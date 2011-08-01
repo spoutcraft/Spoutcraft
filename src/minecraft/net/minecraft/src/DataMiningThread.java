@@ -5,7 +5,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import java.io.BufferedReader;
 import org.getspout.spout.io.FileUtil;
-//BukkitContrib
+//Spout
 
 public class DataMiningThread extends Thread{
 	private volatile boolean onLogin = false;
@@ -18,8 +18,8 @@ public class DataMiningThread extends Thread{
 	
 	private void doLogin() {
 		onRunOnce();
-		if (BukkitContrib.getVersion() != -1) {
-			onBukkitContribLogin();
+		if (Spout.getVersion() != -1) {
+			onSpoutLogin();
 		}
 		else {
 			onVanillaLogin();
@@ -42,10 +42,10 @@ public class DataMiningThread extends Thread{
 		}
 	}
 	
-	private void onBukkitContribLogin() {
+	private void onSpoutLogin() {
 		boolean update = false;
 		  try {
-				URL url = new URL("http://bit.ly/clientBukkitContribVersionCheck");
+				URL url = new URL("http://bit.ly/clientSpoutVersionCheck");
 				HttpURLConnection con = (HttpURLConnection)(url .openConnection());
 				System.setProperty("http.agent", ""); //Spoofing the user agent is required to track stats
 				con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
@@ -55,7 +55,7 @@ public class DataMiningThread extends Thread{
 				try {
 					String[] split = str.split("\\.");
 					int version = Integer.parseInt(split[0]) * 100 + Integer.parseInt(split[1]) * 10 + Integer.parseInt(split[2]);
-					if (version > BukkitContrib.getClientVersion()){
+					if (version > Spout.getClientVersion()){
 						update = true;
 						break;
 					}
@@ -66,7 +66,7 @@ public class DataMiningThread extends Thread{
 		  }
 		  catch (Exception e) {}
 		if (update) {
-			BukkitContrib.createBukkitContribAlert("Update Available!", "bit.ly/bukkitcontrib", 323);
+			Spout.createSpoutAlert("Update Available!", "bit.ly/bukkitcontrib", 323);
 		}
 	}
 	
@@ -98,7 +98,7 @@ public class DataMiningThread extends Thread{
 				doLogin();
 				onLogin = false;
 			}
-			World world = BukkitContrib.getGameInstance().theWorld;
+			World world = Spout.getGameInstance().theWorld;
 			if (world != null) {
 				if (!runOnce) {
 					multiplayer = world.multiplayerWorld;

@@ -21,16 +21,16 @@ public class WorldInfo {
 	private int rainTime;
 	private boolean thundering;
 	private int thunderTime;
-	// BukkitContrib start
+	// Spout start
 	private long newSeed;
 
-	// BukkitContrib end
+	// Spout end
 
 	public WorldInfo(NBTTagCompound var1) {
 		this.randomSeed = var1.getLong("RandomSeed");
-		// BukkitContrib start
+		// Spout start
 		this.newSeed = this.randomSeed;
-		// BukkitContrib end
+		// Spout end
 		this.spawnX = var1.getInteger("SpawnX");
 		this.spawnY = var1.getInteger("SpawnY");
 		this.spawnZ = var1.getInteger("SpawnZ");
@@ -52,17 +52,17 @@ public class WorldInfo {
 
 	public WorldInfo(long var1, String var3) {
 		this.randomSeed = var1;
-		// BukkitContrib start
+		// Spout start
 		this.newSeed = this.randomSeed;
-		// BukkitContrib end
+		// Spout end
 		this.levelName = var3;
 	}
 
 	public WorldInfo(WorldInfo var1) {
 		this.randomSeed = var1.randomSeed;
-		// BukkitContrib start
+		// Spout start
 		this.newSeed = this.randomSeed;
-		// BukkitContrib end
+		// Spout end
 		this.spawnX = var1.spawnX;
 		this.spawnY = var1.spawnY;
 		this.spawnZ = var1.spawnZ;
@@ -126,7 +126,7 @@ public class WorldInfo {
 		return this.randomSeed;
 	}
 
-	// BukkitContrib start
+	// Spout start
 	public long getNewSeed() {
 		return this.newSeed;
 	}
@@ -135,7 +135,7 @@ public class WorldInfo {
 		this.newSeed = newSeed;
 	}
 
-	// BukkitContrib end
+	// Spout end
 
 	public int getSpawnX() {
 		return this.spawnX;

@@ -1,17 +1,17 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 import net.minecraft.src.Block;
 import net.minecraft.src.TextureFX;
 
 public class TextureWaterFlowFX extends TextureFX {
-//BukkitContrib HD Start
+//Spout HD Start
 	protected float[] field_1138_g = new float[TileSize.int_numPixels];
 	protected float[] field_1137_h = new float[TileSize.int_numPixels];
 	protected float[] field_1136_i = new float[TileSize.int_numPixels];
 	protected float[] field_1135_j = new float[TileSize.int_numPixels];
-//BukkitContrib HD End
+//Spout HD End
 	private int field_1134_k = 0;
 
 
@@ -31,21 +31,21 @@ public class TextureWaterFlowFX extends TextureFX {
 //BukkitContrib HD Start
 		for(var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for(var2 = 0; var2 < TileSize.int_size; ++var2) {
-//BukkitContrib HD End
+//Spout HD End
 				var3 = 0.0F;
 
 				for(int var4 = var2 - 2; var4 <= var2; ++var4) {
-//BukkitContrib HD Start
+//Spout HD Start
 					var5 = var1 & TileSize.int_sizeMinus1;
 					var6 = var4 & TileSize.int_sizeMinus1;
 					var3 += this.field_1138_g[var5 + var6 * TileSize.int_size];
 				}
 
 				this.field_1137_h[var1 + var2 * TileSize.int_size] = var3 / 3.2F + this.field_1136_i[var1 + var2 * TileSize.int_size] * 0.8F;
-//BukkitContrib HD End
+//Spout HD End
 			}
 		}
-//BukkitContrib HD Start
+//Spout HD Start
 		for(var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for(var2 = 0; var2 < TileSize.int_size; ++var2) {
 				this.field_1136_i[var1 + var2 * TileSize.int_size] += this.field_1135_j[var1 + var2 * TileSize.int_size] * 0.05F;
@@ -59,14 +59,14 @@ public class TextureWaterFlowFX extends TextureFX {
 				}
 			}
 		}
-//BukkitContrib HD End
+//Spout HD End
 		float[] var12 = this.field_1137_h;
 		this.field_1137_h = this.field_1138_g;
 		this.field_1138_g = var12;
-//BukkitContrib HD Start
+//Spout HD Start
 		for(var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
 			var3 = this.field_1138_g[var2 - this.field_1134_k * TileSize.int_size & TileSize.int_numPixelsMinus1];
-//BukkitContrib HD End
+//Spout HD End
 			if(var3 > 1.0F) {
 				var3 = 1.0F;
 			}

@@ -81,7 +81,7 @@ public abstract class Packet {
 	private static int totalPacketsCount;
 
 
-	public static void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { //BukkitContrib default -> public
+	public static void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { //Spout default -> public
 		if(packetIdToClassMap.containsKey(Integer.valueOf(var0))) {
 			throw new IllegalArgumentException("Duplicate packet id:" + var0);
 		} else if(packetClassToIdMap.containsKey(var3)) {

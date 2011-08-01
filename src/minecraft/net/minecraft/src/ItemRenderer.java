@@ -1,7 +1,7 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLiving;
@@ -50,12 +50,12 @@ public class ItemRenderer {
 
 			Tessellator var3 = Tessellator.instance;
 			int var4 = var1.getItemIcon(var2);
-			//BukkitContrib HD Start
+			//Spout HD Start
 			float var5 = ((float)(var4 % 16 * TileSize.int_size) + 0.0F) / TileSize.float_size16;
 			float var6 = ((float)(var4 % 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
 			float var7 = ((float)(var4 / 16 * TileSize.int_size) + 0.0F) / TileSize.float_size16;
 			float var8 = ((float)(var4 / 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
-			//BukkitContrib HD End
+			//Spout HD End
 			float var9 = 1.0F;
 			float var10 = 0.0F;
 			float var11 = 0.3F;
@@ -88,11 +88,11 @@ public class ItemRenderer {
 			float var15;
 			float var17;
 			float var16;
-			//BukkitContrib HD Start
+			//Spout HD Start
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
-			//BukkitContrib HD End
+			//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var17, 0.0D, (double)(0.0F - var13), (double)var16, (double)var8);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -103,12 +103,12 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(1.0F, 0.0F, 0.0F);
-			//BukkitContrib HD Start
+			//Spout HD Start
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
 				var17 = var9 * var15 + TileSize.float_reciprocal;
-			//BukkitContrib HD End
+			//Spout HD End
 				var3.addVertexWithUV((double)var17, 1.0D, (double)(0.0F - var13), (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 1.0D, 0.0D, (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -118,12 +118,12 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, 1.0F, 0.0F);
-			//BukkitContrib HD Start
+			//Spout HD Start
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
 				var17 = var9 * var15 + TileSize.float_reciprocal;
-			//BukkitContrib HD End
+			//Spout HD End
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, (double)(0.0F - var13), (double)var5, (double)var16);
@@ -133,11 +133,11 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, -1.0F, 0.0F);
-			//BukkitContrib HD Start
+			//Spout HD Start
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
-			//BukkitContrib HD End
+			//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);

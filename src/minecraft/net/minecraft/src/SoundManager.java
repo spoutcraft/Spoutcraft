@@ -14,13 +14,13 @@ import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
-//BukkitContrib Start
+//Spout Start
 import paulscode.sound.CommandObject;
 import paulscode.sound.FilenameURL;
 import org.getspout.spout.packet.*;
 import org.getspout.spout.sound.Music;
 import org.getspout.spout.sound.SoundEffect;
-//BukkitContrib End
+//Spout End
 
 public class SoundManager {
 
@@ -115,9 +115,9 @@ public class SoundManager {
 
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
 				if(var1 != null) {
-					//BukkitContrib start
-					if (BukkitContrib.getVersion() > 7) {
-						EntityPlayer player = BukkitContrib.getGameInstance().thePlayer;
+					//Spout start
+					if (Spout.getVersion() > 7) {
+						EntityPlayer player = Spout.getGameInstance().thePlayer;
 						if (player instanceof EntityClientPlayerMP) {
 							if (waitingSound == null) {
 								Music music = Music.getMusicFromName(var1.soundName);
@@ -145,7 +145,7 @@ public class SoundManager {
 							}
 						}
 					}
-					//BukkitContrib end
+					//Spout end
 					this.ticksBeforeMusic = this.rand.nextInt(12000) + 12000;
 					sndSystem.backgroundMusic("BgMusic", var1.soundUrl, var1.soundName, false);
 					sndSystem.setVolume("BgMusic", this.options.musicVolume);
@@ -200,7 +200,7 @@ public class SoundManager {
 			}
 		}
 	}
-	//BukkitContrib start
+	//Spout start
 	public void playSound(String s, float f, float f1, float f2, float f3, float f4) {
 		playSound(s, f, f1, f2, f3, f4, -1, 1.0F);
 	}
@@ -360,5 +360,5 @@ public class SoundManager {
 	public SoundPoolEntry waitingSound = null;
 	public boolean allowed = false;
 	public boolean cancelled = false;
-	//BukkitContrib end
+	//Spout end
 }

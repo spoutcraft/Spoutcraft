@@ -1,5 +1,5 @@
 package net.minecraft.src;
-//BukkitContrib
+//Spout
 
 public abstract class EntityUtil {
 	public static void setMaximumAir(Entity entity, int time) {

@@ -110,7 +110,7 @@ public class MapItemRenderer {
 		ItemStack inHand = var1.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
-			customName = BukkitContrib.getItemManager().getCustomItemName(inHand.itemID, (short)(inHand.getItemDamage()));
+			customName = Spout.getItemManager().getCustomItemName(inHand.itemID, (short)(inHand.getItemDamage()));
 		}
 		if (customName != null && customName.length() > 0) {
 			this.field_28160_d.drawString(customName, var15, var16, -16777216);

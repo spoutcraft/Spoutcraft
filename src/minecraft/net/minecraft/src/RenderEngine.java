@@ -22,11 +22,11 @@ import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 import net.minecraft.src.ThreadDownloadImageData;
 import org.lwjgl.opengl.GL11;
-//BukkitContrib HD Start
+//Spout HD Start
 import net.minecraft.client.Minecraft;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 
 public class RenderEngine {
 
@@ -35,15 +35,15 @@ public class RenderEngine {
 	private HashMap field_28151_c = new HashMap();
 	private HashMap textureNameToImageMap = new HashMap();
 	private IntBuffer singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
-	//BukkitContrib HD Start
+	//Spout HD Start
 	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
-	//BukkitContrib HD End
+	//Spout HD End
 	private List textureList = new ArrayList();
 	private Map urlToImageDataMap = new HashMap();
 	private GameSettings options;
 	private boolean clampTexture = false;
 	private boolean blurTexture = false;
-	public TexturePackList texturePack; //BukkitContrib private -> public
+	public TexturePackList texturePack; //Spout private -> public
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
 
 
@@ -67,20 +67,20 @@ public class RenderEngine {
 			try {
 				Object var6 = null;
 				if(var1.startsWith("##")) {
-				//BukkitContrib HD Start
+				//Spout HD Start
 					var3 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(var1.substring(2))));
-				//BukkitContrib HD End
+				//Spout HD End
 				} else if(var1.startsWith("%clamp%")) {
 					this.clampTexture = true;
-				//BukkitContrib HD Start
+				//Spout HD Start
 					var3 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(var1.substring(7)));
-				//BukkitContrib HD End
+				//Spout HD End
 					this.clampTexture = false;
 				} else if(var1.startsWith("%blur%")) {
 					this.blurTexture = true;
-				//BukkitContrib HD Start
+				//Spout HD Start
 					var3 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(var1.substring(6)));
-				//BukkitContrib HD End
+				//Spout HD End
 					this.blurTexture = false;
 				} else {
 					InputStream var7 = var2.getResourceAsStream(var1);
@@ -128,25 +128,25 @@ public class RenderEngine {
 				GLAllocation.generateTextureNames(this.singleIntBuffer);
 				int var6 = this.singleIntBuffer.get(0);
 				if(var1.startsWith("##")) {
-					//BukkitContrib HD Start
+					//Spout HD Start
 					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(var1.substring(2))), var6);
-					//BukkitContrib HD End
+					//Spout HD End
 				} else if(var1.startsWith("%clamp%")) {
 					this.clampTexture = true;
-					//BukkitContrib HD Start
+					//Spout HD Start
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(var1.substring(7)), var6);
-					//BukkitContrib HD End
+					//Spout HD End
 					this.clampTexture = false;
 				} else if(var1.startsWith("%blur%")) {
 					this.blurTexture = true;
-					//BukkitContrib HD Start
+					//Spout HD Start
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(var1.substring(6)), var6);
-					//BukkitContrib HD End
+					//Spout HD End
 					this.blurTexture = false;
 				} else {
-					//BukkitContrib HD Start
+					//Spout HD Start
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(var1), var6);
-					//BukkitContrib HD End
+					//Spout HD End
 				}
 
 				this.textureMap.put(var1, Integer.valueOf(var6));
@@ -185,9 +185,9 @@ public class RenderEngine {
 	}
 
 	public void setupTexture(BufferedImage var1, int var2) {
-		//BukkitContrib HD Start
+		//Spout HD Start
 		if (var1 == null) return;
-		//BukkitContrib HD End
+		//Spout HD End
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var2);
 		if(useMipmaps) {
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, 9986 /*GL_NEAREST_MIPMAP_LINEAR*/);
@@ -243,9 +243,9 @@ public class RenderEngine {
 			var6[var7 * 4 + 2] = (byte)var11;
 			var6[var7 * 4 + 3] = (byte)var8;
 		}
-//BukkitContrib HD Start
+//Spout HD Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, var6);
-//BukkitContrib HD End
+//Spout HD End
 		GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, 0, 6408 /*GL_RGBA*/, var3, var4, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
 		if(useMipmaps) {
 			for(var7 = 1; var7 <= 4; ++var7) {
@@ -314,9 +314,9 @@ public class RenderEngine {
 			var5[var6 * 4 + 2] = (byte)var10;
 			var5[var6 * 4 + 3] = (byte)var7;
 		}
-//BukkitContrib HD Start
+//Spout HD Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, var5);
-//BukkitContrib HD End
+//Spout HD End
 		GL11.glTexSubImage2D(3553 /*GL_TEXTURE_2D*/, 0, 0, 0, var2, var3, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
 	}
 
@@ -370,9 +370,9 @@ public class RenderEngine {
 	}
 
 	public void registerTextureFX(TextureFX var1) {
-//BukkitContrib HD Start
+//Spout HD Start
 		TextureUtils.registerTextureFX(this.textureList, var1);
-//BukkitContrib HD End
+//Spout HD End
 	}
 
 	public void updateDynamicTextures() {
@@ -392,16 +392,16 @@ public class RenderEngine {
 			var2 = (TextureFX)this.textureList.get(var1);
 			var2.anaglyphEnabled = this.options.anaglyph;
 			var2.onTick();
-//BukkitContrib HD Start
+//Spout HD Start
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, var2.imageData);
-//BukkitContrib HD End
+//Spout HD End
 			var2.bindImage(this);
 
 			for(var3 = 0; var3 < var2.tileSize; ++var3) {
 				for(var4 = 0; var4 < var2.tileSize; ++var4) {
-//BukkitContrib HD Start
+//Spout HD Start
 					GL11.glTexSubImage2D(3553 /*GL_TEXTURE_2D*/, 0, var2.iconIndex % 16 * TileSize.int_size + var3 * TileSize.int_size, var2.iconIndex / 16 * TileSize.int_size + var4 * TileSize.int_size, TileSize.int_size, TileSize.int_size, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
-//BukkitContrib HD End
+//Spout HD End
 					if(useMipmaps) {
 						for(var5 = 1; var5 <= 4; ++var5) {
 							var6 = 16 >> var5 - 1;
@@ -428,11 +428,11 @@ public class RenderEngine {
 		for(var1 = 0; var1 < this.textureList.size(); ++var1) {
 			var2 = (TextureFX)this.textureList.get(var1);
 			if(var2.textureId > 0) {
-//BukkitContrib HD Start
+//Spout HD Start
 				this.imageData = TextureUtils.getByteBuffer(this.imageData, var2.imageData);
 				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var2.textureId);
 				GL11.glTexSubImage2D(3553 /*GL_TEXTURE_2D*/, 0, 0, 0, TileSize.int_size, TileSize.int_size, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
-//BukkitContrib HD End
+//Spout HD End
 				if(useMipmaps) {
 					for(var3 = 1; var3 <= 4; ++var3) {
 						var4 = 16 >> var3 - 1;
@@ -508,7 +508,7 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
-//BukkitContrib HD Start
+//Spout HD Start
 				if(var9.startsWith("##")) {
 					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(var9.substring(2)));
 				} else if(var9.startsWith("%clamp%")) {
@@ -524,18 +524,18 @@ public class RenderEngine {
 					var2.remove();
 					continue;
 				}
-//BukkitContrib HD End
+//Spout HD End
 
 				int var5 = ((Integer)this.textureMap.get(var9)).intValue();
 				this.setupTexture(var4, var5);
 				this.blurTexture = false;
 				this.clampTexture = false;
 			} catch (IOException var7) {
-				//BukkitContrib HD Start
+				//Spout HD Start
 				//Gracefully handle errors
 				var2.remove();
 				//var7.printStackTrace();
-				//BukkitContrib HD End
+				//Spout HD End
 			}
 		}
 
@@ -546,7 +546,7 @@ public class RenderEngine {
 
 			try {
 				if(var9.startsWith("##")) {
-//BukkitContrib HD Start
+//Spout HD Start
 					var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(var9.substring(2)));
 				} else if(var9.startsWith("%clamp%")) {
 					this.clampTexture = true;
@@ -561,17 +561,17 @@ public class RenderEngine {
 					var2.remove();
 					continue;
 				}
-//BukkitContrib HD End
+//Spout HD End
 
 				this.getImageContents(var4, (int[])this.field_28151_c.get(var9));
 				this.blurTexture = false;
 				this.clampTexture = false;
 			} catch (IOException var6) {
-				//BukkitContrib HD Start
+				//Spout HD Start
 				//Gracefully handle errors
 				var2.remove();
 				//var6.printStackTrace();
-				//BukkitContrib HD End
+				//Spout HD End
 			}
 		}
 
@@ -588,11 +588,11 @@ public class RenderEngine {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var1);
 		}
 	}
-//BukkitContrib HD Start
+//Spout HD Start
 	public void setTileSize(Minecraft var1) {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-//BukkitContrib HD End
+//Spout HD End
 }

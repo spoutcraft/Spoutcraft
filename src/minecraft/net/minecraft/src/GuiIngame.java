@@ -20,18 +20,18 @@ import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-//BukkitContrib Start
+//Spout Start
 import org.getspout.spout.gui.*;
 import org.getspout.spout.player.ChatManager;
-//BukkitContrib End
+//Spout End
 
 public class GuiIngame extends Gui {
 
 	private static RenderItem itemRenderer = new RenderItem();
-	//BukkitContrib Improved Chat Start
+	//Spout Improved Chat Start
 	//Increased default size, efficiency reasons
 	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(10000);
-	//BukkitContrib Improved Chat End
+	//Spout Improved Chat End
 	private Random rand = new Random();
 	private Minecraft mc;
 	public String field_933_a = null;
@@ -48,9 +48,9 @@ public class GuiIngame extends Gui {
 	}
 
 	public void renderGameOverlay(float var1, boolean var2, int var3, int var4) {
-		//BukkitContrib Start
-		BukkitContrib.onTick();
-		//BukkitContrib End
+		//Spout Start
+		Spout.onTick();
+		//Spout End
 		ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 		int var6 = var5.getScaledWidth();
 		int var7 = var5.getScaledHeight();
@@ -99,8 +99,8 @@ public class GuiIngame extends Gui {
 			int var18;
 			for(var16 = 0; var16 < 10; ++var16) {
 				var17 = var7 - 32;
-				//BukkitContrib Start
-				if (BukkitContrib.getMainScreen().getArmorBar().isVisible()) {
+				//Spout Start
+				if (Spout.getMainScreen().getArmorBar().isVisible()) {
 					if(var15 > 0) {
 						var18 = var6 / 2 + 91 - var16 * 8 - 9;
 						if(var16 * 2 + 1 < var15) {
@@ -116,7 +116,7 @@ public class GuiIngame extends Gui {
 						}
 					}
 				}
-				//BukkitContrib End
+				//Spout End
 				byte var31 = 0;
 				if(var12) {
 					var31 = 1;
@@ -126,8 +126,8 @@ public class GuiIngame extends Gui {
 				if(var13 <= 4) {
 					var17 += this.rand.nextInt(2);
 				}
-				//BukkitContrib Start
-				if (BukkitContrib.getMainScreen().getHealthBar().isVisible()) {
+				//Spout Start
+				if (Spout.getMainScreen().getHealthBar().isVisible()) {
 					this.drawTexturedModalRect(var19, var17, 16 + var31 * 9, 0, 9, 9);
 					if(var12) {
 						if(var16 * 2 + 1 < var14) {
@@ -147,14 +147,14 @@ public class GuiIngame extends Gui {
 						this.drawTexturedModalRect(var19, var17, 61, 0, 9, 9);
 					}
 				}
-				//BukkitContrib End
+				//Spout End
 			}
 
 			if(this.mc.thePlayer.isInsideOfMaterial(Material.water)) {
-				//BukkitContrib Start
+				//Spout Start
 				var16 = (int)Math.ceil(((double)(mc.thePlayer.air - 2) * 10D) / (mc.thePlayer.maxAir * 1D));
 				var17 = (int)Math.ceil(((double)mc.thePlayer.air * 10D) / (mc.thePlayer.maxAir * 1D)) - var16;
-				if (BukkitContrib.getMainScreen().getBubbleBar().isVisible()) {
+				if (Spout.getMainScreen().getBubbleBar().isVisible()) {
 					for(var18 = 0; var18 < var16 + var17; ++var18) {
 						if(var18 < var16) {
 							this.drawTexturedModalRect(var6 / 2 - 91 + var18 * 8, var7 - 32 - 9, 16, 18, 9, 9);
@@ -163,7 +163,7 @@ public class GuiIngame extends Gui {
 						}
 					}
 				}
-				//BukkitContrib End
+				//Spout End
 			}
 		}
 
@@ -196,12 +196,12 @@ public class GuiIngame extends Gui {
 			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
-		//BukkitContrib Start Zans Minimap Compatibility
-		if (BukkitContrib.getZanMinimap() != null) {
-			((ZanMinimap)BukkitContrib.getZanMinimap()).OnTickInGame(mc);
+		//Spout Start Zans Minimap Compatibility
+		if (Spout.getZanMinimap() != null) {
+			((ZanMinimap)Spout.getZanMinimap()).OnTickInGame(mc);
 		}
-		BukkitContrib.getMainScreen().render();
-		//BukkitContrib End
+		Spout.getMainScreen().render();
+		//Spout End
 		String var23;
 		if(this.mc.gameSettings.showDebugInfo) {
 			GL11.glPushMatrix();
@@ -222,7 +222,7 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 2, 14737632);
 			var23 = "Allocated memory: " + var30 * 100L / var25 + "% (" + var30 / 1024L / 1024L + "MB)";
 			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 12, 14737632);
-			//BukkitContrib Start
+			//Spout Start
 			//No Cheating!
 			if (!mc.isMultiplayerWorld()) {
 			this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
@@ -230,7 +230,7 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
 			this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 			}
-			//BukkitContrib End
+			//Spout End
 			GL11.glPopMatrix();
 		}
 
@@ -259,16 +259,16 @@ public class GuiIngame extends Gui {
 
 		byte var27 = 10;
 		boolean var28 = false;
-		//BukkitContrib Start
-		if (BukkitContrib.getMainScreen().getChatBar().isVisible()) {
+		//Spout Start
+		if (Spout.getMainScreen().getChatBar().isVisible()) {
 			if(mc.currentScreen instanceof GuiChat) {
 				var27 = 20;
 				var28 = true;
 			}
 		}
 		boolean chatOpen = var28;
-		int lines = chatOpen ? BukkitContrib.getMainScreen().getChatTextBox().getNumVisibleChatLines() : BukkitContrib.getMainScreen().getChatTextBox().getNumVisibleLines();
-		//BukkitContrib End
+		int lines = chatOpen ? Spout.getMainScreen().getChatTextBox().getNumVisibleChatLines() : Spout.getMainScreen().getChatTextBox().getNumVisibleLines();
+		//Spout End
 
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		GL11.glBlendFunc(770, 771);
@@ -276,14 +276,14 @@ public class GuiIngame extends Gui {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
 
-		//BukkitContrib Start
+		//Spout Start
 		
-		if (BukkitContrib.getMainScreen().getChatTextBox().isVisible()) {
-			int start = chatMessageList.size() - BukkitContrib.getChatManager().chatScroll - 1;
-			int end = Math.max(0, chatMessageList.size() - BukkitContrib.getChatManager().chatScroll - 1 - var27);
+		if (Spout.getMainScreen().getChatTextBox().isVisible()) {
+			int start = chatMessageList.size() - Spout.getChatManager().chatScroll - 1;
+			int end = Math.max(0, chatMessageList.size() - Spout.getChatManager().chatScroll - 1 - var27);
 			int viewedLine = 0;
 			
-			for (int line = BukkitContrib.getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + BukkitContrib.getChatManager().chatScroll)); line++) {
+			for (int line = Spout.getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + Spout.getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < 250) {
 					double opacity = 1.0D - chatMessageList.get(line).updateCounter / 250D;
 					opacity *= 10D;
@@ -299,7 +299,7 @@ public class GuiIngame extends Gui {
 						int height = 2;
 						int width = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
-						chat = BukkitContrib.getChatManager().formatChatColors(chat);
+						chat = Spout.getChatManager().formatChatColors(chat);
 						chat = ChatManager.formatUrl(chat);
 						//TODO add support for opening URL in browser if clicked?
 						drawRect(height, width - 1, height + 320, width + 8, color / 2 << 24);
@@ -310,7 +310,7 @@ public class GuiIngame extends Gui {
 				}
 			}
 		}
-		//BukkitContrib End
+		//Spout End
 
 		GL11.glPopMatrix();
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
@@ -446,14 +446,14 @@ public class GuiIngame extends Gui {
 		}
 
 		this.chatMessageList.add(0, new ChatLine(var1));
-		//BukkitContrib Improved Chat Start
+		//Spout Improved Chat Start
 		//Prevent clearing of chat list
 		/*
 		while(this.chatMessageList.size() > 50) {
 			this.chatMessageList.remove(this.chatMessageList.size() - 1);
 		}
 		*/
-		//BukkitContrib Improved Chat End
+		//Spout Improved Chat End
 	}
 
 	public void setRecordPlayingMessage(String var1) {

@@ -14,7 +14,7 @@ public class GuiConnecting extends GuiScreen {
 	private NetClientHandler clientHandler;
 	private boolean cancelled = false;
 
-	//BukkitContrib Start
+	//Spout Start
 	private int counter = 0;
 	private String currentMsg = null;
 	private final String[] highlyInformativeMessages = {
@@ -129,7 +129,7 @@ public class GuiConnecting extends GuiScreen {
 		"Weathering Landforms",
 		"Zeroing Creeper Network"
 	};
-	//BukkitContrib End
+	//Spout End
 	public GuiConnecting(Minecraft var1, String var2, int var3) {
 		System.out.println("Connecting to " + var2 + ", " + var3);
 		var1.changeWorld1((World)null);
@@ -173,7 +173,7 @@ public class GuiConnecting extends GuiScreen {
 			this.drawCenteredString(this.fontRenderer, var4.translateKey("connect.authorizing"), this.width / 2, this.height / 2 - 50, 16777215);
 			this.drawCenteredString(this.fontRenderer, this.clientHandler.field_1209_a, this.width / 2, this.height / 2 - 10, 16777215);
 		}
-		//BukkitContrib Start
+		//Spout Start
 		if (counter == 4500 || currentMsg == null) {
 			counter = 0;
 			currentMsg = highlyInformativeMessages[(new java.util.Random()).nextInt(highlyInformativeMessages.length)];
@@ -183,7 +183,7 @@ public class GuiConnecting extends GuiScreen {
 			counter++;
 		}
 		drawString(fontRenderer, currentMsg, 7, height / 2 - 115, 0xffffff);
-		//BukkitContrib End
+		//Spout End
 		super.drawScreen(var1, var2, var3);
 	}
 

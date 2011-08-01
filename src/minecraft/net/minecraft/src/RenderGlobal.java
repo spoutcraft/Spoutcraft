@@ -51,9 +51,9 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldRenderer;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
-//BukkitContrib Start
+//Spout Start
 import org.getspout.spout.io.CustomTextureManager;
-//BukkitContrib End
+//Spout End
 
 public class RenderGlobal implements IWorldAccess {
 
@@ -166,19 +166,19 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	private void renderStars() {
-		//BukkitContrib Start
-		if (!BukkitContrib.getSkyManager().isStarsVisible()) {
+		//Spout Start
+		if (!Spout.getSkyManager().isStarsVisible()) {
 			return;
 		}
-		//BukkitContrib End
+		//Spout End
 		
 		Random var1 = new Random(10842L);
 		Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 
-		//BukkitContrib Start
-		for(int i = 0; i < BukkitContrib.getSkyManager().getStarFrequency(); i++) {
-		//BukkitContrib End
+		//Spout Start
+		for(int i = 0; i < Spout.getSkyManager().getStarFrequency(); i++) {
+		//Spout End
 			double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var8 = (double)(var1.nextFloat() * 2.0F - 1.0F);
@@ -439,7 +439,7 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public int sortAndRender(EntityLiving var1, int var2, double var3) {
-		//BukkitContrib Start
+		//Spout Start
 		//Performance Change
 		//Do not reload if we already can see farther than the new distance
 		if(mc.gameSettings.renderDistance < renderDistance)
@@ -456,7 +456,7 @@ public class RenderGlobal implements IWorldAccess {
 				}
 			}
 		}
-		//BukkitContrib End
+		//Spout End
 
 		if(var2 == 0) {
 			this.renderersLoaded = 0;
@@ -743,17 +743,17 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glRotatef(0.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(this.worldObj.getCelestialAngle(var1) * 360.0F, 1.0F, 0.0F, 0.0F);
 			var11 = 30.0F;
-			//BukkitContrib Start
+			//Spout Start
 			float f15 = var11;
 			Tessellator tessellator = var17;
-			if (BukkitContrib.getSkyManager().isSunVisible()) {
-				if (BukkitContrib.getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTextureFromUrl(BukkitContrib.getSkyManager().getSunTextureUrl()) == null) {
+			if (Spout.getSkyManager().isSunVisible()) {
+				if (Spout.getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getSunTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/sun.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(BukkitContrib.getSkyManager().getSunTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getSunTextureUrl())));
 				}
-				double multiplier = (BukkitContrib.getSkyManager().getSunSizePercent() / 100D);
+				double multiplier = (Spout.getSkyManager().getSunSizePercent() / 100D);
 				tessellator.startDrawingQuads();
 				tessellator.addVertexWithUV(-f15, 100D / multiplier, -f15, 0.0D, 0.0D);
 				tessellator.addVertexWithUV(f15, 100D / multiplier, -f15, 1.0D, 0.0D);
@@ -762,14 +762,14 @@ public class RenderGlobal implements IWorldAccess {
 				tessellator.draw();
 			}
 			f15 = 20F;
-			if (BukkitContrib.getSkyManager().isMoonVisible()) {
-				if (BukkitContrib.getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTextureFromUrl(BukkitContrib.getSkyManager().getMoonTextureUrl()) == null) {
+			if (Spout.getSkyManager().isMoonVisible()) {
+				if (Spout.getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getMoonTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/moon.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(BukkitContrib.getSkyManager().getMoonTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getMoonTextureUrl())));
 				}
-				double multiplier = (BukkitContrib.getSkyManager().getMoonSizePercent() / 100D);
+				double multiplier = (Spout.getSkyManager().getMoonSizePercent() / 100D);
 				tessellator.startDrawingQuads();
 				tessellator.addVertexWithUV(-f15, -100D / multiplier, f15, 1.0D, 1.0D);
 				tessellator.addVertexWithUV(f15, -100D / multiplier, f15, 0.0D, 1.0D);
@@ -777,7 +777,7 @@ public class RenderGlobal implements IWorldAccess {
 				tessellator.addVertexWithUV(-f15, -100D / multiplier, -f15, 1.0D, 0.0D);
 				tessellator.draw();
 			}
-			//BukkitContrib End
+			//Spout End
 			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 			var12 = this.worldObj.getStarBrightness(var1) * var7;
 			if(var12 > 0.0F) {
@@ -804,11 +804,11 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void renderClouds(float var1) {
-		//BukkitContrib Start
-		if (!BukkitContrib.getSkyManager().isCloudsVisible()) {
+		//Spout Start
+		if (!Spout.getSkyManager().isCloudsVisible()) {
 			return;
 		}
-		//BukkitContrib End
+		//Spout End
 		if(!this.mc.theWorld.worldProvider.isNether) {
 			if(this.mc.gameSettings.fancyGraphics) {
 				this.renderCloudsFancy(var1);
@@ -842,10 +842,10 @@ public class RenderGlobal implements IWorldAccess {
 				int var16 = MathHelper.floor_double(var13 / 2048.0D);
 				var22 -= (double)(var15 * 2048 /*GL_EXP*/);
 				var13 -= (double)(var16 * 2048 /*GL_EXP*/);
-				//BukkitContrib Start
+				//Spout Start
 				//float var17 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
-				float var17 = BukkitContrib.getSkyManager().getCloudHeight() - var2 + 0.33F;
-				//BukkitContrib End
+				float var17 = Spout.getSkyManager().getCloudHeight() - var2 + 0.33F;
+				//Spout End
 				
 				float var18 = (float)(var22 * (double)var10);
 				float var19 = (float)(var13 * (double)var10);
@@ -881,10 +881,10 @@ public class RenderGlobal implements IWorldAccess {
 		float var5 = 4.0F;
 		double var6 = (this.mc.renderViewEntity.prevPosX + (this.mc.renderViewEntity.posX - this.mc.renderViewEntity.prevPosX) * (double)var1 + (double)(((float)this.cloudOffsetX + var1) * 0.03F)) / (double)var4;
 		double var8 = (this.mc.renderViewEntity.prevPosZ + (this.mc.renderViewEntity.posZ - this.mc.renderViewEntity.prevPosZ) * (double)var1) / (double)var4 + 0.33000001311302185D;
-		//BukkitContrib Start
+		//Spout Start
 		//float var10 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
-		float var10 = BukkitContrib.getSkyManager().getCloudHeight() - var2 + 0.33F;
-		//BukkitContrib End
+		float var10 = Spout.getSkyManager().getCloudHeight() - var2 + 0.33F;
+		//Spout End
 		int var11 = MathHelper.floor_double(var6 / 2048.0D);
 		int var12 = MathHelper.floor_double(var8 / 2048.0D);
 		var6 -= (double)(var11 * 2048 /*GL_EXP*/);

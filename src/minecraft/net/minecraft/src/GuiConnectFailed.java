@@ -5,9 +5,9 @@ import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
-//BukkitContrib Start
+//Spout Start
 import net.minecraft.src.ReconnectManager;
-//BukkitContrib End
+//Spout End
 
 public class GuiConnectFailed extends GuiScreen {
 
@@ -24,9 +24,9 @@ public class GuiConnectFailed extends GuiScreen {
 			this.errorDetail = var4.translateKey(var2);
 		}
 
-		//BukkitContrib Start
+		//Spout Start
 		ReconnectManager.detectKick(var1, var2, var3);
-		//BukkitContrib End
+		//Spout End
 	}
 
 	public void updateScreen() {}
@@ -51,8 +51,8 @@ public class GuiConnectFailed extends GuiScreen {
 		this.drawCenteredString(this.fontRenderer, this.errorMessage, this.width / 2, this.height / 2 - 50, 16777215);
 		this.drawCenteredString(this.fontRenderer, this.errorDetail, this.width / 2, this.height / 2 - 10, 16777215);
 		super.drawScreen(var1, var2, var3);
-		//BukkitContrib Start
+		//Spout Start
 		ReconnectManager.teleport(this.mc);
-		//BukkitContrib End
+		//Spout End
 	}
 }

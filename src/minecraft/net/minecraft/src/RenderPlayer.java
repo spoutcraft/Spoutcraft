@@ -77,8 +77,8 @@ public class RenderPlayer extends RenderLiving {
 			float var11 = var1.isSneaking()?32.0F:64.0F;
 			if(var10 < var11) {
 				String var12 = var1.username;
-				//BukkitContrib Start
-				String title = BukkitContrib.entityLabel.get(var1.entityId);
+				//Spout Start
+				String title = Spout.entityLabel.get(var1.entityId);
 				if (title != null) {
 					var12 = title;
 				}
@@ -127,7 +127,7 @@ public class RenderPlayer extends RenderLiving {
 						}
 					}
 				}
-				//BukkitContrib End
+				//Spout End
 			}
 		}
 

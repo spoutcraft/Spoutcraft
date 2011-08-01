@@ -74,16 +74,16 @@ public abstract class GuiContainer extends GuiScreen {
 		this.drawGuiContainerForegroundLayer();
 		if(var12.getItemStack() == null && var6 != null && var6.getHasStack()) {
 			String var13 = ("" + StringTranslate.getInstance().translateNamedKey(var6.getStack().getItemName())).trim();
-			//BukkitContrib Start
-			String custom = BukkitContrib.getItemManager().getCustomItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+			//Spout Start
+			String custom = Spout.getItemManager().getCustomItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			if (custom != null) {
 				var13 = custom;
 			}
 			else if (var13 == null || var13.trim().equals("")) {
-				var13 = BukkitContrib.getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+				var13 = Spout.getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			}
 			if(var13 != null && var13.length() > 0) {
-			//BukkitContrib End
+			//Spout End
 				var9 = var1 - var4 + 12;
 				var10 = var2 - var5 - 12;
 				int var11 = this.fontRenderer.getStringWidth(var13);

@@ -1,5 +1,5 @@
 package net.minecraft.src;
-//BukkitContrib
+//Spout
 
 public abstract class WorldUtil {
 	public static void obtainEntitySkin(World world, Entity entity) {

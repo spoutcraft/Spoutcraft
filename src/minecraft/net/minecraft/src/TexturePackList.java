@@ -1,7 +1,7 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//BukkitContrib HD End
+//Spout HD End
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,11 +47,11 @@ public class TexturePackList {
 			this.mc.gameSettings.skin = this.currentTexturePack;
 			this.mc.gameSettings.saveOptions();
 			this.selectedTexturePack.func_6482_a();
-//BukkitContrib HD Start
+//Spout HD Start
 			TextureUtils.setTileSize();
 			this.mc.renderEngine.setTileSize(this.mc);
 			TextureUtils.setFontRenderer();
-//BukkitContrib HD End
+//Spout HD End
 			return true;
 		}
 	}

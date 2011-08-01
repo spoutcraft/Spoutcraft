@@ -1,8 +1,8 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import net.minecraft.src.TextureFX;
 public class TextureCompassFX extends TextureFX {
 
 	private Minecraft mc;
-	private int[] compassIconImageData = new int[TileSize.int_numPixels]; //BukkitContrib HD
+	private int[] compassIconImageData = new int[TileSize.int_numPixels]; //Spout HD
 	private double field_4229_i;
 	private double field_4228_j;
 
@@ -24,12 +24,12 @@ public class TextureCompassFX extends TextureFX {
 		this.tileImage = 1;
 
 		try {
-//BukkitContrib HD Start
+//Spout HD Start
 			BufferedImage var2 = TextureUtils.getResourceAsBufferedImage("/gui/items.png");
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
-//BukkitContrib HD End
+//Spout HD End
 		} catch (IOException var5) {
 			var5.printStackTrace();
 		}
@@ -37,9 +37,9 @@ public class TextureCompassFX extends TextureFX {
 	}
 
 	public void onTick() {
-//BukkitContrib HD Start
+//Spout HD Start
 		for(int var1 = 0; var1 < TileSize.int_numPixels; ++var1) {
-//BukkitContrib HD End
+//Spout HD End
 			int var2 = this.compassIconImageData[var1] >> 24 & 255;
 			int var3 = this.compassIconImageData[var1] >> 16 & 255;
 			int var4 = this.compassIconImageData[var1] >> 8 & 255;
@@ -126,12 +126,12 @@ public class TextureCompassFX extends TextureFX {
 			this.imageData[var12 * 4 + 2] = (byte)var15;
 			this.imageData[var12 * 4 + 3] = (byte)var16;
 		}
-//BukkitContrib HD Start
+//Spout HD Start
 		for(var9 = TileSize.int_compassNeedleMin; var9 <= TileSize.int_compassNeedleMax; ++var9) {
 			var10 = (int)(TileSize.double_compassCenterMax + var24 * (double)var9 * 0.3D);
 			var11 = (int)(TileSize.double_compassCenterMin + var26 * (double)var9 * 0.3D * 0.5D);
 			var12 = var11 * TileSize.int_size + var10;
-//BukkitContrib HD End
+//Spout HD End
 			var13 = var9 >= 0?255:100;
 			var14 = var9 >= 0?20:100;
 			var15 = var9 >= 0?20:100;

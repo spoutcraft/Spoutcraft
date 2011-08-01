@@ -169,12 +169,12 @@ public class RenderLiving extends Render {
 	protected void preRenderCallback(EntityLiving var1, float var2) {}
 
 	protected void passSpecialRender(EntityLiving var1, double var2, double var4, double var6) {
-		//BukkitContrib Start
-		if(Minecraft.isDebugInfoEnabled() && !BukkitContrib.getGameInstance().isMultiplayerWorld()) {
+		//Spout Start
+		if(Minecraft.isDebugInfoEnabled() && !Spout.getGameInstance().isMultiplayerWorld()) {
 			this.renderLivingLabel(var1, Integer.toString(var1.entityId), var2, var4, var6, 64);
 		}
 		else {
-			String title = BukkitContrib.entityLabel.get(var1.entityId);
+			String title = Spout.entityLabel.get(var1.entityId);
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");
 				for (int i = 0; i < lines.length; i++){
@@ -182,7 +182,7 @@ public class RenderLiving extends Render {
 				}
 			}
 		}
-		//BukkitContrib End
+		//Spout End
 	}
 
 	protected void renderLivingLabel(EntityLiving var1, String var2, double var3, double var5, double var7, int var9) {

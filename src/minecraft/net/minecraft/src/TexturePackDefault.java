@@ -1,7 +1,7 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//BukkitContrib HD End
+//Spout HD End
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
@@ -19,9 +19,9 @@ public class TexturePackDefault extends TexturePackBase {
 		this.firstDescriptionLine = "The default look of Minecraft";
 
 		try {
-//BukkitContrib HD Start
+//Spout HD Start
 			this.texturePackThumbnail = TextureUtils.getResourceAsBufferedImage("/pack.png");
-//BukkitContrib HD End
+//Spout HD End
 		} catch (IOException var2) {
 			var2.printStackTrace();
 		}

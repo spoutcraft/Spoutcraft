@@ -1,5 +1,5 @@
 package net.minecraft.src;
-//BukkitContrib
+//Spout
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

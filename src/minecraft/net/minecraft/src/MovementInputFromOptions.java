@@ -7,7 +7,7 @@ import net.minecraft.src.MovementInput;
 public class MovementInputFromOptions extends MovementInput {
 
 	private boolean[] movementKeyStates = new boolean[10];
-	public GameSettings gameSettings; //BukkitContrib
+	public GameSettings gameSettings; //Spout
 
 
 	public MovementInputFromOptions(GameSettings var1) {

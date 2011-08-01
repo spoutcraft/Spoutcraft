@@ -1,18 +1,18 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 import net.minecraft.src.Block;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
 
 public class TextureLavaFlowFX extends TextureFX {
-//BukkitContrib HD Start
+//Spout HD Start
 	protected float[] field_1143_g = new float[TileSize.int_numPixels];
 	protected float[] field_1142_h = new float[TileSize.int_numPixels];
 	protected float[] field_1141_i = new float[TileSize.int_numPixels];
 	protected float[] field_1140_j = new float[TileSize.int_numPixels];
-//BukkitContrib HD End
+//Spout HD End
 	int field_1139_k = 0;
 
 
@@ -31,35 +31,35 @@ public class TextureLavaFlowFX extends TextureFX {
 		int var7;
 		int var8;
 		int var9;
-//BukkitContrib HD Start
+//Spout HD Start
 		for(int var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for(var2 = 0; var2 < TileSize.int_size; ++var2) {
-//BukkitContrib HD End
+//Spout HD End
 				var3 = 0.0F;
 				int var4 = (int)(MathHelper.sin((float)var2 * 3.1415927F * 2.0F / 16.0F) * 1.2F);
 				var5 = (int)(MathHelper.sin((float)var1 * 3.1415927F * 2.0F / 16.0F) * 1.2F);
 
 				for(var6 = var1 - 1; var6 <= var1 + 1; ++var6) {
 					for(var7 = var2 - 1; var7 <= var2 + 1; ++var7) {
-//BukkitContrib HD Start
+//Spout HD Start
 						var8 = var6 + var4 & TileSize.int_sizeMinus1;
 						var9 = var7 + var5 & TileSize.int_sizeMinus1;
 						var3 += this.field_1143_g[var8 + var9 * TileSize.int_size];
-//BukkitContrib HD End
+//Spout HD End
 					}
 				}
-//BukkitContrib HD Start
+//Spout HD Start
 				this.field_1142_h[var1 + var2 * TileSize.int_size] = var3 / 10.0F + (this.field_1141_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size]) / 4.0F * 0.8F;
 				this.field_1141_i[var1 + var2 * TileSize.int_size] += this.field_1140_j[var1 + var2 * TileSize.int_size] * 0.01F;
 				if(this.field_1141_i[var1 + var2 * TileSize.int_size] < 0.0F) {
 					this.field_1141_i[var1 + var2 * TileSize.int_size] = 0.0F;
-//BukkitContrib HD End
+//Spout HD End
 				}
-//BukkitContrib HD Start
+//Spout HD Start
 				this.field_1140_j[var1 + var2 * TileSize.int_size] -= 0.06F;
 				if(Math.random() < 0.0050D) {
 					this.field_1140_j[var1 + var2 * TileSize.int_size] = 1.5F;
-//BukkitContrib HD End
+//Spout HD End
 				}
 			}
 		}
@@ -67,10 +67,10 @@ public class TextureLavaFlowFX extends TextureFX {
 		float[] var11 = this.field_1142_h;
 		this.field_1142_h = this.field_1143_g;
 		this.field_1143_g = var11;
-//BukkitContrib HD Start
+//Spout HD Start
 		for(var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
 			var3 = this.field_1143_g[var2 - this.field_1139_k / 3 * TileSize.int_size & TileSize.int_numPixelsMinus1] * 2.0F;
-//BukkitContrib HD End
+//Spout HD End
 			if(var3 > 1.0F) {
 				var3 = 1.0F;
 			}

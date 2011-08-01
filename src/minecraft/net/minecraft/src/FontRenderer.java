@@ -11,9 +11,9 @@ import net.minecraft.src.GameSettings;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils; 
-//BukkitContrib HD End
+//Spout HD End
 
 public class FontRenderer {
 
@@ -26,9 +26,9 @@ public class FontRenderer {
 	public FontRenderer(GameSettings var1, String var2, RenderEngine var3) {
 		BufferedImage var4;
 		try {
-//BukkitContrib HD Start
+//Spout HD Start
 			var4 = TextureUtils.getResourceAsBufferedImage(var2);
-//BukkitContrib HD End
+//Spout HD End
 		} catch (IOException var18) {
 			throw new RuntimeException(var18);
 		}
@@ -48,19 +48,19 @@ public class FontRenderer {
 		while(var8 < 256) {
 			var9 = var8 % 16;
 			var10 = var8 / 16;
-//BukkitContrib HD Start
+//Spout HD Start
 			var11 = var5 / 16 - 1;
-//BukkitContrib HD End
+//Spout HD End
 			while(true) {
 				if(var11 >= 0) {
-//BukkitContrib HD Start
+//Spout HD Start
 					var12 = var9 * (var5 / 16) + var11;
-//BukkitContrib HD End
+//Spout HD End
 					boolean var13 = true;
-//BukkitContrib HD Start
+//Spout HD Start
 					for(int var14 = 0; var14 < var5 / 16 && var13; ++var14) {
 						var15 = (var10 * (var5 / 16) + var14) * var5;
-//BukkitContrib HD End
+//Spout HD End
 						var16 = var7[var12 + var15] & 255;
 						if(var16 > 0) {
 							var13 = false;
@@ -74,13 +74,13 @@ public class FontRenderer {
 				}
 
 				if(var8 == 32) {
-//BukkitContrib HD Start
+//Spout HD Start
 					var11 = var5 / 64;
-//BukkitContrib HD End
+//Spout HD End
 				}
-//BukkitContrib HD Start
+//Spout HD Start
 				this.charWidth[var8] = (128 * var11 + 256) / var5;
-//BukkitContrib HD End
+//Spout HD End
 				++var8;
 				break;
 			}
@@ -304,16 +304,16 @@ public class FontRenderer {
 					var6 += 8;
 				}
 			}
-//BukkitContrib HD Start
+//Spout HD Start
 			if(var6 < var5 / 16) {
-//BukkitContrib HD End
+//Spout HD End
 				var6 += 8;
 			}
 
 			return var6;
 		}
 	}
-//BukkitContrib HD Start
+//Spout HD Start
 	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
 		this.charWidth = new int[256];
 		this.fontTextureName = 0;
@@ -422,6 +422,6 @@ public class FontRenderer {
 			GL11.glColor3f((float)var11 / 255.0F, (float)var12 / 255.0F, (float)var22 / 255.0F);
 			GL11.glEndList();
 		}
-//BukkitContrib HD End
+//Spout HD End
 	}
 }

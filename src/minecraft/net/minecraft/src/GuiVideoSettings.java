@@ -8,9 +8,9 @@ import net.minecraft.src.GuiSlider;
 import net.minecraft.src.GuiSmallButton;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StringTranslate;
-//BukkitContrib Start
+//Spout Start
 import org.getspout.spout.packet.*;
-//BukkitContrib End
+//Spout End
 
 public class GuiVideoSettings extends GuiScreen {
 
@@ -49,23 +49,23 @@ public class GuiVideoSettings extends GuiScreen {
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
 			if(var1.id < 100 && var1 instanceof GuiSmallButton) {
-				//BukkitContrib Start
+				//Spout Start
 				int change = 1;
 				GuiButton guibutton = var1;
-				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && BukkitContrib.getVersion() > 5) {
+				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && Spout.getVersion() > 5) {
 					byte view = (byte)guiGameSettings.renderDistance;
-					byte newView = BukkitContrib.getNextRenderDistance(view);
+					byte newView = Spout.getNextRenderDistance(view);
 					guiGameSettings.renderDistance = newView;
 					change = 0;
 					if (view != newView) {
-						((EntityClientPlayerMP)BukkitContrib.getGameInstance().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+						((EntityClientPlayerMP)Spout.getGameInstance().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
 					}
 				}
 				if (change != 0) {
 					guiGameSettings.setOptionValue(((GuiSmallButton)guibutton).returnEnumOptions(), change);
 					guibutton.displayString = guiGameSettings.getKeyBinding(EnumOptions.getEnumOptions(guibutton.id));
 				}
-			 //BukkitContrib End
+			 //Spout End
 			}
 
 			if(var1.id == 200) {

@@ -3,7 +3,7 @@ package net.minecraft.src;
 
 public class ColorizerGrass {
 
-	public static int[] grassBuffer = new int[65536]; //BukkitContrib HD private -> public
+	public static int[] grassBuffer = new int[65536]; //Spout HD private -> public
 
 
 	public static void func_28181_a(int[] var0) {

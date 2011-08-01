@@ -1,14 +1,14 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
-//BukkitContrib HD End
+//Spout HD End
 import net.minecraft.src.RenderEngine;
 import org.lwjgl.opengl.GL11;
 
 public class TextureFX {
-//BukkitContrib HD Start
+//Spout HD Start
 	public byte[] imageData = new byte[TileSize.int_numBytes];
-//BukkitContrib HD End
+//Spout HD End
 	public int iconIndex;
 	public boolean anaglyphEnabled = false;
 	public int textureId = 0;

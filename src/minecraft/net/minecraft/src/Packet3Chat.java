@@ -5,10 +5,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
-//BukkitContrib Start
+//Spout Start
 import net.minecraft.client.Minecraft;
 import org.getspout.spout.packet.*;
-//BukkitContrib End
+//Spout End
 
 public class Packet3Chat extends Packet {
 
@@ -34,25 +34,25 @@ public class Packet3Chat extends Packet {
 	}
 
 	public void processPacket(NetHandler nethandler) {
-		//BukkitContrib Start
+		//Spout Start
 		boolean proc = false;
-		if (!BukkitContrib.isEnabled() || BukkitContrib.getReloadPacket() != null) {
-			String processed = BukkitContrib.colorToString(message);
+		if (!Spout.isEnabled() || Spout.getReloadPacket() != null) {
+			String processed = Spout.colorToString(message);
 			System.out.println(processed);
 			if (processed.split("\\.").length == 3) {
-				BukkitContrib.setVersion(processed);
-				if (BukkitContrib.isEnabled()) {
+				Spout.setVersion(processed);
+				if (Spout.isEnabled()) {
 					proc = true;
-					System.out.println("BukkitContrib SP Enabled");
-					((NetClientHandler)nethandler).addToSendQueue(new Packet3Chat("/" + BukkitContrib.getClientVersionString()));
-					//Let BukkitContrib know we just reloaded
-					if (BukkitContrib.getReloadPacket() != null) {
-						((NetClientHandler)nethandler).addToSendQueue(new CustomPacket(BukkitContrib.getReloadPacket()));
-						BukkitContrib.setReloadPacket(null);
+					System.out.println("Spout SP Enabled");
+					((NetClientHandler)nethandler).addToSendQueue(new Packet3Chat("/" + Spout.getClientVersionString()));
+					//Let Spout know we just reloaded
+					if (Spout.getReloadPacket() != null) {
+						((NetClientHandler)nethandler).addToSendQueue(new CustomPacket(Spout.getReloadPacket()));
+						Spout.setReloadPacket(null);
 					}
 					//Also need to send the render distance
-					Minecraft game = BukkitContrib.getGameInstance();
-					if (game != null && BukkitContrib.getVersion() > 5) {
+					Minecraft game = Spout.getGameInstance();
+					if (game != null && Spout.getVersion() > 5) {
 						final GameSettings settings = game.gameSettings;
 						((NetClientHandler)nethandler).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)settings.renderDistance)));
 					}
@@ -63,7 +63,7 @@ public class Packet3Chat extends Packet {
 			//Normal message handling
 			nethandler.handleChat(this);
 		}
-		//BukkitContrib End
+		//Spout End
 	}
 
 	public int getPacketSize() {

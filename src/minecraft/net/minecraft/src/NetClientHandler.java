@@ -558,14 +558,14 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleRespawn(Packet9Respawn var1) {
-		// BukkitContrib start
+		// Spout start
 		long oldSeed = this.worldClient.getWorldInfo().getRandomSeed();
 		long newSeed = this.worldClient.getWorldInfo().getNewSeed();
 		boolean seedUpdated = oldSeed != newSeed;
 		if (seedUpdated || var1.respawnDimension != this.mc.thePlayer.dimension) {
-			// BukkitContrib end
+			// Spout end
 			this.field_1210_g = false;
-			this.worldClient = new WorldClient(this, newSeed, var1.respawnDimension); // BukkitContrib - use updated seed
+			this.worldClient = new WorldClient(this, newSeed, var1.respawnDimension); // Spout - use updated seed
 			this.worldClient.multiplayerWorld = true;
 			this.mc.changeWorld1(this.worldClient);
 			this.mc.thePlayer.dimension = var1.respawnDimension;

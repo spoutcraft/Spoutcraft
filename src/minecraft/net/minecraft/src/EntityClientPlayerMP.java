@@ -20,8 +20,8 @@ import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.Session;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
-import org.getspout.spout.packet.*; //BukkitContrib
-import org.getspout.spout.player.*; //BukkitContrib
+import org.getspout.spout.packet.*; //Spout
+import org.getspout.spout.player.*; //Spout
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 
@@ -37,9 +37,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private boolean field_9382_bF = false;
 	private boolean wasSneaking = false;
 	private int field_12242_bI = 0;
-	//BukkitContrib Start
+	//Spout Start
 	private KeyBinding fogKey = null;
-	//BukkitContrib End
+	//Spout End
 
 
 	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
@@ -58,12 +58,12 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			super.onUpdate();
 			this.func_4056_N();
 		}
-		//BukkitContrib Start
+		//Spout Start
 		if (fogKey != null) {
-			BukkitContrib.getGameInstance().gameSettings.keyBindToggleFog = fogKey;
+			Spout.getGameInstance().gameSettings.keyBindToggleFog = fogKey;
 			fogKey = null;
 		}
-		//BukkitContrib End
+		//Spout End
 	}
 
 	public void func_4056_N() {
@@ -191,25 +191,25 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 		}
 	}
-	//BukkitContrib Start
+	//Spout Start
 	public void handleKeyPress(int i, boolean keyReleased) {
 		//key bindings
 		if (keyReleased) {
 			String keyName = org.lwjgl.input.Keyboard.getKeyName(i);
 			if (keyName != null && keyName.length() == 1) {
 				char ch = keyName.charAt(0);
-				if (BukkitContrib.getChatManager().getBoundCommand(ch) != null) {
-					BukkitContrib.getChatManager().sendChat(BukkitContrib.getChatManager().getBoundCommand(ch));
+				if (Spout.getChatManager().getBoundCommand(ch) != null) {
+					Spout.getChatManager().sendChat(Spout.getChatManager().getBoundCommand(ch));
 				}
 			}
 		}
-		if (BukkitContrib.isEnabled()) {
+		if (Spout.isEnabled()) {
 				sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput)));
-				if (BukkitContrib.getVersion() > 5 && keyReleased) {
-					final GameSettings settings = BukkitContrib.getGameInstance().gameSettings;
+				if (Spout.getVersion() > 5 && keyReleased) {
+					final GameSettings settings = Spout.getGameInstance().gameSettings;
 					if (i == settings.keyBindToggleFog.keyCode) {
 						byte view = (byte)settings.renderDistance;
-						byte newView = BukkitContrib.getNextRenderDistance(view);
+						byte newView = Spout.getNextRenderDistance(view);
 						fogKey = settings.keyBindToggleFog;
 						settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
 						if (view != newView) {
@@ -222,14 +222,14 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		
 		super.handleKeyPress(i, keyReleased);
 	}
-	//BukkitContrib End
+	//Spout End
 	
-	//BukkitContrib Start
+	//Spout Start
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
 				super.updateCloak();
 				System.out.println("UpdateCloak");
 		}
 	}
-	//BukkitContrib End
+	//Spout End
 }

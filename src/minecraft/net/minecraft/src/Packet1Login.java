@@ -5,9 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
-//BukkitContrib Start
+//Spout Start
 import org.getspout.spout.gui.*;
-//BukkitContrib End
+//Spout End
 
 public class Packet1Login extends Packet {
 
@@ -39,10 +39,10 @@ public class Packet1Login extends Packet {
 	}
 
 	public void processPacket(NetHandler var1) {
-		//BukkitContrib Start
-		BukkitContrib.resetBukkitContrib();
-		BukkitContrib.dataMining.onLogin();
-		//BukkitContrib End
+		//Spout Start
+		Spout.resetSpout();
+		Spout.dataMining.onLogin();
+		//Spout End
 		var1.handleLogin(this);
 	}
 

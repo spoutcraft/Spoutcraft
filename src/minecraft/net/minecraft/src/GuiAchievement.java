@@ -20,12 +20,12 @@ public class GuiAchievement extends Gui {
 	private long field_25083_f;
 	private RenderItem itemRender;
 	private boolean field_27103_i;
-	//BukkitContrib Start
+	//Spout Start
 	private boolean customNotification = false;
 	private int itemId;
 	private short data = -1;
 	private int time = -1;
-	//BukkitContrib End
+	//Spout End
 
 
 	public GuiAchievement(Minecraft var1) {
@@ -39,11 +39,11 @@ public class GuiAchievement extends Gui {
 		this.field_25083_f = System.currentTimeMillis();
 		this.theAchievement = var1;
 		this.field_27103_i = false;
-		//BukkitContrib Start
+		//Spout Start
 		customNotification = false;
 		time = -1;
 		data = -1;
-		//BukkitContrib End
+		//Spout End
 	}
 
 	public void queueAchievementInformation(Achievement var1) {
@@ -52,11 +52,11 @@ public class GuiAchievement extends Gui {
 		this.field_25083_f = System.currentTimeMillis() - 2500L;
 		this.theAchievement = var1;
 		this.field_27103_i = true;
-		//BukkitContrib Start
+		//Spout Start
 		customNotification = false;
 		time = -1;
 		data = -1;
-		//BukkitContrib End
+		//Spout End
 	}
 
 	//BukkiContrib Start
@@ -83,7 +83,7 @@ public class GuiAchievement extends Gui {
 		this.time = time;
 		this.data = data;
 	}
-	//BukkitContrib End
+	//Spout End
 
 	private void updateAchievementWindowScale() {
 		GL11.glViewport(0, 0, this.theGame.displayWidth, this.theGame.displayHeight);
@@ -121,8 +121,8 @@ public class GuiAchievement extends Gui {
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
 
-		if(this.theAchievement != null && this.field_25083_f != 0L || customNotification) { //BukkitContrib
-			//BukkitContrib Start
+		if(this.theAchievement != null && this.field_25083_f != 0L || customNotification) { //Spout
+			//Spout Start
 			double delayTime = 3000;
 			if (customNotification) {
 				if (time < 1) {
@@ -133,7 +133,7 @@ public class GuiAchievement extends Gui {
 				}
 			}
 			double var8 = (double)(System.currentTimeMillis() - this.field_25083_f) / delayTime;
-			//BukkitContrib End
+			//Spout End
 			
 			if(!this.field_27103_i && !this.field_27103_i && (var8 < 0.0D || var8 > 1.0D)) {
 				this.field_25083_f = 0L;
@@ -177,7 +177,7 @@ public class GuiAchievement extends Gui {
 				GL11.glEnable('\u803a');
 				GL11.glEnable(2903 /*GL_COLOR_MATERIAL*/);
 				GL11.glEnable(2896 /*GL_LIGHTING*/);
-				//BukkitContrib Start
+				//Spout Start
 				ItemStack toRender = theAchievement != null ? theAchievement.theItemStack : null;
 				if (customNotification){
 					if (data < 1) {
@@ -190,7 +190,7 @@ public class GuiAchievement extends Gui {
 				if (toRender != null) {
 					itemRender.renderItemIntoGUI(theGame.fontRenderer, theGame.renderEngine, toRender, var5 + 8, var6 + 8); 
 				}
-				//BukkitContrib End
+				//Spout End
 				GL11.glDisable(2896 /*GL_LIGHTING*/);
 				GL11.glDepthMask(true);
 				GL11.glEnable(2929 /*GL_DEPTH_TEST*/);

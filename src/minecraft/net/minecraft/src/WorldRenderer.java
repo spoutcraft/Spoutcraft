@@ -134,9 +134,9 @@ public class WorldRenderer {
 									GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
 									GL11.glScalef(var19, var19, var19);
 									GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
-									//BukkitContrib Performance Start
+									//Spout Performance Start
 									tessellator.isLoadingChunk = true;
-									//BukkitContrib Performance End
+									//Spout Performance End
 									tessellator.startDrawingQuads();
 									tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 								}
@@ -164,9 +164,9 @@ public class WorldRenderer {
 					tessellator.draw();
 					GL11.glPopMatrix();
 					GL11.glEndList();
-					//BukkitContrib Performance Start
+					//Spout Performance Start
 					tessellator.isLoadingChunk = false;
-					//BukkitContrib Performance End
+					//Spout Performance End
 					tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
 				} else {
 					var13 = false;

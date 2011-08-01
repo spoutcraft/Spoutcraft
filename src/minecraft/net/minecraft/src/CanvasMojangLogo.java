@@ -7,13 +7,13 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
-//BukkitContrib HD Start
+//Spout HD Start
 /*
 import javax.imageio.ImageIO;
 import net.minecraft.src.PanelCrashReport;
 */
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//BukkitContrib HD End
+//Spout HD End
 class CanvasMojangLogo extends Canvas {
 
 	private BufferedImage logo;
@@ -21,9 +21,9 @@ class CanvasMojangLogo extends Canvas {
 
 	public CanvasMojangLogo() {
 		try {
-//BukkitContrib HD Start
+//Spout HD Start
 			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/logo.png");
-//BukkitContrib HD End
+//Spout HD End
 		} catch (IOException var2) {
 			;
 		}

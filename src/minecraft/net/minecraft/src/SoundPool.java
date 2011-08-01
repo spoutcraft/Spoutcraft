@@ -53,7 +53,7 @@ public class SoundPool {
 		return this.allSoundPoolEntries.size() == 0?null:(SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
 	}
 	
-	//BukkitContrib Start
+	//Spout Start
 	public SoundPoolEntry getSoundFromSoundPool(String s, int id) {
 		List list = (List)nameToSoundPoolEntriesMapping.get(s);
 		if (list == null) {
@@ -76,5 +76,5 @@ public class SoundPool {
 		}
 	}
 	
-	//BukkitContrib End
+	//Spout End
 }

@@ -1,7 +1,7 @@
 package net.minecraft.src;
-//BukkitContrib HD Start
+//Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//BukkitContrib HD End
+//Spout HD End
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,9 +24,9 @@ public class TerrainTextureManager {
 
 	public TerrainTextureManager() {
 		try {
-//BukkitContrib HD Start
+//Spout HD Start
 			BufferedImage var1 = TextureUtils.getResourceAsBufferedImage("/terrain.png");
-//BukkitContrib HD End
+//Spout HD End
 			int[] var2 = new int[65536];
 			var1.getRGB(0, 0, 256, 256, var2, 0, 256);
 
