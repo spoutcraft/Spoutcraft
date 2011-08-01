@@ -22,6 +22,7 @@ import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
 import org.getspout.spout.packet.*; //Spout
 import org.getspout.spout.player.*; //Spout
+import org.getspout.spout.gui.*; //Spout
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 
@@ -204,7 +205,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			}
 		}
 		if (Spout.isEnabled()) {
-				sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput)));
+				sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN)));
 				if (Spout.getVersion() > 5 && keyReleased) {
 					final GameSettings settings = Spout.getGameInstance().gameSettings;
 					if (i == settings.keyBindToggleFog.keyCode) {
