@@ -1,5 +1,5 @@
 package net.minecraft.src;
-//BukkitContrib
+//Spout
 import java.lang.reflect.Field;
 import net.minecraft.client.Minecraft;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import org.getspout.spout.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Iterator;
 
-public class BukkitContrib {
+public class Spout {
 	private static int buildVersion = -1;
 	private static int minorVersion = -1;
 	private static int majorVersion = -1;
@@ -53,12 +53,12 @@ public class BukkitContrib {
 	public static void setVersion(String version) {
 		try {
 			String split[] = version.split("\\.");
-			BukkitContrib.buildVersion = Integer.valueOf(split[2]);
-			BukkitContrib.minorVersion = Integer.valueOf(split[1]);
-			BukkitContrib.majorVersion = Integer.valueOf(split[0]);
+			Spout.buildVersion = Integer.valueOf(split[2]);
+			Spout.minorVersion = Integer.valueOf(split[1]);
+			Spout.majorVersion = Integer.valueOf(split[0]);
 		}
 		catch (Exception e) {}
-		System.out.println("Set BukkitContrib v. " + getVersionString());
+		System.out.println("Set Spout v. " + getVersionString());
 		mainScreen = new InGameScreen();
 		EntityPlayer player = getGameInstance().thePlayer;
 		if (getVersion() > -1 && player instanceof EntityClientPlayerMP){
@@ -91,46 +91,46 @@ public class BukkitContrib {
 	}
 	
 	public static int getMajorVersion() {
-		return BukkitContrib.majorVersion;
+		return Spout.majorVersion;
 	}
 	
 	public static int getMinorVersion() {
-		return BukkitContrib.minorVersion;
+		return Spout.minorVersion;
 	}
 	
 	public static int getBuildVersion() {
-		return BukkitContrib.buildVersion;
+		return Spout.buildVersion;
 	}
 	
 	public static int getVersion() {
-		return  BukkitContrib.buildVersion +  BukkitContrib.minorVersion * 10 + BukkitContrib.majorVersion * 100;
+		return  Spout.buildVersion +  Spout.minorVersion * 10 + Spout.majorVersion * 100;
 	}
 	
 	public static int getClientMajorVersion() {
-		return BukkitContrib.clientMajorVersion;
+		return Spout.clientMajorVersion;
 	}
 	
 	public static int getClientMinorVersion() {
-		return BukkitContrib.clientMinorVersion;
+		return Spout.clientMinorVersion;
 	}
 	
 	public static int getClientBuildVersion() {
-		return BukkitContrib.clientBuildVersion;
+		return Spout.clientBuildVersion;
 	}
 	
 	public static int getClientVersion() {
-		return  BukkitContrib.clientBuildVersion +  BukkitContrib.clientMinorVersion * 10 + BukkitContrib.clientMajorVersion * 100;
+		return  Spout.clientBuildVersion +  Spout.clientMinorVersion * 10 + Spout.clientMajorVersion * 100;
 	}
 	
 	public static String getClientVersionString() {
-		return "" + BukkitContrib.clientMajorVersion + "." + BukkitContrib.clientMinorVersion + "." + BukkitContrib.clientBuildVersion;
+		return "" + Spout.clientMajorVersion + "." + Spout.clientMinorVersion + "." + Spout.clientBuildVersion;
 	}
 	
 	public static String getVersionString() {
-		return "" + BukkitContrib.majorVersion + "." + BukkitContrib.minorVersion + "." + BukkitContrib.buildVersion;
+		return "" + Spout.majorVersion + "." + Spout.minorVersion + "." + Spout.buildVersion;
 	}
 	
-	public static void resetBukkitContrib() {
+	public static void resetSpout() {
 		reset();
 		game = null;
 		entityLabel = new HashMap<Integer, String>();
@@ -142,10 +142,10 @@ public class BukkitContrib {
 	}
 	
 	private static void reset() {
-		BukkitContrib.buildVersion = -1;
-		BukkitContrib.minorVersion = -1;
-		BukkitContrib.majorVersion = -1;
-		System.out.println("Reset BukkitContrib");
+		Spout.buildVersion = -1;
+		Spout.minorVersion = -1;
+		Spout.majorVersion = -1;
+		System.out.println("Reset Spout");
 	}
 	
 	public static boolean isEnabled() {
@@ -220,7 +220,7 @@ public class BukkitContrib {
 		reloadPacket = packet;
 	}
 
-	public static void createBukkitContribAlert(String title, String message, int toRender) {
+	public static void createSpoutAlert(String title, String message, int toRender) {
 		if (getGameInstance() != null) {
 			getGameInstance().guiAchievement.queueNotification(title, message, toRender);
 		}
@@ -241,9 +241,9 @@ public class BukkitContrib {
 
 	public static byte getNextRenderDistance(int current) {
 		//default behavior
-		if (BukkitContrib.minView == -1 && BukkitContrib.maxView == -1) return (byte)((current + 1) & 3);
-		int minView = BukkitContrib.minView == -1 ? 3 : BukkitContrib.minView;
-		int maxView = BukkitContrib.maxView == -1 ? 0 : BukkitContrib.maxView;
+		if (Spout.minView == -1 && Spout.maxView == -1) return (byte)((current + 1) & 3);
+		int minView = Spout.minView == -1 ? 3 : Spout.minView;
+		int maxView = Spout.maxView == -1 ? 0 : Spout.maxView;
 		current++;
 		if (current > minView) {
 				current = Math.max(0, maxView);
