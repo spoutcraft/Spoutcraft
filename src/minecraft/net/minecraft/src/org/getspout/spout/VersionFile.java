@@ -1,10 +1,10 @@
-package org.getspout.Spout;
+package org.getspout.spout;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.getspout.Spout.io.FileUtil;
+import org.getspout.spout.io.FileUtil;
 
 public class VersionFile {
 	private String version;
