@@ -1,10 +1,10 @@
-package org.getspout.Spout.gui;
+package org.getspout.spout.gui;
 
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-import org.getspout.Spout.packet.*;
+import org.getspout.spout.packet.*;
 import java.util.UUID;
 
 public class CustomTextField extends GuiButton {

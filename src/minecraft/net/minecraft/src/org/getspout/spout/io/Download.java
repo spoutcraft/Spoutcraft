@@ -1,4 +1,4 @@
-package org.getspout.Spout.io;
+package org.getspout.spout.io;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,10 +1,10 @@
-package org.getspout.Spout.gui;
+package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.Spout.packet.PacketUtil;
+import org.getspout.spout.packet.PacketUtil;
 
 public abstract class GenericControl extends GenericWidget implements Control{
 

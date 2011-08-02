@@ -1,9 +1,9 @@
-package org.getspout.Spout.gui;
+package org.getspout.spout.gui;
 
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
-import org.getspout.Spout.packet.*;
+import org.getspout.spout.packet.*;
 
 public class CustomGuiSlider extends GuiSlider {
 	protected Screen screen;

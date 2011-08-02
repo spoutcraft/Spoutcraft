@@ -1,4 +1,4 @@
-package org.getspout.Spout.inventory;
+package org.getspout.spout.inventory;
 
 public class ItemData {
 	public final int id;

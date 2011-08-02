@@ -1,11 +1,11 @@
-package org.getspout.Spout.gui;
+package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.Spout;
-import org.getspout.Spout.packet.PacketUtil;
+import org.getspout.spout.packet.PacketUtil;
 
 public class GenericButton extends GenericControl implements Button {
 

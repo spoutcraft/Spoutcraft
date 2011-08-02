@@ -1,10 +1,10 @@
-package org.getspout.Spout.gui;
+package org.getspout.spout.gui;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.lwjgl.opengl.GL11;
-import org.getspout.Spout.packet.PacketWidget;
+import org.getspout.spout.packet.PacketWidget;
 
 public abstract class GenericScreen extends GenericWidget implements Screen{
 	protected List<Widget> widgets = new ArrayList<Widget>();

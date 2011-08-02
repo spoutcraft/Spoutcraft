@@ -1,4 +1,4 @@
-package org.getspout.Spout.player;
+package org.getspout.spout.player;
 
 import java.util.ArrayList;
 import java.util.List;
