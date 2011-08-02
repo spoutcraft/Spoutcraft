@@ -25,9 +25,9 @@ public class Spout {
 	private static int buildVersion = -1;
 	private static int minorVersion = -1;
 	private static int majorVersion = -1;
-	private static int clientBuildVersion = 8;
-	private static int clientMinorVersion = 1;
-	private static int clientMajorVersion = 0;
+	private static int clientBuildVersion = 0;
+	private static int clientMinorVersion = 0;
+	private static int clientMajorVersion = 1;
 	private static Minecraft game = null;
 	private static PacketPluginReload reloadPacket = null;
 	private static Object zanMinimap = null;

@@ -102,9 +102,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-//BukkitContrib Start
+//Spout Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//BukkitContrib End
+//Spout End
 
 public abstract class Minecraft implements Runnable {
 
@@ -244,14 +244,14 @@ public abstract class Minecraft implements Runnable {
 		this.saveLoader = new SaveConverterMcRegion(new File(this.mcDataDir, "saves"));
 		this.gameSettings = new GameSettings(this, this.mcDataDir);
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
-      //BukkitContrib Start
+      //Spout Start
 		TextureUtils.setMinecraft(this);
-      //BukkitContrib End
+      //Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
-      //BukkitContrib Start
+      //Spout Start
 		TextureUtils.setTileSize();
 		this.renderEngine.setTileSize(this);
-      //BukkitContrib End 
+      //Spout End 
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
 		ColorizerWater.func_28182_a(this.renderEngine.getTextureContents("/misc/watercolor.png"));
 		ColorizerGrass.func_28181_a(this.renderEngine.getTextureContents("/misc/grasscolor.png"));
@@ -855,7 +855,7 @@ public abstract class Minecraft implements Runnable {
 
 			if(var2 && var1 == 1) {
 				ItemStack var9 = this.thePlayer.inventory.getCurrentItem();
-				if(this.playerController.sendUseItem(this.thePlayer, this.theWorld, var9) && var9 != null) { //BukkitContrib reordered
+				if(this.playerController.sendUseItem(this.thePlayer, this.theWorld, var9) && var9 != null) { //Spout reordered
 					this.entityRenderer.itemRenderer.func_9450_c();
 				}
 			}
