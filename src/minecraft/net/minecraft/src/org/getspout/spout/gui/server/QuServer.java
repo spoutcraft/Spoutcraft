@@ -13,29 +13,31 @@ public class QuServer implements Runnable {
 
 	GuiMultiplayer parentScreen;
 	String addr;
-	Thread t;
+	private static Thread instance = null;
 	private List tempServerList = new ArrayList();
 
 
 	public QuServer(GuiMultiplayer var1, String var2) {
 		this.parentScreen = var1;
 		this.addr = var2;
-		this.t = new Thread(this);
 	}
 
 	public void StartGet() {
-		this.t.start();
+		if (instance == null) {
+			instance = new Thread(this);
+			instance.start();
+		}
 	}
 
 	public void run() {
 		try {
-			this.parentScreen.status = "Getting serverlist";
+			this.parentScreen.status = "Getting Server List";
 			String[] var1 = null;
 			URL var2 = new URL(this.addr);
 			BufferedReader var3 = new BufferedReader(new InputStreamReader(var2.openStream()));
 			String var4 = var3.readLine();
 			var3.close();
-			this.parentScreen.status = "Processing servers";
+			this.parentScreen.status = "Processing Servers";
 			String[] var5 = var4.split("\\{");
 
 			for(int var6 = 0; var6 < var5.length; ++var6) {
@@ -53,18 +55,19 @@ public class QuServer implements Runnable {
 						var7 = this.setServer(var6, var1, var7);
 					}
 
-					this.tempServerList.add(var7);
+					tempServerList.add(var7);
 				}
 			}
 
 			this.parentScreen.serverList.clear();
-			this.parentScreen.serverList = this.tempServerList;
+			this.parentScreen.serverList = tempServerList;
 			Collections.sort(this.parentScreen.serverList);
 			this.parentScreen.status = "Done";
 		} catch (IOException var11) {
+			this.parentScreen.status = "An Error Occured.";
 			var11.printStackTrace();
 		}
-
+		instance = null;
 	}
 
 	private mcSBServer setServer(int var1, String[] var2, mcSBServer var3) {

@@ -9,7 +9,7 @@ import org.lwjgl.input.Keyboard;
 public class GuiAddFav extends GuiScreen {
 
 	private GuiScreen screen;
-	private GuiTextField portField;
+	private GuiTextField nameField;
 	private GuiTextField Ipfield;
 	private final String port;
 	private final String ip;
@@ -22,7 +22,7 @@ public class GuiAddFav extends GuiScreen {
 	}
 
 	public void updateScreen() {
-		this.portField.updateCursorCounter();
+		this.nameField.updateCursorCounter();
 		this.Ipfield.updateCursorCounter();
 	}
 
@@ -32,13 +32,13 @@ public class GuiAddFav extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("Add")));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-		this.portField = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.port);
-		this.portField.isFocused = true;
-		this.portField.setMaxStringLength(35);
+		this.nameField = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.port);
+		this.nameField.isFocused = true;
+		this.nameField.setMaxStringLength(35);
 		this.Ipfield = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.ip);
 		this.Ipfield.isFocused = false;
 		this.Ipfield.setMaxStringLength(35);
-		((GuiButton)this.controlList.get(0)).enabled = this.portField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
+		((GuiButton)this.controlList.get(0)).enabled = this.nameField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
 	}
 
 	public void onGuiClosed() {
@@ -50,7 +50,7 @@ public class GuiAddFav extends GuiScreen {
 			if(var1.id == 1) {
 				this.mc.displayGuiScreen(this.screen);
 			} else if(var1.id == 0) {
-				this.writeFav(this.portField.getText(), this.Ipfield.getText());
+				this.writeFav(this.nameField.getText(), this.Ipfield.getText());
 				this.mc.displayGuiScreen(this.screen);
 			}
 
@@ -58,9 +58,9 @@ public class GuiAddFav extends GuiScreen {
 	}
 
 	public void keyTyped(char var1, int var2) {
-		this.portField.textboxKeyTyped(var1, var2);
+		this.nameField.textboxKeyTyped(var1, var2);
 		this.Ipfield.textboxKeyTyped(var1, var2);
-		((GuiButton)this.controlList.get(0)).enabled = this.portField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
+		((GuiButton)this.controlList.get(0)).enabled = this.nameField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
 		if(var1 == 13) {
 			this.actionPerformed((GuiButton)this.controlList.get(0));
 		}
@@ -83,7 +83,7 @@ public class GuiAddFav extends GuiScreen {
 
 	public void mouseClicked(int var1, int var2, int var3) {
 		super.mouseClicked(var1, var2, var3);
-		this.portField.mouseClicked(var1, var2, var3);
+		this.nameField.mouseClicked(var1, var2, var3);
 		this.Ipfield.mouseClicked(var1, var2, var3);
 	}
 
@@ -91,9 +91,9 @@ public class GuiAddFav extends GuiScreen {
 		StringTranslate translater = StringTranslate.getInstance();
 		this.drawDefaultBackground();
 		this.drawCenteredString(Spout.getGameInstance().fontRenderer, translater.translateKey("Add New Favorite"), this.width / 2, this.height / 4 - 60 + 20, 16777215);
-		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Name:"), this.width / 2 - 100, 47, 10526880);
-		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Ip:"), this.width / 2 - 100, 107, 10526880);
-		this.portField.drawTextBox();
+		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Server IP:Port"), this.width / 2 - 100, 47, 10526880);
+		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Server Name"), this.width / 2 - 100, 107, 10526880);
+		this.nameField.drawTextBox();
 		this.Ipfield.drawTextBox();
 		super.drawScreen(var1, var2, var3);
 	}

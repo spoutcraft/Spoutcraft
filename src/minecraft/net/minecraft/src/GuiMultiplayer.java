@@ -95,7 +95,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public void drawScreen(int x, int y, float z) {
 		this.worldSlotContainer.drawScreen(x, y, z);
 		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-		this.drawCenteredString(this.fontRenderer, "SpoutCraft Server Browser", this.width / 2, this.height - 60, 3158064);
+		this.drawCenteredString(this.fontRenderer, "SpoutCraft Server Browser", this.width / 2, this.height - 60, 0x1F3C8E);
 		this.drawString(this.fontRenderer, "Displaying " + this.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverList.size() + " servers") - 2, 20, 5263440);
 		this.drawString(this.fontRenderer, "Status: " + this.status, 2, 20, 5263440);
 		super.drawScreen(x, y, z);
