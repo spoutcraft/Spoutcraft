@@ -168,6 +168,9 @@ public abstract class Minecraft implements Runnable {
 	public boolean isRaining = false;
 	long systemTime = System.currentTimeMillis();
 	private int joinPlayerCounter = 0;
+	//Spout Start
+	private boolean shutdown = false;
+	//Spout End
 
 
 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
@@ -185,6 +188,13 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		theMinecraft = this;
+		//Spout Start
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			public void run() {
+				shutdownMinecraftApplet();
+			}
+		}));
+		//Spout End
 	}
 
 	public void onMinecraftCrash(UnexpectedThrowable var1) {
@@ -458,6 +468,12 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public void shutdownMinecraftApplet() {
+		//Spout Start
+		if (shutdown) {
+			return;
+		}
+		shutdown = true;
+		//Spout End
 		try {
 			this.statFileWriter.func_27175_b();
 			this.statFileWriter.syncStats();
