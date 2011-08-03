@@ -75,7 +75,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else if(var1.id == 3) {
 				this.getServer();
 			} else if(var1.id == 4) {
-				this.mc.displayGuiScreen(new GuiAddFav(this, ((mcSBServer)this.serverList.get(this.selectedWorld)).name, ((mcSBServer)this.serverList.get(this.selectedWorld)).ip + ":" + ((mcSBServer)this.serverList.get(this.selectedWorld)).port));
+				this.mc.displayGuiScreen(new GuiAddFav(this, ((mcSBServer)this.serverList.get(this.selectedWorld)).ip + ":" + ((mcSBServer)this.serverList.get(this.selectedWorld)).port, ((mcSBServer)this.serverList.get(this.selectedWorld)).name));
 			} else if(var1.id == 0) {
 				this.mc.displayGuiScreen(new GuiMainMenu());
 			} else {
