@@ -69,7 +69,7 @@ public class GuiMainMenu extends GuiScreen {
 		int var4 = this.height / 4 + 48;
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, var4, var2.translateKey("menu.singleplayer")));
 		this.controlList.add(this.multiplayerButton = new GuiButton(2, this.width / 2 - 100, var4 + 24, var2.translateKey("menu.multiplayer")));
-		this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, var2.translateKey("menu.mods")));
+		this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, "Texture Packs")); //Spout
 		if(this.mc.hideQuitButton) {
 			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, var2.translateKey("menu.options")));
 		} else {

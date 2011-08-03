@@ -246,7 +246,7 @@ public class Spout {
 		int maxView = Spout.maxView == -1 ? 0 : Spout.maxView;
 		current++;
 		if (current > minView) {
-				current = Math.max(0, maxView);
+			current = Math.max(0, maxView);
 		}
 		return (byte)current;
 	}

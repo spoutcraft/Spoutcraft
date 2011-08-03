@@ -107,6 +107,7 @@ public class GuiFavorites extends GuiScreen {
 		//Top Row
 		quickJoinText = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 200, height - 70, 263, 20, "");
 		quickJoinText.setMaxStringLength(40);
+		quickJoinText.setText(Spout.getGameInstance().gameSettings.lastServer.replace("_", ":"));
 		controlList.add(quickJoin = new GuiButton(QUICK_JOIN, width / 2 + 67, height - 70, 129, 20, "Quick Join"));
 		
 		//Middle row
@@ -179,6 +180,8 @@ public class GuiFavorites extends GuiScreen {
 							String split[] = quickJoinText.getText().split(":");
 							String ip = split[0];
 							int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
+							Spout.getGameInstance().gameSettings.lastServer = quickJoinText.getText();
+							Spout.getGameInstance().gameSettings.saveOptions();
 							Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ip, port));
 						}
 					}
@@ -193,7 +196,13 @@ public class GuiFavorites extends GuiScreen {
 
 	public void selectWorld(int index) {
 		if (index > -1) {
-			Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ((mcSBServer)this.serverList.get(index)).ip, ((mcSBServer)this.serverList.get(index)).port == ""?25565:Integer.parseInt(((mcSBServer)this.serverList.get(index)).port)));
+			try {
+				String info[] = ((mcSBServer)this.serverList.get(index)).name.split(":");
+				String ip = info[0];
+				int port = info.length > 1 ? Integer.parseInt(info[1]) : 25565;
+				Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ip, port));
+			}
+			catch (Exception e) { }
 		}
 	}
 
@@ -275,14 +284,14 @@ public class GuiFavorites extends GuiScreen {
 
 	}
 
-	public mcSBServer setServer(int var1, mcSBServer var2, String var3, String var4) {
-		String[] var5 = var3.split(":");
+	public mcSBServer setServer(int var1, mcSBServer var2, String ip, String name) {
+		String[] var5 = ip.split(":");
 		if(var5.length >= 2) {
 			var2.port = var5[1];
 		}
 
 		var2.ip = var5[0];
-		var2.name = var4;
+		var2.name = name;
 		return var2;
 	}
 
