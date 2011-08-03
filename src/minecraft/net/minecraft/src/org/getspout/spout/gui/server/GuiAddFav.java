@@ -2,8 +2,10 @@ package org.getspout.spout.gui.server;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.File;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
+import org.getspout.spout.io.*;
 import org.lwjgl.input.Keyboard;
 
 public class GuiAddFav extends GuiScreen {
@@ -11,19 +13,28 @@ public class GuiAddFav extends GuiScreen {
 	private GuiScreen screen;
 	private GuiTextField nameField;
 	private GuiTextField Ipfield;
-	private final String port;
+	private final String name;
 	private final String ip;
+	private boolean rename;
 
 
-	public GuiAddFav(GuiScreen screen, String port, String ip) {
+	public GuiAddFav(GuiScreen screen, String name, String ip) {
 		this.screen = screen;
-		this.port = port;
+		this.name = name;
 		this.ip = ip;
+		this.rename = false;
+	}
+	
+	public GuiAddFav(GuiScreen screen, String name, String ip, boolean rename) {
+		this.screen = screen;
+		this.name = name;
+		this.ip = ip;
+		this.rename = rename;
 	}
 
 	public void updateScreen() {
-		this.nameField.updateCursorCounter();
-		this.Ipfield.updateCursorCounter();
+		nameField.updateCursorCounter();
+		Ipfield.updateCursorCounter();
 	}
 
 	public void initGui() {
@@ -32,7 +43,7 @@ public class GuiAddFav extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("Add")));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-		this.nameField = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.port);
+		this.nameField = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.name);
 		this.nameField.isFocused = true;
 		this.nameField.setMaxStringLength(35);
 		this.Ipfield = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.ip);
@@ -45,38 +56,38 @@ public class GuiAddFav extends GuiScreen {
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	public void actionPerformed(GuiButton var1) {
-		if(var1.enabled) {
-			if(var1.id == 1) {
+	public void actionPerformed(GuiButton button) {
+		if(button.enabled) {
+			if(button.id == 1) {
+				if (rename) {
+					GuiFavorites.writeFav(name, ip);
+				}
 				this.mc.displayGuiScreen(this.screen);
-			} else if(var1.id == 0) {
-				this.writeFav(this.nameField.getText(), this.Ipfield.getText());
+			}
+			else if(button.id == 0) {
+				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText());
 				this.mc.displayGuiScreen(this.screen);
 			}
 
 		}
 	}
 
-	public void keyTyped(char var1, int var2) {
-		this.nameField.textboxKeyTyped(var1, var2);
-		this.Ipfield.textboxKeyTyped(var1, var2);
+	public void keyTyped(char letter, int key) {
+		this.nameField.textboxKeyTyped(letter, key);
+		this.Ipfield.textboxKeyTyped(letter, key);
 		((GuiButton)this.controlList.get(0)).enabled = this.nameField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
-		if(var1 == 13) {
-			this.actionPerformed((GuiButton)this.controlList.get(0));
+		if (key == Keyboard.KEY_TAB) {
+			if (nameField.isFocused) {
+				nameField.isFocused = false;
+				Ipfield.isFocused = true;
+			}
+			else if (Ipfield.isFocused) {
+				Ipfield.isFocused = false;
+				nameField.isFocused = true;
+			}
 		}
-
-	}
-
-	public void writeFav(String port, String ip) {
-		try {
-			FileWriter writer = new FileWriter(Minecraft.getMinecraftDir().getPath() + "/Fav.serv", true);
-			BufferedWriter bufferedWritter = new BufferedWriter(writer);
-			bufferedWritter.write(port + ">" + ip);
-			bufferedWritter.newLine();
-			bufferedWritter.flush();
-			bufferedWritter.close();
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
+		else if (key == Keyboard.KEY_RETURN && ((GuiButton)this.controlList.get(0)).enabled) {
+			actionPerformed(((GuiButton)this.controlList.get(0)));
 		}
 
 	}
@@ -88,11 +99,10 @@ public class GuiAddFav extends GuiScreen {
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {
-		StringTranslate translater = StringTranslate.getInstance();
 		this.drawDefaultBackground();
-		this.drawCenteredString(Spout.getGameInstance().fontRenderer, translater.translateKey("Add New Favorite"), this.width / 2, this.height / 4 - 60 + 20, 16777215);
-		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Server IP:Port"), this.width / 2 - 100, 47, 10526880);
-		this.drawString(Spout.getGameInstance().fontRenderer, translater.translateKey("Server Name"), this.width / 2 - 100, 107, 10526880);
+		this.drawCenteredString(Spout.getGameInstance().fontRenderer, "Add New Favorite", this.width / 2, this.height / 4 - 60 + 20, 16777215);
+		this.drawString(Spout.getGameInstance().fontRenderer, "Server IP:Port", this.width / 2 - 100, 47, 10526880);
+		this.drawString(Spout.getGameInstance().fontRenderer, "Server Name", this.width / 2 - 100, 107, 10526880);
 		this.nameField.drawTextBox();
 		this.Ipfield.drawTextBox();
 		super.drawScreen(var1, var2, var3);

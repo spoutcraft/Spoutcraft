@@ -16,13 +16,15 @@ import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
+import org.getspout.spout.io.*;
+import org.lwjgl.input.Keyboard;
 
 public class GuiFavorites extends GuiScreen {
 
 	public List serverList = new ArrayList();
 	private final DateFormat dateFormatter = new SimpleDateFormat();
 	protected GuiScreen parentScreen;
-	protected String screenTitle = "Select server";
+	protected String screenTitle = "Favorite Servers";
 	private boolean selected = false;
 	private int selectedWorld;
 	private List saveList;
@@ -32,9 +34,22 @@ public class GuiFavorites extends GuiScreen {
 	private boolean deleting;
 	private GuiButton buttonSelect;
 	private GuiButton buttonDelete;
+	private GuiButton buttonRename;
 	private GuiButton buttonUp;
 	private GuiButton buttonDown;
+	private GuiTextField quickJoinText;
+	private GuiButton quickJoin;
 	private boolean remove = false;
+	
+	private static final int JOIN_SERVER = 0;
+	private static final int DELETE_SERVER = 1;
+	private static final int ADD_SERVER = 2;
+	private static final int PUBLIC_SERVER_LIST = 3;
+	private static final int RENAME_SERVER = 4;
+	private static final int ARROW_UP = 5;
+	private static final int ARROW_DOWN = 6;
+	private static final int MAIN_MENU = 7;
+	private static final int QUICK_JOIN = 8;
 
 
 	public GuiFavorites(GuiScreen var1) {
@@ -43,7 +58,6 @@ public class GuiFavorites extends GuiScreen {
 
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.screenTitle = var1.translateKey("Select server");
 		this.field_22098_o = var1.translateKey("Unknown");
 		this.field_22097_p = var1.translateKey("aaa");
 		this.loadSaves();
@@ -66,55 +80,121 @@ public class GuiFavorites extends GuiScreen {
 	protected String getCountry(int var1) {
 		return ((mcSBServer)this.serverList.get(var1)).country;
 	}
-
-	public void initButtons() {
-		StringTranslate var1 = StringTranslate.getInstance();
-		this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 154, this.height - 52, 150, 20, var1.translateKey("Join Server")));
-		this.controlList.add(this.buttonDelete = new GuiButton(2, this.width / 2 + 4, this.height - 52, 150, 20, var1.translateKey("Delete Favorite")));
-		this.controlList.add(new GuiButton(3, this.width / 2 - 154, this.height - 28, 150, 20, var1.translateKey("Add new Favorite")));
-		this.controlList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, var1.translateKey("Back")));
-		this.controlList.add(this.buttonUp = new GuiButton(10, this.width - 20 - 10, 35, 20, 20, var1.translateKey("/\\")));
-		this.controlList.add(this.buttonDown = new GuiButton(11, this.width - 20 - 10, this.height - 90, 20, 20, var1.translateKey("\\/")));
-		this.buttonSelect.enabled = false;
-		this.buttonDelete.enabled = false;
-		this.buttonUp.enabled = false;
-		this.buttonDown.enabled = false;
+	
+	@Override
+	public void updateScreen() {
+		quickJoinText.updateCursorCounter();
+	}
+	
+	@Override
+	public void keyTyped(char letter, int key) {
+		if (key == Keyboard.KEY_RETURN && quickJoinText.isFocused) {
+			actionPerformed(quickJoin);
+		}
+		else {
+			quickJoinText.textboxKeyTyped(letter, key);
+			super.keyTyped(letter, key);
+		}
+	}
+	
+	@Override
+	public void mouseClicked(int var1, int var2, int var3) {
+		super.mouseClicked(var1, var2, var3);
+		quickJoinText.mouseClicked(var1, var2, var3);
 	}
 
-	public void actionPerformed(GuiButton var1) {
-		if(var1.enabled) {
-			if(var1.id == 1) {
-				this.selectWorld(this.selectedWorld);
-			} else if(var1.id == 2) {
-				String var2 = ((mcSBServer)this.serverList.get(this.selectedWorld)).name;
-				if(var2 != null) {
-					this.deleting = true;
-					StringTranslate var3 = StringTranslate.getInstance();
-					String var4 = "Are you sure you want to remove \'" + var2 + "\' From the Favorites list?";
-					String var5 = "This action is not Undoable";
-					String var6 = var3.translateKey("selectWorld.deleteButton");
-					String var7 = var3.translateKey("gui.cancel");
-					GuiYesNo var8 = new GuiYesNo(this, var4, var5, var6, var7, this.selectedWorld);
-					Spout.getGameInstance().displayGuiScreen(var8);
-				}
-			} else if(var1.id == 3) {
-				Spout.getGameInstance().displayGuiScreen(new GuiAddFav(this, "", ""));
-			} else if(var1.id == 0) {
-				Spout.getGameInstance().displayGuiScreen(this.parentScreen);
-			} else if(var1.id == 10) {
-				this.shiftUp();
-			} else if(var1.id == 11) {
-				this.shiftDown();
-			} else {
-				this.worldSlotContainer.actionPerformed(var1);
-			}
+	public void initButtons() {
+		//Top Row
+		quickJoinText = new GuiTextField(this, Spout.getGameInstance().fontRenderer, this.width / 2 - 200, height - 70, 263, 20, "");
+		quickJoinText.setMaxStringLength(40);
+		controlList.add(quickJoin = new GuiButton(QUICK_JOIN, width / 2 + 67, height - 70, 129, 20, "Quick Join"));
+		
+		//Middle row
+		controlList.add(buttonSelect = new GuiButton(JOIN_SERVER, width / 2 - 200, height - 46, 130, 20, "Join"));
+		controlList.add(buttonDelete = new GuiButton(DELETE_SERVER, width / 2 - 66, height - 46, 130, 20, "Delete"));
+		controlList.add(buttonRename = new GuiButton(RENAME_SERVER, width / 2 + 67, height - 46, 129, 20, "Rename"));
+		
+		//Bottom Row
+		controlList.add(new GuiButton(ADD_SERVER, width / 2 - 200, height - 22, 130, 20, "Add Server"));
+		controlList.add(new GuiButton(PUBLIC_SERVER_LIST, width / 2 - 66, height - 22, 130, 20, "Public Server List"));
+		controlList.add(new GuiButton(MAIN_MENU, width / 2 + 67, height - 22, 129, 20, "Main Menu"));
+		
+		//Arrow keys
+		controlList.add(buttonUp = new GuiButton(ARROW_UP, width - 30, 25, 20, 20, "/\\"));
+		controlList.add(buttonDown = new GuiButton(ARROW_DOWN, width - 30, height - 101, 20, 20, "\\/"));
+		
+		buttonRename.enabled = false;
+		buttonSelect.enabled = false;
+		buttonDelete.enabled = false;
+		buttonUp.enabled = false;
+		buttonDown.enabled = false;
+	}
 
+	public void actionPerformed(GuiButton button) {
+		if(button.enabled) {
+			String serverName = null;
+			switch(button.id) {
+				case JOIN_SERVER:
+					selectWorld(selectedWorld);
+					break;
+				case DELETE_SERVER:
+					if (selectedWorld > -1) {
+						serverName = ((mcSBServer)serverList.get(selectedWorld)).name;
+						if(serverName != null) {
+							deleting = true;
+							Spout.getGameInstance().displayGuiScreen(new GuiYesNo(this, "Are you sure you want to remove '" + serverName + "' from your favorites?", "This action can not be undone", StringTranslate.getInstance().translateKey("selectWorld.deleteButton"), StringTranslate.getInstance().translateKey("gui.cancel"), this.selectedWorld));
+						}
+					}
+					break;
+				case ADD_SERVER:
+					Spout.getGameInstance().displayGuiScreen(new GuiAddFav(this, "", ""));
+					break;
+				case PUBLIC_SERVER_LIST:
+					Spout.getGameInstance().displayGuiScreen(new GuiMultiplayer(this));
+					break;
+				case RENAME_SERVER:
+					if (selectedWorld > -1) {
+						serverName = ((mcSBServer)serverList.get(selectedWorld)).name;
+						if(serverName != null) {
+							String ip = (((mcSBServer)this.serverList.get(selectedWorld)).ip + ((mcSBServer)this.serverList.get(selectedWorld)).port);
+							deleting = true;
+							deleteWorld(true, selectedWorld);
+							Spout.getGameInstance().displayGuiScreen(new GuiAddFav(this, serverName, ip, true));
+							
+						}
+					}
+					break;
+				case ARROW_UP:
+					shiftUp();
+					break;
+				case ARROW_DOWN:
+					shiftDown();
+					break;
+				case MAIN_MENU:
+					Spout.getGameInstance().displayGuiScreen(new GuiMainMenu());
+					break;
+				case QUICK_JOIN:
+					try	{
+						if (!quickJoinText.getText().isEmpty()) {
+							String split[] = quickJoinText.getText().split(":");
+							String ip = split[0];
+							int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
+							Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ip, port));
+						}
+					}
+					catch (Exception e) { }
+					break;
+				default:
+					worldSlotContainer.actionPerformed(button);
+					break;
+			}
 		}
 	}
 
-	public void selectWorld(int var1) {
-		String[] var2 = ((mcSBServer)this.serverList.get(var1)).ip.split(":");
-		Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ((mcSBServer)this.serverList.get(var1)).ip, ((mcSBServer)this.serverList.get(var1)).port == ""?25565:Integer.parseInt(((mcSBServer)this.serverList.get(var1)).port)));
+	public void selectWorld(int index) {
+		if (index > -1) {
+			Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ((mcSBServer)this.serverList.get(index)).ip, ((mcSBServer)this.serverList.get(index)).port == ""?25565:Integer.parseInt(((mcSBServer)this.serverList.get(index)).port)));
+		}
 	}
 
 	public void deleteWorld(boolean var1, int var2) {
@@ -177,7 +257,7 @@ public class GuiFavorites extends GuiScreen {
 	public void requestServer(String var1) {
 		try {
 			int var2 = 0;
-			FileInputStream var3 = new FileInputStream(Minecraft.getMinecraftDir().getPath() + "/Fav.serv");
+			FileInputStream var3 = new FileInputStream(getFavoriteServerFile());
 			DataInputStream var4 = new DataInputStream(var3);
 
 			String var6;
@@ -218,28 +298,25 @@ public class GuiFavorites extends GuiScreen {
 		return var0;
 	}
 
-	public void writeFav(String var1, String var2) {
+	public static void writeFav(String name, String ip) {
 		try {
-			FileWriter var3 = new FileWriter(Minecraft.getMinecraftDir().getPath() + "/Fav.serv", true);
-			BufferedWriter var4 = new BufferedWriter(var3);
-			var4.write(var2 + ">" + var1);
-			var4.newLine();
-			var4.flush();
-			var4.close();
-		} catch (Exception var5) {
-			System.err.println("Error: " + var5.getMessage());
+			FileWriter writer = new FileWriter(getFavoriteServerFile(), true);
+			writer.write(ip + ">" + name + "\n");;
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
 
 	public void delSave() {
 		try {
-			File var1 = new File(Minecraft.getMinecraftDir().getPath() + "/Fav.serv");
+			File var1 = getFavoriteServerFile();
 			if(!var1.delete()) {
 				return;
 			}
 
-			(new FileWriter(Minecraft.getMinecraftDir().getPath() + "/Fav.serv", true)).close();
+			(new FileWriter(getFavoriteServerFile())).close();
 		} catch (IOException var2) {
 			;
 		}
@@ -247,48 +324,68 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {
+		buttonRename.enabled = buttonDelete.enabled;
 		this.worldSlotContainer.drawScreen(var1, var2, var3);
-		this.drawCenteredString(Spout.getGameInstance().fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
+		this.drawCenteredString(Spout.getGameInstance().fontRenderer, "Favorite Servers", this.width / 2, 5, 16777215);
+		quickJoinText.drawTextBox();
+		if (quickJoinText.getText().isEmpty() && !quickJoinText.isFocused) {
+			this.drawString(Spout.getGameInstance().fontRenderer, "Quick Join: ", this.width / 2 - 196, height - 64, 5263440);
+		}
 		super.drawScreen(var1, var2, var3);
 	}
 
-	public static List getSize(GuiFavorites var0) {
-		return var0.serverList;
+	public static List getSize(GuiFavorites screen) {
+		return screen.serverList;
 	}
 
-	public static int onElementSelected(GuiFavorites var0, int var1) {
-		return var0.selectedWorld = var1;
+	public static int onElementSelected(GuiFavorites screen, int var1) {
+		return screen.selectedWorld = var1;
 	}
 
-	public static int getSelectedWorld(GuiFavorites var0) {
-		return var0.selectedWorld;
+	public static int getSelectedWorld(GuiFavorites screen) {
+		return screen.selectedWorld;
 	}
 
-	public static GuiButton getSelectButton(GuiFavorites var0) {
-		return var0.buttonSelect;
+	public static GuiButton getSelectButton(GuiFavorites screen) {
+		return screen.buttonSelect;
 	}
 
-	public static GuiButton getDeleteButton(GuiFavorites var0) {
-		return var0.buttonDelete;
+	public static GuiButton getDeleteButton(GuiFavorites screen) {
+		return screen.buttonDelete;
 	}
 
-	public static GuiButton getUpButton(GuiFavorites var0) {
-		return var0.buttonUp;
+	public static GuiButton getUpButton(GuiFavorites screen) {
+		return screen.buttonUp;
 	}
 
-	public static GuiButton getDownButton(GuiFavorites var0) {
-		return var0.buttonDown;
+	public static GuiButton getDownButton(GuiFavorites screen) {
+		return screen.buttonDown;
+	}
+	
+	public static GuiButton getRenameButton(GuiFavorites screen) {
+		return screen.buttonRename;
 	}
 
-	public static String func_22087_f(GuiFavorites var0) {
-		return var0.field_22098_o;
+	public static String func_22087_f(GuiFavorites screen) {
+		return screen.field_22098_o;
 	}
 
-	public static DateFormat getDateFormatter(GuiFavorites var0) {
-		return var0.dateFormatter;
+	public static DateFormat getDateFormatter(GuiFavorites screen) {
+		return screen.dateFormatter;
 	}
 
-	public static String func_22088_h(GuiFavorites var0) {
-		return var0.field_22097_p;
+	public static String func_22088_h(GuiFavorites screen) {
+		return screen.field_22097_p;
+	}
+	
+	public static File getFavoriteServerFile() {
+		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
+		if (!favorites.exists()) {
+			try {
+				favorites.createNewFile();
+			}
+			catch (IOException io) {io.printStackTrace();}
+		}
+		return favorites;
 	}
 }

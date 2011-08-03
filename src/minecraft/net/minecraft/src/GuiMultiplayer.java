@@ -57,12 +57,11 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public void initButtons() {
-		StringTranslate var1 = StringTranslate.getInstance();
-		this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 74, this.height - 52, 70, 20, var1.translateKey("Join Server")));
-		this.controlList.add(new GuiButton(2, this.width / 2 - 154, this.height - 28, 150, 20, var1.translateKey("Favorites")));
-		this.controlList.add(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, var1.translateKey("Refresh")));
-		this.controlList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, var1.translateKey("gui.cancel")));
-		this.controlList.add(this.buttonAdd = new GuiButton(4, this.width / 2 - 154, this.height - 52, 70, 20, var1.translateKey("Add Fav")));
+		this.controlList.add(this.buttonSelect = new GuiButton(1, this.width / 2 - 74, this.height - 52, 70, 20, "Join Server"));
+		this.controlList.add(new GuiButton(2, this.width / 2 - 154, this.height - 28, 150, 20, "Favorites"));
+		this.controlList.add(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, "Refresh"));
+		this.controlList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, "Main Menu"));
+		this.controlList.add(this.buttonAdd = new GuiButton(4, this.width / 2 - 154, this.height - 52, 70, 20, "Add Fav"));
 		this.buttonSelect.enabled = false;
 		this.buttonAdd.enabled = false;
 	}
@@ -78,7 +77,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else if(var1.id == 4) {
 				this.mc.displayGuiScreen(new GuiAddFav(this, ((mcSBServer)this.serverList.get(this.selectedWorld)).name, ((mcSBServer)this.serverList.get(this.selectedWorld)).ip + ":" + ((mcSBServer)this.serverList.get(this.selectedWorld)).port));
 			} else if(var1.id == 0) {
-				this.mc.displayGuiScreen(this.parentScreen);
+				this.mc.displayGuiScreen(new GuiMainMenu());
 			} else {
 				this.worldSlotContainer.actionPerformed(var1);
 			}
@@ -95,7 +94,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public void drawScreen(int x, int y, float z) {
 		this.worldSlotContainer.drawScreen(x, y, z);
 		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-		this.drawCenteredString(this.fontRenderer, "SpoutCraft Server Browser", this.width / 2, this.height - 60, 0x1F3C8E);
+		this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 61, 5263440);
 		this.drawString(this.fontRenderer, "Displaying " + this.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverList.size() + " servers") - 2, 20, 5263440);
 		this.drawString(this.fontRenderer, "Status: " + this.status, 2, 20, 5263440);
 		super.drawScreen(x, y, z);

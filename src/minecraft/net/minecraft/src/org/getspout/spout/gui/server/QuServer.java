@@ -33,30 +33,32 @@ public class QuServer implements Runnable {
 		try {
 			this.parentScreen.status = "Getting Server List";
 			String[] var1 = null;
-			URL var2 = new URL(this.addr);
-			BufferedReader var3 = new BufferedReader(new InputStreamReader(var2.openStream()));
-			String var4 = var3.readLine();
-			var3.close();
+			URL url = new URL(this.addr);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			String line = reader.readLine();
+			reader.close();
 			this.parentScreen.status = "Processing Servers";
-			String[] var5 = var4.split("\\{");
+			String[] text = line.split("\\{");
 
-			for(int var6 = 0; var6 < var5.length; ++var6) {
-				if(!var5[var6].contains("[Private]")) {
-					mcSBServer var7 = new mcSBServer(var6);
-					String[] var8 = var5[var6].split("\\,");
+			for(int i = 0; i < text.length; ++i) {
+				if (text[i].contains("[Private]")) {
+					text[i].replace("[Private]","");
+				}
+				text[i].replaceAll("'","");
+				mcSBServer var7 = new mcSBServer(i);
+				String[] var8 = text[i].split("\\,");
 
-					for(int var9 = 0; var9 < var8.length; ++var9) {
-						var1 = var8[var9].split("\\:");
+				for(int var9 = 0; var9 < var8.length; ++var9) {
+					var1 = var8[var9].split("\\:");
 
-						for(int var10 = 0; var10 < var1.length; ++var10) {
-							var1[var10] = stripLeadingAndTrailingQuotes(var1[var10]);
-						}
+					for(int var10 = 0; var10 < var1.length; ++var10) {
+						var1[var10] = stripLeadingAndTrailingQuotes(var1[var10]);
 
-						var7 = this.setServer(var6, var1, var7);
 					}
 
-					tempServerList.add(var7);
+					var7 = this.setServer(i, var1, var7);
 				}
+				tempServerList.add(var7);
 			}
 
 			this.parentScreen.serverList.clear();

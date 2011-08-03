@@ -93,7 +93,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 2) {
-			this.mc.displayGuiScreen(new GuiMultiplayer(this));
+			this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this)); //Spout
 		}
 
 		if(var1.id == 3) {
@@ -130,7 +130,8 @@ public class GuiMainMenu extends GuiScreen {
 		//this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215);
 		
 		//Spout Start
-		this.drawString(this.fontRenderer, "SpoutCraft v." + Spout.getClientVersionString() + " - Minecraft Beta 1.7.3" + " - " + var9, 2, this.height - 10, 0x1F3C8E);
+		var9 = "Spoutcraft " + Spout.getClientVersionString() + " - Minecraft Beta 1.7.3" + " - " + var9;
+		this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 10, this.height - 10, 0x1F3C8E);
 		//Spout End
 		super.drawScreen(var1, var2, var3);
 	}
