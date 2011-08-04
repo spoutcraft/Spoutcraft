@@ -43,13 +43,8 @@ public abstract class GenericWidget implements Widget{
 		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
 		long msb = input.readLong();
 		long lsb = input.readLong();
-		try{
-			setTooltip(PacketUtil.readString(input));
-			System.out.println("Tooltip: "+getTooltip());
-		} catch (Exception e) {
-			System.out.println("Weird string :(");
-		}
 		this.id = new UUID(msb, lsb);
+		setTooltip(PacketUtil.readString(input));
 	}
 
 	@Override
