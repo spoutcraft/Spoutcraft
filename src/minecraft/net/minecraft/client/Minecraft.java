@@ -108,9 +108,9 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public abstract class Minecraft implements Runnable {
 
-	//public static byte[] field_28006_b = new byte[10485760];
+	//public static byte[] field_28006_b = new byte[10485760]; //Spout unused field
 	private static Minecraft theMinecraft;
-	public PlayerController playerController; //TODO PlayerController holds NCH, which holds world info, memory leak?
+	public PlayerController playerController;
 	private boolean fullscreen = false;
 	private boolean hasCrashed = false;
 	public int displayWidth;
@@ -118,10 +118,10 @@ public abstract class Minecraft implements Runnable {
 	private OpenGlCapsChecker glCapabilities;
 	private Timer timer = new Timer(20.0F);
 	public World theWorld;
-	public RenderGlobal renderGlobal; //TODO holds chunk info, memory leak?
+	public RenderGlobal renderGlobal;
 	public EntityPlayerSP thePlayer;
 	public EntityLiving renderViewEntity;
-	public EffectRenderer effectRenderer; //TODO check for leak?
+	public EffectRenderer effectRenderer
 	public Session session = null;
 	public String minecraftUri;
 	public Canvas mcCanvas;
@@ -144,7 +144,7 @@ public abstract class Minecraft implements Runnable {
 	public MovingObjectPosition objectMouseOver = null;
 	public GameSettings gameSettings;
 	protected MinecraftApplet mcApplet;
-	public SoundManager sndManager = new SoundManager(); //TODO flush audio on disconnect?
+	public SoundManager sndManager = new SoundManager();
 	public MouseHelper mouseHelper;
 	public TexturePackList texturePackList;
 	private File mcDataDir;
@@ -1350,7 +1350,7 @@ public abstract class Minecraft implements Runnable {
 
 			this.renderViewEntity = this.thePlayer;
 		} else {
-			this.thePlayer = null; //Marker
+			this.thePlayer = null;
 			//Spout Start
 			playerController = null;
 			effectRenderer = null;
