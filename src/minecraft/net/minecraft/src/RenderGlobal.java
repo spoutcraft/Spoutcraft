@@ -220,23 +220,37 @@ public class RenderGlobal implements IWorldAccess {
 		var2.draw();
 	}
 
-	public void changeWorld(World var1) {
+	//Spout Start
+	//Rewritten Function
+	public void changeWorld(World newWorld) {
 		if(this.worldObj != null) {
 			this.worldObj.removeWorldAccess(this);
 		}
-
+		System.out.println("Changed World: " + newWorld);
 		this.prevSortX = -9999.0D;
 		this.prevSortY = -9999.0D;
 		this.prevSortZ = -9999.0D;
-		RenderManager.instance.func_852_a(var1);
-		this.worldObj = var1;
-		this.globalRenderBlocks = new RenderBlocks(var1);
-		if(var1 != null) {
-			var1.addWorldAccess(this);
+		RenderManager.instance.func_852_a(newWorld);
+		this.worldObj = newWorld;
+		tileEntities.clear();
+		worldRenderersToUpdate.clear();
+		allRenderLists = new RenderList[]{new RenderList(), new RenderList(), new RenderList(), new RenderList()};
+		glRenderLists.clear();
+		if(newWorld != null) {
+			this.globalRenderBlocks = new RenderBlocks(newWorld);
+			newWorld.addWorldAccess(this);
 			this.loadRenderers();
 		}
-
+		else {
+			sortedWorldRenderers = null;
+			worldRenderers = null;
+			globalRenderBlocks = null;
+			TileEntityRenderer.instance.clear();
+			RenderManager.instance.worldObj = null;
+			RenderManager.instance.livingPlayer = null;
+		}
 	}
+	//Spout End
 
 	public void loadRenderers() {
 		Block.leaves.setGraphicsLevel(this.mc.gameSettings.fancyGraphics);

@@ -3,11 +3,13 @@ package org.getspout.spout.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.FileInputStream;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Spout;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.packet.PacketUtil;
+import org.newdawn.slick.opengl.TextureLoader;
 
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String Url = null;
@@ -47,18 +49,27 @@ public class GenericTexture extends GenericWidget implements Texture {
 		if (path == null) {
 			return;
 		}
-		
+		org.newdawn.slick.opengl.Texture texture = null;
+		try {
+			texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true);
+		}
+		catch (IOException e) { }
+		if (texture == null) {
+			System.out.println("Error loading texture: " + path);
+			return;
+		}
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glTranslatef(getX(), getY(), 0); //moves texture into place
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D , Spout.getGameInstance().renderEngine.getTexture(path));
+		//GL11.glBindTexture(GL11.GL_TEXTURE_2D , Spout.getGameInstance().renderEngine.getTexture(path));
+		texture.bind();
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, getHeight(), -90, 0.0D, 0.0D); //draw corners
-		tessellator.addVertexWithUV(getWidth(), getHeight(), -90, -1, 0.0D);
-		tessellator.addVertexWithUV(getWidth(), 0.0D, -90, -1, -1);
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, -1);
+		tessellator.addVertexWithUV(getWidth(), getHeight(), -90, 1, 0.0D);
+		tessellator.addVertexWithUV(getWidth(), 0.0D, -90, 1, 1);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, 1);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);

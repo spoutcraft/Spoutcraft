@@ -108,7 +108,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public abstract class Minecraft implements Runnable {
 
-	public static byte[] field_28006_b = new byte[10485760];
+	//public static byte[] field_28006_b = new byte[10485760];
 	private static Minecraft theMinecraft;
 	public PlayerController playerController; //TODO PlayerController holds NCH, which holds world info, memory leak?
 	private boolean fullscreen = false;
@@ -658,7 +658,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void func_28002_e() {
 		try {
-			field_28006_b = new byte[0];
+			//field_28006_b = new byte[0];
 			this.renderGlobal.func_28137_f();
 		} catch (Throwable var4) {
 			;
@@ -1287,7 +1287,15 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		this.theWorld = var1;
+		//Spout Start
+		if(this.renderGlobal != null) {
+			this.renderGlobal.changeWorld(var1);
+		}
+		//Spout End
 		if(var1 != null) {
+			//Spout Start
+			effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
+			//Spout End
 			this.playerController.func_717_a(var1);
 			if(!this.isMultiplayerWorld()) {
 				if(var3 == null) {
@@ -1311,10 +1319,13 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
+			//Spout start
+			/*Code Moved
 			if(this.renderGlobal != null) {
 				this.renderGlobal.changeWorld(var1);
 			}
-
+			*/
+			//Spout end
 			if(this.effectRenderer != null) {
 				this.effectRenderer.clearEffects(var1);
 			}
@@ -1340,6 +1351,10 @@ public abstract class Minecraft implements Runnable {
 			this.renderViewEntity = this.thePlayer;
 		} else {
 			this.thePlayer = null; //Marker
+			//Spout Start
+			playerController = null;
+			effectRenderer = null;
+			//Spout End
 		}
 
 		System.gc();
