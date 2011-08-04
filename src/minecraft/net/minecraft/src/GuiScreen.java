@@ -103,7 +103,7 @@ public class GuiScreen extends Gui {
 		}
 //Spout Start
 		while(Keyboard.next()) {
-        	if(mc.thePlayer instanceof EntityClientPlayerMP){
+        	if(mc.thePlayer instanceof EntityClientPlayerMP && Spout.isEnabled()){
         		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
         		ScreenType screen = ScreenType.UNKNOWN;
         		if(this instanceof GuiChat){

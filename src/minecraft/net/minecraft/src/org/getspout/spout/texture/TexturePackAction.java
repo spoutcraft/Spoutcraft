@@ -14,6 +14,6 @@ public class TexturePackAction implements Runnable {
 	public void run() {
 		TexturePackCustom pack = new TexturePackCustom(texturePackFile);
 		Spout.getGameInstance().renderEngine.texturePack.setTexturePack(pack);
-		//Spout.getGameInstance().renderEngine.refreshTextures();
+		Spout.getGameInstance().renderEngine.refreshTextures();
 	}
 }

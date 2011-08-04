@@ -8,7 +8,7 @@ public class GuiFavoritesSlot extends GuiSlot {
 
 
 	public GuiFavoritesSlot(GuiFavorites var1) {
-		super(Spout.getGameInstance(), var1.width, var1.height, 32, var1.height - 64, 36);
+		super(Spout.getGameInstance(), var1.width, var1.height, 22, var1.height - 77, 36);
 		this.parentServerGui = var1;
 	}
 
@@ -51,7 +51,7 @@ public class GuiFavoritesSlot extends GuiSlot {
 		var7 = ((mcSBServer)this.parentServerGui.serverList.get(var1)).ip;
 		long var8 = 22L;
 		String var10 = "";
-		this.parentServerGui.drawString(Spout.getGameInstance().fontRenderer, var6, var2 + 2, var3 + 1, 16777215);
-		this.parentServerGui.drawString(Spout.getGameInstance().fontRenderer, var7, var2 + 2, var3 + 12, 8421504);
+		this.parentServerGui.drawString(Spout.getGameInstance().fontRenderer, var7, var2 + 2, var3 + 1, 16777215);
+		this.parentServerGui.drawString(Spout.getGameInstance().fontRenderer, var6, var2 + 2, var3 + 12, 8421504);
 	}
 }

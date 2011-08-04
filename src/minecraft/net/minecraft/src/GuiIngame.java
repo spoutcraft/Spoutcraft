@@ -30,7 +30,7 @@ public class GuiIngame extends Gui {
 	private static RenderItem itemRenderer = new RenderItem();
 	//Spout Improved Chat Start
 	//Increased default size, efficiency reasons
-	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(10000);
+	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(2500);
 	//Spout Improved Chat End
 	private Random rand = new Random();
 	private Minecraft mc;
@@ -447,12 +447,9 @@ public class GuiIngame extends Gui {
 
 		this.chatMessageList.add(0, new ChatLine(var1));
 		//Spout Improved Chat Start
-		//Prevent clearing of chat list
-		/*
-		while(this.chatMessageList.size() > 50) {
+		while(this.chatMessageList.size() > 3000) {
 			this.chatMessageList.remove(this.chatMessageList.size() - 1);
 		}
-		*/
 		//Spout Improved Chat End
 	}
 

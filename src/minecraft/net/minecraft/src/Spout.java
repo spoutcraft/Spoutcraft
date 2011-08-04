@@ -25,7 +25,7 @@ public class Spout {
 	private static int buildVersion = -1;
 	private static int minorVersion = -1;
 	private static int majorVersion = -1;
-	private static int clientBuildVersion = 0;
+	private static int clientBuildVersion = 1;
 	private static int clientMinorVersion = 0;
 	private static int clientMajorVersion = 1;
 	private static Minecraft game = null;
@@ -246,7 +246,7 @@ public class Spout {
 		int maxView = Spout.maxView == -1 ? 0 : Spout.maxView;
 		current++;
 		if (current > minView) {
-				current = Math.max(0, maxView);
+			current = Math.max(0, maxView);
 		}
 		return (byte)current;
 	}

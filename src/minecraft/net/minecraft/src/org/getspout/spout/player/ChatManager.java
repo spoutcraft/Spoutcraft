@@ -287,6 +287,18 @@ public class ChatManager {
 					return true;
 				}
 			}
+			else if (command.startsWith("/client gc")) {
+				Spout.getGameInstance().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Starting Garbage Collection...");
+				long start = System.currentTimeMillis();
+				int i = 1;
+				while ((System.currentTimeMillis() - start) < 50) {
+					System.gc();
+					System.out.println("Garbage Collect Pass: " + i);
+					i++;
+				}
+				Spout.getGameInstance().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Garbage Collection Complete!");
+				return true;
+			}
 		}
 		catch (Exception e) {}
 		return false;

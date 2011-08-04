@@ -108,9 +108,9 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public abstract class Minecraft implements Runnable {
 
-	public static byte[] field_28006_b = new byte[10485760];
+	//public static byte[] field_28006_b = new byte[10485760];
 	private static Minecraft theMinecraft;
-	public PlayerController playerController;
+	public PlayerController playerController; //TODO PlayerController holds NCH, which holds world info, memory leak?
 	private boolean fullscreen = false;
 	private boolean hasCrashed = false;
 	public int displayWidth;
@@ -118,10 +118,10 @@ public abstract class Minecraft implements Runnable {
 	private OpenGlCapsChecker glCapabilities;
 	private Timer timer = new Timer(20.0F);
 	public World theWorld;
-	public RenderGlobal renderGlobal;
+	public RenderGlobal renderGlobal; //TODO holds chunk info, memory leak?
 	public EntityPlayerSP thePlayer;
 	public EntityLiving renderViewEntity;
-	public EffectRenderer effectRenderer;
+	public EffectRenderer effectRenderer; //TODO check for leak?
 	public Session session = null;
 	public String minecraftUri;
 	public Canvas mcCanvas;
@@ -144,7 +144,7 @@ public abstract class Minecraft implements Runnable {
 	public MovingObjectPosition objectMouseOver = null;
 	public GameSettings gameSettings;
 	protected MinecraftApplet mcApplet;
-	public SoundManager sndManager = new SoundManager();
+	public SoundManager sndManager = new SoundManager(); //TODO flush audio on disconnect?
 	public MouseHelper mouseHelper;
 	public TexturePackList texturePackList;
 	private File mcDataDir;
@@ -168,6 +168,9 @@ public abstract class Minecraft implements Runnable {
 	public boolean isRaining = false;
 	long systemTime = System.currentTimeMillis();
 	private int joinPlayerCounter = 0;
+	//Spout Start
+	private boolean shutdown = false;
+	//Spout End
 
 
 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
@@ -185,6 +188,13 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		theMinecraft = this;
+		//Spout Start
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			public void run() {
+				shutdownMinecraftApplet();
+			}
+		}));
+		//Spout End
 	}
 
 	public void onMinecraftCrash(UnexpectedThrowable var1) {
@@ -458,6 +468,12 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public void shutdownMinecraftApplet() {
+		//Spout Start
+		if (shutdown) {
+			return;
+		}
+		shutdown = true;
+		//Spout End
 		try {
 			this.statFileWriter.func_27175_b();
 			this.statFileWriter.syncStats();
@@ -642,7 +658,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void func_28002_e() {
 		try {
-			field_28006_b = new byte[0];
+			//field_28006_b = new byte[0];
 			this.renderGlobal.func_28137_f();
 		} catch (Throwable var4) {
 			;
@@ -1271,7 +1287,15 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		this.theWorld = var1;
+		//Spout Start
+		if(this.renderGlobal != null) {
+			this.renderGlobal.changeWorld(var1);
+		}
+		//Spout End
 		if(var1 != null) {
+			//Spout Start
+			effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
+			//Spout End
 			this.playerController.func_717_a(var1);
 			if(!this.isMultiplayerWorld()) {
 				if(var3 == null) {
@@ -1295,10 +1319,13 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			this.thePlayer.movementInput = new MovementInputFromOptions(this.gameSettings);
+			//Spout start
+			/*Code Moved
 			if(this.renderGlobal != null) {
 				this.renderGlobal.changeWorld(var1);
 			}
-
+			*/
+			//Spout end
 			if(this.effectRenderer != null) {
 				this.effectRenderer.clearEffects(var1);
 			}
@@ -1323,7 +1350,11 @@ public abstract class Minecraft implements Runnable {
 
 			this.renderViewEntity = this.thePlayer;
 		} else {
-			this.thePlayer = null;
+			this.thePlayer = null; //Marker
+			//Spout Start
+			playerController = null;
+			effectRenderer = null;
+			//Spout End
 		}
 
 		System.gc();
