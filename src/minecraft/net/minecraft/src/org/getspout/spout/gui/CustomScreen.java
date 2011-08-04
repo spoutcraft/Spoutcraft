@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class CustomScreen extends GuiScreen {
 	protected PopupScreen screen;
 	public boolean waiting = false;
-	private int mouseX = 0, mouseY = 0;
 	public CustomScreen(PopupScreen screen) {
 		update(screen);
 		this.setWorldAndResolution(Spout.getGameInstance(), screen.getWidth(), screen.getHeight());
@@ -100,10 +99,14 @@ public class CustomScreen extends GuiScreen {
 		screen.render();
 		//Draw the tooltip!
 		String tooltip = "";
-		for(Widget w : screen.getAttachedWidgets()) {
-			if(w.isVisible() && isInBoundingRect(w, x, y) && !w.getTooltip().equals("")) {
-				tooltip = w.getTooltip();
-				break;
+		for (RenderPriority priority : RenderPriority.values()) {	
+			for (Widget widget : screen.getAttachedWidgets()){
+				if (widget.getPriority() == priority){
+					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
+						tooltip = widget.getTooltip();
+						//No return here, when a widget that is over it comes next, tooltip will be overwritten.
+					}
+				}
 			}
 		}
 		
