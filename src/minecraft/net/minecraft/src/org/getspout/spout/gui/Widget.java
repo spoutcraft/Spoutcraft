@@ -145,4 +145,14 @@ public interface Widget{
 	 * Called each tick this widget is updated. This widget is processed for isDirty() immediately afterwords.
 	 */
 	public void onTick();
+	
+	/**
+	 * Sets the tooltip for the widget
+	 */
+	public void setTooltip(String tooltip);
+	
+	/**
+	 * Gets the tooltip from the widget
+	 */
+	public String getTooltip();
 }

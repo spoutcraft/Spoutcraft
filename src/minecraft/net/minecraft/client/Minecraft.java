@@ -1180,7 +1180,8 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			if(!this.isGamePaused) {
-				this.effectRenderer.updateEffects();
+				if(effectRenderer!=null) //Spout
+					this.effectRenderer.updateEffects();
 			}
 		}
 

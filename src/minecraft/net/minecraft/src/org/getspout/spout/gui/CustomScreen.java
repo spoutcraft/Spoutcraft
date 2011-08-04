@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class CustomScreen extends GuiScreen {
 	protected PopupScreen screen;
 	public boolean waiting = false;
+	private int mouseX = 0, mouseY = 0;
 	public CustomScreen(PopupScreen screen) {
 		update(screen);
 		this.setWorldAndResolution(Spout.getGameInstance(), screen.getWidth(), screen.getHeight());
@@ -76,7 +77,7 @@ public class CustomScreen extends GuiScreen {
 			super.handleKeyboardInput();
 		}
 	}
-	
+		
 	public ArrayList<GuiButton> getControlList() {
 		return (ArrayList<GuiButton>)this.controlList;
 	}
@@ -97,5 +98,34 @@ public class CustomScreen extends GuiScreen {
 			}
 		}
 		screen.render();
+		//Draw the tooltip!
+		String tooltip = "";
+		for(Widget w : screen.getAttachedWidgets()) {
+			if(w.isVisible() && isInBoundingRect(w, x, y) && !w.getTooltip().equals("")) {
+				tooltip = w.getTooltip();
+				break;
+			}
+		}
+		
+		if(!tooltip.equals("")) {
+			GL11.glPushMatrix();
+			int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
+			this.drawGradientRect(x - 3, y - 3, x + tooltipWidth + 3, y + 8 + 3, -1073741824, -1073741824);
+			this.fontRenderer.drawStringWithShadow(tooltip, x, y, -1);
+			GL11.glPopMatrix();
+		}
+	}
+	
+	private boolean isInBoundingRect(Widget widget, int x, int y) {
+		int left = widget.getX();
+		int top = widget.getY();
+		int height = widget.getHeight();
+		int width = widget.getWidth();
+		int right = left+width;
+		int bottom = top+height;
+		if(left < x && x < right && top < y && y < bottom){
+			return true;
+		}
+		return false;
 	}
 }

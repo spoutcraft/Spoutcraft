@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+import org.getspout.spout.packet.PacketUtil;
 
 public abstract class GenericWidget implements Widget{
 	protected int upperRightX = 0;
@@ -15,13 +16,14 @@ public abstract class GenericWidget implements Widget{
 	protected transient Screen screen = null;
 	protected RenderPriority priority = RenderPriority.Normal;
 	protected UUID id = UUID.randomUUID();
+	protected String tooltip = "";
 	
 	public GenericWidget() {
 
 	}
 	
 	public int getNumBytes() {
-		return 37;
+		return 37 + PacketUtil.getNumBytes(tooltip);
 	}
 	
 	public GenericWidget(int upperRightX, int upperRightY, int width, int height) {
@@ -41,6 +43,12 @@ public abstract class GenericWidget implements Widget{
 		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
 		long msb = input.readLong();
 		long lsb = input.readLong();
+		try{
+			setTooltip(PacketUtil.readString(input));
+			System.out.println("Tooltip: "+getTooltip());
+		} catch (Exception e) {
+			System.out.println("Weird string :(");
+		}
 		this.id = new UUID(msb, lsb);
 	}
 
@@ -54,6 +62,7 @@ public abstract class GenericWidget implements Widget{
 		output.writeInt(priority.getId());
 		output.writeLong(getId().getMostSignificantBits());
 		output.writeLong(getId().getLeastSignificantBits());
+		PacketUtil.writeString(output, getTooltip());
 	}
 	
 	@Override
@@ -172,5 +181,15 @@ public abstract class GenericWidget implements Widget{
 	@Override
 	public void onTick() {
 		
+	}
+	
+	@Override
+	public void setTooltip(String tooltip){
+		this.tooltip = tooltip;
+	}
+	
+	@Override
+	public String getTooltip(){
+		return tooltip;
 	}
 }
