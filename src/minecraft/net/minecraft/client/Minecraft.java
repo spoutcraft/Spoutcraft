@@ -121,7 +121,7 @@ public abstract class Minecraft implements Runnable {
 	public RenderGlobal renderGlobal;
 	public EntityPlayerSP thePlayer;
 	public EntityLiving renderViewEntity;
-	public EffectRenderer effectRenderer
+	public EffectRenderer effectRenderer;
 	public Session session = null;
 	public String minecraftUri;
 	public Canvas mcCanvas;
