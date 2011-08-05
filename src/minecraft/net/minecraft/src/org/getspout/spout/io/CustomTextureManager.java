@@ -5,8 +5,13 @@ import java.io.IOException;
 
 public class CustomTextureManager {
 	public static void downloadTexture(String url) {
+		String fileName = FileUtil.getFileName(url);
+		if (!FileUtil.isImageFile(fileName)) {
+			System.out.println("Rejecting download of invalid texture: " + fileName);
+			return;
+		}
 		if (!isTextureDownloading(url) && !isTextureDownloaded(url)) {
-			Download download = new Download(FileUtil.getFileName(url), FileUtil.getTextureCacheDirectory(), url, null);
+			Download download = new Download(fileName, FileUtil.getTextureCacheDirectory(), url, null);
 			FileDownloadThread.getInstance().addToDownloadQueue(download);
 		}
 	}
