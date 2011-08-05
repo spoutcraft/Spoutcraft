@@ -2,6 +2,7 @@ package org.getspout.spout.io;
 
 import java.io.File;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import net.minecraft.src.Spout;
 
 public class FileUtil {
@@ -63,5 +64,29 @@ public class FileUtil {
 				return Url.substring(slashIndex + 1).replaceAll("%20", " ");
 		}
 		return Url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
+	}
+	
+	public static boolean isAudioFile(String file) {
+		String extension = FilenameUtils.getExtension(file);
+		if (extension != null) {
+			return extension.equalsIgnoreCase("ogg") || extension.equalsIgnoreCase("wav") || extension.matches(".*[mM][iI][dD][iI]?$");
+		}
+		return false;
+	}
+	
+	public static boolean isImageFile(String file) {
+		String extension = FilenameUtils.getExtension(file);
+		if (extension != null) {
+			return extension.equalsIgnoreCase("png") || extension.equalsIgnoreCase("jpg");
+		}
+		return false;
+	}
+	
+	public static boolean isZippedFile(String file) {
+		String extension = FilenameUtils.getExtension(file);
+		if (extension != null) {
+			return extension.equalsIgnoreCase("zip");
+		}
+		return false;
 	}
 }
