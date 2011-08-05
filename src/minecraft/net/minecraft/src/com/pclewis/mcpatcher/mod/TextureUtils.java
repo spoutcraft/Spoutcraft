@@ -61,27 +61,23 @@ public class TextureUtils {
 
 
 	public static boolean setTileSize() {
-		//MCPatcherUtils.log("\nchanging skin to %s", new Object[]{getTexturePackName(getSelectedTexturePack())});
 		int var0 = getTileSize();
 		if(var0 == TileSize.int_size) {
-			//MCPatcherUtils.log("tile size %d unchanged", new Object[]{Integer.valueOf(var0)});
+			//unchanged
 			return false;
 		} else {
-			//MCPatcherUtils.log("setting tile size to %d (was %d)", new Object[]{Integer.valueOf(var0), Integer.valueOf(TileSize.int_size)});
 			TileSize.setTileSize(var0);
 			return true;
 		}
 	}
 
 	public static void setFontRenderer() {
-		//MCPatcherUtils.log("setFontRenderer()", new Object[0]);
 		minecraft.fontRenderer.initialize(minecraft.gameSettings, "/font/default.png", minecraft.renderEngine);
 	}
 
 	public static void registerTextureFX(List var0, TextureFX var1) {
 		TextureFX var2 = refreshTextureFX(var1);
 		if(var2 != null) {
-			//MCPatcherUtils.log("registering new TextureFX class %s", new Object[]{var1.getClass().getName()});
 			var0.add(var2);
 			var2.onTick();
 		}
@@ -116,7 +112,6 @@ public class TextureUtils {
 			}
 
 			if(var0.imageData.length != TileSize.int_numBytes) {
-				//MCPatcherUtils.log("resizing %s buffer from %d to %d bytes", new Object[]{var1.getName(), Integer.valueOf(var0.imageData.length), Integer.valueOf(TileSize.int_numBytes)});
 				var0.imageData = new byte[TileSize.int_numBytes];
 			}
 
@@ -211,7 +206,6 @@ public class TextureUtils {
 		int var2 = var0.capacity();
 		int var3 = var1.length;
 		if(var3 > var2 || var2 >= 4 * var3) {
-			//MCPatcherUtils.log("resizing gl buffer from 0x%x to 0x%x", new Object[]{Integer.valueOf(var2), Integer.valueOf(var3)});
 			var0 = GLAllocation.createDirectByteBuffer(var3);
 		}
 
@@ -230,18 +224,6 @@ public class TextureUtils {
 				var4.printStackTrace();
 			}
 		}
-		/*System.out.println("Texture Not in Texture Pack: " + var1);
-		try {
-			File test = new File(var1);
-			System.out.println("Texture Not in Texture Pack: " + var1 + " File Exists: " + test.exists());
-			if (test.exists()) {
-				var2 = new FileImageInputStream(test);
-				System.out.println("Found Texture In File: " + var1);
-			}
-		}
-		catch (Exception e) {
-			
-		}*/
 		
 		if(var2 == null) {
 			var2 = TextureUtils.class.getResourceAsStream(var1);
@@ -249,7 +231,6 @@ public class TextureUtils {
 
 		if(var2 == null && !var1.startsWith("/custom_")) {
 			var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
-			//MCPatcherUtils.warn("falling back on thread class loader for %s: %s", new Object[]{var1, var2 == null?"failed":"success"});
 		}
 
 		return var2;
@@ -281,24 +262,17 @@ public class TextureUtils {
 		}
 		
 		if(var2 == null) {
-			System.out.println("Texture Not in Texture Pack: " + var1);
+			//Search local files (downloaded texture)
 			FileImageInputStream imageStream = null;
 			try {
 				File test = new File(var1);
-				System.out.println("Texture Not in Texture Pack: " + var1 + " File Exists: " + test.exists());
 				if (test.exists()) {
 					imageStream = new FileImageInputStream(test);
 					var2 = ImageIO.read(imageStream);
-					System.out.println("Found Texture In File: " + var1);
 				}
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-			}
-			finally {
-				if (imageStream != null){
-					//imageStream.close();
-				}
 			}
 		}
 
@@ -306,11 +280,9 @@ public class TextureUtils {
 			throw new IOException(var1 + " image is null");
 		} else {
 			if(useTextureCache && !var3 && var0 != lastTexturePack) {
-				//MCPatcherUtils.log("clearing texture cache (%d items)", new Object[]{Integer.valueOf(cache.size())});
 				cache.clear();
 			}
 
-			//MCPatcherUtils.log("opened %s %dx%d from %s", new Object[]{var1, Integer.valueOf(var2.getWidth()), Integer.valueOf(var2.getHeight()), var3?"cache":getTexturePackName(var0)});
 			if(!var3) {
 				Integer var8 = (Integer)expectedColumns.get(var1);
 				if(var8 != null && var2.getWidth() != var8.intValue() * TileSize.int_size) {
@@ -344,7 +316,6 @@ public class TextureUtils {
 				if(var4 != null) {
 					BufferedImage var5 = ImageIO.read(var4);
 					int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
-					//MCPatcherUtils.log("  %s tile size is %d", new Object[]{var3.getKey(), Integer.valueOf(var6)});
 					var1 = Math.max(var1, var6);
 				}
 			} catch (Exception var10) {
@@ -374,7 +345,6 @@ public class TextureUtils {
 
 	private static BufferedImage resizeImage(BufferedImage var0, int var1) {
 		int var2 = var0.getHeight() * var1 / var0.getWidth();
-		//MCPatcherUtils.log("  resizing to %dx%d", new Object[]{Integer.valueOf(var1), Integer.valueOf(var2)});
 		BufferedImage var3 = new BufferedImage(var1, var2, 2);
 		Graphics2D var4 = var3.createGraphics();
 		var4.drawImage(var0, 0, 0, var1, var2, (ImageObserver)null);
