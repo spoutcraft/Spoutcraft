@@ -36,11 +36,16 @@ public class PacketTexturePack implements SpoutPacket{
 
 	@Override
 	public void run(int PlayerId) {
-		File texturePack = new File(FileUtil.getTexturePackDirectory(), FileUtil.getFileName(url));
+		String fileName = FileUtil.getFileName(url);
+		if (!FileUtil.isZippedFile(fileName)) {
+			System.out.println("Rejecting Invalid Texture Pack: " + fileName);
+			return;
+		}
+		File texturePack = new File(FileUtil.getTexturePackDirectory(), fileName);
 		if (texturePack.exists()) {
 			texturePack.delete();
 		}
-		Download download = new Download(FileUtil.getFileName(url), FileUtil.getTexturePackDirectory(), url, new TexturePackAction(FileUtil.getFileName(url), FileUtil.getTexturePackDirectory()));
+		Download download = new Download(fileName, FileUtil.getTexturePackDirectory(), url, new TexturePackAction(fileName, FileUtil.getTexturePackDirectory()));
 		FileDownloadThread.getInstance().addToDownloadQueue(download);
 	}
 
