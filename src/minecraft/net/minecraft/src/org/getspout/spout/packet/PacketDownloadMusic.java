@@ -64,7 +64,7 @@ public class PacketDownloadMusic implements SpoutPacket{
 		}
 		File song = new File(directory, fileName);
 		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
-		Download download = new Download(fileName, directory, URL, action);
+		Download download = new Download(fileName, directory, url, action);
 		action.setNotify(!download.isDownloaded() && notify);
 		if (!download.isDownloaded() && notify) {
 			Spout.createSpoutAlert("Downloading Music...", fileName, 2256 /*Gold Record*/);
