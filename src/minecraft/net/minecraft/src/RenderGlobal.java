@@ -1415,6 +1415,9 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void playRecord(String var1, int var2, int var3, int var4) {
+		//Spout Start
+		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		//Spout End
 		if(var1 != null) {
 			this.mc.ingameGUI.setRecordPlayingMessage("C418 - " + var1);
 		}
@@ -1423,6 +1426,9 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void playSound(String var1, double var2, double var4, double var6, float var8, float var9) {
+		//Spout Start
+		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		//Spout End
 		float var10 = 16.0F;
 		if(var8 > 1.0F) {
 			var10 *= var8;
@@ -1435,6 +1441,9 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void spawnParticle(String var1, double var2, double var4, double var6, double var8, double var10, double var12) {
+		//Spout Start
+		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		//Spout End
 		if(this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
 			double var14 = this.mc.renderViewEntity.posX - var2;
 			double var16 = this.mc.renderViewEntity.posY - var4;
@@ -1539,6 +1548,9 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void playAuxSFX(EntityPlayer var1, int var2, int var3, int var4, int var5, int var6) {
+		//Spout Start
+		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		//Spout End
 		Random var7 = this.worldObj.rand;
 		int var16;
 		switch(var2) {
