@@ -9,6 +9,7 @@ import org.getspout.spout.chunkcache.ChunkCache;
 public class PacketCacheHashUpdate implements SpoutPacket {
 	public long[] hashes;
 	public boolean add;
+	public boolean reset = false;
 	
 	public PacketCacheHashUpdate() {
 	}
@@ -20,11 +21,12 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 	}
 
 	public int getNumBytes() {
-		return 5 + 8 * hashes.length;
+		return 6 + 8 * hashes.length;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
 		this.add = input.readBoolean();
+		this.reset = input.readBoolean();
 		int length = input.readInt();
 		this.hashes = new long[length];
 		for(int i = 0; i < length; i++) {
@@ -34,6 +36,7 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeBoolean(this.add);
+		output.writeBoolean(this.reset);
 		output.writeInt(hashes.length);
 		for(int i = 0; i < hashes.length; i++) {
 			output.writeLong(hashes[i]);
@@ -41,7 +44,9 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 	}
 
 	public void run(int id) {
-		if(!this.add) {
+		if(this.reset) {
+			ChunkCache.reset();
+		} else if(!this.add) {
 			for(long hash : this.hashes) {
 				ChunkCache.removeOverwriteBackup(hash);
 			}

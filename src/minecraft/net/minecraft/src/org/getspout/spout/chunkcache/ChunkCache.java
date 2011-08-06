@@ -139,6 +139,7 @@ public class ChunkCache {
 	}
 
 	public static void reset() {
+		hashes.clear();
 		p.reset();
 	}
 
