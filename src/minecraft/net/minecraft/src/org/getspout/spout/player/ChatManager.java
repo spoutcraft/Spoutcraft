@@ -55,6 +55,9 @@ public class ChatManager {
 			
 			else if (Keyboard.isKeyDown(Keyboard.KEY_END)) {
 				chatScroll = getChatHistorySize() - 2;
+				if (chatScroll < 0) {
+					chatScroll = 0;
+				}
 			}
 			
 			else if (Keyboard.isKeyDown(Keyboard.KEY_UP) && commandScroll < pastCommands.size()) {

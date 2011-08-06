@@ -20,6 +20,7 @@ import org.getspout.spout.sound.*;
 import org.getspout.spout.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Iterator;
+import org.getspout.spout.packet.PacketManager;
 
 public class Spout {
 	private static int buildVersion = -1;
@@ -36,12 +37,14 @@ public class Spout {
 	private static SimpleItemManager itemManager = new SimpleItemManager();
 	private static SimpleSkyManager skyManager = new SimpleSkyManager();
 	private static ChatManager chatManager = new ChatManager();
+	private static PacketManager packetManager = new PacketManager();
 	private static boolean inGame = false;
 	private static InGameScreen mainScreen = new InGameScreen();
 	public static HashMap<Integer, String> entityLabel = new HashMap<Integer, String>();
 	public static byte minView = -1;
 	public static byte maxView = -1;
 	public static final DataMiningThread dataMining = new DataMiningThread();
+	private static long ticks = 0;
 	
 	static {
 		dataMining.start();
@@ -163,6 +166,10 @@ public class Spout {
 	public static ChatManager getChatManager() {
 		return chatManager;
 	}
+	
+	public static PacketManager getPacketManager() {
+		return packetManager;
+	}
 
 	public static Minecraft getGameInstance() {
 		if (game == null) {
@@ -263,5 +270,10 @@ public class Spout {
 			inGame = activeGame;
 			getGameInstance().sndManager.stopMusic();
 		}
+		ticks++;
+	}
+	
+	public static long getTicks() {
+		return ticks;
 	}
 }
