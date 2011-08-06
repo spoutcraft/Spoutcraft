@@ -44,7 +44,7 @@ public class Packet51MapChunk extends Packet {
       try {
          var3.inflate(this.chunk);
          // Spout - start
-         this.chunk = ChunkCache.handle(this.chunk, var3);
+         this.chunk = ChunkCache.handle(this.chunk, var3, this.chunkSize);
          // Spout - end
       } catch (DataFormatException var8) {
          throw new IOException("Bad compressed data format");

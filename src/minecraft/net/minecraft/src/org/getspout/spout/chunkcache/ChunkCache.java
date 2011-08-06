@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -42,13 +43,25 @@ public class ChunkCache {
 	}
 	
 	private static byte[] hashData = new byte[CACHED_SIZE];
-
-	public static byte[] handle(byte[] chunkData, Inflater inflater) throws IOException {
+	
+	public static AtomicInteger averageChunkSize = new AtomicInteger();
+	private static int chunks = 0;
+	private static int totalData = 0;
+	public static AtomicInteger hitPercentage = new AtomicInteger();
+	private static int hits = 0;
+	private static int cacheAttempts = 0;
+	
+	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize) throws IOException {
 
 		if(chunkData.length != FULL_CHUNK) {
 			return chunkData;
 		}
 		
+		totalData += chunkSize;
+		chunks++;
+		
+		averageChunkSize.set(totalData/chunks);
+				
 		try {
 			int hashSize = inflater.inflate(hashData, FULL_CHUNK, 40*8);
 			if(hashSize != 40*8) {
@@ -63,8 +76,9 @@ public class ChunkCache {
 		for(int i = 0; i < 40; i++) {
 			long hash = PartitionChunk.getHash(hashData, i);
 			byte[] partitionData = p.get(hash, partition);
-			if(partitionData == null) {
+			if(hash == 0 || partitionData == null) {
 				PartitionChunk.copyFromChunkData(chunkData, i, partition);
+				hash = ChunkHash.hash(partition);
 				p.put(hash, partition);
 				processOverwriteQueue();
 			} else {
@@ -92,8 +106,10 @@ public class ChunkCache {
 			}
 		}
 		
-		//System.out.println("Cache hit/miss: " + cacheHit + "/" + (40-cacheHit));
-
+		hits += cacheHit;
+		cacheAttempts += 40;
+		hitPercentage.set((100 * hits) / cacheAttempts);
+				
 		byte[] cachedChunkData = new byte[81920];
 		System.arraycopy(chunkData, 0, cachedChunkData, 0, 81920);
 
