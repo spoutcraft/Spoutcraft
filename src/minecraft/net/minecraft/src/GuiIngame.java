@@ -21,6 +21,7 @@ import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 //Spout Start
+import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.player.ChatManager;
 //Spout End
@@ -231,6 +232,11 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 			}
 			//Spout End
+			//Spout Start
+			this.drawString(var8, "Map Data Info", 2, 64, 14737632);
+			this.drawString(var8, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72, 14737632);
+			this.drawString(var8, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80, 14737632);
+			//Spout end
 			GL11.glPopMatrix();
 		}
 
