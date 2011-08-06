@@ -1331,7 +1331,7 @@ public abstract class Minecraft implements Runnable {
 				this.effectRenderer.clearEffects(var1);
 			}
 
-			this.playerController.func_6473_b(this.thePlayer);
+			//this.playerController.func_6473_b(this.thePlayer); //Spout Garbage
 			if(var3 != null) {
 				var1.emptyMethod1();
 			}
