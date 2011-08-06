@@ -1297,11 +1297,16 @@ public abstract class Minecraft implements Runnable {
 			//Spout Start
 			effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
 			//Spout End
-			this.playerController.func_717_a(var1);
+			//this.playerController.func_717_a(var1); //Spout empty function
 			if(!this.isMultiplayerWorld()) {
 				if(var3 == null) {
 					this.thePlayer = (EntityPlayerSP)var1.func_4085_a(EntityPlayerSP.class);
 				}
+				//Spout Start
+				if (playerController == null) {
+					playerController = new PlayerControllerSP(this);
+				}
+				//Spout End
 			} else if(this.thePlayer != null) {
 				this.thePlayer.preparePlayerToSpawn();
 				if(var1 != null) {

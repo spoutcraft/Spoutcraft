@@ -26,6 +26,10 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Dimension;
+import org.lwjgl.opengl.GLContext;
 //Spout HD End
 
 public class RenderEngine {
@@ -47,6 +51,7 @@ public class RenderEngine {
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
 	//Spout Start
 	public TexturePackBase oldPack = null;
+	private ByteBuffer[] mipImageDatas;
 	//Spout End
 
 
@@ -192,9 +197,28 @@ public class RenderEngine {
 		if (var1 == null) return;
 		//Spout HD End
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var2);
+		//Spout Start
+		useMipmaps = Config.isUseMipmaps();
+		int var3;
+		int var4;
 		if(useMipmaps) {
-			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, 9986 /*GL_NEAREST_MIPMAP_LINEAR*/);
+			var3 = Config.getMipmapType();
+			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, var3);
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10240 /*GL_TEXTURE_MAG_FILTER*/, 9728 /*GL_NEAREST*/);
+			if(GLContext.getCapabilities().OpenGL12) {
+				GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, '\u813c', 0);
+				var4 = Config.getMipmapLevel();
+				if(var4 >= 4) {
+					int var5 = Math.min(var1.getWidth(), var1.getHeight());
+					var4 = this.getMaxMipmapLevel(var5) - 4;
+					if(var4 < 0) {
+						var4 = 0;
+					}
+				}
+
+				GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, '\u813d', var4);
+			}
+		//Spout End
 		} else {
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, 9728 /*GL_NEAREST*/);
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10240 /*GL_TEXTURE_MAG_FILTER*/, 9728 /*GL_NEAREST*/);
@@ -213,8 +237,8 @@ public class RenderEngine {
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10243 /*GL_TEXTURE_WRAP_T*/, 10497 /*GL_REPEAT*/);
 		}
 
-		int var3 = var1.getWidth();
-		int var4 = var1.getHeight();
+		var3 = var1.getWidth();
+		var4 = var1.getHeight();
 		int[] var5 = new int[var3 * var4];
 		byte[] var6 = new byte[var3 * var4 * 4];
 		var1.getRGB(0, 0, var3, var4, var5, 0, var3);
@@ -251,27 +275,44 @@ public class RenderEngine {
 //Spout HD End
 		GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, 0, 6408 /*GL_RGBA*/, var3, var4, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
 		if(useMipmaps) {
-			for(var7 = 1; var7 <= 4; ++var7) {
-				var8 = var3 >> var7 - 1;
-				var9 = var3 >> var7;
-				var10 = var4 >> var7;
-
-				for(var11 = 0; var11 < var9; ++var11) {
-					for(var12 = 0; var12 < var10; ++var12) {
-						var13 = this.imageData.getInt((var11 * 2 + 0 + (var12 * 2 + 0) * var8) * 4);
-						var14 = this.imageData.getInt((var11 * 2 + 1 + (var12 * 2 + 0) * var8) * 4);
-						int var15 = this.imageData.getInt((var11 * 2 + 1 + (var12 * 2 + 1) * var8) * 4);
-						int var16 = this.imageData.getInt((var11 * 2 + 0 + (var12 * 2 + 1) * var8) * 4);
-						int var17 = this.alphaBlend(this.alphaBlend(var13, var14), this.alphaBlend(var15, var16));
-						this.imageData.putInt((var11 + var12 * var9) * 4, var17);
-					}
-				}
-
-				GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, var7, 6408 /*GL_RGBA*/, var9, var10, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
-			}
+			//Spout Start
+			this.generateMipMaps(this.imageData, var3, var4);
+			//Spout End
 		}
 
 	}
+
+//Spout Start
+	private void generateMipMaps(ByteBuffer var1, int var2, int var3) {
+		ByteBuffer var4 = var1;
+
+		for(int var5 = 1; var5 <= 16; ++var5) {
+			int var6 = var2 >> var5 - 1;
+			int var7 = var2 >> var5;
+			int var8 = var3 >> var5;
+			if(var7 <= 0 || var8 <= 0) {
+				break;
+			}
+
+			ByteBuffer var9 = this.mipImageDatas[var5 - 1];
+
+			for(int var10 = 0; var10 < var7; ++var10) {
+				for(int var11 = 0; var11 < var8; ++var11) {
+					int var12 = var4.getInt((var10 * 2 + 0 + (var11 * 2 + 0) * var6) * 4);
+					int var13 = var4.getInt((var10 * 2 + 1 + (var11 * 2 + 0) * var6) * 4);
+					int var14 = var4.getInt((var10 * 2 + 1 + (var11 * 2 + 1) * var6) * 4);
+					int var15 = var4.getInt((var10 * 2 + 0 + (var11 * 2 + 1) * var6) * 4);
+					int var16 = this.weightedAverageColor(var12, var13, var14, var15);
+					var9.putInt((var10 + var11 * var7) * 4, var16);
+				}
+			}
+
+			GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, var5, 6408 /*GL_RGBA*/, var7, var8, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, var9);
+			var4 = var9;
+		}
+
+	}
+//Spout End
 
 	public void createTextureFromBytes(int[] var1, int var2, int var3, int var4) {
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var4);
@@ -378,6 +419,57 @@ public class RenderEngine {
 //Spout HD End
 	}
 
+//Spout Start
+	private void generateMipMapsSub(int var1, int var2, int var3, int var4, ByteBuffer var5, int var6, boolean var7) {
+		ByteBuffer var8 = var5;
+
+		for(int var9 = 1; var9 <= 16; ++var9) {
+			int var10 = var3 >> var9 - 1;
+			int var11 = var3 >> var9;
+			int var12 = var4 >> var9;
+			int var13 = var1 >> var9;
+			int var14 = var2 >> var9;
+			if(var11 <= 0 || var12 <= 0) {
+				break;
+			}
+
+			ByteBuffer var15 = this.mipImageDatas[var9 - 1];
+
+			int var17;
+			int var16;
+			int var19;
+			int var18;
+			for(var16 = 0; var16 < var11; ++var16) {
+				for(var17 = 0; var17 < var12; ++var17) {
+					var18 = var8.getInt((var16 * 2 + 0 + (var17 * 2 + 0) * var10) * 4);
+					var19 = var8.getInt((var16 * 2 + 1 + (var17 * 2 + 0) * var10) * 4);
+					int var20 = var8.getInt((var16 * 2 + 1 + (var17 * 2 + 1) * var10) * 4);
+					int var21 = var8.getInt((var16 * 2 + 0 + (var17 * 2 + 1) * var10) * 4);
+					int var22;
+					if(var7) {
+						var22 = this.averageColor(this.averageColor(var18, var19), this.averageColor(var20, var21));
+					} else {
+						var22 = this.weightedAverageColor(var18, var19, var20, var21);
+					}
+
+					var15.putInt((var16 + var17 * var11) * 4, var22);
+				}
+			}
+
+			for(var16 = 0; var16 < var6; ++var16) {
+				for(var17 = 0; var17 < var6; ++var17) {
+					var18 = var16 * var11;
+					var19 = var17 * var12;
+					GL11.glTexSubImage2D(3553 /*GL_TEXTURE_2D*/, var9, var13 + var18, var14 + var19, var11, var12, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, var15);
+				}
+			}
+
+			var8 = var15;
+		}
+
+	}
+//Spout End
+
 	public void updateDynamicTextures() {
 		int var1;
 		TextureFX var2;
@@ -465,7 +557,14 @@ public class RenderEngine {
 		int var4 = (var2 & -16777216) >> 24 & 255;
 		return (var3 + var4 >> 1 << 24) + ((var1 & 16711422) + (var2 & 16711422) >> 1);
 	}
-
+//Spout Start
+	private int weightedAverageColor(int var1, int var2, int var3, int var4) {
+		int var5 = this.alphaBlend(var1, var2);
+		int var6 = this.alphaBlend(var3, var4);
+		int var7 = this.alphaBlend(var5, var6);
+		return var7;
+	}
+//Spout End
 	private int alphaBlend(int var1, int var2) {
 		int var3 = (var1 & -16777216) >> 24 & 255;
 		int var4 = (var2 & -16777216) >> 24 & 255;
@@ -597,5 +696,15 @@ public class RenderEngine {
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
+
+	private int getMaxMipmapLevel(int var1) {
+		int var2;
+		for(var2 = 0; var1 > 0; ++var2) {
+			var1 /= 2;
+		}
+
+		return var2 - 1;
+	}
+
 //Spout HD End
 }
