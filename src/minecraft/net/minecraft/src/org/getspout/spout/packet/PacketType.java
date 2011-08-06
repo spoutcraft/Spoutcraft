@@ -23,6 +23,7 @@ public enum PacketType {
 	PacketNotification(17, PacketNotification.class),
 	PacketScreenAction(18, PacketScreenAction.class),
 	PacketControlAction(19, PacketControlAction.class),
+	PacketCacheHashUpdate(20, PacketCacheHashUpdate.class),
 	
 	;
 	
