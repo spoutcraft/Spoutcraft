@@ -157,7 +157,7 @@ public class GuiScreen extends Gui {
         		int i = Keyboard.getEventKey();
         		boolean keyReleased = Keyboard.getEventKeyState();
         		PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);
-        		player.sendQueue.addToSendQueue(new CustomPacket(packet));
+        		Spout.getPacketManager().sendSpoutPacket(packet);
         	}
         //Spout End
 			this.handleKeyboardInput();

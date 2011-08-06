@@ -20,6 +20,7 @@ import org.getspout.spout.sound.*;
 import org.getspout.spout.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.Iterator;
+import org.getspout.spout.packet.PacketManager;
 
 public class Spout {
 	private static int buildVersion = -1;
@@ -36,6 +37,7 @@ public class Spout {
 	private static SimpleItemManager itemManager = new SimpleItemManager();
 	private static SimpleSkyManager skyManager = new SimpleSkyManager();
 	private static ChatManager chatManager = new ChatManager();
+	private static PacketManager packetManager = new PacketManager();
 	private static boolean inGame = false;
 	private static InGameScreen mainScreen = new InGameScreen();
 	public static HashMap<Integer, String> entityLabel = new HashMap<Integer, String>();
@@ -162,6 +164,10 @@ public class Spout {
 
 	public static ChatManager getChatManager() {
 		return chatManager;
+	}
+	
+	public static PacketManager getPacketManager() {
+		return packetManager;
 	}
 
 	public static Minecraft getGameInstance() {
