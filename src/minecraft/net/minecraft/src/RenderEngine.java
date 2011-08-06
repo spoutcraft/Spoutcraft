@@ -45,6 +45,9 @@ public class RenderEngine {
 	private boolean blurTexture = false;
 	public TexturePackList texturePack; //Spout private -> public
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
+	//Spout Start
+	public TexturePackBase oldPack = null;
+	//Spout End
 
 
 	public RenderEngine(TexturePackList var1, GameSettings var2) {
@@ -486,7 +489,7 @@ public class RenderEngine {
 	}
 
 	public void refreshTextures() {
-		TexturePackBase var1 = this.texturePack.selectedTexturePack;
+		//TexturePackBase var1 = this.texturePack.selectedTexturePack; //Spout unused variable
 		Iterator var2 = this.textureNameToImageMap.keySet().iterator();
 
 		BufferedImage var4;
