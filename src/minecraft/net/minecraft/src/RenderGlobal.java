@@ -62,7 +62,7 @@ public class RenderGlobal implements IWorldAccess {
 	private RenderEngine renderEngine;
 	private List worldRenderersToUpdate = new ArrayList();
 	private WorldRenderer[] sortedWorldRenderers;
-	private WorldRenderer[] worldRenderers;
+	public WorldRenderer[] worldRenderers; //Spout private -> public
 	private int renderChunksWide;
 	private int renderChunksTall;
 	private int renderChunksDeep;
