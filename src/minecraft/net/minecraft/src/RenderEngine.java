@@ -56,6 +56,7 @@ public class RenderEngine {
 
 
 	public RenderEngine(TexturePackList var1, GameSettings var2) {
+		this.allocateImageData(256); //Spout
 		this.texturePack = var1;
 		this.options = var2;
 		Graphics var3 = this.missingTextureImage.getGraphics();
@@ -695,6 +696,20 @@ public class RenderEngine {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
+	}
+
+	private void allocateImageData(int var1) {
+		int var2 = var1 * var1 * 4;
+		this.imageData = GLAllocation.createDirectByteBuffer(var2);
+		ArrayList var3 = new ArrayList();
+
+		for(int var4 = var1 / 2; var4 > 0; var4 /= 2) {
+			int var5 = var4 * var4 * 4;
+			ByteBuffer var6 = GLAllocation.createDirectByteBuffer(var5);
+			var3.add(var6);
+		}
+
+		this.mipImageDatas = (ByteBuffer[])((ByteBuffer[])var3.toArray(new ByteBuffer[var3.size()]));
 	}
 
 	private int getMaxMipmapLevel(int var1) {
