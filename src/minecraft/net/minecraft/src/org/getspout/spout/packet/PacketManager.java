@@ -11,6 +11,11 @@ public class PacketManager {
 		this.mc = Spout.getGameInstance();
 	}
 	
+	/**
+	 * Sends the packet to the plugin when it is enabled on the server
+	 * @param packet the Packet to send
+	 * @returns if the sending was successful
+	 */
 	public boolean sendSpoutPacket(SpoutPacket packet){
 		if(mc.thePlayer instanceof EntityClientPlayerMP && Spout.isEnabled()){
 			EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
@@ -20,6 +25,12 @@ public class PacketManager {
 		return false;
 	}
 	
+	/**
+	 * Sends the packet to the plugin when it is enabled on the server and has version >= pluginVersion
+	 * @param packet the Packet to send
+	 * @param pluginVersion the minimum version of the plugin 
+	 * @returns if the sending was successful
+	 */
 	public boolean sendSpoutPacket(SpoutPacket packet, int pluginVersion){
 		if(Spout.getVersion() >= pluginVersion){
 			return sendSpoutPacket(packet);
