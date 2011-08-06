@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Spout;
 
@@ -102,7 +103,13 @@ public class ChunkCache {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				((EntityClientPlayerMP)Spout.getGameInstance().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(true, nearbyHashes)));
+				Minecraft mc = Spout.getGameInstance();
+				if (mc != null) {
+					EntityClientPlayerMP ecp = (EntityClientPlayerMP)mc.thePlayer;
+					if (ecp != null) {
+						ecp.sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(true, nearbyHashes)));
+					}
+				}
 			}
 		}
 		

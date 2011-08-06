@@ -180,7 +180,7 @@ public class GuiFavorites extends GuiScreen {
 							String split[] = quickJoinText.getText().split(":");
 							String ip = split[0];
 							int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
-							Spout.getGameInstance().gameSettings.lastServer = quickJoinText.getText();
+							Spout.getGameInstance().gameSettings.lastServer = quickJoinText.getText().replace(":", "_");
 							Spout.getGameInstance().gameSettings.saveOptions();
 							Spout.getGameInstance().displayGuiScreen(new GuiConnecting(Spout.getGameInstance(), ip, port));
 						}
