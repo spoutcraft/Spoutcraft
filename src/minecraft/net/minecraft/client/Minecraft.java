@@ -104,6 +104,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 //Spout Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
+import net.minecraft.src.PlayerControllerSP;
 //Spout End
 
 public abstract class Minecraft implements Runnable {
