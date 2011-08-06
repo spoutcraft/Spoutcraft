@@ -44,6 +44,7 @@ public class Spout {
 	public static byte minView = -1;
 	public static byte maxView = -1;
 	public static final DataMiningThread dataMining = new DataMiningThread();
+	private static long ticks = 0;
 	
 	static {
 		dataMining.start();
@@ -269,5 +270,10 @@ public class Spout {
 			inGame = activeGame;
 			getGameInstance().sndManager.stopMusic();
 		}
+		ticks++;
+	}
+	
+	public static long getTicks() {
+		return ticks;
 	}
 }
