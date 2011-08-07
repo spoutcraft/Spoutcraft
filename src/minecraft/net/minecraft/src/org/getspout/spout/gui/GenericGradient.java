@@ -3,32 +3,34 @@ package org.getspout.spout.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import org.getspout.spout.packet.PacketUtil;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.Tessellator;
 
 public class GenericGradient extends GenericWidget implements Gradient {
 	
-	protected int color1 = 0xC0101010, color2 = 0xD0101010;
+	protected Color color1 = new Color(0.06F, 0.06F, 0.06F, 0.75F), color2 = new Color(0.06F, 0.06F, 0.06F, 0.82F);
 	
 	public GenericGradient() {
 		
 	}
 	
-	public Gradient setTopColor(int color) {
+	public Gradient setTopColor(Color color) {
 		this.color1 = color;
 		return this;
 	}
 	
-	public Gradient setBottomColor(int color) {
+	public Gradient setBottomColor(Color color) {
 		this.color2 = color;
 		return this;
 	}
 	
-	public int getTopColor() {
+	public Color getTopColor() {
 		return this.color1;
 	}
 	
-	public int getBottomColor() {
+	public Color getBottomColor() {
 		return this.color2;
 	}
 
@@ -39,33 +41,25 @@ public class GenericGradient extends GenericWidget implements Gradient {
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 8;
+		return super.getNumBytes() + 24;
 	}
 	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		this.setTopColor(input.readInt());
-		this.setBottomColor(input.readInt());
+		this.setTopColor(PacketUtil.readColor(input));
+		this.setBottomColor(PacketUtil.readColor(input));
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
-		output.writeInt(getTopColor());
-		output.writeInt(getBottomColor());
+		PacketUtil.writeColor(output, getTopColor());
+		PacketUtil.writeColor(output, getBottomColor());
 	}
 	
 	@Override
 	public void render() {
-		float f = (float)(color1 >> 24 & 0xff) / 255F;
-        float f1 = (float)(color1 >> 16 & 0xff) / 255F;
-        float f2 = (float)(color1 >> 8 & 0xff) / 255F;
-        float f3 = (float)(color1 & 0xff) / 255F;
-        float f4 = (float)(color2 >> 24 & 0xff) / 255F;
-        float f5 = (float)(color2 >> 16 & 0xff) / 255F;
-        float f6 = (float)(color2 >> 8 & 0xff) / 255F;
-        float f7 = (float)(color2 & 0xff) / 255F;
         GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
         GL11.glEnable(3042 /*GL_BLEND*/);
         GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
@@ -73,10 +67,10 @@ public class GenericGradient extends GenericWidget implements Gradient {
         GL11.glShadeModel(7425 /*GL_SMOOTH*/);
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, f);
+        tessellator.setColorRGBA_F(color1.getRedF(), color1.getGreenF(), color1.getBlueF(), color1.getAlphaF());
         tessellator.addVertex(getWidth() + getX(), getY(), 0.0D);
         tessellator.addVertex(getX(), getY(), 0.0D);
-        tessellator.setColorRGBA_F(f5, f6, f7, f4);
+        tessellator.setColorRGBA_F(color2.getRedF(), color2.getGreenF(), color2.getBlueF(), color2.getAlphaF());
         tessellator.addVertex(getX(), getHeight() + getY(), 0.0D);
         tessellator.addVertex(getWidth() + getX(), getHeight() + getY(), 0.0D);
         tessellator.draw();

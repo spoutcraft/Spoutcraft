@@ -6,26 +6,26 @@ public interface Gradient extends Widget {
 	 * Gets the top colour of the gradient to render
 	 * @return color
 	 */
-	public int getTopColor();
+	public Color getTopColor();
 	
 	/**
 	 * Sets the top colour of the gradient to render
-	 * @param color ie 0xFFFFFFFF
+	 * @param color
 	 * @return gradient
 	 */
-	public Gradient setTopColor(int color);
+	public Gradient setTopColor(Color color);
 	
 	/**
 	 * Gets the bottom colour of the gradient to render
 	 * @return color
 	 */
-	public int getBottomColor();
+	public Color getBottomColor();
 	
 	/**
 	 * Sets the bottom colour of the gradient to render
-	 * @param color ie 0xFFFFFFFF
+	 * @param color
 	 * @return gradient
 	 */
-	public Gradient setBottomColor(int color);
+	public Gradient setBottomColor(Color color);
 
 }
