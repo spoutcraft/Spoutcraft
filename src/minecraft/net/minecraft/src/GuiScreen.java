@@ -29,7 +29,7 @@ public class GuiScreen extends Gui {
 	protected FontRenderer fontRenderer;
 	public GuiParticle guiParticles;
 	private GuiButton selectedButton = null;
-
+	GenericGradient bg;
 
 	public void drawScreen(int var1, int var2, float var3) {
 		for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
@@ -92,6 +92,7 @@ public class GuiScreen extends Gui {
 		this.width = var2;
 		this.height = var3;
 		this.controlList.clear();
+		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		this.initGui();
 	}
 
@@ -202,7 +203,7 @@ public class GuiScreen extends Gui {
 
 	public void drawWorldBackground(int var1) {
 		if(this.mc.theWorld != null) {
-			this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
+			bg.render();
 		} else {
 			this.drawBackground(var1);
 		}
