@@ -4,6 +4,8 @@ import java.util.HashMap;
 import org.getspout.spout.packet.PacketSky;
 import net.minecraft.src.Spout;
 import org.getspout.spout.io.CustomTextureManager;
+import net.minecraft.src.Vec3D;
+import org.getspout.spout.gui.Color;
 
 public class SimpleSkyManager implements SkyManager{
 	private int cloudHeight = -999;
@@ -12,7 +14,8 @@ public class SimpleSkyManager implements SkyManager{
 	private int moonPercent = 100;
 	private String sunUrl = null;
 	private String moonUrl = null;
-	
+	private Color skyColor = null, fogColor = null, cloudColor = null;
+    
 	@Override
 	public int getCloudHeight() {
 		if (cloudHeight == -999) {
@@ -135,5 +138,45 @@ public class SimpleSkyManager implements SkyManager{
 			CustomTextureManager.downloadTexture(Url);
 		}
 	}
+    
+    @Override
+    public void setSkyColor(float red, float green, float blue) {
+        skyColor.setRed(red).setGreen(green).setBlue(blue);
+    }
 
+    @Override
+    public void setSkyColor(Color color) {
+        skyColor = color.clone();
+    }
+    
+    @Override
+    public Color getSkyColor() {
+        if(skyColor == null){
+            return null;
+        }
+        return skyColor.clone();
+    }
+    
+    @Override
+    public void setFogColor(Color color) {
+        this.fogColor = color.clone();
+    }
+    
+    @Override
+    public Color getFogColor() {
+        if(fogColor == null){
+            return null;
+        }
+        return fogColor.clone();
+    }
+    
+    @Override
+    public void setCloudColor(Color color){
+        this.cloudColor = color.clone();
+    }
+    
+    @Override 
+    public Color getCloudColor(){
+        return this.cloudColor;
+    }
 }

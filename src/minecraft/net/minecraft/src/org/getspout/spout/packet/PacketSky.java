@@ -4,20 +4,24 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.minecraft.src.*;
+import org.getspout.spout.gui.Color;
+import org.getspout.spout.player.SkyManager;
 
 public class PacketSky implements SpoutPacket{
 	private int cloudY, stars, sunPercent, moonPercent;
+    private Color skyColor, fogColor, cloudColor;
 	String sun = "";
 	String moon = "";
 	public PacketSky() {
 		
 	}
 	
-	public PacketSky(int cloudY, int stars, int sunPercent, int moonPercent) {
+	public PacketSky(int cloudY, int stars, int sunPercent, int moonPercent, Color skyColor) {
 		this.cloudY = cloudY;
 		this.stars = stars;
 		this.sunPercent = sunPercent;
 		this.moonPercent = moonPercent;
+        this.skyColor = skyColor.clone();
 	}
 	
 	public PacketSky(String sunUrl, String moonUrl) {
@@ -31,7 +35,7 @@ public class PacketSky implements SpoutPacket{
 
 	@Override
 	public int getNumBytes() {
-		return 16 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
+		return 25 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
 	}
 
 	@Override
@@ -42,6 +46,9 @@ public class PacketSky implements SpoutPacket{
 		moonPercent = input.readInt();
 		sun = PacketUtil.readString(input, 256);
 		moon = PacketUtil.readString(input, 256);
+        skyColor = PacketUtil.readColor(input);
+        fogColor = PacketUtil.readColor(input);
+        cloudColor = PacketUtil.readColor(input);
 	}
 
 	@Override
@@ -52,6 +59,9 @@ public class PacketSky implements SpoutPacket{
 		output.writeInt(moonPercent);
 		PacketUtil.writeString(output, sun);
 		PacketUtil.writeString(output, moon);
+        PacketUtil.writeColor(output, skyColor);
+        PacketUtil.writeColor(output, fogColor);
+        PacketUtil.writeColor(output, cloudColor);
 	}
 
 	@Override
@@ -84,6 +94,28 @@ public class PacketSky implements SpoutPacket{
 				Spout.getSkyManager().setMoonTextureUrl(moon);
 			}
 		}
+        SkyManager sky = Spout.getSkyManager();
+        
+        //Sky
+        if(skyColor.isOverride()) {
+            sky.setSkyColor(null);
+        } else if(!skyColor.isInvalid()) {
+            sky.setSkyColor(skyColor);
+        }
+        
+        //Fog
+        if(fogColor.isOverride()) {
+            sky.setFogColor(null);
+        } else if(!fogColor.isInvalid()) {
+            sky.setFogColor(fogColor);
+        }
+        
+        //Cloud
+        if(cloudColor.isOverride()) {
+            sky.setCloudColor(null);
+        } else if(!cloudColor.isInvalid()) {
+            sky.setCloudColor(cloudColor);
+        }
 	}
 
 	@Override

@@ -53,6 +53,7 @@ import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.gui.Color;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 //Spout End
@@ -733,10 +734,18 @@ public class RenderGlobal implements IWorldAccess {
 	public void renderSky(float var1) {
 		if(!this.mc.theWorld.worldProvider.isNether) {
 			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-			Vec3D var2 = this.worldObj.func_4079_a(this.mc.renderViewEntity, var1);
-			float var3 = (float)var2.xCoord;
-			float var4 = (float)var2.yCoord;
-			float var5 = (float)var2.zCoord;
+            //Spout Start
+            Vec3D vec3d = worldObj.func_4079_a(mc.renderViewEntity, var1);
+            float var3 = (float)vec3d.xCoord;
+            float var4 = (float)vec3d.yCoord;
+            float var5 = (float)vec3d.zCoord;
+			Color skyColor = Spout.getSkyManager().getSkyColor();
+            if(skyColor!=null){
+                var3 = skyColor.getRedF();
+                var4 = skyColor.getGreenF();
+                var5 = skyColor.getBlueF();
+            }
+            //Spout End
 			float var7;
 			float var8;
 			if(this.mc.gameSettings.anaglyph) {
@@ -912,6 +921,14 @@ public class RenderGlobal implements IWorldAccess {
 				float var7 = (float)var6.xCoord;
 				float var8 = (float)var6.yCoord;
 				float var9 = (float)var6.zCoord;
+                //Spout Start
+                Color cloudColor = Spout.getSkyManager().getCloudColor();
+                if(cloudColor!=null){
+                    var7 = cloudColor.getRedF();
+                    var8 = cloudColor.getGreenF();
+                    var9 = cloudColor.getBlueF();
+                }
+                //Spout End
 				float var10;
 				if(this.mc.gameSettings.anaglyph) {
 					var10 = (var7 * 30.0F + var8 * 59.0F + var9 * 11.0F) / 100.0F;
@@ -984,6 +1001,14 @@ public class RenderGlobal implements IWorldAccess {
 		float var14 = (float)var13.xCoord;
 		float var15 = (float)var13.yCoord;
 		float var16 = (float)var13.zCoord;
+		//Spout Start
+        Color cloudColor = Spout.getSkyManager().getCloudColor();
+        if(cloudColor!=null){
+            var14 = cloudColor.getRedF();
+            var15 = cloudColor.getGreenF();
+            var16 = cloudColor.getBlueF();
+        }
+		//Spout End
 		float var17;
 		float var19;
 		float var18;
