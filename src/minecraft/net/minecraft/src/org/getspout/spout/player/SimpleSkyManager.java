@@ -146,7 +146,10 @@ public class SimpleSkyManager implements SkyManager{
 
     @Override
     public void setSkyColor(Color color) {
-        skyColor = color.clone();
+    	if(color!=null)
+       		skyColor = color.clone();
+       	else
+       		skyColor = null;
     }
     
     @Override
@@ -159,7 +162,10 @@ public class SimpleSkyManager implements SkyManager{
     
     @Override
     public void setFogColor(Color color) {
-        this.fogColor = color.clone();
+    	if(color!=null)
+        	this.fogColor = color.clone();
+        else
+        	fogColor = null;
     }
     
     @Override
@@ -172,7 +178,10 @@ public class SimpleSkyManager implements SkyManager{
     
     @Override
     public void setCloudColor(Color color){
-        this.cloudColor = color.clone();
+    	if(color!=null)
+        	this.cloudColor = color.clone();
+        else
+        	cloudColor = null;
     }
     
     @Override 
