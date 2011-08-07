@@ -16,7 +16,7 @@ public enum WidgetType {
 	Button(10, GenericButton.class),
 	Slider(11, GenericSlider.class),
 	TextField(12, GenericTextField.class),
-	Gradient(12, GenericGradient.class),
+	Gradient(13, GenericGradient.class),
 	;
 	
 	private final int id;
