@@ -26,7 +26,7 @@ public class Spout {
 	private static int buildVersion = -1;
 	private static int minorVersion = -1;
 	private static int majorVersion = -1;
-	private static int clientBuildVersion = 1;
+	private static int clientBuildVersion = 2;
 	private static int clientMinorVersion = 0;
 	private static int clientMajorVersion = 1;
 	private static Minecraft game = null;
