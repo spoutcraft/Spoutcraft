@@ -8,7 +8,7 @@ public class GuiServerSlot extends GuiSlot {
 
 
 	public GuiServerSlot(GuiMultiplayer var1) {
-		super(Spout.getGameInstance(), var1.width, var1.height, 32, var1.height - 64, 36);
+		super(Spout.getGameInstance(), var1.width, var1.height, 32, var1.height - 88, 36);
 		this.parentServerGui = var1;
 	}
 

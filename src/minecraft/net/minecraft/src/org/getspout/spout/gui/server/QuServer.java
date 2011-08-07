@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+
 import net.minecraft.src.GuiMultiplayer;
 
 public class QuServer implements Runnable {
@@ -14,7 +16,8 @@ public class QuServer implements Runnable {
 	GuiMultiplayer parentScreen;
 	String addr;
 	private static Thread instance = null;
-	private List tempServerList = new ArrayList();
+	private ArrayList tempServerList = new ArrayList();
+	private LinkedHashMap<String,ArrayList> tempCountryMappings = new LinkedHashMap<String,ArrayList>();
 
 
 	public QuServer(GuiMultiplayer var1, String var2) {
@@ -39,7 +42,7 @@ public class QuServer implements Runnable {
 			reader.close();
 			this.parentScreen.status = "Processing Servers";
 			String[] text = line.split("\\{");
-
+			
 			for(int i = 0; i < text.length; ++i) {
 				if (text[i].contains("[Private]")) {
 					text[i].replace("[Private]","");
@@ -58,13 +61,42 @@ public class QuServer implements Runnable {
 
 					var7 = this.setServer(i, var1, var7);
 				}
-				tempServerList.add(var7);
+
+				ArrayList list = tempCountryMappings.get(var7.country);
+				if (list == null) {
+					list = new ArrayList();
+					tempCountryMappings.put(var7.country, list);
+				}
+				list.add(var7);
 			}
 
+			for (String country : tempCountryMappings.keySet()) {
+				Collections.sort(tempCountryMappings.get(country), new Comparator() {
+
+					@Override
+					public int compare(Object arg0, Object arg1) {
+						if (!(arg1 instanceof mcSBServer) || !(arg0 instanceof mcSBServer)) {
+							return arg0.hashCode() - arg1.hashCode();
+						}
+						mcSBServer server1 = (mcSBServer)arg0;
+						mcSBServer server2 = (mcSBServer)arg1;
+						return server1.name.compareTo(server2.name);
+					}
+					
+				});
+			}
+			
 			this.parentScreen.serverList.clear();
-			this.parentScreen.serverList = tempServerList;
-			Collections.sort(this.parentScreen.serverList);
+			this.parentScreen.activeCountry = 0;
+			ArrayList tempCountries = new ArrayList(tempCountryMappings.keySet());
+			Collections.sort(tempCountries);
+			this.parentScreen.countries = tempCountries;
+			this.parentScreen.countryMappings = tempCountryMappings;
+			this.parentScreen.page = 0;
+
 			this.parentScreen.status = "Done";
+			this.parentScreen.updateList();
+			
 		} catch (IOException var11) {
 			this.parentScreen.status = "An Error Occured.";
 			var11.printStackTrace();
