@@ -35,7 +35,7 @@ public class PacketSky implements SpoutPacket{
 
 	@Override
 	public int getNumBytes() {
-		return 25 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
+		return 28 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
 	}
 
 	@Override

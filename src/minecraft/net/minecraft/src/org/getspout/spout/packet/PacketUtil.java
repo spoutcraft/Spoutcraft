@@ -40,6 +40,7 @@ public abstract class PacketUtil {
 			output.writeFloat(color.getRedF());
 			output.writeFloat(color.getGreenF());
 			output.writeFloat(color.getBlueF());
+			output.writeFloat(color.getAlphaF());
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -47,11 +48,12 @@ public abstract class PacketUtil {
     
     public static Color readColor(DataInputStream input) {
 		try {
-			float r,g,b;
+			float r,g,b,a;
 			r = input.readFloat();
 			g = input.readFloat();
 			b = input.readFloat();
-			return new Color(r,g,b);
+			a = input.readFloat();
+			return new Color(r,g,b,a);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
