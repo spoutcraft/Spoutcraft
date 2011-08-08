@@ -5,6 +5,7 @@ import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.inventory.SimpleItemManager;
+import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketManager;
