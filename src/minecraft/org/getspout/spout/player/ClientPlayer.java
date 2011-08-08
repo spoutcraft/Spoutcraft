@@ -16,10 +16,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
 	}
-	
-	public EntityClientPlayerMP getHandle() {
-		return (EntityClientPlayerMP)super.getHandle();
-	}
 
 	@Override
 	public RenderDistance getMaximumView() {

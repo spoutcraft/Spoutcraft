@@ -105,9 +105,11 @@ public class SpoutClient implements Client {
 	}
 	
 	public void onWorldEnter() {
-		player = new ClientPlayer((EntityClientPlayerMP)getHandle().thePlayer);
-		clipboardThread = new ClipboardThread(getInstance().player.getHandle());
-		clipboardThread.start();
+		player = new ClientPlayer(getHandle().thePlayer);
+		if (player.getHandle() instanceof EntityClientPlayerMP) {
+			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
+			clipboardThread.start();
+		}
 	}
 	
 	public static Minecraft getHandle() {
