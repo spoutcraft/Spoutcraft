@@ -66,6 +66,7 @@ public class Packet3Chat extends Packet {
 			nethandler.handleChat(this);
 		}*/
 		//Spout End
+		nethandler.handleChat(this);
 	}
 
 	public int getPacketSize() {
