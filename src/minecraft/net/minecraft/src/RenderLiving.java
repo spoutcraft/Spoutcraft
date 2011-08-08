@@ -8,6 +8,8 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.Render;
 import net.minecraft.src.Tessellator;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public class RenderLiving extends Render {
@@ -170,11 +172,11 @@ public class RenderLiving extends Render {
 
 	protected void passSpecialRender(EntityLiving var1, double var2, double var4, double var6) {
 		//Spout Start
-		if(Minecraft.isDebugInfoEnabled() && !Spout.getGameInstance().isMultiplayerWorld()) {
+		if(Minecraft.isDebugInfoEnabled() && !SpoutClient.getHandle().isMultiplayerWorld()) {
 			this.renderLivingLabel(var1, Integer.toString(var1.entityId), var2, var4, var6, 64);
 		}
 		else {
-			String title = Spout.entityLabel.get(var1.entityId);
+			String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");
 				for (int i = 0; i < lines.length; i++){

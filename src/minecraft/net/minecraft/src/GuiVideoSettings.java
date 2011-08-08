@@ -9,6 +9,7 @@ import net.minecraft.src.GuiSmallButton;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.StringTranslate;
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
 //Spout End
 
@@ -39,14 +40,16 @@ public class GuiVideoSettings extends GuiScreen {
 		//Spout Start
 		int var5;
 		for(var5 = 0; var5 < var4; ++var5) {
-			EnumOptions var6 = var3[var5];
+			EnumOptions option = var3[var5];
 			int var7 = this.width / 2 - 155 + var2 % 2 * 160;
 			int var8 = this.height / 6 + 21 * (var2 / 2) - 10;
-			if(!var6.getEnumFloat()) {
-				this.controlList.add(new GuiSmallButton(var6.returnEnumOrdinal(), var7, var8, var6, this.guiGameSettings.getKeyBinding(var6)));
+			if(!option.getEnumFloat()) {
+				this.controlList.add(new GuiSmallButton(option.returnEnumOrdinal(), var7, var8, option, this.guiGameSettings.getKeyBinding(option)));
 			} else {
-				this.controlList.add(new GuiSlider(var6.returnEnumOrdinal(), var7, var8, var6, this.guiGameSettings.getKeyBinding(var6), this.guiGameSettings.getOptionFloatValue(var6)));
+				this.controlList.add(new GuiSlider(option.returnEnumOrdinal(), var7, var8, option, this.guiGameSettings.getKeyBinding(option), this.guiGameSettings.getOptionFloatValue(option)));
 			}
+			
+			((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
 
 			++var2;
 		}
@@ -67,13 +70,13 @@ public class GuiVideoSettings extends GuiScreen {
 				//Spout Start
 				int change = 1;
 				GuiButton guibutton = var1;
-				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && Spout.getVersion() > 5) {
+				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && SpoutClient.getInstance().isCheatMode()) {
 					byte view = (byte)guiGameSettings.renderDistance;
-					byte newView = Spout.getNextRenderDistance(view);
+					byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
 					guiGameSettings.renderDistance = newView;
 					change = 0;
 					if (view != newView) {
-						((EntityClientPlayerMP)Spout.getGameInstance().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+						((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
 					}
 				}
 				if (change != 0) {

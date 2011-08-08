@@ -4,6 +4,7 @@
 
 package net.minecraft.src;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.Color; //Spout
 
 // Referenced classes of package net.minecraft.src:
@@ -113,7 +114,7 @@ public abstract class WorldProvider
         float f3 = 0.7529412F;
         float f4 = 0.8470588F;
         float f5 = 1.0F;
-        Color fogColor = Spout.getSkyManager().getFogColor();
+        Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
         if(fogColor != null){
             f3 = fogColor.getRedF();
             f4 = fogColor.getGreenF();

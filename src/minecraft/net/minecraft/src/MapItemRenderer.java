@@ -10,6 +10,8 @@ import net.minecraft.src.MapCoord;
 import net.minecraft.src.MapData;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public class MapItemRenderer {
@@ -110,7 +112,7 @@ public class MapItemRenderer {
 		ItemStack inHand = var1.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
-			customName = Spout.getItemManager().getCustomItemName(inHand.itemID, (short)(inHand.getItemDamage()));
+			customName = SpoutClient.getInstance().getItemManager().getCustomItemName(inHand.itemID, (short)(inHand.getItemDamage()));
 		}
 		if (customName != null && customName.length() > 0) {
 			this.field_28160_d.drawString(customName, var15, var16, -16777216);

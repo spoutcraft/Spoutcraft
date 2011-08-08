@@ -15,6 +15,8 @@ import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.Tessellator;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
@@ -78,7 +80,7 @@ public class RenderPlayer extends RenderLiving {
 			if(var10 < var11) {
 				String var12 = var1.username;
 				//Spout Start
-				String title = Spout.entityLabel.get(var1.entityId);
+				String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
 				if (title != null) {
 					var12 = title;
 				}

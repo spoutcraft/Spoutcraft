@@ -3,6 +3,7 @@ package net.minecraft.src;
 import net.minecraft.src.ChatAllowedCharacters;
 import net.minecraft.src.GuiScreen;
 import org.lwjgl.input.Keyboard;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.player.*; //bukkitcontrib
 
 public class GuiChat extends GuiScreen {
@@ -13,8 +14,8 @@ public class GuiChat extends GuiScreen {
 	
 	public int cursorPosition = 0;
 	public GuiChat() {
-		Spout.getChatManager().chatScroll = 0;
-		Spout.getChatManager().commandScroll = 0;
+		SpoutClient.getInstance().getChatManager().chatScroll = 0;
+		SpoutClient.getInstance().getChatManager().commandScroll = 0;
 	}
 	//Spout Improved Chat End
 
@@ -32,7 +33,7 @@ public class GuiChat extends GuiScreen {
 
 	protected void keyTyped(char var1, int var2) {
 		//Spout Improved ChatStart
-		if (Spout.getChatManager().onChatKeyTyped(var1, var2, this)) {
+		if (SpoutClient.getInstance().getChatManager().onChatKeyTyped(var1, var2, this)) {
 			return;
 		}
 		//Spout Improved Chat End
@@ -44,13 +45,13 @@ public class GuiChat extends GuiScreen {
 				String var4 = this.message.trim();
 				//Spout Improved Chat Start
 				if (var4.startsWith("/")) {
-					Spout.getChatManager().pastCommands.add(var4);
+					SpoutClient.getInstance().getChatManager().pastCommands.add(var4);
 				}
 				//Spout Improved Chat End
 				//if(!this.mc.lineIsCommand(var4)) {
-				if (!Spout.getChatManager().handleCommand(var4)) {
+				if (!SpoutClient.getInstance().getChatManager().handleCommand(var4)) {
 					//Spout Improved Chat  Start
-					Spout.getChatManager().sendChat(var4);
+					SpoutClient.getInstance().getChatManager().sendChat(var4);
 					//Spout Improved Chat End
 					//this.mc.thePlayer.sendChatMessage(var4);
 					
@@ -72,7 +73,7 @@ public class GuiChat extends GuiScreen {
 
 	public void drawScreen(int i, int j, float f) {
 		//Spout Improved Chat Start
-		Spout.getChatManager().handleMouseWheel();
+		SpoutClient.getInstance().getChatManager().handleMouseWheel();
 		boolean blink = ((updateCounter / 6) % 2 != 0);
 		String text = message;
 		if (cursorPosition > 0 && cursorPosition < message.length()) {
@@ -86,7 +87,7 @@ public class GuiChat extends GuiScreen {
 		else if (cursorPosition == message.length() && blink) {
 			text += "_";
 		}
-		java.util.ArrayList<String> lines = Spout.getChatManager().formatChat(text);
+		java.util.ArrayList<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text);
 		drawRect(2, height - 2 - (lines.size() * 12), width - 2, height - 2, 0x80000000);
 		int size = lines.size();
 		for (int k = 0; k < lines.size(); k++) {

@@ -25,7 +25,7 @@ public enum EnumOptions {
 	SMOOTH_FPS("SMOOTH_FPS", 19, "SMOOTH_FPS", 20, "Smooth FPS", false, false),
 	BRIGHTNESS("BRIGHTNESS", 20, "BRIGHTNESS", 21, "Brightness", true, false),
 	CLOUDS("CLOUDS", 21, "CLOUDS", 22, "Clouds", false, false),
-	CLOUD_HEIGHT("CLOUD_HEIGHT", 22, "CLOUD_HEIGHT", 23, "Cloud Height", true, false),
+	CLOUD_HEIGHT("CLOUD_HEIGHT", 22, "CLOUD_HEIGHT", 23, "Cloud Height", true, false, true),
 	TREES("TREES", 23, "TREES", 24, "Trees", false, false),
 	GRASS("GRASS", 24, "GRASS", 25, "Grass", false, false),
 	RAIN("RAIN", 25, "RAIN", 27, "Rain & Snow", false, false),
@@ -42,19 +42,20 @@ public enum EnumOptions {
 	ANIMATED_EXPLOSION("ANIMATED_EXPLOSION", 36, "ANIMATED_EXPLOSION", 38, "Explosion Animated", false, false),
 	ANIMATED_FLAME("ANIMATED_FLAME", 37, "ANIMATED_FLAME", 39, "Flame Animated", false, false),
 	ANIMATED_SMOKE("ANIMATED_SMOKE", 38, "ANIMATED_SMOKE", 40, "Smoke Animated", false, false),
-	WEATHER("WEATHER", 39, "WEATHER", 41, "Weather", false, false),
-	SKY("SKY", 40, "SKY", 42, "Sky", false, false),
-	STARS("STARS", 41, "STARS", 43, "Stars", false, false),
+	WEATHER("WEATHER", 39, "WEATHER", 41, "Weather", false, false, true),
+	SKY("SKY", 40, "SKY", 42, "Sky", false, false, true),
+	STARS("STARS", 41, "STARS", 43, "Stars", false, false, true),
 	FAR_VIEW("FAR_VIEW", 42, "FAR_VIEW", 44, "Far View", false, false),
 	CHUNK_UPDATES("CHUNK_UPDATES", 43, "CHUNK_UPDATES", 45, "Chunk Updates", false, false),
 	CHUNK_UPDATES_DYNAMIC("CHUNK_UPDATES_DYNAMIC", 44, "CHUNK_UPDATES_DYNAMIC", 46, "Dynamic Updates", false, false),
-	TIME("TIME", 45, "TIME", 47, "Time", false, false),
-	CLEAR_WATER("CLEAR_WATER", 46, "CLEAR_WATER", 48, "Clear Water", false, false);
+	TIME("TIME", 45, "TIME", 47, "Time", false, false, true),
+	CLEAR_WATER("CLEAR_WATER", 46, "CLEAR_WATER", 48, "Clear Water", false, false, true);
 	//Spout End
 	private final boolean enumFloat;
 	private final boolean enumBoolean;
 	private final String enumString;
 	//Spout Start
+	private final boolean cheating;
 	private static final EnumOptions[] $VALUES = new EnumOptions[]{MUSIC, SOUND, INVERT_MOUSE, SENSITIVITY, RENDER_DISTANCE, VIEW_BOBBING, ANAGLYPH, ADVANCED_OPENGL, FRAMERATE_LIMIT, DIFFICULTY, GRAPHICS, AMBIENT_OCCLUSION, GUI_SCALE, FOG_FANCY, FOG_START, MIPMAP_LEVEL, MIPMAP_TYPE, LOAD_FAR, PRELOADED_CHUNKS, SMOOTH_FPS, BRIGHTNESS, CLOUDS, CLOUD_HEIGHT, TREES, GRASS, RAIN, WATER, ANIMATED_WATER, ANIMATED_LAVA, ANIMATED_FIRE, ANIMATED_PORTAL, AO_LEVEL, FAST_DEBUG_INFO, AUTOSAVE_TICKS, BETTER_GRASS, ANIMATED_REDSTONE, ANIMATED_EXPLOSION, ANIMATED_FLAME, ANIMATED_SMOKE, WEATHER, SKY, STARS, FAR_VIEW, CHUNK_UPDATES, CHUNK_UPDATES_DYNAMIC, TIME, CLEAR_WATER};
 	//Spout End
 
@@ -77,6 +78,17 @@ public enum EnumOptions {
 		this.enumString = var5;
 		this.enumFloat = var6;
 		this.enumBoolean = var7;
+		this.cheating = false;
+	}
+	private EnumOptions(String var1, int var2, String var3, int var4, String var5, boolean var6, boolean var7, boolean cheating) {
+		this.enumString = var5;
+		this.enumFloat = var6;
+		this.enumBoolean = var7;
+		this.cheating = cheating;
+	}
+	
+	public boolean isVisualCheating() {
+		return cheating;
 	}
 	//Spout End
 

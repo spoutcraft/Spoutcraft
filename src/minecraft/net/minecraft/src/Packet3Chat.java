@@ -7,6 +7,8 @@ import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
 //Spout Start
 import net.minecraft.client.Minecraft;
+
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
 //Spout End
 
@@ -35,8 +37,8 @@ public class Packet3Chat extends Packet {
 
 	public void processPacket(NetHandler nethandler) {
 		//Spout Start
-		boolean proc = false;
-		if (!Spout.isEnabled() || Spout.getReloadPacket() != null) {
+		/*boolean proc = false;
+		if (!SpoutClient.getInstance().isSpoutEnabled() || SpoutClient.getReloadPacket() != null) {
 			String processed = Spout.colorToString(message);
 			System.out.println(processed);
 			if (processed.split("\\.").length == 3) {
@@ -51,7 +53,7 @@ public class Packet3Chat extends Packet {
 						Spout.setReloadPacket(null);
 					}
 					//Also need to send the render distance
-					Minecraft game = Spout.getGameInstance();
+					Minecraft game = SpoutClient.getHandle();
 					if (game != null && Spout.getVersion() > 5) {
 						final GameSettings settings = game.gameSettings;
 						((NetClientHandler)nethandler).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)settings.renderDistance)));
@@ -62,7 +64,7 @@ public class Packet3Chat extends Packet {
 		if (!proc) {
 			//Normal message handling
 			nethandler.handleChat(this);
-		}
+		}*/
 		//Spout End
 	}
 

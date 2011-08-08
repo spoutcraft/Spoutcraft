@@ -22,6 +22,7 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.chunkcache.ChunkCache;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.player.ChatManager;
 //Spout End
@@ -50,7 +51,8 @@ public class GuiIngame extends Gui {
 
 	public void renderGameOverlay(float var1, boolean var2, int var3, int var4) {
 		//Spout Start
-		Spout.onTick();
+		SpoutClient.getInstance().onTick();
+		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 		//Spout End
 		ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 		int var6 = var5.getScaledWidth();
@@ -101,7 +103,7 @@ public class GuiIngame extends Gui {
 			for(var16 = 0; var16 < 10; ++var16) {
 				var17 = var7 - 32;
 				//Spout Start
-				if (Spout.getMainScreen().getArmorBar().isVisible()) {
+				if (mainScreen.getArmorBar().isVisible()) {
 					if(var15 > 0) {
 						var18 = var6 / 2 + 91 - var16 * 8 - 9;
 						if(var16 * 2 + 1 < var15) {
@@ -128,13 +130,12 @@ public class GuiIngame extends Gui {
 					var17 += this.rand.nextInt(2);
 				}
 				//Spout Start
-				if (Spout.getMainScreen().getHealthBar().isVisible()) {
+				if (mainScreen.getHealthBar().isVisible()) {
 					this.drawTexturedModalRect(var19, var17, 16 + var31 * 9, 0, 9, 9);
 					if(var12) {
 						if(var16 * 2 + 1 < var14) {
 							this.drawTexturedModalRect(var19, var17, 70, 0, 9, 9);
 						}
-
 						if(var16 * 2 + 1 == var14) {
 							this.drawTexturedModalRect(var19, var17, 79, 0, 9, 9);
 						}
@@ -147,6 +148,7 @@ public class GuiIngame extends Gui {
 					if(var16 * 2 + 1 == var13) {
 						this.drawTexturedModalRect(var19, var17, 61, 0, 9, 9);
 					}
+
 				}
 				//Spout End
 			}
@@ -155,7 +157,7 @@ public class GuiIngame extends Gui {
 				//Spout Start
 				var16 = (int)Math.ceil(((double)(mc.thePlayer.air - 2) * 10D) / (mc.thePlayer.maxAir * 1D));
 				var17 = (int)Math.ceil(((double)mc.thePlayer.air * 10D) / (mc.thePlayer.maxAir * 1D)) - var16;
-				if (Spout.getMainScreen().getBubbleBar().isVisible()) {
+				if (mainScreen.getBubbleBar().isVisible()) {
 					for(var18 = 0; var18 < var16 + var17; ++var18) {
 						if(var18 < var16) {
 							this.drawTexturedModalRect(var6 / 2 - 91 + var18 * 8, var7 - 32 - 9, 16, 18, 9, 9);
@@ -197,11 +199,8 @@ public class GuiIngame extends Gui {
 			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
-		//Spout Start Zans Minimap Compatibility
-		if (Spout.getZanMinimap() != null) {
-			((ZanMinimap)Spout.getZanMinimap()).OnTickInGame(mc);
-		}
-		Spout.getMainScreen().render();
+		//Spout Start
+		mainScreen.render();
 		//Spout End
 		String var23;
 		if(this.mc.gameSettings.showDebugInfo) {
@@ -225,7 +224,7 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 12, 14737632);
 			//Spout Start
 			//No Cheating!
-			if (!mc.isMultiplayerWorld()) {
+			if (SpoutClient.getInstance().isCheatMode()) {
 			this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
 			this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
 			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
@@ -266,14 +265,14 @@ public class GuiIngame extends Gui {
 		byte var27 = 10;
 		boolean var28 = false;
 		//Spout Start
-		if (Spout.getMainScreen().getChatBar().isVisible()) {
+		if (mainScreen.getChatBar().isVisible()) {
 			if(mc.currentScreen instanceof GuiChat) {
 				var27 = 20;
 				var28 = true;
 			}
 		}
 		boolean chatOpen = var28;
-		int lines = chatOpen ? Spout.getMainScreen().getChatTextBox().getNumVisibleChatLines() : Spout.getMainScreen().getChatTextBox().getNumVisibleLines();
+		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
 		//Spout End
 
 		GL11.glEnable(3042 /*GL_BLEND*/);
@@ -284,12 +283,11 @@ public class GuiIngame extends Gui {
 
 		//Spout Start
 		
-		if (Spout.getMainScreen().getChatTextBox().isVisible()) {
-			int start = chatMessageList.size() - Spout.getChatManager().chatScroll - 1;
-			int end = Math.max(0, chatMessageList.size() - Spout.getChatManager().chatScroll - 1 - var27);
+		if (mainScreen.getChatTextBox().isVisible()) {
+			Math.max(0, chatMessageList.size() - SpoutClient.getInstance().getChatManager().chatScroll - 1 - var27);
 			int viewedLine = 0;
 			
-			for (int line = Spout.getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + Spout.getChatManager().chatScroll)); line++) {
+			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < 250) {
 					double opacity = 1.0D - chatMessageList.get(line).updateCounter / 250D;
 					opacity *= 10D;
@@ -305,7 +303,7 @@ public class GuiIngame extends Gui {
 						int height = 2;
 						int width = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
-						chat = Spout.getChatManager().formatChatColors(chat);
+						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
 						chat = ChatManager.formatUrl(chat);
 						//TODO add support for opening URL in browser if clicked?
 						drawRect(height, width - 1, height + 320, width + 8, color / 2 << 24);
