@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 
 import net.minecraft.src.GuiMultiplayer;
 
-public class QuServer implements Runnable {
+public class ServerListThread implements Runnable {
 
 	GuiMultiplayer parentScreen;
 	String addr;
@@ -19,7 +19,7 @@ public class QuServer implements Runnable {
 	private LinkedHashMap<String,ArrayList> tempCountryMappings = new LinkedHashMap<String,ArrayList>();
 
 
-	public QuServer(GuiMultiplayer var1, String var2) {
+	public ServerListThread(GuiMultiplayer var1, String var2) {
 		this.parentScreen = var1;
 		this.addr = var2;
 	}
