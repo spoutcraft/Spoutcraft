@@ -17,11 +17,11 @@ public class ClipboardThread extends Thread {
 	EntityClientPlayerMP player;
 	String prevClipboardText = "";
 	public void run() {
-		while(true) {
+		while(!isInterrupted()) {
 			try {
 				sleep(1000);
 			} catch (InterruptedException e1) {
-				
+				Thread.currentThread().interrupt();
 			}
 			try {
 				Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
