@@ -172,6 +172,8 @@ public abstract class Minecraft implements Runnable {
 	private int joinPlayerCounter = 0;
 	//Spout Start
 	private boolean shutdown = false;
+	public static boolean spoutcraftLauncher = false;
+	public static boolean portable = false;
 	//Spout End
 
 
@@ -377,7 +379,20 @@ public abstract class Minecraft implements Runnable {
 
 	public static File getMinecraftDir() {
 		if(minecraftDir == null) {
-			minecraftDir = getAppDir("spoutcraft");
+			//Spout Start
+			String workingDirName = "minecraft";
+			if (spoutcraftLauncher) workingDirName = "spoutcraft";
+			if (portable) {
+				File portableDir = new File(workingDirName);
+				if (!portableDir.exists() && portableDir.mkdirs()) {
+					throw new RuntimeException("The working directory could not be created: " + portableDir);
+				} else {
+					minecraftDir = portableDir;
+				}
+			} else {
+				minecraftDir = getAppDir(workingDirName);
+			}			
+			//Spout End
 		}
 
 		return minecraftDir;

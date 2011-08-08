@@ -37,6 +37,15 @@ public class MinecraftApplet extends Applet {
 		} else {
 			this.mc.session = new Session("Player", "");
 		}
+		
+		//Spout Start
+		if(this.getParameter("spoutcraftlauncher") != null) {
+			Minecraft.spoutcraftLauncher = this.getParameter("spoutcraftlauncher").equalsIgnoreCase("true");
+		}
+		if(this.getParameter("portable") != null) {
+			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
+		}
+		//Spout End
 
 		if(this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
