@@ -51,4 +51,17 @@ public interface Screen extends Widget{
 	 * @return true if a widget was replaced
 	 */
 	public boolean updateWidget(Widget widget);
+	
+	/**
+	 * Is true if this grey background is visible and rendering on the screen
+	 * @return visible
+	 */
+	public boolean isBgVisible();
+	
+	/**
+	 * Sets the visibility of the grey background. If true, it will render normally. If false, it will not appear on the screen.
+	 * @param enable the visibility
+	 * @return the screen
+	 */
+	public GenericScreen setBgVisible(boolean enable);
 }

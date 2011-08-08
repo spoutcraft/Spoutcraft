@@ -85,6 +85,7 @@ public class CustomScreen extends GuiScreen {
 		if (!screen.isTransparent()) {
 			this.drawDefaultBackground();
 		}
+		bg.setVisible(screen.isBgVisible());
 		for (Widget widget : screen.getAttachedWidgets()) {
 			if (widget instanceof GenericButton) {
 				((GenericButton)widget).setup(x, y);

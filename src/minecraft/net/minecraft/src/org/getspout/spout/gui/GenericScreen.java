@@ -1,5 +1,8 @@
 package org.getspout.spout.gui;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -9,6 +12,7 @@ import org.getspout.spout.packet.PacketWidget;
 public abstract class GenericScreen extends GenericWidget implements Screen{
 	protected List<Widget> widgets = new ArrayList<Widget>();
 	protected int playerId;
+	protected boolean bgvis;
 	public GenericScreen() {
 		
 	}
@@ -74,6 +78,32 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		for (Widget widget : widgets) {
 			widget.onTick();
 		}
+	}
+	
+	public GenericScreen setBgVisible(boolean enable) {
+		bgvis = enable;
+		return this;
+	}
+	
+	public boolean isBgVisible() {
+		return bgvis;
+	}
+	
+	@Override
+	public int getNumBytes() {
+		return super.getNumBytes() + 1;
+	}
+	
+	@Override
+	public void readData(DataInputStream input) throws IOException {
+		super.readData(input);
+		setBgVisible(input.readBoolean());
+	}
+
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeBoolean(isBgVisible());
 	}
 	
 	protected boolean canRender(Widget widget) {
