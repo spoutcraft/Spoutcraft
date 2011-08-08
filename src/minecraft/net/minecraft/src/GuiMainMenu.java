@@ -16,6 +16,8 @@ import net.minecraft.src.GuiTexturePacks;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public class GuiMainMenu extends GuiScreen {
@@ -130,7 +132,7 @@ public class GuiMainMenu extends GuiScreen {
 		//this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215); //Spout
 		
 		//Spout Start
-		var9 = "Spoutcraft " + Spout.getClientVersionString() + " - Minecraft Beta 1.7.3" + " - " + var9;
+		var9 = "Spoutcraft " + SpoutClient.getClientVersion().toString() + " - Minecraft Beta 1.7.3" + " - " + var9;
 		this.drawCenteredString(this.fontRenderer, var9, this.width / 2, this.height - 10, 0x1F3C8E);
 		//Spout End
 		super.drawScreen(var1, var2, var3);

@@ -63,11 +63,11 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public String getServerName(int var1) {
-		return ((mcSBServer)this.serverList.get(var1)).name;
+		return ((ServerSlot)this.serverList.get(var1)).name;
 	}
 
 	public String getCountry(int var1) {
-		return ((mcSBServer)this.serverList.get(var1)).country;
+		return ((ServerSlot)this.serverList.get(var1)).country;
 	}
 
 	public void initButtons() {
@@ -93,7 +93,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else if(var1.id == 3) {
 				this.getServer();
 			} else if(var1.id == 4) {
-				this.mc.displayGuiScreen(new GuiAddFav(this, ((mcSBServer)this.serverList.get(this.selectedWorld)).ip + ":" + ((mcSBServer)this.serverList.get(this.selectedWorld)).port, ((mcSBServer)this.serverList.get(this.selectedWorld)).name));
+				this.mc.displayGuiScreen(new GuiAddFav(this, ((ServerSlot)this.serverList.get(this.selectedWorld)).ip + ":" + ((ServerSlot)this.serverList.get(this.selectedWorld)).port, ((ServerSlot)this.serverList.get(this.selectedWorld)).name));
 			} else if(var1.id == 0) {
 				this.mc.displayGuiScreen(new GuiMainMenu());
 			} else if(var1.id == 8) {
@@ -126,7 +126,7 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public void selectWorld(int id) {
-		this.mc.displayGuiScreen(new GuiConnecting(this.mc, ((mcSBServer)this.serverList.get(id)).ip, ((mcSBServer)this.serverList.get(id)).port == ""?25565:Integer.parseInt(((mcSBServer)this.serverList.get(id)).port)));
+		this.mc.displayGuiScreen(new GuiConnecting(this.mc, ((ServerSlot)this.serverList.get(id)).ip, ((ServerSlot)this.serverList.get(id)).port == ""?25565:Integer.parseInt(((ServerSlot)this.serverList.get(id)).port)));
 	}
 	
 	public void updateList() {

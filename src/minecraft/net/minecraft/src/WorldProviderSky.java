@@ -5,6 +5,7 @@
 package net.minecraft.src;
 
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.Color;
 //Spout End
 
@@ -57,7 +58,7 @@ public class WorldProviderSky extends WorldProvider
         float f3 = (float)(i >> 16 & 0xff) / 255F;
         float f4 = (float)(i >> 8 & 0xff) / 255F;
         float f5 = (float)(i & 0xff) / 255F;
-        Color fog = Spout.getSkyManager().getFogColor();
+        Color fog = SpoutClient.getInstance().getSkyManager().getFogColor();
         if(fog!=null){
             f3 = fog.getRedF();
             f4 = fog.getGreenF();

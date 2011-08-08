@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
 //Spout End
@@ -104,7 +105,7 @@ public class GuiScreen extends Gui {
 		}
 //Spout Start
 		while(Keyboard.next()) {
-        	if(mc.thePlayer instanceof EntityClientPlayerMP && Spout.isEnabled()){
+        	if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
         		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
         		ScreenType screen = ScreenType.UNKNOWN;
         		if(this instanceof GuiChat){
@@ -158,7 +159,7 @@ public class GuiScreen extends Gui {
         		int i = Keyboard.getEventKey();
         		boolean keyReleased = Keyboard.getEventKeyState();
         		PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);
-        		Spout.getPacketManager().sendSpoutPacket(packet);
+        		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
         	}
         //Spout End
 			this.handleKeyboardInput();

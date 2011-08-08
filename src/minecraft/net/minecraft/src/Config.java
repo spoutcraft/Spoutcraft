@@ -12,6 +12,8 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.IBlockAccess;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
@@ -183,7 +185,7 @@ public class Config {
 	}
 
 	public static boolean isRainOff() {
-		return gameSettings.ofRain == 3;
+		return gameSettings.ofRain == 3 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isCloudsFancy() {
@@ -191,7 +193,7 @@ public class Config {
 	}
 
 	public static boolean isCloudsOff() {
-		return gameSettings.ofClouds == 3;
+		return gameSettings.ofClouds == 3 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isTreesFancy() {
@@ -539,15 +541,15 @@ public class Config {
 	}
 
 	public static boolean isWeatherEnabled() {
-		return gameSettings == null?true:gameSettings.ofWeather;
+		return gameSettings == null?true:gameSettings.ofWeather && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isSkyEnabled() {
-		return gameSettings == null?true:gameSettings.ofSky;
+		return gameSettings == null?true:gameSettings.ofSky && SpoutClient.getInstance().isCheatMode(); 
 	}
 
 	public static boolean isStarsEnabled() {
-		return gameSettings == null?true:gameSettings.ofStars;
+		return gameSettings == null?true:gameSettings.ofStars && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isFarView() {
@@ -575,15 +577,15 @@ public class Config {
 	}
 
 	public static boolean isTimeDayOnly() {
-		return gameSettings == null?false:gameSettings.ofTime == 1;
+		return gameSettings == null?false:gameSettings.ofTime == 1 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isTimeNightOnly() {
-		return gameSettings == null?false:gameSettings.ofTime == 2;
+		return gameSettings == null?false:gameSettings.ofTime == 2 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isClearWater() {
-		return gameSettings == null?false:gameSettings.ofClearWater;
+		return gameSettings == null?false:gameSettings.ofClearWater && SpoutClient.getInstance().isCheatMode();
 	}
 
 }

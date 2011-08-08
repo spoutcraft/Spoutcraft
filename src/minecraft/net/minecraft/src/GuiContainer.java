@@ -8,6 +8,8 @@ import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderItem;
 import net.minecraft.src.Slot;
 import net.minecraft.src.StringTranslate;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -75,12 +77,12 @@ public abstract class GuiContainer extends GuiScreen {
 		if(var12.getItemStack() == null && var6 != null && var6.getHasStack()) {
 			String var13 = ("" + StringTranslate.getInstance().translateNamedKey(var6.getStack().getItemName())).trim();
 			//Spout Start
-			String custom = Spout.getItemManager().getCustomItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+			String custom = SpoutClient.getInstance().getItemManager().getCustomItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			if (custom != null) {
 				var13 = custom;
 			}
 			else if (var13 == null || var13.trim().equals("")) {
-				var13 = Spout.getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+				var13 = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			}
 			if(var13 != null && var13.length() > 0) {
 			//Spout End

@@ -15,11 +15,9 @@ import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 //Spout Start
-import paulscode.sound.CommandObject;
-import paulscode.sound.FilenameURL;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
 import org.getspout.spout.sound.Music;
-import org.getspout.spout.sound.SoundEffect;
 //Spout End
 
 public class SoundManager {
@@ -116,8 +114,8 @@ public class SoundManager {
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
 				if(var1 != null) {
 					//Spout start
-					if (Spout.getVersion() > 7) {
-						EntityPlayer player = Spout.getGameInstance().thePlayer;
+					if (SpoutClient.getInstance().isSpoutEnabled()) {
+						EntityPlayer player = SpoutClient.getHandle().thePlayer;
 						if (player instanceof EntityClientPlayerMP) {
 							if (waitingSound == null) {
 								Music music = Music.getMusicFromName(var1.soundName);

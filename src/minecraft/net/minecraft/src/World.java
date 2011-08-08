@@ -959,14 +959,14 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	protected void obtainEntitySkin(Entity var1) {
+	public void obtainEntitySkin(Entity var1) { // Spout protected -> public
 		for(int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).obtainEntitySkin(var1);
 		}
 
 	}
 
-	protected void releaseEntitySkin(Entity var1) {
+	public void releaseEntitySkin(Entity var1) { // Spout protected -> public
 		for(int var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
 			((IWorldAccess)this.worldAccesses.get(var2)).releaseEntitySkin(var1);
 		}

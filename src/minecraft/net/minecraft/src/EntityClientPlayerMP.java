@@ -21,7 +21,7 @@ import net.minecraft.src.Session;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
 import org.getspout.spout.packet.*; //Spout
-import org.getspout.spout.player.*; //Spout
+import org.getspout.spout.client.SpoutClient; //Spout
 import org.getspout.spout.gui.*; //Spout
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
@@ -61,7 +61,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 		//Spout Start
 		if (fogKey != null) {
-			Spout.getGameInstance().gameSettings.keyBindToggleFog = fogKey;
+			SpoutClient.getHandle().gameSettings.keyBindToggleFog = fogKey;
 			fogKey = null;
 		}
 		//Spout End
@@ -199,18 +199,18 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			String keyName = org.lwjgl.input.Keyboard.getKeyName(i);
 			if (keyName != null && keyName.length() == 1) {
 				char ch = keyName.charAt(0);
-				if (Spout.getChatManager().getBoundCommand(ch) != null) {
-					Spout.getChatManager().sendChat(Spout.getChatManager().getBoundCommand(ch));
+				if (SpoutClient.getInstance().getChatManager().getBoundCommand(ch) != null) {
+					SpoutClient.getInstance().getChatManager().sendChat(SpoutClient.getInstance().getChatManager().getBoundCommand(ch));
 				}
 			}
 		}
-		if (Spout.isEnabled()) {
+		if (SpoutClient.getInstance().isSpoutEnabled()) {
 				sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN)));
-				if (Spout.getVersion() > 5 && keyReleased) {
-					final GameSettings settings = Spout.getGameInstance().gameSettings;
+				if (keyReleased) {
+					final GameSettings settings = SpoutClient.getHandle().gameSettings;
 					if (i == settings.keyBindToggleFog.keyCode) {
 						byte view = (byte)settings.renderDistance;
-						byte newView = Spout.getNextRenderDistance(view);
+						byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
 						fogKey = settings.keyBindToggleFog;
 						settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
 						if (view != newView) {

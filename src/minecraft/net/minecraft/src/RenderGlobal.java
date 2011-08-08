@@ -52,6 +52,7 @@ import net.minecraft.src.WorldRenderer;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.gui.Color;
 import org.lwjgl.BufferUtils;
@@ -177,7 +178,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	private void renderStars() {
 		//Spout Start
-		if (!Spout.getSkyManager().isStarsVisible()) {
+		if (!SpoutClient.getInstance().getSkyManager().isStarsVisible()) {
 			return;
 		}
 		//Spout End
@@ -187,7 +188,7 @@ public class RenderGlobal implements IWorldAccess {
 		var2.startDrawingQuads();
 
 		//Spout Start
-		for(int i = 0; i < Spout.getSkyManager().getStarFrequency(); i++) {
+		for(int i = 0; i < SpoutClient.getInstance().getSkyManager().getStarFrequency(); i++) {
 		//Spout End
 			double var4 = (double)(var1.nextFloat() * 2.0F - 1.0F);
 			double var6 = (double)(var1.nextFloat() * 2.0F - 1.0F);
@@ -739,7 +740,7 @@ public class RenderGlobal implements IWorldAccess {
             float var3 = (float)vec3d.xCoord;
             float var4 = (float)vec3d.yCoord;
             float var5 = (float)vec3d.zCoord;
-			Color skyColor = Spout.getSkyManager().getSkyColor();
+			Color skyColor = SpoutClient.getInstance().getSkyManager().getSkyColor();
             if(skyColor!=null){
                 var3 = skyColor.getRedF();
                 var4 = skyColor.getGreenF();
@@ -833,14 +834,14 @@ public class RenderGlobal implements IWorldAccess {
 			//Spout Start
 			float f15 = var11;
 			Tessellator tessellator = var17;
-			if (Spout.getSkyManager().isSunVisible()) {
-				if (Spout.getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getSunTextureUrl()) == null) {
+			if (SpoutClient.getInstance().getSkyManager().isSunVisible()) {
+				if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/sun.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getSunTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl())));
 				}
-				double multiplier = (Spout.getSkyManager().getSunSizePercent() / 100D);
+				double multiplier = (SpoutClient.getInstance().getSkyManager().getSunSizePercent() / 100D);
 				tessellator.startDrawingQuads();
 				tessellator.addVertexWithUV(-f15, 100D / multiplier, -f15, 0.0D, 0.0D);
 				tessellator.addVertexWithUV(f15, 100D / multiplier, -f15, 1.0D, 0.0D);
@@ -849,14 +850,14 @@ public class RenderGlobal implements IWorldAccess {
 				tessellator.draw();
 			}
 			f15 = 20F;
-			if (Spout.getSkyManager().isMoonVisible()) {
-				if (Spout.getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getMoonTextureUrl()) == null) {
+			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
+				if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/moon.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(Spout.getSkyManager().getMoonTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
 				}
-				double multiplier = (Spout.getSkyManager().getMoonSizePercent() / 100D);
+				double multiplier = (SpoutClient.getInstance().getSkyManager().getMoonSizePercent() / 100D);
 				tessellator.startDrawingQuads();
 				tessellator.addVertexWithUV(-f15, -100D / multiplier, f15, 1.0D, 1.0D);
 				tessellator.addVertexWithUV(f15, -100D / multiplier, f15, 0.0D, 1.0D);
@@ -901,7 +902,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void renderClouds(float var1) {
 		//Spout Start
-		if (!Spout.getSkyManager().isCloudsVisible()) {
+		if (!SpoutClient.getInstance().getSkyManager().isCloudsVisible()) {
 			return;
 		}
 		//Spout End
@@ -922,7 +923,7 @@ public class RenderGlobal implements IWorldAccess {
 				float var8 = (float)var6.yCoord;
 				float var9 = (float)var6.zCoord;
                 //Spout Start
-                Color cloudColor = Spout.getSkyManager().getCloudColor();
+                Color cloudColor = SpoutClient.getInstance().getSkyManager().getCloudColor();
                 if(cloudColor!=null){
                     var7 = cloudColor.getRedF();
                     var8 = cloudColor.getGreenF();
@@ -948,7 +949,7 @@ public class RenderGlobal implements IWorldAccess {
 				var13 -= (double)(var16 * 2048 /*GL_EXP*/);
 				//Spout Start
 				//float var17 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
-				float var17 = Spout.getSkyManager().getCloudHeight() - var2 + 0.33F;
+				float var17 = SpoutClient.getInstance().getSkyManager().getCloudHeight() - var2 + 0.33F;
 				//Spout End
 				
 				float var18 = (float)(var22 * (double)var10);
@@ -987,8 +988,10 @@ public class RenderGlobal implements IWorldAccess {
 		double var8 = (this.mc.renderViewEntity.prevPosZ + (this.mc.renderViewEntity.posZ - this.mc.renderViewEntity.prevPosZ) * (double)var1) / (double)var4 + 0.33000001311302185D;
 		//Spout Start
 		//float var10 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
-		float var10 = Spout.getSkyManager().getCloudHeight() - var2 + 0.33F ;
-		var10 += this.mc.gameSettings.ofCloudsHeight * 25.0F;
+		float var10 = SpoutClient.getInstance().getSkyManager().getCloudHeight() - var2 + 0.33F ;
+		if (SpoutClient.getInstance().isCheatMode()) {
+			var10 += this.mc.gameSettings.ofCloudsHeight * 25.0F;
+		}
 		//Spout End
 		int var11 = MathHelper.floor_double(var6 / 2048.0D);
 		int var12 = MathHelper.floor_double(var8 / 2048.0D);
@@ -1002,7 +1005,7 @@ public class RenderGlobal implements IWorldAccess {
 		float var15 = (float)var13.yCoord;
 		float var16 = (float)var13.zCoord;
 		//Spout Start
-        Color cloudColor = Spout.getSkyManager().getCloudColor();
+        Color cloudColor = SpoutClient.getInstance().getSkyManager().getCloudColor();
         if(cloudColor!=null){
             var14 = cloudColor.getRedF();
             var15 = cloudColor.getGreenF();

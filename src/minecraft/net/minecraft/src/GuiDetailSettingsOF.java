@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.getspout.spout.client.SpoutClient;
+
 import net.minecraft.src.EnumOptions;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiButton;
@@ -32,14 +34,15 @@ public class GuiDetailSettingsOF extends GuiScreen {
 		int var4 = var3.length;
 
 		for(int var5 = 0; var5 < var4; ++var5) {
-			EnumOptions var6 = var3[var5];
+			EnumOptions option = var3[var5];
 			int var7 = this.width / 2 - 155 + var2 % 2 * 160;
 			int var8 = this.height / 6 + 21 * (var2 / 2) - 10;
-			if(!var6.getEnumFloat()) {
-				this.controlList.add(new GuiSmallButton(var6.returnEnumOrdinal(), var7, var8, var6, this.settings.getKeyBinding(var6)));
+			if(!option.getEnumFloat()) {
+				this.controlList.add(new GuiSmallButton(option.returnEnumOrdinal(), var7, var8, option, this.settings.getKeyBinding(option)));
 			} else {
-				this.controlList.add(new GuiSlider(var6.returnEnumOrdinal(), var7, var8, var6, this.settings.getKeyBinding(var6), this.settings.getOptionFloatValue(var6)));
+				this.controlList.add(new GuiSlider(option.returnEnumOrdinal(), var7, var8, option, this.settings.getKeyBinding(option), this.settings.getOptionFloatValue(option)));
 			}
+			((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
 
 			++var2;
 		}

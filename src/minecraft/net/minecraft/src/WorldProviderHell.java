@@ -4,6 +4,7 @@
 
 package net.minecraft.src;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.Color; //Spout
 
 // Referenced classes of package net.minecraft.src:
@@ -29,7 +30,7 @@ public class WorldProviderHell extends WorldProvider
     public Vec3D func_4096_a(float f, float f1)
     {
         //Spout Start
-        Color fogColor = Spout.getSkyManager().getFogColor();
+        Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
         if(fogColor != null) {
             return Vec3D.createVector(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
         } else {
