@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class CustomScreen extends GuiScreen {
 	protected PopupScreen screen;
-	public boolean waiting = false;
 	public CustomScreen(PopupScreen screen) {
 		update(screen);
 		this.setWorldAndResolution(SpoutClient.getHandle(), (int) screen.getWidth(), (int) screen.getHeight());
@@ -17,29 +16,6 @@ public class CustomScreen extends GuiScreen {
 	
 	public void update(PopupScreen screen) {
 		this.screen = screen;
-	}
-	
-	public void testScreenClose() {
-		if (waiting) {
-			return;
-		}	
-		if (this.mc.thePlayer instanceof EntityClientPlayerMP) {
-			waiting = true;
-			((EntityClientPlayerMP)this.mc.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.ScreenClose)));
-		}
-	}
-	
-	public void closeScreen() {
-		if (!waiting){
-			testScreenClose();
-			return;
-		}
-		this.mc.displayGuiScreen(null);
-		this.mc.setIngameFocus();
-	}
-	
-	public void failedCloseScreen() {
-		waiting = false;
 	}
 	
 	@Override
@@ -55,22 +31,16 @@ public class CustomScreen extends GuiScreen {
 	@Override
 	public void handleKeyboardInput() {
 		boolean handled = false;
-		if(Keyboard.getEventKeyState()) {
-			if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-				handled = true;
-				testScreenClose();
-			}
-			else {
-				for (GuiButton control : getControlList()) {
-					if (control instanceof CustomTextField) {
-						if (((CustomTextField)control).isFocused()) {
-							((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
-							handled = true;
-							break;
-						}
-					}
-				}
-			}
+		if(Keyboard.getEventKeyState()) {		
+                        for (GuiButton control : getControlList()) {
+                                if (control instanceof CustomTextField) {
+                                        if (((CustomTextField)control).isFocused()) {
+                                                ((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
+                                                handled = true;
+                                                break;
+                                        }
+                                }
+                        }			
 		}
 		if (!handled) {
 			super.handleKeyboardInput();

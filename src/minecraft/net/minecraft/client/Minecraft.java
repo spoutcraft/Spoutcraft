@@ -106,6 +106,11 @@ import org.lwjgl.util.glu.GLU;
 import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
+import net.minecraft.src.Spout;
+import org.getspout.spout.gui.ScreenType;
+import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketScreenAction;
+import org.getspout.spout.packet.ScreenAction;
 //Spout End
 
 public abstract class Minecraft implements Runnable {
@@ -436,8 +441,38 @@ public abstract class Minecraft implements Runnable {
 	public ISaveFormat getSaveLoader() {
 		return this.saveLoader;
 	}
-
-	public void displayGuiScreen(GuiScreen var1) {
+        
+        //Spout Start
+        private GuiScreen waitingGui;
+        public void displayGuiScreen(GuiScreen var1){
+            
+            //Part of Original function
+            if(var1 == null && this.theWorld == null) {
+                var1 = new GuiMainMenu();
+            } else if(var1 == null && this.thePlayer.health <= 0) {
+                var1 = new GuiGameOver();
+            }
+            //End
+            if(waitingGui != var1){
+                waitingGui = var1;
+                if(this.thePlayer instanceof EntityClientPlayerMP && Spout.isEnabled()){
+                    if( this.currentScreen  != null && var1 == null ){
+                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
+                    }
+                    if( var1 != null && this.currentScreen == null ) {
+                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, ScreenType.getType(var1))));
+                    }
+                    if( var1 != null && this.currentScreen != null ) { // Hopefully just a submenu 
+                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, ScreenType.getType(var1))));
+                    }
+                } else {
+                    displayGuiScreen();
+                }
+            }
+        }
+        
+	public void displayGuiScreen() {
+                GuiScreen var1 = waitingGui;
 		if(!(this.currentScreen instanceof GuiUnused)) {
 			if(this.currentScreen != null) {
 				this.currentScreen.onGuiClosed();
@@ -448,11 +483,6 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			this.statFileWriter.syncStats();
-			if(var1 == null && this.theWorld == null) {
-				var1 = new GuiMainMenu();
-			} else if(var1 == null && this.thePlayer.health <= 0) {
-				var1 = new GuiGameOver();
-			}
 
 			if(var1 instanceof GuiMainMenu) {
 				this.ingameGUI.clearChatMessages();
@@ -472,6 +502,7 @@ public abstract class Minecraft implements Runnable {
 
 		}
 	}
+        //Spout End
 
 	private void checkGLError(String var1) {
 		int var2 = GL11.glGetError();
