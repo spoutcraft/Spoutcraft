@@ -384,10 +384,10 @@ public abstract class Minecraft implements Runnable {
 			if (spoutcraftLauncher) workingDirName = "spoutcraft";
 			if (portable) {
 				File portableDir = new File(workingDirName);
-				if (!portableDir.exists() && portableDir.mkdirs()) {
-					throw new RuntimeException("The working directory could not be created: " + portableDir);
-				} else {
+				if (portableDir.exists() || portableDir.mkdirs()) {
 					minecraftDir = portableDir;
+				} else {
+					throw new RuntimeException("The working directory could not be created: " + portableDir);
 				}
 			} else {
 				minecraftDir = getAppDir(workingDirName);
