@@ -40,4 +40,10 @@ public class PacketWorldSeed implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketWorldSeed;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
+
 }

@@ -48,4 +48,9 @@ public class PacketNotification extends PacketAlert{
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, itemId, data, time);
 	}
 
+	@Override
+	public int getVersion() {
+		return 0;
+	}
+
 }

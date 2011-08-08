@@ -53,5 +53,10 @@ public class PacketTexturePack implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketTexturePack;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

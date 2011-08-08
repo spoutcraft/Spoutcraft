@@ -11,7 +11,7 @@ public class PacketKeyPress implements SpoutPacket{
 	public boolean pressDown;
 	public byte key;
 	public byte settingKeys[] = new byte[10];
-	public int screenType = 0;
+	public int screenType = -1;
 	public PacketKeyPress(){
 	}
 
@@ -53,7 +53,7 @@ public class PacketKeyPress implements SpoutPacket{
 		this.pressDown = datainputstream.readBoolean();
 		this.screenType = datainputstream.readInt();
 		for (int i = 0; i < 10; i++) {
-				this.settingKeys[i] = datainputstream.readByte();
+			this.settingKeys[i] = datainputstream.readByte();
 		}
 	}
 
@@ -62,7 +62,7 @@ public class PacketKeyPress implements SpoutPacket{
 		dataoutputstream.writeBoolean(this.pressDown);
 		dataoutputstream.writeInt(this.screenType);
 		for (int i = 0; i < 10; i++) {
-				dataoutputstream.writeByte(this.settingKeys[i]);
+			dataoutputstream.writeByte(this.settingKeys[i]);
 		}
 	}
 
@@ -79,4 +79,10 @@ public class PacketKeyPress implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketKeyPress;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
+
 }

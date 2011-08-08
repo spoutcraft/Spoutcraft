@@ -46,6 +46,11 @@ public class PacketAlert implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketAlert;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 	String message;
 	String title;

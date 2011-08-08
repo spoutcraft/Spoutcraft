@@ -11,7 +11,7 @@ import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
 public class PacketRenderDistance implements SpoutPacket{
-	protected byte view;
+	protected byte view = -1;
 	protected byte max = -1;
 	protected byte min = -1;
 	public PacketRenderDistance() {
@@ -63,6 +63,11 @@ public class PacketRenderDistance implements SpoutPacket{
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketRenderDistance;
+	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
 	}
 
 }

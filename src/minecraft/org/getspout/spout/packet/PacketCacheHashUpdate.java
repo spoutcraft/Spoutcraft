@@ -12,6 +12,8 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 	public boolean reset = false;
 	
 	public PacketCacheHashUpdate() {
+		hashes = new long[0];
+		add = false;
 	}
 	
 	public PacketCacheHashUpdate(boolean add, long[] hashes) {
@@ -19,7 +21,7 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 		this.hashes = new long[hashes.length];
 		System.arraycopy(hashes, 0, this.hashes, 0, hashes.length);
 	}
-
+	
 	public int getNumBytes() {
 		return 6 + 8 * hashes.length;
 	}
@@ -55,6 +57,11 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 
 	public PacketType getPacketType() {
 		return PacketType.PacketCacheHashUpdate;
+	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
 	}
 
 }

@@ -33,13 +33,17 @@ public class PacketAllowVisualCheats implements SpoutPacket{
 
 	@Override
 	public void run(int playerId) {
-		System.out.println("Server Cheat Mode: " + cheating);
 		SpoutClient.getInstance().setCheatMode(cheating);
 	}
 
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketAllowVisualCheats;
+	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
 	}
 
 }

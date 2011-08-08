@@ -42,5 +42,10 @@ public class PacketClipboardText implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketClipboardText;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

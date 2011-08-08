@@ -14,7 +14,7 @@ public class PacketPlaySound implements SpoutPacket{
 	short soundId;
 	boolean location = false;
 	int x, y, z;
-	int volume, intensity;
+	int volume, distance;
 	
 	public PacketPlaySound() {
 		
@@ -32,7 +32,7 @@ public class PacketPlaySound implements SpoutPacket{
 		x = input.readInt();
 		y = input.readInt();
 		z = input.readInt();
-		intensity = input.readInt();
+		distance = input.readInt();
 		volume = input.readInt();
 	}
 
@@ -41,16 +41,16 @@ public class PacketPlaySound implements SpoutPacket{
 		output.writeShort(soundId);
 		output.writeBoolean(location);
 		if (!location) {
-				output.writeInt(-1);
-				output.writeInt(-1);
-				output.writeInt(-1);
-				output.writeInt(-1);
+			output.writeInt(-1);
+			output.writeInt(-1);
+			output.writeInt(-1);
+			output.writeInt(-1);
 		}
 		else {
-				output.writeInt(x);
-				output.writeInt(y);
-				output.writeInt(z);
-				output.writeInt(intensity);
+			output.writeInt(x);
+			output.writeInt(y);
+			output.writeInt(z);
+			output.writeInt(distance);
 		}
 		output.writeInt(volume);
 	}
@@ -66,11 +66,10 @@ public class PacketPlaySound implements SpoutPacket{
 						sndManager.playSoundFX(effect.getName(), 0.5F, 0.7F, effect.getSoundId(), volume / 100F);
 					}
 					else {
-						sndManager.playSound(effect.getName(), x, y, z, 0.5F, (intensity / 16F), effect.getSoundId(), volume / 100F);
+						sndManager.playSound(effect.getName(), x, y, z, 0.5F, (distance / 16F), effect.getSoundId(), volume / 100F);
 					}
 				}
 				soundId -= (1 + SoundEffect.getMaxId());
-				System.out.println(soundId);
 				if (soundId > -1 && soundId <= Music.getMaxId()) {
 					Music music = Music.getMusicFromId(soundId);
 					sndManager.playMusic(music.getName(), music.getSoundId(), volume / 100F);
@@ -81,6 +80,11 @@ public class PacketPlaySound implements SpoutPacket{
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketPlaySound;
+	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
 	}
 
 }

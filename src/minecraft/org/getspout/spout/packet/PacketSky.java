@@ -123,5 +123,10 @@ public class PacketSky implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketSky;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }
