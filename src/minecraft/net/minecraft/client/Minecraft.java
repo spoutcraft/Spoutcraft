@@ -103,6 +103,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
 //Spout End
@@ -110,7 +111,7 @@ import net.minecraft.src.PlayerControllerSP;
 public abstract class Minecraft implements Runnable {
 
 	//public static byte[] field_28006_b = new byte[10485760]; //Spout unused field
-	private static Minecraft theMinecraft;
+	public static Minecraft theMinecraft; //Spout private -> public
 	public PlayerController playerController;
 	private boolean fullscreen = false;
 	private boolean hasCrashed = false;
@@ -1356,6 +1357,9 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			this.renderViewEntity = this.thePlayer;
+			//Spout Start
+			SpoutClient.getInstance().onWorldEnter();
+			//Spout End
 		} else {
 			this.thePlayer = null;
 			//Spout Start
@@ -1366,6 +1370,7 @@ public abstract class Minecraft implements Runnable {
 			}
 			playerController = null;
 			effectRenderer = null;
+			SpoutClient.getInstance().onWorldExit();
 			//Spout End
 		}
 
