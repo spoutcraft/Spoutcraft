@@ -225,16 +225,16 @@ public class GuiIngame extends Gui {
 			//Spout Start
 			//No Cheating!
 			if (SpoutClient.getInstance().isCheatMode()) {
-			this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
-			this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
-			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
-			this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+				this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
+				this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
+				this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
+				this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 			}
-			//Spout End
-			//Spout Start
-			this.drawString(var8, "Map Data Info", 2, 64, 14737632);
-			this.drawString(var8, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72, 14737632);
-			this.drawString(var8, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80, 14737632);
+			else {
+				this.drawString(var8, "Map Data Info:", 2, 64, 0x002EB8);
+				this.drawString(var8, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72, 14737632);
+				this.drawString(var8, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80, 14737632);
+			}
 			//Spout end
 			GL11.glPopMatrix();
 		}
