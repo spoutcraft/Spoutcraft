@@ -22,7 +22,7 @@ public class PacketWidget implements SpoutPacket {
 
 	@Override
 	public int getNumBytes() {
-		return widget.getNumBytes() + 20;
+		return (widget != null ? widget.getNumBytes() : 0) + 20;
 	}
 
 	@Override
