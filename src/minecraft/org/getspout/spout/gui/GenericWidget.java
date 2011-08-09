@@ -124,33 +124,33 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public int getX() {
-		return upperRightX;
+		return upperLeftX;
 	}
 
 	@Override
 	public int getY() {
-		return upperRightY;
+		return upperLeftY;
 	}
 	
 	@Override
 	public double getScreenX() {
-		return (upperRightX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+		return (upperLeftX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
 	}
 
 	@Override
 	public double getScreenY() {
-		return (upperRightY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
+		return (upperLeftY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
 	}
 
 	@Override
 	public Widget setX(int pos) {
-		this.upperRightX = pos;
+		this.upperLeftX = pos;
 		return this;
 	}
 
 	@Override
 	public Widget setY(int pos) {
-		this.upperRightY = pos;
+		this.upperLeftY = pos;
 		return this;
 	}
 
