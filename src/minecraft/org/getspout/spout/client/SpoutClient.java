@@ -94,6 +94,7 @@ public class SpoutClient implements Client {
 	public void onTick() {
 		tick++;
 		FileDownloadThread.getInstance().onTick();
+		player.getMainScreen().onTick();
 	}
 
 	public long getTick() {

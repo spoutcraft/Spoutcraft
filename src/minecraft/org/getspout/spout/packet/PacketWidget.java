@@ -76,6 +76,7 @@ public class PacketWidget implements SpoutPacket {
 				widget.setScreen(mainScreen);
 			}
 			else {
+				widget.setScreen(mainScreen);
 				mainScreen.attachWidget(widget);
 			}
 		}
@@ -86,6 +87,7 @@ public class PacketWidget implements SpoutPacket {
 				widget.setScreen(popup);
 			}
 			else {
+				widget.setScreen(popup);
 				popup.attachWidget(widget);
 			}
 		}

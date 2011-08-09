@@ -111,7 +111,7 @@ public abstract class GenericWidget implements Widget{
 	public int getHeight() {
 		return height;
 	}
-	
+
 	@Override
 	public Widget setHeight(int height) {
 		this.height = height;
@@ -120,12 +120,12 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public int getX() {
-		return upperRightX;
+		return (int)(upperRightX * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1) );
 	}
 
 	@Override
 	public int getY() {
-		return upperRightY;
+		return (int)(upperRightY * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1 ));
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public abstract class GenericWidget implements Widget{
 	
 	@Override
 	public void onTick() {
-		
+
 	}
 	
 	@Override

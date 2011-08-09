@@ -39,7 +39,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		throw new UnsupportedOperationException("Unsupported widget type");
 	}
 	
-	
 	@Override
 	public boolean updateWidget(Widget widget) {
 		if (widget instanceof HealthBar)
@@ -73,16 +72,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	@Override
 	public UUID getId() {
 		return new UUID(0, 0);
-	}
-	
-	@Override
-	public int getHeight() {
-		return 240;
-	}
-	
-	@Override
-	public int getWidth() {
-		return 427;
 	}
 	
 	public boolean closePopup() {
@@ -135,7 +124,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		}
 		return true;
 	}
-	
 
 	@Override
 	public WidgetType getType() {

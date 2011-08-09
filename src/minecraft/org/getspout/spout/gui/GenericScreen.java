@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import net.minecraft.src.ScaledResolution;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public abstract class GenericScreen extends GenericWidget implements Screen{
@@ -13,7 +17,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	protected int playerId;
 	protected boolean bgvis;
 	public GenericScreen() {
-		
+		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
+		screenWidth = resolution.getScaledWidth();
+		screenHeight = resolution.getScaledHeight();
 	}
 	
 	public GenericScreen(int playerId) {
@@ -66,6 +72,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		int index = widgets.indexOf(widget);
 		if (index > -1) {
 			widgets.remove(index);
+			widget.setScreen(this);
 			widgets.add(index, widget);
 			return true;
 		}
@@ -77,6 +84,20 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		for (Widget widget : widgets) {
 			widget.onTick();
 		}
+		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
+		screenWidth = resolution.getScaledWidth();
+		screenHeight = resolution.getScaledHeight();
+	}
+	
+	private int screenHeight, screenWidth;
+	@Override
+	public int getHeight() {
+		return screenHeight > 0 ? screenHeight : 427;
+	}
+	
+	@Override
+	public int getWidth() {
+		return screenWidth > 0 ? screenWidth : 240;
 	}
 	
 	public GenericScreen setBgVisible(boolean enable) {

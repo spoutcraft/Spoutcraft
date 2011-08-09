@@ -64,4 +64,8 @@ public interface Screen extends Widget{
 	 * @return the screen
 	 */
 	public GenericScreen setBgVisible(boolean enable);
+	
+	public int getHeight();
+	
+	public int getWidth();
 }
