@@ -98,7 +98,7 @@ public abstract class GenericWidget implements Widget{
 	
 	@Override
 	public int getWidth() {
-		return (int)(width * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
+		return (int)(width * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
 	}
 	
 	@Override
@@ -120,12 +120,12 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public int getX() {
-		return (int)(upperRightX * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
+		return (int)(upperRightX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
 	}
 
 	@Override
 	public int getY() {
-		return (int)(upperRightY * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1 ));
+		return (int)(upperRightY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
 	}
 
 	@Override
