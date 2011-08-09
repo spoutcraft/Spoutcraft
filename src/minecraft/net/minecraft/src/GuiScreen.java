@@ -107,55 +107,7 @@ public class GuiScreen extends Gui {
 		while(Keyboard.next()) {
         	if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
         		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
-        		ScreenType screen = ScreenType.UNKNOWN;
-        		if(this instanceof GuiChat){
-        			screen = ScreenType.CHAT_SCREEN;
-        		}
-        		if(this instanceof GuiSleepMP){
-        			screen = ScreenType.SLEEP_SCREEN;
-        		}
-        		if(this instanceof CustomScreen){
-        			screen = ScreenType.CUSTOM_SCREEN;
-        		}
-        		if(this instanceof GuiInventory){
-        			screen = ScreenType.PLAYER_INVENTORY;
-        		}
-        		if(this instanceof GuiChest){
-        			screen = ScreenType.CHEST_INVENTORY;
-        		}
-        		if(this instanceof GuiDispenser){
-        			screen = ScreenType.DISPENSER_INVENTORY;
-        		}
-        		if(this instanceof GuiFurnace){
-        			screen = ScreenType.FURNACE_INVENTORY;
-        		}
-        		if(this instanceof GuiIngameMenu){
-        			screen = ScreenType.INGAME_MENU;
-        		}
-        		if(this instanceof GuiOptions){
-        			screen = ScreenType.OPTIONS_MENU;
-        		}
-        		if(this instanceof GuiVideoSettings){
-        			screen = ScreenType.VIDEO_SETTINGS_MENU;
-        		}
-        		if(this instanceof GuiControls){
-        			screen = ScreenType.CONTROLS_MENU;
-        		}
-        		if(this instanceof GuiAchievements){
-        			screen = ScreenType.ACHIEVEMENTS_SCREEN;
-        		}
-        		if(this instanceof GuiCrafting){
-        			screen = ScreenType.WORKBENCH_INVENTORY;
-        		}
-        		if(this instanceof GuiGameOver){
-        			screen = ScreenType.GAME_OVER_SCREEN;
-        		}
-        		if(this instanceof GuiEditSign){
-        			screen = ScreenType.SIGN_SCREEN;
-        		}
-        		if(this instanceof GuiStats){
-        			screen = ScreenType.STATISTICS_SCREEN;
-        		}
+        		ScreenType screen = ScreenType.getType(this);
         		int i = Keyboard.getEventKey();
         		boolean keyReleased = Keyboard.getEventKeyState();
         		PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);

@@ -2,6 +2,22 @@ package org.getspout.spout.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.src.GuiAchievements;
+import net.minecraft.src.GuiChat;
+import net.minecraft.src.GuiChest;
+import net.minecraft.src.GuiControls;
+import net.minecraft.src.GuiCrafting;
+import net.minecraft.src.GuiDispenser;
+import net.minecraft.src.GuiEditSign;
+import net.minecraft.src.GuiFurnace;
+import net.minecraft.src.GuiGameOver;
+import net.minecraft.src.GuiIngameMenu;
+import net.minecraft.src.GuiInventory;
+import net.minecraft.src.GuiOptions;
+import net.minecraft.src.GuiScreen;
+import net.minecraft.src.GuiSleepMP;
+import net.minecraft.src.GuiStats;
+import net.minecraft.src.GuiVideoSettings;
 
 public enum ScreenType {
 	GAME_SCREEN(0),
@@ -38,6 +54,59 @@ public enum ScreenType {
 		return lookup.get(code);
 	}
 	
+        public static ScreenType getType(GuiScreen gui) {
+            ScreenType screen = ScreenType.UNKNOWN;
+            if (gui instanceof GuiChat) {
+                screen = ScreenType.CHAT_SCREEN;
+            }
+            if (gui instanceof GuiSleepMP) {
+                screen = ScreenType.SLEEP_SCREEN;
+            }
+            if (gui instanceof CustomScreen) {
+                screen = ScreenType.CUSTOM_SCREEN;
+            }
+            if (gui instanceof GuiInventory) {
+                screen = ScreenType.PLAYER_INVENTORY;
+            }
+            if (gui instanceof GuiChest) {
+                screen = ScreenType.CHEST_INVENTORY;
+            }
+            if (gui instanceof GuiDispenser) {
+                screen = ScreenType.DISPENSER_INVENTORY;
+            }
+            if (gui instanceof GuiFurnace) {
+                screen = ScreenType.FURNACE_INVENTORY;
+            }
+            if (gui instanceof GuiIngameMenu) {
+                screen = ScreenType.INGAME_MENU;
+            }
+            if (gui instanceof GuiOptions) {
+                screen = ScreenType.OPTIONS_MENU;
+            }
+            if (gui instanceof GuiVideoSettings) {
+                screen = ScreenType.VIDEO_SETTINGS_MENU;
+            }
+            if (gui instanceof GuiControls) {
+                screen = ScreenType.CONTROLS_MENU;
+            }
+            if (gui instanceof GuiAchievements) {
+                screen = ScreenType.ACHIEVEMENTS_SCREEN;
+            }
+            if (gui instanceof GuiCrafting) {
+                screen = ScreenType.WORKBENCH_INVENTORY;
+            }
+            if (gui instanceof GuiGameOver) {
+                screen = ScreenType.GAME_OVER_SCREEN;
+            }
+            if (gui instanceof GuiEditSign) {
+                screen = ScreenType.SIGN_SCREEN;
+            }
+            if (gui instanceof GuiStats) {
+                screen = ScreenType.STATISTICS_SCREEN;
+            }
+            return screen;
+        }
+        
 	static {
 		for(ScreenType type:values()){
 			lookup.put(type.code, type);
