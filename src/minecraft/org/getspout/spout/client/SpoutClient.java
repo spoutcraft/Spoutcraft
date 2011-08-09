@@ -131,6 +131,7 @@ public class SpoutClient implements Client {
 	
 	public static void setReloadPacket(SpoutPacket packet) {
 		reloadPacket = packet;
+		instance = null; //dump all saved data
 	}
 	
 	public static SpoutPacket getReloadPacket() {
