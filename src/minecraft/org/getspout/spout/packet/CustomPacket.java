@@ -23,18 +23,18 @@ public class CustomPacket extends Packet{
 	@Override
 	public int getPacketSize() {
 		if(packet == null) {
-			return 12;
+			return 8;
 		} else {
-			return packet.getNumBytes() + 12;
+			return packet.getNumBytes() + 8;
 		}
 	}
 
 	@Override
 	public void readPacketData(DataInputStream input) throws IOException {
 		int packetId = -1;
-		packetId = input.readInt();
+		packetId = input.readShort();
 		int length = input.readInt(); //packet size
-		int version = input.readInt(); //packet version
+		int version = input.readShort(); //packet version
 		if (packetId > -1 && version > -1) {
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
@@ -71,14 +71,14 @@ public class CustomPacket extends Packet{
 	@Override
 	public void writePacketData(DataOutputStream output) throws IOException {
 		if(packet == null) {
-			output.writeInt(-1);
+			output.writeShort(-1);
 			output.writeInt(0);
-			output.writeInt(-1);
+			output.writeShort(-1);
 			return;
 		}
 		//System.out.println("Writing Packet Data for " + packet.getPacketType());
 		output.writeInt(packet.getPacketType().getId());
-		output.writeInt(getPacketSize() - 12);
+		output.writeInt(getPacketSize() - 8);
 		output.writeInt(packet.getVersion());
 		packet.writeData(output);
 	}
