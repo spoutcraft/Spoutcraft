@@ -83,7 +83,7 @@ public class GenericLabel extends GenericWidget implements Label{
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		String lines[] = getText().split("\\n");
 		for (int i = 0; i < lines.length; i++) {
-			font.drawStringWithShadow(lines[i], getX() - (isCentered() ? font.getStringWidth(lines[i]) / 2 : 0), getY() + (i * 10), getHexColor());
+			font.drawStringWithShadow(lines[i], (int) (getScreenX() - (isCentered() ? font.getStringWidth(lines[i]) / 2 : 0)), (int) (getScreenY() + (i * 10)), getHexColor());
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}

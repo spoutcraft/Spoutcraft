@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.getspout.spout.packet.PacketUtil;
 
 public abstract class GenericWidget implements Widget{
-	protected int upperRightX = 0;
-	protected int upperRightY = 0;
+	protected int upperLeftX = 0;
+	protected int upperLeftY = 0;
 	protected int width = 0;
 	protected int height = 0;
 	protected boolean visible = true;
@@ -26,9 +26,9 @@ public abstract class GenericWidget implements Widget{
 		return 37 + PacketUtil.getNumBytes(tooltip);
 	}
 	
-	public GenericWidget(int upperRightX, int upperRightY, int width, int height) {
-		this.upperRightX = upperRightX;
-		this.upperRightY = upperRightY;
+	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
+		this.upperLeftX = upperLeftX;
+		this.upperLeftY = upperLeftY;
 		this.width = width;
 		this.height = height;
 	}
@@ -51,8 +51,8 @@ public abstract class GenericWidget implements Widget{
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(getX());
 		output.writeInt(getY());
-		output.writeInt(getWidth());
-		output.writeInt(getHeight());
+		output.writeInt(width);
+		output.writeInt(height);
 		output.writeBoolean(isVisible());
 		output.writeInt(priority.getId());
 		output.writeLong(getId().getMostSignificantBits());
@@ -97,8 +97,8 @@ public abstract class GenericWidget implements Widget{
 	}
 	
 	@Override
-	public int getWidth() {
-		return (int)(width * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+	public double getWidth() {
+		return (width * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
 	}
 	
 	@Override
@@ -109,7 +109,7 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public int getHeight() {
-		return (int)(height * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1) );
+		return (height * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1) );
 	}
 
 	@Override
@@ -120,12 +120,22 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public int getX() {
-		return (int)(upperRightX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+		return upperRightX;
 	}
 
 	@Override
 	public int getY() {
-		return (int)(upperRightY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
+		return upperRightY;
+	}
+	
+	@Override
+	public double getScreenX() {
+		return (upperRightX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+	}
+
+	@Override
+	public double getScreenY() {
+		return (upperRightY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
 	}
 
 	@Override

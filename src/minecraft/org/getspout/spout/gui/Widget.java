@@ -53,7 +53,7 @@ public interface Widget{
 	 * Gets the width of this widget, in pixels
 	 * @return width 
 	 */
-	public int getWidth();
+	public double getWidth();
 	
 	/**
 	 * Sets the width of this widget, in pixels
@@ -66,7 +66,7 @@ public interface Widget{
 	 * Gets the height of this widget, in pixels
 	 * @return height
 	 */
-	public int getHeight();
+	public double getHeight();
 	
 	/**
 	 * Sets the height of this widget, in pixels
@@ -155,4 +155,16 @@ public interface Widget{
 	 * Gets the tooltip from the widget
 	 */
 	public String getTooltip();
+
+	/**
+	 * Gets the x coordinate this widget will render at on screen after scaling. Widgets (and screens) render from the top left cornor the screen. 0,0 represents the top left corner.
+	 * @return x-coordinate
+	 */
+	public double getScreenX();
+	
+	/**
+	 * Gets the y coordinate this widget will render at on screen after scaling. Widgets (and screens) render from the top left cornor the screen. 0,0 represents the top left corner.
+	 * @return y-coordinate
+	 */
+	public double getScreenY();
 }

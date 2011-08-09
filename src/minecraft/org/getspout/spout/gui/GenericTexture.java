@@ -60,7 +60,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslatef(getX(), getY(), 0); //moves texture into place
+		GL11.glTranslatef((int) getScreenX(), (int) getScreenY(), 0); //moves texture into place
 		//GL11.glBindTexture(GL11.GL_TEXTURE_2D , SpoutClient.getHandle().renderEngine.getTexture(path));
 		texture.bind();
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);

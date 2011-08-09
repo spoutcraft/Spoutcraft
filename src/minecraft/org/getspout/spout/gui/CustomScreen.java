@@ -1,18 +1,13 @@
 package org.getspout.spout.gui;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.*;
-import net.minecraft.src.*;
-import java.util.ArrayList;
 
 public class CustomScreen extends GuiScreen {
 	protected PopupScreen screen;
 	public boolean waiting = false;
 	public CustomScreen(PopupScreen screen) {
 		update(screen);
-		this.setWorldAndResolution(SpoutClient.getHandle(), screen.getWidth(), screen.getHeight());
+		this.setWorldAndResolution(SpoutClient.getHandle(), (int) screen.getWidth(), (int) screen.getHeight());
 	}
 	
 	public void update(PopupScreen screen) {
@@ -121,10 +116,10 @@ public class CustomScreen extends GuiScreen {
 	}
 	
 	private boolean isInBoundingRect(Widget widget, int x, int y) {
-		int left = widget.getX();
-		int top = widget.getY();
-		int height = widget.getHeight();
-		int width = widget.getWidth();
+		int left = (int) widget.getX();
+		int top = (int) widget.getY();
+		int height = (int) widget.getHeight();
+		int width = (int) widget.getWidth();
 		int right = left+width;
 		int bottom = top+height;
 		if(left < x && x < right && top < y && y < bottom){

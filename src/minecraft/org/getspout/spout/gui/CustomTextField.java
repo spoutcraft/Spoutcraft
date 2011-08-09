@@ -76,7 +76,7 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public boolean mousePressed(Minecraft game, int mouseX, int mouseY) {
-		this.setFocused(field.isEnabled() && mouseX >= field.getX() && mouseX < field.getX() + field.getWidth() && mouseY >= field.getY() && mouseY < field.getY() + field.getHeight());
+		this.setFocused(field.isEnabled() && mouseX >= field.getScreenX() && mouseX < field.getScreenX() + field.getWidth() && mouseY >= field.getScreenY() && mouseY < field.getScreenY() + field.getHeight());
 		return isFocused();
 	}
 	
@@ -94,8 +94,8 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public void drawButton(Minecraft game, int mouseX, int mouseY) {
-		this.drawRect(field.getX() - 1, field.getY() - 1, field.getX() + field.getWidth() + 1, field.getY() + field.getHeight() + 1, field.getBorderColor());
-		this.drawRect(field.getX(), field.getY(), field.getX() + field.getWidth(), field.getY() + field.getHeight(), field.getFieldColor());
+		this.drawRect((int) (field.getScreenX() - 1), (int) (field.getScreenY() - 1), (int) (field.getScreenX() + field.getWidth() + 1), (int) (field.getScreenY() + field.getHeight() + 1), field.getBorderColor());
+		this.drawRect((int)field.getScreenX(), (int) field.getScreenY(), (int) (field.getScreenX() + field.getWidth()), (int) (field.getScreenY() + field.getHeight()), field.getFieldColor());
 		if(field.isEnabled()) {
 			count++;
 			boolean showCursor = this.focus && count % 40 < 15;
@@ -112,9 +112,9 @@ public class CustomTextField extends GuiButton {
 					text += field.getText().substring(field.getCursorPosition());
 				}
 			}
-			this.drawString(game.fontRenderer, text, field.getX() + 4, field.getY() + (field.getHeight() - 8) / 2, field.getColor());
+			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor());
 		} else {
-			this.drawString(game.fontRenderer, field.getText(), field.getX() + 4, field.getY() + (field.getHeight() - 8) / 2, field.getDisabledColor());
+			this.drawString(game.fontRenderer, field.getText(), (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getDisabledColor());
 		}
 
 	}

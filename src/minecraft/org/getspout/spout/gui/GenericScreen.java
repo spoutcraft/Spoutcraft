@@ -91,12 +91,12 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	
 	private int screenHeight, screenWidth;
 	@Override
-	public int getHeight() {
+	public double getHeight() {
 		return screenHeight > 0 ? screenHeight : 427;
 	}
 	
 	@Override
-	public int getWidth() {
+	public double getWidth() {
 		return screenWidth > 0 ? screenWidth : 240;
 	}
 	

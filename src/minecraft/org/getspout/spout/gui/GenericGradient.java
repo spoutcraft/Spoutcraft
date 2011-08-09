@@ -68,11 +68,11 @@ public class GenericGradient extends GenericWidget implements Gradient {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(color1.getRedF(), color1.getGreenF(), color1.getBlueF(), color1.getAlphaF());
-        tessellator.addVertex(getWidth() + getX(), getY(), 0.0D);
-        tessellator.addVertex(getX(), getY(), 0.0D);
+        tessellator.addVertex(getWidth() + getScreenX(), getScreenY(), 0.0D);
+        tessellator.addVertex(getScreenX(), getScreenY(), 0.0D);
         tessellator.setColorRGBA_F(color2.getRedF(), color2.getGreenF(), color2.getBlueF(), color2.getAlphaF());
-        tessellator.addVertex(getX(), getHeight() + getY(), 0.0D);
-        tessellator.addVertex(getWidth() + getX(), getHeight() + getY(), 0.0D);
+        tessellator.addVertex(getScreenX(), getHeight() + getScreenY(), 0.0D);
+        tessellator.addVertex(getWidth() + getScreenX(), getHeight() + getScreenY(), 0.0D);
         tessellator.draw();
         GL11.glShadeModel(7424 /*GL_FLAT*/);
         GL11.glDisable(3042 /*GL_BLEND*/);

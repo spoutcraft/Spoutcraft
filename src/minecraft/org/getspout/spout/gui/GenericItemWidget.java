@@ -122,7 +122,7 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 			else {
 				renderer.setScale(1 + (getWidth() / 200D), 1 + (getHeight() / 200D), 1);
 			}
-			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, toRender, getX(), getY());
+			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, toRender, (int) getScreenX(), (int) getScreenY());
 			if (getTypeId() < 255){
 				block.maxX = oldX;
 				block.maxY = oldY;
