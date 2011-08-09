@@ -235,6 +235,11 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
 			this.drawString(var8, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
 			this.drawString(var8, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
+			long currentTime = System.currentTimeMillis();
+			long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
+			long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
+			this.drawString(var8, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
+			this.drawString(var8, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
 			//Spout end
 			GL11.glPopMatrix();
 		}

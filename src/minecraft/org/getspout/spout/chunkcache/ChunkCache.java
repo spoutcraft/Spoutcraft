@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -50,6 +51,9 @@ public class ChunkCache {
 	public static AtomicInteger hitPercentage = new AtomicInteger();
 	private static int hits = 0;
 	private static int cacheAttempts = 0;
+	public static AtomicLong loggingStart = new AtomicLong();
+	public static AtomicInteger totalPacketUp = new AtomicInteger();
+	public static AtomicInteger totalPacketDown = new AtomicInteger();
 	
 	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize) throws IOException {
 
@@ -89,7 +93,7 @@ public class ChunkCache {
 			if(hashes.add(hash)) {
 				Integer index = p.getIndex(hash);
 				if(index != null) {
-					for(int j = index - 512; j < index + 512; j++) {
+					for(int j = index - 1024; j < index + 1024; j++) {
 						Long nearbyHash = p.getHash(j);
 						if(nearbyHash != null && !hashes.contains(nearbyHash)) {
 							hashQueue.add(nearbyHash);
@@ -141,6 +145,9 @@ public class ChunkCache {
 	public static void reset() {
 		hashes.clear();
 		p.reset();
+		loggingStart.set(System.currentTimeMillis());
+		totalPacketUp.set(0);
+		totalPacketDown.set(0);
 	}
 
 }
