@@ -32,7 +32,7 @@ public class SpoutClient implements Client {
 	private long tick = 0;
 	private Thread clipboardThread = null;
 	private ClientPlayer player = null;
-	private boolean cheating = false;
+	private boolean cheating = true;
 	private static SpoutPacket reloadPacket = null;
 	
 	static {
