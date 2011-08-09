@@ -22,7 +22,7 @@ public class PacketWidget implements SpoutPacket {
 
 	@Override
 	public int getNumBytes() {
-		return (widget != null ? widget.getNumBytes() : 0) + 20;
+		return (widget != null ? widget.getNumBytes() : 0) + 26;
 	}
 
 	@Override
@@ -30,12 +30,20 @@ public class PacketWidget implements SpoutPacket {
 		int id = input.readInt();
 		long msb = input.readLong();
 		long lsb = input.readLong();
+		int size = input.readInt();
+		int version = input.readShort();
 		screen = new UUID(msb, lsb);
 		WidgetType widgetType = WidgetType.getWidgetFromId(id);
 		if (widgetType != null) {
 			try {
 				widget = widgetType.getWidgetClass().newInstance();
-				widget.readData(input);
+				if (widget.getVersion() == version) {
+					widget.readData(input);
+				}
+				else {
+					input.skipBytes(size);
+					System.out.println("Received invalid widget: " + widgetType + " v: " + version + " current v: " + widget.getVersion());
+				}
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -49,6 +57,8 @@ public class PacketWidget implements SpoutPacket {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());
+		output.writeInt(widget.getNumBytes());
+		output.writeShort(widget.getVersion());
 		widget.writeData(output);
 	}
 
@@ -100,7 +110,7 @@ public class PacketWidget implements SpoutPacket {
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 }
