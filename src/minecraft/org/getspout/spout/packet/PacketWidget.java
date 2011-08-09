@@ -100,7 +100,7 @@ public class PacketWidget implements SpoutPacket {
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return widget != null ? widget.getVersion() : -1;
 	}
 
 }

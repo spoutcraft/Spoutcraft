@@ -18,6 +18,8 @@ public interface Widget{
 	public UUID getId();
 	
 	public void render();
+
+	public int getVersion();
 	
 	public void readData(DataInputStream input) throws IOException;
 	
