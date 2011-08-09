@@ -1,15 +1,17 @@
 package org.getspout.spout.player;
 
+import java.util.HashMap;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameHUD;
 import org.getspout.spout.gui.InGameScreen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	private RenderDistance min, max;
 	private InGameScreen mainScreen = new InGameScreen();
+	private HashMap<Integer, String> titles = new HashMap<Integer, String>();
 
 	public ClientPlayer(EntityPlayer player) {
 		super(player);
@@ -58,26 +60,22 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	@Override
 	public void showAchievement(String title, String message, int id) {
-		// TODO Auto-generated method stub
-		
+		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id);
 	}
 
 	@Override
 	public String getEntityTitle(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return titles.get(id);
 	}
 
 	@Override
 	public void setEntityTitle(int id, String title) {
-		// TODO Auto-generated method stub
-		
+		titles.put(id, title);
 	}
-
+	
 	@Override
 	public void resetEntityTitle(int id) {
-		// TODO Auto-generated method stub
-		
+		titles.remove(id);
 	}
 
 }
