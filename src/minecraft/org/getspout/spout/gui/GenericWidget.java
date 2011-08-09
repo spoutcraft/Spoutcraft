@@ -108,7 +108,7 @@ public abstract class GenericWidget implements Widget{
 	}
 
 	@Override
-	public int getHeight() {
+	public double getHeight() {
 		return (height * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1) );
 	}
 
