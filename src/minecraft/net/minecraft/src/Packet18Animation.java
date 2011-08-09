@@ -47,8 +47,8 @@ public class Packet18Animation extends Packet {
 			if (SpoutClient.getReloadPacket() != null) {
 				((NetClientHandler)var1).addToSendQueue(new CustomPacket(SpoutClient.getReloadPacket()));
 				SpoutClient.setReloadPacket(null);
-				((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance)));
 			}
+			((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance)));
 			System.out.println("Spout SP Enabled");
 		}
 		else {
