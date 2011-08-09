@@ -1,6 +1,11 @@
 package org.getspout.spout.gui;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.packet.*;
+import net.minecraft.src.*;
+import java.util.ArrayList;
 
 public class CustomScreen extends GuiScreen {
 	protected PopupScreen screen;

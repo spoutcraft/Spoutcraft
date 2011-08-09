@@ -1,6 +1,8 @@
 package org.getspout.spout.gui;
 
 import org.lwjgl.opengl.GL11;
+import net.minecraft.src.*;
+import net.minecraft.client.Minecraft;
 
 public class CustomGuiButton extends GuiButton {
 	protected Screen screen;
