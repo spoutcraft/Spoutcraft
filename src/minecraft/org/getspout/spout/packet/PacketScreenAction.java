@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.*;
+import org.getspout.spout.client.SpoutClient;
 
 import org.getspout.spout.gui.ScreenType;
 
@@ -42,10 +42,10 @@ public class PacketScreenAction implements SpoutPacket{
 	public void run(int playerId) {
             switch(ScreenAction.getScreenActionFromId(action)){
                 case Open:
-                    Spout.getGameInstance().displayGuiScreen();
+                    SpoutClient.getHandle().displayGuiScreen();
                     break;
                 case Close:
-                    Spout.getGameInstance().displayGuiScreen();
+                    SpoutClient.getHandle().displayGuiScreen();
                     break;
             }
 	}

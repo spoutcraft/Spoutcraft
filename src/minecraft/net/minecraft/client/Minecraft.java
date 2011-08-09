@@ -106,7 +106,6 @@ import org.lwjgl.util.glu.GLU;
 import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
-import net.minecraft.src.Spout;
 import org.getspout.spout.gui.ScreenType;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketScreenAction;
@@ -455,7 +454,7 @@ public abstract class Minecraft implements Runnable {
             //End
             if(waitingGui != var1){
                 waitingGui = var1;
-                if(this.thePlayer instanceof EntityClientPlayerMP && Spout.isEnabled()){
+                if(this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
                     if( this.currentScreen  != null && var1 == null ){
                         ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
                     }
