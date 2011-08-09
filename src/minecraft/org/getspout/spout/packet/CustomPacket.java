@@ -77,9 +77,9 @@ public class CustomPacket extends Packet{
 			return;
 		}
 		//System.out.println("Writing Packet Data for " + packet.getPacketType());
-		output.writeInt(packet.getPacketType().getId());
+		output.writeShort(packet.getPacketType().getId());
 		output.writeInt(getPacketSize() - 8);
-		output.writeInt(packet.getVersion());
+		output.writeShort(packet.getVersion());
 		packet.writeData(output);
 	}
 
