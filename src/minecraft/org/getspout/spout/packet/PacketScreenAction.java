@@ -60,5 +60,10 @@ public class PacketScreenAction implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketScreenAction;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

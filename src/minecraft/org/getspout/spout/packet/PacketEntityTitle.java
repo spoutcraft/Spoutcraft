@@ -48,4 +48,9 @@ public class PacketEntityTitle implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketEntityTitle;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 }

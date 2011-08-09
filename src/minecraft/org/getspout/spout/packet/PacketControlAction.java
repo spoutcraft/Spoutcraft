@@ -66,5 +66,10 @@ public class PacketControlAction implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketControlAction;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

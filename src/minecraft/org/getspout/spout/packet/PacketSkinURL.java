@@ -78,4 +78,10 @@ public class PacketSkinURL implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketSkinURL;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
+
 }

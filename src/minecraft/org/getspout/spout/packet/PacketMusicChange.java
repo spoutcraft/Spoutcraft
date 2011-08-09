@@ -55,5 +55,10 @@ public class PacketMusicChange implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketMusicChange;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

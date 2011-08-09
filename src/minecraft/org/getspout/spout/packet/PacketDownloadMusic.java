@@ -77,5 +77,10 @@ public class PacketDownloadMusic implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketDownloadMusic;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

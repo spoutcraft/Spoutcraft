@@ -46,5 +46,10 @@ public class PacketPluginReload implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketPluginReload;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

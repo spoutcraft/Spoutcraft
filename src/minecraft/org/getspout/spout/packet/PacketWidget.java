@@ -95,5 +95,10 @@ public class PacketWidget implements SpoutPacket {
 	public PacketType getPacketType() {
 		return PacketType.PacketWidget;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }

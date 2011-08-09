@@ -52,5 +52,10 @@ public class PacketStopMusic implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketStopMusic;
 	}
+	
+	@Override
+	public int getVersion() {
+		return 0;
+	}
 
 }
