@@ -27,6 +27,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		if (SpoutClient.getHandle().currentScreen == null) {
 			activePopup = null;
 		}
+		if (activePopup != null) {
+			activePopup.onTick();
+		}
 		super.onTick();
 	}
 	
