@@ -5,8 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.player.Player;
-import org.getspout.spout.player.SpoutPlayer;
 
 import net.minecraft.src.*;
 
@@ -57,20 +55,17 @@ public class PacketSkinURL implements SpoutPacket{
 
 	@Override
 	public void run(int PlayerId) {
-		Player p = SpoutClient.getInstance().getPlayerFromId(entityId);
-		if (p != null) {
-			EntityPlayer e = ((SpoutPlayer)p).getHandle();
-			if (e != null) {
-				if (!this.skinURL.equals("none")) {
-					e.skinUrl = this.skinURL;
-				}
-				if (!this.cloakURL.equals("none")) {
-					e.cloakUrl = this.cloakURL;
-					e.playerCloakUrl = this.cloakURL;
-				}
-				e.worldObj.releaseEntitySkin(e);
-				e.worldObj.obtainEntitySkin(e);
+		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
+		if (e != null) {
+			if (!this.skinURL.equals("none")) {
+				e.skinUrl = this.skinURL;
 			}
+			if (!this.cloakURL.equals("none")) {
+				e.cloakUrl = this.cloakURL;
+				e.playerCloakUrl = this.cloakURL;
+			}
+			e.worldObj.releaseEntitySkin(e);
+			e.worldObj.obtainEntitySkin(e);
 		}
 	}
 

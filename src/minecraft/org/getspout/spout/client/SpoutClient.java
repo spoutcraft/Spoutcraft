@@ -18,7 +18,9 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
+import net.minecraft.src.WorldClient;
 
 public class SpoutClient implements Client {
 	private static SpoutClient instance = null;
@@ -124,8 +126,15 @@ public class SpoutClient implements Client {
 	}
 
 	@Override
-	public Player getPlayerFromId(int id) {
-		// TODO Auto-generated method stub
+	public EntityPlayer getPlayerFromId(int id) {
+		if (getHandle().thePlayer.entityId == id) {
+			return getHandle().thePlayer;
+		}
+		WorldClient world = (WorldClient)getHandle().theWorld;
+		Entity e = world.func_709_b(id);
+		if (e instanceof EntityPlayer) {
+			return (EntityPlayer) e;
+		}
 		return null;
 	}
 	

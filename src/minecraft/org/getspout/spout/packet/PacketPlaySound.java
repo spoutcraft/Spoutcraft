@@ -6,7 +6,6 @@ import java.io.IOException;
 import net.minecraft.src.*;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.player.SpoutPlayer;
 import org.getspout.spout.sound.Music;
 import org.getspout.spout.sound.SoundEffect;
 
@@ -57,7 +56,7 @@ public class PacketPlaySound implements SpoutPacket{
 
 	@Override
 	public void run(int entityId) {
-		EntityPlayer e = ((SpoutPlayer)SpoutClient.getInstance().getPlayerFromId(entityId)).getHandle();
+		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
 				SoundManager sndManager = SpoutClient.getHandle().sndManager;
 				if (soundId > -1 && soundId <= SoundEffect.getMaxId()) {
