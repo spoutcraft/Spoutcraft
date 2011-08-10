@@ -27,6 +27,10 @@ public class GenericButton extends GenericControl implements Button {
 	public int getNumBytes() {
 		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 4;
 	}
+	
+	public int getVersion() {
+		return 0;
+	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {

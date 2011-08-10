@@ -24,6 +24,10 @@ public class GenericTextField extends GenericControl implements TextField{
 	public int getNumBytes() {
 		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(text);
 	}
+	
+	public int getVersion() {
+		return 0;
+	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {

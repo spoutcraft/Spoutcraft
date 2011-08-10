@@ -28,6 +28,10 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 		return super.getNumBytes() + 10;
 	}
 	
+	public int getVersion() {
+		return 0;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);

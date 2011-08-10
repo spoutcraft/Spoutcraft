@@ -30,6 +30,10 @@ public class GenericLabel extends GenericWidget implements Label{
 		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 5;
 	}
 	
+	public int getVersion() {
+		return 0;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);

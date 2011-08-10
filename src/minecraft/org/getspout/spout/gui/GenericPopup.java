@@ -15,6 +15,10 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		return super.getNumBytes() + 1;
 	}
 	
+	public int getVersion() {
+		return 0;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);

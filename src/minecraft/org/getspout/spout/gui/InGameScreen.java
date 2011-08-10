@@ -21,6 +21,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		
 		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor);
 	}
+	
+	public int getVersion() {
+		return 0;
+	}
 
 	@Override
 	public void onTick() {

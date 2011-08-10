@@ -19,6 +19,10 @@ public class GenericSlider extends GenericControl implements Slider {
 	public int getNumBytes() {
 		return super.getNumBytes() + 4;
 	}
+	
+	public int getVersion() {
+		return 0;
+	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {

@@ -44,6 +44,10 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		return super.getNumBytes() + 24;
 	}
 	
+	public int getVersion() {
+		return 0;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
