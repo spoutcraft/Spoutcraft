@@ -444,69 +444,71 @@ public abstract class Minecraft implements Runnable {
 	}
 		
 	//Spout Start
-	private GuiScreen waitingGui;
-	public void displayGuiScreen(GuiScreen var1){
-		
+	private GuiScreen previousScreen = null;
+	public void displayGuiScreen(GuiScreen screen) {
+		displayGuiScreen(screen, true);
+	}
+
+	public void displayGuiScreen(GuiScreen screen, boolean notify){
 		//Part of Original function
-		if(var1 == null && this.theWorld == null) {
-			var1 = new GuiMainMenu();
-		} else if(var1 == null && this.thePlayer.health <= 0) {
-			var1 = new GuiGameOver();
+		if(screen == null && this.theWorld == null) {
+			screen = new GuiMainMenu();
+		} else if(screen == null && this.thePlayer.health <= 0) {
+			screen = new GuiGameOver();
 		}
-		//End
-		ScreenType display = ScreenType.getType(var1);
-		if(currentScreen != var1 || waitingGui != var1){
-			waitingGui = var1;
-			if(!display.isInstantOpen() && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
-				if( this.currentScreen  != null && var1 == null ){
-					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
-				}
-				if( var1 != null && this.currentScreen == null ) {
-					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
-				}
-				if( var1 != null && this.currentScreen != null ) { // Hopefully just a submenu 
-					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
-				}
-			} else {
-				displayGuiScreen();
+
+		ScreenType display = ScreenType.getType(screen);
+		previousScreen = this.currentScreen;
+		if(notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
+			//Screen closed
+			if (this.currentScreen != null && screen == null) {
+				((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
+			}
+			//Screen opened
+			if (screen != null && this.currentScreen == null) {
+				((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
+			}
+			//Screen swapped
+			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu 
+				((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
 			}
 		}
-	}
-		
-	public void displayGuiScreen() {
-		GuiScreen var1 = waitingGui;
-		if(!(this.currentScreen instanceof GuiUnused)) {
-			if(this.currentScreen != null) {
+		if (!(this.currentScreen instanceof GuiUnused)) {
+			if (this.currentScreen != null) {
 				this.currentScreen.onGuiClosed();
 			}
 
-			if(var1 instanceof GuiMainMenu) {
+			if (screen instanceof GuiMainMenu) {
 				this.statFileWriter.func_27175_b();
 			}
 
 			this.statFileWriter.syncStats();
 
-			if(var1 instanceof GuiMainMenu) {
+			if (screen instanceof GuiMainMenu) {
 				this.ingameGUI.clearChatMessages();
 			}
 
-				waitingGui = null;
+			this.currentScreen = screen;
 			
-			this.currentScreen = (GuiScreen)var1;
-			if(var1 != null) {
+			if (screen != null) {
 				this.setIngameNotInFocus();
 				ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
 				int var3 = var2.getScaledWidth();
 				int var4 = var2.getScaledHeight();
-				((GuiScreen)var1).setWorldAndResolution(this, var3, var4);
+				screen.setWorldAndResolution(this, var3, var4);
 				this.skipRenderWorld = false;
-			} else {
+			}
+			else {
 				this.setIngameFocus();
 			}
-
 		}
 	}
-		//Spout End
+
+	public void displayPreviousScreen() {
+		displayGuiScreen(previousScreen, false);
+		previousScreen = null;
+	}
+	//Spout End
 
 	private void checkGLError(String var1) {
 		int var2 = GL11.glGetError();
