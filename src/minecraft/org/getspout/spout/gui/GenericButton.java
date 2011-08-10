@@ -58,15 +58,26 @@ public class GenericButton extends GenericControl implements Button {
 		label.setText(text);
 		return this;
 	}
-
+	
 	@Override
-	public boolean isCentered() {
-		return label.isCentered();
+	public Align getAlignX() {
+		return label.getAlignX();
 	}
 
 	@Override
-	public Label setCentered(boolean center) {
-		label.setCentered(center);
+	public Align getAlignY() {
+		return label.getAlignY();
+	}
+	
+	@Override
+	public Widget setAlignX(Align pos) {
+		label.setAlignX(pos);
+		return this;
+	}
+
+	@Override
+	public Widget setAlignY(Align pos) {
+		label.setAlignY(pos);
 		return this;
 	}
 

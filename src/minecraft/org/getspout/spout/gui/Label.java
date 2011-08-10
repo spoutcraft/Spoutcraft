@@ -15,19 +15,6 @@ public interface Label extends Widget{
 	public Label setText(String text);
 	
 	/**
-	 * True if the text for the label is centered
-	 * @return centered
-	 */
-	public boolean isCentered();
-	
-	/**
-	 * Sets the centered status of the text
-	 * @param center the text
-	 * @return label
-	 */
-	public Label setCentered(boolean center);
-	
-	/**
 	 * Gets the hex color code for the text
 	 * @return color code
 	 */
@@ -39,4 +26,13 @@ public interface Label extends Widget{
 	 * @return label
 	 */
 	public Label setHexColor(int hex);
+	
+
+	public Align getAlignX();
+	
+	public Align getAlignY();
+
+	public Widget setAlignX(Align pos);
+	
+	public Widget setAlignY(Align pos);
 }

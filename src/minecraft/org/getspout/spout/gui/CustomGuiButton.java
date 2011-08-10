@@ -21,16 +21,21 @@ public class CustomGuiButton extends GuiButton {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			boolean hovering = mouseX >= button.getScreenX() && mouseY >= button.getScreenY() && mouseX < button.getScreenX() + button.getWidth() && mouseY < button.getScreenY() + button.getHeight();
 			int hoverState = this.getHoverState(hovering);
-			this.drawTexturedModalRect((int) button.getScreenX(), (int) button.getScreenY(), 0, 46 + hoverState * 20, (int) (button.getWidth() / 2), (int) button.getHeight());
-			this.drawTexturedModalRect((int) (button.getScreenX() + button.getWidth() / 2), (int) button.getScreenY(), (int) (200 - button.getWidth() / 2), 46 + hoverState * 20, (int) (button.getWidth() / 2), (int) button.getHeight());
+			this.drawTexturedModalRect((int) button.getScreenX(), (int) button.getScreenY(), 0, 46 + hoverState * 20, (int) Math.ceil(button.getWidth() / 2), (int) button.getHeight());
+			this.drawTexturedModalRect((int) Math.floor(button.getScreenX() + button.getWidth() / 2), (int) button.getScreenY(), (int) (200 - button.getWidth() / 2), 46 + hoverState * 20, (int) (button.getWidth() / 2), (int) button.getHeight());
 			this.mouseDragged(game, mouseX, mouseY);
+			int color = button.getColor();
 			if(!button.isEnabled()) {
-				this.drawCenteredString(font, button.getText(), (int) (button.getScreenX() + button.getWidth() / 2), (int) (button.getScreenY() + (button.getHeight() - 8) / 2), button.getDisabledColor());
+				color = button.getDisabledColor();
 			} else if(hovering) {
-				this.drawCenteredString(font, button.getText(), (int) (button.getScreenX() + button.getWidth() / 2), (int) (button.getScreenY() + (button.getHeight() - 8) / 2), button.getHoverColor());
-			} else {
-				this.drawCenteredString(font, button.getText(), (int) (button.getScreenX() + button.getWidth() / 2), (int) (button.getScreenY() + (button.getHeight() - 8) / 2), button.getColor());
+				color = button.getHoverColor();
 			}
+			int left = (int) button.getScreenX() + 5;
+			switch (button.getAlignX()) {
+				case SECOND: left = (int) (button.getScreenX() + button.getWidth() / 2) - font.getStringWidth(button.getText()); break;
+				case THIRD: left = (int) (button.getScreenX() + button.getWidth()) - font.getStringWidth(button.getText()) - 5; break;
+			}
+			this.drawString(font, button.getText(), left, (int) (button.getScreenY() + (button.getHeight() - 8) / 2), color);
 
 		}
 	}
