@@ -24,16 +24,16 @@ public enum ScreenType {
 	CHAT_SCREEN(1),
 	CUSTOM_SCREEN(2),
 	PLAYER_INVENTORY(3),
-	CHEST_INVENTORY(4),
-	DISPENSER_INVENTORY(5),
-	FURNACE_INVENTORY(6),
+	CHEST_INVENTORY(4, true),
+	DISPENSER_INVENTORY(5, true),
+	FURNACE_INVENTORY(6, true),
 	INGAME_MENU(7),
 	OPTIONS_MENU(8),
 	VIDEO_SETTINGS_MENU(9),
 	CONTROLS_MENU(10),
 	ACHIEVEMENTS_SCREEN(11),
 	STATISTICS_SCREEN(12),
-	WORKBENCH_INVENTORY(13),
+	WORKBENCH_INVENTORY(13, true),
 	SIGN_SCREEN(14),
 	GAME_OVER_SCREEN(15),
 	SLEEP_SCREEN(16),
@@ -41,13 +41,24 @@ public enum ScreenType {
 	
 	
 	private final int code;
+	private final boolean openInstant;
 	private static Map<Integer, ScreenType> lookup = new HashMap<Integer, ScreenType>();
 	private ScreenType(int code){
 		this.code = code;
+		openInstant = false;
+	}
+	
+	private ScreenType(int code, boolean openInstant){
+		this.code = code;
+		this.openInstant = openInstant;
 	}
 	
 	public int getCode(){
 		return code;
+	}
+	
+	public boolean isInstantOpen() {
+		return openInstant;
 	}
 	
 	public static ScreenType getType(int code){

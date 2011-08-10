@@ -262,14 +262,14 @@ public abstract class Minecraft implements Runnable {
 		this.saveLoader = new SaveConverterMcRegion(new File(this.mcDataDir, "saves"));
 		this.gameSettings = new GameSettings(this, this.mcDataDir);
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
-      //Spout Start
+	  //Spout Start
 		TextureUtils.setMinecraft(this);
-      //Spout End
+	  //Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
-      //Spout Start
+	  //Spout Start
 		TextureUtils.setTileSize();
 		this.renderEngine.setTileSize(this);
-      //Spout End 
+	  //Spout End 
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
 		ColorizerWater.func_28182_a(this.renderEngine.getTextureContents("/misc/watercolor.png"));
 		ColorizerGrass.func_28181_a(this.renderEngine.getTextureContents("/misc/grasscolor.png"));
@@ -440,38 +440,39 @@ public abstract class Minecraft implements Runnable {
 	public ISaveFormat getSaveLoader() {
 		return this.saveLoader;
 	}
-        
-        //Spout Start
-        private GuiScreen waitingGui;
-        public void displayGuiScreen(GuiScreen var1){
-            
-            //Part of Original function
-            if(var1 == null && this.theWorld == null) {
-                var1 = new GuiMainMenu();
-            } else if(var1 == null && this.thePlayer.health <= 0) {
-                var1 = new GuiGameOver();
-            }
-            //End
-            if(waitingGui != var1){
-                waitingGui = var1;
-                if(this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
-                    if( this.currentScreen  != null && var1 == null ){
-                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
-                    }
-                    if( var1 != null && this.currentScreen == null ) {
-                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, ScreenType.getType(var1))));
-                    }
-                    if( var1 != null && this.currentScreen != null ) { // Hopefully just a submenu 
-                        ((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, ScreenType.getType(var1))));
-                    }
-                } else {
-                    displayGuiScreen();
-                }
-            }
-        }
-        
+		
+	//Spout Start
+	private GuiScreen waitingGui;
+	public void displayGuiScreen(GuiScreen var1){
+		
+		//Part of Original function
+		if(var1 == null && this.theWorld == null) {
+			var1 = new GuiMainMenu();
+		} else if(var1 == null && this.thePlayer.health <= 0) {
+			var1 = new GuiGameOver();
+		}
+		//End
+		ScreenType display = ScreenType.getType(var1);
+		if(waitingGui != var1){
+			waitingGui = var1;
+			if(!display.isInstantOpen() && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
+				if( this.currentScreen  != null && var1 == null ){
+					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
+				}
+				if( var1 != null && this.currentScreen == null ) {
+					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
+				}
+				if( var1 != null && this.currentScreen != null ) { // Hopefully just a submenu 
+					((EntityClientPlayerMP)this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
+				}
+			} else {
+				displayGuiScreen();
+			}
+		}
+	}
+		
 	public void displayGuiScreen() {
-                GuiScreen var1 = waitingGui;
+		GuiScreen var1 = waitingGui;
 		if(!(this.currentScreen instanceof GuiUnused)) {
 			if(this.currentScreen != null) {
 				this.currentScreen.onGuiClosed();
@@ -501,7 +502,7 @@ public abstract class Minecraft implements Runnable {
 
 		}
 	}
-        //Spout End
+		//Spout End
 
 	private void checkGLError(String var1) {
 		int var2 = GL11.glGetError();
