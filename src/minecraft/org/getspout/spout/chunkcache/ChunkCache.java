@@ -46,8 +46,8 @@ public class ChunkCache {
 	private static byte[] hashData = new byte[CACHED_SIZE];
 	
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
-	private static int chunks = 0;
-	private static int totalData = 0;
+	private static AtomicInteger chunks = new AtomicInteger();
+	private static AtomicInteger totalData = new AtomicInteger();
 	public static AtomicInteger hitPercentage = new AtomicInteger();
 	private static int hits = 0;
 	private static int cacheAttempts = 0;
@@ -61,10 +61,12 @@ public class ChunkCache {
 			return chunkData;
 		}
 		
-		totalData += chunkSize;
-		chunks++;
+		int d = totalData.addAndGet(chunkSize);
+		int c = chunks.incrementAndGet();
 		
-		averageChunkSize.set(totalData/chunks);
+		if(c != 0) {
+			averageChunkSize.set(d/c);
+		}
 				
 		try {
 			int hashSize = inflater.inflate(hashData, FULL_CHUNK, 40*8);
@@ -148,6 +150,8 @@ public class ChunkCache {
 		loggingStart.set(System.currentTimeMillis());
 		totalPacketUp.set(0);
 		totalPacketDown.set(0);
+		totalData.set(0);
+		chunks.set(0);
 	}
 
 }

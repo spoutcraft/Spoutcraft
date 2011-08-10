@@ -78,7 +78,7 @@ public class ServerListThread implements Runnable {
 						}
 						ServerSlot server1 = (ServerSlot)arg0;
 						ServerSlot server2 = (ServerSlot)arg1;
-						return server1.name.compareTo(server2.name);
+						return server1.name.toLowerCase().compareTo(server2.name.toLowerCase());
 					}
 					
 				});

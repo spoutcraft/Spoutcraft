@@ -32,6 +32,8 @@ public class GuiMultiplayer extends GuiScreen {
 	private GuiButton buttonAdd;
 	private GuiButton buttonNextCountry;
 	private GuiButton buttonPrevCountry;
+	private GuiButton buttonNextTenPage;
+	private GuiButton buttonPrevTenPage;
 	private GuiButton buttonNextPage;
 	private GuiButton buttonPrevPage;
 	private boolean first = true;
@@ -75,10 +77,12 @@ public class GuiMultiplayer extends GuiScreen {
 		this.controlList.add(new GuiButton(2, this.width / 2 - 154, this.height - 28, 150, 20, "Favorites"));
 		this.controlList.add(new GuiButton(3, this.width / 2 + 4, this.height - 52, 150, 20, "Refresh"));
 		this.controlList.add(new GuiButton(0, this.width / 2 + 4, this.height - 28, 150, 20, "Main Menu"));
-		this.controlList.add(this.buttonPrevCountry = new GuiButton(6, this.width / 2 - 154, this.height - 76, 40, 20, "<<"));
-		this.controlList.add(this.buttonNextCountry = new GuiButton(7, this.width / 2 + 114, this.height - 76, 40, 20, ">>"));
-		this.controlList.add(this.buttonPrevPage = new GuiButton(8, this.width / 2 - 104, this.height - 76, 40, 20, "<"));
-		this.controlList.add(this.buttonNextPage = new GuiButton(9, this.width / 2 + 64, this.height - 76, 40, 20, ">"));
+		this.controlList.add(this.buttonPrevCountry = new GuiButton(6, this.width / 2 - 154, this.height - 76, 25, 20, "-"));
+		this.controlList.add(this.buttonNextCountry = new GuiButton(7, this.width / 2 + 130, this.height - 76, 25, 20, "+"));
+		this.controlList.add(this.buttonPrevPage = new GuiButton(8, this.width / 2 - 94, this.height - 76, 25, 20, "<"));
+		this.controlList.add(this.buttonNextPage = new GuiButton(9, this.width / 2 + 70, this.height - 76, 25, 20, ">"));
+		this.controlList.add(this.buttonPrevTenPage = new GuiButton(10, this.width / 2 - 124, this.height - 76, 25, 20, "<<"));
+		this.controlList.add(this.buttonNextTenPage = new GuiButton(11, this.width / 2 + 100, this.height - 76, 25, 20, ">>"));
 		this.controlList.add(this.buttonAdd = new GuiButton(4, this.width / 2 - 154, this.height - 52, 70, 20, "Add Fav"));
 		this.buttonSelect.enabled = false;
 		this.buttonAdd.enabled = false;
@@ -104,6 +108,22 @@ public class GuiMultiplayer extends GuiScreen {
 			} else if(var1.id == 9) {
 				if(page < pages - 1) {
 					page++;
+					updateList();
+				}
+			} else if(var1.id == 10) {
+				if(page > 0) {
+					page-=10;
+					if(page < 0) {
+						page = 0;
+					}
+					updateList();
+				}
+			} else if(var1.id == 11) {
+				if(page < pages - 1) {
+					page+=10;
+					if(page > pages - 1) {
+						page = pages - 1;
+					}
 					updateList();
 				}
 			} else if(var1.id == 6) {
@@ -144,6 +164,8 @@ public class GuiMultiplayer extends GuiScreen {
 		}
 		this.buttonNextPage.enabled = page < pages - 1;
 		this.buttonPrevPage.enabled = page > 0;
+		this.buttonNextTenPage.enabled = page < pages - 1;
+		this.buttonPrevTenPage.enabled = page > 0;
 		this.buttonPrevCountry.enabled = activeCountry > 0;
 		this.buttonNextCountry.enabled = activeCountry < countries.size() - 1;
 	}
