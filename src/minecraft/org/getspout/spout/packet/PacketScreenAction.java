@@ -42,10 +42,10 @@ public class PacketScreenAction implements SpoutPacket{
 	public void run(int playerId) {
 		switch(ScreenAction.getScreenActionFromId(action)) {
 			case Open:
-				SpoutClient.getHandle().displayGuiScreen();
+				SpoutClient.getHandle().displayPreviousScreen();
 				break;
 			case Close:
-				SpoutClient.getHandle().displayGuiScreen();
+				SpoutClient.getHandle().displayPreviousScreen();
 				break;
 		}
 	}
@@ -57,7 +57,7 @@ public class PacketScreenAction implements SpoutPacket{
 	
 	@Override
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 }
