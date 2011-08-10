@@ -16,10 +16,10 @@ public class PacketScreenAction implements SpoutPacket{
 	
 	}
 	
-        public PacketScreenAction(ScreenAction action, ScreenType screen) {
+	public PacketScreenAction(ScreenAction action, ScreenType screen) {
  		this.action = (byte)action.getId();
-                this.screen = (byte)screen.getCode();
-        }
+		this.screen = (byte)screen.getCode();
+	}
 	
 	@Override
 	public int getNumBytes() {
@@ -40,14 +40,14 @@ public class PacketScreenAction implements SpoutPacket{
 
 	@Override
 	public void run(int playerId) {
-            switch(ScreenAction.getScreenActionFromId(action)){
-                case Open:
-                    SpoutClient.getHandle().displayGuiScreen();
-                    break;
-                case Close:
-                    SpoutClient.getHandle().displayGuiScreen();
-                    break;
-            }
+		switch(ScreenAction.getScreenActionFromId(action)) {
+			case Open:
+				SpoutClient.getHandle().displayGuiScreen();
+				break;
+			case Close:
+				SpoutClient.getHandle().displayGuiScreen();
+				break;
+		}
 	}
 
 	@Override

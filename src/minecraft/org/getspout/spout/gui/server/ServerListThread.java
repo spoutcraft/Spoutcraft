@@ -100,7 +100,6 @@ public class ServerListThread implements Runnable {
 				this.parentScreen.serverInfo.status = "Done";
 				this.parentScreen.updateList();
 			}
-
 		} catch (IOException var11) {
 			synchronized(this.parentScreen.serverInfo) {
 				this.parentScreen.serverInfo.status = "An Error Occured.";

@@ -48,7 +48,6 @@ public class GuiServerSlot extends GuiSlot {
 				if(var6 == null || MathHelper.stringNullOrLengthZero(var6)) {
 					var6 = GuiMultiplayer.func_22087_f(this.parentServerGui) + " " + "";
 				}
-
 				String var7 = "";
 				var7 = ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).players + "" + "/" + ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).maxPlayers + "";
 				var7 = var7 + ", " + ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).country;
