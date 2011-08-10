@@ -43,18 +43,20 @@ public class GuiServerSlot extends GuiSlot {
 
 	public void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
 		try {
-			String var6 = ((ServerSlot)this.parentServerGui.serverList.get(var1)).name;
-			if(var6 == null || MathHelper.stringNullOrLengthZero(var6)) {
-				var6 = GuiMultiplayer.func_22087_f(this.parentServerGui) + " " + "";
-			}
+			synchronized(this.parentServerGui.serverInfo) {
+				String var6 = ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).name;
+				if(var6 == null || MathHelper.stringNullOrLengthZero(var6)) {
+					var6 = GuiMultiplayer.func_22087_f(this.parentServerGui) + " " + "";
+				}
 
-			String var7 = "";
-			var7 = ((ServerSlot)this.parentServerGui.serverList.get(var1)).players + "" + "/" + ((ServerSlot)this.parentServerGui.serverList.get(var1)).maxPlayers + "";
-			var7 = var7 + ", " + ((ServerSlot)this.parentServerGui.serverList.get(var1)).country;
-			String var10 = "";
-			this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6, var2 + 2, var3 + 1, 16777215);
-			this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var7, var2 + 2, var3 + 12, 8421504);
-			this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var10, var2 + 2, var3 + 12 + 10, 8421504);
+				String var7 = "";
+				var7 = ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).players + "" + "/" + ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).maxPlayers + "";
+				var7 = var7 + ", " + ((ServerSlot)this.parentServerGui.serverInfo.serverList.get(var1)).country;
+				String var10 = "";
+				this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6, var2 + 2, var3 + 1, 16777215);
+				this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var7, var2 + 2, var3 + 12, 8421504);
+				this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var10, var2 + 2, var3 + 12 + 10, 8421504);
+			}
 		} catch (Exception var11) {
 			;
 		}

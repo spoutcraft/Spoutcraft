@@ -7,7 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import net.minecraft.src.GuiMultiplayer;
 
@@ -33,15 +35,19 @@ public class ServerListThread implements Runnable {
 
 	public void run() {
 		try {
-			this.parentScreen.status = "Getting Server List";
+			synchronized(this.parentScreen.serverInfo) {
+				this.parentScreen.serverInfo.status = "Getting Server List";
+			}
 			String[] var1 = null;
 			URL url = new URL(this.addr);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			String line = reader.readLine();
 			reader.close();
-			this.parentScreen.status = "Processing servers";
+			synchronized(this.parentScreen.serverInfo) {
+				this.parentScreen.serverInfo.status = "Processing servers";
+			}
 			String[] text = line.split("\\{");
-			
+
 			for(int i = 0; i < text.length; ++i) {
 				if (text[i].contains("[Private]")) {
 					text[i].replace("[Private]","");
@@ -80,22 +86,25 @@ public class ServerListThread implements Runnable {
 						ServerSlot server2 = (ServerSlot)arg1;
 						return server1.name.toLowerCase().compareTo(server2.name.toLowerCase());
 					}
-					
+
 				});
 			}
-			
-			this.parentScreen.serverList.clear();
-			this.parentScreen.activeCountry = 0;
-			ArrayList tempCountries = new ArrayList(tempCountryMappings.keySet());
-			Collections.sort(tempCountries);
-			this.parentScreen.countries = tempCountries;
-			this.parentScreen.countryMappings = tempCountryMappings;
-			this.parentScreen.page = 0;
-			this.parentScreen.status = "Done";
-			this.parentScreen.updateList();
-			
+			synchronized(this.parentScreen.serverInfo) {			
+				this.parentScreen.serverInfo.serverList.clear();
+				this.parentScreen.serverInfo.activeCountry = 0;
+				ArrayList tempCountries = new ArrayList(tempCountryMappings.keySet());
+				Collections.sort(tempCountries);
+				this.parentScreen.serverInfo.countries = tempCountries;
+				this.parentScreen.serverInfo.countryMappings = tempCountryMappings;
+				this.parentScreen.serverInfo.page = 0;
+				this.parentScreen.serverInfo.status = "Done";
+				this.parentScreen.updateList();
+			}
+
 		} catch (IOException var11) {
-			this.parentScreen.status = "An Error Occured.";
+			synchronized(this.parentScreen.serverInfo) {
+				this.parentScreen.serverInfo.status = "An Error Occured.";
+			}
 			var11.printStackTrace();
 		}
 		instance = null;

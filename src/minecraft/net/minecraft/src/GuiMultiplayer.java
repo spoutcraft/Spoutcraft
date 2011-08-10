@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -13,13 +14,7 @@ import org.getspout.spout.gui.server.*;
 public class GuiMultiplayer extends GuiScreen {
 
 	public static final String version = "1.7.3";
-	public String status = null;
-	public List serverList = new ArrayList();
-	public LinkedHashMap<String,ArrayList> countryMappings = new LinkedHashMap<String,ArrayList>();
-	public List<String> countries = new ArrayList();
-	public int activeCountry = 0;
-	public int page = 0;
-	public int pages = 0;
+	public final ServerListInfo serverInfo = new ServerListInfo();
 	public String indexString = "";
 	private final DateFormat dateFormatter = new SimpleDateFormat();
 	protected GuiScreen parentScreen;
@@ -44,7 +39,9 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public void initGui() {
-		this.status = "Done";
+		synchronized(serverInfo) {
+			this.serverInfo.status = "Done";
+		}
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.screenTitle = var1.translateKey("Select server");
 		this.field_22098_o = var1.translateKey("Unknown");
@@ -65,11 +62,15 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public String getServerName(int var1) {
-		return ((ServerSlot)this.serverList.get(var1)).name;
+		synchronized(serverInfo) {
+			return ((ServerSlot)this.serverInfo.serverList.get(var1)).name;
+		}
 	}
 
 	public String getCountry(int var1) {
-		return ((ServerSlot)this.serverList.get(var1)).country;
+		synchronized(serverInfo) {
+			return ((ServerSlot)this.serverInfo.serverList.get(var1)).country;
+		}
 	}
 
 	public void initButtons() {
@@ -90,95 +91,103 @@ public class GuiMultiplayer extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
-			if(var1.id == 2) {
-				this.mc.displayGuiScreen(new GuiFavorites(this));
-			} else if(var1.id == 1) {
-				this.selectWorld(this.selectedWorld);
-			} else if(var1.id == 3) {
-				this.getServer();
-			} else if(var1.id == 4) {
-				this.mc.displayGuiScreen(new GuiAddFav(this, ((ServerSlot)this.serverList.get(this.selectedWorld)).ip + ":" + ((ServerSlot)this.serverList.get(this.selectedWorld)).port, ((ServerSlot)this.serverList.get(this.selectedWorld)).name));
-			} else if(var1.id == 0) {
-				this.mc.displayGuiScreen(new GuiMainMenu());
-			} else if(var1.id == 8) {
-				if(page > 0) {
-					page--;
-					updateList();
-				}
-			} else if(var1.id == 9) {
-				if(page < pages - 1) {
-					page++;
-					updateList();
-				}
-			} else if(var1.id == 10) {
-				if(page > 0) {
-					page-=10;
-					if(page < 0) {
-						page = 0;
+			synchronized(serverInfo) {
+				if(var1.id == 2) {
+					this.mc.displayGuiScreen(new GuiFavorites(this));
+				} else if(var1.id == 1) {
+					this.selectWorld(this.selectedWorld);
+				} else if(var1.id == 3) {
+					this.getServer();
+				} else if(var1.id == 4) {
+					this.mc.displayGuiScreen(new GuiAddFav(this, ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).ip + ":" + ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).port, ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).name));
+				} else if(var1.id == 0) {
+					this.mc.displayGuiScreen(new GuiMainMenu());
+				} else if(var1.id == 8) {
+					if(serverInfo.page > 0) {
+						serverInfo.page--;
+						updateList();
 					}
-					updateList();
-				}
-			} else if(var1.id == 11) {
-				if(page < pages - 1) {
-					page+=10;
-					if(page > pages - 1) {
-						page = pages - 1;
+				} else if(var1.id == 9) {
+					if(serverInfo.page < serverInfo.pages - 1) {
+						serverInfo.page++;
+						updateList();
 					}
-					updateList();
+				} else if(var1.id == 10) {
+					if(serverInfo.page > 0) {
+						serverInfo.page-=10;
+						if(serverInfo.page < 0) {
+							serverInfo.page = 0;
+						}
+						updateList();
+					}
+				} else if(var1.id == 11) {
+					if(serverInfo.page < serverInfo.pages - 1) {
+						serverInfo.page+=10;
+						if(serverInfo.page > serverInfo.pages - 1) {
+							serverInfo.page = serverInfo.pages - 1;
+						}
+						updateList();
+					}
+				} else if(var1.id == 6) {
+					if(serverInfo.activeCountry > 0) {
+						serverInfo.activeCountry--;
+						serverInfo.page = 0;
+						updateList();
+					}
+				} else if(var1.id == 7) {
+					if(serverInfo.activeCountry < serverInfo.countryMappings.size() - 1) {
+						serverInfo.activeCountry++;
+						serverInfo.page = 0;
+						updateList();
+					}
+				} else {
+					this.worldSlotContainer.actionPerformed(var1);
 				}
-			} else if(var1.id == 6) {
-				if(activeCountry > 0) {
-					activeCountry--;
-					page = 0;
-					updateList();
-				}
-			} else if(var1.id == 7) {
-				if(activeCountry < countryMappings.size() - 1) {
-					activeCountry++;
-					page = 0;
-					updateList();
-				}
-			} else {
-				this.worldSlotContainer.actionPerformed(var1);
 			}
 
 		}
 	}
 
 	public void selectWorld(int id) {
-		this.mc.displayGuiScreen(new GuiConnecting(this.mc, ((ServerSlot)this.serverList.get(id)).ip, ((ServerSlot)this.serverList.get(id)).port == ""?25565:Integer.parseInt(((ServerSlot)this.serverList.get(id)).port)));
-	}
-	
-	public void updateList() {
-		if (countries.size() == 0) {
-			indexString = "Empty (0/0)";
-			serverList = new ArrayList();
-		} else {
-			String country = countries.get(activeCountry);
-			ArrayList fullList = countryMappings.get(country);
-			pages = (fullList.size() + 9) / 10;
-			int last = Math.min(fullList.size(), (page + 1) * 10);
-			int first = page * 10;
-			serverList = fullList.subList(first, last);
-			indexString = country + " (" + (page + 1) + "/" + pages + ")";
+		synchronized(serverInfo) {
+			this.mc.displayGuiScreen(new GuiConnecting(this.mc, ((ServerSlot)this.serverInfo.serverList.get(id)).ip, ((ServerSlot)this.serverInfo.serverList.get(id)).port == ""?25565:Integer.parseInt(((ServerSlot)this.serverInfo.serverList.get(id)).port)));
 		}
-		this.buttonNextPage.enabled = page < pages - 1;
-		this.buttonPrevPage.enabled = page > 0;
-		this.buttonNextTenPage.enabled = page < pages - 1;
-		this.buttonPrevTenPage.enabled = page > 0;
-		this.buttonPrevCountry.enabled = activeCountry > 0;
-		this.buttonNextCountry.enabled = activeCountry < countries.size() - 1;
+	}
+
+	public void updateList() {
+		synchronized(serverInfo) {
+			if (serverInfo.countries.size() == 0) {
+				indexString = "Empty (0/0)";
+				serverInfo.serverList = new ArrayList();
+			} else {
+				String country = serverInfo.countries.get(serverInfo.activeCountry);
+				ArrayList fullList = serverInfo.countryMappings.get(country);
+				serverInfo.pages = (fullList.size() + 9) / 10;
+				int last = Math.min(fullList.size(), (serverInfo.page + 1) * 10);
+				int first = serverInfo.page * 10;
+				serverInfo.serverList = fullList.subList(first, last);
+				indexString = country + " (" + (serverInfo.page + 1) + "/" + serverInfo.pages + ")";
+			}
+			this.buttonNextPage.enabled = serverInfo.page < serverInfo.pages - 1;
+			this.buttonPrevPage.enabled = serverInfo.page > 0;
+			this.buttonNextTenPage.enabled = serverInfo.page < serverInfo.pages - 1;
+			this.buttonPrevTenPage.enabled = serverInfo.page > 0;
+			this.buttonPrevCountry.enabled = serverInfo.activeCountry > 0;
+			this.buttonNextCountry.enabled = serverInfo.activeCountry < serverInfo.countries.size() - 1;
+		}
 	}
 
 	public void deleteWorld(boolean var1, int var2) {}
 
 	public void drawScreen(int x, int y, float z) {
-		this.worldSlotContainer.drawScreen(x, y, z);
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-		this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 86, 5263440);
-		this.drawCenteredString(this.fontRenderer, indexString , this.width / 2, this.height - 71, 5263440);
-		this.drawString(this.fontRenderer, "Displaying " + this.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverList.size() + " servers") - 2, 20, 5263440);
-		this.drawString(this.fontRenderer, "Status: " + this.status, 2, 20, 5263440);
+		synchronized(serverInfo) {
+			this.worldSlotContainer.drawScreen(x, y, z);
+			this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
+			this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 86, 5263440);
+			this.drawCenteredString(this.fontRenderer, indexString , this.width / 2, this.height - 71, 5263440);
+			this.drawString(this.fontRenderer, "Displaying " + this.serverInfo.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverInfo.serverList.size() + " servers") - 2, 20, 5263440);
+			this.drawString(this.fontRenderer, "Status: " + this.serverInfo.status, 2, 20, 5263440);
+		}
 		super.drawScreen(x, y, z);
 	}
 
@@ -188,7 +197,9 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public static List getSize(GuiMultiplayer var0) {
-		return var0.serverList;
+		synchronized(var0.serverInfo) {
+			return var0.serverInfo.serverList;
+		}
 	}
 
 	public static int onElementSelected(GuiMultiplayer var0, int var1) {
@@ -218,4 +229,5 @@ public class GuiMultiplayer extends GuiScreen {
 	public static String func_22088_h(GuiMultiplayer var0) {
 		return var0.field_22097_p;
 	}
+
 }
