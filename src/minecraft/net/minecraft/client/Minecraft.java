@@ -106,6 +106,8 @@ import org.lwjgl.util.glu.GLU;
 import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
+
+import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.gui.ScreenType;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketScreenAction;
@@ -453,7 +455,7 @@ public abstract class Minecraft implements Runnable {
 		}
 		//End
 		ScreenType display = ScreenType.getType(var1);
-		if(waitingGui != var1){
+		if(currentScreen != var1 || waitingGui != var1){
 			waitingGui = var1;
 			if(!display.isInstantOpen() && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
 				if( this.currentScreen  != null && var1 == null ){
@@ -488,6 +490,8 @@ public abstract class Minecraft implements Runnable {
 				this.ingameGUI.clearChatMessages();
 			}
 
+				waitingGui = null;
+			
 			this.currentScreen = (GuiScreen)var1;
 			if(var1 != null) {
 				this.setIngameNotInFocus();
