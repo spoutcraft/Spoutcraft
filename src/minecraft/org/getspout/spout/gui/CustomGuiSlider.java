@@ -45,8 +45,8 @@ public class CustomGuiSlider extends GuiSlider {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			boolean hovering = mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
 			int hoverState = this.getHoverState(hovering);
-			this.drawTexturedModalRect((int) slider.getScreenX(), (int) slider.getScreenY(), 0, 46 + hoverState * 20, (int) (slider.getWidth() / 2), (int) slider.getHeight());
-			this.drawTexturedModalRect((int) (slider.getScreenX() + slider.getWidth() / 2), (int) slider.getScreenY(), (int) (200 - slider.getWidth() / 2), 46 + hoverState * 20, (int) (slider.getWidth() / 2), (int) slider.getHeight());
+			this.drawTexturedModalRect((int) slider.getScreenX(), (int) slider.getScreenY(), 0, 46 + hoverState * 20, (int) Math.ceil(slider.getWidth() / 2), (int) slider.getHeight());
+			this.drawTexturedModalRect((int) Math.floor(slider.getScreenX() + slider.getWidth() / 2), (int) slider.getScreenY(), (int) (200 - slider.getWidth() / 2), 46 + hoverState * 20, (int) (slider.getWidth() / 2), (int) slider.getHeight());
 			this.mouseDragged(game, mouseX, mouseY);
 		}
 	}

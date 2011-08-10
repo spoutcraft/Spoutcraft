@@ -18,7 +18,6 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Packet;
 
 public class SpoutClient implements Client {
@@ -132,10 +131,10 @@ public class SpoutClient implements Client {
 	
 	public static void setReloadPacket(SpoutPacket packet) {
 		reloadPacket = packet;
-		getHandle().displayGuiScreen((GuiScreen) null, false);
-		/*if (packet != null) {
+		if (packet != null) {
 			instance = null; //dump all saved data
-		}*/
+			getInstance().player = new ClientPlayer(getHandle().thePlayer);
+		}
 	}
 	
 	public static SpoutPacket getReloadPacket() {
