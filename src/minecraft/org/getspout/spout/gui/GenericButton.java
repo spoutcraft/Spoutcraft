@@ -58,6 +58,38 @@ public class GenericButton extends GenericControl implements Button {
 		label.setText(text);
 		return this;
 	}
+
+	double offsetx = 0, offsety = 0;
+	
+	@Override
+	public double getWidth() {
+		double width = super.getWidth();
+		if (width > 396) {
+			offsetx = (width - 396) /2;
+			width = 396;
+		}
+		return width;
+	}
+	
+	@Override
+	public double getHeight() {
+		double height = super.getHeight();
+		if (height > 20) {
+			offsety = (height - 20) / 2;
+			height = 20;
+		}
+		return height;
+	}
+	
+	@Override
+	public double getScreenX() {
+		return super.getScreenX() + offsetx;
+	}
+	
+	@Override
+	public double getScreenY() {
+		return super.getScreenY() + offsety;
+	}
 	
 	@Override
 	public Align getAlignX() {
