@@ -18,6 +18,7 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Packet;
 
 public class SpoutClient implements Client {
