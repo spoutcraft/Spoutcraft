@@ -92,7 +92,7 @@ public class GuiScreen extends Gui {
 		this.fontRenderer = var1.fontRenderer;
 		this.width = var2;
 		this.height = var3;
-		this.controlList.clear();
+		//this.controlList.clear();
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		this.initGui();
 	}
