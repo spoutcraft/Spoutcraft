@@ -1,10 +1,11 @@
 package org.getspout.spout.client;
 
+import net.minecraft.src.EntityPlayer;
+
 import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ActivePlayer;
-import org.getspout.spout.player.Player;
 import org.getspout.spout.player.SkyManager;
 
 public interface Client {
@@ -23,7 +24,7 @@ public interface Client {
 	
 	public SpoutVersion getServerVersion();
 	
-	public Player getPlayerFromId(int id);
+	public EntityPlayer getPlayerFromId(int id);
 	
 	public long getTick();
 }
