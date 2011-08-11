@@ -188,7 +188,7 @@ public class GameSettings {
 		}
 
 		if(this.mc.renderGlobal != null) {
-			this.mc.renderGlobal.loadRenderers();
+			this.mc.renderGlobal.markAllRenderersDirty();
 		}
 
 	}
@@ -220,8 +220,10 @@ public class GameSettings {
 						}
 					}
 				}
-
-				this.mc.renderGlobal.loadRenderers();
+					
+				if (mc.theWorld != null) {
+					this.mc.renderGlobal.markAllRenderersDirty();
+				}
 			}
 		}
 	}
@@ -280,12 +282,16 @@ public class GameSettings {
 
 		if(var1 == EnumOptions.GRAPHICS) {
 			this.fancyGraphics = !this.fancyGraphics;
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.AMBIENT_OCCLUSION) {
 			this.ambientOcclusion = !this.ambientOcclusion;
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 //Spout Start
 		if(var1 == EnumOptions.FOG_FANCY) {
@@ -319,7 +325,9 @@ public class GameSettings {
 
 		if(var1 == EnumOptions.LOAD_FAR) {
 			this.ofLoadFar = !this.ofLoadFar;
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.loadRenderers();
+			}
 		}
 
 		if(var1 == EnumOptions.PRELOADED_CHUNKS) {
@@ -327,8 +335,9 @@ public class GameSettings {
 			if(this.ofPreloadedChunks > 8) {
 				this.ofPreloadedChunks = 0;
 			}
-
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.SMOOTH_FPS) {
@@ -347,8 +356,9 @@ public class GameSettings {
 			if(this.ofTrees > 2) {
 				this.ofTrees = 0;
 			}
-
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.GRASS) {
@@ -358,7 +368,9 @@ public class GameSettings {
 			}
 
 			RenderBlocks.fancyGrass = Config.isGrassFancy();
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.RAIN) {
@@ -435,8 +447,9 @@ public class GameSettings {
 			if(this.ofBetterGrass > 3) {
 				this.ofBetterGrass = 1;
 			}
-
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.WEATHER) {
@@ -464,7 +477,9 @@ public class GameSettings {
 
 		if(var1 == EnumOptions.FAR_VIEW) {
 			this.ofFarView = !this.ofFarView;
-			this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.markAllRenderersDirty();
+			}
 		}
 
 		if(var1 == EnumOptions.TIME) {
