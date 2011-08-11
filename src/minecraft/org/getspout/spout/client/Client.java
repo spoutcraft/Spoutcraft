@@ -3,6 +3,7 @@ package org.getspout.spout.client;
 import net.minecraft.src.EntityPlayer;
 
 import org.getspout.spout.SpoutVersion;
+import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ActivePlayer;
@@ -17,6 +18,8 @@ public interface Client {
 	public PacketManager getPacketManager();
 	
 	public ActivePlayer getActivePlayer();
+	
+	public EntityManager getEntityManager();
 	
 	public boolean isCheatMode();
 	

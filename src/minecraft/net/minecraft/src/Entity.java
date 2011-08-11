@@ -2,6 +2,11 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+
+//Spout Start
+import org.getspout.spout.client.SpoutClient;
+//Spout End
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFluid;
@@ -131,6 +136,9 @@ public abstract class Entity {
 		this.setPosition(0.0D, 0.0D, 0.0D);
 		this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
 		this.entityInit();
+		//Spout Start
+		SpoutClient.getInstance().getEntityManager().registerEntity(this);
+		//Spout End
 	}
 
 	protected abstract void entityInit();
