@@ -535,6 +535,14 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			try {
+				if (renderEngine.oldPack != null) {
+					renderEngine.texturePack.setTexturePack(renderEngine.oldPack);
+				}
+			} catch (Exception e) {
+				
+			}
+
+			try {
 				if(this.downloadResourcesThread != null) {
 					this.downloadResourcesThread.closeMinecraft();
 				}
