@@ -4,7 +4,10 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
+
 import java.util.ArrayList;
 
 public class CustomScreen extends GuiScreen {
@@ -49,6 +52,17 @@ public class CustomScreen extends GuiScreen {
 		
 	public ArrayList<GuiButton> getControlList() {
 		return (ArrayList<GuiButton>)this.controlList;
+	}
+	
+	@Override
+	public void setWorldAndResolution(Minecraft var1, int var2, int var3) {
+		this.guiParticles = new GuiParticle(var1);
+		this.mc = var1;
+		this.fontRenderer = var1.fontRenderer;
+		this.width = var2;
+		this.height = var3;
+		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
+		this.initGui();
 	}
 	
 	public void drawScreen(int x, int y, float z) {
