@@ -49,8 +49,8 @@ public class ChunkCache {
 	private static AtomicInteger chunks = new AtomicInteger();
 	private static AtomicInteger totalData = new AtomicInteger();
 	public static AtomicInteger hitPercentage = new AtomicInteger();
-	private static int hits = 0;
-	private static int cacheAttempts = 0;
+	private static AtomicInteger hits = new AtomicInteger();
+	private static AtomicInteger cacheAttempts = new AtomicInteger();
 	public static AtomicLong loggingStart = new AtomicLong();
 	public static AtomicInteger totalPacketUp = new AtomicInteger();
 	public static AtomicInteger totalPacketDown = new AtomicInteger();
@@ -92,6 +92,7 @@ public class ChunkCache {
 				PartitionChunk.copyToChunkData(chunkData, i, partitionData);
 			}
 			
+			// Send hints to server about possible nearby hashes
 			if(hashes.add(hash)) {
 				Integer index = p.getIndex(hash);
 				if(index != null) {
@@ -112,9 +113,11 @@ public class ChunkCache {
 			}
 		}
 		
-		hits += cacheHit;
-		cacheAttempts += 40;
-		hitPercentage.set((100 * hits) / cacheAttempts);
+		int h = hits.addAndGet(cacheHit);
+		int a = cacheAttempts.addAndGet(40);
+		if(a != 0) {
+			hitPercentage.set((100 * h) / a);
+		}
 				
 		byte[] cachedChunkData = new byte[81920];
 		System.arraycopy(chunkData, 0, cachedChunkData, 0, 81920);
@@ -152,6 +155,8 @@ public class ChunkCache {
 		totalPacketDown.set(0);
 		totalData.set(0);
 		chunks.set(0);
+		hits.set(0);
+		cacheAttempts.set(0);
 	}
 
 }
