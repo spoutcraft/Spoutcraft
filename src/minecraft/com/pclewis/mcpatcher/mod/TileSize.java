@@ -35,6 +35,7 @@ public final class TileSize {
 
 	public static void setTileSize(int var0) {
 		int_size = var0;
+		System.out.println("Tile Size: " + var0);
 		int_sizeMinus1 = var0 - 1;
 		int_sizeHalf = var0 / 2;
 		int_glBufferSize = Math.max(int_glBufferSize, 1024 * var0 * var0);
@@ -65,23 +66,6 @@ public final class TileSize {
 		double_sizeMinus1 = double_size - 1.0D;
 		double_compassCenterMin = double_size / 2.0D - 0.5D;
 		double_compassCenterMax = double_size / 2.0D + 0.5D;
-	}
-
-	private static void dump() {
-		Field[] var0 = TileSize.class.getDeclaredFields();
-		int var1 = var0.length;
-
-		for(int var2 = 0; var2 < var1; ++var2) {
-			Field var3 = var0[var2];
-			if(var3.getName().contains("_")) {
-				try {
-					//MCPatcherUtils.log("%s = %s", new Object[]{var3.getName(), var3.get((Object)null)});
-				} catch (Exception var5) {
-					//MCPatcherUtils.log("%s: %s", new Object[]{var3.getName(), var5.toString()});
-				}
-			}
-		}
-
 	}
 
 	static {

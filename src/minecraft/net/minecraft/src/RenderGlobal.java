@@ -1642,5 +1642,14 @@ public class RenderGlobal implements IWorldAccess {
 	public int renderAllSortedRenderers(int var1, double var2) {
 		return this.renderSortedRenderers(0, this.sortedWorldRenderers.length, var1, var2);
 	}
+	
+	public void markAllRenderersDirty() {
+		if (mc.renderGlobal != null && mc.renderGlobal.worldRenderers != null) {
+			WorldRenderer[] renderers = mc.renderGlobal.worldRenderers;
+			for(int i = 0; i < renderers.length; i++) {
+				renderers[i].markDirty();
+			}
+		}
+	}
 //Spout End
 }

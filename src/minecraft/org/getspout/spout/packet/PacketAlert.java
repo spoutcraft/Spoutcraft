@@ -25,8 +25,8 @@ public class PacketAlert implements SpoutPacket{
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
-		title = PacketUtil.readString(input, 26);
-		message = PacketUtil.readString(input, 26);
+		title = PacketUtil.readString(input, 78);
+		message = PacketUtil.readString(input, 78);
 		itemId = input.readInt();
 	}
 
@@ -49,7 +49,7 @@ public class PacketAlert implements SpoutPacket{
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	String message;

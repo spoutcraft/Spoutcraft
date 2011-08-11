@@ -18,6 +18,8 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
+import com.pclewis.mcpatcher.mod.TileSize;
+
 public class Config {
 
 	private static GameSettings gameSettings = null;
@@ -98,7 +100,7 @@ public class Config {
 	}
 
 	public static int getMipmapLevel() {
-		return gameSettings == null?DEF_MIPMAP_LEVEL.intValue():gameSettings.ofMipmapLevel;
+		return gameSettings == null || TileSize.int_size > 16 ?DEF_MIPMAP_LEVEL.intValue():gameSettings.ofMipmapLevel;
 	}
 
 	public static int getMipmapType() {

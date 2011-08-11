@@ -105,7 +105,6 @@ public class SpoutClient implements Client {
 
 	public void onWorldExit() {
 		FileUtil.deleteTempDirectory();
-		getHandle().renderEngine.refreshTextures();
 		instance = null;
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();

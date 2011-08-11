@@ -101,10 +101,10 @@ public class GenericLabel extends GenericWidget implements Label{
 	public void render() {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		String lines[] = getText().split("\\n");
-		int top = 0;
+		double top = getScreenY();
 		switch (vAlign) {
-			case SECOND: top = (int) (getHeight() / 2 - lines.length * 5); break;
-			case THIRD: top = (int) (getHeight() - lines.length * 10); break;
+			case SECOND: top += (int) (getHeight() / 2 - lines.length * 5); break;
+			case THIRD: top += (int) (getHeight() - lines.length * 10); break;
 		}
 		for (int i = 0; i < lines.length; i++) {
 			int left = (int) getScreenX();

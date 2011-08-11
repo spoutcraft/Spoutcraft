@@ -503,7 +503,6 @@ public abstract class Minecraft implements Runnable {
 			}
 		}
 	}
-
 	public void displayPreviousScreen() {
 		displayGuiScreen(previousScreen, false);
 		previousScreen = null;
@@ -1418,8 +1417,8 @@ public abstract class Minecraft implements Runnable {
 			if (renderEngine.oldPack != null) {
 				renderEngine.texturePack.setTexturePack(renderEngine.oldPack);
 				renderEngine.oldPack = null;
-				renderEngine.refreshTextures();
 			}
+			renderEngine.refreshTextures();
 			playerController = null;
 			effectRenderer = null;
 			SpoutClient.getInstance().onWorldExit();

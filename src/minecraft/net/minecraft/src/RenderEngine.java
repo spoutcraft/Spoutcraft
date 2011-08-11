@@ -196,14 +196,12 @@ public class RenderEngine {
 	public void setupTexture(BufferedImage var1, int var2) {
 		//Spout HD Start
 		if (var1 == null) return;
-		//Spout HD End
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var2);
-		//Spout Start
 		useMipmaps = Config.isUseMipmaps();
 		int var3;
 		int var4;
 		if(useMipmaps) {
-			var3 = Config.getMipmapType();
+			var3 = Config.getMipmapType(); 
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, var3);
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10240 /*GL_TEXTURE_MAG_FILTER*/, 9728 /*GL_NEAREST*/);
 			if(GLContext.getCapabilities().OpenGL12) {
@@ -272,6 +270,7 @@ public class RenderEngine {
 			var6[var7 * 4 + 3] = (byte)var8;
 		}
 //Spout HD Start
+		checkImageDataSize(var3);
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, var6);
 //Spout HD End
 		GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, 0, 6408 /*GL_RGBA*/, var3, var4, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
@@ -710,6 +709,16 @@ public class RenderEngine {
 		}
 
 		this.mipImageDatas = (ByteBuffer[])((ByteBuffer[])var3.toArray(new ByteBuffer[var3.size()]));
+	}
+	
+	private void checkImageDataSize(int var1) {
+		if(this.imageData != null) {
+			int var2 = var1 * var1 * 4;
+			if(this.imageData.capacity() >= var2) {
+				return;
+			}
+		}
+		this.allocateImageData(var1);
 	}
 
 	private int getMaxMipmapLevel(int var1) {

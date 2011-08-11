@@ -54,6 +54,7 @@ public class GuiFavorites extends GuiScreen {
 
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
+		Keyboard.enableRepeatEvents(true);
 		this.field_22098_o = var1.translateKey("Unknown");
 		this.field_22097_p = var1.translateKey("aaa");
 		this.loadSaves();
