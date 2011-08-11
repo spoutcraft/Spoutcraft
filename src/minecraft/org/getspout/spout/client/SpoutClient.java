@@ -3,6 +3,8 @@ package org.getspout.spout.client;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.SpoutVersion;
+import org.getspout.spout.entity.EntityManager;
+import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.io.FileDownloadThread;
@@ -31,6 +33,7 @@ public class SpoutClient implements Client {
 	private SimpleSkyManager skyManager = new SimpleSkyManager();
 	private ChatManager chatManager = new ChatManager();
 	private PacketManager packetManager = new PacketManager();
+	private EntityManager entityManager = new SimpleEntityManager();
 	private long tick = 0;
 	private Thread clipboardThread = null;
 	private ClientPlayer player = null;
@@ -75,6 +78,10 @@ public class SpoutClient implements Client {
 	
 	public ActivePlayer getActivePlayer() {
 		return player;
+	}
+	
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 	
 	public boolean isCheatMode() {
@@ -148,5 +155,7 @@ public class SpoutClient implements Client {
 	public static SpoutPacket getReloadPacket() {
 		return reloadPacket;
 	}
+
+
 
 }
