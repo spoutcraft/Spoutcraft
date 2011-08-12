@@ -109,7 +109,10 @@ public class ChunkCache {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(true, nearbyHashes)));
+				EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
+				if (player != null) {
+					player.sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(true, nearbyHashes)));
+				}
 			}
 		}
 		
