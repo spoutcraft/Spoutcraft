@@ -63,6 +63,11 @@ public class GuiFavorites extends GuiScreen {
 		this.initButtons();
 	}
 
+	@Override
+	public void onGuiClosed() {
+		Keyboard.enableRepeatEvents(false);
+	}
+
 	private void loadSaves() {
 		this.selectedWorld = -1;
 		this.serverList.clear();
