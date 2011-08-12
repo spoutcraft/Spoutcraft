@@ -1,16 +1,10 @@
 package net.minecraft.src;
 
-import net.minecraft.src.EnumOptions;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSlider;
-import net.minecraft.src.GuiSmallButton;
-import net.minecraft.src.ScaledResolution;
-import net.minecraft.src.StringTranslate;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.*;
+import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketRenderDistance;
+import org.getspout.spout.player.ActivePlayer;
 //Spout End
 
 public class GuiVideoSettings extends GuiScreen {
@@ -72,11 +66,14 @@ public class GuiVideoSettings extends GuiScreen {
 				GuiButton guibutton = var1;
 				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && SpoutClient.getInstance().isCheatMode()) {
 					byte view = (byte)guiGameSettings.renderDistance;
-					byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
-					guiGameSettings.renderDistance = newView;
-					change = 0;
-					if (view != newView) {
-						((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+					ActivePlayer activePlayer = SpoutClient.getInstance().getActivePlayer();
+					if (activePlayer != null) {
+						byte newView = (byte) activePlayer.getNextRenderDistance().getValue();
+						guiGameSettings.renderDistance = newView;
+						change = 0;
+						if (view != newView) {
+							((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+						}
 					}
 				}
 				if (change != 0) {
