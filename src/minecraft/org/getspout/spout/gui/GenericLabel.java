@@ -127,19 +127,23 @@ public class GenericLabel extends GenericWidget implements Label{
 		
 		double top = getScreenY();
 		switch (vAlign) {
-			case SECOND: top += (int) (getHeight() / 2 - (auto ? sheight : height) / 2); break;
-			case THIRD: top += (int) (getHeight() - (auto ? sheight : height)); break;
+			case SECOND: top += (int) (getHeight() / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
+			case THIRD: top += (int) (getHeight() - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
 		}
 		
 		double aleft = getScreenX();
 		switch (hAlign) {
-			case SECOND: aleft = (getWidth() / 2) - ((auto ? swidth : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
-			case THIRD: aleft = getWidth() - (auto ? swidth : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
+			case SECOND: aleft = (getWidth() / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
+			case THIRD: aleft = getWidth() - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
 		}
 		
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) aleft, (float) top, 0);
-		if (!auto) { GL11.glScalef((float) (getWidth() / swidth), (float) (getHeight() / sheight), 1); }
+		if (auto) {
+			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
+		} else {
+			GL11.glScalef((float) (getWidth() / swidth), (float) (getHeight() / sheight), 1);
+		}
 		for (int i = 0; i < lines.length; i++) {
 			double left = 0;
 			switch (hAlign) {
