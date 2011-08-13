@@ -390,7 +390,6 @@ public class RenderEngine {
 	public ThreadDownloadImageData obtainImageData(String var1, ImageBuffer var2) {
 		ThreadDownloadImageData var3 = (ThreadDownloadImageData)this.urlToImageDataMap.get(var1);
 		if(var3 == null) {
-			releaseImageData(var1);
 			this.urlToImageDataMap.put(var1, new ThreadDownloadImageData(var1, var2));
 		} else {
 			++var3.referenceCount;
