@@ -119,14 +119,18 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 				oldX = block.maxX;
 				oldY = block.maxY;
 				oldZ = block.maxZ;
-				block.maxX = block.maxX * (getWidth() / 8);
-				block.maxY = block.maxY * (getHeight() / 8);
+				block.maxX = block.maxX * (width / 8);
+				block.maxY = block.maxY * (height / 8);
 				block.maxZ = block.maxZ * (getDepth() / 8);
 			}
 			else {
 				renderer.setScale(1 + (getWidth() / 200D), 1 + (getHeight() / 200D), 1);
 			}
-			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, toRender, (int) getScreenX(), (int) getScreenY());
+			GL11.glPushMatrix();
+			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0);
+			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
+			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, toRender, 0, 0);
+			GL11.glPopMatrix();
 			if (getTypeId() < 255){
 				block.maxX = oldX;
 				block.maxY = oldY;
