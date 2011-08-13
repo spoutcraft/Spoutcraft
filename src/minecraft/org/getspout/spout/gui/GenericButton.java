@@ -161,4 +161,15 @@ public class GenericButton extends GenericControl implements Button {
 		button.drawButton(SpoutClient.getHandle(), x, y);
 	}
 
+	@Override
+	public Label setAuto(boolean auto) {
+		label.setAuto(auto);
+		return this;
+	}
+
+	@Override
+	public boolean getAuto() {
+		return label.getAuto();
+	}
+
 }

@@ -35,4 +35,8 @@ public interface Label extends Widget{
 	public Widget setAlignX(Align pos);
 	
 	public Widget setAlignY(Align pos);
+
+	Label setAuto(boolean auto);
+	
+	boolean getAuto();
 }
