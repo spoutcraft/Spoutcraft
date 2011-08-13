@@ -19,10 +19,13 @@ public class CustomGuiButton extends GuiButton {
 			FontRenderer font = game.fontRenderer;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, game.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef((float) button.getScreenX(), (float) button.getScreenY(), 0);
+			GL11.glScalef((float) button.getWidth() / 200f, (float) button.getHeight() / 20f, 1);
+			
 			boolean hovering = mouseX >= button.getScreenX() && mouseY >= button.getScreenY() && mouseX < button.getScreenX() + button.getWidth() && mouseY < button.getScreenY() + button.getHeight();
 			int hoverState = this.getHoverState(hovering);
-			this.drawTexturedModalRect((int) button.getScreenX(), (int) button.getScreenY(), 0, 46 + hoverState * 20, (int) Math.ceil(button.getWidth() / 2), (int) button.getHeight());
-			this.drawTexturedModalRect((int) Math.floor(button.getScreenX() + button.getWidth() / 2), (int) button.getScreenY(), (int) (200 - button.getWidth() / 2), 46 + hoverState * 20, (int) (button.getWidth() / 2), (int) button.getHeight());
+			this.drawTexturedModalRect(0, 0, 0, 46 + hoverState * 20, 100, 20);
+			this.drawTexturedModalRect(100, 0, 100, 46 + hoverState * 20, 100, 20);
 			this.mouseDragged(game, mouseX, mouseY);
 			int color = button.getColor();
 			if(!button.isEnabled()) {
@@ -30,13 +33,12 @@ public class CustomGuiButton extends GuiButton {
 			} else if(hovering) {
 				color = button.getHoverColor();
 			}
-			int left = (int) button.getScreenX() + 5;
+			int left = (int) 5;
 			switch (button.getAlignX()) {
-				case SECOND: left = (int) (button.getScreenX() + button.getWidth() / 2) - (font.getStringWidth(button.getText()) / 2); break;
-				case THIRD: left = (int) (button.getScreenX() + button.getWidth()) - font.getStringWidth(button.getText()) - 5; break;
+				case SECOND: left = (int) (100 - (font.getStringWidth(button.getText()) / 2)); break;
+				case THIRD: left = (int) (200 - font.getStringWidth(button.getText())) - 5; break;
 			}
-			this.drawString(font, button.getText(), left, (int) (button.getScreenY() + (button.getHeight() - 8) / 2), color);
-
+			this.drawString(font, button.getText(), left, 6, color);
 		}
 	}
 	

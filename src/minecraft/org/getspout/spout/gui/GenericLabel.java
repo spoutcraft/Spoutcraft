@@ -103,16 +103,20 @@ public class GenericLabel extends GenericWidget implements Label{
 		String lines[] = getText().split("\\n");
 		double top = getScreenY();
 		switch (vAlign) {
-			case SECOND: top += (int) (getHeight() / 2 - lines.length * 5); break;
-			case THIRD: top += (int) (getHeight() - lines.length * 10); break;
+			case SECOND: top += (int) (getHeight() / 2 - lines.length * getScreen().getHeight() / 48f); break;
+			case THIRD: top += (int) (getHeight() - lines.length * getScreen().getHeight() / 24f); break;
 		}
 		for (int i = 0; i < lines.length; i++) {
 			int left = (int) getScreenX();
 			switch (hAlign) {
-				case SECOND: left += getWidth() / 2 - font.getStringWidth(lines[i]) / 2; break;
-				case THIRD: left += getWidth() - font.getStringWidth(lines[i]); break;
+				case SECOND: left += getWidth() / 2 - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
+				case THIRD: left += getWidth() - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
 			}
-			font.drawStringWithShadow(lines[i], left, (int) (top + (i * 10)), getHexColor());
+			GL11.glPushMatrix(); 
+			GL11.glTranslatef(left, (float) (top + i * getScreen().getHeight() / 24f), 0);
+			GL11.glScalef((float) (getScreen().getWidth()) / 427, (float) (getScreen().getHeight() / 240f), 1);
+			font.drawStringWithShadow(lines[i], 0, 0, getHexColor());
+			GL11.glPopMatrix();
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
