@@ -32,7 +32,7 @@ public class CustomGuiButton extends GuiButton {
 			}
 			int left = (int) button.getScreenX() + 5;
 			switch (button.getAlignX()) {
-				case SECOND: left = (int) (button.getScreenX() + button.getWidth() / 2) - font.getStringWidth(button.getText()); break;
+				case SECOND: left = (int) (button.getScreenX() + button.getWidth() / 2) - (font.getStringWidth(button.getText()) / 2); break;
 				case THIRD: left = (int) (button.getScreenX() + button.getWidth()) - font.getStringWidth(button.getText()) - 5; break;
 			}
 			this.drawString(font, button.getText(), left, (int) (button.getScreenY() + (button.getHeight() - 8) / 2), color);

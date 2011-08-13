@@ -13,7 +13,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	protected String text = "";
 	protected Align vAlign = Align.FIRST;
 	protected Align hAlign = Align.FIRST;
-	protected int hexColor = 0x000000;
+	protected int hexColor = 0xFFFFFF;
 	public GenericLabel(){
 		
 	}
@@ -67,12 +67,12 @@ public class GenericLabel extends GenericWidget implements Label{
 
 	@Override
 	public Align getAlignX() {
-		return vAlign;
+		return hAlign;
 	}
 
 	@Override
 	public Align getAlignY() {
-		return hAlign;
+		return vAlign;
 	}
 	
 	@Override
