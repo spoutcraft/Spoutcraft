@@ -96,7 +96,7 @@ public class GuiAddFav extends GuiScreen {
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
-		this.drawCenteredString(SpoutClient.getHandle().fontRenderer, "Add New Favorite", this.width / 2, this.height / 4 - 60 + 20, 16777215);
+		this.drawCenteredString(SpoutClient.getHandle().fontRenderer, "Add New Favorite", this.width / 2, 20, 16777215);
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 100, 47, 10526880);
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Server Name", this.width / 2 - 100, 107, 10526880);
 		this.nameField.drawTextBox();
