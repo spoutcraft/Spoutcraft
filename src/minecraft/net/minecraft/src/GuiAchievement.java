@@ -59,7 +59,7 @@ public class GuiAchievement extends Gui {
 		//Spout End
 	}
 
-	//BukkiContrib Start
+	//Spout Start
 	public void queueNotification(String title, String message, int toRender) {
 		field_25085_d = title;
 		field_25084_e = message;
