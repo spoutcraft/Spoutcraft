@@ -102,7 +102,7 @@ public abstract class GenericWidget implements Widget{
 	
 	@Override
 	public double getWidth() {
-		return (width * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+		return (width * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public abstract class GenericWidget implements Widget{
 
 	@Override
 	public double getHeight() {
-		return (height * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1) );
+		return (height * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) );
 	}
 
 	@Override
@@ -134,12 +134,12 @@ public abstract class GenericWidget implements Widget{
 	
 	@Override
 	public double getScreenX() {
-		return (upperLeftX * (getScreen() != null ? (getScreen().getWidth() / 240f) : 1) );
+		return (upperLeftX * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
 	}
 
 	@Override
 	public double getScreenY() {
-		return (upperLeftY * (getScreen() != null ? (getScreen().getHeight() / 427f) : 1 ));
+		return (upperLeftY * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1 ));
 	}
 
 	@Override

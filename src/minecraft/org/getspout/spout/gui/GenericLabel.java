@@ -14,7 +14,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	protected Align vAlign = Align.FIRST;
 	protected Align hAlign = Align.FIRST;
 	protected int hexColor = 0xFFFFFF;
-	protected boolean auto = true; 
+	protected boolean auto = true;
 	public GenericLabel(){
 		
 	}
@@ -127,14 +127,14 @@ public class GenericLabel extends GenericWidget implements Label{
 		
 		double top = getScreenY();
 		switch (vAlign) {
-			case SECOND: top += (int) (getHeight() / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
-			case THIRD: top += (int) (getHeight() - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
+			case SECOND: top += (int) ((auto ? screen.getHeight() : height) / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
+			case THIRD: top += (int) ((auto ? screen.getHeight() : height) - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
 		}
 		
 		double aleft = getScreenX();
 		switch (hAlign) {
-			case SECOND: aleft = (getWidth() / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
-			case THIRD: aleft = getWidth() - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
+			case SECOND: aleft = ((auto ? screen.getWidth() : width) / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
+			case THIRD: aleft = (auto ? screen.getWidth() : width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
 		}
 		
 		GL11.glPushMatrix();
