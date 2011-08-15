@@ -144,8 +144,8 @@ public class GenericButton extends GenericControl implements Button {
 				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
 				for (GuiButton control : popup.getControlList()) {
 					if (control instanceof CustomGuiButton) {
-						if (control.equals(this)) {
-							button = (CustomGuiButton)control;
+						button = (CustomGuiButton)control;
+						if(button.getWidget().equals(this)){
 							button.updateWidget(this);
 							success = true;
 							break;
