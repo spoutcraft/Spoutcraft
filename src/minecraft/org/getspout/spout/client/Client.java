@@ -7,6 +7,7 @@ import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ActivePlayer;
+import org.getspout.spout.player.BiomeManager;
 import org.getspout.spout.player.SkyManager;
 
 public interface Client {
@@ -20,6 +21,8 @@ public interface Client {
 	public ActivePlayer getActivePlayer();
 	
 	public EntityManager getEntityManager();
+	
+	public BiomeManager getBiomeManager();
 	
 	public boolean isCheatMode();
 	

@@ -13,8 +13,10 @@ import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.packet.SpoutPacket;
 import org.getspout.spout.player.ActivePlayer;
+import org.getspout.spout.player.BiomeManager;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
+import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
 import net.minecraft.client.Minecraft;
@@ -34,6 +36,7 @@ public class SpoutClient implements Client {
 	private ChatManager chatManager = new ChatManager();
 	private PacketManager packetManager = new PacketManager();
 	private EntityManager entityManager = new SimpleEntityManager();
+	private BiomeManager biomeManager = new SimpleBiomeManager();
 	private long tick = 0;
 	private Thread clipboardThread = null;
 	private ClientPlayer player = null;
@@ -82,6 +85,10 @@ public class SpoutClient implements Client {
 	
 	public EntityManager getEntityManager() {
 		return entityManager;
+	}
+	
+	public BiomeManager getBiomeManager() {
+		return biomeManager;
 	}
 	
 	public boolean isCheatMode() {

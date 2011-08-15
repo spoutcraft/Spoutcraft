@@ -30,6 +30,8 @@ import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -819,6 +821,9 @@ public class EntityRenderer {
 				for(var19 = var5 - var16; var19 <= var5 + var16; ++var19) {
 					for(var20 = var7 - var16; var20 <= var7 + var16; ++var20) {
 						var21 = var17[var18++];
+						if(SpoutClient.getInstance().getBiomeManager().getSnowChanged(var21.getBiomeName())) {
+							var21.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var21.getBiomeName()));
+						}
 						if(var21.getEnableSnow()) {
 							var22 = var4.findTopSolidBlock(var19, var20);
 							if(var22 < 0) {
@@ -879,6 +884,9 @@ public class EntityRenderer {
 				for(var19 = var5 - var16; var19 <= var5 + var16; ++var19) {
 					for(var20 = var7 - var16; var20 <= var7 + var16; ++var20) {
 						var21 = var17[var18++];
+						if(SpoutClient.getInstance().getBiomeManager().getRainChanged(var21.getBiomeName())) {
+							var21.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getRainEnabled(var21.getBiomeName()));
+						}
 						if(var21.canSpawnLightningBolt()) {
 							var22 = var4.findTopSolidBlock(var19, var20);
 							var23 = var6 - var16;

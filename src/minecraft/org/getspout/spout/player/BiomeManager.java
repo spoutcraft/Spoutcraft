@@ -2,12 +2,16 @@ package org.getspout.spout.player;
 
 public interface BiomeManager {
 	
-	public void setSnowEnabled();
+	public void setSnowEnabled(String biome, boolean bool);
 	
-	public void setRainEnabled();
+	public void setRainEnabled(String biome, boolean bool);
 	
-	public boolean getSnowEnabled();
+	public boolean getSnowChanged(String biome);
 	
-	public boolean getRainEnabled();
+	public boolean getRainChanged(String biome);
+	
+	public boolean getSnowEnabled(String biome);
+	
+	public boolean getRainEnabled(String biome);
 
 }
