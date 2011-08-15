@@ -1,24 +1,36 @@
 package org.getspout.spout.player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SimpleBiomeManager implements BiomeManager {
 	
 	private HashMap<String,Boolean> changedSnow = new HashMap<String,Boolean>();
 	private HashMap<String,Boolean> changedRain = new HashMap<String,Boolean>();
+	private List<String> defaultSnow = new ArrayList<String>();
+	private List<String> defaultRain = new ArrayList<String>();
+	
+	public SimpleBiomeManager() {
+		defaultSnow.add("Tundra");
+		defaultSnow.add("Taiga");
+		defaultSnow.add("Ice Desert");
+		
+		defaultRain.add("Desert");
+		defaultRain.add("Ice Desert");
+		defaultRain.add("Hell");
+		defaultRain.add("Sky");
+	}
 
 	@Override
 	public void setSnowEnabled(String biome, boolean bool) {
-		
 		changedSnow.put(biome, bool);
-		
 	}
 
 	@Override
 	public void setRainEnabled(String biome, boolean bool) {
-		
 		changedRain.put(biome, bool);
-		
 	}
 	
 	@Override
@@ -59,12 +71,20 @@ public class SimpleBiomeManager implements BiomeManager {
 	
 	@Override
 	public void resetWeather(String biome) {
-		if(changedSnow.containsKey(biome)) {
-			changedSnow.remove(biome);
+		System.out.println("Reset the weather for "+ biome);
+		
+		if(defaultSnow.contains(biome)) {
+			changedSnow.put(biome, true);
+		}
+		else {
+			changedSnow.put(biome,false);
 		}
 		
-		if(changedRain.containsKey(biome)) {
-			changedRain.remove(biome);
+		if(defaultRain.contains(biome)) {
+			changedRain.put(biome, false);
+		}
+		else {
+			changedRain.put(biome,true);
 		}
 	}
 }

@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.src.BiomeGenBase;
+
 import org.getspout.spout.client.SpoutClient;
 
 public class PacketBiomeWeather implements SpoutPacket {
@@ -74,6 +76,8 @@ public class PacketBiomeWeather implements SpoutPacket {
 			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
 			break;
 		case 3:
+			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
+			break;
 		default:
 			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
 			break;
