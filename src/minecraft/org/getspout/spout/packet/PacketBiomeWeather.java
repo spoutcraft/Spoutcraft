@@ -19,25 +19,21 @@ public class PacketBiomeWeather implements SpoutPacket {
 	public void readData(DataInputStream input) throws IOException {
 		biome = input.readByte();
 		weather = input.readByte();
-		
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeByte(biome);
 		output.writeByte(weather);
-		
 	}
 
 	@Override
 	public PacketType getPacketType() {
-		
 		return PacketType.PacketBiomeWeather;
 	}
 
 	@Override
 	public int getVersion() {
-		
 		return 0;
 	}
 
@@ -77,7 +73,8 @@ public class PacketBiomeWeather implements SpoutPacket {
 			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, true);
 			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
 			break;
-		case 3: default:
+		case 3:
+		default:
 			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
 			break;
 		}

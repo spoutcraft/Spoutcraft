@@ -885,7 +885,7 @@ public class EntityRenderer {
 					for(var20 = var7 - var16; var20 <= var7 + var16; ++var20) {
 						var21 = var17[var18++];
 						if(SpoutClient.getInstance().getBiomeManager().getRainChanged(var21.getBiomeName())) {
-							var21.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getRainEnabled(var21.getBiomeName()));
+							var21.setEnableRain(SpoutClient.getInstance().getBiomeManager().getRainEnabled(var21.getBiomeName()));
 						}
 						if(var21.canSpawnLightningBolt()) {
 							var22 = var4.findTopSolidBlock(var19, var20);
