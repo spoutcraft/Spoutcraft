@@ -71,11 +71,10 @@ public class GenericTexture extends GenericWidget implements Texture {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		float f = 0.00390625F;
 		tessellator.addVertexWithUV(0.0D, getHeight(), -90, 0.0D, 0.0D); //draw corners
-		tessellator.addVertexWithUV(getWidth(), getHeight(), -90, f * getWidth(), 0.0D);
-		tessellator.addVertexWithUV(getWidth(), 0.0D, -90, f * getWidth(), f * getHeight());
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, f * getHeight());
+		tessellator.addVertexWithUV(getWidth(), getHeight(), -90, texture.getWidth(), 0.0D);
+		tessellator.addVertexWithUV(getWidth(), 0.0D, -90, texture.getWidth(), texture.getHeight());
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, texture.getHeight());
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
