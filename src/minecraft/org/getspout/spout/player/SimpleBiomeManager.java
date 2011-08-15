@@ -71,7 +71,6 @@ public class SimpleBiomeManager implements BiomeManager {
 	
 	@Override
 	public void resetWeather(String biome) {
-		System.out.println("Reset the weather for "+ biome);
 		
 		if(defaultSnow.contains(biome)) {
 			changedSnow.put(biome, true);
