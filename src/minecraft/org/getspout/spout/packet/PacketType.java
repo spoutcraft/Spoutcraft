@@ -27,6 +27,7 @@ public enum PacketType {
 	PacketAllowVisualCheats(21, PacketAllowVisualCheats.class),
 	PacketWidgetRemove(22, PacketWidgetRemove.class),
 	PacketEntitySkin(23, PacketEntitySkin.class),
+	PacketBiomeWeather(24, PacketBiomeWeather.class),
 	;
 	
 	private final int id;

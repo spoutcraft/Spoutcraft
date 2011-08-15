@@ -9,18 +9,14 @@ public class SimpleBiomeManager implements BiomeManager {
 
 	@Override
 	public void setSnowEnabled(String biome, boolean bool) {
-		if(changedRain.containsKey(biome)) {
-			changedRain.remove(biome);
-		}
+		
 		changedSnow.put(biome, bool);
 		
 	}
 
 	@Override
 	public void setRainEnabled(String biome, boolean bool) {
-		if(changedSnow.containsKey(biome)) {
-			changedSnow.remove(biome);
-		}
+		
 		changedRain.put(biome, bool);
 		
 	}
@@ -59,5 +55,16 @@ public class SimpleBiomeManager implements BiomeManager {
 		bool = changedRain.get(biome);
 		
 		return bool;
+	}
+	
+	@Override
+	public void resetWeather(String biome) {
+		if(changedSnow.containsKey(biome)) {
+			changedSnow.remove(biome);
+		}
+		
+		if(changedRain.containsKey(biome)) {
+			changedRain.remove(biome);
+		}
 	}
 }

@@ -13,5 +13,7 @@ public interface BiomeManager {
 	public boolean getSnowEnabled(String biome);
 	
 	public boolean getRainEnabled(String biome);
+	
+	public void resetWeather(String biome);
 
 }
