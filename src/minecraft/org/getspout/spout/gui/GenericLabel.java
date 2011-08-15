@@ -133,8 +133,8 @@ public class GenericLabel extends GenericWidget implements Label{
 		
 		double aleft = getScreenX();
 		switch (hAlign) {
-			case SECOND: aleft = ((auto ? screen.getWidth() : width) / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
-			case THIRD: aleft = (auto ? screen.getWidth() : width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
+			case SECOND: aleft += ((width) / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
+			case THIRD: aleft += (width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
 		}
 		
 		GL11.glPushMatrix();
