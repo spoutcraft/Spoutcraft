@@ -174,7 +174,7 @@ public abstract class Entity {
 	public void setEntityDead() {
 		this.isDead = true;
 		// Spout - start
-		SpoutClient.getInstance().getEntityManager().unregisterEntity((Entity)this.unloadedEntityList.get(var1));
+		SpoutClient.getInstance().getEntityManager().unregisterEntity(this);
 		// Spout - end
 	}
 
