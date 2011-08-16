@@ -26,7 +26,7 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 
 	@Override

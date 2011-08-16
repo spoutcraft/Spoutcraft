@@ -43,6 +43,7 @@ public class PacketWidget implements SpoutPacket {
 				else {
 					input.skipBytes(size);
 					System.out.println("Received invalid widget: " + widgetType + " v: " + version + " current v: " + widget.getVersion());
+					widget = null;
 				}
 			}
 			catch (Exception e) {
@@ -64,41 +65,43 @@ public class PacketWidget implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
-		PopupScreen popup = mainScreen.getActivePopup();
-		//Determine if this is a popup screen and if we need to update it
-		if (widget instanceof PopupScreen) {
-			if (popup != null){
-				if (widget.getId().equals(popup)) {
-					if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
-						((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
+			if (widget != null) {
+			InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
+			PopupScreen popup = mainScreen.getActivePopup();
+			//Determine if this is a popup screen and if we need to update it
+			if (widget instanceof PopupScreen) {
+				if (popup != null){
+					if (widget.getId().equals(popup)) {
+						if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
+							((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
+						}
 					}
 				}
+				else {
+					mainScreen.attachPopupScreen((PopupScreen)widget);
+				}
 			}
-			else {
-				mainScreen.attachPopupScreen((PopupScreen)widget);
+			//Determine if this is a widget on the main screen
+			else if (screen.equals(mainScreen.getId())) {
+				if (mainScreen.containsWidget(widget)) {
+					mainScreen.updateWidget(widget);
+					widget.setScreen(mainScreen);
+				}
+				else {
+					widget.setScreen(mainScreen);
+					mainScreen.attachWidget(widget);
+				}
 			}
-		}
-		//Determine if this is a widget on the main screen
-		else if (screen.equals(mainScreen.getId())) {
-			if (mainScreen.containsWidget(widget)) {
-				mainScreen.updateWidget(widget);
-				widget.setScreen(mainScreen);
-			}
-			else {
-				widget.setScreen(mainScreen);
-				mainScreen.attachWidget(widget);
-			}
-		}
-		//Determine if this is a widget on the popup screen
-		else if (popup != null && screen.equals(popup.getId())) {
-			if (popup.containsWidget(widget)) {
-				popup.updateWidget(widget);
-				widget.setScreen(popup);
-			}
-			else {
-				widget.setScreen(popup);
-				popup.attachWidget(widget);
+			//Determine if this is a widget on the popup screen
+			else if (popup != null && screen.equals(popup.getId())) {
+				if (popup.containsWidget(widget)) {
+					popup.updateWidget(widget);
+					widget.setScreen(popup);
+				}
+				else {
+					widget.setScreen(popup);
+					popup.attachWidget(widget);
+				}
 			}
 		}
 	}

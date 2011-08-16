@@ -21,7 +21,7 @@ public class GenericSlider extends GenericControl implements Slider {
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 
 	@Override

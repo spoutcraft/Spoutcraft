@@ -19,7 +19,7 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 
 	@Override

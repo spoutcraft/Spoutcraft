@@ -11,8 +11,7 @@ import net.minecraft.src.FontRenderer;
 
 public class GenericLabel extends GenericWidget implements Label{
 	protected String text = "";
-	protected Align vAlign = Align.FIRST;
-	protected Align hAlign = Align.FIRST;
+	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
 	protected int hexColor = 0xFFFFFF;
 	protected boolean auto = true;
 	public GenericLabel(){
@@ -20,7 +19,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	}
 	
 	public int getVersion() {
-		return 2;
+		return super.getVersion() + 2;
 	}
 	
 	public GenericLabel(String text) {
@@ -34,15 +33,14 @@ public class GenericLabel extends GenericWidget implements Label{
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 7;
+		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 6;
 	}
 	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		this.setText(PacketUtil.readString(input));
-		this.setAlignX(Align.getAlign(input.readByte()));
-		this.setAlignY(Align.getAlign(input.readByte()));
+		this.setAlign(WidgetAnchor.getAnchor(input.readByte()));
 		this.setAuto(input.readBoolean());
 		this.setHexColor(input.readInt());
 	}
@@ -51,8 +49,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		PacketUtil.writeString(output, getText());
-		output.writeByte(hAlign.getId());
-		output.writeByte(vAlign.getId());
+		output.writeByte(align.getId());
 		output.writeBoolean(getAuto());
 		output.writeInt(getHexColor());
 	}
@@ -80,24 +77,13 @@ public class GenericLabel extends GenericWidget implements Label{
 	}
 
 	@Override
-	public Align getAlignX() {
-		return hAlign;
-	}
-
-	@Override
-	public Align getAlignY() {
-		return vAlign;
+	public WidgetAnchor getAlign() {
+		return align;
 	}
 	
 	@Override
-	public Label setAlignX(Align pos) {
-		this.hAlign = pos;
-		return this;
-	}
-
-	@Override
-	public Label setAlignY(Align pos) {
-		this.vAlign = pos;
+	public Label setAlign(WidgetAnchor pos) {
+		this.align = pos;
 		return this;
 	}
 
@@ -112,47 +98,86 @@ public class GenericLabel extends GenericWidget implements Label{
 		return this;
 	}
 	
+	@Override
+	public double getActualWidth() {
+		return auto ? getTextWidth() : super.getActualWidth();
+	}
+	
+	public double getTextWidth() {
+		double swidth = 0;
+		String lines[] = getText().split("\\n");
+		FontRenderer font = SpoutClient.getHandle().fontRenderer;
+		for (int i = 0; i < lines.length; i++) {
+			swidth = font.getStringWidth(lines[i]) > swidth ? font.getStringWidth(lines[i]) : swidth;
+		}
+		return swidth;
+	}
+	
+	@Override
+	public double getActualHeight() {
+		return auto ? getTextHeight() : super.getActualHeight();
+	}
+	
+	public double getTextHeight() {
+		return getText().split("\\n").length * 10;
+	}
+	
 	public void render() {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		String lines[] = getText().split("\\n");
 		
-		double swidth = 0;
-		for (int i = 0; i < lines.length; i++) {
-			swidth = font.getStringWidth(lines[i]) > swidth ? font.getStringWidth(lines[i]) : swidth;
-		}
-		double sheight = lines.length * 10;
+		double swidth = getTextWidth();
+		double sheight = getTextHeight();
 		
-		double height = getHeight();
-		double width = getWidth();
+		GL11.glPushMatrix();
 		
 		double top = getScreenY();
-		switch (vAlign) {
-			case SECOND: top += (int) ((auto ? screen.getHeight() : height) / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
-			case THIRD: top += (int) ((auto ? screen.getHeight() : height) - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
+		switch (align) {
+			case CENTER_LEFT:
+			case CENTER_CENTER:
+			case CENTER_RIGHT:
+				top += (int) ((auto ? screen.getHeight() : height) / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
+			case BOTTOM_LEFT:
+			case BOTTOM_CENTER:
+			case BOTTOM_RIGHT:
+				top += (int) ((auto ? screen.getHeight() : height) - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
 		}
 		
 		double aleft = getScreenX();
-		switch (hAlign) {
-			case SECOND: aleft += ((width) / 2) - ((auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
-			case THIRD: aleft += (width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
+		switch (align) {
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				aleft += (int) ((auto ? screen.getWidth() : width) / 2 - (auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				aleft += (int) ((auto ? screen.getWidth() : width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width)); break;
 		}
 		
-		GL11.glPushMatrix();
 		GL11.glTranslatef((float) aleft, (float) top, 0);
-		if (auto) {
-			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
-		} else {
+		if (!auto) {
 			GL11.glScalef((float) (getWidth() / swidth), (float) (getHeight() / sheight), 1);
+		} else if (getScale()) {
+			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
 		}
 		for (int i = 0; i < lines.length; i++) {
 			double left = 0;
-			switch (hAlign) {
-				case SECOND: left = (swidth / 2) - (font.getStringWidth(lines[i]) / 2); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 854f; break;
-				case THIRD: left = swidth - font.getStringWidth(lines[i]); break;// - (font.getStringWidth(lines[i]) * getScreen().getWidth()) / 427f; break;
+			switch (align) {
+				case TOP_CENTER:
+				case CENTER_CENTER:
+				case BOTTOM_CENTER:
+					left = (swidth / 2) - (font.getStringWidth(lines[i]) / 2); break;
+				case TOP_RIGHT:
+				case CENTER_RIGHT:
+				case BOTTOM_RIGHT:
+					System.out.println("!");
+					left = swidth - font.getStringWidth(lines[i]); break;
 			}
 			font.drawStringWithShadow(lines[i], (int) left, i * 10, getHexColor());
 		}
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
+
 }

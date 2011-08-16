@@ -26,42 +26,22 @@ public interface Label extends Widget{
 	 * @return label
 	 */
 	public Label setHexColor(int hex);
-
-	/** 
-	 * Get the horizontal, x, alignment of text within it's area
-	 * @return alignment enum, ( FIRST | SECOND | THIRD )
-	 */
-	public Align getAlignX();
-	
-	/** 
-	 * Get the vertical, y, alignment of text within it's area
-	 * @return alignment enum, ( FIRST | SECOND | THIRD )
-	 */
-	public Align getAlignY();
-	
-	/** 
-	 * Sets the horizontal, x, alignment of text within it's area providing it's on auto
-	 * @return label
-	 */
-	public Widget setAlignX(Align pos);
-
-	/** 
-	 * Sets the vertical, y, alignment of text within it's area providing it's on auto
-	 * @return label
-	 */
-	public Widget setAlignY(Align pos);
 	
 	/** 
 	 * Determines if text expands to fill width and height
 	 * @param auto
 	 * @return label
 	 */
-	Label setAuto(boolean auto);
+	public Label setAuto(boolean auto);
 	
 	/** 
 	 * Gets if the text will expand to fill width and height
 	 * @param auto
 	 * @return label
 	 */
-	boolean getAuto();
+	public boolean getAuto();
+	
+	public WidgetAnchor getAlign();
+	
+	public Widget setAlign(WidgetAnchor pos);
 }
