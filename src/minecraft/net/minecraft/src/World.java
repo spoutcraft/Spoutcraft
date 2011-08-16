@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.getspout.spout.client.SpoutClient;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
@@ -1243,6 +1246,9 @@ public class World implements IBlockAccess {
 
 		for(var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
 			this.releaseEntitySkin((Entity)this.unloadedEntityList.get(var1));
+			// Spout - start
+			SpoutClient.getInstance().getEntityManager().unregisterEntity((Entity)this.unloadedEntityList.get(var1));
+			// Spout - end
 		}
 
 		this.unloadedEntityList.clear();

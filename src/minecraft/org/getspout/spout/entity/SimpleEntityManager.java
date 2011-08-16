@@ -1,27 +1,25 @@
 package org.getspout.spout.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 
 public class SimpleEntityManager implements EntityManager {
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private HashMap<Integer,Entity> entities = new HashMap<Integer,Entity>();
 	@Override
 	public void registerEntity(Entity entity) {
-		entities.add(entity);
+		entities.put(entity.entityId, entity);
+	}
+	
+	@Override
+	public boolean unregisterEntity(Entity entity) {
+		return entities.remove(entity.entityId) != null;
 	}
 
 	@Override
 	public Entity getEntityFromId(int id) {
-		for(Entity e: entities)
-		{
-			if(e.entityId == id){
-				return e;
-			}
-		}
-		return null;
+		return entities.get(id);
 	}
 
 	@Override
