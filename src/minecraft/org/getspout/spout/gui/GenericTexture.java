@@ -31,7 +31,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 	
 	@Override

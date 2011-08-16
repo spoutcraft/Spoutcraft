@@ -17,17 +17,19 @@ public abstract class GenericWidget implements Widget{
 	protected RenderPriority priority = RenderPriority.Normal;
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
+	protected WidgetAnchor anchor = WidgetAnchor.TOP_LEFT;
+	protected boolean scale = true;
 	
 	public GenericWidget() {
 
 	}
 	
 	public int getNumBytes() {
-		return 37 + PacketUtil.getNumBytes(tooltip);
+		return 39 + PacketUtil.getNumBytes(tooltip);
 	}
 
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 	
 	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
@@ -37,12 +39,34 @@ public abstract class GenericWidget implements Widget{
 		this.height = height;
 	}
 
+	public Widget setAnchor(WidgetAnchor anchor) {
+		this.anchor = anchor;
+		return this;
+	}
+	
+	public Widget setScale(boolean scale) {
+		this.scale = scale;
+		return this;
+	}
+	
+	@Override
+	public WidgetAnchor getAnchor() {
+		return anchor;
+	}
+	
+	@Override
+	public boolean getScale() {
+		return scale;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		setX(input.readInt());
 		setY(input.readInt());
 		setWidth(input.readInt());
 		setHeight(input.readInt());
+		setScale(input.readBoolean());
+		setAnchor(WidgetAnchor.getAnchor(input.readByte()));
 		setVisible(input.readBoolean());
 		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
 		long msb = input.readLong();
@@ -57,6 +81,8 @@ public abstract class GenericWidget implements Widget{
 		output.writeInt(getY());
 		output.writeInt(width);
 		output.writeInt(height);
+		output.writeBoolean(getScale());
+		output.writeByte(anchor.getId());
 		output.writeBoolean(isVisible());
 		output.writeInt(priority.getId());
 		output.writeLong(getId().getMostSignificantBits());
@@ -101,8 +127,8 @@ public abstract class GenericWidget implements Widget{
 	}
 	
 	@Override
-	public double getWidth() {
-		return (width * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
+	public double getActualWidth() {
+		return width;
 	}
 	
 	@Override
@@ -112,8 +138,18 @@ public abstract class GenericWidget implements Widget{
 	}
 
 	@Override
+	public double getActualHeight() {
+		return height;
+	}
+	
+	@Override
+	public double getWidth() {
+		return scale ? (getActualWidth() * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) ) : getActualWidth();
+	}
+	
+	@Override
 	public double getHeight() {
-		return (height * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) );
+		return scale ? (getActualHeight() * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) ) : getActualHeight();
 	}
 
 	@Override
@@ -134,12 +170,38 @@ public abstract class GenericWidget implements Widget{
 	
 	@Override
 	public double getScreenX() {
-		return (upperLeftX * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
+		double left = (upperLeftX * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) );
+		switch (anchor) {
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				left -= getWidth() / 2;
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				left -= getWidth();
+			break;
+		}
+		return left;
 	}
 
 	@Override
 	public double getScreenY() {
-		return (upperLeftY * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1 ));
+		double top = (upperLeftY * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) );
+		switch (anchor) {
+			case CENTER_LEFT:
+			case CENTER_CENTER:
+			case CENTER_RIGHT:
+				top -= getHeight() / 2;
+				break;
+			case BOTTOM_LEFT:
+			case BOTTOM_CENTER:
+			case BOTTOM_RIGHT:
+				top -= getHeight();
+			break;
+		}
+		return top;
 	}
 
 	@Override

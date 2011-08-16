@@ -29,7 +29,7 @@ public class GenericButton extends GenericControl implements Button {
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 
 	@Override
@@ -70,24 +70,13 @@ public class GenericButton extends GenericControl implements Button {
 	}
 	
 	@Override
-	public Align getAlignX() {
-		return label.getAlignX();
-	}
-
-	@Override
-	public Align getAlignY() {
-		return label.getAlignY();
+	public WidgetAnchor getAlign() {
+		return label.getAlign();
 	}
 	
 	@Override
-	public Widget setAlignX(Align pos) {
-		label.setAlignX(pos);
-		return this;
-	}
-
-	@Override
-	public Widget setAlignY(Align pos) {
-		label.setAlignY(pos);
+	public Widget setAlign(WidgetAnchor pos) {
+		label.setAlign(pos);
 		return this;
 	}
 

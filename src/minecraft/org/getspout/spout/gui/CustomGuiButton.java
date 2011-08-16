@@ -20,12 +20,13 @@ public class CustomGuiButton extends GuiButton {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, game.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) button.getScreenX(), (float) button.getScreenY(), 0);
-			GL11.glScalef((float) button.getWidth() / 200f, (float) button.getHeight() / 20f, 1);
+			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
+			GL11.glScalef((float) button.getWidth() / width, (float) button.getHeight() / 20f, 1);
 			
 			boolean hovering = mouseX >= button.getScreenX() && mouseY >= button.getScreenY() && mouseX < button.getScreenX() + button.getWidth() && mouseY < button.getScreenY() + button.getHeight();
 			int hoverState = this.getHoverState(hovering);
-			this.drawTexturedModalRect(0, 0, 0, 46 + hoverState * 20, 100, 20);
-			this.drawTexturedModalRect(100, 0, 100, 46 + hoverState * 20, 100, 20);
+			this.drawTexturedModalRect(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20);
+			this.drawTexturedModalRect((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20);
 			this.mouseDragged(game, mouseX, mouseY);
 			int color = button.getColor();
 			if(!button.isEnabled()) {
@@ -34,9 +35,15 @@ public class CustomGuiButton extends GuiButton {
 				color = button.getHoverColor();
 			}
 			int left = (int) 5;
-			switch (button.getAlignX()) {
-				case SECOND: left = (int) (100 - (font.getStringWidth(button.getText()) / 2)); break;
-				case THIRD: left = (int) (200 - font.getStringWidth(button.getText())) - 5; break;
+			switch (button.getAlign()) {
+				case TOP_CENTER:
+				case CENTER_CENTER:
+				case BOTTOM_CENTER:
+					left = (int) ((width / 2) - (font.getStringWidth(button.getText()) / 2)); break;
+				case TOP_RIGHT:
+				case CENTER_RIGHT:
+				case BOTTOM_RIGHT:
+					left = (int) (width - font.getStringWidth(button.getText())) - 5; break;
 			}
 			this.drawString(font, button.getText(), left, 6, color);
 		}

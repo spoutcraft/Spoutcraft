@@ -16,7 +16,7 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 	}
 	
 	public int getVersion() {
-		return 0;
+		return super.getVersion() + 0;
 	}
 	
 	@Override

@@ -55,7 +55,7 @@ public interface Widget{
 	 * Gets the width of this widget, in pixels
 	 * @return width 
 	 */
-	public double getWidth();
+	public double getActualWidth();
 	
 	/**
 	 * Sets the width of this widget, in pixels
@@ -68,7 +68,7 @@ public interface Widget{
 	 * Gets the height of this widget, in pixels
 	 * @return height
 	 */
-	public double getHeight();
+	public double getActualHeight();
 	
 	/**
 	 * Sets the height of this widget, in pixels
@@ -169,4 +169,34 @@ public interface Widget{
 	 * @return y-coordinate
 	 */
 	public double getScreenY();
+
+	public double getHeight();
+	
+	public double getWidth();
+	
+	/**
+	 * Sets the anchor location for the widget
+	 * @param anchor
+	 * @return widget
+	 */
+	public Widget setAnchor(WidgetAnchor anchor);
+
+	/**
+	 * Gets the anchor location for the widget
+	 * @return widgetAnchor
+	 */
+	public WidgetAnchor getAnchor();
+
+	/**
+	 * Sets whether the widget will be scaled, or use notchs levels
+	 * @param scale
+	 * @return widget
+	 */
+	public Widget setScale(boolean scale);
+
+	/**
+	 * Gets whether the widget will be scaled, or use notchs levels
+	 * @return scale
+	 */
+	public boolean getScale();
 }

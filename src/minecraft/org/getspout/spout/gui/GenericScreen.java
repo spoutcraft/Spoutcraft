@@ -25,6 +25,11 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	public GenericScreen(int playerId) {
 		this.playerId = playerId;
 	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 0;
+	}
 
 	@Override
 	public Widget[] getAttachedWidgets() {
