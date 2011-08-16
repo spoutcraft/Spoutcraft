@@ -21,7 +21,7 @@ import org.getspout.spout.util.PersistentMap;
 public class ChunkCache {
 
 	private final static int FULL_CHUNK = (128 * 16 * 16 * 5) / 2;
-	private final static int CACHED_SIZE = FULL_CHUNK + 40*8;
+	private final static int CACHED_SIZE = FULL_CHUNK + 40*8 + 8;
 
 	private static final PersistentMap p;
 
@@ -44,6 +44,7 @@ public class ChunkCache {
 	}
 	
 	private static byte[] hashData = new byte[CACHED_SIZE];
+	private static byte[] blank = new byte[CACHED_SIZE];
 	
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
 	private static AtomicInteger chunks = new AtomicInteger();
@@ -68,25 +69,35 @@ public class ChunkCache {
 			averageChunkSize.set(d/c);
 		}
 				
+		long CRC = 0;
+		boolean CRCProvided;
 		try {
-			int hashSize = inflater.inflate(hashData, FULL_CHUNK, 40*8);
-			if(hashSize != 40*8) {
+			int hashSize = inflater.inflate(hashData, chunkData.length, 40*8 + 8);
+			if(hashSize == 40*8 + 8) {
+				CRC = PartitionChunk.getHash(hashData, 40);
+				CRCProvided = true;
+			} else if (hashSize != 40*8) {
 				return chunkData;
+			} else {
+				CRCProvided = false;
 			}
 		} catch (DataFormatException e) {
 			return chunkData;
 		}
-
+		
 		int cacheHit = 0;
 		
 		for(int i = 0; i < 40; i++) {
 			long hash = PartitionChunk.getHash(hashData, i);
 			byte[] partitionData = p.get(hash, partition);
-			if(hash == 0 || partitionData == null) {
+			if(hash == 0) {
 				PartitionChunk.copyFromChunkData(chunkData, i, partition);
 				hash = ChunkHash.hash(partition);
 				p.put(hash, partition);
 				processOverwriteQueue();
+			} else if (partitionData == null) {
+				PartitionChunk.copyToChunkData(chunkData, i, blank);
+				throw new RuntimeException("Chunk Cache Error: " + hash + " not in cache");
 			} else {
 				cacheHit++;
 				PartitionChunk.copyToChunkData(chunkData, i, partitionData);
@@ -124,7 +135,15 @@ public class ChunkCache {
 				
 		byte[] cachedChunkData = new byte[81920];
 		System.arraycopy(chunkData, 0, cachedChunkData, 0, 81920);
-
+		
+		long CRCNew = ChunkHash.hash(cachedChunkData);
+		
+		if (CRCProvided && CRCNew != CRC) {
+			System.out.println("CRC mismatch");
+			System.out.println("CRC received: " + CRC + " actual CRC of data: " + CRCNew);
+			throw new RuntimeException("CRC Mismatch");
+		}
+		
 		return cachedChunkData;
 	}
 
