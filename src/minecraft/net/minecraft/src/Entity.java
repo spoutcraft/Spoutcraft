@@ -173,6 +173,9 @@ public abstract class Entity {
 
 	public void setEntityDead() {
 		this.isDead = true;
+		// Spout - start
+		SpoutClient.getInstance().getEntityManager().unregisterEntity((Entity)this.unloadedEntityList.get(var1));
+		// Spout - end
 	}
 
 	protected void setSize(float var1, float var2) {
