@@ -41,7 +41,7 @@ public class GenericGradient extends GenericWidget implements Gradient {
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 24;
+		return super.getNumBytes() + 32;
 	}
 	
 	public int getVersion() {
