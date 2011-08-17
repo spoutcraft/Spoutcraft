@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameHUD;
 import org.getspout.spout.gui.InGameScreen;
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
@@ -46,9 +47,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	
 	@Override
 	public RenderDistance getNextRenderDistance() {
-		int next = getCurrentView().getValue() - 1;
-		if (next < min.getValue()) {
+		int next = getCurrentView().getValue() + (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? -1 : 1);
+		if (next > min.getValue()) {
 			next = max.getValue();
+		} else if (next < max.getValue()) {
+			next = min.getValue();
 		}
 		return RenderDistance.getRenderDistanceFromValue(next);
 	}
