@@ -1,74 +1,54 @@
-package org.getspout.spoutapi.gui;
+package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.plugin.Plugin;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.packet.PacketWidget;
-import org.getspout.spoutapi.packet.PacketWidgetRemove;
-import org.getspout.spoutapi.player.SpoutPlayer;
+import net.minecraft.src.ScaledResolution;
+
+import org.getspout.spout.client.SpoutClient;
+import org.lwjgl.opengl.GL11;
 
 public abstract class GenericScreen extends GenericWidget implements Screen{
-	protected HashMap<Widget, Plugin> widgets = new HashMap<Widget, Plugin>();
+	protected List<Widget> widgets = new ArrayList<Widget>();
 	protected int playerId;
-	protected boolean bg = true;
+	protected boolean bgvis;
 	public GenericScreen() {
-		
+		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
+		screenWidth = resolution.getScaledWidth();
+		screenHeight = resolution.getScaledHeight();
+	}
+	
+	public GenericScreen(int playerId) {
+		this.playerId = playerId;
 	}
 	
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
-	
-	public GenericScreen(int playerId) {
-		this.playerId = playerId;
-	}
 
 	@Override
 	public Widget[] getAttachedWidgets() {
 		Widget[] list = new Widget[widgets.size()];
-		widgets.keySet().toArray(list);
+		widgets.toArray(list);
 		return list;
 	}
 
 	@Override
-	@Deprecated
 	public Screen attachWidget(Widget widget) {
-		return attachWidget(null, widget);
-	}
-	
-	@Override
-	public Screen attachWidget(Plugin plugin, Widget widget) {
-		widgets.put(widget, plugin);
-		widget.setDirty(true);
+		widgets.add(widget);
 		widget.setScreen(this);
 		return this;
 	}
 
 	@Override
 	public Screen removeWidget(Widget widget) {
-		if (widgets.containsKey(widget)) {
-			widgets.remove(widget);
-			if(!widget.getType().isServerOnly()) {
-				SpoutManager.getPlayerFromId(playerId).sendPacket(new PacketWidgetRemove(widget, getId()));
-			}
-			widget.setScreen(null);
-		}
-		return this;
-	}
-	
-	@Override
-	public Screen removeWidgets(Plugin p) {
-		for (Widget i : getAttachedWidgets()) {
-			if (widgets.get(i) != null && widgets.get(i).equals(p)) {
-				removeWidget(i);
-			}
-		}
+		widgets.remove(widget);
+		widget.setScreen(null);
 		return this;
 	}
 	
@@ -84,7 +64,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	
 	@Override
 	public Widget getWidget(UUID id) {
-		for (Widget w : widgets.keySet()) {
+		for (Widget w : widgets) {
 			if (w.getId().equals(id)) {
 				return w;
 			}
@@ -94,11 +74,11 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	
 	@Override
 	public boolean updateWidget(Widget widget) {
-		if (widgets.containsKey(widget)) {
-			Plugin plugin = widgets.get(widget);
-			widgets.remove(widget);
-			widgets.put(widget, plugin);
+		int index = widgets.indexOf(widget);
+		if (index > -1) {
+			widgets.remove(index);
 			widget.setScreen(this);
+			widgets.add(index, widget);
 			return true;
 		}
 		return false;
@@ -106,27 +86,32 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	
 	@Override
 	public void onTick() {
-		SpoutPlayer player = SpoutManager.getPlayerFromId(playerId);
-		if (player != null && player.getVersion() > 17) {
-			for (Widget widget : widgets.keySet()) {
-				widget.onTick();
-				if (widget.isDirty()) {
-					if(! widget.getType().isServerOnly()){
-						player.sendPacket(new PacketWidget(widget, getId()));
-					}
-					widget.setDirty(false);
-				}
-			}
+		for (Widget widget : widgets) {
+			widget.onTick();
 		}
+		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
+		screenWidth = resolution.getScaledWidth();
+		screenHeight = resolution.getScaledHeight();
+	}
+	
+	private int screenHeight, screenWidth;
+	@Override
+	public double getHeight() {
+		return screenHeight > 0 ? screenHeight : 240;
+	}
+	
+	@Override
+	public double getWidth() {
+		return screenWidth > 0 ? screenWidth : 427;
 	}
 	
 	public GenericScreen setBgVisible(boolean enable) {
-		bg = enable;
+		bgvis = enable;
 		return this;
 	}
 	
 	public boolean isBgVisible() {
-		return bg;
+		return bgvis;
 	}
 	
 	@Override
@@ -146,16 +131,19 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		output.writeBoolean(isBgVisible());
 	}
 	
-	@Override
-	public void setDirty(boolean dirty) {
-		super.setDirty(dirty);
-		if (dirty) {
+	protected boolean canRender(Widget widget) {
+		return widget.isVisible();
+	}
+	
+	public void render() {
+		for (RenderPriority priority : RenderPriority.values()) {	
 			for (Widget widget : getAttachedWidgets()){
-				widget.setDirty(true);
+				if (widget.getPriority() == priority && canRender(widget)) {
+					GL11.glPushMatrix();
+					widget.render();
+					GL11.glPopMatrix();
+				}
 			}
 		}
 	}
-	
-	@Override
-	public void render() {}
 }
