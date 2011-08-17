@@ -28,7 +28,7 @@ public abstract class GenericWidget implements Widget{
 	}
 
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 	
 	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
