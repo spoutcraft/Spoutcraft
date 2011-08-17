@@ -12,6 +12,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String Url = null;
+	org.newdawn.slick.opengl.Texture texture = null;
 	public GenericTexture() {
 		
 	}
@@ -52,21 +53,21 @@ public class GenericTexture extends GenericWidget implements Texture {
 		if (path == null) {
 			return;
 		}
-		org.newdawn.slick.opengl.Texture texture = null;
-		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true);
-		}
-		catch (IOException e) { }
 		if (texture == null) {
-			System.out.println("Error loading texture: " + path);
-			return;
+			try {
+				texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true);
+			}
+			catch (IOException e) { }
+			if (texture == null) {
+				System.out.println("Error loading texture: " + path);
+				return;
+			}
 		}
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthMask(false);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); //moves texture into place
-		//GL11.glBindTexture(GL11.GL_TEXTURE_2D , SpoutClient.getHandle().renderEngine.getTexture(path));
-		texture.bind();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		Tessellator tessellator = Tessellator.instance;
