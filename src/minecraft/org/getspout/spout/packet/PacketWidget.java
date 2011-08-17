@@ -65,7 +65,7 @@ public class PacketWidget implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-			if (widget != null) {
+		if (widget != null) {
 			InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 			PopupScreen popup = mainScreen.getActivePopup();
 			//Determine if this is a popup screen and if we need to update it

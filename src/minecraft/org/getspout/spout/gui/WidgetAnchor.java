@@ -12,26 +12,27 @@ public enum WidgetAnchor {
 	BOTTOM_LEFT(6),
 	BOTTOM_CENTER(7),
 	BOTTOM_RIGHT(8),
+	SCALE(9),
 	;
 	
-	private final int type;
-	WidgetAnchor(int type) {
-		this.type = type;
+	private final int id;
+	WidgetAnchor(int id) {
+		this.id = id;
 	}
 	
 	public int getId() {
-		return type;
+		return id;
 	}
 	
 	private static final HashMap<Integer, WidgetAnchor> lookupId = new HashMap<Integer, WidgetAnchor>();
 	
 	static {
 		for (WidgetAnchor t : values()) {
-			lookupId.put(t.type, t);
+			lookupId.put(t.getId(), t);
 		}
 	}
 	
-	public static WidgetAnchor getAnchor(int id) {
+	public static WidgetAnchor getAnchorFromId(int id) {
 		return lookupId.get(id);
 	}
 }

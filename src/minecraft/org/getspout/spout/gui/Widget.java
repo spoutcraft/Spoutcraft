@@ -186,17 +186,4 @@ public interface Widget{
 	 * @return widgetAnchor
 	 */
 	public WidgetAnchor getAnchor();
-
-	/**
-	 * Sets whether the widget will be scaled, or use notchs levels
-	 * @param scale
-	 * @return widget
-	 */
-	public Widget setScale(boolean scale);
-
-	/**
-	 * Gets whether the widget will be scaled, or use notchs levels
-	 * @return scale
-	 */
-	public boolean getScale();
 }

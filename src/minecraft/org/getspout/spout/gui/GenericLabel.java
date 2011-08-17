@@ -40,7 +40,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		this.setText(PacketUtil.readString(input));
-		this.setAlign(WidgetAnchor.getAnchor(input.readByte()));
+		this.setAlign(WidgetAnchor.getAnchorFromId(input.readByte()));
 		this.setAuto(input.readBoolean());
 		this.setHexColor(input.readInt());
 	}
@@ -136,11 +136,11 @@ public class GenericLabel extends GenericWidget implements Label{
 			case CENTER_LEFT:
 			case CENTER_CENTER:
 			case CENTER_RIGHT:
-				top += (int) ((auto ? screen.getHeight() : height) / 2 - (auto ? (sheight * (screen.getHeight() / 240f)) : height) / 2); break;
+				top -= (int) (auto ? getActualHeight() : height) / 2; break;
 			case BOTTOM_LEFT:
 			case BOTTOM_CENTER:
 			case BOTTOM_RIGHT:
-				top += (int) ((auto ? screen.getHeight() : height) - (auto ? (sheight * (screen.getHeight() / 240f)) : height)); break;
+				top -= (int) (auto ? getActualHeight() : height); break;
 		}
 		
 		double aleft = getScreenX();
@@ -148,17 +148,17 @@ public class GenericLabel extends GenericWidget implements Label{
 			case TOP_CENTER:
 			case CENTER_CENTER:
 			case BOTTOM_CENTER:
-				aleft += (int) ((auto ? screen.getWidth() : width) / 2 - (auto ? (swidth * (screen.getWidth() / 427f)) : width) / 2); break;
+				aleft -= (int) (auto ? getActualWidth() : width) / 2; break;
 			case TOP_RIGHT:
 			case CENTER_RIGHT:
 			case BOTTOM_RIGHT:
-				aleft += (int) ((auto ? screen.getWidth() : width) - (auto ? (swidth * (screen.getWidth() / 427f)) : width)); break;
+				aleft -= (int) (auto ? getActualWidth() : width); System.out.println(aleft); break;
 		}
 		
 		GL11.glTranslatef((float) aleft, (float) top, 0);
 		if (!auto) {
 			GL11.glScalef((float) (getWidth() / swidth), (float) (getHeight() / sheight), 1);
-		} else if (getScale()) {
+		} else if (anchor == WidgetAnchor.SCALE) {
 			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
 		}
 		for (int i = 0; i < lines.length; i++) {
@@ -171,7 +171,6 @@ public class GenericLabel extends GenericWidget implements Label{
 				case TOP_RIGHT:
 				case CENTER_RIGHT:
 				case BOTTOM_RIGHT:
-					System.out.println("!");
 					left = swidth - font.getStringWidth(lines[i]); break;
 			}
 			font.drawStringWithShadow(lines[i], (int) left, i * 10, getHexColor());
