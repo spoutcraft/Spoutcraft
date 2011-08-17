@@ -33,6 +33,10 @@ public class PersistentMap {
 
 		return value;
 	}
+	
+	public void wipeFile() throws IOException {
+		f.wipe();
+	}
 
 	public void reset() {
 		overwriteQueue.clear();

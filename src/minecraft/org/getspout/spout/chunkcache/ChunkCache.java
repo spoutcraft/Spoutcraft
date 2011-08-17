@@ -97,6 +97,11 @@ public class ChunkCache {
 				processOverwriteQueue();
 			} else if (partitionData == null) {
 				PartitionChunk.copyToChunkData(chunkData, i, blank);
+				try {
+					p.wipeFile();
+				} catch (IOException ioe) {
+					throw new RuntimeException("Chunk Cache Error: " + hash + " not in cache", ioe);
+				}
 				throw new RuntimeException("Chunk Cache Error: " + hash + " not in cache");
 			} else {
 				cacheHit++;
@@ -109,7 +114,7 @@ public class ChunkCache {
 				if(index != null) {
 					for(int j = index - 1024; j < index + 1024; j++) {
 						Long nearbyHash = p.getHash(j);
-						if(nearbyHash != null && !hashes.contains(nearbyHash)) {
+						if(nearbyHash != null && !hashes.contains(nearbyHash) && nearbyHash != 0) {
 							hashQueue.add(nearbyHash);
 							hashes.add(nearbyHash);
 						}

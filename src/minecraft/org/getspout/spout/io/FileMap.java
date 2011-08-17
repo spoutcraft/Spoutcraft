@@ -62,6 +62,13 @@ public class FileMap {
 		indexFile.close();
 	}
 	
+	public void wipe() throws IOException {
+		for (int i = 0; i < entries; i++) {
+			FATFile.seek(0);
+			FATFile.write(new byte[entries*8]);
+		}
+	}
+	
 	public void write(int index, long hash, byte[] data) throws IOException {
 		if(data == null) {
 			throw new IllegalArgumentException("Null data passed to FileIO.write()");
