@@ -15,6 +15,7 @@ import net.minecraft.src.EntityClientPlayerMP;
 
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketCacheHashUpdate;
+import org.getspout.spout.packet.PacketChunkRefresh;
 import org.getspout.spout.util.ChunkHash;
 import org.getspout.spout.util.PersistentMap;
 
@@ -44,7 +45,7 @@ public class ChunkCache {
 	}
 	
 	private static byte[] hashData = new byte[CACHED_SIZE];
-	private static byte[] blank = new byte[CACHED_SIZE];
+	private static byte[] blank = new byte[2048];
 	
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
 	private static AtomicInteger chunks = new AtomicInteger();
@@ -56,7 +57,7 @@ public class ChunkCache {
 	public static AtomicInteger totalPacketUp = new AtomicInteger();
 	public static AtomicInteger totalPacketDown = new AtomicInteger();
 	
-	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize) throws IOException {
+	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize, int cx, int cz) throws IOException {
 
 		if(chunkData.length != FULL_CHUNK) {
 			return chunkData;
@@ -90,19 +91,18 @@ public class ChunkCache {
 		for(int i = 0; i < 40; i++) {
 			long hash = PartitionChunk.getHash(hashData, i);
 			byte[] partitionData = p.get(hash, partition);
+
 			if(hash == 0) {
 				PartitionChunk.copyFromChunkData(chunkData, i, partition);
 				hash = ChunkHash.hash(partition);
 				p.put(hash, partition);
 				processOverwriteQueue();
 			} else if (partitionData == null) {
+				long[] brokenHash = new long[1];
+				brokenHash[0] = hash;
+				EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
+				player.sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(false, brokenHash)));
 				PartitionChunk.copyToChunkData(chunkData, i, blank);
-				try {
-					p.wipeFile();
-				} catch (IOException ioe) {
-					throw new RuntimeException("Chunk Cache Error: " + hash + " not in cache", ioe);
-				}
-				throw new RuntimeException("Chunk Cache Error: " + hash + " not in cache");
 			} else {
 				cacheHit++;
 				PartitionChunk.copyToChunkData(chunkData, i, partitionData);
@@ -144,9 +144,10 @@ public class ChunkCache {
 		long CRCNew = ChunkHash.hash(cachedChunkData);
 		
 		if (CRCProvided && CRCNew != CRC) {
-			System.out.println("CRC mismatch");
-			System.out.println("CRC received: " + CRC + " actual CRC of data: " + CRCNew);
-			throw new RuntimeException("CRC Mismatch");
+			System.out.println("CRC error, received: " + CRC + " CRC of data: " + CRCNew);
+			System.out.println("Requesting chunk resend: " + cx + " " + cz);
+			EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
+			player.sendQueue.addToSendQueue(new CustomPacket(new PacketChunkRefresh(cx, cz)));
 		}
 		
 		return cachedChunkData;

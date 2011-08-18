@@ -114,6 +114,7 @@ public class FileMap {
 		data = readData(index, data);
 		long dataHash = ChunkHash.hash(data);
 		if(dataHash != hash) {
+			this.writeFAT(index, 0);
 			return null;
 		} else {
 			return data;
@@ -166,8 +167,12 @@ public class FileMap {
 	
 	private void writeFAT(int index, long hash) throws IOException {
 		index = index % entries;
+		Long oldHash = hashes[index].get();
+		FAT.remove(oldHash);
 		hashes[index].set(hash);
-		FAT.put(hash, index);
+		if (hash != 0) {
+			FAT.put(hash, index);
+		}
 		
 		FATFile.seek(index*8);
 		FATFile.writeLong(hash);
@@ -191,6 +196,13 @@ public class FileMap {
 		} else {
 			dataFile.write(data);
 		}
+	}
+	
+	public void corruptIndex(int index) throws IOException {
+		System.out.println("Corrupting index: " + index);
+		byte[] data = readData(index, null);
+		data[123] = (byte)(data[123] + 1);
+		writeData(index, data);
 	}
 	
 }

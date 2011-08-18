@@ -82,5 +82,20 @@ public class PersistentMap {
 		cache.remove(key);
 		return overwriteBackup.remove(key);
 	}
+	
+	public boolean corruptionTest(long hash) {
+		Integer index = f.hashToIndex(hash);
+		try {
+			if (index != null) {
+				f.corruptIndex(index);
+				return true;
+			} else {
+				System.out.println(hash + " doesn't exist, cannot corrupt");
+				return false;
+			}
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
 }
