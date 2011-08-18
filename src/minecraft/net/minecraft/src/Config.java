@@ -105,7 +105,7 @@ public class Config {
 	}
 
 	public static int getMipmapType() {
-		return 0;
+		return Integer.valueOf(9984 /*GL_NEAREST_MIPMAP_NEAREST*/);
 		//return gameSettings == null?DEF_MIPMAP_TYPE.intValue():(gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
 	}
 
