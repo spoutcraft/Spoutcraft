@@ -22,8 +22,9 @@ public class CustomGuiSlider extends GuiSlider {
 			}
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.drawTexturedModalRect((int) (slider.getSliderPosition() * 192), 0, 0, 66, 4, 20);
-			this.drawTexturedModalRect((int) (slider.getSliderPosition() * 192) + 4, 0, 196, 66, 4, 20);
+			float width = (float) (slider.getWidth() < 200 ? slider.getWidth() : 200) - 8;
+			this.drawTexturedModalRect((int) (slider.getSliderPosition() * width), 0, 0, 66, 4, 20);
+			this.drawTexturedModalRect((int) (slider.getSliderPosition() * width) + 4, 0, 196, 66, 4, 20);
 		}
 	}
 	
