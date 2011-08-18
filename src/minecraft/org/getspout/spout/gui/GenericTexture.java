@@ -3,12 +3,10 @@ package org.getspout.spout.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.FileInputStream;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.src.Tessellator;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.packet.PacketUtil;
-import org.newdawn.slick.opengl.TextureLoader;
 
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String Url = null;
@@ -54,12 +52,8 @@ public class GenericTexture extends GenericWidget implements Texture {
 			return;
 		}
 		if (texture == null) {
-			try {
-				texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true);
-			}
-			catch (IOException e) { }
+			texture = CustomTextureManager.getTextureFromPath(path);
 			if (texture == null) {
-				System.out.println("Error loading texture: " + path);
 				return;
 			}
 		}

@@ -152,7 +152,7 @@ public class GenericLabel extends GenericWidget implements Label{
 			case TOP_RIGHT:
 			case CENTER_RIGHT:
 			case BOTTOM_RIGHT:
-				aleft -= (int) (auto ? getActualWidth() : width); System.out.println(aleft); break;
+				aleft -= (int) (auto ? getActualWidth() : width); break;
 		}
 		
 		GL11.glTranslatef((float) aleft, (float) top, 0);
