@@ -105,8 +105,8 @@ public class CustomScreen extends GuiScreen {
 	}
 	
 	private boolean isInBoundingRect(Widget widget, int x, int y) {
-		int left = (int) widget.getX();
-		int top = (int) widget.getY();
+		int left = (int) widget.getScreenX();
+		int top = (int) widget.getScreenY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
 		int right = left+width;
