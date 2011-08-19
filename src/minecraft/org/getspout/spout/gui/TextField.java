@@ -42,29 +42,29 @@ public interface TextField extends Control{
 	public TextField setMaximumCharacters(int max);
 	
 	/**
-	 * Gets the color of the inner field area of the text box. The color is rendered as a hex color code.
+	 * Gets the color of the inner field area of the text box.
 	 * @return field color
 	 */
-	public int getFieldColor();
+	public Color getFieldColor();
 	
 	/**
-	 * Sets the field color of the inner field area of the text box. The color is rendered as a hex color code.
-	 * @param hex color to render as
+	 * Sets the field color of the inner field area of the text box.
+	 * @param color to render as
 	 * @return textfield
 	 */
-	public TextField setFieldColor(int hex);
+	public TextField setFieldColor(Color color);
 	
 	/**
-	 * Gets the outside color of the field area of the text box. The color is rendered as a hex color code.
+	 * Gets the outside color of the field area of the text box.
 	 * @return border color
 	 */
-	public int getBorderColor();
+	public Color getBorderColor();
 	
 	/**
-	 * Sets the outside color of the field area of the text box. The color is rendered as a hex color code.
-	 * @param hex color to render as
+	 * Sets the outside color of the field area of the text box.
+	 * @param color to render as
 	 * @return textfield
 	 */
-	public TextField setBorderColor(int hex);
+	public TextField setBorderColor(Color color);
 
 }

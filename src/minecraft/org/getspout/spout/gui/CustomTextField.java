@@ -94,8 +94,8 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public void drawButton(Minecraft game, int mouseX, int mouseY) {
-		this.drawRect((int) (field.getScreenX() - 1), (int) (field.getScreenY() - 1), (int) (field.getScreenX() + field.getWidth() + 1), (int) (field.getScreenY() + field.getHeight() + 1), field.getBorderColor());
-		this.drawRect((int)field.getScreenX(), (int) field.getScreenY(), (int) (field.getScreenX() + field.getWidth()), (int) (field.getScreenY() + field.getHeight()), field.getFieldColor());
+		this.drawRect((int) (field.getScreenX() - 1), (int) (field.getScreenY() - 1), (int) (field.getScreenX() + field.getWidth() + 1), (int) (field.getScreenY() + field.getHeight() + 1), field.getBorderColor().toInt());
+		this.drawRect((int)field.getScreenX(), (int) field.getScreenY(), (int) (field.getScreenX() + field.getWidth()), (int) (field.getScreenY() + field.getHeight()), field.getFieldColor().toInt());
 		if(field.isEnabled()) {
 			count++;
 			boolean showCursor = this.focus && count % 40 < 15;

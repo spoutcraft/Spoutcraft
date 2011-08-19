@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
+
 import net.minecraft.src.GuiButton;
 
 public class GenericTextField extends GenericControl implements TextField{
@@ -13,8 +14,8 @@ public class GenericTextField extends GenericControl implements TextField{
 	protected String text = "";
 	protected int cursor = 0;
 	protected int maxChars = 16;
-	protected int fieldColor = -16777216;
-	protected int borderColor = -6250336;
+	protected Color fieldColor = new Color(0, 0, 0);
+	protected Color borderColor = new Color(0.625F, 0.625F, 0.625F);
 	CustomTextField field = null;
 	public GenericTextField() {
 
@@ -22,19 +23,19 @@ public class GenericTextField extends GenericControl implements TextField{
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(text);
+		return super.getNumBytes() + 40 + PacketUtil.getNumBytes(text);
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		setCursorPosition(input.readInt());
-		setFieldColor(input.readInt());
-		setBorderColor(input.readInt());
+		setFieldColor(PacketUtil.readColor(input));
+		setBorderColor(PacketUtil.readColor(input));
 		setMaximumCharacters(input.readInt());
 		setText(PacketUtil.readString(input));
 	}
@@ -43,8 +44,8 @@ public class GenericTextField extends GenericControl implements TextField{
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeInt(getCursorPosition());
-		output.writeInt(getFieldColor());
-		output.writeInt(getBorderColor());
+		PacketUtil.writeColor(output, getFieldColor());
+		PacketUtil.writeColor(output, getBorderColor());
 		output.writeInt(getMaximumCharacters());
 		PacketUtil.writeString(output, getText());
 	}
@@ -83,24 +84,24 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	@Override
-	public int getFieldColor() {
+	public Color getFieldColor() {
 		return fieldColor;
 	}
 
 	@Override
-	public TextField setFieldColor(int hex) {
-		this.fieldColor = hex;
+	public TextField setFieldColor(Color color) {
+		this.fieldColor = color;
 		return this;
 	}
 
 	@Override
-	public int getBorderColor() {
+	public Color getBorderColor() {
 		return borderColor;
 	}
 
 	@Override
-	public TextField setBorderColor(int hex) {
-		this.borderColor = hex;
+	public TextField setBorderColor(Color color) {
+		this.borderColor = color;
 		return this;
 	}
 	
