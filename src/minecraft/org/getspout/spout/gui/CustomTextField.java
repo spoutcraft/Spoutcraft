@@ -112,9 +112,9 @@ public class CustomTextField extends GuiButton {
 					text += field.getText().substring(field.getCursorPosition());
 				}
 			}
-			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor());
+			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor().toInt());
 		} else {
-			this.drawString(game.fontRenderer, field.getText(), (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getDisabledColor());
+			this.drawString(game.fontRenderer, field.getText(), (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getDisabledColor().toInt());
 		}
 
 	}

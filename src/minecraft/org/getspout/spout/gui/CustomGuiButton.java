@@ -28,7 +28,7 @@ public class CustomGuiButton extends GuiButton {
 			this.drawTexturedModalRect(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20);
 			this.drawTexturedModalRect((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20);
 			this.mouseDragged(game, mouseX, mouseY);
-			int color = button.getColor();
+			Color color = button.getColor();
 			if(!button.isEnabled()) {
 				color = button.getDisabledColor();
 			} else if(hovering) {
@@ -45,7 +45,7 @@ public class CustomGuiButton extends GuiButton {
 				case BOTTOM_RIGHT:
 					left = (int) (width - font.getStringWidth(button.getText())) - 5; break;
 			}
-			this.drawString(font, button.getText(), left, 6, color);
+			this.drawString(font, button.getText(), left, 6, color.toInt());
 		}
 	}
 	

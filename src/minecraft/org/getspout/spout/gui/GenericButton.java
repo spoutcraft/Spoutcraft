@@ -13,7 +13,7 @@ public class GenericButton extends GenericControl implements Button {
 
 	protected GenericLabel label = new GenericLabel();
 	protected String disabledText = "";
-	protected int hoverColor = 0xffffa0;
+	protected Color hoverColor = new Color(1, 1, 0.627F);
 	private CustomGuiButton button = null;
 	public GenericButton() {
 		
@@ -25,11 +25,11 @@ public class GenericButton extends GenericControl implements Button {
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 4;
+		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 16;
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class GenericButton extends GenericControl implements Button {
 		super.readData(input);
 		label.readData(input);
 		setDisabledText(PacketUtil.readString(input));
-		setHoverColor(input.readInt());
+		setHoverColor(PacketUtil.readColor(input));
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class GenericButton extends GenericControl implements Button {
 		super.writeData(output);
 		label.writeData(output);
 		PacketUtil.writeString(output, getDisabledText());
-		output.writeInt(getHoverColor());
+		PacketUtil.writeColor(output, getHoverColor());
 	}
 
 	@Override
@@ -81,13 +81,13 @@ public class GenericButton extends GenericControl implements Button {
 	}
 
 	@Override
-	public int getHexColor() {
-		return label.getHexColor();
+	public Color getTextColor() {
+		return label.getTextColor();
 	}
 
 	@Override
-	public Label setHexColor(int hex) {
-		label.setHexColor(hex);
+	public Label setTextColor(Color color) {
+		label.setTextColor(color);
 		return this;
 	}
 
@@ -103,13 +103,13 @@ public class GenericButton extends GenericControl implements Button {
 	}
 	
 	@Override
-	public int getHoverColor() {
+	public Color getHoverColor() {
 		return hoverColor;
 	}
 	
 	@Override
-	public Button setHoverColor(int hexColor) {
-		this.hoverColor = hexColor;
+	public Button setHoverColor(Color color) {
+		this.hoverColor = color;
 		return this;
 	}
 	

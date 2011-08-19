@@ -109,4 +109,8 @@ public class Color {
     public static Color override() {
         return new Color(-2,-2,-2);
     }
+    
+    public int toInt() {
+    	return (getAlphaB() << 24) + (getRedB() << 16) + (getGreenB() << 8) + getBlueB();
+    }
 }

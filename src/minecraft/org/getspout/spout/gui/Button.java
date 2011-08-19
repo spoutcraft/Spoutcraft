@@ -16,16 +16,16 @@ public interface Button extends Control, Label{
 	public Button setDisabledText(String text);
 	
 	/**
-	 * Get's the hex color of the control while the mouse is hovering over it
-	 * @return hex color
+	 * Get's the color of the control while the mouse is hovering over it
+	 * @return color
 	 */
-	public int getHoverColor();
+	public Color getHoverColor();
 	
 	/**
-	 * Sets the hex color of the control while the mouse is hovering over it
-	 * @param hexColor
+	 * Sets the color of the control while the mouse is hovering over it
+	 * @param color
 	 * @return Button
 	 */
-	public Button setHoverColor(int hexColor);
+	public Button setHoverColor(Color color);
 
 }

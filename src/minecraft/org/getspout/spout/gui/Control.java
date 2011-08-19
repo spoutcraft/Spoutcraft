@@ -16,28 +16,28 @@ public interface Control extends Widget{
 	public Control setEnabled(boolean enable);
 
 	/**
-	 * Gets the hex color of this control
-	 * @return hex color
+	 * Gets the color of this control
+	 * @return color
 	 */
-	public int getColor();
+	public Color getColor();
 	
 	/**
-	 * Sets the hex color of this control
-	 * @param hexColor to set
+	 * Sets the color of this control
+	 * @param color to set
 	 * @return Control
 	 */
-	public Control setColor(int hexColor);
+	public Control setColor(Color color);
 	
 	/**
-	 * Gets the hex color of this control when it is disabled
+	 * Gets the color of this control when it is disabled
 	 * @return disabled color
 	 */
-	public int getDisabledColor();
+	public Color getDisabledColor();
 	
 	/**
-	 * Sets the hex color of this control when it is disabled
-	 * @param hexColor to set
+	 * Sets the color of this control when it is disabled
+	 * @param color to set
 	 * @return Control
 	 */
-	public Control setDisabledColor(int hexColor);
+	public Control setDisabledColor(Color color);
 }

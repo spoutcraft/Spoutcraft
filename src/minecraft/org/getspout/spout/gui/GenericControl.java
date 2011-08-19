@@ -4,38 +4,40 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.getspout.spout.packet.PacketUtil;
+
 public abstract class GenericControl extends GenericWidget implements Control{
 
 	protected boolean enabled = true;
-	protected int color = 0xe0e0e0;
-	protected int disabledColor = -0x5f5f60;
+	protected Color color = new Color(0.878F, 0.878F, 0.878F);
+	protected Color disabledColor = new Color(0.625F, 0.625F, 0.625F);
 	public GenericControl() {
 		
 	}
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 9;
+		return super.getNumBytes() + 33;
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		setEnabled(input.readBoolean());
-		setColor(input.readInt());
-		setDisabledColor(input.readInt());
+		setColor(PacketUtil.readColor(input));
+		setDisabledColor(PacketUtil.readColor(input));
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(isEnabled());
-		output.writeInt(getColor());
-		output.writeInt(getDisabledColor());
+		PacketUtil.writeColor(output, getColor());
+		PacketUtil.writeColor(output, getDisabledColor());
 	}
 	
 	@Override
@@ -50,24 +52,24 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	}
 
 	@Override
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 
 	@Override
-	public Control setColor(int hexColor) {
-		this.color = hexColor;
+	public Control setColor(Color color) {
+		this.color = color;
 		return this;
 	}
 
 	@Override
-	public int getDisabledColor() {
+	public Color getDisabledColor() {
 		return disabledColor;
 	}
 
 	@Override
-	public Control setDisabledColor(int hexColor) {
-		this.disabledColor = hexColor;
+	public Control setDisabledColor(Color color) {
+		this.disabledColor = color;
 		return this;
 	}
 

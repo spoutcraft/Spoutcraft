@@ -15,17 +15,17 @@ public interface Label extends Widget{
 	public Label setText(String text);
 	
 	/**
-	 * Gets the hex color code for the text
-	 * @return color code
+	 * Gets the color for the text
+	 * @return color
 	 */
-	public int getHexColor();
+	public Color getTextColor();
 	
 	/** 
-	 * Sets the hex color code for the text
-	 * @param hex color code to set
+	 * Sets the color for the text
+	 * @param color to set
 	 * @return label
 	 */
-	public Label setHexColor(int hex);
+	public Label setTextColor(Color color);
 	
 	/** 
 	 * Determines if text expands to fill width and height
