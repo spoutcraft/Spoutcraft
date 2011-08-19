@@ -545,15 +545,15 @@ public class Config {
 	}
 
 	public static boolean isWeatherEnabled() {
-		return gameSettings == null?true:gameSettings.ofWeather && SpoutClient.getInstance().isCheatMode();
+		return gameSettings == null?true:gameSettings.ofWeather || !SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isSkyEnabled() {
-		return gameSettings == null?true:gameSettings.ofSky && SpoutClient.getInstance().isCheatMode(); 
+		return gameSettings == null?true:gameSettings.ofSky || !SpoutClient.getInstance().isCheatMode(); 
 	}
 
 	public static boolean isStarsEnabled() {
-		return gameSettings == null?true:gameSettings.ofStars && SpoutClient.getInstance().isCheatMode();
+		return gameSettings == null?true:gameSettings.ofStars || !SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isFarView() {
