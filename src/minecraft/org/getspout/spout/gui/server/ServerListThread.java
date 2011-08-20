@@ -18,7 +18,7 @@ public class ServerListThread implements Runnable {
 	GuiMultiplayer parentScreen;
 	String addr;
 	private static Thread instance = null;
-	private LinkedHashMap<String,ArrayList> tempCountryMappings = new LinkedHashMap<String,ArrayList>();
+	private LinkedHashMap<String,ArrayList<ServerSlot>> tempCountryMappings = new LinkedHashMap<String,ArrayList<ServerSlot>>();
 
 
 	public ServerListThread(GuiMultiplayer var1, String var2) {
@@ -26,7 +26,7 @@ public class ServerListThread implements Runnable {
 		this.addr = var2;
 	}
 
-	public void StartGet() {
+	public void init() {
 		if (instance == null) {
 			instance = new Thread(this);
 			instance.start();
@@ -36,7 +36,7 @@ public class ServerListThread implements Runnable {
 	public void run() {
 		try {
 			synchronized(this.parentScreen.serverInfo) {
-				this.parentScreen.serverInfo.status = "Getting Server List";
+				this.parentScreen.serverInfo.status = "Retrieving Server List";
 			}
 			String[] var1 = null;
 			URL url = new URL(this.addr);
@@ -53,7 +53,7 @@ public class ServerListThread implements Runnable {
 					text[i].replace("[Private]","");
 				}
 				text[i].replaceAll("'","");
-				ServerSlot var7 = new ServerSlot(i);
+				ServerSlot slot = new ServerSlot(i);
 				String[] var8 = text[i].split("\\,");
 
 				for(int var9 = 0; var9 < var8.length; ++var9) {
@@ -63,15 +63,15 @@ public class ServerListThread implements Runnable {
 						var1[var10] = stripLeadingAndTrailingQuotes(var1[var10]);
 					}
 
-					var7 = this.setServer(i, var1, var7);
+					slot = this.setServer(i, var1, slot);
 				}
 
-				ArrayList list = tempCountryMappings.get(var7.country);
+				ArrayList list<ServerSlot> = tempCountryMappings.get(slot.country);
 				if (list == null) {
 					list = new ArrayList();
-					tempCountryMappings.put(var7.country, list);
+					tempCountryMappings.put(slot.country, list);
 				}
-				list.add(var7);
+				list.add(slot);
 			}
 
 			for (String country : tempCountryMappings.keySet()) {
@@ -89,11 +89,12 @@ public class ServerListThread implements Runnable {
 
 				});
 			}
-			synchronized(this.parentScreen.serverInfo) {			
-				this.parentScreen.serverInfo.serverList.clear();
-				this.parentScreen.serverInfo.activeCountry = 0;
+			synchronized(this.parentScreen.serverInfo) {
 				ArrayList tempCountries = new ArrayList(tempCountryMappings.keySet());
 				Collections.sort(tempCountries);
+				
+				this.parentScreen.serverInfo.serverList.clear();
+				this.parentScreen.serverInfo.activeCountry = tempCountries.size() - 1;
 				this.parentScreen.serverInfo.countries = tempCountries;
 				this.parentScreen.serverInfo.countryMappings = tempCountryMappings;
 				this.parentScreen.serverInfo.page = 0;

@@ -193,7 +193,7 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public void getServer() {
 		ServerListThread serverList = new ServerListThread(this, "http://list.mcmyadmin.com/getdata.aspx?req=serverlist");
-		serverList.StartGet();
+		serverList.init();
 	}
 
 	public static List getSize(GuiMultiplayer var0) {
