@@ -16,7 +16,7 @@ public class ServerSlot implements Comparable {
 	}
 
 	public int compareTo(ServerSlot other) {
-		return this.players - other.players;
+		return other.players - this.players;
 	}
 
 	// $FF: synthetic method
