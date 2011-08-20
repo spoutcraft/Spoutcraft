@@ -176,7 +176,7 @@ public class ChunkProvider implements IChunkProvider {
 		IntIterator iterator = this.droppedChunksSet.iterator();
 		
 		for(int var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
-			Integer var2 = iterator.nextInt();
+			int var2 = iterator.nextInt();
 			Chunk var3 = (Chunk)this.chunkMap.get(var2);
 			var3.onChunkUnload();
 			this.func_28062_b(var3);
