@@ -27,7 +27,7 @@ public class FileDownloadThread extends Thread{
 	public void addToDownloadQueue(Download download){
 		downloads.add(download);
 	}
-	
+
 	public boolean isDownloading(String url) {
 		Iterator<Download> i = downloads.iterator();
 		while(i.hasNext()) {
