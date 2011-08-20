@@ -66,9 +66,9 @@ public class ServerListThread implements Runnable {
 					slot = this.setServer(i, var1, slot);
 				}
 
-				ArrayList list<ServerSlot> = tempCountryMappings.get(slot.country);
+				ArrayList<ServerSlot> list = tempCountryMappings.get(slot.country);
 				if (list == null) {
-					list = new ArrayList();
+					list = new ArrayList<ServerSlot>();
 					tempCountryMappings.put(slot.country, list);
 				}
 				list.add(slot);
