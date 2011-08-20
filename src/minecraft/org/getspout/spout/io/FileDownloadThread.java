@@ -3,8 +3,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 

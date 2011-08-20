@@ -35,13 +35,11 @@ public class PartitionChunk {
 		
 		int pos = start;
 		
-		int count = 0;
 		int partitionPos = 0;
 		
 		for(int outer=0;outer<256;outer++) {
 			for(int inner=0;inner<8;inner++) {
 				chunkData[pos] = partition[partitionPos++];
-				count++;
 				pos++;
 			}
 			pos+=step;
@@ -56,13 +54,11 @@ public class PartitionChunk {
 		
 		int pos = start;
 		
-		int count = 0;
 		int partitionPos = 0;
 		
 		for(int outer=0;outer<256;outer++) {
 			for(int inner=0;inner<8;inner++) {
 				partition[partitionPos++] = chunkData[pos];
-				count++;
 				pos++;
 			}
 			pos+=step;

@@ -10,7 +10,17 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
 
 public class CustomPacket extends Packet{
-	SpoutPacket packet;
+	public SpoutPacket packet;
+	private boolean success = false;
+	private static final int[] nags;
+	private static final int NAG_MSG_AMT = 10;
+	
+	static {
+		nags = new int[PacketType.values().length];
+		for (int i = 0; i < PacketType.values().length; i++) {
+			nags[i] = NAG_MSG_AMT;
+		}
+	}
 
 	public CustomPacket() {
 		
@@ -52,11 +62,14 @@ public class CustomPacket extends Packet{
 			}
 			else if (packet.getVersion() != version) {
 				input.skipBytes(length);
-				System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
+				//Keep server admins from going insane :p
+				if (nags[packetId]-- > 0) {
+					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
+				}
 			}
 			else {
 				packet.readData(input);
-				//System.out.println("Reading Packet Data for " +  PacketType.getPacketFromId(packetId));
+				success = true;
 			}
 		}
 		catch (IOException e) {
@@ -86,7 +99,13 @@ public class CustomPacket extends Packet{
 	@Override
 	public void processPacket(NetHandler netHandler) {
 		if(packet != null) {
-			packet.run(SpoutClient.getHandle().thePlayer.entityId);
+			if (success) {
+				packet.run(SpoutClient.getHandle().thePlayer.entityId);
+			}
+			else {
+				packet.failure(SpoutClient.getHandle().thePlayer.entityId);
+			}
+			
 		}
 	}
 	

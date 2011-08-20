@@ -116,4 +116,9 @@ public class PacketWidget implements SpoutPacket {
 		return 1;
 	}
 
+	@Override
+	public void failure(int playerId) {
+		
+	}
+
 }

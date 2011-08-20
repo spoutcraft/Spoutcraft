@@ -7,6 +7,9 @@ import java.io.IOException;
 import org.getspout.spout.client.SpoutClient;
 
 public class PacketAlert implements SpoutPacket{
+	String message;
+	String title;
+	int itemId;
 	
 	public PacketAlert() {
 		
@@ -52,7 +55,8 @@ public class PacketAlert implements SpoutPacket{
 		return 1;
 	}
 
-	String message;
-	String title;
-	int itemId;
+	@Override
+	public void failure(int playerId) {
+		
+	}
 }

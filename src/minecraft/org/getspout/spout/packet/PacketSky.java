@@ -129,4 +129,9 @@ public class PacketSky implements SpoutPacket{
 		return 1;
 	}
 
+	@Override
+	public void failure(int playerId) {
+		
+	}
+
 }

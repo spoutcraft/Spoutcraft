@@ -60,4 +60,9 @@ public class PacketScreenAction implements SpoutPacket{
 		return 2;
 	}
 
+	@Override
+	public void failure(int playerId) {
+		
+	}
+
 }

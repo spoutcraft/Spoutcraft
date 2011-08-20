@@ -80,4 +80,9 @@ public class PacketWidgetRemove implements SpoutPacket {
 		return 0;
 	}
 
+	@Override
+	public void failure(int playerId) {
+		
+	}
+
 }

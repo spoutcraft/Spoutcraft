@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.File;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.RenderEngine;
 
 import org.getspout.spout.client.SpoutClient;
@@ -71,6 +70,11 @@ public class PacketTexturePack implements SpoutPacket{
 	@Override
 	public int getVersion() {
 		return 0;
+	}
+
+	@Override
+	public void failure(int playerId) {
+		
 	}
 
 }

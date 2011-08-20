@@ -58,4 +58,9 @@ public class PacketStopMusic implements SpoutPacket{
 		return 0;
 	}
 
+	@Override
+	public void failure(int playerId) {
+		
+	}
+
 }

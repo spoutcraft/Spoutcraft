@@ -53,4 +53,9 @@ public class PacketEntityTitle implements SpoutPacket{
 	public int getVersion() {
 		return 0;
 	}
+
+	@Override
+	public void failure(int playerId) {
+		
+	}
 }

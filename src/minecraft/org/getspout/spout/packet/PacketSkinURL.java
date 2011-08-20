@@ -9,8 +9,11 @@ import org.getspout.spout.client.SpoutClient;
 import net.minecraft.src.*;
 
 public class PacketSkinURL implements SpoutPacket{
-	
+	public int entityId;
+	public String skinURL;
+	public String cloakURL;
 	public PacketSkinURL() {
+		
 	}
 	
 	public PacketSkinURL(int id, String skinURL, String cloakURL) {
@@ -30,9 +33,6 @@ public class PacketSkinURL implements SpoutPacket{
 		this.skinURL = "none";
 		this.cloakURL = cloakURL;
 	}
-	public int entityId;
-	public String skinURL;
-	public String cloakURL;
 
 	@Override
 	public int getNumBytes() {
@@ -79,6 +79,11 @@ public class PacketSkinURL implements SpoutPacket{
 	@Override
 	public int getVersion() {
 		return 0;
+	}
+
+	@Override
+	public void failure(int playerId) {
+		
 	}
 
 }
