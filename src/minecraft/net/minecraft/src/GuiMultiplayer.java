@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Collections;
 
 import net.minecraft.src.GuiButton;
 
@@ -162,6 +163,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else {
 				String country = serverInfo.countries.get(serverInfo.activeCountry);
 				ArrayList fullList = serverInfo.countryMappings.get(country);
+				Collections.sort(fullList);
 				serverInfo.pages = (fullList.size() + 9) / 10;
 				int last = Math.min(fullList.size(), (serverInfo.page + 1) * 10);
 				int first = serverInfo.page * 10;

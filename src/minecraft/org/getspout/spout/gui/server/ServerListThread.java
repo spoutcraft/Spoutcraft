@@ -36,7 +36,7 @@ public class ServerListThread implements Runnable {
 	public void run() {
 		try {
 			synchronized(this.parentScreen.serverInfo) {
-				this.parentScreen.serverInfo.status = "Retrieving Server List";
+				this.parentScreen.serverInfo.status = "Retrieving server list...";
 			}
 			String[] var1 = null;
 			URL url = new URL(this.addr);
@@ -44,7 +44,7 @@ public class ServerListThread implements Runnable {
 			String line = reader.readLine();
 			reader.close();
 			synchronized(this.parentScreen.serverInfo) {
-				this.parentScreen.serverInfo.status = "Processing servers";
+				this.parentScreen.serverInfo.status = "Processing servers...";
 			}
 			String[] text = line.split("\\{");
 
