@@ -35,15 +35,15 @@ public class CustomScreen extends GuiScreen {
 	public void handleKeyboardInput() {
 		boolean handled = false;
 		if(Keyboard.getEventKeyState()) {		
-                        for (GuiButton control : getControlList()) {
-                                if (control instanceof CustomTextField) {
-                                        if (((CustomTextField)control).isFocused()) {
-                                                ((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
-                                                handled = true;
-                                                break;
-                                        }
-                                }
-                        }			
+						for (GuiButton control : getControlList()) {
+								if (control instanceof CustomTextField) {
+										if (((CustomTextField)control).isFocused()) {
+												((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
+												handled = true;
+												break;
+										}
+								}
+						}			
 		}
 		if (!handled) {
 			super.handleKeyboardInput();

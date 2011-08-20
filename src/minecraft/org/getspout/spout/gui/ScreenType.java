@@ -65,59 +65,59 @@ public enum ScreenType {
 		return lookup.get(code);
 	}
 	
-        public static ScreenType getType(GuiScreen gui) {
-            ScreenType screen = ScreenType.UNKNOWN;
-            if (gui instanceof GuiChat) {
-                screen = ScreenType.CHAT_SCREEN;
-            }
-            if (gui instanceof GuiSleepMP) {
-                screen = ScreenType.SLEEP_SCREEN;
-            }
-            if (gui instanceof CustomScreen) {
-                screen = ScreenType.CUSTOM_SCREEN;
-            }
-            if (gui instanceof GuiInventory) {
-                screen = ScreenType.PLAYER_INVENTORY;
-            }
-            if (gui instanceof GuiChest) {
-                screen = ScreenType.CHEST_INVENTORY;
-            }
-            if (gui instanceof GuiDispenser) {
-                screen = ScreenType.DISPENSER_INVENTORY;
-            }
-            if (gui instanceof GuiFurnace) {
-                screen = ScreenType.FURNACE_INVENTORY;
-            }
-            if (gui instanceof GuiIngameMenu) {
-                screen = ScreenType.INGAME_MENU;
-            }
-            if (gui instanceof GuiOptions) {
-                screen = ScreenType.OPTIONS_MENU;
-            }
-            if (gui instanceof GuiVideoSettings) {
-                screen = ScreenType.VIDEO_SETTINGS_MENU;
-            }
-            if (gui instanceof GuiControls) {
-                screen = ScreenType.CONTROLS_MENU;
-            }
-            if (gui instanceof GuiAchievements) {
-                screen = ScreenType.ACHIEVEMENTS_SCREEN;
-            }
-            if (gui instanceof GuiCrafting) {
-                screen = ScreenType.WORKBENCH_INVENTORY;
-            }
-            if (gui instanceof GuiGameOver) {
-                screen = ScreenType.GAME_OVER_SCREEN;
-            }
-            if (gui instanceof GuiEditSign) {
-                screen = ScreenType.SIGN_SCREEN;
-            }
-            if (gui instanceof GuiStats) {
-                screen = ScreenType.STATISTICS_SCREEN;
-            }
-            return screen;
-        }
-        
+		public static ScreenType getType(GuiScreen gui) {
+			ScreenType screen = ScreenType.UNKNOWN;
+			if (gui instanceof GuiChat) {
+				screen = ScreenType.CHAT_SCREEN;
+			}
+			if (gui instanceof GuiSleepMP) {
+				screen = ScreenType.SLEEP_SCREEN;
+			}
+			if (gui instanceof CustomScreen) {
+				screen = ScreenType.CUSTOM_SCREEN;
+			}
+			if (gui instanceof GuiInventory) {
+				screen = ScreenType.PLAYER_INVENTORY;
+			}
+			if (gui instanceof GuiChest) {
+				screen = ScreenType.CHEST_INVENTORY;
+			}
+			if (gui instanceof GuiDispenser) {
+				screen = ScreenType.DISPENSER_INVENTORY;
+			}
+			if (gui instanceof GuiFurnace) {
+				screen = ScreenType.FURNACE_INVENTORY;
+			}
+			if (gui instanceof GuiIngameMenu) {
+				screen = ScreenType.INGAME_MENU;
+			}
+			if (gui instanceof GuiOptions) {
+				screen = ScreenType.OPTIONS_MENU;
+			}
+			if (gui instanceof GuiVideoSettings) {
+				screen = ScreenType.VIDEO_SETTINGS_MENU;
+			}
+			if (gui instanceof GuiControls) {
+				screen = ScreenType.CONTROLS_MENU;
+			}
+			if (gui instanceof GuiAchievements) {
+				screen = ScreenType.ACHIEVEMENTS_SCREEN;
+			}
+			if (gui instanceof GuiCrafting) {
+				screen = ScreenType.WORKBENCH_INVENTORY;
+			}
+			if (gui instanceof GuiGameOver) {
+				screen = ScreenType.GAME_OVER_SCREEN;
+			}
+			if (gui instanceof GuiEditSign) {
+				screen = ScreenType.SIGN_SCREEN;
+			}
+			if (gui instanceof GuiStats) {
+				screen = ScreenType.STATISTICS_SCREEN;
+			}
+			return screen;
+		}
+		
 	static {
 		for(ScreenType type:values()){
 			lookup.put(type.code, type);

@@ -105,15 +105,15 @@ public class GuiScreen extends Gui {
 		}
 //Spout Start
 		while(Keyboard.next()) {
-        	if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
-        		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
-        		ScreenType screen = ScreenType.getType(this);
-        		int i = Keyboard.getEventKey();
-        		boolean keyReleased = Keyboard.getEventKeyState();
-        		PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);
-        		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
-        	}
-        //Spout End
+			if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
+				EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
+				ScreenType screen = ScreenType.getType(this);
+				int i = Keyboard.getEventKey();
+				boolean keyReleased = Keyboard.getEventKeyState();
+				PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+			}
+		//Spout End
 			this.handleKeyboardInput();
 		}
 

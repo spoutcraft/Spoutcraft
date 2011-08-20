@@ -42,18 +42,18 @@ public interface SkyManager {
 	public String getMoonTextureUrl();
 	
 	public void setMoonTextureUrl(String Url);
-    
-    public void setSkyColor(float red, float green, float blue);
-    
-    public void setSkyColor(Color color);
-    
-    public Color getSkyColor();
-    
-    public void setFogColor(Color color);
-    
-    public Color getFogColor();
-    
-    public void setCloudColor(Color color);
-    
-    public Color getCloudColor();
+	
+	public void setSkyColor(float red, float green, float blue);
+	
+	public void setSkyColor(Color color);
+	
+	public Color getSkyColor();
+	
+	public void setFogColor(Color color);
+	
+	public Color getFogColor();
+	
+	public void setCloudColor(Color color);
+	
+	public Color getCloudColor();
 }

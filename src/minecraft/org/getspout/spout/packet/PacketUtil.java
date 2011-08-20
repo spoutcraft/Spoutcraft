@@ -29,19 +29,19 @@ public abstract class PacketUtil {
 		try {
 			short size = input.readShort();
 
-	        if (size > maxSize) {
-	            throw new IOException("Received string length longer than maximum allowed (" + size + " > " + maxSize + ")");
-	        } else if (size < 0) {
-	            throw new IOException("Received string length is less than zero! Weird string!");
-	        } else {
-	            StringBuilder stringbuilder = new StringBuilder();
+			if (size > maxSize) {
+				throw new IOException("Received string length longer than maximum allowed (" + size + " > " + maxSize + ")");
+			} else if (size < 0) {
+				throw new IOException("Received string length is less than zero! Weird string!");
+			} else {
+				StringBuilder stringbuilder = new StringBuilder();
 
-	            for (int j = 0; j < size; ++j) {
-	                stringbuilder.append(input.readChar());
-	            }
+				for (int j = 0; j < size; ++j) {
+					stringbuilder.append(input.readChar());
+				}
 
-	            return stringbuilder.toString();
-	        }
+				return stringbuilder.toString();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,7 +49,7 @@ public abstract class PacketUtil {
 	}
 	
 	public static void writeColor(DataOutputStream output, Color color) {
-        try {
+		try {
 			output.writeFloat(color.getRedF());
 			output.writeFloat(color.getGreenF());
 			output.writeFloat(color.getBlueF());
@@ -57,9 +57,9 @@ public abstract class PacketUtil {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    public static Color readColor(DataInputStream input) {
+	}
+	
+	public static Color readColor(DataInputStream input) {
 		try {
 			float r,g,b,a;
 			r = input.readFloat();
@@ -71,6 +71,6 @@ public abstract class PacketUtil {
 			e.printStackTrace();
 		}
 		return null;
-    }
+	}
 
 }

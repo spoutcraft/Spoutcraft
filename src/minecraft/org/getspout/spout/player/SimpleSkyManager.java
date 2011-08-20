@@ -12,7 +12,7 @@ public class SimpleSkyManager implements SkyManager{
 	private String sunUrl = null;
 	private String moonUrl = null;
 	private Color skyColor = null, fogColor = null, cloudColor = null;
-    
+	
 	@Override
 	public int getCloudHeight() {
 		if (cloudHeight == -999) {
@@ -135,54 +135,54 @@ public class SimpleSkyManager implements SkyManager{
 			CustomTextureManager.downloadTexture(Url);
 		}
 	}
-    
-    @Override
-    public void setSkyColor(float red, float green, float blue) {
-        skyColor.setRed(red).setGreen(green).setBlue(blue);
-    }
+	
+	@Override
+	public void setSkyColor(float red, float green, float blue) {
+		skyColor.setRed(red).setGreen(green).setBlue(blue);
+	}
 
-    @Override
-    public void setSkyColor(Color color) {
-    	if(color!=null)
-       		skyColor = color.clone();
-       	else
-       		skyColor = null;
-    }
-    
-    @Override
-    public Color getSkyColor() {
-        if(skyColor == null){
-            return null;
-        }
-        return skyColor.clone();
-    }
-    
-    @Override
-    public void setFogColor(Color color) {
-    	if(color!=null)
-        	this.fogColor = color.clone();
-        else
-        	fogColor = null;
-    }
-    
-    @Override
-    public Color getFogColor() {
-        if(fogColor == null){
-            return null;
-        }
-        return fogColor.clone();
-    }
-    
-    @Override
-    public void setCloudColor(Color color){
-    	if(color!=null)
-        	this.cloudColor = color.clone();
-        else
-        	cloudColor = null;
-    }
-    
-    @Override 
-    public Color getCloudColor(){
-        return this.cloudColor;
-    }
+	@Override
+	public void setSkyColor(Color color) {
+		if(color!=null)
+	   		skyColor = color.clone();
+	   	else
+	   		skyColor = null;
+	}
+	
+	@Override
+	public Color getSkyColor() {
+		if(skyColor == null){
+			return null;
+		}
+		return skyColor.clone();
+	}
+	
+	@Override
+	public void setFogColor(Color color) {
+		if(color!=null)
+			this.fogColor = color.clone();
+		else
+			fogColor = null;
+	}
+	
+	@Override
+	public Color getFogColor() {
+		if(fogColor == null){
+			return null;
+		}
+		return fogColor.clone();
+	}
+	
+	@Override
+	public void setCloudColor(Color color){
+		if(color!=null)
+			this.cloudColor = color.clone();
+		else
+			cloudColor = null;
+	}
+	
+	@Override 
+	public Color getCloudColor(){
+		return this.cloudColor;
+	}
 }
