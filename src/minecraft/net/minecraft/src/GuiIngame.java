@@ -177,8 +177,8 @@ public class GuiIngame extends Gui {
 					}
 				}
 			}
+			//Bubble Bar End
 		}
-		//Bubble Bar End
 
 		GL11.glDisable(3042 /*GL_BLEND*/);
 		GL11.glEnable('\u803a');

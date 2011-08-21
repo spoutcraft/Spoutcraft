@@ -53,28 +53,59 @@ public class ArmorBar extends GenericWidget {
 		return new UUID(0, 0);
 	}
 	
+	/**
+	 * Gets the maximum number of shields displayed on the HUD.
+	 * 
+	 * Armor is scaled to fit the number of shields appropriately.
+	 * @return shields displayed
+	 */
 	public int getMaxNumShields() {
 		return icons;
 	}
 	
+	/**
+	 * Sets the maximum number of shields displayed on the HUD.
+	 * 
+	 * Armor is scaled to fit the number of shields appropriately.
+	 * @param shields to display
+	 * @return this
+	 */
 	public ArmorBar setMaxNumShields(int icons) {
 		this.icons = icons;
 		return this;
 	}
 	
+	/**
+	 * True if the armor bar will appear even when the player has no armor equipped.
+	 * @return always visible
+	 */
 	public boolean isAlwaysVisible() {
 		return alwaysVisible;
 	}
 	
+	/**
+	 * Forces the armor bar to appear, even when the player has no armor equipped.
+	 * @param visible
+	 * @return this
+	 */
 	public ArmorBar setAlwaysVisible(boolean visible) {
 		alwaysVisible = visible;
 		return this;
 	}
 	
+	/**
+	 * Gets the number of pixels each shield is offset when drawing the next shield.
+	 * @return pixel offset
+	 */
 	public int getIconOffset() {
 		return iconOffset;
 	}
 	
+	/**
+	 * Sets the number of pixels each shield is offset when drawing the next shield.
+	 * @param offset when drawing shields
+	 * @return this
+	 */
 	public ArmorBar setIconOffset(int offset) {
 		iconOffset = offset;
 		return this;
