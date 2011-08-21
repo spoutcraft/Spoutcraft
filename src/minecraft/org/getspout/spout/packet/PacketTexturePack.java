@@ -14,28 +14,34 @@ import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileDownloadThread;
 
 public class PacketTexturePack implements SpoutPacket{
+	private static byte[] downloadBuffer = new byte[16384];
 	private String url;
+	private long expectedCRC;
+	
 	public PacketTexturePack(){
 		
 	}
 	
-	public PacketTexturePack(String url) {
+	public PacketTexturePack(String url, long expectedCRC) {
 		this.url = url;
+		this.expectedCRC = expectedCRC;
 	}
 
 	@Override
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(url);
+		return PacketUtil.getNumBytes(url) + 4;
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		url = PacketUtil.readString(input, 256);
+		expectedCRC = input.readLong();
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		PacketUtil.writeString(output, url);
+		output.writeLong(expectedCRC);
 	}
 
 	@Override
@@ -54,7 +60,7 @@ public class PacketTexturePack implements SpoutPacket{
 				return;
 			}
 			File texturePack = new File(FileUtil.getTexturePackDirectory(), fileName);
-			if (texturePack.exists()) {
+			if (FileUtil.getCRC(texturePack, downloadBuffer) != expectedCRC && expectedCRC != 0) {
 				texturePack.delete();
 			}
 			Download download = new Download(fileName, FileUtil.getTexturePackDirectory(), url, new TexturePackAction(fileName, FileUtil.getTexturePackDirectory()));
@@ -69,7 +75,7 @@ public class PacketTexturePack implements SpoutPacket{
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	@Override

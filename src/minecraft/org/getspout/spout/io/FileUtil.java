@@ -1,6 +1,11 @@
 package org.getspout.spout.io;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import net.minecraft.client.Minecraft;
 
@@ -58,16 +63,16 @@ public class FileUtil {
 		}
 		return directory;
 	}
-	
+
 	public static String getFileName(String Url) {
 		int slashIndex = Url.lastIndexOf('/');
 		int dotIndex = Url.lastIndexOf('.', slashIndex);
 		if (dotIndex == -1 || dotIndex < slashIndex) {
-				return Url.substring(slashIndex + 1).replaceAll("%20", " ");
+			return Url.substring(slashIndex + 1).replaceAll("%20", " ");
 		}
 		return Url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
 	}
-	
+
 	public static boolean isAudioFile(String file) {
 		String extension = FilenameUtils.getExtension(file);
 		if (extension != null) {
@@ -75,7 +80,7 @@ public class FileUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean isImageFile(String file) {
 		String extension = FilenameUtils.getExtension(file);
 		if (extension != null) {
@@ -83,12 +88,73 @@ public class FileUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean isZippedFile(String file) {
 		String extension = FilenameUtils.getExtension(file);
 		if (extension != null) {
 			return extension.equalsIgnoreCase("zip");
 		}
 		return false;
+	}
+
+	
+	public static long getCRC(File file, byte[] buffer) {
+
+		FileInputStream in = null;
+		
+		try {
+			in = new FileInputStream(file);
+			return getCRC(in, buffer);
+		} catch (FileNotFoundException e) {
+			return 0;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+	
+	public static long getCRC(URL url, byte[] buffer) {
+		
+		InputStream in = null;
+		
+		try {
+			in = url.openStream();
+			return getCRC(in, buffer);
+		} catch (IOException e) {
+			return 0;
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		
+	}
+
+	public static long getCRC(InputStream in, byte[] buffer) {
+		
+		long hash = 1;
+		
+		int read = 0;
+		int i;
+		while (read >= 0) {
+			try {
+				read = in.read(buffer);
+				for (i=0; i < read; i++) {
+					hash += (hash << 5) + (long)buffer[i];
+				}
+			} catch (IOException ioe) {
+				return 0;
+			}
+		}
+
+		return hash;
+		
 	}
 }
