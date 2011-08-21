@@ -1,5 +1,5 @@
 package org.spoutcraft.api;
 
-public class Spoutcraft {
+public class SpoutcraftPlugin {
 
 }
