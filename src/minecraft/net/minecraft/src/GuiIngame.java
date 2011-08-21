@@ -49,126 +49,136 @@ public class GuiIngame extends Gui {
 		this.mc = var1;
 	}
 
+	//Spout Start
+	//Most of function rewritten
 	public void renderGameOverlay(float var1, boolean var2, int var3, int var4) {
-		//Spout Start
+		
 		SpoutClient.getInstance().onTick();
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
-		//Spout End
-		ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-		int var6 = var5.getScaledWidth();
-		int var7 = var5.getScaledHeight();
-		FontRenderer var8 = this.mc.fontRenderer;
+
+		ScaledResolution scaledRes = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+		int screenWidth = scaledRes.getScaledWidth();
+		int screenHeight = scaledRes.getScaledHeight();
+		FontRenderer font = this.mc.fontRenderer;
 		this.mc.entityRenderer.func_905_b();
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		if(Minecraft.isFancyGraphicsEnabled()) {
-			this.renderVignette(this.mc.thePlayer.getEntityBrightness(var1), var6, var7);
+			this.renderVignette(this.mc.thePlayer.getEntityBrightness(var1), screenWidth, screenHeight);
 		}
 
-		ItemStack var9 = this.mc.thePlayer.inventory.armorItemInSlot(3);
-		if(!this.mc.gameSettings.thirdPersonView && var9 != null && var9.itemID == Block.pumpkin.blockID) {
-			this.renderPumpkinBlur(var6, var7);
+		ItemStack helmet = this.mc.thePlayer.inventory.armorItemInSlot(3);
+		if(!this.mc.gameSettings.thirdPersonView && helmet != null && helmet.itemID == Block.pumpkin.blockID) {
+			this.renderPumpkinBlur(screenWidth, screenHeight);
 		}
 
 		float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * var1;
 		if(var10 > 0.0F) {
-			this.renderPortalOverlay(var10, var6, var7);
+			this.renderPortalOverlay(var10, screenWidth, screenHeight);
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/gui.png"));
 		InventoryPlayer var11 = this.mc.thePlayer.inventory;
 		this.zLevel = -90.0F;
-		this.drawTexturedModalRect(var6 / 2 - 91, var7 - 22, 0, 0, 182, 22);
-		this.drawTexturedModalRect(var6 / 2 - 91 - 1 + var11.currentItem * 20, var7 - 22 - 1, 0, 22, 24, 22);
+		this.drawTexturedModalRect(screenWidth / 2 - 91, screenHeight - 22, 0, 0, 182, 22);
+		this.drawTexturedModalRect(screenWidth / 2 - 91 - 1 + var11.currentItem * 20, screenHeight - 22 - 1, 0, 22, 24, 22);
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/icons.png"));
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		GL11.glBlendFunc(775, 769);
-		this.drawTexturedModalRect(var6 / 2 - 7, var7 / 2 - 7, 0, 0, 16, 16);
+		this.drawTexturedModalRect(screenWidth / 2 - 7, screenHeight / 2 - 7, 0, 0, 16, 16);
 		GL11.glDisable(3042 /*GL_BLEND*/);
-		boolean var12 = this.mc.thePlayer.heartsLife / 3 % 2 == 1;
+		boolean whiteOutlinedHearts = this.mc.thePlayer.heartsLife / 3 % 2 == 1;
 		if(this.mc.thePlayer.heartsLife < 10) {
-			var12 = false;
+			whiteOutlinedHearts = false;
 		}
 
-		int var13 = this.mc.thePlayer.health;
-		int var14 = this.mc.thePlayer.prevHealth;
+		int health = this.mc.thePlayer.health;
 		this.rand.setSeed((long)(this.updateCounter * 312871));
 		int var15;
 		int var17;
-		int var16;
+		
+		
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
 		if(this.mc.playerController.shouldDrawHUD()) {
-			var15 = this.mc.thePlayer.getPlayerArmorValue();
-
+			
+			//Armor Bar Begin
+			float armorPercent = this.mc.thePlayer.getPlayerArmorValue() / 0.2f;
+			ArmorBar armorWidget = mainScreen.getArmorBar();
 			int var18;
-			for(var16 = 0; var16 < 10; ++var16) {
-				var17 = var7 - 32;
-				//Spout Start
-				if (mainScreen.getArmorBar().isVisible()) {
-					if(var15 > 0) {
-						var18 = var6 / 2 + 91 - var16 * 8 - 9;
-						if(var16 * 2 + 1 < var15) {
-							this.drawTexturedModalRect(var18, var17, 34, 9, 9, 9);
+			if (armorWidget.isVisible() && armorWidget.getMaxNumShields() > 0) {
+				int y = (int)armorWidget.getScreenY();
+				float armorPercentPerIcon = 100f / armorWidget.getMaxNumShields();
+				for (int icon = 0; icon < armorWidget.getMaxNumShields(); icon++) {
+					if (armorPercent > 0 || armorWidget.isAlwaysVisible()) {
+						int x = (int)armorWidget.getScreenX() - icon * armorWidget.getIconOffset();
+						boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
+						boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
+						if (full) { //white armor (filled in)
+							this.drawTexturedModalRect(x, y, 34, 9, 9, 9);
 						}
-
-						if(var16 * 2 + 1 == var15) {
-							this.drawTexturedModalRect(var18, var17, 25, 9, 9, 9);
+						else if (half) { //half filled in
+							this.drawTexturedModalRect(x, y, 25, 9, 9, 9);
 						}
-
-						if(var16 * 2 + 1 > var15) {
-							this.drawTexturedModalRect(var18, var17, 16, 9, 9, 9);
+						else {
+							this.drawTexturedModalRect(x, y, 16, 9, 9, 9);
 						}
 					}
 				}
-				//Spout End
-				byte var31 = 0;
-				if(var12) {
-					var31 = 1;
-				}
-
-				int var19 = var6 / 2 - 91 + var16 * 8;
-				if(var13 <= 4) {
-					var17 += this.rand.nextInt(2);
-				}
-				//Spout Start
-				if (mainScreen.getHealthBar().isVisible()) {
-					this.drawTexturedModalRect(var19, var17, 16 + var31 * 9, 0, 9, 9);
-					if(var12) {
-						if(var16 * 2 + 1 < var14) {
-							this.drawTexturedModalRect(var19, var17, 70, 0, 9, 9);
-						}
-						if(var16 * 2 + 1 == var14) {
-							this.drawTexturedModalRect(var19, var17, 79, 0, 9, 9);
-						}
-					}
-
-					if(var16 * 2 + 1 < var13) {
-						this.drawTexturedModalRect(var19, var17, 52, 0, 9, 9);
-					}
-
-					if(var16 * 2 + 1 == var13) {
-						this.drawTexturedModalRect(var19, var17, 61, 0, 9, 9);
-					}
-
-				}
-				//Spout End
 			}
+			//Armor Bar End
+			
+			//Health Bar Begin
+			HealthBar healthWidget = mainScreen.getHealthBar();
+			float healthPercent = health / 0.2f;
+			int y = (int)healthWidget.getScreenY();
+			if (healthPercent <= healthWidget.getDangerPercent()) {
+				y += this.rand.nextInt(2);
+			}
+			float healthPercentPerIcon = 100f / healthWidget.getMaxNumHearts();
+			if (healthWidget.isVisible() && healthWidget.getMaxNumHearts() > 0) {
+				for (int icon = 0; icon < healthWidget.getMaxNumHearts(); ++icon) {
+					boolean full = (icon + 1) * healthPercentPerIcon <= healthPercent;
+					boolean half = (icon + 1) * healthPercentPerIcon < healthPercent + healthPercentPerIcon;
+					int x = (int)healthWidget.getScreenX() + icon * healthWidget.getIconOffset();
+					
+					
+					this.drawTexturedModalRect(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9);
+					if (whiteOutlinedHearts) {
+						if (full) {
+							this.drawTexturedModalRect(x, y, 70, 0, 9, 9);
+						}
+						else if (half) {
+							this.drawTexturedModalRect(x, y, 79, 0, 9, 9);
+						}
+					}
 
+					if (full) {
+						this.drawTexturedModalRect(x, y, 52, 0, 9, 9);
+					}
+					else if (half) {
+						this.drawTexturedModalRect(x, y, 61, 0, 9, 9);
+					}
+
+				}
+			}
+			//Health Bar End
+
+			//Bubble Bar Begin
 			if(this.mc.thePlayer.isInsideOfMaterial(Material.water)) {
-				//Spout Start
-				var16 = (int)Math.ceil(((double)(mc.thePlayer.air - 2) * 10D) / (mc.thePlayer.maxAir * 1D));
-				var17 = (int)Math.ceil(((double)mc.thePlayer.air * 10D) / (mc.thePlayer.maxAir * 1D)) - var16;
+				int icon = (int)Math.ceil(((double)(mc.thePlayer.air - 2) * 10D) / (mc.thePlayer.maxAir * 1D));
+				var17 = (int)Math.ceil(((double)mc.thePlayer.air * 10D) / (mc.thePlayer.maxAir * 1D)) - icon;
 				if (mainScreen.getBubbleBar().isVisible()) {
-					for(var18 = 0; var18 < var16 + var17; ++var18) {
-						if(var18 < var16) {
-							this.drawTexturedModalRect(var6 / 2 - 91 + var18 * 8, var7 - 32 - 9, 16, 18, 9, 9);
+					for(var18 = 0; var18 < icon + var17; ++var18) {
+						if(var18 < icon) {
+							this.drawTexturedModalRect(screenWidth / 2 - 91 + var18 * 8, screenHeight - 32 - 9, 16, 18, 9, 9);
 						} else {
-							this.drawTexturedModalRect(var6 / 2 - 91 + var18 * 8, var7 - 32 - 9, 25, 18, 9, 9);
+							this.drawTexturedModalRect(screenWidth / 2 - 91 + var18 * 8, screenHeight - 32 - 9, 25, 18, 9, 9);
 						}
 					}
 				}
-				//Spout End
 			}
 		}
+		//Bubble Bar End
 
 		GL11.glDisable(3042 /*GL_BLEND*/);
 		GL11.glEnable('\u803a');
@@ -178,9 +188,9 @@ public class GuiIngame extends Gui {
 		GL11.glPopMatrix();
 
 		for(var15 = 0; var15 < 9; ++var15) {
-			var16 = var6 / 2 - 90 + var15 * 20 + 2;
-			var17 = var7 - 16 - 3;
-			this.renderInventorySlot(var15, var16, var17, var1);
+			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
+			var17 = screenHeight - 16 - 3;
+			this.renderInventorySlot(var15, x, var17, var1);
 		}
 
 		RenderHelper.disableStandardItemLighting();
@@ -195,13 +205,13 @@ public class GuiIngame extends Gui {
 			}
 
 			var17 = (int)(220.0F * var26) << 24 | 1052704;
-			this.drawRect(0, 0, var6, var7, var17);
+			this.drawRect(0, 0, screenWidth, screenHeight, var17);
 			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
-		//Spout Start
+		
 		mainScreen.render();
-		//Spout End
+		
 		String var23;
 		if(this.mc.gameSettings.showDebugInfo) {
 			GL11.glPushMatrix();
@@ -209,51 +219,49 @@ public class GuiIngame extends Gui {
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
 
-			var8.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
-			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
-			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
-			var8.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
-			var8.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
+			font.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
+			font.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
+			font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
+			font.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
+			font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
 			long var25 = Runtime.getRuntime().maxMemory();
 			long var30 = Runtime.getRuntime().totalMemory();
 			long var29 = Runtime.getRuntime().freeMemory();
 			long var21 = var30 - var29;
 			var23 = "Used memory: " + var21 * 100L / var25 + "% (" + var21 / 1024L / 1024L + "MB) of " + var25 / 1024L / 1024L + "MB";
-			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 2, 14737632);
+			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
 			var23 = "Allocated memory: " + var30 * 100L / var25 + "% (" + var30 / 1024L / 1024L + "MB)";
-			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 12, 14737632);
-			//Spout Start
+			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
 			//No Cheating!
 			int offset = 0;
 			if (SpoutClient.getInstance().isCheatMode()) {
-				this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
-				this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
-				this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
-				this.drawString(var8, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+				this.drawString(font, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
+				this.drawString(font, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
+				this.drawString(font, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
+				this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 				offset = 40;
 			}
-			this.drawString(var8, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
-			this.drawString(var8, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
-			this.drawString(var8, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
+			this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
+			this.drawString(font, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
+			this.drawString(font, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
 			long currentTime = System.currentTimeMillis();
 			long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
 			long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
-			this.drawString(var8, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
-			this.drawString(var8, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
-			//Spout end
+			this.drawString(font, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
+			this.drawString(font, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
 			GL11.glPopMatrix();
 		}
 
 		if(this.recordPlayingUpFor > 0) {
 			float var24 = (float)this.recordPlayingUpFor - var1;
-			var16 = (int)(var24 * 256.0F / 20.0F);
-			if(var16 > 255) {
-				var16 = 255;
+			int fontColor = (int)(var24 * 256.0F / 20.0F);
+			if(fontColor > 255) {
+				fontColor = 255;
 			}
 
-			if(var16 > 0) {
+			if(fontColor > 0) {
 				GL11.glPushMatrix();
-				GL11.glTranslatef((float)(var6 / 2), (float)(var7 - 48), 0.0F);
+				GL11.glTranslatef((float)(screenWidth / 2), (float)(screenHeight - 48), 0.0F);
 				GL11.glEnable(3042 /*GL_BLEND*/);
 				GL11.glBlendFunc(770, 771);
 				var17 = 16777215;
@@ -261,7 +269,7 @@ public class GuiIngame extends Gui {
 					var17 = Color.HSBtoRGB(var24 / 50.0F, 0.7F, 0.6F) & 16777215;
 				}
 
-				var8.drawString(this.recordPlaying, -var8.getStringWidth(this.recordPlaying) / 2, -4, var17 + (var16 << 24));
+				font.drawString(this.recordPlaying, -font.getStringWidth(this.recordPlaying) / 2, -4, var17 + (fontColor << 24));
 				GL11.glDisable(3042 /*GL_BLEND*/);
 				GL11.glPopMatrix();
 			}
@@ -269,7 +277,6 @@ public class GuiIngame extends Gui {
 
 		byte var27 = 10;
 		boolean var28 = false;
-		//Spout Start
 		if (mainScreen.getChatBar().isVisible()) {
 			if(mc.currentScreen instanceof GuiChat) {
 				var27 = 20;
@@ -278,15 +285,12 @@ public class GuiIngame extends Gui {
 		}
 		boolean chatOpen = var28;
 		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
-		//Spout End
 
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		GL11.glBlendFunc(770, 771);
 		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
-
-		//Spout Start
+		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		
 		if (mainScreen.getChatTextBox().isVisible()) {
 			Math.max(0, chatMessageList.size() - SpoutClient.getInstance().getChatManager().chatScroll - 1 - var27);
@@ -313,13 +317,12 @@ public class GuiIngame extends Gui {
 						//TODO add support for opening URL in browser if clicked?
 						drawRect(height, width - 1, height + 320, width + 8, color / 2 << 24);
 						GL11.glEnable(3042 /*GL_BLEND*/);
-						var8.drawStringWithShadow(chat, height, width, 0xffffff + (color << 24));
+						font.drawStringWithShadow(chat, height, width, 0xffffff + (color << 24));
 					}
 					viewedLine++;
 				}
 			}
 		}
-		//Spout End
 
 		GL11.glPopMatrix();
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);

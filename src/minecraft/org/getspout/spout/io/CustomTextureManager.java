@@ -47,6 +47,13 @@ public class CustomTextureManager {
 		return textures.get(path);
 	}
 	
+	public static void resetTextures() {
+		for (Texture texture : textures.values()) {
+			texture.release();
+		}
+		textures.clear();
+	}
+	
 	public static String getTextureFromUrl(String Url) {
 		if (!isTextureDownloaded(Url)) {
 			return null;

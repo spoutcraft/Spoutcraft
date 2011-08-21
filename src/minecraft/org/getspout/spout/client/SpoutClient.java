@@ -7,6 +7,7 @@ import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.inventory.SimpleItemManager;
+import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.CustomPacket;
@@ -119,6 +120,7 @@ public class SpoutClient implements Client {
 
 	public void onWorldExit() {
 		FileUtil.deleteTempDirectory();
+		CustomTextureManager.resetTextures();
 		instance = null;
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();

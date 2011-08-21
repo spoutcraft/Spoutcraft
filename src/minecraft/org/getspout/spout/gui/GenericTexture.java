@@ -84,7 +84,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	@Override
 	public Texture setUrl(String Url) {
 		if (getUrl() != null) {
-			//TODO release image?
+			texture = null;
 		}
 		this.Url = Url;
 		if (getUrl() != null) {
