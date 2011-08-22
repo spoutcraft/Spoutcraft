@@ -21,7 +21,6 @@ public class CustomTextField extends GuiButton {
 		boolean dirty = false;
 		try {
 			if(field.isEnabled() && this.focus) {
-				String old = field.getText();
 				if(key == 22) {
 					String clipboard = GuiScreen.getClipboardString();
 					if(clipboard == null) {

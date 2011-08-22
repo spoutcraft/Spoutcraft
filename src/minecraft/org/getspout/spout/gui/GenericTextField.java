@@ -124,7 +124,6 @@ public class GenericTextField extends GenericControl implements TextField{
 			if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
 				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
 				for (GuiButton control : popup.getControlList()) {
-					System.out.println(control);
 					if (control instanceof CustomTextField) {
 						if (((CustomTextField)control).isEqual((Widget)this)) {
 							field = (CustomTextField)control;

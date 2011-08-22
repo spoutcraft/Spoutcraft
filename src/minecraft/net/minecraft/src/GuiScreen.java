@@ -103,7 +103,7 @@ public class GuiScreen extends Gui {
 		while(Mouse.next()) {
 			this.handleMouseInput();
 		}
-//Spout Start
+		//Spout Start
 		while(Keyboard.next()) {
 			if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
 				EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
