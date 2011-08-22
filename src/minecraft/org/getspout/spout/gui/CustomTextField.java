@@ -18,6 +18,7 @@ public class CustomTextField extends GuiButton {
 	}
 	
 	public void textboxKeyTyped(char key, int keyId) {
+		boolean dirty = false;
 		try {
 			if(field.isEnabled() && this.focus) {
 				String old = field.getText();
@@ -34,22 +35,27 @@ public class CustomTextField extends GuiButton {
 
 					if(max > 0) {
 						field.setText(field.getText() + clipboard.substring(0, max));
+						dirty = true;
 					}
 				}
 				
 				if (keyId == Keyboard.KEY_RIGHT && field.getCursorPosition() < field.getText().length()) {
 					field.setCursorPosition(field.getCursorPosition() + 1);
+					dirty = true;
 				}
 				else if (keyId == Keyboard.KEY_LEFT && field.getCursorPosition() > 0) {
 					field.setCursorPosition(field.getCursorPosition() - 1);
+					dirty = true;
 				}
 				else if (keyId == Keyboard.KEY_DELETE && field.getCursorPosition() > 0 && field.getCursorPosition() < field.getText().length()) {
 					field.setText(field.getText().substring(0, field.getCursorPosition()) + field.getText().substring(field.getCursorPosition() + 1));
+					dirty = true;
 				}
 
 				if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
 					field.setText(field.getText().substring(0, field.getText().length() - 1));
 					field.setCursorPosition(field.getCursorPosition() - 1);
+					dirty = true;
 				}
 
 				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (field.getText().length() < field.getMaximumCharacters() || field.getMaximumCharacters() == 0)) {
@@ -63,8 +69,9 @@ public class CustomTextField extends GuiButton {
 					}
 					field.setText(newText);
 					field.setCursorPosition(field.getCursorPosition() + 1);
+					dirty = true;
 				}
-				if (!old.equals(field.getText())) {
+				if (dirty) {
 					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, field, field.getText(), field.getCursorPosition())));
 				}
 			}
