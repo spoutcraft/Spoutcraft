@@ -1,6 +1,9 @@
 package org.getspout.spout.player;
 
 import java.util.ArrayList;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiChat;
 
 import org.getspout.spout.client.SpoutClient;
@@ -172,8 +175,9 @@ public class ChatManager {
 	}
 	
 	public void sendChat(String message) {
-		ArrayList<String> lines = formatChat(message);
+		ArrayList<String> lines = formatChat(message, false);
 		for (String chat : lines) {
+			System.out.println("Len: " + chat.length() + " Text: " + chat);
 			SpoutClient.getHandle().thePlayer.sendChatMessage(chat);
 		}
 	}
@@ -195,6 +199,9 @@ public class ChatManager {
 					number = 10 + next - 'a';
 					i++;
 				}
+				else {
+					text += ch;
+				}
 				if (number > -1 && number < 16) {
 					last = ChatColor.getByCode(number);
 				}
@@ -209,10 +216,14 @@ public class ChatManager {
 		return text;
 	}
 	
-	public ArrayList<String> formatChat(String message) {
+	public ArrayList<String> formatChat(String message, boolean display) {
 		ArrayList<String> lines = new ArrayList<String>();
+		FontRenderer font = Minecraft.theMinecraft.fontRenderer;
+		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth();
+		@SuppressWarnings("unused")
 		int line = 0;
-		ChatColor last = null; //TODO this is not implemented
+		int total = 0;
+		ChatColor last = null;
 		String text = "";
 		for (int i = 0; i < message.length(); i++) {
 			char ch = message.charAt(i);
@@ -221,7 +232,26 @@ public class ChatManager {
 				i++;
 				newline = true;
 			}
-			if ((line > 90 && Character.isWhitespace(ch)) || line > 95 || newline) {
+			if (ch == '&' && i < message.length() - 2) {
+				char next = message.charAt(i + 1);
+				int number = -1;
+				String temp = "" + next;
+				if (Character.isDigit(next)) {
+					number = Integer.parseInt(temp);
+					i++;
+				}
+				else if (next >= 'a' && next <= 'f') {
+					number = 10 + next - 'a';
+					i++;
+				}
+				if (number > -1 && number < 16) {
+					last = ChatColor.getByCode(number);
+				}
+			}
+			if (display && total > 1 && total % 99 == 0) {
+				text += ChatColor.RED + " [LINE BREAK] " + (last != null ? last.toString() : ChatColor.WHITE);
+			}
+			if ((display && font.getStringWidth(text + ch) > (width - 8))  || newline || (!display && total > 1 && total % 99 == 0)) {
 				lines.add(text);
 				line = 0;
 				text = "";
@@ -233,6 +263,7 @@ public class ChatManager {
 				text += ch;
 				line++;
 			}
+			total++;
 		}
 		lines.add(text);
 		return lines;

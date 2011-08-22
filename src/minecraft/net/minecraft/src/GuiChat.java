@@ -3,8 +3,10 @@ package net.minecraft.src;
 import net.minecraft.src.ChatAllowedCharacters;
 import net.minecraft.src.GuiScreen;
 import org.lwjgl.input.Keyboard;
+//Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.player.*; //bukkitcontrib
+import org.getspout.spout.gui.ChatBar;
+//Spout End
 
 public class GuiChat extends GuiScreen {
 	//Spout Improved Chat Start
@@ -87,12 +89,13 @@ public class GuiChat extends GuiScreen {
 		else if (cursorPosition == message.length() && blink) {
 			text += "_";
 		}
-		java.util.ArrayList<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text);
-		drawRect(2, height - 2 - (lines.size() * 12), width - 2, height - 2, 0x80000000);
+		ChatBar chatWidget = SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar();
+		java.util.ArrayList<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text, true);
+		drawRect((int)chatWidget.getActualHeight(), (int)chatWidget.getScreenY() - (lines.size() * 12), (int)chatWidget.getScreenX(), (int)chatWidget.getActualWidth(), 0x80000000);
 		int size = lines.size();
 		for (int k = 0; k < lines.size(); k++) {
 			String line = lines.get(k);
-			drawString(fontRenderer, line, 4, height - 12 * size--, 0xe0e0e0);
+			drawString(fontRenderer, line, chatWidget.getCursorX(), chatWidget.getCursorY() - 12 * size--, 0xe0e0e0);
 		}
 		//Spout Improved Chat End
 		super.drawScreen(i, j, f);

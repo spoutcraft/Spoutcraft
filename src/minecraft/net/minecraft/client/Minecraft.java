@@ -107,7 +107,6 @@ import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
 
-import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.gui.ScreenType;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketScreenAction;

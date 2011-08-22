@@ -224,13 +224,13 @@ public class GuiIngame extends Gui {
 			font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
 			font.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
 			font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
-			long var25 = Runtime.getRuntime().maxMemory();
-			long var30 = Runtime.getRuntime().totalMemory();
-			long var29 = Runtime.getRuntime().freeMemory();
-			long var21 = var30 - var29;
-			var23 = "Used memory: " + var21 * 100L / var25 + "% (" + var21 / 1024L / 1024L + "MB) of " + var25 / 1024L / 1024L + "MB";
+			long maxMem = Runtime.getRuntime().maxMemory();
+			long totalMem = Runtime.getRuntime().totalMemory();
+			long freeMem = Runtime.getRuntime().freeMemory();
+			long usedMem = totalMem - freeMem;
+			var23 = "Used memory: " + usedMem * 100L / maxMem + "% (" + usedMem / 1024L / 1024L + "MB) of " + maxMem / 1024L / 1024L + "MB";
 			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
-			var23 = "Allocated memory: " + var30 * 100L / var25 + "% (" + var30 / 1024L / 1024L + "MB)";
+			var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB)";
 			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
 			//No Cheating!
 			int offset = 0;
@@ -241,14 +241,16 @@ public class GuiIngame extends Gui {
 				this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 				offset = 40;
 			}
-			this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
-			this.drawString(font, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
-			this.drawString(font, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
-			long currentTime = System.currentTimeMillis();
-			long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
-			long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
-			this.drawString(font, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
-			this.drawString(font, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
+			if (mc.isMultiplayerWorld() && SpoutClient.getInstance().isSpoutEnabled()) {
+				this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
+				this.drawString(font, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
+				this.drawString(font, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
+				long currentTime = System.currentTimeMillis();
+				long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
+				long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
+				this.drawString(font, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
+				this.drawString(font, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
+			}
 			GL11.glPopMatrix();
 		}
 
@@ -275,15 +277,7 @@ public class GuiIngame extends Gui {
 			}
 		}
 
-		byte var27 = 10;
-		boolean var28 = false;
-		if (mainScreen.getChatBar().isVisible()) {
-			if(mc.currentScreen instanceof GuiChat) {
-				var27 = 20;
-				var28 = true;
-			}
-		}
-		boolean chatOpen = var28;
+		boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
 		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
 
 		GL11.glEnable(3042 /*GL_BLEND*/);
@@ -293,9 +287,7 @@ public class GuiIngame extends Gui {
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		
 		if (mainScreen.getChatTextBox().isVisible()) {
-			Math.max(0, chatMessageList.size() - SpoutClient.getInstance().getChatManager().chatScroll - 1 - var27);
 			int viewedLine = 0;
-			
 			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < 250) {
 					double opacity = 1.0D - chatMessageList.get(line).updateCounter / 250D;
