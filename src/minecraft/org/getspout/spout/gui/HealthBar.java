@@ -11,7 +11,7 @@ public class HealthBar extends GenericWidget {
 
 	public HealthBar() {
 		super();
-		setX(427 / 2 - 91); //157
+		setX(427 / 2 - 91); //122
 		setY(208);
 	}
 	
@@ -32,7 +32,8 @@ public class HealthBar extends GenericWidget {
 	
 	@Override
 	public double getScreenX() {
-		if (getX() == 157) {
+		System.out.println(getX());
+		if (getX() == 122) {
 			return getScreen().getWidth() / 2 - 91;
 		}
 		return super.getScreenX();
