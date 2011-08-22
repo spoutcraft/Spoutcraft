@@ -1,5 +1,12 @@
 package org.spoutcraft.api;
 
-public class Spoutcraft {
+import java.util.logging.Logger;
 
+public class Spoutcraft {
+	private Logger logger = Logger.getLogger("Spoutcraft");
+
+	public Logger getLogger() {
+		return logger;
+	}
+	
 }
