@@ -51,7 +51,7 @@ public class CustomGuiButton extends GuiButton {
 	
 	@Override
 	public boolean mousePressed(Minecraft minecraft, int i, int j) {
-		return enabled && i >= button.getScreenX() && j >= button.getScreenY() && i < button.getScreenX() + button.getWidth() && j < button.getScreenY() + button.getHeight();
+		return button.isEnabled() && button.isVisible() && i >= button.getScreenX() && j >= button.getScreenY() && i < button.getScreenX() + button.getWidth() && j < button.getScreenY() + button.getHeight();
 	}
 	
 	public Button getWidget() {

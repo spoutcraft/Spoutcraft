@@ -64,7 +64,7 @@ public class CustomGuiSlider extends GuiSlider {
 	}
 	
 	public boolean mousePressedWidget(Minecraft game, int mouseX, int mouseY) {
-		return slider.isEnabled() && mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
+		return slider.isEnabled() && slider.isVisible() && mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
 	}
 	
 	public Slider getWidget() {

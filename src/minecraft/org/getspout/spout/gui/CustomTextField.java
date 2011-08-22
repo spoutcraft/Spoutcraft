@@ -76,7 +76,7 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public boolean mousePressed(Minecraft game, int mouseX, int mouseY) {
-		this.setFocused(field.isEnabled() && mouseX >= field.getScreenX() && mouseX < field.getScreenX() + field.getWidth() && mouseY >= field.getScreenY() && mouseY < field.getScreenY() + field.getHeight());
+		this.setFocused(field.isEnabled() && field.isVisible() && mouseX >= field.getScreenX() && mouseX < field.getScreenX() + field.getWidth() && mouseY >= field.getScreenY() && mouseY < field.getScreenY() + field.getHeight());
 		return isFocused();
 	}
 	
