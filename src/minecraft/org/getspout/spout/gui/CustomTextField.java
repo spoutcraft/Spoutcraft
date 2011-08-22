@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.getspout.spout.gui;
 
 import net.minecraft.src.*;
@@ -50,9 +66,8 @@ public class CustomTextField extends GuiButton {
 					field.setText(field.getText().substring(0, field.getCursorPosition()) + field.getText().substring(field.getCursorPosition() + 1));
 					dirty = true;
 				}
-
-				if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
-					field.setText(field.getText().substring(0, field.getText().length() - 1));
+				else if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
+					field.setText(field.getText().substring(0, field.getCursorPosition() - 1) + field.getText().substring(field.getCursorPosition()));
 					field.setCursorPosition(field.getCursorPosition() - 1);
 					dirty = true;
 				}
@@ -115,7 +130,7 @@ public class CustomTextField extends GuiButton {
 				}
 				text += "_";
 				if (field.getCursorPosition() < field.getText().length()) {
-					text += field.getText().substring(field.getCursorPosition());
+					text += field.getText().substring(field.getCursorPosition() + 1);
 				}
 			}
 			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor().toInt());
