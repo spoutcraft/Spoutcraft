@@ -50,9 +50,8 @@ public class CustomTextField extends GuiButton {
 					field.setText(field.getText().substring(0, field.getCursorPosition()) + field.getText().substring(field.getCursorPosition() + 1));
 					dirty = true;
 				}
-
-				if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
-					field.setText(field.getText().substring(0, field.getText().length() - 1));
+				else if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
+					field.setText(field.getText().substring(0, field.getCursorPosition() - 1) + field.getText().substring(field.getCursorPosition()));
 					field.setCursorPosition(field.getCursorPosition() - 1);
 					dirty = true;
 				}
@@ -115,7 +114,7 @@ public class CustomTextField extends GuiButton {
 				}
 				text += "_";
 				if (field.getCursorPosition() < field.getText().length()) {
-					text += field.getText().substring(field.getCursorPosition());
+					text += field.getText().substring(field.getCursorPosition() + 1);
 				}
 			}
 			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor().toInt());
