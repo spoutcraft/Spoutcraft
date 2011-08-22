@@ -29,7 +29,7 @@ public class RenderItem extends Render {
 	public void doRenderItem(EntityItem var1, double var2, double var4, double var6, float var8, float var9) {
 		//Spout Start
 		//Sanity Checks
-		if (var1 == null || var1.item = null) {
+		if (var1 == null || var1.item == null) {
 			return;
 		}
 		//Spout End
