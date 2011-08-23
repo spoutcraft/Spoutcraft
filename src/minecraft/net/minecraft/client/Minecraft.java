@@ -457,7 +457,9 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		ScreenType display = ScreenType.getType(screen);
-		previousScreen = this.currentScreen;
+		if (this.currentScreen != null) {
+			previousScreen = this.currentScreen;
+		}
 		if(notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
 			//Screen closed
 			if (this.currentScreen != null && screen == null) {
@@ -503,6 +505,7 @@ public abstract class Minecraft implements Runnable {
 		}
 	}
 	public void displayPreviousScreen() {
+		System.out.println(previousScreen);
 		displayGuiScreen(previousScreen, false);
 		previousScreen = null;
 	}
