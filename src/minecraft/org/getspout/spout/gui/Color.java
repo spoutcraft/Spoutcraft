@@ -127,6 +127,6 @@ public class Color {
 	}
 	
 	public int toInt() {
-		return (getAlphaB() << 24) + (getRedB() << 16) + (getGreenB() << 8) + getBlueB();
+		return Long.valueOf(((long)getAlphaB() << 24L) + ((long)getRedB() << 16L) + ((long)getGreenB() << 8L) + (long)getBlueB()).intValue();
 	}
 }
