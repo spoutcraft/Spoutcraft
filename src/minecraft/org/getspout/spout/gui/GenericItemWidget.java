@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
@@ -121,11 +122,11 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 		}
 		if (toRender != null) {
 			GL11.glDepthFunc(515);
+			RenderHelper.enableStandardItemLighting();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			RenderHelper.enableStandardItemLighting();
 			double oldX = 1;
 			double oldY = 1;
 			double oldZ = 1;
