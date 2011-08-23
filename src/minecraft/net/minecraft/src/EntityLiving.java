@@ -995,12 +995,16 @@ public abstract class EntityLiving extends Entity
 	
 	//Spout Start
 	public void setCustomTexture(String url){
-		CustomTextureManager.downloadTexture(url);
+		if (url != null) {
+			CustomTextureManager.downloadTexture(url);
+		}
 		customTexture = url;
 	}
 	
 	public void setAlternateCustomTexture(String url){
-		CustomTextureManager.downloadTexture(url);
+		if (url != null) {
+			CustomTextureManager.downloadTexture(url);
+		}
 		alternateTexture = url;
 	}
 	//Spout End
