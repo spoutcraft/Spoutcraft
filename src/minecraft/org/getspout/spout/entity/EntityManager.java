@@ -25,7 +25,5 @@ public interface EntityManager {
 	
 	public Entity getEntityFromId(int id);
 	
-	public void setTexture(int id, String texture);
-
-	public void setAlternateTexture(int id, String texture);
+	public void setTexture(int id, String texture, byte textureId);
 }
