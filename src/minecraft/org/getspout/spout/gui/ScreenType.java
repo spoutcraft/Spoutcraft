@@ -18,6 +18,11 @@ package org.getspout.spout.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.getspout.spout.client.SpoutClient;
+
+import net.minecraft.src.GameSettings;
+import net.minecraft.src.GuiAchievement;
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiChest;
@@ -34,6 +39,7 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSleepMP;
 import net.minecraft.src.GuiStats;
 import net.minecraft.src.GuiVideoSettings;
+import net.minecraft.src.StatFileWriter;
 
 public enum ScreenType {
 	GAME_SCREEN(0),
@@ -75,6 +81,46 @@ public enum ScreenType {
 	
 	public boolean isInstantOpen() {
 		return openInstant;
+	}
+	
+	public void open(){
+		GuiScreen toOpen = null;
+		GameSettings settings = SpoutClient.getHandle().gameSettings;
+		StatFileWriter statfile = SpoutClient.getHandle().statFileWriter;
+		switch(this)
+		{
+		case CHAT_SCREEN:
+			toOpen = new GuiChat();
+			break;
+		case SLEEP_SCREEN:
+			toOpen = new GuiSleepMP();
+			break;
+		case PLAYER_INVENTORY:
+			toOpen = new GuiInventory(SpoutClient.getHandle().thePlayer);
+			break;
+		case INGAME_MENU:
+			toOpen = new GuiIngameMenu();
+			break;
+		case OPTIONS_MENU:
+			toOpen = new GuiOptions(new GuiIngameMenu(), settings);
+			break;
+		case VIDEO_SETTINGS_MENU:
+			toOpen = new GuiVideoSettings(new GuiOptions(new GuiIngameMenu(), SpoutClient.getHandle().gameSettings), settings);
+			break;
+		case CONTROLS_MENU:
+			toOpen = new GuiControls(new GuiOptions(new GuiIngameMenu(), settings), settings);
+			break;
+		case ACHIEVEMENTS_SCREEN:
+			toOpen = new GuiAchievements(statfile);
+			break;
+		case STATISTICS_SCREEN:
+			toOpen = new GuiStats(new GuiIngameMenu(), statfile);
+			break;
+		case GAME_OVER_SCREEN:
+			toOpen = new GuiGameOver();
+			break;
+		}
+		SpoutClient.getHandle().displayGuiScreen(toOpen);
 	}
 	
 	public static ScreenType getType(int code){
