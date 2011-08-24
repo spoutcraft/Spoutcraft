@@ -55,13 +55,35 @@ public class TexturePackList {
 			return true;
 		}
 	}
-
+//Spout Start
 	public void updateAvaliableTexturePacks() {
-		ArrayList var1 = new ArrayList();
+		ArrayList<TexturePackBase> texturePacks = new ArrayList<TexturePackBase>();
 		this.selectedTexturePack = null;
-		var1.add(this.defaultTexturePack);
-		if(this.texturePackDir.exists() && this.texturePackDir.isDirectory()) {
-			File[] var2 = this.texturePackDir.listFiles();
+		texturePacks.add(this.defaultTexturePack);
+		this.updateAvaliableTexturePacks(this.texturePackDir, texturePacks);
+		this.updateAvaliableTexturePacks(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), texturePacks);
+		
+		if(this.selectedTexturePack == null) {
+			this.selectedTexturePack = this.defaultTexturePack;
+		}
+
+		this.availableTexturePacks.removeAll(texturePacks);
+		Iterator i = this.availableTexturePacks.iterator();
+
+		while(i.hasNext()) {
+			TexturePackBase texturePack = (TexturePackBase)i.next();
+			texturePack.func_6484_b(this.mc);
+			this.field_6538_d.remove(texturePack.field_6488_d);
+		}
+
+		this.availableTexturePacks = texturePacks;
+	}
+	
+	public void updateAvaliableTexturePacks(File directory, List<TexturePackBase> texturePacks) {
+		List var1 = texturePacks;
+		if(directory.exists() && directory.isDirectory()) {
+			File[] var2 = directory.listFiles();
+
 			File[] var3 = var2;
 			int var4 = var2.length;
 
@@ -90,23 +112,8 @@ public class TexturePackList {
 				}
 			}
 		}
-
-		if(this.selectedTexturePack == null) {
-			this.selectedTexturePack = this.defaultTexturePack;
-		}
-
-		this.availableTexturePacks.removeAll(var1);
-		Iterator var10 = this.availableTexturePacks.iterator();
-
-		while(var10.hasNext()) {
-			TexturePackBase var11 = (TexturePackBase)var10.next();
-			var11.func_6484_b(this.mc);
-			this.field_6538_d.remove(var11.field_6488_d);
-		}
-
-		this.availableTexturePacks = var1;
 	}
-
+//Spout End
 	public List availableTexturePacks() {
 		return new ArrayList(this.availableTexturePacks);
 	}
