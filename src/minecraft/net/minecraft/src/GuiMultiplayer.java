@@ -157,6 +157,7 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public void updateList() {
 		synchronized(serverInfo) {
+			worldSlotContainer.amountScrolled = 0f;
 			if (serverInfo.countries.size() == 0) {
 				indexString = "Empty (0/0)";
 				serverInfo.serverList = new ArrayList();

@@ -132,8 +132,26 @@ public class ServerListThread implements Runnable {
 				}
 			} else if(var2[0].equalsIgnoreCase("ServerName")) {
 				var3.name = var2[1];
-				if(var3.name.length() > 35) {
-					var3.name = var3.name.substring(0, 32) + "...";
+				while (var3.name.contains("0027")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("0027") - 2) + "'" +  var3.name.substring(var3.name.indexOf("0027") + 4);
+				}
+				while (var3.name.contains("&amp;")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("&amp;")) + "&" +  var3.name.substring(var3.name.indexOf("&amp;") + 5);
+				}
+				while (var3.name.contains("&quot;")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("&quot;")) + "\"" +  var3.name.substring(var3.name.indexOf("&quot;") + 6);
+				}
+				while (var3.name.contains("&#233;")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("&#233;")) + "e" +  var3.name.substring(var3.name.indexOf("&#233;") + 6);
+				}
+				while (var3.name.contains("&#180;")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("&#180;")) + "'" +  var3.name.substring(var3.name.indexOf("&#180;") + 6);
+				}
+				while (var3.name.contains("&#194;")) {
+					var3.name = var3.name.substring(0, var3.name.indexOf("&#194;")) + "a" +  var3.name.substring(var3.name.indexOf("&#194;") + 6);
+				}
+				if(var3.name.length() > 41) {
+					var3.name = var3.name.substring(0, 41) + "...";
 				}
 			} else if(var2[0].equalsIgnoreCase("ServerPlayers")) {
 				var3.players = Integer.parseInt(var2[1]);
