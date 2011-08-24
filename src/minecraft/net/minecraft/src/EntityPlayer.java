@@ -2,6 +2,10 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
+
+//Spout Start
+import org.bukkit.ChatColor;
+//Spout End
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -170,7 +174,15 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public void updateCloak() {
-		this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
+		//Spout Easter Egg
+		String tempName = ChatColor.stripColor(username);
+		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
+			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
+		}
+		else {
+			this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
+		}
+		//Spout End
 		this.cloakUrl = this.playerCloakUrl;
 	}
 
@@ -207,6 +219,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public void onLivingUpdate() {
+		
 		if(this.worldObj.difficultySetting == 0 && this.health < 20 && this.ticksExisted % 20 * 12 == 0) {
 			this.heal(1);
 		}

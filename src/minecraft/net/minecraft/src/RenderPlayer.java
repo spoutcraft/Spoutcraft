@@ -16,6 +16,7 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.Tessellator;
 
+import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
@@ -84,6 +85,33 @@ public class RenderPlayer extends RenderLiving {
 				if (title != null) {
 					var12 = title;
 				}
+				//Easter egg
+				float alpha = 0.25F;
+				if (var12.equalsIgnoreCase("Afforess")) {
+					var12 = ChatColor.DARK_BLUE + "Afforess";
+					alpha = 0f;
+				}
+				else if (var12.equalsIgnoreCase("Wulfspider")) {
+					var12 = ChatColor.BLUE + "Wulfspider";
+					alpha = 0f;
+				}
+				else if (var12.equalsIgnoreCase("Alta189")) {
+					var12 = ChatColor.DARK_GREEN + "Alta189";
+					alpha = 0f;
+				}
+				else if (var12.equalsIgnoreCase("Raphfrk")) {
+					var12 = ChatColor.GREEN + "Raphfrk";
+					alpha = 0f;
+				}
+				else if (var12.equalsIgnoreCase("Narrowtux")) {
+					var12 = ChatColor.GOLD + "Narrowtux";
+					alpha = 0f;
+				}
+				else if (var12.equalsIgnoreCase("Top_Cat")) {
+					var12 = ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
+					alpha = 0f;
+				}
+				//Easter egg end
 				if (!var12.equals("[hide]")) {
 					String lines[] = var12.split("\\n");
 					double y = var4;
@@ -113,7 +141,7 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 							var14.startDrawingQuads();
 							int var15 = var13.getStringWidth(var12) / 2;
-							var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+							var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, alpha);
 							var14.addVertex((double)(-var15 - 1), -1.0D, 0.0D);
 							var14.addVertex((double)(-var15 - 1), 8.0D, 0.0D);
 							var14.addVertex((double)(var15 + 1), 8.0D, 0.0D);
