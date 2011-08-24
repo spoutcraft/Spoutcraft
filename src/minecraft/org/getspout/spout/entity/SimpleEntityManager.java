@@ -51,20 +51,11 @@ public class SimpleEntityManager implements EntityManager {
 	}
 
 	@Override
-	public void setTexture(int id, String texture) {
+	public void setTexture(int id, String texture, byte textureId) {
 		Entity e = getEntityFromId(id);
 		if(e instanceof EntityLiving){
 			EntityLiving el = (EntityLiving)e;
-			el.setCustomTexture(texture);
-		}
-	}
-
-	@Override
-	public void setAlternateTexture(int id, String texture) {
-		Entity e = getEntityFromId(id);
-		if(e instanceof EntityLiving){
-			EntityLiving el = (EntityLiving)e;
-			el.setAlternateCustomTexture(texture);
+			el.setCustomTexture(texture, textureId);
 		}
 	}
 

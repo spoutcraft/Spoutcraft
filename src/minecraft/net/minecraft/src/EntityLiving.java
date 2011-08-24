@@ -4,6 +4,7 @@
 
 package net.minecraft.src;
 
+import java.util.HashMap;
 import java.util.List;
 
 //Spout Start
@@ -72,9 +73,7 @@ public abstract class EntityLiving extends Entity
 	private Entity currentTarget;
 	protected int numTicksToChaseTarget;
 	//Spout Start
-	private String customTexture = null;
-	protected boolean useAlternateTexture = false;
-	private String alternateTexture = null;
+	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
 	//Spout End
 	
 	public EntityLiving(World world)
@@ -126,21 +125,35 @@ public abstract class EntityLiving extends Entity
 	public String getEntityTexture()
 	{
 		//Spout Start
-		/*
-		 * Alternate texture is currently used for the 
-		 */
-		if(useAlternateTexture && (alternateTexture == null || CustomTextureManager.getTextureFromUrl(alternateTexture) == null) ){
-			return texture;
-		} else if(useAlternateTexture){
-			return CustomTextureManager.getTextureFromUrl(alternateTexture);
-		}
-		if(customTexture == null || CustomTextureManager.getTextureFromUrl(customTexture) == null){
+		String custom = getCustomTextureUrl((byte)0);
+		if(custom == null || CustomTextureManager.getTextureFromUrl(custom) == null){
 			return texture;
 		} else {
-			return CustomTextureManager.getTextureFromUrl(customTexture);
+			return CustomTextureManager.getTextureFromUrl(custom);
 		}
 		//Spout End
 	}
+	
+	//Spout Start
+	public String getCustomTextureUrl(byte id){
+		return customTextures.get(id);
+	}
+	
+	public String getCustomTexture(byte id){
+		if(getCustomTextureUrl(id) != null)
+		{
+			return CustomTextureManager.getTextureFromUrl(getCustomTextureUrl(id));
+		}
+		return null;
+	}
+	
+	public void setCustomTexture(String url, byte id){
+		if (url != null) {
+			CustomTextureManager.downloadTexture(url);
+		}
+		customTextures.put(id, url);
+	}
+	//Spout End
 
 	public boolean canBeCollidedWith()
 	{
@@ -992,20 +1005,4 @@ public abstract class EntityLiving extends Entity
 	{
 		return itemstack.getIconIndex();
 	}
-	
-	//Spout Start
-	public void setCustomTexture(String url){
-		if (url != null) {
-			CustomTextureManager.downloadTexture(url);
-		}
-		customTexture = url;
-	}
-	
-	public void setAlternateCustomTexture(String url){
-		if (url != null) {
-			CustomTextureManager.downloadTexture(url);
-		}
-		alternateTexture = url;
-	}
-	//Spout End
 }

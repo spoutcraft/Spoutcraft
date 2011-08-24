@@ -26,7 +26,7 @@ import org.getspout.spout.entity.EntityManager;
 public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";
 	protected int entityId;
-	protected boolean isMainTexture = true;
+	protected byte textureId = 0;
 	@Override
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(texture) + 4 + 1;
@@ -35,14 +35,15 @@ public class PacketEntitySkin implements SpoutPacket {
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		entityId = input.readInt();
-		isMainTexture = input.readBoolean();
+		textureId = input.readByte();
 		texture = PacketUtil.readString(input);
+		System.out.println("txtid: "+textureId+", texture: "+texture);
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(entityId);
-		output.writeBoolean(isMainTexture);
+		output.writeByte(textureId);
 		PacketUtil.writeString(output, texture);
 	}
 
@@ -52,11 +53,7 @@ public class PacketEntitySkin implements SpoutPacket {
 			texture = null;
 		}
 		EntityManager manager = SpoutClient.getInstance().getEntityManager();
-		if(isMainTexture){
-			manager.setTexture(entityId, texture);
-		} else {
-			manager.setAlternateTexture(entityId, texture);
-		}
+		manager.setTexture(entityId, texture, textureId);
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class PacketEntitySkin implements SpoutPacket {
 
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	@Override
