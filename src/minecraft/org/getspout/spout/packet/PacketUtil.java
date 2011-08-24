@@ -38,7 +38,10 @@ public abstract class PacketUtil {
 	}
 	
 	public static int getNumBytes(String str) {
-		return 2 + str.length() * 2;
+		if (str != null) {
+			return 2 + str.length() * 2;
+		}
+		return 2;
 	}
 	
 	public static String readString(DataInputStream input, int maxSize) {

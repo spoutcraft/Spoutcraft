@@ -17,11 +17,15 @@
 package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.getspout.spout.packet.PacketUtil;
+
 public class ChatBar extends GenericWidget implements Widget{
 	private int cursorX = 4, cursorY = 240;
+	protected Color textColor = new Color((short)224, (short)224, (short)224, (short)0);
 	public ChatBar() {
 		super();
 		setX(425);
@@ -30,13 +34,24 @@ public class ChatBar extends GenericWidget implements Widget{
 		setHeight(2);
 	}
 	
+	public int getNumBytes() {
+		return super.getNumBytes() + 8 + 16;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		setX(425);
-		setY(238);
-		setWidth(425);
-		setHeight(2);
+		setCursorX(input.readInt());
+		setCursorY(input.readInt());
+		setTextColor(PacketUtil.readColor(input));
+	}
+	
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(getCursorX());
+		output.writeInt(getCursorY());
+		PacketUtil.writeColor(output, getTextColor());
 	}
 	
 	public WidgetType getType() {
@@ -79,8 +94,22 @@ public class ChatBar extends GenericWidget implements Widget{
 		return this;
 	}
 	
+	public Color getTextColor() {
+		return textColor;
+	}
+	
+	public ChatBar setTextColor(Color color) {
+		textColor = color;
+		return this;
+	}
+	
 	public void render() {
 		
+	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
 	}
 
 }

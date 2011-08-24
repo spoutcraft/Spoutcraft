@@ -95,7 +95,7 @@ public class GuiChat extends GuiScreen {
 		int size = lines.size();
 		for (int k = 0; k < lines.size(); k++) {
 			String line = lines.get(k);
-			drawString(fontRenderer, line, chatWidget.getCursorX(), chatWidget.getCursorY() - 12 * size--, 0xe0e0e0);
+			drawString(fontRenderer, line, chatWidget.getCursorX(), chatWidget.getCursorY() - 12 * size--, chatWidget.getTextColor().toInt());
 		}
 		//Spout Improved Chat End
 		super.drawScreen(i, j, f);

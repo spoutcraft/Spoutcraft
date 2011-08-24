@@ -17,10 +17,12 @@
 package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.getspout.spout.io.CustomTextureManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Gui;
 
 public class ArmorBar extends GenericWidget {
 	private int icons = 10;
@@ -39,10 +41,25 @@ public class ArmorBar extends GenericWidget {
 		setY(208);
 	}
 	
+	@Override
+	public int getNumBytes() {
+		return super.getNumBytes() + 9;
+	}
+	
+	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		setX(427 / 2 + 82);
-		setY(208);
+		setMaxNumShields(input.readInt());
+		setAlwaysVisible(input.readBoolean());
+		setIconOffset(input.readInt());
+	}
+	
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(getMaxNumShields());
+		output.writeBoolean(isAlwaysVisible());
+		output.writeInt(getIconOffset());
 	}
 	
 	public WidgetType getType() {
@@ -51,18 +68,15 @@ public class ArmorBar extends GenericWidget {
 	
 	@Override
 	public double getScreenX() {
-		if (getX() == 295) {
-			return getScreen().getWidth() / 2 + 82;
-		}
-		return super.getScreenX();
+		double mid = getScreen() != null ? getScreen().getWidth() / 2 : 427 / 2D;
+		double diff = super.getScreenX() - mid - 163;
+		return getScreen() != null ? getScreen().getWidth() / 2D - diff : this.getX();
 	}
 	
 	@Override
 	public double getScreenY() {
-		if (getY() == 208) {
-			return getScreen().getHeight() - 32;
-		}
-		return super.getScreenY();
+		int diff = (int) (240 - this.getY());
+		return getScreen() != null ? getScreen().getHeight() - diff : this.getY();
 	}
 	
 	public UUID getId() {
@@ -127,6 +141,8 @@ public class ArmorBar extends GenericWidget {
 		return this;
 	}
 	
+	//My failed attempt to get custom textures for the shields - afforess 21/8/11
+	/*
 	public String getFullArmorUrl() {
 		return fullArmorUrl;
 	}
@@ -222,10 +238,36 @@ public class ArmorBar extends GenericWidget {
 		}
 		return emptyArmortexture.getTextureID();
 	}
+	*/
 
 	@Override
 	public void render() {
-		
+		float armorPercent = Minecraft.theMinecraft.thePlayer.getPlayerArmorValue() / 0.2f;
+		if (isVisible() && getMaxNumShields() > 0) {
+			int y = (int)getScreenY();
+			float armorPercentPerIcon = 100f / getMaxNumShields();
+			for (int icon = 0; icon < getMaxNumShields(); icon++) {
+				if (armorPercent > 0 || isAlwaysVisible()) {
+					int x = (int)getScreenX() - icon * getIconOffset();
+					boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
+					boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
+					if (full) { //white armor (filled in)
+						Gui.drawStaticTexturedModalRect(x, y, 34, 9, 9, 9, 0f);
+					}
+					else if (half) { //half filled in
+						Gui.drawStaticTexturedModalRect(x, y, 25, 9, 9, 9, 0f);
+					}
+					else {
+						Gui.drawStaticTexturedModalRect(x, y, 16, 9, 9, 9, 0f);
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
 	}
 
 }

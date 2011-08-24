@@ -193,7 +193,6 @@ public class ChatManager {
 	public void sendChat(String message) {
 		ArrayList<String> lines = formatChat(message, false);
 		for (String chat : lines) {
-			System.out.println("Len: " + chat.length() + " Text: " + chat);
 			SpoutClient.getHandle().thePlayer.sendChatMessage(chat);
 		}
 	}

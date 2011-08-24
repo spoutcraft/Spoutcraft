@@ -12,7 +12,6 @@ import net.minecraft.src.Gui;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderItem;
@@ -34,7 +33,7 @@ public class GuiIngame extends Gui {
 	//Increased default size, efficiency reasons
 	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(2500);
 	//Spout Improved Chat End
-	private Random rand = new Random();
+	public static final Random rand = new Random(); //Spout private -> public static final
 	private Minecraft mc;
 	public String field_933_a = null;
 	private int updateCounter = 0;
@@ -87,96 +86,24 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(775, 769);
 		this.drawTexturedModalRect(screenWidth / 2 - 7, screenHeight / 2 - 7, 0, 0, 16, 16);
 		GL11.glDisable(3042 /*GL_BLEND*/);
-		boolean whiteOutlinedHearts = this.mc.thePlayer.heartsLife / 3 % 2 == 1;
-		if(this.mc.thePlayer.heartsLife < 10) {
-			whiteOutlinedHearts = false;
-		}
-
-		int health = this.mc.thePlayer.health;
-		this.rand.setSeed((long)(this.updateCounter * 312871));
+		
+		GuiIngame.rand.setSeed((long)(this.updateCounter * 312871));
 		int var15;
 		int var17;
-		
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
 		if(this.mc.playerController.shouldDrawHUD()) {
 			
 			//Armor Bar Begin
-			float armorPercent = this.mc.thePlayer.getPlayerArmorValue() / 0.2f;
-			ArmorBar armorWidget = mainScreen.getArmorBar();
-			int var18;
-			if (armorWidget.isVisible() && armorWidget.getMaxNumShields() > 0) {
-				int y = (int)armorWidget.getScreenY();
-				float armorPercentPerIcon = 100f / armorWidget.getMaxNumShields();
-				for (int icon = 0; icon < armorWidget.getMaxNumShields(); icon++) {
-					if (armorPercent > 0 || armorWidget.isAlwaysVisible()) {
-						int x = (int)armorWidget.getScreenX() - icon * armorWidget.getIconOffset();
-						boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
-						boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
-						if (full) { //white armor (filled in)
-							this.drawTexturedModalRect(x, y, 34, 9, 9, 9);
-						}
-						else if (half) { //half filled in
-							this.drawTexturedModalRect(x, y, 25, 9, 9, 9);
-						}
-						else {
-							this.drawTexturedModalRect(x, y, 16, 9, 9, 9);
-						}
-					}
-				}
-			}
+			mainScreen.getArmorBar().render();
 			//Armor Bar End
 			
 			//Health Bar Begin
-			HealthBar healthWidget = mainScreen.getHealthBar();
-			float healthPercent = health / 0.2f;
-			int y = (int)healthWidget.getScreenY();
-			if (healthPercent <= healthWidget.getDangerPercent()) {
-				y += this.rand.nextInt(2);
-			}
-			float healthPercentPerIcon = 100f / healthWidget.getMaxNumHearts();
-			if (healthWidget.isVisible() && healthWidget.getMaxNumHearts() > 0) {
-				for (int icon = 0; icon < healthWidget.getMaxNumHearts(); ++icon) {
-					boolean full = (icon + 1) * healthPercentPerIcon <= healthPercent;
-					boolean half = (icon + 1) * healthPercentPerIcon < healthPercent + healthPercentPerIcon;
-					int x = (int)healthWidget.getScreenX() + icon * healthWidget.getIconOffset();
-					
-					
-					this.drawTexturedModalRect(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9);
-					if (whiteOutlinedHearts) {
-						if (full) {
-							this.drawTexturedModalRect(x, y, 70, 0, 9, 9);
-						}
-						else if (half) {
-							this.drawTexturedModalRect(x, y, 79, 0, 9, 9);
-						}
-					}
-
-					if (full) {
-						this.drawTexturedModalRect(x, y, 52, 0, 9, 9);
-					}
-					else if (half) {
-						this.drawTexturedModalRect(x, y, 61, 0, 9, 9);
-					}
-
-				}
-			}
+			mainScreen.getHealthBar().render();
 			//Health Bar End
 
 			//Bubble Bar Begin
-			if(this.mc.thePlayer.isInsideOfMaterial(Material.water)) {
-				int icon = (int)Math.ceil(((double)(mc.thePlayer.air - 2) * 10D) / (mc.thePlayer.maxAir * 1D));
-				var17 = (int)Math.ceil(((double)mc.thePlayer.air * 10D) / (mc.thePlayer.maxAir * 1D)) - icon;
-				if (mainScreen.getBubbleBar().isVisible()) {
-					for(var18 = 0; var18 < icon + var17; ++var18) {
-						if(var18 < icon) {
-							this.drawTexturedModalRect(screenWidth / 2 - 91 + var18 * 8, screenHeight - 32 - 9, 16, 18, 9, 9);
-						} else {
-							this.drawTexturedModalRect(screenWidth / 2 - 91 + var18 * 8, screenHeight - 32 - 9, 25, 18, 9, 9);
-						}
-					}
-				}
-			}
+			mainScreen.getBubbleBar().render();
 			//Bubble Bar End
 		}
 
@@ -286,11 +213,12 @@ public class GuiIngame extends Gui {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		
-		if (mainScreen.getChatTextBox().isVisible()) {
+		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
+		if (chatTextWidget.isVisible()) {
 			int viewedLine = 0;
 			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
-				if (chatOpen || chatMessageList.get(line).updateCounter < 250) {
-					double opacity = 1.0D - chatMessageList.get(line).updateCounter / 250D;
+				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {
+					double opacity = 1.0D - chatMessageList.get(line).updateCounter / (double)chatTextWidget.getFadeoutTicks();
 					opacity *= 10D;
 					if(opacity < 0.0D) {
 						opacity = 0.0D;
@@ -301,15 +229,15 @@ public class GuiIngame extends Gui {
 					opacity *= opacity;
 					int color = chatOpen ? 255 : (int)(255D * opacity);
 					if (color > 0) {
-						int height = 2;
-						int width = -viewedLine * 9;
+						int y = 2;
+						int x = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
 						chat = ChatManager.formatUrl(chat);
 						//TODO add support for opening URL in browser if clicked?
-						drawRect(height, width - 1, height + 320, width + 8, color / 2 << 24);
+						drawRect(y, x - 1, y + 320, x + 8, color / 2 << 24);
 						GL11.glEnable(3042 /*GL_BLEND*/);
-						font.drawStringWithShadow(chat, height, width, 0xffffff + (color << 24));
+						font.drawStringWithShadow(chat, y, x, 0xffffff + (color << 24));
 					}
 					viewedLine++;
 				}

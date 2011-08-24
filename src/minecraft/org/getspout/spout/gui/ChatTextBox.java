@@ -24,6 +24,7 @@ import java.util.UUID;
 public class ChatTextBox extends GenericWidget implements Widget{
 	protected int visibleLines = 10;
 	protected int visibleChatLines = 20;
+	protected int fadeoutTicks = 250;
 	public ChatTextBox() {
 
 	}
@@ -35,21 +36,23 @@ public class ChatTextBox extends GenericWidget implements Widget{
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 8;
+		return super.getNumBytes() + 12;
 	}
 	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		visibleLines = input.readInt();
-		visibleChatLines = input.readInt();
+		setNumVisibleLines(input.readInt());
+		setNumVisibleChatLines(input.readInt());
+		setFadeoutTicks(input.readInt());
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
-		output.writeInt(visibleLines);
-		output.writeInt(visibleChatLines);
+		output.writeInt(getNumVisibleLines());
+		output.writeInt(getNumVisibleChatLines());
+		output.writeInt(getFadeoutTicks());
 	}
 	
 	public UUID getId() {
@@ -94,6 +97,20 @@ public class ChatTextBox extends GenericWidget implements Widget{
 	public ChatTextBox setNumVisibleChatLines(int lines) {
 		visibleChatLines = lines;
 		return this;
+	}
+	
+	public int getFadeoutTicks() {
+		return fadeoutTicks;
+	}
+	
+	public ChatTextBox setFadeoutTicks(int ticks) {
+		fadeoutTicks = ticks;
+		return this;
+	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
 	}
 
 }

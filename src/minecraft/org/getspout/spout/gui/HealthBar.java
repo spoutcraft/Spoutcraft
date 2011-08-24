@@ -17,8 +17,13 @@
 package org.getspout.spout.gui;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Gui;
+import net.minecraft.src.GuiIngame;
 
 public class HealthBar extends GenericWidget {
 	private int icons = 10;
@@ -29,12 +34,28 @@ public class HealthBar extends GenericWidget {
 		super();
 		setX(427 / 2 - 91); //122
 		setY(208);
+		setAnchor(WidgetAnchor.BOTTOM_CENTER);
 	}
 	
+	@Override
+	public int getNumBytes() {
+		return super.getNumBytes() + 12;
+	}
+	
+	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		setX(427 / 2 - 91);
-		setY(208);
+		setMaxNumHearts(input.readInt());
+		setIconOffset(input.readInt());
+		setDangerPercent(input.readFloat());
+	}
+	
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(getMaxNumHearts());
+		output.writeInt(getIconOffset());
+		output.writeFloat(getDangerPercent());
 	}
 	
 	public WidgetType getType() {
@@ -48,22 +69,54 @@ public class HealthBar extends GenericWidget {
 	
 	@Override
 	public double getScreenX() {
-		if (getX() == 122) {
-			return getScreen().getWidth() / 2 - 91;
-		}
-		return super.getScreenX();
+		double mid = getScreen() != null ? getScreen().getWidth() / 2 : 427 / 2D;
+		double diff = super.getScreenX() - mid - 31;
+		return getScreen() != null ? getScreen().getWidth() / 2D - diff : this.getX();
 	}
 	
 	@Override
 	public double getScreenY() {
-		if (getY() == 208) {
-			return getScreen().getHeight() - 32;
-		}
-		return super.getScreenY();
+		int diff = (int) (240 - this.getY());
+		return getScreen() != null ? getScreen().getHeight() - diff : this.getY();
 	}
 	
 	public void render() {
-		
+		int health = Minecraft.theMinecraft.thePlayer.health;
+		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.heartsLife / 3 % 2 == 1;
+		if(Minecraft.theMinecraft.thePlayer.heartsLife < 10) {
+			whiteOutlinedHearts = false;
+		}
+		float healthPercent = health / 0.2f;
+		int y = (int)getScreenY();
+		if (healthPercent <= getDangerPercent()) {
+			y += GuiIngame.rand.nextInt(2);
+		}
+		float healthPercentPerIcon = 100f / getMaxNumHearts();
+		if (isVisible() && getMaxNumHearts() > 0) {
+			for (int icon = 0; icon < getMaxNumHearts(); ++icon) {
+				boolean full = (icon + 1) * healthPercentPerIcon <= healthPercent;
+				boolean half = (icon + 1) * healthPercentPerIcon < healthPercent + healthPercentPerIcon;
+				int x = (int)getScreenX() + icon * getIconOffset();
+				
+				Gui.drawStaticTexturedModalRect(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9, 0f);
+				if (whiteOutlinedHearts) {
+					if (full) {
+						Gui.drawStaticTexturedModalRect(x, y, 70, 0, 9, 9, 0f);
+					}
+					else if (half) {
+						Gui.drawStaticTexturedModalRect(x, y, 79, 0, 9, 9, 0f);
+					}
+				}
+
+				if (full) {
+					Gui.drawStaticTexturedModalRect(x, y, 52, 0, 9, 9, 0f);
+				}
+				else if (half) {
+					Gui.drawStaticTexturedModalRect(x, y, 61, 0, 9, 9, 0f);
+				}
+
+			}
+		}
 	}
 	
 	/**
@@ -126,6 +179,11 @@ public class HealthBar extends GenericWidget {
 	public HealthBar setDangerPercent(float percent) {
 		dangerPercent = percent;
 		return this;
+	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
 	}
 
 }
