@@ -36,6 +36,8 @@ public interface ActivePlayer {
 	
 	public void showAchievement(String title, String message, int id);
 	
+	public void showAchievement(String title, String message, int id, int data, int time);
+	
 	public String getEntityTitle(int id);
 	
 	public void setEntityTitle(int id, String title);

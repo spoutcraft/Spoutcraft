@@ -58,7 +58,7 @@ public class PacketAlert implements SpoutPacket{
 
 	@Override
 	public void run(int PlayerId) {
-		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, itemId);
+		SpoutClient.getInstance().getActivePlayer().showAchievement(title, message, itemId);
 	}
 
 	@Override

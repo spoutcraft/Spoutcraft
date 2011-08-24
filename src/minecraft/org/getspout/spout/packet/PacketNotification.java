@@ -61,7 +61,7 @@ public class PacketNotification extends PacketAlert{
 	
 	@Override
 	public void run(int PlayerId) {
-		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, itemId, data, time);
+		SpoutClient.getInstance().getActivePlayer().showAchievement(title, message, itemId, data, time);
 	}
 
 	@Override

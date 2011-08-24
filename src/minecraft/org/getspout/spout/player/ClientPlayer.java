@@ -81,6 +81,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	public void showAchievement(String title, String message, int id) {
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id);
 	}
+	
+	@Override
+	public void showAchievement(String title, String message, int id, int data, int time) {
+		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id, (short) data, time);
+	}
 
 	@Override
 	public String getEntityTitle(int id) {
