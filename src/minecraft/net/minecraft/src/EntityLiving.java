@@ -74,6 +74,7 @@ public abstract class EntityLiving extends Entity
 	protected int numTicksToChaseTarget;
 	//Spout Start
 	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
+	private byte textureToRender = 0;
 	//Spout End
 	
 	public EntityLiving(World world)
@@ -125,7 +126,7 @@ public abstract class EntityLiving extends Entity
 	public String getEntityTexture()
 	{
 		//Spout Start
-		String custom = getCustomTextureUrl((byte)0);
+		String custom = getCustomTextureUrl(getTextureToRender());
 		if(custom == null || CustomTextureManager.getTextureFromUrl(custom) == null){
 			return texture;
 		} else {
@@ -146,12 +147,20 @@ public abstract class EntityLiving extends Entity
 		}
 		return null;
 	}
-	
+
 	public void setCustomTexture(String url, byte id){
 		if (url != null) {
 			CustomTextureManager.downloadTexture(url);
 		}
 		customTextures.put(id, url);
+	}
+	
+	public void setTextureToRender(byte textureToRender) {
+		this.textureToRender = textureToRender;
+	}
+
+	public byte getTextureToRender() {
+		return textureToRender;
 	}
 	//Spout End
 
