@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import org.getspout.spout.client.SpoutClient;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
@@ -2517,6 +2518,15 @@ public class World implements IBlockAccess {
 
 	public static int int2ChunkZ(int composite) {
 		return (composite & '\u8000') == 0?composite & 32767:-(-composite & 32767);
+	}
+	
+	public void doColorfulStuff() {
+		for(int i = 0; i < this.playerEntities.size(); ++i) {
+			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);
+			if (ep != Minecraft.theMinecraft.thePlayer) { 
+				ep.doFancyStuff();
+			}
+		}
 	}
    //Spout End
 

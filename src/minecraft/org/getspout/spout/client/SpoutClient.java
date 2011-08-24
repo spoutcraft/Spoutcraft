@@ -128,6 +128,9 @@ public class SpoutClient implements Client {
 		tick++;
 		FileDownloadThread.getInstance().onTick();
 		player.getMainScreen().onTick();
+		if (Minecraft.theMinecraft.theWorld != null) {
+			Minecraft.theMinecraft.theWorld.doColorfulStuff();
+		}
 	}
 
 	public long getTick() {

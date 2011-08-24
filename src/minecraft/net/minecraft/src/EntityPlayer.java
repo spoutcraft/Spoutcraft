@@ -76,8 +76,6 @@ public abstract class EntityPlayer extends EntityLiving {
 	public float prevTimeInPortal;
 	private int damageRemainder = 0;
 	public EntityFish fishEntity = null;
-	private boolean spoutMember = false; //Spout
-
 
 	public EntityPlayer(World var1) {
 		super(var1);
@@ -178,7 +176,6 @@ public abstract class EntityPlayer extends EntityLiving {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
 		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
-			spoutMember = true;
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
@@ -243,12 +240,6 @@ public abstract class EntityPlayer extends EntityLiving {
 			var2 = 0.0F;
 		}
 		
-		//Spout Easter Egg
-		if (spoutMember && this.onGround && var1 == 0.1F) {
-			worldObj.spawnParticle("reddust", posX + rand.nextFloat() - 0.5, boundingBox.minY, posZ + rand.nextFloat() - 0.5, 255.0D, 210.0D, 0.0D);
-		}
-		//Spout End
-
 		this.cameraYaw += (var1 - this.cameraYaw) * 0.4F;
 		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
 		if(this.health > 0) {
@@ -848,4 +839,30 @@ public abstract class EntityPlayer extends EntityLiving {
 			this.inPortal = true;
 		}
 	}
+	//Spout Easter Egg
+	public void doFancyStuff() {
+		float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		if(var1 > 0.1F) {
+			var1 = 0.1F;
+		}
+
+		if(!this.onGround || this.health <= 0) {
+			var1 = 0.0F;
+		}
+
+		String tempName = ChatColor.stripColor(username);
+		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
+			int sparkleLoops = Math.max(1, (int) (var1 / 0.01F));
+			while (sparkleLoops > 0) {
+				if (rand.nextInt(2) == 0) {
+					worldObj.spawnParticle("reddust", posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.5), posZ + rand.nextFloat() - 0.5, 255.0D, 210.0D, 0.0D);
+				}
+				else {
+					worldObj.spawnParticle("portal", posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.5), posZ + rand.nextFloat() - 0.5, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D);
+				}
+				sparkleLoops--;
+			}
+		}
+	}
+	//Spout End
 }
