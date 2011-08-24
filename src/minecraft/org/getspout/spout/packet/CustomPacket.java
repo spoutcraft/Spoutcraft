@@ -29,7 +29,8 @@ public class CustomPacket extends Packet{
 	public SpoutPacket packet;
 	private boolean success = false;
 	private static final int[] nags;
-	private static final int NAG_MSG_AMT = 10;
+	protected static final int NAG_MSG_AMT = 10;
+	protected static boolean outdated = false;
 	
 	static {
 		nags = new int[PacketType.values().length];
@@ -57,6 +58,7 @@ public class CustomPacket extends Packet{
 
 	@Override
 	public void readPacketData(DataInputStream input) throws IOException {
+		final boolean prevOutdated = outdated;
 		int packetId = -1;
 		packetId = input.readShort();
 		int version = input.readShort(); //packet version
@@ -82,6 +84,7 @@ public class CustomPacket extends Packet{
 				if (nags[packetId]-- > 0) {
 					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
+				outdated = outdated ? true : version > packet.getVersion();
 			}
 			else {
 				packet.readData(input);
@@ -94,6 +97,9 @@ public class CustomPacket extends Packet{
 		catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("readData() for packetId " + packetId + " threw an exception");
+		}
+		if (prevOutdated != outdated) {
+			SpoutClient.getInstance().getActivePlayer().showAchievement("Update Available!", "New Spoutcraft update!", 323 /*Sign*/);
 		}
 	}
 

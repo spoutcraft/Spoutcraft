@@ -27,6 +27,15 @@ import org.getspout.spout.gui.*;
 public class PacketWidget implements SpoutPacket {
 	protected Widget widget;
 	protected UUID screen;
+	private static final int[] nags;
+	
+	static {
+		nags = new int[WidgetType.values().length];
+		for (int i = 0; i < WidgetType.values().length; i++) {
+			nags[i] = CustomPacket.NAG_MSG_AMT;
+		}
+	}
+	
 	public PacketWidget() {
 
 	}
@@ -58,7 +67,9 @@ public class PacketWidget implements SpoutPacket {
 				}
 				else {
 					input.skipBytes(size);
-					System.out.println("Received invalid widget: " + widgetType + " v: " + version + " current v: " + widget.getVersion());
+					if (nags[id]-- > 0) {
+						System.out.println("Received invalid widget: " + widgetType + " v: " + version + " current v: " + widget.getVersion());
+					}
 					widget = null;
 				}
 			}

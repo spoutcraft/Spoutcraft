@@ -99,10 +99,20 @@ public class ChatTextBox extends GenericWidget implements Widget{
 		return this;
 	}
 	
+	/**
+	 * The number ticks until the text fades out from the main screen
+	 * @return fadeout ticks
+	 */
 	public int getFadeoutTicks() {
 		return fadeoutTicks;
 	}
 	
+	/**
+	 * Sets the number of ticks until the text fades out from the main screen.
+	 * 20 ticks is equivelent to one second.
+	 * @param ticks to set
+	 * @return this
+	 */
 	public ChatTextBox setFadeoutTicks(int ticks) {
 		fadeoutTicks = ticks;
 		return this;
