@@ -76,6 +76,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public float prevTimeInPortal;
 	private int damageRemainder = 0;
 	public EntityFish fishEntity = null;
+	private boolean spoutMember = false; //Spout
 
 
 	public EntityPlayer(World var1) {
@@ -177,6 +178,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
 		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
+			spoutMember = true;
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
@@ -240,6 +242,12 @@ public abstract class EntityPlayer extends EntityLiving {
 		if(this.onGround || this.health <= 0) {
 			var2 = 0.0F;
 		}
+		
+		//Spout Easter Egg
+		if (spoutMember && this.onGround && var1 == 0.1F) {
+			worldObj.spawnParticle("reddust", posX + rand.nextFloat() - 0.5, boundingBox.minY, posZ + rand.nextFloat() - 0.5, 255.0D, 210.0D, 0.0D);
+		}
+		//Spout End
 
 		this.cameraYaw += (var1 - this.cameraYaw) * 0.4F;
 		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
