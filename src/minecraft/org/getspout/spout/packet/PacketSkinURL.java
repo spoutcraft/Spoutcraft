@@ -28,6 +28,7 @@ public class PacketSkinURL implements SpoutPacket{
 	public int entityId;
 	public String skinURL;
 	public String cloakURL;
+	public boolean release = true;
 	public PacketSkinURL() {
 		
 	}
@@ -36,6 +37,7 @@ public class PacketSkinURL implements SpoutPacket{
 		this.entityId = id;
 		this.skinURL = skinURL;
 		this.cloakURL = cloakURL;
+		release = false;
 	}
 	
 	public PacketSkinURL(int id, String skinURL) {
@@ -52,7 +54,7 @@ public class PacketSkinURL implements SpoutPacket{
 
 	@Override
 	public int getNumBytes() {
-		return 4 + PacketUtil.getNumBytes(skinURL) + PacketUtil.getNumBytes(cloakURL);
+		return 5 + PacketUtil.getNumBytes(skinURL) + PacketUtil.getNumBytes(cloakURL);
 	}
 
 	@Override
@@ -60,6 +62,7 @@ public class PacketSkinURL implements SpoutPacket{
 		entityId = input.readInt();
 		skinURL = PacketUtil.readString(input, 256);
 		cloakURL = PacketUtil.readString(input, 256);
+		release = input.readBoolean();
 	}
 
 	@Override
@@ -67,6 +70,7 @@ public class PacketSkinURL implements SpoutPacket{
 		output.writeInt(entityId);
 		PacketUtil.writeString(output, skinURL);
 		PacketUtil.writeString(output, cloakURL);
+		output.writeBoolean(release);
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public class PacketSkinURL implements SpoutPacket{
 				e.cloakUrl = this.cloakURL;
 				e.playerCloakUrl = this.cloakURL;
 			}
-			if (this.cloakURL.equals("none") || this.skinURL.equals("none")) {
+			if (release) {
 				e.worldObj.releaseEntitySkin(e);
 			}
 			e.worldObj.obtainEntitySkin(e);
@@ -94,7 +98,7 @@ public class PacketSkinURL implements SpoutPacket{
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	@Override

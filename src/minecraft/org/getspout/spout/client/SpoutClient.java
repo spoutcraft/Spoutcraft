@@ -145,7 +145,9 @@ public class SpoutClient implements Client {
 	}
 	
 	public void onWorldEnter() {
-		player = new ClientPlayer(getHandle().thePlayer);
+		if (player == null) {
+			player = new ClientPlayer(getHandle().thePlayer);
+		}
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled()) {
 			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
 			clipboardThread.start();
