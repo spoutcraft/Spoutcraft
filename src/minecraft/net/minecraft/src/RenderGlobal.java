@@ -131,15 +131,22 @@ public class RenderGlobal implements IWorldAccess {
 			ARBOcclusionQuery.glGenQueriesARB(this.glOcclusionQueryBase);
 		}
 
+		//Spout Start
+		refreshStars();
+		//Spout End
+	}
+	//Spout Start
+	public void refreshStars() {
 		this.starGLCallList = GLAllocation.generateDisplayLists(3);
 		GL11.glPushMatrix();
 		GL11.glNewList(this.starGLCallList, 4864 /*GL_COMPILE*/);
 		this.renderStars();
 		GL11.glEndList();
 		GL11.glPopMatrix();
-		Tessellator var4 = Tessellator.instance;
 		this.glSkyList = this.starGLCallList + 1;
 		GL11.glNewList(this.glSkyList, 4864 /*GL_COMPILE*/);
+		
+		Tessellator var4 = Tessellator.instance;
 		byte var6 = 64;
 		int var7 = 256 / var6 + 2;
 		float var5 = 16.0F;
@@ -175,7 +182,7 @@ public class RenderGlobal implements IWorldAccess {
 		var4.draw();
 		GL11.glEndList();
 	}
-
+	//Spout End
 	private void renderStars() {
 		//Spout Start
 		if (!SpoutClient.getInstance().getSkyManager().isStarsVisible()) {

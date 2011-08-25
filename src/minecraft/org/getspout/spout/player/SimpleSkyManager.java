@@ -16,6 +16,8 @@
  */
 package org.getspout.spout.player;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.Color;
@@ -62,6 +64,7 @@ public class SimpleSkyManager implements SkyManager{
 	@Override
 	public void setStarFrequency(int frequency) {
 		starFrequency = frequency;
+		Minecraft.theMinecraft.renderGlobal.refreshStars();
 	}
 
 	@Override
