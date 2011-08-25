@@ -63,21 +63,34 @@ public interface ItemManager {
 	 */
 	public void setItemName(int item, short data, String name);
 
+	/**
+	 * Resets the name of the item back to the notchian default
+	 * @param item to reset
+	 */
+	public void resetName(int item);
+	
+	/**
+	 * Resets the name of the item back to the notchian default
+	 * @param item to reset
+	 * @param data of the item
+	 */
+	public void resetName(int item, short data);
+	
 	 /**
      * Sets the texture of the item
      * @param item to name
      * @param texture to set
      */
-	public void setItemTexture(int item, String texture);
-	
-	/**
+    public void setItemTexture(int item, String texture);
+    
+    /**
      * Sets the texture of the item
      * @param item to name
      * @param data of the item
      * @param texture to set
      */
     public void setItemTexture(int item, short data, String texture);
-	
+    
     /**
      * Gets the custom name of the item, or null if none exists
      * @param item to get the name of
@@ -105,22 +118,10 @@ public interface ItemManager {
      * @param data of the item
      */
     public void resetTexture(int item, short data);
-    
-	/**
-	 * Resets the name of the item back to the notchian default
-	 * @param item to reset
-	 */
-	public void resetName(int item);
-	
-	/**
-	 * Resets the name of the item back to the notchian default
-	 * @param item to reset
-	 * @param data of the item
-	 */
-	public void resetName(int item, short data);
 	
 	/**
 	 * Resets the names and textures of all items to the notchian defaults. Use with care.
 	 */
 	public void reset();
+		
 }

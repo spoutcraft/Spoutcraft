@@ -48,11 +48,10 @@ public class PacketItemTexture implements SpoutPacket {
 
 	@Override
 	public void run(int PlayerId) {
-		if(texture.equals("[reset]")){
-			texture = null;
-		}
-		ItemManager manager = SpoutClient.getInstance().getItemManager();
-		manager.setItemTexture(id,data,texture);
+	    ItemManager manager = SpoutClient.getInstance().getItemManager();
+	    if(texture.equals("[reset]"))
+    			texture = null;
+    	manager.setItemTexture(id,data,texture);
 	}
 
 	@Override

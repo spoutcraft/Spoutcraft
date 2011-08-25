@@ -46,7 +46,7 @@ public enum PacketType {
 	PacketBiomeWeather(24, PacketBiomeWeather.class),
 	PacketChunkRefresh(25, PacketChunkRefresh.class), 
 	PacketOpenScreen(26, PacketOpenScreen.class),
-	PacketItemTexture(27, PacketItemTexture.class),
+	PacketItemTexture(31, PacketItemTexture.class),
 	;
 	
 	private final int id;

@@ -309,12 +309,6 @@ public class SimpleItemManager implements ItemManager{
 	}
 
 	@Override
-	public void reset() {
-        customNames.clear();
-        customTextures.clear();
-	}
-
-	@Override
 	public String getCustomItemName(int item) {
 		return getCustomItemName(item, (short)0);
 	}
@@ -348,13 +342,10 @@ public class SimpleItemManager implements ItemManager{
 
     @Override
     public String getCustomItemTexture(int item, short data) {
-        CustomTextureManager.downloadTexture("http://www.blankcodex.com/minecraft/items/gem.png");
-        return "http://www.blankcodex.com/minecraft/items/gem.png";
-        /*
         ItemData info = new ItemData(item, data);
         if(customTextures.containsKey(info))
             return customTextures.get(info);
-        return null;*/
+        return null;
     }
 
     @Override
@@ -369,4 +360,11 @@ public class SimpleItemManager implements ItemManager{
             customTextures.remove(info);
         }
     }
+
+    @Override
+    public void reset() {
+        customNames.clear();
+        customTextures.clear();
+    }
+
 }
