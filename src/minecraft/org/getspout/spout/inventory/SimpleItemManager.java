@@ -17,12 +17,17 @@
 package org.getspout.spout.inventory;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
+
+import org.getspout.spout.io.CustomTextureManager;
 
 public class SimpleItemManager implements ItemManager{
-	private final HashMap<ItemData, String> itemNames;
+    private final HashMap<ItemData, String> itemNames;
+    private final HashMap<ItemData, String> customTextures;
 	private final HashMap<ItemData, String> customNames;
 	public SimpleItemManager() {
-		itemNames = new HashMap<ItemData, String>(500);
+        itemNames = new HashMap<ItemData, String>(500);
+        customTextures = new HashMap<ItemData, String>(100);
 		customNames = new HashMap<ItemData, String>(100);
 		itemNames.put(new ItemData(1), "Stone");
 		itemNames.put(new ItemData(2), "Grass");
@@ -305,7 +310,8 @@ public class SimpleItemManager implements ItemManager{
 
 	@Override
 	public void reset() {
-		customNames.clear();
+        customNames.clear();
+        customTextures.clear();
 	}
 
 	@Override
@@ -321,4 +327,46 @@ public class SimpleItemManager implements ItemManager{
 		}
 		return null;
 	}
+
+    @Override
+    public void setItemTexture(int item, String texture) {
+        setItemTexture(item, (short)0, texture);
+    }
+
+    @Override
+    public void setItemTexture(int item, short data, String texture) {
+        customTextures.put(new ItemData(item, data), texture);
+        if (texture != null) {
+            CustomTextureManager.downloadTexture(texture);
+        }
+    }
+
+    @Override
+    public String getCustomItemTexture(int item) {
+        return getCustomItemTexture(item, (short)0);
+    }
+
+    @Override
+    public String getCustomItemTexture(int item, short data) {
+        CustomTextureManager.downloadTexture("http://www.blankcodex.com/minecraft/items/gem.png");
+        return "http://www.blankcodex.com/minecraft/items/gem.png";
+        /*
+        ItemData info = new ItemData(item, data);
+        if(customTextures.containsKey(info))
+            return customTextures.get(info);
+        return null;*/
+    }
+
+    @Override
+    public void resetTexture(int item) {
+        resetTexture(item,(short)0);
+    }
+
+    @Override
+    public void resetTexture(int item, short data) {
+        ItemData info = new ItemData(item, data);
+        if (customTextures.containsKey(info)) {
+            customTextures.remove(info);
+        }
+    }
 }
