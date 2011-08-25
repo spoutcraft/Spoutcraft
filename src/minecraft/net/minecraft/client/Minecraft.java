@@ -457,7 +457,9 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		ScreenType display = ScreenType.getType(screen);
-		previousScreen = this.currentScreen;
+		if (this.currentScreen != null || screen != null) {
+			previousScreen = this.currentScreen;
+		}
 		if(notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
 			//Screen closed
 			if (this.currentScreen != null && screen == null) {
@@ -839,7 +841,7 @@ public abstract class Minecraft implements Runnable {
 			if(!this.inGameHasFocus) {
 				this.inGameHasFocus = true;
 				this.mouseHelper.grabMouseCursor();
-				//this.displayGuiScreen((GuiScreen)null);
+				this.displayGuiScreen((GuiScreen)null);
 				this.leftClickCounter = 10000;
 				this.mouseTicksRan = this.ticksRan + 10000;
 			}
