@@ -37,7 +37,6 @@ public class PacketEntitySkin implements SpoutPacket {
 		entityId = input.readInt();
 		textureId = input.readByte();
 		texture = PacketUtil.readString(input);
-		System.out.println("txtid: "+textureId+", texture: "+texture);
 	}
 
 	@Override
