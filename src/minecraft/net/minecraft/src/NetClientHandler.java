@@ -368,6 +368,7 @@ public class NetClientHandler extends NetHandler {
 			this.mc.thePlayer.prevPosY = this.mc.thePlayer.posY;
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.field_1210_g = true;
+			//this.mc.displayGuiScreen((GuiScreen) null); Spout
 		}
 
 	}
