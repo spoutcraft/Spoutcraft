@@ -59,11 +59,11 @@ public class GuiPredownload extends GuiScreen{
 		}
 		
 		if (joinCounter == -1) {
-			this.mc.displayGuiScreen(queuedScreen);
 			if (netHandler.cached != null) {
 				netHandler.handleFlying(netHandler.cached);
 				netHandler.cached = null;
 			}
+			this.mc.displayGuiScreen(queuedScreen);
 		}
 	}
 
