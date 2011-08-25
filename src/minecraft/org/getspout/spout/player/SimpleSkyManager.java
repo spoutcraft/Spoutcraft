@@ -64,7 +64,7 @@ public class SimpleSkyManager implements SkyManager{
 	@Override
 	public void setStarFrequency(int frequency) {
 		starFrequency = frequency;
-		starFrequency = Math.max(starFrequency, 1000000);
+		starFrequency = Math.min(starFrequency, 1000000);
 		Minecraft.theMinecraft.renderGlobal.refreshStars();
 	}
 
