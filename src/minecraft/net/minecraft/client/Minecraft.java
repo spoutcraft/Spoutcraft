@@ -457,7 +457,7 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		ScreenType display = ScreenType.getType(screen);
-		if (this.currentScreen != null || screen != null) {
+		if (previousScreen != null || screen != null) {
 			previousScreen = this.currentScreen;
 		}
 		if(notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
