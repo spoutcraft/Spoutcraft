@@ -46,6 +46,9 @@ public enum PacketType {
 	PacketBiomeWeather(24, PacketBiomeWeather.class),
 	PacketChunkRefresh(25, PacketChunkRefresh.class), 
 	PacketOpenScreen(26, PacketOpenScreen.class),
+	PacketPreCacheFile(27, PacketPreCacheFile.class),
+	PacketCacheFile(28, PacketCacheFile.class),
+	PacketCacheDeleteFile(29, PacketCacheDeleteFile.class),
 	;
 	
 	private final int id;

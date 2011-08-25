@@ -22,7 +22,6 @@ import java.util.Map;
 import org.getspout.spout.client.SpoutClient;
 
 import net.minecraft.src.GameSettings;
-import net.minecraft.src.GuiAchievement;
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiChest;

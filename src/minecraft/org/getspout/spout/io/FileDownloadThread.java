@@ -27,6 +27,7 @@ public class FileDownloadThread extends Thread{
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
 	private final ConcurrentLinkedQueue<Runnable> actions = new ConcurrentLinkedQueue<Runnable>();
 	private final byte[] buffer = new byte[1024*1024];
+	private volatile String activeDownload = null;
 	
 	protected FileDownloadThread() {
 		super("File Download Thread");
@@ -64,6 +65,19 @@ public class FileDownloadThread extends Thread{
 		}
 	}
 	
+	public void abort() {
+		this.interrupt();
+		downloads.clear();
+	}
+	
+	public String getActiveDownload() {
+		return activeDownload;
+	}
+	
+	public int getDownloadsRemaining() {
+		return downloads.size();
+	}
+	
 	public void run() {
 		while(true) {
 			Download next = downloads.poll();
@@ -71,6 +85,7 @@ public class FileDownloadThread extends Thread{
 				try {
 					if (!next.isDownloaded()) {
 						System.out.println("Downloading File: " + next.getDownloadUrl());
+						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
 						URL url = new URL(next.getDownloadUrl());
 						URLConnection conn = url.openConnection();
 						InputStream in = conn.getInputStream();
@@ -90,10 +105,10 @@ public class FileDownloadThread extends Thread{
 							if (length > 0 && totalBytes > (last + step)) {
 								last = totalBytes;
 								long mb = totalBytes/(1024*1024);
-								System.out.println("Downloading File: " + next.getDownloadUrl() + " " + mb + "MB/" + (length/(1024*1024)));
+								System.out.println("Downloading: " + next.getDownloadUrl() + " " + mb + "MB/" + (length/(1024*1024)));
 							}
 							try {
-								Thread.sleep(100);
+								Thread.sleep(25);
 							} catch (InterruptedException e) {
 								
 							}
@@ -116,6 +131,7 @@ public class FileDownloadThread extends Thread{
 					e.printStackTrace();
 					System.out.println("-----------------------");
 				}
+				activeDownload = null;
 			}
 			else {
 				try {

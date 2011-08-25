@@ -110,6 +110,10 @@ public class NetClientHandler extends NetHandler {
 	private boolean field_1210_g = false;
 	public MapStorage field_28118_b = new MapStorage((ISaveHandler) null);
 	Random rand = new Random();
+	//Spout start
+	private boolean predownload = false;
+	public Packet10Flying cached = null;
+	//Spout end
 
 	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {
 		this.mc = var1;
@@ -324,6 +328,16 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleFlying(Packet10Flying var1) {
+		//Spout Start
+		if (!predownload) {
+			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
+			predownload = true;
+		}
+		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
+			cached = var1;
+			return;
+		}
+		//Spout End
 		EntityPlayerSP var2 = this.mc.thePlayer;
 		double var3 = var2.posX;
 		double var5 = var2.posY;
