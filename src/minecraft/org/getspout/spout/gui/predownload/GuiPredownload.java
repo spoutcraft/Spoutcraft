@@ -1,6 +1,7 @@
 package org.getspout.spout.gui.predownload;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.gui.server.GuiFavorites;
 import org.getspout.spout.io.FileDownloadThread;
 
@@ -15,6 +16,7 @@ public class GuiPredownload extends GuiScreen{
 	private NetClientHandler netHandler;
 	private int updateCounter = 0;
 	private int joinCounter = -2;
+	public CustomScreen queuedScreen = null;
 
 
 	public GuiPredownload(NetClientHandler handler) {
@@ -57,7 +59,7 @@ public class GuiPredownload extends GuiScreen{
 		}
 		
 		if (joinCounter == -1) {
-			this.mc.displayGuiScreen(null);
+			this.mc.displayGuiScreen(queuedScreen);
 			if (netHandler.cached != null) {
 				netHandler.handleFlying(netHandler.cached);
 				netHandler.cached = null;

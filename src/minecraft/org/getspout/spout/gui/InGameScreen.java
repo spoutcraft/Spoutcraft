@@ -19,6 +19,7 @@ package org.getspout.spout.gui;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.predownload.GuiPredownload;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected HealthBar health;
@@ -132,7 +133,12 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	public boolean attachPopupScreen(PopupScreen screen) {
 		if (getActivePopup() == null) {
 			activePopup = screen;
-			SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
+			if (SpoutClient.getHandle().currentScreen instanceof GuiPredownload) {
+				((GuiPredownload)SpoutClient.getHandle().currentScreen).queuedScreen = new CustomScreen(screen);
+			}
+			else {
+				SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
+			}
 			return true;
 		}
 		return false;
