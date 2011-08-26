@@ -34,17 +34,18 @@ public abstract class GenericWidget implements Widget{
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.SCALE;
+	protected String plugin;
 	
 	public GenericWidget() {
 
 	}
 	
 	public int getNumBytes() {
-		return 38 + PacketUtil.getNumBytes(tooltip);
+		return 38 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(plugin);
 	}
 
 	public int getVersion() {
-		return 2;
+		return 3;
 	}
 	
 	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
@@ -77,6 +78,7 @@ public abstract class GenericWidget implements Widget{
 		long lsb = input.readLong();
 		this.id = new UUID(msb, lsb);
 		setTooltip(PacketUtil.readString(input));
+		setPlugin(PacketUtil.readString(input));
 	}
 
 	@Override
@@ -91,6 +93,18 @@ public abstract class GenericWidget implements Widget{
 		output.writeLong(getId().getMostSignificantBits());
 		output.writeLong(getId().getLeastSignificantBits());
 		PacketUtil.writeString(output, getTooltip());
+		PacketUtil.writeString(output, getPlugin());
+	}
+	
+	@Override
+	public String getPlugin() {
+		return plugin;
+	}
+	
+	@Override
+	public Widget setPlugin(String plugin) {
+		this.plugin = plugin;
+		return this;
 	}
 	
 	@Override

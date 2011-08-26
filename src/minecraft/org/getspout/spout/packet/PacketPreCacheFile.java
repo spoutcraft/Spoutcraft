@@ -54,19 +54,21 @@ public class PacketPreCacheFile implements SpoutPacket{
 
 	@Override
 	public void run(int playerId) {
+		if (!FileUtil.canCache(file)) {
+			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + file);
+			return;
+		}
 		File directory = FileUtil.getCacheDirectory();
 		String fileName = FileUtil.getFileName(file);
 		File expected = new File(directory, fileName);
 		if (expected.exists()) {
 			long crc = FileUtil.getCRC(expected, downloadBuffer);
-			this.cached = crc == expectedCRC;
-			System.out.println("Calculated CRC: " + crc + " Expected CRC: " + expectedCRC);
+			this.cached = expectedCRC != 0 && crc == expectedCRC;
 		}
 		if (!cached) {
 			if (expected.exists()) {
 				expected.delete();
 			}
-			System.out.println("No cached file found for " + fileName);
 			//Request copy of file
 			if (!url) {
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
@@ -78,7 +80,6 @@ public class PacketPreCacheFile implements SpoutPacket{
 			}
 		}
 		else {
-			System.out.println("Found valid cached file found for " + fileName);
 		}
 	}
 

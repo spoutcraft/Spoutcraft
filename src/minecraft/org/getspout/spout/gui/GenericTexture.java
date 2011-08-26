@@ -25,14 +25,14 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.packet.PacketUtil;
 
 public class GenericTexture extends GenericWidget implements Texture {
-	protected String Url = null;
+	protected String url = null;
 	org.newdawn.slick.opengl.Texture texture = null;
 	public GenericTexture() {
 		
 	}
 	
-	public GenericTexture(String Url) {
-		this.Url = Url;
+	public GenericTexture(String url) {
+		this.url = url;
 	}
 
 	@Override
@@ -63,12 +63,8 @@ public class GenericTexture extends GenericWidget implements Texture {
 	
 	@Override
 	public void render() {
-		String path = CustomTextureManager.getTextureFromUrl(getUrl());
-		if (path == null) {
-			return;
-		}
 		if (texture == null) {
-			texture = CustomTextureManager.getTextureFromPath(path);
+			texture = CustomTextureManager.getTextureFromUrl(getPlugin(), getUrl());
 			if (texture == null) {
 				return;
 			}
@@ -94,17 +90,17 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	@Override
 	public String getUrl() {
-		return Url;
+		return url;
 	}
 
 	@Override
-	public Texture setUrl(String Url) {
+	public Texture setUrl(String url) {
 		if (getUrl() != null) {
 			texture = null;
 		}
-		this.Url = Url;
+		this.url = url;
 		if (getUrl() != null) {
-			CustomTextureManager.downloadTexture(Url);
+			CustomTextureManager.downloadTexture(getPlugin(), url);
 		}
 		return this;
 	}

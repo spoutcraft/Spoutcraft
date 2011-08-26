@@ -842,11 +842,11 @@ public class RenderGlobal implements IWorldAccess {
 			float f15 = var11;
 			Tessellator tessellator = var17;
 			if (SpoutClient.getInstance().getSkyManager().isSunVisible()) {
-				if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
+				if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/sun.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl())));
 				}
 				double multiplier = (SpoutClient.getInstance().getSkyManager().getSunSizePercent() / 100D);
 				tessellator.startDrawingQuads();
@@ -858,11 +858,11 @@ public class RenderGlobal implements IWorldAccess {
 			}
 			f15 = 20F;
 			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
-				if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
+				if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
 					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture("/terrain/moon.png"));
 				}
 				else {
-					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
+					GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
 				}
 				double multiplier = (SpoutClient.getInstance().getSkyManager().getMoonSizePercent() / 100D);
 				tessellator.startDrawingQuads();

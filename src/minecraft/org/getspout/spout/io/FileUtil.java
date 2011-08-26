@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Collection;
 
 import net.minecraft.client.Minecraft;
 
@@ -29,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 public class FileUtil {
+	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	public static File getCacheDirectory() {
 		File directory = new File(Minecraft.getMinecraftDir(), "spout");
 		if (!directory.exists()) {
@@ -62,6 +64,56 @@ public class FileUtil {
 			directory.mkdir();
 		}
 		return directory;
+	}
+	
+	public static File findGeneralFile(String plugin, String fileName) {
+		File directory = new File(getCacheDirectory(), plugin);
+		if (directory.exists()) {
+			Collection<File> files = FileUtils.listFiles(directory, null, true);
+			for (File file : files) {
+				String name = getFileName(file.getPath());
+				if (name.equals(fileName)) {
+					return file;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static File findAudioFile(String plugin, String fileName) {
+		File success = findGeneralFile(plugin, fileName);
+		if (success != null) {
+			return success;
+		}
+		File directory = new File(getAudioCacheDirectory(), plugin);
+		if (directory.exists()) {
+			Collection<File> files = FileUtils.listFiles(directory, null, true);
+			for (File file : files) {
+				String name = getFileName(file.getPath());
+				if (name.equals(fileName)) {
+					return file;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static File findTextureFile(String plugin, String fileName) {
+		File success = findGeneralFile(plugin, fileName);
+		if (success != null) {
+			return success;
+		}
+		File directory = new File(getTextureCacheDirectory(), plugin);
+		if (directory.exists()) {
+			Collection<File> files = FileUtils.listFiles(directory, null, true);
+			for (File file : files) {
+				String name = getFileName(file.getPath());
+				if (name.equals(fileName)) {
+					return file;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static File getTextureCacheDirectory() {
@@ -172,5 +224,15 @@ public class FileUtil {
 
 		return hash;
 		
+	}
+	
+	public static boolean canCache(File file) {
+		String filename = FileUtil.getFileName(file.getPath());
+		return FilenameUtils.isExtension(filename, validExtensions);
+	}
+
+	public static boolean canCache(String fileUrl) {
+		String filename = FileUtil.getFileName(fileUrl);
+		return FilenameUtils.isExtension(filename, validExtensions);
 	}
 }

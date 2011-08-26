@@ -51,6 +51,10 @@ public class PacketCacheFile implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
+		if (!FileUtil.canCache(fileName)) {
+			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
+			return;
+		}
 		File directory = FileUtil.getCacheDirectory();
 		File cache = new File(directory, fileName);
 		try {

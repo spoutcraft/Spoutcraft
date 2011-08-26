@@ -28,12 +28,16 @@ public class CustomTextureManager {
 	static HashMap<String, Texture> textures = new HashMap<String, Texture>();
 	
 	public static void downloadTexture(String url) {
+		downloadTexture(null, url);
+	}
+	
+	public static void downloadTexture(String plugin, String url) {
 		String fileName = FileUtil.getFileName(url);
 		if (!FileUtil.isImageFile(fileName)) {
 			System.out.println("Rejecting download of invalid texture: " + fileName);
 			return;
 		}
-		if (!isTextureDownloading(url) && !isTextureDownloaded(url)) {
+		if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
 			Download download = new Download(fileName, FileUtil.getTextureCacheDirectory(), url, null);
 			FileDownloadThread.getInstance().addToDownloadQueue(download);
 		}
@@ -43,8 +47,23 @@ public class CustomTextureManager {
 		return FileDownloadThread.getInstance().isDownloading(url);
 	}
 	
-	public static boolean isTextureDownloaded(String Url) {
-		return (new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(Url))).exists();
+	public static boolean isTextureDownloaded(String url) {
+		return (getTextureFile(null, url)).exists();
+	}
+	
+	public static boolean isTextureDownloaded(String plugin, String url) {
+		return (getTextureFile(plugin, url)).exists();
+	}
+	
+	public static File getTextureFile(String plugin, String url) {
+		String fileName = FileUtil.getFileName(url);
+		if (plugin != null) {
+			File file = FileUtil.findTextureFile(plugin, fileName);
+			if (file != null) {
+				return file;
+			}
+		}
+		return new File(FileUtil.getTextureCacheDirectory(), fileName);
 	}
 	
 	public static Texture getTextureFromPath(String path) {
@@ -70,11 +89,33 @@ public class CustomTextureManager {
 		textures.clear();
 	}
 	
-	public static String getTextureFromUrl(String Url) {
-		if (!isTextureDownloaded(Url)) {
+	public static Texture getTextureFromUrl(String url) {
+		return getTextureFromUrl(null, url);
+	}
+	
+	public static Texture getTextureFromUrl(String plugin, String url) {
+		if (!isTextureDownloaded(plugin, url)) {
 			return null;
 		}
-		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(Url));
+		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(url));
+		try {
+			return getTextureFromPath(download.getCanonicalPath());
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static String getTexturePathFromUrl(String url) {
+		return getTexturePathFromUrl(null, url);
+	}
+	
+	public static String getTexturePathFromUrl(String plugin, String url) {
+		if (!isTextureDownloaded(plugin, url)) {
+			return null;
+		}
+		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(url));
 		try {
 			return download.getCanonicalPath();
 		}

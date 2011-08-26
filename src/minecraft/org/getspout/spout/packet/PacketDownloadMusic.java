@@ -79,7 +79,10 @@ public class PacketDownloadMusic implements SpoutPacket{
 			System.out.println("Rejecting download of invalid audio: " + fileName);
 			return;
 		}
-		File song = new File(directory, fileName);
+		File song = FileUtil.findAudioFile(plugin, fileName);
+		if (song == null) {
+			song = new File(directory, fileName);
+		}
 		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
 		Download download = new Download(fileName, directory, url, action);
 		action.setNotify(!download.isDownloaded() && notify);

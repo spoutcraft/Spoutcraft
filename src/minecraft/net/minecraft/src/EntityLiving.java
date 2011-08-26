@@ -127,10 +127,10 @@ public abstract class EntityLiving extends Entity
 	{
 		//Spout Start
 		String custom = getCustomTextureUrl(getTextureToRender());
-		if(custom == null || CustomTextureManager.getTextureFromUrl(custom) == null){
+		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){
 			return texture;
 		} else {
-			return CustomTextureManager.getTextureFromUrl(custom);
+			return CustomTextureManager.getTexturePathFromUrl(custom);
 		}
 		//Spout End
 	}
@@ -143,7 +143,7 @@ public abstract class EntityLiving extends Entity
 	public String getCustomTexture(byte id){
 		if(getCustomTextureUrl(id) != null)
 		{
-			return CustomTextureManager.getTextureFromUrl(getCustomTextureUrl(id));
+			return CustomTextureManager.getTexturePathFromUrl(getCustomTextureUrl(id));
 		}
 		return null;
 	}
