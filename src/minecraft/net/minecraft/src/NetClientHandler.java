@@ -9,6 +9,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Random;
+
+import org.getspout.spout.ReconnectManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
@@ -355,12 +358,13 @@ public class NetClientHandler extends NetHandler {
 		
 		//Spout Start
 		boolean display = false;
-		if (!predownload) {
+		if (!predownload && !ReconnectManager.serverTeleport) {
 			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
 			predownload = true;
 		}
 		else {
 			display = true;
+			ReconnectManager.serverTeleport = false;
 		}
 		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
 			cached = var1;

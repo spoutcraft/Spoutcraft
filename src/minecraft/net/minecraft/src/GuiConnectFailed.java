@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.gui.server.GuiFavorites;
 
 import net.minecraft.src.GuiButton;
@@ -8,8 +9,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
 //Spout Start
-import net.minecraft.src.ReconnectManager;
-//Spout End
 
 public class GuiConnectFailed extends GuiScreen {
 

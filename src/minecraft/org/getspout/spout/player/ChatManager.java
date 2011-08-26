@@ -263,10 +263,8 @@ public class ChatManager {
 					last = ChatColor.getByCode(number);
 				}
 			}
-			if (display && total > 1 && total % 99 == 0) {
-				text += ChatColor.RED + " [LINE BREAK] " + (last != null ? last.toString() : ChatColor.WHITE);
-			}
-			if ((display && font.getStringWidth(text + ch) > (width - 8))  || newline || (!display && total > 1 && total % 99 == 0)) {
+
+			if (font.getStringWidth(text + ch) > (width - 8) || newline || (!display && total > 1 && total % 99 == 0)) {
 				lines.add(text);
 				line = 0;
 				text = "";

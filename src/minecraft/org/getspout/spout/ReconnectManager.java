@@ -1,15 +1,15 @@
-package net.minecraft.src;
+package org.getspout.spout;
 
-import java.util.List;
 import java.lang.String;
-import net.minecraft.client.Minecraft;
+
+import net.minecraft.src.GuiConnecting;
 
 public class ReconnectManager {
-  static String hostName = null;
-  static int portNum = -1;
+	static String hostName = null;
+	static int portNum = -1;
+	public static boolean serverTeleport = false;
 
-  static public void detectKick(String infoString, String reason,
-		Object[] objects) {
+	public static void detectKick(String infoString, String reason, Object[] objects) {
 	 portNum = -1;
 
 	 if (infoString == null || reason == null || objects == null) {
@@ -24,28 +24,29 @@ public class ReconnectManager {
 	 if (infoString.contains("disconnect.disconnected")) {
 		if (reason.indexOf("[Serverport]") == 0
 			 || reason.indexOf("[Redirect]") == 0) {
-		  String[] split = reason.split(":");
-		  if (split.length == 3) {
+			String[] split = reason.split(":");
+			if (split.length == 3) {
 			 hostName = split[1].trim();
 			 try {
 				portNum = Integer.parseInt(split[2].trim());
 			 } catch (Exception e) {
 				portNum = -1;
 			 }
-		  } else if (split.length == 2) {
+			} else if (split.length == 2) {
 			 hostName = split[1].trim();
 			 portNum = 25565;
-		  }
+			}
 		}
 	 }
 
-  }
+	}
 
-  static public void teleport(net.minecraft.client.Minecraft mc) {
+	public static void teleport(net.minecraft.client.Minecraft mc) {
 	 if (portNum != -1 && hostName != null) {
 		mc.displayGuiScreen(new GuiConnecting(mc, hostName, portNum));
+		serverTeleport = true;
 	 }
-  }
+	}
 
 }
 
