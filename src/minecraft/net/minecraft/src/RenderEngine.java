@@ -303,7 +303,12 @@ public class RenderEngine {
 					int var14 = var4.getInt((var10 * 2 + 1 + (var11 * 2 + 1) * var6) * 4);
 					int var15 = var4.getInt((var10 * 2 + 0 + (var11 * 2 + 1) * var6) * 4);
 					int var16 = this.weightedAverageColor(var12, var13, var14, var15);
-					var9.putInt((var10 + var11 * var7) * 4, var16);
+					try {
+						var9.putInt((var10 + var11 * var7) * 4, var16);
+					}
+					catch (Exception e) {
+						System.out.println("Error building mipmaps, loop: " + var5 + " byte buffer size: " + var9.capacity());
+					}
 				}
 			}
 
