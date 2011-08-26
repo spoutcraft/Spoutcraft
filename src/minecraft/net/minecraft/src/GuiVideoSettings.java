@@ -43,7 +43,13 @@ public class GuiVideoSettings extends GuiScreen {
 				this.controlList.add(new GuiSlider(option.returnEnumOrdinal(), var7, var8, option, this.guiGameSettings.getKeyBinding(option), this.guiGameSettings.getOptionFloatValue(option)));
 			}
 			
-			((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
+			if (((GuiButton)controlList.get(controlList.size() - 1)).enabled) {
+				((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
+			}
+			if (((GuiButton)controlList.get(controlList.size() - 1)).enabled) {
+				((GuiButton)controlList.get(controlList.size() - 1)).enabled = Config.canUseMipmaps() || !option.getEnumString().toLowerCase().contains("mipmap");
+			}
+			
 
 			++var2;
 		}
@@ -128,15 +134,15 @@ public class GuiVideoSettings extends GuiScreen {
 				GuiButton var9 = this.getSelectedButton(var1, var2);
 				if(var9 != null) {
 					String var10 = this.getButtonName(var9.displayString);
-					String[] var11 = this.getTooltipLines(var10);
-					if(var11 == null) {
+					String[] tooltips = this.getTooltipLines(var10);
+					if(tooltips == null) {
 						return;
 					}
 
 					this.drawGradientRect(var5, var6, var7, var8, -536870912, -536870912);
 
-					for(int var12 = 0; var12 < var11.length; ++var12) {
-						String var13 = var11[var12];
+					for(int var12 = 0; var12 < tooltips.length; ++var12) {
+						String var13 = tooltips[var12];
 						this.fontRenderer.drawStringWithShadow(var13, var5 + 5, var6 + 5 + var12 * 11, 14540253);
 					}
 				}
@@ -149,8 +155,70 @@ public class GuiVideoSettings extends GuiScreen {
 		}
 	}
 
-	private String[] getTooltipLines(String var1) {
-		return var1.equals("Graphics")?new String[]{"Visual quality", "  Fast  - lower quality, faster", "  Fancy - higher quality, slower", "Changes the appearance of clouds, leaves, water,", "shadows and grass sides."}:(var1.equals("Render Distance")?new String[]{"Visible distance", "  Far - 256m (slower)", "  Normal - 128m", "  Short - 64m (faster)", "  Tiny - 32m (fastest)"}:(var1.equals("Smooth Lighting")?new String[]{"Smooth lighting", "  OFF - no smooth lighting (faster)", "  1% - light smooth lighting (slower)", "  100% - dark smooth lighting (slower)"}:(var1.equals("Performance")?new String[]{"FPS Limit", "  Max FPS - no limit (fastest)", "  Balanced - limit 120 FPS (slower)", "  Power saver - limit 40 FPS (slowest)", "  VSync - limit to monitor framerate (60, 30, 20)", "Balanced and Power saver decrease the FPS even if", "the limit value is not reached."}:(var1.equals("3D Anaglyph")?new String[]{"3D mode used with red-cyan 3D glasses."}:(var1.equals("View Bobbing")?new String[]{"More realistic movement.", "When using mipmaps set it to OFF for best results."}:(var1.equals("GUI Scale")?new String[]{"GUI Scale", "Smaller GUI might be faster"}:(var1.equals("Advanced OpenGL")?new String[]{"Detect and render only visible geometry", "  OFF - all geometry is rendered (slower)", "  Fast - only visible geometry is rendered (fastest)", "  Fancy - conservative, avoids visual artifacts (faster)", "The option is available only if it is supported by the ", "graphic card."}:(var1.equals("Fog")?new String[]{"Fog type", "  Fast - faster fog", "  Fancy - slower fog, looks better", "The fancy fog is available only if it is supported by the ", "graphic card."}:(var1.equals("Fog Start")?new String[]{"Fog start", "  0.2 - the fog starts near the player", "  0.8 - the fog starts far from the player", "This option usually does not affect the performance."}:(var1.equals("Mipmap Level")?new String[]{"Visual effect which makes distant objects look better", "by smoothing the texture details", "  OFF - no smoothing", "  1 - minimum smoothing", "  4 - maximum smoothing", "This option usually does not affect the performance."}:(var1.equals("Mipmap Type")?new String[]{"Visual effect which makes distant objects look better", "by smoothing the texture details", "  Nearest - rough smoothing", "  Linear - fine smoothing", "This option usually does not affect the performance."}:(var1.equals("Load Far")?new String[]{"Loads the world chunks at distance Far.", "Switching the render distance does not cause all chunks ", "to be loaded again.", "  OFF - world chunks loaded up to render distance", "  ON - world chunks loaded at distance Far, allows", "		 fast render distance switching"}:(var1.equals("Preloaded Chunks")?new String[]{"Defines an area in which no chunks will be loaded", "  OFF - after 5m new chunks will be loaded", "  2 - after 32m  new chunks will be loaded", "  8 - after 128m new chunks will be loaded", "Higher values need more time to load all the chunks"}:(var1.equals("Smooth FPS")?new String[]{"Stabilizes FPS by flushing the graphic driver buffers", "  OFF - no stabilization, FPS may fluctuate", "  ON - FPS stabilization", "This option is graphic driver dependant and its effect", "is not always visible"}:(var1.equals("Brightness")?new String[]{"Increases the brightness of darker objects", "  OFF - standard brightness", "  100% - maximum brightness for darker objects", "This options does not change the brightness of ", "fully black objects"}:null)))))))))))))));
+	private String[] getTooltipLines(String option) {
+		final String[] cheating = {"This option has been disabled by the server because", " it is considered cheating.", " ", "Contact your admin if you would like it enabled"};
+		final String[] mipmap = {"This option has been disabled because your texture pack", " does not support mipmaps.", " ", "Full mipmap support for all texture packs is planned"};
+		if (option.equals("Graphics")) {
+			return new String[]{"Visual quality", "  Fast  - lower quality, faster", "  Fancy - higher quality, slower", "Changes the appearance of clouds, leaves, water,", "shadows and grass sides."};
+		}
+		else if (option.equals("Render Distance")) {
+			return new String[]{"Visible distance", "  Far - 256m (slower)", "  Normal - 128m", "  Short - 64m (faster)", "  Tiny - 32m (fastest)"};
+		}
+		else if (option.equals("Smooth Lighting")) {
+			return new String[]{"Smooth lighting", "  OFF - no smooth lighting (faster)", "  1% - light smooth lighting (slower)", "  100% - dark smooth lighting (slower)"};
+		}
+		else if (option.equals("Performance")) {
+			return new String[]{"FPS Limit", "  Max FPS - no limit (fastest)", "  Balanced - limit 120 FPS (slower)", "  Power saver - limit 40 FPS (slowest)", "  VSync - limit to monitor framerate (60, 30, 20)", "Balanced and Power saver decrease the FPS even if", "the limit value is not reached."};
+		}
+		else if (option.equals("3D Anaglyph")) {
+			return new String[]{"3D mode used with red-cyan 3D glasses."};
+		}
+		else if (option.equals("View Bobbing")) {
+			return new String[]{"More realistic movement.", "When using mipmaps set it to OFF for best results."};
+		}
+		else if (option.equals("GUI Scale")) {
+			return new String[]{"GUI Scale", "Smaller GUI might be faster"};
+		}
+		else if (option.equals("Advanced OpenGL")) {
+			return new String[]{"Detect and render only visible geometry", "  OFF - all geometry is rendered (slower)", "  Fast - only visible geometry is rendered (fastest)", "  Fancy - conservative, avoids visual artifacts (faster)", "The option is available only if it is supported by the ", "graphic card."};
+		}
+		else if (option.equals("Fog")) {
+			return new String[]{"Fog type", "  Fast - faster fog", "  Fancy - slower fog, looks better", "The fancy fog is available only if it is supported by the ", "graphic card."};
+		}
+		else if (option.equals("Fog Start")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Fog start", "  0.2 - the fog starts near the player", "  0.8 - the fog starts far from the player", "This option usually does not affect the performance."};
+		}
+		else if (option.equals("Mipmap Level")) {
+			if (!Config.canUseMipmaps()) {
+				return mipmap;
+			}
+			return new String[]{"Visual effect which makes distant objects look better", "by smoothing the texture details", "  OFF - no smoothing", "  1 - minimum smoothing", "  4 - maximum smoothing", "This option usually does not affect the performance."};
+		}
+		else if (option.equals("Mipmap Type")) {
+			if (!Config.canUseMipmaps()) {
+				return mipmap;
+			}
+			return new String[]{"Visual effect which makes distant objects look better", "by smoothing the texture details", "  Nearest - rough smoothing", "  Linear - fine smoothing", "This option usually does not affect the performance."};
+		}
+		else if (option.equals("Load Far")) {
+			return new String[]{"Loads the world chunks at distance Far.", "Switching the render distance does not cause all chunks ", "to be loaded again.", "  OFF - world chunks loaded up to render distance", "  ON - world chunks loaded at distance Far, allows", "		 fast render distance switching"};
+		}
+		else if (option.equals("Preloaded Chunks")) {
+			return new String[]{"Defines an area in which no chunks will be loaded", "  OFF - after 5m new chunks will be loaded", "  2 - after 32m  new chunks will be loaded", "  8 - after 128m new chunks will be loaded", "Higher values need more time to load all the chunks"};
+		}
+		else if (option.equals("Smooth FPS")) {
+			return new String[]{"Stabilizes FPS by flushing the graphic driver buffers", "  OFF - no stabilization, FPS may fluctuate", "  ON - FPS stabilization", "This option is graphic driver dependant and its effect", "is not always visible"};
+		}
+		else if (option.equals("Brightness")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Increases the brightness of darker objects", "  OFF - standard brightness", "  100% - maximum brightness for darker objects", "This options does not change the brightness of ", "fully black objects"};
+		}
+		return null;
 	}
 
 	private String getButtonName(String var1) {
