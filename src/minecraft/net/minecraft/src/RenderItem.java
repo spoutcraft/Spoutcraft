@@ -86,18 +86,17 @@ public class RenderItem extends Render {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var14 = var10.getIconIndex();
 			//Spout Custom Items Start
-            String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
-            Boolean bCustomTexture = false;
-            if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-                bCustomTexture = true;
-                this.loadTexture(CustomTextureManager.getTextureFromUrl(customTexture));
-            }
-            else if(var10.itemID < 256) {
+			String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
+			Boolean bCustomTexture = false;
+			if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+				bCustomTexture = true;
+				this.loadTexture(CustomTextureManager.getTextureFromUrl(customTexture));
+			} else if (var10.itemID < 256) {
 				this.loadTexture("/terrain.png");
 			} else {
 				this.loadTexture("/gui/items.png");
 			}
-            //Spout Custom Items End
+			// Spout Custom Items End
 
 			Tessellator var15 = Tessellator.instance;
 			var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
@@ -133,17 +132,16 @@ public class RenderItem extends Render {
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
 				//Spout Custom Items Start
-				if(bCustomTexture == true){
-				    var15.addVertexWithUV((double)(0.0F - var21), (double)(0.0F - var22), 0.0D, (double)0, (double)1);
-                    var15.addVertexWithUV((double)(var20 - var21), (double)(0.0F - var22), 0.0D, (double)1, (double)1);
-                    var15.addVertexWithUV((double)(var20 - var21), (double)(1.0F - var22), 0.0D, (double)1, (double)0);
-                    var15.addVertexWithUV((double)(0.0F - var21), (double)(1.0F - var22), 0.0D, (double)0, (double)0);
-				}
-				else {
-	                var15.addVertexWithUV((double)(0.0F - var21), (double)(0.0F - var22), 0.0D, (double)var16, (double)var19);
-	                var15.addVertexWithUV((double)(var20 - var21), (double)(0.0F - var22), 0.0D, (double)var17, (double)var19);
-	                var15.addVertexWithUV((double)(var20 - var21), (double)(1.0F - var22), 0.0D, (double)var17, (double)var18);
-	                var15.addVertexWithUV((double)(0.0F - var21), (double)(1.0F - var22), 0.0D, (double)var16, (double)var18);
+				if (bCustomTexture == true) {
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 1);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 1);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) 1, (double) 0);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) 0, (double) 0);
+				} else {
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) var16, (double) var19);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) var17, (double) var19);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) var17, (double) var18);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) var16, (double) var18);
 				}
 				//Spout Custom Items End	            
 				var15.draw();
@@ -158,7 +156,7 @@ public class RenderItem extends Render {
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
 		float var11;
 		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
-		    var2.bindTexture(var2.getTexture("/terrain.png"));
+			var2.bindTexture(var2.getTexture("/terrain.png"));
 			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F);
@@ -182,18 +180,18 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-            //Spout Custom Items Start
-            String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
-            Boolean bCustomTexture = false; 
-            if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-                var2.bindTexture(var2.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
-                bCustomTexture = true;
-            } else if(var3 < 256) {
+			// Spout Custom Items Start
+			String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
+			Boolean bCustomTexture = false;
+			if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+				var2.bindTexture(var2.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
+				bCustomTexture = true;
+			} else if (var3 < 256) {
 				var2.bindTexture(var2.getTexture("/terrain.png"));
 			} else {
 				var2.bindTexture(var2.getTexture("/gui/items.png"));
 			}
-            //Spout Custom Items End
+			// Spout Custom Items End
 
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
@@ -205,19 +203,18 @@ public class RenderItem extends Render {
 				GL11.glColor4f(var9, var10, var11, 1.0F);
 			}
 
-            //Spout Custom Items Start
-			if(bCustomTexture == true) {
-			     Tessellator tes = Tessellator.instance;
-			     tes.startDrawingQuads();
-		         tes.addVertexWithUV((double)(var6 + 0), (double)(var7 + 16), (double)0, 0, 1);
-		         tes.addVertexWithUV((double)(var6 + 16), (double)(var7 + 16), (double)0, 1, 1);
-		         tes.addVertexWithUV((double)(var6 + 16), (double)(var7 + 0), (double)0, 1, 0);
-		         tes.addVertexWithUV((double)(var6 + 0), (double)(var7 + 0), (double)0, 0, 0);
-		         tes.draw();
-			}
-			else
-			    this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
-            //Spout Custom Items End
+			// Spout Custom Items Start
+			if (bCustomTexture == true) {
+				Tessellator tes = Tessellator.instance;
+				tes.startDrawingQuads();
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 1);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 16), (double) 0, 1, 1);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 0), (double) 0, 1, 0);
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 0), (double) 0, 0, 0);
+				tes.draw();
+			} else
+				this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+			// Spout Custom Items End
 
 			GL11.glEnable(2896 /*GL_LIGHTING*/);
 		}

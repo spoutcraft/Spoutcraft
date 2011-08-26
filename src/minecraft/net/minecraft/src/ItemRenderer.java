@@ -45,13 +45,13 @@ public class ItemRenderer {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
 		} else {
-   	        //Spout Custom Items Start
-	        String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
-	        if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-	            GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
-	        }
-	        else if(var2.itemID < 256) {
-	        //Spout Custom Items End
+			//Spout Custom Items Start
+			String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
+			if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
+			}
+			else if(var2.itemID < 256) {
+			//Spout Custom Items End
 				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 			} else {
 				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
@@ -66,13 +66,13 @@ public class ItemRenderer {
 			float var8 = ((float)(var4 / 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
 			//Spout HD End
 			//Spout Custom Items Start
-            if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-                var5 = 0;
-                var6 = 1;
-                var7 = 0;
-                var8 = 1;
-            }
-            //Spout Custom Items End
+			if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
+				var5 = 0;
+				var6 = 1;
+				var7 = 0;
+				var8 = 1;
+			}
+			//Spout Custom Items End
 			float var9 = 1.0F;
 			float var10 = 0.0F;
 			float var11 = 0.3F;

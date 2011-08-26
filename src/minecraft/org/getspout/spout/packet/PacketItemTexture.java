@@ -26,7 +26,7 @@ import org.getspout.spout.inventory.ItemManager;
 public class PacketItemTexture implements SpoutPacket {
 	protected String texture = "";
 	private int id;
-    private short data;
+	private short data;
 	@Override
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(texture) + 6;
@@ -48,10 +48,10 @@ public class PacketItemTexture implements SpoutPacket {
 
 	@Override
 	public void run(int PlayerId) {
-	    ItemManager manager = SpoutClient.getInstance().getItemManager();
-	    if(texture.equals("[reset]"))
-    			texture = null;
-    	manager.setItemTexture(id,data,texture);
+		ItemManager manager = SpoutClient.getInstance().getItemManager();
+		if (texture.equals("[reset]"))
+			texture = null;
+		manager.setItemTexture(id, data, texture);
 	}
 
 	@Override
