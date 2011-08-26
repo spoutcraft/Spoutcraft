@@ -68,7 +68,7 @@ public class FileUtil {
 	
 	public static File findGeneralFile(String plugin, String fileName) {
 		File directory = new File(getCacheDirectory(), plugin);
-		if (directory.exists()) {
+		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
@@ -86,7 +86,7 @@ public class FileUtil {
 			return success;
 		}
 		File directory = new File(getAudioCacheDirectory(), plugin);
-		if (directory.exists()) {
+		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
@@ -104,7 +104,7 @@ public class FileUtil {
 			return success;
 		}
 		File directory = new File(getTextureCacheDirectory(), plugin);
-		if (directory.exists()) {
+		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
