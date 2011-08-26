@@ -96,17 +96,19 @@ public class Config {
 
 	public static boolean isUseMipmaps() {
 		int var0 = getMipmapLevel();
-		return false; //var0 > 0; //Temporarily removed
+		return var0 > 0; 
+	}
+	
+	public static boolean canUseMipmaps() {
+		return TileSize.int_size <= 16;
 	}
 
 	public static int getMipmapLevel() {
-		return 0;
-		//return gameSettings == null || TileSize.int_size > 16 ?DEF_MIPMAP_LEVEL.intValue():gameSettings.ofMipmapLevel; //Temporarily removed
+		return gameSettings == null || !canUseMipmaps() ?DEF_MIPMAP_LEVEL.intValue():gameSettings.ofMipmapLevel; //Temporarily removed
 	}
 
 	public static int getMipmapType() {
-		return Integer.valueOf(9984 /*GL_NEAREST_MIPMAP_NEAREST*/);
-		//return gameSettings == null?DEF_MIPMAP_TYPE.intValue():(gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
+		return gameSettings == null?DEF_MIPMAP_TYPE.intValue():(gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
 	}
 
 	public static boolean isUseAlphaFunc() {

@@ -111,8 +111,78 @@ public class GuiDetailSettingsOF extends GuiScreen {
 		}
 	}
 
-	private String[] getTooltipLines(String var1) {
-		return var1.equals("Clouds")?new String[]{"Clouds", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "  OFF - no clouds, fastest", "Fast clouds are rendered 2D.", "Fancy clouds are rendered 3D."}:(var1.equals("Cloud Height")?new String[]{"Cloud Height", "  OFF - default height", "  100% - above world height limit"}:(var1.equals("Trees")?new String[]{"Trees", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "Fast trees have opaque leaves.", "Fancy trees have transparent leaves."}:(var1.equals("Grass")?new String[]{"Grass", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "Fast grass uses default side texture.", "Fancy grass uses biome side texture."}:(var1.equals("Water")?new String[]{"Water", "  Default - as set by setting Graphics", "  Fast  - lower quality, faster", "  Fancy - higher quality, slower", "Fast water (1 pass) has some visual artifacts", "Fancy water (2 pass) has no visual artifacts"}:(var1.equals("Rain & Snow")?new String[]{"Rain & Snow", "  Default - as set by setting Graphics", "  Fast  - light rain/snow, faster", "  Fancy - heavy rain/snow, slower", "  OFF - no rain/snow, fastest", "When rain is OFF the splashes and rain sounds", "are still active."}:(var1.equals("Sky")?new String[]{"Sky", "  ON - sky is visible, slower", "  OFF  - sky is not visible, faster", "When sky is OFF the moon and sun are still visible."}:(var1.equals("Stars")?new String[]{"Stars", "  ON - stars are visible, slower", "  OFF  - stars are not visible, faster"}:(var1.equals("Better Grass")?new String[]{"Better Grass", "  OFF - default side grass texture, fastest", "  Fast - full side grass texture, slower", "  Fancy - dynamic side grass texture, slowest"}:(var1.equals("Weather")?new String[]{"Weather", "  ON - weather is active, slower", "  OFF  - weather is not active, faster", "The weather controls rain, snow and thunderstorms."}:(var1.equals("Autosave")?new String[]{"Autosave interval", "Default autosave interval (2s) is NOT RECOMMENDED.", "Autosave causes the famous Lag Spike of Death."}:(var1.equals("Fast Debug Info")?new String[]{"Fast Debug Info", " OFF - default debug info screen, slower", " ON - debug info screen without lagometer, faster", "Removes the lagometer from the debug screen (F3)."}:(var1.equals("Chunk Updates")?new String[]{"Chunk updates per frame", " 1 - (default) slower world loading, higher FPS", " 3 - faster world loading, lower FPS", " 5 - fastest world loading, lowest FPS"}:(var1.equals("Dynamic Updates")?new String[]{"Chunk updates per frame", " OFF - (default) standard chunk updates per frame", " ON - more updates while the player is standing still", "Dynamic updates force more chunk updates while", "the player is standing still to load the world faster."}:(var1.equals("Far View")?new String[]{"Far View", " OFF - (default) standard view distance", " ON - 3x view distance", "Far View is very resource demanding!", "3x view distance => 9x chunks to be loaded => FPS / 9", "Standard view distances: 32, 64, 128, 256", "Far view distances: 96, 192, 384, 512"}:(var1.equals("Time")?new String[]{"Time", " Default - normal day/night cycles", " Day Only - day only", " Night Only - night only"}:null)))))))))))))));
+	private String[] getTooltipLines(String option) {
+		final String[] cheating = {"This option has been disabled by the server because", " it is considered cheating.", " ", "Contact your admin if you would like it enabled"};
+		if (option.equals("Clouds")) {
+			return new String[]{"Clouds", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "  OFF - no clouds, fastest", "Fast clouds are rendered 2D.", "Fancy clouds are rendered 3D."};
+		}
+		else if (option.equals("Cloud Height")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Cloud Height", "  OFF - default height", "  100% - above world height limit"};
+		}
+		else if (option.equals("Trees")) {
+			return new String[]{"Trees", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "Fast trees have opaque leaves.", "Fancy trees have transparent leaves."};
+		}
+		else if (option.equals("Grass")) {
+			return new String[]{"Grass", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "Fast grass uses default side texture.", "Fancy grass uses biome side texture."};
+		}
+		else if (option.equals("Water")) {
+			return new String[]{"Water", "  Default - as set by setting Graphics", "  Fast  - lower quality, faster", "  Fancy - higher quality, slower", "Fast water (1 pass) has some visual artifacts", "Fancy water (2 pass) has no visual artifacts"};
+		}
+		else if (option.equals("Rain & Snow")) {
+			return new String[]{"Rain & Snow", "  Default - as set by setting Graphics", "  Fast  - light rain/snow, faster", "  Fancy - heavy rain/snow, slower", "  OFF - no rain/snow, fastest", "When rain is OFF the splashes and rain sounds", "are still active."};
+		}
+		else if (option.equals("Sky")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Sky", "  ON - sky is visible, slower", "  OFF  - sky is not visible, faster", "When sky is OFF the moon and sun are still visible."};
+		}
+		else if (option.equals("Stars")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Stars", "  ON - stars are visible, slower", "  OFF  - stars are not visible, faster"};
+		}
+		else if (option.equals("Better Grass")) {
+			return new String[]{"Better Grass", "  OFF - default side grass texture, fastest", "  Fast - full side grass texture, slower", "  Fancy - dynamic side grass texture, slowest"};
+		}
+		else if (option.equals("Weather")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Weather", "  ON - weather is active, slower", "  OFF  - weather is not active, faster", "The weather controls rain, snow and thunderstorms."};
+		}
+		else if (option.equals("Autosave")) {
+			return new String[]{"Autosave interval", "Default autosave interval (2s) is NOT RECOMMENDED.", "Autosave causes the famous Lag Spike of Death."};
+		}
+		else if (option.equals("Fast Debug Info")) {
+			return new String[]{"Fast Debug Info", " OFF - default debug info screen, slower", " ON - debug info screen without lagometer, faster", "Removes the lagometer from the debug screen (F3)."};
+		}
+		else if (option.equals("Chunk Updates")) {
+			return new String[]{"Chunk updates per frame", " 1 - (default) slower world loading, higher FPS", " 3 - faster world loading, lower FPS", " 5 - fastest world loading, lowest FPS"};
+		}
+		else if (option.equals("Dynamic Updates")) {
+			return new String[]{"Chunk updates per frame", " OFF - (default) standard chunk updates per frame", " ON - more updates while the player is standing still", "Dynamic updates force more chunk updates while", "the player is standing still to load the world faster."};
+		}
+		else if (option.equals("Far View")) {
+			return new String[]{"Far View", " OFF - (default) standard view distance", " ON - 3x view distance", "Far View is very resource demanding!", "3x view distance => 9x chunks to be loaded => FPS / 9", "Standard view distances: 32, 64, 128, 256", "Far view distances: 96, 192, 384, 512"};
+		}
+		else if (option.equals("Clear Water")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Clear Water", " OFF - (default) standard water view", " ON - can see deeper through water, no longer obscures vision", "Clear water is very resource demanding!",};
+		}
+		else if (option.equals("Time")) {
+			if (!SpoutClient.getInstance().isCheatMode()) {
+				return cheating;
+			}
+			return new String[]{"Time", " Default - normal day/night cycles", " Day Only - day only", " Night Only - night only"};
+		}
+		return null;
 	}
 
 	private String getButtonName(String var1) {
