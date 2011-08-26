@@ -354,9 +354,13 @@ public class NetClientHandler extends NetHandler {
 		var1.stance = var2.posY;
 		
 		//Spout Start
+		boolean display = false;
 		if (!predownload) {
 			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
 			predownload = true;
+		}
+		else {
+			display = true;
 		}
 		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
 			cached = var1;
@@ -370,7 +374,11 @@ public class NetClientHandler extends NetHandler {
 			this.mc.thePlayer.prevPosY = this.mc.thePlayer.posY;
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.field_1210_g = true;
-			//this.mc.displayGuiScreen((GuiScreen) null); Spout
+			//Spout Start
+			if (display) {
+				this.mc.displayGuiScreen((GuiScreen) null);
+			}
+			//Spout End
 		}
 
 	}
