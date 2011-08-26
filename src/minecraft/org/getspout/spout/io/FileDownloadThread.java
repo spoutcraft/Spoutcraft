@@ -21,6 +21,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class FileDownloadThread extends Thread{
 	private static FileDownloadThread instance = null;
@@ -28,6 +29,7 @@ public class FileDownloadThread extends Thread{
 	private final ConcurrentLinkedQueue<Runnable> actions = new ConcurrentLinkedQueue<Runnable>();
 	private final byte[] buffer = new byte[1024*1024];
 	private volatile String activeDownload = null;
+	public static AtomicLong preCacheCompleted = new AtomicLong(0L);
 	
 	protected FileDownloadThread() {
 		super("File Download Thread");

@@ -18,6 +18,7 @@ public class GuiPredownload extends GuiScreen{
 	public CustomScreen queuedScreen = null;
 	private boolean activeDownload = false;
 	private boolean paused = false;
+	private boolean allPacketsReceived = false;
 
 	public GuiPredownload(NetClientHandler handler) {
 		this.netHandler = handler;
@@ -61,8 +62,12 @@ public class GuiPredownload extends GuiScreen{
 			}
 			activeDownload = true;
 		}
+
+		if (FileDownloadThread.preCacheCompleted.get() > System.currentTimeMillis() - 1000) {
+			allPacketsReceived = true;
+		}
 		
-		if (joinCounter == -1) {
+		if (joinCounter == -1 || (allPacketsReceived && !activeDownload)) {
 			this.mc.displayGuiScreen(null);
 			this.mc.displayGuiScreen(queuedScreen);
 			if (netHandler.cached != null) {
