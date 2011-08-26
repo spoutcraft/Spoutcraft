@@ -91,7 +91,7 @@ public class GuiChat extends GuiScreen {
 		}
 		ChatBar chatWidget = SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar();
 		java.util.ArrayList<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text, true);
-		drawRect((int)chatWidget.getActualHeight(), (int)chatWidget.getScreenY() - (lines.size() * 12), (int)chatWidget.getScreenX(), (int)chatWidget.getActualWidth(), 0x80000000);
+		drawRect((int)chatWidget.getScreenX(), (int)(chatWidget.getScreenY() - lines.size() * chatWidget.getHeight()), (int)chatWidget.getScreenX() + (int)chatWidget.getWidth(), (int)chatWidget.getScreenY(), 0x80000000);
 		int size = lines.size();
 		for (int k = 0; k < lines.size(); k++) {
 			String line = lines.get(k);

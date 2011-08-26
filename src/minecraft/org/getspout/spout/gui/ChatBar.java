@@ -28,10 +28,11 @@ public class ChatBar extends GenericWidget implements Widget{
 	protected Color textColor = new Color((short)255, (short)255, (short)255, (short)0);
 	public ChatBar() {
 		super();
-		setX(425);
-		setY(238);
+		setX(2);
+		setY(-2);
 		setWidth(425);
-		setHeight(2);
+		setHeight(12);
+		setAnchor(WidgetAnchor.BOTTOM_LEFT);
 	}
 	
 	public int getNumBytes() {
@@ -61,18 +62,6 @@ public class ChatBar extends GenericWidget implements Widget{
 	@Override
 	public UUID getId() {
 		return new UUID(0, 2);
-	}
-	
-	@Override
-	public double getScreenX() {
-		int diff = (int) (427 - this.getX());
-		return getScreen() != null ? getScreen().getWidth() - diff : this.getX();
-	}
-	
-	@Override
-	public double getScreenY() {
-		int diff = (int) (240 - this.getY());
-		return getScreen() != null ? getScreen().getHeight() - diff : this.getY();
 	}
 	
 	public int getCursorX() {
