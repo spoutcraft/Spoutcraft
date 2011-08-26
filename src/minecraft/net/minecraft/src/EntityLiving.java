@@ -75,6 +75,9 @@ public abstract class EntityLiving extends Entity
 	//Spout Start
 	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
 	private byte textureToRender = 0;
+	public double gravityMod = 1D;
+	public double walkingMod = 1D;
+	public double swimmingMod = 1D;
 	//Spout End
 	
 	public EntityLiving(World world)
@@ -551,10 +554,12 @@ public abstract class EntityLiving extends Entity
 			double d = posY;
 			moveFlying(f, f1, 0.02F);
 			moveEntity(motionX, motionY, motionZ);
-			motionX *= 0.80000001192092896D;
-			motionY *= 0.80000001192092896D;
-			motionZ *= 0.80000001192092896D;
-			motionY -= 0.02D;
+			//Spout start
+			motionX *= 0.80000001192092896D * swimmingMod;
+			motionY *= 0.80000001192092896D * swimmingMod;
+			motionZ *= 0.80000001192092896D * swimmingMod;
+			motionY -= 0.02D * gravityMod;
+			//Spout end
 			if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d, motionZ))
 			{
 				motionY = 0.30000001192092896D;
@@ -586,7 +591,9 @@ public abstract class EntityLiving extends Entity
 				}
 			}
 			float f3 = 0.1627714F / (f2 * f2 * f2);
-			moveFlying(f, f1, onGround ? 0.1F * f3 : 0.02F);
+			//Spout start
+			moveFlying(f, f1, onGround ? (float)(0.1F * f3 * walkingMod) : 0.02F);
+			//Spout end
 			f2 = 0.91F;
 			if(onGround)
 			{
@@ -631,7 +638,7 @@ public abstract class EntityLiving extends Entity
 			{
 				motionY = 0.20000000000000001D;
 			}
-			motionY -= 0.080000000000000002D;
+			motionY -= 0.080000000000000002D * gravityMod; //Spout
 			motionY *= 0.98000001907348633D;
 			motionX *= f2;
 			motionZ *= f2;
