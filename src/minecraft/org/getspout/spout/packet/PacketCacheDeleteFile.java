@@ -2,7 +2,10 @@ package org.getspout.spout.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
+
+import org.getspout.spout.io.FileUtil;
 
 public class PacketCacheDeleteFile implements SpoutPacket {
 	private String plugin;
@@ -35,7 +38,14 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		
+		File file = FileUtil.findAudioFile(plugin, fileName);
+		if (file != null) {
+			file.delete();
+		}
+		file = FileUtil.findTextureFile(plugin, fileName);
+		if (file != null) {
+			file.delete();
+		}
 	}
 
 	@Override

@@ -105,23 +105,23 @@ public class GuiIngame extends Gui {
 			//Bubble Bar Begin
 			mainScreen.getBubbleBar().render();
 			//Bubble Bar End
+			
+			GL11.glDisable(3042 /*GL_BLEND*/);
+			GL11.glEnable('\u803a');
+			GL11.glPushMatrix();
+			GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
+			RenderHelper.enableStandardItemLighting();
+			GL11.glPopMatrix();
+
+			for(var15 = 0; var15 < 9; ++var15) {
+				int x = screenWidth / 2 - 90 + var15 * 20 + 2;
+				var17 = screenHeight - 16 - 3;
+				this.renderInventorySlot(var15, x, var17, var1);
+			}
+			RenderHelper.disableStandardItemLighting();
+			GL11.glDisable('\u803a');
 		}
-
-		GL11.glDisable(3042 /*GL_BLEND*/);
-		GL11.glEnable('\u803a');
-		GL11.glPushMatrix();
-		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-		RenderHelper.enableStandardItemLighting();
-		GL11.glPopMatrix();
-
-		for(var15 = 0; var15 < 9; ++var15) {
-			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
-			var17 = screenHeight - 16 - 3;
-			this.renderInventorySlot(var15, x, var17, var1);
-		}
-
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable('\u803a');
+		
 		if(this.mc.thePlayer.func_22060_M() > 0) {
 			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
@@ -214,7 +214,7 @@ public class GuiIngame extends Gui {
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
-		if (chatTextWidget.isVisible()) {
+		if (this.mc.playerController.shouldDrawHUD() && chatTextWidget.isVisible()) {
 			int viewedLine = 0;
 			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {

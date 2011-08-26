@@ -433,7 +433,7 @@ public class EntityRenderer {
 			this.prevFrameTime = System.currentTimeMillis();
 		}
 
-		if(this.mc.inGameHasFocus) {
+		if(this.mc.inGameHasFocus || this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) { //Spout
 			this.mc.mouseHelper.mouseXYChange();
 			float var14 = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
 			float var4 = var14 * var14 * var14 * 8.0F;

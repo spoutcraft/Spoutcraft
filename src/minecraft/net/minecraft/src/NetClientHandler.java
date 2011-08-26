@@ -328,16 +328,6 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleFlying(Packet10Flying var1) {
-		//Spout Start
-		if (!predownload) {
-			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
-			predownload = true;
-		}
-		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
-			cached = var1;
-			return;
-		}
-		//Spout End
 		EntityPlayerSP var2 = this.mc.thePlayer;
 		double var3 = var2.posX;
 		double var5 = var2.posY;
@@ -362,6 +352,18 @@ public class NetClientHandler extends NetHandler {
 		var1.yPosition = var2.boundingBox.minY;
 		var1.zPosition = var2.posZ;
 		var1.stance = var2.posY;
+		
+		//Spout Start
+		if (!predownload) {
+			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
+			predownload = true;
+		}
+		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
+			cached = var1;
+			return;
+		}
+		//Spout End
+		
 		this.netManager.addToSendQueue(var1);
 		if (!this.field_1210_g) {
 			this.mc.thePlayer.prevPosX = this.mc.thePlayer.posX;
