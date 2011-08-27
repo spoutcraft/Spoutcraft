@@ -174,6 +174,14 @@ public class SpoutClient implements Client {
 		return null;
 	}
 	
+	public Entity getEntityFromId(int id) {
+		if (getHandle().thePlayer.entityId == id) {
+			return getHandle().thePlayer;
+		}
+		WorldClient world = (WorldClient)getHandle().theWorld;
+		return world.func_709_b(id);
+	}
+	
 	public static void setReloadPacket(SpoutPacket packet) {
 		reloadPacket = packet;
 		if (packet != null) {

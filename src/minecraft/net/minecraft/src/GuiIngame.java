@@ -140,7 +140,7 @@ public class GuiIngame extends Gui {
 		mainScreen.render();
 		
 		String var23;
-		if(this.mc.gameSettings.showDebugInfo) {
+		if(this.mc.playerController.shouldDrawHUD() && this.mc.gameSettings.showDebugInfo) {
 			GL11.glPushMatrix();
 			if(Minecraft.hasPaidCheckTime > 0L) {
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
