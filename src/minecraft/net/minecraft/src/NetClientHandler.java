@@ -359,13 +359,12 @@ public class NetClientHandler extends NetHandler {
 		
 		//Spout Start
 		boolean display = false;
-		if (SpoutClient.getInstance().isSpoutEnabled() && !predownload && !ReconnectManager.serverTeleport) {
+		if (SpoutClient.getInstance().isSpoutEnabled() && !predownload) {
 			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
 			predownload = true;
 		}
 		else {
 			display = true;
-			ReconnectManager.serverTeleport = false;
 		}
 		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
 			cached = var1;
