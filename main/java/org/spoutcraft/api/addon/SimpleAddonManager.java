@@ -3,11 +3,15 @@ package org.spoutcraft.api.addon;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 
 import org.spoutcraft.api.Spoutcraft;
@@ -25,10 +29,22 @@ public class SimpleAddonManager implements AddonManager {
 	private final List<Addon> addons = new ArrayList<Addon>();
 	private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
 	private final SimpleCommandMap commandMap;
+	private final Map<Event.Type, SortedSet<RegisteredListener>> listeners = new EnumMap<Event.Type, SortedSet<RegisteredListener>>(Event.Type.class);
+	private final Comparator<RegisteredListener> comparer = new Comparator<RegisteredListener>() {
+		public int compare(RegisteredListener i, RegisteredListener j) {
+			int result = i.getPriority().compareTo(j.getPriority());
+
+			if ((result == 0) && (i != j)) {
+				result = 1;
+			}
+
+			return result;
+		}
+	};
 
 	public SimpleAddonManager(Spoutcraft instance, SimpleCommandMap commandMap) {
 		spoutcraft = instance;
-        this.commandMap = commandMap;
+		this.commandMap = commandMap;
 	}
 
 	public synchronized Addon getAddon(String paramString) {
@@ -139,45 +155,74 @@ public class SimpleAddonManager implements AddonManager {
 	}
 
 	public synchronized void callEvent(Event paramEvent) {
-		// TODO Auto-generated method stub
+		SortedSet<RegisteredListener> eventListeners = listeners.get(paramEvent.getType());
 
+        if (eventListeners != null) {
+            for (RegisteredListener registration : eventListeners) {
+                 try {
+                    registration.callEvent(paramEvent);
+                
+                } catch (Throwable ex) {
+                    spoutcraft.getLogger().log(Level.SEVERE, "Could not pass event " + paramEvent.getType() + " to " + registration.getAddon().getDescription().getName(), ex);
+                }
+            }
+        }
 	}
 
 	public void registerEvent(Type paramType, Listener paramListener, Priority paramPriority, Addon paramAddon) {
-		// TODO Auto-generated method stub
+		if (!paramAddon.isEnabled()) {
+			throw new IllegalAddonAccessException("Addon attempted to register " + paramType + " while not enabled");
+		}
+
+		getEventListeners(paramType).add(new RegisteredListener(paramListener, paramPriority, paramAddon, paramType));
 
 	}
 
 	public void registerEvent(Type paramType, Listener paramListener, EventExecutor paramEventExecutor, Priority paramPriority, Addon paramAddon) {
-		// TODO Auto-generated method stub
+		if (!paramAddon.isEnabled()) {
+            throw new IllegalAddonAccessException("Addon attempted to register " + paramType + " while not enabled");
+        }
+
+        getEventListeners(paramType).add(new RegisteredListener(paramListener, paramEventExecutor, paramPriority, paramAddon));
+	}
+
+	private SortedSet<RegisteredListener> getEventListeners(Event.Type type) {
+		SortedSet<RegisteredListener> eventListeners = listeners.get(type);
+
+		if (eventListeners != null) {
+			return eventListeners;
+		}
+
+		eventListeners = new TreeSet<RegisteredListener>(comparer);
+		listeners.put(type, eventListeners);
+		return eventListeners;
 	}
 
 	public void enableAddon(Addon addon) {
 		if (!addon.isEnabled()) {
-            List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
+			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
 
-            if (!addonCommands.isEmpty()) {
-                commandMap.registerAll(addon.getDescription().getName(), addonCommands);
-            }
-            
-            try {
-                addon.getAddonLoader().enableAddon(addon);
-            } catch (Throwable ex) {
-                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
-            }
-        }
+			if (!addonCommands.isEmpty()) {
+				commandMap.registerAll(addon.getDescription().getName(), addonCommands);
+			}
 
+			try {
+				addon.getAddonLoader().enableAddon(addon);
+			} catch (Throwable ex) {
+				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+			}
+		}
 
 	}
 
 	public void disableAddon(Addon addon) {
-		 if (addon.isEnabled()) {
-	            try {
-	                addon.getAddonLoader().disableAddon(addon);
-	            } catch (Throwable ex) {
-	                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
-	            }
-	        }
+		if (addon.isEnabled()) {
+			try {
+				addon.getAddonLoader().disableAddon(addon);
+			} catch (Throwable ex) {
+				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+			}
+		}
 	}
 
 }
