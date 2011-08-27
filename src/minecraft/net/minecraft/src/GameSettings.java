@@ -315,11 +315,13 @@ public class GameSettings {
 				this.ofMipmapLevel = 0;
 			}
 
+			this.mc.renderEngine.setTileSize(this.mc);
 			this.mc.renderEngine.refreshTextures();
 		}
 
 		if(var1 == EnumOptions.MIPMAP_TYPE) {
 			this.ofMipmapLinear = !this.ofMipmapLinear;
+			this.mc.renderEngine.setTileSize(this.mc);
 			this.mc.renderEngine.refreshTextures();
 		}
 
