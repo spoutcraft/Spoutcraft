@@ -91,7 +91,7 @@ public class ChatManager {
 
 			else if (control && Keyboard.isKeyDown(Keyboard.KEY_V)) {
 				String paste = paste();
-				message = (message.substring(0, cursor) + paste + message.substring(cursor));
+				message = (message.substring(0, cursor) + paste + message.substring(Math.min(cursor, message.length())));
 				cursor += paste.length();
 				updateMessage(message, chat);
 				updateCursor(cursor, chat);
@@ -234,51 +234,47 @@ public class ChatManager {
 	public ArrayList<String> formatChat(String message, boolean display) {
 		ArrayList<String> lines = new ArrayList<String>();
 		FontRenderer font = Minecraft.theMinecraft.fontRenderer;
-		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth();
-		@SuppressWarnings("unused")
-		int line = 0;
-		int total = 0;
-		ChatColor last = null;
-		String text = "";
-		for (int i = 0; i < message.length(); i++) {
-			char ch = message.charAt(i);
-			boolean newline = ch == '\n';
-			if (!newline && i < message.length() - 1 && ch == '\\' && message.charAt(i + 1) == 'n') {
-				i++;
-				newline = true;
+		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth() - 6;
+		
+		//First Pass, break up line of text into individual words
+		String[] words = message.split(" ");;
+		
+		//Second pass, break up words that exceed the max chat length (100 chars)
+		ArrayList<String> wordList = new ArrayList<String>(100);
+		for (String word : words) {
+			do {
+				int len = word.length();
+				String subWord = word.substring(0, Math.min(len, 100));
+				if (subWord.length() != len) {
+					word = word.substring(subWord.length());
+				}
+				wordList.add(subWord);
 			}
-			if (ch == '&' && i < message.length() - 2) {
-				char next = message.charAt(i + 1);
-				int number = -1;
-				String temp = "" + next;
-				if (Character.isDigit(next)) {
-					number = Integer.parseInt(temp);
-					i++;
-				}
-				else if (next >= 'a' && next <= 'f') {
-					number = 10 + next - 'a';
-					i++;
-				}
-				if (number > -1 && number < 16) {
-					last = ChatColor.getByCode(number);
-				}
-			}
-
-			if (font.getStringWidth(text + ch) > (width - 8) || newline || (!display && total > 1 && total % 99 == 0)) {
-				lines.add(text);
-				line = 0;
-				text = "";
-				if (last != null) {
-					text += last.toString();
-				}
+			while (word.length() > 100);
+		}
+		
+		//Ensure we always have something
+		if (wordList.size() == 0) {
+			wordList.add("");
+		}
+		
+		//Third pass, build up lines of chat that are less than the width of the chat bar
+		StringBuffer curLine = new StringBuffer(wordList.get(0));
+		for (int i = 1; i < wordList.size(); i++) {
+			String word = wordList.get(i);
+			if (font.getStringWidth(curLine.toString() + word) < width) {
+				curLine.append(" ");
+				curLine.append(word);
 			}
 			else {
-				text += ch;
-				line++;
+				lines.add(curLine.toString());
+				curLine = new StringBuffer(word);
 			}
-			total++;
 		}
-		lines.add(text);
+		if (curLine.length() > 0) {
+			lines.add(curLine.toString());
+		}
+
 		return lines;
 	}
 	

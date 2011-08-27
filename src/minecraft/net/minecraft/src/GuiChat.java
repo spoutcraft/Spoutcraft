@@ -76,7 +76,7 @@ public class GuiChat extends GuiScreen {
 	public void drawScreen(int i, int j, float f) {
 		//Spout Improved Chat Start
 		SpoutClient.getInstance().getChatManager().handleMouseWheel();
-		boolean blink = ((updateCounter / 6) % 2 != 0);
+		boolean blink = true;//((updateCounter / 6) % 2 != 0) || message.trim().length() == 0;
 		String text = message;
 		if (cursorPosition > 0 && cursorPosition < message.length()) {
 			if (!blink) {
