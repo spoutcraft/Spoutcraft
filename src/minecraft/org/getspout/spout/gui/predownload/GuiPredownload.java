@@ -47,7 +47,8 @@ public class GuiPredownload extends GuiScreen{
 				joinCounter--;
 			}
 		}
-
+		
+		Minecraft.theMinecraft.thePlayer.gravityMod = 0D;
 		Minecraft.theMinecraft.thePlayer.movementInput.updatePlayerMoveState(Minecraft.theMinecraft.thePlayer);
 
 		if (this.netHandler != null) {
@@ -70,14 +71,16 @@ public class GuiPredownload extends GuiScreen{
 
 		boolean fastEnd = (ReconnectManager.serverTeleport && allPacketsReceived && !activeDownload);
 
-		if (joinCounter == -1 || fastEnd) {
+		if (joinCounter <= -1 || fastEnd) {
 			ReconnectManager.serverTeleport = false;
+			Minecraft.theMinecraft.thePlayer.gravityMod = 1D;
 			this.mc.displayGuiScreen(null);
 			this.mc.displayGuiScreen(queuedScreen);
 			if (netHandler.cached != null) {
 				netHandler.addToSendQueue(netHandler.cached);
 				netHandler.cached = null;
 			}
+			
 		}
 	}
 
@@ -88,7 +91,7 @@ public class GuiPredownload extends GuiScreen{
 			joinCounter = Math.max(joinCounter, 3);
 		}
 		else if (!paused && key == Keyboard.KEY_J) {
-			joinCounter = 0;
+			joinCounter = -1;
 		}
 	}
 
