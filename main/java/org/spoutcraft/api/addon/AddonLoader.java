@@ -8,9 +8,9 @@ import org.spoutcraft.api.event.Listener;
 
 public abstract interface AddonLoader {
 	
-	  public abstract Addon loadAddon(File paramFile) throws InvalidAddonException, InvalidAddonException, UnknownDependencyException;
+	  public abstract Addon loadAddon(File paramFile) throws InvalidAddonException, InvalidAddonException, UnknownDependencyException, InvalidDescriptionException;
 
-	  public abstract Addon loadAddon(File paramFile, boolean paramBoolean) throws InvalidAddonException, InvalidAddonException, UnknownDependencyException;
+	  public abstract Addon loadAddon(File paramFile, boolean paramBoolean) throws InvalidAddonException, InvalidAddonException, UnknownDependencyException, InvalidDescriptionException;
 
 	  public abstract Pattern[] getAddonFileFilters();
 

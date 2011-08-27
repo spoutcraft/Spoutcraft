@@ -1,5 +1,8 @@
 package org.spoutcraft.api.addon.java;
 
+import java.io.File;
+
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.addon.AddonDescriptionFile;
 import org.spoutcraft.api.addon.AddonLoader;
@@ -35,6 +38,16 @@ public abstract class JavaAddon implements Addon{
 				this.onDisable();
 			}
 		}
+	}
+
+	public void initialize(JavaAddonLoader javaAddonLoader, Spoutcraft spoutcraft, AddonDescriptionFile description2, File dataFolder, File file, AddonClassLoader loader2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public AddonClassLoader getClassLoader() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -266,7 +266,8 @@ public final class SimpleCommandMap implements CommandMap {
 
     private static class ReloadCommand extends Command {
 
-        private final Spoutcraft spoutcraft;
+        @SuppressWarnings("unused")
+		private final Spoutcraft spoutcraft;
 
         public ReloadCommand(String name, Spoutcraft spoutcraft) {
             super(name);
