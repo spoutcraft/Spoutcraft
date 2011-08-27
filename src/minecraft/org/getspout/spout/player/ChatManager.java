@@ -286,7 +286,6 @@ public class ChatManager {
 		StringBuffer curLine = new StringBuffer(wordList.get(0));
 		for (int i = 1; i < wordList.size(); i++) {
 			String word = wordList.get(i);
-			System.out.println("Len: " + font.getStringWidth(curLine.toString() + word) + " width: " + width );
 			if (font.getStringWidth(curLine.toString() + word) < width && (curLine.length() + word.length() < 100)) {
 				curLine.append(" ");
 				curLine.append(word);
