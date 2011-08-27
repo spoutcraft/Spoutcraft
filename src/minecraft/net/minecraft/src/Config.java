@@ -100,7 +100,7 @@ public class Config {
 	}
 	
 	public static boolean canUseMipmaps() {
-		return true;//return TileSize.int_size <= 16;
+		return TileSize.int_size <= 64;
 	}
 
 	public static int getMipmapLevel() {

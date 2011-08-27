@@ -309,7 +309,7 @@ public class RenderEngine {
 					}
 				}
 			}
-
+		
 			GL11.glTexImage2D(3553 /*GL_TEXTURE_2D*/, var5, 6408 /*GL_RGBA*/, var7, var8, 0, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, var9);
 			var4 = var9;
 		}

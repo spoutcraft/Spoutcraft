@@ -14,7 +14,7 @@ import org.lwjgl.input.Keyboard;
 public class GuiPredownload extends GuiScreen{
 	private NetClientHandler netHandler;
 	private int updateCounter = 0;
-	private int joinCounter = 10;
+	private int joinCounter = 6;
 	public CustomScreen queuedScreen = null;
 	private boolean activeDownload = false;
 	private boolean paused = false;
@@ -81,7 +81,7 @@ public class GuiPredownload extends GuiScreen{
 	protected void keyTyped(char ch, int key) {
 		if (key == Keyboard.KEY_P) {
 			paused = !paused;
-			joinCounter = Math.max(joinCounter, 5);
+			joinCounter = Math.max(joinCounter, 3);
 		}
 		else if (!paused && key == Keyboard.KEY_J) {
 			joinCounter = 0;
@@ -109,7 +109,7 @@ public class GuiPredownload extends GuiScreen{
 			if (!SpoutClient.getInstance().isSpoutEnabled()) {
 				this.drawCenteredString(this.fontRenderer, "Spout not detected!", this.width / 2, this.height / 2 + 60, 0xFF0000);
 			}
-			else if (SpoutClient.getInstance().isSpoutEnabled()) {
+			else {
 				this.drawCenteredString(this.fontRenderer, "Spout detected", this.width / 2, this.height / 2 + 60, 0xAADD00);
 			}
 			
@@ -120,7 +120,7 @@ public class GuiPredownload extends GuiScreen{
 			this.drawCenteredString(this.fontRenderer, "press 'P' to keep looking around!", this.width / 2, this.height / 2 + 85, 0xFF4500);
 		}
 		else {
-			this.drawCenteredString(this.fontRenderer, "press 'P' to unpause and join the world!", this.width / 2, this.height / 2 + 85, 0xFF4500);
+			this.drawCenteredString(this.fontRenderer, "press 'P' to unpause!", this.width / 2, this.height / 2 + 85, 0xFF4500);
 		}
 		
 		super.drawScreen(var1, var2, var3);

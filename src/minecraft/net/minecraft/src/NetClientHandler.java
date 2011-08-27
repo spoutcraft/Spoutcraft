@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.getspout.spout.ReconnectManager;
+import org.getspout.spout.client.SpoutClient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
@@ -358,7 +359,7 @@ public class NetClientHandler extends NetHandler {
 		
 		//Spout Start
 		boolean display = false;
-		if (!predownload && !ReconnectManager.serverTeleport) {
+		if (SpoutClient.getInstance().isSpoutEnabled() && !predownload && !ReconnectManager.serverTeleport) {
 			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
 			predownload = true;
 		}
