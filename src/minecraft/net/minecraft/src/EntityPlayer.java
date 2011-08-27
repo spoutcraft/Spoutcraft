@@ -343,9 +343,13 @@ public abstract class EntityPlayer extends EntityLiving {
 			var2 /= 5.0F;
 		}
 
+		//Spout start
+		/*
 		if(!this.onGround) {
 			var2 /= 5.0F;
 		}
+		*/
+		//Spout End
 
 		return var2;
 	}
