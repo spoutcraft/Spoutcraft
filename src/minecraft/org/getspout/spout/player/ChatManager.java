@@ -248,21 +248,46 @@ public class ChatManager {
 				if (subWord.length() != len) {
 					word = word.substring(subWord.length());
 				}
+				else {
+					word = "";
+				}
 				wordList.add(subWord);
 			}
 			while (word.length() > 100);
+			if (!word.isEmpty())
+				wordList.add(word);
 		}
+	
+		
+		//Third pass, break up words that exceed the max width of the screen
+		ArrayList<String> properWordList = new ArrayList<String>(100);
+		for (String word : words) {
+			StringBuilder cutoff = new StringBuilder("");
+			StringBuilder newWord = new StringBuilder(word);
+			while (font.getStringWidth(newWord.toString()) > width) {
+				cutoff.append(newWord.charAt(newWord.length() - 1));
+				newWord.deleteCharAt(newWord.length() - 1);
+			}
+			properWordList.add(newWord.toString());
+			if (cutoff.length() > 0) {
+				cutoff.reverse();
+				properWordList.add(cutoff.toString());
+			}
+		}
+		
+		wordList = properWordList;
 		
 		//Ensure we always have something
 		if (wordList.size() == 0) {
 			wordList.add("");
 		}
 		
-		//Third pass, build up lines of chat that are less than the width of the chat bar
+		//Fourth pass, build up lines of chat that are less than the width of the chat bar
 		StringBuffer curLine = new StringBuffer(wordList.get(0));
 		for (int i = 1; i < wordList.size(); i++) {
 			String word = wordList.get(i);
-			if (font.getStringWidth(curLine.toString() + word) < width) {
+			System.out.println("Len: " + font.getStringWidth(curLine.toString() + word) + " width: " + width );
+			if (font.getStringWidth(curLine.toString() + word) < width && (curLine.length() + word.length() < 100)) {
 				curLine.append(" ");
 				curLine.append(word);
 			}

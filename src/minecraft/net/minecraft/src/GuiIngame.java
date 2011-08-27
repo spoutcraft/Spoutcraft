@@ -229,15 +229,15 @@ public class GuiIngame extends Gui {
 					opacity *= opacity;
 					int color = chatOpen ? 255 : (int)(255D * opacity);
 					if (color > 0) {
-						int y = 2;
-						int x = -viewedLine * 9;
+						int x = 2;
+						int y = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
 						chat = ChatManager.formatUrl(chat);
 						//TODO add support for opening URL in browser if clicked?
-						drawRect(y, x - 1, y + 320, x + 8, color / 2 << 24);
+						drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
 						GL11.glEnable(3042 /*GL_BLEND*/);
-						font.drawStringWithShadow(chat, y, x, 0xffffff + (color << 24));
+						font.drawStringWithShadow(chat, x, y, 0xffffff + (color << 24));
 					}
 					viewedLine++;
 				}
