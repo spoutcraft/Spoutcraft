@@ -48,7 +48,7 @@ public class ItemRenderer {
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
 		bCustomTexture = true;
 		}
-		else if(var2.itemID < 256) {
+		else if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 		} else {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
