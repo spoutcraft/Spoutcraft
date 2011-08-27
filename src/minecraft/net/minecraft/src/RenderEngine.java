@@ -718,10 +718,10 @@ public class RenderEngine {
 		int var2 = var1 * var1 * 4;
 		this.imageData = GLAllocation.createDirectByteBuffer(var2);
 		ArrayList var3 = new ArrayList();
-		System.out.println("Allocating Image Data: " + var1);
+		//System.out.println("Allocating Image Data: " + var1);
 		for(int var4 = var1 / 2; var4 > 0; var4 /= 2) {
 			int var5 = var4 * var4 * 4;
-			System.out.println("Allocating MipMap Data: " + var5);
+			//System.out.println("Allocating MipMap Data: " + var5);
 			ByteBuffer var6 = GLAllocation.createDirectByteBuffer(var5);
 			var3.add(var6);
 		}
