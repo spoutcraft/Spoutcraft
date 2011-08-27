@@ -16,6 +16,11 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
+//Spout Start
+import net.minecraft.client.Minecraft;
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CustomTextureManager;
+//Spout End
 import org.lwjgl.opengl.GL11;
 
 public class WorldRenderer {
@@ -139,56 +144,108 @@ public class WorldRenderer {
 			byte var9 = 1;
 			ChunkCache var10 = new ChunkCache(this.worldObj, var22 - var9, var2 - var9, var3 - var9, var4 + var9, var5 + var9, var6 + var9);
 			RenderBlocks var11 = new RenderBlocks(var10);
+			
+			List<String> hitTextures = new ArrayList<String>();
+			int currentTexture = 0;
+			Minecraft game = SpoutClient.getHandle();
 
-			for(int var12 = 0; var12 < 2; ++var12) {
+			hitTextures.add("/terrain.png");
+			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
+			for (int var12 = 0; var12 < 2; ++var12) {
 				boolean var13 = false;
 				boolean var14 = false;
 				boolean var15 = false;
 
-				for(int var16 = var2; var16 < var5; ++var16) {
-					for(int var17 = var3; var17 < var6; ++var17) {
-						for(int var18 = var22; var18 < var4; ++var18) {
-							int var19 = var10.getBlockId(var18, var16, var17);
-							if(var19 > 0) {
-								if(!var15) {
-									var15 = true;
-									GL11.glNewList(this.glRenderList + var12, 4864 /*GL_COMPILE*/);
-									tessellator.isLoadingChunk = true;
-									tessellator.startDrawingQuads();
-								}
-
-								if(var12 == 0 && Block.isBlockContainer[var19]) {
-									TileEntity var20 = var10.getBlockTileEntity(var18, var16, var17);
-									if(TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
-										this.tileEntityRenderers.add(var20);
+				game.renderEngine.bindTexture(defaultTexture);
+				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {
+					boolean uvIgnore = false;
+					int texture = defaultTexture;
+					if(currentTexture > 0){
+						String customTexture = CustomTextureManager.getTextureFromUrl(hitTextures.get(currentTexture));
+						if(customTexture != null){
+							texture = game.renderEngine.getTexture(customTexture);
+							if(texture <= 0)
+								texture = defaultTexture;
+						}
+					}
+					
+					
+					for (int var16 = var2; var16 < var5; ++var16) {
+						for (int var17 = var3; var17 < var6; ++var17) {
+							for (int var18 = var22; var18 < var4; ++var18) {
+								int var19 = var10.getBlockId(var18, var16, var17);
+								short data = (short) var10.getBlockMetadata(var18, var16, var17);
+								String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var19, data);
+								if(customTexture != null){
+									boolean found = false;
+									for(int i=0;i<hitTextures.size();i++){
+										if(hitTextures.get(i).equals(customTexture))
+											found = true;
 									}
+									if(!found)
+										hitTextures.add(customTexture);
+									if(!hitTextures.get(currentTexture).equals(customTexture))
+										continue;
+								} else if(currentTexture != 0) { 
+									continue;
 								}
+								if (var19 > 0) {
 
-								Block var25 = Block.blocksList[var19];
-								int var21 = var25.getRenderBlockPass();
-								if(var21 != var12) {
-									var13 = true;
-								} else if(var21 == var12) {
-									var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
+									if (!var15) {
+										var15 = true;
+										GL11.glNewList(this.glRenderList + var12, 4864 /* GL_COMPILE */);
+										tessellator.isLoadingChunk = true;
+										tessellator.startDrawingQuads();
+									}
+									
+									if(tessellator.textureOverride != texture){
+										tessellator.draw();
+										tessellator.textureOverride = texture;
+										tessellator.startDrawingQuads();
+									}
+									
+
+									if (var12 == 0 && Block.isBlockContainer[var19]) {
+										TileEntity var20 = var10.getBlockTileEntity(var18, var16, var17);
+										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
+											this.tileEntityRenderers.add(var20);
+										}
+									}
+
+									Block var25 = Block.blocksList[var19];
+									int var21 = var25.getRenderBlockPass();
+									if (var21 != var12) {
+										var13 = true;
+									} else if (var21 == var12) {
+										if (currentTexture > 0 && texture != defaultTexture) {
+											var11.customUVs = true;
+											var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
+											var11.customUVs = false;
+										} else {
+											var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
+										}
+									}
 								}
 							}
 						}
 					}
 				}
 
-				if(var15) {
+				if (var15) {
 					tessellator.draw();
+					tessellator.textureOverride = 0;
 					GL11.glEndList();
 					tessellator.isLoadingChunk = false;
+					game.renderEngine.bindTexture(defaultTexture);
 				} else {
 					var14 = false;
 				}
 
-				if(var14) {
+				if (var14) {
 					this.skipRenderPass[var12] = false;
 				}
 
-				if(!var13) {
+				if (!var13) {
 					break;
 				}
 			}

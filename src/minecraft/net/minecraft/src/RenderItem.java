@@ -12,10 +12,10 @@ import net.minecraft.src.Render;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
-//Spout Custom Items Start 
+//Spout Start 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
-//Spout Custom Items End
+//Spout End
 import org.lwjgl.opengl.GL11;
 
 public class RenderItem extends Render {
@@ -60,9 +60,20 @@ public class RenderItem extends Render {
 		float var17;
 		float var16;
 		float var18;
+		//Spout Start
+		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
+		Boolean bCustomTexture = false;
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+			bCustomTexture = true;
+			this.loadTexture(CustomTextureManager.getTextureFromUrl(customTexture));
+		} else if (var10.itemID < 256) {
+			this.loadTexture("/terrain.png");
+		} else {
+			this.loadTexture("/gui/items.png");
+		}
+		// Spout Custom Items End
 		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
-			this.loadTexture("/terrain.png");
 			float var29 = 0.25F;
 			if(!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
 				var29 = 0.5F;
@@ -79,24 +90,19 @@ public class RenderItem extends Render {
 					GL11.glTranslatef(var16, var17, var18);
 				}
 
-				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+				//Spout Start
+				if(bCustomTexture == true) {
+					this.renderBlocks.customUVs = true;
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+					this.renderBlocks.customUVs = false;
+				} else {
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+				}
 				GL11.glPopMatrix();
 			}
 		} else {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var14 = var10.getIconIndex();
-			//Spout Custom Items Start
-			String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
-			Boolean bCustomTexture = false;
-			if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
-				bCustomTexture = true;
-				this.loadTexture(CustomTextureManager.getTextureFromUrl(customTexture));
-			} else if (var10.itemID < 256) {
-				this.loadTexture("/terrain.png");
-			} else {
-				this.loadTexture("/gui/items.png");
-			}
-			// Spout Custom Items End
 
 			Tessellator var15 = Tessellator.instance;
 			var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
@@ -131,7 +137,7 @@ public class RenderItem extends Render {
 				GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
-				//Spout Custom Items Start
+				//Spout Start
 				if (bCustomTexture == true) {
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 1);
 					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 1);
@@ -143,7 +149,7 @@ public class RenderItem extends Render {
 					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) var17, (double) var18);
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) var16, (double) var18);
 				}
-				//Spout Custom Items End	            
+				//Spout End	            
 				var15.draw();
 				GL11.glPopMatrix();
 			}
@@ -155,8 +161,20 @@ public class RenderItem extends Render {
 
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
 		float var11;
-		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		// Spout Custom Items Start
+		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
+		Boolean bCustomTexture = false;
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+			var2.bindTexture(var2.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
+			bCustomTexture = true;
+		} else if (var3 < 256) {
 			var2.bindTexture(var2.getTexture("/terrain.png"));
+		} else {
+			var2.bindTexture(var2.getTexture("/gui/items.png"));
+		}
+		
+		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+			// Spout Custom Items End
 			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F);
@@ -174,24 +192,19 @@ public class RenderItem extends Render {
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			//Spout Start
+			if(bCustomTexture)
+				this.renderBlocks.customUVs = true;
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
 			this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
+			if(bCustomTexture)
+				this.renderBlocks.customUVs = false;
+			//Spout End
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-			// Spout Custom Items Start
-			String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
-			Boolean bCustomTexture = false;
-			if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
-				var2.bindTexture(var2.getTexture(CustomTextureManager.getTextureFromUrl(customTexture)));
-				bCustomTexture = true;
-			} else if (var3 < 256) {
-				var2.bindTexture(var2.getTexture("/terrain.png"));
-			} else {
-				var2.bindTexture(var2.getTexture("/gui/items.png"));
-			}
-			// Spout Custom Items End
+		
 
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
