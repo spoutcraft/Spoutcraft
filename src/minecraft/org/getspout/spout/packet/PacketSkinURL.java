@@ -19,9 +19,11 @@ package org.getspout.spout.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.getspout.spout.client.SpoutClient;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 public class PacketSkinURL implements SpoutPacket{
@@ -77,6 +79,10 @@ public class PacketSkinURL implements SpoutPacket{
 	public void run(int PlayerId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
+			boolean reobtainSkin = false;
+			boolean reobtainCloak = false;
+			String oldSkin = e.skinUrl;
+			String oldCloak = e.playerCloakUrl;
 			if (!this.skinURL.equals("none")) {
 				e.skinUrl = this.skinURL;
 			}
@@ -86,6 +92,29 @@ public class PacketSkinURL implements SpoutPacket{
 			}
 			if (release) {
 				e.worldObj.releaseEntitySkin(e);
+			}
+			List<EntityPlayer> players = e.worldObj.playerEntities;
+			if (oldSkin != null) {
+				for (EntityPlayer player : players) {
+					if (player.skinUrl != null && player.skinUrl.equals(oldSkin)) {
+						reobtainSkin = true;
+						break;
+					}
+				}
+			}
+			if (oldCloak != null) {
+				for (EntityPlayer player : players) {
+					if (player.playerCloakUrl != null && player.playerCloakUrl.equals(oldSkin)) {
+						reobtainCloak = true;
+						break;
+					}
+				}
+			}
+			if (reobtainSkin) {
+				Minecraft.theMinecraft.renderEngine.obtainImageData(oldSkin, new ImageBufferDownload());
+			}
+			if (reobtainCloak) {
+				Minecraft.theMinecraft.renderEngine.obtainImageData(oldCloak, new ImageBufferDownload());
 			}
 			e.worldObj.obtainEntitySkin(e);
 		}
