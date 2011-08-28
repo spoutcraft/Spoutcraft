@@ -282,6 +282,9 @@ public class SettingsHandler {
 				HashMap<String,String> contents = this.loadHashMap();
 				result = contents.get(property);
 			}
+			if (result == null) {
+				return false;
+			}
 			if (result.equalsIgnoreCase("true") || result.equalsIgnoreCase("false")) {
 				return Boolean.valueOf(result.toLowerCase());
 			} else {

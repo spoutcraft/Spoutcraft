@@ -42,8 +42,8 @@ public class GuiAbout extends GuiScreen {
 		drawString(this.fontRenderer, "plugin or just using the Glowstone server.", this.width / 2 - 190, this.height - 63, 0x357EC7);
 		
 		drawString(this.fontRenderer, "The Spout Team:", this.width / 2 - 205, this.height - 33, 0x2554C7);
-		drawString(this.fontRenderer, "Afforess - Lead Developer, Alta189 - Developer, Raphfrk - Developer", this.width / 2 - 190, this.height - 23, 0x357EC7);
-		drawString(this.fontRenderer, "Narrowtux - Developer, Top_Cat - Developer, Wulfspider - Web Developer", this.width / 2 - 190, this.height - 13, 0x357EC7);
+		drawString(this.fontRenderer, "Afforess - Lead Developer, alta189 - Developer, Raphfrk - Developer", this.width / 2 - 190, this.height - 23, 0x357EC7);
+		drawString(this.fontRenderer, "narrowtux - Developer, Top_Cat - Developer, Wulfspider - Web Developer", this.width / 2 - 190, this.height - 13, 0x357EC7);
 		super.drawScreen(x, x, z);
 	}
 }
