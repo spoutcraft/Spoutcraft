@@ -30,7 +30,19 @@ public abstract class Event {
 	}
 	
 	public static enum Type {
+		/**
+         * PLAYER EVENTS
+         */
+		KEY_UP(Category.PLAYER),
+		KEY_DOWN(Category.PLAYER),
+		RENDER_DISTANCE_CHANGE(Category.PLAYER),
+		MOUSE_MOVE(Category.PLAYER),
+		MOUSE_DOWN(Category.PLAYER),
+		MOUSE_UP(Category.PLAYER),
 		
+		/**
+         * Represents a custom event, isn't actually used
+         */
 		CUSTOM_EVENT(Category.MISCELLANEOUS);
 		
 		private final Category category;
