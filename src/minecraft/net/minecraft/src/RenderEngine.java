@@ -408,6 +408,22 @@ public class RenderEngine {
 		if(var2 != null) {
 			--var2.referenceCount;
 			if(var2.referenceCount == 0) {
+				//Spout Start
+				if (Minecraft.theMinecraft.theWorld != null) {
+					List<EntityPlayer> players = Minecraft.theMinecraft.theWorld.playerEntities;
+					for (EntityPlayer player : players) {
+						if (player.skinUrl != null && player.skinUrl.equals(var1)) {
+							var2.referenceCount++;
+						}
+						if (player.playerCloakUrl != null && player.playerCloakUrl.equals(var1)) {
+							var2.referenceCount++;
+						}
+					}
+				}
+				if (var2.referenceCount > 0) {
+					return;
+				}
+				//Spout End
 				if(var2.textureName >= 0) {
 					this.deleteTexture(var2.textureName);
 				}
