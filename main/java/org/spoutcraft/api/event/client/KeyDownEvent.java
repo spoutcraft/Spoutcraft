@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.api.event.player;
+package org.spoutcraft.api.event.client;
 
 import org.spoutcraft.api.event.Cancellable;
 import org.spoutcraft.api.event.Event;
 import org.spoutcraft.api.gui.ScreenType;
 
-public class KeyUpEvent extends Event implements Cancellable {
+public class KeyDownEvent extends Event implements Cancellable {
 	private Keyboard key;
 	private ScreenType screenType;
 	protected boolean cancel = false;
-	public KeyUpEvent(int keyPress, ScreenType screenType) {
-		super(Type.KEY_UP);
+	public KeyDownEvent(int keyPress, ScreenType screenType) {
+		super(Type.KEY_DOWN);
 		this.key = Keyboard.getKey(keyPress);
 		this.screenType = screenType;
 	}
@@ -37,7 +37,7 @@ public class KeyUpEvent extends Event implements Cancellable {
 	public ScreenType getScreenType(){
 		return screenType;
 	}
-	
+
 	@Override
 	public boolean isCancelled() {
 		return cancel;

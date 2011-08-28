@@ -14,37 +14,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.api.event.player;
+package org.spoutcraft.api.event.client;
 
+import org.spoutcraft.api.event.Cancellable;
 import org.spoutcraft.api.event.Event;
 import org.spoutcraft.api.gui.ScreenType;
 
-public class MouseDownEvent extends Event {
-	private int x;
-	private int y;
-	private Mouse button;
+public class KeyUpEvent extends Event implements Cancellable {
+	private Keyboard key;
 	private ScreenType screenType;
-	public MouseDownEvent(int mouseButton, int x, int y, ScreenType screenType) {
-		super(Type.MOUSE_DOWN);
-		this.x = x;
-		this.y = y;
-		this.button = Mouse.getButton(mouseButton);
+	protected boolean cancel = false;
+	public KeyUpEvent(int keyPress, ScreenType screenType) {
+		super(Type.KEY_UP);
+		this.key = Keyboard.getKey(keyPress);
 		this.screenType = screenType;
 	}
 	
-	public int getX() {
-		return x;
-	}
-	
-	public int getY() {
-		return y;
-	}
-	
-	public Mouse getButton() {
-		return button;
+	public Keyboard getKey() {
+		return key;
 	}
 	
 	public ScreenType getScreenType(){
 		return screenType;
+	}
+	
+	@Override
+	public boolean isCancelled() {
+		return cancel;
+	}
+
+	@Override
+	public void setCancelled(boolean cancel) {
+		this.cancel = cancel;
 	}
 }

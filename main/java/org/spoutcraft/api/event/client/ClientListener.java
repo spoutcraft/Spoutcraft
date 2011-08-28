@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.api.event.player;
+package org.spoutcraft.api.event.client;
 
 import org.spoutcraft.api.event.Listener;
 
-public class PlayerListener implements Listener {
+public class ClientListener implements Listener {
 	
-	public PlayerListener() { }
+	public ClientListener() { }
 	
 	public void onKeyDown(KeyDownEvent event) { }
 	

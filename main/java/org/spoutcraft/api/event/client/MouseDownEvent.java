@@ -14,18 +14,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.api.event.player;
+package org.spoutcraft.api.event.client;
 
 import org.spoutcraft.api.event.Event;
 import org.spoutcraft.api.gui.ScreenType;
 
-public class MouseUpEvent extends Event {
+public class MouseDownEvent extends Event {
 	private int x;
 	private int y;
 	private Mouse button;
 	private ScreenType screenType;
-	public MouseUpEvent(int mouseButton, int x, int y, ScreenType screenType) {
-		super(Type.MOUSE_UP);
+	public MouseDownEvent(int mouseButton, int x, int y, ScreenType screenType) {
+		super(Type.MOUSE_DOWN);
 		this.x = x;
 		this.y = y;
 		this.button = Mouse.getButton(mouseButton);
