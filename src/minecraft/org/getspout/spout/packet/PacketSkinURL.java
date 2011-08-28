@@ -103,7 +103,7 @@ public class PacketSkinURL implements SpoutPacket{
 				}
 				if (oldCloak != null) {
 					for (EntityPlayer player : players) {
-						if (player.playerCloakUrl != null && player.playerCloakUrl.equals(oldSkin)) {
+						if (player.playerCloakUrl != null && player.playerCloakUrl.equals(oldCloak)) {
 							reobtainCloak = true;
 							break;
 						}
