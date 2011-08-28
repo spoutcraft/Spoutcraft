@@ -51,7 +51,8 @@ public enum PacketType {
 	PacketCacheDeleteFile(29, PacketCacheDeleteFile.class),
 	PacketPreCacheCompleted(30, PacketPreCacheCompleted.class),
 	PacketMovementModifiers(31, PacketMovementModifiers.class),
-	PacketSetVelocity(32, PacketSetVelocity.class),
+	PacketSetVelocity(32, PacketSetVelocity.class), 
+	PacketBlockTextures(33, PacketBlockTextures.class),
 	;
 	
 	private final int id;
