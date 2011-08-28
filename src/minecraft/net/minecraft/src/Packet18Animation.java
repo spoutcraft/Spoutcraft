@@ -5,16 +5,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 //Spout Start
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketFullVersion;
 import org.getspout.spout.packet.PacketRenderDistance;
-import net.minecraft.client.Minecraft;
 //Spout End
-
-import net.minecraft.src.Entity;
-import net.minecraft.src.NetHandler;
-import net.minecraft.src.Packet;
 
 public class Packet18Animation extends Packet {
 
@@ -49,6 +47,7 @@ public class Packet18Animation extends Packet {
 				SpoutClient.setReloadPacket(null);
 			}
 			((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance)));
+			((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketFullVersion(SpoutClient.getClientVersion().toString())));
 			System.out.println("Spout SP Enabled");
 		}
 		else {
