@@ -30,8 +30,37 @@ public abstract class Event {
 	}
 	
 	public static enum Type {
-		CUSTOM_EVENT
+		
+		CUSTOM_EVENT(Category.MISCELLANEOUS);
+		
+		private final Category category;
+		
+		private Type(Category category) {
+            this.category = category;
+        }
+
+        /**
+         * Gets the Category assigned to this event
+         *
+         * @return Category of this Event.Type
+         */
+        public Category getCategory() {
+            return category;
+        }
 	}
+	
+	public enum Category {
+        PLAYER,
+        ENTITY,
+        BLOCK,
+        LIVING_ENTITY,
+        WEATHER,
+        VEHICLE,
+        WORLD,
+        CLIENT,
+        INVENTORY,
+        MISCELLANEOUS;
+    }
 	
 	public static enum Priority {
 		Lowest,
