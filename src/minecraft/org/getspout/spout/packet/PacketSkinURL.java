@@ -92,29 +92,29 @@ public class PacketSkinURL implements SpoutPacket{
 			}
 			if (release) {
 				e.worldObj.releaseEntitySkin(e);
-			}
-			List<EntityPlayer> players = e.worldObj.playerEntities;
-			if (oldSkin != null) {
-				for (EntityPlayer player : players) {
-					if (player.skinUrl != null && player.skinUrl.equals(oldSkin)) {
-						reobtainSkin = true;
-						break;
+				List<EntityPlayer> players = e.worldObj.playerEntities;
+				if (oldSkin != null) {
+					for (EntityPlayer player : players) {
+						if (player.skinUrl != null && player.skinUrl.equals(oldSkin)) {
+							reobtainSkin = true;
+							break;
+						}
 					}
 				}
-			}
-			if (oldCloak != null) {
-				for (EntityPlayer player : players) {
-					if (player.playerCloakUrl != null && player.playerCloakUrl.equals(oldSkin)) {
-						reobtainCloak = true;
-						break;
+				if (oldCloak != null) {
+					for (EntityPlayer player : players) {
+						if (player.playerCloakUrl != null && player.playerCloakUrl.equals(oldSkin)) {
+							reobtainCloak = true;
+							break;
+						}
 					}
 				}
-			}
-			if (reobtainSkin) {
-				Minecraft.theMinecraft.renderEngine.obtainImageData(oldSkin, new ImageBufferDownload());
-			}
-			if (reobtainCloak) {
-				Minecraft.theMinecraft.renderEngine.obtainImageData(oldCloak, new ImageBufferDownload());
+				if (reobtainSkin) {
+					Minecraft.theMinecraft.renderEngine.obtainImageData(oldSkin, new ImageBufferDownload());
+				}
+				if (reobtainCloak) {
+					Minecraft.theMinecraft.renderEngine.obtainImageData(oldCloak, new ImageBufferDownload());
+				}
 			}
 			e.worldObj.obtainEntitySkin(e);
 		}
