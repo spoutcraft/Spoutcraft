@@ -53,7 +53,6 @@ public class CustomTextField extends GuiButton {
 						dirty = true;
 					}
 				}
-				
 				if (keyId == Keyboard.KEY_RIGHT && field.getCursorPosition() < field.getText().length()) {
 					field.setCursorPosition(field.getCursorPosition() + 1);
 					dirty = true;
@@ -71,7 +70,6 @@ public class CustomTextField extends GuiButton {
 					field.setCursorPosition(field.getCursorPosition() - 1);
 					dirty = true;
 				}
-
 				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (field.getText().length() < field.getMaximumCharacters() || field.getMaximumCharacters() == 0)) {
 					String newText = "";
 					if (field.getCursorPosition() > 0) {

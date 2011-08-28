@@ -19,6 +19,7 @@ package org.getspout.spout.client;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.SpoutVersion;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.inventory.ItemManager;
@@ -63,6 +64,7 @@ public class SpoutClient implements Client {
 	static {
 		dataMiningThread.start();
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
+		ConfigReader.read();
 	}
 	
 	public static SpoutClient getInstance() {
@@ -151,9 +153,13 @@ public class SpoutClient implements Client {
 		if (player == null) {
 			player = new ClientPlayer(getHandle().thePlayer);
 		}
-		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled()) {
+		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
 			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
 			clipboardThread.start();
+		}
+		else if (clipboardThread != null){
+			clipboardThread.interrupt();
+			clipboardThread = null;
 		}
 	}
 	

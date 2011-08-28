@@ -38,6 +38,14 @@ public class FileUtil {
 		}
 		return directory;
 	}
+	
+	public static File getSpoutcraftDirectory() {
+		File directory = new File(Minecraft.getMinecraftDir(), "spoutcraft");
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+		return directory;
+	}
 
 	public static File getTempDirectory() {
 		File directory = new File(getCacheDirectory(), "temp");
