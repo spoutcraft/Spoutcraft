@@ -76,8 +76,10 @@ public abstract class EntityLiving extends Entity
 	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
 	private byte textureToRender = 0;
 	public double gravityMod = 1D;
-	public double walkingMod = 1D;
+	public double walkingMod = 	1D;
 	public double swimmingMod = 1D;
+	public double jumpingMod = 1D;
+	public double airspeedMod = 1D;
 	//Spout End
 	
 	public EntityLiving(World world)
@@ -552,12 +554,12 @@ public abstract class EntityLiving extends Entity
 		if(isInWater())
 		{
 			double d = posY;
-			moveFlying(f, f1, 0.02F);
+			moveFlying(f, f1, (float) (0.02F * swimmingMod)); //Spout
 			moveEntity(motionX, motionY, motionZ);
+			motionX *= 0.80000001192092896D;
+			motionY *= 0.80000001192092896D;
+			motionZ *= 0.80000001192092896D;
 			//Spout start
-			motionX *= 0.80000001192092896D * swimmingMod;
-			motionY *= 0.80000001192092896D * swimmingMod;
-			motionZ *= 0.80000001192092896D * swimmingMod;
 			motionY -= 0.02D * gravityMod;
 			//Spout end
 			if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d, motionZ))
@@ -592,7 +594,14 @@ public abstract class EntityLiving extends Entity
 			}
 			float f3 = 0.1627714F / (f2 * f2 * f2);
 			//Spout start
-			moveFlying(f, f1, onGround ? (float)(0.1F * f3 * walkingMod) : 0.02F);
+			float movement = 0.02F;
+			if (onGround) {
+				movement = (float) (0.1F * f3 * walkingMod);
+			}
+			else if (!isInWater()) {
+				movement *= airspeedMod;
+			}
+			moveFlying(f, f1, movement);
 			//Spout end
 			f2 = 0.91F;
 			if(onGround)
@@ -742,11 +751,11 @@ public abstract class EntityLiving extends Entity
 		{
 			if(flag)
 			{
-				motionY += 0.039999999105930328D;
+				motionY += 0.039999999105930328D * jumpingMod; //Spout
 			} else
 			if(flag1)
 			{
-				motionY += 0.039999999105930328D;
+				motionY += 0.039999999105930328D * jumpingMod; //Spout
 			} else
 			if(onGround)
 			{
@@ -779,7 +788,7 @@ public abstract class EntityLiving extends Entity
 
 	protected void jump()
 	{
-		motionY = 0.41999998688697815D;
+		motionY = 0.41999998688697815D * jumpingMod; //Spout
 	}
 
 	protected boolean canDespawn()

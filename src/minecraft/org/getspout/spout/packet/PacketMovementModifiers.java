@@ -11,20 +11,24 @@ public class PacketMovementModifiers implements SpoutPacket{
 	double gravityMod = 1;
 	double walkingMod = 1;
 	double swimmingMod = 1;
+	double jumpingMod = 1;
+	double airspeedMod = 1;
 	
 	public PacketMovementModifiers() {
 		
 	}
 	
-	public PacketMovementModifiers(double gravity, double walking, double swimming) {
+	public PacketMovementModifiers(double gravity, double walking, double swimming, double jumping, double airspeed) {
 		this.gravityMod = gravity;
 		this.walkingMod = walking;
 		this.swimmingMod = swimming;
+		this.jumpingMod = jumping;
+		this.airspeedMod = airspeed;
 	}
 
 	@Override
 	public int getNumBytes() {
-		return 24;
+		return 40;
 	}
 
 	@Override
@@ -32,6 +36,8 @@ public class PacketMovementModifiers implements SpoutPacket{
 		gravityMod = input.readDouble();
 		walkingMod = input.readDouble();
 		swimmingMod = input.readDouble();
+		jumpingMod = input.readDouble();
+		airspeedMod = input.readDouble();
 	}
 
 	@Override
@@ -39,6 +45,8 @@ public class PacketMovementModifiers implements SpoutPacket{
 		output.writeDouble(gravityMod);
 		output.writeDouble(walkingMod);
 		output.writeDouble(swimmingMod);
+		output.writeDouble(jumpingMod);
+		output.writeDouble(airspeedMod);
 	}
 
 	@Override
@@ -46,6 +54,8 @@ public class PacketMovementModifiers implements SpoutPacket{
 		Minecraft.theMinecraft.thePlayer.gravityMod = gravityMod;
 		Minecraft.theMinecraft.thePlayer.walkingMod = walkingMod;
 		Minecraft.theMinecraft.thePlayer.swimmingMod = swimmingMod;
+		Minecraft.theMinecraft.thePlayer.jumpingMod = jumpingMod;
+		Minecraft.theMinecraft.thePlayer.airspeedMod = airspeedMod;
 	}
 
 	@Override
@@ -61,7 +71,7 @@ public class PacketMovementModifiers implements SpoutPacket{
 
 	@Override
 	public int getVersion() {
-		return 0;
+		return 2;
 	}
 
 }
