@@ -30,12 +30,19 @@ public abstract class Event {
 	}
 	
 	public static enum Type {
+		/**
+		* CLIENT EVENTS
+		*/
 		KEY_UP(Category.CLIENT),
 		KEY_DOWN(Category.CLIENT),
 		RENDER_DISTANCE_CHANGE(Category.CLIENT),
 		MOUSE_MOVE(Category.CLIENT),
 		MOUSE_DOWN(Category.CLIENT),
 		MOUSE_UP(Category.CLIENT),
+
+		/**
+		* Represents a custom event, isn't actually used
+		*/
 		CUSTOM_EVENT(Category.MISCELLANEOUS);
 		
 		private final Category category;
