@@ -75,9 +75,12 @@ public class GuiMainMenu extends GuiScreen {
 		if(this.mc.hideQuitButton) {
 			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, var2.translateKey("menu.options")));
 		} else {
-			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72 + 12, 98, 20, var2.translateKey("menu.options")));
-			this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72 + 12, 98, 20, var2.translateKey("menu.quit")));
+		//Spout Start
+			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, 98, 20, var2.translateKey("menu.options")));
+			this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72, 98, 20, var2.translateKey("menu.quit")));
 		}
+		this.controlList.add(new GuiButton(5, this.width / 2 - 100, var4 + 96, "About"));
+		//Spout End
 
 		if(this.mc.session == null) {
 			this.multiplayerButton.enabled = false;
@@ -105,6 +108,11 @@ public class GuiMainMenu extends GuiScreen {
 		if(var1.id == 4) {
 			this.mc.shutdown();
 		}
+		//Spout Start
+		if(var1.id == 5) {
+			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
+		}
+		//Spout End
 
 	}
 

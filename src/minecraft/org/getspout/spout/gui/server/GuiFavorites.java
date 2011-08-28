@@ -57,7 +57,7 @@ public class GuiFavorites extends GuiScreen {
 	private static final int DELETE_SERVER = 1;
 	private static final int ADD_SERVER = 2;
 	private static final int PUBLIC_SERVER_LIST = 3;
-	private static final int RENAME_SERVER = 4;
+	private static final int EDIT_SERVER = 4;
 	private static final int ARROW_UP = 5;
 	private static final int ARROW_DOWN = 6;
 	private static final int MAIN_MENU = 7;
@@ -131,7 +131,7 @@ public class GuiFavorites extends GuiScreen {
 		//Middle row
 		controlList.add(buttonSelect = new GuiButton(JOIN_SERVER, width / 2 - 200, height - 46, 130, 20, "Join"));
 		controlList.add(buttonDelete = new GuiButton(DELETE_SERVER, width / 2 - 66, height - 46, 130, 20, "Delete"));
-		controlList.add(buttonRename = new GuiButton(RENAME_SERVER, width / 2 + 67, height - 46, 129, 20, "Rename"));
+		controlList.add(buttonRename = new GuiButton(EDIT_SERVER, width / 2 + 67, height - 46, 129, 20, "Edit"));
 		
 		//Bottom Row
 		controlList.add(new GuiButton(ADD_SERVER, width / 2 - 200, height - 22, 130, 20, "Add Server"));
@@ -171,7 +171,7 @@ public class GuiFavorites extends GuiScreen {
 				case PUBLIC_SERVER_LIST:
 					SpoutClient.getHandle().displayGuiScreen(new GuiMultiplayer(this));
 					break;
-				case RENAME_SERVER:
+				case EDIT_SERVER:
 					if (selectedWorld > -1) {
 						serverName = ((ServerSlot)serverList.get(selectedWorld)).name;
 						if(serverName != null) {
@@ -284,21 +284,23 @@ public class GuiFavorites extends GuiScreen {
 
 	public void requestServer(String var1) {
 		try {
-			int var2 = 0;
-			FileInputStream var3 = new FileInputStream(getFavoriteServerFile());
-			DataInputStream var4 = new DataInputStream(var3);
+			int serverSlot = 0;
+			FileInputStream input = new FileInputStream(getFavoriteServerFile());
+			DataInputStream data = new DataInputStream(input);
 
-			String var6;
-			for(BufferedReader var5 = new BufferedReader(new InputStreamReader(var4)); (var6 = var5.readLine()) != null; ++var2) {
-				ServerSlot var7 = new ServerSlot(var2);
-				String[] var8 = var6.split(">");
-				var7 = this.setServer(var2, var7, var8[0], var8[1]);
-				this.serverList.add(var7);
+			String line;
+			for(BufferedReader reader = new BufferedReader(new InputStreamReader(data)); (line = reader.readLine()) != null; serverSlot++) {
+				ServerSlot slot = new ServerSlot(serverSlot);
+				String[] serverData = line.split(">");
+				if (serverData.length == 2) {
+					slot = this.setServer(serverSlot, slot, serverData[0], serverData[1]);
+					this.serverList.add(slot);
+				}
 			}
 
-			var4.close();
-		} catch (Exception var9) {
-			System.err.println("Error: " + var9.getMessage());
+			data.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
