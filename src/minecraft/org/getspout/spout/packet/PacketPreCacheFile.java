@@ -58,7 +58,10 @@ public class PacketPreCacheFile implements SpoutPacket{
 			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + file);
 			return;
 		}
-		File directory = FileUtil.getCacheDirectory();
+		File directory = new File(FileUtil.getCacheDirectory(), plugin);
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
 		String fileName = FileUtil.getFileName(file);
 		File expected = new File(directory, fileName);
 		if (expected.exists()) {
@@ -75,7 +78,7 @@ public class PacketPreCacheFile implements SpoutPacket{
 			}
 			//Begin download
 			else {
-				Download data = new Download(fileName, FileUtil.getCacheDirectory(), file, null);
+				Download data = new Download(fileName, directory, file, null);
 				FileDownloadThread.getInstance().addToDownloadQueue(data);
 			}
 		}

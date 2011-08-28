@@ -65,6 +65,7 @@ public class GuiPredownload extends GuiScreen{
 			activeDownload = true;
 		}
 
+		allPacketsReceived = false;
 		if (FileDownloadThread.preCacheCompleted.get() > System.currentTimeMillis() - 1000) {
 			allPacketsReceived = true;
 		}
@@ -90,7 +91,7 @@ public class GuiPredownload extends GuiScreen{
 			paused = !paused;
 			joinCounter = Math.max(joinCounter, 3);
 		}
-		else if (!paused && key == Keyboard.KEY_J) {
+		else if (allPacketsReceived && !paused && key == Keyboard.KEY_J) {
 			joinCounter = -1;
 		}
 	}
