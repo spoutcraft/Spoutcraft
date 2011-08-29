@@ -147,6 +147,7 @@ public class SpoutClient implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
+		Minecraft.theMinecraft.sndManager.stopMusic();
 	}
 	
 	public void onWorldEnter() {

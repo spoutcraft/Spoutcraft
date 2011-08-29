@@ -26,6 +26,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 public class CustomTextureManager {
 	static HashMap<String, Texture> textures = new HashMap<String, Texture>();
+	static HashMap<String, File> cacheTextureFiles = new HashMap<String, File>();
 	
 	public static void downloadTexture(String url) {
 		downloadTexture(null, url);
@@ -57,9 +58,14 @@ public class CustomTextureManager {
 	
 	public static File getTextureFile(String plugin, String url) {
 		String fileName = FileUtil.getFileName(url);
+		File cache = cacheTextureFiles.get(fileName);
+		if (cache != null) {
+			return cache;
+		}
 		if (plugin != null) {
 			File file = FileUtil.findTextureFile(plugin, fileName);
 			if (file != null) {
+				cacheTextureFiles.put(fileName, file);
 				return file;
 			}
 		}
@@ -86,6 +92,7 @@ public class CustomTextureManager {
 		for (Texture texture : textures.values()) {
 			texture.release();
 		}
+		cacheTextureFiles.clear();
 		textures.clear();
 	}
 	
@@ -94,12 +101,12 @@ public class CustomTextureManager {
 	}
 	
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		if (!isTextureDownloaded(plugin, url)) {
+		File texture = getTextureFile(plugin, url);
+		if (!texture.exists()) {
 			return null;
 		}
-		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(url));
 		try {
-			return getTextureFromPath(download.getCanonicalPath());
+			return getTextureFromPath(texture.getCanonicalPath());
 		}
 		catch (IOException e) {
 			e.printStackTrace();

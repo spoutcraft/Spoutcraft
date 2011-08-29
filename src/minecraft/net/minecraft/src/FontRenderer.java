@@ -138,7 +138,7 @@ public class FontRenderer {
 		}
 
 	}
-
+	
 	public void drawStringWithShadow(String var1, int var2, int var3, int var4) {
 		this.renderString(var1, var2 + 1, var3 + 1, var4, true);
 		this.drawString(var1, var2, var3, var4);
@@ -148,6 +148,69 @@ public class FontRenderer {
 		this.renderString(var1, var2, var3, var4, false);
 	}
 
+	//Spout Start
+	//Yay, I completely decoded the field names!
+	public void renderStringInGame(String text, double x, double y, double z, float yaw, int color, float scale) {
+		if(text != null) {
+			int i;
+			
+			GL11.glEnable('\u803a');
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.fontTextureName);
+			float red = (float)(color >> 16 & 255) / 255.0F;
+			float green = (float)(color >> 8 & 255) / 255.0F;
+			float blue = (float)(color & 255) / 255.0F;
+			float alpha = (float)(color >> 24 & 255) / 255.0F;
+			if(alpha == 0.0F) {
+				alpha = 1.0F;
+			}
+
+			GL11.glColor4f(red, green, blue, alpha);
+			this.buffer.clear();
+			GL11.glPushMatrix(); //Matrix of the whole text
+			GL11.glTranslated(x, y, z);
+			GL11.glScaled(-0.014*scale, -0.014*scale, -0.014*scale);
+			GL11.glRotatef(yaw, 0, 1.0F, 0);
+			GL11.glPushMatrix(); //Matrix to move the text to center
+			GL11.glTranslated(-getStringWidth(text)/2,0,0); //Move text to center
+			for(i = 0; i < text.length(); ++i) {
+				int colorBit;
+				for(; text.length() > i + 1 && text.charAt(i) == 167; i += 2) {
+					colorBit = "0123456789abcdef".indexOf(text.toLowerCase().charAt(i + 1));
+					if(colorBit < 0 || colorBit > 15) {
+						colorBit = 15;
+					}
+
+					this.buffer.put(this.fontDisplayLists + 256 + colorBit);
+					if(this.buffer.remaining() == 0) {
+						this.buffer.flip();
+						GL11.glCallLists(this.buffer);
+						this.buffer.clear();
+					}
+				}
+
+				if(i < text.length()) {
+					colorBit = ChatAllowedCharacters.allowedCharacters.indexOf(text.charAt(i));
+					if(colorBit >= 0) {
+						this.buffer.put(this.fontDisplayLists + colorBit + 32);
+					}
+				}
+
+				if(this.buffer.remaining() == 0) {
+					this.buffer.flip();
+					GL11.glCallLists(this.buffer);
+					this.buffer.clear();
+				}
+			}
+
+			this.buffer.flip();
+			GL11.glCallLists(this.buffer);
+			GL11.glPopMatrix();
+			GL11.glPopMatrix();
+			GL11.glDisable('\u803a');
+		}
+	}
+	//Spout End
+	
 	public void renderString(String var1, int var2, int var3, int var4, boolean var5) {
 		if(var1 != null) {
 			int var6;
