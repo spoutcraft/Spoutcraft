@@ -648,7 +648,7 @@ public abstract class EntityLiving extends Entity
 				motionY = 0.20000000000000001D;
 			}
 			motionY -= 0.080000000000000002D * gravityMod; //Spout
-			motionY *= 0.98000001907348633D * gravityMod; //Spout
+			motionY *= 0.98000001907348633D;
 			motionX *= f2;
 			motionZ *= f2;
 		}
