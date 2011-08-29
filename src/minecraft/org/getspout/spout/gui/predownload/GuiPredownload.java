@@ -65,7 +65,6 @@ public class GuiPredownload extends GuiScreen{
 			activeDownload = true;
 		}
 
-		allPacketsReceived = false;
 		if (FileDownloadThread.preCacheCompleted.get() > System.currentTimeMillis() - 1000) {
 			allPacketsReceived = true;
 		}
@@ -91,7 +90,7 @@ public class GuiPredownload extends GuiScreen{
 			paused = !paused;
 			joinCounter = Math.max(joinCounter, 3);
 		}
-		else if (allPacketsReceived && !paused && key == Keyboard.KEY_J) {
+		else if (allPacketsReceived && !activeDownload && !paused && key == Keyboard.KEY_J) {
 			joinCounter = -1;
 		}
 	}
@@ -122,7 +121,7 @@ public class GuiPredownload extends GuiScreen{
 					this.drawCenteredString(this.fontRenderer, "Spout detected", this.width / 2, this.height / 2 + 60, 0xAADD00);
 				}
 
-				if (allPacketsReceived) {
+				if (allPacketsReceived && !activeDownload) {
 					this.drawCenteredString(this.fontRenderer, "Press 'J' to skip and join immediately!", this.width / 2, this.height / 2 + 75, 0x00FF00);
 				}
 
