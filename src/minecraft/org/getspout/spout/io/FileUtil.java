@@ -142,6 +142,8 @@ public class FileUtil {
 
 	public static String getFileName(String Url) {
 		int slashIndex = Url.lastIndexOf('/');
+		int backslashIndex = Url.lastIndexOf('\\');
+		slashIndex = Math.max(slashIndex, backslashIndex);
 		int dotIndex = Url.lastIndexOf('.', slashIndex);
 		if (dotIndex == -1 || dotIndex < slashIndex) {
 			return Url.substring(slashIndex + 1).replaceAll("%20", " ");

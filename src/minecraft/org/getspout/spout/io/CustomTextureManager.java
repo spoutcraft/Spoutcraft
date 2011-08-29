@@ -94,12 +94,12 @@ public class CustomTextureManager {
 	}
 	
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		if (!isTextureDownloaded(plugin, url)) {
+		File texture = getTextureFile(plugin, url);
+		if (!texture.exists()) {
 			return null;
 		}
-		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(url));
 		try {
-			return getTextureFromPath(download.getCanonicalPath());
+			return getTextureFromPath(texture.getCanonicalPath());
 		}
 		catch (IOException e) {
 			e.printStackTrace();
