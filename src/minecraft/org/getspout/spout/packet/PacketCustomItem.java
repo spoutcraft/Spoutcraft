@@ -11,19 +11,21 @@ public class PacketCustomItem implements SpoutPacket {
 	private int itemId;
 	private Integer blockId;
 	private String textureURL;
+	private String pluginName;
 	
 	public PacketCustomItem() {
 	}
 	
-	public PacketCustomItem(int itemId, Integer blockId, String textureURL) {
+	public PacketCustomItem(int itemId, Integer blockId, String pluginName, String textureURL) {
 		this.itemId = itemId;
 		this.blockId = blockId;
 		this.textureURL = textureURL;
+		this.pluginName = pluginName;
 	}
 	
 	@Override
 	public int getNumBytes() {
-		return 8 + PacketUtil.getNumBytes(textureURL);
+		return 8 + PacketUtil.getNumBytes(getTextureURL()) + PacketUtil.getNumBytes(getPluginName());
 	}
 	
 	@Override
@@ -37,20 +39,33 @@ public class PacketCustomItem implements SpoutPacket {
 		if (textureURL.equals("")) {
 			textureURL = null;
 		}
+		pluginName = PacketUtil.readString(input, 256);
+		if (pluginName == "") {
+			pluginName = null;
+		}
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(itemId);
 		output.writeInt(blockId == null ? -1 : blockId);
-		PacketUtil.writeString(output, textureURL == null ? "" : textureURL);
+		PacketUtil.writeString(output, getTextureURL());
+		PacketUtil.writeString(output, getPluginName());
+	}
+	
+	private String getTextureURL() {
+		return textureURL == null ? "" : textureURL;
+	}
+	
+	private String getPluginName() {
+		return pluginName == null ? "" : pluginName;
 	}
 	
 	@Override
 	public void run(int PlayerId) {
 		SpoutItemBlock.addItemBlockMap(itemId, blockId);
 	}
-
+	
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketCustomItem;
@@ -58,13 +73,12 @@ public class PacketCustomItem implements SpoutPacket {
 	
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	@Override
 	public void failure(int playerId) {
 		
 	}
-
 
 }

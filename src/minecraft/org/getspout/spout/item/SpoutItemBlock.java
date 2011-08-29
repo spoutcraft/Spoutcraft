@@ -34,7 +34,7 @@ public class SpoutItemBlock extends ItemBlock {
 			if (damage >= 1024) {
 				Integer blockId = itemBlock.get(damage);
 				if (blockId == null) {
-					return false;
+					return true;
 				} else {
 					boolean result = onBlockItemUse(blockId, stack, player, world, x, y, z, face);
 					return result;
