@@ -16,13 +16,16 @@ public class GuiPredownload extends GuiScreen{
 	private NetClientHandler netHandler;
 	private int updateCounter = 0;
 	private int joinCounter = 6;
+	private int downloadDelayCounter = 2;
 	public CustomScreen queuedScreen = null;
 	private boolean activeDownload = false;
 	private boolean paused = false;
 	private boolean allPacketsReceived = false;
+	private GuiScreen parent = null;
 
 	public GuiPredownload(NetClientHandler handler) {
 		this.netHandler = handler;
+		parent = Minecraft.theMinecraft.currentScreen;
 	}
 
 	public void initGui() {
@@ -40,21 +43,26 @@ public class GuiPredownload extends GuiScreen{
 	}
 
 	public void updateScreen() {
+		//Increase counters, send keep alive packets
 		++this.updateCounter;
 		if (this.updateCounter % 20 == 0) {
 			this.netHandler.addToSendQueue(new Packet0KeepAlive());
 			if (!paused) {
 				joinCounter--;
+				downloadDelayCounter--;
 			}
 		}
 		
+		//Keep the player from falling
 		Minecraft.theMinecraft.thePlayer.gravityMod = 0D;
 		Minecraft.theMinecraft.thePlayer.movementInput.updatePlayerMoveState(Minecraft.theMinecraft.thePlayer);
 
+		//Read packets
 		if (this.netHandler != null) {
 			this.netHandler.processReadPackets();
 		}
 
+		//Check for active downloads
 		activeDownload = false;
 		if (FileDownloadThread.getInstance().getActiveDownload() != null || FileDownloadThread.getInstance().getDownloadsRemaining() > 0) {
 			if (this.updateCounter % 20 == 0) {
@@ -65,11 +73,20 @@ public class GuiPredownload extends GuiScreen{
 			activeDownload = true;
 		}
 
+		//Check to see if we got the file cache complete packet
 		if (FileDownloadThread.preCacheCompleted.get() > System.currentTimeMillis() - 1000) {
 			allPacketsReceived = true;
 		}
 
 		boolean fastEnd = (ReconnectManager.serverTeleport && allPacketsReceived && !activeDownload);
+		
+		if (downloadDelayCounter < 0 && parent != null) {
+			parent = null;
+			fastEnd = allPacketsReceived && !activeDownload;
+			if (!fastEnd) {
+				joinCounter = 6;
+			}
+		}
 
 		if (joinCounter <= -1 || fastEnd) {
 			ReconnectManager.serverTeleport = false;
@@ -96,6 +113,10 @@ public class GuiPredownload extends GuiScreen{
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {
+		if (parent != null) {
+			parent.drawScreen(var1, var2, var3);
+			return;
+		}
 		//this.drawBackground(0);
 		if (!ReconnectManager.serverTeleport) { // Prevents screen from flashing when teleporting
 			if (!paused) { 
