@@ -40,7 +40,7 @@ public class Packet18Animation extends Packet {
 	public void processPacket(NetHandler var1) {
 		//Spout Start
 		if (entityId == -42) {
-			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(1, 0, 2, 0));
+			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(1, 0, 5, 0));
 			((NetClientHandler)var1).addToSendQueue(this);
 			if (SpoutClient.getReloadPacket() != null) {
 				((NetClientHandler)var1).addToSendQueue(new CustomPacket(SpoutClient.getReloadPacket()));
