@@ -38,12 +38,10 @@ public class KeyUpEvent extends Event implements Cancellable {
 		return screenType;
 	}
 	
-	@Override
 	public boolean isCancelled() {
 		return cancel;
 	}
 
-	@Override
 	public void setCancelled(boolean cancel) {
 		this.cancel = cancel;
 	}
