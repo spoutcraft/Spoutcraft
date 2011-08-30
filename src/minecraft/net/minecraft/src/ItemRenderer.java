@@ -46,7 +46,7 @@ public class ItemRenderer {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
 		boolean bCustomTexture = false;
-		boolean blockType = false;
+		boolean blockType = true;
 		if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
 			bCustomTexture = true;

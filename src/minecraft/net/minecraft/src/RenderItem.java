@@ -65,7 +65,7 @@ public class RenderItem extends Render {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
-		boolean blockType = false;
+		boolean blockType = true;
 		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
 			bCustomTexture = true;
 			blockType = SpoutItemBlock.isCustomBlock(var10.itemID, var10.getItemDamage());
@@ -170,7 +170,7 @@ public class RenderItem extends Render {
 		// Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		Boolean bCustomTexture = false;
-		boolean blockType = false;
+		boolean blockType = true;
 		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
 			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
 			bCustomTexture = true;
