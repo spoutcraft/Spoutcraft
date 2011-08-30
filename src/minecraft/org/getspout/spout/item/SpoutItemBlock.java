@@ -19,6 +19,7 @@ public class SpoutItemBlock extends ItemBlock {
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
+		this.setHasSubtypes(true);
 	}
 
 	public static void addItemInfoMap(int damage, String pluginName, String textureURL, Integer blockId) {
