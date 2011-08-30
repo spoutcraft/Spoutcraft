@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-import org.getspout.spout.item.SpoutItemBlock;
 import org.lwjgl.opengl.GL11;
 
 public class RenderItem extends Render {
@@ -127,29 +126,6 @@ public class RenderItem extends Render {
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
 		float var11;
 		
-		// Spout Start
-		if (var3 == 1 && var4 >= 1024) {
-			Integer textureId = SpoutItemBlock.getTextureId(var4);
-			if (textureId != null) { 
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
-
-				var2.bindTexture(textureId);
-
-				int var8 = Item.itemsList[var3].getColorFromDamage(var4);
-				float var9 = (float)(var8 >> 16 & 255) / 255.0F;
-				float var10 = (float)(var8 >> 8 & 255) / 255.0F;
-				var11 = (float)(var8 & 255) / 255.0F;
-				if(this.field_27004_a) {
-					GL11.glColor4f(var9, var10, var11, 1.0F);
-				}
-
-				this.renderTexturedQuad(var6, var7, 0, 0, 16, 16, (float)(1/16.0));
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
-				return;
-			}
-		}
-		// Spout End
-		
 		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 			var2.bindTexture(var2.getTexture("/terrain.png"));
 			Block var14 = Block.blocksList[var3];
@@ -244,16 +220,11 @@ public class RenderItem extends Render {
 		var1.draw();
 	}
 	
-	// Spout Start
 	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6) {
-		renderTexturedQuad(var1, var2, var3, var4, var5, var6, 0.00390625F);
-	}
-
-	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6, float scale) {
 		float var7 = 0.0F;
-		float var8 = scale;
-		float var9 = scale;
-	// Spout End
+		float var8 = 0.00390625F;
+		float var9 = 0.00390625F;
+
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
 		var10.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)var7, (double)((float)(var3 + 0) * var8), (double)((float)(var4 + var6) * var9));
