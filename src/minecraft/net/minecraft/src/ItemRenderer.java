@@ -46,10 +46,9 @@ public class ItemRenderer {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
 		boolean bCustomTexture = false;
 		if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
-		bCustomTexture = true;
-		}
-		else if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+			bCustomTexture = true;
+		} else if(var2.itemID < 256) {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 		} else {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
