@@ -1399,6 +1399,14 @@ public class RenderBlocks {
 		double var23 = var3 + 0.5D + 0.44999998807907104D;
 		double var25 = var7 + 0.5D - 0.44999998807907104D;
 		double var27 = var7 + 0.5D + 0.44999998807907104D;
+		//Spout Start
+		if(this.customUVs == true){
+			var13 = 0;
+			var15 = 1;
+			var17 = 0;
+			var19 = 1;
+		}
+		//Spout End
 		var9.addVertexWithUV(var21, var5 + 1.0D, var25, var13, var17);
 		var9.addVertexWithUV(var21, var5 + 0.0D, var25, var13, var19);
 		var9.addVertexWithUV(var23, var5 + 0.0D, var27, var15, var19);

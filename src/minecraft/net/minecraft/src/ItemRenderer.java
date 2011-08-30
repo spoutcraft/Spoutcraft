@@ -18,9 +18,10 @@ import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
 import net.minecraft.src.Tessellator;
-
+//Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
+//Spout End
 import org.lwjgl.opengl.GL11;
 
 public class ItemRenderer {
