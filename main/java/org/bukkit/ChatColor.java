@@ -49,7 +49,7 @@ public enum ChatColor {
 	}
 
 	public String toString() {
-		return String.format("§%x", new Object[] { Integer.valueOf(this.code) });
+		return String.format("\u00A7%x", new Object[] { Integer.valueOf(this.code) });
 	}
 
 	public static ChatColor getByCode(int code) {
@@ -61,7 +61,7 @@ public enum ChatColor {
 			return null;
 		}
 
-		return input.replaceAll("(?i)§[0-F]", "");
+		return input.replaceAll("(?i)\u00A7[0-F]", "");
 	}
 
 	static {
