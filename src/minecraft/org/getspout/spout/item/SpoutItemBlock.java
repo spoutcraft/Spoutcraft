@@ -11,22 +11,26 @@ import net.minecraft.src.World;
 public class SpoutItemBlock extends ItemBlock {
 
 	private final static HashMap<Integer, Integer> itemBlock = new HashMap<Integer, Integer>();
+	private final static HashMap<Integer, Short> itemMetaData = new HashMap<Integer, Short>();
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
 		this.setHasSubtypes(true);
 	}
 
-	public static void addItemInfoMap(int damage, Integer blockId) {
-		if (blockId == null) {
+	public static void addItemInfoMap(int damage, Integer blockId, Short metaData) {
+		if (blockId == null || metaData == null) {
 			itemBlock.remove(damage);
+			itemMetaData.remove(damage);
 		} else {
 			itemBlock.put(damage, blockId);
+			itemMetaData.put(damage, metaData);
 		}
 	}
 
 	public static void wipeMap() {
 		itemBlock.clear();
+		itemMetaData.clear();
 	}
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
@@ -34,10 +38,11 @@ public class SpoutItemBlock extends ItemBlock {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
 				Integer blockId = itemBlock.get(damage);
-				if (blockId == null) {
+				Short metaData = itemMetaData.get(damage);
+				if (blockId == null || metaData == null) {
 					return true;
 				} else {
-					boolean result = onBlockItemUse(blockId, stack, player, world, x, y, z, face);
+					boolean result = onBlockItemUse(blockId, metaData, stack, player, world, x, y, z, face);
 					return result;
 				}
 			}
@@ -46,7 +51,7 @@ public class SpoutItemBlock extends ItemBlock {
 	}
 
 	// From super class
-	public boolean onBlockItemUse(int blockID, ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
+	public boolean onBlockItemUse(int blockID, short metaData, ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
 		if (var3.getBlockId(var4, var5, var6) == Block.snow.blockID) {
 			var7 = 0;
 		} else {
@@ -81,7 +86,7 @@ public class SpoutItemBlock extends ItemBlock {
 			return false;
 		} else if (var3.canBlockBePlacedAt(blockID, var4, var5, var6, false, var7)) {
 			Block var8 = Block.blocksList[blockID];
-			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, this.getPlacedBlockMetadata(var1.getItemDamage()))) {
+			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, metaData)) {
 				Block.blocksList[blockID].onBlockPlaced(var3, var4, var5, var6, var7);
 				Block.blocksList[blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
 				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.func_1145_d(),
