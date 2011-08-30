@@ -63,7 +63,7 @@ public class PacketCustomItem implements SpoutPacket {
 	
 	@Override
 	public void run(int PlayerId) {
-		SpoutItemBlock.addItemBlockMap(itemId, blockId);
+		SpoutItemBlock.addItemInfoMap(itemId, pluginName, textureURL, blockId);
 	}
 	
 	@Override

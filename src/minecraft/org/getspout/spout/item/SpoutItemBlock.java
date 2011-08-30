@@ -8,24 +8,73 @@ import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
+import org.getspout.spout.io.CustomTextureManager;
+import org.newdawn.slick.opengl.Texture;
+
 public class SpoutItemBlock extends ItemBlock {
 
 	private final static HashMap<Integer, Integer> itemBlock = new HashMap<Integer, Integer>();
+	private final static HashMap<Integer, String> itemTexture = new HashMap<Integer, String>();
+	private final static HashMap<Integer, String> itemPlugin = new HashMap<Integer, String>();
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
 	}
 
-	public static void addItemBlockMap(int damage, Integer blockId) {
+	public static void addItemInfoMap(int damage, String pluginName, String textureURL, Integer blockId) {
 		if (blockId == null) {
 			itemBlock.remove(damage);
 		} else {
 			itemBlock.put(damage, blockId);
 		}
+		if (pluginName == null || textureURL == null) {
+			itemTexture.remove(damage);
+			itemPlugin.remove(damage);
+		} else {
+			itemTexture.put(damage, textureURL);
+			itemPlugin.put(damage, pluginName);
+		}
 	}
 
 	public static void wipeMap() {
 		itemBlock.clear();
+		itemTexture.clear();
+		itemPlugin.clear();
+	}
+	
+	private static String getTextureURL(Integer damage) {
+		if (damage == null) {
+			return null;
+		} else {
+			return itemTexture.get(damage);
+		}
+	}
+	
+	private static String getPluginName(Integer damage) {
+		if (damage == null) {
+			return null;
+		} else {
+			return itemPlugin.get(damage);
+		}
+	}
+	
+	public static Integer getTextureId(int damage) {
+		
+		String plugin = getPluginName(damage);
+		String textureURL = getTextureURL(damage);
+		
+		if (plugin == null || textureURL == null) {
+			return null;
+		}
+		
+		 Texture texture = CustomTextureManager.getTextureFromUrl(plugin, textureURL);
+		 
+		 if (texture == null) {
+			 return null;
+		 }
+		 
+		 return texture.getTextureID();
+		
 	}
 
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
