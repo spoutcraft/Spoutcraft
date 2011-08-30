@@ -33,6 +33,14 @@ public class SpoutItemBlock extends ItemBlock {
 		itemMetaData.clear();
 	}
 	
+	public static boolean isCustomBlock(int blockId, int damage) {
+		if (blockId != 1) {
+			return false;
+		} else {
+			return itemBlock.get(damage) != null;
+		}
+	}
+	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
 		if (stack.itemID == 1) {
 			int damage = stack.getItemDamage();

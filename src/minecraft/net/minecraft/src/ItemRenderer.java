@@ -21,6 +21,7 @@ import net.minecraft.src.Tessellator;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutItemBlock;
 //Spout End
 import org.lwjgl.opengl.GL11;
 
@@ -45,9 +46,11 @@ public class ItemRenderer {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
 		boolean bCustomTexture = false;
+		boolean blockType = false;
 		if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
 			bCustomTexture = true;
+			blockType = SpoutItemBlock.isCustomBlock(var2.itemID, var2.getItemDamage());
 		} else if(var2.itemID < 256) {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 		} else {
@@ -55,7 +58,7 @@ public class ItemRenderer {
 		}
 		//Spout End
 		
-		if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
+		if(blockType && var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
 			//Spout Start
 			if(bCustomTexture == true)
 				this.renderBlocksInstance.customUVs = true;

@@ -16,6 +16,7 @@ import net.minecraft.src.Tessellator;
 //Spout Start 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutItemBlock;
 //Spout End
 import org.lwjgl.opengl.GL11;
 
@@ -64,8 +65,10 @@ public class RenderItem extends Render {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
+		boolean blockType = false;
 		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
 			bCustomTexture = true;
+			blockType = SpoutItemBlock.isCustomBlock(var10.itemID, var10.getItemDamage());
 			RenderEngine renderer = this.renderManager.renderEngine;
 			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
 		} else if (var10.itemID < 256) {
@@ -73,7 +76,7 @@ public class RenderItem extends Render {
 		} else {
 			this.loadTexture("/gui/items.png");
 		}
-		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
+		if(blockType && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var29 = 0.25F;
 		// Spout End
@@ -167,16 +170,18 @@ public class RenderItem extends Render {
 		// Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		Boolean bCustomTexture = false;
+		boolean blockType = false;
 		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
 			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
 			bCustomTexture = true;
+			blockType = SpoutItemBlock.isCustomBlock(var3, var4);
 		} else if (var3 < 256) {
 			var2.bindTexture(var2.getTexture("/terrain.png"));
 		} else {
 			var2.bindTexture(var2.getTexture("/gui/items.png"));
 		}
 		
-		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		if(blockType && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 			// Spout End
 			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
