@@ -113,7 +113,7 @@ public class Animation {
 	}
 	
 	public Animateable getCurrentValue(){
-		return startValue.getValueAt(getAnimationProgress().getValueAt(currentTime/duration), startValue, endValue);
+		return startValue.getValueAt(getAnimationProgress().getValueAt((double)currentTime/(double)duration), startValue, endValue);
 	}
 	
 	public void setProperty(PropertyDelegate property) {
