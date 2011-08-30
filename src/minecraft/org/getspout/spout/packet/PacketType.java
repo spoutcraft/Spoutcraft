@@ -54,6 +54,7 @@ public enum PacketType {
 	PacketSetVelocity(32, PacketSetVelocity.class),
 	PacketFullVersion(33, PacketFullVersion.class),
 	PacketCustomItem(34, PacketCustomItem.class),
+	PacketItemTexture(35, PacketItemTexture.class),
 	;
 	
 	private final int id;

@@ -2,6 +2,21 @@ package net.minecraft.src;
 
 import java.util.Random;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.FontRenderer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.Render;
+import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.RenderEngine;
+import net.minecraft.src.Tessellator;
+//Spout Start 
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CustomTextureManager;
+//Spout End
 import org.lwjgl.opengl.GL11;
 
 public class RenderItem extends Render {
@@ -46,10 +61,22 @@ public class RenderItem extends Render {
 		float var17;
 		float var16;
 		float var18;
+		//Spout Start
+		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
+		Boolean bCustomTexture = false;
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+			bCustomTexture = true;
+			RenderEngine renderer = this.renderManager.renderEngine;
+			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+		} else if (var10.itemID < 256) {
+			this.loadTexture("/terrain.png");
+		} else {
+			this.loadTexture("/gui/items.png");
+		}
 		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
-			this.loadTexture("/terrain.png");
 			float var29 = 0.25F;
+		// Spout End
 			if(!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
 				var29 = 0.5F;
 			}
@@ -65,17 +92,19 @@ public class RenderItem extends Render {
 					GL11.glTranslatef(var16, var17, var18);
 				}
 
-				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+				//Spout Start
+				if(bCustomTexture == true) {
+					this.renderBlocks.customUVs = true;
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+					this.renderBlocks.customUVs = false;
+				} else {
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
+				}
 				GL11.glPopMatrix();
 			}
 		} else {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var14 = var10.getIconIndex();
-			if(var10.itemID < 256) {
-				this.loadTexture("/terrain.png");
-			} else {
-				this.loadTexture("/gui/items.png");
-			}
 
 			Tessellator var15 = Tessellator.instance;
 			var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
@@ -110,10 +139,19 @@ public class RenderItem extends Render {
 				GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
-				var15.addVertexWithUV((double)(0.0F - var21), (double)(0.0F - var22), 0.0D, (double)var16, (double)var19);
-				var15.addVertexWithUV((double)(var20 - var21), (double)(0.0F - var22), 0.0D, (double)var17, (double)var19);
-				var15.addVertexWithUV((double)(var20 - var21), (double)(1.0F - var22), 0.0D, (double)var17, (double)var18);
-				var15.addVertexWithUV((double)(0.0F - var21), (double)(1.0F - var22), 0.0D, (double)var16, (double)var18);
+				//Spout Start
+				if (bCustomTexture == true) {
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 1);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 1);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) 1, (double) 0);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) 0, (double) 0);
+				} else {
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) var16, (double) var19);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) var17, (double) var19);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) var17, (double) var18);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) var16, (double) var18);
+				}
+				//Spout End	            
 				var15.draw();
 				GL11.glPopMatrix();
 			}
@@ -125,9 +163,21 @@ public class RenderItem extends Render {
 
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
 		float var11;
+
+		// Spout Start
+		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
+		Boolean bCustomTexture = false;
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+			bCustomTexture = true;
+		} else if (var3 < 256) {
+			var2.bindTexture(var2.getTexture("/terrain.png"));
+		} else {
+			var2.bindTexture(var2.getTexture("/gui/items.png"));
+		}
 		
 		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
-			var2.bindTexture(var2.getTexture("/terrain.png"));
+			// Spout End
 			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F);
@@ -145,27 +195,43 @@ public class RenderItem extends Render {
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			//Spout Start
+			if(bCustomTexture)
+				this.renderBlocks.customUVs = true;
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
 			this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
+			if(bCustomTexture)
+				this.renderBlocks.customUVs = false;
+			//Spout End
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-			if(var3 < 256) {
-				var2.bindTexture(var2.getTexture("/terrain.png"));
-			} else {
-				var2.bindTexture(var2.getTexture("/gui/items.png"));
-			}
+		
+
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
 			float var9 = (float)(var8 >> 16 & 255) / 255.0F;
 			float var10 = (float)(var8 >> 8 & 255) / 255.0F;
+
 			var11 = (float)(var8 & 255) / 255.0F;
 			if(this.field_27004_a) {
 				GL11.glColor4f(var9, var10, var11, 1.0F);
 			}
 
-			this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+			// Spout Start
+			if (bCustomTexture == true) {
+				Tessellator tes = Tessellator.instance;
+				tes.startDrawingQuads();
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 1);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 16), (double) 0, 1, 1);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 0), (double) 0, 1, 0);
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 0), (double) 0, 0, 0);
+				tes.draw();
+			} else
+				this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+			// Spout End
+
 			GL11.glEnable(2896 /*GL_LIGHTING*/);
 		}
 
