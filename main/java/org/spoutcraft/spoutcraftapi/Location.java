@@ -2,16 +2,22 @@ package org.spoutcraft.spoutcraftapi;
 
 import org.spoutcraft.spoutcraftapi.animation.Animatable;
 
-public class Location implements Animatable{
+public class Location implements Animatable {
 	private double x,y,z;
 	private float yaw,pitch;
 	private World world;
+	
 	public Location(World world, double x, double y, double z) {
-		// TODO Auto-generated constructor stub
+		this(world, x, y, z, 0, 0);
 	}
 
 	public Location(World world, double x, double y, double z, float yaw, float pitch) {
-		// TODO Auto-generated constructor stub
+		this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.pitch = pitch;
+        this.yaw = yaw;
 	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
