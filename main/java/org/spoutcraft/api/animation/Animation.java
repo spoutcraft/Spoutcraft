@@ -17,7 +17,7 @@ public class Animation {
 		STOPPED, PAUSED, RUNNING;
 	}
 	
-	private Animateable startValue, endValue;
+	private Animatable startValue, endValue;
 	
 	private int duration;
 
@@ -33,19 +33,19 @@ public class Animation {
 		return state;
 	}
 	
-	public Animateable getStartValue() {
+	public Animatable getStartValue() {
 		return startValue;
 	}
 	
-	public void setStartValue(Animateable startValue) {
+	public void setStartValue(Animatable startValue) {
 		this.startValue = startValue;
 	}
 	
-	public Animateable getEndValue() {
+	public Animatable getEndValue() {
 		return endValue;
 	}
 	
-	public void setEndValue(Animateable endValue) {
+	public void setEndValue(Animatable endValue) {
 		this.endValue = endValue;
 	}
 	
@@ -108,11 +108,19 @@ public class Animation {
 	
 	public void stop(){
 		this.state = State.STOPPED;
-		this.currentTime = duration;
+		switch(direction){
+		case FORWARD:
+			this.currentTime = duration;
+			break;
+		case BACKWARD:
+			this.currentTime = 0;
+			break;
+		}
 		animator.cancel();
+		property.set(getCurrentValue());
 	}
 	
-	public Animateable getCurrentValue(){
+	public Animatable getCurrentValue(){
 		return startValue.getValueAt(getAnimationProgress().getValueAt((double)currentTime/(double)duration), startValue, endValue);
 	}
 	
@@ -146,7 +154,7 @@ public class Animation {
 				time = 0;
 			}
 			animation.setCurrentTime(time);
-			Animateable value = animation.getCurrentValue();
+			Animatable value = animation.getCurrentValue();
 			animation.getProperty().set(value);
 		}
 	}

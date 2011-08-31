@@ -1,8 +1,8 @@
 package org.spoutcraft.api;
 
-import org.spoutcraft.api.animation.Animateable;
+import org.spoutcraft.api.animation.Animatable;
 
-public class Location implements Animateable{
+public class Location implements Animatable{
 	private double x,y,z;
 	private float yaw,pitch;
 	private World world;
@@ -15,7 +15,7 @@ public class Location implements Animateable{
 	}
 
 	@Override
-	public Animateable getValueAt(double p, Animateable startValue, Animateable endValue) {
+	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
 		Location p1 = (Location)startValue;
 		Location p2 = (Location)endValue;
 		if(!p1.world.equals(p2.world)){

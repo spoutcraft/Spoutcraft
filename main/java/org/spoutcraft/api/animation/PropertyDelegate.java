@@ -11,5 +11,5 @@ public interface PropertyDelegate {
 	 * Will be called each animation cycle.
 	 * @param value to be set to the object.
 	 */
-	public void set(Animateable value);
+	public void set(Animatable value);
 }
