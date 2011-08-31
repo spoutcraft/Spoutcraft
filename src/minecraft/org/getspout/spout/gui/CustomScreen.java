@@ -100,11 +100,13 @@ public class CustomScreen extends GuiScreen {
 		screen.render();
 		//Draw the tooltip!
 		String tooltip = "";
+		Widget tooltipWidget = null;
 		for (RenderPriority priority : RenderPriority.values()) {	
 			for (Widget widget : screen.getAttachedWidgets()){
 				if (widget.getPriority() == priority){
 					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
 						tooltip = widget.getTooltip();
+						tooltipWidget = widget;
 						//No return here, when a widget that is over it comes next, tooltip will be overwritten.
 					}
 				}
@@ -114,8 +116,14 @@ public class CustomScreen extends GuiScreen {
 		if(!tooltip.equals("")) {
 			GL11.glPushMatrix();
 			int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
-			this.drawGradientRect(x - 3, y - 3, x + tooltipWidth + 3, y + 8 + 3, -1073741824, -1073741824);
-			this.fontRenderer.drawStringWithShadow(tooltip, x, y, -1);
+			int offsetX = 0;
+			if(x + tooltipWidth + 2 > screen.getWidth()){
+				offsetX = -tooltipWidth - 11;
+			}
+			x += 6;
+			y -= 6;
+			this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 + 3, -1073741824, -1073741824);
+			this.fontRenderer.drawStringWithShadow(tooltip, x + offsetX, y, -1);
 			GL11.glPopMatrix();
 		}
 	}
@@ -127,7 +135,7 @@ public class CustomScreen extends GuiScreen {
 		int width = (int) widget.getWidth();
 		int right = left+width;
 		int bottom = top+height;
-		if(left < x && x < right && top < y && y < bottom){
+		if(left <= x && x < right && top <= y && y < bottom){
 			return true;
 		}
 		return false;
