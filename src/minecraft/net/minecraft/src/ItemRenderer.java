@@ -57,18 +57,20 @@ public class ItemRenderer {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
 		}
 		//Spout End
-		
+
 		if(blockType && var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
 			//Spout Start
 			if(bCustomTexture == true)
 				this.renderBlocksInstance.customUVs = true;
-				this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
+
+			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
+
 			if(bCustomTexture == true)
 				this.renderBlocksInstance.customUVs = false;
 			//Spout End
-			
+
 		} else {
-		
+
 			Tessellator var3 = Tessellator.instance;
 			int var4 = var1.getItemIcon(var2);
 			//Spout HD Start
@@ -81,8 +83,8 @@ public class ItemRenderer {
 			if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
 				var5 = 0;
 				var6 = 1;
-				var7 = 0;
-				var8 = 1;
+				var7 = 1;
+				var8 = 0;
 			}
 			//Spout End
 			float var9 = 1.0F;
@@ -121,7 +123,7 @@ public class ItemRenderer {
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
-			//Spout HD End
+				//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var17, 0.0D, (double)(0.0F - var13), (double)var16, (double)var8);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -137,7 +139,7 @@ public class ItemRenderer {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
 				var17 = var9 * var15 + TileSize.float_reciprocal;
-			//Spout HD End
+				//Spout HD End
 				var3.addVertexWithUV((double)var17, 1.0D, (double)(0.0F - var13), (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 1.0D, 0.0D, (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -152,7 +154,7 @@ public class ItemRenderer {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
 				var17 = var9 * var15 + TileSize.float_reciprocal;
-			//Spout HD End
+				//Spout HD End
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, (double)(0.0F - var13), (double)var5, (double)var16);
@@ -166,7 +168,7 @@ public class ItemRenderer {
 			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
 				var15 = (float)var14 / TileSize.float_size;
 				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
-			//Spout HD End
+				//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);

@@ -79,7 +79,7 @@ public class RenderItem extends Render {
 		if(blockType && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var29 = 0.25F;
-		// Spout End
+			// Spout End
 			if(!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
 				var29 = 0.5F;
 			}
@@ -144,10 +144,10 @@ public class RenderItem extends Render {
 				var15.setNormal(0.0F, 1.0F, 0.0F);
 				//Spout Start
 				if (bCustomTexture == true) {
-					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 1);
-					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 1);
-					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) 1, (double) 0);
-					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) 0, (double) 0);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 0);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 0);
+					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) 1, (double) 1);
+					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) 0, (double) 1);
 				} else {
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) var16, (double) var19);
 					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) var17, (double) var19);
@@ -180,7 +180,7 @@ public class RenderItem extends Render {
 		} else {
 			var2.bindTexture(var2.getTexture("/gui/items.png"));
 		}
-		
+
 		if(blockType && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 			// Spout End
 			Block var14 = Block.blocksList[var3];
@@ -212,7 +212,7 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-		
+
 
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
@@ -228,10 +228,10 @@ public class RenderItem extends Render {
 			if (bCustomTexture == true) {
 				Tessellator tes = Tessellator.instance;
 				tes.startDrawingQuads();
-				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 1);
-				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 16), (double) 0, 1, 1);
-				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 0), (double) 0, 1, 0);
-				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 0), (double) 0, 0, 0);
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 0);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 16), (double) 0, 1, 0);
+				tes.addVertexWithUV((double) (var6 + 16), (double) (var7 + 0), (double) 0, 1, 1);
+				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 0), (double) 0, 0, 1);
 				tes.draw();
 			} else
 				this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
@@ -290,7 +290,7 @@ public class RenderItem extends Render {
 		var1.addVertex((double)(var2 + var4), (double)(var3 + 0), 0.0D);
 		var1.draw();
 	}
-	
+
 	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6) {
 		float var7 = 0.0F;
 		float var8 = 0.00390625F;
