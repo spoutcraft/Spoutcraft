@@ -53,6 +53,9 @@ public enum PacketType {
 	PacketMovementModifiers(31, PacketMovementModifiers.class),
 	PacketSetVelocity(32, PacketSetVelocity.class),
 	PacketFullVersion(33, PacketFullVersion.class),
+	PacketCustomItem(34, PacketCustomItem.class),
+	PacketItemTexture(35, PacketItemTexture.class), 
+	PacketOpenSignGUI(37, PacketOpenSignGUI.class),
 	;
 	
 	private final int id;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
@@ -62,7 +63,7 @@ public class PacketPreCacheFile implements SpoutPacket{
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		String fileName = FileUtil.getFileName(file);
+		final String fileName = FileUtil.getFileName(file);
 		File expected = new File(directory, fileName);
 		if (expected.exists()) {
 			long crc = FileUtil.getCRC(expected, downloadBuffer);
@@ -78,11 +79,22 @@ public class PacketPreCacheFile implements SpoutPacket{
 			}
 			//Begin download
 			else {
-				Download data = new Download(fileName, directory, file, null);
+				Runnable queued = null;
+				if (FileUtil.isImageFile(fileName)) {
+					queued = new Runnable() {
+						public void run() {
+							CustomTextureManager.getTextureFromUrl(plugin, fileName);
+						}
+					};
+				}
+				Download data = new Download(fileName, directory, file, queued);
 				FileDownloadThread.getInstance().addToDownloadQueue(data);
 			}
 		}
 		else {
+			if (FileUtil.isImageFile(fileName)) {
+				CustomTextureManager.getTextureFromUrl(plugin, fileName);
+			}
 		}
 	}
 

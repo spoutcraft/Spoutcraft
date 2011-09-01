@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileUtil;
 
 public class PacketCacheFile implements SpoutPacket {
@@ -65,6 +66,9 @@ public class PacketCacheFile implements SpoutPacket {
 			FileUtils.writeByteArrayToFile(cache, fileData);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		if (cache.exists() && FileUtil.isImageFile(fileName)) {
+			CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
 	}
 

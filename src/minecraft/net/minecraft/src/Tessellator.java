@@ -39,7 +39,9 @@ public class Tessellator {
 	private int vboIndex = 0;
 	private int vboCount = 10;
 	private int bufferSize;
-
+	//Spout Start
+	public int textureOverride = 0;
+	//Spout End
 
 	private Tessellator(int var1) {
 		this.bufferSize = var1;
@@ -85,6 +87,11 @@ public class Tessellator {
 					}
 
 					GL11.glEnableClientState('\u8078');
+
+					//Spout Start
+					if(textureOverride > 0)
+						GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, textureOverride);
+					//Spout End
 				}
 
 				if(this.hasColor) {
