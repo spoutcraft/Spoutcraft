@@ -4,6 +4,8 @@ import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.io.FileDownloadThread;
+import org.getspout.spout.packet.PacketManager;
+import org.getspout.spout.packet.PacketPreCacheCompleted;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
@@ -97,7 +99,7 @@ public class GuiPredownload extends GuiScreen{
 				netHandler.addToSendQueue(netHandler.cached);
 				netHandler.cached = null;
 			}
-			
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketPreCacheCompleted());
 		}
 	}
 
