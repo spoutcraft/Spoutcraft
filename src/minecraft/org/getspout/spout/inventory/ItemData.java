@@ -16,19 +16,23 @@
  */
 package org.getspout.spout.inventory;
 
+import java.util.HashMap;
+
 public class ItemData {
 	public final int id;
 	public final short data;
+	private static final HashMap<Integer, HashMap<Integer, ItemData>> itemDatas= new HashMap<Integer, HashMap<Integer, ItemData>>();
 	protected ItemData(int id) {
 		this.id = id;
 		this.data = 0;
 	}
 	
-	protected ItemData(int id, int data) {
+	private ItemData(int id, int data) {
 		this.id = id;
 		this.data = (short)data;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ItemData) {
 			ItemData temp = (ItemData)obj;
@@ -37,8 +41,27 @@ public class ItemData {
 		return false;
 	}
 	
+	@Override
 	public int hashCode() {
 		return 37 * id * 7 * (2 + data);
+	}
+	
+	public static ItemData getItemData(int id) {
+		return getItemData(id, 0);
+	}
+	
+	public static ItemData getItemData(int id, int data) {
+		HashMap<Integer, ItemData> itemDatasForId = itemDatas.get(id);
+		if (itemDatasForId == null) {
+			itemDatasForId = new HashMap<Integer, ItemData>();
+			itemDatas.put(id, itemDatasForId);
+		}
+		ItemData itemData = itemDatasForId.get(data);
+		if (itemData == null) {
+			itemData = new ItemData(id, data);
+			itemDatasForId.put(data, itemData);
+		}
+		return itemData;
 	}
 
 }

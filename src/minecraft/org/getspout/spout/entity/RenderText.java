@@ -18,8 +18,6 @@
 package org.getspout.spout.entity;
 
 import org.getspout.spout.client.SpoutClient;
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.src.Entity;
 import net.minecraft.src.RenderEntity;
 import net.minecraft.src.RenderHelper;
