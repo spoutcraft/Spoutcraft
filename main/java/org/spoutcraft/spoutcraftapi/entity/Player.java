@@ -3,10 +3,10 @@ package org.spoutcraft.spoutcraftapi.entity;
 import java.net.InetSocketAddress;
 
 import org.spoutcraft.spoutcraftapi.Achievement;
-import org.spoutcraft.spoutcraftapi.Location;
 import org.spoutcraft.spoutcraftapi.Material;
 import org.spoutcraft.spoutcraftapi.Statistic;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.util.Location;
 
 public interface Player extends HumanEntity, CommandSender {
 

@@ -3,8 +3,8 @@ package org.spoutcraft.spoutcraftapi.entity;
 import java.util.HashSet;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.Location;
 import org.spoutcraft.spoutcraftapi.block.Block;
+import org.spoutcraft.spoutcraftapi.util.Location;
 
 public interface LivingEntity extends Entity {
 	public int getHealth();

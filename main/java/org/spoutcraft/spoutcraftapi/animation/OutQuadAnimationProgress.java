@@ -12,7 +12,6 @@ public class OutQuadAnimationProgress implements AnimationProgress {
 		this.strength = strength;
 	}
 	
-	@Override
 	public double getValueAt(double progress) {
 		return -Math.abs(Math.pow(progress - 1, strength)) + 1;
 	}

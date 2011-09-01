@@ -1,5 +1,7 @@
 package org.spoutcraft.spoutcraftapi.animation;
 
+import org.spoutcraft.spoutcraftapi.animation.AnimationProgress;
+
 public class InQuadAnimationProgress implements AnimationProgress {
 
 	private int strength;
@@ -12,7 +14,6 @@ public class InQuadAnimationProgress implements AnimationProgress {
 		this.strength = strength;
 	}
 	
-	@Override
 	public double getValueAt(double progress) {
 		return Math.pow(progress, strength);
 	}
