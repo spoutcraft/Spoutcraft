@@ -8,24 +8,23 @@ import org.getspout.spout.item.SpoutItemBlock;
 
 public class PacketCustomItem implements SpoutPacket {
 	
+	
 	private int itemId;
 	private Integer blockId;
-	private String textureURL;
-	private String pluginName;
+	private Short metaData;
 	
 	public PacketCustomItem() {
 	}
 	
-	public PacketCustomItem(int itemId, Integer blockId, String pluginName, String textureURL) {
+	public PacketCustomItem(int itemId, Integer blockId, Short metaData) {
 		this.itemId = itemId;
 		this.blockId = blockId;
-		this.textureURL = textureURL;
-		this.pluginName = pluginName;
+		this.metaData = metaData;
 	}
 	
 	@Override
 	public int getNumBytes() {
-		return 8 + PacketUtil.getNumBytes(getTextureURL()) + PacketUtil.getNumBytes(getPluginName());
+		return 10;
 	}
 	
 	@Override
@@ -35,13 +34,9 @@ public class PacketCustomItem implements SpoutPacket {
 		if (blockId == -1) {
 			blockId = null;
 		}
-		textureURL = PacketUtil.readString(input, 256);
-		if (textureURL.equals("")) {
-			textureURL = null;
-		}
-		pluginName = PacketUtil.readString(input, 256);
-		if (pluginName == "") {
-			pluginName = null;
+		metaData = input.readShort();
+		if (metaData == -1) {
+			metaData = null;
 		}
 	}
 
@@ -49,23 +44,14 @@ public class PacketCustomItem implements SpoutPacket {
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(itemId);
 		output.writeInt(blockId == null ? -1 : blockId);
-		PacketUtil.writeString(output, getTextureURL());
-		PacketUtil.writeString(output, getPluginName());
+		output.writeShort(metaData == null ? -1 : metaData);
 	}
-	
-	private String getTextureURL() {
-		return textureURL == null ? "" : textureURL;
-	}
-	
-	private String getPluginName() {
-		return pluginName == null ? "" : pluginName;
-	}
-	
+
 	@Override
 	public void run(int PlayerId) {
-		SpoutItemBlock.addItemBlockMap(itemId, blockId);
+		SpoutItemBlock.addItemInfoMap(itemId, blockId, metaData);
 	}
-	
+
 	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketCustomItem;
@@ -73,7 +59,7 @@ public class PacketCustomItem implements SpoutPacket {
 	
 	@Override
 	public int getVersion() {
-		return 1;
+		return 3;
 	}
 
 	@Override

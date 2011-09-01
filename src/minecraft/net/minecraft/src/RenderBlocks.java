@@ -21,7 +21,7 @@ import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 
 public class RenderBlocks {
-	
+
 	//Spout Start
 	//All private -> public
 	public IBlockAccess blockAccess;
@@ -91,6 +91,10 @@ public class RenderBlocks {
 	public boolean aoGrassXYZNNC;
 	public boolean aoGrassXYZCNP;
 	public static float[][] redstoneColors = new float[16][];
+	//Spout End
+
+	//Spout Start
+	public boolean customUVs = false;
 	//Spout End
 
 
@@ -370,7 +374,7 @@ public class RenderBlocks {
 		this.func_31074_b(var1, var2, var3, var4, true);
 		this.renderAllFaces = false;
 	}
-//Spout Start
+	//Spout Start
 	private boolean func_31074_b(Block var1, int var2, int var3, int var4, boolean var5) {
 		int var6 = this.blockAccess.getBlockMetadata(var2, var3, var4);
 		boolean var7 = var5 || (var6 & 8) != 0;
@@ -466,7 +470,7 @@ public class RenderBlocks {
 
 		return true;
 	}
-//Spout End
+	//Spout End
 	private void func_31076_a(double var1, double var3, double var5, double var7, double var9, double var11, float var13, double var14) {
 		int var16 = 108;
 		if(this.overrideBlockTexture >= 0) {
@@ -506,7 +510,7 @@ public class RenderBlocks {
 		var19.addVertexWithUV(var3, var7, var9, var20, var26);
 		var19.addVertexWithUV(var3, var7, var11, var24, var26);
 	}
-//Spout Start
+	//Spout Start
 	private void func_31077_c(double var1, double var3, double var5, double var7, double var9, double var11, float var13, double var14) {
 		int var16 = 108;
 		if(this.overrideBlockTexture >= 0) {
@@ -616,7 +620,7 @@ public class RenderBlocks {
 		var1.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		return true;
 	}
-//Spout End
+	//Spout End
 	public boolean renderBlockLever(Block var1, int var2, int var3, int var4) {
 		int var5 = this.blockAccess.getBlockMetadata(var2, var3, var4);
 		int var6 = var5 & 7;
@@ -1395,6 +1399,14 @@ public class RenderBlocks {
 		double var23 = var3 + 0.5D + 0.44999998807907104D;
 		double var25 = var7 + 0.5D - 0.44999998807907104D;
 		double var27 = var7 + 0.5D + 0.44999998807907104D;
+		//Spout Start
+		if(this.customUVs == true){
+			var13 = 1;
+			var15 = 0;
+			var17 = 1;
+			var19 = 0;
+		}
+		//Spout End
 		var9.addVertexWithUV(var21, var5 + 1.0D, var25, var13, var17);
 		var9.addVertexWithUV(var21, var5 + 0.0D, var25, var13, var19);
 		var9.addVertexWithUV(var23, var5 + 0.0D, var27, var15, var19);
@@ -1768,12 +1780,12 @@ public class RenderBlocks {
 			var17 = false;
 			var15 = false;
 		}
-//Spout Start
+		//Spout Start
 		float var21;
 		float var23;
 		float var22;
 		float var24;
-//Spout End
+		//Spout End
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 - 1, var4, 0)) {
 			if(this.aoDebugEnable > 0) {
 				--var3;
@@ -1806,7 +1818,7 @@ public class RenderBlocks {
 				}
 
 				++var3;
-//Spout Start
+				//Spout Start
 				if(var8) {
 					this.aoLightValueScratchXYZNNP = Config.fixAoLight(this.aoLightValueScratchXYZNNP, this.aoLightValueYNeg);
 					this.aoLightValueScratchXYNN = Config.fixAoLight(this.aoLightValueScratchXYNN, this.aoLightValueYNeg);
@@ -1846,7 +1858,7 @@ public class RenderBlocks {
 			this.colorBlueTopRight *= var24;
 			this.renderBottomFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 0));
 			var10 = true;
-//Spout End
+			//Spout End
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
@@ -1922,7 +1934,7 @@ public class RenderBlocks {
 			this.renderTopFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 1));
 			var10 = true;
 		}
-			//Spout End
+		//Spout End
 
 		int var25;
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 - 1, 2)) {
@@ -1957,7 +1969,7 @@ public class RenderBlocks {
 				}
 
 				++var4;
-		//Spout Start
+				//Spout Start
 				if(var8) {
 					this.aoLightValueScratchXZNN = Config.fixAoLight(this.aoLightValueScratchXZNN, this.aoLightValueZNeg);
 					this.aoLightValueScratchXYZNPN = Config.fixAoLight(this.aoLightValueScratchXYZNPN, this.aoLightValueZNeg);
@@ -2072,7 +2084,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPPP = var1.getBlockBrightness(this.blockAccess, var2 + 1, var3 + 1, var4);
 				}
 
-//Spout Start
+				//Spout Start
 				--var4;
 				if(var8) {
 					this.aoLightValueScratchXZNP = Config.fixAoLight(this.aoLightValueScratchXZNP, this.aoLightValueZPos);
@@ -2954,6 +2966,19 @@ public class RenderBlocks {
 		double var32 = var4 + var1.minY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 0;
+			var18 = 0;
+			var24 = 1;
+			var16 = 1;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var32, var36, var22, var26);
@@ -3036,6 +3061,19 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 1;
+			var18 = 1;
+			var24 = 0;
+			var16 = 0;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var30, var32, var36, var14, var18);
@@ -3125,6 +3163,20 @@ public class RenderBlocks {
 		double var32 = var4 + var1.minY;
 		double var34 = var4 + var1.maxY;
 		double var36 = var6 + var1.minZ;
+
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 1;
+			var18 = 1;
+			var24 = 0;
+			var16 = 0;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var34, var36, var20, var24);
@@ -3214,6 +3266,19 @@ public class RenderBlocks {
 		double var32 = var4 + var1.minY;
 		double var34 = var4 + var1.maxY;
 		double var36 = var6 + var1.maxZ;
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 1;
+			var18 = 1;
+			var24 = 0;
+			var16 = 0;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var34, var36, var12, var16);
@@ -3303,6 +3368,19 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 1;
+			var18 = 1;
+			var24 = 0;
+			var16 = 0;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var32, var36, var20, var24);
@@ -3392,6 +3470,19 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
+		//Spout Start
+		if(this.customUVs == true){
+			var20 = 0;
+			var12 = 1;
+			var22 = 1;
+			var14 = 0;
+
+			var26 = 1;
+			var18 = 1;
+			var24 = 0;
+			var16 = 0;
+		}
+		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var30, var36, var22, var26);
