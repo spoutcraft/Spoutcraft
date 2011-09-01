@@ -24,6 +24,7 @@ import net.minecraft.src.GuiButton;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 
 public class GenericButton extends GenericControl implements Button {
 

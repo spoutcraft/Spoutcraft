@@ -17,6 +17,8 @@
 package org.getspout.spout.gui;
 
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 

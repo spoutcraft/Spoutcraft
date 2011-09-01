@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
 

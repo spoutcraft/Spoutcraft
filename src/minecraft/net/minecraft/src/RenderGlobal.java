@@ -54,7 +54,7 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 //Spout End

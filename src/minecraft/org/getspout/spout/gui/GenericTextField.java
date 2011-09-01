@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 
 import net.minecraft.src.GuiButton;
 

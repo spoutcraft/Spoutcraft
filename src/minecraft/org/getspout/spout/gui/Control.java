@@ -16,6 +16,8 @@
  */
 package org.getspout.spout.gui;
 
+import org.spoutcraft.spoutcraftapi.gui.Color;
+
 public interface Control extends Widget{
 
 	/**

@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 
 public abstract class GenericControl extends GenericWidget implements Control{
 

@@ -6,7 +6,7 @@ package net.minecraft.src;
 
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 //Spout End
 
 // Referenced classes of package net.minecraft.src:

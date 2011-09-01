@@ -20,7 +20,7 @@ import net.minecraft.client.Minecraft;
 
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
 public class SimpleSkyManager implements SkyManager{

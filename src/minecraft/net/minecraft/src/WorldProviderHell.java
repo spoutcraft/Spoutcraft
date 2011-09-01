@@ -4,8 +4,10 @@
 
 package net.minecraft.src;
 
+//Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.Color; //Spout
+import org.spoutcraft.spoutcraftapi.gui.Color;
+//Spout End
 
 // Referenced classes of package net.minecraft.src:
 //			WorldProvider, WorldChunkManagerHell, BiomeGenBase, Vec3D, 

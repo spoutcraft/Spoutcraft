@@ -19,7 +19,8 @@ package org.getspout.spout.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import org.getspout.spout.gui.Color;
+
+import org.spoutcraft.spoutcraftapi.gui.Color;
 
 public abstract class PacketUtil {
 	public static final int maxString = 32767;

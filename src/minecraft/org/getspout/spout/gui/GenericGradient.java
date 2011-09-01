@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.getspout.spout.packet.PacketUtil;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+
 import net.minecraft.src.Tessellator;
 
 public class GenericGradient extends GenericWidget implements Gradient {

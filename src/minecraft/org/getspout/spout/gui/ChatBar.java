@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.getspout.spout.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 
 public class ChatBar extends GenericWidget implements Widget{
 	private int cursorX = 4, cursorY = 240;
