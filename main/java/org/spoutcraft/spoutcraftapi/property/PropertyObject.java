@@ -2,7 +2,9 @@ package org.spoutcraft.spoutcraftapi.property;
 
 import java.util.HashMap;
 
-public class PropertyObject {
+import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
+
+public class PropertyObject implements PropertyInterface {
 	private HashMap<String, PropertySetDelegate> properties = new HashMap<String, PropertySetDelegate>();
 	
 	protected void addProperty(String name, PropertySetDelegate delegate){
