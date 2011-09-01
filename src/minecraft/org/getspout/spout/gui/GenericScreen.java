@@ -151,9 +151,11 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		return widget.isVisible();
 	}
 	
+	RenderPriority[] rvalues = RenderPriority.values();
+	
 	public void render() {
-		for (RenderPriority priority : RenderPriority.values()) {	
-			for (Widget widget : getAttachedWidgets()){
+		for (RenderPriority priority : rvalues) {	
+			for (Widget widget : widgets){
 				if (widget.getPriority() == priority && canRender(widget)) {
 					GL11.glPushMatrix();
 					widget.render();
