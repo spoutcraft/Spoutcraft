@@ -7,38 +7,22 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 
-public final class Spoutcraft {
+public abstract interface Spoutcraft {
 
-	public String getName() {
-		return null;
-	}
+	public String getName();
 
-	public String getVersion() {
-		return null;
-	}
+	public String getVersion();
 
-	public AddonManager getAddonManager(){
-		return null;
-	}
+	public AddonManager getAddonManager();
 
-	public void reload(){
-		
-	}
+	public void reload();
 
-	public Logger getLogger(){
-		return null;
-	}
+	public Logger getLogger();
 
-	public AddonCommand getAddonCommand(String name){
-		return null;
-	}
+	public AddonCommand getAddonCommand(String name);
 
-	public boolean dispatchCommand(CommandSender sender, String commandLine){
-		return false;
-	}
+	public boolean dispatchCommand(CommandSender sender, String commandLine);
 
-	public Map<String, String[]> getCommandAliases(){
-		return null;
-	}
+	public Map<String, String[]> getCommandAliases();
 
 }
