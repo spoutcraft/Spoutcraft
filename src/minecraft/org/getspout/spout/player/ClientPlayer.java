@@ -21,6 +21,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameHUD;
 import org.getspout.spout.gui.InGameScreen;
 import org.lwjgl.input.Keyboard;
+import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;

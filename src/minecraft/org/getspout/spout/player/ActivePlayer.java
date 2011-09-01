@@ -17,6 +17,7 @@
 package org.getspout.spout.player;
 
 import org.getspout.spout.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
 public interface ActivePlayer {
 	

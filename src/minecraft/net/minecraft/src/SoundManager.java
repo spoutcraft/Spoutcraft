@@ -17,7 +17,7 @@ import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
-import org.getspout.spout.sound.Music;
+import org.spoutcraft.spoutcraftapi.sound.Music;
 //Spout End
 
 public class SoundManager {

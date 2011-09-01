@@ -22,8 +22,8 @@ import java.io.IOException;
 import net.minecraft.src.*;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.sound.Music;
-import org.getspout.spout.sound.SoundEffect;
+import org.spoutcraft.spoutcraftapi.sound.Music;
+import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
 public class PacketPlaySound implements SpoutPacket{
 	short soundId;

@@ -21,7 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.player.RenderDistance;
+import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
