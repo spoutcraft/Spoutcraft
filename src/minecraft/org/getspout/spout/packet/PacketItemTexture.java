@@ -24,34 +24,64 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.inventory.ItemManager;
 
 public class PacketItemTexture implements SpoutPacket {
-	protected String texture = "";
 	private int id;
 	private short data;
+	private String pluginName;
+	private String name;
+	public PacketItemTexture() {
+		
+	}
+	
+	public PacketItemTexture(int id, short data, String pluginName, String name) {
+		this.id = id;
+		this.data = data;
+		this.name = name;
+		this.pluginName = pluginName;
+	}
+	
+	private String getPluginName() {
+		if (pluginName == null) {
+			return "";
+		} else {
+			return pluginName;
+		}
+	}
+	
+	private void setPluginName(String pluginName) {
+		if (pluginName.equals("")) {
+			this.pluginName = null;
+		} else {
+			this.pluginName = pluginName;
+		}
+	}
+
 	@Override
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(texture) + 6;
+		return 6 + PacketUtil.getNumBytes(name) + PacketUtil.getNumBytes(getPluginName());
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		id = input.readInt();
 		data = input.readShort();
-		texture = PacketUtil.readString(input);
+		name = PacketUtil.readString(input);
+		setPluginName(PacketUtil.readString(input));
+		
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(id);
 		output.writeShort(data);
-		PacketUtil.writeString(output, texture);
+		PacketUtil.writeString(output, name);
+		PacketUtil.writeString(output, getPluginName());
 	}
-
 	@Override
 	public void run(int PlayerId) {
 		ItemManager manager = SpoutClient.getInstance().getItemManager();
-		if (texture.equals("[reset]"))
-			texture = null;
-		manager.setItemTexture(id, data, texture);
+		if (name.equals("[reset]"))
+			name = null;
+		manager.setItemTexture(id, data, pluginName, name);
 	}
 
 	@Override
@@ -61,7 +91,7 @@ public class PacketItemTexture implements SpoutPacket {
 
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	@Override

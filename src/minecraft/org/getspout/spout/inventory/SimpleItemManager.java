@@ -17,15 +17,18 @@
 package org.getspout.spout.inventory;
 
 import java.util.HashMap;
+
 import org.getspout.spout.io.CustomTextureManager;
 
 public class SimpleItemManager implements ItemManager{
 	private final HashMap<ItemData, String> itemNames;
 	private final HashMap<ItemData, String> customTextures;
+	private final HashMap<ItemData, String> customTexturesPlugin;
 	private final HashMap<ItemData, String> customNames;
 	public SimpleItemManager() {
 		itemNames = new HashMap<ItemData, String>(500);
 		customTextures = new HashMap<ItemData, String>(100);
+		customTexturesPlugin = new HashMap<ItemData, String>(100);
 		customNames = new HashMap<ItemData, String>(100);
 		itemNames.put(ItemData.getItemData(1), "Stone");
 		itemNames.put(ItemData.getItemData(2), "Grass");
@@ -327,12 +330,23 @@ public class SimpleItemManager implements ItemManager{
 
 	@Override
 	public void setItemTexture(int item, short data, String texture) {
-		customTextures.put(ItemData.getItemData(item, data), texture);
-		if (texture != null) {
+		setItemTexture(item, data, null, texture);
+	}
+	
+	@Override
+	public void setItemTexture(int item, short data, String pluginName, String texture) {
+		ItemData newKey = ItemData.getItemData(item, data);
+		customTextures.put(newKey, texture);
+		if (pluginName == null) {
+			customTexturesPlugin.remove(newKey);
+		} else {
+			customTexturesPlugin.put(newKey, pluginName);
+		}
+		if (texture != null && pluginName == null) {
 			CustomTextureManager.downloadTexture(texture);
 		}
 	}
-
+	
 	@Override
 	public String getCustomItemTexture(int item) {
 		return getCustomItemTexture(item, (short) 0);
@@ -343,6 +357,14 @@ public class SimpleItemManager implements ItemManager{
 		ItemData info = ItemData.getItemData(item, data);
 		if (customTextures.containsKey(info))
 			return customTextures.get(info);
+		return null;
+	}
+	
+	@Override
+	public String getCustomItemTexturePlugin(int item, short data) {
+		ItemData info = ItemData.getItemData(item, data);
+		if (customTexturesPlugin.containsKey(info))
+			return customTexturesPlugin.get(info);
 		return null;
 	}
 

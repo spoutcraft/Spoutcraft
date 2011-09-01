@@ -45,10 +45,11 @@ public class ItemRenderer {
 		GL11.glPushMatrix();
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) (var2.getItemDamage()));
+		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var2.itemID, (short) (var2.getItemDamage()));
 		boolean bCustomTexture = false;
 		boolean blockType = true;
-		if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
-			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+		if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null){
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
 			bCustomTexture = true;
 			blockType = SpoutItemBlock.isCustomBlock(var2.itemID, var2.getItemDamage());
 		} else if(var2.itemID < 256) {
@@ -80,7 +81,7 @@ public class ItemRenderer {
 			float var8 = ((float)(var4 / 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
 			//Spout HD End
 			//Spout Start
-			if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null){
+			if(customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null){
 				var5 = 0;
 				var6 = 1;
 				var7 = 1;

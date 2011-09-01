@@ -64,13 +64,14 @@ public class RenderItem extends Render {
 		float var18;
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
+		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
 		boolean blockType = true;
-		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			blockType = SpoutItemBlock.isCustomBlock(var10.itemID, var10.getItemDamage());
 			RenderEngine renderer = this.renderManager.renderEngine;
-			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
 		} else if (var10.itemID < 256) {
 			this.loadTexture("/terrain.png");
 		} else {
@@ -169,10 +170,11 @@ public class RenderItem extends Render {
 
 		// Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
+		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var3, (short) var4);
 		Boolean bCustomTexture = false;
 		boolean blockType = true;
-		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexture) != null) {
-			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexture).getTextureID());
+		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
+			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
 			bCustomTexture = true;
 			blockType = SpoutItemBlock.isCustomBlock(var3, var4);
 		} else if (var3 < 256) {

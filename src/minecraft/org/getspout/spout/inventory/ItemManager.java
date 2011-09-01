@@ -91,6 +91,16 @@ public interface ItemManager {
 	 * @param texture to set
 	 */
 	public void setItemTexture(int item, short data, String texture);
+	
+	/**
+	 * Sets the texture of the item
+	 * 
+	 * @param item to texture
+	 * @param data of the item
+	 * @param pluginName the name of the associated plugin
+	 * @param texture to set
+	 */
+	public void setItemTexture(int item, short data, String pluginName, String texture);
 
 	/**
 	 * Gets the custom name of the item, or null if none exists
@@ -107,6 +117,14 @@ public interface ItemManager {
 	 * @return texture 
 	 */
 	public String getCustomItemTexture(int item, short data);
+	
+	/**
+	 * Gets the custom texture of the item, or null if none exists
+	 * @param item to get the texture of
+	 * @param data data of the item
+	 * @return texture 
+	 */
+	public String getCustomItemTexturePlugin(int item, short data);
 
 	/**
 	 * Resets the name of the item back to the notchian default
