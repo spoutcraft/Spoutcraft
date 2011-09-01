@@ -16,7 +16,9 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-public class Color {
+import org.spoutcraft.spoutcraftapi.animation.Animatable;
+
+public class Color implements Animatable {
 	private short red;
 	private short green;
 	private short blue;
@@ -122,5 +124,21 @@ public class Color {
 	
 	public int toInt() {
 		return Long.valueOf(((long)getAlphaB() << 24L) + ((long)getRedB() << 16L) + ((long)getGreenB() << 8L) + (long)getBlueB()).intValue();
+	}
+
+	@Override
+	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
+		short r, g, b, a;
+		Color p1 = (Color)startValue;
+		Color p2 = (Color)endValue;
+		r = p1.red;
+		g = p1.green;
+		b = p1.blue;
+		a = p1.alpha;
+		r+= (r-p2.red)*p;
+		g+= (g-p2.green)*p;
+		b+= (b-p2.blue)*p;
+		a+= (a-p2.alpha)*p;
+		return new Color(r, g, b, a);
 	}
 }
