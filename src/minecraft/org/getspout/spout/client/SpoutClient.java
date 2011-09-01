@@ -22,7 +22,6 @@ import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
-import org.getspout.spout.inventory.ItemManager;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
@@ -37,6 +36,8 @@ import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
+import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;

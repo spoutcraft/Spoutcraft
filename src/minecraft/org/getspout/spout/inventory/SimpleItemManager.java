@@ -19,6 +19,7 @@ package org.getspout.spout.inventory;
 import java.util.HashMap;
 
 import org.getspout.spout.io.CustomTextureManager;
+import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 
 public class SimpleItemManager implements ItemManager{
 	private final HashMap<ItemData, String> itemNames;
