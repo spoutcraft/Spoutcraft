@@ -16,7 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.player;
 
-import org.getspout.spout.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+
 public interface SkyManager {
 	
 	public int getCloudHeight();
