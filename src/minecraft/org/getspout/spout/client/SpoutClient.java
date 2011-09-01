@@ -30,13 +30,13 @@ import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.packet.SpoutPacket;
 import org.getspout.spout.player.ActivePlayer;
-import org.getspout.spout.player.BiomeManager;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
 import org.getspout.spout.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;

@@ -22,9 +22,9 @@ import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ActivePlayer;
-import org.getspout.spout.player.BiomeManager;
 import org.getspout.spout.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 
 public interface Client {
 	
