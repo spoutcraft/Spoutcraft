@@ -1,15 +1,15 @@
 package org.spoutcraft.spoutcraftapi.animation;
 
-/**
- * This is used to set the new values to the animated object. Implement this interface for your properties.
- * @author tux
- *
- */
-public interface PropertyDelegate {
-	/**
-	 * Sets the value to the object.
-	 * Will be called each animation cycle.
-	 * @param value to be set to the object.
-	 */
-	public void set(Animatable value);
+import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
+import org.spoutcraft.spoutcraftapi.property.Property;
+
+public class PropertyDelegate implements ValueSetDelegate {
+	private Property delegate;
+	public PropertyDelegate(PropertyInterface object, String property){
+		delegate = object.getPropertyDelegate(property);
+	}
+	@Override
+	public void set(Animatable value) {
+		delegate.set(value);
+	}
 }

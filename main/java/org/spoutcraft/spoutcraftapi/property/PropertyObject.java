@@ -5,9 +5,9 @@ import java.util.HashMap;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 
 public class PropertyObject implements PropertyInterface {
-	private HashMap<String, PropertySetDelegate> properties = new HashMap<String, PropertySetDelegate>();
+	private HashMap<String, Property> properties = new HashMap<String, Property>();
 	
-	protected void addProperty(String name, PropertySetDelegate delegate){
+	protected void addProperty(String name, Property delegate){
 		properties.put(name, delegate);
 	}
 	
@@ -24,7 +24,7 @@ public class PropertyObject implements PropertyInterface {
 		}
 	}
 	
-	public PropertySetDelegate getPropertyDelegate(String name){
+	public Property getPropertyDelegate(String name){
 		return properties.get(name);
 	}
 }
