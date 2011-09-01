@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.Block;
 import net.minecraft.src.RenderManager;
@@ -131,24 +132,24 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 			double oldY = 1;
 			double oldZ = 1;
 			Block block = null;
-			if (getTypeId() < 255) {
+			if (getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[getTypeId()].getRenderType())) {
 				block = Block.blocksList[getTypeId()];
 				oldX = block.maxX;
 				oldY = block.maxY;
 				oldZ = block.maxZ;
-				block.maxX = block.maxX * (width / 8);
-				block.maxY = block.maxY * (height / 8);
-				block.maxZ = block.maxZ * (getDepth() / 8);
+				block.maxX = block.maxX * width / 8;
+				block.maxY = block.maxY * height / 8;
+				block.maxZ = block.maxZ * getDepth() / 8;
 			}
 			else {
-				renderer.setScale(1 + (getWidth() / 200D), 1 + (getHeight() / 200D), 1);
+				renderer.setScale((width / 8D), (height / 8D), 1);
 			}
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0);
 			GL11.glScalef((float) (screen.getWidth() / 427f), (float) (screen.getHeight() / 240f), 1);
 			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, toRender, 0, 0);
 			GL11.glPopMatrix();
-			if (getTypeId() < 255){
+			if (getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[getTypeId()].getRenderType())){
 				block.maxX = oldX;
 				block.maxY = oldY;
 				block.maxZ = oldZ;
