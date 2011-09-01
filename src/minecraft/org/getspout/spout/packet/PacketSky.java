@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.Color;
-import org.getspout.spout.player.SkyManager;
+import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
 public class PacketSky implements SpoutPacket{
 	private int cloudY, stars, sunPercent, moonPercent;

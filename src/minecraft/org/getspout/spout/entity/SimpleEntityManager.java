@@ -19,6 +19,8 @@ package org.getspout.spout.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.spoutcraft.spoutcraftapi.entity.EntityManager;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 
