@@ -90,6 +90,7 @@ public class FileDownloadThread extends Thread{
 						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
 						URL url = new URL(next.getDownloadUrl());
 						URLConnection conn = url.openConnection();
+						conn.setReadTimeout(2000); //2s timeout
 						InputStream in = conn.getInputStream();
 						
 						FileOutputStream fos = new FileOutputStream(next.getTempFile());
