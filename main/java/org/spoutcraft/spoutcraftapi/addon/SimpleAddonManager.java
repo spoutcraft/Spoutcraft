@@ -1,6 +1,7 @@
 package org.spoutcraft.spoutcraftapi.addon;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,219 +11,376 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.bukkit.util.FileUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.event.Event;
-import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.spoutcraft.spoutcraftapi.event.Event.Priority;
-import org.spoutcraft.spoutcraftapi.event.Event.Type;
+import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public class SimpleAddonManager implements AddonManager {
 
 	private Spoutcraft spoutcraft;
-	private final List<Addon> addons = new ArrayList<Addon>();
-	private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
-	private final SimpleCommandMap commandMap;
-	private final Map<Event.Type, SortedSet<RegisteredListener>> listeners = new EnumMap<Event.Type, SortedSet<RegisteredListener>>(Event.Type.class);
-	private final Comparator<RegisteredListener> comparer = new Comparator<RegisteredListener>() {
-		public int compare(RegisteredListener i, RegisteredListener j) {
-			int result = i.getPriority().compareTo(j.getPriority());
+	private final Map<Pattern, AddonLoader> fileAssociations = new HashMap<Pattern, AddonLoader>();
+    private final List<Addon> addons = new ArrayList<Addon>();
+    private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
+    private final Map<Event.Type, SortedSet<RegisteredListener>> listeners = new EnumMap<Event.Type, SortedSet<RegisteredListener>>(Event.Type.class);
+    private static File updateDirectory = null;
+    private final SimpleCommandMap commandMap;
+    private final Comparator<RegisteredListener> comparer = new Comparator<RegisteredListener>() {
+        public int compare(RegisteredListener i, RegisteredListener j) {
+            int result = i.getPriority().compareTo(j.getPriority());
 
-			if ((result == 0) && (i != j)) {
-				result = 1;
-			}
+            if ((result == 0) && (i != j)) {
+                result = 1;
+            }
 
-			return result;
-		}
-	};
+            return result;
+        }
+    };
 
-	public SimpleAddonManager(Spoutcraft instance, SimpleCommandMap commandMap) {
-		spoutcraft = instance;
-		this.commandMap = commandMap;
-	}
+    public SimpleAddonManager(Spoutcraft instance, SimpleCommandMap commandMap) {
+        spoutcraft = instance;
+        this.commandMap = commandMap;
+    }
 
-	public synchronized Addon getAddon(String paramString) {
-		return (Addon) this.lookupNames.get(paramString);
-	}
+    /**
+     * Registers the specified addon loader
+     *
+     * @param loader Class name of the AddonLoader to register
+     * @throws IllegalArgumentException Thrown when the given Class is not a valid AddonLoader
+     */
+    public void registerInterface(Class<? extends AddonLoader> loader) throws IllegalArgumentException {
+        AddonLoader instance;
 
-	public synchronized Addon[] getAddons() {
-		return (Addon[]) this.addons.toArray(new Addon[0]);
-	}
+        if (AddonLoader.class.isAssignableFrom(loader)) {
+            Constructor<? extends AddonLoader> constructor;
 
-	public boolean isAddonEnabled(String paramString) {
-		Addon addon = getAddon(paramString);
-		return isAddonEnabled(addon);
-	}
+            try {
+                constructor = loader.getConstructor(Spoutcraft.class);
+                instance = constructor.newInstance(spoutcraft);
+            } catch (NoSuchMethodException ex) {
+                String className = loader.getName();
 
-	public boolean isAddonEnabled(Addon paramAddon) {
-		if ((paramAddon != null) && (this.addons.contains(paramAddon))) {
-			return paramAddon.isEnabled();
-		}
-		return false;
-	}
+                throw new IllegalArgumentException(String.format("Class %s does not have a public %s(Spoutcraft) constructor", className, className), ex);
+            } catch (Exception ex) {
+                throw new IllegalArgumentException(String.format("Unexpected exception %s while attempting to construct a new instance of %s", ex.getClass().getName(), loader.getName()), ex);
+            }
+        } else {
+            throw new IllegalArgumentException(String.format("Class %s does not implement interface AddonLoader", loader.getName()));
+        }
 
-	public synchronized Addon loadAddon(File paramFile) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
-		return loadAddon(paramFile, true);
-	}
+        Pattern[] patterns = instance.getAddonFileFilters();
 
-	private synchronized Addon loadAddon(File file, boolean ignoreSoftDepenencies) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
-		Addon result = null;
+        synchronized (this) {
+            for (Pattern pattern : patterns) {
+                fileAssociations.put(pattern, instance);
+            }
+        }
+    }
 
-		if (file.exists() && file.getPath().toLowerCase().endsWith(".jar")) {
-			AddonLoader loader = new SimpleAddonLoader();
-			result = loader.loadAddon(file, ignoreSoftDepenencies);
-		}
+    /**
+     * Loads the addons contained within the specified directory
+     *
+     * @param directory Directory to check for addons
+     * @return A list of all addons loaded
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Addon[] loadAddons(File directory) {
+        List<Addon> result = new ArrayList<Addon>();
+        File[] files = directory.listFiles();
 
-		if (result != null) {
-			this.addons.add(result);
-			this.lookupNames.put(result.getDescription().getName(), result);
-		}
+        boolean allFailed = false;
+        boolean finalPass = false;
 
-		return result;
-	}
+        LinkedList<File> filesList = new LinkedList(Arrays.asList(files));
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Addon[] loadAddons(File paramFile) {
-		List result = new ArrayList();
-		File[] files = paramFile.listFiles();
+        if (!(spoutcraft.getUpdateFolder().equals(""))) {
+            updateDirectory = new File(directory, spoutcraft.getUpdateFolder());
+        }
 
-		boolean allFailed = false;
-		boolean finalPass = false;
+        while (!allFailed || finalPass) {
+            allFailed = true;
+            Iterator<File> itr = filesList.iterator();
 
-		LinkedList filesList = new LinkedList(Arrays.asList(files));
+            while (itr.hasNext()) {
+                File file = itr.next();
+                Addon addon = null;
 
-		while ((!allFailed) || (finalPass)) {
-			allFailed = true;
-			Iterator itr = filesList.iterator();
+                try {
+                    addon = loadAddon(file, finalPass);
+                    itr.remove();
+                } catch (UnknownDependencyException ex) {
+                    if (finalPass) {
+                        spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+                        itr.remove();
+                    } else {
+                        addon = null;
+                    }
+                } catch (InvalidAddonException ex) {
+                    spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
+                    itr.remove();
+                } catch (InvalidDescriptionException ex) {
+                    spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+                    itr.remove();
+                }
 
-			while (itr.hasNext()) {
-				File file = (File) itr.next();
-				Addon addon = null;
-				try {
-					addon = loadAddon(file, finalPass);
-					itr.remove();
-				} catch (UnknownDependencyException ex) {
-					if (finalPass) {
-						this.spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + paramFile.getPath() + "': " + ex.getMessage(), ex);
-						itr.remove();
-					} else {
-						addon = null;
-					}
-				} catch (InvalidAddonException ex) {
-					this.spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + paramFile.getPath() + "': ", ex.getCause());
-					itr.remove();
-				} catch (InvalidDescriptionException ex) {
-					this.spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + paramFile.getPath() + "': " + ex.getMessage(), ex);
-					itr.remove();
-				}
+                if (addon != null) {
+                    result.add(addon);
+                    allFailed = false;
+                    finalPass = false;
+                }
+            }
+            if (finalPass) {
+                break;
+            } else if (allFailed) {
+                finalPass = true;
+            }
+        }
 
-				if (addon != null) {
-					result.add(addon);
-					allFailed = false;
-					finalPass = false;
-				}
-			}
-			if (finalPass)
-				break;
-			if (allFailed) {
-				finalPass = true;
-			}
-		}
+        return result.toArray(new Addon[result.size()]);
+    }
 
-		return (Addon[]) result.toArray(new Addon[result.size()]);
-	}
+    /**
+     * Loads the addon in the specified file
+     *
+     * File must be valid according to the current enabled Addon interfaces
+     *
+     * @param file File containing the addon to load
+     * @return The Addon loaded, or null if it was invalid
+     * @throws InvalidAddonException Thrown when the specified file is not a valid addon
+     * @throws InvalidDescriptionException Thrown when the specified file contains an invalid description
+     */
+    public synchronized Addon loadAddon(File file) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
+        return loadAddon(file, true);
+    }
 
-	public void disableAddons() {
-		for (Addon addon : getAddons()) {
-			disableAddon(addon);
-		}
+    /**
+     * Loads the addon in the specified file
+     *
+     * File must be valid according to the current enabled Addon interfaces
+     *
+     * @param file File containing the addon to load
+     * @param ignoreSoftDependencies Loader will ignore soft dependencies if this flag is set to true
+     * @return The Addon loaded, or null if it was invalid
+     * @throws InvalidAddonException Thrown when the specified file is not a valid addon
+     * @throws InvalidDescriptionException Thrown when the specified file contains an invalid description
+     */
+    public synchronized Addon loadAddon(File file, boolean ignoreSoftDependencies) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
+        File updateFile = null;
 
-	}
+        if (updateDirectory != null && updateDirectory.isDirectory() && (updateFile = new File(updateDirectory, file.getName())).isFile()) {
+            if (FileUtil.copy(updateFile, file)) {
+                updateFile.delete();
+            }
+        }
 
-	public void clearAddons() {
-		synchronized (this) {
-			disableAddons();
-			this.addons.clear();
-			this.lookupNames.clear();
-		}
+        Set<Pattern> filters = fileAssociations.keySet();
+        Addon result = null;
 
-	}
+        for (Pattern filter : filters) {
+            String name = file.getName();
+            Matcher match = filter.matcher(name);
 
-	public synchronized void callEvent(Event paramEvent) {
-		SortedSet<RegisteredListener> eventListeners = listeners.get(paramEvent.getType());
+            if (match.find()) {
+                AddonLoader loader = fileAssociations.get(filter);
+
+                result = loader.loadAddon(file, ignoreSoftDependencies);
+            }
+        }
+
+        if (result != null) {
+            addons.add(result);
+            lookupNames.put(result.getDescription().getName(), result);
+        }
+
+        return result;
+    }
+
+    /**
+     * Checks if the given addon is loaded and returns it when applicable
+     *
+     * Please note that the name of the addon is case-sensitive
+     *
+     * @param name Name of the addon to check
+     * @return Addon if it exists, otherwise null
+     */
+    public synchronized Addon getAddon(String name) {
+        return lookupNames.get(name);
+    }
+
+    public synchronized Addon[] getAddons() {
+        return addons.toArray(new Addon[0]);
+    }
+
+    /**
+     * Checks if the given addon is enabled or not
+     *
+     * Please note that the name of the addon is case-sensitive.
+     *
+     * @param name Name of the addon to check
+     * @return true if the addon is enabled, otherwise false
+     */
+    public boolean isAddonEnabled(String name) {
+        Addon addon = getAddon(name);
+
+        return isAddonEnabled(addon);
+    }
+
+    /**
+     * Checks if the given addon is enabled or not
+     *
+     * @param addon Addon to check
+     * @return true if the addon is enabled, otherwise false
+     */
+    public boolean isAddonEnabled(Addon addon) {
+        if ((addon != null) && (addons.contains(addon))) {
+            return addon.isEnabled();
+        } else {
+            return false;
+        }
+    }
+
+    public void enableAddon(final Addon addon) {
+        if (!addon.isEnabled()) {
+            List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
+
+            if (!addonCommands.isEmpty()) {
+                commandMap.registerAll(addon.getDescription().getName(), addonCommands);
+            }
+            
+            try {
+                addon.getAddonLoader().enableAddon(addon);
+            } catch (Throwable ex) {
+                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public void disableAddons() {
+        for (Addon addon: getAddons()) {
+            disableAddon(addon);
+        }
+    }
+
+    public void disableAddon(final Addon addon) {
+        if (addon.isEnabled()) {
+            try {
+                addon.getAddonLoader().disableAddon(addon);
+            } catch (Throwable ex) {
+                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+            }
+        }
+    }
+
+    public void clearAddons() {
+        synchronized (this) {
+            disableAddons();
+            addons.clear();
+            lookupNames.clear();
+            listeners.clear();
+        }
+    }
+
+    /**
+     * Calls a player related event with the given details
+     *
+     * @param type Type of player related event to call
+     * @param event Event details
+     */
+    public synchronized void callEvent(Event event) {
+        SortedSet<RegisteredListener> eventListeners = listeners.get(event.getType());
 
         if (eventListeners != null) {
             for (RegisteredListener registration : eventListeners) {
-                 try {
-                    registration.callEvent(paramEvent);
-                
+                try {
+                    registration.callEvent(event);
+                } catch (AuthorNagException ex) {
+                    Addon addon = registration.getAddon();
+
+                    if (addon.isNaggable()) {
+                        addon.setNaggable(false);
+
+                        String author = "<NoAuthorGiven>";
+
+                        if (addon.getDescription().getAuthors().size() > 0) {
+                            author = addon.getDescription().getAuthors().get(0);
+                        }
+                        spoutcraft.getLogger().log(Level.SEVERE, String.format(
+                            "Nag author: '%s' of '%s' about the following: %s",
+                            author,
+                            addon.getDescription().getName(),
+                            ex.getMessage()
+                        ));
+                    }
                 } catch (Throwable ex) {
-                    spoutcraft.getLogger().log(Level.SEVERE, "Could not pass event " + paramEvent.getType() + " to " + registration.getAddon().getDescription().getName(), ex);
+                    spoutcraft.getLogger().log(Level.SEVERE, "Could not pass event " + event.getType() + " to " + registration.getAddon().getDescription().getName(), ex);
                 }
             }
         }
-	}
+    }
 
-	public void registerEvent(Type paramType, Listener paramListener, Priority paramPriority, Addon paramAddon) {
-		if (!paramAddon.isEnabled()) {
-			throw new IllegalAddonAccessException("Addon attempted to register " + paramType + " while not enabled");
-		}
-
-		getEventListeners(paramType).add(new RegisteredListener(paramListener, paramPriority, paramAddon, paramType));
-
-	}
-
-	public void registerEvent(Type paramType, Listener paramListener, EventExecutor paramEventExecutor, Priority paramPriority, Addon paramAddon) {
-		if (!paramAddon.isEnabled()) {
-            throw new IllegalAddonAccessException("Addon attempted to register " + paramType + " while not enabled");
+    /**
+     * Registers the given event to the specified listener
+     *
+     * @param type EventType to register
+     * @param listener PlayerListener to register
+     * @param priority Priority of this event
+     * @param addon Addon to register
+     */
+    public void registerEvent(Event.Type type, Listener listener, Priority priority, Addon addon) {
+        if (!addon.isEnabled()) {
+            throw new IllegalAddonAccessException("Addon attempted to register " + type + " while not enabled");
         }
 
-        getEventListeners(paramType).add(new RegisteredListener(paramListener, paramEventExecutor, paramPriority, paramAddon));
-	}
+        getEventListeners(type).add(new RegisteredListener(listener, priority, addon, type));
+    }
 
-	private SortedSet<RegisteredListener> getEventListeners(Event.Type type) {
-		SortedSet<RegisteredListener> eventListeners = listeners.get(type);
+    /**
+     * Registers the given event to the specified listener using a directly passed EventExecutor
+     *
+     * @param type EventType to register
+     * @param listener PlayerListener to register
+     * @param executor EventExecutor to register
+     * @param priority Priority of this event
+     * @param addon Addon to register
+     */
+    public void registerEvent(Event.Type type, Listener listener, EventExecutor executor, Priority priority, Addon addon) {
+        if (!addon.isEnabled()) {
+            throw new IllegalAddonAccessException("Addon attempted to register " + type + " while not enabled");
+        }
 
-		if (eventListeners != null) {
-			return eventListeners;
-		}
+        getEventListeners(type).add(new RegisteredListener(listener, executor, priority, addon));
+    }
 
-		eventListeners = new TreeSet<RegisteredListener>(comparer);
-		listeners.put(type, eventListeners);
-		return eventListeners;
-	}
+    /**
+     * Returns a SortedSet of RegisteredListener for the specified event type creating a new queue if needed
+     *
+     * @param type EventType to lookup
+     * @return SortedSet<RegisteredListener> the looked up or create queue matching the requested type
+     */
+    private SortedSet<RegisteredListener> getEventListeners(Event.Type type) {
+        SortedSet<RegisteredListener> eventListeners = listeners.get(type);
 
-	public void enableAddon(Addon addon) {
-		if (!addon.isEnabled()) {
-			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
+        if (eventListeners != null) {
+            return eventListeners;
+        }
 
-			if (!addonCommands.isEmpty()) {
-				commandMap.registerAll(addon.getDescription().getName(), addonCommands);
-			}
+        eventListeners = new TreeSet<RegisteredListener>(comparer);
+        listeners.put(type, eventListeners);
+        return eventListeners;
+    }
 
-			try {
-				addon.getAddonLoader().enableAddon(addon);
-			} catch (Throwable ex) {
-				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
-			}
-		}
+   
 
-	}
-
-	public void disableAddon(Addon addon) {
-		if (addon.isEnabled()) {
-			try {
-				addon.getAddonLoader().disableAddon(addon);
-			} catch (Throwable ex) {
-				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
-			}
-		}
-	}
 
 }

@@ -29,7 +29,7 @@ import org.spoutcraft.spoutcraftapi.event.Event;
 import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.yaml.snakeyaml.error.YAMLException;
 
-public final class JavaAddonLoader implements AddonLoader {
+public class JavaAddonLoader implements AddonLoader {
 	private final Spoutcraft spoutcraft;
 	private final Pattern[] fileFilters = new Pattern[] { Pattern.compile("\\.jar$"), };
 	private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
@@ -60,7 +60,7 @@ public final class JavaAddonLoader implements AddonLoader {
 			}
 
 			InputStream stream = jar.getInputStream(entry);
-			
+
 			description = new AddonDescriptionFile(stream);
 
 			stream.close();
@@ -246,7 +246,8 @@ public final class JavaAddonLoader implements AddonLoader {
 
 			// Perhaps abort here, rather than continue going, but as it stands,
 			// an abort is not possible the way it's currently written
-			// TODO: spoutcraft.getAddonManager().callEvent(new AddonEnableEvent(addpm));
+			// TODO: spoutcraft.getAddonManager().callEvent(new
+			// AddonEnableEvent(addpm));
 		}
 	}
 
@@ -265,7 +266,8 @@ public final class JavaAddonLoader implements AddonLoader {
 				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 
-			// TODO: spoutcraft.getAddonManager().callEvent(new AddonDisableEvent(addon));
+			// TODO: spoutcraft.getAddonManager().callEvent(new
+			// AddonDisableEvent(addon));
 
 			loaders.remove(jAddon.getDescription().getName());
 

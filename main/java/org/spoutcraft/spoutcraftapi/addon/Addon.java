@@ -15,6 +15,10 @@ public abstract interface Addon extends CommandExecutor {
 	public abstract boolean isEnabled();
 	
 	public abstract void setEnabled(boolean arg);
+
+	public abstract boolean isNaggable();
+
+	public abstract void setNaggable(boolean b);
 	
 	public enum Mode {
 		SINGLE_PLAYER, 
