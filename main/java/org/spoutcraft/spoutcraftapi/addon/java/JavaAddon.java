@@ -47,7 +47,7 @@ public abstract class JavaAddon implements Addon {
 		return dataFolder;
 	}
 
-	public Client getSpoutcraft() {
+	public Client getClient() {
 		return client;
 	}
 
