@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.util.FileUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
@@ -29,7 +29,7 @@ import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public class SimpleAddonManager implements AddonManager {
 
-	private Spoutcraft spoutcraft;
+	private Client client;
 	private final Map<Pattern, AddonLoader> fileAssociations = new HashMap<Pattern, AddonLoader>();
     private final List<Addon> addons = new ArrayList<Addon>();
     private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
@@ -48,8 +48,8 @@ public class SimpleAddonManager implements AddonManager {
         }
     };
 
-    public SimpleAddonManager(Spoutcraft instance, SimpleCommandMap commandMap) {
-        spoutcraft = instance;
+    public SimpleAddonManager(Client instance, SimpleCommandMap commandMap) {
+        client = instance;
         this.commandMap = commandMap;
     }
 
@@ -66,8 +66,8 @@ public class SimpleAddonManager implements AddonManager {
             Constructor<? extends AddonLoader> constructor;
 
             try {
-                constructor = loader.getConstructor(Spoutcraft.class);
-                instance = constructor.newInstance(spoutcraft);
+                constructor = loader.getConstructor(Client.class);
+                instance = constructor.newInstance(client);
             } catch (NoSuchMethodException ex) {
                 String className = loader.getName();
 
@@ -104,8 +104,8 @@ public class SimpleAddonManager implements AddonManager {
 
         LinkedList<File> filesList = new LinkedList(Arrays.asList(files));
 
-        if (!(spoutcraft.getUpdateFolder().equals(""))) {
-            updateDirectory = new File(directory, spoutcraft.getUpdateFolder());
+        if (!(client.getUpdateFolder().equals(""))) {
+            updateDirectory = new File(directory, client.getUpdateFolder());
         }
 
         while (!allFailed || finalPass) {
@@ -121,16 +121,16 @@ public class SimpleAddonManager implements AddonManager {
                     itr.remove();
                 } catch (UnknownDependencyException ex) {
                     if (finalPass) {
-                        spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+                        client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
                         itr.remove();
                     } else {
                         addon = null;
                     }
                 } catch (InvalidAddonException ex) {
-                    spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
+                    client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
                     itr.remove();
                 } catch (InvalidDescriptionException ex) {
-                    spoutcraft.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+                    client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
                     itr.remove();
                 }
 
@@ -261,7 +261,7 @@ public class SimpleAddonManager implements AddonManager {
             try {
                 addon.getAddonLoader().enableAddon(addon);
             } catch (Throwable ex) {
-                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+                client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
             }
         }
     }
@@ -277,7 +277,7 @@ public class SimpleAddonManager implements AddonManager {
             try {
                 addon.getAddonLoader().disableAddon(addon);
             } catch (Throwable ex) {
-                spoutcraft.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+                client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
             }
         }
     }
@@ -315,7 +315,7 @@ public class SimpleAddonManager implements AddonManager {
                         if (addon.getDescription().getAuthors().size() > 0) {
                             author = addon.getDescription().getAuthors().get(0);
                         }
-                        spoutcraft.getLogger().log(Level.SEVERE, String.format(
+                        client.getLogger().log(Level.SEVERE, String.format(
                             "Nag author: '%s' of '%s' about the following: %s",
                             author,
                             addon.getDescription().getName(),
@@ -323,7 +323,7 @@ public class SimpleAddonManager implements AddonManager {
                         ));
                     }
                 } catch (Throwable ex) {
-                    spoutcraft.getLogger().log(Level.SEVERE, "Could not pass event " + event.getType() + " to " + registration.getAddon().getDescription().getName(), ex);
+                    client.getLogger().log(Level.SEVERE, "Could not pass event " + event.getType() + " to " + registration.getAddon().getDescription().getName(), ex);
                 }
             }
         }

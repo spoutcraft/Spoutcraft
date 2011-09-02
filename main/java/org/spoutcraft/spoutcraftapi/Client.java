@@ -7,7 +7,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 
-public abstract interface Spoutcraft {
+public abstract interface Client {
 
 	public String getName();
 

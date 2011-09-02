@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
@@ -30,13 +30,13 @@ import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.yaml.snakeyaml.error.YAMLException;
 
 public class JavaAddonLoader implements AddonLoader {
-	private final Spoutcraft spoutcraft;
+	private final Client client;
 	private final Pattern[] fileFilters = new Pattern[] { Pattern.compile("\\.jar$"), };
 	private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
 	private final Map<String, AddonClassLoader> loaders = new HashMap<String, AddonClassLoader>();
 
-	public JavaAddonLoader(Spoutcraft instance) {
-		spoutcraft = instance;
+	public JavaAddonLoader(Client instance) {
+		client = instance;
 	}
 
 	public Addon loadAddon(File file) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
@@ -78,12 +78,12 @@ public class JavaAddonLoader implements AddonLoader {
 		if (dataFolder.equals(oldDataFolder)) {
 			// They are equal -- nothing needs to be done!
 		} else if (dataFolder.isDirectory() && oldDataFolder.isDirectory()) {
-			spoutcraft.getLogger().log(Level.INFO, String.format("While loading %s (%s) found old-data folder: %s next to the new one: %s", description.getName(), file, oldDataFolder, dataFolder));
+			client.getLogger().log(Level.INFO, String.format("While loading %s (%s) found old-data folder: %s next to the new one: %s", description.getName(), file, oldDataFolder, dataFolder));
 		} else if (oldDataFolder.isDirectory() && !dataFolder.exists()) {
 			if (!oldDataFolder.renameTo(dataFolder)) {
 				throw new InvalidAddonException(new Exception("Unable to rename old data folder: '" + oldDataFolder + "' to: '" + dataFolder + "'"));
 			}
-			spoutcraft.getLogger().log(Level.INFO, String.format("While loading %s (%s) renamed data folder: '%s' to '%s'", description.getName(), file, oldDataFolder, dataFolder));
+			client.getLogger().log(Level.INFO, String.format("While loading %s (%s) renamed data folder: '%s' to '%s'", description.getName(), file, oldDataFolder, dataFolder));
 		}
 
 		if (dataFolder.exists() && !dataFolder.isDirectory()) {
@@ -150,7 +150,7 @@ public class JavaAddonLoader implements AddonLoader {
 
 			result = constructor.newInstance();
 
-			result.initialize(this, spoutcraft, description, dataFolder, file, loader);
+			result.initialize(this, client, description, dataFolder, file, loader);
 		} catch (Throwable ex) {
 			throw new InvalidAddonException(ex);
 		}
@@ -241,7 +241,7 @@ public class JavaAddonLoader implements AddonLoader {
 			try {
 				jAddon.setEnabled(true);
 			} catch (Throwable ex) {
-				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+				client.getLogger().log(Level.SEVERE, "Error occurred while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 
 			// Perhaps abort here, rather than continue going, but as it stands,
@@ -263,7 +263,7 @@ public class JavaAddonLoader implements AddonLoader {
 			try {
 				jAddon.setEnabled(false);
 			} catch (Throwable ex) {
-				spoutcraft.getLogger().log(Level.SEVERE, "Error occurred while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+				client.getLogger().log(Level.SEVERE, "Error occurred while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 
 			// TODO: spoutcraft.getAddonManager().callEvent(new
