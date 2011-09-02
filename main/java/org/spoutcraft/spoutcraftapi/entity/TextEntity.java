@@ -10,8 +10,8 @@ public interface TextEntity extends Entity {
 	
 	public void setRotatingWithPlayer(boolean flag);
 	
-	public double getScale();
+	public float getScale();
 	
-	public void setScale(double s);
+	public void setScale(float s);
 	
 }
