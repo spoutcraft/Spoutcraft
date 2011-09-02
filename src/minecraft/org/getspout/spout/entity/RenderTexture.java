@@ -45,10 +45,12 @@ public class RenderTexture extends RenderEntity {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, entityT.texture.getTextureID());
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0, -entityT.height * 0.014, 0, 0.0D, 0.0D); //draw corners
-		tessellator.addVertexWithUV(-entityT.width * 0.014, -entityT.height * 0.014, 0, entityT.texture.getWidth(), 0.0D);
-		tessellator.addVertexWithUV(-entityT.width * 0.014, 0, 0, entityT.texture.getWidth(), entityT.texture.getHeight());
-		tessellator.addVertexWithUV(0, 0, 0, 0.0D, entityT.texture.getHeight());
+		double h = entityT.height * 0.014;
+		double w = entityT.width * 0.014;
+		tessellator.addVertexWithUV(w/2, -h/2, 0, 0.0D, 0.0D); //draw corners
+		tessellator.addVertexWithUV(-w/2, -h/2, 0, entityT.texture.getWidth(), 0.0D);
+		tessellator.addVertexWithUV(-w/2, h/2, 0, entityT.texture.getWidth(), entityT.texture.getHeight());
+		tessellator.addVertexWithUV(w/2, h/2, 0, 0.0D, entityT.texture.getHeight());
 		tessellator.draw();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderHelper.enableStandardItemLighting();
