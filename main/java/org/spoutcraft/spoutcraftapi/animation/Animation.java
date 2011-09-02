@@ -25,7 +25,7 @@ public class Animation {
 	private Direction direction;
 	private State state;
 	private AnimationProgress animationProgress = new LinearAnimationProgress();
-	private PropertyDelegate property;
+	private ValueSetDelegate property;
 	private static Timer timer = new Timer();
 	private AnimationRunnable animator = new AnimationRunnable(this);
 	
@@ -124,11 +124,11 @@ public class Animation {
 		return startValue.getValueAt(getAnimationProgress().getValueAt((double)currentTime/(double)duration), startValue, endValue);
 	}
 	
-	public void setProperty(PropertyDelegate property) {
+	public void setValueDelegate(ValueSetDelegate property) {
 		this.property = property;
 	}
 
-	public PropertyDelegate getProperty() {
+	public ValueSetDelegate getValueDelegate() {
 		return property;
 	}
 
@@ -155,7 +155,7 @@ public class Animation {
 			}
 			animation.setCurrentTime(time);
 			Animatable value = animation.getCurrentValue();
-			animation.getProperty().set(value);
+			animation.getValueDelegate().set(value);
 		}
 	}
 }

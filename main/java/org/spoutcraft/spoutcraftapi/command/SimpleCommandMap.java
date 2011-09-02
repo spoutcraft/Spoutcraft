@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.Iterator;
 
 import org.bukkit.ChatColor;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 
@@ -19,17 +19,17 @@ import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 public final class SimpleCommandMap implements CommandMap {
     private final Map<String, Command> knownCommands = new HashMap<String, Command>();
     private final Set<String> aliases = new HashSet<String>();
-    private final Spoutcraft spoutcraft;
+    private final Client client;
 
-    public SimpleCommandMap(final Spoutcraft spoutcraft) {
-        this.spoutcraft = spoutcraft;
-        setDefaultCommands(spoutcraft);
+    public SimpleCommandMap(final Client client) {
+        this.client = client;
+        setDefaultCommands(client);
     }
 
-    private void setDefaultCommands(final Spoutcraft spoutcraft) {
-        register("bukkit", new VersionCommand("version", spoutcraft));
-        register("bukkit", new ReloadCommand("reload", spoutcraft));
-        register("bukkit", new AddonsCommand("plugins", spoutcraft));
+    private void setDefaultCommands(final Client client) {
+        register("bukkit", new VersionCommand("version", client));
+        register("bukkit", new ReloadCommand("reload", client));
+        register("bukkit", new AddonsCommand("plugins", client));
     }
 
     /**
@@ -144,7 +144,7 @@ public final class SimpleCommandMap implements CommandMap {
         }
         knownCommands.clear();
         aliases.clear();
-        setDefaultCommands(spoutcraft);
+        setDefaultCommands(client);
     }
 
     public Command getCommand(String name) {
@@ -152,7 +152,7 @@ public final class SimpleCommandMap implements CommandMap {
     }
 
     public void registerSpoutcraftAliases() {
-        Map<String, String[]> values = spoutcraft.getCommandAliases();
+        Map<String, String[]> values = client.getCommandAliases();
 
         for (String alias : values.keySet()) {
             String[] targetNames = values.get(alias);
@@ -179,17 +179,17 @@ public final class SimpleCommandMap implements CommandMap {
 
             if (bad.length() > 0) {
                 bad = bad.substring(0, bad.length() - 2);
-                spoutcraft.getLogger().warning("The following command(s) could not be aliased under '" + alias + "' because they do not exist: " + bad);
+                client.getLogger().warning("The following command(s) could not be aliased under '" + alias + "' because they do not exist: " + bad);
             }
         }
     }
 
     private static class VersionCommand extends Command {
-        private final Spoutcraft spoutcraft;
+        private final Client client;
 
-        public VersionCommand(String name, Spoutcraft spoutcraft) {
+        public VersionCommand(String name, Client client) {
             super(name);
-            this.spoutcraft = spoutcraft;
+            this.client = client;
             this.description = "Gets the version of this spoutcraft including any plugins in use";
             this.usageMessage = "/version [plugin name]";
             this.setAliases(Arrays.asList("ver", "about"));
@@ -198,7 +198,7 @@ public final class SimpleCommandMap implements CommandMap {
         @Override
         public boolean execute(CommandSender sender, String currentAlias, String[] args) {
             if (args.length == 0) {
-                sender.sendMessage("This spoutcraft is running " + ChatColor.GREEN + spoutcraft.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + spoutcraft.getVersion());
+                sender.sendMessage("This spoutcraft is running " + ChatColor.GREEN + client.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + client.getVersion());
                 sender.sendMessage("This spoutcraft is also sporting some funky dev build of Bukkit!");
             } else {
                 StringBuilder name = new StringBuilder();
@@ -210,7 +210,7 @@ public final class SimpleCommandMap implements CommandMap {
                     name.append(arg);
                 }
 
-                Addon plugin = spoutcraft.getAddonManager().getAddon(name.toString());
+                Addon plugin = client.getAddonManager().getAddon(name.toString());
 
                 if (plugin != null) {
                     AddonDescriptionFile desc = plugin.getDescription();
@@ -267,11 +267,11 @@ public final class SimpleCommandMap implements CommandMap {
     private static class ReloadCommand extends Command {
 
         @SuppressWarnings("unused")
-		private final Spoutcraft spoutcraft;
+		private final Client client;
 
-        public ReloadCommand(String name, Spoutcraft spoutcraft) {
+        public ReloadCommand(String name, Client client) {
             super(name);
-            this.spoutcraft = spoutcraft;
+            this.client = client;
             this.description = "Reloads the spoutcraft configuration and plugins";
             this.usageMessage = "/reload";
             this.setAliases(Arrays.asList("rl"));
@@ -293,11 +293,11 @@ public final class SimpleCommandMap implements CommandMap {
 
     private static class AddonsCommand extends Command {
 
-        private final Spoutcraft spoutcraft;
+        private final Client client;
 
-        public AddonsCommand(String name, Spoutcraft spoutcraft) {
+        public AddonsCommand(String name, Client client) {
             super(name);
-            this.spoutcraft = spoutcraft;
+            this.client = client;
             this.description = "Gets a list of plugins running on the spoutcraft";
             this.usageMessage = "/plugins";
             this.setAliases(Arrays.asList("pl"));
@@ -311,7 +311,7 @@ public final class SimpleCommandMap implements CommandMap {
 
         private String getAddonList() {
             StringBuilder pluginList = new StringBuilder();
-            Addon[] plugins = spoutcraft.getAddonManager().getAddons();
+            Addon[] plugins = client.getAddonManager().getAddons();
 
             for (Addon plugin : plugins) {
                 if (pluginList.length() > 0) {

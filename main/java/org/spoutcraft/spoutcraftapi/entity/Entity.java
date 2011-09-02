@@ -3,6 +3,7 @@ package org.spoutcraft.spoutcraftapi.entity;
 import java.util.List;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
@@ -10,7 +11,7 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 /**
  * Represents a base entity in the world
  */
-public interface Entity {
+public interface Entity extends PropertyInterface {
 
 	public Location getLocation();
 
