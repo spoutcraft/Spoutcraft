@@ -79,7 +79,7 @@ public class SimpleAddonManager implements AddonManager {
             throw new IllegalArgumentException(String.format("Class %s does not implement interface AddonLoader", loader.getName()));
         }
 
-        Pattern[] patterns = instance.getAddonFileFilters();
+		Pattern[] patterns = instance.getAddonFileFilters();
 
         synchronized (this) {
             for (Pattern pattern : patterns) {
