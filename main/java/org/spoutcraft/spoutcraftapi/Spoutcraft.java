@@ -25,4 +25,6 @@ public abstract interface Spoutcraft {
 
 	public Map<String, String[]> getCommandAliases();
 
+	public String getUpdateFolder();
+
 }
