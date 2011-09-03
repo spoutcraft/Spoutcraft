@@ -103,6 +103,7 @@ public class PacketPreCacheFile implements SpoutPacket{
 					queued = new Runnable() {
 						public void run() {
 							long crc = FileUtil.getCRC(expected, new byte[16384]);
+							System.out.println("Downloaded File " + fileName + "'s CRC " + crc + ", expected CRC: " + expectedCRC);
 							if (crc == finalCRC) {
 								CustomTextureManager.getTextureFromUrl(plugin, fileName);
 							}
