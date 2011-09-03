@@ -30,6 +30,11 @@ public class SpoutCustomBlockDesign {
 	private float[][] textXPos;
 	private float[][] textYPos;
 	
+	private float maxBrightness = 1.0F;
+	private float minBrightness = 0F;
+	
+	private float brightness = 0.5F;
+	
 	public SpoutCustomBlockDesign() {
 	}
 
@@ -53,10 +58,22 @@ public class SpoutCustomBlockDesign {
 	public void setBounds(Block block) {
 		block.setBlockBounds(lowXBound, lowYBound, lowZBound, highXBound, highYBound, highZBound);
 	}
+	
+	public void setMaxBrightness(float maxBrightness) {
+		this.maxBrightness = maxBrightness;
+	}
+	
+	public void setMinBrightness(float minBrightness) {
+		this.minBrightness = minBrightness;
+	}
+	
+	public void setBrightness(float brightness) {
+		this.brightness = brightness * maxBrightness + (1 - brightness) * minBrightness;
+	}
 
 	public void draw(Tessellator tessallator, int x, int y, int z) {
 
-		tessallator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+		tessallator.setColorOpaque_F(1.0F * brightness, 1.0F * brightness, 1.0F * brightness);
 
 		for (int i = 0; i < xPos.length; i++) {
 			float[] xx = xPos[i];
@@ -74,7 +91,11 @@ public class SpoutCustomBlockDesign {
 
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + getDoubleArrayLength(xPos) + getDoubleArrayLength(yPos) + getDoubleArrayLength(zPos)
-		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 6 * 4;
+		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 8 * 4;
+	}
+	
+	public static int getVersion() {
+		return 1;
 	}
 
 	public void read(DataInputStream input) throws IOException {
@@ -96,6 +117,8 @@ public class SpoutCustomBlockDesign {
 		highXBound = input.readFloat();
 		highYBound = input.readFloat();
 		highZBound = input.readFloat();
+		maxBrightness = input.readFloat();
+		minBrightness = input.readFloat();
 	}
 
 	private final static String resetString = "[reset]";
@@ -126,6 +149,8 @@ public class SpoutCustomBlockDesign {
 		output.writeFloat(highXBound);
 		output.writeFloat(highYBound);
 		output.writeFloat(highZBound);
+		output.writeFloat(maxBrightness);
+		output.writeFloat(minBrightness);
 	}
 
 	private float[] readQuadFloat(DataInputStream input) throws IOException {
