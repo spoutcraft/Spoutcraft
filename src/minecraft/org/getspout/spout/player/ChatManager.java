@@ -236,6 +236,10 @@ public class ChatManager {
 		FontRenderer font = Minecraft.theMinecraft.fontRenderer;
 		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth() - 6;
 		
+		if (display) {
+			message = formatUrl(message);
+		}
+		
 		//First Pass, break up line of text into individual words
 		String[] words = message.split(" ");;
 		
@@ -389,6 +393,15 @@ public class ChatManager {
 		int start = -1;
 		if (start == -1) {
 			start = message.indexOf("http://");
+		}
+		if (start == -1) {
+			start = message.indexOf("https://");
+		}
+		if (start == -1) {
+			start = message.indexOf("ftp://");
+		}
+		if (start == -1) {
+			start = message.indexOf("irc://");
 		}
 		if (start == -1) {
 			start = message.indexOf("www.");
