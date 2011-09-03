@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutCustomBlockDesign;
+import org.getspout.spout.item.SpoutItemBlock;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
@@ -134,10 +136,12 @@ public class WorldRenderer {
 			RenderBlocks var11 = new RenderBlocks(var10);
 			
 			List<String> hitTextures = new ArrayList<String>();
+			List<String> hitTexturesPlugins = new ArrayList<String>();
 			int currentTexture = 0;
 			Minecraft game = SpoutClient.getHandle();
 
 			hitTextures.add("/terrain.png");
+			hitTexturesPlugins.add("");
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
 			for (int var12 = 0; var12 < 2; ++var12) {
 				boolean var13 = false;
@@ -149,7 +153,7 @@ public class WorldRenderer {
 					boolean uvIgnore = false;
 					int texture = defaultTexture;
 					if(currentTexture > 0){
-						Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTextures.get(currentTexture));
+						Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
 						if (customTexture != null) {
 							texture = customTexture.getTextureID();
 							game.renderEngine.bindTexture(texture);
@@ -164,15 +168,26 @@ public class WorldRenderer {
 								int var19 = var10.getBlockId(var18, var16, var17);
 								short data = (short) var10.getBlockMetadata(var18, var16, var17);
 								String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var19, data);
+								String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var19, data);
+								SpoutCustomBlockDesign design = null;
+								if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
+									design = SpoutItemBlock.getCustomBlockDesign(var18, var16, var17);
+									if (design != null) {
+										customTexture = design.getTexureURL();
+										customTexturePlugin = design.getTexturePlugin();
+									}
+								}
 								if(customTexture != null){
 									boolean found = false;
 									for(int i=0;i<hitTextures.size();i++){
-										if(hitTextures.get(i).equals(customTexture))
+										if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTexturePlugin))
 											found = true;
 									}
-									if(!found)
+									if(!found) {
 										hitTextures.add(customTexture);
-									if(!hitTextures.get(currentTexture).equals(customTexture))
+										hitTexturesPlugins.add(customTexturePlugin);
+									}
+									if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTexturePlugin))
 										continue;
 								} else if(currentTexture != 0) { 
 									continue;
@@ -202,7 +217,9 @@ public class WorldRenderer {
 
 									Block var25 = Block.blocksList[var19];
 									int var21 = var25.getRenderBlockPass();
-									if (var21 != var12) {
+									if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
+										SpoutItemBlock.renderCustomBlock(this, var11, var25, var18, var16, var17);
+									} else if (var21 != var12) {
 										var13 = true;
 									} else if (var21 == var12) {
 										if (currentTexture > 0 && texture != defaultTexture) {

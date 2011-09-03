@@ -2,16 +2,27 @@ package org.getspout.spout.item;
 
 import java.util.HashMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
+import net.minecraft.src.WorldRenderer;
+
+import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutItemBlock extends ItemBlock {
 
 	private final static HashMap<Integer, Integer> itemBlock = new HashMap<Integer, Integer>();
 	private final static HashMap<Integer, Short> itemMetaData = new HashMap<Integer, Short>();
+	
+	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
+	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
+	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
+	private final static HashMap<Integer, SpoutCustomBlockDesign> customBlockDesign = new HashMap<Integer, SpoutCustomBlockDesign>();
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
@@ -106,6 +117,79 @@ public class SpoutItemBlock extends ItemBlock {
 		} else {
 			return false;
 		}
+	}
+
+	public static void overrideBlock(int x, int y, int z, Integer blockId, Integer metaData) {
+		mutableIntVector.setIntX(x);
+		mutableIntVector.setIntY(y);
+		mutableIntVector.setIntZ(z);
+		
+		if (blockId == null || metaData == null) {
+			blockIdOverride.remove(mutableIntVector);
+			blockMetaDataOverride.remove(mutableIntVector);
+		} else {
+			MutableIntegerVector old = mutableIntVector;
+			mutableIntVector = new MutableIntegerVector(0, 0, 0);
+			blockIdOverride.put(old, blockId);
+			blockMetaDataOverride.put(old, metaData);
+		}
+		 Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
+	}
+	
+	public static void setCustomBlockDesign(SpoutCustomBlockDesign design, Integer blockId, Integer metaData) {
+		int key = getKey(blockId, metaData);
+		
+		if (design == null) {
+			customBlockDesign.remove(key);
+		} else {
+			customBlockDesign.put(key, design);
+		}
+	}
+	
+	public static void renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, Block block, int x, int y, int z) {
+		
+		SpoutCustomBlockDesign design = getCustomBlockDesign(x, y, z);
+		
+		if (design == null) {
+			return;
+		}
+	
+		Tessellator tessallator = Tessellator.instance;
+		
+		design.setBounds(block);
+		
+		design.draw(tessallator, x, y, z);
+	}
+	
+	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {
+			
+		return customBlockDesign.get(getKey(x, y, z));
+	}
+	
+	public static int getKey(int x, int y, int z) {
+		mutableIntVector.setIntX(x);
+		mutableIntVector.setIntY(y);
+		mutableIntVector.setIntZ(z);
+		
+		Integer blockId = blockIdOverride.get(mutableIntVector);
+		Integer metaData = blockMetaDataOverride.get(mutableIntVector);
+		
+		if (metaData == null) {
+			metaData = 0;
+		}
+		
+		return getKey(blockId, metaData);
+	}
+	
+	private static int getKey(int blockId, int metaData) {
+		return blockId + (metaData << 24);
+	}
+	
+	public static boolean isBlockOverride(int x, int y, int z) {
+		mutableIntVector.setIntX(x);
+		mutableIntVector.setIntY(y);
+		mutableIntVector.setIntZ(z);
+		return blockIdOverride.containsKey(mutableIntVector);
 	}
 
 }
