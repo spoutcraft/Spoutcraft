@@ -287,7 +287,7 @@ public class WorldRenderer {
 	}
 
 	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 3);
+		GL11.glCallList(this.glRenderList + 2);
 	}
 
 	public boolean skipAllRenderPasses() {
