@@ -191,5 +191,12 @@ public class SpoutItemBlock extends ItemBlock {
 		mutableIntVector.setIntZ(z);
 		return blockIdOverride.containsKey(mutableIntVector);
 	}
-
+	
+	public static void reset() {
+		itemBlock.clear();
+		itemMetaData.clear();
+		blockIdOverride.clear();
+		customBlockDesign.clear();
+	}
+	
 }
