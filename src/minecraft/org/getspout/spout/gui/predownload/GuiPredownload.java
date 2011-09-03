@@ -4,8 +4,8 @@ import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.io.FileDownloadThread;
-import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.packet.PacketPreCacheCompleted;
+import org.getspout.spout.packet.SpoutPacket;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiButton;
@@ -20,6 +20,7 @@ public class GuiPredownload extends GuiScreen{
 	private int joinCounter = 6;
 	private int downloadDelayCounter = 2;
 	public CustomScreen queuedScreen = null;
+	public SpoutPacket queuedPacket = null;
 	private boolean activeDownload = false;
 	private boolean paused = false;
 	private boolean allPacketsReceived = false;
@@ -95,6 +96,9 @@ public class GuiPredownload extends GuiScreen{
 			Minecraft.theMinecraft.thePlayer.gravityMod = 1D;
 			this.mc.displayGuiScreen(null);
 			this.mc.displayGuiScreen(queuedScreen);
+			if (queuedPacket != null) {
+				queuedPacket.run(Minecraft.theMinecraft.thePlayer.entityId);
+			}
 			if (netHandler.cached != null) {
 				netHandler.addToSendQueue(netHandler.cached);
 				netHandler.cached = null;

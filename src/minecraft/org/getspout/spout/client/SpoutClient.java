@@ -23,6 +23,7 @@ import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.inventory.SimpleItemManager;
+import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
@@ -143,6 +144,7 @@ public class SpoutClient implements Client {
 	public void onWorldExit() {
 		FileUtil.deleteTempDirectory();
 		CustomTextureManager.resetTextures();
+		CRCManager.clear();
 		instance = null;
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();
