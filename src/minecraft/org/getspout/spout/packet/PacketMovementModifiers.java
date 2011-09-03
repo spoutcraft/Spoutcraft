@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.getspout.spout.gui.predownload.GuiPredownload;
+
 import net.minecraft.client.Minecraft;
 
 
@@ -51,11 +53,16 @@ public class PacketMovementModifiers implements SpoutPacket{
 
 	@Override
 	public void run(int playerId) {
-		Minecraft.theMinecraft.thePlayer.gravityMod = gravityMod;
-		Minecraft.theMinecraft.thePlayer.walkingMod = walkingMod;
-		Minecraft.theMinecraft.thePlayer.swimmingMod = swimmingMod;
-		Minecraft.theMinecraft.thePlayer.jumpingMod = jumpingMod;
-		Minecraft.theMinecraft.thePlayer.airspeedMod = airspeedMod;
+		if (Minecraft.theMinecraft.currentScreen instanceof GuiPredownload) {
+			((GuiPredownload)Minecraft.theMinecraft.currentScreen).queuedPacket = this;
+		}
+		else {
+			Minecraft.theMinecraft.thePlayer.gravityMod = gravityMod;
+			Minecraft.theMinecraft.thePlayer.walkingMod = walkingMod;
+			Minecraft.theMinecraft.thePlayer.swimmingMod = swimmingMod;
+			Minecraft.theMinecraft.thePlayer.jumpingMod = jumpingMod;
+			Minecraft.theMinecraft.thePlayer.airspeedMod = airspeedMod;
+		}
 	}
 
 	@Override
