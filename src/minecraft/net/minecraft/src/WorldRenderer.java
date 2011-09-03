@@ -32,7 +32,7 @@ public class WorldRenderer {
 	public int posYClip;
 	public int posZClip;
 	public boolean isInFrustum = false;
-	public boolean[] skipRenderPass = new boolean[2];
+	public boolean[] skipRenderPass = new boolean[3];
 	public int posXPlus;
 	public int posYPlus;
 	public int posZPlus;
@@ -117,7 +117,7 @@ public class WorldRenderer {
 			int var5 = this.posY + this.sizeHeight;
 			int var6 = this.posZ + this.sizeDepth;
 
-			for(int var7 = 0; var7 < 2; ++var7) {
+			for(int var7 = 0; var7 < 3; ++var7) {
 				this.skipRenderPass[var7] = true;
 			}
 
@@ -143,7 +143,7 @@ public class WorldRenderer {
 			hitTextures.add("/terrain.png");
 			hitTexturesPlugins.add("");
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-			for (int var12 = 0; var12 < 2; ++var12) {
+			for (int var12 = 0; var12 < 3; ++var12) {
 				boolean var13 = false;
 				boolean var14 = false;
 				boolean var15 = false;
@@ -275,7 +275,7 @@ public class WorldRenderer {
 	}
 
 	public void setDontDraw() {
-		for(int var1 = 0; var1 < 2; ++var1) {
+		for(int var1 = 0; var1 < 3; ++var1) {
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -308,7 +308,7 @@ public class WorldRenderer {
 	}
 
 	public boolean skipAllRenderPasses() {
-		return !this.isInitialized?false:this.skipRenderPass[0] && this.skipRenderPass[1];
+		return !this.isInitialized?false:this.skipRenderPass[0] && this.skipRenderPass[1] && this.skipRenderPass[2];
 	}
 
 	public void markDirty() {
