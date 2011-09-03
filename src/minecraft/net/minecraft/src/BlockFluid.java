@@ -1,379 +1,286 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
 import java.util.Random;
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.Material;
+import net.minecraft.src.Vec3D;
+import net.minecraft.src.World;
 
-// Referenced classes of package net.minecraft.src:
-//            Block, Material, World, IBlockAccess, 
-//            Vec3D, AxisAlignedBB, Entity
+public abstract class BlockFluid extends Block {
 
-public abstract class BlockFluid extends Block
-{
+	protected BlockFluid(int var1, Material var2) {
+		super(var1, (var2 == Material.lava?14:12) * 16 + 13, var2);
+		float var3 = 0.0F;
+		float var4 = 0.0F;
+		this.setBlockBounds(0.0F + var4, 0.0F + var3, 0.0F + var4, 1.0F + var4, 1.0F + var3, 1.0F + var4);
+		this.setTickOnLoad(true);
+	}
 
-    protected BlockFluid(int i, Material material)
-    {
-        super(i, (material != Material.lava ? 12 : 14) * 16 + 13, material);
-        float f = 0.0F;
-        float f1 = 0.0F;
-        setBlockBounds(0.0F + f1, 0.0F + f, 0.0F + f1, 1.0F + f1, 1.0F + f, 1.0F + f1);
-        setTickOnLoad(true);
-    }
+	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
+		return 16777215;
+	}
 
-    public int colorMultiplier(IBlockAccess iblockaccess, int i, int j, int k)
-    {
-        return 0xffffff;
-    }
+	public static float getPercentAir(int var0) {
+		if(var0 >= 8) {
+			var0 = 0;
+		}
 
-    public static float getPercentAir(int i)
-    {
-        if(i >= 8)
-        {
-            i = 0;
-        }
-        float f = (float)(i + 1) / 9F;
-        return f;
-    }
+		float var1 = (float)(var0 + 1) / 9.0F;
+		return var1;
+	}
 
-    public int getBlockTextureFromSide(int i)
-    {
-        if(i == 0 || i == 1)
-        {
-            return blockIndexInTexture;
-        } else
-        {
-            return blockIndexInTexture + 1;
-        }
-    }
+	public int getBlockTextureFromSide(int var1) {
+		return var1 != 0 && var1 != 1?this.blockIndexInTexture + 1:this.blockIndexInTexture;
+	}
 
-    protected int getFlowDecay(World world, int i, int j, int k)
-    {
-        if(world.getBlockMaterial(i, j, k) != blockMaterial)
-        {
-            return -1;
-        } else
-        {
-            return world.getBlockMetadata(i, j, k);
-        }
-    }
+	protected int getFlowDecay(World var1, int var2, int var3, int var4) {
+		return var1.getBlockMaterial(var2, var3, var4) != this.blockMaterial?-1:var1.getBlockMetadata(var2, var3, var4);
+	}
 
-    protected int getEffectiveFlowDecay(IBlockAccess iblockaccess, int i, int j, int k)
-    {
-        if(iblockaccess.getBlockMaterial(i, j, k) != blockMaterial)
-        {
-            return -1;
-        }
-        int l = iblockaccess.getBlockMetadata(i, j, k);
-        if(l >= 8)
-        {
-            l = 0;
-        }
-        return l;
-    }
+	protected int getEffectiveFlowDecay(IBlockAccess var1, int var2, int var3, int var4) {
+		if(var1.getBlockMaterial(var2, var3, var4) != this.blockMaterial) {
+			return -1;
+		} else {
+			int var5 = var1.getBlockMetadata(var2, var3, var4);
+			if(var5 >= 8) {
+				var5 = 0;
+			}
 
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
+			return var5;
+		}
+	}
 
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
 
-    public boolean canCollideCheck(int i, boolean flag)
-    {
-        return flag && i == 0;
-    }
+	public boolean isOpaqueCube() {
+		return false;
+	}
 
-    public boolean getIsBlockSolid(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        Material material = iblockaccess.getBlockMaterial(i, j, k);
-        if(material == blockMaterial)
-        {
-            return false;
-        }
-        if(material == Material.ice)
-        {
-            return false;
-        }
-        if(l == 1)
-        {
-            return true;
-        } else
-        {
-            return super.getIsBlockSolid(iblockaccess, i, j, k, l);
-        }
-    }
+	public boolean canCollideCheck(int var1, boolean var2) {
+		return var2 && var1 == 0;
+	}
 
-    public boolean shouldSideBeRendered(IBlockAccess iblockaccess, int i, int j, int k, int l)
-    {
-        Material material = iblockaccess.getBlockMaterial(i, j, k);
-        if(material == blockMaterial)
-        {
-            return false;
-        }
-        if(material == Material.ice)
-        {
-            return false;
-        }
-        if(l == 1)
-        {
-            return true;
-        } else
-        {
-            return super.shouldSideBeRendered(iblockaccess, i, j, k, l);
-        }
-    }
+	public boolean getIsBlockSolid(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+		Material var6 = var1.getBlockMaterial(var2, var3, var4);
+		return var6 == this.blockMaterial?false:(var6 == Material.ice?false:(var5 == 1?true:super.getIsBlockSolid(var1, var2, var3, var4, var5)));
+	}
 
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k)
-    {
-        return null;
-    }
+	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+		Material var6 = var1.getBlockMaterial(var2, var3, var4);
+		return var6 == this.blockMaterial?false:(var6 == Material.ice?false:(var5 == 1?true:super.shouldSideBeRendered(var1, var2, var3, var4, var5)));
+	}
 
-    public int getRenderType()
-    {
-        return 4;
-    }
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
+		return null;
+	}
 
-    public int idDropped(int i, Random random)
-    {
-        return 0;
-    }
+	public int getRenderType() {
+		return 4;
+	}
 
-    public int quantityDropped(Random random)
-    {
-        return 0;
-    }
+	public int idDropped(int var1, Random var2) {
+		return 0;
+	}
 
-    private Vec3D getFlowVector(IBlockAccess iblockaccess, int i, int j, int k)
-    {
-        Vec3D vec3d = Vec3D.createVector(0.0D, 0.0D, 0.0D);
-        int l = getEffectiveFlowDecay(iblockaccess, i, j, k);
-        for(int i1 = 0; i1 < 4; i1++)
-        {
-            int j1 = i;
-            int k1 = j;
-            int l1 = k;
-            if(i1 == 0)
-            {
-                j1--;
-            }
-            if(i1 == 1)
-            {
-                l1--;
-            }
-            if(i1 == 2)
-            {
-                j1++;
-            }
-            if(i1 == 3)
-            {
-                l1++;
-            }
-            int i2 = getEffectiveFlowDecay(iblockaccess, j1, k1, l1);
-            if(i2 < 0)
-            {
-                if(iblockaccess.getBlockMaterial(j1, k1, l1).getIsSolid())
-                {
-                    continue;
-                }
-                i2 = getEffectiveFlowDecay(iblockaccess, j1, k1 - 1, l1);
-                if(i2 >= 0)
-                {
-                    int j2 = i2 - (l - 8);
-                    vec3d = vec3d.addVector((j1 - i) * j2, (k1 - j) * j2, (l1 - k) * j2);
-                }
-                continue;
-            }
-            if(i2 >= 0)
-            {
-                int k2 = i2 - l;
-                vec3d = vec3d.addVector((j1 - i) * k2, (k1 - j) * k2, (l1 - k) * k2);
-            }
-        }
+	public int quantityDropped(Random var1) {
+		return 0;
+	}
 
-        if(iblockaccess.getBlockMetadata(i, j, k) >= 8)
-        {
-            boolean flag = false;
-            if(flag || getIsBlockSolid(iblockaccess, i, j, k - 1, 2))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i, j, k + 1, 3))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i - 1, j, k, 4))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i + 1, j, k, 5))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i, j + 1, k - 1, 2))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i, j + 1, k + 1, 3))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i - 1, j + 1, k, 4))
-            {
-                flag = true;
-            }
-            if(flag || getIsBlockSolid(iblockaccess, i + 1, j + 1, k, 5))
-            {
-                flag = true;
-            }
-            if(flag)
-            {
-                vec3d = vec3d.normalize().addVector(0.0D, -6D, 0.0D);
-            }
-        }
-        vec3d = vec3d.normalize();
-        return vec3d;
-    }
+	private Vec3D getFlowVector(IBlockAccess var1, int var2, int var3, int var4) {
+		Vec3D var5 = Vec3D.createVector(0.0D, 0.0D, 0.0D);
+		int var6 = this.getEffectiveFlowDecay(var1, var2, var3, var4);
 
-    public void velocityToAddToEntity(World world, int i, int j, int k, Entity entity, Vec3D vec3d)
-    {
-        Vec3D vec3d1 = getFlowVector(world, i, j, k);
-        vec3d.xCoord += vec3d1.xCoord;
-        vec3d.yCoord += vec3d1.yCoord;
-        vec3d.zCoord += vec3d1.zCoord;
-    }
+		for(int var7 = 0; var7 < 4; ++var7) {
+			int var8 = var2;
+			int var10 = var4;
+			if(var7 == 0) {
+				var8 = var2 - 1;
+			}
 
-    public int tickRate()
-    {
-        if(blockMaterial == Material.water)
-        {
-            return 5;
-        }
-        return blockMaterial != Material.lava ? 0 : 30;
-    }
+			if(var7 == 1) {
+				var10 = var4 - 1;
+			}
 
-    public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k)
-    {
-        float f = iblockaccess.getLightBrightness(i, j, k);
-        float f1 = iblockaccess.getLightBrightness(i, j + 1, k);
-        return f <= f1 ? f1 : f;
-    }
+			if(var7 == 2) {
+				++var8;
+			}
 
-    public void updateTick(World world, int i, int j, int k, Random random)
-    {
-        super.updateTick(world, i, j, k, random);
-    }
+			if(var7 == 3) {
+				++var10;
+			}
 
-    public int getRenderBlockPass()
-    {
-        return blockMaterial != Material.water ? 0 : 2;
-    }
+			int var11 = this.getEffectiveFlowDecay(var1, var8, var3, var10);
+			int var12;
+			if(var11 < 0) {
+				if(!var1.getBlockMaterial(var8, var3, var10).getIsSolid()) {
+					var11 = this.getEffectiveFlowDecay(var1, var8, var3 - 1, var10);
+					if(var11 >= 0) {
+						var12 = var11 - (var6 - 8);
+						var5 = var5.addVector((double)((var8 - var2) * var12), (double)((var3 - var3) * var12), (double)((var10 - var4) * var12));
+					}
+				}
+			} else if(var11 >= 0) {
+				var12 = var11 - var6;
+				var5 = var5.addVector((double)((var8 - var2) * var12), (double)((var3 - var3) * var12), (double)((var10 - var4) * var12));
+			}
+		}
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random)
-    {
-        if(blockMaterial == Material.water && random.nextInt(64) == 0)
-        {
-            int l = world.getBlockMetadata(i, j, k);
-            if(l > 0 && l < 8)
-            {
-                world.playSoundEffect((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "liquid.water", random.nextFloat() * 0.25F + 0.75F, random.nextFloat() * 1.0F + 0.5F);
-            }
-        }
-        if(blockMaterial == Material.lava && world.getBlockMaterial(i, j + 1, k) == Material.air && !world.isBlockOpaqueCube(i, j + 1, k) && random.nextInt(100) == 0)
-        {
-            double d = (float)i + random.nextFloat();
-            double d1 = (double)j + maxY;
-            double d2 = (float)k + random.nextFloat();
-            world.spawnParticle("lava", d, d1, d2, 0.0D, 0.0D, 0.0D);
-        }
-    }
+		if(var1.getBlockMetadata(var2, var3, var4) >= 8) {
+			boolean var13 = false;
+			if(var13 || this.getIsBlockSolid(var1, var2, var3, var4 - 1, 2)) {
+				var13 = true;
+			}
 
-    public static double func_293_a(IBlockAccess iblockaccess, int i, int j, int k, Material material)
-    {
-        Vec3D vec3d = null;
-        if(material == Material.water)
-        {
-            vec3d = ((BlockFluid)Block.waterMoving).getFlowVector(iblockaccess, i, j, k);
-        }
-        if(material == Material.lava)
-        {
-            vec3d = ((BlockFluid)Block.lavaMoving).getFlowVector(iblockaccess, i, j, k);
-        }
-        if(vec3d.xCoord == 0.0D && vec3d.zCoord == 0.0D)
-        {
-            return -1000D;
-        } else
-        {
-            return Math.atan2(vec3d.zCoord, vec3d.xCoord) - 1.5707963267948966D;
-        }
-    }
+			if(var13 || this.getIsBlockSolid(var1, var2, var3, var4 + 1, 3)) {
+				var13 = true;
+			}
 
-    public void onBlockAdded(World world, int i, int j, int k)
-    {
-        checkForHarden(world, i, j, k);
-    }
+			if(var13 || this.getIsBlockSolid(var1, var2 - 1, var3, var4, 4)) {
+				var13 = true;
+			}
 
-    public void onNeighborBlockChange(World world, int i, int j, int k, int l)
-    {
-        checkForHarden(world, i, j, k);
-    }
+			if(var13 || this.getIsBlockSolid(var1, var2 + 1, var3, var4, 5)) {
+				var13 = true;
+			}
 
-    private void checkForHarden(World world, int i, int j, int k)
-    {
-        if(world.getBlockId(i, j, k) != blockID)
-        {
-            return;
-        }
-        if(blockMaterial == Material.lava)
-        {
-            boolean flag = false;
-            if(flag || world.getBlockMaterial(i, j, k - 1) == Material.water)
-            {
-                flag = true;
-            }
-            if(flag || world.getBlockMaterial(i, j, k + 1) == Material.water)
-            {
-                flag = true;
-            }
-            if(flag || world.getBlockMaterial(i - 1, j, k) == Material.water)
-            {
-                flag = true;
-            }
-            if(flag || world.getBlockMaterial(i + 1, j, k) == Material.water)
-            {
-                flag = true;
-            }
-            if(flag || world.getBlockMaterial(i, j + 1, k) == Material.water)
-            {
-                flag = true;
-            }
-            if(flag)
-            {
-                int l = world.getBlockMetadata(i, j, k);
-                if(l == 0)
-                {
-                    world.setBlockWithNotify(i, j, k, Block.obsidian.blockID);
-                } else
-                if(l <= 4)
-                {
-                    world.setBlockWithNotify(i, j, k, Block.cobblestone.blockID);
-                }
-                triggerLavaMixEffects(world, i, j, k);
-            }
-        }
-    }
+			if(var13 || this.getIsBlockSolid(var1, var2, var3 + 1, var4 - 1, 2)) {
+				var13 = true;
+			}
 
-    protected void triggerLavaMixEffects(World world, int i, int j, int k)
-    {
-        world.playSoundEffect((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-        for(int l = 0; l < 8; l++)
-        {
-            world.spawnParticle("largesmoke", (double)i + Math.random(), (double)j + 1.2D, (double)k + Math.random(), 0.0D, 0.0D, 0.0D);
-        }
+			if(var13 || this.getIsBlockSolid(var1, var2, var3 + 1, var4 + 1, 3)) {
+				var13 = true;
+			}
 
-    }
+			if(var13 || this.getIsBlockSolid(var1, var2 - 1, var3 + 1, var4, 4)) {
+				var13 = true;
+			}
+
+			if(var13 || this.getIsBlockSolid(var1, var2 + 1, var3 + 1, var4, 5)) {
+				var13 = true;
+			}
+
+			if(var13) {
+				var5 = var5.normalize().addVector(0.0D, -6.0D, 0.0D);
+			}
+		}
+
+		var5 = var5.normalize();
+		return var5;
+	}
+
+	public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {
+		Vec3D var7 = this.getFlowVector(var1, var2, var3, var4);
+		var6.xCoord += var7.xCoord;
+		var6.yCoord += var7.yCoord;
+		var6.zCoord += var7.zCoord;
+	}
+
+	public int tickRate() {
+		return this.blockMaterial == Material.water?5:(this.blockMaterial == Material.lava?30:0);
+	}
+
+	public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
+		float var5 = var1.getLightBrightness(var2, var3, var4);
+		float var6 = var1.getLightBrightness(var2, var3 + 1, var4);
+		return var5 > var6?var5:var6;
+	}
+
+	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+		super.updateTick(var1, var2, var3, var4, var5);
+	}
+
+	public int getRenderBlockPass() {
+		return this.blockMaterial == Material.water?2:0;
+	}
+
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+		if(this.blockMaterial == Material.water && var5.nextInt(64) == 0) {
+			int var6 = var1.getBlockMetadata(var2, var3, var4);
+			if(var6 > 0 && var6 < 8) {
+				var1.playSoundEffect((double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F), "liquid.water", var5.nextFloat() * 0.25F + 0.75F, var5.nextFloat() * 1.0F + 0.5F);
+			}
+		}
+
+		if(this.blockMaterial == Material.lava && var1.getBlockMaterial(var2, var3 + 1, var4) == Material.air && !var1.isBlockOpaqueCube(var2, var3 + 1, var4) && var5.nextInt(100) == 0) {
+			double var12 = (double)((float)var2 + var5.nextFloat());
+			double var8 = (double)var3 + this.maxY;
+			double var10 = (double)((float)var4 + var5.nextFloat());
+			var1.spawnParticle("lava", var12, var8, var10, 0.0D, 0.0D, 0.0D);
+		}
+
+	}
+
+	public static double func_293_a(IBlockAccess var0, int var1, int var2, int var3, Material var4) {
+		Vec3D var5 = null;
+		if(var4 == Material.water) {
+			var5 = ((BlockFluid)Block.waterMoving).getFlowVector(var0, var1, var2, var3);
+		}
+
+		if(var4 == Material.lava) {
+			var5 = ((BlockFluid)Block.lavaMoving).getFlowVector(var0, var1, var2, var3);
+		}
+
+		return var5.xCoord == 0.0D && var5.zCoord == 0.0D?-1000.0D:Math.atan2(var5.zCoord, var5.xCoord) - 1.5707963267948966D;
+	}
+
+	public void onBlockAdded(World var1, int var2, int var3, int var4) {
+		this.checkForHarden(var1, var2, var3, var4);
+	}
+
+	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
+		this.checkForHarden(var1, var2, var3, var4);
+	}
+
+	private void checkForHarden(World var1, int var2, int var3, int var4) {
+		if(var1.getBlockId(var2, var3, var4) == this.blockID) {
+			if(this.blockMaterial == Material.lava) {
+				boolean var5 = false;
+				if(var5 || var1.getBlockMaterial(var2, var3, var4 - 1) == Material.water) {
+					var5 = true;
+				}
+
+				if(var5 || var1.getBlockMaterial(var2, var3, var4 + 1) == Material.water) {
+					var5 = true;
+				}
+
+				if(var5 || var1.getBlockMaterial(var2 - 1, var3, var4) == Material.water) {
+					var5 = true;
+				}
+
+				if(var5 || var1.getBlockMaterial(var2 + 1, var3, var4) == Material.water) {
+					var5 = true;
+				}
+
+				if(var5 || var1.getBlockMaterial(var2, var3 + 1, var4) == Material.water) {
+					var5 = true;
+				}
+
+				if(var5) {
+					int var6 = var1.getBlockMetadata(var2, var3, var4);
+					if(var6 == 0) {
+						var1.setBlockWithNotify(var2, var3, var4, Block.obsidian.blockID);
+					} else if(var6 <= 4) {
+						var1.setBlockWithNotify(var2, var3, var4, Block.cobblestone.blockID);
+					}
+
+					this.triggerLavaMixEffects(var1, var2, var3, var4);
+				}
+			}
+
+		}
+	}
+
+	protected void triggerLavaMixEffects(World var1, int var2, int var3, int var4) {
+		var1.playSoundEffect((double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F), "random.fizz", 0.5F, 2.6F + (var1.rand.nextFloat() - var1.rand.nextFloat()) * 0.8F);
+
+		for(int var5 = 0; var5 < 8; ++var5) {
+			var1.spawnParticle("largesmoke", (double)var2 + Math.random(), (double)var3 + 1.2D, (double)var4 + Math.random(), 0.0D, 0.0D, 0.0D);
+		}
+
+	}
 }
