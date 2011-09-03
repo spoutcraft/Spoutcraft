@@ -58,7 +58,6 @@ public class PacketCacheFile implements SpoutPacket {
 		int size = input.readInt();
 		this.fileData = new byte[size];
 		int read = input.read(this.fileData);
-		System.out.println("Read Bytes: " + read + " Expected Bytes " + size);
 		if (read != size) {
 			input.skipBytes(size - read);
 		}
@@ -91,7 +90,6 @@ public class PacketCacheFile implements SpoutPacket {
 		}
 		long expectedCRC = CRCManager.getCRC(fileName);
 		long calculatedCRC = FileUtil.getCRC(cache, new byte[16384]);
-		System.out.println("Downloaded File " + fileName + "'s CRC " + calculatedCRC + ", expected CRC: " + expectedCRC);
 		if (expectedCRC != calculatedCRC) {
 			System.out.println("WARNING, Downloaded File " + fileName + "'s CRC " + calculatedCRC + " did not match the expected CRC: " + expectedCRC);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketPreCacheFile(plugin, fileName, expectedCRC, false));
