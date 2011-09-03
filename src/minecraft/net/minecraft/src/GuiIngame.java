@@ -23,6 +23,8 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
+import org.getspout.spout.player.ChatManager;
+//Spout End
 
 public class GuiIngame extends Gui {
 
@@ -231,7 +233,7 @@ public class GuiIngame extends Gui {
 						int y = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
-						//chat = ChatManager.formatUrl(chat);
+						chat = ChatManager.formatUrl(chat);
 						//TODO add support for opening URL in browser if clicked?
 						drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
 						GL11.glEnable(3042 /*GL_BLEND*/);
