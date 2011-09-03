@@ -102,7 +102,7 @@ public class WorldRenderer {
 			++chunksUpdated;
 			if(this.needsBoxUpdate) {
 				float var1 = 0.0F;
-				GL11.glNewList(this.glRenderList + 2, 4864 /*GL_COMPILE*/);
+				GL11.glNewList(this.glRenderList + 3, 4864 /*GL_COMPILE*/);
 				RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var1), (double)((float)this.posYClip - var1), (double)((float)this.posZClip - var1), (double)((float)(this.posXClip + this.sizeWidth) + var1), (double)((float)(this.posYClip + this.sizeHeight) + var1), (double)((float)(this.posZClip + this.sizeDepth) + var1)));
 				GL11.glEndList();
 				this.needsBoxUpdate = false;
@@ -304,7 +304,7 @@ public class WorldRenderer {
 	}
 
 	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 2);
+		GL11.glCallList(this.glRenderList + 3);
 	}
 
 	public boolean skipAllRenderPasses() {
