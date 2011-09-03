@@ -391,6 +391,15 @@ public class ChatManager {
 			start = message.indexOf("http://");
 		}
 		if (start == -1) {
+			start = message.indexOf("https://");
+		}
+		if (start == -1) {
+			start = message.indexOf("ftp://");
+		}
+		if (start == -1) {
+			start = message.indexOf("irc://");
+		}
+		if (start == -1) {
 			start = message.indexOf("www.");
 		}
 		if (start != -1) {
