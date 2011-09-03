@@ -175,8 +175,8 @@ public class GuiIngame extends Gui {
 				long currentTime = System.currentTimeMillis();
 				long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
 				long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
-				this.drawString(font, "Bandwidth (Up): " + upBandwidth + "kbps", 2, 88 + offset, 14737632);
-				this.drawString(font, "Bandwidth (Down): " + downBandwidth + "kbps", 2, 96 + offset, 14737632);
+				this.drawString(font, "Bandwidth (Up): " + Math.max(1, upBandwidth) + "kbps", 2, 88 + offset, 14737632);
+				this.drawString(font, "Bandwidth (Down): " + Math.max(1, downBandwidth) + "kbps", 2, 96 + offset, 14737632);
 			}
 			GL11.glPopMatrix();
 		}
