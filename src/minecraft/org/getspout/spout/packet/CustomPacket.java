@@ -122,10 +122,26 @@ public class CustomPacket extends Packet{
 	public void processPacket(NetHandler netHandler) {
 		if(packet != null) {
 			if (success) {
-				packet.run(SpoutClient.getHandle().thePlayer.entityId);
+				try {
+					packet.run(SpoutClient.getHandle().thePlayer.entityId);
+				}
+				catch (Exception e) {
+					System.out.println("------------------------");
+					System.out.println("Unexpected Exception: " + e.getClass());
+					e.printStackTrace();
+					System.out.println("------------------------");
+				}
 			}
 			else {
-				packet.failure(SpoutClient.getHandle().thePlayer.entityId);
+				try {
+					packet.failure(SpoutClient.getHandle().thePlayer.entityId);
+				}
+				catch (Exception e) {
+					System.out.println("------------------------");
+					System.out.println("Unexpected Exception: " + e.getClass());
+					e.printStackTrace();
+					System.out.println("------------------------");
+				}
 			}
 			
 		}
