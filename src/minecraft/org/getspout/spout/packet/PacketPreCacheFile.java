@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.getspout.spout.packet;
 
 import java.io.DataInputStream;
@@ -6,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileDownloadThread;
@@ -59,17 +76,19 @@ public class PacketPreCacheFile implements SpoutPacket{
 			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + file);
 			return;
 		}
-		File directory = new File(FileUtil.getCacheDirectory(), plugin);
+		final File directory = new File(FileUtil.getCacheDirectory(), plugin);
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
 		final String fileName = FileUtil.getFileName(file);
-		File expected = new File(directory, fileName);
+		final File expected = new File(directory, fileName);
 		if (expected.exists()) {
 			long crc = FileUtil.getCRC(expected, downloadBuffer);
 			this.cached = expectedCRC != 0 && crc == expectedCRC;
 		}
 		if (!cached) {
+			final long finalCRC = expectedCRC;
+			CRCManager.setCRC(fileName, finalCRC);
 			if (expected.exists()) {
 				expected.delete();
 			}
@@ -83,7 +102,13 @@ public class PacketPreCacheFile implements SpoutPacket{
 				if (FileUtil.isImageFile(fileName)) {
 					queued = new Runnable() {
 						public void run() {
-							CustomTextureManager.getTextureFromUrl(plugin, fileName);
+							long crc = FileUtil.getCRC(expected, new byte[16384]);
+							if (crc == finalCRC) {
+								CustomTextureManager.getTextureFromUrl(plugin, fileName);
+							}
+							else {
+								System.out.println("WARNING, Downloaded File " + fileName + "'s CRC " + crc + " did not match the expected CRC: " + finalCRC);
+							}
 						}
 					};
 				}
