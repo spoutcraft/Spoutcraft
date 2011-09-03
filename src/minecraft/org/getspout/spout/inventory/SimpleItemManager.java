@@ -19,6 +19,7 @@ package org.getspout.spout.inventory;
 import java.util.HashMap;
 
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutItemBlock;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 
 public class SimpleItemManager implements ItemManager{
@@ -386,6 +387,7 @@ public class SimpleItemManager implements ItemManager{
 	public void reset() {
 		customNames.clear();
 		customTextures.clear();
+		SpoutItemBlock.reset();
 	}
 
 }
