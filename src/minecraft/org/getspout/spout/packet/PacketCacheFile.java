@@ -57,7 +57,11 @@ public class PacketCacheFile implements SpoutPacket {
 		this.plugin = PacketUtil.readString(input);
 		int size = input.readInt();
 		this.fileData = new byte[size];
-		input.read(this.fileData);
+		int read = input.read(this.fileData);
+		System.out.println("Read Bytes: " + read + " Expected Bytes " + size);
+		if (read != size) {
+			input.skipBytes(size - read);
+		}
 	}
 
 	@Override
