@@ -10,6 +10,8 @@ import net.minecraft.src.Tessellator;
 import org.getspout.spout.packet.PacketUtil;
 
 public class SpoutCustomBlockDesign {
+	
+	private boolean reset = false;
 
 	private float lowXBound;
 	private float lowYBound;
@@ -72,11 +74,16 @@ public class SpoutCustomBlockDesign {
 
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + getDoubleArrayLength(xPos) + getDoubleArrayLength(yPos) + getDoubleArrayLength(zPos)
-				+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 6 * 4;
+		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 6 * 4;
 	}
 
 	public void read(DataInputStream input) throws IOException {
 		textureURL = PacketUtil.readString(input);
+		if (textureURL.equals(resetString)) {
+			reset = true;
+			return;
+		}
+		reset = false;
 		texturePlugin = PacketUtil.readString(input);
 		xPos = readDoubleArray(input);
 		yPos = readDoubleArray(input);
@@ -91,7 +98,21 @@ public class SpoutCustomBlockDesign {
 		highZBound = input.readFloat();
 	}
 
+	private final static String resetString = "[reset]";
+	
+	public static void writeReset(DataOutputStream output) {
+		PacketUtil.writeString(output, resetString);
+	}
+	
+	public static int getResetNumBytes() {
+		return PacketUtil.getNumBytes(resetString);
+	}
+
 	public void write(DataOutputStream output) throws IOException {
+		if (reset) {
+			PacketUtil.writeString(output, resetString);
+			return;
+		}
 		PacketUtil.writeString(output, textureURL);
 		PacketUtil.writeString(output, texturePlugin);
 		writeDoubleArray(output, xPos);
@@ -209,6 +230,10 @@ public class SpoutCustomBlockDesign {
 
 	public String getTexturePlugin() {
 		return texturePlugin;
+	}
+	
+	public boolean getReset() {
+		return reset;
 	}
 
 }
