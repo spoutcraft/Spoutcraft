@@ -19,6 +19,18 @@ public class MutableIntegerVector extends MutableVector {
 	public int getIntZ() {
 		return (int) z;
 	}
+	
+	public void setIntX(int x) {
+		this.x = x;
+	}
+
+	public void setIntY(int y) {
+		this.y = y;
+	}
+
+	public void setIntZ(int z) {
+		this.z = z;
+	}
 
 	@Override
 	public int hashCode() {
