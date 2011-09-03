@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -76,7 +77,7 @@ public class CustomTextureManager {
 		if (!textures.containsKey(path)) {
 			Texture texture = null;
 			try {
-				texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true);
+				texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true,  GL11.GL_NEAREST);
 			}
 			catch (IOException e) { }
 			if (texture == null) {
