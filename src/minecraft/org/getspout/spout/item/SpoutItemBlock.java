@@ -167,11 +167,9 @@ public class SpoutItemBlock extends ItemBlock {
 		
 		Tessellator tessallator = Tessellator.instance;
 		
-		design.setBrightness(block.getBlockBrightness(renderBlocks.blockAccess, x, y, z));
-		
 		design.setBounds(block);
 		
-		design.draw(tessallator, x, y, z);
+		design.draw(tessallator, block, renderBlocks, x, y, z);
 		
 		return true;
 	}

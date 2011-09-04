@@ -5,9 +5,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
 import org.getspout.spout.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutCustomBlockDesign {
 	
@@ -29,6 +31,10 @@ public class SpoutCustomBlockDesign {
 
 	private float[][] textXPos;
 	private float[][] textYPos;
+	
+	private int[] lightSourceXOffset;
+	private int[] lightSourceYOffset;
+	private int[] lightSourceZOffset;
 	
 	private float maxBrightness = 1.0F;
 	private float minBrightness = 0F;
@@ -82,11 +88,18 @@ public class SpoutCustomBlockDesign {
 		return renderPass;
 	}
 
-	public void draw(Tessellator tessallator, int x, int y, int z) {
-
-		tessallator.setColorOpaque_F(1.0F * brightness, 1.0F * brightness, 1.0F * brightness);
-
+	public void draw(Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
+		
 		for (int i = 0; i < xPos.length; i++) {
+			
+			MutableIntegerVector sourceBlock = getLightSource(i, x, y, z);
+			
+			float baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+
+			float brightness = baseBrightness * maxBrightness + (1 - baseBrightness) * minBrightness;
+			
+			tessallator.setColorOpaque_F(1.0F * brightness, 1.0F * brightness, 1.0F * brightness);
+			
 			float[] xx = xPos[i];
 			float[] yy = yPos[i];
 			float[] zz = zPos[i];
@@ -102,11 +115,11 @@ public class SpoutCustomBlockDesign {
 
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + getDoubleArrayLength(xPos) + getDoubleArrayLength(yPos) + getDoubleArrayLength(zPos)
-		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 9 * 4;
+		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 9 * 4 + (3 + lightSourceXOffset.length + lightSourceXOffset.length + lightSourceXOffset.length) * 4;
 	}
 	
 	public static int getVersion() {
-		return 2;
+		return 3;
 	}
 
 	public void read(DataInputStream input) throws IOException {
@@ -131,6 +144,9 @@ public class SpoutCustomBlockDesign {
 		maxBrightness = input.readFloat();
 		minBrightness = input.readFloat();
 		renderPass = input.readInt();
+		lightSourceXOffset = readIntArray(input);
+		lightSourceYOffset = readIntArray(input);
+		lightSourceZOffset = readIntArray(input);
 	}
 
 	private final static String resetString = "[reset]";
@@ -164,6 +180,21 @@ public class SpoutCustomBlockDesign {
 		output.writeFloat(maxBrightness);
 		output.writeFloat(minBrightness);
 		output.writeInt(renderPass);
+		writeIntArray(output, lightSourceXOffset);
+		writeIntArray(output, lightSourceYOffset);
+		writeIntArray(output, lightSourceZOffset);
+	}
+	
+	private int[] readIntArray(DataInputStream input) throws IOException {
+		int length = input.readInt();
+		if (length > 256) {
+			throw new IllegalArgumentException("Int array exceeded max length (" + length + ")");
+		}
+		int[] newArray = new int[length];
+		for (int i = 0; i < length; i++) {
+			newArray[i] = input.readInt();
+		}
+		return newArray;
 	}
 
 	private float[] readQuadFloat(DataInputStream input) throws IOException {
@@ -189,6 +220,16 @@ public class SpoutCustomBlockDesign {
 		}
 		return newDoubleArray;
 	}
+	
+	private void writeIntArray(DataOutputStream output, int[] ints) throws IOException {
+		if (ints.length > 256) {
+			throw new IllegalArgumentException("Array containing " + ints.length + " ints passed to writeQuadFloat");
+		}
+		output.writeInt(ints.length);
+		for (int i = 0; i < ints.length; i++) {
+			output.writeInt(ints[i]);
+		}
+	}
 
 	private void writeQuadFloat(DataOutputStream output, float[] floats) throws IOException {
 		if (floats.length != 4) {
@@ -198,7 +239,7 @@ public class SpoutCustomBlockDesign {
 			output.writeFloat(floats[i]);
 		}
 	}
-
+	
 	private void writeDoubleArray(DataOutputStream output, float[][] floats) throws IOException {
 		if (floats.length > 256) {
 			throw new IllegalArgumentException("Double array exceeded max length (" + floats.length + ")");
@@ -230,6 +271,9 @@ public class SpoutCustomBlockDesign {
 		zPos = new float[quads][];
 		textXPos = new float[quads][];
 		textYPos = new float[quads][];
+		lightSourceXOffset = new int[quads];
+		lightSourceYOffset = new int[quads];
+		lightSourceZOffset = new int[quads];
 		
 		for (int i = 0; i < quads; i++) {
 			xPos[i] = new float[4];
@@ -237,6 +281,9 @@ public class SpoutCustomBlockDesign {
 			zPos[i] = new float[4];
 			textXPos[i] = new float[4];
 			textYPos[i] = new float[4];
+			lightSourceXOffset[i] = 0;
+			lightSourceYOffset[i] = 0;
+			lightSourceZOffset[i] = 0;
 		}
 	}
 	
@@ -272,6 +319,17 @@ public class SpoutCustomBlockDesign {
 	
 	public boolean getReset() {
 		return reset;
+	}
+	
+	public void setLightSource(int quad, int x, int y, int z) {
+		lightSourceXOffset[quad] = x;
+		lightSourceYOffset[quad] = y;
+		lightSourceZOffset[quad] = z;
+	}
+	
+	public MutableIntegerVector getLightSource(int quad, int x, int y, int z) {
+		MutableIntegerVector blockVector = new MutableIntegerVector(x + lightSourceXOffset[quad], y + lightSourceYOffset[quad], z + lightSourceZOffset[quad]);
+		return blockVector;
 	}
 
 }
