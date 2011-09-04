@@ -218,10 +218,14 @@ public class WorldRenderer {
 									Block var25 = Block.blocksList[var19];
 									int var21 = var25.getRenderBlockPass();
 									if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
-										SpoutItemBlock.renderCustomBlock(this, var11, var25, var18, var16, var17);
+										if (var12 == SpoutItemBlock.getRenderPass(var18, var16, var17)) {
+											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, var25, var18, var16, var17);
+										} else {
+											var13 = true;
+										}
 									} else if (var21 != var12) {
 										var13 = true;
-									} else if (var21 == var12) {
+									} else {
 										if (currentTexture > 0 && texture != defaultTexture) {
 											var11.customUVs = true;
 											var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);

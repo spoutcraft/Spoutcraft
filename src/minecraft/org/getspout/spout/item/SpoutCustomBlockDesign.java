@@ -35,11 +35,13 @@ public class SpoutCustomBlockDesign {
 	
 	private float brightness = 0.5F;
 	
+	private int renderPass = 0;
+	
 	public SpoutCustomBlockDesign() {
 	}
 
 	public SpoutCustomBlockDesign(float lowXBound, float lowYBound, float lowZBound, float highXBound, float highYBound, float highZBound, String textureURL, String texturePlugin,
-			float[][] xPos, float[][] yPos, float[][] zPos, float[][] textXPos, float[][] textYPos) {
+			float[][] xPos, float[][] yPos, float[][] zPos, float[][] textXPos, float[][] textYPos, int renderPass) {
 		this.lowXBound = lowXBound;
 		this.lowYBound = lowYBound;
 		this.lowZBound = lowZBound;
@@ -53,6 +55,7 @@ public class SpoutCustomBlockDesign {
 		this.zPos = zPos;
 		this.textXPos = textXPos;
 		this.textYPos = textYPos;
+		this.renderPass = renderPass;
 	}
 
 	public void setBounds(Block block) {
@@ -69,6 +72,14 @@ public class SpoutCustomBlockDesign {
 	
 	public void setBrightness(float brightness) {
 		this.brightness = brightness * maxBrightness + (1 - brightness) * minBrightness;
+	}
+	
+	public void setRenderPass(int renderPass) {
+		this.renderPass = renderPass;
+	}
+	
+	public int getRenderPass() {
+		return renderPass;
 	}
 
 	public void draw(Tessellator tessallator, int x, int y, int z) {
@@ -91,11 +102,11 @@ public class SpoutCustomBlockDesign {
 
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + getDoubleArrayLength(xPos) + getDoubleArrayLength(yPos) + getDoubleArrayLength(zPos)
-		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 8 * 4;
+		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 9 * 4;
 	}
 	
 	public static int getVersion() {
-		return 1;
+		return 2;
 	}
 
 	public void read(DataInputStream input) throws IOException {
@@ -119,6 +130,7 @@ public class SpoutCustomBlockDesign {
 		highZBound = input.readFloat();
 		maxBrightness = input.readFloat();
 		minBrightness = input.readFloat();
+		renderPass = input.readInt();
 	}
 
 	private final static String resetString = "[reset]";
@@ -151,6 +163,7 @@ public class SpoutCustomBlockDesign {
 		output.writeFloat(highZBound);
 		output.writeFloat(maxBrightness);
 		output.writeFloat(minBrightness);
+		output.writeInt(renderPass);
 	}
 
 	private float[] readQuadFloat(DataInputStream input) throws IOException {

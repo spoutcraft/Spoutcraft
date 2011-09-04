@@ -146,14 +146,25 @@ public class SpoutItemBlock extends ItemBlock {
 		}
 	}
 	
-	public static void renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, Block block, int x, int y, int z) {
+	public static int getRenderPass(int x, int y, int z) {
 		
 		SpoutCustomBlockDesign design = getCustomBlockDesign(x, y, z);
 		
 		if (design == null) {
-			return;
+			return 0;
+		} else {
+			return design.getRenderPass();
 		}
+	}
 	
+	public static boolean renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, Block block, int x, int y, int z) {
+		
+		SpoutCustomBlockDesign design = getCustomBlockDesign(x, y, z);
+		
+		if (design == null) {
+			return false;
+		}
+		
 		Tessellator tessallator = Tessellator.instance;
 		
 		design.setBrightness(block.getBlockBrightness(renderBlocks.blockAccess, x, y, z));
@@ -161,6 +172,8 @@ public class SpoutItemBlock extends ItemBlock {
 		design.setBounds(block);
 		
 		design.draw(tessallator, x, y, z);
+		
+		return true;
 	}
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {
