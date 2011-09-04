@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 
 public abstract interface Client {
 
@@ -26,5 +27,7 @@ public abstract interface Client {
 	public Map<String, String[]> getCommandAliases();
 
 	public String getUpdateFolder();
+	
+	public SafeGL getGLWrapper();
 
 }
