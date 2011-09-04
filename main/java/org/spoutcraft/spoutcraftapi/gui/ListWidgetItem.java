@@ -18,17 +18,27 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 	
 	private void initProperties(){
 		addProperty("title", new Property() {
-			
-			@Override
 			public void set(Object value) {
-				// TODO Auto-generated method stub
-				
+				setTitle((String)value);
 			}
-			
-			@Override
 			public Object get() {
-				// TODO Auto-generated method stub
-				return null;
+				return getTitle();
+			}
+		});
+		addProperty("text", new Property() {
+			public void set(Object value) {
+				setText((String)value);
+			}
+			public Object get() {
+				return getText();
+			}
+		});
+		addProperty("iconurl", new Property() {
+			public void set(Object value) {
+				setIconUrl((String)value);
+			}
+			public Object get() {
+				return getIconUrl();
 			}
 		});
 	}
