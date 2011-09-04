@@ -20,6 +20,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.src.GuiButton;
+
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
@@ -28,6 +31,7 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	protected boolean enabled = true;
 	protected Color color = new Color(0.878F, 0.878F, 0.878F);
 	protected Color disabledColor = new Color(0.625F, 0.625F, 0.625F);
+	protected GuiButton field = null;
 	public GenericControl() {
 		
 	}
@@ -90,4 +94,35 @@ public abstract class GenericControl extends GenericWidget implements Control{
 		return this;
 	}
 
+	@Override
+	public Widget setScreen(Screen screen) {
+		if (screen == null) {
+			getField();
+			CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
+			popup.getControlList().remove(field);
+		}
+		return super.setScreen(screen);
+	}
+	
+	public boolean getField() {
+		if (field == null) {
+			boolean success = false;
+			if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
+				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
+				for (GuiButton control : popup.getControlList()) {
+					if (control instanceof CustomTextField) {
+						if (((GuiButton)control).isEqual((Widget)this)) {
+							field = (GuiButton)control;
+							field.updateWidget(this);
+							success = true;
+							break;
+						}
+					}
+				}
+			}
+			return success;
+		}
+		return true;
+	}
+	
 }

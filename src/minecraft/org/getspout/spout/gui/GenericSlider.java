@@ -22,11 +22,9 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 
-import net.minecraft.src.GuiButton;
 public class GenericSlider extends GenericControl implements Slider {
 
 	protected float slider = 0.5f;
-	private CustomGuiSlider sliderControl = null;
 	public GenericSlider() {
 		
 	}
@@ -94,27 +92,11 @@ public class GenericSlider extends GenericControl implements Slider {
 
 	@Override
 	public void render() {
-		if (sliderControl == null) {
-			boolean success = false;
-			if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
-				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
-				for (GuiButton control : popup.getControlList()) {
-					if (control instanceof CustomGuiSlider) {
-						if (control.equals(this)) {
-							sliderControl = (CustomGuiSlider)control;
-							sliderControl.updateWidget(this);
-							success = true;
-							break;
-						}
-					}
-				}
-				if (!success) {
-					sliderControl = new CustomGuiSlider(getScreen(), this);
-					popup.getControlList().add(sliderControl);
-				}
-			}
+		if (!getField()) {
+			field = new CustomGuiSlider(getScreen(), this);
+			((CustomScreen)SpoutClient.getHandle().currentScreen).getControlList().add(field);
 		}
-		sliderControl.drawButton(SpoutClient.getHandle(), x, y);
+		field.drawButton(SpoutClient.getHandle(), x, y);
 	}
 
 }

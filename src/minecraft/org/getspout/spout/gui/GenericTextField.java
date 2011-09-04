@@ -24,8 +24,6 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
-import net.minecraft.src.GuiButton;
-
 public class GenericTextField extends GenericControl implements TextField{
 	
 	protected String text = "";
@@ -33,7 +31,6 @@ public class GenericTextField extends GenericControl implements TextField{
 	protected int maxChars = 16;
 	protected Color fieldColor = new Color(0, 0, 0);
 	protected Color borderColor = new Color(0.625F, 0.625F, 0.625F);
-	CustomTextField field = null;
 	public GenericTextField() {
 
 	}
@@ -136,25 +133,9 @@ public class GenericTextField extends GenericControl implements TextField{
 
 	@Override
 	public void render() {
-		if (field == null) {
-			boolean success = false;
-			if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
-				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
-				for (GuiButton control : popup.getControlList()) {
-					if (control instanceof CustomTextField) {
-						if (((CustomTextField)control).isEqual((Widget)this)) {
-							field = (CustomTextField)control;
-							field.updateWidget(this);
-							success = true;
-							break;
-						}
-					}
-				}
-				if (!success) {
-					field = new CustomTextField(getScreen(), this);
-					popup.getControlList().add(field);
-				}
-			}
+		if (!getField()) {
+			field = new CustomTextField(getScreen(), this);
+			((CustomScreen)SpoutClient.getHandle().currentScreen).getControlList().add(field);
 		}
 		field.drawButton(SpoutClient.getHandle(), x, y);
 	}

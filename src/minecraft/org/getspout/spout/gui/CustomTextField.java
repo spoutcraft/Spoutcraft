@@ -20,11 +20,9 @@ import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.getspout.spout.packet.*;
-import java.util.UUID;
 
 public class CustomTextField extends GuiButton {
 	protected Screen screen;
-	protected TextField field;
 	private int count = 0;
 	private boolean focus = false;
 	public CustomTextField(Screen screen, TextField field) {
@@ -36,55 +34,55 @@ public class CustomTextField extends GuiButton {
 	public void textboxKeyTyped(char key, int keyId) {
 		boolean dirty = false;
 		try {
-			if(field.isEnabled() && this.focus) {
+			if(getField().isEnabled() && this.focus) {
 				if(key == 22) {
 					String clipboard = GuiScreen.getClipboardString();
 					if(clipboard == null) {
 						clipboard = "";
 					}
 
-					int max = 32 - field.getText().length();
+					int max = 32 - getField().getText().length();
 					if(max > clipboard.length()) {
 						max = clipboard.length();
 					}
 
 					if(max > 0) {
-						field.setText(field.getText() + clipboard.substring(0, max));
+						getField().setText(getField().getText() + clipboard.substring(0, max));
 						dirty = true;
 					}
 				}
-				if (keyId == Keyboard.KEY_RIGHT && field.getCursorPosition() < field.getText().length()) {
-					field.setCursorPosition(field.getCursorPosition() + 1);
+				if (keyId == Keyboard.KEY_RIGHT && getField().getCursorPosition() < getField().getText().length()) {
+					getField().setCursorPosition(getField().getCursorPosition() + 1);
 					dirty = true;
 				}
-				else if (keyId == Keyboard.KEY_LEFT && field.getCursorPosition() > 0) {
-					field.setCursorPosition(field.getCursorPosition() - 1);
+				else if (keyId == Keyboard.KEY_LEFT && getField().getCursorPosition() > 0) {
+					getField().setCursorPosition(getField().getCursorPosition() - 1);
 					dirty = true;
 				}
-				else if (keyId == Keyboard.KEY_DELETE && field.getCursorPosition() > 0 && field.getCursorPosition() < field.getText().length()) {
-					field.setText(field.getText().substring(0, field.getCursorPosition()) + field.getText().substring(field.getCursorPosition() + 1));
+				else if (keyId == Keyboard.KEY_DELETE && getField().getCursorPosition() > 0 && getField().getCursorPosition() < getField().getText().length()) {
+					getField().setText(getField().getText().substring(0, getField().getCursorPosition()) + getField().getText().substring(getField().getCursorPosition() + 1));
 					dirty = true;
 				}
-				else if(keyId == Keyboard.KEY_BACK && field.getText().length() > 0 && field.getCursorPosition() > 0) {
-					field.setText(field.getText().substring(0, field.getCursorPosition() - 1) + field.getText().substring(field.getCursorPosition()));
-					field.setCursorPosition(field.getCursorPosition() - 1);
+				else if(keyId == Keyboard.KEY_BACK && getField().getText().length() > 0 && getField().getCursorPosition() > 0) {
+					getField().setText(getField().getText().substring(0, getField().getCursorPosition() - 1) + getField().getText().substring(getField().getCursorPosition()));
+					getField().setCursorPosition(getField().getCursorPosition() - 1);
 					dirty = true;
 				}
-				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (field.getText().length() < field.getMaximumCharacters() || field.getMaximumCharacters() == 0)) {
+				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (getField().getText().length() < getField().getMaximumCharacters() || getField().getMaximumCharacters() == 0)) {
 					String newText = "";
-					if (field.getCursorPosition() > 0) {
-						newText += field.getText().substring(0, field.getCursorPosition());
+					if (getField().getCursorPosition() > 0) {
+						newText += getField().getText().substring(0, getField().getCursorPosition());
 					}
 					newText += key;
-					if (field.getCursorPosition() < field.getText().length()) {
-						newText += field.getText().substring(field.getCursorPosition());
+					if (getField().getCursorPosition() < getField().getText().length()) {
+						newText += getField().getText().substring(getField().getCursorPosition());
 					}
-					field.setText(newText);
-					field.setCursorPosition(field.getCursorPosition() + 1);
+					getField().setText(newText);
+					getField().setCursorPosition(getField().getCursorPosition() + 1);
 					dirty = true;
 				}
 				if (dirty) {
-					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, field, field.getText(), field.getCursorPosition())));
+					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, field, getField().getText(), getField().getCursorPosition())));
 				}
 			}
 		}
@@ -95,7 +93,7 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public boolean mousePressed(Minecraft game, int mouseX, int mouseY) {
-		this.setFocused(field.isEnabled() && field.isVisible() && mouseX >= field.getScreenX() && mouseX < field.getScreenX() + field.getWidth() && mouseY >= field.getScreenY() && mouseY < field.getScreenY() + field.getHeight());
+		this.setFocused(getField().isEnabled() && getField().isVisible() && mouseX >= getField().getScreenX() && mouseX < getField().getScreenX() + getField().getWidth() && mouseY >= getField().getScreenY() && mouseY < getField().getScreenY() + getField().getHeight());
 		return isFocused();
 	}
 	
@@ -105,7 +103,7 @@ public class CustomTextField extends GuiButton {
 	
 	public void setFocused(boolean focus) {
 		if(focus && !this.focus) {
-			field.setCursorPosition(field.getText().length());
+			getField().setCursorPosition(getField().getText().length());
 		}
 
 		this.focus = focus;
@@ -113,46 +111,39 @@ public class CustomTextField extends GuiButton {
 	
 	@Override
 	public void drawButton(Minecraft game, int mouseX, int mouseY) {
-		this.drawRect((int) (field.getScreenX() - 1), (int) (field.getScreenY() - 1), (int) (field.getScreenX() + field.getWidth() + 1), (int) (field.getScreenY() + field.getHeight() + 1), field.getBorderColor().toInt());
-		this.drawRect((int)field.getScreenX(), (int) field.getScreenY(), (int) (field.getScreenX() + field.getWidth()), (int) (field.getScreenY() + field.getHeight()), field.getFieldColor().toInt());
-		if(field.isEnabled()) {
+		this.drawRect((int) (getField().getScreenX() - 1), (int) (getField().getScreenY() - 1), (int) (getField().getScreenX() + getField().getWidth() + 1), (int) (getField().getScreenY() + getField().getHeight() + 1), getField().getBorderColor().toInt());
+		this.drawRect((int)getField().getScreenX(), (int) getField().getScreenY(), (int) (getField().getScreenX() + getField().getWidth()), (int) (getField().getScreenY() + getField().getHeight()), getField().getFieldColor().toInt());
+		if(getField().isEnabled()) {
 			count++;
 			boolean showCursor = this.focus && count % 40 < 15;
-			String text = field.getText();
-			if (field.getCursorPosition() < 0) field.setCursorPosition(0);
-			if (field.getCursorPosition() > text.length()) field.setCursorPosition(text.length());
+			String text = getField().getText();
+			if (getField().getCursorPosition() < 0) getField().setCursorPosition(0);
+			if (getField().getCursorPosition() > text.length()) getField().setCursorPosition(text.length());
 			if (showCursor) {
 				text = "";
-				if (field.getCursorPosition() > 0) {
-					text += field.getText().substring(0, field.getCursorPosition());
+				if (getField().getCursorPosition() > 0) {
+					text += getField().getText().substring(0, getField().getCursorPosition());
 				}
 				text += "_";
-				if (field.getCursorPosition() < field.getText().length()) {
-					text += field.getText().substring(field.getCursorPosition() + 1);
+				if (getField().getCursorPosition() < getField().getText().length()) {
+					text += getField().getText().substring(getField().getCursorPosition() + 1);
 				}
 			}
-			this.drawString(game.fontRenderer, text, (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getColor().toInt());
+			this.drawString(game.fontRenderer, text, (int) (getField().getScreenX() + 4), (int) (getField().getScreenY() + (getField().getHeight() - 8) / 2), getField().getColor().toInt());
 		} else {
-			this.drawString(game.fontRenderer, field.getText(), (int) (field.getScreenX() + 4), (int) (field.getScreenY() + (field.getHeight() - 8) / 2), field.getDisabledColor().toInt());
+			this.drawString(game.fontRenderer, getField().getText(), (int) (getField().getScreenX() + 4), (int) (getField().getScreenY() + (getField().getHeight() - 8) / 2), getField().getDisabledColor().toInt());
 		}
 
 	}
-
-	public TextField getWidget() {
-		return field;
+	
+	public TextField getField() {
+		return (TextField) field;
 	}
 	
-	public UUID getId() {
-		return field.getId();
-	}
-	
-	public boolean isEqual(Widget widget) {
-		return widget.getId().equals(field.getId());
-	}
-	
-	public void updateWidget(TextField widget) {
-		this.field = widget;
-		if (field.getCursorPosition() < 0) field.setCursorPosition(0);
-		if (field.getCursorPosition() > field.getText().length()) field.setCursorPosition(field.getText().length());
+	@Override
+	public void updateWidget(Control widget) {
+		super.updateWidget(widget);
+		if (getField().getCursorPosition() < 0) getField().setCursorPosition(0);
+		if (getField().getCursorPosition() > getField().getText().length()) getField().setCursorPosition(getField().getText().length());
 	}
 }

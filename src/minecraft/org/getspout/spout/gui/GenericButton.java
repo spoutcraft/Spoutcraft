@@ -20,8 +20,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.GuiButton;
-
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.gui.Color;
@@ -31,7 +29,6 @@ public class GenericButton extends GenericControl implements Button {
 	protected GenericLabel label = new GenericLabel();
 	protected String disabledText = "";
 	protected Color hoverColor = new Color(1, 1, 0.627F);
-	private CustomGuiButton button = null;
 	public GenericButton() {
 		
 	}
@@ -143,28 +140,24 @@ public class GenericButton extends GenericControl implements Button {
 	private int y;
 	
 	@Override
-	public void render() {
-		if (button == null) {
-			boolean success = false;
-			if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
+	public Widget setScreen(Screen screen) {
+		if (screen == null) {
+			getField();
+			if (field != null) {
 				CustomScreen popup = (CustomScreen)SpoutClient.getHandle().currentScreen;
-				for (GuiButton control : popup.getControlList()) {
-					if (control instanceof CustomGuiButton) {
-						button = (CustomGuiButton)control;
-						if(button.getWidget().equals(this)){
-							button.updateWidget(this);
-							success = true;
-							break;
-						}
-					}
-				}
-				if (!success) {
-					button = new CustomGuiButton(getScreen(), this);
-					popup.getControlList().add(button);
-				}
+				popup.getControlList().remove(field);
 			}
 		}
-		button.drawButton(SpoutClient.getHandle(), x, y);
+		return super.setScreen(screen);
+	}
+	
+	@Override
+	public void render() {
+		if (!getField()) {
+			field = new CustomGuiButton(getScreen(), this);
+			((CustomScreen)SpoutClient.getHandle().currentScreen).getControlList().add(field);
+		}
+		field.drawButton(SpoutClient.getHandle(), x, y);
 	}
 
 	@Override
