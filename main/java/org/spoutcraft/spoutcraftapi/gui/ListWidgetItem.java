@@ -1,5 +1,7 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
@@ -54,4 +56,19 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if(! (other instanceof ListWidgetItem)){
+			return false;
+		}
+		ListWidgetItem li = (ListWidgetItem)other;
+		return (new EqualsBuilder()).append(this.text, li.text).append(this.title, li.title).append(this.iconUrl, li.iconUrl).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return (new HashCodeBuilder()).append(text).append(title).append(iconUrl).toHashCode();
+	}
+	
 }
