@@ -12,4 +12,11 @@ public interface ValueSetDelegate {
 	 * @param value to be set to the object.
 	 */
 	public void set(Animatable value);
+
+	/**
+	 * Sets the value to the object as Number (int, double, etc.)
+	 * Will be called each animation cycle.
+	 * @param value to be set to the object.
+	 */
+	public void set(Number value);
 }

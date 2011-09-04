@@ -17,7 +17,8 @@ public class Animation {
 		STOPPED, PAUSED, RUNNING;
 	}
 	
-	private Animatable startValue, endValue;
+	private Animatable startValue = null, endValue = null;
+	private Number startNumber = null, endNumber = null;
 	
 	private int duration;
 
@@ -132,6 +133,22 @@ public class Animation {
 		return property;
 	}
 
+	public void setStartNumber(Number startNumber) {
+		this.startNumber = startNumber;
+	}
+
+	public Number getStartNumber() {
+		return startNumber;
+	}
+
+	public void setEndNumber(Number endNumber) {
+		this.endNumber = endNumber;
+	}
+
+	public Number getEndNumber() {
+		return endNumber;
+	}
+
 	private class AnimationRunnable extends TimerTask{
 		public Animation animation;
 		public AnimationRunnable(Animation ani) {
@@ -154,8 +171,18 @@ public class Animation {
 				time = 0;
 			}
 			animation.setCurrentTime(time);
-			Animatable value = animation.getCurrentValue();
-			animation.getValueDelegate().set(value);
+			if(startNumber == null){
+				Animatable value = animation.getCurrentValue();
+				animation.getValueDelegate().set(value);
+			} else {
+				Number value = animation.getCurrentValueNumber();
+				animation.getValueDelegate().set(value);
+			}
 		}
+	}
+
+	public Number getCurrentValueNumber() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
