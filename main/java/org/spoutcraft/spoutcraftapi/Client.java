@@ -29,5 +29,11 @@ public abstract interface Client {
 	public String getUpdateFolder();
 	
 	public SafeGL getGLWrapper();
+	
+	public Mode getMode();
+	
+	public enum Mode{
+		Single_Player, Multiplayer, Menu;
+	}
 
 }
