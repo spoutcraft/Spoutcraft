@@ -123,7 +123,15 @@ public class Color implements Animatable {
 	}
 	
 	public int toInt() {
-		return Long.valueOf(((long)getAlphaB() << 24L) + ((long)getRedB() << 16L) + ((long)getGreenB() << 8L) + (long)getBlueB()).intValue();
+		short a = getAlphaB();
+		short r = getRedB();
+		short g = getGreenB();
+		short b = getBlueB();
+		a = a > 255 ? 255 : a; a = a < 0 ? 0 : a;
+		r = r > 255 ? 255 : r; r = r < 0 ? 0 : r;
+		g = g > 255 ? 255 : g; g = g < 0 ? 0 : g;
+		b = b > 255 ? 255 : b; b = b < 0 ? 0 : b;
+		return (a << 24) + (r << 16) + (g << 8) + b;
 	}
 
 	@Override
