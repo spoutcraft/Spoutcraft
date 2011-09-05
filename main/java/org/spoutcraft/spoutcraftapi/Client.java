@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
-import org.spoutcraft.spoutcraftapi.entity.EntityManager;
+import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
@@ -40,9 +40,9 @@ public interface Client {
 	
 	//public PacketManager getPacketManager();
 	
-	//public ActivePlayer getActivePlayer();
+	public ActivePlayer getActivePlayer();
 	
-	public EntityManager getEntityManager();
+	//public EntityManager getEntityManager();
 	
 	public BiomeManager getBiomeManager();
 	
