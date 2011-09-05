@@ -9,7 +9,6 @@ import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.EntityManager;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
-import org.spoutcraft.spoutcraftapi.packet.PacketManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
@@ -39,7 +38,7 @@ public interface Client {
 	
 	public SkyManager getSkyManager();
 	
-	public PacketManager getPacketManager();
+	//public PacketManager getPacketManager();
 	
 	//public ActivePlayer getActivePlayer();
 	
