@@ -32,7 +32,9 @@ public enum WidgetType {
 	Button(10, GenericButton.class),
 	Slider(11, GenericSlider.class),
 	TextField(12, GenericTextField.class),
-	Gradient(13, GenericGradient.class),
+	Gradient(13, GenericGradient.class), 
+	//Container has id 14!
+	EntityWidget(15, GenericEntityWidget.class),
 	;
 	
 	private final int id;
