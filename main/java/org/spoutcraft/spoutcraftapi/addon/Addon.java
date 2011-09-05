@@ -1,6 +1,8 @@
 package org.spoutcraft.spoutcraftapi.addon;
 
-public abstract interface Addon {
+import org.spoutcraft.spoutcraftapi.command.CommandExecutor;
+
+public abstract interface Addon extends CommandExecutor {
 
 	public abstract AddonDescriptionFile getDescription();
 
