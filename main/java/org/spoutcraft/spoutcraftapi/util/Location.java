@@ -22,6 +22,7 @@ public interface Location extends Vector, FixedLocation{
 
 	/**
 	 * Sets the world of this location
+	 * 
 	 * @param world New world
 	 * @return this location
 	 */

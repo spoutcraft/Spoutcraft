@@ -4,19 +4,19 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.World;
 
-public class MutableLocation extends MutableVector implements Location{
+public class MutableLocation extends MutableVector implements Location {
 	private double pitch;
 	private double yaw;
 	private World world;
-	
+
 	public MutableLocation() {
 		pitch = yaw = 0D;
 		world = null;
 	}
-	
+
 	/**
 	 * Constructs a new Location with the given coordinates
-	 *
+	 * 
 	 * @param world The world in which this location resides
 	 * @param x The x-coordinate of this new location
 	 * @param y The y-coordinate of this new location
@@ -28,7 +28,7 @@ public class MutableLocation extends MutableVector implements Location{
 
 	/**
 	 * Constructs a new Location with the given coordinates and direction
-	 *
+	 * 
 	 * @param world The world in which this location resides
 	 * @param x The x-coordinate of this new location
 	 * @param y The y-coordinate of this new location
@@ -44,7 +44,7 @@ public class MutableLocation extends MutableVector implements Location{
 		this.pitch = pitch;
 		this.yaw = yaw;
 	}
-	
+
 	public double getYaw() {
 		return yaw;
 	}
@@ -71,7 +71,7 @@ public class MutableLocation extends MutableVector implements Location{
 		this.world = world;
 		return this;
 	}
-	
+
 	public Vector getDirection() {
 		Vector vector = new MutableVector();
 
@@ -87,16 +87,16 @@ public class MutableLocation extends MutableVector implements Location{
 
 		return vector;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Location) {
-			Location other = (Location)obj;
+			Location other = (Location) obj;
 			return (new EqualsBuilder()).append(getX(), other.getX()).append(getY(), other.getY()).append(getZ(), other.getZ()).append(getYaw(), other.getYaw()).append(getPitch(), other.getPitch()).append(getWorld(), other.getWorld()).isEquals();
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(getX()).append(getY()).append(getZ()).append(getYaw()).append(getPitch()).append(getWorld()).toHashCode();
