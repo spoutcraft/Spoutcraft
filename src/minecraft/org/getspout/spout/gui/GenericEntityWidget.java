@@ -42,13 +42,13 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 		GL11.glEnable(32826 /*GL_RESCALE_NORMAL_EXT*/);
         GL11.glEnable(2903 /*GL_COLOR_MATERIAL*/);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(getX() + 30, getY() + 50, 50F);
+		GL11.glTranslated(getX() + getWidth()/2, getY() + getHeight(), 50F);
 		RenderHelper.enableStandardItemLighting();
-        float f1 = 30F;
+        float f1 = (float) Math.min(getWidth(), getHeight());
         GL11.glScalef(-f1, f1, f1);
         GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(entity.prevRotationYaw, 0, 1.0F, 0);
-		//RenderHelper.enableStandardItemLighting();
+		RenderHelper.enableStandardItemLighting();
         RenderManager.instance.playerViewY = 180F;
         RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
 		GL11.glPopMatrix();
