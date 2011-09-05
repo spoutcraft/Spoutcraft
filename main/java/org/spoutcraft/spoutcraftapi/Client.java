@@ -8,7 +8,7 @@ import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 
-public abstract interface Client {
+public interface Client {
 
 	public String getName();
 
