@@ -8,6 +8,7 @@ import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -58,7 +59,7 @@ public interface Client {
 	
 	public Mode getMode();
 	
-	
+	public RenderDelegate getRenderDelegate();
 	
 	public enum Mode{
 		Single_Player, Multiplayer, Menu;
