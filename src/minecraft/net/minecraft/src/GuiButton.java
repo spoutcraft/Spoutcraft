@@ -1,13 +1,9 @@
 package net.minecraft.src;
 
-import java.util.UUID;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
 
-import org.getspout.spout.gui.Control;
-import org.getspout.spout.gui.Widget;
 import org.lwjgl.opengl.GL11;
 
 public class GuiButton extends Gui {
@@ -20,7 +16,6 @@ public class GuiButton extends Gui {
 	public int id;
 	public boolean enabled;
 	public boolean enabled2;
-	protected Control field;
 
 	public GuiButton(int var1, int var2, int var3, String var4) {
 		this(var1, var2, var3, 200, 20, var4);
@@ -69,22 +64,6 @@ public class GuiButton extends Gui {
 			}
 
 		}
-	}
-	
-	public void updateWidget(Control widget) {
-		this.field = widget;
-	}
-	
-	public Control getWidget() {
-		return field;
-	}
-	
-	public UUID getId() {
-		return field.getId();
-	}
-	
-	public boolean isEqual(Widget widget) {
-		return widget.getId().equals(field.getId());
 	}
 	
 	protected void mouseDragged(Minecraft var1, int var2, int var3) {}

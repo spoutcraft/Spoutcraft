@@ -107,7 +107,8 @@ import org.getspout.spout.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import net.minecraft.src.PlayerControllerSP;
 
-import org.getspout.spout.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.getspout.spout.gui.ScreenUtil;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketScreenAction;
 import org.getspout.spout.packet.ScreenAction;
@@ -460,23 +461,21 @@ public abstract class Minecraft implements Runnable {
 			screen = new GuiGameOver();
 		}
 
-		ScreenType display = ScreenType.getType(screen);
+		ScreenType display = ScreenUtil.getType(screen);
 		if (previousScreen != null || screen != null) {
 			previousScreen = this.currentScreen;
 		}
 		if (notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
 			// Screen closed
 			if (this.currentScreen != null && screen == null) {
-				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenType.getType(this.currentScreen))));
+				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen))));
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
 				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
 			}
 			// Screen swapped
-			if (screen != null && this.currentScreen != null) { // Hopefully
-																// just a
-																// submenu
+			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
 			}
 		}

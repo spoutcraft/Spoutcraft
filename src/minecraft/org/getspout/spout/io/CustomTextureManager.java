@@ -59,14 +59,14 @@ public class CustomTextureManager {
 	
 	public static File getTextureFile(String plugin, String url) {
 		String fileName = FileUtil.getFileName(url);
-		File cache = cacheTextureFiles.get(fileName);
+		File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
 		if (cache != null) {
 			return cache;
 		}
 		if (plugin != null) {
 			File file = FileUtil.findTextureFile(plugin, fileName);
 			if (file != null) {
-				cacheTextureFiles.put(fileName, file);
+				cacheTextureFiles.put(plugin + File.separator + fileName, file);
 				return file;
 			}
 		}

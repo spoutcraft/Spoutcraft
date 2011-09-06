@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 
@@ -31,6 +32,7 @@ import org.apache.commons.io.FilenameUtils;
 
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
+	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
 	public static File getCacheDirectory() {
 		File directory = new File(Minecraft.getMinecraftDir(), "spout");
 		if (!directory.exists()) {
@@ -140,15 +142,23 @@ public class FileUtil {
 		return directory;
 	}
 
-	public static String getFileName(String Url) {
-		int slashIndex = Url.lastIndexOf('/');
-		int backslashIndex = Url.lastIndexOf('\\');
-		slashIndex = Math.max(slashIndex, backslashIndex);
-		int dotIndex = Url.lastIndexOf('.', slashIndex);
-		if (dotIndex == -1 || dotIndex < slashIndex) {
-			return Url.substring(slashIndex + 1).replaceAll("%20", " ");
+	public static String getFileName(String url) {
+		if (fileNameCache.containsKey(url)) {
+			return fileNameCache.get(url);
 		}
-		return Url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
+		int slashIndex = url.lastIndexOf('/');
+		int backslashIndex = url.lastIndexOf('\\');
+		slashIndex = Math.max(slashIndex, backslashIndex);
+		int dotIndex = url.lastIndexOf('.', slashIndex);
+		String result;
+		if (dotIndex == -1 || dotIndex < slashIndex) {
+			result = url.substring(slashIndex + 1).replaceAll("%20", " ");
+		}
+		else {
+			result = url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
+		}
+		fileNameCache.put(url, result);
+		return result;
 	}
 
 	public static boolean isAudioFile(String file) {

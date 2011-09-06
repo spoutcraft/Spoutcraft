@@ -23,6 +23,10 @@ import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
+import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 
 public class PacketWidget implements SpoutPacket {
 	protected Widget widget;
@@ -30,8 +34,8 @@ public class PacketWidget implements SpoutPacket {
 	private static final int[] nags;
 	
 	static {
-		nags = new int[WidgetType.values().length];
-		for (int i = 0; i < WidgetType.values().length; i++) {
+		nags = new int[WidgetType.getNumWidgetTypes()];
+		for (int i = 0; i < WidgetType.getNumWidgetTypes(); i++) {
 			nags[i] = CustomPacket.NAG_MSG_AMT;
 		}
 	}

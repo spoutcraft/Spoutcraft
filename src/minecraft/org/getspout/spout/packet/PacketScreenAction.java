@@ -21,8 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
-
-import org.getspout.spout.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class PacketScreenAction implements SpoutPacket{
 	protected byte action = -1;

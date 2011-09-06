@@ -21,8 +21,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.getspout.spout.gui.Widget;
-import org.getspout.spout.gui.Screen;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
+import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class PacketControlAction implements SpoutPacket{
 	protected UUID screen;

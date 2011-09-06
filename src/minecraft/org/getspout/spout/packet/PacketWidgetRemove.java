@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
+import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 
 public class PacketWidgetRemove implements SpoutPacket {
 	protected Widget widget;

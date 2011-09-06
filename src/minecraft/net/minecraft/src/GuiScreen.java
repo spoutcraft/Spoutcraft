@@ -18,6 +18,8 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
+import org.spoutcraft.spoutcraftapi.gui.*;
+
 //Spout End
 
 public class GuiScreen extends Gui {
@@ -107,7 +109,7 @@ public class GuiScreen extends Gui {
 		while(Keyboard.next()) {
 			if(mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()){
 				EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
-				ScreenType screen = ScreenType.getType(this);
+				ScreenType screen = ScreenUtil.getType(this);
 				int i = Keyboard.getEventKey();
 				boolean keyReleased = Keyboard.getEventKeyState();
 				PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);

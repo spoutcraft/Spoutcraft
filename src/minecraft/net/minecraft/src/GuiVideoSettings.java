@@ -4,8 +4,8 @@ package net.minecraft.src;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketRenderDistance;
-import org.getspout.spout.player.ActivePlayer;
 //Spout End
+import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 
 public class GuiVideoSettings extends GuiScreen {
 

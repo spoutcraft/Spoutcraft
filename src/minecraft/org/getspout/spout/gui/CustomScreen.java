@@ -18,6 +18,7 @@ package org.getspout.spout.gui;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
 
@@ -39,19 +40,75 @@ public class CustomScreen extends GuiScreen {
 	
 	@Override
 	public void actionPerformed(GuiButton button){
-		if (button instanceof CustomGuiButton){
-			((EntityClientPlayerMP)this.mc.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, ((CustomGuiButton)button).getWidget(), 1)));
-		}
-		else if (button instanceof CustomGuiSlider) {
+	//	if (button instanceof CustomGuiButton){
+		//	((EntityClientPlayerMP)this.mc.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, ((CustomGuiButton)button).getWidget(), 1)));
+	//	}
+	//	else if (button instanceof CustomGuiSlider) {
 			//This fires before the new position is set, so no good
-		}	
+	//	}
+	}
+	
+	@Override
+	protected void mouseClicked(int mouseX, int mouseY, int click) {
+		screen.setMouseX(mouseY);
+		screen.setMouseY(mouseY);
+		if (click == 0) {
+			for (Widget widget : screen.getAttachedWidgets()) {
+				if (widget instanceof Control) {
+					Control control = (Control)widget;
+					if (control.isEnabled() && control.isVisible()) {
+						if (isInBoundingRect(control, mouseX, mouseY)) {
+							control.setFocus(true);
+							this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+							if (control instanceof Button) {
+								SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+							}
+							else if (control instanceof Slider) {
+								//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
+								((Slider)control).setDragging(true);
+							}
+							else if (control instanceof TextField) {
+								((TextField)control).setCursorPosition(((TextField)control).getText().length());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	protected void mouseMovedOrUp(int mouseX, int mouseY, int click) {
+		screen.setMouseX(mouseX);
+		screen.setMouseY(mouseY);
+		for (Widget widget : screen.getAttachedWidgets()) {
+			if (widget instanceof Control) {
+				Control control = (Control)widget;
+				if (control.isEnabled() && control.isVisible()) {
+					if (click == 0) {
+						if (!isInBoundingRect(control, mouseX, mouseY)) { //released control
+							control.setFocus(false);
+						}
+						if (control instanceof Slider) {
+							((Slider)control).setDragging(false);
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider)control).getSliderPosition()));
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
 	public void handleKeyboardInput() {
 		boolean handled = false;
-		if(Keyboard.getEventKeyState()) {		
-			for (GuiButton control : getControlList()) {
+		if(Keyboard.getEventKeyState()) {
+			for (Widget widget : screen.getAttachedWidgets()) {
+				if (widget instanceof TextField) {
+					onTextFieldTyped((TextField)widget, Keyboard.getEventCharacter(), Keyboard.getEventKey());
+				}
+			}
+			/*for (GuiButton control : getControlList()) {
 				if (control instanceof CustomTextField) {
 					if (((CustomTextField)control).isFocused()) {
 						((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
@@ -59,10 +116,70 @@ public class CustomScreen extends GuiScreen {
 						break;
 					}
 				}
-			}			
+			}*/
 		}
 		if (!handled) {
 			super.handleKeyboardInput();
+		}
+	}
+	
+	public void onTextFieldTyped(TextField textField, char key, int keyId) {
+		boolean dirty = false;
+		try {
+			if(textField.isEnabled() && textField.isFocus()) {
+				if(key == 22) {
+					String clipboard = GuiScreen.getClipboardString();
+					if(clipboard == null) {
+						clipboard = "";
+					}
+
+					int max = 32 - textField.getText().length();
+					if(max > clipboard.length()) {
+						max = clipboard.length();
+					}
+
+					if(max > 0) {
+						textField.setText(textField.getText() + clipboard.substring(0, max));
+						dirty = true;
+					}
+				}
+				if (keyId == Keyboard.KEY_RIGHT && textField.getCursorPosition() < textField.getText().length()) {
+					textField.setCursorPosition(textField.getCursorPosition() + 1);
+					dirty = true;
+				}
+				else if (keyId == Keyboard.KEY_LEFT && textField.getCursorPosition() > 0) {
+					textField.setCursorPosition(textField.getCursorPosition() - 1);
+					dirty = true;
+				}
+				else if (keyId == Keyboard.KEY_DELETE && textField.getCursorPosition() > 0 && textField.getCursorPosition() < textField.getText().length()) {
+					textField.setText(textField.getText().substring(0, textField.getCursorPosition()) + textField.getText().substring(textField.getCursorPosition() + 1));
+					dirty = true;
+				}
+				else if(keyId == Keyboard.KEY_BACK && textField.getText().length() > 0 && textField.getCursorPosition() > 0) {
+					textField.setText(textField.getText().substring(0, textField.getCursorPosition() - 1) + textField.getText().substring(textField.getCursorPosition()));
+					textField.setCursorPosition(textField.getCursorPosition() - 1);
+					dirty = true;
+				}
+				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (textField.getText().length() < textField.getMaximumCharacters() || textField.getMaximumCharacters() == 0)) {
+					String newText = "";
+					if (textField.getCursorPosition() > 0) {
+						newText += textField.getText().substring(0, textField.getCursorPosition());
+					}
+					newText += key;
+					if (textField.getCursorPosition() < textField.getText().length()) {
+						newText += textField.getText().substring(textField.getCursorPosition());
+					}
+					textField.setText(newText);
+					textField.setCursorPosition(textField.getCursorPosition() + 1);
+					dirty = true;
+				}
+				if (dirty) {
+					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 		
@@ -86,27 +203,16 @@ public class CustomScreen extends GuiScreen {
 			this.drawDefaultBackground();
 		}
 		bg.setVisible(screen.isBgVisible());
-		for (Widget widget : screen.getAttachedWidgets()) {
-			if (widget instanceof GenericButton) {
-				((GenericButton)widget).setup(x, y);
-			}
-			else if (widget instanceof GenericTextField) {
-				((GenericTextField)widget).setup(x, y);
-			}
-			else if (widget instanceof GenericSlider) {
-				((GenericSlider)widget).setup(x, y);
-			}
-		}
 		screen.render();
 		//Draw the tooltip!
 		String tooltip = "";
-		Widget tooltipWidget = null;
+		//Widget tooltipWidget = null;
 		for (RenderPriority priority : RenderPriority.values()) {	
 			for (Widget widget : screen.getAttachedWidgets()){
 				if (widget.getPriority() == priority){
 					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
 						tooltip = widget.getTooltip();
-						tooltipWidget = widget;
+						//tooltipWidget = widget;
 						//No return here, when a widget that is over it comes next, tooltip will be overwritten.
 					}
 				}

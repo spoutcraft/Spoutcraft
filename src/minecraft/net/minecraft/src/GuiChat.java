@@ -5,7 +5,7 @@ import net.minecraft.src.GuiScreen;
 import org.lwjgl.input.Keyboard;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.ChatBar;
+import org.spoutcraft.spoutcraftapi.gui.ChatBar;
 //Spout End
 
 public class GuiChat extends GuiScreen {

@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.player.ChatManager;
 //Spout End
 

@@ -20,7 +20,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+
 import net.minecraft.src.*;
 
 public class PacketKeyPress implements SpoutPacket{

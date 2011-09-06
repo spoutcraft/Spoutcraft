@@ -23,6 +23,7 @@ import net.minecraft.src.World;
 import org.getspout.spout.packet.*; //Spout
 import org.getspout.spout.client.SpoutClient; //Spout
 import org.getspout.spout.gui.*; //Spout
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 

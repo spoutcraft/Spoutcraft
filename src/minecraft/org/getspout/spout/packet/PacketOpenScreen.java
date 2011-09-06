@@ -4,7 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.gui.ScreenType;
+import org.getspout.spout.gui.ScreenUtil;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class PacketOpenScreen implements SpoutPacket {
 	ScreenType type = null;
@@ -26,7 +27,7 @@ public class PacketOpenScreen implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
-		type.open();
+		ScreenUtil.open(type);
 	}
 
 	@Override

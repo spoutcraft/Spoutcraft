@@ -16,12 +16,17 @@
  */
 package org.getspout.spout.client;
 
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
+import org.getspout.spout.gl.SpoutGL;
+import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
@@ -29,15 +34,21 @@ import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketManager;
-import org.getspout.spout.packet.SpoutPacket;
-import org.getspout.spout.player.ActivePlayer;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
+import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.AddonManager;
+import org.spoutcraft.spoutcraftapi.command.AddonCommand;
+import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
@@ -61,7 +72,8 @@ public class SpoutClient implements Client {
 	private Thread clipboardThread = null;
 	private ClientPlayer player = null;
 	private boolean cheating = true;
-	private static SpoutPacket reloadPacket = null;
+	private RenderDelegate render = new MCRenderDelegate();
+	private SafeGL openGL = new SpoutGL();
 	
 	static {
 		dataMiningThread.start();
@@ -72,6 +84,7 @@ public class SpoutClient implements Client {
 	public static SpoutClient getInstance() {
 		if (instance == null) {
 			instance = new SpoutClient();
+			Spoutcraft.setClient(instance);
 		}
 		return instance;
 	}
@@ -145,7 +158,6 @@ public class SpoutClient implements Client {
 		FileUtil.deleteTempDirectory();
 		CustomTextureManager.resetTextures();
 		CRCManager.clear();
-		instance = null;
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();
 			clipboardThread = null;
@@ -171,7 +183,6 @@ public class SpoutClient implements Client {
 		return Minecraft.theMinecraft;
 	}
 
-	@Override
 	public EntityPlayer getPlayerFromId(int id) {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;
@@ -192,16 +203,74 @@ public class SpoutClient implements Client {
 		return world.func_709_b(id);
 	}
 	
-	public static void setReloadPacket(SpoutPacket packet) {
-		reloadPacket = packet;
-		if (packet != null) {
-			instance = null; //dump all saved data
-			getInstance().player = new ClientPlayer(getHandle().thePlayer);
-		}
+	@Override
+	public boolean dispatchCommand(CommandSender arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public static SpoutPacket getReloadPacket() {
-		return reloadPacket;
+
+	@Override
+	public AddonCommand getAddonCommand(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AddonManager getAddonManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String[]> getCommandAliases() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SafeGL getGLWrapper() {
+		return openGL;
+	}
+
+	@Override
+	public Logger getLogger() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Mode getMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RenderDelegate getRenderDelegate() {
+		return render;
+	}
+
+	@Override
+	public String getUpdateFolder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
