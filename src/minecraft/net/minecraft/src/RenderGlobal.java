@@ -346,7 +346,7 @@ public class RenderGlobal implements IWorldAccess {
 					this.worldRenderers[var7].markDirty();
 					this.sortedWorldRenderers[var7] = this.worldRenderers[var7];
 					this.worldRenderersToUpdate.add(this.worldRenderers[var7]);
-					var2 += 4;
+					var2 += 4; //Spout
 				}
 			}
 		}

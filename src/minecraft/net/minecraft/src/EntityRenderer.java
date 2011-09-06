@@ -680,15 +680,15 @@ public class EntityRenderer {
 				}
 				//Spout Start
 				if(var22 > 0) {
-					var5.renderAllSortedRenderers(2, (double)var1);
+					var5.renderAllSortedRenderers(2, (double)var1); //Spout
 				}
 				//Spout End
 
 				GL11.glShadeModel(7424 /*GL_FLAT*/);
 			} else {
-				var5.sortAndRender(var4, 2, (double)var1);
+				var5.sortAndRender(var4, 2, (double)var1); //Spout
 			}
-			var5.sortAndRender(var4, 1, (double)var1);
+			var5.sortAndRender(var4, 1, (double)var1); //Spout
 
 			GL11.glDepthMask(true);
 			GL11.glEnable(2884 /*GL_CULL_FACE*/);
