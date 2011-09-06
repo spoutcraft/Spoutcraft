@@ -48,6 +48,8 @@ import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
+import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 import net.minecraft.client.Minecraft;
@@ -269,6 +271,36 @@ public class SpoutClient implements Client {
 
 	@Override
 	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getProperty(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Property getPropertyDelegate(String arg0) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setProperty(String arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Location getCamera() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCamera(Location arg0) {
 		// TODO Auto-generated method stub
 		
 	}
