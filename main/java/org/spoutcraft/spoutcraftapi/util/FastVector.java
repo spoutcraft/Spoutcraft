@@ -3,10 +3,11 @@ package org.spoutcraft.spoutcraftapi.util;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class FastVector implements FixedVector{
+public class FastVector implements FixedVector {
 	public final int x;
 	public final int y;
 	public final int z;
+
 	public FastVector(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -69,16 +70,16 @@ public class FastVector implements FixedVector{
 	public boolean isInSphere(Vector origin, double radius) {
 		return (Math.pow(origin.getX() - x, 2) + Math.pow(origin.getY() - y, 2) + Math.pow(origin.getZ() - z, 2)) <= Math.pow(radius, 2);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof FastVector) {
-			FastVector other = (FastVector)obj;
+			FastVector other = (FastVector) obj;
 			return (new EqualsBuilder()).append(x, other.getX()).append(y, other.getY()).append(z, other.getZ()).isEquals();
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(x).append(y).append(z).toHashCode();

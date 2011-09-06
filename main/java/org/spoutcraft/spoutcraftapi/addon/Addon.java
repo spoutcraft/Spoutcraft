@@ -21,7 +21,9 @@ public abstract interface Addon extends CommandExecutor {
 	public abstract void setNaggable(boolean b);
 
 	public enum Mode {
-		SINGLE_PLAYER, MULTIPLAYER, BOTH;
+		SINGLE_PLAYER,
+		MULTIPLAYER,
+		BOTH;
 	}
 
 }

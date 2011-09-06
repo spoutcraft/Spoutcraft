@@ -19,7 +19,7 @@ public class MutableIntegerVector extends MutableVector {
 	public int getIntZ() {
 		return (int) z;
 	}
-	
+
 	public void setIntX(int x) {
 		this.x = x;
 	}

@@ -12,8 +12,10 @@ import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
+import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
+import org.spoutcraft.spoutcraftapi.util.Location;
 
-public interface Client {
+public interface Client extends PropertyInterface{
 
 	public String getName();
 
@@ -60,6 +62,10 @@ public interface Client {
 	public Mode getMode();
 	
 	public RenderDelegate getRenderDelegate();
+	
+	public Location getCamera();
+	
+	public void setCamera(Location loc);
 	
 	public enum Mode{
 		Single_Player, Multiplayer, Menu;

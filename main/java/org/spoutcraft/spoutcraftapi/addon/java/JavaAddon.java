@@ -6,6 +6,8 @@ import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
+import org.spoutcraft.spoutcraftapi.command.Command;
+import org.spoutcraft.spoutcraftapi.command.CommandSender;
 
 public abstract class JavaAddon implements Addon {
 
@@ -80,6 +82,12 @@ public abstract class JavaAddon implements Addon {
 
 	public AddonClassLoader getClassLoader() {
 		return classLoader;
+	}
+	
+
+	@Override
+	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
+		return false;
 	}
 
 }
