@@ -12,9 +12,9 @@ public class SpoutcraftBlock implements Block{
 	
 	public SpoutcraftBlock(SpoutcraftChunk chunk, int x, int y, int z) {
 		this.x = x;
-        this.y = y;
-        this.z = z;
-        this.chunk = chunk;
+		this.y = y;
+		this.z = z;
+		this.chunk = chunk;
 	}
 	
 	public int getX() {

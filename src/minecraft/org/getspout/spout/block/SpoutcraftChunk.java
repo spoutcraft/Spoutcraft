@@ -10,27 +10,27 @@ import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
 public class SpoutcraftChunk implements Chunk{
-    private WeakReference<net.minecraft.src.Chunk> weakChunk;
-    private WorldClient worldClient;
+	private WeakReference<net.minecraft.src.Chunk> weakChunk;
+	private WorldClient worldClient;
 	private int x;
-    private int z;
-    
-    public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
-    	this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
-    	worldClient = (WorldClient) getHandle().worldObj;
-    	x = getHandle().xPosition;
-    	z = getHandle().zPosition;
+	private int z;
+	
+	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
+		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
+		worldClient = (WorldClient) getHandle().worldObj;
+		x = getHandle().xPosition;
+		z = getHandle().zPosition;
 	}
-    
-    public net.minecraft.src.Chunk getHandle() {
-    	net.minecraft.src.Chunk c = weakChunk.get();
-        if (c == null) {
-            c = worldClient.getChunkFromChunkCoords(x, z);
-            weakChunk = new WeakReference<net.minecraft.src.Chunk>(c);
-        }
-        return c;
-    }
-    
+	
+	public net.minecraft.src.Chunk getHandle() {
+		net.minecraft.src.Chunk c = weakChunk.get();
+		if (c == null) {
+			c = worldClient.getChunkFromChunkCoords(x, z);
+			weakChunk = new WeakReference<net.minecraft.src.Chunk>(c);
+		}
+		return c;
+	}
+	
 	public Block getBlockAt(int x, int y, int z) {
 		// TODO Auto-generated method stub
 		return null;
