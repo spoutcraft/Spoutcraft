@@ -5,19 +5,28 @@ import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 
 public class SpoutcraftBlock implements Block{
+	private final SpoutcraftChunk chunk;
+	private final int x;
+	private final int y;
+	private final int z;
+	
+	public SpoutcraftBlock(SpoutcraftChunk chunk, int x, int y, int z) {
+		this.x = x;
+        this.y = y;
+        this.z = z;
+        this.chunk = chunk;
+	}
+	
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
 	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return y;
 	}
 
 	public int getZ() {
-		// TODO Auto-generated method stub
-		return 0;
+		return z;
 	}
 
 	public float getHardness() {
@@ -50,8 +59,7 @@ public class SpoutcraftBlock implements Block{
 
 	@Override
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return chunk.getWorld();
 	}
 
 	@Override
@@ -80,8 +88,7 @@ public class SpoutcraftBlock implements Block{
 
 	@Override
 	public Chunk getChunk() {
-		// TODO Auto-generated method stub
-		return null;
+		return chunk;
 	}
 
 }

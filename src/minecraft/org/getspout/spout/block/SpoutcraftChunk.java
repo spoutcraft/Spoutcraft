@@ -1,12 +1,36 @@
 package org.getspout.spout.block;
 
+import java.lang.ref.WeakReference;
+
+import net.minecraft.src.WorldClient;
+
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
 public class SpoutcraftChunk implements Chunk{
-
+    private WeakReference<net.minecraft.src.Chunk> weakChunk;
+    private WorldClient worldClient;
+	private int x;
+    private int z;
+    
+    public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
+    	this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
+    	worldClient = (WorldClient) getHandle().worldObj;
+    	x = getHandle().xPosition;
+    	z = getHandle().zPosition;
+	}
+    
+    public net.minecraft.src.Chunk getHandle() {
+    	net.minecraft.src.Chunk c = weakChunk.get();
+        if (c == null) {
+            c = worldClient.getChunkFromChunkCoords(x, z);
+            weakChunk = new WeakReference<net.minecraft.src.Chunk>(c);
+        }
+        return c;
+    }
+    
 	public Block getBlockAt(int x, int y, int z) {
 		// TODO Auto-generated method stub
 		return null;
@@ -20,32 +44,27 @@ public class SpoutcraftChunk implements Chunk{
 
 	@Override
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
 	@Override
 	public int getZ() {
-		// TODO Auto-generated method stub
-		return 0;
+		return z;
 	}
 
 	@Override
 	public boolean isLoaded() {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().isChunkLoaded(this);
 	}
 
 	@Override
 	public boolean load() {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().loadChunk(getX(), getZ(), true);
 	}
 
 	@Override
 	public boolean load(boolean generate) {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().loadChunk(getX(), getZ(), generate);
 	}
 
 	@Override
