@@ -40,7 +40,6 @@ public class GenericLabel extends GenericWidget implements Label{
 		this.text = text;
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.Label;
 	}
@@ -68,45 +67,37 @@ public class GenericLabel extends GenericWidget implements Label{
 		PacketUtil.writeColor(output, getTextColor());
 	}
 
-	@Override
 	public String getText() {
 		return text;
 	}
 
-	@Override
 	public Label setText(String text) {
 		this.text = text;
 		return this;
 	}
 	
-	@Override
 	public boolean getAuto() {
 		return auto;
 	}
 	
-	@Override
 	public Label setAuto(boolean auto) {
 		this.auto = auto;
 		return this;
 	}
 
-	@Override
 	public WidgetAnchor getAlign() {
 		return align;
 	}
 	
-	@Override
 	public Label setAlign(WidgetAnchor pos) {
 		this.align = pos;
 		return this;
 	}
 
-	@Override
 	public Color getTextColor() {
 		return color;
 	}
 
-	@Override
 	public Label setTextColor(Color color) {
 		this.color = color;
 		return this;

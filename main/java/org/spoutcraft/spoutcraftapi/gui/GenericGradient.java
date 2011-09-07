@@ -50,7 +50,6 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		return this.color2;
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.Gradient;
 	}
@@ -78,7 +77,6 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		PacketUtil.writeColor(output, getBottomColor());
 	}
 	
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

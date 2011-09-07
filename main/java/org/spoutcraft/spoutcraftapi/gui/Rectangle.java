@@ -86,7 +86,6 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 		this.y = y;
 	}
 
-	@Override
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
 		int w,h,x,y;
 		Rectangle p1 = (Rectangle)startValue;

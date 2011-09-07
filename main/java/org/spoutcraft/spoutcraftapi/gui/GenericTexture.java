@@ -33,7 +33,6 @@ public class GenericTexture extends GenericWidget implements Texture {
 		this.url = url;
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.Texture;
 	}
@@ -59,17 +58,14 @@ public class GenericTexture extends GenericWidget implements Texture {
 		PacketUtil.writeString(output, getUrl());
 	}
 	
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-	@Override
 	public String getUrl() {
 		return url;
 	}
 
-	@Override
 	public Texture setUrl(String url) {
 		this.url = url;
 		if (getUrl() != null) {

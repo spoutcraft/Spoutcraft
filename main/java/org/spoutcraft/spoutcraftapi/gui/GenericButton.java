@@ -66,12 +66,10 @@ public class GenericButton extends GenericControl implements Button {
 		return (PopupScreen)super.getScreen();
 	}
 
-	@Override
 	public String getText() {
 		return label.getText();
 	}
 
-	@Override
 	public Label setText(String text) {
 		label.setText(text);
 		return this;
@@ -87,69 +85,56 @@ public class GenericButton extends GenericControl implements Button {
 		return super.getScreenY();
 	}
 	
-	@Override
 	public WidgetAnchor getAlign() {
 		return label.getAlign();
 	}
 	
-	@Override
 	public Widget setAlign(WidgetAnchor pos) {
 		label.setAlign(pos);
 		return this;
 	}
 
-	@Override
 	public Color getTextColor() {
 		return label.getTextColor();
 	}
 
-	@Override
 	public Label setTextColor(Color color) {
 		label.setTextColor(color);
 		return this;
 	}
 
-	@Override
 	public String getDisabledText() {
 		return disabledText;
 	}
 
-	@Override
 	public Button setDisabledText(String text) {
 		disabledText = text;
 		return this;
 	}
 	
-	@Override
 	public Color getHoverColor() {
 		return hoverColor;
 	}
 	
-	@Override
 	public Button setHoverColor(Color color) {
 		this.hoverColor = color;
 		return this;
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.Button;
 	}
 	
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-	@Override
 	public Label setAuto(boolean auto) {
 		label.setAuto(auto);
 		return this;
 	}
 
-	@Override
 	public boolean getAuto() {
 		return label.getAuto();
 	}
-
 }

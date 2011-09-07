@@ -10,12 +10,10 @@ public class PropertyDelegate implements ValueSetDelegate {
 		delegate = object.getPropertyDelegate(property);
 	}
 	
-	@Override
 	public void set(Animatable value) {
 		delegate.set(value);
 	}
 	
-	@Override
 	public void set(Number value) {
 		delegate.set(value);
 	}

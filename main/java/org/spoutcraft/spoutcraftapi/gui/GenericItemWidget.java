@@ -96,12 +96,10 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 		return this;
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.ItemWidget;
 	}
 
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

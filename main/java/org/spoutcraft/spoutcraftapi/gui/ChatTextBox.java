@@ -29,7 +29,6 @@ public class ChatTextBox extends GenericWidget implements Widget{
 
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.ChatTextBox;
 	}

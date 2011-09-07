@@ -62,34 +62,28 @@ public abstract class GenericControl extends GenericWidget implements Control{
 		return (PopupScreen)super.getScreen();
 	}
 	
-	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
 
-	@Override
 	public Control setEnabled(boolean enable) {
 		enabled = enable;
 		return this;
 	}
 
-	@Override
 	public Color getColor() {
 		return color;
 	}
 
-	@Override
 	public Control setColor(Color color) {
 		this.color = color;
 		return this;
 	}
 
-	@Override
 	public Color getDisabledColor() {
 		return disabledColor;
 	}
 
-	@Override
 	public Control setDisabledColor(Color color) {
 		this.disabledColor = color;
 		return this;

@@ -48,23 +48,19 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		output.writeBoolean(isTransparent());
 	}
 	
-	@Override
 	public boolean isTransparent() {
 		return transparent;
 	}
 
-	@Override
 	public PopupScreen setTransparent(boolean value) {
 		this.transparent = value;
 		return this;
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.PopupScreen;
 	}
 	
-	@Override
 	public boolean close() {
 		if (getScreen() != null) {
 			if (getScreen() instanceof InGameHUD) {
@@ -74,7 +70,6 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		return false;
 	}
 
-	@Override
 	public double getMouseX() {
 		return mouseX;
 	}
@@ -84,7 +79,6 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		return this;
 	}
 
-	@Override
 	public double getMouseY() {
 		return mouseY;
 	}

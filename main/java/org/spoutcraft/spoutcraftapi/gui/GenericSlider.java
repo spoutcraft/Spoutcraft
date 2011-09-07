@@ -56,12 +56,10 @@ public class GenericSlider extends GenericControl implements Slider {
 		return (PopupScreen)super.getScreen();
 	}
 
-	@Override
 	public float getSliderPosition() {
 		return slider;
 	}
 
-	@Override
 	public Slider setSliderPosition(float value) {
 		if (value > 1f) {
 			value = 1f;
@@ -84,12 +82,10 @@ public class GenericSlider extends GenericControl implements Slider {
 		return super.getScreenY();
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.Slider;
 	}
 
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

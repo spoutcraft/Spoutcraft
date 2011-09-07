@@ -61,12 +61,10 @@ public abstract class GenericWidget implements Widget{
 		return this;
 	}
 	
-	@Override
 	public WidgetAnchor getAnchor() {
 		return anchor;
 	}
 	
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		setX(input.readInt());
 		setY(input.readInt());
@@ -82,7 +80,6 @@ public abstract class GenericWidget implements Widget{
 		setPlugin(PacketUtil.readString(input));
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(getX());
 		output.writeInt(getY());
@@ -97,96 +94,79 @@ public abstract class GenericWidget implements Widget{
 		PacketUtil.writeString(output, getPlugin());
 	}
 	
-	@Override
 	public String getPlugin() {
 		return plugin;
 	}
 	
-	@Override
 	public Widget setPlugin(String plugin) {
 		this.plugin = plugin;
 		return this;
 	}
 	
-	@Override
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
 	
-	@Override
 	public boolean isDirty() {
 		return dirty;
 	}
 	
-	@Override
 	public UUID getId() {
 		return id;
 	}
-	@Override
+	
 	public Screen getScreen() {
 		return screen;
 	}
 	
-	@Override
 	public Widget setScreen(Screen screen) {
 		this.screen = screen;
 		return this;
 	}
 	
-	@Override
 	public RenderPriority getPriority() {
 		return priority;
 	}
 	
-	@Override
 	public Widget setPriority(RenderPriority priority) {
 		this.priority = priority;
 		return this;
 	}
 	
-	@Override
 	public double getActualWidth() {
 		return width;
 	}
 	
-	@Override
 	public Widget setWidth(int width) {
 		this.width = width;
 		return this;
 	}
 
-	@Override
 	public double getActualHeight() {
 		return height;
 	}
 	
-	@Override
 	public double getWidth() {
 		return anchor == WidgetAnchor.SCALE ? (getActualWidth() * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) ) : getActualWidth();
 	}
 	
-	@Override
 	public double getHeight() {
 		return anchor == WidgetAnchor.SCALE ? (getActualHeight() * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) ) : getActualHeight();
 	}
 
-	@Override
 	public Widget setHeight(int height) {
 		this.height = height;
 		return this;
 	}
 
-	@Override
 	public int getX() {
 		return upperLeftX;
 	}
 
-	@Override
 	public int getY() {
 		return upperLeftY;
 	}
 	
-	@Override
 	public double getScreenX() {
 		double left = upperLeftX * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
 		switch (anchor) {
@@ -204,7 +184,6 @@ public abstract class GenericWidget implements Widget{
 		return left;
 	}
 
-	@Override
 	public double getScreenY() {
 		double top = upperLeftY * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
 		switch (anchor) {
@@ -222,36 +201,30 @@ public abstract class GenericWidget implements Widget{
 		return top;
 	}
 
-	@Override
 	public Widget setX(int pos) {
 		this.upperLeftX = pos;
 		return this;
 	}
 
-	@Override
 	public Widget setY(int pos) {
 		this.upperLeftY = pos;
 		return this;
 	}
 
-	@Override
 	public Widget shiftXPos(int modX) {
 		setX(getX() + modX);
 		return this;
 	}
 	
-	@Override
 	public Widget shiftYPos(int modY) {
 		setY(getY() + modY);
 		return this;
 	}
 	
-	@Override
 	public boolean isVisible() {
 		return visible;
 	}
 	
-	@Override
 	public Widget setVisible(boolean enable) {
 		visible = enable;
 		return this;
@@ -267,17 +240,14 @@ public abstract class GenericWidget implements Widget{
 		return other instanceof Widget && other.hashCode() == hashCode();
 	}
 	
-	@Override
 	public void onTick() {
 
 	}
 	
-	@Override
 	public void setTooltip(String tooltip){
 		this.tooltip = tooltip;
 	}
 	
-	@Override
 	public String getTooltip(){
 		return tooltip;
 	}

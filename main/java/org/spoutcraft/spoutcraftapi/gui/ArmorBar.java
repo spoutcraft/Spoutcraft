@@ -135,7 +135,6 @@ public class ArmorBar extends GenericWidget {
 		return this;
 	}
 
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

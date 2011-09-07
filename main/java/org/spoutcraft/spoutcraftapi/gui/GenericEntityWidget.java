@@ -21,22 +21,18 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 		output.writeInt(entityId);
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.EntityWidget;
 	}
 
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-	@Override
 	public void setEntityID(int entity) {
 		this.entityId = entity;
 	}
 
-	@Override
 	public int getEntityID() {
 		return entityId;
 	}

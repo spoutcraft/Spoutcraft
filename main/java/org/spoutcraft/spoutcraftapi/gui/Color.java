@@ -134,7 +134,6 @@ public class Color implements Animatable {
 		return (a << 24) + (r << 16) + (g << 8) + b;
 	}
 
-	@Override
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
 		short r, g, b, a;
 		Color p1 = (Color)startValue;

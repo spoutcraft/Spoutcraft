@@ -84,8 +84,6 @@ public abstract class JavaAddon implements Addon {
 		return classLoader;
 	}
 	
-
-	@Override
 	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
 		return false;
 	}

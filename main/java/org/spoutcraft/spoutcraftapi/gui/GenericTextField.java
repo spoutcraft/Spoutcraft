@@ -68,67 +68,55 @@ public class GenericTextField extends GenericControl implements TextField{
 		return (PopupScreen)super.getScreen();
 	}
 
-	@Override
 	public int getCursorPosition() {
 		return cursor;
 	}
 
-	@Override
 	public TextField setCursorPosition(int position) {
 		this.cursor = position;
 		return this;
 	}
 
-	@Override
 	public String getText() {
 		return text;
 	}
 
-	@Override
 	public TextField setText(String text) {
 		this.text = text;
 		return this;
 	}
 	
-	@Override
 	public int getMaximumCharacters() {
 		return maxChars;
 	}
 	
-	@Override
 	public TextField setMaximumCharacters(int max) {
 		this.maxChars = max;
 		return this;
 	}
 
-	@Override
 	public Color getFieldColor() {
 		return fieldColor;
 	}
 
-	@Override
 	public TextField setFieldColor(Color color) {
 		this.fieldColor = color;
 		return this;
 	}
 
-	@Override
 	public Color getBorderColor() {
 		return borderColor;
 	}
 
-	@Override
 	public TextField setBorderColor(Color color) {
 		this.borderColor = color;
 		return this;
 	}
 	
-	@Override
 	public WidgetType getType() {
 		return WidgetType.TextField;
 	}
 
-	@Override
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

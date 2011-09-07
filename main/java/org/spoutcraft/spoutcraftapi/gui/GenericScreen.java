@@ -43,38 +43,32 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		return super.getVersion() + 0;
 	}
 
-	@Override
 	public Widget[] getAttachedWidgets() {
 		Widget[] list = new Widget[widgets.size()];
 		widgets.toArray(list);
 		return list;
 	}
 
-	@Override
 	public Screen attachWidget(Widget widget) {
 		widgets.add(widget);
 		widget.setScreen(this);
 		return this;
 	}
 
-	@Override
 	public Screen removeWidget(Widget widget) {
 		widgets.remove(widget);
 		widget.setScreen(null);
 		return this;
 	}
 	
-	@Override
 	public boolean containsWidget(Widget widget) {
 		return containsWidget(widget.getId());
 	}
 	
-	@Override
 	public boolean containsWidget(UUID id) {
 		return getWidget(id) != null;
 	}
 	
-	@Override
 	public Widget getWidget(UUID id) {
 		for (Widget w : widgets) {
 			if (w.getId().equals(id)) {
@@ -84,7 +78,6 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		return null;
 	}
 	
-	@Override
 	public boolean updateWidget(Widget widget) {
 		int index = widgets.indexOf(widget);
 		if (index > -1) {
