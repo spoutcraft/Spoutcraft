@@ -320,9 +320,9 @@ public class MCRenderDelegate implements RenderDelegate{
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); //draw corners
-			tessellator.addVertexWithUV(texture.getWidth(), texture.getHeight(), -90, texture.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(texture.getWidth(), 0.0D, -90, texture.getWidth(), texture.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, texture.getHeight());
+			tessellator.addVertexWithUV(texture.getWidth(), texture.getHeight(), -90, textureBinding.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(texture.getWidth(), 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
 			tessellator.draw();
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
