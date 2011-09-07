@@ -77,7 +77,10 @@ public class CustomTextureManager {
 		if (!textures.containsKey(path)) {
 			Texture texture = null;
 			try {
-				texture = TextureLoader.getTexture("PNG", new FileInputStream(path), true,  GL11.GL_NEAREST);
+				System.out.println("Loading Texture: " + path);
+				FileInputStream stream = new FileInputStream(path);
+				texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+				stream.close();
 			}
 			catch (IOException e) { }
 			if (texture == null) {
