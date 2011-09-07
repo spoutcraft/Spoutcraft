@@ -39,6 +39,7 @@ public abstract class Event {
 		MOUSE_MOVE(Category.CLIENT),
 		MOUSE_DOWN(Category.CLIENT),
 		MOUSE_UP(Category.CLIENT),
+		PLAYER_INTERACT(Category.PLAYER),
 
 		/**
 		* Represents a custom event, isn't actually used
