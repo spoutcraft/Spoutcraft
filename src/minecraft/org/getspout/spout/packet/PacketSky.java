@@ -50,12 +50,10 @@ public class PacketSky implements SpoutPacket{
 		this.moon = moonUrl;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 64 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		cloudY = input.readInt();
 		stars = input.readInt();
@@ -68,7 +66,6 @@ public class PacketSky implements SpoutPacket{
 		cloudColor = PacketUtil.readColor(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(cloudY);
 		output.writeInt(stars);
@@ -81,7 +78,6 @@ public class PacketSky implements SpoutPacket{
 		PacketUtil.writeColor(output, cloudColor);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		if (cloudY != 0) {
 			SpoutClient.getInstance().getSkyManager().setCloudHeight(cloudY);
@@ -135,17 +131,14 @@ public class PacketSky implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketSky;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

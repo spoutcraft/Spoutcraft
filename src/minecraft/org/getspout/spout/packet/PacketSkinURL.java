@@ -51,12 +51,10 @@ public class PacketSkinURL implements SpoutPacket{
 		this.cloakURL = cloakURL;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 5 + PacketUtil.getNumBytes(skinURL) + PacketUtil.getNumBytes(cloakURL);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		entityId = input.readInt();
 		skinURL = PacketUtil.readString(input, 256);
@@ -64,7 +62,6 @@ public class PacketSkinURL implements SpoutPacket{
 		release = input.readBoolean();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(entityId);
 		PacketUtil.writeString(output, skinURL);
@@ -72,7 +69,6 @@ public class PacketSkinURL implements SpoutPacket{
 		output.writeBoolean(release);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
@@ -90,19 +86,16 @@ public class PacketSkinURL implements SpoutPacket{
 		}
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketSkinURL;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

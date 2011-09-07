@@ -54,16 +54,11 @@ public class PacketChunkRefresh implements SpoutPacket {
 		return PacketType.PacketChunkRefresh;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
-
-
 }

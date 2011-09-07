@@ -35,24 +35,20 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 		this.fileName = fileName;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(fileName) + PacketUtil.getNumBytes(plugin);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		fileName = PacketUtil.readString(input);
 		plugin = PacketUtil.readString(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		PacketUtil.writeString(output, fileName);
 		PacketUtil.writeString(output, plugin);
 	}
 
-	@Override
 	public void run(int playerId) {
 		File file = FileUtil.findAudioFile(plugin, fileName);
 		if (file != null) {
@@ -64,17 +60,14 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketCacheDeleteFile;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}

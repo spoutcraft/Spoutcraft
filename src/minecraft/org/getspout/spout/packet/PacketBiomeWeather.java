@@ -26,34 +26,28 @@ public class PacketBiomeWeather implements SpoutPacket {
 	public byte biome;
 	public byte weather;
 
-	@Override
 	public int getNumBytes() {
 		return 2;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		biome = input.readByte();
 		weather = input.readByte();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeByte(biome);
 		output.writeByte(weather);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketBiomeWeather;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		String biomeString = "";
 		
@@ -98,7 +92,6 @@ public class PacketBiomeWeather implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

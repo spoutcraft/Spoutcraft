@@ -89,8 +89,6 @@ public class ServerListThread implements Runnable {
 
 			for (String country : tempCountryMappings.keySet()) {
 				Collections.sort(tempCountryMappings.get(country), new Comparator() {
-
-					@Override
 					public int compare(Object arg0, Object arg1) {
 						if (!(arg1 instanceof ServerSlot) || !(arg0 instanceof ServerSlot)) {
 							return arg0.hashCode() - arg1.hashCode();

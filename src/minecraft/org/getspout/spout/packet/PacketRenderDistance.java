@@ -38,26 +38,22 @@ public class PacketRenderDistance implements SpoutPacket{
 		this.view = view;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 3;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		view = input.readByte();
 		max = input.readByte();
 		min = input.readByte();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.write(view);
 		output.write(max);
 		output.write(min);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		Minecraft game = SpoutClient.getHandle();
 		if (game != null) {
@@ -76,17 +72,15 @@ public class PacketRenderDistance implements SpoutPacket{
 			SpoutClient.getInstance().getActivePlayer().setMinimumView(RenderDistance.FAR);
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketRenderDistance;
 	}
-	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

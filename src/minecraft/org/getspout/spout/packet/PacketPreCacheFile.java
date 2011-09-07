@@ -47,12 +47,10 @@ public class PacketPreCacheFile implements SpoutPacket{
 		this.url = url;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 10 + PacketUtil.getNumBytes(file) + PacketUtil.getNumBytes(plugin);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		this.cached = input.readBoolean();
 		this.url = input.readBoolean();
@@ -61,7 +59,6 @@ public class PacketPreCacheFile implements SpoutPacket{
 		this.plugin = PacketUtil.readString(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeBoolean(this.cached);
 		output.writeBoolean(this.url);
@@ -70,7 +67,6 @@ public class PacketPreCacheFile implements SpoutPacket{
 		PacketUtil.writeString(output, this.plugin);
 	}
 
-	@Override
 	public void run(int playerId) {
 		if (!FileUtil.canCache(file)) {
 			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + file);
@@ -124,19 +120,15 @@ public class PacketPreCacheFile implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketPreCacheFile;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
-
 }

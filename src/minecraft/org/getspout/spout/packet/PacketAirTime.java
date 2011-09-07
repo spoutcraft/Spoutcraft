@@ -35,40 +35,33 @@ public class PacketAirTime implements SpoutPacket{
 		this.air = time;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 8;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		this.airTime = input.readInt();
 		this.air = input.readInt();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(this.airTime);
 		output.writeInt(this.air);
 	}
 
-	@Override
 	public void run(int id) {
 		SpoutClient.getHandle().thePlayer.maxAir = airTime;
 		SpoutClient.getHandle().thePlayer.air = air;
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketAirTime;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

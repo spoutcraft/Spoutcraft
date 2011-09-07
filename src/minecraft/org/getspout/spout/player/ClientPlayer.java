@@ -38,32 +38,26 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		max = RenderDistance.FAR;
 	}
 
-	@Override
 	public RenderDistance getMaximumView() {
 		return max;
 	}
 
-	@Override
 	public RenderDistance getMinimumView() {
 		return min;
 	}
 
-	@Override
 	public void setMaximumView(RenderDistance distance) {
 		max = distance;
 	}
 
-	@Override
 	public void setMinimumView(RenderDistance distance) {
 		min = distance;
 	}
 	
-	@Override
 	public RenderDistance getCurrentView() {
 		return RenderDistance.getRenderDistanceFromValue(Minecraft.theMinecraft.gameSettings.renderDistance);
 	}
 	
-	@Override
 	public RenderDistance getNextRenderDistance() {
 		int next = getCurrentView().getValue() + (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? -1 : 1);
 		if (next > min.getValue()) {
@@ -74,34 +68,27 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return RenderDistance.getRenderDistanceFromValue(next);
 	}
 	
-	@Override
 	public InGameHUD getMainScreen() {
 		return mainScreen;
 	}
 
-	@Override
 	public void showAchievement(String title, String message, int id) {
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id);
 	}
 	
-	@Override
 	public void showAchievement(String title, String message, int id, int data, int time) {
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id, (short) data, time);
 	}
 
-	@Override
 	public String getEntityTitle(int id) {
 		return titles.get(id);
 	}
 
-	@Override
 	public void setEntityTitle(int id, String title) {
 		titles.put(id, title);
 	}
 	
-	@Override
 	public void resetEntityTitle(int id) {
 		titles.remove(id);
 	}
-
 }

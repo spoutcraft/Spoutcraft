@@ -34,39 +34,32 @@ public class PacketNotification extends PacketAlert{
 		this.time = time;
 		this.data = data;
 	}
-	
-	@Override
+
 	public int getNumBytes() {
 		return super.getNumBytes() + 6;
 	}
 	
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		this.data = input.readShort();
 		this.time = input.readInt();
 	}
 	
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeShort(data);
 		output.writeInt(time);
 	}
-	
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketNotification;
 	}
-	
-	@Override
+
 	public void run(int PlayerId) {
 		SpoutClient.getInstance().getActivePlayer().showAchievement(title, message, itemId, data, time);
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
-
 }

@@ -39,12 +39,10 @@ public class PacketWidgetRemove implements SpoutPacket {
 		this.screen = screen;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return widget.getNumBytes() + 20;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		int id = input.readInt();
 		long msb = input.readLong();
@@ -63,7 +61,6 @@ public class PacketWidgetRemove implements SpoutPacket {
 		
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
@@ -71,7 +68,6 @@ public class PacketWidgetRemove implements SpoutPacket {
 		widget.writeData(output);
 	}
 	
-	@Override
 	public void run(int playerId) {
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 		PopupScreen popup = mainScreen.getActivePopup();
@@ -89,19 +85,16 @@ public class PacketWidgetRemove implements SpoutPacket {
 		}
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketWidgetRemove;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

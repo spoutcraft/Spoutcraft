@@ -205,106 +205,86 @@ public class SpoutClient implements Client {
 		return world.func_709_b(id);
 	}
 	
-	@Override
 	public boolean dispatchCommand(CommandSender arg0, String arg1) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public AddonCommand getAddonCommand(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public AddonManager getAddonManager() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Map<String, String[]> getCommandAliases() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public SafeGL getGLWrapper() {
 		return openGL;
 	}
 
-	@Override
 	public Logger getLogger() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Mode getMode() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public RenderDelegate getRenderDelegate() {
 		return render;
 	}
 
-	@Override
 	public String getUpdateFolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public String getVersion() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public Object getProperty(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Property getPropertyDelegate(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void setProperty(String arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public Location getCamera() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void setCamera(Location arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 }

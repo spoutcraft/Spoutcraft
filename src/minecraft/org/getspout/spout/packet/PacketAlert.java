@@ -37,41 +37,34 @@ public class PacketAlert implements SpoutPacket{
 		this.itemId = itemId;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 4 + PacketUtil.getNumBytes(title) + PacketUtil.getNumBytes(message);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		title = PacketUtil.readString(input, 78);
 		message = PacketUtil.readString(input, 78);
 		itemId = input.readInt();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		PacketUtil.writeString(output, title);
 		PacketUtil.writeString(output, message);
 		output.writeInt(itemId);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		SpoutClient.getInstance().getActivePlayer().showAchievement(title, message, itemId);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketAlert;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

@@ -34,124 +34,103 @@ public class CraftEntity extends PropertyObject implements Entity {
 		});
 	}
 	
-	@Override
 	public Location getLocation() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public void setVelocity(Vector velocity) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public Vector getVelocity() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public World getWorld() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public boolean teleport(Location location) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean teleport(Entity destination) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public List<Entity> getNearbyEntities(double x, double y, double z) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public int getEntityId() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getFireTicks() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getMaxFireTicks() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public void setFireTicks(int ticks) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void remove() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public boolean isDead() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public Entity getPassenger() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public boolean setPassenger(Entity passenger) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean eject() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public float getFallDistance() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public void setFallDistance(float distance) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public UUID getUniqueId() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

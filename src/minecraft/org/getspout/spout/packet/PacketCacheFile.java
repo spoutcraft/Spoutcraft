@@ -46,12 +46,10 @@ public class PacketCacheFile implements SpoutPacket {
 		this.fileName = FileUtil.getFileName(file.getPath());
 	}
 
-	@Override
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(fileName) + PacketUtil.getNumBytes(plugin) + fileData.length + 4;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		this.fileName = PacketUtil.readString(input);
 		this.plugin = PacketUtil.readString(input);
@@ -63,7 +61,6 @@ public class PacketCacheFile implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		PacketUtil.writeString(output, fileName);
 		PacketUtil.writeString(output, plugin);
@@ -71,7 +68,6 @@ public class PacketCacheFile implements SpoutPacket {
 		output.write(fileData);
 	}
 
-	@Override
 	public void run(int playerId) {
 		this.fileName = FileUtil.getFileName(this.fileName);
 		if (!FileUtil.canCache(fileName)) {
@@ -100,18 +96,15 @@ public class PacketCacheFile implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketCacheFile;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}

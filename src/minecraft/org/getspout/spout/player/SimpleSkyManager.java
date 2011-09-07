@@ -32,7 +32,6 @@ public class SimpleSkyManager implements SkyManager{
 	private String moonUrl = null;
 	private Color skyColor = null, fogColor = null, cloudColor = null;
 	
-	@Override
 	public int getCloudHeight() {
 		if (cloudHeight == -999) {
 			return (int)SpoutClient.getHandle().theWorld.worldProvider.getCloudHeight();
@@ -40,75 +39,62 @@ public class SimpleSkyManager implements SkyManager{
 		return cloudHeight;
 	}
 
-	@Override
 	public void setCloudHeight(int y) {
 		this.cloudHeight = y;
 	}
 
-	@Override
 	public boolean isCloudsVisible() {
 		return getCloudHeight() > -1;
 	}
 
-	@Override
 	public void setCloudsVisible(boolean visible) {
 		if (isCloudsVisible() != visible) {
 			setCloudHeight(visible ? 108 : -1);
 		}
 	}
 
-	@Override
 	public int getStarFrequency() {
 		return starFrequency;
 	}
 
-	@Override
 	public void setStarFrequency(int frequency) {
 		starFrequency = frequency;
 		starFrequency = Math.min(starFrequency, 1000000);
 		Minecraft.theMinecraft.renderGlobal.refreshStars();
 	}
 
-	@Override
 	public boolean isStarsVisible() {
 		return starFrequency > -1;
 	}
 
-	@Override
 	public void setStarsVisible(boolean visible) {
 		if (isStarsVisible() != visible) {
 			setStarFrequency(visible ? 1500 : -1);
 		}
 	}
 
-	@Override
 	public int getSunSizePercent() {
 		return sunPercent;
 	}
 
-	@Override
 	public void setSunSizePercent(int percent) {
 		sunPercent = percent;
 	}
 
-	@Override
 	public boolean isSunVisible() {
 		return sunPercent > -1;
 	}
 
-	@Override
 	public void setSunVisible(boolean visible) {
 		if (isSunVisible() != visible) {
 			setSunSizePercent(visible ? 100 : -1);
 		}
 	}
 
-	@Override
 	public String getSunTextureUrl() {
 		return sunUrl;
 	}
 
-	@Override
 	public void setSunTextureUrl(String Url) {
 		if (sunUrl != null) {
 			//TODO release image?
@@ -119,34 +105,28 @@ public class SimpleSkyManager implements SkyManager{
 		}
 	}
 
-	@Override
 	public int getMoonSizePercent() {
 		return moonPercent;
 	}
 
-	@Override
 	public void setMoonSizePercent(int percent) {
 		moonPercent = percent;
 	}
 
-	@Override
 	public boolean isMoonVisible() {
 		return moonPercent > -1;
 	}
 
-	@Override
 	public void setMoonVisible(boolean visible) {
 		if (isMoonVisible() != visible) {
 			setMoonSizePercent(visible ? 100 : -1);
 		}
 	}
 
-	@Override
 	public String getMoonTextureUrl() {
 		return moonUrl;
 	}
 
-	@Override
 	public void setMoonTextureUrl(String Url) {
 		if (moonUrl != null) {
 			//TODO release image?
@@ -157,12 +137,10 @@ public class SimpleSkyManager implements SkyManager{
 		}
 	}
 	
-	@Override
 	public void setSkyColor(float red, float green, float blue) {
 		skyColor.setRed(red).setGreen(green).setBlue(blue);
 	}
 
-	@Override
 	public void setSkyColor(Color color) {
 		if(color!=null)
 	   		skyColor = color.clone();
@@ -170,7 +148,6 @@ public class SimpleSkyManager implements SkyManager{
 	   		skyColor = null;
 	}
 	
-	@Override
 	public Color getSkyColor() {
 		if(skyColor == null){
 			return null;
@@ -178,7 +155,6 @@ public class SimpleSkyManager implements SkyManager{
 		return skyColor.clone();
 	}
 	
-	@Override
 	public void setFogColor(Color color) {
 		if(color!=null)
 			this.fogColor = color.clone();
@@ -186,7 +162,6 @@ public class SimpleSkyManager implements SkyManager{
 			fogColor = null;
 	}
 	
-	@Override
 	public Color getFogColor() {
 		if(fogColor == null){
 			return null;
@@ -194,7 +169,6 @@ public class SimpleSkyManager implements SkyManager{
 		return fogColor.clone();
 	}
 	
-	@Override
 	public void setCloudColor(Color color){
 		if(color!=null)
 			this.cloudColor = color.clone();
@@ -202,7 +176,6 @@ public class SimpleSkyManager implements SkyManager{
 			cloudColor = null;
 	}
 	
-	@Override 
 	public Color getCloudColor(){
 		return this.cloudColor;
 	}

@@ -36,12 +36,10 @@ public class PacketDownloadMusic implements SpoutPacket{
 		
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 22 + PacketUtil.getNumBytes(url) + PacketUtil.getNumBytes(plugin);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		url = PacketUtil.readString(input, 255);
 		plugin = PacketUtil.readString(input, 255);
@@ -54,7 +52,6 @@ public class PacketDownloadMusic implements SpoutPacket{
 		notify = input.readBoolean();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		PacketUtil.writeString(output, url);
 		PacketUtil.writeString(output, plugin);
@@ -67,8 +64,6 @@ public class PacketDownloadMusic implements SpoutPacket{
 		output.writeBoolean(notify);
 	}
 
-
-	@Override
 	public void run(int PlayerId) {
 		File directory = new File(FileUtil.getAudioCacheDirectory(), plugin);
 		if (!directory.exists()){	
@@ -92,19 +87,15 @@ public class PacketDownloadMusic implements SpoutPacket{
 		FileDownloadThread.getInstance().addToDownloadQueue(download);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketDownloadMusic;
 	}
-	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

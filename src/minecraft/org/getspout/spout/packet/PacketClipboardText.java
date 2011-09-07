@@ -31,17 +31,14 @@ public class PacketClipboardText implements SpoutPacket{
 		this.text = text;
 	}
 	protected String text;
-	@Override
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(text);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		text = PacketUtil.readString(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		if (text.length() > PacketUtil.maxString) {
 			text = text.substring(0, PacketUtil.maxString - 1);
@@ -49,22 +46,22 @@ public class PacketClipboardText implements SpoutPacket{
 		PacketUtil.writeString(output, text);
 	}
 
-	@Override
+
 	public void run(int playerId) {
 		ChatManager.copy(text);
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketClipboardText;
 	}
 	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
+
 	public void failure(int playerId) {
 		
 	}

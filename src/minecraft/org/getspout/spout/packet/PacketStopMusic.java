@@ -34,24 +34,20 @@ public class PacketStopMusic implements SpoutPacket{
 		this.fadeTime = fadeTime;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 5;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		resetTimer = input.readBoolean();
 		fadeTime = input.readInt();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeBoolean(resetTimer);
 		output.writeInt(fadeTime);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		if (fadeTime == -1){
 			SpoutClient.getHandle().sndManager.stopMusic();
@@ -64,19 +60,15 @@ public class PacketStopMusic implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketStopMusic;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

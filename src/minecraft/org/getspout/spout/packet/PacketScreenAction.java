@@ -36,24 +36,20 @@ public class PacketScreenAction implements SpoutPacket{
 		this.screen = (byte)screen.getCode();
 	}
 	
-	@Override
 	public int getNumBytes() {
 		return 2;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		action = input.readByte();
 		screen = input.readByte();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeByte(action);
 		output.writeByte(screen);
 	}
 
-	@Override
 	public void run(int playerId) {
 		switch(ScreenAction.getScreenActionFromId(action)) {
 			case Open:
@@ -65,19 +61,15 @@ public class PacketScreenAction implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketScreenAction;
 	}
-	
-	@Override
+
 	public int getVersion() {
 		return 2;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

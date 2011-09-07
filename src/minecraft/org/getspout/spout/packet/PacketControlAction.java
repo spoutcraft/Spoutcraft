@@ -46,12 +46,12 @@ public class PacketControlAction implements SpoutPacket{
 		this.data = data;
 	}
 
-	@Override
+
 	public int getNumBytes() {
 		return 36 + PacketUtil.getNumBytes(data);
 	}
 
-	@Override
+
 	public void readData(DataInputStream input) throws IOException {
 		long msb = input.readLong();
 		long lsb = input.readLong();
@@ -63,7 +63,7 @@ public class PacketControlAction implements SpoutPacket{
 		this.data = PacketUtil.readString(input);
 	}
 
-	@Override
+
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());
@@ -73,22 +73,22 @@ public class PacketControlAction implements SpoutPacket{
 		PacketUtil.writeString(output, data);
 	}
 
-	@Override
+
 	public void run(int playerId) {
 		//Nothing to do
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketControlAction;
 	}
 	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
+
 	public void failure(int playerId) {
 		
 	}

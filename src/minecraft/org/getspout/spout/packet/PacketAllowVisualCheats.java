@@ -32,37 +32,30 @@ public class PacketAllowVisualCheats implements SpoutPacket{
 		this.cheating = allow;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 1;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		cheating = input.readBoolean();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeBoolean(cheating);
 	}
 
-	@Override
 	public void run(int playerId) {
 		SpoutClient.getInstance().setCheatMode(cheating);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketAllowVisualCheats;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

@@ -35,12 +35,10 @@ public class PacketPlaySound implements SpoutPacket{
 		
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 23;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		soundId = input.readShort();
 		location = input.readBoolean();
@@ -51,7 +49,6 @@ public class PacketPlaySound implements SpoutPacket{
 		volume = input.readInt();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeShort(soundId);
 		output.writeBoolean(location);
@@ -70,7 +67,6 @@ public class PacketPlaySound implements SpoutPacket{
 		output.writeInt(volume);
 	}
 
-	@Override
 	public void run(int entityId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
@@ -92,19 +88,15 @@ public class PacketPlaySound implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketPlaySound;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

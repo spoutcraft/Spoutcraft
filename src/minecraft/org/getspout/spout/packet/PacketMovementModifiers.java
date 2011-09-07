@@ -28,12 +28,10 @@ public class PacketMovementModifiers implements SpoutPacket{
 		this.airspeedMod = airspeed;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 40;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		gravityMod = input.readDouble();
 		walkingMod = input.readDouble();
@@ -42,7 +40,6 @@ public class PacketMovementModifiers implements SpoutPacket{
 		airspeedMod = input.readDouble();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeDouble(gravityMod);
 		output.writeDouble(walkingMod);
@@ -51,7 +48,6 @@ public class PacketMovementModifiers implements SpoutPacket{
 		output.writeDouble(airspeedMod);
 	}
 
-	@Override
 	public void run(int playerId) {
 		if (Minecraft.theMinecraft.currentScreen instanceof GuiPredownload) {
 			((GuiPredownload)Minecraft.theMinecraft.currentScreen).queuedPacket = this;
@@ -65,20 +61,16 @@ public class PacketMovementModifiers implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketMovementModifiers;
 	}
 
-	@Override
 	public int getVersion() {
 		return 2;
 	}
-
 }

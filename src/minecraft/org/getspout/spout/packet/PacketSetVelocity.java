@@ -41,12 +41,10 @@ public class PacketSetVelocity implements SpoutPacket {
 		this.motZ = motZ;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 28;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		entityId = input.readInt();
 		motX = input.readDouble();
@@ -54,7 +52,6 @@ public class PacketSetVelocity implements SpoutPacket {
 		motZ = input.readDouble();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(entityId);
 		output.writeDouble(motX);
@@ -62,7 +59,6 @@ public class PacketSetVelocity implements SpoutPacket {
 		output.writeDouble(motZ);
 	}
 
-	@Override
 	public void run(int playerId) {
 		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
 		if (e != null && !Double.isNaN(motX) && !Double.isNaN(motY) && !Double.isNaN(motZ)) {
@@ -72,19 +68,15 @@ public class PacketSetVelocity implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketSetVelocity;
 	}
 
-	@Override
 	public int getVersion() {
 		return 1;
 	}
-
 }

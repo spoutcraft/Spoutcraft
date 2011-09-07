@@ -274,12 +274,10 @@ public class SimpleItemManager implements ItemManager{
 		itemNames.put(ItemData.getItemData(2257), "Music Disc");
 	}
 
-	@Override
 	public String getItemName(int item) {
 		return getItemName(item, (short)0);
 	}
 
-	@Override
 	public String getItemName(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customNames.containsKey(info)) {
@@ -288,22 +286,18 @@ public class SimpleItemManager implements ItemManager{
 		return itemNames.get(info);
 	}
 
-	@Override
 	public void setItemName(int item, String name) {
 		setItemName(item, (short)0, name);
 	}
 
-	@Override
 	public void setItemName(int item, short data, String name) {
 		customNames.put(ItemData.getItemData(item, data), name);
 	}
 	
-	@Override
 	public void resetName(int item) {
 		resetName(item,(byte) 0);
 	}
 
-	@Override
 	public void resetName(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customNames.containsKey(info)) {
@@ -311,12 +305,10 @@ public class SimpleItemManager implements ItemManager{
 		}
 	}
 
-	@Override
 	public String getCustomItemName(int item) {
 		return getCustomItemName(item, (short)0);
 	}
 
-	@Override
 	public String getCustomItemName(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customNames.containsKey(info)) {
@@ -325,17 +317,14 @@ public class SimpleItemManager implements ItemManager{
 		return null;
 	}
 
-	@Override
 	public void setItemTexture(int item, String texture) {
 		setItemTexture(item, (short) 0, texture);
 	}
 
-	@Override
 	public void setItemTexture(int item, short data, String texture) {
 		setItemTexture(item, data, null, texture);
 	}
 	
-	@Override
 	public void setItemTexture(int item, short data, String pluginName, String texture) {
 		ItemData newKey = ItemData.getItemData(item, data);
 		customTextures.put(newKey, texture);
@@ -349,12 +338,10 @@ public class SimpleItemManager implements ItemManager{
 		}
 	}
 	
-	@Override
 	public String getCustomItemTexture(int item) {
 		return getCustomItemTexture(item, (short) 0);
 	}
 
-	@Override
 	public String getCustomItemTexture(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customTextures.containsKey(info))
@@ -362,7 +349,6 @@ public class SimpleItemManager implements ItemManager{
 		return null;
 	}
 	
-	@Override
 	public String getCustomItemTexturePlugin(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customTexturesPlugin.containsKey(info))
@@ -370,12 +356,10 @@ public class SimpleItemManager implements ItemManager{
 		return null;
 	}
 
-	@Override
 	public void resetTexture(int item) {
 		resetTexture(item, (short) 0);
 	}
 
-	@Override
 	public void resetTexture(int item, short data) {
 		ItemData info = ItemData.getItemData(item, data);
 		if (customTextures.containsKey(info)) {
@@ -383,7 +367,6 @@ public class SimpleItemManager implements ItemManager{
 		}
 	}
 
-	@Override
 	public void reset() {
 		customNames.clear();
 		customTextures.clear();

@@ -40,26 +40,22 @@ public class PacketMusicChange implements SpoutPacket{
 		return cancel;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 9;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		id = input.readInt();
 		volumePercent = input.readInt();
 		cancel =  input.readBoolean();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(id);
 		output.writeInt(volumePercent);
 		output.writeBoolean(cancel);
 	}
 
-	@Override
 	public void run(int playerId) {
 		if (cancel)
 			SpoutClient.getHandle().sndManager.cancelled = true;
@@ -67,19 +63,15 @@ public class PacketMusicChange implements SpoutPacket{
 			SpoutClient.getHandle().sndManager.allowed = true;
 	}		
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketMusicChange;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

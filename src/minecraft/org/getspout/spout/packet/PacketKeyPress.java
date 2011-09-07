@@ -92,17 +92,17 @@ public class PacketKeyPress implements SpoutPacket{
 		return 1 + 1 + 4 + 10;
 	}
 
-	@Override
+
 	public PacketType getPacketType() {
 		return PacketType.PacketKeyPress;
 	}
 	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
+
 	public void failure(int playerId) {
 		
 	}

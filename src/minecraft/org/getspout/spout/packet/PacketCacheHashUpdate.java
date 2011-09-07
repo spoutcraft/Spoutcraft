@@ -75,12 +75,10 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 		return PacketType.PacketCacheHashUpdate;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

@@ -13,26 +13,24 @@ import net.minecraft.src.World;
 
 public class PacketOpenSignGUI implements SpoutPacket {
 	int x,y,z;
-	@Override
+
 	public int getNumBytes() {
 		return 12; //Never be too lazy to calculate !
 	}
 
-	@Override
+
 	public void readData(DataInputStream input) throws IOException {
 		x = input.readInt();
 		y = input.readInt();
 		z = input.readInt();
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(x);
 		output.writeInt(y);
 		output.writeInt(z);
 	}
 
-	@Override
 	public void run(int playerId) {
 		World world = SpoutClient.getHandle().theWorld;
 		TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -43,16 +41,13 @@ public class PacketOpenSignGUI implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void failure(int playerId) {
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketOpenSignGUI;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}

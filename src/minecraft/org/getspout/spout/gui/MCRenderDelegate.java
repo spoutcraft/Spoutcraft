@@ -32,29 +32,24 @@ public class MCRenderDelegate implements RenderDelegate{
 		renderer.setRenderManager(RenderManager.instance);
 	}
 
-	@Override
 	public void downloadTexture(String plugin, String url) {
 		CustomTextureManager.downloadTexture(plugin, url);
 	}
 
-	@Override
 	public int getScreenHeight() {
 		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
 		return resolution.getScaledHeight();
 	}
 
-	@Override
 	public int getScreenWidth() {
 		ScaledResolution resolution = new ScaledResolution(SpoutClient.getHandle().gameSettings, SpoutClient.getHandle().displayWidth, SpoutClient.getHandle().displayHeight);
 		return resolution.getScaledWidth();
 	}
 
-	@Override
 	public int getTextWidth(String text) {
 		return Minecraft.theMinecraft.fontRenderer.getStringWidth(text);
 	}
 
-	@Override
 	public void render(ArmorBar bar) {
 		float armorPercent = Minecraft.theMinecraft.thePlayer.getPlayerArmorValue() / 0.2f;
 		if (bar.isVisible() && bar.getMaxNumShields() > 0) {
@@ -79,7 +74,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 
-	@Override
 	public void render(BubbleBar bar) {
 		if(Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
 			int bubbles = (int)Math.ceil(((double)(Minecraft.theMinecraft.thePlayer.air - 2) * (double)bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D));
@@ -96,7 +90,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 
-	@Override
 	public void render(GenericButton button) {
 		if(button.isVisible()) {
 			FontRenderer font = Minecraft.theMinecraft.fontRenderer;
@@ -146,7 +139,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		return state;
 	}
 
-	@Override
 	public void render(GenericGradient gradient) {
 		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 		GL11.glEnable(3042 /*GL_BLEND*/);
@@ -168,7 +160,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 	}
 
-	@Override
 	public void render(GenericItemWidget item) {
 		GL11.glDepthFunc(515);
 		RenderHelper.enableStandardItemLighting();
@@ -207,7 +198,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		RenderHelper.disableStandardItemLighting();
 	}
 
-	@Override
 	public void render(GenericLabel label) {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		String lines[] = label.getText().split("\\n");
@@ -265,7 +255,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	@Override
 	public void render(GenericSlider slider) {
 		if(slider.isVisible()) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
@@ -294,7 +283,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 
-	@Override
 	public void render(GenericTextField textField) {
 		Gui.drawRect((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
 		Gui.drawRect((int)textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
@@ -319,7 +307,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 
-	@Override
 	public void render(GenericTexture texture) {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getPlugin(), texture.getUrl());
 		if (textureBinding != null) {
@@ -343,7 +330,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 
-	@Override
 	public void render(HealthBar bar) {
 		int health = Minecraft.theMinecraft.thePlayer.health;
 		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.heartsLife / 3 % 2 == 1;
@@ -383,7 +369,6 @@ public class MCRenderDelegate implements RenderDelegate{
 		}
 	}
 	
-	@Override
 	public void render(GenericEntityWidget entityWidget) {
 		Entity entity = SpoutClient.getInstance().getEntityFromId(entityWidget.getEntityID());
 		if (entity != null) {

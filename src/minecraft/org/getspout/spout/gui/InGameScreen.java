@@ -155,7 +155,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		return true;
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.InGameScreen;
 	}

@@ -47,7 +47,7 @@ public class CustomPacket extends Packet{
 		this.packet = packet;
 	}
 
-	@Override
+
 	public int getPacketSize() {
 		if(packet == null) {
 			return 8;
@@ -56,7 +56,7 @@ public class CustomPacket extends Packet{
 		}
 	}
 
-	@Override
+
 	public void readPacketData(DataInputStream input) throws IOException {
 		final boolean prevOutdated = outdated;
 		int packetId = -1;
@@ -103,7 +103,7 @@ public class CustomPacket extends Packet{
 		}
 	}
 
-	@Override
+
 	public void writePacketData(DataOutputStream output) throws IOException {
 		if(packet == null) {
 			output.writeShort(-1);
@@ -118,7 +118,7 @@ public class CustomPacket extends Packet{
 		packet.writeData(output);
 	}
 
-	@Override
+
 	public void processPacket(NetHandler netHandler) {
 		if(packet != null) {
 			if (success) {

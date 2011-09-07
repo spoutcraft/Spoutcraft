@@ -55,12 +55,11 @@ public class PacketItemTexture implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 6 + PacketUtil.getNumBytes(name) + PacketUtil.getNumBytes(getPluginName());
 	}
 
-	@Override
+
 	public void readData(DataInputStream input) throws IOException {
 		id = input.readInt();
 		data = input.readShort();
@@ -69,14 +68,13 @@ public class PacketItemTexture implements SpoutPacket {
 		
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(id);
 		output.writeShort(data);
 		PacketUtil.writeString(output, name);
 		PacketUtil.writeString(output, getPluginName());
 	}
-	@Override
+
 	public void run(int PlayerId) {
 		ItemManager manager = SpoutClient.getInstance().getItemManager();
 		if (name.equals("[reset]"))
@@ -84,17 +82,14 @@ public class PacketItemTexture implements SpoutPacket {
 		manager.setItemTexture(id, data, pluginName, name);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketItemTexture;
 	}
 
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}

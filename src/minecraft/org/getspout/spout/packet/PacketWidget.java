@@ -49,12 +49,10 @@ public class PacketWidget implements SpoutPacket {
 		this.screen = screen;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return (widget != null ? widget.getNumBytes() : 0) + 26;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		int id = input.readInt();
 		long msb = input.readLong();
@@ -84,7 +82,6 @@ public class PacketWidget implements SpoutPacket {
 		
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
@@ -94,7 +91,6 @@ public class PacketWidget implements SpoutPacket {
 		widget.writeData(output);
 	}
 
-	@Override
 	public void run(int playerId) {
 		if (widget != null) {
 			InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
@@ -137,19 +133,15 @@ public class PacketWidget implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketWidget;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

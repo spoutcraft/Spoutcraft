@@ -27,26 +27,23 @@ public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";
 	protected int entityId;
 	protected byte textureId = 0;
-	@Override
+
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(texture) + 4 + 1;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		entityId = input.readInt();
 		textureId = input.readByte();
 		texture = PacketUtil.readString(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(entityId);
 		output.writeByte(textureId);
 		PacketUtil.writeString(output, texture);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		if(texture.equals("[reset]")){
 			texture = null;
@@ -55,19 +52,15 @@ public class PacketEntitySkin implements SpoutPacket {
 		manager.setTexture(entityId, texture, textureId);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketEntitySkin;
 	}
 
-	@Override
 	public int getVersion() {
 		return 1;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

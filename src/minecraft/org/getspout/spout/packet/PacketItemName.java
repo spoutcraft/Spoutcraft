@@ -36,26 +36,22 @@ public class PacketItemName implements SpoutPacket{
 		this.name = name;
 	}
 
-	@Override
 	public int getNumBytes() {
 		return 6 + PacketUtil.getNumBytes(name);
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		id = input.readInt();
 		data = input.readShort();
 		name = PacketUtil.readString(input);
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(id);
 		output.writeShort(data);
 		PacketUtil.writeString(output, name);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		if (name != null) {
 			if (name.equals("[resetall]")) {
@@ -70,19 +66,15 @@ public class PacketItemName implements SpoutPacket{
 		}
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketItemName;
 	}
-	
-	@Override
+
 	public int getVersion() {
 		return 0;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

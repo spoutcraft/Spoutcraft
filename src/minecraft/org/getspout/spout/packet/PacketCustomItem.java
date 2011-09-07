@@ -22,12 +22,10 @@ public class PacketCustomItem implements SpoutPacket {
 		this.metaData = metaData;
 	}
 	
-	@Override
 	public int getNumBytes() {
 		return 10;
 	}
 	
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		itemId = input.readInt();
 		blockId = input.readInt();
@@ -40,31 +38,25 @@ public class PacketCustomItem implements SpoutPacket {
 		}
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(itemId);
 		output.writeInt(blockId == null ? -1 : blockId);
 		output.writeShort(metaData == null ? -1 : metaData);
 	}
 
-	@Override
 	public void run(int PlayerId) {
 		SpoutItemBlock.addItemInfoMap(itemId, blockId, metaData);
 	}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketCustomItem;
 	}
 	
-	@Override
 	public int getVersion() {
 		return 3;
 	}
 
-	@Override
 	public void failure(int playerId) {
 		
 	}
-
 }

@@ -40,17 +40,14 @@ public class SimpleBiomeManager implements BiomeManager {
 		defaultRain.add("Sky");
 	}
 
-	@Override
 	public void setSnowEnabled(String biome, boolean bool) {
 		changedSnow.put(biome, bool);
 	}
 
-	@Override
 	public void setRainEnabled(String biome, boolean bool) {
 		changedRain.put(biome, bool);
 	}
 	
-	@Override
 	public boolean getSnowChanged(String biome) {
 		boolean bool = false;
 		if(changedSnow.containsKey(biome)) {
@@ -60,7 +57,6 @@ public class SimpleBiomeManager implements BiomeManager {
 		return bool;
 	}
 	
-	@Override
 	public boolean getRainChanged(String biome) {
 		boolean bool = false;
 		if(changedRain.containsKey(biome)) {
@@ -70,7 +66,6 @@ public class SimpleBiomeManager implements BiomeManager {
 		return bool;
 	}
 
-	@Override
 	public boolean getSnowEnabled(String biome) {
 		boolean bool = false;
 		bool = changedSnow.get(biome);
@@ -78,7 +73,6 @@ public class SimpleBiomeManager implements BiomeManager {
 		return bool;
 	}
 	
-	@Override
 	public boolean getRainEnabled(String biome) {
 		boolean bool = false;
 		bool = changedRain.get(biome);
@@ -86,7 +80,6 @@ public class SimpleBiomeManager implements BiomeManager {
 		return bool;
 	}
 	
-	@Override
 	public void resetWeather(String biome) {
 		
 		if(defaultSnow.contains(biome)) {
