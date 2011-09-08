@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi.block;
 
+import org.spoutcraft.spoutcraftapi.SPOnly;
 import org.spoutcraft.spoutcraftapi.World;
 
 public interface Block {
@@ -26,9 +27,14 @@ public interface Block {
 
 	public int getZ();
 
+	@SPOnly
 	public float getHardness();
 
+	@SPOnly
 	public void setHardness(float hardness);
+	
+	@SPOnly
+	public void resetHardness();
 
 	// TODO Implement
 	public int getBlockPower();
@@ -56,5 +62,4 @@ public interface Block {
 	
 	//TODO Implement
 	public Chunk getChunk();
-
 }

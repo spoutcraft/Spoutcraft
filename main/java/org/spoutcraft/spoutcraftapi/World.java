@@ -18,10 +18,10 @@ package org.spoutcraft.spoutcraftapi;
 
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public interface World {
 
-	//TODO Implement
 	public Block getBlockAt(int x, int y, int z);
 	
 	//TODO Implement
@@ -54,10 +54,10 @@ public interface World {
 	//TODO Implement
 	public boolean getAllowMonsters();
 	
-	//TODO Implement
 	public Chunk getChunkAt(Block block);
 	
-	//TODO Implement
+	public Chunk getChunkAt(FixedLocation location);
+	
 	public Chunk getChunkAt(int x, int z);
 	
 	//TODO Implement

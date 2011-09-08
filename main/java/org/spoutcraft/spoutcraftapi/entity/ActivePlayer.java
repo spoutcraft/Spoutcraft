@@ -18,6 +18,7 @@ package org.spoutcraft.spoutcraftapi.entity;
 
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public interface ActivePlayer extends Player{
 	
@@ -44,5 +45,6 @@ public interface ActivePlayer extends Player{
 	public void setEntityTitle(int id, String title);
 	
 	public void resetEntityTitle(int id);
-
+	
+	public FixedLocation getLastClickedLocation();
 }
