@@ -403,7 +403,7 @@ public class Block {
       return this.blockID;
    }
 
-   public float blockStrength(EntityPlayer var1) {
+   public final float blockStrength(EntityPlayer var1) { // Spout public -> public final
       return this.blockHardness < 0.0F?0.0F:(!var1.canHarvestBlock(this)?1.0F / this.blockHardness / 100.0F:var1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
    }
 

@@ -1,5 +1,8 @@
 package org.getspout.spout.block;
 
+import gnu.trove.TIntFloatHashMap;
+import gnu.trove.TIntIntHashMap;
+
 import java.lang.ref.WeakReference;
 
 import net.minecraft.src.WorldClient;
@@ -14,6 +17,8 @@ public class SpoutcraftChunk implements Chunk{
 	private WorldClient worldClient;
 	private int x;
 	private int z;
+	protected final TIntIntHashMap powerOverrides = new TIntIntHashMap();
+	protected final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
@@ -36,59 +41,48 @@ public class SpoutcraftChunk implements Chunk{
 		return null;
 	}
 
-	@Override
 	public World getWorld() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public int getX() {
 		return x;
 	}
 
-	@Override
 	public int getZ() {
 		return z;
 	}
 
-	@Override
 	public boolean isLoaded() {
 		return getWorld().isChunkLoaded(this);
 	}
 
-	@Override
 	public boolean load() {
 		return getWorld().loadChunk(getX(), getZ(), true);
 	}
 
-	@Override
 	public boolean load(boolean generate) {
 		return getWorld().loadChunk(getX(), getZ(), generate);
 	}
 
-	@Override
 	public boolean unload() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean unload(boolean save) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean unload(boolean save, boolean safe) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public Entity[] getEntities() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

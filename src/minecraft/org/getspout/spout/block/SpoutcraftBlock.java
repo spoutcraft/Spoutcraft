@@ -39,54 +39,45 @@ public class SpoutcraftBlock implements Block{
 		
 	}
 
-	@Override
 	public int getBlockPower() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public byte getLightLevel() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getTypeId() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public World getWorld() {
 		return chunk.getWorld();
 	}
 
-	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean isLiquid() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public void setData(byte data) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public boolean setTypeId(int type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public Chunk getChunk() {
 		return chunk;
 	}

@@ -96,7 +96,9 @@ public abstract class Entity {
 	public int serverPosY;
 	public int serverPosZ;
 	public boolean ignoreFrustumCheck;
-
+	//Spout start
+	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
+	//Spout end
 
 	public Entity(World var1) {
 		this.entityId = nextEntityID++;

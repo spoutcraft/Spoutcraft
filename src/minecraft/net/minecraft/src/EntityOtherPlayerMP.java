@@ -5,6 +5,9 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
+//Spout start
+import org.getspout.spout.player.SpoutPlayer;
+//Spout end
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 
@@ -29,6 +32,9 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.noClip = true;
 		this.field_22062_y = 0.25F;
 		this.renderDistanceWeight = 10.0D;
+		//Spout start
+		spoutEntity = new SpoutPlayer(this);
+		//Spout end
 	}
 
 	protected void resetHeight() {
