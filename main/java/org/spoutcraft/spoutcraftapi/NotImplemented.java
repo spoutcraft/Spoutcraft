@@ -14,5 +14,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface NotImplemented {
 	public String author() default "alta189";
 	public String version() default "1.0";
-	public String shortDescription() default "Indicates that the function or event only is used or runs when the client is in Multiplayer";
+	public String shortDescription() default "Indicates that the function or event is implemented into Spoutcraft currently";
 }
