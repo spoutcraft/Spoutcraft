@@ -54,11 +54,7 @@ public interface Client extends PropertyInterface{
 	
 	public SkyManager getSkyManager();
 	
-	//public PacketManager getPacketManager();
-	
 	public ActivePlayer getActivePlayer();
-	
-	//public EntityManager getEntityManager();
 	
 	public BiomeManager getBiomeManager();
 	
@@ -66,7 +62,7 @@ public interface Client extends PropertyInterface{
 	
 	public boolean isSpoutEnabled();
 	
-	//public SpoutVersion getServerVersion();
+	public SpoutVersion getServerVersion();
 	
 	//public EntityPlayer getPlayerFromId(int id);
 	
