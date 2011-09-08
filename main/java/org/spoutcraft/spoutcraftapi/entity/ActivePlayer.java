@@ -19,7 +19,7 @@ package org.spoutcraft.spoutcraftapi.entity;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
-public interface ActivePlayer {
+public interface ActivePlayer extends Player{
 	
 	public RenderDistance getMaximumView();
 	
