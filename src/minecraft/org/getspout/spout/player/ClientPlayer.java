@@ -23,9 +23,11 @@ import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerSP;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	private RenderDistance min, max;
@@ -36,6 +38,10 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		super(player);
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
+	}
+	
+	public EntityPlayerSP getHandle() {
+		return (EntityPlayerSP)super.getHandle();
 	}
 
 	public RenderDistance getMaximumView() {
@@ -90,5 +96,9 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	
 	public void resetEntityTitle(int id) {
 		titles.remove(id);
+	}
+	
+	public FixedLocation getLastClickedLocation() {
+		return getHandle().lastClickLocation;
 	}
 }

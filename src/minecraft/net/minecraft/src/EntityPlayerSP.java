@@ -25,6 +25,7 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.getspout.spout.player.ClientPlayer;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end
 
 public class EntityPlayerSP extends EntityPlayer {
@@ -34,6 +35,9 @@ public class EntityPlayerSP extends EntityPlayer {
 	private MouseFilter field_21903_bJ = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
+	//Spout start
+	public FixedLocation lastClickLocation = null;
+	//Spout end
 
 
 	public EntityPlayerSP(Minecraft var1, World var2, Session var3, int var4) {

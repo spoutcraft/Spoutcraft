@@ -30,13 +30,19 @@ public class SpoutcraftBlock implements Block{
 	}
 
 	public float getHardness() {
-		// TODO Auto-generated method stub
-		return 0;
+		int index = getIndex();
+		if (chunk.hardnessOverrides.containsKey(index)) {
+			return chunk.hardnessOverrides.get(index);
+		}
+		return net.minecraft.src.Block.blocksList[getTypeId()].getHardness();
 	}
 
 	public void setHardness(float hardness) {
-		// TODO Auto-generated method stub
-		
+		chunk.hardnessOverrides.put(getIndex(), hardness);
+	}
+	
+	public void resetHardness() {
+		chunk.hardnessOverrides.remove(getIndex());
 	}
 
 	public int getBlockPower() {
@@ -59,8 +65,7 @@ public class SpoutcraftBlock implements Block{
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return getTypeId() == 0;
 	}
 
 	public boolean isLiquid() {
@@ -80,6 +85,10 @@ public class SpoutcraftBlock implements Block{
 
 	public Chunk getChunk() {
 		return chunk;
+	}
+	
+	private int getIndex() {
+		return (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
 	}
 
 }

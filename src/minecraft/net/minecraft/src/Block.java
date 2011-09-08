@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import gnu.trove.TIntFloatHashMap;
+
 import java.util.ArrayList;
 import java.util.Random;
 import net.minecraft.src.AxisAlignedBB;
@@ -98,7 +100,11 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
 // Spout Start
+import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.item.SpoutItemBlock;
+import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.util.FastLocation;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 // Spout End
 
 public class Block {
@@ -403,9 +409,27 @@ public class Block {
       return this.blockID;
    }
 
-   public final float blockStrength(EntityPlayer var1) { // Spout public -> public final
-      return this.blockHardness < 0.0F?0.0F:(!var1.canHarvestBlock(this)?1.0F / this.blockHardness / 100.0F:var1.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
-   }
+   //Spout start
+	 public final float blockStrength(EntityPlayer entityhuman) {
+		if (entityhuman instanceof EntityPlayerSP) {
+			ActivePlayer player = (ActivePlayer)((EntityPlayerSP)entityhuman).spoutEntity;
+			FixedLocation target = player.getLastClickedLocation();
+			if (target != null) {
+				int index = getIndex((int)target.getX(), (int)target.getY(), (int)target.getZ());
+				SpoutcraftChunk chunk = (SpoutcraftChunk)target.getWorld().getChunkAt(target);
+				TIntFloatHashMap hardnessOverrides = chunk.hardnessOverrides;
+				if (hardnessOverrides.containsKey(index)) {
+					return hardnessOverrides.get(index);
+				}
+			}
+		}
+		return this.blockHardness < 0.0F?0.0F:(!entityhuman.canHarvestBlock(this)?1.0F / this.blockHardness / 100.0F:entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
+	}
+   
+   private int getIndex(int x, int y, int z) {
+		return (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
+	}
+   //Spout end
 
    public final void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5) {
       this.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, 1.0F);
@@ -573,7 +597,14 @@ public class Block {
 
    public void onBlockPlaced(World var1, int var2, int var3, int var4, int var5) {}
 
-   public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {}
+   //Spout start
+   public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
+	   if (var5 instanceof EntityPlayerSP) {
+		   FixedLocation location = new FastLocation(var2, var3, var4, 0, 0, var1.world);
+		   ((EntityPlayerSP)var5).lastClickLocation = location;
+	   }
+   }
+   //Spout end
 
    public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {}
 

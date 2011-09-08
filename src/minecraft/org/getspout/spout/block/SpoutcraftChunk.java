@@ -1,9 +1,10 @@
 package org.getspout.spout.block;
 
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 import gnu.trove.TIntFloatHashMap;
 import gnu.trove.TIntIntHashMap;
-
-import java.lang.ref.WeakReference;
 
 import net.minecraft.src.WorldClient;
 
@@ -12,13 +13,16 @@ import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
+import com.google.common.collect.MapMaker;
+
 public class SpoutcraftChunk implements Chunk{
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private WorldClient worldClient;
+	private final Map<Integer, Block> cache = new MapMaker().softValues().makeMap();
 	private int x;
 	private int z;
-	protected final TIntIntHashMap powerOverrides = new TIntIntHashMap();
-	protected final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
+	public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
+	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
@@ -37,13 +41,22 @@ public class SpoutcraftChunk implements Chunk{
 	}
 	
 	public Block getBlockAt(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        int pos = (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
+        Block block = this.cache.get(pos);
+        if (block == null) {
+            Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0x7F, (getZ() << 4) | (z & 0xF));
+            Block oldBlock = this.cache.put(pos, newBlock);
+            if (oldBlock == null) {
+                block = newBlock;
+            } else {
+                block = oldBlock;
+            }
+        }
+        return block;
+    }
 
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return worldClient.world;
 	}
 
 	public int getX() {

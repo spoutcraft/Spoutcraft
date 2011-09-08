@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.getspout.spout.client.SpoutClient;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
@@ -51,6 +49,8 @@ import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WorldProvider;
 //Spout Start
 import it.unimi.dsi.fastutil.ints.*;
+import org.getspout.spout.SpoutcraftWorld;
+import org.getspout.spout.client.SpoutClient;
 //Spout End
 
 public class World implements IBlockAccess {
@@ -95,12 +95,15 @@ public class World implements IBlockAccess {
 	private boolean spawnHostileMobs;
 	private boolean spawnPeacefulMobs;
 	static int lightingUpdatesScheduled = 0;
-	//Spout Start
+	//Spout start
 	private IntSet positionsToUpdate;
-	//Spout End
+	//Spout end
 	private int soundCounter;
 	private List field_1012_M;
 	public boolean multiplayerWorld;
+	//Spout start
+	public final SpoutcraftWorld world;
+	//Spout end
 
 
 	public WorldChunkManager getWorldChunkManager() {
@@ -148,6 +151,9 @@ public class World implements IBlockAccess {
 		this.chunkProvider = this.getChunkProvider();
 		this.calculateInitialSkylight();
 		this.func_27163_E();
+		//Spout start
+		world = new SpoutcraftWorld(this);
+		//Spout end
 	}
 
 	public World(World var1, WorldProvider var2) {
@@ -192,6 +198,9 @@ public class World implements IBlockAccess {
 		this.chunkProvider = this.getChunkProvider();
 		this.calculateInitialSkylight();
 		this.func_27163_E();
+		//Spout start
+		world = new SpoutcraftWorld(this);
+		//Spout end
 	}
 
 	public World(ISaveHandler var1, String var2, long var3) {
@@ -259,6 +268,9 @@ public class World implements IBlockAccess {
 
 		this.calculateInitialSkylight();
 		this.func_27163_E();
+		//Spout start
+		world = new SpoutcraftWorld(this);
+		//Spout end
 	}
 
 	protected IChunkProvider getChunkProvider() {
