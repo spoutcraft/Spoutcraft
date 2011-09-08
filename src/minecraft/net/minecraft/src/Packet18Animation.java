@@ -7,7 +7,7 @@ import java.io.IOException;
 //Spout Start
 import net.minecraft.client.Minecraft;
 
-import org.getspout.spout.SpoutVersion;
+import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketFullVersion;

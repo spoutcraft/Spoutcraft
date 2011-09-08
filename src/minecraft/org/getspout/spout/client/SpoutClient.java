@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
-import org.getspout.spout.SpoutVersion;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
@@ -39,6 +38,7 @@ import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
