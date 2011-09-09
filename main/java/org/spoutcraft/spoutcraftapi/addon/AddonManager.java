@@ -3,7 +3,6 @@ package org.spoutcraft.spoutcraftapi.addon;
 import java.io.File;
 
 import org.spoutcraft.spoutcraftapi.event.Event;
-import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public abstract interface AddonManager {
 
@@ -23,11 +22,7 @@ public abstract interface AddonManager {
 
 	public abstract void clearAddons();
 
-	public abstract void callEvent(Event paramEvent);
-
-	public abstract void registerEvent(Event.Type paramType, Listener paramListener, Event.Priority paramPriority, Addon paramAddon);
-
-	public abstract void registerEvent(Event.Type paramType, Listener paramListener, EventExecutor paramEventExecutor, Event.Priority paramPriority, Addon paramAddon);
+	public abstract void callEvent(Event event);
 
 	public abstract void enableAddon(Addon paramAddon);
 

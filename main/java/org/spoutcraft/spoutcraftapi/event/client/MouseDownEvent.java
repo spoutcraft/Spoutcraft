@@ -16,16 +16,19 @@
  */
 package org.spoutcraft.spoutcraftapi.event.client;
 
+import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.Event;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class MouseDownEvent extends Event {
+public class MouseDownEvent extends Event<MouseDownEvent> implements Cancellable {
+	
 	private int x;
 	private int y;
 	private Mouse button;
 	private ScreenType screenType;
+	
 	public MouseDownEvent(int mouseButton, int x, int y, ScreenType screenType) {
-		super(Type.MOUSE_DOWN);
 		this.x = x;
 		this.y = y;
 		this.button = Mouse.getButton(mouseButton);
@@ -47,4 +50,25 @@ public class MouseDownEvent extends Event {
 	public ScreenType getScreenType(){
 		return screenType;
 	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancel) {
+		this.cancelled = cancel;
+	}
+	
+	public static final HandlerList<MouseDownEvent> handlers = new HandlerList<MouseDownEvent>();
+	
+	@Override
+	protected HandlerList<MouseDownEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Mouse Down Event";
+	}
+	
 }

@@ -20,19 +20,19 @@ import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockFace;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.event.block.Action;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
-public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
+public class PlayerInteractEvent extends PlayerEvent<PlayerInteractEvent> implements Cancellable {
 
 	protected Block clickedBlock;
-	protected boolean cancel = false;
 	protected BlockFace blockFace;
 	protected Action action;
 	protected ItemStack item;
 
 	protected PlayerInteractEvent(Player player, Action action, ItemStack item, Block clickedBlock, BlockFace blockFace) {
-		super(Type.PLAYER_INTERACT, player);
+		super(player);
 		this.clickedBlock = clickedBlock;
 		this.blockFace = blockFace;
 		this.action = action;
@@ -64,12 +64,23 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
 	}
 
 	public boolean isCancelled() {
-		return cancel;
+		return cancelled;
 	}
 
 	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		this.cancelled = cancel;
+	}
 
+	public static final HandlerList<PlayerInteractEvent> handlers = new HandlerList<PlayerInteractEvent>();
+	
+	@Override
+	protected HandlerList<PlayerInteractEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Player Interact Event";
 	}
 
 }

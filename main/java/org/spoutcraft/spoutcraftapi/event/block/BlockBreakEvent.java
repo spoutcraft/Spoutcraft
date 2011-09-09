@@ -3,13 +3,14 @@ package org.spoutcraft.spoutcraftapi.event.block;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
-public class BlockBreakEvent extends BlockEvent implements Cancellable {
+public class BlockBreakEvent extends BlockEvent<BlockBreakEvent> implements Cancellable {
+	
 	protected Player player;
-	protected boolean cancel = false;
 
 	protected BlockBreakEvent(Block block, Player player) {
-		super(Type.BLOCK_BREAK, block);
+		super(block);
 		this.player = player;
 	}
 
@@ -18,11 +19,23 @@ public class BlockBreakEvent extends BlockEvent implements Cancellable {
 	}
 
 	public boolean isCancelled() {
-		return cancel;
+		return cancelled;
 	}
 
 	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		this.cancelled = cancel;
+	}
+
+	public static final HandlerList<BlockBreakEvent> handlers = new HandlerList<BlockBreakEvent>();
+	
+	@Override
+	protected HandlerList<BlockBreakEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Block Damage Event";
 	}
 
 }

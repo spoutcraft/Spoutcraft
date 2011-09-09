@@ -18,13 +18,14 @@ package org.spoutcraft.spoutcraftapi.event.client;
 
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.Event;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
-public class RenderDistanceChangeEvent extends Event implements Cancellable {
+public class RenderDistanceChangeEvent extends Event<RenderDistanceChangeEvent> implements Cancellable {
+	
 	protected RenderDistance newView;
-	protected boolean cancel = false;
+	
 	public RenderDistanceChangeEvent(RenderDistance newView) {
-		super(Type.RENDER_DISTANCE_CHANGE);
 		this.newView = newView;
 	}
 	
@@ -37,11 +38,23 @@ public class RenderDistanceChangeEvent extends Event implements Cancellable {
 	}
 	
 	public boolean isCancelled() {
-		return cancel;
-	}
-	
-	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		return cancelled;
 	}
 
+	public void setCancelled(boolean cancel) {
+		this.cancelled = cancel;
+	}
+
+	public static final HandlerList<RenderDistanceChangeEvent> handlers = new HandlerList<RenderDistanceChangeEvent>();
+	
+	@Override
+	protected HandlerList<RenderDistanceChangeEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Render Distance Change Event";
+	}
+	
 }

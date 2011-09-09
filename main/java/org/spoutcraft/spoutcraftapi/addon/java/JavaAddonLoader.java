@@ -19,14 +19,10 @@ import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
-import org.spoutcraft.spoutcraftapi.addon.EventExecutor;
 import org.spoutcraft.spoutcraftapi.addon.InvalidAddonException;
 import org.spoutcraft.spoutcraftapi.addon.InvalidDescriptionException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownDependencyException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownSoftDependencyException;
-import org.spoutcraft.spoutcraftapi.event.CustomEventListener;
-import org.spoutcraft.spoutcraftapi.event.Event;
-import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.yaml.snakeyaml.error.YAMLException;
 
 public class JavaAddonLoader implements AddonLoader {
@@ -209,19 +205,6 @@ public class JavaAddonLoader implements AddonLoader {
 		if (!classes.containsKey(name)) {
 			classes.put(name, clazz);
 		}
-	}
-
-	public EventExecutor createExecutor(Event.Type type, Listener listener) {
-		switch (type) {
-		case CUSTOM_EVENT:
-			return new EventExecutor() {
-				public void execute(Listener listener, Event event) {
-					((CustomEventListener) listener).onCustomEvent(event);
-				}
-			};
-		}
-
-		throw new IllegalArgumentException("Event " + type + " is not supported");
 	}
 
 	public void enableAddon(final Addon addon) {

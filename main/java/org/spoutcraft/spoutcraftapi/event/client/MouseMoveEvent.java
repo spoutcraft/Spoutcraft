@@ -17,14 +17,16 @@
 package org.spoutcraft.spoutcraftapi.event.client;
 
 import org.spoutcraft.spoutcraftapi.event.Event;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class MouseMoveEvent extends Event {
+public class MouseMoveEvent extends Event<MouseMoveEvent> {
+	
 	private int x;
 	private int y;
 	private ScreenType screenType;
+	
 	public MouseMoveEvent(int x, int y, ScreenType screenType) {
-		super(Type.MOUSE_MOVE);
 		this.x = x;
 		this.y = y;
 		this.screenType = screenType;
@@ -41,4 +43,17 @@ public class MouseMoveEvent extends Event {
 	public ScreenType getScreenType(){
 		return screenType;
 	}
+	
+	public static final HandlerList<MouseMoveEvent> handlers = new HandlerList<MouseMoveEvent>();
+	
+	@Override
+	protected HandlerList<MouseMoveEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Mouse Move Event";
+	}
+	
 }

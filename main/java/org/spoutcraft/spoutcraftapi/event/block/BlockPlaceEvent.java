@@ -4,11 +4,11 @@ import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockState;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
-public class BlockPlaceEvent extends BlockEvent implements Cancellable {
+public class BlockPlaceEvent extends BlockEvent<BlockPlaceEvent> implements Cancellable {
 
-	protected boolean cancel = false;
 	protected Player player;
 	protected BlockState replacedBlockState;
 	protected Block placedAgainst;
@@ -16,7 +16,7 @@ public class BlockPlaceEvent extends BlockEvent implements Cancellable {
 	protected boolean canBuild;
 
 	protected BlockPlaceEvent(Block placedBlock, BlockState replacedBlockState, Block placedAgainst, ItemStack itemInHand, Player player, boolean canBuild) {
-		super(Type.BLOCK_PLACE, placedBlock);
+		super(placedBlock);
 		this.player = player;
 		this.replacedBlockState = replacedBlockState;
 		this.placedAgainst = placedAgainst;
@@ -53,12 +53,23 @@ public class BlockPlaceEvent extends BlockEvent implements Cancellable {
 	}
 
 	public boolean isCancelled() {
-		return cancel;
+		return cancelled;
 	}
 
 	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		this.cancelled = cancel;
+	}
+	
+	public static final HandlerList<BlockPlaceEvent> handlers = new HandlerList<BlockPlaceEvent>();
+	
+	@Override
+	protected HandlerList<BlockPlaceEvent> getHandlers() {
+		return handlers;
+	}
 
+	@Override
+	protected String getEventName() {
+		return "Block Place Event";
 	}
 
 }

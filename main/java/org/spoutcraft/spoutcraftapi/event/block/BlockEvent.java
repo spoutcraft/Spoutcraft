@@ -3,15 +3,16 @@ package org.spoutcraft.spoutcraftapi.event.block;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.event.Event;
 
-public class BlockEvent extends Event{
+public abstract class BlockEvent<TEvent extends BlockEvent<TEvent>> extends Event<TEvent> {
+	
 	protected Block block;
 
-	protected BlockEvent(Type type, Block block) {
-		super(type);
+	protected BlockEvent(Block block) {
 		this.block = block;
 	}
 
 	public Block getBlock() {
 		return block;
 	}
+	
 }

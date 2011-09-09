@@ -2,14 +2,14 @@ package org.spoutcraft.spoutcraftapi.event.block;
 
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
-public class BlockPhysicsEvent extends BlockEvent implements Cancellable {
+public class BlockPhysicsEvent extends BlockEvent<BlockPhysicsEvent> implements Cancellable {
 
-	protected boolean cancel = false;
 	protected int changedId;
 
 	protected BlockPhysicsEvent(Block block, int changedId) {
-		super(Type.BLOCK_PHYSICS, block);
+		super(block);
 		this.changedId = changedId;
 	}
 	
@@ -18,11 +18,23 @@ public class BlockPhysicsEvent extends BlockEvent implements Cancellable {
 	}
 
 	public boolean isCancelled() {
-		return cancel;
+		return cancelled;
 	}
 
 	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		this.cancelled = cancel;
+	}
+	
+	public static final HandlerList<BlockPhysicsEvent> handlers = new HandlerList<BlockPhysicsEvent>();
+	
+	@Override
+	protected HandlerList<BlockPhysicsEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Block Physics Event";
 	}
 
 }
