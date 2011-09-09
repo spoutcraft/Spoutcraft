@@ -6,8 +6,6 @@ import java.util.Map;
 import gnu.trove.TIntFloatHashMap;
 import gnu.trove.TIntIntHashMap;
 
-import net.minecraft.src.WorldClient;
-
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
@@ -17,7 +15,7 @@ import com.google.common.collect.MapMaker;
 
 public class SpoutcraftChunk implements Chunk{
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
-	private WorldClient worldClient;
+	private net.minecraft.src.World world;
 	private final Map<Integer, Block> cache = new MapMaker().softValues().makeMap();
 	private int x;
 	private int z;
@@ -26,7 +24,7 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
-		worldClient = (WorldClient) getHandle().worldObj;
+		world = getHandle().worldObj;
 		x = getHandle().xPosition;
 		z = getHandle().zPosition;
 	}
@@ -34,7 +32,7 @@ public class SpoutcraftChunk implements Chunk{
 	public net.minecraft.src.Chunk getHandle() {
 		net.minecraft.src.Chunk c = weakChunk.get();
 		if (c == null) {
-			c = worldClient.getChunkFromChunkCoords(x, z);
+			c = world.getChunkFromChunkCoords(x, z);
 			weakChunk = new WeakReference<net.minecraft.src.Chunk>(c);
 		}
 		return c;
@@ -56,7 +54,7 @@ public class SpoutcraftChunk implements Chunk{
     }
 
 	public World getWorld() {
-		return worldClient.world;
+		return world.world;
 	}
 
 	public int getX() {

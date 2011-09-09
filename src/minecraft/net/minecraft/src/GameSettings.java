@@ -202,7 +202,7 @@ public class GameSettings {
 		Block.waterStill.setLightOpacity(var1);
 		Block.waterMoving.setLightOpacity(var1);
 		if(this.mc.theWorld != null) {
-			IChunkProvider var2 = this.mc.theWorld.chunkProvider;
+			/*IChunkProvider var2 = this.mc.theWorld.chunkProvider;
 			if(var2 != null) {
 				for(int var3 = -512; var3 < 512; ++var3) {
 					for(int var4 = -512; var4 < 512; ++var4) {
@@ -220,11 +220,8 @@ public class GameSettings {
 						}
 					}
 				}
-					
-				if (mc.theWorld != null) {
-					this.mc.renderGlobal.markAllRenderersDirty();
-				}
-			}
+			}*/
+			this.mc.renderGlobal.markAllRenderersDirty();
 		}
 	}
 //Spout End
@@ -308,7 +305,7 @@ public class GameSettings {
 				this.ofFogStart = 0.2F;
 			}
 		}
-
+		/*
 		if(var1 == EnumOptions.MIPMAP_LEVEL) {
 			++this.ofMipmapLevel;
 			if(this.ofMipmapLevel > 4) {
@@ -324,11 +321,11 @@ public class GameSettings {
 			this.mc.renderEngine.setTileSize(this.mc);
 			this.mc.renderEngine.refreshTextures();
 		}
-
+		*/
 		if(var1 == EnumOptions.LOAD_FAR) {
 			this.ofLoadFar = !this.ofLoadFar;
-			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.loadRenderers();
+			if (this.mc.theWorld != null && !this.ofLoadFar) {
+				this.mc.renderGlobal.markAllRenderersDirty();
 			}
 		}
 
@@ -549,11 +546,11 @@ public class GameSettings {
 			return this.ofFogFancy?var4 + "Fancy":var4 + "Fast";
 		} else if(var1 == EnumOptions.FOG_START) {
 			return var4 + this.ofFogStart;
-		} else if(var1 == EnumOptions.MIPMAP_LEVEL) {
+		}/* else if(var1 == EnumOptions.MIPMAP_LEVEL) {
 			return var4 + this.ofMipmapLevel;
 		} else if(var1 == EnumOptions.MIPMAP_TYPE) {
 			return this.ofMipmapLinear?var4 + "Linear":var4 + "Nearest";
-		} else if(var1 == EnumOptions.LOAD_FAR) {
+		}*/ else if(var1 == EnumOptions.LOAD_FAR) {
 			return this.ofLoadFar?var4 + "ON":var4 + "OFF";
 		} else if(var1 == EnumOptions.PRELOADED_CHUNKS) {
 			return this.ofPreloadedChunks == 0?var4 + "OFF":var4 + this.ofPreloadedChunks;

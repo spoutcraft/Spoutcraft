@@ -18,8 +18,8 @@ public enum EnumOptions {
 	GUI_SCALE("GUI_SCALE", 12, "GUI_SCALE", 12, "options.guiScale", false, false),
 	FOG_FANCY("FOG_FANCY", 13, "FOG_FANCY", 13, "Fog", false, false),
 	FOG_START("FOG_START", 14, "FOG_START", 14, "Fog Start", false, false, true),
-	MIPMAP_LEVEL("MIPMAP_LEVEL", 15, "MIPMAP_LEVEL", 15, "Mipmap Level", false, false),
-	MIPMAP_TYPE("MIPMAP_TYPE", 16, "MIPMAP_TYPE", 16, "Mipmap Type", false, false),
+	//MIPMAP_LEVEL("MIPMAP_LEVEL", 15, "MIPMAP_LEVEL", 15, "Mipmap Level", false, false),
+	//MIPMAP_TYPE("MIPMAP_TYPE", 16, "MIPMAP_TYPE", 16, "Mipmap Type", false, false),
 	LOAD_FAR("LOAD_FAR", 17, "LOAD_FAR", 18, "Load Far", false, false),
 	PRELOADED_CHUNKS("PRELOADED_CHUNKS", 18, "PRELOADED_CHUNKS", 19, "Preloaded Chunks", false, false),
 	SMOOTH_FPS("SMOOTH_FPS", 19, "SMOOTH_FPS", 20, "Smooth FPS", false, false),
@@ -56,7 +56,6 @@ public enum EnumOptions {
 	private final String enumString;
 	//Spout Start
 	private final boolean cheating;
-	private static final EnumOptions[] $VALUES = new EnumOptions[]{MUSIC, SOUND, INVERT_MOUSE, SENSITIVITY, RENDER_DISTANCE, VIEW_BOBBING, ANAGLYPH, ADVANCED_OPENGL, FRAMERATE_LIMIT, DIFFICULTY, GRAPHICS, AMBIENT_OCCLUSION, GUI_SCALE, FOG_FANCY, FOG_START, MIPMAP_LEVEL, MIPMAP_TYPE, LOAD_FAR, PRELOADED_CHUNKS, SMOOTH_FPS, BRIGHTNESS, CLOUDS, CLOUD_HEIGHT, TREES, GRASS, RAIN, WATER, ANIMATED_WATER, ANIMATED_LAVA, ANIMATED_FIRE, ANIMATED_PORTAL, AO_LEVEL, FAST_DEBUG_INFO, AUTOSAVE_TICKS, BETTER_GRASS, ANIMATED_REDSTONE, ANIMATED_EXPLOSION, ANIMATED_FLAME, ANIMATED_SMOKE, WEATHER, SKY, STARS, FAR_VIEW, CHUNK_UPDATES, CHUNK_UPDATES_DYNAMIC, TIME, CLEAR_WATER};
 	//Spout End
 
 	public static EnumOptions getEnumOptions(int var0) {

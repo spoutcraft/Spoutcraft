@@ -182,7 +182,7 @@ public abstract class Minecraft implements Runnable {
 	private boolean shutdown = false;
 	public static boolean spoutcraftLauncher = false;
 	public static boolean portable = false;
-
+	public static int framesPerSecond = 0;
 	// Spout End
 
 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
@@ -702,6 +702,9 @@ public abstract class Minecraft implements Runnable {
 						this.debug = var3 + " fps, " + WorldRenderer.chunksUpdated + " chunk updates";
 						WorldRenderer.chunksUpdated = 0;
 						var1 += 1000L;
+						//Spout Start
+						framesPerSecond = var3;
+						//Spout End
 					}
 				} catch (MinecraftException var18) {
 					this.theWorld = null;

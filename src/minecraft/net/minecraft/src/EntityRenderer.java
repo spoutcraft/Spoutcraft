@@ -731,6 +731,9 @@ public class EntityRenderer {
 		if(!Config.isRainFancy()) {
 			var1 /= 2.0F;
 		}
+		if (Config.isRainOff()) {
+			return;
+		}
 		//Spout End
 
 		if(var1 != 0.0F) {

@@ -4,6 +4,7 @@ package net.minecraft.src;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketRenderDistance;
+import org.lwjgl.opengl.Display;
 //Spout End
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 
@@ -13,7 +14,7 @@ public class GuiVideoSettings extends GuiScreen {
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
 	//Spout Start
-	private static EnumOptions[] field_22108_k = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.BRIGHTNESS};
+	private static EnumOptions[] field_22108_k = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.BRIGHTNESS};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -57,6 +58,9 @@ public class GuiVideoSettings extends GuiScreen {
 		//Spout Start
 		var5 = this.height / 6 + 21 * (var2 / 2) - 10;
 		int var9 = this.width / 2 - 155 + 0;
+		if (this.mc.theWorld != null) {
+			this.controlList.add(new GuiButton(201, this.width / 2 - 100 - 55, this.height / 6 + 168 - 10, 310, 20, "Optimize Video Settings For This Computer"));
+		}
 		this.controlList.add(new GuiSmallButton(100, var9, var5, "Animations..."));
 		var9 = this.width / 2 - 155 + 160;
 		this.controlList.add(new GuiSmallButton(101, var9, var5, "Details..."));
@@ -104,6 +108,85 @@ public class GuiVideoSettings extends GuiScreen {
 				this.mc.gameSettings.saveOptions();
 				GuiDetailSettingsOF var5 = new GuiDetailSettingsOF(this, this.guiGameSettings);
 				this.mc.displayGuiScreen(var5);
+			}
+			if (var1.id == 201) {
+				int cores = Runtime.getRuntime().availableProcessors();
+				int fps = Math.max(1, net.minecraft.client.Minecraft.framesPerSecond);
+				System.out.println("Optimizing Settings, Cores: " + cores + " FPS: " + fps);
+				GameSettings settings = this.mc.gameSettings;
+				if (fps > 150) {
+					settings.ofFogFancy = true;
+					settings.fancyGraphics = true;
+					settings.ofPreloadedChunks = 6;
+					settings.ofOcclusionFancy = true;
+					settings.ofChunkUpdates = 3;
+					if (cores > 1) {
+						settings.ofSmoothFps = true;
+						settings.ofPreloadedChunks = 8;
+					}
+					settings.renderDistance = 0;
+					this.mc.renderGlobal.markAllRenderersDirty();
+				}
+				else if (fps > 100) {
+					settings.ofChunkUpdates = 2;
+					settings.ofFogFancy = true;
+					settings.fancyGraphics = true;
+					settings.ofPreloadedChunks = 2;
+					settings.ofOcclusionFancy = true;
+					settings.renderDistance = 0;
+					this.mc.renderGlobal.markAllRenderersDirty();
+				}
+				else if (fps > 60) {
+					settings.ofPreloadedChunks = 0;
+					settings.ofOcclusionFancy = false;
+					//Ideal range
+				}
+				else if (fps > 30) {
+					settings.ofLoadFar = false;
+					settings.ofPreloadedChunks = 0;
+					settings.ofOcclusionFancy = false;
+					settings.ofSmoothFps = false;
+					settings.ofOcclusionFancy = false;
+					settings.advancedOpengl = false;
+					settings.ofClearWater = false;
+					settings.fancyGraphics = false;
+					settings.ofFarView = false;
+					settings.renderDistance = Math.max(1, settings.renderDistance);
+					settings.limitFramerate = 0;
+					this.mc.renderGlobal.loadRenderers();
+				}
+				else if (fps > 20) {
+					settings.ofFogFancy = false;
+					settings.ofLoadFar = false;
+					settings.ofPreloadedChunks = 0;
+					settings.ofOcclusionFancy = false;
+					settings.ofSmoothFps = false;
+					settings.ofOcclusionFancy = false;
+					settings.advancedOpengl = false;
+					settings.ofClearWater = false;
+					settings.fancyGraphics = false;
+					settings.ofChunkUpdates = 1;
+					settings.ofFarView = false;
+					settings.renderDistance = Math.max(2, settings.renderDistance);
+					settings.limitFramerate = 0;
+					this.mc.renderGlobal.loadRenderers();
+				}
+				else {
+					settings.ofFogFancy = false;
+					settings.ofLoadFar = false;
+					settings.ofPreloadedChunks = 0;
+					settings.ofOcclusionFancy = false;
+					settings.ofSmoothFps = false;
+					settings.ofOcclusionFancy = false;
+					settings.advancedOpengl = false;
+					settings.ofClearWater = false;
+					settings.fancyGraphics = false;
+					settings.ofChunkUpdates = 1;
+					settings.ofFarView = false;
+					settings.renderDistance = 3;
+					settings.limitFramerate = 0;
+					this.mc.renderGlobal.loadRenderers();
+				}
 			}
 
 			if(var1.id != EnumOptions.BRIGHTNESS.ordinal() && var1.id != EnumOptions.AO_LEVEL.ordinal()) {
