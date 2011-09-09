@@ -43,6 +43,11 @@ public abstract class Event {
 		PLAYER_MOVE(Category.PLAYER),
 		PLAYER_BED_ENTER(Category.PLAYER),
 		PLAYER_BED_LEAVE(Category.PLAYER),
+		BLOCK_BREAK(Category.BLOCK),
+		BLOCK_PHYSICS(Category.BLOCK),
+		BLOCK_PLACE(Category.BLOCK),
+		BLOCK_DAMAGE(Category.BLOCK),
+		
 
 		/**
 		* Represents a custom event, isn't actually used

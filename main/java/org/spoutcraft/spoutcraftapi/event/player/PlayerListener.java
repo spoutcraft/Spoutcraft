@@ -16,18 +16,23 @@
  */
 package org.spoutcraft.spoutcraftapi.event.player;
 
+import org.spoutcraft.spoutcraftapi.NotImplemented;
 import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public class PlayerListener implements Listener {
 
 	public PlayerListener() { }
 	
+	@NotImplemented
 	public void onPlayerInteract(PlayerInteractEvent event) { }
 	
+	@NotImplemented
 	public void onPlayerMove(PlayerMoveEvent event) { }
 	
+	@NotImplemented
 	public void onPlayerBedEnter(PlayerBedEnterEvent event) { }
 	
+	@NotImplemented
 	public void onPlayerBedLeave(PlayerBedLeaveEvent event) { }
 
 }
