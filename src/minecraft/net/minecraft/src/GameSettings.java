@@ -50,7 +50,7 @@ public class GameSettings {
 	public int ofWater = 0;
 	public int ofBetterGrass = 3;
 	public int ofAutoSaveTicks = 4000;
-	public boolean ofFastDebugInfo = false;
+	public byte fastDebugMode = 0;
 	public boolean ofWeather = true;
 	public boolean ofSky = true;
 	public boolean ofStars = true;
@@ -100,7 +100,6 @@ public class GameSettings {
 	public float field_22272_F;
 	public float field_22271_G;
 	public int guiScale;
-
 
 	public GameSettings(Minecraft var1, File var2) {
 		this.keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
@@ -431,7 +430,10 @@ public class GameSettings {
 		}
 
 		if(var1 == EnumOptions.FAST_DEBUG_INFO) {
-			this.ofFastDebugInfo = !this.ofFastDebugInfo;
+			fastDebugMode++;
+			if (fastDebugMode > 2) {
+				fastDebugMode = 0;
+			}
 		}
 
 		if(var1 == EnumOptions.AUTOSAVE_TICKS) {
@@ -638,7 +640,13 @@ public class GameSettings {
 		} else if(var1 == EnumOptions.ANIMATED_SMOKE) {
 			return this.ofAnimatedSmoke?var4 + "ON":var4 + "OFF";
 		} else if(var1 == EnumOptions.FAST_DEBUG_INFO) {
-			return this.ofFastDebugInfo?var4 + "ON":var4 + "OFF";
+			if (fastDebugMode == 0) {
+				return var4 + "OFF";
+			}
+			if (fastDebugMode == 1) {
+				return var4 + "ON";
+			}
+			return var4 + "FPS Only";
 		} else if(var1 == EnumOptions.AUTOSAVE_TICKS) {
 			return this.ofAutoSaveTicks <= 40?var4 + "Default (2s)":(this.ofAutoSaveTicks <= 400?var4 + "20s":(this.ofAutoSaveTicks <= 4000?var4 + "3min":var4 + "30min"));
 		} else if(var1 == EnumOptions.BETTER_GRASS) {
@@ -870,8 +878,8 @@ public class GameSettings {
 						this.ofAnimatedSmoke = Boolean.valueOf(var3[1]).booleanValue();
 					}
 
-					if(var3[0].equals("ofFastDebugInfo") && var3.length >= 2) {
-						this.ofFastDebugInfo = Boolean.valueOf(var3[1]).booleanValue();
+					if(var3[0].equals("fastDebugMode") && var3.length >= 2) {
+						this.fastDebugMode = (byte) Integer.valueOf(var3[1]).intValue();
 					}
 
 					if(var3[0].equals("ofAutoSaveTicks") && var3.length >= 2) {
@@ -983,7 +991,7 @@ public class GameSettings {
 			var1.println("ofAnimatedExplosion:" + this.ofAnimatedExplosion);
 			var1.println("ofAnimatedFlame:" + this.ofAnimatedFlame);
 			var1.println("ofAnimatedSmoke:" + this.ofAnimatedSmoke);
-			var1.println("ofFastDebugInfo:" + this.ofFastDebugInfo);
+			var1.println("fastDebugMode:" + this.fastDebugMode);
 			var1.println("ofAutoSaveTicks:" + this.ofAutoSaveTicks);
 			var1.println("ofBetterGrass:" + this.ofBetterGrass);
 			var1.println("ofWeather:" + this.ofWeather);

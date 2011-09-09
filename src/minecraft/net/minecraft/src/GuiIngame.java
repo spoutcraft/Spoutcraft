@@ -145,43 +145,47 @@ public class GuiIngame extends Gui {
 			if(Minecraft.hasPaidCheckTime > 0L) {
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
-
-			font.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
-			font.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
-			font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
-			font.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
-			font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
-			long maxMem = Runtime.getRuntime().maxMemory();
-			long totalMem = Runtime.getRuntime().totalMemory();
-			long freeMem = Runtime.getRuntime().freeMemory();
-			long usedMem = (maxMem - freeMem);
-			String os = System.getProperty("os.name");
-			if (os != null && os.toLowerCase().contains("win")) {
-				usedMem *= 2; //Windows underreports used memory
-				usedMem += 1024L * 100;
+			if (this.mc.gameSettings.fastDebugMode != 2) {
+				font.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
+				font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
+				font.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
+				font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
+				long maxMem = Runtime.getRuntime().maxMemory();
+				long totalMem = Runtime.getRuntime().totalMemory();
+				long freeMem = Runtime.getRuntime().freeMemory();
+				long usedMem = (maxMem - freeMem);
+				String os = System.getProperty("os.name");
+				if (os != null && os.toLowerCase().contains("win")) {
+					usedMem *= 2; //Windows underreports used memory
+					usedMem += 1024L * 100;
+				}
+				var23 = "Used memory: " + ((int)((usedMem / (float)maxMem) * 100f)) + "% (" + usedMem / 1024L / 1024L + "MB) of " + totalMem / 1024L / 1024L + "MB";
+				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
+				var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB)";
+				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
+				//No Cheating!
+				int offset = 0;
+				if (SpoutClient.getInstance().isCheatMode()) {
+					this.drawString(font, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
+					this.drawString(font, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
+					this.drawString(font, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
+					this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+					offset = 40;
+				}
+				if (mc.isMultiplayerWorld() && SpoutClient.getInstance().isSpoutEnabled()) {
+					this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
+					this.drawString(font, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
+					this.drawString(font, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
+					long currentTime = System.currentTimeMillis();
+					long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
+					long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
+					this.drawString(font, "Bandwidth (Up): " + Math.max(1, upBandwidth) + "kbps", 2, 88 + offset, 14737632);
+					this.drawString(font, "Bandwidth (Down): " + Math.max(1, downBandwidth) + "kbps", 2, 96 + offset, 14737632);
+				}
 			}
-			var23 = "Used memory: " + ((int)((usedMem / (float)maxMem) * 100f)) + "% (" + usedMem / 1024L / 1024L + "MB) of " + totalMem / 1024L / 1024L + "MB";
-			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
-			var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB)";
-			this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
-			//No Cheating!
-			int offset = 0;
-			if (SpoutClient.getInstance().isCheatMode()) {
-				this.drawString(font, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
-				this.drawString(font, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
-				this.drawString(font, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
-				this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
-				offset = 40;
-			}
-			if (mc.isMultiplayerWorld() && SpoutClient.getInstance().isSpoutEnabled()) {
-				this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
-				this.drawString(font, "Average packet size: " + ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
-				this.drawString(font, "Cache hit percent: " + ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
-				long currentTime = System.currentTimeMillis();
-				long downBandwidth = (8 * ChunkCache.totalPacketDown.get()) / (currentTime - ChunkCache.loggingStart.get());
-				long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
-				this.drawString(font, "Bandwidth (Up): " + Math.max(1, upBandwidth) + "kbps", 2, 88 + offset, 14737632);
-				this.drawString(font, "Bandwidth (Down): " + Math.max(1, downBandwidth) + "kbps", 2, 96 + offset, 14737632);
+			else {
+				font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 			}
 			GL11.glPopMatrix();
 		}

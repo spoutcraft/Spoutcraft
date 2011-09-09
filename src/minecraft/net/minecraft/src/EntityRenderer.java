@@ -490,8 +490,7 @@ public class EntityRenderer {
 				this.renderEndNanoTime = System.nanoTime();
 				if(!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					//Spout Start
-					if(this.mc.gameSettings.ofFastDebugInfo) {
-						Minecraft var10000 = this.mc;
+					if(this.mc.gameSettings.fastDebugMode != 0) {
 						if(Minecraft.isDebugInfoEnabled()) {
 							this.showDebugInfo = !this.showDebugInfo;
 						}
@@ -502,7 +501,7 @@ public class EntityRenderer {
 					}
 
 					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var19, var20);
-					if(this.mc.gameSettings.ofFastDebugInfo) {
+					if(this.mc.gameSettings.fastDebugMode != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
 					//Spout End
