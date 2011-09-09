@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
@@ -98,6 +99,7 @@ public abstract class Entity {
 	public boolean ignoreFrustumCheck;
 	//Spout start
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
+	public UUID uniqueId = UUID.randomUUID();
 	//Spout end
 
 	public Entity(World var1) {
@@ -820,6 +822,10 @@ public abstract class Entity {
 		var1.setShort("Fire", (short)this.fire);
 		var1.setShort("Air", (short)this.air);
 		var1.setBoolean("OnGround", this.onGround);
+		//Spout Start
+		var1.setLong("ID_LSB", uniqueId.getLeastSignificantBits());
+		var1.setLong("ID_MSB", uniqueId.getMostSignificantBits());
+		//Spout End
 		this.writeEntityToNBT(var1);
 	}
 
@@ -853,6 +859,15 @@ public abstract class Entity {
 		this.onGround = var1.getBoolean("OnGround");
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.setRotation(this.rotationYaw, this.rotationPitch);
+		
+		//Spout Start
+		long lsb = var1.getLong("ID_LSB");
+		long msb = var1.getLong("ID_MSB");
+		UUID id = new UUID(msb, lsb);
+		if (!id.equals(new UUID(0, 0))) {
+			uniqueId = id;
+		}
+		//Spout End
 		this.readEntityFromNBT(var1);
 	}
 

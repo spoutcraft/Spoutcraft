@@ -18,7 +18,7 @@ public class BlockIce extends BlockBreakable {
 	}
 
 	public int getRenderBlockPass() {
-		return 2; //Spout
+		return 1;
 	}
 
 	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
