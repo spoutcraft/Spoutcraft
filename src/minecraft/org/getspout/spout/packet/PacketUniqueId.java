@@ -49,7 +49,8 @@ public class PacketUniqueId implements SpoutPacket{
 			else {
 				e = ((WorldClient)Minecraft.theMinecraft.theWorld).func_709_b(entityId);
 			}
-			e.uniqueId = new UUID(msb, lsb);
+			UUID current = new UUID(msb, lsb);
+			e.uniqueId = current;
 		}
 	}
 

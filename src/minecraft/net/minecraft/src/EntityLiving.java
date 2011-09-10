@@ -76,7 +76,7 @@ public abstract class EntityLiving extends Entity
 	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
 	private byte textureToRender = 0;
 	public double gravityMod = 1D;
-	public double walkingMod = 	1D;
+	public double walkingMod = 1D;
 	public double swimmingMod = 1D;
 	public double jumpingMod = 1D;
 	public double airspeedMod = 1D;
@@ -825,7 +825,7 @@ public abstract class EntityLiving extends Entity
 	protected void updatePlayerActionState()
 	{
 		entityAge++;
-		EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D);
+		//EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D); Spout removed
 		despawnEntity();
 		moveStrafing = 0.0F;
 		moveForward = 0.0F;
