@@ -171,10 +171,13 @@ public class WorldRenderer {
 								SpoutCustomBlockDesign design = null;
 								if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
 									design = SpoutItemBlock.getCustomBlockDesign(var18, var16, var17);
-									if (design != null) {
-										customTexture = design.getTexureURL();
-										customTexturePlugin = design.getTexturePlugin();
-									}
+								} else {
+									int data = var10.getBlockMetadata(var18, var16, var17);
+									design = SpoutItemBlock.getCustomBlockDesign(var19, data);
+								}
+								if (design != null) {
+									customTexture = design.getTexureURL();
+									customTexturePlugin = design.getTexturePlugin();
 								}
 								if(customTexture != null){
 									boolean found = false;
@@ -216,9 +219,9 @@ public class WorldRenderer {
 
 									Block var25 = Block.blocksList[var19];
 									int var21 = var25.getRenderBlockPass();
-									if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
-										if (var12 == SpoutItemBlock.getRenderPass(var18, var16, var17)) {
-											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, var25, var18, var16, var17);
+									if (design != null) {
+										if (var12 == design.getRenderPass()) {
+											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, design, var25, var18, var16, var17);
 										} else {
 											var13 = true;
 										}
