@@ -44,11 +44,17 @@ public class SpoutItemBlock extends ItemBlock {
 		itemMetaData.clear();
 	}
 	
-	public static boolean isCustomBlock(int blockId, int damage) {
+	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {
 		if (blockId != 1) {
-			return false;
+			return null;
 		} else {
-			return itemBlock.get(damage) != null;
+			Integer id = itemBlock.get(damage);
+			Short data = itemMetaData.get(damage);
+			if (id == null || data == null) {
+				return null;
+			} else {
+				return customBlockDesign.get(getKey(id, data & 0xFFFF));
+			}
 		}
 	}
 	

@@ -9,6 +9,7 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
 import org.getspout.spout.packet.PacketUtil;
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutCustomBlockDesign {
@@ -87,14 +88,26 @@ public class SpoutCustomBlockDesign {
 	public int getRenderPass() {
 		return renderPass;
 	}
-
+	
 	public void draw(Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
+		draw(tessallator, block, renders, 1, x, y, z);
+	}
+
+	public void draw(Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
+		
+		setBrightness(inventoryBrightness);
 		
 		for (int i = 0; i < xPos.length; i++) {
 			
 			MutableIntegerVector sourceBlock = getLightSource(i, x, y, z);
 			
-			float baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+			float baseBrightness;
+			
+			if (block != null) {
+				baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+			} else {
+				baseBrightness = brightness;
+			}
 
 			float brightness = baseBrightness * maxBrightness + (1 - baseBrightness) * minBrightness;
 			
@@ -111,6 +124,23 @@ public class SpoutCustomBlockDesign {
 			}
 		}
 
+	}
+	
+	public void renderBlockOnInventory(RenderBlocks renders, float brightness) {
+		
+		Tessellator tessellator = Tessellator.instance;
+		
+		GL11.glColor4f(1, 1, 1, 1.0F);
+		
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1.0F, 0.0F);
+		
+		draw(tessellator, null, renders, brightness, 0, 0, 0);
+		
+		tessellator.draw();
+		
 	}
 
 	public int getNumBytes() {
