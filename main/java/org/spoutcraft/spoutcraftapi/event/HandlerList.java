@@ -83,6 +83,12 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 		}
 	}
 
+	public static void clearAll() {
+		for (HandlerList h  : alllists) {
+			h.clear();
+		}
+	}
+
 	/**
 	 * Create a new handler list and initialize using EventManager.Order
 	 * handlerlist is then added to meta-list for use in bakeall()
@@ -169,6 +175,13 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 				handlerslots.get(order).remove(registration);
 			}
 		}
+	}
+
+	private void clear() {
+		for (Entry<Order, ArrayList<ListenerRegistration<TEvent>>> entry : handlerslots.entrySet()) {
+			entry.getValue().clear();
+		}
+		baked = false;
 	}
 
 	/**
