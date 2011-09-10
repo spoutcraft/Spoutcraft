@@ -130,7 +130,6 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public UUID getUniqueId() {
-		// TODO Auto-generated method stub
-		return null;
+		return handle.uniqueId;
 	}
 }
