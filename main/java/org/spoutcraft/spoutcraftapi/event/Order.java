@@ -38,7 +38,7 @@ public enum Order {
 	 * even when event has been canceled. Should generally be used to uncancel
 	 * events canceled in Earliest.
 	 */
-	Early_IgnoreCancelled(1),
+	EarlyIgnoreCancelled(1),
 
 	/**
 	 * Called after "Earliest" handlers. Should generally be used for low
@@ -51,7 +51,7 @@ public enum Order {
 	 * even when event has been canceled. This is for general-purpose
 	 * always-run events.
 	 */
-	Default_IgnoreCancelled(3),
+	DefaultIgnoreCancelled(3),
 	/**
 	 * Default call, for general purpose handlers
 	 */
@@ -61,20 +61,37 @@ public enum Order {
 	 * Called after "Default" handlers and before "Late" handlers. Is called
 	 * even when event has been canceled.
 	 */
-	Late_IgnoreCancelled(5),
+	LateIgnoreCancelled(5),
 
 	/**
 	 * Called after "Default" handlers. 
 	 */
 	Late(6),
 
-	Latest_IgnoreCancelled(7),
+	/**
+	 * Called after "Late" handlers and before "Latest" handlers. Is called
+	 * even when event has been canceled.
+	 */
+	LatestIgnoreCancelled(7),
+
+	/**
+	 * Called after "Late" handlers.
+	 */
 	Latest(8),
+
+	/**
+	 * Called after "Latest" handlers. No changes to the event should be made
+	 * in this order slot (though it is not enforced). Is called even when
+	 * event has been cancelled.
+	 */
 	Monitor(9);
+
 	private int index;
+
 	Order(int index) {
 		this.index = index;
 	}
+
 	/**
 	 * @return the index
 	 */

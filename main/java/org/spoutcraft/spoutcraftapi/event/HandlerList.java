@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map.Entry;
 
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.addon.IllegalAddonAccessException;
+
 /**
  * @author lahwran
  * @param <TEvent> Event type
@@ -32,7 +35,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	 * 
 	 * is initialized in bake().
 	 */
-	Listener<TEvent>[][] handlers;
+	public Listener<TEvent>[][] handlers;
 
 	/**
 	 * Int array same length as handlers. each value in this array is the index
@@ -40,14 +43,14 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	 * 
 	 * is initialized in bake().
 	 */
-	int[] handlerids;
+	public int[] handlerids;
 
 	/**
 	 * Dynamic handler lists. These are changed using register() and
 	 * unregister() and are automatically baked to the handlers array any
 	 * time they have changed.
 	 */
-	private final EnumMap<Order, ArrayList<Listener<TEvent>>> handlerslots;
+	private final EnumMap<Order, ArrayList<ListenerRegistration<TEvent>>> handlerslots;
 
 	/**
 	 * Whether the current handlerslist has been fully baked. When this is set
@@ -74,28 +77,50 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 		}
 	}
 
+	public static void purgePlugin(Addon addon) {
+		for (HandlerList h  : alllists) {
+			h.unregister(addon);
+		}
+	}
+
 	/**
 	 * Create a new handler list and initialize using EventManager.Order
 	 * handlerlist is then added to meta-list for use in bakeall()
 	 */
 	public HandlerList() {
-		handlerslots = new EnumMap<Order, ArrayList<Listener<TEvent>>>(Order.class);
+		handlerslots = new EnumMap<Order, ArrayList<ListenerRegistration<TEvent>>>(Order.class);
 		for (Order o : Order.values()) {
-			handlerslots.put(o, new ArrayList<Listener<TEvent>>());
+			handlerslots.put(o, new ArrayList<ListenerRegistration<TEvent>>());
 		}
 		alllists.add(this);
+	}
+
+	private boolean isRegistered(ListenerRegistration registration, Order orderslot) {
+		for (ListenerRegistration other : handlerslots.get(orderslot)) {
+			if (other.getListener() == registration.getListener() && other.getAddon() == registration.getAddon()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
 	 * Register a new listener in this handler list
 	 * @param listener listener to register
 	 * @param order order location at which to call provided listener
+	 * @param addon Addon this listener belongs to
 	 */
-	public void register(Listener<TEvent> listener, Order order) {
-		if (handlerslots.get(order).contains(listener))
+	public void register(Listener<TEvent> listener, Order order, Addon addon) {
+		if (!addon.isEnabled()) {
+			throw new IllegalAddonAccessException("Addon attempted to register a listener while not enabled");
+		}
+		ListenerRegistration registration = new ListenerRegistration(listener, order, addon);
+		if (isRegistered(registration, order)) {
 			throw new IllegalStateException("This listener is already registered to order "+order.toString());
+		}
+
+		handlerslots.get(order).add(registration);
 		baked = false;
-		handlerslots.get(order).add(listener);
 	}
 
 	/**
@@ -114,28 +139,58 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	 * @param order order from which to remove listener
 	 */
 	public void unregister(Listener<TEvent> listener, Order order) {
-		if (handlerslots.get(order).contains(listener)) {
-			baked = false;
-			handlerslots.get(order).remove(listener);
+		for (ListenerRegistration registration : handlerslots.get(order)) {
+			if (registration.getListener() == listener) {
+				baked = false;
+				handlerslots.get(order).remove(registration);
+			}
+		}
+	}
+
+	/**
+	 * Remove a plugin from all order slots
+	 * @param addon plugin to remove
+	 */
+	public void unregister(Addon addon) {
+		for (Order o : Order.values()) {
+			unregister(addon, o);
+		}
+	}
+
+	/**
+	 * Remove a plugin from a specific order slot
+	 * @param addon plugin to remove
+	 * @param order order from which to remove plugin
+	 */
+	public void unregister(Addon addon, Order order) {
+		for (ListenerRegistration registration : handlerslots.get(order)) {
+			if (registration.getAddon() == addon) {
+				baked = false;
+				handlerslots.get(order).remove(registration);
+			}
 		}
 	}
 
 	/**
 	 * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary
 	 */
-	void bake() {
+	public void bake() {
 		if (baked)
 			return; // don't re-bake when still valid
 
 		ArrayList<Listener[]> handlerslist = new ArrayList<Listener[]>();
 		ArrayList<Integer> handleridslist = new ArrayList<Integer>();
-		for (Entry<Order, ArrayList<Listener<TEvent>>> entry : handlerslots.entrySet()) {
+		for (Entry<Order, ArrayList<ListenerRegistration<TEvent>>> entry : handlerslots.entrySet()) {
 			Order orderslot = entry.getKey();
 
-			ArrayList<Listener<TEvent>> list = entry.getValue();
+			ArrayList<ListenerRegistration<TEvent>> list = entry.getValue();
 
 			int ord = orderslot.getIndex();
-			handlerslist.add(list.toArray(new Listener[list.size()]));
+			Listener[] array = new Listener[list.size()];
+			for (int i=0; i < array.length; i++) {
+				array[i] = list.get(i).getListener();
+			}
+			handlerslist.add(array);
 			handleridslist.add(ord);
 		}
 		handlers = handlerslist.toArray(new Listener[handlerslist.size()][]);

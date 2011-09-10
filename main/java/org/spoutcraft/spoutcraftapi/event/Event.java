@@ -33,7 +33,7 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 	 * 
 	 * @return HandlerList to call event with
 	 */
-	protected abstract HandlerList<TEvent> getHandlers();
+	public abstract HandlerList<TEvent> getHandlers();
 
 	/**
 	 * Get event type name.

@@ -22,7 +22,7 @@ public abstract interface AddonManager {
 
 	public abstract void clearAddons();
 
-	public abstract void callEvent(Event event);
+	public abstract <TEvent extends Event<TEvent>> void callEvent(TEvent event);
 
 	public abstract void enableAddon(Addon paramAddon);
 

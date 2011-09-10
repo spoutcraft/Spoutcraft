@@ -20,7 +20,8 @@ import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.event.Event;
-import org.spoutcraft.spoutcraftapi.event.EventManager;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
+import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public class SimpleAddonManager implements AddonManager {
 
@@ -30,7 +31,6 @@ public class SimpleAddonManager implements AddonManager {
 	private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
 	private static File updateDirectory = null;
 	private final SimpleCommandMap commandMap;
-	private final EventManager manager = new EventManager();
 
 	public SimpleAddonManager(Client instance, SimpleCommandMap commandMap) {
 		client = instance;
@@ -281,8 +281,36 @@ public class SimpleAddonManager implements AddonManager {
 	 * @param type Type of player related event to call
 	 * @param event Event details
 	 */
-	public synchronized void callEvent(Event event) { //TODO:Urg warnings
-		manager.callEvent(event);
+
+	/**
+	 * Call an event.
+	 * 
+	 * @param <TEvent> Event subclass
+	 * @param event Event to handle
+	 * @author lahwran
+	 */
+	public <TEvent extends Event<TEvent>> void callEvent(TEvent event) {
+		HandlerList<TEvent> handlerlist = event.getHandlers();
+		handlerlist.bake();
+
+		Listener<TEvent>[][] handlers = handlerlist.handlers;
+		int[] handlerids = handlerlist.handlerids;
+
+		for (int arrayidx=0; arrayidx<handlers.length; arrayidx++) {
+
+			// if the order slot is even and the event has stopped propogating
+			if (event.isCancelled() && (handlerids[arrayidx] & 1) == 0)
+				continue; // then don't call this order slot
+
+			for (int handler = 0; handler < handlers[arrayidx].length; handler++) {
+				try {
+					handlers[arrayidx][handler].onEvent(event);
+				} catch (Throwable t) {
+					System.err.println("Error while passing event "+event);
+					t.printStackTrace();
+				}
+			}
+		}
 	}
 
 
