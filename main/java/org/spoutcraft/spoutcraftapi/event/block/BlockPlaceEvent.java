@@ -63,7 +63,7 @@ public class BlockPlaceEvent extends BlockEvent<BlockPlaceEvent> implements Canc
 	public static final HandlerList<BlockPlaceEvent> handlers = new HandlerList<BlockPlaceEvent>();
 	
 	@Override
-	protected HandlerList<BlockPlaceEvent> getHandlers() {
+	public HandlerList<BlockPlaceEvent> getHandlers() {
 		return handlers;
 	}
 

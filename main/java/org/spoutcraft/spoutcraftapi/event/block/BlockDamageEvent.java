@@ -46,7 +46,7 @@ public class BlockDamageEvent extends BlockEvent<BlockDamageEvent> implements Ca
 	public static final HandlerList<BlockDamageEvent> handlers = new HandlerList<BlockDamageEvent>();
 	
 	@Override
-	protected HandlerList<BlockDamageEvent> getHandlers() {
+	public HandlerList<BlockDamageEvent> getHandlers() {
 		return handlers;
 	}
 

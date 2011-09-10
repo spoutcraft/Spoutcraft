@@ -47,7 +47,7 @@ public class MouseMoveEvent extends Event<MouseMoveEvent> {
 	public static final HandlerList<MouseMoveEvent> handlers = new HandlerList<MouseMoveEvent>();
 	
 	@Override
-	protected HandlerList<MouseMoveEvent> getHandlers() {
+	public HandlerList<MouseMoveEvent> getHandlers() {
 		return handlers;
 	}
 

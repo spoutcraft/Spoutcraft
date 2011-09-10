@@ -29,7 +29,7 @@ public class BlockBreakEvent extends BlockEvent<BlockBreakEvent> implements Canc
 	public static final HandlerList<BlockBreakEvent> handlers = new HandlerList<BlockBreakEvent>();
 	
 	@Override
-	protected HandlerList<BlockBreakEvent> getHandlers() {
+	public HandlerList<BlockBreakEvent> getHandlers() {
 		return handlers;
 	}
 

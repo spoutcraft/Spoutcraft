@@ -62,7 +62,7 @@ public class MouseUpEvent extends Event<MouseUpEvent> implements Cancellable {
 	public static final HandlerList<MouseUpEvent> handlers = new HandlerList<MouseUpEvent>();
 	
 	@Override
-	protected HandlerList<MouseUpEvent> getHandlers() {
+	public HandlerList<MouseUpEvent> getHandlers() {
 		return handlers;
 	}
 

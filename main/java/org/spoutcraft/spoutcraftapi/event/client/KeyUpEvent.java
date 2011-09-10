@@ -50,7 +50,7 @@ public class KeyUpEvent extends Event<KeyUpEvent> implements Cancellable {
 	public static final HandlerList<KeyUpEvent> handlers = new HandlerList<KeyUpEvent>();
 	
 	@Override
-	protected HandlerList<KeyUpEvent> getHandlers() {
+	public HandlerList<KeyUpEvent> getHandlers() {
 		return handlers;
 	}
 

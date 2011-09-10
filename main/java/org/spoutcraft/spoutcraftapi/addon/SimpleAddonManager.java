@@ -271,7 +271,7 @@ public class SimpleAddonManager implements AddonManager {
 			disableAddons();
 			addons.clear();
 			lookupNames.clear();
-			//TODO:Clear listeners
+			HandlerList.clearAll();
 		}
 	}
 

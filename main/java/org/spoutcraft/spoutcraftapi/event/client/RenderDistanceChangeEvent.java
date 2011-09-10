@@ -48,7 +48,7 @@ public class RenderDistanceChangeEvent extends Event<RenderDistanceChangeEvent> 
 	public static final HandlerList<RenderDistanceChangeEvent> handlers = new HandlerList<RenderDistanceChangeEvent>();
 	
 	@Override
-	protected HandlerList<RenderDistanceChangeEvent> getHandlers() {
+	public HandlerList<RenderDistanceChangeEvent> getHandlers() {
 		return handlers;
 	}
 

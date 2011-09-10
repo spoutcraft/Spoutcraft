@@ -74,7 +74,7 @@ public class PlayerInteractEvent extends PlayerEvent<PlayerInteractEvent> implem
 	public static final HandlerList<PlayerInteractEvent> handlers = new HandlerList<PlayerInteractEvent>();
 	
 	@Override
-	protected HandlerList<PlayerInteractEvent> getHandlers() {
+	public HandlerList<PlayerInteractEvent> getHandlers() {
 		return handlers;
 	}
 

@@ -28,7 +28,7 @@ public class BlockPhysicsEvent extends BlockEvent<BlockPhysicsEvent> implements 
 	public static final HandlerList<BlockPhysicsEvent> handlers = new HandlerList<BlockPhysicsEvent>();
 	
 	@Override
-	protected HandlerList<BlockPhysicsEvent> getHandlers() {
+	public HandlerList<BlockPhysicsEvent> getHandlers() {
 		return handlers;
 	}
 

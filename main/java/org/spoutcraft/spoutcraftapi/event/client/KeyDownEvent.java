@@ -50,7 +50,7 @@ public class KeyDownEvent extends Event<KeyDownEvent> implements Cancellable {
 	public static final HandlerList<KeyDownEvent> handlers = new HandlerList<KeyDownEvent>();
 	
 	@Override
-	protected HandlerList<KeyDownEvent> getHandlers() {
+	public HandlerList<KeyDownEvent> getHandlers() {
 		return handlers;
 	}
 

@@ -36,7 +36,7 @@ public class PlayerBedLeaveEvent extends PlayerEvent<PlayerBedLeaveEvent> {
 	public static final HandlerList<PlayerBedLeaveEvent> handlers = new HandlerList<PlayerBedLeaveEvent>();
 	
 	@Override
-	protected HandlerList<PlayerBedLeaveEvent> getHandlers() {
+	public HandlerList<PlayerBedLeaveEvent> getHandlers() {
 		return handlers;
 	}
 

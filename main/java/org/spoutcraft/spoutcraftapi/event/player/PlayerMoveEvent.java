@@ -59,7 +59,7 @@ public class PlayerMoveEvent extends PlayerEvent<PlayerMoveEvent> implements Can
 	public static final HandlerList<PlayerMoveEvent> handlers = new HandlerList<PlayerMoveEvent>();
 	
 	@Override
-	protected HandlerList<PlayerMoveEvent> getHandlers() {
+	public HandlerList<PlayerMoveEvent> getHandlers() {
 		return handlers;
 	}
 

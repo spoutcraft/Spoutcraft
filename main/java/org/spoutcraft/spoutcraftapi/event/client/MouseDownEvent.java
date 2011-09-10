@@ -62,7 +62,7 @@ public class MouseDownEvent extends Event<MouseDownEvent> implements Cancellable
 	public static final HandlerList<MouseDownEvent> handlers = new HandlerList<MouseDownEvent>();
 	
 	@Override
-	protected HandlerList<MouseDownEvent> getHandlers() {
+	public HandlerList<MouseDownEvent> getHandlers() {
 		return handlers;
 	}
 
