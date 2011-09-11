@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.Block;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
@@ -89,11 +90,25 @@ public class SpoutCustomBlockDesign {
 		return renderPass;
 	}
 	
-	public void draw(Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
-		draw(tessallator, block, renders, 1, x, y, z);
+	public boolean draw(Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
+		return draw(tessallator, block, renders, 1, x, y, z);
 	}
 
-	public void draw(Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
+	public boolean draw(Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
+		
+		if (block != null) {
+			IBlockAccess access = renders.blockAccess;
+			boolean enclosed = true;
+			enclosed &= access.isBlockOpaqueCube(x, y + 1, z);
+			enclosed &= access.isBlockOpaqueCube(x, y - 1, z);
+			enclosed &= access.isBlockOpaqueCube(x, y, z + 1);
+			enclosed &= access.isBlockOpaqueCube(x, y, z - 1);
+			enclosed &= access.isBlockOpaqueCube(x + 1, y, z);
+			enclosed &= access.isBlockOpaqueCube(x - 1, y, z);
+			if (enclosed) {
+				return false;
+			}
+		}
 		
 		setBrightness(inventoryBrightness);
 		
@@ -123,6 +138,7 @@ public class SpoutCustomBlockDesign {
 				tessallator.addVertexWithUV(x + xx[j], y + yy[j], z + zz[j], tx[j], ty[j]);
 			}
 		}
+		return true;
 
 	}
 	

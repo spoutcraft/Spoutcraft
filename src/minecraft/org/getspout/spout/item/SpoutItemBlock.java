@@ -173,9 +173,7 @@ public class SpoutItemBlock extends ItemBlock {
 		
 		design.setBounds(block);
 		
-		design.draw(tessallator, block, renderBlocks, x, y, z);
-		
-		return true;
+		return design.draw(tessallator, block, renderBlocks, x, y, z);
 	}
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {
