@@ -152,8 +152,11 @@ public class FileUtil {
 			String file = testUrl.getFile();
 			int end = file.lastIndexOf('?');
 			int lastDot = file.lastIndexOf('.');
+			int slash = file.lastIndexOf('/');
+			int forwardSlash = file.lastIndexOf("\\");
+			slash = slash > forwardSlash ? slash : forwardSlash;
 			end = end == -1 || lastDot > end ? file.length() : end;
-			String result = file.substring(file.lastIndexOf('/') + 1, end).replaceAll("%20", " ");
+			String result = file.substring(slash + 1, end).replaceAll("%20", " ");
 			fileNameCache.put(url, result);
 			return result;
 		} catch (MalformedURLException e) {
