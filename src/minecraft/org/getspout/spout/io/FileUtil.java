@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -146,19 +147,19 @@ public class FileUtil {
 		if (fileNameCache.containsKey(url)) {
 			return fileNameCache.get(url);
 		}
-		int slashIndex = url.lastIndexOf('/');
-		int backslashIndex = url.lastIndexOf('\\');
-		slashIndex = Math.max(slashIndex, backslashIndex);
-		int dotIndex = url.lastIndexOf('.', slashIndex);
-		String result;
-		if (dotIndex == -1 || dotIndex < slashIndex) {
-			result = url.substring(slashIndex + 1).replaceAll("%20", " ");
+		try {
+			URL testUrl = new URL(url);
+			String file = testUrl.getFile();
+			int end = file.lastIndexOf('?');
+			int lastDot = file.lastIndexOf('.');
+			end = end == -1 || lastDot > end ? file.length() : end;
+			String result = file.substring(file.lastIndexOf('/') + 1, end).replaceAll("%20", " ");
+			fileNameCache.put(url, result);
+			return result;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
-		else {
-			result = url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
-		}
-		fileNameCache.put(url, result);
-		return result;
+		return null;
 	}
 
 	public static boolean isAudioFile(String file) {
