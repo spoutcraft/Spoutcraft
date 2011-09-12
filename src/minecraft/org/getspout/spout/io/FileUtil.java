@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -147,22 +146,15 @@ public class FileUtil {
 		if (fileNameCache.containsKey(url)) {
 			return fileNameCache.get(url);
 		}
-		try {
-			URL testUrl = new URL(url);
-			String file = testUrl.getFile();
-			int end = file.lastIndexOf('?');
-			int lastDot = file.lastIndexOf('.');
-			int slash = file.lastIndexOf('/');
-			int forwardSlash = file.lastIndexOf("\\");
-			slash = slash > forwardSlash ? slash : forwardSlash;
-			end = end == -1 || lastDot > end ? file.length() : end;
-			String result = file.substring(slash + 1, end).replaceAll("%20", " ");
-			fileNameCache.put(url, result);
-			return result;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		int end = url.lastIndexOf('?');
+		int lastDot = url.lastIndexOf('.');
+		int slash = url.lastIndexOf('/');
+		int forwardSlash = url.lastIndexOf("\\");
+		slash = slash > forwardSlash ? slash : forwardSlash;
+		end = end == -1 || lastDot > end ? url.length() : end;
+		String result = url.substring(slash + 1, end).replaceAll("%20", " ");
+		fileNameCache.put(url, result);
+		return result;
 	}
 
 	public static boolean isAudioFile(String file) {
