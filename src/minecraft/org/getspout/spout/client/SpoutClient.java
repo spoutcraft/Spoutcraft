@@ -72,7 +72,7 @@ public class SpoutClient implements Client {
 	private BiomeManager biomeManager = new SimpleBiomeManager();
 	private long tick = 0;
 	private Thread clipboardThread = null;
-	private ClientPlayer player = null;
+	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
 	private SafeGL openGL = new SpoutGL();
@@ -170,6 +170,7 @@ public class SpoutClient implements Client {
 	public void onWorldEnter() {
 		if (player == null) {
 			player = new ClientPlayer(getHandle().thePlayer);
+			getHandle().thePlayer.spoutEntity = player;
 		}
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
 			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());

@@ -175,7 +175,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void updateCloak() {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
-		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
+		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
@@ -855,7 +855,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		String tempName = ChatColor.stripColor(username);
-		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux")) {
+		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
 			int sparkleLoops = Math.max(1, (int) (var1 / 0.01F));
 			while (sparkleLoops > 0) {
 				if (rand.nextInt(2) == 0) {

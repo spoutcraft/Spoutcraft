@@ -2,23 +2,12 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Render;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.Tessellator;
-//Spout Start 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItemBlock;
-//Spout End
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 public class RenderItem extends Render {
 
@@ -66,10 +55,12 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
-		boolean blockType = true;
-		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
+		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
+		if (blockType != null) {
+			RenderEngine renderer = this.renderManager.renderEngine;
+			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
-			blockType = SpoutItemBlock.isCustomBlock(var10.itemID, var10.getItemDamage());
 			RenderEngine renderer = this.renderManager.renderEngine;
 			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
 		} else if (var10.itemID < 256) {
@@ -77,7 +68,7 @@ public class RenderItem extends Render {
 		} else {
 			this.loadTexture("/gui/items.png");
 		}
-		if(blockType && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
+		if(blockType != null || (!bCustomTexture && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType()))) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var29 = 0.25F;
 			// Spout End
@@ -97,13 +88,12 @@ public class RenderItem extends Render {
 				}
 
 				//Spout Start
-				if(bCustomTexture == true) {
-					this.renderBlocks.customUVs = true;
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
-					this.renderBlocks.customUVs = false;
+				if(blockType != null) {
+					blockType.renderBlockOnInventory(renderBlocks, var1.getEntityBrightness(var9));
 				} else {
 					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
 				}
+				//Spout end
 				GL11.glPopMatrix();
 			}
 		} else {
@@ -172,18 +162,19 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var3, (short) var4);
 		Boolean bCustomTexture = false;
-		boolean blockType = true;
-		if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
-			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
+		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var3, var4);
+		if (blockType != null) {
+			var2.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
-			blockType = SpoutItemBlock.isCustomBlock(var3, var4);
+			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
 		} else if (var3 < 256) {
 			var2.bindTexture(var2.getTexture("/terrain.png"));
 		} else {
 			var2.bindTexture(var2.getTexture("/gui/items.png"));
 		}
 
-		if(blockType && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		if(blockType != null || (!bCustomTexture && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType()))) {
 			// Spout End
 			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
@@ -203,14 +194,14 @@ public class RenderItem extends Render {
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 			//Spout Start
-			if(bCustomTexture)
-				this.renderBlocks.customUVs = true;
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
+			if(blockType != null) {
+				blockType.renderBlockOnInventory(renderBlocks, 1.0F);
+			} else {
+				this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
+			}
 			this.renderBlocks.useInventoryTint = true;
-			if(bCustomTexture)
-				this.renderBlocks.customUVs = false;
-			//Spout End
+			//Spout end
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);

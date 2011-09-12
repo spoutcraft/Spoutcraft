@@ -166,16 +166,18 @@ public class WorldRenderer {
 						for (int var17 = var3; var17 < var6; ++var17) {
 							for (int var18 = var22; var18 < var4; ++var18) {
 								int var19 = var10.getBlockId(var18, var16, var17);
-								short data = (short) var10.getBlockMetadata(var18, var16, var17);
-								String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var19, data);
-								String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var19, data);
+								String customTexture = null; 
+								String customTexturePlugin = null;
 								SpoutCustomBlockDesign design = null;
 								if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
 									design = SpoutItemBlock.getCustomBlockDesign(var18, var16, var17);
-									if (design != null) {
-										customTexture = design.getTexureURL();
-										customTexturePlugin = design.getTexturePlugin();
-									}
+								} else {
+									int data = var10.getBlockMetadata(var18, var16, var17);
+									design = SpoutItemBlock.getCustomBlockDesign(var19, data);
+								}
+								if (design != null) {
+									customTexture = design.getTexureURL();
+									customTexturePlugin = design.getTexturePlugin();
 								}
 								if(customTexture != null){
 									boolean found = false;
@@ -217,22 +219,16 @@ public class WorldRenderer {
 
 									Block var25 = Block.blocksList[var19];
 									int var21 = var25.getRenderBlockPass();
-									if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
-										if (var12 == SpoutItemBlock.getRenderPass(var18, var16, var17)) {
-											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, var25, var18, var16, var17);
+									if (design != null) {
+										if (var12 == design.getRenderPass()) {
+											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, design, var25, var18, var16, var17);
 										} else {
 											var13 = true;
 										}
 									} else if (var21 != var12) {
 										var13 = true;
 									} else {
-										if (currentTexture > 0 && texture != defaultTexture) {
-											var11.customUVs = true;
-											var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
-											var11.customUVs = false;
-										} else {
-											var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
-										}
+										var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
 									}
 								}
 							}

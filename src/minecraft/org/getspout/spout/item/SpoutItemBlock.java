@@ -44,11 +44,17 @@ public class SpoutItemBlock extends ItemBlock {
 		itemMetaData.clear();
 	}
 	
-	public static boolean isCustomBlock(int blockId, int damage) {
-		if (blockId != 1) {
-			return false;
+	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {
+		if (blockId != 1 || damage == 0) {
+			return customBlockDesign.get(getKey(blockId, damage));
 		} else {
-			return itemBlock.get(damage) != null;
+			Integer id = itemBlock.get(damage);
+			Short data = itemMetaData.get(damage);
+			if (id == null || data == null) {
+				return null;
+			} else {
+				return customBlockDesign.get(getKey(id, data & 0xFFFF));
+			}
 		}
 	}
 	
@@ -157,9 +163,7 @@ public class SpoutItemBlock extends ItemBlock {
 		}
 	}
 	
-	public static boolean renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, Block block, int x, int y, int z) {
-		
-		SpoutCustomBlockDesign design = getCustomBlockDesign(x, y, z);
+	public static boolean renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, SpoutCustomBlockDesign design, Block block, int x, int y, int z) {
 		
 		if (design == null) {
 			return false;
@@ -169,9 +173,7 @@ public class SpoutItemBlock extends ItemBlock {
 		
 		design.setBounds(block);
 		
-		design.draw(tessallator, block, renderBlocks, x, y, z);
-		
-		return true;
+		return design.draw(tessallator, block, renderBlocks, x, y, z);
 	}
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {

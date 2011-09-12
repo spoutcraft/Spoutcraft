@@ -93,11 +93,6 @@ public class RenderBlocks {
 	public static float[][] redstoneColors = new float[16][];
 	//Spout End
 
-	//Spout Start
-	public boolean customUVs = false;
-	//Spout End
-
-
 	public RenderBlocks(IBlockAccess var1) {
 		this.blockAccess = var1;
 	}
@@ -1382,7 +1377,13 @@ public class RenderBlocks {
 		var12.addVertexWithUV(var28, var4 + 1.0D, var6 - var36, (double)var17, (double)var18);
 	}
 
+	//Spout start
 	public void renderCrossedSquares(Block var1, int var2, double var3, double var5, double var7) {
+		renderCrossedSquares(var1, var2, var3, var5, var7, false);
+	}
+
+	public void renderCrossedSquares(Block var1, int var2, double var3, double var5, double var7, boolean customUV) {
+	//Spout end
 		Tessellator var9 = Tessellator.instance;
 		int var10 = var1.getBlockTextureFromSideAndMetadata(0, var2);
 		if(this.overrideBlockTexture >= 0) {
@@ -1399,14 +1400,15 @@ public class RenderBlocks {
 		double var23 = var3 + 0.5D + 0.44999998807907104D;
 		double var25 = var7 + 0.5D - 0.44999998807907104D;
 		double var27 = var7 + 0.5D + 0.44999998807907104D;
-		//Spout Start
-		if(this.customUVs == true){
+		//Spout start
+		if (customUV) {
 			var13 = 1;
 			var15 = 0;
 			var17 = 1;
 			var19 = 0;
 		}
-		//Spout End
+		//Spout end
+
 		var9.addVertexWithUV(var21, var5 + 1.0D, var25, var13, var17);
 		var9.addVertexWithUV(var21, var5 + 0.0D, var25, var13, var19);
 		var9.addVertexWithUV(var23, var5 + 0.0D, var27, var15, var19);
@@ -2966,19 +2968,7 @@ public class RenderBlocks {
 		double var32 = var4 + var1.minY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
 
-			var26 = 0;
-			var18 = 0;
-			var24 = 1;
-			var16 = 1;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var32, var36, var22, var26);
@@ -3061,19 +3051,7 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
 
-			var26 = 1;
-			var18 = 1;
-			var24 = 0;
-			var16 = 0;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var30, var32, var36, var14, var18);
@@ -3164,19 +3142,6 @@ public class RenderBlocks {
 		double var34 = var4 + var1.maxY;
 		double var36 = var6 + var1.minZ;
 
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
-
-			var26 = 1;
-			var18 = 1;
-			var24 = 0;
-			var16 = 0;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var34, var36, var20, var24);
@@ -3266,19 +3231,7 @@ public class RenderBlocks {
 		double var32 = var4 + var1.minY;
 		double var34 = var4 + var1.maxY;
 		double var36 = var6 + var1.maxZ;
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
 
-			var26 = 1;
-			var18 = 1;
-			var24 = 0;
-			var16 = 0;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var34, var36, var12, var16);
@@ -3368,19 +3321,7 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
 
-			var26 = 1;
-			var18 = 1;
-			var24 = 0;
-			var16 = 0;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var32, var36, var20, var24);
@@ -3470,19 +3411,7 @@ public class RenderBlocks {
 		double var32 = var4 + var1.maxY;
 		double var34 = var6 + var1.minZ;
 		double var36 = var6 + var1.maxZ;
-		//Spout Start
-		if(this.customUVs == true){
-			var20 = 0;
-			var12 = 1;
-			var22 = 1;
-			var14 = 0;
 
-			var26 = 1;
-			var18 = 1;
-			var24 = 0;
-			var16 = 0;
-		}
-		//Spout End
 		if(this.enableAO) {
 			var9.setColorOpaque_F(this.colorRedTopLeft, this.colorGreenTopLeft, this.colorBlueTopLeft);
 			var9.addVertexWithUV(var28, var30, var36, var22, var26);
