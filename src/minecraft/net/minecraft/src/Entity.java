@@ -100,6 +100,7 @@ public abstract class Entity {
 	//Spout start
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
+	public boolean wasOnGround;
 	//Spout end
 
 	public Entity(World var1) {
@@ -142,6 +143,7 @@ public abstract class Entity {
 		this.entityInit();
 		//Spout Start
 		SpoutClient.getInstance().getEntityManager().registerEntity(this);
+		this.wasOnGround = true;
 		//Spout End
 	}
 
@@ -223,6 +225,14 @@ public abstract class Entity {
 	}
 
 	public void onEntityUpdate() {
+		
+		//Spout start
+		if(this.onGround && !this.wasOnGround){
+			this.distanceWalkedModified = this.nextStepDistance;
+		}
+		this.wasOnGround = this.onGround?true:false;
+		//Spout end
+		
 		if(this.ridingEntity != null && this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		}
