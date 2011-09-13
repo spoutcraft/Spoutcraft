@@ -146,17 +146,13 @@ public class FileUtil {
 		if (fileNameCache.containsKey(url)) {
 			return fileNameCache.get(url);
 		}
-		int slashIndex = url.lastIndexOf('/');
-		int backslashIndex = url.lastIndexOf('\\');
-		slashIndex = Math.max(slashIndex, backslashIndex);
-		int dotIndex = url.lastIndexOf('.', slashIndex);
-		String result;
-		if (dotIndex == -1 || dotIndex < slashIndex) {
-			result = url.substring(slashIndex + 1).replaceAll("%20", " ");
-		}
-		else {
-			result = url.substring(slashIndex + 1, dotIndex).replaceAll("%20", " ");
-		}
+		int end = url.lastIndexOf('?');
+		int lastDot = url.lastIndexOf('.');
+		int slash = url.lastIndexOf('/');
+		int forwardSlash = url.lastIndexOf("\\");
+		slash = slash > forwardSlash ? slash : forwardSlash;
+		end = end == -1 || lastDot > end ? url.length() : end;
+		String result = url.substring(slash + 1, end).replaceAll("%20", " ");
 		fileNameCache.put(url, result);
 		return result;
 	}
