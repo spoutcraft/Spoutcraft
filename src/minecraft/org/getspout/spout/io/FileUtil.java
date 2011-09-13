@@ -82,7 +82,7 @@ public class FileUtil {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
-				if (name.equals(fileName)) {
+				if (name != null && name.equals(fileName)) {
 					return file;
 				}
 			}
@@ -100,7 +100,7 @@ public class FileUtil {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
-				if (name.equals(fileName)) {
+				if (name != null && name.equals(fileName)) {
 					return file;
 				}
 			}
@@ -118,7 +118,7 @@ public class FileUtil {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {
 				String name = getFileName(file.getPath());
-				if (name.equals(fileName)) {
+				if (name != null && name.equals(fileName)) {
 					return file;
 				}
 			}
