@@ -15,10 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.getspout.spout.io;
+import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,6 +29,7 @@ public class FileDownloadThread extends Thread{
 	private static FileDownloadThread instance = null;
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
 	private final ConcurrentLinkedQueue<Runnable> actions = new ConcurrentLinkedQueue<Runnable>();
+	private final HashSet<String> failedUrls = new HashSet<String>();
 	private final byte[] buffer = new byte[1024*1024];
 	private volatile String activeDownload = null;
 	public static AtomicLong preCacheCompleted = new AtomicLong(0L);
@@ -70,6 +73,8 @@ public class FileDownloadThread extends Thread{
 	public void abort() {
 		this.interrupt();
 		downloads.clear();
+		actions.clear();
+		failedUrls.clear();
 	}
 	
 	public String getActiveDownload() {
@@ -83,7 +88,7 @@ public class FileDownloadThread extends Thread{
 	public void run() {
 		while(true) {
 			Download next = downloads.poll();
-			if (next != null) {
+			if (next != null && failedUrls.contains(next.getDownloadUrl())) {
 				try {
 					if (!next.isDownloaded()) {
 						System.out.println("Downloading File: " + next.getDownloadUrl());
@@ -94,6 +99,7 @@ public class FileDownloadThread extends Thread{
 						InputStream in = conn.getInputStream();
 						
 						FileOutputStream fos = new FileOutputStream(next.getTempFile());
+						BufferedOutputStream bos = new BufferedOutputStream(fos);
 						
 						long length = conn.getContentLength();
 						int bytes;
@@ -103,7 +109,7 @@ public class FileDownloadThread extends Thread{
 						long step = Math.max(1024*1024, length / 8);
 						
 						while ((bytes = in.read(buffer)) >= 0) {
-							fos.write(buffer, 0, bytes);
+							bos.write(buffer, 0, bytes);
 							totalBytes += bytes;
 							if (length > 0 && totalBytes > (last + step)) {
 								last = totalBytes;
@@ -117,7 +123,7 @@ public class FileDownloadThread extends Thread{
 							}
 						}
 						in.close();
-						fos.close();
+						bos.close();
 						next.move();
 						System.out.println("File moved to: " + next.directory.getCanonicalPath());
 						try {
@@ -129,6 +135,7 @@ public class FileDownloadThread extends Thread{
 					}
 				}
 				catch (Exception e) {
+					failedUrls.add(next.getDownloadUrl());
 					System.out.println("-----------------------");
 					System.out.println("Download Failed!");
 					e.printStackTrace();
