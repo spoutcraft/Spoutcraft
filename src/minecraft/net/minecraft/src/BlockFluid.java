@@ -20,7 +20,18 @@ public abstract class BlockFluid extends Block {
 	}
 
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
-		return 16777215;
+		//Spout start - Biome water
+        if(var1.getBlockMaterial(var2, var3, var4) == Material.lava)
+        {
+            return 0xffffff;
+        } else
+        {
+            var1.getWorldChunkManager().func_4069_a(var2, var4, 1, 1);
+            double d = var1.getWorldChunkManager().temperature[0];
+            double d1 = var1.getWorldChunkManager().humidity[0];
+            return ColorizerWater.getWaterColor(d, d1);
+        }
+		//Spout end - Biome Water
 	}
 
 	public static float getPercentAir(int var0) {
