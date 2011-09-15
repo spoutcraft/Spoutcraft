@@ -24,7 +24,9 @@ import java.util.UUID;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.OverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 
@@ -106,6 +108,20 @@ public class PacketWidget implements SpoutPacket {
 				}
 				else {
 					mainScreen.attachPopupScreen((PopupScreen)widget);
+				}
+			}
+			//Determine if this screen overrides another screen
+			Screen currentScreen = SpoutClient.getInstance().getActivePlayer().getCurrentScreen();
+			
+			if(widget instanceof OverlayScreen && currentScreen != mainScreen) {
+				if (currentScreen != null){
+					if(widget.getId().equals(currentScreen)){
+						SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
+					}
+				} else {
+					OverlayScreen overlay = (OverlayScreen)widget;
+					overlay.setScreenType(ScreenUtil.getType(SpoutClient.getHandle().currentScreen));
+					SpoutClient.getInstance().getActivePlayer().setCurrentScreen(overlay);
 				}
 			}
 			//Determine if this is a widget on the main screen
