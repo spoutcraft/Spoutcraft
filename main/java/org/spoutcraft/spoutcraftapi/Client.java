@@ -9,6 +9,7 @@ import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
@@ -39,6 +40,8 @@ public interface Client extends PropertyInterface{
 	public ItemManager getItemManager();
 	
 	public SkyManager getSkyManager();
+	
+	public KeyBindingManager getKeyBindingManager();
 	
 	//public PacketManager getPacketManager();
 	

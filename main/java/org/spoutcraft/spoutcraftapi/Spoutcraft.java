@@ -8,6 +8,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 
 public final class Spoutcraft {
 	
@@ -69,5 +70,9 @@ public final class Spoutcraft {
 	
 	public static Mode getMode() {
 		return client.getMode();
+	}
+	
+	public static KeyBindingManager getKeyBindingManager() {
+		return client.getKeyBindingManager();
 	}
 }
