@@ -84,4 +84,18 @@ public interface Screen extends Widget{
 	public double getHeight();
 	
 	public double getWidth();
+
+	/**
+	 * Gets the type of the screen
+	 * @return the type of the screen
+	 */
+	public ScreenType getScreenType();
+
+	public Screen setMouseX(int mouseX);
+	
+	public Screen setMouseY(int mouseY);
+	
+	public int getMouseX();
+	
+	public int getMouseY();
 }

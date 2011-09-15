@@ -29,6 +29,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 	protected List<Widget> widgets = new ArrayList<Widget>();
 	protected int playerId;
 	protected boolean bgvis;
+	protected int mouseX = -1, mouseY = -1;
 	public GenericScreen() {
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
@@ -152,4 +153,27 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 			}
 		}
 	}
+	
+	@Override
+	public Screen setMouseX(int mouseX) {
+		this.mouseX = mouseX;
+		return this;
+	}
+
+	@Override
+	public Screen setMouseY(int mouseY) {
+		this.mouseY = mouseY;
+		return this;
+	}
+
+	@Override
+	public int getMouseX() {
+		return mouseX;
+	}
+
+	@Override
+	public int getMouseY() {
+		return mouseY;
+	}
+
 }

@@ -37,7 +37,9 @@ public class WidgetType {
 	public static WidgetType Slider = new WidgetType(GenericSlider.class, 11);
 	public static WidgetType TextField = new WidgetType(GenericTextField.class, 12);
 	public static WidgetType Gradient = new WidgetType(GenericGradient.class, 13);
-	public static WidgetType EntityWidget = new WidgetType(GenericEntityWidget.class, 14);
+	//Container has the 14, dude!
+	public static WidgetType EntityWidget = new WidgetType(GenericEntityWidget.class, 15);
+	public static WidgetType OverlayScreen = new WidgetType(GenericOverlayScreen.class, 16);
 	
 	private final int id;
 	private final Class<? extends Widget> widgetClass;

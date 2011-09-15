@@ -17,6 +17,7 @@
 package org.spoutcraft.spoutcraftapi.entity;
 
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
@@ -36,6 +37,8 @@ public interface ActivePlayer extends Player{
 	
 	public InGameHUD getMainScreen();
 	
+	public Screen getCurrentScreen();
+	
 	public void showAchievement(String title, String message, int id);
 	
 	public void showAchievement(String title, String message, int id, int data, int time);
@@ -47,4 +50,6 @@ public interface ActivePlayer extends Player{
 	public void resetEntityTitle(int id);
 	
 	public FixedLocation getLastClickedLocation();
+
+	void setCurrentScreen(Screen screen);
 }

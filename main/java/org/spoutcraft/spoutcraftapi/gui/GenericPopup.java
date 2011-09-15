@@ -70,22 +70,9 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		return false;
 	}
 
-	public double getMouseX() {
-		return mouseX;
-	}
-	
-	public PopupScreen setMouseX(double mouseX) {
-		this.mouseX = mouseX;
-		return this;
-	}
-
-	public double getMouseY() {
-		return mouseY;
-	}
-	
-	public PopupScreen setMouseY(double mouseY) {
-		this.mouseY = mouseY;
-		return this;
+	@Override
+	public ScreenType getScreenType() {
+		return ScreenType.CUSTOM_SCREEN;
 	}
 
 }

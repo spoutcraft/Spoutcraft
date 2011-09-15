@@ -36,13 +36,4 @@ public interface PopupScreen extends Screen{
 	 * @return true if the screen was closed
 	 */
 	public boolean close();
-	
-	
-	public double getMouseX();
-	
-	public PopupScreen setMouseX(double mouseX);
-	
-	public double getMouseY();
-	
-	public PopupScreen setMouseY(double mouseX);
 }
