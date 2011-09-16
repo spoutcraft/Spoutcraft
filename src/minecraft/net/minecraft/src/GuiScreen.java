@@ -37,14 +37,16 @@ public class GuiScreen extends Gui {
 	public Screen screen = null;
 	//Spout End
 	
+	public void drawScreenPre(int x, int y, float z) {
+		drawWidgets(x, y, z);
+		drawScreen(x,y,z);
+	}
+	
 	public void drawScreen(int var1, int var2, float var3) {
 		for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
 			GuiButton var5 = (GuiButton)this.controlList.get(var4);
 			var5.drawButton(this.mc, var1, var2);
 		}
-		//Spout Start
-		drawWidgets(var1, var2, var3);
-		//Spout End
 	}
 
 	protected void keyTyped(char var1, int var2) {
@@ -79,24 +81,16 @@ public class GuiScreen extends Gui {
 		return (ArrayList<GuiButton>)this.controlList;
 	}
 	
-	protected void mouseClicked(int mouseX, int mouseY, int click) {
-		if(click == 0) {
-			for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
-				GuiButton var5 = (GuiButton)this.controlList.get(var4);
-				if(var5.mousePressed(this.mc, mouseX, mouseY)) {
-					this.selectedButton = var5;
-					this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
-					this.actionPerformed(var5);
-				}
-			}
-		}
-		//Spout Start
-		if(screen == null) {
+	//Wrap ALL the methods!!
+
+	private void mouseClickedPre(int mouseX, int mouseY, int eventButton) {
+		mouseClicked(mouseX, mouseY, eventButton); // Call vanilla method
+		if(getScreen() == null) {
 			return;
 		}
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
-		if (click == 0) {
+		if (eventButton == 0) {
 			for (Widget widget : screen.getAttachedWidgets()) {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
@@ -119,17 +113,24 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
-		//Spout
 	}
-
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int click) {
-		if(this.selectedButton != null && click == 0) {
-			this.selectedButton.mouseReleased(mouseX, mouseY);
-			this.selectedButton = null;
+	
+	protected void mouseClicked(int mouseX, int mouseY, int click) {
+		if(click == 0) {
+			for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
+				GuiButton var5 = (GuiButton)this.controlList.get(var4);
+				if(var5.mousePressed(this.mc, mouseX, mouseY)) {
+					this.selectedButton = var5;
+					this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+					this.actionPerformed(var5);
+				}
+			}
 		}
-		
-		//Spout Start
-		if(screen == null) {
+	}
+	
+	private void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
+		mouseMovedOrUp(mouseX, mouseY, eventButton);
+		if(getScreen() == null) {
 			return;
 		}
 		screen.setMouseX(mouseX);
@@ -138,7 +139,7 @@ public class GuiScreen extends Gui {
 			if (widget instanceof Control) {
 				Control control = (Control)widget;
 				if (control.isEnabled() && control.isVisible()) {
-					if (click == 0) {
+					if (eventButton == 0) {
 						if (!isInBoundingRect(control, mouseX, mouseY)) { //released control
 							control.setFocus(false);
 						}
@@ -150,7 +151,13 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
-		//Spout End
+	}
+
+	protected void mouseMovedOrUp(int mouseX, int mouseY, int click) {
+		if(this.selectedButton != null && click == 0) {
+			this.selectedButton.mouseReleased(mouseX, mouseY);
+			this.selectedButton = null;
+		}
 	}
 
 	protected void actionPerformed(GuiButton var1) {}
@@ -194,11 +201,11 @@ public class GuiScreen extends Gui {
 		if(Mouse.getEventButtonState()) {
 			var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-			this.mouseClicked(var1, var2, Mouse.getEventButton());
+			this.mouseClickedPre(var1, var2, Mouse.getEventButton());
 		} else {
 			var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
 			var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-			this.mouseMovedOrUp(var1, var2, Mouse.getEventButton());
+			this.mouseMovedOrUpPre(var1, var2, Mouse.getEventButton());
 		}
 
 	}
@@ -206,7 +213,7 @@ public class GuiScreen extends Gui {
 	public void handleKeyboardInput() {
 		//Spout Start
 		boolean handled = false;
-		if(Keyboard.getEventKeyState() && screen != null) {
+		if(Keyboard.getEventKeyState() && getScreen() != null) {
 			for (Widget widget : screen.getAttachedWidgets()) {
 				if (widget instanceof TextField) {
 					onTextFieldTyped((TextField)widget, Keyboard.getEventCharacter(), Keyboard.getEventKey());
@@ -281,7 +288,7 @@ public class GuiScreen extends Gui {
 	public void selectNextField() {}
 	
 	public void drawWidgets(int x, int y, float z) {
-		if(screen == null) {
+		if(getScreen() == null) {
 			return;
 		}
 		//Draw ALL the widgets!!
@@ -387,5 +394,17 @@ public class GuiScreen extends Gui {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Screen getScreen() {
+		if(screen == null) {
+			ScreenType type = ScreenUtil.getType(this);
+			if(type == ScreenType.GAME_SCREEN || type == ScreenType.CUSTOM_SCREEN){
+				return screen;
+			}
+			screen = new GenericOverlayScreen();
+			((OverlayScreen)screen).setScreenType(type);
+		}
+		return screen;
 	}
 }

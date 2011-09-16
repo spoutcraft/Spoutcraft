@@ -97,6 +97,10 @@ public class PacketWidget implements SpoutPacket {
 		if (widget != null) {
 			InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 			PopupScreen popup = mainScreen.getActivePopup();
+			Screen overlay = null;
+			if(SpoutClient.getHandle().currentScreen != null) { 
+				overlay = SpoutClient.getHandle().currentScreen.getScreen();
+			}
 			//Determine if this is a popup screen and if we need to update it
 			if (widget instanceof PopupScreen) {
 				if (popup != null){
@@ -111,22 +115,13 @@ public class PacketWidget implements SpoutPacket {
 				}
 			}
 			//Determine if this screen overrides another screen
-			Screen currentScreen = SpoutClient.getInstance().getActivePlayer().getCurrentScreen();
-			
-			if(widget instanceof OverlayScreen && currentScreen != mainScreen) {
-				if (currentScreen != null){
-					if(widget.getId().equals(currentScreen)){
-						SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
-					}
-				} else {
-					OverlayScreen overlay = (OverlayScreen)widget;
-					overlay.setScreenType(ScreenUtil.getType(SpoutClient.getHandle().currentScreen));
-					SpoutClient.getInstance().getActivePlayer().setCurrentScreen(overlay);
-				}
+			else if(widget instanceof OverlayScreen) {
+				SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
+				overlay = (OverlayScreen)widget;
 			}
 			//Determine if this is a widget on the main screen
 			else if (screen.equals(mainScreen.getId())) {
-				if (mainScreen.containsWidget(widget)) {
+				if (mainScreen.containsWidget(widget.getId())) {
 					mainScreen.updateWidget(widget);
 					widget.setScreen(mainScreen);
 				}
@@ -137,13 +132,23 @@ public class PacketWidget implements SpoutPacket {
 			}
 			//Determine if this is a widget on the popup screen
 			else if (popup != null && screen.equals(popup.getId())) {
-				if (popup.containsWidget(widget)) {
+				if (popup.containsWidget(widget.getId())) {
 					popup.updateWidget(widget);
 					widget.setScreen(popup);
 				}
 				else {
 					widget.setScreen(popup);
 					popup.attachWidget(widget);
+				}
+			} 
+			//Determine if this is a widget on an overlay screen
+			else if (overlay != null && screen.equals(overlay.getId())){
+				if(overlay.containsWidget(widget.getId())){
+					popup.updateWidget(widget);
+					widget.setScreen(overlay);
+				} else {
+					widget.setScreen(overlay);
+					overlay.attachWidget(widget);
 				}
 			}
 		}
