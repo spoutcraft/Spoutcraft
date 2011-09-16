@@ -58,10 +58,7 @@ public class CustomScreen extends GuiScreen {
 			for (Widget widget : screen.getAttachedWidgets()) {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
-					if (control.isEnabled()
-						&& control.isVisible()
-						&& isInBoundingRect(control, mouseX, mouseY))
-					{
+					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
