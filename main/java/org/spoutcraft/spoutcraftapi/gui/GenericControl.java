@@ -58,8 +58,8 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	}
 	
 	@Override
-	public PopupScreen getScreen() {
-		return (PopupScreen)super.getScreen();
+	public Screen getScreen() {
+		return super.getScreen();
 	}
 	
 	public boolean isEnabled() {

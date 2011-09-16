@@ -45,5 +45,5 @@ public interface Button extends Control, Label{
 	 */
 	public Button setHoverColor(Color color);
 	
-	public PopupScreen getScreen();
+	public Screen getScreen();
 }

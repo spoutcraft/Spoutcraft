@@ -62,8 +62,8 @@ public class GenericButton extends GenericControl implements Button {
 	}
 	
 	@Override
-	public PopupScreen getScreen() {
-		return (PopupScreen)super.getScreen();
+	public Screen getScreen() {
+		return super.getScreen();
 	}
 
 	public String getText() {
