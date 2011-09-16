@@ -136,7 +136,7 @@ public class PacketSky implements SpoutPacket{
 	}
 	
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 	public void failure(int playerId) {
