@@ -5,6 +5,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentSkipListMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
@@ -91,24 +92,24 @@ public class GuiScreen extends Gui {
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
+			Keyboard.enableRepeatEvents(false);
 			for (Widget widget : screen.getAttachedWidgets()) {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
-					if (control.isEnabled() && control.isVisible()) {
-						if (isInBoundingRect(control, mouseX, mouseY)) {
-							control.setFocus(true);
-							this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
-							if (control instanceof Button) {
-								SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-							}
-							else if (control instanceof Slider) {
-								//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
-								((Slider)control).setDragging(true);
-							}
-							else if (control instanceof TextField) {
-								((TextField)control).setCursorPosition(((TextField)control).getText().length());
-							}
+					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
+						control.setFocus(true);
+						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+						if (control instanceof Button) {
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
 						}
+						else if (control instanceof Slider) {
+							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
+							((Slider)control).setDragging(true);
+						}
+						else if (control instanceof TextField) {
+							((TextField)control).setCursorPosition(((TextField)control).getText().length());
+						}
+						break;
 					}
 				}
 			}
@@ -140,7 +141,7 @@ public class GuiScreen extends Gui {
 				Control control = (Control)widget;
 				if (control.isEnabled() && control.isVisible()) {
 					if (eventButton == 0) {
-						if (!isInBoundingRect(control, mouseX, mouseY)) { //released control
+						if (control.isFocus() && !isInBoundingRect(control, mouseX, mouseY)) { //released control
 							control.setFocus(false);
 						}
 						if (control instanceof Slider) {
@@ -213,21 +214,43 @@ public class GuiScreen extends Gui {
 	public void handleKeyboardInput() {
 		//Spout Start
 		boolean handled = false;
-		if(Keyboard.getEventKeyState() && getScreen() != null) {
+		if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+			Keyboard.enableRepeatEvents(false);
+		} else if(Keyboard.getEventKeyState() && getScreen() != null) {
+			boolean tab = Keyboard.getEventKey() == Keyboard.KEY_TAB;
+			TextField focusedTF = null;
+			ConcurrentSkipListMap<Integer, TextField> tabIndexMap = tab ? new ConcurrentSkipListMap<Integer, TextField>() : null;
+			
 			for (Widget widget : screen.getAttachedWidgets()) {
 				if (widget instanceof TextField) {
-					onTextFieldTyped((TextField)widget, Keyboard.getEventCharacter(), Keyboard.getEventKey());
-				}
-			}
-			/*for (GuiButton control : getControlList()) {
-				if (control instanceof CustomTextField) {
-					if (((CustomTextField)control).isFocused()) {
-						((CustomTextField)control).textboxKeyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
+					TextField tf = (TextField) widget;
+					// handle tabbing
+					// get all textfields of this screen and start looking for the next bigger tab-index
+					if (tab) {
+						if (tf.isFocus()) focusedTF = tf;
+						tabIndexMap.put(tf.getTabIndex(), tf);
+					}
+					// pass typed key to text processor
+					else if (tf.isEnabled() && tf.isFocus()) {
+						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
+							((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition())));
+						}
 						handled = true;
 						break;
 					}
 				}
-			}*/
+			}
+			
+			// start looking for the next bigger tab-index
+			if (tab && focusedTF != null) {
+				Integer index = tabIndexMap.higherKey(focusedTF.getTabIndex());
+				if(index == null) index = tabIndexMap.ceilingKey(0);
+				if(index != null) {
+					focusedTF.setFocus(false);
+					tabIndexMap.get(index).setFocus(true);
+					handled = true;
+				}
+			}
 		}
 		if (!handled) {
 			//Spout - Start of vanilla code, got wrapped with this if

@@ -1,6 +1,7 @@
 package org.getspout.spout.gui;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -286,24 +287,27 @@ public class MCRenderDelegate implements RenderDelegate{
 	public void render(GenericTextField textField) {
 		Gui.drawRect((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
 		Gui.drawRect((int)textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
-		if(textField.isEnabled()) {
-			boolean showCursor = textField.isFocus() && Spoutcraft.getClient().getTick() % 40 < 15;
-			String text = textField.getText();
-			if (textField.getCursorPosition() < 0) textField.setCursorPosition(0);
-			if (textField.getCursorPosition() > text.length()) textField.setCursorPosition(text.length());
-			if (showCursor) {
-				text = "";
-				if (textField.getCursorPosition() > 0) {
-					text += textField.getText().substring(0, textField.getCursorPosition());
-				}
-				text += "_";
-				if (textField.getCursorPosition() < textField.getText().length()) {
-					text += textField.getText().substring(textField.getCursorPosition() + 1);
-				}
+		
+		int x = (int) (textField.getScreenX() + GenericTextField.PADDING);
+		int y = (int) (textField.getScreenY() + GenericTextField.PADDING);
+		int color = textField.isEnabled() ? textField.getColor().toInt() : textField.getDisabledColor().toInt();
+		int[] cursor = textField.getTextProcessor().getCursor2D();
+		int lineNum = 0;
+		int cursorOffset = 0;
+		String line;
+		Iterator<String> iter = textField.getTextProcessor().iterator();
+		
+		while (iter.hasNext()) {
+			line = iter.next();
+			if (lineNum == cursor[0]) {
+				cursorOffset = Minecraft.theMinecraft.fontRenderer.getStringWidth(line.substring(0, cursor[1]));
 			}
-			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(text, (int) (textField.getScreenX() + 4), (int) (textField.getScreenY() + (textField.getHeight() - 8) / 2), textField.getColor().toInt());
-		} else {
-			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(textField.getText(), (int) (textField.getScreenX() + 4), (int) (textField.getScreenY() + (textField.getHeight() - 8) / 2), textField.getDisabledColor().toInt());
+			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
+		}
+		
+		boolean showCursor = textField.isEnabled() && textField.isFocus() && (Spoutcraft.getClient().getTick() & 0x20) > 0; 
+		if (showCursor) {
+			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
 	}
 
