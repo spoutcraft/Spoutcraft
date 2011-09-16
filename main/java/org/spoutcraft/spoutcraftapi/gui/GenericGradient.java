@@ -60,7 +60,7 @@ public class GenericGradient extends GenericWidget implements Gradient {
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 	
 	@Override

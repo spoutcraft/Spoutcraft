@@ -51,7 +51,7 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 1;
+		return super.getVersion() + 2;
 	}
 
 	public void readData(DataInputStream input) throws IOException {

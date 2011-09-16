@@ -42,7 +42,7 @@ public class GenericButton extends GenericControl implements Button {
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 1;
+		return super.getVersion() + 2;
 	}
 
 	@Override
