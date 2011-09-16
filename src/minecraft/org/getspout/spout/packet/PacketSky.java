@@ -51,7 +51,7 @@ public class PacketSky implements SpoutPacket{
 	}
 
 	public int getNumBytes() {
-		return 64 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
+		return 31 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
 	}
 
 	public void readData(DataInputStream input) throws IOException {
