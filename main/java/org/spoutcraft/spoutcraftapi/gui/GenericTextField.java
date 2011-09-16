@@ -140,6 +140,8 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	public TextField setTextProcessor(TextProcessor processor) {
+		processor.setWidth(getTextProcessor().getWidth());
+		processor.setText(getTextProcessor().getText());
 		this.textProcessor = processor;
 		return this;
 	}
@@ -169,17 +171,14 @@ public class GenericTextField extends GenericControl implements TextField{
 
 	public TextField setPasswordField(boolean password) {
 		if (this.password != password) {
-			TextProcessor processor = (password) ? new PasswordTextProcessor() : new GenericTextProcessor();
-			processor.setWidth(getTextProcessor().getWidth());
-			processor.setText(getTextProcessor().getText());
-			setTextProcessor(processor);
+			setTextProcessor((password) ? new PasswordTextProcessor() : new GenericTextProcessor());
 		}
 		this.password = password;
 		return this;
 	}
 
 	public Widget setWidth(int width) {
-		textProcessor.setWidth(Math.max(0, width - 2* PADDING));
+		textProcessor.setWidth(Math.max(0, width - PADDING << 1));
 		return super.setWidth(width);
 	}
 
