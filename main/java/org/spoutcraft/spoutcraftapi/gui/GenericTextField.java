@@ -178,7 +178,7 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	public Widget setWidth(int width) {
-		textProcessor.setWidth(Math.max(0, width - PADDING << 1));
+		textProcessor.setWidth(Math.max(0, width - (PADDING << 1)));
 		return super.setWidth(width);
 	}
 
