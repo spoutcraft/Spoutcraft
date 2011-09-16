@@ -97,14 +97,11 @@ public class PasswordTextProcessor implements TextProcessor
 	}
 	
 	protected boolean isRangeValid(int start, int end) {
-		return 	start >= 0
-				&& end <= textBuffer.length()
-				&& start < end;
+		return start >= 0 && end <= textBuffer.length() && start < end;
 	}
 	
 	protected boolean insert(char c) {
-		if (textBuffer.length()+1 > maxAsteriskChars
-			|| (charLimit > 0 && textBuffer.length() >= charLimit)) {
+		if (textBuffer.length()+1 > maxAsteriskChars || (charLimit > 0 && textBuffer.length() >= charLimit)) {
 			return false;
 		}
 		textBuffer.insert(cursor++, c);

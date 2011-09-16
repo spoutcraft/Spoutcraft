@@ -141,9 +141,7 @@ public class GenericTextProcessor implements TextProcessor {
 	}
 	
 	protected boolean isRangeValid(int start, int end) {
-		return 	start >= 0
-				&& end <= textBuffer.length()
-				&& start < end;
+		return 	start >= 0 && end <= textBuffer.length() && start < end;
 	}
 	
 	protected boolean isCursorValid() {
