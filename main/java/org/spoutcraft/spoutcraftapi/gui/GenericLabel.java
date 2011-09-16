@@ -33,7 +33,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	}
 	
 	public int getVersion() {
-		return super.getVersion() + 3;
+		return super.getVersion() + 4;
 	}
 	
 	public GenericLabel(String text) {
@@ -46,7 +46,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 18;
+		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 7;
 	}
 	
 	@Override

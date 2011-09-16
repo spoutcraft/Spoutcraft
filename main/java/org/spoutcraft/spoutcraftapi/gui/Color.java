@@ -50,6 +50,13 @@ public class Color implements Animatable {
 		alpha = a;
 	}
 	
+	public Color(int argb) {
+		alpha = (short) (argb >>> 24);
+		red = (short) ((argb & 0xFF0000) >>> 16);
+		green = (short) ((argb & 0xFF00) >>> 8);
+		blue = (short) (argb & 0xFF);
+	}
+	
 	public float getRedF(){
 		return red/255F;
 	}
@@ -123,15 +130,7 @@ public class Color implements Animatable {
 	}
 	
 	public int toInt() {
-		short a = getAlphaB();
-		short r = getRedB();
-		short g = getGreenB();
-		short b = getBlueB();
-		a = a > 255 ? 255 : a; a = a < 0 ? 0 : a;
-		r = r > 255 ? 255 : r; r = r < 0 ? 0 : r;
-		g = g > 255 ? 255 : g; g = g < 0 ? 0 : g;
-		b = b > 255 ? 255 : b; b = b < 0 ? 0 : b;
-		return (a << 24) + (r << 16) + (g << 8) + b;
+		return (getAlphaB() & 0xFF) << 24 | (getRedB() & 0xFF) << 16 | (getGreenB() & 0xFF) << 8 | (getBlueB() & 0xFF);
 	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
