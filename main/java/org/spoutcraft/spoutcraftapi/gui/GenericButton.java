@@ -38,7 +38,7 @@ public class GenericButton extends GenericControl implements Button {
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 16;
+		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 5;
 	}
 	
 	public int getVersion() {

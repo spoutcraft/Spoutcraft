@@ -36,7 +36,7 @@ public class ChatBar extends GenericWidget implements Widget{
 	}
 	
 	public int getNumBytes() {
-		return super.getNumBytes() + 8 + 16;
+		return super.getNumBytes() + 13;
 	}
 	
 	@Override

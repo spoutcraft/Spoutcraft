@@ -24,6 +24,8 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 
 public abstract class PacketUtil {
 	public static final int maxString = 32767;
+	public static final byte FLAG_COLORINVALID = 1;
+	public static final byte FLAG_COLOROVERRIDE = 2;
 	
 	public static void writeString(DataOutputStream output, String s) {
 		try {
@@ -70,10 +72,15 @@ public abstract class PacketUtil {
 	
 	public static void writeColor(DataOutputStream output, Color color) {
 		try {
-			output.writeFloat(color.getRedF());
-			output.writeFloat(color.getGreenF());
-			output.writeFloat(color.getBlueF());
-			output.writeFloat(color.getAlphaF());
+			byte flags = 0x0;
+			
+			if (color.getRedF() == -1F)
+				flags |= FLAG_COLORINVALID;
+			else if (color.getRedF() == -2F)
+				flags |= FLAG_COLOROVERRIDE;
+			
+			output.writeByte(flags);
+			output.writeInt(color.toInt());
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -81,16 +88,20 @@ public abstract class PacketUtil {
 	
 	public static Color readColor(DataInputStream input) {
 		try {
-			float r,g,b,a;
-			r = input.readFloat();
-			g = input.readFloat();
-			b = input.readFloat();
-			a = input.readFloat();
-			return new Color(r,g,b,a);
+			byte flags = input.readByte();
+			int argb = input.readInt();
+			
+			if ((flags & FLAG_COLORINVALID) > 0)
+				return Color.invalid();
+			if ((flags & FLAG_COLOROVERRIDE) > 0)
+				return Color.override();
+			
+			return new Color(argb);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
 
 }

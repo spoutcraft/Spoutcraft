@@ -46,7 +46,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 18;
+		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 7;
 	}
 	
 	@Override
