@@ -130,10 +130,7 @@ public class Color implements Animatable {
 	}
 	
 	public int toInt() {
-		return	(getAlphaB() & 0xFF) << 24
-				| (getRedB() & 0xFF) << 16
-				| (getGreenB() & 0xFF) << 8
-				| (getBlueB() & 0xFF);
+		return (getAlphaB() & 0xFF) << 24 | (getRedB() & 0xFF) << 16 | (getGreenB() & 0xFF) << 8 | (getBlueB() & 0xFF);
 	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
