@@ -26,6 +26,7 @@ import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gl.SpoutGL;
 import org.getspout.spout.gui.MCRenderDelegate;
+import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
@@ -50,6 +51,7 @@ import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 import net.minecraft.client.Minecraft;
@@ -81,6 +83,7 @@ public class SpoutClient implements Client {
 		dataMiningThread.start();
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
 		ConfigReader.read();
+		Keyboard.setKeyManager(new SimpleKeyManager());
 	}
 	
 	public static SpoutClient getInstance() {

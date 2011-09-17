@@ -127,7 +127,7 @@ public class CustomPacket extends Packet{
 				}
 				catch (Exception e) {
 					System.out.println("------------------------");
-					System.out.println("Unexpected Exception: " + e.getClass());
+					System.out.println("Unexpected Exception: " + packet.getPacketType());
 					e.printStackTrace();
 					System.out.println("------------------------");
 				}
@@ -138,7 +138,7 @@ public class CustomPacket extends Packet{
 				}
 				catch (Exception e) {
 					System.out.println("------------------------");
-					System.out.println("Unexpected Exception: " + e.getClass());
+					System.out.println("Unexpected Exception: " + packet.getPacketType());
 					e.printStackTrace();
 					System.out.println("------------------------");
 				}

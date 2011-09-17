@@ -9,9 +9,11 @@ import net.minecraft.src.RenderItem;
 import net.minecraft.src.Slot;
 import net.minecraft.src.StringTranslate;
 
-import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+//Spout start
+import org.getspout.spout.client.SpoutClient;
+//Spout end
 
 public abstract class GuiContainer extends GuiScreen {
 
@@ -20,9 +22,9 @@ public abstract class GuiContainer extends GuiScreen {
 	protected int ySize = 166;
 	public Container inventorySlots;
 
-
 	public GuiContainer(Container var1) {
 		this.inventorySlots = var1;
+		
 	}
 
 	public void initGui() {
@@ -31,7 +33,7 @@ public abstract class GuiContainer extends GuiScreen {
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {
-		this.drawDefaultBackground();
+		this.drawDefaultBackground();	
 		int var4 = (this.width - this.xSize) / 2;
 		int var5 = (this.height - this.ySize) / 2;
 		this.drawGuiContainerBackgroundLayer(var3);
@@ -68,7 +70,7 @@ public abstract class GuiContainer extends GuiScreen {
 			itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
 			itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), var1 - var4 - 8, var2 - var5 - 8);
 		}
-
+		
 		GL11.glDisable('\u803a');
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
@@ -81,7 +83,7 @@ public abstract class GuiContainer extends GuiScreen {
 			if (custom != null) {
 				var13 = custom;
 			}
-			else if (var13 == null || var13.trim().equals("")) {
+			else if (var13 == null || var13.trim().isEmpty()) {
 				var13 = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			}
 			if(var13 != null && var13.length() > 0) {
@@ -95,7 +97,7 @@ public abstract class GuiContainer extends GuiScreen {
 		}
 
 		GL11.glPopMatrix();
-		super.drawScreen(var1, var2, var3);
+		super.drawScreen(var1, var2, var3);	
 		GL11.glEnable(2896 /*GL_LIGHTING*/);
 		GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 	}

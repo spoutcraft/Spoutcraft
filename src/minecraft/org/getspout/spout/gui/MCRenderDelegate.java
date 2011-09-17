@@ -28,6 +28,7 @@ import org.spoutcraft.spoutcraftapi.gui.*;
 public class MCRenderDelegate implements RenderDelegate{
 	protected final RenderItemCustom renderer;
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
+	MinecraftFont font = new MinecraftFontWrapper();
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
 		renderer.setRenderManager(RenderManager.instance);
@@ -392,5 +393,9 @@ public class MCRenderDelegate implements RenderDelegate{
 			RenderHelper.disableStandardItemLighting();
 	        GL11.glDisable(32826 /*GL_RESCALE_NORMAL_EXT*/);
 		}
+	}
+
+	public MinecraftFont getMinecraftFont() {
+		return font;
 	}
 }

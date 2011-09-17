@@ -172,7 +172,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		return widget instanceof HealthBar || widget instanceof BubbleBar || widget instanceof ChatTextBox || widget instanceof ChatBar || widget instanceof ArmorBar;
 	}
 
-	@Override
 	public ScreenType getScreenType() {
 		return ScreenType.GAME_SCREEN;
 	}

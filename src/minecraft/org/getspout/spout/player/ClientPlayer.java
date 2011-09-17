@@ -22,7 +22,6 @@ import org.getspout.spout.gui.InGameScreen;
 import org.getspout.spout.gui.ScreenUtil;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.gui.GenericOverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
@@ -108,7 +107,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return getHandle().lastClickLocation;
 	}
 
-	@Override
 	public Screen getCurrentScreen() {
 		//See if the screen has changed since last get
 		ScreenType currentType = ScreenUtil.getType(SpoutClient.getHandle().currentScreen);
@@ -119,7 +117,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return currentScreen;
 	}
 	
-	@Override
 	public void setCurrentScreen(Screen screen) {
 		currentScreen = screen;
 	}
