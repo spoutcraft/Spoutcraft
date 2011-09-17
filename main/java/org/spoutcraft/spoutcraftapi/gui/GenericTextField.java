@@ -20,8 +20,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
@@ -183,7 +181,7 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	public Control setFocus(boolean focus) {
-		if (focus) Keyboard.enableRepeatEvents(true);
+		if (focus) Keyboard.setRepeatingEvents(true);
 		return super.setFocus(focus);
 	}
 }

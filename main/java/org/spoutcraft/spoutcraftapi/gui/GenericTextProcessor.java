@@ -16,17 +16,14 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.ChatAllowedCharacters;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GuiScreen;
-
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class GenericTextProcessor implements TextProcessor {
 	
@@ -44,7 +41,7 @@ public class GenericTextProcessor implements TextProcessor {
 	protected StringBuffer textBuffer = new StringBuffer();
 	protected ArrayList<String> formattedText = new ArrayList<String>();
 	protected ArrayList<Integer> lineBreaks = new ArrayList<Integer>();
-	protected FontRenderer fontRenderer = Minecraft.theMinecraft.fontRenderer;
+	protected MinecraftFont font = Spoutcraft.getClient().getRenderDelegate().getMinecraftFont();
 	
 	public GenericTextProcessor() {
 	}
@@ -86,18 +83,15 @@ public class GenericTextProcessor implements TextProcessor {
 	}
 	
 
-	@Override
 	public int getCursor() {
 		return cursor;
 	}
 	
-	@Override
 	public void setCursor(int cursor) {
 		this.cursor = cursor;
 		correctCursor();
 	}
 	
-	@Override
 	public int[] getCursor2D() {
 		int[] c = new int[2];
 		c[0] = getCursorLine();
@@ -191,7 +185,6 @@ public class GenericTextProcessor implements TextProcessor {
 		return false;
 	}
 
-	@Override
 	public void clear() {
 		lineBreaks.clear();
 		formattedText.clear();
@@ -226,12 +219,10 @@ public class GenericTextProcessor implements TextProcessor {
 		return true;
 	}
 
-	@Override
 	public Iterator<String> iterator() {
 		return formattedText.iterator();
 	}
 
-	@Override
 	public void setText(String str) {
 		clear();
 		if (str.length() > 0) {
@@ -253,7 +244,7 @@ public class GenericTextProcessor implements TextProcessor {
 		int positionOld = 0;
 		boolean previousSpace = false;
 		boolean skipIterator = false;
-		final int spaceCharWidth = fontRenderer.getStringWidth(STR_SPACE);
+		final int spaceCharWidth = font.getTextWidth(STR_SPACE);
 		
 		// virtually split text in parts that don't exceed the line width
 		lineBreaks.clear();
@@ -263,7 +254,7 @@ public class GenericTextProcessor implements TextProcessor {
 				word = st.nextToken();
 			}
 			skipIterator = false;
-			wordWidth = fontRenderer.getStringWidth(word);
+			wordWidth = font.getTextWidth(word);
 			position += word.length();
 			
 			// if word is a newline directive, add a linebreak
@@ -283,7 +274,7 @@ public class GenericTextProcessor implements TextProcessor {
 			if (wordWidth > width) {
 				int i = word.length();
 				while(i > 0 && wordWidth > width)
-					wordWidth -= fontRenderer.getStringWidth(String.valueOf(word.charAt(--i)));
+					wordWidth -= font.getTextWidth(String.valueOf(word.charAt(--i)));
 				position = position - word.length() + i;
 				lineBreaks.add(position);
 				lineWidth = 0;
@@ -323,27 +314,22 @@ public class GenericTextProcessor implements TextProcessor {
 		return true;
 	}
 
-	@Override
 	public String getText() {
 		return textBuffer.toString();
 	}
 
-	@Override
 	public int getMaximumCharacters() {
 		return charLimit;
 	}
 	
-	@Override
 	public void setMaximumCharacters(int max) {
 		this.charLimit = max;
 	}
 
-	@Override
 	public int getMaximumLines() {
 		return lineLimit;
 	}
 	
-	@Override
 	public void setMaximumLines(int max) {
 		this.lineLimit = max;
 	}
@@ -359,76 +345,86 @@ public class GenericTextProcessor implements TextProcessor {
 		}
 	}
 
-	@Override
 	public boolean handleInput(char key, int keyId)
 	{
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-		switch (keyId) {
-			case Keyboard.KEY_RETURN:
-				insert(CHAR_NEWLINE);
+		if (keyId == Keyboard.KEY_RETURN.getKeyCode()) {
+			insert(CHAR_NEWLINE);
+			return true;
+		}
+		if (keyId == Keyboard.KEY_BACK.getKeyCode()) {
+			if (ctrl) {
+				int p = getPreviousWordPosition(cursor);
+				return delete(p, cursor, p);
+			}
+			else if (cursor > 0) {
+				return deleteChar(--cursor);
+			}
+			return false;
+		}
+		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
+			if (ctrl) 	return delete(cursor, getNextWordPosition(cursor), cursor);
+			else 		return deleteChar();
+		}
+		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
+			if (ctrl)	cursor = getPreviousWordPosition(cursor-1);
+			else		cursorLeft();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
+			if (ctrl)	cursor = getNextWordPosition(cursor+1);
+			else		cursorRight();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_UP.getKeyCode()) {
+			cursorUp();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_DOWN.getKeyCode()) {
+			cursorDown();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_HOME.getKeyCode()) {
+			cursor = 0;
+			return false;
+		}
+		if (keyId == Keyboard.KEY_END.getKeyCode()) {
+			cursor = textBuffer.length();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_V.getKeyCode()) {
+			if (ctrl) {
+				return insert(getClipboardString());
+			}
+		}
+		if (keyId == Keyboard.KEY_C.getKeyCode()) {
+			if (ctrl) {
+				clear();
 				return true;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_BACK:
-				if (ctrl) {
-					int p = getPreviousWordPosition(cursor);
-					return delete(p, cursor, p);
-				}
-				else if (cursor > 0) {
-					return deleteChar(--cursor);
-				}
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_DELETE:
-				if (ctrl) 	return delete(cursor, getNextWordPosition(cursor), cursor);
-				else 		return deleteChar();
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_LEFT:
-				if (ctrl)	cursor = getPreviousWordPosition(cursor-1);
-				else		cursorLeft();
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_RIGHT:
-				if (ctrl)	cursor = getNextWordPosition(cursor+1);
-				else		cursorRight();
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_UP:
-				cursorUp();
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_DOWN:
-				cursorDown();
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_HOME:
-				cursor = 0;
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_END:
-				cursor = textBuffer.length();
-				return false;
-				// –––––––––––––––––––––––
-			case Keyboard.KEY_V:
-				if (ctrl) {
-					return insert(GuiScreen.getClipboardString());
-				}
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_C:
-				if (ctrl) {
-					clear();
-					return true;
-				}
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_D:
-				if (ctrl) {
-					return deleteLine();
-				}
-			// –––––––––––––––––––––––
-			default:
-				if (ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1) {
-					return insert(key);
-				}
+			}
+		}
+		if (keyId == Keyboard.KEY_D.getKeyCode()) {
+			if (ctrl) {
+				return deleteLine();
+			}
+		}
+		if (font.isAllowedChar(key)) {
+			return insert(key);
 		}
 		return false;
+	}
+	
+	private static String getClipboardString() {
+		try {
+			Transferable transfer = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
+			if(transfer != null && transfer.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				String var1 = (String)transfer.getTransferData(DataFlavor.stringFlavor);
+				return var1;
+			}
+		} catch (Exception var2) {
+			;
+		}
+
+		return null;
 	}
 }

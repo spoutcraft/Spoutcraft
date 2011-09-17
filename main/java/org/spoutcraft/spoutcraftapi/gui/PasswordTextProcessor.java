@@ -18,11 +18,7 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import java.util.Iterator;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.ChatAllowedCharacters;
-import net.minecraft.src.FontRenderer;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class PasswordTextProcessor implements TextProcessor
 {
@@ -32,8 +28,8 @@ public class PasswordTextProcessor implements TextProcessor
 	protected int width = 0;
 	protected int cursor = 0;
 	protected StringBuffer textBuffer = new StringBuffer();
-	protected FontRenderer fontRenderer = Minecraft.theMinecraft.fontRenderer;
-	protected final int CHAR_ASTERISK_WIDTH = fontRenderer.getStringWidth(String.valueOf(CHAR_ASTERISK));
+	protected MinecraftFont font = Spoutcraft.getClient().getRenderDelegate().getMinecraftFont();
+	protected final int CHAR_ASTERISK_WIDTH = font.getTextWidth(String.valueOf(CHAR_ASTERISK));
 	protected int maxAsteriskChars = 0;
 	
 	public PasswordTextProcessor() {
@@ -155,42 +151,40 @@ public class PasswordTextProcessor implements TextProcessor
 	public boolean handleInput(char key, int keyId)
 	{
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-		switch (keyId) {
-			case Keyboard.KEY_BACK:
-				if (ctrl)	return delete(0, cursor, 0);
-				else		return delete(cursor-1, cursor, cursor-1);
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_DELETE:
-				if (ctrl) 	return delete(cursor, textBuffer.length(), cursor);
-				else 		return delete(cursor, cursor+1, cursor);
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_UP:
-			case Keyboard.KEY_HOME:
-				ctrl = true;
-			case Keyboard.KEY_LEFT:
-				if (ctrl)	cursor = 0;
-				else		cursor = Math.max(0, --cursor);
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_DOWN:
-			case Keyboard.KEY_END:
-				ctrl = true;
-			case Keyboard.KEY_RIGHT:
-				if (ctrl)	cursor = textBuffer.length();
-				else		cursor = Math.min(textBuffer.length(), ++cursor);
-				return false;
-			// –––––––––––––––––––––––
-			case Keyboard.KEY_D:
-			case Keyboard.KEY_C:
-				if (ctrl) {
-					clear();
-					return true;
-				}
-			// –––––––––––––––––––––––
-			default:
-				if (ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1) {
-					return insert(key);
-				}
+		if (keyId == Keyboard.KEY_BACK.getKeyCode()) {
+			if (ctrl)	return delete(0, cursor, 0);
+			else		return delete(cursor-1, cursor, cursor-1);
+		}
+		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
+			if (ctrl) 	return delete(cursor, textBuffer.length(), cursor);
+			else 		return delete(cursor, cursor+1, cursor);
+		}
+		if (keyId == Keyboard.KEY_UP.getKeyCode() || keyId == Keyboard.KEY_HOME.getKeyCode()) {
+			cursor = 0;
+			return false;
+		}
+		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
+			if (ctrl)	cursor = 0;
+			else		cursor = Math.max(0, --cursor);
+			return false;
+		}
+		if (keyId == Keyboard.KEY_DOWN.getKeyCode() || keyId == Keyboard.KEY_END.getKeyCode()) {
+			cursor = textBuffer.length();
+			return false;
+		}
+		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
+			if (ctrl)	cursor = textBuffer.length();
+			else		cursor = Math.min(textBuffer.length(), ++cursor);
+			return false;
+		}
+		if (keyId == Keyboard.KEY_D.getKeyCode() || keyId == Keyboard.KEY_C.getKeyCode()) {
+			if (ctrl) {
+				clear();
+				return true;
+			}
+		}
+		if (font.isAllowedChar(key)) {
+			return insert(key);
 		}
 		return false;
 	}

@@ -111,7 +111,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	public double getTextWidth() {
 		double swidth = 0;
 		String lines[] = getText().split("\\n");
-		RenderDelegate font = Spoutcraft.getClient().getRenderDelegate();
+		MinecraftFont font = Spoutcraft.getClient().getRenderDelegate().getMinecraftFont();
 		for (int i = 0; i < lines.length; i++) {
 			swidth = font.getTextWidth(lines[i]) > swidth ? font.getTextWidth(lines[i]) : swidth;
 		}

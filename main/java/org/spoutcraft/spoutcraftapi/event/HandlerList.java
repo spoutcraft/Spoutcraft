@@ -28,7 +28,7 @@ import org.spoutcraft.spoutcraftapi.addon.IllegalAddonAccessException;
  * @param <TEvent> Event type
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class HandlerList<TEvent extends Event<TEvent>> {
 	/**
 	 * handler array. this field being an array is the key to this system's speed.

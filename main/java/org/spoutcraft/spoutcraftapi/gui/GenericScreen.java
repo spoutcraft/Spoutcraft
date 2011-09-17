@@ -154,24 +154,20 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		}
 	}
 	
-	@Override
 	public Screen setMouseX(int mouseX) {
 		this.mouseX = mouseX;
 		return this;
 	}
 
-	@Override
 	public Screen setMouseY(int mouseY) {
 		this.mouseY = mouseY;
 		return this;
 	}
 
-	@Override
 	public int getMouseX() {
 		return mouseX;
 	}
 
-	@Override
 	public int getMouseY() {
 		return mouseY;
 	}

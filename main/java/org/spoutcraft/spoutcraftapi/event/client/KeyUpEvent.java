@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.event.client;
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.Event;
 import org.spoutcraft.spoutcraftapi.event.HandlerList;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class KeyUpEvent extends Event<KeyUpEvent> implements Cancellable {

@@ -42,10 +42,9 @@ public interface RenderDelegate {
 
 	public void downloadTexture(String plugin, String url);
 
-	public int getTextWidth(String text);
-	
 	public int getScreenWidth();
 	
 	public int getScreenHeight();
-
+	
+	public MinecraftFont getMinecraftFont();
 }

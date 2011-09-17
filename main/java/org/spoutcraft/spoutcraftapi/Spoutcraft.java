@@ -24,6 +24,8 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gl.SafeGL;
+import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 public final class Spoutcraft {
 	
@@ -85,5 +87,13 @@ public final class Spoutcraft {
 	
 	public static Mode getMode() {
 		return client.getMode();
+	}
+	
+	public static RenderDelegate getRenderDelegate() {
+		return client.getRenderDelegate();
+	}
+	
+	public static MinecraftFont getMinecraftFont() {
+		return client.getRenderDelegate().getMinecraftFont();
 	}
 }

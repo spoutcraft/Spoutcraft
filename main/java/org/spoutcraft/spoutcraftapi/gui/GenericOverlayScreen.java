@@ -6,17 +6,14 @@ public class GenericOverlayScreen extends GenericScreen implements OverlayScreen
 	public GenericOverlayScreen() {
 	}
 
-	@Override
 	public WidgetType getType() {
 		return WidgetType.OverlayScreen;
 	}
 
-	@Override
 	public ScreenType getScreenType() {
 		return screenType;
 	}
 
-	@Override
 	public OverlayScreen setScreenType(ScreenType screenType) {
 		this.screenType = screenType;
 		return this;

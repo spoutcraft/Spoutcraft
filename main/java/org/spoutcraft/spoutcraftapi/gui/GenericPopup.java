@@ -70,7 +70,6 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		return false;
 	}
 
-	@Override
 	public ScreenType getScreenType() {
 		return ScreenType.CUSTOM_SCREEN;
 	}
