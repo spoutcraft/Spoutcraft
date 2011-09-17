@@ -19,9 +19,13 @@ package org.getspout.spout.player;
 import java.util.HashMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameScreen;
+import org.getspout.spout.gui.ScreenUtil;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.gui.GenericOverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
@@ -33,6 +37,8 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	private RenderDistance min, max;
 	private InGameScreen mainScreen = new InGameScreen();
 	private HashMap<Integer, String> titles = new HashMap<Integer, String>();
+	private Screen currentScreen = null;
+	private ScreenType screenType;
 
 	public ClientPlayer(EntityPlayer player) {
 		super(player);
@@ -100,5 +106,21 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	
 	public FixedLocation getLastClickedLocation() {
 		return getHandle().lastClickLocation;
+	}
+
+	@Override
+	public Screen getCurrentScreen() {
+		//See if the screen has changed since last get
+		ScreenType currentType = ScreenUtil.getType(SpoutClient.getHandle().currentScreen);
+		if(currentType != screenType){
+			currentScreen = null;
+		}
+		screenType = currentType;
+		return currentScreen;
+	}
+	
+	@Override
+	public void setCurrentScreen(Screen screen) {
+		currentScreen = screen;
 	}
 }

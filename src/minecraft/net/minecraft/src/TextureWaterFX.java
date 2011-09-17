@@ -78,7 +78,7 @@ public class TextureWaterFX extends TextureFX {
 			float var13 = var3 * var3;
 			var5 = (int)(32.0F + var13 * 32.0F);
 			var6 = (int)(50.0F + var13 * 64.0F);
-			int var7 = 255;
+			int var7 = 127; //Spout - Biome Water 255 -> 127
 			int var8 = (int)(146.0F + var13 * 50.0F);
 			if(this.anaglyphEnabled) {
 				int var9 = (var5 * 30 + var6 * 59 + var7 * 11) / 100;
@@ -89,9 +89,11 @@ public class TextureWaterFX extends TextureFX {
 				var7 = var11;
 			}
 
-			this.imageData[var2 * 4 + 0] = (byte)var5;
-			this.imageData[var2 * 4 + 1] = (byte)var6;
+			//Spout start - Biome Water
+			this.imageData[var2 * 4 + 0] = (byte)var7;
+			this.imageData[var2 * 4 + 1] = (byte)var7;
 			this.imageData[var2 * 4 + 2] = (byte)var7;
+			//Spout end - Biome Water
 			this.imageData[var2 * 4 + 3] = (byte)var8;
 		}
 

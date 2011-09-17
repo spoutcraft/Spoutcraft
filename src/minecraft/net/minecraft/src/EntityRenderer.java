@@ -533,7 +533,9 @@ public class EntityRenderer {
 
 			if(this.mc.currentScreen != null) {
 				GL11.glClear(256);
-				this.mc.currentScreen.drawScreen(var19, var20, var1);
+				//Spout Start
+				this.mc.currentScreen.drawScreenPre(var19, var20, var1);
+				//Spout End
 				if(this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(var1);
 				}
