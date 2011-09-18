@@ -47,4 +47,6 @@ public interface RenderDelegate {
 	public int getScreenHeight();
 	
 	public MinecraftFont getMinecraftFont();
+	
+	public MinecraftTessellator getTessellator();
 }

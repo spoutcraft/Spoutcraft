@@ -23,7 +23,6 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
@@ -50,9 +49,7 @@ public interface Client extends PropertyInterface{
 	public Map<String, String[]> getCommandAliases();
 
 	public String getUpdateFolder();
-	
-	public SafeGL getGLWrapper();
-	
+
 	public ItemManager getItemManager();
 	
 	public SkyManager getSkyManager();

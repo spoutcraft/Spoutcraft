@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public abstract class GenericScreen extends GenericWidget implements Screen{
@@ -146,9 +147,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		for (RenderPriority priority : rvalues) {	
 			for (Widget widget : widgets){
 				if (widget.getPriority() == priority && canRender(widget)) {
-					Spoutcraft.getGLWrapper().pushMatrix();
+					GL11.glPushMatrix();
 					widget.render();
-					Spoutcraft.getGLWrapper().popMatrix();
+					GL11.glPopMatrix();
 				}
 			}
 		}

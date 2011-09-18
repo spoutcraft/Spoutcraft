@@ -23,8 +23,8 @@ import org.spoutcraft.spoutcraftapi.Client.Mode;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
-import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 public final class Spoutcraft {
@@ -81,10 +81,6 @@ public final class Spoutcraft {
 		return client.getUpdateFolder();
 	}
 	
-	public static SafeGL getGLWrapper() {
-		return client.getGLWrapper();
-	}
-	
 	public static Mode getMode() {
 		return client.getMode();
 	}
@@ -95,5 +91,9 @@ public final class Spoutcraft {
 	
 	public static MinecraftFont getMinecraftFont() {
 		return client.getRenderDelegate().getMinecraftFont();
+	}
+	
+	public static MinecraftTessellator getTessellator() {
+		return client.getRenderDelegate().getTessellator();
 	}
 }
