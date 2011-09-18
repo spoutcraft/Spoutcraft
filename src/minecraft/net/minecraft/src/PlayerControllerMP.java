@@ -51,10 +51,6 @@ public class PlayerControllerMP extends PlayerController {
 		var1.rotationYaw = -180.0F;
 	}
 
-	public boolean shouldDrawHUD() {
-		return !this.field_35649_k;
-	}
-
 	public boolean sendBlockRemoved(int var1, int var2, int var3, int var4) {
 		if(this.field_35649_k) {
 			return false;
@@ -289,10 +285,10 @@ public class PlayerControllerMP extends PlayerController {
     //Spout Start
 	@Override
 	public boolean shouldDrawHUD() {
-		if (super.shouldDrawHUD()) {
+		if (!this.field_35649_k) {
 			return !(this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload);
 		}
-		return super.shouldDrawHUD();
+		return !this.field_35649_k;
 	}
 	//Spout End
 }
