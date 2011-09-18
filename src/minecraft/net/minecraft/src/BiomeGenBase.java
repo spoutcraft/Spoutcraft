@@ -128,6 +128,22 @@ public abstract class BiomeGenBase {
 		return (WorldGenerator)(var1.nextInt(10) == 0?this.field_35480_A:this.field_35493_z);
 	}
 
+	//Spout start
+	protected BiomeGenBase setEnableSnow(boolean bool) {
+		enableSnow = bool;
+		return this;
+	}
+	
+	protected BiomeGenBase setEnableRain(boolean bool) {
+		enableRain = bool;
+		return this;
+	}
+	
+	protected String getBiomeName() {
+		return biomeName;
+	}
+	//Spout end
+
 	protected BiomeGenBase setBiomeName(String var1) {
 		this.biomeName = var1;
 		return this;

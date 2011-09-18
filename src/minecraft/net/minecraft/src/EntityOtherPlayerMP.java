@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Entity;
+import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
@@ -11,6 +12,7 @@ import org.getspout.spout.player.SpoutPlayer;
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 
+	private boolean field_35218_b = false;
 	private int field_785_bg;
 	private double field_784_bh;
 	private double field_783_bi;
@@ -41,7 +43,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.yOffset = 0.0F;
 	}
 
-	public boolean attackEntityFrom(Entity var1, int var2) {
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
 		return true;
 	}
 
@@ -67,6 +69,15 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 
 		this.field_704_R += (var5 - this.field_704_R) * 0.4F;
 		this.field_703_S += this.field_704_R;
+		if(!this.field_35218_b && this.func_35114_R() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
+			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
+			this.func_35199_b(this.inventory.mainInventory[this.inventory.currentItem], Item.itemsList[var6.itemID].func_35411_c(var6));
+			this.field_35218_b = true;
+		} else if(this.field_35218_b && !this.func_35114_R()) {
+			this.func_35207_ac();
+			this.field_35218_b = false;
+		}
+
 	}
 
 	public float getShadowSize() {
@@ -74,7 +85,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	public void onLivingUpdate() {
-		super.updatePlayerActionState();
+		super.updateEntityActionState();
 		if(this.field_785_bg > 0) {
 			double var1 = this.posX + (this.field_784_bh - this.posX) / (double)this.field_785_bg;
 			double var3 = this.posY + (this.field_783_bi - this.posY) / (double)this.field_785_bg;
@@ -130,7 +141,10 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	public void func_6420_o() {}
-	
+
+	public float getEyeHeight() {
+		return 1.82F;
+	}
 	 //Spout Start
 	 public void updateCloak() {
 		  if (this.cloakUrl == null || this.playerCloakUrl == null) {
