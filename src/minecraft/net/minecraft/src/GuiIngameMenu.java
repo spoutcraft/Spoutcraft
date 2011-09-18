@@ -26,7 +26,6 @@ public class GuiIngameMenu extends GuiScreen {
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + var1, "Save and quit to title"));
 		if(this.mc.isMultiplayerWorld()) {
 			((GuiButton)this.controlList.get(0)).displayString = "Disconnect";
-			
 		}
 
 		this.controlList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + var1, "Back to game"));
@@ -51,8 +50,7 @@ public class GuiIngameMenu extends GuiScreen {
 			//Spout Start
 			if (mp) {
 				this.mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
-			}
-			else {
+			} else {
 				this.mc.displayGuiScreen(new GuiMainMenu());
 			}
 			//Spout End

@@ -73,7 +73,7 @@ public class GuiChat extends GuiScreen {
 		}
 	}
 
-	public void drawScreen(int i, int j, float f) {
+	public void drawScreen(int var1, int var2, float var3) {
 		//Spout Improved Chat Start
 		SpoutClient.getInstance().getChatManager().handleMouseWheel();
 		boolean blink = true;//((updateCounter / 6) % 2 != 0) || message.trim().length() == 0;
@@ -98,7 +98,7 @@ public class GuiChat extends GuiScreen {
 			drawString(fontRenderer, line, chatWidget.getCursorX(), chatWidget.getCursorY() - 12 * size--, chatWidget.getTextColor().toInt());
 		}
 		//Spout Improved Chat End
-		super.drawScreen(i, j, f);
+		super.drawScreen(var1, var2, var3);
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {
@@ -112,9 +112,8 @@ public class GuiChat extends GuiScreen {
 				//Spout Improved Chat Start
 				/*
 				byte var4 = 100;
-				if(message.length() > var4)
-				{
-					message = message.substring(0, var4);
+				if(this.message.length() > var4) {
+					this.message = this.message.substring(0, var4);
 				}
 				*/
 				super.drawScreen(var1, var2, var3);
