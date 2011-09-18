@@ -26,7 +26,7 @@ public class SoundManager {
 	private SoundPool soundPoolSounds = new SoundPool();
 	private SoundPool soundPoolStreaming = new SoundPool();
 	private SoundPool soundPoolMusic = new SoundPool();
-	private int field_587_e = 0;
+	private int latestSoundID = 0;
 	private GameSettings options;
 	private static boolean loaded = false;
 	private Random rand = new Random();
@@ -198,6 +198,7 @@ public class SoundManager {
 			}
 		}
 	}
+
 	//Spout start
 	public void playSound(String s, float f, float f1, float f2, float f3, float f4) {
 		playSound(s, f, f1, f2, f3, f4, -1, 1.0F);
@@ -232,11 +233,11 @@ public class SoundManager {
 			sndSystem.play(s1);
 		}
 	}
-
+	
 	public void playSoundFX(String s, float f, float f1) {
 		playSoundFX(s, f, f1, -1, 1.0F);
 	}
-
+	
 	public void playSoundFX(String s, float f, float f1, int soundId, float volume)
 	{
 		if(!loaded || options.soundVolume == 0.0F)
@@ -287,7 +288,7 @@ public class SoundManager {
 			sndSystem.play("BgMusic");
 		}
 	}
-
+	
 	public void playCustomSoundEffect(String effect, float volume) {
 		playCustomSoundEffect(effect, 0, 0, 0, volume, 0F);
 	}
@@ -327,7 +328,7 @@ public class SoundManager {
 		soundPoolSounds.addCustomSound(sound, song);
 	}
 	
-	 public void addCustomMusic(String sound, File song) {
+	public void addCustomMusic(String sound, File song) {
 		soundPoolMusic.addCustomSound(sound, song);
 	}
 	
@@ -359,4 +360,5 @@ public class SoundManager {
 	public boolean allowed = false;
 	public boolean cancelled = false;
 	//Spout end
+
 }
