@@ -37,7 +37,7 @@ public class GuiConnectFailed extends GuiScreen {
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.clear();
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("Back to server list"))); //Spout
+		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.toMenu")));
 	}
 
 	protected void actionPerformed(GuiButton var1) {
