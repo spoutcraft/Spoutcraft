@@ -10,7 +10,6 @@ public class TextureFX {
 	//Spout HD Start
 	public byte[] imageData = new byte[TileSize.int_numBytes];
 	//Spout HD End
-	public byte[] imageData = new byte[1024 /*GL_FRONT_LEFT*/];
 	public int iconIndex;
 	public boolean anaglyphEnabled = false;
 	public int textureId = 0;

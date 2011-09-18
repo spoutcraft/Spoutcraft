@@ -29,7 +29,6 @@ public class TerrainTextureManager {
 			//Spout HD Start
 			BufferedImage var1 = TextureUtils.getResourceAsBufferedImage("/terrain.png");
 			//Spout HD End
-			BufferedImage var1 = ImageIO.read(TerrainTextureManager.class.getResource("/terrain.png"));
 			int[] var2 = new int[65536];
 			var1.getRGB(0, 0, 256, 256, var2, 0, 256);
 

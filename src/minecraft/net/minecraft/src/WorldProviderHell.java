@@ -1,5 +1,10 @@
 package net.minecraft.src;
 
+//Spout start
+import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+//Spout end
+
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkProviderHell;

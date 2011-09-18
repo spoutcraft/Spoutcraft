@@ -19,7 +19,15 @@ import net.minecraft.src.RenderPlayer;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-
+//Spout HD Start
+import net.minecraft.client.Minecraft;
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.item.SpoutCustomBlockDesign;
+import org.getspout.spout.item.SpoutItemBlock;
+import org.newdawn.slick.opengl.Texture;
+import com.pclewis.mcpatcher.mod.TileSize;
+//Spout end
 public class ItemRenderer {
 
 	private Minecraft mc;
@@ -38,22 +46,53 @@ public class ItemRenderer {
 
 	public void renderItem(EntityLiving var1, ItemStack var2) {
 		GL11.glPushMatrix();
-		if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
+		//Spout Start
+		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) var2.getItemDamage());
+		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var2.itemID, (short) var2.getItemDamage());
+		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var2.itemID, var2.getItemDamage());
+		Texture customTextureObject = null;
+		if (customTexture != null) {
+			customTextureObject = CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture);
+		}
+		
+		if (blockType != null) {
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+		} else if (customTextureObject != null) {
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, customTextureObject.getTextureID());
+		} else if(var2.itemID < 256) {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
-			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), 1.0F);
 		} else {
-			if(var2.itemID < 256) {
-				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
+		}
+		//Spout End
+
+		if(blockType != null || (customTextureObject == null && var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType()))) {
+			//Spout Start
+			if (blockType != null) {
+				blockType.renderBlockOnInventory(this.renderBlocksInstance, var1.getEntityBrightness(1.0F));
 			} else {
-				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/items.png"));
+				this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
 			}
+			//Spout End
+
+		} else {
 
 			Tessellator var3 = Tessellator.instance;
 			int var4 = var1.getItemIcon(var2);
-			float var5 = ((float)(var4 % 16 * 16) + 0.0F) / 256.0F;
-			float var6 = ((float)(var4 % 16 * 16) + 15.99F) / 256.0F;
-			float var7 = ((float)(var4 / 16 * 16) + 0.0F) / 256.0F;
-			float var8 = ((float)(var4 / 16 * 16) + 15.99F) / 256.0F;
+			//Spout HD Start
+			float var5 = ((float)(var4 % 16 * TileSize.int_size) + 0.0F) / TileSize.float_size16;
+			float var6 = ((float)(var4 % 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
+			float var7 = ((float)(var4 / 16 * TileSize.int_size) + 0.0F) / TileSize.float_size16;
+			float var8 = ((float)(var4 / 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
+			//Spout HD End
+			//Spout Start
+			if(customTextureObject != null){
+				var5 = 0;
+				var6 = 1;
+				var7 = 1;
+				var8 = 0;
+			}
+			//Spout End
 			float var9 = 1.0F;
 			float var10 = 0.0F;
 			float var11 = 0.3F;
@@ -86,9 +125,11 @@ public class ItemRenderer {
 			float var15;
 			float var17;
 			float var16;
-			for(var14 = 0; var14 < 16; ++var14) {
-				var15 = (float)var14 / 16.0F;
-				var16 = var6 + (var5 - var6) * var15 - 0.001953125F;
+			//Spout HD Start
+			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
+				var15 = (float)var14 / TileSize.float_size;
+				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
+				//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var17, 0.0D, (double)(0.0F - var13), (double)var16, (double)var8);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -99,11 +140,12 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(1.0F, 0.0F, 0.0F);
-
-			for(var14 = 0; var14 < 16; ++var14) {
-				var15 = (float)var14 / 16.0F;
-				var16 = var6 + (var5 - var6) * var15 - 0.001953125F;
-				var17 = var9 * var15 + 0.0625F;
+			//Spout HD Start
+			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
+				var15 = (float)var14 / TileSize.float_size;
+				var16 = var6 + (var5 - var6) * var15 - TileSize.float_texNudge;
+				var17 = var9 * var15 + TileSize.float_reciprocal;
+				//Spout HD End
 				var3.addVertexWithUV((double)var17, 1.0D, (double)(0.0F - var13), (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 1.0D, 0.0D, (double)var16, (double)var7);
 				var3.addVertexWithUV((double)var17, 0.0D, 0.0D, (double)var16, (double)var8);
@@ -113,11 +155,12 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, 1.0F, 0.0F);
-
-			for(var14 = 0; var14 < 16; ++var14) {
-				var15 = (float)var14 / 16.0F;
-				var16 = var8 + (var7 - var8) * var15 - 0.001953125F;
-				var17 = var9 * var15 + 0.0625F;
+			//Spout HD Start
+			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
+				var15 = (float)var14 / TileSize.float_size;
+				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
+				var17 = var9 * var15 + TileSize.float_reciprocal;
+				//Spout HD End
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV((double)var9, (double)var17, (double)(0.0F - var13), (double)var5, (double)var16);
@@ -127,10 +170,11 @@ public class ItemRenderer {
 			var3.draw();
 			var3.startDrawingQuads();
 			var3.setNormal(0.0F, -1.0F, 0.0F);
-
-			for(var14 = 0; var14 < 16; ++var14) {
-				var15 = (float)var14 / 16.0F;
-				var16 = var8 + (var7 - var8) * var15 - 0.001953125F;
+			//Spout HD Start
+			for(var14 = 0; var14 < TileSize.int_size; ++var14) {
+				var15 = (float)var14 / TileSize.float_size;
+				var16 = var8 + (var7 - var8) * var15 - TileSize.float_texNudge;
+				//Spout HD End
 				var17 = var9 * var15;
 				var3.addVertexWithUV((double)var9, (double)var17, 0.0D, (double)var5, (double)var16);
 				var3.addVertexWithUV(0.0D, (double)var17, 0.0D, (double)var6, (double)var16);

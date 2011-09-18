@@ -102,14 +102,14 @@ public abstract class WorldProvider {
 
 		//Spout Start
 		
-		float var3 = 0.7529412F;
-		float var4 = 0.8470588F;
-		float var5 = 1.0F;
+		float var4 = 0.7529412F;
+		float var5 = 0.8470588F;
+		float var6 = 1.0F;
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if(fogColor != null){
-			var3 = fogColor.getRedF();
-			var4 = fogColor.getGreenF();
-			var5 = fogColor.getBlueF();
+			var4 = fogColor.getRedF();
+			var5 = fogColor.getGreenF();
+			var6 = fogColor.getBlueF();
 		}
 		//Spout End
 		var4 *= var3 * 0.94F + 0.06F;

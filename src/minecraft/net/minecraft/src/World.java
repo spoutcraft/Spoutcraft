@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
@@ -50,6 +51,7 @@ import net.minecraft.src.WorldSettings;
 import it.unimi.dsi.fastutil.ints.*;
 import org.getspout.spout.SpoutcraftWorld;
 import org.getspout.spout.client.SpoutClient;
+import net.minecraft.client.Minecraft;
 //Spout End
 
 public class World implements IBlockAccess {
@@ -197,7 +199,9 @@ public class World implements IBlockAccess {
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
-		this.positionsToUpdate = new HashSet();
+		//Spout Start
+		this.positionsToUpdate = new IntOpenHashSet();
+		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
 		this.field_1012_M = new ArrayList();
@@ -251,7 +255,9 @@ public class World implements IBlockAccess {
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
-		this.positionsToUpdate = new HashSet();
+		//Spout Start
+		this.positionsToUpdate = new IntOpenHashSet();
+		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
 		this.field_1012_M = new ArrayList();
@@ -1964,7 +1970,7 @@ public class World implements IBlockAccess {
 
 			for(var6 = -var5; var6 <= var5; ++var6) {
 				for(var7 = -var5; var7 <= var5; ++var7) {
-					this.positionsToUpdate.add(new ChunkCoordIntPair(var6 + var3, var7 + var4));
+					this.positionsToUpdate.add((int) ChunkCoordIntPair.chunkXZ2Int(var6 + var3, var7 + var4)); //Spout
 				}
 			}
 		}
@@ -1977,7 +1983,7 @@ public class World implements IBlockAccess {
 
 		while(var13.hasNext()) {
 			//Spout start
-			int next = var12.nextInt();
+			int next = var13.nextInt();
 			int chunkX = int2ChunkX(next);
 			int chunkZ = int2ChunkZ(next);
 			var3 = chunkX * 16;

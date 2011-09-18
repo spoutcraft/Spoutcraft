@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
@@ -23,6 +24,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItemBlock;
 import org.newdawn.slick.opengl.Texture;
+import net.minecraft.client.Minecraft;
 //Spout end
 
 public class WorldRenderer {
