@@ -1,16 +1,18 @@
 package net.minecraft.src;
 
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityArrow;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;
+import net.minecraft.src.ModelRenderer;
 import net.minecraft.src.Render;
 import net.minecraft.src.Tessellator;
-
-import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 public class RenderLiving extends Render {
 
@@ -30,7 +32,7 @@ public class RenderLiving extends Render {
 	public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
 		GL11.glPushMatrix();
 		GL11.glDisable(2884 /*GL_CULL_FACE*/);
-		this.mainModel.onGround = this.func_167_c(var1, var9);
+		this.mainModel.onGround = this.renderSwingProgress(var1, var9);
 		if(this.renderPassModel != null) {
 			this.renderPassModel.onGround = this.mainModel.onGround;
 		}
@@ -44,8 +46,8 @@ public class RenderLiving extends Render {
 			float var10 = var1.prevRenderYawOffset + (var1.renderYawOffset - var1.prevRenderYawOffset) * var9;
 			float var11 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var9;
 			float var12 = var1.prevRotationPitch + (var1.rotationPitch - var1.prevRotationPitch) * var9;
-			this.func_22012_b(var1, var2, var4, var6);
-			float var13 = this.func_170_d(var1, var9);
+			this.renderLivingAt(var1, var2, var4, var6);
+			float var13 = this.handleRotationFloat(var1, var9);
 			this.rotateCorpse(var1, var13, var10, var9);
 			float var14 = 0.0625F;
 			GL11.glEnable('\u803a');
@@ -61,11 +63,11 @@ public class RenderLiving extends Render {
 			this.loadDownloadableImageTexture(var1.skinUrl, var1.getEntityTexture());
 			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			this.mainModel.setLivingAnimations(var1, var16, var15, var9);
-			this.mainModel.render(var16, var15, var13, var11 - var10, var12, var14);
+			this.mainModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 
 			for(int var17 = 0; var17 < 4; ++var17) {
 				if(this.shouldRenderPass(var1, var17, var9)) {
-					this.renderPassModel.render(var16, var15, var13, var11 - var10, var12, var14);
+					this.renderPassModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 					GL11.glDisable(3042 /*GL_BLEND*/);
 					GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 				}
@@ -74,6 +76,11 @@ public class RenderLiving extends Render {
 			this.renderEquippedItems(var1, var9);
 			float var25 = var1.getEntityBrightness(var9);
 			int var18 = this.getColorMultiplier(var1, var25, var9);
+			GL13.glClientActiveTexture('\u84c1');
+			GL13.glActiveTexture('\u84c1');
+			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+			GL13.glClientActiveTexture('\u84c0');
+			GL13.glActiveTexture('\u84c0');
 			if((var18 >> 24 & 255) > 0 || var1.hurtTime > 0 || var1.deathTime > 0) {
 				GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 				GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
@@ -82,12 +89,12 @@ public class RenderLiving extends Render {
 				GL11.glDepthFunc(514);
 				if(var1.hurtTime > 0 || var1.deathTime > 0) {
 					GL11.glColor4f(var25, 0.0F, 0.0F, 0.4F);
-					this.mainModel.render(var16, var15, var13, var11 - var10, var12, var14);
+					this.mainModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 
 					for(int var19 = 0; var19 < 4; ++var19) {
-						if(this.func_27005_b(var1, var19, var9)) {
+						if(this.inheritRenderPass(var1, var19, var9)) {
 							GL11.glColor4f(var25, 0.0F, 0.0F, 0.4F);
-							this.renderPassModel.render(var16, var15, var13, var11 - var10, var12, var14);
+							this.renderPassModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 						}
 					}
 				}
@@ -98,12 +105,12 @@ public class RenderLiving extends Render {
 					float var21 = (float)(var18 & 255) / 255.0F;
 					float var22 = (float)(var18 >> 24 & 255) / 255.0F;
 					GL11.glColor4f(var26, var20, var21, var22);
-					this.mainModel.render(var16, var15, var13, var11 - var10, var12, var14);
+					this.mainModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 
 					for(int var23 = 0; var23 < 4; ++var23) {
-						if(this.func_27005_b(var1, var23, var9)) {
+						if(this.inheritRenderPass(var1, var23, var9)) {
 							GL11.glColor4f(var26, var20, var21, var22);
-							this.renderPassModel.render(var16, var15, var13, var11 - var10, var12, var14);
+							this.renderPassModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 						}
 					}
 				}
@@ -119,12 +126,17 @@ public class RenderLiving extends Render {
 			var24.printStackTrace();
 		}
 
+		GL13.glClientActiveTexture('\u84c1');
+		GL13.glActiveTexture('\u84c1');
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+		GL13.glClientActiveTexture('\u84c0');
+		GL13.glActiveTexture('\u84c0');
 		GL11.glEnable(2884 /*GL_CULL_FACE*/);
 		GL11.glPopMatrix();
 		this.passSpecialRender(var1, var2, var4, var6);
 	}
 
-	protected void func_22012_b(EntityLiving var1, double var2, double var4, double var6) {
+	protected void renderLivingAt(EntityLiving var1, double var2, double var4, double var6) {
 		GL11.glTranslatef((float)var2, (float)var4, (float)var6);
 	}
 
@@ -142,17 +154,51 @@ public class RenderLiving extends Render {
 
 	}
 
-	protected float func_167_c(EntityLiving var1, float var2) {
+	protected float renderSwingProgress(EntityLiving var1, float var2) {
 		return var1.getSwingProgress(var2);
 	}
 
-	protected float func_170_d(EntityLiving var1, float var2) {
+	protected float handleRotationFloat(EntityLiving var1, float var2) {
 		return (float)var1.ticksExisted + var2;
 	}
 
-	protected void renderEquippedItems(EntityLiving var1, float var2) {}
+	protected void renderEquippedItems(EntityLiving var1, float var2) {
+		if(var1.field_35172_bP > 0) {
+			EntityArrow var3 = new EntityArrow(var1.worldObj, var1.posX, var1.posY, var1.posZ);
+			Random var4 = new Random((long)var1.entityId);
 
-	protected boolean func_27005_b(EntityLiving var1, int var2, float var3) {
+			for(int var5 = 0; var5 < var1.field_35172_bP; ++var5) {
+				GL11.glPushMatrix();
+				ModelRenderer var6 = this.mainModel.func_35393_a(var4);
+				var6.postRender(0.0625F);
+				float var7 = var4.nextFloat();
+				float var8 = var4.nextFloat();
+				float var9 = var4.nextFloat();
+				float var10 = (var6.field_35977_i + (var6.field_35973_l - var6.field_35977_i) * var7) / 16.0F;
+				float var11 = (var6.field_35975_j + (var6.field_35974_m - var6.field_35975_j) * var8) / 16.0F;
+				float var12 = (var6.field_35976_k + (var6.field_35972_n - var6.field_35976_k) * var9) / 16.0F;
+				GL11.glTranslatef(var10, var11, var12);
+				var7 = var7 * 2.0F - 1.0F;
+				var8 = var8 * 2.0F - 1.0F;
+				var9 = var9 * 2.0F - 1.0F;
+				var7 *= -1.0F;
+				var8 *= -1.0F;
+				var9 *= -1.0F;
+				float var13 = MathHelper.sqrt_float(var7 * var7 + var9 * var9);
+				var3.prevRotationYaw = var3.rotationYaw = (float)(Math.atan2((double)var7, (double)var9) * 180.0D / 3.1415927410125732D);
+				var3.prevRotationPitch = var3.rotationPitch = (float)(Math.atan2((double)var8, (double)var13) * 180.0D / 3.1415927410125732D);
+				double var14 = 0.0D;
+				double var16 = 0.0D;
+				double var18 = 0.0D;
+				float var20 = 0.0F;
+				this.renderManager.renderEntityWithPosYaw(var3, var14, var16, var18, var20, var2);
+				GL11.glPopMatrix();
+			}
+		}
+
+	}
+
+	protected boolean inheritRenderPass(EntityLiving var1, int var2, float var3) {
 		return this.shouldRenderPass(var1, var2, var3);
 	}
 

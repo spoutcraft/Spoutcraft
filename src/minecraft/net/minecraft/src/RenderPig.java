@@ -1,34 +1,27 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
-import org.getspout.spout.entity.EntitySkinType;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPig;
+import net.minecraft.src.ModelBase;
+import net.minecraft.src.RenderLiving;
 
+public class RenderPig extends RenderLiving {
 
-// Referenced classes of package net.minecraft.src:
-//            RenderLiving, EntityPig, ModelBase, EntityLiving
+	public RenderPig(ModelBase var1, ModelBase var2, float var3) {
+		super(var1, var3);
+		this.setRenderPassModel(var2);
+	}
 
-public class RenderPig extends RenderLiving
-{
-
-    public RenderPig(ModelBase modelbase, ModelBase modelbase1, float f)
-    {
-        super(modelbase, f);
-        setRenderPassModel(modelbase1);
-    }
-
-    protected boolean renderSaddledPig(EntityPig entitypig, int i, float f)
-    {
-    	//Spout Start
+	protected boolean renderSaddledPig(EntityPig var1, int var2, float var3) {
+		//Spout Start
         loadTexture(EntitySkinType.getTexture(EntitySkinType.PIG_SADDLE, entitypig, "/mob/saddle.png"));
     	//Spout End
-        return i == 0 && entitypig.getSaddled();
-    }
+		return var2 == 0 && var1.getSaddled();
+	}
 
-    protected boolean shouldRenderPass(EntityLiving entityliving, int i, float f)
-    {
-        return renderSaddledPig((EntityPig)entityliving, i, f);
-    }
+	// $FF: synthetic method
+	// $FF: bridge method
+	protected boolean shouldRenderPass(EntityLiving var1, int var2, float var3) {
+		return this.renderSaddledPig((EntityPig)var1, var2, var3);
+	}
 }
