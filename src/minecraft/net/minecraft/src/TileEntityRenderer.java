@@ -7,6 +7,8 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntityChest;
+import net.minecraft.src.TileEntityChestRenderer;
 import net.minecraft.src.TileEntityMobSpawner;
 import net.minecraft.src.TileEntityMobSpawnerRenderer;
 import net.minecraft.src.TileEntityPiston;
@@ -16,6 +18,7 @@ import net.minecraft.src.TileEntitySignRenderer;
 import net.minecraft.src.TileEntitySpecialRenderer;
 import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 public class TileEntityRenderer {
 
@@ -39,6 +42,7 @@ public class TileEntityRenderer {
 		this.specialRendererMap.put(TileEntitySign.class, new TileEntitySignRenderer());
 		this.specialRendererMap.put(TileEntityMobSpawner.class, new TileEntityMobSpawnerRenderer());
 		this.specialRendererMap.put(TileEntityPiston.class, new TileEntityRendererPiston());
+		this.specialRendererMap.put(TileEntityChest.class, new TileEntityChestRenderer());
 		Iterator var1 = this.specialRendererMap.values().iterator();
 
 		while(var1.hasNext()) {
@@ -101,8 +105,11 @@ public class TileEntityRenderer {
 
 	public void renderTileEntity(TileEntity var1, float var2) {
 		if(var1.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < 4096.0D) {
-			float var3 = this.worldObj.getLightBrightness(var1.xCoord, var1.yCoord, var1.zCoord);
-			GL11.glColor3f(var3, var3, var3);
+			int var3 = this.worldObj.func_35451_b(var1.xCoord, var1.yCoord, var1.zCoord, 0);
+			int var4 = var3 % 65536;
+			int var5 = var3 / 65536;
+			GL13.glMultiTexCoord2f('\u84c1', (float)var4 / 1.0F, (float)var5 / 1.0F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.renderTileEntityAt(var1, (double)var1.xCoord - staticPlayerX, (double)var1.yCoord - staticPlayerY, (double)var1.zCoord - staticPlayerZ, var2);
 		}
 

@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.IntBuffer;
@@ -291,12 +290,12 @@ public class FontRenderer {
 		}
 	}
 
-	public void func_27278_a(String var1, int var2, int var3, int var4, int var5) {
+	public void drawSplitString(String var1, int var2, int var3, int var4, int var5) {
 		String[] var6 = var1.split("\n");
 		if(var6.length > 1) {
 			for(int var11 = 0; var11 < var6.length; ++var11) {
-				this.func_27278_a(var6[var11], var2, var3, var4, var5);
-				var3 += this.func_27277_a(var6[var11], var4);
+				this.drawSplitString(var6[var11], var2, var3, var4, var5);
+				var3 += this.splitStringWidth(var6[var11], var4);
 			}
 
 		} else {
@@ -330,14 +329,14 @@ public class FontRenderer {
 		}
 	}
 
-	public int func_27277_a(String var1, int var2) {
+	public int splitStringWidth(String var1, int var2) {
 		String[] var3 = var1.split("\n");
 		int var5;
 		if(var3.length > 1) {
 			int var9 = 0;
 
 			for(var5 = 0; var5 < var3.length; ++var5) {
-				var9 += this.func_27277_a(var3[var5], var2);
+				var9 += this.splitStringWidth(var3[var5], var2);
 			}
 
 			return var9;

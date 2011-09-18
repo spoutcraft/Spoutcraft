@@ -3,15 +3,27 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
-
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Block;
+import net.minecraft.src.Chunk;
+import net.minecraft.src.ChunkCache;
+import net.minecraft.src.Entity;
+import net.minecraft.src.ICamera;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.RenderItem;
+import net.minecraft.src.Tessellator;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntityRenderer;
+import net.minecraft.src.World;
+import org.lwjgl.opengl.GL11;
+//Spout start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItemBlock;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+//Spout end
 
 public class WorldRenderer {
 
@@ -119,12 +131,6 @@ public class WorldRenderer {
 
 			for(int var7 = 0; var7 < 3; ++var7) { //Spout
 				this.skipRenderPass[var7] = true;
-			}
-
-			Object var23 = Config.getFieldValue("LightCache", "cache");
-			if(var23 != null) {
-				Config.callVoid(var23, "clear", new Object[0]);
-				Config.callVoid("BlockCoord", "resetPool", new Object[0]);
 			}
 
 			Chunk.isLit = false;
@@ -283,7 +289,7 @@ public class WorldRenderer {
 		this.isInitialized = false;
 	}
 
-	public void func_1204_c() {
+	public void stopRendering() {
 		this.setDontDraw();
 		this.worldObj = null;
 	}
