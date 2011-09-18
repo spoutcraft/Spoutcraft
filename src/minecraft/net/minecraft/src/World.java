@@ -2314,6 +2314,11 @@ public class World implements IBlockAccess {
 	}
 
 	public void setWorldTime(long var1) {
+		//Spout start
+		if (Config.isTimeDayOnly() || Config.isTimeNightOnly()) {
+			return;
+		}
+		//Spout end
 		this.worldInfo.setWorldTime(var1);
 	}
 

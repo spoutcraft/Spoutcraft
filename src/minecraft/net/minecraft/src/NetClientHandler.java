@@ -10,7 +10,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Random;
 
-import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.client.SpoutClient;
 
 import net.minecraft.client.Minecraft;
@@ -586,14 +585,9 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleRespawn(Packet9Respawn var1) {
-		// Spout start
-		long oldSeed = this.worldClient.getWorldInfo().getRandomSeed();
-		long newSeed = this.worldClient.getWorldInfo().getNewSeed();
-		boolean seedUpdated = oldSeed != newSeed;
-		if (seedUpdated || var1.respawnDimension != this.mc.thePlayer.dimension) {
-			// Spout end
+		if (var1.respawnDimension != this.mc.thePlayer.dimension) {
 			this.field_1210_g = false;
-			this.worldClient = new WorldClient(this, newSeed, var1.respawnDimension); // Spout - use updated seed
+			this.worldClient = new WorldClient(this, this.worldClient.getWorldInfo().getRandomSeed(), var1.respawnDimension); 
 			this.worldClient.multiplayerWorld = true;
 			this.mc.changeWorld1(this.worldClient);
 			this.mc.thePlayer.dimension = var1.respawnDimension;
