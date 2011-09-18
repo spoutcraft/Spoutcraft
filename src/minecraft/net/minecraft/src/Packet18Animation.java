@@ -3,6 +3,9 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.minecraft.src.Entity;
+import net.minecraft.src.NetHandler;
+import net.minecraft.src.Packet;
 
 //Spout Start
 import net.minecraft.client.Minecraft;

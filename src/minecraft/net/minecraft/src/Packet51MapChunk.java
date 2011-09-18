@@ -8,8 +8,6 @@ import java.util.zip.Inflater;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
 
-import org.getspout.spout.chunkcache.ChunkCache;
-
 public class Packet51MapChunk extends Packet {
 
 	public int xPosition;
@@ -42,7 +40,7 @@ public class Packet51MapChunk extends Packet {
 
 		try {
 			var3.inflate(this.chunk);
-			// Spout - start
+            // Spout - start
 			this.chunk = ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
 			// Spout - end
 		} catch (DataFormatException var8) {
