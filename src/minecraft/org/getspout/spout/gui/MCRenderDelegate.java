@@ -29,6 +29,7 @@ public class MCRenderDelegate implements RenderDelegate{
 	protected final RenderItemCustom renderer;
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
+	MinecraftTessellator tessellator = new MinecraftTessellatorWrapper();
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
 		renderer.setRenderManager(RenderManager.instance);
@@ -397,5 +398,9 @@ public class MCRenderDelegate implements RenderDelegate{
 
 	public MinecraftFont getMinecraftFont() {
 		return font;
+	}
+
+	public MinecraftTessellator getTessellator() {
+		return tessellator;
 	}
 }
