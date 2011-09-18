@@ -5,6 +5,10 @@ import net.minecraft.src.EntityPig;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.RenderLiving;
 
+//Spout Start
+import org.getspout.spout.entity.EntitySkinType;
+//Spout End
+
 public class RenderPig extends RenderLiving {
 
 	public RenderPig(ModelBase var1, ModelBase var2, float var3) {
