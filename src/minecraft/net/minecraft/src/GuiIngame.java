@@ -7,12 +7,18 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChatLine;
+import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.FontRenderer;
+import net.minecraft.src.FoodStats;
 import net.minecraft.src.Gui;
 import net.minecraft.src.GuiChat;
+import net.minecraft.src.GuiSavingLevelString;
 import net.minecraft.src.InventoryPlayer;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.NetClientHandler;
+import net.minecraft.src.Potion;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderItem;
 import net.minecraft.src.ScaledResolution;
@@ -39,7 +45,7 @@ public class GuiIngame extends Gui {
 	private int updateCounter = 0;
 	private String recordPlaying = "";
 	private int recordPlayingUpFor = 0;
-	private boolean field_22065_l = false;
+	private boolean recordIsPlaying = false;
 	public float damageGuiPartialTime;
 	float prevVignetteBrightness = 1.0F;
 
@@ -203,7 +209,7 @@ public class GuiIngame extends Gui {
 				GL11.glEnable(3042 /*GL_BLEND*/);
 				GL11.glBlendFunc(770, 771);
 				var17 = 16777215;
-				if(this.field_22065_l) {
+				if(this.recordIsPlaying) {
 					var17 = Color.HSBtoRGB(var24 / 50.0F, 0.7F, 0.6F) & 16777215;
 				}
 
@@ -254,9 +260,67 @@ public class GuiIngame extends Gui {
 		}
 
 		GL11.glPopMatrix();
+		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.field_35384_x.field_35965_e) {
+			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
+			List var44 = var41.field_35786_c;
+			int var40 = var41.field_35785_d;
+			var38 = var40;
+
+			for(var16 = 1; var38 > 20; var38 = (var40 + var16 - 1) / var16) {
+				++var16;
+			}
+
+			var17 = 300 / var16;
+			if(var17 > 150) {
+				var17 = 150;
+			}
+
+			var18 = (var6 - var16 * var17) / 2;
+			byte var46 = 10;
+			this.drawRect(var18 - 1, var46 - 1, var18 + var17 * var16, var46 + 9 * var38, Integer.MIN_VALUE);
+
+			for(var20 = 0; var20 < var40; ++var20) {
+				var47 = var18 + var20 % var16 * var17;
+				var22 = var46 + var20 / var16 * 9;
+				this.drawRect(var47, var22, var47 + var17 - 1, var22 + 8, 553648127);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
+				if(var20 < var44.size()) {
+					GuiSavingLevelString var50 = (GuiSavingLevelString)var44.get(var20);
+					var8.drawStringWithShadow(var50.field_35624_a, var47, var22, 16777215);
+					this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
+					boolean var48 = false;
+					boolean var53 = false;
+					byte var49 = 0;
+					var53 = false;
+					byte var54;
+					if(var50.field_35623_b < 0) {
+						var54 = 5;
+					} else if(var50.field_35623_b < 150) {
+						var54 = 0;
+					} else if(var50.field_35623_b < 300) {
+						var54 = 1;
+					} else if(var50.field_35623_b < 600) {
+						var54 = 2;
+					} else if(var50.field_35623_b < 1000) {
+						var54 = 3;
+					} else {
+						var54 = 4;
+					}
+
+					this.zLevel += 100.0F;
+					this.drawTexturedModalRect(var47 + var17 - 12, var22, 0 + var49 * 10, 176 + var54 * 8, 10, 8);
+					this.zLevel -= 100.0F;
+				}
+			}
+		}
+
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
+	//Spout End
 
 	private void renderPumpkinBlur(int var1, int var2) {
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
@@ -397,7 +461,7 @@ public class GuiIngame extends Gui {
 	public void setRecordPlayingMessage(String var1) {
 		this.recordPlaying = "Now playing: " + var1;
 		this.recordPlayingUpFor = 60;
-		this.field_22065_l = true;
+		this.recordIsPlaying = true;
 	}
 
 	public void addChatMessageTranslate(String var1) {
