@@ -181,8 +181,6 @@ public class GameSettings {
 		if(var1 == EnumOptions.GAMMA) {
 			this.field_35380_M = var2;
 		}
-
-	}
 //Spout Start
 		if(var1 == EnumOptions.BRIGHTNESS) {
 			this.ofBrightness = var2;
