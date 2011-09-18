@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
+import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.ItemStack;
@@ -20,10 +20,12 @@ import net.minecraft.src.Packet9Respawn;
 import net.minecraft.src.Session;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
-import org.getspout.spout.packet.*; //Spout
-import org.getspout.spout.client.SpoutClient; //Spout
-import org.getspout.spout.gui.*; //Spout
+//Spout Start
+import org.getspout.spout.packet.*;
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+//Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 
@@ -37,6 +39,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private float oldRotationYaw;
 	private float oldRotationPitch;
 	private boolean field_9382_bF = false;
+	private boolean field_35227_cs = false;
 	private boolean wasSneaking = false;
 	private int field_12242_bI = 0;
 	//Spout Start
@@ -49,14 +52,17 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		this.sendQueue = var4;
 	}
 
-	public boolean attackEntityFrom(Entity var1, int var2) {
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
 		return false;
 	}
 
 	public void heal(int var1) {}
 
 	public void onUpdate() {
-		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), 64, MathHelper.floor_double(this.posZ))) {
+		World var10000 = this.worldObj;
+		int var10001 = MathHelper.floor_double(this.posX);
+		this.worldObj.getClass();
+		if(var10000.blockExists(var10001, 128 / 2, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
 			this.func_4056_N();
 		}
@@ -74,42 +80,53 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			this.field_9380_bx = 0;
 		}
 
-		boolean var1 = this.isSneaking();
+		boolean var1 = this.func_35117_Q();
 		if(var1 != this.wasSneaking) {
 			if(var1) {
-				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
 			} else {
-				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 5));
 			}
 
 			this.wasSneaking = var1;
 		}
 
-		double var2 = this.posX - this.oldPosX;
-		double var4 = this.boundingBox.minY - this.field_9378_bz;
-		double var6 = this.posY - this.oldPosY;
-		double var8 = this.posZ - this.oldPosZ;
-		double var10 = (double)(this.rotationYaw - this.oldRotationYaw);
-		double var12 = (double)(this.rotationPitch - this.oldRotationPitch);
-		boolean var14 = var4 != 0.0D || var6 != 0.0D || var2 != 0.0D || var8 != 0.0D;
-		boolean var15 = var10 != 0.0D || var12 != 0.0D;
+		boolean var2 = this.isSneaking();
+		if(var2 != this.field_35227_cs) {
+			if(var2) {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
+			} else {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
+			}
+
+			this.field_35227_cs = var2;
+		}
+
+		double var3 = this.posX - this.oldPosX;
+		double var5 = this.boundingBox.minY - this.field_9378_bz;
+		double var7 = this.posY - this.oldPosY;
+		double var9 = this.posZ - this.oldPosZ;
+		double var11 = (double)(this.rotationYaw - this.oldRotationYaw);
+		double var13 = (double)(this.rotationPitch - this.oldRotationPitch);
+		boolean var15 = var5 != 0.0D || var7 != 0.0D || var3 != 0.0D || var9 != 0.0D;
+		boolean var16 = var11 != 0.0D || var13 != 0.0D;
 		//Spout start
 		if (!(this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload)) {
 		if(this.ridingEntity != null) {
-			if(var15) {
+			if(var16) {
 				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
 			} else {
 				this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
 			}
 
-			var14 = false;
-		} else if(var14 && var15) {
+			var15 = false;
+		} else if(var15 && var16) {
 			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
 			this.field_12242_bI = 0;
-		} else if(var14) {
+		} else if(var15) {
 			this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
 			this.field_12242_bI = 0;
-		} else if(var15) {
+		} else if(var16) {
 			this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
 			this.field_12242_bI = 0;
 		} else {
@@ -124,14 +141,14 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		//Spout End
 
 		this.field_9382_bF = this.onGround;
-		if(var14) {
+		if(var15) {
 			this.oldPosX = this.posX;
 			this.field_9378_bz = this.boundingBox.minY;
 			this.oldPosY = this.posY;
 			this.oldPosZ = this.posZ;
 		}
 
-		if(var15) {
+		if(var16) {
 			this.oldRotationYaw = this.rotationYaw;
 			this.oldRotationPitch = this.rotationPitch;
 		}
@@ -157,11 +174,18 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void respawnPlayer() {
 		this.sendInventoryChanged();
-		this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension));
+		NetClientHandler var10000 = this.sendQueue;
+		//Packet9Respawn var10001 = new Packet9Respawn;
+		byte var10003 = (byte)this.dimension;
+		byte var10004 = (byte)this.worldObj.difficultySetting;
+		long var10005 = this.worldObj.getRandomSeed();
+		this.worldObj.getClass();
+		Packet9Respawn var10001 = new Packet9Respawn(var10003, var10004, var10005, 128, 0);
+		var10000.addToSendQueue(var10001);
 	}
 
-	protected void damageEntity(int var1) {
-		this.health -= var1;
+	protected void b(DamageSource var1, int var2) {
+		this.health -= var2;
 	}
 
 	public void closeScreen() {
@@ -233,8 +257,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	//Spout Start
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
-				super.updateCloak();
-				System.out.println("UpdateCloak");
+			super.updateCloak();
 		}
 	}
 	//Spout End

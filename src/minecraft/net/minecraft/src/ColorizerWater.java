@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+
 public class ColorizerWater {
 
 	public static int[] waterBuffer = new int[65536]; // Spout HD private -> public
