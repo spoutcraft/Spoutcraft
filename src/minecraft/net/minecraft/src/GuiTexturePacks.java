@@ -98,6 +98,16 @@ public class GuiTexturePacks extends GuiScreen {
 	}
 
 	// $FF: synthetic method
+	static Minecraft func_35307_f(GuiTexturePacks var0) {
+		return var0.mc;
+	}
+
+	// $FF: synthetic method
+	static Minecraft func_35308_g(GuiTexturePacks var0) {
+		return var0.mc;
+	}
+
+	// $FF: synthetic method
 	static Minecraft func_22118_f(GuiTexturePacks var0) {
 		return var0.mc;
 	}
