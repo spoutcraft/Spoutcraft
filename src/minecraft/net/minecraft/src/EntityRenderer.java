@@ -1077,6 +1077,9 @@ public class EntityRenderer {
 						float var24 = this.field_35822_i[var23] * 0.5F;
 						float var25 = this.field_35820_j[var23] * 0.5F;
 						BiomeGenBase var26 = var17[var46++];
+						if(SpoutClient.getInstance().getBiomeManager().getSnowChanged(var26.getBiomeName())) {
+							var26.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var26.getBiomeName()));
+						}
 						if(var26.canSpawnLightningBolt() || var26.getEnableSnow()) {
 							int var27 = var42.func_35461_e(var21, var22);
 							int var28 = var44 - var16;
