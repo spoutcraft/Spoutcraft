@@ -1,83 +1,77 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.FontRenderer;
+import net.minecraft.src.SignModel;
+import net.minecraft.src.TileEntity;
+import net.minecraft.src.TileEntitySign;
+import net.minecraft.src.TileEntitySpecialRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class TileEntitySignRenderer extends TileEntitySpecialRenderer
-{
-	private SignModel signModel;
+public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
-	public TileEntitySignRenderer()
-	{
-		signModel = new SignModel();
-	}
+	private SignModel signModel = new SignModel();
 
-	public void renderTileEntitySignAt(TileEntitySign tileentitysign, double d, double d1, double d2, 
-			float f)
-	{
-		Block block = tileentitysign.getBlockType();
+
+	public void renderTileEntitySignAt(TileEntitySign var1, double var2, double var4, double var6, float var8) {
+		Block var9 = var1.getBlockType();
 		GL11.glPushMatrix();
-		float f1 = 0.6666667F;
-		if(block == Block.signPost)
-		{
-			GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.75F * f1, (float)d2 + 0.5F);
-			float f2 = (float)(tileentitysign.getBlockMetadata() * 360) / 16F;
-			GL11.glRotatef(-f2, 0.0F, 1.0F, 0.0F);
-			signModel.signStick.showModel = true;
-		} else
-		{
-			int i = tileentitysign.getBlockMetadata();
-			float f3 = 0.0F;
-			if(i == 2)
-			{
-				f3 = 180F;
+		float var10 = 0.6666667F;
+		float var12;
+		if(var9 == Block.signPost) {
+			GL11.glTranslatef((float)var2 + 0.5F, (float)var4 + 0.75F * var10, (float)var6 + 0.5F);
+			float var11 = (float)(var1.getBlockMetadata() * 360) / 16.0F;
+			GL11.glRotatef(-var11, 0.0F, 1.0F, 0.0F);
+			this.signModel.signStick.showModel = true;
+		} else {
+			int var16 = var1.getBlockMetadata();
+			var12 = 0.0F;
+			if(var16 == 2) {
+				var12 = 180.0F;
 			}
-			if(i == 4)
-			{
-				f3 = 90F;
+
+			if(var16 == 4) {
+				var12 = 90.0F;
 			}
-			if(i == 5)
-			{
-				f3 = -90F;
+
+			if(var16 == 5) {
+				var12 = -90.0F;
 			}
-			GL11.glTranslatef((float)d + 0.5F, (float)d1 + 0.75F * f1, (float)d2 + 0.5F);
-			GL11.glRotatef(-f3, 0.0F, 1.0F, 0.0F);
+
+			GL11.glTranslatef((float)var2 + 0.5F, (float)var4 + 0.75F * var10, (float)var6 + 0.5F);
+			GL11.glRotatef(-var12, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -0.3125F, -0.4375F);
-			signModel.signStick.showModel = false;
+			this.signModel.signStick.showModel = false;
 		}
-		bindTextureByName("/item/sign.png");
+
+		this.bindTextureByName("/item/sign.png");
 		GL11.glPushMatrix();
-		GL11.glScalef(f1, -f1, -f1);
-		signModel.renderSign();
+		GL11.glScalef(var10, -var10, -var10);
+		this.signModel.renderSign();
 		GL11.glPopMatrix();
-		FontRenderer fontrenderer = getFontRenderer();
-		float f4 = 0.01666667F * f1;
-		GL11.glTranslatef(0.0F, 0.5F * f1, 0.07F * f1);
-		GL11.glScalef(f4, -f4, f4);
-		GL11.glNormal3f(0.0F, 0.0F, -1F * f4);
+		FontRenderer var17 = this.getFontRenderer();
+		var12 = 0.016666668F * var10;
+		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);
+		GL11.glScalef(var12, -var12, var12);
+		GL11.glNormal3f(0.0F, 0.0F, -1.0F * var12);
 		GL11.glDepthMask(false);
-		int j = 0;
-		for(int k = 0; k < tileentitysign.signText.length; k++)
-		{
-			String s = tileentitysign.signText[k];
-			if(k == tileentitysign.lineBeingEdited)
-			{
+		byte var13 = 0;
+
+		for(int var14 = 0; var14 < var1.signText.length; ++var14) {
+			String var15 = var1.signText[var14];
+			if(var14 == var1.lineBeingEdited) {
 				//Spoutcraft Start
-				String before = s.substring(0, tileentitysign.columnBeingEdited);
+				String before = var15.substring(0, var1.columnBeingEdited);
 				String after = "";
-				if(s.length() - tileentitysign.columnBeingEdited > 0)
+				if(var15.length() - var1.columnBeingEdited > 0)
 				{
-					after = s.substring(tileentitysign.columnBeingEdited, s.length());
+					after = var15.substring(var1.columnBeingEdited, var15.length());
 				}
-				s = before + "_" + after;
+				var15 = before + "_" + after;
 				//Spoutcraft End
-				fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, k * 10 - tileentitysign.signText.length * 5, j);
-			} else
-			{
-				fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, k * 10 - tileentitysign.signText.length * 5, j);
+				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - var1.signText.length * 5, var13);
+			} else {
+				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - var1.signText.length * 5, var13);
 			}
 		}
 
@@ -86,9 +80,9 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer
 		GL11.glPopMatrix();
 	}
 
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, 
-			float f)
-	{
-		renderTileEntitySignAt((TileEntitySign)tileentity, d, d1, d2, f);
+	// $FF: synthetic method
+	// $FF: bridge method
+	public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
+		this.renderTileEntitySignAt((TileEntitySign)var1, var2, var4, var6, var8);
 	}
 }
