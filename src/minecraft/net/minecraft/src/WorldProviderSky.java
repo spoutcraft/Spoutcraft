@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkProviderSky;
@@ -39,9 +42,9 @@ public class WorldProviderSky extends WorldProvider {
 			var4 = 1.0F;
 		}
 		//Spout Start
-		float var5 = (float)(i >> 16 & 0xff) / 255F;
-		float var6 = (float)(i >> 8 & 0xff) / 255F;
-		float var7 = (float)(i & 0xff) / 255F;
+		float var5 = (float)(var3 >> 16 & 0xff) / 255F;
+		float var6 = (float)(var3 >> 8 & 0xff) / 255F;
+		float var7 = (float)(var3 & 0xff) / 255F;
 		Color fog = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if(fog!=null){
 			var5 = fog.getRedF();
