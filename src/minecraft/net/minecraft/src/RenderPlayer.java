@@ -16,6 +16,9 @@ import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.Tessellator;
+
+import org.bukkit.ChatColor;
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
@@ -109,7 +112,7 @@ public class RenderPlayer extends RenderLiving {
 					var12 = ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
 					alpha = 0f;
 				} else if(var12.equalsIgnoreCase("Olloth")) {
-					var12 = ChatColor.CYAN + "Olloth";
+					var12 = ChatColor.AQUA + "Olloth";
 					alpha = 0f;
 				}
 				//Easter egg end
