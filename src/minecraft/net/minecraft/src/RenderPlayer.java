@@ -17,8 +17,10 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.Tessellator;
 
+//Spout Start
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+//spout End
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {

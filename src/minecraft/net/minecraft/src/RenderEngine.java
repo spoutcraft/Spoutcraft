@@ -43,7 +43,6 @@ public class RenderEngine {
     //Spout HD Start
 	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 	//Spout HD End
-	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(16777216);
 	public List textureList = new ArrayList(); //Spout private -> public
 	private Map urlToImageDataMap = new HashMap();
 	private GameSettings options;
@@ -246,8 +245,8 @@ public class RenderEngine {
 			GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10243 /*GL_TEXTURE_WRAP_T*/, 10497 /*GL_REPEAT*/);
 		}
 
-		int var3 = var1.getWidth();
-		int var4 = var1.getHeight();
+		var3 = var1.getWidth();
+		var4 = var1.getHeight();
 		int[] var5 = new int[var3 * var4];
 		byte[] var6 = new byte[var3 * var4 * 4];
 		var1.getRGB(0, 0, var3, var4, var5, 0, var3);
@@ -681,6 +680,7 @@ public class RenderEngine {
 			var9 = (String)var2.next();
 
 			try {
+				if(var9.startsWith("##")) {
 				//Spout HD Start
                     var4 = this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(var9.substring(2)));
                 } else if(var9.startsWith("%clamp%")) {

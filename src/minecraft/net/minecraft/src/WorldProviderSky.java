@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
+//Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
+//spout End
 
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
