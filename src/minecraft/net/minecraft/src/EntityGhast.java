@@ -42,7 +42,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
 		this.texture = var1 == 1?"/mob/ghast_fire.png":"/mob/ghast.png";
 		//Spout Start
-		setTextureToRender((byte) (byte0 == 1? EntitySkinType.GHAST_MOUTH.getId() : 0));
+		setTextureToRender((byte) (var1 == 1? EntitySkinType.GHAST_MOUTH.getId() : 0));
 		//Spout End
 	}
 
