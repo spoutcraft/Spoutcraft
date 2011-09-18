@@ -14,10 +14,6 @@ public class TextureLavaFlowFX extends TextureFX {
 	protected float[] field_1141_i = new float[TileSize.int_numPixels];
 	protected float[] field_1140_j = new float[TileSize.int_numPixels];
 	//Spout HD End
-	protected float[] field_1143_g = new float[256];
-	protected float[] field_1142_h = new float[256];
-	protected float[] field_1141_i = new float[256];
-	protected float[] field_1140_j = new float[256];
 	int field_1139_k = 0;
 
 
