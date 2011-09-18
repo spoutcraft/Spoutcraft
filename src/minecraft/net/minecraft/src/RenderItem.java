@@ -1,13 +1,26 @@
 package net.minecraft.src;
 
 import java.util.Random;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.FontRenderer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.Render;
+import net.minecraft.src.RenderBlocks;
+import net.minecraft.src.RenderEngine;
+import net.minecraft.src.Tessellator;
+import org.lwjgl.opengl.GL11;
 
+//Spout start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItemBlock;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+//SPout end
 
 public class RenderItem extends Render {
 
@@ -71,22 +84,23 @@ public class RenderItem extends Render {
 		if(blockType != null || (!bCustomTexture && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType()))) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var29 = 0.25F;
-			// Spout End
 			if(!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
+			// Spout End
 				var29 = 0.5F;
 			}
 
 			GL11.glScalef(var29, var29, var29);
 
-			for(int var28 = 0; var28 < var13; ++var28) {
+			for(int var30 = 0; var30 < var13; ++var30) {
 				GL11.glPushMatrix();
-				if(var28 > 0) {
-					var16 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
+				if(var30 > 0) {
 					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
 					var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
-					GL11.glTranslatef(var16, var17, var18);
+					var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
+					GL11.glTranslatef(var17, var18, var19);
 				}
 
+				var17 = 1.0F;
 				//Spout Start
 				if(blockType != null) {
 					blockType.renderBlockOnInventory(renderBlocks, var1.getEntityBrightness(var9));
@@ -99,12 +113,17 @@ public class RenderItem extends Render {
 		} else {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var14 = var10.getIconIndex();
+			if(var10.itemID < 256) {
+				this.loadTexture("/terrain.png");
+			} else {
+				this.loadTexture("/gui/items.png");
+			}
 
 			Tessellator var15 = Tessellator.instance;
-			var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
+			float var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
 			var17 = (float)(var14 % 16 * 16 + 16) / 256.0F;
 			var18 = (float)(var14 / 16 * 16 + 0) / 256.0F;
-			float var19 = (float)(var14 / 16 * 16 + 16) / 256.0F;
+			var19 = (float)(var14 / 16 * 16 + 16) / 256.0F;
 			float var20 = 1.0F;
 			float var21 = 0.5F;
 			float var22 = 0.25F;
@@ -117,7 +136,7 @@ public class RenderItem extends Render {
 				var24 = (float)(var23 >> 16 & 255) / 255.0F;
 				var25 = (float)(var23 >> 8 & 255) / 255.0F;
 				var26 = (float)(var23 & 255) / 255.0F;
-				float var27 = var1.getEntityBrightness(var9);
+				float var27 = 1.0F;
 				GL11.glColor4f(var24 * var27, var25 * var27, var26 * var27, 1.0F);
 			}
 
@@ -134,7 +153,7 @@ public class RenderItem extends Render {
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
 				//Spout Start
-				if (bCustomTexture == true) {
+				if (bCustomTexture) {
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 0);
 					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 0);
 					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) 1, (double) 1);
@@ -145,7 +164,7 @@ public class RenderItem extends Render {
 					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) var17, (double) var18);
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) var16, (double) var18);
 				}
-				//Spout End	            
+				//Spout End	
 				var15.draw();
 				GL11.glPopMatrix();
 			}
@@ -205,20 +224,22 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-
-
+			if(var3 < 256) {
+				var2.bindTexture(var2.getTexture("/terrain.png"));
+			} else {
+				var2.bindTexture(var2.getTexture("/gui/items.png"));
+			}
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
 			float var9 = (float)(var8 >> 16 & 255) / 255.0F;
 			float var10 = (float)(var8 >> 8 & 255) / 255.0F;
-
 			var11 = (float)(var8 & 255) / 255.0F;
 			if(this.field_27004_a) {
 				GL11.glColor4f(var9, var10, var11, 1.0F);
 			}
 
 			// Spout Start
-			if (bCustomTexture == true) {
+			if (bCustomTexture) {
 				Tessellator tes = Tessellator.instance;
 				tes.startDrawingQuads();
 				tes.addVertexWithUV((double) (var6 + 0), (double) (var7 + 16), (double) 0, 0, 0);
@@ -288,7 +309,6 @@ public class RenderItem extends Render {
 		float var7 = 0.0F;
 		float var8 = 0.00390625F;
 		float var9 = 0.00390625F;
-
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
 		var10.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)var7, (double)((float)(var3 + 0) * var8), (double)((float)(var4 + var6) * var9));
