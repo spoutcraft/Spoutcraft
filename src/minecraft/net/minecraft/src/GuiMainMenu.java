@@ -241,13 +241,13 @@ public class GuiMainMenu extends GuiScreen {
 		this.func_35354_a(var3);
 		this.func_35354_a(var3);
 		GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
+		GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, 9729 /*GL_LINEAR*/);
+		GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10240 /*GL_TEXTURE_MAG_FILTER*/, 9729 /*GL_LINEAR*/);
 		Tessellator var4 = Tessellator.instance;
 		var4.startDrawingQuads();
 		float var5 = this.width > this.height?120.0F / (float)this.width:120.0F / (float)this.height;
 		float var6 = (float)this.height * var5 / 256.0F;
 		float var7 = (float)this.width * var5 / 256.0F;
-		GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10241 /*GL_TEXTURE_MIN_FILTER*/, 9729 /*GL_LINEAR*/);
-		GL11.glTexParameteri(3553 /*GL_TEXTURE_2D*/, 10240 /*GL_TEXTURE_MAG_FILTER*/, 9729 /*GL_LINEAR*/);
 		var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
 		int var8 = this.width;
 		int var9 = this.height;
