@@ -62,7 +62,7 @@ public final class SpawnerAnimals {
 
 				for(int var8 = -var7; var8 <= var7; ++var8) {
 					for(int var9 = -var7; var9 <= var7; ++var9) {
-						eligibleChunksForSpawning.add(new ChunkCoordIntPair(var8 + var5, var9 + var6));
+						eligibleChunksForSpawning.add((int)ChunkCoordIntPair.chunkXZ2Int(var8 + var5, var9 + var6));
 					}
 				}
 			}
@@ -75,7 +75,7 @@ public final class SpawnerAnimals {
 			for(int var35 = 0; var35 < var6; ++var35) {
 				EnumCreatureType var36 = var34[var35];
 				if((!var36.getPeacefulCreature() || var2) && (var36.getPeacefulCreature() || var1) && var0.countEntities(var36.getCreatureClass()) <= var36.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256) {
-					Iterator var37 = eligibleChunksForSpawning.iterator();
+					IntIterator var37 = eligibleChunksForSpawning.iterator();
 
 					label91:
 					while(var37.hasNext()) {
@@ -88,7 +88,7 @@ public final class SpawnerAnimals {
 						List var12 = var11.getSpawnableList(var36);
 						if(var12 != null && !var12.isEmpty()) {
 							SpawnListEntry var13 = (SpawnListEntry)WeightedRandom.func_35733_a(var0.rand, var12);
-							ChunkPosition var14 = getRandomSpawningPointInChunk(var0, var10.chunkXPos * 16, var10.chunkZPos * 16);
+							ChunkPosition var14 = getRandomSpawningPointInChunk(var0, chunkX * 16, chunkZ * 16); //Spout
 							int var15 = var14.x;
 							int var16 = var14.y;
 							int var17 = var14.z;
