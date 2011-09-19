@@ -260,7 +260,7 @@ public class GuiIngame extends Gui {
 		}
 
 		GL11.glPopMatrix();
-		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.field_35384_x.field_35965_e) {
+		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed) {
 			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
 			List var44 = var41.field_35786_c;
 			int var40 = var41.field_35785_d;

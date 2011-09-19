@@ -298,7 +298,7 @@ public abstract class Entity {
 				}
 			} else {
 				if(this.fire % 20 == 0) {
-					this.attackEntityFrom(DamageSource.field_35540_b, 1);
+					this.attackEntityFrom(DamageSource.onFire, 1);
 				}
 
 				--this.fire;
@@ -323,7 +323,7 @@ public abstract class Entity {
 
 	protected void setOnFireFromLava() {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom(DamageSource.field_35541_c, 4);
+			this.attackEntityFrom(DamageSource.lava, 4);
 			this.fire = 600;
 		}
 
@@ -610,7 +610,7 @@ public abstract class Entity {
 
 	protected void dealFireDamage(int var1) {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom(DamageSource.field_35542_a, var1);
+			this.attackEntityFrom(DamageSource.inFire, var1);
 		}
 
 	}
@@ -1140,7 +1140,7 @@ public abstract class Entity {
 		return this.getEntityFlag(3);
 	}
 
-	public void func_35113_c(boolean var1) {
+	public void shouldSprint(boolean var1) {
 		this.setFlag(3, var1);
 	}
 

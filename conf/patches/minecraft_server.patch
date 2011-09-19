@@ -217,6 +217,39 @@ diff -r -U 3 minecraft_server\net\minecraft\src\Block.java minecraft_server_patc
      public static final int field_536_t[] = new int[256];
      public static final boolean field_28029_t[] = new boolean[256];
      public static final Block field_535_u;
+@@ -582,18 +582,18 @@
+     public static final Block field_9041_O;
+     public static final Block field_9040_P;
+     public static final Block field_9039_Q;
+-    public static final Block field_9038_R = (new BlockNote(25)).func_237_c(0.8F).func_20037_a("musicBlock").func_28027_k();
+-    public static final Block field_9037_S = (new BlockBed(26)).func_237_c(0.2F).func_20037_a("bed").func_27021_h().func_28027_k();
++    public static final Block field_9038_R;
++    public static final Block field_9037_S;
+     public static final Block field_9036_T;
+     public static final Block field_9034_U;
+     public static final Block field_9033_V;
+-    public static final Block field_9032_W = (new BlockWeb(30, 11)).func_258_c(1).func_237_c(4F).func_20037_a("web");
++    public static final Block field_9032_W;
+     public static final BlockTallGrass field_9031_X;
+     public static final BlockDeadBush field_9030_Y;
+     public static final Block field_9029_Z;
+-    public static final BlockPistonExtension field_9049_aa = (BlockPistonExtension)(new BlockPistonExtension(34, 107)).func_28027_k();
++    public static final BlockPistonExtension field_9049_aa;
+     public static final Block field_616_ac;
+-    public static final BlockPistonMoving field_9048_ac = new BlockPistonMoving(36);
++    public static final BlockPistonMoving field_9048_ac;
+     public static final BlockFlower field_4072_ae;
+     public static final BlockFlower field_4071_af;
+     public static final BlockFlower field_4070_ag;
+@@ -654,7 +654,7 @@
+     public static final Block field_22010_bi;
+     public static final Block field_25013_bj;
+     public static final Block field_28030_bl;
+-    public static final Block field_35056_bm = (new BlockSilverfish(97)).func_237_c(0.75F);
++    public static final Block field_35056_bm;
+     public static final Block field_35052_bn;
+     public static final Block field_35053_bo;
+     public static final Block field_35054_bp;
 @@ -696,8 +696,6 @@
          field_9023_j = new StepSoundStone("stone", 1.0F, 1.0F);
          field_9022_k = new StepSound("cloth", 1.0F, 1.0F);
@@ -226,6 +259,33 @@ diff -r -U 3 minecraft_server\net\minecraft\src\Block.java minecraft_server_patc
          field_535_u = (new BlockStone(1, 1)).func_237_c(1.5F).func_232_b(10F).func_4026_a(field_9025_h).func_20037_a("stone");
          field_534_v = (BlockGrass)(new BlockGrass(2)).func_237_c(0.6F).func_4026_a(field_9026_g).func_20037_a("grass");
          field_533_w = (new BlockDirt(3, 2)).func_237_c(0.5F).func_4026_a(field_9027_f).func_20037_a("dirt");
+@@ -722,13 +720,18 @@
+         field_9041_O = (new Block(22, 144, Material.field_523_d)).func_237_c(3F).func_232_b(5F).func_4026_a(field_9025_h).func_20037_a("blockLapis");
+         field_9040_P = (new BlockDispenser(23)).func_237_c(3.5F).func_4026_a(field_9025_h).func_20037_a("dispenser").func_28027_k();
+         field_9039_Q = (new BlockSandStone(24)).func_4026_a(field_9025_h).func_237_c(0.8F).func_20037_a("sandStone");
++        field_9038_R = (new BlockNote(25)).func_237_c(0.8F).func_20037_a("musicBlock").func_28027_k();
++        field_9037_S = (new BlockBed(26)).func_237_c(0.2F).func_20037_a("bed").func_27021_h().func_28027_k();
+         field_9036_T = (new BlockRail(27, 179, true)).func_237_c(0.7F).func_4026_a(field_9024_i).func_20037_a("goldenRail").func_28027_k();
+         field_9034_U = (new BlockDetectorRail(28, 195)).func_237_c(0.7F).func_4026_a(field_9024_i).func_20037_a("detectorRail").func_28027_k();
+         field_9033_V = (new BlockPistonBase(29, 106, true)).func_20037_a("pistonStickyBase").func_28027_k();
++        field_9032_W = (new BlockWeb(30, 11)).func_258_c(1).func_237_c(4F).func_20037_a("web");
+         field_9031_X = (BlockTallGrass)(new BlockTallGrass(31, 39)).func_237_c(0.0F).func_4026_a(field_9026_g).func_20037_a("tallgrass");
+         field_9030_Y = (BlockDeadBush)(new BlockDeadBush(32, 55)).func_237_c(0.0F).func_4026_a(field_9026_g).func_20037_a("deadbush");
+         field_9029_Z = (new BlockPistonBase(33, 107, false)).func_20037_a("pistonBase").func_28027_k();
++        field_9049_aa = (BlockPistonExtension)(new BlockPistonExtension(34, 107)).func_28027_k();
+         field_616_ac = (new BlockCloth()).func_237_c(0.8F).func_4026_a(field_9022_k).func_20037_a("cloth").func_28027_k();
++        field_9048_ac = new BlockPistonMoving(36);
+         field_4072_ae = (BlockFlower)(new BlockFlower(37, 13)).func_237_c(0.0F).func_4026_a(field_9026_g).func_20037_a("flower");
+         field_4071_af = (BlockFlower)(new BlockFlower(38, 12)).func_237_c(0.0F).func_4026_a(field_9026_g).func_20037_a("rose");
+         field_4070_ag = (BlockFlower)(new BlockMushroom(39, 29)).func_237_c(0.0F).func_4026_a(field_9026_g).func_224_a(0.125F).func_20037_a("mushroom");
+@@ -789,6 +792,7 @@
+         field_22010_bi = (new BlockRedstoneRepeater(94, true)).func_237_c(0.0F).func_224_a(0.625F).func_4026_a(field_9028_e).func_20037_a("diode").func_27021_h().func_28027_k();
+         field_25013_bj = (new BlockLockedChest(95)).func_237_c(0.0F).func_224_a(1.0F).func_4026_a(field_9028_e).func_20037_a("lockedchest").func_231_a(true).func_28027_k();
+         field_28030_bl = (new BlockTrapDoor(96, Material.field_524_c)).func_237_c(3F).func_4026_a(field_9028_e).func_20037_a("trapdoor").func_27021_h().func_28027_k();
++        field_35056_bm = (new BlockSilverfish(97)).func_237_c(0.75F);
+         field_35052_bn = (new BlockStoneBrick(98)).func_237_c(1.5F).func_232_b(10F).func_4026_a(field_9025_h).func_20037_a("stonebricksmooth");
+         field_35053_bo = (new BlockMushroomCap(99, Material.field_524_c, 142, 0)).func_237_c(0.2F).func_4026_a(field_9028_e).func_20037_a("mushroom").func_28027_k();
+         field_35054_bp = (new BlockMushroomCap(100, Material.field_524_c, 142, 1)).func_237_c(0.2F).func_4026_a(field_9028_e).func_20037_a("mushroom").func_28027_k();
 diff -r -U 3 minecraft_server\net\minecraft\src\ConvertProgressUpdater.java minecraft_server_patched\net\minecraft\src\ConvertProgressUpdater.java
 --- minecraft_server\net\minecraft\src\ConvertProgressUpdater.java	Sun Sep 18 15:34:21 2011
 +++ minecraft_server_patched\net\minecraft\src\ConvertProgressUpdater.java	Sun Sep 18 14:40:04 2011

@@ -412,9 +412,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		return tessellator;
 	}
 
-	@Override
 	public void render(HungerBar bar) {
-
 		if (bar.isVisible()) {
 			int y = (int) bar.getScreenY();
 			int x = (int) bar.getScreenX();
@@ -426,7 +424,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			int foodIcon = 16;
 			byte foodOutline = 0;
 
-			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.field_35691_s)) {
+			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
 				foodIcon += 36;
 				foodOutline = 13;
 			}

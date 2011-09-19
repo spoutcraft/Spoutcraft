@@ -248,7 +248,7 @@ public class NetworkManager {
 	}
 
 	// $FF: synthetic method
-	static DataOutputStream func_28140_f(NetworkManager var0) {
+	static DataOutputStream getOutputStream(NetworkManager var0) {
 		return var0.socketOutputStream;
 	}
 

@@ -88,7 +88,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		if(this.field_35221_d > 0) {
 			--this.field_35221_d;
 			if(this.field_35221_d == 0) {
-				this.func_35113_c(false);
+				this.shouldSprint(false);
 			}
 		}
 
@@ -133,7 +133,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				}
 
 				this.inPortal = false;
-			} else if(this.func_35160_a(Potion.field_35684_k) && this.func_35167_b(Potion.field_35684_k).func_35802_b() > 60) {
+			} else if(this.func_35160_a(Potion.potionConfusion) && this.func_35167_b(Potion.potionConfusion).func_35802_b() > 60) {
 				this.timeInPortal += 0.006666667F;
 				if(this.timeInPortal > 1.0F) {
 					this.timeInPortal = 1.0F;
@@ -175,25 +175,25 @@ public class EntityPlayerSP extends EntityPlayer {
 				if(this.field_35224_c == 0) {
 					this.field_35224_c = 7;
 				} else {
-					this.func_35113_c(true);
+					this.shouldSprint(true);
 					this.field_35224_c = 0;
 				}
 			}
 
 			if(this.func_35117_Q() && (this.movementInput.moveForward < var2 || this.isCollidedHorizontally || !var4)) {
-				this.func_35113_c(false);
+				this.shouldSprint(false);
 			}
 
-			if(this.field_35212_aW.field_35758_c && !var1 && this.movementInput.jump) {
+			if(this.capabilities.field_35758_c && !var1 && this.movementInput.jump) {
 				if(this.field_35216_aw == 0) {
 					this.field_35216_aw = 7;
 				} else {
-					this.field_35212_aW.field_35757_b = !this.field_35212_aW.field_35757_b;
+					this.capabilities.isFlying = !this.capabilities.isFlying;
 					this.field_35216_aw = 0;
 				}
 			}
 
-			if(this.field_35212_aW.field_35757_b) {
+			if(this.capabilities.isFlying) {
 				if(this.movementInput.sneak) {
 					this.motionY -= 0.15D;
 				}
@@ -204,16 +204,16 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 
 			super.onLivingUpdate();
-			if(this.onGround && this.field_35212_aW.field_35757_b) {
-				this.field_35212_aW.field_35757_b = false;
+			if(this.onGround && this.capabilities.isFlying) {
+				this.capabilities.isFlying = false;
 			}
 
 		}
 	}
 
-	public float func_35220_u_() {
+	public float getFOVMultiplier() {
 		float var1 = 1.0F;
-		if(this.field_35212_aW.field_35757_b) {
+		if(this.capabilities.isFlying) {
 			var1 *= 1.1F;
 		}
 
@@ -297,7 +297,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.field_9346_af = var2;
 			this.prevHealth = this.health;
 			this.heartsLife = this.heartsHalvesLife;
-			this.b(DamageSource.field_35547_j, var2);
+			this.damageEntity(DamageSource.generic, var2);
 			this.hurtTime = this.maxHurtTime = 10;
 		}
 
@@ -389,8 +389,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		return false;
 	}
 
-	public void func_35113_c(boolean var1) {
-		super.func_35113_c(var1);
+	public void shouldSprint(boolean var1) {
+		super.shouldSprint(var1);
 		if(!var1) {
 			this.field_35221_d = 0;
 		} else {
@@ -399,10 +399,10 @@ public class EntityPlayerSP extends EntityPlayer {
 
 	}
 
-	public void func_35219_c(int var1, int var2, int var3) {
-		this.Xp = var1;
-		this.XpTotal = var2;
-		this.XpLevel = var3;
+	public void setXPStats(int var1, int var2, int var3) {
+		this.currentXP = var1;
+		this.totalXP = var2;
+		this.playerLevel = var3;
 	}
 	
 	//Spout

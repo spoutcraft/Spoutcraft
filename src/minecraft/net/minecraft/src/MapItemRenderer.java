@@ -33,7 +33,7 @@ public class MapItemRenderer {
 
 	}
 
-	public void func_28157_a(EntityPlayer var1, RenderEngine var2, MapData var3) {
+	public void renderMap(EntityPlayer var1, RenderEngine var2, MapData var3) {
 		for(int var4 = 0; var4 < 16384 /*GL_LIGHT0*/; ++var4) {
 			byte var5 = var3.field_28176_f[var4];
 			if(var5 / 4 == 0) {

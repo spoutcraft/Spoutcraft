@@ -53,7 +53,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public InventoryPlayer inventory = new InventoryPlayer(this);
 	public Container inventorySlots;
 	public Container craftingInventory;
-	protected FoodStats field_35217_av = new FoodStats();
+	protected FoodStats foodStats = new FoodStats();
 	protected int field_35216_aw = 0;
 	public byte field_9371_f = 0;
 	public int score = 0;
@@ -83,10 +83,10 @@ public abstract class EntityPlayer extends EntityLiving {
 	protected boolean inPortal = false;
 	public float timeInPortal;
 	public float prevTimeInPortal;
-	public PlayerCapabilities field_35212_aW = new PlayerCapabilities();
-	public int Xp;
-	public int XpLevel;
-	public int XpTotal;
+	public PlayerCapabilities capabilities = new PlayerCapabilities();
+	public int currentXP;
+	public int playerLevel;
+	public int totalXP;
 	private ItemStack field_34907_d;
 	private int field_34906_e;
 	protected float field_35215_ba = 0.1F;
@@ -198,13 +198,13 @@ public abstract class EntityPlayer extends EntityLiving {
 			this.craftingInventory = this.inventorySlots;
 		}
 
-		if(this.field_35212_aW.field_35757_b) {
+		if(this.capabilities.isFlying) {
 			for(int var9 = 0; var9 < 8; ++var9) {
 				;
 			}
 		}
 
-		if(this.fire > 0 && this.field_35212_aW.field_35759_a) {
+		if(this.fire > 0 && this.capabilities.disableDamage) {
 			this.fire = 0;
 		}
 
@@ -248,7 +248,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		if(!this.worldObj.multiplayerWorld) {
-			this.field_35217_av.func_35768_a(this);
+			this.foodStats.func_35768_a(this);
 		}
 
 	}
@@ -337,7 +337,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	private int func_35202_aE() {
-		return this.func_35160_a(Potion.field_35675_e)?6 - (1 + this.func_35167_b(Potion.field_35675_e).func_35801_c()) * 1:(this.func_35160_a(Potion.field_35672_f)?6 + (1 + this.func_35167_b(Potion.field_35672_f).func_35801_c()) * 2:6);
+		return this.func_35160_a(Potion.potionDigSpeed)?6 - (1 + this.func_35167_b(Potion.potionDigSpeed).func_35801_c()) * 1:(this.func_35160_a(Potion.potionDigSlow)?6 + (1 + this.func_35167_b(Potion.potionDigSlow).func_35801_c()) * 2:6);
 	}
 
 	protected void updateEntityActionState() {
@@ -498,12 +498,12 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 		*/
 		//Spout End
-		if(this.func_35160_a(Potion.field_35675_e)) {
-			var2 *= 1.0F + (float)(this.func_35167_b(Potion.field_35675_e).func_35801_c() + 1) * 0.2F;
+		if(this.func_35160_a(Potion.potionDigSpeed)) {
+			var2 *= 1.0F + (float)(this.func_35167_b(Potion.potionDigSpeed).func_35801_c() + 1) * 0.2F;
 		}
 
-		if(this.func_35160_a(Potion.field_35672_f)) {
-			var2 *= 1.0F - (float)(this.func_35167_b(Potion.field_35672_f).func_35801_c() + 1) * 0.2F;
+		if(this.func_35160_a(Potion.potionDigSlow)) {
+			var2 *= 1.0F - (float)(this.func_35167_b(Potion.potionDigSlow).func_35801_c() + 1) * 0.2F;
 		}
 
 		return var2;
@@ -520,9 +520,9 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.dimension = var1.getInteger("Dimension");
 		this.sleeping = var1.getBoolean("Sleeping");
 		this.sleepTimer = var1.getShort("SleepTimer");
-		this.Xp = var1.getInteger("Xp");
-		this.XpLevel = var1.getInteger("XpLevel");
-		this.XpTotal = var1.getInteger("XpTotal");
+		this.currentXP = var1.getInteger("Xp");
+		this.playerLevel = var1.getInteger("XpLevel");
+		this.totalXP = var1.getInteger("XpTotal");
 		if(this.sleeping) {
 			this.bedChunkCoordinates = new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
 			this.wakeUpPlayer(true, true, false);
@@ -532,7 +532,7 @@ public abstract class EntityPlayer extends EntityLiving {
 			this.playerSpawnCoordinate = new ChunkCoordinates(var1.getInteger("SpawnX"), var1.getInteger("SpawnY"), var1.getInteger("SpawnZ"));
 		}
 
-		this.field_35217_av.func_35766_a(var1);
+		this.foodStats.func_35766_a(var1);
 	}
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
@@ -541,16 +541,16 @@ public abstract class EntityPlayer extends EntityLiving {
 		var1.setInteger("Dimension", this.dimension);
 		var1.setBoolean("Sleeping", this.sleeping);
 		var1.setShort("SleepTimer", (short)this.sleepTimer);
-		var1.setInteger("Xp", this.Xp);
-		var1.setInteger("XpLevel", this.XpLevel);
-		var1.setInteger("XpTotal", this.XpTotal);
+		var1.setInteger("Xp", this.currentXP);
+		var1.setInteger("XpLevel", this.playerLevel);
+		var1.setInteger("XpTotal", this.totalXP);
 		if(this.playerSpawnCoordinate != null) {
 			var1.setInteger("SpawnX", this.playerSpawnCoordinate.posX);
 			var1.setInteger("SpawnY", this.playerSpawnCoordinate.posY);
 			var1.setInteger("SpawnZ", this.playerSpawnCoordinate.posZ);
 		}
 
-		this.field_35217_av.func_35763_b(var1);
+		this.foodStats.func_35763_b(var1);
 	}
 
 	public void displayGUIChest(IInventory var1) {}
@@ -568,7 +568,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		if(this.field_35212_aW.field_35759_a && !var1.func_35529_d()) {
+		if(this.capabilities.disableDamage && !var1.func_35529_d()) {
 			return false;
 		} else {
 			this.entityAge = 0;
@@ -579,7 +579,7 @@ public abstract class EntityPlayer extends EntityLiving {
 					this.wakeUpPlayer(true, true, false);
 				}
 
-				Entity var3 = var1.func_35532_a();
+				Entity var3 = var1.getEntity();
 				if(var3 instanceof EntityMob || var3 instanceof EntityArrow) {
 					if(this.worldObj.difficultySetting == 0) {
 						var2 = 0;
@@ -643,7 +643,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	protected void b(DamageSource var1, int var2) {
+	protected void damageEntity(DamageSource var1, int var2) {
 		if(!var1.func_35534_b() && this.func_35162_ad()) {
 			var2 = 1 + var2 >> 1;
 		}
@@ -657,7 +657,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		this.func_35198_d(var1.func_35533_c());
-		super.b(var1, var2);
+		super.damageEntity(var1, var2);
 	}
 
 	public void displayGUIFurnace(TileEntityFurnace var1) {}
@@ -708,13 +708,13 @@ public abstract class EntityPlayer extends EntityLiving {
 				var2 = var2 * 3 / 2 + 1;
 			}
 
-			boolean var4 = var1.attackEntityFrom(DamageSource.func_35527_a(this), var2);
+			boolean var4 = var1.attackEntityFrom(DamageSource.causePlayerDamage(this), var2);
 			if(var4) {
 				if(this.func_35117_Q()) {
 					var1.addVelocity((double)(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * 1.0F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * 1.0F));
 					this.motionX *= 0.6D;
 					this.motionZ *= 0.6D;
-					this.func_35113_c(false);
+					this.shouldSprint(false);
 				}
 
 				if(var3) {
@@ -958,7 +958,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		double var3 = this.posX;
 		double var5 = this.posY;
 		double var7 = this.posZ;
-		if(this.field_35212_aW.field_35757_b) {
+		if(this.capabilities.isFlying) {
 			double var9 = this.motionY;
 			float var11 = this.field_35168_bw;
 			this.field_35168_bw = 0.05F;
@@ -1033,7 +1033,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	protected void fall(float var1) {
-		if(!this.field_35212_aW.field_35758_c) {
+		if(!this.capabilities.field_35758_c) {
 			if(var1 >= 2.0F) {
 				this.addStat(StatList.distanceFallenStat, (int)Math.round((double)var1 * 100.0D));
 			}
@@ -1079,43 +1079,43 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	public void func_35204_c(int var1) {
-		this.Xp += var1;
-		this.XpTotal += var1;
+	public void handleXPBar(int var1) {
+		this.currentXP += var1;
+		this.totalXP += var1;
 
-		while(this.Xp >= this.func_35193_as()) {
-			this.Xp -= this.func_35193_as();
-			this.func_35203_aG();
+		while(this.currentXP >= this.xpBarCap()) {
+			this.currentXP -= this.xpBarCap();
+			this.increaseLevel();
 		}
 
 	}
 
-	public int func_35193_as() {
-		return (this.XpLevel + 1) * 10;
+	public int xpBarCap() {
+		return (this.playerLevel + 1) * 10;
 	}
 
-	private void func_35203_aG() {
-		++this.XpLevel;
+	private void increaseLevel() {
+		++this.playerLevel;
 	}
 
 	public void func_35198_d(float var1) {
-		if(!this.field_35212_aW.field_35759_a) {
+		if(!this.capabilities.disableDamage) {
 			if(!this.worldObj.multiplayerWorld) {
-				this.field_35217_av.func_35762_a(var1);
+				this.foodStats.func_35762_a(var1);
 			}
 
 		}
 	}
 
 	public FoodStats func_35191_at() {
-		return this.field_35217_av;
+		return this.foodStats;
 	}
 
 	public boolean func_35197_b(boolean var1) {
-		return (var1 || this.field_35217_av.func_35770_c()) && !this.field_35212_aW.field_35759_a;
+		return (var1 || this.foodStats.func_35770_c()) && !this.capabilities.disableDamage;
 	}
 
-	public boolean func_35194_au() {
+	public boolean shouldHeal() {
 		return this.health > 0 && this.health < 20;
 	}
 
@@ -1134,8 +1134,8 @@ public abstract class EntityPlayer extends EntityLiving {
 		return true;
 	}
 
-	protected int a(EntityPlayer var1) {
-		return this.XpTotal >> 1;
+	protected int func_36001_a(EntityPlayer var1) {
+		return this.totalXP >> 1;
 	}
 
 	protected boolean func_35163_av() {

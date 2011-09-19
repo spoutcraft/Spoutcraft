@@ -56,24 +56,24 @@ public class MovementInputFromOptions extends MovementInput {
 	public void updatePlayerMoveState(EntityPlayer var1) {
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
-		if(this.movementKeyStates[0]) {
+		if(this.gameSettings.keyBindForward.pressed) {
 			++this.moveForward;
 		}
 
-		if(this.movementKeyStates[1]) {
+		if(this.gameSettings.keyBindBack.pressed) {
 			--this.moveForward;
 		}
 
-		if(this.movementKeyStates[2]) {
+		if(this.gameSettings.keyBindLeft.pressed) {
 			++this.moveStrafe;
 		}
 
-		if(this.movementKeyStates[3]) {
+		if(this.gameSettings.keyBindRight.pressed) {
 			--this.moveStrafe;
 		}
 
-		this.jump = this.movementKeyStates[4];
-		this.sneak = this.movementKeyStates[5];
+		this.jump = this.gameSettings.keyBindJump.pressed;
+		this.sneak = this.gameSettings.keyBindSneak.pressed;
 		if(this.sneak) {
 			this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);
 			this.moveForward = (float)((double)this.moveForward * 0.3D);

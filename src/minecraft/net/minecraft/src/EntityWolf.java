@@ -271,7 +271,7 @@ public class EntityWolf extends EntityAnimal {
 	}
 
 	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		Entity var3 = var1.func_35532_a();
+		Entity var3 = var1.getEntity();
 		this.setIsSitting(false);
 		if(var3 != null && !(var3 instanceof EntityPlayer) && !(var3 instanceof EntityArrow)) {
 			var2 = (var2 + 1) / 2;
@@ -338,7 +338,7 @@ public class EntityWolf extends EntityAnimal {
 				var3 = 4;
 			}
 
-			var1.attackEntityFrom(DamageSource.func_35525_a(this), var3);
+			var1.attackEntityFrom(DamageSource.causeMobDamage(this), var3);
 		}
 
 	}

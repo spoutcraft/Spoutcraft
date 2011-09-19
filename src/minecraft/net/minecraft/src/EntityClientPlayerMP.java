@@ -42,6 +42,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private boolean wasSneaking = false;
 	private int field_12242_bI = 0;
 
+
 	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
 		super(var1, var2, var3, 0);
 		this.sendQueue = var4;
@@ -59,11 +60,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		this.worldObj.getClass();
 		if(var10000.blockExists(var10001, 128 / 2, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
-			this.func_4056_N();
+			this.onUpdate2();
 		}
 	}
 
-	public void func_4056_N() {
+	public void onUpdate2() {
 		if(this.field_9380_bx++ == 20) {
 			this.sendInventoryChanged();
 			this.field_9380_bx = 0;
@@ -173,7 +174,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		var10000.addToSendQueue(var10001);
 	}
 
-	protected void b(DamageSource var1, int var2) {
+	protected void damageEntity(DamageSource var1, int var2) {
 		this.health -= var2;
 	}
 

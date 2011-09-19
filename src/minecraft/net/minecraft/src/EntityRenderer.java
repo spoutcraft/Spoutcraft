@@ -191,7 +191,7 @@ public class EntityRenderer {
 
 	private void func_35809_c() {
 		EntityPlayerSP var1 = (EntityPlayerSP)this.mc.renderViewEntity;
-		this.field_35814_O = var1.func_35220_u_();
+		this.field_35814_O = var1.getFOVMultiplier();
 		this.field_35813_N = this.field_35812_M;
 		this.field_35812_M += (this.field_35814_O - this.field_35812_M) * 0.5F;
 	}
@@ -203,7 +203,7 @@ public class EntityRenderer {
 			EntityPlayer var3 = (EntityPlayer)this.mc.renderViewEntity;
 			float var4 = 70.0F;
 			if(var2) {
-				var4 += this.mc.gameSettings.field_35379_L * 40.0F;
+				var4 += this.mc.gameSettings.fovSetting * 40.0F;
 				var4 *= this.field_35813_N + (this.field_35812_M - this.field_35813_N) * var1;
 			}
 
@@ -382,7 +382,7 @@ public class EntityRenderer {
 		var4 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * var1;
 		if(var4 > 0.0F) {
 			byte var5 = 20;
-			if(this.mc.thePlayer.func_35160_a(Potion.field_35684_k)) {
+			if(this.mc.thePlayer.func_35160_a(Potion.potionConfusion)) {
 				var5 = 7;
 			}
 
@@ -512,7 +512,7 @@ public class EntityRenderer {
 		this.field_35815_V = true;
 	}
 
-	private void func_35808_e() {
+	private void updateLightmap() {
 		World var1 = this.mc.theWorld;
 		if(var1 != null) {
 			for(int var2 = 0; var2 < 256; ++var2) {
@@ -533,7 +533,7 @@ public class EntityRenderer {
 				var12 = var12 * 0.96F + 0.03F;
 				var13 = var13 * 0.96F + 0.03F;
 				var14 = var14 * 0.96F + 0.03F;
-				float var15 = this.mc.gameSettings.field_35380_M;
+				float var15 = this.mc.gameSettings.gammaSetting;
 				if(var12 > 1.0F) {
 					var12 = 1.0F;
 				}
@@ -643,7 +643,7 @@ public class EntityRenderer {
 		//Spout End
 
 		if(this.field_35815_V) {
-			this.func_35808_e();
+			this.updateLightmap();
 		}
 
 		if(!Display.isActive()) {
@@ -1022,144 +1022,139 @@ public class EntityRenderer {
 		if(var2 > 0.0F) {
 			//Spout Start
 			if(!Config.isRainOff()) {
-				this.func_35806_b((double)var1);
-				if(this.field_35822_i == null) {
-					this.field_35822_i = new float[1024 /*GL_FRONT_LEFT*/];
-					this.field_35820_j = new float[1024 /*GL_FRONT_LEFT*/];
-	
-					for(int var3 = 0; var3 < 32; ++var3) {
-						for(int var4 = 0; var4 < 32; ++var4) {
-							float var5 = (float)(var4 - 16);
-							float var6 = (float)(var3 - 16);
-							float var7 = MathHelper.sqrt_float(var5 * var5 + var6 * var6);
-							this.field_35822_i[var3 << 5 | var4] = -var6 / var7;
-							this.field_35820_j[var3 << 5 | var4] = var5 / var7;
-						}
+			this.func_35806_b((double)var1);
+			if(this.field_35822_i == null) {
+				this.field_35822_i = new float[1024 /*GL_FRONT_LEFT*/];
+				this.field_35820_j = new float[1024 /*GL_FRONT_LEFT*/];
+
+				for(int var3 = 0; var3 < 32; ++var3) {
+					for(int var4 = 0; var4 < 32; ++var4) {
+						float var5 = (float)(var4 - 16);
+						float var6 = (float)(var3 - 16);
+						float var7 = MathHelper.sqrt_float(var5 * var5 + var6 * var6);
+						this.field_35822_i[var3 << 5 | var4] = -var6 / var7;
+						this.field_35820_j[var3 << 5 | var4] = var5 / var7;
 					}
 				}
-	
-				EntityLiving var41 = this.mc.renderViewEntity;
-				World var42 = this.mc.theWorld;
-				int var43 = MathHelper.floor_double(var41.posX);
-				int var44 = MathHelper.floor_double(var41.posY);
-				int var45 = MathHelper.floor_double(var41.posZ);
-				Tessellator var8 = Tessellator.instance;
-				GL11.glDisable(2884 /*GL_CULL_FACE*/);
-				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-				GL11.glEnable(3042 /*GL_BLEND*/);
-				GL11.glBlendFunc(770, 771);
-				GL11.glAlphaFunc(516, 0.01F);
-				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/snow.png"));
-				double var9 = var41.lastTickPosX + (var41.posX - var41.lastTickPosX) * (double)var1;
-				double var11 = var41.lastTickPosY + (var41.posY - var41.lastTickPosY) * (double)var1;
-				double var13 = var41.lastTickPosZ + (var41.posZ - var41.lastTickPosZ) * (double)var1;
-				int var15 = MathHelper.floor_double(var11);
-				byte var16 = 5;
-				if(Config.isRainFancy()) {
-					var16 = 10;
-				}
-	
-				BiomeGenBase[] var17 = var42.getWorldChunkManager().func_4069_a(var43 - var16, var45 - var16, var16 * 2 + 1, var16 * 2 + 1);
-				boolean var18 = false;
-				byte var19 = -1;
-				float var20 = (float)this.rendererUpdateCount + var1;
-				if(Config.isRainFancy()) {
-					var16 = 10;
-				}
-	
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				int var46 = 0;
-	
-				for(int var21 = var43 - var16; var21 <= var43 + var16; ++var21) {
-					for(int var22 = var45 - var16; var22 <= var45 + var16; ++var22) {
-						int var23 = (var22 - var45 + 16) * 32 + var21 - var43 + 16;
-						float var24 = this.field_35822_i[var23] * 0.5F;
-						float var25 = this.field_35820_j[var23] * 0.5F;
-						BiomeGenBase var26 = var17[var46++];
-						if(SpoutClient.getInstance().getBiomeManager().getSnowChanged(var26.getBiomeName())) {
-							var26.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var26.getBiomeName()));
+			}
+
+			EntityLiving var41 = this.mc.renderViewEntity;
+			World var42 = this.mc.theWorld;
+			int var43 = MathHelper.floor_double(var41.posX);
+			int var44 = MathHelper.floor_double(var41.posY);
+			int var45 = MathHelper.floor_double(var41.posZ);
+			Tessellator var8 = Tessellator.instance;
+			GL11.glDisable(2884 /*GL_CULL_FACE*/);
+			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+			GL11.glEnable(3042 /*GL_BLEND*/);
+			GL11.glBlendFunc(770, 771);
+			GL11.glAlphaFunc(516, 0.01F);
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/snow.png"));
+			double var9 = var41.lastTickPosX + (var41.posX - var41.lastTickPosX) * (double)var1;
+			double var11 = var41.lastTickPosY + (var41.posY - var41.lastTickPosY) * (double)var1;
+			double var13 = var41.lastTickPosZ + (var41.posZ - var41.lastTickPosZ) * (double)var1;
+			int var15 = MathHelper.floor_double(var11);
+			byte var16 = 5;
+			if(Config.isRainFancy()) {
+				var16 = 10;
+			}
+
+			BiomeGenBase[] var17 = var42.getWorldChunkManager().func_4069_a(var43 - var16, var45 - var16, var16 * 2 + 1, var16 * 2 + 1);
+			boolean var18 = false;
+			byte var19 = -1;
+			float var20 = (float)this.rendererUpdateCount + var1;
+			if(Config.isRainFancy()) {
+				var16 = 10;
+			}
+
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			int var46 = 0;
+
+			for(int var21 = var43 - var16; var21 <= var43 + var16; ++var21) {
+				for(int var22 = var45 - var16; var22 <= var45 + var16; ++var22) {
+					int var23 = (var22 - var45 + 16) * 32 + var21 - var43 + 16;
+					float var24 = this.field_35822_i[var23] * 0.5F;
+					float var25 = this.field_35820_j[var23] * 0.5F;
+					BiomeGenBase var26 = var17[var46++];
+					if(SpoutClient.getInstance().getBiomeManager().getSnowChanged(var26.getBiomeName())) {
+						var26.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var26.getBiomeName()));
+					}
+					if(var26.canSpawnLightningBolt() || var26.getEnableSnow()) {
+						int var27 = var42.func_35461_e(var21, var22);
+						int var28 = var44 - var16;
+						int var29 = var44 + var16;
+						if(var28 < var27) {
+							var28 = var27;
 						}
-						if(var26.canSpawnLightningBolt() || var26.getEnableSnow()) {
-							int var27 = var42.func_35461_e(var21, var22);
-							int var28 = var44 - var16;
-							int var29 = var44 + var16;
-							if(var28 < var27) {
-								var28 = var27;
-							}
-	
-							if(var29 < var27) {
-								var29 = var27;
-							}
-	
-							float var30 = 1.0F;
-							int var31 = var27;
-							if(var27 < var15) {
-								var31 = var15;
-							}
-	
-							if(var28 != var29) {
-								this.random.setSeed((long)(var21 * var21 * 3121 /*GL_RGBA_MODE*/ + var21 * 45238971 ^ var22 * var22 * 418711 + var22 * 13761));
-								double var35;
-								float var32;
-								if(var26.canSpawnLightningBolt()) {
-									if(var19 != 0) {
-										if(var19 >= 0) {
-											var8.draw();
-										}
-	
-										var19 = 0;
-										GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/rain.png"));
-										var8.startDrawingQuads();
+
+						if(var29 < var27) {
+							var29 = var27;
+						}
+
+						float var30 = 1.0F;
+						int var31 = var27;
+						if(var27 < var15) {
+							var31 = var15;
+						}
+
+						if(var28 != var29) {
+							this.random.setSeed((long)(var21 * var21 * 3121 /*GL_RGBA_MODE*/ + var21 * 45238971 ^ var22 * var22 * 418711 + var22 * 13761));
+							double var35;
+							float var32;
+							if(var26.canSpawnLightningBolt()) {
+								if(var19 != 0) {
+									if(var19 >= 0) {
+										var8.draw();
 									}
-	
-									var32 = ((float)(this.rendererUpdateCount + var21 * var21 * 3121 /*GL_RGBA_MODE*/ + var21 * 45238971 + var22 * var22 * 418711 + var22 * 13761 & 31) + var1) / 32.0F * (3.0F + this.random.nextFloat());
-									double var33 = (double)((float)var21 + 0.5F) - var41.posX;
-									var35 = (double)((float)var22 + 0.5F) - var41.posZ;
-									float var37 = MathHelper.sqrt_double(var33 * var33 + var35 * var35) / (float)var16;
-									float var38 = 1.0F;
-									var8.func_35835_b(var42.func_35451_b(var21, var31, var22, 0));
-									var8.setColorRGBA_F(var38, var38, var38, ((1.0F - var37 * var37) * 0.5F + 0.5F) * var2);
-									var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
-									var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30), (double)((float)var28 * var30 / 4.0F + var32 * var30));
-									var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var28, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30), (double)((float)var28 * var30 / 4.0F + var32 * var30));
-									var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var29, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30), (double)((float)var29 * var30 / 4.0F + var32 * var30));
-									var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var29, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30), (double)((float)var29 * var30 / 4.0F + var32 * var30));
-									var8.setTranslationD(0.0D, 0.0D, 0.0D);
-								} else {
-									if(var19 != 1) {
-										if(var19 >= 0) {
-											var8.draw();
-										}
-	
-										var19 = 1;
-										GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/snow.png"));
-										var8.startDrawingQuads();
-									}
-	
-									var32 = ((float)(this.rendererUpdateCount & 511) + var1) / 512.0F;
-									float var47 = this.random.nextFloat() + var20 * 0.01F * (float)this.random.nextGaussian();
-									float var34 = this.random.nextFloat() + var20 * (float)this.random.nextGaussian() * 0.0010F;
-									var35 = (double)((float)var21 + 0.5F) - var41.posX;
-									double var48 = (double)((float)var22 + 0.5F) - var41.posZ;
-									float var39 = MathHelper.sqrt_double(var35 * var35 + var48 * var48) / (float)var16;
-									float var40 = 1.0F;
-									var8.func_35835_b((var42.func_35451_b(var21, var31, var22, 0) * 3 + 15728880) / 4);
-									var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.3F + 0.5F) * var2);
-									var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
-	
-	
-	
-	
-									var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30 + var47), (double)((float)var28 * var30 / 4.0F + var32 * var30 + var34));
-									var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var28, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30 + var47), (double)((float)var28 * var30 / 4.0F + var32 * var30 + var34));
-									var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var29, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30 + var47), (double)((float)var29 * var30 / 4.0F + var32 * var30 + var34));
-									var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var29, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30 + var47), (double)((float)var29 * var30 / 4.0F + var32 * var30 + var34));
-									var8.setTranslationD(0.0D, 0.0D, 0.0D);
-	
+
+									var19 = 0;
+									GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/rain.png"));
+									var8.startDrawingQuads();
 								}
+
+								var32 = ((float)(this.rendererUpdateCount + var21 * var21 * 3121 /*GL_RGBA_MODE*/ + var21 * 45238971 + var22 * var22 * 418711 + var22 * 13761 & 31) + var1) / 32.0F * (3.0F + this.random.nextFloat());
+								double var33 = (double)((float)var21 + 0.5F) - var41.posX;
+								var35 = (double)((float)var22 + 0.5F) - var41.posZ;
+								float var37 = MathHelper.sqrt_double(var33 * var33 + var35 * var35) / (float)var16;
+								float var38 = 1.0F;
+								var8.func_35835_b(var42.func_35451_b(var21, var31, var22, 0));
+								var8.setColorRGBA_F(var38, var38, var38, ((1.0F - var37 * var37) * 0.5F + 0.5F) * var2);
+								var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30), (double)((float)var28 * var30 / 4.0F + var32 * var30));
+								var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var28, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30), (double)((float)var28 * var30 / 4.0F + var32 * var30));
+								var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var29, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30), (double)((float)var29 * var30 / 4.0F + var32 * var30));
+								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var29, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30), (double)((float)var29 * var30 / 4.0F + var32 * var30));
+								var8.setTranslationD(0.0D, 0.0D, 0.0D);
+							} else {
+								if(var19 != 1) {
+									if(var19 >= 0) {
+										var8.draw();
+									}
+
+									var19 = 1;
+									GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/environment/snow.png"));
+									var8.startDrawingQuads();
+								}
+
+								var32 = ((float)(this.rendererUpdateCount & 511) + var1) / 512.0F;
+								float var47 = this.random.nextFloat() + var20 * 0.01F * (float)this.random.nextGaussian();
+								float var34 = this.random.nextFloat() + var20 * (float)this.random.nextGaussian() * 0.0010F;
+								var35 = (double)((float)var21 + 0.5F) - var41.posX;
+								double var48 = (double)((float)var22 + 0.5F) - var41.posZ;
+								float var39 = MathHelper.sqrt_double(var35 * var35 + var48 * var48) / (float)var16;
+								float var40 = 1.0F;
+								var8.func_35835_b((var42.func_35451_b(var21, var31, var22, 0) * 3 + 15728880) / 4);
+								var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.3F + 0.5F) * var2);
+								var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30 + var47), (double)((float)var28 * var30 / 4.0F + var32 * var30 + var34));
+								var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var28, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30 + var47), (double)((float)var28 * var30 / 4.0F + var32 * var30 + var34));
+								var8.addVertexWithUV((double)((float)var21 + var24) + 0.5D, (double)var29, (double)((float)var22 + var25) + 0.5D, (double)(1.0F * var30 + var47), (double)((float)var29 * var30 / 4.0F + var32 * var30 + var34));
+								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var29, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30 + var47), (double)((float)var29 * var30 / 4.0F + var32 * var30 + var34));
+								var8.setTranslationD(0.0D, 0.0D, 0.0D);
 							}
 						}
 					}
+				}
 				}
 
 	

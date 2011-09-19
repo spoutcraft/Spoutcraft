@@ -619,7 +619,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void func_35777_a(Packet43Experience var1) {
-		this.mc.thePlayer.func_35219_c(var1.field_35230_a, var1.field_35228_b, var1.field_35229_c);
+		this.mc.thePlayer.setXPStats(var1.field_35230_a, var1.field_35228_b, var1.field_35229_c);
 	}
 
 	public void handleRespawn(Packet9Respawn var1) {
@@ -792,7 +792,7 @@ public class NetClientHandler extends NetHandler {
 	public void func_35783_a(Packet42RemoveEntityEffect var1) {
 		Entity var2 = this.getEntityByID(var1.field_35253_a);
 		if(var2 != null && var2 instanceof EntityLiving) {
-			((EntityLiving)var2).damageEntity(var1.field_35252_b);
+			((EntityLiving)var2).func_36002_f(var1.field_35252_b);
 		}
 	}
 

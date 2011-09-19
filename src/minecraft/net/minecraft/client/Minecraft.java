@@ -868,7 +868,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void setIngameNotInFocus() {
 		if(this.inGameHasFocus) {
-			KeyBinding.func_35959_a();
+			KeyBinding.unPressAllKeys();
 			this.inGameHasFocus = false;
 			this.mouseHelper.ungrabMouseCursor();
 		}
@@ -946,7 +946,7 @@ public abstract class Minecraft implements Runnable {
 
 					if(var3.stackSize == 0) {
 						this.thePlayer.inventory.mainInventory[this.thePlayer.inventory.currentItem] = null;
-					} else if(var3.stackSize != var9 || this.playerController.func_35640_h()) {
+					} else if(var3.stackSize != var9 || this.playerController.isInCreativeMode()) {
 						this.entityRenderer.itemRenderer.func_9449_b();
 					}
 				}
@@ -1086,9 +1086,9 @@ public abstract class Minecraft implements Runnable {
 
 		if(this.currentScreen == null || this.currentScreen.allowUserInput) {
 			while(Mouse.next()) {
-				KeyBinding.func_35963_a(Mouse.getEventButton() - 100, Mouse.getEventButtonState());
+				KeyBinding.setKeyBindState(Mouse.getEventButton() - 100, Mouse.getEventButtonState());
 				if(Mouse.getEventButtonState()) {
-					KeyBinding.func_35960_a(Mouse.getEventButton() - 100);
+					KeyBinding.onTick(Mouse.getEventButton() - 100);
 				}
 
 				long var5 = System.currentTimeMillis() - this.systemTime;
@@ -1140,9 +1140,9 @@ public abstract class Minecraft implements Runnable {
 
 			while(Keyboard.next()) {
 				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); //Spout handle key presses
-				KeyBinding.func_35963_a(Keyboard.getEventKey(), Keyboard.getEventKeyState());
+				KeyBinding.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 				if(Keyboard.getEventKeyState()) {
-					KeyBinding.func_35960_a(Keyboard.getEventKey());
+					KeyBinding.onTick(Keyboard.getEventKey());
 				}
 
 				if(Keyboard.getEventKeyState()) {
@@ -1187,41 +1187,41 @@ public abstract class Minecraft implements Runnable {
 				}
 			}
 
-			while(this.gameSettings.keyBindInventory.func_35962_c()) {
+			while(this.gameSettings.keyBindInventory.isPressed()) {
 				this.displayGuiScreen(new GuiInventory(this.thePlayer));
 			}
 
-			while(this.gameSettings.keyBindDrop.func_35962_c()) {
+			while(this.gameSettings.keyBindDrop.isPressed()) {
 				this.thePlayer.dropCurrentItem();
 			}
 
-			while(this.isMultiplayerWorld() && this.gameSettings.keyBindChat.func_35962_c()) {
+			while(this.isMultiplayerWorld() && this.gameSettings.keyBindChat.isPressed()) {
 				this.displayGuiScreen(new GuiChat());
 			}
 
 			if(this.thePlayer.func_35196_Z()) {
-				if(!this.gameSettings.field_35381_w.field_35965_e) {
+				if(!this.gameSettings.keyBindUseItem.pressed) {
 					this.playerController.func_35638_c(this.thePlayer);
 				}
 			} else {
-				while(this.gameSettings.field_35382_v.func_35962_c()) {
+				while(this.gameSettings.keyBindAttack.isPressed()) {
 					this.clickMouse(0);
 				}
 
-				while(this.gameSettings.field_35381_w.func_35962_c()) {
+				while(this.gameSettings.keyBindUseItem.isPressed()) {
 					this.clickMouse(1);
 				}
 
-				while(this.gameSettings.field_35383_y.func_35962_c()) {
+				while(this.gameSettings.keyBindPickBlock.isPressed()) {
 					this.clickMiddleMouseButton();
 				}
 			}
 
-			if(this.gameSettings.field_35381_w.field_35965_e && this.field_35001_ab == 0 && !this.thePlayer.func_35196_Z()) {
+			if(this.gameSettings.keyBindUseItem.pressed && this.field_35001_ab == 0 && !this.thePlayer.func_35196_Z()) {
 				this.clickMouse(1);
 			}
 
-			this.sendClickBlockToController(0, this.currentScreen == null && this.gameSettings.field_35382_v.field_35965_e && this.inGameHasFocus);
+			this.sendClickBlockToController(0, this.currentScreen == null && this.gameSettings.keyBindAttack.pressed && this.inGameHasFocus);
 		}
 
 		if(this.theWorld != null) {
@@ -1510,7 +1510,7 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			boolean var9 = true;
-			this.theWorld.dropOldChucks();
+			this.theWorld.dropOldChunks();
 		}
 
 	}

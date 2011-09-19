@@ -187,7 +187,7 @@ public abstract class EntityLiving extends Entity {
 		}
 
 		if(this.isEntityAlive() && this.isEntityInsideOpaqueBlock()) {
-			this.attackEntityFrom(DamageSource.field_35538_d, 1);
+			this.attackEntityFrom(DamageSource.inWall, 1);
 		}
 
 		if(this.isImmuneToFire || this.worldObj.multiplayerWorld) {
@@ -195,7 +195,7 @@ public abstract class EntityLiving extends Entity {
 		}
 
 		int var1;
-		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.field_35170_bR.containsKey(Integer.valueOf(Potion.field_35680_o.field_35670_H))) {
+		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.field_35170_bR.containsKey(Integer.valueOf(Potion.potionWaterBreathing.id))) {
 			--this.air;
 			if(this.air == -20) {
 				this.air = 0;
@@ -207,7 +207,7 @@ public abstract class EntityLiving extends Entity {
 					this.worldObj.spawnParticle("bubble", this.posX + (double)var2, this.posY + (double)var3, this.posZ + (double)var4, this.motionX, this.motionY, this.motionZ);
 				}
 
-				this.attackEntityFrom(DamageSource.field_35539_e, 2);
+				this.attackEntityFrom(DamageSource.drown, 2);
 			}
 
 			this.fire = 0;
@@ -260,14 +260,14 @@ public abstract class EntityLiving extends Entity {
 			this.field_34904_b = null;
 		}
 
-		this.dropFewItems();
+		this.func_36000_g();
 		this.field_9359_x = this.field_9360_w;
 		this.prevRenderYawOffset = this.renderYawOffset;
 		this.prevRotationYaw = this.rotationYaw;
 		this.prevRotationPitch = this.rotationPitch;
 	}
 
-	protected int a(EntityPlayer var1) {
+	protected int func_36001_a(EntityPlayer var1) {
 		return this.field_35171_bJ;
 	}
 
@@ -434,19 +434,19 @@ public abstract class EntityLiving extends Entity {
 						return false;
 					}
 
-					this.b(var1, var2 - this.field_9346_af);
+					this.damageEntity(var1, var2 - this.field_9346_af);
 					this.field_9346_af = var2;
 					var3 = false;
 				} else {
 					this.field_9346_af = var2;
 					this.prevHealth = this.health;
 					this.heartsLife = this.heartsHalvesLife;
-					this.b(var1, var2);
+					this.damageEntity(var1, var2);
 					this.hurtTime = this.maxHurtTime = 10;
 				}
 
 				this.attackedAtYaw = 0.0F;
-				Entity var4 = var1.func_35532_a();
+				Entity var4 = var1.getEntity();
 				if(var4 != null) {
 					if(var4 instanceof EntityPlayer) {
 						this.field_34905_c = 60;
@@ -498,7 +498,7 @@ public abstract class EntityLiving extends Entity {
 		this.attackedAtYaw = 0.0F;
 	}
 
-	protected void b(DamageSource var1, int var2) {
+	protected void damageEntity(DamageSource var1, int var2) {
 		this.health -= var2;
 	}
 
@@ -535,7 +535,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public void onDeath(DamageSource var1) {
-		Entity var2 = var1.func_35532_a();
+		Entity var2 = var1.getEntity();
 		if(this.scoreValue >= 0 && var2 != null) {
 			var2.addToPlayerScore(this, this.scoreValue);
 		}
@@ -546,13 +546,13 @@ public abstract class EntityLiving extends Entity {
 
 		this.unused_flag = true;
 		if(!this.worldObj.multiplayerWorld) {
-			this.a(this.field_34905_c > 0);
+			this.dropFewItems(this.field_34905_c > 0);
 		}
 
 		this.worldObj.setEntityState(this, (byte)3);
 	}
 
-	protected void a(boolean var1) {
+	protected void dropFewItems(boolean var1) {
 		int var2 = this.getDropItemId();
 		if(var2 > 0) {
 			int var3 = this.rand.nextInt(3);
@@ -572,7 +572,7 @@ public abstract class EntityLiving extends Entity {
 		super.fall(var1);
 		int var2 = (int)Math.ceil((double)(var1 - 3.0F));
 		if(var2 > 0) {
-			this.attackEntityFrom(DamageSource.field_35549_h, var2);
+			this.attackEntityFrom(DamageSource.fall, var2);
 			int var3 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
 			if(var3 > 0) {
 				StepSound var4 = Block.blocksList[var3].stepSound;
@@ -969,7 +969,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void kill() {
-		this.attackEntityFrom(DamageSource.field_35550_i, 4);
+		this.attackEntityFrom(DamageSource.outOfWorld, 4);
 	}
 
 	public float getSwingProgress(float var1) {
@@ -1044,11 +1044,11 @@ public abstract class EntityLiving extends Entity {
 			this.hurtTime = this.maxHurtTime = 10;
 			this.attackedAtYaw = 0.0F;
 			this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-			this.attackEntityFrom(DamageSource.field_35547_j, 0);
+			this.attackEntityFrom(DamageSource.generic, 0);
 		} else if(var1 == 3) {
 			this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.health = 0;
-			this.onDeath(DamageSource.field_35547_j);
+			this.onDeath(DamageSource.generic);
 		} else {
 			super.handleHealthUpdate(var1);
 		}
@@ -1063,7 +1063,7 @@ public abstract class EntityLiving extends Entity {
 		return var1.getIconIndex();
 	}
 
-	protected void dropFewItems() {
+	protected void func_36000_g() {
 		Iterator var1 = this.field_35170_bR.keySet().iterator();
 
 		while(var1.hasNext()) {
@@ -1078,11 +1078,11 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public boolean func_35160_a(Potion var1) {
-		return this.field_35170_bR.containsKey(Integer.valueOf(var1.field_35670_H));
+		return this.field_35170_bR.containsKey(Integer.valueOf(var1.id));
 	}
 
 	public PotionEffect func_35167_b(Potion var1) {
-		return (PotionEffect)this.field_35170_bR.get(Integer.valueOf(var1.field_35670_H));
+		return (PotionEffect)this.field_35170_bR.get(Integer.valueOf(var1.id));
 	}
 
 	public void func_35165_a(PotionEffect var1) {
@@ -1096,7 +1096,7 @@ public abstract class EntityLiving extends Entity {
 
 	}
 
-	public void damageEntity(int var1) {
+	public void func_36002_f(int var1) {
 		this.field_35170_bR.remove(Integer.valueOf(var1));
 	}
 
@@ -1108,12 +1108,12 @@ public abstract class EntityLiving extends Entity {
 
 	protected float func_35166_t_() {
 		float var1 = 1.0F;
-		if(this.func_35160_a(Potion.field_35677_c)) {
-			var1 *= 1.0F + 0.2F * (float)(this.func_35167_b(Potion.field_35677_c).func_35801_c() + 1);
+		if(this.func_35160_a(Potion.potionSpeed)) {
+			var1 *= 1.0F + 0.2F * (float)(this.func_35167_b(Potion.potionSpeed).func_35801_c() + 1);
 		}
 
-		if(this.func_35160_a(Potion.field_35674_d)) {
-			var1 *= 1.0F - 0.15F * (float)(this.func_35167_b(Potion.field_35674_d).func_35801_c() + 1);
+		if(this.func_35160_a(Potion.potionSlowdown)) {
+			var1 *= 1.0F - 0.15F * (float)(this.func_35167_b(Potion.potionSlowdown).func_35801_c() + 1);
 		}
 
 		return var1;

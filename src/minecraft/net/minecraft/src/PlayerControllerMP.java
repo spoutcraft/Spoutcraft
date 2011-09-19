@@ -274,7 +274,7 @@ public class PlayerControllerMP extends PlayerController {
 		return !this.field_35649_k;
 	}
 
-	public boolean func_35640_h() {
+	public boolean isInCreativeMode() {
 		return this.field_35649_k;
 	}
 

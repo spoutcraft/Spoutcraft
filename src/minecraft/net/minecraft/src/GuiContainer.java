@@ -141,14 +141,6 @@ public abstract class GuiContainer extends GuiScreen {
 		return null;
 	}
 
-	private boolean getIsMouseOverSlot(Slot var1, int var2, int var3) {
-		int var4 = (this.width - this.xSize) / 2;
-		int var5 = (this.height - this.ySize) / 2;
-		var2 -= var4;
-		var3 -= var5;
-		return var2 >= var1.xDisplayPosition - 1 && var2 < var1.xDisplayPosition + 16 + 1 && var3 >= var1.yDisplayPosition - 1 && var3 < var1.yDisplayPosition + 16 + 1;
-	}
-
 	protected void mouseClicked(int var1, int var2, int var3) {
 		super.mouseClicked(var1, var2, var3);
 		if(var3 == 0 || var3 == 1) {
@@ -171,6 +163,14 @@ public abstract class GuiContainer extends GuiScreen {
 			}
 		}
 
+	}
+
+	private boolean getIsMouseOverSlot(Slot var1, int var2, int var3) {
+		int var4 = (this.width - this.xSize) / 2;
+		int var5 = (this.height - this.ySize) / 2;
+		var2 -= var4;
+		var3 -= var5;
+		return var2 >= var1.xDisplayPosition - 1 && var2 < var1.xDisplayPosition + 16 + 1 && var3 >= var1.yDisplayPosition - 1 && var3 < var1.yDisplayPosition + 16 + 1;
 	}
 
 	protected void func_35309_a(Slot var1, int var2, int var3, boolean var4) {

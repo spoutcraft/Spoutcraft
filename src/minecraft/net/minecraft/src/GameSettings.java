@@ -86,10 +86,10 @@ public class GameSettings {
 	public KeyBinding keyBindChat = new KeyBinding("key.chat", 20);
 	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", 33); //Spout restored Fog key
 	public KeyBinding keyBindSneak = new KeyBinding("key.sneak", 42);
-	public KeyBinding field_35382_v = new KeyBinding("key.attack", -100);
-	public KeyBinding field_35381_w = new KeyBinding("key.use", -99);
-	public KeyBinding field_35384_x = new KeyBinding("key.playerlist", 15);
-	public KeyBinding field_35383_y = new KeyBinding("key.pickItem", -98);
+	public KeyBinding keyBindAttack = new KeyBinding("key.attack", -100);
+	public KeyBinding keyBindUseItem = new KeyBinding("key.use", -99);
+	public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15);
+	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;
 	private File optionsFile;
@@ -103,13 +103,13 @@ public class GameSettings {
 	public boolean debugCamEnable;
 	public float field_22272_F;
 	public float field_22271_G;
-	public float field_35379_L;
-	public float field_35380_M;
+	public float fovSetting;
+	public float gammaSetting;
 	public int guiScale;
 
 
 	public GameSettings(Minecraft var1, File var2) {
-		this.keyBindings = new KeyBinding[]{this.field_35382_v, this.field_35381_w, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.field_35384_x, this.field_35383_y}; //Spout restored Fog key
+		this.keyBindings = new KeyBinding[]{this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindPlayerList, this.keyBindPickBlock}; //Spout restored Fog key
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = false;
@@ -120,8 +120,8 @@ public class GameSettings {
 		this.debugCamEnable = false;
 		this.field_22272_F = 1.0F;
 		this.field_22271_G = 1.0F;
-		this.field_35379_L = 0.0F;
-		this.field_35380_M = 0.0F;
+		this.fovSetting = 0.0F;
+		this.gammaSetting = 0.0F;
 		this.guiScale = 0;
 		this.mc = var1;
 		this.optionsFile = new File(var2, "options.txt");
@@ -129,7 +129,7 @@ public class GameSettings {
 	}
 
 	public GameSettings() {
-		this.keyBindings = new KeyBinding[]{this.field_35382_v, this.field_35381_w, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.field_35384_x, this.field_35383_y};
+		this.keyBindings = new KeyBinding[]{this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock};
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = false;
@@ -140,8 +140,8 @@ public class GameSettings {
 		this.debugCamEnable = false;
 		this.field_22272_F = 1.0F;
 		this.field_22271_G = 1.0F;
-		this.field_35379_L = 0.0F;
-		this.field_35380_M = 0.0F;
+		this.fovSetting = 0.0F;
+		this.gammaSetting = 0.0F;
 		this.guiScale = 0;
 	}
 
@@ -175,11 +175,11 @@ public class GameSettings {
 			this.mouseSensitivity = var2;
 		}
 		if(var1 == EnumOptions.FOV) {
-			this.field_35379_L = var2;
+			this.fovSetting = var2;
 		}
 
 		if(var1 == EnumOptions.GAMMA) {
-			this.field_35380_M = var2;
+			this.gammaSetting = var2;
 		}
 //Spout Start
 		if(var1 == EnumOptions.BRIGHTNESS) {
@@ -517,7 +517,7 @@ public class GameSettings {
 	}
 
 	public float getOptionFloatValue(EnumOptions var1) {
-		return var1 == EnumOptions.FOV?this.field_35379_L:(var1 == EnumOptions.GAMMA?this.field_35380_M:(var1 == EnumOptions.MUSIC?this.musicVolume:(var1 == EnumOptions.SOUND?this.soundVolume:(var1 == EnumOptions.SENSITIVITY?this.mouseSensitivity:(var1 == EnumOptions.BRIGHTNESS?this.ofBrightness:(var1 == EnumOptions.CLOUD_HEIGHT?this.ofCloudsHeight:(var1 == EnumOptions.AO_LEVEL?this.ofAoLevel:0.0F))))))); //Spout
+		return var1 == EnumOptions.FOV?this.fovSetting:(var1 == EnumOptions.GAMMA?this.gammaSetting:(var1 == EnumOptions.MUSIC?this.musicVolume:(var1 == EnumOptions.SOUND?this.soundVolume:(var1 == EnumOptions.SENSITIVITY?this.mouseSensitivity:(var1 == EnumOptions.BRIGHTNESS?this.ofBrightness:(var1 == EnumOptions.CLOUD_HEIGHT?this.ofCloudsHeight:(var1 == EnumOptions.AO_LEVEL?this.ofAoLevel:0.0F))))))); //Spout
 	}
 
 	public boolean getOptionOrdinalValue(EnumOptions var1) {
@@ -706,11 +706,11 @@ public class GameSettings {
 					}
 
 					if(var3[0].equals("fov")) {
-						this.field_35379_L = this.parseFloat(var3[1]);
+						this.fovSetting = this.parseFloat(var3[1]);
 					}
 
 					if(var3[0].equals("gamma")) {
-						this.field_35380_M = this.parseFloat(var3[1]);
+						this.gammaSetting = this.parseFloat(var3[1]);
 					}
 
 					if(var3[0].equals("invertYMouse")) {
@@ -958,7 +958,7 @@ public class GameSettings {
 				}
 			}
 
-			KeyBinding.func_35961_b();
+			KeyBinding.resetKeyBindingArrayAndHash();
 			var1.close();
 		} catch (Exception var6) {
 			System.out.println("Failed to load options");
@@ -978,8 +978,8 @@ public class GameSettings {
 			var1.println("sound:" + this.soundVolume);
 			var1.println("invertYMouse:" + this.invertMouse);
 			var1.println("mouseSensitivity:" + this.mouseSensitivity);
-			var1.println("fov:" + this.field_35379_L);
-			var1.println("gamma:" + this.field_35380_M);
+			var1.println("fov:" + this.fovSetting);
+			var1.println("gamma:" + this.gammaSetting);
 			var1.println("viewDistance:" + this.renderDistance);
 			var1.println("guiScale:" + this.guiScale);
 			var1.println("bobView:" + this.viewBobbing);

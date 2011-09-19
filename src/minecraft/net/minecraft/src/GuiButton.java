@@ -3,7 +3,6 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
-
 import org.lwjgl.opengl.GL11;
 
 public class GuiButton extends Gui {
@@ -16,6 +15,7 @@ public class GuiButton extends Gui {
 	public int id;
 	public boolean enabled;
 	public boolean enabled2;
+
 
 	public GuiButton(int var1, int var2, int var3, String var4) {
 		this(var1, var2, var3, 200, 20, var4);
@@ -65,7 +65,7 @@ public class GuiButton extends Gui {
 
 		}
 	}
-	
+
 	protected void mouseDragged(Minecraft var1, int var2, int var3) {}
 
 	public void mouseReleased(int var1, int var2) {}
