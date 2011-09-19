@@ -275,7 +275,7 @@ public class GuiIngame extends Gui {
 				var17 = 150;
 			}
 
-			int var18 = (var6 - var16 * var17) / 2;
+			int var18 = (screenWidth - var16 * var17) / 2;
 			byte var46 = 10;
 			this.drawRect(var18 - 1, var46 - 1, var18 + var17 * var16, var46 + 9 * var38, Integer.MIN_VALUE);
 
