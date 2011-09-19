@@ -608,7 +608,6 @@ public class EntityRenderer {
 		}
 
 		Block.leaves.setGraphicsLevel(Config.isTreesFancy());
-		Config.setMinecraft(this.mc);
 
 		if(world != null) {
 			world.autosavePeriod = this.mc.gameSettings.ofAutoSaveTicks;
