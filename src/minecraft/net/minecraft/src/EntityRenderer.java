@@ -615,7 +615,7 @@ public class EntityRenderer {
 		}
 
 		if(!Config.isWeatherEnabled() && var2 != null && var2.worldInfo != null) {
-			var2.worldInfo.setRaining(false);
+			var2.worldInfo.setIsRaining(false);
 		}
 
 		if(var2 != null) {
@@ -722,7 +722,7 @@ public class EntityRenderer {
 						}
 					}
 
-					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var19, var20);
+					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var16, var17);
 					if(this.mc.gameSettings.fastDebugMode != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
@@ -756,7 +756,7 @@ public class EntityRenderer {
 			if(this.mc.currentScreen != null) {
 				GL11.glClear(256);
 				//Spout Start
-				this.mc.currentScreen.drawScreenPre(var19, var20, var1);
+				this.mc.currentScreen.drawScreenPre(var16, var17, var1);
 				//Spout End
 				if(this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(var1);

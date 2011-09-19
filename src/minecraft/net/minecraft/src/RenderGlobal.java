@@ -296,7 +296,7 @@ public class RenderGlobal implements IWorldAccess {
 		this.prevSortX = -9999.0D;
 		this.prevSortY = -9999.0D;
 		this.prevSortZ = -9999.0D;
-		RenderManager.instance.func_852_a(newWorld);
+		RenderManager.instance.set(newWorld);
 		this.worldObj = newWorld;
 		tileEntities.clear();
 		worldRenderersToUpdate.clear();
@@ -695,7 +695,6 @@ public class RenderGlobal implements IWorldAccess {
 						} else if(var32.isInFrustum && !var32.isWaitingOnOcclusionQuery) {
 							float var34;
 							float var35;
-							float var33;
 							float var36;
 							if(var32.isVisibleFromPosition) {
 								var33 = Math.abs((float)(var32.visibleFromX - var1.posX));

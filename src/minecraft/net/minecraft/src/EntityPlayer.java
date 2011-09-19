@@ -1141,6 +1141,11 @@ public abstract class EntityPlayer extends EntityLiving {
 	protected boolean func_35163_av() {
 		return true;
 	}
+	
+	//Spout added back handle key press
+	public void handleKeyPress(int i, boolean keyReleased) {
+		
+	}
 
 	//Spout Easter Egg
 	public void doFancyStuff() {

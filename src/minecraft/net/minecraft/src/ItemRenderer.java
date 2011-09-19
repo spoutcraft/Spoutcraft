@@ -294,7 +294,7 @@ public class ItemRenderer {
 			var27.addVertexWithUV((double)(0 - var25), (double)(0 - var25), 0.0D, 0.0D, 0.0D);
 			var27.draw();
 			MapData var23 = Item.map.func_28012_a(var14, this.mc.theWorld);
-			this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var23);
+			this.mapItemRenderer.func_28157_a(this.mc.thePlayer, this.mc.renderEngine, var23);
 			GL11.glPopMatrix();
 		} else if(var14 != null) {
 			GL11.glPushMatrix();

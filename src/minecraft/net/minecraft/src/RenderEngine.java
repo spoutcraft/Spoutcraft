@@ -48,7 +48,7 @@ public class RenderEngine {
 	private GameSettings options;
 	public boolean clampTexture = false;
 	public boolean blurTexture = false;
-	private TexturePackList texturePack;
+	public TexturePackList texturePack; //Spout private -> public
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
     //Spout Start
 	public TexturePackBase oldPack = null;

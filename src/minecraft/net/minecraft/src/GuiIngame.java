@@ -153,9 +153,9 @@ public class GuiIngame extends Gui {
 			}
 			if (this.mc.gameSettings.fastDebugMode != 2) {
 				font.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
-				font.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
+				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
-				font.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
+				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
 				font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
 				long maxMem = Runtime.getRuntime().maxMemory();
 				long totalMem = Runtime.getRuntime().totalMemory();
@@ -264,8 +264,8 @@ public class GuiIngame extends Gui {
 			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
 			List var44 = var41.field_35786_c;
 			int var40 = var41.field_35785_d;
-			var38 = var40;
-
+			int var38 = var40;
+			int var16;
 			for(var16 = 1; var38 > 20; var38 = (var40 + var16 - 1) / var16) {
 				++var16;
 			}
@@ -275,19 +275,19 @@ public class GuiIngame extends Gui {
 				var17 = 150;
 			}
 
-			var18 = (var6 - var16 * var17) / 2;
+			int var18 = (var6 - var16 * var17) / 2;
 			byte var46 = 10;
 			this.drawRect(var18 - 1, var46 - 1, var18 + var17 * var16, var46 + 9 * var38, Integer.MIN_VALUE);
 
-			for(var20 = 0; var20 < var40; ++var20) {
-				var47 = var18 + var20 % var16 * var17;
-				var22 = var46 + var20 / var16 * 9;
+			for(int var20 = 0; var20 < var40; ++var20) {
+				int var47 = var18 + var20 % var16 * var17;
+				int var22 = var46 + var20 / var16 * 9;
 				this.drawRect(var47, var22, var47 + var17 - 1, var22 + 8, 553648127);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 				if(var20 < var44.size()) {
 					GuiSavingLevelString var50 = (GuiSavingLevelString)var44.get(var20);
-					var8.drawStringWithShadow(var50.field_35624_a, var47, var22, 16777215);
+					font.drawStringWithShadow(var50.field_35624_a, var47, var22, 16777215);
 					this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
 					boolean var48 = false;
 					boolean var53 = false;

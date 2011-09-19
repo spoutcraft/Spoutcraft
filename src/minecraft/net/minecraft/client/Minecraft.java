@@ -860,7 +860,6 @@ public abstract class Minecraft implements Runnable {
 					this.displayGuiScreen((GuiScreen) null);
 				}
 				this.leftClickCounter = 10000;
-				this.mouseTicksRan = this.ticksRan + 10000;
 			}
 		}
 	}
@@ -1118,12 +1117,10 @@ public abstract class Minecraft implements Runnable {
 						 else {
 							if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) {
 								this.clickMouse(0);
-								this.mouseTicksRan = this.ticksRan;
 							}
 
 							if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState()) {
 								this.clickMouse(1);
-								this.mouseTicksRan = this.ticksRan;
 							}
 
 							if (Mouse.getEventButton() == 2 && Mouse.getEventButtonState()) {
@@ -1142,6 +1139,7 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			while(Keyboard.next()) {
+				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); //Spout handle key presses
 				KeyBinding.func_35963_a(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 				if(Keyboard.getEventKeyState()) {
 					KeyBinding.func_35960_a(Keyboard.getEventKey());
