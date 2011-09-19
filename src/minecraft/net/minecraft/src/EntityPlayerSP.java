@@ -401,4 +401,10 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.XpTotal = var2;
 		this.XpLevel = var3;
 	}
+	
+	//Spout
+	public void handleKeyPress(int key, boolean keyPressed) {
+		((MovementInputFromOptions)this.movementInput).checkKeyForMovementInput(key, keyPressed);
+	}
+	//Spout end
 }
