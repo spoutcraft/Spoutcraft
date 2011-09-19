@@ -37,6 +37,8 @@ public interface RenderDelegate {
 	public void render(GenericTexture texture);
 
 	public void render(HealthBar bar);
+	
+	public void render(HungerBar hungerBar);
 
 	public void render(GenericEntityWidget entityWidget);
 
@@ -49,4 +51,5 @@ public interface RenderDelegate {
 	public MinecraftFont getMinecraftFont();
 
 	public MinecraftTessellator getTessellator();
+
 }

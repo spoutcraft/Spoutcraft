@@ -40,6 +40,7 @@ public class WidgetType {
 	// Container has the 14, dude!
 	public static WidgetType EntityWidget = new WidgetType(GenericEntityWidget.class, 15);
 	public static WidgetType OverlayScreen = new WidgetType(GenericOverlayScreen.class, 16);
+	public static WidgetType HungerBar = new WidgetType(HungerBar.class, 17);
 
 	private final int id;
 	private final Class<? extends Widget> widgetClass;
