@@ -372,66 +372,6 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 	
-	public void onTextFieldTyped(TextField textField, char key, int keyId) {
-		boolean dirty = false;
-		try {
-			if(textField.isEnabled() && textField.isFocus()) {
-				if(key == 22) {
-					String clipboard = GuiScreen.getClipboardString();
-					if(clipboard == null) {
-						clipboard = "";
-					}
-
-					int max = 32 - textField.getText().length();
-					if(max > clipboard.length()) {
-						max = clipboard.length();
-					}
-
-					if(max > 0) {
-						textField.setText(textField.getText() + clipboard.substring(0, max));
-						dirty = true;
-					}
-				}
-				if (keyId == Keyboard.KEY_RIGHT && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_LEFT && textField.getCursorPosition() > 0) {
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_DELETE && textField.getCursorPosition() > 0 && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition()) + textField.getText().substring(textField.getCursorPosition() + 1));
-					dirty = true;
-				}
-				else if(keyId == Keyboard.KEY_BACK && textField.getText().length() > 0 && textField.getCursorPosition() > 0) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition() - 1) + textField.getText().substring(textField.getCursorPosition()));
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (textField.getText().length() < textField.getMaximumCharacters() || textField.getMaximumCharacters() == 0)) {
-					String newText = "";
-					if (textField.getCursorPosition() > 0) {
-						newText += textField.getText().substring(0, textField.getCursorPosition());
-					}
-					newText += key;
-					if (textField.getCursorPosition() < textField.getText().length()) {
-						newText += textField.getText().substring(textField.getCursorPosition());
-					}
-					textField.setText(newText);
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				if (dirty) {
-					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
-				}
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public Screen getScreen() {
 		if(screen == null) {
 			ScreenType type = ScreenUtil.getType(this);
