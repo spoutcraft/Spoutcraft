@@ -8,7 +8,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TextureFX;
 
 public class TextureLavaFX extends TextureFX {
-
+	
 	//Spout HD Start
 	protected float[] field_1147_g = new float[TileSize.int_numPixels];
 	protected float[] field_1146_h = new float[TileSize.int_numPixels];

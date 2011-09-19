@@ -12,6 +12,7 @@ public class TextureFlamesFX extends TextureFX {
 	protected float[] field_1133_g = new float[TileSize.int_flameArraySize];
 	protected float[] field_1132_h = new float[TileSize.int_flameArraySize];
 	//Spout HD End
+
 	public TextureFlamesFX(int var1) {
 		super(Block.fire.blockIndexInTexture + var1 * 16);
 	}
@@ -46,7 +47,7 @@ public class TextureFlamesFX extends TextureFX {
 				this.field_1132_h[var1 + var2 * TileSize.int_size] = var4 / ((float)var3 * TileSize.float_flameNudge);
 				if(var2 >= TileSize.int_flameHeightMinus1) {
 					this.field_1132_h[var1 + var2 * TileSize.int_size] = (float)(Math.random() * Math.random() * Math.random() * 4.0D + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
-					//Spout HD End
+				//Spout HD End
 				}
 			}
 		}
@@ -90,5 +91,6 @@ public class TextureFlamesFX extends TextureFX {
 			this.imageData[var2 * 4 + 2] = (byte)var7;
 			this.imageData[var2 * 4 + 3] = (byte)var8;
 		}
+
 	}
 }

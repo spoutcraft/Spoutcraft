@@ -46,6 +46,7 @@ public class Chunk {
 	public boolean neverSave;
 	public boolean hasEntities;
 	public long lastSaveTime;
+	boolean field_35846_u;
 	//Spout start
 	public SpoutcraftChunk spoutChunk;
 	//Spout end
