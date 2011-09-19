@@ -13,13 +13,12 @@ public class HungerBar extends GenericWidget {
 	public HungerBar() {
 		super();
 		setX(427 / 2 + 82); // 295
-		setY(208);
+		setY(198);
 		setAnchor(WidgetAnchor.BOTTOM_CENTER);
 	}
 
 	public WidgetType getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return WidgetType.HungerBar;
 	}
 	
 	@Override
@@ -78,6 +77,12 @@ public class HungerBar extends GenericWidget {
 	
 	public int getUpdateCounter() {
 		return updateCounter;
+	}
+	
+	@Override
+	public int getVersion() {
+
+		return super.getVersion();
 	}
 
 }
