@@ -595,8 +595,8 @@ public class EntityRenderer {
 
 	public void updateCameraAndRender(float var1) {
 		//Spout Start
-		World var2 = this.mc.theWorld;
-		if(var2 != null && var2.worldProvider != null && this.updatedWorldProvider != var2.worldProvider) {
+		World world = this.mc.theWorld;
+		if(world != null && world.worldProvider != null && this.updatedWorldProvider != world.worldProvider) {
 			this.updateWorldLightLevels();
 			this.updatedWorldProvider = this.mc.theWorld.worldProvider;
 		}
@@ -610,34 +610,34 @@ public class EntityRenderer {
 		Block.leaves.setGraphicsLevel(Config.isTreesFancy());
 		Config.setMinecraft(this.mc);
 
-		if(var2 != null) {
-			var2.autosavePeriod = this.mc.gameSettings.ofAutoSaveTicks;
+		if(world != null) {
+			world.autosavePeriod = this.mc.gameSettings.ofAutoSaveTicks;
 		}
 
-		if(!Config.isWeatherEnabled() && var2 != null && var2.worldInfo != null) {
-			var2.worldInfo.setRaining(false);
+		if(!Config.isWeatherEnabled() && world != null && world.worldInfo != null) {
+			world.worldInfo.setIsRaining(false);
 		}
 
-		if(var2 != null) {
-			long var3 = var2.getWorldTime();
+		if(world != null) {
+			long var3 = world.getWorldTime();
 			long var5 = var3 % 24000L;
 			if(Config.isTimeDayOnly()) {
 				if(var5 <= 1000L) {
-					var2.setWorldTime(var3 - var5 + 1001L);
+					world.setWorldTime(var3 - var5 + 1001L);
 				}
 
 				if(var5 >= 11000L) {
-					var2.setWorldTime(var3 - var5 + 24001L);
+					world.setWorldTime(var3 - var5 + 24001L);
 				}
 			}
 
 			if(Config.isTimeNightOnly()) {
 				if(var5 <= 14000L) {
-					var2.setWorldTime(var3 - var5 + 14001L);
+					world.setWorldTime(var3 - var5 + 14001L);
 				}
 
 				if(var5 >= 22000L) {
-					var2.setWorldTime(var3 - var5 + 24000L + 14001L);
+					world.setWorldTime(var3 - var5 + 24000L + 14001L);
 				}
 			}
 		}
@@ -722,7 +722,7 @@ public class EntityRenderer {
 						}
 					}
 
-					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var19, var20);
+					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var16, var17);
 					if(this.mc.gameSettings.fastDebugMode != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
@@ -756,7 +756,7 @@ public class EntityRenderer {
 			if(this.mc.currentScreen != null) {
 				GL11.glClear(256);
 				//Spout Start
-				this.mc.currentScreen.drawScreenPre(var19, var20, var1);
+				this.mc.currentScreen.drawScreenPre(var16, var17, var1);
 				//Spout End
 				if(this.mc.currentScreen != null && this.mc.currentScreen.guiParticles != null) {
 					this.mc.currentScreen.guiParticles.draw(var1);
@@ -1390,7 +1390,6 @@ public class EntityRenderer {
 	
 			}
 			//Spout End
-			}
 
 			GL11.glEnable(2903 /*GL_COLOR_MATERIAL*/);
 			GL11.glColorMaterial(1028 /*GL_FRONT*/, 4608 /*GL_AMBIENT*/);
