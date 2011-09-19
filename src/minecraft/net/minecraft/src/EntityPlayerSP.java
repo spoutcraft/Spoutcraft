@@ -29,6 +29,8 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketRenderDistance;
 import org.getspout.spout.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end
@@ -48,6 +50,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	private MouseFilter field_21902_bL = new MouseFilter();
 	//Spout start
 	public FixedLocation lastClickLocation = null;
+	private KeyBinding fogKey = null;
 	//Spout end
 
 
@@ -403,8 +406,33 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 	
 	//Spout
-	public void handleKeyPress(int key, boolean keyPressed) {
-		((MovementInputFromOptions)this.movementInput).checkKeyForMovementInput(key, keyPressed);
+	@Override
+	public void handleKeyPress(int key, boolean keyReleased) {
+		((MovementInputFromOptions)this.movementInput).checkKeyForMovementInput(key, keyReleased);
+		if (keyReleased) {
+			final GameSettings settings = SpoutClient.getHandle().gameSettings;
+			if (key == settings.keyBindToggleFog.keyCode) {
+				byte view = (byte)settings.renderDistance;
+				byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
+				fogKey = settings.keyBindToggleFog;
+				settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
+				if (view != newView) {
+					settings.renderDistance = newView;
+					if (this instanceof EntityClientPlayerMP) {
+						((EntityClientPlayerMP)this).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void onUpdate() {
+		if (fogKey != null) {
+			SpoutClient.getHandle().gameSettings.keyBindToggleFog = fogKey;
+			fogKey = null;
+		}
+		super.onUpdate();
 	}
 	//Spout end
 }

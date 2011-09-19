@@ -23,7 +23,6 @@ import net.minecraft.src.World;
 //Spout Start
 import org.getspout.spout.packet.*;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 //Spout End
 
@@ -42,10 +41,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private boolean field_35227_cs = false;
 	private boolean wasSneaking = false;
 	private int field_12242_bI = 0;
-	//Spout Start
-	private KeyBinding fogKey = null;
-	//Spout End
-
 
 	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
 		super(var1, var2, var3, 0);
@@ -66,12 +61,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			super.onUpdate();
 			this.func_4056_N();
 		}
-		//Spout Start
-		if (fogKey != null) {
-			SpoutClient.getHandle().gameSettings.keyBindToggleFog = fogKey;
-			fogKey = null;
-		}
-		//Spout End
 	}
 
 	public void func_4056_N() {
@@ -222,6 +211,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 	}
 	//Spout Start
+	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		//key bindings
 		if (keyReleased) {
@@ -234,27 +224,13 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			}
 		}
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
-				sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN)));
-				if (keyReleased) {
-					final GameSettings settings = SpoutClient.getHandle().gameSettings;
-					if (i == settings.keyBindToggleFog.keyCode) {
-						byte view = (byte)settings.renderDistance;
-						byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
-						fogKey = settings.keyBindToggleFog;
-						settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
-						if (view != newView) {
-							settings.renderDistance = newView;
-							sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
-						}
-					}
-				}
+			sendQueue.addToSendQueue(new CustomPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN)));
 		}
 		
 		super.handleKeyPress(i, keyReleased);
 	}
-	//Spout End
 	
-	//Spout Start
+	@Override
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
 			super.updateCloak();
