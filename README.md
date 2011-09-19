@@ -19,17 +19,17 @@ Download the latest builds from [Jenkins].
 
 Compiling
 ---------
-Spoutcraft requires the Minecraft Coder Pack.
-* Download and extract the latest compatible version of Minecraft Coder Pack.
-* Copy the latest complete, unmodified Minecraft bin directory from your .minecraft directory.
-* Place the Minecraft bin directory under MCP's jars directory.
-* Run MCP's decompile script (.bat for Windows or .sh for Linux).
-* Checkout or copy the conf directory from the Spoutcraft GitHub repository to MCP's conf directory.
-* Checkout or copy the lib directory from the Spoutcraft GitHub repository to MCP's lib directory.
-* Checkout or copy the latest src directory from the Spoutcraft GitHub repostiory to MCP's src directory.
-* Run MCP's recompile and reobfuscate scripts (.bat for Windows or .sh for Linux).
-* When tasks are finished, the compiled Spout class files will be located in reobf.
-* You'll also need to class files from the jars located in the lib directory on the Spoutcraft GitHub repository to run the client.
+Spoutcraft requires the Minecraft Coder Pack.  
+* Download and extract the latest compatible version of Minecraft Coder Pack.  
+* Copy the latest complete, unmodified Minecraft bin directory from your .minecraft directory.  
+* Place the Minecraft bin directory under MCP's jars directory.  
+* Run MCP's decompile script (.bat for Windows or .sh for Linux).  
+* Checkout or copy the conf directory from the Spoutcraft GitHub repository to MCP's conf directory.  
+* Checkout or copy the lib directory from the Spoutcraft GitHub repository to MCP's lib directory.  
+* Checkout or copy the latest src directory from the Spoutcraft GitHub repostiory to MCP's src directory. 
+* Run MCP's recompile and reobfuscate scripts (.bat for Windows or .sh for Linux).  
+* When tasks are finished, the compiled Spout class files will be located in reobf.  
+* You'll also need to class files from the jars located in the lib directory on the Spoutcraft GitHub repository to run the client.  
 
 Coding and Pull Request Formatting
 ----------------------------------
