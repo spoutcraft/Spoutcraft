@@ -8,10 +8,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.FontRenderer;
+import net.minecraft.src.FoodStats;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
+import net.minecraft.src.Potion;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderManager;
@@ -24,11 +26,12 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
-public class MCRenderDelegate implements RenderDelegate{
+public class MCRenderDelegate implements RenderDelegate {
 	protected final RenderItemCustom renderer;
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
 	MinecraftTessellator tessellator = new MinecraftTessellatorWrapper();
+
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
 		renderer.setRenderManager(RenderManager.instance);
@@ -55,20 +58,18 @@ public class MCRenderDelegate implements RenderDelegate{
 	public void render(ArmorBar bar) {
 		float armorPercent = Minecraft.theMinecraft.thePlayer.getPlayerArmorValue() / 0.2f;
 		if (bar.isVisible() && bar.getMaxNumShields() > 0) {
-			int y = (int)bar.getScreenY();
+			int y = (int) bar.getScreenY();
 			float armorPercentPerIcon = 100f / bar.getMaxNumShields();
 			for (int icon = 0; icon < bar.getMaxNumShields(); icon++) {
 				if (armorPercent > 0 || bar.isAlwaysVisible()) {
-					int x = (int)bar.getScreenX() - icon * bar.getIconOffset();
+					int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 					boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
 					boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
-					if (full) { //white armor (filled in)
+					if (full) { // white armor (filled in)
 						RenderUtil.drawTexturedModalRectangle(x, y, 34, 9, 9, 9, 0f);
-					}
-					else if (half) { //half filled in
+					} else if (half) { // half filled in
 						RenderUtil.drawTexturedModalRectangle(x, y, 25, 9, 9, 9, 0f);
-					}
-					else {
+					} else {
 						RenderUtil.drawTexturedModalRectangle(x, y, 16, 9, 9, 9, 0f);
 					}
 				}
@@ -77,15 +78,15 @@ public class MCRenderDelegate implements RenderDelegate{
 	}
 
 	public void render(BubbleBar bar) {
-		if(Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
-			int bubbles = (int)Math.ceil(((double)(Minecraft.theMinecraft.thePlayer.air - 2) * (double)bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D));
-			int poppingBubbles = (int)Math.ceil(((double)Minecraft.theMinecraft.thePlayer.air * (double)bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D)) - bubbles;
+		if (Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
+			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.air - 2) * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D));
+			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.air * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D)) - bubbles;
 			if (bar.isVisible()) {
-				for(int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
-					if(bubble < bubbles) {
-						RenderUtil.drawTexturedModalRectangle((int)bar.getScreenX() + bubble * bar.getIconOffset(), (int)bar.getScreenY(), 16, 18, 9, 9, 0f);
+				for (int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
+					if (bubble < bubbles) {
+						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() + bubble * bar.getIconOffset(), (int) bar.getScreenY(), 16, 18, 9, 9, 0f);
 					} else {
-						RenderUtil.drawTexturedModalRectangle((int)bar.getScreenX() + bubble * bar.getIconOffset(), (int)bar.getScreenY(), 25, 18, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() + bubble * bar.getIconOffset(), (int) bar.getScreenY(), 25, 18, 9, 9, 0f);
 					}
 				}
 			}
@@ -93,48 +94,49 @@ public class MCRenderDelegate implements RenderDelegate{
 	}
 
 	public void render(GenericButton button) {
-		if(button.isVisible()) {
+		if (button.isVisible()) {
 			FontRenderer font = Minecraft.theMinecraft.fontRenderer;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) button.getScreenX(), (float) button.getScreenY(), 0);
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
 			GL11.glScalef((float) button.getWidth() / width, (float) button.getHeight() / 20f, 1);
-			
+
 			double mouseX = button.getScreen().getMouseX();
 			double mouseY = button.getScreen().getMouseY();
-			
+
 			boolean hovering = mouseX >= button.getScreenX() && mouseY >= button.getScreenY() && mouseX < button.getScreenX() + button.getWidth() && mouseY < button.getScreenY() + button.getHeight();
 			int hoverState = getHoverState(button, hovering);
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			Color color = button.getTextColor();
-			if(!button.isEnabled()) {
+			if (!button.isEnabled()) {
 				color = button.getDisabledColor();
-			} else if(hovering) {
+			} else if (hovering) {
 				color = button.getHoverColor();
 			}
 			int left = (int) 5;
 			switch (button.getAlign()) {
-				case TOP_CENTER:
-				case CENTER_CENTER:
-				case BOTTOM_CENTER:
-					left = (int) ((width / 2) - (font.getStringWidth(button.getText()) / 2)); break;
-				case TOP_RIGHT:
-				case CENTER_RIGHT:
-				case BOTTOM_RIGHT:
-					left = (int) (width - font.getStringWidth(button.getText())) - 5; break;
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				left = (int) ((width / 2) - (font.getStringWidth(button.getText()) / 2));
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				left = (int) (width - font.getStringWidth(button.getText())) - 5;
+				break;
 			}
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
 		}
 	}
-	
+
 	protected int getHoverState(Control control, boolean hover) {
 		int state = 1;
 		if (!control.isEnabled()) {
 			state = 0;
-		}
-		else if (hover) {
+		} else if (hover) {
 			state = 2;
 		}
 
@@ -181,8 +183,7 @@ public class MCRenderDelegate implements RenderDelegate{
 			block.maxX = block.maxX * item.getWidth() / 8;
 			block.maxY = block.maxY * item.getHeight() / 8;
 			block.maxZ = block.maxZ * item.getDepth() / 8;
-		}
-		else {
+		} else {
 			renderer.setScale((item.getWidth() / 8D), (item.getHeight() / 8D), 1);
 		}
 		GL11.glPushMatrix();
@@ -190,7 +191,7 @@ public class MCRenderDelegate implements RenderDelegate{
 		GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
 		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, item.getTypeId(), item.getData(), Item.itemsList[item.getTypeId()].getIconFromDamage(item.getData()), 0, 0);
 		GL11.glPopMatrix();
-		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())){
+		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
 			block.maxX = oldX;
 			block.maxY = oldY;
 			block.maxZ = oldZ;
@@ -203,36 +204,40 @@ public class MCRenderDelegate implements RenderDelegate{
 	public void render(GenericLabel label) {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		String lines[] = label.getText().split("\\n");
-		
+
 		double swidth = label.getTextWidth();
 		double sheight = label.getTextHeight();
-		
+
 		GL11.glPushMatrix();
-		
+
 		double top = label.getScreenY();
 		switch (label.getAlign()) {
-			case CENTER_LEFT:
-			case CENTER_CENTER:
-			case CENTER_RIGHT:
-				top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight()) / 2; break;
-			case BOTTOM_LEFT:
-			case BOTTOM_CENTER:
-			case BOTTOM_RIGHT:
-				top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight()); break;
+		case CENTER_LEFT:
+		case CENTER_CENTER:
+		case CENTER_RIGHT:
+			top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight()) / 2;
+			break;
+		case BOTTOM_LEFT:
+		case BOTTOM_CENTER:
+		case BOTTOM_RIGHT:
+			top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight());
+			break;
 		}
-		
+
 		double aleft = label.getScreenX();
 		switch (label.getAlign()) {
-			case TOP_CENTER:
-			case CENTER_CENTER:
-			case BOTTOM_CENTER:
-				aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth()) / 2; break;
-			case TOP_RIGHT:
-			case CENTER_RIGHT:
-			case BOTTOM_RIGHT:
-				aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth()); break;
+		case TOP_CENTER:
+		case CENTER_CENTER:
+		case BOTTOM_CENTER:
+			aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth()) / 2;
+			break;
+		case TOP_RIGHT:
+		case CENTER_RIGHT:
+		case BOTTOM_RIGHT:
+			aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth());
+			break;
 		}
-		
+
 		GL11.glTranslatef((float) aleft, (float) top, 0);
 		if (!label.getAuto()) {
 			GL11.glScalef((float) (label.getWidth() / swidth), (float) (label.getHeight() / sheight), 1);
@@ -242,14 +247,16 @@ public class MCRenderDelegate implements RenderDelegate{
 		for (int i = 0; i < lines.length; i++) {
 			double left = 0;
 			switch (label.getAlign()) {
-				case TOP_CENTER:
-				case CENTER_CENTER:
-				case BOTTOM_CENTER:
-					left = (swidth / 2) - (font.getStringWidth(lines[i]) / 2); break;
-				case TOP_RIGHT:
-				case CENTER_RIGHT:
-				case BOTTOM_RIGHT:
-					left = swidth - font.getStringWidth(lines[i]); break;
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				left = (swidth / 2) - (font.getStringWidth(lines[i]) / 2);
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				left = swidth - font.getStringWidth(lines[i]);
+				break;
 			}
 			font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
 		}
@@ -258,24 +265,24 @@ public class MCRenderDelegate implements RenderDelegate{
 	}
 
 	public void render(GenericSlider slider) {
-		if(slider.isVisible()) {
+		if (slider.isVisible()) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			float width = (float) (slider.getWidth() < 200 ? slider.getWidth() : 200);
 			GL11.glTranslatef((float) slider.getScreenX(), (float) slider.getScreenY(), 0);
 			GL11.glScalef((float) slider.getWidth() / width, (float) slider.getHeight() / 20f, 1);
-			
+
 			double mouseX = slider.getScreen().getMouseX();
 			double mouseY = slider.getScreen().getMouseY();
-			
+
 			boolean hovering = mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
-			
+
 			int hoverState = getHoverState(slider, hovering);
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			
-			if(slider.isDragging()) {
-				slider.setSliderPosition((float)(mouseX - (slider.getScreenX() + 4)) / (float)(slider.getWidth() - 8));
+
+			if (slider.isDragging()) {
+				slider.setSliderPosition((float) (mouseX - (slider.getScreenX() + 4)) / (float) (slider.getWidth() - 8));
 			}
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -287,8 +294,8 @@ public class MCRenderDelegate implements RenderDelegate{
 
 	public void render(GenericTextField textField) {
 		RenderUtil.drawRectangle((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
-		RenderUtil.drawRectangle((int)textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
-		
+		RenderUtil.drawRectangle((int) textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
+
 		int x = (int) (textField.getScreenX() + GenericTextField.PADDING);
 		int y = (int) (textField.getScreenY() + GenericTextField.PADDING);
 		int color = textField.isEnabled() ? textField.getColor().toInt() : textField.getDisabledColor().toInt();
@@ -297,7 +304,7 @@ public class MCRenderDelegate implements RenderDelegate{
 		int cursorOffset = 0;
 		String line;
 		Iterator<String> iter = textField.getTextProcessor().iterator();
-		
+
 		while (iter.hasNext()) {
 			line = iter.next();
 			if (lineNum == cursor[0]) {
@@ -305,8 +312,8 @@ public class MCRenderDelegate implements RenderDelegate{
 			}
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
 		}
-		
-		boolean showCursor = textField.isEnabled() && textField.isFocus() && (Spoutcraft.getClient().getTick() & 0x20) > 0; 
+
+		boolean showCursor = textField.isEnabled() && textField.isFocus() && (Spoutcraft.getClient().getTick() & 0x20) > 0;
 		if (showCursor) {
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
@@ -318,13 +325,17 @@ public class MCRenderDelegate implements RenderDelegate{
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); //moves texture into place
+			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves
+																								// texture
+																								// into
+																								// place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); //draw corners
+			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); // draw
+																						// corners
 			tessellator.addVertexWithUV(texture.getWidth(), texture.getHeight(), -90, textureBinding.getWidth(), 0.0D);
 			tessellator.addVertexWithUV(texture.getWidth(), 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
 			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
@@ -338,11 +349,11 @@ public class MCRenderDelegate implements RenderDelegate{
 	public void render(HealthBar bar) {
 		int health = Minecraft.theMinecraft.thePlayer.health;
 		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.heartsLife / 3 % 2 == 1;
-		if(Minecraft.theMinecraft.thePlayer.heartsLife < 10) {
+		if (Minecraft.theMinecraft.thePlayer.heartsLife < 10) {
 			whiteOutlinedHearts = false;
 		}
 		float healthPercent = health / 0.2f;
-		int y = (int)bar.getScreenY();
+		int y = (int) bar.getScreenY();
 		if (healthPercent <= bar.getDangerPercent()) {
 			y += GuiIngame.rand.nextInt(2);
 		}
@@ -351,47 +362,45 @@ public class MCRenderDelegate implements RenderDelegate{
 			for (int icon = 0; icon < bar.getMaxNumHearts(); ++icon) {
 				boolean full = (icon + 1) * healthPercentPerIcon <= healthPercent;
 				boolean half = (icon + 1) * healthPercentPerIcon < healthPercent + healthPercentPerIcon;
-				int x = (int)bar.getScreenX() + icon * bar.getIconOffset();
-				
+				int x = (int) bar.getScreenX() + icon * bar.getIconOffset();
+
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9, 0f);
 				if (whiteOutlinedHearts) {
 					if (full) {
 						RenderUtil.drawTexturedModalRectangle(x, y, 70, 0, 9, 9, 0f);
-					}
-					else if (half) {
+					} else if (half) {
 						RenderUtil.drawTexturedModalRectangle(x, y, 79, 0, 9, 9, 0f);
 					}
 				}
 
 				if (full) {
 					RenderUtil.drawTexturedModalRectangle(x, y, 52, 0, 9, 9, 0f);
-				}
-				else if (half) {
+				} else if (half) {
 					RenderUtil.drawTexturedModalRectangle(x, y, 61, 0, 9, 9, 0f);
 				}
 
 			}
 		}
 	}
-	
+
 	public void render(GenericEntityWidget entityWidget) {
 		Entity entity = SpoutClient.getInstance().getEntityFromId(entityWidget.getEntityID());
 		if (entity != null) {
 			GL11.glEnable(32826);
-	        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 			GL11.glPushMatrix();
-			GL11.glTranslated(entityWidget.getX() + entityWidget.getWidth()/2, entityWidget.getY() + entityWidget.getHeight(), 50F);
+			GL11.glTranslated(entityWidget.getX() + entityWidget.getWidth() / 2, entityWidget.getY() + entityWidget.getHeight(), 50F);
 			RenderHelper.enableStandardItemLighting();
-	        float f1 = (float) Math.min(entityWidget.getWidth(), entityWidget.getHeight());
-	        GL11.glScalef(-f1, f1, f1);
-	        GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-	        GL11.glRotatef(entity.prevRotationYaw, 0, 1.0F, 0);
+			float f1 = (float) Math.min(entityWidget.getWidth(), entityWidget.getHeight());
+			GL11.glScalef(-f1, f1, f1);
+			GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glRotatef(entity.prevRotationYaw, 0, 1.0F, 0);
 			RenderHelper.enableStandardItemLighting();
-	        RenderManager.instance.playerViewY = 180F;
-	        RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+			RenderManager.instance.playerViewY = 180F;
+			RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
 			GL11.glPopMatrix();
 			RenderHelper.disableStandardItemLighting();
-	        GL11.glDisable(32826);
+			GL11.glDisable(32826);
 		}
 	}
 
@@ -401,5 +410,40 @@ public class MCRenderDelegate implements RenderDelegate{
 
 	public MinecraftTessellator getTessellator() {
 		return tessellator;
+	}
+
+	@Override
+	public void render(HungerBar bar) {
+
+		if (bar.isVisible()) {
+			int y = (int) bar.getScreenY();
+			int x = (int) bar.getScreenX();
+			
+			FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
+
+			int foodAmount = foodStats.func_35765_a();
+
+			int foodIcon = 16;
+			byte foodOutline = 0;
+
+			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.field_35691_s)) {
+				foodIcon += 36;
+				foodOutline = 13;
+			}
+			
+			for (int icon = 0; icon < 10; icon++) {
+
+				RenderUtil.drawTexturedModalRectangle(x, y, 16 + foodOutline * 9, 27, 9, 9, 0f);
+
+				if (icon * 2 + 1 < foodAmount) {
+					RenderUtil.drawTexturedModalRectangle(x, y, foodIcon + 36, 27, 9, 9, 0f);
+				}
+
+				if (icon * 2 + 1 == foodAmount) {
+					RenderUtil.drawTexturedModalRectangle(x, y, foodIcon + 45, 27, 9, 9, 0f);
+				}
+			}
+		}
+
 	}
 }
