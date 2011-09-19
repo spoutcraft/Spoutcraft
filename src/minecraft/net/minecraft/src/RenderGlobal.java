@@ -604,8 +604,8 @@ public class RenderGlobal implements IWorldAccess {
 			this.renderersSkippingRenderPass = 0;
 		}
 
-		double var33 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * var3;
-		double var7 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * var3;
+		double var39 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * var3;
+		double var40 = var1.lastTickPosY + (var1.posY - var1.lastTickPosY) * var3;
 		double var9 = var1.lastTickPosZ + (var1.posZ - var1.lastTickPosZ) * var3;
 		double var11 = var1.posX - this.prevSortX;
 		double var13 = var1.posY - this.prevSortY;
@@ -695,6 +695,7 @@ public class RenderGlobal implements IWorldAccess {
 						} else if(var32.isInFrustum && !var32.isWaitingOnOcclusionQuery) {
 							float var34;
 							float var35;
+							float var33;
 							float var36;
 							if(var32.isVisibleFromPosition) {
 								var33 = Math.abs((float)(var32.visibleFromX - var1.posX));
@@ -821,7 +822,7 @@ public class RenderGlobal implements IWorldAccess {
 		if(!this.mc.theWorld.worldProvider.isNether) {
 			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 			//Spout Start
-			Vec3D vec3d = worldObj.func_4079_a(mc.renderViewEntity, var1);
+			Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, var1);
 			float var3 = (float)vec3d.xCoord;
 			float var4 = (float)vec3d.yCoord;
 			float var5 = (float)vec3d.zCoord;
@@ -1025,14 +1026,6 @@ public class RenderGlobal implements IWorldAccess {
 				Vec3D var6 = this.worldObj.drawClouds(var1);
 				float var7 = (float)var6.xCoord;
 				float var8 = (float)var6.yCoord;
-				//Spout Start
-				Color cloudColor = SpoutClient.getInstance().getSkyManager().getCloudColor();
-				if(cloudColor!=null){
-					var7 = cloudColor.getRedF();
-					var8 = cloudColor.getGreenF();
-					var9 = cloudColor.getBlueF();
-				}
-				//Spout End
 				float var9 = (float)var6.zCoord;
 				float var10;
 				if(this.mc.gameSettings.anaglyph) {
@@ -1059,6 +1052,14 @@ public class RenderGlobal implements IWorldAccess {
 				float var20 = (float)(var13 * (double)var10);
 				float var21 = (float)(var15 * (double)var10);
 				var5.startDrawingQuads();
+				//Spout Start
+				Color cloudColor = SpoutClient.getInstance().getSkyManager().getCloudColor();
+				if(cloudColor!=null){
+					var7 = cloudColor.getRedF();
+					var8 = cloudColor.getGreenF();
+					var9 = cloudColor.getBlueF();
+				}
+				//Spout End
 				var5.setColorRGBA_F(var7, var8, var9, 0.8F);
 
 				for(int var22 = -var3 * var4; var22 < var3 * var4; var22 += var3) {
