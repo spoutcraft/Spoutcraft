@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
 //Spout Start
@@ -9,28 +5,25 @@ import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 //Spout End
 
-// Referenced classes of package net.minecraft.src:
-//			WorldProvider, WorldChunkManagerHell, BiomeGenBase, Vec3D, 
-//			ChunkProviderHell, World, Block, IChunkProvider
+import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Block;
+import net.minecraft.src.ChunkProviderHell;
+import net.minecraft.src.IChunkProvider;
+import net.minecraft.src.Vec3D;
+import net.minecraft.src.WorldChunkManagerHell;
+import net.minecraft.src.WorldProvider;
 
-public class WorldProviderHell extends WorldProvider
-{
+public class WorldProviderHell extends WorldProvider {
 
-	public WorldProviderHell()
-	{
+	public void registerWorldChunkManager() {
+		this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.hell, 1.0F, 0.0F);
+		this.isNether = true;
+		this.isHellWorld = true;
+		this.hasNoSky = true;
+		this.worldType = -1;
 	}
 
-	public void registerWorldChunkManager()
-	{
-		worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.hell, 1.0D, 0.0D);
-		isNether = true;
-		isHellWorld = true;
-		hasNoSky = true;
-		worldType = -1;
-	}
-
-	public Vec3D func_4096_a(float f, float f1)
-	{
+	public Vec3D func_4096_a(float var1, float var2) {
 		//Spout Start
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if(fogColor != null) {
@@ -38,46 +31,33 @@ public class WorldProviderHell extends WorldProvider
 		} else {
 			return Vec3D.createVector(0.20000000298023224D, 0.029999999329447746D, 0.029999999329447746D);
 		}
-		//Spout End
+		//Spout End	
 	}
 
-	protected void generateLightBrightnessTable()
-	{
-		float f = 0.1F;
-		for(int i = 0; i <= 15; i++)
-		{
-			float f1 = 1.0F - (float)i / 15F;
-			lightBrightnessTable[i] = ((1.0F - f1) / (f1 * 3F + 1.0F)) * (1.0F - f) + f;
+	protected void generateLightBrightnessTable() {
+		float var1 = 0.1F;
+
+		for(int var2 = 0; var2 <= 15; ++var2) {
+			float var3 = 1.0F - (float)var2 / 15.0F;
+			this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
 		}
 
 	}
 
-	public IChunkProvider getChunkProvider()
-	{
-		return new ChunkProviderHell(worldObj, worldObj.getRandomSeed());
+	public IChunkProvider getChunkProvider() {
+		return new ChunkProviderHell(this.worldObj, this.worldObj.getRandomSeed());
 	}
 
-	public boolean canCoordinateBeSpawn(int i, int j)
-	{
-		int k = worldObj.getFirstUncoveredBlock(i, j);
-		if(k == Block.bedrock.blockID)
-		{
-			return false;
-		}
-		if(k == 0)
-		{
-			return false;
-		}
-		return Block.opaqueCubeLookup[k];
+	public boolean canCoordinateBeSpawn(int var1, int var2) {
+		int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
+		return var3 == Block.bedrock.blockID?false:(var3 == 0?false:Block.opaqueCubeLookup[var3]);
 	}
 
-	public float calculateCelestialAngle(long l, float f)
-	{
+	public float calculateCelestialAngle(long var1, float var3) {
 		return 0.5F;
 	}
 
-	public boolean canRespawnHere()
-	{
+	public boolean canRespawnHere() {
 		return false;
 	}
 }

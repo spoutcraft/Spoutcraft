@@ -1,4 +1,5 @@
 package net.minecraft.src;
+
 //Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
 //Spout HD End
@@ -6,10 +7,11 @@ import net.minecraft.src.Block;
 import net.minecraft.src.TextureFX;
 
 public class TextureFlamesFX extends TextureFX {
-//Spout HD Start
+	
+	//Spout HD Start
 	protected float[] field_1133_g = new float[TileSize.int_flameArraySize];
 	protected float[] field_1132_h = new float[TileSize.int_flameArraySize];
-//Spout HD End
+	//Spout HD End
 
 	public TextureFlamesFX(int var1) {
 		super(Block.fire.blockIndexInTexture + var1 * 16);
@@ -20,29 +22,32 @@ public class TextureFlamesFX extends TextureFX {
 		float var4;
 		int var5;
 		int var6;
-//Spout HD Start
+		//Spout HD Start
 		for(int var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for(var2 = 0; var2 < TileSize.int_flameHeight; ++var2) {
-//Spout HD End
+				//Spout HD End
 				int var3 = 18;
-//Spout HD Start
+				//Spout HD Start
 				var4 = this.field_1133_g[var1 + (var2 + 1) % TileSize.int_flameHeight * TileSize.int_size] * (float)var3;
-//Spout HD End
+				//Spout HD End
+
 				for(var5 = var1 - 1; var5 <= var1 + 1; ++var5) {
 					for(var6 = var2; var6 <= var2 + 1; ++var6) {
-//Spout HD Start
+						//Spout HD Start
 						if(var5 >= 0 && var6 >= 0 && var5 < TileSize.int_size && var6 < TileSize.int_flameHeight) {
 							var4 += this.field_1133_g[var5 + var6 * TileSize.int_size];
 						}
-//Spout HD End
+						//Spout HD End
+
 						++var3;
 					}
 				}
-//Spout HD Start
+
+				//Spout HD Start
 				this.field_1132_h[var1 + var2 * TileSize.int_size] = var4 / ((float)var3 * TileSize.float_flameNudge);
 				if(var2 >= TileSize.int_flameHeightMinus1) {
 					this.field_1132_h[var1 + var2 * TileSize.int_size] = (float)(Math.random() * Math.random() * Math.random() * 4.0D + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
-//Spout HD End
+				//Spout HD End
 				}
 			}
 		}
@@ -50,9 +55,10 @@ public class TextureFlamesFX extends TextureFX {
 		float[] var12 = this.field_1132_h;
 		this.field_1132_h = this.field_1133_g;
 		this.field_1133_g = var12;
-//Spout HD Start
+
+		//Spout HD Start
 		for(var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
-//Spout HD End
+			//Spout HD End
 			float var13 = this.field_1133_g[var2] * 1.8F;
 			if(var13 > 1.0F) {
 				var13 = 1.0F;

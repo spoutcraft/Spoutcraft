@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.src.Empty1;
+import net.minecraft.src.MCHash;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet0KeepAlive;
 import net.minecraft.src.Packet100OpenWindow;
@@ -18,6 +19,7 @@ import net.minecraft.src.Packet103SetSlot;
 import net.minecraft.src.Packet104WindowItems;
 import net.minecraft.src.Packet105UpdateProgressbar;
 import net.minecraft.src.Packet106Transaction;
+import net.minecraft.src.Packet107CreativeSetSlot;
 import net.minecraft.src.Packet10Flying;
 import net.minecraft.src.Packet11PlayerPosition;
 import net.minecraft.src.Packet12PlayerLook;
@@ -32,13 +34,16 @@ import net.minecraft.src.Packet18Animation;
 import net.minecraft.src.Packet19EntityAction;
 import net.minecraft.src.Packet1Login;
 import net.minecraft.src.Packet200Statistic;
+import net.minecraft.src.Packet201PlayerInfo;
 import net.minecraft.src.Packet20NamedEntitySpawn;
 import net.minecraft.src.Packet21PickupSpawn;
 import net.minecraft.src.Packet22Collect;
 import net.minecraft.src.Packet23VehicleSpawn;
 import net.minecraft.src.Packet24MobSpawn;
+import net.minecraft.src.Packet254ServerPing;
 import net.minecraft.src.Packet255KickDisconnect;
 import net.minecraft.src.Packet25EntityPainting;
+import net.minecraft.src.Packet26EntityExpOrb;
 import net.minecraft.src.Packet27Position;
 import net.minecraft.src.Packet28EntityVelocity;
 import net.minecraft.src.Packet29DestroyEntity;
@@ -52,6 +57,9 @@ import net.minecraft.src.Packet38EntityStatus;
 import net.minecraft.src.Packet39AttachEntity;
 import net.minecraft.src.Packet3Chat;
 import net.minecraft.src.Packet40EntityMetadata;
+import net.minecraft.src.Packet41EntityEffect;
+import net.minecraft.src.Packet42RemoveEntityEffect;
+import net.minecraft.src.Packet43Experience;
 import net.minecraft.src.Packet4UpdateTime;
 import net.minecraft.src.Packet50PreChunk;
 import net.minecraft.src.Packet51MapChunk;
@@ -71,23 +79,23 @@ import net.minecraft.src.PacketCounter;
 
 public abstract class Packet {
 
-	private static Map packetIdToClassMap = new HashMap();
+	private static MCHash packetIdToClassMap = new MCHash();
 	private static Map packetClassToIdMap = new HashMap();
 	private static Set clientPacketIdList = new HashSet();
 	private static Set serverPacketIdList = new HashSet();
 	public final long creationTimeMillis = System.currentTimeMillis();
 	public boolean isChunkDataPacket = false;
-	private static HashMap packetStats;
-	private static int totalPacketsCount;
+	private static MCHash totalPacketsCount;
+	private static int packetStats;
 
 
-	public static void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { //Spout default -> public
-		if(packetIdToClassMap.containsKey(Integer.valueOf(var0))) {
+	static public void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { //Spout default -> public
+		if(packetIdToClassMap.func_35858_b(var0)) {
 			throw new IllegalArgumentException("Duplicate packet id:" + var0);
 		} else if(packetClassToIdMap.containsKey(var3)) {
 			throw new IllegalArgumentException("Duplicate packet class:" + var3);
 		} else {
-			packetIdToClassMap.put(Integer.valueOf(var0), var3);
+			packetIdToClassMap.addKey(var0, var3);
 			packetClassToIdMap.put(var3, Integer.valueOf(var0));
 			if(var1) {
 				clientPacketIdList.add(Integer.valueOf(var0));
@@ -102,7 +110,7 @@ public abstract class Packet {
 
 	public static Packet getNewPacket(int var0) {
 		try {
-			Class var1 = (Class)packetIdToClassMap.get(Integer.valueOf(var0));
+			Class var1 = (Class)packetIdToClassMap.lookup(var0);
 			return var1 == null?null:(Packet)var1.newInstance();
 		} catch (Exception var2) {
 			var2.printStackTrace();
@@ -141,15 +149,15 @@ public abstract class Packet {
 			return null;
 		}
 
-		PacketCounter var4 = (PacketCounter)packetStats.get(Integer.valueOf(var6));
+		PacketCounter var4 = (PacketCounter)totalPacketsCount.lookup(var6);
 		if(var4 == null) {
 			var4 = new PacketCounter((Empty1)null);
-			packetStats.put(Integer.valueOf(var6), var4);
+			totalPacketsCount.addKey(var6, var4);
 		}
 
 		var4.addPacket(var3.getPacketSize());
-		++totalPacketsCount;
-		if(totalPacketsCount % 1000 == 0) {
+		++packetStats;
+		if(packetStats % 1000 == 0) {
 			;
 		}
 
@@ -222,6 +230,7 @@ public abstract class Packet {
 		addIdClassMapping(23, true, false, Packet23VehicleSpawn.class);
 		addIdClassMapping(24, true, false, Packet24MobSpawn.class);
 		addIdClassMapping(25, true, false, Packet25EntityPainting.class);
+		addIdClassMapping(26, true, false, Packet26EntityExpOrb.class);
 		addIdClassMapping(27, false, true, Packet27Position.class);
 		addIdClassMapping(28, true, false, Packet28EntityVelocity.class);
 		addIdClassMapping(29, true, false, Packet29DestroyEntity.class);
@@ -233,6 +242,9 @@ public abstract class Packet {
 		addIdClassMapping(38, true, false, Packet38EntityStatus.class);
 		addIdClassMapping(39, true, false, Packet39AttachEntity.class);
 		addIdClassMapping(40, true, false, Packet40EntityMetadata.class);
+		addIdClassMapping(41, true, false, Packet41EntityEffect.class);
+		addIdClassMapping(42, true, false, Packet42RemoveEntityEffect.class);
+		addIdClassMapping(43, true, false, Packet43Experience.class);
 		addIdClassMapping(50, true, false, Packet50PreChunk.class);
 		addIdClassMapping(51, true, false, Packet51MapChunk.class);
 		addIdClassMapping(52, true, false, Packet52MultiBlockChange.class);
@@ -249,11 +261,14 @@ public abstract class Packet {
 		addIdClassMapping(104, true, false, Packet104WindowItems.class);
 		addIdClassMapping(105, true, false, Packet105UpdateProgressbar.class);
 		addIdClassMapping(106, true, true, Packet106Transaction.class);
+		addIdClassMapping(107, true, true, Packet107CreativeSetSlot.class);
 		addIdClassMapping(130, true, true, Packet130UpdateSign.class);
 		addIdClassMapping(131, true, false, Packet131MapData.class);
 		addIdClassMapping(200, true, false, Packet200Statistic.class);
+		addIdClassMapping(201, true, false, Packet201PlayerInfo.class);
+		addIdClassMapping(254, false, true, Packet254ServerPing.class);
 		addIdClassMapping(255, true, true, Packet255KickDisconnect.class);
-		packetStats = new HashMap();
-		totalPacketsCount = 0;
+		totalPacketsCount = new MCHash();
+		packetStats = 0;
 	}
 }

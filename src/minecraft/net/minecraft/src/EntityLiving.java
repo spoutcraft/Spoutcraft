@@ -1,77 +1,93 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Block;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityWolf;
+import net.minecraft.src.EntityXPOrb;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.MovingObjectPosition;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.NBTTagList;
+import net.minecraft.src.Potion;
+import net.minecraft.src.PotionEffect;
+import net.minecraft.src.StepSound;
+import net.minecraft.src.Vec3D;
+import net.minecraft.src.World;
 //Spout Start
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End
+public abstract class EntityLiving extends Entity {
 
-// Referenced classes of package net.minecraft.src:
-//			Entity, Vec3D, World, Material, 
-//			MathHelper, Block, StepSound, AxisAlignedBB, 
-//			NBTTagCompound, ItemStack, MovingObjectPosition
-
-public abstract class EntityLiving extends Entity
-{
-
-	public int heartsHalvesLife;
+	public int heartsHalvesLife = 20;
 	public float field_9365_p;
 	public float field_9363_r;
-	public float renderYawOffset;
-	public float prevRenderYawOffset;
+	public float renderYawOffset = 0.0F;
+	public float prevRenderYawOffset = 0.0F;
 	protected float field_9362_u;
 	protected float field_9361_v;
 	protected float field_9360_w;
 	protected float field_9359_x;
-	protected boolean field_9358_y;
-	protected String texture;
-	protected boolean field_9355_A;
-	protected float field_9353_B;
-	protected String field_9351_C;
-	protected float field_9349_D;
-	protected int scoreValue;
-	protected float field_9345_F;
-	public boolean isMultiplayerEntity;
+	protected boolean field_9358_y = true;
+	protected String texture = "/mob/char.png";
+	protected boolean field_9355_A = true;
+	protected float field_9353_B = 0.0F;
+	protected String entityType = null;
+	protected float field_9349_D = 1.0F;
+	protected int scoreValue = 0;
+	protected float field_9345_F = 0.0F;
+	public boolean isMultiplayerEntity = false;
+	public float field_35169_bv = 0.1F;
+	public float field_35168_bw = 0.02F;
 	public float prevSwingProgress;
 	public float swingProgress;
-	public int health;
+	public int health = 10;
 	public int prevHealth;
 	private int livingSoundTime;
 	public int hurtTime;
 	public int maxHurtTime;
-	public float attackedAtYaw;
-	public int deathTime;
-	public int attackTime;
+	public float attackedAtYaw = 0.0F;
+	public int deathTime = 0;
+	public int attackTime = 0;
 	public float prevCameraPitch;
 	public float cameraPitch;
-	protected boolean unused_flag;
-	public int field_9326_T;
-	public float field_9325_U;
+	protected boolean unused_flag = false;
+	protected int field_35171_bJ;
+	public int field_9326_T = -1;
+	public float field_9325_U = (float)(Math.random() * 0.8999999761581421D + 0.10000000149011612D);
 	public float field_705_Q;
 	public float field_704_R;
 	public float field_703_S;
+	private EntityPlayer field_34904_b = null;
+	private int field_34905_c = 0;
+	public int field_35172_bP = 0;
+	public int field_35173_bQ = 0;
+	protected HashMap field_35170_bR = new HashMap();
 	protected int newPosRotationIncrements;
 	protected double newPosX;
 	protected double newPosY;
 	protected double newPosZ;
 	protected double newRotationYaw;
 	protected double newRotationPitch;
-	float field_9348_ae;
-	protected int field_9346_af;
-	protected int entityAge;
+	float field_9348_ae = 0.0F;
+	protected int field_9346_af = 0;
+	protected int entityAge = 0;
 	protected float moveStrafing;
 	protected float moveForward;
 	protected float randomYawVelocity;
-	protected boolean isJumping;
-	protected float defaultPitch;
-	protected float moveSpeed;
+	protected boolean isJumping = false;
+	protected float defaultPitch = 0.0F;
+	protected float moveSpeed = 0.7F;
 	private Entity currentTarget;
-	protected int numTicksToChaseTarget;
+	protected int numTicksToChaseTarget = 0;
+
 	//Spout Start
 	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
 	private byte textureToRender = 0;
@@ -81,55 +97,24 @@ public abstract class EntityLiving extends Entity
 	public double jumpingMod = 1D;
 	public double airspeedMod = 1D;
 	//Spout End
-	
-	public EntityLiving(World world)
-	{
-		super(world);
-		heartsHalvesLife = 20;
-		renderYawOffset = 0.0F;
-		prevRenderYawOffset = 0.0F;
-		field_9358_y = true;
-		texture = "/mob/char.png";
-		field_9355_A = true;
-		field_9353_B = 0.0F;
-		field_9351_C = null;
-		field_9349_D = 1.0F;
-		scoreValue = 0;
-		field_9345_F = 0.0F;
-		isMultiplayerEntity = false;
-		attackedAtYaw = 0.0F;
-		deathTime = 0;
-		attackTime = 0;
-		unused_flag = false;
-		field_9326_T = -1;
-		field_9325_U = (float)(Math.random() * 0.89999997615814209D + 0.10000000149011612D);
-		field_9348_ae = 0.0F;
-		field_9346_af = 0;
-		entityAge = 0;
-		isJumping = false;
-		defaultPitch = 0.0F;
-		moveSpeed = 0.7F;
-		numTicksToChaseTarget = 0;
-		health = 10;
-		preventEntitySpawning = true;
-		field_9363_r = (float)(Math.random() + 1.0D) * 0.01F;
-		setPosition(posX, posY, posZ);
-		field_9365_p = (float)Math.random() * 12398F;
-		rotationYaw = (float)(Math.random() * 3.1415927410125732D * 2D);
-		stepHeight = 0.5F;
+
+	public EntityLiving(World var1) {
+		super(var1);
+		this.preventEntitySpawning = true;
+		this.field_9363_r = (float)(Math.random() + 1.0D) * 0.01F;
+		this.setPosition(this.posX, this.posY, this.posZ);
+		this.field_9365_p = (float)Math.random() * 12398.0F;
+		this.rotationYaw = (float)(Math.random() * 3.1415927410125732D * 2.0D);
+		this.stepHeight = 0.5F;
 	}
 
-	protected void entityInit()
-	{
+	protected void entityInit() {}
+
+	public boolean canEntityBeSeen(Entity var1) {
+		return this.worldObj.rayTraceBlocks(Vec3D.createVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), Vec3D.createVector(var1.posX, var1.posY + (double)var1.getEyeHeight(), var1.posZ)) == null;
 	}
 
-	public boolean canEntityBeSeen(Entity entity)
-	{
-		return worldObj.rayTraceBlocks(Vec3D.createVector(posX, posY + (double)getEyeHeight(), posZ), Vec3D.createVector(entity.posX, entity.posY + (double)entity.getEyeHeight(), entity.posZ)) == null;
-	}
-
-	public String getEntityTexture()
-	{
+	public String getEntityTexture() {
 		//Spout Start
 		String custom = getCustomTextureUrl(getTextureToRender());
 		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){
@@ -139,8 +124,8 @@ public abstract class EntityLiving extends Entity
 		}
 		//Spout End
 	}
-	
-	//Spout Start
+
+//Spout Start
 	public String getCustomTextureUrl(byte id){
 		return customTextures.get(id);
 	}
@@ -169,865 +154,968 @@ public abstract class EntityLiving extends Entity
 	}
 	//Spout End
 
-	public boolean canBeCollidedWith()
-	{
-		return !isDead;
+	public boolean canBeCollidedWith() {
+		return !this.isDead;
 	}
 
-	public boolean canBePushed()
-	{
-		return !isDead;
+	public boolean canBePushed() {
+		return !this.isDead;
 	}
 
-	public float getEyeHeight()
-	{
-		return height * 0.85F;
+	public float getEyeHeight() {
+		return this.height * 0.85F;
 	}
 
-	public int getTalkInterval()
-	{
+	public int getTalkInterval() {
 		return 80;
 	}
 
-	public void playLivingSound()
-	{
-		String s = getLivingSound();
-		if(s != null)
-		{
-			worldObj.playSoundAtEntity(this, s, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+	public void playLivingSound() {
+		String var1 = this.getLivingSound();
+		if(var1 != null) {
+			this.worldObj.playSoundAtEntity(this, var1, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 		}
+
 	}
 
-	public void onEntityUpdate()
-	{
-		prevSwingProgress = swingProgress;
+	public void onEntityUpdate() {
+		this.prevSwingProgress = this.swingProgress;
 		super.onEntityUpdate();
-		if(rand.nextInt(1000) < livingSoundTime++)
-		{
-			livingSoundTime = -getTalkInterval();
-			playLivingSound();
+		if(this.rand.nextInt(1000) < this.livingSoundTime++) {
+			this.livingSoundTime = -this.getTalkInterval();
+			this.playLivingSound();
 		}
-		if(isEntityAlive() && isEntityInsideOpaqueBlock())
-		{
-			attackEntityFrom(null, 1);
+
+		if(this.isEntityAlive() && this.isEntityInsideOpaqueBlock()) {
+			this.attackEntityFrom(DamageSource.field_35538_d, 1);
 		}
-		if(isImmuneToFire || worldObj.multiplayerWorld)
-		{
-			fire = 0;
+
+		if(this.isImmuneToFire || this.worldObj.multiplayerWorld) {
+			this.fire = 0;
 		}
-		if(isEntityAlive() && isInsideOfMaterial(Material.water) && !canBreatheUnderwater())
-		{
-			air--;
-			if(air == -20)
-			{
-				air = 0;
-				for(int i = 0; i < 8; i++)
-				{
-					float f = rand.nextFloat() - rand.nextFloat();
-					float f1 = rand.nextFloat() - rand.nextFloat();
-					float f2 = rand.nextFloat() - rand.nextFloat();
-					worldObj.spawnParticle("bubble", posX + (double)f, posY + (double)f1, posZ + (double)f2, motionX, motionY, motionZ);
+
+		int var1;
+		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.field_35170_bR.containsKey(Integer.valueOf(Potion.field_35680_o.field_35670_H))) {
+			--this.air;
+			if(this.air == -20) {
+				this.air = 0;
+
+				for(var1 = 0; var1 < 8; ++var1) {
+					float var2 = this.rand.nextFloat() - this.rand.nextFloat();
+					float var3 = this.rand.nextFloat() - this.rand.nextFloat();
+					float var4 = this.rand.nextFloat() - this.rand.nextFloat();
+					this.worldObj.spawnParticle("bubble", this.posX + (double)var2, this.posY + (double)var3, this.posZ + (double)var4, this.motionX, this.motionY, this.motionZ);
 				}
 
-				attackEntityFrom(null, 2);
+				this.attackEntityFrom(DamageSource.field_35539_e, 2);
 			}
-			fire = 0;
-		} else
-		{
-			air = maxAir;
+
+			this.fire = 0;
+		} else {
+			this.air = this.maxAir;
 		}
-		prevCameraPitch = cameraPitch;
-		if(attackTime > 0)
-		{
-			attackTime--;
+
+		this.prevCameraPitch = this.cameraPitch;
+		if(this.attackTime > 0) {
+			--this.attackTime;
 		}
-		if(hurtTime > 0)
-		{
-			hurtTime--;
+
+		if(this.hurtTime > 0) {
+			--this.hurtTime;
 		}
-		if(heartsLife > 0)
-		{
-			heartsLife--;
+
+		if(this.heartsLife > 0) {
+			--this.heartsLife;
 		}
-		if(health <= 0)
-		{
-			deathTime++;
-			if(deathTime > 20)
-			{
-				onEntityDeath();
-				setEntityDead();
-				for(int j = 0; j < 20; j++)
-				{
-					double d = rand.nextGaussian() * 0.02D;
-					double d1 = rand.nextGaussian() * 0.02D;
-					double d2 = rand.nextGaussian() * 0.02D;
-					worldObj.spawnParticle("explode", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, posY + (double)(rand.nextFloat() * height), (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width, d, d1, d2);
+
+		if(this.health <= 0) {
+			++this.deathTime;
+			if(this.deathTime > 20) {
+				//Spout start - disabled XP orbs
+				/*if(this.field_34905_c > 0 || this.func_35163_av()) {
+					var1 = this.a(this.field_34904_b);
+
+					while(var1 > 0) {
+						int var8 = EntityXPOrb.func_35121_b(var1);
+						var1 -= var8;
+						this.worldObj.entityJoinedWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var8));
+					}
+				}*/
+				//Spout end
+				this.onEntityDeath();
+				this.setEntityDead();
+
+				for(var1 = 0; var1 < 20; ++var1) {
+					double var9 = this.rand.nextGaussian() * 0.02D;
+					double var10 = this.rand.nextGaussian() * 0.02D;
+					double var6 = this.rand.nextGaussian() * 0.02D;
+					this.worldObj.spawnParticle("explode", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var9, var10, var6);
 				}
-
 			}
 		}
-		field_9359_x = field_9360_w;
-		prevRenderYawOffset = renderYawOffset;
-		prevRotationYaw = rotationYaw;
-		prevRotationPitch = rotationPitch;
+
+		if(this.field_34905_c > 0) {
+			--this.field_34905_c;
+		} else {
+			this.field_34904_b = null;
+		}
+
+		this.dropFewItems();
+		this.field_9359_x = this.field_9360_w;
+		this.prevRenderYawOffset = this.renderYawOffset;
+		this.prevRotationYaw = this.rotationYaw;
+		this.prevRotationPitch = this.rotationPitch;
 	}
 
-	public void spawnExplosionParticle()
-	{
-		for(int i = 0; i < 20; i++)
-		{
-			double d = rand.nextGaussian() * 0.02D;
-			double d1 = rand.nextGaussian() * 0.02D;
-			double d2 = rand.nextGaussian() * 0.02D;
-			double d3 = 10D;
-			worldObj.spawnParticle("explode", (posX + (double)(rand.nextFloat() * width * 2.0F)) - (double)width - d * d3, (posY + (double)(rand.nextFloat() * height)) - d1 * d3, (posZ + (double)(rand.nextFloat() * width * 2.0F)) - (double)width - d2 * d3, d, d1, d2);
+	protected int a(EntityPlayer var1) {
+		return this.field_35171_bJ;
+	}
+
+	protected boolean func_35163_av() {
+		return false;
+	}
+
+	public void spawnExplosionParticle() {
+		for(int var1 = 0; var1 < 20; ++var1) {
+			double var2 = this.rand.nextGaussian() * 0.02D;
+			double var4 = this.rand.nextGaussian() * 0.02D;
+			double var6 = this.rand.nextGaussian() * 0.02D;
+			double var8 = 10.0D;
+			this.worldObj.spawnParticle("explode", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width - var2 * var8, this.posY + (double)(this.rand.nextFloat() * this.height) - var4 * var8, this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width - var6 * var8, var2, var4, var6);
 		}
 
 	}
 
-	public void updateRidden()
-	{
+	public void updateRidden() {
 		super.updateRidden();
-		field_9362_u = field_9361_v;
-		field_9361_v = 0.0F;
+		this.field_9362_u = this.field_9361_v;
+		this.field_9361_v = 0.0F;
 	}
 
-	public void setPositionAndRotation2(double d, double d1, double d2, float f, 
-			float f1, int i)
-	{
-		yOffset = 0.0F;
-		newPosX = d;
-		newPosY = d1;
-		newPosZ = d2;
-		newRotationYaw = f;
-		newRotationPitch = f1;
-		newPosRotationIncrements = i;
+	public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
+		this.yOffset = 0.0F;
+		this.newPosX = var1;
+		this.newPosY = var3;
+		this.newPosZ = var5;
+		this.newRotationYaw = (double)var7;
+		this.newRotationPitch = (double)var8;
+		this.newPosRotationIncrements = var9;
 	}
 
-	public void onUpdate()
-	{
+	public void onUpdate() {
 		super.onUpdate();
-		onLivingUpdate();
-		double d = posX - prevPosX;
-		double d1 = posZ - prevPosZ;
-		float f = MathHelper.sqrt_double(d * d + d1 * d1);
-		float f1 = renderYawOffset;
-		float f2 = 0.0F;
-		field_9362_u = field_9361_v;
-		float f3 = 0.0F;
-		if(f > 0.05F)
-		{
-			f3 = 1.0F;
-			f2 = f * 3F;
-			f1 = ((float)Math.atan2(d1, d) * 180F) / 3.141593F - 90F;
-		}
-		if(swingProgress > 0.0F)
-		{
-			f1 = rotationYaw;
-		}
-		if(!onGround)
-		{
-			f3 = 0.0F;
-		}
-		field_9361_v = field_9361_v + (f3 - field_9361_v) * 0.3F;
-		float f4;
-		for(f4 = f1 - renderYawOffset; f4 < -180F; f4 += 360F) { }
-		for(; f4 >= 180F; f4 -= 360F) { }
-		renderYawOffset += f4 * 0.3F;
-		float f5;
-		for(f5 = rotationYaw - renderYawOffset; f5 < -180F; f5 += 360F) { }
-		for(; f5 >= 180F; f5 -= 360F) { }
-		boolean flag = f5 < -90F || f5 >= 90F;
-		if(f5 < -75F)
-		{
-			f5 = -75F;
-		}
-		if(f5 >= 75F)
-		{
-			f5 = 75F;
-		}
-		renderYawOffset = rotationYaw - f5;
-		if(f5 * f5 > 2500F)
-		{
-			renderYawOffset += f5 * 0.2F;
-		}
-		if(flag)
-		{
-			f2 *= -1F;
-		}
-		for(; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
-		for(; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
-		for(; renderYawOffset - prevRenderYawOffset < -180F; prevRenderYawOffset -= 360F) { }
-		for(; renderYawOffset - prevRenderYawOffset >= 180F; prevRenderYawOffset += 360F) { }
-		for(; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
-		for(; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
-		field_9360_w += f2;
-	}
-
-	protected void setSize(float f, float f1)
-	{
-		super.setSize(f, f1);
-	}
-
-	public void heal(int i)
-	{
-		if(health <= 0)
-		{
-			return;
-		}
-		health += i;
-		if(health > 20)
-		{
-			health = 20;
-		}
-		heartsLife = heartsHalvesLife / 2;
-	}
-
-	public boolean attackEntityFrom(Entity entity, int i)
-	{
-		if(worldObj.multiplayerWorld)
-		{
-			return false;
-		}
-		entityAge = 0;
-		if(health <= 0)
-		{
-			return false;
-		}
-		field_704_R = 1.5F;
-		boolean flag = true;
-		if((float)heartsLife > (float)heartsHalvesLife / 2.0F)
-		{
-			if(i <= field_9346_af)
-			{
-				return false;
+		if(this.field_35172_bP > 0) {
+			if(this.field_35173_bQ <= 0) {
+				this.field_35173_bQ = 60;
 			}
-			damageEntity(i - field_9346_af);
-			field_9346_af = i;
-			flag = false;
-		} else
-		{
-			field_9346_af = i;
-			prevHealth = health;
-			heartsLife = heartsHalvesLife;
-			damageEntity(i);
-			hurtTime = maxHurtTime = 10;
+
+			--this.field_35173_bQ;
+			if(this.field_35173_bQ <= 0) {
+				--this.field_35172_bP;
+			}
 		}
-		attackedAtYaw = 0.0F;
-		if(flag)
-		{
-			worldObj.func_9425_a(this, (byte)2);
-			setBeenAttacked();
-			if(entity != null)
-			{
-				double d = entity.posX - posX;
-				double d1;
-				for(d1 = entity.posZ - posZ; d * d + d1 * d1 < 0.0001D; d1 = (Math.random() - Math.random()) * 0.01D)
-				{
-					d = (Math.random() - Math.random()) * 0.01D;
+
+		this.onLivingUpdate();
+		double var1 = this.posX - this.prevPosX;
+		double var3 = this.posZ - this.prevPosZ;
+		float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3);
+		float var6 = this.renderYawOffset;
+		float var7 = 0.0F;
+		this.field_9362_u = this.field_9361_v;
+		float var8 = 0.0F;
+		if(var5 > 0.05F) {
+			var8 = 1.0F;
+			var7 = var5 * 3.0F;
+			var6 = (float)Math.atan2(var3, var1) * 180.0F / 3.1415927F - 90.0F;
+		}
+
+		if(this.swingProgress > 0.0F) {
+			var6 = this.rotationYaw;
+		}
+
+		if(!this.onGround) {
+			var8 = 0.0F;
+		}
+
+		this.field_9361_v += (var8 - this.field_9361_v) * 0.3F;
+
+		float var9;
+		for(var9 = var6 - this.renderYawOffset; var9 < -180.0F; var9 += 360.0F) {
+			;
+		}
+
+		while(var9 >= 180.0F) {
+			var9 -= 360.0F;
+		}
+
+		this.renderYawOffset += var9 * 0.3F;
+
+		float var10;
+		for(var10 = this.rotationYaw - this.renderYawOffset; var10 < -180.0F; var10 += 360.0F) {
+			;
+		}
+
+		while(var10 >= 180.0F) {
+			var10 -= 360.0F;
+		}
+
+		boolean var11 = var10 < -90.0F || var10 >= 90.0F;
+		if(var10 < -75.0F) {
+			var10 = -75.0F;
+		}
+
+		if(var10 >= 75.0F) {
+			var10 = 75.0F;
+		}
+
+		this.renderYawOffset = this.rotationYaw - var10;
+		if(var10 * var10 > 2500.0F) {
+			this.renderYawOffset += var10 * 0.2F;
+		}
+
+		if(var11) {
+			var7 *= -1.0F;
+		}
+
+		while(this.rotationYaw - this.prevRotationYaw < -180.0F) {
+			this.prevRotationYaw -= 360.0F;
+		}
+
+		while(this.rotationYaw - this.prevRotationYaw >= 180.0F) {
+			this.prevRotationYaw += 360.0F;
+		}
+
+		while(this.renderYawOffset - this.prevRenderYawOffset < -180.0F) {
+			this.prevRenderYawOffset -= 360.0F;
+		}
+
+		while(this.renderYawOffset - this.prevRenderYawOffset >= 180.0F) {
+			this.prevRenderYawOffset += 360.0F;
+		}
+
+		while(this.rotationPitch - this.prevRotationPitch < -180.0F) {
+			this.prevRotationPitch -= 360.0F;
+		}
+
+		while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
+			this.prevRotationPitch += 360.0F;
+		}
+
+		this.field_9360_w += var7;
+	}
+
+	protected void setSize(float var1, float var2) {
+		super.setSize(var1, var2);
+	}
+
+	public void heal(int var1) {
+		if(this.health > 0) {
+			this.health += var1;
+			if(this.health > 20) {
+				this.health = 20;
+			}
+
+			this.heartsLife = this.heartsHalvesLife / 2;
+		}
+	}
+
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
+		if(this.worldObj.multiplayerWorld) {
+			return false;
+		} else {
+			this.entityAge = 0;
+			if(this.health <= 0) {
+				return false;
+			} else {
+				this.field_704_R = 1.5F;
+				boolean var3 = true;
+				if((float)this.heartsLife > (float)this.heartsHalvesLife / 2.0F) {
+					if(var2 <= this.field_9346_af) {
+						return false;
+					}
+
+					this.b(var1, var2 - this.field_9346_af);
+					this.field_9346_af = var2;
+					var3 = false;
+				} else {
+					this.field_9346_af = var2;
+					this.prevHealth = this.health;
+					this.heartsLife = this.heartsHalvesLife;
+					this.b(var1, var2);
+					this.hurtTime = this.maxHurtTime = 10;
 				}
 
-				attackedAtYaw = (float)((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - rotationYaw;
-				knockBack(entity, i, d, d1);
-			} else
-			{
-				attackedAtYaw = (int)(Math.random() * 2D) * 180;
+				this.attackedAtYaw = 0.0F;
+				Entity var4 = var1.func_35532_a();
+				if(var4 != null) {
+					if(var4 instanceof EntityPlayer) {
+						this.field_34905_c = 60;
+						this.field_34904_b = (EntityPlayer)var4;
+					} else if(var4 instanceof EntityWolf) {
+						EntityWolf var5 = (EntityWolf)var4;
+						if(var5.isWolfTamed()) {
+							this.field_34905_c = 60;
+							this.field_34904_b = null;
+						}
+					}
+				}
+
+				if(var3) {
+					this.worldObj.setEntityState(this, (byte)2);
+					this.setBeenAttacked();
+					if(var4 != null) {
+						double var9 = var4.posX - this.posX;
+
+						double var7;
+						for(var7 = var4.posZ - this.posZ; var9 * var9 + var7 * var7 < 1.0E-4D; var7 = (Math.random() - Math.random()) * 0.01D) {
+							var9 = (Math.random() - Math.random()) * 0.01D;
+						}
+
+						this.attackedAtYaw = (float)(Math.atan2(var7, var9) * 180.0D / 3.1415927410125732D) - this.rotationYaw;
+						this.knockBack(var4, var2, var9, var7);
+					} else {
+						this.attackedAtYaw = (float)((int)(Math.random() * 2.0D) * 180);
+					}
+				}
+
+				if(this.health <= 0) {
+					if(var3) {
+						this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+					}
+
+					this.onDeath(var1);
+				} else if(var3) {
+					this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+				}
+
+				return true;
 			}
 		}
-		if(health <= 0)
-		{
-			if(flag)
-			{
-				worldObj.playSoundAtEntity(this, getDeathSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-			}
-			onDeath(entity);
-		} else
-		if(flag)
-		{
-			worldObj.playSoundAtEntity(this, getHurtSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-		}
-		return true;
 	}
 
-	public void performHurtAnimation()
-	{
-		hurtTime = maxHurtTime = 10;
-		attackedAtYaw = 0.0F;
+	public void performHurtAnimation() {
+		this.hurtTime = this.maxHurtTime = 10;
+		this.attackedAtYaw = 0.0F;
 	}
 
-	protected void damageEntity(int i)
-	{
-		health -= i;
+	protected void b(DamageSource var1, int var2) {
+		this.health -= var2;
 	}
 
-	protected float getSoundVolume()
-	{
+	protected float getSoundVolume() {
 		return 1.0F;
 	}
 
-	protected String getLivingSound()
-	{
+	protected String getLivingSound() {
 		return null;
 	}
 
-	protected String getHurtSound()
-	{
+	protected String getHurtSound() {
 		return "random.hurt";
 	}
 
-	protected String getDeathSound()
-	{
+	protected String getDeathSound() {
 		return "random.hurt";
 	}
 
-	public void knockBack(Entity entity, int i, double d, double d1)
-	{
-		float f = MathHelper.sqrt_double(d * d + d1 * d1);
-		float f1 = 0.4F;
-		motionX /= 2D;
-		motionY /= 2D;
-		motionZ /= 2D;
-		motionX -= (d / (double)f) * (double)f1;
-		motionY += 0.40000000596046448D;
-		motionZ -= (d1 / (double)f) * (double)f1;
-		if(motionY > 0.40000000596046448D)
-		{
-			motionY = 0.40000000596046448D;
+	public void knockBack(Entity var1, int var2, double var3, double var5) {
+		this.field_35118_ao = true;
+		float var7 = MathHelper.sqrt_double(var3 * var3 + var5 * var5);
+		float var8 = 0.4F;
+		this.motionX /= 2.0D;
+		this.motionY /= 2.0D;
+		this.motionZ /= 2.0D;
+		this.motionX -= var3 / (double)var7 * (double)var8;
+		this.motionY += 0.4000000059604645D;
+		this.motionZ -= var5 / (double)var7 * (double)var8;
+		if(this.motionY > 0.4000000059604645D) {
+			this.motionY = 0.4000000059604645D;
 		}
+
 	}
 
-	public void onDeath(Entity entity)
-	{
-		if(scoreValue >= 0 && entity != null)
-		{
-			entity.addToPlayerScore(this, scoreValue);
+	public void onDeath(DamageSource var1) {
+		Entity var2 = var1.func_35532_a();
+		if(this.scoreValue >= 0 && var2 != null) {
+			var2.addToPlayerScore(this, this.scoreValue);
 		}
-		if(entity != null)
-		{
-			entity.onKillEntity(this);
+
+		if(var2 != null) {
+			var2.onKillEntity(this);
 		}
-		unused_flag = true;
-		if(!worldObj.multiplayerWorld)
-		{
-			dropFewItems();
+
+		this.unused_flag = true;
+		if(!this.worldObj.multiplayerWorld) {
+			this.a(this.field_34905_c > 0);
 		}
-		worldObj.func_9425_a(this, (byte)3);
+
+		this.worldObj.setEntityState(this, (byte)3);
 	}
 
-	protected void dropFewItems()
-	{
-		int i = getDropItemId();
-		if(i > 0)
-		{
-			int j = rand.nextInt(3);
-			for(int k = 0; k < j; k++)
-			{
-				dropItem(i, 1);
+	protected void a(boolean var1) {
+		int var2 = this.getDropItemId();
+		if(var2 > 0) {
+			int var3 = this.rand.nextInt(3);
+
+			for(int var4 = 0; var4 < var3; ++var4) {
+				this.dropItem(var2, 1);
 			}
-
 		}
+
 	}
 
-	protected int getDropItemId()
-	{
+	protected int getDropItemId() {
 		return 0;
 	}
 
-	protected void fall(float f)
-	{
-		super.fall(f);
-		int i = (int)Math.ceil(f - 3F);
-		if(i > 0)
-		{
-			attackEntityFrom(null, i);
-			int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(posY - 0.20000000298023224D - (double)yOffset), MathHelper.floor_double(posZ));
-			if(j > 0)
-			{
-				StepSound stepsound = Block.blocksList[j].stepSound;
-				worldObj.playSoundAtEntity(this, stepsound.func_1145_d(), stepsound.getVolume() * 0.5F, stepsound.getPitch() * 0.75F);
+	protected void fall(float var1) {
+		super.fall(var1);
+		int var2 = (int)Math.ceil((double)(var1 - 3.0F));
+		if(var2 > 0) {
+			this.attackEntityFrom(DamageSource.field_35549_h, var2);
+			int var3 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
+			if(var3 > 0) {
+				StepSound var4 = Block.blocksList[var3].stepSound;
+				this.worldObj.playSoundAtEntity(this, var4.stepSoundDir2(), var4.getVolume() * 0.5F, var4.getPitch() * 0.75F);
 			}
 		}
+
 	}
 
-	public void moveEntityWithHeading(float f, float f1)
-	{
-		if(isInWater())
-		{
-			double d = posY;
-			moveFlying(f, f1, (float) (0.02F * swimmingMod)); //Spout
-			moveEntity(motionX, motionY, motionZ);
-			motionX *= 0.80000001192092896D;
-			motionY *= 0.80000001192092896D;
-			motionZ *= 0.80000001192092896D;
+	public void moveEntityWithHeading(float var1, float var2) {
+		double var3;
+		if(this.isInWater()) {
+			var3 = this.posY;
+			moveFlying(var1, var2, (float) (0.02F * swimmingMod)); //Spout
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.motionX *= 0.800000011920929D;
+			this.motionY *= 0.800000011920929D;
+			this.motionZ *= 0.800000011920929D;
 			//Spout start
 			motionY -= 0.02D * gravityMod;
 			//Spout end
-			if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d, motionZ))
-			{
-				motionY = 0.30000001192092896D;
+			if(this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var3, this.motionZ)) {
+				this.motionY = 0.30000001192092896D;
 			}
-		} else
-		if(handleLavaMovement())
-		{
-			double d1 = posY;
-			moveFlying(f, f1, 0.02F);
-			moveEntity(motionX, motionY, motionZ);
-			motionX *= 0.5D;
-			motionY *= 0.5D;
-			motionZ *= 0.5D;
-			motionY -= 0.02D;
-			if(isCollidedHorizontally && isOffsetPositionInLiquid(motionX, ((motionY + 0.60000002384185791D) - posY) + d1, motionZ))
-			{
-				motionY = 0.30000001192092896D;
+		} else if(this.handleLavaMovement()) {
+			var3 = this.posY;
+			this.moveFlying(var1, var2, 0.02F);
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			this.motionX *= 0.5D;
+			this.motionY *= 0.5D;
+			this.motionZ *= 0.5D;
+			this.motionY -= 0.02D;
+			if(this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var3, this.motionZ)) {
+				this.motionY = 0.30000001192092896D;
 			}
-		} else
-		{
-			float f2 = 0.91F;
-			if(onGround)
-			{
-				f2 = 0.5460001F;
-				int i = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
-				if(i > 0)
-				{
-					f2 = Block.blocksList[i].slipperiness * 0.91F;
+		} else {
+			float var8 = 0.91F;
+			if(this.onGround) {
+				var8 = 0.54600006F;
+				int var4 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+				if(var4 > 0) {
+					var8 = Block.blocksList[var4].slipperiness * 0.91F;
 				}
 			}
-			float f3 = 0.1627714F / (f2 * f2 * f2);
+
+			float var9 = 0.16277136F / (var8 * var8 * var8);
+			float var5 = this.onGround?this.field_35169_bv * var9:this.field_35168_bw;
 			//Spout start
 			float movement = 0.02F;
 			if (onGround) {
-				movement = (float) (0.1F * f3 * walkingMod);
+				movement = (float) (0.1F * var9 * walkingMod);
 			}
 			else if (!isInWater()) {
 				movement *= airspeedMod;
 			}
-			moveFlying(f, f1, movement);
+			moveFlying(var1, var2, movement);
 			//Spout end
-			f2 = 0.91F;
-			if(onGround)
-			{
-				f2 = 0.5460001F;
-				int j = worldObj.getBlockId(MathHelper.floor_double(posX), MathHelper.floor_double(boundingBox.minY) - 1, MathHelper.floor_double(posZ));
-				if(j > 0)
-				{
-					f2 = Block.blocksList[j].slipperiness * 0.91F;
+			var8 = 0.91F;
+			if(this.onGround) {
+				var8 = 0.54600006F;
+				int var6 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+				if(var6 > 0) {
+					var8 = Block.blocksList[var6].slipperiness * 0.91F;
 				}
 			}
-			if(isOnLadder())
-			{
-				float f4 = 0.15F;
-				if(motionX < (double)(-f4))
-				{
-					motionX = -f4;
+
+			if(this.isOnLadder()) {
+				float var11 = 0.15F;
+				if(this.motionX < (double)(-var11)) {
+					this.motionX = (double)(-var11);
 				}
-				if(motionX > (double)f4)
-				{
-					motionX = f4;
+
+				if(this.motionX > (double)var11) {
+					this.motionX = (double)var11;
 				}
-				if(motionZ < (double)(-f4))
-				{
-					motionZ = -f4;
+
+				if(this.motionZ < (double)(-var11)) {
+					this.motionZ = (double)(-var11);
 				}
-				if(motionZ > (double)f4)
-				{
-					motionZ = f4;
+
+				if(this.motionZ > (double)var11) {
+					this.motionZ = (double)var11;
 				}
-				fallDistance = 0.0F;
-				if(motionY < -0.14999999999999999D)
-				{
-					motionY = -0.14999999999999999D;
+
+				this.fallDistance = 0.0F;
+				if(this.motionY < -0.15D) {
+					this.motionY = -0.15D;
 				}
-				if(isSneaking() && motionY < 0.0D)
-				{
-					motionY = 0.0D;
+
+				if(this.isSneaking() && this.motionY < 0.0D) {
+					this.motionY = 0.0D;
 				}
 			}
-			moveEntity(motionX, motionY, motionZ);
-			if(isCollidedHorizontally && isOnLadder())
-			{
-				motionY = 0.20000000000000001D;
+
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+			if(this.isCollidedHorizontally && this.isOnLadder()) {
+				this.motionY = 0.2D;
 			}
-			motionY -= 0.080000000000000002D * gravityMod; //Spout
-			motionY *= 0.98000001907348633D;
-			motionX *= f2;
-			motionZ *= f2;
+
+			this.motionY -= 0.08D * gravityMod; //Spout
+			this.motionY *= 0.9800000190734863D;
+			this.motionX *= (double)var8;
+			this.motionZ *= (double)var8;
 		}
-		field_705_Q = field_704_R;
-		double d2 = posX - prevPosX;
-		double d3 = posZ - prevPosZ;
-		float f5 = MathHelper.sqrt_double(d2 * d2 + d3 * d3) * 4F;
-		if(f5 > 1.0F)
-		{
-			f5 = 1.0F;
+
+		this.field_705_Q = this.field_704_R;
+		var3 = this.posX - this.prevPosX;
+		double var10 = this.posZ - this.prevPosZ;
+		float var7 = MathHelper.sqrt_double(var3 * var3 + var10 * var10) * 4.0F;
+		if(var7 > 1.0F) {
+			var7 = 1.0F;
 		}
-		field_704_R += (f5 - field_704_R) * 0.4F;
-		field_703_S += field_704_R;
+
+		this.field_704_R += (var7 - this.field_704_R) * 0.4F;
+		this.field_703_S += this.field_704_R;
 	}
 
-	public boolean isOnLadder()
-	{
-		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(boundingBox.minY);
-		int k = MathHelper.floor_double(posZ);
-		return worldObj.getBlockId(i, j, k) == Block.ladder.blockID;
+	public boolean isOnLadder() {
+		int var1 = MathHelper.floor_double(this.posX);
+		int var2 = MathHelper.floor_double(this.boundingBox.minY);
+		int var3 = MathHelper.floor_double(this.posZ);
+		return this.worldObj.getBlockId(var1, var2, var3) == Block.ladder.blockID;
 	}
 
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-	{
-		nbttagcompound.setShort("Health", (short)health);
-		nbttagcompound.setShort("HurtTime", (short)hurtTime);
-		nbttagcompound.setShort("DeathTime", (short)deathTime);
-		nbttagcompound.setShort("AttackTime", (short)attackTime);
-	}
+	public void writeEntityToNBT(NBTTagCompound var1) {
+		var1.setShort("Health", (short)this.health);
+		var1.setShort("HurtTime", (short)this.hurtTime);
+		var1.setShort("DeathTime", (short)this.deathTime);
+		var1.setShort("AttackTime", (short)this.attackTime);
+		if(!this.field_35170_bR.isEmpty()) {
+			NBTTagList var2 = new NBTTagList();
+			Iterator var3 = this.field_35170_bR.values().iterator();
 
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-	{
-		health = nbttagcompound.getShort("Health");
-		if(!nbttagcompound.hasKey("Health"))
-		{
-			health = 10;
+			while(var3.hasNext()) {
+				PotionEffect var4 = (PotionEffect)var3.next();
+				NBTTagCompound var5 = new NBTTagCompound();
+				var5.setByte("Id", (byte)var4.func_35799_a());
+				var5.setByte("Amplifier", (byte)var4.func_35801_c());
+				var5.setInteger("Duration", var4.func_35802_b());
+				var2.setTag(var5);
+			}
+
+			var1.setTag("ActiveEffects", var2);
 		}
-		hurtTime = nbttagcompound.getShort("HurtTime");
-		deathTime = nbttagcompound.getShort("DeathTime");
-		attackTime = nbttagcompound.getShort("AttackTime");
+
 	}
 
-	public boolean isEntityAlive()
-	{
-		return !isDead && health > 0;
+	public void readEntityFromNBT(NBTTagCompound var1) {
+		this.health = var1.getShort("Health");
+		if(!var1.hasKey("Health")) {
+			this.health = 10;
+		}
+
+		this.hurtTime = var1.getShort("HurtTime");
+		this.deathTime = var1.getShort("DeathTime");
+		this.attackTime = var1.getShort("AttackTime");
+		if(var1.hasKey("ActiveEffects")) {
+			NBTTagList var2 = var1.getTagList("ActiveEffects");
+
+			for(int var3 = 0; var3 < var2.tagCount(); ++var3) {
+				NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+				byte var5 = var4.getByte("Id");
+				byte var6 = var4.getByte("Amplifier");
+				int var7 = var4.getInteger("Duration");
+				this.field_35170_bR.put(Integer.valueOf(var5), new PotionEffect(var5, var7, var6));
+			}
+		}
+
 	}
 
-	public boolean canBreatheUnderwater()
-	{
+	public boolean isEntityAlive() {
+		return !this.isDead && this.health > 0;
+	}
+
+	public boolean canBreatheUnderwater() {
 		return false;
 	}
 
-	public void onLivingUpdate()
-	{
-		if(newPosRotationIncrements > 0)
-		{
-			double d = posX + (newPosX - posX) / (double)newPosRotationIncrements;
-			double d1 = posY + (newPosY - posY) / (double)newPosRotationIncrements;
-			double d2 = posZ + (newPosZ - posZ) / (double)newPosRotationIncrements;
-			double d3;
-			for(d3 = newRotationYaw - (double)rotationYaw; d3 < -180D; d3 += 360D) { }
-			for(; d3 >= 180D; d3 -= 360D) { }
-			rotationYaw += d3 / (double)newPosRotationIncrements;
-			rotationPitch += (newRotationPitch - (double)rotationPitch) / (double)newPosRotationIncrements;
-			newPosRotationIncrements--;
-			setPosition(d, d1, d2);
-			setRotation(rotationYaw, rotationPitch);
-			List list1 = worldObj.getCollidingBoundingBoxes(this, boundingBox.contract(0.03125D, 0.0D, 0.03125D));
-			if(list1.size() > 0)
-			{
-				double d4 = 0.0D;
-				for(int j = 0; j < list1.size(); j++)
-				{
-					AxisAlignedBB axisalignedbb = (AxisAlignedBB)list1.get(j);
-					if(axisalignedbb.maxY > d4)
-					{
-						d4 = axisalignedbb.maxY;
+	public void onLivingUpdate() {
+		if(this.newPosRotationIncrements > 0) {
+			double var1 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
+			double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
+			double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
+
+			double var7;
+			for(var7 = this.newRotationYaw - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
+				;
+			}
+
+			while(var7 >= 180.0D) {
+				var7 -= 360.0D;
+			}
+
+			this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.newPosRotationIncrements);
+			this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
+			--this.newPosRotationIncrements;
+			this.setPosition(var1, var3, var5);
+			this.setRotation(this.rotationYaw, this.rotationPitch);
+			List var9 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.contract(0.03125D, 0.0D, 0.03125D));
+			if(var9.size() > 0) {
+				double var10 = 0.0D;
+
+				for(int var12 = 0; var12 < var9.size(); ++var12) {
+					AxisAlignedBB var13 = (AxisAlignedBB)var9.get(var12);
+					if(var13.maxY > var10) {
+						var10 = var13.maxY;
 					}
 				}
 
-				d1 += d4 - boundingBox.minY;
-				setPosition(d, d1, d2);
+				var3 += var10 - this.boundingBox.minY;
+				this.setPosition(var1, var3, var5);
 			}
 		}
-		if(isMovementBlocked())
-		{
-			isJumping = false;
-			moveStrafing = 0.0F;
-			moveForward = 0.0F;
-			randomYawVelocity = 0.0F;
-		} else
-		if(!isMultiplayerEntity)
-		{
-			updatePlayerActionState();
+
+		if(this.isMovementBlocked()) {
+			this.isJumping = false;
+			this.moveStrafing = 0.0F;
+			this.moveForward = 0.0F;
+			this.randomYawVelocity = 0.0F;
+		} else if(!this.isMultiplayerEntity) {
+			this.updateEntityActionState();
 		}
-		boolean flag = isInWater();
-		boolean flag1 = handleLavaMovement();
-		if(isJumping)
-		{
-			if(flag)
-			{
-				motionY += 0.039999999105930328D * jumpingMod; //Spout
-			} else
-			if(flag1)
-			{
-				motionY += 0.039999999105930328D * jumpingMod; //Spout
-			} else
-			if(onGround)
-			{
-				jump();
+
+		boolean var14 = this.isInWater();
+		boolean var2 = this.handleLavaMovement();
+		if(this.isJumping) {
+			if(var14) {
+				this.motionY += 0.03999999910593033D * jumpingMod; //Spout
+			} else if(var2) {
+				this.motionY += 0.03999999910593033D * jumpingMod; //Spout
+			} else if(this.onGround) {
+				this.jump();
 			}
 		}
-		moveStrafing *= 0.98F;
-		moveForward *= 0.98F;
-		randomYawVelocity *= 0.9F;
-		moveEntityWithHeading(moveStrafing, moveForward);
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-		if(list != null && list.size() > 0)
-		{
-			for(int i = 0; i < list.size(); i++)
-			{
-				Entity entity = (Entity)list.get(i);
-				if(entity.canBePushed())
-				{
-					entity.applyEntityCollision(this);
-				}
-			}
 
-		}
-	}
-
-	protected boolean isMovementBlocked()
-	{
-		return health <= 0;
-	}
-
-	protected void jump()
-	{
-		motionY = 0.41999998688697815D * jumpingMod; //Spout
-	}
-
-	protected boolean canDespawn()
-	{
-		return true;
-	}
-
-	protected void despawnEntity()
-	{
-		EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D);
-		if(canDespawn() && entityplayer != null)
-		{
-			double d = ((Entity) (entityplayer)).posX - posX;
-			double d1 = ((Entity) (entityplayer)).posY - posY;
-			double d2 = ((Entity) (entityplayer)).posZ - posZ;
-			double d3 = d * d + d1 * d1 + d2 * d2;
-			if(d3 > 16384D)
-			{
-				setEntityDead();
-			}
-			if(entityAge > 600 && rand.nextInt(800) == 0)
-			{
-				if(d3 < 1024D)
-				{
-					entityAge = 0;
-				} else
-				{
-					setEntityDead();
+		this.moveStrafing *= 0.98F;
+		this.moveForward *= 0.98F;
+		this.randomYawVelocity *= 0.9F;
+		float var15 = this.field_35169_bv;
+		this.field_35169_bv *= this.func_35166_t_();
+		this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
+		this.field_35169_bv = var15;
+		List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+		if(var4 != null && var4.size() > 0) {
+			for(int var16 = 0; var16 < var4.size(); ++var16) {
+				Entity var6 = (Entity)var4.get(var16);
+				if(var6.canBePushed()) {
+					var6.applyEntityCollision(this);
 				}
 			}
 		}
+
 	}
 
-	protected void updatePlayerActionState()
-	{
-		entityAge++;
-		//EntityPlayer entityplayer = worldObj.getClosestPlayerToEntity(this, -1D); Spout removed
-		despawnEntity();
-		moveStrafing = 0.0F;
-		moveForward = 0.0F;
-		float f = 8F;
-		if(rand.nextFloat() < 0.02F)
-		{
-			EntityPlayer entityplayer1 = worldObj.getClosestPlayerToEntity(this, f);
-			if(entityplayer1 != null)
-			{
-				currentTarget = entityplayer1;
-				numTicksToChaseTarget = 10 + rand.nextInt(20);
-			} else
-			{
-				randomYawVelocity = (rand.nextFloat() - 0.5F) * 20F;
-			}
-		}
-		if(currentTarget != null)
-		{
-			faceEntity(currentTarget, 10F, func_25026_x());
-			if(numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity(this) > (double)(f * f))
-			{
-				currentTarget = null;
-			}
-		} else
-		{
-			if(rand.nextFloat() < 0.05F)
-			{
-				randomYawVelocity = (rand.nextFloat() - 0.5F) * 20F;
-			}
-			rotationYaw += randomYawVelocity;
-			rotationPitch = defaultPitch;
-		}
-		boolean flag = isInWater();
-		boolean flag1 = handleLavaMovement();
-		if(flag || flag1)
-		{
-			isJumping = rand.nextFloat() < 0.8F;
-		}
+	protected boolean isMovementBlocked() {
+		return this.health <= 0;
 	}
 
-	protected int func_25026_x()
-	{
-		return 40;
-	}
-
-	public void faceEntity(Entity entity, float f, float f1)
-	{
-		double d = entity.posX - posX;
-		double d2 = entity.posZ - posZ;
-		double d1;
-		if(entity instanceof EntityLiving)
-		{
-			EntityLiving entityliving = (EntityLiving)entity;
-			d1 = (posY + (double)getEyeHeight()) - (entityliving.posY + (double)entityliving.getEyeHeight());
-		} else
-		{
-			d1 = (entity.boundingBox.minY + entity.boundingBox.maxY) / 2D - (posY + (double)getEyeHeight());
-		}
-		double d3 = MathHelper.sqrt_double(d * d + d2 * d2);
-		float f2 = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
-		float f3 = (float)(-((Math.atan2(d1, d3) * 180D) / 3.1415927410125732D));
-		rotationPitch = -updateRotation(rotationPitch, f3, f1);
-		rotationYaw = updateRotation(rotationYaw, f2, f);
-	}
-
-	public boolean hasCurrentTarget()
-	{
-		return currentTarget != null;
-	}
-
-	public Entity getCurrentTarget()
-	{
-		return currentTarget;
-	}
-
-	private float updateRotation(float f, float f1, float f2)
-	{
-		float f3;
-		for(f3 = f1 - f; f3 < -180F; f3 += 360F) { }
-		for(; f3 >= 180F; f3 -= 360F) { }
-		if(f3 > f2)
-		{
-			f3 = f2;
-		}
-		if(f3 < -f2)
-		{
-			f3 = -f2;
-		}
-		return f + f3;
-	}
-
-	public void onEntityDeath()
-	{
-	}
-
-	public boolean getCanSpawnHere()
-	{
-		return worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.getIsAnyLiquid(boundingBox);
-	}
-
-	protected void kill()
-	{
-		attackEntityFrom(null, 4);
-	}
-
-	public float getSwingProgress(float f)
-	{
-		float f1 = swingProgress - prevSwingProgress;
-		if(f1 < 0.0F)
-		{
-			f1++;
-		}
-		return prevSwingProgress + f1 * f;
-	}
-
-	public Vec3D getPosition(float f)
-	{
-		if(f == 1.0F)
-		{
-			return Vec3D.createVector(posX, posY, posZ);
-		} else
-		{
-			double d = prevPosX + (posX - prevPosX) * (double)f;
-			double d1 = prevPosY + (posY - prevPosY) * (double)f;
-			double d2 = prevPosZ + (posZ - prevPosZ) * (double)f;
-			return Vec3D.createVector(d, d1, d2);
-		}
-	}
-
-	public Vec3D getLookVec()
-	{
-		return getLook(1.0F);
-	}
-
-	public Vec3D getLook(float f)
-	{
-		if(f == 1.0F)
-		{
-			float f1 = MathHelper.cos(-rotationYaw * 0.01745329F - 3.141593F);
-			float f3 = MathHelper.sin(-rotationYaw * 0.01745329F - 3.141593F);
-			float f5 = -MathHelper.cos(-rotationPitch * 0.01745329F);
-			float f7 = MathHelper.sin(-rotationPitch * 0.01745329F);
-			return Vec3D.createVector(f3 * f5, f7, f1 * f5);
-		} else
-		{
-			float f2 = prevRotationPitch + (rotationPitch - prevRotationPitch) * f;
-			float f4 = prevRotationYaw + (rotationYaw - prevRotationYaw) * f;
-			float f6 = MathHelper.cos(-f4 * 0.01745329F - 3.141593F);
-			float f8 = MathHelper.sin(-f4 * 0.01745329F - 3.141593F);
-			float f9 = -MathHelper.cos(-f2 * 0.01745329F);
-			float f10 = MathHelper.sin(-f2 * 0.01745329F);
-			return Vec3D.createVector(f8 * f9, f10, f6 * f9);
-		}
-	}
-
-	public MovingObjectPosition rayTrace(double d, float f)
-	{
-		Vec3D vec3d = getPosition(f);
-		Vec3D vec3d1 = getLook(f);
-		Vec3D vec3d2 = vec3d.addVector(vec3d1.xCoord * d, vec3d1.yCoord * d, vec3d1.zCoord * d);
-		return worldObj.rayTraceBlocks(vec3d, vec3d2);
-	}
-
-	public int getMaxSpawnedInChunk()
-	{
-		return 4;
-	}
-
-	public ItemStack getHeldItem()
-	{
-		return null;
-	}
-
-	public void handleHealthUpdate(byte byte0)
-	{
-		if(byte0 == 2)
-		{
-			field_704_R = 1.5F;
-			heartsLife = heartsHalvesLife;
-			hurtTime = maxHurtTime = 10;
-			attackedAtYaw = 0.0F;
-			worldObj.playSoundAtEntity(this, getHurtSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-			attackEntityFrom(null, 0);
-		} else
-		if(byte0 == 3)
-		{
-			worldObj.playSoundAtEntity(this, getDeathSound(), getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-			health = 0;
-			onDeath(null);
-		} else
-		{
-			super.handleHealthUpdate(byte0);
-		}
-	}
-
-	public boolean isPlayerSleeping()
-	{
+	public boolean func_35162_ad() {
 		return false;
 	}
 
-	public int getItemIcon(ItemStack itemstack)
-	{
-		return itemstack.getIconIndex();
+	protected void jump() {
+		this.motionY = 0.41999998688697815D * jumpingMod; //Spout
+		if(this.func_35117_Q()) {
+			float var1 = this.rotationYaw * 0.017453292F;
+			this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);
+			this.motionZ += (double)(MathHelper.cos(var1) * 0.2F);
+		}
+
+		this.field_35118_ao = true;
+	}
+
+	protected boolean canDespawn() {
+		return true;
+	}
+
+	protected void despawnEntity() {
+		EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
+		if(this.canDespawn() && var1 != null) {
+			double var2 = var1.posX - this.posX;
+			double var4 = var1.posY - this.posY;
+			double var6 = var1.posZ - this.posZ;
+			double var8 = var2 * var2 + var4 * var4 + var6 * var6;
+			if(var8 > 16384.0D) {
+				this.setEntityDead();
+			}
+
+			if(this.entityAge > 600 && this.rand.nextInt(800) == 0) {
+				if(var8 < 1024.0D) {
+					this.entityAge = 0;
+				} else {
+					this.setEntityDead();
+				}
+			}
+		}
+
+	}
+
+	protected void updateEntityActionState() {
+		++this.entityAge;
+		EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, -1.0D);
+		this.despawnEntity();
+		this.moveStrafing = 0.0F;
+		this.moveForward = 0.0F;
+		float var2 = 8.0F;
+		if(this.rand.nextFloat() < 0.02F) {
+			var1 = this.worldObj.getClosestPlayerToEntity(this, (double)var2);
+			if(var1 != null) {
+				this.currentTarget = var1;
+				this.numTicksToChaseTarget = 10 + this.rand.nextInt(20);
+			} else {
+				this.randomYawVelocity = (this.rand.nextFloat() - 0.5F) * 20.0F;
+			}
+		}
+
+		if(this.currentTarget != null) {
+			this.faceEntity(this.currentTarget, 10.0F, (float)this.getVerticalFaceSpeed());
+			if(this.numTicksToChaseTarget-- <= 0 || this.currentTarget.isDead || this.currentTarget.getDistanceSqToEntity(this) > (double)(var2 * var2)) {
+				this.currentTarget = null;
+			}
+		} else {
+			if(this.rand.nextFloat() < 0.05F) {
+				this.randomYawVelocity = (this.rand.nextFloat() - 0.5F) * 20.0F;
+			}
+
+			this.rotationYaw += this.randomYawVelocity;
+			this.rotationPitch = this.defaultPitch;
+		}
+
+		boolean var3 = this.isInWater();
+		boolean var4 = this.handleLavaMovement();
+		if(var3 || var4) {
+			this.isJumping = this.rand.nextFloat() < 0.8F;
+		}
+
+	}
+
+	protected int getVerticalFaceSpeed() {
+		return 40;
+	}
+
+	public void faceEntity(Entity var1, float var2, float var3) {
+		double var4 = var1.posX - this.posX;
+		double var8 = var1.posZ - this.posZ;
+		double var6;
+		if(var1 instanceof EntityLiving) {
+			EntityLiving var10 = (EntityLiving)var1;
+			var6 = this.posY + (double)this.getEyeHeight() - (var10.posY + (double)var10.getEyeHeight());
+		} else {
+			var6 = (var1.boundingBox.minY + var1.boundingBox.maxY) / 2.0D - (this.posY + (double)this.getEyeHeight());
+		}
+
+		double var14 = (double)MathHelper.sqrt_double(var4 * var4 + var8 * var8);
+		float var12 = (float)(Math.atan2(var8, var4) * 180.0D / 3.1415927410125732D) - 90.0F;
+		float var13 = (float)(-(Math.atan2(var6, var14) * 180.0D / 3.1415927410125732D));
+		this.rotationPitch = -this.updateRotation(this.rotationPitch, var13, var3);
+		this.rotationYaw = this.updateRotation(this.rotationYaw, var12, var2);
+	}
+
+	public boolean hasCurrentTarget() {
+		return this.currentTarget != null;
+	}
+
+	public Entity getCurrentTarget() {
+		return this.currentTarget;
+	}
+
+	private float updateRotation(float var1, float var2, float var3) {
+		float var4;
+		for(var4 = var2 - var1; var4 < -180.0F; var4 += 360.0F) {
+			;
+		}
+
+		while(var4 >= 180.0F) {
+			var4 -= 360.0F;
+		}
+
+		if(var4 > var3) {
+			var4 = var3;
+		}
+
+		if(var4 < -var3) {
+			var4 = -var3;
+		}
+
+		return var1 + var4;
+	}
+
+	public void onEntityDeath() {}
+
+	public boolean getCanSpawnHere() {
+		return this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.getIsAnyLiquid(this.boundingBox);
+	}
+
+	protected void kill() {
+		this.attackEntityFrom(DamageSource.field_35550_i, 4);
+	}
+
+	public float getSwingProgress(float var1) {
+		float var2 = this.swingProgress - this.prevSwingProgress;
+		if(var2 < 0.0F) {
+			++var2;
+		}
+
+		return this.prevSwingProgress + var2 * var1;
+	}
+
+	public Vec3D getPosition(float var1) {
+		if(var1 == 1.0F) {
+			return Vec3D.createVector(this.posX, this.posY, this.posZ);
+		} else {
+			double var2 = this.prevPosX + (this.posX - this.prevPosX) * (double)var1;
+			double var4 = this.prevPosY + (this.posY - this.prevPosY) * (double)var1;
+			double var6 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double)var1;
+			return Vec3D.createVector(var2, var4, var6);
+		}
+	}
+
+	public Vec3D getLookVec() {
+		return this.getLook(1.0F);
+	}
+
+	public Vec3D getLook(float var1) {
+		float var2;
+		float var3;
+		float var4;
+		float var5;
+		if(var1 == 1.0F) {
+			var2 = MathHelper.cos(-this.rotationYaw * 0.017453292F - 3.1415927F);
+			var3 = MathHelper.sin(-this.rotationYaw * 0.017453292F - 3.1415927F);
+			var4 = -MathHelper.cos(-this.rotationPitch * 0.017453292F);
+			var5 = MathHelper.sin(-this.rotationPitch * 0.017453292F);
+			return Vec3D.createVector((double)(var3 * var4), (double)var5, (double)(var2 * var4));
+		} else {
+			var2 = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * var1;
+			var3 = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * var1;
+			var4 = MathHelper.cos(-var3 * 0.017453292F - 3.1415927F);
+			var5 = MathHelper.sin(-var3 * 0.017453292F - 3.1415927F);
+			float var6 = -MathHelper.cos(-var2 * 0.017453292F);
+			float var7 = MathHelper.sin(-var2 * 0.017453292F);
+			return Vec3D.createVector((double)(var5 * var6), (double)var7, (double)(var4 * var6));
+		}
+	}
+
+	public float func_35159_aC() {
+		return 1.0F;
+	}
+
+	public MovingObjectPosition rayTrace(double var1, float var3) {
+		Vec3D var4 = this.getPosition(var3);
+		Vec3D var5 = this.getLook(var3);
+		Vec3D var6 = var4.addVector(var5.xCoord * var1, var5.yCoord * var1, var5.zCoord * var1);
+		return this.worldObj.rayTraceBlocks(var4, var6);
+	}
+
+	public int getMaxSpawnedInChunk() {
+		return 4;
+	}
+
+	public ItemStack getHeldItem() {
+		return null;
+	}
+
+	public void handleHealthUpdate(byte var1) {
+		if(var1 == 2) {
+			this.field_704_R = 1.5F;
+			this.heartsLife = this.heartsHalvesLife;
+			this.hurtTime = this.maxHurtTime = 10;
+			this.attackedAtYaw = 0.0F;
+			this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.attackEntityFrom(DamageSource.field_35547_j, 0);
+		} else if(var1 == 3) {
+			this.worldObj.playSoundAtEntity(this, this.getDeathSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			this.health = 0;
+			this.onDeath(DamageSource.field_35547_j);
+		} else {
+			super.handleHealthUpdate(var1);
+		}
+
+	}
+
+	public boolean isPlayerSleeping() {
+		return false;
+	}
+
+	public int getItemIcon(ItemStack var1) {
+		return var1.getIconIndex();
+	}
+
+	protected void dropFewItems() {
+		Iterator var1 = this.field_35170_bR.keySet().iterator();
+
+		while(var1.hasNext()) {
+			Integer var2 = (Integer)var1.next();
+			PotionEffect var3 = (PotionEffect)this.field_35170_bR.get(var2);
+			if(!var3.func_35798_a(this) && !this.worldObj.multiplayerWorld) {
+				var1.remove();
+				this.func_35158_d(var3);
+			}
+		}
+
+	}
+
+	public boolean func_35160_a(Potion var1) {
+		return this.field_35170_bR.containsKey(Integer.valueOf(var1.field_35670_H));
+	}
+
+	public PotionEffect func_35167_b(Potion var1) {
+		return (PotionEffect)this.field_35170_bR.get(Integer.valueOf(var1.field_35670_H));
+	}
+
+	public void func_35165_a(PotionEffect var1) {
+		if(this.field_35170_bR.containsKey(Integer.valueOf(var1.func_35799_a()))) {
+			((PotionEffect)this.field_35170_bR.get(Integer.valueOf(var1.func_35799_a()))).func_35796_a(var1);
+			this.func_35161_c((PotionEffect)this.field_35170_bR.get(Integer.valueOf(var1.func_35799_a())));
+		} else {
+			this.field_35170_bR.put(Integer.valueOf(var1.func_35799_a()), var1);
+			this.func_35164_b(var1);
+		}
+
+	}
+
+	public void damageEntity(int var1) {
+		this.field_35170_bR.remove(Integer.valueOf(var1));
+	}
+
+	protected void func_35164_b(PotionEffect var1) {}
+
+	protected void func_35161_c(PotionEffect var1) {}
+
+	protected void func_35158_d(PotionEffect var1) {}
+
+	protected float func_35166_t_() {
+		float var1 = 1.0F;
+		if(this.func_35160_a(Potion.field_35677_c)) {
+			var1 *= 1.0F + 0.2F * (float)(this.func_35167_b(Potion.field_35677_c).func_35801_c() + 1);
+		}
+
+		if(this.func_35160_a(Potion.field_35674_d)) {
+			var1 *= 1.0F - 0.15F * (float)(this.func_35167_b(Potion.field_35674_d).func_35801_c() + 1);
+		}
+
+		return var1;
 	}
 }

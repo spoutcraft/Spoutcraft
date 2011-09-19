@@ -2,15 +2,16 @@ package net.minecraft.src;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 //Spout Start
+import java.util.UUID;
 import org.getspout.spout.client.SpoutClient;
 //Spout End
 
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFluid;
+import net.minecraft.src.DamageSource;
 import net.minecraft.src.DataWatcher;
 import net.minecraft.src.EntityItem;
 import net.minecraft.src.EntityLightningBolt;
@@ -56,7 +57,7 @@ public abstract class Entity {
 	public boolean isCollidedVertically;
 	public boolean isCollided;
 	public boolean beenAttacked;
-	public boolean isInWeb;
+	protected boolean isInWeb;
 	public boolean field_9293_aM;
 	public boolean isDead;
 	public float yOffset;
@@ -81,12 +82,11 @@ public abstract class Entity {
 	protected boolean inWater;
 	public int heartsLife;
 	public int air;
-	private boolean isFirstUpdate;
+	private boolean firstUpdate;
 	public String skinUrl;
 	public String cloakUrl;
 	protected boolean isImmuneToFire;
 	protected DataWatcher dataWatcher;
-	public float entityBrightness;
 	private double entityRiderPitchDelta;
 	private double entityRiderYawDelta;
 	public boolean addedToChunk;
@@ -97,6 +97,8 @@ public abstract class Entity {
 	public int serverPosY;
 	public int serverPosZ;
 	public boolean ignoreFrustumCheck;
+	public boolean field_35118_ao;
+
 	//Spout start
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
@@ -132,10 +134,9 @@ public abstract class Entity {
 		this.inWater = false;
 		this.heartsLife = 0;
 		this.air = 300;
-		this.isFirstUpdate = true;
+		this.firstUpdate = true;
 		this.isImmuneToFire = false;
 		this.dataWatcher = new DataWatcher();
-		this.entityBrightness = 0.0F;
 		this.addedToChunk = false;
 		this.worldObj = var1;
 		this.setPosition(0.0D, 0.0D, 0.0D);
@@ -203,7 +204,7 @@ public abstract class Entity {
 		this.boundingBox.setBounds(var1 - (double)var7, var3 - (double)this.yOffset + (double)this.ySize, var5 - (double)var7, var1 + (double)var7, var3 - (double)this.yOffset + (double)this.ySize + (double)var8, var5 + (double)var7);
 	}
 
-	public void func_346_d(float var1, float var2) {
+	public void setAngles(float var1, float var2) {
 		float var3 = this.rotationPitch;
 		float var4 = this.rotationYaw;
 		this.rotationYaw = (float)((double)this.rotationYaw + (double)var1 * 0.15D);
@@ -244,29 +245,39 @@ public abstract class Entity {
 		this.prevPosZ = this.posZ;
 		this.prevRotationPitch = this.rotationPitch;
 		this.prevRotationYaw = this.rotationYaw;
+		int var3;
+		if(this.func_35117_Q()) {
+			int var1 = MathHelper.floor_double(this.posX);
+			int var2 = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
+			var3 = MathHelper.floor_double(this.posZ);
+			int var4 = this.worldObj.getBlockId(var1, var2, var3);
+			if(var4 > 0) {
+				this.worldObj.spawnParticle("tilecrack_" + var4, this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, -this.motionX * 4.0D, 1.5D, -this.motionZ * 4.0D);
+			}
+		}
+
 		if(this.handleWaterMovement()) {
-			if(!this.inWater && !this.isFirstUpdate) {
-				float var1 = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
-				if(var1 > 1.0F) {
-					var1 = 1.0F;
+			if(!this.inWater && !this.firstUpdate) {
+				float var6 = MathHelper.sqrt_double(this.motionX * this.motionX * 0.20000000298023224D + this.motionY * this.motionY + this.motionZ * this.motionZ * 0.20000000298023224D) * 0.2F;
+				if(var6 > 1.0F) {
+					var6 = 1.0F;
 				}
 
-				this.worldObj.playSoundAtEntity(this, "random.splash", var1, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
-				float var2 = (float)MathHelper.floor_double(this.boundingBox.minY);
+				this.worldObj.playSoundAtEntity(this, "random.splash", var6, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
+				float var7 = (float)MathHelper.floor_double(this.boundingBox.minY);
 
-				int var3;
-				float var4;
 				float var5;
+				float var8;
 				for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
-					var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					var8 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
 					var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-					this.worldObj.spawnParticle("bubble", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY - (double)(this.rand.nextFloat() * 0.2F), this.motionZ);
+					this.worldObj.spawnParticle("bubble", this.posX + (double)var8, (double)(var7 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY - (double)(this.rand.nextFloat() * 0.2F), this.motionZ);
 				}
 
 				for(var3 = 0; (float)var3 < 1.0F + this.width * 20.0F; ++var3) {
-					var4 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+					var8 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
 					var5 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-					this.worldObj.spawnParticle("splash", this.posX + (double)var4, (double)(var2 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
+					this.worldObj.spawnParticle("splash", this.posX + (double)var8, (double)(var7 + 1.0F), this.posZ + (double)var5, this.motionX, this.motionY, this.motionZ);
 				}
 			}
 
@@ -287,7 +298,7 @@ public abstract class Entity {
 				}
 			} else {
 				if(this.fire % 20 == 0) {
-					this.attackEntityFrom((Entity)null, 1);
+					this.attackEntityFrom(DamageSource.field_35540_b, 1);
 				}
 
 				--this.fire;
@@ -303,16 +314,16 @@ public abstract class Entity {
 		}
 
 		if(!this.worldObj.multiplayerWorld) {
-			this.setEntityFlag(0, this.fire > 0);
-			this.setEntityFlag(2, this.ridingEntity != null);
+			this.setFlag(0, this.fire > 0);
+			this.setFlag(2, this.ridingEntity != null);
 		}
 
-		this.isFirstUpdate = false;
+		this.firstUpdate = false;
 	}
 
 	protected void setOnFireFromLava() {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom((Entity)null, 4);
+			this.attackEntityFrom(DamageSource.field_35541_c, 4);
 			this.fire = 600;
 		}
 
@@ -524,13 +535,13 @@ public abstract class Entity {
 				}
 
 				if(this.distanceWalkedModified > (float)this.nextStepDistance && var28 > 0) {
-					++this.nextStepDistance;
+					this.nextStepDistance = (int)this.distanceWalkedModified + 1;
 					StepSound var29 = Block.blocksList[var28].stepSound;
 					if(this.worldObj.getBlockId(var38, var26 + 1, var39) == Block.snow.blockID) {
 						var29 = Block.snow.stepSound;
-						this.worldObj.playSoundAtEntity(this, var29.func_1145_d(), var29.getVolume() * 0.15F, var29.getPitch());
+						this.worldObj.playSoundAtEntity(this, var29.stepSoundDir2(), var29.getVolume() * 0.15F, var29.getPitch());
 					} else if(!Block.blocksList[var28].blockMaterial.getIsLiquid()) {
-						this.worldObj.playSoundAtEntity(this, var29.func_1145_d(), var29.getVolume() * 0.15F, var29.getPitch());
+						this.worldObj.playSoundAtEntity(this, var29.stepSoundDir2(), var29.getVolume() * 0.15F, var29.getPitch());
 					}
 
 					Block.blocksList[var28].onEntityWalking(this.worldObj, var38, var26, var39, this);
@@ -599,7 +610,7 @@ public abstract class Entity {
 
 	protected void dealFireDamage(int var1) {
 		if(!this.isImmuneToFire) {
-			this.attackEntityFrom((Entity)null, var1);
+			this.attackEntityFrom(DamageSource.field_35542_a, var1);
 		}
 
 	}
@@ -612,7 +623,7 @@ public abstract class Entity {
 	}
 
 	public boolean isWet() {
-		return this.inWater || this.worldObj.canBlockBeRainedOn(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+		return this.inWater || this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
 	}
 
 	public boolean isInWater() {
@@ -630,7 +641,7 @@ public abstract class Entity {
 		int var6 = MathHelper.floor_double(this.posZ);
 		int var7 = this.worldObj.getBlockId(var4, var5, var6);
 		if(var7 != 0 && Block.blocksList[var7].blockMaterial == var1) {
-			float var8 = BlockFluid.getPercentAir(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
+			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
 		} else {
@@ -663,20 +674,31 @@ public abstract class Entity {
 		}
 	}
 
+	public int func_35115_a(float var1) {
+		int var2 = MathHelper.floor_double(this.posX);
+		int var3 = MathHelper.floor_double(this.posZ);
+		World var10000 = this.worldObj;
+		this.worldObj.getClass();
+		if(var10000.blockExists(var2, 128 / 2, var3)) {
+			double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
+			int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
+			return this.worldObj.func_35451_b(var2, var6, var3, 0);
+		} else {
+			return 0;
+		}
+	}
+
 	public float getEntityBrightness(float var1) {
 		int var2 = MathHelper.floor_double(this.posX);
-		double var3 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
-		int var5 = MathHelper.floor_double(this.posY - (double)this.yOffset + var3);
-		int var6 = MathHelper.floor_double(this.posZ);
-		if(this.worldObj.checkChunksExist(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ), MathHelper.floor_double(this.boundingBox.maxX), MathHelper.floor_double(this.boundingBox.maxY), MathHelper.floor_double(this.boundingBox.maxZ))) {
-			float var7 = this.worldObj.getLightBrightness(var2, var5, var6);
-			if(var7 < this.entityBrightness) {
-				var7 = this.entityBrightness;
-			}
-
-			return var7;
+		int var3 = MathHelper.floor_double(this.posZ);
+		World var10000 = this.worldObj;
+		this.worldObj.getClass();
+		if(var10000.blockExists(var2, 128 / 2, var3)) {
+			double var4 = (this.boundingBox.maxY - this.boundingBox.minY) * 0.66D;
+			int var6 = MathHelper.floor_double(this.posY - (double)this.yOffset + var4);
+			return this.worldObj.getLightBrightness(var2, var6, var3);
 		} else {
-			return this.entityBrightness;
+			return 0.0F;
 		}
 	}
 
@@ -774,13 +796,14 @@ public abstract class Entity {
 		this.motionX += var1;
 		this.motionY += var3;
 		this.motionZ += var5;
+		this.field_35118_ao = true;
 	}
 
 	protected void setBeenAttacked() {
 		this.beenAttacked = true;
 	}
 
-	public boolean attackEntityFrom(Entity var1, int var2) {
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
 		this.setBeenAttacked();
 		return false;
 	}
@@ -1113,11 +1136,27 @@ public abstract class Entity {
 		return this.getEntityFlag(1);
 	}
 
+	public boolean func_35117_Q() {
+		return this.getEntityFlag(3);
+	}
+
+	public void func_35113_c(boolean var1) {
+		this.setFlag(3, var1);
+	}
+
+	public boolean func_35114_R() {
+		return this.getEntityFlag(4);
+	}
+
+	public void func_35116_d(boolean var1) {
+		this.setFlag(4, var1);
+	}
+
 	protected boolean getEntityFlag(int var1) {
 		return (this.dataWatcher.getWatchableObjectByte(0) & 1 << var1) != 0;
 	}
 
-	protected void setEntityFlag(int var1, boolean var2) {
+	protected void setFlag(int var1, boolean var2) {
 		byte var3 = this.dataWatcher.getWatchableObjectByte(0);
 		if(var2) {
 			this.dataWatcher.updateObject(0, Byte.valueOf((byte)(var3 | 1 << var1)));
@@ -1211,6 +1250,10 @@ public abstract class Entity {
 		}
 
 		return false;
+	}
+
+	public void func_35112_o() {
+		this.isInWeb = true;
 	}
 
 }

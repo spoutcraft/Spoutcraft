@@ -6,24 +6,16 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GameSettings;
 import net.minecraft.src.IBlockAccess;
 
 import org.getspout.spout.client.SpoutClient;
-import org.lwjgl.Sys;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
-
-import com.pclewis.mcpatcher.mod.TileSize;
 
 public class Config {
 
-	private static GameSettings gameSettings = null;
-	private static Minecraft minecraft = null;
 	private static float[] lightLevels = null;
 	private static int iconWidthTerrain = 16;
 	private static int iconWidthItems = 16;
@@ -43,55 +35,12 @@ public class Config {
 	public static final Integer DEF_UPDATES_PER_FRAME = Integer.valueOf(3);
 	public static final Boolean DEF_DYNAMIC_UPDATES = Boolean.valueOf(false);
 
-
-	private static String getVersion() {
-		return "OptiFine_1.7.3_HD_F";
-	}
-
-	private static void checkOpenGlCaps() {
-		log("");
-		log(getVersion());
-		log("" + new Date());
-		log("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ") version " + System.getProperty("os.version"));
-		log("Java: " + System.getProperty("java.version") + ", " + System.getProperty("java.vendor"));
-		log("VM: " + System.getProperty("java.vm.name") + " (" + System.getProperty("java.vm.info") + "), " + System.getProperty("java.vm.vendor"));
-		log("LWJGL: " + Sys.getVersion());
-		log("OpenGL: " + GL11.glGetString(7937 /*GL_RENDERER*/) + " version " + GL11.glGetString(7938 /*GL_VERSION*/) + ", " + GL11.glGetString(7936 /*GL_VENDOR*/));
-		int var0 = getOpenGlVersion();
-		String var1 = "" + var0 / 10 + "." + var0 % 10;
-		log("OpenGL Version: " + var1);
-		if(!GLContext.getCapabilities().OpenGL12) {
-			log("OpenGL Mipmap levels: Not available (GL12.GL_TEXTURE_MAX_LEVEL)");
-		}
-
-		if(!GLContext.getCapabilities().GL_NV_fog_distance) {
-			log("OpenGL Fancy fog: Not available (GL_NV_fog_distance)");
-		}
-
-		if(!GLContext.getCapabilities().GL_ARB_occlusion_query) {
-			log("OpenGL Occlussion culling: Not available (GL_ARB_occlusion_query)");
-		}
-
-	}
-
 	public static boolean isFancyFogAvailable() {
 		return GLContext.getCapabilities().GL_NV_fog_distance;
 	}
 
 	public static boolean isOcclusionAvailable() {
 		return GLContext.getCapabilities().GL_ARB_occlusion_query;
-	}
-
-	private static int getOpenGlVersion() {
-		return !GLContext.getCapabilities().OpenGL11?10:(!GLContext.getCapabilities().OpenGL12?11:(!GLContext.getCapabilities().OpenGL13?12:(!GLContext.getCapabilities().OpenGL14?13:(!GLContext.getCapabilities().OpenGL15?14:(!GLContext.getCapabilities().OpenGL20?15:(!GLContext.getCapabilities().OpenGL21?20:(!GLContext.getCapabilities().OpenGL30?21:(!GLContext.getCapabilities().OpenGL31?30:(!GLContext.getCapabilities().OpenGL32?31:(!GLContext.getCapabilities().OpenGL33?32:(!GLContext.getCapabilities().OpenGL40?33:40)))))))))));
-	}
-
-	public static void setGameSettings(GameSettings var0) {
-		if(gameSettings == null) {
-			checkOpenGlCaps();
-		}
-
-		gameSettings = var0;
 	}
 
 	public static boolean isUseMipmaps() {
@@ -104,11 +53,11 @@ public class Config {
 	}
 
 	public static int getMipmapLevel() {
-		return gameSettings == null || !canUseMipmaps() ?DEF_MIPMAP_LEVEL.intValue():gameSettings.ofMipmapLevel; //Temporarily removed
+		return Minecraft.theMinecraft.gameSettings == null || !canUseMipmaps() ?DEF_MIPMAP_LEVEL.intValue():Minecraft.theMinecraft.gameSettings.ofMipmapLevel; //Temporarily removed
 	}
 
 	public static int getMipmapType() {
-		return gameSettings == null?DEF_MIPMAP_TYPE.intValue():(gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
+		return Minecraft.theMinecraft.gameSettings == null?DEF_MIPMAP_TYPE.intValue():(Minecraft.theMinecraft.gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
 	}
 
 	public static boolean isUseAlphaFunc() {
@@ -121,27 +70,27 @@ public class Config {
 	}
 
 	public static boolean isFogFancy() {
-		return !GLContext.getCapabilities().GL_NV_fog_distance?false:(gameSettings == null?false:gameSettings.ofFogFancy);
+		return !GLContext.getCapabilities().GL_NV_fog_distance?false:(Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofFogFancy);
 	}
 
 	public static float getFogStart() {
-		return gameSettings == null?DEF_FOG_START.floatValue():gameSettings.ofFogStart;
+		return Minecraft.theMinecraft.gameSettings == null?DEF_FOG_START.floatValue():Minecraft.theMinecraft.gameSettings.ofFogStart;
 	}
 
 	public static boolean isOcclusionEnabled() {
-		return gameSettings == null?DEF_OCCLUSION_ENABLED.booleanValue():gameSettings.advancedOpengl;
+		return Minecraft.theMinecraft.gameSettings == null?DEF_OCCLUSION_ENABLED.booleanValue():Minecraft.theMinecraft.gameSettings.advancedOpengl;
 	}
 
 	public static boolean isOcclusionFancy() {
-		return !isOcclusionEnabled()?false:(gameSettings == null?false:gameSettings.ofOcclusionFancy);
+		return !isOcclusionEnabled()?false:(Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofOcclusionFancy);
 	}
 
 	public static boolean isLoadChunksFar() {
-		return gameSettings == null?DEF_LOAD_CHUNKS_FAR.booleanValue():gameSettings.ofLoadFar;
+		return Minecraft.theMinecraft.gameSettings == null?DEF_LOAD_CHUNKS_FAR.booleanValue():Minecraft.theMinecraft.gameSettings.ofLoadFar;
 	}
 
 	public static int getPreloadedChunks() {
-		return gameSettings == null?DEF_PRELOADED_CHUNKS.intValue():gameSettings.ofPreloadedChunks;
+		return Minecraft.theMinecraft.gameSettings == null?DEF_PRELOADED_CHUNKS.intValue():Minecraft.theMinecraft.gameSettings.ofPreloadedChunks;
 	}
 
 	public static void dbg(String var0) {
@@ -175,39 +124,39 @@ public class Config {
 	}
 
 	public static int getUpdatesPerFrame() {
-		return gameSettings != null?gameSettings.ofChunkUpdates:1;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofChunkUpdates:1;
 	}
 
 	public static boolean isDynamicUpdates() {
-		return gameSettings != null?gameSettings.ofChunkUpdatesDynamic:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofChunkUpdatesDynamic:true;
 	}
 
 	public static boolean isRainFancy() {
-		return gameSettings.ofRain == 0?gameSettings.fancyGraphics:gameSettings.ofRain == 2;
+		return Minecraft.theMinecraft.gameSettings.ofRain == 0?Minecraft.theMinecraft.gameSettings.fancyGraphics:Minecraft.theMinecraft.gameSettings.ofRain == 2;
 	}
 
 	public static boolean isWaterFancy() {
-		return gameSettings.ofWater == 0?gameSettings.fancyGraphics:gameSettings.ofWater == 2;
+		return Minecraft.theMinecraft.gameSettings.ofWater == 0?Minecraft.theMinecraft.gameSettings.fancyGraphics:Minecraft.theMinecraft.gameSettings.ofWater == 2;
 	}
 
 	public static boolean isRainOff() {
-		return gameSettings.ofRain == 3 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings.ofRain == 3 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isCloudsFancy() {
-		return gameSettings.ofClouds == 0?gameSettings.fancyGraphics:gameSettings.ofClouds == 2;
+		return Minecraft.theMinecraft.gameSettings.ofClouds == 0?Minecraft.theMinecraft.gameSettings.fancyGraphics:Minecraft.theMinecraft.gameSettings.ofClouds == 2;
 	}
 
 	public static boolean isCloudsOff() {
-		return gameSettings.ofClouds == 3 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings.ofClouds == 3 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isTreesFancy() {
-		return gameSettings.ofTrees == 0?gameSettings.fancyGraphics:gameSettings.ofTrees == 2;
+		return Minecraft.theMinecraft.gameSettings.ofTrees == 0?Minecraft.theMinecraft.gameSettings.fancyGraphics:Minecraft.theMinecraft.gameSettings.ofTrees == 2;
 	}
 
 	public static boolean isGrassFancy() {
-		return gameSettings.ofGrass == 0?gameSettings.fancyGraphics:gameSettings.ofGrass == 2;
+		return Minecraft.theMinecraft.gameSettings.ofGrass == 0?Minecraft.theMinecraft.gameSettings.fancyGraphics:Minecraft.theMinecraft.gameSettings.ofGrass == 2;
 	}
 
 	public static int limit(int var0, int var1, int var2) {
@@ -219,47 +168,47 @@ public class Config {
 	}
 
 	public static boolean isAnimatedWater() {
-		return gameSettings != null?gameSettings.ofAnimatedWater != 2:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedWater != 2:true;
 	}
 
 	public static boolean isGeneratedWater() {
-		return gameSettings != null?gameSettings.ofAnimatedWater == 1:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedWater == 1:true;
 	}
 
 	public static boolean isAnimatedPortal() {
-		return gameSettings != null?gameSettings.ofAnimatedPortal:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedPortal:true;
 	}
 
 	public static boolean isAnimatedLava() {
-		return gameSettings != null?gameSettings.ofAnimatedLava != 2:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedLava != 2:true;
 	}
 
 	public static boolean isGeneratedLava() {
-		return gameSettings != null?gameSettings.ofAnimatedLava == 1:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedLava == 1:true;
 	}
 
 	public static boolean isAnimatedFire() {
-		return gameSettings != null?gameSettings.ofAnimatedFire:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedFire:true;
 	}
 
 	public static boolean isAnimatedRedstone() {
-		return gameSettings != null?gameSettings.ofAnimatedRedstone:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedRedstone:true;
 	}
 
 	public static boolean isAnimatedExplosion() {
-		return gameSettings != null?gameSettings.ofAnimatedExplosion:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedExplosion:true;
 	}
 
 	public static boolean isAnimatedFlame() {
-		return gameSettings != null?gameSettings.ofAnimatedFlame:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedFlame:true;
 	}
 
 	public static boolean isAnimatedSmoke() {
-		return gameSettings != null?gameSettings.ofAnimatedSmoke:true;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedSmoke:true;
 	}
 
 	public static float getAmbientOcclusionLevel() {
-		return gameSettings != null?gameSettings.ofAoLevel:0.0F;
+		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAoLevel:0.0F;
 	}
 
 	public static float fixAoLight(float var0, float var1) {
@@ -443,14 +392,6 @@ public class Config {
 		}
 	}
 
-	public static void setMinecraft(Minecraft var0) {
-		minecraft = var0;
-	}
-
-	public static Minecraft getMinecraft() {
-		return minecraft;
-	}
-
 	public static int getIconWidthTerrain() {
 		return iconWidthTerrain;
 	}
@@ -531,11 +472,11 @@ public class Config {
 	}
 
 	public static boolean isBetterGrass() {
-		return gameSettings == null?false:gameSettings.ofBetterGrass != 3;
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofBetterGrass != 3;
 	}
 
 	public static boolean isBetterGrassFancy() {
-		return gameSettings == null?false:gameSettings.ofBetterGrass == 2;
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofBetterGrass == 2;
 	}
 
 	public static boolean isFontRendererUpdated() {
@@ -547,19 +488,19 @@ public class Config {
 	}
 
 	public static boolean isWeatherEnabled() {
-		return gameSettings == null?true:gameSettings.ofWeather || !SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofWeather || !SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isSkyEnabled() {
-		return gameSettings == null?true:gameSettings.ofSky || !SpoutClient.getInstance().isCheatMode(); 
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofSky || !SpoutClient.getInstance().isCheatMode(); 
 	}
 
 	public static boolean isStarsEnabled() {
-		return gameSettings == null?true:gameSettings.ofStars || !SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofStars || !SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isFarView() {
-		return gameSettings == null?false:gameSettings.ofFarView;
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofFarView;
 	}
 
 	public static void sleep(long var0) {
@@ -583,15 +524,15 @@ public class Config {
 	}
 
 	public static boolean isTimeDayOnly() {
-		return gameSettings == null?false:gameSettings.ofTime == 1 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 1 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isTimeNightOnly() {
-		return gameSettings == null?false:gameSettings.ofTime == 2 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 2 && SpoutClient.getInstance().isCheatMode();
 	}
 
 	public static boolean isClearWater() {
-		return gameSettings == null?false:gameSettings.ofClearWater && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isCheatMode();
 	}
 
 }

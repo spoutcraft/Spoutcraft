@@ -1,8 +1,5 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
-import java.lang.reflect.Field;
-
 public final class TileSize {
 
 	public static int int_size;

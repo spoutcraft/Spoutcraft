@@ -1,6 +1,146 @@
+diff -r -U 3 minecraft\net\minecraft\client\Minecraft.java minecraft_patched\net\minecraft\client\Minecraft.java
+--- minecraft\net\minecraft\client\Minecraft.java	Sun Sep 18 14:38:04 2011
++++ minecraft_patched\net\minecraft\client\Minecraft.java	Sun Sep 18 16:53:05 2011
+@@ -1361,11 +1361,13 @@
+ 
+             this.field_6324_e.func_600_a(var6.field_22395_a + var10, 64, var6.field_22396_c + var8);
+             if(!this.field_6327_b.func_35643_e()) {
++/*
+                while(true) {
+                   if(this.field_6324_e.func_6465_g()) {
+                      continue;
+                   }
+                }
++*/
+             }
+          }
+       }
+diff -r -U 3 minecraft\net\minecraft\src\Chunk.java minecraft_patched\net\minecraft\src\Chunk.java
+--- minecraft\net\minecraft\src\Chunk.java	Sun Sep 18 14:37:56 2011
++++ minecraft_patched\net\minecraft\src\Chunk.java	Sun Sep 18 14:56:03 2011
+@@ -72,20 +72,20 @@
+    public Chunk(World var1, byte[] var2, int var3, int var4) {
+       this(var1, var3, var4);
+       this.field_1539_b = var2;
+-      NibbleArray var10001 = new NibbleArray;
++      //NibbleArray var10001 = new NibbleArray;
+       int var10003 = var2.length;
+       var1.getClass();
+-      var10001.<init>(var10003, 7);
++      NibbleArray var10001 = new NibbleArray(var10003, 7);
+       this.field_1536_e = var10001;
+-      var10001 = new NibbleArray;
++      //var10001 = new NibbleArray;
+       var10003 = var2.length;
+       var1.getClass();
+-      var10001.<init>(var10003, 7);
++      var10001 = new NibbleArray(var10003, 7);
+       this.field_1535_f = var10001;
+-      var10001 = new NibbleArray;
++      //var10001 = new NibbleArray;
+       var10003 = var2.length;
+       var1.getClass();
+-      var10001.<init>(var10003, 7);
++      var10001 = new NibbleArray(var10003, 7);
+       this.field_1534_g = var10001;
+    }
+ 
+diff -r -U 3 minecraft\net\minecraft\src\ChunkLoader.java minecraft_patched\net\minecraft\src\ChunkLoader.java
+--- minecraft\net\minecraft\src\ChunkLoader.java	Sun Sep 18 14:37:44 2011
++++ minecraft_patched\net\minecraft\src\ChunkLoader.java	Sun Sep 18 14:56:59 2011
+@@ -166,47 +166,47 @@
+       int var3 = var1.func_756_e("zPos");
+       Chunk var4 = new Chunk(var0, var2, var3);
+       var4.field_1539_b = var1.func_759_j("Blocks");
+-      NibbleArray var10001 = new NibbleArray;
++      //NibbleArray var10001 = new NibbleArray;
+       byte[] var10003 = var1.func_759_j("Data");
+       var0.getClass();
+-      var10001.<init>(var10003, 7);
++      NibbleArray var10001 = new NibbleArray(var10003, 7);
+       var4.field_1536_e = var10001;
+-      var10001 = new NibbleArray;
++      //var10001 = new NibbleArray;
+       var10003 = var1.func_759_j("SkyLight");
+       var0.getClass();
+-      var10001.<init>(var10003, 7);
++      var10001 = new NibbleArray(var10003, 7);
+       var4.field_1535_f = var10001;
+-      var10001 = new NibbleArray;
++      //var10001 = new NibbleArray;
+       var10003 = var1.func_759_j("BlockLight");
+       var0.getClass();
+-      var10001.<init>(var10003, 7);
++      var10001 = new NibbleArray(var10003, 7);
+       var4.field_1534_g = var10001;
+       var4.field_1533_h = var1.func_759_j("HeightMap");
+       var4.field_1527_n = var1.func_760_m("TerrainPopulated");
+       int var10;
+       if(!var4.field_1536_e.func_769_a()) {
+-         var10001 = new NibbleArray;
++         //var10001 = new NibbleArray;
+          var10 = var4.field_1539_b.length;
+          var0.getClass();
+-         var10001.<init>(var10, 7);
++         var10001 = new NibbleArray(var10, 7);
+          var4.field_1536_e = var10001;
+       }
+ 
+       if(var4.field_1533_h == null || !var4.field_1535_f.func_769_a()) {
+          var4.field_1533_h = new byte[256];
+-         var10001 = new NibbleArray;
++         //var10001 = new NibbleArray;
+          var10 = var4.field_1539_b.length;
+          var0.getClass();
+-         var10001.<init>(var10, 7);
++         var10001 = new NibbleArray(var10, 7);
+          var4.field_1535_f = var10001;
+          var4.func_1024_c();
+       }
+ 
+       if(!var4.field_1534_g.func_769_a()) {
+-         var10001 = new NibbleArray;
++         //var10001 = new NibbleArray;
+          var10 = var4.field_1539_b.length;
+          var0.getClass();
+-         var10001.<init>(var10, 7);
++         var10001 = new NibbleArray(var10, 7);
+          var4.field_1534_g = var10001;
+          var4.func_1014_a();
+       }
+diff -r -U 3 minecraft\net\minecraft\src\ChunkProvider.java minecraft_patched\net\minecraft\src\ChunkProvider.java
+--- minecraft\net\minecraft\src\ChunkProvider.java	Sun Sep 18 14:37:42 2011
++++ minecraft_patched\net\minecraft\src\ChunkProvider.java	Sun Sep 18 14:54:48 2011
+@@ -29,9 +29,9 @@
+ 
+ 
+    public ChunkProvider(World var1, IChunkLoader var2, IChunkProvider var3) {
+-      EmptyChunk var10001 = new EmptyChunk;
++      //EmptyChunk var10001 = new EmptyChunk;
+       var1.getClass();
+-      var10001.<init>(var1, new byte[256 * 128], 0, 0);
++      EmptyChunk var10001 = new EmptyChunk(var1, new byte[256 * 128], 0, 0);
+       this.field_28064_b = var10001;
+       this.field_28066_g = var1;
+       this.field_28069_d = var2;
+diff -r -U 3 minecraft\net\minecraft\src\ChunkProviderClient.java minecraft_patched\net\minecraft\src\ChunkProviderClient.java
+--- minecraft\net\minecraft\src\ChunkProviderClient.java	Sun Sep 18 14:37:46 2011
++++ minecraft_patched\net\minecraft\src\ChunkProviderClient.java	Sun Sep 18 14:55:03 2011
+@@ -20,9 +20,9 @@
+ 
+ 
+    public ChunkProviderClient(World var1) {
+-      EmptyChunk var10001 = new EmptyChunk;
++      //EmptyChunk var10001 = new EmptyChunk;
+       var1.getClass();
+-      var10001.<init>(var1, new byte[256 * 128], 0, 0);
++      EmptyChunk var10001 = new EmptyChunk(var1, new byte[256 * 128], 0, 0);
+       this.field_887_a = var10001;
+       this.field_888_d = var1;
+    }
 diff -r -U 3 minecraft\net\minecraft\src\CodecMus.java minecraft_patched\net\minecraft\src\CodecMus.java
---- minecraft\net\minecraft\src\CodecMus.java	Tue Jul 05 00:59:58 2011
-+++ minecraft_patched\net\minecraft\src\CodecMus.java	Tue Jul 05 01:03:31 2011
+--- minecraft\net\minecraft\src\CodecMus.java	Sun Sep 18 14:37:54 2011
++++ minecraft_patched\net\minecraft\src\CodecMus.java	Sun Sep 18 15:15:16 2011
 @@ -1,5 +1,6 @@
  package net.minecraft.src;
  
@@ -20,15 +160,33 @@ diff -r -U 3 minecraft\net\minecraft\src\CodecMus.java minecraft_patched\net\min
 +      }
     }
  }
+diff -r -U 3 minecraft\net\minecraft\src\EntityClientPlayerMP.java minecraft_patched\net\minecraft\src\EntityClientPlayerMP.java
+--- minecraft\net\minecraft\src\EntityClientPlayerMP.java	Sun Sep 18 14:37:24 2011
++++ minecraft_patched\net\minecraft\src\EntityClientPlayerMP.java	Sun Sep 18 14:55:27 2011
+@@ -156,12 +156,12 @@
+    public void func_9367_r() {
+       this.func_9375_Q();
+       NetClientHandler var10000 = this.field_797_bg;
+-      Packet9Respawn var10001 = new Packet9Respawn;
++      //Packet9Respawn var10001 = new Packet9Respawn;
+       byte var10003 = (byte)this.field_4129_m;
+       byte var10004 = (byte)this.field_615_ag.field_1039_l;
+       long var10005 = this.field_615_ag.func_22138_q();
+       this.field_615_ag.getClass();
+-      var10001.<init>(var10003, var10004, var10005, 128, 0);
++      Packet9Respawn var10001 = new Packet9Respawn(var10003, var10004, var10005, 128, 0);
+       var10000.func_847_a(var10001);
+    }
+ 
 diff -r -U 3 minecraft\net\minecraft\src\ItemMap.java minecraft_patched\net\minecraft\src\ItemMap.java
---- minecraft\net\minecraft\src\ItemMap.java	Tue Jul 05 01:00:10 2011
-+++ minecraft_patched\net\minecraft\src\ItemMap.java	Tue Jul 05 01:02:12 2011
+--- minecraft\net\minecraft\src\ItemMap.java	Sun Sep 18 14:37:46 2011
++++ minecraft_patched\net\minecraft\src\ItemMap.java	Sun Sep 18 14:48:56 2011
 @@ -19,7 +19,7 @@
     }
  
     public static MapData func_28013_a(short var0, World var1) {
 -      "map_" + var0;
-+//      "map_" + var0;
++      //"map_" + var0;
        MapData var3 = (MapData)var1.func_28103_a(MapData.class, "map_" + var0);
        if(var3 == null) {
           int var4 = var1.func_28101_b("map");
@@ -37,13 +195,13 @@ diff -r -U 3 minecraft\net\minecraft\src\ItemMap.java minecraft_patched\net\mine
  
     public MapData func_28012_a(ItemStack var1, World var2) {
 -      "map_" + var1.func_21181_i();
-+//      "map_" + var1.func_21181_i();
++      //"map_" + var1.func_21181_i();
        MapData var4 = (MapData)var2.func_28103_a(MapData.class, "map_" + var1.func_21181_i());
        if(var4 == null) {
           var1.func_28156_b(var2.func_28101_b("map"));
 diff -r -U 3 minecraft\net\minecraft\src\MusInputStream.java minecraft_patched\net\minecraft\src\MusInputStream.java
---- minecraft\net\minecraft\src\MusInputStream.java	Tue Jul 05 01:00:02 2011
-+++ minecraft_patched\net\minecraft\src\MusInputStream.java	Tue Jul 05 01:04:05 2011
+--- minecraft\net\minecraft\src\MusInputStream.java	Sun Sep 18 14:37:56 2011
++++ minecraft_patched\net\minecraft\src\MusInputStream.java	Sun Sep 18 15:15:16 2011
 @@ -1,5 +1,6 @@
  package net.minecraft.src;
  

@@ -4,25 +4,30 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import net.minecraft.src.GLAllocation;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GLContext;
 
 public class Tessellator {
 
-	private static boolean convertQuadsToTriangles = true;
+	private static boolean convertQuadsToTriangles = false;
 	private static boolean tryVBO = false;
 	private ByteBuffer byteBuffer;
 	private IntBuffer intBuffer;
 	private FloatBuffer floatBuffer;
+	private ShortBuffer field_35836_g;
 	private int[] rawBuffer;
 	private int vertexCount = 0;
 	private double textureU;
 	private double textureV;
+	private int field_35837_l;
 	private int color;
 	private boolean hasColor = false;
 	private boolean hasTexture = false;
+	private boolean field_35838_p = false;
 	private boolean hasNormals = false;
 	private int rawBufferIndex = 0;
 	private int addedVertices = 0;
@@ -42,12 +47,17 @@ public class Tessellator {
 	//Spout Start
 	public int textureOverride = 0;
 	//Spout End
+	//Spout Performance Start
+	public static boolean isLoadingChunk = false;
+	//Spout Performance End
+
 
 	private Tessellator(int var1) {
 		this.bufferSize = var1;
 		this.byteBuffer = GLAllocation.createDirectByteBuffer(var1 * 4);
 		this.intBuffer = this.byteBuffer.asIntBuffer();
 		this.floatBuffer = this.byteBuffer.asFloatBuffer();
+		this.field_35836_g = this.byteBuffer.asShortBuffer();
 		this.rawBuffer = new int[var1];
 		this.useVBO = tryVBO && GLContext.getCapabilities().GL_ARB_vertex_buffer_object;
 		if(this.useVBO) {
@@ -66,7 +76,7 @@ public class Tessellator {
 			if (!isLoadingChunk) {
 				GL11.glEnd();
 			} else
-			//Spout Performance End
+				//Spout Performance End
 			if(this.vertexCount > 0) {
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
@@ -87,11 +97,24 @@ public class Tessellator {
 					}
 
 					GL11.glEnableClientState('\u8078');
-
+					
 					//Spout Start
 					if(textureOverride > 0)
 						GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, textureOverride);
 					//Spout End
+				}
+
+				if(this.field_35838_p) {
+					GL13.glClientActiveTexture('\u84c1');
+					if(this.useVBO) {
+						GL11.glTexCoordPointer(2, 5122 /*GL_SHORT*/, 32, 24L);
+					} else {
+						this.field_35836_g.position(14);
+						GL11.glTexCoordPointer(2, 32, this.field_35836_g);
+					}
+
+					GL11.glEnableClientState('\u8078');
+					GL13.glClientActiveTexture('\u84c0');
 				}
 
 				if(this.hasColor) {
@@ -107,7 +130,7 @@ public class Tessellator {
 
 				if(this.hasNormals) {
 					if(this.useVBO) {
-						GL11.glNormalPointer(5120 /*GL_BYTE*/, 32, 24L);
+						GL11.glNormalPointer(5121 /*GL_UNSIGNED_BYTE*/, 32, 24L);
 					} else {
 						this.byteBuffer.position(24);
 						GL11.glNormalPointer(32, this.byteBuffer);
@@ -133,6 +156,12 @@ public class Tessellator {
 				GL11.glDisableClientState('\u8074');
 				if(this.hasTexture) {
 					GL11.glDisableClientState('\u8078');
+				}
+
+				if(this.field_35838_p) {
+					GL13.glClientActiveTexture('\u84c1');
+					GL11.glDisableClientState('\u8078');
+					GL13.glClientActiveTexture('\u84c0');
 				}
 
 				if(this.hasColor) {
@@ -174,6 +203,7 @@ public class Tessellator {
 			this.hasNormals = false;
 			this.hasColor = false;
 			this.hasTexture = false;
+			this.field_35838_p = false;
 			this.isColorDisabled = false;
 		}
 	}
@@ -187,6 +217,11 @@ public class Tessellator {
 			GL11.glTexCoord2f((float)var1, (float)var3);
 		}
 		//Spout Performance End
+	}
+
+	public void func_35835_b(int var1) {
+		this.field_35838_p = true;
+		this.field_35837_l = var1;
 	}
 
 	public void setColorOpaque_F(float var1, float var2, float var3) {
@@ -240,7 +275,7 @@ public class Tessellator {
 			if (!isLoadingChunk) {
 				GL11.glColor4ub((byte)var1, (byte)var2, (byte)var3, (byte)var4);
 			} else
-			//Spout Performance End
+				//Spout Performance End
 			if(ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
 				this.color = var4 << 24 | var3 << 16 | var2 << 8 | var1;
 			} else {
@@ -272,6 +307,10 @@ public class Tessellator {
 					this.rawBuffer[this.rawBufferIndex + 4] = this.rawBuffer[this.rawBufferIndex - var8 + 4];
 				}
 
+				if(this.field_35838_p) {
+					this.rawBuffer[this.rawBufferIndex + 7] = this.rawBuffer[this.rawBufferIndex - var8 + 7];
+				}
+
 				if(this.hasColor) {
 					this.rawBuffer[this.rawBufferIndex + 5] = this.rawBuffer[this.rawBufferIndex - var8 + 5];
 				}
@@ -287,6 +326,10 @@ public class Tessellator {
 		if(this.hasTexture) {
 			this.rawBuffer[this.rawBufferIndex + 3] = Float.floatToRawIntBits((float)this.textureU);
 			this.rawBuffer[this.rawBufferIndex + 4] = Float.floatToRawIntBits((float)this.textureV);
+		}
+
+		if(this.field_35838_p) {
+			this.rawBuffer[this.rawBufferIndex + 7] = this.field_35837_l;
 		}
 
 		if(this.hasColor) {
@@ -328,12 +371,8 @@ public class Tessellator {
 	}
 
 	public void setNormal(float var1, float var2, float var3) {
-		if(!this.isDrawing) {
-			System.out.println("But..");
-		}
-
 		this.hasNormals = true;
-		byte var4 = (byte)((int)(var1 * 128.0F));
+		byte var4 = (byte)((int)(var1 * 127.0F));
 		byte var5 = (byte)((int)(var2 * 127.0F));
 		byte var6 = (byte)((int)(var3 * 127.0F));
 		this.normal = var4 | var5 << 8 | var6 << 16;
@@ -355,7 +394,5 @@ public class Tessellator {
 		this.yOffset += (double)var2;
 		this.zOffset += (double)var3;
 	}
-	//Spout Performance Start
-	public static boolean isLoadingChunk = false;
-	//Spout Performance End
+
 }

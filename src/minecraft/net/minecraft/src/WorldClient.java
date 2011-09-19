@@ -7,7 +7,6 @@ import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.ChunkProviderClient;
 import net.minecraft.src.Entity;
 import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.IWorldAccess;
 import net.minecraft.src.MCHash;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.Packet255KickDisconnect;
@@ -15,6 +14,7 @@ import net.minecraft.src.SaveHandlerMP;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldBlockPositionType;
 import net.minecraft.src.WorldProvider;
+import net.minecraft.src.WorldSettings;
 
 public class WorldClient extends World {
 
@@ -26,40 +26,33 @@ public class WorldClient extends World {
 	private Set entitySpawnQueue = new HashSet();
 
 
-	public WorldClient(NetClientHandler var1, long var2, int var4) {
-		super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(var4), var2);
+	public WorldClient(NetClientHandler var1, WorldSettings var2, int var3, int var4) {
+		super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(var3), var2);
 		this.sendQueue = var1;
+		this.difficultySetting = var4;
 		this.setSpawnPoint(new ChunkCoordinates(8, 64, 8));
-		this.field_28108_z = var1.field_28118_b;
+		this.mapStorage = var1.mapStorage;
 	}
 
 	public void tick() {
 		this.setWorldTime(this.getWorldTime() + 1L);
-		int var1 = this.calculateSkylightSubtracted(1.0F);
-		int var2;
-		if(var1 != this.skylightSubtracted) {
-			this.skylightSubtracted = var1;
 
-			for(var2 = 0; var2 < this.worldAccesses.size(); ++var2) {
-				((IWorldAccess)this.worldAccesses.get(var2)).updateAllRenderers();
-			}
-		}
-
-		for(var2 = 0; var2 < 10 && !this.entitySpawnQueue.isEmpty(); ++var2) {
-			Entity var3 = (Entity)this.entitySpawnQueue.iterator().next();
-			if(!this.loadedEntityList.contains(var3)) {
-				this.entityJoinedWorld(var3);
+		int var1;
+		for(var1 = 0; var1 < 10 && !this.entitySpawnQueue.isEmpty(); ++var1) {
+			Entity var2 = (Entity)this.entitySpawnQueue.iterator().next();
+			if(!this.loadedEntityList.contains(var2)) {
+				this.entityJoinedWorld(var2);
 			}
 		}
 
 		this.sendQueue.processReadPackets();
 
-		for(var2 = 0; var2 < this.blocksToReceive.size(); ++var2) {
-			WorldBlockPositionType var4 = (WorldBlockPositionType)this.blocksToReceive.get(var2);
-			if(--var4.acceptCountdown == 0) {
-				super.setBlockAndMetadata(var4.posX, var4.posY, var4.posZ, var4.blockID, var4.metadata);
-				super.markBlockNeedsUpdate(var4.posX, var4.posY, var4.posZ);
-				this.blocksToReceive.remove(var2--);
+		for(var1 = 0; var1 < this.blocksToReceive.size(); ++var1) {
+			WorldBlockPositionType var3 = (WorldBlockPositionType)this.blocksToReceive.get(var1);
+			if(--var3.acceptCountdown == 0) {
+				super.setBlockAndMetadata(var3.posX, var3.posY, var3.posZ, var3.blockID, var3.metadata);
+				super.markBlockNeedsUpdate(var3.posX, var3.posY, var3.posZ);
+				this.blocksToReceive.remove(var1--);
 			}
 		}
 
@@ -88,13 +81,13 @@ public class WorldClient extends World {
 
 	public void scheduleBlockUpdate(int var1, int var2, int var3, int var4, int var5) {}
 
-	public boolean TickUpdates(boolean var1) {
+	public boolean tickUpdates(boolean var1) {
 		return false;
 	}
 
 	public void doPreChunk(int var1, int var2, boolean var3) {
 		if(var3) {
-			this.field_20915_C.prepareChunk(var1, var2);
+			this.field_20915_C.loadChunk(var1, var2);
 		} else {
 			this.field_20915_C.func_539_c(var1, var2);
 		}
@@ -214,12 +207,12 @@ public class WorldClient extends World {
 
 	protected void updateWeather() {
 		if(!this.worldProvider.hasNoSky) {
-			if(this.field_27168_F > 0) {
-				--this.field_27168_F;
+			if(this.lastLightningBolt > 0) {
+				--this.lastLightningBolt;
 			}
 
 			this.prevRainingStrength = this.rainingStrength;
-			if(this.worldInfo.getRaining()) {
+			if(this.worldInfo.getIsRaining()) {
 				this.rainingStrength = (float)((double)this.rainingStrength + 0.01D);
 			} else {
 				this.rainingStrength = (float)((double)this.rainingStrength - 0.01D);
@@ -234,7 +227,7 @@ public class WorldClient extends World {
 			}
 
 			this.prevThunderingStrength = this.thunderingStrength;
-			if(this.worldInfo.getThundering()) {
+			if(this.worldInfo.getIsThundering()) {
 				this.thunderingStrength = (float)((double)this.thunderingStrength + 0.01D);
 			} else {
 				this.thunderingStrength = (float)((double)this.thunderingStrength - 0.01D);

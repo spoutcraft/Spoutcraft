@@ -28,6 +28,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected ChatBar chat;
 	protected ChatTextBox chatText;
 	protected ArmorBar armor;
+	protected HungerBar hunger;
 	protected PopupScreen activePopup = null;
 	
 	public InGameScreen() {
@@ -36,6 +37,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.chat = new ChatBar();
 		this.chatText = new ChatTextBox();
 		this.armor = new ArmorBar();
+		this.hunger = new HungerBar();
 		
 		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor);
 	}
@@ -76,6 +78,8 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 			chat = (ChatBar)widget;
 		else if (widget instanceof ArmorBar)
 			armor = (ArmorBar)widget;
+		else if (widget instanceof HungerBar)
+			hunger = (HungerBar)widget;
 		return super.updateWidget(widget);
 	}
 
@@ -91,6 +95,8 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 			throw new UnsupportedOperationException("Cannot remove the chat bar. Use setVisible(false) to hide it instead");
 		if (widget instanceof ArmorBar)
 			throw new UnsupportedOperationException("Cannot remove the armor bar. Use setVisible(false) to hide it instead");
+		if (widget instanceof HungerBar)
+			throw new UnsupportedOperationException("Cannot remove the hunger bar. Use setVisible(false) to hide it instead");
 		return super.removeWidget(widget);
 	}
 	
@@ -125,6 +131,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	
 	public ArmorBar getArmorBar() {
 		return armor;
+	}
+	
+	public HungerBar getHungerBar() {
+		return hunger;
 	}
 	
 	public PopupScreen getActivePopup() {
@@ -169,10 +179,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 
 	public static boolean isCustomWidget(Widget widget) {
-		return widget instanceof HealthBar || widget instanceof BubbleBar || widget instanceof ChatTextBox || widget instanceof ChatBar || widget instanceof ArmorBar;
+		return widget instanceof HealthBar || widget instanceof BubbleBar || widget instanceof ChatTextBox || widget instanceof ChatBar || widget instanceof ArmorBar || widget instanceof HungerBar;
 	}
 
-	@Override
 	public ScreenType getScreenType() {
 		return ScreenType.GAME_SCREEN;
 	}

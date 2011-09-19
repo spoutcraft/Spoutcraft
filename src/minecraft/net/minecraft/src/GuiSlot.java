@@ -16,9 +16,11 @@ public abstract class GuiSlot {
 	protected final int bottom;
 	private final int right;
 	private final int left;
-	protected final int posZ;
+	protected final int slotHeight;
 	private int scrollUpButtonID;
 	private int scrollDownButtonID;
+	protected int field_35409_k;
+	protected int field_35408_l;
 	private float initialClickY = -2.0F;
 	private float scrollMultiplier;
 	public float amountScrolled; //Spout private -> public
@@ -35,7 +37,7 @@ public abstract class GuiSlot {
 		this.height = var3;
 		this.top = var4;
 		this.bottom = var5;
-		this.posZ = var6;
+		this.slotHeight = var6;
 		this.left = 0;
 		this.right = var2;
 	}
@@ -60,7 +62,7 @@ public abstract class GuiSlot {
 	protected abstract boolean isSelected(int var1);
 
 	protected int getContentHeight() {
-		return this.getSize() * this.posZ + this.field_27261_r;
+		return this.getSize() * this.slotHeight + this.field_27261_r;
 	}
 
 	protected abstract void drawBackground();
@@ -77,7 +79,7 @@ public abstract class GuiSlot {
 		int var3 = this.width / 2 - 110;
 		int var4 = this.width / 2 + 110;
 		int var5 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
-		int var6 = var5 / this.posZ;
+		int var6 = var5 / this.slotHeight;
 		return var1 >= var3 && var1 <= var4 && var6 >= 0 && var5 >= 0 && var6 < this.getSize()?var6:-1;
 	}
 
@@ -105,11 +107,11 @@ public abstract class GuiSlot {
 	public void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
 			if(var1.id == this.scrollUpButtonID) {
-				this.amountScrolled -= (float)(this.posZ * 2 / 3);
+				this.amountScrolled -= (float)(this.slotHeight * 2 / 3);
 				this.initialClickY = -2.0F;
 				this.bindAmountScrolled();
 			} else if(var1.id == this.scrollDownButtonID) {
-				this.amountScrolled += (float)(this.posZ * 2 / 3);
+				this.amountScrolled += (float)(this.slotHeight * 2 / 3);
 				this.initialClickY = -2.0F;
 				this.bindAmountScrolled();
 			}
@@ -118,6 +120,8 @@ public abstract class GuiSlot {
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {
+		this.field_35409_k = var1;
+		this.field_35408_l = var2;
 		this.drawBackground();
 		int var4 = this.getSize();
 		int var5 = this.width / 2 + 124;
@@ -134,7 +138,7 @@ public abstract class GuiSlot {
 					int var8 = this.width / 2 - 110;
 					var9 = this.width / 2 + 110;
 					var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
-					var11 = var10 / this.posZ;
+					var11 = var10 / this.slotHeight;
 					if(var1 >= var8 && var1 <= var9 && var11 >= 0 && var10 >= 0 && var11 < var4) {
 						boolean var12 = var11 == this.selectedElement && System.currentTimeMillis() - this.lastClicked < 250L;
 						this.elementClicked(var11, var12);
@@ -204,8 +208,8 @@ public abstract class GuiSlot {
 
 		int var14;
 		for(var11 = 0; var11 < var4; ++var11) {
-			var18 = var10 + var11 * this.posZ + this.field_27261_r;
-			var13 = this.posZ - 4;
+			var18 = var10 + var11 * this.slotHeight + this.field_27261_r;
+			var13 = this.slotHeight - 4;
 			if(var18 <= this.bottom && var18 + var13 >= this.top) {
 				if(this.field_25123_p && this.isSelected(var11)) {
 					var14 = this.width / 2 - 110;

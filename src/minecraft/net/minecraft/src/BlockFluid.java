@@ -19,22 +19,26 @@ public abstract class BlockFluid extends Block {
 		this.setTickOnLoad(true);
 	}
 
+	public int func_35274_i() {
+		return 16777215;
+	}
+
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
 		//Spout start - Biome water
-        if(var1.getBlockMaterial(var2, var3, var4) == Material.lava)
-        {
-            return 0xffffff;
-        } else
-        {
-            var1.getWorldChunkManager().func_4069_a(var2, var4, 1, 1);
-            double d = var1.getWorldChunkManager().temperature[0];
-            double d1 = var1.getWorldChunkManager().humidity[0];
-            return ColorizerWater.getWaterColor(d, d1);
-        }
+		  if(var1.getBlockMaterial(var2, var3, var4) == Material.lava)
+		  {
+				return 0xffffff;
+		  } else
+		  {
+				var1.getWorldChunkManager().func_4069_a(var2, var4, 1, 1);
+				double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var4);
+				double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
+				return ColorizerWater.getWaterColor(d, d1);
+		  }
 		//Spout end - Biome Water
 	}
 
-	public static float getPercentAir(int var0) {
+	public static float getFluidHeightPercent(int var0) {
 		if(var0 >= 8) {
 			var0 = 0;
 		}
@@ -78,12 +82,12 @@ public abstract class BlockFluid extends Block {
 
 	public boolean getIsBlockSolid(IBlockAccess var1, int var2, int var3, int var4, int var5) {
 		Material var6 = var1.getBlockMaterial(var2, var3, var4);
-		return var6 == this.blockMaterial?false:(var6 == Material.ice?false:(var5 == 1?true:super.getIsBlockSolid(var1, var2, var3, var4, var5)));
+		return var6 == this.blockMaterial?false:(var5 == 1?true:(var6 == Material.ice?false:super.getIsBlockSolid(var1, var2, var3, var4, var5)));
 	}
 
 	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
 		Material var6 = var1.getBlockMaterial(var2, var3, var4);
-		return var6 == this.blockMaterial?false:(var6 == Material.ice?false:(var5 == 1?true:super.shouldSideBeRendered(var1, var2, var3, var4, var5)));
+		return var6 == this.blockMaterial?false:(var5 == 1?true:(var6 == Material.ice?false:super.shouldSideBeRendered(var1, var2, var3, var4, var5)));
 	}
 
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
@@ -195,6 +199,16 @@ public abstract class BlockFluid extends Block {
 		return this.blockMaterial == Material.water?5:(this.blockMaterial == Material.lava?30:0);
 	}
 
+	public int func_35275_c(IBlockAccess var1, int var2, int var3, int var4) {
+		int var5 = var1.func_35451_b(var2, var3, var4, 0);
+		int var6 = var1.func_35451_b(var2, var3 + 1, var4, 0);
+		int var7 = var5 & 255;
+		int var8 = var6 & 255;
+		int var9 = var5 >> 16 & 255;
+		int var10 = var6 >> 16 & 255;
+		return (var7 > var8?var7:var8) | (var9 > var10?var9:var10) << 16;
+	}
+
 	public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
 		float var5 = var1.getLightBrightness(var2, var3, var4);
 		float var6 = var1.getLightBrightness(var2, var3 + 1, var4);
@@ -210,18 +224,91 @@ public abstract class BlockFluid extends Block {
 	}
 
 	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+		int var6;
+		if(this.blockMaterial == Material.water) {
+			if(var5.nextInt(10) == 0) {
+				var6 = var1.getBlockMetadata(var2, var3, var4);
+				if(var6 <= 0 || var6 >= 8) {
+					var1.spawnParticle("suspended", (double)((float)var2 + var5.nextFloat()), (double)((float)var3 + var5.nextFloat()), (double)((float)var4 + var5.nextFloat()), 0.0D, 0.0D, 0.0D);
+				}
+			}
+
+			for(var6 = 0; var6 < 0; ++var6) {
+				int var7 = var5.nextInt(4);
+				int var8 = var2;
+				int var9 = var4;
+				if(var7 == 0) {
+					var8 = var2 - 1;
+				}
+
+				if(var7 == 1) {
+					++var8;
+				}
+
+				if(var7 == 2) {
+					var9 = var4 - 1;
+				}
+
+				if(var7 == 3) {
+					++var9;
+				}
+
+				if(var1.getBlockMaterial(var8, var3, var9) == Material.air && (var1.getBlockMaterial(var8, var3 - 1, var9).getIsSolid() || var1.getBlockMaterial(var8, var3 - 1, var9).getIsLiquid())) {
+					float var10 = 0.0625F;
+					double var11 = (double)((float)var2 + var5.nextFloat());
+					double var13 = (double)((float)var3 + var5.nextFloat());
+					double var15 = (double)((float)var4 + var5.nextFloat());
+					if(var7 == 0) {
+						var11 = (double)((float)var2 - var10);
+					}
+
+					if(var7 == 1) {
+						var11 = (double)((float)(var2 + 1) + var10);
+					}
+
+					if(var7 == 2) {
+						var15 = (double)((float)var4 - var10);
+					}
+
+					if(var7 == 3) {
+						var15 = (double)((float)(var4 + 1) + var10);
+					}
+
+					double var17 = 0.0D;
+					double var19 = 0.0D;
+					if(var7 == 0) {
+						var17 = (double)(-var10);
+					}
+
+					if(var7 == 1) {
+						var17 = (double)var10;
+					}
+
+					if(var7 == 2) {
+						var19 = (double)(-var10);
+					}
+
+					if(var7 == 3) {
+						var19 = (double)var10;
+					}
+
+					var1.spawnParticle("splash", var11, var13, var15, var17, 0.0D, var19);
+				}
+			}
+		}
+
 		if(this.blockMaterial == Material.water && var5.nextInt(64) == 0) {
-			int var6 = var1.getBlockMetadata(var2, var3, var4);
+			var6 = var1.getBlockMetadata(var2, var3, var4);
 			if(var6 > 0 && var6 < 8) {
 				var1.playSoundEffect((double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F), "liquid.water", var5.nextFloat() * 0.25F + 0.75F, var5.nextFloat() * 1.0F + 0.5F);
 			}
 		}
 
 		if(this.blockMaterial == Material.lava && var1.getBlockMaterial(var2, var3 + 1, var4) == Material.air && !var1.isBlockOpaqueCube(var2, var3 + 1, var4) && var5.nextInt(100) == 0) {
-			double var12 = (double)((float)var2 + var5.nextFloat());
-			double var8 = (double)var3 + this.maxY;
-			double var10 = (double)((float)var4 + var5.nextFloat());
-			var1.spawnParticle("lava", var12, var8, var10, 0.0D, 0.0D, 0.0D);
+			double var21 = (double)((float)var2 + var5.nextFloat());
+			double var22 = (double)var3 + this.maxY;
+			double var23 = (double)((float)var4 + var5.nextFloat());
+			var1.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
 		}
 
 	}

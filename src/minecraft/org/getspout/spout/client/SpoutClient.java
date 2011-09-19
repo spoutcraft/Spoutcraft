@@ -24,8 +24,8 @@ import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
-import org.getspout.spout.gl.SpoutGL;
 import org.getspout.spout.gui.MCRenderDelegate;
+import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
@@ -44,12 +44,12 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.gl.SafeGL;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 import net.minecraft.client.Minecraft;
@@ -75,12 +75,12 @@ public class SpoutClient implements Client {
 	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
-	private SafeGL openGL = new SpoutGL();
 	
 	static {
 		dataMiningThread.start();
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
 		ConfigReader.read();
+		Keyboard.setKeyManager(new SimpleKeyManager());
 	}
 	
 	public static SpoutClient getInstance() {
@@ -224,10 +224,6 @@ public class SpoutClient implements Client {
 	public Map<String, String[]> getCommandAliases() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public SafeGL getGLWrapper() {
-		return openGL;
 	}
 
 	public Logger getLogger() {

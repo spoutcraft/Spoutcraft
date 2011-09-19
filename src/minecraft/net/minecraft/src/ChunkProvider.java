@@ -2,90 +2,96 @@ package net.minecraft.src;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
+import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EmptyChunk;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IChunkLoader;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
+import net.minecraft.src.PlayerList;
 import net.minecraft.src.World;
 //Spout Start
-import it.unimi.dsi.fastutil.ints.*;
-//Spout End
+import gnu.trove.TLongHashSet;
+import gnu.trove.TLongIterator;
+//Spout end
 
 public class ChunkProvider implements IChunkProvider {
 
 	//Spout Start
-	private IntSet droppedChunksSet = new IntOpenHashSet();
+	private TLongHashSet droppedChunksSet = new TLongHashSet();
 	//Spout End
 	private Chunk field_28064_b;
 	private IChunkProvider chunkProvider;
 	private IChunkLoader chunkLoader;
-	private Map chunkMap = new HashMap();
+	private PlayerList chunkMap = new PlayerList();
 	private List chunkList = new ArrayList();
-	private World field_28066_g;
+	private World worldObj;
+	private int field_35392_h;
 
 
 	public ChunkProvider(World var1, IChunkLoader var2, IChunkProvider var3) {
-		this.field_28064_b = new EmptyChunk(var1, new byte['\u8000'], 0, 0);
-		this.field_28066_g = var1;
+		//EmptyChunk var10001 = new EmptyChunk;
+		var1.getClass();
+		EmptyChunk var10001 = new EmptyChunk(var1, new byte[256 * 128], 0, 0);
+		this.field_28064_b = var10001;
+		this.worldObj = var1;
 		this.chunkLoader = var2;
 		this.chunkProvider = var3;
 	}
 
 	public boolean chunkExists(int var1, int var2) {
-		return this.chunkMap.containsKey(Integer.valueOf(ChunkCoordIntPair.chunkXZ2Int(var1, var2)));
+		return this.chunkMap.func_35575_b(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
 	}
 
-	public Chunk prepareChunk(int var1, int var2) {
-		int var3 = ChunkCoordIntPair.chunkXZ2Int(var1, var2);
-		this.droppedChunksSet.remove(Integer.valueOf(var3));
-		Chunk var4 = (Chunk)this.chunkMap.get(Integer.valueOf(var3));
-		if(var4 == null) {
-			var4 = this.loadChunkFromFile(var1, var2);
-			if(var4 == null) {
+	public void func_35391_d(int var1, int var2) {
+		ChunkCoordinates var3 = this.worldObj.getSpawnPoint();
+		int var4 = var1 * 16 + 8 - var3.posX;
+		int var5 = var2 * 16 + 8 - var3.posZ;
+		short var6 = 128;
+		if(var4 < -var6 || var4 > var6 || var5 < -var6 || var5 > var6) {
+			this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
+		}
+
+	}
+
+	public Chunk loadChunk(int var1, int var2) {
+		long var3 = ChunkCoordIntPair.chunkXZ2Int(var1, var2);
+		this.droppedChunksSet.remove(var3);
+		Chunk var5 = (Chunk)this.chunkMap.func_35578_a(var3);
+		if(var5 == null) {
+			int var6 = 1875004;
+			if(var1 < -var6 || var2 < -var6 || var1 >= var6 || var2 >= var6) {
+				return this.field_28064_b;
+			}
+
+			var5 = this.loadChunkFromFile(var1, var2);
+			if(var5 == null) {
 				if(this.chunkProvider == null) {
-					var4 = this.field_28064_b;
+					var5 = this.field_28064_b;
 				} else {
-					var4 = this.chunkProvider.provideChunk(var1, var2);
+					var5 = this.chunkProvider.provideChunk(var1, var2);
 				}
 			}
 
-			this.chunkMap.put(Integer.valueOf(var3), var4);
-			this.chunkList.add(var4);
-			if(var4 != null) {
-				var4.func_4143_d();
-				var4.onChunkLoad();
+			this.chunkMap.func_35577_a(var3, var5);
+			this.chunkList.add(var5);
+			if(var5 != null) {
+				var5.func_4143_d();
+				var5.onChunkLoad();
 			}
 
-			if(!var4.isTerrainPopulated && this.chunkExists(var1 + 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 + 1, var2)) {
-				this.populate(this, var1, var2);
-			}
-
-			if(this.chunkExists(var1 - 1, var2) && !this.provideChunk(var1 - 1, var2).isTerrainPopulated && this.chunkExists(var1 - 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 - 1, var2)) {
-				this.populate(this, var1 - 1, var2);
-			}
-
-			if(this.chunkExists(var1, var2 - 1) && !this.provideChunk(var1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 + 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 + 1, var2)) {
-				this.populate(this, var1, var2 - 1);
-			}
-
-			if(this.chunkExists(var1 - 1, var2 - 1) && !this.provideChunk(var1 - 1, var2 - 1).isTerrainPopulated && this.chunkExists(var1 - 1, var2 - 1) && this.chunkExists(var1, var2 - 1) && this.chunkExists(var1 - 1, var2)) {
-				this.populate(this, var1 - 1, var2 - 1);
-			}
+			var5.func_35843_a(this, this, var1, var2);
 		}
 
-		return var4;
+		return var5;
 	}
 
 	public Chunk provideChunk(int var1, int var2) {
-		Chunk var3 = (Chunk)this.chunkMap.get(Integer.valueOf(ChunkCoordIntPair.chunkXZ2Int(var1, var2)));
-		return var3 == null?this.prepareChunk(var1, var2):var3;
+		Chunk var3 = (Chunk)this.chunkMap.func_35578_a(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+		return var3 == null?this.loadChunk(var1, var2):var3;
 	}
 
 	private Chunk loadChunkFromFile(int var1, int var2) {
@@ -93,9 +99,9 @@ public class ChunkProvider implements IChunkProvider {
 			return null;
 		} else {
 			try {
-				Chunk var3 = this.chunkLoader.loadChunk(this.field_28066_g, var1, var2);
+				Chunk var3 = this.chunkLoader.loadChunk(this.worldObj, var1, var2);
 				if(var3 != null) {
-					var3.lastSaveTime = this.field_28066_g.getWorldTime();
+					var3.lastSaveTime = this.worldObj.getWorldTime();
 				}
 
 				return var3;
@@ -109,7 +115,7 @@ public class ChunkProvider implements IChunkProvider {
 	private void func_28063_a(Chunk var1) {
 		if(this.chunkLoader != null) {
 			try {
-				this.chunkLoader.saveExtraChunkData(this.field_28066_g, var1);
+				this.chunkLoader.saveExtraChunkData(this.worldObj, var1);
 			} catch (Exception var3) {
 				var3.printStackTrace();
 			}
@@ -120,8 +126,8 @@ public class ChunkProvider implements IChunkProvider {
 	private void func_28062_b(Chunk var1) {
 		if(this.chunkLoader != null) {
 			try {
-				var1.lastSaveTime = this.field_28066_g.getWorldTime();
-				this.chunkLoader.saveChunk(this.field_28066_g, var1);
+				var1.lastSaveTime = this.worldObj.getWorldTime();
+				this.chunkLoader.saveChunk(this.worldObj, var1);
 			} catch (IOException var3) {
 				var3.printStackTrace();
 			}
@@ -172,20 +178,35 @@ public class ChunkProvider implements IChunkProvider {
 	}
 
 	public boolean unload100OldestChunks() {
+		int var1;
 		//Spout Start
-		IntIterator iterator = this.droppedChunksSet.iterator();
-		
-		for(int var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
-			int var2 = iterator.nextInt();
-			Chunk var3 = (Chunk)this.chunkMap.get(var2);
+		TLongIterator iterator = this.droppedChunksSet.iterator();
+		for(var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
+			long var2 = iterator.next();
+			iterator.remove();
+			Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
 			var3.onChunkUnload();
 			this.func_28062_b(var3);
 			this.func_28063_a(var3);
 			this.droppedChunksSet.remove(var2);
-			this.chunkMap.remove(var2);
+			this.chunkMap.func_35574_d(var2);
 			this.chunkList.remove(var3);
 		}
 		//Spout End
+
+		for(var1 = 0; var1 < 10; ++var1) {
+			if(this.field_35392_h >= this.chunkList.size()) {
+				this.field_35392_h = 0;
+				break;
+			}
+
+			Chunk var4 = (Chunk)this.chunkList.get(this.field_35392_h++);
+			EntityPlayer var5 = this.worldObj.getClosestPlayer((double)(var4.xPosition << 4) + 8.0D, 64.0D, (double)(var4.zPosition << 4) + 8.0D, 288.0D);
+			if(var5 == null) {
+				this.func_35391_d(var4.xPosition, var4.zPosition);
+			}
+		}
+
 		if(this.chunkLoader != null) {
 			this.chunkLoader.func_814_a();
 		}
@@ -198,6 +219,6 @@ public class ChunkProvider implements IChunkProvider {
 	}
 
 	public String makeString() {
-		return "ServerChunkCache: " + this.chunkMap.size() + " Drop: " + this.droppedChunksSet.size();
+		return "ServerChunkCache: " + this.chunkMap.func_35576_a() + " Drop: " + this.droppedChunksSet.size();
 	}
 }

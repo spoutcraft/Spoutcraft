@@ -5,7 +5,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListMap; //Spout
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
@@ -29,7 +29,7 @@ public class GuiScreen extends Gui {
 	public int width;
 	public int height;
 	protected List controlList = new ArrayList();
-	public boolean field_948_f = false;
+	public boolean allowUserInput = false;
 	protected FontRenderer fontRenderer;
 	public GuiParticle guiParticles;
 	private GuiButton selectedButton = null;
@@ -116,11 +116,11 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
-	protected void mouseClicked(int mouseX, int mouseY, int click) {
-		if(click == 0) {
+	protected void mouseClicked(int var1, int var2, int var3) {
+		if(var3 == 0) {
 			for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
 				GuiButton var5 = (GuiButton)this.controlList.get(var4);
-				if(var5.mousePressed(this.mc, mouseX, mouseY)) {
+				if(var5.mousePressed(this.mc, var1, var2)) {
 					this.selectedButton = var5;
 					this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 					this.actionPerformed(var5);
@@ -154,9 +154,9 @@ public class GuiScreen extends Gui {
 		}
 	}
 
-	protected void mouseMovedOrUp(int mouseX, int mouseY, int click) {
-		if(this.selectedButton != null && click == 0) {
-			this.selectedButton.mouseReleased(mouseX, mouseY);
+	protected void mouseMovedOrUp(int var1, int var2, int var3) {
+		if(this.selectedButton != null && var3 == 0) {
+			this.selectedButton.mouseReleased(var1, var2);
 			this.selectedButton = null;
 		}
 	}
@@ -259,7 +259,6 @@ public class GuiScreen extends Gui {
 					this.mc.toggleFullscreen();
 					return;
 				}
-	
 				this.keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
 			}
 			//Spout - End of vanilla code
@@ -309,7 +308,8 @@ public class GuiScreen extends Gui {
 	public void deleteWorld(boolean var1, int var2) {}
 
 	public void selectNextField() {}
-	
+
+	//Spout Start
 	public void drawWidgets(int x, int y, float z) {
 		if(getScreen() == null) {
 			return;
@@ -430,4 +430,5 @@ public class GuiScreen extends Gui {
 		}
 		return screen;
 	}
+	//Spout End
 }

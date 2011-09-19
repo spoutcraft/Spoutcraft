@@ -6,6 +6,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.EnumAction;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemArmor;
@@ -16,8 +17,10 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderLiving;
 import net.minecraft.src.Tessellator;
 
+//Spout Start
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+//spout End
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
@@ -95,20 +98,23 @@ public class RenderPlayer extends RenderLiving {
 					var12 = ChatColor.BLUE + "Wulfspider";
 					alpha = 0f;
 				}
-				else if (var12.equalsIgnoreCase("Alta189")) {
-					var12 = ChatColor.DARK_GREEN + "Alta189";
+				else if (var12.equalsIgnoreCase("alta189")) {
+					var12 = ChatColor.DARK_GREEN + "alta189";
 					alpha = 0f;
 				}
 				else if (var12.equalsIgnoreCase("Raphfrk")) {
 					var12 = ChatColor.GREEN + "Raphfrk";
 					alpha = 0f;
 				}
-				else if (var12.equalsIgnoreCase("Narrowtux")) {
-					var12 = ChatColor.GOLD + "Narrowtux";
+				else if (var12.equalsIgnoreCase("narrowtux")) {
+					var12 = ChatColor.GOLD + "narrowtux";
 					alpha = 0f;
 				}
 				else if (var12.equalsIgnoreCase("Top_Cat")) {
 					var12 = ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
+					alpha = 0f;
+				} else if(var12.equalsIgnoreCase("Olloth")) {
+					var12 = ChatColor.AQUA + "Olloth";
 					alpha = 0f;
 				}
 				//Easter egg end
@@ -164,6 +170,7 @@ public class RenderPlayer extends RenderLiving {
 	}
 
 	protected void renderSpecials(EntityPlayer var1, float var2) {
+		super.renderEquippedItems(var1, var2);
 		ItemStack var3 = var1.inventory.armorItemInSlot(3);
 		if(var3 != null && var3.getItem().shiftedIndex < 256) {
 			GL11.glPushMatrix();
@@ -202,12 +209,12 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
 			double var21 = var1.field_20066_r + (var1.field_20063_u - var1.field_20066_r) * (double)var2 - (var1.prevPosX + (var1.posX - var1.prevPosX) * (double)var2);
-			double var22 = var1.field_20065_s + (var1.field_20062_v - var1.field_20065_s) * (double)var2 - (var1.prevPosY + (var1.posY - var1.prevPosY) * (double)var2);
+			double var23 = var1.field_20065_s + (var1.field_20062_v - var1.field_20065_s) * (double)var2 - (var1.prevPosY + (var1.posY - var1.prevPosY) * (double)var2);
 			double var8 = var1.field_20064_t + (var1.field_20061_w - var1.field_20064_t) * (double)var2 - (var1.prevPosZ + (var1.posZ - var1.prevPosZ) * (double)var2);
 			float var10 = var1.prevRenderYawOffset + (var1.renderYawOffset - var1.prevRenderYawOffset) * var2;
 			double var11 = (double)MathHelper.sin(var10 * 3.1415927F / 180.0F);
 			double var13 = (double)(-MathHelper.cos(var10 * 3.1415927F / 180.0F));
-			float var15 = (float)var22 * 10.0F;
+			float var15 = (float)var23 * 10.0F;
 			if(var15 < -6.0F) {
 				var15 = -6.0F;
 			}
@@ -259,6 +266,15 @@ public class RenderPlayer extends RenderLiving {
 					GL11.glTranslatef(0.0F, -0.125F, 0.0F);
 				}
 
+				if(var1.func_35205_Y() > 0) {
+					EnumAction var22 = var20.func_35865_n();
+					if(var22 == EnumAction.block) {
+						GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+						GL11.glRotatef(-60.0F, 0.0F, 1.0F, 0.0F);
+						GL11.glRotatef(-20.0F, 1.0F, 0.0F, 0.0F);
+					}
+				}
+
 				GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
 				GL11.glScalef(var5, -var5, var5);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
@@ -291,14 +307,14 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void func_22016_b(EntityPlayer var1, double var2, double var4, double var6) {
 		if(var1.isEntityAlive() && var1.isPlayerSleeping()) {
-			super.func_22012_b(var1, var2 + (double)var1.field_22063_x, var4 + (double)var1.field_22062_y, var6 + (double)var1.field_22061_z);
+			super.renderLivingAt(var1, var2 + (double)var1.field_22063_x, var4 + (double)var1.field_22062_y, var6 + (double)var1.field_22061_z);
 		} else {
-			super.func_22012_b(var1, var2, var4, var6);
+			super.renderLivingAt(var1, var2, var4, var6);
 		}
 
 	}
 
-	protected void func_22017_a(EntityPlayer var1, float var2, float var3, float var4) {
+	protected void rotatePlayer(EntityPlayer var1, float var2, float var3, float var4) {
 		if(var1.isEntityAlive() && var1.isPlayerSleeping()) {
 			GL11.glRotatef(var1.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(this.getDeathMaxRotation(var1), 0.0F, 0.0F, 1.0F);
@@ -336,12 +352,12 @@ public class RenderPlayer extends RenderLiving {
 	// $FF: synthetic method
 	// $FF: bridge method
 	protected void rotateCorpse(EntityLiving var1, float var2, float var3, float var4) {
-		this.func_22017_a((EntityPlayer)var1, var2, var3, var4);
+		this.rotatePlayer((EntityPlayer)var1, var2, var3, var4);
 	}
 
 	// $FF: synthetic method
 	// $FF: bridge method
-	protected void func_22012_b(EntityLiving var1, double var2, double var4, double var6) {
+	protected void renderLivingAt(EntityLiving var1, double var2, double var4, double var6) {
 		this.func_22016_b((EntityPlayer)var1, var2, var4, var6);
 	}
 

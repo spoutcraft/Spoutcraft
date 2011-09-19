@@ -3,7 +3,9 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Achievement;
 import net.minecraft.src.AchievementList;
+import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityCrit2FX;
 import net.minecraft.src.EntityPickupFX;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiChest;
@@ -13,10 +15,12 @@ import net.minecraft.src.GuiEditSign;
 import net.minecraft.src.GuiFurnace;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.IInventory;
+import net.minecraft.src.Item;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.MouseFilter;
 import net.minecraft.src.MovementInput;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.Potion;
 import net.minecraft.src.Session;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.TileEntityDispenser;
@@ -25,6 +29,8 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketRenderDistance;
 import org.getspout.spout.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end
@@ -33,11 +39,18 @@ public class EntityPlayerSP extends EntityPlayer {
 
 	public MovementInput movementInput;
 	protected Minecraft mc;
+	protected int field_35224_c = 0;
+	public int field_35221_d = 0;
+	public float field_35222_e;
+	public float field_35223_ap;
+	public float field_35226_aq;
+	public float field_35225_ar;
 	private MouseFilter field_21903_bJ = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
 	//Spout start
 	public FixedLocation lastClickLocation = null;
+	private KeyBinding fogKey = null;
 	//Spout end
 
 
@@ -60,75 +73,164 @@ public class EntityPlayerSP extends EntityPlayer {
 		super.moveEntity(var1, var3, var5);
 	}
 
-	public void updatePlayerActionState() {
-		super.updatePlayerActionState();
+	public void updateEntityActionState() {
+		super.updateEntityActionState();
 		this.moveStrafing = this.movementInput.moveStrafe;
 		this.moveForward = this.movementInput.moveForward;
 		this.isJumping = this.movementInput.jump;
+		this.field_35226_aq = this.field_35222_e;
+		this.field_35225_ar = this.field_35223_ap;
+		this.field_35223_ap = (float)((double)this.field_35223_ap + (double)(this.rotationPitch - this.field_35223_ap) * 0.5D);
+		this.field_35222_e = (float)((double)this.field_35222_e + (double)(this.rotationYaw - this.field_35222_e) * 0.5D);
 	}
 
 	public void onLivingUpdate() {
-		if(!this.mc.statFileWriter.hasAchievementUnlocked(AchievementList.openInventory)) {
-			this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory);
+		if(this.field_35221_d > 0) {
+			--this.field_35221_d;
+			if(this.field_35221_d == 0) {
+				this.func_35113_c(false);
+			}
 		}
 
-		this.prevTimeInPortal = this.timeInPortal;
-		if(this.inPortal) {
-			if(!this.worldObj.multiplayerWorld && this.ridingEntity != null) {
-				this.mountEntity((Entity)null);
+		if(this.field_35224_c > 0) {
+			--this.field_35224_c;
+		}
+
+		if(this.mc.playerController.func_35643_e()) {
+			this.posX = this.posZ = 0.5D;
+			this.posX = 0.0D;
+			this.posZ = 0.0D;
+			this.rotationYaw = (float)this.ticksExisted / 12.0F;
+			this.rotationPitch = 10.0F;
+			this.posY = 68.5D;
+		} else {
+			if(!this.mc.statFileWriter.hasAchievementUnlocked(AchievementList.openInventory)) {
+				this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory);
 			}
 
-			if(this.mc.currentScreen != null) {
-				this.mc.displayGuiScreen((GuiScreen)null);
-			}
+			this.prevTimeInPortal = this.timeInPortal;
+			if(this.inPortal) {
+				if(!this.worldObj.multiplayerWorld && this.ridingEntity != null) {
+					this.mountEntity((Entity)null);
+				}
 
-			if(this.timeInPortal == 0.0F) {
-				this.mc.sndManager.playSoundFX("portal.trigger", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-			}
+				if(this.mc.currentScreen != null) {
+					this.mc.displayGuiScreen((GuiScreen)null);
+				}
 
-			this.timeInPortal += 0.0125F;
-			if(this.timeInPortal >= 1.0F) {
-				this.timeInPortal = 1.0F;
-				if(!this.worldObj.multiplayerWorld) {
-					this.timeUntilPortal = 10;
-					this.mc.sndManager.playSoundFX("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-					this.mc.usePortal();
+				if(this.timeInPortal == 0.0F) {
+					this.mc.sndManager.playSoundFX("portal.trigger", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+				}
+
+				this.timeInPortal += 0.0125F;
+				if(this.timeInPortal >= 1.0F) {
+					this.timeInPortal = 1.0F;
+					if(!this.worldObj.multiplayerWorld) {
+						this.timeUntilPortal = 10;
+						this.mc.sndManager.playSoundFX("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+						this.mc.usePortal();
+					}
+				}
+
+				this.inPortal = false;
+			} else if(this.func_35160_a(Potion.field_35684_k) && this.func_35167_b(Potion.field_35684_k).func_35802_b() > 60) {
+				this.timeInPortal += 0.006666667F;
+				if(this.timeInPortal > 1.0F) {
+					this.timeInPortal = 1.0F;
+				}
+			} else {
+				if(this.timeInPortal > 0.0F) {
+					this.timeInPortal -= 0.05F;
+				}
+
+				if(this.timeInPortal < 0.0F) {
+					this.timeInPortal = 0.0F;
 				}
 			}
 
-			this.inPortal = false;
-		} else {
-			if(this.timeInPortal > 0.0F) {
-				this.timeInPortal -= 0.05F;
+			if(this.timeUntilPortal > 0) {
+				--this.timeUntilPortal;
 			}
 
-			if(this.timeInPortal < 0.0F) {
-				this.timeInPortal = 0.0F;
+			boolean var1 = this.movementInput.jump;
+			float var2 = 0.8F;
+			boolean var3 = this.movementInput.moveForward >= var2;
+			this.movementInput.updatePlayerMoveState(this);
+			if(this.func_35196_Z()) {
+				this.movementInput.moveStrafe *= 0.2F;
+				this.movementInput.moveForward *= 0.2F;
+				this.field_35224_c = 0;
 			}
-		}
 
-		if(this.timeUntilPortal > 0) {
-			--this.timeUntilPortal;
-		}
+			if(this.movementInput.sneak && this.ySize < 0.2F) {
+				this.ySize = 0.2F;
+			}
 
-		this.movementInput.updatePlayerMoveState(this);
-		if(this.movementInput.sneak && this.ySize < 0.2F) {
-			this.ySize = 0.2F;
-		}
+			this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+			this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
+			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+			boolean var4 = (float)this.func_35191_at().func_35765_a() > 6.0F;
+			if(this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.func_35117_Q() && var4 && !this.func_35196_Z()) {
+				if(this.field_35224_c == 0) {
+					this.field_35224_c = 7;
+				} else {
+					this.func_35113_c(true);
+					this.field_35224_c = 0;
+				}
+			}
 
-		this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-		this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-		this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-		this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-		super.onLivingUpdate();
+			if(this.func_35117_Q() && (this.movementInput.moveForward < var2 || this.isCollidedHorizontally || !var4)) {
+				this.func_35113_c(false);
+			}
+
+			if(this.field_35212_aW.field_35758_c && !var1 && this.movementInput.jump) {
+				if(this.field_35216_aw == 0) {
+					this.field_35216_aw = 7;
+				} else {
+					this.field_35212_aW.field_35757_b = !this.field_35212_aW.field_35757_b;
+					this.field_35216_aw = 0;
+				}
+			}
+
+			if(this.field_35212_aW.field_35757_b) {
+				if(this.movementInput.sneak) {
+					this.motionY -= 0.15D;
+				}
+
+				if(this.movementInput.jump) {
+					this.motionY += 0.15D;
+				}
+			}
+
+			super.onLivingUpdate();
+			if(this.onGround && this.field_35212_aW.field_35757_b) {
+				this.field_35212_aW.field_35757_b = false;
+			}
+
+		}
 	}
 
-	public void resetPlayerKeyState() {
-		this.movementInput.resetKeyState();
-	}
+	public float func_35220_u_() {
+		float var1 = 1.0F;
+		if(this.field_35212_aW.field_35757_b) {
+			var1 *= 1.1F;
+		}
 
-	public void handleKeyPress(int var1, boolean var2) {
-		this.movementInput.checkKeyForMovementInput(var1, var2);
+		var1 *= (this.field_35169_bv * this.func_35166_t_() / this.field_35215_ba + 1.0F) / 2.0F;
+		if(this.func_35196_Z() && this.func_35195_X().itemID == Item.bow.shiftedIndex) {
+			int var2 = this.func_35192_aa();
+			float var3 = (float)var2 / 20.0F;
+			if(var3 > 1.0F) {
+				var3 = 1.0F;
+			} else {
+				var3 *= var3;
+			}
+
+			var1 *= 1.0F - var3 * 0.15F;
+		}
+
+		return var1;
 	}
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
@@ -166,6 +268,10 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiDispenser(this.inventory, var1));
 	}
 
+	public void func_35200_b(Entity var1) {
+		this.mc.effectRenderer.addEffect(new EntityCrit2FX(this.mc.theWorld, var1));
+	}
+
 	public void onItemPickup(Entity var1, int var2) {
 		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, var1, this, -0.5F));
 	}
@@ -191,7 +297,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.field_9346_af = var2;
 			this.prevHealth = this.health;
 			this.heartsLife = this.heartsHalvesLife;
-			this.damageEntity(var2);
+			this.b(DamageSource.field_35547_j, var2);
 			this.hurtTime = this.maxHurtTime = 10;
 		}
 
@@ -282,4 +388,51 @@ public class EntityPlayerSP extends EntityPlayer {
 
 		return false;
 	}
+
+	public void func_35113_c(boolean var1) {
+		super.func_35113_c(var1);
+		if(!var1) {
+			this.field_35221_d = 0;
+		} else {
+			this.field_35221_d = 600;
+		}
+
+	}
+
+	public void func_35219_c(int var1, int var2, int var3) {
+		this.Xp = var1;
+		this.XpTotal = var2;
+		this.XpLevel = var3;
+	}
+	
+	//Spout
+	@Override
+	public void handleKeyPress(int key, boolean keyReleased) {
+		((MovementInputFromOptions)this.movementInput).checkKeyForMovementInput(key, keyReleased);
+		if (keyReleased) {
+			final GameSettings settings = SpoutClient.getHandle().gameSettings;
+			if (key == settings.keyBindToggleFog.keyCode) {
+				byte view = (byte)settings.renderDistance;
+				byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
+				fogKey = settings.keyBindToggleFog;
+				settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
+				if (view != newView) {
+					settings.renderDistance = newView;
+					if (this instanceof EntityClientPlayerMP) {
+						((EntityClientPlayerMP)this).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+					}
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void onUpdate() {
+		if (fogKey != null) {
+			SpoutClient.getHandle().gameSettings.keyBindToggleFog = fogKey;
+			fogKey = null;
+		}
+		super.onUpdate();
+	}
+	//Spout end
 }

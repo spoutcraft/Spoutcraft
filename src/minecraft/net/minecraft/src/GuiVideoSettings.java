@@ -1,20 +1,27 @@
 package net.minecraft.src;
 
+import net.minecraft.src.EnumOptions;
+import net.minecraft.src.GameSettings;
+import net.minecraft.src.GuiButton;
+import net.minecraft.src.GuiScreen;
+import net.minecraft.src.GuiSlider;
+import net.minecraft.src.GuiSmallButton;
+import net.minecraft.src.ScaledResolution;
+import net.minecraft.src.StringTranslate;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketRenderDistance;
 import org.lwjgl.opengl.Display;
-//Spout End
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-
+//Spout End
 public class GuiVideoSettings extends GuiScreen {
 
-	private GuiScreen field_22110_h;
+	private GuiScreen parentGuiScreen;
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
 	//Spout Start
-	private static EnumOptions[] field_22108_k = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.BRIGHTNESS};
+	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.BRIGHTNESS};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -22,7 +29,7 @@ public class GuiVideoSettings extends GuiScreen {
 
 
 	public GuiVideoSettings(GuiScreen var1, GameSettings var2) {
-		this.field_22110_h = var1;
+		this.parentGuiScreen = var1;
 		this.guiGameSettings = var2;
 	}
 
@@ -30,7 +37,7 @@ public class GuiVideoSettings extends GuiScreen {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.field_22107_a = var1.translateKey("options.videoTitle");
 		int var2 = 0;
-		EnumOptions[] var3 = field_22108_k;
+		EnumOptions[] var3 = videoOptions;
 		int var4 = var3.length;
 		//Spout Start
 		int var5;
@@ -70,6 +77,7 @@ public class GuiVideoSettings extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
+			int var2 = this.guiGameSettings.guiScale;
 			if(var1.id < 100 && var1 instanceof GuiSmallButton) {
 				//Spout Start
 				int change = 1;
@@ -95,13 +103,13 @@ public class GuiVideoSettings extends GuiScreen {
 			//Spout Start
 			if(var1.id == 200) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(this.field_22110_h);
+				this.mc.displayGuiScreen(this.parentGuiScreen);
 			}
 
 			if(var1.id == 100) {
 				this.mc.gameSettings.saveOptions();
-				GuiAnimationSettingsOF var2 = new GuiAnimationSettingsOF(this, this.guiGameSettings);
-				this.mc.displayGuiScreen(var2);
+				GuiAnimationSettingsOF var3 = new GuiAnimationSettingsOF(this, this.guiGameSettings);
+				this.mc.displayGuiScreen(var3);
 			}
 
 			if(var1.id == 101) {

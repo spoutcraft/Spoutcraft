@@ -9,7 +9,6 @@ public class ClippingHelper {
 	public float[] clippingMatrix = new float[16];
 
 
-	
 	public boolean isBoxInFrustum(double var1, double var3, double var5, double var7, double var9, double var11) {
 //Spout Start
 		for(int var13 = 0; var13 < 6; ++var13) {

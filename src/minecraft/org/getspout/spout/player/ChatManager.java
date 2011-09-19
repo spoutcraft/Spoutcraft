@@ -17,7 +17,6 @@
 package org.getspout.spout.player;
 
 import java.util.ArrayList;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiChat;
@@ -237,29 +236,9 @@ public class ChatManager {
 		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth() - 6;
 		
 		//First Pass, break up line of text into individual words
-		String[] words = message.split(" ");;
+		String[] words = message.split(" ");
 		
-		//Second pass, break up words that exceed the max chat length (100 chars)
-		ArrayList<String> wordList = new ArrayList<String>(100);
-		for (String word : words) {
-			do {
-				int len = word.length();
-				String subWord = word.substring(0, Math.min(len, 100));
-				if (subWord.length() != len) {
-					word = word.substring(subWord.length());
-				}
-				else {
-					word = "";
-				}
-				wordList.add(subWord);
-			}
-			while (word.length() > 100);
-			if (!word.isEmpty())
-				wordList.add(word);
-		}
-	
-		
-		//Third pass, break up words that exceed the max width of the screen
+		//Second pass, break up words that exceed the max width of the screen
 		ArrayList<String> properWordList = new ArrayList<String>(100);
 		for (String word : words) {
 			StringBuilder cutoff = new StringBuilder("");
@@ -275,8 +254,25 @@ public class ChatManager {
 			}
 		}
 		
-		wordList = properWordList;
-		
+		//Third pass, break up words that exceed the max chat length (100 chars)
+		ArrayList<String> wordList = new ArrayList<String>(100);
+		for (String word : properWordList) {
+			do {
+				int len = word.length();
+				String subWord = word.substring(0, Math.min(len, 100));
+				if (subWord.length() != len) {
+					word = word.substring(subWord.length());
+				}
+				else {
+					word = "";
+				}
+				wordList.add(subWord);
+			}
+			while (word.length() > 100);
+			if (!word.isEmpty())
+				wordList.add(word);
+		}
+
 		//Ensure we always have something
 		if (wordList.size() == 0) {
 			wordList.add("");

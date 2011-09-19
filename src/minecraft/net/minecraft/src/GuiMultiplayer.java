@@ -14,7 +14,7 @@ import org.getspout.spout.gui.server.*;
 
 public class GuiMultiplayer extends GuiScreen {
 
-	public static final String version = "1.7.3";
+	public static final String version = "1.8.1";
 	public final ServerListInfo serverInfo = new ServerListInfo();
 	public String indexString = "";
 	private final DateFormat dateFormatter = new SimpleDateFormat();
