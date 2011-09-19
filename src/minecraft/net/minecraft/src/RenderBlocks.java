@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderBlocks {
 
-	private IBlockAccess blockAccess;
+	public IBlockAccess blockAccess; //Spout private -> public
 	private int overrideBlockTexture = -1;
 	private boolean flipTexture = false;
 	private boolean renderAllFaces = false;
