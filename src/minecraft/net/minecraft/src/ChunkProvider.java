@@ -2,9 +2,7 @@ package net.minecraft.src;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
@@ -16,13 +14,14 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.PlayerList;
 import net.minecraft.src.World;
 //Spout Start
-import it.unimi.dsi.fastutil.ints.*;
-//Spout End
+import gnu.trove.TLongHashSet;
+import gnu.trove.TLongIterator;
+//Spout end
 
 public class ChunkProvider implements IChunkProvider {
 
 	//Spout Start
-	private IntSet droppedChunksSet = new IntOpenHashSet();
+	private TLongHashSet droppedChunksSet = new TLongHashSet();
 	//Spout End
 	private Chunk field_28064_b;
 	private IChunkProvider chunkProvider;
@@ -53,14 +52,14 @@ public class ChunkProvider implements IChunkProvider {
 		int var5 = var2 * 16 + 8 - var3.posZ;
 		short var6 = 128;
 		if(var4 < -var6 || var4 > var6 || var5 < -var6 || var5 > var6) {
-			this.droppedChunksSet.add((int) ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
+			this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
 		}
 
 	}
 
 	public Chunk loadChunk(int var1, int var2) {
 		long var3 = ChunkCoordIntPair.chunkXZ2Int(var1, var2);
-		this.droppedChunksSet.remove(Long.valueOf(var3));
+		this.droppedChunksSet.remove(var3);
 		Chunk var5 = (Chunk)this.chunkMap.func_35578_a(var3);
 		if(var5 == null) {
 			int var6 = 1875004;
@@ -181,10 +180,10 @@ public class ChunkProvider implements IChunkProvider {
 	public boolean unload100OldestChunks() {
 		int var1;
 		//Spout Start
-		IntIterator iterator = this.droppedChunksSet.iterator();
+		TLongIterator iterator = this.droppedChunksSet.iterator();
 		
 		for(var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
-			int var2 = iterator.nextInt();
+			long var2 = iterator.next();
 			Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
 			var3.onChunkUnload();
 			this.func_28062_b(var3);

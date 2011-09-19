@@ -48,6 +48,8 @@ import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldSettings;
 //Spout Start
+import gnu.trove.TLongHashSet;
+import gnu.trove.TLongIterator;
 import it.unimi.dsi.fastutil.ints.*;
 import org.getspout.spout.SpoutcraftWorld;
 import org.getspout.spout.client.SpoutClient;
@@ -100,7 +102,7 @@ public class World implements IBlockAccess {
 	protected boolean spawnHostileMobs;
 	protected boolean spawnPeacefulMobs;
 	//Spout start
-	private IntSet positionsToUpdate;
+	private TLongHashSet positionsToUpdate;
 	//Spout end
 	private int soundCounter;
 	int[] field_35466_H;
@@ -149,7 +151,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new IntOpenHashSet();
+		this.positionsToUpdate = new TLongHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -200,7 +202,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new IntOpenHashSet();
+		this.positionsToUpdate = new TLongHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -256,7 +258,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new IntOpenHashSet();
+		this.positionsToUpdate = new TLongHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -1979,13 +1981,13 @@ public class World implements IBlockAccess {
 			--this.soundCounter;
 		}
 
-		IntIterator var13 = this.positionsToUpdate.iterator(); //Spout
+		TLongIterator var13 = this.positionsToUpdate.iterator(); //Spout
 
 		while(var13.hasNext()) {
 			//Spout start
-			int next = var13.nextInt();
-			int chunkX = int2ChunkX(next);
-			int chunkZ = int2ChunkZ(next);
+			long next = var13.next();
+			int chunkX = int2ChunkX((int)next);
+			int chunkZ = int2ChunkZ((int)next);
 			var3 = chunkX * 16;
 			var4 = chunkZ * 16;
 			Chunk var15 = this.getChunkFromChunkCoords(chunkX, chunkZ);
