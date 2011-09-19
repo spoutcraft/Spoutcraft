@@ -53,7 +53,7 @@ public class ChunkProvider implements IChunkProvider {
 		int var5 = var2 * 16 + 8 - var3.posZ;
 		short var6 = 128;
 		if(var4 < -var6 || var4 > var6 || var5 < -var6 || var5 > var6) {
-			this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(var1, var2)));
+			this.droppedChunksSet.add((int) ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
 		}
 
 	}
@@ -185,7 +185,7 @@ public class ChunkProvider implements IChunkProvider {
 		
 		for(var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
 			int var2 = iterator.nextInt();
-			Chunk var3 = (Chunk)this.chunkMap.get(var2);
+			Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
 			var3.onChunkUnload();
 			this.func_28062_b(var3);
 			this.func_28063_a(var3);
