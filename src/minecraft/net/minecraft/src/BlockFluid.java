@@ -31,8 +31,8 @@ public abstract class BlockFluid extends Block {
 		  } else
 		  {
 				var1.getWorldChunkManager().func_4069_a(var2, var4, 1, 1);
-				double d = var1.getWorldChunkManager().temperature[0];
-				double d1 = var1.getWorldChunkManager().humidity[0];
+				double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var4);
+				double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
 				return ColorizerWater.getWaterColor(d, d1);
 		  }
 		//Spout end - Biome Water
