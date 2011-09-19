@@ -11,6 +11,8 @@ import net.minecraft.src.ModelBase;
 import net.minecraft.src.ModelRenderer;
 import net.minecraft.src.Render;
 import net.minecraft.src.Tessellator;
+
+import org.getspout.spout.client.SpoutClient; //Spout
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 

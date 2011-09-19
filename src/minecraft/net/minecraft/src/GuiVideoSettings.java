@@ -108,8 +108,8 @@ public class GuiVideoSettings extends GuiScreen {
 
 			if(var1.id == 100) {
 				this.mc.gameSettings.saveOptions();
-				GuiAnimationSettingsOF var2 = new GuiAnimationSettingsOF(this, this.guiGameSettings);
-				this.mc.displayGuiScreen(var2);
+				GuiAnimationSettingsOF var3 = new GuiAnimationSettingsOF(this, this.guiGameSettings);
+				this.mc.displayGuiScreen(var3);
 			}
 
 			if(var1.id == 101) {
