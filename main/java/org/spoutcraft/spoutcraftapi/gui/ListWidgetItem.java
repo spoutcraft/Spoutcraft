@@ -24,35 +24,38 @@ import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
 public class ListWidgetItem extends PropertyObject implements PropertyInterface {
 	private String title = null, text = null, iconUrl = null;
-	public ListWidgetItem(String title, String text, String iconUrl)
-	{
+
+	public ListWidgetItem(String title, String text, String iconUrl) {
 		initProperties();
 		setTitle(title);
 		setText(text);
 		setIconUrl(iconUrl);
 	}
-	
-	private void initProperties(){
+
+	private void initProperties() {
 		addProperty("title", new Property() {
 			public void set(Object value) {
-				setTitle((String)value);
+				setTitle((String) value);
 			}
+
 			public Object get() {
 				return getTitle();
 			}
 		});
 		addProperty("text", new Property() {
 			public void set(Object value) {
-				setText((String)value);
+				setText((String) value);
 			}
+
 			public Object get() {
 				return getText();
 			}
 		});
 		addProperty("iconurl", new Property() {
 			public void set(Object value) {
-				setIconUrl((String)value);
+				setIconUrl((String) value);
 			}
+
 			public Object get() {
 				return getIconUrl();
 			}
@@ -85,10 +88,10 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 
 	@Override
 	public boolean equals(Object other) {
-		if(! (other instanceof ListWidgetItem)){
+		if (!(other instanceof ListWidgetItem)) {
 			return false;
 		}
-		ListWidgetItem li = (ListWidgetItem)other;
+		ListWidgetItem li = (ListWidgetItem) other;
 		return (new EqualsBuilder()).append(this.text, li.text).append(this.title, li.title).append(this.iconUrl, li.iconUrl).isEquals();
 	}
 
@@ -96,5 +99,5 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(text).append(title).append(iconUrl).toHashCode();
 	}
-	
+
 }

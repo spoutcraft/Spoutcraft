@@ -28,7 +28,7 @@ public class BlockPhysicsEvent extends BlockEvent<BlockPhysicsEvent> implements 
 		super(block);
 		this.changedId = changedId;
 	}
-	
+
 	public int getChangedTypeId() {
 		return changedId;
 	}
@@ -40,9 +40,9 @@ public class BlockPhysicsEvent extends BlockEvent<BlockPhysicsEvent> implements 
 	public void setCancelled(boolean cancel) {
 		this.cancelled = cancel;
 	}
-	
+
 	public static final HandlerList<BlockPhysicsEvent> handlers = new HandlerList<BlockPhysicsEvent>();
-	
+
 	@Override
 	public HandlerList<BlockPhysicsEvent> getHandlers() {
 		return handlers;

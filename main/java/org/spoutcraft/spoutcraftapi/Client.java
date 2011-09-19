@@ -30,7 +30,7 @@ import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
-public interface Client extends PropertyInterface{
+public interface Client extends PropertyInterface {
 
 	public String getName();
 
@@ -51,33 +51,35 @@ public interface Client extends PropertyInterface{
 	public String getUpdateFolder();
 
 	public ItemManager getItemManager();
-	
+
 	public SkyManager getSkyManager();
-	
+
 	public ActivePlayer getActivePlayer();
-	
+
 	public BiomeManager getBiomeManager();
-	
+
 	public boolean isCheatMode();
-	
+
 	public boolean isSpoutEnabled();
-	
+
 	public SpoutVersion getServerVersion();
-	
-	//public EntityPlayer getPlayerFromId(int id);
-	
+
+	// public EntityPlayer getPlayerFromId(int id);
+
 	public long getTick();
-	
+
 	public Mode getMode();
-	
+
 	public RenderDelegate getRenderDelegate();
-	
+
 	public Location getCamera();
-	
+
 	public void setCamera(Location loc);
-	
-	public enum Mode{
-		Single_Player, Multiplayer, Menu;
+
+	public enum Mode {
+		Single_Player,
+		Multiplayer,
+		Menu;
 	}
 
 }

@@ -107,8 +107,7 @@ public interface Vector extends FixedVector {
 	public Vector multiply(double m);
 
 	/**
-	 * Calculates the cross product of this vector with another. The cross
-	 * product is defined as:
+	 * Calculates the cross product of this vector with another. The cross product is defined as:
 	 * 
 	 * x = y1 * z2 - y2 * z1<br/>
 	 * y = z1 * x2 - z2 * x1<br/>

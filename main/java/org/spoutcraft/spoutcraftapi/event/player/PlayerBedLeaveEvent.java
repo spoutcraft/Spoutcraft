@@ -21,20 +21,20 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
 public class PlayerBedLeaveEvent extends PlayerEvent<PlayerBedLeaveEvent> {
-	
+
 	protected Block bed;
 
 	protected PlayerBedLeaveEvent(Player player, Block bed) {
 		super(player);
 		this.bed = bed;
 	}
-	
+
 	public Block getBed() {
 		return bed;
 	}
 
 	public static final HandlerList<PlayerBedLeaveEvent> handlers = new HandlerList<PlayerBedLeaveEvent>();
-	
+
 	@Override
 	public HandlerList<PlayerBedLeaveEvent> getHandlers() {
 		return handlers;
@@ -44,5 +44,5 @@ public class PlayerBedLeaveEvent extends PlayerEvent<PlayerBedLeaveEvent> {
 	protected String getEventName() {
 		return "Player Bed Enter Event";
 	}
-	
+
 }

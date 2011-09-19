@@ -28,6 +28,7 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	protected Color color = new Color(0.878F, 0.878F, 0.878F);
 	protected Color disabledColor = new Color(0.625F, 0.625F, 0.625F);
 	protected boolean focus = false;
+	
 	public GenericControl() {
 		
 	}

@@ -26,20 +26,21 @@ import java.util.UUID;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public abstract class GenericScreen extends GenericWidget implements Screen{
+public abstract class GenericScreen extends GenericWidget implements Screen {
 	protected List<Widget> widgets = new ArrayList<Widget>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
+
 	public GenericScreen() {
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
 	}
-	
+
 	public GenericScreen(int playerId) {
 		this.playerId = playerId;
 	}
-	
+
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 0;
@@ -62,15 +63,15 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		widget.setScreen(null);
 		return this;
 	}
-	
+
 	public boolean containsWidget(Widget widget) {
 		return containsWidget(widget.getId());
 	}
-	
+
 	public boolean containsWidget(UUID id) {
 		return getWidget(id) != null;
 	}
-	
+
 	public Widget getWidget(UUID id) {
 		for (Widget w : widgets) {
 			if (w.getId().equals(id)) {
@@ -79,7 +80,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		}
 		return null;
 	}
-	
+
 	public boolean updateWidget(Widget widget) {
 		int index = widgets.indexOf(widget);
 		if (index > -1) {
@@ -90,7 +91,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onTick() {
 		for (Widget widget : widgets) {
@@ -99,32 +100,33 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
 	}
-	
+
 	private int screenHeight, screenWidth;
+
 	@Override
 	public double getHeight() {
 		return screenHeight > 0 ? screenHeight : 240;
 	}
-	
+
 	@Override
 	public double getWidth() {
 		return screenWidth > 0 ? screenWidth : 427;
 	}
-	
+
 	public GenericScreen setBgVisible(boolean enable) {
 		bgvis = enable;
 		return this;
 	}
-	
+
 	public boolean isBgVisible() {
 		return bgvis;
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 1;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -136,16 +138,16 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 		super.writeData(output);
 		output.writeBoolean(isBgVisible());
 	}
-	
+
 	protected boolean canRender(Widget widget) {
 		return widget.isVisible();
 	}
-	
+
 	RenderPriority[] rvalues = RenderPriority.values();
-	
+
 	public void render() {
-		for (RenderPriority priority : rvalues) {	
-			for (Widget widget : widgets){
+		for (RenderPriority priority : rvalues) {
+			for (Widget widget : widgets) {
 				if (widget.getPriority() == priority && canRender(widget)) {
 					GL11.glPushMatrix();
 					widget.render();
@@ -154,7 +156,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen{
 			}
 		}
 	}
-	
+
 	public Screen setMouseX(int mouseX) {
 		this.mouseX = mouseX;
 		return this;

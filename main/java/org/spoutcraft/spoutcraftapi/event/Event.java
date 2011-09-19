@@ -23,8 +23,7 @@ package org.spoutcraft.spoutcraftapi.event;
 public abstract class Event<TEvent extends Event<TEvent>> {
 
 	/**
-	 * Stores cancelled status. will be false unless a subclass publishes
-	 * setCancelled.
+	 * Stores cancelled status. will be false unless a subclass publishes setCancelled.
 	 */
 	protected boolean cancelled = false;
 
@@ -43,17 +42,18 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 	protected abstract String getEventName();
 
 	public String toString() {
-		return getEventName()+" ("+this.getClass().getName()+")";
+		return getEventName() + " (" + this.getClass().getName() + ")";
 	}
 
 	/**
-	 * Set cancelled status. Events which wish to be cancellable should
-	 * implement Cancellable and implement setCancelled as:
+	 * Set cancelled status. Events which wish to be cancellable should implement Cancellable and implement setCancelled as:
+	 * 
 	 * <pre>
-	 *	 public void setCancelled(boolean cancelled) {
-	 *		 super.setCancelled(cancelled);
-	 *	 }
+	 * public void setCancelled(boolean cancelled) {
+	 * 	super.setCancelled(cancelled);
+	 * }
 	 * </pre>
+	 * 
 	 * @param cancelled True to cancel event
 	 */
 	protected void setCancelled(boolean cancelled) {
@@ -61,11 +61,10 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 	}
 
 	/**
-	 * Returning true will prevent calling any even Order slots. 
+	 * Returning true will prevent calling any even Order slots.
 	 * 
 	 * @see Order
-	 * @return false if the event is propogating; events which do not implement
-	 *				Cancellable should never return true here
+	 * @return false if the event is propogating; events which do not implement Cancellable should never return true here
 	 */
 	public boolean isCancelled() {
 		return cancelled;

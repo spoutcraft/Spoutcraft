@@ -147,11 +147,12 @@ public enum Keyboard {
 	KEY_APPS(221),
 	KEY_POWER(222),
 	KEY_SLEEP(223),
-	KEYBOARD_SIZE(256),	
+	KEYBOARD_SIZE(256),
 	KEY_UNKNOWN(-1);
 
 	private final int keyCode;
 	private static final Map<Integer, Keyboard> lookupKeyCode = new HashMap<Integer, Keyboard>();
+
 	Keyboard(final int i) {
 		this.keyCode = i;
 	}
@@ -164,9 +165,9 @@ public enum Keyboard {
 		if (lookupKeyCode.containsKey(key)) {
 			return lookupKeyCode.get(key);
 		}
-		//Some computers report signed/unsigned values incorrectly
-		if (lookupKeyCode.containsKey(256+key)) {
-			return lookupKeyCode.get(256+key);
+		// Some computers report signed/unsigned values incorrectly
+		if (lookupKeyCode.containsKey(256 + key)) {
+			return lookupKeyCode.get(256 + key);
 		}
 		return KEY_UNKNOWN;
 	}
@@ -176,22 +177,23 @@ public enum Keyboard {
 			lookupKeyCode.put(key.keyCode, key);
 		}
 	}
-	
+
 	private static KeyManager manager;
+
 	public static void setKeyManager(KeyManager manager) {
 		if (Keyboard.manager == null) {
 			Keyboard.manager = manager;
 		}
 	}
-	
+
 	public static boolean isKeyDown(Keyboard key) {
 		return manager.isKeyDown(key);
 	}
-	
+
 	public static boolean isRepeatingEvents() {
 		return manager.isRepeatingEvents();
 	}
-	
+
 	public static void setRepeatingEvents(boolean repeat) {
 		manager.setRepeatingEvents(repeat);
 	}

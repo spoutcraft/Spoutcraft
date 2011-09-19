@@ -26,9 +26,9 @@ import org.spoutcraft.spoutcraftapi.addon.IllegalAddonAccessException;
 /**
  * @author lahwran
  * @param <TEvent> Event type
- *
+ * 
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class HandlerList<TEvent extends Event<TEvent>> {
 	/**
 	 * handler array. this field being an array is the key to this system's speed.
@@ -38,24 +38,19 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	public Listener<TEvent>[][] handlers;
 
 	/**
-	 * Int array same length as handlers. each value in this array is the index
-	 * of an Order slot, corossponding to the equivalent value in handlers.
+	 * Int array same length as handlers. each value in this array is the index of an Order slot, corossponding to the equivalent value in handlers.
 	 * 
 	 * is initialized in bake().
 	 */
 	public int[] handlerids;
 
 	/**
-	 * Dynamic handler lists. These are changed using register() and
-	 * unregister() and are automatically baked to the handlers array any
-	 * time they have changed.
+	 * Dynamic handler lists. These are changed using register() and unregister() and are automatically baked to the handlers array any time they have changed.
 	 */
 	private final EnumMap<Order, ArrayList<ListenerRegistration<TEvent>>> handlerslots;
 
 	/**
-	 * Whether the current handlerslist has been fully baked. When this is set
-	 * to false, the Map<Order, List<Listener>> will be baked to Listener[][]
-	 * next time the event is called.
+	 * Whether the current handlerslist has been fully baked. When this is set to false, the Map<Order, List<Listener>> will be baked to Listener[][] next time the event is called.
 	 * 
 	 * @see EventManager.callEvent
 	 */
@@ -67,9 +62,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	private static ArrayList<HandlerList> alllists = new ArrayList<HandlerList>();
 
 	/**
-	 * Bake all handler lists. Best used just after all normal event
-	 * registration is complete, ie just after all plugins are loaded if
-	 * you're using fevents in a plugin system.
+	 * Bake all handler lists. Best used just after all normal event registration is complete, ie just after all plugins are loaded if you're using fevents in a plugin system.
 	 */
 	public static void bakeall() {
 		for (HandlerList h : alllists) {
@@ -78,20 +71,19 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	}
 
 	public static void purgePlugin(Addon addon) {
-		for (HandlerList h  : alllists) {
+		for (HandlerList h : alllists) {
 			h.unregister(addon);
 		}
 	}
 
 	public static void clearAll() {
-		for (HandlerList h  : alllists) {
+		for (HandlerList h : alllists) {
 			h.clear();
 		}
 	}
 
 	/**
-	 * Create a new handler list and initialize using EventManager.Order
-	 * handlerlist is then added to meta-list for use in bakeall()
+	 * Create a new handler list and initialize using EventManager.Order handlerlist is then added to meta-list for use in bakeall()
 	 */
 	public HandlerList() {
 		handlerslots = new EnumMap<Order, ArrayList<ListenerRegistration<TEvent>>>(Order.class);
@@ -112,6 +104,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Register a new listener in this handler list
+	 * 
 	 * @param listener listener to register
 	 * @param order order location at which to call provided listener
 	 * @param addon Addon this listener belongs to
@@ -122,7 +115,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 		}
 		ListenerRegistration registration = new ListenerRegistration(listener, order, addon);
 		if (isRegistered(registration, order)) {
-			throw new IllegalStateException("This listener is already registered to order "+order.toString());
+			throw new IllegalStateException("This listener is already registered to order " + order.toString());
 		}
 
 		handlerslots.get(order).add(registration);
@@ -131,6 +124,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a listener from all order slots
+	 * 
 	 * @param listener listener to purge
 	 */
 	public void unregister(Listener<TEvent> listener) {
@@ -141,6 +135,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a listener from a specific order slot
+	 * 
 	 * @param listener listener to remove
 	 * @param order order from which to remove listener
 	 */
@@ -155,6 +150,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a plugin from all order slots
+	 * 
 	 * @param addon plugin to remove
 	 */
 	public void unregister(Addon addon) {
@@ -165,6 +161,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a plugin from a specific order slot
+	 * 
 	 * @param addon plugin to remove
 	 * @param order order from which to remove plugin
 	 */
@@ -200,7 +197,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 			int ord = orderslot.getIndex();
 			Listener[] array = new Listener[list.size()];
-			for (int i=0; i < array.length; i++) {
+			for (int i = 0; i < array.length; i++) {
 				array[i] = list.get(i).getListener();
 			}
 			handlerslist.add(array);
@@ -208,7 +205,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 		}
 		handlers = handlerslist.toArray(new Listener[handlerslist.size()][]);
 		handlerids = new int[handleridslist.size()];
-		for (int i=0; i<handleridslist.size(); i++) {
+		for (int i = 0; i < handleridslist.size(); i++) {
 			handlerids[i] = handleridslist.get(i);
 		}
 		baked = true;

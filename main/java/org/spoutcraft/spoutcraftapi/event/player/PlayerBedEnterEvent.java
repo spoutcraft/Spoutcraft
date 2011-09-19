@@ -22,14 +22,14 @@ import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
 public class PlayerBedEnterEvent extends PlayerEvent<PlayerBedEnterEvent> implements Cancellable {
-	
+
 	protected Block bed;
 
 	protected PlayerBedEnterEvent(Player player, Block bed) {
 		super(player);
 		this.bed = bed;
 	}
-	
+
 	public Block getBed() {
 		return bed;
 	}
@@ -43,7 +43,7 @@ public class PlayerBedEnterEvent extends PlayerEvent<PlayerBedEnterEvent> implem
 	}
 
 	public static final HandlerList<PlayerBedEnterEvent> handlers = new HandlerList<PlayerBedEnterEvent>();
-	
+
 	@Override
 	public HandlerList<PlayerBedEnterEvent> getHandlers() {
 		return handlers;

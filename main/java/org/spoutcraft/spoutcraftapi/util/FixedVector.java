@@ -26,8 +26,7 @@ public interface FixedVector extends Cloneable {
 	public double getX();
 
 	/**
-	 * Gets the floored value of the X component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the X component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block X
 	 */
@@ -41,8 +40,7 @@ public interface FixedVector extends Cloneable {
 	public double getY();
 
 	/**
-	 * Gets the floored value of the Y component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the Y component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block y
 	 */
@@ -56,19 +54,14 @@ public interface FixedVector extends Cloneable {
 	public double getZ();
 
 	/**
-	 * Gets the floored value of the Z component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the Z component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block z
 	 */
 	public int getBlockZ();
 
 	/**
-	 * Gets the magnitude of the vector, defined as sqrt(x^2+y^2+z^2). The value
-	 * of this method is not cached and uses a costly square-root function, so
-	 * do not repeatedly call this method to get the vector's magnitude. NaN
-	 * will be returned if the inner result of the sqrt() function overflows,
-	 * which will be caused if the length is too long.
+	 * Gets the magnitude of the vector, defined as sqrt(x^2+y^2+z^2). The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the length is too long.
 	 * 
 	 * @return the magnitude
 	 */
@@ -82,11 +75,7 @@ public interface FixedVector extends Cloneable {
 	public double lengthSquared();
 
 	/**
-	 * Get the distance between this vector and another. The value of this
-	 * method is not cached and uses a costly square-root function, so do not
-	 * repeatedly call this method to get the vector's magnitude. NaN will be
-	 * returned if the inner result of the sqrt() function overflows, which will
-	 * be caused if the distance is too long.
+	 * Get the distance between this vector and another. The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the distance is too long.
 	 * 
 	 * @return the distance
 	 */
@@ -108,8 +97,7 @@ public interface FixedVector extends Cloneable {
 	public float angle(Vector other);
 
 	/**
-	 * Calculates the dot product of this vector with another. The dot product
-	 * is defined as x1*x2+y1*y2+z1*z2. The returned value is a scalar.
+	 * Calculates the dot product of this vector with another. The dot product is defined as x1*x2+y1*y2+z1*z2. The returned value is a scalar.
 	 * 
 	 * @param other
 	 * @return dot product
@@ -117,9 +105,7 @@ public interface FixedVector extends Cloneable {
 	public double dot(Vector other);
 
 	/**
-	 * Returns whether this vector is in an axis-aligned bounding box. The
-	 * minimum and maximum vectors given must be truly the minimum and maximum
-	 * X, Y and Z components.
+	 * Returns whether this vector is in an axis-aligned bounding box. The minimum and maximum vectors given must be truly the minimum and maximum X, Y and Z components.
 	 * 
 	 * @param min
 	 * @param max

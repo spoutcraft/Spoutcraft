@@ -23,9 +23,10 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class ChatBar extends GenericWidget implements Widget{
+public class ChatBar extends GenericWidget implements Widget {
 	private int cursorX = 4, cursorY = 240;
-	protected Color textColor = new Color((short)255, (short)255, (short)255, (short)0);
+	protected Color textColor = new Color((short) 255, (short) 255, (short) 255, (short) 0);
+
 	public ChatBar() {
 		super();
 		setX(2);
@@ -34,11 +35,11 @@ public class ChatBar extends GenericWidget implements Widget{
 		setHeight(12);
 		setAnchor(WidgetAnchor.BOTTOM_LEFT);
 	}
-	
+
 	public int getNumBytes() {
 		return super.getNumBytes() + 13;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -46,7 +47,7 @@ public class ChatBar extends GenericWidget implements Widget{
 		setCursorY(input.readInt());
 		setTextColor(PacketUtil.readColor(input));
 	}
-	
+
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
@@ -54,48 +55,48 @@ public class ChatBar extends GenericWidget implements Widget{
 		output.writeInt(getCursorY());
 		PacketUtil.writeColor(output, getTextColor());
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.ChatBar;
 	}
-	
+
 	@Override
 	public UUID getId() {
 		return new UUID(0, 2);
 	}
-	
+
 	public int getCursorX() {
 		return cursorX;
 	}
-	
+
 	public ChatBar setCursorX(int x) {
 		cursorX = x;
 		return this;
 	}
-	
+
 	public int getCursorY() {
 		int diff = 240 - cursorY;
 		return (int) (getScreen() != null ? getScreen().getHeight() - diff : cursorY);
 	}
-	
-	public ChatBar setCursorY(int y){
+
+	public ChatBar setCursorY(int y) {
 		cursorY = y;
 		return this;
 	}
-	
+
 	public Color getTextColor() {
 		return textColor;
 	}
-	
+
 	public ChatBar setTextColor(Color color) {
 		textColor = color;
 		return this;
 	}
-	
+
 	public void render() {
-		
+
 	}
-	
+
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 2;

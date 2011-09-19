@@ -18,7 +18,7 @@ package org.spoutcraft.spoutcraftapi.util;
 
 import org.spoutcraft.spoutcraftapi.World;
 
-public class FastLocation extends FastVector implements FixedLocation{
+public class FastLocation extends FastVector implements FixedLocation {
 	private final double yaw;
 	private final double pitch;
 	private final World world;

@@ -1,4 +1,3 @@
-
 /*
  * This file is part of Spoutcraft API (http://wiki.getspout.org/).
  * 

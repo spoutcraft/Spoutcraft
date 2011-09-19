@@ -20,32 +20,31 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericGradient extends GenericWidget implements Gradient {
-	
+
 	protected Color color1 = new Color(0.06F, 0.06F, 0.06F, 0.75F), color2 = new Color(0.06F, 0.06F, 0.06F, 0.82F);
-	
+
 	public GenericGradient() {
-		
+
 	}
-	
+
 	public Gradient setTopColor(Color color) {
 		this.color1 = color;
 		return this;
 	}
-	
+
 	public Gradient setBottomColor(Color color) {
 		this.color2 = color;
 		return this;
 	}
-	
+
 	public Color getTopColor() {
 		return this.color1;
 	}
-	
+
 	public Color getBottomColor() {
 		return this.color2;
 	}
@@ -53,16 +52,16 @@ public class GenericGradient extends GenericWidget implements Gradient {
 	public WidgetType getType() {
 		return WidgetType.Gradient;
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 10;
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 1;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -76,7 +75,7 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		PacketUtil.writeColor(output, getTopColor());
 		PacketUtil.writeColor(output, getBottomColor());
 	}
-	
+
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

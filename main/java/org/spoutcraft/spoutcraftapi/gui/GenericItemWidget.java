@@ -24,24 +24,24 @@ import java.io.IOException;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
-public class GenericItemWidget extends GenericWidget implements ItemWidget{
+public class GenericItemWidget extends GenericWidget implements ItemWidget {
 	protected int material = -1;
 	protected short data = -1;
 	protected int depth = 8;
 	protected ItemStack toRender = null;
-	
+
 	public GenericItemWidget() {
 
 	}
-	
+
 	public int getNumBytes() {
 		return super.getNumBytes() + 10;
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -58,39 +58,39 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget{
 		output.writeShort(getData());
 		output.writeInt(getDepth());
 	}
-	
+
 	public ItemWidget setTypeId(int id) {
 		this.material = id;
 		return this;
 	}
-	
+
 	public int getTypeId() {
 		return material;
 	}
-	
+
 	public ItemWidget setData(short data) {
 		this.data = data;
 		return this;
 	}
-	
+
 	public short getData() {
 		return data;
 	}
-	
+
 	public ItemWidget setDepth(int depth) {
 		this.depth = depth;
 		return this;
 	}
-	
+
 	public int getDepth() {
 		return depth;
 	}
-	
+
 	public ItemWidget setHeight(int height) {
 		super.setHeight(height);
 		return this;
 	}
-	
+
 	public ItemWidget setWidth(int width) {
 		super.setWidth(width);
 		return this;

@@ -28,23 +28,23 @@ import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 
 public final class Spoutcraft {
-	
+
 	private static Client client = null;
-	
+
 	private Spoutcraft() {
 	}
-	
+
 	public static void setClient(Client argClient) {
 		if (client != null) {
 			throw new UnsupportedOperationException("Cannot redefine singleton Client");
 		}
 		client = argClient;
 	}
-	
+
 	public static Client getClient() {
 		return client;
 	}
-	
+
 	public static String getName() {
 		return client.getName();
 	}
@@ -80,19 +80,19 @@ public final class Spoutcraft {
 	public static String getUpdateFolder() {
 		return client.getUpdateFolder();
 	}
-	
+
 	public static Mode getMode() {
 		return client.getMode();
 	}
-	
+
 	public static RenderDelegate getRenderDelegate() {
 		return client.getRenderDelegate();
 	}
-	
+
 	public static MinecraftFont getMinecraftFont() {
 		return client.getRenderDelegate().getMinecraftFont();
 	}
-	
+
 	public static MinecraftTessellator getTessellator() {
 		return client.getRenderDelegate().getTessellator();
 	}

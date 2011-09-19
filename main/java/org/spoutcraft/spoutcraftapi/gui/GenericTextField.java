@@ -23,23 +23,23 @@ import java.io.IOException;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class GenericTextField extends GenericControl implements TextField{
-	
+public class GenericTextField extends GenericControl implements TextField {
+
 	public static final int PADDING = 4;
 	public static final int LINE_HEIGHT = 10;
 	public static final int LINE_SPACING = 2;
-	
+
 	private static final char MASK_MAXLINES = 0x7F; // bits 1–7
 	private static final char MASK_TABINDEX = 0x3F80; // bits 8–14
 	private static final char FLAG_PASSWORD = 0x4000; // bit 15
 	private static final char FLAG_FOCUS = 0x8000; // bit 16
-		
+
 	protected boolean password = false;
 	protected TextProcessor textProcessor;
 	protected int tabIndex = 0;
 	protected Color fieldColor = new Color(0, 0, 0);
 	protected Color borderColor = new Color(0.625F, 0.625F, 0.625F);
-	
+
 	public GenericTextField() {
 		this.textProcessor = new GenericTextProcessor();
 	}
@@ -70,12 +70,12 @@ public class GenericTextField extends GenericControl implements TextField{
 		super.writeData(output);
 		PacketUtil.writeColor(output, getFieldColor());
 		PacketUtil.writeColor(output, getBorderColor());
-		output.writeChar((char) (getMaximumLines() & MASK_MAXLINES | (getTabIndex() << 7) & MASK_TABINDEX  | (isPasswordField() ? FLAG_PASSWORD : 0) | (isFocus() ? FLAG_FOCUS : 0)));
+		output.writeChar((char) (getMaximumLines() & MASK_MAXLINES | (getTabIndex() << 7) & MASK_TABINDEX | (isPasswordField() ? FLAG_PASSWORD : 0) | (isFocus() ? FLAG_FOCUS : 0)));
 		output.writeChar(getCursorPosition());
 		output.writeChar(getMaximumCharacters());
 		PacketUtil.writeString(output, getText());
 	}
-	
+
 	public PopupScreen getScreen() {
 		return (PopupScreen) super.getScreen();
 	}
@@ -181,7 +181,8 @@ public class GenericTextField extends GenericControl implements TextField{
 	}
 
 	public Control setFocus(boolean focus) {
-		if (focus) Keyboard.setRepeatingEvents(true);
+		if (focus)
+			Keyboard.setRepeatingEvents(true);
 		return super.setFocus(focus);
 	}
 }

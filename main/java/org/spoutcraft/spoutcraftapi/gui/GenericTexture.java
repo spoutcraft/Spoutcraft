@@ -25,10 +25,11 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String url = null;
+
 	public GenericTexture() {
-		
+
 	}
-	
+
 	public GenericTexture(String url) {
 		this.url = url;
 	}
@@ -36,16 +37,16 @@ public class GenericTexture extends GenericWidget implements Texture {
 	public WidgetType getType() {
 		return WidgetType.Texture;
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + PacketUtil.getNumBytes(getUrl());
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -57,7 +58,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 		super.writeData(output);
 		PacketUtil.writeString(output, getUrl());
 	}
-	
+
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

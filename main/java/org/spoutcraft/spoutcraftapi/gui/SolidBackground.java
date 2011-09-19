@@ -17,9 +17,10 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 public interface SolidBackground {
-	
+
 	/**
 	 * Not implemented.
+	 * 
 	 * @param red
 	 * @param green
 	 * @param blue

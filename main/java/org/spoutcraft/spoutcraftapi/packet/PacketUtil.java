@@ -26,7 +26,7 @@ public abstract class PacketUtil {
 	public static final int maxString = 32767;
 	public static final byte FLAG_COLORINVALID = 1;
 	public static final byte FLAG_COLOROVERRIDE = 2;
-	
+
 	public static void writeString(DataOutputStream output, String s) {
 		try {
 			output.writeShort(s.length());
@@ -35,18 +35,18 @@ public abstract class PacketUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String readString(DataInputStream input) {
 		return readString(input, maxString);
 	}
-	
+
 	public static int getNumBytes(String str) {
 		if (str != null) {
 			return 2 + str.length() * 2;
 		}
 		return 2;
 	}
-	
+
 	public static String readString(DataInputStream input, int maxSize) {
 		try {
 			short size = input.readShort();
@@ -69,39 +69,38 @@ public abstract class PacketUtil {
 		}
 		return null;
 	}
-	
+
 	public static void writeColor(DataOutputStream output, Color color) {
 		try {
 			byte flags = 0x0;
-			
+
 			if (color.getRedF() == -1F)
 				flags |= FLAG_COLORINVALID;
 			else if (color.getRedF() == -2F)
 				flags |= FLAG_COLOROVERRIDE;
-			
+
 			output.writeByte(flags);
 			output.writeInt(color.toInt());
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Color readColor(DataInputStream input) {
 		try {
 			byte flags = input.readByte();
 			int argb = input.readInt();
-			
+
 			if ((flags & FLAG_COLORINVALID) > 0)
 				return Color.invalid();
 			if ((flags & FLAG_COLOROVERRIDE) > 0)
 				return Color.override();
-			
+
 			return new Color(argb);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
 
 }

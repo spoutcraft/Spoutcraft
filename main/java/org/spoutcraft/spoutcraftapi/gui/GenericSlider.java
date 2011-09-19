@@ -26,15 +26,16 @@ public class GenericSlider extends GenericControl implements Slider {
 
 	protected float slider = 0.5f;
 	protected boolean dragged = false;
+
 	public GenericSlider() {
-		
+
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 4;
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
@@ -50,10 +51,10 @@ public class GenericSlider extends GenericControl implements Slider {
 		super.writeData(output);
 		output.writeFloat(getSliderPosition());
 	}
-	
+
 	@Override
 	public PopupScreen getScreen() {
-		return (PopupScreen)super.getScreen();
+		return (PopupScreen) super.getScreen();
 	}
 
 	public float getSliderPosition() {
@@ -63,25 +64,23 @@ public class GenericSlider extends GenericControl implements Slider {
 	public Slider setSliderPosition(float value) {
 		if (value > 1f) {
 			value = 1f;
-		}
-		else if (value < 0f) {
+		} else if (value < 0f) {
 			value = 0f;
 		}
 		slider = value;
 		return this;
 	}
 
-	
 	@Override
 	public double getScreenX() {
 		return super.getScreenX();
 	}
-	
+
 	@Override
 	public double getScreenY() {
 		return super.getScreenY();
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.Slider;
 	}
@@ -89,11 +88,11 @@ public class GenericSlider extends GenericControl implements Slider {
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
-	
+
 	public boolean isDragging() {
 		return dragged;
 	}
-	
+
 	public Slider setDragging(boolean dragged) {
 		this.dragged = dragged;
 		return this;

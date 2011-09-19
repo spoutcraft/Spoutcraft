@@ -23,7 +23,7 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public abstract class GenericWidget implements Widget{
+public abstract class GenericWidget implements Widget {
 	protected int upperLeftX = 0;
 	protected int upperLeftY = 0;
 	protected int width = 0;
@@ -36,11 +36,11 @@ public abstract class GenericWidget implements Widget{
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.SCALE;
 	protected String plugin;
-	
+
 	public GenericWidget() {
 
 	}
-	
+
 	public int getNumBytes() {
 		return 38 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(plugin);
 	}
@@ -48,7 +48,7 @@ public abstract class GenericWidget implements Widget{
 	public int getVersion() {
 		return 3;
 	}
-	
+
 	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
 		this.upperLeftX = upperLeftX;
 		this.upperLeftY = upperLeftY;
@@ -60,11 +60,11 @@ public abstract class GenericWidget implements Widget{
 		this.anchor = anchor;
 		return this;
 	}
-	
+
 	public WidgetAnchor getAnchor() {
 		return anchor;
 	}
-	
+
 	public void readData(DataInputStream input) throws IOException {
 		setX(input.readInt());
 		setY(input.readInt());
@@ -93,50 +93,50 @@ public abstract class GenericWidget implements Widget{
 		PacketUtil.writeString(output, getTooltip());
 		PacketUtil.writeString(output, getPlugin());
 	}
-	
+
 	public String getPlugin() {
 		return plugin;
 	}
-	
+
 	public Widget setPlugin(String plugin) {
 		this.plugin = plugin;
 		return this;
 	}
-	
+
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
-	
+
 	public boolean isDirty() {
 		return dirty;
 	}
-	
+
 	public UUID getId() {
 		return id;
 	}
-	
+
 	public Screen getScreen() {
 		return screen;
 	}
-	
+
 	public Widget setScreen(Screen screen) {
 		this.screen = screen;
 		return this;
 	}
-	
+
 	public RenderPriority getPriority() {
 		return priority;
 	}
-	
+
 	public Widget setPriority(RenderPriority priority) {
 		this.priority = priority;
 		return this;
 	}
-	
+
 	public double getActualWidth() {
 		return width;
 	}
-	
+
 	public Widget setWidth(int width) {
 		this.width = width;
 		return this;
@@ -145,13 +145,13 @@ public abstract class GenericWidget implements Widget{
 	public double getActualHeight() {
 		return height;
 	}
-	
+
 	public double getWidth() {
-		return anchor == WidgetAnchor.SCALE ? (getActualWidth() * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) ) : getActualWidth();
+		return anchor == WidgetAnchor.SCALE ? (getActualWidth() * (getScreen() != null ? (getScreen().getWidth() / 427f) : 1)) : getActualWidth();
 	}
-	
+
 	public double getHeight() {
-		return anchor == WidgetAnchor.SCALE ? (getActualHeight() * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) ) : getActualHeight();
+		return anchor == WidgetAnchor.SCALE ? (getActualHeight() * (getScreen() != null ? (getScreen().getHeight() / 240f) : 1)) : getActualHeight();
 	}
 
 	public Widget setHeight(int height) {
@@ -166,7 +166,7 @@ public abstract class GenericWidget implements Widget{
 	public int getY() {
 		return upperLeftY;
 	}
-	
+
 	public double getScreenX() {
 		double left = upperLeftX * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
 		switch (anchor) {
@@ -179,7 +179,7 @@ public abstract class GenericWidget implements Widget{
 			case CENTER_RIGHT:
 			case BOTTOM_RIGHT:
 				left += getScreen().getWidth();
-			break;
+				break;
 		}
 		return left;
 	}
@@ -196,7 +196,7 @@ public abstract class GenericWidget implements Widget{
 			case BOTTOM_CENTER:
 			case BOTTOM_RIGHT:
 				top += getScreen().getHeight();
-			break;
+				break;
 		}
 		return top;
 	}
@@ -215,40 +215,40 @@ public abstract class GenericWidget implements Widget{
 		setX(getX() + modX);
 		return this;
 	}
-	
+
 	public Widget shiftYPos(int modY) {
 		setY(getY() + modY);
 		return this;
 	}
-	
+
 	public boolean isVisible() {
 		return visible;
 	}
-	
+
 	public Widget setVisible(boolean enable) {
 		visible = enable;
 		return this;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getId().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		return other instanceof Widget && other.hashCode() == hashCode();
 	}
-	
+
 	public void onTick() {
 
 	}
-	
-	public void setTooltip(String tooltip){
+
+	public void setTooltip(String tooltip) {
 		this.tooltip = tooltip;
 	}
-	
-	public String getTooltip(){
+
+	public String getTooltip() {
 		return tooltip;
 	}
 }

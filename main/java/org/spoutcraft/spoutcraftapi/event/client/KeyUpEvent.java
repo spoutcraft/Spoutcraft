@@ -23,23 +23,23 @@ import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class KeyUpEvent extends Event<KeyUpEvent> implements Cancellable {
-	
+
 	private Keyboard key;
 	private ScreenType screenType;
-	
+
 	public KeyUpEvent(int keyPress, ScreenType screenType) {
 		this.key = Keyboard.getKey(keyPress);
 		this.screenType = screenType;
 	}
-	
+
 	public Keyboard getKey() {
 		return key;
 	}
-	
-	public ScreenType getScreenType(){
+
+	public ScreenType getScreenType() {
 		return screenType;
 	}
-	
+
 	public boolean isCancelled() {
 		return cancelled;
 	}
@@ -47,9 +47,9 @@ public class KeyUpEvent extends Event<KeyUpEvent> implements Cancellable {
 	public void setCancelled(boolean cancel) {
 		this.cancelled = cancel;
 	}
-	
+
 	public static final HandlerList<KeyUpEvent> handlers = new HandlerList<KeyUpEvent>();
-	
+
 	@Override
 	public HandlerList<KeyUpEvent> getHandlers() {
 		return handlers;
@@ -59,5 +59,5 @@ public class KeyUpEvent extends Event<KeyUpEvent> implements Cancellable {
 	protected String getEventName() {
 		return "Key Up Event";
 	}
-	
+
 }

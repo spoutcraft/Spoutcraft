@@ -20,22 +20,23 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class GenericPopup extends GenericScreen implements PopupScreen{
+public class GenericPopup extends GenericScreen implements PopupScreen {
 	protected boolean transparent = false;
 	protected double mouseX, mouseY;
+
 	public GenericPopup() {
-		
+
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 1;
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -47,7 +48,7 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		super.writeData(output);
 		output.writeBoolean(isTransparent());
 	}
-	
+
 	public boolean isTransparent() {
 		return transparent;
 	}
@@ -56,15 +57,15 @@ public class GenericPopup extends GenericScreen implements PopupScreen{
 		this.transparent = value;
 		return this;
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.PopupScreen;
 	}
-	
+
 	public boolean close() {
 		if (getScreen() != null) {
 			if (getScreen() instanceof InGameHUD) {
-				((InGameHUD)getScreen()).closePopup();
+				((InGameHUD) getScreen()).closePopup();
 			}
 		}
 		return false;

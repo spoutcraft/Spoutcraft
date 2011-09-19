@@ -39,31 +39,31 @@ public class BlockPlaceEvent extends BlockEvent<BlockPlaceEvent> implements Canc
 		this.itemInHand = itemInHand;
 		this.canBuild = canBuild;
 	}
-	
+
 	public boolean canBuild() {
 		return canBuild;
 	}
-	
+
 	public Block getBlockPlaced() {
 		return block;
 	}
-	
+
 	public Block getBlockAgainst() {
 		return placedAgainst;
 	}
-	
+
 	public BlockState getReplacedBlockState() {
 		return replacedBlockState;
 	}
-	
+
 	public ItemStack getItemInHand() {
 		return itemInHand;
 	}
-	
+
 	public void setBuild(boolean canBuild) {
 		this.canBuild = canBuild;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
@@ -75,9 +75,9 @@ public class BlockPlaceEvent extends BlockEvent<BlockPlaceEvent> implements Canc
 	public void setCancelled(boolean cancel) {
 		this.cancelled = cancel;
 	}
-	
+
 	public static final HandlerList<BlockPlaceEvent> handlers = new HandlerList<BlockPlaceEvent>();
-	
+
 	@Override
 	public HandlerList<BlockPlaceEvent> getHandlers() {
 		return handlers;

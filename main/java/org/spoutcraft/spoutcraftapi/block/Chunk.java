@@ -16,41 +16,42 @@
  */
 package org.spoutcraft.spoutcraftapi.block;
 
+import org.spoutcraft.spoutcraftapi.NotImplemented;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
 public interface Chunk {
-	
+
 	public Block getBlockAt(int x, int y, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public World getWorld();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public int getX();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public int getZ();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean isLoaded();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean load();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean load(boolean generate);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean unload();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean unload(boolean save);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean unload(boolean save, boolean safe);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public Entity[] getEntities();
 
 }

@@ -20,13 +20,13 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.Event;
 
 public abstract class PlayerEvent<TEvent extends PlayerEvent<TEvent>> extends Event<TEvent> {
-	
+
 	protected Player player;
 
 	protected PlayerEvent(Player player) {
 		this.player = player;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}

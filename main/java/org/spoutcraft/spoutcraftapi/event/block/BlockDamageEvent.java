@@ -23,7 +23,7 @@ import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
 public class BlockDamageEvent extends BlockEvent<BlockDamageEvent> implements Cancellable {
-	
+
 	protected ItemStack itemInHand;
 	protected boolean instaBreak;
 	protected Player player;
@@ -34,19 +34,19 @@ public class BlockDamageEvent extends BlockEvent<BlockDamageEvent> implements Ca
 		this.itemInHand = itemInHand;
 		this.instaBreak = instaBreak;
 	}
-	
+
 	public boolean getInstaBreak() {
 		return instaBreak;
 	}
-	
+
 	public ItemStack getItemInHand() {
 		return itemInHand;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public void setInstaBreak(boolean instaBreak) {
 		this.instaBreak = instaBreak;
 	}
@@ -60,7 +60,7 @@ public class BlockDamageEvent extends BlockEvent<BlockDamageEvent> implements Ca
 	}
 
 	public static final HandlerList<BlockDamageEvent> handlers = new HandlerList<BlockDamageEvent>();
-	
+
 	@Override
 	public HandlerList<BlockDamageEvent> getHandlers() {
 		return handlers;

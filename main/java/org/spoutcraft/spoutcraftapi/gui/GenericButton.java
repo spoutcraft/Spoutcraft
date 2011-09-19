@@ -28,19 +28,20 @@ public class GenericButton extends GenericControl implements Button {
 	protected GenericLabel label = new GenericLabel();
 	protected String disabledText = "";
 	protected Color hoverColor = new Color(1, 1, 0.627F);
+
 	public GenericButton() {
-		
+
 	}
-	
+
 	public GenericButton(String text) {
 		setText(text);
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + label.getNumBytes() + PacketUtil.getNumBytes(getDisabledText()) + 5;
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 2;
 	}
@@ -60,7 +61,7 @@ public class GenericButton extends GenericControl implements Button {
 		PacketUtil.writeString(output, getDisabledText());
 		PacketUtil.writeColor(output, getHoverColor());
 	}
-	
+
 	@Override
 	public Screen getScreen() {
 		return super.getScreen();
@@ -74,21 +75,21 @@ public class GenericButton extends GenericControl implements Button {
 		label.setText(text);
 		return this;
 	}
-	
+
 	@Override
 	public double getScreenX() {
 		return super.getScreenX();
 	}
-	
+
 	@Override
 	public double getScreenY() {
 		return super.getScreenY();
 	}
-	
+
 	public WidgetAnchor getAlign() {
 		return label.getAlign();
 	}
-	
+
 	public Widget setAlign(WidgetAnchor pos) {
 		label.setAlign(pos);
 		return this;
@@ -111,20 +112,20 @@ public class GenericButton extends GenericControl implements Button {
 		disabledText = text;
 		return this;
 	}
-	
+
 	public Color getHoverColor() {
 		return hoverColor;
 	}
-	
+
 	public Button setHoverColor(Color color) {
 		this.hoverColor = color;
 		return this;
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.Button;
 	}
-	
+
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

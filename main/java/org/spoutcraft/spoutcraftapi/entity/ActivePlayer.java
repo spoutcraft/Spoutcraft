@@ -21,34 +21,34 @@ import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
-public interface ActivePlayer extends Player{
-	
+public interface ActivePlayer extends Player {
+
 	public RenderDistance getMaximumView();
-	
+
 	public void setMaximumView(RenderDistance distance);
-	
+
 	public RenderDistance getMinimumView();
-	
+
 	public void setMinimumView(RenderDistance distance);
-	
+
 	public RenderDistance getNextRenderDistance();
-	
+
 	public RenderDistance getCurrentView();
-	
+
 	public InGameHUD getMainScreen();
-	
+
 	public Screen getCurrentScreen();
-	
+
 	public void showAchievement(String title, String message, int id);
-	
+
 	public void showAchievement(String title, String message, int id, int data, int time);
-	
+
 	public String getEntityTitle(int id);
-	
+
 	public void setEntityTitle(int id, String title);
-	
+
 	public void resetEntityTitle(int id);
-	
+
 	public FixedLocation getLastClickedLocation();
 
 	void setCurrentScreen(Screen screen);

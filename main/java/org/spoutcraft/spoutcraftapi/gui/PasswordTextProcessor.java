@@ -20,10 +20,9 @@ import java.util.Iterator;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public class PasswordTextProcessor implements TextProcessor
-{
+public class PasswordTextProcessor implements TextProcessor {
 	protected static final char CHAR_ASTERISK = '*';
-	
+
 	protected int charLimit = 0;
 	protected int width = 0;
 	protected int cursor = 0;
@@ -31,11 +30,11 @@ public class PasswordTextProcessor implements TextProcessor
 	protected MinecraftFont font = Spoutcraft.getClient().getRenderDelegate().getMinecraftFont();
 	protected final int CHAR_ASTERISK_WIDTH = font.getTextWidth(String.valueOf(CHAR_ASTERISK));
 	protected int maxAsteriskChars = 0;
-	
+
 	public PasswordTextProcessor() {
-		
+
 	}
-	
+
 	public void clear() {
 		textBuffer.delete(0, textBuffer.length());
 		cursor = 0;
@@ -49,19 +48,19 @@ public class PasswordTextProcessor implements TextProcessor
 		this.cursor = cursor;
 		correctCursor();
 	}
-	
+
 	protected void correctCursor() {
 		cursor = Math.max(0, Math.min(cursor, textBuffer.length()));
 	}
-	
+
 	public int[] getCursor2D() {
-		return new int[]{0, cursor};
+		return new int[] { 0, cursor };
 	}
 
 	public int getMaximumCharacters() {
 		return charLimit;
 	}
-	
+
 	public void setMaximumCharacters(int max) {
 		this.charLimit = max;
 	}
@@ -69,7 +68,7 @@ public class PasswordTextProcessor implements TextProcessor
 	public int getMaximumLines() {
 		return 1;
 	}
-	
+
 	public void setMaximumLines(int max) {
 		// ignore (can only be 1)
 	}
@@ -91,19 +90,19 @@ public class PasswordTextProcessor implements TextProcessor
 			cursor = textBuffer.length();
 		}
 	}
-	
+
 	protected boolean isRangeValid(int start, int end) {
 		return start >= 0 && end <= textBuffer.length() && start < end;
 	}
-	
+
 	protected boolean insert(char c) {
-		if (textBuffer.length()+1 > maxAsteriskChars || (charLimit > 0 && textBuffer.length() >= charLimit)) {
+		if (textBuffer.length() + 1 > maxAsteriskChars || (charLimit > 0 && textBuffer.length() >= charLimit)) {
 			return false;
 		}
 		textBuffer.insert(cursor++, c);
 		return true;
 	}
-	
+
 	protected boolean delete(int start, int end, int cursorPos) {
 		if (isRangeValid(start, end)) {
 			textBuffer.delete(start, end);
@@ -113,7 +112,7 @@ public class PasswordTextProcessor implements TextProcessor
 		}
 		return false;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
@@ -122,50 +121,55 @@ public class PasswordTextProcessor implements TextProcessor
 		this.width = width;
 		maxAsteriskChars = (int) Math.floor(width / CHAR_ASTERISK_WIDTH);
 	}
-	
+
 	public Iterator<String> iterator() {
 		final char[] hiddenText = new char[textBuffer.length()];
-		for (int i=0; i<textBuffer.length(); ++i) {
+		for (int i = 0; i < textBuffer.length(); ++i) {
 			hiddenText[i] = CHAR_ASTERISK;
 		}
-		
+
 		Iterator<String> iter = new Iterator<String>() {
 			int iteratorPos = 0;
 			String s = new String(hiddenText);
-			
+
 			public void remove() {
 			}
-			
+
 			public String next() {
 				++iteratorPos;
 				return s;
 			}
-			
+
 			public boolean hasNext() {
 				return iteratorPos == 0;
 			}
 		};
 		return iter;
 	}
-	
-	public boolean handleInput(char key, int keyId)
-	{
+
+	public boolean handleInput(char key, int keyId) {
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 		if (keyId == Keyboard.KEY_BACK.getKeyCode()) {
-			if (ctrl)	return delete(0, cursor, 0);
-			else		return delete(cursor-1, cursor, cursor-1);
+			if (ctrl)
+				return delete(0, cursor, 0);
+			else
+				return delete(cursor - 1, cursor, cursor - 1);
 		}
 		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
-			if (ctrl) 	return delete(cursor, textBuffer.length(), cursor);
-			else 		return delete(cursor, cursor+1, cursor);
+			if (ctrl)
+				return delete(cursor, textBuffer.length(), cursor);
+			else
+				return delete(cursor, cursor + 1, cursor);
 		}
 		if (keyId == Keyboard.KEY_UP.getKeyCode() || keyId == Keyboard.KEY_HOME.getKeyCode()) {
 			cursor = 0;
 			return false;
 		}
 		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
-			if (ctrl)	cursor = 0;
-			else		cursor = Math.max(0, --cursor);
+			if (ctrl)
+				cursor = 0;
+			else
+				cursor = Math.max(0, --cursor);
 			return false;
 		}
 		if (keyId == Keyboard.KEY_DOWN.getKeyCode() || keyId == Keyboard.KEY_END.getKeyCode()) {
@@ -173,8 +177,10 @@ public class PasswordTextProcessor implements TextProcessor
 			return false;
 		}
 		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
-			if (ctrl)	cursor = textBuffer.length();
-			else		cursor = Math.min(textBuffer.length(), ++cursor);
+			if (ctrl)
+				cursor = textBuffer.length();
+			else
+				cursor = Math.min(textBuffer.length(), ++cursor);
 			return false;
 		}
 		if (keyId == Keyboard.KEY_D.getKeyCode() || keyId == Keyboard.KEY_C.getKeyCode()) {

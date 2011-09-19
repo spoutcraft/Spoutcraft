@@ -23,68 +23,68 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 public interface World {
 
 	public Block getBlockAt(int x, int y, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public Block getHighestBlockAt(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public int getHighestBlockYAt(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public void setTime(long time);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public long getTime();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public void setFullTime(long time);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public long getFullTime();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public void save();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public int getMaxHeight();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean getAllowAnimals();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean getAllowMonsters();
-	
+
 	public Chunk getChunkAt(Block block);
-	
+
 	public Chunk getChunkAt(FixedLocation location);
-	
+
 	public Chunk getChunkAt(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public Chunk[] getLoadedChunks();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public long getSeed();
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean isChunkLoaded(Chunk chunk);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean isChunkLoaded(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public void loadChunk(Chunk chunk);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public void loadChunk(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean loadChunk(int x, int z, boolean generate);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean refreshChunk(int x, int z);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public boolean regenerateChunk(int x, int z);
 
 }

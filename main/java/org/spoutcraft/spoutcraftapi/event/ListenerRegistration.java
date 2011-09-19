@@ -41,6 +41,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the listener for this registration
+	 * 
 	 * @return Registered Listener
 	 */
 	public Listener<TEvent> getListener() {
@@ -49,6 +50,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the Addon for this registration
+	 * 
 	 * @return Registered Addon
 	 */
 	public Addon getAddon() {
@@ -57,6 +59,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the order slot for this registration
+	 * 
 	 * @return Registered order
 	 */
 	public Order getOrder() {

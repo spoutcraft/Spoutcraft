@@ -30,16 +30,16 @@ public class ArmorBar extends GenericWidget {
 
 	public ArmorBar() {
 		super();
-		setX(427 / 2 + 82); //295
+		setX(427 / 2 + 82); // 295
 		setY(208);
 		setAnchor(WidgetAnchor.BOTTOM_CENTER);
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 9;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -47,7 +47,7 @@ public class ArmorBar extends GenericWidget {
 		setAlwaysVisible(input.readBoolean());
 		setIconOffset(input.readInt());
 	}
-	
+
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
@@ -55,42 +55,44 @@ public class ArmorBar extends GenericWidget {
 		output.writeBoolean(isAlwaysVisible());
 		output.writeInt(getIconOffset());
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.ArmorBar;
 	}
-	
+
 	@Override
 	public double getScreenX() {
 		double mid = getScreen() != null ? getScreen().getWidth() / 2 : 427 / 2D;
 		double diff = super.getScreenX() - mid - 376;
 		return getScreen() != null ? getScreen().getWidth() / 2D - diff : this.getX();
 	}
-	
+
 	@Override
 	public double getScreenY() {
 		int diff = (int) (240 - this.getY());
 		return getScreen() != null ? getScreen().getHeight() - diff : this.getY();
 	}
-	
+
 	public UUID getId() {
 		return new UUID(0, 0);
 	}
-	
+
 	/**
 	 * Gets the maximum number of shields displayed on the HUD.
 	 * 
 	 * Armor is scaled to fit the number of shields appropriately.
+	 * 
 	 * @return shields displayed
 	 */
 	public int getMaxNumShields() {
 		return icons;
 	}
-	
+
 	/**
 	 * Sets the maximum number of shields displayed on the HUD.
 	 * 
 	 * Armor is scaled to fit the number of shields appropriately.
+	 * 
 	 * @param shields to display
 	 * @return this
 	 */
@@ -98,17 +100,19 @@ public class ArmorBar extends GenericWidget {
 		this.icons = icons;
 		return this;
 	}
-	
+
 	/**
 	 * True if the armor bar will appear even when the player has no armor equipped.
+	 * 
 	 * @return always visible
 	 */
 	public boolean isAlwaysVisible() {
 		return alwaysVisible;
 	}
-	
+
 	/**
 	 * Forces the armor bar to appear, even when the player has no armor equipped.
+	 * 
 	 * @param visible
 	 * @return this
 	 */
@@ -116,17 +120,19 @@ public class ArmorBar extends GenericWidget {
 		alwaysVisible = visible;
 		return this;
 	}
-	
+
 	/**
 	 * Gets the number of pixels each shield is offset when drawing the next shield.
+	 * 
 	 * @return pixel offset
 	 */
 	public int getIconOffset() {
 		return iconOffset;
 	}
-	
+
 	/**
 	 * Sets the number of pixels each shield is offset when drawing the next shield.
+	 * 
 	 * @param offset when drawing shields
 	 * @return this
 	 */
@@ -138,7 +144,7 @@ public class ArmorBar extends GenericWidget {
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
-	
+
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 1;

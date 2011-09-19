@@ -21,7 +21,8 @@ import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 public class PropertyAnimation extends Animation {
 	private String propertyName;
 	private PropertyInterface object;
-	public PropertyAnimation(PropertyInterface object, String property){
+
+	public PropertyAnimation(PropertyInterface object, String property) {
 		propertyName = property;
 		this.object = object;
 		setValueDelegate(new PropertyDelegate(object, propertyName));
@@ -29,21 +30,21 @@ public class PropertyAnimation extends Animation {
 		setStartValue(value);
 		setEndValue(value);
 	}
-	
-	public void setProperty(String name){
+
+	public void setProperty(String name) {
 		propertyName = name;
 		setValueDelegate(new PropertyDelegate(object, propertyName));
 	}
-	
-	public String getProperty(){
+
+	public String getProperty() {
 		return propertyName;
 	}
-	
-	public PropertyInterface getAnimatedObject(){
+
+	public PropertyInterface getAnimatedObject() {
 		return object;
 	}
-	
-	public void setAnimatedObject(PropertyInterface object){
+
+	public void setAnimatedObject(PropertyInterface object) {
 		this.object = object;
 		setValueDelegate(new PropertyDelegate(object, propertyName));
 	}

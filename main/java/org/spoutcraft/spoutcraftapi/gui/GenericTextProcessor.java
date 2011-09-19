@@ -26,14 +26,14 @@ import java.util.StringTokenizer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class GenericTextProcessor implements TextProcessor {
-	
+
 	protected static final int AVERAGE_CHAR_WIDTH = 6;
 	protected static final char CHAR_NULL = '\0';
 	protected static final char CHAR_SPACE = ' ';
 	protected static final char CHAR_NEWLINE = '\n';
 	protected static final String STR_SPACE = String.valueOf(CHAR_SPACE);
 	protected static final String STR_NEWLINE = String.valueOf(CHAR_NEWLINE);
-	
+
 	protected int charLimit = 0;
 	protected int lineLimit = 0;
 	protected int width = 0;
@@ -42,17 +42,16 @@ public class GenericTextProcessor implements TextProcessor {
 	protected ArrayList<String> formattedText = new ArrayList<String>();
 	protected ArrayList<Integer> lineBreaks = new ArrayList<Integer>();
 	protected MinecraftFont font = Spoutcraft.getClient().getRenderDelegate().getMinecraftFont();
-	
+
 	public GenericTextProcessor() {
 	}
-	
+
 	protected boolean cursorUp() {
 		int line = getCursorLine();
 		if (line > 0) {
-			int start = (line == 1) ? 0 : lineBreaks.get(line-2);
-			cursor = start + Math.min(lineBreaks.get(line-1) - start - 1, cursor - lineBreaks.get(line-1));
-		}
-		else {
+			int start = (line == 1) ? 0 : lineBreaks.get(line - 2);
+			cursor = start + Math.min(lineBreaks.get(line - 1) - start - 1, cursor - lineBreaks.get(line - 1));
+		} else {
 			cursor = 0;
 		}
 		return true;
@@ -61,10 +60,9 @@ public class GenericTextProcessor implements TextProcessor {
 	protected boolean cursorDown() {
 		int line = getCursorLine();
 		if (line + 1 < lineBreaks.size()) {
-			int start = (line == 0) ? 0 : lineBreaks.get(line-1);
-			cursor = lineBreaks.get(line) + Math.min(lineBreaks.get(line+1) - lineBreaks.get(line) - 1, cursor - start);
-		}
-		else {
+			int start = (line == 0) ? 0 : lineBreaks.get(line - 1);
+			cursor = lineBreaks.get(line) + Math.min(lineBreaks.get(line + 1) - lineBreaks.get(line) - 1, cursor - start);
+		} else {
 			cursor = textBuffer.length();
 		}
 		return true;
@@ -81,100 +79,100 @@ public class GenericTextProcessor implements TextProcessor {
 			++cursor;
 		return true;
 	}
-	
 
 	public int getCursor() {
 		return cursor;
 	}
-	
+
 	public void setCursor(int cursor) {
 		this.cursor = cursor;
 		correctCursor();
 	}
-	
+
 	public int[] getCursor2D() {
 		int[] c = new int[2];
 		c[0] = getCursorLine();
 		c[1] = getCursorOffset(c[0]);
 		return c;
 	}
-	
+
 	protected void correctCursor() {
 		cursor = Math.max(0, Math.min(cursor, textBuffer.length()));
 	}
-	
+
 	protected int getCursorLine() {
-		for (int i=0; i<lineBreaks.size(); ++i)
+		for (int i = 0; i < lineBreaks.size(); ++i)
 			if (cursor < lineBreaks.get(i))
 				return i;
-		
-		if (cursor == textBuffer.length() && getCharAt(cursor-1) == CHAR_NEWLINE)
+
+		if (cursor == textBuffer.length() && getCharAt(cursor - 1) == CHAR_NEWLINE)
 			return lineBreaks.size();
-		return Math.max(0,  lineBreaks.size()-1);
+		return Math.max(0, lineBreaks.size() - 1);
 	}
-	
+
 	protected int getCursorOffset(int line) {
-		int start = (line < 1) ? 0 : lineBreaks.get(line-1);
+		int start = (line < 1) ? 0 : lineBreaks.get(line - 1);
 		return cursor - start;
 	}
-	
+
 	protected int getPreviousWordPosition(int offset) {
-		int i = Math.max(textBuffer.lastIndexOf(STR_SPACE, offset-1), textBuffer.lastIndexOf(STR_NEWLINE, offset-1));
+		int i = Math.max(textBuffer.lastIndexOf(STR_SPACE, offset - 1), textBuffer.lastIndexOf(STR_NEWLINE, offset - 1));
 		return Math.max(0, i);
 	}
-	
+
 	protected int getNextWordPosition(int offset) {
 		int i = textBuffer.indexOf(STR_SPACE, offset) + 1;
-		if(i == 0) i = textBuffer.indexOf(STR_NEWLINE, offset) + 1;
-		if(i == 0) i = textBuffer.length();
+		if (i == 0)
+			i = textBuffer.indexOf(STR_NEWLINE, offset) + 1;
+		if (i == 0)
+			i = textBuffer.length();
 		return i;
 	}
-	
+
 	protected boolean isIndexValid(int index) {
 		return index > -1 && index < textBuffer.length();
 	}
-	
+
 	protected boolean isRangeValid(int start, int end) {
-		return 	start >= 0 && end <= textBuffer.length() && start < end;
+		return start >= 0 && end <= textBuffer.length() && start < end;
 	}
-	
+
 	protected boolean isCursorValid() {
 		return isIndexValid(cursor);
 	}
-	
+
 	protected char getChar() {
 		return getCharAt(cursor);
 	}
-	
+
 	protected char getCharAt(int position) {
 		return (isIndexValid(position)) ? textBuffer.charAt(position) : CHAR_NULL;
 	}
-	
+
 	protected boolean deleteChar() {
 		return deleteChar(cursor);
 	}
 
 	protected boolean deleteChar(int position) {
-		if (isRangeValid(position, position+1)) {
-			textBuffer.delete(position, position+1);
+		if (isRangeValid(position, position + 1)) {
+			textBuffer.delete(position, position + 1);
 			return formatText();
 		}
 		return false;
 	}
-	
-	protected boolean deleteLine()
-	{
+
+	protected boolean deleteLine() {
 		return deleteLine(getCursorLine());
 	}
-	
+
 	protected boolean deleteLine(int line) {
 		if (line > -1 && lineBreaks.size() > line) {
-			int start = (line > 0) ? lineBreaks.get(line - 1): 0;
+			int start = (line > 0) ? lineBreaks.get(line - 1) : 0;
 			return delete(start, lineBreaks.get(line), start);
 		}
 		return false;
 	}
-	
+
 	protected boolean delete(int start, int end, int cursorPos) {
 		if (isRangeValid(start, end)) {
 			textBuffer.delete(start, end);
@@ -205,10 +203,10 @@ public class GenericTextProcessor implements TextProcessor {
 	}
 
 	protected boolean insert(String s) {
-		if(s == null || (charLimit > 0 && textBuffer.length() + s.length() >= charLimit)) {
+		if (s == null || (charLimit > 0 && textBuffer.length() + s.length() >= charLimit)) {
 			return false;
 		}
-		
+
 		textBuffer.insert(cursor, s);
 		if (!formatText()) { // if function call wasn't successful, revert changes
 			textBuffer.delete(cursor, cursor + s.length());
@@ -226,17 +224,17 @@ public class GenericTextProcessor implements TextProcessor {
 	public void setText(String str) {
 		clear();
 		if (str.length() > 0) {
-			if(charLimit > 0 && str.length() > charLimit)
+			if (charLimit > 0 && str.length() > charLimit)
 				str = str.substring(0, charLimit);
-			
+
 			textBuffer.append(str);
 			cursor = str.length();
 			formatText();
 		}
 	}
-	
+
 	protected boolean formatText() {
-		StringTokenizer st = new StringTokenizer(textBuffer.toString(), STR_NEWLINE+STR_SPACE, true);
+		StringTokenizer st = new StringTokenizer(textBuffer.toString(), STR_NEWLINE + STR_SPACE, true);
 		String word = null;
 		int wordWidth = 0;
 		int lineWidth = 0;
@@ -245,18 +243,18 @@ public class GenericTextProcessor implements TextProcessor {
 		boolean previousSpace = false;
 		boolean skipIterator = false;
 		final int spaceCharWidth = font.getTextWidth(STR_SPACE);
-		
+
 		// virtually split text in parts that don't exceed the line width
 		lineBreaks.clear();
 		while (st.hasMoreTokens() || skipIterator) {
 			// get word and its length
-			if(!skipIterator) {
+			if (!skipIterator) {
 				word = st.nextToken();
 			}
 			skipIterator = false;
 			wordWidth = font.getTextWidth(word);
 			position += word.length();
-			
+
 			// if word is a newline directive, add a linebreak
 			if (word.equals(STR_NEWLINE)) {
 				lineWidth = 0;
@@ -269,11 +267,11 @@ public class GenericTextProcessor implements TextProcessor {
 				previousSpace = true;
 				continue;
 			}
-			
+
 			// split very long words
 			if (wordWidth > width) {
 				int i = word.length();
-				while(i > 0 && wordWidth > width)
+				while (i > 0 && wordWidth > width)
 					wordWidth -= font.getTextWidth(String.valueOf(word.charAt(--i)));
 				position = position - word.length() + i;
 				lineBreaks.add(position);
@@ -283,13 +281,12 @@ public class GenericTextProcessor implements TextProcessor {
 			}
 			// check if this word would exceed the max-width of the line
 			else if (lineWidth + wordWidth > width) {
-				if (lineBreaks.size() + 1 < lineLimit) { 
+				if (lineBreaks.size() + 1 < lineLimit) {
 					lineBreaks.add(position - word.length());
 					lineWidth = wordWidth;
-				}
-				else return false;
-			}
-			else {
+				} else
+					return false;
+			} else {
 				lineWidth += wordWidth;
 			}
 			previousSpace = false;
@@ -298,15 +295,15 @@ public class GenericTextProcessor implements TextProcessor {
 		if (lineBreaks.size() >= lineLimit) {
 			return false;
 		}
-		
-		// create a line break at the end (–> indizes easier) 
+
+		// create a line break at the end (–> indizes easier)
 		if (!lineBreaks.contains(textBuffer.length())) {
 			lineBreaks.add(textBuffer.length());
 		}
-		
+
 		// split text into parts using the virtual line breaks
 		formattedText.clear();
-		for (int i=0; i<lineBreaks.size() && i<lineLimit; ++i) {
+		for (int i = 0; i < lineBreaks.size() && i < lineLimit; ++i) {
 			position = lineBreaks.get(i);
 			formattedText.add(textBuffer.substring(positionOld, position));
 			positionOld = position;
@@ -321,7 +318,7 @@ public class GenericTextProcessor implements TextProcessor {
 	public int getMaximumCharacters() {
 		return charLimit;
 	}
-	
+
 	public void setMaximumCharacters(int max) {
 		this.charLimit = max;
 	}
@@ -329,7 +326,7 @@ public class GenericTextProcessor implements TextProcessor {
 	public int getMaximumLines() {
 		return lineLimit;
 	}
-	
+
 	public void setMaximumLines(int max) {
 		this.lineLimit = max;
 	}
@@ -345,8 +342,7 @@ public class GenericTextProcessor implements TextProcessor {
 		}
 	}
 
-	public boolean handleInput(char key, int keyId)
-	{
+	public boolean handleInput(char key, int keyId) {
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 		if (keyId == Keyboard.KEY_RETURN.getKeyCode()) {
 			insert(CHAR_NEWLINE);
@@ -356,24 +352,29 @@ public class GenericTextProcessor implements TextProcessor {
 			if (ctrl) {
 				int p = getPreviousWordPosition(cursor);
 				return delete(p, cursor, p);
-			}
-			else if (cursor > 0) {
+			} else if (cursor > 0) {
 				return deleteChar(--cursor);
 			}
 			return false;
 		}
 		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
-			if (ctrl) 	return delete(cursor, getNextWordPosition(cursor), cursor);
-			else 		return deleteChar();
+			if (ctrl)
+				return delete(cursor, getNextWordPosition(cursor), cursor);
+			else
+				return deleteChar();
 		}
 		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
-			if (ctrl)	cursor = getPreviousWordPosition(cursor-1);
-			else		cursorLeft();
+			if (ctrl)
+				cursor = getPreviousWordPosition(cursor - 1);
+			else
+				cursorLeft();
 			return false;
 		}
 		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
-			if (ctrl)	cursor = getNextWordPosition(cursor+1);
-			else		cursorRight();
+			if (ctrl)
+				cursor = getNextWordPosition(cursor + 1);
+			else
+				cursorRight();
 			return false;
 		}
 		if (keyId == Keyboard.KEY_UP.getKeyCode()) {
@@ -413,12 +414,12 @@ public class GenericTextProcessor implements TextProcessor {
 		}
 		return false;
 	}
-	
+
 	private static String getClipboardString() {
 		try {
-			Transferable transfer = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
-			if(transfer != null && transfer.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-				String var1 = (String)transfer.getTransferData(DataFlavor.stringFlavor);
+			Transferable transfer = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+			if (transfer != null && transfer.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				String var1 = (String) transfer.getTransferData(DataFlavor.stringFlavor);
 				return var1;
 			}
 		} catch (Exception var2) {

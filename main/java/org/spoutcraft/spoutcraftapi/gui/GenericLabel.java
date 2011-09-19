@@ -23,32 +23,33 @@ import java.io.IOException;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class GenericLabel extends GenericWidget implements Label{
+public class GenericLabel extends GenericWidget implements Label {
 	protected String text = "";
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
 	protected Color color = new Color(1, 1, 1);
 	protected boolean auto = true;
-	public GenericLabel(){
-		
+
+	public GenericLabel() {
+
 	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 4;
 	}
-	
+
 	public GenericLabel(String text) {
 		this.text = text;
 	}
-	
+
 	public WidgetType getType() {
 		return WidgetType.Label;
 	}
-	
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 7;
 	}
-	
+
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
@@ -75,11 +76,11 @@ public class GenericLabel extends GenericWidget implements Label{
 		this.text = text;
 		return this;
 	}
-	
+
 	public boolean getAuto() {
 		return auto;
 	}
-	
+
 	public Label setAuto(boolean auto) {
 		this.auto = auto;
 		return this;
@@ -88,7 +89,7 @@ public class GenericLabel extends GenericWidget implements Label{
 	public WidgetAnchor getAlign() {
 		return align;
 	}
-	
+
 	public Label setAlign(WidgetAnchor pos) {
 		this.align = pos;
 		return this;
@@ -102,12 +103,12 @@ public class GenericLabel extends GenericWidget implements Label{
 		this.color = color;
 		return this;
 	}
-	
+
 	@Override
 	public double getActualWidth() {
 		return auto ? getTextWidth() : super.getActualWidth();
 	}
-	
+
 	public double getTextWidth() {
 		double swidth = 0;
 		String lines[] = getText().split("\\n");
@@ -117,16 +118,16 @@ public class GenericLabel extends GenericWidget implements Label{
 		}
 		return swidth;
 	}
-	
+
 	@Override
 	public double getActualHeight() {
 		return auto ? getTextHeight() : super.getActualHeight();
 	}
-	
+
 	public double getTextHeight() {
 		return getText().split("\\n").length * 10;
 	}
-	
+
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

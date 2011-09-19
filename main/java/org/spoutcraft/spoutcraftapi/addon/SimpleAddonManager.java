@@ -55,7 +55,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Registers the specified addon loader
-	 *
+	 * 
 	 * @param loader Class name of the AddonLoader to register
 	 * @throws IllegalArgumentException Thrown when the given Class is not a valid AddonLoader
 	 */
@@ -90,7 +90,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Loads the addons contained within the specified directory
-	 *
+	 * 
 	 * @param directory Directory to check for addons
 	 * @return A list of all addons loaded
 	 */
@@ -152,9 +152,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Loads the addon in the specified file
-	 *
+	 * 
 	 * File must be valid according to the current enabled Addon interfaces
-	 *
+	 * 
 	 * @param file File containing the addon to load
 	 * @return The Addon loaded, or null if it was invalid
 	 * @throws InvalidAddonException Thrown when the specified file is not a valid addon
@@ -166,9 +166,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Loads the addon in the specified file
-	 *
+	 * 
 	 * File must be valid according to the current enabled Addon interfaces
-	 *
+	 * 
 	 * @param file File containing the addon to load
 	 * @param ignoreSoftDependencies Loader will ignore soft dependencies if this flag is set to true
 	 * @return The Addon loaded, or null if it was invalid
@@ -208,9 +208,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is loaded and returns it when applicable
-	 *
+	 * 
 	 * Please note that the name of the addon is case-sensitive
-	 *
+	 * 
 	 * @param name Name of the addon to check
 	 * @return Addon if it exists, otherwise null
 	 */
@@ -224,9 +224,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is enabled or not
-	 *
+	 * 
 	 * Please note that the name of the addon is case-sensitive.
-	 *
+	 * 
 	 * @param name Name of the addon to check
 	 * @return true if the addon is enabled, otherwise false
 	 */
@@ -238,7 +238,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is enabled or not
-	 *
+	 * 
 	 * @param addon Addon to check
 	 * @return true if the addon is enabled, otherwise false
 	 */
@@ -257,7 +257,7 @@ public class SimpleAddonManager implements AddonManager {
 			if (!addonCommands.isEmpty()) {
 				commandMap.registerAll(addon.getDescription().getName(), addonCommands);
 			}
-			
+
 			try {
 				addon.getAddonLoader().enableAddon(addon);
 			} catch (Throwable ex) {
@@ -267,7 +267,7 @@ public class SimpleAddonManager implements AddonManager {
 	}
 
 	public void disableAddons() {
-		for (Addon addon: getAddons()) {
+		for (Addon addon : getAddons()) {
 			disableAddon(addon);
 		}
 	}
@@ -293,7 +293,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Calls a player related event with the given details
-	 *
+	 * 
 	 * @param type Type of player related event to call
 	 * @param event Event details
 	 */
@@ -312,7 +312,7 @@ public class SimpleAddonManager implements AddonManager {
 		Listener<TEvent>[][] handlers = handlerlist.handlers;
 		int[] handlerids = handlerlist.handlerids;
 
-		for (int arrayidx=0; arrayidx<handlers.length; arrayidx++) {
+		for (int arrayidx = 0; arrayidx < handlers.length; arrayidx++) {
 
 			// if the order slot is even and the event has stopped propogating
 			if (event.isCancelled() && (handlerids[arrayidx] & 1) == 0)
@@ -322,12 +322,11 @@ public class SimpleAddonManager implements AddonManager {
 				try {
 					handlers[arrayidx][handler].onEvent(event);
 				} catch (Throwable t) {
-					System.err.println("Error while passing event "+event);
+					System.err.println("Error while passing event " + event);
 					t.printStackTrace();
 				}
 			}
 		}
 	}
-
 
 }

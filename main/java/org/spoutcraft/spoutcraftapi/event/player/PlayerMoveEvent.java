@@ -57,7 +57,7 @@ public class PlayerMoveEvent extends PlayerEvent<PlayerMoveEvent> implements Can
 	}
 
 	public static final HandlerList<PlayerMoveEvent> handlers = new HandlerList<PlayerMoveEvent>();
-	
+
 	@Override
 	public HandlerList<PlayerMoveEvent> getHandlers() {
 		return handlers;
@@ -67,5 +67,5 @@ public class PlayerMoveEvent extends PlayerEvent<PlayerMoveEvent> implements Can
 	protected String getEventName() {
 		return "Player Move Event";
 	}
-	
+
 }

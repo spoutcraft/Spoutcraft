@@ -22,9 +22,7 @@ package org.spoutcraft.spoutcraftapi.event;
 public interface Cancellable {
 
 	/**
-	 * If an event stops propogating (ie, is cancelled) partway through an even
-	 * slot, that slot will not cease execution, but future even slots will not
-	 * be called.
+	 * If an event stops propogating (ie, is cancelled) partway through an even slot, that slot will not cease execution, but future even slots will not be called.
 	 * 
 	 * @param cancelled True to set event canceled, False to uncancel event.
 	 */

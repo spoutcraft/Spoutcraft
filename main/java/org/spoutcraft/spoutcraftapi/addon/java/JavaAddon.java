@@ -99,7 +99,7 @@ public abstract class JavaAddon implements Addon {
 	public AddonClassLoader getClassLoader() {
 		return classLoader;
 	}
-	
+
 	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
 		return false;
 	}

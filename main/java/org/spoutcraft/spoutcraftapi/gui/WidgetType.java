@@ -22,7 +22,7 @@ public class WidgetType {
 	private static HashMap<WidgetType, Integer> lookupClass = new HashMap<WidgetType, Integer>();
 	private static HashMap<Integer, WidgetType> lookupId = new HashMap<Integer, WidgetType>();
 	private static int lastId = 0;
-	
+
 	public static WidgetType Label = new WidgetType(GenericLabel.class, 0);
 	public static WidgetType HealthBar = new WidgetType(HealthBar.class, 1);
 	public static WidgetType BubbleBar = new WidgetType(BubbleBar.class, 2);
@@ -37,12 +37,13 @@ public class WidgetType {
 	public static WidgetType Slider = new WidgetType(GenericSlider.class, 11);
 	public static WidgetType TextField = new WidgetType(GenericTextField.class, 12);
 	public static WidgetType Gradient = new WidgetType(GenericGradient.class, 13);
-	//Container has the 14, dude!
+	// Container has the 14, dude!
 	public static WidgetType EntityWidget = new WidgetType(GenericEntityWidget.class, 15);
 	public static WidgetType OverlayScreen = new WidgetType(GenericOverlayScreen.class, 16);
-	
+
 	private final int id;
 	private final Class<? extends Widget> widgetClass;
+
 	public WidgetType(Class<? extends Widget> widget) {
 		widgetClass = widget;
 		id = lastId;
@@ -50,7 +51,7 @@ public class WidgetType {
 		lookupClass.put(this, id);
 		lookupId.put(id, this);
 	}
-	
+
 	private WidgetType(Class<? extends Widget> widget, int id) {
 		widgetClass = widget;
 		this.id = id;
@@ -60,23 +61,23 @@ public class WidgetType {
 		lookupClass.put(this, id);
 		lookupId.put(id, this);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public Class<? extends Widget> getWidgetClass() {
 		return widgetClass;
 	}
-	
+
 	public static Integer getWidgetId(Class<? extends Widget> widget) {
 		return lookupClass.get(widget);
 	}
-	
+
 	public static WidgetType getWidgetFromId(int id) {
 		return lookupId.get(id);
 	}
-	
+
 	public static int getNumWidgetTypes() {
 		return lastId;
 	}

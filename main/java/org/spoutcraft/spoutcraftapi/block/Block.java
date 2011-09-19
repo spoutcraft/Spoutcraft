@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi.block;
 
+import org.spoutcraft.spoutcraftapi.NotImplemented;
 import org.spoutcraft.spoutcraftapi.SPOnly;
 import org.spoutcraft.spoutcraftapi.World;
 
@@ -32,34 +33,34 @@ public interface Block {
 
 	@SPOnly
 	public void setHardness(float hardness);
-	
+
 	@SPOnly
 	public void resetHardness();
 
-	// TODO Implement
+	@NotImplemented
 	public int getBlockPower();
 
-	// TODO Implement
+	@NotImplemented
 	public byte getLightLevel();
 
-	// TODO Implement
+	@NotImplemented
 	public int getTypeId();
 
-	// TODO Implement
+	@NotImplemented
 	public World getWorld();
 
-	// TODO Implement
+	@NotImplemented
 	public boolean isEmpty();
 
-	// TODO Implement
+	@NotImplemented
 	public boolean isLiquid();
 
-	// TODO Implement
+	@NotImplemented
 	public void setData(byte data);
 
-	// TODO Implement
+	@NotImplemented
 	public boolean setTypeId(int type);
-	
-	//TODO Implement
+
+	@NotImplemented
 	public Chunk getChunk();
 }

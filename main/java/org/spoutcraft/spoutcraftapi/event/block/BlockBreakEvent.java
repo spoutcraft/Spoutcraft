@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
 public class BlockBreakEvent extends BlockEvent<BlockBreakEvent> implements Cancellable {
-	
+
 	protected Player player;
 
 	protected BlockBreakEvent(Block block, Player player) {
@@ -43,7 +43,7 @@ public class BlockBreakEvent extends BlockEvent<BlockBreakEvent> implements Canc
 	}
 
 	public static final HandlerList<BlockBreakEvent> handlers = new HandlerList<BlockBreakEvent>();
-	
+
 	@Override
 	public HandlerList<BlockBreakEvent> getHandlers() {
 		return handlers;
