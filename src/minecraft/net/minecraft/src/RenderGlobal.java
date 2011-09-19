@@ -950,6 +950,11 @@ public class RenderGlobal implements IWorldAccess {
 				tessellator.draw();
 			}
 			//Spout End
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(3042 /*GL_BLEND*/);
+			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
+			GL11.glEnable(2912 /*GL_FOG*/);
+			GL11.glPopMatrix();
 			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
 			double var18 = this.mc.thePlayer.getPosition(var1).yCoord - 64.0D;
