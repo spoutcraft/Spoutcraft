@@ -305,7 +305,7 @@ public class World implements IBlockAccess {
 	protected void getInitialSpawnLocation() {
 		this.findingSpawnPoint = true;
 		WorldChunkManager var1 = this.getWorldChunkManager();
-		List var2 = var1.func_35559_a();
+		List var2 = var1.getBiomesToSpawnIn();
 		Random var3 = new Random(this.getRandomSeed());
 		ChunkPosition var4 = var1.func_35556_a(0, 0, 256, var2, var3);
 		int var5 = 0;
@@ -2422,7 +2422,7 @@ public class World implements IBlockAccess {
 		this.unloadedEntityList.addAll(var1);
 	}
 
-	public void dropOldChucks() {
+	public void dropOldChunks() {
 		while(this.chunkProvider.unload100OldestChunks()) {
 			;
 		}
@@ -2441,7 +2441,7 @@ public class World implements IBlockAccess {
 		if(var10 != null && !this.checkIfAABBIsClear(var10)) {
 			return false;
 		} else {
-			if(var8 == Block.waterMoving || var8 == Block.waterStill || var8 == Block.lavaMoving || var8 == Block.lavaStill || var8 == Block.fire || var8 == Block.snow || var8 == Block.field_35278_bv) {
+			if(var8 == Block.waterMoving || var8 == Block.waterStill || var8 == Block.lavaMoving || var8 == Block.lavaStill || var8 == Block.fire || var8 == Block.snow || var8 == Block.vine) {
 				var8 = null;
 			}
 
