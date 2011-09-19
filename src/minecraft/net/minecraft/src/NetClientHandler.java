@@ -252,14 +252,16 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void func_35778_a(Packet26EntityExpOrb var1) {
-		EntityXPOrb var2 = new EntityXPOrb(this.worldClient, (double)var1.field_35239_b, (double)var1.field_35240_c, (double)var1.field_35237_d, var1.field_35238_e);
+		//Spout disabled XP orbs
+		/*EntityXPOrb var2 = new EntityXPOrb(this.worldClient, (double)var1.field_35239_b, (double)var1.field_35240_c, (double)var1.field_35237_d, var1.field_35238_e);
 		var2.serverPosX = var1.field_35239_b;
 		var2.serverPosY = var1.field_35240_c;
 		var2.serverPosZ = var1.field_35237_d;
 		var2.rotationYaw = 0.0F;
 		var2.rotationPitch = 0.0F;
 		var2.entityId = var1.field_35241_a;
-		this.worldClient.func_712_a(var1.field_35241_a, var2);
+		this.worldClient.func_712_a(var1.field_35241_a, var2);*/
+		//Spout end
 	}
 
 	public void handleWeather(Packet71Weather var1) {

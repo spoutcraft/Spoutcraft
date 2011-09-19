@@ -231,7 +231,8 @@ public abstract class EntityLiving extends Entity {
 		if(this.health <= 0) {
 			++this.deathTime;
 			if(this.deathTime > 20) {
-				if(this.field_34905_c > 0 || this.func_35163_av()) {
+				//Spout start - disabled XP orbs
+				/*if(this.field_34905_c > 0 || this.func_35163_av()) {
 					var1 = this.a(this.field_34904_b);
 
 					while(var1 > 0) {
@@ -239,8 +240,8 @@ public abstract class EntityLiving extends Entity {
 						var1 -= var8;
 						this.worldObj.entityJoinedWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var8));
 					}
-				}
-
+				}*/
+				//Spout end
 				this.onEntityDeath();
 				this.setEntityDead();
 
