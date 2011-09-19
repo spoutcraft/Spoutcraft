@@ -62,7 +62,7 @@ public class RenderItem extends Render {
 		GL11.glTranslatef((float)var2, (float)var4 + var11, (float)var6);
 		GL11.glEnable('\u803a');
 		float var17;
-		float var16;
+		float var19;
 		float var18;
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
