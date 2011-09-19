@@ -20,7 +20,7 @@ public class RenderSheep extends RenderLiving {
 	protected boolean setWoolColorAndRender(EntitySheep var1, int var2, float var3) {
 		if(var2 == 0 && !var1.getSheared()) {
 			//Spout Start
-			loadTexture(EntitySkinType.getTexture(EntitySkinType.SHEEP_FUR, entitysheep, "/mob/sheep_fur.png"));
+			loadTexture(EntitySkinType.getTexture(EntitySkinType.SHEEP_FUR, var1, "/mob/sheep_fur.png"));
 			//Spout End
 			float var4 = 1.0F;
 			int var5 = var1.getFleeceColor();

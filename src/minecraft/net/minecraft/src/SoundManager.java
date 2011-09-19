@@ -26,7 +26,7 @@ public class SoundManager {
 	private SoundPool soundPoolSounds = new SoundPool();
 	private SoundPool soundPoolStreaming = new SoundPool();
 	private SoundPool soundPoolMusic = new SoundPool();
-	private int latestSoundID = 0;
+	private int field_587_e = 0;
 	private GameSettings options;
 	private static boolean loaded = false;
 	private Random rand = new Random();

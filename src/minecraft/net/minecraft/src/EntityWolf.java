@@ -18,6 +18,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PathEntity;
 import net.minecraft.src.World;
 
+import org.getspout.spout.entity.EntitySkinType; //Spout
+
 public class EntityWolf extends EntityAnimal {
 
 	private boolean looksWithInterest = false;
