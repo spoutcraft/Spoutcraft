@@ -852,8 +852,8 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public void setIngameFocus(boolean close) {
-		if (Display.isActive()) {
-			if (!this.inGameHasFocus) {
+		if(Display.isActive()) {
+			if(!this.inGameHasFocus) {
 				this.inGameHasFocus = true;
 				this.mouseHelper.grabMouseCursor();
 				if (close) {
@@ -1115,14 +1115,6 @@ public abstract class Minecraft implements Runnable {
 						}
 //Spout restore middle mouse click
 						 else {
-							if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState()) {
-								this.clickMouse(0);
-							}
-
-							if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState()) {
-								this.clickMouse(1);
-							}
-
 							if (Mouse.getEventButton() == 2 && Mouse.getEventButtonState()) {
 								this.clickMiddleMouseButton();
 							}

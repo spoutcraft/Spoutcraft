@@ -32,7 +32,6 @@ public class TextureCompassFX extends TextureFX {
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
 			//Spout HD End
-			var2.getRGB(var3, var4, 16, 16, this.compassIconImageData, 0, 16);
 		} catch (IOException var5) {
 			var5.printStackTrace();
 		}
@@ -107,10 +106,12 @@ public class TextureCompassFX extends TextureFX {
 		short var16;
 		int var19;
 		int var18;
-		for(var9 = -4; var9 <= 4; ++var9) {
-			var10 = (int)(8.5D + var26 * (double)var9 * 0.3D);
-			var11 = (int)(7.5D - var24 * (double)var9 * 0.3D * 0.5D);
-			var12 = var11 * 16 + var10;
+//Spout HD start
+		for(var9 = TileSize.int_compassCrossMin; var9 <= TileSize.int_compassCrossMax; ++var9) {
+			var10 = (int)(TileSize.double_compassCenterMax + var26 * (double)var9 * 0.3D);
+			var11 = (int)(TileSize.double_compassCenterMin - var24 * (double)var9 * 0.3D * 0.5D);
+			var12 = var11 * TileSize.int_size + var10;
+//Spout HD end
 			var13 = 100;
 			var14 = 100;
 			var15 = 100;
@@ -131,14 +132,11 @@ public class TextureCompassFX extends TextureFX {
 		}
 
 		//Spout HD Start
-		for(var9 = -8; var9 <= 16; ++var9) {
+		for(var9 = TileSize.int_compassNeedleMin; var9 <= TileSize.int_compassNeedleMax; ++var9) {
 			var10 = (int)(TileSize.double_compassCenterMax + var24 * (double)var9 * 0.3D);
 			var11 = (int)(TileSize.double_compassCenterMin + var26 * (double)var9 * 0.3D * 0.5D);
 			var12 = var11 * TileSize.int_size + var10;
 			//Spout HD End
-			var10 = (int)(8.5D + var24 * (double)var9 * 0.3D);
-			var11 = (int)(7.5D + var26 * (double)var9 * 0.3D * 0.5D);
-			var12 = var11 * 16 + var10;
 			var13 = var9 >= 0?255:100;
 			var14 = var9 >= 0?20:100;
 			var15 = var9 >= 0?20:100;

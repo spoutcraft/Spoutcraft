@@ -215,6 +215,10 @@ public class TextureUtils {
 		return var0;
 	}
 
+	public static boolean isRequiredResource(String var0) {
+		return !var0.startsWith("/custom_") && !var0.equals("/terrain_nh.png") && !var0.equals("/terrain_s.png");
+	}
+
 	public static InputStream getResourceAsStream(TexturePackBase var0, String var1) {
 		InputStream var2 = null;
 		if(var0 != null) {
@@ -229,7 +233,7 @@ public class TextureUtils {
 			var2 = TextureUtils.class.getResourceAsStream(var1);
 		}
 
-		if(var2 == null && !var1.startsWith("/custom_")) {
+		if(var2 == null && isRequiredResource(var1)) {
 			var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
 		}
 
@@ -284,14 +288,30 @@ public class TextureUtils {
 			}
 
 			if(!var3) {
-				Integer var8 = (Integer)expectedColumns.get(var1);
-				if(var8 != null && var2.getWidth() != var8.intValue() * TileSize.int_size) {
-					var2 = resizeImage(var2, var8.intValue() * TileSize.int_size);
+				Integer var11 = (Integer)expectedColumns.get(var1);
+				if(var11 != null && var2.getWidth() != var11.intValue() * TileSize.int_size) {
+					var2 = resizeImage(var2, var11.intValue() * TileSize.int_size);
 				}
 
 				if(useTextureCache) {
 					lastTexturePack = var0;
 					cache.put(var1, var2);
+				}
+
+				if(var1.contains("_eyes.")) {
+					int var5 = 0;
+
+					for(int var6 = 0; var6 < var2.getWidth(); ++var6) {
+						for(int var7 = 0; var7 < var2.getHeight(); ++var7) {
+							int var8 = var2.getRGB(var6, var7);
+							if((var8 & -16777216) == 0 && var8 != 0) {
+								var2.setRGB(var6, var7, 0);
+								++var5;
+							}
+						}
+					}
+
+					//MCPatcherUtils.log("  fixed %d transparent pixels", new Object[]{Integer.valueOf(var5), var1});
 				}
 			}
 
@@ -301,6 +321,10 @@ public class TextureUtils {
 
 	public static BufferedImage getResourceAsBufferedImage(String var0) throws IOException {
 		return getResourceAsBufferedImage(getSelectedTexturePack(), var0);
+	}
+
+	public static BufferedImage getResourceAsBufferedImage(Object var0, Object var1, String var2) throws IOException {
+		return getResourceAsBufferedImage(var2);
 	}
 
 	public static int getTileSize(TexturePackBase var0) {

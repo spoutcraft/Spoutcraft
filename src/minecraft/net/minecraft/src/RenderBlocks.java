@@ -280,7 +280,6 @@ public class RenderBlocks {
 		case 1:
 			var64 = 3;
 		case 2:
-		default:
 			break;
 		case 3:
 			var64 = 2;
@@ -2614,6 +2613,23 @@ public class RenderBlocks {
 			var16 = false;
 			var15 = false;
 			var13 = false;
+//Spout HD start
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2) == 0) {
+				var15 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3) == 0) {
+				var16 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4) == 0) {
+				var17 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5) == 0) {
+				var18 = true;
+			}
+//Spout HD end
 		}
 
 		if(this.overrideBlockTexture >= 0) {
@@ -2622,6 +2638,23 @@ public class RenderBlocks {
 			var16 = false;
 			var15 = false;
 			var13 = false;
+//Spout HD start
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2) == 0) {
+				var15 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3) == 0) {
+				var16 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4) == 0) {
+				var17 = true;
+			}
+
+			if(var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5) == 0) {
+				var18 = true;
+			}
+//Spout HD end
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 - 1, var4, 0)) {
@@ -3244,7 +3277,7 @@ public class RenderBlocks {
 				if(var28 == 3) {
 					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 2);
 					if(var28 == 0) {
-						var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 					}
 				}
 
@@ -3271,7 +3304,7 @@ public class RenderBlocks {
 				if(var28 == 3) {
 					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 3);
 					if(var28 == 0) {
-						var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 					}
 				}
 
@@ -3298,7 +3331,7 @@ public class RenderBlocks {
 				if(var28 == 3) {
 					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 4);
 					if(var28 == 0) {
-						var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 					}
 				}
 
@@ -3325,7 +3358,7 @@ public class RenderBlocks {
 				if(var28 == 3) {
 					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 5);
 					if(var28 == 0) {
-						var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 					}
 				}
 

@@ -1,22 +1,29 @@
 package net.minecraft.src;
-
+//Spout HD start
+import com.pclewis.mcpatcher.mod.TileSize;
+//Spout HD end
 import net.minecraft.src.Block;
 import net.minecraft.src.TextureFX;
 
 public class TextureWaterFlowFX extends TextureFX {
-
-	protected float[] field_1138_g = new float[256];
-	protected float[] field_1137_h = new float[256];
-	protected float[] field_1136_i = new float[256];
-	protected float[] field_1135_j = new float[256];
-	private int field_1134_k = 0;
+//Spout HD start
+	protected float[] field_1138_g;
+	protected float[] field_1137_h;
+	protected float[] field_1136_i;
+	protected float[] field_1135_j;
+	private int field_1134_k;
 
 
 	public TextureWaterFlowFX() {
 		super(Block.waterMoving.blockIndexInTexture + 1);
+		this.field_1138_g = new float[TileSize.int_numPixels];
+		this.field_1137_h = new float[TileSize.int_numPixels];
+		this.field_1136_i = new float[TileSize.int_numPixels];
+		this.field_1135_j = new float[TileSize.int_numPixels];
+		this.field_1134_k = 0;
 		this.tileSize = 2;
 	}
-
+//Spout HD end
 	public void onTick() {
 		++this.field_1134_k;
 
@@ -25,30 +32,32 @@ public class TextureWaterFlowFX extends TextureFX {
 		float var3;
 		int var5;
 		int var6;
-		for(var1 = 0; var1 < 16; ++var1) {
-			for(var2 = 0; var2 < 16; ++var2) {
+//Spout HD start
+		for(var1 = 0; var1 < TileSize.int_size; ++var1) {
+			for(var2 = 0; var2 < TileSize.int_size; ++var2) {
 				var3 = 0.0F;
 
 				for(int var4 = var2 - 2; var4 <= var2; ++var4) {
-					var5 = var1 & 15;
-					var6 = var4 & 15;
-					var3 += this.field_1138_g[var5 + var6 * 16];
+					var5 = var1 & TileSize.int_sizeMinus1;
+					var6 = var4 & TileSize.int_sizeMinus1;
+					var3 += this.field_1138_g[var5 + var6 * TileSize.int_size];
 				}
 
-				this.field_1137_h[var1 + var2 * 16] = var3 / 3.2F + this.field_1136_i[var1 + var2 * 16] * 0.8F;
+				this.field_1137_h[var1 + var2 * TileSize.int_size] = var3 / 3.2F + this.field_1136_i[var1 + var2 * TileSize.int_size] * 0.8F;
 			}
 		}
 
-		for(var1 = 0; var1 < 16; ++var1) {
-			for(var2 = 0; var2 < 16; ++var2) {
-				this.field_1136_i[var1 + var2 * 16] += this.field_1135_j[var1 + var2 * 16] * 0.05F;
-				if(this.field_1136_i[var1 + var2 * 16] < 0.0F) {
-					this.field_1136_i[var1 + var2 * 16] = 0.0F;
+		for(var1 = 0; var1 < TileSize.int_size; ++var1) {
+			for(var2 = 0; var2 < TileSize.int_size; ++var2) {
+				this.field_1136_i[var1 + var2 * TileSize.int_size] += this.field_1135_j[var1 + var2 * TileSize.int_size] * 0.05F;
+				if(this.field_1136_i[var1 + var2 * TileSize.int_size] < 0.0F) {
+					this.field_1136_i[var1 + var2 * TileSize.int_size] = 0.0F;
 				}
 
-				this.field_1135_j[var1 + var2 * 16] -= 0.3F;
+				this.field_1135_j[var1 + var2 * TileSize.int_size] -= 0.3F;
 				if(Math.random() < 0.2D) {
-					this.field_1135_j[var1 + var2 * 16] = 0.5F;
+					this.field_1135_j[var1 + var2 * TileSize.int_size] = 0.5F;
+//Spout HD end
 				}
 			}
 		}
@@ -56,9 +65,10 @@ public class TextureWaterFlowFX extends TextureFX {
 		float[] var12 = this.field_1137_h;
 		this.field_1137_h = this.field_1138_g;
 		this.field_1138_g = var12;
-
-		for(var2 = 0; var2 < 256; ++var2) {
-			var3 = this.field_1138_g[var2 - this.field_1134_k * 16 & 255];
+//Spout HD start
+		for(var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
+			var3 = this.field_1138_g[var2 - this.field_1134_k * TileSize.int_size & TileSize.int_numPixelsMinus1];
+//Spout HD end
 			if(var3 > 1.0F) {
 				var3 = 1.0F;
 			}
