@@ -1438,6 +1438,7 @@ public abstract class Minecraft implements Runnable {
 			// Spout End
 		} else {
 			// Spout Start
+			this.thePlayer = null;
 			if (renderEngine.oldPack != null) {
 				renderEngine.texturePack.setTexturePack(renderEngine.oldPack);
 				renderEngine.oldPack = null;

@@ -181,9 +181,9 @@ public class ChunkProvider implements IChunkProvider {
 		int var1;
 		//Spout Start
 		TLongIterator iterator = this.droppedChunksSet.iterator();
-		
 		for(var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
 			long var2 = iterator.next();
+			iterator.remove();
 			Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
 			var3.onChunkUnload();
 			this.func_28062_b(var3);
