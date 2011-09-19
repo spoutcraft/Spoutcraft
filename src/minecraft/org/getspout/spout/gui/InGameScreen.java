@@ -39,7 +39,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.armor = new ArmorBar();
 		this.hunger = new HungerBar();
 		
-		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor);
+		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger);
 	}
 	
 	public int getVersion() {
