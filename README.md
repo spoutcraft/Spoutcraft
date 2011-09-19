@@ -19,7 +19,6 @@ Download the latest builds from [Jenkins].
 
 Compiling
 ---------
-Spoutcraft requires the Minecraft Coder Pack.  
 * Download and extract the latest compatible version of Minecraft Coder Pack.  
 * Copy the latest complete, unmodified Minecraft bin directory from your .minecraft directory.  
 * Place the Minecraft bin directory under MCP's jars directory.  
