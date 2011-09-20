@@ -237,7 +237,7 @@ public class GuiIngame extends Gui {
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
 		if (chatTextWidget.isVisible()) {
 			int viewedLine = 0;
-			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
+			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size(), (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {
 					double opacity = 1.0D - chatMessageList.get(line).updateCounter / (double)chatTextWidget.getFadeoutTicks();
 					opacity *= 10D;
