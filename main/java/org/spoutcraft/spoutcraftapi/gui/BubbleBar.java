@@ -29,8 +29,8 @@ public class BubbleBar extends GenericWidget implements Widget {
 
 	public BubbleBar() {
 		super();
-		setX(427 / 2 - 91); // 122
-		setY(199);
+		setX(427 / 2 + 82); // 295
+		setY(191);
 		setAnchor(WidgetAnchor.BOTTOM_CENTER);
 	}
 
@@ -64,7 +64,7 @@ public class BubbleBar extends GenericWidget implements Widget {
 	@Override
 	public double getScreenX() {
 		double mid = getScreen() != null ? getScreen().getWidth() / 2 : 427 / 2D;
-		double diff = super.getScreenX() - mid - 31;
+		double diff = super.getScreenX() - mid - 376;
 		return getScreen() != null ? getScreen().getWidth() / 2D - diff : this.getX();
 	}
 
