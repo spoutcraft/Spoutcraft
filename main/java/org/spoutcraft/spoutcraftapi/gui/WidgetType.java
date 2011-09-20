@@ -41,6 +41,7 @@ public class WidgetType {
 	public static WidgetType EntityWidget = new WidgetType(GenericEntityWidget.class, 15);
 	public static WidgetType OverlayScreen = new WidgetType(GenericOverlayScreen.class, 16);
 	public static WidgetType HungerBar = new WidgetType(HungerBar.class, 17);
+	public static WidgetType ExpBar = new WidgetType(ExpBar.class, 18);
 
 	private final int id;
 	private final Class<? extends Widget> widgetClass;

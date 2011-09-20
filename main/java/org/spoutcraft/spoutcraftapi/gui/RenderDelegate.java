@@ -21,6 +21,8 @@ public interface RenderDelegate {
 	public void render(ArmorBar bar);
 
 	public void render(BubbleBar bar);
+	
+	public void render(ExpBar bar);
 
 	public void render(GenericButton button);
 
@@ -38,7 +40,7 @@ public interface RenderDelegate {
 
 	public void render(HealthBar bar);
 	
-	public void render(HungerBar hungerBar);
+	public void render(HungerBar bar);
 
 	public void render(GenericEntityWidget entityWidget);
 

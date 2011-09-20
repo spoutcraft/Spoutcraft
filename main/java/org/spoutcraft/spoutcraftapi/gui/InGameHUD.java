@@ -61,6 +61,13 @@ public interface InGameHUD extends Screen {
 	public HungerBar getHungerBar();
 
 	/**
+	 * Gets the Exp bar associated with this HUD
+	 * 
+	 * @return exp bar
+	 */
+	public ExpBar getExpBar();
+	
+	/**
 	 * Is true if the widget can be attached to the screen. Primary controls, like the health bar can not be attached twice. Control widgets that require input from the mouse or keyboard can not be attached
 	 * 
 	 * @param widget
