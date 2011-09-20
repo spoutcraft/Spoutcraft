@@ -62,7 +62,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			float armorPercentPerIcon = 100f / bar.getMaxNumShields();
 			for (int icon = 0; icon < bar.getMaxNumShields(); icon++) {
 				if (armorPercent > 0 || bar.isAlwaysVisible()) {
-					int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
+					int x = (int) bar.getScreenX() + icon * bar.getIconOffset();
 					boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
 					boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
 					if (full) { // white armor (filled in)
