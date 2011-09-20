@@ -619,11 +619,10 @@ public abstract class EntityLiving extends Entity {
 			}
 
 			float var9 = 0.16277136F / (var8 * var8 * var8);
-			float var5 = this.onGround?this.field_35169_bv * var9:this.field_35168_bw;
 			//Spout start
-			float movement = 0.02F;
+			float movement = this.field_35168_bw;
 			if (onGround) {
-				movement = (float) (0.1F * var9 * walkingMod);
+				movement = (float) (this.field_35169_bv * var9 * walkingMod);
 			}
 			else if (!isInWater()) {
 				movement *= airspeedMod;
