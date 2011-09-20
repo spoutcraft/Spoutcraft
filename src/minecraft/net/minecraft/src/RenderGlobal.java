@@ -772,7 +772,6 @@ public class RenderGlobal implements IWorldAccess {
 	//Spout End
 
 	private int renderSortedRenderers(int var1, int var2, int var3, double var4) {
-		this.bed.clear(); //Spout
 		this.glRenderLists.clear();
 		int var6 = 0;
 
@@ -793,26 +792,54 @@ public class RenderGlobal implements IWorldAccess {
 			if(!this.sortedWorldRenderers[var7].skipRenderPass[var3] && this.sortedWorldRenderers[var7].isInFrustum && (!this.occlusionEnabled || this.sortedWorldRenderers[var7].isVisible)) {
 				int var8 = this.sortedWorldRenderers[var7].getGLCallListForPass(var3);
 				if(var8 >= 0) {
-					this.bed.put(var8); //Spout
 					this.glRenderLists.add(this.sortedWorldRenderers[var7]);
 					++var6;
 				}
 			}
 		}
-		//Spout Start
-		this.bed.flip();
-		EntityLiving var14 = this.mc.renderViewEntity;
-		double var15 = var14.lastTickPosX + (var14.posX - var14.lastTickPosX) * var4;
-		double var10 = var14.lastTickPosY + (var14.posY - var14.lastTickPosY) * var4;
-		double var12 = var14.lastTickPosZ + (var14.posZ - var14.lastTickPosZ) * var4;
-		GL11.glTranslatef((float)(-var15), (float)(-var10), (float)(-var12));
-		GL11.glCallLists(this.bed);
-		GL11.glTranslatef((float)var15, (float)var10, (float)var12);
+
+		EntityLiving var19 = this.mc.renderViewEntity;
+		double var20 = var19.lastTickPosX + (var19.posX - var19.lastTickPosX) * var4;
+		double var10 = var19.lastTickPosY + (var19.posY - var19.lastTickPosY) * var4;
+		double var12 = var19.lastTickPosZ + (var19.posZ - var19.lastTickPosZ) * var4;
+		int var14 = 0;
+
+		int var15;
+		for(var15 = 0; var15 < this.allRenderLists.length; ++var15) {
+			this.allRenderLists[var15].func_859_b();
+		}
+
+		for(var15 = 0; var15 < this.glRenderLists.size(); ++var15) {
+			WorldRenderer var16 = (WorldRenderer)this.glRenderLists.get(var15);
+			int var17 = -1;
+
+			for(int var18 = 0; var18 < var14; ++var18) {
+				if(this.allRenderLists[var18].func_862_a(var16.posXMinus, var16.posYMinus, var16.posZMinus)) {
+					var17 = var18;
+				}
+			}
+
+			if(var17 < 0) {
+				var17 = var14++;
+				this.allRenderLists[var17].func_861_a(var16.posXMinus, var16.posYMinus, var16.posZMinus, var20, var10, var12);
+			}
+
+			this.allRenderLists[var17].func_858_a(var16.getGLCallListForPass(var3));
+		}
+
+		this.renderAllRenderLists(var3, var4);
 		return var6;
 	}
-	
-	public void renderAllRenderLists(int var1, double var2) {}
-	//Spout End
+
+	public void renderAllRenderLists(int var1, double var2) {
+		this.mc.entityRenderer.func_35806_b(var2);
+
+		for(int var4 = 0; var4 < this.allRenderLists.length; ++var4) {
+			this.allRenderLists[var4].func_860_a();
+		}
+
+		this.mc.entityRenderer.func_35810_a(var2);
+	}
 
 	public void updateClouds() {
 		++this.cloudOffsetX;
