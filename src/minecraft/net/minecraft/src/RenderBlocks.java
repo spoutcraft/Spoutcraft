@@ -2892,6 +2892,29 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2);
+			if(Config.isBetterGrass()) {
+				if(var26 == 3) {
+					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 2);
+					if(var26 == 0) {
+						this.colorRedTopLeft *= var5;
+						this.colorRedBottomLeft *= var5;
+						this.colorRedBottomRight *= var5;
+						this.colorRedTopRight *= var5;
+						this.colorGreenTopLeft *= var6;
+						this.colorGreenBottomLeft *= var6;
+						this.colorGreenBottomRight *= var6;
+						this.colorGreenTopRight *= var6;
+						this.colorBlueTopLeft *= var7;
+						this.colorBlueBottomLeft *= var7;
+						this.colorBlueBottomRight *= var7;
+						this.colorBlueTopRight *= var7;
+					}
+				}
+
+				if(var26 == 68) {
+					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 2);
+				}
+			}
 			this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -2988,7 +3011,30 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3);
-			this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3));
+			if(Config.isBetterGrass()) {
+				if(var26 == 3) {
+					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 3);
+					if(var26 == 0) {
+						this.colorRedTopLeft *= var5;
+						this.colorRedBottomLeft *= var5;
+						this.colorRedBottomRight *= var5;
+						this.colorRedTopRight *= var5;
+						this.colorGreenTopLeft *= var6;
+						this.colorGreenBottomLeft *= var6;
+						this.colorGreenBottomRight *= var6;
+						this.colorGreenTopRight *= var6;
+						this.colorBlueTopLeft *= var7;
+						this.colorBlueBottomLeft *= var7;
+						this.colorBlueBottomRight *= var7;
+						this.colorBlueTopRight *= var7;
+					}
+				}
+
+				if(var26 == 68) {
+					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 3);
+				}
+			}
+			this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
 				this.colorRedBottomLeft *= var5;
@@ -3084,6 +3130,29 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4);
+			if(Config.isBetterGrass()) {
+				if(var26 == 3) {
+					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 4);
+					if(var26 == 0) {
+						this.colorRedTopLeft *= var5;
+						this.colorRedBottomLeft *= var5;
+						this.colorRedBottomRight *= var5;
+						this.colorRedTopRight *= var5;
+						this.colorGreenTopLeft *= var6;
+						this.colorGreenBottomLeft *= var6;
+						this.colorGreenBottomRight *= var6;
+						this.colorGreenTopRight *= var6;
+						this.colorBlueTopLeft *= var7;
+						this.colorBlueBottomLeft *= var7;
+						this.colorBlueBottomRight *= var7;
+						this.colorBlueTopRight *= var7;
+					}
+				}
+
+				if(var26 == 68) {
+					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 4);
+				}
+			}
 			this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -3180,6 +3249,29 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5);
+			if(Config.isBetterGrass()) {
+				if(var26 == 3) {
+					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 5);
+					if(var26 == 0) {
+						this.colorRedTopLeft *= var5;
+						this.colorRedBottomLeft *= var5;
+						this.colorRedBottomRight *= var5;
+						this.colorRedTopRight *= var5;
+						this.colorGreenTopLeft *= var6;
+						this.colorGreenBottomLeft *= var6;
+						this.colorGreenBottomRight *= var6;
+						this.colorGreenTopRight *= var6;
+						this.colorBlueTopLeft *= var7;
+						this.colorBlueBottomLeft *= var7;
+						this.colorBlueBottomRight *= var7;
+						this.colorBlueTopRight *= var7;
+					}
+				}
+
+				if(var26 == 68) {
+					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 5);
+				}
+			}
 			this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;

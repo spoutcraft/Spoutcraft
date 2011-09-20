@@ -1668,7 +1668,7 @@ public class RenderGlobal implements IWorldAccess {
 	public void updateAllRenderers() {
 		if(this.worldRenderers != null) {
 			for(int var1 = 0; var1 < this.worldRenderers.length; ++var1) {
-				if(this.worldRenderers[var1].isChunkLit && !this.worldRenderers[var1].needsUpdate) {
+				if(/*this.worldRenderers[var1].isChunkLit && */!this.worldRenderers[var1].needsUpdate) {
 					this.worldRenderersToUpdate.add(this.worldRenderers[var1]);
 					this.worldRenderers[var1].markDirty();
 				}
