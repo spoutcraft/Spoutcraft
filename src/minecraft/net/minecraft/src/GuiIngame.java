@@ -98,7 +98,6 @@ public class GuiIngame extends Gui {
 		int var17;
 		
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
-		if(this.mc.playerController.shouldDrawHUD()) {
 			
 			//Armor Bar Begin
 			mainScreen.getArmorBar().render();
@@ -112,9 +111,13 @@ public class GuiIngame extends Gui {
 			mainScreen.getBubbleBar().render();
 			//Bubble Bar End
 			
+		if(this.mc.playerController.shouldDrawHUD()) {
+			
 			//Hunger Bar Begin
 			mainScreen.getHungerBar().render();
 			//Hunger Bar End
+			
+		}
 			
 			GL11.glDisable(3042 /*GL_BLEND*/);
 			GL11.glEnable('\u803a');
@@ -130,7 +133,6 @@ public class GuiIngame extends Gui {
 			}
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDisable('\u803a');
-		}
 		
 		if(this.mc.thePlayer.func_22060_M() > 0) {
 			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
@@ -150,13 +152,13 @@ public class GuiIngame extends Gui {
 		mainScreen.render();
 		
 		String var23;
-		if(this.mc.playerController.shouldDrawHUD() && this.mc.gameSettings.showDebugInfo) {
+		if(this.mc.gameSettings.showDebugInfo) {
 			GL11.glPushMatrix();
 			if(Minecraft.hasPaidCheckTime > 0L) {
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
 			if (this.mc.gameSettings.fastDebugMode != 2) {
-				font.drawStringWithShadow("Minecraft Beta 1.7.3 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Minecraft Beta 1.8.1 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -233,7 +235,7 @@ public class GuiIngame extends Gui {
 		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
-		if (this.mc.playerController.shouldDrawHUD() && chatTextWidget.isVisible()) {
+		if (chatTextWidget.isVisible()) {
 			int viewedLine = 0;
 			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size() - 1, (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
 				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {
