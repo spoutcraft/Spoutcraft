@@ -85,9 +85,9 @@ public class MCRenderDelegate implements RenderDelegate {
 			if (bar.isVisible()) {
 				for (int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
 					if (bubble < bubbles) {
-						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() + bubble * bar.getIconOffset(), (int) bar.getScreenY(), 16, 18, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() - bubble * bar.getIconOffset(), (int) bar.getScreenY(), 16, 18, 9, 9, 0f);
 					} else {
-						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() + bubble * bar.getIconOffset(), (int) bar.getScreenY(), 25, 18, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle((int) bar.getScreenX() - bubble * bar.getIconOffset(), (int) bar.getScreenY(), 25, 18, 9, 9, 0f);
 					}
 				}
 			}
