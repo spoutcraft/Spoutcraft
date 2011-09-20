@@ -32,7 +32,6 @@ public class MCRenderDelegate implements RenderDelegate {
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
 	MinecraftTessellator tessellator = new MinecraftTessellatorWrapper();
-	Random rand = new Random();
 
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
@@ -365,20 +364,26 @@ public class MCRenderDelegate implements RenderDelegate {
 				boolean full = (icon + 1) * healthPercentPerIcon <= healthPercent;
 				boolean half = (icon + 1) * healthPercentPerIcon < healthPercent + healthPercentPerIcon;
 				int x = (int) bar.getScreenX() + icon * bar.getIconOffset();
+				
+				int iconType = 16;
+
+				if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionPoison)) {
+					iconType += 36;
+				}
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9, 0f);
 				if (whiteOutlinedHearts) {
 					if (full) {
-						RenderUtil.drawTexturedModalRectangle(x, y, 70, 0, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 54, 0, 9, 9, 0f);
 					} else if (half) {
-						RenderUtil.drawTexturedModalRectangle(x, y, 79, 0, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 63, 0, 9, 9, 0f);
 					}
 				}
 
 				if (full) {
-					RenderUtil.drawTexturedModalRectangle(x, y, 52, 0, 9, 9, 0f);
+					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 36, 0, 9, 9, 0f);
 				} else if (half) {
-					RenderUtil.drawTexturedModalRectangle(x, y, 61, 0, 9, 9, 0f);
+					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, 0, 9, 9, 0f);
 				}
 
 			}
@@ -416,7 +421,6 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(HungerBar bar) {
 		if (bar.isVisible()) {
-			rand.setSeed(bar.getUpdateCounter() * 0x4c627);
 			
 			FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
 
@@ -436,7 +440,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				
 				if(Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0)
 				{
-					y += rand.nextInt(3) - 1;
+					y += GuiIngame.rand.nextInt(3) - 1;
 				}
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + foodOutline * 9, 27, 9, 9, 0f);
@@ -451,5 +455,23 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 		}
 
+	}
+	
+	public void render(ExpBar bar) {
+		if (bar.isVisible()) {
+            int expCap = Minecraft.theMinecraft.thePlayer.xpBarCap();
+            if(expCap > 0)
+            {
+                char c = '\266';
+                int x = (int) bar.getScreenX();
+                int y = (int) bar.getScreenY();
+                int exp = (Minecraft.theMinecraft.thePlayer.currentXP * (c + 1)) / expCap;
+                RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, c, 5, 0f);
+                if(exp > 0)
+                {
+                    RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
+                }
+            }
+		}
 	}
 }

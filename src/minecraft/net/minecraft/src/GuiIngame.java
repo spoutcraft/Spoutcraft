@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.player.ChatManager;
 //Spout End
@@ -96,29 +97,32 @@ public class GuiIngame extends Gui {
 		GuiIngame.rand.setSeed((long)(this.updateCounter * 312871));
 		int var15;
 		int var17;
-		
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/icons.png"));
-			
-			//Armor Bar Begin
-			mainScreen.getArmorBar().render();
-			//Armor Bar End
-			
-			//Health Bar Begin
-			mainScreen.getHealthBar().render();
-			//Health Bar End
+	
 
-			//Bubble Bar Begin
-			mainScreen.getBubbleBar().render();
-			//Bubble Bar End
-			
-		if(this.mc.playerController.shouldDrawHUD()) {
-			
-			//Hunger Bar Begin
+		if (this.mc.playerController.shouldDrawHUD()) {
+
+			// Hunger Bar Begin
 			mainScreen.getHungerBar().render();
-			//Hunger Bar End
+			// Hunger Bar End
 			
+			// Armor Bar Begin
+			mainScreen.getArmorBar().render();
+			// Armor Bar End
+
+			// Health Bar Begin
+			mainScreen.getHealthBar().render();
+			// Health Bar End
+
+			// Bubble Bar Begin
+			mainScreen.getBubbleBar().render();
+			// Bubble Bar End
+			
+			// Exp Bar Begin
+			mainScreen.getExpBar().render();
+			// Exp Bar End
+
 		}
-			
+
 			GL11.glDisable(3042 /*GL_BLEND*/);
 			GL11.glEnable('\u803a');
 			GL11.glPushMatrix();
