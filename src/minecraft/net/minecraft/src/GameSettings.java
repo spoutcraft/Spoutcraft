@@ -205,7 +205,7 @@ public class GameSettings {
 		}
 
 		if(this.mc.renderGlobal != null) {
-			this.mc.renderGlobal.markAllRenderersDirty();
+			this.mc.renderGlobal.updateAllRenderers();
 		}
 
 	}
@@ -238,7 +238,7 @@ public class GameSettings {
 					}
 				}
 			}*/
-			this.mc.renderGlobal.markAllRenderersDirty();
+			this.mc.renderGlobal.updateAllRenderers();
 		}
 	}
 //Spout End
@@ -297,14 +297,14 @@ public class GameSettings {
 		if(var1 == EnumOptions.GRAPHICS) {
 			this.fancyGraphics = !this.fancyGraphics;
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
 		if(var1 == EnumOptions.AMBIENT_OCCLUSION) {
 			this.ambientOcclusion = !this.ambientOcclusion;
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 //Spout Start
@@ -342,7 +342,7 @@ public class GameSettings {
 		if(var1 == EnumOptions.LOAD_FAR) {
 			this.ofLoadFar = !this.ofLoadFar;
 			if (this.mc.theWorld != null && !this.ofLoadFar) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
@@ -352,7 +352,7 @@ public class GameSettings {
 				this.ofPreloadedChunks = 0;
 			}
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
@@ -373,7 +373,7 @@ public class GameSettings {
 				this.ofTrees = 0;
 			}
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
@@ -385,7 +385,7 @@ public class GameSettings {
 
 			RenderBlocks.fancyGrass = Config.isGrassFancy();
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
@@ -467,7 +467,7 @@ public class GameSettings {
 				this.ofBetterGrass = 1;
 			}
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 
@@ -497,7 +497,7 @@ public class GameSettings {
 		if(var1 == EnumOptions.FAR_VIEW) {
 			this.ofFarView = !this.ofFarView;
 			if (this.mc.theWorld != null) {
-				this.mc.renderGlobal.markAllRenderersDirty();
+				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
 

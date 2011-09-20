@@ -124,24 +124,23 @@ public class WorldRenderer {
 
 			this.isVisible = true;
 			this.isVisibleFromPosition = false;
-			int var22 = this.posX;
-			int var2 = this.posY;
-			int var3 = this.posZ;
-			int var4 = this.posX + this.sizeWidth;
-			int var5 = this.posY + this.sizeHeight;
-			int var6 = this.posZ + this.sizeDepth;
+			int x = this.posX;
+			int y = this.posY;
+			int z = this.posZ;
+			int sizeXOffset = this.posX + this.sizeWidth;
+			int sizeYOffset = this.posY + this.sizeHeight;
+			int sizeZOffset = this.posZ + this.sizeDepth;
 
-			for(int var7 = 0; var7 < 3; ++var7) { //Spout
-				this.skipRenderPass[var7] = true;
+			for(int renderPass = 0; renderPass < 3; ++renderPass) { //Spout
+				this.skipRenderPass[renderPass] = true;
 			}
 
 			Chunk.isLit = false;
-			HashSet var8 = new HashSet();
-			var8.addAll(this.tileEntityRenderers);
+			HashSet tileRenderers = new HashSet();
+			tileRenderers.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
-			byte var9 = 1;
-			ChunkCache var10 = new ChunkCache(this.worldObj, var22 - var9, var2 - var9, var3 - var9, var4 + var9, var5 + var9, var6 + var9);
-			RenderBlocks var11 = new RenderBlocks(var10);
+			ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
+			RenderBlocks blockRenderer = new RenderBlocks(chunkCache);
 			
 			List<String> hitTextures = new ArrayList<String>();
 			List<String> hitTexturesPlugins = new ArrayList<String>();
@@ -151,10 +150,10 @@ public class WorldRenderer {
 			hitTextures.add("/terrain.png");
 			hitTexturesPlugins.add("");
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-			for (int var12 = 0; var12 < 3; ++var12) { //Spout
-				boolean var13 = false;
-				boolean var14 = false;
-				boolean var15 = false;
+			for (int renderPass = 0; renderPass < 3; ++renderPass) { //Spout
+				boolean skipRenderPass = false;
+				boolean rendered = false;
+				boolean drawBlock = false;
 
 				game.renderEngine.bindTexture(defaultTexture);
 				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {
@@ -170,17 +169,17 @@ public class WorldRenderer {
 						}
 					}
 					
-					for (int var16 = var2; var16 < var5; ++var16) {
-						for (int var17 = var3; var17 < var6; ++var17) {
-							for (int var18 = var22; var18 < var4; ++var18) {
-								int var19 = var10.getBlockId(var18, var16, var17);
+					for (int dy = y; dy < sizeYOffset; ++dy) {
+						for (int dz = z; dz < sizeZOffset; ++dz) {
+							for (int dx = x; dx < sizeXOffset; ++dx) {
+								int var19 = chunkCache.getBlockId(dx, dy, dz);
 								String customTexture = null; 
 								String customTexturePlugin = null;
 								SpoutCustomBlockDesign design = null;
-								if (SpoutItemBlock.isBlockOverride(var18, var16, var17)) {
-									design = SpoutItemBlock.getCustomBlockDesign(var18, var16, var17);
+								if (SpoutItemBlock.isBlockOverride(dx, dy, dz)) {
+									design = SpoutItemBlock.getCustomBlockDesign(dx, dy, dz);
 								} else {
-									int data = var10.getBlockMetadata(var18, var16, var17);
+									int data = chunkCache.getBlockMetadata(dx, dy, dz);
 									design = SpoutItemBlock.getCustomBlockDesign(var19, data);
 								}
 								if (design != null) {
@@ -204,11 +203,17 @@ public class WorldRenderer {
 								}
 								if (var19 > 0) {
 
-									if (!var15) {
-										var15 = true;
-										GL11.glNewList(this.glRenderList + var12, 4864 /* GL_COMPILE */);
-										tessellator.isLoadingChunk = true;
+									if (!drawBlock) {
+										drawBlock = true;
+										GL11.glNewList(this.glRenderList + renderPass, 4864 /* GL_COMPILE */);
+										Tessellator.isLoadingChunk = true;
+										GL11.glPushMatrix();
+										this.setupGLTranslation();
+										GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
+										GL11.glScalef(1F, 1F, 1F);
+										GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
 										tessellator.startDrawingQuads();
+										tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 									}
 									
 									if(tessellator.textureOverride != texture){
@@ -218,25 +223,25 @@ public class WorldRenderer {
 									}
 									
 
-									if (var12 == 0 && Block.isBlockContainer[var19]) {
-										TileEntity var20 = var10.getBlockTileEntity(var18, var16, var17);
+									if (renderPass == 0 && Block.isBlockContainer[var19]) {
+										TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
 										}
 									}
 
 									Block var25 = Block.blocksList[var19];
-									int var21 = var25.getRenderBlockPass();
+									int blockRenderPass = var25.getRenderBlockPass();
 									if (design != null) {
-										if (var12 == design.getRenderPass()) {
-											var14 |= SpoutItemBlock.renderCustomBlock(this, var11, design, var25, var18, var16, var17);
+										if (renderPass == design.getRenderPass()) {
+											rendered |= SpoutItemBlock.renderCustomBlock(this, blockRenderer, design, var25, dx, dy, dz);
 										} else {
-											var13 = true;
+											skipRenderPass = true;
 										}
-									} else if (var21 != var12) {
-										var13 = true;
+									} else if (blockRenderPass != renderPass) {
+										skipRenderPass = true;
 									} else {
-										var14 |= var11.renderBlockByRenderType(var25, var18, var16, var17);
+										rendered |= blockRenderer.renderBlockByRenderType(var25, dx, dy, dz);
 									}
 								}
 							}
@@ -244,32 +249,34 @@ public class WorldRenderer {
 					}
 				}
 
-				if (var15) {
+				if (drawBlock) {
 					tessellator.draw();
 					tessellator.textureOverride = 0;
+					GL11.glPopMatrix();
 					GL11.glEndList();
-					tessellator.isLoadingChunk = false;
+					Tessellator.isLoadingChunk = false;
 					game.renderEngine.bindTexture(defaultTexture);
+					tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
 				} else {
-					var14 = false;
+					rendered = false;
 				}
 
-				if (var14) {
-					this.skipRenderPass[var12] = false;
+				if (rendered) {
+					this.skipRenderPass[renderPass] = false;
 				}
 
-				if (!var13) {
+				if (!skipRenderPass) {
 					break;
 				}
 			}
 
 			HashSet var24 = new HashSet();
 			var24.addAll(this.tileEntityRenderers);
-			var24.removeAll(var8);
+			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
-			var8.removeAll(this.tileEntityRenderers);
+			tileRenderers.removeAll(this.tileEntityRenderers);
 			//Spout End
-			this.tileEntities.removeAll(var8);
+			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
 		}

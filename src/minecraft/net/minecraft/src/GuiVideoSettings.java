@@ -133,7 +133,7 @@ public class GuiVideoSettings extends GuiScreen {
 						settings.ofPreloadedChunks = 8;
 					}
 					settings.renderDistance = 0;
-					this.mc.renderGlobal.markAllRenderersDirty();
+					this.mc.renderGlobal.updateAllRenderers();
 				}
 				else if (fps > 100) {
 					settings.ofChunkUpdates = 2;
@@ -142,7 +142,7 @@ public class GuiVideoSettings extends GuiScreen {
 					settings.ofPreloadedChunks = 2;
 					settings.ofOcclusionFancy = true;
 					settings.renderDistance = 0;
-					this.mc.renderGlobal.markAllRenderersDirty();
+					this.mc.renderGlobal.updateAllRenderers();
 				}
 				else if (fps > 60) {
 					settings.ofPreloadedChunks = 0;
