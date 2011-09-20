@@ -15,7 +15,9 @@ import net.minecraft.src.TextureFX;
 public class TextureCompassFX extends TextureFX {
 
 	private Minecraft mc;
-	private int[] compassIconImageData = new int[256];
+//Spout HD Start
+	private int[] compassIconImageData = new int[TileSize.int_numPixels];
+//Spout HD End
 	private double field_4229_i;
 	private double field_4228_j;
 
