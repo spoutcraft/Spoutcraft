@@ -30,8 +30,8 @@ public class ArmorBar extends GenericWidget {
 
 	public ArmorBar() {
 		super();
-		setX(427 / 2 + 82); // 295
-		setY(208);
+		setX(427 / 2 - 91); // 122
+		setY(198);
 		setAnchor(WidgetAnchor.BOTTOM_CENTER);
 	}
 
@@ -63,7 +63,7 @@ public class ArmorBar extends GenericWidget {
 	@Override
 	public double getScreenX() {
 		double mid = getScreen() != null ? getScreen().getWidth() / 2 : 427 / 2D;
-		double diff = super.getScreenX() - mid - 376;
+		double diff = super.getScreenX() - mid - 31;
 		return getScreen() != null ? getScreen().getWidth() / 2D - diff : this.getX();
 	}
 
