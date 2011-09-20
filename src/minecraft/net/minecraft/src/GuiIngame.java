@@ -112,6 +112,10 @@ public class GuiIngame extends Gui {
 			mainScreen.getBubbleBar().render();
 			//Bubble Bar End
 			
+			//Hunger Bar Begin
+			mainScreen.getHungerBar().render();
+			//Hunger Bar End
+			
 			GL11.glDisable(3042 /*GL_BLEND*/);
 			GL11.glEnable('\u803a');
 			GL11.glPushMatrix();
