@@ -897,7 +897,7 @@ public class EntityRenderer {
 				}
 
 				GL11.glColorMask(false, false, false, false);
-				int var22 = var5.sortAndRender(var4, 1, (double)var1); //Spout
+				int var22 = var5.sortAndRender(var4, 2, (double)var1); //Spout
 				if(this.mc.gameSettings.anaglyph) {
 					if(anaglyphField == 0) {
 						GL11.glColorMask(false, true, true, true);
