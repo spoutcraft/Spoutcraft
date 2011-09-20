@@ -429,14 +429,14 @@ public class MCRenderDelegate implements RenderDelegate {
 			int foodIcon = 16;
 			byte foodOutline = 0;
 			
+			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
+				foodIcon += 36;
+				foodOutline = 13;
+			}
+			
 			for (int icon = 0; icon < bar.getNumOfIcons(); icon++) {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 				int y = (int) bar.getScreenY();
-				
-				if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
-					foodIcon += 36;
-					foodOutline = 13;
-				}
 				
 				if(Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0)
 				{
