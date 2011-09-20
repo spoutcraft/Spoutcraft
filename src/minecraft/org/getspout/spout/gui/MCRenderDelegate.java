@@ -2,6 +2,7 @@ package org.getspout.spout.gui;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -31,6 +32,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
 	MinecraftTessellator tessellator = new MinecraftTessellatorWrapper();
+	Random rand = new Random();
 
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
@@ -414,7 +416,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(HungerBar bar) {
 		if (bar.isVisible()) {
-			int y = (int) bar.getScreenY();
+			rand.setSeed(bar.getUpdateCounter() * 0x4c627);
 			
 			FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
 
@@ -422,14 +424,20 @@ public class MCRenderDelegate implements RenderDelegate {
 
 			int foodIcon = 16;
 			byte foodOutline = 0;
-
-			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
-				foodIcon += 36;
-				foodOutline = 13;
-			}
 			
-			for (int icon = 0; icon < 10; icon++) {
+			for (int icon = 0; icon < bar.getNumOfIcons(); icon++) {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
+				int y = (int) bar.getScreenY();
+				
+				if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
+					foodIcon += 36;
+					foodOutline = 13;
+				}
+				
+				if(Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0)
+				{
+					y += rand.nextInt(3) - 1;
+				}
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + foodOutline * 9, 27, 9, 9, 0f);
 
