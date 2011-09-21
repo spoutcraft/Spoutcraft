@@ -1,7 +1,7 @@
 # Compiled source #
 ###################
-bin/
-target/
+bin
+target
 *.com
 *.class
 *.dll
@@ -11,12 +11,10 @@ target/
 
 # Git #
 #######
-.git/
+.git
 
 # Packages #
 ############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
 *.7z
 *.dmg
 *.gz
@@ -47,9 +45,9 @@ MANIFEST.MF
 
 # Netbeans files #
 ##################
-build/
-dist/
-nbproject/
+build
+dist
+nbproject
 build.xml
 
 # Minecraft Coder Pack #
@@ -59,21 +57,21 @@ cleanup.bat
 cleanup.sh
 decompile.bat
 decompile.sh
-docs/
-eclipse/
-jars/
-logs/
+docs
+eclipse
+jars
+logs
 recompile.bat
 recompile.sh
-reobf/
+reobf
 reobfuscate.bat
 reobfuscate.sh
-runtime/
+runtime
 startclient.bat
 startclient.sh
 startserver.bat
 startserver.sh
-temp/
+temp
 updatemcp.bat
 updatemcp.sh
 updatemd5.bat
