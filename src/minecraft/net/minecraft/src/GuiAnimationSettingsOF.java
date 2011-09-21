@@ -56,12 +56,10 @@ public class GuiAnimationSettingsOF extends GuiScreen {
 				this.mc.displayGuiScreen(this.prevScreen);
 			}
 
-			if(var1.id != EnumOptions.CLOUD_HEIGHT.ordinal()) {
-				ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-				int var3 = var2.getScaledWidth();
-				int var4 = var2.getScaledHeight();
-				this.setWorldAndResolution(this.mc, var3, var4);
-			}
+			ScaledResolution var2 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+			int var3 = var2.getScaledWidth();
+			int var4 = var2.getScaledHeight();
+			this.setWorldAndResolution(this.mc, var3, var4);
 
 		}
 	}

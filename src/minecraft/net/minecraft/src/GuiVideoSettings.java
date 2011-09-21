@@ -21,7 +21,7 @@ public class GuiVideoSettings extends GuiScreen {
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
 	//Spout Start
-	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.BRIGHTNESS};
+	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.GAMMA};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -197,7 +197,7 @@ public class GuiVideoSettings extends GuiScreen {
 				}
 			}
 
-			if(var1.id != EnumOptions.BRIGHTNESS.ordinal() && var1.id != EnumOptions.AO_LEVEL.ordinal()) {
+			if(var1.id != EnumOptions.GAMMA.ordinal() && var1.id != EnumOptions.AO_LEVEL.ordinal()) {
 				ScaledResolution var6 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 				int var3 = var6.getScaledWidth();
 				int var4 = var6.getScaledHeight();

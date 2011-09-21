@@ -40,10 +40,9 @@ public class GameSettings {
 	public int ofPreloadedChunks = 0;
 	public boolean ofOcclusionFancy = false;
 	public boolean ofSmoothFps = false;
-	public float ofBrightness = 0.0F;
-	public float ofAoLevel = 0.0F;
+	public float ofAoLevel = 1.0F;
 	public int ofClouds = 0;
-	public float ofCloudsHeight = 0.0F;
+	public float ofCloudsHeight = 1.0F;
 	public int ofTrees = 0;
 	public int ofGrass = 0;
 	public int ofRain = 0;
@@ -182,9 +181,10 @@ public class GameSettings {
 			this.gammaSetting = var2;
 		}
 //Spout Start
-		if(var1 == EnumOptions.BRIGHTNESS) {
-			this.ofBrightness = var2;
-			this.updateWorldLightLevels();
+		if(var1 == EnumOptions.GAMMA) {
+			this.gammaSetting = var2;
+			//this.ofBrightness = var2;
+			//this.updateWorldLightLevels();
 		}
 
 		if(var1 == EnumOptions.CLOUD_HEIGHT) {
@@ -517,7 +517,7 @@ public class GameSettings {
 	}
 
 	public float getOptionFloatValue(EnumOptions var1) {
-		return var1 == EnumOptions.FOV?this.fovSetting:(var1 == EnumOptions.GAMMA?this.gammaSetting:(var1 == EnumOptions.MUSIC?this.musicVolume:(var1 == EnumOptions.SOUND?this.soundVolume:(var1 == EnumOptions.SENSITIVITY?this.mouseSensitivity:(var1 == EnumOptions.BRIGHTNESS?this.ofBrightness:(var1 == EnumOptions.CLOUD_HEIGHT?this.ofCloudsHeight:(var1 == EnumOptions.AO_LEVEL?this.ofAoLevel:0.0F))))))); //Spout
+		return var1 == EnumOptions.FOV?this.fovSetting:(var1 == EnumOptions.GAMMA?this.gammaSetting:(var1 == EnumOptions.MUSIC?this.musicVolume:(var1 == EnumOptions.SOUND?this.soundVolume:(var1 == EnumOptions.SENSITIVITY?this.mouseSensitivity:(var1 == EnumOptions.GAMMA?this.gammaSetting:(var1 == EnumOptions.CLOUD_HEIGHT?this.ofCloudsHeight:(var1 == EnumOptions.AO_LEVEL?this.ofAoLevel:0.0F))))))); //Spout
 	}
 
 	public boolean getOptionOrdinalValue(EnumOptions var1) {
@@ -828,12 +828,6 @@ public class GameSettings {
 						this.ofSmoothFps = Boolean.valueOf(var3[1]).booleanValue();
 					}
 
-					if(var3[0].equals("ofBrightness") && var3.length >= 2) {
-						this.ofBrightness = Float.valueOf(var3[1]).floatValue();
-						this.ofBrightness = Config.limit(this.ofBrightness, 0.0F, 1.0F);
-						this.updateWorldLightLevels();
-					}
-
 					if(var3[0].equals("ofAoLevel") && var3.length >= 2) {
 						this.ofAoLevel = Float.valueOf(var3[1]).floatValue();
 						this.ofAoLevel = Config.limit(this.ofAoLevel, 0.0F, 1.0F);
@@ -1004,7 +998,6 @@ public class GameSettings {
 			var1.println("ofPreloadedChunks:" + this.ofPreloadedChunks);
 			var1.println("ofOcclusionFancy:" + this.ofOcclusionFancy);
 			var1.println("ofSmoothFps:" + this.ofSmoothFps);
-			var1.println("ofBrightness:" + this.ofBrightness);
 			var1.println("ofAoLevel:" + this.ofAoLevel);
 			var1.println("ofClouds:" + this.ofClouds);
 			var1.println("ofCloudsHeight:" + this.ofCloudsHeight);

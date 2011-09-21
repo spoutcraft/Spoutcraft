@@ -770,7 +770,7 @@ public class EntityRenderer {
 		if(this.mc != null) {
 			if(this.mc.theWorld != null) {
 				if(this.mc.theWorld.worldProvider != null) {
-					float var1 = this.mc.gameSettings.ofBrightness;
+					float var1 = this.mc.gameSettings.gammaSetting;
 					float[] var2 = this.mc.theWorld.worldProvider.lightBrightnessTable;
 					float var3 = 0.05F;
 					if(this.mc.theWorld.worldProvider != null && this.mc.theWorld.worldProvider.isNether) {
