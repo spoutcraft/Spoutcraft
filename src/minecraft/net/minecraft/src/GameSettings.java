@@ -540,15 +540,15 @@ public class GameSettings {
 	public String getKeyBinding(EnumOptions var1) {
 		StringTranslate var2 = StringTranslate.getInstance();
 //Spout Start
-		String var3 = var2.translateKey(var1.getEnumString());
-		if(var3 == null) {
-			var3 = var1.getEnumString();
+		String var4 = var2.translateKey(var1.getEnumString());
+		if(var4 == null) {
+			var4 = var1.getEnumString();
 		}
 
-		String var4 = var3 + ": ";
+		var4 += ": ";
 		if(var1.getEnumFloat()) {
 			float var6 = this.getOptionFloatValue(var1);
-			return var1 == EnumOptions.SENSITIVITY?(var6 == 0.0F?var4 + var2.translateKey("options.sensitivity.min"):(var6 == 1.0F?var4 + var2.translateKey("options.sensitivity.max"):var4 + (int)(var6 * 200.0F) + "%")):(var6 == 0.0F?var4 + var2.translateKey("options.off"):var4 + (int)(var6 * 100.0F) + "%");
+			return var1 == EnumOptions.SENSITIVITY?(var6 == 0.0F?var4 + var2.translateKey("options.sensitivity.min"):(var6 == 1.0F?var4 + var2.translateKey("options.sensitivity.max"):var4 + (int)(var6 * 200.0F) + "%")):(var1 == EnumOptions.FOV?(var6 == 0.0F?var4 + var2.translateKey("options.fov.min"):(var6 == 1.0F?var4 + var2.translateKey("options.fov.max"):var4 + (int)(70.0F + var6 * 40.0F))):(var1 == EnumOptions.GAMMA?(var6 == 0.0F?var4 + var2.translateKey("options.gamma.min"):(var6 == 1.0F?var4 + var2.translateKey("options.gamma.max"):var4 + "+" + (int)(var6 * 100.0F) + "%")):(var6 == 0.0F?var4 + var2.translateKey("options.off"):var4 + (int)(var6 * 100.0F) + "%")));
 		} else if(var1 == EnumOptions.ADVANCED_OPENGL) {
 			return !this.advancedOpengl?var4 + "OFF":(this.ofOcclusionFancy?var4 + "Fancy":var4 + "Fast");
 		} else if(var1.getEnumBoolean()) {
