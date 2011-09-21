@@ -167,46 +167,6 @@ public class Config {
 		return var0 < var1?var1:(var0 > var2?var2:var0);
 	}
 
-	public static boolean isAnimatedWater() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedWater != 2:true;
-	}
-
-	public static boolean isGeneratedWater() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedWater == 1:true;
-	}
-
-	public static boolean isAnimatedPortal() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedPortal:true;
-	}
-
-	public static boolean isAnimatedLava() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedLava != 2:true;
-	}
-
-	public static boolean isGeneratedLava() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedLava == 1:true;
-	}
-
-	public static boolean isAnimatedFire() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedFire:true;
-	}
-
-	public static boolean isAnimatedRedstone() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedRedstone:true;
-	}
-
-	public static boolean isAnimatedExplosion() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedExplosion:true;
-	}
-
-	public static boolean isAnimatedFlame() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedFlame:true;
-	}
-
-	public static boolean isAnimatedSmoke() {
-		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAnimatedSmoke:true;
-	}
-
 	public static float getAmbientOcclusionLevel() {
 		return Minecraft.theMinecraft.gameSettings != null?Minecraft.theMinecraft.gameSettings.ofAoLevel:0.0F;
 	}
