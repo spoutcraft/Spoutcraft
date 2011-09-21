@@ -83,62 +83,57 @@ public class GuiIngame extends Gui {
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/gui.png"));
+		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/gui.png"));
 		InventoryPlayer var11 = this.mc.thePlayer.inventory;
 		this.zLevel = -90.0F;
 		this.drawTexturedModalRect(screenWidth / 2 - 91, screenHeight - 22, 0, 0, 182, 22);
 		this.drawTexturedModalRect(screenWidth / 2 - 91 - 1 + var11.currentItem * 20, screenHeight - 22 - 1, 0, 22, 24, 22);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/icons.png"));
-		GL11.glEnable(3042 /*GL_BLEND*/);
+		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/icons.png"));
+		GL11.glEnable(3042 /* GL_BLEND */);
 		GL11.glBlendFunc(775, 769);
 		this.drawTexturedModalRect(screenWidth / 2 - 7, screenHeight / 2 - 7, 0, 0, 16, 16);
-		GL11.glDisable(3042 /*GL_BLEND*/);
-		
-		GuiIngame.rand.setSeed((long)(this.updateCounter * 312871));
+		GL11.glDisable(3042 /* GL_BLEND */);
+
+		GuiIngame.rand.setSeed((long) (this.updateCounter * 312871));
 		int var15;
 		int var17;
-	
 
-		if (this.mc.playerController.shouldDrawHUD()) {
+		// Hunger Bar Begin
+		mainScreen.getHungerBar().render();
+		// Hunger Bar End
 
-			// Hunger Bar Begin
-			mainScreen.getHungerBar().render();
-			// Hunger Bar End
-			
-			// Armor Bar Begin
-			mainScreen.getArmorBar().render();
-			// Armor Bar End
+		// Armor Bar Begin
+		mainScreen.getArmorBar().render();
+		// Armor Bar End
 
-			// Health Bar Begin
-			mainScreen.getHealthBar().render();
-			// Health Bar End
+		// Health Bar Begin
+		mainScreen.getHealthBar().render();
+		// Health Bar End
 
-			// Bubble Bar Begin
-			mainScreen.getBubbleBar().render();
-			// Bubble Bar End
-			
-			// Exp Bar Begin
-			mainScreen.getExpBar().render();
-			// Exp Bar End
+		// Bubble Bar Begin
+		mainScreen.getBubbleBar().render();
+		// Bubble Bar End
 
+		// Exp Bar Begin
+		mainScreen.getExpBar().render();
+		// Exp Bar End
+
+		GL11.glDisable(3042 /* GL_BLEND */);
+		GL11.glEnable('\u803a');
+		GL11.glPushMatrix();
+		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
+		RenderHelper.enableStandardItemLighting();
+		GL11.glPopMatrix();
+
+		for (var15 = 0; var15 < 9; ++var15) {
+			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
+			var17 = screenHeight - 16 - 3;
+			this.renderInventorySlot(var15, x, var17, var1);
 		}
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable('\u803a');
 
-			GL11.glDisable(3042 /*GL_BLEND*/);
-			GL11.glEnable('\u803a');
-			GL11.glPushMatrix();
-			GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-			RenderHelper.enableStandardItemLighting();
-			GL11.glPopMatrix();
-
-			for(var15 = 0; var15 < 9; ++var15) {
-				int x = screenWidth / 2 - 90 + var15 * 20 + 2;
-				var17 = screenHeight - 16 - 3;
-				this.renderInventorySlot(var15, x, var17, var1);
-			}
-			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable('\u803a');
-		
-		if(this.mc.thePlayer.func_22060_M() > 0) {
+		if (this.mc.thePlayer.func_22060_M() > 0) {
 			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 			var15 = this.mc.thePlayer.func_22060_M();
@@ -270,7 +265,9 @@ public class GuiIngame extends Gui {
 		}
 
 		GL11.glPopMatrix();
-		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed) {
+		
+		ServerPlayerList playerList = mainScreen.getServerPlayerList();
+		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed && playerList.isVisible()) {
 			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
 			List var44 = var41.field_35786_c;
 			int var40 = var41.field_35785_d;

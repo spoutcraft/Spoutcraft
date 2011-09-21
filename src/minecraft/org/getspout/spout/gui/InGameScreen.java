@@ -30,6 +30,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected ArmorBar armor;
 	protected HungerBar hunger;
 	protected ExpBar exp;
+	protected ServerPlayerList playerList;
 	protected PopupScreen activePopup = null;
 	
 	public InGameScreen() {
@@ -40,8 +41,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.armor = new ArmorBar();
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
+		this.playerList = new ServerPlayerList();
 		
-		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp);
+		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
 	}
 	
 	public int getVersion() {
@@ -84,6 +86,8 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 			hunger = (HungerBar)widget;
 		else if (widget instanceof ExpBar)
 			exp = (ExpBar)widget;
+		else if (widget instanceof ServerPlayerList)
+			playerList = (ServerPlayerList)widget;
 		return super.updateWidget(widget);
 	}
 
@@ -103,6 +107,8 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 			throw new UnsupportedOperationException("Cannot remove the hunger bar. Use setVisible(false) to hide it instead");
 		if (widget instanceof ExpBar)
 			throw new UnsupportedOperationException("Cannot remove the exp bar. Use setVisible(false) to hide it instead");
+		if (widget instanceof ServerPlayerList)
+			throw new UnsupportedOperationException("Cannot remove the player list. Use setVisisble(false) to hide it instead");
 		return super.removeWidget(widget);
 	}
 	
@@ -147,6 +153,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		return exp;
 	}
 	
+	public ServerPlayerList getServerPlayerList() {
+		return playerList;
+	}
+	
 	public PopupScreen getActivePopup() {
 		return activePopup;
 	}
@@ -189,7 +199,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 
 	public static boolean isCustomWidget(Widget widget) {
-		return widget instanceof HealthBar || widget instanceof BubbleBar || widget instanceof ChatTextBox || widget instanceof ChatBar || widget instanceof ArmorBar || widget instanceof HungerBar || widget instanceof ExpBar;
+		return widget instanceof HealthBar || widget instanceof BubbleBar || widget instanceof ChatTextBox || widget instanceof ChatBar || widget instanceof ArmorBar || widget instanceof HungerBar || widget instanceof ExpBar || widget instanceof ServerPlayerList;
 	}
 
 	public ScreenType getScreenType() {
