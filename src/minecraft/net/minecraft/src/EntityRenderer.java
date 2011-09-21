@@ -622,21 +622,21 @@ public class EntityRenderer {
 			long var5 = var3 % 24000L;
 			if(Config.isTimeDayOnly()) {
 				if(var5 <= 1000L) {
-					world.setWorldTime(var3 - var5 + 1001L);
+					world.worldInfo.setWorldTime(var3 - var5 + 1001L);
 				}
 
 				if(var5 >= 11000L) {
-					world.setWorldTime(var3 - var5 + 24001L);
+					world.worldInfo.setWorldTime(var3 - var5 + 24001L);
 				}
 			}
 
 			if(Config.isTimeNightOnly()) {
 				if(var5 <= 14000L) {
-					world.setWorldTime(var3 - var5 + 14001L);
+					world.worldInfo.setWorldTime(var3 - var5 + 14001L);
 				}
 
 				if(var5 >= 22000L) {
-					world.setWorldTime(var3 - var5 + 24000L + 14001L);
+					world.worldInfo.setWorldTime(var3 - var5 + 24000L + 14001L);
 				}
 			}
 		}
