@@ -65,12 +65,11 @@ public class GuiVideoSettings extends GuiScreen {
 		//Spout Start
 		var5 = this.height / 6 + 21 * (var2 / 2) - 10;
 		int var9 = this.width / 2 - 155 + 0;
-		if (this.mc.theWorld != null) {
-			this.controlList.add(new GuiButton(201, this.width / 2 - 100 - 55, this.height / 6 + 168 - 10, 310, 20, "Optimize Video Settings For This Computer"));
-		}
-		this.controlList.add(new GuiSmallButton(100, var9, var5, "Animations..."));
-		var9 = this.width / 2 - 155 + 160;
 		this.controlList.add(new GuiSmallButton(101, var9, var5, "Details..."));
+		var9 = this.width / 2 - 155 + 160;
+		if (this.mc.theWorld != null) {
+			this.controlList.add(new GuiSmallButton(201, var9, var5, "Optimize Video Settings"));
+		}
 		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168 + 11, var1.translateKey("gui.done")));
 		//Spout End
 	}
@@ -104,12 +103,6 @@ public class GuiVideoSettings extends GuiScreen {
 			if(var1.id == 200) {
 				this.mc.gameSettings.saveOptions();
 				this.mc.displayGuiScreen(this.parentGuiScreen);
-			}
-
-			if(var1.id == 100) {
-				this.mc.gameSettings.saveOptions();
-				GuiAnimationSettingsOF var3 = new GuiAnimationSettingsOF(this, this.guiGameSettings);
-				this.mc.displayGuiScreen(var3);
 			}
 
 			if(var1.id == 101) {

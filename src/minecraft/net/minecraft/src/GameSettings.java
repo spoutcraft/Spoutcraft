@@ -58,14 +58,6 @@ public class GameSettings {
 	public boolean ofFarView = false;
 	public int ofTime = 0;
 	public boolean ofClearWater = false;
-	public int ofAnimatedWater = 0;
-	public int ofAnimatedLava = 0;
-	public boolean ofAnimatedFire = true;
-	public boolean ofAnimatedPortal = true;
-	public boolean ofAnimatedRedstone = true;
-	public boolean ofAnimatedExplosion = true;
-	public boolean ofAnimatedFlame = true;
-	public boolean ofAnimatedSmoke = true;
 	public static final int DEFAULT = 0;
 	public static final int FAST = 1;
 	public static final int FANCY = 2;
@@ -403,50 +395,6 @@ public class GameSettings {
 			}
 		}
 
-		if(var1 == EnumOptions.ANIMATED_WATER) {
-			++this.ofAnimatedWater;
-			if(this.ofAnimatedWater > 2) {
-				this.ofAnimatedWater = 0;
-			}
-
-			this.mc.renderEngine.refreshTextures();
-		}
-
-		if(var1 == EnumOptions.ANIMATED_LAVA) {
-			++this.ofAnimatedLava;
-			if(this.ofAnimatedLava > 2) {
-				this.ofAnimatedLava = 0;
-			}
-
-			this.mc.renderEngine.refreshTextures();
-		}
-
-		if(var1 == EnumOptions.ANIMATED_FIRE) {
-			this.ofAnimatedFire = !this.ofAnimatedFire;
-			this.mc.renderEngine.refreshTextures();
-		}
-
-		if(var1 == EnumOptions.ANIMATED_PORTAL) {
-			this.ofAnimatedPortal = !this.ofAnimatedPortal;
-			this.mc.renderEngine.refreshTextures();
-		}
-
-		if(var1 == EnumOptions.ANIMATED_REDSTONE) {
-			this.ofAnimatedRedstone = !this.ofAnimatedRedstone;
-		}
-
-		if(var1 == EnumOptions.ANIMATED_EXPLOSION) {
-			this.ofAnimatedExplosion = !this.ofAnimatedExplosion;
-		}
-
-		if(var1 == EnumOptions.ANIMATED_FLAME) {
-			this.ofAnimatedFlame = !this.ofAnimatedFlame;
-		}
-
-		if(var1 == EnumOptions.ANIMATED_SMOKE) {
-			this.ofAnimatedSmoke = !this.ofAnimatedSmoke;
-		}
-
 		if(var1 == EnumOptions.FAST_DEBUG_INFO) {
 			fastDebugMode++;
 			if (fastDebugMode > 2) {
@@ -627,36 +575,6 @@ public class GameSettings {
 			default:
 				return var4 + "Default";
 			}
-		} else if(var1 == EnumOptions.ANIMATED_WATER) {
-			switch(this.ofAnimatedWater) {
-			case 1:
-				return var4 + "Dynamic";
-			case 2:
-				return var4 + "OFF";
-			default:
-				return var4 + "ON";
-			}
-		} else if(var1 == EnumOptions.ANIMATED_LAVA) {
-			switch(this.ofAnimatedLava) {
-			case 1:
-				return var4 + "Dynamic";
-			case 2:
-				return var4 + "OFF";
-			default:
-				return var4 + "ON";
-			}
-		} else if(var1 == EnumOptions.ANIMATED_FIRE) {
-			return this.ofAnimatedFire?var4 + "ON":var4 + "OFF";
-		} else if(var1 == EnumOptions.ANIMATED_PORTAL) {
-			return this.ofAnimatedPortal?var4 + "ON":var4 + "OFF";
-		} else if(var1 == EnumOptions.ANIMATED_REDSTONE) {
-			return this.ofAnimatedRedstone?var4 + "ON":var4 + "OFF";
-		} else if(var1 == EnumOptions.ANIMATED_EXPLOSION) {
-			return this.ofAnimatedExplosion?var4 + "ON":var4 + "OFF";
-		} else if(var1 == EnumOptions.ANIMATED_FLAME) {
-			return this.ofAnimatedFlame?var4 + "ON":var4 + "OFF";
-		} else if(var1 == EnumOptions.ANIMATED_SMOKE) {
-			return this.ofAnimatedSmoke?var4 + "ON":var4 + "OFF";
 		} else if(var1 == EnumOptions.FAST_DEBUG_INFO) {
 			if (fastDebugMode == 0) {
 				return var4 + "OFF";
@@ -864,40 +782,6 @@ public class GameSettings {
 						this.ofWater = Config.limit(this.ofWater, 0, 3);
 					}
 
-					if(var3[0].equals("ofAnimatedWater") && var3.length >= 2) {
-						this.ofAnimatedWater = Integer.valueOf(var3[1]).intValue();
-						this.ofAnimatedWater = Config.limit(this.ofAnimatedWater, 0, 2);
-					}
-
-					if(var3[0].equals("ofAnimatedLava") && var3.length >= 2) {
-						this.ofAnimatedLava = Integer.valueOf(var3[1]).intValue();
-						this.ofAnimatedLava = Config.limit(this.ofAnimatedLava, 0, 2);
-					}
-
-					if(var3[0].equals("ofAnimatedFire") && var3.length >= 2) {
-						this.ofAnimatedFire = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
-					if(var3[0].equals("ofAnimatedPortal") && var3.length >= 2) {
-						this.ofAnimatedPortal = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
-					if(var3[0].equals("ofAnimatedRedstone") && var3.length >= 2) {
-						this.ofAnimatedRedstone = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
-					if(var3[0].equals("ofAnimatedExplosion") && var3.length >= 2) {
-						this.ofAnimatedExplosion = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
-					if(var3[0].equals("ofAnimatedFlame") && var3.length >= 2) {
-						this.ofAnimatedFlame = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
-					if(var3[0].equals("ofAnimatedSmoke") && var3.length >= 2) {
-						this.ofAnimatedSmoke = Boolean.valueOf(var3[1]).booleanValue();
-					}
-
 					if(var3[0].equals("fastDebugMode") && var3.length >= 2) {
 						this.fastDebugMode = (byte) Integer.valueOf(var3[1]).intValue();
 					}
@@ -1005,14 +889,6 @@ public class GameSettings {
 			var1.println("ofGrass:" + this.ofGrass);
 			var1.println("ofRain:" + this.ofRain);
 			var1.println("ofWater:" + this.ofWater);
-			var1.println("ofAnimatedWater:" + this.ofAnimatedWater);
-			var1.println("ofAnimatedLava:" + this.ofAnimatedLava);
-			var1.println("ofAnimatedFire:" + this.ofAnimatedFire);
-			var1.println("ofAnimatedPortal:" + this.ofAnimatedPortal);
-			var1.println("ofAnimatedRedstone:" + this.ofAnimatedRedstone);
-			var1.println("ofAnimatedExplosion:" + this.ofAnimatedExplosion);
-			var1.println("ofAnimatedFlame:" + this.ofAnimatedFlame);
-			var1.println("ofAnimatedSmoke:" + this.ofAnimatedSmoke);
 			var1.println("fastDebugMode:" + this.fastDebugMode);
 			var1.println("ofAutoSaveTicks:" + this.ofAutoSaveTicks);
 			var1.println("ofBetterGrass:" + this.ofBetterGrass);
