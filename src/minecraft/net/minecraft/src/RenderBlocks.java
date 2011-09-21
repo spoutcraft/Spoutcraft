@@ -2569,6 +2569,7 @@ public class RenderBlocks {
 
 	public boolean renderStandardBlockWithAmbientOcclusion(Block var1, int var2, int var3, int var4, float var5, float var6, float var7) {
 		this.enableAO = true;
+		boolean rendered = false;
 		boolean var8 = Config.getAmbientOcclusionLevel() > 0.0F; //Spout
 		float var9 = this.lightValueOwn;
 		float var10 = this.lightValueOwn;
@@ -2733,7 +2734,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			this.renderBottomFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 0));
-			var8 = true;
+			rendered = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
@@ -2812,7 +2813,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			this.renderTopFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 1));
-			var8 = true;
+			rendered = true;
 		}
 
 		int var26;
@@ -2932,7 +2933,7 @@ public class RenderBlocks {
 				this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			var8 = true;
+			rendered = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 + 1, 3)) {
@@ -3051,7 +3052,7 @@ public class RenderBlocks {
 				this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			var8 = true;
+			rendered = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
@@ -3170,7 +3171,7 @@ public class RenderBlocks {
 				this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			var8 = true;
+			rendered = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 + 1, var3, var4, 5)) {
@@ -3289,11 +3290,11 @@ public class RenderBlocks {
 				this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			var8 = true;
+			rendered = true;
 		}
 
 		this.enableAO = false;
-		return var8;
+		return rendered;
 	}
 
 	private int func_35924_c(int var1, int var2, int var3, int var4) {
