@@ -9,7 +9,27 @@ public class TileEntitySign extends TileEntity {
 	public int lineBeingEdited = -1;
 	public int columnBeingEdited; //Spoutcraft
 	private boolean isEditable = true;
-
+	//Spout start
+	private byte text = -1; //-1 means invalid cache, 0 means false, 1 means true
+	
+	public boolean hasText() {
+		if (text != -1) {
+			return text != 0;
+		}
+		text = 0;
+		for (int i = 0; i < signText.length; i++) {
+			if (signText[i] != null && !signText[i].isEmpty()) {
+				text = 1;
+				break;
+			}
+		}
+		return text != 0;
+	}
+	
+	public void recalculateText() {
+		text = -1;
+	}
+	//Spout end
 
 	public void writeToNBT(NBTTagCompound var1) {
 		super.writeToNBT(var1);
@@ -29,6 +49,9 @@ public class TileEntitySign extends TileEntity {
 				this.signText[var2] = this.signText[var2].substring(0, 15);
 			}
 		}
+		//Spout start
+		recalculateText();
+		//Spout end
 
 	}
 }

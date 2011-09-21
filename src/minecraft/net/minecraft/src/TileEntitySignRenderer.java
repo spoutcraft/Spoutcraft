@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.SignModel;
@@ -20,8 +21,8 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		float var12;
 		if(var9 == Block.signPost) {
 			GL11.glTranslatef((float)var2 + 0.5F, (float)var4 + 0.75F * var10, (float)var6 + 0.5F);
-			float var11 = (float)(var1.getBlockMetadata() * 360) / 16.0F;
-			GL11.glRotatef(-var11, 0.0F, 1.0F, 0.0F);
+			var12 = (float)(var1.getBlockMetadata() * 360) / 16.0F; //Spout (swapped from var11 to var12, var12 is the pitch)
+			GL11.glRotatef(-var12, 0.0F, 1.0F, 0.0F); //Spout (swapped from var11 to var12)
 			this.signModel.signStick.showModel = true;
 		} else {
 			int var16 = var1.getBlockMetadata();
@@ -49,6 +50,13 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(var10, -var10, -var10);
 		this.signModel.renderSign();
 		GL11.glPopMatrix();
+		//Spout start
+		if (var1.hasText()) {
+		EntityLiving viewer = Minecraft.theMinecraft.renderViewEntity;
+		if (viewer == null) {
+			viewer = Minecraft.theMinecraft.thePlayer;
+		}
+		if (viewer != null && var1.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < 64) {
 		FontRenderer var17 = this.getFontRenderer();
 		var12 = 0.016666668F * var10;
 		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);
@@ -77,6 +85,9 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glDepthMask(true);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		}
+		}
+		//Spout end
 		GL11.glPopMatrix();
 	}
 

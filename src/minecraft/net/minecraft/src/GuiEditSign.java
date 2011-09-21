@@ -35,7 +35,7 @@ public class GuiEditSign extends GuiScreen {
 		if(this.mc.theWorld.multiplayerWorld) {
 			this.mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
 		}
-
+		entitySign.recalculateText();
 	}
 
 	public void updateScreen() {
@@ -123,6 +123,7 @@ public class GuiEditSign extends GuiScreen {
 				entitySign.signText[editLine] = line;
 			}
 		}
+		entitySign.recalculateText();
 	}
 	//Spoutcraft End
 
