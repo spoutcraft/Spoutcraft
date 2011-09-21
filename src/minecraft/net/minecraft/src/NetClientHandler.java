@@ -153,6 +153,9 @@ public class NetClientHandler extends NetHandler {
 		this.mc.statFileWriter.readStat(StatList.joinMultiplayerStat, 1);
 		this.worldClient = new WorldClient(this, new WorldSettings(var1.mapSeed, var1.field_35249_d, false), var1.field_35250_e, var1.field_35247_f);
 		this.worldClient.multiplayerWorld = true;
+		//Spout start
+		this.worldClient.setMapHeight(var1.field_35248_g);
+		//Spout end
 		this.mc.changeWorld1(this.worldClient);
 		this.mc.thePlayer.dimension = var1.field_35250_e;
 		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));

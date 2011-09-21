@@ -60,8 +60,8 @@ public class World implements IBlockAccess {
 
 	public final int field_35473_a;
 	public final int field_35471_b;
-	public final int field_35472_c;
-	public final int field_35469_d;
+	public int field_35472_c; //Spout removed final - Map Height
+	public int field_35469_d; //Spout removed final - Map Height - 1
 	public final int field_35470_e;
 	public boolean scheduledUpdatesAreImmediate;
 	public List loadedEntityList;
@@ -2828,6 +2828,11 @@ public class World implements IBlockAccess {
 				ep.doFancyStuff();
 			}
 		}
+	}
+	
+	public void setMapHeight(int height) {
+		this.field_35472_c = height;
+		this.field_35469_d = height - 1;
 	}
 	//Spout End
 
