@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -41,8 +43,14 @@ public class PlayerControllerMP extends PlayerController {
 		this.field_35649_k = var1;
 		if(this.field_35649_k) {
 			PlayerControllerTest.func_35646_d(this.mc.thePlayer);
+			//Spout start
+			Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(false);
+			//Spout end
 		} else {
 			PlayerControllerTest.func_35645_e(this.mc.thePlayer);
+			//Spout start
+			Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(true);
+			//Spout end
 		}
 
 	}
