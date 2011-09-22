@@ -609,10 +609,6 @@ public class EntityRenderer {
 
 		Block.leaves.setGraphicsLevel(Config.isTreesFancy());
 
-		if(world != null) {
-			world.autosavePeriod = this.mc.gameSettings.ofAutoSaveTicks;
-		}
-
 		if(!Config.isWeatherEnabled() && world != null && world.worldInfo != null) {
 			world.worldInfo.setIsRaining(false);
 		}

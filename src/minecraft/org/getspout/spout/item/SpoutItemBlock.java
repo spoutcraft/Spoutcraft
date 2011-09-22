@@ -1,5 +1,7 @@
 package org.getspout.spout.item;
 
+import gnu.trove.TIntIntHashMap;
+
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
@@ -16,8 +18,8 @@ import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutItemBlock extends ItemBlock {
 
-	private final static HashMap<Integer, Integer> itemBlock = new HashMap<Integer, Integer>();
-	private final static HashMap<Integer, Short> itemMetaData = new HashMap<Integer, Short>();
+	private final static TIntIntHashMap itemBlock = new TIntIntHashMap();
+	private final static TIntIntHashMap itemMetaData = new TIntIntHashMap();
 	
 	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
 	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
@@ -48,28 +50,31 @@ public class SpoutItemBlock extends ItemBlock {
 		if (blockId != 1 || damage == 0) {
 			return customBlockDesign.get(getKey(blockId, damage));
 		} else {
-			Integer id = itemBlock.get(damage);
-			Short data = itemMetaData.get(damage);
-			if (id == null || data == null) {
-				return null;
-			} else {
-				return customBlockDesign.get(getKey(id, data & 0xFFFF));
+			int id = itemBlock.get(damage);
+			if (id != 0) {
+				short data = (short) itemMetaData.get(damage);
+				if (data != 0) {
+					return customBlockDesign.get(getKey(id, data & 0xFFFF));
+				}
 			}
 		}
+		return null;
 	}
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
 		if (stack.itemID == 1) {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
-				Integer blockId = itemBlock.get(damage);
-				Short metaData = itemMetaData.get(damage);
-				if (blockId == null || metaData == null) {
+				int blockId = itemBlock.get(damage);
+				if (blockId == 0){
 					return true;
-				} else {
-					boolean result = onBlockItemUse(blockId, metaData, stack, player, world, x, y, z, face);
-					return result;
 				}
+				short metaData = (short) itemMetaData.get(damage);
+				if (metaData == 0) {
+					return true;
+				}
+				boolean result = onBlockItemUse(blockId, metaData, stack, player, world, x, y, z, face);
+				return result;
 			}
 		}
 		return super.onItemUse(stack, player, world, x, y, z, face);

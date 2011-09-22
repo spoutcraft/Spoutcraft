@@ -66,6 +66,7 @@ public class GameSettings {
 	public static final int ANIM_GENERATED = 1;
 	public static final int ANIM_OFF = 2;
 	public String skin = "Default";
+	public boolean fastBiomeColors = true;
 //Spout End
 	public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
@@ -418,6 +419,13 @@ public class GameSettings {
 				this.mc.renderGlobal.updateAllRenderers();
 			}
 		}
+		
+		if (var1 == EnumOptions.BIOME_COLORS) {
+			fastBiomeColors = !fastBiomeColors;
+			if (this.mc.theWorld != null) {
+				this.mc.renderGlobal.updateAllRenderers();
+			}
+		}
 
 		if(var1 == EnumOptions.WEATHER) {
 			this.ofWeather = !this.ofWeather;
@@ -594,6 +602,12 @@ public class GameSettings {
 			default:
 				return var4 + "OFF";
 			}
+		}
+		else if(var1 == EnumOptions.BIOME_COLORS) {
+			if (fastBiomeColors) {
+				return var4 + "Fast";
+			}
+			return var4 + "Fancy";
 		} else {
 			return var1 == EnumOptions.WEATHER?(this.ofWeather?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.SKY?(this.ofSky?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.STARS?(this.ofStars?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.CHUNK_UPDATES?var4 + this.ofChunkUpdates:(var1 == EnumOptions.CHUNK_UPDATES_DYNAMIC?(this.ofChunkUpdatesDynamic?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.FAR_VIEW?(this.ofFarView?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.TIME?(this.ofTime == 1?var4 + "Day Only":(this.ofTime == 2?var4 + "Night Only":var4 + "Default")):(var1 == EnumOptions.CLEAR_WATER?(this.ofClearWater?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.GRAPHICS?(this.fancyGraphics?var4 + var2.translateKey("options.graphics.fancy"):var4 + var2.translateKey("options.graphics.fast")):var4))))))));
 		}
@@ -830,6 +844,10 @@ public class GameSettings {
 						this.ofClearWater = Boolean.valueOf(var3[1]).booleanValue();
 						this.updateWaterOpacity();
 					}
+					
+					if(var3[0].equals("FastBiomeColors") && var3.length >= 2) {
+						this.fastBiomeColors = Boolean.valueOf(var3[1]).booleanValue();
+					}
 //Spout End
 				} catch (Exception var5) {
 					System.out.println("Skipping bad option: " + var2);
@@ -900,6 +918,7 @@ public class GameSettings {
 			var1.println("ofFarView:" + this.ofFarView);
 			var1.println("ofTime:" + this.ofTime);
 			var1.println("ofClearWater:" + this.ofClearWater);
+			var1.println("FastBiomeColors: " + fastBiomeColors);
 //Spout End
 			var1.close();
 		} catch (Exception var3) {

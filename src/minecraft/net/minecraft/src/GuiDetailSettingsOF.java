@@ -16,7 +16,7 @@ public class GuiDetailSettingsOF extends GuiScreen {
 	private GuiScreen prevScreen;
 	protected String title = "Detail Settings";
 	private GameSettings settings;
-	private static EnumOptions[] enumOptions = new EnumOptions[]{EnumOptions.CLOUDS, EnumOptions.CLOUD_HEIGHT, EnumOptions.TREES, EnumOptions.GRASS, EnumOptions.WATER, EnumOptions.RAIN, EnumOptions.SKY, EnumOptions.STARS, EnumOptions.BETTER_GRASS, EnumOptions.WEATHER, EnumOptions.AUTOSAVE_TICKS, EnumOptions.FAST_DEBUG_INFO, EnumOptions.CHUNK_UPDATES, EnumOptions.CHUNK_UPDATES_DYNAMIC, EnumOptions.FAR_VIEW, EnumOptions.TIME, EnumOptions.CLEAR_WATER};
+	private static EnumOptions[] enumOptions = new EnumOptions[]{EnumOptions.CLOUDS, EnumOptions.CLOUD_HEIGHT, EnumOptions.TREES, EnumOptions.GRASS, EnumOptions.WATER, EnumOptions.RAIN, EnumOptions.SKY, EnumOptions.STARS, EnumOptions.BETTER_GRASS, EnumOptions.WEATHER, EnumOptions.AUTOSAVE_TICKS, EnumOptions.FAST_DEBUG_INFO, EnumOptions.CHUNK_UPDATES, EnumOptions.CHUNK_UPDATES_DYNAMIC, EnumOptions.FAR_VIEW, EnumOptions.TIME, EnumOptions.CLEAR_WATER, EnumOptions.BIOME_COLORS};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -181,6 +181,9 @@ public class GuiDetailSettingsOF extends GuiScreen {
 				return cheating;
 			}
 			return new String[]{"Time", " Default - normal day/night cycles", " Day Only - day only", " Night Only - night only"};
+		}
+		else if (option.equals("Biome Colors")) {
+			return new String[]{"Biome Colors", " Fast - caches colors for grass and water per chunk.", " May cause sharp changes in color near chunk edges.", "", " Fast - normal coloring for grass and water.", " Calculates color for water and grass for each block."};
 		}
 		return null;
 	}

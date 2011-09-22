@@ -44,7 +44,8 @@ public enum EnumOptions {
 	CHUNK_UPDATES("CHUNK_UPDATES", 43, "CHUNK_UPDATES", 45, "Chunk Updates", false, false),
 	CHUNK_UPDATES_DYNAMIC("CHUNK_UPDATES_DYNAMIC", 44, "CHUNK_UPDATES_DYNAMIC", 46, "Dynamic Updates", false, false),
 	TIME("TIME", 45, "TIME", 47, "Time", false, false, true),
-	CLEAR_WATER("CLEAR_WATER", 46, "CLEAR_WATER", 48, "Clear Water", false, false, true);
+	CLEAR_WATER("CLEAR_WATER", 46, "CLEAR_WATER", 48, "Clear Water", false, false, true),
+	BIOME_COLORS("BIOME_COLORS", 49, "BIOME_COLORS", 50, "Biome Colors", false, false);
 	//Spout End
 	private final boolean enumFloat;
 	private final boolean enumBoolean;

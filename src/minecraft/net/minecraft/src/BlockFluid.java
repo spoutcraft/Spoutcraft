@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import java.util.Random;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -10,7 +12,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
 public abstract class BlockFluid extends Block {
-
+	
 	protected BlockFluid(int var1, Material var2) {
 		super(var1, (var2 == Material.lava?14:12) * 16 + 13, var2);
 		float var3 = 0.0F;
@@ -25,16 +27,18 @@ public abstract class BlockFluid extends Block {
 
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
 		//Spout start - Biome water
-		  if(var1.getBlockMaterial(var2, var3, var4) == Material.lava)
-		  {
-				return 0xffffff;
-		  } else
-		  {
-				var1.getWorldChunkManager().func_4069_a(var2, var4, 1, 1);
+		if(var1.getBlockMaterial(var2, var3, var4) == Material.lava) {
+			return 0xffffff;
+		} else {
+			int color = var1.getWaterColorCache(var2, var3, var4);
+			if (color == -1 || !Minecraft.theMinecraft.gameSettings.fastBiomeColors) {
 				double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var4);
 				double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
-				return ColorizerWater.getWaterColor(d, d1);
-		  }
+				color =  ColorizerWater.getWaterColor(d, d1);
+				var1.setWaterColorCache(var2, var3, var4, color);
+			}
+			return color;
+		}
 		//Spout end - Biome Water
 	}
 

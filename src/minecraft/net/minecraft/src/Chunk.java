@@ -49,6 +49,8 @@ public class Chunk {
 	boolean field_35846_u;
 	//Spout start
 	public SpoutcraftChunk spoutChunk;
+	int grassColorCache = -1;
+	int waterColorCache = -1;
 	//Spout end
 
 	public Chunk(World var1, int var2, int var3) {

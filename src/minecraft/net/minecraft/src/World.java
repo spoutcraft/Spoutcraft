@@ -50,9 +50,10 @@ import net.minecraft.src.WorldSettings;
 //Spout Start
 import gnu.trove.TLongHashSet;
 import gnu.trove.TLongIterator;
-import it.unimi.dsi.fastutil.ints.*;
 import org.getspout.spout.SpoutcraftWorld;
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+
 import net.minecraft.client.Minecraft;
 //Spout End
 
@@ -143,7 +144,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		this.autosavePeriod = 12000; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
@@ -194,7 +195,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		this.autosavePeriod = 12000; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
@@ -250,7 +251,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		this.autosavePeriod = 12000; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
@@ -1862,7 +1863,7 @@ public class World implements IBlockAccess {
 		}
 
 		var2 = this.worldInfo.getWorldTime() + 1L;
-		if(var2 % (long)this.autosavePeriod == 0L) {
+		if(Spoutcraft.getClient().getTick() % autosavePeriod == 0) {
 			this.saveWorld(false, (IProgressUpdate)null);
 		}
 
@@ -2834,6 +2835,35 @@ public class World implements IBlockAccess {
 		this.field_35472_c = height;
 		this.field_35469_d = height - 1;
 	}
-	//Spout End
 
+	public int getGrassColorCache(int x, int y, int z) {
+		Chunk chunk = getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			return chunk.grassColorCache;
+		}
+		return 0xffffff;
+	}
+
+	public void setGrassColorCache(int x, int y, int z, int color) {
+		Chunk chunk = getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			chunk.grassColorCache = color;
+		}
+	}
+
+	public int getWaterColorCache(int x, int y, int z) {
+		Chunk chunk = getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			return chunk.waterColorCache;
+		}
+		return 0xffffff;
+	}
+
+	public void setWaterColorCache(int x, int y, int z, int color) {
+		Chunk chunk = getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			chunk.waterColorCache = color;
+		}
+	}
+	//Spout End
 }
