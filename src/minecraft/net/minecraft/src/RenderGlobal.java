@@ -1215,17 +1215,17 @@ public class RenderGlobal implements IWorldAccess {
 		//Spout start
 		frameCount++;
 		int renderersToUpdate = Config.getUpdatesPerFrame();
-		double tempRenderesToUpdate = renderersToUpdate;
+		double tempRenderersToUpdate = renderersToUpdate;
 		int renderersUpdated = 0;
 		if (Config.isDynamicUpdates()) {
 			if (!this.isMoving(var1)) {
-				tempRenderesToUpdate *= 3D;
+				tempRenderersToUpdate *= 3D;
 			}
 			else {
-				tempRenderesToUpdate /= 2D;
+				tempRenderersToUpdate /= 2D;
 			}
 		}
-		renderersToUpdate = (int)tempRenderesToUpdate; //casting is safe because values are always >= 0
+		renderersToUpdate = (int)tempRenderersToUpdate; //casting is safe because values are always >= 0
 		if (frameCount % 5 == 0) {
 			renderersToUpdate++; //to keep it above 0
 		}
