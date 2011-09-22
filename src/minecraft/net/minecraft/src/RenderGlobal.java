@@ -62,7 +62,6 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 //Spout End
 
@@ -114,7 +113,7 @@ public class RenderGlobal implements IWorldAccess {
 	int frustrumCheckOffset = 0;
 	//Spout Start
 	private long lastMovedTime = System.currentTimeMillis();
-	private IntBuffer bed = BufferUtils.createIntBuffer(65536);
+	private long frameCount = 0;
 	//Spout End 
 
 	public RenderGlobal(Minecraft var1, RenderEngine var2) {
@@ -1213,6 +1212,27 @@ public class RenderGlobal implements IWorldAccess {
 
 	public boolean updateRenderers(EntityLiving var1, boolean var2) {
 		boolean var3 = false;
+		//Spout start
+		frameCount++;
+		int renderersToUpdate = Config.getUpdatesPerFrame();
+		double tempRenderesToUpdate = renderersToUpdate;
+		int renderersUpdated = 0;
+		if (Config.isDynamicUpdates()) {
+			if (!this.isMoving(var1)) {
+				tempRenderesToUpdate *= 3D;
+			}
+			else {
+				tempRenderesToUpdate /= 2D;
+			}
+		}
+		renderersToUpdate = (int)tempRenderesToUpdate; //casting is safe because values are always >= 0
+		if (frameCount % 5 == 0) {
+			renderersToUpdate++; //to keep it above 0
+		}
+		if (renderersToUpdate <= 0) {
+			return this.worldRenderersToUpdate.size() == 0;
+		}
+		//Spout end
 		if(var3) {
 			Collections.sort(this.worldRenderersToUpdate, new RenderSorter(var1));
 			int var17 = this.worldRenderersToUpdate.size() - 1;
@@ -1233,6 +1253,12 @@ public class RenderGlobal implements IWorldAccess {
 				} else if(!var20.isInFrustum) {
 					continue;
 				}
+				//Spout start
+				if (renderersUpdated > renderersToUpdate) {
+					return this.worldRenderersToUpdate.size() == 0;
+				}
+				renderersUpdated++;
+				//Spout end
 
 				var20.updateRenderer();
 				this.worldRenderersToUpdate.remove(var20);
@@ -1284,6 +1310,13 @@ public class RenderGlobal implements IWorldAccess {
 				if(var7 == null) {
 					var7 = new ArrayList();
 				}
+				
+				//Spout start
+				if (renderersUpdated > renderersToUpdate) {
+					break;
+				}
+				renderersUpdated++;
+				//Spout end
 
 				++var9;
 				var7.add(var11);
@@ -1755,4 +1788,24 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 	}
+	
+	//Spout start
+	private boolean isMoving(EntityLiving var1) {
+		if (this.isMovingNow(var1)) {
+			this.lastMovedTime = System.currentTimeMillis();
+			return true;
+		} else {
+			return System.currentTimeMillis() - this.lastMovedTime < 2000L;
+		}
+	}
+	
+	private boolean isMovingNow(EntityLiving var1) {
+		double var2 = 0.0010D;
+		return var1.isJumping?true:(var1.isSneaking()?true:((double)var1.prevSwingProgress > var2?true:(this.mc.mouseHelper.deltaX != 0?true:(this.mc.mouseHelper.deltaY != 0?true:(Math.abs(var1.posX - var1.prevPosX) > var2?true:(Math.abs(var1.posY - var1.prevPosY) > var2?true:Math.abs(var1.posZ - var1.prevPosZ) > var2))))));
+	}
+
+	private boolean isActingNow() {
+		return Mouse.isButtonDown(0)?true:Mouse.isButtonDown(1);
+	}
+	//Spout end
 }
