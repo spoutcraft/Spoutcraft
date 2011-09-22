@@ -18,6 +18,8 @@ package org.getspout.spout.gui;
 
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.predownload.GuiPredownload;
 import org.spoutcraft.spoutcraftapi.gui.*;
@@ -41,6 +43,13 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.armor = new ArmorBar();
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
+		if(Minecraft.theMinecraft.playerController.isInCreativeMode()) {
+			health.setVisible(false);
+			bubble.setVisible(false);
+			armor.setVisible(false);
+			hunger.setVisible(false);
+			exp.setVisible(false);
+		}
 		this.playerList = new ServerPlayerList();
 		
 		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
