@@ -32,6 +32,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketRenderDistance;
 import org.getspout.spout.player.ClientPlayer;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end
 
@@ -418,7 +419,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
 				if (view != newView) {
 					settings.renderDistance = newView;
-					if (this instanceof EntityClientPlayerMP) {
+					if (this instanceof EntityClientPlayerMP && Spoutcraft.getClient().isSpoutEnabled()) {
 						((EntityClientPlayerMP)this).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
 					}
 				}
