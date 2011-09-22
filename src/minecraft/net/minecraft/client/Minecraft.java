@@ -1113,13 +1113,6 @@ public abstract class Minecraft implements Runnable {
 						if(!this.inGameHasFocus && Mouse.getEventButtonState()) {
 							this.setIngameFocus();
 						}
-//Spout restore middle mouse click
-						 else {
-							if (Mouse.getEventButton() == 2 && Mouse.getEventButtonState()) {
-								this.clickMiddleMouseButton();
-							}
-						}
-//Spout end
 					} else if(this.currentScreen != null) {
 						this.currentScreen.handleMouseInput();
 					}

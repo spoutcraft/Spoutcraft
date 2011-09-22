@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.predownload.GuiPredownload;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{
@@ -43,15 +44,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.armor = new ArmorBar();
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
-		if(Minecraft.theMinecraft.playerController.isInCreativeMode()) {
-			health.setVisible(false);
-			bubble.setVisible(false);
-			armor.setVisible(false);
-			hunger.setVisible(false);
-			exp.setVisible(false);
-		}
 		this.playerList = new ServerPlayerList();
-		
+		toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
+
 		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
 	}
 	
@@ -213,5 +208,13 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 
 	public ScreenType getScreenType() {
 		return ScreenType.GAME_SCREEN;
+	}
+	
+	public void toggleSurvivalHUD(boolean toggle) {
+		health.setVisible(toggle);
+		bubble.setVisible(toggle);
+		armor.setVisible(toggle);
+		hunger.setVisible(toggle);
+		exp.setVisible(toggle);
 	}
 }
