@@ -420,11 +420,13 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(HungerBar bar) {
-		if (bar.isVisible()) {
-			
-			FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
+		FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
 
-			int foodLevel = foodStats.func_35765_a();
+		int foodLevel = foodStats.func_35765_a();
+		float foodPercent = foodLevel / 0.2f;
+		float foodPercentPerIcon = 100f / bar.getNumOfIcons();
+		
+		if (bar.isVisible() && bar.getNumOfIcons() > 0) {
 
 			int foodIcon = 16;
 			byte foodOutline = 0;
@@ -445,11 +447,11 @@ public class MCRenderDelegate implements RenderDelegate {
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + foodOutline * 9, 27, 9, 9, 0f);
 
-				if (icon * 2 + 1 < foodLevel) {
+				if ((icon + 1) * foodPercentPerIcon <= foodPercent) {
 					RenderUtil.drawTexturedModalRectangle(x, y, foodIcon + 36, 27, 9, 9, 0f);
 				}
 
-				if (icon * 2 + 1 == foodLevel) {
+				else if ((icon + 1) * foodPercentPerIcon < foodPercent + foodPercentPerIcon) {
 					RenderUtil.drawTexturedModalRectangle(x, y, foodIcon + 45, 27, 9, 9, 0f);
 				}
 			}
