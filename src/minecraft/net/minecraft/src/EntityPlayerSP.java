@@ -170,7 +170,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-			boolean var4 = (float)this.func_35191_at().func_35765_a() > 6.0F;
+			boolean var4 = (float)this.func_35191_at().func_35765_a() > 6.0F || this.mc.playerController.isInCreativeMode();
 			if(this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.func_35117_Q() && var4 && !this.func_35196_Z()) {
 				if(this.field_35224_c == 0) {
 					this.field_35224_c = 7;
@@ -216,7 +216,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		if(this.capabilities.isFlying) {
 			var1 *= 1.1F;
 		}
-
+		
 		var1 *= (this.field_35169_bv * this.func_35166_t_() / this.field_35215_ba + 1.0F) / 2.0F;
 		if(this.func_35196_Z() && this.func_35195_X().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.func_35192_aa();
