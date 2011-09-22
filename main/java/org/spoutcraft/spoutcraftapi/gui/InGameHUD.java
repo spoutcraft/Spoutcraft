@@ -104,4 +104,10 @@ public interface InGameHUD extends Screen {
 	 */
 	public boolean closePopup();
 
+	/**
+	 * Ease of use method setting all the survival mode HUD elements to setVisible(toggle);
+	 * 
+	 * @param toggle true or false
+	 */
+	public void toggleSurvivalHUD(boolean toggle);
 }
