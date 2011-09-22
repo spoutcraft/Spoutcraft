@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.addon.java;
 
 import java.io.File;
@@ -19,14 +35,10 @@ import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
-import org.spoutcraft.spoutcraftapi.addon.EventExecutor;
 import org.spoutcraft.spoutcraftapi.addon.InvalidAddonException;
 import org.spoutcraft.spoutcraftapi.addon.InvalidDescriptionException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownDependencyException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownSoftDependencyException;
-import org.spoutcraft.spoutcraftapi.event.CustomEventListener;
-import org.spoutcraft.spoutcraftapi.event.Event;
-import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.yaml.snakeyaml.error.YAMLException;
 
 public class JavaAddonLoader implements AddonLoader {
@@ -209,19 +221,6 @@ public class JavaAddonLoader implements AddonLoader {
 		if (!classes.containsKey(name)) {
 			classes.put(name, clazz);
 		}
-	}
-
-	public EventExecutor createExecutor(Event.Type type, Listener listener) {
-		switch (type) {
-		case CUSTOM_EVENT:
-			return new EventExecutor() {
-				public void execute(Listener listener, Event event) {
-					((CustomEventListener) listener).onCustomEvent(event);
-				}
-			};
-		}
-
-		throw new IllegalArgumentException("Event " + type + " is not supported");
 	}
 
 	public void enableAddon(final Addon addon) {

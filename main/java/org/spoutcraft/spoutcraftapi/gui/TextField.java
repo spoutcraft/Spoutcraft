@@ -1,0 +1,157 @@
+/*
+ * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.spoutcraft.spoutcraftapi.gui;
+
+public interface TextField extends Control {
+
+	/**
+	 * Gets the position of the cursor in the text field. Position zero is the start of the text.
+	 * 
+	 * @return position
+	 */
+	public int getCursorPosition();
+
+	/**
+	 * Sets the position of the cursor in the text field.
+	 * 
+	 * @param position to set to
+	 * @return textfield
+	 */
+	public TextField setCursorPosition(int position);
+
+	/**
+	 * Gets the text typed in this text field
+	 * 
+	 * @return text
+	 */
+	public String getText();
+
+	/**
+	 * Sets the text visible in this text field
+	 * 
+	 * @param text inside of the text field
+	 * @return textfield
+	 */
+	public TextField setText(String text);
+
+	/**
+	 * Gets the maximum characters that can be typed into this text field
+	 * 
+	 * @return maximum characters
+	 */
+	public int getMaximumCharacters();
+
+	/**
+	 * Sets the maximum characters that can be typed into this text field. If zero is passed, the text field will hold as many characters as it can depending on its size.
+	 * 
+	 * @param max characters that can be typed
+	 * @return max chars
+	 */
+	public TextField setMaximumCharacters(int max);
+
+	/**
+	 * Gets the maximum line this text field can hold
+	 * 
+	 * @return max lines
+	 */
+	public int getMaximumLines();
+
+	/**
+	 * Sets the maximum lines this text field can hold. If zero is passed, the text field will hold as many lines as it can depending on its size.
+	 * 
+	 * @param max lines (0 – 127)
+	 * @return textfield
+	 */
+	public TextField setMaximumLines(int max);
+
+	/**
+	 * Gets the color of the inner field area of the text box.
+	 * 
+	 * @return field color
+	 */
+	public Color getFieldColor();
+
+	/**
+	 * Sets the field color of the inner field area of the text box.
+	 * 
+	 * @param color to render as
+	 * @return textfield
+	 */
+	public TextField setFieldColor(Color color);
+
+	/**
+	 * Gets the outside color of the field area of the text box.
+	 * 
+	 * @return border color
+	 */
+	public Color getBorderColor();
+
+	/**
+	 * Sets the outside color of the field area of the text box.
+	 * 
+	 * @param color to render as
+	 * @return textfield
+	 */
+	public TextField setBorderColor(Color color);
+
+	/**
+	 * Gets the tab index for this text field
+	 * 
+	 * @return tab index
+	 */
+	public int getTabIndex();
+
+	/**
+	 * Sets the tab index for this text field. When the player presses the tabulator key the text field with index+1 will obtain the focus. Text fields using the same index may not obtain focus when pressing the tabulator key. The behaviour discontinuous index sequences is undefined.
+	 * 
+	 * @param index Tab index (0 – 127)
+	 * @return textfield
+	 */
+	public TextField setTabIndex(int index);
+
+	/**
+	 * Determines if this text field is a password field
+	 * 
+	 * @return password field
+	 */
+	public boolean isPasswordField();
+
+	/**
+	 * Sets whether the text will be obfuscated by asterisk (*) characters. Setting to true forces the maximum lines to be 1.
+	 * 
+	 * @param password
+	 * @return textfield
+	 */
+	public TextField setPasswordField(boolean password);
+
+	/**
+	 * Gets the text processor
+	 * 
+	 * @return assigned text processor
+	 */
+	public TextProcessor getTextProcessor();
+
+	/**
+	 * Sets the text processor
+	 * 
+	 * @param processor
+	 * @return textfield
+	 */
+	public TextField setTextProcessor(TextProcessor processor);
+
+	public PopupScreen getScreen();
+}

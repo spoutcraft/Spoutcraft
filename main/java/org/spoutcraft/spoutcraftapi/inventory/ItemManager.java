@@ -19,8 +19,7 @@ package org.spoutcraft.spoutcraftapi.inventory;
 public interface ItemManager {
 
 	/**
-	 * Gets notchian item name for the item, or the custom name if one overrides
-	 * it
+	 * Gets notchian item name for the item, or the custom name if one overrides it
 	 * 
 	 * @param item to get the name of
 	 * @return name
@@ -36,8 +35,7 @@ public interface ItemManager {
 	public String getCustomItemName(int item);
 
 	/**
-	 * Gets notchian item name for the item, or the custom name if one overrides
-	 * it
+	 * Gets notchian item name for the item, or the custom name if one overrides it
 	 * 
 	 * @param item to get the name of
 	 * @param data for the item
@@ -155,8 +153,7 @@ public interface ItemManager {
 	public void resetTexture(int item, short data);
 
 	/**
-	 * Resets the names and textures of all items to the notchian defaults. Use
-	 * with care.
+	 * Resets the names and textures of all items to the notchian defaults. Use with care.
 	 */
 	public void reset();
 

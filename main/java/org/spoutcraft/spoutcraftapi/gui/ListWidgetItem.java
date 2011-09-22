@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.gui;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -8,35 +24,38 @@ import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
 public class ListWidgetItem extends PropertyObject implements PropertyInterface {
 	private String title = null, text = null, iconUrl = null;
-	public ListWidgetItem(String title, String text, String iconUrl)
-	{
+
+	public ListWidgetItem(String title, String text, String iconUrl) {
 		initProperties();
 		setTitle(title);
 		setText(text);
 		setIconUrl(iconUrl);
 	}
-	
-	private void initProperties(){
+
+	private void initProperties() {
 		addProperty("title", new Property() {
 			public void set(Object value) {
-				setTitle((String)value);
+				setTitle((String) value);
 			}
+
 			public Object get() {
 				return getTitle();
 			}
 		});
 		addProperty("text", new Property() {
 			public void set(Object value) {
-				setText((String)value);
+				setText((String) value);
 			}
+
 			public Object get() {
 				return getText();
 			}
 		});
 		addProperty("iconurl", new Property() {
 			public void set(Object value) {
-				setIconUrl((String)value);
+				setIconUrl((String) value);
 			}
+
 			public Object get() {
 				return getIconUrl();
 			}
@@ -69,10 +88,10 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 
 	@Override
 	public boolean equals(Object other) {
-		if(! (other instanceof ListWidgetItem)){
+		if (!(other instanceof ListWidgetItem)) {
 			return false;
 		}
-		ListWidgetItem li = (ListWidgetItem)other;
+		ListWidgetItem li = (ListWidgetItem) other;
 		return (new EqualsBuilder()).append(this.text, li.text).append(this.title, li.title).append(this.iconUrl, li.iconUrl).isEquals();
 	}
 
@@ -80,5 +99,5 @@ public class ListWidgetItem extends PropertyObject implements PropertyInterface 
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(text).append(title).append(iconUrl).toHashCode();
 	}
-	
+
 }

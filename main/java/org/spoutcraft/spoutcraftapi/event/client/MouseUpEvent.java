@@ -16,35 +16,59 @@
  */
 package org.spoutcraft.spoutcraftapi.event.client;
 
+import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.Event;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class MouseUpEvent extends Event {
+public class MouseUpEvent extends Event<MouseUpEvent> implements Cancellable {
+
 	private int x;
 	private int y;
 	private Mouse button;
 	private ScreenType screenType;
+
 	public MouseUpEvent(int mouseButton, int x, int y, ScreenType screenType) {
-		super(Type.MOUSE_UP);
 		this.x = x;
 		this.y = y;
 		this.button = Mouse.getButton(mouseButton);
 		this.screenType = screenType;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public Mouse getButton() {
 		return button;
 	}
-	
-	public ScreenType getScreenType(){
+
+	public ScreenType getScreenType() {
 		return screenType;
 	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancel) {
+		this.cancelled = cancel;
+	}
+
+	public static final HandlerList<MouseUpEvent> handlers = new HandlerList<MouseUpEvent>();
+
+	@Override
+	public HandlerList<MouseUpEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Mouse Up Event";
+	}
+
 }

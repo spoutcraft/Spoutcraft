@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.util;
 
 import java.util.Random;
@@ -5,10 +21,7 @@ import java.util.Random;
 import org.spoutcraft.spoutcraftapi.World;
 
 /**
- * Represents a mutable vector. Because the components of Vectors are mutable,
- * storing Vectors long term may be dangerous if passing code modifies the
- * Vector later. If you want to keep around a Vector, it may be wise to call
- * <code>clone()</code> in order to get a copy.
+ * Represents a mutable vector. Because the components of Vectors are mutable, storing Vectors long term may be dangerous if passing code modifies the Vector later. If you want to keep around a Vector, it may be wise to call <code>clone()</code> in order to get a copy.
  */
 public class MutableVector implements Vector {
 	private static Random random = new Random();
@@ -136,11 +149,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Gets the magnitude of the vector, defined as sqrt(x^2+y^2+z^2). The value
-	 * of this method is not cached and uses a costly square-root function, so
-	 * do not repeatedly call this method to get the vector's magnitude. NaN
-	 * will be returned if the inner result of the sqrt() function overflows,
-	 * which will be caused if the length is too long.
+	 * Gets the magnitude of the vector, defined as sqrt(x^2+y^2+z^2). The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the length is too long.
 	 * 
 	 * @return the magnitude
 	 */
@@ -158,11 +167,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Get the distance between this vector and another. The value of this
-	 * method is not cached and uses a costly square-root function, so do not
-	 * repeatedly call this method to get the vector's magnitude. NaN will be
-	 * returned if the inner result of the sqrt() function overflows, which will
-	 * be caused if the distance is too long.
+	 * Get the distance between this vector and another. The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the distance is too long.
 	 * 
 	 * @return the distance
 	 */
@@ -257,8 +262,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Calculates the dot product of this vector with another. The dot product
-	 * is defined as x1*x2+y1*y2+z1*z2. The returned value is a scalar.
+	 * Calculates the dot product of this vector with another. The dot product is defined as x1*x2+y1*y2+z1*z2. The returned value is a scalar.
 	 * 
 	 * @param other
 	 * @return dot product
@@ -268,8 +272,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Calculates the cross product of this vector with another. The cross
-	 * product is defined as:
+	 * Calculates the cross product of this vector with another. The cross product is defined as:
 	 * 
 	 * x = y1 * z2 - y2 * z1<br/>
 	 * y = z1 * x2 - z2 * x1<br/>
@@ -317,9 +320,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Returns whether this vector is in an axis-aligned bounding box. The
-	 * minimum and maximum vectors given must be truly the minimum and maximum
-	 * X, Y and Z components.
+	 * Returns whether this vector is in an axis-aligned bounding box. The minimum and maximum vectors given must be truly the minimum and maximum X, Y and Z components.
 	 * 
 	 * @param min
 	 * @param max
@@ -350,8 +351,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Gets the floored value of the X component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the X component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block X
 	 */
@@ -369,8 +369,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Gets the floored value of the Y component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the Y component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block y
 	 */
@@ -388,8 +387,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Gets the floored value of the Z component, indicating the block that this
-	 * vector is contained with.
+	 * Gets the floored value of the Z component, indicating the block that this vector is contained with.
 	 * 
 	 * @return block z
 	 */
@@ -499,9 +497,7 @@ public class MutableVector implements Vector {
 	/**
 	 * Checks to see if two objects are equal.
 	 * 
-	 * Only two Vectors can ever return true. This method uses a fuzzy match to
-	 * account for floating point errors. The epsilon can be retrieved with
-	 * epsilon.
+	 * Only two Vectors can ever return true. This method uses a fuzzy match to account for floating point errors. The epsilon can be retrieved with epsilon.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -610,8 +606,7 @@ public class MutableVector implements Vector {
 	}
 
 	/**
-	 * Gets a random vector with components having a random value between 0 and
-	 * 1.
+	 * Gets a random vector with components having a random value between 0 and 1.
 	 * 
 	 * @return
 	 */

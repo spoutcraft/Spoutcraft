@@ -14,24 +14,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi.event.client;
+package org.spoutcraft.spoutcraftapi.gui;
 
-import org.spoutcraft.spoutcraftapi.event.Listener;
+public interface EntityWidget extends Widget {
+	
+	public void setEntityID(int entity);
 
-public class ClientListener implements Listener {
-	
-	public ClientListener() { }
-	
-	public void onKeyDown(KeyDownEvent event) { }
-	
-	public void onKeyUp(KeyUpEvent event) { }
-	
-	public void onMouseMove(MouseMoveEvent event) { }
-	
-	public void onMouseDown(MouseDownEvent event) { }
-	
-	public void onMouseUp(MouseUpEvent event) { }
-	
-	public void onRenderDistanceChange(RenderDistanceChangeEvent event) { }
-	
+	public int getEntityID();
 }

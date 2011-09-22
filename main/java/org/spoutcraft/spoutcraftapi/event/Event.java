@@ -1,86 +1,72 @@
+/*
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.event;
 
-public abstract class Event {
-	
-	private final Type type;
-	private final String name;
-	
-	protected Event(Type type) {
-		this.type = type;
-		this.name = null;
-	}
-	
-	protected Event(String name) {
-		this.type = Type.CUSTOM_EVENT;
-		this.name = name;
-	}
-	
-	/**
-	 * @return the type
-	 */
-	public final Type getType() {
-		return type;
-	}
+/**
+ * @author lahwran
+ * @param <TEvent> Event class
+ */
+public abstract class Event<TEvent extends Event<TEvent>> {
 
 	/**
-	 * @return the name
+	 * Stores cancelled status. will be false unless a subclass publishes setCancelled.
 	 */
-	public final String getName() {
-		return name;
-	}
-	
-	public static enum Type {
-		/**
-		* CLIENT EVENTS
-		*/
-		KEY_UP(Category.CLIENT),
-		KEY_DOWN(Category.CLIENT),
-		RENDER_DISTANCE_CHANGE(Category.CLIENT),
-		MOUSE_MOVE(Category.CLIENT),
-		MOUSE_DOWN(Category.CLIENT),
-		MOUSE_UP(Category.CLIENT),
+	protected boolean cancelled = false;
 
-		/**
-		* Represents a custom event, isn't actually used
-		*/
-		CUSTOM_EVENT(Category.MISCELLANEOUS);
-		
-		private final Category category;
-		
-		private Type(Category category) {
-            this.category = category;
-        }
+	/**
+	 * Get the static handler list of this event subclass.
+	 * 
+	 * @return HandlerList to call event with
+	 */
+	public abstract HandlerList<TEvent> getHandlers();
 
-        /**
-         * Gets the Category assigned to this event
-         *
-         * @return Category of this Event.Type
-         */
-        public Category getCategory() {
-            return category;
-        }
+	/**
+	 * Get event type name.
+	 * 
+	 * @return event name
+	 */
+	protected abstract String getEventName();
+
+	public String toString() {
+		return getEventName() + " (" + this.getClass().getName() + ")";
 	}
-	
-	public enum Category {
-        PLAYER,
-        ENTITY,
-        BLOCK,
-        LIVING_ENTITY,
-        WEATHER,
-        VEHICLE,
-        WORLD,
-        CLIENT,
-        INVENTORY,
-        MISCELLANEOUS;
-    }
-	
-	public static enum Priority {
-		Lowest,
-		Low,
-		Normal,
-		High,
-		Highest,
-		Monitor;
+
+	/**
+	 * Set cancelled status. Events which wish to be cancellable should implement Cancellable and implement setCancelled as:
+	 * 
+	 * <pre>
+	 * public void setCancelled(boolean cancelled) {
+	 * 	super.setCancelled(cancelled);
+	 * }
+	 * </pre>
+	 * 
+	 * @param cancelled True to cancel event
+	 */
+	protected void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
-	
+
+	/**
+	 * Returning true will prevent calling any even Order slots.
+	 * 
+	 * @see Order
+	 * @return false if the event is propogating; events which do not implement Cancellable should never return true here
+	 */
+	public boolean isCancelled() {
+		return cancelled;
+	}
 }

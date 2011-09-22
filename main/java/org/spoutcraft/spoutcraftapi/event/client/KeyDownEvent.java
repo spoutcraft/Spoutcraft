@@ -18,31 +18,46 @@ package org.spoutcraft.spoutcraftapi.event.client;
 
 import org.spoutcraft.spoutcraftapi.event.Cancellable;
 import org.spoutcraft.spoutcraftapi.event.Event;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class KeyDownEvent extends Event implements Cancellable {
+public class KeyDownEvent extends Event<KeyDownEvent> implements Cancellable {
+
 	private Keyboard key;
 	private ScreenType screenType;
-	protected boolean cancel = false;
+
 	public KeyDownEvent(int keyPress, ScreenType screenType) {
-		super(Type.KEY_DOWN);
 		this.key = Keyboard.getKey(keyPress);
 		this.screenType = screenType;
 	}
-	
+
 	public Keyboard getKey() {
 		return key;
 	}
-	
-	public ScreenType getScreenType(){
+
+	public ScreenType getScreenType() {
 		return screenType;
 	}
 
 	public boolean isCancelled() {
-		return cancel;
+		return cancelled;
 	}
 
 	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
+		this.cancelled = cancel;
 	}
+
+	public static final HandlerList<KeyDownEvent> handlers = new HandlerList<KeyDownEvent>();
+
+	@Override
+	public HandlerList<KeyDownEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Key Down Event";
+	}
+
 }

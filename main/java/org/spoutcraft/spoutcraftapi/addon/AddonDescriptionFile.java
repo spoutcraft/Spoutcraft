@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft API is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft API is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.addon;
 
 import java.io.InputStream;
@@ -18,21 +34,21 @@ public class AddonDescriptionFile {
 	private ArrayList<String> depend = null;
 	private ArrayList<String> softDepend = null;
 	private String version = null;
-	public Mode mode= null;
+	public Mode mode = null;
 	private Object commands = null;
 	private String description = null;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private ArrayList<String> authors = new ArrayList();
 	private String website = null;
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AddonDescriptionFile(InputStream stream) throws InvalidDescriptionException {
-		loadMap((Map)yaml.load(stream));
+		loadMap((Map) yaml.load(stream));
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public AddonDescriptionFile(Reader reader) throws InvalidDescriptionException {
-		loadMap((Map)yaml.load(reader));
+		loadMap((Map) yaml.load(reader));
 	}
 
 	public AddonDescriptionFile(String addonName, String addonVersion, String mainClass) {
@@ -73,8 +89,7 @@ public class AddonDescriptionFile {
 		return this.softDepend;
 	}
 
-	public String getDescription()
-	{
+	public String getDescription() {
 		return this.description;
 	}
 
@@ -86,20 +101,19 @@ public class AddonDescriptionFile {
 		return this.website;
 	}
 
-	
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void loadMap(Map<String, Object> map) throws InvalidDescriptionException {
 		try {
 			this.name = map.get("name").toString();
 
-			if (!this.name.matches("^[A-Za-z0-9 _.-]+$")) throw new InvalidDescriptionException("name '" + this.name + "' contains invalid characters.");
+			if (!this.name.matches("^[A-Za-z0-9 _.-]+$"))
+				throw new InvalidDescriptionException("name '" + this.name + "' contains invalid characters.");
 		} catch (NullPointerException ex) {
 			throw new InvalidDescriptionException(ex, "name is not defined");
 		} catch (ClassCastException ex) {
 			throw new InvalidDescriptionException(ex, "name is of wrong type");
 		}
-		
+
 		try {
 			this.version = map.get("version").toString();
 		} catch (NullPointerException ex) {
@@ -107,7 +121,7 @@ public class AddonDescriptionFile {
 		} catch (ClassCastException ex) {
 			throw new InvalidDescriptionException(ex, "version is of wrong type");
 		}
-		
+
 		try {
 			this.main = map.get("main").toString();
 			if (this.main.startsWith("org.bukkit."))
@@ -117,12 +131,12 @@ public class AddonDescriptionFile {
 		} catch (ClassCastException ex) {
 			throw new InvalidDescriptionException(ex, "main is of wrong type");
 		}
-		
+
 		try {
 			String mode = map.get("mode").toString();
-			
+
 			this.mode = Mode.valueOf(mode);
-			
+
 			if (this.mode == null) {
 				if (map.containsKey("mode")) {
 					throw new InvalidDescriptionException(null, "mode is of wrong type");
@@ -130,7 +144,7 @@ public class AddonDescriptionFile {
 					throw new InvalidDescriptionException("mode is not defined");
 				}
 			}
-			
+
 		} catch (NullPointerException ex) {
 			throw new InvalidDescriptionException(ex, "mode is not defined");
 		} catch (ClassCastException ex) {
@@ -147,7 +161,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("depend")) {
 			try {
-				this.depend = ((ArrayList)map.get("depend"));
+				this.depend = ((ArrayList) map.get("depend"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "depend is of wrong type");
 			}
@@ -155,7 +169,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("softdepend")) {
 			try {
-				this.softDepend = ((ArrayList)map.get("softdepend"));
+				this.softDepend = ((ArrayList) map.get("softdepend"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "softdepend is of wrong type");
 			}
@@ -163,7 +177,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("website")) {
 			try {
-				this.website = ((String)map.get("website"));
+				this.website = ((String) map.get("website"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "website is of wrong type");
 			}
@@ -171,7 +185,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("description")) {
 			try {
-				this.description = ((String)map.get("description"));
+				this.description = ((String) map.get("description"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "description is of wrong type");
 			}
@@ -179,7 +193,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("author")) {
 			try {
-				String extra = (String)map.get("author");
+				String extra = (String) map.get("author");
 
 				this.authors.add(extra);
 			} catch (ClassCastException ex) {
@@ -189,7 +203,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("authors")) {
 			try {
-				ArrayList extra = (ArrayList)map.get("authors");
+				ArrayList extra = (ArrayList) map.get("authors");
 
 				this.authors.addAll(extra);
 			} catch (ClassCastException ex) {

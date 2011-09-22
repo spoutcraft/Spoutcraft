@@ -27,6 +27,7 @@ public enum Mouse {
 
 	private final int buttonCode;
 	private static final Map<Integer, Mouse> lookupButtonCode = new HashMap<Integer, Mouse>();
+
 	Mouse(final int i) {
 		this.buttonCode = i;
 	}
@@ -39,9 +40,9 @@ public enum Mouse {
 		if (lookupButtonCode.containsKey(button)) {
 			return lookupButtonCode.get(button);
 		}
-		//Some computers report signed/unsigned values incorrectly
-		if (lookupButtonCode.containsKey(256+button)) {
-			return lookupButtonCode.get(256+button);
+		// Some computers report signed/unsigned values incorrectly
+		if (lookupButtonCode.containsKey(256 + button)) {
+			return lookupButtonCode.get(256 + button);
 		}
 		return KEY_UNKNOWN;
 	}
