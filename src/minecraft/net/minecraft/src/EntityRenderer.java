@@ -825,7 +825,11 @@ public class EntityRenderer {
 			GL11.glClear(16640);
 			GL11.glEnable(2884 /*GL_CULL_FACE*/);
 			this.setupCameraTransform(var1, var19);
-			ClippingHelperImpl.getInstance();
+			//Spout performance start
+			//Frustum constructor also calls ClippingHelperImpl.getInstance, so functionally identical, saves 1 call on that expensive glGetFloats.
+			//ClippingHelperImpl.getInstance();
+			Frustrum var18 = new Frustrum();
+			//Spout end
 			if(this.mc.gameSettings.renderDistance < 2 || Config.isFarView()) { //Spout
 				this.setupFog(-1, var1);
 				var5.renderSky(var1);
@@ -837,7 +841,7 @@ public class EntityRenderer {
 				GL11.glShadeModel(7425 /*GL_SMOOTH*/);
 			}
 
-			Frustrum var18 = new Frustrum();
+			
 			var18.setPosition(var7, var9, var11);
 			this.mc.renderGlobal.clipRenderersByFrustrum(var18, var1);
 			if(var19 == 0) {
