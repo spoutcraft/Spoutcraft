@@ -5,7 +5,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentSkipListMap; //Spout
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
@@ -16,11 +15,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 //Spout Start
+import java.util.IdentityHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
 import org.spoutcraft.spoutcraftapi.gui.*;
-
 //Spout End
 
 public class GuiScreen extends Gui {
@@ -36,6 +36,7 @@ public class GuiScreen extends Gui {
 	//Spout Start
 	public GenericGradient bg; 
 	public Screen screen = null;
+	protected IdentityHashMap<TextField, ScheduledTextFieldUpdate> scheduledTextFieldUpdates = new IdentityHashMap<TextField, ScheduledTextFieldUpdate>();
 	//Spout End
 	
 	public void drawScreenPre(int x, int y, float z) {
@@ -232,8 +233,20 @@ public class GuiScreen extends Gui {
 					}
 					// pass typed key to text processor
 					else if (tf.isEnabled() && tf.isFocus()) {
-						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
-							((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition())));
+						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) { // if is dirty
+							ScheduledTextFieldUpdate updateThread = null;
+							if (scheduledTextFieldUpdates.containsKey(tf)) {
+								updateThread =  scheduledTextFieldUpdates.get(tf);
+								if (updateThread.isAlive())
+									updateThread.delay();
+								else
+									updateThread.start();
+							}
+							else {
+								updateThread = new ScheduledTextFieldUpdate(screen, tf);
+								scheduledTextFieldUpdates.put(tf, updateThread);
+								updateThread.start();
+							}
 						}
 						handled = true;
 						break;
@@ -359,66 +372,6 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 	
-	public void onTextFieldTyped(TextField textField, char key, int keyId) {
-		boolean dirty = false;
-		try {
-			if(textField.isEnabled() && textField.isFocus()) {
-				if(key == 22) {
-					String clipboard = GuiScreen.getClipboardString();
-					if(clipboard == null) {
-						clipboard = "";
-					}
-
-					int max = 32 - textField.getText().length();
-					if(max > clipboard.length()) {
-						max = clipboard.length();
-					}
-
-					if(max > 0) {
-						textField.setText(textField.getText() + clipboard.substring(0, max));
-						dirty = true;
-					}
-				}
-				if (keyId == Keyboard.KEY_RIGHT && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_LEFT && textField.getCursorPosition() > 0) {
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_DELETE && textField.getCursorPosition() > 0 && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition()) + textField.getText().substring(textField.getCursorPosition() + 1));
-					dirty = true;
-				}
-				else if(keyId == Keyboard.KEY_BACK && textField.getText().length() > 0 && textField.getCursorPosition() > 0) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition() - 1) + textField.getText().substring(textField.getCursorPosition()));
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (textField.getText().length() < textField.getMaximumCharacters() || textField.getMaximumCharacters() == 0)) {
-					String newText = "";
-					if (textField.getCursorPosition() > 0) {
-						newText += textField.getText().substring(0, textField.getCursorPosition());
-					}
-					newText += key;
-					if (textField.getCursorPosition() < textField.getText().length()) {
-						newText += textField.getText().substring(textField.getCursorPosition());
-					}
-					textField.setText(newText);
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				if (dirty) {
-					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
-				}
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public Screen getScreen() {
 		if(screen == null) {
 			ScreenType type = ScreenUtil.getType(this);
@@ -429,6 +382,49 @@ public class GuiScreen extends Gui {
 			((OverlayScreen)screen).setScreenType(type);
 		}
 		return screen;
+	}
+	
+	private class ScheduledTextFieldUpdate implements Runnable {
+		private static final long DELAY_TIME = 500;
+		private static final long SLEEP_TIME = 125;
+		private TextField textField;
+		private Screen screen;
+		private long sendTime;
+		private Thread thread;
+		
+		public ScheduledTextFieldUpdate(Screen screen, TextField textField) {
+			this.textField = textField;
+			this.screen = screen;
+		}
+		
+		public void run() {
+			delay();
+			while (!expired()) {
+				try {
+					Thread.sleep(SLEEP_TIME);
+				}
+				catch (InterruptedException e) {
+					break;
+				}
+			}
+			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+		}
+		
+		public synchronized void delay() {
+			sendTime = System.currentTimeMillis() + DELAY_TIME;
+		}
+		
+		public synchronized boolean expired() {
+			return sendTime <= System.currentTimeMillis();
+		}
+		
+		public synchronized void start() {
+			(thread = new Thread(this)).start();
+		}
+		
+		public synchronized boolean isAlive() {
+			return thread.isAlive();
+		}
 	}
 	//Spout End
 }
