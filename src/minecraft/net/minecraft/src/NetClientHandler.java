@@ -721,6 +721,10 @@ public class NetClientHandler extends NetHandler {
 				}
 
 				var3.onInventoryChanged();
+				
+				//Spout start
+				var3.recalculateText();
+				//Spout end
 			}
 		}
 
