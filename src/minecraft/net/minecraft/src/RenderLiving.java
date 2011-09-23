@@ -220,7 +220,7 @@ public class RenderLiving extends Render {
 
 	protected void passSpecialRender(EntityLiving var1, double var2, double var4, double var6) {
 		//Spout Start
-		if(Minecraft.isDebugInfoEnabled() && !SpoutClient.getHandle().isMultiplayerWorld()) {
+		if(Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isCheatMode()) {
 			this.renderLivingLabel(var1, Integer.toString(var1.entityId), var2, var4, var6, 64);
 		}
 		else {
