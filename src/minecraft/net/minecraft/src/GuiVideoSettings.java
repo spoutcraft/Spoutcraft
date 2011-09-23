@@ -89,7 +89,7 @@ public class GuiVideoSettings extends GuiScreen {
 						guiGameSettings.renderDistance = newView;
 						change = 0;
 						if (view != newView && this.mc.isMultiplayerWorld()) {
-							((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 						}
 					}
 				}
