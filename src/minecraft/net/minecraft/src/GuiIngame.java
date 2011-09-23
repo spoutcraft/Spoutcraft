@@ -167,10 +167,6 @@ public class GuiIngame extends Gui {
 				long freeMem = Runtime.getRuntime().freeMemory();
 				long usedMem = (maxMem - freeMem);
 				String os = System.getProperty("os.name");
-				if (os != null && os.toLowerCase().contains("win")) {
-					usedMem *= 2; //Windows underreports used memory
-					usedMem += 1024L * 100;
-				}
 				var23 = "Used memory: " + ((int)((usedMem / (float)maxMem) * 100f)) + "% (" + usedMem / 1024L / 1024L + "MB) of " + totalMem / 1024L / 1024L + "MB";
 				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
 				var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB)";
