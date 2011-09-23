@@ -88,7 +88,7 @@ public class FileDownloadThread extends Thread{
 	public void run() {
 		while(true) {
 			Download next = downloads.poll();
-			if (next != null && failedUrls.contains(next.getDownloadUrl())) {
+			if (next != null && !failedUrls.contains(next.getDownloadUrl())) {
 				try {
 					if (!next.isDownloaded()) {
 						System.out.println("Downloading File: " + next.getDownloadUrl());
