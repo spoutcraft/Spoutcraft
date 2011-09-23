@@ -275,7 +275,7 @@ public class Tessellator {
 			if (!isLoadingChunk) {
 				GL11.glColor4ub((byte)var1, (byte)var2, (byte)var3, (byte)var4);
 			} else
-				//Spout Performance End
+			//Spout Performance End
 			if(ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
 				this.color = var4 << 24 | var3 << 16 | var2 << 8 | var1;
 			} else {

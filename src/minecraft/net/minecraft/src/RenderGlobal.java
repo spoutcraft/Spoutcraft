@@ -1232,10 +1232,10 @@ public class RenderGlobal implements IWorldAccess {
 		//If we have had few chunk updates, do more!
 		if (Config.isDynamicUpdates()) {
 			if (WorldRenderer.chunksUpdated < 3) {
-				renderersToUpdate += 3;
+				renderersToUpdate += 5;
 			}
 			else if (WorldRenderer.chunksUpdated < 5) {
-				renderersToUpdate++;
+				renderersToUpdate += 3;
 			}
 		}
 		if (renderersToUpdate <= 0) {
