@@ -26,7 +26,7 @@ public enum EnumOptions {
 	PRELOADED_CHUNKS("PRELOADED_CHUNKS", 18, "PRELOADED_CHUNKS", 19, "Preloaded Chunks", false, false),
 	SMOOTH_FPS("SMOOTH_FPS", 19, "SMOOTH_FPS", 20, "Smooth FPS", false, false),
 	//BRIGHTNESS("BRIGHTNESS", 20, "BRIGHTNESS", 21, "Brightness", true, false, true),
-	GAMMA("GAMMA", 20, "GAMMA", 21, "options.gamma", true, false, true),
+	GAMMA("GAMMA", 20, "GAMMA", 21, "options.gamma", true, false, false),
 	CLOUDS("CLOUDS", 21, "CLOUDS", 22, "Clouds", false, false),
 	CLOUD_HEIGHT("CLOUD_HEIGHT", 22, "CLOUD_HEIGHT", 23, "Cloud Height", true, false, true),
 	TREES("TREES", 23, "TREES", 24, "Trees", false, false),
