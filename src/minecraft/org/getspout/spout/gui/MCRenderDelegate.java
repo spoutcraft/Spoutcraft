@@ -129,7 +129,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = (int) (width - font.getStringWidth(button.getText())) - 5;
 				break;
 			}
+			float scale = button.getScale();
+			float reset = 1/scale;
+			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
+			GL11.glScalef(reset, reset, reset);
 		}
 	}
 
@@ -259,7 +263,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = swidth - font.getStringWidth(lines[i]);
 				break;
 			}
+			float scale = label.getScale();
+			float reset = 1/scale;
+			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			GL11.glScalef(reset, reset, reset);
 		}
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
