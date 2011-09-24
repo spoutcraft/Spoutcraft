@@ -104,7 +104,7 @@ public class CustomTextureManager {
 				texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
 				stream.close();
 			}
-			catch (IOException e) { }
+			catch (Exception e) { }
 			if (texture == null) {
 				System.out.println("Error loading texture: " + path);
 				return null;

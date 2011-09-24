@@ -131,7 +131,7 @@ public class GuiAbout extends GuiScreen {
 		
 		scrollArea.setY(30);
 		scrollArea.setHeight(this.height - 50);
-		scrollArea.setX(this.width - 12);
+		scrollArea.setX(this.width - 8);
 		scrollArea.setWidth(16);
 		scrollArea.setTopColor(scrollBarColor);
 		scrollArea.setBottomColor(scrollBarColor2);
@@ -216,11 +216,11 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 		
-		drawString(this.fontRenderer, "Minecraft 1.8.1", (int)(this.width * 0.097f), this.height - 20, 0xffffff);
-		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.097f), this.height - 10, 0xffffff);
+		drawString(this.fontRenderer, "Beta 1.8.1", (int)(this.width * 0.097f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.097f), this.height - 10, 0x808080);
 		
-		drawString(this.fontRenderer, "Spoutcraft " + SpoutClient.getClientVersion().toString(), (int)(this.width * 0.695f), this.height - 20, 0xffffff);
-		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width * 0.695f), this.height - 10, 0xffffff);
+		drawString(this.fontRenderer, SpoutClient.getClientVersion().toString(), (int)(this.width * 0.8713f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width * 0.695f), this.height - 10, 0x808080);
 		
 		getControlList().get(0).xPosition = this.width / 2 - 45;
 		getControlList().get(0).yPosition = this.height - 25;
