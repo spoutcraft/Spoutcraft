@@ -191,7 +191,7 @@ public class GuiAbout extends GuiScreen {
 		this.drawTexturedModalRect((int)(0.23f * this.width) + 155, (int)(this.height * 2.1f), 0, 45, 155, 44);
 		GL11.glScalef(1/.4f, 1/.4f, 1/.4f); //undo scale above
 
-		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("C:/Users/Cameron/workspace/Spoutcraft/bin/title/spoutcraft.png");
+		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("title/spoutcraft.png");
 		if (textureBinding != null) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
