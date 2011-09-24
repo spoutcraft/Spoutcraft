@@ -66,4 +66,16 @@ public interface Label extends Widget {
 	public WidgetAnchor getAlign();
 
 	public Widget setAlign(WidgetAnchor pos);
+	
+	/**
+	 * Set the scale of the text
+	 * @param scale to set
+	 */
+	public Label setScale(float scale);
+	
+	/**
+	 * Gets the scale of the text
+	 * @return scale of text
+	 */
+	public float getScale();
 }
