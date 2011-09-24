@@ -19,7 +19,7 @@ public enum EnumOptions {
 	AMBIENT_OCCLUSION("AMBIENT_OCCLUSION", 13, "AMBIENT_OCCLUSION", 13, "options.ao", false, true),
 	GUI_SCALE("GUI_SCALE", 14, "GUI_SCALE", 14, "options.guiScale", false, false),
 	FOG_FANCY("FOG_FANCY", 15, "FOG_FANCY", 15, "Fog", false, false),
-	FOG_START("FOG_START", 16, "FOG_START", 16, "Fog Start", false, false, true),
+	VOID_FOG("VOID_FOG", 16, "VOID_FOG", 16, "Void Fog", false, false, false),
 	//MIPMAP_LEVEL("MIPMAP_LEVEL", 17, "MIPMAP_LEVEL", 17, "Mipmap Level", false, false),
 	//MIPMAP_TYPE("MIPMAP_TYPE", 16, "MIPMAP_TYPE", 16, "Mipmap Type", false, false),
 	LOAD_FAR("LOAD_FAR", 17, "LOAD_FAR", 18, "Load Far", false, false),

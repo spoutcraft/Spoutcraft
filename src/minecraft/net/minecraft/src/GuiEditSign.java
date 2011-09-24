@@ -35,7 +35,11 @@ public class GuiEditSign extends GuiScreen {
 		if(this.mc.theWorld.multiplayerWorld) {
 			this.mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
 		}
-		entitySign.recalculateText(); //Spout
+		//Spout start
+		entitySign.lineBeingEdited = -1; 
+		entitySign.columnBeingEdited = -1;
+		entitySign.recalculateText();
+		//Spout end
 	}
 
 	public void updateScreen() {
@@ -159,14 +163,18 @@ public class GuiEditSign extends GuiScreen {
 			GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
 		}
 
-		if(this.updateCounter / 6 % 2 == 0) {
+		//Spout start
+		//if(this.updateCounter / 6 % 2 == 0) {
 			this.entitySign.lineBeingEdited = this.editLine;
-			entitySign.columnBeingEdited = editColumn; //Spoutcraft
-		}
+			entitySign.columnBeingEdited = editColumn;
+		//}
+		//Spout end
 
 		TileEntityRenderer.instance.renderTileEntityAt(this.entitySign, -0.5D, -0.75D, -0.5D, 0.0F);
-		this.entitySign.lineBeingEdited = -1;
-		entitySign.columnBeingEdited = -1;
+		//Spout stop blinking cursor
+		//this.entitySign.lineBeingEdited = -1; 
+		//entitySign.columnBeingEdited = -1;
+		//Spout end
 		GL11.glPopMatrix();
 		super.drawScreen(var1, var2, var3);
 	}
