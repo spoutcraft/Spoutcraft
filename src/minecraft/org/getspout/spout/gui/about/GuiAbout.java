@@ -187,11 +187,12 @@ public class GuiAbout extends GuiScreen {
 		
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPushMatrix();
+		GL11.glTranslatef((0.097f * this.width), (this.height - 45), 0);
 		GL11.glScalef(0.4f, 0.4f, 0.4f);
-		this.drawTexturedModalRect((int)(0.23f * this.width), (int)(this.height * 2.1f), 0, 0, 155, 44);
-		this.drawTexturedModalRect((int)(0.23f * this.width) + 155, (int)(this.height * 2.1f), 0, 45, 155, 44);
-		GL11.glScalef(1/.4f, 1/.4f, 1/.4f); //undo scale above
-
+		this.drawTexturedModalRect(0, 0, 0, 0, 155, 44);
+		this.drawTexturedModalRect(155, 0, 0, 45, 155, 44);
+		GL11.glPopMatrix();
 		
 		if (textureBinding != null) {
 			GL11.glPushMatrix();
@@ -199,7 +200,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((0.685f * this.width), (this.height * 0.83f), 0); // moves texture into place
+			GL11.glTranslatef((0.685f * this.width), (this.height - 45), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
