@@ -23,7 +23,7 @@ public class GuiAbout extends GuiScreen {
 	private Color scrollBarColor = new Color(0.46F, 0.46F, 0.46F, 0.55F);
 	private Color scrollBarColor2 = new Color(0.06F, 0.06F, 0.06F, 0.62F);
 	private Gradient scrollArea = new GenericGradient();
-	org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("res/spoutcraft.png");
+	org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("/res/spoutcraft.png");
 	public GuiAbout() {
 		
 	}
