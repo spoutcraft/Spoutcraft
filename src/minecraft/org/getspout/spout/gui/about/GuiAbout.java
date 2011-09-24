@@ -23,6 +23,7 @@ public class GuiAbout extends GuiScreen {
 	private Color scrollBarColor = new Color(0.46F, 0.46F, 0.46F, 0.55F);
 	private Color scrollBarColor2 = new Color(0.06F, 0.06F, 0.06F, 0.62F);
 	private Gradient scrollArea = new GenericGradient();
+	org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("title/spoutcraft.png");
 	public GuiAbout() {
 		
 	}
@@ -30,7 +31,7 @@ public class GuiAbout extends GuiScreen {
 	@Override
 	public void initGui() {
 		this.controlList.clear();
-		controlList.add(new GuiButton(1, this.width / 2 - 40, this.height - 25, 100, 20, "Main Menu"));
+		controlList.add(new GuiButton(1, this.width / 2 - 45, this.height - 25, 100, 20, "Main Menu"));
 	}
 	
 	@Override
@@ -191,7 +192,7 @@ public class GuiAbout extends GuiScreen {
 		this.drawTexturedModalRect((int)(0.23f * this.width) + 155, (int)(this.height * 2.1f), 0, 45, 155, 44);
 		GL11.glScalef(1/.4f, 1/.4f, 1/.4f); //undo scale above
 
-		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("title/spoutcraft.png");
+		
 		if (textureBinding != null) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -221,7 +222,7 @@ public class GuiAbout extends GuiScreen {
 		drawString(this.fontRenderer, "Spoutcraft " + SpoutClient.getClientVersion().toString(), (int)(this.width * 0.695f), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width * 0.695f), this.height - 10, 0xffffff);
 		
-		getControlList().get(0).xPosition = this.width / 2 - 40;
+		getControlList().get(0).xPosition = this.width / 2 - 45;
 		getControlList().get(0).yPosition = this.height - 25;
 		getControlList().get(0).drawButton(this.mc, x, y);
 		//super.drawScreen(x, x, z);
