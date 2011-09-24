@@ -23,7 +23,7 @@ public class GuiAbout extends GuiScreen {
 	private Color scrollBarColor = new Color(0.46F, 0.46F, 0.46F, 0.55F);
 	private Color scrollBarColor2 = new Color(0.06F, 0.06F, 0.06F, 0.62F);
 	private Gradient scrollArea = new GenericGradient();
-	org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromPath("res/spoutcraft.png");
+	Texture textureBinding = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
 	public GuiAbout() {
 		
 	}
@@ -187,11 +187,12 @@ public class GuiAbout extends GuiScreen {
 		
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPushMatrix();
+		GL11.glTranslatef((0.097f * this.width), (this.height - 45), 0);
 		GL11.glScalef(0.4f, 0.4f, 0.4f);
-		this.drawTexturedModalRect((int)(0.23f * this.width), (int)(this.height * 2.1f), 0, 0, 155, 44);
-		this.drawTexturedModalRect((int)(0.23f * this.width) + 155, (int)(this.height * 2.1f), 0, 45, 155, 44);
-		GL11.glScalef(1/.4f, 1/.4f, 1/.4f); //undo scale above
-
+		this.drawTexturedModalRect(0, 0, 0, 0, 155, 44);
+		this.drawTexturedModalRect(155, 0, 0, 45, 155, 44);
+		GL11.glPopMatrix();
 		
 		if (textureBinding != null) {
 			GL11.glPushMatrix();
@@ -199,7 +200,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((0.685f * this.width), (this.height * 0.83f), 0); // moves texture into place
+			GL11.glTranslatef((0.685f * this.width), (this.height - 45), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -216,11 +217,11 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 		
-		drawString(this.fontRenderer, "Minecraft 1.8.1", (int)(this.width * 0.097f), this.height - 20, 0xffffff);
-		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.097f), this.height - 10, 0xffffff);
+		drawString(this.fontRenderer, "Beta 1.8.1", (int)(this.width * 0.097f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.097f), this.height - 10, 0x808080);
 		
-		drawString(this.fontRenderer, "Spoutcraft " + SpoutClient.getClientVersion().toString(), (int)(this.width * 0.695f), this.height - 20, 0xffffff);
-		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width * 0.695f), this.height - 10, 0xffffff);
+		drawString(this.fontRenderer, SpoutClient.getClientVersion().toString(), (int)(this.width * 0.8713f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width * 0.695f), this.height - 10, 0x808080);
 		
 		getControlList().get(0).xPosition = this.width / 2 - 45;
 		getControlList().get(0).yPosition = this.height - 25;
