@@ -60,7 +60,6 @@ public enum PacketType {
 	PacketCustomBlockOverride(38, PacketCustomBlockOverride.class),
 	PacketCustomBlockDesign(39, PacketCustomBlockDesign.class),
 	PacketUniqueId(40, PacketUniqueId.class),
-	PacketPlayerAttribute(41, PacketPlayerAttribute.class),
 	;
 	
 	private final int id;

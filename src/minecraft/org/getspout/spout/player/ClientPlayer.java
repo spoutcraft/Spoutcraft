@@ -120,44 +120,4 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	public void setCurrentScreen(Screen screen) {
 		currentScreen = screen;
 	}
-
-	@Override
-	public void setCanFly(boolean fly) {
-		getHandle().capabilities.field_35758_c = fly;
-	}
-
-	@Override
-	public boolean canFly() {
-		return getHandle().capabilities.field_35758_c;
-	}
-
-	@Override
-	public void setFlying(boolean flying) {
-		getHandle().capabilities.isFlying = flying;
-	}
-
-	@Override
-	public boolean isFlying() {
-		return getHandle().capabilities.isFlying;
-	}
-
-	@Override
-	public void setInvulnerable(boolean invulnerable) {
-		getHandle().capabilities.disableDamage = invulnerable;
-	}
-
-	@Override
-	public boolean isInvulnerable() {
-		return getHandle().capabilities.disableDamage;
-	}
-
-	@Override
-	public void setInstantBreak(boolean instantBreak) {
-		getHandle().capabilities.field_35756_d = instantBreak;
-	}
-
-	@Override
-	public boolean canInstantBreak() {
-		return getHandle().capabilities.field_35756_d;
-	}
 }
