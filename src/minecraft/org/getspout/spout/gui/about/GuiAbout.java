@@ -131,7 +131,7 @@ public class GuiAbout extends GuiScreen {
 		
 		scrollArea.setY(30);
 		scrollArea.setHeight(this.height - 50);
-		scrollArea.setX(this.width - 8);
+		scrollArea.setX(this.width - 12);
 		scrollArea.setWidth(16);
 		scrollArea.setTopColor(scrollBarColor);
 		scrollArea.setBottomColor(scrollBarColor2);
