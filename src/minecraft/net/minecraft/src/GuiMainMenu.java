@@ -279,13 +279,14 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glScalef(var8, var8, var8);
 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
 		GL11.glPopMatrix();
+		//Spout Start
 		//this.drawString(this.fontRenderer, "Minecraft Beta 1.8.1", 2, this.height - 10, 16777215); //Spout
-		String var9 = "Copyright Mojang AB. Do not distribute!";
+		//String var9 = "Copyright Mojang AB. Do not distribute!";
 		//this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215); //Spout
 		
-		//Spout Start
-		var9 = "Spoutcraft " + SpoutClient.getClientVersion().toString() + " - Minecraft Beta 1.8.1" + " - " + var9;
-		this.drawCenteredString(this.fontRenderer, var9, this.width / 2, this.height - 10, 0x1F3C8E);
+		
+		//var9 = "Spoutcraft " + SpoutClient.getClientVersion().toString() + " - Minecraft Beta 1.8.1" + " - " + var9;
+		//this.drawCenteredString(this.fontRenderer, var9, this.width / 2, this.height - 10, 0x1F3C8E);
 		//Spout End
 		super.drawScreen(var1, var2, var3);
 	}
