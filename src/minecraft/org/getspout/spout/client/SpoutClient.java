@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.config.ConfigReader;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
@@ -45,6 +46,7 @@ import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.Property;
@@ -75,6 +77,7 @@ public class SpoutClient implements Client {
 	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
+	private KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	
 	static {
 		dataMiningThread.start();
@@ -283,5 +286,10 @@ public class SpoutClient implements Client {
 	public void setCamera(Location arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public KeyBindingManager getKeyBindingManager() {
+		return bindingManager;
 	}
 }

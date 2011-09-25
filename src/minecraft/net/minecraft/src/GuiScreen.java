@@ -189,6 +189,7 @@ public class GuiScreen extends Gui {
 				boolean keyReleased = Keyboard.getEventKeyState();
 				PacketKeyPress packet = new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)player.movementInput, screen);
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+				SpoutClient.getInstance().getKeyBindingManager().pressKey(i, keyReleased, screen.getCode());
 			}
 		//Spout End
 			this.handleKeyboardInput();
