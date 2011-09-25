@@ -17,9 +17,15 @@
 package org.getspout.spout.client;
 
 import java.io.File;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Packet;
+import net.minecraft.src.WorldClient;
 
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
@@ -51,20 +57,13 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.gui.Keyboard;
-import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Packet;
-import net.minecraft.src.WorldClient;
 
 public class SpoutClient implements Client {
 	private static SpoutClient instance = null;
@@ -266,21 +265,6 @@ public class SpoutClient implements Client {
 
 	public SpoutVersion getVersion() {
 		return clientVersion;
-	}
-	
-	public Object getProperty(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Property getPropertyDelegate(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setProperty(String arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public Location getCamera() {
