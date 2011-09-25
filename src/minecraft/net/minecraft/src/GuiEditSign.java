@@ -171,9 +171,9 @@ public class GuiEditSign extends GuiScreen {
 		//Spout end
 
 		TileEntityRenderer.instance.renderTileEntityAt(this.entitySign, -0.5D, -0.75D, -0.5D, 0.0F);
-		//Spout stop blinking cursor
-		//this.entitySign.lineBeingEdited = -1; 
-		//entitySign.columnBeingEdited = -1;
+		//Spout start
+		this.entitySign.lineBeingEdited = -1; 
+		entitySign.columnBeingEdited = -1;
 		//Spout end
 		GL11.glPopMatrix();
 		super.drawScreen(var1, var2, var3);
