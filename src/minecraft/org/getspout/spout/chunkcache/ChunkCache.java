@@ -27,10 +27,7 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityClientPlayerMP;
-
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketCacheHashUpdate;
 import org.getspout.spout.packet.PacketChunkRefresh;
 import org.getspout.spout.util.ChunkHash;
