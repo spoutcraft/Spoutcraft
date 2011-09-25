@@ -28,13 +28,14 @@ public class GenericLabel extends GenericWidget implements Label {
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
 	protected Color color = new Color(1, 1, 1);
 	protected boolean auto = true;
+	protected float scale = 1.0F;
 
 	public GenericLabel() {
 
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 4;
+		return super.getVersion() + 5;
 	}
 
 	public GenericLabel(String text) {
@@ -47,7 +48,7 @@ public class GenericLabel extends GenericWidget implements Label {
 
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 7;
+		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 11;
 	}
 
 	@Override
@@ -57,6 +58,7 @@ public class GenericLabel extends GenericWidget implements Label {
 		this.setAlign(WidgetAnchor.getAnchorFromId(input.readByte()));
 		this.setAuto(input.readBoolean());
 		this.setTextColor(PacketUtil.readColor(input));
+		this.setScale(input.readFloat());
 	}
 
 	@Override
@@ -66,6 +68,7 @@ public class GenericLabel extends GenericWidget implements Label {
 		output.writeByte(align.getId());
 		output.writeBoolean(getAuto());
 		PacketUtil.writeColor(output, getTextColor());
+		output.writeFloat(scale);
 	}
 
 	public String getText() {
@@ -102,6 +105,16 @@ public class GenericLabel extends GenericWidget implements Label {
 	public Label setTextColor(Color color) {
 		this.color = color;
 		return this;
+	}
+	
+	
+	public Label setScale(float scale) {
+		this.scale = scale;
+		return this;
+	}
+	
+	public float getScale() {
+		return scale;
 	}
 
 	@Override

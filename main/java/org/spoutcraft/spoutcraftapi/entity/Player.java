@@ -19,9 +19,9 @@ package org.spoutcraft.spoutcraftapi.entity;
 import java.net.InetSocketAddress;
 
 import org.spoutcraft.spoutcraftapi.Achievement;
-import org.spoutcraft.spoutcraftapi.Material;
 import org.spoutcraft.spoutcraftapi.Statistic;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
 public interface Player extends HumanEntity, CommandSender {
@@ -64,8 +64,8 @@ public interface Player extends HumanEntity, CommandSender {
 
 	public void incrementStatistic(Statistic statistic, int amount);
 
-	public void incrementStatistic(Statistic statistic, Material material);
+	public void incrementStatistic(Statistic statistic, MaterialData material);
 
-	public void incrementStatistic(Statistic statistic, Material material, int amount);
+	public void incrementStatistic(Statistic statistic, MaterialData material, int amount);
 
 }

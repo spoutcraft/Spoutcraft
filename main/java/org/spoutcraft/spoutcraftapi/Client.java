@@ -16,7 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi;
 
-import java.util.Map;
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
@@ -35,11 +35,9 @@ public interface Client extends PropertyInterface {
 
 	public String getName();
 
-	public String getVersion();
+	public SpoutVersion getVersion();
 
 	public AddonManager getAddonManager();
-
-	public void reload();
 
 	public Logger getLogger();
 
@@ -47,9 +45,7 @@ public interface Client extends PropertyInterface {
 
 	public boolean dispatchCommand(CommandSender sender, String commandLine);
 
-	public Map<String, String[]> getCommandAliases();
-
-	public String getUpdateFolder();
+	public File getUpdateFolder();
 
 	public ItemManager getItemManager();
 

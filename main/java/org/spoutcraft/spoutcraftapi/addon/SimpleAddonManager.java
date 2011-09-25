@@ -104,8 +104,8 @@ public class SimpleAddonManager implements AddonManager {
 
 		LinkedList<File> filesList = new LinkedList(Arrays.asList(files));
 
-		if (!(client.getUpdateFolder().equals(""))) {
-			updateDirectory = new File(directory, client.getUpdateFolder());
+		if (!(client.getUpdateFolder() == null)) {
+			updateDirectory = client.getUpdateFolder();
 		}
 
 		while (!allFailed || finalPass) {

@@ -16,7 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi;
 
-import java.util.Map;
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.Client.Mode;
@@ -50,16 +50,12 @@ public final class Spoutcraft {
 		return client.getName();
 	}
 
-	public static String getVersion() {
+	public static SpoutVersion getVersion() {
 		return client.getVersion();
 	}
 
 	public static AddonManager getAddonManager() {
 		return client.getAddonManager();
-	}
-
-	public static void reload() {
-		client.reload();
 	}
 
 	public static Logger getLogger() {
@@ -73,12 +69,8 @@ public final class Spoutcraft {
 	public static boolean dispatchCommand(CommandSender sender, String commandLine) {
 		return client.dispatchCommand(sender, commandLine);
 	}
-
-	public static Map<String, String[]> getCommandAliases() {
-		return client.getCommandAliases();
-	}
-
-	public static String getUpdateFolder() {
+	
+	public static File getUpdateFolder() {
 		return client.getUpdateFolder();
 	}
 
