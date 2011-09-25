@@ -101,7 +101,7 @@ public class AddonDescriptionFile {
 		return this.website;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings("unchecked")
 	private void loadMap(Map<String, Object> map) throws InvalidDescriptionException {
 		try {
 			this.name = map.get("name").toString();
@@ -161,7 +161,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("depend")) {
 			try {
-				this.depend = ((ArrayList) map.get("depend"));
+				this.depend = ((ArrayList<String>) map.get("depend"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "depend is of wrong type");
 			}
@@ -169,7 +169,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("softdepend")) {
 			try {
-				this.softDepend = ((ArrayList) map.get("softdepend"));
+				this.softDepend = ((ArrayList<String>) map.get("softdepend"));
 			} catch (ClassCastException ex) {
 				throw new InvalidDescriptionException(ex, "softdepend is of wrong type");
 			}
@@ -203,7 +203,7 @@ public class AddonDescriptionFile {
 
 		if (map.containsKey("authors")) {
 			try {
-				ArrayList extra = (ArrayList) map.get("authors");
+				ArrayList<String> extra = (ArrayList<String>) map.get("authors");
 
 				this.authors.addAll(extra);
 			} catch (ClassCastException ex) {
@@ -211,10 +211,9 @@ public class AddonDescriptionFile {
 			}
 		}
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	private Map<String, Object> saveMap() {
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 
 		map.put("name", this.name);
 		map.put("main", this.main);
@@ -240,7 +239,6 @@ public class AddonDescriptionFile {
 		else if (this.authors.size() > 1) {
 			map.put("authors", this.authors);
 		}
-
 		return map;
 	}
 
