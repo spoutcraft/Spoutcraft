@@ -27,9 +27,7 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityClientPlayerMP;
-
-import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.PacketCacheHashUpdate;
 import org.getspout.spout.packet.PacketChunkRefresh;
 import org.getspout.spout.util.ChunkHash;
@@ -116,8 +114,7 @@ public class ChunkCache {
 			} else if (partitionData == null) {
 				long[] brokenHash = new long[1];
 				brokenHash[0] = hash;
-				EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
-				player.sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(false, brokenHash)));
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(false, brokenHash));
 				PartitionChunk.copyToChunkData(chunkData, i, blank);
 			} else {
 				cacheHit++;
@@ -141,10 +138,7 @@ public class ChunkCache {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
-				if (player != null) {
-					player.sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(true, nearbyHashes)));
-				}
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(true, nearbyHashes));
 			}
 		}
 		
@@ -162,8 +156,7 @@ public class ChunkCache {
 		if (CRCProvided && CRCNew != CRC) {
 			System.out.println("CRC error, received: " + CRC + " CRC of data: " + CRCNew);
 			System.out.println("Requesting chunk resend: " + cx + " " + cz);
-			EntityClientPlayerMP player = (EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer;
-			player.sendQueue.addToSendQueue(new CustomPacket(new PacketChunkRefresh(cx, cz)));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketChunkRefresh(cx, cz));
 		}
 		
 		return cachedChunkData;
@@ -183,7 +176,7 @@ public class ChunkCache {
 			for(int j = 0; j < overwrittenHashes.length; j++) {
 				overwrittenHashes[j] = overwriteQueue.removeFirst();
 			}
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketCacheHashUpdate(false, overwrittenHashes)));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(false, overwrittenHashes));
 		}
 	}
 

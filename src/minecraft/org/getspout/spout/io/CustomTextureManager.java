@@ -19,7 +19,10 @@ package org.getspout.spout.io;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+
+import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -83,6 +86,25 @@ public class CustomTextureManager {
 				stream.close();
 			}
 			catch (IOException e) { }
+			if (texture == null) {
+				System.out.println("Error loading texture: " + path);
+				return null;
+			}
+			textures.put(path, texture);
+		}
+		return textures.get(path);
+	}
+	
+	public static Texture getTextureFromJar(String path) {
+		if (!textures.containsKey(path)) {
+			Texture texture = null;
+			try {
+				//System.out.println("Loading Texture: " + path);
+				InputStream stream = Minecraft.class.getResourceAsStream(path);
+				texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+				stream.close();
+			}
+			catch (Exception e) { }
 			if (texture == null) {
 				System.out.println("Error loading texture: " + path);
 				return null;

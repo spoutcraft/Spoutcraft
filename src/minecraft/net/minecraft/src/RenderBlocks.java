@@ -280,6 +280,7 @@ public class RenderBlocks {
 		case 1:
 			var64 = 3;
 		case 2:
+		default:
 			break;
 		case 3:
 			var64 = 2;
@@ -2569,8 +2570,7 @@ public class RenderBlocks {
 
 	public boolean renderStandardBlockWithAmbientOcclusion(Block var1, int var2, int var3, int var4, float var5, float var6, float var7) {
 		this.enableAO = true;
-		boolean rendered = false;
-		boolean var8 = Config.getAmbientOcclusionLevel() > 0.0F; //Spout
+		boolean var8 = false;
 		float var9 = this.lightValueOwn;
 		float var10 = this.lightValueOwn;
 		float var11 = this.lightValueOwn;
@@ -2734,7 +2734,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			this.renderBottomFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 0));
-			rendered = true;
+			var8 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
@@ -2813,7 +2813,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			this.renderTopFace(var1, (double)var2, (double)var3, (double)var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 1));
-			rendered = true;
+			var8 = true;
 		}
 
 		int var26;
@@ -2933,7 +2933,7 @@ public class RenderBlocks {
 				this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			rendered = true;
+			var8 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 + 1, 3)) {
@@ -3052,7 +3052,7 @@ public class RenderBlocks {
 				this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			rendered = true;
+			var8 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
@@ -3171,7 +3171,7 @@ public class RenderBlocks {
 				this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			rendered = true;
+			var8 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 + 1, var3, var4, 5)) {
@@ -3290,11 +3290,11 @@ public class RenderBlocks {
 				this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
 
-			rendered = true;
+			var8 = true;
 		}
 
 		this.enableAO = false;
-		return rendered;
+		return var8;
 	}
 
 	private int func_35924_c(int var1, int var2, int var3, int var4) {
@@ -3363,109 +3363,73 @@ public class RenderBlocks {
 		int var28;
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 - 1, 2)) {
 			var8.func_35835_b(var1.minZ > 0.0D?var26:var1.func_35275_c(this.blockAccess, var2, var3, var4 - 1));
-			//Spout start
 			var8.setColorOpaque_F(var18, var21, var24);
 			var28 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2);
-			if(Config.isBetterGrass()) {
-				if(var28 == 3) {
-					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 2);
-					if(var28 == 0) {
-						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
-					}
-				}
-
-				if(var28 == 68) {
-					var28 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 2);
-				}
+//Spout start
+			if(var28 == 0) {
+				var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 			}
-
+//Spout end
 			this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, var28);
-			if((fancyGrass || Config.isBetterGrass()) && var28 == 3 && this.overrideBlockTexture < 0) {
+			if(fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
 				this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
-			//Spout end
+
 			var9 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 + 1, 3)) {
 			var8.func_35835_b(var1.maxZ < 1.0D?var26:var1.func_35275_c(this.blockAccess, var2, var3, var4 + 1));
-			//Spout start
 			var8.setColorOpaque_F(var18, var21, var24);
 			var28 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3);
-			if(Config.isBetterGrass()) {
-				if(var28 == 3) {
-					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 3);
-					if(var28 == 0) {
-						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
-					}
-				}
-
-				if(var28 == 68) {
-					var28 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 3);
-				}
+//Spout start
+			if(var28 == 0) {
+				var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 			}
-
+//Spout end
 			this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, var28);
-			if((fancyGrass || Config.isBetterGrass()) && var28 == 3 && this.overrideBlockTexture < 0) {
+			if(fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
 				this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
-			//Spout end
+
 			var9 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
 			var8.func_35835_b(var1.minX > 0.0D?var26:var1.func_35275_c(this.blockAccess, var2 - 1, var3, var4));
-			//Spout start
-			var8.setColorOpaque_F(var18, var21, var24);
+			var8.setColorOpaque_F(var19, var22, var25);
 			var28 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4);
-			if(Config.isBetterGrass()) {
-				if(var28 == 3) {
-					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 4);
-					if(var28 == 0) {
-						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
-					}
-				}
-
-				if(var28 == 68) {
-					var28 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 4);
-				}
+//Spout start
+			if(var28 == 0) {
+				var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 			}
-
+//Spout end
 			this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, var28);
-			if((fancyGrass || Config.isBetterGrass()) && var28 == 3 && this.overrideBlockTexture < 0) {
-				var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+			if(fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+				var8.setColorOpaque_F(var19 * var5, var22 * var6, var25 * var7);
 				this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
-			//Spout end
+
 			var9 = true;
 		}
 
 		if(this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 + 1, var3, var4, 5)) {
 			var8.func_35835_b(var1.maxX < 1.0D?var26:var1.func_35275_c(this.blockAccess, var2 + 1, var3, var4));		
-			//Spout start
-			var8.setColorOpaque_F(var18, var21, var24);
+			var8.setColorOpaque_F(var19, var22, var25);
 			var28 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5);
-			if(Config.isBetterGrass()) {
-				if(var28 == 3) {
-					var28 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 5);
-					if(var28 == 0) {
-						var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
-					}
-				}
-
-				if(var28 == 68) {
-					var28 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 5);
-				}
+//Spout start
+			if(var28 == 0) {
+				var8.setColorOpaque_F(var5 * var5, var6 * var6, var7 * var7);
 			}
-
+//Spout end
 			this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, var28);
-			if((fancyGrass || Config.isBetterGrass()) && var28 == 3 && this.overrideBlockTexture < 0) {
-				var8.setColorOpaque_F(var18 * var5, var21 * var6, var24 * var7);
+			if(fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+				var8.setColorOpaque_F(var19 * var5, var22 * var6, var25 * var7);
 				this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, 38);
 			}
-			//Spout end
+
 			var9 = true;
 		}
 

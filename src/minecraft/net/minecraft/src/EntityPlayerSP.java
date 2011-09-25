@@ -420,7 +420,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				if (view != newView) {
 					settings.renderDistance = newView;
 					if (this instanceof EntityClientPlayerMP && Spoutcraft.getClient().isSpoutEnabled()) {
-						((EntityClientPlayerMP)this).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 					}
 				}
 			}

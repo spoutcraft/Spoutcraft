@@ -10,22 +10,15 @@ public class ClippingHelper {
 
 
 	public boolean isBoxInFrustum(double var1, double var3, double var5, double var7, double var9, double var11) {
-//Spout Start
 		for(int var13 = 0; var13 < 6; ++var13) {
-			float var14 = (float)var1;
-			float var15 = (float)var3;
-			float var16 = (float)var5;
-			float var17 = (float)var7;
-			float var18 = (float)var9;
-			float var19 = (float)var11;
-			if(this.frustum[var13][0] * var14 + this.frustum[var13][1] * var15 + this.frustum[var13][2] * var16 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var17 + this.frustum[var13][1] * var15 + this.frustum[var13][2] * var16 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var14 + this.frustum[var13][1] * var18 + this.frustum[var13][2] * var16 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var17 + this.frustum[var13][1] * var18 + this.frustum[var13][2] * var16 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var14 + this.frustum[var13][1] * var15 + this.frustum[var13][2] * var19 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var17 + this.frustum[var13][1] * var15 + this.frustum[var13][2] * var19 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var14 + this.frustum[var13][1] * var18 + this.frustum[var13][2] * var19 + this.frustum[var13][3] <= 0.0F && this.frustum[var13][0] * var17 + this.frustum[var13][1] * var18 + this.frustum[var13][2] * var19 + this.frustum[var13][3] <= 0.0F) {
+			if((double)this.frustum[var13][0] * var1 + (double)this.frustum[var13][1] * var3 + (double)this.frustum[var13][2] * var5 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var7 + (double)this.frustum[var13][1] * var3 + (double)this.frustum[var13][2] * var5 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var1 + (double)this.frustum[var13][1] * var9 + (double)this.frustum[var13][2] * var5 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var7 + (double)this.frustum[var13][1] * var9 + (double)this.frustum[var13][2] * var5 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var1 + (double)this.frustum[var13][1] * var3 + (double)this.frustum[var13][2] * var11 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var7 + (double)this.frustum[var13][1] * var3 + (double)this.frustum[var13][2] * var11 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var1 + (double)this.frustum[var13][1] * var9 + (double)this.frustum[var13][2] * var11 + (double)this.frustum[var13][3] <= 0.0D && (double)this.frustum[var13][0] * var7 + (double)this.frustum[var13][1] * var9 + (double)this.frustum[var13][2] * var11 + (double)this.frustum[var13][3] <= 0.0D) {
 				return false;
 			}
 		}
 
 		return true;
 	}
-
+//Spout start
 	public boolean isBoxInFrustumFully(double var1, double var3, double var5, double var7, double var9, double var11) {
 		for(int var13 = 0; var13 < 6; ++var13) {
 			float var14 = (float)var1;
@@ -45,5 +38,5 @@ public class ClippingHelper {
 
 		return true;
 	}
-//Spout End 
+//Spout end 
 }

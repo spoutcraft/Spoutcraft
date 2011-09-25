@@ -473,15 +473,15 @@ public abstract class Minecraft implements Runnable {
 		if (notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
 			// Screen closed
 			if (this.currentScreen != null && screen == null) {
-				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen))));
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen)));
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
-				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
-				((EntityClientPlayerMP) this.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketScreenAction(ScreenAction.Open, display)));
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
 			}
 		}
 		if (!(this.currentScreen instanceof GuiUnused)) {

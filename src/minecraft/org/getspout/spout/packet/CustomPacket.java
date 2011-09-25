@@ -63,6 +63,7 @@ public class CustomPacket extends Packet{
 		packetId = input.readShort();
 		int version = input.readShort(); //packet version
 		int length = input.readInt(); //packet size
+		//System.out.println("Reading Packet: " + PacketType.getPacketFromId(packetId) + " Size: " + length + " bytes, version: " + version);
 		if (packetId > -1 && version > -1) {
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();

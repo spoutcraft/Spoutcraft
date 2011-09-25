@@ -97,7 +97,7 @@ public class WorldRenderer {
 			this.posYMinus = var2 - this.posYClip;
 			this.posZMinus = var3 - this.posZClip;
 			//Spout Start
-			float var4 = 0.0F;
+			float var4 = 6.0F;
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.sizeWidth) + var4), (double)((float)(var2 + this.sizeHeight) + var4), (double)((float)(var3 + this.sizeDepth) + var4));
 			this.needsBoxUpdate = true;
 			this.markDirty();
@@ -115,7 +115,7 @@ public class WorldRenderer {
 		if(this.needsUpdate) {
 			++chunksUpdated;
 			if(this.needsBoxUpdate) {
-				float var1 = 0.0F;
+				float var1 = 6.0F;
 				GL11.glNewList(this.glRenderList + 3, 4864 /*GL_COMPILE*/); //Spout
 				RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var1), (double)((float)this.posYClip - var1), (double)((float)this.posZClip - var1), (double)((float)(this.posXClip + this.sizeWidth) + var1), (double)((float)(this.posYClip + this.sizeHeight) + var1), (double)((float)(this.posZClip + this.sizeDepth) + var1)));
 				GL11.glEndList();

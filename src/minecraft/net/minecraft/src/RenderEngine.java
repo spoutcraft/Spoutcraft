@@ -52,11 +52,9 @@ public class RenderEngine {
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
     //Spout Start
 	public TexturePackBase oldPack = null;
-	private ByteBuffer[] mipImageDatas;
 	//Spout End
 
 	public RenderEngine(TexturePackList var1, GameSettings var2) {
-        allocateImageData(256); //Spout
 		this.texturePack = var1;
 		this.options = var2;
 		Graphics var3 = this.missingTextureImage.getGraphics();
@@ -640,42 +638,4 @@ public class RenderEngine {
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-
-	private void checkImageDataSize(int var1) {
-		if(this.imageData != null) {
-			int var2 = var1 * var1 * 4;
-			if(this.imageData.capacity() >= var2) {
-				return;
-			}
-		}
-		
-		this.allocateImageData(var1);
-	}
-
-	private void allocateImageData(int var1) {
-		int var2 = var1 * var1 * 4;
-		this.imageData = GLAllocation.createDirectByteBuffer(var2);
-		ArrayList var3 = new ArrayList();
-		//System.out.println("Allocating Image Data: " + var1);
-		for(int var4 = var1 / 2; var4 > 0; var4 /= 2) {
-			int var5 = var4 * var4 * 4;
-			//System.out.println("Allocating MipMap Data: " + var5);
-			ByteBuffer var6 = GLAllocation.createDirectByteBuffer(var5);
-			var3.add(var6);
-		}
-
-		this.mipImageDatas = (ByteBuffer[])((ByteBuffer[])var3.toArray(new ByteBuffer[var3.size()]));
-	}
-
-	private int getMaxMipmapLevel(int var1) {
-		int var2;
-		for(var2 = 0; var1 > 0; ++var2) {
-			var1 /= 2;
-		}
-
-		return var2 - 1;
-	}
-
-	//Spout HD End
-
 }

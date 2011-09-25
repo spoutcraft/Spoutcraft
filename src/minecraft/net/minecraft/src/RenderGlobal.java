@@ -114,6 +114,7 @@ public class RenderGlobal implements IWorldAccess {
 	//Spout Start
 	private long lastMovedTime = System.currentTimeMillis();
 	private long frameCount = 0;
+	public static int renderersToUpdateLastTick = 0;
 	//Spout End 
 
 	public RenderGlobal(Minecraft var1, RenderEngine var2) {
@@ -1217,9 +1218,33 @@ public class RenderGlobal implements IWorldAccess {
 		int renderersToUpdate = Config.getUpdatesPerFrame();
 		double tempRenderersToUpdate = renderersToUpdate;
 		int renderersUpdated = 0;
+		//Be aggressive!
 		if (Config.isDynamicUpdates()) {
-			if (!this.isMoving(var1)) {
+			if (!this.isMoving(var1, 2000) || mc.currentScreen != null) { //if we have a screen open load chunks like crazy
+				tempRenderersToUpdate *= 20D;
+			}
+			else if (!this.isMoving(var1, 1000)){
+				tempRenderersToUpdate *= 15D;
+			}
+			else if (!this.isMoving(var1, 1000)){
+				tempRenderersToUpdate *= 10D;
+			}
+			else if (!this.isMoving(var1, 500)){
+				tempRenderersToUpdate *= 5D;
+			}
+			else if (!this.isMoving(var1, 250)){
 				tempRenderersToUpdate *= 3D;
+			}
+			else if (!this.isMoving(var1, 125)){
+				tempRenderersToUpdate *= 2D;
+			}
+			else if (!this.isMoving(var1, 75)){
+				tempRenderersToUpdate *= 3D;
+				tempRenderersToUpdate /= 2D;
+			}
+			else if (!this.isMoving(var1, 35)){
+				tempRenderersToUpdate *= 5D;
+				tempRenderersToUpdate /= 4D;
 			}
 			else {
 				tempRenderersToUpdate /= 2D;
@@ -1229,6 +1254,14 @@ public class RenderGlobal implements IWorldAccess {
 		if (frameCount % 5 == 0) {
 			renderersToUpdate++; //to keep it above 0
 		}
+		//If we have had few chunk updates, do more!
+		if (WorldRenderer.chunksUpdated < 3) {
+			renderersToUpdate += 5;
+		}
+		else if (WorldRenderer.chunksUpdated < 5) {
+			renderersToUpdate += 3;
+		}
+		renderersToUpdateLastTick = renderersToUpdate;
 		if (renderersToUpdate <= 0) {
 			return this.worldRenderersToUpdate.size() == 0;
 		}
@@ -1790,22 +1823,18 @@ public class RenderGlobal implements IWorldAccess {
 	}
 	
 	//Spout start
-	private boolean isMoving(EntityLiving var1) {
-		if (this.isMovingNow(var1)) {
+	private boolean isMoving(EntityLiving entity, long time) {
+		if (this.isMovingNow(entity)) {
 			this.lastMovedTime = System.currentTimeMillis();
 			return true;
 		} else {
-			return System.currentTimeMillis() - this.lastMovedTime < 2000L;
+			return System.currentTimeMillis() - this.lastMovedTime < time;
 		}
 	}
 	
 	private boolean isMovingNow(EntityLiving var1) {
 		double var2 = 0.0010D;
 		return var1.isJumping?true:(var1.isSneaking()?true:((double)var1.prevSwingProgress > var2?true:(this.mc.mouseHelper.deltaX != 0?true:(this.mc.mouseHelper.deltaY != 0?true:(Math.abs(var1.posX - var1.prevPosX) > var2?true:(Math.abs(var1.posY - var1.prevPosY) > var2?true:Math.abs(var1.posZ - var1.prevPosZ) > var2))))));
-	}
-
-	private boolean isActingNow() {
-		return Mouse.isButtonDown(0)?true:Mouse.isButtonDown(1);
 	}
 	//Spout end
 }

@@ -114,7 +114,7 @@ public class PacketCacheFile implements SpoutPacket {
 		compressed = input.readBoolean();
 		int size = input.readInt();
 		this.fileData = new byte[size];
-		input.read(this.fileData);
+		input.readFully(this.fileData);
 		decompress(); //TODO move this to another thread?
 	}
 

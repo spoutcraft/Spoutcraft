@@ -596,12 +596,6 @@ public class EntityRenderer {
 	public void updateCameraAndRender(float var1) {
 		//Spout Start
 		World world = this.mc.theWorld;
-		if(world != null && world.worldProvider != null && this.updatedWorldProvider != world.worldProvider) {
-			this.updateWorldLightLevels();
-			this.updatedWorldProvider = this.mc.theWorld.worldProvider;
-		}
-
-		Minecraft.hasPaidCheckTime = 0L;
 		RenderBlocks.fancyGrass = Config.isGrassFancy();
 		if(Config.isBetterGrassFancy()) {
 			RenderBlocks.fancyGrass = true;
@@ -761,32 +755,6 @@ public class EntityRenderer {
 		}
 	}
 
-//Spout Start
-	public void updateWorldLightLevels() {
-		if(this.mc != null) {
-			if(this.mc.theWorld != null) {
-				if(this.mc.theWorld.worldProvider != null) {
-					float var1 = this.mc.gameSettings.gammaSetting;
-					float[] var2 = this.mc.theWorld.worldProvider.lightBrightnessTable;
-					float var3 = 0.05F;
-					if(this.mc.theWorld.worldProvider != null && this.mc.theWorld.worldProvider.isNether) {
-						var3 = 0.1F + var1 * 0.15F;
-					}
-
-					float var4 = 3.0F * (1.0F - var1);
-
-					for(int var5 = 0; var5 <= 15; ++var5) {
-						float var6 = 1.0F - (float)var5 / 15.0F;
-						var2[var5] = (1.0F - var6) / (var6 * var4 + 1.0F) * (1.0F - var3) + var3;
-					}
-
-					Config.setLightLevels(var2);
-				}
-			}
-		}
-	}
-//Spout End
-
 	public void renderWorld(float var1, long var2) {
 		GL11.glEnable(2884 /*GL_CULL_FACE*/);
 		GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
@@ -853,11 +821,6 @@ public class EntityRenderer {
 			GL11.glEnable(2912 /*GL_FOG*/);
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
-			//Spout Start
-			if(Config.isUseAlphaFunc()) {
-				GL11.glAlphaFunc(516, Config.getAlphaFuncLevel());
-			}
-			//Spout Start
 			var5.sortAndRender(var4, 0, (double)var1);
 			GL11.glShadeModel(7424 /*GL_FLAT*/);
 			EntityPlayer var20;
@@ -1353,33 +1316,35 @@ public class EntityRenderer {
 						var4 = var7;
 					}
 				}
-
-				GL11.glFogi(2917 /*GL_FOG_MODE*/, 9729 /*GL_LINEAR*/);
 				//Spout Start
+				if (!this.mc.gameSettings.voidFog) {
+					var4 = 0.8F * this.farPlaneDistance;
+					var5 = this.farPlaneDistance;
+				}
+				//Spout End
+				
+				GL11.glFogi(2917 /*GL_FOG_MODE*/, 9729 /*GL_LINEAR*/);
+				GL11.glFogf(2915 /*GL_FOG_START*/, var4 * 0.25F);
+				GL11.glFogf(2916 /*GL_FOG_END*/, var4);
+				if(var1 < 0) {
+					GL11.glFogf(2915 /*GL_FOG_START*/, 0.0F);
+					GL11.glFogf(2916 /*GL_FOG_END*/, var4 * 0.8F);
+				}
+	
 				if(GLContext.getCapabilities().GL_NV_fog_distance) {
+					//Spout start
 					if(Config.isFogFancy()) {
 						GL11.glFogi('\u855a', '\u855b');
 					} else {
 						GL11.glFogi('\u855a', '\u855c');
 					}
+					//Spout end
 				}
-				var4 = Config.getFogStart();
-				var5 = 1.0F;
-				if(var1 < 0) {
-					var4 = 0.0F;
-					var5 = 0.8F;
-				}
-	
+
 				if(this.mc.theWorld.worldProvider.isNether) {
-					var4 = 0.0F;
-					var5 = 1.0F;
+					GL11.glFogf(2915 /*GL_FOG_START*/, 0.0F);
 				}
-	
-				GL11.glFogf(2915 /*GL_FOG_START*/, this.farPlaneDistance * var4);
-				GL11.glFogf(2916 /*GL_FOG_END*/, this.farPlaneDistance * var5);
-	
 			}
-			//Spout End
 
 			GL11.glEnable(2903 /*GL_COLOR_MATERIAL*/);
 			GL11.glColorMaterial(1028 /*GL_FRONT*/, 4608 /*GL_AMBIENT*/);

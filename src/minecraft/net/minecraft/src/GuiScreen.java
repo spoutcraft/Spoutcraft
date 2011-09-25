@@ -234,7 +234,7 @@ public class GuiScreen extends Gui {
 					// pass typed key to text processor
 					else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
-							((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition())));
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition()));
 						}
 						handled = true;
 						break;
@@ -411,7 +411,7 @@ public class GuiScreen extends Gui {
 					dirty = true;
 				}
 				if (dirty) {
-					((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
 				}
 			}
 		}

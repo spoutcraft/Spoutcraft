@@ -22,7 +22,6 @@ import net.minecraft.client.Minecraft;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.predownload.GuiPredownload;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{

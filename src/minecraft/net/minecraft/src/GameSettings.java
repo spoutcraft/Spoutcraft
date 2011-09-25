@@ -33,7 +33,7 @@ public class GameSettings {
 	public boolean ambientOcclusion = true;
 //Spout Start
 	public boolean ofFogFancy = false;
-	public float ofFogStart = 0.8F;
+	public boolean voidFog = true;
 	public int ofMipmapLevel = 0;
 	public boolean ofMipmapLinear = false;
 	public boolean ofLoadFar = false;
@@ -192,17 +192,6 @@ public class GameSettings {
 
 	}
 
-	private void updateWorldLightLevels() {
-		if(this.mc.entityRenderer != null) {
-			this.mc.entityRenderer.updateWorldLightLevels();
-		}
-
-		if(this.mc.renderGlobal != null) {
-			this.mc.renderGlobal.updateAllRenderers();
-		}
-
-	}
-
 	private void updateWaterOpacity() {
 		byte var1 = 3;
 		if(this.ofClearWater) {
@@ -308,30 +297,9 @@ public class GameSettings {
 				this.ofFogFancy = !this.ofFogFancy;
 			}
 		}
-
-		if(var1 == EnumOptions.FOG_START) {
-			this.ofFogStart += 0.2F;
-			if(this.ofFogStart > 0.81F) {
-				this.ofFogStart = 0.2F;
-			}
+		if(var1 == EnumOptions.VOID_FOG) {
+			this.voidFog = !this.voidFog;
 		}
-		/*
-		if(var1 == EnumOptions.MIPMAP_LEVEL) {
-			++this.ofMipmapLevel;
-			if(this.ofMipmapLevel > 4) {
-				this.ofMipmapLevel = 0;
-			}
-
-			this.mc.renderEngine.setTileSize(this.mc);
-			this.mc.renderEngine.refreshTextures();
-		}
-
-		if(var1 == EnumOptions.MIPMAP_TYPE) {
-			this.ofMipmapLinear = !this.ofMipmapLinear;
-			this.mc.renderEngine.setTileSize(this.mc);
-			this.mc.renderEngine.refreshTextures();
-		}
-		*/
 		if(var1 == EnumOptions.LOAD_FAR) {
 			this.ofLoadFar = !this.ofLoadFar;
 			if (this.mc.theWorld != null && !this.ofLoadFar) {
@@ -520,13 +488,7 @@ public class GameSettings {
 			return this.limitFramerate == 3?var4 + "VSync":var4 + StatCollector.translateToLocal(LIMIT_FRAMERATES[this.limitFramerate]);
 		} else if(var1 == EnumOptions.FOG_FANCY) {
 			return this.ofFogFancy?var4 + "Fancy":var4 + "Fast";
-		} else if(var1 == EnumOptions.FOG_START) {
-			return var4 + this.ofFogStart;
-		}/* else if(var1 == EnumOptions.MIPMAP_LEVEL) {
-			return var4 + this.ofMipmapLevel;
-		} else if(var1 == EnumOptions.MIPMAP_TYPE) {
-			return this.ofMipmapLinear?var4 + "Linear":var4 + "Nearest";
-		}*/ else if(var1 == EnumOptions.LOAD_FAR) {
+		} else if(var1 == EnumOptions.LOAD_FAR) {
 			return this.ofLoadFar?var4 + "ON":var4 + "OFF";
 		} else if(var1 == EnumOptions.PRELOADED_CHUNKS) {
 			return this.ofPreloadedChunks == 0?var4 + "OFF":var4 + this.ofPreloadedChunks;
@@ -608,7 +570,14 @@ public class GameSettings {
 				return var4 + "Fast";
 			}
 			return var4 + "Fancy";
-		} else {
+		}
+		else if(var1 == EnumOptions.VOID_FOG) {
+			if (voidFog) {
+				return var4 + "ON";
+			}
+			return var4 + "OFF";
+		}
+		 else {
 			return var1 == EnumOptions.WEATHER?(this.ofWeather?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.SKY?(this.ofSky?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.STARS?(this.ofStars?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.CHUNK_UPDATES?var4 + this.ofChunkUpdates:(var1 == EnumOptions.CHUNK_UPDATES_DYNAMIC?(this.ofChunkUpdatesDynamic?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.FAR_VIEW?(this.ofFarView?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.TIME?(this.ofTime == 1?var4 + "Day Only":(this.ofTime == 2?var4 + "Night Only":var4 + "Default")):(var1 == EnumOptions.CLEAR_WATER?(this.ofClearWater?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.GRAPHICS?(this.fancyGraphics?var4 + var2.translateKey("options.graphics.fancy"):var4 + var2.translateKey("options.graphics.fast")):var4))))))));
 		}
 	}
@@ -711,15 +680,8 @@ public class GameSettings {
 						this.ofFogFancy = var3[1].equals("true");
 					}
 
-					if(var3[0].equals("ofFogStart") && var3.length >= 2) {
-						this.ofFogStart = Float.valueOf(var3[1]).floatValue();
-						if(this.ofFogStart < 0.2F) {
-							this.ofFogStart = 0.2F;
-						}
-
-						if(this.ofFogStart > 0.81F) {
-							this.ofFogStart = 0.8F;
-						}
+					if(var3[0].equals("voidFog") && var3.length >= 2) {
+						this.voidFog = var3[1].equals("true");
 					}
 
 					if(var3[0].equals("ofMipmapLevel") && var3.length >= 2) {
@@ -893,7 +855,7 @@ public class GameSettings {
 			}
 //Spout Start
 			var1.println("ofFogFancy:" + this.ofFogFancy);
-			var1.println("ofFogStart:" + this.ofFogStart);
+			var1.println("voidFog:" + this.voidFog);
 			var1.println("ofMipmapLevel:" + this.ofMipmapLevel);
 			var1.println("ofMipmapLinear:" + this.ofMipmapLinear);
 			var1.println("ofLoadFar:" + this.ofLoadFar);

@@ -73,10 +73,6 @@ public class Config {
 		return !GLContext.getCapabilities().GL_NV_fog_distance?false:(Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofFogFancy);
 	}
 
-	public static float getFogStart() {
-		return Minecraft.theMinecraft.gameSettings == null?DEF_FOG_START.floatValue():Minecraft.theMinecraft.gameSettings.ofFogStart;
-	}
-
 	public static boolean isOcclusionEnabled() {
 		return Minecraft.theMinecraft.gameSettings == null?DEF_OCCLUSION_ENABLED.booleanValue():Minecraft.theMinecraft.gameSettings.advancedOpengl;
 	}

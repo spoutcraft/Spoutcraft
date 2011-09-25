@@ -1,6 +1,7 @@
 package org.getspout.spout.item;
 
 import gnu.trove.TIntIntHashMap;
+import gnu.trove.TIntObjectHashMap;
 
 import java.util.HashMap;
 
@@ -24,7 +25,7 @@ public class SpoutItemBlock extends ItemBlock {
 	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
 	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
 	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
-	private final static HashMap<Integer, SpoutCustomBlockDesign> customBlockDesign = new HashMap<Integer, SpoutCustomBlockDesign>();
+	private final static TIntObjectHashMap customBlockDesign = new TIntObjectHashMap();
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
@@ -48,13 +49,13 @@ public class SpoutItemBlock extends ItemBlock {
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {
 		if (blockId != 1 || damage == 0) {
-			return customBlockDesign.get(getKey(blockId, damage));
+			return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(blockId, damage));
 		} else {
 			int id = itemBlock.get(damage);
 			if (id != 0) {
 				short data = (short) itemMetaData.get(damage);
 				if (data != 0) {
-					return customBlockDesign.get(getKey(id, data & 0xFFFF));
+					return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(id, data & 0xFFFF));
 				}
 			}
 		}
@@ -182,8 +183,7 @@ public class SpoutItemBlock extends ItemBlock {
 	}
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {
-			
-		return customBlockDesign.get(getKey(x, y, z));
+		return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(x, y, z));
 	}
 	
 	public static int getKey(int x, int y, int z) {

@@ -183,7 +183,7 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			return new String[]{"Time", " Default - normal day/night cycles", " Day Only - day only", " Night Only - night only"};
 		}
 		else if (option.equals("Biome Colors")) {
-			return new String[]{"Biome Colors", " Fast - caches colors for grass and water per chunk.", " May cause sharp changes in color near chunk edges.", "", " Fast - normal coloring for grass and water.", " Calculates color for water and grass for each block."};
+			return new String[]{"Biome Colors", " Fast - caches colors for grass and water per chunk.", " May cause sharp changes in color near chunk edges.", "", " Fancy - normal coloring for grass and water.", " Calculates color for water and grass for each block."};
 		}
 		return null;
 	}

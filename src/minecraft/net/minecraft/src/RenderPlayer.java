@@ -93,28 +93,23 @@ public class RenderPlayer extends RenderLiving {
 				if (var12.equalsIgnoreCase("Afforess")) {
 					var12 = ChatColor.DARK_BLUE + "Afforess";
 					alpha = 0f;
-				}
-				else if (var12.equalsIgnoreCase("Wulfspider")) {
+				} else if (var12.equalsIgnoreCase("Wulfspider")) {
 					var12 = ChatColor.BLUE + "Wulfspider";
 					alpha = 0f;
-				}
-				else if (var12.equalsIgnoreCase("alta189")) {
+				} else if (var12.equalsIgnoreCase("alta189")) {
 					var12 = ChatColor.DARK_GREEN + "alta189";
 					alpha = 0f;
-				}
-				else if (var12.equalsIgnoreCase("Raphfrk")) {
+				} else if (var12.equalsIgnoreCase("Raphfrk")) {
 					var12 = ChatColor.GREEN + "Raphfrk";
 					alpha = 0f;
-				}
-				else if (var12.equalsIgnoreCase("narrowtux")) {
+				} else if (var12.equalsIgnoreCase("narrowtux")) {
 					var12 = ChatColor.GOLD + "narrowtux";
 					alpha = 0f;
-				}
-				else if (var12.equalsIgnoreCase("Top_Cat")) {
+				} else if (var12.equalsIgnoreCase("Top_Cat")) {
 					var12 = ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
 					alpha = 0f;
-				} else if(var12.equalsIgnoreCase("Olloth")) {
-					var12 = ChatColor.AQUA + "Olloth";
+				} else if (var12.equalsIgnoreCase("Olloth")) {
+					var12 = ChatColor.DARK_RED + "Olloth";
 					alpha = 0f;
 				}
 				//Easter egg end

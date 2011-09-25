@@ -21,7 +21,7 @@ public class GuiVideoSettings extends GuiScreen {
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
 	//Spout Start
-	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.FOG_START, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.GAMMA};
+	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.VOID_FOG, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.GAMMA};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -89,7 +89,7 @@ public class GuiVideoSettings extends GuiScreen {
 						guiGameSettings.renderDistance = newView;
 						change = 0;
 						if (view != newView && this.mc.isMultiplayerWorld()) {
-							((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)newView)));
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 						}
 					}
 				}
@@ -269,11 +269,8 @@ public class GuiVideoSettings extends GuiScreen {
 		else if (option.equals("Fog")) {
 			return new String[]{"Fog type", "  Fast - faster fog", "  Fancy - slower fog, looks better", "The fancy fog is available only if it is supported by the ", "graphic card."};
 		}
-		else if (option.equals("Fog Start")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
-				return cheating;
-			}
-			return new String[]{"Fog start", "  0.2 - the fog starts near the player", "  0.8 - the fog starts far from the player", "This option usually does not affect the performance."};
+		else if (option.equals("Void Fog")) {
+			return new String[]{"Void Fog", "  ON - A dark fog that obscures vision appears at low" , " levels of the map.", "  OFF - normal view distance at all height levels."};
 		}
 		else if (option.equals("Mipmap Level")) {
 			if (!Config.canUseMipmaps()) {

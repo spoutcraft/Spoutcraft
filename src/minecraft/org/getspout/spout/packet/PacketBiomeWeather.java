@@ -65,6 +65,9 @@ public class PacketBiomeWeather implements SpoutPacket {
 		case 10: biomeString = "Tundra"; break;
 		case 11: biomeString = "Hell"; break;
 		case 12: biomeString = "Sky"; break;
+		case 13: biomeString = "Ocean"; break;
+		case 14: biomeString = "River"; break;
+		case 15: biomeString = "Extreme Hills"; break;
 		default: break;
 		}
 		

@@ -10,8 +10,9 @@ import net.minecraft.src.MapCoord;
 import net.minecraft.src.MapData;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
-
+//Spout start
 import org.getspout.spout.client.SpoutClient;
+//Spout end
 import org.lwjgl.opengl.GL11;
 
 public class MapItemRenderer {

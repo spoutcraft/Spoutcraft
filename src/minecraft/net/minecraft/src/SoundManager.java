@@ -121,7 +121,7 @@ public class SoundManager {
 								Music music = Music.getMusicFromName(var1.soundName);
 								if (music != null) {
 									waitingSound = var1;
-									((EntityClientPlayerMP)player).sendQueue.addToSendQueue(new CustomPacket(new PacketMusicChange(music.getId(), (int)options.musicVolume * 100)));
+									SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketMusicChange(music.getId(), (int)options.musicVolume * 100));
 									return;
 								}
 							}

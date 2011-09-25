@@ -193,7 +193,7 @@ public class NetworkManager {
 	}
 
 	public void processReadPackets() {
-		if(this.sendQueueByteLength > 1048576) {
+		if(this.sendQueueByteLength > (1048576 * 10)) {//Spout increased overflow from 1mb to 10mb
 			this.networkShutdown("disconnect.overflow", new Object[0]);
 		}
 

@@ -2,7 +2,6 @@ package org.getspout.spout.gui;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -129,7 +128,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = (int) (width - font.getStringWidth(button.getText())) - 5;
 				break;
 			}
+			float scale = button.getScale();
+			float reset = 1/scale;
+			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
+			GL11.glScalef(reset, reset, reset);
 		}
 	}
 
@@ -259,7 +262,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = swidth - font.getStringWidth(lines[i]);
 				break;
 			}
+			float scale = label.getScale();
+			float reset = 1/scale;
+			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			GL11.glScalef(reset, reset, reset);
 		}
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -326,17 +333,13 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves
-																								// texture
-																								// into
-																								// place
+			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); // draw
-																						// corners
+			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); // draw corners
 			tessellator.addVertexWithUV(texture.getWidth(), texture.getHeight(), -90, textureBinding.getWidth(), 0.0D);
 			tessellator.addVertexWithUV(texture.getWidth(), 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
 			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
@@ -440,8 +443,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 				int y = (int) bar.getScreenY();
 				
-				if(Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0)
-				{
+				if(Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
 					y += GuiIngame.rand.nextInt(3) - 1;
 				}
 
@@ -458,22 +460,21 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 
 	}
-	
+
 	public void render(ExpBar bar) {
 		if (bar.isVisible()) {
-            int expCap = Minecraft.theMinecraft.thePlayer.xpBarCap();
-            if(expCap > 0)
-            {
-                char c = '\266';
-                int x = (int) bar.getScreenX();
-                int y = (int) bar.getScreenY();
-                int exp = (Minecraft.theMinecraft.thePlayer.currentXP * (c + 1)) / expCap;
-                RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, c, 5, 0f);
-                if(exp > 0)
-                {
-                    RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
-                }
-            }
+			int expCap = Minecraft.theMinecraft.thePlayer.xpBarCap();
+			if(expCap > 0) {
+				char c = '\266';
+				int x = (int) bar.getScreenX();
+				int y = (int) bar.getScreenY();
+				int exp = (Minecraft.theMinecraft.thePlayer.currentXP * (c + 1)) / expCap;
+				RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, c, 5, 0f);
+				if(exp > 0)
+				{
+					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
+				}
+			}
 		}
 	}
 }

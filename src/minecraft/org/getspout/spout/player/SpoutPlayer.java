@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Achievement;
-import org.spoutcraft.spoutcraftapi.Material;
 import org.spoutcraft.spoutcraftapi.Statistic;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
@@ -34,6 +33,7 @@ import org.spoutcraft.spoutcraftapi.entity.Snowball;
 import org.spoutcraft.spoutcraftapi.entity.Vehicle;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
@@ -45,393 +45,305 @@ public class SpoutPlayer implements Player{
 	public SpoutPlayer(EntityPlayer player) {
 		this.player = player;
 	}
-	
-	public EntityPlayer getHandle() {
-		return player;
+	public String getName() {
+		return player.username;
 	}
-
 	public PlayerInventory getInventory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public ItemStack getItemInHand() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public String getName() {
+	public void setItemInHand(ItemStack item) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
-
-	public int getSleepTicks() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public boolean isSleeping() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void setItemInHand(ItemStack arg0) {
+	public int getSleepTicks() {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
-
-	public void damage(int arg0) {
-		// TODO Auto-generated method stub
-		
+	public int getHealth() {
+		return player.health;
 	}
-
-	public void damage(int arg0, Entity arg1) {
-		// TODO Auto-generated method stub
-		
+	public void setHealth(int health) {
+		player.health = health;
 	}
-
 	public double getEyeHeight() {
+		return player.height;
+	}
+	public double getEyeHeight(boolean ignoreSneaking) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	public double getEyeHeight(boolean arg0) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public Location getEyeLocation() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public int getHealth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getLastDamage() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> arg0, int arg1) {
+	public List<Block> getLineOfSight(HashSet<Byte> transparent, int maxDistance) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public List<Block> getLineOfSight(HashSet<Byte> arg0, int arg1) {
+	public Block getTargetBlock(HashSet<Byte> transparent, int maxDistance) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public int getMaximumAir() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getMaximumNoDamageTicks() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getNoDamageTicks() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getRemainingAir() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Block getTargetBlock(HashSet<Byte> arg0, int arg1) {
+	public List<Block> getLastTwoTargetBlocks(HashSet<Byte> transparent, int maxDistance) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public Vehicle getVehicle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isInsideVehicle() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean leaveVehicle() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setHealth(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setLastDamage(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setMaximumAir(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setMaximumNoDamageTicks(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setNoDamageTicks(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setRemainingAir(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Arrow shootArrow() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Egg throwEgg() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public Snowball throwSnowball() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public boolean eject() {
+	public Arrow shootArrow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public boolean isInsideVehicle() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public int getEntityId() {
+	public boolean leaveVehicle() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public Vehicle getVehicle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public int getRemainingAir() {
+		return player.air;
+	}
+	public void setRemainingAir(int ticks) {
+		player.air = ticks;
+	}
+	public int getMaximumAir() {
+		return player.maxAir;
+	}
+	public void setMaximumAir(int ticks) {
+		player.maxAir = ticks;
+	}
+	public void damage(int amount) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void damage(int amount, Entity source) {
+		// TODO Auto-generated method stub
+		
+	}
+	public int getMaximumNoDamageTicks() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	public float getFallDistance() {
+	public void setMaximumNoDamageTicks(int ticks) {
+		// TODO Auto-generated method stub
+		
+	}
+	public int getLastDamage() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	public int getFireTicks() {
+	public void setLastDamage(int damage) {
+		// TODO Auto-generated method stub
+		
+	}
+	public int getNoDamageTicks() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	public void setNoDamageTicks(int ticks) {
+		// TODO Auto-generated method stub
+		
+	}
 	public Location getLocation() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public int getMaxFireTicks() {
+	public void setVelocity(Vector velocity) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
-
-	public List<Entity> getNearbyEntities(double arg0, double arg1, double arg2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Entity getPassenger() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public UUID getUniqueId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Vector getVelocity() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public World getWorld() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public boolean isDead() {
+	public boolean teleport(Location location) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	public boolean teleport(Entity destination) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public List<Entity> getNearbyEntities(double x, double y, double z) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public int getEntityId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int getFireTicks() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public int getMaxFireTicks() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public void setFireTicks(int ticks) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void remove() {
+		player.isDead = true;
+	}
+	public boolean isDead() {
+		return player.isDead;
+	}
+	public Entity getPassenger() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public boolean setPassenger(Entity passenger) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void remove() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setFallDistance(float arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setFireTicks(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean setPassenger(Entity arg0) {
+	public boolean eject() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void setVelocity(Vector arg0) {
+	public float getFallDistance() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public void setFallDistance(float distance) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public boolean teleport(Location arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public UUID getUniqueId() {
+		return player.uniqueId;
 	}
-
-	public boolean teleport(Entity arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Object getProperty(String arg0) {
+	public Object getProperty(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public Property getPropertyDelegate(String arg0) {
+	public void setProperty(String name, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+	public Property getPropertyDelegate(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void setProperty(String arg0, Object arg1) {
+	public void sendMessage(String paramString) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void sendMessage(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void awardAchievement(Achievement arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void chat(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public InetSocketAddress getAddress() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Location getCompassTarget() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void incrementStatistic(Statistic arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void incrementStatistic(Statistic arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void incrementStatistic(Statistic arg0, Material arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void incrementStatistic(Statistic arg0, Material arg1, int arg2) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public boolean isOnline() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public boolean isSleepingIgnored() {
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setDisplayName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setCompassTarget(Location loc) {
+		// TODO Auto-generated method stub
+		
+	}
+	public Location getCompassTarget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public InetSocketAddress getAddress() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void sendRawMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void kickPlayer(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void chat(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+	public boolean performCommand(String command) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 	public boolean isSneaking() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	public void kickPlayer(String arg0) {
+	public void setSneaking(boolean sneak) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void loadData() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean performCommand(String arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public void saveData() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void sendRawMessage(String arg0) {
+	public void loadData() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setCompassTarget(Location arg0) {
+	public void setSleepingIgnored(boolean isSleeping) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setDisplayName(String arg0) {
+	public boolean isSleepingIgnored() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public void awardAchievement(Achievement achievement) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setSleepingIgnored(boolean arg0) {
+	public void incrementStatistic(Statistic statistic) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void setSneaking(boolean arg0) {
+	public void incrementStatistic(Statistic statistic, int amount) {
 		// TODO Auto-generated method stub
 		
 	}
+	public void incrementStatistic(Statistic statistic, MaterialData material) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void incrementStatistic(Statistic statistic, MaterialData material, int amount) {
+		// TODO Auto-generated method stub
+		
+	}
+	public EntityPlayer getHandle() {
+		return player;
+	}
+
 }
