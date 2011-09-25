@@ -47,7 +47,6 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
-import org.spoutcraft.spoutcraftapi.command.CommandMap;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
@@ -252,7 +251,7 @@ public class SpoutClient implements Client {
 		return render;
 	}
 
-	public String getUpdateFolder() {
+	public File getUpdateFolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
