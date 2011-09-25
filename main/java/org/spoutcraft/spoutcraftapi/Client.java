@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi;
 
+import java.io.File;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -46,7 +47,7 @@ public interface Client extends PropertyInterface {
 
 	public Map<String, String[]> getCommandAliases();
 
-	public String getUpdateFolder();
+	public File getUpdateFolder();
 
 	public ItemManager getItemManager();
 

@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi;
 
+import java.io.File;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -73,7 +74,7 @@ public final class Spoutcraft {
 		return client.getCommandAliases();
 	}
 
-	public static String getUpdateFolder() {
+	public static File getUpdateFolder() {
 		return client.getUpdateFolder();
 	}
 
