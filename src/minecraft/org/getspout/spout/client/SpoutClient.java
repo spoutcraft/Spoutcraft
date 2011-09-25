@@ -237,8 +237,7 @@ public class SpoutClient implements Client {
 	}
 
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Spoutcraft_" + clientVersion.toString();
 	}
 
 	public RenderDelegate getRenderDelegate() {
@@ -250,16 +249,11 @@ public class SpoutClient implements Client {
 		return null;
 	}
 
-	public String getVersion() {
+	public SpoutVersion getVersion() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void reload() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	public Object getProperty(String arg0) {
 		// TODO Auto-generated method stub
 		return null;
