@@ -14,7 +14,7 @@ import org.spoutcraft.spoutcraftapi.material.item.GenericItem;
 import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
 import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
 
-public class MaterialData {
+public final class MaterialData {
 	private final static TLongObjectHashMap idMap = new TLongObjectHashMap();
 	public static final Block air = new Air();
 	public static final Block stone = new Solid(1);

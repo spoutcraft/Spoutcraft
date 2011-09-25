@@ -33,7 +33,7 @@
 package org.spoutcraft.spoutcraftapi.block;
 
 import org.spoutcraft.spoutcraftapi.World;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 /**
  * Represents a captured state of a block, which will not change automatically.
  *
@@ -50,13 +50,13 @@ public interface BlockState {
 	 * @return Block that this BlockState represents
 	 */
 	Block getBlock();
-
+	
 	/**
-	 * Gets the type of this block
-	 *
-	 * @return block type
+	 * Gets the location represented by this blockstate
+	 * 
+	 * @return location that this block state represents
 	 */
-	MaterialData getType();
+	FixedLocation getLocation();
 
 	/**
 	 * Gets the type-id of this block
@@ -108,20 +108,6 @@ public interface BlockState {
 	Chunk getChunk();
 
 	/**
-	 * Sets the type of this block
-	 *
-	 * @param type Material to change this block to
-	 */
-	void setType(MaterialData type);
-
-	/**
-	 * Sets the type-id of this block
-	 *
-	 * @param type Type-Id to change this block to
-	 */
-	boolean setTypeId(int type);
-
-	/**
 	 * Attempts to update the block represented by this state, setting it to the
 	 * new values as defined by this state. <br />
 	 * <br />
@@ -150,6 +136,4 @@ public interface BlockState {
 	 * @return true if the update was successful, otherwise false
 	 */
 	boolean update(boolean force);
-
-	public byte getRawData();
 }

@@ -34,7 +34,7 @@ package org.spoutcraft.spoutcraftapi.inventory;
 
 import java.util.HashMap;
 
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.material.Material;
 
 /**
  * Interface to the various inventories
@@ -121,7 +121,7 @@ public interface Inventory {
 	 * @param material The material to check for
 	 * @return If any ItemStacks were found
 	 */
-	public boolean contains(MaterialData material);
+	public boolean contains(Material material);
 
 	/**
 	 * Check if the inventory contains any ItemStacks matching the given ItemStack
@@ -147,7 +147,7 @@ public interface Inventory {
 	 * @param material The material to check for
 	 * @return If any ItemStacks were found
 	 */
-	public boolean contains(MaterialData material, int amount);
+	public boolean contains(Material material, int amount);
 
 	/**
 	 * Check if the inventory contains any ItemStacks matching the given ItemStack and at least the minimum amount specified
@@ -172,7 +172,7 @@ public interface Inventory {
 	 * @param materialId The material to look for
 	 * @return The Slots found.
 	 */
-	public HashMap<Integer, ? extends ItemStack> all(MaterialData material);
+	public HashMap<Integer, ? extends ItemStack> all(Material material);
 
 	/**
 	 * Find all slots in the inventory containing any ItemStacks with the given ItemStack
@@ -197,7 +197,7 @@ public interface Inventory {
 	 * @param materialId The material to look for
 	 * @return The Slot found.
 	 */
-	public int first(MaterialData material);
+	public int first(Material material);
 
 	/**
 	 * Find the first slot in the inventory containing an ItemStack with the given stack
@@ -227,7 +227,7 @@ public interface Inventory {
 	 *
 	 * @param material The material to remove
 	 */
-	public void remove(MaterialData material);
+	public void remove(Material material);
 
 	/**
 	 * Remove all stacks in the inventory matching the given stack.
