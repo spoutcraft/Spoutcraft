@@ -62,10 +62,10 @@ import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
-import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
-public class SpoutClient implements Client {
+public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static Thread dataMiningThread = new DataMiningThread();
 	private static final SpoutVersion clientVersion = new SpoutVersion(1, 0, 6, 0);
