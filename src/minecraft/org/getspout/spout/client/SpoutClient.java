@@ -17,9 +17,15 @@
 package org.getspout.spout.client;
 
 import java.io.File;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Packet;
+import net.minecraft.src.WorldClient;
 
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
@@ -51,23 +57,15 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
-import org.spoutcraft.spoutcraftapi.property.Property;
-import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.gui.Keyboard;
-import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Packet;
-import net.minecraft.src.WorldClient;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
+import org.spoutcraft.spoutcraftapi.util.Location;
 
-public class SpoutClient extends PropertyObject implements Client{
+public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static Thread dataMiningThread = new DataMiningThread();
 	private static final SpoutVersion clientVersion = new SpoutVersion(1, 0, 6, 0);
