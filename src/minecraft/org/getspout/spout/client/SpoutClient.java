@@ -16,7 +16,9 @@
  */
 package org.getspout.spout.client;
 
+import java.io.File;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.getspout.spout.ClipboardThread;
@@ -40,7 +42,10 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
+import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
+import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
@@ -75,6 +80,7 @@ public class SpoutClient implements Client {
 	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
+	private SimpleAddonManager addonManager;
 	
 	static {
 		dataMiningThread.start();
@@ -217,8 +223,7 @@ public class SpoutClient implements Client {
 	}
 
 	public AddonManager getAddonManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return addonManager;
 	}
 
 	public Map<String, String[]> getCommandAliases() {
@@ -278,4 +283,23 @@ public class SpoutClient implements Client {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void loadAddons() {
+        addonManager.registerInterface(JavaAddonLoader.class);
+
+        File addonFolder = new File(Minecraft.getMinecraftDir(), "addons");
+        if (addonFolder.exists()) {
+            Addon[] addons = addonManager.loadAddons(addonFolder);
+            for (Addon addon : addons) {
+                try {
+                    addon.onLoad();
+                } catch (Throwable ex) {
+                    Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
+                }
+            }
+        } else {
+            addonFolder.mkdir();
+        }
+    }
+
 }
