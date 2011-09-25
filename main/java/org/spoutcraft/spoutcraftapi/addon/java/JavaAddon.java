@@ -76,6 +76,9 @@ public abstract class JavaAddon implements Addon {
 	public boolean isEnabled() {
 		return enabled;
 	}
+	
+	public void onLoad() {
+	}
 
 	public void setEnabled(boolean arg) {
 		if (this.enabled != arg) {
