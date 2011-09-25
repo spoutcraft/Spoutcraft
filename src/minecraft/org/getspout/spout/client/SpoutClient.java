@@ -84,6 +84,7 @@ public class SpoutClient implements Client {
 	private RenderDelegate render = new MCRenderDelegate();
 	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
 	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
+	private Logger log = Logger.getLogger(SpoutClient.class.getName());
 	private Mode clientMode = Mode.Menu;
 	
 	static {
@@ -239,14 +240,8 @@ public class SpoutClient implements Client {
 		return addonManager;
 	}
 
-	public Map<String, String[]> getCommandAliases() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Logger getLogger() {
-		// TODO Auto-generated method stub
-		return null;
+		return log;
 	}
 
 	public Mode getMode() {
@@ -306,7 +301,6 @@ public class SpoutClient implements Client {
                 loadAddon(addon);
             }
         }
-        commandMap.registerSpoutcraftAliases();
     }
 	
 	private void loadAddon(Addon addon) {
