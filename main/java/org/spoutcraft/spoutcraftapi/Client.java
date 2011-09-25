@@ -38,8 +38,6 @@ public interface Client extends PropertyInterface {
 
 	public AddonManager getAddonManager();
 
-	public void reload();
-
 	public Logger getLogger();
 
 	public AddonCommand getAddonCommand(String name);
