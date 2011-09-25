@@ -14,8 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
+package org.spoutcraft.spoutcraftapi.inventory;
 
-public class Material {
+import java.util.Collection;
 
+public interface InventoryBuilder {
+	
+	public Inventory construct(ItemStack[] items, String name);
+	
+	public Inventory construct(Collection<ItemStack> items, String name);
+	
+	public Inventory construct(int size, String name);
 }

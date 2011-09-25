@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Iterator;
 
-import org.bukkit.ChatColor;
+import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
