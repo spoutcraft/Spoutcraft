@@ -57,10 +57,6 @@ public final class Spoutcraft {
 		return client.getAddonManager();
 	}
 
-	public static void reload() {
-		client.reload();
-	}
-
 	public static Logger getLogger() {
 		return client.getLogger();
 	}
