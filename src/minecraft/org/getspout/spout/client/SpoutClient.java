@@ -47,6 +47,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
+import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
@@ -83,6 +84,7 @@ public class SpoutClient implements Client {
 	private RenderDelegate render = new MCRenderDelegate();
 	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
 	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
+	private Mode clientMode = Mode.Menu;
 	
 	static {
 		dataMiningThread.start();
@@ -214,14 +216,23 @@ public class SpoutClient implements Client {
 		return world.func_709_b(id);
 	}
 	
-	public boolean dispatchCommand(CommandSender arg0, String arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean dispatchCommand(CommandSender sender, String commandLine) {
+		if (commandMap.dispatch(sender, commandLine)) {
+            return true;
+        }
+        sender.sendMessage("Unknown command. Type \"help\" for help.");
+
+        return false;
 	}
 
-	public AddonCommand getAddonCommand(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public AddonCommand getAddonCommand(String name) {
+		Command command = commandMap.getCommand(name);
+
+        if (command instanceof AddonCommand) {
+            return (AddonCommand) command;
+        } else {
+            return null;
+        }
 	}
 
 	public AddonManager getAddonManager() {
@@ -239,8 +250,11 @@ public class SpoutClient implements Client {
 	}
 
 	public Mode getMode() {
-		// TODO Auto-generated method stub
-		return null;
+		return clientMode;
+	}
+	
+	public void setMode(Mode clientMode) {
+		this.clientMode = clientMode;
 	}
 
 	public String getName() {
@@ -252,8 +266,7 @@ public class SpoutClient implements Client {
 	}
 
 	public File getUpdateFolder() {
-		// TODO Auto-generated method stub
-		return null;
+		return new File(Minecraft.getMinecraftDir(), "addons" + File.separator + "updates");
 	}
 
 	public SpoutVersion getVersion() {
