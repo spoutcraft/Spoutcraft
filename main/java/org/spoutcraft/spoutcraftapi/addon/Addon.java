@@ -26,6 +26,8 @@ public abstract interface Addon extends CommandExecutor {
 
 	public abstract void onDisable();
 
+	public abstract void onLoad();
+
 	public abstract AddonLoader getAddonLoader();
 
 	public abstract boolean isEnabled();
