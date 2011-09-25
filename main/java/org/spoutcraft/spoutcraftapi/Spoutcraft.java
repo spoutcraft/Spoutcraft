@@ -17,7 +17,6 @@
 package org.spoutcraft.spoutcraftapi;
 
 import java.io.File;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.Client.Mode;
