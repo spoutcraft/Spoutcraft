@@ -81,8 +81,8 @@ public class SpoutClient implements Client {
 	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
-	private SimpleAddonManager addonManager;
-	private SimpleCommandMap commandMap;
+	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
+	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
 	
 	static {
 		dataMiningThread.start();
