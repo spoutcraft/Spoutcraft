@@ -34,7 +34,7 @@ public interface Client extends PropertyInterface {
 
 	public String getName();
 
-	public String getVersion();
+	public SpoutVersion getVersion();
 
 	public AddonManager getAddonManager();
 

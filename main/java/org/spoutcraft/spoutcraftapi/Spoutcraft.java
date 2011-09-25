@@ -49,7 +49,7 @@ public final class Spoutcraft {
 		return client.getName();
 	}
 
-	public static String getVersion() {
+	public static SpoutVersion getVersion() {
 		return client.getVersion();
 	}
 
