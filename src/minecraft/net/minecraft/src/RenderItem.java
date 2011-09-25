@@ -224,11 +224,6 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else if(var5 >= 0) {
 			GL11.glDisable(2896 /*GL_LIGHTING*/);
-			if(var3 < 256) {
-				var2.bindTexture(var2.getTexture("/terrain.png"));
-			} else {
-				var2.bindTexture(var2.getTexture("/gui/items.png"));
-			}
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
 			float var9 = (float)(var8 >> 16 & 255) / 255.0F;
