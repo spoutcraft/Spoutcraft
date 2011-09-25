@@ -69,11 +69,7 @@ public final class Spoutcraft {
 	public static boolean dispatchCommand(CommandSender sender, String commandLine) {
 		return client.dispatchCommand(sender, commandLine);
 	}
-
-	public static Map<String, String[]> getCommandAliases() {
-		return client.getCommandAliases();
-	}
-
+	
 	public static File getUpdateFolder() {
 		return client.getUpdateFolder();
 	}

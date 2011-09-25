@@ -45,8 +45,6 @@ public interface Client extends PropertyInterface {
 
 	public boolean dispatchCommand(CommandSender sender, String commandLine);
 
-	public Map<String, String[]> getCommandAliases();
-
 	public File getUpdateFolder();
 
 	public ItemManager getItemManager();
