@@ -67,7 +67,7 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
-public class SpoutClient implements Client extends PropertyObject {
+public class SpoutClient extends PropertyObject implements Client{
 	private static SpoutClient instance = null;
 	private static Thread dataMiningThread = new DataMiningThread();
 	private static final SpoutVersion clientVersion = new SpoutVersion(1, 0, 6, 0);
