@@ -113,11 +113,6 @@ public class RenderItem extends Render {
 		} else {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var14 = var10.getIconIndex();
-			if(var10.itemID < 256) {
-				this.loadTexture("/terrain.png");
-			} else {
-				this.loadTexture("/gui/items.png");
-			}
 
 			Tessellator var15 = Tessellator.instance;
 			float var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
