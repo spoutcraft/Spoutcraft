@@ -47,7 +47,9 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
+import org.spoutcraft.spoutcraftapi.command.CommandMap;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
@@ -81,6 +83,7 @@ public class SpoutClient implements Client {
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
 	private SimpleAddonManager addonManager;
+	private SimpleCommandMap commandMap;
 	
 	static {
 		dataMiningThread.start();
@@ -255,8 +258,7 @@ public class SpoutClient implements Client {
 	}
 
 	public SpoutVersion getVersion() {
-		// TODO Auto-generated method stub
-		return null;
+		return clientVersion;
 	}
 	
 	public Object getProperty(String arg0) {
@@ -283,6 +285,30 @@ public class SpoutClient implements Client {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void enableAddons() {
+        Addon[] addons = addonManager.getAddons();
+
+        for (Addon addon : addons) {
+            if (!addon.isEnabled()) {
+                loadAddon(addon);
+            }
+        }
+        commandMap.registerSpoutcraftAliases();
+    }
+	
+	private void loadAddon(Addon addon) {
+        try {
+            addonManager.enableAddon(addon);
+        } catch (Throwable ex) {
+            Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
+        }
+    }
+
+
+    public void disableAddons() {
+        addonManager.disableAddons();
+    }
 	
 	public void loadAddons() {
         addonManager.registerInterface(JavaAddonLoader.class);
