@@ -594,18 +594,6 @@ public interface World {
 	public long getSeed();
 
 	/**
-	 * Gets the current PVP setting for this world.
-	 * @return True if PVP is enabled
-	 */
-	public boolean getPVP();
-
-	/**
-	 * Sets the PVP setting for this world.
-	 * @param pvp True/False whether PVP should be Enabled.
-	 */
-	public void setPVP(boolean pvp);
-
-	/**
 	 * Gets the chunk generator for this world
 	 *
 	 * @return ChunkGenerator associated with this world
@@ -771,6 +759,13 @@ public interface World {
 	 * @param value true if the world should automatically save, otherwise false
 	 */
 	public void setAutoSave(boolean value);
+	
+	/**
+	 * Returns true if this is a multiplayer world
+	 * 
+	 * @return true if the world is a multiplayer world
+	 */
+	public boolean isMultiplayerWorld();
 
 	/**
 	 * Represents various map environment types that a world may be
