@@ -22,7 +22,7 @@ public class Color implements Animatable {
 	private short red;
 	private short green;
 	private short blue;
-	private short alpha = 1;
+	private short alpha = 0;
 
 	public Color(float r, float g, float b) {
 		setRed(r);
@@ -111,6 +111,10 @@ public class Color implements Animatable {
 
 	public Color clone() {
 		return new Color(red, green, blue, alpha);
+	}
+	
+	public String toString() {
+		return "r: "+red+" g: "+green+" b: "+blue+" a: "+alpha;
 	}
 
 	public boolean isInvalid() {

@@ -27,7 +27,7 @@ public class GenericButton extends GenericControl implements Button {
 
 	protected GenericLabel label = new GenericLabel();
 	protected String disabledText = "";
-	protected Color hoverColor = new Color(1, 1, 0.627F);
+	protected Color hoverColor = new Color(1f, 1f, 0.627F);
 	protected float scale = 1.0F;
 
 	public GenericButton() {
