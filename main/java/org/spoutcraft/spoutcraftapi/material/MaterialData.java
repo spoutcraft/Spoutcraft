@@ -1,5 +1,7 @@
 package org.spoutcraft.spoutcraftapi.material;
 
+import gnu.trove.TLongObjectHashMap;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
