@@ -3,6 +3,8 @@ package org.getspout.spout;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
 import org.spoutcraft.spoutcraftapi.Effect;
@@ -35,14 +37,12 @@ public class SpoutcraftWorld implements World{
 		return handle;
 	}
 
-	public boolean getAllowAnimals() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isAllowAnimals() {
+		return handle.spawnPeacefulMobs;
 	}
 
-	public boolean getAllowMonsters() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isAllowMonsters() {
+		return handle.spawnHostileMobs;
 	}
 
 	public Block getBlockAt(int x, int y, int z) {
@@ -62,22 +62,19 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public long getFullTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.getWorldTime();
 	}
 
-	public Block getHighestBlockAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Block getHighestBlockAt(int x, int z) {
+		return getBlockAt(x, getHighestBlockYAt(x, z), z);
 	}
 
-	public int getHighestBlockYAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getHighestBlockYAt(int x, int z) {
+		return handle.getFirstUncoveredBlock(x, z);
 	}
 
 	public Chunk[] getLoadedChunks() {
-		// TODO Auto-generated method stub
+		//TODO where is this stored?
 		return null;
 	}
 
@@ -89,32 +86,24 @@ public class SpoutcraftWorld implements World{
 		return handle.getRandomSeed();
 	}
 
-	public long getTime() {
-		return handle.getWorldTime();
+	public boolean isChunkLoaded(Chunk chunk) {
+		return handle.chunkProvider.chunkExists(chunk.getX(), chunk.getZ());
 	}
 
-	public boolean isChunkLoaded(Chunk arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isChunkLoaded(int x, int z) {
+		return handle.chunkProvider.chunkExists(x, z);
 	}
 
-	public boolean isChunkLoaded(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public void loadChunk(Chunk chunk) {
+		handle.chunkProvider.loadChunk(chunk.getX(), chunk.getZ());
 	}
 
-	public void loadChunk(Chunk arg0) {
-		// TODO Auto-generated method stub
-		
+	public void loadChunk(int x, int z) {
+		handle.chunkProvider.loadChunk(x, z);
 	}
 
-	public void loadChunk(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean loadChunk(int arg0, int arg1, boolean arg2) {
-		// TODO Auto-generated method stub
+	public boolean loadChunk(int x, int z, boolean generate) {
+		//TODO ?
 		return false;
 	}
 
@@ -129,43 +118,43 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		handle.chunkProvider.saveChunks(false, null);
 	}
 
-	public void setFullTime(long arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setFullTime(long time) {
+		handle.worldInfo.setWorldTime(time);
 	}
 
-	public void setTime(long arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public long getTime() {
+        long time = getFullTime() % 24000;
+        if (time < 0) time += 24000;
+        return time;
+    }
+
+    public void setTime(long time) {
+        long margin = (time - getFullTime()) % 24000;
+        if (margin < 0) margin += 24000;
+        setFullTime(getFullTime() + margin);
+    }
 
 	public Block getBlockAt(FixedLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+		return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4).getBlockAt(location.getBlockX() & 0xF, location.getBlockY() & 0x7F, location.getBlockZ() & 0xF);
 	}
 
 	public int getBlockTypeIdAt(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.getBlockId(x, y, z);
 	}
 
 	public int getBlockTypeIdAt(FixedLocation location) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getBlockTypeIdAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
 
 	public int getHighestBlockYAt(FixedLocation location) {
-		// TODO Auto-generated method stub
-		return 0;
+		return getHighestBlockYAt(location.getBlockX(), location.getBlockZ());
 	}
 
 	public Block getHighestBlockAt(FixedLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+		return getHighestBlockAt(location.getBlockX(), location.getBlockZ());
 	}
 
 	public boolean unloadChunk(Chunk chunk) {
@@ -256,12 +245,10 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public String getName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public UUID getUID() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -342,16 +329,6 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
-	public boolean getPVP() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setPVP(boolean pvp) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public ChunkGenerator getGenerator() {
 		// TODO Auto-generated method stub
 		return null;
@@ -388,16 +365,6 @@ public class SpoutcraftWorld implements World{
 	public void setSpawnFlags(boolean allowMonsters, boolean allowAnimals) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public boolean isAllowAnimals() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isAllowMonsters() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public Biome getBiome(int x, int z) {
@@ -438,5 +405,9 @@ public class SpoutcraftWorld implements World{
 	public void setAutoSave(boolean value) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public boolean isMultiplayerWorld() {
+		return Minecraft.theMinecraft.isMultiplayerWorld();
 	}
 }
