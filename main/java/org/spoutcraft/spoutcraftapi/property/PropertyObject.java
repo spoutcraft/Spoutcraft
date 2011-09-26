@@ -18,8 +18,6 @@ package org.spoutcraft.spoutcraftapi.property;
 
 import java.util.HashMap;
 
-import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
-
 public class PropertyObject implements PropertyInterface {
 	private HashMap<String, Property> properties = new HashMap<String, Property>();
 

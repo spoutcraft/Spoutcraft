@@ -23,10 +23,10 @@ import org.spoutcraft.spoutcraftapi.Client.Mode;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
-import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 
 public final class Spoutcraft {
 

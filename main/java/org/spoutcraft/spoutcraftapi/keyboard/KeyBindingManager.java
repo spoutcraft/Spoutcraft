@@ -1,6 +1,5 @@
 package org.spoutcraft.spoutcraftapi.keyboard;
 
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public interface KeyBindingManager {
 
@@ -13,5 +12,4 @@ public interface KeyBindingManager {
 	public abstract void save();
 
 	public void pressKey(int key, boolean keyReleased, int screen);
-
 }

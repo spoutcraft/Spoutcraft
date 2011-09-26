@@ -3,9 +3,7 @@ package org.spoutcraft.spoutcraftapi.keyboard;
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class KeyBinding implements Serializable {
 	private static final long serialVersionUID = 3241524501740640147L;

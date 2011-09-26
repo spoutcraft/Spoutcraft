@@ -16,7 +16,6 @@
  */
 package org.spoutcraft.spoutcraftapi.animation;
 
-import org.spoutcraft.spoutcraftapi.animation.AnimationProgress;
 
 public class InQuadAnimationProgress implements AnimationProgress {
 
