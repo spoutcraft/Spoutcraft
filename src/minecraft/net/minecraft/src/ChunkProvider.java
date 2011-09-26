@@ -221,4 +221,10 @@ public class ChunkProvider implements IChunkProvider {
 	public String makeString() {
 		return "ServerChunkCache: " + this.chunkMap.func_35576_a() + " Drop: " + this.droppedChunksSet.size();
 	}
+
+	//Spout Start
+	public List<Chunk> getChunkList() {
+		return chunkList;
+	}
+	//Spout end
 }

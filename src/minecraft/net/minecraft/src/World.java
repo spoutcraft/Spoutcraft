@@ -92,16 +92,16 @@ public class World implements IBlockAccess {
 	public boolean isNewWorld;
 	public final WorldProvider worldProvider;
 	protected List worldAccesses;
-	protected IChunkProvider chunkProvider;
+	public IChunkProvider chunkProvider; //Spout protected -> public
 	protected final ISaveHandler saveHandler;
-	protected WorldInfo worldInfo;
+	public WorldInfo worldInfo; //Spout protected -> public
 	public boolean findingSpawnPoint;
 	private boolean allPlayersSleeping;
 	public MapStorage mapStorage;
 	private ArrayList collidingBoundingBoxes;
 	private boolean scanningTileEntities;
-	protected boolean spawnHostileMobs;
-	protected boolean spawnPeacefulMobs;
+	public boolean spawnHostileMobs; //Spout private -> public
+	public boolean spawnPeacefulMobs; //Spout private -> public
 	//Spout start
 	private TLongHashSet positionsToUpdate;
 	//Spout end
