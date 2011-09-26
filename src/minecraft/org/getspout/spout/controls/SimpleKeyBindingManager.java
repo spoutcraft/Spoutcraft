@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
@@ -16,6 +17,7 @@ import org.getspout.spout.packet.PacketKeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
 	private HashMap<Integer, KeyBinding> bindingsForKey = new HashMap<Integer, KeyBinding>();
@@ -62,6 +64,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	@Override
 	public void save(){
 		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD); // to ignore transient fields!!
 		File file = getDataFile();
 		try {
 			FileWriter writer = new FileWriter(file);
@@ -96,5 +99,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			return;
 		}
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
+	}
+	
+	public List<KeyBinding> getAllBindings() {
+		return bindings;
 	}
 }
