@@ -26,7 +26,7 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 public class GenericLabel extends GenericWidget implements Label {
 	protected String text = "";
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
-	protected Color color = new Color(1, 1, 1);
+	protected Color color = new Color(1f, 1f, 1f);
 	protected boolean auto = true;
 	protected float scale = 1.0F;
 
