@@ -56,7 +56,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		if (viewer == null) {
 			viewer = Minecraft.theMinecraft.thePlayer;
 		}
-		if (viewer != null && var1.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < 64) {
+		if (Minecraft.theMinecraft.gameSettings.signDistance == Integer.MAX_VALUE || viewer != null && var1.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Minecraft.theMinecraft.gameSettings.signDistance * Minecraft.theMinecraft.gameSettings.signDistance)) {
 		FontRenderer var17 = this.getFontRenderer();
 		var12 = 0.016666668F * var10;
 		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);
