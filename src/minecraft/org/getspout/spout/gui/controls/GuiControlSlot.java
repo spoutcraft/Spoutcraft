@@ -44,7 +44,7 @@ public class GuiControlSlot extends GuiSlot {
 		KeyBinding item = bindings.get(var1);
 		String name = item.getDescription();
 		String key = "Key: "+Keyboard.getKeyName(item.getKey());
-		if(isSelectedNew){
+		if(isSelectedNew && var1 == selectedBinding){
 			key = "> ??? <";
 		}
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
