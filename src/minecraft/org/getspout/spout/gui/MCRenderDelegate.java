@@ -128,11 +128,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = (int) (width - font.getStringWidth(button.getText())) - 5;
 				break;
 			}
+			GL11.glPushMatrix();
 			float scale = button.getScale();
-			float reset = 1/scale;
 			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
-			GL11.glScalef(reset, reset, reset);
+			GL11.glPopMatrix();
 		}
 	}
 

@@ -3,9 +3,9 @@ package org.getspout.spout.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 
 public class PacketKeyBinding implements SpoutPacket {
@@ -15,23 +15,21 @@ public class PacketKeyBinding implements SpoutPacket {
 	private String description;
 	private int key;
 	private boolean pressed;
-	private int screen;
+	private UUID uniqueId;
 	
 	public PacketKeyBinding(){
 		
 	}
 	
 	public PacketKeyBinding(KeyBinding binding, int key, boolean pressed, int screen){
-		id = binding.getId();
-		plugin = binding.getPlugin();
 		this.key = key;
 		this.pressed = pressed;
-		this.screen = screen;
+		this.uniqueId = binding.getUniqueId();
 	}
 	
 	@Override
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(id) + PacketUtil.getNumBytes(plugin) + 4 + 1 + 4;
+		return 4 + 1 + 16;
 	}
 
 	@Override
@@ -40,20 +38,21 @@ public class PacketKeyBinding implements SpoutPacket {
 		description = PacketUtil.readString(input);
 		plugin = PacketUtil.readString(input);
 		key = input.readInt();
+		uniqueId = new UUID(input.readLong(), input.readLong());
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, id);
-		PacketUtil.writeString(output, plugin);
 		output.writeInt(key);
 		output.writeBoolean(pressed);
-		output.writeInt(screen);
+		output.writeLong(uniqueId.getMostSignificantBits());
+		output.writeLong(uniqueId.getLeastSignificantBits());
 	}
 
 	@Override
 	public void run(int playerId) {
 		KeyBinding binding = new KeyBinding(key, plugin, id, description);
+		binding.setUniqueId(uniqueId);
 		SpoutClient.getInstance().getKeyBindingManager().registerControl(binding);
 	}
 

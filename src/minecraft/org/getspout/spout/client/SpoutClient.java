@@ -320,12 +320,7 @@ public class SpoutClient extends PropertyObject implements Client {
             addonFolder.mkdir();
         }
     }
-
-	public void setCamera(Location arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public KeyBindingManager getKeyBindingManager() {
 		return bindingManager;
