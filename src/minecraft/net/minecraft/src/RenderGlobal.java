@@ -1049,6 +1049,8 @@ public class RenderGlobal implements IWorldAccess {
 				GL11.glDisable(3042 /*GL_BLEND*/);
 				GL11.glEnable(2884 /*GL_CULL_FACE*/);
 			}
+		} else {
+			GL11.glBlendFunc(770, 771);
 		}
 	}
 
