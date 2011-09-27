@@ -37,7 +37,7 @@ public class GuiControlSlot extends GuiSlot {
 	}
 
 	protected void drawBackground() {
-		//this.parentGui.drawDefaultBackground();
+		this.parentGui.drawDefaultBackground();
 	}
 
 	protected void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
