@@ -73,9 +73,31 @@ public interface Client extends PropertyInterface {
 
 	public RenderDelegate getRenderDelegate();
 
+	/**
+	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.
+	 * @return the location and view of the camera
+	 */
 	public Location getCamera();
 
+	/**
+	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.
+	 * Detaching the camera is mandatory before doing a cut scene, otherwise, the players movement will override your cutscene.
+	 * @see detachCamera(boolean)
+	 * @param loc the location and view of the camera
+	 */
 	public void setCamera(Location loc);
+	
+	/**
+	 * The detach property decides if player movements will influence the camera or not. If the camera is detached, player movements will be ignored.
+	 * @param detach if the camera should be detached
+	 */
+	public void detachCamera(boolean detach);
+	
+	/**
+	 * The detach property decides if player movements will influence the camera or not. If the camera is detached, player movements will be ignored.
+	 * @return if the camera is detached
+	 */
+	public boolean isCameraDetached();
 
 	public enum Mode {
 		Single_Player,
