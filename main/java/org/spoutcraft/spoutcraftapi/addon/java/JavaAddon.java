@@ -43,13 +43,13 @@ public abstract class JavaAddon implements Addon {
 
 	public void initialize(JavaAddonLoader loader, Client client, AddonDescriptionFile description, File dataFolder, File file, AddonClassLoader classLoader) {
 		if (!initialized) {
-			this.initialized = true;
 			this.loader = loader;
 			this.client = client;
 			this.file = file;
 			this.description = description;
 			this.dataFolder = dataFolder;
 			this.classLoader = classLoader;
+			this.initialized = true;
 		}
 	}
 
@@ -95,8 +95,8 @@ public abstract class JavaAddon implements Addon {
 		return naggable;
 	}
 
-	public final void setNaggable(boolean canNag) {
-		this.naggable = canNag;
+	public final void setNaggable(boolean naggable) {
+		this.naggable = naggable;
 	}
 
 	public AddonClassLoader getClassLoader() {

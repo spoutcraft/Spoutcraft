@@ -94,7 +94,6 @@ public class SimpleAddonManager implements AddonManager {
 	 * @param directory Directory to check for addons
 	 * @return A list of all addons loaded
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Addon[] loadAddons(File directory) {
 		List<Addon> result = new ArrayList<Addon>();
 		File[] files = directory.listFiles();
@@ -102,7 +101,7 @@ public class SimpleAddonManager implements AddonManager {
 		boolean allFailed = false;
 		boolean finalPass = false;
 
-		LinkedList<File> filesList = new LinkedList(Arrays.asList(files));
+		LinkedList<File> filesList = new LinkedList<File>(Arrays.asList(files));
 
 		if (!(client.getUpdateFolder() == null)) {
 			updateDirectory = client.getUpdateFolder();
