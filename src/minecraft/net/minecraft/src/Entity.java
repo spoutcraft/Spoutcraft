@@ -143,7 +143,6 @@ public abstract class Entity {
 		this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
 		this.entityInit();
 		//Spout Start
-		SpoutClient.getInstance().getEntityManager().registerEntity(this);
 		this.wasOnGround = true;
 		//Spout End
 	}
@@ -180,9 +179,6 @@ public abstract class Entity {
 
 	public void setEntityDead() {
 		this.isDead = true;
-		// Spout - start
-		SpoutClient.getInstance().getEntityManager().unregisterEntity(this);
-		// Spout - end
 	}
 
 	protected void setSize(float var1, float var2) {
