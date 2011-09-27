@@ -1357,9 +1357,6 @@ public class World implements IBlockAccess {
 
 		for(var1 = 0; var1 < this.unloadedEntityList.size(); ++var1) {
 			this.releaseEntitySkin((Entity)this.unloadedEntityList.get(var1));
-			// Spout - start
-			SpoutClient.getInstance().getEntityManager().unregisterEntity((Entity)this.unloadedEntityList.get(var1));
-			// Spout - end
 		}
 
 		this.unloadedEntityList.clear();

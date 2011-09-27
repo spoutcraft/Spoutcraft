@@ -21,7 +21,7 @@ public class GuiVideoSettings extends GuiScreen {
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
 	//Spout Start
-	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.VOID_FOG, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SMOOTH_FPS, EnumOptions.GAMMA};
+	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AO_LEVEL, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.FOG_FANCY, EnumOptions.VOID_FOG, /*EnumOptions.MIPMAP_LEVEL, EnumOptions.MIPMAP_TYPE, */EnumOptions.LOAD_FAR, EnumOptions.PRELOADED_CHUNKS, EnumOptions.SIGN_DISTANCE, EnumOptions.SMOOTH_FPS, EnumOptions.GAMMA};
 	private int lastMouseX = 0;
 	private int lastMouseY = 0;
 	private long mouseStillTime = 0L;
@@ -54,22 +54,22 @@ public class GuiVideoSettings extends GuiScreen {
 			if (((GuiButton)controlList.get(controlList.size() - 1)).enabled) {
 				((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
 			}
-			if (((GuiButton)controlList.get(controlList.size() - 1)).enabled) {
-				((GuiButton)controlList.get(controlList.size() - 1)).enabled = Config.canUseMipmaps() || !option.getEnumString().toLowerCase().contains("mipmap");
-			}
-			
 
 			++var2;
 		}
-		//Spout End
-		//Spout Start
-		var5 = this.height / 6 + 21 * (var2 / 2) - 10;
-		int var9 = this.width / 2 - 155 + 0;
-		this.controlList.add(new GuiSmallButton(101, var9, var5, "Details..."));
-		var9 = this.width / 2 - 155 + 160;
-		if (this.mc.theWorld != null) {
-			this.controlList.add(new GuiSmallButton(201, var9, var5, "Optimize Video Settings"));
+		int var7 = this.width / 2 - 155 + var2 % 2 * 160;
+		int var8 = this.height / 6 + 21 * (var2 / 2) - 10;
+		this.controlList.add(new GuiSmallButton(201, var7, var8, "Optimize Video Settings"));
+		if (this.mc.theWorld == null) {
+			((GuiButton)controlList.get(controlList.size() - 1)).enabled = false;
 		}
+		var2++;
+		var7 = this.width / 2 - 155 + var2 % 2 * 160;
+		var8 = this.height / 6 + 21 * (var2 / 2) - 10;
+		
+		this.controlList.add(new GuiSmallButton(101, var7, var8, "Details..."));
+		
+		
 		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168 + 11, var1.translateKey("gui.done")));
 		//Spout End
 	}
@@ -127,6 +127,7 @@ public class GuiVideoSettings extends GuiScreen {
 					}
 					settings.renderDistance = 0;
 					this.mc.renderGlobal.updateAllRenderers();
+					settings.signDistance = Integer.MAX_VALUE;
 				}
 				else if (fps > 100) {
 					settings.ofChunkUpdates = 2;
@@ -136,10 +137,12 @@ public class GuiVideoSettings extends GuiScreen {
 					settings.ofOcclusionFancy = true;
 					settings.renderDistance = 0;
 					this.mc.renderGlobal.updateAllRenderers();
+					settings.signDistance = 128;
 				}
 				else if (fps > 60) {
 					settings.ofPreloadedChunks = 0;
 					settings.ofOcclusionFancy = false;
+					settings.signDistance = 64;
 					//Ideal range
 				}
 				else if (fps > 30) {
@@ -155,6 +158,7 @@ public class GuiVideoSettings extends GuiScreen {
 					settings.renderDistance = Math.max(1, settings.renderDistance);
 					settings.limitFramerate = 0;
 					this.mc.renderGlobal.loadRenderers();
+					settings.signDistance = 32;
 				}
 				else if (fps > 20) {
 					settings.ofFogFancy = false;
@@ -171,6 +175,7 @@ public class GuiVideoSettings extends GuiScreen {
 					settings.renderDistance = Math.max(2, settings.renderDistance);
 					settings.limitFramerate = 0;
 					this.mc.renderGlobal.loadRenderers();
+					settings.signDistance = 16;
 				}
 				else {
 					settings.ofFogFancy = false;
@@ -187,6 +192,7 @@ public class GuiVideoSettings extends GuiScreen {
 					settings.renderDistance = 3;
 					settings.limitFramerate = 0;
 					this.mc.renderGlobal.loadRenderers();
+					settings.signDistance = 8;
 				}
 			}
 
@@ -292,6 +298,15 @@ public class GuiVideoSettings extends GuiScreen {
 		}
 		else if (option.equals("Smooth FPS")) {
 			return new String[]{"Stabilizes FPS by flushing the graphic driver buffers", "  OFF - no stabilization, FPS may fluctuate", "  ON - FPS stabilization", "This option is graphic driver dependant and its effect", "is not always visible"};
+		}
+		else if (option.equals("Sign Distance")) {
+			return new String[]{"The distance from which you can see the text on a sign", "Farther distances can decreases FPS."};
+		}
+		else if (option.equals("Optimize Video Settings")) {
+			if (this.mc.theWorld == null) {
+				return new String[]{"This can only be used in game."};
+			}
+			return new String[]{"Attempts to configure your video settings to achieve ~60 fps.", "May be more or less, depending on hardware"};
 		}
 		else if (option.equals("Brightness")) {
 			if (!SpoutClient.getInstance().isCheatMode()) {

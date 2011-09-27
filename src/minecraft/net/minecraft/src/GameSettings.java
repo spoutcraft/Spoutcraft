@@ -67,6 +67,7 @@ public class GameSettings {
 	public static final int ANIM_OFF = 2;
 	public String skin = "Default";
 	public boolean fastBiomeColors = true;
+	public int signDistance = 8;
 //Spout End
 	public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
@@ -436,6 +437,17 @@ public class GameSettings {
 			this.ofClearWater = !this.ofClearWater;
 			this.updateWaterOpacity();
 		}
+		if (var1 == EnumOptions.SIGN_DISTANCE) {
+			if (this.signDistance < 128) {
+				this.signDistance *= 2;
+			}
+			else if (this.signDistance == 128) {
+				this.signDistance = Integer.MAX_VALUE;
+			}
+			else {
+				this.signDistance = 4;
+			}
+		}
 //Spout End
 		this.saveOptions();
 	}
@@ -576,6 +588,12 @@ public class GameSettings {
 				return var4 + "ON";
 			}
 			return var4 + "OFF";
+		}
+		else if(var1 == EnumOptions.SIGN_DISTANCE) {
+			if (signDistance != Integer.MAX_VALUE) {
+				return var4 + signDistance;
+			}
+			return var4 + "Infinite";
 		}
 		 else {
 			return var1 == EnumOptions.WEATHER?(this.ofWeather?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.SKY?(this.ofSky?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.STARS?(this.ofStars?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.CHUNK_UPDATES?var4 + this.ofChunkUpdates:(var1 == EnumOptions.CHUNK_UPDATES_DYNAMIC?(this.ofChunkUpdatesDynamic?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.FAR_VIEW?(this.ofFarView?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.TIME?(this.ofTime == 1?var4 + "Day Only":(this.ofTime == 2?var4 + "Night Only":var4 + "Default")):(var1 == EnumOptions.CLEAR_WATER?(this.ofClearWater?var4 + "ON":var4 + "OFF"):(var1 == EnumOptions.GRAPHICS?(this.fancyGraphics?var4 + var2.translateKey("options.graphics.fancy"):var4 + var2.translateKey("options.graphics.fast")):var4))))))));
