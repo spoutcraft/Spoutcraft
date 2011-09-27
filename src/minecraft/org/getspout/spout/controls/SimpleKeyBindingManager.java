@@ -49,7 +49,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		save();
 	}
 	
-	private void updateBindings() {
+	public void updateBindings() {
 		if(bindings == null){
 			bindings = new ArrayList<KeyBinding>();
 			return;

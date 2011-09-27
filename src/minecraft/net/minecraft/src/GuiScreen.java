@@ -39,8 +39,8 @@ public class GuiScreen extends Gui {
 	//Spout End
 	
 	public void drawScreenPre(int x, int y, float z) {
-		drawWidgets(x, y, z);
 		drawScreen(x,y,z);
+		drawWidgets(x, y, z);
 	}
 	
 	public void drawScreen(int var1, int var2, float var3) {
@@ -100,6 +100,7 @@ public class GuiScreen extends Gui {
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
+							this.buttonClicked((Button)control);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
 						}
 						else if (control instanceof Slider) {
@@ -431,5 +432,7 @@ public class GuiScreen extends Gui {
 		}
 		return screen;
 	}
+	
+	protected void buttonClicked(Button btn){}
 	//Spout End
 }
