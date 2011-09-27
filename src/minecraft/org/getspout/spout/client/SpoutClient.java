@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
@@ -46,6 +47,7 @@ import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
+import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -58,6 +60,7 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
@@ -271,13 +274,33 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public Location getCamera() {
-		// TODO Auto-generated method stub
-		return null;
+		Location ret = null;
+		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
+		ret = new AnimatableLocation(null, cam.posX, cam.posY, cam.posZ);
+		ret.setPitch(cam.rotationPitch);
+		ret.setYaw(cam.rotationYaw);
+		return ret;
 	}
 
-	public void setCamera(Location arg0) {
+	public void setCamera(Location pos) {
+		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
+		cam.posX = pos.getX();
+		cam.posY = pos.getY();
+		cam.posZ = pos.getZ();
+		cam.rotationPitch = (float) pos.getPitch();
+		cam.rotationYaw = (float) pos.getYaw();
+	}
+
+	@Override
+	public void detachCamera(boolean detach) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isCameraDetached() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	public void enableAddons() {
