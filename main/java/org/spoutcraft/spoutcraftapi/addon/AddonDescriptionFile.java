@@ -31,24 +31,24 @@ public class AddonDescriptionFile {
 	private static final Yaml yaml = new Yaml(new SafeConstructor());
 	private String name = null;
 	private String main = null;
+	private AddonLoadOrder load = AddonLoadOrder.POSTWORLD;
 	private ArrayList<String> depend = null;
 	private ArrayList<String> softDepend = null;
 	private String version = null;
 	public Mode mode = null;
 	private Object commands = null;
 	private String description = null;
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private ArrayList<String> authors = new ArrayList();
+	private ArrayList<String> authors = new ArrayList<String>();
 	private String website = null;
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public AddonDescriptionFile(InputStream stream) throws InvalidDescriptionException {
-		loadMap((Map) yaml.load(stream));
+		loadMap((Map<String, Object>) yaml.load(stream));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	public AddonDescriptionFile(Reader reader) throws InvalidDescriptionException {
-		loadMap((Map) yaml.load(reader));
+		loadMap((Map<String, Object>) yaml.load(reader));
 	}
 
 	public AddonDescriptionFile(String addonName, String addonVersion, String mainClass) {
@@ -75,6 +75,10 @@ public class AddonDescriptionFile {
 
 	public String getMain() {
 		return this.main;
+	}
+	
+	public AddonLoadOrder getLoad() {
+		return this.load;
 	}
 
 	public Object getCommands() {
@@ -149,6 +153,14 @@ public class AddonDescriptionFile {
 			throw new InvalidDescriptionException(ex, "mode is not defined");
 		} catch (ClassCastException ex) {
 			throw new InvalidDescriptionException(ex, "mode is of wrong type");
+		}
+		
+		if (map.containsKey("load")) {
+			try {
+				this.commands = map.get("load");
+			} catch (ClassCastException ex) {
+				throw new InvalidDescriptionException(ex, "load is of wrong type");
+			}
 		}
 
 		if (map.containsKey("commands")) {
