@@ -35,8 +35,14 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	public Location getLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		double X = handle.posX;
+		double Y = handle.posY;
+		double Z = handle.posZ;
+		Location loc = null;
+		loc.setX(X);
+		loc.setY(Y);
+		loc.setZ(Z);
+		return loc;
 	}
 
 	public void setVelocity(Vector velocity) {
@@ -90,8 +96,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		handle.setEntityDead();
 	}
 
 	public boolean isDead() {
