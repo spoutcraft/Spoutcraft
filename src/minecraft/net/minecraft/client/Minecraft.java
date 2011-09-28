@@ -1433,6 +1433,7 @@ public abstract class Minecraft implements Runnable {
 			}
 			renderEngine.refreshTextures();
 			SpoutClient.getInstance().onWorldExit();
+			SpoutClient.getInstance().disableAddons();
 			// Spout End
 		}
 
