@@ -6,16 +6,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.PacketKeyBinding;
-import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
