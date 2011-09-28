@@ -41,8 +41,8 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 import net.minecraft.src.EntityPlayer;
 
 public class SpoutPlayer implements Player{
-	private final EntityPlayer player;
-	public SpoutPlayer(EntityPlayer player) {
+	protected EntityPlayer player;
+	public void setPlayer(EntityPlayer player) {
 		this.player = player;
 	}
 	public String getName() {

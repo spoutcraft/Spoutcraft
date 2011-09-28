@@ -185,7 +185,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public void onWorldEnter() {
 		if (player == null) {
-			player = new ClientPlayer(getHandle().thePlayer);
+			player = ClientPlayer.getInstance();
+			player.setPlayer(getHandle().thePlayer);
 			getHandle().thePlayer.spoutEntity = player;
 		}
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
