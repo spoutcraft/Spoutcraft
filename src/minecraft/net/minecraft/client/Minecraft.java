@@ -105,17 +105,15 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
-//Spout Start
-import org.getspout.spout.client.SpoutClient;
-import com.pclewis.mcpatcher.mod.TextureUtils;
-import net.minecraft.src.PlayerControllerSP;
 
+//Spout Start
+import com.pclewis.mcpatcher.mod.TextureUtils;
+import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.getspout.spout.gui.ScreenUtil;
-import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketScreenAction;
 import org.getspout.spout.packet.ScreenAction;
-
 //Spout End
 
 public abstract class Minecraft implements Runnable {
@@ -1350,6 +1348,10 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public void changeWorld(World var1, String var2, EntityPlayer var3) {
+		// Spout Start
+		SpoutClient.getInstance().loadAddons();
+		SpoutClient.getInstance().enableAddons(AddonLoadOrder.PREWORLD);
+		// Spout End
 		this.statFileWriter.func_27175_b();
 		this.statFileWriter.syncStats();
 		this.renderViewEntity = null;
@@ -1420,6 +1422,7 @@ public abstract class Minecraft implements Runnable {
 			this.renderViewEntity = this.thePlayer;
 			// Spout Start
 			SpoutClient.getInstance().onWorldEnter();
+			SpoutClient.getInstance().enableAddons(AddonLoadOrder.POSTWORLD);
 			// Spout End
 		} else {
 			// Spout Start
