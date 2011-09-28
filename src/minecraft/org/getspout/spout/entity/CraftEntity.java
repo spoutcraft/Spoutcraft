@@ -88,8 +88,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public int getFireTicks() {
-		// TODO Auto-generated method stub
-		return 0;
+		int fire = handle.fire;
+		return fire;
 	}
 
 	public int getMaxFireTicks() {
@@ -98,8 +98,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setFireTicks(int ticks) {
-		// TODO Auto-generated method stub
-
+		handle.fire = ticks;
 	}
 
 	public void remove() {
