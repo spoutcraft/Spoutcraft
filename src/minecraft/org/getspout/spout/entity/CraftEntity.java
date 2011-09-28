@@ -46,13 +46,20 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setVelocity(Vector velocity) {
-		// TODO Auto-generated method stub
-
+		handle.motionX = velocity.getX();
+		handle.motionY = velocity.getY();
+		handle.motionZ = velocity.getZ();
 	}
 
 	public Vector getVelocity() {
-		// TODO Auto-generated method stub
-		return null;
+		double X = handle.motionX;
+		double Y = handle.motionY;
+		double Z = handle.motionX;
+		Vector v = null;
+		v.setX(X);
+		v.setY(Y);
+		v.setZ(Z);
+		return v;
 	}
 
 	public World getWorld() {
@@ -61,7 +68,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean teleport(Location location) {
-		// TODO Auto-generated method stub
+		handle.setPosition(location.getX(), location.getY(), location.getZ());
 		return false;
 	}
 
@@ -76,8 +83,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public int getEntityId() {
-		// TODO Auto-generated method stub
-		return 0;
+		int id = handle.entityId;
+		return id;
 	}
 
 	public int getFireTicks() {
@@ -100,8 +107,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean isDead() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean dead = handle.isDead;
+		return dead;
 	}
 
 	public Entity getPassenger() {
