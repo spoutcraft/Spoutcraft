@@ -52,6 +52,7 @@ import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
@@ -60,7 +61,6 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
@@ -303,11 +303,11 @@ public class SpoutClient extends PropertyObject implements Client {
 		return false;
 	}
 	
-	public void enableAddons() {
+	public void enableAddons(AddonLoadOrder load) {
         Addon[] addons = addonManager.getAddons();
 
         for (Addon addon : addons) {
-            if (!addon.isEnabled()) {
+            if (!addon.isEnabled() && addon.getDescription().getLoad() == load) {
                 loadAddon(addon);
             }
         }
