@@ -20,6 +20,10 @@ public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
 	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses = new HashMap<Class<? extends Entity>, Class<? extends CraftEntity>>();
 	
+	public CraftEntity() {
+		
+	}
+	
 	public CraftEntity(FixedLocation location) {
 		
 	}
