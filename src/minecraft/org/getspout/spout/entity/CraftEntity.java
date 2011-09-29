@@ -1,5 +1,6 @@
 package org.getspout.spout.entity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableVector;
@@ -18,12 +20,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
 	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses;
 	
-	public CraftEntity() {
+	public CraftEntity(FixedLocation location) {
 		
-	}
-	
-	protected static void registerEntity(CraftEntity entity, net.minecraft.src.Entity handle) {
-		//TODO: register the entity in the world!
 	}
 	
 	public CraftEntity(net.minecraft.src.Entity handle) {
@@ -66,6 +64,13 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public boolean teleport(Location location) {
 		handle.setPosition(location.getX(), location.getY(), location.getZ());
+		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
+		return true;
+	}
+	
+	public boolean teleport(FixedLocation location) {
+		handle.setPosition(location.getX(), location.getY(), location.getZ());
+		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
 		return true;
 	}
 
@@ -139,20 +144,30 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static Entity spawn(Location loc, Class<Entity> clazz){
+	public static Entity spawn(FixedLocation loc, Class<Entity> clazz){
 		Class<CraftEntity> craftClass = (Class<CraftEntity>) interfacedClasses.get(clazz);
 		CraftEntity ret = null;
 		try {
-			ret = craftClass.newInstance();
+			ret = craftClass.getConstructor(FixedLocation.class).newInstance(loc);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 			return null;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 			return null;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return null;
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return null;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
 		}
-		ret.teleport(loc);
-		registerEntity(ret, ret.handle);
 		return ret;
 	}
 

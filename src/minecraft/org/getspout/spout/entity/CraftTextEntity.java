@@ -1,9 +1,17 @@
 package org.getspout.spout.entity;
 
+import org.getspout.spout.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public class CraftTextEntity extends CraftEntity implements TextEntity {
 
+	public CraftTextEntity(FixedLocation location) {
+		super(location);
+		handle = new EntityText(((SpoutcraftWorld)location.getWorld()).getHandle());
+		teleport(location);
+	}
+	
 	public CraftTextEntity(EntityText handle) {
 		super(handle);
 	}
