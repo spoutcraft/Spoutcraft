@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.getspout.spout.player.SpoutPlayer;
 import org.spoutcraft.spoutcraftapi.World;
+import org.spoutcraft.spoutcraftapi.entity.Arrow;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
@@ -177,5 +180,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public static void registerTypes() {
 		interfacedClasses.put(TextEntity.class, CraftTextEntity.class);
+		interfacedClasses.put(Player.class, SpoutPlayer.class);
+		interfacedClasses.put(Arrow.class, CraftArrow.class);
+		
 	}
 }
