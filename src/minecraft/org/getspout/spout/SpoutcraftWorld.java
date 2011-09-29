@@ -313,25 +313,19 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power) {
-		// TODO Auto-generated method stub
-		return false;
+		return createExplosion(x, y, z, power, false);
 	}
 
-	public boolean createExplosion(double x, double y, double z, float power,
-			boolean setFire) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
+		return handle.newExplosion(null, x, y, z, power, setFire) != null;
 	}
 
 	public boolean createExplosion(FixedLocation loc, float power) {
-		// TODO Auto-generated method stub
-		return false;
+		return createExplosion(loc, power, false);
 	}
 
-	public boolean createExplosion(FixedLocation loc, float power,
-			boolean setFire) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createExplosion(FixedLocation loc, float power, boolean setFire) {
+		return createExplosion(loc.getX(), loc.getY(), loc.getZ(), power, setFire);
 	}
 
 	public Environment getEnvironment() {
