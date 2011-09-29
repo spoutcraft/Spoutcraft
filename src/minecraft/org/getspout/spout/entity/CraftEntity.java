@@ -118,7 +118,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public float getFallDistance() {
-		return 0;
+		return handle.fallDistance;
 	}
 
 	public void setFallDistance(float distance) {

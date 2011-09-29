@@ -65,7 +65,7 @@ public abstract class Entity {
 	public float height;
 	public float prevDistanceWalkedModified;
 	public float distanceWalkedModified;
-	protected float fallDistance;
+	public float fallDistance; //Spout protected -> public
 	private int nextStepDistance;
 	public double lastTickPosX;
 	public double lastTickPosY;
