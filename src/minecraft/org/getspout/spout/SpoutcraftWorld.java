@@ -79,7 +79,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getMaxHeight() {
-		return 127;
+		return handle.field_35472_c;
 	}
 
 	public long getSeed() {
@@ -339,9 +339,8 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
-	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
+	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz) throws IllegalArgumentException {
+		//TODO: Auto-generated method stub
 		return null;
 	}
 
