@@ -1,11 +1,12 @@
 package org.getspout.spout.entity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import org.getspout.spout.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -15,9 +16,17 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
+	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses;
 	
-	public CraftEntity(net.minecraft.src.Entity handle)
-	{
+	public CraftEntity() {
+		
+	}
+	
+	protected static void registerEntity(CraftEntity entity, net.minecraft.src.Entity handle) {
+		//TODO: register the entity in the world!
+	}
+	
+	public CraftEntity(net.minecraft.src.Entity handle) {
 		this.handle = handle;
 		addProperty("location", new Property() {
 			public void set(Object value) {
@@ -127,5 +136,27 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public UUID getUniqueId() {
 		return handle.uniqueId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Entity spawn(Location loc, Class<Entity> clazz){
+		Class<CraftEntity> craftClass = (Class<CraftEntity>) interfacedClasses.get(clazz);
+		CraftEntity ret = null;
+		try {
+			ret = craftClass.newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+		ret.teleport(loc);
+		registerEntity(ret, ret.handle);
+		return ret;
+	}
+
+	public static void registerTypes() {
+		interfacedClasses.put(TextEntity.class, CraftTextEntity.class);
 	}
 }

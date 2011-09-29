@@ -6,7 +6,11 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
+import net.minecraft.src.WorldProvider;
+import net.minecraft.src.WorldProviderHell;
+import net.minecraft.src.WorldProviderSky;
 
+import org.getspout.spout.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
 import org.spoutcraft.spoutcraftapi.Effect;
@@ -27,11 +31,14 @@ import org.spoutcraft.spoutcraftapi.generator.ChunkGenerator;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class SpoutcraftWorld implements World{
 	
 	private final net.minecraft.src.World handle;
+	private Environment environment;
+	
 	public SpoutcraftWorld(net.minecraft.src.World world) {
 		handle = world;
 	}
@@ -77,7 +84,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Chunk[] getLoadedChunks() {
-		//TODO where is this stored?
+		//TODO: Auto-generated method stub
 		return null;
 	}
 
@@ -200,8 +207,7 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
-	public Arrow spawnArrow(FixedLocation location, Vector velocity,
-			float speed, float spread) {
+	public Arrow spawnArrow(FixedLocation location, Vector velocity, float speed, float spread) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -211,8 +217,7 @@ public class SpoutcraftWorld implements World{
 		return false;
 	}
 
-	public boolean generateTree(FixedLocation loc, TreeType type,
-			BlockChangeDelegate delegate) {
+	public boolean generateTree(FixedLocation loc, TreeType type, BlockChangeDelegate delegate) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -329,8 +334,8 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Environment getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: get the environments
+		return environment;
 	}
 
 	public ChunkGenerator getGenerator() {
@@ -343,9 +348,9 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz) throws IllegalArgumentException {
-		//TODO: Auto-generated method stub
-		return null;
+		return (T) CraftEntity.spawn(new MutableLocation(location.getWorld(), location.getX(), location.getY(), location.getZ()), (Class<Entity>) clazz);
 	}
 
 	public void playEffect(FixedLocation location, Effect effect, int data) {
@@ -353,14 +358,12 @@ public class SpoutcraftWorld implements World{
 		
 	}
 
-	public void playEffect(FixedLocation location, Effect effect, int data,
-			int radius) {
+	public void playEffect(FixedLocation location, Effect effect, int data, int radius) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z,
-			boolean includeBiome, boolean includeBiomeTempRain) {
+	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z, boolean includeBiome, boolean includeBiomeTempRain) {
 		// TODO Auto-generated method stub
 		return null;
 	}

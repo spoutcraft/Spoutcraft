@@ -32,6 +32,7 @@ import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.getspout.spout.entity.CraftEntity;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
@@ -97,6 +98,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
 		ConfigReader.read();
 		Keyboard.setKeyManager(new SimpleKeyManager());
+		CraftEntity.registerTypes();
 	}
 	
 	public static SpoutClient getInstance() {
