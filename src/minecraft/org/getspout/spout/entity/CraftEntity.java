@@ -35,18 +35,31 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	public Location getLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		double X = handle.posX;
+		double Y = handle.posY;
+		double Z = handle.posZ;
+		Location loc = null;
+		loc.setX(X);
+		loc.setY(Y);
+		loc.setZ(Z);
+		return loc;
 	}
 
 	public void setVelocity(Vector velocity) {
-		// TODO Auto-generated method stub
-
+		handle.motionX = velocity.getX();
+		handle.motionY = velocity.getY();
+		handle.motionZ = velocity.getZ();
 	}
 
 	public Vector getVelocity() {
-		// TODO Auto-generated method stub
-		return null;
+		double X = handle.motionX;
+		double Y = handle.motionY;
+		double Z = handle.motionX;
+		Vector v = null;
+		v.setX(X);
+		v.setY(Y);
+		v.setZ(Z);
+		return v;
 	}
 
 	public World getWorld() {
@@ -55,7 +68,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean teleport(Location location) {
-		// TODO Auto-generated method stub
+		handle.setPosition(location.getX(), location.getY(), location.getZ());
 		return false;
 	}
 
@@ -70,13 +83,13 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public int getEntityId() {
-		// TODO Auto-generated method stub
-		return 0;
+		int id = handle.entityId;
+		return id;
 	}
 
 	public int getFireTicks() {
-		// TODO Auto-generated method stub
-		return 0;
+		int fire = handle.fire;
+		return fire;
 	}
 
 	public int getMaxFireTicks() {
@@ -85,18 +98,16 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setFireTicks(int ticks) {
-		// TODO Auto-generated method stub
-
+		handle.fire = ticks;
 	}
 
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		handle.setEntityDead();
 	}
 
 	public boolean isDead() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean dead = handle.isDead;
+		return dead;
 	}
 
 	public Entity getPassenger() {
