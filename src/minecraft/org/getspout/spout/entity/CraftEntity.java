@@ -52,7 +52,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public World getWorld() {
-		return new SpoutcraftWorld(handle.worldObj);
+		return handle.worldObj.world;
 	}
 
 	public boolean teleport(Location location) {
