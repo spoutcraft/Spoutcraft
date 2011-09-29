@@ -50,10 +50,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return instance;
 	}
 	
-	public void setPlayer(EntityPlayer player) {
-		this.player = player;
-	}
-	
 	public ClientPlayer() {
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
