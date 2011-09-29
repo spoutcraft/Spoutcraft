@@ -122,8 +122,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setFallDistance(float distance) {
-		// TODO Auto-generated method stub
-
+		handle.fallDistance = distance;
 	}
 
 	public UUID getUniqueId() {
