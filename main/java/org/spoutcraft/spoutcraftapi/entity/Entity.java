@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
@@ -38,6 +39,8 @@ public interface Entity extends PropertyInterface {
 	public World getWorld();
 
 	public boolean teleport(Location location);
+	
+	public boolean teleport(FixedLocation location);
 
 	public boolean teleport(Entity destination);
 
