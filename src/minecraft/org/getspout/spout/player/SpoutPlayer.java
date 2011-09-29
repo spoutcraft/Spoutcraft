@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.getspout.spout.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.Achievement;
 import org.spoutcraft.spoutcraftapi.Statistic;
 import org.spoutcraft.spoutcraftapi.World;
@@ -35,6 +36,7 @@ import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
@@ -180,6 +182,13 @@ public class SpoutPlayer implements Player{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	public boolean teleport(FixedLocation location) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public boolean teleport(Location location) {
 		// TODO Auto-generated method stub
 		return false;
