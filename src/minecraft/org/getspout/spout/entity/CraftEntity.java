@@ -8,6 +8,8 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.util.MutableLocation;
+import org.spoutcraft.spoutcraftapi.util.MutableVector;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class CraftEntity extends PropertyObject implements Entity {
@@ -35,14 +37,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	public Location getLocation() {
-		double X = handle.posX;
-		double Y = handle.posY;
-		double Z = handle.posZ;
-		Location loc = null;
-		loc.setX(X);
-		loc.setY(Y);
-		loc.setZ(Z);
-		return loc;
+		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ);
 	}
 
 	public void setVelocity(Vector velocity) {
@@ -52,14 +47,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public Vector getVelocity() {
-		double X = handle.motionX;
-		double Y = handle.motionY;
-		double Z = handle.motionX;
-		Vector v = null;
-		v.setX(X);
-		v.setY(Y);
-		v.setZ(Z);
-		return v;
+		return new MutableVector(handle.motionX,handle.motionY,handle.motionZ);
 	}
 
 	public World getWorld() {
@@ -69,12 +57,11 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public boolean teleport(Location location) {
 		handle.setPosition(location.getX(), location.getY(), location.getZ());
-		return false;
+		return true;
 	}
 
 	public boolean teleport(Entity destination) {
-		// TODO Auto-generated method stub
-		return false;
+		return teleport(destination.getLocation());
 	}
 
 	public List<Entity> getNearbyEntities(double x, double y, double z) {
@@ -83,13 +70,11 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public int getEntityId() {
-		int id = handle.entityId;
-		return id;
+		return handle.entityId;
 	}
 
 	public int getFireTicks() {
-		int fire = handle.fire;
-		return fire;
+		return handle.fire;
 	}
 
 	public int getMaxFireTicks() {
@@ -106,8 +91,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean isDead() {
-		boolean dead = handle.isDead;
-		return dead;
+		return handle.isDead;
 	}
 
 	public Entity getPassenger() {
