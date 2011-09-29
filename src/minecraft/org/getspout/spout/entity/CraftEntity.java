@@ -95,27 +95,29 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public Entity getPassenger() {
-		// TODO Auto-generated method stub
-		return null;
+		return handle.riddenByEntity.spoutEntity;
 	}
 
 	public boolean setPassenger(Entity passenger) {
-		// TODO Auto-generated method stub
-		return false;
+		handle.riddenByEntity = ((CraftEntity)passenger).handle;
+		((CraftEntity)passenger).handle.ridingEntity = handle;
+		return true;
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.riddenByEntity == null;
 	}
 
 	public boolean eject() {
-		// TODO Auto-generated method stub
+		if(!isEmpty()){
+			handle.riddenByEntity.ridingEntity = null;
+			handle.riddenByEntity = null;
+			return true;
+		}
 		return false;
 	}
 
 	public float getFallDistance() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
