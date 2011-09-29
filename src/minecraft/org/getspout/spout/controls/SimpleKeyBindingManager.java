@@ -59,7 +59,6 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 	}
 	
-	@Override
 	public void save(){
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD); // to ignore transient fields!!
@@ -77,7 +76,6 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		return new File(FileUtil.getSpoutcraftDirectory(), "bindings.yml");
 	}
 
-	@Override
 	public void load(){
 		Yaml yaml = new Yaml();
 		try {
@@ -89,7 +87,6 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		updateBindings();
 	}
 
-	@Override
 	public void pressKey(int key, boolean keyReleased, int screen) {
 		
 		KeyBinding binding = bindingsForKey.get(key);

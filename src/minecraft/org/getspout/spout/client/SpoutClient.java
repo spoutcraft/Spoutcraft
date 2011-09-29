@@ -294,13 +294,11 @@ public class SpoutClient extends PropertyObject implements Client {
 		cam.rotationYaw = (float) pos.getYaw();
 	}
 
-	@Override
 	public void detachCamera(boolean detach) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public boolean isCameraDetached() {
 		// TODO Auto-generated method stub
 		return false;
@@ -347,7 +345,6 @@ public class SpoutClient extends PropertyObject implements Client {
         }
     }
 	
-	@Override
 	public KeyBindingManager getKeyBindingManager() {
 		return bindingManager;
 	}
