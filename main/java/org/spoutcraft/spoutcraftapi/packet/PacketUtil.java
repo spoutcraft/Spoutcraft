@@ -102,5 +102,71 @@ public abstract class PacketUtil {
 		}
 		return null;
 	}
+	
+	public static int[] readIntArray(DataInputStream input) throws IOException {
+		int length = input.readInt();
+		if (length > 256) {
+			throw new IllegalArgumentException("Int array exceeded max length (" + length + ")");
+		}
+		int[] newArray = new int[length];
+		for (int i = 0; i < length; i++) {
+			newArray[i] = input.readInt();
+		}
+		return newArray;
+	}
+
+	public static float[] readQuadFloat(DataInputStream input) throws IOException {
+		float[] newArray = new float[4];
+		for (int i = 0; i < 4; i++) {
+			newArray[i] = input.readFloat();
+		}
+		return newArray;
+	}
+
+	public static int getDoubleArrayLength(float[][] doubleArray) {
+		return doubleArray.length * 16;
+	}
+
+	public static float[][] readDoubleArray(DataInputStream input) throws IOException {
+		int length = input.readShort();
+		if (length > 256) {
+			throw new IllegalArgumentException("Double array exceeded max length (" + length + ")");
+		}
+		float[][] newDoubleArray = new float[length][];
+		for (int i = 0; i < length; i++) {
+			newDoubleArray[i] = readQuadFloat(input);
+		}
+		return newDoubleArray;
+	}
+	
+	public static void writeIntArray(DataOutputStream output, int[] ints) throws IOException {
+		if (ints.length > 256) {
+			throw new IllegalArgumentException("Array containing " + ints.length + " ints passed to writeQuadFloat");
+		}
+		output.writeInt(ints.length);
+		for (int i = 0; i < ints.length; i++) {
+			output.writeInt(ints[i]);
+		}
+	}
+
+	public static void writeQuadFloat(DataOutputStream output, float[] floats) throws IOException {
+		if (floats.length != 4) {
+			throw new IllegalArgumentException("Array containing " + floats.length + " floats passed to writeQuadFloat");
+		}
+		for (int i = 0; i < 4; i++) {
+			output.writeFloat(floats[i]);
+		}
+	}
+
+	public static void writeDoubleArray(DataOutputStream output, float[][] floats) throws IOException {
+		if (floats.length > 256) {
+			throw new IllegalArgumentException("Double array exceeded max length (" + floats.length + ")");
+		}
+
+		output.writeShort(floats.length);
+		for (int i = 0; i < floats.length; i++) {
+			writeQuadFloat(output, floats[i]);
+		}
+	}
 
 }
