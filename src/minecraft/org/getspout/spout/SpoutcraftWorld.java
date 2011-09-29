@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.WorldInfo;
 
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
@@ -24,6 +25,7 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.generator.BlockPopulator;
 import org.spoutcraft.spoutcraftapi.generator.ChunkGenerator;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
@@ -269,13 +271,13 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public FixedLocation getSpawnLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		WorldInfo info = handle.worldInfo;
+		return new FastLocation(info.getSpawnX(), info.getSpawnY(), info.getSpawnZ(), 0, 0, this);
 	}
 
 	public boolean setSpawnLocation(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return false;
+		handle.worldInfo.setSpawn(x, y, z);
+		return true;
 	}
 
 	public boolean hasStorm() {
