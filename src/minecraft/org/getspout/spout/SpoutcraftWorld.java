@@ -281,43 +281,35 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public boolean hasStorm() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.worldInfo.getIsRaining();
 	}
 
 	public void setStorm(boolean hasStorm) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setIsRaining(hasStorm);
 	}
 
 	public int getWeatherDuration() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.worldInfo.getRainTime();
 	}
 
 	public void setWeatherDuration(int duration) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setRainTime(duration);
 	}
 
 	public boolean isThundering() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.worldInfo.getIsThundering();
 	}
 
 	public void setThundering(boolean thundering) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setIsThundering(thundering);
 	}
 
 	public int getThunderDuration() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.worldInfo.getThunderTime();
 	}
 
 	public void setThunderDuration(int duration) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setThunderTime(duration);
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power) {
