@@ -1,5 +1,6 @@
 package org.getspout.spout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -230,18 +231,33 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public List<Entity> getEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Entity> ret = new ArrayList<Entity>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.Entity){
+				ret.add(((net.minecraft.src.Entity)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public List<LivingEntity> getLivingEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.EntityLiving){
+				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public List<Player> getPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Player> ret = new ArrayList<Player>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.EntityPlayer){
+				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public String getName() {
