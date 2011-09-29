@@ -30,6 +30,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileUtil;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketCacheFile implements SpoutPacket {
 	private String plugin;

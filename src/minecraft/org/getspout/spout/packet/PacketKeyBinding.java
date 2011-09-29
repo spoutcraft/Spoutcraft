@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketKeyBinding implements SpoutPacket {
 

@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 import net.minecraft.src.*;
 

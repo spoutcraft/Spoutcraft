@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketControlAction implements SpoutPacket{
 	protected UUID screen;
