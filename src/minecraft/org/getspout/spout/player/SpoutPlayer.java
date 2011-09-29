@@ -61,8 +61,8 @@ public class SpoutPlayer implements Player{
 		
 	}
 	public boolean isSleeping() {
-		// TODO Auto-generated method stub
-		return false;
+		boolean sleep = player.isPlayerSleeping();
+		return sleep;
 	}
 	public int getSleepTicks() {
 		// TODO Auto-generated method stub
@@ -134,8 +134,7 @@ public class SpoutPlayer implements Player{
 		player.maxAir = ticks;
 	}
 	public void damage(int amount) {
-		// TODO Auto-generated method stub
-		
+		player.health -= amount;
 	}
 	public void damage(int amount, Entity source) {
 		// TODO Auto-generated method stub
