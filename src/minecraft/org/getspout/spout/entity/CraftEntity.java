@@ -3,6 +3,7 @@ package org.getspout.spout.entity;
 import java.util.List;
 import java.util.UUID;
 
+import org.getspout.spout.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
@@ -51,8 +52,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SpoutcraftWorld(handle.worldObj);
 	}
 
 	public boolean teleport(Location location) {
