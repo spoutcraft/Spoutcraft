@@ -471,7 +471,7 @@ public abstract class Minecraft implements Runnable {
 		if (previousScreen != null || screen != null) {
 			previousScreen = this.currentScreen;
 		}
-		if (notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
+		if (notify && thePlayer != null && theWorld != null) {
 			// Screen closed
 			if (this.currentScreen != null && screen == null) {
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen)));

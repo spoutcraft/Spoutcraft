@@ -40,6 +40,13 @@ public class GuiScreen extends Gui {
 	//Spout Start
 	public GenericGradient bg; 
 	public Screen screen = null;
+	
+	public Player getPlayer() {
+		if (this.mc.thePlayer != null) {
+			return (Player)this.mc.thePlayer.spoutEntity;
+		}
+		return null;
+	}
 	//Spout End
 	
 	public void drawScreenPre(int x, int y, float z) {
@@ -106,7 +113,7 @@ public class GuiScreen extends Gui {
 						if (control instanceof Button) {
 							this.buttonClicked((Button)control);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-							ButtonClickEvent event = ButtonClickEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, (Button) control);
+							ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
 							((Button) control).onButtonClick(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
@@ -155,7 +162,7 @@ public class GuiScreen extends Gui {
 						if (control instanceof Slider) {
 							((Slider)control).setDragging(false);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider)control).getSliderPosition()));
-							SliderDragEvent event = SliderDragEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, (Slider)control, ((Slider)control).getSliderPosition());
+							SliderDragEvent event = SliderDragEvent.getInstance(getPlayer(), screen, (Slider)control, ((Slider)control).getSliderPosition());
 							((Slider)control).onSliderDrag(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
@@ -246,7 +253,7 @@ public class GuiScreen extends Gui {
 					else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition()));
-							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, tf, tf.getText());
+							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance(getPlayer(), screen, tf, tf.getText());
 							tf.onTextFieldChange(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
