@@ -110,6 +110,9 @@ import org.lwjgl.util.glu.GLU;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
+import org.spoutcraft.spoutcraftapi.entity.Player;
+import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.ScreenOpenEvent;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.getspout.spout.gui.ScreenUtil;
 import org.getspout.spout.packet.PacketScreenAction;
@@ -468,18 +471,21 @@ public abstract class Minecraft implements Runnable {
 		if (previousScreen != null || screen != null) {
 			previousScreen = this.currentScreen;
 		}
-		if (notify && this.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
+		if (notify && thePlayer != null && theWorld != null) {
 			// Screen closed
 			if (this.currentScreen != null && screen == null) {
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen)));
+				SpoutClient.getInstance().getAddonManager().callEvent(ScreenCloseEvent.getInstance((Player)thePlayer.spoutEntity, currentScreen.screen, display));
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
+				SpoutClient.getInstance().getAddonManager().callEvent(ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display));
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
+				SpoutClient.getInstance().getAddonManager().callEvent(ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display));
 			}
 		}
 		if (!(this.currentScreen instanceof GuiUnused)) {
