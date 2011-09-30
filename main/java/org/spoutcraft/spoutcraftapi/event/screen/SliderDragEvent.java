@@ -33,6 +33,25 @@ public class SliderDragEvent extends ScreenEvent<SliderDragEvent> {
 		this.old = slider.getSliderPosition();
 	}
 	
+	private static final SliderDragEvent instance = new SliderDragEvent(null, null, null, 0);
+
+	/**
+	 * Gets the singleton, updates its state and returns it
+	 * @param Player to update the singleton with
+	 * @param Screen to update the singleton with
+	 * @param Slider to update the singleton with
+	 * @param position to update the singleton with
+	 * @return SliderDragEvent singleton
+	 */
+	public static SliderDragEvent getInstance(Player player, Screen screen, Slider slider, float position) {
+		instance.player = player;
+		instance.screen = screen;
+		instance.type = ScreenType.CUSTOM_SCREEN;
+		instance.slider = slider;
+		instance.position = position;
+		return instance;
+	}
+	
 	public Slider getSlider() {
 		return slider;
 	}

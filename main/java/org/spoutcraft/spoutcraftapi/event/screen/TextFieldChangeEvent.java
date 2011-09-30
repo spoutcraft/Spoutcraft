@@ -33,6 +33,25 @@ public class TextFieldChangeEvent extends ScreenEvent<TextFieldChangeEvent>{
 		this.newVal = newVal;
 	}
 	
+	private static final TextFieldChangeEvent instance = new TextFieldChangeEvent(null, null, null, null);
+
+	/**
+	 * Gets the singleton, updates its state and returns it
+	 * @param Player to update the singleton with
+	 * @param Screen to update the singleton with
+	 * @param TextField to update the singleton with
+	 * @param String to update the singleton with
+	 * @return TextFieldChangeEvent singleton
+	 */
+	public static TextFieldChangeEvent getInstance(Player player, Screen screen, TextField field, String newVal) {
+		instance.player = player;
+		instance.screen = screen;
+		instance.type = ScreenType.CUSTOM_SCREEN;
+		instance.field = field;
+		instance.newVal = newVal;
+		return instance;
+	}
+	
 	public TextField getTextField() {
 		return field;
 	}

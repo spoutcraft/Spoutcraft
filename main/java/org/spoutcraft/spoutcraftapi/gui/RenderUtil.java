@@ -27,9 +27,8 @@ public class RenderUtil {
 	 * @param cy y coordinate for the center of the circle
 	 * @param r radius of the circle
 	 * @param numSegments to draw (number of sides to the polygon. Large values > 50 approximate a circle)
-	 * @param thickness of the line to draw
 	 */
-	public static void drawCircle(float cx, float cy, float r, int numSegments, float thickness) { 
+	public static void drawCircle(float cx, float cy, float r, int numSegments) { 
 		float theta = 2 * 3.1415926F / ((float)numSegments); 
 		float c = (float) Math.cos(theta);//precalculate the sine and cosine
 		float s = (float) Math.sin(theta);
@@ -39,7 +38,6 @@ public class RenderUtil {
 		float y = 0; 
 		
 		GL11.glBegin(GL11.GL_LINE_LOOP); 
-		GL11.glLineWidth(thickness);
 		for(int ii = 0; ii < numSegments; ii++) { 
 			
 			GL11.glVertex2f(x + cx, y + cy);//output vertex 

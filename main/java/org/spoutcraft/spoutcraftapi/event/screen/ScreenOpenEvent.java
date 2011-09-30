@@ -22,8 +22,24 @@ import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class ScreenOpenEvent extends ScreenEvent<ScreenOpenEvent>{
-	public ScreenOpenEvent(Player player, Screen screen, ScreenType type) {
+	private ScreenOpenEvent(Player player, Screen screen, ScreenType type) {
 		super(player, screen, type);
+	}
+	
+	private static final ScreenOpenEvent instance = new ScreenOpenEvent(null, null, null);
+
+	/**
+	 * Gets the singleton, updates its state and returns it
+	 * @param Player to update the singleton with
+	 * @param Screen to update the singleton with
+	 * @param ScreenType to update the singleton with
+	 * @return ScreenOpenEvent singleton
+	 */
+	public static ScreenOpenEvent getInstance(Player player, Screen screen, ScreenType type) {
+		instance.player = player;
+		instance.screen = screen;
+		instance.type = type;
+		return instance;
 	}
 
 	public static final HandlerList<ScreenOpenEvent> handlers = new HandlerList<ScreenOpenEvent>();

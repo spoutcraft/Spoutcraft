@@ -23,8 +23,24 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class ScreenCloseEvent extends ScreenEvent<ScreenCloseEvent>{
 
-	public ScreenCloseEvent(Player player, Screen screen, ScreenType type) {
+	private ScreenCloseEvent(Player player, Screen screen, ScreenType type) {
 		super(player, screen, type);
+	}
+	
+	private static final ScreenCloseEvent instance = new ScreenCloseEvent(null, null, null);
+
+	/**
+	 * Gets the singleton, updates its state and returns it
+	 * @param Player to update the singleton with
+	 * @param Screen to update the singleton with
+	 * @param ScreenType to update the singleton with
+	 * @return ScreenCloseEvent singleton
+	 */
+	public static ScreenCloseEvent getInstance(Player player, Screen screen, ScreenType type) {
+		instance.player = player;
+		instance.screen = screen;
+		instance.type = type;
+		return instance;
 	}
 
 	public static final HandlerList<ScreenCloseEvent> handlers = new HandlerList<ScreenCloseEvent>();

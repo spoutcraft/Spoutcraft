@@ -24,11 +24,28 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class ButtonClickEvent extends ScreenEvent<ButtonClickEvent>{
 	protected Button control;
-	public ButtonClickEvent(Player player, Screen screen, Button control) {
+	private ButtonClickEvent(Player player, Screen screen, Button control) {
 		super(player, screen, ScreenType.CUSTOM_SCREEN);
 		this.control = control;
 	}
 	
+	private static final ButtonClickEvent instance = new ButtonClickEvent(null, null, null);
+
+	/**
+	 * Gets the singleton, updates its state and returns it
+	 * @param Player to update the singleton with
+	 * @param Screen to update the singleton with
+	 * @param Button to update the singleton with
+	 * @return ButtonClickEvent singleton
+	 */
+	public static ButtonClickEvent getInstance(Player player, Screen screen, Button control) {
+		instance.player = player;
+		instance.screen = screen;
+		instance.type = ScreenType.CUSTOM_SCREEN;
+		instance.control = control;
+		return instance;
+	}
+
 	public Button getButton() {
 		return control;
 	}
