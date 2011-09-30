@@ -28,6 +28,7 @@ import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.texture.TexturePackAction;
 import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileDownloadThread;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketTexturePack implements SpoutPacket{
 	private static byte[] downloadBuffer = new byte[16384];

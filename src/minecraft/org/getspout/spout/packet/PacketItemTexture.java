@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketItemTexture implements SpoutPacket {
 	private int id;

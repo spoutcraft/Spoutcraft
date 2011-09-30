@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
 public class PacketFullVersion implements SpoutPacket {
 
 	private String versionString;

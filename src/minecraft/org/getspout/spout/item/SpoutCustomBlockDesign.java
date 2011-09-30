@@ -9,8 +9,8 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
-import org.getspout.spout.packet.PacketUtil;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutCustomBlockDesign {
@@ -160,8 +160,8 @@ public class SpoutCustomBlockDesign {
 	}
 
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + getDoubleArrayLength(xPos) + getDoubleArrayLength(yPos) + getDoubleArrayLength(zPos)
-		+ getDoubleArrayLength(textXPos) + getDoubleArrayLength(textYPos) + 9 * 4 + (3 + lightSourceXOffset.length + lightSourceXOffset.length + lightSourceXOffset.length) * 4;
+		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(texturePlugin) + PacketUtil.getDoubleArrayLength(xPos) + PacketUtil.getDoubleArrayLength(yPos) + PacketUtil.getDoubleArrayLength(zPos)
+		+ PacketUtil.getDoubleArrayLength(textXPos) + PacketUtil.getDoubleArrayLength(textYPos) + 9 * 4 + (3 + lightSourceXOffset.length + lightSourceXOffset.length + lightSourceXOffset.length) * 4;
 	}
 	
 	public static int getVersion() {
@@ -176,11 +176,11 @@ public class SpoutCustomBlockDesign {
 		}
 		reset = false;
 		texturePlugin = PacketUtil.readString(input);
-		xPos = readDoubleArray(input);
-		yPos = readDoubleArray(input);
-		zPos = readDoubleArray(input);
-		textXPos = readDoubleArray(input);
-		textYPos = readDoubleArray(input);
+		xPos = PacketUtil.readDoubleArray(input);
+		yPos = PacketUtil.readDoubleArray(input);
+		zPos = PacketUtil.readDoubleArray(input);
+		textXPos = PacketUtil.readDoubleArray(input);
+		textYPos = PacketUtil.readDoubleArray(input);
 		lowXBound = input.readFloat();
 		lowYBound = input.readFloat();
 		lowZBound = input.readFloat();
@@ -190,9 +190,9 @@ public class SpoutCustomBlockDesign {
 		maxBrightness = input.readFloat();
 		minBrightness = input.readFloat();
 		renderPass = input.readInt();
-		lightSourceXOffset = readIntArray(input);
-		lightSourceYOffset = readIntArray(input);
-		lightSourceZOffset = readIntArray(input);
+		lightSourceXOffset = PacketUtil.readIntArray(input);
+		lightSourceYOffset = PacketUtil.readIntArray(input);
+		lightSourceZOffset = PacketUtil.readIntArray(input);
 	}
 
 	private final static String resetString = "[reset]";
@@ -212,11 +212,11 @@ public class SpoutCustomBlockDesign {
 		}
 		PacketUtil.writeString(output, textureURL);
 		PacketUtil.writeString(output, texturePlugin);
-		writeDoubleArray(output, xPos);
-		writeDoubleArray(output, yPos);
-		writeDoubleArray(output, zPos);
-		writeDoubleArray(output, textXPos);
-		writeDoubleArray(output, textYPos);
+		PacketUtil.writeDoubleArray(output, xPos);
+		PacketUtil.writeDoubleArray(output, yPos);
+		PacketUtil.writeDoubleArray(output, zPos);
+		PacketUtil.writeDoubleArray(output, textXPos);
+		PacketUtil.writeDoubleArray(output, textYPos);
 		output.writeFloat(lowXBound);
 		output.writeFloat(lowYBound);
 		output.writeFloat(lowZBound);
@@ -226,75 +226,9 @@ public class SpoutCustomBlockDesign {
 		output.writeFloat(maxBrightness);
 		output.writeFloat(minBrightness);
 		output.writeInt(renderPass);
-		writeIntArray(output, lightSourceXOffset);
-		writeIntArray(output, lightSourceYOffset);
-		writeIntArray(output, lightSourceZOffset);
-	}
-	
-	private int[] readIntArray(DataInputStream input) throws IOException {
-		int length = input.readInt();
-		if (length > 256) {
-			throw new IllegalArgumentException("Int array exceeded max length (" + length + ")");
-		}
-		int[] newArray = new int[length];
-		for (int i = 0; i < length; i++) {
-			newArray[i] = input.readInt();
-		}
-		return newArray;
-	}
-
-	private float[] readQuadFloat(DataInputStream input) throws IOException {
-		float[] newArray = new float[4];
-		for (int i = 0; i < 4; i++) {
-			newArray[i] = input.readFloat();
-		}
-		return newArray;
-	}
-
-	private int getDoubleArrayLength(float[][] doubleArray) {
-		return doubleArray.length * 16;
-	}
-
-	private float[][] readDoubleArray(DataInputStream input) throws IOException {
-		int length = input.readShort();
-		if (length > 256) {
-			throw new IllegalArgumentException("Double array exceeded max length (" + length + ")");
-		}
-		float[][] newDoubleArray = new float[length][];
-		for (int i = 0; i < length; i++) {
-			newDoubleArray[i] = readQuadFloat(input);
-		}
-		return newDoubleArray;
-	}
-	
-	private void writeIntArray(DataOutputStream output, int[] ints) throws IOException {
-		if (ints.length > 256) {
-			throw new IllegalArgumentException("Array containing " + ints.length + " ints passed to writeQuadFloat");
-		}
-		output.writeInt(ints.length);
-		for (int i = 0; i < ints.length; i++) {
-			output.writeInt(ints[i]);
-		}
-	}
-
-	private void writeQuadFloat(DataOutputStream output, float[] floats) throws IOException {
-		if (floats.length != 4) {
-			throw new IllegalArgumentException("Array containing " + floats.length + " floats passed to writeQuadFloat");
-		}
-		for (int i = 0; i < 4; i++) {
-			output.writeFloat(floats[i]);
-		}
-	}
-	
-	private void writeDoubleArray(DataOutputStream output, float[][] floats) throws IOException {
-		if (floats.length > 256) {
-			throw new IllegalArgumentException("Double array exceeded max length (" + floats.length + ")");
-		}
-
-		output.writeShort(floats.length);
-		for (int i = 0; i < floats.length; i++) {
-			writeQuadFloat(output, floats[i]);
-		}
+		PacketUtil.writeIntArray(output, lightSourceXOffset);
+		PacketUtil.writeIntArray(output, lightSourceYOffset);
+		PacketUtil.writeIntArray(output, lightSourceZOffset);
 	}
 	
 	public void setTexture(String plugin, String textureURL) {

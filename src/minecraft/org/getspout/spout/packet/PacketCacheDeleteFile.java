@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.getspout.spout.io.FileUtil;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketCacheDeleteFile implements SpoutPacket {
 	private String plugin;

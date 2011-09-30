@@ -27,6 +27,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketPreCacheFile implements SpoutPacket{
 	private static byte[] downloadBuffer = new byte[16384];

@@ -26,6 +26,7 @@ import org.getspout.spout.io.Download;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.sound.QueuedSound;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketDownloadMusic implements SpoutPacket{
 	int x, y, z;

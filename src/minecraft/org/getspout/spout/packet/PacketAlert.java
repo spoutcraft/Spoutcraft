@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketAlert implements SpoutPacket{
 	String message;

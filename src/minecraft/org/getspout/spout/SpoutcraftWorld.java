@@ -1,10 +1,16 @@
 package org.getspout.spout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.WorldInfo;
+import net.minecraft.src.WorldProvider;
+import net.minecraft.src.WorldProviderHell;
+import net.minecraft.src.WorldProviderSky;
 
+import org.getspout.spout.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
 import org.spoutcraft.spoutcraftapi.Effect;
@@ -23,12 +29,16 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.generator.BlockPopulator;
 import org.spoutcraft.spoutcraftapi.generator.ChunkGenerator;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class SpoutcraftWorld implements World{
 	
 	private final net.minecraft.src.World handle;
+	private Environment environment;
+	
 	public SpoutcraftWorld(net.minecraft.src.World world) {
 		handle = world;
 	}
@@ -74,12 +84,12 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Chunk[] getLoadedChunks() {
-		//TODO where is this stored?
+		//TODO: Auto-generated method stub
 		return null;
 	}
 
 	public int getMaxHeight() {
-		return 127;
+		return handle.field_35472_c;
 	}
 
 	public long getSeed() {
@@ -197,8 +207,7 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
-	public Arrow spawnArrow(FixedLocation location, Vector velocity,
-			float speed, float spread) {
+	public Arrow spawnArrow(FixedLocation location, Vector velocity, float speed, float spread) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -208,8 +217,7 @@ public class SpoutcraftWorld implements World{
 		return false;
 	}
 
-	public boolean generateTree(FixedLocation loc, TreeType type,
-			BlockChangeDelegate delegate) {
+	public boolean generateTree(FixedLocation loc, TreeType type, BlockChangeDelegate delegate) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -230,18 +238,33 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public List<Entity> getEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Entity> ret = new ArrayList<Entity>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.Entity){
+				ret.add(((net.minecraft.src.Entity)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public List<LivingEntity> getLivingEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.EntityLiving){
+				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public List<Player> getPlayers() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Player> ret = new ArrayList<Player>();
+		for(Object mcentity:handle.loadedEntityList) {
+			if(mcentity instanceof net.minecraft.src.EntityPlayer){
+				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEntity);
+			}
+		}
+		return ret;
 	}
 
 	public String getName() {
@@ -253,80 +276,66 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public FixedLocation getSpawnLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		WorldInfo info = handle.worldInfo;
+		return new FastLocation(info.getSpawnX(), info.getSpawnY(), info.getSpawnZ(), 0, 0, this);
 	}
 
 	public boolean setSpawnLocation(int x, int y, int z) {
-		// TODO Auto-generated method stub
-		return false;
+		handle.worldInfo.setSpawn(x, y, z);
+		return true;
 	}
 
 	public boolean hasStorm() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.worldInfo.getIsRaining();
 	}
 
 	public void setStorm(boolean hasStorm) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setIsRaining(hasStorm);
 	}
 
 	public int getWeatherDuration() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.worldInfo.getRainTime();
 	}
 
 	public void setWeatherDuration(int duration) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setRainTime(duration);
 	}
 
 	public boolean isThundering() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.worldInfo.getIsThundering();
 	}
 
 	public void setThundering(boolean thundering) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setIsThundering(thundering);
 	}
 
 	public int getThunderDuration() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.worldInfo.getThunderTime();
 	}
 
 	public void setThunderDuration(int duration) {
-		// TODO Auto-generated method stub
-		
+		handle.worldInfo.setThunderTime(duration);
 	}
 
 	public boolean createExplosion(double x, double y, double z, float power) {
-		// TODO Auto-generated method stub
-		return false;
+		return createExplosion(x, y, z, power, false);
 	}
 
-	public boolean createExplosion(double x, double y, double z, float power,
-			boolean setFire) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createExplosion(double x, double y, double z, float power, boolean setFire) {
+		return handle.newExplosion(null, x, y, z, power, setFire) != null;
 	}
 
 	public boolean createExplosion(FixedLocation loc, float power) {
-		// TODO Auto-generated method stub
-		return false;
+		return createExplosion(loc, power, false);
 	}
 
-	public boolean createExplosion(FixedLocation loc, float power,
-			boolean setFire) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean createExplosion(FixedLocation loc, float power, boolean setFire) {
+		return createExplosion(loc.getX(), loc.getY(), loc.getZ(), power, setFire);
 	}
 
 	public Environment getEnvironment() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: get the environments
+		return environment;
 	}
 
 	public ChunkGenerator getGenerator() {
@@ -339,10 +348,9 @@ public class SpoutcraftWorld implements World{
 		return null;
 	}
 
-	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz)
-			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	public <T extends Entity> T spawn(FixedLocation location, Class<T> clazz) throws IllegalArgumentException {
+		return (T) CraftEntity.spawn(new MutableLocation(location.getWorld(), location.getX(), location.getY(), location.getZ()), (Class<Entity>) clazz);
 	}
 
 	public void playEffect(FixedLocation location, Effect effect, int data) {
@@ -350,14 +358,12 @@ public class SpoutcraftWorld implements World{
 		
 	}
 
-	public void playEffect(FixedLocation location, Effect effect, int data,
-			int radius) {
+	public void playEffect(FixedLocation location, Effect effect, int data, int radius) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z,
-			boolean includeBiome, boolean includeBiomeTempRain) {
+	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z, boolean includeBiome, boolean includeBiomeTempRain) {
 		// TODO Auto-generated method stub
 		return null;
 	}

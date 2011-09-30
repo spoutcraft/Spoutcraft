@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import org.getspout.spout.player.ChatManager;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketClipboardText implements SpoutPacket{
 	

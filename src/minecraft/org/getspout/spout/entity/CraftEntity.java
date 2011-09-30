@@ -1,20 +1,34 @@
 package org.getspout.spout.entity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.util.MutableLocation;
+import org.spoutcraft.spoutcraftapi.util.MutableVector;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
+	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses = new HashMap<Class<? extends Entity>, Class<? extends CraftEntity>>();
 	
-	public CraftEntity(net.minecraft.src.Entity handle)
-	{
+	public CraftEntity() {
+		
+	}
+	
+	public CraftEntity(FixedLocation location) {
+		
+	}
+	
+	public CraftEntity(net.minecraft.src.Entity handle) {
 		this.handle = handle;
 		addProperty("location", new Property() {
 			public void set(Object value) {
@@ -35,33 +49,37 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	public Location getLocation() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ);
 	}
 
 	public void setVelocity(Vector velocity) {
-		// TODO Auto-generated method stub
-
+		handle.motionX = velocity.getX();
+		handle.motionY = velocity.getY();
+		handle.motionZ = velocity.getZ();
 	}
 
 	public Vector getVelocity() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MutableVector(handle.motionX,handle.motionY,handle.motionZ);
 	}
 
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return handle.worldObj.world;
 	}
 
 	public boolean teleport(Location location) {
-		// TODO Auto-generated method stub
-		return false;
+		handle.setPosition(location.getX(), location.getY(), location.getZ());
+		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
+		return true;
+	}
+	
+	public boolean teleport(FixedLocation location) {
+		handle.setPosition(location.getX(), location.getY(), location.getZ());
+		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
+		return true;
 	}
 
 	public boolean teleport(Entity destination) {
-		// TODO Auto-generated method stub
-		return false;
+		return teleport(destination.getLocation());
 	}
 
 	public List<Entity> getNearbyEntities(double x, double y, double z) {
@@ -70,13 +88,11 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public int getEntityId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.entityId;
 	}
 
 	public int getFireTicks() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.fire;
 	}
 
 	public int getMaxFireTicks() {
@@ -85,51 +101,81 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setFireTicks(int ticks) {
-		// TODO Auto-generated method stub
-
+		handle.fire = ticks;
 	}
 
 	public void remove() {
-		// TODO Auto-generated method stub
-
+		handle.setEntityDead();
 	}
 
 	public boolean isDead() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.isDead;
 	}
 
 	public Entity getPassenger() {
-		// TODO Auto-generated method stub
-		return null;
+		return handle.riddenByEntity.spoutEntity;
 	}
 
 	public boolean setPassenger(Entity passenger) {
-		// TODO Auto-generated method stub
-		return false;
+		handle.riddenByEntity = ((CraftEntity)passenger).handle;
+		((CraftEntity)passenger).handle.ridingEntity = handle;
+		return true;
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return handle.riddenByEntity == null;
 	}
 
 	public boolean eject() {
-		// TODO Auto-generated method stub
+		if(!isEmpty()){
+			handle.riddenByEntity.ridingEntity = null;
+			handle.riddenByEntity = null;
+			return true;
+		}
 		return false;
 	}
 
 	public float getFallDistance() {
-		// TODO Auto-generated method stub
-		return 0;
+		return handle.fallDistance;
 	}
 
 	public void setFallDistance(float distance) {
-		// TODO Auto-generated method stub
-
+		handle.fallDistance = distance;
 	}
 
 	public UUID getUniqueId() {
 		return handle.uniqueId;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static Entity spawn(FixedLocation loc, Class<Entity> clazz){
+		Class<CraftEntity> craftClass = (Class<CraftEntity>) interfacedClasses.get(clazz);
+		CraftEntity ret = null;
+		try {
+			ret = craftClass.getConstructor(FixedLocation.class).newInstance(loc);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return null;
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return null;
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+			return null;
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return ret;
+	}
+
+	public static void registerTypes() {
+		interfacedClasses.put(TextEntity.class, CraftTextEntity.class);
 	}
 }

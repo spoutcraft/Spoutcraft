@@ -306,10 +306,12 @@ public abstract class GuiSlot {
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
 
-	private void overlayBackground(int var1, int var2, int var3, int var4) {
+	private void overlayBackground(int var1, int var2, int var3, int var4) {	
+		GL11.glPushMatrix(); //Spout
 		Tessellator var5 = Tessellator.instance;
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glTranslatef(0, 0, -0.1f); // Spout
 		float var6 = 32.0F;
 		var5.startDrawingQuads();
 		var5.setColorRGBA_I(4210752, var4);
@@ -319,5 +321,6 @@ public abstract class GuiSlot {
 		var5.addVertexWithUV((double)this.width, (double)var1, 0.0D, (double)((float)this.width / var6), (double)((float)var1 / var6));
 		var5.addVertexWithUV(0.0D, (double)var1, 0.0D, 0.0D, (double)((float)var1 / var6));
 		var5.draw();
+		GL11.glPopMatrix(); //Spout
 	}
 }

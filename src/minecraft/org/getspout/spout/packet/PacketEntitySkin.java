@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.entity.EntityManager;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";

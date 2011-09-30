@@ -128,11 +128,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				left = (int) (width - font.getStringWidth(button.getText())) - 5;
 				break;
 			}
+			GL11.glPushMatrix();
 			float scale = button.getScale();
-			float reset = 1/scale;
 			GL11.glScalef(scale, scale, scale);
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
-			GL11.glScalef(reset, reset, reset);
+			GL11.glPopMatrix();
 		}
 	}
 
@@ -219,12 +219,12 @@ public class MCRenderDelegate implements RenderDelegate {
 		case CENTER_LEFT:
 		case CENTER_CENTER:
 		case CENTER_RIGHT:
-			top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight()) / 2;
+			top -= (int) (label.isAuto() ? label.getActualHeight() : label.getHeight()) / 2;
 			break;
 		case BOTTOM_LEFT:
 		case BOTTOM_CENTER:
 		case BOTTOM_RIGHT:
-			top -= (int) (label.getAuto() ? label.getActualHeight() : label.getHeight());
+			top -= (int) (label.isAuto() ? label.getActualHeight() : label.getHeight());
 			break;
 		}
 
@@ -233,17 +233,17 @@ public class MCRenderDelegate implements RenderDelegate {
 		case TOP_CENTER:
 		case CENTER_CENTER:
 		case BOTTOM_CENTER:
-			aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth()) / 2;
+			aleft -= (int) (label.isAuto() ? label.getActualWidth() : label.getWidth()) / 2;
 			break;
 		case TOP_RIGHT:
 		case CENTER_RIGHT:
 		case BOTTOM_RIGHT:
-			aleft -= (int) (label.getAuto() ? label.getActualWidth() : label.getWidth());
+			aleft -= (int) (label.isAuto() ? label.getActualWidth() : label.getWidth());
 			break;
 		}
 
 		GL11.glTranslatef((float) aleft, (float) top, 0);
-		if (!label.getAuto()) {
+		if (!label.isAuto()) {
 			GL11.glScalef((float) (label.getWidth() / swidth), (float) (label.getHeight() / sheight), 1);
 		} else if (label.getAnchor() == WidgetAnchor.SCALE) {
 			GL11.glScalef((float) (label.getScreen().getWidth() / 427f), (float) (label.getScreen().getHeight() / 240f), 1);
@@ -394,7 +394,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericEntityWidget entityWidget) {
-		Entity entity = SpoutClient.getInstance().getEntityFromId(entityWidget.getEntityID());
+		Entity entity = SpoutClient.getInstance().getEntityFromId(entityWidget.getEntityId());
 		if (entity != null) {
 			GL11.glEnable(32826);
 			GL11.glEnable(GL11.GL_COLOR_MATERIAL);

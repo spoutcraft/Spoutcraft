@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
@@ -30,6 +31,8 @@ import net.minecraft.src.WorldClient;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.config.ConfigReader;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.getspout.spout.entity.CraftEntity;
 import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
@@ -45,10 +48,12 @@ import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
 import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
+import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
@@ -60,6 +65,7 @@ import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
@@ -81,6 +87,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public ClientPlayer player = null;
 	private boolean cheating = true;
 	private RenderDelegate render = new MCRenderDelegate();
+	private KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
 	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
 	private Logger log = Logger.getLogger(SpoutClient.class.getName());
@@ -91,6 +98,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
 		ConfigReader.read();
 		Keyboard.setKeyManager(new SimpleKeyManager());
+		CraftEntity.registerTypes();
 	}
 	
 	public static SpoutClient getInstance() {
@@ -179,7 +187,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public void onWorldEnter() {
 		if (player == null) {
-			player = new ClientPlayer(getHandle().thePlayer);
+			player = ClientPlayer.getInstance();
+			player.setPlayer(getHandle().thePlayer);
 			getHandle().thePlayer.spoutEntity = player;
 		}
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
@@ -268,20 +277,38 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public Location getCamera() {
-		// TODO Auto-generated method stub
-		return null;
+		Location ret = null;
+		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
+		ret = new AnimatableLocation(null, cam.posX, cam.posY, cam.posZ);
+		ret.setPitch(cam.rotationPitch);
+		ret.setYaw(cam.rotationYaw);
+		return ret;
 	}
 
-	public void setCamera(Location arg0) {
+	public void setCamera(Location pos) {
+		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
+		cam.posX = pos.getX();
+		cam.posY = pos.getY();
+		cam.posZ = pos.getZ();
+		cam.rotationPitch = (float) pos.getPitch();
+		cam.rotationYaw = (float) pos.getYaw();
+	}
+
+	public void detachCamera(boolean detach) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public boolean isCameraDetached() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
-	public void enableAddons() {
+	public void enableAddons(AddonLoadOrder load) {
         Addon[] addons = addonManager.getAddons();
 
         for (Addon addon : addons) {
-            if (!addon.isEnabled()) {
+            if (!addon.isEnabled() && addon.getDescription().getLoad() == load) {
                 loadAddon(addon);
             }
         }
@@ -317,5 +344,8 @@ public class SpoutClient extends PropertyObject implements Client {
             addonFolder.mkdir();
         }
     }
-
+	
+	public KeyBindingManager getKeyBindingManager() {
+		return bindingManager;
+	}
 }

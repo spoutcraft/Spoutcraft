@@ -1,5 +1,4 @@
-/*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+/* This file is part of Spoutcraft (http://wiki.getspout.org/).
  * 
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -59,7 +58,8 @@ public enum PacketType {
 	PacketOpenSignGUI(37, PacketOpenSignGUI.class),
 	PacketCustomBlockOverride(38, PacketCustomBlockOverride.class),
 	PacketCustomBlockDesign(39, PacketCustomBlockDesign.class),
-	PacketUniqueId(40, PacketUniqueId.class),
+	PacketUniqueId(40, PacketUniqueId.class), 
+	PacketKeyBinding(41, PacketKeyBinding.class),
 	;
 	
 	private final int id;

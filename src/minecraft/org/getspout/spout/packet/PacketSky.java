@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
 public class PacketSky implements SpoutPacket{
