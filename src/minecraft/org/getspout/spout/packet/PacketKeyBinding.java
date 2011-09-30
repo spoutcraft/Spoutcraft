@@ -28,12 +28,10 @@ public class PacketKeyBinding implements SpoutPacket {
 		this.uniqueId = binding.getUniqueId();
 	}
 	
-	@Override
 	public int getNumBytes() {
 		return 4 + 1 + 16;
 	}
 
-	@Override
 	public void readData(DataInputStream input) throws IOException {
 		id = PacketUtil.readString(input);
 		description = PacketUtil.readString(input);
@@ -42,7 +40,6 @@ public class PacketKeyBinding implements SpoutPacket {
 		uniqueId = new UUID(input.readLong(), input.readLong());
 	}
 
-	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(key);
 		output.writeBoolean(pressed);
@@ -50,22 +47,18 @@ public class PacketKeyBinding implements SpoutPacket {
 		output.writeLong(uniqueId.getLeastSignificantBits());
 	}
 
-	@Override
 	public void run(int playerId) {
 		KeyBinding binding = new KeyBinding(key, plugin, id, description);
 		binding.setUniqueId(uniqueId);
 		SpoutClient.getInstance().getKeyBindingManager().registerControl(binding);
 	}
 
-	@Override
 	public void failure(int playerId) {}
 
-	@Override
 	public PacketType getPacketType() {
 		return PacketType.PacketKeyBinding;
 	}
 
-	@Override
 	public int getVersion() {
 		return 0;
 	}
