@@ -26,18 +26,7 @@ public class CustomScreen extends GuiScreen {
 		update(screen);
 		this.setWorldAndResolution(SpoutClient.getHandle(), (int) screen.getWidth(), (int) screen.getHeight());
 	}
-	
-	@Override
-	public void actionPerformed(GuiButton button){
-	//	if (button instanceof CustomGuiButton){
-		//	((EntityClientPlayerMP)this.mc.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, ((CustomGuiButton)button).getWidget(), 1)));
-	//	}
-	//	else if (button instanceof CustomGuiSlider) {
-			//This fires before the new position is set, so no good
-	//	}
-	}
 
-	
 	@Override
 	public void setWorldAndResolution(Minecraft var1, int var2, int var3) {
 		this.guiParticles = new GuiParticle(var1);

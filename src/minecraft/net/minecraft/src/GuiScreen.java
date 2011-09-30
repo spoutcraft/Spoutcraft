@@ -19,6 +19,10 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
+import org.spoutcraft.spoutcraftapi.entity.Player;
+import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 //Spout End
@@ -101,6 +105,9 @@ public class GuiScreen extends Gui {
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+							ButtonClickEvent event = ButtonClickEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, (Button) control);
+							((Button) control).onButtonClick(event);
+							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
 						else if (control instanceof Slider) {
 							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
@@ -147,6 +154,9 @@ public class GuiScreen extends Gui {
 						if (control instanceof Slider) {
 							((Slider)control).setDragging(false);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider)control).getSliderPosition()));
+							SliderDragEvent event = SliderDragEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, (Slider)control, ((Slider)control).getSliderPosition());
+							((Slider)control).onSliderDrag(event);
+							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
 					}
 				}
@@ -234,6 +244,9 @@ public class GuiScreen extends Gui {
 					else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition()));
+							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance((Player)this.mc.thePlayer.spoutEntity, screen, tf, tf.getText());
+							tf.onTextFieldChange(event);
+							SpoutClient.getInstance().getAddonManager().callEvent(event);
 						}
 						handled = true;
 						break;
