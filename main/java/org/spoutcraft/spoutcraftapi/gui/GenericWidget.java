@@ -83,9 +83,9 @@ public abstract class GenericWidget implements Widget {
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(getX());
 		output.writeInt(getY());
-		output.writeInt(width);
-		output.writeInt(height);
-		output.writeByte(anchor.getId());
+		output.writeInt((int) getActualWidth());
+		output.writeInt((int) getActualHeight());
+		output.writeByte(getAnchor().getId());
 		output.writeBoolean(isVisible());
 		output.writeInt(priority.getId());
 		output.writeLong(getId().getMostSignificantBits());
@@ -244,11 +244,24 @@ public abstract class GenericWidget implements Widget {
 
 	}
 
-	public void setTooltip(String tooltip) {
+	public Widget setTooltip(String tooltip) {
 		this.tooltip = tooltip;
+		return this;
 	}
 
 	public String getTooltip() {
 		return tooltip;
+	}
+
+	public Widget copy() {
+		try {
+			Widget copy = getType().getWidgetClass().newInstance();
+			copy.setX(getX()).setY(getY()).setWidth((int) getActualWidth()).setHeight((int) getActualHeight()).setVisible(isVisible());
+			copy.setPriority(getPriority()).setTooltip(getTooltip()).setAnchor(getAnchor());
+			return copy;
+		}
+		catch (Exception e) {
+			throw new IllegalStateException("Unable to create a copy of " + getClass() + ". Does it have a valid widget type?");
+		}
 	}
 }

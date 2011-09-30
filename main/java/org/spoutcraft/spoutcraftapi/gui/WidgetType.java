@@ -44,6 +44,7 @@ public class WidgetType {
 	public static WidgetType ExpBar = new WidgetType(ExpBar.class, 18);
 
 	private final int id;
+	private final boolean client;
 	private final Class<? extends Widget> widgetClass;
 
 	public WidgetType(Class<? extends Widget> widget) {
@@ -51,7 +52,8 @@ public class WidgetType {
 		id = lastId;
 		lastId++;
 		lookupClass.put(this, id);
-		lookupId.put(id, this);
+		lookupId.put(id, this); 
+		client = false;
 	}
 
 	private WidgetType(Class<? extends Widget> widget, int id) {
@@ -62,6 +64,18 @@ public class WidgetType {
 		}
 		lookupClass.put(this, id);
 		lookupId.put(id, this);
+		client = false;
+	}
+
+	public WidgetType(Class<? extends Widget> widget, int id, boolean client) {
+		widgetClass = widget;
+		this.id = id;
+		if (id > lastId) {
+			lastId = id;
+		}
+		lookupClass.put(this, id);
+		lookupId.put(id, this);
+		this.client = client;
 	}
 
 	public int getId() {
@@ -83,4 +97,9 @@ public class WidgetType {
 	public static int getNumWidgetTypes() {
 		return lastId;
 	}
+
+	public boolean isClientOnly() {
+		return client;
+	}
+
 }

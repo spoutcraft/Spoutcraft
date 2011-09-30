@@ -65,29 +65,56 @@ public class ChatBar extends GenericWidget implements Widget {
 		return new UUID(0, 2);
 	}
 
+	/**
+	 * Gets the x position that the cursor starts at when typing chat
+	 * @return cursor x
+	 */
 	public int getCursorX() {
 		return cursorX;
 	}
 
+	/**
+	 * Sets the x position that the cursor starts at when typing 
+	 * @param x position to set
+	 * @return this
+	 */
 	public ChatBar setCursorX(int x) {
 		cursorX = x;
 		return this;
 	}
 
+	/**
+	 * Gets the y position that the cursor starts at when typing chat
+	 * @return cursor y
+	 */
 	public int getCursorY() {
 		int diff = 240 - cursorY;
 		return (int) (getScreen() != null ? getScreen().getHeight() - diff : cursorY);
 	}
 
+	/**
+	 * Sets the y position that the cursor starts at when typing 
+	 * @param y position to set
+	 * @return this
+	 */
 	public ChatBar setCursorY(int y) {
 		cursorY = y;
 		return this;
 	}
 
+	/**
+	 * Gets the default color of the text for the chat bar
+	 * @return default text color
+	 */
 	public Color getTextColor() {
 		return textColor;
 	}
 
+	/**
+	 * Sets the default color of the text for the chat bar
+	 * @param color to set
+	 * @return this
+	 */
 	public ChatBar setTextColor(Color color) {
 		textColor = color;
 		return this;

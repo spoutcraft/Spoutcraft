@@ -75,4 +75,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 		return this;
 	}
 
+	public Texture copy() {
+		return ((Texture)super.copy()).setUrl(getUrl());
+	}
 }

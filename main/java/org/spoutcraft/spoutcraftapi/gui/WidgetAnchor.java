@@ -28,10 +28,10 @@ public enum WidgetAnchor {
 	BOTTOM_LEFT(6),
 	BOTTOM_CENTER(7),
 	BOTTOM_RIGHT(8),
-	SCALE(9), ;
+	SCALE(9),
+	;
 
 	private final int id;
-
 	WidgetAnchor(int id) {
 		this.id = id;
 	}

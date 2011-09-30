@@ -75,8 +75,9 @@ public interface InGameHUD extends Screen {
 	public ServerPlayerList getServerPlayerList();
 	
 	/**
-	 * Is true if the widget can be attached to the screen. Primary controls, like the health bar can not be attached twice. Control widgets that require input from the mouse or keyboard can not be attached
-	 * 
+	 * Is true if the widget can be attached to the screen.
+	 * Primary controls, like the health bar can not be attached twice.
+	 * Control widgets that require input from the mouse or keyboard can not be attached
 	 * @param widget
 	 * @return true if the widge can be attached
 	 */

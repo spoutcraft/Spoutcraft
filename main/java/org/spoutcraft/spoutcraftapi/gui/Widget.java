@@ -23,32 +23,63 @@ import java.util.UUID;
 
 public interface Widget {
 
+	/**
+	 * The number of bytes of data serialized when sending or receiving data.
+	 * @return
+	 */
 	public int getNumBytes();
 
+	/**
+	 * The version this widget is. Mismatched versions will fail to be created.
+	 * @return version
+	 */
+	public int getVersion();
+	
+	/**
+	 * The type of widget this is. Required for proper synchronization between the server and client.
+	 * @return widget type
+	 */
 	public WidgetType getType();
 
 	/**
 	 * Returns a unique id for this widget
-	 * 
 	 * @return id
 	 */
 	public UUID getId();
 
 	public void render();
-
-	public int getVersion();
-
+	/**
+	 * Called after this widget this created for serialization. 
+	 * @param input
+	 * @throws IOException
+	 */
 	public void readData(DataInputStream input) throws IOException;
 
+	/**
+	 * Called when this widget is serialized to the client.
+	 * 
+	 * Note: ensure that any changes here are reflected in {@link getNumBytes()} and are also present on the client.
+	 * @param output
+	 * @throws IOException
+	 */
 	public void writeData(DataOutputStream output) throws IOException;
 
+	/**
+	 * Get's the plugin that attached this widget to the screen, or null if this screen is unattached.
+	 * @return plugin that attached this widget to the screen
+	 */
 	public String getPlugin();
 
+	/**
+	 * Internal use only. 
+	 * @param plugin
+	 * @return this
+	 */
 	public Widget setPlugin(String plugin);
 
 	/**
-	 * Marks this widget as needing an update on the client. It will be updated after the next onTick call, and marked as setDirty(false) Every widget is dirty immediately after creation
-	 * 
+	 * Marks this widget as needing an update on the client. It will be updated after the next onTick call, and marked as setDirty(false)
+	 * Every widget is dirty immediately after creation
 	 * @param dirty
 	 */
 	public void setDirty(boolean dirty);
@@ -188,8 +219,10 @@ public interface Widget {
 
 	/**
 	 * Sets the tooltip for the widget
+	 * 
+	 * @Return widget
 	 */
-	public void setTooltip(String tooltip);
+	public Widget setTooltip(String tooltip);
 
 	/**
 	 * Gets the tooltip from the widget

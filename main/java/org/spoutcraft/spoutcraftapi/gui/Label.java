@@ -61,7 +61,7 @@ public interface Label extends Widget {
 	 * @param auto
 	 * @return label
 	 */
-	public boolean getAuto();
+	public boolean isAuto();
 
 	public WidgetAnchor getAlign();
 

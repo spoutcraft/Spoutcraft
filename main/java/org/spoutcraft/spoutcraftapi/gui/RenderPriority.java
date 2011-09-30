@@ -36,10 +36,10 @@ public enum RenderPriority {
 	/**
 	 * Will render after all other textures and widgets
 	 */
-	Lowest(4), ;
+	Lowest(4),
+	;
 
 	private final int id;
-
 	RenderPriority(int id) {
 		this.id = id;
 	}

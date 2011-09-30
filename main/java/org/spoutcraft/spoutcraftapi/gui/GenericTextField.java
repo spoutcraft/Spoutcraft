@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericTextField extends GenericControl implements TextField {
@@ -184,5 +185,14 @@ public class GenericTextField extends GenericControl implements TextField {
 		if (focus)
 			Keyboard.setRepeatingEvents(true);
 		return super.setFocus(focus);
+	}
+
+	public TextField copy() {
+		// ignore focus parameter which would lead to strange behaviour!
+		return ((TextField)super.copy()).setText(getText()).setCursorPosition(getCursorPosition()).setMaximumCharacters(getMaximumCharacters()).setFieldColor(getFieldColor()).setBorderColor(getBorderColor()).setMaximumLines(getMaximumLines()).setTabIndex(getTabIndex()).setPasswordField(isPasswordField());
+	}
+
+	public void onTextFieldChange(TextFieldChangeEvent event) {
+		
 	}
 }

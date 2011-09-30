@@ -175,4 +175,8 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return mouseY;
 	}
 
+	@Override
+	public Widget copy() {
+		throw new UnsupportedOperationException("You can not create a copy of a screen");
+	}
 }

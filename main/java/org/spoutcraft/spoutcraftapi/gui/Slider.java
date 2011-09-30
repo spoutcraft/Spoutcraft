@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+
 public interface Slider extends Control {
 
 	/**
@@ -33,9 +35,16 @@ public interface Slider extends Control {
 	 */
 	public Slider setSliderPosition(float value);
 
-	public PopupScreen getScreen();
-
 	public boolean isDragging();
 
 	public Slider setDragging(boolean dragged);
+
+	/**
+	 * Fires when this slider is dragged on the screen.
+	 * 
+	 * This event is also sent to the screen listener, afterwards.
+	 * 
+	 * @param event
+	 */
+	public void onSliderDrag(SliderDragEvent event);
 }

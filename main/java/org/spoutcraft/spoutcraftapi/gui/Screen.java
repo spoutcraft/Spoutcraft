@@ -95,9 +95,8 @@ public interface Screen extends Widget {
 	public double getWidth();
 
 	/**
-	 * Gets the type of the screen
-	 * 
-	 * @return the type of the screen
+	 * Gets the screen type of this screen
+	 * @return the screen type
 	 */
 	public ScreenType getScreenType();
 

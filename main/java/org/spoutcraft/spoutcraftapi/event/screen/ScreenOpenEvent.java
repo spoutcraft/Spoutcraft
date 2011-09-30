@@ -14,20 +14,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi.gui;
+package org.spoutcraft.spoutcraftapi.event.screen;
 
-public interface EntityWidget extends Widget {
-	
-	/**
-	 * Sets the id of this entity
-	 * @param id of the entity
-	 * @return this
-	 */
-	public EntityWidget setEntityId(int id);
+import org.spoutcraft.spoutcraftapi.entity.Player;
+import org.spoutcraft.spoutcraftapi.event.HandlerList;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-	/**
-	 * Gets the id of this entity
-	 * @return the id of this entity
-	 */
-	public int getEntityId();
+public class ScreenOpenEvent extends ScreenEvent<ScreenOpenEvent>{
+	public ScreenOpenEvent(Player player, Screen screen, ScreenType type) {
+		super(player, screen, type);
+	}
+
+	public static final HandlerList<ScreenOpenEvent> handlers = new HandlerList<ScreenOpenEvent>();
+
+	@Override
+	public HandlerList<ScreenOpenEvent> getHandlers() {
+		return handlers;
+	}
+
+	@Override
+	protected String getEventName() {
+		return "Screen Open Event";
+	}
 }

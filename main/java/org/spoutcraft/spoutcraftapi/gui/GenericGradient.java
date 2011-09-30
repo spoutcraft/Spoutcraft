@@ -76,6 +76,10 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		PacketUtil.writeColor(output, getBottomColor());
 	}
 
+	@Override
+	public Gradient copy() {
+		return ((Gradient)super.copy()).setTopColor(getTopColor()).setBottomColor(getBottomColor());
+	}
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}

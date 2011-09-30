@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+
 public interface Button extends Control, Label {
 
 	/**
@@ -48,5 +50,18 @@ public interface Button extends Control, Label {
 	 */
 	public Button setHoverColor(Color color);
 
-	public Screen getScreen();
+	public Button setText(String text);
+	
+	public Button setTextColor(Color color);
+
+	public Button setAuto(boolean auto);
+	
+	/**
+	 * Fires when this button is clicked on the screen.
+	 * 
+	 * This event is also sent to the screen listener, afterwards.
+	 * 
+	 * @param event
+	 */
+	public void onButtonClick(ButtonClickEvent event);
 }

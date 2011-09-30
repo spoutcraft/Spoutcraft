@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericButton extends GenericControl implements Button {
@@ -65,16 +66,11 @@ public class GenericButton extends GenericControl implements Button {
 		output.writeFloat(scale);
 	}
 
-	@Override
-	public Screen getScreen() {
-		return super.getScreen();
-	}
-
 	public String getText() {
 		return label.getText();
 	}
 
-	public Label setText(String text) {
+	public Button setText(String text) {
 		label.setText(text);
 		return this;
 	}
@@ -102,7 +98,7 @@ public class GenericButton extends GenericControl implements Button {
 		return label.getTextColor();
 	}
 
-	public Label setTextColor(Color color) {
+	public Button setTextColor(Color color) {
 		label.setTextColor(color);
 		return this;
 	}
@@ -133,13 +129,21 @@ public class GenericButton extends GenericControl implements Button {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-	public Label setAuto(boolean auto) {
+	public Button setAuto(boolean auto) {
 		label.setAuto(auto);
 		return this;
 	}
 
-	public boolean getAuto() {
-		return label.getAuto();
+	public boolean isAuto() {
+		return label.isAuto();
+	}
+
+	public Button copy() {
+		return ((Button)super.copy()).setDisabledText(getDisabledText()).setText(getText()).setAuto(isAuto()).setTextColor(getTextColor()).setHoverColor(getHoverColor());
+	}
+
+	public void onButtonClick(ButtonClickEvent event) {
+		
 	}
 
 	public Label setScale(float scale) {

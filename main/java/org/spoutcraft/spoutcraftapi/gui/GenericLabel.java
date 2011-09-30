@@ -66,7 +66,7 @@ public class GenericLabel extends GenericWidget implements Label {
 		super.writeData(output);
 		PacketUtil.writeString(output, getText());
 		output.writeByte(align.getId());
-		output.writeBoolean(getAuto());
+		output.writeBoolean(isAuto());
 		PacketUtil.writeColor(output, getTextColor());
 		output.writeFloat(scale);
 	}
@@ -80,7 +80,7 @@ public class GenericLabel extends GenericWidget implements Label {
 		return this;
 	}
 
-	public boolean getAuto() {
+	public boolean isAuto() {
 		return auto;
 	}
 

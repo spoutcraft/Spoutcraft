@@ -34,6 +34,11 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget {
 
 	}
 
+	public GenericItemWidget(ItemStack item) {
+		this.material = item.getTypeId();
+		this.data = item.getDurability();
+	}
+
 	public int getNumBytes() {
 		return super.getNumBytes() + 10;
 	}
@@ -98,6 +103,11 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget {
 
 	public WidgetType getType() {
 		return WidgetType.ItemWidget;
+	}
+
+	@Override
+	public ItemWidget copy() {
+		return ((ItemWidget)super.copy()).setTypeId(getTypeId()).setData(getData()).setDepth(getDepth());
 	}
 
 	public void render() {

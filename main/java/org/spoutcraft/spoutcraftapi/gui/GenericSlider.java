@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 
 public class GenericSlider extends GenericControl implements Slider {
 
@@ -96,6 +97,15 @@ public class GenericSlider extends GenericControl implements Slider {
 	public Slider setDragging(boolean dragged) {
 		this.dragged = dragged;
 		return this;
+	}
+
+	@Override
+	public Slider copy() {
+		return ((Slider)super.copy()).setSliderPosition(getSliderPosition());
+	}
+
+	public void onSliderDrag(SliderDragEvent event) {
+		
 	}
 
 }

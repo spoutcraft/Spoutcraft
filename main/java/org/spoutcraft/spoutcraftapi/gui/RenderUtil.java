@@ -20,6 +20,38 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class RenderUtil {
+	
+	/**
+	 * Draws a polygon that approximates a circle, for large values of numSegments
+	 * @param cx x coordinate or the center of the circle
+	 * @param cy y coordinate for the center of the circle
+	 * @param r radius of the circle
+	 * @param numSegments to draw (number of sides to the polygon. Large values > 50 approximate a circle)
+	 * @param thickness of the line to draw
+	 */
+	public static void drawCircle(float cx, float cy, float r, int numSegments, float thickness) { 
+		float theta = 2 * 3.1415926F / ((float)numSegments); 
+		float c = (float) Math.cos(theta);//precalculate the sine and cosine
+		float s = (float) Math.sin(theta);
+		float t;
+
+		float x = r;//we start at angle = 0 
+		float y = 0; 
+		
+		GL11.glBegin(GL11.GL_LINE_LOOP); 
+		GL11.glLineWidth(thickness);
+		for(int ii = 0; ii < numSegments; ii++) { 
+			
+			GL11.glVertex2f(x + cx, y + cy);//output vertex 
+			
+			//apply the rotation matrix
+			t = x;
+			x = c * x - s * y;
+			y = s * t + c * y;
+		} 
+		GL11.glEnd(); 
+	}
+	
 	public static void drawRectangle(int x, int y, int width, int height, int color) {
 		int temp;
 		if (x < width) {

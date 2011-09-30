@@ -25,10 +25,31 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 	private int entityId = 0;
 
+	public GenericEntityWidget() {
+
+	}
+
+	public GenericEntityWidget(int entityId) {
+		this.entityId = entityId;
+	}
+
+	public WidgetType getType() {
+		return WidgetType.EntityWidget;
+	}
+
+	public EntityWidget setEntityId(int id) {
+		entityId = id;
+		return this;
+	}
+
+	public int getEntityId() {
+		return entityId;
+	}
+	
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
-		setEntityID(input.readInt());
+		entityId = input.readInt();
 	}
 
 	@Override
@@ -36,20 +57,13 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 		super.writeData(output);
 		output.writeInt(entityId);
 	}
-
-	public WidgetType getType() {
-		return WidgetType.EntityWidget;
+	
+	@Override
+	public EntityWidget copy() {
+		return ((EntityWidget)super.copy()).setEntityId(getEntityId());
 	}
 
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
-	}
-
-	public void setEntityID(int entity) {
-		this.entityId = entity;
-	}
-
-	public int getEntityID() {
-		return entityId;
 	}
 }

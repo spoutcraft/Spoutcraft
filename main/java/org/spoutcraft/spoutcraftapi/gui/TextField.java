@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
+
 public interface TextField extends Control {
 
 	/**
@@ -116,8 +118,10 @@ public interface TextField extends Control {
 	public int getTabIndex();
 
 	/**
-	 * Sets the tab index for this text field. When the player presses the tabulator key the text field with index+1 will obtain the focus. Text fields using the same index may not obtain focus when pressing the tabulator key. The behaviour discontinuous index sequences is undefined.
-	 * 
+	 * Sets the tab index for this text field. When the player presses 
+	 * the tabulator key the text field with index+1 will obtain the focus.
+	 * Text fields using the same index may not obtain focus when pressing the tabulator key.
+	 * The behaviour discontinuous index sequences is undefined.
 	 * @param index Tab index (0 – 127)
 	 * @return textfield
 	 */
@@ -131,8 +135,8 @@ public interface TextField extends Control {
 	public boolean isPasswordField();
 
 	/**
-	 * Sets whether the text will be obfuscated by asterisk (*) characters. Setting to true forces the maximum lines to be 1.
-	 * 
+	 * Sets whether the text will be obfuscated by asterisk (*) characters.
+	 * Setting to true forces the maximum lines to be 1.
 	 * @param password
 	 * @return textfield
 	 */
@@ -153,5 +157,12 @@ public interface TextField extends Control {
 	 */
 	public TextField setTextProcessor(TextProcessor processor);
 
-	public PopupScreen getScreen();
+	/**
+	 * Fires when this text field is typed into on the screen.
+	 * 
+	 * This event is also sent to the screen listener, afterwards.
+	 * 
+	 * @param event
+	 */
+	public void onTextFieldChange(TextFieldChangeEvent event);
 }
