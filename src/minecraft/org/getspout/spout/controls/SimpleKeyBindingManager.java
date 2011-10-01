@@ -76,13 +76,15 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		return new File(FileUtil.getSpoutcraftDirectory(), "bindings.yml");
 	}
 
+	@SuppressWarnings("unchecked")
 	public void load(){
 		Yaml yaml = new Yaml();
 		try {
 			bindings = yaml.loadAs(new FileReader(getDataFile()), ArrayList.class);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			bindings = new ArrayList<KeyBinding>();
+		} catch (Exception e) {
+			bindings = new ArrayList<KeyBinding>();
 		}
 		updateBindings();
 	}
