@@ -1324,7 +1324,7 @@ public class EntityRenderer {
 				//Spout End
 				
 				GL11.glFogi(2917 /*GL_FOG_MODE*/, 9729 /*GL_LINEAR*/);
-				GL11.glFogf(2915 /*GL_FOG_START*/, var4 * 0.25F);
+				GL11.glFogf(2915 /*GL_FOG_START*/, var4 * 0.6F); //Spout fog adjustment 0.25F to 0.6F
 				GL11.glFogf(2916 /*GL_FOG_END*/, var4);
 				if(var1 < 0) {
 					GL11.glFogf(2915 /*GL_FOG_START*/, 0.0F);
