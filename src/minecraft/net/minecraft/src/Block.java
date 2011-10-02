@@ -107,7 +107,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
 // Spout Start
-import gnu.trove.TIntFloatHashMap;
+import gnu.trove.map.hash.TIntFloatHashMap;
 import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.item.SpoutItemBlock;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;

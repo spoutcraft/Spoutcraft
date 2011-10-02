@@ -1,7 +1,7 @@
 package org.getspout.spout.item;
 
-import gnu.trove.TIntIntHashMap;
-import gnu.trove.TIntObjectHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.HashMap;
 

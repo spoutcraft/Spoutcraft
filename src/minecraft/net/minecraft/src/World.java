@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import gnu.trove.iterator.TLongIterator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -48,11 +50,9 @@ import net.minecraft.src.WorldInfo;
 import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldSettings;
 //Spout Start
-import gnu.trove.TLongHashSet;
-import gnu.trove.TLongIterator;
 import org.getspout.spout.SpoutcraftWorld;
-import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
 
 import net.minecraft.client.Minecraft;
 //Spout End
@@ -103,7 +103,7 @@ public class World implements IBlockAccess {
 	public boolean spawnHostileMobs; //Spout private -> public
 	public boolean spawnPeacefulMobs; //Spout private -> public
 	//Spout start
-	private TLongHashSet positionsToUpdate;
+	private TIntPairHashSet positionsToUpdate;
 	//Spout end
 	private int soundCounter;
 	int[] field_35466_H;
@@ -152,7 +152,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new TLongHashSet();
+		this.positionsToUpdate = new TIntPairHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -203,7 +203,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new TLongHashSet();
+		this.positionsToUpdate = new TIntPairHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -259,7 +259,7 @@ public class World implements IBlockAccess {
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
 		//Spout Start
-		this.positionsToUpdate = new TLongHashSet();
+		this.positionsToUpdate = new TIntPairHashSet();
 		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
@@ -1970,7 +1970,7 @@ public class World implements IBlockAccess {
 
 			for(var6 = -var5; var6 <= var5; ++var6) {
 				for(var7 = -var5; var7 <= var5; ++var7) {
-					this.positionsToUpdate.add((int) ChunkCoordIntPair.chunkXZ2Int(var6 + var3, var7 + var4)); //Spout
+					this.positionsToUpdate.add(var6 + var3, var7 + var4); //Spout
 				}
 			}
 		}
@@ -1984,8 +1984,8 @@ public class World implements IBlockAccess {
 		while(var13.hasNext()) {
 			//Spout start
 			long next = var13.next();
-			int chunkX = long2ChunkX(next);
-			int chunkZ = long2ChunkZ(next);
+			int chunkX = TIntPairHashSet.longToKey1(next);
+			int chunkZ = TIntPairHashSet.longToKey2(next);
 			var3 = chunkX * 16;
 			var4 = chunkZ * 16;
 			Chunk var15 = this.getChunkFromChunkCoords(chunkX, chunkZ);
@@ -2811,14 +2811,6 @@ public class World implements IBlockAccess {
 
 	public void scheduleLightingUpdate(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7) {}
 	//Spout Start
-	public static int long2ChunkX(long composite) {
-		return (int) (composite & 4294967295L);
-	}
-
-	public static int long2ChunkZ(long composite) {
-		return (int) ((composite >> 32) & 4294967295L);
-	}
-	
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {
 			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);

@@ -18,6 +18,8 @@ import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.CustomScreen;
+import org.getspout.spout.gui.addon.MainAddonScreen;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -113,7 +115,8 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 3) {
-			this.mc.displayGuiScreen(new GuiTexturePacks(this));
+			//this.mc.displayGuiScreen(new GuiTexturePacks(this));
+			this.mc.displayGuiScreen(new CustomScreen(new MainAddonScreen()));
 		}
 
 		if(var1.id == 4) {

@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
@@ -14,14 +15,14 @@ import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.PlayerList;
 import net.minecraft.src.World;
 //Spout Start
-import gnu.trove.TLongHashSet;
-import gnu.trove.TLongIterator;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
+import gnu.trove.iterator.TLongIterator;
 //Spout end
 
 public class ChunkProvider implements IChunkProvider {
 
 	//Spout Start
-	private TLongHashSet droppedChunksSet = new TLongHashSet();
+	private TIntPairHashSet droppedChunksSet = new TIntPairHashSet();
 	//Spout End
 	private Chunk field_28064_b;
 	private IChunkProvider chunkProvider;
@@ -52,14 +53,16 @@ public class ChunkProvider implements IChunkProvider {
 		int var5 = var2 * 16 + 8 - var3.posZ;
 		short var6 = 128;
 		if(var4 < -var6 || var4 > var6 || var5 < -var6 || var5 > var6) {
-			this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
+			this.droppedChunksSet.add(var1, var2); //Spout
 		}
 
 	}
 
 	public Chunk loadChunk(int var1, int var2) {
+		//Spout start
 		long var3 = ChunkCoordIntPair.chunkXZ2Int(var1, var2);
-		this.droppedChunksSet.remove(var3);
+		this.droppedChunksSet.remove(var1, var2);
+		//Spout en
 		Chunk var5 = (Chunk)this.chunkMap.func_35578_a(var3);
 		if(var5 == null) {
 			int var6 = 1875004;
@@ -188,7 +191,7 @@ public class ChunkProvider implements IChunkProvider {
 			var3.onChunkUnload();
 			this.func_28062_b(var3);
 			this.func_28063_a(var3);
-			this.droppedChunksSet.remove(var2);
+			this.droppedChunksSet.remove(var3.xPosition, var3.zPosition);
 			this.chunkMap.func_35574_d(var2);
 			this.chunkList.remove(var3);
 		}

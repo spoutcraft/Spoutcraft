@@ -16,11 +16,11 @@
  */
 package org.getspout.spout.block;
 
+import gnu.trove.map.hash.TIntFloatHashMap;
+import gnu.trove.map.hash.TIntIntHashMap;
+
 import java.lang.ref.WeakReference;
 import java.util.Map;
-
-import gnu.trove.TIntFloatHashMap;
-import gnu.trove.TIntIntHashMap;
 
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
