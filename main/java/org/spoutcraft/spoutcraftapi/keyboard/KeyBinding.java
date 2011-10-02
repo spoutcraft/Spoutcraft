@@ -11,7 +11,7 @@ public class KeyBinding implements Serializable {
 	private String plugin;
 	private String id;
 	private String description;
-	private transient UUID uuid;
+	private transient UUID uuid = null;
 	
 	public KeyBinding() {
 		uuid = UUID.randomUUID();
