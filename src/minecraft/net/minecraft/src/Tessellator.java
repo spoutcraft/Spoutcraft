@@ -47,9 +47,6 @@ public class Tessellator {
 	//Spout Start
 	public int textureOverride = 0;
 	//Spout End
-	//Spout Performance Start
-	public static boolean isLoadingChunk = false;
-	//Spout Performance End
 
 
 	private Tessellator(int var1) {
@@ -72,11 +69,6 @@ public class Tessellator {
 			throw new IllegalStateException("Not tesselating!");
 		} else {
 			this.isDrawing = false;
-			//Spout Performance Start
-			if (!isLoadingChunk) {
-				GL11.glEnd();
-			} else
-				//Spout Performance End
 			if(this.vertexCount > 0) {
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
@@ -192,11 +184,6 @@ public class Tessellator {
 		if(this.isDrawing) {
 			throw new IllegalStateException("Already tesselating!");
 		} else {
-			//Spout Performance Start
-			if (!isLoadingChunk) {
-				GL11.glBegin(var1);
-			}
-			//Spout Performance End
 			this.isDrawing = true;
 			this.reset();
 			this.drawMode = var1;
@@ -212,11 +199,6 @@ public class Tessellator {
 		this.hasTexture = true;
 		this.textureU = var1;
 		this.textureV = var3;
-		//Spout Performance Start
-		if (!isLoadingChunk) {
-			GL11.glTexCoord2f((float)var1, (float)var3);
-		}
-		//Spout Performance End
 	}
 
 	public void func_35835_b(int var1) {
@@ -271,11 +253,6 @@ public class Tessellator {
 			}
 
 			this.hasColor = true;
-			//Spout Performance Start
-			if (!isLoadingChunk) {
-				GL11.glColor4ub((byte)var1, (byte)var2, (byte)var3, (byte)var4);
-			} else
-			//Spout Performance End
 			if(ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
 				this.color = var4 << 24 | var3 << 16 | var2 << 8 | var1;
 			} else {
@@ -291,13 +268,6 @@ public class Tessellator {
 	}
 
 	public void addVertex(double var1, double var3, double var5) {
-		//Spout Performance Start
-		if (!isLoadingChunk)
-		{
-			GL11.glVertex3f((float)(var1 + xOffset), (float)(var3 + yOffset), (float)(var5 + zOffset));
-			return;
-		}
-		//Spout Performance End
 		++this.addedVertices;
 		if(this.drawMode == 7 && convertQuadsToTriangles && this.addedVertices % 4 == 0) {
 			for(int var7 = 0; var7 < 2; ++var7) {
@@ -376,11 +346,6 @@ public class Tessellator {
 		byte var5 = (byte)((int)(var2 * 127.0F));
 		byte var6 = (byte)((int)(var3 * 127.0F));
 		this.normal = var4 | var5 << 8 | var6 << 16;
-		//Spout Performance Start
-		if (!isLoadingChunk) {
-			GL11.glNormal3b(var4, var5, var6);
-		}
-		//Spout Performance End
 	}
 
 	public void setTranslationD(double var1, double var3, double var5) {
