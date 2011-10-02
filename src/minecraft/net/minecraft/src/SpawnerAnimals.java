@@ -26,13 +26,14 @@ import net.minecraft.src.SpawnListEntry;
 import net.minecraft.src.WeightedRandom;
 import net.minecraft.src.World;
 //Spout start
-import it.unimi.dsi.fastutil.ints.*;
+import gnu.trove.TLongHashSet;
+import gnu.trove.TLongIterator;
 //Spout end
 
 public final class SpawnerAnimals {
 
 	//Spout start
-	private static IntSet eligibleChunksForSpawning = new IntOpenHashSet();
+	private static TLongHashSet eligibleChunksForSpawning = new TLongHashSet();
 	//Spout end
 	protected static final Class[] nightSpawnEntities = new Class[]{EntitySpider.class, EntityZombie.class, EntitySkeleton.class};
 
@@ -62,7 +63,7 @@ public final class SpawnerAnimals {
 
 				for(int var8 = -var7; var8 <= var7; ++var8) {
 					for(int var9 = -var7; var9 <= var7; ++var9) {
-						eligibleChunksForSpawning.add((int)ChunkCoordIntPair.chunkXZ2Int(var8 + var5, var9 + var6));
+						eligibleChunksForSpawning.add(ChunkCoordIntPair.chunkXZ2Int(var8 + var5, var9 + var6));
 					}
 				}
 			}
@@ -75,14 +76,14 @@ public final class SpawnerAnimals {
 			for(int var35 = 0; var35 < var6; ++var35) {
 				EnumCreatureType var36 = var34[var35];
 				if((!var36.getPeacefulCreature() || var2) && (var36.getPeacefulCreature() || var1) && var0.countEntities(var36.getCreatureClass()) <= var36.getMaxNumberOfCreature() * eligibleChunksForSpawning.size() / 256) {
-					IntIterator var37 = eligibleChunksForSpawning.iterator();
+					TLongIterator var37 = eligibleChunksForSpawning.iterator();
 
 					label91:
 					while(var37.hasNext()) {
 						//Spout start
-						int next = var37.nextInt();
-						int chunkX = World.int2ChunkX(next);
-						int chunkZ = World.int2ChunkZ(next);
+						long next = var37.next();
+						int chunkX = World.long2ChunkX(next);
+						int chunkZ = World.long2ChunkZ(next);
 						BiomeGenBase var11 = var0.getWorldChunkManager().getBiomeGenAt(chunkX, chunkZ);
 						//Spout end
 						List var12 = var11.getSpawnableList(var36);

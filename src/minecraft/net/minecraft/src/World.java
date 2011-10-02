@@ -1984,8 +1984,8 @@ public class World implements IBlockAccess {
 		while(var13.hasNext()) {
 			//Spout start
 			long next = var13.next();
-			int chunkX = int2ChunkX((int)next);
-			int chunkZ = int2ChunkZ((int)next);
+			int chunkX = long2ChunkX(next);
+			int chunkZ = long2ChunkZ(next);
 			var3 = chunkX * 16;
 			var4 = chunkZ * 16;
 			Chunk var15 = this.getChunkFromChunkCoords(chunkX, chunkZ);
@@ -2811,12 +2811,12 @@ public class World implements IBlockAccess {
 
 	public void scheduleLightingUpdate(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7) {}
 	//Spout Start
-	public static int int2ChunkX(int composite) {
-		return (composite & Integer.MIN_VALUE) == 0?composite >> 16:(composite & -65536) >> 16;
+	public static int long2ChunkX(long composite) {
+		return (int) (composite & 4294967295L);
 	}
 
-	public static int int2ChunkZ(int composite) {
-		return (composite & '\u8000') == 0?composite & 32767:-(-composite & 32767);
+	public static int long2ChunkZ(long composite) {
+		return (int) ((composite >> 32) & 4294967295L);
 	}
 	
 	public void doColorfulStuff() {
