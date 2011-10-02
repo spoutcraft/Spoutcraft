@@ -206,7 +206,6 @@ public class WorldRenderer {
 									if (!drawBlock) {
 										drawBlock = true;
 										GL11.glNewList(this.glRenderList + renderPass, 4864 /* GL_COMPILE */);
-										Tessellator.isLoadingChunk = true;
 										GL11.glPushMatrix();
 										this.setupGLTranslation();
 										GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
@@ -254,7 +253,6 @@ public class WorldRenderer {
 					tessellator.textureOverride = 0;
 					GL11.glPopMatrix();
 					GL11.glEndList();
-					Tessellator.isLoadingChunk = false;
 					game.renderEngine.bindTexture(defaultTexture);
 					tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
 				} else {
