@@ -92,7 +92,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	public void pressKey(int key, boolean keyReleased, int screen) {
 		
 		KeyBinding binding = bindingsForKey.get(key);
-		if(binding==null){
+		if(binding==null || binding.getUniqueId() == null){
 			return;
 		}
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
