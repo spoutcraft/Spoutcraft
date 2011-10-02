@@ -165,11 +165,11 @@ public class GuiIngame extends Gui {
 				long maxMem = Runtime.getRuntime().maxMemory();
 				long totalMem = Runtime.getRuntime().totalMemory();
 				long freeMem = Runtime.getRuntime().freeMemory();
-				long usedMem = (maxMem - freeMem);
+				long usedMem = (totalMem - freeMem);
 				String os = System.getProperty("os.name");
-				var23 = "Used memory: " + ((int)((usedMem / (float)maxMem) * 100f)) + "% (" + usedMem / 1024L / 1024L + "MB) of " + totalMem / 1024L / 1024L + "MB";
+				var23 = "Used memory: " + ((int)((usedMem / (float)totalMem) * 100f)) + "% (" + usedMem / 1024L / 1024L + "MB) of " + totalMem / 1024L / 1024L + "MB";
 				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 2, 14737632);
-				var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB)";
+				var23 = "Allocated memory: " + totalMem * 100L / maxMem + "% (" + totalMem / 1024L / 1024L + "MB) of " + maxMem / 1024L / 1024L + "MB";
 				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
 				//No Cheating!
 				int offset = 0;
