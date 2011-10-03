@@ -8,6 +8,7 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
@@ -17,7 +18,7 @@ import net.minecraft.src.WorldRenderer;
 
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
-public class SpoutItemBlock extends ItemBlock {
+public class SpoutItemBlock extends Item {
 
 	private final static TIntIntHashMap itemBlock = new TIntIntHashMap();
 	private final static TIntIntHashMap itemMetaData = new TIntIntHashMap();

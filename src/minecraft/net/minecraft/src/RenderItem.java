@@ -20,6 +20,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItemBlock;
 import org.newdawn.slick.opengl.Texture;
+
 //SPout end
 
 public class RenderItem extends Render {
@@ -28,50 +29,49 @@ public class RenderItem extends Render {
 	private Random random = new Random();
 	public boolean field_27004_a = true;
 
-
 	public RenderItem() {
 		this.shadowSize = 0.15F;
 		this.field_194_c = 0.75F;
 	}
 
 	public void doRenderItem(EntityItem var1, double var2, double var4, double var6, float var8, float var9) {
-		//Spout Start
-		//Sanity Checks
+		// Spout Start
+		// Sanity Checks
 		if (var1 == null || var1.item == null) {
 			return;
 		}
-		//Spout End
+		// Spout End
 		this.random.setSeed(187L);
 		ItemStack var10 = var1.item;
 		GL11.glPushMatrix();
-		float var11 = MathHelper.sin(((float)var1.age + var9) / 10.0F + var1.field_804_d) * 0.1F + 0.1F;
-		float var12 = (((float)var1.age + var9) / 20.0F + var1.field_804_d) * 57.295776F;
+		float var11 = MathHelper.sin(((float) var1.age + var9) / 10.0F + var1.field_804_d) * 0.1F + 0.1F;
+		float var12 = (((float) var1.age + var9) / 20.0F + var1.field_804_d) * 57.295776F;
 		byte var13 = 1;
-		if(var1.item.stackSize > 1) {
+		if (var1.item.stackSize > 1) {
 			var13 = 2;
 		}
 
-		if(var1.item.stackSize > 5) {
+		if (var1.item.stackSize > 5) {
 			var13 = 3;
 		}
 
-		if(var1.item.stackSize > 20) {
+		if (var1.item.stackSize > 20) {
 			var13 = 4;
 		}
 
-		GL11.glTranslatef((float)var2, (float)var4 + var11, (float)var6);
+		GL11.glTranslatef((float) var2, (float) var4 + var11, (float) var6);
 		GL11.glEnable('\u803a');
 		float var17;
 		float var19;
 		float var18;
-		//Spout Start
+		// Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
 		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
-			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());
 		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			RenderEngine renderer = this.renderManager.renderEngine;
@@ -81,19 +81,21 @@ public class RenderItem extends Render {
 		} else {
 			this.loadTexture("/gui/items.png");
 		}
-		if(blockType != null || (!bCustomTexture && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType()))) {
+		if (blockType != null || (!bCustomTexture && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType()))) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var29 = 0.25F;
-			if(!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
-			// Spout End
-				var29 = 0.5F;
+			if (var10.itemID != 318) {
+				if (!Block.blocksList[var10.itemID].renderAsNormalBlock() && var10.itemID != Block.stairSingle.blockID && Block.blocksList[var10.itemID].getRenderType() != 16) {
+					var29 = 0.5F;
+				}
 			}
+			// Spout End
 
 			GL11.glScalef(var29, var29, var29);
 
-			for(int var30 = 0; var30 < var13; ++var30) {
+			for (int var30 = 0; var30 < var13; ++var30) {
 				GL11.glPushMatrix();
-				if(var30 > 0) {
+				if (var30 > 0) {
 					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
 					var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
 					var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var29;
@@ -101,13 +103,13 @@ public class RenderItem extends Render {
 				}
 
 				var17 = 1.0F;
-				//Spout Start
-				if(blockType != null) {
+				// Spout Start
+				if (blockType != null) {
 					blockType.renderBlockOnInventory(renderBlocks, var1.getEntityBrightness(var9));
 				} else {
 					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
 				}
-				//Spout end
+				// Spout end
 				GL11.glPopMatrix();
 			}
 		} else {
@@ -115,10 +117,10 @@ public class RenderItem extends Render {
 			int var14 = var10.getIconIndex();
 
 			Tessellator var15 = Tessellator.instance;
-			float var16 = (float)(var14 % 16 * 16 + 0) / 256.0F;
-			var17 = (float)(var14 % 16 * 16 + 16) / 256.0F;
-			var18 = (float)(var14 / 16 * 16 + 0) / 256.0F;
-			var19 = (float)(var14 / 16 * 16 + 16) / 256.0F;
+			float var16 = (float) (var14 % 16 * 16 + 0) / 256.0F;
+			var17 = (float) (var14 % 16 * 16 + 16) / 256.0F;
+			var18 = (float) (var14 / 16 * 16 + 0) / 256.0F;
+			var19 = (float) (var14 / 16 * 16 + 16) / 256.0F;
 			float var20 = 1.0F;
 			float var21 = 0.5F;
 			float var22 = 0.25F;
@@ -126,18 +128,18 @@ public class RenderItem extends Render {
 			float var25;
 			float var24;
 			float var26;
-			if(this.field_27004_a) {
+			if (this.field_27004_a) {
 				var23 = Item.itemsList[var10.itemID].getColorFromDamage(var10.getItemDamage());
-				var24 = (float)(var23 >> 16 & 255) / 255.0F;
-				var25 = (float)(var23 >> 8 & 255) / 255.0F;
-				var26 = (float)(var23 & 255) / 255.0F;
+				var24 = (float) (var23 >> 16 & 255) / 255.0F;
+				var25 = (float) (var23 >> 8 & 255) / 255.0F;
+				var26 = (float) (var23 & 255) / 255.0F;
 				float var27 = 1.0F;
 				GL11.glColor4f(var24 * var27, var25 * var27, var26 * var27, 1.0F);
 			}
 
-			for(var23 = 0; var23 < var13; ++var23) {
+			for (var23 = 0; var23 < var13; ++var23) {
 				GL11.glPushMatrix();
-				if(var23 > 0) {
+				if (var23 > 0) {
 					var24 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
 					var25 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
 					var26 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.3F;
@@ -147,7 +149,7 @@ public class RenderItem extends Render {
 				GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 				var15.startDrawingQuads();
 				var15.setNormal(0.0F, 1.0F, 0.0F);
-				//Spout Start
+				// Spout Start
 				if (bCustomTexture) {
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (0.0F - var22), 0.0D, (double) 0, (double) 0);
 					var15.addVertexWithUV((double) (var20 - var21), (double) (0.0F - var22), 0.0D, (double) 1, (double) 0);
@@ -159,7 +161,7 @@ public class RenderItem extends Render {
 					var15.addVertexWithUV((double) (var20 - var21), (double) (1.0F - var22), 0.0D, (double) var17, (double) var18);
 					var15.addVertexWithUV((double) (0.0F - var21), (double) (1.0F - var22), 0.0D, (double) var16, (double) var18);
 				}
-				//Spout End	
+				// Spout End
 				var15.draw();
 				GL11.glPopMatrix();
 			}
@@ -178,7 +180,7 @@ public class RenderItem extends Render {
 		Boolean bCustomTexture = false;
 		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var3, var4);
 		if (blockType != null) {
-			var2.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+			var2.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());
 		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
@@ -188,43 +190,42 @@ public class RenderItem extends Render {
 			var2.bindTexture(var2.getTexture("/gui/items.png"));
 		}
 
-		if(blockType != null || (!bCustomTexture && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType()))) {
+		if (blockType != null || (!bCustomTexture && var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType()))) {
 			// Spout End
-			Block var14 = Block.blocksList[var3];
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F);
+			GL11.glTranslatef((float) (var6 - 2), (float) (var7 + 3), -3.0F);
 			GL11.glScalef(10.0F, 10.0F, 10.0F);
 			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			int var15 = Item.itemsList[var3].getColorFromDamage(var4);
-			var11 = (float)(var15 >> 16 & 255) / 255.0F;
-			float var12 = (float)(var15 >> 8 & 255) / 255.0F;
-			float var13 = (float)(var15 & 255) / 255.0F;
-			if(this.field_27004_a) {
+			var11 = (float) (var15 >> 16 & 255) / 255.0F;
+			float var12 = (float) (var15 >> 8 & 255) / 255.0F;
+			float var13 = (float) (var15 & 255) / 255.0F;
+			if (this.field_27004_a) {
 				GL11.glColor4f(var11, var12, var13, 1.0F);
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			//Spout Start
+			// Spout Start
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			if(blockType != null) {
+			if (blockType != null) {
 				blockType.renderBlockOnInventory(renderBlocks, 1.0F);
 			} else {
-				this.renderBlocks.renderBlockOnInventory(var14, var4, 1.0F);
+				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var3], var4, 1.0F);
 			}
 			this.renderBlocks.useInventoryTint = true;
-			//Spout end
+			// Spout end
 			GL11.glPopMatrix();
-		} else if(var5 >= 0) {
-			GL11.glDisable(2896 /*GL_LIGHTING*/);
+		} else if (var5 >= 0) {
+			GL11.glDisable(2896 /* GL_LIGHTING */);
 
 			int var8 = Item.itemsList[var3].getColorFromDamage(var4);
-			float var9 = (float)(var8 >> 16 & 255) / 255.0F;
-			float var10 = (float)(var8 >> 8 & 255) / 255.0F;
-			var11 = (float)(var8 & 255) / 255.0F;
-			if(this.field_27004_a) {
+			float var9 = (float) (var8 >> 16 & 255) / 255.0F;
+			float var10 = (float) (var8 >> 8 & 255) / 255.0F;
+			var11 = (float) (var8 & 255) / 255.0F;
+			if (this.field_27004_a) {
 				GL11.glColor4f(var9, var10, var11, 1.0F);
 			}
 
@@ -241,44 +242,44 @@ public class RenderItem extends Render {
 				this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
 			// Spout End
 
-			GL11.glEnable(2896 /*GL_LIGHTING*/);
+			GL11.glEnable(2896 /* GL_LIGHTING */);
 		}
 
-		GL11.glEnable(2884 /*GL_CULL_FACE*/);
+		GL11.glEnable(2884 /* GL_CULL_FACE */);
 	}
 
 	public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
-		if(var3 != null) {
+		if (var3 != null) {
 			this.drawItemIntoGui(var1, var2, var3.itemID, var3.getItemDamage(), var3.getIconIndex(), var4, var5);
 		}
 	}
 
 	public void renderItemOverlayIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
-		if(var3 != null) {
-			if(var3.stackSize > 1) {
+		if (var3 != null) {
+			if (var3.stackSize > 1) {
 				String var6 = "" + var3.stackSize;
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
-				GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
+				GL11.glDisable(2896 /* GL_LIGHTING */);
+				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
 				var1.drawStringWithShadow(var6, var4 + 19 - 2 - var1.getStringWidth(var6), var5 + 6 + 3, 16777215);
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
-				GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
+				GL11.glEnable(2896 /* GL_LIGHTING */);
+				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
 			}
 
-			if(var3.isItemDamaged()) {
-				int var11 = (int)Math.round(13.0D - (double)var3.getItemDamageForDisplay() * 13.0D / (double)var3.getMaxDamage());
-				int var7 = (int)Math.round(255.0D - (double)var3.getItemDamageForDisplay() * 255.0D / (double)var3.getMaxDamage());
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
-				GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
-				GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+			if (var3.isItemDamaged()) {
+				int var11 = (int) Math.round(13.0D - (double) var3.getItemDamageForDisplay() * 13.0D / (double) var3.getMaxDamage());
+				int var7 = (int) Math.round(255.0D - (double) var3.getItemDamageForDisplay() * 255.0D / (double) var3.getMaxDamage());
+				GL11.glDisable(2896 /* GL_LIGHTING */);
+				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
+				GL11.glDisable(3553 /* GL_TEXTURE_2D */);
 				Tessellator var8 = Tessellator.instance;
 				int var9 = 255 - var7 << 16 | var7 << 8;
 				int var10 = (255 - var7) / 4 << 16 | 16128;
 				this.renderQuad(var8, var4 + 2, var5 + 13, 13, 2, 0);
 				this.renderQuad(var8, var4 + 2, var5 + 13, 12, 1, var10);
 				this.renderQuad(var8, var4 + 2, var5 + 13, var11, 1, var9);
-				GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
-				GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
+				GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+				GL11.glEnable(2896 /* GL_LIGHTING */);
+				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
@@ -288,10 +289,10 @@ public class RenderItem extends Render {
 	private void renderQuad(Tessellator var1, int var2, int var3, int var4, int var5, int var6) {
 		var1.startDrawingQuads();
 		var1.setColorOpaque_I(var6);
-		var1.addVertex((double)(var2 + 0), (double)(var3 + 0), 0.0D);
-		var1.addVertex((double)(var2 + 0), (double)(var3 + var5), 0.0D);
-		var1.addVertex((double)(var2 + var4), (double)(var3 + var5), 0.0D);
-		var1.addVertex((double)(var2 + var4), (double)(var3 + 0), 0.0D);
+		var1.addVertex((double) (var2 + 0), (double) (var3 + 0), 0.0D);
+		var1.addVertex((double) (var2 + 0), (double) (var3 + var5), 0.0D);
+		var1.addVertex((double) (var2 + var4), (double) (var3 + var5), 0.0D);
+		var1.addVertex((double) (var2 + var4), (double) (var3 + 0), 0.0D);
 		var1.draw();
 	}
 
@@ -301,16 +302,16 @@ public class RenderItem extends Render {
 		float var9 = 0.00390625F;
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
-		var10.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)var7, (double)((float)(var3 + 0) * var8), (double)((float)(var4 + var6) * var9));
-		var10.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)var7, (double)((float)(var3 + var5) * var8), (double)((float)(var4 + var6) * var9));
-		var10.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)var7, (double)((float)(var3 + var5) * var8), (double)((float)(var4 + 0) * var9));
-		var10.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)var7, (double)((float)(var3 + 0) * var8), (double)((float)(var4 + 0) * var9));
+		var10.addVertexWithUV((double) (var1 + 0), (double) (var2 + var6), (double) var7, (double) ((float) (var3 + 0) * var8), (double) ((float) (var4 + var6) * var9));
+		var10.addVertexWithUV((double) (var1 + var5), (double) (var2 + var6), (double) var7, (double) ((float) (var3 + var5) * var8), (double) ((float) (var4 + var6) * var9));
+		var10.addVertexWithUV((double) (var1 + var5), (double) (var2 + 0), (double) var7, (double) ((float) (var3 + var5) * var8), (double) ((float) (var4 + 0) * var9));
+		var10.addVertexWithUV((double) (var1 + 0), (double) (var2 + 0), (double) var7, (double) ((float) (var3 + 0) * var8), (double) ((float) (var4 + 0) * var9));
 		var10.draw();
 	}
 
 	// $FF: synthetic method
 	// $FF: bridge method
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		this.doRenderItem((EntityItem)var1, var2, var4, var6, var8, var9);
+		this.doRenderItem((EntityItem) var1, var2, var4, var6, var8, var9);
 	}
 }
