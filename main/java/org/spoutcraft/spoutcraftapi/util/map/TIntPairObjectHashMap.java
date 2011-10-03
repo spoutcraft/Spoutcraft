@@ -40,7 +40,7 @@ public class TIntPairObjectHashMap<K>{
 		map.clear();
 	}
 
-	public boolean containsValue(float val) {
+	public boolean containsValue(K val) {
 		return map.containsValue(val);
 	}
 
