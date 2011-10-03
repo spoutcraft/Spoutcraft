@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
+import gnu.trove.set.hash.TLongHashSet;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
@@ -14,16 +15,10 @@ import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.PlayerList;
 import net.minecraft.src.World;
-//Spout Start
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
-import gnu.trove.iterator.TLongIterator;
-//Spout end
 
 public class ChunkProvider implements IChunkProvider {
 
-	//Spout Start
-	private TIntPairHashSet droppedChunksSet = new TIntPairHashSet();
-	//Spout End
+	private TLongHashSet droppedChunksSet = new TLongHashSet(); //Spout
 	private Chunk field_28064_b;
 	private IChunkProvider chunkProvider;
 	private IChunkLoader chunkLoader;
@@ -53,16 +48,22 @@ public class ChunkProvider implements IChunkProvider {
 		int var5 = var2 * 16 + 8 - var3.posZ;
 		short var6 = 128;
 		if(var4 < -var6 || var4 > var6 || var5 < -var6 || var5 > var6) {
-			this.droppedChunksSet.add(var1, var2); //Spout
+			/*Spout start
+			this.droppedChunksSet.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(var1, var2)));
+			*/
+			this.droppedChunksSet.add(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+			//Spout end
 		}
 
 	}
 
 	public Chunk loadChunk(int var1, int var2) {
-		//Spout start
 		long var3 = ChunkCoordIntPair.chunkXZ2Int(var1, var2);
-		this.droppedChunksSet.remove(var1, var2);
-		//Spout en
+		/*Spout start
+		this.droppedChunksSet.remove(Long.valueOf(var3)); 
+		*/
+		this.droppedChunksSet.remove(var3); 
+		//Spout end
 		Chunk var5 = (Chunk)this.chunkMap.func_35578_a(var3);
 		if(var5 == null) {
 			int var6 = 1875004;
@@ -182,20 +183,23 @@ public class ChunkProvider implements IChunkProvider {
 
 	public boolean unload100OldestChunks() {
 		int var1;
-		//Spout Start
-		TLongIterator iterator = this.droppedChunksSet.iterator();
-		for(var1 = 0; var1 < 100 && iterator.hasNext(); ++var1) {
-			long var2 = iterator.next();
-			iterator.remove();
-			Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
-			var3.onChunkUnload();
-			this.func_28062_b(var3);
-			this.func_28063_a(var3);
-			this.droppedChunksSet.remove(var3.xPosition, var3.zPosition);
-			this.chunkMap.func_35574_d(var2);
-			this.chunkList.remove(var3);
+		for(var1 = 0; var1 < 100; ++var1) {
+			if(!this.droppedChunksSet.isEmpty()) {
+				/*Spout start
+				Long var2 = (Long)this.droppedChunksSet.iterator().next();
+				Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2.longValue());
+				*/
+				long var2 = this.droppedChunksSet.iterator().next();
+				Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
+				//Spout end
+				var3.onChunkUnload();
+				this.func_28062_b(var3);
+				this.func_28063_a(var3);
+				this.droppedChunksSet.remove(var2);
+				this.chunkMap.func_35574_d(var2); //Spout
+				this.chunkList.remove(var3);
+			}
 		}
-		//Spout End
 
 		for(var1 = 0; var1 < 10; ++var1) {
 			if(this.field_35392_h >= this.chunkList.size()) {
@@ -224,10 +228,4 @@ public class ChunkProvider implements IChunkProvider {
 	public String makeString() {
 		return "ServerChunkCache: " + this.chunkMap.func_35576_a() + " Drop: " + this.droppedChunksSet.size();
 	}
-
-	//Spout Start
-	public List<Chunk> getChunkList() {
-		return chunkList;
-	}
-	//Spout end
 }
