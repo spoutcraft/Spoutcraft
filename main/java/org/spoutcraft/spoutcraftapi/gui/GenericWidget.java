@@ -35,7 +35,7 @@ public abstract class GenericWidget implements Widget {
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.SCALE;
-	protected String plugin;
+	protected String plugin = "Spoutcraft";
 
 	public GenericWidget() {
 
