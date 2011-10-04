@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 //Spout Start
 import org.getspout.spout.gui.controls.GuiPluginControls;
+import org.getspout.spout.gui.shortcuts.GuiCommandShortcuts;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
@@ -39,8 +40,10 @@ public class GuiControls extends GuiScreen
             controlList.add(new GuiSmallButton(j, i + (j % 2) * 160, height / 6 + 24 * (j >> 1), 70, 20, options.getOptionDisplayString(j)));
         }
 
-        controlList.add(new GuiButton(200, width / 2 - 205, height / 6 + 168, stringtranslate.translateKey("gui.done"))); // Spout
-        controlList.add(new GuiButton(201, width / 2 +   5, height / 6 + 168, "Plugin Controls")); // Spout
+        controlList.add(new GuiButton(200, width / 2 - 150, height / 6 + 168, 100, 20, stringtranslate.translateKey("gui.done"))); // Spout
+        controlList.add(new GuiButton(201, width / 2 - 45, height / 6 + 168, 100, 20, "Plugin Controls")); // Spout
+        controlList.add(new GuiButton(202, width / 2 + 60, height / 6 + 168, 100, 20, "Shortcuts")); //Spout
+        
         screenTitle = stringtranslate.translateKey("controls.title");
 
     }
@@ -58,6 +61,9 @@ public class GuiControls extends GuiScreen
         	break;
     	case 201:
     		mc.displayGuiScreen(new GuiPluginControls(this));
+    		break;
+    	case 202:
+    		mc.displayGuiScreen(new GuiCommandShortcuts(this));
     		break;
     	default:
     		buttonId = guibutton.id;

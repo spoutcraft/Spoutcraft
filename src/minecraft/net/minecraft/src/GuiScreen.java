@@ -40,6 +40,7 @@ public class GuiScreen extends Gui {
 	//Spout Start
 	public GenericGradient bg; 
 	public Screen screen = null;
+	private long updateTicks;
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -188,6 +189,11 @@ public class GuiScreen extends Gui {
 		this.width = var2;
 		this.height = var3;
 		this.controlList.clear();
+		if(!(this instanceof CustomScreen) && screen != null){
+			for(Widget w:screen.getAttachedWidgets()){
+				screen.removeWidget(w);
+			}
+		}
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		this.initGui();
 	}
@@ -288,7 +294,12 @@ public class GuiScreen extends Gui {
 		//Spout End
 	}
 
-	public void updateScreen() {}
+	public void updateScreen() {
+		//Spout Start
+		updateTicks++;
+		MCRenderDelegate.shouldRenderCursor = updateTicks / 6 % 2 == 0;
+		//Spout End
+	}
 
 	public void onGuiClosed() {}
 

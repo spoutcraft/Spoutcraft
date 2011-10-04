@@ -27,6 +27,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class MCRenderDelegate implements RenderDelegate {
+	public static boolean shouldRenderCursor = false;
 	protected final RenderItemCustom renderer;
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
@@ -321,7 +322,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
 		}
 
-		boolean showCursor = textField.isEnabled() && textField.isFocus() && (Spoutcraft.getClient().getTick() & 0x20) > 0;
+		boolean showCursor = textField.isEnabled() && textField.isFocus() && ((Spoutcraft.getClient().getTick() & 0x20) > 0 || shouldRenderCursor);
 		if (showCursor) {
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
