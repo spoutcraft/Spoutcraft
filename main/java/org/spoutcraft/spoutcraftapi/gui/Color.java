@@ -22,7 +22,7 @@ public class Color implements Animatable {
 	private short red;
 	private short green;
 	private short blue;
-	private short alpha = 0;
+	private short alpha = 1;
 
 	public Color(float r, float g, float b) {
 		setRed(r);
