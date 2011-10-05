@@ -43,6 +43,10 @@ public interface RenderDelegate {
 	public void render(HungerBar bar);
 
 	public void render(GenericEntityWidget entityWidget);
+	
+	public void render(GenericRadioButton radio);
+	
+	public void render(GenericCheckBox check);
 
 	public void downloadTexture(String plugin, String url);
 

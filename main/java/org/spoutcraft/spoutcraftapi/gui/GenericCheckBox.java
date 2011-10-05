@@ -39,12 +39,7 @@ public class GenericCheckBox extends GenericButton implements CheckBox {
 
 	@Override
 	public void render() {
-		Spoutcraft.getClient().getRenderDelegate().render(this);
-	}
-
-	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		checked = !checked;
+		Spoutcraft.getClient().getRenderDelegate().render((GenericCheckBox)this);
 	}
 
 	public boolean isChecked() {

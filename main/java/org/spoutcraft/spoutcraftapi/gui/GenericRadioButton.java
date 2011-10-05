@@ -14,6 +14,10 @@ public class GenericRadioButton extends GenericButton implements RadioButton {
 	boolean selected = false;
 	int group = 0;
 	
+	public GenericRadioButton(String text) {
+		super(text);
+	}
+
 	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 2;
@@ -43,22 +47,17 @@ public class GenericRadioButton extends GenericButton implements RadioButton {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		setSelected(true);
-	}
-
 	public boolean isSelected() {
 		return selected;
 	}
 
 	public RadioButton setSelected(boolean selected) {
-		this.selected = selected;
 		if(selected) {
 			for(RadioButton b:getRadiosInGroup()) {
 				b.setSelected(false);
 			}
 		}
+		this.selected = selected;
 		return this;
 	}
 
