@@ -112,11 +112,7 @@ public class GuiScreen extends Gui {
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
-							this.buttonClicked((Button)control);
-							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-							ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
-							((Button) control).onButtonClick(event);
-							SpoutClient.getInstance().getAddonManager().callEvent(event);
+							handleButtonClick((Button)control);
 						}
 						else if (control instanceof Slider) {
 							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
@@ -132,6 +128,22 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
+	private void handleButtonClick(Button control) {
+		this.buttonClicked((Button)control);
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
+		((Button) control).onButtonClick(event);
+		SpoutClient.getInstance().getAddonManager().callEvent(event);
+		if(control instanceof CheckBox) {
+			CheckBox check = (CheckBox)control;
+			check.setChecked(!check.isChecked());
+		}
+		if(control instanceof RadioButton) {
+			RadioButton radio = (RadioButton)control;
+			radio.setSelected(true);
+		}
+	}
+
 	protected void mouseClicked(int var1, int var2, int var3) {
 		if(var3 == 0) {
 			for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
