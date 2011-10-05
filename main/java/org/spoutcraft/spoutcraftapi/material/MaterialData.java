@@ -22,8 +22,9 @@ import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
 import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
-public final class MaterialData {
+public class MaterialData {
 	private final static TIntPairObjectHashMap<Material> idMap = new TIntPairObjectHashMap<Material>();
+	private static boolean initiated = false;
 	public static final Block air = new Air();
 	public static final Block stone = new Solid(1);
 	public static final Block grass = new Grass();
@@ -83,7 +84,6 @@ public final class MaterialData {
 	public static final Block greenWool = new Wool(35,13);
 	public static final Block redWool = new Wool(35,14);
 	public static final Block blackWool = new Wool(35,15);
-	public static final Block errorWool = new Wool(35,16);
 	public static final Block movedByPiston = new Solid(36);
 	public static final Block dandelion = new Solid(37);
 	public static final Block rose = new Solid(38);
@@ -137,7 +137,7 @@ public final class MaterialData {
 	public static final Block redstoneTorchOn = new Solid(76);
 	public static final Block stoneButton = new Solid(77);
 	public static final Block snow = new Solid(78);
-	public static final Block Ice = new Solid(79);
+	public static final Block ice = new Solid(79);
 	public static final Block snowBlock = new Solid(80);
 	public static final Block cactus = new Solid(81);
 	public static final Block clayBlock = new Solid(82);
@@ -147,7 +147,7 @@ public final class MaterialData {
 	public static final Block pumpkin = new Solid(86);
 	public static final Block netherrack = new Solid(87);
 	public static final Block soulSand = new Solid(88);
-	public static final Block glowstoneBlow = new Solid(89);
+	public static final Block glowstoneBlock = new Solid(89);
 	public static final Block portal = new Solid(90);
 	public static final Block jackOLantern = new Solid(91);
 	public static final Block cakeBlock = new Solid(92);
@@ -300,23 +300,27 @@ public final class MaterialData {
 	public static final Item enderPearl = new GenericItem(368);
 	public static final Item goldMusicDisc = new GenericItem(2256);
 	public static final Item greenMusicDisc = new GenericItem(2257);
-
-	static {
-		Field[] fields = MaterialData.class.getFields();
-		for (Field f : fields) {
-			if (f.isAccessible() && Modifier.isStatic(f.getModifiers())) {
-				try {
-					Object value = f.get(null);
-					if (value instanceof Material) {
-						Material mat = (Material)value;
-						idMap.put(mat.getRawId(), mat.getRawData(), mat);
+	
+	private static void init() {
+		if (!initiated) {
+			Field[] fields = MaterialData.class.getFields();
+			for (Field f : fields) {
+				f.setAccessible(true);
+				if (Modifier.isStatic(f.getModifiers())) {
+					try {
+						Object value = f.get(null);
+						if (value instanceof Material) {
+							Material mat = (Material)value;
+							idMap.put(mat.getRawId(), mat.getRawData(), mat);
+						}
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
 					}
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
 				}
 			}
+			initiated = true;
 		}
 	}
 	
@@ -325,8 +329,9 @@ public final class MaterialData {
 	}
 	
 	public static Material getMaterial(int id, short data) {
+		init();
 		Material mat = (Material) idMap.get(id, 0); //Test if they id has subtypes first
-		if (!mat.hasSubtypes()) {
+		if (mat == null || !mat.hasSubtypes()) {
 			return mat;
 		}
 		return (Material) idMap.get(id, data);

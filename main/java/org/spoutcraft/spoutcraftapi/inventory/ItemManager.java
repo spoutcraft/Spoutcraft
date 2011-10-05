@@ -17,6 +17,30 @@
 package org.spoutcraft.spoutcraftapi.inventory;
 
 public interface ItemManager {
+	
+	public float getFriction(int id, short data);
+	
+	public void setFriction(int id, short data, float friction);
+	
+	public void resetFriction(int id, short data);
+	
+	public float getHardness(int id, short data);
+	
+	public void setHardness(int id, short data, float hardness);
+	
+	public void resetHardness(int id, short data);
+	
+	public boolean isOpaque(int id, short data);
+	
+	public void setOpaque(int id, short data, boolean opacity);
+	
+	public void resetOpacity(int id, short data);
+	
+	public int getLightLevel(int id, short data);
+	
+	public void setLightLevel(int id, short data, int level);
+	
+	public void resetLightLevel(int id, short data);
 
 	/**
 	 * Gets notchian item name for the item, or the custom name if one overrides it

@@ -77,10 +77,6 @@ public class GenericTextField extends GenericControl implements TextField {
 		PacketUtil.writeString(output, getText());
 	}
 
-	public PopupScreen getScreen() {
-		return (PopupScreen) super.getScreen();
-	}
-
 	public int getCursorPosition() {
 		return textProcessor.getCursor();
 	}

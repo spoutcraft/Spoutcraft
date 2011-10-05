@@ -54,23 +54,21 @@ public class GenericBlock implements Block{
 	}
 
 	public float getFriction() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Spoutcraft.getClient().getItemManager().getFriction(getRawId(), (short) getRawData());
 	}
 
 	public Block setFriction(float friction) {
-		// TODO Auto-generated method stub
-		return null;
+		Spoutcraft.getClient().getItemManager().setFriction(getRawId(), (short) getRawData(), friction);
+		return this;
 	}
 
 	public float getHardness() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Spoutcraft.getClient().getItemManager().getHardness(getRawId(), (short) getRawData());
 	}
 
 	public Block setHardness(float hardness) {
-		// TODO Auto-generated method stub
-		return null;
+		Spoutcraft.getClient().getItemManager().setHardness(getRawId(), (short) getRawData(), hardness);
+		return this;
 	}
 
 	public float getExplosionResistence() {
@@ -84,22 +82,20 @@ public class GenericBlock implements Block{
 	}
 
 	public boolean isOpaque() {
-		// TODO Auto-generated method stub
-		return false;
+		return Spoutcraft.getClient().getItemManager().isOpaque(getRawId(), (short) getRawData());
 	}
 
 	public Block setOpaque(boolean opaque) {
-		// TODO Auto-generated method stub
-		return null;
+		Spoutcraft.getClient().getItemManager().setOpaque(getRawId(), (short) getRawData(), opaque);
+		return this;
 	}
 
 	public int getLightLevel() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Spoutcraft.getClient().getItemManager().getLightLevel(getRawId(), (short) getRawData());
 	}
 
 	public Block setLightLevel(int level) {
-		// TODO Auto-generated method stub
-		return null;
+		Spoutcraft.getClient().getItemManager().setLightLevel(getRawId(), (short) getRawData(), level);
+		return this;
 	}
 }
