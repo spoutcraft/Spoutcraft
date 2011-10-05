@@ -42,6 +42,8 @@ public class WidgetType {
 	public static WidgetType OverlayScreen = new WidgetType(GenericOverlayScreen.class, 16);
 	public static WidgetType HungerBar = new WidgetType(HungerBar.class, 17);
 	public static WidgetType ExpBar = new WidgetType(ExpBar.class, 18);
+	public static WidgetType CheckBox = new WidgetType(GenericCheckBox.class, 19);
+	public static WidgetType RadioButton = new WidgetType(GenericRadioButton.class, 20);
 
 	private final int id;
 	private final boolean client;
