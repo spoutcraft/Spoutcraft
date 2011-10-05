@@ -22,7 +22,7 @@ public class Color implements Animatable {
 	private short red;
 	private short green;
 	private short blue;
-	private short alpha = 0;
+	private short alpha = 255;
 
 	public Color(float r, float g, float b) {
 		setRed(r);
@@ -88,6 +88,22 @@ public class Color implements Animatable {
 	public short getAlphaB() {
 		return alpha;
 	}
+	
+	public int getRedI() {
+		return (int)red;
+	}
+	
+	public int getGreenI() {
+		return (int)green;
+	}
+	
+	public int getBlueI() {
+		return (int)blue;
+	}
+	
+	public int getAlphaI() {
+		return (int)alpha;
+	}
 
 	public Color setRed(float r) {
 		red = (short) (r * 255);
@@ -134,7 +150,7 @@ public class Color implements Animatable {
 	}
 
 	public int toInt() {
-		return (getAlphaB() & 0xFF) << 24 | (getRedB() & 0xFF) << 16 | (getGreenB() & 0xFF) << 8 | (getBlueB() & 0xFF);
+		return (getAlphaI() & 0xFF) << 24 | (getRedI() & 0xFF) << 16 | (getGreenI() & 0xFF) << 8 | (getBlueI() & 0xFF);
 	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {

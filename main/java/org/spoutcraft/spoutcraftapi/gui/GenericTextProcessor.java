@@ -34,8 +34,8 @@ public class GenericTextProcessor implements TextProcessor {
 	protected static final String STR_SPACE = String.valueOf(CHAR_SPACE);
 	protected static final String STR_NEWLINE = String.valueOf(CHAR_NEWLINE);
 
-	protected int charLimit = 0;
-	protected int lineLimit = 0;
+	protected int charLimit = 16;
+	protected int lineLimit = 1;
 	protected int width = 0;
 	protected int cursor = 0;
 	protected StringBuffer textBuffer = new StringBuffer();

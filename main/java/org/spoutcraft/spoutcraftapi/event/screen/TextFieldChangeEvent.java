@@ -29,7 +29,10 @@ public class TextFieldChangeEvent extends ScreenEvent<TextFieldChangeEvent>{
 	public TextFieldChangeEvent(Player player, Screen screen, TextField field, String newVal) {
 		super(player, screen, ScreenType.CUSTOM_SCREEN);
 		this.field = field;
-		this.oldVal = field.getText();
+		if(field != null)
+			this.oldVal = field.getText();
+		else 
+			this.oldVal = "";
 		this.newVal = newVal;
 	}
 	
