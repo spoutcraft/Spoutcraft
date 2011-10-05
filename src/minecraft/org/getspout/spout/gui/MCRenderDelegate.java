@@ -468,7 +468,6 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 		}
 	}
-	String basePath = "/Users/tux/Entwicklung/Minecraft/mcp44";
 	
 	public void render(GenericCheckBox checkBox) {
 		if(checkBox.isVisible()){
@@ -508,11 +507,11 @@ public class MCRenderDelegate implements RenderDelegate {
 	Texture checkBoxCross;
 	
 	private void loadTextures(){
-		 defaultBox = CustomTextureManager.getTextureFromPath(basePath+"/res/boxNormal.png");
-		 hoverBox = CustomTextureManager.getTextureFromPath(basePath+"/res/boxHover.png");
-		 disabledBox = CustomTextureManager.getTextureFromPath(basePath+"/res/boxDisabled.png");
-		 radio = CustomTextureManager.getTextureFromPath(basePath+"/res/radio.png");
-		 checkBoxCross = CustomTextureManager.getTextureFromPath(basePath+"/res/check.png");
+		 defaultBox = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
+		 hoverBox = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
+		 disabledBox = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
+		 radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
+		 checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 	}
 	
 	protected void renderBaseBox(Control box) {
