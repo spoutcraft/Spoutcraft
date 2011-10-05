@@ -31,6 +31,7 @@ import net.minecraft.src.WorldClient;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.PacketDecompressionThread;
+import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.entity.CraftEntity;
@@ -180,6 +181,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		FileUtil.deleteTempDirectory();
 		CustomTextureManager.resetTextures();
 		CRCManager.clear();
+		SpoutcraftChunk.loadedChunks.clear();
 		if (clipboardThread != null) {
 			clipboardThread.interrupt();
 			clipboardThread = null;
@@ -202,6 +204,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
+		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
 	}
 	

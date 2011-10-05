@@ -51,6 +51,7 @@ public class Chunk {
 	public SpoutcraftChunk spoutChunk;
 	int grassColorCache = -1;
 	int waterColorCache = -1;
+	
 	//Spout end
 
 	public Chunk(World var1, int var2, int var3) {
@@ -653,7 +654,11 @@ public class Chunk {
 		for(int var1 = 0; var1 < this.entities.length; ++var1) {
 			this.worldObj.addLoadedEntities(this.entities[var1]);
 		}
-
+		
+		//Spout start
+		//note: onChunkLoad is only called in SP
+		SpoutcraftChunk.loadedChunks.add(spoutChunk);
+		//Spout end
 	}
 
 	public void onChunkUnload() {
@@ -668,7 +673,9 @@ public class Chunk {
 		for(int var3 = 0; var3 < this.entities.length; ++var3) {
 			this.worldObj.unloadEntities(this.entities[var3]);
 		}
-
+		//Spout start
+		SpoutcraftChunk.loadedChunks.remove(spoutChunk);
+		//Spout end
 	}
 
 	public void setChunkModified() {

@@ -20,8 +20,11 @@ import gnu.trove.map.hash.TIntFloatHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
@@ -30,6 +33,8 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import com.google.common.collect.MapMaker;
 
 public class SpoutcraftChunk implements Chunk{
+	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
+	
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private net.minecraft.src.World world;
 	private final Map<Integer, Block> cache = new MapMaker().softValues().makeMap();
@@ -55,19 +60,19 @@ public class SpoutcraftChunk implements Chunk{
 	}
 	
 	public Block getBlockAt(int x, int y, int z) {
-        int pos = (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
-        Block block = this.cache.get(pos);
-        if (block == null) {
-            Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0x7F, (getZ() << 4) | (z & 0xF));
-            Block oldBlock = this.cache.put(pos, newBlock);
-            if (oldBlock == null) {
-                block = newBlock;
-            } else {
-                block = oldBlock;
-            }
-        }
-        return block;
-    }
+		int pos = (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
+		Block block = this.cache.get(pos);
+		if (block == null) {
+			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0x7F, (getZ() << 4) | (z & 0xF));
+			Block oldBlock = this.cache.put(pos, newBlock);
+			if (oldBlock == null) {
+				block = newBlock;
+			} else {
+				block = oldBlock;
+			}
+		}
+		return block;
+	}
 
 	public World getWorld() {
 		return world.world;
@@ -94,22 +99,50 @@ public class SpoutcraftChunk implements Chunk{
 	}
 
 	public boolean unload() {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().unloadChunk(getX(), getX());
 	}
 
 	public boolean unload(boolean save) {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().unloadChunk(getX(), getZ(), save);
 	}
 
 	public boolean unload(boolean save, boolean safe) {
-		// TODO Auto-generated method stub
-		return false;
+		return getWorld().unloadChunk(getX(), getZ(), save, safe);
 	}
 
 	public Entity[] getEntities() {
-		// TODO Auto-generated method stub
-		return null;
+		int count = 0, index = 0;
+		net.minecraft.src.Chunk chunk = getHandle();
+		for (int i = 0; i < 8; i++) {
+			count += chunk.entities[i].size();
+		}
+
+		Entity[] entities = new Entity[count];
+		for (int i = 0; i < 8; i++) {
+			for (Object obj: chunk.entities[i].toArray()) {
+				if (!(obj instanceof net.minecraft.src.Entity)) {
+					continue;
+				}
+				entities[index++] = ((net.minecraft.src.Entity) obj).spoutEntity;
+			}
+		}
+		return entities;
 	}
+	
+	public int hashCode() {
+		return new HashCodeBuilder().append(x).append(z).hashCode();
+	}
+	
+	public boolean equals(Object obj) {
+		if (obj instanceof SpoutcraftChunk) {
+			SpoutcraftChunk other = (SpoutcraftChunk)obj;
+			return x == other.x && z == other.z;
+		}
+		return false;
+	}
+	
+	public String toString() {
+		return "SpoutcraftChunk (" + x + ", " + z +") ";
+	}
+	
 }

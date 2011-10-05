@@ -348,16 +348,26 @@ public class ChatManager {
 					return true;
 				}
 			}
+			else if (command.equals("/?") || command.startsWith("/client help")) {
+				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Spoutcraft Client Debug Commands:");
+				SpoutClient.getHandle().ingameGUI.addChatMessage("/client gc - run the garbage collector");
+				return true;
+			}
 			else if (command.startsWith("/client gc")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Starting Garbage Collection...");
 				long start = System.currentTimeMillis();
-				int i = 1;
-				while ((System.currentTimeMillis() - start) < 50) {
+				long mem = Runtime.getRuntime().freeMemory();
+				long time = 250;
+				if (command.split(" ").length > 2) {
+					try {
+						time = Long.parseLong(command.split(" ")[2]);
+					} catch(Exception ignore) {}
+				}
+				while ((System.currentTimeMillis() - start) < time) {
 					System.gc();
-					System.out.println("Garbage Collect Pass: " + i);
-					i++;
 				}
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Garbage Collection Complete!");
+				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + (Runtime.getRuntime().freeMemory() - mem) / (1024D * 1024D) + " mb of memory freed");
 				return true;
 			}
 		}

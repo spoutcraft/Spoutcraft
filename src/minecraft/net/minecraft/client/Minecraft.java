@@ -108,6 +108,8 @@ import org.lwjgl.util.glu.GLU;
 
 //Spout Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
+
+import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
@@ -1187,6 +1189,14 @@ public abstract class Minecraft implements Runnable {
 			while(this.isMultiplayerWorld() && this.gameSettings.keyBindChat.isPressed()) {
 				this.displayGuiScreen(new GuiChat());
 			}
+			
+			//Spout start
+			//Open chat in SP with debug key
+			if (!isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_GRAVE) {
+				this.displayGuiScreen(new GuiChat());
+				thePlayer.sendChatMessage(ChatColor.RED + "Debug Console Opened");
+			}
+			//Spout end
 
 			if(this.thePlayer.func_35196_Z()) {
 				if(!this.gameSettings.keyBindUseItem.pressed) {

@@ -1,15 +1,14 @@
 package org.getspout.spout;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
-import net.minecraft.src.WorldProvider;
-import net.minecraft.src.WorldProviderHell;
-import net.minecraft.src.WorldProviderSky;
-
+import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
@@ -84,8 +83,13 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Chunk[] getLoadedChunks() {
-		//TODO: Auto-generated method stub
-		return null;
+		Set<SpoutcraftChunk> chunks = SpoutcraftChunk.loadedChunks;
+		Chunk[] loaded = new Chunk[chunks.size()];
+		Iterator<SpoutcraftChunk> j = chunks.iterator();
+		for (int i = 0; i < chunks.size(); i++){
+			loaded[i] = j.next();
+		}
+		return loaded;
 	}
 
 	public int getMaxHeight() {
