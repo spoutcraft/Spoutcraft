@@ -30,6 +30,7 @@ import net.minecraft.src.WorldClient;
 
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
+import org.getspout.spout.PacketDecompressionThread;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.entity.CraftEntity;
@@ -164,6 +165,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void onTick() {
 		tick++;
 		FileDownloadThread.getInstance().onTick();
+		PacketDecompressionThread.onTick();
 		player.getMainScreen().onTick();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
@@ -183,6 +185,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread = null;
 		}
 		Minecraft.theMinecraft.sndManager.stopMusic();
+		PacketDecompressionThread.endThread();
 	}
 	
 	public void onWorldEnter() {
@@ -199,6 +202,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
+		PacketDecompressionThread.startThread();
 	}
 	
 	public static Minecraft getHandle() {

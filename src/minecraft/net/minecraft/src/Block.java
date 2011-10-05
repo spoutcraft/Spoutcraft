@@ -244,8 +244,8 @@ public class Block {
 	public static final Block stairsStoneBrickSmooth = (new BlockStairs(109, stoneBrick)).setBlockName("stairsStoneBrickSmooth").setRequiresSelfNotify();
 	public int blockIndexInTexture;
 	public final int blockID;
-	protected float blockHardness;
-	protected float blockResistance;
+	public float blockHardness; //Spout protected->public
+	public float blockResistance; //Spout protected->public
 	protected boolean blockConstructorCalled;
 	protected boolean enableStats;
 	public double minX;

@@ -32,7 +32,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketCacheFile implements SpoutPacket {
+public class PacketCacheFile implements CompressablePacket {
 	private String plugin;
 	private byte[] fileData;
 	private String fileName;
@@ -77,6 +77,10 @@ public class PacketCacheFile implements SpoutPacket {
 		}
 	}
 	
+	public boolean isCompressed() {
+		return compressed;
+	}
+	
 	public void decompress() {
 		if (compressed) {
 			Inflater decompressor = new Inflater();
@@ -116,7 +120,6 @@ public class PacketCacheFile implements SpoutPacket {
 		int size = input.readInt();
 		this.fileData = new byte[size];
 		input.readFully(this.fileData);
-		decompress(); //TODO move this to another thread?
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {

@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.getspout.spout.PacketDecompressionThread;
 import org.getspout.spout.client.SpoutClient;
 
 import net.minecraft.src.Packet;
@@ -123,14 +124,19 @@ public class CustomPacket extends Packet{
 	public void processPacket(NetHandler netHandler) {
 		if(packet != null) {
 			if (success) {
-				try {
-					packet.run(SpoutClient.getHandle().thePlayer.entityId);
+				if (packet instanceof CompressablePacket) {
+					PacketDecompressionThread.add((CompressablePacket)packet);
 				}
-				catch (Exception e) {
-					System.out.println("------------------------");
-					System.out.println("Unexpected Exception: " + packet.getPacketType());
-					e.printStackTrace();
-					System.out.println("------------------------");
+				else {
+					try {
+						packet.run(SpoutClient.getHandle().thePlayer.entityId);
+					}
+					catch (Exception e) {
+						System.out.println("------------------------");
+						System.out.println("Unexpected Exception: " + packet.getPacketType());
+						e.printStackTrace();
+						System.out.println("------------------------");
+					}
 				}
 			}
 			else {
