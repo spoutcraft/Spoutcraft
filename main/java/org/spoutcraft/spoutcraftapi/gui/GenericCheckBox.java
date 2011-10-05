@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
 public class GenericCheckBox extends GenericButton implements CheckBox {
 
