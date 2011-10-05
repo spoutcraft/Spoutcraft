@@ -141,7 +141,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				shortcuts.add(sh);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			shortcuts = new ArrayList<Shortcut>();
 		}
 		updateShortcuts();
 	}
