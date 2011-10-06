@@ -106,8 +106,12 @@ public class CustomTextureManager {
 			}
 			catch (Exception e) { }
 			if (texture == null) {
-				System.out.println("Error loading texture: " + path);
-				return null;
+				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../.."+ path);
+				if(texture == null) {
+					System.out.println("Error loading texture: " + path);
+					return null;
+				}
+				return texture;
 			}
 			textures.put(path, texture);
 		}
