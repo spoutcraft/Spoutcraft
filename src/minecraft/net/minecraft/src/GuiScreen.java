@@ -530,7 +530,7 @@ public class GuiScreen extends Gui {
 					break;
 				}
 			}
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
 		}
 		
 		public synchronized void delay() {
