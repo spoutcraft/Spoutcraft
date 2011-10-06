@@ -365,18 +365,22 @@ public class GuiScreen extends Gui {
 		}
 		
 		if(!tooltip.equals("")) {
-			GL11.glPushMatrix();
-			int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
-			int offsetX = 0;
-			if(x + tooltipWidth + 2 > screen.getWidth()){
-				offsetX = -tooltipWidth - 11;
-			}
-			x += 6;
-			y -= 6;
-			this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 + 3, -1073741824, -1073741824);
-			this.fontRenderer.drawStringWithShadow(tooltip, x + offsetX, y, -1);
-			GL11.glPopMatrix();
+			drawTooltip(tooltip, x, y);
 		}
+	}
+	
+	protected void drawTooltip(String tooltip, int x, int y) {
+		GL11.glPushMatrix();
+		int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
+		int offsetX = 0;
+		if(x + tooltipWidth + 2 > screen.getWidth()){
+			offsetX = -tooltipWidth - 11;
+		}
+		x += 6;
+		y -= 6;
+		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 + 3, -1073741824, -1073741824);
+		this.fontRenderer.drawStringWithShadow(tooltip, x + offsetX, y, -1);
+		GL11.glPopMatrix();
 	}
 	
 	protected boolean isInBoundingRect(Widget widget, int x, int y) {
@@ -384,6 +388,17 @@ public class GuiScreen extends Gui {
 		int top = (int) widget.getScreenY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
+		int right = left+width;
+		int bottom = top+height;
+		if(left <= x && x < right && top <= y && y < bottom){
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean isInBoundingRect(int widgetX, int widgetY, int height, int width, int x, int y) {
+		int left = widgetX;
+		int top = widgetY;
 		int right = left+width;
 		int bottom = top+height;
 		if(left <= x && x < right && top <= y && y < bottom){
