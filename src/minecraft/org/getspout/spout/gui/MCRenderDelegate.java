@@ -23,6 +23,7 @@ import net.minecraft.src.Tessellator;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
@@ -103,17 +104,13 @@ public class MCRenderDelegate implements RenderDelegate {
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
 			GL11.glScalef((float) button.getWidth() / width, (float) button.getHeight() / 20f, 1);
 
-			double mouseX = button.getScreen().getMouseX();
-			double mouseY = button.getScreen().getMouseY();
-
-			boolean hovering = mouseX >= button.getScreenX() && mouseY >= button.getScreenY() && mouseX < button.getScreenX() + button.getWidth() && mouseY < button.getScreenY() + button.getHeight();
-			int hoverState = getHoverState(button, hovering);
+			int hoverState = getHoverState(button, isHovering(button));
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			Color color = button.getTextColor();
 			if (!button.isEnabled()) {
 				color = button.getDisabledColor();
-			} else if (hovering) {
+			} else if (isHovering(button)) {
 				color = button.getHoverColor();
 			}
 			int left = (int) 5;
@@ -135,6 +132,14 @@ public class MCRenderDelegate implements RenderDelegate {
 			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
 			GL11.glPopMatrix();
 		}
+	}
+	
+	protected boolean isHovering(Widget widget) {
+		double mouseX = widget.getScreen().getMouseX();
+		double mouseY = widget.getScreen().getMouseY();
+
+		boolean hovering = mouseX >= widget.getScreenX() && mouseY >= widget.getScreenY() && mouseX < widget.getScreenX() + widget.getWidth() && mouseY < widget.getScreenY() + widget.getHeight();
+		return hovering;
 	}
 
 	protected int getHoverState(Control control, boolean hover) {
@@ -331,23 +336,8 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void render(GenericTexture texture) {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getPlugin(), texture.getUrl());
 		if (textureBinding != null) {
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glDepthMask(false);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			Tessellator tessellator = Tessellator.instance;
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, texture.getHeight(), -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(texture.getWidth(), texture.getHeight(), -90, textureBinding.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(texture.getWidth(), 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
-			tessellator.draw();
-			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight());
 		}
 	}
 
@@ -477,5 +467,105 @@ public class MCRenderDelegate implements RenderDelegate {
 				}
 			}
 		}
+	}
+	
+	public void render(GenericCheckBox checkBox) {
+		if(checkBox.isVisible()){
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
+			renderBaseBox(checkBox);
+			FontRenderer font = SpoutClient.getHandle().fontRenderer;
+			Color color = getColor(checkBox);
+			if(!checkBox.isChecked()) {
+				color.setAlpha(0.2F);
+			}
+			drawTexture(checkBoxCross, 20, 20, color);
+			font.drawString(checkBox.getText(), 22, 7, getColor(checkBox).toInt());
+		}
+	}
+	
+	
+	
+	public void render(GenericRadioButton radioButton) {
+		if(radioButton.isVisible()) {
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef((float) radioButton.getScreenX(), (float) radioButton.getScreenY(), 0);
+			renderBaseBox(radioButton);
+			FontRenderer font = SpoutClient.getHandle().fontRenderer;
+			Color color = getColor(radioButton);
+			if(!radioButton.isSelected()){
+				color.setAlpha(0.2F);
+			}
+			drawTexture(radio, 20, 20, color);
+			font.drawString(radioButton.getText(), 22, 7, getColor(radioButton).toInt());
+		}
+	}
+	Texture radio;
+	Texture defaultBox;
+	Texture hoverBox;
+	Texture disabledBox;
+	Texture checkBoxCross;
+	
+	private void loadTextures(){
+		 defaultBox = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
+		 hoverBox = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
+		 disabledBox = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
+		 radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
+		 checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
+	}
+	
+	protected void renderBaseBox(Control box) {
+		if(defaultBox == null)
+			loadTextures();
+		Texture usedTexture = null;
+		if(box.isEnabled() && isHovering(box)) {
+			usedTexture = hoverBox;
+		} else if(box.isEnabled()) {
+			usedTexture = defaultBox;
+		} else {
+			usedTexture = disabledBox;
+		}
+		drawTexture(usedTexture, 20, 20);
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height, Color color) {
+		if(textureBinding == null) return;
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDepthMask(false);
+		bindColor(color);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(0.0D, height, -90, 0.0D, 0.0D); // draw corners
+		tessellator.addVertexWithUV(width, height, -90, textureBinding.getWidth(), 0.0D);
+		tessellator.addVertexWithUV(width, 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
+		tessellator.draw();
+		GL11.glDepthMask(true);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPopMatrix();
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
+	}
+	
+	protected Color getColor(Button c) {
+		if(c.isEnabled() && isHovering(c)){
+			return c.getHoverColor().clone();
+		}else if(c.isEnabled()) {
+			return c.getColor().clone();
+		} else {
+			return c.getDisabledColor().clone();
+		}
+	}
+	
+	protected void bindColor(Color c) {
+		GL11.glColor4f(c.getRedF(), c.getGreenF(), c.getBlueF(), c.getAlphaF());
 	}
 }

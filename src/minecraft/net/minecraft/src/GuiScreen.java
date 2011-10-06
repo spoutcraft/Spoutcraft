@@ -5,7 +5,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentSkipListMap; //Spout
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.Gui;
@@ -16,6 +15,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 //Spout Start
+import java.util.IdentityHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
@@ -24,7 +25,6 @@ import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.*;
-
 //Spout End
 
 public class GuiScreen extends Gui {
@@ -48,6 +48,8 @@ public class GuiScreen extends Gui {
 		}
 		return null;
 	}
+	
+	protected IdentityHashMap<TextField, ScheduledTextFieldUpdate> scheduledTextFieldUpdates = new IdentityHashMap<TextField, ScheduledTextFieldUpdate>();
 	//Spout End
 	
 	public void drawScreenPre(int x, int y, float z) {
@@ -112,11 +114,7 @@ public class GuiScreen extends Gui {
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
-							this.buttonClicked((Button)control);
-							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-							ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
-							((Button) control).onButtonClick(event);
-							SpoutClient.getInstance().getAddonManager().callEvent(event);
+							handleButtonClick((Button)control);
 						}
 						else if (control instanceof Slider) {
 							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
@@ -132,6 +130,22 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
+	private void handleButtonClick(Button control) {
+		this.buttonClicked((Button)control);
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
+		((Button) control).onButtonClick(event);
+		SpoutClient.getInstance().getAddonManager().callEvent(event);
+		if(control instanceof CheckBox) {
+			CheckBox check = (CheckBox)control;
+			check.setChecked(!check.isChecked());
+		}
+		if(control instanceof RadioButton) {
+			RadioButton radio = (RadioButton)control;
+			radio.setSelected(true);
+		}
+	}
+
 	protected void mouseClicked(int var1, int var2, int var3) {
 		if(var3 == 0) {
 			for(int var4 = 0; var4 < this.controlList.size(); ++var4) {
@@ -258,10 +272,22 @@ public class GuiScreen extends Gui {
 					// pass typed key to text processor
 					else if (tf.isEnabled() && tf.isFocus()) {
 						if (tf.getTextProcessor().handleInput(Keyboard.getEventCharacter(), Keyboard.getEventKey())) {
-							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, tf, tf.getText(), tf.getCursorPosition()));
 							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance(getPlayer(), screen, tf, tf.getText());
 							tf.onTextFieldChange(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
+							ScheduledTextFieldUpdate updateThread = null;
+							if (scheduledTextFieldUpdates.containsKey(tf)) {
+								updateThread =  scheduledTextFieldUpdates.get(tf);
+								if (updateThread.isAlive())
+									updateThread.delay();
+								else
+									updateThread.start();
+							}
+							else {
+								updateThread = new ScheduledTextFieldUpdate(screen, tf);
+								scheduledTextFieldUpdates.put(tf, updateThread);
+								updateThread.start();
+							}
 						}
 						handled = true;
 						break;
@@ -480,5 +506,48 @@ public class GuiScreen extends Gui {
 	}
 	
 	protected void buttonClicked(Button btn){}
+
+	private class ScheduledTextFieldUpdate implements Runnable {
+		private static final long DELAY_TIME = 500;
+		private static final long SLEEP_TIME = 125;
+		private TextField textField;
+		private Screen screen;
+		private long sendTime;
+		private Thread thread;
+		
+		public ScheduledTextFieldUpdate(Screen screen, TextField textField) {
+			this.textField = textField;
+			this.screen = screen;
+		}
+		
+		public void run() {
+			delay();
+			while (!expired()) {
+				try {
+					Thread.sleep(SLEEP_TIME);
+				}
+				catch (InterruptedException e) {
+					break;
+				}
+			}
+			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+		}
+		
+		public synchronized void delay() {
+			sendTime = System.currentTimeMillis() + DELAY_TIME;
+		}
+		
+		public synchronized boolean expired() {
+			return sendTime <= System.currentTimeMillis();
+		}
+		
+		public synchronized void start() {
+			(thread = new Thread(this)).start();
+		}
+		
+		public synchronized boolean isAlive() {
+			return thread.isAlive();
+		}
+	}
 	//Spout End
 }
