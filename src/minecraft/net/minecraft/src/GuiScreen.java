@@ -391,18 +391,22 @@ public class GuiScreen extends Gui {
 		}
 		
 		if(!tooltip.equals("")) {
-			GL11.glPushMatrix();
-			int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
-			int offsetX = 0;
-			if(x + tooltipWidth + 2 > screen.getWidth()){
-				offsetX = -tooltipWidth - 11;
-			}
-			x += 6;
-			y -= 6;
-			this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 + 3, -1073741824, -1073741824);
-			this.fontRenderer.drawStringWithShadow(tooltip, x + offsetX, y, -1);
-			GL11.glPopMatrix();
+			drawTooltip(tooltip, x, y);
 		}
+	}
+	
+	protected void drawTooltip(String tooltip, int x, int y) {
+		GL11.glPushMatrix();
+		int tooltipWidth = this.fontRenderer.getStringWidth(tooltip);
+		int offsetX = 0;
+		if(x + tooltipWidth + 2 > screen.getWidth()){
+			offsetX = -tooltipWidth - 11;
+		}
+		x += 6;
+		y -= 6;
+		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 + 3, -1073741824, -1073741824);
+		this.fontRenderer.drawStringWithShadow(tooltip, x + offsetX, y, -1);
+		GL11.glPopMatrix();
 	}
 	
 	protected boolean isInBoundingRect(Widget widget, int x, int y) {
@@ -416,6 +420,77 @@ public class GuiScreen extends Gui {
 			return true;
 		}
 		return false;
+	}
+	
+	protected boolean isInBoundingRect(int widgetX, int widgetY, int height, int width, int x, int y) {
+		int left = widgetX;
+		int top = widgetY;
+		int right = left+width;
+		int bottom = top+height;
+		if(left <= x && x < right && top <= y && y < bottom){
+			return true;
+		}
+		return false;
+	}
+	
+	public void onTextFieldTyped(TextField textField, char key, int keyId) {
+		boolean dirty = false;
+		try {
+			if(textField.isEnabled() && textField.isFocus()) {
+				if(key == 22) {
+					String clipboard = GuiScreen.getClipboardString();
+					if(clipboard == null) {
+						clipboard = "";
+					}
+
+					int max = 32 - textField.getText().length();
+					if(max > clipboard.length()) {
+						max = clipboard.length();
+					}
+
+					if(max > 0) {
+						textField.setText(textField.getText() + clipboard.substring(0, max));
+						dirty = true;
+					}
+				}
+				if (keyId == Keyboard.KEY_RIGHT && textField.getCursorPosition() < textField.getText().length()) {
+					textField.setCursorPosition(textField.getCursorPosition() + 1);
+					dirty = true;
+				}
+				else if (keyId == Keyboard.KEY_LEFT && textField.getCursorPosition() > 0) {
+					textField.setCursorPosition(textField.getCursorPosition() - 1);
+					dirty = true;
+				}
+				else if (keyId == Keyboard.KEY_DELETE && textField.getCursorPosition() > 0 && textField.getCursorPosition() < textField.getText().length()) {
+					textField.setText(textField.getText().substring(0, textField.getCursorPosition()) + textField.getText().substring(textField.getCursorPosition() + 1));
+					dirty = true;
+				}
+				else if(keyId == Keyboard.KEY_BACK && textField.getText().length() > 0 && textField.getCursorPosition() > 0) {
+					textField.setText(textField.getText().substring(0, textField.getCursorPosition() - 1) + textField.getText().substring(textField.getCursorPosition()));
+					textField.setCursorPosition(textField.getCursorPosition() - 1);
+					dirty = true;
+				}
+				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (textField.getText().length() < textField.getMaximumCharacters() || textField.getMaximumCharacters() == 0)) {
+					String newText = "";
+					if (textField.getCursorPosition() > 0) {
+						newText += textField.getText().substring(0, textField.getCursorPosition());
+					}
+					newText += key;
+					if (textField.getCursorPosition() < textField.getText().length()) {
+						newText += textField.getText().substring(textField.getCursorPosition());
+					}
+					textField.setText(newText);
+					textField.setCursorPosition(textField.getCursorPosition() + 1);
+					dirty = true;
+				}
+				if (dirty) {
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Screen getScreen() {
