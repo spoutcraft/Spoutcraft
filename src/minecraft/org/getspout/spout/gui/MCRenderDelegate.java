@@ -327,7 +327,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
 		}
 
-		boolean showCursor = textField.isEnabled() && textField.isFocus() && ((Spoutcraft.getClient().getTick() & 0x20) > 0 || shouldRenderCursor);
+		boolean showCursor = textField.isEnabled() && textField.isFocus() && shouldRenderCursor;
 		if (showCursor) {
 			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}

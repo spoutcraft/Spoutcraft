@@ -455,7 +455,8 @@ public class GuiScreen extends Gui {
 					break;
 				}
 			}
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new CustomPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition())));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
+			System.out.println("Sent changes.");
 		}
 		
 		public synchronized void delay() {
@@ -468,6 +469,7 @@ public class GuiScreen extends Gui {
 		
 		public synchronized void start() {
 			(thread = new Thread(this)).start();
+			System.out.println("Started updating textfield");
 		}
 		
 		public synchronized boolean isAlive() {
