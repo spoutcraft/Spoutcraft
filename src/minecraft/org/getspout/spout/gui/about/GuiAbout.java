@@ -36,7 +36,7 @@ public class GuiAbout extends GuiScreen {
 	@Override
 	public void initGui() {
 		this.controlList.clear();
-		controlList.add(new GuiButton(1, this.width / 2 - 45, this.height - 25, 100, 20, "Main Menu"));
+		controlList.add(new GuiButton(1, this.width / 2 - 50, this.height - 25, 100, 20, "Main Menu"));
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class GuiAbout extends GuiScreen {
 		super.handleMouseInput();
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
-			setScrolled(getScrolled() + (scroll / (SCROLL_FACTOR * SCREEN_SIZE)));
+			setScrolled(getScrolled() - (scroll / (SCROLL_FACTOR * SCREEN_SIZE)));
 		}
 	}
 	
@@ -237,7 +237,7 @@ public class GuiAbout extends GuiScreen {
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPushMatrix();
-		GL11.glTranslatef((0.0075f * this.width), (this.height - 45), 0);
+		GL11.glTranslatef((0.0075f * this.width), (this.height - 40), 0);
 		GL11.glScalef(0.4f, 0.4f, 0.4f);
 		this.drawTexturedModalRect(0, 0, 0, 0, 155, 44);
 		this.drawTexturedModalRect(155, 0, 0, 45, 155, 44);
@@ -249,7 +249,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((this.width - 120), (this.height - 45), 0); // moves texture into place
+			GL11.glTranslatef((this.width - 132), (this.height - 45), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, spoutcraftTexture.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -272,7 +272,7 @@ public class GuiAbout extends GuiScreen {
 		drawString(this.fontRenderer, SpoutClient.getClientVersion().toString(), (int)(this.width - 44), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width - 120), this.height - 10, 0x808080);
 		
-		getControlList().get(0).xPosition = this.width / 2 - 45;
+		getControlList().get(0).xPosition = this.width / 2 - 50;
 		getControlList().get(0).yPosition = this.height - 25;
 		getControlList().get(0).drawButton(this.mc, x, y);
 		//super.drawScreen(x, x, z);
