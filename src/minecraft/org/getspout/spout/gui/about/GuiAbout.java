@@ -249,7 +249,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((this.width - 120), (this.height - 45), 0); // moves texture into place
+			GL11.glTranslatef((this.width - 135), (this.height - 45), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, spoutcraftTexture.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
