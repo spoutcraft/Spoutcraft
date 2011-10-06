@@ -4,8 +4,11 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -62,8 +65,6 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.lwjgl.input.Mouse;
-//Spout End
 
 public class RenderGlobal implements IWorldAccess {
 
@@ -71,6 +72,7 @@ public class RenderGlobal implements IWorldAccess {
 	private World worldObj;
 	private RenderEngine renderEngine;
 	private List worldRenderersToUpdate = new ArrayList();
+	private Set<WorldRenderer> worldRenderersToUpdateSet = new HashSet<WorldRenderer>(); //Spout added, for fast .contains calls
 	private WorldRenderer[] sortedWorldRenderers;
 	public WorldRenderer[] worldRenderers; //Spout private -> public
 	private int renderChunksWide;
@@ -297,6 +299,7 @@ public class RenderGlobal implements IWorldAccess {
 		this.worldObj = newWorld;
 		tileEntities.clear();
 		worldRenderersToUpdate.clear();
+		worldRenderersToUpdateSet.clear();
 		allRenderLists = new RenderList[]{new RenderList(), new RenderList(), new RenderList(), new RenderList()};
 		glRenderLists.clear();
 		if(newWorld != null) {
@@ -386,6 +389,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			this.worldRenderersToUpdate.clear();
+			worldRenderersToUpdateSet.clear(); //Spout added line
 			this.tileEntities.clear();
 
 			for(var4 = 0; var4 < this.renderChunksWide; ++var4) {
@@ -551,6 +555,7 @@ public class RenderGlobal implements IWorldAccess {
 					var14.setPosition(var7, var13, var10);
 					if(!var15 && var14.needsUpdate) {
 						this.worldRenderersToUpdate.add(var14);
+						worldRenderersToUpdateSet.add(var14); //Spout
 					}
 				}
 			}
@@ -571,8 +576,9 @@ public class RenderGlobal implements IWorldAccess {
 		for(int var5 = 0; var5 < 10; ++var5) {
 			this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
 			WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
-			if(var6.needsUpdate && !this.worldRenderersToUpdate.contains(var6)) {
+			if(var6.needsUpdate && !this.worldRenderersToUpdateSet.contains(var6)) { //Spout use worldRenderersToUpdateSet instead of worldRenderersToUpdate for contains
 				this.worldRenderersToUpdate.add(var6);
+				worldRenderersToUpdateSet.add(var6); //Spout
 			}
 		}
 		}
@@ -1584,6 +1590,7 @@ public class RenderGlobal implements IWorldAccess {
 					WorldRenderer var20 = this.worldRenderers[var19];
 					if(!var20.needsUpdate) {
 						this.worldRenderersToUpdate.add(var20);
+						worldRenderersToUpdateSet.add(var20); //Spout
 						var20.markDirty();
 					}
 				}
@@ -1738,6 +1745,7 @@ public class RenderGlobal implements IWorldAccess {
 			for(int var1 = 0; var1 < this.worldRenderers.length; ++var1) {
 				if(/*this.worldRenderers[var1].isChunkLit && */!this.worldRenderers[var1].needsUpdate) {
 					this.worldRenderersToUpdate.add(this.worldRenderers[var1]);
+					worldRenderersToUpdateSet.add(this.worldRenderers[var1]); //Spout
 					this.worldRenderers[var1].markDirty();
 				}
 			}

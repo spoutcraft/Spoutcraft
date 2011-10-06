@@ -62,11 +62,13 @@ public class FileDownloadThread extends Thread{
 	}
 	
 	public void onTick() {
-		Iterator<Runnable> i = actions.iterator();
-		while(i.hasNext()) {
-			Runnable action = i.next();
-			action.run();
-			i.remove();
+		if (!actions.isEmpty()) {
+			Iterator<Runnable> i = actions.iterator();
+			while(i.hasNext()) {
+				Runnable action = i.next();
+				action.run();
+				i.remove();
+			}
 		}
 	}
 	
