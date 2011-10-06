@@ -272,7 +272,13 @@ public class World implements IBlockAccess {
 		this.isNewWorld = this.worldInfo == null;
 		if(var4 != null) {
 			this.worldProvider = var4;
-		} else if(this.worldInfo != null && this.worldInfo.getDimension() == -1) {
+		} 
+		//Spout start
+		else if (!GuiCreateWorld.normalWorld) {
+			worldProvider = WorldProvider.getProviderForDimension(1); //Skylands
+		}
+		//Spout end
+		else if(this.worldInfo != null && this.worldInfo.getDimension() == -1) {
 			this.worldProvider = WorldProvider.getProviderForDimension(-1);
 		} else {
 			this.worldProvider = WorldProvider.getProviderForDimension(0);
