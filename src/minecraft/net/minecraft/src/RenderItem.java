@@ -180,7 +180,10 @@ public class RenderItem extends Render {
 		Boolean bCustomTexture = false;
 		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var3, var4);
 		if (blockType != null) {
-			var2.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());
+			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL());
+			if (customTextureBinding != null){
+				var2.bindTexture(customTextureBinding.getTextureID());
+			}
 		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			var2.bindTexture(CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture).getTextureID());
