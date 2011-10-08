@@ -33,7 +33,10 @@ public interface Screen extends Widget {
 	 * @param widget to attach
 	 * @return screen
 	 */
+	@Deprecated
 	public Screen attachWidget(Widget widget);
+	
+	public Screen attachWidget(String plugin, Widget widget);
 
 	/**
 	 * Removes a widget from this screen
