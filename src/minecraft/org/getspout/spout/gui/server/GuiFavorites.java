@@ -170,20 +170,20 @@ public class GuiFavorites extends GuiScreen {
 					}
 					break;
 				case ADD_SERVER:
-					SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, "", ""));
+					SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, "", "", 0));
 					break;
 				case PUBLIC_SERVER_LIST:
 					SpoutClient.getHandle().displayGuiScreen(new GuiMultiplayer(this));
 					break;
 				case EDIT_SERVER:
 					if (selectedWorld > -1) {
-						serverName = ((ServerSlot)serverList.get(selectedWorld)).name;
+						ServerSlot slot = (ServerSlot)this.serverList.get(selectedWorld);
+						serverName = slot.name;
 						if(serverName != null) {
-							String ip = (((ServerSlot)this.serverList.get(selectedWorld)).ip + ((ServerSlot)this.serverList.get(selectedWorld)).port);
+							String ip = slot.ip + ":" + slot.port;
 							deleting = true;
 							deleteWorld(true, selectedWorld);
-							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, ip, true));
-							
+							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, ip, slot.uniqueid, true));
 						}
 					}
 					break;
@@ -220,13 +220,19 @@ public class GuiFavorites extends GuiScreen {
 	public void selectWorld(int index) {
 		if (index > -1) {
 			try {
-				String info[] = ((ServerSlot)this.serverList.get(index)).name.split(":");
+				String info[] = ((ServerSlot)this.serverList.get(index)).ip.split(":");
 				String ip = info[0];
 				int port = info.length > 1 ? Integer.parseInt(info[1]) : 25565;
 				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), ip, port));
 			}
 			catch (Exception e) { }
 		}
+	}
+	
+	public void elementInfo(int id) {
+		ServerSlot info = (ServerSlot)this.serverList.get(id);
+		System.out.println("id: " + info.uniqueid);
+		//SpoutClient.getHandle().displayGuiScreen(screen);
 	}
 
 	public void deleteWorld(boolean var1, int var2) {
@@ -239,7 +245,7 @@ public class GuiFavorites extends GuiScreen {
 				while(var3.hasNext()) {
 					ServerSlot var4 = (ServerSlot)var3.next();
 					if(var2 != var4.ID) {
-						GuiFavorites.writeFav(var4.name, var4.ip);
+						GuiFavorites.writeFav(var4.name, var4.ip, var4.uniqueid);
 					}
 				}
 
@@ -260,7 +266,7 @@ public class GuiFavorites extends GuiScreen {
 
 			while(var1.hasNext()) {
 				ServerSlot var2 = (ServerSlot)var1.next();
-				GuiFavorites.writeFav(var2.name, var2.ip);
+				GuiFavorites.writeFav(var2.name, var2.ip, var2.uniqueid);
 			}
 
 			--this.selectedWorld;
@@ -278,7 +284,7 @@ public class GuiFavorites extends GuiScreen {
 
 			while(var1.hasNext()) {
 				ServerSlot var2 = (ServerSlot)var1.next();
-				GuiFavorites.writeFav(var2.name, var2.ip);
+				GuiFavorites.writeFav(var2.name, var2.ip, var2.uniqueid);
 			}
 
 			++this.selectedWorld;
@@ -298,8 +304,13 @@ public class GuiFavorites extends GuiScreen {
 				String[] serverData = line.split(">");
 				if (serverData.length == 2) {
 					slot = this.setServer(serverSlot, slot, serverData[0], serverData[1]);
-					this.serverList.add(slot);
+				} else if (serverData.length == 3) {
+					slot = this.setServer(serverSlot, slot, serverData[0], serverData[1]);
+					slot.uniqueid = Integer.parseInt(serverData[2]);
+				} else {
+					continue;
 				}
+				this.serverList.add(slot);
 			}
 
 			data.close();
@@ -332,10 +343,10 @@ public class GuiFavorites extends GuiScreen {
 		return var0;
 	}
 
-	public static void writeFav(String name, String ip) {
+	public static void writeFav(String name, String ip, int uid) {
 		try {
 			FileWriter writer = new FileWriter(getFavoriteServerFile(), true);
-			writer.write(ip + ">" + name + "\n");;
+			writer.write(ip + ">" + name + ">" + uid + "\n");
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -512,6 +523,10 @@ public class GuiFavorites extends GuiScreen {
 	
 	public static void updateServerNBT(GuiFavorites var0, ServerSlot var1) throws IOException {
 		var0.func_35328_b(var1);
+	}
+	
+	public static void onElementInfo(GuiFavorites var0, int var1) {
+		var0.elementInfo(var1);
 	}
 	
 	public static File getFavoriteServerFile() {

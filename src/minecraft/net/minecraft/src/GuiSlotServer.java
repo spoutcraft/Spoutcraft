@@ -2,14 +2,17 @@ package net.minecraft.src;
 
 import net.minecraft.src.GuiMultiplayer;
 import net.minecraft.src.GuiSlot;
-import net.minecraft.src.ServerNBTStorage;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.ThreadPollServers;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 import org.getspout.spout.gui.server.ServerSlot;
+import org.getspout.spout.io.CustomTextureManager;
 
-class GuiSlotServer extends GuiSlot {
+public class GuiSlotServer extends GuiSlot {
 
+	public static Texture serverInfoTexture = CustomTextureManager.getTextureFromJar("/res/info.png");
+	
 	// $FF: synthetic field
 	final GuiMultiplayer field_35410_a;
 
@@ -23,6 +26,11 @@ class GuiSlotServer extends GuiSlot {
 		return GuiMultiplayer.getSize(this.field_35410_a).size();
 	}
 
+	@Override
+	protected void elementInfo(int var1) {
+		GuiMultiplayer.onElementInfo(this.field_35410_a, var1);
+	}
+	
 	protected void elementClicked(int var1, boolean var2) {
 		GuiMultiplayer.onElementSelected(this.field_35410_a, var1);
 		boolean var3 = GuiMultiplayer.getSelectedWorld(this.field_35410_a) >= 0 && GuiMultiplayer.getSelectedWorld(this.field_35410_a) < this.getSize();
@@ -64,6 +72,28 @@ class GuiSlotServer extends GuiSlot {
 		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.status, var2 + 215 - this.field_35410_a.fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
 		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.ip + ":" + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		GL11.glPushMatrix();
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDepthMask(false);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glTranslatef(var2 + 220, var3, 0); // moves texture into place
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, serverInfoTexture.getTextureID());
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(0.0D, 13, -90, 0.0D, 0.0D); // draw corners
+		tessellator.addVertexWithUV(10, 13, -90, serverInfoTexture.getWidth(), 0.0D);
+		tessellator.addVertexWithUV(10, 0.0D, -90, serverInfoTexture.getWidth(), serverInfoTexture.getHeight());
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, serverInfoTexture.getHeight());
+		tessellator.draw();
+		GL11.glDepthMask(true);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPopMatrix();
+		
 		this.field_35410_a.mc.renderEngine.bindTexture(this.field_35410_a.mc.renderEngine.getTexture("/gui/icons.png"));
 		boolean var7 = false;
 		boolean var8 = false;

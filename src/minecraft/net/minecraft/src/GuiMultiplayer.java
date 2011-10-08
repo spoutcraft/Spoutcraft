@@ -107,7 +107,9 @@ public class GuiMultiplayer extends GuiScreen {
 				} else if(var1.id == 3) {
 					this.getServer();
 				} else if(var1.id == 4) {
-					this.mc.displayGuiScreen(new GuiAddFav(this, ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).ip + ":" + ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).port, ((ServerSlot)this.serverInfo.serverList.get(this.selectedWorld)).name));
+					ServerSlot slot = (ServerSlot)this.serverInfo.serverList.get(this.selectedWorld);
+					GuiAddFav gui = new GuiAddFav(this, (slot.ip + ":" + slot.port), slot.name, slot.uniqueid);
+					this.mc.displayGuiScreen(gui);
 				} else if(var1.id == 0) {
 					this.mc.displayGuiScreen(new GuiMainMenu());
 				} else if(var1.id == 8) {
@@ -159,6 +161,14 @@ public class GuiMultiplayer extends GuiScreen {
 	public void selectWorld(int id) {
 		synchronized(serverInfo) {
 			this.mc.displayGuiScreen(new GuiConnecting(this.mc, ((ServerSlot)this.serverInfo.serverList.get(id)).ip, ((ServerSlot)this.serverInfo.serverList.get(id)).port == ""?25565:Integer.parseInt(((ServerSlot)this.serverInfo.serverList.get(id)).port)));
+		}
+	}
+	
+	public void elementInfo(int id) {
+		synchronized(serverInfo) {
+			ServerSlot info = (ServerSlot)this.serverInfo.serverList.get(id);
+			System.out.println("id: " + info.uniqueid);
+			//this.mc.displayGuiScreen(screen);
 		}
 	}
 
@@ -322,6 +332,10 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public static int onElementSelected(GuiMultiplayer var0, int var1) {
 		return var0.selectedWorld = var1;
+	}
+	
+	public static void onElementInfo(GuiMultiplayer var0, int var1) {
+		var0.elementInfo(var1);
 	}
 
 	public static int getSelectedWorld(GuiMultiplayer var0) {

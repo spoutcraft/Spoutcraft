@@ -29,19 +29,22 @@ public class GuiAddFav extends GuiScreen {
 	private final String name;
 	private final String ip;
 	private boolean rename;
+	public int uid = 0;
 
 
-	public GuiAddFav(GuiScreen screen, String name, String ip) {
+	public GuiAddFav(GuiScreen screen, String name, String ip, int uid) {
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;
+		this.uid = uid;
 		this.rename = false;
 	}
 	
-	public GuiAddFav(GuiScreen screen, String name, String ip, boolean rename) {
+	public GuiAddFav(GuiScreen screen, String name, String ip, int uid, boolean rename) {
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;
+		this.uid = uid;
 		this.rename = rename;
 	}
 
@@ -73,12 +76,12 @@ public class GuiAddFav extends GuiScreen {
 		if(button.enabled) {
 			if(button.id == 1) {
 				if (rename) {
-					GuiFavorites.writeFav(name, ip);
+					GuiFavorites.writeFav(name, ip, uid);
 				}
 				this.mc.displayGuiScreen(this.screen);
 			}
 			else if(button.id == 0) {
-				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText());
+				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText(), uid);
 				this.mc.displayGuiScreen(this.screen);
 			}
 

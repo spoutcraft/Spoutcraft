@@ -25,7 +25,6 @@ public class GuiFavoritesSlot extends GuiSlot {
 
 	public final GuiFavorites parentServerGui;
 
-
 	public GuiFavoritesSlot(GuiFavorites var1) {
 		super(SpoutClient.getHandle(), var1.width, var1.height, 22, var1.height - 77, 36);
 		this.parentServerGui = var1;
@@ -35,6 +34,11 @@ public class GuiFavoritesSlot extends GuiSlot {
 		return GuiFavorites.getSize(this.parentServerGui).size();
 	}
 
+	@Override
+	protected void elementInfo(int var1) {
+		GuiFavorites.onElementInfo(this.parentServerGui, var1);
+	}
+	
 	public void elementClicked(int var1, boolean var2) {
 		GuiFavorites.onElementSelected(this.parentServerGui, var1);
 		boolean var3 = GuiFavorites.getSelectedWorld(this.parentServerGui) >= 0 && GuiFavorites.getSelectedWorld(this.parentServerGui) < this.getSize();
@@ -78,6 +82,30 @@ public class GuiFavoritesSlot extends GuiSlot {
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.status, var2 + 215 - SpoutClient.getHandle().fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.ip + ":" + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		if (var6.uniqueid > 0) {
+			GL11.glPushMatrix();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef(var2 + 220, var3, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, GuiSlotServer.serverInfoTexture.getTextureID());
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(0.0D, 13, -90, 0.0D, 0.0D); // draw corners
+			tessellator.addVertexWithUV(10, 13, -90, GuiSlotServer.serverInfoTexture.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(10, 0.0D, -90, GuiSlotServer.serverInfoTexture.getWidth(), GuiSlotServer.serverInfoTexture.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, GuiSlotServer.serverInfoTexture.getHeight());
+			tessellator.draw();
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glPopMatrix();
+		}
+		
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
 		boolean var7 = false;
 		boolean var8 = false;

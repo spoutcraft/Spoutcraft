@@ -58,6 +58,8 @@ public abstract class GuiSlot {
 	protected abstract int getSize();
 
 	protected abstract void elementClicked(int var1, boolean var2);
+	
+	protected void elementInfo(int var1) {};
 
 	protected abstract boolean isSelected(int var1);
 
@@ -124,7 +126,7 @@ public abstract class GuiSlot {
 		this.field_35408_l = var2;
 		this.drawBackground();
 		int var4 = this.getSize();
-		int var5 = this.width / 2 + 124;
+		int var5 = this.width / 2 + 130;
 		int var6 = var5 + 6;
 		int var9;
 		int var10;
@@ -137,8 +139,14 @@ public abstract class GuiSlot {
 				if(var2 >= this.top && var2 <= this.bottom) {
 					int var8 = this.width / 2 - 110;
 					var9 = this.width / 2 + 110;
+					int var8i = this.width / 2 + 111;
+					int var9i = this.width / 2 + 122;
 					var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
 					var11 = var10 / this.slotHeight;
+					int info_top = var2 - ((var11 * slotHeight) + this.top + this.field_27261_r - (int)this.amountScrolled + 4);
+					if(var1 >= var8i && var1 <= var9i && var11 >= 0 && var10 >= 0 && var11 < var4 && info_top < 13) {
+						elementInfo(var11);
+					}
 					if(var1 >= var8 && var1 <= var9 && var11 >= 0 && var10 >= 0 && var11 < var4) {
 						boolean var12 = var11 == this.selectedElement && System.currentTimeMillis() - this.lastClicked < 250L;
 						this.elementClicked(var11, var12);

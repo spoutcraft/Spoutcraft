@@ -19,6 +19,7 @@ package org.getspout.spout.gui.server;
 public class ServerSlot implements Comparable {
 
 	public int ID = 0;
+	public int uniqueid = 0;
 	public String ip = "";
 	public String port = "";
 	public String name = "";

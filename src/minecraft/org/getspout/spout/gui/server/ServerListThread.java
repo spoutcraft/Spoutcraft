@@ -61,14 +61,11 @@ public class ServerListThread implements Runnable {
 			}
 			String[] text = line.split("\\{");
 
-			for(int i = 0; i < text.length; ++i) {
-				if (text[i].contains("[Private]")) {
-					text[i].replace("[Private]","");
-				}
+			for(int i = 1; i < text.length; ++i) {
 				text[i].replaceAll("'","");
 				ServerSlot slot = new ServerSlot(i);
 				String[] var8 = text[i].split("\\,");
-
+				
 				for(int var9 = 0; var9 < var8.length; ++var9) {
 					var1 = var8[var9].split("\\:");
 
@@ -123,12 +120,11 @@ public class ServerListThread implements Runnable {
 
 	private ServerSlot setServer(int var1, String[] var2, ServerSlot var3) {
 		if(var2.length >= 2) {
-			if(var2[0].equalsIgnoreCase("ServerAddress")) {
+			if(var2[0].equalsIgnoreCase("ip")) {
 				var3.ip = var2[1];
-				if(var2.length == 3) {
-					var3.port = "" + var2[2];
-				}
-			} else if(var2[0].equalsIgnoreCase("ServerName")) {
+			} else if(var2[0].equalsIgnoreCase("port")) {
+				var3.port = var2[1];
+			} else if(var2[0].equalsIgnoreCase("name")) {
 				var3.name = var2[1];
 				while (var3.name.contains("0027")) {
 					var3.name = var3.name.substring(0, var3.name.indexOf("0027") - 2) + "'" +  var3.name.substring(var3.name.indexOf("0027") + 4);
@@ -151,12 +147,14 @@ public class ServerListThread implements Runnable {
 				if(var3.name.length() > 41) {
 					var3.name = var3.name.substring(0, 41) + "...";
 				}
-			} else if(var2[0].equalsIgnoreCase("ServerPlayers")) {
+			} else if(var2[0].equalsIgnoreCase("players")) {
 				var3.players = Integer.parseInt(var2[1]);
-			} else if(var2[0].equalsIgnoreCase("ServerMaxPlayers")) {
+			} else if(var2[0].equalsIgnoreCase("maxplayers")) {
 				var3.maxPlayers = Integer.parseInt(var2[1]);
-			} else if(var2[0].equalsIgnoreCase("CountryName")) {
+			} else if(var2[0].equalsIgnoreCase("country")) {
 				var3.country = var2[1];
+			} else if (var2[0].equalsIgnoreCase("uniqueid")) {
+				var3.uniqueid = Integer.parseInt(var2[1]);
 			}
 		}
 
