@@ -185,7 +185,7 @@ public abstract class GuiSlot {
 		} else {
 			this.initialClickY = -1.0F;
 		}
-
+		
 		this.bindAmountScrolled();
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
@@ -205,7 +205,7 @@ public abstract class GuiSlot {
 		if(this.field_27262_q) {
 			this.func_27260_a(var9, var10, var16);
 		}
-
+		
 		int var14;
 		for(var11 = 0; var11 < var4; ++var11) {
 			var18 = var10 + var11 * this.slotHeight + this.field_27261_r;
@@ -306,7 +306,7 @@ public abstract class GuiSlot {
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
 
-	private void overlayBackground(int var1, int var2, int var3, int var4) {	
+	private void overlayBackground(int var1, int var2, int var3, int var4) {
 		GL11.glPushMatrix(); //Spout
 		Tessellator var5 = Tessellator.instance;
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));

@@ -5,21 +5,23 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import org.getspout.spout.gui.server.GuiFavorites;
+import org.getspout.spout.gui.server.GuiFavoritesSlot;
 import org.getspout.spout.gui.server.ServerSlot;
 
 import net.minecraft.src.GuiMultiplayer;
 import net.minecraft.src.GuiSlotServer;
 import net.minecraft.src.ServerNBTStorage;
 
-class ThreadPollServers extends Thread {
+public class ThreadPollServers extends Thread {
 
 	// $FF: synthetic field
 	final ServerSlot field_35601_a;
 	// $FF: synthetic field
-	final GuiSlotServer field_35600_b;
+	final GuiSlot field_35600_b;
 
 
-	ThreadPollServers(GuiSlotServer var1, ServerSlot var2) {
+	public ThreadPollServers(GuiSlot var1, ServerSlot var2) {
 		this.field_35600_b = var1;
 		this.field_35601_a = var2;
 	}
@@ -36,7 +38,11 @@ class ThreadPollServers extends Thread {
 								var27 = true;
 								this.field_35601_a.msg = "\u00a78Polling..";
 								long var1 = System.nanoTime();
-								GuiMultiplayer.updateServerNBT(this.field_35600_b.field_35410_a, this.field_35601_a);
+								if (this.field_35600_b instanceof GuiSlotServer) {
+									GuiMultiplayer.updateServerNBT(((GuiSlotServer) this.field_35600_b).field_35410_a, this.field_35601_a);
+								} else if (this.field_35600_b instanceof GuiFavoritesSlot) {
+									GuiFavorites.updateServerNBT(((GuiFavoritesSlot) this.field_35600_b).parentServerGui, this.field_35601_a);
+								}
 								long var3 = System.nanoTime();
 								this.field_35601_a.ping = (var3 - var1) / 1000000L;
 								var27 = false;

@@ -17,12 +17,13 @@
 package org.getspout.spout.gui.server;
 
 import org.getspout.spout.client.SpoutClient;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.*;
 
 public class GuiFavoritesSlot extends GuiSlot {
 
-	final GuiFavorites parentServerGui;
+	public final GuiFavorites parentServerGui;
 
 
 	public GuiFavoritesSlot(GuiFavorites var1) {
@@ -60,14 +61,65 @@ public class GuiFavoritesSlot extends GuiSlot {
 	}
 
 	public void drawSlot(int var1, int var2, int var3, int var4, Tessellator var5) {
-		String var6 = ((ServerSlot)this.parentServerGui.serverList.get(var1)).name;
-		if(var6 == null || MathHelper.stringNullOrLengthZero(var6)) {
-			var6 = GuiFavorites.func_22087_f(this.parentServerGui) + " " + "";
+		ServerSlot var6 = (ServerSlot)GuiFavorites.getSize(this.parentServerGui).get(var1);
+		synchronized(GuiMultiplayer.getSyncObject()) {
+			if(GuiMultiplayer.getPingLimit() < 5 && !var6.pinging) {
+				var6.pinging = true;
+				var6.ping = -2L;
+				var6.msg = "";
+				var6.status = "";
+				GuiMultiplayer.incrementPingLimit();
+				(new ThreadPollServers(this, var6)).start();
+			}
+		}
+		
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.name, var2 + 2, var3 + 1, 16777215);
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.msg, var2 + 2, var3 + 12, 8421504);
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.status, var2 + 215 - SpoutClient.getHandle().fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.ip + ":" + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
+		boolean var7 = false;
+		boolean var8 = false;
+		String var9 = "";
+		byte var12;
+		int var13;
+		if(var6.pinging && var6.ping != -2L) {
+			var12 = 0;
+			var8 = false;
+			if(var6.ping < 0L) {
+				var13 = 5;
+			} else if(var6.ping < 150L) {
+				var13 = 0;
+			} else if(var6.ping < 300L) {
+				var13 = 1;
+			} else if(var6.ping < 600L) {
+				var13 = 2;
+			} else if(var6.ping < 1000L) {
+				var13 = 3;
+			} else {
+				var13 = 4;
+			}
+
+			if(var6.ping < 0L) {
+				var9 = "(no connection)";
+			} else {
+				var9 = var6.ping + "ms";
+			}
+		} else {
+			var12 = 1;
+			var13 = (int)(System.currentTimeMillis() / 100L + (long)(var1 * 2) & 7L);
+			if(var13 > 4) {
+				var13 = 8 - var13;
+			}
+
+			var9 = "Polling..";
 		}
 
-		String var7 = "";
-		var7 = ((ServerSlot)this.parentServerGui.serverList.get(var1)).ip;
-		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var7, var2 + 2, var3 + 1, 16777215);
-		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6, var2 + 2, var3 + 12, 8421504);
+		this.parentServerGui.drawTexturedModalRect(var2 + 205, var3, 0 + var12 * 10, 176 + var13 * 8, 10, 8);
+		byte var10 = 4;
+		if(this.field_35409_k >= var2 + 205 - var10 && this.field_35408_l >= var3 - var10 && this.field_35409_k <= var2 + 205 + 10 + var10 && this.field_35408_l <= var3 + 8 + var10) {
+			GuiFavorites.tooltip(this.parentServerGui, var9);
+		}
 	}
 }

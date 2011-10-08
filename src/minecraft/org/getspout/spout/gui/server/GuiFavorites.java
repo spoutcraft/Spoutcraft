@@ -18,11 +18,14 @@ package org.getspout.spout.gui.server;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,6 +65,7 @@ public class GuiFavorites extends GuiScreen {
 	private static final int ARROW_DOWN = 6;
 	private static final int MAIN_MENU = 7;
 	private static final int QUICK_JOIN = 8;
+	private String tooltip = null;
 
 
 	public GuiFavorites(GuiScreen var1) {
@@ -306,13 +310,13 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public ServerSlot setServer(int var1, ServerSlot var2, String ip, String name) {
-		String[] var5 = ip.split(":");
+		String[] var5 = name.split(":");
 		if(var5.length >= 2) {
 			var2.port = var5[1];
 		}
 
 		var2.ip = var5[0];
-		var2.name = name;
+		var2.name = ip;
 		return var2;
 	}
 
@@ -352,14 +356,112 @@ public class GuiFavorites extends GuiScreen {
 		}
 
 	}
+	
+	private int parseIntWithDefault(String var1, int var2) {
+		try {
+			return Integer.parseInt(var1.trim());
+		} catch (Exception var4) {
+			return var2;
+		}
+	}
 
+	private void func_35328_b(ServerSlot var1) throws IOException {
+		String var2 = var1.ip + ":" + var1.port;
+		String[] var3 = var2.split(":");
+		if(var2.startsWith("[")) {
+			int var4 = var2.indexOf("]");
+			if(var4 > 0) {
+				String var5 = var2.substring(1, var4);
+				String var6 = var2.substring(var4 + 1).trim();
+				if(var6.startsWith(":") && var6.length() > 0) {
+					var6 = var6.substring(1);
+					var3 = new String[]{var5, var6};
+				} else {
+					var3 = new String[]{var5};
+				}
+			}
+		}
+
+		if(var3.length > 2) {
+			var3 = new String[]{var2};
+		}
+
+		String var29 = var3[0];
+		int var30 = var3.length > 1?this.parseIntWithDefault(var3[1], 25565):25565;
+		Socket var31 = null;
+		DataInputStream var7 = null;
+		DataOutputStream var8 = null;
+
+		try {
+			var31 = new Socket();
+			var31.setSoTimeout(3000);
+			var31.setTcpNoDelay(true);
+			var31.setTrafficClass(18);
+			var31.connect(new InetSocketAddress(var29, var30), 3000);
+			var7 = new DataInputStream(var31.getInputStream());
+			var8 = new DataOutputStream(var31.getOutputStream());
+			var8.write(254);
+			if(var7.read() != 255) {
+				throw new IOException("Bad message");
+			}
+
+			String var9 = Packet.readString(var7, 64);
+			char[] var10 = var9.toCharArray();
+
+			int var11;
+			for(var11 = 0; var11 < var10.length; ++var11) {
+				if(var10[var11] != 167 && ChatAllowedCharacters.allowedCharacters.indexOf(var10[var11]) < 0) {
+					var10[var11] = 63;
+				}
+			}
+
+			var9 = new String(var10);
+			var3 = var9.split("\u00a7");
+			var9 = var3[0];
+			var11 = -1;
+			int var12 = -1;
+
+			try {
+				var11 = Integer.parseInt(var3[1]);
+				var12 = Integer.parseInt(var3[2]);
+			} catch (Exception var27) { }
+
+			var1.msg = "\u00a77" + var9;
+			if(var11 >= 0 && var12 > 0) {
+				var1.status = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
+			} else {
+				var1.status = "\u00a78???";
+			}
+		} finally {
+			try {
+				if(var7 != null) {
+					var7.close();
+				}
+			} catch (Throwable var26) { }
+			try {
+				if(var8 != null) {
+					var8.close();
+				}
+			} catch (Throwable var25) { }
+			try {
+				if(var31 != null) {
+					var31.close();
+				}
+			} catch (Throwable var24) { }
+		}
+	}
+	
 	public void drawScreen(int var1, int var2, float var3) {
+		this.tooltip = null;
 		buttonRename.enabled = buttonDelete.enabled;
 		this.worldSlotContainer.drawScreen(var1, var2, var3);
 		this.drawCenteredString(SpoutClient.getHandle().fontRenderer, "Favorite Servers", this.width / 2, 5, 16777215);
 		quickJoinText.drawTextBox();
 		if (quickJoinText.getText().isEmpty() && !quickJoinText.isFocused) {
 			this.drawString(SpoutClient.getHandle().fontRenderer, "Quick Join: ", this.width / 2 - 196, height - 64, 5263440);
+		}
+		if(this.tooltip != null) {
+			this.drawTooltip(this.tooltip, var1, var2);
 		}
 		super.drawScreen(var1, var2, var3);
 	}
@@ -408,6 +510,10 @@ public class GuiFavorites extends GuiScreen {
 		return screen.field_22097_p;
 	}
 	
+	public static void updateServerNBT(GuiFavorites var0, ServerSlot var1) throws IOException {
+		var0.func_35328_b(var1);
+	}
+	
 	public static File getFavoriteServerFile() {
 		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
 		if (!favorites.exists()) {
@@ -417,5 +523,9 @@ public class GuiFavorites extends GuiScreen {
 			catch (IOException io) {io.printStackTrace();}
 		}
 		return favorites;
+	}
+	
+	public static void tooltip(GuiFavorites var0, String message) {
+		var0.tooltip = message;
 	}
 }
