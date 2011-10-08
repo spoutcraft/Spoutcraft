@@ -1,5 +1,10 @@
 package net.minecraft.src;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,14 +17,16 @@ import org.getspout.spout.gui.server.*;
 
 public class GuiMultiplayer extends GuiScreen {
 
+	private static int pinglimit = 0;
 	public static final String version = "1.8.1";
+	private static Object synchronize = new Object();
 	public final ServerListInfo serverInfo = new ServerListInfo();
 	public String indexString = "";
 	private final DateFormat dateFormatter = new SimpleDateFormat();
 	protected GuiScreen parentScreen;
 	protected String screenTitle = "Select server";
 	private int selectedWorld;
-	private GuiServerSlot worldSlotContainer;
+	private GuiSlotServer worldSlotContainer;
 	private String field_22098_o;
 	private String field_22097_p;
 	private GuiButton buttonSelect;
@@ -31,6 +38,8 @@ public class GuiMultiplayer extends GuiScreen {
 	private GuiButton buttonNextPage;
 	private GuiButton buttonPrevPage;
 	private boolean first = true;
+	private ServerNBTStorage field_35349_w = null;
+	private String tooltip = null;
 
 
 	public GuiMultiplayer(GuiScreen var1) {
@@ -46,7 +55,7 @@ public class GuiMultiplayer extends GuiScreen {
 		this.field_22098_o = var1.translateKey("Unknown");
 		this.field_22097_p = var1.translateKey("aaa");
 		this.loadSaves();
-		this.worldSlotContainer = new GuiServerSlot(this);
+		this.worldSlotContainer = new GuiSlotServer(this);
 		this.worldSlotContainer.registerScrollButtons(this.controlList, 4, 5);
 		this.initButtons();
 	}
@@ -182,18 +191,126 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public void drawScreen(int x, int y, float z) {
 		synchronized(serverInfo) {
+			this.tooltip = null;
 			this.worldSlotContainer.drawScreen(x, y, z);
 			this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
 			this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 86, 5263440);
 			this.drawCenteredString(this.fontRenderer, indexString , this.width / 2, this.height - 71, 5263440);
 			this.drawString(this.fontRenderer, "Displaying " + this.serverInfo.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverInfo.serverList.size() + " servers") - 2, 20, 5263440);
 			this.drawString(this.fontRenderer, "Status: " + this.serverInfo.status, 2, 20, 5263440);
+			if(this.tooltip != null) {
+				this.drawTooltip(this.tooltip, x, y);
+			}
 		}
 		super.drawScreen(x, y, z);
 	}
+	
+	protected void drawTooltip(String var1, int var2, int var3) {
+		if(var1 != null) {
+			int var4 = var2 + 12;
+			int var5 = var3 - 12;
+			int var6 = this.fontRenderer.getStringWidth(var1);
+			this.drawGradientRect(var4 - 3, var5 - 3, var4 + var6 + 3, var5 + 8 + 3, -1073741824, -1073741824);
+			this.fontRenderer.drawStringWithShadow(var1, var4, var5, -1);
+		}
+	}
+	
+	private int parseIntWithDefault(String var1, int var2) {
+		try {
+			return Integer.parseInt(var1.trim());
+		} catch (Exception var4) {
+			return var2;
+		}
+	}
+	
+	private void func_35328_b(ServerSlot var1) throws IOException {
+		String var2 = var1.ip + ":" + var1.port;
+		String[] var3 = var2.split(":");
+		if(var2.startsWith("[")) {
+			int var4 = var2.indexOf("]");
+			if(var4 > 0) {
+				String var5 = var2.substring(1, var4);
+				String var6 = var2.substring(var4 + 1).trim();
+				if(var6.startsWith(":") && var6.length() > 0) {
+					var6 = var6.substring(1);
+					var3 = new String[]{var5, var6};
+				} else {
+					var3 = new String[]{var5};
+				}
+			}
+		}
+
+		if(var3.length > 2) {
+			var3 = new String[]{var2};
+		}
+
+		String var29 = var3[0];
+		int var30 = var3.length > 1?this.parseIntWithDefault(var3[1], 25565):25565;
+		Socket var31 = null;
+		DataInputStream var7 = null;
+		DataOutputStream var8 = null;
+
+		try {
+			var31 = new Socket();
+			var31.setSoTimeout(3000);
+			var31.setTcpNoDelay(true);
+			var31.setTrafficClass(18);
+			var31.connect(new InetSocketAddress(var29, var30), 3000);
+			var7 = new DataInputStream(var31.getInputStream());
+			var8 = new DataOutputStream(var31.getOutputStream());
+			var8.write(254);
+			if(var7.read() != 255) {
+				throw new IOException("Bad message");
+			}
+
+			String var9 = Packet.readString(var7, 64);
+			char[] var10 = var9.toCharArray();
+
+			int var11;
+			for(var11 = 0; var11 < var10.length; ++var11) {
+				if(var10[var11] != 167 && ChatAllowedCharacters.allowedCharacters.indexOf(var10[var11]) < 0) {
+					var10[var11] = 63;
+				}
+			}
+
+			var9 = new String(var10);
+			var3 = var9.split("\u00a7");
+			var9 = var3[0];
+			var11 = -1;
+			int var12 = -1;
+
+			try {
+				var11 = Integer.parseInt(var3[1]);
+				var12 = Integer.parseInt(var3[2]);
+			} catch (Exception var27) { }
+
+			var1.msg = "\u00a77" + var9;
+			if(var11 >= 0 && var12 > 0) {
+				var1.status = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
+			} else {
+				var1.status = "\u00a78???";
+			}
+		} finally {
+			try {
+				if(var7 != null) {
+					var7.close();
+				}
+			} catch (Throwable var26) { }
+			try {
+				if(var8 != null) {
+					var8.close();
+				}
+			} catch (Throwable var25) { }
+			try {
+				if(var31 != null) {
+					var31.close();
+				}
+			} catch (Throwable var24) { }
+		}
+	}
 
 	public void getServer() {
-		ServerListThread serverList = new ServerListThread(this, "http://list.mcmyadmin.com/getdata.aspx?req=serverlist");
+		ServerListThread serverList = new ServerListThread(this, "http://thomasc.co.uk/Spout/texture/api.php?type=1");
 		serverList.init();
 	}
 
@@ -223,12 +340,40 @@ public class GuiMultiplayer extends GuiScreen {
 		return var0.field_22098_o;
 	}
 
+	public static void selectWorld(GuiMultiplayer var0, int var1) {
+		var0.selectWorld(var1);
+	}
+	
 	public static DateFormat getDateFormatter(GuiMultiplayer var0) {
 		return var0.dateFormatter;
+	}
+	
+	public static Object getSyncObject() {
+		return synchronize;
 	}
 
 	public static String func_22088_h(GuiMultiplayer var0) {
 		return var0.field_22097_p;
+	}
+	
+	public static int getPingLimit() {
+		return pinglimit;
+	}
+	
+	public static void incrementPingLimit() {
+		pinglimit++;
+	}
+	
+	public static void decrementPingLimit() {
+		pinglimit--;
+	}
+	
+	public static void updateServerNBT(GuiMultiplayer var0, ServerSlot var1) throws IOException {
+		var0.func_35328_b(var1);
+	}
+	
+	public static void tooltip(GuiMultiplayer var0, String message) {
+		var0.tooltip = message;
 	}
 
 }
