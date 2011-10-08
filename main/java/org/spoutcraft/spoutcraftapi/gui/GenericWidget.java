@@ -21,9 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.getspout.spoutapi.gui.Plugin;
-import org.getspout.spoutapi.gui.Screen;
-import org.getspout.spoutapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public abstract class GenericWidget implements Widget {
