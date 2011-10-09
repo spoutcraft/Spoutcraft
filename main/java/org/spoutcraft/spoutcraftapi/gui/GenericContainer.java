@@ -75,7 +75,6 @@ public class GenericContainer extends GenericWidget implements Container {
 		return this;
 	}
 
-	@Override
 	public Widget[] getChildren() {
 		Widget[] list = new Widget[children.size()];
 		children.toArray(list);

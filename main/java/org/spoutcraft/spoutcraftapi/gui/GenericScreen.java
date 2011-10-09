@@ -58,7 +58,6 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return attachWidget(null, widget);
 	}
 	
-	@Override
 	public Screen attachWidget(String plugin, Widget widget) {
 		widgets.put(widget, plugin);
 		widget.setPlugin(plugin);
