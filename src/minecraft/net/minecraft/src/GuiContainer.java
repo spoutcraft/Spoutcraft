@@ -84,12 +84,9 @@ public abstract class GuiContainer extends GuiScreen {
 		if(var13.getItemStack() == null && var6 != null && var6.getHasStack()) {
 			String var14 = ("" + StringTranslate.getInstance().translateNamedKey(var6.getStack().getItemName())).trim();
 			//Spout Start
-			String custom = SpoutClient.getInstance().getItemManager().getCustomItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+			String custom = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			if (custom != null) {
 				var14 = custom;
-			}
-			else if (var14 == null || var14.trim().isEmpty()) {
-				var14 = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
 			}
 			if(var14 != null && var14.length() > 0) {
 			//Spout End
