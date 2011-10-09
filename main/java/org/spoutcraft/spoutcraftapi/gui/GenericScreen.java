@@ -19,15 +19,14 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public abstract class GenericScreen extends GenericWidget implements Screen {
-	protected List<Widget> widgets = new ArrayList<Widget>();
+	protected HashMap<Widget, String> widgets = new HashMap<Widget, String>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
@@ -48,12 +47,19 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	public Widget[] getAttachedWidgets() {
 		Widget[] list = new Widget[widgets.size()];
-		widgets.toArray(list);
+		widgets.keySet().toArray(list);
 		return list;
 	}
 
+	@Deprecated
 	public Screen attachWidget(Widget widget) {
-		widgets.add(widget);
+		return attachWidget(null, widget);
+	}
+	
+	public Screen attachWidget(String plugin, Widget widget) {
+		widgets.put(widget, plugin);
+		widget.setPlugin(plugin);
+		widget.setDirty(true);
 		widget.setScreen(this);
 		return this;
 	}
@@ -63,30 +69,39 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		widget.setScreen(null);
 		return this;
 	}
-
+	
+	public Screen removeWidgets(String p) {
+		for (Widget i : getAttachedWidgets()) {
+			if (widgets.get(i) != null && widgets.get(i).equals(p)) {
+				removeWidget(i);
+			}
+		}
+		return this;
+	}
+	
 	public boolean containsWidget(Widget widget) {
 		return containsWidget(widget.getId());
 	}
-
+	
 	public boolean containsWidget(UUID id) {
 		return getWidget(id) != null;
 	}
-
+	
 	public Widget getWidget(UUID id) {
-		for (Widget w : widgets) {
+		for (Widget w : widgets.keySet()) {
 			if (w.getId().equals(id)) {
 				return w;
 			}
 		}
 		return null;
 	}
-
+	
 	public boolean updateWidget(Widget widget) {
-		int index = widgets.indexOf(widget);
-		if (index > -1) {
-			widgets.remove(index);
+		if (widgets.containsKey(widget)) {
+			String plugin = widgets.get(widget);
+			widgets.remove(widget);
+			widgets.put(widget, plugin);
 			widget.setScreen(this);
-			widgets.add(index, widget);
 			return true;
 		}
 		return false;
@@ -94,7 +109,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	@Override
 	public void onTick() {
-		for (Widget widget : widgets) {
+		for (Widget widget : widgets.keySet()) {
 			widget.onTick();
 		}
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
@@ -147,7 +162,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	public void render() {
 		for (RenderPriority priority : rvalues) {
-			for (Widget widget : widgets) {
+			for (Widget widget : widgets.keySet()) {
 				if (widget.getPriority() == priority && canRender(widget)) {
 					GL11.glPushMatrix();
 					widget.render();

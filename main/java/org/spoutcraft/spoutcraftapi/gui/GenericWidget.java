@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
  * 
- * Spoutcraft is free software: you can redistribute it and/or modify
+ * Spoutcraft API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft is distributed in the hope that it will be useful,
+ * Spoutcraft API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -24,8 +24,8 @@ import java.util.UUID;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public abstract class GenericWidget implements Widget {
-	protected int upperLeftX = 0;
-	protected int upperLeftY = 0;
+	protected int X = 0;
+	protected int Y = 0;
 	protected int width = 0;
 	protected int height = 0;
 	protected boolean visible = true;
@@ -36,6 +36,12 @@ public abstract class GenericWidget implements Widget {
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.SCALE;
 	protected String plugin = "Spoutcraft";
+	// Client side layout
+	protected Container container = null;
+	protected boolean fixed = false;
+	protected int marginTop = 0, marginRight = 0, marginBottom = 0, marginLeft = 0;
+	protected int minWidth = 0, maxWidth = 427, minHeight = 0, maxHeight = 240;
+	protected int orig_x = 0, orig_y = 0;
 
 	public GenericWidget() {
 
@@ -49,9 +55,9 @@ public abstract class GenericWidget implements Widget {
 		return 3;
 	}
 
-	public GenericWidget(int upperLeftX, int upperLeftY, int width, int height) {
-		this.upperLeftX = upperLeftX;
-		this.upperLeftY = upperLeftY;
+	public GenericWidget(int X, int Y, int width, int height) {
+		this.X = X;
+		this.Y = Y;
 		this.width = width;
 		this.height = height;
 	}
@@ -123,6 +129,17 @@ public abstract class GenericWidget implements Widget {
 		this.screen = screen;
 		return this;
 	}
+	
+	public Widget setScreen(String plugin, Screen screen) {
+		if (this.screen != null && screen != null && screen != this.screen) {
+			this.screen.removeWidget(this);
+		}
+		this.screen = screen;
+		if (plugin != null) {
+			this.plugin = plugin;
+		}
+		return this;
+	}
 
 	public RenderPriority getPriority() {
 		return priority;
@@ -160,15 +177,15 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public int getX() {
-		return upperLeftX;
+		return X;
 	}
 
 	public int getY() {
-		return upperLeftY;
+		return Y;
 	}
 
 	public double getScreenX() {
-		double left = upperLeftX * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
+		double left = X * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
 		switch (anchor) {
 			case TOP_CENTER:
 			case CENTER_CENTER:
@@ -185,7 +202,7 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public double getScreenY() {
-		double top = upperLeftY * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
+		double top = Y * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
 		switch (anchor) {
 			case CENTER_LEFT:
 			case CENTER_CENTER:
@@ -202,12 +219,12 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget setX(int pos) {
-		this.upperLeftX = pos;
+		this.X = pos;
 		return this;
 	}
 
 	public Widget setY(int pos) {
-		this.upperLeftY = pos;
+		this.Y = pos;
 		return this;
 	}
 
@@ -239,29 +256,201 @@ public abstract class GenericWidget implements Widget {
 	public boolean equals(Object other) {
 		return other instanceof Widget && other.hashCode() == hashCode();
 	}
-
+	
 	public void onTick() {
-
+		
+	}
+	
+	public Widget setTooltip(String t){
+		tooltip = t;
+		return this;
+	}
+	
+	public String getTooltip(){
+		return tooltip;
+	}
+	
+	public Container getContainer() {
+		return container;
+	}
+	
+	public void setContainer(Container container) {
+		if (this.container != null && container != null && container != this.container) {
+			this.container.removeChild(this);
+		}
+		this.container = container;
 	}
 
-	public Widget setTooltip(String tooltip) {
-		this.tooltip = tooltip;
+	public Widget setFixed(boolean fixed) {
+		if (this.fixed != fixed) {
+			this.fixed = fixed;
+			updateSize();
+		}
 		return this;
 	}
 
-	public String getTooltip() {
-		return tooltip;
+	public boolean isFixed() {
+		return fixed;
 	}
 
+	public Widget setMargin(int marginAll) {
+		return setMargin(marginAll, marginAll, marginAll, marginAll);
+	}
+	
+	public Widget setMargin(int marginTopBottom, int marginLeftRight) {
+		return setMargin(marginTopBottom, marginLeftRight, marginTopBottom, marginLeftRight);
+	}
+	
+	public Widget setMargin(int marginTop, int marginLeftRight, int marginBottom) {
+		return setMargin(marginTop, marginLeftRight, marginBottom, marginLeftRight);
+	}
+	
+	public Widget setMargin(int marginTop, int marginRight, int marginBottom, int marginLeft) {
+		if (this.marginTop != marginTop || this.marginRight != marginRight || this.marginBottom != marginBottom || this.marginLeft != marginLeft) {
+			this.marginTop = marginTop;
+			this.marginRight = marginRight;
+			this.marginBottom = marginBottom;
+			this.marginLeft = marginLeft;
+			updateSize();
+		}
+		return this;
+	}
+
+	public Widget setMarginTop(int marginTop) {
+		if (this.marginTop != marginTop) {
+			this.marginTop = marginTop;
+			updateSize();
+		}
+		return this;
+	}
+
+	public Widget setMarginRight(int marginRight) {
+		if (this.marginRight != marginRight) {
+			this.marginRight = marginRight;
+			updateSize();
+		}
+		return this;
+	}
+
+	public Widget setMarginBottom(int marginBottom) {
+		if (this.marginBottom != marginBottom) {
+			this.marginBottom = marginBottom;
+			updateSize();
+		}
+		return this;
+	}
+
+	public Widget setMarginLeft(int marginLeft) {
+		if (this.marginLeft != marginLeft) {
+			this.marginLeft = marginLeft;
+			updateSize();
+		}
+		return this;
+	}
+
+	public int getMarginTop() {
+		return marginTop;
+	}
+	
+	public int getMarginRight() {
+		return marginRight;
+	}
+	
+	public int getMarginBottom() {
+		return marginBottom;
+	}
+	
+	public int getMarginLeft() {
+		return marginLeft;
+	}
+
+	public Widget setMinWidth(int min) {
+		min = Math.max(min, 0);
+		if (minWidth != min) {
+			minWidth = min;
+			updateSize();
+			setWidth(width); // Enforce our new size if needed
+		}
+		return this;
+	}
+
+	public int getMinWidth() {
+		return minWidth;
+	}
+
+	public Widget setMaxWidth(int max) {
+		max = max <= 0 ? 427 : max;
+		if (maxWidth != max) {
+			maxWidth = max;
+			updateSize();
+			setWidth(width); // Enforce our new size if needed
+		}
+		return this;
+	}
+
+	public int getMaxWidth() {
+		return maxWidth;
+	}
+
+	public Widget setMinHeight(int min) {
+		min = Math.max(min, 0);
+		if (minHeight != min) {
+			minHeight = min;
+			updateSize();
+			setHeight(height); // Enforce our new size if needed
+		}
+		return this;
+	}
+
+	public int getMinHeight() {
+		return minHeight;
+	}
+
+	public Widget setMaxHeight(int max) {
+		max = max <= 0 ? 240 : max;
+		if (maxHeight != max) {
+			maxHeight = max;
+			updateSize();
+			setHeight(height); // Enforce our new size if needed
+		}
+		return this;
+	}
+
+	public int getMaxHeight() {
+		return maxHeight;
+	}
+
+	public Widget savePos() {
+		orig_x = X;
+		orig_y = Y;
+		return this;
+	}
+
+	public Widget restorePos() {
+		X = orig_x;
+		Y = orig_y;
+		return this;
+	}
+	
 	public Widget copy() {
 		try {
 			Widget copy = getType().getWidgetClass().newInstance();
-			copy.setX(getX()).setY(getY()).setWidth((int) getActualWidth()).setHeight((int) getActualHeight()).setVisible(isVisible());
+			copy.setX(getX()).setY(getY()).setWidth((int) getWidth()).setHeight((int) getHeight()).setVisible(isVisible());
 			copy.setPriority(getPriority()).setTooltip(getTooltip()).setAnchor(getAnchor());
+			copy.setMargin(getMarginTop(), getMarginRight(), getMarginBottom(), getMarginLeft());
+			copy.setMinWidth(getMinWidth()).setMaxWidth(getMaxWidth()).setMinHeight(getMinHeight()).setMaxHeight(getMaxHeight());
+			copy.setFixed(isFixed());
 			return copy;
 		}
 		catch (Exception e) {
 			throw new IllegalStateException("Unable to create a copy of " + getClass() + ". Does it have a valid widget type?");
 		}
+	}
+
+	public Widget updateSize() {
+		if (container != null) {
+			container.updateSize();
+		}
+		return this;
 	}
 }

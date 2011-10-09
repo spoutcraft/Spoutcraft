@@ -2,6 +2,7 @@ package org.spoutcraft.spoutcraftapi.material;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
@@ -231,7 +232,7 @@ public class MaterialData {
 	public static final Item goldChestplate = new GenericArmor(315);
 	public static final Item goldLeggings = new GenericArmor(316);
 	public static final Item goldBoots = new GenericArmor(317);
-	public static final Item flint = new GenericItem(318);
+	public static final Item flint = new GenericItem(318, 0, true);
 	public static final Item rawPorkchop = new GenericFood(319);
 	public static final Item cookedPorkchop = new GenericFood(320);
 	public static final Item paintings = new GenericItem(321);
@@ -317,6 +318,14 @@ public class MaterialData {
 		}
 	}
 	
+	public static void addCustomItem(CustomItem item) {
+		idMap.put(318, item.getCustomId(), item);
+	}
+	
+	public static void addCustomBlock(CustomBlock block) {
+		idMap.put(318, block.getCustomId(), block);
+	}
+	
 	public static Material getMaterial(int id) {
 		return getMaterial(id, (short)0);
 	}
@@ -341,6 +350,26 @@ public class MaterialData {
 		return null;
 	}
 	
+	public static CustomBlock getCustomBlock(int customId) {
+		Material mat = (Material) idMap.get(318, customId);
+		if (mat instanceof CustomBlock) {
+			return (CustomBlock)mat;
+		}
+		return null;
+	}
+	
+	public static CustomItem getCustomItem(int customId) {
+		if(getCustomBlock(customId) != null) {
+			return getCustomBlock(customId).getBlockItem();
+		}
+		
+		Material mat = (Material) idMap.get(318, customId);
+		if (mat instanceof CustomItem) {
+			return (CustomItem) mat;
+		}
+		return null;
+	}
+	
 	public static Item getItem(int id) {
 		return getItem(id, (short)0);
 	}
@@ -351,6 +380,10 @@ public class MaterialData {
 			return (Item)mat;
 		}
 		return null;
+	}
+	
+	public static Iterator<Material> getMaterialIterator() {
+		return idMap.valueCollection().iterator();
 	}
 
 }
