@@ -21,7 +21,6 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameScreen;
 import org.getspout.spout.gui.ScreenUtil;
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
@@ -30,7 +29,6 @@ import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
@@ -50,7 +48,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return instance;
 	}
 	
-	public ClientPlayer() {
+	private ClientPlayer() {
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
 	}
@@ -91,6 +89,10 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	
 	public InGameHUD getMainScreen() {
 		return mainScreen;
+	}
+	
+	public void resetMainScreen() {
+		mainScreen = new InGameScreen();
 	}
 
 	public void showAchievement(String title, String message, int id) {

@@ -186,6 +186,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
+		ClientPlayer.getInstance().resetMainScreen();
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
 	}
