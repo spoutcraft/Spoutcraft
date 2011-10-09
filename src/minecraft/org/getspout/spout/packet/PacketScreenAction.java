@@ -58,6 +58,9 @@ public class PacketScreenAction implements SpoutPacket{
 			case Close:
 				SpoutClient.getHandle().displayPreviousScreen();
 				break;
+			case Force_Close:
+				SpoutClient.getHandle().displayGuiScreen(null, false);
+				break;
 		}
 	}
 

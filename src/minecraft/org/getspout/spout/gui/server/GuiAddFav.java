@@ -29,19 +29,22 @@ public class GuiAddFav extends GuiScreen {
 	private final String name;
 	private final String ip;
 	private boolean rename;
+	public int uid = 0;
 
 
-	public GuiAddFav(GuiScreen screen, String name, String ip) {
+	public GuiAddFav(GuiScreen screen, String name, String ip, int uid) {
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;
+		this.uid = uid;
 		this.rename = false;
 	}
 	
-	public GuiAddFav(GuiScreen screen, String name, String ip, boolean rename) {
+	public GuiAddFav(GuiScreen screen, String name, String ip, int uid, boolean rename) {
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;
+		this.uid = uid;
 		this.rename = rename;
 	}
 
@@ -54,13 +57,15 @@ public class GuiAddFav extends GuiScreen {
 		StringTranslate var1 = StringTranslate.getInstance();
 		Keyboard.enableRepeatEvents(true);
 		this.controlList.clear();
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey("Add")));
+		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey(rename ? "Edit" : "Add")));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-		this.nameField = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.name);
-		this.nameField.isFocused = true;
+		this.nameField = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.name);
+		//this.nameField.isEnabled = uid == 0;
+		this.nameField.isFocused = false;
 		this.nameField.setMaxStringLength(35);
-		this.Ipfield = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.ip);
-		this.Ipfield.isFocused = false;
+		this.Ipfield = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.ip);
+		this.Ipfield.isEnabled = uid == 0;
+		this.Ipfield.isFocused = true;
 		this.Ipfield.setMaxStringLength(35);
 		((GuiButton)this.controlList.get(0)).enabled = this.nameField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
 	}
@@ -73,12 +78,12 @@ public class GuiAddFav extends GuiScreen {
 		if(button.enabled) {
 			if(button.id == 1) {
 				if (rename) {
-					GuiFavorites.writeFav(name, ip);
+					GuiFavorites.writeFav(name, ip, uid);
 				}
 				this.mc.displayGuiScreen(this.screen);
 			}
 			else if(button.id == 0) {
-				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText());
+				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText(), uid);
 				this.mc.displayGuiScreen(this.screen);
 			}
 

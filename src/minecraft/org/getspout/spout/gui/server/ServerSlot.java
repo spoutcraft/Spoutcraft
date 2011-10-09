@@ -19,12 +19,21 @@ package org.getspout.spout.gui.server;
 public class ServerSlot implements Comparable {
 
 	public int ID = 0;
+	public int uniqueid = 0;
 	public String ip = "";
 	public String port = "";
 	public String name = "";
 	public int players = 0;
 	public int maxPlayers = 0;
 	public String country = "";
+	public boolean pinging = false;
+	public long ping = -2L;
+	public String status = "";
+	public String msg = "";
+	public String description = "";
+	public String site = "";
+	public String forum = "";
+	public boolean loaded = false;
 
 
 	public ServerSlot(int ID) {

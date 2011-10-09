@@ -116,8 +116,10 @@ public class PacketWidget implements SpoutPacket {
 			}
 			//Determine if this screen overrides another screen
 			else if(widget instanceof OverlayScreen) {
-				SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
-				overlay = (OverlayScreen)widget;
+				if (SpoutClient.getHandle().currentScreen != null) {
+					SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
+					overlay = (OverlayScreen)widget;
+				}
 			}
 			//Determine if this is a widget on the main screen
 			else if (screen.equals(mainScreen.getId())) {
