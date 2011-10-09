@@ -301,7 +301,7 @@ public class GuiFavorites extends GuiScreen {
 				ServerSlot slot = new ServerSlot(serverSlot);
 				String[] serverData = line.split(">");
 				if (serverData.length == 2) {
-					slot = this.setServer(serverSlot, slot, serverData[1], serverData[0]);
+					slot = this.setServer(serverSlot, slot, serverData[0], serverData[1]);
 				} else if (serverData.length == 3) {
 					slot = this.setServer(serverSlot, slot, serverData[0], serverData[1]);
 					slot.uniqueid = Integer.parseInt(serverData[2]);
@@ -529,7 +529,6 @@ public class GuiFavorites extends GuiScreen {
 	
 	public static File getFavoriteServerFile() {
 		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
-		System.out.println(favorites.getAbsolutePath());
 		if (!favorites.exists()) {
 			try {
 				favorites.createNewFile();
