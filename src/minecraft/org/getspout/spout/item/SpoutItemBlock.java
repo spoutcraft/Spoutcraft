@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
-import net.minecraft.src.ItemBlock;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
@@ -26,7 +25,7 @@ public class SpoutItemBlock extends Item {
 	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
 	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
 	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
-	private final static TIntObjectHashMap customBlockDesign = new TIntObjectHashMap();
+	private final static TIntObjectHashMap<SpoutCustomBlockDesign> customBlockDesign = new TIntObjectHashMap<SpoutCustomBlockDesign>();
 
 	public SpoutItemBlock(int blockId) {
 		super(blockId);
@@ -50,7 +49,7 @@ public class SpoutItemBlock extends Item {
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {
 		if (blockId != 1 || damage == 0) {
-			return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(blockId, damage));
+			return customBlockDesign.get(getKey(blockId, damage));
 		} else {
 			int id = itemBlock.get(damage);
 			if (id != 0) {

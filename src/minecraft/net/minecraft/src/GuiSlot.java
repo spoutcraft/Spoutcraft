@@ -58,6 +58,8 @@ public abstract class GuiSlot {
 	protected abstract int getSize();
 
 	protected abstract void elementClicked(int var1, boolean var2);
+	
+	protected void elementInfo(int var1) {};
 
 	protected abstract boolean isSelected(int var1);
 
@@ -118,13 +120,25 @@ public abstract class GuiSlot {
 
 		}
 	}
+	
+	public void onClick(int var1, int var2, int var3) {
+		int var8i = this.width / 2 + 111;
+		int var9i = this.width / 2 + 122;
+		int var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
+		int var11 = var10 / this.slotHeight;
+		int var4 = this.getSize();
+		int info_top = var2 - ((var11 * slotHeight) + this.top + this.field_27261_r - (int)this.amountScrolled + 4);
+		if(var1 >= var8i && var1 <= var9i && var11 >= 0 && var10 >= 0 && var11 < var4 && info_top < 13) {
+			elementInfo(var11);
+		}
+	}
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.field_35409_k = var1;
 		this.field_35408_l = var2;
 		this.drawBackground();
 		int var4 = this.getSize();
-		int var5 = this.width / 2 + 124;
+		int var5 = this.width / 2 + 130;
 		int var6 = var5 + 6;
 		int var9;
 		int var10;
@@ -139,6 +153,7 @@ public abstract class GuiSlot {
 					var9 = this.width / 2 + 110;
 					var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
 					var11 = var10 / this.slotHeight;
+					
 					if(var1 >= var8 && var1 <= var9 && var11 >= 0 && var10 >= 0 && var11 < var4) {
 						boolean var12 = var11 == this.selectedElement && System.currentTimeMillis() - this.lastClicked < 250L;
 						this.elementClicked(var11, var12);
@@ -185,7 +200,7 @@ public abstract class GuiSlot {
 		} else {
 			this.initialClickY = -1.0F;
 		}
-
+		
 		this.bindAmountScrolled();
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
@@ -205,7 +220,7 @@ public abstract class GuiSlot {
 		if(this.field_27262_q) {
 			this.func_27260_a(var9, var10, var16);
 		}
-
+		
 		int var14;
 		for(var11 = 0; var11 < var4; ++var11) {
 			var18 = var10 + var11 * this.slotHeight + this.field_27261_r;
@@ -234,7 +249,7 @@ public abstract class GuiSlot {
 				this.drawSlot(var11, var9, var18, var13, var16);
 			}
 		}
-
+		
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		byte var19 = 4;
 		this.overlayBackground(0, this.top, 255, 255);
@@ -275,7 +290,7 @@ public abstract class GuiSlot {
 			if(var14 < this.top) {
 				var14 = this.top;
 			}
-
+			
 			var16.startDrawingQuads();
 			var16.setColorRGBA_I(0, 255);
 			var16.addVertexWithUV((double)var5, (double)this.bottom, 0.0D, 0.0D, 1.0D);
@@ -306,7 +321,7 @@ public abstract class GuiSlot {
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
 
-	private void overlayBackground(int var1, int var2, int var3, int var4) {	
+	private void overlayBackground(int var1, int var2, int var3, int var4) {
 		GL11.glPushMatrix(); //Spout
 		Tessellator var5 = Tessellator.instance;
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));

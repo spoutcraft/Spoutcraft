@@ -186,6 +186,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
+		ClientPlayer.getInstance().resetMainScreen();
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
 	}
@@ -206,6 +207,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
+		
+		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 	}
 	
 	public static Minecraft getHandle() {

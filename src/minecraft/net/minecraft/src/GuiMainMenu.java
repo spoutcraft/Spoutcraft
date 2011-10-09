@@ -113,7 +113,6 @@ public class GuiMainMenu extends GuiScreen {
 
 		if(var1.id == 3) {
 			this.mc.displayGuiScreen(new GuiTexturePacks(this));
-			//this.mc.displayGuiScreen(new CustomScreen(new MainAddonScreen()));
 		}
 
 		if(var1.id == 4) {

@@ -4,8 +4,11 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -62,8 +65,6 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.lwjgl.input.Mouse;
-//Spout End
 
 public class RenderGlobal implements IWorldAccess {
 
@@ -1346,13 +1347,6 @@ public class RenderGlobal implements IWorldAccess {
 					var7 = new ArrayList();
 				}
 				
-				//Spout start
-				if (renderersUpdated > renderersToUpdate) {
-					break;
-				}
-				renderersUpdated++;
-				//Spout end
-
 				++var9;
 				var7.add(var11);
 				this.worldRenderersToUpdate.set(var10, (Object)null);
@@ -1367,6 +1361,13 @@ public class RenderGlobal implements IWorldAccess {
 					var11 = (WorldRenderer)var7.get(var10);
 					var11.updateRenderer();
 					var11.needsUpdate = false;
+					
+					//Spout start
+					if (renderersUpdated > renderersToUpdate) {
+						break;
+					}
+					renderersUpdated++;
+					//Spout end
 				}
 			}
 
@@ -1385,6 +1386,13 @@ public class RenderGlobal implements IWorldAccess {
 					var6[var21].updateRenderer();
 					var6[var21].needsUpdate = false;
 					++var10;
+					
+					//Spout start
+					if (renderersUpdated > renderersToUpdate) {
+						break;
+					}
+					renderersUpdated++;
+					//Spout end
 				}
 			}
 

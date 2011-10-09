@@ -56,7 +56,10 @@ public class ItemRenderer {
 		}
 		
 		if (blockType != null) {
-			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());			
+			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL());
+			if (customTextureBinding != null){
+				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, customTextureBinding.getTextureID());	
+			}
 		} else if (customTextureObject != null) {
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, customTextureObject.getTextureID());
 		} else if(var2.itemID < 256) {
