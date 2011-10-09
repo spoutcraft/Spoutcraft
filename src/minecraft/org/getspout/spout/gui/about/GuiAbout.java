@@ -1,5 +1,6 @@
 package org.getspout.spout.gui.about;
 
+import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.input.Mouse;
@@ -29,6 +30,7 @@ public class GuiAbout extends GuiScreen {
 	private static final float SCROLL_FACTOR = 10f;
 	Texture spoutcraftTexture = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
 	Texture yourkitLogo = CustomTextureManager.getTextureFromJar("/res/yourkit.png");
+	Texture lethalDriveLogo = CustomTextureManager.getTextureFromJar("/res/lethaldrive.png");
 	public GuiAbout() {
 		
 	}
@@ -163,6 +165,30 @@ public class GuiAbout extends GuiScreen {
 		
 		drawScaledString("Sponsors", this.width / 2 + 30, 0, 0xffffff);
 		
+		drawScaledString("Team", this.width / 2 + 30, 90, 0xffffff);
+		drawScaledString("Afforess - Lead Developer", this.width / 2 + 30, 100, 0x808080);
+		drawScaledString("Wulfspider - Co-Lead & Support", this.width / 2 + 30, 110, 0x808080);
+		drawScaledString("alta189 - Co-Lead & Developer", this.width / 2 + 30, 120, 0x808080);
+		drawScaledString("Top_Cat - Developer", this.width / 2 + 30, 130, 0x808080);
+		drawScaledString("Raphfrk - Developer", this.width / 2 + 30, 140, 0x808080);
+		drawScaledString("narrowtux - Developer", this.width / 2 + 30, 150, 0x808080);
+		drawScaledString("Olloth - Developer", this.width / 2 + 30, 160, 0x808080);
+		drawScaledString("Email: dev@getspout.org", this.width / 2 + 30, 170, 0x808080);
+		drawScaledString("Website: getspout.org", this.width / 2 + 30, 180, 0x808080);
+		drawScaledString("IRC: #spout in Esper.net", this.width / 2 + 30, 190, 0x808080);
+		
+		drawScaledString("Contributors", this.width / 2 - 200, 220, 0xffffff);
+		drawScaledString("The Bukkit Team - Bukkit Server API", this.width / 2 - 200, 230, 0x808080);
+		drawScaledString("lahwran - Fast Events Code", this.width / 2 - 200, 240, 0x808080);
+		drawScaledString("Celtic Minstrel - Code", this.width / 2 - 200, 250, 0x808080);
+		drawScaledString("Zeerix - Threading Code", this.width / 2 - 200, 260, 0x808080);
+		drawScaledString("Karlthepagan - Optick Mod", this.width / 2 - 200, 270, 0x808080);
+		drawScaledString("Kahr - HD Textures Code", this.width / 2 - 200, 280, 0x808080);
+		drawScaledString("Jeckari - Custom Texture Code", this.width / 2 - 200, 290, 0x808080);
+		drawScaledString("Rychochet - GUI Code", this.width / 2 - 200, 300, 0x808080);
+		drawScaledString("knowbuddy - GUI optimizations", this.width / 2 - 200, 310, 0x808080);
+		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, 320, 0x808080);
+		
 		int yourkitX = (this.width / 2 + 30);
 		int yourkitY = getScaledHeight(60);
 		if (yourkitLogo != null) {
@@ -189,34 +215,37 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 		if (isInBoundingRect(yourkitX, yourkitY, 15, 55, x, y)) {
-			drawTooltip("YourKit, LLC is the creator of innovative tools  ", x, y);
-			drawTooltip("for profiling Java and .NET applications.          ", x, y+11);
-			drawTooltip("Take a look at their products at www.yourkit.com", x, y+22);
+			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.AQUA + "www.yourkit.com", x, y);
 		}
 		
-		drawScaledString("Team", this.width / 2 + 30, 90, 0xffffff);
-		drawScaledString("Afforess - Lead Developer", this.width / 2 + 30, 100, 0x808080);
-		drawScaledString("Wulfspider - Co-Lead & Support", this.width / 2 + 30, 110, 0x808080);
-		drawScaledString("alta189 - Co-Lead & Developer", this.width / 2 + 30, 120, 0x808080);
-		drawScaledString("Top_Cat - Developer", this.width / 2 + 30, 130, 0x808080);
-		drawScaledString("Raphfrk - Developer", this.width / 2 + 30, 140, 0x808080);
-		drawScaledString("narrowtux - Developer", this.width / 2 + 30, 150, 0x808080);
-		drawScaledString("Olloth - Developer", this.width / 2 + 30, 160, 0x808080);
-		drawScaledString("Email: dev@getspout.org", this.width / 2 + 30, 170, 0x808080);
-		drawScaledString("Website: getspout.org", this.width / 2 + 30, 180, 0x808080);
-		drawScaledString("IRC: #spout in Esper.net", this.width / 2 + 30, 190, 0x808080);
-		
-		drawScaledString("Contributors", this.width / 2 - 200, 220, 0xffffff);
-		drawScaledString("The Bukkit Team - Bukkit Server API", this.width / 2 - 200, 230, 0x808080);
-		drawScaledString("lahwran - Fast Events Code", this.width / 2 - 200, 240, 0x808080);
-		drawScaledString("Celtic Minstrel - Code", this.width / 2 - 200, 250, 0x808080);
-		drawScaledString("Zeerix - Threading Code", this.width / 2 - 200, 260, 0x808080);
-		drawScaledString("Karlthepagan - Optick Mod", this.width / 2 - 200, 270, 0x808080);
-		drawScaledString("Kahr - HD Textures Code", this.width / 2 - 200, 280, 0x808080);
-		drawScaledString("Jeckari - Custom Texture Code", this.width / 2 - 200, 290, 0x808080);
-		drawScaledString("Rychochet - GUI Code", this.width / 2 - 200, 300, 0x808080);
-		drawScaledString("knowbuddy - GUI optimizations", this.width / 2 - 200, 310, 0x808080);
-		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, 320, 0x808080);
+		int lethalDriveX = (this.width / 2 + 45);
+		int lethalDriveY = getScaledHeight(20);
+		if (lethalDriveLogo != null) {
+			GL11.glPushMatrix();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef(lethalDriveX, lethalDriveY, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, lethalDriveLogo.getTextureID());
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			Tessellator tessellator = Tessellator.instance;
+			//GL11.glScalef(0.5f, 0.5f, 0.5f);
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(0.0D, 33, -90, 0.0D, 0.0D); // draw corners
+			tessellator.addVertexWithUV(147, 33, -90, lethalDriveLogo.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(147, 0.0D, -90, lethalDriveLogo.getWidth(), lethalDriveLogo.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, lethalDriveLogo.getHeight());
+			tessellator.draw();
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glPopMatrix();
+		}
+		if (isInBoundingRect(lethalDriveX, lethalDriveY, 33, 147, x, y)) {
+			drawTooltip("LethalDrive is the cutting edge in game servers. \nSpout trusts them with their servers, and you can too!\nGo to " + ChatColor.AQUA + "www.lethaldrive.com/spout" + ChatColor.WHITE + " for a discount!", x, y);
+		}
 		
 		
 		drawScaledString("Move along, nothing to see here.", 40, 1750, 0x808080);
