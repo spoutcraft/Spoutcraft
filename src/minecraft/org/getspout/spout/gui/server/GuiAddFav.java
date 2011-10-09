@@ -59,11 +59,11 @@ public class GuiAddFav extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, var1.translateKey(rename ? "Edit" : "Add")));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.cancel")));
-		this.nameField = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.name);
+		this.nameField = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.name);
 		//this.nameField.isEnabled = uid == 0;
 		this.nameField.isFocused = true;
 		this.nameField.setMaxStringLength(35);
-		this.Ipfield = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 120, 200, 20, this.ip);
+		this.Ipfield = new GuiTextField(this, SpoutClient.getHandle().fontRenderer, this.width / 2 - 100, 60, 200, 20, this.ip);
 		this.Ipfield.isEnabled = uid == 0;
 		this.Ipfield.isFocused = false;
 		this.Ipfield.setMaxStringLength(35);
