@@ -67,7 +67,11 @@ public class GuiScreen extends Gui {
 	protected void keyTyped(char var1, int var2) {
 		if(var2 == 1) {
 			this.mc.displayGuiScreen((GuiScreen)null);
-			this.mc.setIngameFocus();
+			//Spout start
+			if (mc.currentScreen == null) {
+				this.mc.setIngameFocus();
+			}
+			//Spout end
 		}
 
 	}

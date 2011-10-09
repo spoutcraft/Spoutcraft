@@ -19,6 +19,7 @@ package org.getspout.spout.packet;
 public enum ScreenAction {
 	Open(0),
 	Close(1),
+	Force_Close(2),
 	;
 	
 	private final byte id;
