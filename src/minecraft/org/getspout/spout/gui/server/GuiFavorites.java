@@ -181,7 +181,7 @@ public class GuiFavorites extends GuiScreen {
 						ServerSlot slot = (ServerSlot)this.serverList.get(selectedWorld);
 						serverName = slot.name;
 						if(serverName != null) {
-							String ip = slot.ip + ":" + slot.port;
+							String ip = slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port;
 							deleting = true;
 							deleteWorld(true, selectedWorld);
 							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, ip, slot.uniqueid, true));
