@@ -17,7 +17,9 @@
 package org.getspout.spout.gui.server;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.*;
 
@@ -80,25 +82,26 @@ public class GuiFavoritesSlot extends GuiSlot {
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.name, var2 + 2, var3 + 1, 16777215);
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.msg, var2 + 2, var3 + 12, 8421504);
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.status, var2 + 215 - SpoutClient.getHandle().fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
-		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.ip + ":" + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.ip + (var6.port.length() > 0 ? ":" : "") + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		if (var6.uniqueid > 0) {
+			Texture serverInfoTexture = CustomTextureManager.getTextureFromJar("/res/info.png");
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef(var2 + 220, var3, 0); // moves texture into place
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, GuiSlotServer.serverInfoTexture.getTextureID());
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, serverInfoTexture.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			Tessellator tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV(0.0D, 13, -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(10, 13, -90, GuiSlotServer.serverInfoTexture.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(10, 0.0D, -90, GuiSlotServer.serverInfoTexture.getWidth(), GuiSlotServer.serverInfoTexture.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, GuiSlotServer.serverInfoTexture.getHeight());
+			tessellator.addVertexWithUV(10, 13, -90, serverInfoTexture.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(10, 0.0D, -90, serverInfoTexture.getWidth(), serverInfoTexture.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, serverInfoTexture.getHeight());
 			tessellator.draw();
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);

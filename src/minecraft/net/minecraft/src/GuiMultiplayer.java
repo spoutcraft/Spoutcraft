@@ -38,7 +38,6 @@ public class GuiMultiplayer extends GuiScreen {
 	private GuiButton buttonNextPage;
 	private GuiButton buttonPrevPage;
 	private boolean first = true;
-	private ServerNBTStorage field_35349_w = null;
 	private String tooltip = null;
 
 
@@ -109,6 +108,7 @@ public class GuiMultiplayer extends GuiScreen {
 				} else if(var1.id == 4) {
 					ServerSlot slot = (ServerSlot)this.serverInfo.serverList.get(this.selectedWorld);
 					GuiAddFav gui = new GuiAddFav(this, (slot.ip + ":" + slot.port), slot.name, slot.uniqueid);
+					gui.allowUserInput = false;
 					this.mc.displayGuiScreen(gui);
 				} else if(var1.id == 0) {
 					this.mc.displayGuiScreen(new GuiMainMenu());
@@ -167,8 +167,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public void elementInfo(int id) {
 		synchronized(serverInfo) {
 			ServerSlot info = (ServerSlot)this.serverInfo.serverList.get(id);
-			System.out.println("id: " + info.uniqueid);
-			//this.mc.displayGuiScreen(screen);
+			this.mc.displayGuiScreen(new GuiServerInfo(info, this));
 		}
 	}
 
@@ -231,6 +230,12 @@ public class GuiMultiplayer extends GuiScreen {
 		} catch (Exception var4) {
 			return var2;
 		}
+	}
+	
+	@Override
+	protected void mouseClicked(int var1, int var2, int var3) {
+		super.mouseClicked(var1, var2, var3);
+		worldSlotContainer.onClick(var1, var2, var3);
 	}
 	
 	private void func_35328_b(ServerSlot var1) throws IOException {

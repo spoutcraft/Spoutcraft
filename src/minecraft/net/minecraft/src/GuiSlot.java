@@ -120,6 +120,18 @@ public abstract class GuiSlot {
 
 		}
 	}
+	
+	public void onClick(int var1, int var2, int var3) {
+		int var8i = this.width / 2 + 111;
+		int var9i = this.width / 2 + 122;
+		int var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
+		int var11 = var10 / this.slotHeight;
+		int var4 = this.getSize();
+		int info_top = var2 - ((var11 * slotHeight) + this.top + this.field_27261_r - (int)this.amountScrolled + 4);
+		if(var1 >= var8i && var1 <= var9i && var11 >= 0 && var10 >= 0 && var11 < var4 && info_top < 13) {
+			elementInfo(var11);
+		}
+	}
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.field_35409_k = var1;
@@ -139,14 +151,9 @@ public abstract class GuiSlot {
 				if(var2 >= this.top && var2 <= this.bottom) {
 					int var8 = this.width / 2 - 110;
 					var9 = this.width / 2 + 110;
-					int var8i = this.width / 2 + 111;
-					int var9i = this.width / 2 + 122;
 					var10 = var2 - this.top - this.field_27261_r + (int)this.amountScrolled - 4;
 					var11 = var10 / this.slotHeight;
-					int info_top = var2 - ((var11 * slotHeight) + this.top + this.field_27261_r - (int)this.amountScrolled + 4);
-					if(var1 >= var8i && var1 <= var9i && var11 >= 0 && var10 >= 0 && var11 < var4 && info_top < 13) {
-						elementInfo(var11);
-					}
+					
 					if(var1 >= var8 && var1 <= var9 && var11 >= 0 && var10 >= 0 && var11 < var4) {
 						boolean var12 = var11 == this.selectedElement && System.currentTimeMillis() - this.lastClicked < 250L;
 						this.elementClicked(var11, var12);
@@ -242,7 +249,7 @@ public abstract class GuiSlot {
 				this.drawSlot(var11, var9, var18, var13, var16);
 			}
 		}
-
+		
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		byte var19 = 4;
 		this.overlayBackground(0, this.top, 255, 255);
@@ -283,7 +290,7 @@ public abstract class GuiSlot {
 			if(var14 < this.top) {
 				var14 = this.top;
 			}
-
+			
 			var16.startDrawingQuads();
 			var16.setColorRGBA_I(0, 255);
 			var16.addVertexWithUV((double)var5, (double)this.bottom, 0.0D, 0.0D, 1.0D);

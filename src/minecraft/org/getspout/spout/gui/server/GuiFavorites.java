@@ -123,6 +123,7 @@ public class GuiFavorites extends GuiScreen {
 	public void mouseClicked(int var1, int var2, int var3) {
 		super.mouseClicked(var1, var2, var3);
 		quickJoinText.mouseClicked(var1, var2, var3);
+		worldSlotContainer.onClick(var1, var2, var3);
 	}
 
 	public void initButtons() {
@@ -220,10 +221,8 @@ public class GuiFavorites extends GuiScreen {
 	public void selectWorld(int index) {
 		if (index > -1) {
 			try {
-				String info[] = ((ServerSlot)this.serverList.get(index)).ip.split(":");
-				String ip = info[0];
-				int port = info.length > 1 ? Integer.parseInt(info[1]) : 25565;
-				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), ip, port));
+				ServerSlot info = ((ServerSlot)this.serverList.get(index));
+				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), info.ip, (info.port.length() > 0 ? Integer.parseInt(info.port) : 25565)));
 			}
 			catch (Exception e) { }
 		}
@@ -231,8 +230,7 @@ public class GuiFavorites extends GuiScreen {
 	
 	public void elementInfo(int id) {
 		ServerSlot info = (ServerSlot)this.serverList.get(id);
-		System.out.println("id: " + info.uniqueid);
-		//SpoutClient.getHandle().displayGuiScreen(screen);
+		SpoutClient.getHandle().displayGuiScreen(new GuiServerInfo(info, this));
 	}
 
 	public void deleteWorld(boolean var1, int var2) {
@@ -321,13 +319,13 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public ServerSlot setServer(int var1, ServerSlot var2, String ip, String name) {
-		String[] var5 = name.split(":");
+		String[] var5 = ip.split(":");
 		if(var5.length >= 2) {
 			var2.port = var5[1];
 		}
 
 		var2.ip = var5[0];
-		var2.name = ip;
+		var2.name = name;
 		return var2;
 	}
 
@@ -531,6 +529,7 @@ public class GuiFavorites extends GuiScreen {
 	
 	public static File getFavoriteServerFile() {
 		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
+		System.out.println(favorites.getAbsolutePath());
 		if (!favorites.exists()) {
 			try {
 				favorites.createNewFile();

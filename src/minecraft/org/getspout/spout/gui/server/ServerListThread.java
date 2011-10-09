@@ -20,10 +20,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.yaml.snakeyaml.Yaml;
+
 import net.minecraft.src.GuiMultiplayer;
 
 public class ServerListThread implements Runnable {
@@ -46,42 +51,43 @@ public class ServerListThread implements Runnable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void run() {
 		try {
 			synchronized(this.parentScreen.serverInfo) {
 				this.parentScreen.serverInfo.status = "Retrieving server list...";
 			}
-			String[] var1 = null;
 			URL url = new URL(this.addr);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line = reader.readLine();
+			Yaml yaml = new Yaml();
+			ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
 			reader.close();
+			
 			synchronized(this.parentScreen.serverInfo) {
 				this.parentScreen.serverInfo.status = "Processing servers...";
 			}
-			String[] text = line.split("\\{");
-
-			for(int i = 1; i < text.length; ++i) {
-				text[i].replaceAll("'","");
-				ServerSlot slot = new ServerSlot(i);
-				String[] var8 = text[i].split("\\,");
+			
+			int j = 0;
+			for (Map<String, String> i : list) {
+				ServerSlot slot = new ServerSlot(++j);
+				slot.ip = i.get("ip");
+				slot.port = i.get("port");
+				slot.country = i.get("country");
+				slot.players = Integer.parseInt(i.get("players"));
+				slot.maxPlayers = Integer.parseInt(i.get("maxplayers"));
+				slot.name = URLDecoder.decode(i.get("name"), "UTF-8");
+				slot.site = URLDecoder.decode(i.get("site"), "UTF-8");
+				slot.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
+				slot.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+				slot.uniqueid = Integer.parseInt(i.get("uniqueid"));
+				slot.loaded = true;
 				
-				for(int var9 = 0; var9 < var8.length; ++var9) {
-					var1 = var8[var9].split("\\:");
-
-					for(int var10 = 0; var10 < var1.length; ++var10) {
-						var1[var10] = stripLeadingAndTrailingQuotes(var1[var10]);
-					}
-
-					slot = this.setServer(i, var1, slot);
+				ArrayList<ServerSlot> clist = tempCountryMappings.get(slot.country);
+				if (clist == null) {
+					clist = new ArrayList<ServerSlot>();
+					tempCountryMappings.put(slot.country, clist);
 				}
-
-				ArrayList<ServerSlot> list = tempCountryMappings.get(slot.country);
-				if (list == null) {
-					list = new ArrayList<ServerSlot>();
-					tempCountryMappings.put(slot.country, list);
-				}
-				list.add(slot);
+				clist.add(slot);
 			}
 
 			for (String country : tempCountryMappings.keySet()) {
@@ -116,49 +122,6 @@ public class ServerListThread implements Runnable {
 			var11.printStackTrace();
 		}
 		instance = null;
-	}
-
-	private ServerSlot setServer(int var1, String[] var2, ServerSlot var3) {
-		if(var2.length >= 2) {
-			if(var2[0].equalsIgnoreCase("ip")) {
-				var3.ip = var2[1];
-			} else if(var2[0].equalsIgnoreCase("port")) {
-				var3.port = var2[1];
-			} else if(var2[0].equalsIgnoreCase("name")) {
-				var3.name = var2[1];
-				while (var3.name.contains("0027")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("0027") - 2) + "'" +  var3.name.substring(var3.name.indexOf("0027") + 4);
-				}
-				while (var3.name.contains("&amp;")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("&amp;")) + "&" +  var3.name.substring(var3.name.indexOf("&amp;") + 5);
-				}
-				while (var3.name.contains("&quot;")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("&quot;")) + "\"" +  var3.name.substring(var3.name.indexOf("&quot;") + 6);
-				}
-				while (var3.name.contains("&#233;")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("&#233;")) + "e" +  var3.name.substring(var3.name.indexOf("&#233;") + 6);
-				}
-				while (var3.name.contains("&#180;")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("&#180;")) + "'" +  var3.name.substring(var3.name.indexOf("&#180;") + 6);
-				}
-				while (var3.name.contains("&#194;")) {
-					var3.name = var3.name.substring(0, var3.name.indexOf("&#194;")) + "a" +  var3.name.substring(var3.name.indexOf("&#194;") + 6);
-				}
-				if(var3.name.length() > 41) {
-					var3.name = var3.name.substring(0, 41) + "...";
-				}
-			} else if(var2[0].equalsIgnoreCase("players")) {
-				var3.players = Integer.parseInt(var2[1]);
-			} else if(var2[0].equalsIgnoreCase("maxplayers")) {
-				var3.maxPlayers = Integer.parseInt(var2[1]);
-			} else if(var2[0].equalsIgnoreCase("country")) {
-				var3.country = var2[1];
-			} else if (var2[0].equalsIgnoreCase("uniqueid")) {
-				var3.uniqueid = Integer.parseInt(var2[1]);
-			}
-		}
-
-		return var3;
 	}
 
 	static String stripLeadingAndTrailingQuotes(String var0) {

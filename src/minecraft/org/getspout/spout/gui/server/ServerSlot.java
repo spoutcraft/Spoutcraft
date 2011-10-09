@@ -30,6 +30,10 @@ public class ServerSlot implements Comparable {
 	public long ping = -2L;
 	public String status = "";
 	public String msg = "";
+	public String description = "";
+	public String site = "";
+	public String forum = "";
+	public boolean loaded = false;
 
 
 	public ServerSlot(int ID) {
