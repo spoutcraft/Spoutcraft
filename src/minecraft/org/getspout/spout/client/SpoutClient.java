@@ -207,6 +207,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
+		
+		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 	}
 	
 	public static Minecraft getHandle() {

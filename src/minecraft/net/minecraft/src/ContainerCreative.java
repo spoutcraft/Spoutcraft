@@ -72,7 +72,6 @@ class ContainerCreative extends Container {
 			}
 		}
 		Collections.sort(itemList, new Comparator<ItemStack>() {
-			@Override
 			public int compare(ItemStack o1, ItemStack o2) {
 				int idDiff = o1.itemID - o2.itemID;
 				int dataDiff = o1.getItemDamage() - o2.getItemDamage();

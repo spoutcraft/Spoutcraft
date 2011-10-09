@@ -224,7 +224,9 @@ public class GuiFavorites extends GuiScreen {
 				ServerSlot info = ((ServerSlot)this.serverList.get(index));
 				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), info.ip, (info.port.length() > 0 ? Integer.parseInt(info.port) : 25565)));
 			}
-			catch (Exception e) { }
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

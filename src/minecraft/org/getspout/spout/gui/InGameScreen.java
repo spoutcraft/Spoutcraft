@@ -44,7 +44,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
-		toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 
 		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
 	}
