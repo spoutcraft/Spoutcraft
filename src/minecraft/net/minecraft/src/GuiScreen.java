@@ -78,6 +78,11 @@ public class GuiScreen extends Gui {
 	
 	//Spout Start
 	public void update(Screen screen){
+		if(this.screen != null) {
+			for(Widget w : this.screen.getAttachedWidgets()) {
+				screen.attachWidget(w);
+			}
+		}
 		this.screen = screen;
 	}
 	//Spout End
