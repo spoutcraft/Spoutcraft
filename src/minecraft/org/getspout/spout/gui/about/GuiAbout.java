@@ -215,11 +215,11 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 		if (isInBoundingRect(yourkitX, yourkitY, 15, 55, x, y)) {
-			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.AQUA + "www.yourkit.com", x, y);
+			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.BLUE + "www.yourkit.com", x, y);
 		}
 		
-		int lethalDriveX = (this.width / 2 + 45);
-		int lethalDriveY = getScaledHeight(20);
+		int lethalDriveX = (this.width / 2 + 30);
+		int lethalDriveY = getScaledHeight(15);
 		if (lethalDriveLogo != null) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -244,7 +244,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 		if (isInBoundingRect(lethalDriveX, lethalDriveY, 33, 147, x, y)) {
-			drawTooltip("LethalDrive is the cutting edge in game servers. \nSpout trusts them with their servers, and you can too!\nGo to " + ChatColor.AQUA + "www.lethaldrive.com/spout" + ChatColor.WHITE + " for a discount!", x, y);
+			drawTooltip("LethalDrive is the cutting edge in game servers. \nSpout trusts their server for our stuff, and you can too!\nGo to " + ChatColor.BLUE + "www.lethaldrive.com/spout" + ChatColor.WHITE + " for a discount!", x, y);
 		}
 		
 		
