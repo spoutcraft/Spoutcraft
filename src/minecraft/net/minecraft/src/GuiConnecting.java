@@ -177,7 +177,7 @@ public class GuiConnecting extends GuiScreen {
 		if (counter == 4500 || currentMsg == null) {
 			counter = 0;
 			currentMsg = highlyInformativeMessages[(new java.util.Random()).nextInt(highlyInformativeMessages.length)];
-			currentMsg = org.bukkit.ChatColor.GREEN.toString() + currentMsg.trim() + "...";
+			currentMsg = org.bukkit.ChatColor.GREEN.toString() + currentMsg + "...";
 		}
 		else {
 			counter++;
