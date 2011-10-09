@@ -17,6 +17,8 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 public interface MinecraftTessellator {
+	
+	public int getMCTexture(String texture);
 
 	public void draw();
 
