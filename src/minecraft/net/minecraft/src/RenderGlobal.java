@@ -72,7 +72,6 @@ public class RenderGlobal implements IWorldAccess {
 	private World worldObj;
 	private RenderEngine renderEngine;
 	private List worldRenderersToUpdate = new ArrayList();
-	private Set<WorldRenderer> worldRenderersToUpdateSet = new HashSet<WorldRenderer>(); //Spout added, for fast .contains calls
 	private WorldRenderer[] sortedWorldRenderers;
 	public WorldRenderer[] worldRenderers; //Spout private -> public
 	private int renderChunksWide;
@@ -299,7 +298,6 @@ public class RenderGlobal implements IWorldAccess {
 		this.worldObj = newWorld;
 		tileEntities.clear();
 		worldRenderersToUpdate.clear();
-		worldRenderersToUpdateSet.clear();
 		allRenderLists = new RenderList[]{new RenderList(), new RenderList(), new RenderList(), new RenderList()};
 		glRenderLists.clear();
 		if(newWorld != null) {
@@ -389,7 +387,6 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			this.worldRenderersToUpdate.clear();
-			worldRenderersToUpdateSet.clear(); //Spout added line
 			this.tileEntities.clear();
 
 			for(var4 = 0; var4 < this.renderChunksWide; ++var4) {
@@ -555,7 +552,6 @@ public class RenderGlobal implements IWorldAccess {
 					var14.setPosition(var7, var13, var10);
 					if(!var15 && var14.needsUpdate) {
 						this.worldRenderersToUpdate.add(var14);
-						worldRenderersToUpdateSet.add(var14); //Spout
 					}
 				}
 			}
@@ -576,9 +572,8 @@ public class RenderGlobal implements IWorldAccess {
 		for(int var5 = 0; var5 < 10; ++var5) {
 			this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
 			WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
-			if(var6.needsUpdate && !this.worldRenderersToUpdateSet.contains(var6)) { //Spout use worldRenderersToUpdateSet instead of worldRenderersToUpdate for contains
+			if(var6.needsUpdate && !this.worldRenderersToUpdate.contains(var6)) {
 				this.worldRenderersToUpdate.add(var6);
-				worldRenderersToUpdateSet.add(var6); //Spout
 			}
 		}
 		}
@@ -1597,7 +1592,6 @@ public class RenderGlobal implements IWorldAccess {
 					WorldRenderer var20 = this.worldRenderers[var19];
 					if(!var20.needsUpdate) {
 						this.worldRenderersToUpdate.add(var20);
-						worldRenderersToUpdateSet.add(var20); //Spout
 						var20.markDirty();
 					}
 				}
@@ -1752,7 +1746,6 @@ public class RenderGlobal implements IWorldAccess {
 			for(int var1 = 0; var1 < this.worldRenderers.length; ++var1) {
 				if(/*this.worldRenderers[var1].isChunkLit && */!this.worldRenderers[var1].needsUpdate) {
 					this.worldRenderersToUpdate.add(this.worldRenderers[var1]);
-					worldRenderersToUpdateSet.add(this.worldRenderers[var1]); //Spout
 					this.worldRenderers[var1].markDirty();
 				}
 			}
