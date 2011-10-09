@@ -2,6 +2,7 @@ package org.spoutcraft.spoutcraftapi.material;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
@@ -351,6 +352,10 @@ public class MaterialData {
 			return (Item)mat;
 		}
 		return null;
+	}
+	
+	public static Iterator<Material> getMaterialIterator() {
+		return idMap.valueCollection().iterator();
 	}
 
 }
