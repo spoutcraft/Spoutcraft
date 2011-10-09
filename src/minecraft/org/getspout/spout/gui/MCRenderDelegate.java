@@ -552,7 +552,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 	
 	protected void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F, 1.0F));
 	}
 	
 	protected Color getColor(Button c) {
