@@ -72,26 +72,28 @@ public class GuiSlotServer extends GuiSlot {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		Texture serverInfoTexture = CustomTextureManager.getTextureFromJar("/res/info.png");
-		GL11.glPushMatrix();
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDepthMask(false);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslatef(var2 + 220, var3, 0); // moves texture into place
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, serverInfoTexture.getTextureID());
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, 13, -90, 0.0D, 0.0D); // draw corners
-		tessellator.addVertexWithUV(10, 13, -90, serverInfoTexture.getWidth(), 0.0D);
-		tessellator.addVertexWithUV(10, 0.0D, -90, serverInfoTexture.getWidth(), serverInfoTexture.getHeight());
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, serverInfoTexture.getHeight());
-		tessellator.draw();
-		GL11.glDepthMask(true);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glPopMatrix();
+		if (serverInfoTexture != null) {
+			GL11.glPushMatrix();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef(var2 + 220, var3, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, serverInfoTexture.getTextureID());
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(0.0D, 13, -90, 0.0D, 0.0D); // draw corners
+			tessellator.addVertexWithUV(10, 13, -90, serverInfoTexture.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(10, 0.0D, -90, serverInfoTexture.getWidth(), serverInfoTexture.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, serverInfoTexture.getHeight());
+			tessellator.draw();
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glPopMatrix();
+		}
 		
 		this.field_35410_a.mc.renderEngine.bindTexture(this.field_35410_a.mc.renderEngine.getTexture("/gui/icons.png"));
 		boolean var7 = false;
