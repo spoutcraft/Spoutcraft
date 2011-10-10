@@ -1,5 +1,6 @@
 package org.getspout.spout.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
@@ -60,6 +61,10 @@ public class MinecraftTessellatorWrapper implements MinecraftTessellator{
 
 	public void setTranslation(double x, double y, double z) {
 		Tessellator.instance.setTranslationD(x, y, z);
+	}
+
+	public int getMCTexture(String texture) {
+		return Minecraft.theMinecraft.renderEngine.getTexture(texture);
 	}
 
 }
