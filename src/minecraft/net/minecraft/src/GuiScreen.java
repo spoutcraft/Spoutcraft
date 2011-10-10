@@ -17,6 +17,8 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+
+import org.getspout.spout.ScheduledTextFieldUpdate;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
@@ -524,47 +526,6 @@ public class GuiScreen extends Gui {
 	
 	protected void buttonClicked(Button btn){}
 
-	private class ScheduledTextFieldUpdate implements Runnable {
-		private static final long DELAY_TIME = 500;
-		private static final long SLEEP_TIME = 125;
-		private TextField textField;
-		private Screen screen;
-		private long sendTime;
-		private Thread thread;
-		
-		public ScheduledTextFieldUpdate(Screen screen, TextField textField) {
-			this.textField = textField;
-			this.screen = screen;
-		}
-		
-		public void run() {
-			delay();
-			while (!expired()) {
-				try {
-					Thread.sleep(SLEEP_TIME);
-				}
-				catch (InterruptedException e) {
-					break;
-				}
-			}
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
-		}
-		
-		public synchronized void delay() {
-			sendTime = System.currentTimeMillis() + DELAY_TIME;
-		}
-		
-		public synchronized boolean expired() {
-			return sendTime <= System.currentTimeMillis();
-		}
-		
-		public synchronized void start() {
-			(thread = new Thread(this)).start();
-		}
-		
-		public synchronized boolean isAlive() {
-			return thread.isAlive();
-		}
-	}
+	
 	//Spout End
 }
