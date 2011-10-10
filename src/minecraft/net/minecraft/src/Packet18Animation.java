@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketFullVersion;
 import org.getspout.spout.packet.PacketRenderDistance;
 //Spout End
@@ -43,10 +42,10 @@ public class Packet18Animation extends Packet {
 	public void processPacket(NetHandler var1) {
 		//Spout Start
 		if (entityId == -42) {
-			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(1, 0, 5, 0));
+			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(1, 0, 6, 0));
 			((NetClientHandler)var1).addToSendQueue(this);
-			((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance)));
-			((NetClientHandler)var1).addToSendQueue(new CustomPacket(new PacketFullVersion(SpoutClient.getClientVersion().toString())));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(SpoutClient.getClientVersion().toString()));
 			System.out.println("Spout SP Enabled");
 		}
 		else {

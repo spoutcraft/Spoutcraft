@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import net.minecraft.src.EntityClientPlayerMP;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.packet.*;
 
 public class ClipboardThread extends Thread {
@@ -53,7 +54,7 @@ public class ClipboardThread extends Thread {
 					if (text != null) {
 						if (!text.equals(prevClipboardText)) {
 							prevClipboardText = text;
-							player.sendQueue.addToSendQueue(new CustomPacket(new PacketClipboardText(text)));
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClipboardText(text));
 						}
 					}
 				}
