@@ -41,6 +41,7 @@ public class GuiScreen extends Gui {
 	public GenericGradient bg; 
 	public Screen screen = null;
 	private long updateTicks;
+	private ListWidget holding = null;
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -132,6 +133,9 @@ public class GuiScreen extends Gui {
 						else if (control instanceof TextField) {
 							((TextField)control).setCursorPosition(((TextField)control).getText().length());
 						}
+						else if (control instanceof ListWidget) {
+							handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+						}
 						break;
 					}
 				}
@@ -139,6 +143,38 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
+	private void handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
+		int x = (int) (mouseX - lw.getScreenX());
+		int y = (int) (mouseY - lw.getScreenY());
+		int scroll = lw.getScrollPosition();
+		int currentHeight = 0;
+		int n = 0;
+		if(x < 5) {
+			return;
+		}
+		if(x > lw.getWidth()-16) {
+			double scrollY = 0;
+			double p = (double)scroll / (double)lw.getMaxScrollPosition();
+			scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
+			if(scrollY <= mouseY && mouseY <= scrollY + 16) {
+				holding = lw;
+				System.out.println("Holds scrollbar!");
+			}
+			return;
+		}
+		y += scroll;
+		y -= 5;
+		for(ListWidgetItem item:lw.getItems()) {
+			
+			if(currentHeight <= y && y <= currentHeight + item.getHeight()) {
+				lw.setSelection(n);
+				break;
+			}
+			n++;
+			currentHeight += item.getHeight();
+		}
+	}
+
 	private void handleButtonClick(Button control) {
 		this.buttonClicked((Button)control);
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
@@ -194,6 +230,14 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
+		if(holding != null) {
+			int y = mouseY - holding.getY();
+			double p = (double)y/holding.getHeight();
+			holding.setScrollPosition((int) ((double)holding.getMaxScrollPosition() * p));
+			if(eventButton == 0) {
+				holding = null;
+			}
+		}
 	}
 
 	protected void mouseMovedOrUp(int var1, int var2, int var3) {
@@ -244,20 +288,32 @@ public class GuiScreen extends Gui {
 
 	}
 
+	//Spout Start rewritten
 	public void handleMouseInput() {
-		int var1;
-		int var2;
+		int x;
+		int y;
 		if(Mouse.getEventButtonState()) {
-			var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
-			var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-			this.mouseClickedPre(var1, var2, Mouse.getEventButton());
+			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+			this.mouseClickedPre(x, y, Mouse.getEventButton());
 		} else {
-			var1 = Mouse.getEventX() * this.width / this.mc.displayWidth;
-			var2 = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-			this.mouseMovedOrUpPre(var1, var2, Mouse.getEventButton());
+			x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+			this.mouseMovedOrUpPre(x, y, Mouse.getEventButton());
 		}
-
+		int scroll = Mouse.getEventDWheel();
+		if (scroll != 0) {
+			for(Widget w:getScreen().getAttachedWidgets()) {
+				if(isInBoundingRect(w, x, y)) {
+					if(w instanceof ListWidget) {
+						ListWidget lw = (ListWidget)w;
+						lw.setScrollPosition(lw.getScrollPosition() - scroll / 30);
+					}
+				}
+			}
+		}
 	}
+	//Spout End rewritten
 
 	public void handleKeyboardInput() {
 		//Spout Start
@@ -300,6 +356,21 @@ public class GuiScreen extends Gui {
 						}
 						handled = true;
 						break;
+					}
+				}
+				if (widget instanceof ListWidget) {
+					ListWidget lw = (ListWidget)widget;
+					if(lw.isEnabled() && lw.isFocus()) {
+						if(Keyboard.getEventKey() == Keyboard.KEY_DOWN && Keyboard.getEventKeyState()) {
+							handled = true;
+							lw.shiftSelection(1);
+							break;
+						}
+						if(Keyboard.getEventKey() == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
+							handled = true;
+							lw.shiftSelection(-1);
+							break;
+						}
 					}
 				}
 			}

@@ -11,6 +11,7 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.FoodStats;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
+import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
@@ -567,5 +568,75 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	protected void bindColor(Color c) {
 		GL11.glColor4f(c.getRedF(), c.getGreenF(), c.getBlueF(), c.getAlphaF());
+	}
+
+	public void render(GenericListWidgetItem lwi, int x, int y, int width, int height) {
+		FontRenderer font = SpoutClient.getHandle().fontRenderer;
+		font.drawString(lwi.getTitle(), x+2, y+2, new Color(1.0F,1.0F,1.0F).toInt());
+		font.drawString(lwi.getText(), x+2, y+2+8, new Color(0.8F,0.8F,0.8F).toInt());
+	}
+
+	public void render(GenericListWidget lw) {
+		int scrollTop = lw.getScrollPosition();
+		int scrollBottom = (int) (scrollTop + lw.getHeight() - 5);
+		GL11.glTranslated(lw.getScreenX(), lw.getScreenY(), 0);
+		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+		scissorWidget(lw);
+		int currentHeight = 0;
+		RenderUtil.drawRectangle(0, 0, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
+		GL11.glTranslated(0, -scrollTop + 5, 0);
+		for(ListWidgetItem item:lw.getItems()) {
+			
+			//Only render visible items
+			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
+				
+				//Draw selection border
+				if(lw.isSelected(item)) {
+					RenderUtil.drawRectangle(4, currentHeight-1, (int) (lw.getWidth() - 13), currentHeight-1+item.getHeight()+2, new Color(1.0F,1.0F,1.0F).toInt());
+					RenderUtil.drawRectangle(5, currentHeight, (int) (lw.getWidth() - 14), currentHeight+item.getHeight(), new Color(0.0F,0.0F,0.0F).toInt());
+				}
+				
+				//Render actual item
+				GL11.glPushMatrix();
+				item.render(5, currentHeight, (int) (lw.getWidth() - 15), item.getHeight());
+				GL11.glPopMatrix();
+			}
+			
+			currentHeight += item.getHeight();
+		}
+		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		GL11.glTranslatef(0, scrollTop - 5, 0);
+		GL11.glDisable(2896 /*GL_LIGHTING*/);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		RenderUtil.drawGradientRectangle(0, 0, (int)lw.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
+		RenderUtil.drawGradientRectangle(0, (int)lw.getHeight() - 5, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
+		
+		Minecraft mc = SpoutClient.getHandle();
+		int texture = mc.renderEngine.getTexture("/gui/allitems.png");
+		mc.renderEngine.bindTexture(texture);
+		double scrollY = 0;
+		double p = (double)scrollTop / (double)lw.getMaxScrollPosition();
+		scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
+		RenderUtil.drawTexturedModalRectangle((int) (lw.getWidth() - 14), (int) scrollY, 0, 208, 16, 16, 0f);
+	}
+
+	private void scissorWidget(Widget widget) {
+		double x = widget.getX() + widget.getWidth(), y = widget.getY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
+		double screenWidth, screenHeight;
+		GuiScreen screen = SpoutClient.getHandle().currentScreen;
+		screenWidth = screen.width;
+		screenHeight = screen.height;
+		int windowWidth = SpoutClient.getHandle().displayWidth, windowHeight = SpoutClient.getHandle().displayHeight;
+		ScaledResolution scale = new ScaledResolution(SpoutClient.getHandle().gameSettings, windowWidth, windowHeight);
+		double scaleFactor = scale.scaleFactor;
+		height = (double) height * scaleFactor;
+		width = (double) width * scaleFactor;
+		x*= scaleFactor; y*=scaleFactor;
+		screenWidth *= scaleFactor;
+		screenHeight *= scaleFactor;
+		x = screenWidth - x;
+		y = screenHeight - y;
+		GL11.glScissor((int)x, (int)y, (int)width, (int)height);
 	}
 }
