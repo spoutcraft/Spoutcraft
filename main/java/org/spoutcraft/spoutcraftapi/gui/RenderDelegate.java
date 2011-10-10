@@ -58,4 +58,8 @@ public interface RenderDelegate {
 
 	public MinecraftTessellator getTessellator();
 
+	void render(GenericListWidgetItem lwi, int x, int y, int width, int height);
+
+	void render(GenericListWidget lw);
+
 }
