@@ -16,7 +16,7 @@ public class GuiSlotServer extends GuiSlot {
 
 
 	public GuiSlotServer(GuiMultiplayer var1) {
-		super(var1.mc, var1.width, var1.height, 32, var1.height - 88, 36);
+		super(var1.mc, var1.width, var1.height, 32, var1.height - 80, 36);
 		this.field_35410_a = var1;
 	}
 

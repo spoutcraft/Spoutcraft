@@ -34,14 +34,14 @@ import net.minecraft.src.GuiMultiplayer;
 public class ServerListThread implements Runnable {
 
 	GuiMultiplayer parentScreen;
-	String addr;
+	ServerTab tab;
 	private static Thread instance = null;
 	private LinkedHashMap<String,ArrayList<ServerSlot>> tempCountryMappings = new LinkedHashMap<String,ArrayList<ServerSlot>>();
 
 
-	public ServerListThread(GuiMultiplayer var1, String var2) {
+	public ServerListThread(GuiMultiplayer var1, ServerTab var2) {
 		this.parentScreen = var1;
-		this.addr = var2;
+		this.tab = var2;
 	}
 
 	public void init() {
@@ -57,51 +57,56 @@ public class ServerListThread implements Runnable {
 			synchronized(this.parentScreen.serverInfo) {
 				this.parentScreen.serverInfo.status = "Retrieving server list...";
 			}
-			URL url = new URL(this.addr);
+			URL url = new URL(this.tab.url);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 			Yaml yaml = new Yaml();
-			ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
+			Object yamlObj = yaml.load(reader);
 			reader.close();
 			
 			synchronized(this.parentScreen.serverInfo) {
 				this.parentScreen.serverInfo.status = "Processing servers...";
 			}
-			
-			int j = 0;
-			for (Map<String, String> i : list) {
-				ServerSlot slot = new ServerSlot(++j);
-				slot.ip = i.get("ip");
-				slot.port = i.get("port");
-				slot.country = i.get("country");
-				slot.players = Integer.parseInt(i.get("players"));
-				slot.maxPlayers = Integer.parseInt(i.get("maxplayers"));
-				slot.name = URLDecoder.decode(i.get("name"), "UTF-8");
-				slot.site = URLDecoder.decode(i.get("site"), "UTF-8");
-				slot.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-				slot.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
-				slot.uniqueid = Integer.parseInt(i.get("uniqueid"));
-				slot.loaded = true;
-				
-				ArrayList<ServerSlot> clist = tempCountryMappings.get(slot.country);
-				if (clist == null) {
-					clist = new ArrayList<ServerSlot>();
-					tempCountryMappings.put(slot.country, clist);
+			if (yamlObj instanceof ArrayList) {
+				ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yamlObj;
+				int j = 0;
+				for (Map<String, String> i : list) {
+					ServerSlot slot = new ServerSlot(++j);
+					slot.ip = i.get("ip");
+					slot.port = i.get("port");
+					slot.country = i.get("country");
+					slot.players = Integer.parseInt(i.get("players"));
+					slot.maxPlayers = Integer.parseInt(i.get("maxplayers"));
+					slot.name = URLDecoder.decode(i.get("name"), "UTF-8");
+					slot.site = URLDecoder.decode(i.get("site"), "UTF-8");
+					slot.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
+					slot.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+					slot.uniqueid = Integer.parseInt(i.get("uniqueid"));
+					slot.loaded = true;
+					
+					String country = tab.pages ? slot.country : tab.title;
+					ArrayList<ServerSlot> clist = tempCountryMappings.get(country);
+					if (clist == null) {
+						clist = new ArrayList<ServerSlot>();
+						tempCountryMappings.put(country, clist);
+					}
+					clist.add(slot);
 				}
-				clist.add(slot);
 			}
 
-			for (String country : tempCountryMappings.keySet()) {
-				Collections.sort(tempCountryMappings.get(country), new Comparator() {
-					public int compare(Object arg0, Object arg1) {
-						if (!(arg1 instanceof ServerSlot) || !(arg0 instanceof ServerSlot)) {
-							return arg0.hashCode() - arg1.hashCode();
+			if (tab.pages) {
+				for (String country : tempCountryMappings.keySet()) {
+					Collections.sort(tempCountryMappings.get(country), new Comparator() {
+						public int compare(Object arg0, Object arg1) {
+							if (!(arg1 instanceof ServerSlot) || !(arg0 instanceof ServerSlot)) {
+								return arg0.hashCode() - arg1.hashCode();
+							}
+							ServerSlot server1 = (ServerSlot)arg0;
+							ServerSlot server2 = (ServerSlot)arg1;
+							return server1.name.toLowerCase().compareTo(server2.name.toLowerCase());
 						}
-						ServerSlot server1 = (ServerSlot)arg0;
-						ServerSlot server2 = (ServerSlot)arg1;
-						return server1.name.toLowerCase().compareTo(server2.name.toLowerCase());
-					}
-
-				});
+	
+					});
+				}
 			}
 			synchronized(this.parentScreen.serverInfo) {
 				ArrayList tempCountries = new ArrayList(tempCountryMappings.keySet());
