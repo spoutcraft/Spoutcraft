@@ -14,6 +14,9 @@ import java.util.Collections;
 import net.minecraft.src.GuiButton;
 
 import org.getspout.spout.gui.server.*;
+import org.getspout.spout.io.CustomTextureManager;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 public class GuiMultiplayer extends GuiScreen {
 
@@ -24,7 +27,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public String indexString = "";
 	private final DateFormat dateFormatter = new SimpleDateFormat();
 	protected GuiScreen parentScreen;
-	protected String screenTitle = "Select server";
+	protected String screenTitle = "Server Browser";
 	private int selectedWorld;
 	private GuiSlotServer worldSlotContainer;
 	private String field_22098_o;
@@ -43,6 +46,12 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public GuiMultiplayer(GuiScreen var1) {
 		this.parentScreen = var1;
+		tabs.add(new ServerTab("Featured", "http://servers.getspout.org/api.php?type=1&featured"));
+		tabs.add(new ServerTab("Popular", "http://servers.getspout.org/api.php?type=1&popular"));
+		tabs.add(new ServerTab("Country", "http://servers.getspout.org/api.php?type=1&all", true));
+		tabs.add(new ServerTab("A-Z", "http://servers.getspout.org/api.php?type=1&az"));
+		tabs.add(new ServerTab("Z-A", "http://servers.getspout.org/api.php?type=1&za"));
+		tabs.add(new ServerTab("Random", "http://servers.getspout.org/api.php?type=1&random"));
 	}
 
 	public void initGui() {
@@ -50,13 +59,13 @@ public class GuiMultiplayer extends GuiScreen {
 			this.serverInfo.status = "Done";
 		}
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.screenTitle = var1.translateKey("Select server");
+		this.screenTitle = var1.translateKey("Server Browser");
 		this.field_22098_o = var1.translateKey("Unknown");
 		this.field_22097_p = var1.translateKey("aaa");
-		this.loadSaves();
 		this.worldSlotContainer = new GuiSlotServer(this);
 		this.worldSlotContainer.registerScrollButtons(this.controlList, 4, 5);
 		this.initButtons();
+		this.loadSaves();
 	}
 
 	public void loadSaves() {
@@ -191,27 +200,72 @@ public class GuiMultiplayer extends GuiScreen {
 			this.buttonPrevPage.enabled = serverInfo.page > 0;
 			this.buttonNextTenPage.enabled = serverInfo.page < serverInfo.pages - 1;
 			this.buttonPrevTenPage.enabled = serverInfo.page > 0;
-			this.buttonPrevCountry.enabled = serverInfo.activeCountry > 0;
-			this.buttonNextCountry.enabled = serverInfo.activeCountry < serverInfo.countries.size() - 1;
+			this.buttonPrevCountry.enabled = serverInfo.activeCountry > 0 && tabs.get(current_tab).pages;
+			this.buttonNextCountry.enabled = serverInfo.activeCountry < serverInfo.countries.size() - 1 && tabs.get(current_tab).pages;
 		}
 	}
 
 	public void deleteWorld(boolean var1, int var2) {}
 
+	ArrayList<ServerTab> tabs = new ArrayList<ServerTab>();
+	int current_tab = 0;
+	
 	public void drawScreen(int x, int y, float z) {
 		synchronized(serverInfo) {
 			this.tooltip = null;
 			this.worldSlotContainer.drawScreen(x, y, z);
-			this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-			this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 86, 5263440);
+			this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 8, 16777215);
+			renderTabs();
+			//this.drawCenteredString(this.fontRenderer, "Spoutcraft Server Browser", this.width / 2, this.height - 86, 5263440);
 			this.drawCenteredString(this.fontRenderer, indexString , this.width / 2, this.height - 71, 5263440);
-			this.drawString(this.fontRenderer, "Displaying " + this.serverInfo.serverList.size() + " servers", this.width - this.fontRenderer.getStringWidth("Displaying " + this.serverInfo.serverList.size() + " servers") - 2, 20, 5263440);
-			this.drawString(this.fontRenderer, "Status: " + this.serverInfo.status, 2, 20, 5263440);
+			this.drawString(this.fontRenderer, "Displaying " + this.serverInfo.serverList.size() + " servers", 2, 20, 5263440);
+			this.drawString(this.fontRenderer, "Status: " + this.serverInfo.status, 2, 10, 5263440);
 			if(this.tooltip != null) {
 				this.drawTooltip(this.tooltip, x, y);
 			}
 		}
 		super.drawScreen(x, y, z);
+	}
+	
+	public void renderTabs() {
+		int offset = 0;
+		double s = 0.5;
+		Texture tabTexture = CustomTextureManager.getTextureFromJar("/res/tab.png");
+		Texture tabSelectedTexture = CustomTextureManager.getTextureFromJar("/res/tab_s.png");
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND); 
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); 
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		for (ServerTab tab : tabs) {
+			if (tabTexture != null) {
+				GL11.glPushMatrix();
+				Texture cTexture = tabs.indexOf(tab) == current_tab ? tabSelectedTexture : tabTexture;
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, cTexture.getTextureID());
+				GL11.glTranslatef(this.width / 2 + offset, 20, 0); // moves texture into place
+				Tessellator tessellator = Tessellator.instance;
+				tessellator.startDrawingQuads();
+				tessellator.addVertexWithUV(0.0D, 15, -90, 0.0D, 0.0D); // draw corners
+				tessellator.addVertexWithUV(34, 15, -90, cTexture.getWidth(), 0.0D);
+				tessellator.addVertexWithUV(34, 0.0D, -90, cTexture.getWidth(), cTexture.getHeight());
+				tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, cTexture.getHeight());
+				tessellator.draw();
+				GL11.glPopMatrix();
+	
+				GL11.glPushMatrix();
+				GL11.glTranslatef((float) (this.width / 2 + 17 - this.fontRenderer.getStringWidth(tab.title) / 4 + offset), 24F, 0F);
+				GL11.glScaled(s, s, s);
+				this.drawString(this.fontRenderer, tab.title, 0, 0, 0xFFFFFF);
+				GL11.glPopMatrix();
+				offset += 35;
+			}
+		}
+		GL11.glDepthMask(true);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glPopMatrix();
 	}
 	
 	protected void drawTooltip(String var1, int var2, int var3) {
@@ -235,6 +289,11 @@ public class GuiMultiplayer extends GuiScreen {
 	@Override
 	protected void mouseClicked(int var1, int var2, int var3) {
 		super.mouseClicked(var1, var2, var3);
+		if (var1 >= this.width / 2 && var1 <= this.width / 2 + tabs.size() * 35 - 2 && var2 >= 20 && var2 <= 33) {
+			int var4 = (var1 - this.width / 2) / 35;
+			current_tab = var4;
+			getServer();
+		}
 		worldSlotContainer.onClick(var1, var2, var3);
 	}
 	
@@ -325,7 +384,7 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public void getServer() {
-		ServerListThread serverList = new ServerListThread(this, "http://thomasc.co.uk/Spout/texture/api.php?type=1");
+		ServerListThread serverList = new ServerListThread(this, tabs.get(current_tab));
 		serverList.init();
 	}
 

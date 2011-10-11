@@ -45,6 +45,9 @@ public class SpoutItemBlock extends Item {
 	public static void wipeMap() {
 		itemBlock.clear();
 		itemMetaData.clear();
+		blockIdOverride.clear();
+		blockMetaDataOverride.clear();
+		customBlockDesign.clear();
 	}
 	
 	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {

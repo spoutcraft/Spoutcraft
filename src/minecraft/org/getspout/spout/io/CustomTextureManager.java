@@ -82,7 +82,9 @@ public class CustomTextureManager {
 			try {
 				//System.out.println("Loading Texture: " + path);
 				FileInputStream stream = new FileInputStream(path);
-				texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+				if (stream.available() > 0) {
+					texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+				}
 				stream.close();
 			}
 			catch (IOException e) { }
