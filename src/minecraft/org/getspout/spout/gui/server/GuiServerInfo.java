@@ -50,7 +50,7 @@ public class GuiServerInfo extends GuiScreen {
 	public GuiServerInfo(ServerSlot info, GuiScreen back) {
 		if (!info.loaded) {
 			try {
-				URL url = new URL("http://www.thomasc.co.uk/Spout/texture/api.php?type=1&id=" + info.uniqueid);
+				URL url = new URL("http://servers.getspout.org/api.php?id=" + info.uniqueid);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 				Yaml yaml = new Yaml();
 				ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
@@ -68,11 +68,11 @@ public class GuiServerInfo extends GuiScreen {
 		int maxlen = 210;
 		this.info = info;
 		this.back = back;
-		url = "http://www.thomasc.co.uk/Spout/texture/preview/1/" + info.uniqueid + ".png";
+		url = "http://servers.getspout.org/preview/" + info.uniqueid + ".png";
 		site = shorten(info.site, maxlen);
 		forum = shorten(info.forum, maxlen);
 		CustomTextureManager.downloadTexture(url);
-		CustomTextureManager.downloadTexture("http://www.thomasc.co.uk/Spout/texture/images/flags/" + info.country.toLowerCase() + ".png");
+		CustomTextureManager.downloadTexture("http://servers.getspout.org/images/flags/" + info.country.toLowerCase() + ".png");
 	}
 	
 	public String shorten(String string, int width) {
@@ -111,7 +111,7 @@ public class GuiServerInfo extends GuiScreen {
 					((GuiMultiplayer) back).updateList();
 				}
 			} else if (button.id == 2) {
-				openLink("http://www.thomasc.co.uk/Spout/texture/server.php?id=" + info.uniqueid);
+				openLink("http://servers.getspout.org/info/" + info.uniqueid + ".php");
 			}
 		}
 	}
@@ -166,7 +166,7 @@ public class GuiServerInfo extends GuiScreen {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		} else {
-			flag = CustomTextureManager.getTextureFromUrl("http://www.thomasc.co.uk/Spout/texture/images/flags/" + info.country.toLowerCase() + ".png");
+			flag = CustomTextureManager.getTextureFromUrl("http://servers.getspout.org/images/flags/" + info.country.toLowerCase() + ".png");
 		}
 		
 		if (image != null) {

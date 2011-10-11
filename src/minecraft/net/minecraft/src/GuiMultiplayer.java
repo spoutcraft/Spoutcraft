@@ -27,7 +27,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public String indexString = "";
 	private final DateFormat dateFormatter = new SimpleDateFormat();
 	protected GuiScreen parentScreen;
-	protected String screenTitle = "Server browser";
+	protected String screenTitle = "Server Browser";
 	private int selectedWorld;
 	private GuiSlotServer worldSlotContainer;
 	private String field_22098_o;
@@ -46,12 +46,12 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public GuiMultiplayer(GuiScreen var1) {
 		this.parentScreen = var1;
-		tabs.add(new ServerTab("Featured", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&featured"));
-		tabs.add(new ServerTab("Popular", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&popular"));
-		tabs.add(new ServerTab("Country", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&all", true));
-		tabs.add(new ServerTab("A-Z", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&az"));
-		tabs.add(new ServerTab("Z-A", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&za"));
-		tabs.add(new ServerTab("Random", "http://www.thomasc.co.uk/Spout/texture/api.php?type=1&random"));
+		tabs.add(new ServerTab("Featured", "http://servers.getspout.org/api.php?type=1&featured"));
+		tabs.add(new ServerTab("Popular", "http://servers.getspout.org/api.php?type=1&popular"));
+		tabs.add(new ServerTab("Country", "http://servers.getspout.org/api.php?type=1&all", true));
+		tabs.add(new ServerTab("A-Z", "http://servers.getspout.org/api.php?type=1&az"));
+		tabs.add(new ServerTab("Z-A", "http://servers.getspout.org/api.php?type=1&za"));
+		tabs.add(new ServerTab("Random", "http://servers.getspout.org/api.php?type=1&random"));
 	}
 
 	public void initGui() {
@@ -59,7 +59,7 @@ public class GuiMultiplayer extends GuiScreen {
 			this.serverInfo.status = "Done";
 		}
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.screenTitle = var1.translateKey("Server browser");
+		this.screenTitle = var1.translateKey("Server Browser");
 		this.field_22098_o = var1.translateKey("Unknown");
 		this.field_22097_p = var1.translateKey("aaa");
 		this.worldSlotContainer = new GuiSlotServer(this);
