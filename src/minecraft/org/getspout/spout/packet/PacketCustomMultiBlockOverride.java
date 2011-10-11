@@ -63,8 +63,8 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 			int x = result.get(index) + chunkX * 16;
 			int y = result.get(index+1);
 			int z = result.get(index+2) + chunkZ * 16;
-			int id = result.get(index+3);
-			int data = result.get(index+5);
+			int id = result.getShort(index+3);
+			int data = result.getShort(index+5);
 			SpoutItemBlock.overrideBlock(x, y, z, id, data);
 		}
 	}
