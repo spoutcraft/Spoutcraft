@@ -116,7 +116,7 @@ public class GenericListWidget extends GenericControl implements ListWidget {
 	}
 
 	public int getMaxScrollPosition() {
-		return (int) (getTotalHeight() - getHeight() + 10);
+		return Math.max(0, (int) (getTotalHeight() - getHeight() + 10));
 	}
 
 	public boolean isSelected(ListWidgetItem item) {
