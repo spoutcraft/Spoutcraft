@@ -151,13 +151,15 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if(!(binding==null || binding.getUniqueId() == null)){
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
 		}
-		Shortcut shortcut = shortcutsForKey.get(key);
-		if(shortcut != null && !keyReleased) {
-			//TODO: send to addons!
-			for(String cmd:shortcut.getCommands()) {
-				if(SpoutClient.getHandle().isMultiplayerWorld()) {
-					EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
-					player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+		if(screen == 0) {
+			Shortcut shortcut = shortcutsForKey.get(key);
+			if(shortcut != null && !keyReleased) {
+				//TODO: send to addons!
+				for(String cmd:shortcut.getCommands()) {
+					if(SpoutClient.getHandle().isMultiplayerWorld()) {
+						EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
+						player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+					}
 				}
 			}
 		}
