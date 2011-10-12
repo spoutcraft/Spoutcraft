@@ -37,7 +37,7 @@ public class SpoutcraftChunk implements Chunk{
 	
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private net.minecraft.src.World world;
-	private final Map<Integer, Block> cache = new MapMaker().softValues().makeMap();
+	private final Map<Integer, Block> cache = new MapMaker().weakValues().makeMap();
 	private int x;
 	private int z;
 	public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
