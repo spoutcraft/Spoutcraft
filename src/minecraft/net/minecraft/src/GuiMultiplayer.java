@@ -189,7 +189,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else {
 				String country = serverInfo.countries.get(serverInfo.activeCountry);
 				ArrayList fullList = serverInfo.countryMappings.get(country);
-				Collections.sort(fullList);
+				if (tabs.get(current_tab).pages) { Collections.sort(fullList); }
 				serverInfo.pages = (fullList.size() + 9) / 10;
 				int last = Math.min(fullList.size(), (serverInfo.page + 1) * 10);
 				int first = serverInfo.page * 10;
@@ -361,12 +361,8 @@ public class GuiMultiplayer extends GuiScreen {
 			var1.msg = "\u00a77" + var9;
 			if(var11 >= 0 && var12 > 0) {
 				var1.status = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
-				var1.players = var11;
-				var1.maxPlayers = var12;
 			} else {
 				var1.status = "\u00a78???";
-				var1.players = 0;
-				var1.maxPlayers = 0;
 			}
 		} finally {
 			try {
