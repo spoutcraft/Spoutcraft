@@ -43,7 +43,8 @@ public class GuiScreen extends Gui {
 	public GenericGradient bg; 
 	public Screen screen = null;
 	private long updateTicks;
-	private ListWidget holding = null;
+	private Scrollable holding = null;
+	private Orientation holdingScrollBar = Orientation.VERTICAL;
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -135,8 +136,11 @@ public class GuiScreen extends Gui {
 						else if (control instanceof TextField) {
 							((TextField)control).setCursorPosition(((TextField)control).getText().length());
 						}
-						else if (control instanceof ListWidget) {
-							handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+						else if (control instanceof Scrollable) {
+							boolean handled = handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
+							if(!handled && control instanceof ListWidget) {
+								handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+							}
 						}
 						break;
 					}
@@ -148,24 +152,11 @@ public class GuiScreen extends Gui {
 	private void handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getScreenX());
 		int y = (int) (mouseY - lw.getScreenY());
-		int scroll = lw.getScrollPosition();
-		int currentHeight = 0;
-		int n = 0;
-		if(x < 5) {
-			return;
-		}
-		if(x > lw.getWidth()-16) {
-			double scrollY = 0;
-			double p = (double)scroll / (double)lw.getMaxScrollPosition();
-			scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
-			if(scrollY <= mouseY && mouseY <= scrollY + 16) {
-				holding = lw;
-				System.out.println("Holds scrollbar!");
-			}
-			return;
-		}
+		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
 		y -= 5;
+		int currentHeight = 0;
+		int n = 0;
 		for(ListWidgetItem item:lw.getItems()) {
 			
 			if(currentHeight <= y && y <= currentHeight + item.getHeight()) {
@@ -175,6 +166,42 @@ public class GuiScreen extends Gui {
 			n++;
 			currentHeight += item.getHeight();
 		}
+	}
+
+	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
+		int x = (int) (mouseX - lw.getScreenX());
+		int y = (int) (mouseY - lw.getScreenY());
+		int scrollY = lw.getScrollPosition(Orientation.VERTICAL);
+		int scrollX = lw.getScrollPosition(Orientation.HORIZONTAL);
+		System.out.println("Mouse: ("+x+"|"+y+")");
+		if(x > lw.getWidth()-16 && lw.needsScrollBar(Orientation.VERTICAL)) {
+			System.out.println("Checking VERTICAL");
+			double scrollFactor = 0;
+			double p = (double)scrollY / (double)lw.getMaximumScrollPosition(Orientation.VERTICAL);
+			scrollFactor = 3 + p * (lw.getHeight() - 16.0 - 6.0);
+			System.out.println("p: "+p+"\nscrollFactor: "+scrollFactor);
+			if(scrollFactor <= y && y <= scrollFactor + 16) {
+				holding = lw;
+				holdingScrollBar = Orientation.VERTICAL;
+			}
+		}
+		if(y > lw.getHeight() - 16 && lw.needsScrollBar(Orientation.HORIZONTAL)) {
+			System.out.println("Checking HORIZONTAL");
+			double scrollFactor = 0;
+			double p = (double)scrollX / (double)lw.getMaximumScrollPosition(Orientation.HORIZONTAL);
+			scrollFactor = 3 + p * (lw.getWidth() - 16.0 - 6.0);
+			System.out.println("p: "+p+"\nscrollFactor: "+scrollFactor);
+			if(scrollFactor <= x && x <= scrollFactor + 16) {
+				holding = lw;
+				holdingScrollBar = Orientation.HORIZONTAL;
+			}
+		}
+		if(holding != null)
+		{
+			System.out.println("Holds "+holdingScrollBar+" scrollbar!");
+			return true;
+		}
+		return false;
 	}
 
 	private void handleButtonClick(Button control) {
@@ -233,11 +260,23 @@ public class GuiScreen extends Gui {
 			}
 		}
 		if(holding != null) {
-			int y = mouseY - holding.getY();
-			double p = (double)y/holding.getHeight();
-			holding.setScrollPosition((int) ((double)holding.getMaxScrollPosition() * p));
+			double p = 0;
+			switch(holdingScrollBar){
+			case VERTICAL:
+				int y = mouseY - holding.getY();
+				p = (double)y/holding.getHeight();
+				break;
+			case HORIZONTAL:
+				int x = mouseX - holding.getX();
+				p = (double)x/holding.getWidth();
+				
+				break;
+			}
+			holding.setScrollPosition(holdingScrollBar, (int) ((double)holding.getMaximumScrollPosition(holdingScrollBar) * p));
+			
 			if(eventButton == 0) {
 				holding = null;
+				System.out.println("Released "+holdingScrollBar+" scrollbar!");
 			}
 		}
 	}
@@ -305,11 +344,20 @@ public class GuiScreen extends Gui {
 		}
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
+			Orientation axis = Orientation.VERTICAL;
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
+				axis = Orientation.HORIZONTAL;
+			}
 			for(Widget w:getScreen().getAttachedWidgets()) {
 				if(isInBoundingRect(w, x, y)) {
-					if(w instanceof ListWidget) {
-						ListWidget lw = (ListWidget)w;
-						lw.setScrollPosition(lw.getScrollPosition() - scroll / 30);
+					if(w instanceof Scrollable) {
+						//Stupid LWJGL not recognizing vertical scrolls :(
+						Scrollable lw = (Scrollable)w;
+						if(axis == Orientation.VERTICAL) {
+							lw.scroll(0, -scroll / 30);
+						} else {
+							lw.scroll(-scroll / 30, 0);
+						}
 					}
 				}
 			}
