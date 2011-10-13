@@ -68,7 +68,7 @@ public class GuiSlotServer extends GuiSlot {
 		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.name, var2 + 2, var3 + 1, 16777215);
 		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.msg, var2 + 2, var3 + 12, 8421504);
 		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.status, var2 + 215 - this.field_35410_a.fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
-		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.ip + (var6.port.length() > 0 ? ":" : "") + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
+		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.getFullIp(), var2 + 2, var3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		Texture serverInfoTexture = CustomTextureManager.getTextureFromJar("/res/info.png");

@@ -116,7 +116,7 @@ public class GuiMultiplayer extends GuiScreen {
 					this.getServer();
 				} else if(var1.id == 4) {
 					ServerSlot slot = (ServerSlot)this.serverInfo.serverList.get(this.selectedWorld);
-					GuiAddFav gui = new GuiAddFav(this, slot.name, (slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port), slot.uniqueid);
+					GuiAddFav gui = new GuiAddFav(this, slot.name, slot.getFullIp(), slot.uniqueid);
 					gui.allowUserInput = false;
 					this.mc.displayGuiScreen(gui);
 				} else if(var1.id == 0) {
