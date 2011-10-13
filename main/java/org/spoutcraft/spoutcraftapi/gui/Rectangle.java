@@ -105,6 +105,36 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	/**
+	 * Shifts the position by given x and y.
+	 * @param x
+	 * @param y
+	 */
+	public void moveBy(int x, int y) {
+		this.x += x;
+		this.y += y;
+	}
+	
+	/**
+	 * Resizes the rect with given width and height
+	 * @param width
+	 * @param height
+	 */
+	public void resize(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+	
+	/**
+	 * Moves rect to given x and y position.
+	 * @param x
+	 * @param y
+	 */
+	public void move(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {
 		int w, h, x, y;

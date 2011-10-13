@@ -5,18 +5,13 @@ import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public class GenericListWidget extends GenericControl implements ListWidget {
+public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;
-	private int scroll = 0;
 	private int cachedTotalHeight = -1;
 
 	public WidgetType getType() {
 		return WidgetType.ListWidget;
-	}
-
-	public void render() {
-		Spoutcraft.getRenderDelegate().render(this);
 	}
 
 	public ListWidgetItem[] getItems() {
@@ -62,13 +57,15 @@ public class GenericListWidget extends GenericControl implements ListWidget {
 		}
 		
 		//Check if selection is visible
+		//TODO: move this into Scrollable.ensureVisible(Rect)
+		int scroll = getScrollPosition(Orientation.VERTICAL);
 		int h = getItemYOnScreen(selected);
 		ListWidgetItem item = getSelectedItem();
 		int scrollBottom = (int) (scroll + getHeight() - 10);
 		if(h<scroll) {
-			setScrollPosition(h);
+			setScrollPosition(Orientation.VERTICAL, h);
 		} else if(h + item.getHeight() > scrollBottom) {
-			setScrollPosition((int) (h - getHeight() + 10 + item.getHeight()));
+			setScrollPosition(Orientation.VERTICAL, (int) (h - getHeight() + 10 + item.getHeight()));
 		}
 		return this;
 	}
@@ -91,32 +88,32 @@ public class GenericListWidget extends GenericControl implements ListWidget {
 	}
 
 	public ListWidget setScrollPosition(int position) {
-		scroll = position;
-		if(scroll<0) {
-			scroll = 0;
-		}
-		if(scroll > getMaxScrollPosition()) {
-			scroll = getMaxScrollPosition();
-		}
+		setScrollPosition(Orientation.VERTICAL, position);
 		return this;
 	}
 
 	public int getScrollPosition() {
-		return scroll;
+		return getScrollPosition(Orientation.VERTICAL);
 	}
-
-	public int getTotalHeight() {
+	
+	@Override
+	public int getInnerSize(Orientation axis) {
+		if(axis == Orientation.HORIZONTAL) return (int) (10000);
 		if(cachedTotalHeight == -1) {
 			cachedTotalHeight = 0;
 			for(ListWidgetItem item:items) {
 				cachedTotalHeight+=item.getHeight();
 			}
 		}
-		return cachedTotalHeight;
+		return cachedTotalHeight + 10;
+	}
+	
+	public int getTotalHeight() {
+		return getInnerSize(Orientation.VERTICAL);
 	}
 
 	public int getMaxScrollPosition() {
-		return Math.max(0, (int) (getTotalHeight() - getHeight() + 10));
+		return getMaximumScrollPosition(Orientation.VERTICAL);
 	}
 
 	public boolean isSelected(ListWidgetItem item) {
@@ -132,6 +129,10 @@ public class GenericListWidget extends GenericControl implements ListWidget {
 			setSelection(selected + n);
 		}
 		return this;
+	}
+
+	public void renderContents() {
+		Spoutcraft.getRenderDelegate().renderContents(this);
 	}
 
 }

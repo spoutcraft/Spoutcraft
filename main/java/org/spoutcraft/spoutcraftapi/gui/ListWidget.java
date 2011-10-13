@@ -1,6 +1,6 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-public interface ListWidget extends Control {
+public interface ListWidget extends Scrollable {
 	/**
 	 * Get all the items from the list widget
 	 * @return the assigned ListWidgetItems
@@ -58,30 +58,7 @@ public interface ListWidget extends Control {
 	 * @returns if the item is selected
 	 */
 	boolean isSelected(ListWidgetItem item);
-	
-	/**
-	 * Sets the scroll position
-	 * @param position
-	 * @return instance of the ListWidget
-	 */
-	public ListWidget setScrollPosition(int position);
-	
-	/**
-	 * @return the scroll position
-	 */
-	public int getScrollPosition();
-	
-	/**
-	 * Calculates the total height of all elements.
-	 * @return
-	 */
-	public int getTotalHeight();
-	
-	/**
-	 * @return the scroll position that is needed to show the very last item.
-	 */
-	public int getMaxScrollPosition();
-	
+
 	/**
 	 * Moves the selection up or down by n
 	 * @param n
@@ -89,4 +66,34 @@ public interface ListWidget extends Control {
 	 */
 	public ListWidget shiftSelection(int n);
 	
+	/**
+	 * Sets the scroll position
+	 * @param position
+	 * @return instance of the ListWidget
+	 * @deprecated use Scrollable.setScrollPosition(Orientation.VERTICAL, value) instead.
+	 */
+	@Deprecated
+	public ListWidget setScrollPosition(int position);
+	
+	/**
+	 * @return the scroll position
+	 * @deprecated use Scrollable.getScrollPosition(Orientation.VERTICAL) instead.
+	 */
+	@Deprecated
+	public int getScrollPosition();
+	
+	/**
+	 * Calculates the total height of all elements.
+	 * @return
+	 * @deprecated use Scrollable.getInnerSize(Orientation.VERTICAL) instead.
+	 */
+	@Deprecated
+	public int getTotalHeight();
+	
+	/**
+	 * @return the scroll position that is needed to show the very last item.
+	 * @deprecated use Scrollable.getMaximumScrollPosition(Orientation.VERTICAL) instead
+	 */
+	@Deprecated
+	public int getMaxScrollPosition();
 }
