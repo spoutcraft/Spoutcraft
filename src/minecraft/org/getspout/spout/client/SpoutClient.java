@@ -89,6 +89,12 @@ public class SpoutClient extends PropertyObject implements Client {
 	private Thread clipboardThread = null;
 	public ClientPlayer player = null;
 	private boolean cheating = true;
+	private boolean sky = true;
+	private boolean clearwater = true;
+	private boolean cloudheight = true;
+	private boolean stars = true;
+	private boolean weather = true;
+	private boolean time = true;
 	private RenderDelegate render = new MCRenderDelegate();
 	private KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
@@ -154,6 +160,15 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public void setCheatMode(boolean cheat) {
 		cheating = cheat;
+	}
+
+	public void setVisualCheats(boolean sky, boolean clearwater, boolean cloudheight, boolean stars, boolean weather, boolean time) {
+		this.sky = sky;
+		this.clearwater = clearwater;
+		this.cloudheight = cloudheight;
+		this.stars = stars;
+		this.weather = weather;
+		this.time = time;
 	}
 	
 	public boolean isSpoutEnabled() {
