@@ -18,8 +18,6 @@ package org.getspout.spout.gui;
 
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.predownload.GuiPredownload;
 import org.spoutcraft.spoutcraftapi.gui.*;
@@ -45,7 +43,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
 
-		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
+		attachWidget("Spoutcraft", health).attachWidget("Spoutcraft", bubble).attachWidget("Spoutcraft", chat).attachWidget("Spoutcraft", chatText).attachWidget("Spoutcraft", armor).attachWidget("Spoutcraft", hunger).attachWidget("Spoutcraft", exp).attachWidget("Spoutcraft", playerList);
 	}
 	
 	public int getVersion() {
@@ -64,9 +62,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 	
 	@Override
-	public InGameScreen attachWidget(Widget widget) {
+	public InGameScreen attachWidget(String plugin, Widget widget) {
 		if (canAttachWidget(widget)) {
-			super.attachWidget(widget);
+			super.attachWidget(plugin, widget);
 			return this;
 		}
 		throw new UnsupportedOperationException("Unsupported widget type");

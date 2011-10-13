@@ -129,7 +129,7 @@ public class PacketWidget implements SpoutPacket {
 				}
 				else {
 					widget.setScreen(mainScreen);
-					mainScreen.attachWidget(widget);
+					mainScreen.attachWidget("Spoutcraft", widget);
 				}
 			}
 			//Determine if this is a widget on the popup screen
@@ -140,7 +140,7 @@ public class PacketWidget implements SpoutPacket {
 				}
 				else {
 					widget.setScreen(popup);
-					popup.attachWidget(widget);
+					popup.attachWidget("Spoutcraft", widget);
 				}
 			} 
 			//Determine if this is a widget on an overlay screen
@@ -150,7 +150,7 @@ public class PacketWidget implements SpoutPacket {
 					widget.setScreen(overlay);
 				} else {
 					widget.setScreen(overlay);
-					overlay.attachWidget(widget);
+					overlay.attachWidget("Spoutcraft", widget);
 				}
 			}
 		}

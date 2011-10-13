@@ -31,10 +31,8 @@ import net.minecraft.src.*;
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.yaml.snakeyaml.Yaml;
 
 public class GuiServerInfo extends GuiScreen {

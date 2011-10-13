@@ -112,14 +112,11 @@ public class GuiFavoritesSlot extends GuiSlot {
 		}
 		
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
-		boolean var7 = false;
-		boolean var8 = false;
 		String var9 = "";
 		byte var12;
 		int var13;
 		if(var6.pinging && var6.ping != -2L) {
 			var12 = 0;
-			var8 = false;
 			if(var6.ping < 0L) {
 				var13 = 5;
 			} else if(var6.ping < 150L) {
