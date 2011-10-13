@@ -162,6 +162,30 @@ public class SpoutClient extends PropertyObject implements Client {
 		cheating = cheat;
 	}
 
+	public boolean isSkyCheat() {
+		return sky;
+	}
+
+	public boolean isClearWaterCheat() {
+		return clearwater;
+	}
+
+	public boolean isCloudHeightCheat() {
+		return cloudheight;
+	}
+
+	public boolean isStarsCheat() {
+		return stars;
+	}
+
+	public boolean isWeatherCheat() {
+		return weather;
+	}
+
+	public boolean isTimeCheat() {
+		return time;
+	}
+
 	public void setVisualCheats(boolean sky, boolean clearwater, boolean cloudheight, boolean stars, boolean weather, boolean time) {
 		this.sky = sky;
 		this.clearwater = clearwater;
