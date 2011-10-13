@@ -16,8 +16,11 @@
  */
 package org.getspout.spout.gui.server;
 
+import java.io.IOException;
+
 import net.minecraft.src.*;
 
+import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Keyboard;
 
@@ -86,7 +89,6 @@ public class GuiAddFav extends GuiScreen {
 				GuiFavorites.writeFav(this.nameField.getText(), this.Ipfield.getText(), uid);
 				this.mc.displayGuiScreen(this.screen);
 			}
-
 		}
 	}
 
@@ -94,6 +96,25 @@ public class GuiAddFav extends GuiScreen {
 		this.nameField.textboxKeyTyped(letter, key);
 		this.Ipfield.textboxKeyTyped(letter, key);
 		((GuiButton)this.controlList.get(0)).enabled = this.nameField.getText().trim().length() > 0 && this.Ipfield.getText().trim().length() > 0;
+		if (((GuiButton)this.controlList.get(0)).enabled){
+			try {
+				if (GuiFavorites.hasServer(this.nameField.getText().trim())){
+					((GuiButton)this.controlList.get(0)).enabled = false;
+					((GuiButton)this.controlList.get(0)).displayString = ChatColor.RED + "Duplicate Server Name";
+				}
+				else if (GuiFavorites.hasIP(this.Ipfield.getText().trim())){
+					((GuiButton)this.controlList.get(0)).enabled = false;
+					((GuiButton)this.controlList.get(0)).displayString = ChatColor.RED + "Duplicate Server IP";
+				}
+				else {
+					((GuiButton)this.controlList.get(0)).displayString = "Add";
+					((GuiButton)this.controlList.get(0)).enabled = true;
+				}
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
 		if (key == Keyboard.KEY_TAB) {
 			if (nameField.isFocused) {
 				nameField.isFocused = false;

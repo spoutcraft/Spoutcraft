@@ -21,6 +21,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -531,6 +533,32 @@ public class GuiFavorites extends GuiScreen {
 	
 	public static void onElementInfo(GuiFavorites var0, int var1) {
 		var0.elementInfo(var1);
+	}
+	
+	public static boolean hasServer(String name) throws IOException {
+		BufferedReader bf = new BufferedReader(new FileReader(getFavoriteServerFile()));
+		String line = bf.readLine();
+		while (line != null) {
+			String[] split = line.split(">");
+			if (split[0].equalsIgnoreCase(name)) {
+				return true;
+			}
+			line = bf.readLine();
+		}
+		return false;
+	}
+	
+	public static boolean hasIP(String ip) throws IOException {
+		BufferedReader bf = new BufferedReader(new FileReader(getFavoriteServerFile()));
+		String line = bf.readLine();
+		while (line != null) {
+			String[] split = line.split(">");
+			if (split[1].equalsIgnoreCase(ip)) {
+				return true;
+			}
+			line = bf.readLine();
+		}
+		return false;
 	}
 	
 	public static File getFavoriteServerFile() {
