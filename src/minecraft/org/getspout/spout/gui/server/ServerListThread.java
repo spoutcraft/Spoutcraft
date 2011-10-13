@@ -72,7 +72,7 @@ public class ServerListThread implements Runnable {
 				for (Map<String, String> i : list) {
 					ServerSlot slot = new ServerSlot(++j);
 					slot.ip = i.get("ip");
-					slot.port = i.get("port");
+					slot.port = i.get("port").equals("25565") ? "" : i.get("port");
 					slot.country = i.get("country");
 					slot.players = Integer.parseInt(i.get("players"));
 					slot.maxPlayers = Integer.parseInt(i.get("maxplayers"));
