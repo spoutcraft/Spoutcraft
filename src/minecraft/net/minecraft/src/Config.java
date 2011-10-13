@@ -136,7 +136,7 @@ public class Config {
 	}
 
 	public static boolean isRainOff() {
-		return Minecraft.theMinecraft.gameSettings.ofRain == 3 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings.ofRain == 3 && SpoutClient.getInstance().isWeatherCheat();
 	}
 
 	public static boolean isCloudsFancy() {
@@ -144,7 +144,7 @@ public class Config {
 	}
 
 	public static boolean isCloudsOff() {
-		return Minecraft.theMinecraft.gameSettings.ofClouds == 3 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings.ofClouds == 3 && SpoutClient.getInstance().isCloudHeightCheat();
 	}
 
 	public static boolean isTreesFancy() {
@@ -444,15 +444,15 @@ public class Config {
 	}
 
 	public static boolean isWeatherEnabled() {
-		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofWeather || !SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofWeather || !SpoutClient.getInstance().isWeatherCheat();
 	}
 
 	public static boolean isSkyEnabled() {
-		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofSky || !SpoutClient.getInstance().isCheatMode(); 
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofSky || !SpoutClient.getInstance().isSkyCheat(); 
 	}
 
 	public static boolean isStarsEnabled() {
-		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofStars || !SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?true:Minecraft.theMinecraft.gameSettings.ofStars || !SpoutClient.getInstance().isStarsCheat();
 	}
 
 	public static boolean isFarView() {
@@ -480,15 +480,15 @@ public class Config {
 	}
 
 	public static boolean isTimeDayOnly() {
-		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 1 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 1 && SpoutClient.getInstance().isTimeCheat();
 	}
 
 	public static boolean isTimeNightOnly() {
-		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 2 && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofTime == 2 && SpoutClient.getInstance().isTimeCheat();
 	}
 
 	public static boolean isClearWater() {
-		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isCheatMode();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isTimeCheat();
 	}
 
 }

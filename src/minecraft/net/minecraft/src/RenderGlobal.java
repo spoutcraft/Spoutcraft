@@ -1072,7 +1072,7 @@ public class RenderGlobal implements IWorldAccess {
 		//Spout Start
 		//float var12 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
 		float var12 = SpoutClient.getInstance().getSkyManager().getCloudHeight() - var2 + 0.33F ;
-		if (SpoutClient.getInstance().isCheatMode()) {
+		if (SpoutClient.getInstance().isCloudHeightCheat()) {
 			var12 -= (1.0F - this.mc.gameSettings.ofCloudsHeight) * 25.0F;
 		}
 		//Spout End
