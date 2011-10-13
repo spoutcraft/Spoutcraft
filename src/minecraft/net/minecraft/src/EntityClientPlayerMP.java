@@ -100,8 +100,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		double var13 = (double)(this.rotationPitch - this.oldRotationPitch);
 		boolean var15 = var5 != 0.0D || var7 != 0.0D || var3 != 0.0D || var9 != 0.0D;
 		boolean var16 = var11 != 0.0D || var13 != 0.0D;
-		//Spout start
-		if (sendQueue.cached == null) {
 		if(this.ridingEntity != null) {
 			if(var16) {
 				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
@@ -127,8 +125,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 				this.field_12242_bI = 0;
 			}
 		}
-		}
-		//Spout End
 
 		this.field_9382_bF = this.onGround;
 		if(var15) {

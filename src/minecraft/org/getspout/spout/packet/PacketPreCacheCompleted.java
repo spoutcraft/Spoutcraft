@@ -45,12 +45,8 @@ public class PacketPreCacheCompleted implements SpoutPacket{
 
 	public void run(int playerId) {
 		FileDownloadThread.preCacheCompleted.set(System.currentTimeMillis());
-		Packet10Flying login = ((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.cached;
-		if (login != null) {
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.handleFlying(login);
-			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.cached = null;
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
-		}
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
+		SpoutClient.getHandle().displayGuiScreen(null, false);
 		System.out.println("Completed Precaching");
 	}
 
