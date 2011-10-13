@@ -9,4 +9,15 @@ public enum Orientation {
 	 * Vertical axis (top-bottom)
 	 */
 	VERTICAL,
+	;
+	
+	public Orientation getOther() {
+		switch(this) {
+		case HORIZONTAL:
+			return VERTICAL;
+		case VERTICAL:
+			return HORIZONTAL;
+		}
+		return null;
+	}
 }
