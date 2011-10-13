@@ -627,7 +627,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			mc.renderEngine.bindTexture(texture);
 			double scrollX = 0;
 			double p = (double)scrollLeft / (double)gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
-			scrollX = 3 + p * (gs.getWidth() - 16.0 - 6);
+			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
 			RenderUtil.drawTexturedModalRectangle((int)scrollX, (int) (gs.getHeight() - 16), 0, 208, 16, 16, 0f);
 		}
 		if(gs.needsScrollBar(Orientation.VERTICAL)) {
@@ -636,7 +636,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			mc.renderEngine.bindTexture(texture);
 			double scrollY = 0;
 			double p = (double)scrollTop / (double)gs.getMaximumScrollPosition(Orientation.VERTICAL);
-			scrollY = 3 + p * (gs.getHeight() - 16.0 - 6);
+			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
 			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 0, 208, 16, 16, 0f);
 		}
 	}
