@@ -117,7 +117,7 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			return new String[]{"Clouds", "  Default - as set by setting Graphics", "  Fast - lower quality, faster", "  Fancy - higher quality, slower", "  OFF - no clouds, fastest", "Fast clouds are rendered 2D.", "Fancy clouds are rendered 3D."};
 		}
 		else if (option.equals("Cloud Height")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isCloudHeightCheat()) {
 				return cheating;
 			}
 			return new String[]{"Cloud Height", "  OFF - default height", "  100% - above world height limit"};
@@ -135,13 +135,13 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			return new String[]{"Rain & Snow", "  Default - as set by setting Graphics", "  Fast  - light rain/snow, faster", "  Fancy - heavy rain/snow, slower", "  OFF - no rain/snow, fastest", "When rain is OFF the splashes and rain sounds", "are still active."};
 		}
 		else if (option.equals("Sky")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isSkyCheat()) {
 				return cheating;
 			}
 			return new String[]{"Sky", "  ON - sky is visible, slower", "  OFF  - sky is not visible, faster", "When sky is OFF the moon and sun are still visible."};
 		}
 		else if (option.equals("Stars")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isStarsCheat()) {
 				return cheating;
 			}
 			return new String[]{"Stars", "  ON - stars are visible, slower", "  OFF  - stars are not visible, faster"};
@@ -150,7 +150,7 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			return new String[]{"Better Grass", "  OFF - default side grass texture, fastest", "  Fast - full side grass texture, slower", "  Fancy - dynamic side grass texture, slowest"};
 		}
 		else if (option.equals("Weather")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isWeatherCheat()) {
 				return cheating;
 			}
 			return new String[]{"Weather", "  ON - weather is active, slower", "  OFF  - weather is not active, faster", "The weather controls rain, snow and thunderstorms."};
@@ -171,13 +171,13 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			return new String[]{"Far View", " OFF - (default) standard view distance", " ON - 3x view distance", "Far View is very resource demanding!", "3x view distance => 9x chunks to be loaded => FPS / 9", "Standard view distances: 32, 64, 128, 256", "Far view distances: 96, 192, 384, 512"};
 		}
 		else if (option.equals("Clear Water")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isClearWaterCheat()) {
 				return cheating;
 			}
 			return new String[]{"Clear Water", " OFF - (default) standard water view", " ON - can see deeper through water, no longer obscures vision", "Clear water is very resource demanding!",};
 		}
 		else if (option.equals("Time")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isTimeCheat()) {
 				return cheating;
 			}
 			return new String[]{"Time", " Default - normal day/night cycles", " Day Only - day only", " Night Only - night only"};
