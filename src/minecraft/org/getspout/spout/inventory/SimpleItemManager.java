@@ -16,9 +16,15 @@
  */
 package org.getspout.spout.inventory;
 
+import java.util.Iterator;
+
+import gnu.trove.iterator.TLongIterator;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.material.Block;
+import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairFloatHashMap;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
@@ -328,6 +334,17 @@ public class SimpleItemManager implements ItemManager {
 	public void reset() {
 		customNames.clear();
 		customTextures.clear();
+		Iterator<Material> i = MaterialData.getMaterialIterator();
+		while(i.hasNext()) {
+			Material next = i.next();
+			if (next instanceof Block) {
+				Block block = (Block)next;
+				resetFriction(block.getRawId(), (short) block.getRawData());
+				resetHardness(block.getRawId(), (short) block.getRawData());
+				resetOpacity(block.getRawId(), (short) block.getRawData());
+				resetLightLevel(block.getRawId(), (short) block.getRawData());
+			}
+		}
 	}
 
 	public String getCustomItemName(int item) {

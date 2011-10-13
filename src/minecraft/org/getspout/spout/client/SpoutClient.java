@@ -191,6 +191,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
 		SpoutItemBlock.wipeMap();
+		itemManager.reset();
 	}
 	
 	public void onWorldEnter() {
