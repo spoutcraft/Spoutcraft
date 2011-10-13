@@ -192,7 +192,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		PacketDecompressionThread.endThread();
 		SpoutItem.wipeMap();
 		itemManager.reset();
-		FileDownloadThread.preCacheCompleted.set(0);
+		FileDownloadThread.preCacheCompleted.lazySet(0);
 	}
 	
 	public void onWorldEnter() {

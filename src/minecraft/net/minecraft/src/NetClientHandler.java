@@ -390,7 +390,7 @@ public class NetClientHandler extends NetHandler {
 		//Spout Start
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
 			if (FileDownloadThread.preCacheCompleted.get() == 0L) {
-				if (cached != null){
+				if (cached == null){
 					cached = var1;
 				}
 				return;
