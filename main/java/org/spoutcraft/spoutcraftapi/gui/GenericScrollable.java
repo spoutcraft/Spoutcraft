@@ -87,7 +87,7 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 	public int getViewportSize(Orientation axis) {
 		int size = 0;
 		size = (int) (axis == Orientation.HORIZONTAL?getWidth():getHeight());
-		if(needsScrollBar(axis==Orientation.HORIZONTAL?Orientation.VERTICAL:Orientation.HORIZONTAL)) {
+		if(needsScrollBar(axis.getOther())) {
 			return size - 16;
 		}
 		return size;
