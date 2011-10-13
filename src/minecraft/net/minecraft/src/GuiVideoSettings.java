@@ -300,7 +300,7 @@ public class GuiVideoSettings extends GuiScreen {
 			return new String[]{"Stabilizes FPS by flushing the graphic driver buffers", "  OFF - no stabilization, FPS may fluctuate", "  ON - FPS stabilization", "This option is graphic driver dependant and its effect", "is not always visible"};
 		}
 		else if (option.equals("Sign Distance")) {
-			return new String[]{"The distance from which you can see the text on a sign", "Farther distances can decreases FPS."};
+			return new String[]{"The distance from which you can see the text on a sign", "Farther distances can decrease FPS."};
 		}
 		else if (option.equals("Optimize Video Settings")) {
 			if (this.mc.theWorld == null) {
