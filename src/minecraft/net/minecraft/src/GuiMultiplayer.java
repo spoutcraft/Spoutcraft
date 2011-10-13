@@ -116,7 +116,7 @@ public class GuiMultiplayer extends GuiScreen {
 					this.getServer();
 				} else if(var1.id == 4) {
 					ServerSlot slot = (ServerSlot)this.serverInfo.serverList.get(this.selectedWorld);
-					GuiAddFav gui = new GuiAddFav(this, (slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port), slot.name, slot.uniqueid);
+					GuiAddFav gui = new GuiAddFav(this, slot.name, (slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port), slot.uniqueid);
 					gui.allowUserInput = false;
 					this.mc.displayGuiScreen(gui);
 				} else if(var1.id == 0) {
@@ -189,7 +189,7 @@ public class GuiMultiplayer extends GuiScreen {
 			} else {
 				String country = serverInfo.countries.get(serverInfo.activeCountry);
 				ArrayList fullList = serverInfo.countryMappings.get(country);
-				Collections.sort(fullList);
+				if (tabs.get(current_tab).pages) { Collections.sort(fullList); }
 				serverInfo.pages = (fullList.size() + 9) / 10;
 				int last = Math.min(fullList.size(), (serverInfo.page + 1) * 10);
 				int first = serverInfo.page * 10;
