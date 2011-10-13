@@ -173,24 +173,19 @@ public class GuiScreen extends Gui {
 		int y = (int) (mouseY - lw.getScreenY());
 		int scrollY = lw.getScrollPosition(Orientation.VERTICAL);
 		int scrollX = lw.getScrollPosition(Orientation.HORIZONTAL);
-		System.out.println("Mouse: ("+x+"|"+y+")");
 		if(x > lw.getWidth()-16 && lw.needsScrollBar(Orientation.VERTICAL)) {
-			System.out.println("Checking VERTICAL");
 			double scrollFactor = 0;
 			double p = (double)scrollY / (double)lw.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollFactor = 3 + p * (lw.getViewportSize(Orientation.VERTICAL) - 16.0 - 6.0);
-			System.out.println("p: "+p+"\nscrollFactor: "+scrollFactor);
 			if(scrollFactor <= y && y <= scrollFactor + 16) {
 				holding = lw;
 				holdingScrollBar = Orientation.VERTICAL;
 			}
 		}
 		if(y > lw.getHeight() - 16 && lw.needsScrollBar(Orientation.HORIZONTAL)) {
-			System.out.println("Checking HORIZONTAL");
 			double scrollFactor = 0;
 			double p = (double)scrollX / (double)lw.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollFactor = 3 + p * (lw.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6.0);
-			System.out.println("p: "+p+"\nscrollFactor: "+scrollFactor);
 			if(scrollFactor <= x && x <= scrollFactor + 16) {
 				holding = lw;
 				holdingScrollBar = Orientation.HORIZONTAL;
@@ -198,7 +193,6 @@ public class GuiScreen extends Gui {
 		}
 		if(holding != null)
 		{
-			System.out.println("Holds "+holdingScrollBar+" scrollbar!");
 			return true;
 		}
 		return false;
@@ -276,7 +270,6 @@ public class GuiScreen extends Gui {
 			
 			if(eventButton == 0) {
 				holding = null;
-				System.out.println("Released "+holdingScrollBar+" scrollbar!");
 			}
 		}
 	}
