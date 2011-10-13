@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.FileDownloadThread;
 //SPout end
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
@@ -130,7 +131,6 @@ public class NetClientHandler extends NetHandler {
 	public int field_35785_d = 20;
 	Random rand = new Random();
 	//Spout start
-	private boolean predownload = false;
 	public Packet10Flying cached = null;
 	//Spout end
 
@@ -388,17 +388,13 @@ public class NetClientHandler extends NetHandler {
 		var1.stance = var2.posY;
 		
 		//Spout Start
-		boolean display = false;
-		if (SpoutClient.getInstance().isSpoutEnabled() && !predownload) {
-			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
-			predownload = true;
-		}
-		else {
-			display = true;
-		}
-		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
-			cached = var1;
-			return;
+		if (SpoutClient.getInstance().isSpoutEnabled()) {
+			if (FileDownloadThread.preCacheCompleted.get() == 0L) {
+				if (cached != null){
+					cached = var1;
+				}
+				return;
+			}
 		}
 		//Spout End
 		
@@ -408,11 +404,7 @@ public class NetClientHandler extends NetHandler {
 			this.mc.thePlayer.prevPosY = this.mc.thePlayer.posY;
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.field_1210_g = true;
-			//Spout Start
-			if (display) {
-				this.mc.displayGuiScreen((GuiScreen) null);
-			}
-			//Spout End
+			this.mc.displayGuiScreen((GuiScreen) null);
 		}
 
 	}

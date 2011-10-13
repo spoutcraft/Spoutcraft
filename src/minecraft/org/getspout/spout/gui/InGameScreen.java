@@ -16,10 +16,10 @@
  */
 package org.getspout.spout.gui;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.predownload.GuiPredownload;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{
@@ -32,6 +32,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected ExpBar exp;
 	protected ServerPlayerList playerList;
 	protected PopupScreen activePopup = null;
+	protected LinkedList<PopupScreen> queuedScreens = new LinkedList<PopupScreen>();
 	
 	public InGameScreen() {
 		this.health = new HealthBar();
@@ -57,6 +58,12 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		}
 		if (activePopup != null) {
 			activePopup.onTick();
+		}
+		else{
+			PopupScreen queued = queuedScreens.poll();
+			if (queued != null) {
+				attachPopupScreen(queued);
+			}
 		}
 		super.onTick();
 	}
@@ -163,15 +170,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	
 	public boolean attachPopupScreen(PopupScreen screen) {
 		if (getActivePopup() == null) {
-			activePopup = screen;
-			if (SpoutClient.getHandle().currentScreen instanceof GuiPredownload) {
-				((GuiPredownload)SpoutClient.getHandle().currentScreen).queuedScreen = new CustomScreen(screen);
-			}
-			else {
-				SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
-			}
+			SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
 			return true;
 		}
+		queuedScreens.add(screen);
 		return false;
 	}
 	

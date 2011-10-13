@@ -20,6 +20,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Packet10Flying;
+
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileDownloadThread;
 
 public class PacketPreCacheCompleted implements SpoutPacket{
@@ -40,7 +45,13 @@ public class PacketPreCacheCompleted implements SpoutPacket{
 
 	public void run(int playerId) {
 		FileDownloadThread.preCacheCompleted.set(System.currentTimeMillis());
-		System.out.println("Completed");
+		Packet10Flying login = ((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.cached;
+		if (login != null) {
+			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.handleFlying(login);
+			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.cached = null;
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
+		}
+		System.out.println("Completed Precaching");
 	}
 
 	public void failure(int playerId) {

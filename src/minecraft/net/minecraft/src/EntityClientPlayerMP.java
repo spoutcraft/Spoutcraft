@@ -101,7 +101,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		boolean var15 = var5 != 0.0D || var7 != 0.0D || var3 != 0.0D || var9 != 0.0D;
 		boolean var16 = var11 != 0.0D || var13 != 0.0D;
 		//Spout start
-		if (!(this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload)) {
+		if (sendQueue.cached == null) {
 		if(this.ridingEntity != null) {
 			if(var16) {
 				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
