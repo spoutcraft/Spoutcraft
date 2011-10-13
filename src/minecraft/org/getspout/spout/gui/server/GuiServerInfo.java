@@ -48,7 +48,7 @@ public class GuiServerInfo extends GuiScreen {
 	private GuiScreen back;
 
 	public GuiServerInfo(ServerSlot info, GuiScreen back) {
-		if (!info.loaded) {
+		if (info.loaded < 2) {
 			try {
 				URL url = new URL("http://servers.getspout.org/api.php?id=" + info.uniqueid);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -57,11 +57,15 @@ public class GuiServerInfo extends GuiScreen {
 				reader.close();
 				
 				Map<String, String> i = list.get(0);
-				info.country = i.get("country");
-				info.site = URLDecoder.decode(i.get("site"), "UTF-8");
-				info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-				info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
-				info.loaded = true;
+				switch (info.loaded) {
+					case 0:
+						info.country = i.get("country");
+						info.site = URLDecoder.decode(i.get("site"), "UTF-8");
+						info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
+					case 1:
+						info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+				}
+				info.loaded = 2;
 			} catch (IOException e) {}
 		}
 		

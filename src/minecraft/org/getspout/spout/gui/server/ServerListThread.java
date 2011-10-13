@@ -79,9 +79,8 @@ public class ServerListThread implements Runnable {
 					slot.name = URLDecoder.decode(i.get("name"), "UTF-8");
 					slot.site = URLDecoder.decode(i.get("site"), "UTF-8");
 					slot.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-					slot.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
 					slot.uniqueid = Integer.parseInt(i.get("uniqueid"));
-					slot.loaded = true;
+					slot.loaded = 1;
 					
 					String country = tab.pages ? slot.country : tab.title;
 					ArrayList<ServerSlot> clist = tempCountryMappings.get(country);

@@ -33,7 +33,7 @@ public class ServerSlot implements Comparable {
 	public String description = "";
 	public String site = "";
 	public String forum = "";
-	public boolean loaded = false;
+	public int loaded = 0;
 
 
 	public ServerSlot(int ID) {
