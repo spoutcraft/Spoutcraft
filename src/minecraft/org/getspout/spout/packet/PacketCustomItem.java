@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 
 public class PacketCustomItem implements SpoutPacket {
 	
@@ -45,7 +45,7 @@ public class PacketCustomItem implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		SpoutItemBlock.addItemInfoMap(itemId, blockId, metaData);
+		SpoutItem.addItemInfoMap(itemId, blockId, metaData);
 	}
 
 	public PacketType getPacketType() {

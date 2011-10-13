@@ -17,7 +17,7 @@ import net.minecraft.src.WorldRenderer;
 
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
-public class SpoutItemBlock extends Item {
+public class SpoutItem extends Item {
 
 	private final static TIntIntHashMap itemBlock = new TIntIntHashMap();
 	private final static TIntIntHashMap itemMetaData = new TIntIntHashMap();
@@ -27,7 +27,7 @@ public class SpoutItemBlock extends Item {
 	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
 	private final static TIntObjectHashMap<SpoutCustomBlockDesign> customBlockDesign = new TIntObjectHashMap<SpoutCustomBlockDesign>();
 
-	public SpoutItemBlock(int blockId) {
+	public SpoutItem(int blockId) {
 		super(blockId);
 		this.setHasSubtypes(true);
 	}

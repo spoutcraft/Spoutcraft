@@ -44,7 +44,7 @@ import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ChatManager;
@@ -190,7 +190,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		ClientPlayer.getInstance().resetMainScreen();
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
-		SpoutItemBlock.wipeMap();
+		SpoutItem.wipeMap();
 		itemManager.reset();
 	}
 	
