@@ -106,6 +106,22 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 		this.y = y;
 	}
 	
+	public int getTop() {
+		return getY();
+	}
+	
+	public int getLeft() {
+		return getX();
+	}
+	
+	public int getBottom() {
+		return getY() + getHeight();
+	}
+	
+	public int getRight() {
+		return getX() + getWidth();
+	}
+	
 	/**
 	 * Shifts the position by given x and y.
 	 * @param x
@@ -163,5 +179,10 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 	@Override
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(width).append(height).append(x).append(y).toHashCode();
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "{ x: "+x+" y: "+y+" width: "+width+" height: "+height+" }";
 	}
 }

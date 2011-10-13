@@ -57,19 +57,19 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		}
 		
 		//Check if selection is visible
-		//TODO: move this into Scrollable.ensureVisible(Rect)
-		int scroll = getScrollPosition(Orientation.VERTICAL);
-		int h = getItemYOnScreen(selected);
-		ListWidgetItem item = getSelectedItem();
-		int scrollBottom = (int) (scroll + getHeight() - 10);
-		if(h<scroll) {
-			setScrollPosition(Orientation.VERTICAL, h);
-		} else if(h + item.getHeight() > scrollBottom) {
-			setScrollPosition(Orientation.VERTICAL, (int) (h - getHeight() + 10 + item.getHeight()));
-		}
+		ensureVisible(getItemRect(selected));
 		return this;
 	}
 	
+	private Rectangle getItemRect(int n) {
+		Rectangle result = new Rectangle(0,0,0,0);
+		result.setX(0);
+		result.setY(getItemYOnScreen(n));
+		result.setHeight(items.get(n).getHeight());
+		result.setWidth(getInnerSize(Orientation.VERTICAL));
+		return result;
+	}
+
 	private int getItemYOnScreen(int n) {
 		int height = 0;
 		for(int i = 0; i<n && i<items.size(); i++) {

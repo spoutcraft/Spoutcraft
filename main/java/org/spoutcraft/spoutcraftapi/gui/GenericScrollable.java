@@ -50,8 +50,48 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 	}
 
 	public void ensureVisible(Rectangle rect) {
-		// TODO Auto-generated method stub
-		
+		int scrollTop = getScrollPosition(Orientation.VERTICAL);
+		int scrollLeft = getScrollPosition(Orientation.HORIZONTAL);
+		int scrollBottom = scrollTop + getViewportSize(Orientation.VERTICAL) - 10;
+		int scrollRight = scrollLeft + getViewportSize(Orientation.HORIZONTAL) - 10;
+		boolean correctHorizontal = false;
+		boolean correctVertical = false;
+		if(scrollTop <= rect.getTop() && rect.getBottom() <=scrollBottom) {
+			//Fits vertical
+			if(scrollLeft <= rect.getLeft() && rect.getRight() <= scrollRight) {
+				//Fits completely
+				//Nothing to do.
+				return;
+			} else {
+				//Doesn't fit horizontal
+				correctHorizontal = true;
+			}
+		} else {
+			//Doesn't fit vertical
+			correctVertical = true;
+			if(scrollLeft <= rect.getLeft() && rect.getRight() <= scrollRight) {
+				//But does fit horizontal
+			} else {
+				//Doesn't fit horizontal too
+				correctHorizontal = true;
+			}
+		}
+		if(correctHorizontal) {
+			if(scrollRight < rect.getRight()) {
+				setScrollPosition(Orientation.HORIZONTAL, rect.getRight() - getViewportSize(Orientation.HORIZONTAL) + 10);
+			}
+			if(scrollLeft > rect.getLeft()) {
+				setScrollPosition(Orientation.HORIZONTAL, rect.getLeft());
+			}
+		}
+		if(correctVertical) {
+			if(scrollBottom < rect.getBottom()) {
+				setScrollPosition(Orientation.VERTICAL, rect.getBottom() - getViewportSize(Orientation.VERTICAL) + 10);
+			}
+			if(scrollTop > rect.getTop()) {
+				setScrollPosition(Orientation.VERTICAL, rect.getTop());
+			}
+		}
 	}
 
 	public int getMaximumScrollPosition(Orientation axis) {
