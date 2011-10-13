@@ -82,7 +82,7 @@ public class GuiFavoritesSlot extends GuiSlot {
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.name, var2 + 2, var3 + 1, 16777215);
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.msg, var2 + 2, var3 + 12, 8421504);
 		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.status, var2 + 215 - SpoutClient.getHandle().fontRenderer.getStringWidth(var6.status), var3 + 12, 8421504);
-		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.ip + (var6.port.length() > 0 ? ":" : "") + var6.port, var2 + 2, var3 + 12 + 11, 3158064);
+		this.parentServerGui.drawString(SpoutClient.getHandle().fontRenderer, var6.getFullIp(), var2 + 2, var3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		if (var6.uniqueid > 0) {

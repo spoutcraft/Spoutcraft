@@ -183,10 +183,9 @@ public class GuiFavorites extends GuiScreen {
 						ServerSlot slot = (ServerSlot)this.serverList.get(selectedWorld);
 						serverName = slot.name;
 						if(serverName != null) {
-							String ip = slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port;
 							deleting = true;
 							deleteWorld(true, selectedWorld);
-							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, ip, slot.uniqueid, true));
+							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, slot.getFullIp(), slot.uniqueid, true));
 						}
 					}
 					break;
@@ -247,7 +246,7 @@ public class GuiFavorites extends GuiScreen {
 				while(var3.hasNext()) {
 					ServerSlot var4 = (ServerSlot)var3.next();
 					if(var2 != var4.ID) {
-						GuiFavorites.writeFav(var4.name, var4.ip, var4.uniqueid);
+						GuiFavorites.writeFav(var4.name, var4.getFullIp(), var4.uniqueid);
 					}
 				}
 
@@ -286,7 +285,7 @@ public class GuiFavorites extends GuiScreen {
 
 			while(var1.hasNext()) {
 				ServerSlot var2 = (ServerSlot)var1.next();
-				GuiFavorites.writeFav(var2.name, var2.ip, var2.uniqueid);
+				GuiFavorites.writeFav(var2.name, var2.getFullIp(), var2.uniqueid);
 			}
 
 			++this.selectedWorld;

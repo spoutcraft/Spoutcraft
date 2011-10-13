@@ -200,7 +200,7 @@ public class GuiServerInfo extends GuiScreen {
 		}
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 20, this.height / 2 - 95, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.ip + (info.port.length() > 0 ? ":" : "") + info.port, this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
+		this.drawString(SpoutClient.getHandle().fontRenderer, info.getFullIp(), this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Name", this.width / 2 - 20, this.height / 2 - 70, 0xFFFFFF);
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.name, this.width / 2 - 10, this.height / 2 - 60, 0xA0A0A0);

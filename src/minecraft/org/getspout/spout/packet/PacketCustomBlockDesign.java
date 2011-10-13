@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.item.SpoutCustomBlockDesign;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 
 public class PacketCustomBlockDesign implements SpoutPacket {
 	
@@ -74,7 +74,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	
 	public void run(int id) {
 		if (blockId != null && blockId >= 0) {
-			SpoutItemBlock.setCustomBlockDesign(design, blockId, metaData);
+			SpoutItem.setCustomBlockDesign(design, blockId, metaData);
 		}
 	}
 

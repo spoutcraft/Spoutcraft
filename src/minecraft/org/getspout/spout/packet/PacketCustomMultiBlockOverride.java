@@ -25,7 +25,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 
 public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	private int chunkX;
@@ -65,7 +65,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 			int z = result.get(index+2) + chunkZ * 16;
 			int id = result.getShort(index+3);
 			int data = result.getShort(index+5);
-			SpoutItemBlock.overrideBlock(x, y, z, id, data);
+			SpoutItem.overrideBlock(x, y, z, id, data);
 		}
 	}
 

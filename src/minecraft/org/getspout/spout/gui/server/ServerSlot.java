@@ -43,6 +43,10 @@ public class ServerSlot implements Comparable {
 	public int compareTo(ServerSlot other) {
 		return other.players - this.players;
 	}
+	
+	public String getFullIp() {
+		return ip + (port.length() > 0 ? ":" : "") + port;
+	}
 
 	// $FF: synthetic method
 	// $FF: bridge method
