@@ -101,7 +101,13 @@ public class GuiEditSign extends GuiScreen {
 		}
 		if(allowedCharacters.indexOf(var1) >= 0 && this.entitySign.signText[this.editLine].length() < 15) { //enter
 			String line = entitySign.signText[editLine];
-			String before = line.substring(0, editColumn);
+			
+			//prevent out of bounds on the substring call
+			int endColumnStart = Math.min(editColumn,  line.length());
+			String before = "";
+			if (endColumnStart > 0) {
+				before = line.substring(0, endColumnStart);
+			}
 			String after = "";
 			if(line.length() - editColumn > 0)
 			{

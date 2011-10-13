@@ -7,7 +7,7 @@ package net.minecraft.src;
 import java.io.PrintStream;
 import java.util.Random;
 
-import org.getspout.spout.item.SpoutItemBlock; //Spout Custom item block
+import org.getspout.spout.item.SpoutItem; //Spout Custom item block
 
 // Referenced classes of package net.minecraft.src:
 //            ItemStack, StatCollector, EnumAction, ItemSpade, 
@@ -299,7 +299,7 @@ public class Item
     public static Item plateGold = (new ItemArmor(59, 1, 4, 1)).setIconCoord(4, 1).setItemName("chestplateGold");
     public static Item legsGold = (new ItemArmor(60, 1, 4, 2)).setIconCoord(4, 2).setItemName("leggingsGold");
     public static Item bootsGold = (new ItemArmor(61, 1, 4, 3)).setIconCoord(4, 3).setItemName("bootsGold");
-    public static Item flint = (new SpoutItemBlock(62)).setIconCoord(6, 0).setItemName("flint"); //Spout changed to SpoutItemBlock
+    public static Item flint = (new SpoutItem(62)).setIconCoord(6, 0).setItemName("flint"); //Spout changed to SpoutItemBlock
     public static Item porkRaw = (new ItemFood(63, 3, 0.3F, true)).setIconCoord(7, 5).setItemName("porkchopRaw");
     public static Item porkCooked = (new ItemFood(64, 8, 0.8F, true)).setIconCoord(8, 5).setItemName("porkchopCooked");
     public static Item painting = (new ItemPainting(65)).setIconCoord(10, 1).setItemName("painting");

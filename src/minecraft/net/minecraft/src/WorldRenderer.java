@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
 import net.minecraft.client.Minecraft;
 //Spout end
@@ -176,11 +176,11 @@ public class WorldRenderer {
 								String customTexture = null; 
 								String customTexturePlugin = null;
 								SpoutCustomBlockDesign design = null;
-								if (SpoutItemBlock.isBlockOverride(dx, dy, dz)) {
-									design = SpoutItemBlock.getCustomBlockDesign(dx, dy, dz);
+								if (SpoutItem.isBlockOverride(dx, dy, dz)) {
+									design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
 								} else {
 									int data = chunkCache.getBlockMetadata(dx, dy, dz);
-									design = SpoutItemBlock.getCustomBlockDesign(var19, data);
+									design = SpoutItem.getCustomBlockDesign(var19, data);
 								}
 								if (design != null) {
 									customTexture = design.getTexureURL();
@@ -233,7 +233,7 @@ public class WorldRenderer {
 									int blockRenderPass = var25.getRenderBlockPass();
 									if (design != null) {
 										if (renderPass == design.getRenderPass()) {
-											rendered |= SpoutItemBlock.renderCustomBlock(this, blockRenderer, design, var25, dx, dy, dz);
+											rendered |= SpoutItem.renderCustomBlock(this, blockRenderer, design, var25, dx, dy, dz);
 										} else {
 											skipRenderPass = true;
 										}

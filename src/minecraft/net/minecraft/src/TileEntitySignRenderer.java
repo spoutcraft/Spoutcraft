@@ -69,7 +69,11 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 			String var15 = var1.signText[var14];
 			if(var14 == var1.lineBeingEdited) {
 				//Spoutcraft Start
-				String before = var15.substring(0, var1.columnBeingEdited);
+				int endColumnStart = Math.min(var1.columnBeingEdited,  var15.length());
+				String before = "";
+				if (endColumnStart > 0) {
+					before = var15.substring(0, endColumnStart);
+				}
 				String after = "";
 				if(var15.length() - var1.columnBeingEdited > 0)
 				{

@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 
 public class PacketCustomBlockOverride implements SpoutPacket {
 	
@@ -72,7 +72,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	
 
 	public void run(int PlayerId) {
-		SpoutItemBlock.overrideBlock(x, y, z, getBlockId(), getMetaData());
+		SpoutItem.overrideBlock(x, y, z, getBlockId(), getMetaData());
 	}
 
 

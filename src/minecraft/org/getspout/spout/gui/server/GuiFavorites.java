@@ -440,8 +440,12 @@ public class GuiFavorites extends GuiScreen {
 			var1.msg = "\u00a77" + var9;
 			if(var11 >= 0 && var12 > 0) {
 				var1.status = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
+				var1.players = var11;
+				var1.maxPlayers = var12;
 			} else {
 				var1.status = "\u00a78???";
+				var1.players = 0;
+				var1.maxPlayers = 0;
 			}
 		} finally {
 			try {

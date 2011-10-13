@@ -48,7 +48,7 @@ public class GuiServerInfo extends GuiScreen {
 	private GuiScreen back;
 
 	public GuiServerInfo(ServerSlot info, GuiScreen back) {
-		if (!info.loaded) {
+		if (info.loaded < 2) {
 			try {
 				URL url = new URL("http://servers.getspout.org/api.php?id=" + info.uniqueid);
 				BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -57,11 +57,15 @@ public class GuiServerInfo extends GuiScreen {
 				reader.close();
 				
 				Map<String, String> i = list.get(0);
-				info.country = i.get("country");
-				info.site = URLDecoder.decode(i.get("site"), "UTF-8");
-				info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-				info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
-				info.loaded = true;
+				switch (info.loaded) {
+					case 0:
+						info.country = i.get("country");
+						info.site = URLDecoder.decode(i.get("site"), "UTF-8");
+						info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
+					case 1:
+						info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+				}
+				info.loaded = 2;
 			} catch (IOException e) {}
 		}
 		
@@ -104,7 +108,8 @@ public class GuiServerInfo extends GuiScreen {
 	public void actionPerformed(GuiButton button) {
 		if(button.enabled) {
 			if (button.id == 0) {
-				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), info.ip, Integer.parseInt(info.port)));
+				int port = info.port.length() > 0 ? Integer.parseInt(info.port) : 25565;
+				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), info.ip, port));
 			} else if (button.id == 1) {
 				SpoutClient.getHandle().displayGuiScreen(back);
 				if (back instanceof GuiMultiplayer) {
@@ -195,7 +200,7 @@ public class GuiServerInfo extends GuiScreen {
 		}
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 20, this.height / 2 - 95, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.ip + ":" + info.port, this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
+		this.drawString(SpoutClient.getHandle().fontRenderer, info.ip + (info.port.length() > 0 ? ":" : "") + info.port, this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Name", this.width / 2 - 20, this.height / 2 - 70, 0xFFFFFF);
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.name, this.width / 2 - 10, this.height / 2 - 60, 0xA0A0A0);
@@ -218,9 +223,6 @@ public class GuiServerInfo extends GuiScreen {
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Description", this.width / 2 - 20, this.height / 2 + 30, 0xFFFFFF);
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.description, this.width / 2 - 10, this.height / 2 + 40, 0xA0A0A0);
 		
-		//this.drawCenteredString(SpoutClient.getHandle().fontRenderer, (rename ? "Edit" : "Add New") + " Favorite", this.width / 2, 20, 16777215);
-		//this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 100, 47, 10526880);
-		//this.drawString(SpoutClient.getHandle().fontRenderer, "Server Name", this.width / 2 - 100, 107, 10526880);
 		super.drawScreen(var1, var2, var3);
 	}
 }

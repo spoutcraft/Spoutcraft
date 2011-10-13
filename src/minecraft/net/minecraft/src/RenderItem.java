@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
 
 //SPout end
@@ -68,7 +68,7 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
+		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
 			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());
@@ -178,7 +178,7 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var3, (short) var4);
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItemBlock.getCustomBlockDesign(var3, var4);
+		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var3, var4);
 		if (blockType != null) {
 			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL());
 			if (customTextureBinding != null){

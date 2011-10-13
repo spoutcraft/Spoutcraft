@@ -109,7 +109,7 @@ import net.minecraft.src.World;
 // Spout Start
 import gnu.trove.map.hash.TIntFloatHashMap;
 import org.getspout.spout.block.SpoutcraftChunk;
-import org.getspout.spout.item.SpoutItemBlock;
+import org.getspout.spout.item.SpoutItem;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
@@ -717,9 +717,6 @@ public class Block {
 		Item.itemsList[tallGrass.blockID] = new ItemVine(tallGrass.blockID - 256, true);
 		Item.itemsList[pistonBase.blockID] = new ItemPiston(pistonBase.blockID - 256);
 		Item.itemsList[pistonStickyBase.blockID] = new ItemPiston(pistonStickyBase.blockID - 256);
-		// Spout Start
-		Item.itemsList[1] = new SpoutItemBlock(1 - 256);
-		// Spout end
 
 		for(int var0 = 0; var0 < 256; ++var0) {
 			if(blocksList[var0] != null && Item.itemsList[var0] == null) {
