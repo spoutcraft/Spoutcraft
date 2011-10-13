@@ -60,6 +60,8 @@ public interface RenderDelegate {
 
 	void render(GenericListWidgetItem lwi, int x, int y, int width, int height);
 
-	void render(GenericListWidget lw);
+	public void render(GenericScrollable genericScrollable);
+
+	public void renderContents(GenericListWidget genericListWidget);
 
 }
