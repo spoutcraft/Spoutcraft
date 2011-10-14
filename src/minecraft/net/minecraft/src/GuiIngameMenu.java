@@ -68,12 +68,6 @@ public class GuiIngameMenu extends GuiScreen {
 		if(var1.id == 6) {
 			this.mc.displayGuiScreen(new GuiStats(this, this.mc.statFileWriter));
 		}
-		//Spout Start
-		if(var1.id == 7) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.TestScreen());
-		}
-		//Spout End
-
 	}
 
 	public void updateScreen() {
