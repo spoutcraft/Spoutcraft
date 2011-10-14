@@ -123,9 +123,6 @@ public class GuiMainMenu extends GuiScreen {
 		if(var1.id == 5) {
 			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
 		}
-		if(var1.id == 6) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.TestScreen());
-		}
 		//Spout End
 
 	}
