@@ -488,7 +488,7 @@ public class Config {
 	}
 
 	public static boolean isClearWater() {
-		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isTimeCheat();
+		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isClearWaterCheat();
 	}
 
 }
