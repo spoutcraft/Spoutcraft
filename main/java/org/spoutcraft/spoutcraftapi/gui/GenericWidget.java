@@ -186,6 +186,7 @@ public abstract class GenericWidget implements Widget {
 
 	public double getScreenX() {
 		double left = X * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
+		if(screen == null) return left;
 		switch (anchor) {
 			case TOP_CENTER:
 			case CENTER_CENTER:
@@ -203,6 +204,7 @@ public abstract class GenericWidget implements Widget {
 
 	public double getScreenY() {
 		double top = Y * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
+		if(screen == null) return top;
 		switch (anchor) {
 			case CENTER_LEFT:
 			case CENTER_CENTER:
@@ -452,5 +454,33 @@ public abstract class GenericWidget implements Widget {
 			container.updateSize();
 		}
 		return this;
+	}
+
+	public double getActualX() {
+		if(screen == null) {
+			return getScreenX();
+		}
+		else {
+			if(screen instanceof ScrollArea) {
+				ScrollArea sa = (ScrollArea)screen;
+				return getScreenX() - sa.getScrollPosition(Orientation.HORIZONTAL) + sa.getScreenX() + 5;
+			} else {
+				return getScreenX() + screen.getScreenX();
+			}
+		}
+	}
+
+	public double getActualY() {
+		if(screen == null) {
+			return getScreenY();
+		}
+		else {
+			if(screen instanceof ScrollArea) {
+				ScrollArea sa = (ScrollArea)screen;
+				return getScreenY() - sa.getScrollPosition(Orientation.VERTICAL) + sa.getScreenY() + 5;
+			} else {
+				return getScreenY() + screen.getScreenY();
+			}
+		}
 	}
 }

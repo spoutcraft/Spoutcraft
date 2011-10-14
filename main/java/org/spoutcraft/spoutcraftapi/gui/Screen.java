@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 public interface Screen extends Widget {
@@ -26,6 +28,26 @@ public interface Screen extends Widget {
 	 * @return array of all widgets
 	 */
 	public Widget[] getAttachedWidgets();
+	
+	/**
+	 * Get's an array of all the attached widgets to this screen. Modifying this array will not affect the screen.
+	 * @param recursive if true, gets all widgets from contained screens too.
+	 * @return array of all widgets
+	 */
+	public Widget[] getAttachedWidgets(boolean recursive);
+	
+	/**
+	 * Get's a set of all the attached widgets to this screen. Modifying this set will not affect the screen.
+	 * @return set of all widgets
+	 */
+	public Set<Widget> getAttachedWidgetsAsSet();
+	
+	/**
+	 * Get's an array of all the attached widgets to this screen. Modifying this array will not affect the screen.
+	 * @param recursive if true, gets all widgets from contained screens too.
+	 * @return set of all widgets
+	 */
+	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive);
 
 	/**
 	 * Attaches a widget to this screen
@@ -91,7 +113,7 @@ public interface Screen extends Widget {
 	 * @param enable the visibility
 	 * @return the screen
 	 */
-	public GenericScreen setBgVisible(boolean enable);
+	public Screen setBgVisible(boolean enable);
 
 	public double getHeight();
 
