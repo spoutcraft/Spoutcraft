@@ -59,8 +59,6 @@ public interface Client extends PropertyInterface {
 
 	public BiomeManager getBiomeManager();
 
-	public boolean isCheatMode();
-
 	public boolean isSpoutEnabled();
 
 	public SpoutVersion getServerVersion();
