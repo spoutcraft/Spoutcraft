@@ -88,13 +88,17 @@ public class SpoutClient extends PropertyObject implements Client {
 	private long tick = 0;
 	private Thread clipboardThread = null;
 	public ClientPlayer player = null;
-	private boolean cheating = true;
-	private boolean sky = true;
-	private boolean clearwater = true;
-	private boolean cloudheight = true;
-	private boolean stars = true;
-	private boolean weather = true;
-	private boolean time = true;
+	private boolean sky = false;
+	private boolean clearwater = false;
+	private boolean cloudheight = false;
+	private boolean stars = false;
+	private boolean weather = false;
+	private boolean time = false;
+	private boolean coords = false;
+	private boolean brightness = false;
+	private boolean entitylabel = false;
+	private boolean renderdistance = false;
+	
 	private RenderDelegate render = new MCRenderDelegate();
 	private KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
@@ -153,14 +157,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	public BiomeManager getBiomeManager() {
 		return biomeManager;
 	}
-	
-	public boolean isCheatMode() {
-		return cheating || !getHandle().isMultiplayerWorld() || getHandle().theWorld == null;
-	}
-	
-	public void setCheatMode(boolean cheat) {
-		cheating = cheat;
-	}
 
 	public boolean isSkyCheat() {
 		return sky;
@@ -185,14 +181,34 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isTimeCheat() {
 		return time;
 	}
+	
+	public boolean isCoordsCheat() {
+		return coords;
+	}
+	
+	public boolean isBrightnessCheat() {
+		return brightness;
+	}
+	
+	public boolean isEntityLabelCheat() {
+		return entitylabel;
+	}
+	
+	public boolean isRenderDistanceCheat() {
+		return renderdistance;
+	}
 
-	public void setVisualCheats(boolean sky, boolean clearwater, boolean cloudheight, boolean stars, boolean weather, boolean time) {
-		this.sky = sky;
-		this.clearwater = clearwater;
-		this.cloudheight = cloudheight;
-		this.stars = stars;
-		this.weather = weather;
-		this.time = time;
+	public void setVisualCheats(boolean tsky, boolean tclearwater, boolean tcloudheight, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tbrightness, boolean tentitylabel, boolean trenderdistance) {
+		this.sky = tsky;
+		this.clearwater = tclearwater;
+		this.cloudheight = tcloudheight;
+		this.stars = tstars;
+		this.weather = tweather;
+		this.time = ttime;
+		this.coords = tcoords;
+		this.brightness = tbrightness;
+		this.entitylabel = tentitylabel;
+		this.renderdistance = trenderdistance;
 	}
 	
 	public boolean isSpoutEnabled() {

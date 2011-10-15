@@ -22,56 +22,67 @@ import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
 
-public class PacketAllowVisualCheats implements SpoutPacket{
-	private boolean cheating = false;
+public class PacketAllowVisualCheats implements SpoutPacket {
 	private boolean sky = false;
 	private boolean clearwater = false;
 	private boolean cloudheight = false;
 	private boolean stars = false;
 	private boolean weather = false;
 	private boolean time = false;
+	private boolean coords = false;
+	private boolean brightness = false;
+	private boolean entitylabel = false;
+	private boolean renderdistance = false;
 
 	public PacketAllowVisualCheats() {
 
 	}
 	
-	public PacketAllowVisualCheats(boolean allow, boolean sky, boolean clearwater, boolean cloudheight, boolean stars, boolean weather, boolean time) {
-		this.cheating = allow;
-		this.sky = sky;
-		this.clearwater = clearwater;
-		this.cloudheight = cloudheight;
-		this.stars = stars;
-		this.weather = weather;
-		this.time = time;
+	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tcloudheight, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tbrightness, boolean tentitylabel, boolean trenderdistance) {
+		this.sky = tsky;
+		this.clearwater = tclearwater;
+		this.cloudheight = tcloudheight;
+		this.stars = tstars;
+		this.weather = tweather;
+		this.time = ttime;
+		this.coords = tcoords;
+		this.brightness = tbrightness;
+		this.entitylabel = tentitylabel;
+		this.renderdistance = trenderdistance;
 	}
 
 	public int getNumBytes() {
-		return 7;
+		return 10;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
-		cheating = input.readBoolean();
-                sky = input.readBoolean();
-                clearwater = input.readBoolean();
-                cloudheight = input.readBoolean();
-                stars = input.readBoolean();
-                weather = input.readBoolean();
-                time = input.readBoolean();    		
+            this.sky = input.readBoolean();
+            this.clearwater = input.readBoolean();
+            this.cloudheight = input.readBoolean();
+            this.stars = input.readBoolean();
+            this.weather = input.readBoolean();
+            this.time = input.readBoolean();  
+            this.coords = input.readBoolean();
+            this.brightness = input.readBoolean();
+            this.entitylabel = input.readBoolean();
+            this.renderdistance = input.readBoolean();
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
-		output.writeBoolean(cheating);
-                output.writeBoolean(sky);
-                output.writeBoolean(clearwater);
-                output.writeBoolean(cloudheight);
-                output.writeBoolean(stars);
-                output.writeBoolean(weather);
-                output.writeBoolean(time);	
+            output.writeBoolean(sky);
+            output.writeBoolean(clearwater);
+            output.writeBoolean(cloudheight);
+            output.writeBoolean(stars);
+            output.writeBoolean(weather);
+            output.writeBoolean(time);
+            output.writeBoolean(coords);
+            output.writeBoolean(brightness);
+            output.writeBoolean(entitylabel);
+            output.writeBoolean(renderdistance);
 	}
 
 	public void run(int playerId) {
-		SpoutClient.getInstance().setCheatMode(cheating);
-		SpoutClient.getInstance().setVisualCheats(sky, clearwater, cloudheight, stars, weather, time);
+		SpoutClient.getInstance().setVisualCheats(sky, clearwater, cloudheight, stars, weather, time, coords, brightness, entitylabel, renderdistance);
 	}
 
 	public PacketType getPacketType() {

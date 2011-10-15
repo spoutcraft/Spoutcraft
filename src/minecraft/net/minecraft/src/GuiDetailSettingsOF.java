@@ -42,8 +42,14 @@ public class GuiDetailSettingsOF extends GuiScreen {
 			} else {
 				this.controlList.add(new GuiSlider(option.returnEnumOrdinal(), var7, var8, option, this.settings.getKeyBinding(option), this.settings.getOptionFloatValue(option)));
 			}
-			((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
-
+			
+			if(option == EnumOptions.CLOUD_HEIGHT) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCloudHeightCheat();
+			else if(option == EnumOptions.SKY) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isSkyCheat();
+			else if(option == EnumOptions.STARS) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isStarsCheat();
+			else if(option == EnumOptions.WEATHER) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isWeatherCheat();
+			else if(option == EnumOptions.TIME) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isTimeCheat();
+			else if(option == EnumOptions.CLEAR_WATER) ((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isClearWaterCheat();
+			
 			++var2;
 		}
 

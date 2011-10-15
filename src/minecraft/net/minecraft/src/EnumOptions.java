@@ -83,9 +83,6 @@ public enum EnumOptions {
 		this.cheating = cheating;
 	}
 	
-	public boolean isVisualCheating() {
-		return cheating;
-	}
 	//Spout End
 
 	public boolean getEnumFloat() {

@@ -50,10 +50,6 @@ public class GuiVideoSettings extends GuiScreen {
 			} else {
 				this.controlList.add(new GuiSlider(option.returnEnumOrdinal(), var7, var8, option, this.guiGameSettings.getKeyBinding(option), this.guiGameSettings.getOptionFloatValue(option)));
 			}
-			
-			if (((GuiButton)controlList.get(controlList.size() - 1)).enabled) {
-				((GuiButton)controlList.get(controlList.size() - 1)).enabled = SpoutClient.getInstance().isCheatMode() || !option.isVisualCheating();
-			}
 
 			++var2;
 		}
@@ -81,7 +77,7 @@ public class GuiVideoSettings extends GuiScreen {
 				//Spout Start
 				int change = 1;
 				GuiButton guibutton = var1;
-				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && SpoutClient.getInstance().isCheatMode()) {
+				if (EnumOptions.getEnumOptions(guibutton.id) == EnumOptions.RENDER_DISTANCE && SpoutClient.getInstance().isRenderDistanceCheat()) {
 					byte view = (byte)guiGameSettings.renderDistance;
 					ActivePlayer activePlayer = SpoutClient.getInstance().getActivePlayer();
 					if (activePlayer != null) {
@@ -309,7 +305,7 @@ public class GuiVideoSettings extends GuiScreen {
 			return new String[]{"Attempts to configure your video settings to achieve ~60 fps.", "May be more or less, depending on hardware"};
 		}
 		else if (option.equals("Brightness")) {
-			if (!SpoutClient.getInstance().isCheatMode()) {
+			if (!SpoutClient.getInstance().isBrightnessCheat()) {
 				return cheating;
 			}
 			return new String[]{"Increases the brightness of darker objects", "  OFF - standard brightness", "  100% - maximum brightness for darker objects", "This options does not change the brightness of ", "fully black objects"};
