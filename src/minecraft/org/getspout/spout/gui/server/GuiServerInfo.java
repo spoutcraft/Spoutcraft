@@ -31,10 +31,8 @@ import net.minecraft.src.*;
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.yaml.snakeyaml.Yaml;
 
 public class GuiServerInfo extends GuiScreen {
@@ -200,7 +198,7 @@ public class GuiServerInfo extends GuiScreen {
 		}
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 20, this.height / 2 - 95, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.ip + (info.port.length() > 0 ? ":" : "") + info.port, this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
+		this.drawString(SpoutClient.getHandle().fontRenderer, info.getFullIp(), this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Name", this.width / 2 - 20, this.height / 2 - 70, 0xFFFFFF);
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.name, this.width / 2 - 10, this.height / 2 - 60, 0xA0A0A0);

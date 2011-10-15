@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.io.FileDownloadThread;
 //SPout end
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
@@ -129,10 +130,6 @@ public class NetClientHandler extends NetHandler {
 	public List field_35786_c = new ArrayList();
 	public int field_35785_d = 20;
 	Random rand = new Random();
-	//Spout start
-	private boolean predownload = false;
-	public Packet10Flying cached = null;
-	//Spout end
 
 	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {
 		this.mc = var1;
@@ -386,33 +383,22 @@ public class NetClientHandler extends NetHandler {
 		var1.yPosition = var2.boundingBox.minY;
 		var1.zPosition = var2.posZ;
 		var1.stance = var2.posY;
-		
-		//Spout Start
-		boolean display = false;
-		if (SpoutClient.getInstance().isSpoutEnabled() && !predownload) {
-			this.mc.displayGuiScreen((GuiScreen) new org.getspout.spout.gui.predownload.GuiPredownload(this));
-			predownload = true;
-		}
-		else {
-			display = true;
-		}
-		if (this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload) {
-			cached = var1;
-			return;
-		}
-		//Spout End
-		
+
 		this.netManager.addToSendQueue(var1);
 		if(!this.field_1210_g) {
 			this.mc.thePlayer.prevPosX = this.mc.thePlayer.posX;
 			this.mc.thePlayer.prevPosY = this.mc.thePlayer.posY;
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.field_1210_g = true;
+			
 			//Spout Start
-			if (display) {
-				this.mc.displayGuiScreen((GuiScreen) null);
+			if (SpoutClient.getInstance().isSpoutEnabled()) {
+				if (FileDownloadThread.preCacheCompleted.get() == 0L) {
+					return;
+				}
 			}
 			//Spout End
+			this.mc.displayGuiScreen((GuiScreen) null);
 		}
 
 	}

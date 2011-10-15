@@ -293,9 +293,6 @@ public class PlayerControllerMP extends PlayerController {
     //Spout Start
 	@Override
 	public boolean shouldDrawHUD() {
-		if (!this.field_35649_k) {
-			return !(this.mc.currentScreen instanceof org.getspout.spout.gui.predownload.GuiPredownload);
-		}
 		return !this.field_35649_k;
 	}
 	//Spout End

@@ -88,7 +88,6 @@ public class GuiMainMenu extends GuiScreen {
 		//Spout Start
 			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, 98, 20, var2.translateKey("menu.options")));
 			this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72, 98, 20, var2.translateKey("menu.quit")));
-			this.controlList.add(new GuiButton(6, this.width / 2 - 100, 10, "Area 51 - Top Secret!"));
 		}
 		this.controlList.add(new GuiButton(5, this.width / 2 - 100, var4 + 96, "About"));
 		//Spout End
@@ -122,9 +121,6 @@ public class GuiMainMenu extends GuiScreen {
 		//Spout Start
 		if(var1.id == 5) {
 			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
-		}
-		if(var1.id == 6) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.TestScreen());
 		}
 		//Spout End
 

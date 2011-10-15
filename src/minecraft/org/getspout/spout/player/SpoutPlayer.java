@@ -17,31 +17,14 @@
 package org.getspout.spout.player;
 
 import java.net.InetSocketAddress;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
-
-import org.getspout.spout.entity.CraftEntity;
 import org.getspout.spout.entity.CraftLivingEntity;
 import org.spoutcraft.spoutcraftapi.Achievement;
 import org.spoutcraft.spoutcraftapi.Statistic;
-import org.spoutcraft.spoutcraftapi.World;
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.entity.Arrow;
-import org.spoutcraft.spoutcraftapi.entity.Egg;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.entity.Snowball;
-import org.spoutcraft.spoutcraftapi.entity.Vehicle;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.property.Property;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.util.MutableLocation;
-import org.spoutcraft.spoutcraftapi.util.Vector;
-
 import net.minecraft.src.EntityPlayer;
 
 public class SpoutPlayer extends CraftLivingEntity implements Player{
