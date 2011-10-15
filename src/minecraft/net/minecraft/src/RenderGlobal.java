@@ -1289,12 +1289,6 @@ public class RenderGlobal implements IWorldAccess {
 				} else if(!var20.isInFrustum) {
 					continue;
 				}
-				//Spout start
-				if (renderersUpdated > renderersToUpdate) {
-					return this.worldRenderersToUpdate.size() == 0;
-				}
-				renderersUpdated++;
-				//Spout end
 
 				var20.updateRenderer();
 				this.worldRenderersToUpdate.remove(var20);
@@ -1347,6 +1341,13 @@ public class RenderGlobal implements IWorldAccess {
 					var7 = new ArrayList();
 				}
 				
+				//Spout start
+				if (renderersUpdated > renderersToUpdate) {
+					break;
+				}
+				renderersUpdated++;
+				//Spout end
+				
 				++var9;
 				var7.add(var11);
 				this.worldRenderersToUpdate.set(var10, (Object)null);
@@ -1361,13 +1362,6 @@ public class RenderGlobal implements IWorldAccess {
 					var11 = (WorldRenderer)var7.get(var10);
 					var11.updateRenderer();
 					var11.needsUpdate = false;
-					
-					//Spout start
-					if (renderersUpdated > renderersToUpdate) {
-						break;
-					}
-					renderersUpdated++;
-					//Spout end
 				}
 			}
 
@@ -1386,13 +1380,6 @@ public class RenderGlobal implements IWorldAccess {
 					var6[var21].updateRenderer();
 					var6[var21].needsUpdate = false;
 					++var10;
-					
-					//Spout start
-					if (renderersUpdated > renderersToUpdate) {
-						break;
-					}
-					renderersUpdated++;
-					//Spout end
 				}
 			}
 
