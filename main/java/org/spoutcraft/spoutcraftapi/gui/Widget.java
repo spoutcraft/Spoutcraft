@@ -186,20 +186,6 @@ public interface Widget{
 	public double getScreenY();
 	
 	/**
-	 * Gets the actual position of the widget on the screen.
-	 * This can be different from getX() whenever the widget is inside a screen that can be moved as a widget on the global screen, or if the parent screen is scrollable. An example of such a screen is the ScrollArea.
-	 * @return the actual position of the widget on the screen.
-	 */
-	public double getActualX();
-	
-	/**
-	 * Gets the actual position of the widget on the screen.
-	 * This can be different from getY() whenever the widget is inside a screen that can be moved as a widget on the global screen, or if the parent screen is scrollable. An example of such a screen is the ScrollArea.
-	 * @return the actual position of the widget on the screen.
-	 */
-	public double getActualY();
-	
-	/**
 	 * Sets the x coordinate of this widget. Widgets (and screens) render from the top left corner the screen. 0,0 represents the top left corner.
 	 * @param pos to set
 	 * @return widget

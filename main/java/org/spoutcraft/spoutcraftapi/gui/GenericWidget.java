@@ -186,7 +186,6 @@ public abstract class GenericWidget implements Widget {
 
 	public double getScreenX() {
 		double left = X * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
-		if(screen == null) return left;
 		switch (anchor) {
 			case TOP_CENTER:
 			case CENTER_CENTER:
@@ -204,7 +203,6 @@ public abstract class GenericWidget implements Widget {
 
 	public double getScreenY() {
 		double top = Y * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
-		if(screen == null) return top;
 		switch (anchor) {
 			case CENTER_LEFT:
 			case CENTER_CENTER:

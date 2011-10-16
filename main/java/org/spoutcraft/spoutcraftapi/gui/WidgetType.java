@@ -46,7 +46,6 @@ public class WidgetType {
 	public static WidgetType RadioButton = new WidgetType(GenericRadioButton.class, 20);
 	public static WidgetType ListWidget = new WidgetType(GenericListWidget.class, 21);
 	public static WidgetType DirtBackground = new WidgetType(DirtBackground.class, 22);
-	public static WidgetType ScrollArea = new WidgetType(GenericScrollArea.class, 23);
 
 
 	private final int id;

@@ -19,8 +19,6 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
 
 public class GenericPopup extends GenericScreen implements PopupScreen {
 	protected boolean transparent = false;

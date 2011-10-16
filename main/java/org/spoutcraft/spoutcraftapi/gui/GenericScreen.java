@@ -19,7 +19,6 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +49,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	public Widget[] getAttachedWidgets() {
 		return getAttachedWidgets(false);
-	}
+	} 
 	
 	public Widget[] getAttachedWidgets(boolean recursive) {
 		Widget[] list = new Widget[widgets.size()];
@@ -65,23 +64,6 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		}
 		list = allwidgets.toArray(list);
 		return list;
-	}
-	
-	public Set<Widget> getAttachedWidgetsAsSet() {
-		return getAttachedWidgetsAsSet(false);
-	}
-
-	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive) {
-		Set<Widget> allwidgets = new HashSet<Widget>();
-		allwidgets.addAll(widgets.keySet());
-		if(recursive) {
-			for(Widget w:widgets.keySet()) {
-				if(w instanceof Screen) {
-					allwidgets.addAll(((Screen)w).getAttachedWidgetsAsSet(true));
-				}
-			}
-		}
-		return allwidgets;
 	}
 
 	@Deprecated
