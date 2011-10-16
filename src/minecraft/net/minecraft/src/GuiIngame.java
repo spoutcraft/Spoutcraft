@@ -173,7 +173,7 @@ public class GuiIngame extends Gui {
 				this.drawString(font, var23, screenWidth - font.getStringWidth(var23) - 2, 12, 14737632);
 				//No Cheating!
 				int offset = 0;
-				if (SpoutClient.getInstance().isCheatMode()) {
+				if (SpoutClient.getInstance().isCoordsCheat()) {
 					this.drawString(font, "x: " + this.mc.thePlayer.posX, 2, 64, 14737632);
 					this.drawString(font, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
 					this.drawString(font, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);

@@ -5,7 +5,6 @@ import org.getspout.spout.controls.Shortcut;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.lwjgl.input.Keyboard;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiSlot;
 import net.minecraft.src.Tessellator;

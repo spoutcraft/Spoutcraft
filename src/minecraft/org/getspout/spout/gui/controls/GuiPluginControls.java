@@ -32,7 +32,7 @@ public class GuiPluginControls extends GuiScreen {
 		closeButton = new GenericButton("Done");
 		closeButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		closeButton.setWidth(50).setHeight(20).setX(10).setY((int)getScreen().getHeight()-30);
-		getScreen().attachWidget(closeButton);
+		getScreen().attachWidget("Spoutcraft", closeButton);
 		description = new GenericLabel("Doubleclick a keybinding and press a key to assign!");
 		description.setHeight(20).setWidth(200).setX(70).setY((int)getScreen().getHeight()-30);
 		getScreen().attachWidget(description);

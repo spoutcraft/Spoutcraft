@@ -1,7 +1,6 @@
 package org.getspout.spout.controls;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,9 +14,7 @@ import net.minecraft.src.Packet3Chat;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
-import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketKeyBinding;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.yaml.snakeyaml.Yaml;
