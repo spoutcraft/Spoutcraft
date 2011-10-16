@@ -9,6 +9,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;
 	private int cachedTotalHeight = -1;
+	private long lastClickTime = -1;
 
 	public WidgetType getType() {
 		return WidgetType.ListWidget;
@@ -48,6 +49,14 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 
 	public ListWidget setSelection(int n) {
+		long currentTime = System.currentTimeMillis();
+		boolean doubleClick = false;
+		if(currentTime - lastClickTime < 200) {
+			doubleClick = true;
+			lastClickTime = -1;
+		} else {
+			lastClickTime = currentTime;
+		}
 		selected = n;
 		if(selected < -1) {
 			selected = -1;
@@ -55,6 +64,8 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		if(selected > items.size()-1) {
 			selected = items.size()-1;
 		}
+		
+		onSelected(selected, doubleClick);
 		
 		//Check if selection is visible
 		ensureVisible(getItemRect(selected));
@@ -133,6 +144,9 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 
 	public void renderContents() {
 		Spoutcraft.getRenderDelegate().renderContents(this);
+	}
+
+	public void onSelected(int item, boolean doubleClick) {
 	}
 
 }

@@ -96,4 +96,11 @@ public interface ListWidget extends Scrollable {
 	 */
 	@Deprecated
 	public int getMaxScrollPosition();
+	
+	/**
+	 * Will be called on each selection change.
+	 * @param item the number of the item that was clicked/selected by keypress. Can be -1 that means that no item is selected
+	 * @param doubleClick if true, item has been doubleclicked.
+	 */
+	public void onSelected(int item, boolean doubleClick);
 }
