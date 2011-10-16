@@ -15,7 +15,8 @@ public class GuiPluginControls extends GuiScreen {
 	GuiScreen parentScreen;
 	Button closeButton;
 	Label description;
-	GuiControlSlot slotContainer;
+	Label title;
+	PluginControlsList list;
 	
 	public GuiPluginControls(GuiControls parent) {
 		super();
@@ -23,6 +24,11 @@ public class GuiPluginControls extends GuiScreen {
 	}
 	
 	public void initGui(){
+		title = new GenericLabel("Plugin Controls");
+		title.setX(10).setY(10).setHeight(20).setWidth(width - 20);
+		title.setScale(2);
+		getScreen().attachWidget(title);
+		
 		closeButton = new GenericButton("Done");
 		closeButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		closeButton.setWidth(50).setHeight(20).setX(10).setY((int)getScreen().getHeight()-30);
@@ -30,28 +36,21 @@ public class GuiPluginControls extends GuiScreen {
 		description = new GenericLabel("Doubleclick a keybinding and press a key to assign!");
 		description.setHeight(20).setWidth(200).setX(70).setY((int)getScreen().getHeight()-30);
 		getScreen().attachWidget(description);
-		slotContainer = new GuiControlSlot(this);
-		slotContainer.bindings = ((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).getAllBindings();
-		slotContainer.manager = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
+		
+		list = new PluginControlsList(this);
+		list.setX(0).setY(32).setWidth(width).setHeight(height - 32 - 40);
+		getScreen().attachWidget(list);
 	}
 	
 	@Override
 	public void drawScreen(int x, int y, float z) {
-		slotContainer.drawScreen(x, y, z);
-		super.drawScreen(x, y, z);
+		drawDefaultBackground();
 	}
 
 	@Override
 	protected void buttonClicked(Button btn) {
 		if(btn.equals(closeButton)){
 			mc.displayGuiScreen(parentScreen);
-		}
-	}
-	
-	@Override
-	protected void keyTyped(char c, int i) {
-		if(!slotContainer.keyTyped(c,i)){
-			super.keyTyped(c, i);
 		}
 	}
 }
