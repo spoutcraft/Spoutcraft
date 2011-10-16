@@ -448,4 +448,8 @@ public interface Widget{
 	public Widget updateSize();
 	
 	public void render();
+	
+	public double getActualX();
+	
+	public double getActualY();
 }

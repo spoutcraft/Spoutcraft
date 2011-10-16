@@ -209,4 +209,21 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	public Widget copy() {
 		throw new UnsupportedOperationException("You can not create a copy of a screen");
 	}
+
+	public Set<Widget> getAttachedWidgetsAsSet() {
+		return getAttachedWidgetsAsSet(false);
+	}
+
+	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive) {
+		Set<Widget> set = new HashSet<Widget>();
+		set.addAll(widgets.keySet());
+		if(recursive) {
+			for(Widget w:widgets.keySet()) {
+				if(w instanceof Screen) {
+					set.addAll(((Screen)w).getAttachedWidgetsAsSet(true));
+				}
+			}
+		}
+		return set;
+	}
 }

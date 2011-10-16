@@ -97,7 +97,7 @@ public interface Screen extends Widget {
 	 * @param enable the visibility
 	 * @return the screen
 	 */
-	public GenericScreen setBgVisible(boolean enable);
+	public Screen setBgVisible(boolean enable);
 
 	public double getHeight();
 
