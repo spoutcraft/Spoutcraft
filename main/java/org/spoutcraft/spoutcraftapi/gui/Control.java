@@ -66,4 +66,18 @@ public interface Control extends Widget {
 	public boolean isFocus();
 
 	public Control setFocus(boolean focus);
+	
+	/**
+	 * Will be called if this control has focus and a key was pressed.
+	 * @param key the pressed key.
+	 * @return true if you handled the keypress and it shouldn't be handled elsewhere.
+	 */
+	public boolean onKeyPressed(Keyboard key);
+	
+	/**
+	 * Will be called if this control has focus and a key was released.
+	 * @param key the released key.
+	 * @return true if you handled the keyrelease and it shouldn't be handled elsewhere.
+	 */
+	public boolean onKeyReleased(Keyboard key);
 }

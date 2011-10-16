@@ -98,7 +98,15 @@ public abstract class GenericControl extends GenericWidget implements Control{
 
 	@Override
 	public Control copy() {
-		return ((Control)super.copy()).setEnabled(isEnabled()).setColor(getColor()).setDisabledColor(getDisabledColor());
+		return ((Control)super.copy()).setEnabled(isEnabled()).setColor(getColor().clone()).setDisabledColor(getDisabledColor().clone());
+	}
+
+	public boolean onKeyPressed(Keyboard key) {
+		return false;
+	}
+
+	public boolean onKeyReleased(Keyboard key) {
+		return false;
 	}
 	
 }
