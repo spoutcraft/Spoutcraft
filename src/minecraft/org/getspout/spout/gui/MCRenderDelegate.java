@@ -108,12 +108,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			int hoverState = getHoverState(button, isHovering(button));
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			Color color = button.getTextColor();
-			if (!button.isEnabled()) {
-				color = button.getDisabledColor();
-			} else if (isHovering(button)) {
-				color = button.getHoverColor();
-			}
+			Color color = getColor(button);
+			
 			int left = (int) 5;
 			switch (button.getAlign()) {
 			case TOP_CENTER:
@@ -139,7 +135,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		double mouseX = widget.getScreen().getMouseX();
 		double mouseY = widget.getScreen().getMouseY();
 
-		boolean hovering = mouseX >= widget.getScreenX() && mouseY >= widget.getScreenY() && mouseX < widget.getScreenX() + widget.getWidth() && mouseY < widget.getScreenY() + widget.getHeight();
+		boolean hovering = mouseX >= widget.getActualX() && mouseY >= widget.getActualY() && mouseX < widget.getActualX() + widget.getWidth() && mouseY < widget.getActualY() + widget.getHeight();
 		return hovering;
 	}
 
@@ -288,9 +284,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glScalef((float) slider.getWidth() / width, (float) slider.getHeight() / 20f, 1);
 
 			double mouseX = slider.getScreen().getMouseX();
-			double mouseY = slider.getScreen().getMouseY();
 
-			boolean hovering = mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
+			boolean hovering = isHovering(slider);
 
 			int hoverState = getHoverState(slider, hovering);
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
