@@ -63,7 +63,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 				}
 			}
 		}
-		allwidgets.toArray(list);
+		list = allwidgets.toArray(list);
 		return list;
 	}
 	
