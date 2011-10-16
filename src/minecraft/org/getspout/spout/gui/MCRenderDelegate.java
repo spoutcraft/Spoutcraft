@@ -532,8 +532,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		if(textureBinding == null) return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(770, 771);
 		GL11.glDepthMask(false);
 		bindColor(color);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
@@ -550,7 +548,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
-		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	protected void drawTexture(Texture textureBinding, int width, int height) {
