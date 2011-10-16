@@ -463,7 +463,7 @@ public abstract class GenericWidget implements Widget {
 		else {
 			if(screen instanceof ScrollArea) {
 				ScrollArea sa = (ScrollArea)screen;
-				return getScreenX() - sa.getScrollPosition(Orientation.HORIZONTAL) + sa.getScreenX() + 5;
+				return getScreenX() - sa.getScrollPosition(Orientation.HORIZONTAL) + sa.getScreenX();
 			} else {
 				return getScreenX() + screen.getScreenX();
 			}
@@ -477,7 +477,7 @@ public abstract class GenericWidget implements Widget {
 		else {
 			if(screen instanceof ScrollArea) {
 				ScrollArea sa = (ScrollArea)screen;
-				return getScreenY() - sa.getScrollPosition(Orientation.VERTICAL) + sa.getScreenY() + 5;
+				return getScreenY() - sa.getScrollPosition(Orientation.VERTICAL) + sa.getScreenY();
 			} else {
 				return getScreenY() + screen.getScreenY();
 			}

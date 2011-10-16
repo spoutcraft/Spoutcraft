@@ -76,4 +76,6 @@ public interface Scrollable extends Control {
 	 * @return
 	 */
 	public int getViewportSize(Orientation axis);
+	
+	public int getMargin(PositionOrientation pos);
 }

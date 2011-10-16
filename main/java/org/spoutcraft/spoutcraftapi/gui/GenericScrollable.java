@@ -132,4 +132,13 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 		}
 		return size;
 	}
+
+	public int getMargin(PositionOrientation pos) {
+		switch(pos) {
+		case TOP:
+			return 5;
+		default: 
+			return 0;
+		}
+	}
 }
