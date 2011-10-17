@@ -487,6 +487,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	public void render(GenericCheckBox checkBox) {
 		if(checkBox.isVisible()){
+			Texture checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
 			renderBaseBox(checkBox, true);
@@ -504,6 +505,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	public void render(GenericRadioButton radioButton) {
 		if(radioButton.isVisible()) {
+			Texture radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) radioButton.getScreenX(), (float) radioButton.getScreenY(), 0);
 			renderBaseBox(radioButton, true);
@@ -516,33 +518,19 @@ public class MCRenderDelegate implements RenderDelegate {
 			font.drawString(radioButton.getText(), 22, 7, getColor(radioButton).toInt());
 		}
 	}
-	Texture radio;
-	Texture defaultBox;
-	Texture hoverBox;
-	Texture disabledBox;
-	Texture checkBoxCross;
 	
-	private void loadTextures(){
-		 defaultBox = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
-		 hoverBox = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
-		 disabledBox = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
-		 radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
-		 checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
-	}
 	protected void renderBaseBox(Control box) {
 		renderBaseBox(box, false);
 	}
 	
 	protected void renderBaseBox(Control box, boolean blend) {
-		if(defaultBox == null)
-			loadTextures();
 		Texture usedTexture = null;
 		if(box.isEnabled() && isHovering(box)) {
-			usedTexture = hoverBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
 		} else if(box.isEnabled()) {
-			usedTexture = defaultBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
 		} else {
-			usedTexture = disabledBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
 		}
 		drawTexture(usedTexture, 20, 20, blend);
 	}
