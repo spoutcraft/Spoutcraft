@@ -34,7 +34,7 @@ public abstract class GenericWidget implements Widget {
 	protected RenderPriority priority = RenderPriority.Normal;
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
-	protected WidgetAnchor anchor = WidgetAnchor.SCALE;
+	protected WidgetAnchor anchor = WidgetAnchor.TOP_LEFT;
 	protected String plugin = "Spoutcraft";
 	// Client side layout
 	protected Container container = null;
