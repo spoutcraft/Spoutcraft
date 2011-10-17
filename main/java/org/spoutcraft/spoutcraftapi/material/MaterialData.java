@@ -153,7 +153,7 @@ public class MaterialData {
 	public static final Block jackOLantern = new Solid("Jack 'o' Lantern", 91);
 	public static final Block cakeBlock = new Solid("Cake Block", 92);
 	public static final Block redstoneRepeaterOff = new Solid("Redstone Repeater", 93);
-	public static final Block redstoneRepeaterOn = new Solid("Redstone Repeated (On)", 94);
+	public static final Block redstoneRepeaterOn = new Solid("Redstone Repeater (On)", 94);
 	public static final Block lockedChest = new Solid("Locked Chest", 95);
 	public static final Block trapdoor = new Solid("Trapdoor", 96);
 	public static final Block silverfishStone = new Solid("Silverfish Stone", 97);
