@@ -24,33 +24,39 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 
 public class GenericSlider extends GenericControl implements Slider {
-
+	protected Label label = new GenericLabel();
 	protected float slider = 0.5f;
 	protected boolean dragged = false;
 
 	public GenericSlider() {
 
 	}
+	
+	public GenericSlider(String text) {
+		label.setText(text);
+	}
 
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 4;
+		return super.getNumBytes() + 4 + label.getNumBytes();
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		setSliderPosition(input.readFloat());
+		label.readData(input);
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeFloat(getSliderPosition());
+		label.writeData(output);
 	}
 
 	@Override
@@ -106,6 +112,51 @@ public class GenericSlider extends GenericControl implements Slider {
 
 	public void onSliderDrag(SliderDragEvent event) {
 		
+	}
+
+	public String getText() {
+		return label.getText();
+	}
+
+	public Color getTextColor() {
+		return label.getTextColor();
+	}
+
+	public boolean isAuto() {
+		return label.isAuto();
+	}
+
+	public WidgetAnchor getAlign() {
+		return label.getAlign();
+	}
+
+	public Label setScale(float scale) {
+		label.setScale(scale);
+		return this;
+	}
+
+	public float getScale() {
+		return label.getScale();
+	}
+
+	public Slider setText(String text) {
+		label.setText(text);
+		return this;
+	}
+
+	public Slider setTextColor(Color color) {
+		label.setTextColor(color);
+		return this;
+	}
+
+	public Slider setAuto(boolean auto) {
+		label.setAuto(auto);
+		return this;
+	}
+
+	public Slider setAlign(WidgetAnchor align) {
+		label.setAlign(align);
+		return this;
 	}
 
 }

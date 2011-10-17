@@ -18,7 +18,7 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 
-public interface Slider extends Control {
+public interface Slider extends Control, Label {
 
 	/**
 	 * Gets the slider position (between 0.0f and 1.0f)
@@ -38,6 +38,14 @@ public interface Slider extends Control {
 	public boolean isDragging();
 
 	public Slider setDragging(boolean dragged);
+	
+	public Slider setText(String text);
+	
+	public Slider setTextColor(Color color);
+
+	public Slider setAuto(boolean auto);
+	
+	public Slider setAlign(WidgetAnchor align);
 
 	/**
 	 * Fires when this slider is dragged on the screen.

@@ -89,7 +89,7 @@ public class GenericButton extends GenericControl implements Button {
 		return label.getAlign();
 	}
 
-	public Widget setAlign(WidgetAnchor pos) {
+	public Button setAlign(WidgetAnchor pos) {
 		label.setAlign(pos);
 		return this;
 	}

@@ -56,6 +56,8 @@ public interface Button extends Control, Label {
 
 	public Button setAuto(boolean auto);
 	
+	public Button setAlign(WidgetAnchor align);
+	
 	/**
 	 * Fires when this button is clicked on the screen.
 	 * 
