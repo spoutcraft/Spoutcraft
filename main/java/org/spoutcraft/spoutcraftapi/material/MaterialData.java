@@ -29,7 +29,7 @@ public class MaterialData {
 	public static final Block air = new Air("Air");
 	public static final Block stone = new Solid("Stone", 1);
 	public static final Block grass = new Grass("Grass");
-	public static final Block dirt = new Solid("Dirst",3);
+	public static final Block dirt = new Solid("Dirt",3);
 	public static final Block cobblestone = new Solid("Cobblestone", 4);
 	public static final Block wood = new Solid("Wooden Planks", 5);
 	public static final Block sapling = new Sapling("Sapling", 0);
