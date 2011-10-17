@@ -20,10 +20,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.Packet10Flying;
-
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileDownloadThread;
 

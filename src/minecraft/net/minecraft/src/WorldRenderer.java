@@ -169,7 +169,8 @@ public class WorldRenderer {
 						}
 					}
 					
-					for (int dy = y; dy < sizeYOffset; ++dy) {
+					//for (int dy = y; dy < sizeYOffset; ++dy) {
+					for (int dy = sizeYOffset; dy > y; --dy) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dx = x; dx < sizeXOffset; ++dx) {
 								int var19 = chunkCache.getBlockId(dx, dy, dz);

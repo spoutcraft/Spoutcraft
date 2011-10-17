@@ -120,7 +120,7 @@ public class GuiScreen extends Gui {
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
 			Keyboard.enableRepeatEvents(false);
-			for (Widget widget : screen.getAttachedWidgets()) {
+			for (Widget widget : screen.getAttachedWidgets(true)) {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
 					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
@@ -150,8 +150,8 @@ public class GuiScreen extends Gui {
 	}
 	
 	private void handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
-		int x = (int) (mouseX - lw.getScreenX());
-		int y = (int) (mouseY - lw.getScreenY());
+		int x = (int) (mouseX - lw.getActualX());
+		int y = (int) (mouseY - lw.getActualY());
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
 		y -= 5;
@@ -169,8 +169,8 @@ public class GuiScreen extends Gui {
 	}
 
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
-		int x = (int) (mouseX - lw.getScreenX());
-		int y = (int) (mouseY - lw.getScreenY());
+		int x = (int) (mouseX - lw.getActualX());
+		int y = (int) (mouseY - lw.getActualY());
 		int scrollY = lw.getScrollPosition(Orientation.VERTICAL);
 		int scrollX = lw.getScrollPosition(Orientation.HORIZONTAL);
 		if(x > lw.getWidth()-16 && lw.needsScrollBar(Orientation.VERTICAL)) {
@@ -234,7 +234,7 @@ public class GuiScreen extends Gui {
 		}
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
-		for (Widget widget : screen.getAttachedWidgets()) {
+		for (Widget widget : screen.getAttachedWidgets(true)) {
 			if (widget instanceof Control) {
 				Control control = (Control)widget;
 				if (control.isEnabled() && control.isVisible()) {
@@ -257,11 +257,11 @@ public class GuiScreen extends Gui {
 			double p = 0;
 			switch(holdingScrollBar){
 			case VERTICAL:
-				int y = mouseY - holding.getY();
+				int y = (int) (mouseY - holding.getActualY());
 				p = (double)y/holding.getViewportSize(Orientation.VERTICAL);
 				break;
 			case HORIZONTAL:
-				int x = mouseX - holding.getX();
+				int x = (int) (mouseX - holding.getActualX());
 				p = (double)x/holding.getViewportSize(Orientation.HORIZONTAL);
 				
 				break;
@@ -341,8 +341,8 @@ public class GuiScreen extends Gui {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 				axis = Orientation.HORIZONTAL;
 			}
-			for(Widget w:getScreen().getAttachedWidgets()) {
-				if(isInBoundingRect(w, x, y)) {
+			for(Widget w:getScreen().getAttachedWidgets(true)) {
+				if(w != null && isInBoundingRect(w, x, y)) {
 					if(w instanceof Scrollable) {
 						//Stupid LWJGL not recognizing vertical scrolls :(
 						Scrollable lw = (Scrollable)w;
@@ -363,12 +363,28 @@ public class GuiScreen extends Gui {
 		boolean handled = false;
 		if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 			Keyboard.enableRepeatEvents(false);
-		} else if(Keyboard.getEventKeyState() && getScreen() != null) {
+		} else if(getScreen() != null) {
 			boolean tab = Keyboard.getEventKey() == Keyboard.KEY_TAB;
 			TextField focusedTF = null;
 			ConcurrentSkipListMap<Integer, TextField> tabIndexMap = tab ? new ConcurrentSkipListMap<Integer, TextField>() : null;
 			
-			for (Widget widget : screen.getAttachedWidgets()) {
+			for (Widget widget : screen.getAttachedWidgets(true)) {
+				if (widget instanceof Control) {
+					Control control = (Control) widget;
+					if(control.isFocus()){
+						if(Keyboard.getEventKeyState()) {
+							handled = control.onKeyPressed(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+						} else {
+							handled = control.onKeyReleased(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+						}
+					}
+					if (handled) {
+						break;
+					}
+				}
+				if (!Keyboard.getEventKeyState()) {
+					break;
+				}
 				if (widget instanceof TextField) {
 					TextField tf = (TextField) widget;
 					// handle tabbing
@@ -502,7 +518,7 @@ public class GuiScreen extends Gui {
 		String tooltip = "";
 		//Widget tooltipWidget = null;
 		for (RenderPriority priority : RenderPriority.values()) {	
-			for (Widget widget : screen.getAttachedWidgets()){
+			for (Widget widget : screen.getAttachedWidgets(true)){ //We need ALL the tooltips now
 				if (widget.getPriority() == priority){
 					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
 						tooltip = widget.getTooltip();
@@ -541,18 +557,19 @@ public class GuiScreen extends Gui {
 	}
 	
 	protected boolean isInBoundingRect(Widget widget, int x, int y) {
-		int left = (int) widget.getScreenX();
-		int top = (int) widget.getScreenY();
+		int left = (int) widget.getActualX();
+		int top = (int) widget.getActualY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
 		int right = left+width;
 		int bottom = top+height;
+		
 		if(left <= x && x < right && top <= y && y < bottom){
 			return true;
 		}
 		return false;
 	}
-	
+
 	protected boolean isInBoundingRect(int widgetX, int widgetY, int height, int width, int x, int y) {
 		int left = widgetX;
 		int top = widgetY;
