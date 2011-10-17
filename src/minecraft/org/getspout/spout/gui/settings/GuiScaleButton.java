@@ -16,6 +16,8 @@
  */
 package org.getspout.spout.gui.settings;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
@@ -40,6 +42,7 @@ public class GuiScaleButton extends GenericButton{
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.guiScale += 1;
 		ConfigReader.guiScale &= 3;
+		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
 		ConfigReader.write();
 	}
 }

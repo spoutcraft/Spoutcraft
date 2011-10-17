@@ -3,6 +3,8 @@ package org.getspout.spout.config;
 import java.io.File;
 import java.lang.reflect.Field;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.io.FileUtil;
 
 public class ConfigReader {
@@ -64,6 +66,15 @@ public class ConfigReader {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
+		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
+		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
+		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
+		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
+		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
+		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
+		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		
 		System.out.println("Finished Reading Configuration");
 	}
