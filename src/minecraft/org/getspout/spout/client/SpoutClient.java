@@ -40,6 +40,7 @@ import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.inventory.SimpleItemManager;
+import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
@@ -68,6 +69,7 @@ import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -85,6 +87,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private PacketManager packetManager = new PacketManager();
 	private EntityManager entityManager = new SimpleEntityManager();
 	private BiomeManager biomeManager = new SimpleBiomeManager();
+	private MaterialManager materialManager = new SimpleMaterialManager();
 	private long tick = 0;
 	private Thread clipboardThread = null;
 	public ClientPlayer player = null;
@@ -153,6 +156,10 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public BiomeManager getBiomeManager() {
 		return biomeManager;
+	}
+	
+	public MaterialManager getMaterialManager() {
+		return materialManager;
 	}
 
 	public boolean isSkyCheat() {
