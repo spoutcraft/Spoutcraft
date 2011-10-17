@@ -124,6 +124,11 @@ public class GuiScreen extends Gui {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
 					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
+						if(control.getScreen() instanceof Scrollable) {
+							if(!isInBoundingRect(control.getScreen(), mouseX, mouseY)) {
+								continue;
+							}
+						}
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
