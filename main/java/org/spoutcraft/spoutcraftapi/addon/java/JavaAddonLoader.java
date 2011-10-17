@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
@@ -39,6 +40,8 @@ import org.spoutcraft.spoutcraftapi.addon.InvalidAddonException;
 import org.spoutcraft.spoutcraftapi.addon.InvalidDescriptionException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownDependencyException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownSoftDependencyException;
+import org.spoutcraft.spoutcraftapi.event.addon.AddonDisableEvent;
+import org.spoutcraft.spoutcraftapi.event.addon.AddonEnableEvent;
 import org.yaml.snakeyaml.error.YAMLException;
 
 public class JavaAddonLoader implements AddonLoader {
@@ -245,8 +248,7 @@ public class JavaAddonLoader implements AddonLoader {
 
 			// Perhaps abort here, rather than continue going, but as it stands,
 			// an abort is not possible the way it's currently written
-			// TODO: spoutcraft.getAddonManager().callEvent(new
-			// AddonEnableEvent(addpm));
+			Spoutcraft.getAddonManager().callEvent(AddonEnableEvent.getInstance(jAddon));
 		}
 	}
 
@@ -265,8 +267,7 @@ public class JavaAddonLoader implements AddonLoader {
 				client.getLogger().log(Level.SEVERE, "Error occurred while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 
-			// TODO: spoutcraft.getAddonManager().callEvent(new
-			// AddonDisableEvent(addon));
+			Spoutcraft.getAddonManager().callEvent(AddonDisableEvent.getInstance(jAddon));
 
 			loaders.remove(jAddon.getDescription().getName());
 
