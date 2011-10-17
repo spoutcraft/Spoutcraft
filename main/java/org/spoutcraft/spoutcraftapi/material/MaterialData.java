@@ -12,6 +12,7 @@ import org.spoutcraft.spoutcraftapi.material.block.LongGrass;
 import org.spoutcraft.spoutcraftapi.material.block.Sapling;
 import org.spoutcraft.spoutcraftapi.material.block.Slab;
 import org.spoutcraft.spoutcraftapi.material.block.Solid;
+import org.spoutcraft.spoutcraftapi.material.block.StoneBricks;
 import org.spoutcraft.spoutcraftapi.material.block.Tree;
 import org.spoutcraft.spoutcraftapi.material.block.Wool;
 import org.spoutcraft.spoutcraftapi.material.item.Coal;
@@ -156,7 +157,9 @@ public class MaterialData {
 	public static final Block lockedChest = new Solid("Locked Chest", 95);
 	public static final Block trapdoor = new Solid("Trapdoor", 96);
 	public static final Block silverfishStone = new Solid("Silverfish Stone", 97);
-	public static final Block stoneBricks = new Solid("Stone Brick", 98);
+	public static final Block stoneBricks = new StoneBricks("Stone Brick", 98, 0);
+	public static final Block mossyStoneBricks = new StoneBricks("Mossy Stone Brick", 98, 1);
+	public static final Block crackedStoneBricks = new StoneBricks("Cracked Stone Brick", 98, 2);
 	public static final Block hugeRedMushroom = new Solid("Huge Red Mushroom", 99);
 	public static final Block hugeBrownMushroom = new Solid("Huge Brown Mushroom", 100);
 	public static final Block ironBars = new Solid("Iron Bars", 101);
