@@ -29,13 +29,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 	}
 	
 	public void renderContents() {
-		for(RenderPriority priority:RenderPriority.values()) {
-			for(Widget w:getAttachedWidgets()) {
-				if(w.getPriority() == priority) {
-					w.render();
-				}
-			}
-		}
+		Spoutcraft.getRenderDelegate().renderContents(this);
 	}
 
 	public WidgetType getType() {
@@ -76,7 +70,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 			width = (int) Math.max(width, w.getX() + w.getWidth());
 		}
 		setInnerSize(Orientation.HORIZONTAL, width);
-		setInnerSize(Orientation.VERTICAL, height);
+		setInnerSize(Orientation.VERTICAL, height + 5);
 	}
 
 	public Screen removeWidget(Widget widget) {

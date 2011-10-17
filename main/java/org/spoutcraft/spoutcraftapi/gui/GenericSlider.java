@@ -59,11 +59,6 @@ public class GenericSlider extends GenericControl implements Slider {
 		label.writeData(output);
 	}
 
-	@Override
-	public PopupScreen getScreen() {
-		return (PopupScreen) super.getScreen();
-	}
-
 	public float getSliderPosition() {
 		return slider;
 	}

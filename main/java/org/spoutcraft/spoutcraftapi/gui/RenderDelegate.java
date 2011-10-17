@@ -64,4 +64,6 @@ public interface RenderDelegate {
 
 	public void renderContents(GenericListWidget genericListWidget);
 
+	public void renderContents(GenericScrollArea genericScrollArea);
+
 }
