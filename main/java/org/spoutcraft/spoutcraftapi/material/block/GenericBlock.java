@@ -8,20 +8,23 @@ public class GenericBlock implements Block{
 	private final int id;
 	private final int data;
 	private final boolean subtypes;
+	private final String name;
+	private String customName;
 	private SoundEffect stepSound = SoundEffect.STONE;
 	
-	private GenericBlock(int id, int data, boolean subtypes) {
+	private GenericBlock(String name, int id, int data, boolean subtypes) {
+		this.name = name;
 		this.id = id;
 		this.data = data;
 		this.subtypes = subtypes;
 	}
 	
-	protected GenericBlock(int id, int data) {
-		this(id, data, true);
+	protected GenericBlock(String name, int id, int data) {
+		this(name, id, data, true);
 	}
 	
-	protected GenericBlock(int id) {
-		this(id, 0, false);
+	protected GenericBlock(String name, int id) {
+		this(name, id, 0, false);
 	}
 
 	public int getRawId() {
@@ -37,10 +40,14 @@ public class GenericBlock implements Block{
 	}
 
 	public String getName() {
-		return Spoutcraft.getClient().getItemManager().getItemName(id, (short)data);
+		if(customName != null) {
+			return customName;
+		}
+		return name;
 	}
 
 	public void setName(String name) {
+		this.customName = name;
 		Spoutcraft.getClient().getItemManager().setItemName(id, (short)data, name);
 	}
 
