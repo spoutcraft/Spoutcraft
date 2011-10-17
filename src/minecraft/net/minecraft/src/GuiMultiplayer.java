@@ -299,7 +299,7 @@ public class GuiMultiplayer extends GuiScreen {
 	
 	private void func_35328_b(ServerSlot var1) throws IOException {
 		String var2 = var1.ip + ":" + var1.port;
-		String[] var3 = var2.split(":");
+		String[] splitPacket = var2.split(":");
 		if(var2.startsWith("[")) {
 			int var4 = var2.indexOf("]");
 			if(var4 > 0) {
@@ -307,19 +307,19 @@ public class GuiMultiplayer extends GuiScreen {
 				String var6 = var2.substring(var4 + 1).trim();
 				if(var6.startsWith(":") && var6.length() > 0) {
 					var6 = var6.substring(1);
-					var3 = new String[]{var5, var6};
+					splitPacket = new String[]{var5, var6};
 				} else {
-					var3 = new String[]{var5};
+					splitPacket = new String[]{var5};
 				}
 			}
 		}
 
-		if(var3.length > 2) {
-			var3 = new String[]{var2};
+		if(splitPacket.length > 2) {
+			splitPacket = new String[]{var2};
 		}
 
-		String var29 = var3[0];
-		int var30 = var3.length > 1?this.parseIntWithDefault(var3[1], 25565):25565;
+		String var29 = splitPacket[0];
+		int var30 = splitPacket.length > 1?this.parseIntWithDefault(splitPacket[1], 25565):25565;
 		Socket var31 = null;
 		DataInputStream var7 = null;
 		DataOutputStream var8 = null;
@@ -336,38 +336,47 @@ public class GuiMultiplayer extends GuiScreen {
 			if(var7.read() != 255) {
 				throw new IOException("Bad message");
 			}
+		
+			String sPacket = Packet.readString(var7, 256);
 
-			String var9 = Packet.readString(var7, 64);
-			char[] var10 = var9.toCharArray();
+			char[] cPacket = sPacket.toCharArray();
 
-			int var11;
-			for(var11 = 0; var11 < var10.length; ++var11) {
-				if(var10[var11] != 167 && ChatAllowedCharacters.allowedCharacters.indexOf(var10[var11]) < 0) {
-					var10[var11] = 63;
+			int i;
+			for(i = 0; i < cPacket.length; ++i) {
+				if(cPacket[i] != 167 && ChatAllowedCharacters.allowedCharacters.indexOf(cPacket[i]) < 0) {
+					cPacket[i] = 63;
 				}
 			}
 
-			var9 = new String(var10);
-			var3 = var9.split("\u00a7");
-			var9 = var3[0];
-			var11 = -1;
+			sPacket = new String(cPacket);
+			splitPacket = sPacket.split("\u00a7");
+
+			i = -1;
 			int var12 = -1;
 
 			try {
-				var11 = Integer.parseInt(var3[1]);
-				var12 = Integer.parseInt(var3[2]);
+				i = Integer.parseInt(splitPacket[1]);
+				var12 = Integer.parseInt(splitPacket[2]);
 			} catch (Exception var27) { }
 
-			var1.msg = "\u00a77" + var9;
-			if(var11 >= 0 && var12 > 0) {
-				var1.status = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
-				var1.players = var11;
+			String sMOTD = "???";
+			if(splitPacket[0].length() > 34)
+			{
+				sMOTD = splitPacket[0].substring(0, 29) + " ...";
+			}
+			else sMOTD = splitPacket[0];
+	
+			var1.msg = "\u00a77" + sMOTD;
+			if(i >= 0 && var12 > 0) {
+				var1.status = "\u00a77" + i + "\u00a78/\u00a77" + var12;
+				var1.players = i;
 				var1.maxPlayers = var12;
 			} else {
 				var1.status = "\u00a78???";
 				var1.players = 0;
 				var1.maxPlayers = 0;
 			}
+
 		} finally {
 			try {
 				if(var7 != null) {

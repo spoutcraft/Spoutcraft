@@ -396,7 +396,6 @@ public class VideoSettings extends GuiScreen{
 				((Gradient)widgets[i]).setWidth((int)(this.width * 0.74D));
 			}
 		}
-		
 		screen.render();
 		drawTooltips(x, y);
 		

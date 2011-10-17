@@ -107,12 +107,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			int hoverState = getHoverState(button, isHovering(button));
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			Color color = button.getTextColor();
-			if (!button.isEnabled()) {
-				color = button.getDisabledColor();
-			} else if (isHovering(button)) {
-				color = button.getHoverColor();
-			}
+			Color color = getColor(button);
+			
 			int left = (int) 5;
 			switch (button.getAlign()) {
 			case TOP_CENTER:
@@ -138,7 +134,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		double mouseX = widget.getScreen().getMouseX();
 		double mouseY = widget.getScreen().getMouseY();
 
-		boolean hovering = mouseX >= widget.getScreenX() && mouseY >= widget.getScreenY() && mouseX < widget.getScreenX() + widget.getWidth() && mouseY < widget.getScreenY() + widget.getHeight();
+		boolean hovering = mouseX >= widget.getActualX() && mouseY >= widget.getActualY() && mouseX < widget.getActualX() + widget.getWidth() && mouseY < widget.getActualY() + widget.getHeight();
 		return hovering;
 	}
 
@@ -493,13 +489,13 @@ public class MCRenderDelegate implements RenderDelegate {
 		if(checkBox.isVisible()){
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
-			renderBaseBox(checkBox);
+			renderBaseBox(checkBox, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(checkBox);
 			if(!checkBox.isChecked()) {
 				color.setAlpha(0.2F);
 			}
-			drawTexture(checkBoxCross, 20, 20, color);
+			drawTexture(checkBoxCross, 20, 20, color, true);
 			font.drawString(checkBox.getText(), 22, 7, getColor(checkBox).toInt());
 		}
 	}
@@ -510,13 +506,13 @@ public class MCRenderDelegate implements RenderDelegate {
 		if(radioButton.isVisible()) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) radioButton.getScreenX(), (float) radioButton.getScreenY(), 0);
-			renderBaseBox(radioButton);
+			renderBaseBox(radioButton, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(radioButton);
 			if(!radioButton.isSelected()){
 				color.setAlpha(0.2F);
 			}
-			drawTexture(radio, 20, 20, color);
+			drawTexture(radio, 20, 20, color, true);
 			font.drawString(radioButton.getText(), 22, 7, getColor(radioButton).toInt());
 		}
 	}
@@ -533,8 +529,11 @@ public class MCRenderDelegate implements RenderDelegate {
 		 radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
 		 checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 	}
-	
 	protected void renderBaseBox(Control box) {
+		renderBaseBox(box, false);
+	}
+	
+	protected void renderBaseBox(Control box, boolean blend) {
 		if(defaultBox == null)
 			loadTextures();
 		Texture usedTexture = null;
@@ -545,15 +544,29 @@ public class MCRenderDelegate implements RenderDelegate {
 		} else {
 			usedTexture = disabledBox;
 		}
-		drawTexture(usedTexture, 20, 20);
+		drawTexture(usedTexture, 20, 20, blend);
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend);
 	}
 	
 	protected void drawTexture(Texture textureBinding, int width, int height, Color color) {
+		drawTexture(textureBinding, width, height, color, false);
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
 		if(textureBinding == null) return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(770, 771);
+		if (blend) {
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(770, 771);
+		}
 		GL11.glDepthMask(false);
 		bindColor(color);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
@@ -570,12 +583,11 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
-		GL11.glDisable(GL11.GL_BLEND);
+		if (blend){
+			GL11.glDisable(GL11.GL_BLEND);
+		}
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
-	}
 	
 	protected Color getColor(Button c) {
 		if(c.isEnabled() && isHovering(c)){
@@ -596,8 +608,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		font.drawString(lwi.getTitle(), x+2, y+2, new Color(1.0F,1.0F,1.0F).toInt());
 		font.drawString(lwi.getText(), x+2, y+2+8, new Color(0.8F,0.8F,0.8F).toInt());
 	}
-
-	
 
 	private void scissorWidget(Widget widget) {
 		double x = widget.getX() + widget.getWidth(), y = widget.getY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
