@@ -204,11 +204,6 @@ public class GuiScreen extends Gui {
 	}
 
 	private void handleButtonClick(Button control) {
-		this.buttonClicked((Button)control);
-		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
-		((Button) control).onButtonClick(event);
-		SpoutClient.getInstance().getAddonManager().callEvent(event);
 		if(control instanceof CheckBox) {
 			CheckBox check = (CheckBox)control;
 			check.setChecked(!check.isChecked());
@@ -217,6 +212,11 @@ public class GuiScreen extends Gui {
 			RadioButton radio = (RadioButton)control;
 			radio.setSelected(true);
 		}
+		this.buttonClicked((Button)control);
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
+		((Button) control).onButtonClick(event);
+		SpoutClient.getInstance().getAddonManager().callEvent(event);
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {
