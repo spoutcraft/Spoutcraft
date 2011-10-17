@@ -19,16 +19,33 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.HashMap;
 
 public enum WidgetAnchor {
-	TOP_LEFT(0),
-	TOP_CENTER(1),
-	TOP_RIGHT(2),
-	CENTER_LEFT(3),
-	CENTER_CENTER(4),
-	CENTER_RIGHT(5),
-	BOTTOM_LEFT(6),
-	BOTTOM_CENTER(7),
-	BOTTOM_RIGHT(8),
-	SCALE(9),
+	/**
+	 * Widget anchors allow you to place widgets that
+	 * stick or "anchor" to a point on the screen
+	 * 
+	 * A widget's coordinates refer to it's top left
+	 * corner and anchors change the point they are
+	 * relative to on the screen
+	 * 
+	 * You can choose any of 9 points to anchor to,
+	 * note that if anchoring to the bottom or right
+	 * the widget will likely be offscreen until you
+	 * set a negative y or x value
+	 * 
+	 * The only exception is scale which assumes the
+	 * screen to always be 427x240 and moves/scales
+	 * widgets to conform
+	 */
+	TOP_LEFT(0), // x, y
+	TOP_CENTER(1), // screenwidth/2 + x, y
+	TOP_RIGHT(2), // screenwidth + x, y
+	CENTER_LEFT(3), // x, screenheight/2 + y
+	CENTER_CENTER(4), // screenwidth/2 + x, screenheight/2 + y
+	CENTER_RIGHT(5), // screenwidth + x, screenheight/2 + y
+	BOTTOM_LEFT(6), // x, screenheight + y
+	BOTTOM_CENTER(7), // screenwidth/2 + x, screenheight + y
+	BOTTOM_RIGHT(8), // screenwidth + x, screenheight + y
+	SCALE(9), // Scales
 	;
 
 	private final int id;
