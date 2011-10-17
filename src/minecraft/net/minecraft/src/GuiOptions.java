@@ -60,7 +60,7 @@ public class GuiOptions extends GuiScreen {
 				this.mc.gameSettings.saveOptions();
 				//Spout start
 				//this.mc.displayGuiScreen(new GuiVideoSettings(this, this.options));
-				this.mc.displayGuiScreen(new VideoSettings());
+				this.mc.displayGuiScreen(new VideoSettings(this));
 				//Spout end
 			}
 

@@ -23,42 +23,42 @@ import java.util.UUID;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
 
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class VideoSettings extends GuiScreen{
-	private float scrolled = 0f;
-	private boolean holdingScrollBar = false;
-	private Color scrollBarColor = new Color(0.46F, 0.46F, 0.46F, 0.55F);
-	private Color scrollBarColor2 = new Color(0.06F, 0.06F, 0.06F, 0.62F);
-	private Color background1 = new Color(0.06F, 0.06F, 0.06F, 0.43F);
-	private Color background2 = new Color(0.06F, 0.06F, 0.06F, 0.52F);
-	private Gradient scrollArea = new GenericGradient();
-	private static final int SCREEN_SIZE = 225;
-	private static final int SCREEN_START = 20;
-	private static final int SCREEN_END = 10;
-	private static final float SCROLL_FACTOR = 10f;
-	
+	private Button doneButton = null;
 	private Label title = null;
+	private GuiScreen parent;
 	
-	private HashMap<UUID, Integer> origY = new HashMap<UUID, Integer>();
-	
-	public VideoSettings() {
-		screen = new GenericPopup();
+	public VideoSettings(GuiScreen parent) {
+		this.parent = parent;
 	}
+	
 	public void initGui() {
+		GenericScrollArea screen = new GenericScrollArea();
+		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(16+24).setX(0);
+		getScreen().attachWidget("Spoutcraft", screen);
+		
 		GenericLabel label = new GenericLabel("Video Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
-		screen.attachWidget("Spoutcraft", label);
+		getScreen().attachWidget("Spoutcraft", label);
 		title = label;
+		
+		doneButton = new GenericButton("Done");
+		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
+		doneButton.setX((int) (width / 2 - 200 / 2)).setY(height - 30);
+		doneButton.setHeight(20).setWidth(200);
+		getScreen().attachWidget("Spoutcraft", doneButton);
 		
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
-		int top = (int)(height / 6 + 11);
+		int top = 5;
 		
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
 		
@@ -278,172 +278,20 @@ public class VideoSettings extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		top += 22;
-		
-		origY.clear();
-		Widget[] widgets = screen.getAttachedWidgets();
-		for (int i = 0; i < widgets.length; i++) {
-			origY.put(widgets[i].getId(), widgets[i].getY());
-		}
-		
 	}
-	
+
 	@Override
-	public void mouseClicked(int mouseX, int mouseY, int click) {
-		holdingScrollBar = false;
-		boolean clickedScrollBar = mouseX >= this.width - 12 && mouseY <= this.width;
-		int height = getInvertedScaledHeight(this.height );
-		if (clickedScrollBar) {
-			//do nothing if we clicked on the bar slider itself
-			if (mouseY > height + 16 && mouseY < this.height - 50) {
-				setScrolled(getScrolled() + 0.1f);
-			}
-			else if (mouseY < height && mouseY > 30) {
-				setScrolled(getScrolled() - 0.1f);
-			}
-			else {
-				holdingScrollBar = true;
-			}
-		}
-		super.mouseClicked(mouseX, mouseY, click);
+	public void drawScreen(int var1, int var2, float var3) {
+		drawDefaultBackground();
 	}
-	
+
 	@Override
-	public void mouseMovedOrUp(int mouseX, int mouseY, int click) {
-		if (click != 0) { //still dragging
-			if (holdingScrollBar) {
-				int height = getInvertedScaledHeight(this.height);
-				if (mouseY > height + 16) {
-					setScrolled(getScrolled() + 0.01f);
-				}
-				else if (mouseY < height) {
-					setScrolled(getScrolled() - 0.01f);
-				}
-			}
-		}
-		else {
-			holdingScrollBar = false;
-		}
-		super.mouseMovedOrUp(mouseX, mouseY, click);
-	}
-	
-	@Override
-	public void handleMouseInput() {
-		super.handleMouseInput();
-		int scroll = Mouse.getEventDWheel();
-		if (scroll != 0) {
-			setScrolled(getScrolled() - (scroll / (SCROLL_FACTOR * SCREEN_SIZE)));
+	protected void buttonClicked(Button btn) {
+		if(btn.equals(doneButton)) {
+			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
 	}
 	
-	public float getScrolled() {
-		return scrolled;
-	}
-	
-	public void setScrolled(float f) {
-		if (f > 1f) {
-			scrolled = 1f;
-		}
-		else if (f < 0f) {
-			scrolled = 0f;
-		}
-		else {
-			scrolled = f;
-		}
-		Widget[] widgets = screen.getAttachedWidgets();
-		for (int i = 0; i < widgets.length; i++) {
-			if (!widgets[i].isFixed())
-				widgets[i].setY(getScaledHeight(origY.get(widgets[i].getId())));
-		}
-	}
-	
-	public int getScaledHeight(int height) {
-		return SCREEN_END + height - (int)(SCREEN_SIZE * scrolled) - SCREEN_START;
-	}
-	
-	public int getInvertedScaledHeight(int height) {
-		return (int)((this.height - SCREEN_END - 34) * scrolled) + height - this.height + SCREEN_START + 10;
-	}
-	
-	@Override
-	public void drawScreenPre(int x, int y, float z) {	
-		super.drawBackground(0);
-		GL11.glDisable(2896 /*GL_LIGHTING*/);
-		GL11.glDisable(2912 /*GL_FOG*/);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
-		bg.setTopColor(background1);
-		bg.setBottomColor(background2);
-		bg.setY(30);
-		bg.setHeight(this.height);
-		bg.setX(0);
-		bg.setWidth(this.width - 12);
-		bg.render();
-		
-		scrollArea.setY(SCREEN_START);
-		scrollArea.setHeight(this.height - SCREEN_END);
-		scrollArea.setX(this.width - 12);
-		scrollArea.setWidth(16);
-		scrollArea.setTopColor(scrollBarColor);
-		scrollArea.setBottomColor(scrollBarColor2);
-		scrollArea.render();
-		
-		//screen.onTick();
-		
-		//scale gradients manually
-		Widget[] widgets = screen.getAttachedWidgets();
-		for (int i = 0; i < widgets.length; i++) {
-			if (widgets[i] instanceof Gradient) {
-				((Gradient)widgets[i]).setWidth((int)(this.width * 0.74D));
-			}
-			widgets[i].setScreen(screen);
-		}
-		screen.render();
-		drawTooltips(x, y);
-		
-		GL11.glDisable(2912 /*GL_FOG*/);
-		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
-		this.overlayBackground(0, 30, 255, 255);
-		
-		title.render();
-		
-		GL11.glDisable(2896 /*GL_LIGHTING*/);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		int var11 = this.mc.renderEngine.getTexture("/gui/allitems.png");
-		this.mc.renderEngine.bindTexture(var11);
-		RenderUtil.drawTexturedModalRectangle(this.width - 14, getInvertedScaledHeight(this.height), 0, 208, 16, 16, 0f);
-		
-		//Shadow magic
-		GL11.glEnable(3042 /*GL_BLEND*/);
-		GL11.glBlendFunc(770, 771);
-		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-		GL11.glShadeModel(7425 /*GL_SMOOTH*/);
-		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-		Tessellator var16 = Tessellator.instance;
-		byte var19 = 4;
-		var16.startDrawingQuads();
-		var16.setColorRGBA_I(0, 0);
-		var16.addVertexWithUV(0, (double)(30 + var19), 0.0D, 0.0D, 1.0D);
-		var16.addVertexWithUV(this.width - 12, (double)(30 + var19), 0.0D, 1.0D, 1.0D);
-		var16.setColorRGBA_I(0, 255);
-		var16.addVertexWithUV(this.width - 12, 30, 0.0D, 1.0D, 0.0D);
-		var16.addVertexWithUV(0, 30, 0.0D, 0.0D, 0.0D);
-		var16.draw();
-	}
-	
-	private void overlayBackground(int var1, int var2, int var3, int var4) {
-		Tessellator var5 = Tessellator.instance;
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/gui/background.png"));
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		float var6 = 32.0F;
-		var5.startDrawingQuads();
-		var5.setColorRGBA_I(4210752, var4);
-		var5.addVertexWithUV(0.0D, (double)var2, 0.0D, 0.0D, (double)((float)var2 / var6));
-		var5.addVertexWithUV((double)this.width, (double)var2, 0.0D, (double)((float)this.width / var6), (double)((float)var2 / var6));
-		var5.setColorRGBA_I(4210752, var3);
-		var5.addVertexWithUV((double)this.width, (double)var1, 0.0D, (double)((float)this.width / var6), (double)((float)var1 / var6));
-		var5.addVertexWithUV(0.0D, (double)var1, 0.0D, 0.0D, (double)((float)var1 / var6));
-		var5.draw();
-	}
 	/*
 	FOG_FANCY("FOG_FANCY", 15, "FOG_FANCY", 15, "Fog", false, false),
 	VOID_FOG("VOID_FOG", 16, "VOID_FOG", 16, "Void Fog", false, false, false),
