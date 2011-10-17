@@ -29,6 +29,7 @@ public enum WidgetAnchor {
 	BOTTOM_CENTER(7),
 	BOTTOM_RIGHT(8),
 	SCALE(9),
+	NO_SCALE(10),
 	;
 
 	private final int id;
