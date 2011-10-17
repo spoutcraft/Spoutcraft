@@ -16,7 +16,6 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
