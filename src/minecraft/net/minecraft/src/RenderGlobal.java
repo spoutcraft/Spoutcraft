@@ -468,7 +468,13 @@ public class RenderGlobal implements IWorldAccess {
 			RenderHelper.enableStandardItemLighting();
 
 			for(var6 = 0; var6 < this.tileEntities.size(); ++var6) {
-				TileEntityRenderer.instance.renderTileEntity((TileEntity)this.tileEntities.get(var6), var3);
+				//Spout start
+				TileEntity tileentity = (TileEntity)this.tileEntities.get(var6);
+				this.worldObj.checkEntityTile(tileentity);
+				if(!tileentity.isInvalid()) {
+					TileEntityRenderer.instance.renderTileEntity(tileentity, var3);
+				}
+				//Spout end
 			}
 
 			this.mc.entityRenderer.func_35810_a((double)var3);
