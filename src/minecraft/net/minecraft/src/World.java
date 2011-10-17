@@ -51,6 +51,7 @@ import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldSettings;
 //Spout Start
 import org.getspout.spout.SpoutcraftWorld;
+import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
@@ -2586,7 +2587,7 @@ public class World implements IBlockAccess {
 
 	public void setWorldTime(long var1) {
 		//Spout start
-		if (Config.isTimeDayOnly() || Config.isTimeNightOnly()) {
+		if (ConfigReader.time != 0) {
 			return;
 		}
 		//Spout end

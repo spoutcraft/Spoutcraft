@@ -287,13 +287,9 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glScalef((float) slider.getWidth() / width, (float) slider.getHeight() / 20f, 1);
 
 			double mouseX = slider.getScreen().getMouseX();
-			double mouseY = slider.getScreen().getMouseY();
 
-			boolean hovering = mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
-
-			int hoverState = getHoverState(slider, hovering);
-			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
+			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46, (int) Math.ceil(width / 2), 20, 0f);
+			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46, (int) Math.ceil(width / 2), 20, 0f);
 
 			if (slider.isDragging()) {
 				slider.setSliderPosition((float) (mouseX - (slider.getScreenX() + 4)) / (float) (slider.getWidth() - 8));
@@ -303,6 +299,30 @@ public class MCRenderDelegate implements RenderDelegate {
 			width -= 8;
 			RenderUtil.drawTexturedModalRectangle((int) (slider.getSliderPosition() * width), 0, 0, 66, 4, 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) (slider.getSliderPosition() * width) + 4, 0, 196, 66, 4, 20, 0f);
+			
+			Color color = slider.getTextColor();
+			if (!slider.isEnabled()) {
+				color = slider.getDisabledColor();
+			}
+			
+			int left = (int) 5;
+			switch (slider.getAlign()) {
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				left = (int) ((width / 2) - (font.getTextWidth(slider.getText()) / 2));
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				left = (int) (width - font.getTextWidth(slider.getText())) - 5;
+				break;
+			}
+			GL11.glPushMatrix();
+			float scale = slider.getScale();
+			GL11.glScalef(scale, scale, scale);
+			font.drawString(slider.getText(), left, 6, color.toInt());
+			GL11.glPopMatrix();
 		}
 	}
 

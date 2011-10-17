@@ -242,7 +242,7 @@ public class GuiScreen extends Gui {
 						if (control.isFocus() && !isInBoundingRect(control, mouseX, mouseY)) { //released control
 							control.setFocus(false);
 						}
-						if (control instanceof Slider) {
+						if (control instanceof Slider && ((Slider)control).isDragging()) {
 							((Slider)control).setDragging(false);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider)control).getSliderPosition()));
 							SliderDragEvent event = SliderDragEvent.getInstance(getPlayer(), screen, (Slider)control, ((Slider)control).getSliderPosition());
@@ -342,8 +342,8 @@ public class GuiScreen extends Gui {
 				axis = Orientation.HORIZONTAL;
 			}
 			for(Widget w:getScreen().getAttachedWidgets()) {
-				if(isInBoundingRect(w, x, y)) {
-					if(w instanceof Scrollable) {
+				if(w instanceof Scrollable) {
+					if(isInBoundingRect(w, x, y)) {
 						//Stupid LWJGL not recognizing vertical scrolls :(
 						Scrollable lw = (Scrollable)w;
 						if(axis == Orientation.VERTICAL) {
@@ -498,6 +498,10 @@ public class GuiScreen extends Gui {
 		}
 		//Draw ALL the widgets!!
 		screen.render();
+		drawTooltips(x, y);
+	}
+	
+	public void drawTooltips(int x, int y) {
 		//Draw the tooltip!
 		String tooltip = "";
 		//Widget tooltipWidget = null;
@@ -531,10 +535,10 @@ public class GuiScreen extends Gui {
 		}
 		x += 6;
 		y -= 6;
-		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 * lines.length + 3, -1073741824, -1073741824);
+		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 10 * lines.length + 3, -1073741824, -1073741824);
 		int i = 0;
 		for(String line:lines) {
-			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i, -1);
+			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 10 * i, -1);
 			i++;
 		}
 		GL11.glPopMatrix();

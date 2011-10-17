@@ -7,6 +7,8 @@ import net.minecraft.src.SignModel;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.TileEntitySpecialRenderer;
+
+import org.getspout.spout.config.ConfigReader;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
@@ -56,7 +58,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		if (viewer == null) {
 			viewer = Minecraft.theMinecraft.thePlayer;
 		}
-		if (Minecraft.theMinecraft.gameSettings.signDistance == Integer.MAX_VALUE || viewer != null && var1.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Minecraft.theMinecraft.gameSettings.signDistance * Minecraft.theMinecraft.gameSettings.signDistance)) {
+		if (ConfigReader.signDistance == Integer.MAX_VALUE || viewer != null && var1.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (ConfigReader.signDistance * ConfigReader.signDistance)) {
 		FontRenderer var17 = this.getFontRenderer();
 		var12 = 0.016666668F * var10;
 		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);

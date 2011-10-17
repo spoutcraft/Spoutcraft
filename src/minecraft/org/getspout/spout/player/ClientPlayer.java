@@ -77,6 +77,10 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return RenderDistance.getRenderDistanceFromValue(Minecraft.theMinecraft.gameSettings.renderDistance);
 	}
 	
+	public void setCurrentView(RenderDistance view){
+		Minecraft.theMinecraft.gameSettings.renderDistance = view.getValue();
+	}
+	
 	public RenderDistance getNextRenderDistance() {
 		int next = getCurrentView().getValue() + (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? -1 : 1);
 		if (next > min.getValue()) {

@@ -23,6 +23,8 @@ import net.minecraft.src.ModelBed;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
+
+import org.getspout.spout.config.ConfigReader;
 import org.lwjgl.opengl.GL11;
 
 public class RenderBlocks {
@@ -2893,9 +2895,10 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 2);
-			if(Config.isBetterGrass()) {
+			//Spout start
+			if (ConfigReader.betterGrass != 0) {
 				if(var26 == 3) {
-					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 2);
+					var26 = getSideGrassTexture(this.blockAccess, var2, var3, var4, 2);
 					if(var26 == 0) {
 						this.colorRedTopLeft *= var5;
 						this.colorRedBottomLeft *= var5;
@@ -2913,9 +2916,10 @@ public class RenderBlocks {
 				}
 
 				if(var26 == 68) {
-					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 2);
+					var26 = getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 2);
 				}
 			}
+			//Spout end
 			this.renderEastFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -3012,9 +3016,10 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3);
-			if(Config.isBetterGrass()) {
+			//Spout start
+			if (ConfigReader.betterGrass != 0) {
 				if(var26 == 3) {
-					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 3);
+					var26 = getSideGrassTexture(this.blockAccess, var2, var3, var4, 3);
 					if(var26 == 0) {
 						this.colorRedTopLeft *= var5;
 						this.colorRedBottomLeft *= var5;
@@ -3032,9 +3037,10 @@ public class RenderBlocks {
 				}
 
 				if(var26 == 68) {
-					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 3);
+					var26 = getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 3);
 				}
 			}
+			//Spout end
 			this.renderWestFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -3131,9 +3137,10 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 4);
-			if(Config.isBetterGrass()) {
+			//Spout start
+			if (ConfigReader.betterGrass != 0) {
 				if(var26 == 3) {
-					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 4);
+					var26 = getSideGrassTexture(this.blockAccess, var2, var3, var4, 4);
 					if(var26 == 0) {
 						this.colorRedTopLeft *= var5;
 						this.colorRedBottomLeft *= var5;
@@ -3151,9 +3158,10 @@ public class RenderBlocks {
 				}
 
 				if(var26 == 68) {
-					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 4);
+					var26 = getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 4);
 				}
 			}
+			//Spout end
 			this.renderNorthFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -3250,9 +3258,10 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var26 = var1.getBlockTexture(this.blockAccess, var2, var3, var4, 5);
-			if(Config.isBetterGrass()) {
+			//Spout start
+			if (ConfigReader.betterGrass != 0) {
 				if(var26 == 3) {
-					var26 = Config.getSideGrassTexture(this.blockAccess, var2, var3, var4, 5);
+					var26 = getSideGrassTexture(this.blockAccess, var2, var3, var4, 5);
 					if(var26 == 0) {
 						this.colorRedTopLeft *= var5;
 						this.colorRedBottomLeft *= var5;
@@ -3270,9 +3279,10 @@ public class RenderBlocks {
 				}
 
 				if(var26 == 68) {
-					var26 = Config.getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 5);
+					var26 = getSideSnowGrassTexture(this.blockAccess, var2, var3, var4, 5);
 				}
 			}
+			//Spout end
 			this.renderSouthFace(var1, (double)var2, (double)var3, (double)var4, var26);
 			if(fancyGrass && var26 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
@@ -4636,4 +4646,65 @@ public class RenderBlocks {
 	public static boolean renderItemIn3d(int var0) {
 		return var0 == 0?true:(var0 == 13?true:(var0 == 10?true:(var0 == 11?true:(var0 == 22?true:(var0 == 21?true:var0 == 16)))));
 	}
+	
+	//Spout start
+	public static int getSideGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
+		if (ConfigReader.betterGrass == 0) {
+			return 3;
+		} else {
+			if(ConfigReader.betterGrass == 2) {
+				--y;
+				switch(blockface) {
+				case 2:
+					--z;
+					break;
+				case 3:
+					++z;
+					break;
+				case 4:
+					--x;
+					break;
+				case 5:
+					++x;
+				}
+
+				int id = world.getBlockId(x, y, z);
+				if(id != 2) {
+					return 3;
+				}
+			}
+
+			return 0;
+		}
+	}
+
+	public static int getSideSnowGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
+		if (ConfigReader.betterGrass == 0) {
+			return 68;
+		} else {
+			if (ConfigReader.betterGrass == 2) {
+				switch(blockface) {
+				case 2:
+					--z;
+					break;
+				case 3:
+					++z;
+					break;
+				case 4:
+					--x;
+					break;
+				case 5:
+					++x;
+				}
+
+				int id = world.getBlockId(x, y, z);
+				if(id != 78 && id != 80) {
+					return 68;
+				}
+			}
+
+			return 66;
+		}
+	}
+	//Spout end
 }
