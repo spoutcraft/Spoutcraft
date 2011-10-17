@@ -542,19 +542,31 @@ public class GuiScreen extends Gui {
 		GL11.glPushMatrix();
 		String lines[] = tooltip.split("\n");
 		int tooltipWidth = 0;
+		int tooltipHeight = 8 * lines.length + 3;
 		for(String line:lines) {
 			tooltipWidth = Math.max(this.fontRenderer.getStringWidth(line), tooltipWidth);
 		}
 		int offsetX = 0;
-		if(x + tooltipWidth + 2 > screen.getWidth()){
+		if(x + tooltipWidth > width){
 			offsetX = -tooltipWidth - 11;
+			if (offsetX + x < 0) {
+				offsetX = -x;
+			}
 		}
+		int offsetY = 0;
+		if(y + tooltipHeight + 2 > height) {
+			offsetY = -tooltipHeight;
+			if(offsetY + y < 0) {
+				offsetY = -y;
+			}
+		}
+		
 		x += 6;
 		y -= 6;
-		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 * lines.length + 3, -1073741824, -1073741824);
+		this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
 		int i = 0;
 		for(String line:lines) {
-			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i, -1);
+			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i + offsetY, -1);
 			i++;
 		}
 		GL11.glPopMatrix();
