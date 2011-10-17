@@ -124,6 +124,11 @@ public class GuiScreen extends Gui {
 				if (widget instanceof Control) {
 					Control control = (Control)widget;
 					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
+						if(control.getScreen() instanceof Scrollable) {
+							if(!isInBoundingRect(control.getScreen(), mouseX, mouseY)) {
+								continue;
+							}
+						}
 						control.setFocus(true);
 						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 						if (control instanceof Button) {
@@ -525,6 +530,11 @@ public class GuiScreen extends Gui {
 			for (Widget widget : screen.getAttachedWidgets(true)){ //We need ALL the tooltips now
 				if (widget.getPriority() == priority){
 					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
+						if(widget.getScreen() instanceof Scrollable) {
+							if(!isInBoundingRect(widget.getScreen(), x, y)){
+								continue;
+							}
+						}
 						tooltip = widget.getTooltip();
 						//tooltipWidget = widget;
 						//No return here, when a widget that is over it comes next, tooltip will be overwritten.
@@ -542,19 +552,31 @@ public class GuiScreen extends Gui {
 		GL11.glPushMatrix();
 		String lines[] = tooltip.split("\n");
 		int tooltipWidth = 0;
+		int tooltipHeight = 8 * lines.length + 3;
 		for(String line:lines) {
 			tooltipWidth = Math.max(this.fontRenderer.getStringWidth(line), tooltipWidth);
 		}
 		int offsetX = 0;
-		if(x + tooltipWidth + 2 > screen.getWidth()){
+		if(x + tooltipWidth > width){
 			offsetX = -tooltipWidth - 11;
+			if (offsetX + x < 0) {
+				offsetX = -x;
+			}
 		}
+		int offsetY = 0;
+		if(y + tooltipHeight + 2 > height) {
+			offsetY = -tooltipHeight;
+			if(offsetY + y < 0) {
+				offsetY = -y;
+			}
+		}
+		
 		x += 6;
 		y -= 6;
-		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 * lines.length + 3, -1073741824, -1073741824);
+		this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
 		int i = 0;
 		for(String line:lines) {
-			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i, -1);
+			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i + offsetY, -1);
 			i++;
 		}
 		GL11.glPopMatrix();
