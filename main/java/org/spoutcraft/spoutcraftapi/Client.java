@@ -25,12 +25,14 @@ import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
+@SuppressWarnings("deprecation")
 public interface Client extends PropertyInterface {
 
 	public String getName();
@@ -58,6 +60,8 @@ public interface Client extends PropertyInterface {
 	public ActivePlayer getActivePlayer();
 
 	public BiomeManager getBiomeManager();
+	
+	public MaterialManager getMaterialManager();
 
 	public boolean isSpoutEnabled();
 

@@ -48,7 +48,7 @@ public class GenericBlock implements Block{
 
 	public void setName(String name) {
 		this.customName = name;
-		Spoutcraft.getClient().getItemManager().setItemName(id, (short)data, name);
+		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
 
 	public SoundEffect getStepSound() {
@@ -61,20 +61,20 @@ public class GenericBlock implements Block{
 	}
 
 	public float getFriction() {
-		return Spoutcraft.getClient().getItemManager().getFriction(getRawId(), (short) getRawData());
+		return Spoutcraft.getClient().getMaterialManager().getFriction(this);
 	}
 
 	public Block setFriction(float friction) {
-		Spoutcraft.getClient().getItemManager().setFriction(getRawId(), (short) getRawData(), friction);
+		Spoutcraft.getClient().getMaterialManager().setFriction(this, friction);
 		return this;
 	}
 
 	public float getHardness() {
-		return Spoutcraft.getClient().getItemManager().getHardness(getRawId(), (short) getRawData());
+		return Spoutcraft.getClient().getMaterialManager().getHardness(this);
 	}
 
 	public Block setHardness(float hardness) {
-		Spoutcraft.getClient().getItemManager().setHardness(getRawId(), (short) getRawData(), hardness);
+		Spoutcraft.getClient().getMaterialManager().setHardness(this, hardness);
 		return this;
 	}
 
@@ -89,20 +89,20 @@ public class GenericBlock implements Block{
 	}
 
 	public boolean isOpaque() {
-		return Spoutcraft.getClient().getItemManager().isOpaque(getRawId(), (short) getRawData());
+		return Spoutcraft.getClient().getMaterialManager().isOpaque(this);
 	}
 
 	public Block setOpaque(boolean opaque) {
-		Spoutcraft.getClient().getItemManager().setOpaque(getRawId(), (short) getRawData(), opaque);
+		Spoutcraft.getClient().getMaterialManager().setOpaque(this, opaque);
 		return this;
 	}
 
 	public int getLightLevel() {
-		return Spoutcraft.getClient().getItemManager().getLightLevel(getRawId(), (short) getRawData());
+		return Spoutcraft.getClient().getMaterialManager().getLightLevel(this);
 	}
 
 	public Block setLightLevel(int level) {
-		Spoutcraft.getClient().getItemManager().setLightLevel(getRawId(), (short) getRawData(), level);
+		Spoutcraft.getClient().getMaterialManager().setLightLevel(this, level);
 		return this;
 	}
 }

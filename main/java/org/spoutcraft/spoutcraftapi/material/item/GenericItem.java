@@ -47,7 +47,7 @@ public class GenericItem implements Item {
 
 	public void setName(String name) {
 		this.customName = name;
-		Spoutcraft.getClient().getItemManager().setItemName(id, (short) data, name);
+		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
 
 }
