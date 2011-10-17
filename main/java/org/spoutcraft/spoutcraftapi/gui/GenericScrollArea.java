@@ -56,7 +56,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		widgets.put(widget, plugin);
 		widget.setPlugin(plugin);
 		widget.setDirty(true);
-		widget.setAnchor(WidgetAnchor.NO_SCALE);
+		widget.setAnchor(WidgetAnchor.TOP_LEFT);
 		widget.setScreen(this);
 		updateInnerSize();
 		return this;
