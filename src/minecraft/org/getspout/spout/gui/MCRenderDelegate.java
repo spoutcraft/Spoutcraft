@@ -623,6 +623,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		scissorWidget(gs);
 		RenderUtil.drawRectangle(0, 0, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
+		GL11.glPushMatrix();
 		GL11.glTranslated(-scrollLeft, -scrollTop, 0);
 		GL11.glPushMatrix();
 		
@@ -630,7 +631,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		gs.renderContents();
 		
 		GL11.glPopMatrix();
-		GL11.glTranslated(scrollLeft, scrollTop, 0);
+		GL11.glPopMatrix();
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
@@ -681,6 +682,18 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 			
 			currentHeight += item.getHeight();
+		}
+	}
+
+	public void renderContents(GenericScrollArea genericScrollArea) {
+		for(RenderPriority priority:RenderPriority.values()) {
+			for(Widget w:genericScrollArea.getAttachedWidgets()) {
+				if(w.getPriority() == priority) {
+					GL11.glPushMatrix();
+					w.render();
+					GL11.glPopMatrix();
+				}
+			}
 		}
 	}
 	
