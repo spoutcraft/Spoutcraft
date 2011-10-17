@@ -1338,6 +1338,44 @@ public class World implements IBlockAccess {
 
 		}
 	}
+	//Spout start
+	public void checkEntityTile(TileEntity tileentity)
+	{
+		switch(getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
+		{
+			case 63:
+			case 68:
+				if(!(tileentity instanceof TileEntitySign))
+					tileentity.invalidate();
+				break;
+			case 61:
+			case 62:
+				if(!(tileentity instanceof TileEntityFurnace))
+					tileentity.invalidate();
+				break;
+			case 84:
+				if(!(tileentity instanceof TileEntityRecordPlayer))
+					tileentity.invalidate();
+				break;
+			case 23:
+				if(!(tileentity instanceof TileEntityDispenser))
+					tileentity.invalidate();
+				break;
+			case 54:
+				if(!(tileentity instanceof TileEntityChest))
+					tileentity.invalidate();
+				break;
+			case 52:
+				if(!(tileentity instanceof TileEntityMobSpawner))
+					tileentity.invalidate();
+				break;
+			case 25:
+				if(!(tileentity instanceof TileEntityNote))
+					tileentity.invalidate();
+				break;
+		}
+	}
+	//Spout end
 
 	public void updateEntities() {
 		int var1;
@@ -1402,7 +1440,13 @@ public class World implements IBlockAccess {
 		while(var10.hasNext()) {
 			TileEntity var5 = (TileEntity)var10.next();
 			if(!var5.isInvalid() && var5.worldObj != null) {
-				var5.updateEntity();
+				//Spout start
+				checkEntityTile(var5);
+				if(!var5.isInvalid())
+				{
+					var5.updateEntity();
+				}
+				//Spout end
 			}
 
 			if(var5.isInvalid()) {
