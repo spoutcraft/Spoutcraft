@@ -31,6 +31,10 @@ public enum RenderDistance {
 	public final int getValue() {
 		return value;
 	}
+	
+	public String toString() {
+		return name().charAt(0) + name().substring(1).toLowerCase();
+	}
 
 	public static RenderDistance getRenderDistanceFromValue(int value) {
 		for (RenderDistance rd : values()) {

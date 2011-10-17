@@ -8,19 +8,22 @@ public class GenericItem implements Item {
 	private final int id;
 	private final int data;
 	private final boolean subtypes;
+	private final String name;
+	private String customName;
 
-	public GenericItem(int id, int data, boolean subtypes) {
+	public GenericItem(String name, int id, int data, boolean subtypes) {
+		this.name = name;
 		this.id = id;
 		this.data = data;
 		this.subtypes = subtypes;
 	}
 
-	protected GenericItem(int id, int data) {
-		this(id, data, false);
+	protected GenericItem(String name, int id, int data) {
+		this(name, id, data, false);
 	}
 
-	public GenericItem(int id) {
-		this(id, 0, false);
+	public GenericItem(String name, int id) {
+		this(name, id, 0, false);
 	}
 
 	public int getRawId() {
@@ -36,11 +39,15 @@ public class GenericItem implements Item {
 	}
 
 	public String getName() {
-		return Spoutcraft.getClient().getItemManager().getItemName(id, (short) data);
+		if(customName != null) {
+			return customName;
+		}
+		return name;
 	}
 
 	public void setName(String name) {
-		Spoutcraft.getClient().getItemManager().setItemName(id, (short) data, name);
+		this.customName = name;
+		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
 
 }

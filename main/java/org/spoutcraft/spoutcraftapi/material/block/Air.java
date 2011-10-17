@@ -5,8 +5,8 @@ import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
 public class Air extends GenericBlock implements Block {
 
-	public Air() {
-		super(0);
+	public Air(String name) {
+		super(name, 0);
 	}
 	
 	public SoundEffect getStepSound() {

@@ -4,8 +4,8 @@ import org.spoutcraft.spoutcraftapi.material.Plant;
 
 public class Grass extends GenericBlock implements Plant{
 	
-	public Grass(){
-		super(2);
+	public Grass(String name){
+		super(name, 2);
 	}
 
 	public boolean isHasGrowthStages() {

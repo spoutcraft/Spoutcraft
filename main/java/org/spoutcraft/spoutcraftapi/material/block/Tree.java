@@ -4,8 +4,8 @@ import org.spoutcraft.spoutcraftapi.material.Plant;
 
 public class Tree extends GenericBlock implements Plant{
 
-	public Tree(int id, int data) {
-		super(id, data);
+	public Tree(String name, int id, int data) {
+		super(name, id, data);
 	}
 
 	public boolean isHasGrowthStages() {

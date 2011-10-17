@@ -4,8 +4,8 @@ import org.spoutcraft.spoutcraftapi.material.Tool;
 
 public class GenericTool extends GenericItem implements Tool {
 
-	public GenericTool(int id) {
-		super(id);
+	public GenericTool(String name, int id) {
+		super(name, id);
 	}
 
 	public int getToolPower() {

@@ -34,6 +34,8 @@ public interface ActivePlayer extends Player {
 	public RenderDistance getNextRenderDistance();
 
 	public RenderDistance getCurrentView();
+	
+	public void setCurrentView(RenderDistance distance);
 
 	public InGameHUD getMainScreen();
 

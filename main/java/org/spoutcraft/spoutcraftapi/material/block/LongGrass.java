@@ -4,8 +4,8 @@ import org.spoutcraft.spoutcraftapi.material.Plant;
 
 public class LongGrass extends GenericBlock implements Plant{
 
-	public LongGrass(int id, int data) {
-		super(id, data);
+	public LongGrass(String name, int id, int data) {
+		super(name, id, data);
 	}
 
 	public boolean isHasGrowthStages() {

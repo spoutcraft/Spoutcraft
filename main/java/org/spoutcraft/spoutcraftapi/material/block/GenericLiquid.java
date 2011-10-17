@@ -4,8 +4,8 @@ import org.spoutcraft.spoutcraftapi.material.Liquid;
 
 public class GenericLiquid extends GenericBlock implements Liquid{
 	private final boolean flowing;
-	public GenericLiquid(int id, boolean flowing) {
-		super(id);
+	public GenericLiquid(String name, int id, boolean flowing) {
+		super(name, id);
 		this.flowing = flowing;
 	}
 

@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi.inventory;
 
+@Deprecated
 public interface ItemManager {
 	
 	public float getFriction(int id, short data);
