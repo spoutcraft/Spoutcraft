@@ -15,19 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.spoutcraft.spoutcraftapi.addon;
+
 /**
  * Determines the load order for Addons
- *
+ * 
  */
 public enum AddonLoadOrder {
-	
+
 	/**
 	 * Loaded before the World is loaded
 	 */
 	PREWORLD,
-	
+
 	/**
 	 * Loaded after the World is loaded
 	 */
-	POSTWORLD;
+	POSTWORLD,
+
+	/**
+	 * Loaded after the Game starts
+	 */
+	GAMESTART;
 }
