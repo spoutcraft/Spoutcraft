@@ -291,13 +291,6 @@ public class SimpleAddonManager implements AddonManager {
 	}
 
 	/**
-	 * Calls a player related event with the given details
-	 * 
-	 * @param type Type of player related event to call
-	 * @param event Event details
-	 */
-
-	/**
 	 * Call an event.
 	 * 
 	 * @param <TEvent> Event subclass
