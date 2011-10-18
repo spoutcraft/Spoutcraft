@@ -1,5 +1,6 @@
 package org.spoutcraft.spoutcraftapi.material;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
@@ -321,18 +322,39 @@ public class MaterialData {
 		}
 	}
 	
+	/**
+	 * Adds a custom item to the material list
+	 * @param item to add
+	 */
 	public static void addCustomItem(CustomItem item) {
 		idMap.put(318, item.getCustomId(), item);
 	}
 	
+	/**
+	 * Adds a custom block to the material list
+	 * @param block to add
+	 */
 	public static void addCustomBlock(CustomBlock block) {
 		idMap.put(318, block.getCustomId(), block);
 	}
 	
+	/**
+	 * 
+	 * @param Gets the material from the given id
+	 * @return material, or null if none found
+	 */
 	public static Material getMaterial(int id) {
 		return getMaterial(id, (short)0);
 	}
 	
+	/**
+	 * Gets the material from the given id and data.
+	 * 
+	 * If a non-zero data value is given for a material with no subtypes, the material at the id and data value of zero will be returned instead.
+	 * @param id to get
+	 * @param data to get
+	 * @return material or null if none found
+	 */
 	public static Material getMaterial(int id, short data) {
 		Material mat = (Material) idMap.get(id, 0); //Test if they id has subtypes first
 		if (mat == null || !mat.hasSubtypes()) {
@@ -341,10 +363,54 @@ public class MaterialData {
 		return (Material) idMap.get(id, data);
 	}
 	
+	/**
+	 * Gets the material from the given id and data, or creates it if nessecary.
+	 * 
+	 * Creation occurs when a material exists at the given id, and zero data value, but does not have any subtypes.
+	 * A new material that is a copy of the material at the given id and zero data value is created.
+	 * If creation fails for any reason, null will be returned.
+	 * If the material has subtypes normally, null will be returned if there is no subtype at the given data value
+	 * @param id to get
+	 * @param data to get
+	 * @return material found, created, or null
+	 */
+	public static Material getOrCreateMaterial(int id, short data) {
+		Material mat = (Material) idMap.get(id, 0); //Test if they id has subtypes first
+		if (mat != null && !mat.hasSubtypes()) {
+			Material orig = mat;
+			mat = idMap.get(id, data); //get the request material
+			if (mat == null) { //create it if it doesn't exist
+				try {
+					Class<?>[] params = {String.class, int.class, int.class};
+					Constructor<? extends Material> constructor = orig.getClass().getConstructor(params);
+					constructor.setAccessible(true);
+					mat = constructor.newInstance(orig.getName(), id, data);
+					idMap.put(id, data, mat);
+				}
+				catch (Exception e) {
+					System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
+				}
+			}
+			return mat;
+		}
+		return null;
+	}
+	
+	/**
+	 * Gets the block at the given id, or null if none found
+	 * @param id to get
+	 * @return block, or null if none found
+	 */
 	public static Block getBlock(int id) {
 		return getBlock(id, (short)0);
 	}
 	
+	/**
+	 * Gets the block at the given id and data, or null if none found
+	 * @param id to get
+	 * @param data to get
+	 * @return block, or null if none found
+	 */
 	public static Block getBlock(int id, short data) {
 		Material mat = getMaterial(id, data);
 		if (mat instanceof Block) {
@@ -373,10 +439,21 @@ public class MaterialData {
 		return null;
 	}
 	
+	/**
+	 * Gets the item at the given id, or null if none found
+	 * @param id to get
+	 * @return item or null if none found
+	 */
 	public static Item getItem(int id) {
 		return getItem(id, (short)0);
 	}
 	
+	/**
+	 * Gets the item at the given id and data, or null if none found
+	 * @param id to get
+	 * @param data to get
+	 * @return item or null if none found
+	 */
 	public static Item getItem(int id, short data) {
 		Material mat = getMaterial(id, data);
 		if (mat instanceof Item) {
@@ -385,6 +462,10 @@ public class MaterialData {
 		return null;
 	}
 	
+	/**
+	 * Gets an iterator for all the materials registered in the game
+	 * @return iterator
+	 */
 	public static Iterator<Material> getMaterialIterator() {
 		return idMap.valueCollection().iterator();
 	}
