@@ -81,7 +81,7 @@ public abstract class GuiContainer extends GuiScreen {
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		this.drawGuiContainerForegroundLayer();
-		if(var13.getItemStack() == null && var6 != null && var6.getHasStack()) {
+		if(var13.getItemStack() == null && var6 != null && var6.getHasStack() && shouldShowTooltip()) { //Spout added tooltip condition.
 			String var14 = ("" + StringTranslate.getInstance().translateNamedKey(var6.getStack().getItemName())).trim();
 			//Spout Start
 			String custom = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
