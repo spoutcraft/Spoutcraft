@@ -130,6 +130,12 @@ public class AddonDescriptionFile {
 			this.main = map.get("main").toString();
 			if (this.main.startsWith("org.bukkit."))
 				throw new InvalidDescriptionException("main may not be within the org.bukkit namespace");
+			if (this.main.startsWith("org.getspout."))
+				throw new InvalidDescriptionException("main may not be within the org.getspout namespace");
+			if (this.main.startsWith("org.spoutcraft."))
+				throw new InvalidDescriptionException("main may not be within the org.spoutcraft namespace");
+			if (this.main.startsWith("net.minecraft."))
+				throw new InvalidDescriptionException("main may not be within the net.minecraft namespace");
 		} catch (NullPointerException ex) {
 			throw new InvalidDescriptionException(ex, "main is not defined");
 		} catch (ClassCastException ex) {
