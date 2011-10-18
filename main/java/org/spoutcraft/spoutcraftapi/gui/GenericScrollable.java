@@ -1,20 +1,14 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.util.HashMap;
-
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public abstract class GenericScrollable extends GenericControl implements Scrollable {
-	protected HashMap<Orientation, ScrollBarPolicy> scrollBarPolicy = new HashMap<Orientation, ScrollBarPolicy>();
-	protected HashMap<Orientation, Integer> innerSize = new HashMap<Orientation, Integer>();
-	protected HashMap<Orientation, Integer> scrollPosition = new HashMap<Orientation, Integer>();
+	private ScrollBarPolicy sbpVert;
+	protected ScrollBarPolicy sbpHoriz = sbpVert = ScrollBarPolicy.SHOW_IF_NEEDED;
+	protected int innerSizeHoriz = 0, innerSizeVert = 0;
+	protected int scrollX = 0, scrollY = 0;
 	
 	public GenericScrollable() {
-		for(Orientation axis:Orientation.values()) {
-			scrollBarPolicy.put(axis, ScrollBarPolicy.SHOW_IF_NEEDED);
-			innerSize.put(axis, 0);
-			scrollPosition.put(axis, 0);
-		}
 	}
 	
 	public void render() {
@@ -22,11 +16,23 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 	}
 
 	public int getInnerSize(Orientation axis) {
-		return innerSize.get(axis);
+		switch(axis) {
+		case HORIZONTAL:
+			return innerSizeHoriz;
+		case VERTICAL:
+			return innerSizeVert;
+		}
+		return 0;
 	}
 
 	public int getScrollPosition(Orientation axis) {
-		return scrollPosition.get(axis);
+		switch(axis) {
+		case HORIZONTAL:
+			return scrollX;
+		case VERTICAL:
+			return scrollY;
+		}
+		return 0;
 	}
 
 	public void setScrollPosition(Orientation axis, int position) {
@@ -36,7 +42,14 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 		if(position > getMaximumScrollPosition(axis)) {
 			position = getMaximumScrollPosition(axis);
 		}
-		scrollPosition.put(axis, position);
+		switch(axis) {
+		case HORIZONTAL:
+			scrollX = position;
+			break;
+		case VERTICAL:
+			scrollY = position;
+			break;
+		}
 	}
 
 	public void scroll(int x, int y) {
@@ -113,15 +126,35 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 	}
 
 	public void setScrollBarPolicy(Orientation axis, ScrollBarPolicy policy) {
-		scrollBarPolicy.put(axis, policy);
+		switch(axis) {
+		case HORIZONTAL:
+			sbpHoriz = policy;
+			break;
+		case VERTICAL:
+			sbpVert = policy;
+			break;
+		}
 	}
 	
 	public ScrollBarPolicy getScrollBarPolicy(Orientation axis) {
-		return scrollBarPolicy.get(axis);
+		switch(axis) {
+		case HORIZONTAL:
+			return sbpHoriz;
+		case VERTICAL:
+			return sbpVert;
+		}
+		return null;
 	}
 	
 	protected void setInnerSize(Orientation axis, int size) {
-		innerSize.put(axis, size);
+		switch(axis) {
+		case HORIZONTAL:
+			innerSizeHoriz = size;
+			break;
+		case VERTICAL:
+			innerSizeVert = size;
+			break;
+		}
 	}
 
 	public int getViewportSize(Orientation axis) {
