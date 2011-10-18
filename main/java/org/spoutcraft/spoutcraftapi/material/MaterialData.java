@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
+import org.getspout.spoutapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
 import org.spoutcraft.spoutcraftapi.material.block.GenericLiquid;
@@ -161,8 +162,8 @@ public class MaterialData {
 	public static final Block stoneBricks = new StoneBricks("Stone Brick", 98, 0);
 	public static final Block mossyStoneBricks = new StoneBricks("Mossy Stone Brick", 98, 1);
 	public static final Block crackedStoneBricks = new StoneBricks("Cracked Stone Brick", 98, 2);
-	public static final Block hugeRedMushroom = new Solid("Huge Red Mushroom", 99);
-	public static final Block hugeBrownMushroom = new Solid("Huge Brown Mushroom", 100);
+	public static final Block hugeBrownMushroom = new Solid("Huge Brown Mushroom", 99);
+	public static final Block hugeRedMushroom = new Solid("Huge Red Mushroom", 100);
 	public static final Block ironBars = new Solid("Iron Bars", 101);
 	public static final Block glassPane = new Solid("Glass Pane", 102);
 	public static final Block watermelon = new Solid("Watermelon", 103);
