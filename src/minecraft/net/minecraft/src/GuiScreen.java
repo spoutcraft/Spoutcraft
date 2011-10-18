@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.getspout.spout.ScheduledTextFieldUpdate;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
 import org.spoutcraft.spoutcraftapi.entity.Player;
@@ -45,6 +46,8 @@ public class GuiScreen extends Gui {
 	private long updateTicks;
 	private Scrollable holding = null;
 	private Orientation holdingScrollBar = Orientation.VERTICAL;
+	private long lastMouseMove = 0;
+	public static int TOOLTIP_DELAY = 500;
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -247,6 +250,7 @@ public class GuiScreen extends Gui {
 	}
 	
 	private void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
+		lastMouseMove = System.currentTimeMillis();
 		mouseMovedOrUp(mouseX, mouseY, eventButton);
 		if(getScreen() == null) {
 			return;
@@ -291,6 +295,10 @@ public class GuiScreen extends Gui {
 				holding = null;
 			}
 		}
+	}
+	
+	protected boolean shouldShowTooltip() {
+		return !ConfigReader.delayedTooltips || System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
 	}
 
 	protected void mouseMovedOrUp(int var1, int var2, int var3) {
@@ -533,7 +541,9 @@ public class GuiScreen extends Gui {
 		}
 		//Draw ALL the widgets!!
 		screen.render();
-		drawTooltips(x, y);
+		if (shouldShowTooltip()) {
+			drawTooltips(x, y);
+		}
 	}
 		
 	public void drawTooltips(int x, int y) {
