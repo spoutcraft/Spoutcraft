@@ -278,16 +278,12 @@ public class GuiScreen extends Gui {
 		}
 		if(holding != null && holdingScrollBar != null) {
 			double p = 0;
-			switch(holdingScrollBar){
-			case VERTICAL:
+			if(holdingScrollBar == Orientation.VERTICAL) {
 				int y = (int) (mouseY - holding.getActualY());
 				p = (double)y/holding.getViewportSize(Orientation.VERTICAL);
-				break;
-			case HORIZONTAL:
+			} else {
 				int x = (int) (mouseX - holding.getActualX());
 				p = (double)x/holding.getViewportSize(Orientation.HORIZONTAL);
-				
-				break;
 			}
 			holding.setScrollPosition(holdingScrollBar, (int) ((double)holding.getMaximumScrollPosition(holdingScrollBar) * p));
 			
