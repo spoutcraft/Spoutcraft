@@ -166,12 +166,12 @@ public interface MaterialManager {
 	public boolean isCustomBlock(Block block);
 	
 	/**
-	 * Registers a SpoutRecipe to the server
+	 * Registers a Recipe to the client
 	 * 
 	 * @param recipe to register
 	 * @return true if successful
 	 */
-	public boolean registerSpoutRecipe(Recipe recipe);
+	public boolean registerRecipe(Recipe recipe);
 	
 	/**
 	 * Checks if the this item is a custom item or not
