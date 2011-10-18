@@ -32,7 +32,7 @@ import org.spoutcraft.spoutcraftapi.gui.*;
 public class VideoSettings extends GuiScreen{
 	private Button doneButton = null;
 	private Label title = null;
-	private GuiScreen parent;
+	public final GuiScreen parent;
 	
 	public VideoSettings(GuiScreen parent) {
 		this.parent = parent;
@@ -72,7 +72,7 @@ public class VideoSettings extends GuiScreen{
 		Gradient linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(55).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 		
@@ -161,7 +161,7 @@ public class VideoSettings extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(55).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 		
@@ -202,7 +202,7 @@ public class VideoSettings extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		
-		control = new GuiScaleButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control = new GuiScaleButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
 		top += 22;
@@ -229,7 +229,7 @@ public class VideoSettings extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(55).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget("Spoutcraft", linebreak);
 		top += 6;
 		
@@ -277,6 +277,13 @@ public class VideoSettings extends GuiScreen{
 		control = new VoidFogButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget("Spoutcraft", control);
+		top += 22;
+		
+		control = new DelayedTooltipCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget("Spoutcraft", control);
+		//RIGHT CONTROL HERE
+		
 		top += 22;
 	}
 

@@ -12,6 +12,8 @@ import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.inventory.Recipe;
+import org.spoutcraft.spoutcraftapi.inventory.ShapedRecipe;
+import org.spoutcraft.spoutcraftapi.inventory.ShapelessRecipe;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.Material;
@@ -251,9 +253,21 @@ public class SimpleMaterialManager implements MaterialManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	public boolean registerSpoutRecipe(Recipe recipe) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean registerRecipe(Recipe recipe) {
+		SpoutcraftRecipe toAdd;
+		if (recipe instanceof Recipe) {
+			toAdd = (SpoutcraftRecipe) recipe;
+		} else {
+			if (recipe instanceof ShapedRecipe) {
+				toAdd = SimpleShapedRecipe.fromSpoutRecipe((ShapedRecipe) recipe);
+			} else if (recipe instanceof ShapelessRecipe) {
+				toAdd = SimpleShapelessRecipe.fromSpoutRecipe((ShapelessRecipe) recipe);
+			} else {
+				return false;
+			}
+		}
+		toAdd.addToCraftingManager();
+		return true;
 	}
 	public boolean isCustomItem(ItemStack item) {
 		// TODO Auto-generated method stub
