@@ -30,7 +30,8 @@ Compiling
 * Run MCP's recompile and reobfuscate scripts (.bat for Windows or .sh for Linux).  
 * When tasks are finished, the compiled Spout class files will be located in reobf.  
 * You'll also need to class files from the jars located in the lib directory on the Spoutcraft GitHub repository to run the client.  
-**NOTE:** You will need to copy the Minecraft resources folder to the MCP root in order to launch the game using MCP.
+
+**NOTE:** You will need to copy the Minecraft resources folder to the MCP root in order to launch the game using MCP.  
 **NOTE:** You will need to copy the res folder to the minecraft.jar along with the compile Spoutcraft source and contents of the SpoutcraftAPI.jar for those custom resources to show.
 
 Coding and Pull Request Formatting
@@ -43,7 +44,7 @@ Coding and Pull Request Formatting
 * If you change a packet or widget's read/write/number of bytes, be sure to increment the version on both the server and client.
 * When modifying Notch code (Minecraft vanilla code), include `//Spout start` and `//Spout end`
 
-Please follow the above conventions if you want your pull request(s) accepted.
+**Please follow the above conventions if you want your pull request(s) accepted.**
 
 [Project Logo]: http://cdn.getspout.org/img/logo/spoutcraft_551x150.png
 [License]: http://www.gnu.org/licenses/lgpl.html
@@ -51,7 +52,7 @@ Please follow the above conventions if you want your pull request(s) accepted.
 [Forum]: http://spout.in/bukkit
 [GitHub]: https://github.com/SpoutDev/Spoutcraft
 [Jenkins]: http://spout.in/ci
-[Issues]: https://spout.in/issues
+[Issues]: http://spout.in/issues
 [Twitter]: http://spout.in/twitter
 [Twitter Logo]: http://cdn.getspout.org/img/button/twitter_follow_us.png
 [Facebook]: http://spout.in/facebook
