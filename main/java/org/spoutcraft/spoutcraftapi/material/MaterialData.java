@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
-import org.getspout.spoutapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
 import org.spoutcraft.spoutcraftapi.material.block.GenericLiquid;
