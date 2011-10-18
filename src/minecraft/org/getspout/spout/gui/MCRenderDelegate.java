@@ -639,6 +639,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		RenderUtil.drawGradientRectangle(0, (int)gs.getHeight() - 5, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
 		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		//Draw scrollbars
 		if(gs.needsScrollBar(Orientation.HORIZONTAL)) {
 			Minecraft mc = SpoutClient.getHandle();
