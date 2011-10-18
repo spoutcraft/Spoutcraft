@@ -120,41 +120,54 @@ public class GuiScreen extends Gui {
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
 			Keyboard.enableRepeatEvents(false);
-			for (Widget widget : screen.getAttachedWidgets(true)) {
-				if (widget instanceof Control) {
-					Control control = (Control)widget;
-					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
-						if(control.getScreen() instanceof Scrollable) {
-							if(!isInBoundingRect(control.getScreen(), mouseX, mouseY)) {
-								continue;
+			for (int i = 4; i>=0; i--) {
+				for (Widget widget : screen.getAttachedWidgets(true)) {
+					if(widget.getPriority().getId()!=i){
+						continue;
+					}
+					if (widget instanceof Control) {
+						Control control = (Control)widget;
+						if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
+							if(control.getScreen() instanceof Scrollable) {
+								if(!isInBoundingRect(control.getScreen(), mouseX, mouseY)) {
+									continue;
+								}
+							}
+							control.setFocus(true);
+							boolean handled = false;
+							if (control instanceof Scrollable) {
+								handled = handled || handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
+								if(!handled && control instanceof ListWidget) {
+									handled = handled || handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+								}
+							} 
+							if (!handled) {
+								if (control instanceof Button) {
+									handleButtonClick((Button)control);
+									handled = true;
+								}
+								else if (control instanceof Slider) {
+									//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
+									((Slider)control).setDragging(true);
+									handled = true;
+								}
+								else if (control instanceof TextField) {
+									((TextField)control).setCursorPosition(((TextField)control).getText().length());
+									handled = true;
+								} 
+							}
+							if (handled) {
+								this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+								break;
 							}
 						}
-						control.setFocus(true);
-						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
-						if (control instanceof Button) {
-							handleButtonClick((Button)control);
-						}
-						else if (control instanceof Slider) {
-							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
-							((Slider)control).setDragging(true);
-						}
-						else if (control instanceof TextField) {
-							((TextField)control).setCursorPosition(((TextField)control).getText().length());
-						}
-						else if (control instanceof Scrollable) {
-							boolean handled = handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
-							if(!handled && control instanceof ListWidget) {
-								handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
-							}
-						}
-						break;
 					}
 				}
 			}
 		}
 	}
 	
-	private void handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
+	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
@@ -166,11 +179,12 @@ public class GuiScreen extends Gui {
 			
 			if(currentHeight <= y && y <= currentHeight + item.getHeight()) {
 				lw.setSelection(n);
-				break;
+				return true;
 			}
 			n++;
 			currentHeight += item.getHeight();
 		}
+		return false;
 	}
 
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
@@ -258,7 +272,7 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
-		if(holding != null) {
+		if(holding != null && holdingScrollBar != null) {
 			double p = 0;
 			switch(holdingScrollBar){
 			case VERTICAL:
