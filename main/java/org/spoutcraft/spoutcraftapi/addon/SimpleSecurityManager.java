@@ -121,12 +121,12 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pckg) {
-		checkAccess();
+		//TODO doesn't the classloader handle this already?
 	}
 
 	@Override
 	public void checkPackageDefinition(String pckg) {
-		checkAccess();
+		//TODO doesn't the classloader handle this already?
 	}
 
 	@Override
