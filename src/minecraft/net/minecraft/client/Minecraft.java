@@ -779,6 +779,12 @@ public abstract class Minecraft implements Runnable {
 		if(this.prevFrameTime == -1L) {
 			this.prevFrameTime = System.nanoTime();
 		}
+		
+		//Spout start
+		//Only show if no other screens are up
+		if (currentScreen != null) {
+			return;
+		}
 
 		long var5 = System.nanoTime();
 		tickTimes[numRecordedFrameTimes & frameTimes.length - 1] = var1;

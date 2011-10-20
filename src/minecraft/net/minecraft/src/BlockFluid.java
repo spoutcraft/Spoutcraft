@@ -28,11 +28,11 @@ public abstract class BlockFluid extends Block {
 
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
 		//Spout start - Biome water
-		if(var1.getBlockMaterial(var2, var3, var4) == Material.lava) {
+		if(var1.getBlockMaterial(var2, var3, var4) == Material.lava || !ConfigReader.waterBiomeColors) {
 			return 0xffffff;
 		} else {
 			int color = var1.getWaterColorCache(var2, var3, var4);
-			if (color == -1 || !ConfigReader.biomeColors) {
+			if (color == -1 || !ConfigReader.fastBiomeColors) {
 				double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var4);
 				double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
 				color =  ColorizerWater.getWaterColor(d, d1);
