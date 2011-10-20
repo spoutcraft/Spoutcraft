@@ -131,5 +131,42 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
+	
+	private static void restoreDefaults() {
+		clipboardAccess = false;
+		advancedOpenGL = 0;
+		anaglyph3D = false;
+		autosave = 0;
+		betterGrass = 0;
+		biomeColors = false;
+		brightnessSlider = 1F;
+		chunkUpdates = 1;
+		clearWater = false;
+		dynamicUpdates = true;
+		fancyClouds = false;
+		fancyFog = false;
+		fancyGraphics = false;
+		fancyGrass = false;
+		fancyTrees = false;
+		fancyWater = false;
+		fancyWeather = false;
+		farView = false;
+		fastDebug = 0;
+		guiScale = 0;
+		performance = 0;
+		preloadedChunks = 0;
+		renderDistance = 0;
+		signDistance = 16;
+		sky = true;
+		smoothFPS = false;
+		smoothLighting = 1F;
+		stars = true;
+		time = 0;
+		viewBobbing = false;
+		voidFog = true;
+		weather = true;
+		delayedTooltips = false;
+		write();
+	}
 
 }
