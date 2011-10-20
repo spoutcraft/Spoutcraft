@@ -1341,6 +1341,9 @@ public class World implements IBlockAccess {
 	//Spout start
 	public void checkEntityTile(TileEntity tileentity)
 	{
+		if(tileentity instanceof TileEntityPiston)
+			return;
+
 		switch(getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
 		{
 			case 63:
@@ -1372,6 +1375,9 @@ public class World implements IBlockAccess {
 			case 25:
 				if(!(tileentity instanceof TileEntityNote))
 					tileentity.invalidate();
+				break;
+			default:
+				tileentity.invalidate();
 				break;
 		}
 	}
