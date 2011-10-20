@@ -207,7 +207,7 @@ public class JavaAddonLoader implements AddonLoader {
 		} else {
 			for (String current : loaders.keySet()) {
 				AddonClassLoader loader = loaders.get(current);
-				
+
 				try {
 					cachedClass = loader.findClass(name, false);
 				} catch (ClassNotFoundException cnfe) {
