@@ -310,12 +310,14 @@ public class SimpleAddonManager implements AddonManager {
 	 * @author lahwran
 	 */
 	public <TEvent extends Event<TEvent>> void callEvent(TEvent event) {
-		securityManager.lock(superSecretSecurityKey);
+		
 		HandlerList<TEvent> handlerlist = event.getHandlers();
 		handlerlist.bake();
 
 		Listener<TEvent>[][] handlers = handlerlist.handlers;
 		int[] handlerids = handlerlist.handlerids;
+		
+		securityManager.lock(superSecretSecurityKey);
 
 		for (int arrayidx = 0; arrayidx < handlers.length; arrayidx++) {
 
