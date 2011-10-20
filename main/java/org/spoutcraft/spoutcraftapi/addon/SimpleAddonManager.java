@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -47,10 +48,16 @@ public class SimpleAddonManager implements AddonManager {
 	private final Map<String, Addon> lookupNames = new HashMap<String, Addon>();
 	private static File updateDirectory = null;
 	private final SimpleCommandMap commandMap;
+	private final SimpleSecurityManager securityManager;
+	private final double superSecretSecurityKey;
 
 	public SimpleAddonManager(Client instance, SimpleCommandMap commandMap) {
 		client = instance;
 		this.commandMap = commandMap;
+		
+		superSecretSecurityKey = (new Random()).nextDouble();
+		securityManager = new SimpleSecurityManager(superSecretSecurityKey);
+		System.setSecurityManager(securityManager);
 	}
 
 	/**
@@ -87,7 +94,7 @@ public class SimpleAddonManager implements AddonManager {
 			}
 		}
 	}
-
+	
 	/**
 	 * Loads the addons contained within the specified directory
 	 * 
@@ -175,6 +182,7 @@ public class SimpleAddonManager implements AddonManager {
 	 * @throws InvalidDescriptionException Thrown when the specified file contains an invalid description
 	 */
 	public synchronized Addon loadAddon(File file, boolean ignoreSoftDependencies) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
+		securityManager.lock(superSecretSecurityKey);
 		File updateFile = null;
 
 		if (updateDirectory != null && updateDirectory.isDirectory() && (updateFile = new File(updateDirectory, file.getName())).isFile()) {
@@ -201,7 +209,7 @@ public class SimpleAddonManager implements AddonManager {
 			addons.add(result);
 			lookupNames.put(result.getDescription().getName(), result);
 		}
-
+		securityManager.unlock(superSecretSecurityKey);
 		return result;
 	}
 
@@ -251,6 +259,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	public void enableAddon(final Addon addon) {
 		if (!addon.isEnabled()) {
+			securityManager.lock(superSecretSecurityKey);
 			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
 
 			if (!addonCommands.isEmpty()) {
@@ -262,6 +271,7 @@ public class SimpleAddonManager implements AddonManager {
 			} catch (Throwable ex) {
 				client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
+			securityManager.unlock(superSecretSecurityKey);
 		}
 	}
 
@@ -273,11 +283,13 @@ public class SimpleAddonManager implements AddonManager {
 
 	public void disableAddon(final Addon addon) {
 		if (addon.isEnabled()) {
+			securityManager.lock(superSecretSecurityKey);
 			try {
 				addon.getAddonLoader().disableAddon(addon);
 			} catch (Throwable ex) {
 				client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
+			securityManager.unlock(superSecretSecurityKey);
 		}
 	}
 
@@ -298,6 +310,7 @@ public class SimpleAddonManager implements AddonManager {
 	 * @author lahwran
 	 */
 	public <TEvent extends Event<TEvent>> void callEvent(TEvent event) {
+		securityManager.lock(superSecretSecurityKey);
 		HandlerList<TEvent> handlerlist = event.getHandlers();
 		handlerlist.bake();
 
@@ -312,13 +325,16 @@ public class SimpleAddonManager implements AddonManager {
 
 			for (int handler = 0; handler < handlers[arrayidx].length; handler++) {
 				try {
+					
 					handlers[arrayidx][handler].onEvent(event);
+
 				} catch (Throwable t) {
 					System.err.println("Error while passing event " + event);
 					t.printStackTrace();
 				}
 			}
 		}
+		securityManager.unlock(superSecretSecurityKey);
 	}
 
 }
