@@ -30,28 +30,28 @@ public class GuiCommandShortcuts extends GuiScreen {
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
 		doneButton.setX(10).setY((int) (height-30));
-		getScreen().attachWidget(doneButton);
+		getScreen().attachWidget("Spoutcraft", doneButton);
 		
 		titleLabel = new GenericLabel("Command Shortcuts");
 		titleLabel.setHeight(20).setWidth(200);
 		titleLabel.setAlign(WidgetAnchor.TOP_CENTER);
 		titleLabel.setX((int) (getScreen().getWidth()/2-100)).setY(10);
-		getScreen().attachWidget(titleLabel);
+		getScreen().attachWidget("Spoutcraft", titleLabel);
 		
 		addButton = new GenericButton("Add Shortcut");
 		addButton.setWidth(100).setHeight(20);
 		addButton.setX((int) (doneButton.getX()+doneButton.getWidth()+10)).setY(doneButton.getY());
-		getScreen().attachWidget(addButton);
+		getScreen().attachWidget("Spoutcraft", addButton);
 		
 		editButton = new GenericButton("Edit Shortcut");
 		editButton.setWidth(100).setHeight(20);
 		editButton.setX((int) (addButton.getX()+addButton.getWidth()+10)).setY(addButton.getY());
-		getScreen().attachWidget(editButton);
+		getScreen().attachWidget("Spoutcraft", editButton);
 		
 		removeButton = new GenericButton("Remove Shortcut");
 		removeButton.setWidth(100).setHeight(20);
 		removeButton.setX((int) (editButton.getX()+editButton.getWidth()+10)).setY(editButton.getY());
-		getScreen().attachWidget(removeButton);
+		getScreen().attachWidget("Spoutcraft", removeButton);
 
 		slot = new GuiShortcutsSlot(this);
 		

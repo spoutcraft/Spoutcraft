@@ -51,6 +51,7 @@ import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldSettings;
 //Spout Start
 import org.getspout.spout.SpoutcraftWorld;
+import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
@@ -1337,6 +1338,50 @@ public class World implements IBlockAccess {
 
 		}
 	}
+	//Spout start
+	public void checkEntityTile(TileEntity tileentity)
+	{
+		if(tileentity instanceof TileEntityPiston)
+			return;
+
+		switch(getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
+		{
+			case 63:
+			case 68:
+				if(!(tileentity instanceof TileEntitySign))
+					tileentity.invalidate();
+				break;
+			case 61:
+			case 62:
+				if(!(tileentity instanceof TileEntityFurnace))
+					tileentity.invalidate();
+				break;
+			case 84:
+				if(!(tileentity instanceof TileEntityRecordPlayer))
+					tileentity.invalidate();
+				break;
+			case 23:
+				if(!(tileentity instanceof TileEntityDispenser))
+					tileentity.invalidate();
+				break;
+			case 54:
+				if(!(tileentity instanceof TileEntityChest))
+					tileentity.invalidate();
+				break;
+			case 52:
+				if(!(tileentity instanceof TileEntityMobSpawner))
+					tileentity.invalidate();
+				break;
+			case 25:
+				if(!(tileentity instanceof TileEntityNote))
+					tileentity.invalidate();
+				break;
+			default:
+				tileentity.invalidate();
+				break;
+		}
+	}
+	//Spout end
 
 	public void updateEntities() {
 		int var1;
@@ -1401,7 +1446,13 @@ public class World implements IBlockAccess {
 		while(var10.hasNext()) {
 			TileEntity var5 = (TileEntity)var10.next();
 			if(!var5.isInvalid() && var5.worldObj != null) {
-				var5.updateEntity();
+				//Spout start
+				checkEntityTile(var5);
+				if(!var5.isInvalid())
+				{
+					var5.updateEntity();
+				}
+				//Spout end
 			}
 
 			if(var5.isInvalid()) {
@@ -2586,7 +2637,7 @@ public class World implements IBlockAccess {
 
 	public void setWorldTime(long var1) {
 		//Spout start
-		if (Config.isTimeDayOnly() || Config.isTimeNightOnly()) {
+		if (ConfigReader.time != 0) {
 			return;
 		}
 		//Spout end

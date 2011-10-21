@@ -25,7 +25,6 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class MCRenderDelegate implements RenderDelegate {
@@ -108,12 +107,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			int hoverState = getHoverState(button, isHovering(button));
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			Color color = button.getTextColor();
-			if (!button.isEnabled()) {
-				color = button.getDisabledColor();
-			} else if (isHovering(button)) {
-				color = button.getHoverColor();
-			}
+			Color color = getColor(button);
+			
 			int left = (int) 5;
 			switch (button.getAlign()) {
 			case TOP_CENTER:
@@ -139,7 +134,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		double mouseX = widget.getScreen().getMouseX();
 		double mouseY = widget.getScreen().getMouseY();
 
-		boolean hovering = mouseX >= widget.getScreenX() && mouseY >= widget.getScreenY() && mouseX < widget.getScreenX() + widget.getWidth() && mouseY < widget.getScreenY() + widget.getHeight();
+		boolean hovering = mouseX >= widget.getActualX() && mouseY >= widget.getActualY() && mouseX < widget.getActualX() + widget.getWidth() && mouseY < widget.getActualY() + widget.getHeight();
 		return hovering;
 	}
 
@@ -288,13 +283,9 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glScalef((float) slider.getWidth() / width, (float) slider.getHeight() / 20f, 1);
 
 			double mouseX = slider.getScreen().getMouseX();
-			double mouseY = slider.getScreen().getMouseY();
 
-			boolean hovering = mouseX >= slider.getScreenX() && mouseY >= slider.getScreenY() && mouseX < slider.getScreenX() + slider.getWidth() && mouseY < slider.getScreenY() + slider.getHeight();
-
-			int hoverState = getHoverState(slider, hovering);
-			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
-			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
+			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46, (int) Math.ceil(width / 2), 20, 0f);
+			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46, (int) Math.ceil(width / 2), 20, 0f);
 
 			if (slider.isDragging()) {
 				slider.setSliderPosition((float) (mouseX - (slider.getScreenX() + 4)) / (float) (slider.getWidth() - 8));
@@ -304,6 +295,30 @@ public class MCRenderDelegate implements RenderDelegate {
 			width -= 8;
 			RenderUtil.drawTexturedModalRectangle((int) (slider.getSliderPosition() * width), 0, 0, 66, 4, 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) (slider.getSliderPosition() * width) + 4, 0, 196, 66, 4, 20, 0f);
+			
+			Color color = slider.getTextColor();
+			if (!slider.isEnabled()) {
+				color = slider.getDisabledColor();
+			}
+			
+			int left = (int) 5;
+			switch (slider.getAlign()) {
+			case TOP_CENTER:
+			case CENTER_CENTER:
+			case BOTTOM_CENTER:
+				left = (int) ((width / 2) - (font.getTextWidth(slider.getText()) / 2));
+				break;
+			case TOP_RIGHT:
+			case CENTER_RIGHT:
+			case BOTTOM_RIGHT:
+				left = (int) (width - font.getTextWidth(slider.getText())) - 5;
+				break;
+			}
+			GL11.glPushMatrix();
+			float scale = slider.getScale();
+			GL11.glScalef(scale, scale, scale);
+			font.drawString(slider.getText(), left, 6, color.toInt());
+			GL11.glPopMatrix();
 		}
 	}
 
@@ -472,15 +487,16 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	public void render(GenericCheckBox checkBox) {
 		if(checkBox.isVisible()){
+			Texture checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
-			renderBaseBox(checkBox);
+			renderBaseBox(checkBox, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(checkBox);
 			if(!checkBox.isChecked()) {
 				color.setAlpha(0.2F);
 			}
-			drawTexture(checkBoxCross, 20, 20, color);
+			drawTexture(checkBoxCross, 20, 20, color, true);
 			font.drawString(checkBox.getText(), 22, 7, getColor(checkBox).toInt());
 		}
 	}
@@ -489,52 +505,56 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	public void render(GenericRadioButton radioButton) {
 		if(radioButton.isVisible()) {
+			Texture radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) radioButton.getScreenX(), (float) radioButton.getScreenY(), 0);
-			renderBaseBox(radioButton);
+			renderBaseBox(radioButton, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(radioButton);
 			if(!radioButton.isSelected()){
 				color.setAlpha(0.2F);
 			}
-			drawTexture(radio, 20, 20, color);
+			drawTexture(radio, 20, 20, color, true);
 			font.drawString(radioButton.getText(), 22, 7, getColor(radioButton).toInt());
 		}
 	}
-	Texture radio;
-	Texture defaultBox;
-	Texture hoverBox;
-	Texture disabledBox;
-	Texture checkBoxCross;
-	
-	private void loadTextures(){
-		 defaultBox = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
-		 hoverBox = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
-		 disabledBox = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
-		 radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
-		 checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
-	}
 	
 	protected void renderBaseBox(Control box) {
-		if(defaultBox == null)
-			loadTextures();
+		renderBaseBox(box, false);
+	}
+	
+	protected void renderBaseBox(Control box, boolean blend) {
 		Texture usedTexture = null;
 		if(box.isEnabled() && isHovering(box)) {
-			usedTexture = hoverBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
 		} else if(box.isEnabled()) {
-			usedTexture = defaultBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxNormal.png");
 		} else {
-			usedTexture = disabledBox;
+			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxDisabled.png");
 		}
-		drawTexture(usedTexture, 20, 20);
+		drawTexture(usedTexture, 20, 20, blend);
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend);
 	}
 	
 	protected void drawTexture(Texture textureBinding, int width, int height, Color color) {
+		drawTexture(textureBinding, width, height, color, false);
+	}
+	
+	protected void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
 		if(textureBinding == null) return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(770, 771);
+		if (blend) {
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(770, 771);
+		}
 		GL11.glDepthMask(false);
 		bindColor(color);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
@@ -551,12 +571,11 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
-		GL11.glDisable(GL11.GL_BLEND);
+		if (blend){
+			GL11.glDisable(GL11.GL_BLEND);
+		}
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
-	}
 	
 	protected Color getColor(Button c) {
 		if(c.isEnabled() && isHovering(c)){
@@ -577,8 +596,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		font.drawString(lwi.getTitle(), x+2, y+2, new Color(1.0F,1.0F,1.0F).toInt());
 		font.drawString(lwi.getText(), x+2, y+2+8, new Color(0.8F,0.8F,0.8F).toInt());
 	}
-
-	
 
 	private void scissorWidget(Widget widget) {
 		double x = widget.getX() + widget.getWidth(), y = widget.getY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
@@ -606,6 +623,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		scissorWidget(gs);
 		RenderUtil.drawRectangle(0, 0, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
+		GL11.glPushMatrix();
 		GL11.glTranslated(-scrollLeft, -scrollTop, 0);
 		GL11.glPushMatrix();
 		
@@ -613,13 +631,15 @@ public class MCRenderDelegate implements RenderDelegate {
 		gs.renderContents();
 		
 		GL11.glPopMatrix();
-		GL11.glTranslated(scrollLeft, scrollTop, 0);
+		GL11.glPopMatrix();
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		RenderUtil.drawGradientRectangle(0, 0, (int)gs.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
 		RenderUtil.drawGradientRectangle(0, (int)gs.getHeight() - 5, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
 		
+		GL11.glDisable(2896 /*GL_LIGHTING*/);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		//Draw scrollbars
 		if(gs.needsScrollBar(Orientation.HORIZONTAL)) {
 			Minecraft mc = SpoutClient.getHandle();
@@ -664,6 +684,18 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 			
 			currentHeight += item.getHeight();
+		}
+	}
+
+	public void renderContents(GenericScrollArea genericScrollArea) {
+		for(RenderPriority priority:RenderPriority.values()) {
+			for(Widget w:genericScrollArea.getAttachedWidgets()) {
+				if(w.getPriority() == priority) {
+					GL11.glPushMatrix();
+					w.render();
+					GL11.glPopMatrix();
+				}
+			}
 		}
 	}
 	

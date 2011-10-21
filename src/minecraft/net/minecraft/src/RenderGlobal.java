@@ -63,6 +63,7 @@ import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
@@ -337,7 +338,7 @@ public class RenderGlobal implements IWorldAccess {
 */
 	public void loadRenderers() {
 		if(this.worldObj != null) {
-			Block.leaves.setGraphicsLevel(Config.isTreesFancy()); //Spout
+			Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees); //Spout
 			this.renderDistance = this.mc.gameSettings.renderDistance;
 			int var1;
 			if(this.worldRenderers != null) {
@@ -348,20 +349,12 @@ public class RenderGlobal implements IWorldAccess {
 
 			var1 = 64 << 3 - this.renderDistance;
 			//Spout Start
-			if(Config.isLoadChunksFar()) {
+			if (ConfigReader.farView) {
 				var1 = 512;
 			}
 			
-			if(Config.isFarView()) {
-				if(var1 < 512) {
-					var1 *= 3;
-				} else {
-					var1 *= 2;
-				}
-			}
-			
-			var1 += Config.getPreloadedChunks() * 2 * 16;
-			if(!Config.isFarView() && var1 > 400) {
+			var1 += ConfigReader.preloadedChunks * 2 * 16;
+			if(!ConfigReader.farView && var1 > 400) {
 				var1 = 400;
 			}
 			//Spout End
@@ -475,7 +468,13 @@ public class RenderGlobal implements IWorldAccess {
 			RenderHelper.enableStandardItemLighting();
 
 			for(var6 = 0; var6 < this.tileEntities.size(); ++var6) {
-				TileEntityRenderer.instance.renderTileEntity((TileEntity)this.tileEntities.get(var6), var3);
+				//Spout start
+				TileEntity tileentity = (TileEntity)this.tileEntities.get(var6);
+				this.worldObj.checkEntityTile(tileentity);
+				if(!tileentity.isInvalid()) {
+					TileEntityRenderer.instance.renderTileEntity(tileentity, var3);
+				}
+				//Spout end
 			}
 
 			this.mc.entityRenderer.func_35810_a((double)var3);
@@ -601,7 +600,7 @@ public class RenderGlobal implements IWorldAccess {
 			Arrays.sort(this.sortedWorldRenderers, new EntitySorter(var1));
 		}
 		//Spout start
-		if(this.mc.gameSettings.ofSmoothFps && var2 == 0) {
+		if (ConfigReader.smoothFPS && var2 == 0) {
 			GL11.glFinish();
 		}
 		//Spout end
@@ -819,7 +818,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glEnable(2912 /*GL_FOG*/);
 			GL11.glColor3f(var3, var4, var5);
 			//Spout Start
-			if(Config.isSkyEnabled()) {
+			if (ConfigReader.sky) {
 				GL11.glCallList(this.glSkyList);
 			}
 			//Spout End
@@ -834,7 +833,7 @@ public class RenderGlobal implements IWorldAccess {
 			float var11;
 			float var12;
 			//Spout Start
-			if(var17 != null && Config.isSkyEnabled()) {
+			if(var17 != null && ConfigReader.sky) {
 			//Spout End
 				GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 				GL11.glShadeModel(7425 /*GL_SMOOTH*/);
@@ -969,7 +968,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, -((float)(var18 - 16.0D)), 0.0F);
 			//Spout Start
-			if(Config.isSkyEnabled()) {
+			if (ConfigReader.sky) {
 				GL11.glCallList(this.glSkyList2);
 			}
 			//Spout End
@@ -985,8 +984,8 @@ public class RenderGlobal implements IWorldAccess {
 			return;
 		}
 		//Spout End
-		if(!this.mc.theWorld.worldProvider.isNether && this.mc.gameSettings.ofClouds != 3) { //Spout
-			if(Config.isCloudsFancy()) { //Spout
+		if(!this.mc.theWorld.worldProvider.isNether && ConfigReader.sky) { //Spout
+			if (ConfigReader.fancyClouds) { //Spout
 				this.renderCloudsFancy(var1);
 			} else {
 				GL11.glDisable(2884 /*GL_CULL_FACE*/);
@@ -1072,9 +1071,6 @@ public class RenderGlobal implements IWorldAccess {
 		//Spout Start
 		//float var12 = this.worldObj.worldProvider.getCloudHeight() - var2 + 0.33F;
 		float var12 = SpoutClient.getInstance().getSkyManager().getCloudHeight() - var2 + 0.33F ;
-		if (SpoutClient.getInstance().isCloudHeightCheat()) {
-			var12 -= (1.0F - this.mc.gameSettings.ofCloudsHeight) * 25.0F;
-		}
 		//Spout End
 		int var13 = MathHelper.floor_double(var8 / 2048.0D);
 		int var14 = MathHelper.floor_double(var10 / 2048.0D);
@@ -1218,11 +1214,11 @@ public class RenderGlobal implements IWorldAccess {
 		boolean var3 = false;
 		//Spout start
 		frameCount++;
-		int renderersToUpdate = Config.getUpdatesPerFrame();
+		int renderersToUpdate = ConfigReader.chunkUpdates;
 		double tempRenderersToUpdate = renderersToUpdate;
 		int renderersUpdated = 0;
 		//Be aggressive!
-		if (Config.isDynamicUpdates()) {
+		if (ConfigReader.dynamicUpdates) {
 			if (!this.isMoving(var1, 2000) || mc.currentScreen != null) { //if we have a screen open load chunks like crazy
 				tempRenderersToUpdate *= 20D;
 			}
@@ -1289,12 +1285,6 @@ public class RenderGlobal implements IWorldAccess {
 				} else if(!var20.isInFrustum) {
 					continue;
 				}
-				//Spout start
-				if (renderersUpdated > renderersToUpdate) {
-					return this.worldRenderersToUpdate.size() == 0;
-				}
-				renderersUpdated++;
-				//Spout end
 
 				var20.updateRenderer();
 				this.worldRenderersToUpdate.remove(var20);
@@ -1347,6 +1337,13 @@ public class RenderGlobal implements IWorldAccess {
 					var7 = new ArrayList();
 				}
 				
+				//Spout start
+				if (renderersUpdated > renderersToUpdate) {
+					break;
+				}
+				renderersUpdated++;
+				//Spout end
+				
 				++var9;
 				var7.add(var11);
 				this.worldRenderersToUpdate.set(var10, (Object)null);
@@ -1361,13 +1358,6 @@ public class RenderGlobal implements IWorldAccess {
 					var11 = (WorldRenderer)var7.get(var10);
 					var11.updateRenderer();
 					var11.needsUpdate = false;
-					
-					//Spout start
-					if (renderersUpdated > renderersToUpdate) {
-						break;
-					}
-					renderersUpdated++;
-					//Spout end
 				}
 			}
 
@@ -1386,13 +1376,6 @@ public class RenderGlobal implements IWorldAccess {
 					var6[var21].updateRenderer();
 					var6[var21].needsUpdate = false;
 					++var10;
-					
-					//Spout start
-					if (renderersUpdated > renderersToUpdate) {
-						break;
-					}
-					renderersUpdated++;
-					//Spout end
 				}
 			}
 

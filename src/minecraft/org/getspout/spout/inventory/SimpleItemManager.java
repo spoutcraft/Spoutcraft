@@ -18,7 +18,6 @@ package org.getspout.spout.inventory;
 
 import java.util.Iterator;
 
-import gnu.trove.iterator.TLongIterator;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;

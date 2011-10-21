@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.getspout.spout.ScheduledTextFieldUpdate;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
 import org.spoutcraft.spoutcraftapi.entity.Player;
@@ -45,6 +46,8 @@ public class GuiScreen extends Gui {
 	private long updateTicks;
 	private Scrollable holding = null;
 	private Orientation holdingScrollBar = Orientation.VERTICAL;
+	private long lastMouseMove = 0;
+	public static int TOOLTIP_DELAY = 500;
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -120,38 +123,56 @@ public class GuiScreen extends Gui {
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
 			Keyboard.enableRepeatEvents(false);
-			for (Widget widget : screen.getAttachedWidgets()) {
-				if (widget instanceof Control) {
-					Control control = (Control)widget;
-					if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
-						control.setFocus(true);
-						this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
-						if (control instanceof Button) {
-							handleButtonClick((Button)control);
-						}
-						else if (control instanceof Slider) {
-							//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
-							((Slider)control).setDragging(true);
-						}
-						else if (control instanceof TextField) {
-							((TextField)control).setCursorPosition(((TextField)control).getText().length());
-						}
-						else if (control instanceof Scrollable) {
-							boolean handled = handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
-							if(!handled && control instanceof ListWidget) {
-								handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+			for (int i = 4; i>=0; i--) {
+				for (Widget widget : screen.getAttachedWidgets(true)) {
+					if(widget.getPriority().getId()!=i){
+						continue;
+					}
+					if (widget instanceof Control) {
+						Control control = (Control)widget;
+						if (control.isEnabled() && control.isVisible() && isInBoundingRect(control, mouseX, mouseY)) {
+							if(control.getScreen() instanceof Scrollable) {
+								if(!isInBoundingRect(control.getScreen(), mouseX, mouseY)) {
+									continue;
+								}
+							}
+							control.setFocus(true);
+							boolean handled = false;
+							if (control instanceof Scrollable) {
+								handled = handled || handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
+								if(!handled && control instanceof ListWidget) {
+									handled = handled || handleClickOnListWidget((ListWidget)control, mouseX, mouseY);
+								}
+							} 
+							if (!handled) {
+								if (control instanceof Button) {
+									handleButtonClick((Button)control);
+									handled = true;
+								}
+								else if (control instanceof Slider) {
+									//((Slider)control).setSliderPosition((float)(mouseX - (((Slider)control).getScreenX() + 4)) / (float)(((Slider)control).getWidth() - 8));
+									((Slider)control).setDragging(true);
+									handled = true;
+								}
+								else if (control instanceof TextField) {
+									((TextField)control).setCursorPosition(((TextField)control).getText().length());
+									handled = true;
+								} 
+							}
+							if (handled) {
+								this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+								break;
 							}
 						}
-						break;
 					}
 				}
 			}
 		}
 	}
 	
-	private void handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
-		int x = (int) (mouseX - lw.getScreenX());
-		int y = (int) (mouseY - lw.getScreenY());
+	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
+		int x = (int) (mouseX - lw.getActualX());
+		int y = (int) (mouseY - lw.getActualY());
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
 		y -= 5;
@@ -161,16 +182,17 @@ public class GuiScreen extends Gui {
 			
 			if(currentHeight <= y && y <= currentHeight + item.getHeight()) {
 				lw.setSelection(n);
-				break;
+				return true;
 			}
 			n++;
 			currentHeight += item.getHeight();
 		}
+		return false;
 	}
 
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
-		int x = (int) (mouseX - lw.getScreenX());
-		int y = (int) (mouseY - lw.getScreenY());
+		int x = (int) (mouseX - lw.getActualX());
+		int y = (int) (mouseY - lw.getActualY());
 		int scrollY = lw.getScrollPosition(Orientation.VERTICAL);
 		int scrollX = lw.getScrollPosition(Orientation.HORIZONTAL);
 		if(x > lw.getWidth()-16 && lw.needsScrollBar(Orientation.VERTICAL)) {
@@ -199,11 +221,6 @@ public class GuiScreen extends Gui {
 	}
 
 	private void handleButtonClick(Button control) {
-		this.buttonClicked((Button)control);
-		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
-		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
-		((Button) control).onButtonClick(event);
-		SpoutClient.getInstance().getAddonManager().callEvent(event);
 		if(control instanceof CheckBox) {
 			CheckBox check = (CheckBox)control;
 			check.setChecked(!check.isChecked());
@@ -212,6 +229,11 @@ public class GuiScreen extends Gui {
 			RadioButton radio = (RadioButton)control;
 			radio.setSelected(true);
 		}
+		this.buttonClicked((Button)control);
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, 1));
+		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
+		((Button) control).onButtonClick(event);
+		SpoutClient.getInstance().getAddonManager().callEvent(event);
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {
@@ -228,13 +250,14 @@ public class GuiScreen extends Gui {
 	}
 	
 	private void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
+		lastMouseMove = System.currentTimeMillis();
 		mouseMovedOrUp(mouseX, mouseY, eventButton);
 		if(getScreen() == null) {
 			return;
 		}
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
-		for (Widget widget : screen.getAttachedWidgets()) {
+		for (Widget widget : screen.getAttachedWidgets(true)) {
 			if (widget instanceof Control) {
 				Control control = (Control)widget;
 				if (control.isEnabled() && control.isVisible()) {
@@ -242,7 +265,7 @@ public class GuiScreen extends Gui {
 						if (control.isFocus() && !isInBoundingRect(control, mouseX, mouseY)) { //released control
 							control.setFocus(false);
 						}
-						if (control instanceof Slider) {
+						if (control instanceof Slider && ((Slider)control).isDragging()) {
 							((Slider)control).setDragging(false);
 							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, control, ((Slider)control).getSliderPosition()));
 							SliderDragEvent event = SliderDragEvent.getInstance(getPlayer(), screen, (Slider)control, ((Slider)control).getSliderPosition());
@@ -253,18 +276,14 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
-		if(holding != null) {
+		if(holding != null && holdingScrollBar != null) {
 			double p = 0;
-			switch(holdingScrollBar){
-			case VERTICAL:
-				int y = mouseY - holding.getY();
+			if(holdingScrollBar == Orientation.VERTICAL) {
+				int y = (int) (mouseY - holding.getActualY());
 				p = (double)y/holding.getViewportSize(Orientation.VERTICAL);
-				break;
-			case HORIZONTAL:
-				int x = mouseX - holding.getX();
+			} else {
+				int x = (int) (mouseX - holding.getActualX());
 				p = (double)x/holding.getViewportSize(Orientation.HORIZONTAL);
-				
-				break;
 			}
 			holding.setScrollPosition(holdingScrollBar, (int) ((double)holding.getMaximumScrollPosition(holdingScrollBar) * p));
 			
@@ -272,6 +291,10 @@ public class GuiScreen extends Gui {
 				holding = null;
 			}
 		}
+	}
+	
+	protected boolean shouldShowTooltip() {
+		return !ConfigReader.delayedTooltips || System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
 	}
 
 	protected void mouseMovedOrUp(int var1, int var2, int var3) {
@@ -341,8 +364,8 @@ public class GuiScreen extends Gui {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
 				axis = Orientation.HORIZONTAL;
 			}
-			for(Widget w:getScreen().getAttachedWidgets()) {
-				if(isInBoundingRect(w, x, y)) {
+			for(Widget w:getScreen().getAttachedWidgets(true)) {
+				if(w != null && isInBoundingRect(w, x, y)) {
 					if(w instanceof Scrollable) {
 						//Stupid LWJGL not recognizing vertical scrolls :(
 						Scrollable lw = (Scrollable)w;
@@ -363,12 +386,28 @@ public class GuiScreen extends Gui {
 		boolean handled = false;
 		if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 			Keyboard.enableRepeatEvents(false);
-		} else if(Keyboard.getEventKeyState() && getScreen() != null) {
+		} else if(getScreen() != null) {
 			boolean tab = Keyboard.getEventKey() == Keyboard.KEY_TAB;
 			TextField focusedTF = null;
 			ConcurrentSkipListMap<Integer, TextField> tabIndexMap = tab ? new ConcurrentSkipListMap<Integer, TextField>() : null;
 			
-			for (Widget widget : screen.getAttachedWidgets()) {
+			for (Widget widget : screen.getAttachedWidgets(true)) {
+				if (widget instanceof Control) {
+					Control control = (Control) widget;
+					if(control.isFocus()){
+						if(Keyboard.getEventKeyState()) {
+							handled = control.onKeyPressed(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+						} else {
+							handled = control.onKeyReleased(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+						}
+					}
+					if (handled) {
+						break;
+					}
+				}
+				if (!Keyboard.getEventKeyState()) {
+					break;
+				}
 				if (widget instanceof TextField) {
 					TextField tf = (TextField) widget;
 					// handle tabbing
@@ -498,13 +537,24 @@ public class GuiScreen extends Gui {
 		}
 		//Draw ALL the widgets!!
 		screen.render();
+		if (shouldShowTooltip()) {
+			drawTooltips(x, y);
+		}
+	}
+		
+	public void drawTooltips(int x, int y) {
 		//Draw the tooltip!
 		String tooltip = "";
 		//Widget tooltipWidget = null;
 		for (RenderPriority priority : RenderPriority.values()) {	
-			for (Widget widget : screen.getAttachedWidgets()){
+			for (Widget widget : screen.getAttachedWidgets(true)){ //We need ALL the tooltips now
 				if (widget.getPriority() == priority){
 					if(widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
+						if(widget.getScreen() instanceof Scrollable) {
+							if(!isInBoundingRect(widget.getScreen(), x, y)){
+								continue;
+							}
+						}
 						tooltip = widget.getTooltip();
 						//tooltipWidget = widget;
 						//No return here, when a widget that is over it comes next, tooltip will be overwritten.
@@ -522,37 +572,50 @@ public class GuiScreen extends Gui {
 		GL11.glPushMatrix();
 		String lines[] = tooltip.split("\n");
 		int tooltipWidth = 0;
+		int tooltipHeight = 8 * lines.length + 3;
 		for(String line:lines) {
 			tooltipWidth = Math.max(this.fontRenderer.getStringWidth(line), tooltipWidth);
 		}
 		int offsetX = 0;
-		if(x + tooltipWidth + 2 > screen.getWidth()){
+		if(x + tooltipWidth > width){
 			offsetX = -tooltipWidth - 11;
+			if (offsetX + x < 0) {
+				offsetX = -x;
+			}
 		}
+		int offsetY = 0;
+		if(y + tooltipHeight + 2 > height) {
+			offsetY = -tooltipHeight;
+			if(offsetY + y < 0) {
+				offsetY = -y;
+			}
+		}
+		
 		x += 6;
 		y -= 6;
-		this.drawGradientRect(x - 3 + offsetX, y - 3, x + tooltipWidth + 3 + offsetX, y + 8 * lines.length + 3, -1073741824, -1073741824);
+		this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
 		int i = 0;
 		for(String line:lines) {
-			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i, -1);
+			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i + offsetY, -1);
 			i++;
 		}
 		GL11.glPopMatrix();
 	}
 	
 	protected boolean isInBoundingRect(Widget widget, int x, int y) {
-		int left = (int) widget.getScreenX();
-		int top = (int) widget.getScreenY();
+		int left = (int) widget.getActualX();
+		int top = (int) widget.getActualY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
 		int right = left+width;
 		int bottom = top+height;
+		
 		if(left <= x && x < right && top <= y && y < bottom){
 			return true;
 		}
 		return false;
 	}
-	
+
 	protected boolean isInBoundingRect(int widgetX, int widgetY, int height, int width, int x, int y) {
 		int left = widgetX;
 		int top = widgetY;

@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.player.ChatManager;
@@ -156,7 +157,7 @@ public class GuiIngame extends Gui {
 			if(Minecraft.hasPaidCheckTime > 0L) {
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
-			if (this.mc.gameSettings.fastDebugMode != 2) {
+			if (ConfigReader.fastDebug != 2) {
 				font.drawStringWithShadow("Minecraft Beta 1.8.1 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);

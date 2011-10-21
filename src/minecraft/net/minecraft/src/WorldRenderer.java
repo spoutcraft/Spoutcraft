@@ -20,6 +20,7 @@ import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
@@ -169,7 +170,8 @@ public class WorldRenderer {
 						}
 					}
 					
-					for (int dy = y; dy < sizeYOffset; ++dy) {
+					//for (int dy = y; dy < sizeYOffset; ++dy) {
+					for (int dy = sizeYOffset; dy > y; --dy) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dx = x; dx < sizeXOffset; ++dx) {
 								int var19 = chunkCache.getBlockId(dx, dy, dz);
@@ -308,7 +310,7 @@ public class WorldRenderer {
 	public void updateInFrustrum(ICamera var1) {
 		this.isInFrustum = var1.isBoundingBoxInFrustum(this.rendererBoundingBox);
 		//Spout Start
-		if(this.isInFrustum && Config.isOcclusionEnabled() && Config.isOcclusionFancy()) {
+		if(this.isInFrustum && ConfigReader.advancedOpenGL == 2) {
 			this.isInFrustrumFully = var1.isBoundingBoxInFrustumFully(this.rendererBoundingBox);
 		} else {
 			this.isInFrustrumFully = false;

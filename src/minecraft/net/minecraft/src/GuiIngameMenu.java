@@ -32,11 +32,6 @@ public class GuiIngameMenu extends GuiScreen {
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + var1, "Options..."));
 		this.controlList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.achievements")));
 		this.controlList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.stats")));
-		//Spout Start
-		if(!this.mc.hideQuitButton) {
-			this.controlList.add(new GuiButton(7, this.width / 2 - 100, 10, "Crime Scene - Do Not Cross!"));
-		}
-		//Spout End
 	}
 
 	protected void actionPerformed(GuiButton var1) {
@@ -73,12 +68,6 @@ public class GuiIngameMenu extends GuiScreen {
 		if(var1.id == 6) {
 			this.mc.displayGuiScreen(new GuiStats(this, this.mc.statFileWriter));
 		}
-		//Spout Start
-		if(var1.id == 7) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.TestScreen());
-		}
-		//Spout End
-
 	}
 
 	public void updateScreen() {

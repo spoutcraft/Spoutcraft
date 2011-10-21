@@ -16,12 +16,10 @@
  */
 package org.getspout.spout.gui;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.predownload.GuiPredownload;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{
@@ -34,6 +32,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected ExpBar exp;
 	protected ServerPlayerList playerList;
 	protected PopupScreen activePopup = null;
+	protected LinkedList<PopupScreen> queuedScreens = new LinkedList<PopupScreen>();
 	
 	public InGameScreen() {
 		this.health = new HealthBar();
@@ -45,7 +44,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
 
-		attachWidget(health).attachWidget(bubble).attachWidget(chat).attachWidget(chatText).attachWidget(armor).attachWidget(hunger).attachWidget(exp).attachWidget(playerList);
+		attachWidget("Spoutcraft", health).attachWidget("Spoutcraft", bubble).attachWidget("Spoutcraft", chat).attachWidget("Spoutcraft", chatText).attachWidget("Spoutcraft", armor).attachWidget("Spoutcraft", hunger).attachWidget("Spoutcraft", exp).attachWidget("Spoutcraft", playerList);
 	}
 	
 	public int getVersion() {
@@ -60,13 +59,19 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		if (activePopup != null) {
 			activePopup.onTick();
 		}
+		else{
+			PopupScreen queued = queuedScreens.poll();
+			if (queued != null) {
+				attachPopupScreen(queued);
+			}
+		}
 		super.onTick();
 	}
 	
 	@Override
-	public InGameScreen attachWidget(Widget widget) {
+	public InGameScreen attachWidget(String plugin, Widget widget) {
 		if (canAttachWidget(widget)) {
-			super.attachWidget(widget);
+			super.attachWidget(plugin, widget);
 			return this;
 		}
 		throw new UnsupportedOperationException("Unsupported widget type");
@@ -165,15 +170,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	
 	public boolean attachPopupScreen(PopupScreen screen) {
 		if (getActivePopup() == null) {
-			activePopup = screen;
-			if (SpoutClient.getHandle().currentScreen instanceof GuiPredownload) {
-				((GuiPredownload)SpoutClient.getHandle().currentScreen).queuedScreen = new CustomScreen(screen);
-			}
-			else {
-				SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
-			}
+			SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
 			return true;
 		}
+		queuedScreens.add(screen);
 		return false;
 	}
 	

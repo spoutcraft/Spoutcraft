@@ -114,12 +114,16 @@ import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.ScreenEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.ScreenOpenEvent;
+import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.getspout.spout.gui.ScreenUtil;
 import org.getspout.spout.packet.PacketScreenAction;
 import org.getspout.spout.packet.ScreenAction;
 //Spout End
+import org.getspout.spout.packet.SpoutPacket;
 
 public abstract class Minecraft implements Runnable {
 
@@ -275,6 +279,7 @@ public abstract class Minecraft implements Runnable {
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
 		// Spout Start
 		TextureUtils.setMinecraft(this);
+		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion().toString());
 		// Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
 		// Spout Start
@@ -470,24 +475,42 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		ScreenType display = ScreenUtil.getType(screen);
-		if (previousScreen != null || screen != null) {
-			previousScreen = this.currentScreen;
-		}
+		
 		if (notify && thePlayer != null && theWorld != null) {
 			// Screen closed
+			ScreenEvent event = null;
+			SpoutPacket packet = null;
+			Screen widget = null;
 			if (this.currentScreen != null && screen == null) {
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen)));
-				SpoutClient.getInstance().getAddonManager().callEvent(ScreenCloseEvent.getInstance((Player)thePlayer.spoutEntity, currentScreen.screen, display));
+				packet = new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen));
+				event = ScreenCloseEvent.getInstance((Player)thePlayer.spoutEntity, currentScreen.screen, display);
+				widget = currentScreen.screen;
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
-				SpoutClient.getInstance().getAddonManager().callEvent(ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display));
+				packet = new PacketScreenAction(ScreenAction.Open, display);
+				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display);
+				widget = screen.screen;
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketScreenAction(ScreenAction.Open, display));
-				SpoutClient.getInstance().getAddonManager().callEvent(ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display));
+				packet = new PacketScreenAction(ScreenAction.Open, display);
+				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display);
+				widget = screen.screen;
+			}
+			boolean cancel = false;
+			if (event != null) {
+				SpoutClient.getInstance().getAddonManager().callEvent(event);
+				cancel = event.isCancelled();
+			}
+			if (!cancel && packet != null) {
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+				if (widget instanceof PopupScreen) {
+					((PopupScreen)widget).close();
+				}
+			}
+			if (cancel) {
+				return;
 			}
 		}
 		if (!(this.currentScreen instanceof GuiUnused)) {
@@ -503,6 +526,10 @@ public abstract class Minecraft implements Runnable {
 
 			if (screen instanceof GuiMainMenu) {
 				this.ingameGUI.clearChatMessages();
+			}
+			
+			if (previousScreen != null || screen != null) {
+				previousScreen = this.currentScreen;
 			}
 
 			this.currentScreen = screen;
@@ -777,6 +804,12 @@ public abstract class Minecraft implements Runnable {
 		long var3 = 16666666L;
 		if(this.prevFrameTime == -1L) {
 			this.prevFrameTime = System.nanoTime();
+		}
+		
+		//Spout start
+		//Only show if no other screens are up
+		if (currentScreen != null) {
+			return;
 		}
 
 		long var5 = System.nanoTime();

@@ -107,7 +107,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.posY = 68.5D;
 		} else {
 			if(!this.mc.statFileWriter.hasAchievementUnlocked(AchievementList.openInventory)) {
-				this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory);
+				//this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory); //Spout this was bugging me
 			}
 
 			this.prevTimeInPortal = this.timeInPortal;

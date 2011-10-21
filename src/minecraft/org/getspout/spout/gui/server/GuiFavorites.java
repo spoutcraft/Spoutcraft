@@ -21,6 +21,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,6 +38,8 @@ import net.minecraft.src.*;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.*;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 public class GuiFavorites extends GuiScreen {
 
@@ -66,7 +69,9 @@ public class GuiFavorites extends GuiScreen {
 	private static final int MAIN_MENU = 7;
 	private static final int QUICK_JOIN = 8;
 	private String tooltip = null;
-
+	
+	private int refreshRotateTicks = 0;
+	private float refreshAngle = 0f;
 
 	public GuiFavorites(GuiScreen var1) {
 		this.parentScreen = var1;
@@ -120,10 +125,18 @@ public class GuiFavorites extends GuiScreen {
 	}
 	
 	@Override
-	public void mouseClicked(int var1, int var2, int var3) {
-		super.mouseClicked(var1, var2, var3);
-		quickJoinText.mouseClicked(var1, var2, var3);
-		worldSlotContainer.onClick(var1, var2, var3);
+	public void mouseClicked(int mouseX, int mouseY, int click) {
+		if (mouseX >= 5 && mouseX <= 21 && mouseY >= 5 && mouseY <= 21) {
+			GuiMultiplayer.pinglimit = 0;
+			for (int i = 0; i < serverList.size(); i++) {
+				ServerSlot info = ((ServerSlot)this.serverList.get(i));
+				info.pinging = false;
+			}
+			refreshRotateTicks = 480;
+		}
+		super.mouseClicked(mouseX, mouseY, click);
+		quickJoinText.mouseClicked(mouseX, mouseY, click);
+		worldSlotContainer.onClick(mouseX, mouseY, click);
 	}
 
 	public void initButtons() {
@@ -181,10 +194,9 @@ public class GuiFavorites extends GuiScreen {
 						ServerSlot slot = (ServerSlot)this.serverList.get(selectedWorld);
 						serverName = slot.name;
 						if(serverName != null) {
-							String ip = slot.ip + (slot.port.length() > 0 ? ":" : "") + slot.port;
 							deleting = true;
 							deleteWorld(true, selectedWorld);
-							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, ip, slot.uniqueid, true));
+							SpoutClient.getHandle().displayGuiScreen(new GuiAddFav(this, serverName, slot.getFullIp(), slot.uniqueid, true));
 						}
 					}
 					break;
@@ -245,7 +257,7 @@ public class GuiFavorites extends GuiScreen {
 				while(var3.hasNext()) {
 					ServerSlot var4 = (ServerSlot)var3.next();
 					if(var2 != var4.ID) {
-						GuiFavorites.writeFav(var4.name, var4.ip, var4.uniqueid);
+						GuiFavorites.writeFav(var4.name, var4.getFullIp(), var4.uniqueid);
 					}
 				}
 
@@ -284,7 +296,7 @@ public class GuiFavorites extends GuiScreen {
 
 			while(var1.hasNext()) {
 				ServerSlot var2 = (ServerSlot)var1.next();
-				GuiFavorites.writeFav(var2.name, var2.ip, var2.uniqueid);
+				GuiFavorites.writeFav(var2.name, var2.getFullIp(), var2.uniqueid);
 			}
 
 			++this.selectedWorld;
@@ -489,6 +501,39 @@ public class GuiFavorites extends GuiScreen {
 			this.drawTooltip(this.tooltip, var1, var2);
 		}
 		super.drawScreen(var1, var2, var3);
+		
+		Texture refresh = CustomTextureManager.getTextureFromJar("/res/refresh.png");
+		if (refreshRotateTicks > 0) {
+			refreshRotateTicks--;
+			refreshAngle += 1.5;
+			if (refreshAngle > 360) {
+				refreshAngle -= 360;
+			}
+		}
+		if (refresh != null) {
+			GL11.glPushMatrix();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef(13, 13, 0);
+			GL11.glRotatef(refreshAngle, 0F, 0F, 1F);
+			GL11.glTranslatef(-8, -8, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, refresh.getTextureID());
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(0.0D, 16, -90, 0.0D, 0.0D); // draw corners
+			tessellator.addVertexWithUV(16, 16, -90, refresh.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(16, 0.0D, -90, refresh.getWidth(), refresh.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, refresh.getHeight());
+			tessellator.draw();
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glPopMatrix();
+		}
 	}
 
 	public static List getSize(GuiFavorites screen) {
@@ -541,6 +586,32 @@ public class GuiFavorites extends GuiScreen {
 	
 	public static void onElementInfo(GuiFavorites var0, int var1) {
 		var0.elementInfo(var1);
+	}
+	
+	public static boolean hasServer(String name) throws IOException {
+		BufferedReader bf = new BufferedReader(new FileReader(getFavoriteServerFile()));
+		String line = bf.readLine();
+		while (line != null) {
+			String[] split = line.split(">");
+			if (split[0].equalsIgnoreCase(name)) {
+				return true;
+			}
+			line = bf.readLine();
+		}
+		return false;
+	}
+	
+	public static boolean hasIP(String ip) throws IOException {
+		BufferedReader bf = new BufferedReader(new FileReader(getFavoriteServerFile()));
+		String line = bf.readLine();
+		while (line != null) {
+			String[] split = line.split(">");
+			if (split[1].equalsIgnoreCase(ip)) {
+				return true;
+			}
+			line = bf.readLine();
+		}
+		return false;
 	}
 	
 	public static File getFavoriteServerFile() {

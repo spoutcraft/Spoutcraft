@@ -15,7 +15,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GLContext;
 
 public class Config {
-
+/*
 	private static float[] lightLevels = null;
 	private static int iconWidthTerrain = 16;
 	private static int iconWidthItems = 16;
@@ -27,7 +27,7 @@ public class Config {
 	public static final Boolean DEF_OPTIMIZE_RENDER_DISTANCE = Boolean.valueOf(false);
 	public static final Boolean DEF_OCCLUSION_ENABLED = Boolean.valueOf(false);
 	public static final Integer DEF_MIPMAP_LEVEL = Integer.valueOf(0);
-	public static final Integer DEF_MIPMAP_TYPE = Integer.valueOf(9984 /*GL_NEAREST_MIPMAP_NEAREST*/);
+	public static final Integer DEF_MIPMAP_TYPE = Integer.valueOf(9984 );
 	public static final Float DEF_ALPHA_FUNC_LEVEL = Float.valueOf(0.1F);
 	public static final Boolean DEF_LOAD_CHUNKS_FAR = Boolean.valueOf(false);
 	public static final Integer DEF_PRELOADED_CHUNKS = Integer.valueOf(0);
@@ -57,7 +57,7 @@ public class Config {
 	}
 
 	public static int getMipmapType() {
-		return Minecraft.theMinecraft.gameSettings == null?DEF_MIPMAP_TYPE.intValue():(Minecraft.theMinecraft.gameSettings.ofMipmapLinear?9986 /*GL_NEAREST_MIPMAP_LINEAR*/:9984 /*GL_NEAREST_MIPMAP_NEAREST*/); //Temporarily removed
+		return Minecraft.theMinecraft.gameSettings == null?DEF_MIPMAP_TYPE.intValue():(Minecraft.theMinecraft.gameSettings.ofMipmapLinear?9986 :9984 ); //Temporarily removed
 	}
 
 	public static boolean isUseAlphaFunc() {
@@ -490,5 +490,5 @@ public class Config {
 	public static boolean isClearWater() {
 		return Minecraft.theMinecraft.gameSettings == null?false:Minecraft.theMinecraft.gameSettings.ofClearWater && SpoutClient.getInstance().isClearWaterCheat();
 	}
-
+*/
 }
