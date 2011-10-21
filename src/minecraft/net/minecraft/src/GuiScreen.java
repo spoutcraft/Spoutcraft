@@ -122,7 +122,6 @@ public class GuiScreen extends Gui {
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
-			Keyboard.enableRepeatEvents(false);
 			for (int i = 4; i>=0; i--) {
 				for (Widget widget : screen.getAttachedWidgets(true)) {
 					if(widget.getPriority().getId()!=i){
