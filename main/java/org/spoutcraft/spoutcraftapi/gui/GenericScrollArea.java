@@ -16,6 +16,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
+	@SuppressWarnings("unused")
 	private int screenHeight, screenWidth;
 	
 	public GenericScrollArea(int playerId) {
