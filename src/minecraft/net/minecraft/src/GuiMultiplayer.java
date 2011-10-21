@@ -20,7 +20,7 @@ import org.newdawn.slick.opengl.Texture;
 
 public class GuiMultiplayer extends GuiScreen {
 
-	private static int pinglimit = 0;
+	public static int pinglimit = 0;
 	public static final String version = "1.8.1";
 	private static Object synchronize = new Object();
 	public final ServerListInfo serverInfo = new ServerListInfo();

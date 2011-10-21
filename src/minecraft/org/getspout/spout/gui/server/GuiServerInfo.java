@@ -44,6 +44,8 @@ public class GuiServerInfo extends GuiScreen {
 	private String site = "";
 	private String forum = "";
 	private GuiScreen back;
+	private boolean hoveringSite = false;
+	private boolean hoveringForum = false;
 
 	public GuiServerInfo(ServerSlot info, GuiScreen back) {
 		if (info.loaded < 2) {
@@ -54,14 +56,16 @@ public class GuiServerInfo extends GuiScreen {
 				ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
 				reader.close();
 				
-				Map<String, String> i = list.get(0);
-				switch (info.loaded) {
-					case 0:
-						info.country = i.get("country");
-						info.site = URLDecoder.decode(i.get("site"), "UTF-8");
-						info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-					case 1:
-						info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+				if (list.size() > 0) {
+					Map<String, String> i = list.get(0);
+					switch (info.loaded) {
+						case 0:
+							info.country = i.get("country");
+							info.site = URLDecoder.decode(i.get("site"), "UTF-8");
+							info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
+						case 1:
+							info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
+					}
 				}
 				info.loaded = 2;
 			} catch (IOException e) {}
@@ -87,10 +91,12 @@ public class GuiServerInfo extends GuiScreen {
 		return string + (shortened ? "..." : "");
 	}
 
+	@Override
 	public void updateScreen() {
 		
 	}
 
+	@Override
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.clear();
@@ -99,10 +105,12 @@ public class GuiServerInfo extends GuiScreen {
 		this.controlList.add(new GuiButton(2, this.width / 2 - 200, this.height / 4 + 150, 160, 20, var1.translateKey("Help promote this server")));
 	}
 
+	@Override
 	public void onGuiClosed() {
 		
 	}
 
+	@Override
 	public void actionPerformed(GuiButton button) {
 		if(button.enabled) {
 			if (button.id == 0) {
@@ -119,6 +127,7 @@ public class GuiServerInfo extends GuiScreen {
 		}
 	}
 
+	@Override
 	public void keyTyped(char letter, int key) {
 		
 	}
@@ -135,15 +144,28 @@ public class GuiServerInfo extends GuiScreen {
 		}
 	}
 
-	public void mouseClicked(int var1, int var2, int var3) {
-		if (var1 >= this.width / 2 - 10 && var1 <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(site) && var2 >= this.height / 2 - 10 && var2 <= this.height / 2 - 2) {
+	@Override
+	public void mouseClicked(int x, int y, int click) {
+		if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(site) && y >= this.height / 2 - 10 && y <= this.height / 2 - 2) {
 			openLink(info.site);
-		} else if (var1 >= this.width / 2 - 10 && var1 <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(forum) && var2 >= this.height / 2 + 15 && var2 <= this.height / 2 + 23) {
+		} else if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(forum) && y >= this.height / 2 + 15 && y <= this.height / 2 + 23) {
 			openLink(info.forum);
 		}
-		super.mouseClicked(var1, var2, var3);
+		super.mouseClicked(x, y, click);
+	}
+	
+	@Override
+	public void mouseMovedOrUp(int x, int y, int click) {
+		hoveringSite = false;
+		hoveringForum = false;
+		if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(site) && y >= this.height / 2 - 10 && y <= this.height / 2 - 2) {
+			hoveringSite = true;
+		} else if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(forum) && y >= this.height / 2 + 15 && y <= this.height / 2 + 23) {
+			hoveringForum = true;
+		}
 	}
 
+	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
 		
@@ -213,10 +235,10 @@ public class GuiServerInfo extends GuiScreen {
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.msg + ChatColor.GRAY + " (" + info.ping+"ms)", this.width / 2 - 10, this.height / 2 - 35, 0xA0A0A0);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Website", this.width / 2 - 20, this.height / 2 - 20, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, site, this.width / 2 - 10, this.height / 2 - 10, 0x40FFFF);
+		this.drawString(SpoutClient.getHandle().fontRenderer, site, this.width / 2 - 10, this.height / 2 - 10, hoveringSite ? 0x0099FF : 0x40FFFF);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Forum Post", this.width / 2 - 20, this.height / 2 + 5, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, forum, this.width / 2 - 10, this.height / 2 + 15, 0x40FFFF);
+		this.drawString(SpoutClient.getHandle().fontRenderer, forum, this.width / 2 - 10, this.height / 2 + 15, hoveringForum ? 0x0099FF : 0x40FFFF);
 		
 		this.drawString(SpoutClient.getHandle().fontRenderer, "Description", this.width / 2 - 20, this.height / 2 + 30, 0xFFFFFF);
 		this.drawString(SpoutClient.getHandle().fontRenderer, info.description, this.width / 2 - 10, this.height / 2 + 40, 0xA0A0A0);
