@@ -32,7 +32,7 @@ public abstract class BlockFluid extends Block {
 			return 0xffffff;
 		} else {
 			int color = var1.getWaterColorCache(var2, var3, var4);
-			if (color == -1 || !ConfigReader.fastBiomeColors) {
+			if (color == -1 || ConfigReader.fancyBiomeColors) {
 				double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var4);
 				double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
 				color =  ColorizerWater.getWaterColor(d, d1);

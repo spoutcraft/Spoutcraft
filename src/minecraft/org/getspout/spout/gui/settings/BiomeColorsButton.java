@@ -29,13 +29,13 @@ public class BiomeColorsButton extends GenericCheckBox{
 	public BiomeColorsButton(UUID fancyGraphics) {
 		super("Fancy Biome Colors");
 		this.fancyGraphics = fancyGraphics;
-		this.setChecked(!ConfigReader.fastBiomeColors);
+		this.setChecked(ConfigReader.fancyBiomeColors);
 		setTooltip("Biome Colors\nFast - caches colors for grass and water per chunk.\nMay cause sharp changes in color near chunk edges.\nFancy - normal coloring for grass and water.\nCalculates color for water and grass for each block.");
 	}
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fastBiomeColors = !ConfigReader.fastBiomeColors;
+		ConfigReader.fancyBiomeColors = !ConfigReader.fancyBiomeColors;
 		ConfigReader.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 		

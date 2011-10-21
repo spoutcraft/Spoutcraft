@@ -13,7 +13,7 @@ public class ConfigReader {
 	public static boolean anaglyph3D = false;
 	public static int autosave = 0;
 	public static int betterGrass = 0;
-	public static boolean fastBiomeColors = false;
+	public static boolean fancyBiomeColors = false;
 	public static boolean waterBiomeColors = true;
 	public static float brightnessSlider = 1F;
 	public static int chunkUpdates = 1;
@@ -139,7 +139,7 @@ public class ConfigReader {
 		anaglyph3D = false;
 		autosave = 0;
 		betterGrass = 0;
-		fastBiomeColors = false;
+		fancyBiomeColors = false;
 		brightnessSlider = 1F;
 		chunkUpdates = 1;
 		clearWater = false;
