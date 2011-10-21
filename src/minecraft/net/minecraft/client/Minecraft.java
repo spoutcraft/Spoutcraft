@@ -498,9 +498,9 @@ public abstract class Minecraft implements Runnable {
 				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display);
 				widget = screen.screen;
 			}
-			SpoutClient.getInstance().getAddonManager().callEvent(event);
 			boolean cancel = false;
 			if (event != null) {
+				SpoutClient.getInstance().getAddonManager().callEvent(event);
 				cancel = event.isCancelled();
 			}
 			if (!cancel && packet != null) {
