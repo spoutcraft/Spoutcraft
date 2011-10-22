@@ -687,8 +687,10 @@ public class EntityRenderer {
 				} else {
 					this.renderWorld(var1, this.renderEndNanoTime + (long)(1000000000 / var7));
 				}
-
-				if(this.mc.gameSettings.limitFramerate == 2) {
+//Spout start
+//Fix Balanced not limiting framerate properly
+				if(this.mc.gameSettings.limitFramerate == 1 || this.mc.gameSettings.limitFramerate == 2) {
+//Spout end
 					var8 = (this.renderEndNanoTime + (long)(1000000000 / var7) - System.nanoTime()) / 1000000L;
 					if(var8 > 0L && var8 < 500L) {
 						try {

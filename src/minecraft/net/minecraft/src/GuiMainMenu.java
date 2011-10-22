@@ -29,6 +29,9 @@ public class GuiMainMenu extends GuiScreen {
 	private int field_35357_f = 0;
 	private int field_35358_g;
 
+	//Spout start
+	long renderEndNanoTime = 0L;
+	//Spout end
 
 	public GuiMainMenu() {
 		try {
@@ -278,6 +281,21 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glScalef(var8, var8, var8);
 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
 		GL11.glPopMatrix();
+
+		//Spout start
+		//Limit main menu framerate to 120 FPS
+		long sleeptime = (this.renderEndNanoTime + (long)(1000000000 / 120) - System.nanoTime()) / 1000000L;
+		if(sleeptime > 0L && sleeptime < 500L) {
+			try {
+				Thread.sleep(sleeptime);
+			} catch (InterruptedException var12) {
+				var12.printStackTrace();
+			}
+		}
+		
+		this.renderEndNanoTime = System.nanoTime();
+		//Spout end
+
 		//Spout Start
 		//this.drawString(this.fontRenderer, "Minecraft Beta 1.8.1", 2, this.height - 10, 16777215); //Spout
 		//String var9 = "Copyright Mojang AB. Do not distribute!";
