@@ -126,6 +126,8 @@ public class RenderPlayer extends RenderLiving {
 								this.renderLivingLabel(var1, var12, var2, var4, var6, 64);
 							}
 						} else {
+							var12 = ChatColor.stripColor(var12); //strip colors when sneaking
+							
 							FontRenderer var13 = this.getFontRendererFromRenderManager();
 							GL11.glPushMatrix();
 							GL11.glTranslatef((float)var2 + 0.0F, (float)var4 + 2.3F, (float)var6);
