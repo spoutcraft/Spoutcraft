@@ -16,10 +16,21 @@
  */
 package org.getspout.spout.entity;
 
+import java.util.UUID;
+
 import net.minecraft.src.Entity;
 
 public interface EntityManager {
+	
 	public Entity getEntityFromId(int id);
 	
 	public void setTexture(int id, String texture, byte textureId);
+	
+	public EntityData getData(UUID id);
+	
+	public EntityData getGenericData();
+	
+	public void removeData(UUID id);
+	
+	public void clearData();
 }

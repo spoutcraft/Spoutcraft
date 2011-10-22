@@ -5,9 +5,6 @@ import java.util.Random;
 
 //Spout Start
 import java.util.UUID;
-import org.getspout.spout.client.SpoutClient;
-//Spout End
-
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFluid;
@@ -103,6 +100,7 @@ public abstract class Entity {
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
+	public boolean uuidValid = true;
 	//Spout end
 
 	public Entity(World var1) {

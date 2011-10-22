@@ -22,6 +22,8 @@ import net.minecraft.src.StepSound;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 //Spout Start
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.entity.EntityData;
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End
 public abstract class EntityLiving extends Entity {
@@ -89,13 +91,7 @@ public abstract class EntityLiving extends Entity {
 	protected int numTicksToChaseTarget = 0;
 
 	//Spout Start
-	private HashMap<Byte, String> customTextures = new HashMap<Byte, String>();
-	private byte textureToRender = 0;
-	public double gravityMod = 1D;
-	public double walkingMod = 1D;
-	public double swimmingMod = 1D;
-	public double jumpingMod = 1D;
-	public double airspeedMod = 1D;
+	private EntityData entityData = null;
 	//Spout End
 
 	public EntityLiving(World var1) {
@@ -106,6 +102,10 @@ public abstract class EntityLiving extends Entity {
 		this.field_9365_p = (float)Math.random() * 12398.0F;
 		this.rotationYaw = (float)(Math.random() * 3.1415927410125732D * 2.0D);
 		this.stepHeight = 0.5F;
+		
+		//Spout start
+		uuidValid = !SpoutClient.getHandle().isMultiplayerWorld() || SpoutClient.getInstance().isSpoutEnabled(); //the uuid is not valid until we send it in a packet in MP
+		//Spout end
 	}
 
 	protected void entityInit() {}
@@ -126,8 +126,24 @@ public abstract class EntityLiving extends Entity {
 	}
 
 //Spout Start
+	
+	public final EntityData getData() {
+		if (entityData == null) {
+			if (uuidValid){
+				entityData = SpoutClient.getInstance().getEntityManager().getData(uniqueId);
+			}
+			else {
+				return SpoutClient.getInstance().getEntityManager().getGenericData();
+			}
+		}
+		return entityData;
+	}
+	
 	public String getCustomTextureUrl(byte id){
-		return customTextures.get(id);
+		if (getData().getCustomTextures() == null) {
+			return null;
+		}
+		return getData().getCustomTextures().get(id);
 	}
 	
 	public String getCustomTexture(byte id){
@@ -142,15 +158,17 @@ public abstract class EntityLiving extends Entity {
 		if (url != null) {
 			CustomTextureManager.downloadTexture(url);
 		}
-		customTextures.put(id, url);
+		if (getData().getCustomTextures() != null) {
+			getData().getCustomTextures().put(id, url);
+		}
 	}
 	
 	public void setTextureToRender(byte textureToRender) {
-		this.textureToRender = textureToRender;
+		getData().setTextureToRender(textureToRender);
 	}
 
 	public byte getTextureToRender() {
-		return textureToRender;
+		return getData().getTextureToRender();
 	}
 	//Spout End
 
@@ -584,13 +602,13 @@ public abstract class EntityLiving extends Entity {
 		double var3;
 		if(this.isInWater()) {
 			var3 = this.posY;
-			moveFlying(var1, var2, (float) (0.02F * swimmingMod)); //Spout
+			moveFlying(var1, var2, (float) (0.02F * getData().getSwimmingMod())); //Spout
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
 			this.motionZ *= 0.800000011920929D;
 			//Spout start
-			motionY -= 0.02D * gravityMod;
+			motionY -= 0.02D * getData().getGravityMod();
 			//Spout end
 			if(this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var3, this.motionZ)) {
 				this.motionY = 0.30000001192092896D;
@@ -620,10 +638,10 @@ public abstract class EntityLiving extends Entity {
 			//Spout start
 			float movement = this.field_35168_bw;
 			if (onGround) {
-				movement = (float) (this.field_35169_bv * var9 * walkingMod);
+				movement = (float) (this.field_35169_bv * var9 * getData().getWalkingMod());
 			}
 			else if (!isInWater()) {
-				movement *= airspeedMod;
+				movement *= getData().getAirspeedMod();
 			}
 			moveFlying(var1, var2, movement);
 			//Spout end
@@ -669,7 +687,7 @@ public abstract class EntityLiving extends Entity {
 				this.motionY = 0.2D;
 			}
 
-			this.motionY -= 0.08D * gravityMod; //Spout
+			this.motionY -= 0.08D * getData().getGravityMod(); //Spout
 			this.motionY *= 0.9800000190734863D;
 			this.motionX *= (double)var8;
 			this.motionZ *= (double)var8;
@@ -797,9 +815,9 @@ public abstract class EntityLiving extends Entity {
 		boolean var2 = this.handleLavaMovement();
 		if(this.isJumping) {
 			if(var14) {
-				this.motionY += 0.03999999910593033D * jumpingMod; //Spout
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //Spout
 			} else if(var2) {
-				this.motionY += 0.03999999910593033D * jumpingMod; //Spout
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //Spout
 			} else if(this.onGround) {
 				this.jump();
 			}
@@ -833,7 +851,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void jump() {
-		this.motionY = 0.41999998688697815D * jumpingMod; //Spout
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); //Spout
 		if(this.func_35117_Q()) {
 			float var1 = this.rotationYaw * 0.017453292F;
 			this.motionX -= (double)(MathHelper.sin(var1) * 0.2F);

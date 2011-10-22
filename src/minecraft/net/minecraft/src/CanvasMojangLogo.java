@@ -22,7 +22,7 @@ class CanvasMojangLogo extends Canvas {
 	public CanvasMojangLogo() {
 		try {
 //Spout HD Start
-			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/logo.png");
+			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/crash_logo.png");
 //Spout HD End
 		} catch (IOException var2) {
 			;

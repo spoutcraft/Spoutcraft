@@ -16,12 +16,17 @@
  */
 package org.getspout.spout.entity;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.WorldClient;
 
 public class SimpleEntityManager implements EntityManager {
+	private HashMap<UUID, EntityData> entityData = new HashMap<UUID, EntityData>(1000);
+	private final EntityData generic = new EmptyEntityData();
 	public Entity getEntityFromId(int id) {
 		return ((WorldClient) Minecraft.theMinecraft.theWorld).func_709_b(id);
 	}
@@ -33,5 +38,27 @@ public class SimpleEntityManager implements EntityManager {
 			el.setCustomTexture(texture, textureId);
 		}
 	}
-
+	
+	public EntityData getData(UUID id) {
+		EntityData storage = entityData.get(id);
+		if (storage != null) {
+			return storage;
+		}
+		storage = new EntityData();
+		entityData.put(id, storage);
+		return storage;
+	}
+	
+	public EntityData getGenericData() {
+		return generic;
+	}
+	
+	public void removeData(UUID id) {
+		entityData.remove(id);
+	}
+	
+	public void clearData() {
+		entityData.clear();
+		System.out.println("Cleared Data");
+	}
 }

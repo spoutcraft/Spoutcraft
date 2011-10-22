@@ -243,6 +243,10 @@ public class SpoutClient extends PropertyObject implements Client {
 		SpoutItem.wipeMap();
 		itemManager.reset();
 		FileDownloadThread.preCacheCompleted.lazySet(0);
+		entityManager.clearData();
+		if (getHandle().thePlayer != null) {
+			getHandle().thePlayer.uuidValid = false;
+		}
 	}
 	
 	public void onWorldEnter() {
