@@ -981,7 +981,7 @@ public class EntityRenderer {
 		float var2 = this.mc.theWorld.getRainStrength(var1);
 		if(var2 > 0.0F) {
 			//Spout Start
-			if (!ConfigReader.weather) {
+			if (ConfigReader.weather) {
 			this.func_35806_b((double)var1);
 			if(this.field_35822_i == null) {
 				this.field_35822_i = new float[1024 /*GL_FRONT_LEFT*/];
