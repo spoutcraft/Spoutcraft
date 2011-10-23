@@ -68,6 +68,8 @@ public interface Client extends PropertyInterface {
 	public SpoutVersion getServerVersion();
 
 	// public EntityPlayer getPlayerFromId(int id);
+	
+	public String getAddonFolder();
 
 	public long getTick();
 
