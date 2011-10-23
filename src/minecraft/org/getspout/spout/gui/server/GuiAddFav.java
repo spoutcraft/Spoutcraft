@@ -36,6 +36,7 @@ public class GuiAddFav extends GuiScreen {
 
 
 	public GuiAddFav(GuiScreen screen, String name, String ip, int uid) {
+		this.doFramerateLimit = true;	
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;

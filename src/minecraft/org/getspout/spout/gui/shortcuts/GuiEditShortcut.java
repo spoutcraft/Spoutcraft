@@ -24,6 +24,7 @@ public class GuiEditShortcut extends GuiScreen {
 	
 	boolean recording = false;
 	public GuiEditShortcut(GuiCommandShortcuts parent, Shortcut item) {
+		this.doFramerateLimit = true;
 		this.parent = parent;
 		this.item = item;
 	}

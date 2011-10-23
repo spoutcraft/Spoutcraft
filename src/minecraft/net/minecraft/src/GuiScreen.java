@@ -48,6 +48,10 @@ public class GuiScreen extends Gui {
 	private Orientation holdingScrollBar = Orientation.VERTICAL;
 	private long lastMouseMove = 0;
 	public static int TOOLTIP_DELAY = 500;
+	long renderEndNanoTime = 0L;
+	protected boolean doFramerateLimit = false;
+	protected static int limitedFramerate = 120;
+	
 	
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -62,6 +66,23 @@ public class GuiScreen extends Gui {
 	public void drawScreenPre(int x, int y, float z) {
 		drawScreen(x,y,z);
 		drawWidgets(x, y, z);
+		
+		//Spout start
+		//Limit main menu framerate to 120 FPS as long as we aren't in a game already
+		if(this.doFramerateLimit && this.mc.theWorld == null)
+		{
+			long sleeptime = (this.renderEndNanoTime + (long)(1000000000 / limitedFramerate) - System.nanoTime()) / 1000000L;
+			if(sleeptime > 0L && sleeptime < 500L) {
+				try {
+					Thread.sleep(sleeptime);
+				} catch (InterruptedException var12) {
+					var12.printStackTrace();
+				}
+			}
+			
+			this.renderEndNanoTime = System.nanoTime();
+		}
+		//Spout end	
 	}
 	
 	public void drawScreen(int var1, int var2, float var3) {

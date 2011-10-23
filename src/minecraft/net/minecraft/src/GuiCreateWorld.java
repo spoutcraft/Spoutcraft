@@ -34,6 +34,9 @@ public class GuiCreateWorld extends GuiScreen {
 
 
 	public GuiCreateWorld(GuiScreen var1) {
+		//Spout start
+		this.doFramerateLimit = true;
+		//Spout end		
 		this.parentGuiScreen = var1;
 	}
 

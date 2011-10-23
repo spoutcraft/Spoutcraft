@@ -19,6 +19,9 @@ public class GuiTexturePacks extends GuiScreen {
 
 
 	public GuiTexturePacks(GuiScreen var1) {
+		//Spout start
+		this.doFramerateLimit = true;
+		//Spout end		
 		this.guiScreen = var1;
 	}
 

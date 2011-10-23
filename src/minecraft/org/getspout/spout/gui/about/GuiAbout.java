@@ -32,7 +32,7 @@ public class GuiAbout extends GuiScreen {
 	Texture yourkitLogo = CustomTextureManager.getTextureFromJar("/res/yourkit.png");
 	Texture lethalDriveLogo = CustomTextureManager.getTextureFromJar("/res/lethaldrive.png");
 	public GuiAbout() {
-		
+		this.doFramerateLimit = true;
 	}
 	
 	@Override

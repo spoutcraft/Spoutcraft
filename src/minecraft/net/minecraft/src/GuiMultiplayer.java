@@ -45,6 +45,9 @@ public class GuiMultiplayer extends GuiScreen {
 
 
 	public GuiMultiplayer(GuiScreen var1) {
+		//Spout start
+		this.doFramerateLimit = true;
+		//Spout end		
 		this.parentScreen = var1;
 		tabs.add(new ServerTab("Featured", "http://servers.getspout.org/api.php?type=1&featured"));
 		tabs.add(new ServerTab("Popular", "http://servers.getspout.org/api.php?type=1&popular"));

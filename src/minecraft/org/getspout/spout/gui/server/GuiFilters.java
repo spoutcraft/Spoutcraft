@@ -27,6 +27,7 @@ public class GuiFilters extends GuiScreen {
 
 
 	public GuiFilters(GuiMultiplayer var1) {
+		this.doFramerateLimit = true;
 		this.parentScreen = var1;
 	}
 

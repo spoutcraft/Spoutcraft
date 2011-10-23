@@ -20,6 +20,9 @@ public class GuiControls extends GuiScreen
     
     public GuiControls(GuiScreen guiscreen, GameSettings gamesettings)
     {
+    	//Spout start
+    	this.doFramerateLimit = true;
+    	//Spout end
         screenTitle = "Controls";
         buttonId = -1;
         parentScreen = guiscreen;

@@ -17,6 +17,7 @@ public class GuiEditCommand extends GuiScreen{
 	TextField cmd;
 
 	public GuiEditCommand(GuiEditShortcut parent, int i) {
+		this.doFramerateLimit = true;
 		this.parent = parent;
 		this.item = i;
 	}

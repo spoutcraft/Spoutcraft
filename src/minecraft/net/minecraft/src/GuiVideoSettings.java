@@ -18,6 +18,9 @@ public class GuiVideoSettings extends GuiScreen {
 
 
 	public GuiVideoSettings(GuiScreen var1, GameSettings var2) {
+		//Spout start
+		this.doFramerateLimit = true;
+		//Spout end		
 		this.parentGuiScreen = var1;
 		this.guiGameSettings = var2;
 	}

@@ -30,6 +30,7 @@ public class VideoSettings extends GuiScreen{
 	public final GuiScreen parent;
 	
 	public VideoSettings(GuiScreen parent) {
+		this.doFramerateLimit = true;
 		this.parent = parent;
 	}
 	

@@ -22,6 +22,9 @@ public class GuiOptions extends GuiScreen {
 
 
 	public GuiOptions(GuiScreen var1, GameSettings var2) {
+		//Spout start
+		this.doFramerateLimit = true;
+		//Spout end		
 		this.parentScreen = var1;
 		this.options = var2;
 	}
