@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.addon;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
@@ -44,6 +46,10 @@ class SimpleSecurityManager extends SecurityManager {
 		}
 	}
 
+	private boolean isLocked() {
+		return locked;
+	}
+
 	private void checkAccess() {
 		if (locked) {
 			throw new SecurityException("Access is restricted!");
@@ -66,7 +72,7 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAwtEventQueueAccess() {
-		checkAccess();
+		//checkAccess();
 	}
 
 	@Override
@@ -81,12 +87,16 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-		checkAccess();
+		//checkAccess(); // TODO : Commented out so that Addons can load
 	}
 
 	@Override
 	public void checkDelete(String file) {
-		checkAccess();
+	 	if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to delete " + file);
+			}
+		}
 	}
 
 	@Override
@@ -156,12 +166,20 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(String file) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to read " + file);
+			}
+		}
 	}
 
 	@Override
 	public void checkRead(String file, Object context) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to read " + file);
+			}
+		}
 	}
 
 	@Override
@@ -191,6 +209,10 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(String file) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to write to " + file);
+			}
+		}
 	}
 }
