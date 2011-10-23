@@ -10,9 +10,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 public class GenericScrollArea extends GenericScrollable implements ScrollArea {
-	protected HashMap<Widget, String> widgets = new HashMap<Widget, String>();
+	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
@@ -53,9 +54,9 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return attachWidget(null, widget);
 	}
 	
-	public Screen attachWidget(String plugin, Widget widget) {
-		widgets.put(widget, plugin);
-		widget.setPlugin(plugin);
+	public Screen attachWidget(Addon addon, Widget widget) {
+		widgets.put(widget, addon);
+		widget.setAddon(addon);
 		widget.setDirty(true);
 		widget.setAnchor(WidgetAnchor.TOP_LEFT);
 		widget.setScreen(this);
@@ -81,9 +82,9 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return this;
 	}
 	
-	public Screen removeWidgets(String p) {
+	public Screen removeWidgets(Addon addon) {
 		for (Widget i : getAttachedWidgets()) {
-			if (widgets.get(i) != null && widgets.get(i).equals(p)) {
+			if (widgets.get(i) != null && widgets.get(i).equals(addon)) {
 				removeWidget(i);
 			}
 		}
@@ -110,9 +111,9 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 	
 	public boolean updateWidget(Widget widget) {
 		if (widgets.containsKey(widget)) {
-			String plugin = widgets.get(widget);
+			Addon addon = widgets.get(widget);
 			widgets.remove(widget);
-			widgets.put(widget, plugin);
+			widgets.put(widget, addon);
 			widget.setScreen(this);
 			return true;
 		}

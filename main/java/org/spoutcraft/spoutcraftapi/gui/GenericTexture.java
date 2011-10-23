@@ -70,7 +70,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	public Texture setUrl(String url) {
 		this.url = url;
 		if (getUrl() != null) {
-			Spoutcraft.getClient().getRenderDelegate().downloadTexture(getPlugin(), getUrl());
+			Spoutcraft.getClient().getRenderDelegate().downloadTexture(getAddon().getDescription().getName(), getUrl());
 		}
 		return this;
 	}

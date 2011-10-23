@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.util.FileUtil;
 import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
@@ -127,16 +128,16 @@ public class SimpleAddonManager implements AddonManager {
 					itr.remove();
 				} catch (UnknownDependencyException ex) {
 					if (finalPass) {
-						client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+						safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
 						itr.remove();
 					} else {
 						addon = null;
 					}
 				} catch (InvalidAddonException ex) {
-					client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
+					safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
 					itr.remove();
 				} catch (InvalidDescriptionException ex) {
-					client.getLogger().log(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+					safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
 					itr.remove();
 				}
 
@@ -258,6 +259,9 @@ public class SimpleAddonManager implements AddonManager {
 	}
 
 	public void enableAddon(final Addon addon) {
+		if (addon instanceof ServerAddon) {
+			return;
+		}
 		if (!addon.isEnabled()) {
 			securityManager.lock(superSecretSecurityKey);
 			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
@@ -269,7 +273,7 @@ public class SimpleAddonManager implements AddonManager {
 			try {
 				addon.getAddonLoader().enableAddon(addon);
 			} catch (Throwable ex) {
-				client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+				safelyLog(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 			securityManager.unlock(superSecretSecurityKey);
 		}
@@ -282,12 +286,15 @@ public class SimpleAddonManager implements AddonManager {
 	}
 
 	public void disableAddon(final Addon addon) {
+		if (addon instanceof ServerAddon) {
+			return;
+		}
 		if (addon.isEnabled()) {
 			securityManager.lock(superSecretSecurityKey);
 			try {
 				addon.getAddonLoader().disableAddon(addon);
 			} catch (Throwable ex) {
-				client.getLogger().log(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
+				safelyLog(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
 			securityManager.unlock(superSecretSecurityKey);
 		}
@@ -337,6 +344,23 @@ public class SimpleAddonManager implements AddonManager {
 			}
 		}
 		securityManager.unlock(superSecretSecurityKey);
+	}
+	
+	private void safelyLog(Level level, String message, Throwable ex) {
+		boolean relock = false;
+		if (securityManager.isLocked()){
+			relock = true;
+			securityManager.unlock(superSecretSecurityKey);
+		}
+		client.getLogger().log(level, message, ex);
+		if (relock) {
+			securityManager.lock(superSecretSecurityKey);
+		}
+	}
+	
+	public void addFakeAddon(ServerAddon addon) {
+		addons.add(addon);
+		lookupNames.put(addon.getDescription().getName(), addon);
 	}
 
 }
