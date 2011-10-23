@@ -235,6 +235,16 @@ public class ChatManager {
 		FontRenderer font = Minecraft.theMinecraft.fontRenderer;
 		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth() - 6;
 		
+		if (message.startsWith("/")) {
+			if (message.length() > 100) {
+				lines.add(message.substring(0, 100));
+			}
+			else {
+				lines.add(message);
+			}
+			return lines;
+		}
+		
 		//First Pass, break up line of text into individual words
 		String[] words = message.split(" ");
 		
