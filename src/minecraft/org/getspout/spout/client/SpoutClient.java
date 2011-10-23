@@ -105,6 +105,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
 	private Logger log = Logger.getLogger(SpoutClient.class.getName());
 	private Mode clientMode = Mode.Menu;
+	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
 	
 	static {
 		dataMiningThread.start();
@@ -398,9 +399,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void loadAddons() {
         addonManager.registerInterface(JavaAddonLoader.class);
 
-        File addonFolder = new File(Minecraft.getMinecraftDir(), "addons");
-        if (addonFolder.exists()) {
-            Addon[] addons = addonManager.loadAddons(addonFolder);
+        File addonDir = new File(addonFolder);
+        if (addonDir.exists()) {
+            Addon[] addons = addonManager.loadAddons(addonDir);
             for (Addon addon : addons) {
                 try {
                     addon.onLoad();
@@ -409,11 +410,16 @@ public class SpoutClient extends PropertyObject implements Client {
                 }
             }
         } else {
-            addonFolder.mkdir();
+            addonDir.mkdir();
         }
     }
 	
 	public KeyBindingManager getKeyBindingManager() {
 		return bindingManager;
+	}
+
+	@Override
+	public String getAddonFolder() {
+		return addonFolder;
 	}
 }
