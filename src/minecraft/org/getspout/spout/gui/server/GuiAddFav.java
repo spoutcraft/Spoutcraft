@@ -35,7 +35,7 @@ public class GuiAddFav extends GuiScreen {
 	public int uid = 0;
 
 
-	public GuiAddFav(GuiScreen screen, String name, String ip, int uid) {
+	public GuiAddFav(GuiScreen screen, String name, String ip, int uid) {	
 		this.screen = screen;
 		this.name = name;
 		this.ip = ip;
