@@ -13,7 +13,7 @@ import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
 
 public abstract class GenericCustomBlock extends GenericBlock implements CustomBlock {
 	public BlockDesign design = new GenericBlockDesign();
-	public static MaterialManager mm = Spoutcraft.getClient().getMaterialManager();
+	public static MaterialManager mm;
 	private final String fullName;
 	private final int customID;
 	private final Addon addon;
@@ -27,9 +27,11 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	 * @param plugin creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
+	 * @param material manager
 	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque) {
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, MaterialManager manager) {
 		super(name, isOpaque ? 1 : 20);
+		mm = manager;
 		item = new GenericCustomItem(addon, name);
 		this.blockId = isOpaque ? 1 : 20;
 		this.addon = addon;
@@ -37,6 +39,17 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 		this.customID = item.getCustomId();
 		MaterialData.addCustomBlock(this);
 		this.setItemDrop(mm.getCustomItemStack(this, 1));
+	}
+	
+	/**
+	 * Creates a GenericCustomBlock with no model yet.
+	 * 
+	 * @param plugin creating the block
+	 * @param name of the block
+	 * @param isOpaque true if you want the block solid
+	 */
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque) {
+		this(addon, name, isOpaque, Spoutcraft.getClient().getMaterialManager());
 	}
 
 	/**
@@ -50,6 +63,22 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	 */
 	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design, int customMetaData) {
 		this(addon, name, isOpaque);
+		this.customMetaData = customMetaData;
+		setBlockDesign(design);
+	}
+	
+	/**
+	 * Creates a GenericCustomBlock with a specified Design and metadata
+	 * 
+	 * @param plugin creating the block
+	 * @param name of the block
+	 * @param isOpaque true if you want the block solid
+	 * @param design to use for the block
+	 * @param customMetaData for the block
+	 * @param material manager
+	 */
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design, int customMetaData, MaterialManager manager) {
+		this(addon, name, isOpaque, manager);
 		this.customMetaData = customMetaData;
 		setBlockDesign(design);
 	}
