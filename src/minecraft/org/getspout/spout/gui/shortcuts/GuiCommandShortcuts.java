@@ -24,7 +24,6 @@ public class GuiCommandShortcuts extends GuiScreen {
 	private SimpleKeyBindingManager manager = (SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager();
 	
 	public GuiCommandShortcuts(GuiControls guiControls) {
-		this.doFramerateLimit = true;
 		parentScreen = guiControls;
 	}
 	

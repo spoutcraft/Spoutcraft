@@ -48,7 +48,6 @@ public class GuiServerInfo extends GuiScreen {
 	private boolean hoveringForum = false;
 
 	public GuiServerInfo(ServerSlot info, GuiScreen back) {
-		this.doFramerateLimit = true;
 		if (info.loaded < 2) {
 			try {
 				URL url = new URL("http://servers.getspout.org/api.php?id=" + info.uniqueid);

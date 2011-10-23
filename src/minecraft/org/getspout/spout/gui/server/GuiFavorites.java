@@ -74,7 +74,6 @@ public class GuiFavorites extends GuiScreen {
 	private float refreshAngle = 0f;
 
 	public GuiFavorites(GuiScreen var1) {
-		this.doFramerateLimit = true;
 		this.parentScreen = var1;
 	}
 

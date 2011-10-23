@@ -30,9 +30,6 @@ public class GuiMainMenu extends GuiScreen {
 	private int field_35358_g;
 
 	public GuiMainMenu() {
-		//Spout start
-		this.doFramerateLimit = true;
-		//Spout end
 		try {
 			ArrayList var1 = new ArrayList();
 			BufferedReader var2 = new BufferedReader(new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));

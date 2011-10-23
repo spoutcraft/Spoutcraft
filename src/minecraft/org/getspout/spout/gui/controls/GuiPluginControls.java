@@ -20,7 +20,6 @@ public class GuiPluginControls extends GuiScreen {
 	
 	public GuiPluginControls(GuiControls parent) {
 		super();
-		this.doFramerateLimit = true;
 		parentScreen = parent;
 	}
 	

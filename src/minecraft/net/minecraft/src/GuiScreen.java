@@ -49,7 +49,6 @@ public class GuiScreen extends Gui {
 	private long lastMouseMove = 0;
 	public static int TOOLTIP_DELAY = 500;
 	long renderEndNanoTime = 0L;
-	protected boolean doFramerateLimit = false;
 	protected static int limitedFramerate = 120;
 	
 	
@@ -69,7 +68,7 @@ public class GuiScreen extends Gui {
 		
 		//Spout start
 		//Limit main menu framerate to 120 FPS as long as we aren't in a game already
-		if(this.doFramerateLimit && this.mc.theWorld == null)
+		if(this.mc.theWorld == null)
 		{
 			long sleeptime = (this.renderEndNanoTime + (long)(1000000000 / limitedFramerate) - System.nanoTime()) / 1000000L;
 			if(sleeptime > 0L && sleeptime < 500L) {

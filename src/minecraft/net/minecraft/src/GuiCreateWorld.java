@@ -33,10 +33,7 @@ public class GuiCreateWorld extends GuiScreen {
 	public static boolean normalWorld = true; //Spout world type
 
 
-	public GuiCreateWorld(GuiScreen var1) {
-		//Spout start
-		this.doFramerateLimit = true;
-		//Spout end		
+	public GuiCreateWorld(GuiScreen var1) {	
 		this.parentGuiScreen = var1;
 	}
 
