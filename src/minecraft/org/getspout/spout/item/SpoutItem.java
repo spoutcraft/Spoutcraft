@@ -173,7 +173,7 @@ public class SpoutItem extends Item {
 		}
 	}
 	
-	public static boolean renderCustomBlock(WorldRenderer worldRenderer, RenderBlocks renderBlocks, SpoutCustomBlockDesign design, Block block, int x, int y, int z) {
+	public static boolean renderCustomBlock(RenderBlocks renderBlocks, SpoutCustomBlockDesign design, Block block, int x, int y, int z) {
 		
 		if (design == null) {
 			return false;

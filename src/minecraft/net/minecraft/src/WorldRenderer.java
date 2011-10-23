@@ -175,35 +175,37 @@ public class WorldRenderer {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dx = x; dx < sizeXOffset; ++dx) {
 								int var19 = chunkCache.getBlockId(dx, dy, dz);
-								String customTexture = null; 
-								String customTexturePlugin = null;
-								SpoutCustomBlockDesign design = null;
-								if (SpoutItem.isBlockOverride(dx, dy, dz)) {
-									design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
-								} else {
-									int data = chunkCache.getBlockMetadata(dx, dy, dz);
-									design = SpoutItem.getCustomBlockDesign(var19, data);
-								}
-								if (design != null) {
-									customTexture = design.getTexureURL();
-									customTexturePlugin = design.getTexturePlugin();
-								}
-								if(customTexture != null){
-									boolean found = false;
-									for(int i=0;i<hitTextures.size();i++){
-										if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTexturePlugin))
-											found = true;
-									}
-									if(!found) {
-										hitTextures.add(customTexture);
-										hitTexturesPlugins.add(customTexturePlugin);
-									}
-									if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTexturePlugin))
-										continue;
-								} else if(currentTexture != 0) { 
-									continue;
-								}
+								
 								if (var19 > 0) {
+									String customTexture = null; 
+									String customTexturePlugin = null;
+									SpoutCustomBlockDesign design = null;
+									if (SpoutItem.isBlockOverride(dx, dy, dz)) {
+										design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
+									} else {
+										int data = chunkCache.getBlockMetadata(dx, dy, dz);
+										design = SpoutItem.getCustomBlockDesign(var19, data);
+									}
+									if (design != null) {
+										customTexture = design.getTexureURL();
+										customTexturePlugin = design.getTexturePlugin();
+									}
+									if(customTexture != null){
+										boolean found = false;
+										for(int i=0;i<hitTextures.size();i++){
+											if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTexturePlugin))
+												found = true;
+										}
+										if(!found) {
+											hitTextures.add(customTexture);
+											hitTexturesPlugins.add(customTexturePlugin);
+										}
+										if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTexturePlugin))
+											continue;
+									} else if(currentTexture != 0) { 
+										continue;
+									}
+								
 
 									if (!drawBlock) {
 										drawBlock = true;
@@ -235,7 +237,7 @@ public class WorldRenderer {
 									int blockRenderPass = var25.getRenderBlockPass();
 									if (design != null) {
 										if (renderPass == design.getRenderPass()) {
-											rendered |= SpoutItem.renderCustomBlock(this, blockRenderer, design, var25, dx, dy, dz);
+											rendered |= SpoutItem.renderCustomBlock(blockRenderer, design, var25, dx, dy, dz);
 										} else {
 											skipRenderPass = true;
 										}
