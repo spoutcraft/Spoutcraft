@@ -44,7 +44,7 @@ public class GuiMultiplayer extends GuiScreen {
 	private String tooltip = null;
 
 
-	public GuiMultiplayer(GuiScreen var1) {
+	public GuiMultiplayer(GuiScreen var1) {	
 		this.parentScreen = var1;
 		tabs.add(new ServerTab("Featured", "http://servers.getspout.org/api.php?type=1&featured"));
 		tabs.add(new ServerTab("Popular", "http://servers.getspout.org/api.php?type=1&popular"));
