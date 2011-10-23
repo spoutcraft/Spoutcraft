@@ -186,7 +186,7 @@ public class EffectRenderer {
 						
 						//Spout start
 						if (custom) {
-							this.addEffect((new CustomEntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5, customTexture)).func_4041_a(var1, var2, var3));
+							this.addEffect((new CustomEntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5, customTexture, design)).func_4041_a(var1, var2, var3));
 						}
 						else {
 							this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)var1 - 0.5D, var13 - (double)var2 - 0.5D, var15 - (double)var3 - 0.5D, var6, var17, var5)).func_4041_a(var1, var2, var3));
@@ -245,7 +245,7 @@ public class EffectRenderer {
 				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
 					custom = true;
-					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, var4, data, customTexture)).func_4041_a(var1, var2, var3).func_407_b(0.2F).func_405_d(0.6F));
+					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, var4, data, customTexture, design)).func_4041_a(var1, var2, var3).func_407_b(0.2F).func_405_d(0.6F));
 				}
 			}
 			if (!custom) {

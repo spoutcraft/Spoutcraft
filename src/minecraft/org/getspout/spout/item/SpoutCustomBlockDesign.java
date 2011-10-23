@@ -101,6 +101,26 @@ public class SpoutCustomBlockDesign implements BlockDesign{
 		return renderPass;
 	}
 	
+	public float[][] getX() {
+		return xPos;
+	}
+	
+	public float[][] getY() {
+		return yPos;
+	}
+	
+	public float[][] getZ() {
+		return zPos;
+	}
+	
+	public float[][] getTextureXPos() {
+		return textXPos;
+	}
+	
+	public float[][] getTextureYPos() {
+		return textYPos;
+	}
+	
 	public boolean draw(Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
 		return draw(tessallator, block, renders, 1, x, y, z);
 	}

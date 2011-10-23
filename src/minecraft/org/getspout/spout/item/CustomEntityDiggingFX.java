@@ -26,9 +26,11 @@ import net.minecraft.src.World;
 
 public class CustomEntityDiggingFX extends EntityDiggingFX{
 	private Texture textureBinding = null;
-	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding) {
+	SpoutCustomBlockDesign design;
+	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, SpoutCustomBlockDesign design) {
 		super(var1, var2, var4, var6, var8, var10, var12, block, var15, var16);
 		this.textureBinding = textureBinding;
+		this.design = design;
 	}
 	
 	public void renderParticle(Tessellator var1, float var2, float var3, float var4, float var5, float var6, float var7) {
@@ -42,11 +44,15 @@ public class CustomEntityDiggingFX extends EntityDiggingFX{
 		float var14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)var2 - interpPosY);
 		float var15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)var2 - interpPosZ);
 		float var16 = 1.0F;
-		var1.setColorOpaque_F(var16 * this.particleRed, var16 * this.particleGreen, var16 * this.particleBlue);
-		var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), 0.0D, 0.0D);
-		var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), textureBinding.getWidth(), 0.0D);
-		var1.addVertexWithUV((double)(var13 + var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 + var5 * var12 + var7 * var12), textureBinding.getWidth(), textureBinding.getHeight());
-		var1.addVertexWithUV((double)(var13 + var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 + var5 * var12 - var7 * var12), 0.0D, textureBinding.getHeight());
+		for (int i = 0; i < design.getX().length; i++) {
+			
+			var1.setColorOpaque_F(var16 * this.particleRed, var16 * this.particleGreen, var16 * this.particleBlue);
+			var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), design.getTextureXPos()[i][0], design.getTextureYPos()[i][0]);
+			var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), design.getTextureXPos()[i][1], design.getTextureYPos()[i][1]);
+			var1.addVertexWithUV((double)(var13 + var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 + var5 * var12 + var7 * var12), design.getTextureXPos()[i][2], design.getTextureYPos()[i][2]);
+			var1.addVertexWithUV((double)(var13 + var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 + var5 * var12 - var7 * var12), design.getTextureXPos()[i][3], design.getTextureYPos()[i][3]);
+		}
+		
 		
 		var10.draw();
 	}
