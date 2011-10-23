@@ -13,6 +13,10 @@ public class GenericRadioButton extends GenericButton implements RadioButton {
 	boolean selected = false;
 	int group = 0;
 	
+	public GenericRadioButton() {
+		super();
+	}
+	
 	public GenericRadioButton(String text) {
 		super(text);
 	}
