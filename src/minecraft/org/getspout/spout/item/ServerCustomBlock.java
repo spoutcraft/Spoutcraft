@@ -16,6 +16,7 @@
  */
 package org.getspout.spout.item;
 
+import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
@@ -23,7 +24,7 @@ import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 public class ServerCustomBlock extends GenericCustomBlock{
 
 	public ServerCustomBlock(String name, boolean isOpaque, BlockDesign design, int customMetaData) {
-		super(Spoutcraft.getAddonManager().getAddon(design.getTextureAddon()), name, isOpaque, design, customMetaData);
+		super(Spoutcraft.getAddonManager().getAddon(design.getTextureAddon()), name, isOpaque, design, customMetaData, SpoutClient.getInstance().getMaterialManager());
 	}
 	
 	@Override
