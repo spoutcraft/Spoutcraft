@@ -3,6 +3,8 @@ package org.getspout.spout.gui.shortcuts;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.controls.Shortcut;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
@@ -27,31 +29,32 @@ public class GuiCommandShortcuts extends GuiScreen {
 	
 	@Override
 	public void initGui() {
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
 		doneButton.setX(10).setY((int) (height-30));
-		getScreen().attachWidget("Spoutcraft", doneButton);
+		getScreen().attachWidget(spoutcraft, doneButton);
 		
 		titleLabel = new GenericLabel("Command Shortcuts");
 		titleLabel.setHeight(20).setWidth(200);
 		titleLabel.setAlign(WidgetAnchor.TOP_CENTER);
 		titleLabel.setX((int) (getScreen().getWidth()/2-100)).setY(10);
-		getScreen().attachWidget("Spoutcraft", titleLabel);
+		getScreen().attachWidget(spoutcraft, titleLabel);
 		
 		addButton = new GenericButton("Add Shortcut");
 		addButton.setWidth(100).setHeight(20);
 		addButton.setX((int) (doneButton.getX()+doneButton.getWidth()+10)).setY(doneButton.getY());
-		getScreen().attachWidget("Spoutcraft", addButton);
+		getScreen().attachWidget(spoutcraft, addButton);
 		
 		editButton = new GenericButton("Edit Shortcut");
 		editButton.setWidth(100).setHeight(20);
 		editButton.setX((int) (addButton.getX()+addButton.getWidth()+10)).setY(addButton.getY());
-		getScreen().attachWidget("Spoutcraft", editButton);
+		getScreen().attachWidget(spoutcraft, editButton);
 		
 		removeButton = new GenericButton("Remove Shortcut");
 		removeButton.setWidth(100).setHeight(20);
 		removeButton.setX((int) (editButton.getX()+editButton.getWidth()+10)).setY(editButton.getY());
-		getScreen().attachWidget("Spoutcraft", removeButton);
+		getScreen().attachWidget(spoutcraft, removeButton);
 
 		slot = new GuiShortcutsSlot(this);
 		

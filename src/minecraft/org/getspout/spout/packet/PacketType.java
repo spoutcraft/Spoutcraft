@@ -62,6 +62,7 @@ public enum PacketType {
 	PacketKeyBinding(41, PacketKeyBinding.class),
 	PacketBlockData(42, PacketBlockData.class),
 	PacketCustomMultiBlockOverride(43, PacketCustomMultiBlockOverride.class),
+	PacketServerPlugins(44, PacketServerPlugins.class),
 	;
 	
 	private final int id;

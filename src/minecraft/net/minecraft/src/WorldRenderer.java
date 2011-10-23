@@ -188,7 +188,7 @@ public class WorldRenderer {
 									}
 									if (design != null) {
 										customTexture = design.getTexureURL();
-										customTexturePlugin = design.getTexturePlugin();
+										customTexturePlugin = design.getTextureAddon();
 									}
 									if(customTexture != null){
 										boolean found = false;

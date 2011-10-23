@@ -20,6 +20,8 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD{
@@ -43,8 +45,10 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
+		
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
-		attachWidget("Spoutcraft", health).attachWidget("Spoutcraft", bubble).attachWidget("Spoutcraft", chat).attachWidget("Spoutcraft", chatText).attachWidget("Spoutcraft", armor).attachWidget("Spoutcraft", hunger).attachWidget("Spoutcraft", exp).attachWidget("Spoutcraft", playerList);
+		attachWidget(spoutcraft, health).attachWidget(spoutcraft, bubble).attachWidget(spoutcraft, chat).attachWidget(spoutcraft, chatText).attachWidget(spoutcraft, armor).attachWidget(spoutcraft, hunger).attachWidget(spoutcraft, exp).attachWidget(spoutcraft, playerList);
 	}
 	
 	public int getVersion() {
@@ -69,9 +73,9 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 	
 	@Override
-	public InGameScreen attachWidget(String plugin, Widget widget) {
+	public InGameScreen attachWidget(Addon addon, Widget widget) {
 		if (canAttachWidget(widget)) {
-			super.attachWidget(plugin, widget);
+			super.attachWidget(addon, widget);
 			return this;
 		}
 		throw new UnsupportedOperationException("Unsupported widget type");

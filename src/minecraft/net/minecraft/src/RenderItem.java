@@ -71,7 +71,7 @@ public class RenderItem extends Render {
 		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
-			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL()).getTextureID());
+			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL()).getTextureID());
 		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			RenderEngine renderer = this.renderManager.renderEngine;
@@ -180,7 +180,7 @@ public class RenderItem extends Render {
 		Boolean bCustomTexture = false;
 		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var3, var4);
 		if (blockType != null) {
-			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL());
+			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
 			if (customTextureBinding != null){
 				var2.bindTexture(customTextureBinding.getTextureID());
 			}

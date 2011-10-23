@@ -169,7 +169,7 @@ public class EffectRenderer {
 				design = SpoutItem.getCustomBlockDesign(var5, data);
 			}
 			if (design != null) {
-				customTexture = CustomTextureManager.getTextureFromUrl(design.getTexturePlugin(), design.getTexureURL());
+				customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
 					custom = true;
 				}
@@ -242,7 +242,7 @@ public class EffectRenderer {
 				design = SpoutItem.getCustomBlockDesign(var5, data);
 			}
 			if (design != null) {
-				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTexturePlugin(), design.getTexureURL());
+				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
 					custom = true;
 					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, var4, data, customTexture)).func_4041_a(var1, var2, var3).func_407_b(0.2F).func_405_d(0.6F));

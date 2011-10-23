@@ -350,7 +350,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTexture texture) {
-		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getPlugin(), texture.getUrl());
+		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getAddon().getDescription().getName(), texture.getUrl());
 		if (textureBinding != null) {
 			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
 			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight());

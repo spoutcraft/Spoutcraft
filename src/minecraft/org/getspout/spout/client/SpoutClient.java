@@ -59,6 +59,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
+import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
@@ -119,6 +120,9 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (instance == null) {
 			instance = new SpoutClient();
 			Spoutcraft.setClient(instance);
+			
+			ServerAddon addon = new ServerAddon("Spoutcraft", Spoutcraft.getVersion().toString(), null);
+			instance.addonManager.addFakeAddon(addon);
 		}
 		return instance;
 	}
@@ -296,21 +300,21 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public boolean dispatchCommand(CommandSender sender, String commandLine) {
 		if (commandMap.dispatch(sender, commandLine)) {
-            return true;
-        }
-        sender.sendMessage("Unknown command. Type \"help\" for help.");
+			return true;
+		}
+		sender.sendMessage("Unknown command. Type \"help\" for help.");
 
-        return false;
+		return false;
 	}
 
 	public AddonCommand getAddonCommand(String name) {
 		Command command = commandMap.getCommand(name);
 
-        if (command instanceof AddonCommand) {
-            return (AddonCommand) command;
-        } else {
-            return null;
-        }
+		if (command instanceof AddonCommand) {
+			return (AddonCommand) command;
+		} else {
+			return null;
+		}
 	}
 
 	public AddonManager getAddonManager() {
@@ -374,51 +378,50 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 	
 	public void enableAddons(AddonLoadOrder load) {
-        Addon[] addons = addonManager.getAddons();
+		Addon[] addons = addonManager.getAddons();
 
-        for (Addon addon : addons) {
-            if (!addon.isEnabled() && addon.getDescription().getLoad() == load) {
-                loadAddon(addon);
-            }
-        }
-    }
+		for (Addon addon : addons) {
+			if (!addon.isEnabled() && addon.getDescription().getLoad() == load) {
+				loadAddon(addon);
+			}
+		}
+	}
 	
 	private void loadAddon(Addon addon) {
-        try {
-            addonManager.enableAddon(addon);
-        } catch (Throwable ex) {
-            Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
-        }
-    }
+		try {
+			addonManager.enableAddon(addon);
+		} catch (Throwable ex) {
+			Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
+		}
+	}
 
 
-    public void disableAddons() {
-        addonManager.disableAddons();
-    }
+	public void disableAddons() {
+		addonManager.disableAddons();
+	}
 	
 	public void loadAddons() {
-        addonManager.registerInterface(JavaAddonLoader.class);
+		addonManager.registerInterface(JavaAddonLoader.class);
 
-        File addonDir = new File(addonFolder);
-        if (addonDir.exists()) {
-            Addon[] addons = addonManager.loadAddons(addonDir);
-            for (Addon addon : addons) {
-                try {
-                    addon.onLoad();
-                } catch (Throwable ex) {
-                    Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
-                }
-            }
-        } else {
-            addonDir.mkdir();
-        }
-    }
+		File addonDir = new File(addonFolder);
+		if (addonDir.exists()) {
+			Addon[] addons = addonManager.loadAddons(addonDir);
+			for (Addon addon : addons) {
+				try {
+					addon.onLoad();
+				} catch (Throwable ex) {
+					Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " initializing " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
+				}
+			}
+		} else {
+			addonDir.mkdir();
+		}
+	}
 	
 	public KeyBindingManager getKeyBindingManager() {
 		return bindingManager;
 	}
 
-	@Override
 	public String getAddonFolder() {
 		return addonFolder;
 	}

@@ -10,10 +10,15 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
+import org.spoutcraft.spoutcraftapi.block.design.Quad;
+import org.spoutcraft.spoutcraftapi.block.design.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.Vertex;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
-public class SpoutCustomBlockDesign {
+public class SpoutCustomBlockDesign implements BlockDesign{
 	
 	private boolean reset = false;
 
@@ -26,6 +31,8 @@ public class SpoutCustomBlockDesign {
 
 	private String textureURL;
 	private String texturePlugin;
+	
+	protected Texture texture;
 
 	private float[][] xPos;
 	private float[][] yPos;
@@ -70,20 +77,24 @@ public class SpoutCustomBlockDesign {
 		block.setBlockBounds(lowXBound, lowYBound, lowZBound, highXBound, highYBound, highZBound);
 	}
 	
-	public void setMaxBrightness(float maxBrightness) {
+	public BlockDesign setMaxBrightness(float maxBrightness) {
 		this.maxBrightness = maxBrightness;
+		return this;
 	}
 	
-	public void setMinBrightness(float minBrightness) {
+	public BlockDesign setMinBrightness(float minBrightness) {
 		this.minBrightness = minBrightness;
+		return this;
 	}
 	
-	public void setBrightness(float brightness) {
+	public BlockDesign setBrightness(float brightness) {
 		this.brightness = brightness * maxBrightness + (1 - brightness) * minBrightness;
+		return this;
 	}
 	
-	public void setRenderPass(int renderPass) {
+	public BlockDesign setRenderPass(int renderPass) {
 		this.renderPass = renderPass;
+		return this;
 	}
 	
 	public int getRenderPass() {
@@ -164,7 +175,7 @@ public class SpoutCustomBlockDesign {
 		+ PacketUtil.getDoubleArrayLength(textXPos) + PacketUtil.getDoubleArrayLength(textYPos) + 9 * 4 + (3 + lightSourceXOffset.length + lightSourceXOffset.length + lightSourceXOffset.length) * 4;
 	}
 	
-	public static int getVersion() {
+	public int getVersion() {
 		return 3;
 	}
 
@@ -197,11 +208,11 @@ public class SpoutCustomBlockDesign {
 
 	private final static String resetString = "[reset]";
 	
-	public static void writeReset(DataOutputStream output) {
+	public void writeReset(DataOutputStream output) {
 		PacketUtil.writeString(output, resetString);
 	}
 	
-	public static int getResetNumBytes() {
+	public int getResetNumBytes() {
 		return PacketUtil.getNumBytes(resetString);
 	}
 
@@ -231,21 +242,23 @@ public class SpoutCustomBlockDesign {
 		PacketUtil.writeIntArray(output, lightSourceZOffset);
 	}
 	
-	public void setTexture(String plugin, String textureURL) {
-		this.texturePlugin = plugin;
+	public BlockDesign setTexture(Addon addon, String textureURL) {
+		this.texturePlugin = addon.getDescription().getName();
 		this.textureURL = textureURL;
+		return this;
 	}
 	
-	public void setBoundingBox(float lowX, float lowY, float lowZ, float highX, float highY, float highZ) {
+	public BlockDesign setBoundingBox(float lowX, float lowY, float lowZ, float highX, float highY, float highZ) {
 		this.lowXBound = lowX;
 		this.lowYBound = lowY;
 		this.lowZBound = lowZ;
 		this.highXBound = highX;
 		this.highYBound = highY;
 		this.highZBound = highZ;
+		return this;
 	}
 	
-	public void setQuadNumber(int quads) {
+	public BlockDesign setQuadNumber(int quads) {
 		xPos = new float[quads][];
 		yPos = new float[quads][];
 		zPos = new float[quads][];
@@ -265,9 +278,10 @@ public class SpoutCustomBlockDesign {
 			lightSourceYOffset[i] = 0;
 			lightSourceZOffset[i] = 0;
 		}
+		return this;
 	}
 	
-	public void setQuad(int quadNumber,
+	public BlockDesign setQuad(int quadNumber,
 			float x1, float y1, float z1, int tx1, int ty1,
 			float x2, float y2, float z2, int tx2, int ty2,
 			float x3, float y3, float z3, int tx3, int ty3,
@@ -278,22 +292,23 @@ public class SpoutCustomBlockDesign {
 		setVertex(quadNumber, 1, x2, y2, z2, tx2, ty2, textureSizeX, textureSizeY);
 		setVertex(quadNumber, 2, x3, y3, z3, tx3, ty3, textureSizeX, textureSizeY);
 		setVertex(quadNumber, 3, x4, y4, z4, tx4, ty4, textureSizeX, textureSizeY);
-		
+		return this;
 	}
 	
-	public void setVertex(int quadNumber, int vertexNumber, float x, float y, float z, int tx, int ty, int textureSizeX, int textureSizeY) {
+	public BlockDesign setVertex(int quadNumber, int vertexNumber, float x, float y, float z, int tx, int ty, int textureSizeX, int textureSizeY) {
 		xPos[quadNumber][vertexNumber] = x;
 		yPos[quadNumber][vertexNumber] = y;
 		zPos[quadNumber][vertexNumber] = z;
 		textXPos[quadNumber][vertexNumber] = (float)tx / (float)textureSizeX;
 		textYPos[quadNumber][vertexNumber] = (float)ty / (float)textureSizeY;
+		return this;
 	}
 
 	public String getTexureURL() {
 		return textureURL;
 	}
 
-	public String getTexturePlugin() {
+	public String getTextureAddon() {
 		return texturePlugin;
 	}
 	
@@ -301,10 +316,11 @@ public class SpoutCustomBlockDesign {
 		return reset;
 	}
 	
-	public void setLightSource(int quad, int x, int y, int z) {
+	public BlockDesign setLightSource(int quad, int x, int y, int z) {
 		lightSourceXOffset[quad] = x;
 		lightSourceYOffset[quad] = y;
 		lightSourceZOffset[quad] = z;
+		return this;
 	}
 	
 	public MutableIntegerVector getLightSource(int quad, int x, int y, int z) {
@@ -312,4 +328,20 @@ public class SpoutCustomBlockDesign {
 		return blockVector;
 	}
 
+	public BlockDesign setQuad(Quad quad) {
+		return setVertex(quad.getVertex(0)).setVertex(quad.getVertex(1)).setVertex(quad.getVertex(2)).setVertex(quad.getVertex(3));
+	}
+
+	public BlockDesign setVertex(Vertex vertex) {
+		return setVertex(vertex.getQuadNum(), vertex.getIndex(), vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getTextureX(), vertex.getTextureY(), vertex.getTextureWidth(), vertex.getTextureHeight());
+	}
+
+	public BlockDesign setTexture(Addon addon, Texture texture) {
+		this.texture = texture;
+		return setTexture(addon, texture.getTexture());
+	}
+	
+	public Texture getTexture() {
+		return texture;
+	}
 }

@@ -4,21 +4,22 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.getspout.spout.item.ServerCustomBlock;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketCustomBlockDesign implements SpoutPacket {
 	
 	private Integer blockId;
 	private Integer metaData;
-
+	private String name;
+	private boolean opaque;
 	private SpoutCustomBlockDesign design;
 	
 	public PacketCustomBlockDesign() {
-	}
-	
-	public PacketCustomBlockDesign(Integer blockId, Integer metaData, SpoutCustomBlockDesign design) {
-		this.design = design;
+		
 	}
 	
 	private void setBlockId(Integer blockId) {
@@ -48,13 +49,15 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 	
 	public int getNumBytes() {
-		int designBytes = (design == null) ? SpoutCustomBlockDesign.getResetNumBytes() : design.getNumBytes();
-		return 8 + designBytes;
+		int designBytes = (design == null) ?  (new SpoutCustomBlockDesign().getResetNumBytes()) : design.getNumBytes();
+		return 8 + designBytes + PacketUtil.getNumBytes(name) + 1;
 	}
 	
 	public void readData(DataInputStream input) throws IOException {
 		setBlockId(input.readInt());
 		setMetaData(input.readInt());
+		name = PacketUtil.readString(input);
+		opaque = input.readBoolean();
 		design = new SpoutCustomBlockDesign();
 		design.read(input);
 		if (design.getReset()) {
@@ -65,16 +68,20 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(blockId == null ? -1 : blockId);
 		output.writeInt(metaData == null ? 0 : metaData);
+		PacketUtil.writeString(output, name);
+		output.writeBoolean(opaque);
 		if (design != null) {
 			design.write(output);
 		} else {
-			SpoutCustomBlockDesign.writeReset(output);
+			new SpoutCustomBlockDesign().writeReset(output);
 		}
 	}
 	
 	public void run(int id) {
 		if (blockId != null && blockId >= 0) {
 			SpoutItem.setCustomBlockDesign(design, blockId, metaData);
+			ServerCustomBlock customBlock = new ServerCustomBlock(name, opaque, design, metaData);
+			MaterialData.addCustomBlock(customBlock);
 		}
 	}
 
@@ -89,7 +96,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 
 
 	public int getVersion() {
-		return SpoutCustomBlockDesign.getVersion();
+		return new SpoutCustomBlockDesign().getVersion() + 1;
 	}
 
 }

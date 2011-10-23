@@ -13,8 +13,9 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldRenderer;
 
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutItem extends Item {
@@ -66,7 +67,7 @@ public class SpoutItem extends Item {
 	}
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
-		if (stack.itemID == 1) {
+		if (stack.itemID == MaterialData.flint.getRawId()) {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
 				int blockId = itemBlock.get(damage);
@@ -75,7 +76,7 @@ public class SpoutItem extends Item {
 				}
 				short metaData = (short) itemMetaData.get(damage);
 				if (metaData == 0) {
-					return true;
+					//return true;
 				}
 				boolean result = onBlockItemUse(blockId, metaData, stack, player, world, x, y, z, face);
 				return result;
@@ -123,7 +124,12 @@ public class SpoutItem extends Item {
 			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, metaData)) {
 				Block.blocksList[blockID].onBlockPlaced(var3, var4, var5, var6, var7);
 				Block.blocksList[blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
-				overrideBlock(var4, var5, var6, blockID, (int) metaData);
+				
+				if (var1.itemID == MaterialData.flint.getRawId() && var1.getItemDamage() != 0) {
+					CustomBlock block = MaterialData.getCustomBlock(var1.getItemDamage());
+					overrideBlock(var4, var5, var6, block.getCustomId(),0);
+				}
+				
 				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.stepSoundDir2(),
 						(var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
 				--var1.stackSize;
@@ -139,7 +145,6 @@ public class SpoutItem extends Item {
 		mutableIntVector.setIntX(x);
 		mutableIntVector.setIntY(y);
 		mutableIntVector.setIntZ(z);
-		
 		if (blockId == null || metaData == null) {
 			blockIdOverride.remove(mutableIntVector);
 			blockMetaDataOverride.remove(mutableIntVector);

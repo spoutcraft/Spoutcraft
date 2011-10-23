@@ -1,5 +1,6 @@
 package org.getspout.spout.gui.shortcuts;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
@@ -24,7 +25,7 @@ public class GuiEditCommand extends GuiScreen{
 		title = new GenericLabel("Enter Command");
 		title.setHeight(20).setWidth(200);
 		title.setX(width/2-100).setY(100);
-		getScreen().attachWidget("Spoutcraft", title);
+		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), title);
 		
 		cmd = new GenericTextField();
 		cmd.setHeight(20).setWidth(200);
@@ -34,11 +35,11 @@ public class GuiEditCommand extends GuiScreen{
 		if(item >= 0) {
 			cmd.setText(parent.getShortcut().getCommands().get(item));
 		}
-		getScreen().attachWidget("Spoutcraft", cmd);
+		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), cmd);
 		
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(200).setX(width/2-100).setY(160);
-		getScreen().attachWidget("Spoutcraft", doneButton);
+		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), doneButton);
 	}
 
 	public void drawScreen(int var1, int var2, float var3) {

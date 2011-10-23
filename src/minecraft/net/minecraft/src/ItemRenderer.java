@@ -56,7 +56,7 @@ public class ItemRenderer {
 		}
 		
 		if (blockType != null) {
-			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTexturePlugin(), blockType.getTexureURL());
+			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
 			if (customTextureBinding != null){
 				GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, customTextureBinding.getTextureID());	
 			}
