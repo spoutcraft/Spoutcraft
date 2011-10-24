@@ -1250,9 +1250,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 		}
 		renderersToUpdate = (int)tempRenderersToUpdate; //casting is safe because values are always >= 0
-		if (frameCount % 5 == 0) {
-			renderersToUpdate++; //to keep it above 0
-		}
+		renderersToUpdate = Math.max(1, renderersToUpdate);
 		//If we have had few chunk updates, do more!
 		if (WorldRenderer.chunksUpdated < 3) {
 			renderersToUpdate += 5;
