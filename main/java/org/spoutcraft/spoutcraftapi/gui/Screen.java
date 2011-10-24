@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft API (http://wiki.getspout.org/).
  * 
- * Spoutcraft is free software: you can redistribute it and/or modify
+ * Spoutcraft API is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft is distributed in the hope that it will be useful,
+ * Spoutcraft API is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -19,6 +19,8 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.Set;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+
 public interface Screen extends Widget {
 
 	/**
@@ -28,9 +30,28 @@ public interface Screen extends Widget {
 	 */
 	public Widget[] getAttachedWidgets();
 	
+	/**
+	 * Get's an array of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
+	 * 
+	 * @param recursive whether to get widgets attached to screens attached to this screen.
+	 * @return array of all widgets
+	 */
 	public Widget[] getAttachedWidgets(boolean recursive);
 	
+	/**
+	 * Get's a set of all the attached widgets to this screen. Modifying this array will not affect the screen.
+	 * 
+	 * @return set of all widgets
+	 */
 	public Set<Widget> getAttachedWidgetsAsSet();
+	
+	/**
+	 * Get's a set of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
+	 * 
+	 * @param recursive whether to get widgets attached to screens attached to this screen.
+	 * @return set of all widgets
+	 */
+	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive);
 
 	/**
 	 * Attaches a widget to this screen
@@ -41,7 +62,14 @@ public interface Screen extends Widget {
 	@Deprecated
 	public Screen attachWidget(Widget widget);
 	
-	public Screen attachWidget(String plugin, Widget widget);
+	/**
+	 * Attaches a widget to this screen
+	 * 
+	 * @param widget to attach
+	 * @param Addon that created this widget
+	 * @return screen
+	 */
+	public Screen attachWidget(Addon addon, Widget widget);
 
 	/**
 	 * Removes a widget from this screen
@@ -98,8 +126,16 @@ public interface Screen extends Widget {
 	 */
 	public Screen setBgVisible(boolean enable);
 
+	/**
+	 * Gets the height of the screen
+	 * @return height
+	 */
 	public double getHeight();
 
+	/**
+	 * Gets the width of the screen
+	 * @return width
+	 */
 	public double getWidth();
 
 	/**
@@ -108,13 +144,31 @@ public interface Screen extends Widget {
 	 */
 	public ScreenType getScreenType();
 
+	/**
+	 * Internal use only
+	 * @param mouseX
+	 * @return this screen
+	 */
 	public Screen setMouseX(int mouseX);
 
+	/**
+	 * Internal use only
+	 * @param mouseY
+	 * @return this screen
+	 */
 	public Screen setMouseY(int mouseY);
 
+	/**
+	 * Gets the x coordinate of the mouse on this screen
+	 * @return x coordinate of the mouse
+	 */
 	public int getMouseX();
 
+	/**
+	 * Gets the y coordinate of the mouse on this screen
+	 * @return y coordinate of the mouse
+	 */
 	public int getMouseY();
 
-	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive);
+	
 }

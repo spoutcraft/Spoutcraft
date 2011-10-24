@@ -16,7 +16,10 @@
  */
 package org.spoutcraft.spoutcraftapi.addon;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+
 import java.io.FileDescriptor;
+import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.security.Permission;
 
@@ -44,8 +47,12 @@ class SimpleSecurityManager extends SecurityManager {
 		}
 	}
 
+	public boolean isLocked() {
+		return locked && Thread.currentThread().getName().equals("Minecraft main thread");
+	}
+
 	private void checkAccess() {
-		if (locked) {
+		if (isLocked()) {
 			throw new SecurityException("Access is restricted!");
 		}
 	}
@@ -66,7 +73,7 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAwtEventQueueAccess() {
-		checkAccess();
+		//checkAccess();
 	}
 
 	@Override
@@ -81,12 +88,16 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-		checkAccess();
+		//checkAccess(); // TODO : Commented out so that Addons can load
 	}
 
 	@Override
 	public void checkDelete(String file) {
-		checkAccess();
+	 	if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to delete " + file);
+			}
+		}
 	}
 
 	@Override
@@ -111,7 +122,26 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int which) {
-		checkAccess();
+		if (clazz == null) {
+			throw new NullPointerException("class can't be null");
+		}
+		if (which != Member.PUBLIC && isLocked()) {
+			Class<?> stack[] = getClassContext();
+			/*
+			* stack depth of 4 should be the caller of one of the
+			* methods in java.lang.Class that invoke checkMember
+			* access. The stack should look like:
+			*
+			* someCaller                        [3]
+			* java.lang.Class.someReflectionAPI [2]
+			* java.lang.Class.checkMemberAccess [1]
+			* SecurityManager.checkMemberAccess [0]
+			*
+			*/
+			if ((stack.length<4) || (stack[3].getClassLoader() != clazz.getClassLoader())) {
+				checkAccess();
+			}
+		}
 	}
 
 	@Override
@@ -156,12 +186,20 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(String file) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to read " + file);
+			}
+		}
 	}
 
 	@Override
 	public void checkRead(String file, Object context) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to read " + file);
+			}
+		}
 	}
 
 	@Override
@@ -191,6 +229,10 @@ class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(String file) {
-		checkAccess();
+		if (isLocked()) {
+			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				throw new SecurityException("Access is restricted! Addon tried to write to " + file);
+			}
+		}
 	}
 }

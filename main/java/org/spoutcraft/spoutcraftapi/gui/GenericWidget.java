@@ -21,6 +21,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public abstract class GenericWidget implements Widget {
@@ -35,7 +37,7 @@ public abstract class GenericWidget implements Widget {
 	protected UUID id = UUID.randomUUID();
 	protected String tooltip = "";
 	protected WidgetAnchor anchor = WidgetAnchor.TOP_LEFT;
-	protected String plugin = "Spoutcraft";
+	protected Addon addon = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 	// Client side layout
 	protected Container container = null;
 	protected boolean fixed = false;
@@ -48,7 +50,7 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public int getNumBytes() {
-		return 38 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(plugin);
+		return 38 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
 	}
 
 	public int getVersion() {
@@ -83,7 +85,7 @@ public abstract class GenericWidget implements Widget {
 		long lsb = input.readLong();
 		this.id = new UUID(msb, lsb);
 		setTooltip(PacketUtil.readString(input));
-		setPlugin(PacketUtil.readString(input));
+		setAddon(Spoutcraft.getAddonManager().getAddon(PacketUtil.readString(input)));
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -97,15 +99,16 @@ public abstract class GenericWidget implements Widget {
 		output.writeLong(getId().getMostSignificantBits());
 		output.writeLong(getId().getLeastSignificantBits());
 		PacketUtil.writeString(output, getTooltip());
-		PacketUtil.writeString(output, getPlugin());
+		PacketUtil.writeString(output, getAddon().getDescription().getName());
 	}
 
-	public String getPlugin() {
-		return plugin;
+	public Addon getAddon() {
+		return addon;
 	}
 
-	public Widget setPlugin(String plugin) {
-		this.plugin = plugin;
+	public Widget setAddon(Addon addon) {
+		if (addon != null)
+			this.addon = addon;
 		return this;
 	}
 
@@ -130,13 +133,13 @@ public abstract class GenericWidget implements Widget {
 		return this;
 	}
 	
-	public Widget setScreen(String plugin, Screen screen) {
+	public Widget setScreen(Addon addon, Screen screen) {
 		if (this.screen != null && screen != null && screen != this.screen) {
 			this.screen.removeWidget(this);
 		}
 		this.screen = screen;
-		if (plugin != null) {
-			this.plugin = plugin;
+		if (addon != null) {
+			this.addon = addon;
 		}
 		return this;
 	}

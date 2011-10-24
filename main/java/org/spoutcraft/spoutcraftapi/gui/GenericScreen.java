@@ -26,9 +26,10 @@ import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 public abstract class GenericScreen extends GenericWidget implements Screen {
-	protected HashMap<Widget, String> widgets = new HashMap<Widget, String>();
+	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
@@ -71,7 +72,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return attachWidget(null, widget);
 	}
 	
-	public Screen attachWidget(String plugin, Widget widget) {
+	public Screen attachWidget(Addon plugin, Widget widget) {
 		widgets.put(widget, plugin);
 		//widget.setPlugin(plugin);
 		widget.setDirty(true);
@@ -85,9 +86,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return this;
 	}
 	
-	public Screen removeWidgets(String p) {
+	public Screen removeWidgets(Addon addon) {
 		for (Widget i : getAttachedWidgets()) {
-			if (widgets.get(i) != null && widgets.get(i).equals(p)) {
+			if (widgets.get(i) != null && widgets.get(i).equals(addon)) {
 				removeWidget(i);
 			}
 		}
@@ -113,9 +114,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	
 	public boolean updateWidget(Widget widget) {
 		if (widgets.containsKey(widget)) {
-			String plugin = widgets.get(widget);
+			Addon addon = widgets.get(widget);
 			widgets.remove(widget);
-			widgets.put(widget, plugin);
+			widgets.put(widget, addon);
 			widget.setScreen(this);
 			return true;
 		}

@@ -154,5 +154,4 @@ public class HealthBar extends GenericWidget {
 	public int getVersion() {
 		return super.getVersion() + 1;
 	}
-
 }

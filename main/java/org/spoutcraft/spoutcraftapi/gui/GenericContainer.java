@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+
 public class GenericContainer extends GenericWidget implements Container {
 
 	protected List<Widget> children = new ArrayList<Widget>();
@@ -60,8 +62,8 @@ public class GenericContainer extends GenericWidget implements Container {
 		child.setAnchor(super.getAnchor());
 		// Relayout if we are already using layout - otherwise this will return immediately
 		if (getScreen() != null) {
-			String p = child.getPlugin();
-			getScreen().attachWidget(p, child);
+			Addon addon = child.getAddon();
+			getScreen().attachWidget(addon, child);
 		}
 		updateSize();
 		updateLayout();
@@ -161,7 +163,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setScreen(Screen screen) {
 		for (Widget child : children) {
 			if (screen != null) {
-				screen.attachWidget(getPlugin(), child);
+				screen.attachWidget(getAddon(), child);
 			} else if (this.screen != null) {
 				this.screen.removeWidget(child);
 			}

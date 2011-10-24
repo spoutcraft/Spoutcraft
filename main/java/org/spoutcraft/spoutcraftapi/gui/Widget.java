@@ -21,6 +21,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+
 public interface Widget{
 	
 	/**
@@ -67,14 +69,14 @@ public interface Widget{
 	 * Get's the plugin that attached this widget to the screen, or null if this screen is unattached.
 	 * @return plugin that attached this widget to the screen
 	 */
-	public String getPlugin();
+	public Addon getAddon();
 	
 	/**
 	 * Internal use only. 
 	 * @param plugin
 	 * @return this
 	 */
-	public Widget setPlugin(String plugin);
+	public Widget setAddon(Addon addon);
 	
 	/**
 	 * Marks this widget as needing an update on the client. It will be updated after the next onTick call, and marked as setDirty(false)
@@ -159,7 +161,7 @@ public interface Widget{
 	 * @param plugin this is attached to
 	 * @return widget
 	 */
-	public Widget setScreen(String plugin, Screen screen);
+	public Widget setScreen(Addon addon, Screen screen);
 
 	/**
 	 * Gets the x coordinate of this widget. Widgets (and screens) render from the top left corner the screen. 0,0 represents the top left corner.
