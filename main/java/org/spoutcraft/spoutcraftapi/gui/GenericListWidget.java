@@ -165,6 +165,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	public void clear() {
 		items.clear();
 		cachedTotalHeight = -1;
+		selected = -1;
 	}
 
 }
