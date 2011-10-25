@@ -212,7 +212,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 	
 	public boolean isSpoutEnabled() {
-		return server.getVersion() >= 100;
+		return server.getVersion() >= 0;
 	}
 	
 	public void setSpoutVersion(SpoutVersion version) {
