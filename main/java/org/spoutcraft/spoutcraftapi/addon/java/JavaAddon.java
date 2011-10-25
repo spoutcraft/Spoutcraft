@@ -73,7 +73,7 @@ public abstract class JavaAddon implements Addon {
 		return loader;
 	}
 
-	public boolean isEnabled() {
+	public final boolean isEnabled() {
 		return enabled;
 	}
 	
