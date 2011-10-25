@@ -31,7 +31,6 @@ public class GuiEditShortcut extends GuiScreen {
 	
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
-		slot.drawScreen(var1, var2, var3);
 		super.drawScreen(var1, var2, var3);
 	}
 	
@@ -76,6 +75,7 @@ public class GuiEditShortcut extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, titleText);
 		
 		slot = new GuiCommandsSlot(this);
+		getScreen().attachWidget(spoutcraft, slot);
 		
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
@@ -121,23 +121,24 @@ public class GuiEditShortcut extends GuiScreen {
 				parent.getManager().registerShortcut(item);
 			}
 			mc.displayGuiScreen(parent);
+			parent.slot.updateItems();
 		}
 		if(btn.equals(addButton)){
 			editCommand(-1);
 		}
 		if(btn.equals(editButton)){
-			editCommand(slot.getSelected());
+			editCommand(slot.getSelectedRow());
 		}
 		if(btn.equals(removeButton)){
-			item.removeCommand(slot.getSelected());
-			slot.updateSelected();
+			item.removeCommand(slot.getSelectedRow());
+			slot.updateItems();
 			updateButtons();
 		}
 	}
 	
 	public void updateButtons() {
-		editButton.setEnabled(slot.getSelected() != -1);
-		removeButton.setEnabled(slot.getSelected() != -1);
+		editButton.setEnabled(slot.getSelectedRow() != -1);
+		removeButton.setEnabled(slot.getSelectedRow() != -1);
 	}
 
 	public void editCommand(int i) {

@@ -16,11 +16,12 @@ import net.minecraft.src.GuiControls;
 import net.minecraft.src.GuiScreen;
 
 public class GuiCommandShortcuts extends GuiScreen {
+
 	private GuiControls parentScreen;
 	private Button doneButton;
 	private Button addButton, removeButton, editButton;
 	private Label titleLabel;
-	private GuiShortcutsSlot slot;
+	public GuiShortcutsSlot slot;
 	private SimpleKeyBindingManager manager = (SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager();
 	
 	public GuiCommandShortcuts(GuiControls guiControls) {
@@ -57,21 +58,15 @@ public class GuiCommandShortcuts extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, removeButton);
 
 		slot = new GuiShortcutsSlot(this);
+		getScreen().attachWidget(spoutcraft, slot);
 		
 		updateButtons();	
 	}
 
 	public void updateButtons() {
-		Shortcut item = slot.getSelection();
+		Shortcut item = slot.getSelectedShortcut();
 		editButton.setEnabled(item != null);
 		removeButton.setEnabled(item != null);
-	}
-
-	@Override
-	public void drawScreen(int var1, int var2, float var3) {
-		drawDefaultBackground();
-		slot.drawScreen(var1, var2, var3);
-		super.drawScreen(var1, var2, var3);
 	}
 	
 	@Override
@@ -87,11 +82,11 @@ public class GuiCommandShortcuts extends GuiScreen {
 			editItem(item);
 		}
 		if(btn.equals(editButton)){
-			editItem(slot.getSelection());
+			editItem(slot.getSelectedShortcut());
 		}
 		if(btn.equals(removeButton)){
-			manager.unregisterShortcut(slot.getSelection());
-			slot.updateSelection();
+			manager.unregisterShortcut(slot.getSelectedShortcut());
+			slot.updateItems();
 		}
 	}
 
@@ -102,6 +97,11 @@ public class GuiCommandShortcuts extends GuiScreen {
 
 	public SimpleKeyBindingManager getManager() {
 		return manager;
+	}
+	
+	@Override
+	public void drawScreen(int var1, int var2, float var3) {
+		drawDefaultBackground();
 	}
 	
 }

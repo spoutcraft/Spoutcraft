@@ -2,56 +2,75 @@ package org.getspout.spout.gui.shortcuts;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.controls.Shortcut;
+import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
+import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
+import org.spoutcraft.spoutcraftapi.gui.ListWidget;
+import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiSlot;
 import net.minecraft.src.Tessellator;
 
-public class GuiCommandsSlot extends GuiSlot {
+public class GuiCommandsSlot extends GenericListWidget {
+
+
 
 	GuiEditShortcut parent;
 	Shortcut shortcut;
-	int selection = -1;
 	
 	public GuiCommandsSlot(GuiEditShortcut parent) {
-		super(SpoutClient.getHandle(), parent.width, parent.height, 70, parent.height-40, 14);
+		setWidth(parent.width);
+		setHeight(parent.height - 70 - 40);
+		setX(0).setY(70);
 		this.parent = parent;
 		this.shortcut = parent.getShortcut();
+		updateItems();
 	}
 
-	protected int getSize() {
-		return shortcut.getCommands().size();
+	public void updateItems() {
+		clear();
+		for(String cmd:shortcut.getCommands()) {
+			addItem(new CommandLWI(cmd));
+		}
 	}
-
-	protected void elementClicked(int i, boolean doubleClicked) {
-		selection = i;
-		if(doubleClicked) {
-			parent.editCommand(i);
+	
+	@Override
+	public void onSelected(int item, boolean doubleClick) {
+		if(doubleClick) {
+			parent.editCommand(item);
 		}
 		parent.updateButtons();
 	}
+	
+	private class CommandLWI implements ListWidgetItem {
 
-	protected boolean isSelected(int i) {
-		return i == selection;
-	}
-
-	protected void drawBackground() {
-		parent.drawDefaultBackground();
-	}
-
-	protected void drawSlot(int i, int x, int y, int z, Tessellator t) {
-		String cmd = shortcut.getCommands().get(i);
-		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		parent.drawString(font, cmd, x+2, y+2, 0xffffff);
-	}
-
-	public int getSelected() {
-		return selection;
-	}
-
-	public void updateSelected() {
-		if(getSize()==0) {
-			selection = -1;
+		ListWidget widget;
+		String cmd;
+		public CommandLWI(String cmd) {
+			this.cmd = cmd;
 		}
+		
+		public void setListWidget(ListWidget widget) {
+			this.widget = widget;
+		}
+
+		public ListWidget getListWidget() {
+			return widget;
+		}
+
+		public int getHeight() {
+			return 23;
+		}
+
+		public void render(int x, int y, int width, int height) {
+			FontRenderer font = SpoutClient.getHandle().fontRenderer;
+			parent.drawString(font, cmd, x+2, y+2, 0xffffff);
+			if(cmd.startsWith("/")) {
+				parent.drawString(font, "Command", x+2, y+13, 0xaaaaaa);
+			} else {
+				parent.drawString(font, "Chat Message", x+2, y+13, 0xaaaaaa);
+			}
+		}
+		
 	}
 }
