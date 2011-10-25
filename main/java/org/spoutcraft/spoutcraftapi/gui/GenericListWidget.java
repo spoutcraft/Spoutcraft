@@ -24,7 +24,11 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		if(i == -1) {
 			return null;
 		}
-		return items.get(i);
+		ListWidgetItem items [] = getItems();
+		if(i>=items.length) {
+			return null;
+		}
+		return items[i];
 	}
 
 	public ListWidget addItem(ListWidgetItem item) {
@@ -46,6 +50,10 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 
 	public ListWidgetItem getSelectedItem() {
 		return getItem(selected);
+	}
+	
+	public int getSelectedRow() {
+		return selected;
 	}
 
 	public ListWidget setSelection(int n) {
@@ -73,10 +81,14 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 	
 	private Rectangle getItemRect(int n) {
+		ListWidgetItem item = getItem(n);
 		Rectangle result = new Rectangle(0,0,0,0);
+		if(item == null) {
+			return result;
+		}
 		result.setX(0);
 		result.setY(getItemYOnScreen(n));
-		result.setHeight(items.get(n).getHeight());
+		result.setHeight(getItem(n).getHeight());
 		result.setWidth(getInnerSize(Orientation.VERTICAL));
 		return result;
 	}
@@ -134,6 +146,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 
 	public ListWidget shiftSelection(int n) {
+		lastClickTime = 0;
 		if(selected + n < 0){
 			setSelection(0);
 		} else {
@@ -147,6 +160,11 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 
 	public void onSelected(int item, boolean doubleClick) {
+	}
+
+	public void clear() {
+		items.clear();
+		cachedTotalHeight = -1;
 	}
 
 }
