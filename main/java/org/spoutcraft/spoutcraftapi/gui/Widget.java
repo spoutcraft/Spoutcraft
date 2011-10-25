@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
  * 
- * Spoutcraft API is free software: you can redistribute it and/or modify
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft API is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -77,20 +77,7 @@ public interface Widget{
 	 * @return this
 	 */
 	public Widget setAddon(Addon addon);
-	
-	/**
-	 * Marks this widget as needing an update on the client. It will be updated after the next onTick call, and marked as setDirty(false)
-	 * Every widget is dirty immediately after creation
-	 * @param dirty
-	 */
-	public void setDirty(boolean dirty);
-	
-	/**
-	 * Is true if this widget has been marked dirty
-	 * @return dirty
-	 */
-	public boolean isDirty();
-	
+
 	/**
 	 * Gets the render priority for this widget. Highest priorities render first (in the background), the lowest priorities render on top (in the foreground).
 	 * @return priority.

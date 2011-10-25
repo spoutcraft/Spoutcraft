@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
  * 
- * Spoutcraft API is free software: you can redistribute it and/or modify
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft API is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -31,7 +31,6 @@ public abstract class GenericWidget implements Widget {
 	protected int width = 0;
 	protected int height = 0;
 	protected boolean visible = true;
-	protected transient boolean dirty = true;
 	protected transient Screen screen = null;
 	protected RenderPriority priority = RenderPriority.Normal;
 	protected UUID id = UUID.randomUUID();
@@ -110,14 +109,6 @@ public abstract class GenericWidget implements Widget {
 		if (addon != null)
 			this.addon = addon;
 		return this;
-	}
-
-	public void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
-
-	public boolean isDirty() {
-		return dirty;
 	}
 
 	public UUID getId() {

@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
  * 
- * Spoutcraft is free software: you can redistribute it and/or modify
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -72,10 +72,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		return attachWidget(null, widget);
 	}
 	
-	public Screen attachWidget(Addon plugin, Widget widget) {
-		widgets.put(widget, plugin);
-		//widget.setPlugin(plugin);
-		widget.setDirty(true);
+	public Screen attachWidget(Addon addon, Widget widget) {
+		widgets.put(widget, addon);
+		//widget.setAddon(addon);
 		widget.setScreen(this);
 		return this;
 	}

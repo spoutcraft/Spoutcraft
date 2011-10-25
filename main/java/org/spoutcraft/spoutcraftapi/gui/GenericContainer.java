@@ -1,12 +1,12 @@
 /*
- * This file is part of Spoutcraft API (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
  * 
- * Spoutcraft API is free software: you can redistribute it and/or modify
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft API is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -81,19 +81,6 @@ public class GenericContainer extends GenericWidget implements Container {
 		Widget[] list = new Widget[children.size()];
 		children.toArray(list);
 		return list;
-	}
-
-	@Override
-	public void setDirty(boolean dirty) {
-		super.setDirty(dirty);
-		for (Widget widget : children) {
-			widget.setDirty(dirty);
-		}
-	}
-
-	@Override
-	public boolean isDirty() {
-		return false;
 	}
 
 	@Override
@@ -310,7 +297,7 @@ public class GenericContainer extends GenericWidget implements Container {
 						realwidth = widget.getMinWidth() == 0 ? newwidth - widget.getMarginLeft() - widget.getMarginRight() : widget.getMinWidth();
 					}
 					if (widget.getHeight() != realheight || widget.getWidth() != realwidth) {
-						widget.setHeight(realheight).setWidth(realwidth).setDirty(true);
+						widget.setHeight(realheight).setWidth(realwidth);
 					}
 				}
 				if (type == ContainerType.VERTICAL) {
@@ -342,7 +329,7 @@ public class GenericContainer extends GenericWidget implements Container {
 				int realtop = top + widget.getMarginTop();
 				int realleft = left + widget.getMarginLeft();
 				if (widget.getY() != realtop || widget.getX() != realleft) {
-					widget.setY(realtop).setX(realleft).setDirty(true);
+					widget.setY(realtop).setX(realleft);
 				}
 				if (type == ContainerType.VERTICAL) {
 					top += widget.getHeight() + widget.getMarginTop() + widget.getMarginBottom();
