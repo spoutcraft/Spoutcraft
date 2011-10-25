@@ -29,12 +29,10 @@ public final class ServerAddon extends JavaAddon{
 
 	@Override
 	public void onEnable() {
-		Spoutcraft.getAddonManager().disableAddon(this);
 	}
 
 	@Override
 	public void onDisable() {
-		
 	}
 
 }

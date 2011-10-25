@@ -360,6 +360,7 @@ public class SimpleAddonManager implements AddonManager {
 	
 	public void addFakeAddon(ServerAddon addon) {
 		addons.add(addon);
+		addon.setEnabled(true);
 		lookupNames.put(addon.getDescription().getName(), addon);
 	}
 
