@@ -134,49 +134,6 @@ public class RenderGlobal implements IWorldAccess {
 			ARBOcclusionQuery.glGenQueriesARB(this.glOcclusionQueryBase);
 		}
 
-		this.starGLCallList = GLAllocation.generateDisplayLists(3);
-		GL11.glPushMatrix();
-		GL11.glNewList(this.starGLCallList, 4864 /*GL_COMPILE*/);
-		this.renderStars();
-		GL11.glEndList();
-		GL11.glPopMatrix();
-		Tessellator var4 = Tessellator.instance;
-		this.glSkyList = this.starGLCallList + 1;
-		GL11.glNewList(this.glSkyList, 4864 /*GL_COMPILE*/);
-		byte var6 = 64;
-		int var7 = 256 / var6 + 2;
-		float var5 = 16.0F;
-
-		int var8;
-		int var9;
-		for(var8 = -var6 * var7; var8 <= var6 * var7; var8 += var6) {
-			for(var9 = -var6 * var7; var9 <= var6 * var7; var9 += var6) {
-				var4.startDrawingQuads();
-				var4.addVertex((double)(var8 + 0), (double)var5, (double)(var9 + 0));
-				var4.addVertex((double)(var8 + var6), (double)var5, (double)(var9 + 0));
-				var4.addVertex((double)(var8 + var6), (double)var5, (double)(var9 + var6));
-				var4.addVertex((double)(var8 + 0), (double)var5, (double)(var9 + var6));
-				var4.draw();
-			}
-		}
-
-		GL11.glEndList();
-		this.glSkyList2 = this.starGLCallList + 2;
-		GL11.glNewList(this.glSkyList2, 4864 /*GL_COMPILE*/);
-		var5 = -16.0F;
-		var4.startDrawingQuads();
-
-		for(var8 = -var6 * var7; var8 <= var6 * var7; var8 += var6) {
-			for(var9 = -var6 * var7; var9 <= var6 * var7; var9 += var6) {
-				var4.addVertex((double)(var8 + var6), (double)var5, (double)(var9 + 0));
-				var4.addVertex((double)(var8 + 0), (double)var5, (double)(var9 + 0));
-				var4.addVertex((double)(var8 + 0), (double)var5, (double)(var9 + var6));
-				var4.addVertex((double)(var8 + var6), (double)var5, (double)(var9 + var6));
-			}
-		}
-
-		var4.draw();
-		GL11.glEndList();
 		//Spout Start
 		refreshStars();
 		//Spout End
@@ -190,10 +147,9 @@ public class RenderGlobal implements IWorldAccess {
 		this.renderStars();
 		GL11.glEndList();
 		GL11.glPopMatrix();
+		Tessellator var4 = Tessellator.instance;
 		this.glSkyList = this.starGLCallList + 1;
 		GL11.glNewList(this.glSkyList, 4864 /*GL_COMPILE*/);
-		
-		Tessellator var4 = Tessellator.instance;
 		byte var6 = 64;
 		int var7 = 256 / var6 + 2;
 		float var5 = 16.0F;
@@ -1250,7 +1206,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 		}
 		renderersToUpdate = (int)tempRenderersToUpdate; //casting is safe because values are always >= 0
-		if (frameCount % 3 == 0)
+		if (frameCount % 5 == 0)
 			renderersToUpdate = Math.max(1, renderersToUpdate);
 		//If we have had few chunk updates, do more!
 		if (WorldRenderer.chunksUpdated < 3) {
@@ -1259,6 +1215,8 @@ public class RenderGlobal implements IWorldAccess {
 		else if (WorldRenderer.chunksUpdated < 5) {
 			renderersToUpdate += 3;
 		}
+		immediatelyUpdateBlocks(MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ), 
+				MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ));
 		renderersToUpdateLastTick = renderersToUpdate;
 		if (renderersToUpdate <= 0) {
 			return this.worldRenderersToUpdate.size() == 0;
@@ -1543,6 +1501,47 @@ public class RenderGlobal implements IWorldAccess {
 		var2.addVertex(var1.minX, var1.maxY, var1.maxZ);
 		var2.draw();
 	}
+	
+	//Spout start
+	public void immediatelyUpdateBlocks(int var1, int var2, int var3, int var4, int var5, int var6) {
+		int var7 = MathHelper.bucketInt(var1, 16);
+		int var8 = MathHelper.bucketInt(var2, 16);
+		int var9 = MathHelper.bucketInt(var3, 16);
+		int var10 = MathHelper.bucketInt(var4, 16);
+		int var11 = MathHelper.bucketInt(var5, 16);
+		int var12 = MathHelper.bucketInt(var6, 16);
+
+		for(int var13 = var7; var13 <= var10; ++var13) {
+			int var14 = var13 % this.renderChunksWide;
+			if(var14 < 0) {
+				var14 += this.renderChunksWide;
+			}
+
+			for(int var15 = var8; var15 <= var11; ++var15) {
+				int var16 = var15 % this.renderChunksTall;
+				if(var16 < 0) {
+					var16 += this.renderChunksTall;
+				}
+
+				for(int var17 = var9; var17 <= var12; ++var17) {
+					int var18 = var17 % this.renderChunksDeep;
+					if(var18 < 0) {
+						var18 += this.renderChunksDeep;
+					}
+
+					int var19 = (var18 * this.renderChunksTall + var16) * this.renderChunksWide + var14;
+					WorldRenderer var20 = this.worldRenderers[var19];
+					if(var20.needsUpdate) {
+						var20.updateRenderer();
+						worldRenderersToUpdate.remove(var20);
+						var20.needsUpdate = false;
+					}
+				}
+			}
+		}
+
+	}
+	//Spout end
 
 	public void markBlocksForUpdate(int var1, int var2, int var3, int var4, int var5, int var6) {
 		int var7 = MathHelper.bucketInt(var1, 16);
