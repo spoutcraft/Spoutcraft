@@ -80,7 +80,7 @@ import org.spoutcraft.spoutcraftapi.util.Location;
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static Thread dataMiningThread = new DataMiningThread();
-	private static final SpoutVersion clientVersion = new SpoutVersion(1, 0, 6, 0);
+	private static final SpoutVersion clientVersion = new SpoutVersion(0);
 	private SpoutVersion server = new SpoutVersion();
 	private SimpleItemManager itemManager = new SimpleItemManager();
 	private SimpleSkyManager skyManager = new SimpleSkyManager();

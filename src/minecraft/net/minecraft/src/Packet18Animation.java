@@ -42,7 +42,7 @@ public class Packet18Animation extends Packet {
 	public void processPacket(NetHandler var1) {
 		//Spout Start
 		if (entityId == -42) {
-			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(1, 0, 6, 0));
+			SpoutClient.getInstance().setSpoutVersion(new SpoutVersion(0));
 			((NetClientHandler)var1).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(SpoutClient.getClientVersion().toString()));
