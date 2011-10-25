@@ -42,7 +42,7 @@ public class GuiShortcutsSlot extends GuiSlot {
 	protected void drawSlot(int i, int x, int y, int z, Tessellator tesselator) {
 		Shortcut item = getItem(i);
 		String title = item.getTitle();
-		String key = "Key: "+Keyboard.getKeyName(item.getKey());
+		String key = "Shortcut: "+item.toString();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		parent.drawString(font, title, x+2, y+1, 16777215);
 		parent.drawString(font, key, x+2, y+12, 8421504);

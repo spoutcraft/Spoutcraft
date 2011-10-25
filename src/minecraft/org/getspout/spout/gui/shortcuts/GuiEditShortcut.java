@@ -1,6 +1,7 @@
 package org.getspout.spout.gui.shortcuts;
 
 import org.getspout.spout.controls.Shortcut;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -35,8 +36,10 @@ public class GuiEditShortcut extends GuiScreen {
 	}
 	
 	protected void keyTyped(char c, int i) {
-		if(recording) {
+		if(recording && !SimpleKeyBindingManager.isModifierKey(i)) {
 			item.setKey(i);
+			item.setRawModifiers((byte)0);
+			SimpleKeyBindingManager.setModifiersToShortcut(item);
 			recording = false;
 			updateRecordButton();
 		} else {
@@ -100,7 +103,7 @@ public class GuiEditShortcut extends GuiScreen {
 	private void updateRecordButton() {
 		String keyname = recording?"Press a key!":"Click Here!";
 		if(item.getKey()>=0 && !recording){
-			keyname = Keyboard.getKeyName(item.getKey());
+			keyname = item.toString();
 		}
 		String name = (recording?"> ":"")+keyname+(recording?" <":"");
 		recordButton.setText(name);
