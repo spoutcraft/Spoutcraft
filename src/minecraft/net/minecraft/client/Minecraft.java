@@ -749,6 +749,20 @@ public abstract class Minecraft implements Runnable {
 					this.displayGuiScreen(new GuiErrorScreen());
 					System.gc();
 				}
+				//Spout start
+				catch (Throwable t) {
+					//try to handle errors gracefuly
+					try {
+						this.theWorld = null;
+						this.changeWorld1((World)null);
+						this.displayGuiScreen(new org.getspout.spout.gui.error.GuiUnexpectedError());
+						
+						t.printStackTrace();
+					}
+					catch (Throwable failed) {
+						throw new RuntimeException(t);
+					}
+				}
 			}
 		} catch (MinecraftError var20) {
 			;

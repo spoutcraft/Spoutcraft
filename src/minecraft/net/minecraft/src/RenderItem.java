@@ -71,7 +71,14 @@ public class RenderItem extends Render {
 		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
-			renderer.bindTexture(CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL()).getTextureID());
+			Texture texture = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
+			if (texture != null) {
+				renderer.bindTexture(texture.getTextureID());
+			}
+			else {
+				this.loadTexture("/terrain.png");
+				System.out.println("No texture for " + blockType.getTextureAddon() + ", " + blockType.getTexureURL() + " was found!");
+			}
 		} else if (customTexture != null && CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture) != null) {
 			bCustomTexture = true;
 			RenderEngine renderer = this.renderManager.renderEngine;
