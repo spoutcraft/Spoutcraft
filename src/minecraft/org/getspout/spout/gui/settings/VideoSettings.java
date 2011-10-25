@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import net.minecraft.src.GuiScreen;
+
+import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -284,6 +286,28 @@ public class VideoSettings extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 		
 		top += 22;
+		
+		top += 5;
+		
+		label = new GenericLabel(ChatColor.RED + "Danger Area");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		label.setTextColor(grey);
+		screen.attachWidget(spoutcraft, label);
+		top += 11;
+		
+		linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
+		
+		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		//RIGHT CONTROL HERE!
 	}
 
 	@Override
