@@ -26,15 +26,10 @@ public final class ServerAddon extends JavaAddon{
 	public ServerAddon(String name, String version, String main) {
 		initialize(null, Spoutcraft.getClient(), new AddonDescriptionFile(name, version, main), new File(Spoutcraft.getClient().getAddonFolder(), name), null, null);
 	}
-	
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
 
 	@Override
 	public void onEnable() {
-		
+		Spoutcraft.getAddonManager().disableAddon(this);
 	}
 
 	@Override
