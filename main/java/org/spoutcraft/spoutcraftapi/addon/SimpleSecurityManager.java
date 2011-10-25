@@ -23,7 +23,7 @@ import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.security.Permission;
 
-class SimpleSecurityManager extends SecurityManager {
+public class SimpleSecurityManager extends SecurityManager {
 	private final double key;
 	private boolean locked = false;
 

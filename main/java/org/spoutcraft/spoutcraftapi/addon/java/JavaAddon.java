@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.addon.java;
 import java.io.File;
 
 import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.UnsafeMethod;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
@@ -36,12 +37,18 @@ public abstract class JavaAddon implements Addon {
 	private boolean enabled = false;
 	private AddonDescriptionFile description = null;
 	private boolean naggable = false;
+	
+	@UnsafeMethod
+	public JavaAddon(){
+		
+	}
 
-	public AddonDescriptionFile getDescription() {
+	public final AddonDescriptionFile getDescription() {
 		return description;
 	}
 
-	public void initialize(JavaAddonLoader loader, Client client, AddonDescriptionFile description, File dataFolder, File file, AddonClassLoader classLoader) {
+	
+	public final void initialize(JavaAddonLoader loader, Client client, AddonDescriptionFile description, File dataFolder, File file, AddonClassLoader classLoader) {
 		if (!initialized) {
 			this.loader = loader;
 			this.client = client;
@@ -53,23 +60,25 @@ public abstract class JavaAddon implements Addon {
 		}
 	}
 
+	@UnsafeMethod
 	public abstract void onEnable();
 
+	@UnsafeMethod
 	public abstract void onDisable();
 
-	public File getFile() {
+	public final File getFile() {
 		return file;
 	}
 
-	public File getDataFolder() {
+	public final File getDataFolder() {
 		return dataFolder;
 	}
 
-	public Client getClient() {
+	public final Client getClient() {
 		return client;
 	}
 
-	public AddonLoader getAddonLoader() {
+	public final AddonLoader getAddonLoader() {
 		return loader;
 	}
 
@@ -77,9 +86,11 @@ public abstract class JavaAddon implements Addon {
 		return enabled;
 	}
 	
+	@UnsafeMethod
 	public void onLoad() {
 	}
 
+	@UnsafeMethod
 	public void setEnabled(boolean arg) {
 		if (this.enabled != arg) {
 			this.enabled = arg;
@@ -99,10 +110,11 @@ public abstract class JavaAddon implements Addon {
 		this.naggable = naggable;
 	}
 
-	public AddonClassLoader getClassLoader() {
+	public final AddonClassLoader getClassLoader() {
 		return classLoader;
 	}
 
+	@UnsafeMethod
 	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
 		return false;
 	}

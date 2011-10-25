@@ -33,25 +33,31 @@ import java.util.regex.Pattern;
 
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeMethod;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
 import org.spoutcraft.spoutcraftapi.addon.InvalidAddonException;
 import org.spoutcraft.spoutcraftapi.addon.InvalidDescriptionException;
+import org.spoutcraft.spoutcraftapi.addon.SimpleSecurityManager;
 import org.spoutcraft.spoutcraftapi.addon.UnknownDependencyException;
 import org.spoutcraft.spoutcraftapi.addon.UnknownSoftDependencyException;
 import org.spoutcraft.spoutcraftapi.event.addon.AddonDisableEvent;
 import org.spoutcraft.spoutcraftapi.event.addon.AddonEnableEvent;
 import org.yaml.snakeyaml.error.YAMLException;
 
-public class JavaAddonLoader implements AddonLoader {
+public final class JavaAddonLoader implements AddonLoader {
 	private final Client client;
 	private final Pattern[] fileFilters = new Pattern[] { Pattern.compile("\\.jar$"), };
 	private final Map<String, Class<?>> classes = new HashMap<String, Class<?>>();
 	private final Map<String, AddonClassLoader> loaders = new HashMap<String, AddonClassLoader>();
+	private final SimpleSecurityManager manager;
+	private final double key;
 
-	public JavaAddonLoader(Client instance) {
+	public JavaAddonLoader(Client instance, SimpleSecurityManager manager, double key) {
 		client = instance;
+		this.manager = manager;
+		this.key = key;
 	}
 
 	public Addon loadAddon(File file) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
@@ -161,11 +167,13 @@ public class JavaAddonLoader implements AddonLoader {
 			Class<?> jarClass = Class.forName(description.getMain(), true, loader);
 			Class<? extends JavaAddon> addon = jarClass.asSubclass(JavaAddon.class);
 
+			manager.lock(key);
 			Constructor<? extends JavaAddon> constructor = addon.getConstructor();
 
 			result = constructor.newInstance();
 
 			result.initialize(this, client, description, dataFolder, file, loader);
+			manager.unlock(key);
 		} catch (Throwable ex) {
 			throw new InvalidAddonException(ex);
 		}
@@ -226,6 +234,7 @@ public class JavaAddonLoader implements AddonLoader {
 		}
 	}
 
+	@UnsafeMethod
 	public void enableAddon(final Addon addon) {
 		if (!(addon instanceof JavaAddon)) {
 			throw new IllegalArgumentException("Addon is not associated with this AddonLoader");
@@ -252,6 +261,7 @@ public class JavaAddonLoader implements AddonLoader {
 		}
 	}
 
+	@UnsafeMethod
 	public void disableAddon(Addon addon) {
 		if (!(addon instanceof JavaAddon)) {
 			throw new IllegalArgumentException("Addon is not associated with this AddonLoader");

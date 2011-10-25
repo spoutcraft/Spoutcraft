@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.util.FileUtil;
 import org.spoutcraft.spoutcraftapi.Client;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
@@ -68,6 +68,9 @@ public class SimpleAddonManager implements AddonManager {
 	 * @throws IllegalArgumentException Thrown when the given Class is not a valid AddonLoader
 	 */
 	public void registerInterface(Class<? extends AddonLoader> loader) throws IllegalArgumentException {
+		if (!loader.equals(JavaAddonLoader.class)){
+			throw new UnsupportedOperationException("Spoutcraft does not currently support non-standard addon loaders. :(");
+		}
 		AddonLoader instance;
 
 		if (AddonLoader.class.isAssignableFrom(loader)) {
