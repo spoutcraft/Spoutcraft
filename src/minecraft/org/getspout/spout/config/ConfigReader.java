@@ -133,8 +133,7 @@ public class ConfigReader {
 		return defaultValue;
 	}
 	
-	@SuppressWarnings("unused")
-	private static void restoreDefaults() {
+	public static void restoreDefaults() {
 		clipboardAccess = false;
 		advancedOpenGL = 0;
 		anaglyph3D = false;
