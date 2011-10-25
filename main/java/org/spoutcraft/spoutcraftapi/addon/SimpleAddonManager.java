@@ -77,7 +77,7 @@ public class SimpleAddonManager implements AddonManager {
 			Constructor<? extends AddonLoader> constructor;
 
 			try {
-				constructor = loader.getConstructor(Client.class);
+				constructor = loader.getConstructor(Client.class, SimpleSecurityManager.class, double.class);
 				instance = constructor.newInstance(client, securityManager, superSecretSecurityKey);
 			} catch (NoSuchMethodException ex) {
 				String className = loader.getName();
