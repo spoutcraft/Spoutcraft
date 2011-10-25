@@ -472,6 +472,12 @@ public class GuiScreen extends Gui {
 							lw.shiftSelection(-1);
 							break;
 						}
+						if(Keyboard.getEventKey() == Keyboard.KEY_RETURN && Keyboard.getEventKeyState()) {
+							handled = true;
+							if(lw.getSelectedRow() != -1) {
+								lw.onSelected(lw.getSelectedRow(), true);
+							}
+						}
 					}
 				}
 			}
