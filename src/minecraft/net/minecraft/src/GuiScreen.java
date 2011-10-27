@@ -50,6 +50,7 @@ public class GuiScreen extends Gui {
 	public static int TOOLTIP_DELAY = 500;
 	long renderEndNanoTime = 0L;
 	protected static int limitedFramerate = 120;
+	private long lastClick = 0;
 	
 	
 	public Player getPlayer() {
@@ -200,7 +201,21 @@ public class GuiScreen extends Gui {
 		for(ListWidgetItem item:lw.getItems()) {
 			
 			if(currentHeight <= y && y <= currentHeight + item.getHeight()) {
+				boolean doubleclick = false;
+				if(System.currentTimeMillis() - 200 < lastClick) {
+					doubleclick = true;
+				}
 				lw.setSelection(n);
+				PacketControlAction action = null;
+				if(!doubleclick) {
+					action = new PacketControlAction(lw.getScreen(), lw, "click", lw.getSelectedRow());
+				} else {
+					action = new PacketControlAction(lw.getScreen(), lw, "doubleclick", lw.getSelectedRow());
+				}
+				lw.onSelected(lw.getSelectedRow(), doubleclick);
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
+				
+				lastClick = System.currentTimeMillis();
 				return true;
 			}
 			n++;
@@ -393,6 +408,8 @@ public class GuiScreen extends Gui {
 						} else {
 							lw.scroll(-scroll / 30, 0);
 						}
+						PacketControlAction action = new PacketControlAction(lw.getScreen(), lw, axis.toString(), lw.getScrollPosition(axis));
+						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
 					}
 				}
 			}
@@ -462,21 +479,27 @@ public class GuiScreen extends Gui {
 				if (widget instanceof ListWidget) {
 					ListWidget lw = (ListWidget)widget;
 					if(lw.isEnabled() && lw.isFocus()) {
+						PacketControlAction action = null;
 						if(Keyboard.getEventKey() == Keyboard.KEY_DOWN && Keyboard.getEventKeyState()) {
 							handled = true;
 							lw.shiftSelection(1);
-							break;
+							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
 							handled = true;
 							lw.shiftSelection(-1);
-							break;
+							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_RETURN && Keyboard.getEventKeyState()) {
 							handled = true;
 							if(lw.getSelectedRow() != -1) {
 								lw.onSelected(lw.getSelectedRow(), true);
+								action = new PacketControlAction(lw.getScreen(), lw, "doubleclick", lw.getSelectedRow());
 							}
+						}
+						if(action != null) {
+							SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
+							break;
 						}
 					}
 				}

@@ -611,7 +611,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		x*= scaleFactor; y*=scaleFactor;
 		screenWidth *= scaleFactor;
 		screenHeight *= scaleFactor;
-		x = screenWidth - x;
+		x = x - width;
 		y = screenHeight - y;
 		GL11.glScissor((int)x, (int)y, (int)width, (int)height);
 	}
@@ -667,7 +667,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslated(0,  5, 0);
 		int currentHeight = 0;
 		for(ListWidgetItem item:lw.getItems()) {
-			
 			//Only render visible items
 			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
 				
