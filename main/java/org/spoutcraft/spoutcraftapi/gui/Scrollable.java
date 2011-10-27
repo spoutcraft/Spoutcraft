@@ -2,6 +2,11 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 public interface Scrollable extends Control {
 	/**
+	 * Renders the contents of the Scrollable.
+	 * The viewport is already transformed and a matrix is pushed.
+	 */
+	public void renderContents();
+	/**
 	 * Gets the inner size for given axis, in pixels.
 	 * @param axis of the size vector
 	 * @return the size of the viewport on given axis
@@ -62,13 +67,6 @@ public interface Scrollable extends Control {
 	 * @return the scrollbar policy for the given axis
 	 */
 	public ScrollBarPolicy getScrollBarPolicy(Orientation axis);
-	
-	/**
-	 * Renders the contents of the scrollarea.
-	 * Note that the viewport is already moved into place by glTransform(scrollX, scrollY, 0) so you don't need to map the coordinates for the contents to the scroll values.
-	 * Also, there will be a glScissor call before this, and GL_SCISSOR is enabled to prevent drawing stuff outside the widget (i.e. if the first element isn't visible, but you draw it nonetheless)
-	 */
-	public void renderContents();
 	
 	/**
 	 * Gets the size of the rectangle inside the scrollable. This is usually getWidth/Height() - 16 when the corresponding scrollbar is visible.

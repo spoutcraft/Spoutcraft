@@ -1,5 +1,9 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public abstract class GenericScrollable extends GenericControl implements Scrollable {
@@ -173,5 +177,32 @@ public abstract class GenericScrollable extends GenericControl implements Scroll
 		default: 
 			return 0;
 		}
+	}
+	
+	@Override
+	public int getNumBytes() {
+		return super.getNumBytes() + 6*4;
+	}
+	
+	@Override
+	public void readData(DataInputStream input) throws IOException {
+		super.readData(input);
+		sbpHoriz = ScrollBarPolicy.getById(input.readInt());
+		sbpVert = ScrollBarPolicy.getById(input.readInt());
+		scrollX = input.readInt();
+		scrollY = input.readInt();
+		innerSizeHoriz = input.readInt();
+		innerSizeVert = input.readInt();
+	}
+
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(sbpHoriz.getId());
+		output.writeInt(sbpVert.getId());
+		output.writeInt(scrollX);
+		output.writeInt(scrollY);
+		output.writeInt(innerSizeHoriz);
+		output.writeInt(innerSizeVert);
 	}
 }

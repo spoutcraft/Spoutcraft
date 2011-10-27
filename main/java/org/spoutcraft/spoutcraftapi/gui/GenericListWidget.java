@@ -1,15 +1,18 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;
 	private int cachedTotalHeight = -1;
-	private long lastClickTime = -1;
 
 	public WidgetType getType() {
 		return WidgetType.ListWidget;
@@ -57,14 +60,6 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 
 	public ListWidget setSelection(int n) {
-		long currentTime = System.currentTimeMillis();
-		boolean doubleClick = false;
-		if(currentTime - lastClickTime < 200) {
-			doubleClick = true;
-			lastClickTime = -1;
-		} else {
-			lastClickTime = currentTime;
-		}
 		selected = n;
 		if(selected < -1) {
 			selected = -1;
@@ -72,8 +67,6 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		if(selected > items.size()-1) {
 			selected = items.size()-1;
 		}
-		
-		onSelected(selected, doubleClick);
 		
 		//Check if selection is visible
 		ensureVisible(getItemRect(selected));
@@ -146,7 +139,6 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	}
 
 	public ListWidget shiftSelection(int n) {
-		lastClickTime = 0;
 		if(selected + n < 0){
 			setSelection(0);
 		} else {
@@ -167,5 +159,33 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		cachedTotalHeight = -1;
 		selected = -1;
 	}
+	
+	@Override
+	public int getNumBytes() {
+		return super.getNumBytes() + 4 + 4;
+	}
+
+	@Override
+	public void readData(DataInputStream input) throws IOException {
+		super.readData(input);
+		setInnerSize(Orientation.HORIZONTAL, 0);
+		setInnerSize(Orientation.VERTICAL, 0);
+		clear();
+		selected = input.readInt();
+		int count = input.readInt();
+		for(int i = 0; i < count; i++) {
+			GenericListWidgetItem item = new GenericListWidgetItem(PacketUtil.readString(input), PacketUtil.readString(input), "");
+			addItem(item);
+		}
+	}
+
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(selected); // Write which item is selected.
+		output.writeInt(0); // Write number of items first!
+		//Don't transmit clientside items because of the interface ListWidgetItem
+	}
+	
 
 }
