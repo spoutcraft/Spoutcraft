@@ -45,7 +45,6 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 		chunkX = input.readInt();
 		chunkZ = input.readInt();
 		int size = input.readInt();
-		System.out.println("Reading Custom Multiblock Packet, Chunk: (" + chunkX + ", " + chunkZ + "). Size: " + size);
 		data = new byte[size];
 		input.readFully(data);
 	}
