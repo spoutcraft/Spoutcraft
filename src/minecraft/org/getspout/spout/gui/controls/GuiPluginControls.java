@@ -3,7 +3,9 @@ package org.getspout.spout.gui.controls;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
@@ -17,6 +19,7 @@ public class GuiPluginControls extends GuiScreen {
 	Label description;
 	Label title;
 	PluginControlsList list;
+	CheckBox box;
 	
 	public GuiPluginControls(GuiControls parent) {
 		super();
@@ -42,6 +45,11 @@ public class GuiPluginControls extends GuiScreen {
 		list.setX(0).setY(32).setWidth(width).setHeight(height - 32 - 40);
 		getScreen().attachWidget(spoutcraft, list);
 		
+		box = new GenericCheckBox("Only current server");
+		box.setWidth(150).setHeight(20);
+		box.setX(width - 160).setY(list.getY() - 20);
+		getScreen().attachWidget(spoutcraft, box);
+		
 		if (list.manager.getAllBindings().size() == 0) {
 			description.setText("You don't have any plugin keybindings. Plugin Keybindings are\nregistered by plugins and you can edit the key which summons them.\nIf you want Shortcuts, go back and select \"Shortcuts\".");
 		}
@@ -56,6 +64,10 @@ public class GuiPluginControls extends GuiScreen {
 	protected void buttonClicked(Button btn) {
 		if(btn.equals(closeButton)){
 			mc.displayGuiScreen(parentScreen);
+		}
+		if(btn.equals(box)) {
+			list.setFilered(box.isChecked());
+			list.updateBindings();
 		}
 	}
 }
