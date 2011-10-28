@@ -22,23 +22,32 @@ public class GuiEditCommand extends GuiScreen{
 	}
 	
 	public void initGui() {
-		title = new GenericLabel("Enter Command");
+		title = new GenericLabel("Enter Command / Chat message\nFor commands, use a '/'. If you omit the slash, it'll be sent as a chat message instead.");
 		title.setHeight(20).setWidth(200);
-		title.setX(width/2-100).setY(100);
+		title.setX(10).setY(10);
 		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), title);
 		
-		cmd = new GenericTextField();
-		cmd.setHeight(20).setWidth(200);
-		cmd.setMaximumCharacters(Integer.MAX_VALUE);
-		cmd.setX(width/2-100).setY(130);
-		cmd.setFocus(true);
+		String text = "";
 		if(item >= 0) {
-			cmd.setText(parent.getShortcut().getCommands().get(item));
+			text = parent.getShortcut().getCommands().get(item);
 		}
+		if(cmd != null) {
+			text = cmd.getText();
+		}
+		
+		cmd = new GenericTextField();
+		cmd.setX(10).setY(40);
+		cmd.setWidth(width - 20);
+		cmd.setHeight(height - 80);
+		cmd.setFocus(true);
+		cmd.setText(text);
+		cmd.setMaximumCharacters(0);
+		cmd.setMaximumLines(0);
+		
 		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), cmd);
 		
 		doneButton = new GenericButton("Done");
-		doneButton.setHeight(20).setWidth(200).setX(width/2-100).setY(160);
+		doneButton.setHeight(20).setWidth(200).setX(width/2 - 100).setY(height - 30);
 		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), doneButton);
 	}
 
@@ -49,11 +58,13 @@ public class GuiEditCommand extends GuiScreen{
 	protected void buttonClicked(Button btn) {
 		if(btn.equals(doneButton)) {
 			String command = cmd.getText(); 
-			if(item == -1) {
-				parent.getShortcut().addCommand(command);
-			} else {
-				parent.getShortcut().getCommands().remove(item);
-				parent.getShortcut().getCommands().add(item, command);
+			if(!command.trim().isEmpty()) {
+				if(item == -1) {
+					parent.getShortcut().addCommand(command);
+				} else {
+					parent.getShortcut().getCommands().remove(item);
+					parent.getShortcut().getCommands().add(item, command);
+				}
 			}
 			mc.displayGuiScreen(parent);
 		}

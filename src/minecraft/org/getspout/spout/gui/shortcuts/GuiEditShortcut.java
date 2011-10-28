@@ -1,6 +1,7 @@
 package org.getspout.spout.gui.shortcuts;
 
 import org.getspout.spout.controls.Shortcut;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -30,13 +31,14 @@ public class GuiEditShortcut extends GuiScreen {
 	
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
-		slot.drawScreen(var1, var2, var3);
 		super.drawScreen(var1, var2, var3);
 	}
 	
 	protected void keyTyped(char c, int i) {
-		if(recording) {
+		if(recording && !SimpleKeyBindingManager.isModifierKey(i)) {
 			item.setKey(i);
+			item.setRawModifiers((byte)0);
+			SimpleKeyBindingManager.setModifiersToShortcut(item);
 			recording = false;
 			updateRecordButton();
 		} else {
@@ -73,6 +75,7 @@ public class GuiEditShortcut extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, titleText);
 		
 		slot = new GuiCommandsSlot(this);
+		getScreen().attachWidget(spoutcraft, slot);
 		
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
@@ -100,7 +103,7 @@ public class GuiEditShortcut extends GuiScreen {
 	private void updateRecordButton() {
 		String keyname = recording?"Press a key!":"Click Here!";
 		if(item.getKey()>=0 && !recording){
-			keyname = Keyboard.getKeyName(item.getKey());
+			keyname = item.toString();
 		}
 		String name = (recording?"> ":"")+keyname+(recording?" <":"");
 		recordButton.setText(name);
@@ -118,23 +121,24 @@ public class GuiEditShortcut extends GuiScreen {
 				parent.getManager().registerShortcut(item);
 			}
 			mc.displayGuiScreen(parent);
+			parent.slot.updateItems();
 		}
 		if(btn.equals(addButton)){
 			editCommand(-1);
 		}
 		if(btn.equals(editButton)){
-			editCommand(slot.getSelected());
+			editCommand(slot.getSelectedRow());
 		}
 		if(btn.equals(removeButton)){
-			item.removeCommand(slot.getSelected());
-			slot.updateSelected();
+			item.removeCommand(slot.getSelectedRow());
+			slot.updateItems();
 			updateButtons();
 		}
 	}
 	
 	public void updateButtons() {
-		editButton.setEnabled(slot.getSelected() != -1);
-		removeButton.setEnabled(slot.getSelected() != -1);
+		editButton.setEnabled(slot.getSelectedRow() != -1);
+		removeButton.setEnabled(slot.getSelectedRow() != -1);
 	}
 
 	public void editCommand(int i) {

@@ -38,13 +38,13 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	
 
 	public int getNumBytes() {
-		return 10 + data.length;
+		return 12 + data.length;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
 		chunkX = input.readInt();
 		chunkZ = input.readInt();
-		int size = input.readShort();
+		int size = input.readInt();
 		data = new byte[size];
 		input.readFully(data);
 	}
@@ -52,7 +52,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(chunkX);
 		output.writeInt(chunkZ);
-		output.writeShort(data.length);
+		output.writeInt(data.length);
 		output.write(data);
 	}
 
@@ -78,7 +78,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	}
 
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	public void compress() {

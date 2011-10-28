@@ -69,7 +69,9 @@ public class PacketDecompressionThread extends Thread{
 			try {
 				CompressablePacket packet = queue.take();
 				packet.decompress();
-				decompressed.add(packet);
+				synchronized(decompressed) {
+					decompressed.add(packet);
+				}
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -77,18 +79,20 @@ public class PacketDecompressionThread extends Thread{
 	}
 	
 	public static void onTick() {
-		Iterator<CompressablePacket> i = instance.decompressed.iterator();
-		while(i.hasNext()) {
-			SpoutPacket packet = i.next();
-			try {
-				packet.run(SpoutClient.getHandle().thePlayer.entityId);
-				i.remove();
-			}
-			catch (Exception e) {
-				System.out.println("------------------------");
-				System.out.println("Unexpected Exception: " + packet.getPacketType());
-				e.printStackTrace();
-				System.out.println("------------------------");
+		synchronized(instance.decompressed) {
+			Iterator<CompressablePacket> i = instance.decompressed.iterator();
+			while(i.hasNext()) {
+				SpoutPacket packet = i.next();
+				try {
+					packet.run(SpoutClient.getHandle().thePlayer.entityId);
+					i.remove();
+				}
+				catch (Exception e) {
+					System.out.println("------------------------");
+					System.out.println("Unexpected Exception: " + packet.getPacketType());
+					e.printStackTrace();
+					System.out.println("------------------------");
+				}
 			}
 		}
 	}

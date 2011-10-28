@@ -331,7 +331,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getAddon().getDescription().getName(), texture.getUrl());
 		if (textureBinding != null) {
 			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
-			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight());
+			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight(), texture.isDrawingAlphaChannel());
 		}
 	}
 
@@ -589,7 +589,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		x*= scaleFactor; y*=scaleFactor;
 		screenWidth *= scaleFactor;
 		screenHeight *= scaleFactor;
-		x = screenWidth - x;
+		x = x - width;
 		y = screenHeight - y;
 		GL11.glScissor((int)x, (int)y, (int)width, (int)height);
 	}
@@ -645,7 +645,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslated(0,  5, 0);
 		int currentHeight = 0;
 		for(ListWidgetItem item:lw.getItems()) {
-			
 			//Only render visible items
 			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
 				

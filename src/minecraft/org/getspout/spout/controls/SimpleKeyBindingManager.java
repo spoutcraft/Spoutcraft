@@ -15,6 +15,7 @@ import net.minecraft.src.Packet3Chat;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.PacketKeyBinding;
+import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.yaml.snakeyaml.Yaml;
@@ -84,7 +85,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		
 		shortcutsForKey.clear();
 		for(Shortcut shortcut:shortcuts) {
-			shortcutsForKey.put(shortcut.getKey(), shortcut);
+			shortcutsForKey.put(shortcut.hashCode(), shortcut); //The hash also contains the modifier
 		}
 	}
 	
@@ -100,6 +101,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				HashMap<String, Object> item = new HashMap<String, Object>();
 				item.put("title", sh.getTitle());
 				item.put("key", sh.getKey());
+				item.put("modifiers", sh.getModifiers());
 				item.put("commands", sh.getCommands());
 				shsave.add(item);
 			}
@@ -135,6 +137,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				sh.setTitle((String)item.get("title"));
 				sh.setKey((Integer)item.get("key"));
 				sh.setCommands((ArrayList<String>)item.get("commands"));
+				if(item.containsKey("modifiers")) {
+					sh.setRawModifiers((byte)(int)(Integer)item.get("modifiers"));
+				}
 				shortcuts.add(sh);
 			}
 		} catch (Exception e) {
@@ -149,24 +154,62 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
 		}
 		if(screen == 0) {
-			Shortcut shortcut = shortcutsForKey.get(key);
-			if(shortcut != null && !keyReleased) {
-				//TODO: send to addons!
-				for(String cmd:shortcut.getCommands()) {
-					if(SpoutClient.getHandle().isMultiplayerWorld()) {
-						EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
-						player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+			if(!isModifierKey(key)) {
+				Shortcut shortcut = shortcutsForKey.get(getPressedShortcut(key).hashCode());
+				if(shortcut != null && !keyReleased) {
+					//TODO: send to addons!
+					for(String cmd:shortcut.getCommands()) {
+						if(SpoutClient.getHandle().isMultiplayerWorld()) {
+							EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
+							player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+						}
 					}
 				}
 			}
 		}
 	}
 	
+	public static boolean isModifierKey(int key) {
+		if(key == Keyboard.KEY_LSHIFT
+				|| key == Keyboard.KEY_RSHIFT
+				|| key == Keyboard.KEY_LMENU
+				|| key == Keyboard.KEY_RMENU
+				|| key == Keyboard.KEY_LCONTROL
+				|| key == Keyboard.KEY_RCONTROL
+				|| key == Keyboard.KEY_LMETA
+				|| key == Keyboard.KEY_RMETA){
+			return true;
+		}
+		return false;
+	}
+
 	public List<KeyBinding> getAllBindings() {
 		return bindings;
 	}
 
 	public List<Shortcut> getAllShortcuts() {
 		return Collections.unmodifiableList(shortcuts);
+	}
+	
+	public static Shortcut getPressedShortcut(int key) {
+		Shortcut sh = new Shortcut();
+		sh.setKey(key);
+		setModifiersToShortcut(sh);
+		return sh;
+	}
+	
+	public static void setModifiersToShortcut(Shortcut sh) {
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			sh.setModifier(Shortcut.MOD_SHIFT, true);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+			sh.setModifier(Shortcut.MOD_CTRL, true);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU)) {
+			sh.setModifier(Shortcut.MOD_ALT, true);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA)) {
+			sh.setModifier(Shortcut.MOD_SUPER, true);
+		}
 	}
 }
