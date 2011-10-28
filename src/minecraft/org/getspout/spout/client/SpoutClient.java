@@ -114,10 +114,13 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	
 	private SpoutClient() {
+		instance = this;
 		securityKey = (new Random()).nextDouble();
 		securityManager = new SimpleSecurityManager(securityKey);
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		System.setSecurityManager(securityManager);
+		
+		((SimpleKeyBindingManager)bindingManager).load();
 	}
 	
 	static {
@@ -130,7 +133,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public static SpoutClient getInstance() {
 		if (instance == null) {
-			instance = new SpoutClient();
+			new SpoutClient();
 			Spoutcraft.setClient(instance);
 			
 			//must be done after construtor

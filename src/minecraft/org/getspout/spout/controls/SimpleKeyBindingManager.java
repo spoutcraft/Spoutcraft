@@ -28,7 +28,6 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<Shortcut> shortcuts = new ArrayList<Shortcut>();
 	
 	public SimpleKeyBindingManager(){
-		load();
 	}
 	
 	public void registerControl(KeyBinding binding){
