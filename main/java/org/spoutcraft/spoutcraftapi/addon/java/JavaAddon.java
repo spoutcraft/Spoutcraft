@@ -17,6 +17,7 @@
 package org.spoutcraft.spoutcraftapi.addon.java;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.UnsafeMethod;
@@ -84,6 +85,10 @@ public abstract class JavaAddon implements Addon {
 
 	public final boolean isEnabled() {
 		return enabled;
+	}
+	
+	public final Logger getLogger(){
+		return client.getLogger();
 	}
 	
 	@UnsafeMethod

@@ -165,12 +165,12 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		checkAccess();
+		//checkAccess(); //TODO handle on case by case basis
 	}
 
 	@Override
 	public void checkPermission(Permission per, Object context) {
-		checkAccess();
+		//checkAccess(); //TODO handle on case by case basis
 	}
 
 	@Override
