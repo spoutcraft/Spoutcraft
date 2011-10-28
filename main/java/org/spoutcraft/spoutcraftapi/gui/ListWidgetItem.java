@@ -27,4 +27,11 @@ public interface ListWidgetItem {
 	 * @param height of the item
 	 */
 	public void render(int x, int y, int width, int height);
+	
+	/**
+	 * Will be called when someone clicks on this item
+	 * @param x the relative x position where the item was clicked
+	 * @param y the relative y position where the item was clicked
+	 */
+	public void onClick(int x, int y);
 }

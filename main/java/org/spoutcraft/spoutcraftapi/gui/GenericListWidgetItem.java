@@ -118,4 +118,7 @@ public class GenericListWidgetItem extends PropertyObject implements PropertyInt
 		return parent;
 	}
 
+	public void onClick(int x, int y) {
+	}
+
 }
