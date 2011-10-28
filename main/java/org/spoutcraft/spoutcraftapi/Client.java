@@ -37,7 +37,7 @@ public interface Client extends PropertyInterface {
 
 	public String getName();
 
-	public SpoutVersion getVersion();
+	public long getVersion();
 
 	public AddonManager getAddonManager();
 
@@ -65,7 +65,7 @@ public interface Client extends PropertyInterface {
 
 	public boolean isSpoutEnabled();
 
-	public SpoutVersion getServerVersion();
+	public long getServerVersion();
 
 	// public EntityPlayer getPlayerFromId(int id);
 	

@@ -165,12 +165,12 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		//checkAccess(); //TODO handle on case by case basis
+		checkAccess(); //TODO handle on case by case basis
 	}
 
 	@Override
 	public void checkPermission(Permission per, Object context) {
-		//checkAccess(); //TODO handle on case by case basis
+		checkAccess(); //TODO handle on case by case basis
 	}
 
 	@Override
@@ -191,19 +191,20 @@ public final class SimpleSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(String file) {
 		if (isLocked()) {
-			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
-				throw new SecurityException("Access is restricted! Addon tried to read " + file);
+			if (file.endsWith(".class")) {
+				return; //class loader will have already decided it's safe if we got here
 			}
+			if (file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				return; //allow access
+			}
+			System.out.println("Reading from " + file);
+			throw new SecurityException("Access is restricted! Addon tried to read " + file);
 		}
 	}
 
 	@Override
 	public void checkRead(String file, Object context) {
-		if (isLocked()) {
-			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
-				throw new SecurityException("Access is restricted! Addon tried to read " + file);
-			}
-		}
+		checkRead(file);
 	}
 
 	@Override
@@ -235,6 +236,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	public void checkWrite(String file) {
 		if (isLocked()) {
 			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+				System.out.println("Writing to " + file);
 				throw new SecurityException("Access is restricted! Addon tried to write to " + file);
 			}
 		}
