@@ -16,6 +16,8 @@
  */
 package org.spoutcraft.spoutcraftapi.addon;
 
+import java.util.logging.Logger;
+
 import org.spoutcraft.spoutcraftapi.command.CommandExecutor;
 
 public abstract interface Addon extends CommandExecutor {
@@ -37,6 +39,8 @@ public abstract interface Addon extends CommandExecutor {
 	public abstract boolean isNaggable();
 
 	public abstract void setNaggable(boolean b);
+	
+	public abstract Logger getLogger();
 
 	public enum Mode {
 		SINGLE_PLAYER,
