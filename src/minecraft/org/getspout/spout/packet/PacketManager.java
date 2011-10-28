@@ -49,7 +49,7 @@ public class PacketManager {
 	 * @returns if the sending was successful
 	 */
 	public boolean sendSpoutPacket(SpoutPacket packet, int pluginVersion){
-		if(SpoutClient.getInstance().getServerVersion().getVersion() >= pluginVersion){
+		if(SpoutClient.getInstance().getServerVersion() >= pluginVersion){
 			return sendSpoutPacket(packet);
 		}	
 		return false;

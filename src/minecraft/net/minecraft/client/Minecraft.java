@@ -279,7 +279,7 @@ public abstract class Minecraft implements Runnable {
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
 		// Spout Start
 		TextureUtils.setMinecraft(this);
-		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion().toString());
+		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion());
 		// Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
 		// Spout Start
@@ -522,7 +522,14 @@ public abstract class Minecraft implements Runnable {
 				this.statFileWriter.func_27175_b();
 			}
 
+			boolean wasSandboxed = SpoutClient.isSandboxed();
+			if (wasSandboxed) {
+				SpoutClient.disableSandbox();
+			}
 			this.statFileWriter.syncStats();
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 
 			if (screen instanceof GuiMainMenu) {
 				this.ingameGUI.clearChatMessages();
@@ -572,6 +579,7 @@ public abstract class Minecraft implements Runnable {
 			return;
 		}
 		shutdown = true;
+		SpoutClient.disableSandbox();
 		// Spout End
 		try {
 			this.statFileWriter.func_27175_b();
@@ -753,14 +761,12 @@ public abstract class Minecraft implements Runnable {
 				catch (Throwable t) {
 					//try to handle errors gracefuly
 					try {
-						this.theWorld = null;
-						this.changeWorld1((World)null);
-						
 						if (SpoutClient.isSandboxed()) {
 							SpoutClient.disableSandbox(); 
 						}
-						SpoutClient.getInstance().getAddonManager().disableAddons(); //disable addons if an error occurs
-						
+						this.theWorld = null;
+						this.changeWorld1((World)null);
+
 						this.displayGuiScreen(new org.getspout.spout.gui.error.GuiUnexpectedError());
 						
 						t.printStackTrace();
@@ -1419,8 +1425,10 @@ public abstract class Minecraft implements Runnable {
 
 	public void changeWorld(World var1, String var2, EntityPlayer var3) {
 		// Spout Start
-		SpoutClient.getInstance().loadAddons();
-		SpoutClient.getInstance().enableAddons(AddonLoadOrder.PREWORLD);
+		if (var1 != null) {
+			SpoutClient.getInstance().loadAddons();
+			SpoutClient.getInstance().enableAddons(AddonLoadOrder.PREWORLD);
+		}
 		// Spout End
 		this.statFileWriter.func_27175_b();
 		this.statFileWriter.syncStats();

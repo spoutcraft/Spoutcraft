@@ -55,7 +55,6 @@ import org.getspout.spout.player.SimpleBiomeManager;
 import org.getspout.spout.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
-import org.spoutcraft.spoutcraftapi.SpoutVersion;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
@@ -83,7 +82,7 @@ import org.spoutcraft.spoutcraftapi.util.Location;
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
-	private static final SpoutVersion clientVersion = new SpoutVersion(0);
+	private static final long version = 0L;
 	
 	private final SimpleItemManager itemManager = new SimpleItemManager();
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
@@ -101,7 +100,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final double securityKey;
 	private long tick = 0;
 	private Thread clipboardThread = null;
-	private SpoutVersion server = new SpoutVersion();
+	private long server = -1L;
 	public ClientPlayer player = null;
 	private boolean sky = false;
 	private boolean clearwater = false;
@@ -135,14 +134,14 @@ public class SpoutClient extends PropertyObject implements Client {
 			Spoutcraft.setClient(instance);
 			
 			//must be done after construtor
-			ServerAddon addon = new ServerAddon("Spoutcraft", clientVersion.toString(), null);
+			ServerAddon addon = new ServerAddon("Spoutcraft", Long.toString(version), null);
 			instance.addonManager.addFakeAddon(addon);
 		}
 		return instance;
 	}
 	
-	public static SpoutVersion getClientVersion() {
-		return clientVersion;
+	public static long getClientVersion() {
+		return version;
 	}
 	
 	public static void enableSandbox() {
@@ -157,7 +156,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		return getInstance().securityManager.isLocked();
 	}
 	
-	public SpoutVersion getServerVersion() {
+	public long getServerVersion() {
 		return server;
 	}
 	
@@ -248,10 +247,10 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 	
 	public boolean isSpoutEnabled() {
-		return server.getVersion() >= 0;
+		return server >= 0;
 	}
 	
-	public void setSpoutVersion(SpoutVersion version) {
+	public void setSpoutVersion(long version) {
 		server = version;
 	}
 
@@ -370,7 +369,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public String getName() {
-		return "Spoutcraft_" + clientVersion.toString();
+		return "Spoutcraft_" + version;
 	}
 
 	public RenderDelegate getRenderDelegate() {
@@ -381,8 +380,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		return new File(Minecraft.getMinecraftDir(), "addons" + File.separator + "updates");
 	}
 
-	public SpoutVersion getVersion() {
-		return clientVersion;
+	public long getVersion() {
+		return version;
 	}
 
 	public Location getCamera() {

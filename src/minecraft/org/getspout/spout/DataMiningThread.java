@@ -46,7 +46,7 @@ public class DataMiningThread extends Thread{
 	
 	private void doLogin() {
 		onRunOnce();
-		if (SpoutClient.getInstance().getServerVersion().getVersion() > 99) {
+		if (SpoutClient.getInstance().getServerVersion() > 0) {
 			onSpoutLogin();
 		}
 		else {
