@@ -21,8 +21,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
+@UnsafeClass
 public class GenericContainer extends GenericWidget implements Container {
 
 	protected List<Widget> children = new ArrayList<Widget>();

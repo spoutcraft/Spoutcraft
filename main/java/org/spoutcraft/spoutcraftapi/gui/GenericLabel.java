@@ -21,8 +21,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@UnsafeClass
 public class GenericLabel extends GenericWidget implements Label {
 	protected String text = "";
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;

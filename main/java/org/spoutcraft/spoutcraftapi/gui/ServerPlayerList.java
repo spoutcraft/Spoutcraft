@@ -1,6 +1,6 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-public class ServerPlayerList extends GenericWidget {
+public final class ServerPlayerList extends GenericWidget {
 
 	public WidgetType getType() {
 		// TODO Auto-generated method stub

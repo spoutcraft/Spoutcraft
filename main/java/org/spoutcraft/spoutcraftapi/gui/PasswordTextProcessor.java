@@ -19,7 +19,9 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.Iterator;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class PasswordTextProcessor implements TextProcessor {
 	protected static final char CHAR_ASTERISK = '*';
 

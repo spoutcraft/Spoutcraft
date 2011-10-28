@@ -16,6 +16,14 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public interface OverlayScreen extends Screen {
+	/**
+	 * Sets the screen type
+	 * @param screenType
+	 * @return this
+	 */
 	public OverlayScreen setScreenType(ScreenType screenType);
 }

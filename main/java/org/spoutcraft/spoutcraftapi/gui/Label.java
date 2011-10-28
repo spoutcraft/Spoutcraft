@@ -16,6 +16,9 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public interface Label extends Widget {
 	/**
 	 * Gets the text of the label

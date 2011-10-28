@@ -24,7 +24,9 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class GenericTextProcessor implements TextProcessor {
 
 	protected static final int AVERAGE_CHAR_WIDTH = 6;

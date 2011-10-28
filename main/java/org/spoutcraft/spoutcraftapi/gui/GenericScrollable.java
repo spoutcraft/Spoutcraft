@@ -1,7 +1,9 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public abstract class GenericScrollable extends GenericControl implements Scrollable {
 	private ScrollBarPolicy sbpVert;
 	protected ScrollBarPolicy sbpHoriz = sbpVert = ScrollBarPolicy.SHOW_IF_NEEDED;

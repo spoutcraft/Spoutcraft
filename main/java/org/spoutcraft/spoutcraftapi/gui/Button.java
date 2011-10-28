@@ -16,8 +16,10 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
+@UnsafeClass
 public interface Button extends Control, Label {
 
 	/**

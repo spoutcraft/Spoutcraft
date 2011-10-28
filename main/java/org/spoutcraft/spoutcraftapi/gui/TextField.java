@@ -16,8 +16,10 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 
+@UnsafeClass
 public interface TextField extends Control {
 
 	/**

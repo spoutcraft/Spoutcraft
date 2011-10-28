@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -50,15 +49,14 @@ public class SimpleAddonManager implements AddonManager {
 	private static File updateDirectory = null;
 	private final SimpleCommandMap commandMap;
 	private final SimpleSecurityManager securityManager;
-	private final double superSecretSecurityKey;
+	private final double key;
 
-	public SimpleAddonManager(Client instance, SimpleCommandMap commandMap) {
+	public SimpleAddonManager(Client instance, SimpleCommandMap commandMap, SimpleSecurityManager manager, double key) {
 		client = instance;
 		this.commandMap = commandMap;
 		
-		superSecretSecurityKey = (new Random()).nextDouble();
-		securityManager = new SimpleSecurityManager(superSecretSecurityKey);
-		System.setSecurityManager(securityManager);
+		this.key = key;
+		securityManager = manager;
 	}
 
 	/**
@@ -77,8 +75,8 @@ public class SimpleAddonManager implements AddonManager {
 			Constructor<? extends AddonLoader> constructor;
 
 			try {
-				constructor = loader.getConstructor(Client.class);
-				instance = constructor.newInstance(client, securityManager, superSecretSecurityKey);
+				constructor = loader.getConstructor(Client.class, SimpleSecurityManager.class, double.class);
+				instance = constructor.newInstance(client, securityManager, key);
 			} catch (NoSuchMethodException ex) {
 				String className = loader.getName();
 
@@ -186,7 +184,7 @@ public class SimpleAddonManager implements AddonManager {
 	 * @throws InvalidDescriptionException Thrown when the specified file contains an invalid description
 	 */
 	public synchronized Addon loadAddon(File file, boolean ignoreSoftDependencies) throws InvalidAddonException, InvalidDescriptionException, UnknownDependencyException {
-		securityManager.lock(superSecretSecurityKey);
+		securityManager.lock(key);
 		File updateFile = null;
 
 		if (updateDirectory != null && updateDirectory.isDirectory() && (updateFile = new File(updateDirectory, file.getName())).isFile()) {
@@ -213,7 +211,7 @@ public class SimpleAddonManager implements AddonManager {
 			addons.add(result);
 			lookupNames.put(result.getDescription().getName(), result);
 		}
-		securityManager.unlock(superSecretSecurityKey);
+		securityManager.unlock(key);
 		return result;
 	}
 
@@ -266,7 +264,7 @@ public class SimpleAddonManager implements AddonManager {
 			return;
 		}
 		if (!addon.isEnabled()) {
-			securityManager.lock(superSecretSecurityKey);
+			securityManager.lock(key);
 			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
 
 			if (!addonCommands.isEmpty()) {
@@ -278,7 +276,7 @@ public class SimpleAddonManager implements AddonManager {
 			} catch (Throwable ex) {
 				safelyLog(Level.SEVERE, "Error occurred (in the addon loader) while enabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
-			securityManager.unlock(superSecretSecurityKey);
+			securityManager.unlock(key);
 		}
 	}
 
@@ -293,13 +291,13 @@ public class SimpleAddonManager implements AddonManager {
 			return;
 		}
 		if (addon.isEnabled()) {
-			securityManager.lock(superSecretSecurityKey);
+			securityManager.lock(key);
 			try {
 				addon.getAddonLoader().disableAddon(addon);
 			} catch (Throwable ex) {
 				safelyLog(Level.SEVERE, "Error occurred (in the addon loader) while disabling " + addon.getDescription().getFullName() + " (Is it up to date?): " + ex.getMessage(), ex);
 			}
-			securityManager.unlock(superSecretSecurityKey);
+			securityManager.unlock(key);
 		}
 	}
 
@@ -327,7 +325,11 @@ public class SimpleAddonManager implements AddonManager {
 		Listener<TEvent>[][] handlers = handlerlist.handlers;
 		int[] handlerids = handlerlist.handlerids;
 		
-		securityManager.lock(superSecretSecurityKey);
+		//We wouldn't want to open the lock prematurely if it was locked by the caller, would we now? :)
+		boolean wasLocked = securityManager.isLocked();
+		if (!wasLocked) {
+			securityManager.lock(key);
+		}
 
 		for (int arrayidx = 0; arrayidx < handlers.length; arrayidx++) {
 
@@ -346,18 +348,20 @@ public class SimpleAddonManager implements AddonManager {
 				}
 			}
 		}
-		securityManager.unlock(superSecretSecurityKey);
+		if (!wasLocked) {
+			securityManager.unlock(key);
+		}
 	}
 	
 	private void safelyLog(Level level, String message, Throwable ex) {
 		boolean relock = false;
 		if (securityManager.isLocked()){
 			relock = true;
-			securityManager.unlock(superSecretSecurityKey);
+			securityManager.unlock(key);
 		}
 		client.getLogger().log(level, message, ex);
 		if (relock) {
-			securityManager.lock(superSecretSecurityKey);
+			securityManager.lock(key);
 		}
 	}
 	

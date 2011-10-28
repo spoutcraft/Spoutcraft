@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@UnsafeClass
 public abstract class GenericWidget implements Widget {
 	protected int X = 0;
 	protected int Y = 0;

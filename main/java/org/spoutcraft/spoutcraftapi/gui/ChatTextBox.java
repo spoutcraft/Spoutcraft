@@ -21,6 +21,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public class ChatTextBox extends GenericWidget implements Widget {
 	protected int visibleLines = 10;
 	protected int visibleChatLines = 20;

@@ -5,7 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class GenericCheckBox extends GenericButton implements CheckBox {
 
 	boolean checked = false;

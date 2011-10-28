@@ -21,8 +21,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 
+@UnsafeClass
 public class GenericSlider extends GenericControl implements Slider {
 	protected Label label = new GenericLabel();
 	protected float slider = 0.5f;

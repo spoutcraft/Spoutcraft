@@ -72,6 +72,15 @@ public class WidgetType {
 		lookupId.put(id, this);
 		client = false;
 	}
+	
+	public WidgetType(Class<? extends Widget> widget, boolean client) {
+		widgetClass = widget;
+		id = lastId;
+		lastId++;
+		lookupClass.put(this, id);
+		lookupId.put(id, this);
+		this.client = client;
+	}
 
 	public WidgetType(Class<? extends Widget> widget, int id, boolean client) {
 		widgetClass = widget;
@@ -84,12 +93,16 @@ public class WidgetType {
 		this.client = client;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 
-	public Class<? extends Widget> getWidgetClass() {
+	public final Class<? extends Widget> getWidgetClass() {
 		return widgetClass;
+	}
+	
+	public final boolean isClientOnly() {
+		return client;
 	}
 
 	public static Integer getWidgetId(Class<? extends Widget> widget) {
@@ -103,9 +116,4 @@ public class WidgetType {
 	public static int getNumWidgetTypes() {
 		return lastId;
 	}
-
-	public boolean isClientOnly() {
-		return client;
-	}
-
 }

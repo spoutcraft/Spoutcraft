@@ -19,8 +19,10 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.Set;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
+@UnsafeClass
 public interface Screen extends Widget {
 
 	/**

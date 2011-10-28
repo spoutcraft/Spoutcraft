@@ -16,6 +16,9 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public class GenericRectange extends GenericGradient{
 	
 	public GenericRectange(){

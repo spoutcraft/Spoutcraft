@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;

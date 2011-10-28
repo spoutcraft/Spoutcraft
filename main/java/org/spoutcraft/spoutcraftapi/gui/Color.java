@@ -18,7 +18,7 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import org.spoutcraft.spoutcraftapi.animation.Animatable;
 
-public class Color implements Animatable {
+public final class Color implements Animatable {
 	private short red;
 	private short green;
 	private short blue;

@@ -18,6 +18,9 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import java.util.Iterator;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public interface TextProcessor extends Iterable<String> {
 
 	/**

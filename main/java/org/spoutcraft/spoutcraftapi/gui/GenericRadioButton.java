@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class GenericRadioButton extends GenericButton implements RadioButton {
 	
 	boolean selected = false;
