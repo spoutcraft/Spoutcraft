@@ -51,7 +51,7 @@ public final class EasterEggs {
 	
 	public static String getSplashTextEasterEgg() {
 		DateTime now = DateTime.now();
-		if (true || halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
+		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
 			return "Happy Halloween!";
 		}
 		return null;
