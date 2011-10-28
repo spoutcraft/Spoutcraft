@@ -90,6 +90,10 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 	
 	public void save(){
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if(wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD); // to ignore transient fields!!
 		try {
@@ -109,6 +113,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if(wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 	
 	private File getBindingsFile() {
@@ -121,6 +128,10 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 
 	@SuppressWarnings("unchecked")
 	public void load(){
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if(wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		Yaml yaml = new Yaml();
 		try {
 			bindings = yaml.loadAs(new FileReader(getBindingsFile()), ArrayList.class);
@@ -146,6 +157,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			shortcuts = new ArrayList<Shortcut>();
 		}
 		updateShortcuts();
+		if(wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 
 	public void pressKey(int key, boolean keyReleased, int screen) {
