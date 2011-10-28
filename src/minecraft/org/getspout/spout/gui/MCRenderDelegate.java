@@ -577,9 +577,8 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	private void scissorWidget(Widget widget) {
 		double x = widget.getX() + widget.getWidth(), y = widget.getY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
-		double screenWidth, screenHeight;
+		double screenHeight;
 		GuiScreen screen = SpoutClient.getHandle().currentScreen;
-		screenWidth = screen.width;
 		screenHeight = screen.height;
 		int windowWidth = SpoutClient.getHandle().displayWidth, windowHeight = SpoutClient.getHandle().displayHeight;
 		ScaledResolution scale = new ScaledResolution(SpoutClient.getHandle().gameSettings, windowWidth, windowHeight);
@@ -587,7 +586,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		height = (double) height * scaleFactor;
 		width = (double) width * scaleFactor;
 		x*= scaleFactor; y*=scaleFactor;
-		screenWidth *= scaleFactor;
 		screenHeight *= scaleFactor;
 		x = x - width;
 		y = screenHeight - y;

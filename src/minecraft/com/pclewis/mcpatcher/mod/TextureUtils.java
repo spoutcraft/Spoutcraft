@@ -19,6 +19,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.imageio.ImageIO;
+
+import org.getspout.spout.client.SpoutClient;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.ColorizerGrass;
@@ -220,24 +223,33 @@ public class TextureUtils {
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase var0, String var1) {
-		InputStream var2 = null;
-		if(var0 != null) {
-			try {
-				var2 = var0.getResourceAsStream(var1);
-			} catch (Exception var4) {
-				var4.printStackTrace();
+		boolean wasLocked = SpoutClient.isSandboxed();
+		SpoutClient.disableSandbox();
+		try {
+			InputStream var2 = null;
+			if(var0 != null) {
+				try {
+					var2 = var0.getResourceAsStream(var1);
+				} catch (Exception var4) {
+					var4.printStackTrace();
+				}
+			}
+			
+			if(var2 == null) {
+				var2 = TextureUtils.class.getResourceAsStream(var1);
+			}
+	
+			if(var2 == null && isRequiredResource(var1)) {
+				var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
+			}
+	
+			return var2;
+		}
+		finally {
+			if (wasLocked) {
+				SpoutClient.enableSandbox();
 			}
 		}
-		
-		if(var2 == null) {
-			var2 = TextureUtils.class.getResourceAsStream(var1);
-		}
-
-		if(var2 == null && isRequiredResource(var1)) {
-			var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
-		}
-
-		return var2;
 	}
 
 	public static InputStream getResourceAsStream(String var0) {
@@ -245,77 +257,86 @@ public class TextureUtils {
 	}
 
 	public static BufferedImage getResourceAsBufferedImage(TexturePackBase var0, String var1) throws IOException {
-		BufferedImage var2 = null;
-		boolean var3 = false;
-		if(useTextureCache && var0 == lastTexturePack) {
-			var2 = (BufferedImage)cache.get(var1);
-			if(var2 != null) {
-				var3 = true;
+		boolean wasLocked = SpoutClient.isSandboxed();
+		SpoutClient.disableSandbox();
+		try {
+			BufferedImage var2 = null;
+			boolean var3 = false;
+			if(useTextureCache && var0 == lastTexturePack) {
+				var2 = (BufferedImage)cache.get(var1);
+				if(var2 != null) {
+					var3 = true;
+				}
 			}
-		}
-
-		if(var2 == null) {
-			InputStream var4 = getResourceAsStream(var0, var1);
-			if(var4 != null) {
+	
+			if(var2 == null) {
+				InputStream var4 = getResourceAsStream(var0, var1);
+				if(var4 != null) {
+					try {
+						var2 = ImageIO.read(var4);
+					} finally {
+						MCPatcherUtils.close((Closeable)var4);
+					}
+				}
+			}
+			
+			if(var2 == null) {
+				//Search local files (downloaded texture)
+				FileImageInputStream imageStream = null;
 				try {
-					var2 = ImageIO.read(var4);
-				} finally {
-					MCPatcherUtils.close((Closeable)var4);
+					File test = new File(var1);
+					if (test.exists()) {
+						imageStream = new FileImageInputStream(test);
+						var2 = ImageIO.read(imageStream);
+					}
+				}
+				catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
-		}
-		
-		if(var2 == null) {
-			//Search local files (downloaded texture)
-			FileImageInputStream imageStream = null;
-			try {
-				File test = new File(var1);
-				if (test.exists()) {
-					imageStream = new FileImageInputStream(test);
-					var2 = ImageIO.read(imageStream);
+	
+			if(var2 == null) {
+				throw new IOException(var1 + " image is null");
+			} else {
+				if(useTextureCache && !var3 && var0 != lastTexturePack) {
+					cache.clear();
 				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		if(var2 == null) {
-			throw new IOException(var1 + " image is null");
-		} else {
-			if(useTextureCache && !var3 && var0 != lastTexturePack) {
-				cache.clear();
-			}
-
-			if(!var3) {
-				Integer var11 = (Integer)expectedColumns.get(var1);
-				if(var11 != null && var2.getWidth() != var11.intValue() * TileSize.int_size) {
-					var2 = resizeImage(var2, var11.intValue() * TileSize.int_size);
-				}
-
-				if(useTextureCache) {
-					lastTexturePack = var0;
-					cache.put(var1, var2);
-				}
-
-				if(var1.contains("_eyes.")) {
-					int var5 = 0;
-
-					for(int var6 = 0; var6 < var2.getWidth(); ++var6) {
-						for(int var7 = 0; var7 < var2.getHeight(); ++var7) {
-							int var8 = var2.getRGB(var6, var7);
-							if((var8 & -16777216) == 0 && var8 != 0) {
-								var2.setRGB(var6, var7, 0);
-								++var5;
+	
+				if(!var3) {
+					Integer var11 = (Integer)expectedColumns.get(var1);
+					if(var11 != null && var2.getWidth() != var11.intValue() * TileSize.int_size) {
+						var2 = resizeImage(var2, var11.intValue() * TileSize.int_size);
+					}
+	
+					if(useTextureCache) {
+						lastTexturePack = var0;
+						cache.put(var1, var2);
+					}
+	
+					if(var1.contains("_eyes.")) {
+						//int var5 = 0;
+	
+						for(int var6 = 0; var6 < var2.getWidth(); ++var6) {
+							for(int var7 = 0; var7 < var2.getHeight(); ++var7) {
+								int var8 = var2.getRGB(var6, var7);
+								if((var8 & -16777216) == 0 && var8 != 0) {
+									var2.setRGB(var6, var7, 0);
+									//++var5;
+								}
 							}
 						}
+	
+						//MCPatcherUtils.log("  fixed %d transparent pixels", new Object[]{Integer.valueOf(var5), var1});
 					}
-
-					//MCPatcherUtils.log("  fixed %d transparent pixels", new Object[]{Integer.valueOf(var5), var1});
 				}
+	
+				return var2;
 			}
-
-			return var2;
+		}
+		finally {
+			if (wasLocked) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 
