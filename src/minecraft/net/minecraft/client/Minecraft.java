@@ -755,11 +755,18 @@ public abstract class Minecraft implements Runnable {
 					try {
 						this.theWorld = null;
 						this.changeWorld1((World)null);
+						
+						if (SpoutClient.isSandboxed()) {
+							SpoutClient.disableSandbox(); 
+						}
+						SpoutClient.getInstance().getAddonManager().disableAddons(); //disable addons if an error occurs
+						
 						this.displayGuiScreen(new org.getspout.spout.gui.error.GuiUnexpectedError());
 						
 						t.printStackTrace();
 					}
 					catch (Throwable failed) {
+						SpoutClient.disableSandbox(); 
 						throw new RuntimeException(t);
 					}
 				}

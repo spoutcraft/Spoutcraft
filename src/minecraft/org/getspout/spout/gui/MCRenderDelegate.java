@@ -110,18 +110,14 @@ public class MCRenderDelegate implements RenderDelegate {
 			Color color = getColor(button);
 			
 			int left = (int) 5;
-			switch (button.getAlign()) {
-			case TOP_CENTER:
-			case CENTER_CENTER:
-			case BOTTOM_CENTER:
+			WidgetAnchor align = button.getAlign();
+			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 				left = (int) ((width / 2) - (font.getStringWidth(button.getText()) / 2));
-				break;
-			case TOP_RIGHT:
-			case CENTER_RIGHT:
-			case BOTTOM_RIGHT:
-				left = (int) (width - font.getStringWidth(button.getText())) - 5;
-				break;
 			}
+			else if (align == WidgetAnchor.TOP_RIGHT || align == WidgetAnchor.CENTER_RIGHT || align == WidgetAnchor.BOTTOM_RIGHT) {
+				left = (int) (width - font.getStringWidth(button.getText())) - 5;
+			}
+			
 			GL11.glPushMatrix();
 			float scale = button.getScale();
 			GL11.glScalef(scale, scale, scale);
@@ -217,31 +213,21 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glPushMatrix();
 
 		double top = label.getScreenY();
-		switch (label.getAlign()) {
-		case CENTER_LEFT:
-		case CENTER_CENTER:
-		case CENTER_RIGHT:
+		
+		WidgetAnchor align = label.getAlign();
+		if (align == WidgetAnchor.CENTER_LEFT || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.CENTER_RIGHT) {
 			top -= (int) (label.isAuto() ? label.getActualHeight() : label.getHeight()) / 2;
-			break;
-		case BOTTOM_LEFT:
-		case BOTTOM_CENTER:
-		case BOTTOM_RIGHT:
-			top -= (int) (label.isAuto() ? label.getActualHeight() : label.getHeight());
-			break;
 		}
-
+		else if (align == WidgetAnchor.BOTTOM_LEFT || align == WidgetAnchor.BOTTOM_CENTER || align == WidgetAnchor.BOTTOM_RIGHT) {
+			top -= (int) (label.isAuto() ? label.getActualHeight() : label.getHeight());
+		}
+		
 		double aleft = label.getScreenX();
-		switch (label.getAlign()) {
-		case TOP_CENTER:
-		case CENTER_CENTER:
-		case BOTTOM_CENTER:
+		if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 			aleft -= (int) (label.isAuto() ? label.getActualWidth() : label.getWidth()) / 2;
-			break;
-		case TOP_RIGHT:
-		case CENTER_RIGHT:
-		case BOTTOM_RIGHT:
+		}
+		else if (align == WidgetAnchor.TOP_RIGHT || align == WidgetAnchor.CENTER_RIGHT || align == WidgetAnchor.BOTTOM_RIGHT) {
 			aleft -= (int) (label.isAuto() ? label.getActualWidth() : label.getWidth());
-			break;
 		}
 
 		GL11.glTranslatef((float) aleft, (float) top, 0);
@@ -252,18 +238,14 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		for (int i = 0; i < lines.length; i++) {
 			double left = 0;
-			switch (label.getAlign()) {
-			case TOP_CENTER:
-			case CENTER_CENTER:
-			case BOTTOM_CENTER:
+			
+			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 				left = (swidth / 2) - (font.getStringWidth(lines[i]) / 2);
-				break;
-			case TOP_RIGHT:
-			case CENTER_RIGHT:
-			case BOTTOM_RIGHT:
-				left = swidth - font.getStringWidth(lines[i]);
-				break;
 			}
+			else if (align == WidgetAnchor.TOP_RIGHT || align == WidgetAnchor.CENTER_RIGHT || align == WidgetAnchor.BOTTOM_RIGHT) {
+				left = swidth - font.getStringWidth(lines[i]);
+			}
+
 			float scale = label.getScale();
 			float reset = 1/scale;
 			GL11.glScalef(scale, scale, scale);
@@ -302,18 +284,14 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 			
 			int left = (int) 5;
-			switch (slider.getAlign()) {
-			case TOP_CENTER:
-			case CENTER_CENTER:
-			case BOTTOM_CENTER:
+			WidgetAnchor align = slider.getAlign();
+			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 				left = (int) ((width / 2) - (font.getTextWidth(slider.getText()) / 2));
-				break;
-			case TOP_RIGHT:
-			case CENTER_RIGHT:
-			case BOTTOM_RIGHT:
-				left = (int) (width - font.getTextWidth(slider.getText())) - 5;
-				break;
 			}
+			else if (align == WidgetAnchor.TOP_RIGHT || align == WidgetAnchor.CENTER_RIGHT || align == WidgetAnchor.BOTTOM_RIGHT) {
+				left = (int) (width - font.getTextWidth(slider.getText())) - 5;
+			}
+
 			GL11.glPushMatrix();
 			float scale = slider.getScale();
 			GL11.glScalef(scale, scale, scale);

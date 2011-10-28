@@ -19,6 +19,7 @@ import net.minecraft.src.Tessellator;
 
 //Spout Start
 import org.bukkit.ChatColor;
+import org.getspout.spout.EasterEggs;
 import org.getspout.spout.client.SpoutClient;
 //spout End
 import org.lwjgl.opengl.GL11;
@@ -85,34 +86,19 @@ public class RenderPlayer extends RenderLiving {
 				String var12 = var1.username;
 				//Spout Start
 				String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
+				int color = EasterEggs.getEastEggTitleColor();
+				float alpha = 0.25F;
 				if (title != null) {
 					var12 = title;
 				}
-				//Easter egg
-				float alpha = 0.25F;
-				if (var12.equalsIgnoreCase("Afforess")) {
-					var12 = ChatColor.DARK_BLUE + "Afforess";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("Wulfspider")) {
-					var12 = ChatColor.BLUE + "Wulfspider";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("alta189")) {
-					var12 = ChatColor.DARK_GREEN + "alta189";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("Raphfrk")) {
-					var12 = ChatColor.GREEN + "Raphfrk";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("narrowtux")) {
-					var12 = ChatColor.GOLD + "narrowtux";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("Top_Cat")) {
-					var12 = ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
-					alpha = 0f;
-				} else if (var12.equalsIgnoreCase("Olloth")) {
-					var12 = ChatColor.DARK_RED + "Olloth";
-					alpha = 0f;
+				else {
+					//if a plugin hasn't set a title, use the easter egg title (if one exists)
+					title = EasterEggs.getEasterEggTitle(var1.username);
+					if (title != null && color == -1) {
+						var12 = title;
+						alpha = 0.0F;
+					}
 				}
-				//Easter egg end
 				if (!var12.equals("[hide]")) {
 					String lines[] = var12.split("\\n");
 					double y = var4;
@@ -123,7 +109,12 @@ public class RenderPlayer extends RenderLiving {
 							if(var1.isPlayerSleeping()) {
 								this.renderLivingLabel(var1, var12, var2, var4 - 1.5D, var6, 64);
 							} else {
-								this.renderLivingLabel(var1, var12, var2, var4, var6, 64);
+								if (color != -1) {
+									this.renderLivingLabel(var1, var12, var2, var4, var6, 64, color, color);
+								}
+								else {
+									this.renderLivingLabel(var1, var12, var2, var4, var6, 64);
+								}
 							}
 						} else {
 							var12 = ChatColor.stripColor(var12); //strip colors when sneaking

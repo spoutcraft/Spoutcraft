@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 
 import net.minecraft.client.Minecraft;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
 
 public class ConfigReader {
@@ -82,6 +83,10 @@ public class ConfigReader {
 	}
 	
 	public static void write() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
 		try {
 			if (!config.exists()) {
@@ -102,6 +107,9 @@ public class ConfigReader {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 	}
 	

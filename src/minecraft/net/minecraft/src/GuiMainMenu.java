@@ -74,6 +74,14 @@ public class GuiMainMenu extends GuiScreen {
 		} else if(var1.get(2) + 1 == 1 && var1.get(5) == 1) {
 			this.splashText = "Happy new year!";
 		}
+		//Spout start
+		else {
+			String text = org.getspout.spout.EasterEggs.getSplashTextEasterEgg();
+			if (text != null) {
+				this.splashText = text;
+			}
+		}
+		//Spout end
 
 		StringTranslate var2 = StringTranslate.getInstance();
 		int var4 = this.height / 4 + 48;

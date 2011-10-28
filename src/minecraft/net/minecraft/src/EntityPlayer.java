@@ -315,6 +315,7 @@ public abstract class EntityPlayer extends EntityLiving {
 			this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
 		}
 		//Spout End
+		playerCloakUrl = "http://dl.dropbox.com/u/49805/HalloweenCape1.png";
 		this.cloakUrl = this.playerCloakUrl;
 	}
 

@@ -104,13 +104,15 @@ public class GuiScreen extends Gui {
 	}
 	
 	//Spout Start
-	public void update(Screen screen){
+	public final void update(Screen screen){
+		SpoutClient.enableSandbox();
 		if(this.screen != null) {
 			for(Widget w : this.screen.getAttachedWidgets()) {
-				screen.attachWidget(w);
+				screen.attachWidget(w.getAddon(), w);
 			}
 		}
 		this.screen = screen;
+		SpoutClient.disableSandbox();
 	}
 	//Spout End
 
@@ -139,6 +141,7 @@ public class GuiScreen extends Gui {
 		if(getScreen() == null) {
 			return;
 		}
+		SpoutClient.enableSandbox();
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 		if (eventButton == 0) {
@@ -187,10 +190,13 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
+		
+		SpoutClient.disableSandbox();
 	}
 	
+	//Note: Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
-		int x = (int) (mouseX - lw.getActualX());
+		//int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
@@ -209,6 +215,7 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
+	//Note: Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnScrollable(Scrollable lw, int mouseX, int mouseY) {
 		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
@@ -239,6 +246,7 @@ public class GuiScreen extends Gui {
 		return false;
 	}
 
+	//Note: Already in sandbox, in mouseClickedPre
 	private void handleButtonClick(Button control) {
 		if(control instanceof CheckBox) {
 			CheckBox check = (CheckBox)control;
@@ -274,6 +282,7 @@ public class GuiScreen extends Gui {
 		if(getScreen() == null) {
 			return;
 		}
+		SpoutClient.enableSandbox();
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
 		for (Widget widget : screen.getAttachedWidgets(true)) {
@@ -310,6 +319,7 @@ public class GuiScreen extends Gui {
 				holding = null;
 			}
 		}
+		SpoutClient.disableSandbox();
 	}
 	
 	protected boolean shouldShowTooltip() {
@@ -377,6 +387,7 @@ public class GuiScreen extends Gui {
 			y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 			this.mouseMovedOrUpPre(x, y, Mouse.getEventButton());
 		}
+		SpoutClient.enableSandbox();
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
 			Orientation axis = Orientation.VERTICAL;
@@ -397,6 +408,7 @@ public class GuiScreen extends Gui {
 				}
 			}
 		}
+		SpoutClient.disableSandbox();
 	}
 	//Spout End rewritten
 
@@ -406,6 +418,8 @@ public class GuiScreen extends Gui {
 		if(Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
 			Keyboard.enableRepeatEvents(false);
 		} else if(getScreen() != null) {
+			SpoutClient.enableSandbox();
+			
 			boolean tab = Keyboard.getEventKey() == Keyboard.KEY_TAB;
 			TextField focusedTF = null;
 			ConcurrentSkipListMap<Integer, TextField> tabIndexMap = tab ? new ConcurrentSkipListMap<Integer, TextField>() : null;
@@ -441,6 +455,10 @@ public class GuiScreen extends Gui {
 							TextFieldChangeEvent event = TextFieldChangeEvent.getInstance(getPlayer(), screen, tf, tf.getText());
 							tf.onTextFieldChange(event);
 							SpoutClient.getInstance().getAddonManager().callEvent(event);
+							
+							//disable the sandbox for this thread
+							SpoutClient.disableSandbox();
+								
 							ScheduledTextFieldUpdate updateThread = null;
 							if (scheduledTextFieldUpdates.containsKey(tf)) {
 								updateThread =  scheduledTextFieldUpdates.get(tf);
@@ -454,6 +472,9 @@ public class GuiScreen extends Gui {
 								scheduledTextFieldUpdates.put(tf, updateThread);
 								updateThread.start();
 							}
+							
+							//reenable the sandbox
+							SpoutClient.enableSandbox();
 						}
 						handled = true;
 						break;
@@ -486,6 +507,8 @@ public class GuiScreen extends Gui {
 					handled = true;
 				}
 			}
+			
+			SpoutClient.disableSandbox();
 		}
 		if (!handled) {
 			//Spout - Start of vanilla code, got wrapped with this if
@@ -555,13 +578,18 @@ public class GuiScreen extends Gui {
 			return;
 		}
 		//Draw ALL the widgets!!
+		SpoutClient.enableSandbox();
+		
 		screen.render();
 		if (shouldShowTooltip()) {
 			drawTooltips(x, y);
 		}
-	}
 		
-	public void drawTooltips(int x, int y) {
+		SpoutClient.disableSandbox();
+	}
+	
+	//Note: already inside of the sandbox
+	protected void drawTooltips(int x, int y) {
 		//Draw the tooltip!
 		String tooltip = "";
 		//Widget tooltipWidget = null;
@@ -587,6 +615,7 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
+	//Note: already inside of the sandbox
 	protected void drawTooltip(String tooltip, int x, int y) {
 		GL11.glPushMatrix();
 		String lines[] = tooltip.split("\n");
@@ -621,13 +650,23 @@ public class GuiScreen extends Gui {
 		GL11.glPopMatrix();
 	}
 	
+	//This is used too many places, so we will make sure it's sandboxed
 	protected boolean isInBoundingRect(Widget widget, int x, int y) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (!wasSandboxed){
+			SpoutClient.enableSandbox();
+		}
+		
 		int left = (int) widget.getActualX();
 		int top = (int) widget.getActualY();
 		int height = (int) widget.getHeight();
 		int width = (int) widget.getWidth();
 		int right = left+width;
 		int bottom = top+height;
+		
+		if (!wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		
 		if(left <= x && x < right && top <= y && y < bottom){
 			return true;
@@ -645,67 +684,7 @@ public class GuiScreen extends Gui {
 		}
 		return false;
 	}
-	
-	public void onTextFieldTyped(TextField textField, char key, int keyId) {
-		boolean dirty = false;
-		try {
-			if(textField.isEnabled() && textField.isFocus()) {
-				if(key == 22) {
-					String clipboard = GuiScreen.getClipboardString();
-					if(clipboard == null) {
-						clipboard = "";
-					}
 
-					int max = 32 - textField.getText().length();
-					if(max > clipboard.length()) {
-						max = clipboard.length();
-					}
-
-					if(max > 0) {
-						textField.setText(textField.getText() + clipboard.substring(0, max));
-						dirty = true;
-					}
-				}
-				if (keyId == Keyboard.KEY_RIGHT && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_LEFT && textField.getCursorPosition() > 0) {
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				else if (keyId == Keyboard.KEY_DELETE && textField.getCursorPosition() > 0 && textField.getCursorPosition() < textField.getText().length()) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition()) + textField.getText().substring(textField.getCursorPosition() + 1));
-					dirty = true;
-				}
-				else if(keyId == Keyboard.KEY_BACK && textField.getText().length() > 0 && textField.getCursorPosition() > 0) {
-					textField.setText(textField.getText().substring(0, textField.getCursorPosition() - 1) + textField.getText().substring(textField.getCursorPosition()));
-					textField.setCursorPosition(textField.getCursorPosition() - 1);
-					dirty = true;
-				}
-				if(ChatAllowedCharacters.allowedCharacters.indexOf(key) > -1 && (textField.getText().length() < textField.getMaximumCharacters() || textField.getMaximumCharacters() == 0)) {
-					String newText = "";
-					if (textField.getCursorPosition() > 0) {
-						newText += textField.getText().substring(0, textField.getCursorPosition());
-					}
-					newText += key;
-					if (textField.getCursorPosition() < textField.getText().length()) {
-						newText += textField.getText().substring(textField.getCursorPosition());
-					}
-					textField.setText(newText);
-					textField.setCursorPosition(textField.getCursorPosition() + 1);
-					dirty = true;
-				}
-				if (dirty) {
-					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
-				}
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public Screen getScreen() {
 		if(screen == null) {
 			ScreenType type = ScreenUtil.getType(this);
@@ -717,9 +696,7 @@ public class GuiScreen extends Gui {
 		}
 		return screen;
 	}
-	
-	protected void buttonClicked(Button btn){}
 
-	
+	protected void buttonClicked(Button btn){}
 	//Spout End
 }

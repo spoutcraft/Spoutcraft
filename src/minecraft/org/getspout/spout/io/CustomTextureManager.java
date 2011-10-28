@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
@@ -37,14 +38,22 @@ public class CustomTextureManager {
 	}
 	
 	public static void downloadTexture(String plugin, String url) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		String fileName = FileUtil.getFileName(url);
 		if (!FileUtil.isImageFile(fileName)) {
 			System.out.println("Rejecting download of invalid texture: " + fileName);
-			return;
 		}
-		if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
+		else if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
 			Download download = new Download(fileName, FileUtil.getTextureCacheDirectory(), url, null);
 			FileDownloadThread.getInstance().addToDownloadQueue(download);
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 	}
 	
@@ -53,32 +62,67 @@ public class CustomTextureManager {
 	}
 	
 	public static boolean isTextureDownloaded(String url) {
-		return (getTextureFile(null, url)).exists();
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		boolean result = getTextureFile(null, url).exists();
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return result;
 	}
 	
-	public static boolean isTextureDownloaded(String plugin, String url) {
-		return (getTextureFile(plugin, url)).exists();
+	public static boolean isTextureDownloaded(String addon, String url) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		boolean result = getTextureFile(addon, url).exists();
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return result;
 	}
 	
 	public static File getTextureFile(String plugin, String url) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		String fileName = FileUtil.getFileName(url);
 		File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
+		File result = new File(FileUtil.getTextureCacheDirectory(), fileName);
 		if (cache != null) {
-			return cache;
+			result = cache;
 		}
 		if (plugin != null) {
 			File file = FileUtil.findTextureFile(plugin, fileName);
 			if (file != null) {
 				cacheTextureFiles.put(plugin + File.separator + fileName, file);
-				return file;
+				result = file;
 			}
 		}
-		return new File(FileUtil.getTextureCacheDirectory(), fileName);
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return result;
 	}
 	
 	public static Texture getTextureFromPath(String path) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		Texture texture = null;
 		if (!textures.containsKey(path)) {
-			Texture texture = null;
 			try {
 				//System.out.println("Loading Texture: " + path);
 				FileInputStream stream = new FileInputStream(path);
@@ -90,16 +134,30 @@ public class CustomTextureManager {
 			catch (IOException e) { }
 			if (texture == null) {
 				System.out.println("Error loading texture: " + path);
-				return null;
 			}
-			textures.put(path, texture);
+			else {
+				textures.put(path, texture);
+			}
 		}
-		return textures.get(path);
+		else {
+			texture = textures.get(path);
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		
+		return texture;
 	}
 	
 	public static Texture getTextureFromJar(String path) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		Texture texture = null;
 		if (!textures.containsKey(path)) {
-			Texture texture = null;
 			try {
 				//System.out.println("Loading Texture: " + path);
 				InputStream stream = Minecraft.class.getResourceAsStream(path);
@@ -111,13 +169,20 @@ public class CustomTextureManager {
 				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../.."+ path);
 				if(texture == null) {
 					System.out.println("Error loading texture: " + path);
-					return null;
 				}
-				return texture;
 			}
-			textures.put(path, texture);
+			else {
+				textures.put(path, texture);
+			}
 		}
-		return textures.get(path);
+		else {
+			texture = textures.get(path);
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return texture;
 	}
 	
 	public static void resetTextures() {
@@ -154,13 +219,28 @@ public class CustomTextureManager {
 		if (!isTextureDownloaded(plugin, url)) {
 			return null;
 		}
+		
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File download = new File(FileUtil.getTextureCacheDirectory(), FileUtil.getFileName(url));
 		try {
-			return download.getCanonicalPath();
+			String path = download.getCanonicalPath();
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
+			return path;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			return null;
 		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		
+		return null;
 	}
 }

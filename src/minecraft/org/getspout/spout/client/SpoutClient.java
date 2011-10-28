@@ -17,6 +17,7 @@
 package org.getspout.spout.client;
 
 import java.io.File;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,6 +62,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
+import org.spoutcraft.spoutcraftapi.addon.SimpleSecurityManager;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.Command;
@@ -77,20 +79,29 @@ import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
+@SuppressWarnings("deprecation")
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
-	private static Thread dataMiningThread = new DataMiningThread();
+	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final SpoutVersion clientVersion = new SpoutVersion(0);
-	private SpoutVersion server = new SpoutVersion();
-	private SimpleItemManager itemManager = new SimpleItemManager();
-	private SimpleSkyManager skyManager = new SimpleSkyManager();
-	private ChatManager chatManager = new ChatManager();
-	private PacketManager packetManager = new PacketManager();
-	private EntityManager entityManager = new SimpleEntityManager();
-	private BiomeManager biomeManager = new SimpleBiomeManager();
-	private MaterialManager materialManager = new SimpleMaterialManager();
+	
+	private final SimpleItemManager itemManager = new SimpleItemManager();
+	private final SimpleSkyManager skyManager = new SimpleSkyManager();
+	private final ChatManager chatManager = new ChatManager();
+	private final PacketManager packetManager = new PacketManager();
+	private final EntityManager entityManager = new SimpleEntityManager();
+	private final BiomeManager biomeManager = new SimpleBiomeManager();
+	private final MaterialManager materialManager = new SimpleMaterialManager();
+	private final RenderDelegate render = new MCRenderDelegate();
+	private final KeyBindingManager bindingManager = new SimpleKeyBindingManager();
+	private final SimpleCommandMap commandMap = new SimpleCommandMap(this);
+	private final Logger log = Logger.getLogger(SpoutClient.class.getName());
+	private final SimpleAddonManager addonManager;
+	private final SimpleSecurityManager securityManager;
+	private final double securityKey;
 	private long tick = 0;
 	private Thread clipboardThread = null;
+	private SpoutVersion server = new SpoutVersion();
 	public ClientPlayer player = null;
 	private boolean sky = false;
 	private boolean clearwater = false;
@@ -99,14 +110,16 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean time = false;
 	private boolean coords = false;
 	private boolean entitylabel = false;
-	
-	private RenderDelegate render = new MCRenderDelegate();
-	private KeyBindingManager bindingManager = new SimpleKeyBindingManager();
-	private SimpleCommandMap commandMap = new SimpleCommandMap(this);
-	private SimpleAddonManager addonManager = new SimpleAddonManager(this, commandMap);
-	private Logger log = Logger.getLogger(SpoutClient.class.getName());
 	private Mode clientMode = Mode.Menu;
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
+	
+	
+	private SpoutClient() {
+		securityKey = (new Random()).nextDouble();
+		securityManager = new SimpleSecurityManager(securityKey);
+		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
+		System.setSecurityManager(securityManager);
+	}
 	
 	static {
 		dataMiningThread.start();
@@ -121,7 +134,8 @@ public class SpoutClient extends PropertyObject implements Client {
 			instance = new SpoutClient();
 			Spoutcraft.setClient(instance);
 			
-			ServerAddon addon = new ServerAddon("Spoutcraft", Spoutcraft.getVersion().toString(), null);
+			//must be done after construtor
+			ServerAddon addon = new ServerAddon("Spoutcraft", clientVersion.toString(), null);
 			instance.addonManager.addFakeAddon(addon);
 		}
 		return instance;
@@ -129,6 +143,18 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public static SpoutVersion getClientVersion() {
 		return clientVersion;
+	}
+	
+	public static void enableSandbox() {
+		getInstance().securityManager.lock(getInstance().securityKey);
+	}
+	
+	public static void disableSandbox() {
+		getInstance().securityManager.unlock(getInstance().securityKey);
+	}
+	
+	public static boolean isSandboxed() {
+		return getInstance().securityManager.isLocked();
 	}
 	
 	public SpoutVersion getServerVersion() {
@@ -204,11 +230,21 @@ public class SpoutClient extends PropertyObject implements Client {
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
 		
-		ConfigReader.sky = ConfigReader.sky && isSkyCheat();
-		ConfigReader.clearWater = ConfigReader.clearWater && isClearWaterCheat();
-		ConfigReader.stars = ConfigReader.stars && isStarsCheat();
-		ConfigReader.weather = ConfigReader.weather && isWeatherCheat();
-		ConfigReader.time = ConfigReader.time != 0 && isTimeCheat() ? ConfigReader.time : 0;
+		if (!isSkyCheat()) {
+			ConfigReader.sky = true;
+		}
+		if (!isClearWaterCheat()) {
+			ConfigReader.clearWater = false;
+		}
+		if (!isStarsCheat()) {
+			ConfigReader.stars = true;
+		}
+		if (!isWeatherCheat()) {
+			ConfigReader.weather = true;
+		}
+		if (!isTimeCheat()) {
+			ConfigReader.time = 0;
+		}
 	}
 	
 	public boolean isSpoutEnabled() {

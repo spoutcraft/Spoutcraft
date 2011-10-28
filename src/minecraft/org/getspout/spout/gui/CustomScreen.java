@@ -39,12 +39,15 @@ public class CustomScreen extends GuiScreen {
 	}
 	
 	public void drawScreen(int x, int y, float z) {
+		SpoutClient.enableSandbox();
 		if(screen instanceof PopupScreen){
 			if (!((PopupScreen)screen).isTransparent()) {
 				this.drawDefaultBackground();
 			}
 		}
+		
 		bg.setVisible(screen.isBgVisible());
-		drawWidgets(x, y, z);
+		SpoutClient.disableSandbox();
+		drawWidgets(x, y, z); //already sandboxed
 	}
 }

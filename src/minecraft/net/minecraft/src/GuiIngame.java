@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GL11;
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.player.ChatManager;
 //Spout End
@@ -98,6 +97,9 @@ public class GuiIngame extends Gui {
 		GuiIngame.rand.setSeed((long) (this.updateCounter * 312871));
 		int var15;
 		int var17;
+		
+		//better safe than sorry
+		SpoutClient.enableSandbox();
 
 		// Hunger Bar Begin
 		mainScreen.getHungerBar().render();
@@ -118,6 +120,8 @@ public class GuiIngame extends Gui {
 		// Exp Bar Begin
 		mainScreen.getExpBar().render();
 		// Exp Bar End
+		
+		SpoutClient.disableSandbox();
 
 		GL11.glDisable(3042 /* GL_BLEND */);
 		GL11.glEnable('\u803a');
@@ -149,7 +153,9 @@ public class GuiIngame extends Gui {
 			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		}
 		
+		SpoutClient.enableSandbox();
 		mainScreen.render();
+		SpoutClient.disableSandbox();
 		
 		String var23;
 		if(this.mc.gameSettings.showDebugInfo) {
@@ -221,6 +227,7 @@ public class GuiIngame extends Gui {
 			}
 		}
 
+		SpoutClient.enableSandbox();
 		boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
 		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
 
@@ -260,6 +267,7 @@ public class GuiIngame extends Gui {
 				}
 			}
 		}
+		SpoutClient.disableSandbox();
 
 		GL11.glPopMatrix();
 		
