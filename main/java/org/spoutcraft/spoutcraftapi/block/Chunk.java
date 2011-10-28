@@ -16,7 +16,6 @@
  */
 package org.spoutcraft.spoutcraftapi.block;
 
-import org.spoutcraft.spoutcraftapi.NotImplemented;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
