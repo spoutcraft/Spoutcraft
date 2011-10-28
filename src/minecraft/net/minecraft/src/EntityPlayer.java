@@ -308,14 +308,17 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void updateCloak() {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
-		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
+		String easterEgg = org.getspout.spout.EasterEggs.getEasterEggCape();
+		if (easterEgg != null) {
+			playerCloakUrl = easterEgg;	
+		}
+		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
 			this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
 		}
 		//Spout End
-		playerCloakUrl = "http://dl.dropbox.com/u/49805/HalloweenCape1.png";
 		this.cloakUrl = this.playerCloakUrl;
 	}
 

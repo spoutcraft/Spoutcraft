@@ -86,7 +86,7 @@ public class RenderPlayer extends RenderLiving {
 				String var12 = var1.username;
 				//Spout Start
 				String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
-				int color = EasterEggs.getEastEggTitleColor();
+				int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
 				if (title != null) {
 					var12 = title;

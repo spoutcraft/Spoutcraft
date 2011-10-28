@@ -41,7 +41,7 @@ public final class EasterEggs {
 		return null;
 	}
 	
-	public static int getEastEggTitleColor() {
+	public static int getEasterEggTitleColor() {
 		DateTime now = DateTime.now();
 		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
 			return 0xFF5E00; //orange
@@ -51,9 +51,18 @@ public final class EasterEggs {
 	
 	public static String getSplashTextEasterEgg() {
 		DateTime now = DateTime.now();
-		if (true || halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
+		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
 			return "Happy Halloween!";
 		}
 		return null;
+	}
+	
+	public static String getEasterEggCape() {
+		DateTime now = DateTime.now();
+		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
+			return "http://cdn.getspout.org/img/cape/halloween1.png";
+		}
+		return null;
+		
 	}
 }
