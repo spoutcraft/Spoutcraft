@@ -95,7 +95,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final RenderDelegate render = new MCRenderDelegate();
 	private final KeyBindingManager bindingManager = new SimpleKeyBindingManager();
 	private final SimpleCommandMap commandMap = new SimpleCommandMap(this);
-	private final Logger log = Logger.getLogger(SpoutClient.class.getName());
+	private final Logger log = new SpoutcraftLogger();
 	private final SimpleAddonManager addonManager;
 	private final SimpleSecurityManager securityManager;
 	private final double securityKey;
