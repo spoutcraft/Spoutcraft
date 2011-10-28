@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.spoutcraftapi.util.FixedVector;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
@@ -34,7 +35,7 @@ public interface Entity extends PropertyInterface {
 
 	public void setVelocity(Vector velocity);
 
-	public Vector getVelocity();
+	public FixedVector getVelocity();
 
 	public World getWorld();
 
@@ -44,7 +45,7 @@ public interface Entity extends PropertyInterface {
 
 	public boolean teleport(Entity destination);
 
-	public List<org.spoutcraft.spoutcraftapi.entity.Entity> getNearbyEntities(double x, double y, double z);
+	public List<Entity> getNearbyEntities(double x, double y, double z);
 
 	public int getEntityId();
 
