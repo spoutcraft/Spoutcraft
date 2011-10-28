@@ -198,16 +198,27 @@ public class CustomTextureManager {
 	}
 	
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		File texture = getTextureFile(plugin, url);
-		if (!texture.exists()) {
-			return null;
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
 		}
 		try {
-			return getTextureFromPath(texture.getCanonicalPath());
+			File texture = getTextureFile(plugin, url);
+			if (!texture.exists()) {
+				return null;
+			}
+			try {
+				return getTextureFromPath(texture.getCanonicalPath());
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return null;
+		finally {
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 	

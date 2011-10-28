@@ -19,6 +19,7 @@ package org.getspout.spout.gui.error;
 import java.awt.Desktop;
 import java.net.URL;
 
+import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
@@ -128,11 +129,15 @@ class IgnoreErrorButton extends GenericButton {
 
 class ReportErrorButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
+		SpoutClient.disableSandbox();
 		try {
 			URL url =  new URL("https://github.com/SpoutDev/Spout/issues/new");
 			Desktop.getDesktop().browse(url.toURI());
 		}
 		catch (Exception e) { }
+		finally {
+			SpoutClient.enableSandbox();
+		}
 		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
 	}
 }
