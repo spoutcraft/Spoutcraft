@@ -22,36 +22,88 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 
 public interface Chunk {
 
+	/**
+	 * Gets a block from this chunk
+	 *
+	 * @param x 0-15
+	 * @param y 0-127
+	 * @param z 0-15
+	 * @return the Block
+	 */
 	public Block getBlockAt(int x, int y, int z);
 
-	@NotImplemented
+	/**
+	 * Gets the world containing this chunk
+	 *
+	 * @return Parent World
+	 */
 	public World getWorld();
 
-	@NotImplemented
+	/**
+	 * Gets the X-coordinate of this chunk
+	 *
+	 * @return X-coordinate
+	 */
 	public int getX();
 
-	@NotImplemented
+	/**
+	 * Gets the Z-coordinate of this chunk
+	 *
+	 * @return Z-coordinate
+	 */
 	public int getZ();
 
-	@NotImplemented
+	/**
+	 * Checks if the chunk is loaded.
+	 *
+	 * @return True if it is loaded.
+	 */
 	public boolean isLoaded();
 
-	@NotImplemented
+	/**
+	 * Loads the chunk.
+	 *
+	 * @return true if the chunk has loaded successfully, otherwise false
+	 */
 	public boolean load();
 
-	@NotImplemented
+
+	/**
+	 * Loads the chunk.
+	 *
+	 * @param generate Whether or not to generate a chunk if it doesn't already exist
+	 * @return true if the chunk has loaded successfully, otherwise false
+	 */
 	public boolean load(boolean generate);
 
-	@NotImplemented
+	/**
+	 * Unloads and optionally saves the Chunk
+	 *
+	 * @return true if the chunk has unloaded successfully, otherwise false
+	 */	 
 	public boolean unload();
 
-	@NotImplemented
+	/**
+	 * Unloads and optionally saves the Chunk
+	 *
+	 * @param save Controls whether the chunk is saved
+	 * @return true if the chunk has unloaded successfully, otherwise false
+	 */
 	public boolean unload(boolean save);
 
-	@NotImplemented
+	/**
+	 * Unloads and optionally saves the Chunk
+	 *
+	 * @param save Controls whether the chunk is saved
+	 * @param safe Controls whether to unload the chunk when players are nearby
+	 * @return true if the chunk has unloaded successfully, otherwise false
+	 */
 	public boolean unload(boolean save, boolean safe);
 
-	@NotImplemented
+	/**
+	 * Get a list of all entities in the chunk.
+	 * @return The entities.
+	 */
 	public Entity[] getEntities();
 
 }
