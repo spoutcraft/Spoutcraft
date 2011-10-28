@@ -1,5 +1,8 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public class GenericOverlayScreen extends GenericScreen implements OverlayScreen {
 	ScreenType screenType;
 

@@ -20,16 +20,13 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * @author alta189
- * 
- */
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface SPOnly {
+public @interface UnsafeConstructor {
 	public String author() default "SpoutDev";
 
 	public String version() default "1.0";
 
-	public String shortDescription() default "Indicates that the function or event only is used or runs when the client is in Single Player";
+	public String shortDescription() default "Indicates that the constructor executes potentionally unsafe addon code and should be sandboxed before calling";
+
 }

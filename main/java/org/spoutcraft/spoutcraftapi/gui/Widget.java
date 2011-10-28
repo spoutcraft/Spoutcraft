@@ -21,13 +21,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
+@UnsafeClass
 public interface Widget{
 	
 	/**
 	 * The number of bytes of data serialized when sending or receiving data.
-	 * @return
+	 * @return number of bytes serialized in this widget
 	 */
 	public int getNumBytes();
 

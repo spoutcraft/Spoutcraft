@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
+
 public interface MinecraftFont {
 
 	/**

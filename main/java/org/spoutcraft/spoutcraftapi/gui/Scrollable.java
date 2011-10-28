@@ -1,5 +1,8 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public interface Scrollable extends Control {
 	/**
 	 * Renders the contents of the Scrollable.

@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface MPOnly {
-	public String author() default "alta189";
+	public String author() default "SpoutDev";
 
 	public String version() default "1.0";
 

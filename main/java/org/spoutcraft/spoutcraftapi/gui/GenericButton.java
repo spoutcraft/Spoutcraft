@@ -21,9 +21,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@UnsafeClass
 public class GenericButton extends GenericControl implements Button {
 
 	protected GenericLabel label = new GenericLabel();

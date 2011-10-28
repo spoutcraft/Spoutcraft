@@ -10,8 +10,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
+@UnsafeClass
 public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
 	protected int playerId;

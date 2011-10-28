@@ -19,16 +19,16 @@ package org.spoutcraft.spoutcraftapi.gui;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public class RenderUtil {
+public final class RenderUtil {
 	
 	/**
-	 * Draws a polygon that approximates a circle, for large values of numSegments
+	 * Draws a symmetrical polygon. Large values of segments (>50) approximate a circle.
 	 * @param cx x coordinate or the center of the circle
 	 * @param cy y coordinate for the center of the circle
 	 * @param r radius of the circle
 	 * @param numSegments to draw (number of sides to the polygon. Large values > 50 approximate a circle)
 	 */
-	public static void drawCircle(float cx, float cy, float r, int numSegments) { 
+	public static void drawSymmetricalPolygon(float cx, float cy, float r, int numSegments) { 
 		float theta = 2 * 3.1415926F / ((float)numSegments); 
 		float c = (float) Math.cos(theta);//precalculate the sine and cosine
 		float s = (float) Math.sin(theta);
@@ -123,7 +123,4 @@ public class RenderUtil {
 		tessellator.addVertexWithUV((double) x, (double) y, (double) zLevel, (double) ((float) (var3) * var7), (double) ((float) (modalX) * var8));
 		tessellator.draw();
 	}
-	
-	// Spout End
-
 }

@@ -21,8 +21,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@UnsafeClass
 public class GenericGradient extends GenericWidget implements Gradient {
 
 	protected Color color1 = new Color(0.06F, 0.06F, 0.06F, 0.75F), color2 = new Color(0.06F, 0.06F, 0.06F, 0.82F);

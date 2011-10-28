@@ -26,8 +26,10 @@ import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
+@UnsafeClass
 public abstract class GenericScreen extends GenericWidget implements Screen {
 	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
 	protected int playerId;

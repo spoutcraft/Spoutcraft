@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class HealthBar extends GenericWidget {
 	private int icons = 10;
 	private int iconOffset = 8;

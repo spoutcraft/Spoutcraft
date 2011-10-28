@@ -21,8 +21,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@UnsafeClass
 public class ChatBar extends GenericWidget implements Widget {
 	private int cursorX = 4, cursorY = 240;
 	protected Color textColor = new Color((short) 255, (short) 255, (short) 255, (short) 0);

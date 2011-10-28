@@ -19,7 +19,9 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class ExpBar extends GenericWidget {
 
 	public ExpBar() {

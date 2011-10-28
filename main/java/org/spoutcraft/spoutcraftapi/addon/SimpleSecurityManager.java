@@ -23,11 +23,14 @@ import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.security.Permission;
 
-public class SimpleSecurityManager extends SecurityManager {
+public final class SimpleSecurityManager extends SecurityManager {
 	private final double key;
 	private boolean locked = false;
 
-	protected SimpleSecurityManager(double key) {
+	public SimpleSecurityManager(double key) {
+		if (System.getSecurityManager() instanceof SimpleSecurityManager) {
+			throw new SecurityException("Warning, Duplicate SimpleSecurityManager created!");
+		}
 		this.key = key;
 	}
 
@@ -53,7 +56,8 @@ public class SimpleSecurityManager extends SecurityManager {
 
 	private void checkAccess() {
 		if (isLocked()) {
-			throw new SecurityException("Access is restricted!");
+			//throw new SecurityException("Access is restricted!");
+			Thread.dumpStack();
 		}
 	}
 
@@ -214,7 +218,7 @@ public class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
-		checkAccess();
+		checkAccess(); //TODO check launcher options?
 	}
 
 	@Override

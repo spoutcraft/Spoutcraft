@@ -18,7 +18,9 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class DirtBackground extends GenericWidget{
 
 	public WidgetType getType() {

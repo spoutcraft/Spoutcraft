@@ -20,6 +20,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public class GenericPopup extends GenericScreen implements PopupScreen {
 	protected boolean transparent = false;
 	protected double mouseX, mouseY;

@@ -19,10 +19,12 @@ package org.spoutcraft.spoutcraftapi.gui;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
+@UnsafeClass
 public class GenericListWidgetItem extends PropertyObject implements PropertyInterface, ListWidgetItem {
 	private String title = null, text = null, iconUrl = null;
 	private ListWidget parent;

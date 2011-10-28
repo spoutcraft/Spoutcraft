@@ -22,8 +22,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
+@UnsafeClass
 public class GenericItemWidget extends GenericWidget implements ItemWidget {
 	protected int material = -1;
 	protected short data = -1;

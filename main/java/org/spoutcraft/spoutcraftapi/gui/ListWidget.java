@@ -1,5 +1,8 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
+
+@UnsafeClass
 public interface ListWidget extends Scrollable {
 	/**
 	 * Get all the items from the list widget

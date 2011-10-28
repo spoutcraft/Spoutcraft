@@ -21,7 +21,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
+@UnsafeClass
 public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 	private int entityId = 0;
 
