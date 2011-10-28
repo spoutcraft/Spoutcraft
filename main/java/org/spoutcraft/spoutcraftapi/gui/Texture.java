@@ -35,5 +35,18 @@ public interface Texture extends Widget {
 	 * @return texture
 	 */
 	public Texture setUrl(String Url);
+	
+	/**
+	 * Gets if the texture draws the full alpha channel instead of just using a bit-mask.
+	 * @return if it's drawing the alpha channel
+	 */
+	public boolean isDrawingAlphaChannel();
+	
+	/**
+	 * Sets if the texture should draw the full alpha channel instead of just using a bit-mask.
+	 * @param draw to set the drawing state
+	 * @return texture
+	 */
+	public Texture setDrawAlphaChannel(boolean draw);
 
 }

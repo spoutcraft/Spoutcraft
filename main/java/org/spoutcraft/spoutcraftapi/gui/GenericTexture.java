@@ -27,6 +27,7 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 @UnsafeClass
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String url = null;
+	protected boolean drawAlpha = false;
 
 	public GenericTexture() {
 
@@ -42,23 +43,25 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getUrl());
+		return super.getNumBytes() + PacketUtil.getNumBytes(getUrl()) + 1;
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 0;
+		return super.getVersion() + 1;
 	}
 
 	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		this.setUrl(PacketUtil.readString(input));
+		this.setDrawAlphaChannel(input.readBoolean());
 	}
 
 	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		PacketUtil.writeString(output, getUrl());
+		output.writeBoolean(isDrawingAlphaChannel());
 	}
 
 	public void render() {
@@ -79,5 +82,14 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	public Texture copy() {
 		return ((Texture)super.copy()).setUrl(getUrl());
+	}
+
+	public boolean isDrawingAlphaChannel() {
+		return drawAlpha;
+	}
+
+	public Texture setDrawAlphaChannel(boolean draw) {
+		this.drawAlpha = draw;
+		return this;
 	}
 }
