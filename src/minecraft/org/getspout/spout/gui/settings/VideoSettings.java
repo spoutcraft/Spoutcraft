@@ -287,6 +287,12 @@ public class VideoSettings extends GuiScreen{
 		
 		top += 22;
 		
+		control = new MipMapButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		top += 22;
+		
 		top += 5;
 		
 		label = new GenericLabel(ChatColor.RED + "Danger Area");

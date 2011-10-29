@@ -204,7 +204,9 @@ public class GuiScreen extends Gui {
 			this.mc.sndManager.playSoundFX(sound, 1.0F, 1.0F);
 		}
 		finally {
-			SpoutClient.enableSandbox();
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 	
@@ -370,11 +372,13 @@ public class GuiScreen extends Gui {
 		this.width = var2;
 		this.height = var3;
 		this.controlList.clear();
+		SpoutClient.enableSandbox();
 		if(!(this instanceof CustomScreen) && screen != null){
 			for(Widget w:screen.getAttachedWidgets()){
 				screen.removeWidget(w);
 			}
 		}
+		SpoutClient.disableSandbox();
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		this.initGui();
 	}

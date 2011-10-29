@@ -34,6 +34,7 @@ import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.PacketDecompressionThread;
 import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.config.ConfigReader;
+import org.getspout.spout.config.MipMapUtils;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.entity.CraftEntity;
 import org.getspout.spout.entity.EntityManager;
@@ -261,7 +262,13 @@ public class SpoutClient extends PropertyObject implements Client {
 		tick++;
 		FileDownloadThread.getInstance().onTick();
 		PacketDecompressionThread.onTick();
+		
+		enableSandbox();
 		player.getMainScreen().onTick();
+		disableSandbox();
+		
+		MipMapUtils.onTick();
+		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 		}
@@ -272,6 +279,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public void onWorldExit() {
+		disableSandbox();
 		FileUtil.deleteTempDirectory();
 		CustomTextureManager.resetTextures();
 		CRCManager.clear();
@@ -308,7 +316,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		SpoutcraftChunk.loadedChunks.clear();
 		PacketDecompressionThread.startThread();
-		
+		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 	}
 	
@@ -460,7 +468,27 @@ public class SpoutClient extends PropertyObject implements Client {
 		return bindingManager;
 	}
 
-	public String getAddonFolder() {
-		return addonFolder;
+	public File getAddonFolder() {
+		return new File(addonFolder);
+	}
+	
+	public File getAudioCache() {
+		return FileUtil.getAudioCacheDirectory();
+	}
+	
+	public File getTemporaryCache() {
+		return FileUtil.getTempDirectory();
+	}
+	
+	public File getTextureCache() {
+		return FileUtil.getTextureCacheDirectory();
+	}
+	
+	public File getTexturePackFolder() {
+		return FileUtil.getTexturePackDirectory();
+	}
+	
+	public File getStatsFolder() {
+		return FileUtil.getStatsDirectory();
 	}
 }
