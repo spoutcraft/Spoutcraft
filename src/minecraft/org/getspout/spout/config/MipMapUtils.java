@@ -35,6 +35,7 @@ public class MipMapUtils {
 	
 	
 	public static void initializeMipMaps() {
+		GL11.glPushMatrix();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 		GL11.glBindTexture(3553, terrain);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
@@ -58,10 +59,12 @@ public class MipMapUtils {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
 		}
 		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
+		GL11.glPopMatrix();
 	}
 	
 	public static void onTick() {
 		if (updateTerrain) {
+			GL11.glPushMatrix();
 			int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(3553, terrain);
 			
@@ -81,9 +84,10 @@ public class MipMapUtils {
 
 				if (currentFade <= 0.0f) {
 					GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-					GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
+					GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F); //default blend state
 
 					updateTerrain = false;
+					GL11.glPopMatrix();
 					return;
 				}
 				else {
@@ -100,7 +104,8 @@ public class MipMapUtils {
 					EXTFramebufferObject.glGenerateMipmapEXT(GL11.GL_TEXTURE_2D);
 					break;
 			}
-			GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F);
+			GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F); //more strict blend state
+			GL11.glPopMatrix();
 		}
 	}
 }

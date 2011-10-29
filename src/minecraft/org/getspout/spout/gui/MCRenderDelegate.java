@@ -465,6 +465,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	
 	public void render(GenericCheckBox checkBox) {
 		if(checkBox.isVisible()){
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
 			Texture checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
