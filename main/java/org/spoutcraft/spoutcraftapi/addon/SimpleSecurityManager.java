@@ -98,7 +98,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	@Override
 	public void checkDelete(String file) {
 	 	if (isLocked()) {
-			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+			if (!hasFileAccess(file)) {
 				throw new SecurityException("Access is restricted! Addon tried to delete " + file);
 			}
 		}
@@ -191,14 +191,13 @@ public final class SimpleSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(String file) {
 		if (isLocked()) {
-			if (file.endsWith(".class")) {
+			if (file.endsWith(".class") || file.endsWith(".jar")) {
 				return; //class loader will have already decided it's safe if we got here
 			}
-			if (file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
-				return; //allow access
+			if (!hasFileAccess(file)) {
+				System.out.println("Reading from " + file);
+				throw new SecurityException("Access is restricted! Addon tried to read " + file);
 			}
-			System.out.println("Reading from " + file);
-			throw new SecurityException("Access is restricted! Addon tried to read " + file);
 		}
 	}
 
@@ -235,10 +234,32 @@ public final class SimpleSecurityManager extends SecurityManager {
 	@Override
 	public void checkWrite(String file) {
 		if (isLocked()) {
-			if (!file.startsWith(Spoutcraft.getClient().getAddonFolder())) {
+			if (!hasFileAccess(file)) {
 				System.out.println("Writing to " + file);
 				throw new SecurityException("Access is restricted! Addon tried to write to " + file);
 			}
 		}
+	}
+	
+	public static boolean hasFileAccess(String file) {
+		if (file.startsWith(Spoutcraft.getAddonFolder().getPath())) {
+			return true; //allow access
+		}
+		if (file.startsWith(Spoutcraft.getAudioCache().getPath())) {
+			return true; //allow access
+		}
+		if (file.startsWith(Spoutcraft.getTemporaryCache().getPath())) {
+			return true; //allow access
+		}
+		if (file.startsWith(Spoutcraft.getTextureCache().getPath())) {
+			return true; //allow access
+		}
+		if (file.startsWith(Spoutcraft.getTexturePackFolder().getPath())) {
+			return true; //allow access
+		}
+		if (file.startsWith(Spoutcraft.getStatsFolder().getPath())) {
+			return true; //allow access
+		}
+		return false;
 	}
 }

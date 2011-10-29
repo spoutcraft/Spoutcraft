@@ -149,8 +149,28 @@ public final class Spoutcraft {
 		return client.isSpoutEnabled();
 	}
 	
-	public static String getAddonFolder() {
+	public static File getAddonFolder() {
 		return client.getAddonFolder();
+	}
+	
+	public static File getAudioCache() {
+		return client.getAudioCache();
+	}
+	
+	public static File getTemporaryCache() {
+		return client.getTemporaryCache();
+	}
+	
+	public static File getTextureCache() {
+		return client.getTextureCache();
+	}
+	
+	public static File getTexturePackFolder() {
+		return client.getTexturePackFolder();
+	}
+	
+	public static File getStatsFolder() {
+		return client.getStatsFolder();
 	}
 	
 	public static long getTick() {
