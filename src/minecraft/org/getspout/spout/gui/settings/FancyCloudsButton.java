@@ -28,7 +28,7 @@ public class FancyCloudsButton extends GenericCheckBox{
 		super("Fancy Clouds");
 		this.fancyGraphics = fancyGraphics;
 		setChecked(ConfigReader.fancyClouds);
-		setTooltip("Clouds\nDefault - as set by setting Graphics\nFast - lower quality, faster\nFancy - higher quality, slower\nOFF - no clouds, fastest\nFast clouds are rendered 2D.\nFancy clouds are rendered 3D.");
+		setTooltip("Clouds\nFast - lower quality, faster\nFancy - higher quality, slower\nFast clouds are rendered 2D.\nFancy clouds are rendered 3D.");
 	}
 	
 	@Override

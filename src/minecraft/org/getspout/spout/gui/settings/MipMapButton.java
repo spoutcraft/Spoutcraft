@@ -29,7 +29,7 @@ public class MipMapButton extends GenericCheckBox{
 	public MipMapButton() {
 		super("Terrain Mipmaps");
 		this.setChecked(ConfigReader.mipmaps);
-		setTooltip("Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrian.");
+		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrian.");
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ public class FancyGrassButton extends GenericCheckBox{
 		super("Fancy Grass");
 		this.fancyGraphics = fancyGraphics;
 		setChecked(ConfigReader.fancyGrass);
-		setTooltip("Fancy Grass\nDefault - as set by setting Graphics\nFast - lower quality, faster\nFancy - higher quality, slower\nFast grass uses default side texture.\nFancy grass uses biome side texture.");
+		setTooltip("Fancy Grass\nFast - lower quality, faster\nFancy - higher quality, slower\nFast grass uses default side texture.\nFancy grass uses biome side texture.");
 	}
 	
 	@Override

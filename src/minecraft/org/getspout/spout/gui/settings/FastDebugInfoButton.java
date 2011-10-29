@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public class FastDebugInfoButton extends GenericButton{
 	public FastDebugInfoButton() {
-		setTooltip("Fast Debug Info\nOFF - default debug info screen, slower\nON - debug info screen without lagometer, faster\nRemoves the lagometer from the debug screen (F3).");
+		setTooltip("Fast Debug Info\nFancy - default debug info screen, slower\nFast - debug info screen without lagometer, faster\nFPS Only - Shows only the frames per second, hiding debug information.");
 	}
 	
 	@Override

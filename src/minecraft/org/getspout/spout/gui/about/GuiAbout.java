@@ -186,7 +186,8 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("Jeckari - Custom Texture Code", this.width / 2 - 200, 290, 0x808080);
 		drawScaledString("Rychochet - GUI Code", this.width / 2 - 200, 300, 0x808080);
 		drawScaledString("knowbuddy - GUI optimizations", this.width / 2 - 200, 310, 0x808080);
-		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, 320, 0x808080);
+		drawScaledString("TomyLobo - Mipmaping", this.width / 2 - 200, 320, 0x808080);
+		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, 330, 0x808080);
 		
 		int yourkitX = (this.width / 2 + 30);
 		int yourkitY = getScaledHeight(60);
