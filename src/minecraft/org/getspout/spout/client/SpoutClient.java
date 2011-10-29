@@ -119,7 +119,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		securityKey = (new Random()).nextDouble();
 		securityManager = new SimpleSecurityManager(securityKey);
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
-		System.setSecurityManager(securityManager);
+		//System.setSecurityManager(securityManager);
 		
 		((SimpleKeyBindingManager)bindingManager).load();
 	}
