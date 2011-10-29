@@ -523,7 +523,7 @@ public class GuiFavorites extends GuiScreen {
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef(13, 11, 0);
-			GL11.glRotatef(refreshAngle, 0F, 0F, 1F);
+			GL11.glRotatef(-refreshAngle, 0F, 0F, 1F);
 			GL11.glTranslatef(-8, -8, 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, refresh.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
