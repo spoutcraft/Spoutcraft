@@ -94,25 +94,26 @@ public class CustomTextureManager {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
-		String fileName = FileUtil.getFileName(url);
-		File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
-		File result = new File(FileUtil.getTextureCacheDirectory(), fileName);
-		if (cache != null) {
-			result = cache;
+		try {
+			String fileName = FileUtil.getFileName(url);
+			File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
+			if (cache != null) {
+				return cache;
+			}
+			if (plugin != null) {
+				File file = FileUtil.findTextureFile(plugin, fileName);
+				if (file != null) {
+					cacheTextureFiles.put(plugin + File.separator + fileName, file);
+					return file;
+				}
+			}
+			return new File(FileUtil.getTextureCacheDirectory(), fileName);
 		}
-		else if (plugin != null) {
-			File file = FileUtil.findTextureFile(plugin, fileName);
-			if (file != null) {
-				cacheTextureFiles.put(plugin + File.separator + fileName, file);
-				result = file;
+		finally {
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
 			}
 		}
-		
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
-		return result;
 	}
 	
 	public static Texture getTextureFromPath(String path) {
