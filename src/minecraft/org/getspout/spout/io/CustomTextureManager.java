@@ -101,7 +101,7 @@ public class CustomTextureManager {
 		if (cache != null) {
 			result = cache;
 		}
-		if (plugin != null) {
+		else if (plugin != null) {
 			File file = FileUtil.findTextureFile(plugin, fileName);
 			if (file != null) {
 				cacheTextureFiles.put(plugin + File.separator + fileName, file);
