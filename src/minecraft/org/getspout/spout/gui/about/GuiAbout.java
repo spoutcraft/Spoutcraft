@@ -359,7 +359,8 @@ public class GuiAbout extends GuiScreen {
 		drawString(this.fontRenderer, "Beta 1.8.1", (int)(this.width * 0.034f), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.034f), this.height - 10, 0x808080);
 		
-		drawString(this.fontRenderer, "Build " + Long.toString(SpoutClient.getClientVersion()), (int)(this.width - 45), this.height - 20, 0xffffff);
+		String version = Long.toString(SpoutClient.getClientVersion());
+		drawString(this.fontRenderer, "Build " + version, (int)(this.width - 45) - fontRenderer.getStringWidth(version) + fontRenderer.getStringWidth("0"), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width - 129), this.height - 10, 0x808080);
 		
 		getControlList().get(0).xPosition = this.width / 2 - 50;
