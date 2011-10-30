@@ -16,6 +16,8 @@
  */
 package org.getspout.spout.gui.settings;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
@@ -45,5 +47,21 @@ public class AutosaveButton extends GenericButton{
 			ConfigReader.autosave = 0;
 		}
 		ConfigReader.write();
+		
+		if (Minecraft.theMinecraft.theWorld != null) {
+			Minecraft.theMinecraft.theWorld.autosavePeriod = getAutosaveTicks();
+		}
+	}
+	
+	public static int getAutosaveTicks() {
+		switch(ConfigReader.autosave) {
+			case 0: return 30 * 60 * 20;
+			case 1: return 3 * 60 * 20;
+			case 2: return 60 * 20;
+			case 3: return 30 * 20;
+			case 4: return 10 * 20;
+			case 5: return 2 * 20;
+			default: return 40;
+		}
 	}
 }
