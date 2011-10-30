@@ -286,6 +286,7 @@ public abstract class Minecraft implements Runnable {
 		TextureUtils.setTileSize();
 		this.renderEngine.setTileSize(this);
 		// Spout End
+		this.loadScreen();
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
 		ColorizerWater.func_28182_a(this.renderEngine.getTextureContents("/misc/watercolor.png"));
 		ColorizerGrass.func_28181_a(this.renderEngine.getTextureContents("/misc/grasscolor.png"));
