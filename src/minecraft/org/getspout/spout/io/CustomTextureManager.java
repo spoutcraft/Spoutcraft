@@ -103,6 +103,7 @@ public class CustomTextureManager {
 			if (plugin != null) {
 				File file = FileUtil.findTextureFile(plugin, fileName);
 				if (file != null) {
+					
 					cacheTextureFiles.put(plugin + File.separator + fileName, file);
 					return file;
 				}

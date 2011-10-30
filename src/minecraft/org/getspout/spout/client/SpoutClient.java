@@ -298,6 +298,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (getHandle().thePlayer != null) {
 			getHandle().thePlayer.uuidValid = false;
 		}
+		server = -1L;
 	}
 	
 	public void onWorldEnter() {
