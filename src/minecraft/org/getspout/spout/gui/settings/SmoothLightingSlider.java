@@ -16,6 +16,8 @@
  */
 package org.getspout.spout.gui.settings;
 
+import net.minecraft.client.Minecraft;
+
 import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
@@ -31,6 +33,10 @@ public class SmoothLightingSlider extends GenericSlider{
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
 		ConfigReader.smoothLighting = event.getNewPosition();
+		Minecraft.theMinecraft.gameSettings.ambientOcclusion = ConfigReader.smoothLighting > 0F;
+		if (Minecraft.theMinecraft.theWorld != null) {
+			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		}
 		ConfigReader.write();
 	}
 	
