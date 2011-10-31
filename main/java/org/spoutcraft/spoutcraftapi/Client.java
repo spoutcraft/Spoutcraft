@@ -69,7 +69,17 @@ public interface Client extends PropertyInterface {
 
 	// public EntityPlayer getPlayerFromId(int id);
 	
-	public String getAddonFolder();
+	public File getAddonFolder();
+	
+	public File getAudioCache();
+	
+	public File getTemporaryCache();
+	
+	public File getTextureCache();
+	
+	public File getTexturePackFolder();
+	
+	public File getStatsFolder();
 
 	public long getTick();
 

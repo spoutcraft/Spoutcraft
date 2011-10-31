@@ -24,6 +24,8 @@ import java.util.UUID;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
+import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 @UnsafeClass
@@ -86,7 +88,14 @@ public abstract class GenericWidget implements Widget {
 		long lsb = input.readLong();
 		this.id = new UUID(msb, lsb);
 		setTooltip(PacketUtil.readString(input));
-		setAddon(Spoutcraft.getAddonManager().getAddon(PacketUtil.readString(input)));
+		String addonName = PacketUtil.readString(input);
+		Addon addon = Spoutcraft.getAddonManager().getAddon(addonName);
+		//since this is coming from the server, assume we haven't gotten the addon info yet
+		if (addon == null) {
+			addon = new ServerAddon(addonName, "", "");
+			((SimpleAddonManager)Spoutcraft.getAddonManager()).addFakeAddon((ServerAddon)addon);
+		}
+		setAddon(addon);
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
