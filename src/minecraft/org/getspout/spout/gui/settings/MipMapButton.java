@@ -36,29 +36,7 @@ public class MipMapButton extends GenericCheckBox{
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.mipmaps = !ConfigReader.mipmaps;
 		ConfigReader.write();
-		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
-		GL11.glPushMatrix();
-		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
-		if (MipMapUtils.mode == 3) {
-			MipMapUtils.updateTerrain = ConfigReader.mipmaps;
-			GL11.glBindTexture(3553, terrain);
-			if (ConfigReader.mipmaps) {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-			}
-			else {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			}
-			GL11.glPopMatrix();
-			return;
-		}
-
-		if (ConfigReader.mipmaps) {
-			MipMapUtils.updateTerrain = true;
-
-			GL11.glBindTexture(3553, terrain);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-		}
-		GL11.glPopMatrix();
+		MipMapUtils.update();
 	}
 	
 	
