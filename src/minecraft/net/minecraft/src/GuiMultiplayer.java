@@ -13,6 +13,7 @@ import java.util.Collections;
 
 import net.minecraft.src.GuiButton;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.server.*;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
@@ -109,16 +110,16 @@ public class GuiMultiplayer extends GuiScreen {
 		if(var1.enabled) {
 			synchronized(serverInfo) {
 				if(var1.id == 2) {
-					this.mc.displayGuiScreen(new GuiFavorites(this));
+					this.mc.displayGuiScreen(new GuiFavorites2(this));
 				} else if(var1.id == 1) {
 					this.selectWorld(this.selectedWorld);
 				} else if(var1.id == 3) {
 					this.getServer();
 				} else if(var1.id == 4) {
 					ServerSlot slot = (ServerSlot)this.serverInfo.serverList.get(this.selectedWorld);
-					GuiAddFav gui = new GuiAddFav(this, slot.name, slot.getFullIp(), slot.uniqueid);
-					gui.allowUserInput = false;
-					this.mc.displayGuiScreen(gui);
+					SpoutClient.getInstance().getServerManager().getFavorites().addServer(slot.name, slot.ip, slot.port.equals("")?25565:Integer.valueOf(slot.port), slot.uniqueid);
+					SpoutClient.getInstance().getServerManager().getFavorites().save();
+					mc.displayGuiScreen(new GuiFavorites2(this));
 				} else if(var1.id == 0) {
 					this.mc.displayGuiScreen(new GuiMainMenu());
 				} else if(var1.id == 8) {

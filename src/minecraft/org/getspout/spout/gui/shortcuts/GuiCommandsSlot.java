@@ -71,6 +71,8 @@ public class GuiCommandsSlot extends GenericListWidget {
 				parent.drawString(font, "Chat Message", x+2, y+13, 0xaaaaaa);
 			}
 		}
-		
+
+		public void onClick(int x, int y, boolean d) {
+		}
 	}
 }

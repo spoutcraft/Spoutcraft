@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.getspout.spout.gui.server.GuiFavorites;
+import org.getspout.spout.gui.server.GuiFavorites2;
 
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiButton;
@@ -49,7 +50,7 @@ public class GuiIngameMenu extends GuiScreen {
 			this.mc.changeWorld1((World)null);
 			//Spout Start
 			if (mp) {
-				this.mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
+				this.mc.displayGuiScreen(new GuiFavorites2(new GuiMainMenu()));
 			} else {
 				this.mc.displayGuiScreen(new GuiMainMenu());
 			}

@@ -33,7 +33,7 @@ public class GuiShortcutsSlot extends GenericListWidget {
 		}
 	}
 
-	protected int getSize() {
+	public int getSize() {
 		return manager.getAllShortcuts().size();
 	}
 	
@@ -118,6 +118,9 @@ public class GuiShortcutsSlot extends GenericListWidget {
 			if(chat > 0) {
 				parent.drawString(font, chat + " Chat message" + (chat != 1?"s":""), x+2, y, 0xaaaaaa);
 			}
+		}
+
+		public void onClick(int x, int y, boolean d) {
 		}
 	}
 }
