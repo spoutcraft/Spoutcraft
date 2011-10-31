@@ -35,6 +35,7 @@ public interface ListWidgetItem {
 	 * Will be called when someone clicks on this item
 	 * @param x the relative x position where the item was clicked
 	 * @param y the relative y position where the item was clicked
+	 * @param doubleClick wether the item has been doubleclicked
 	 */
-	public void onClick(int x, int y);
+	public void onClick(int x, int y, boolean doubleClick);
 }

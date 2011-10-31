@@ -47,6 +47,7 @@ public class WidgetType {
 	public static WidgetType ListWidget = new WidgetType(GenericListWidget.class, 21);
 	public static WidgetType DirtBackground = new WidgetType(DirtBackground.class, 22);
 	public static WidgetType ScrollArea = new WidgetType(GenericScrollArea.class, 23);
+	public static WidgetType ListView = new WidgetType(GenericListView.class, 24);
 
 
 	private final int id;

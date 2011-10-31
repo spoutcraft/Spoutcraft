@@ -120,7 +120,8 @@ public class GenericListWidgetItem extends PropertyObject implements PropertyInt
 		return parent;
 	}
 
-	public void onClick(int x, int y) {
+	public void onClick(int x, int y, boolean d) {
+		System.out.println(getTitle() + " got clicked at "+x+", "+y + (d?" (double":""));
 	}
 
 }

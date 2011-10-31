@@ -12,7 +12,7 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;
-	private int cachedTotalHeight = -1;
+	protected int cachedTotalHeight = -1;
 
 	public WidgetType getType() {
 		return WidgetType.ListWidget;
@@ -73,7 +73,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		return this;
 	}
 	
-	private Rectangle getItemRect(int n) {
+	protected Rectangle getItemRect(int n) {
 		ListWidgetItem item = getItem(n);
 		Rectangle result = new Rectangle(0,0,0,0);
 		if(item == null) {
@@ -86,12 +86,16 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		return result;
 	}
 
-	private int getItemYOnScreen(int n) {
+	protected int getItemYOnScreen(int n) {
 		int height = 0;
-		for(int i = 0; i<n && i<items.size(); i++) {
+		for(int i = 0; i<n && i<getSize(); i++) {
 			height += getItem(n).getHeight();
 		}
 		return height;
+	}
+
+	public int getSize() {
+		return items.size();
 	}
 
 	public ListWidget clearSelection() {
@@ -117,7 +121,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		if(axis == Orientation.HORIZONTAL) return getViewportSize(Orientation.HORIZONTAL);
 		if(cachedTotalHeight == -1) {
 			cachedTotalHeight = 0;
-			for(ListWidgetItem item:items) {
+			for(ListWidgetItem item:getItems()) {
 				cachedTotalHeight+=item.getHeight();
 			}
 		}
