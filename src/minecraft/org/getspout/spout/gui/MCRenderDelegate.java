@@ -479,9 +479,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			font.drawString(checkBox.getText(), 22, 7, getColor(checkBox).toInt());
 		}
 	}
-	
-	
-	
+
 	public void render(GenericRadioButton radioButton) {
 		if(radioButton.isVisible()) {
 			Texture radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
@@ -514,19 +512,19 @@ public class MCRenderDelegate implements RenderDelegate {
 		drawTexture(usedTexture, 20, 20, blend);
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height) {
+	public void drawTexture(Texture textureBinding, int width, int height) {
 		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F));
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
+	public void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
 		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend);
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height, Color color) {
+	public void drawTexture(Texture textureBinding, int width, int height, Color color) {
 		drawTexture(textureBinding, width, height, color, false);
 	}
 	
-	protected void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
+	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
 		if(textureBinding == null) return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);

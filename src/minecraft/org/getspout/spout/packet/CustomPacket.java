@@ -34,8 +34,9 @@ public class CustomPacket extends Packet{
 	protected static boolean outdated = false;
 	
 	static {
-		nags = new int[PacketType.values().length];
-		for (int i = 0; i < PacketType.values().length; i++) {
+		int packets = PacketType.values()[PacketType.values().length - 1].getId();
+		nags = new int[packets];
+		for (int i = 0; i < packets; i++) {
 			nags[i] = NAG_MSG_AMT;
 		}
 	}

@@ -38,7 +38,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	
 
 	public int getNumBytes() {
-		return 12 + data.length;
+		return 12 + (data != null ? data.length : 0);
 	}
 
 	public void readData(DataInputStream input) throws IOException {
