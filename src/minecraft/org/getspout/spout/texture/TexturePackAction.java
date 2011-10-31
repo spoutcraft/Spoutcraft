@@ -19,6 +19,7 @@ package org.getspout.spout.texture;
 import java.io.File;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.config.MipMapUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.TexturePackCustom;
@@ -39,6 +40,7 @@ public class TexturePackAction implements Runnable {
 		}
 		game.renderEngine.texturePack.setTexturePack(pack);
 		game.renderEngine.refreshTextures();
+		MipMapUtils.update();
 		if (game.renderGlobal != null && game.renderGlobal.worldRenderers != null) {
 			WorldRenderer[] renderers = game.renderGlobal.worldRenderers;
 			for(int i = 0; i < renderers.length; i++) {
