@@ -82,7 +82,11 @@ public class GuiEditSign extends GuiScreen {
 		}
 		if(var2 == 14 && this.entitySign.signText[this.editLine].length() > 0) { //backsp
 			String line = entitySign.signText[editLine];
-			String before = line.substring(0, editColumn);
+			int endColumnStart = Math.min(editColumn,  line.length());
+			String before = "";
+			if (endColumnStart > 0) {
+				before = line.substring(0, endColumnStart);
+			}
 			String after = "";
 			if(line.length() - editColumn > 0)
 			{
@@ -92,9 +96,9 @@ public class GuiEditSign extends GuiScreen {
 				before = before.substring(0, before.length()-1);
 				line = before + after;
 				entitySign.signText[editLine] = line;
-				editColumn--;
-				if (editColumn<0)
-				{
+				endColumnStart--;
+				editColumn = endColumnStart;
+				if (editColumn < 0)	{
 					editColumn = 0;
 				}
 			}
@@ -109,22 +113,21 @@ public class GuiEditSign extends GuiScreen {
 				before = line.substring(0, endColumnStart);
 			}
 			String after = "";
-			if(line.length() - editColumn > 0)
-			{
-				after = line.substring(editColumn, line.length());
+			if(line.length() - endColumnStart > 0) {
+				after = line.substring(endColumnStart, line.length());
 			}
 			before += var1;
 			line = before + after;
 			entitySign.signText[editLine] = line;
-			editColumn++;
+			endColumnStart++;
+			editColumn = endColumnStart;
 		}
 		if(var2 == 211) //del 
 		{
 			String line = entitySign.signText[editLine];
 			String before = line.substring(0, editColumn);
 			String after = "";
-			if(line.length() - editColumn > 0)
-			{
+			if(line.length() - editColumn > 0) {
 				after = line.substring(editColumn, line.length());
 			}
 			if(after.length() > 0){

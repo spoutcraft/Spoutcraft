@@ -16,10 +16,16 @@
  */
 package org.getspout.spout.gui.error;
 
-import java.awt.Desktop;
-import java.net.URL;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiConnecting;
+import net.minecraft.src.GuiMainMenu;
+import net.minecraft.src.GuiScreen;
 
-import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.MCRenderDelegate;
+import org.getspout.spout.gui.server.GuiFavorites;
+import org.getspout.spout.io.CustomTextureManager;
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
@@ -28,19 +34,25 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiScreen;
-
-public class GuiUnexpectedError extends GuiScreen{
+public class GuiConnectionLost extends GuiScreen{
+	public static String lastServerIp;
+	public static int lastServerPort;
 	
-	public GuiUnexpectedError() {
-		
+	private String message;
+	
+	public GuiConnectionLost() {
+		message = "The connection to the server has been lost!";
 	}
 	
+	public GuiConnectionLost(String message) {
+		this.message = message;
+	}
+	
+	@Override
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		
@@ -48,7 +60,7 @@ public class GuiUnexpectedError extends GuiScreen{
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 		
-		GenericLabel label = new GenericLabel("Oh Noes!");
+		GenericLabel label = new GenericLabel("Connection Lost!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
@@ -57,93 +69,76 @@ public class GuiUnexpectedError extends GuiScreen{
 		int top = 5;
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
 		
-		label = new GenericLabel("Spoutcraft has encounted an unexpected error! How shall we proceed?");
+		label = new GenericLabel(message);
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
 		screen.attachWidget(spoutcraft, label);
-		top += 22;
 		
-		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyway, Even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
-		"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
-		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n"+
-		"and forgive and forget.\n\nWhat were we talking about again?");
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 11 * 10;
+		LocalTexture texture = new LocalTexture();
+		texture.setUrl("/res/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
+		texture.setHeight(128).setWidth(128);
+		screen.attachWidget(spoutcraft, texture);
 		
-		Button button = new IgnoreErrorButton().setText("Ignore & Return To Main Menu");
+		top += 116;
+		
+		Button button;
+		button = new ReconnectButton().setText("Attempt to Reconnect");
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		top += 32;
+		top += 26;
 		
-		label = new GenericLabel("2.) Oh dear, an error. I should report this right away so it can get fixed!");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 22;
-		
-		button = new ReportErrorButton().setText("Report & Return To Main Menu");
+		button = new ReturnToServerList().setText("Return to Server List");
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		top += 32;
+		top += 26;
 		
-		label = new GenericLabel("3.) An error? Fits this crummy mod like a glove. Get me out of here!");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 22;
-		
-		button = new ExitGameButton().setText("Exit This Crummy Game");
+		button = new ReturnToMainMenu().setText("Return to Main Menu");
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		top += 32;
+		top += 26;
 	}
 	
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
 	}
-	
-	
-
 }
 
-class IgnoreErrorButton extends GenericButton {
+class ReconnectButton extends GenericButton {
+	public void onButtonClick(ButtonClickEvent event) {
+		Minecraft.theMinecraft.displayGuiScreen(new GuiConnecting(Minecraft.theMinecraft, GuiConnectionLost.lastServerIp, GuiConnectionLost.lastServerPort));
+	}
+}
+
+class ReturnToMainMenu extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
 	}
 }
 
-class ReportErrorButton extends GenericButton {
+class ReturnToServerList extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
-		SpoutClient.disableSandbox();
-		try {
-			URL url =  new URL("https://github.com/SpoutDev/Spout/issues/new");
-			Desktop.getDesktop().browse(url.toURI());
-		}
-		catch (Exception e) { }
-		finally {
-			SpoutClient.enableSandbox();
-		}
-		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
+		Minecraft.theMinecraft.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
 	}
 }
 
-class ExitGameButton extends GenericButton {
-	public void onButtonClick(ButtonClickEvent event) {
-		Minecraft.theMinecraft.shutdownMinecraftApplet();
+class LocalTexture extends GenericTexture {
+	public void render() {
+		Texture texture = CustomTextureManager.getTextureFromJar(getUrl());
+		if (texture != null) {
+			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); // moves texture into place
+			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(texture, (int)getWidth(), (int)getHeight(), isDrawingAlphaChannel());
+		}
 	}
 }
+

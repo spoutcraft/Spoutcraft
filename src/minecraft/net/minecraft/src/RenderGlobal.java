@@ -1215,8 +1215,6 @@ public class RenderGlobal implements IWorldAccess {
 		else if (WorldRenderer.chunksUpdated < 5) {
 			renderersToUpdate += 3;
 		}
-		immediatelyUpdateBlocks(MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ), 
-				MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ));
 		renderersToUpdateLastTick = renderersToUpdate;
 		if (renderersToUpdate <= 0) {
 			return this.worldRenderersToUpdate.size() == 0;
@@ -1503,7 +1501,8 @@ public class RenderGlobal implements IWorldAccess {
 	}
 	
 	//Spout start
-	public void immediatelyUpdateBlocks(int var1, int var2, int var3, int var4, int var5, int var6) {
+	public int immediatelyUpdateBlocks(int var1, int var2, int var3, int var4, int var5, int var6) {
+		int result = 0;
 		int var7 = MathHelper.bucketInt(var1, 16);
 		int var8 = MathHelper.bucketInt(var2, 16);
 		int var9 = MathHelper.bucketInt(var3, 16);
@@ -1531,15 +1530,15 @@ public class RenderGlobal implements IWorldAccess {
 
 					int var19 = (var18 * this.renderChunksTall + var16) * this.renderChunksWide + var14;
 					WorldRenderer var20 = this.worldRenderers[var19];
-					if(var20.needsUpdate) {
-						var20.updateRenderer();
-						worldRenderersToUpdate.remove(var20);
-						var20.needsUpdate = false;
-					}
+					var20.needsUpdate = true;
+					var20.updateRenderer();
+					worldRenderersToUpdate.remove(var20);
+					var20.needsUpdate = false;
+					result++;
 				}
 			}
 		}
-
+		return result;
 	}
 	//Spout end
 

@@ -88,7 +88,7 @@ public class World implements IBlockAccess {
 	public int field_27172_i;
 	public boolean editingBlocks;
 	private long lockTimestamp;
-	protected int autosavePeriod;
+	public int autosavePeriod = org.getspout.spout.gui.settings.AutosaveButton.getAutosaveTicks(); //Spout protected -> public
 	public int difficultySetting;
 	public Random rand;
 	public boolean isNewWorld;
@@ -146,7 +146,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		//this.autosavePeriod = 40; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
@@ -197,7 +197,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		//this.autosavePeriod = 40; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
@@ -253,7 +253,7 @@ public class World implements IBlockAccess {
 		this.field_27172_i = 0;
 		this.editingBlocks = false;
 		this.lockTimestamp = System.currentTimeMillis();
-		this.autosavePeriod = 40;
+		//this.autosavePeriod = 40; //Spout
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();

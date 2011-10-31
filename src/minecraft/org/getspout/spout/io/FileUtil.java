@@ -29,30 +29,75 @@ import net.minecraft.client.Minecraft;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.getspout.spout.client.SpoutClient;
 
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
 	public static File getCacheDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(Minecraft.getMinecraftDir(), "spout");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 	
 	public static File getSpoutcraftDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(Minecraft.getMinecraftDir(), "spoutcraft");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getTempDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(getCacheDirectory(), "temp");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return directory;
+	}
+	
+	public static File getStatsDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		File directory = new File(Minecraft.getMinecraftDir(), "stats");
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
@@ -69,9 +114,18 @@ public class FileUtil {
 	}
 
 	public static File getAudioCacheDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(getCacheDirectory(), "audiocache");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
@@ -127,17 +181,35 @@ public class FileUtil {
 	}
 
 	public static File getTextureCacheDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(getCacheDirectory(), "texturecache");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
 
 	public static File getTexturePackDirectory() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
 		File directory = new File(Minecraft.getMinecraftDir(), "texturepacks");
 		if (!directory.exists()) {
 			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}

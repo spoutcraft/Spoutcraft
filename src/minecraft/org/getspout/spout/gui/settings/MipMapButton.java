@@ -16,31 +16,29 @@
  */
 package org.getspout.spout.gui.settings;
 
-import java.util.UUID;
-
 import net.minecraft.client.Minecraft;
 
 import org.getspout.spout.config.ConfigReader;
+import org.getspout.spout.config.MipMapUtils;
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FancyGrassButton extends GenericCheckBox{
-	UUID fancyGraphics;
-	public FancyGrassButton(UUID fancyGraphics) {
-		super("Fancy Grass");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyGrass);
-		setTooltip("Fancy Grass\nFast - lower quality, faster\nFancy - higher quality, slower\nFast grass uses default side texture.\nFancy grass uses biome side texture.");
+public class MipMapButton extends GenericCheckBox{
+	
+	public MipMapButton() {
+		super("Terrain Mipmaps");
+		this.setChecked(ConfigReader.mipmaps);
+		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrian.");
 	}
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyGrass = !ConfigReader.fancyGrass;
+		ConfigReader.mipmaps = !ConfigReader.mipmaps;
 		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
-		
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
-		}
+		MipMapUtils.update();
 	}
+	
+	
+
 }

@@ -28,7 +28,7 @@ public class FancyWaterButton extends GenericCheckBox{
 		super("Fancy Water");
 		this.fancyGraphics = fancyGraphics;
 		setChecked(ConfigReader.fancyWater);
-		setTooltip("Fancy Water\nDefault - as set by setting Graphics\nFast  - lower quality, faster\nFancy - higher quality, slower\nFast water (1 pass) has some visual artifacts\nFancy water (2 pass) has no visual artifacts");
+		setTooltip("Fancy Water\nFast  - lower quality, faster\nFancy - higher quality, slower\nFast water (1 pass) has some visual artifacts\nFancy water (2 pass) has no visual artifacts");
 	}
 	
 	@Override

@@ -40,9 +40,9 @@ public class GuiEditCommand extends GuiScreen{
 		cmd.setWidth(width - 20);
 		cmd.setHeight(height - 80);
 		cmd.setFocus(true);
-		cmd.setText(text);
 		cmd.setMaximumCharacters(0);
 		cmd.setMaximumLines(0);
+		cmd.setText(text);
 		
 		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), cmd);
 		

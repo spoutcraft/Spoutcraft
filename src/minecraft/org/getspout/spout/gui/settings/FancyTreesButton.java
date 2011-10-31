@@ -30,7 +30,7 @@ public class FancyTreesButton extends GenericCheckBox{
 		super("Fancy Trees");
 		this.fancyGraphics = fancyGraphics;
 		setChecked(ConfigReader.fancyTrees);
-		setTooltip("Trees\nDefault - as set by setting Graphics\nFast - lower quality, faster\nFancy - higher quality, slower\nFast trees have opaque leaves.\nFancy trees have transparent leaves.");
+		setTooltip("Trees\nFast - lower quality, faster\nFancy - higher quality, slower\nFast trees have opaque leaves.\nFancy trees have transparent leaves.");
 	}
 	
 	@Override

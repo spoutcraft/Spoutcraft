@@ -94,25 +94,27 @@ public class CustomTextureManager {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
-		String fileName = FileUtil.getFileName(url);
-		File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
-		File result = new File(FileUtil.getTextureCacheDirectory(), fileName);
-		if (cache != null) {
-			result = cache;
+		try {
+			String fileName = FileUtil.getFileName(url);
+			File cache = cacheTextureFiles.get(plugin + File.separator + fileName);
+			if (cache != null) {
+				return cache;
+			}
+			if (plugin != null) {
+				File file = FileUtil.findTextureFile(plugin, fileName);
+				if (file != null) {
+					
+					cacheTextureFiles.put(plugin + File.separator + fileName, file);
+					return file;
+				}
+			}
+			return new File(FileUtil.getTextureCacheDirectory(), fileName);
 		}
-		if (plugin != null) {
-			File file = FileUtil.findTextureFile(plugin, fileName);
-			if (file != null) {
-				cacheTextureFiles.put(plugin + File.separator + fileName, file);
-				result = file;
+		finally {
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
 			}
 		}
-		
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
-		return result;
 	}
 	
 	public static Texture getTextureFromPath(String path) {
@@ -198,16 +200,27 @@ public class CustomTextureManager {
 	}
 	
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		File texture = getTextureFile(plugin, url);
-		if (!texture.exists()) {
-			return null;
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
 		}
 		try {
-			return getTextureFromPath(texture.getCanonicalPath());
+			File texture = getTextureFile(plugin, url);
+			if (!texture.exists()) {
+				return null;
+			}
+			try {
+				return getTextureFromPath(texture.getCanonicalPath());
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return null;
+		finally {
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 	

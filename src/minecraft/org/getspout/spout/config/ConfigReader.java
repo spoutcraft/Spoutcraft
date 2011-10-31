@@ -43,6 +43,7 @@ public class ConfigReader {
 	public static boolean voidFog = true;
 	public static boolean weather = true;
 	public static boolean delayedTooltips = false;
+	public static boolean mipmaps = false;
 	
 	public static void read() {
 		System.out.println("Reading Configuration");
@@ -71,13 +72,13 @@ public class ConfigReader {
 		}
 		
 		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
-		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
 		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
 		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
 		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
 		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
+		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
 		
 		System.out.println("Finished Reading Configuration");
 	}

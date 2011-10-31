@@ -183,7 +183,7 @@ public class GuiScreen extends Gui {
 								} 
 							}
 							if (handled) {
-								this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+								playSoundFX("random.click", 1.0F, 1.0F);
 								break;
 							}
 						}
@@ -193,6 +193,21 @@ public class GuiScreen extends Gui {
 		}
 		
 		SpoutClient.disableSandbox();
+	}
+	
+	private void playSoundFX(String sound, float f, float f1) {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		try {
+			this.mc.sndManager.playSoundFX(sound, 1.0F, 1.0F);
+		}
+		finally {
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
+		}
 	}
 	
 	//Note: Already in sandbox, in mouseClickedPre
@@ -287,7 +302,7 @@ public class GuiScreen extends Gui {
 				GuiButton var5 = (GuiButton)this.controlList.get(var4);
 				if(var5.mousePressed(this.mc, var1, var2)) {
 					this.selectedButton = var5;
-					this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+					playSoundFX("random.click", 1.0F, 1.0F);
 					this.actionPerformed(var5);
 				}
 			}
@@ -360,11 +375,13 @@ public class GuiScreen extends Gui {
 		this.width = var2;
 		this.height = var3;
 		this.controlList.clear();
+		SpoutClient.enableSandbox();
 		if(!(this instanceof CustomScreen) && screen != null){
 			for(Widget w:screen.getAttachedWidgets()){
 				screen.removeWidget(w);
 			}
 		}
+		SpoutClient.disableSandbox();
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height).setWidth(this.width);
 		this.initGui();
 	}
