@@ -212,8 +212,9 @@ public class GuiScreen extends Gui {
 	
 	//Note: Already in sandbox, in mouseClickedPre
 	private boolean handleClickOnListWidget(ListWidget lw, int mouseX, int mouseY) {
-		//int x = (int) (mouseX - lw.getActualX());
+		int x = (int) (mouseX - lw.getActualX());
 		int y = (int) (mouseY - lw.getActualY());
+		if(x < 5) return false;
 		int scroll = lw.getScrollPosition(Orientation.VERTICAL);
 		y += scroll;
 		y -= 5;
@@ -233,6 +234,8 @@ public class GuiScreen extends Gui {
 				} else {
 					action = new PacketControlAction(lw.getScreen(), lw, "doubleclick", lw.getSelectedRow());
 				}
+				ListWidgetItem current = lw.getSelectedItem();
+				current.onClick(x - 5, y - currentHeight, doubleclick);
 				lw.onSelected(lw.getSelectedRow(), doubleclick);
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
 				
@@ -532,6 +535,7 @@ public class GuiScreen extends Gui {
 							handled = true;
 							if(lw.getSelectedRow() != -1) {
 								lw.onSelected(lw.getSelectedRow(), true);
+								lw.getSelectedItem().onClick(-1, -1, true);
 								action = new PacketControlAction(lw.getScreen(), lw, "doubleclick", lw.getSelectedRow());
 							}
 						}

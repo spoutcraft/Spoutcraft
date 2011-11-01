@@ -114,7 +114,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 2) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this)); //Spout
+			this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites2(this)); //Spout
 		}
 
 		if(var1.id == 3) {

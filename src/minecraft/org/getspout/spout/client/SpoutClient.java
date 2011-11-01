@@ -41,6 +41,7 @@ import org.getspout.spout.entity.EntityManager;
 import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.SimpleKeyManager;
+import org.getspout.spout.gui.server.ServerManager;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.io.CRCManager;
@@ -98,6 +99,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final Logger log = new SpoutcraftLogger();
 	private final SimpleAddonManager addonManager;
 	private final SimpleSecurityManager securityManager;
+	private final ServerManager serverManager = new ServerManager();
 	private final double securityKey;
 	private long tick = 0;
 	private Thread clipboardThread = null;
@@ -122,6 +124,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		//System.setSecurityManager(securityManager);
 		
 		((SimpleKeyBindingManager)bindingManager).load();
+		serverManager.init();
 	}
 	
 	static {
@@ -491,5 +494,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public File getStatsFolder() {
 		return FileUtil.getStatsDirectory();
+	}
+	
+	public ServerManager getServerManager() {
+		return instance.serverManager;
 	}
 }

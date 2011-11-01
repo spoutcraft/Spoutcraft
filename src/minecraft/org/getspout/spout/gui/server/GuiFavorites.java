@@ -340,7 +340,6 @@ public class GuiFavorites extends GuiScreen {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public ServerSlot setServer(int var1, ServerSlot var2, String ip, String name) {

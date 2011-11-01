@@ -44,29 +44,7 @@ public class MipMapSlider extends GenericSlider{
 	public void onSliderDrag(SliderDragEvent event) {
 		ConfigReader.mipmapsPercent = event.getNewPosition();
 		ConfigReader.write();
-		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
-		GL11.glPushMatrix();
-		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
-		if (MipMapUtils.mode == 3) {
-			MipMapUtils.updateTerrain = ConfigReader.mipmapsPercent > 0F;
-			GL11.glBindTexture(3553, terrain);
-			if (ConfigReader.mipmapsPercent > 0F) {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-			}
-			else {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			}
-			GL11.glPopMatrix();
-			return;
-		}
-
-		if (ConfigReader.mipmapsPercent > 0F) {
-			MipMapUtils.updateTerrain = true;
-
-			GL11.glBindTexture(3553, terrain);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-		}
-		GL11.glPopMatrix();
+		MipMapUtils.update();
 	}
 	
 	

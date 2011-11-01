@@ -1,5 +1,6 @@
 package org.getspout.spout.gui.controls;
 
+import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -27,6 +28,10 @@ public class GuiPluginControls extends GuiScreen {
 	}
 	
 	public void initGui(){
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if(wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		title = new GenericLabel("Plugin Controls");
 		int txtwidth = Spoutcraft.getMinecraftFont().getTextWidth("Plugin Controls");
@@ -52,6 +57,9 @@ public class GuiPluginControls extends GuiScreen {
 		
 		if (list.manager.getAllBindings().size() == 0) {
 			description.setText("You don't have any plugin keybindings. Plugin Keybindings are\nregistered by plugins and you can edit the key which summons them.\nIf you want Shortcuts, go back and select \"Shortcuts\".");
+		}
+		if(wasSandboxed) {
+			SpoutClient.enableSandbox();
 		}
 	}
 	

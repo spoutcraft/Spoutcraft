@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.gui.server.GuiFavorites;
+import org.getspout.spout.gui.server.GuiFavorites2;
 
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
@@ -42,7 +43,7 @@ public class GuiConnectFailed extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.id == 0) {
-			this.mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu())); //Spout
+			this.mc.displayGuiScreen(new GuiFavorites2(new GuiMainMenu())); //Spout
 		}
 
 	}
