@@ -21,28 +21,36 @@ import net.minecraft.client.Minecraft;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.config.MipMapUtils;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class MipMapButton extends GenericCheckBox{
+public class MipMapSlider extends GenericSlider{
 	
-	public MipMapButton() {
+	public MipMapSlider() {
 		super("Terrain Mipmaps");
-		this.setChecked(ConfigReader.mipmaps);
+		this.setSliderPosition(ConfigReader.mipmapsPercent);
 		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrian.");
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.mipmaps = !ConfigReader.mipmaps;
+	public String getText() {
+		if (this.getSliderPosition() == 0F) {
+			return "Terrain Mipmaps: OFF";
+		}
+		return "Terrain Mipmaps: " + (int)(this.getSliderPosition() * 100) + "%";
+	}
+	
+	@Override
+	public void onSliderDrag(SliderDragEvent event) {
+		ConfigReader.mipmapsPercent = event.getNewPosition();
 		ConfigReader.write();
-		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
+		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPushMatrix();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 		if (MipMapUtils.mode == 3) {
-			MipMapUtils.updateTerrain = ConfigReader.mipmaps;
+			MipMapUtils.updateTerrain = ConfigReader.mipmapsPercent > 0F;
 			GL11.glBindTexture(3553, terrain);
-			if (ConfigReader.mipmaps) {
+			if (ConfigReader.mipmapsPercent > 0F) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			}
 			else {
@@ -52,7 +60,7 @@ public class MipMapButton extends GenericCheckBox{
 			return;
 		}
 
-		if (ConfigReader.mipmaps) {
+		if (ConfigReader.mipmapsPercent > 0F) {
 			MipMapUtils.updateTerrain = true;
 
 			GL11.glBindTexture(3553, terrain);

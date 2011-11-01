@@ -58,7 +58,7 @@ public class MipMapUtils {
 			MipMapUtils.mode = 3;
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
 		}
-		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
+		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPopMatrix();
 	}
 	

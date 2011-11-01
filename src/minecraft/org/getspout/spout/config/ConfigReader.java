@@ -43,7 +43,7 @@ public class ConfigReader {
 	public static boolean voidFog = true;
 	public static boolean weather = true;
 	public static boolean delayedTooltips = false;
-	public static boolean mipmaps = false;
+	public static float mipmapsPercent = 0F;
 	
 	public static void read() {
 		System.out.println("Reading Configuration");

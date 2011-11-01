@@ -287,7 +287,7 @@ public class VideoSettings extends GuiScreen{
 		
 		top += 22;
 		
-		control = new MipMapButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control = new MipMapSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		
