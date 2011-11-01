@@ -474,6 +474,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			Color color = getColor(checkBox);
 			if(!checkBox.isChecked()) {
 				color.setAlpha(0.2F);
+			} else {
+				color.setRed(0).setGreen(1).setBlue(0);
 			}
 			drawTexture(checkBoxCross, 20, 20, color, true);
 			font.drawString(checkBox.getText(), 22, 7, getColor(checkBox).toInt());
