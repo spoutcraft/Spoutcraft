@@ -58,18 +58,18 @@ public class MipMapUtils {
 			MipMapUtils.mode = 3;
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
 		}
-		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
+		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPopMatrix();
 	}
 	
 	public static void update() {
-		MipMapUtils.targetFade = ConfigReader.mipmaps ? 1F : 0F;
+		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPushMatrix();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 		if (MipMapUtils.mode == 3) {
-			MipMapUtils.updateTerrain = ConfigReader.mipmaps;
+			MipMapUtils.updateTerrain = ConfigReader.mipmapsPercent > 0F;
 			GL11.glBindTexture(3553, terrain);
-			if (ConfigReader.mipmaps) {
+			if (ConfigReader.mipmapsPercent > 0F) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			}
 			else {
@@ -79,7 +79,7 @@ public class MipMapUtils {
 			return;
 		}
 
-		if (ConfigReader.mipmaps) {
+		if (ConfigReader.mipmapsPercent > 0F) {
 			MipMapUtils.updateTerrain = true;
 
 			GL11.glBindTexture(3553, terrain);
