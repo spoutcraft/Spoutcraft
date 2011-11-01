@@ -38,6 +38,8 @@ public class ServerItem implements ListWidgetItem {
 	public static final int PING_TIMEOUT = -3;
 	public static final int PING_BAD_MESSAGE = -4;
 	
+	protected static int numPolling = 0;
+	
 	public ServerItem(String title, String ip, int port, int dbId) {
 		this.ip = ip;
 		this.port = port;
@@ -185,9 +187,15 @@ public class ServerItem implements ListWidgetItem {
 	}
 	
 	protected class PollThread extends Thread {
-
+		
 		@Override
 		public void run() {
+			while(numPolling >= 2) {
+				try {
+					sleep(10);
+				} catch (InterruptedException e) {}
+			}
+			numPolling ++;
 			polling = true;
 			Socket sock = null;
 			DataInputStream input = null;
@@ -231,6 +239,7 @@ public class ServerItem implements ListWidgetItem {
 				ping = PING_BAD_MESSAGE;
 			} finally {
 				polling = false;
+				numPolling--;
 				try {
 					sock.close();
 					input.close();
