@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.CustomScreen;
 import org.getspout.spout.io.FileDownloadThread;
 
 public class PacketPreCacheCompleted implements SpoutPacket{
@@ -42,7 +43,9 @@ public class PacketPreCacheCompleted implements SpoutPacket{
 	public void run(int playerId) {
 		FileDownloadThread.preCacheCompleted.set(System.currentTimeMillis());
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
-		SpoutClient.getHandle().displayGuiScreen(null, false);
+		if(!(SpoutClient.getHandle().currentScreen instanceof CustomScreen)) {
+			SpoutClient.getHandle().displayGuiScreen(null, false);
+		}
 		System.out.println("Completed Precaching");
 	}
 
