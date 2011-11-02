@@ -141,6 +141,18 @@ public class WorldRenderer {
 				boolean rendered = false;
 				boolean drawBlock = false;
 				
+				if (!drawBlock) {
+					drawBlock = true;
+					GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
+					GL11.glPushMatrix();
+					this.setupGLTranslation();
+					GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
+					GL11.glScalef(1F, 1F, 1F);
+					GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
+					tessellator.startDrawingQuads();
+					tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
+				}
+				
 				game.renderEngine.bindTexture(defaultTexture);
 				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {	
 					int texture = defaultTexture;
@@ -155,6 +167,12 @@ public class WorldRenderer {
 								texture = defaultTexture;
 							}
 						}
+					}
+
+					if(tessellator.textureOverride != texture){
+						tessellator.draw();
+						tessellator.textureOverride = texture;
+						tessellator.startDrawingQuads();
 					}
 					
 					//The x,y,z order is important, don't change!
@@ -208,23 +226,7 @@ public class WorldRenderer {
 									}
 								
 
-									if (!drawBlock) {
-										drawBlock = true;
-										GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
-										GL11.glPushMatrix();
-										this.setupGLTranslation();
-										GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
-										GL11.glScalef(1F, 1F, 1F);
-										GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
-										tessellator.startDrawingQuads();
-										tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
-									}
 									
-									if(tessellator.textureOverride != texture){
-										tessellator.draw();
-										tessellator.textureOverride = texture;
-										tessellator.startDrawingQuads();
-									}
 									
 
 									if (renderPass == 0 && Block.isBlockContainer[id]) {
