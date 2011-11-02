@@ -16,20 +16,24 @@ public class GenericCustomItem extends GenericItem implements CustomItem {
 	private final int customId;
 	public String texture;
 
-	public GenericCustomItem(Addon addon, String name) {
-		super(name, 318, mm.registerCustomItemName(addon, addon.getDescription().getName() + name));
+	public GenericCustomItem(Addon addon, String name, int customId) {
+		super(name, 318, customId);
 		this.fullName = addon.getDescription().getName() + name;
-		this.customId = mm.registerCustomItemName(addon, fullName);
+		this.customId = customId;
 		this.addon = addon;
 		this.setName(name);
 		MaterialData.addCustomItem(this);
 	}
-	
+
+	public GenericCustomItem(Addon addon, String name) {
+		this(addon, name, mm.registerCustomItemName(addon, addon.getDescription().getName() + name));
+	}
+
 	public GenericCustomItem(Addon addon, String name, String texture) {
 		this(addon, name);
 		this.setTexture(texture);
 	}
-	
+
 	@Override
 	public void setName(String name) {
 		super.setName(name);
@@ -61,5 +65,5 @@ public class GenericCustomItem extends GenericItem implements CustomItem {
 	public boolean onItemInteract(Player player, Block block, BlockFace face) {
 		return true;
 	}
-	
+
 }
