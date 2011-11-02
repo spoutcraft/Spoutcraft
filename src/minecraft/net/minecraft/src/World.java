@@ -104,9 +104,7 @@ public class World implements IBlockAccess {
 	private boolean scanningTileEntities;
 	public boolean spawnHostileMobs; //Spout private -> public
 	public boolean spawnPeacefulMobs; //Spout private -> public
-	//Spout start
 	private Set positionsToUpdate;
-	//Spout end
 	private int soundCounter;
 	int[] field_35466_H;
 	private List field_1012_M;
@@ -153,9 +151,7 @@ public class World implements IBlockAccess {
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
-		//Spout Start
 		this.positionsToUpdate = new HashSet();
-		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
 		this.field_1012_M = new ArrayList();
@@ -204,9 +200,7 @@ public class World implements IBlockAccess {
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
-		//Spout Start
 		this.positionsToUpdate = new HashSet();
-		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
 		this.field_1012_M = new ArrayList();
@@ -260,9 +254,7 @@ public class World implements IBlockAccess {
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
-		//Spout Start
 		this.positionsToUpdate = new HashSet();
-		//Spout End
 		this.soundCounter = this.rand.nextInt(12000);
 		this.field_35466_H = new int['\u8000'];
 		this.field_1012_M = new ArrayList();
@@ -275,11 +267,10 @@ public class World implements IBlockAccess {
 			this.worldProvider = var4;
 		} 
 		//Spout start
-		else if (!GuiCreateWorld.normalWorld) {
+		else if(!GuiCreateWorld.normalWorld || (this.worldInfo != null && this.worldInfo.getDimension() == 1)) {
 			worldProvider = WorldProvider.getProviderForDimension(1); //Skylands
-		}
 		//Spout end
-		else if(this.worldInfo != null && this.worldInfo.getDimension() == -1) {
+		} else if(this.worldInfo != null && this.worldInfo.getDimension() == -1) {
 			this.worldProvider = WorldProvider.getProviderForDimension(-1);
 		} else {
 			this.worldProvider = WorldProvider.getProviderForDimension(0);

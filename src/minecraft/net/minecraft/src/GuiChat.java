@@ -49,6 +49,9 @@ public class GuiChat extends GuiScreen {
 				if (var4.startsWith("/")) {
 					SpoutClient.getInstance().getChatManager().pastCommands.add(var4);
 				}
+				else {
+					SpoutClient.getInstance().getChatManager().pastMessages.add(var4);
+				}
 				//Spout Improved Chat End
 				//if(!this.mc.lineIsCommand(var4)) {
 				if (!SpoutClient.getInstance().getChatManager().handleCommand(var4)) {

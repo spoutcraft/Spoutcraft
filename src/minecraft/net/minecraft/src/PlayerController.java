@@ -34,11 +34,6 @@ public abstract class PlayerController {
 			if(var6 != null && var8) {
 				var6.onBlockDestroyedByPlayer(var5, var1, var2, var3, var7);
 			}
-			
-			//Spout start
-			mc.renderGlobal.immediatelyUpdateBlocks(var1, var2, var3, var1, var2, var3);
-			//Spout end
-
 			return var8;
 		}
 	}

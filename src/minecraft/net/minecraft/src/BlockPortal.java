@@ -146,7 +146,7 @@ public class BlockPortal extends BlockBreakable {
 	}
 
 	public int getRenderBlockPass() {
-		return 2; //Spout
+		return 1;
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
