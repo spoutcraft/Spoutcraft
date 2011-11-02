@@ -34,10 +34,11 @@ public class GenericButton extends GenericControl implements Button {
 	protected float scale = 1.0F;
 
 	public GenericButton() {
-
+		label.setAlign(WidgetAnchor.TOP_CENTER);
 	}
 
 	public GenericButton(String text) {
+		label.setAlign(WidgetAnchor.TOP_CENTER);
 		setText(text);
 	}
 
