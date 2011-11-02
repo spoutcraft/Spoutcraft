@@ -26,7 +26,6 @@ public class SpoutItem extends Item {
 	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
 	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
 	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
-	private final static TIntObjectHashMap<SpoutCustomBlockDesign> customBlockDesign = new TIntObjectHashMap<SpoutCustomBlockDesign>();
 
 	public SpoutItem(int blockId) {
 		super(blockId);
@@ -48,23 +47,8 @@ public class SpoutItem extends Item {
 		itemMetaData.clear();
 		blockIdOverride.clear();
 		blockMetaDataOverride.clear();
-		customBlockDesign.clear();
 	}
 	
-	public static SpoutCustomBlockDesign getCustomBlockDesign(int blockId, int damage) {
-		if (blockId != 1 || damage == 0) {
-			return customBlockDesign.get(getKey(blockId, damage));
-		} else {
-			int id = itemBlock.get(damage);
-			if (id != 0) {
-				short data = (short) itemMetaData.get(damage);
-				if (data != 0) {
-					return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(id, data & 0xFFFF));
-				}
-			}
-		}
-		return null;
-	}
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
 		if (stack.itemID == MaterialData.flint.getRawId()) {
@@ -157,27 +141,6 @@ public class SpoutItem extends Item {
 		 Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
 	}
 	
-	public static void setCustomBlockDesign(SpoutCustomBlockDesign design, Integer blockId, Integer metaData) {
-		int key = getKey(blockId, metaData);
-		
-		if (design == null) {
-			customBlockDesign.remove(key);
-		} else {
-			customBlockDesign.put(key, design);
-		}
-	}
-	
-	public static int getRenderPass(int x, int y, int z) {
-		
-		SpoutCustomBlockDesign design = getCustomBlockDesign(x, y, z);
-		
-		if (design == null) {
-			return 0;
-		} else {
-			return design.getRenderPass();
-		}
-	}
-	
 	public static boolean renderCustomBlock(RenderBlocks renderBlocks, SpoutCustomBlockDesign design, Block block, int x, int y, int z) {
 		
 		if (design == null) {
@@ -189,10 +152,6 @@ public class SpoutItem extends Item {
 		design.setBounds(block);
 		
 		return design.draw(tessallator, block, renderBlocks, x, y, z);
-	}
-	
-	public static SpoutCustomBlockDesign getCustomBlockDesign(int x, int y, int z) {
-		return (SpoutCustomBlockDesign) customBlockDesign.get(getKey(x, y, z));
 	}
 	
 	public static int getKey(int x, int y, int z) {
@@ -225,7 +184,6 @@ public class SpoutItem extends Item {
 		itemBlock.clear();
 		itemMetaData.clear();
 		blockIdOverride.clear();
-		customBlockDesign.clear();
 	}
 	
 }

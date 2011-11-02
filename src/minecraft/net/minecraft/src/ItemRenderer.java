@@ -26,6 +26,8 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import com.pclewis.mcpatcher.mod.TileSize;
 //Spout end
 public class ItemRenderer {
@@ -49,7 +51,10 @@ public class ItemRenderer {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) var2.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var2.itemID, (short) var2.getItemDamage());
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var2.itemID, var2.getItemDamage());
+		SpoutCustomBlockDesign blockType = null;
+		if(MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()) != null) {
+			blockType = (SpoutCustomBlockDesign) MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()).getBlockDesign();
+		}
 		Texture customTextureObject = null;
 		if (customTexture != null) {
 			customTextureObject = CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture);

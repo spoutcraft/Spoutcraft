@@ -25,6 +25,8 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import net.minecraft.client.Minecraft;
 //Spout end
 
@@ -180,12 +182,11 @@ public class WorldRenderer {
 									String customTexture = null; 
 									String customTexturePlugin = null;
 									SpoutCustomBlockDesign design = null;
-									if (SpoutItem.isBlockOverride(dx, dy, dz)) {
-										design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
-									} else {
-										int data = chunkCache.getBlockMetadata(dx, dy, dz);
-										design = SpoutItem.getCustomBlockDesign(var19, data);
+									int data = chunkCache.getBlockMetadata(dx, dy, dz);
+									if(MaterialData.getBlock(var19, (short) data) != null) {
+										design = (SpoutCustomBlockDesign) MaterialData.getBlock(var19, (short) data).getBlockDesign();
 									}
+									
 									if (design != null) {
 										customTexture = design.getTexureURL();
 										customTexturePlugin = design.getTextureAddon();
