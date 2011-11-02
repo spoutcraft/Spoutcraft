@@ -20,6 +20,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 //SPout end
 
@@ -68,7 +69,10 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
+		SpoutCustomBlockDesign blockType = null;
+		if(MaterialData.getBlock(var10.itemID, (short) var10.getItemDamage()) != null) {
+			blockType = (SpoutCustomBlockDesign) MaterialData.getBlock(var10.itemID, (short) var10.getItemDamage()).getBlockDesign();
+		}
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
 			Texture texture = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
@@ -185,7 +189,10 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var3, (short) var4);
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var3, var4);
+		SpoutCustomBlockDesign blockType = null;
+		if(MaterialData.getBlock(var3, (short) var4) != null) {
+			blockType = (SpoutCustomBlockDesign) MaterialData.getBlock(var3, (short) var4).getBlockDesign();
+		}
 		if (blockType != null) {
 			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
 			if (customTextureBinding != null){

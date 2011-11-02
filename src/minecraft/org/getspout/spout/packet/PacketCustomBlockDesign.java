@@ -78,10 +78,8 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 	
 	public void run(int id) {
-		if (blockId != null && blockId >= 0) {
-			SpoutItem.setCustomBlockDesign(design, blockId, metaData);
-			ServerCustomBlock customBlock = new ServerCustomBlock(name, opaque, design, metaData);
-			MaterialData.addCustomBlock(customBlock);
+		if (MaterialData.getBlock(blockId, metaData.shortValue()) != null) {
+			MaterialData.getBlock(blockId, metaData.shortValue()).setBlockDesign(design);
 		}
 	}
 

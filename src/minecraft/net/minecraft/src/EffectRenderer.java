@@ -22,6 +22,8 @@ import org.getspout.spout.item.SpoutItem;
 //Spout end
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class EffectRenderer {
 
@@ -163,11 +165,10 @@ public class EffectRenderer {
 			SpoutCustomBlockDesign design = null;
 			Texture customTexture = null;
 			int data = worldObj.getBlockMetadata(var1, var2, var3);
-			if (SpoutItem.isBlockOverride(var1, var2, var3)) {
-				design = SpoutItem.getCustomBlockDesign(var1, var2, var3);
-			} else {
-				design = SpoutItem.getCustomBlockDesign(var5, data);
+			if(MaterialData.getBlock(var5, (short) data) != null) {
+				design = (SpoutCustomBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
 			}
+			
 			if (design != null) {
 				customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
@@ -236,11 +237,10 @@ public class EffectRenderer {
 			boolean custom = false;
 			SpoutCustomBlockDesign design = null;
 			int data = worldObj.getBlockMetadata(var1, var2, var3);
-			if (SpoutItem.isBlockOverride(var1, var2, var3)) {
-				design = SpoutItem.getCustomBlockDesign(var1, var2, var3);
-			} else {
-				design = SpoutItem.getCustomBlockDesign(var5, data);
+			if(MaterialData.getBlock(var5, (short) data) != null) {
+				design = (SpoutCustomBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
 			}
+			
 			if (design != null) {
 				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
