@@ -147,7 +147,7 @@ public class PacketWidget implements SpoutPacket {
 			//Determine if this is a widget on an overlay screen
 			else if (overlay != null && screen.equals(overlay.getId())){
 				if(overlay.containsWidget(widget.getId())){
-					popup.updateWidget(widget);
+					overlay.updateWidget(widget);
 					widget.setScreen(overlay);
 				} else {
 					widget.setScreen(overlay);
