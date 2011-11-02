@@ -81,7 +81,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		}
 		result.setX(0);
 		result.setY(getItemYOnScreen(n));
-		result.setHeight(getItem(n).getHeight());
+		result.setHeight(item.getHeight());
 		result.setWidth(getInnerSize(Orientation.VERTICAL));
 		return result;
 	}
@@ -89,7 +89,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	protected int getItemYOnScreen(int n) {
 		int height = 0;
 		for(int i = 0; i<n && i<getSize(); i++) {
-			height += getItem(n).getHeight();
+			height += getItem(i).getHeight();
 		}
 		return height;
 	}
