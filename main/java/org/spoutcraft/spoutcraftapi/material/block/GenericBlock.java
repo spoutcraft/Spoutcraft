@@ -1,6 +1,7 @@
 package org.spoutcraft.spoutcraftapi.material.block;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
@@ -11,6 +12,7 @@ public class GenericBlock implements Block{
 	private final String name;
 	private String customName;
 	private SoundEffect stepSound = SoundEffect.STONE;
+	private BlockDesign design;
 	
 	private GenericBlock(String name, int id, int data, boolean subtypes) {
 		this.name = name;
@@ -103,6 +105,16 @@ public class GenericBlock implements Block{
 
 	public Block setLightLevel(int level) {
 		Spoutcraft.getClient().getMaterialManager().setLightLevel(this, level);
+		return this;
+	}
+
+	public BlockDesign getBlockDesign() {
+		return design;
+	}
+
+	public Block setBlockDesign(BlockDesign design) {
+		this.design = design;
+		Spoutcraft.getMaterialManager().setCustomBlockDesign(this, design);
 		return this;
 	}
 }

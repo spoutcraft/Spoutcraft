@@ -1,5 +1,6 @@
 package org.spoutcraft.spoutcraftapi.material;
 
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
 public interface Block extends Material{
@@ -27,5 +28,9 @@ public interface Block extends Material{
 	public int getLightLevel();
 	
 	public Block setLightLevel(int level);
+	
+	public BlockDesign getBlockDesign();
+	
+	public Block setBlockDesign(BlockDesign design);
 
 }

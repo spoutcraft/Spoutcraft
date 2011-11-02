@@ -30,11 +30,15 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	 * @param material manager
 	 */
 	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, MaterialManager manager) {
+		this(addon, name, isOpaque, new GenericCustomItem(addon, name), manager);
+	}
+	
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, CustomItem item, MaterialManager manager) {
 		super(name, isOpaque ? 1 : 20);
 		mm = manager;
-		item = new GenericCustomItem(addon, name);
-		this.blockId = isOpaque ? 1 : 20;
+		this.blockId = isOpaque ? 1 :20;
 		this.addon = addon;
+		this.item = item;
 		this.fullName = item.getFullName();
 		this.customID = item.getCustomId();
 		MaterialData.addCustomBlock(this);
