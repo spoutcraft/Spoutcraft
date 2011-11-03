@@ -314,7 +314,7 @@ public class ServerItem implements ListWidgetItem {
 		if(wasSandboxed) SpoutClient.disableSandbox();
 		Thread send = new Thread() {
 			public void run() {
-				if(ping > 0) {
+				if(ping > 0 && databaseId != -1) {
 					while(numPolling > 0) {
 						try {
 							Thread.sleep(20);
@@ -323,7 +323,8 @@ public class ServerItem implements ListWidgetItem {
 						}
 					}
 					String api = "http://servers.getspout.org/senddata.php?";
-					api += "ping="+ping;
+					api += "uid="+databaseId;
+					api += "&ping="+ping;
 					api += "&players="+players;
 					api += "&maxplayers="+maxPlayers;
 					URL url;
