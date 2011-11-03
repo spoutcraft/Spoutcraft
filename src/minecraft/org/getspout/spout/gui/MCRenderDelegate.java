@@ -28,6 +28,9 @@ import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class MCRenderDelegate implements RenderDelegate {
+	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
+	private Color scrollBarColor2 = new Color(0.1F, 0.1F, 0.1F, 0.38F);
+	
 	public static boolean shouldRenderCursor = false;
 	protected final RenderItemCustom renderer;
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
@@ -622,7 +625,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			double scrollX = 0;
 			double p = (double)scrollLeft / (double)gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
-			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 16, (int) gs.getWidth(), (int) gs.getHeight(), 0xff666666, 0xff888888);
+			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 16, (int) gs.getWidth(), (int) gs.getHeight(), scrollBarColor.toInt(), scrollBarColor2.toInt());
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int)scrollX, (int) (gs.getHeight() - 16), 0, 208, 16, 16, 0f);
 		}
@@ -633,7 +636,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			double scrollY = 0;
 			double p = (double)scrollTop / (double)gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
-			RenderUtil.drawGradientRectangle((int) gs.getWidth() - 16, 0, (int) gs.getWidth(), (int) gs.getHeight(), 0xff666666, 0xff888888);
+			RenderUtil.drawGradientRectangle((int) gs.getWidth() - 16, 0, (int) gs.getWidth(), (int) gs.getHeight(), scrollBarColor.toInt(), scrollBarColor2.toInt());
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 0, 208, 16, 16, 0f);
 			
