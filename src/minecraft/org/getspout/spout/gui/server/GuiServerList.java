@@ -26,7 +26,7 @@ public class GuiServerList extends GuiScreen {
 	private GenericListView view;
 	private GenericScrollArea filters;
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset;
-	SortButton featured, popular, byName, byFreeSlots, byPing;
+	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
 	FilterButton hasPlayers, notFull;
 	CountryButton buttonCountry;
@@ -50,6 +50,7 @@ public class GuiServerList extends GuiScreen {
 		popular = new SortButton("Popular", "popular");
 		byName = new SortButton("Name", "sortBy=name");
 		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false);
+		byPlayers = new SortButton("Players Online", "sortBy=players", false);
 		byPing = new SortButton("Ping", "sortBy=ping");
 		random = new RandomButton();
 		hasPlayers = new FilterButton("Has Players", "hasplayers");
@@ -123,8 +124,15 @@ public class GuiServerList extends GuiScreen {
 		ftop += 25;
 		
 		byFreeSlots.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		byFreeSlots.setTooltip("Sorts by the number of free slots\non the server (maxplayers - players)");
 		filters.attachWidget(spoutcraft, byFreeSlots);
 		model.addUrlElement(byFreeSlots);
+		ftop += 25;
+		
+		byPlayers.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		byPlayers.setTooltip("Sorts by the actual number of\nonline players on the server");
+		filters.attachWidget(spoutcraft, byPlayers);
+		model.addUrlElement(byPlayers);
 		ftop += 25;
 		
 		byPing.setWidth(100).setHeight(20).setX(5).setY(ftop);
