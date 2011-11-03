@@ -178,7 +178,7 @@ public class GuiServerList extends GuiScreen {
 		
 		top += view.getHeight() + 5;
 		
-		int left = width / 2 - 405 / 2 + 5;
+		int left = width / 2 - 405 / 2;
 		int right = left + 205;
 		
 		buttonJoin.setHeight(20).setWidth(200).setX(left).setY(top);
