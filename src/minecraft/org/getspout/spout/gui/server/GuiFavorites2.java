@@ -3,21 +3,14 @@ package org.getspout.spout.gui.server;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
-import org.spoutcraft.spoutcraftapi.gui.Gradient;
 import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 
-import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiMultiplayer;
 import net.minecraft.src.GuiScreen;
 
 public class GuiFavorites2 extends GuiScreen {
@@ -32,9 +25,7 @@ public class GuiFavorites2 extends GuiScreen {
 	private GenericListView view;
 	private Label title;
 	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
-	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
-	private Color scrollBarColor2 = new Color(0.08F, 0.08F, 0.08F, 0.38F);
-	
+
 	public GuiFavorites2(GuiScreen parent) {
 		model.setCurrentGUI(this);
 		this.parent = parent;
@@ -115,16 +106,6 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
-		
-		Gradient scrollArea = new CustomGenericGradient(view);
-		scrollArea.setY(20);
-		scrollArea.setHeight(height - 100);
-		scrollArea.setX(width - 16);
-		scrollArea.setWidth(16);
-		scrollArea.setTopColor(scrollBarColor);
-		scrollArea.setBottomColor(scrollBarColor2);
-		scrollArea.setPriority(RenderPriority.Low);
-		getScreen().attachWidget(spoutcraft, scrollArea);
 		
 		updateButtons();
 	}
@@ -220,15 +201,5 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
-	}
-}
-
-class CustomGenericGradient extends GenericGradient {
-	GenericListView view;
-	public CustomGenericGradient(GenericListView view) {
-		this.view = view;
-	}
-	public boolean isVisible() {
-		return view.needsScrollBar(Orientation.VERTICAL);
 	}
 }
