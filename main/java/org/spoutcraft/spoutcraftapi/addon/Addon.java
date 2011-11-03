@@ -20,27 +20,27 @@ import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.command.CommandExecutor;
 
-public abstract interface Addon extends CommandExecutor {
+public interface Addon extends CommandExecutor {
 
-	public abstract AddonDescriptionFile getDescription();
+	public AddonDescriptionFile getDescription();
 
-	public abstract void onEnable();
+	public void onEnable();
 
-	public abstract void onDisable();
+	public void onDisable();
 
-	public abstract void onLoad();
+	public void onLoad();
 
-	public abstract AddonLoader getAddonLoader();
+	public AddonLoader getAddonLoader();
 
-	public abstract boolean isEnabled();
+	public boolean isEnabled();
 
-	public abstract void setEnabled(boolean arg);
+	public void setEnabled(boolean arg);
 
-	public abstract boolean isNaggable();
+	public boolean isNaggable();
 
-	public abstract void setNaggable(boolean b);
+	public void setNaggable(boolean b);
 	
-	public abstract Logger getLogger();
+	public Logger getLogger();
 
 	public enum Mode {
 		SINGLE_PLAYER,
