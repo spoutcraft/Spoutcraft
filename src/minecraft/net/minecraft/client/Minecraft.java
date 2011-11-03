@@ -350,6 +350,10 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		this.loadingScreen = new LoadingScreenRenderer(this);
+		
+		// Spout Start
+		
+		// Spout End
 	}
 
 	private void loadScreen() throws LWJGLException {
