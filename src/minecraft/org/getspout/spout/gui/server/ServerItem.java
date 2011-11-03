@@ -37,7 +37,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected PollThread currentThread;
 
-	protected String country;
+	protected String country = null;
 	
 	public static final int PING_POLLING = -1;
 	public static final int PING_UNKNOWN = -2;
@@ -73,9 +73,9 @@ public class ServerItem implements ListWidgetItem {
 		
 		font.drawStringWithShadow(title, x + 2, y + 2, 0xffffff);
 		String sMotd = "";
-		if(polling && !showPingWhilePolling) {
+		if((ping == PING_POLLING || polling) && !showPingWhilePolling) {
 			sMotd = "Polling...";
-		} else {
+		} else if(!showPingWhilePolling) {
 			switch(ping) {
 			case PING_UNKNOWN:
 				sMotd = ChatColor.RED + "Unknown Host!";
@@ -95,7 +95,7 @@ public class ServerItem implements ListWidgetItem {
 		}
 		
 		int color = 0xffffff;
-		if(polling && !showPingWhilePolling) {
+		if((ping == PING_POLLING || polling) && !showPingWhilePolling) {
 			Color c1 = new Color(0, 0, 0);
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
@@ -113,6 +113,11 @@ public class ServerItem implements ListWidgetItem {
 			String sPlayers = players + " / "+maxPlayers + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			font.drawStringWithShadow(sPlayers, width - playerswidth - 5, y+11, 0xaaaaaa);
+			if(country != null) {
+				String sCountry = "Country: "+country;
+				int countrywidth = font.getStringWidth(sCountry);
+				font.drawStringWithShadow(sCountry, width - countrywidth - 5, y+24, 0xaaaaaa);
+			}
 		}
 		
 		GL11.glColor4f(1f, 1f, 1f, 1f);

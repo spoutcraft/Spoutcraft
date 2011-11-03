@@ -249,18 +249,19 @@ public class ServerListModel extends AbstractListModel {
 					int uid = Integer.valueOf((String)hash.get("uniqueid"));
 					int port = Integer.valueOf((String)hash.get("port"));
 					String adress = (String) hash.get("ip");
-					int ping = Integer.valueOf((String)hash.get("ping"));
-					int players = Integer.valueOf((String)hash.get("numplayers"));
-					int maxplayers = Integer.valueOf((String)hash.get("maxplayers"));
+					//int ping = Integer.valueOf((String)hash.get("ping"));
+					//int players = Integer.valueOf((String)hash.get("numplayers"));
+					//int maxplayers = Integer.valueOf((String)hash.get("maxplayers"));
 					String country = (String) hash.get("country");
 					ServerItem server = new ServerItem(name, adress, port, uid);
-					server.setPing(ping);
-					server.setPlayers(players);
-					server.setMaxPlayers(maxplayers);
+					//server.setPing(ping);
+//					server.setPlayers(players);
+//					server.setMaxPlayers(maxplayers);
 					server.setCountry(country);
-					server.setShowPingWhilePolling(true);
+//					server.setShowPingWhilePolling(true);
 					servers.add(server);
 				} catch(UnsupportedEncodingException e){}
+				catch(Exception e2) { continue; }
 			} else {
 				HashMap<String, Object> hash = (HashMap<String, Object>) item;
 				int after = Integer.valueOf((String) hash.get("after"));

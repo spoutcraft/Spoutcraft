@@ -25,6 +25,7 @@ public class GuiServerList extends GuiScreen {
 	private GenericScrollArea filters;
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch;
 	SortButton featured, popular, byName, byFreeSlots, byPing;
+	RandomButton random;
 	FilterButton hasPlayers, notFull;
 	CountryButton buttonCountry;
 	SearchField search;
@@ -48,6 +49,7 @@ public class GuiServerList extends GuiScreen {
 		byName = new SortButton("Name", "sortBy=name");
 		byFreeSlots = new SortButton("Free slots", "sortBy=freeslots", false);
 		byPing = new SortButton("Ping", "sortBy=ping");
+		random = new RandomButton();
 		hasPlayers = new FilterButton("Has Players", "hasplayers");
 		notFull = new FilterButton("Not Full", "notfull");
 		labelSearch = new GenericLabel("Search");
@@ -97,6 +99,11 @@ public class GuiServerList extends GuiScreen {
 		popular.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, popular);
 		model.addUrlElement(popular);
+		ftop += 25;
+		
+		random.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		filters.attachWidget(spoutcraft, random);
+		model.addUrlElement(random);
 		ftop += 25;
 		
 		byName.setWidth(100).setHeight(20).setX(5).setY(ftop);
