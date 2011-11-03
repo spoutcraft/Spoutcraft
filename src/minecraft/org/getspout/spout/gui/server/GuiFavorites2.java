@@ -84,23 +84,23 @@ public class GuiFavorites2 extends GuiScreen {
 		
 		top += 25;
 		
-		buttonJoin = new GenericButton("Join Server");
-		buttonJoin.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonJoin);
-		
-		buttonEdit = new GenericButton("Edit");
-		buttonEdit.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonEdit);
-		
 		buttonDelete = new GenericButton("Delete");
-		buttonDelete.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDelete);
+		
+		buttonAdd = new GenericButton("Add Favorite");
+		buttonAdd.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonAdd);
+		
+		buttonJoin = new GenericButton("Join Server");
+		buttonJoin.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonJoin);
 		
 		top += 25;
 		
-		buttonAdd = new GenericButton("Add Favorite");
-		buttonAdd.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonAdd);
+		buttonEdit = new GenericButton("Edit");
+		buttonEdit.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonEdit);
 		
 		buttonServerList = new GenericButton("Server List");
 		buttonServerList.setX(center).setY(top).setWidth(cellWidth).setHeight(20);

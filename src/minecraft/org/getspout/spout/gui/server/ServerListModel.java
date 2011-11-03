@@ -255,12 +255,14 @@ public class ServerListModel extends AbstractListModel {
 					//int ping = Integer.valueOf((String)hash.get("ping"));
 					//int players = Integer.valueOf((String)hash.get("numplayers"));
 					//int maxplayers = Integer.valueOf((String)hash.get("maxplayers"));
+					boolean whitelisted = ((String)hash.get("whitelist")).equals("1")?true:false;
 					String country = (String) hash.get("country");
 					ServerItem server = new ServerItem(name, adress, port, uid);
 					//server.setPing(ping);
 //					server.setPlayers(players);
 //					server.setMaxPlayers(maxplayers);
 					server.setCountry(country);
+					server.setWhitelisted(whitelisted);
 //					server.setShowPingWhilePolling(true);
 					servers.add(server);
 				} catch(UnsupportedEncodingException e){}

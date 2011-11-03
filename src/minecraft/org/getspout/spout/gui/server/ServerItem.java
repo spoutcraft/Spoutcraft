@@ -13,7 +13,10 @@ import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.MCRenderDelegate;
+import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
@@ -37,7 +40,9 @@ public class ServerItem implements ListWidgetItem {
 
 	protected PollThread currentThread;
 
+	//Options from the serverlist API
 	protected String country = null;
+	protected boolean whitelisted = false;
 	
 	public static final int PING_POLLING = -1;
 	public static final int PING_UNKNOWN = -2;
@@ -115,11 +120,6 @@ public class ServerItem implements ListWidgetItem {
 			String sPlayers = players + " / "+maxPlayers + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			font.drawStringWithShadow(sPlayers, width - playerswidth - 5, y+11, 0xaaaaaa);
-			if(country != null) {
-				String sCountry = "Country: "+country;
-				int countrywidth = font.getStringWidth(sCountry);
-				font.drawStringWithShadow(sCountry, width - countrywidth - 5, y+20, 0xaaaaaa);
-			}
 		}
 		
 		GL11.glColor4f(1f, 1f, 1f, 1f);
@@ -155,6 +155,33 @@ public class ServerItem implements ListWidgetItem {
 			font.drawStringWithShadow(ip + ":" +port, x+2, y+20, 0xaaaaaa);
 		} else {
 			font.drawStringWithShadow(ip, x+2, y+20, 0xaaaaaa);
+		}
+		
+		//Icon Drawing
+		int iconMargin = 10;
+		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
+		
+		if(isWhitelisted()) {
+			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/lock.png");
+			GL11.glPushMatrix();
+			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
+			r.drawTexture(lockIcon, 7, 11);
+			GL11.glPopMatrix();
+			iconMargin += 5 + 7;
+		}
+		
+		if(country != null) {
+			String url = "http://servers.getspout.org/images/flags/"+country.toLowerCase()+".png";
+			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
+			if(icon != null) {
+				GL11.glPushMatrix();
+				GL11.glTranslatef(x + width - iconMargin - 16, y + 20, 0);
+				r.drawTexture(icon, 16, 11);
+				GL11.glPopMatrix();
+				iconMargin += 5 + 16;
+			} else {
+				CustomTextureManager.downloadTexture("Spoutcraft", url);
+			}
 		}
 	}
 
@@ -367,6 +394,14 @@ public class ServerItem implements ListWidgetItem {
 		return this.country;
 	}
 	
+	public boolean isWhitelisted() {
+		return whitelisted;
+	}
+
+	public void setWhitelisted(boolean whitelisted) {
+		this.whitelisted = whitelisted;
+	}
+
 	public void setShowPingWhilePolling(boolean b) {
 		this.showPingWhilePolling = b;
 	}

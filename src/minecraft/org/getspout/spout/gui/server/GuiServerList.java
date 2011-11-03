@@ -1,7 +1,10 @@
 package org.getspout.spout.gui.server;
 
+import java.net.URL;
+
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+import org.lwjgl.Sys;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -25,7 +28,7 @@ public class GuiServerList extends GuiScreen {
 	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
-	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset;
+	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset, buttonAddServer;
 	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
 	FilterButton hasPlayers, notFull;
@@ -65,6 +68,7 @@ public class GuiServerList extends GuiScreen {
 		buttonFavorites = new GenericButton("Favorites");
 		buttonRefresh = new GenericButton("Refresh");
 		buttonReset = new GenericButton("Reset Filters");
+		buttonAddServer = new GenericButton("Add Your Server");
 	}
 	
 	public void initGui() {
@@ -183,16 +187,19 @@ public class GuiServerList extends GuiScreen {
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 		
-		buttonJoin.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonJoin);
-		
-		buttonReset.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonReset.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonReset);
+		
+		buttonAddFavorite.setHeight(20).setWidth(cellWidth).setX(center).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		
+		buttonJoin.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonJoin);
 		
 		top+=25;
 		
-		buttonAddFavorite.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		buttonAddServer.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonAddServer);
 		
 		buttonFavorites.setHeight(20).setWidth(cellWidth).setX(center).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonFavorites);
@@ -241,6 +248,9 @@ public class GuiServerList extends GuiScreen {
 			model.clearElementFilters();
 			featured.setSelected(true);
 			model.updateUrl();
+		}
+		if(btn.equals(buttonAddServer)) {
+			Sys.openURL("http://servers.getspout.org/submit.php");
 		}
 	}
 
