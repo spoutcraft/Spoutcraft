@@ -6,13 +6,19 @@ import org.getspout.spout.client.SpoutClient;
 
 public class ServerManager {
 	private FavoritesModel favorites;
+	private ServerListModel serverList;
 	
 	public void init() {
 		favorites = new FavoritesModel();
+		serverList = new ServerListModel();
 	}
 	
 	public FavoritesModel getFavorites() {
 		return favorites;
+	}
+	
+	public ServerListModel getServerList() {
+		return serverList;
 	}
 
 	/**

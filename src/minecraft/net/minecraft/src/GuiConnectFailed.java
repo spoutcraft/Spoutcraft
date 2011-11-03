@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import org.getspout.spout.ReconnectManager;
-import org.getspout.spout.gui.server.GuiFavorites;
 import org.getspout.spout.gui.server.GuiFavorites2;
 
 import net.minecraft.src.GuiButton;

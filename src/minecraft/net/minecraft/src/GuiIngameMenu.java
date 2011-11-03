@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import org.getspout.spout.gui.server.GuiFavorites;
-import org.getspout.spout.gui.server.GuiFavorites2;
+import org.getspout.spout.gui.server.GuiFavorites2; //Spout
 
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiButton;

@@ -22,7 +22,7 @@ import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
 import org.getspout.spout.gui.MCRenderDelegate;
-import org.getspout.spout.gui.server.GuiFavorites;
+import org.getspout.spout.gui.server.GuiFavorites2;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -128,7 +128,7 @@ class ReturnToMainMenu extends GenericButton {
 
 class ReturnToServerList extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
+		Minecraft.theMinecraft.displayGuiScreen(new GuiFavorites2(new GuiMainMenu()));
 	}
 }
 

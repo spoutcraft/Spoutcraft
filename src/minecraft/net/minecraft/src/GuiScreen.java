@@ -524,11 +524,15 @@ public class GuiScreen extends Gui {
 						if(Keyboard.getEventKey() == Keyboard.KEY_DOWN && Keyboard.getEventKeyState()) {
 							handled = true;
 							lw.shiftSelection(1);
+							lw.onSelected(lw.getSelectedRow(), false);
+							lw.getSelectedItem().onClick(-1, -1, false);
 							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
 							handled = true;
 							lw.shiftSelection(-1);
+							lw.onSelected(lw.getSelectedRow(), false);
+							lw.getSelectedItem().onClick(-1, -1, false);
 							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_RETURN && Keyboard.getEventKeyState()) {

@@ -175,4 +175,13 @@ public class FavoritesModel extends AbstractListModel {
 		items.remove(selectedRow);
 		items.add(i, item);
 	}
+	
+	public boolean containsSever(ServerItem item) {
+		for(ServerItem obj:items) {
+			if(obj.getIp().equals(item.getIp()) && obj.getPort() == item.getPort()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

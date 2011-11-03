@@ -125,7 +125,7 @@ public class GuiFavorites2 extends GuiScreen {
 			SpoutClient.getHandle().displayGuiScreen(new GuiMainMenu());
 		}
 		if(btn.equals(buttonServerList)) {
-			SpoutClient.getHandle().displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+			SpoutClient.getHandle().displayGuiScreen(new GuiServerList());
 		}
 		if(btn.equals(buttonQuickJoin)) {
 			doQuickJoin();

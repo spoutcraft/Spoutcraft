@@ -498,11 +498,11 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 	}
 	
-	protected void renderBaseBox(Control box) {
+	public void renderBaseBox(Control box) {
 		renderBaseBox(box, false);
 	}
 	
-	protected void renderBaseBox(Control box, boolean blend) {
+	public void renderBaseBox(Control box, boolean blend) {
 		Texture usedTexture = null;
 		if(box.isEnabled() && isHovering(box)) {
 			usedTexture = CustomTextureManager.getTextureFromJar("/res/boxHover.png");
@@ -556,7 +556,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 	
 	
-	protected Color getColor(Button c) {
+	public Color getColor(Button c) {
 		if(c.isEnabled() && isHovering(c)){
 			return c.getHoverColor().clone();
 		}else if(c.isEnabled()) {

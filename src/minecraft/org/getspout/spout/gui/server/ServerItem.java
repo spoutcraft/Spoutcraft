@@ -3,14 +3,18 @@ package org.getspout.spout.gui.server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 
 import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
@@ -18,20 +22,22 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class ServerItem implements ListWidgetItem {
 
-	ListWidget widget;
+	protected ListWidget widget;
 
-	String ip;
-	int port;
-	String title;
+	protected String ip;
+	protected int port;
+	protected String title;
 	
-	int databaseId = -1;
-	int ping = PING_POLLING;
-	boolean polling = false;
-	long pollStart;
-	String motd = "A minecraft server";
-	int players = 0, maxPlayers = 0;
+	protected int databaseId = -1;
+	protected int ping = PING_POLLING;
+	protected boolean polling = false;
+	protected long pollStart;
+	protected String motd = "A Minecraft server";
+	protected int players = 0, maxPlayers = 0;
 
-	private PollThread currentThread;
+	protected PollThread currentThread;
+
+	protected String country;
 	
 	public static final int PING_POLLING = -1;
 	public static final int PING_UNKNOWN = -2;
@@ -39,6 +45,8 @@ public class ServerItem implements ListWidgetItem {
 	public static final int PING_BAD_MESSAGE = -4;
 	
 	protected static int numPolling = 0;
+	
+	protected boolean showPingWhilePolling = false;
 	
 	public ServerItem(String title, String ip, int port, int dbId) {
 		this.ip = ip;
@@ -65,13 +73,10 @@ public class ServerItem implements ListWidgetItem {
 		
 		font.drawStringWithShadow(title, x + 2, y + 2, 0xffffff);
 		String sMotd = "";
-		if(polling) {
-			sMotd = ChatColor.BLUE+"Polling...";
+		if(polling && !showPingWhilePolling) {
+			sMotd = "Polling...";
 		} else {
 			switch(ping) {
-			case PING_POLLING: 
-				
-				break;
 			case PING_UNKNOWN:
 				sMotd = ChatColor.RED + "Unknown Host!";
 				break;
@@ -89,9 +94,19 @@ public class ServerItem implements ListWidgetItem {
 			}
 		}
 		
-		font.drawStringWithShadow(sMotd, x+2, y + 11, 0xffffff);
+		int color = 0xffffff;
+		if(polling && !showPingWhilePolling) {
+			Color c1 = new Color(0, 0, 0);
+			double darkness = 0;
+			long t = System.currentTimeMillis() % 1000;
+			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
+			c1.setBlue(1f - (float)darkness);
+			color = c1.toInt();
+		}
 		
-		if(ping > 0 && !polling) {
+		font.drawStringWithShadow(sMotd, x+2, y + 11, color);
+		
+		if(ping > 0 && (!polling || showPingWhilePolling)) {
 			String sping = ping + " ms";
 			int pingwidth = font.getStringWidth(sping);
 			font.drawStringWithShadow(sping, width - pingwidth - 20, y + 2, 0xaaaaaa);
@@ -186,6 +201,42 @@ public class ServerItem implements ListWidgetItem {
 		this.databaseId = databaseId;
 	}
 	
+	public int getPing() {
+		return ping;
+	}
+
+	public void setPing(int ping) {
+		this.ping = ping;
+	}
+
+	public boolean isPolling() {
+		return polling;
+	}
+
+	public String getMotd() {
+		return motd;
+	}
+
+	public void setMotd(String motd) {
+		this.motd = motd;
+	}
+
+	public int getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(int players) {
+		this.players = players;
+	}
+
+	public int getMaxPlayers() {
+		return maxPlayers;
+	}
+
+	public void setMaxPlayers(int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
+
 	protected class PollThread extends Thread {
 		
 		@Override
@@ -240,6 +291,7 @@ public class ServerItem implements ListWidgetItem {
 			} finally {
 				polling = false;
 				numPolling--;
+				sendDCData();
 				try {
 					sock.close();
 					input.close();
@@ -248,5 +300,62 @@ public class ServerItem implements ListWidgetItem {
 			}
 		}
 		
+	}
+	
+	/**
+	 * Sends ping, playercount and maximum players to the server list database. 
+	 * No personal data (aside your IP) will be transferred and the IP won't be 
+	 * saved. Sending this data to the server makes for a more accurate ping calculation
+	 * and will give you better search results when you order by ping. Our server then
+	 * doesn't have to ping all the servers on its own.
+	 */
+	protected void sendDCData() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if(wasSandboxed) SpoutClient.disableSandbox();
+		Thread send = new Thread() {
+			public void run() {
+				if(ping > 0) {
+					while(numPolling > 0) {
+						try {
+							Thread.sleep(20);
+						} catch (InterruptedException e) {
+							return;
+						}
+					}
+					String api = "http://servers.getspout.org/senddata.php?";
+					api += "ping="+ping;
+					api += "&players="+players;
+					api += "&maxplayers="+maxPlayers;
+					URL url;
+					try {
+						url = new URL(api);
+					} catch (MalformedURLException e) {
+						return;
+					}
+					try {
+						InputStream stream  = url.openStream();
+						if(stream.read() == (int)'k') {
+							System.out.println("Deployed ping data for "+getTitle()+".");
+						}
+						stream.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+		};
+		send.start();
+		if(wasSandboxed) SpoutClient.enableSandbox();
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	
+	public String getCountry() {
+		return this.country;
+	}
+	
+	public void setShowPingWhilePolling(boolean b) {
+		this.showPingWhilePolling = b;
 	}
 }
