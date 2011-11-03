@@ -39,6 +39,7 @@ public class ServerListModel extends AbstractListModel {
 	protected Thread currentLoader = null;
 	protected List<String> countries = new LinkedList<String>();
 	public static final String API = "http://servers.getspout.org/api2.php";
+	protected boolean loading = false;
 	
 	public ServerListModel() {
 		refreshAPIData(getDefaultUrl(), 0, true);
@@ -191,6 +192,7 @@ public class ServerListModel extends AbstractListModel {
 		currentLoader = new Thread() {
 			@Override
 			public void run() {
+				loading = true;
 				long start = System.currentTimeMillis();
 				URL url1;
 				try {
@@ -216,6 +218,7 @@ public class ServerListModel extends AbstractListModel {
 				System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 				apiData = yamlObj;
 				refreshList(clear);
+				loading = false;
 				try {
 					reader.close();
 				} catch (IOException e) {
@@ -318,9 +321,6 @@ public class ServerListModel extends AbstractListModel {
 	}
 	
 	public boolean isLoading() {
-		if(currentLoader != null) {
-			return currentLoader.isAlive();
-		}
-		return false;
+		return loading;
 	}
 }
