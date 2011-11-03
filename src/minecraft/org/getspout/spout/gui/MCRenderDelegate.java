@@ -612,9 +612,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		RenderUtil.drawGradientRectangle(0, 0, (int)gs.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
-		RenderUtil.drawGradientRectangle(0, (int)gs.getHeight() - 5, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
-		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		//Draw scrollbars
@@ -625,6 +622,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			double scrollX = 0;
 			double p = (double)scrollLeft / (double)gs.getMaximumScrollPosition(Orientation.HORIZONTAL);
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
+			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 16, (int) gs.getWidth(), (int) gs.getHeight(), 0xff666666, 0xff888888);
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int)scrollX, (int) (gs.getHeight() - 16), 0, 208, 16, 16, 0f);
 		}
 		if(gs.needsScrollBar(Orientation.VERTICAL)) {
@@ -634,7 +633,12 @@ public class MCRenderDelegate implements RenderDelegate {
 			double scrollY = 0;
 			double p = (double)scrollTop / (double)gs.getMaximumScrollPosition(Orientation.VERTICAL);
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
+			RenderUtil.drawGradientRectangle((int) gs.getWidth() - 16, 0, (int) gs.getWidth(), (int) gs.getHeight(), 0xff666666, 0xff888888);
+			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 0, 208, 16, 16, 0f);
+			
+			RenderUtil.drawGradientRectangle(0, 0, (int)gs.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
+			RenderUtil.drawGradientRectangle(0, (int)gs.getHeight() - 5, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
 		}
 	}
 
