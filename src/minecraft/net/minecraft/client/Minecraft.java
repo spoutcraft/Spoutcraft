@@ -352,7 +352,8 @@ public abstract class Minecraft implements Runnable {
 		this.loadingScreen = new LoadingScreenRenderer(this);
 		
 		// Spout Start
-		
+		SpoutClient.getInstance().loadAddons();
+		SpoutClient.getInstance().enableAddons(AddonLoadOrder.GAMESTART);
 		// Spout End
 	}
 
@@ -585,6 +586,7 @@ public abstract class Minecraft implements Runnable {
 		}
 		shutdown = true;
 		SpoutClient.disableSandbox();
+		SpoutClient.getInstance().disableAddons();
 		// Spout End
 		try {
 			this.statFileWriter.func_27175_b();
@@ -1431,7 +1433,6 @@ public abstract class Minecraft implements Runnable {
 	public void changeWorld(World var1, String var2, EntityPlayer var3) {
 		// Spout Start
 		if (var1 != null) {
-			SpoutClient.getInstance().loadAddons();
 			SpoutClient.getInstance().enableAddons(AddonLoadOrder.PREWORLD);
 		}
 		// Spout End
@@ -1516,7 +1517,6 @@ public abstract class Minecraft implements Runnable {
 			}
 			renderEngine.refreshTextures();
 			SpoutClient.getInstance().onWorldExit();
-			SpoutClient.getInstance().disableAddons();
 			// Spout End
 		}
 
