@@ -1,6 +1,8 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractListModel {
 	
@@ -24,6 +26,10 @@ public abstract class AbstractListModel {
 		for(GenericListView view:views) {
 			view.sizeChanged();
 		}
+	}
+	
+	public Set<GenericListView> getViews() {
+		return Collections.unmodifiableSet(views);
 	}
 
 }

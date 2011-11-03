@@ -36,6 +36,7 @@ public class GenericListView extends GenericListWidget implements ListWidget {
 		return items;
 	}
 
+	@Override
 	public ListWidgetItem getItem(int n) {
 		return model.getItem(n);
 	}
@@ -94,6 +95,7 @@ public class GenericListView extends GenericListWidget implements ListWidget {
 		return this;
 	}
 
+	@Override
 	public void onSelected(int item, boolean doubleClick) {
 		model.onSelected(item, doubleClick);
 	}
