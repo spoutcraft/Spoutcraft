@@ -47,7 +47,7 @@ public class WorldRenderer {
 	public int posYClip;
 	public int posZClip;
 	public boolean isInFrustum = false;
-	public boolean[] skipRenderPass = new boolean[3]; //Spout
+	public boolean[] skipRenderPass = new boolean[2];
 	public int posXPlus;
 	public int posYPlus;
 	public int posZPlus;
@@ -62,14 +62,6 @@ public class WorldRenderer {
 	private boolean isInitialized = false;
 	public List tileEntityRenderers = new ArrayList();
 	private List tileEntities;
-	//Spout Start
-	public boolean isVisibleFromPosition = false;
-	public double visibleFromX;
-	public double visibleFromY;
-	public double visibleFromZ;
-	private boolean needsBoxUpdate = false;
-	public boolean isInFrustrumFully = false;
-	//Spout End
 
 	public WorldRenderer(World var1, List var2, int var3, int var4, int var5, int var6, int var7) {
 		this.worldObj = var1;
@@ -97,13 +89,12 @@ public class WorldRenderer {
 			this.posXMinus = var1 - this.posXClip;
 			this.posYMinus = var2 - this.posYClip;
 			this.posZMinus = var3 - this.posZClip;
-			//Spout Start
 			float var4 = 6.0F;
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.sizeWidth) + var4), (double)((float)(var2 + this.sizeHeight) + var4), (double)((float)(var3 + this.sizeDepth) + var4));
-			this.needsBoxUpdate = true;
+			GL11.glNewList(this.glRenderList + 2, 4864 /*GL_COMPILE*/);
+			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + this.sizeWidth) + var4), (double)((float)(this.posYClip + this.sizeHeight) + var4), (double)((float)(this.posZClip + this.sizeDepth) + var4)));
+			GL11.glEndList();
 			this.markDirty();
-			this.isVisibleFromPosition = false;
-			//Spout End
 		}
 	}
 
@@ -115,16 +106,6 @@ public class WorldRenderer {
 		//Spout Start
 		if(this.needsUpdate) {
 			++chunksUpdated;
-			if(this.needsBoxUpdate) {
-				float var1 = 6.0F;
-				GL11.glNewList(this.glRenderList + 3, 4864 /*GL_COMPILE*/); //Spout
-				RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var1), (double)((float)this.posYClip - var1), (double)((float)this.posZClip - var1), (double)((float)(this.posXClip + this.sizeWidth) + var1), (double)((float)(this.posYClip + this.sizeHeight) + var1), (double)((float)(this.posZClip + this.sizeDepth) + var1)));
-				GL11.glEndList();
-				this.needsBoxUpdate = false;
-			}
-
-			this.isVisible = true;
-			this.isVisibleFromPosition = false;
 			int x = this.posX;
 			int y = this.posY;
 			int z = this.posZ;
@@ -132,7 +113,7 @@ public class WorldRenderer {
 			int sizeYOffset = this.posY + this.sizeHeight;
 			int sizeZOffset = this.posZ + this.sizeDepth;
 
-			for(int renderPass = 0; renderPass < 3; ++renderPass) { //Spout
+			for(int renderPass = 0; renderPass < 2; ++renderPass) {
 				this.skipRenderPass[renderPass] = true;
 			}
 
@@ -151,100 +132,127 @@ public class WorldRenderer {
 			hitTextures.add("/terrain.png");
 			hitTexturesPlugins.add("");
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
-			for (int renderPass = 0; renderPass < 3; ++renderPass) { //Spout
+			game.renderEngine.bindTexture(defaultTexture);
+			
+			
+			for (int renderPass = 0; renderPass < 2; ++renderPass) {
+				
 				boolean skipRenderPass = false;
 				boolean rendered = false;
 				boolean drawBlock = false;
-
+				
+				if (!drawBlock) {
+					drawBlock = true;
+					GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
+					GL11.glPushMatrix();
+					this.setupGLTranslation();
+					GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
+					GL11.glScalef(1F, 1F, 1F);
+					GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
+					tessellator.startDrawingQuads();
+					tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
+				}
+				
 				game.renderEngine.bindTexture(defaultTexture);
-				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {
-					boolean uvIgnore = false;
+				for (currentTexture = 0; currentTexture < hitTextures.size(); currentTexture++) {	
 					int texture = defaultTexture;
-					if(currentTexture > 0){
+					//First pass (currentTexture == 0) is for the default terrain.png texture. Subsquent passes are for custom textures
+					//This design is to avoid unnessecary glBindTexture calls.
+					if(currentTexture > 0) {
 						Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
 						if (customTexture != null) {
 							texture = customTexture.getTextureID();
 							game.renderEngine.bindTexture(texture);
-							if(texture <= 0)
+							if(texture <= 0) {
 								texture = defaultTexture;
+							}
 						}
 					}
+
+					if(tessellator.textureOverride != texture){
+						tessellator.draw();
+						tessellator.textureOverride = texture;
+						tessellator.startDrawingQuads();
+					}
 					
-					//for (int dy = y; dy < sizeYOffset; ++dy) {
-					for (int dy = sizeYOffset; dy > y; --dy) {
+					//The x,y,z order is important, don't change!
+					for (int dx = x; dx < sizeXOffset; ++dx) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
-							for (int dx = x; dx < sizeXOffset; ++dx) {
-								int var19 = chunkCache.getBlockId(dx, dy, dz);
-								
-								if (var19 > 0) {
+							for (int dy = y; dy < sizeYOffset; ++dy) {
+								int id = chunkCache.getBlockId(dx, dy, dz);
+								if (id > 0) {
+									
+									//Find the custom texture and addon that created it
+									//TODO a helper method to do this step?
 									String customTexture = null; 
-									String customTexturePlugin = null;
+									String customTextureAddon = null;
 									SpoutCustomBlockDesign design = null;
 									if (SpoutItem.isBlockOverride(dx, dy, dz)) {
 										design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
 									} else {
 										int data = chunkCache.getBlockMetadata(dx, dy, dz);
-										design = SpoutItem.getCustomBlockDesign(var19, data);
+										design = SpoutItem.getCustomBlockDesign(id, data);
 									}
 									if (design != null) {
 										customTexture = design.getTexureURL();
-										customTexturePlugin = design.getTextureAddon();
+										customTextureAddon = design.getTextureAddon();
 									}
+									
+									
 									if(customTexture != null){
 										boolean found = false;
-										for(int i=0;i<hitTextures.size();i++){
-											if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTexturePlugin))
+										
+										//Search for the custom texture in our list
+										for(int i = 0; i < hitTextures.size(); i++){
+											if(hitTextures.get(i).equals(customTexture) && hitTexturesPlugins.get(i).equals(customTextureAddon)) {
 												found = true;
+												break;
+											}
 										}
+										//If it is not already accounted for, add it so we do an additional pass for it.
 										if(!found) {
 											hitTextures.add(customTexture);
-											hitTexturesPlugins.add(customTexturePlugin);
+											hitTexturesPlugins.add(customTextureAddon);
 										}
-										if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTexturePlugin))
+										
+										//Do not render if we are using a different texture than the current one
+										if(!hitTextures.get(currentTexture).equals(customTexture) || !hitTexturesPlugins.get(currentTexture).equals(customTextureAddon)) {
 											continue;
-									} else if(currentTexture != 0) { 
+										}
+									}
+									//Do not render if we are not using the terrain.png and can't find a valid texture for this custom block
+									else if (currentTexture != 0) { 
 										continue;
 									}
-								
 
-									if (!drawBlock) {
-										drawBlock = true;
-										GL11.glNewList(this.glRenderList + renderPass, 4864 /* GL_COMPILE */);
-										GL11.glPushMatrix();
-										this.setupGLTranslation();
-										GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
-										GL11.glScalef(1F, 1F, 1F);
-										GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
-										tessellator.startDrawingQuads();
-										tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
-									}
-									
-									if(tessellator.textureOverride != texture){
-										tessellator.draw();
-										tessellator.textureOverride = texture;
-										tessellator.startDrawingQuads();
-									}
-									
-
-									if (renderPass == 0 && Block.isBlockContainer[var19]) {
+									if (renderPass == 0 && Block.isBlockContainer[id]) {
 										TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
 										}
 									}
-
-									Block var25 = Block.blocksList[var19];
-									int blockRenderPass = var25.getRenderBlockPass();
+									
+									Block block = Block.blocksList[id];
+									//Determine which pass this block needs to be rendered on
+									int blockRenderPass = block.getRenderBlockPass();
 									if (design != null) {
-										if (renderPass == design.getRenderPass()) {
-											rendered |= SpoutItem.renderCustomBlock(blockRenderer, design, var25, dx, dy, dz);
-										} else {
-											skipRenderPass = true;
-										}
-									} else if (blockRenderPass != renderPass) {
+										blockRenderPass = design.getRenderPass();
+									}
+									
+									if (renderPass == 0 && blockRenderer.func_35927_a(dx, dy, dz, 0)) {
+										rendered = true;
+									}
+									
+									if (blockRenderPass != renderPass) {
 										skipRenderPass = true;
-									} else {
-										rendered |= blockRenderer.renderBlockByRenderType(var25, dx, dy, dz);
+									}
+									else {
+										if (design != null) {
+											rendered |= SpoutItem.renderCustomBlock(blockRenderer, design, block, dx, dy, dz);
+										}
+										else {
+											rendered |= blockRenderer.renderBlockByRenderType(block, dx, dy, dz);
+										}
 									}
 								}
 							}
@@ -292,7 +300,7 @@ public class WorldRenderer {
 	}
 
 	public void setDontDraw() {
-		for(int var1 = 0; var1 < 3; ++var1) { //Spout
+		for(int var1 = 0; var1 < 2; ++var1) {
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -311,21 +319,14 @@ public class WorldRenderer {
 
 	public void updateInFrustrum(ICamera var1) {
 		this.isInFrustum = var1.isBoundingBoxInFrustum(this.rendererBoundingBox);
-		//Spout Start
-		if(this.isInFrustum && ConfigReader.advancedOpenGL == 2) {
-			this.isInFrustrumFully = var1.isBoundingBoxInFrustumFully(this.rendererBoundingBox);
-		} else {
-			this.isInFrustrumFully = false;
-		}
-		//Spout End
 	}
 
 	public void callOcclusionQueryList() {
-		GL11.glCallList(this.glRenderList + 3); //Spout
+		GL11.glCallList(this.glRenderList + 2);
 	}
 
 	public boolean skipAllRenderPasses() {
-		return !this.isInitialized?false:this.skipRenderPass[0] && this.skipRenderPass[1] && this.skipRenderPass[2]; //Spout
+		return !this.isInitialized?false:this.skipRenderPass[0] && this.skipRenderPass[1];
 	}
 
 	public void markDirty() {

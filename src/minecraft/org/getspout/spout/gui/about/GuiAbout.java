@@ -36,6 +36,7 @@ public class GuiAbout extends GuiScreen {
 	Texture lethalDriveLogo = CustomTextureManager.getTextureFromJar("/res/lethaldrive.png");
 	private int sourceY = -1;
 	private int sourceWidth = -1;
+	private boolean hoveringLink = false;
 	
 	public GuiAbout() {
 	}
@@ -96,6 +97,7 @@ public class GuiAbout extends GuiScreen {
 	
 	@Override
 	public void mouseMovedOrUp(int mouseX, int mouseY, int click) {
+		hoveringLink = false;
 		if (click != 0) { //still dragging
 			if (holdingScrollBar) {
 				int height = getInvertedScaledHeight(this.height);
@@ -109,6 +111,9 @@ public class GuiAbout extends GuiScreen {
 		}
 		else {
 			holdingScrollBar = false;
+		}
+		if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(sourceY), 10, sourceWidth, mouseX, mouseY)) {
+			hoveringLink = true;
 		}
 		super.mouseMovedOrUp(mouseX, mouseY, click);
 	}
@@ -205,12 +210,12 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("lahwran - Fast Events Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Celtic Minstrel - Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Zeerix - Threading Code", this.width / 2 - 200, top, 0x808080); top += 10;
-		drawScaledString("Karlthepagan - OptiTick Mod", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("Karlthepagan - OptiTick Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Kahr - HD Textures Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Jeckari - Custom Texture Code", this.width / 2 - 200, top, 0x808080); top += 10;
-		drawScaledString("Rychochet - GUI Code", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("Rycochet - GUI Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("knowbuddy - GUI Optimizations", this.width / 2 - 200, top, 0x808080); top += 10;
-		drawScaledString("TomyLobo - Mipmaping", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("TomyLobo - Mipmapping Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		
 		
@@ -244,7 +249,7 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("can browse the source code at", this.width / 2 + 30, top, 0x808080);  top += 10;
 		sourceY = top;
 		sourceWidth = this.fontRenderer.getStringWidth("https://github.com/SpoutDev");
-		drawScaledString("https://github.com/SpoutDev", this.width / 2 + 30, sourceY, 0x0000FF); top += 10;
+		drawScaledString("https://github.com/SpoutDev", this.width / 2 + 30, sourceY, hoveringLink ? 0x65A5D1 : 0x176093); top += 10;
 		
 		top += 20;
 		
@@ -307,9 +312,6 @@ public class GuiAbout extends GuiScreen {
 		if (isInBoundingRect(lethalDriveX, lethalDriveY, 33, 147, x, y)) {
 			drawTooltip("LethalDrive is the cutting edge in game servers. \nSpout trusts their server for our stuff, and you can too!\nGo to " + ChatColor.BLUE + "www.lethaldrive.com/spout" + ChatColor.WHITE + " for a discount!", x, y);
 		}
-		
-		
-		drawScaledString("Move along, nothing to see here.", 40, 450, 0x808080);
 		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

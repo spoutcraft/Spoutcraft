@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.TextureUtils;
+
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;

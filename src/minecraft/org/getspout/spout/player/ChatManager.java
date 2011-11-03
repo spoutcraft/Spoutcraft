@@ -34,9 +34,11 @@ import net.minecraft.src.ChatAllowedCharacters;
 
 public class ChatManager {
 	public int commandScroll = 0;
+	public int messageScroll = 0;
 	public int chatScroll = 0;
 	private HashMap<Character, String> boundCommands = new HashMap<Character, String>();
-	public ArrayList<String> pastCommands = new ArrayList<String>(1000);
+	public ArrayList<String> pastCommands = new ArrayList<String>(100);
+	public ArrayList<String> pastMessages = new ArrayList<String>(1000);
 	public boolean onChatKeyTyped(char character, int key, GuiChat chat) {
 		try {
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
@@ -76,18 +78,34 @@ public class ChatManager {
 				}
 			}
 			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_UP) && commandScroll < pastCommands.size()) {
-				commandScroll++;
-				message = updateCommandScroll(chat);
+			else if (control && Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				if (commandScroll < pastCommands.size()) {
+					commandScroll++;
+					message = updateCommandScroll(chat);
+					updateMessage(message, chat);
+				}
+			}
+			
+			else if (control && Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				if (commandScroll > 0) {
+					commandScroll--;
+					message = updateCommandScroll(chat);
+					updateMessage(message, chat);
+				}
+			}
+			
+			else if (Keyboard.isKeyDown(Keyboard.KEY_UP) && messageScroll < pastMessages.size()) {
+				messageScroll++;
+				message = updateMessageScroll(chat);
 				updateMessage(message, chat);
 			}
 			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && commandScroll > 0) {
-				commandScroll--;
-				message = updateCommandScroll(chat);
+			else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && messageScroll > 0) {
+				messageScroll--;
+				message = updateMessageScroll(chat);
 				updateMessage(message, chat);
 			}
-
+	
 			else if (control && Keyboard.isKeyDown(Keyboard.KEY_V)) {
 				String paste = paste();
 				message = (message.substring(0, cursor) + paste + message.substring(Math.min(cursor, message.length())));
@@ -179,6 +197,20 @@ public class ChatManager {
 		updateCursor(command.length(), chat);
 		return command;
 	}
+	
+	public String updateMessageScroll(GuiChat chat) {
+		String message;
+		if (messageScroll == 0) {
+			message = "";
+		}
+		else {
+			message = (String)pastMessages.get(pastMessages.size() - messageScroll);
+		}
+		updateMessage(message, chat);
+		updateCursor(message.length(), chat);
+		return message;
+	}
+
 
 	public void updateCursor(int position, GuiChat chat) {
 		chat.cursorPosition = checkCursor(chat.message, position);
