@@ -224,10 +224,6 @@ public class WorldRenderer {
 									else if (currentTexture != 0) { 
 										continue;
 									}
-								
-
-									
-									
 
 									if (renderPass == 0 && Block.isBlockContainer[id]) {
 										TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
