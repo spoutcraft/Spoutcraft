@@ -63,6 +63,7 @@ public enum PacketType {
 	PacketBlockData(42, PacketBlockData.class),
 	PacketCustomMultiBlockOverride(43, PacketCustomMultiBlockOverride.class),
 	PacketServerPlugins(44, PacketServerPlugins.class),
+	PacketCustomMaterial(45, PacketCustomMaterial.class),
 	;
 	
 	private final int id;

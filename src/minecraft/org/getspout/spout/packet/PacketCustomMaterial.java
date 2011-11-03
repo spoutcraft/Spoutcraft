@@ -59,12 +59,10 @@ public class PacketCustomMaterial implements SpoutPacket {
 	}
 
 	public PacketType getPacketType() {
-		// TODO Auto-generated method stub
-		return null;
+		return PacketType.PacketCustomMaterial;
 	}
 
 	public int getVersion() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
