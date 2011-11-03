@@ -12,4 +12,6 @@ public interface UrlElement {
 	 * @return
 	 */
 	String getUrlPart();
+	
+	void clear();
 }

@@ -23,4 +23,8 @@ public class SearchField extends GenericTextField implements UrlElement {
 	public String getUrlPart() {
 		return "terms="+getText().replaceAll(" ", ",");
 	}
+
+	public void clear() {
+		setText("");
+	}
 }

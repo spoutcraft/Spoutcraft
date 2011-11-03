@@ -329,4 +329,10 @@ public class ServerListModel extends AbstractListModel {
 		if(currentGui != null)
 			currentGui.updateButtons();
 	}
+
+	public void clearElementFilters() {
+		for(UrlElement element: urlElements) {
+			element.clear();
+		}
+	}
 }

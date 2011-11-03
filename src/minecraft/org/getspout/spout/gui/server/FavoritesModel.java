@@ -22,9 +22,20 @@ public class FavoritesModel extends AbstractListModel {
 	
 	private ArrayList<ServerItem> items = new ArrayList<ServerItem>();
 	private GuiFavorites2 gui;
+	private boolean polling = false;
 	
 	public FavoritesModel() {
-		load();
+	}
+	
+	public synchronized boolean isPolling() {
+		return polling;
+	}
+	
+	public synchronized void setPolling(boolean poll) {
+		polling = poll;
+		if(gui != null) {
+			gui.updateButtons();
+		}
 	}
 	
 	public void setCurrentGUI(GuiFavorites2 gui) {

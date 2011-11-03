@@ -93,4 +93,8 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 		String surl = url + (allowSorting?"&order="+dir:"");
 		return surl;
 	}
+
+	public void clear() {
+		setSelected(false);
+	}
 }

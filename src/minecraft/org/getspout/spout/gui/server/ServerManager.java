@@ -10,6 +10,7 @@ public class ServerManager {
 	
 	public void init() {
 		favorites = new FavoritesModel();
+		favorites.load();
 		serverList = new ServerListModel();
 	}
 	

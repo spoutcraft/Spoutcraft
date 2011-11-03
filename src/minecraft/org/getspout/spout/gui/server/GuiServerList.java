@@ -22,7 +22,7 @@ public class GuiServerList extends GuiScreen {
 
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
 	
-	private Label labelTitle, filterTitle, labelSearch;
+	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset;
@@ -55,17 +55,16 @@ public class GuiServerList extends GuiScreen {
 		random = new RandomButton();
 		hasPlayers = new FilterButton("Has Players", "hasplayers");
 		notFull = new FilterButton("Not Full", "notfull");
-		labelSearch = new GenericLabel("Search");
 		search = new SearchField();
 		buttonSearch = new GenericButton("Search");
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);
-		buttonJoin = new GenericButton("Join");
-		buttonAddFavorite = new GenericButton("Add As Favorite");
+		buttonJoin = new GenericButton("Join Server");
+		buttonAddFavorite = new GenericButton("Add Favorite");
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonFavorites = new GenericButton("Favorites");
 		buttonRefresh = new GenericButton("Refresh");
-		buttonReset = new GenericButton(ChatColor.RED+"Reset Filters");
+		buttonReset = new GenericButton("Reset Filters");
 	}
 	
 	public void initGui() {
@@ -79,17 +78,13 @@ public class GuiServerList extends GuiScreen {
 		}
 		
 		int top = 5;
-		labelTitle.setY(top)
-			.setX(width/2 - mc.fontRenderer.getStringWidth("Public Server List")/2);
+		labelTitle.setY(top + 7).setX(width/2 - mc.fontRenderer.getStringWidth("Public Server List")/2);
 		getScreen().attachWidget(spoutcraft, labelTitle);
 		
-		buttonRefresh.setX(5).setY(top - 2).setWidth(100).setHeight(20);
+		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 		
-		buttonReset.setX(width - 5 - 100).setY(top - 2).setWidth(100).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonReset);
-		
-		top+=20;
+		top+=25;
 		
 		filters.setWidth(130).setHeight(height - top - 55);
 		filters.setX(5).setY(top);
@@ -150,10 +145,6 @@ public class GuiServerList extends GuiScreen {
 		model.addUrlElement(notFull);
 		ftop += 25;
 		
-		labelSearch.setX(5).setY(ftop).setHeight(11).setWidth(100);
-		filters.attachWidget(spoutcraft, labelSearch);
-		ftop += 13;
-		
 		search.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, search);
 		model.addUrlElement(search);
@@ -186,22 +177,28 @@ public class GuiServerList extends GuiScreen {
 		
 		top += view.getHeight() + 5;
 		
-		int left = width / 2 - 405 / 2;
-		int right = left + 205;
+		int totalWidth = 401;
+		int cellWidth = (totalWidth - 20)/3;
+		int left = width / 2 - totalWidth / 2 + 5;
+		int center = left + cellWidth + 5;
+		int right = center + cellWidth + 5;
 		
-		buttonJoin.setHeight(20).setWidth(200).setX(left).setY(top);
+		buttonJoin.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonJoin);
 		
-		buttonAddFavorite.setHeight(20).setWidth(200).setX(right).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		buttonReset.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonReset);
 		
 		top+=25;
-
-		buttonMainMenu.setHeight(20).setWidth(200).setX(left).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 		
-		buttonFavorites.setHeight(20).setWidth(200).setX(right).setY(top);
+		buttonAddFavorite.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		
+		buttonFavorites.setHeight(20).setWidth(cellWidth).setX(center).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonFavorites);
+
+		buttonMainMenu.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 		
 		updateButtons();
 		instancesCreated = true;
@@ -241,10 +238,7 @@ public class GuiServerList extends GuiScreen {
 			model.updateUrl();
 		}
 		if(btn.equals(buttonReset)) {
-			hasPlayers.setChecked(false, false);
-			notFull.setChecked(false, false);
-			search.setText("");
-			buttonCountry.setCurrentCountry(-1);
+			model.clearElementFilters();
 			featured.setSelected(true);
 			model.updateUrl();
 		}
@@ -288,5 +282,6 @@ public class GuiServerList extends GuiScreen {
 			color.setGreen(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
 		}
+		super.updateScreen();
 	}
 }

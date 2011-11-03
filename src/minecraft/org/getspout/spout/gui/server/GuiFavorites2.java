@@ -3,6 +3,7 @@ package org.getspout.spout.gui.server;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
@@ -37,26 +38,28 @@ public class GuiFavorites2 extends GuiScreen {
 		
 		title = new GenericLabel("Favorite Servers");
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
-		title.setY(5);
+		title.setY(12);
 		title.setHeight(15).setWidth(SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		getScreen().attachWidget(spoutcraft, title);
 		
 		buttonMoveUp = new GenericButton("/\\");
-		buttonMoveUp.setX(width - 50).setY(0);
+		buttonMoveUp.setTooltip("Move Item Up");
+		buttonMoveUp.setX(5).setY(5);
 		buttonMoveUp.setHeight(20).setWidth(20);
 		getScreen().attachWidget(spoutcraft, buttonMoveUp);
 		
 		buttonMoveDown = new GenericButton("\\/");
-		buttonMoveDown.setX(width - 25).setY(0);
+		buttonMoveDown.setTooltip("Move Item Down");
+		buttonMoveDown.setX(25).setY(5);
 		buttonMoveDown.setHeight(20).setWidth(20);
 		getScreen().attachWidget(spoutcraft, buttonMoveDown);
 		
-		buttonRefresh = new GenericButton("Poll again");
-		buttonRefresh.setHeight(20).setWidth(150).setX(5).setY(0);
+		buttonRefresh = new GenericButton("Refresh");
+		buttonRefresh.setHeight(20).setWidth(100).setX(width - 105).setY(5);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 		
 		view = new GenericListView(model);
-		view.setX(0).setY(20).setWidth(width).setHeight(height - 100);
+		view.setX(5).setY(30).setWidth(width - 10).setHeight(height - 110);
 		getScreen().attachWidget(spoutcraft, view);
 		
 		int top = (int) (view.getY() + view.getHeight() + 5);
@@ -201,5 +204,27 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
+		
+		if(model.isPolling()) {
+			buttonRefresh.setEnabled(false);
+			buttonRefresh.setText("Polling...");
+			buttonRefresh.setDisabledColor(new Color(0f,0f,1f));
+		} else {
+			buttonRefresh.setEnabled(true);
+			buttonRefresh.setText("Refresh");
+		}
+	}
+	
+	@Override
+	public void updateScreen() {
+		if(model.isPolling()) {
+			Color color = new Color(0, 0f, 0);
+			double darkness = 0;
+			long t = System.currentTimeMillis() % 1000;
+			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
+			color.setBlue(1f - (float)darkness);
+			buttonRefresh.setDisabledColor(color);
+		}
+		super.updateScreen();
 	}
 }

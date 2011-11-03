@@ -34,4 +34,8 @@ public class FilterButton extends GenericCheckBox implements UrlElement{
 		return url;
 	}
 
+	public void clear() {
+		setChecked(false);
+	}
+
 }

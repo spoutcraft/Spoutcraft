@@ -48,6 +48,8 @@ public class ServerItem implements ListWidgetItem {
 	
 	protected boolean showPingWhilePolling = false;
 	
+	protected FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	
 	public ServerItem(String title, String ip, int port, int dbId) {
 		this.ip = ip;
 		this.port = port;
@@ -253,6 +255,7 @@ public class ServerItem implements ListWidgetItem {
 			}
 			numPolling ++;
 			polling = true;
+			model.setPolling(true);
 			Socket sock = null;
 			DataInputStream input = null;
 			DataOutputStream output = null;
@@ -296,6 +299,9 @@ public class ServerItem implements ListWidgetItem {
 			} finally {
 				polling = false;
 				numPolling--;
+				if(numPolling == 0) {
+					model.setPolling(false);
+				}
 				sendDCData();
 				try {
 					sock.close();

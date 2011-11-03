@@ -38,4 +38,8 @@ public class CountryButton extends GenericButton implements UrlElement {
 		item = i;
 	}
 
+	public void clear() {
+		item = -1;
+	}
+
 }
