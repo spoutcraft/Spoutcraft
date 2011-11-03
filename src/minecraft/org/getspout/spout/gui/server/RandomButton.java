@@ -3,7 +3,6 @@ package org.getspout.spout.gui.server;
 import java.util.Random;
 
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.RadioButton;
 
 public class RandomButton extends SortButton {
 	Random rand = new Random();
@@ -19,7 +18,6 @@ public class RandomButton extends SortButton {
 		seed = rand.nextLong();
 		super.onButtonClick(event);
 	}
-
 	
 	@Override
 	public String getUrlPart() {

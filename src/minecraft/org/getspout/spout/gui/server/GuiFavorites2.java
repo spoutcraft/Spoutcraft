@@ -116,16 +116,6 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 		
-		Gradient scrollArea = new CustomGenericGradient(view);
-		scrollArea.setY(20);
-		scrollArea.setHeight(height - 100);
-		scrollArea.setX(width - 16);
-		scrollArea.setWidth(16);
-		scrollArea.setTopColor(scrollBarColor);
-		scrollArea.setBottomColor(scrollBarColor2);
-		scrollArea.setPriority(RenderPriority.Low);
-		getScreen().attachWidget(spoutcraft, scrollArea);
-		
 		updateButtons();
 	}
 	
@@ -220,15 +210,5 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
-	}
-}
-
-class CustomGenericGradient extends GenericGradient {
-	GenericListView view;
-	public CustomGenericGradient(GenericListView view) {
-		this.view = view;
-	}
-	public boolean isVisible() {
-		return view.needsScrollBar(Orientation.VERTICAL);
 	}
 }

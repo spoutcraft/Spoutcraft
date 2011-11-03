@@ -116,7 +116,7 @@ public class ServerItem implements ListWidgetItem {
 			if(country != null) {
 				String sCountry = "Country: "+country;
 				int countrywidth = font.getStringWidth(sCountry);
-				font.drawStringWithShadow(sCountry, width - countrywidth - 5, y+24, 0xaaaaaa);
+				font.drawStringWithShadow(sCountry, width - countrywidth - 5, y+20, 0xaaaaaa);
 			}
 		}
 		

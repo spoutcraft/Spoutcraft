@@ -47,7 +47,7 @@ public class GuiServerList extends GuiScreen {
 		featured = new SortButton("Featured", "featured");
 		popular = new SortButton("Popular", "popular");
 		byName = new SortButton("Name", "sortBy=name");
-		byFreeSlots = new SortButton("Free slots", "sortBy=freeslots", false);
+		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false);
 		byPing = new SortButton("Ping", "sortBy=ping");
 		random = new RandomButton();
 		hasPlayers = new FilterButton("Has Players", "hasplayers");
@@ -58,7 +58,7 @@ public class GuiServerList extends GuiScreen {
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);
 		buttonJoin = new GenericButton("Join");
-		buttonAddFavorite = new GenericButton("Add as favorite");
+		buttonAddFavorite = new GenericButton("Add As Favorite");
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonFavorites = new GenericButton("Favorites");
 	}
