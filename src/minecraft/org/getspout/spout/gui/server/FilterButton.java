@@ -13,12 +13,17 @@ public class FilterButton extends GenericCheckBox implements UrlElement{
 		this.url = url;
 	}
 	
+	public CheckBox setChecked(boolean check, boolean update) {
+		super.setChecked(check);
+		if(update) {
+			model.updateUrl();
+		}
+		return this;
+	}
 	
 	@Override
 	public CheckBox setChecked(boolean b) {
-		super.setChecked(b);
-		model.updateUrl();
-		return this;
+		return setChecked(b, true);
 	}
 	
 	public boolean isActive() {

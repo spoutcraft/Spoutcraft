@@ -34,4 +34,8 @@ public class CountryButton extends GenericButton implements UrlElement {
 		return "Country: "+(item != -1 ?currentCountry + " ("+(item+1)+"/"+model.getCountries().size()+")":"All");
 	}
 
+	public void setCurrentCountry(int i) {
+		item = i;
+	}
+
 }

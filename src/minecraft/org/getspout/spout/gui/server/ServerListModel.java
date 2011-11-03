@@ -192,7 +192,7 @@ public class ServerListModel extends AbstractListModel {
 		currentLoader = new Thread() {
 			@Override
 			public void run() {
-				loading = true;
+				setLoading(true);
 				long start = System.currentTimeMillis();
 				URL url1;
 				try {
@@ -218,7 +218,7 @@ public class ServerListModel extends AbstractListModel {
 				System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 				apiData = yamlObj;
 				refreshList(clear);
-				loading = false;
+				setLoading(false);
 				try {
 					reader.close();
 				} catch (IOException e) {
@@ -322,5 +322,11 @@ public class ServerListModel extends AbstractListModel {
 	
 	public boolean isLoading() {
 		return loading;
+	}
+	
+	public void setLoading(boolean l) {
+		loading = l;
+		if(currentGui != null)
+			currentGui.updateButtons();
 	}
 }
