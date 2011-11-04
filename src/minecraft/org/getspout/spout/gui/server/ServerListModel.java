@@ -44,7 +44,6 @@ public class ServerListModel extends AbstractListModel {
 	public ServerListModel() {
 		refreshAPIData(getDefaultUrl(), 0, true);
 		loadCountries();
-//		test();
 	}
 	
 	private void loadCountries() {
@@ -84,30 +83,6 @@ public class ServerListModel extends AbstractListModel {
 			}
 		}.start();
 		if(wasSandboxed) SpoutClient.enableSandbox();
-	}
-
-	@SuppressWarnings("unused")
-	private void test() {
-		ServerItem item1 = new ServerItem("Fancy server", "192.232.12.2", 25665, -1);
-		ServerItem item2 = new ServerItem("Moar fancy server", "example.com", 25565, -1);
-		ServerItem item3 = new ServerItem("Even moar fancy server", "example.com", 25565, -1);
-		
-		item1.setPlayers(5);
-		item1.setMaxPlayers(20);
-		
-		item2.setPlayers(5);
-		item2.setMaxPlayers(10);
-		
-		item3.setPlayers(19);
-		item3.setMaxPlayers(20);
-		
-		servers.add(item1);
-		servers.add(item2);
-		servers.add(item3);
-		moreItems = true;
-		
-		countries.add("US");
-		countries.add("DE");
 	}
 	
 	public void setCurrentGui(GuiServerList gui) {
