@@ -145,8 +145,8 @@ public class PollResult {
 			try {
 				long start = System.currentTimeMillis();
 				sock = new Socket();
-				sock.setSoTimeout(3000);
-				sock.connect(new InetSocketAddress(ip, port), 3000);
+				sock.setSoTimeout(10000);
+				sock.connect(new InetSocketAddress(ip, port), 10000);
 				sock.setTcpNoDelay(true);
 				sock.setTrafficClass(18);
 
