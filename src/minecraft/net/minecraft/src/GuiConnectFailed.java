@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.getspout.spout.ReconnectManager;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.server.GuiFavorites2;
 
 import net.minecraft.src.GuiButton;
@@ -37,12 +38,12 @@ public class GuiConnectFailed extends GuiScreen {
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.clear();
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, var1.translateKey("gui.toMenu")));
+		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Back to "+SpoutClient.getInstance().getServerManager().getJoinedFromName()));
 	}
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.id == 0) {
-			this.mc.displayGuiScreen(new GuiFavorites2(new GuiMainMenu())); //Spout
+			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
 		}
 
 	}

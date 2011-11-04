@@ -21,6 +21,7 @@ import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.server.GuiFavorites2;
 import org.getspout.spout.io.CustomTextureManager;
@@ -91,7 +92,7 @@ public class GuiConnectionLost extends GuiScreen{
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
 		
-		button = new ReturnToServerList().setText("Return to Server List");
+		button = new ReturnToServerList().setText("Return to "+SpoutClient.getInstance().getServerManager().getJoinedFromName());
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
@@ -128,7 +129,7 @@ class ReturnToMainMenu extends GenericButton {
 
 class ReturnToServerList extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiFavorites2(new GuiMainMenu()));
+		Minecraft.theMinecraft.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom());
 	}
 }
 

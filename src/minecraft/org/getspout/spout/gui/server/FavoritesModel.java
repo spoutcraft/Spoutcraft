@@ -195,4 +195,8 @@ public class FavoritesModel extends AbstractListModel {
 		}
 		return false;
 	}
+
+	public GuiFavorites2 getCurrentGui() {
+		return gui;
+	}
 }

@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.net.URL;
 
 import net.minecraft.src.FontRenderer;
+import net.minecraft.src.GuiMainMenu;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
@@ -53,7 +54,10 @@ public class ServerItem implements ListWidgetItem {
 	
 	protected boolean showPingWhilePolling = false;
 	
-	protected FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	protected FavoritesModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
+	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
+	
+	protected boolean isFavorite = true;
 	
 	public ServerItem(String title, String ip, int port, int dbId) {
 		this.ip = ip;
@@ -61,6 +65,10 @@ public class ServerItem implements ListWidgetItem {
 		this.title = title;
 		this.databaseId = dbId;
 		poll();
+	}
+	
+	public void setFavorite(boolean b) {
+		isFavorite = b;
 	}
 	
 	public void setListWidget(ListWidget widget) {
@@ -187,7 +195,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void onClick(int x, int y, boolean doubleClick) {
 		if(doubleClick) {
-			SpoutClient.getInstance().getServerManager().join(this);
+			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 		}
 	}
 	
@@ -282,7 +290,7 @@ public class ServerItem implements ListWidgetItem {
 			}
 			numPolling ++;
 			polling = true;
-			model.setPolling(true);
+			favorites.setPolling(true);
 			Socket sock = null;
 			DataInputStream input = null;
 			DataOutputStream output = null;
@@ -327,7 +335,7 @@ public class ServerItem implements ListWidgetItem {
 				polling = false;
 				numPolling--;
 				if(numPolling == 0) {
-					model.setPolling(false);
+					favorites.setPolling(false);
 				}
 				sendDCData();
 				try {

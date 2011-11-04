@@ -258,6 +258,7 @@ public class ServerListModel extends AbstractListModel {
 					boolean whitelisted = ((String)hash.get("whitelist")).equals("1")?true:false;
 					String country = (String) hash.get("country");
 					ServerItem server = new ServerItem(name, adress, port, uid);
+					server.setFavorite(false);
 					//server.setPing(ping);
 //					server.setPlayers(players);
 //					server.setMaxPlayers(maxplayers);
@@ -336,5 +337,9 @@ public class ServerListModel extends AbstractListModel {
 		for(UrlElement element: urlElements) {
 			element.clear();
 		}
+	}
+
+	public GuiServerList getCurrentGui() {
+		return currentGui;
 	}
 }
