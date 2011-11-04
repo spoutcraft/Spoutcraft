@@ -134,6 +134,8 @@ public class AddonDescriptionFile {
 				throw new InvalidDescriptionException("main may not be within the org.getspout namespace");
 			if (this.main.startsWith("org.spoutcraft."))
 				throw new InvalidDescriptionException("main may not be within the org.spoutcraft namespace");
+			if (this.main.startsWith("in.spout."))
+				throw new InvalidDescriptionException("main may not be within the in.spout namespace");
 			if (this.main.startsWith("net.minecraft."))
 				throw new InvalidDescriptionException("main may not be within the net.minecraft namespace");
 		} catch (NullPointerException ex) {
