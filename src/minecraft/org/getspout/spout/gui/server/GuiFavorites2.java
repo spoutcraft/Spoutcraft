@@ -64,9 +64,9 @@ public class GuiFavorites2 extends GuiScreen {
 		
 		int top = (int) (view.getY() + view.getHeight() + 5);
 		
-		int totalWidth = 401;
-		int cellWidth = (totalWidth - 20)/3;
-		int left = width / 2 - totalWidth / 2 + 5;
+		int totalWidth = Math.min(width - 9, 200*3+10);
+		int cellWidth = (totalWidth - 10)/3;
+		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 		
@@ -153,7 +153,7 @@ public class GuiFavorites2 extends GuiScreen {
 				item = (ServerItem) model.getItem(view.getSelectedRow());
 			}
 			if(item != null) {
-				SpoutClient.getInstance().getServerManager().join(item);
+				SpoutClient.getInstance().getServerManager().join(item, this, "Favorites");
 			} else {
 				//Just in case something weird happens
 				updateButtons();
@@ -190,7 +190,7 @@ public class GuiFavorites2 extends GuiScreen {
 				int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
 				SpoutClient.getHandle().gameSettings.lastServer = adress.replace(":", "_");
 				SpoutClient.getHandle().gameSettings.saveOptions();
-				SpoutClient.getInstance().getServerManager().join(ip, port);
+				SpoutClient.getInstance().getServerManager().join(ip, port, this, "Favorites");
 			}
 		}
 		catch (Exception e) { }

@@ -31,7 +31,7 @@ public class GuiServerList extends GuiScreen {
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset, buttonAddServer;
 	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
-	FilterButton hasPlayers, notFull;
+	FilterButton hasPlayers, notFull, noWhitelist;
 	CountryButton buttonCountry;
 	SearchField search;
 	
@@ -58,6 +58,7 @@ public class GuiServerList extends GuiScreen {
 		random = new RandomButton();
 		hasPlayers = new FilterButton("Has Players", "hasplayers");
 		notFull = new FilterButton("Not Full", "notfull");
+		noWhitelist = new FilterButton("No Whitelist", "notwhitelisted");
 		search = new SearchField();
 		buttonSearch = new GenericButton("Search");
 		buttonCountry = new CountryButton();
@@ -149,6 +150,11 @@ public class GuiServerList extends GuiScreen {
 		model.addUrlElement(notFull);
 		ftop += 25;
 		
+		noWhitelist.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		filters.attachWidget(spoutcraft, noWhitelist);
+		model.addUrlElement(noWhitelist);
+		ftop += 25;
+		
 		search.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, search);
 		model.addUrlElement(search);
@@ -181,9 +187,9 @@ public class GuiServerList extends GuiScreen {
 		
 		top += view.getHeight() + 5;
 		
-		int totalWidth = 401;
-		int cellWidth = (totalWidth - 20)/3;
-		int left = width / 2 - totalWidth / 2 + 5;
+		int totalWidth = Math.min(width - 9, 200*3+10);
+		int cellWidth = (totalWidth - 10)/3;
+		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 		
@@ -233,7 +239,7 @@ public class GuiServerList extends GuiScreen {
 		if(btn.equals(buttonJoin)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			if(item != null) {
-				SpoutClient.getInstance().getServerManager().join(item);
+				SpoutClient.getInstance().getServerManager().join(item, this, "Server List");
 			} else {
 				updateButtons();
 			}
