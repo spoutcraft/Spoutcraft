@@ -45,6 +45,8 @@ public class ConfigReader {
 	public static boolean delayedTooltips = false;
 	public static float mipmapsPercent = 0F;
 	
+	public static Object[] settings = null;
+	
 	public static void read() {
 		System.out.println("Reading Configuration");
 		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
@@ -54,8 +56,14 @@ public class ConfigReader {
 			}
 			SettingsHandler settings = new SettingsHandler(config);
 			Field[] fields = ConfigReader.class.getDeclaredFields();
-			for (Field f : fields) {
+			
+			ConfigReader.settings = new Object[fields.length];
+			
+			for (int i = 0; i < fields.length; i++) {
+				Field f = fields[i];
 				Object value = f.get(null);
+				
+				ConfigReader.settings[i] = value;
 				if (value instanceof Boolean) {
 					f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean)value));
 				}
@@ -143,40 +151,21 @@ public class ConfigReader {
 	}
 	
 	public static void restoreDefaults() {
-		clipboardAccess = false;
-		advancedOpenGL = 0;
-		anaglyph3D = false;
-		autosave = 0;
-		betterGrass = 0;
-		fancyBiomeColors = false;
-		brightnessSlider = 1F;
-		chunkUpdates = 1;
-		clearWater = false;
-		dynamicUpdates = true;
-		fancyClouds = false;
-		fancyFog = false;
-		fancyGraphics = false;
-		fancyGrass = false;
-		fancyTrees = false;
-		fancyWater = false;
-		fancyWeather = false;
-		farView = false;
-		fastDebug = 0;
-		guiScale = 0;
-		performance = 0;
-		preloadedChunks = 0;
-		renderDistance = 0;
-		signDistance = 16;
-		sky = true;
-		smoothFPS = false;
-		smoothLighting = 1F;
-		stars = true;
-		time = 0;
-		viewBobbing = false;
-		voidFog = true;
-		weather = true;
-		delayedTooltips = false;
-		write();
+		if (ConfigReader.settings != null) {
+			Field[] fields = ConfigReader.class.getDeclaredFields();
+			for (int i = 0; i < fields.length; i++) {
+				Field f = fields[i];
+				Object value = ConfigReader.settings[i];
+				if (value != null && f != null) {
+					try {
+						f.set(null, value);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			write();
+		}
 	}
 
 }
