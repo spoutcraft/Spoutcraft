@@ -9,12 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.minecraft.src.FontRenderer;
-
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.yaml.snakeyaml.Yaml;
 
@@ -51,34 +48,39 @@ public class FavoritesModel extends AbstractListModel {
 	}
 	
 	public void load() {
-		if(!getFile().exists()) {
-			importVanilla();
-			importLegacyTXT();
-			save();
-		} else {
-			Yaml yaml = new Yaml();
-			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if(wasSandboxed) SpoutClient.disableSandbox();
-			try {
-				ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) yaml.load(new FileReader(getFile()));
-				for(HashMap<String, Object> item: list) {
-					String title = "";
-					String ip = "";
-					int port = 25565;
-					int databaseId = -1;
-					if(item.containsKey("title")) title = (String) item.get("title");
-					if(item.containsKey("ip")) ip = (String) item.get("ip");
-					if(item.containsKey("port")) port = (Integer) item.get("port");
-					if(item.containsKey("databaseid")) databaseId = (Integer) item.get("databaseid");
-					addServer(title, ip, port, databaseId);
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if(wasSandboxed) SpoutClient.disableSandbox();
+		try {
+			if(!getFile().exists()) {
+				importVanilla();
+				importLegacyTXT();
+				save();
+			} else {
+				Yaml yaml = new Yaml();
+				
+				try {
+					ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) yaml.load(new FileReader(getFile()));
+					for(HashMap<String, Object> item: list) {
+						String title = "";
+						String ip = "";
+						int port = 25565;
+						int databaseId = -1;
+						if(item.containsKey("title")) title = (String) item.get("title");
+						if(item.containsKey("ip")) ip = (String) item.get("ip");
+						if(item.containsKey("port")) port = (Integer) item.get("port");
+						if(item.containsKey("databaseid")) databaseId = (Integer) item.get("databaseid");
+						addServer(title, ip, port, databaseId);
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
 				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				if(wasSandboxed) SpoutClient.enableSandbox();
-				return;
 			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
 			if(wasSandboxed) SpoutClient.enableSandbox();
-			
 		}
 	}
 	
