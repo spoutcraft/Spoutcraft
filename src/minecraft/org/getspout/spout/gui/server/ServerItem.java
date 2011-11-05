@@ -1,16 +1,6 @@
 package org.getspout.spout.gui.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.URL;
-
 import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GuiMainMenu;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
@@ -22,7 +12,6 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class ServerItem implements ListWidgetItem {
 
