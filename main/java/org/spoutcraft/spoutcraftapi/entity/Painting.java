@@ -30,37 +30,45 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+import org.spoutcraft.spoutcraftapi.Art;
+import org.spoutcraft.spoutcraftapi.block.BlockFace;
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+/**
+ * Represents a Painting.
+ */
+public interface Painting extends Entity {
+	/**
+	 * Get the art on this painting
+	 * @return The art
+	 */
+	public Art getArt();
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Set the art on this painting
+	 * @param art The new art
+	 * @return False if the new art won't fit at the painting's current location
+	 */
+	public boolean setArt(Art art);
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
+	/**
+	 * Set the art on this painting
+	 * @param art The new art
+	 * @param force If true, force the new art regardless of whether it fits at the current location
+	 * Note that forcing it where it can't fit normally causes it to drop as an item unless you override
+	 * this by catching the PAINTING_BREAK event.
+	 * @return False if force was false and the new art won't fit at the painting's current location
+	 */
+	public boolean setArt(Art art, boolean force);
 
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
+	/**
+	 * Sets the direction of the painting, potentially overriding rules of placement. Note that if the result
+	 * is not valid the painting would normally drop as an item.
+	 * @param face The new direction.
+	 * @param force Whether to force it.
+	 * @return False if force was false and there was no block for it to attach to in order to face the given direction.
+	 */
+	public boolean setFacingDirection(BlockFace face, boolean force);
 }

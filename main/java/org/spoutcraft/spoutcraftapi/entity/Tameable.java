@@ -30,37 +30,43 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+public interface Tameable {
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+	/**
+	 * Check if this is tamed
+	 *
+	 * If something is tamed then a player can not tame it through normal methods, even if it does not belong to anyone in particular.
+	 *
+	 * @return true if this has been tamed
+	 */
+	public boolean isTamed();
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Sets if this has been tamed. Not necessary if the method setOwner has been used, as it tames automatically.
+	 *
+	 * If something is tamed then a player can not tame it through normal methods, even if it does not belong to anyone in particular.
+	 *
+	 * @param tame true if tame
+	 */
+	public void setTamed(boolean tame);
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
+	/**
+	 * Gets the current owning AnimalTamer
+	 *
+	 * @return the owning AnimalTamer, or null if not owned
+	 */
+	public AnimalTamer getOwner();
 
-	public byte getType() {
-		return this.type;
-	}
+	/**
+	 * Set this to be owned by given AnimalTamer.
+	 * If the owner is not null, this will be tamed and will have any current path it is following removed.
+	 * If the owner is set to null, this will be untamed, and the current owner removed.
+	 *
+	 * @param tamer the AnimalTamer who should own this
+	 */
+	public void setOwner(AnimalTamer tamer);
 
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
 }

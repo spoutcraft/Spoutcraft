@@ -30,37 +30,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+/**
+ * Represents a Creature. Creatures are non-intelligent monsters or animals which
+ * have very simple abilities.
+ */
+public interface Creature extends LivingEntity {
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+	/**
+	 * Instructs this Creature to set the specified LivingEntity as its target.
+	 * Hostile creatures may attack their target, and friendly creatures may
+	 * follow their target.
+	 *
+	 * @param target New LivingEntity to target, or null to clear the target
+	 */
+	public void setTarget(LivingEntity target);
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
-
-	private Instrument(byte type) {
-		this.type = type;
-	}
-
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
+	/**
+	 * Gets the current target of this Creature
+	 *
+	 * @return Current target of this creature, or null if none exists
+	 */
+	public LivingEntity getTarget();
 }

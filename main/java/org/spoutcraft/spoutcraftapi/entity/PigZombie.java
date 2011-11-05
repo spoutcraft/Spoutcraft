@@ -30,37 +30,38 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+/**
+ * Represents a Pig Zombie.
+ */
+public interface PigZombie extends Zombie {
+	/**
+	 * Get the pig zombie's current anger level.
+	 *
+	 * @return The anger level.
+	 */
+	int getAnger();
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+	/**
+	 * Set the pig zombie's current anger level.
+	 *
+	 * @param level The anger level. Higher levels of anger take longer to wear off.
+	 */
+	void setAnger(int level);
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Shorthand; sets to either 0 or the default level.
+	 *
+	 * @param angry Whether the zombie should be angry.
+	 */
+	void setAngry(boolean angry);
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
-
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
+	/**
+	 * Shorthand; gets whether the zombie is angry.
+	 *
+	 * @return True if the zombie is angry, otherwise false.
+	 */
+	boolean isAngry();
 }

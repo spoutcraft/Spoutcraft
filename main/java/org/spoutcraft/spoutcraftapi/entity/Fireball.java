@@ -30,37 +30,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+import org.spoutcraft.spoutcraftapi.util.Vector;
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+/**
+ * Represents a Fireball.
+ */
+public interface Fireball extends Projectile, Explosive {
+	/**
+	 * Fireballs fly straight and do not take setVelocity(...) well.
+	 *
+	 * @param direction
+	 *			the direction this fireball is flying toward
+	 */
+	public void setDirection(Vector direction);
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Retrieve the direction this fireball is heading toward
+	 *
+	 * @return the direction
+	 */
+	public Vector getDirection();
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
-
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
 }

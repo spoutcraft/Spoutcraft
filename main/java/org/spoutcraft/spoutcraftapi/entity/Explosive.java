@@ -30,37 +30,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+/**
+ * A representation of an explosive entity
+ */
+public interface Explosive extends Entity {
+	/**
+	 * Set the radius affected by this explosive's explosion
+	 * @param yield The explosive yield
+	 */
+	public void setYield(float yield);
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+	/**
+	 * Return the radius or yield of this explosive's explosion
+	 * @return the radius of blocks affected
+	 */
+	public float getYield();
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Set whether or not this explosive's explosion causes fire
+	 * @param isIncendiary Whether it should cause fire
+	 */
+	public void setIsIncendiary(boolean isIncendiary);
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
-
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
+	/**
+	 * Return whether or not this explosive creates a fire when exploding
+	 * @return true if the explosive creates fire, false otherwise
+	 */
+	public boolean isIncendiary();
 }

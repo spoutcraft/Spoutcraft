@@ -136,7 +136,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 			* methods in java.lang.Class that invoke checkMember
 			* access. The stack should look like:
 			*
-			* someCaller                        [3]
+			* someCaller						[3]
 			* java.lang.Class.someReflectionAPI [2]
 			* java.lang.Class.checkMemberAccess [1]
 			* SecurityManager.checkMemberAccess [0]

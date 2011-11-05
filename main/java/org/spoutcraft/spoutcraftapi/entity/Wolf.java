@@ -30,37 +30,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+/**
+ * Represents a Wolf
+ */
+public interface Wolf extends Animals, Tameable {
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
+	/**
+	 * Checks if this wolf is angry
+	 *
+	 * @return Anger true if angry
+	 */
+	public boolean isAngry();
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+	/**
+	 * Sets the anger of this wolf
+	 * An angry wolf can not be fed or tamed, and will actively look for targets to attack.
+	 *
+	 * @param angry true if angry
+	 */
+	public void setAngry(boolean angry);
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
+	/**
+	 * Checks if this wolf is sitting
+	 *
+	 * @return true if sitting
+	 */
+	public boolean isSitting();
 
-	public byte getType() {
-		return this.type;
-	}
+	/**
+	 * Sets if this wolf is sitting
+	 * Will remove any path that the wolf was following beforehand.
+	 *
+	 * @param sitting true if sitting
+	 */
+	public void setSitting(boolean sitting);
 
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
 }

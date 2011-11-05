@@ -30,37 +30,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.spoutcraftapi;
 
-import java.util.HashMap;
-import java.util.Map;
+package org.spoutcraft.spoutcraftapi.entity;
 
-public enum Instrument {
+import org.spoutcraft.spoutcraftapi.material.Material;
 
-	PIANO((byte) 0x0), // All other
-	BASS_DRUM((byte) 0x1), // Stone
-	SNARE_DRUM((byte) 0x2), // Sand
-	STICKS((byte) 0x3), // Glass
-	BASS_GUITAR((byte) 0x4); // Wood
 
-	private final byte type;
-	private final static Map<Byte, Instrument> types = new HashMap<Byte, Instrument>();
+/**
+ * Represents an Enderman.
+ */
+public interface Enderman extends Monster {
 
-	private Instrument(byte type) {
-		this.type = type;
-	}
+	/**
+	 * Get the id and data of the block that the Enderman is carrying.
+	 *
+	 * @return MaterialData containing the id and data of the block
+	 */
+	public Material getCarriedMaterial();
 
-	public byte getType() {
-		return this.type;
-	}
-
-	public static Instrument getByType(final byte type) {
-		return types.get(type);
-	}
-
-	static {
-		for (Instrument instrument : Instrument.values()) {
-			types.put(instrument.getType(), instrument);
-		}
-	}
+	/**
+	 * Set the id and data of the block that the Enderman is carring.
+	 *
+	 * @param material data to set the carried block to
+	 */
+	public void setCarriedMaterial(Material material);
 }
