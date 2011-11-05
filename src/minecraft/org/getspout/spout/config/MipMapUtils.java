@@ -18,6 +18,7 @@ package org.getspout.spout.config;
 
 import net.minecraft.client.Minecraft;
 
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -32,37 +33,44 @@ public class MipMapUtils {
 	public static boolean updateTerrain = true;
 	public static float targetFade = 1F;
 	public static float currentFade = 1F;
-	
+	private static boolean initialized = false;
 	
 	public static void initializeMipMaps() {
+		initialized = false;
 		GL11.glPushMatrix();
-		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
-		GL11.glBindTexture(3553, terrain);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-		
-		int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
-		int tileWidth = textureWidth / 16;
-		
-		MipMapUtils.mipmapLevels = (int)Math.round(Math.log((double)tileWidth)/Math.log(2D));
-
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, MipMapUtils.mipmapLevels);
-		
-		ContextCapabilities capabilities = GLContext.getCapabilities();
-		if (capabilities.OpenGL30) {
-			MipMapUtils.mode = 1;
+		if (ConfigReader.mipmapsPercent > 0F) {
+			int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
+			GL11.glBindTexture(3553, terrain);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
+			
+			int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+			int tileWidth = textureWidth / 16;
+			
+			MipMapUtils.mipmapLevels = (int)Math.round(Math.log((double)tileWidth)/Math.log(2D));
+	
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, MipMapUtils.mipmapLevels);
+			
+			ContextCapabilities capabilities = GLContext.getCapabilities();
+			if (capabilities.OpenGL30) {
+				MipMapUtils.mode = 1;
+			}
+			else if (capabilities.GL_EXT_framebuffer_object) {
+				MipMapUtils.mode = 2;
+			}
+			else if (capabilities.OpenGL14) {
+				MipMapUtils.mode = 3;
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+			}
+			MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
+			initialized = true;
 		}
-		else if (capabilities.GL_EXT_framebuffer_object) {
-			MipMapUtils.mode = 2;
-		}
-		else if (capabilities.OpenGL14) {
-			MipMapUtils.mode = 3;
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
-		}
-		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPopMatrix();
 	}
 	
 	public static void update() {
+		if (!initialized && ConfigReader.mipmapsPercent > 0F) {
+			initializeMipMaps();
+		}
 		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 		GL11.glPushMatrix();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
