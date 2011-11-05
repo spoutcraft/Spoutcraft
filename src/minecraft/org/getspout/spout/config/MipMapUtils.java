@@ -18,7 +18,6 @@ package org.getspout.spout.config;
 
 import net.minecraft.client.Minecraft;
 
-import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
