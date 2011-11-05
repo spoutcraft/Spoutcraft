@@ -98,12 +98,11 @@ public class GenericButton extends GenericControl implements Button {
 	}
 
 	public Color getTextColor() {
-		return label.getTextColor();
+		return this.getColor();
 	}
 
 	public Button setTextColor(Color color) {
-		label.setTextColor(color);
-		return this;
+		return (Button) this.setColor(color);
 	}
 
 	public String getDisabledText() {
