@@ -50,6 +50,7 @@ import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.item.SpoutItem;
 import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketAddonData;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
@@ -58,6 +59,7 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
@@ -74,6 +76,7 @@ import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
+import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -102,6 +105,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final ServerManager serverManager = new ServerManager();
 	private final double securityKey;
 	private long tick = 0;
+	private long inWorldTicks = 0;
 	private Thread clipboardThread = null;
 	private long server = -1L;
 	public ClientPlayer player = null;
@@ -114,6 +118,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean entitylabel = false;
 	private Mode clientMode = Mode.Menu;
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
+	
 	
 	
 	private SpoutClient() {
@@ -198,6 +203,10 @@ public class SpoutClient extends PropertyObject implements Client {
 	public MaterialManager getMaterialManager() {
 		return materialManager;
 	}
+	
+	public World getWorld() {
+		return getHandle().theWorld.world;
+	}
 
 	public boolean isSkyCheat() {
 		return sky || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
@@ -274,11 +283,16 @@ public class SpoutClient extends PropertyObject implements Client {
 		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
+			inWorldTicks++;
 		}
 	}
 
 	public long getTick() {
 		return tick;
+	}
+	
+	public long getInWorldTicks() {
+		return inWorldTicks;
 	}
 
 	public void onWorldExit() {
@@ -302,6 +316,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			getHandle().thePlayer.uuidValid = false;
 		}
 		server = -1L;
+		inWorldTicks = 0L;
 	}
 	
 	public void onWorldEnter() {
@@ -322,6 +337,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		PacketDecompressionThread.startThread();
 		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
+		inWorldTicks = 0L;
 	}
 	
 	public static Minecraft getHandle() {
@@ -498,5 +514,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public ServerManager getServerManager() {
 		return instance.serverManager;
+	}
+	
+	public void send(AddonPacket packet) {
+		getPacketManager().sendSpoutPacket(new PacketAddonData(packet));
 	}
 }
