@@ -28,6 +28,7 @@ import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
+import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -53,6 +54,10 @@ public final class Spoutcraft {
 	 */
 	public static Client getClient() {
 		return client;
+	}
+	
+	public static World getWorld() {
+		return client.getWorld();
 	}
 
 	/**
@@ -191,5 +196,9 @@ public final class Spoutcraft {
 	
 	public static boolean isCameraDetached() {
 		return client.isCameraDetached();
+	}
+	
+	public static void send(AddonPacket packet) {
+		client.send(packet);
 	}
 }

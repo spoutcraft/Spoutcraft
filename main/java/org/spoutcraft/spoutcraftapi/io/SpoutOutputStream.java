@@ -1,0 +1,153 @@
+/*
+ * This file is part of SpoutAPI (http://wiki.getspout.org/).
+ * 
+ * SpoutAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.spoutcraft.spoutcraftapi.io;
+
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+
+import org.spoutcraft.spoutcraftapi.block.Block;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.util.Vector;
+
+public class SpoutOutputStream extends OutputStream{
+	ByteBuffer buffer = ByteBuffer.allocate(1024);
+	public SpoutOutputStream() {
+	}
+
+	public void writeBlock(Block block){
+		this.writeInt(block.getX());
+		this.writeInt(block.getY());
+		this.writeInt(block.getZ());
+		this.writeLong(block.getWorld().getUID().getLeastSignificantBits());
+		this.writeLong(block.getWorld().getUID().getMostSignificantBits());
+	}
+
+	public void writeLocation(Location location){
+		this.writeDouble(location.getX());
+		this.writeDouble(location.getY());
+		this.writeDouble(location.getZ());
+		this.writeFloat((float) location.getPitch());
+		this.writeFloat((float) location.getYaw());
+		this.writeLong(location.getWorld().getUID().getLeastSignificantBits());
+		this.writeLong(location.getWorld().getUID().getMostSignificantBits());
+	}
+
+	public void writeVector(Vector vector){
+		this.writeDouble(vector.getX());
+		this.writeDouble(vector.getY());
+		this.writeDouble(vector.getZ());
+	}
+
+	public void writeItemStack(ItemStack item){
+		this.writeInt(item.getTypeId());
+		this.writeShort(item.getDurability());
+		this.writeShort((short)item.getAmount());
+	}
+
+	public void writeMaterial(Material material){
+		this.writeInt(material.getRawId());
+		this.writeShort((short) material.getRawData());
+	}
+	
+	@Override
+	public void write(byte[] b) {
+		while(buffer.remaining() < b.length){
+			expand();
+		}
+		buffer.put(b);
+	}
+	
+	@Override
+	public void write(byte[] b, int len, int off) {
+		while(buffer.remaining() < b.length){
+			expand();
+		}
+		buffer.put(b, len, off);
+	}
+	
+	@Override
+	public void write(int b) {
+		if (buffer.remaining() < 1) {
+			expand();
+		}
+		buffer.put((byte)b);
+	}
+	
+	public void writeShort(short s) {
+		if (buffer.remaining() < 2) {
+			expand();
+		}
+		buffer.putShort(s);
+	}
+	
+	public void writeInt(int i) {
+		if (buffer.remaining() < 4) {
+			expand();
+		}
+		buffer.putInt(i);
+	}
+	
+	public void writeLong(long l) {
+		if (buffer.remaining() < 8) {
+			expand();
+		}
+		buffer.putLong(l);
+	}
+	
+	public void writeFloat(float f) {
+		if (buffer.remaining() < 4) {
+			expand();
+		}
+		buffer.putFloat(f);
+	}
+	
+	public void writeDouble(double d) {
+		if (buffer.remaining() < 8) {
+			expand();
+		}
+		buffer.putDouble(d);
+	}
+	
+	public void writeChar(char ch) {
+		if (buffer.remaining() < 2) {
+			expand();
+		}
+		buffer.putChar(ch);
+	}
+	
+	public void writeString(String s){
+		while(buffer.remaining() < (2 + s.length() * 2)){
+			expand();
+		}
+		buffer.putShort((short) s.length());
+		for (int i = 0; i < s.length(); i++) {
+			buffer.putChar(s.charAt(i));
+		}
+	}
+	
+	public ByteBuffer getRawBuffer() {
+		return buffer;
+	}
+	
+	private void expand() {
+		ByteBuffer replacement = ByteBuffer.allocate(buffer.capacity() * 2);
+		replacement.put(buffer.array());
+		buffer = replacement;
+	}
+}

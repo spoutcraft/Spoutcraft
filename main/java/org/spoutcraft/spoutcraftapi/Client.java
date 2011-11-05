@@ -26,6 +26,7 @@ import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
+import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -38,6 +39,8 @@ public interface Client extends PropertyInterface {
 	public String getName();
 
 	public long getVersion();
+	
+	public World getWorld();
 
 	public AddonManager getAddonManager();
 
@@ -86,6 +89,8 @@ public interface Client extends PropertyInterface {
 	public Mode getMode();
 
 	public RenderDelegate getRenderDelegate();
+	
+	public void send(AddonPacket packet);
 
 	/**
 	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.
