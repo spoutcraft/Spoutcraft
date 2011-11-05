@@ -42,6 +42,7 @@ import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.gui.server.ServerManager;
+import org.getspout.spout.gui.texturepacks.TexturePacksModel;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.io.CRCManager;
@@ -117,6 +118,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean coords = false;
 	private boolean entitylabel = false;
 	private Mode clientMode = Mode.Menu;
+	private TexturePacksModel textureModel = new TexturePacksModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
 	
 	
@@ -518,5 +520,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public void send(AddonPacket packet) {
 		getPacketManager().sendSpoutPacket(new PacketAddonData(packet));
+	}
+
+	public TexturePacksModel getTexturePacksModel() {
+		return textureModel;
 	}
 }

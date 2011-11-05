@@ -9,8 +9,6 @@ import net.minecraft.src.TexturePackList;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 
-import com.pclewis.mcpatcher.mod.TextureUtils;
-
 public class TexturePacksModel extends AbstractListModel {
 
 	TexturePackList textures = SpoutClient.getHandle().texturePackList;
