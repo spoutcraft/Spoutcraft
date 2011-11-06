@@ -39,7 +39,7 @@ public interface LivingEntity extends Entity {
 	/**
 	 * Resets the title that appears over top of this entity in game
 	 */
-	public void reseTitle();
+	public void resetTitle();
 
 	/**
 	 * Gets the entity's health from 0-20, where 0 is dead and 20 is full
