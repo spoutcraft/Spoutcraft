@@ -10,14 +10,15 @@ import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class GenericCustomItem extends GenericItem implements CustomItem {
-	public static MaterialManager mm = Spoutcraft.getClient().getMaterialManager();
+	public static MaterialManager mm;
 	private final String fullName;
 	private final Addon addon;
 	private final int customId;
 	public String texture;
 
-	public GenericCustomItem(Addon addon, String name, int customId) {
+	public GenericCustomItem(MaterialManager manager, Addon addon, String name, int customId) {
 		super(name, 318, customId);
+		mm = manager;
 		this.fullName = addon.getDescription().getName() + name;
 		this.customId = customId;
 		this.addon = addon;
@@ -26,7 +27,7 @@ public class GenericCustomItem extends GenericItem implements CustomItem {
 	}
 
 	public GenericCustomItem(Addon addon, String name) {
-		this(addon, name, mm.registerCustomItemName(addon, addon.getDescription().getName() + name));
+		this(Spoutcraft.getClient().getMaterialManager(), addon, name, mm.registerCustomItemName(addon, addon.getDescription().getName() + name));
 	}
 
 	public GenericCustomItem(Addon addon, String name, String texture) {
