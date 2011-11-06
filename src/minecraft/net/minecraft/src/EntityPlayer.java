@@ -93,6 +93,9 @@ public abstract class EntityPlayer extends EntityLiving {
 	protected float field_35213_bb = 0.02F;
 	private int damageRemainder = 0;
 	public EntityFish fishEntity = null;
+	//Spout start
+	public String displayName;
+	//Spout end
 
 
 	public EntityPlayer(World var1) {

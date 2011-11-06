@@ -83,8 +83,8 @@ public class RenderPlayer extends RenderLiving {
 			float var10 = var1.getDistanceToEntity(this.renderManager.livingPlayer);
 			float var11 = var1.isSneaking()?32.0F:64.0F;
 			if(var10 < var11) {
-				String var12 = var1.username;
 				//Spout Start
+				String var12 = var1.displayName;
 				String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
 				int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;

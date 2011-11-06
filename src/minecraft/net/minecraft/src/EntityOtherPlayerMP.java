@@ -35,6 +35,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.field_22062_y = 0.25F;
 		this.renderDistanceWeight = 10.0D;
 		//Spout start
+		displayName = username;
 		spoutEntity = new SpoutPlayer();
 		((SpoutPlayer) spoutEntity).setPlayer(this);
 		//Spout end

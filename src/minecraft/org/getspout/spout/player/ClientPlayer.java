@@ -16,17 +16,22 @@
  */
 package org.getspout.spout.player;
 
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameScreen;
 import org.getspout.spout.gui.ScreenUtil;
 import org.lwjgl.input.Keyboard;
+import org.spoutcraft.spoutcraftapi.Achievement;
+import org.spoutcraft.spoutcraftapi.Statistic;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.spoutcraftapi.util.Location;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayerSP;
@@ -54,7 +59,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 	
 	public EntityPlayerSP getHandle() {
-		return (EntityPlayerSP)super.getHandle();
+		return (EntityPlayerSP)super.getMCPlayer();
 	}
 
 	public RenderDistance getMaximumView() {
@@ -135,5 +140,79 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	
 	public void setCurrentScreen(Screen screen) {
 		currentScreen = screen;
+	}
+
+	public void sendMessage(String paramString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setCompassTarget(Location loc) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Location getCompassTarget() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public InetSocketAddress getAddress() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void sendRawMessage(String message) {
+		SpoutClient.getHandle().thePlayer.sendChatMessage(message);
+	}
+
+	public void disconnect(String message) {
+		Minecraft.theMinecraft.theWorld.sendQuittingDisconnectingPacket();
+		Minecraft.theMinecraft.changeWorld1(null);
+	}
+
+	public void chat(String msg) {
+		SpoutClient.getInstance().getChatManager().sendChat(msg);
+	}
+
+	public boolean performCommand(String command) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void saveData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void loadData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void awardAchievement(Achievement achievement) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void incrementStatistic(Statistic statistic) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void incrementStatistic(Statistic statistic, int amount) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void incrementStatistic(Statistic statistic, MaterialData material) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void incrementStatistic(Statistic statistic, MaterialData material,
+			int amount) {
+		// TODO Auto-generated method stub
+		
 	}
 }
