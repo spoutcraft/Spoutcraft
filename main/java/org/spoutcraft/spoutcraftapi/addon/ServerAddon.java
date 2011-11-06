@@ -35,17 +35,6 @@ public final class ServerAddon extends JavaAddon {
 	@Override
 	public void onDisable() {
 	}
-	
-	public int hashCode() {
-		return this.getDescription().getName().hashCode();
-	}
-	
-	public boolean equals(Object other) {
-		if (other instanceof JavaAddon) {
-			return ((JavaAddon)other).getDescription().getName().equals(getDescription().getName());
-		}
-		return false;
-	}
 
 	public int hashCode() {
 		return this.getDescription().getName().hashCode();
