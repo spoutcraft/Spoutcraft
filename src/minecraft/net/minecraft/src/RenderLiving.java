@@ -224,7 +224,7 @@ public class RenderLiving extends Render {
 			this.renderLivingLabel(var1, Integer.toString(var1.entityId), var2, var4, var6, 64);
 		}
 		else {
-			String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
+			String title = var1.displayName;
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");
 				for (int i = 0; i < lines.length; i++){

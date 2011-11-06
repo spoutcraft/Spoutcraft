@@ -1150,7 +1150,7 @@ public abstract class Entity {
 		return (this.dataWatcher.getWatchableObjectByte(0) & 1 << var1) != 0;
 	}
 
-	protected void setFlag(int var1, boolean var2) {
+	public void setFlag(int var1, boolean var2) { //Spout protected->public
 		byte var3 = this.dataWatcher.getWatchableObjectByte(0);
 		if(var2) {
 			this.dataWatcher.updateObject(0, Byte.valueOf((byte)(var3 | 1 << var1)));

@@ -16,38 +16,29 @@
  */
 package org.getspout.spout.player;
 
-import java.net.InetSocketAddress;
-import java.util.HashMap;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.InGameScreen;
-import org.getspout.spout.gui.ScreenUtil;
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.spoutcraftapi.Achievement;
-import org.spoutcraft.spoutcraftapi.Statistic;
+import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
-import org.spoutcraft.spoutcraftapi.gui.Screen;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EntityPlayerSP;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	private static ClientPlayer instance = null;
 	private RenderDistance min, max;
 	private InGameScreen mainScreen = new InGameScreen();
-	private HashMap<Integer, String> titles = new HashMap<Integer, String>();
-	private Screen currentScreen = null;
-	private ScreenType screenType;
 
 	public static ClientPlayer getInstance() {
 		if (instance == null) {
 			instance = new ClientPlayer();
-			instance.setPlayer(Minecraft.theMinecraft.thePlayer);
+			instance.setPlayer(SpoutClient.getHandle().thePlayer);
 			SpoutClient.getInstance().player = (ClientPlayer) instance;
 		}
 		return instance;
@@ -79,11 +70,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 	
 	public RenderDistance getCurrentView() {
-		return RenderDistance.getRenderDistanceFromValue(Minecraft.theMinecraft.gameSettings.renderDistance);
+		return RenderDistance.getRenderDistanceFromValue(SpoutClient.getHandle().gameSettings.renderDistance);
 	}
 	
 	public void setCurrentView(RenderDistance view){
-		Minecraft.theMinecraft.gameSettings.renderDistance = view.getValue();
+		SpoutClient.getHandle().gameSettings.renderDistance = view.getValue();
 	}
 	
 	public RenderDistance getNextRenderDistance() {
@@ -112,54 +103,22 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id, (short) data, time);
 	}
 
-	public String getEntityTitle(int id) {
-		return titles.get(id);
-	}
-
-	public void setEntityTitle(int id, String title) {
-		titles.put(id, title);
-	}
-	
-	public void resetEntityTitle(int id) {
-		titles.remove(id);
-	}
-	
 	public FixedLocation getLastClickedLocation() {
 		return getHandle().lastClickLocation;
 	}
 
-	public Screen getCurrentScreen() {
-		//See if the screen has changed since last get
-		ScreenType currentType = ScreenUtil.getType(SpoutClient.getHandle().currentScreen);
-		if(currentType != screenType){
-			currentScreen = null;
-		}
-		screenType = currentType;
-		return currentScreen;
-	}
-	
-	public void setCurrentScreen(Screen screen) {
-		currentScreen = screen;
-	}
-
-	public void sendMessage(String paramString) {
-		// TODO Auto-generated method stub
-		
+	public void sendMessage(String msg) {
+		SpoutClient.getHandle().ingameGUI.addChatMessage(msg);
 	}
 
 	public void setCompassTarget(Location loc) {
-		// TODO Auto-generated method stub
-		
+		SpoutClient.getHandle().thePlayer.setPlayerSpawnCoordinate(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		SpoutClient.getHandle().theWorld.getWorldInfo().setSpawn(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public Location getCompassTarget() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public InetSocketAddress getAddress() {
-		// TODO Auto-generated method stub
-		return null;
+		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getPlayerSpawnCoordinate();
+		return new MutableLocation(SpoutClient.getInstance().getWorld(), coords.posX, coords.posY, coords.posZ);
 	}
 
 	public void sendRawMessage(String message) {
@@ -167,8 +126,8 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 
 	public void disconnect(String message) {
-		Minecraft.theMinecraft.theWorld.sendQuittingDisconnectingPacket();
-		Minecraft.theMinecraft.changeWorld1(null);
+		SpoutClient.getHandle().theWorld.sendQuittingDisconnectingPacket();
+		SpoutClient.getHandle().changeWorld1(null);
 	}
 
 	public void chat(String msg) {
@@ -180,38 +139,82 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return false;
 	}
 
-	public void saveData() {
+	public boolean isSprinting() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setSprinting(boolean sprinting) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void loadData() {
+	public int getExperience() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setExperience(int exp) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void awardAchievement(Achievement achievement) {
+	public int getLevel() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setLevel(int level) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void incrementStatistic(Statistic statistic) {
+	public int getTotalExperience() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setTotalExperience(int exp) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void incrementStatistic(Statistic statistic, int amount) {
+	public float getExhaustion() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setExhaustion(float value) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void incrementStatistic(Statistic statistic, MaterialData material) {
+	public float getSaturation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setSaturation(float value) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void incrementStatistic(Statistic statistic, MaterialData material,
-			int amount) {
+	public int getFoodLevel() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void setFoodLevel(int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public GameMode getGameMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setGameMode(GameMode mode) {
 		// TODO Auto-generated method stub
 		
 	}

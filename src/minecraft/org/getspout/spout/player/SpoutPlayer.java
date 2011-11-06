@@ -16,13 +16,12 @@
  */
 package org.getspout.spout.player;
 
-import org.getspout.spout.entity.CraftLivingEntity;
+import org.getspout.spout.entity.CraftHumanEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 
-public class SpoutPlayer extends CraftLivingEntity implements Player{
+public class SpoutPlayer extends CraftHumanEntity implements Player{
 	
 	public SpoutPlayer() {
 		
@@ -40,67 +39,15 @@ public class SpoutPlayer extends CraftLivingEntity implements Player{
 		this.handle = player;
 	}
 	
-	public String getName() {
-		return getMCPlayer().username;
-	}
-	
-	public PlayerInventory getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public ItemStack getItemInHand() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	public int getHealth() {
-		return getMCPlayer().health;
-	}
-	
-	public void setHealth(int health) {
-		getMCPlayer().health = health;
-	}
-	
-	public double getEyeHeight() {
-		return getMCPlayer().height;
-	}
-	
 	public boolean isOnline() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String getDisplayName() {
-		return getMCPlayer().displayName;
-	}
-
-	public void setDisplayName(String name) {
-		getMCPlayer().displayName = name;
+		return Minecraft.theMinecraft.isMultiplayerWorld();
 	}
 
 	public boolean isSneaking() {
-		// TODO Auto-generated method stub
-		return false;
+		return getMCPlayer().isSneaking();
 	}
 
 	public void setSneaking(boolean sneak) {
-		// TODO Auto-generated method stub
-		
+		getMCPlayer().setFlag(1, sneak);
 	}
 }

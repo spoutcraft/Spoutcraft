@@ -14,23 +14,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.getspout.spout.entity;
 
-import java.util.UUID;
+import org.spoutcraft.spoutcraftapi.entity.Projectile;
 
-import net.minecraft.src.Entity;
+public abstract class AbstractProjectile extends CraftEntity implements Projectile {
 
-public interface EntityManager {
-	
-	public Entity getEntityFromId(int id);
-	
-	public void setTexture(int id, String texture, byte textureId);
-	
-	public EntityData getData(UUID id);
-	
-	public EntityData getGenericData();
-	
-	public void removeData(UUID id);
-	
-	public void clearData();
+	private boolean doesBounce;
+
+	public AbstractProjectile(net.minecraft.src.Entity entity) {
+		super(entity);
+		doesBounce = false;
+	}
+
+	public boolean doesBounce() {
+		return doesBounce;
+	}
+
+	public void setBounce(boolean doesBounce) {
+		this.doesBounce = doesBounce;
+	}
+
 }

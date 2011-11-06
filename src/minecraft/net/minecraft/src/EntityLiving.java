@@ -79,7 +79,7 @@ public abstract class EntityLiving extends Entity {
 	protected double newRotationYaw;
 	protected double newRotationPitch;
 	float field_9348_ae = 0.0F;
-	protected int field_9346_af = 0;
+	public int field_9346_af = 0; //Spout private -> public (last damage)
 	protected int entityAge = 0;
 	protected float moveStrafing;
 	protected float moveForward;
@@ -92,6 +92,7 @@ public abstract class EntityLiving extends Entity {
 
 	//Spout Start
 	private EntityData entityData = null;
+	public String displayName = null;
 	//Spout End
 
 	public EntityLiving(World var1) {
@@ -514,7 +515,7 @@ public abstract class EntityLiving extends Entity {
 		this.attackedAtYaw = 0.0F;
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		this.health -= var2;
 	}
 
