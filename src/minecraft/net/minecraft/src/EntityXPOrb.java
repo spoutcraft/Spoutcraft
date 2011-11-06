@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import org.getspout.spout.entity.CraftExperienceOrb;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
@@ -29,6 +30,10 @@ public class EntityXPOrb extends Entity {
 		this.motionY = (double)((float)(Math.random() * 0.2D) * 2.0F);
 		this.motionZ = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D) * 2.0F);
 		this.xpValue = var8;
+		
+		//Spout start
+		this.spoutEntity = new CraftExperienceOrb(this);
+		//Spout end
 	}
 
 	protected boolean canTriggerWalking() {
