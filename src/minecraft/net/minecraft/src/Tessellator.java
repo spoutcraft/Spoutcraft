@@ -58,6 +58,7 @@ public class Tessellator {
 		this.rawBuffer = new int[var1];
 		this.useVBO = tryVBO && GLContext.getCapabilities().GL_ARB_vertex_buffer_object;
 		if(this.useVBO) {
+			
 			this.vertexBuffers = GLAllocation.createDirectIntBuffer(this.vboCount);
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
@@ -76,8 +77,8 @@ public class Tessellator {
 				this.byteBuffer.limit(this.rawBufferIndex * 4);
 				if(this.useVBO) {
 					this.vboIndex = (this.vboIndex + 1) % this.vboCount;
-					ARBVertexBufferObject.glBindBufferARB('\u8892', this.vertexBuffers.get(this.vboIndex));
-					ARBVertexBufferObject.glBufferDataARB('\u8892', this.byteBuffer, '\u88e0');
+					ARBVertexBufferObject.glBindBufferARB('\u8892' /*GL_ARRAY_BUFFER*/ , this.vertexBuffers.get(this.vboIndex));
+					ARBVertexBufferObject.glBufferDataARB('\u8892' /*GL_ARRAY_BUFFER*/, this.byteBuffer, '\u88e0' /* GL_STREAM_DRAW */);
 				}
 
 				if(this.hasTexture) {
@@ -88,7 +89,7 @@ public class Tessellator {
 						GL11.glTexCoordPointer(2, 32, this.floatBuffer);
 					}
 
-					GL11.glEnableClientState('\u8078');
+					GL11.glEnableClientState('\u8078' /* GL_TEXTURE_COORD_ARRAY */); 
 					
 					//Spout Start
 					if(textureOverride > 0)
@@ -97,7 +98,7 @@ public class Tessellator {
 				}
 
 				if(this.field_35838_p) {
-					GL13.glClientActiveTexture('\u84c1');
+					GL13.glClientActiveTexture('\u84c1' /* GL_TEXTURE1 */);
 					if(this.useVBO) {
 						GL11.glTexCoordPointer(2, 5122 /*GL_SHORT*/, 32, 24L);
 					} else {
@@ -105,8 +106,8 @@ public class Tessellator {
 						GL11.glTexCoordPointer(2, 32, this.field_35836_g);
 					}
 
-					GL11.glEnableClientState('\u8078');
-					GL13.glClientActiveTexture('\u84c0');
+					GL11.glEnableClientState('\u8078'/* GL_TEXTURE_COORD_ARRAY */);
+					GL13.glClientActiveTexture('\u84c0' /* GL_TEXTURE0 */);
 				}
 
 				if(this.hasColor) {
@@ -117,7 +118,7 @@ public class Tessellator {
 						GL11.glColorPointer(4, true, 32, this.byteBuffer);
 					}
 
-					GL11.glEnableClientState('\u8076');
+					GL11.glEnableClientState('\u8076' /* GL_COLOR_ARRAY */);
 				}
 
 				if(this.hasNormals) {
@@ -128,7 +129,7 @@ public class Tessellator {
 						GL11.glNormalPointer(32, this.byteBuffer);
 					}
 
-					GL11.glEnableClientState('\u8075');
+					GL11.glEnableClientState('\u8075' /* GL_NORMAL_ARRAY */);
 				}
 
 				if(this.useVBO) {
@@ -138,30 +139,30 @@ public class Tessellator {
 					GL11.glVertexPointer(3, 32, this.floatBuffer);
 				}
 
-				GL11.glEnableClientState('\u8074');
+				GL11.glEnableClientState('\u8074' /* GL_VERTEX_ARRAY */);
 				if(this.drawMode == 7 && convertQuadsToTriangles) {
 					GL11.glDrawArrays(4, 0, this.vertexCount);
 				} else {
 					GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
 				}
 
-				GL11.glDisableClientState('\u8074');
+				GL11.glDisableClientState('\u8074' /* GL_VERTEX_ARRAY */);
 				if(this.hasTexture) {
-					GL11.glDisableClientState('\u8078');
+					GL11.glDisableClientState('\u8078' /* GL_TEXTURE_COORD_ARRAY */);
 				}
 
 				if(this.field_35838_p) {
-					GL13.glClientActiveTexture('\u84c1');
-					GL11.glDisableClientState('\u8078');
-					GL13.glClientActiveTexture('\u84c0');
+					GL13.glClientActiveTexture('\u84c1' /* GL_TEXTURE_1 */);
+					GL11.glDisableClientState('\u8078' /* GL_TEXTURE_COORD_ARRAY */);
+					GL13.glClientActiveTexture('\u84c0' /* GL_TEXTURE0 */);
 				}
 
 				if(this.hasColor) {
-					GL11.glDisableClientState('\u8076');
+					GL11.glDisableClientState('\u8076' /* GL_COLOR_ARRAY */);
 				}
 
 				if(this.hasNormals) {
-					GL11.glDisableClientState('\u8075');
+					GL11.glDisableClientState('\u8075' /* GL_NORMAL_ARRAY */);
 				}
 			}
 
