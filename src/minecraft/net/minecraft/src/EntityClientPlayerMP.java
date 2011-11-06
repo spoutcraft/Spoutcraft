@@ -170,7 +170,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		var10000.addToSendQueue(var10001);
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		this.health -= var2;
 	}
 

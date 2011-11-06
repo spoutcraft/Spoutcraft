@@ -646,7 +646,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		if(!var1.func_35534_b() && this.func_35162_ad()) {
 			var2 = 1 + var2 >> 1;
 		}
