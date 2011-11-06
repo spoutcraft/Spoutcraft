@@ -77,6 +77,14 @@ public class SpoutCustomBlockDesign implements BlockDesign{
 		block.setBlockBounds(lowXBound, lowYBound, lowZBound, highXBound, highYBound, highZBound);
 	}
 	
+	public float getLowXBound() {
+		return lowXBound;
+	}
+	
+	public float getLowYBound() {
+		return lowYBound;
+	}
+	
 	public BlockDesign setMaxBrightness(float maxBrightness) {
 		this.maxBrightness = maxBrightness;
 		return this;

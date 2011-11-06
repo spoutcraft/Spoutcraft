@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.getspout.spout.item.ServerCustomBlock;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
@@ -16,7 +17,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	private Integer metaData;
 	private String name;
 	private boolean opaque;
-	private SpoutCustomBlockDesign design;
+	private GenericBlockDesign design;
 	
 	public PacketCustomBlockDesign() {
 		
@@ -49,7 +50,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 	
 	public int getNumBytes() {
-		int designBytes = (design == null) ?  (new SpoutCustomBlockDesign().getResetNumBytes()) : design.getNumBytes();
+		int designBytes = (design == null) ?  (new GenericBlockDesign().getResetNumBytes()) : design.getNumBytes();
 		return 8 + designBytes + PacketUtil.getNumBytes(name) + 1;
 	}
 	
@@ -58,7 +59,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 		setMetaData(input.readInt());
 		name = PacketUtil.readString(input);
 		opaque = input.readBoolean();
-		design = new SpoutCustomBlockDesign();
+		design = new GenericBlockDesign();
 		design.read(input);
 		if (design.getReset()) {
 			design = null;
@@ -73,7 +74,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 		if (design != null) {
 			design.write(output);
 		} else {
-			new SpoutCustomBlockDesign().writeReset(output);
+			new GenericBlockDesign().writeReset(output);
 		}
 	}
 	
@@ -94,7 +95,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 
 
 	public int getVersion() {
-		return new SpoutCustomBlockDesign().getVersion() + 1;
+		return new GenericBlockDesign().getVersion() + 1;
 	}
 
 }

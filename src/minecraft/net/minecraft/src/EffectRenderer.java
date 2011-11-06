@@ -23,6 +23,7 @@ import org.getspout.spout.item.SpoutItem;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class EffectRenderer {
@@ -162,11 +163,11 @@ public class EffectRenderer {
 			
 			//Spout start
 			boolean custom = false;
-			SpoutCustomBlockDesign design = null;
+			GenericBlockDesign design = null;
 			Texture customTexture = null;
 			int data = worldObj.getBlockMetadata(var1, var2, var3);
 			if(MaterialData.getBlock(var5, (short) data) != null) {
-				design = (SpoutCustomBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
+				design = (GenericBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
 			}
 			
 			if (design != null) {
@@ -235,10 +236,10 @@ public class EffectRenderer {
 			
 			//Spout start
 			boolean custom = false;
-			SpoutCustomBlockDesign design = null;
+			GenericBlockDesign design = null;
 			int data = worldObj.getBlockMetadata(var1, var2, var3);
 			if(MaterialData.getBlock(var5, (short) data) != null) {
-				design = (SpoutCustomBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
+				design = (GenericBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
 			}
 			
 			if (design != null) {

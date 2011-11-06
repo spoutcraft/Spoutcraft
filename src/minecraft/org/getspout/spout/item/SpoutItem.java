@@ -8,12 +8,15 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 
+import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
@@ -141,17 +144,84 @@ public class SpoutItem extends Item {
 		 Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
 	}
 	
-	public static boolean renderCustomBlock(RenderBlocks renderBlocks, SpoutCustomBlockDesign design, Block block, int x, int y, int z) {
+	public static boolean renderCustomBlock(RenderBlocks renderBlocks, GenericBlockDesign design, Block block, int x, int y, int z) {
 		
 		if (design == null) {
 			return false;
 		}
 		
 		Tessellator tessallator = Tessellator.instance;
+
+		block.setBlockBounds(design.getLowXBound(), design.getLowYBound(), design.getLowZBound(), design.getHighXBound(), design.getHighYBound(), design.getHighZBound());
 		
-		design.setBounds(block);
+		return draw(design, tessallator, block, renderBlocks, x, y, z);
+	}
+	
+	public static void renderBlockOnInventory(GenericBlockDesign design, RenderBlocks renders, float brightness) {
+		Tessellator tessellator = Tessellator.instance;
 		
-		return design.draw(tessallator, block, renderBlocks, x, y, z);
+		GL11.glColor4f(1, 1, 1, 1.0F);
+		
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1.0F, 0.0F);
+		
+		draw(design, tessellator, null, renders, brightness, 0, 0, 0);
+		
+		tessellator.draw();
+	}
+	
+	public static boolean draw(GenericBlockDesign design, Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
+		return draw(design, tessallator, block, renders, 1, x, y, z);
+	}
+	
+	public static boolean draw(GenericBlockDesign design, Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
+		
+		if (block != null) {
+			IBlockAccess access = renders.blockAccess;
+			boolean enclosed = true;
+			enclosed &= access.isBlockOpaqueCube(x, y + 1, z);
+			enclosed &= access.isBlockOpaqueCube(x, y - 1, z);
+			enclosed &= access.isBlockOpaqueCube(x, y, z + 1);
+			enclosed &= access.isBlockOpaqueCube(x, y, z - 1);
+			enclosed &= access.isBlockOpaqueCube(x + 1, y, z);
+			enclosed &= access.isBlockOpaqueCube(x - 1, y, z);
+			if (enclosed) {
+				return false;
+			}
+		}
+		
+		design.setBrightness(inventoryBrightness);
+		
+		for (int i = 0; i < design.getX().length; i++) {
+			
+			MutableIntegerVector sourceBlock = design.getLightSource(i, x, y, z);
+			
+			float baseBrightness;
+			
+			if (block != null) {
+				baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+			} else {
+				baseBrightness = design.getBrightness();
+			}
+
+			float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
+			
+			tessallator.setColorOpaque_F(1.0F * brightness, 1.0F * brightness, 1.0F * brightness);
+			
+			float[] xx = design.getX()[i];
+			float[] yy = design.getY()[i];
+			float[] zz = design.getZ()[i];
+			float[] tx = design.getTextureXPos()[i];
+			float[] ty = design.getTextureYPos()[i];
+
+			for (int j = 0; j < 4; j++) {
+				tessallator.addVertexWithUV(x + xx[j], y + yy[j], z + zz[j], tx[j], ty[j]);
+			}
+		}
+		return true;
+
 	}
 	
 	public static int getKey(int x, int y, int z) {

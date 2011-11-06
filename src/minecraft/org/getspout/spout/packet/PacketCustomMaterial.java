@@ -27,11 +27,12 @@ public class PacketCustomMaterial implements SpoutPacket {
 	}
 
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(addon.getDescription().getName()) + PacketUtil.getNumBytes(name);
+//		return PacketUtil.getNumBytes(addon.getDescription().getName()) + PacketUtil.getNumBytes(name);
+		return 0;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
-		addon = Spoutcraft.getAddonManager().getAddon(PacketUtil.readString(input));
+		addon = Spoutcraft.getAddonManager().getOrCreateAddon(PacketUtil.readString(input));
 		name = PacketUtil.readString(input);
 		id = input.readInt();
 		data = input.readInt();

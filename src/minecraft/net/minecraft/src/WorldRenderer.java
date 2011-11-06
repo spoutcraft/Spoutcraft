@@ -25,6 +25,7 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import net.minecraft.client.Minecraft;
@@ -176,15 +177,15 @@ public class WorldRenderer {
 					for (int dy = sizeYOffset; dy > y; --dy) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dx = x; dx < sizeXOffset; ++dx) {
-								int var19 = chunkCache.getBlockId(dx, dy, dz);
+								int id = chunkCache.getBlockId(dx, dy, dz);
 								
-								if (var19 > 0) {
+								if (id > 0) {
 									String customTexture = null; 
 									String customTexturePlugin = null;
-									SpoutCustomBlockDesign design = null;
+									GenericBlockDesign design = null;
 									int data = chunkCache.getBlockMetadata(dx, dy, dz);
-									if(MaterialData.getBlock(var19, (short) data) != null) {
-										design = (SpoutCustomBlockDesign) MaterialData.getBlock(var19, (short) data).getBlockDesign();
+									if(MaterialData.getBlock(id, (short) data) != null) {
+										design = (GenericBlockDesign) MaterialData.getBlock(id, (short) data).getBlockDesign();
 									}
 									
 									if (design != null) {
@@ -227,14 +228,14 @@ public class WorldRenderer {
 									}
 									
 
-									if (renderPass == 0 && Block.isBlockContainer[var19]) {
+									if (renderPass == 0 && Block.isBlockContainer[id]) {
 										TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
 										}
 									}
 
-									Block var25 = Block.blocksList[var19];
+									Block var25 = Block.blocksList[id];
 									int blockRenderPass = var25.getRenderBlockPass();
 									if (design != null) {
 										if (renderPass == design.getRenderPass()) {

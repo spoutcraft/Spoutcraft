@@ -18,6 +18,7 @@ package org.getspout.spout.item;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityDiggingFX;
@@ -26,8 +27,8 @@ import net.minecraft.src.World;
 
 public class CustomEntityDiggingFX extends EntityDiggingFX{
 	private Texture textureBinding = null;
-	SpoutCustomBlockDesign design;
-	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, SpoutCustomBlockDesign design) {
+	GenericBlockDesign design;
+	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, GenericBlockDesign design) {
 		super(var1, var2, var4, var6, var8, var10, var12, block, var15, var16);
 		this.textureBinding = textureBinding;
 		this.design = design;
