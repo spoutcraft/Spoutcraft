@@ -23,11 +23,8 @@ import net.minecraft.src.EntityPlayer;
 
 public class SpoutPlayer extends CraftHumanEntity implements Player{
 	
-	public SpoutPlayer() {
-		
-	}
-	
 	public SpoutPlayer(net.minecraft.src.EntityPlayer handle) {
+		super(handle);
 		this.handle = handle;
 	}
 	

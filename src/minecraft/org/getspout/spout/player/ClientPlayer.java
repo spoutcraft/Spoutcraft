@@ -37,14 +37,15 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public static ClientPlayer getInstance() {
 		if (instance == null) {
-			instance = new ClientPlayer();
+			instance = new ClientPlayer(SpoutClient.getHandle().thePlayer);
 			instance.setPlayer(SpoutClient.getHandle().thePlayer);
 			SpoutClient.getInstance().player = (ClientPlayer) instance;
 		}
 		return instance;
 	}
 	
-	private ClientPlayer() {
+	private ClientPlayer(EntityPlayerSP entity) {
+		super(entity);
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
 	}
