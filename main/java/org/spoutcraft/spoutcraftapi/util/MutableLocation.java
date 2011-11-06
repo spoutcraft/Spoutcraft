@@ -117,4 +117,8 @@ public class MutableLocation extends MutableVector implements Location {
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(getX()).append(getY()).append(getZ()).append(getYaw()).append(getPitch()).append(getWorld()).toHashCode();
 	}
+
+	public Vector toVector() {
+		return new MutableVector(x, y, z);
+	}
 }

@@ -16,14 +16,13 @@
  */
 package org.spoutcraft.spoutcraftapi.entity;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedVector;
-import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 /**
@@ -31,45 +30,157 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
  */
 public interface Entity extends PropertyInterface {
 
-	public Location getLocation();
+	/**
+	 * Gets the current location of the entity
+	 * @return location
+	 */
+	public FixedLocation getLocation();
 
+	/**
+	 * Sets the velocity of the entity
+	 * @param velocity to set
+	 */
 	public void setVelocity(Vector velocity);
 
+	/**
+	 * Gets the current velocity of the entity
+	 * @return velocity
+	 */
 	public FixedVector getVelocity();
 
+	/**
+	 * Gets the world this entity is in
+	 * @return world
+	 */
 	public World getWorld();
 
-	public boolean teleport(Location location);
-	
+	/**
+	 * Teleports the entity to the given location
+	 * @param location to teleport to
+	 * @return true if successful
+	 */
 	public boolean teleport(FixedLocation location);
 
+	/**
+	 * Teleports the entity to the given entity
+	 * @param entity to teleport to
+	 * @return true if successful
+	 */
 	public boolean teleport(Entity destination);
 
-	public List<Entity> getNearbyEntities(double x, double y, double z);
+	 /**
+	 * Returns a set of entities within a bounding box defined by x,y,z centered around player
+	 *
+	 * @param x Size of the box along x axis
+	 * @param y Size of the box along y axis
+	 * @param z Size of the box along z axis
+	 * @return Set<Entity> List of entities nearby
+	 */
+	public Set<Entity> getNearbyEntities(double x, double y, double z);
 
+	/**
+	 * Returns a unique id for this entity
+	 *
+	 * @return Entity id
+	 */
 	public int getEntityId();
 
+	/**
+	 * Returns the entity's current fire ticks (ticks before the entity stops being on fire).
+	 *
+	 * @return int fireTicks
+	 */
 	public int getFireTicks();
 
+	/**
+	 * Returns the entity's maximum fire ticks.
+	 *
+	 * @return int maxFireTicks
+	 */
 	public int getMaxFireTicks();
 
+	/**
+	 * Sets the entity's current fire ticks (ticks before the entity stops being on fire).
+	 *
+	 * @param ticks Current ticks remaining
+	 */
 	public void setFireTicks(int ticks);
 
+	/**
+	 * Mark the entity's removal.
+	 */
 	public void remove();
 
+	/**
+	 * Returns true if this entity has been marked for removal.
+	 * @return True if it is dead.
+	 */
 	public boolean isDead();
 
+	/**
+	 * Gets the primary passenger of a vehicle. For vehicles that could have
+	 * multiple passengers, this will only return the primary passenger.
+	 *
+	 * @return an entity
+	 */
 	public abstract Entity getPassenger();
 
+	/**
+	 * Set the passenger of a vehicle.
+	 *
+	 * @param passenger The new passenger.
+	 * @return false if it could not be done for whatever reason
+	 */
 	public abstract boolean setPassenger(Entity passenger);
 
+	/**
+	 * Check if a vehicle has passengers.
+	 *
+	 * @return True if the vehicle has no passengers.
+	 */
 	public abstract boolean isEmpty();
 
+	/**
+	 * Eject any passenger.
+	 *
+	 * @return True if there was a passenger.
+	 */
 	public abstract boolean eject();
 
+	/**
+	 * Returns the distance this entity has fallen
+	 * @return The distance.
+	 */
 	public float getFallDistance();
 
+	/**
+	 * Sets the fall distance for this entity
+	 * @param distance The new distance.
+	 */
 	public void setFallDistance(float distance);
 
+	/**
+	 * Returns a unique and persistent id for this entity
+	 * @return unique id
+	 */
 	public UUID getUniqueId();
+	
+	/**
+	 * Gets the amount of ticks this entity has lived for.
+	 * <p>
+	 * This is the equivalent to "age" in entities.
+	 * 
+	 * @return Age of entity
+	 */
+	public int getTicksLived();
+	
+	/**
+	 * Sets the amount of ticks this entity has lived for.
+	 * <p>
+	 * This is the equivalent to "age" in entities. May not be
+	 * less than one tick.
+	 * 
+	 * @param value Age of entity
+	 */
+	public void setTicksLived(int value);
 }

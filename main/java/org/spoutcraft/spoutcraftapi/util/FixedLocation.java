@@ -47,4 +47,10 @@ public interface FixedLocation extends FixedVector {
 	 * @return Vector
 	 */
 	public Vector getDirection();
+
+	/**
+	 * Creates a vector with the properties of this location
+	 * @return vector
+	 */
+	public Vector toVector();
 }

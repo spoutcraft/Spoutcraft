@@ -18,13 +18,21 @@ package org.spoutcraft.spoutcraftapi.entity;
 
 public interface Player extends HumanEntity{
 
+	/**
+	 * Is true if this player is online
+	 * @return online
+	 */
 	public boolean isOnline();
 
-	public String getDisplayName();
-
-	public void setDisplayName(String name);
-
+	/**
+	 * Returns if the player is in sneak mode
+	 * @return true if player is in sneak mode
+	 */
 	public boolean isSneaking();
 
+	/**
+	 * Sets the sneak mode the player
+	 * @param sneak true if player should appear sneaking
+	 */
 	public void setSneaking(boolean sneak);
 }

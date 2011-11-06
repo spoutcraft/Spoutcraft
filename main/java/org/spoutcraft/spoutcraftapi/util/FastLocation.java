@@ -57,5 +57,9 @@ public class FastLocation extends FastVector implements FixedLocation {
 
 		return vector;
 	}
+	
+	public Vector toVector() {
+		return new MutableVector(x, y, z);
+	}
 
 }
