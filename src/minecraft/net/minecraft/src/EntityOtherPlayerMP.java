@@ -36,7 +36,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.renderDistanceWeight = 10.0D;
 		//Spout start
 		displayName = username;
-		spoutEntity = new SpoutPlayer();
+		spoutEntity = new SpoutPlayer(this);
 		((SpoutPlayer) spoutEntity).setPlayer(this);
 		//Spout end
 	}
