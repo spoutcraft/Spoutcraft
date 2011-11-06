@@ -1,68 +1,74 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) braces deadcode 
+
 package net.minecraft.src;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiConnectFailed;
-import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Packet2Handshake;
 
-class ThreadConnectToServer extends Thread {
+// Referenced classes of package net.minecraft.src:
+//            NetClientHandler, GuiConnecting, Packet2Handshake, Session, 
+//            GuiConnectFailed
 
-	// $FF: synthetic field
-	final Minecraft mc;
-	// $FF: synthetic field
-	final String hostName;
-	// $FF: synthetic field
-	final int port;
-	// $FF: synthetic field
-	final GuiConnecting connectingGui;
+class ThreadConnectToServer extends Thread
+{
 
+    ThreadConnectToServer(GuiConnecting guiconnecting, Minecraft minecraft, String s, int i)
+    {
+        connectingGui = guiconnecting;
+        mc = minecraft;
+        hostName = s;
+        port = i;
+    }
 
-	ThreadConnectToServer(GuiConnecting var1, Minecraft var2, String var3, int var4) {
-		this.connectingGui = var1;
-		this.mc = var2;
-		this.hostName = var3;
-		this.port = var4;
-	}
+    public void run()
+    {
+        try
+        {
+            GuiConnecting.setNetClientHandler(connectingGui, new NetClientHandler(mc, hostName, port));
+            if(GuiConnecting.isCancelled(connectingGui))
+            {
+                return;
+            }
+            GuiConnecting.getNetClientHandler(connectingGui).addToSendQueue(new Packet2Handshake(mc.session.username));
+        }
+        catch(UnknownHostException unknownhostexception)
+        {
+            if(GuiConnecting.isCancelled(connectingGui))
+            {
+                return;
+            }
+            mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[] {
+                (new StringBuilder()).append("Unknown host '").append(hostName).append("'").toString()
+            }));
+        }
+        catch(ConnectException connectexception)
+        {
+            if(GuiConnecting.isCancelled(connectingGui))
+            {
+                return;
+            }
+            mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[] {
+                connectexception.getMessage()
+            }));
+        }
+        catch(Exception exception)
+        {
+            if(GuiConnecting.isCancelled(connectingGui))
+            {
+                return;
+            }
+            exception.printStackTrace();
+            mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[] {
+                exception.toString()
+            }));
+        }
+    }
 
-	public void run() {
-		try {
-			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(this.mc, this.hostName, this.port));
-			if(GuiConnecting.isCancelled(this.connectingGui)) {
-				return;
-			}
-
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username));
-		} catch (UnknownHostException var2) {
-			if(GuiConnecting.isCancelled(this.connectingGui)) {
-				return;
-			}
-			
-			this.mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[]{"Unknown host \'" + this.hostName + "\'"}));
-		} catch (ConnectException var3) {
-			if(GuiConnecting.isCancelled(this.connectingGui)) {
-				return;
-			}
-
-			//Spout start
-			if (var3.getMessage().toLowerCase().contains("connection refused")) {
-				org.getspout.spout.gui.error.GuiConnectionLost.lastServerIp = hostName;
-				org.getspout.spout.gui.error.GuiConnectionLost.lastServerPort = port;
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost("The server is not currently online!"));
-			}
-			else
-			//Spout end
-			this.mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[]{var3.getMessage()}));
-		} catch (Exception var4) {
-			if(GuiConnecting.isCancelled(this.connectingGui)) {
-				return;
-			}
-
-			var4.printStackTrace();
-			this.mc.displayGuiScreen(new GuiConnectFailed("connect.failed", "disconnect.genericReason", new Object[]{var4.toString()}));
-		}
-
-	}
+    final Minecraft mc; /* synthetic field */
+    final String hostName; /* synthetic field */
+    final int port; /* synthetic field */
+    final GuiConnecting connectingGui; /* synthetic field */
 }

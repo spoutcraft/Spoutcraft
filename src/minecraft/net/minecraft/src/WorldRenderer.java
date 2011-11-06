@@ -25,6 +25,9 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import net.minecraft.client.Minecraft;
 //Spout end
 
@@ -181,18 +184,16 @@ public class WorldRenderer {
 							for (int dy = y; dy < sizeYOffset; ++dy) {
 								int id = chunkCache.getBlockId(dx, dy, dz);
 								if (id > 0) {
-									
-									//Find the custom texture and addon that created it
-									//TODO a helper method to do this step?
 									String customTexture = null; 
 									String customTextureAddon = null;
-									SpoutCustomBlockDesign design = null;
-									if (SpoutItem.isBlockOverride(dx, dy, dz)) {
-										design = SpoutItem.getCustomBlockDesign(dx, dy, dz);
-									} else {
-										int data = chunkCache.getBlockMetadata(dx, dy, dz);
-										design = SpoutItem.getCustomBlockDesign(id, data);
+									GenericBlockDesign design = null;
+
+									if(SpoutItem.isBlockOverride(dx, dy, dz)) {
+										if(SpoutItem.getBlockOverride(dx, dy, dz) != null ) {
+											design = (GenericBlockDesign) SpoutItem.getBlockOverride(dx, dy, dz).getBlockDesign();
+										}
 									}
+									
 									if (design != null) {
 										customTexture = design.getTexureURL();
 										customTextureAddon = design.getTextureAddon();
@@ -231,7 +232,7 @@ public class WorldRenderer {
 											this.tileEntityRenderers.add(var20);
 										}
 									}
-									
+
 									Block block = Block.blocksList[id];
 									//Determine which pass this block needs to be rendered on
 									int blockRenderPass = block.getRenderBlockPass();

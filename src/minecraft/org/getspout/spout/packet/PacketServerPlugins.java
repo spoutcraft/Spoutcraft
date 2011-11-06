@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
@@ -62,9 +63,13 @@ public class PacketServerPlugins implements SpoutPacket{
 	public void run(int playerId) {
 		SimpleAddonManager addonManager = ((SimpleAddonManager)Spoutcraft.getAddonManager());
 		for (int i = 0; i < plugins.length; i++) {
-			if (Spoutcraft.getAddonManager().getAddon(plugins[i]) == null) {
-				ServerAddon addon = new ServerAddon(plugins[i], versions[i], null);
-				addonManager.addFakeAddon(addon);
+			Addon addon = addonManager.getAddon(plugins[i]);
+			if(addon == null) {
+				addon = new ServerAddon(plugins[i], versions[i], null);
+				addonManager.addFakeAddon((ServerAddon) addon);
+			}
+			else if(addon instanceof ServerAddon) {
+				addonManager.addFakeAddon(new ServerAddon(plugins[i], versions[i], null));
 			}
 		}
 	}
