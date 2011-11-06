@@ -33,45 +33,39 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPigZombie;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.PigZombie;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftPigZombie extends CraftZombie implements PigZombie {
+
+	public CraftPigZombie(EntityPigZombie entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public EntityPigZombie getHandle() {
+		return (EntityPigZombie)handle;
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	@Override
+	public String toString() {
+		return "CraftPigZombie";
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public int getAnger() {
+		return getHandle().angerLevel;
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
+
+	public void setAnger(int level) {
+		getHandle().angerLevel = level;
 	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
+
+	public void setAngry(boolean angry) {
+		setAnger(angry ? 400 : 0);
 	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
+
+	public boolean isAngry() {
+		return getAnger() > 0;
 	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
-	}
+
 }

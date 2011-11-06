@@ -5,6 +5,7 @@ import java.util.List;
 
 //Spout Start
 import org.bukkit.ChatColor;
+import org.getspout.spout.entity.CraftHumanEntity;
 //Spout End
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.AxisAlignedBB;
@@ -106,6 +107,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.field_9353_B = 180.0F;
 		this.fireResistance = 20;
 		this.texture = "/mob/char.png";
+		
+		//Spout start
+		this.spoutEntity = new CraftHumanEntity(this);
+		//Spout end
 	}
 
 	protected void entityInit() {

@@ -23,6 +23,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.entity.CraftLivingEntity;
 import org.getspout.spout.entity.EntityData;
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End
@@ -106,6 +107,7 @@ public abstract class EntityLiving extends Entity {
 		
 		//Spout start
 		uuidValid = !SpoutClient.getHandle().isMultiplayerWorld() || SpoutClient.getInstance().isSpoutEnabled(); //the uuid is not valid until we send it in a packet in MP
+		spoutEntity = new CraftLivingEntity(this);
 		//Spout end
 	}
 

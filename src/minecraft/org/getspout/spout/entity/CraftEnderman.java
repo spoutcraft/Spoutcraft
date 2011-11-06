@@ -33,45 +33,32 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityEnderman;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.Enderman;
+import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftEnderman extends CraftMonster implements Enderman {
+	public CraftEnderman(EntityEnderman entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public EntityEnderman getEntityEnderman() {
+		return (EntityEnderman)handle;
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	@Override
+	public String toString() {
+		return "CraftEnderman";
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public Material getCarriedMaterial() {
+		return MaterialData.getMaterial(getEntityEnderman().func_35176_r(), (short) getEntityEnderman().func_35180_s());
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	public void setCarriedMaterial(Material data) {
+		getEntityEnderman().func_35177_b(data.getRawId());
+		getEntityEnderman().func_35181_c(data.getRawData());
 	}
 }

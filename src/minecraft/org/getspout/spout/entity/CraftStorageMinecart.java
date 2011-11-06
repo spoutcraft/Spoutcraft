@@ -33,45 +33,26 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityMinecart;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.getspout.spout.inventory.CraftInventory;
+import org.spoutcraft.spoutcraftapi.entity.StorageMinecart;
+import org.spoutcraft.spoutcraftapi.inventory.Inventory;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftStorageMinecart extends CraftMinecart implements StorageMinecart {
+	private CraftInventory inventory;
+
+	public CraftStorageMinecart(EntityMinecart entity) {
+		super(entity);
+		inventory = new CraftInventory(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public Inventory getInventory() {
+		return inventory;
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
-	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
-	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	@Override
+	public String toString() {
+		return "CraftStorageMinecart{" + "inventory=" + inventory + '}';
 	}
 }

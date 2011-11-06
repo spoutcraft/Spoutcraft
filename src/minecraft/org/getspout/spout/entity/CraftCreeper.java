@@ -33,45 +33,38 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import org.spoutcraft.spoutcraftapi.entity.Creeper;
+import net.minecraft.src.EntityCreeper;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+public class CraftCreeper extends CraftMonster implements Creeper {
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+	public CraftCreeper(EntityCreeper entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public EntityCreeper getEntityCreeper() {
+		return (EntityCreeper) handle;
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	@Override
+	public String toString() {
+		return "CraftCreeper";
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public boolean isPowered() {
+		return getEntityCreeper().getPowered();
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
+
+	public void setPowered(boolean powered) {
+	   // Entity entity = this.getEntityCreeper().spoutEntity;
+
+		//TODO add event!
+		if (powered) {
+			getEntityCreeper().setPowered(true);
+		}
+		else {
+			getEntityCreeper().setPowered(false);
+		}
 	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
-	}
+
 }

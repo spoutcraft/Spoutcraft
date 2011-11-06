@@ -33,45 +33,38 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityItem;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
+import org.getspout.spout.inventory.CraftItemStack;
+import org.spoutcraft.spoutcraftapi.entity.Item;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftItem extends CraftEntity implements Item {
+	private EntityItem item;
+
+	public CraftItem(EntityItem entity) {
+		super(entity);
+		this.item = entity;
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public ItemStack getItemStack() {
+		return new CraftItemStack(item.item);
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	public void setItemStack(ItemStack stack) {
+		item.item = new net.minecraft.src.ItemStack(stack.getTypeId(), stack.getAmount(), stack.getDurability());
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public int getPickupDelay() {
+		return item.delayBeforeCanPickup;
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
+
+	public void setPickupDelay(int delay) {
+		item.delayBeforeCanPickup = delay;
 	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	@Override
+	public String toString() {
+		return "CraftItem";
 	}
 }

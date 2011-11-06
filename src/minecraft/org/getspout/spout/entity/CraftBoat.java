@@ -33,45 +33,56 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityBoat;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.Boat;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftBoat extends CraftVehicle implements Boat {
+	protected EntityBoat boat;
+
+	public CraftBoat(EntityBoat entity) {
+		super(entity);
+		boat = entity;
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public double getMaxSpeed() {
+		return boat.maxSpeed;
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	public void setMaxSpeed(double speed) {
+		if (speed >= 0D) {
+			boat.maxSpeed = speed;
+		}
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public double getOccupiedDeceleration() {
+		return boat.occupiedDeceleration;
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
+
+	public void setOccupiedDeceleration(double speed) {
+		if (speed >= 0D) {
+			boat.occupiedDeceleration = speed;
+		}
 	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
+
+	public double getUnoccupiedDeceleration() {
+		return boat.unoccupiedDeceleration;
 	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
+
+	public void setUnoccupiedDeceleration(double speed) {
+		boat.unoccupiedDeceleration = speed;
 	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	public boolean getWorkOnLand() {
+		return boat.landBoats;
+	}
+
+	public void setWorkOnLand(boolean workOnLand) {
+		boat.landBoats = workOnLand;
+	}
+
+	@Override
+	public String toString() {
+		return "CraftBoat";
 	}
 }

@@ -33,45 +33,22 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityMob;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.Monster;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftMonster extends CraftCreature implements Monster {
+
+	public CraftMonster(EntityMob entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	@Override
+	public String toString() {
+		return "CraftMonster";
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
-	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
-	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	public EntityMob getEntityMonster() {
+		return (EntityMob) handle;
 	}
 }

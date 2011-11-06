@@ -33,45 +33,47 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityTNTPrimed;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.TNTPrimed;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
+
+	public CraftTNTPrimed(EntityTNTPrimed entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	@Override
+	public String toString() {
+		return "CraftTNTPrimed";
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	public EntityTNTPrimed getHandle() {
+		return (EntityTNTPrimed)handle;
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public float getYield() {
+		return getHandle().yield;
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
+
+	public boolean isIncendiary() {
+		return getHandle().incendiary;
 	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
+
+	public void setIsIncendiary(boolean isIncendiary) {
+		getHandle().incendiary = isIncendiary;
 	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
+
+	public void setYield(float yield) {
+		getHandle().yield = yield;
 	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	public int getFuseTicks() {
+		return getHandle().fuse;
 	}
+
+	public void setFuseTicks(int fuseTicks) {
+		getHandle().fuse = fuseTicks;
+	}
+
 }

@@ -33,45 +33,40 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityCreature;
+import net.minecraft.src.EntityLiving;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.Creature;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftCreature extends CraftLivingEntity implements Creature {
+	public CraftCreature(EntityCreature entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public void setTarget(LivingEntity target) {
+		EntityCreature entity = getEntityCreature();
+		if (target == null) {
+			entity.entityToAttack = null;
+		} else if (target instanceof CraftLivingEntity) {
+			EntityLiving victim = ((CraftLivingEntity) target).getEntityLiving();
+			entity.entityToAttack = victim;
+			entity.pathToEntity = entity.worldObj.getPathToEntity(entity, entity.entityToAttack, 16.0F);
+		}
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	public CraftLivingEntity getTarget() {
+		if (getEntityCreature().entityToAttack == null) return null;
+
+		return (CraftLivingEntity) getEntityCreature().entityToAttack.spoutEntity;
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
+
+	public EntityCreature getEntityCreature() {
+		return (EntityCreature) handle;
 	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	@Override
+	public String toString() {
+		return "CraftCreature";
 	}
 }

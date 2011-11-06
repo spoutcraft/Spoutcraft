@@ -32,7 +32,6 @@ import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-import org.spoutcraft.spoutcraftapi.util.FixedVector;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableVector;
@@ -80,7 +79,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 		handle.motionZ = velocity.getZ();
 	}
 
-	public FixedVector getVelocity() {
+	public Vector getVelocity() {
 		return new MutableVector(handle.motionX, handle.motionY, handle.motionZ);
 	}
 

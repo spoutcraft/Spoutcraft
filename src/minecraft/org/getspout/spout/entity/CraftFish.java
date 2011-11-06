@@ -33,45 +33,34 @@
 
 package org.getspout.spout.entity;
 
+import net.minecraft.src.EntityFish;
 import net.minecraft.src.EntityPlayer;
 
-import org.getspout.spout.inventory.CraftInventoryPlayer;
-import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.spoutcraftapi.entity.Fish;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
-	
-	public CraftHumanEntity(EntityPlayer player) {
-		super(player);
+public class CraftFish extends AbstractProjectile implements Fish {
+	public CraftFish(EntityFish entity) {
+		super(entity);
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	@Override
+	public String toString() {
+		return "CraftFish";
 	}
-	
-	public String getName() {
-		return getMCPlayer().username;
+
+	public LivingEntity getShooter() {
+		if (((EntityFish) handle).angler != null) {
+			return (LivingEntity) ((EntityFish) handle).angler.spoutEntity;
+		}
+
+		return null;
+
 	}
-	
-	public PlayerInventory getInventory() {
-		return new CraftInventoryPlayer(getMCPlayer().inventory);
-	}
-	
-	public ItemStack getItemInHand() {
-		return getInventory().getItemInHand();
-	}
-	
-	public void setItemInHand(ItemStack item) {
-		getInventory().setItemInHand(item);
-	}
-	
-	public boolean isSleeping() {
-		boolean sleep = getMCPlayer().isPlayerSleeping();
-		return sleep;
-	}
-	
-	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+
+	public void setShooter(LivingEntity shooter) {
+		if (shooter instanceof CraftHumanEntity) {
+			((EntityFish) handle).angler = (EntityPlayer) ((CraftHumanEntity) shooter).handle;
+		}
 	}
 }

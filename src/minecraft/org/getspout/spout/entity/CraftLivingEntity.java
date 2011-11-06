@@ -48,6 +48,10 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 
 public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+	
+	public CraftLivingEntity(EntityLiving living) {
+		super(living);
+	}
 
 	public EntityLiving getEntityLiving(){
 		return (EntityLiving) handle;

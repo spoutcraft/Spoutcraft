@@ -17,6 +17,8 @@
 package org.getspout.spout.client;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,6 +75,7 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
@@ -524,5 +527,69 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public TexturePacksModel getTexturePacksModel() {
 		return textureModel;
+	}
+
+	public Player[] getPlayers() {
+		if (getWorld() == null){
+			return new Player[0];
+		}
+		List<Player> playerList = getWorld().getPlayers();
+		Player[] players = new Player[playerList.size()];
+		for (int i = 0; i < playerList.size(); i++) {
+			players[i] = playerList.get(i);
+		}
+		return players;
+	}
+
+	public Player getPlayer(String name) {
+		Player[] players = getPlayers();
+
+		Player found = null;
+		String lowerName = name.toLowerCase();
+		int delta = Integer.MAX_VALUE;
+		for (Player player : players) {
+			if (player.getName().toLowerCase().startsWith(lowerName)) {
+				int curDelta = player.getName().length() - lowerName.length();
+				if (curDelta < delta) {
+					found = player;
+					delta = curDelta;
+				}
+				if (curDelta == 0) break;
+			}
+		}
+		return found;
+	}
+
+	public Player getPlayerExact(String name) {
+		 String lname = name.toLowerCase();
+
+			for (Player player : getPlayers()) {
+				if (player.getName().equalsIgnoreCase(lname)) {
+					return player;
+				}
+			}
+
+			return null;
+	}
+
+	public List<Player> matchPlayer(String partialName) {
+		List<Player> matchedPlayers = new ArrayList<Player>();
+
+		for (Player iterPlayer : this.getPlayers()) {
+			String iterPlayerName = iterPlayer.getName();
+
+			if (partialName.equalsIgnoreCase(iterPlayerName)) {
+				// Exact match
+				matchedPlayers.clear();
+				matchedPlayers.add(iterPlayer);
+				break;
+			}
+			if (iterPlayerName.toLowerCase().indexOf(partialName.toLowerCase()) != -1) {
+				// Partial match
+				matchedPlayers.add(iterPlayer);
+			}
+		}
+
+		return matchedPlayers;
 	}
 }
