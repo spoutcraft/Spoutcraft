@@ -183,9 +183,11 @@ public class WorldRenderer {
 									String customTexture = null; 
 									String customTexturePlugin = null;
 									GenericBlockDesign design = null;
-									int data = chunkCache.getBlockMetadata(dx, dy, dz);
-									if(MaterialData.getBlock(id, (short) data) != null) {
-										design = (GenericBlockDesign) MaterialData.getBlock(id, (short) data).getBlockDesign();
+
+									if(SpoutItem.isBlockOverride(dx, dy, dz)) {
+										if(SpoutItem.getBlockOverride(dx, dy, dz) != null ) {
+											design = (GenericBlockDesign) SpoutItem.getBlockOverride(dx, dy, dz).getBlockDesign();
+										}
 									}
 									
 									if (design != null) {

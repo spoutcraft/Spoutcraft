@@ -250,6 +250,15 @@ public class SpoutItem extends Item {
 		return blockIdOverride.containsKey(mutableIntVector);
 	}
 	
+	public static org.spoutcraft.spoutcraftapi.material.Block getBlockOverride(int x, int y, int z) {
+		mutableIntVector.setIntX(x);
+		mutableIntVector.setIntY(y);
+		mutableIntVector.setIntZ(z);
+		Integer blockId = blockIdOverride.get(mutableIntVector);
+		
+		return MaterialData.getBlock(MaterialData.flint.getRawId(), blockId.shortValue());
+	}
+	
 	public static void reset() {
 		itemBlock.clear();
 		itemMetaData.clear();
