@@ -1,16 +1,16 @@
-package org.getspout.spout.gui.server;
+package org.getspout.spout.gui.database;
 
-import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
 public class FilterButton extends GenericCheckBox implements UrlElement{
-	protected ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
+	protected AbstractAPIModel model;
 	protected String url = "";
 	
-	public FilterButton(String text, String url){
+	public FilterButton(String text, String url, AbstractAPIModel model){
 		super(text);
 		this.url = url;
+		this.model = model;
 	}
 	
 	public CheckBox setChecked(boolean check, boolean update) {

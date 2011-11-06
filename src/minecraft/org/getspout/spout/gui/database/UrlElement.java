@@ -1,4 +1,4 @@
-package org.getspout.spout.gui.server;
+package org.getspout.spout.gui.database;
 
 public interface UrlElement {
 	/**
@@ -13,5 +13,8 @@ public interface UrlElement {
 	 */
 	String getUrlPart();
 	
+	/**
+	 * Clear so the item won't be active
+	 */
 	void clear();
 }

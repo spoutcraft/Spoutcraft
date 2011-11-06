@@ -1,4 +1,4 @@
-package org.getspout.spout.gui.server;
+package org.getspout.spout.gui.database;
 
 import net.minecraft.src.FontRenderer;
 
@@ -9,10 +9,8 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
 import org.spoutcraft.spoutcraftapi.gui.RadioButton;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class SortButton extends GenericRadioButton implements UrlElement {
 	boolean topdown = true;
@@ -20,18 +18,20 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 	boolean allowSorting = true;
 	boolean firstClick = false;
 	
-	ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
+	protected AbstractAPIModel model;
 	String url;
 	
-	public SortButton(String text, String urlPart) {
+	public SortButton(String text, String urlPart, AbstractAPIModel model) {
 		super(text);
 		url = urlPart;
+		this.model = model;
 	}
 	
-	public SortButton(String text, String baseUrl, boolean preferredOrder) {
+	public SortButton(String text, String baseUrl, boolean preferredOrder, AbstractAPIModel model) {
 		super(text);
 		url = baseUrl;
 		this.preferredOrder = preferredOrder;
+		this.model = model;
 	}
 
 	@Override

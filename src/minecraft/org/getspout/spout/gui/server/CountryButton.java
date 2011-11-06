@@ -1,6 +1,7 @@
 package org.getspout.spout.gui.server;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.database.UrlElement;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 

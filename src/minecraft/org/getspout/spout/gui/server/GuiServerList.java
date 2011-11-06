@@ -4,6 +4,11 @@ import java.net.URL;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.database.FilterButton;
+import org.getspout.spout.gui.database.GuiAPIDisplay;
+import org.getspout.spout.gui.database.RandomButton;
+import org.getspout.spout.gui.database.SearchField;
+import org.getspout.spout.gui.database.SortButton;
 import org.lwjgl.Sys;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -20,7 +25,7 @@ import org.spoutcraft.spoutcraftapi.gui.Widget;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
-public class GuiServerList extends GuiScreen {
+public class GuiServerList extends GuiAPIDisplay {
 
 
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
@@ -49,17 +54,17 @@ public class GuiServerList extends GuiScreen {
 		labelTitle = new GenericLabel("Public Server List");
 		filters = new GenericScrollArea();
 		filterTitle = new GenericLabel("Sort & Filter");
-		featured = new SortButton("Featured", "featured");
-		popular = new SortButton("Popular", "popular");
-		byName = new SortButton("Name", "sortBy=name");
-		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false);
-		byPlayers = new SortButton("Players Online", "sortBy=players", false);
-		byPing = new SortButton("Ping", "sortBy=ping");
-		random = new RandomButton();
-		hasPlayers = new FilterButton("Has Players", "hasplayers");
-		notFull = new FilterButton("Not Full", "notfull");
-		noWhitelist = new FilterButton("No Whitelist", "notwhitelisted");
-		search = new SearchField();
+		featured = new SortButton("Featured", "featured", model);
+		popular = new SortButton("Popular", "popular", model);
+		byName = new SortButton("Name", "sortBy=name", model);
+		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false, model);
+		byPlayers = new SortButton("Players Online", "sortBy=players", false, model);
+		byPing = new SortButton("Ping", "sortBy=ping", model);
+		random = new RandomButton(model);
+		hasPlayers = new FilterButton("Has Players", "hasplayers", model);
+		notFull = new FilterButton("Not Full", "notfull", model);
+		noWhitelist = new FilterButton("No Whitelist", "notwhitelisted", model);
+		search = new SearchField(model);
 		buttonSearch = new GenericButton("Search");
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);

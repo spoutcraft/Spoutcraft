@@ -1,18 +1,20 @@
-package org.getspout.spout.gui.server;
+package org.getspout.spout.gui.database;
 
-import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
 public class SearchField extends GenericTextField implements UrlElement {
-	public SearchField() {
+	private AbstractAPIModel model;
+	
+	public SearchField(AbstractAPIModel model) {
 		setMaximumCharacters(0);
+		this.model = model;
 	}
 	
 	@Override
 	public void onTextFieldChange(TextFieldChangeEvent event) {
 		if(event.getNewText().isEmpty()) {
-			SpoutClient.getInstance().getServerManager().getServerList().updateUrl();
+			model.updateUrl();
 		}
 	}
 
