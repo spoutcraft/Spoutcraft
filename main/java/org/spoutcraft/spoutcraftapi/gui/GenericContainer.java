@@ -34,6 +34,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	protected int minWidthCalc = 0, maxWidthCalc = 427, minHeightCalc = 0, maxHeightCalc = 240;
 	protected boolean auto = true;
 	protected boolean recalculating = false;
+	protected boolean needsLayout = true;
 
 	public GenericContainer() {
 	}
@@ -68,7 +69,7 @@ public class GenericContainer extends GenericWidget implements Container {
 			getScreen().attachWidget(addon, child);
 		}
 		updateSize();
-		updateLayout();
+		deferLayout();
 		return this;
 	}
 
@@ -144,7 +145,7 @@ public class GenericContainer extends GenericWidget implements Container {
 			this.screen.removeWidget(child);
 		}
 		updateSize();
-		updateLayout();
+		deferLayout();
 		return this;
 	}
 
@@ -165,7 +166,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setHeight(int height) {
 		if (super.getHeight() != height) {
 			super.setHeight(height);
-			this.updateLayout();
+			this.deferLayout();
 		}
 		return this;
 	}
@@ -174,7 +175,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setWidth(int width) {
 		if (super.getWidth() != width) {
 			super.setWidth(width);
-			this.updateLayout();
+			this.deferLayout();
 		}
 		return this;
 	}
@@ -183,7 +184,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setLayout(ContainerType type) {
 		if (this.type != type) {
 			this.type = type;
-			updateLayout();
+			deferLayout();
 		}
 		return this;
 	}
@@ -195,7 +196,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setAlign(WidgetAnchor align) {
 		if (this.align != align) {
 			this.align = align;
-			updateLayout();
+			deferLayout();
 		}
 		return this;
 	}
@@ -207,13 +208,19 @@ public class GenericContainer extends GenericWidget implements Container {
 	public Container setReverse(boolean reverse) {
 		if (this.reverse != reverse) {
 			this.reverse = reverse;
-			updateLayout();
+			deferLayout();
 		}
 		return this;
 	}
 
 	public boolean getReverse() {
 		return reverse;
+	}
+
+	@Override
+	public Container deferLayout() {
+		needsLayout = true;
+		return this;
 	}
 
 	public Container updateLayout() {
@@ -341,25 +348,38 @@ public class GenericContainer extends GenericWidget implements Container {
 			}
 			recalculating = false;
 		}
+		needsLayout = false;
 		return this;
 	}
 
+	@Override
+	public void onTick() {
+		if (needsLayout) {
+			updateLayout();
+		}
+	}
+
+	@Override
 	public int getMinWidth() {
 		return Math.max(super.getMinWidth(), minWidthCalc);
 	}
 
+	@Override
 	public int getMaxWidth() {
 		return Math.min(super.getMaxWidth(), maxWidthCalc);
 	}
 
+	@Override
 	public int getMinHeight() {
 		return Math.max(super.getMinHeight(), minHeightCalc);
 	}
 
+	@Override
 	public int getMaxHeight() {
 		return Math.min(super.getMaxHeight(), maxHeightCalc);
 	}
 
+	@Override
 	public Container updateSize() {
 		if (!recalculating && !isFixed()) {
 			recalculating = true; // Prevent us from getting into a loop due to both trickle down and push up
@@ -417,12 +437,10 @@ public class GenericContainer extends GenericWidget implements Container {
 				maxWidthCalc = maxwidth;
 				minHeightCalc = minheight;
 				maxHeightCalc = maxheight;
-				recalculating = false;
-				updateLayout();
-				if (getContainer() != null) { // Push up to parents
-					recalculating = true;
+				deferLayout();
+				if (hasContainer()) { // Push up to parents
 					getContainer().updateSize();
-					getContainer().updateLayout();
+					getContainer().deferLayout();
 				}
 			}
 			recalculating = false;
