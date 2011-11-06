@@ -17,12 +17,14 @@
 package org.spoutcraft.spoutcraftapi;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
@@ -60,7 +62,7 @@ public interface Client extends PropertyInterface {
 	
 	//public PacketManager getPacketManager();
 	
-	public ActivePlayer getActivePlayer();
+	
 
 	public BiomeManager getBiomeManager();
 	
@@ -91,6 +93,45 @@ public interface Client extends PropertyInterface {
 	public RenderDelegate getRenderDelegate();
 	
 	public void send(AddonPacket packet);
+	
+	public ActivePlayer getActivePlayer();
+	
+	/**
+	 * Gets a list of all Players
+	 *
+	 * @return An array of Players
+	 */
+	public Player[] getPlayers();
+	
+	/**
+	 * Gets a player object by the given username
+	 *
+	 * This method may not return objects for offline players
+	 *
+	 * @param name Name to look up
+	 * @return Player if it was found, otherwise null
+	 */
+	public Player getPlayer(String name);
+
+	/**
+	 * Gets the player with the exact given name, case insensitive
+	 *
+	 * @param name Exact name of the player to retrieve
+	 * @return Player object or null if not found
+	 */
+	public Player getPlayerExact(String name);
+
+	/**
+	 * Attempts to match any players with the given name, and returns a list
+	 * of all possibly matches
+	 *
+	 * This list is not sorted in any particular order. If an exact match is found,
+	 * the returned list will only contain a single result.
+	 *
+	 * @param name Name to match
+	 * @return List of all possible players
+	 */
+	public List<Player> matchPlayer(String name);
 
 	/**
 	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.

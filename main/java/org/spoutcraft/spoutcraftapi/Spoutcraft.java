@@ -17,6 +17,7 @@
 package org.spoutcraft.spoutcraftapi;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.Client.Mode;
@@ -24,6 +25,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonManager;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
@@ -200,5 +202,50 @@ public final class Spoutcraft {
 	
 	public static void send(AddonPacket packet) {
 		client.send(packet);
+	}
+	
+	/**
+	 * Gets a list of all Players
+	 *
+	 * @return An array of Players
+	 */
+	public static Player[] getPlayers() {
+		return client.getPlayers();
+	}
+	
+	/**
+	 * Gets a player object by the given username
+	 *
+	 * This method may not return objects for offline players
+	 *
+	 * @param name Name to look up
+	 * @return Player if it was found, otherwise null
+	 */
+	public static Player getPlayer(String name) {
+		return client.getPlayer(name);
+	}
+
+	/**
+	 * Gets the player with the exact given name, case insensitive
+	 *
+	 * @param name Exact name of the player to retrieve
+	 * @return Player object or null if not found
+	 */
+	public static Player getPlayerExact(String name) {
+		return client.getPlayerExact(name);
+	}
+
+	/**
+	 * Attempts to match any players with the given name, and returns a list
+	 * of all possibly matches
+	 *
+	 * This list is not sorted in any particular order. If an exact match is found,
+	 * the returned list will only contain a single result.
+	 *
+	 * @param name Name to match
+	 * @return List of all possible players
+	 */
+	public static List<Player> matchPlayer(String name) {
+		return client.matchPlayer(name);
 	}
 }
