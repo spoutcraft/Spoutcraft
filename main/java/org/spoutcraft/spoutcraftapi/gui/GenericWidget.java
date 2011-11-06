@@ -278,7 +278,11 @@ public abstract class GenericWidget implements Widget {
 	public Container getContainer() {
 		return container;
 	}
-	
+
+	public boolean hasContainer() {
+		return container != null;
+	}
+
 	public void setContainer(Container container) {
 		if (this.container != null && container != null && container != this.container) {
 			this.container.removeChild(this);

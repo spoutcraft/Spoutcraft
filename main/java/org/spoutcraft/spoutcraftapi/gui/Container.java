@@ -71,11 +71,20 @@ public interface Container extends Widget {
 
 	/**
 	 * Force the container to re-layout all non-fixed children.
+	 * Unless you specifically need to update the layout at this instant,
+	 * you should use use deferLayout() instead.
 	 * This will re-position and resize all child elements.
-	 * This is automatically called when the container gets resized.
-	 * @return 
+	 * @return
 	 */
 	public Container updateLayout();
+
+	/**
+	 * Automatically call updateLayout during the next onTick.
+	 * This is automatically called when anything changes that would affect the container layout.
+	 * NOTE: Subclasses should ensure they don't prevent Container.onTick() from running.
+	 * @return
+	 */
+	public Container deferLayout();
 
 	/**
 	 * Set the contents alignment.
