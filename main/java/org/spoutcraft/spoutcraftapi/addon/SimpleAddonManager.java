@@ -226,6 +226,13 @@ public class SimpleAddonManager implements AddonManager {
 	public synchronized Addon getAddon(String name) {
 		return lookupNames.get(name);
 	}
+	
+	public synchronized Addon getOrCreateAddon(String name) {
+		if(!lookupNames.containsKey(name)) {
+			addFakeAddon(new ServerAddon(name, null, null));
+		}
+		return lookupNames.get(name);
+	}
 
 	public synchronized Addon[] getAddons() {
 		return addons.toArray(new Addon[0]);
