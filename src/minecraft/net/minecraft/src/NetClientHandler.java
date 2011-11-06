@@ -452,7 +452,11 @@ public class NetClientHandler extends NetHandler {
 			this.mc.changeWorld1((World)null);
 			
 			//Spout start
-			if (var2 == null || var2.length == 0 || !(var2[0] instanceof String)) {
+			System.out.println(var1);
+			if (var1 != null && var1.toLowerCase().contains("endofstream")) {
+				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost());
+			}
+			else if (var2 == null || var2.length == 0 || !(var2[0] instanceof String)) {
 				this.mc.displayGuiScreen(new GuiConnectFailed("disconnect.lost", var1, var2));
 			}
 			else if (((String)var2[0]).toLowerCase().contains("connection reset")) {

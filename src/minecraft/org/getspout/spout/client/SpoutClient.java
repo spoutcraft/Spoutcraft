@@ -17,6 +17,8 @@
 package org.getspout.spout.client;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,7 @@ import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.gui.server.ServerManager;
+import org.getspout.spout.gui.texturepacks.TexturePacksModel;
 import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.io.CRCManager;
@@ -50,6 +53,7 @@ import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.item.SpoutItem;
 import org.getspout.spout.packet.CustomPacket;
+import org.getspout.spout.packet.PacketAddonData;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
@@ -58,6 +62,7 @@ import org.getspout.spout.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
@@ -70,10 +75,12 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
+import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
@@ -102,6 +109,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final ServerManager serverManager = new ServerManager();
 	private final double securityKey;
 	private long tick = 0;
+	private long inWorldTicks = 0;
 	private Thread clipboardThread = null;
 	private long server = -1L;
 	public ClientPlayer player = null;
@@ -113,7 +121,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean coords = false;
 	private boolean entitylabel = false;
 	private Mode clientMode = Mode.Menu;
+	private TexturePacksModel textureModel = new TexturePacksModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
+	
 	
 	
 	private SpoutClient() {
@@ -198,6 +208,10 @@ public class SpoutClient extends PropertyObject implements Client {
 	public MaterialManager getMaterialManager() {
 		return materialManager;
 	}
+	
+	public World getWorld() {
+		return getHandle().theWorld.world;
+	}
 
 	public boolean isSkyCheat() {
 		return sky || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
@@ -274,11 +288,16 @@ public class SpoutClient extends PropertyObject implements Client {
 		
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
+			inWorldTicks++;
 		}
 	}
 
 	public long getTick() {
 		return tick;
+	}
+	
+	public long getInWorldTicks() {
+		return inWorldTicks;
 	}
 
 	public void onWorldExit() {
@@ -302,6 +321,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			getHandle().thePlayer.uuidValid = false;
 		}
 		server = -1L;
+		inWorldTicks = 0L;
 	}
 	
 	public void onWorldEnter() {
@@ -322,6 +342,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		PacketDecompressionThread.startThread();
 		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
+		inWorldTicks = 0L;
 	}
 	
 	public static Minecraft getHandle() {
@@ -498,5 +519,77 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public ServerManager getServerManager() {
 		return instance.serverManager;
+	}
+	
+	public void send(AddonPacket packet) {
+		getPacketManager().sendSpoutPacket(new PacketAddonData(packet));
+	}
+
+	public TexturePacksModel getTexturePacksModel() {
+		return textureModel;
+	}
+
+	public Player[] getPlayers() {
+		if (getWorld() == null){
+			return new Player[0];
+		}
+		List<Player> playerList = getWorld().getPlayers();
+		Player[] players = new Player[playerList.size()];
+		for (int i = 0; i < playerList.size(); i++) {
+			players[i] = playerList.get(i);
+		}
+		return players;
+	}
+
+	public Player getPlayer(String name) {
+		Player[] players = getPlayers();
+
+		Player found = null;
+		String lowerName = name.toLowerCase();
+		int delta = Integer.MAX_VALUE;
+		for (Player player : players) {
+			if (player.getName().toLowerCase().startsWith(lowerName)) {
+				int curDelta = player.getName().length() - lowerName.length();
+				if (curDelta < delta) {
+					found = player;
+					delta = curDelta;
+				}
+				if (curDelta == 0) break;
+			}
+		}
+		return found;
+	}
+
+	public Player getPlayerExact(String name) {
+		 String lname = name.toLowerCase();
+
+			for (Player player : getPlayers()) {
+				if (player.getName().equalsIgnoreCase(lname)) {
+					return player;
+				}
+			}
+
+			return null;
+	}
+
+	public List<Player> matchPlayer(String partialName) {
+		List<Player> matchedPlayers = new ArrayList<Player>();
+
+		for (Player iterPlayer : this.getPlayers()) {
+			String iterPlayerName = iterPlayer.getName();
+
+			if (partialName.equalsIgnoreCase(iterPlayerName)) {
+				// Exact match
+				matchedPlayers.clear();
+				matchedPlayers.add(iterPlayer);
+				break;
+			}
+			if (iterPlayerName.toLowerCase().indexOf(partialName.toLowerCase()) != -1) {
+				// Partial match
+				matchedPlayers.add(iterPlayer);
+			}
+		}
+
+		return matchedPlayers;
 	}
 }

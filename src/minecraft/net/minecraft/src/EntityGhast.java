@@ -10,6 +10,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 //Spout Start
+import org.getspout.spout.entity.CraftGhast;
 import org.getspout.spout.entity.EntitySkinType;
 //Spout End
 public class EntityGhast extends EntityFlying implements IMob {
@@ -30,6 +31,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		this.setSize(4.0F, 4.0F);
 		this.isImmuneToFire = true;
 		this.field_35171_bJ = 5;
+		//Spout start
+		this.spoutEntity = new CraftGhast(this);
+		//Spout end
 	}
 
 	protected void entityInit() {

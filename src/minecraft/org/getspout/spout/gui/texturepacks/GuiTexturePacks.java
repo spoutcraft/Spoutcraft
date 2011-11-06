@@ -1,7 +1,5 @@
 package org.getspout.spout.gui.texturepacks;
 
-import java.io.File;
-
 import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.Sys;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -14,7 +12,6 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 

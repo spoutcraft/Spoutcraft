@@ -23,7 +23,6 @@ import net.minecraft.src.GuiScreen;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.MCRenderDelegate;
-import org.getspout.spout.gui.server.GuiFavorites2;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;

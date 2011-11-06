@@ -18,6 +18,8 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.PathEntity;
 import net.minecraft.src.World;
 
+import org.getspout.spout.entity.CraftPig;
+import org.getspout.spout.entity.CraftWolf;
 import org.getspout.spout.entity.EntitySkinType; //Spout
 
 public class EntityWolf extends EntityAnimal {
@@ -37,6 +39,10 @@ public class EntityWolf extends EntityAnimal {
 		this.setSize(0.8F, 0.8F);
 		this.moveSpeed = 1.1F;
 		this.health = 8;
+		
+		//Spout start
+		this.spoutEntity = new CraftWolf(this);
+		//Spout end
 	}
 
 	protected void entityInit() {

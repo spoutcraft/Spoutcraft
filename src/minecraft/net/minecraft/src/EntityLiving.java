@@ -23,6 +23,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.entity.CraftLivingEntity;
 import org.getspout.spout.entity.EntityData;
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End
@@ -79,7 +80,7 @@ public abstract class EntityLiving extends Entity {
 	protected double newRotationYaw;
 	protected double newRotationPitch;
 	float field_9348_ae = 0.0F;
-	protected int field_9346_af = 0;
+	public int field_9346_af = 0; //Spout private -> public (last damage)
 	protected int entityAge = 0;
 	protected float moveStrafing;
 	protected float moveForward;
@@ -92,6 +93,7 @@ public abstract class EntityLiving extends Entity {
 
 	//Spout Start
 	private EntityData entityData = null;
+	public String displayName = null;
 	//Spout End
 
 	public EntityLiving(World var1) {
@@ -105,6 +107,7 @@ public abstract class EntityLiving extends Entity {
 		
 		//Spout start
 		uuidValid = !SpoutClient.getHandle().isMultiplayerWorld() || SpoutClient.getInstance().isSpoutEnabled(); //the uuid is not valid until we send it in a packet in MP
+		spoutEntity = new CraftLivingEntity(this);
 		//Spout end
 	}
 
@@ -514,7 +517,7 @@ public abstract class EntityLiving extends Entity {
 		this.attackedAtYaw = 0.0F;
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		this.health -= var2;
 	}
 

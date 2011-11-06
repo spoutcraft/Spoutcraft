@@ -20,7 +20,6 @@ import net.minecraft.src.Tessellator;
 //Spout Start
 import org.bukkit.ChatColor;
 import org.getspout.spout.EasterEggs;
-import org.getspout.spout.client.SpoutClient;
 //spout End
 import org.lwjgl.opengl.GL11;
 
@@ -83,41 +82,34 @@ public class RenderPlayer extends RenderLiving {
 			float var10 = var1.getDistanceToEntity(this.renderManager.livingPlayer);
 			float var11 = var1.isSneaking()?32.0F:64.0F;
 			if(var10 < var11) {
-				String var12 = var1.username;
 				//Spout Start
-				String title = SpoutClient.getInstance().getActivePlayer().getEntityTitle(var1.entityId);
+				String title = var1.displayName;
 				int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
-				if (title != null) {
-					var12 = title;
-				}
-				else {
-					//if a plugin hasn't set a title, use the easter egg title (if one exists)
+				//if a plugin hasn't set a title, use the easter egg title (if one exists)
+				if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
 					title = EasterEggs.getEasterEggTitle(var1.username);
-					if (title != null && color == -1) {
-						var12 = title;
-						alpha = 0.0F;
-					}
+					alpha = 0.0F;
 				}
-				if (!var12.equals("[hide]")) {
-					String lines[] = var12.split("\\n");
+				if (!title.equals("[hide]")) {
+					String lines[] = title.split("\\n");
 					double y = var4;
 					for (int line = 0; line < lines.length; line++) {
-						var12 = lines[line];
+						title = lines[line];
 						var4 = y + (0.275D * (lines.length - line - 1));
 						if(!var1.isSneaking()) {
 							if(var1.isPlayerSleeping()) {
-								this.renderLivingLabel(var1, var12, var2, var4 - 1.5D, var6, 64);
+								this.renderLivingLabel(var1, title, var2, var4 - 1.5D, var6, 64);
 							} else {
 								if (color != -1) {
-									this.renderLivingLabel(var1, var12, var2, var4, var6, 64, color, color);
+									this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
 								}
 								else {
-									this.renderLivingLabel(var1, var12, var2, var4, var6, 64);
+									this.renderLivingLabel(var1, title, var2, var4, var6, 64);
 								}
 							}
 						} else {
-							var12 = ChatColor.stripColor(var12); //strip colors when sneaking
+							title = ChatColor.stripColor(title); //strip colors when sneaking
 							
 							FontRenderer var13 = this.getFontRendererFromRenderManager();
 							GL11.glPushMatrix();
@@ -134,7 +126,7 @@ public class RenderPlayer extends RenderLiving {
 							Tessellator var14 = Tessellator.instance;
 							GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
 							var14.startDrawingQuads();
-							int var15 = var13.getStringWidth(var12) / 2;
+							int var15 = var13.getStringWidth(title) / 2;
 							var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, alpha);
 							var14.addVertex((double)(-var15 - 1), -1.0D, 0.0D);
 							var14.addVertex((double)(-var15 - 1), 8.0D, 0.0D);
@@ -143,7 +135,7 @@ public class RenderPlayer extends RenderLiving {
 							var14.draw();
 							GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 							GL11.glDepthMask(true);
-							var13.drawString(var12, -var13.getStringWidth(var12) / 2, 0, 553648127);
+							var13.drawString(title, -var13.getStringWidth(title) / 2, 0, 553648127);
 							GL11.glEnable(2896 /*GL_LIGHTING*/);
 							GL11.glDisable(3042 /*GL_BLEND*/);
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

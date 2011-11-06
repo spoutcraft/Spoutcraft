@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.*;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.OverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;

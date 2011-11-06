@@ -5,6 +5,7 @@ import java.util.List;
 
 //Spout Start
 import org.bukkit.ChatColor;
+import org.getspout.spout.entity.CraftHumanEntity;
 //Spout End
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.AxisAlignedBB;
@@ -94,7 +95,6 @@ public abstract class EntityPlayer extends EntityLiving {
 	private int damageRemainder = 0;
 	public EntityFish fishEntity = null;
 
-
 	public EntityPlayer(World var1) {
 		super(var1);
 		this.inventorySlots = new ContainerPlayer(this.inventory, !var1.multiplayerWorld);
@@ -107,6 +107,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.field_9353_B = 180.0F;
 		this.fireResistance = 20;
 		this.texture = "/mob/char.png";
+		
+		//Spout start
+		this.spoutEntity = new CraftHumanEntity(this);
+		//Spout end
 	}
 
 	protected void entityInit() {
@@ -647,7 +651,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		if(!var1.func_35534_b() && this.func_35162_ad()) {
 			var2 = 1 + var2 >> 1;
 		}

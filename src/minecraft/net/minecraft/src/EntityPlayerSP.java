@@ -29,7 +29,6 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketRenderDistance;
 import org.getspout.spout.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -65,6 +64,7 @@ public class EntityPlayerSP extends EntityPlayer {
 
 		this.username = var3.username;
 		//Spout start
+		displayName = username;
 		spoutEntity = ClientPlayer.getInstance();
 		((ClientPlayer) spoutEntity).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;

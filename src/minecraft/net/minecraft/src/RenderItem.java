@@ -20,6 +20,8 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 //SPout end
 
@@ -68,7 +70,10 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var10.itemID, (short) var10.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var10.itemID, (short) var10.getItemDamage());
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var10.itemID, var10.getItemDamage());
+		GenericBlockDesign blockType = null;
+		if(MaterialData.getBlock(var10.itemID, (short) var10.getItemDamage()) != null) {
+			blockType = (GenericBlockDesign) MaterialData.getBlock(var10.itemID, (short) var10.getItemDamage()).getBlockDesign();
+		}
 		if (blockType != null) {
 			RenderEngine renderer = this.renderManager.renderEngine;
 			Texture texture = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
@@ -112,7 +117,7 @@ public class RenderItem extends Render {
 				var17 = 1.0F;
 				// Spout Start
 				if (blockType != null) {
-					blockType.renderBlockOnInventory(renderBlocks, var1.getEntityBrightness(var9));
+					SpoutItem.renderBlockOnInventory(blockType, renderBlocks, var1.getEntityBrightness(var9));
 				} else {
 					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var1.getEntityBrightness(var9));
 				}
@@ -185,7 +190,10 @@ public class RenderItem extends Render {
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var3, (short) var4);
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var3, (short) var4);
 		Boolean bCustomTexture = false;
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var3, var4);
+		GenericBlockDesign blockType = null;
+		if(MaterialData.getBlock(var3, (short) var4) != null) {
+			blockType = (GenericBlockDesign) MaterialData.getBlock(var3, (short) var4).getBlockDesign();
+		}
 		if (blockType != null) {
 			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
 			if (customTextureBinding != null){
@@ -221,7 +229,7 @@ public class RenderItem extends Render {
 			// Spout Start
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
 			if (blockType != null) {
-				blockType.renderBlockOnInventory(renderBlocks, 1.0F);
+				SpoutItem.renderBlockOnInventory(blockType, renderBlocks, 1.0F);
 			} else {
 				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var3], var4, 1.0F);
 			}

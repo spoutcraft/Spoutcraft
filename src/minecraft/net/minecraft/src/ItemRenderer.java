@@ -26,6 +26,9 @@ import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import com.pclewis.mcpatcher.mod.TileSize;
 //Spout end
 public class ItemRenderer {
@@ -49,7 +52,10 @@ public class ItemRenderer {
 		//Spout Start
 		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) var2.getItemDamage());
 		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var2.itemID, (short) var2.getItemDamage());
-		SpoutCustomBlockDesign blockType = SpoutItem.getCustomBlockDesign(var2.itemID, var2.getItemDamage());
+		GenericBlockDesign blockType = null;
+		if(MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()) != null) {
+			blockType = (GenericBlockDesign) MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()).getBlockDesign();
+		}
 		Texture customTextureObject = null;
 		if (customTexture != null) {
 			customTextureObject = CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture);
@@ -72,7 +78,7 @@ public class ItemRenderer {
 		if(blockType != null || (customTextureObject == null && var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType()))) {
 			//Spout Start
 			if (blockType != null) {
-				blockType.renderBlockOnInventory(this.renderBlocksInstance, var1.getEntityBrightness(1.0F));
+				SpoutItem.renderBlockOnInventory(blockType, this.renderBlocksInstance, var1.getEntityBrightness(1.0F));
 			} else {
 				this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), var1.getEntityBrightness(1.0F));
 			}
