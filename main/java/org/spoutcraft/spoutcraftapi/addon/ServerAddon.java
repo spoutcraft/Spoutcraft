@@ -21,10 +21,11 @@ import java.io.File;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddon;
 
-public final class ServerAddon extends JavaAddon{
-	
+public final class ServerAddon extends JavaAddon {
+
 	public ServerAddon(String name, String version, String main) {
 		initialize(null, Spoutcraft.getClient(), new AddonDescriptionFile(name, version, main), new File(Spoutcraft.getClient().getAddonFolder(), name), null, null);
+		System.out.println(this.getDescription().getName());
 	}
 
 	@Override
@@ -46,4 +47,14 @@ public final class ServerAddon extends JavaAddon{
 		return false;
 	}
 
+	public int hashCode() {
+		return this.getDescription().getName().hashCode();
+	}
+
+	public boolean equals(Object other) {
+		if (other instanceof JavaAddon) {
+			return ((JavaAddon) other).getDescription().getName().equals(getDescription().getName());
+		}
+		return false;
+	}
 }

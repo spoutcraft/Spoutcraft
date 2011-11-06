@@ -6,8 +6,7 @@ import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
-import org.spoutcraft.spoutcraftapi.util.MutableVector;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class GenericBlockDesign implements BlockDesign {
 
@@ -61,6 +60,62 @@ public class GenericBlockDesign implements BlockDesign {
 		this.textXPos = textXPos;
 		this.textYPos = textYPos;
 		this.renderPass = renderPass;
+	}
+	
+	public float[][] getX() {
+		return xPos;
+	}
+	
+	public float[][] getY() {
+		return yPos;
+	}
+	
+	public float[][] getZ() {
+		return zPos;
+	}
+	
+	public float[][] getTextureXPos() {
+		return textXPos;
+	}
+	
+	public float[][] getTextureYPos() {
+		return textYPos;
+	}
+	
+	public float getBrightness() {
+		return brightness;
+	}
+	
+	public float getMaxBrightness() {
+		return maxBrightness;
+	}
+	
+	public float getMinBrightness() {
+		return minBrightness;
+	}
+	
+	public float getLowXBound() {
+		return lowXBound;
+	}
+	
+	public float getLowYBound() {
+		return lowYBound;
+	}
+	
+	public float getLowZBound() {
+		return lowZBound;
+	}
+	
+	public float getHighXBound() {
+		return highXBound;
+	}
+	
+	public float getHighYBound() {
+		return highYBound;
+	}
+	
+	public float getHighZBound() {
+		return highZBound;
 	}
 
 	public BlockDesign setMaxBrightness(float maxBrightness) {
@@ -235,9 +290,9 @@ public class GenericBlockDesign implements BlockDesign {
 		return this;
 	}
 
-	public Vector getLightSource(int quad, int x, int y, int z) {
-		Vector blockMutableVector = new MutableVector(x + lightSourceXOffset[quad], y + lightSourceYOffset[quad], z + lightSourceZOffset[quad]);
-		return blockMutableVector;
+	public MutableIntegerVector getLightSource(int quad, int x, int y, int z) {
+		MutableIntegerVector blockVector = new MutableIntegerVector(x + lightSourceXOffset[quad], y + lightSourceYOffset[quad], z + lightSourceZOffset[quad]);
+		return blockVector;
 	}
 
 	public BlockDesign setTexture(Addon addon, Texture texture) {
@@ -256,5 +311,4 @@ public class GenericBlockDesign implements BlockDesign {
 	public BlockDesign setVertex(Vertex vertex) {
 		return setVertex(vertex.getQuadNum(), vertex.getIndex(), vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getTextureX(), vertex.getTextureY(), vertex.getTextureWidth(), vertex.getTextureHeight());
 	}
-
 }

@@ -44,4 +44,6 @@ public abstract interface AddonManager {
 
 	public abstract void disableAddon(Addon paramAddon);
 
+	public abstract Addon getOrCreateAddon(String readString);
+
 }
