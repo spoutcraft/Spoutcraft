@@ -50,7 +50,7 @@ public class PacketCustomMaterial implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		CustomItem item = new GenericCustomItem(addon, name, id);
+		CustomItem item = new GenericCustomItem(Spoutcraft.getClient().getMaterialManager(), addon, name, id);
 		if(!isItem) {
 			Material block = new ServerCustomBlock(addon, name, isOpaque, item);
 		}
