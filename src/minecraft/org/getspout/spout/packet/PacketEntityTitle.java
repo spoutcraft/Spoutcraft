@@ -20,7 +20,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
+
 import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketEntityTitle implements SpoutPacket{
@@ -51,11 +55,15 @@ public class PacketEntityTitle implements SpoutPacket{
 	}
 
 	public void run(int id) {
-		if (title.equals("reset")) {
-			SpoutClient.getInstance().getActivePlayer().resetEntityTitle(entityId);
-		}
-		else {
-			SpoutClient.getInstance().getActivePlayer().setEntityTitle(entityId, title);
+		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
+		if (e != null && e instanceof EntityLiving) {
+			LivingEntity living = (LivingEntity)e.spoutEntity;
+			if (title.equals("reset")) {
+				living.resetTitle();
+			}
+			else {
+				living.setTitle(title);
+			}
 		}
 	}
 
