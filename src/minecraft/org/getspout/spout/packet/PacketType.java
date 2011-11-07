@@ -65,6 +65,7 @@ public enum PacketType {
 	PacketServerPlugins(44, PacketServerPlugins.class),
 	PacketAddonData(45, PacketAddonData.class),
 	PacketCustomMaterial(46, PacketCustomMaterial.class),
+    PacketScreenshot(47, PacketScreenshot.class),
 	;
 	
 	private final int id;
