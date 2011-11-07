@@ -8,6 +8,7 @@ import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
@@ -67,7 +68,23 @@ public class ServerItem implements ListWidgetItem {
 		
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		
-		font.drawStringWithShadow(title, x + 2, y + 2, 0xffffff);
+		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
+		
+		int margin1 = 0;
+		int margin2 = 0;
+		
+		if(getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
+			String sping = getPing() + " ms";
+			int pingwidth = font.getStringWidth(sping);
+			margin1 = pingwidth + 15;
+			font.drawStringWithShadow(sping, width - pingwidth - 20, y + 2, 0xaaaaaa);
+			String sPlayers = getPlayers() + " / "+getMaxPlayers() + " players";
+			int playerswidth = font.getStringWidth(sPlayers);
+			margin2 = playerswidth;
+			font.drawStringWithShadow(sPlayers, width - playerswidth - 5, y+11, 0xaaaaaa);
+		}
+		
+		font.drawStringWithShadow(r.getFittingText(title, width - 2 - 10 - margin1), x + 2, y + 2, 0xffffff);
 		String sMotd = "";
 		if((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
 			sMotd = "Polling...";
@@ -98,16 +115,7 @@ public class ServerItem implements ListWidgetItem {
 			color = c1.toInt();
 		}
 		
-		font.drawStringWithShadow(sMotd, x+2, y + 11, color);
-		
-		if(getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
-			String sping = getPing() + " ms";
-			int pingwidth = font.getStringWidth(sping);
-			font.drawStringWithShadow(sping, width - pingwidth - 20, y + 2, 0xaaaaaa);
-			String sPlayers = getPlayers() + " / "+getMaxPlayers() + " players";
-			int playerswidth = font.getStringWidth(sPlayers);
-			font.drawStringWithShadow(sPlayers, width - playerswidth - 5, y+11, 0xaaaaaa);
-		}
+		font.drawStringWithShadow(r.getFittingText(sMotd, width - 2 - 10 - margin2), x+2, y + 11, color);
 		
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 		
@@ -146,7 +154,6 @@ public class ServerItem implements ListWidgetItem {
 		
 		//Icon Drawing
 		int iconMargin = 10;
-		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 		
 		if(isWhitelisted()) {
 			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/lock.png");
