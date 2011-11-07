@@ -29,6 +29,7 @@ public class TextureItem implements ListWidgetItem {
 	private String name;
 	private String description;
 	private String author;
+	private String forumlink;
 	private ListWidget widget;
 	private Download download = null;
 	private String downloadFail = null;
@@ -143,6 +144,14 @@ public class TextureItem implements ListWidgetItem {
 
 	public void setSize(long size) {
 		this.size = size;
+	}
+
+	public String getForumlink() {
+		return forumlink;
+	}
+
+	public void setForumlink(String forumlink) {
+		this.forumlink = forumlink;
 	}
 
 	public void updateInstalled() {

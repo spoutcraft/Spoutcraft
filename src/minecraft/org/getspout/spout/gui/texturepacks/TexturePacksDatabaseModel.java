@@ -23,6 +23,7 @@ public class TexturePacksDatabaseModel extends AbstractAPIModel {
 			t.setId(Integer.valueOf((String) item.get("Id")));
 			t.setDescription((String) item.get("desc"));
 			t.setSize((Integer) item.get("size"));
+			t.setForumlink((String) item.get("forumlink"));
 			t.updateInstalled();
 			entries.add(t);
 		}

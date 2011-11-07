@@ -23,7 +23,7 @@ import org.spoutcraft.spoutcraftapi.gui.Widget;
 public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 
 	private Label screenTitle, sortFilterTitle;
-	private Button buttonMainMenu, buttonLocal, buttonDownload, buttonAdd, buttonRefresh;
+	private Button buttonMainMenu, buttonLocal, buttonDownload, buttonAdd, buttonRefresh, buttonForum;
 	private boolean instancesCreated = false;
 	private GenericListView view;
 	private TexturePacksDatabaseModel model = SpoutClient.getInstance().getTexturePacksDatabaseModel();
@@ -38,6 +38,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 		buttonAdd = new GenericButton("Add Texture");
 		buttonRefresh = new GenericButton("Refresh");
 		screenTitle = new GenericLabel("Texture Packs Database");
+		buttonForum = new GenericButton("Show Forum Thread");
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
 		model.refreshAPIData(model.getDefaultUrl(), 0, true);
@@ -87,6 +88,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
 		int right = center + 5 + cellWidth;
+		
+		buttonForum.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonForum);
 		
 		buttonDownload.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDownload);
@@ -146,6 +150,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 	public void updateButtons() {
 		int sel = view.getSelectedRow();
 		boolean enable = false;
+		boolean allowForum = false;
 		boolean allowDownload = false;
 		if(sel >= 0) {
 			ListWidgetItem item = model.getItem(sel);
@@ -153,9 +158,11 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 				TextureItem t = (TextureItem)item;
 				enable = true;
 				allowDownload = !(t.isDownloading() || t.isInstalled());
+				allowForum = !t.getForumlink().isEmpty();
 			}
 		}
 		buttonDownload.setEnabled(allowDownload);
+		buttonForum.setEnabled(allowForum);
 		
 		if(model.isLoading()) {
 			buttonRefresh.setEnabled(false);
@@ -189,6 +196,16 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 		}
 		if(btn.equals(buttonRefresh)) {
 			model.refreshAPIData(model.getCurrentUrl(), 0, true);
+		}
+		if(btn.equals(buttonForum)) {
+			int sel = view.getSelectedRow();
+			if(sel >= 0) {
+				ListWidgetItem item = model.getItem(sel);
+				if(item instanceof TextureItem) {
+					((TextureItem)item).download();
+					Sys.openURL(((TextureItem)item).getForumlink());
+				}
+			}
 		}
 	}
 	
