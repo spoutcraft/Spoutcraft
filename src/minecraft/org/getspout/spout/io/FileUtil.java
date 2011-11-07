@@ -218,13 +218,19 @@ public class FileUtil {
 		if (fileNameCache.containsKey(url)) {
 			return fileNameCache.get(url);
 		}
-		int end = url.lastIndexOf('?');
+		int question = url.lastIndexOf("?");
+		int end = question;
 		int lastDot = url.lastIndexOf('.');
 		int slash = url.lastIndexOf('/');
 		int forwardSlash = url.lastIndexOf("\\");
 		slash = slash > forwardSlash ? slash : forwardSlash;
 		end = end == -1 || lastDot > end ? url.length() : end;
 		String result = url.substring(slash + 1, end).replaceAll("%20", " ");
+		if(url.contains("?")) {
+			//Use hashcode instead.
+			String ext = FilenameUtils.getExtension(result);
+			result = url.hashCode() + (!ext.isEmpty()?"." + ext:"");
+		}
 		fileNameCache.put(url, result);
 		return result;
 	}

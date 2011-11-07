@@ -34,17 +34,21 @@ public class CustomTextureManager {
 	static HashMap<String, File> cacheTextureFiles = new HashMap<String, File>();
 	
 	public static void downloadTexture(String url) {
-		downloadTexture(null, url);
+		downloadTexture(null, url, false);
 	}
 	
-	public static void downloadTexture(String plugin, String url) {
+	public static void downloadTexture(String url, boolean ignoreEnding) {
+		downloadTexture(null, url, ignoreEnding);
+	}
+	
+	public static void downloadTexture(String plugin, String url, boolean ignoreEnding) {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
 		
 		String fileName = FileUtil.getFileName(url);
-		if (!FileUtil.isImageFile(fileName)) {
+		if (!ignoreEnding && !FileUtil.isImageFile(fileName)) {
 			System.out.println("Rejecting download of invalid texture: " + fileName);
 		}
 		else if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
@@ -55,6 +59,10 @@ public class CustomTextureManager {
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
+	}
+	
+	public static void downloadTexture(String plugin, String url) {
+		downloadTexture(plugin, url, false);
 	}
 	
 	public static boolean isTextureDownloading(String url) {
