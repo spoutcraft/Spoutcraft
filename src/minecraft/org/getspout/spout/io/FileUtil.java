@@ -218,8 +218,7 @@ public class FileUtil {
 		if (fileNameCache.containsKey(url)) {
 			return fileNameCache.get(url);
 		}
-		int question = url.lastIndexOf("?");
-		int end = question;
+		int end = url.lastIndexOf("?");
 		int lastDot = url.lastIndexOf('.');
 		int slash = url.lastIndexOf('/');
 		int forwardSlash = url.lastIndexOf("\\");

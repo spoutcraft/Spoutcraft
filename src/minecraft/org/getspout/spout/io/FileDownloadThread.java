@@ -113,6 +113,7 @@ public class FileDownloadThread extends Thread{
 						while ((bytes = in.read(buffer)) >= 0) {
 							bos.write(buffer, 0, bytes);
 							totalBytes += bytes;
+							next.setProgress((int) (((double)totalBytes / (double)length) * 100));
 							if (length > 0 && totalBytes > (last + step)) {
 								last = totalBytes;
 								long mb = totalBytes/(1024*1024);

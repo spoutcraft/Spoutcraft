@@ -18,7 +18,7 @@ import net.minecraft.src.GuiScreen;
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
 	private Label screenTitle;
-	private Button buttonDone, buttonOpenFolder, buttonSelect;
+	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir;
 	private boolean instancesCreated = false;
 	private TexturePacksModel model = SpoutClient.getInstance().getTexturePacksModel();
 	
@@ -27,11 +27,14 @@ public class GuiTexturePacks extends GuiScreen {
 		model.update();
 		screenTitle = new GenericLabel("Texture Packs");
 		view = new GenericListView(model);
-		buttonDone = new GenericButton("Done");
+		buttonDone = new GenericButton("Main Menu");
+		buttonDone.setTooltip("Go back to notch's flashy Main Menu!");
 		buttonOpenFolder = new GenericButton("Open Folder");
 		buttonOpenFolder.setTooltip("Place your Texture Packs here");
 		buttonSelect = new GenericButton("Select");
 		buttonSelect.setTooltip("You can also doubleclick on an item");
+		buttonReservoir = new GenericButton("Database");
+		buttonReservoir.setTooltip("Get awesome new textures here!");
 	}
 	
 	public void initGui() {
@@ -47,7 +50,7 @@ public class GuiTexturePacks extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, screenTitle);
 		top+=15;
 		
-		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 30);
+		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 55);
 		getScreen().attachWidget(spoutcraft, view);
 		
 		top += 5 + view.getHeight();
@@ -58,11 +61,16 @@ public class GuiTexturePacks extends GuiScreen {
 		int center = left + 5 + cellWidth;
 		int right = center + 5 + cellWidth;
 		
+		buttonSelect.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonSelect);
+		
+		top += 25;
+		
 		buttonOpenFolder.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonOpenFolder);
 		
-		buttonSelect.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonSelect);
+		buttonReservoir.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonReservoir);
 		
 		buttonDone.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDone);
@@ -91,6 +99,9 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if(btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			model.getItem(view.getSelectedRow()).select();
+		}
+		if(btn.equals(buttonReservoir)) {
+			mc.displayGuiScreen(new GuiTexturePacksDatabase());
 		}
 	}
 }

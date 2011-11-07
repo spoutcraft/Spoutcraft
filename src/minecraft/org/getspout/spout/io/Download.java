@@ -25,6 +25,8 @@ public class Download {
 	protected final File directory;
 	protected final String url;
 	protected final Runnable action;
+	protected int progress = 0;
+	
 	public Download(String filename, File directory, String url, Runnable action) {
 		this.filename = filename;
 		this.directory = directory;
@@ -66,5 +68,13 @@ public class Download {
 			return temp.filename.equals(this.filename) && temp.directory.getPath().equals(this.directory.getPath()) && temp.url.equals(this.url);
 		}
 		return false;
+	}
+	
+	synchronized public void setProgress(int p) {
+		progress = p;
+	}
+	
+	synchronized public int getProgress() {
+		return progress;
 	}
 }
