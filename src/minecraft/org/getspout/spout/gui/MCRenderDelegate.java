@@ -1,5 +1,7 @@
 package org.getspout.spout.gui;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
@@ -36,6 +39,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	protected HashMap<UUID, GuiButton> customFields = new HashMap<UUID, GuiButton>();
 	MinecraftFont font = new MinecraftFontWrapper();
 	MinecraftTessellator tessellator = new MinecraftTessellatorWrapper();
+	TIntObjectHashMap<String> optimalWidth = new TIntObjectHashMap<String>();
 
 	public MCRenderDelegate() {
 		renderer = new RenderItemCustom();
@@ -680,6 +684,22 @@ public class MCRenderDelegate implements RenderDelegate {
 				}
 			}
 		}
+	}
+
+	public String getFittingText(String text, int width) {
+		int hash = (new HashCodeBuilder()).append(text).append(width).toHashCode();
+		if(optimalWidth.contains(hash)) {
+			return optimalWidth.get(hash);
+		}
+		FontRenderer font = SpoutClient.getHandle().fontRenderer;
+		String t = text;
+		int remove = 0;
+		while (font.getStringWidth(t) > width) {
+			remove ++;
+			t = text.substring(0, text.length() - 1 - remove) + "...";
+		}
+		optimalWidth.put(hash, t);
+		return t;
 	}
 	
 //	public void render(GenericListWidget lw) {
