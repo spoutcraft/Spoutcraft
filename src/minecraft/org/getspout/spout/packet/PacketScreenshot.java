@@ -11,11 +11,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-
 public class PacketScreenshot implements SpoutPacket {
     byte[] ssAsPng = null;
+    boolean isRequest = false;
 
     public PacketScreenshot() {
+        isRequest = true;
     }
 
     public PacketScreenshot(BufferedImage ss) throws IOException {
@@ -28,27 +29,42 @@ public class PacketScreenshot implements SpoutPacket {
 
     public int getNumBytes() {
         if (ssAsPng == null) {
-            return 0;
+            return 1;
         }
-        return ssAsPng.length + 4;
+        return ssAsPng.length + 5;
     }
 
     public void readData(DataInputStream input) throws IOException {
+        isRequest = input.readBoolean();
+        if (!isRequest) {
+            int ssLen = input.readInt();
+            ssAsPng = new byte[ssLen];
+            input.readFully(ssAsPng);
+        }
     }
 
     public void writeData(DataOutputStream output) throws IOException {
-        output.writeInt(ssAsPng.length);
-        output.write(ssAsPng);
+        if (ssAsPng == null) {
+            output.writeBoolean(true);
+        } else {
+            output.writeBoolean(false);
+            output.writeInt(ssAsPng.length);
+            output.write(ssAsPng);
+        }
     }
 
     public void run(int playerId) {
+        if (!isRequest) {
+            return; // we can't do anything!
+        }
         try {
-            Minecraft.theMinecraft.ingameGUI.addChatMessage("The server has requested a screenshot of your Minecraft screen.");
+            SpoutClient.getInstance().getActivePlayer().showAchievement("Sending screenshot...", "Screenshot requested by server.", 321);
             BufferedImage screenshot = ScreenShotHelper.getScreenshot(Minecraft.theMinecraft.displayWidth, Minecraft.theMinecraft.displayHeight);
             PacketScreenshot packet = new PacketScreenshot(screenshot);
             SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
         } catch (IOException ioe) {
-            Minecraft.theMinecraft.ingameGUI.addChatMessage("Failed to send screenshot to server.");
+            ioe.printStackTrace();
+            SpoutClient.getInstance().getActivePlayer().showAchievement("Error", "Failed to send screenshot!", 321);
         }
 
     }
@@ -61,6 +77,6 @@ public class PacketScreenshot implements SpoutPacket {
     }
 
     public int getVersion() {
-        return 0;
+        return 1;
     }
 }
