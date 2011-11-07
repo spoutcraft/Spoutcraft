@@ -48,9 +48,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		}
 		
 		if(moreItems) {
-			if(itemLoadNextItems == null) {
-				itemLoadNextItems = new GenericListWidgetItem("More items on the server.", "Double click to load", "");
-			}
+			itemLoadNextItems = new GenericListWidgetItem("More items on the server.", "Click to load", "");
 			ret.add(itemLoadNextItems);
 		}
 		return ret;
@@ -117,8 +115,8 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 				HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
 				int after = Integer.valueOf((String) hash.get("after"));
 				moreItems = after > 0;
-				refreshList(clear);
 				setLoading(false);
+				refreshList(clear);
 				try {
 					reader.close();
 				} catch (IOException e) {
@@ -133,6 +131,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	protected void clear() {
 		entries.clear();
 	}
+	
 	protected abstract void refreshList(boolean clear);
 	
 	public boolean isLoading() {
@@ -204,8 +203,8 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	
 	@Override
 	public void onSelected(int item, boolean doubleClick) {
-		currentGui.updateButtons();
-		if(effectiveCache.get(item) == itemLoadNextItems && doubleClick) {
+		if(currentGui != null) currentGui.updateButtons();
+		if(effectiveCache.get(item) == itemLoadNextItems) {
 			loadNextPage();
 			itemLoadNextItems.setTitle("Loading ...");
 			itemLoadNextItems.setText("Please wait ...");
