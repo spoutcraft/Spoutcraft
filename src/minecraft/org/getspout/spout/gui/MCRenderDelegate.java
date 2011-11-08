@@ -308,6 +308,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTextField textField) {
+		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		RenderUtil.drawRectangle((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
 		RenderUtil.drawRectangle((int) textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
 
@@ -317,20 +318,23 @@ public class MCRenderDelegate implements RenderDelegate {
 		int[] cursor = textField.getTextProcessor().getCursor2D();
 		int lineNum = 0;
 		int cursorOffset = 0;
-		String line;
-		Iterator<String> iter = textField.getTextProcessor().iterator();
-
-		while (iter.hasNext()) {
-			line = iter.next();
-			if (lineNum == cursor[0]) {
-				cursorOffset = Minecraft.theMinecraft.fontRenderer.getStringWidth(line.substring(0, cursor[1]));
+		if(!textField.getText().isEmpty()) {
+			String line;
+			Iterator<String> iter = textField.getTextProcessor().iterator();
+	
+			while (iter.hasNext()) {
+				line = iter.next();
+				if (lineNum == cursor[0]) {
+					cursorOffset = font.getStringWidth(line.substring(0, cursor[1]));
+				}
+				font.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
 			}
-			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
+		} else {
+			font.drawStringWithShadow(textField.getPlaceholder(), x, y, color);
 		}
-
 		boolean showCursor = textField.isEnabled() && textField.isFocus() && shouldRenderCursor;
 		if (showCursor) {
-			Minecraft.theMinecraft.fontRenderer.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
+			font.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
 	}
 
