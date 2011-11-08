@@ -86,19 +86,24 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		currentLoader = new Thread() {
 			@Override
 			public void run() {
-				setLoading(true);
-				long start = System.currentTimeMillis();
-				URL url1;
+				BufferedReader reader = null;
 				try {
-					url1 = new URL(url+"&page="+page);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					return;
-				}
-				System.out.println("Loading "+url1.toString());
-				BufferedReader reader;
-				try {
+					setLoading(true);
+					long start = System.currentTimeMillis();
+					URL url1 = new URL(url+"&page="+page);
+					System.out.println("Loading "+url1.toString());
+					
 					reader = new BufferedReader(new InputStreamReader(url1.openStream()));
+					
+					Yaml yaml = new Yaml();
+					ArrayList<Object> yamlObj = (ArrayList<Object>) yaml.load(reader);
+					System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
+					apiData = yamlObj;
+					HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
+					int after = Integer.valueOf((String) hash.get("after"));
+					moreItems = after > 0;
+					refreshList(clear);
+					
 				} catch (IOException e1) {
 					//Put a fancy error message on the list!
 					clear();
@@ -107,20 +112,12 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					error = error.replaceAll("([A-Z])", " $1").trim();
 					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load servers!", error, ""));
 					return;
-				}
-				Yaml yaml = new Yaml();
-				ArrayList<Object> yamlObj = (ArrayList<Object>) yaml.load(reader);
-				System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
-				apiData = yamlObj;
-				HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
-				int after = Integer.valueOf((String) hash.get("after"));
-				moreItems = after > 0;
-				setLoading(false);
-				refreshList(clear);
-				try {
-					reader.close();
-				} catch (IOException e) {
-					return;
+				} catch(Exception e) {}
+				finally {
+					setLoading(false);
+					try {
+						reader.close();
+					} catch (Exception e) {}
 				}
 			}
 		};

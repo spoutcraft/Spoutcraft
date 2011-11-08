@@ -30,6 +30,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 	private GenericScrollArea filter;
 	private SortButton featured, popular, byName;
 	private RandomButton random;
+	private ResolutionFilter filterResolution;
 	
 	private void createInstances() {
 		buttonMainMenu = new GenericButton("Main Menu");
@@ -46,14 +47,16 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 		featured.setAllowSorting(false);
 		popular = new SortButton("Popular", "popular", model);
 		popular.setAllowSorting(false);
-		byName = new SortButton("By Name", "sortBy=name", model);
+		byName = new SortButton("Name", "sortBy=name", model);
 		random = new RandomButton(model);
+		filterResolution = new ResolutionFilter();
 		sortFilterTitle = new GenericLabel("Sort & Filter");
 		model.clearUrlElements();
 		model.addUrlElement(popular);
 		model.addUrlElement(random);
 		model.addUrlElement(featured);
 		model.addUrlElement(byName);
+		model.addUrlElement(filterResolution);
 		filter = new GenericScrollArea();
 	}
 	
@@ -127,6 +130,10 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 		
 		byName.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filter.attachWidget(spoutcraft, byName);
+		ftop += 25;
+		
+		filterResolution.setWidth(100).setHeight(20).setY(ftop).setX(5);
+		filter.attachWidget(spoutcraft, filterResolution);
 		ftop += 25;
 		
 		//Stretch to real width

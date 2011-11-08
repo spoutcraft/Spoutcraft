@@ -1,5 +1,7 @@
 package org.getspout.spout.gui.texturepacks;
 
+import java.io.File;
+
 import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.Sys;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -14,11 +16,13 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.TexturePackCustom;
 
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
 	private Label screenTitle;
-	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir;
+	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir, buttonDelete;
 	private boolean instancesCreated = false;
 	private TexturePacksModel model = SpoutClient.getInstance().getTexturePacksModel();
 	
@@ -35,6 +39,8 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonSelect.setTooltip("You can also doubleclick on an item");
 		buttonReservoir = new GenericButton("Database");
 		buttonReservoir.setTooltip("Get awesome new textures here!");
+		buttonDelete = new GenericButton("Delete");
+		buttonDelete.setTooltip("Deletes the Texture Pack. BEWARE!");
 	}
 	
 	public void initGui() {
@@ -63,6 +69,9 @@ public class GuiTexturePacks extends GuiScreen {
 		
 		buttonSelect.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonSelect);
+		
+		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonDelete);
 		
 		top += 25;
 		
@@ -102,6 +111,20 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if(btn.equals(buttonReservoir)) {
 			mc.displayGuiScreen(new GuiTexturePacksDatabase());
+		}
+		if(btn.equals(buttonDelete)) {
+			try {
+				TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
+				if(pack instanceof TexturePackCustom) {
+					TexturePackCustom custom = (TexturePackCustom) pack;
+					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
+					if(d.exists()) {
+						d.delete();
+					}
+					model.update();
+				}
+			} catch(NullPointerException e) {
+			}
 		}
 	}
 }

@@ -107,11 +107,11 @@ public class ServerListModel extends AbstractAPIModel {
 				ServerItem server = new ServerItem(name, adress, port, uid);
 				server.setFavorite(false);
 				//server.setPing(ping);
-				//					server.setPlayers(players);
-				//					server.setMaxPlayers(maxplayers);
+				//server.setPlayers(players);
+				//server.setMaxPlayers(maxplayers);
 				server.setCountry(country);
 				server.setWhitelisted(whitelisted);
-				//					server.setShowPingWhilePolling(true);
+				//server.setShowPingWhilePolling(true);
 				entries.add(server);
 			} catch(UnsupportedEncodingException e){}
 			catch(Exception e2) { continue; }
