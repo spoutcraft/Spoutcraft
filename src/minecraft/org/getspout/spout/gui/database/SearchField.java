@@ -1,5 +1,6 @@
 package org.getspout.spout.gui.database;
 
+import org.bukkit.ChatColor;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
@@ -9,13 +10,12 @@ public class SearchField extends GenericTextField implements UrlElement {
 	public SearchField(AbstractAPIModel model) {
 		setMaximumCharacters(0);
 		this.model = model;
+		setPlaceholder(ChatColor.GRAY+"Search");
 	}
 	
 	@Override
-	public void onTextFieldChange(TextFieldChangeEvent event) {
-		if(event.getNewText().isEmpty()) {
-			model.updateUrl();
-		}
+	public void onTypingFinished() {
+		model.updateUrl();
 	}
 
 	public boolean isActive() {
