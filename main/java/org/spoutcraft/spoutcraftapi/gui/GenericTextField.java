@@ -42,6 +42,7 @@ public class GenericTextField extends GenericControl implements TextField {
 	protected int tabIndex = 0;
 	protected Color fieldColor = new Color(0, 0, 0);
 	protected Color borderColor = new Color(0.625F, 0.625F, 0.625F);
+	protected String placeholder = "";
 
 	public GenericTextField() {
 		this.textProcessor = new GenericTextProcessor();
@@ -53,6 +54,10 @@ public class GenericTextField extends GenericControl implements TextField {
 
 	public int getVersion() {
 		return super.getVersion() + 2;
+	}
+	
+	public String getActualText() {
+		return textProcessor.getText().isEmpty()?getPlaceholder():textProcessor.getText();
 	}
 
 	public void readData(DataInputStream input) throws IOException {
@@ -192,5 +197,17 @@ public class GenericTextField extends GenericControl implements TextField {
 
 	public void onTextFieldChange(TextFieldChangeEvent event) {
 		
+	}
+	
+	public void onTypingFinished() {
+		
+	}
+
+	public void setPlaceholder(String text) {
+		placeholder = text;
+	}
+
+	public String getPlaceholder() {
+		return placeholder;
 	}
 }

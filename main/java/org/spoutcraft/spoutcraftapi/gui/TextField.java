@@ -167,4 +167,19 @@ public interface TextField extends Control {
 	 * @param event
 	 */
 	public void onTextFieldChange(TextFieldChangeEvent event);
+
+	public void onTypingFinished();
+	
+	/**
+	 * Sets the placeholder to text.
+	 * The placeholder will be displayed when no text is in the TextField
+	 * @param text to set as placeholder
+	 */
+	public void setPlaceholder(String text);
+	
+	/**
+	 * Gets the placeholder
+	 * @return the placeholder
+	 */
+	public String getPlaceholder();
 }
