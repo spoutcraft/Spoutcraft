@@ -155,15 +155,6 @@ public class ServerItem implements ListWidgetItem {
 		//Icon Drawing
 		int iconMargin = 10;
 		
-		if(isWhitelisted()) {
-			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/lock.png");
-			GL11.glPushMatrix();
-			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
-			r.drawTexture(lockIcon, 7, 11);
-			GL11.glPopMatrix();
-			iconMargin += 5 + 7;
-		}
-		
 		if(country != null) {
 			String url = "http://cdn.getspout.org/img/flag/"+country.toLowerCase()+".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
@@ -176,6 +167,15 @@ public class ServerItem implements ListWidgetItem {
 			} else {
 				CustomTextureManager.downloadTexture("Spoutcraft", url);
 			}
+		}
+		
+		if(isWhitelisted()) {
+			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/lock.png");
+			GL11.glPushMatrix();
+			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
+			r.drawTexture(lockIcon, 7, 11);
+			GL11.glPopMatrix();
+			iconMargin += 5 + 7;
 		}
 	}
 
