@@ -44,6 +44,7 @@ public class ScheduledTextFieldUpdate implements Runnable {
 				break;
 			}
 		}
+		textField.onTypingFinished();
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketControlAction(screen, textField, textField.getText(), textField.getCursorPosition()));
 	}
 	
