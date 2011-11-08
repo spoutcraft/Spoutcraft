@@ -165,7 +165,7 @@ public class ServerItem implements ListWidgetItem {
 		}
 		
 		if(country != null) {
-			String url = "http://servers.getspout.org/images/flags/"+country.toLowerCase()+".png";
+			String url = "http://cdn.getspout.org/img/flag/"+country.toLowerCase()+".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
 			if(icon != null) {
 				GL11.glPushMatrix();

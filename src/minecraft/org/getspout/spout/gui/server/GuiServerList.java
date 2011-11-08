@@ -33,7 +33,7 @@ public class GuiServerList extends GuiAPIDisplay {
 	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
-	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonSearch, buttonRefresh, buttonReset, buttonAddServer;
+	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonRefresh, buttonReset, buttonAddServer;
 	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
 	FilterButton hasPlayers, notFull, noWhitelist;
@@ -65,7 +65,6 @@ public class GuiServerList extends GuiAPIDisplay {
 		notFull = new FilterButton("Not Full", "notfull", model);
 		noWhitelist = new FilterButton("No Whitelist", "notwhitelisted", model);
 		search = new SearchField(model);
-		buttonSearch = new GenericButton("Search");
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);
 		buttonJoin = new GenericButton("Join Server");
@@ -93,6 +92,10 @@ public class GuiServerList extends GuiAPIDisplay {
 		
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
+		
+		search.setWidth(100).setHeight(20).setX(5).setY(top);
+		getScreen().attachWidget(spoutcraft, search);
+		model.addUrlElement(search);
 		
 		top+=25;
 		
@@ -158,15 +161,6 @@ public class GuiServerList extends GuiAPIDisplay {
 		noWhitelist.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, noWhitelist);
 		model.addUrlElement(noWhitelist);
-		ftop += 25;
-		
-		search.setWidth(100).setHeight(20).setX(5).setY(ftop);
-		filters.attachWidget(spoutcraft, search);
-		model.addUrlElement(search);
-		ftop += 25;
-		
-		buttonSearch.setWidth(100).setHeight(20).setX(5).setY(ftop);
-		filters.attachWidget(spoutcraft, buttonSearch);
 		ftop += 25;
 		
 		buttonCountry.setWidth(100).setHeight(20).setX(5).setY(ftop);
@@ -248,9 +242,6 @@ public class GuiServerList extends GuiAPIDisplay {
 			} else {
 				updateButtons();
 			}
-		}
-		if(btn.equals(buttonSearch)) {
-			model.updateUrl();
 		}
 		if(btn.equals(buttonRefresh)) {
 			model.updateUrl();
