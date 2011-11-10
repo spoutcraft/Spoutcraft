@@ -2,6 +2,7 @@ package org.getspout.spout.gui.texturepacks;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.UrlElement;
+import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
@@ -27,7 +28,7 @@ public class ResolutionFilter extends GenericButton implements UrlElement {
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		current++;
-		if(current >= possibilities.length) {
+		if(current >= possibilities.length || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
 			current = -1;
 		}
 		SpoutClient.getInstance().getTexturePacksDatabaseModel().updateUrl();

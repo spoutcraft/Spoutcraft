@@ -22,6 +22,8 @@ public class TexturePackItem implements ListWidgetItem {
 	private ListWidget widget;
 	private int tileSize;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
+	int id = -1;
+	private String title = null;
 	
 	public TexturePackItem(TexturePackBase pack) {
 		this.setPack(pack);
@@ -51,6 +53,9 @@ public class TexturePackItem implements ListWidgetItem {
 //		int w = font.getStringWidth(sTileSize);
 //		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
 		
+		//TODO: Work out why tile size is not correctly calculated
+		//TODO: Show database information (author/member who posted it)
+		
 		pack.bindThumbnailTexture(SpoutClient.getHandle());
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         tessellator.startDrawingQuads();
@@ -77,9 +82,23 @@ public class TexturePackItem implements ListWidgetItem {
 	}
 	
 	public String getName() {
-		String name = pack.texturePackFileName;
-		name = name.replaceAll("^\\.zip", "");
-		return name;
+		if(title == null) {
+			String name = pack.texturePackFileName;
+			int suffix = name.lastIndexOf(".zip");
+			if(suffix != -1) {
+				name = name.substring(0, suffix);
+			}
+			int db = name.lastIndexOf(".id_");
+			if(db != -1) {
+				try {
+					id = Integer.valueOf(name.substring(db + 4, name.length()));
+				} catch(NumberFormatException e) {}
+				name = name.substring(0, db);
+			}
+			name = name.replaceAll("_", " ");
+			title = name;
+		}
+		return title;
 	}
 
 	public void select() {
