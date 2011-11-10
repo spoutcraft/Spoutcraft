@@ -1,5 +1,6 @@
 package org.getspout.spout.gui.server;
 
+import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -26,6 +27,7 @@ public class GuiFavorites2 extends GuiScreen {
 	private GenericListView view;
 	private Label title;
 	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	private long confirmationTimeout = 0;
 
 	public GuiFavorites2(GuiScreen parent) {
 		model.setCurrentGUI(this);
@@ -144,8 +146,14 @@ public class GuiFavorites2 extends GuiScreen {
 			}
 		}
 		if(btn.equals(buttonDelete)) {
-			model.removeServer((ServerItem)view.getSelectedItem());
-			model.save();
+			if(buttonDelete.getText().equals("Delete")) {
+				buttonDelete.setText(ChatColor.RED+"Really?");
+				confirmationTimeout = System.currentTimeMillis();
+			} else {
+				model.removeServer((ServerItem)view.getSelectedItem());
+				model.save();
+				buttonDelete.setText("Delete");
+			}
 		}
 		if(btn.equals(buttonJoin)) {
 			ServerItem item = null;
@@ -204,6 +212,7 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
+		buttonDelete.setText("Delete");
 		
 		if(model.isPolling()) {
 			buttonRefresh.setEnabled(false);
@@ -224,6 +233,14 @@ public class GuiFavorites2 extends GuiScreen {
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
 			color.setBlue(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
+		}
+		if(System.currentTimeMillis() - confirmationTimeout > 5000) {
+			buttonDelete.setText("Delete");
+		}
+		if(System.currentTimeMillis() - confirmationTimeout < 500) {
+			buttonDelete.setEnabled(false);
+		} else if(!buttonDelete.getText().equals("Delete")) {
+			buttonDelete.setEnabled(true);
 		}
 		super.updateScreen();
 	}
