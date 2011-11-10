@@ -1,46 +1,52 @@
 package org.getspout.spout.gui.texturepacks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.UrlElement;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
-public class ResolutionFilter extends GenericButton implements UrlElement {
+public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	
-	private int current = -1;
+	TexturePacksDatabaseModel model = SpoutClient.getInstance().getTexturePacksDatabaseModel();
+	
 	private int possibilities[] = {
 			8, 16, 32, 64, 128, 256, 512, 1024	
 	};
 	
+	public ResolutionFilter() {
+		List<String> list = new ArrayList<String>();
+		list.add("All");
+		for(int r:possibilities) {
+			list.add(r+"x"+r);
+		}
+		setItems(list);
+	}
+	
 	public boolean isActive() {
-		return current != -1;
+		return getSelectedRow() != 0;
 	}
 
 	public String getUrlPart() {
-		return "resolution="+possibilities[current];
+		return "resolution="+possibilities[getSelectedRow()-1];
 	}
 
 	public void clear() {
-		current = 1;
+		setSelection(0);
 	}
-
+	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		current++;
-		if(current >= possibilities.length || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			current = -1;
-		}
-		SpoutClient.getInstance().getTexturePacksDatabaseModel().updateUrl();
+	public void onSelectionChanged(int item, String text) {
+		model.updateUrl();
 	}
 	
 	@Override
 	public String getText() {
-		if(current == -1) {
-			return "Resolution: All";
-		} else {
-			return "Resolution: "+possibilities[current]+"x"+possibilities[current];
-		}
+		return "Resolution: "+getSelectedItem();
 	}
 
 }

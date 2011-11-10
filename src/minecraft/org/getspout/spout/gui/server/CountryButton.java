@@ -1,47 +1,46 @@
 package org.getspout.spout.gui.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.UrlElement;
-import org.lwjgl.input.Keyboard;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
-public class CountryButton extends GenericButton implements UrlElement {
+public class CountryButton extends GenericComboBox implements UrlElement {
 
-	String currentCountry = "all";
-	int item = -1;
 	ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
+	
+	public CountryButton() {
+		List<String> countries = new ArrayList<String>();
+		countries.add("All");
+		countries.addAll(model.getCountries());
+		setItems(countries);
+	}
 
 	public boolean isActive() {
-		return item != -1;
+		return getSelectedRow() != 0;
 	}
 
 	public String getUrlPart() {
-		return "country="+currentCountry;
+		return "country="+getSelectedItem();
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		item ++;
-		if(model.getCountries().size() <= item || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-			item = -1;
-		}
-		if(item != -1) {
-			currentCountry = model.getCountries().get(item);
-		}
+	public void onSelectionChanged(int row, String text) {
 		model.updateUrl();
 	}
 	
 	public String getText() {
-		return "Country: "+(item != -1 ?currentCountry + " ("+(item+1)+"/"+model.getCountries().size()+")":"All");
+		return "Country: "+getSelectedItem();
 	}
 
 	public void setCurrentCountry(int i) {
-		item = i;
+		setSelection(i + 1);
 	}
 
 	public void clear() {
-		item = -1;
+		setSelection(0);
 	}
 
 }
