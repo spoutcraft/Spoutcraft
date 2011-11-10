@@ -13,8 +13,13 @@ public class TexturePacksModel extends AbstractListModel {
 
 	TexturePackList textures = SpoutClient.getHandle().texturePackList;
 	List<TexturePackItem> items = new ArrayList<TexturePackItem>();
+	GuiTexturePacks currentGui = null;
 	
 	public TexturePacksModel() {
+	}
+	
+	public void setCurrentGui(GuiTexturePacks gui) {
+		currentGui = gui;
 	}
 	
 	public int getSize() {
@@ -28,8 +33,9 @@ public class TexturePacksModel extends AbstractListModel {
 
 	@Override
 	public void onSelected(int item, boolean doubleClick) {
-		// TODO Auto-generated method stub
-		
+		if(currentGui != null) {
+			currentGui.updateButtons();
+		}
 	}
 	
 	public void update() {

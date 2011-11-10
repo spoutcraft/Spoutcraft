@@ -22,11 +22,12 @@ import net.minecraft.src.TexturePackCustom;
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
 	private Label screenTitle;
-	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir, buttonDelete;
+	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir, buttonDelete, buttonInfo;
 	private boolean instancesCreated = false;
 	private TexturePacksModel model = SpoutClient.getInstance().getTexturePacksModel();
 	
 	private void createInstances() {
+		model.setCurrentGui(this);
 		if(instancesCreated) return;
 		model.update();
 		screenTitle = new GenericLabel("Texture Packs");
@@ -41,6 +42,8 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonReservoir.setTooltip("Get awesome new textures here!");
 		buttonDelete = new GenericButton("Delete");
 		buttonDelete.setTooltip("Deletes the Texture Pack. BEWARE!");
+		buttonInfo = new GenericButton("Info");
+		buttonInfo.setTooltip("Go to the online database entry");
 	}
 	
 	public void initGui() {
@@ -70,6 +73,9 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonSelect.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonSelect);
 		
+		buttonInfo.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonInfo);
+		
 		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDelete);
 		
@@ -91,6 +97,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		
 		instancesCreated = true;
+		updateButtons();
 	}
 	
 	public void drawScreen(int x, int y, float f) {
@@ -126,5 +133,22 @@ public class GuiTexturePacks extends GuiScreen {
 			} catch(NullPointerException e) {
 			}
 		}
+		if(btn.equals(buttonInfo)) {
+			try {
+				TexturePackItem item = model.getItem(view.getSelectedRow());
+				if(item.id != -1) {
+					Sys.openURL("http://textures.getspout.org/info/"+item.id+".php");
+				}
+			} catch(Exception e) {
+			}
+		}
+	}
+	
+	public void updateButtons() {
+		try {
+			TexturePackItem item = model.getItem(view.getSelectedRow());
+			buttonInfo.setEnabled(item.id != -1);
+			buttonDelete.setEnabled((item.getPack() instanceof TexturePackCustom));
+		} catch(Exception e) {}
 	}
 }
