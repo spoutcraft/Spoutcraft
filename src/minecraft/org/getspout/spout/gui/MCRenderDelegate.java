@@ -588,7 +588,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	private void scissorWidget(Widget widget) {
-		double x = widget.getX() + widget.getWidth(), y = widget.getY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
+		double x = widget.getActualX() + widget.getWidth(), y = widget.getActualY() + widget.getHeight(), width = widget.getWidth(), height = widget.getHeight();
 		double screenHeight;
 		GuiScreen screen = SpoutClient.getHandle().currentScreen;
 		screenHeight = screen.height;
@@ -704,6 +704,21 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		optimalWidth.put(hash, t);
 		return t;
+	}
+
+	public void render(GenericComboBox comboBox) {
+		if (comboBox.isVisible()) {
+			render((GenericButton)comboBox);
+			Texture text;
+			if(comboBox.isOpen()) {
+				text = CustomTextureManager.getTextureFromJar("/res/ascending.png");
+			} else {
+				text = CustomTextureManager.getTextureFromJar("/res/descending.png");
+			}
+			GL11.glTranslated(comboBox.getWidth()-16, 3, 0);
+			RenderUtil.drawRectangle(0, -3, 16, (int) comboBox.getHeight(), 0x33000000);
+			drawTexture(text, 16, 16, getColor(comboBox), true);
+		}
 	}
 	
 //	public void render(GenericListWidget lw) {

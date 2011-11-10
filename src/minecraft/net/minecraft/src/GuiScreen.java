@@ -145,9 +145,15 @@ public class GuiScreen extends Gui {
 		SpoutClient.enableSandbox();
 		screen.setMouseX(mouseX);
 		screen.setMouseY(mouseY);
+		
+		ComboBox openCombobox = null;
+		
 		if (eventButton == 0) {
+			boolean handled = false;
 			for (int i = 4; i>=0; i--) {
+				Widget lastWidget = null;
 				for (Widget widget : screen.getAttachedWidgets(true)) {
+					lastWidget = widget;
 					if(widget.getPriority().getId()!=i){
 						continue;
 					}
@@ -160,7 +166,6 @@ public class GuiScreen extends Gui {
 								}
 							}
 							control.setFocus(true);
-							boolean handled = false;
 							if (control instanceof Scrollable) {
 								handled = handled || handleClickOnScrollable((Scrollable)control, mouseX, mouseY);
 								if(!handled && control instanceof ListWidget) {
@@ -182,15 +187,29 @@ public class GuiScreen extends Gui {
 									handled = true;
 								} 
 							}
-							if (handled) {
-								playSoundFX("random.click", 1.0F, 1.0F);
-								break;
-							}
 						}
 					}
+
+					if(lastWidget instanceof ComboBox) {
+						ComboBox box = (ComboBox)lastWidget;
+						if(box.isOpen()) {
+							openCombobox = box;
+						}
+					}
+					if(handled) {
+						break;
+					}
+				}
+				if (handled) {
+					if(lastWidget == openCombobox) {
+						openCombobox = null;
+					}
+					playSoundFX("random.click", 1.0F, 1.0F);
+					break;
 				}
 			}
 		}
+		if(openCombobox != null) openCombobox.closeList();
 		
 		SpoutClient.disableSandbox();
 	}
@@ -439,7 +458,7 @@ public class GuiScreen extends Gui {
 						} else {
 							lw.scroll(-scroll / 30, 0);
 						}
-						PacketControlAction action = new PacketControlAction(lw.getScreen(), lw, axis.toString(), lw.getScrollPosition(axis));
+						PacketControlAction action = new PacketControlAction(lw.getScreen() != null?lw.getScreen():getScreen(), lw, axis.toString(), lw.getScrollPosition(axis));
 						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
 					}
 				}
@@ -526,21 +545,21 @@ public class GuiScreen extends Gui {
 							lw.shiftSelection(1);
 							lw.onSelected(lw.getSelectedRow(), false);
 							lw.getSelectedItem().onClick(-1, -1, false);
-							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
+							action = new PacketControlAction(lw.getScreen() != null?lw.getScreen():getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
 							handled = true;
 							lw.shiftSelection(-1);
 							lw.onSelected(lw.getSelectedRow(), false);
 							lw.getSelectedItem().onClick(-1, -1, false);
-							action = new PacketControlAction(lw.getScreen(), lw, "selected", lw.getSelectedRow());
+							action = new PacketControlAction(lw.getScreen() != null?lw.getScreen():getScreen(), lw, "selected", lw.getSelectedRow());
 						}
 						if(Keyboard.getEventKey() == Keyboard.KEY_RETURN && Keyboard.getEventKeyState()) {
 							handled = true;
 							if(lw.getSelectedRow() != -1) {
 								lw.onSelected(lw.getSelectedRow(), true);
 								lw.getSelectedItem().onClick(-1, -1, true);
-								action = new PacketControlAction(lw.getScreen(), lw, "doubleclick", lw.getSelectedRow());
+								action = new PacketControlAction(lw.getScreen() != null?lw.getScreen():getScreen(), lw, "doubleclick", lw.getSelectedRow());
 							}
 						}
 						if(action != null) {
