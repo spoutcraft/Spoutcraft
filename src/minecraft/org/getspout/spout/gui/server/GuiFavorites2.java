@@ -91,16 +91,16 @@ public class GuiFavorites2 extends GuiScreen {
 		buttonAdd = new GenericButton("Add Favorite");
 		buttonAdd.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonAdd);
-
-		buttonDelete = new GenericButton("Delete");
-		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		getScreen().attachWidget(spoutcraft, buttonDelete);
-
-		top += 25;
 		
 		buttonEdit = new GenericButton("Edit");
 		buttonEdit.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonEdit);
+
+		top += 25;
+
+		buttonDelete = new GenericButton("Delete");
+		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonDelete);
 		
 		buttonServerList = new GenericButton("Server List");
 		buttonServerList.setX(center).setY(top).setWidth(cellWidth).setHeight(20);

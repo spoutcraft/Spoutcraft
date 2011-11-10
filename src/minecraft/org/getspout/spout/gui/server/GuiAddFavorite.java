@@ -75,6 +75,10 @@ public class GuiAddFavorite extends GuiScreen {
 	protected void buttonClicked(Button btn) {
 		if(btn.equals(buttonDone)) {
 			updateItem();
+			if(item.getTitle().isEmpty() || item.getIp().isEmpty()) {
+				SpoutClient.getHandle().displayGuiScreen(parent);
+				return;
+			}
 			if(!update) {
 				SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
 			}
