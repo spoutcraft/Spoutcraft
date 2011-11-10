@@ -329,7 +329,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				}
 				font.drawStringWithShadow(line, x, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * lineNum++, color);
 			}
-		} else {
+		} else if(!textField.isFocus()) {
 			font.drawStringWithShadow(textField.getPlaceholder(), x, y, color);
 		}
 		boolean showCursor = textField.isEnabled() && textField.isFocus() && shouldRenderCursor;
