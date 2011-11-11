@@ -194,7 +194,7 @@ public class RenderItem extends Render {
 		if(MaterialData.getBlock(var3, (short) var4) != null) {
 			blockType = (GenericBlockDesign) MaterialData.getBlock(var3, (short) var4).getBlockDesign();
 		}
-		if (blockType != null) {
+		if (blockType != null && blockType.getTextureAddon() != null && blockType.getTexureURL() != null) {
 			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
 			if (customTextureBinding != null){
 				var2.bindTexture(customTextureBinding.getTextureID());
