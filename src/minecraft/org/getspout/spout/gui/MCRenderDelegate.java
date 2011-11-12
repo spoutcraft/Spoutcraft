@@ -670,7 +670,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				
 				//Render actual item
 				GL11.glPushMatrix();
-				item.render(5, currentHeight, lw.getViewportSize(Orientation.HORIZONTAL), item.getHeight());
+				item.render(5, currentHeight, lw.getViewportSize(Orientation.HORIZONTAL) - 9, item.getHeight());
 				GL11.glPopMatrix();
 			}
 			

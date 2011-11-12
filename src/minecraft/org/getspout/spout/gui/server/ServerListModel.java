@@ -62,7 +62,9 @@ public class ServerListModel extends AbstractAPIModel {
 				synchronized (countries) {
 					countries.clear();
 					for(String c:yamlObj) {
-						countries.add(c);
+						if(!c.trim().isEmpty()) {
+							countries.add(c);
+						}
 					}
 				}
 				try {

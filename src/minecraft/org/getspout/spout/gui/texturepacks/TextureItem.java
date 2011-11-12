@@ -56,8 +56,8 @@ public class TextureItem implements ListWidgetItem {
 		
 		String sResolution = resolution + "x";
 		int sWidth = font.getStringWidth(sResolution);
-		font.drawStringWithShadow(sResolution, x+width - sWidth - 10, y+2, 0xffaaaaaa);
-		String desc = r.getFittingText(getDescription(), width - 10 - 29);
+		font.drawStringWithShadow(sResolution, x + width - sWidth - 2, y+2, 0xffaaaaaa);
+		String desc = r.getFittingText(getDescription(), width - 2 - 29);
 		font.drawStringWithShadow(desc, x + 29, y + 20, 0xffaaaaaa);
 		String sStatus = "";
 		if(size > 1024*1024*9000) {
@@ -81,7 +81,7 @@ public class TextureItem implements ListWidgetItem {
 		}
 		if(sStatus != null) {
 			sWidth = font.getStringWidth(sStatus);
-			font.drawStringWithShadow(sStatus, x+width-sWidth-10, y+11, 0xffaaaaaa);
+			font.drawStringWithShadow(sStatus, x+width-sWidth-2, y+11, 0xffaaaaaa);
 		}
 		
 		String iconUrl = "http://textures.getspout.org/preview.php?id="+getId();

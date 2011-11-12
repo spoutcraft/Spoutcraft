@@ -76,15 +76,15 @@ public class ServerItem implements ListWidgetItem {
 		if(getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
 			String sping = getPing() + " ms";
 			int pingwidth = font.getStringWidth(sping);
-			margin1 = pingwidth + 15;
-			font.drawStringWithShadow(sping, width - pingwidth - 20, y + 2, 0xaaaaaa);
+			margin1 = pingwidth + 14;
+			font.drawStringWithShadow(sping, x + width - pingwidth - 14, y + 2, 0xaaaaaa);
 			String sPlayers = getPlayers() + " / "+getMaxPlayers() + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			margin2 = playerswidth;
-			font.drawStringWithShadow(sPlayers, width - playerswidth - 5, y+11, 0xaaaaaa);
+			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y+11, 0xaaaaaa);
 		}
 		
-		font.drawStringWithShadow(r.getFittingText(title, width - 2 - 10 - margin1), x + 2, y + 2, 0xffffff);
+		font.drawStringWithShadow(r.getFittingText(title, width - 2 - margin1), x + 2, y + 2, 0xffffff);
 		String sMotd = "";
 		if((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
 			sMotd = "Polling...";
@@ -145,7 +145,7 @@ public class ServerItem implements ListWidgetItem {
 			}
 		}
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
-		RenderUtil.drawTexturedModalRectangle(width - 5 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
+		RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
 		if(port != 25565) {
 			font.drawStringWithShadow(ip + ":" +port, x+2, y+20, 0xaaaaaa);
 		} else {
@@ -153,7 +153,7 @@ public class ServerItem implements ListWidgetItem {
 		}
 		
 		//Icon Drawing
-		int iconMargin = 10;
+		int iconMargin = 2;
 		
 		if(country != null) {
 			String url = "http://cdn.getspout.org/img/flag/"+country.toLowerCase()+".png";
