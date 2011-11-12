@@ -24,6 +24,9 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import net.minecraft.src.*;
+import net.minecraft.client.Minecraft;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.getspout.spout.client.SpoutClient;
@@ -156,6 +159,7 @@ public class PacketCacheFile implements CompressablePacket {
 		else if (cache.exists() && FileUtil.isImageFile(fileName)) {
 			CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
+		((EntityClientPlayerMP)Minecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 
 	public void failure(int playerId) {
