@@ -2,7 +2,6 @@ package org.getspout.spout.gui.shortcuts;
 
 import org.getspout.spout.controls.Shortcut;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;

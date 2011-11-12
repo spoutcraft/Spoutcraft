@@ -24,6 +24,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@SuppressWarnings("deprecation")
 public class PacketItemTexture implements SpoutPacket {
 	private int id;
 	private short data;

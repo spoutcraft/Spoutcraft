@@ -27,6 +27,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairFloatHashMap;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
+@SuppressWarnings("deprecation")
 public class SimpleItemManager implements ItemManager {
 	private final TIntPairFloatHashMap originalHardness = new TIntPairFloatHashMap();
 	private final TIntPairFloatHashMap originalFriction = new TIntPairFloatHashMap();

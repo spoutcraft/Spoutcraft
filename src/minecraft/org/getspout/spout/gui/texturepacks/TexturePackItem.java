@@ -1,33 +1,28 @@
 package org.getspout.spout.gui.texturepacks;
 
 import net.minecraft.src.FontRenderer;
-import net.minecraft.src.RenderHelper;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.MCRenderDelegate;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
-import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
-
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class TexturePackItem implements ListWidgetItem {
 	
 	private TexturePackBase pack;
 	private ListWidget widget;
-	private int tileSize;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
 	int id = -1;
 	private String title = null;
 	
 	public TexturePackItem(TexturePackBase pack) {
 		this.setPack(pack);
-		tileSize = TextureUtils.getTileSize(pack);
+		TextureUtils.getTileSize(pack);
 	}
 
 	public void setListWidget(ListWidget widget) {

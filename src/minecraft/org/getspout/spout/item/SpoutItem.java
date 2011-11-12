@@ -1,8 +1,6 @@
 package org.getspout.spout.item;
 
 import gnu.trove.map.hash.TIntIntHashMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;

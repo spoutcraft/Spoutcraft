@@ -1,8 +1,5 @@
 package org.getspout.spout.gui.server;
 
-import java.net.URL;
-
-import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.FilterButton;
 import org.getspout.spout.gui.database.GuiAPIDisplay;
@@ -23,7 +20,6 @@ import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiScreen;
 
 public class GuiServerList extends GuiAPIDisplay {
 
@@ -225,7 +221,7 @@ public class GuiServerList extends GuiAPIDisplay {
 			mc.displayGuiScreen(new GuiMainMenu());
 		}
 		if(btn.equals(buttonFavorites)) {
-			mc.displayGuiScreen(new GuiFavorites2(new GuiMainMenu()));
+			mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
 		}
 		if(btn.equals(buttonAddFavorite)) {
 			if(view.getSelectedItem() instanceof ServerItem) {

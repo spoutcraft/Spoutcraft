@@ -2,7 +2,6 @@ package org.getspout.spout.gui.database;
 
 import java.util.Random;
 
-import org.getspout.spout.gui.server.ServerListModel;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
 public class RandomButton extends SortButton {

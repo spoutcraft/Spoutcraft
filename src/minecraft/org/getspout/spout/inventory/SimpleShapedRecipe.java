@@ -5,7 +5,6 @@ import java.util.HashMap;
 import net.minecraft.src.CraftingManager;
 
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.Recipe;
 import org.spoutcraft.spoutcraftapi.inventory.ShapedRecipe;
 import org.spoutcraft.spoutcraftapi.material.Material;
 

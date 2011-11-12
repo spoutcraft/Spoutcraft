@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
+@SuppressWarnings("deprecation")
 public class PacketItemName implements SpoutPacket{
 	private int id;
 	private short data;

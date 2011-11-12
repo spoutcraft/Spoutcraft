@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.getspout.spout.ReconnectManager;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.server.GuiFavorites2;
+import org.getspout.spout.gui.server.GuiFavorites;
 
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;

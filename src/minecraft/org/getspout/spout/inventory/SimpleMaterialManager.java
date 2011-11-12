@@ -33,7 +33,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	
 	public float getFriction(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -64,7 +63,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public float getHardness(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -72,7 +70,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public void setHardness(org.spoutcraft.spoutcraftapi.material.Block block, float hardness) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -91,7 +88,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public boolean isOpaque(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -99,7 +95,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public void setOpaque(org.spoutcraft.spoutcraftapi.material.Block block, boolean opacity) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -110,7 +105,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public void resetOpacity(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -122,7 +116,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public int getLightLevel(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -130,7 +123,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public void setLightLevel(org.spoutcraft.spoutcraftapi.material.Block block, int level) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
@@ -141,7 +133,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public void resetLightLevel(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		int data = block.getRawData();
 		if(block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}

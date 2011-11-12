@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.Yaml;
 public class FavoritesModel extends AbstractListModel {
 	
 	private ArrayList<ServerItem> items = new ArrayList<ServerItem>();
-	private GuiFavorites2 gui;
+	private GuiFavorites gui;
 	private boolean polling = false;
 	
 	public FavoritesModel() {
@@ -35,7 +35,7 @@ public class FavoritesModel extends AbstractListModel {
 		}
 	}
 	
-	public void setCurrentGUI(GuiFavorites2 gui) {
+	public void setCurrentGUI(GuiFavorites gui) {
 		this.gui = gui;
 	}
 
@@ -198,7 +198,7 @@ public class FavoritesModel extends AbstractListModel {
 		return false;
 	}
 
-	public GuiFavorites2 getCurrentGui() {
+	public GuiFavorites getCurrentGui() {
 		return gui;
 	}
 }

@@ -15,12 +15,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.AbstractAPIModel;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.yaml.snakeyaml.Yaml;

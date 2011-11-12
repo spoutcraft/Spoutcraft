@@ -16,11 +16,8 @@
  */
 package org.getspout.spout.gui.settings;
 
-import net.minecraft.client.Minecraft;
-
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.config.MipMapUtils;
-import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 

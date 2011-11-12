@@ -16,11 +16,8 @@
  */
 package org.getspout.spout.item;
 
-import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 

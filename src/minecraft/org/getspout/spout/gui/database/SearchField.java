@@ -1,7 +1,6 @@
 package org.getspout.spout.gui.database;
 
 import org.bukkit.ChatColor;
-import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
 public class SearchField extends GenericTextField implements UrlElement {

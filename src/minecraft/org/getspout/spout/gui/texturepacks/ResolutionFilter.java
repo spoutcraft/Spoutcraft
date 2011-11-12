@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.database.UrlElement;
-import org.lwjgl.input.Keyboard;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
 public class ResolutionFilter extends GenericComboBox implements UrlElement {

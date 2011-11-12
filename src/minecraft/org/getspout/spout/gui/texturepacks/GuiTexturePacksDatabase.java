@@ -156,14 +156,14 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 	
 	public void updateButtons() {
 		int sel = view.getSelectedRow();
-		boolean enable = false;
+		//boolean enable = false;
 		boolean allowForum = false;
 		boolean allowDownload = false;
 		if(sel >= 0) {
 			ListWidgetItem item = model.getItem(sel);
 			if(item instanceof TextureItem) {
 				TextureItem t = (TextureItem)item;
-				enable = true;
+				//enable = true;
 				allowDownload = !(t.isDownloading() || t.isInstalled());
 				allowForum = !t.getForumlink().isEmpty();
 			}

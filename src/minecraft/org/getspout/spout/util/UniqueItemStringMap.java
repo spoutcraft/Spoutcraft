@@ -17,7 +17,6 @@ package org.getspout.spout.util;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;

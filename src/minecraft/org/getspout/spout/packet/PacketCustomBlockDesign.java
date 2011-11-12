@@ -4,9 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.item.ServerCustomBlock;
-import org.getspout.spout.item.SpoutCustomBlockDesign;
-import org.getspout.spout.item.SpoutItem;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;

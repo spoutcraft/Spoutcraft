@@ -3,13 +3,10 @@ package org.getspout.spout.gui.shortcuts;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.controls.Shortcut;
 import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
-import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
 import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GuiSlot;
-import net.minecraft.src.Tessellator;
 
 public class GuiCommandsSlot extends GenericListWidget {
 
