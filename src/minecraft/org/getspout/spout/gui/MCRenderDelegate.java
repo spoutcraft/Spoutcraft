@@ -160,11 +160,12 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
+		boolean VERT = gradient.getOrientation() == Orientation.VERTICAL;
 		tessellator.setColorRGBA_F(gradient.getTopColor().getRedF(), gradient.getTopColor().getGreenF(), gradient.getTopColor().getBlueF(), gradient.getTopColor().getAlphaF());
-		tessellator.addVertex(gradient.getWidth() + gradient.getScreenX(), gradient.getScreenY(), 0.0D);
+		tessellator.addVertex((VERT ? gradient.getWidth() : 0) + gradient.getScreenX(), (VERT ? 0 : gradient.getHeight()) + gradient.getScreenY(), 0.0D);
 		tessellator.addVertex(gradient.getScreenX(), gradient.getScreenY(), 0.0D);
 		tessellator.setColorRGBA_F(gradient.getBottomColor().getRedF(), gradient.getBottomColor().getGreenF(), gradient.getBottomColor().getBlueF(), gradient.getBottomColor().getAlphaF());
-		tessellator.addVertex(gradient.getScreenX(), gradient.getHeight() + gradient.getScreenY(), 0.0D);
+		tessellator.addVertex((VERT ? 0 : gradient.getWidth()) + gradient.getScreenX(), (VERT ? gradient.getHeight() : 0) + gradient.getScreenY(), 0.0D);
 		tessellator.addVertex(gradient.getWidth() + gradient.getScreenX(), gradient.getHeight() + gradient.getScreenY(), 0.0D);
 		tessellator.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
