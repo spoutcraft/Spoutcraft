@@ -3,7 +3,9 @@ package org.spoutcraft.spoutcraftapi.material;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
@@ -27,6 +29,8 @@ import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
 public class MaterialData {
 	private final static TIntPairObjectHashMap<Material> idMap = new TIntPairObjectHashMap<Material>();
+	private final static List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
+	private final static List<CustomItem> customItems = new ArrayList<CustomItem>();
 	public static final Block air = new Air("Air");
 	public static final Block stone = new Solid("Stone", 1);
 	public static final Block grass = new Grass("Grass");
@@ -328,6 +332,7 @@ public class MaterialData {
 	 */
 	public static void addCustomItem(CustomItem item) {
 		idMap.put(318, item.getCustomId(), item);
+		customItems.add(item);
 	}
 	
 	/**
@@ -336,6 +341,7 @@ public class MaterialData {
 	 */
 	public static void addCustomBlock(CustomBlock block) {
 		idMap.put(318, block.getCustomId(), block);
+		customBlocks.add(block);
 	}
 	
 	/**
@@ -417,6 +423,14 @@ public class MaterialData {
 			return (Block)mat;
 		}
 		return null;
+	}
+	
+	public static List<CustomBlock> getCustomBlocks() {
+		return customBlocks;
+	}
+	
+	public static List<CustomItem> getCustomItems() {
+		return customItems;
 	}
 	
 	public static CustomBlock getCustomBlock(int customId) {
