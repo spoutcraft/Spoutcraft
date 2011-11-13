@@ -16,7 +16,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	
 	public GenericComboBox() {
 		model = new ComboBoxModel();
-		view = new GenericListView(model);
+		view = new ComboBoxView(model, this);
 		view.setSelection(0);
 		view.setVisible(false);
 		background = new GenericGradient();
@@ -26,7 +26,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	
 	public GenericComboBox(ComboBoxModel model) {
 		this.model = model;
-		view = new GenericListView(model);
+		view = new ComboBoxView(model, this);
 		view.setSelection(0);
 		view.setVisible(false);
 		background = new GenericGradient();
@@ -65,28 +65,27 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		
 		screen.attachWidget(getAddon(), view);
 		view.setVisible(true);
-		view.setX((int) getActualX());
-		view.setY((int) (getActualY() + getHeight()));
-		view.setWidth((int) getWidth());
-		int needed = view.getInnerSize(Orientation.VERTICAL) + 10;
-		int available = (int) (screen.getHeight() - view.getActualY() - 5);
-		
-		System.out.println("Screen height: "+screen.getHeight()+" y: "+view.getActualY());
-		
-		System.out.println("available: "+available);
-		
-		if(available < 20) {
-			available = getY() - 5;
-			view.setY(getY() - Math.min(available, needed));
-		}
-		
-		view.setHeight(Math.min(needed, available));
+//		view.setX((int) getActualX());
+//		view.setY((int) (getActualY() + getHeight()));
+//		view.setWidth((int) getWidth());
+//		int needed = view.getInnerSize(Orientation.VERTICAL) + 10;
+//		int available = (int) (screen.getHeight() - view.getActualY() - 5);
+//		
+//		System.out.println("Screen height: "+screen.getHeight()+" y: "+view.getActualY());
+//		
+//		System.out.println("available: "+available);
+//		
+//		if(available < 20) {
+//			available = getY() - 5;
+//			view.setY(getY() - Math.min(available, needed));
+//		}
+//		
+//		view.setHeight(Math.min(needed, available));
 		view.setPriority(RenderPriority.Lowest); //Makes it the top-most widget
-		System.out.println("x: "+view.getX()+" y: "+view.getY()+" width: "+view.getWidth()+" height: "+view.getHeight());
 		view.setFocus(true);
-		background.setX(view.getX()).setY(view.getY()).setWidth((int) view.getWidth()).setHeight((int) view.getHeight());
-		background.setPriority(RenderPriority.Low);
-		screen.attachWidget(getAddon(), background);
+//		background.setX(view.getX()).setY(view.getY()).setWidth((int) view.getWidth()).setHeight((int) view.getHeight());
+//		background.setPriority(RenderPriority.Low);
+//		screen.attachWidget(getAddon(), background);
 		view.setSelection(view.getSelectedRow());
 		return this;
 	}
@@ -94,7 +93,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	public ComboBox closeList() {
 		view.setVisible(false);
 		screen.removeWidget(view);
-		screen.removeWidget(background);
+//		screen.removeWidget(background);
 		return this;
 	}
 	
@@ -224,5 +223,50 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		public void setTitle(String title) {
 			this.text = title;
 		}
+	}
+	
+	protected class ComboBoxView extends GenericListView {
+
+		@Override
+		public double getWidth() {
+			return combo.getWidth();
+		}
+		@Override
+		public double getHeight() {
+			int a = getAvailableHeight(false) - 5;
+			if(a < 30) {
+				a = getAvailableHeight(true) - 5;
+			}
+			return Math.min(a, getInnerSize(Orientation.VERTICAL));
+		}
+		@Override
+		public int getX() {
+			return (int) combo.getActualX();
+		}
+		@Override
+		public int getY() {
+			int h = (int) getHeight();
+			int a = getAvailableHeight(false);
+			if(a < 30) {
+				return (int) (combo.getActualY()-h);
+			} else {
+				return (int) (combo.getActualY() + combo.getHeight());
+			}
+		}
+		
+		protected int getAvailableHeight(boolean top) {
+			if(!top) {
+				return (int) (getScreen().getActualHeight() - combo.getActualY() - 5);
+			} else {
+				return (int) (combo.getActualY() - 5);
+			}
+		}
+		
+		ComboBox combo;
+		public ComboBoxView(AbstractListModel model, ComboBox box) {
+			super(model);
+			combo = box;
+		}
+		
 	}
 }
