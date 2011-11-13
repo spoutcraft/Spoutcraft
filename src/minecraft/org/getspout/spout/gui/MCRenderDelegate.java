@@ -611,7 +611,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslated(gs.getScreenX(), gs.getScreenY(), 0);
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
 		scissorWidget(gs);
-		RenderUtil.drawRectangle(0, 0, (int)gs.getWidth(), (int)gs.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
+		RenderUtil.drawRectangle(0, 0, (int)gs.getWidth(), (int)gs.getHeight(), gs.getBackgroundColor().toInt());
 		GL11.glPushMatrix();
 		GL11.glTranslated(-scrollLeft, -scrollTop, 0);
 		GL11.glPushMatrix();
