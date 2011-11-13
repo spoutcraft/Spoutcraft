@@ -16,8 +16,10 @@
  */
 package org.getspout.spout.config;
 
+import gnu.trove.map.hash.TIntIntHashMap;
 import net.minecraft.client.Minecraft;
 
+import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -25,9 +27,12 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
+import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class MipMapUtils {
-	public static int mipmapLevels = 8;
+	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();
 	public static int mode = 0;
 	public static boolean updateTerrain = true;
 	public static float targetFade = 1F;
@@ -39,31 +44,59 @@ public class MipMapUtils {
 		GL11.glPushMatrix();
 		if (ConfigReader.mipmapsPercent > 0F) {
 			int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
-			GL11.glBindTexture(3553, terrain);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
+			initalizeTexture(terrain);
 			
-			int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
-			int tileWidth = textureWidth / 16;
+			for (CustomBlock block : MaterialData.getCustomBlocks()) {
+				if (block.getBlockDesign() != null) {
+					String texture = block.getBlockDesign().getTexureURL();
+					String textureAddon = block.getBlockDesign().getTextureAddon();
+					if (texture != null && textureAddon != null) {
+						Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
+						if (tex != null) {
+							initalizeTexture(tex.getTextureID());
+						}
+					}
+				}
+			}
 			
-			MipMapUtils.mipmapLevels = (int)Math.round(Math.log((double)tileWidth)/Math.log(2D));
-	
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, MipMapUtils.mipmapLevels);
-			
-			ContextCapabilities capabilities = GLContext.getCapabilities();
-			if (capabilities.OpenGL30) {
-				MipMapUtils.mode = 1;
-			}
-			else if (capabilities.GL_EXT_framebuffer_object) {
-				MipMapUtils.mode = 2;
-			}
-			else if (capabilities.OpenGL14) {
-				MipMapUtils.mode = 3;
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
-			}
 			MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
 			initialized = true;
 		}
 		GL11.glPopMatrix();
+	}
+	
+	public static int getMipmapLevels(int texture) {
+		int levels = mipmapLevels.get(texture);
+		if (levels == 0) levels = 8;
+		return levels;
+	}
+	
+	public static void setMipmapLevels(int texture, int levels) {
+		mipmapLevels.put(texture, levels);
+	}
+	
+	public static void initalizeTexture(int textureId) {
+		GL11.glBindTexture(3553, textureId);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
+		
+		int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+		int tileWidth = textureWidth / 16;
+		
+		setMipmapLevels(textureId, (int)Math.round(Math.log((double)tileWidth)/Math.log(2D)));
+
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, getMipmapLevels(textureId));
+		
+		ContextCapabilities capabilities = GLContext.getCapabilities();
+		if (capabilities.OpenGL30) {
+			MipMapUtils.mode = 1;
+		}
+		else if (capabilities.GL_EXT_framebuffer_object) {
+			MipMapUtils.mode = 2;
+		}
+		else if (capabilities.OpenGL14) {
+			MipMapUtils.mode = 3;
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+		}
 	}
 	
 	public static void update() {
@@ -71,11 +104,29 @@ public class MipMapUtils {
 			initializeMipMaps();
 		}
 		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
-		GL11.glPushMatrix();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
+		update(terrain);
+		
+		for (CustomBlock block : MaterialData.getCustomBlocks()) {
+			if (block.getBlockDesign() != null) {
+				String texture = block.getBlockDesign().getTexureURL();
+				String textureAddon = block.getBlockDesign().getTextureAddon();
+				if (texture != null && textureAddon != null) {
+					Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
+					if (tex != null) {
+						update(tex.getTextureID());
+					}
+				}
+			}
+		}
+		
+	}
+	
+	public static void update(int texture) {
+		GL11.glPushMatrix();
 		if (MipMapUtils.mode == 3) {
 			MipMapUtils.updateTerrain = ConfigReader.mipmapsPercent > 0F;
-			GL11.glBindTexture(3553, terrain);
+			GL11.glBindTexture(3553, texture);
 			if (ConfigReader.mipmapsPercent > 0F) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			}
@@ -89,7 +140,7 @@ public class MipMapUtils {
 		if (ConfigReader.mipmapsPercent > 0F) {
 			MipMapUtils.updateTerrain = true;
 
-			GL11.glBindTexture(3553, terrain);
+			GL11.glBindTexture(3553, texture);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 		}
 		GL11.glPopMatrix();
@@ -97,9 +148,22 @@ public class MipMapUtils {
 	
 	public static void onTick() {
 		if (updateTerrain) {
-			GL11.glPushMatrix();
 			int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
-			GL11.glBindTexture(3553, terrain);
+			
+			onTick(terrain, targetFade, currentFade);
+			
+			for (CustomBlock block : MaterialData.getCustomBlocks()) {
+				if (block.getBlockDesign() != null) {
+					String texture = block.getBlockDesign().getTexureURL();
+					String textureAddon = block.getBlockDesign().getTextureAddon();
+					if (texture != null && textureAddon != null) {
+						Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
+						if (tex != null) {
+							onTick(tex.getTextureID(), targetFade, currentFade);
+						}
+					}
+				}
+			}
 			
 			if (targetFade != currentFade) {
 				if (targetFade < currentFade) {
@@ -114,31 +178,51 @@ public class MipMapUtils {
 						currentFade = targetFade;
 					}
 				}
-
-				if (currentFade <= 0.0f) {
-					GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-					GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F); //default blend state
-
-					updateTerrain = false;
-					GL11.glPopMatrix();
-					return;
-				}
-				else {
-					GL11.glTexEnvf(GL14.GL_TEXTURE_FILTER_CONTROL, GL14.GL_TEXTURE_LOD_BIAS, mipmapLevels*(currentFade-1.0f));
-				}
 			}
-			
-			switch (mode) {
-				case 1:
-					GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
-					break;
-	
-				case 2:
-					EXTFramebufferObject.glGenerateMipmapEXT(GL11.GL_TEXTURE_2D);
-					break;
-			}
-			GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F); //more strict blend state
-			GL11.glPopMatrix();
 		}
+	}
+	
+	public static void onTick(int texture, float targetFade, float currentFade) {
+		GL11.glPushMatrix();
+		GL11.glBindTexture(3553, texture);
+		
+		if (targetFade != currentFade) {
+			if (targetFade < currentFade) {
+				currentFade -= 0.01f;
+				if (currentFade <= targetFade) {
+					currentFade = targetFade;
+				}
+			}
+			else {
+				currentFade += 0.01f;
+				if (currentFade >= targetFade) {
+					currentFade = targetFade;
+				}
+			}
+
+			if (currentFade <= 0.0f) {
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+				GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F); //default blend state
+
+				updateTerrain = false;
+				GL11.glPopMatrix();
+				return;
+			}
+			else {
+				GL11.glTexEnvf(GL14.GL_TEXTURE_FILTER_CONTROL, GL14.GL_TEXTURE_LOD_BIAS, getMipmapLevels(texture)*(currentFade-1.0f));
+			}
+		}
+		
+		switch (mode) {
+			case 1:
+				GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+				break;
+
+			case 2:
+				EXTFramebufferObject.glGenerateMipmapEXT(GL11.GL_TEXTURE_2D);
+				break;
+		}
+		GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F); //more strict blend state
+		GL11.glPopMatrix();
 	}
 }

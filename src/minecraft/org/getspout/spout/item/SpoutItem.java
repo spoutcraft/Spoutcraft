@@ -1,9 +1,6 @@
 package org.getspout.spout.item;
 
 import gnu.trove.map.hash.TIntIntHashMap;
-import java.util.HashMap;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.IBlockAccess;
@@ -14,6 +11,7 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -22,34 +20,23 @@ import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 public class SpoutItem extends Item {
 
 	private final static TIntIntHashMap itemBlock = new TIntIntHashMap();
-	private final static TIntIntHashMap itemMetaData = new TIntIntHashMap();
 	
-	private static MutableIntegerVector mutableIntVector = new MutableIntegerVector(0, 0, 0);
-	private final static HashMap<MutableIntegerVector, Integer> blockIdOverride = new HashMap<MutableIntegerVector, Integer>();
-	private final static HashMap<MutableIntegerVector, Integer> blockMetaDataOverride = new HashMap<MutableIntegerVector, Integer>();
-
 	public SpoutItem(int blockId) {
 		super(blockId);
 		this.setHasSubtypes(true);
 	}
 
-	public static void addItemInfoMap(int damage, Integer blockId, Short metaData) {
-		if (blockId == null || metaData == null) {
+	public static void addItemInfoMap(int damage, Integer blockId) {
+		if (blockId == null) {
 			itemBlock.remove(damage);
-			itemMetaData.remove(damage);
 		} else {
 			itemBlock.put(damage, blockId);
-			itemMetaData.put(damage, metaData);
 		}
 	}
 
 	public static void wipeMap() {
 		itemBlock.clear();
-		itemMetaData.clear();
-		blockIdOverride.clear();
-		blockMetaDataOverride.clear();
 	}
-	
 	
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
 		if (stack.itemID == MaterialData.flint.getRawId()) {
@@ -59,11 +46,7 @@ public class SpoutItem extends Item {
 				if (blockId == 0){
 					return true;
 				}
-				short metaData = (short) itemMetaData.get(damage);
-				if (metaData == 0) {
-					//return true;
-				}
-				boolean result = onBlockItemUse(blockId, metaData, stack, player, world, x, y, z, face);
+				boolean result = onBlockItemUse(blockId, stack, player, world, x, y, z, face);
 				return result;
 			}
 		}
@@ -71,7 +54,7 @@ public class SpoutItem extends Item {
 	}
 
 	// From super class
-	public boolean onBlockItemUse(int blockID, short metaData, ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
+	public boolean onBlockItemUse(int blockID, ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
 		if (var3.getBlockId(var4, var5, var6) == Block.snow.blockID) {
 			var7 = 0;
 		} else {
@@ -106,13 +89,13 @@ public class SpoutItem extends Item {
 			return false;
 		} else if (var3.canBlockBePlacedAt(blockID, var4, var5, var6, false, var7)) {
 			Block var8 = Block.blocksList[blockID];
-			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, metaData)) {
+			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, 0)) {
 				Block.blocksList[blockID].onBlockPlaced(var3, var4, var5, var6, var7);
 				Block.blocksList[blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
 				
 				if (var1.itemID == MaterialData.flint.getRawId() && var1.getItemDamage() != 0) {
 					CustomBlock block = MaterialData.getCustomBlock(var1.getItemDamage());
-					overrideBlock(var4, var5, var6, block.getCustomId(),0);
+					Spoutcraft.getWorld().getChunkAt(var4 / 16, var6 / 16).setCustomBlockId(var4, var5, var6, (short) block.getCustomId());
 				}
 				
 				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.stepSoundDir2(),
@@ -126,22 +109,6 @@ public class SpoutItem extends Item {
 		}
 	}
 
-	public static void overrideBlock(int x, int y, int z, Integer blockId, Integer metaData) {
-		mutableIntVector.setIntX(x);
-		mutableIntVector.setIntY(y);
-		mutableIntVector.setIntZ(z);
-		if (blockId == null || metaData == null) {
-			blockIdOverride.remove(mutableIntVector);
-			blockMetaDataOverride.remove(mutableIntVector);
-		} else {
-			MutableIntegerVector old = mutableIntVector;
-			mutableIntVector = new MutableIntegerVector(0, 0, 0);
-			blockIdOverride.put(old, blockId);
-			blockMetaDataOverride.put(old, metaData);
-		}
-		 Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
-	}
-	
 	public static boolean renderCustomBlock(RenderBlocks renderBlocks, GenericBlockDesign design, Block block, int x, int y, int z) {
 		
 		if (design == null) {
@@ -175,8 +142,9 @@ public class SpoutItem extends Item {
 	}
 	
 	public static boolean draw(GenericBlockDesign design, Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
-		
+		//int color = 16777215; 
 		if (block != null) {
+			//color = block.colorMultiplier(renders.blockAccess, x, y, z);
 			IBlockAccess access = renders.blockAccess;
 			boolean enclosed = true;
 			enclosed &= access.isBlockOpaqueCube(x, y + 1, z);
@@ -190,8 +158,13 @@ public class SpoutItem extends Item {
 			}
 		}
 		
-		design.setBrightness(inventoryBrightness);
 		
+		float red = 1.0F; //(float)(color >> 16 & 255) / 255.0F;
+		float blue = 1.0F;//(float)(color >> 8 & 255) / 255.0F;
+		float green = 1.0F;//(float)(color & 255) / 255.0F;
+		
+		design.setBrightness(inventoryBrightness);
+
 		for (int i = 0; i < design.getX().length; i++) {
 			
 			MutableIntegerVector sourceBlock = design.getLightSource(i, x, y, z);
@@ -206,7 +179,7 @@ public class SpoutItem extends Item {
 
 			float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
 			
-			tessallator.setColorOpaque_F(1.0F * brightness, 1.0F * brightness, 1.0F * brightness);
+			tessallator.setColorOpaque_F(red * brightness, blue * brightness, green * brightness);
 			
 			float[] xx = design.getX()[i];
 			float[] yy = design.getY()[i];
@@ -221,46 +194,4 @@ public class SpoutItem extends Item {
 		return true;
 
 	}
-	
-	public static int getKey(int x, int y, int z) {
-		mutableIntVector.setIntX(x);
-		mutableIntVector.setIntY(y);
-		mutableIntVector.setIntZ(z);
-		
-		Integer blockId = blockIdOverride.get(mutableIntVector);
-		Integer metaData = blockMetaDataOverride.get(mutableIntVector);
-		
-		if (metaData == null) {
-			metaData = 0;
-		}
-		
-		return getKey(blockId, metaData);
-	}
-	
-	private static int getKey(int blockId, int metaData) {
-		return blockId + (metaData << 24);
-	}
-	
-	public static boolean isBlockOverride(int x, int y, int z) {
-		mutableIntVector.setIntX(x);
-		mutableIntVector.setIntY(y);
-		mutableIntVector.setIntZ(z);
-		return blockIdOverride.containsKey(mutableIntVector);
-	}
-	
-	public static org.spoutcraft.spoutcraftapi.material.Block getBlockOverride(int x, int y, int z) {
-		mutableIntVector.setIntX(x);
-		mutableIntVector.setIntY(y);
-		mutableIntVector.setIntZ(z);
-		Integer blockId = blockIdOverride.get(mutableIntVector);
-		
-		return MaterialData.getBlock(MaterialData.flint.getRawId(), blockId.shortValue());
-	}
-	
-	public static void reset() {
-		itemBlock.clear();
-		itemMetaData.clear();
-		blockIdOverride.clear();
-	}
-	
 }

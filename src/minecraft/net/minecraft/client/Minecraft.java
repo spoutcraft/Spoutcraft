@@ -780,6 +780,7 @@ public abstract class Minecraft implements Runnable {
 					}
 					catch (Throwable failed) {
 						SpoutClient.disableSandbox(); 
+						failed.printStackTrace();
 						throw new RuntimeException(t);
 					}
 				}

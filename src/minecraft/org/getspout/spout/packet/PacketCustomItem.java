@@ -11,19 +11,17 @@ public class PacketCustomItem implements SpoutPacket {
 	
 	private int itemId;
 	private Integer blockId;
-	private Short metaData;
 	
 	public PacketCustomItem() {
 	}
 	
-	public PacketCustomItem(int itemId, Integer blockId, Short metaData) {
+	public PacketCustomItem(int itemId, Integer blockId) {
 		this.itemId = itemId;
 		this.blockId = blockId;
-		this.metaData = metaData;
 	}
 	
 	public int getNumBytes() {
-		return 10;
+		return 8;
 	}
 	
 	public void readData(DataInputStream input) throws IOException {
@@ -32,20 +30,15 @@ public class PacketCustomItem implements SpoutPacket {
 		if (blockId == -1) {
 			blockId = null;
 		}
-		metaData = input.readShort();
-		if (metaData == -1) {
-			metaData = null;
-		}
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(itemId);
 		output.writeInt(blockId == null ? -1 : blockId);
-		output.writeShort(metaData == null ? -1 : metaData);
 	}
 
 	public void run(int PlayerId) {
-		SpoutItem.addItemInfoMap(itemId, blockId, metaData);
+		SpoutItem.addItemInfoMap(itemId, blockId);
 	}
 
 	public PacketType getPacketType() {
@@ -53,7 +46,7 @@ public class PacketCustomItem implements SpoutPacket {
 	}
 	
 	public int getVersion() {
-		return 3;
+		return 4;
 	}
 
 	public void failure(int playerId) {

@@ -66,6 +66,10 @@ public class SpoutcraftWorld implements World{
 		return handle.getChunkFromChunkCoords(x, y).spoutChunk;
 	}
 	
+	public Chunk getChunkAt(int x, int y, int z) {
+		return handle.getChunkFromBlockCoords(x, z).spoutChunk;
+	}
+	
 	public Chunk getChunkAt(FixedLocation location) {
 		return handle.getChunkFromBlockCoords(location.getBlockX(), location.getBlockZ()).spoutChunk;
 	}

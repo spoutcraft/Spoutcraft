@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
@@ -42,6 +44,7 @@ public class SpoutcraftChunk implements Chunk{
 	private int z;
 	public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
 	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
+	private short[] customBlockIds = null;
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
@@ -127,6 +130,33 @@ public class SpoutcraftChunk implements Chunk{
 			}
 		}
 		return entities;
+	}
+	
+	public short getCustomBlockId(int x, int y, int z) {
+		if (customBlockIds != null) {
+			int key = ((x & 0xF) << 11) | ((z & 0xF) << 7) | (y & 0x7F);
+			return customBlockIds[key];
+		}
+		return 0;
+	}
+	
+	public void setCustomBlockId(int x, int y, int z, short id) {
+		if (customBlockIds == null) {
+			customBlockIds = new short[16*16*128];
+		}
+		if (id < 0) id = 0;
+		int key = ((x & 0xF) << 11) | ((z & 0xF) << 7) | (y & 0x7F);
+		customBlockIds[key] = id;
+		Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
+	}
+	
+	public short[] getCustomBlockIds(){
+		return customBlockIds;
+	}
+	
+	public void setCustomBlockIds(short[] ids) {
+		customBlockIds = ids;
+		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, 128, z * 16 + 15);
 	}
 	
 	public int hashCode() {

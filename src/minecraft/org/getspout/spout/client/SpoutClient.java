@@ -83,6 +83,7 @@ import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
@@ -324,6 +325,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		server = -1L;
 		inWorldTicks = 0L;
+		MaterialData.getCustomBlocks().clear();
+		MaterialData.getCustomItems().clear();
 	}
 	
 	public void onWorldEnter() {

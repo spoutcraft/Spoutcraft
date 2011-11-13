@@ -59,6 +59,5 @@ public class SimpleEntityManager implements EntityManager {
 	
 	public void clearData() {
 		entityData.clear();
-		System.out.println("Cleared Data");
 	}
 }

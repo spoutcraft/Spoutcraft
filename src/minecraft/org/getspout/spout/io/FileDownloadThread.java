@@ -139,10 +139,7 @@ public class FileDownloadThread extends Thread{
 				}
 				catch (Exception e) {
 					failedUrls.add(next.getDownloadUrl());
-					System.out.println("-----------------------");
-					System.out.println("Download Failed!");
-					e.printStackTrace();
-					System.out.println("-----------------------");
+					System.out.println("Download of " + next.getDownloadUrl() + " Failed!");
 				}
 				activeDownload = null;
 			}

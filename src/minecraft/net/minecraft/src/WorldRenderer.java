@@ -20,12 +20,12 @@ import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import net.minecraft.client.Minecraft;
@@ -119,6 +119,8 @@ public class WorldRenderer {
 			for(int renderPass = 0; renderPass < 2; ++renderPass) {
 				this.skipRenderPass[renderPass] = true;
 			}
+			
+			short[] customBlockIds = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockIds();
 
 			Chunk.isLit = false;
 			HashSet tileRenderers = new HashSet();
@@ -188,9 +190,13 @@ public class WorldRenderer {
 									String customTextureAddon = null;
 									GenericBlockDesign design = null;
 
-									if(SpoutItem.isBlockOverride(dx, dy, dz)) {
-										if(SpoutItem.getBlockOverride(dx, dy, dz) != null ) {
-											design = (GenericBlockDesign) SpoutItem.getBlockOverride(dx, dy, dz).getBlockDesign();
+									if (customBlockIds != null) {
+										int key = ((dx & 0xF) << 11) | ((dz & 0xF) << 7) | (dy & 0x7F);
+										if (customBlockIds[key] != 0) {
+											CustomBlock mat = MaterialData.getCustomBlock(customBlockIds[key]);
+											if (mat != null) {
+												design = (GenericBlockDesign) mat.getBlockDesign();
+											}
 										}
 									}
 									
