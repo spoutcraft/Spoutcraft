@@ -176,6 +176,10 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 			onSelectionChanged(i, getItem(i).getText());
 			closeList();
 		}
+
+		public boolean isLast(ComboBoxItem comboBoxItem) {
+			return items.indexOf(comboBoxItem) == items.size() - 1;
+		}
 	}
 	
 	public class ComboBoxItem implements ListWidgetItem {
@@ -201,6 +205,9 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 		public void render(int x, int y, int width, int height) {
 			Spoutcraft.getRenderDelegate().getMinecraftFont().drawString(text, x+2, y+2, 0xffffffff);
+			if(!model.isLast(this)) {
+				RenderUtil.drawRectangle(x, y+11, x+width, y+11+1, 0xffaaaaaa);
+			}
 		}
 
 		public void onClick(int x, int y, boolean doubleClick) {

@@ -67,5 +67,7 @@ public interface RenderDelegate {
 	public void renderContents(GenericScrollArea genericScrollArea);
 	
 	public void render(GenericComboBox comboBox);
+	
+	public String getFittingText(String text, int width);
 
 }
