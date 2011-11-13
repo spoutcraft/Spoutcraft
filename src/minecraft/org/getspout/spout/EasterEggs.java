@@ -20,7 +20,6 @@ import org.bukkit.ChatColor;
 import org.joda.time.DateTime;
 
 public final class EasterEggs {
-	private static final DateTime halloween = new DateTime(2011, 10, 31, 12, 0); //2011, october 31, 12 noon
 	
 	public static String getEasterEggTitle(String user) {
 		if (user.equalsIgnoreCase("Afforess")) {
@@ -37,32 +36,9 @@ public final class EasterEggs {
 			return ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
 		} if (user.equalsIgnoreCase("Olloth")) {
 			return ChatColor.DARK_RED + "Olloth";
+		} if (user.equalsIgnoreCase("Tips48")) {
+			return ChatColor.AQUA + "Tips48";
 		}
 		return null;
-	}
-	
-	public static int getEasterEggTitleColor() {
-		DateTime now = DateTime.now();
-		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
-			return 0xFF5E00; //orange
-		}
-		return -1;
-	}
-	
-	public static String getSplashTextEasterEgg() {
-		DateTime now = DateTime.now();
-		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
-			return "Happy Halloween!";
-		}
-		return null;
-	}
-	
-	public static String getEasterEggCape() {
-		DateTime now = DateTime.now();
-		if (halloween.getDayOfMonth() == now.getDayOfMonth() && halloween.getMonthOfYear() == now.getMonthOfYear()) {
-			return "http://cdn.getspout.org/img/cape/halloween1.png";
-		}
-		return null;
-		
 	}
 }
