@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxModel;
 
 public class GenericComboBox extends GenericButton implements ComboBox {
 	private List<String> items = new ArrayList<String>();
