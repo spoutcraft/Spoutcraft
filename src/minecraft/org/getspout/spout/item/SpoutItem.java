@@ -95,7 +95,7 @@ public class SpoutItem extends Item {
 				
 				if (var1.itemID == MaterialData.flint.getRawId() && var1.getItemDamage() != 0) {
 					CustomBlock block = MaterialData.getCustomBlock(var1.getItemDamage());
-					Spoutcraft.getWorld().getChunkAt(var4 / 16, var6 / 16).setCustomBlockId(var4, var5, var6, (short) block.getCustomId());
+					Spoutcraft.getWorld().getChunkAt(var4, var5, var6).setCustomBlockId(var4, var5, var6, (short) block.getCustomId());
 				}
 				
 				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.stepSoundDir2(),

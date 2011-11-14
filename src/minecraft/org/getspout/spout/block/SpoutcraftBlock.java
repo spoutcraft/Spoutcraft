@@ -307,6 +307,10 @@ public class SpoutcraftBlock implements Block{
 	}
 	
 	public org.spoutcraft.spoutcraftapi.material.Block getType() {
+		short customId = chunk.getCustomBlockId(x, y, z);
+		if (customId != 0) {
+			return MaterialData.getCustomBlock(customId);
+		}
 		return MaterialData.getBlock(getTypeId(), getData());
 	}
 	

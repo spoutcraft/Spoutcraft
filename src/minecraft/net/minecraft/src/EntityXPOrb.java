@@ -110,6 +110,17 @@ public class EntityXPOrb extends Entity {
 			int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 			if(var5 > 0) {
 				var14 = Block.blocksList[var5].slipperiness * 0.98F;
+				//Spout start
+				if (!worldObj.multiplayerWorld) {
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
+					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
+						var14 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.98F;
+					}
+				}
+				//Spout end
 			}
 		}
 

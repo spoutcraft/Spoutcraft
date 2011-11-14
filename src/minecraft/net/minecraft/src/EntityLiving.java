@@ -634,6 +634,15 @@ public abstract class EntityLiving extends Entity {
 				int var4 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(var4 > 0) {
 					var8 = Block.blocksList[var4].slipperiness * 0.91F;
+					//Spout start
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
+					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
+						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					}
+					//Spout end
 				}
 			}
 
@@ -654,6 +663,15 @@ public abstract class EntityLiving extends Entity {
 				int var6 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(var6 > 0) {
 					var8 = Block.blocksList[var6].slipperiness * 0.91F;
+					//Spout start
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
+					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
+						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					}
+					//Spout end
 				}
 			}
 
