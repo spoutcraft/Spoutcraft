@@ -5,13 +5,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
 public class GenericComboBox extends GenericButton implements ComboBox {
+	
 	private List<String> items = new ArrayList<String>();
 	private ComboBoxModel model;
 	private GenericListView view;
-	private Gradient background;
 	private Screen screen;
 	
 	public GenericComboBox() {
@@ -19,9 +20,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		view = new ComboBoxView(model, this);
 		view.setSelection(0);
 		view.setVisible(false);
-		background = new GenericGradient();
-		background.setTopColor(new Color(1f,1f,1f));
-		background.setBottomColor(new Color(1f,1f,1f));
 	}
 	
 	public GenericComboBox(ComboBoxModel model) {
@@ -29,9 +27,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		view = new ComboBoxView(model, this);
 		view.setSelection(0);
 		view.setVisible(false);
-		background = new GenericGradient();
-		background.setTopColor(new Color(1f,1f,1f));
-		background.setBottomColor(new Color(1f,1f,1f));
 	}
 	
 	public WidgetType getType() {
@@ -65,27 +60,8 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		
 		screen.attachWidget(getAddon(), view);
 		view.setVisible(true);
-//		view.setX((int) getActualX());
-//		view.setY((int) (getActualY() + getHeight()));
-//		view.setWidth((int) getWidth());
-//		int needed = view.getInnerSize(Orientation.VERTICAL) + 10;
-//		int available = (int) (screen.getHeight() - view.getActualY() - 5);
-//		
-//		System.out.println("Screen height: "+screen.getHeight()+" y: "+view.getActualY());
-//		
-//		System.out.println("available: "+available);
-//		
-//		if(available < 20) {
-//			available = getY() - 5;
-//			view.setY(getY() - Math.min(available, needed));
-//		}
-//		
-//		view.setHeight(Math.min(needed, available));
 		view.setPriority(RenderPriority.Lowest); //Makes it the top-most widget
 		view.setFocus(true);
-//		background.setX(view.getX()).setY(view.getY()).setWidth((int) view.getWidth()).setHeight((int) view.getHeight());
-//		background.setPriority(RenderPriority.Low);
-//		screen.attachWidget(getAddon(), background);
 		view.setSelection(view.getSelectedRow());
 		return this;
 	}
@@ -93,7 +69,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	public ComboBox closeList() {
 		view.setVisible(false);
 		screen.removeWidget(view);
-//		screen.removeWidget(background);
 		return this;
 	}
 	
@@ -134,6 +109,29 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	public ComboBox setSelection(int row) {
 		view.setSelection(row);
 		return this;
+	}
+	
+	@Override
+	public Widget setScreen(Addon addon, Screen screen) {
+		
+		super.setScreen(addon, screen);
+		
+		screen = getScreen();
+		while (!(screen instanceof GenericScreen)) {
+			if(screen.getScreen() != null)
+				screen = screen.getScreen();
+			else 
+				break;
+		}
+		
+		screen.attachWidget(addon, view);
+		
+		return this;
+	}
+	
+	@Override
+	public Widget setScreen(Screen screen) {
+		return setScreen(null, screen);
 	}
 
 	protected class ComboBoxModel extends AbstractListModel {
@@ -184,6 +182,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		private String text;
 		private ListWidget widget;
 		private ComboBoxModel model;
+		private GenericGradient gradient = new GenericGradient();
 		
 		public ComboBoxItem(ComboBoxModel model) {
 			this.model = model;
@@ -204,7 +203,10 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		public void render(int x, int y, int width, int height) {
 			Spoutcraft.getRenderDelegate().getMinecraftFont().drawString(text, x+2, y+2, 0xffffffff);
 			if(!model.isLast(this)) {
-				RenderUtil.drawRectangle(x, y+11, x+width, y+11+1, 0xffaaaaaa);
+				gradient.setX(x).setY(y+11).setWidth(width).setHeight(1);
+				gradient.setTopColor(new Color(0f,0f,0f,0f)).setBottomColor(new Color(1f,1f,1f,1f));
+				gradient.setOrientation(Orientation.HORIZONTAL); //Doesn't work yet :(
+				Spoutcraft.getRenderDelegate().render(gradient);
 			}
 		}
 
@@ -226,23 +228,36 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 	
 	protected class ComboBoxView extends GenericListView {
+		
+		ComboBox combo;
+		public ComboBoxView(AbstractListModel model, ComboBox box) {
+			super(model);
+			combo = box;
+			setBackgroundColor(new Color(0.5f,0.5f,0.5f,0.9f));
+		}
 
 		@Override
 		public double getWidth() {
+			setWidth((int) combo.getWidth());
 			return combo.getWidth();
 		}
+		
 		@Override
 		public double getHeight() {
 			int a = getAvailableHeight(false) - 5;
 			if(a < 30) {
 				a = getAvailableHeight(true) - 5;
 			}
-			return Math.min(a, getInnerSize(Orientation.VERTICAL));
+			double res = Math.min(a, getInnerSize(Orientation.VERTICAL));
+			setHeight((int) res);
+			return res;
 		}
+		
 		@Override
 		public int getX() {
 			return (int) combo.getActualX();
 		}
+		
 		@Override
 		public int getY() {
 			int h = (int) getHeight();
@@ -253,20 +268,25 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 				return (int) (combo.getActualY() + combo.getHeight());
 			}
 		}
-		
+
+		@Override
+		public double getActualX() {
+			setX(getX());
+			return super.getActualX();
+		}
+
+		@Override
+		public double getActualY() {
+			setY(getY());
+			return super.getActualY();
+		}
+
 		protected int getAvailableHeight(boolean top) {
 			if(!top) {
-				return (int) (getScreen().getActualHeight() - combo.getActualY() - 5);
+				return (int) (Spoutcraft.getClient().getRenderDelegate().getScreenHeight() - combo.getActualY() - combo.getHeight() - 5);
 			} else {
 				return (int) (combo.getActualY() - 5);
 			}
 		}
-		
-		ComboBox combo;
-		public ComboBoxView(AbstractListModel model, ComboBox box) {
-			super(model);
-			combo = box;
-		}
-		
 	}
 }
