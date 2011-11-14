@@ -13,6 +13,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
 	private int selected = -1;
 	protected int cachedTotalHeight = -1;
+	
 
 	public WidgetType getType() {
 		return WidgetType.ListWidget;
@@ -178,7 +179,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		selected = input.readInt();
 		int count = input.readInt();
 		for(int i = 0; i < count; i++) {
-			GenericListWidgetItem item = new GenericListWidgetItem(PacketUtil.readString(input), PacketUtil.readString(input), "");
+			GenericListWidgetItem item = new GenericListWidgetItem(PacketUtil.readString(input), PacketUtil.readString(input), PacketUtil.readString(input));
 			addItem(item);
 		}
 	}
@@ -191,5 +192,8 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		//Don't transmit clientside items because of the interface ListWidgetItem
 	}
 	
-
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
+	}
 }

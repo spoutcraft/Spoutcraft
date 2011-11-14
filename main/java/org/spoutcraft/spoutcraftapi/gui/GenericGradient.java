@@ -90,14 +90,11 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
-
-	@Override
 	public Gradient setOrientation(Orientation axis) {
 		this.axis = axis;
 		return this;
 	}
 
-	@Override
 	public Orientation getOrientation() {
 		return axis;
 	}

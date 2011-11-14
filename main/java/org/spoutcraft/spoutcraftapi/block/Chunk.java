@@ -104,5 +104,13 @@ public interface Chunk {
 	 * @return The entities.
 	 */
 	public Entity[] getEntities();
+	
+	public short getCustomBlockId(int x, int y, int z);
+	
+	public void setCustomBlockId(int x, int y, int z, short id);
+	
+	public short[] getCustomBlockIds();
+	
+	public void setCustomBlockIds(short[] ids);
 
 }

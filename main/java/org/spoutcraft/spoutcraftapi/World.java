@@ -140,6 +140,16 @@ public interface World {
 	 * @return Chunk at the given coordinates
 	 */
 	public Chunk getChunkAt(int x, int z);
+	
+	/**
+	 * Gets the {@link Chunk} at the given <b>block</b> coordinates
+	 *
+	 * @param x X-coordinate of the block
+	 * @param z Y-coordinate of the block
+	 * @param z Z-coordinate of the block
+	 * @return Chunk at the given block coordinates
+	 */
+	public Chunk getChunkAt(int x, int y, int z);
 
 	/**
 	 * Gets the {@link Chunk} at the given {@link Location}

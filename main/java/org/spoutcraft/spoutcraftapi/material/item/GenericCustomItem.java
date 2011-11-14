@@ -66,5 +66,4 @@ public class GenericCustomItem extends GenericItem implements CustomItem {
 	public boolean onItemInteract(Player player, Block block, BlockFace face) {
 		return true;
 	}
-
 }

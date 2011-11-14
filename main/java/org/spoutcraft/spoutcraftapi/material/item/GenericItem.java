@@ -49,5 +49,4 @@ public class GenericItem implements Item {
 		this.customName = name;
 		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
-
 }
