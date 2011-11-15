@@ -17,6 +17,7 @@
 package org.spoutcraft.spoutcraftapi.util;
 
 import org.spoutcraft.spoutcraftapi.World;
+import org.spoutcraft.spoutcraftapi.block.Block;
 
 public class FastLocation extends FastVector implements FixedLocation {
 	private final double yaw;
@@ -60,6 +61,10 @@ public class FastLocation extends FastVector implements FixedLocation {
 	
 	public Vector toVector() {
 		return new MutableVector(x, y, z);
+	}
+	
+	public Block getBlock() {
+		return world.getBlockAt(this);
 	}
 
 }

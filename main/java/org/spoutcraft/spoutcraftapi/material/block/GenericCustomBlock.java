@@ -20,6 +20,9 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	private final CustomItem item;
 	private final int blockId;
 	public int customMetaData = 0;
+	private float hardness = 1.5F;
+	private float friction = 0.6F;
+	private int lightLevel = 0;
 
 	/**
 	 * Creates a GenericCustomBlock with no model yet.
@@ -158,6 +161,39 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	
 	public CustomBlock setItemDrop(ItemStack item) {
 		mm.registerItemDrop(this, item);
+		return this;
+	}
+	
+	@Override
+	public float getHardness() {
+		return hardness;
+	}
+	
+	@Override
+	public CustomBlock setHardness(float hardness) {
+		this.hardness = hardness;
+		return this;
+	}
+	
+	@Override
+	public float getFriction() {
+		return friction;
+	}
+	
+	@Override
+	public CustomBlock setFriction(float friction) {
+		this.friction = friction;
+		return this;
+	}
+	
+	@Override
+	public int getLightLevel() {
+		return lightLevel;
+	}
+	
+	@Override
+	public CustomBlock setLightLevel(int level) {
+		lightLevel = level;
 		return this;
 	}
 }

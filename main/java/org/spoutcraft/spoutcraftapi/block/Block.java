@@ -147,6 +147,11 @@ public interface Block {
 	 */
 	public int getZ();
 	
+	/**
+	 * Gets the material that this block represents
+	 * 
+	 * @return material
+	 */
 	public org.spoutcraft.spoutcraftapi.material.Block getType();
 
 	/**
@@ -171,6 +176,12 @@ public interface Block {
 	 */
 	public void setData(byte data);
 
+	/**
+	 * Sets the metadata for this block
+	 *
+	 * @param data New block specific metadata
+	 * @param whether or not to update neighbor blocks after setting the metadata
+	 */
 	public void setData(byte data, boolean applyPhyiscs);
 
 	/**
