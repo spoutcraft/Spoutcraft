@@ -111,6 +111,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
 			GL11.glScalef((float) button.getWidth() / width, (float) button.getHeight() / 20f, 1);
 
+			String text = getFittingText(button.getText(), (int) button.getInnerWidth());
+			
 			int hoverState = getHoverState(button, isHovering(button));
 			RenderUtil.drawTexturedModalRectangle(0, 0, 0, 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
@@ -119,16 +121,16 @@ public class MCRenderDelegate implements RenderDelegate {
 			int left = (int) 5;
 			WidgetAnchor align = button.getAlign();
 			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
-				left = (int) ((width / 2) - (font.getStringWidth(button.getText()) / 2));
+				left = (int) ((width / 2) - (font.getStringWidth(text) / 2));
 			}
 			else if (align == WidgetAnchor.TOP_RIGHT || align == WidgetAnchor.CENTER_RIGHT || align == WidgetAnchor.BOTTOM_RIGHT) {
-				left = (int) (width - font.getStringWidth(button.getText())) - 5;
+				left = (int) (width - font.getStringWidth(text)) - 5;
 			}
 			
 			GL11.glPushMatrix();
 			float scale = button.getScale();
 			GL11.glScalef(scale, scale, scale);
-			font.drawStringWithShadow(button.getText(), left, 6, color.toInt());
+			font.drawStringWithShadow(text, left, 6, color.toInt());
 			GL11.glPopMatrix();
 		}
 	}
@@ -692,15 +694,18 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public String getFittingText(String text, int width) {
+		if(width <= 1) {
+			return text;
+		}
 		int hash = (new HashCodeBuilder()).append(text).append(width).toHashCode();
 		if(optimalWidth.contains(hash)) {
 			return optimalWidth.get(hash);
 		}
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		String t = text;
+		String t = new String(text);
 		int remove = 0;
 		while (font.getStringWidth(t) > width) {
-			remove ++;
+			remove++;
 			t = text.substring(0, text.length() - 1 - remove) + "...";
 		}
 		optimalWidth.put(hash, t);
@@ -709,6 +714,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericComboBox comboBox) {
 		if (comboBox.isVisible()) {
+			comboBox.setInnerWidth((int) comboBox.getWidth() - 16);
 			render((GenericButton)comboBox);
 			Texture text;
 			if(comboBox.isOpen()) {
