@@ -202,13 +202,11 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		}
 
 		public void render(int x, int y, int width, int height) {
+			gradient.setX(x).setY(y).setWidth(width).setHeight(height);
+			gradient.setTopColor(new Color(0.6f,0.6f,0.6f,0.5f)).setBottomColor(new Color(0.6f,0.6f,0.6f,0f));
+			gradient.setOrientation(Orientation.VERTICAL);
+			Spoutcraft.getRenderDelegate().render(gradient);
 			Spoutcraft.getRenderDelegate().getMinecraftFont().drawString(text, x+2, y+2, 0xffffffff);
-			if(!model.isLast(this)) {
-				gradient.setX(x).setY(y+11).setWidth(width).setHeight(1);
-				gradient.setTopColor(new Color(0f,0f,0f,1f)).setBottomColor(new Color(1f,1f,1f,1f));
-				gradient.setOrientation(Orientation.HORIZONTAL); //Doesn't work yet :(
-				Spoutcraft.getRenderDelegate().render(gradient);
-			}
 		}
 		
 		public void onClick(int x, int y, boolean doubleClick) {
