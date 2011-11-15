@@ -53,6 +53,7 @@ import net.minecraft.src.WorldSettings;
 import org.getspout.spout.SpoutcraftWorld;
 import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
 
@@ -2156,7 +2157,16 @@ public class World implements IBlockAccess {
 	}
 
 	private int func_35458_d(int var1, int var2, int var3, int var4, int var5, int var6) {
-		int var7 = Block.lightValue[var5];
+		//Spout start
+		int light = Block.lightValue[var5];
+		if (var5 > 0) {
+			org.spoutcraft.spoutcraftapi.material.Block b = Spoutcraft.getWorld().getBlockAt(var2, var3, var4).getType();
+			if (b instanceof CustomBlock && b.getLightLevel() > 0) {
+				light = b.getLightLevel();
+			}
+		}
+		int var7 = light;
+		//Spout end
 		int var8 = this.getSavedLightValue(EnumSkyBlock.Block, var2 - 1, var3, var4) - var6;
 		int var9 = this.getSavedLightValue(EnumSkyBlock.Block, var2 + 1, var3, var4) - var6;
 		int var10 = this.getSavedLightValue(EnumSkyBlock.Block, var2, var3 - 1, var4) - var6;

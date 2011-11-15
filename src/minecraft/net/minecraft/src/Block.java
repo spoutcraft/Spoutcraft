@@ -110,7 +110,9 @@ import net.minecraft.src.World;
 import gnu.trove.map.hash.TIntFloatHashMap;
 import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.item.SpoutItem;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 // Spout End
@@ -354,11 +356,25 @@ public class Block {
 	}
 
 	public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
-		return var1.getBrightness(var2, var3, var4, lightValue[this.blockID]);
+		//Spout start
+		int light = lightValue[this.blockID];
+		org.spoutcraft.spoutcraftapi.material.Block b = Spoutcraft.getWorld().getBlockAt(var2, var3, var4).getType();
+		if (b instanceof CustomBlock && b.getLightLevel() > 0) {
+			light = b.getLightLevel();
+		}
+		return var1.getBrightness(var2, var3, var4, light);
+		//Spout end
 	}
 
 	public int func_35275_c(IBlockAccess var1, int var2, int var3, int var4) {
-		return var1.func_35451_b(var2, var3, var4, lightValue[this.blockID]);
+		//Spout start
+		int light = lightValue[this.blockID];
+		org.spoutcraft.spoutcraftapi.material.Block b = Spoutcraft.getWorld().getBlockAt(var2, var3, var4).getType();
+		if (b instanceof CustomBlock && b.getLightLevel() > 0) {
+			light = b.getLightLevel();
+		}
+		return var1.func_35451_b(var2, var3, var4, light);
+		//Spout end
 	}
 
 	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
@@ -439,6 +455,12 @@ public class Block {
 			ActivePlayer player = (ActivePlayer)((EntityPlayerSP)entityhuman).spoutEntity;
 			FixedLocation target = player.getLastClickedLocation();
 			if (target != null) {
+				
+				org.spoutcraft.spoutcraftapi.material.Block b = target.getBlock().getType();
+				if (b instanceof CustomBlock) {
+					return b.getHardness();
+				}
+				
 				int index = getIndex((int)target.getX(), (int)target.getY(), (int)target.getZ());
 				SpoutcraftChunk chunk = (SpoutcraftChunk)target.getWorld().getChunkAt(target);
 				TIntFloatHashMap hardnessOverrides = chunk.hardnessOverrides;

@@ -26,7 +26,7 @@ public class MipMapSlider extends GenericSlider{
 	public MipMapSlider() {
 		super("Terrain Mipmaps");
 		this.setSliderPosition(ConfigReader.mipmapsPercent);
-		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrian.");
+		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrain.");
 	}
 	
 	@Override

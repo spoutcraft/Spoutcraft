@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.getspout.spout.item.ServerCustomBlock;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
@@ -18,13 +19,16 @@ public class PacketCustomMaterial implements SpoutPacket {
 	private byte type;
 	private boolean isItem = false;
 	private boolean isOpaque = false;
+	private float hardness;
+	private float friction;
+	private int lightLevel;
 
 	public PacketCustomMaterial() {
 
 	}
 
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(addon.getDescription().getName()) + PacketUtil.getNumBytes(name) + 4 + 1 + 1 + 1;
+		return PacketUtil.getNumBytes(addon.getDescription().getName()) + PacketUtil.getNumBytes(name) + 4 + 1 + 1 + 1 + 4 + 4 + 4;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
@@ -34,6 +38,9 @@ public class PacketCustomMaterial implements SpoutPacket {
 		type = input.readByte();
 		isItem = type == 2 ? true : false;
 		isOpaque = type == 1 ? true : false;
+		hardness = input.readFloat();
+		friction = input.readFloat();
+		lightLevel = input.readInt();
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -41,12 +48,17 @@ public class PacketCustomMaterial implements SpoutPacket {
 		PacketUtil.writeString(output, name);
 		output.writeInt(id);
 		output.writeByte(isItem ? 2 : isOpaque ? 1 : 0);
+		output.writeFloat(hardness);
+		output.writeFloat(friction);
+		output.writeInt(lightLevel);
 	}
 
 	public void run(int playerId) {
 		CustomItem item = new GenericCustomItem(Spoutcraft.getClient().getMaterialManager(), addon, name, id);
 		if(!isItem) {
-			new ServerCustomBlock(addon, name, isOpaque, item);
+			CustomBlock block = new ServerCustomBlock(addon, name, isOpaque, item);
+			block.setHardness(hardness).setFriction(friction).setLightLevel(lightLevel);
+			
 		}
 	}
 
@@ -58,7 +70,7 @@ public class PacketCustomMaterial implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 }
