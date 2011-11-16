@@ -28,6 +28,9 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String url = null;
 	protected boolean drawAlpha = false;
+	protected WidgetAnchor align = WidgetAnchor.SCALE;
+	protected int top;
+	protected int left;
 
 	public GenericTexture() {
 
@@ -43,11 +46,12 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getUrl()) + 1;
+		return super.getNumBytes() + PacketUtil.getNumBytes(getUrl()) + 6;
 	}
 
+	@Override
 	public int getVersion() {
-		return super.getVersion() + 1;
+		return super.getVersion() + 2;
 	}
 
 	@Override
@@ -55,6 +59,9 @@ public class GenericTexture extends GenericWidget implements Texture {
 		super.readData(input);
 		this.setUrl(PacketUtil.readString(input));
 		this.setDrawAlphaChannel(input.readBoolean());
+		setAlign(WidgetAnchor.getAnchorFromId(input.readByte()));
+		setTop(input.readShort());
+		setLeft(input.readShort());
 	}
 
 	@Override
@@ -62,6 +69,9 @@ public class GenericTexture extends GenericWidget implements Texture {
 		super.writeData(output);
 		PacketUtil.writeString(output, getUrl());
 		output.writeBoolean(isDrawingAlphaChannel());
+		output.writeByte(align.getId());
+		output.writeShort(top);
+		output.writeShort(left);
 	}
 
 	public void render() {
@@ -80,8 +90,12 @@ public class GenericTexture extends GenericWidget implements Texture {
 		return this;
 	}
 
+	@Override
 	public Texture copy() {
-		return ((Texture)super.copy()).setUrl(getUrl());
+		return ((Texture)super.copy()) //
+				.setUrl(getUrl()) //
+				.setTop(getTop()) //
+				.setLeft(getLeft());
 	}
 
 	public boolean isDrawingAlphaChannel() {
@@ -91,5 +105,38 @@ public class GenericTexture extends GenericWidget implements Texture {
 	public Texture setDrawAlphaChannel(boolean draw) {
 		this.drawAlpha = draw;
 		return this;
+	}
+
+	public Texture setAlign(WidgetAnchor align) {
+		if (align != null && getAlign() != align) {
+			this.align = align;
+		}
+		return this;
+	}
+
+	public WidgetAnchor getAlign() {
+		return align;
+	}
+
+	public Texture setTop(int top) {
+		if (getTop() != top) {
+			this.top = top;
+		}
+		return this;
+	}
+
+	public int getTop() {
+		return top;
+	}
+
+	public Texture setLeft(int left) {
+		if (getLeft() != left) {
+			this.left = left;
+		}
+		return this;
+	}
+
+	public int getLeft() {
+		return left;
 	}
 }

@@ -34,6 +34,12 @@ public interface Widget{
 	public int getNumBytes();
 
 	/**
+	 * Is this running on Spoutcraft (ie, not on the server) - declared final in GenericWidget!
+	 * @return if it's running on a client
+	 */
+	public boolean isSpoutcraft();
+
+	/**
 	 * The version this widget is. Mismatched versions will fail to be created.
 	 * @return version
 	 */
@@ -448,4 +454,40 @@ public interface Widget{
 	public double getActualX();
 	
 	public double getActualY();
+
+	/**
+	 * Setup a simple automatic animation.
+	 * Please note that some animation types are limited to certain types of widget.
+	 * All animation is carried out on the client, so it isn't possible to update
+	 * the server side values affected by the animation...
+	 * @param type the type of animation to use
+	 * @param axis which direction to animate (if applicable)
+	 * @param value a custom value used by some types (default: 1)
+	 * @param count how many frames
+	 * @param ticks how many ticks per "frame"
+	 * @param repeat should the animation be repeated
+	 * @param reset should it reset back to the first frame after finishing
+	 * @return widget
+	 */
+	public Widget animate(Animation type, Orientation axis, byte value, byte count, short ticks, boolean repeat, boolean reset);
+
+	/**
+	 * Start the animation.
+	 * @return widget
+	 */
+	public Widget animateStart();
+
+	/**
+	 * Stop the animation, optionally letting it finish a loop.
+	 * If the "reset" option was set when creating the animation it will go
+	 * back to the first frame, otherwise it will stop where it is.
+	 * @param finish should it finish the current loop (if repeating)
+	 * @return widget
+	 */
+	public Widget animateStop(boolean finish);
+
+	/**
+	 * Called immediately before onTick, do try to be careful with it...
+	 */
+	public void onAnimate();
 }

@@ -161,21 +161,26 @@ public interface TextField extends Control {
 
 	/**
 	 * Fires when this text field is typed into on the screen.
-	 * 
-	 * This event is also sent to the screen listener, afterwards.
-	 * 
+	 * This event will also be sent to the screen listener
 	 * @param event
 	 */
 	public void onTextFieldChange(TextFieldChangeEvent event);
 
-	public void onTypingFinished();
+	/**
+	 * Fires when the user presses Enter.
+	 * This event will fire the onTextFieldChange method first, and the
+	 * screen listener afterwards.
+	 * @param event
+	 */
+	public void onTypingFinished(TextFieldChangeEvent event);
 	
 	/**
 	 * Sets the placeholder to text.
 	 * The placeholder will be displayed when no text is in the TextField
 	 * @param text to set as placeholder
+	 * @return textfield
 	 */
-	public void setPlaceholder(String text);
+	public TextField setPlaceholder(String text);
 	
 	/**
 	 * Gets the placeholder

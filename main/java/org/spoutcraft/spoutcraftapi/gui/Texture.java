@@ -49,4 +49,45 @@ public interface Texture extends Widget {
 	 */
 	public Texture setDrawAlphaChannel(boolean draw);
 
+	/**
+	 * Sets the texture alignment for drawing.
+	 * The default is SCALE - so whatever size the actual image is it will scale
+	 * to Width and Height of the widget. By using a different anchor point it
+	 * will instead use a slice of the image to display.
+	 * @param align the anchor point
+	 * @return texture
+	 */
+	public Texture setAlign(WidgetAnchor align);
+
+	/**
+	 * Get the current alignment for drawing.
+	 * @return the alignment
+	 */
+	public WidgetAnchor getAlign();
+
+	/**
+	 * Set the offset to the top of the image.
+	 * @param top the top offset
+	 * @return texture
+	 */
+	public Texture setTop(int top);
+
+	/**
+	 * Get the offset to the top of the image.
+	 * @return top offset
+	 */
+	public int getTop();
+
+	/**
+	 * The offset to the left of the image.
+	 * @param left the left offset
+	 * @return texture
+	 */
+	public Texture setLeft(int left);
+
+	/**
+	 * Get the offset to the left of the image.
+	 * @return left offset
+	 */
+	public int getLeft();
 }

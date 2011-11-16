@@ -19,46 +19,58 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.util.HashMap;
 
 /**
- * This is used to define the orientation for Scrollable widgets.
+ * Types of animation, only one animation is permitted at a time, and note that
+ * some types are limited to certain widget types...
  */
-public enum Orientation {
-	/**
-	 * Horizontal axis (left-right)
-	 */
-	HORIZONTAL(0),
-	/**
-	 * Vertical axis (top-bottom)
-	 */
-	VERTICAL(1);
+public enum Animation {
 
+	/**
+	 * No animation (default).
+	 */
+	NONE(0),
+	/**
+	 * Change the X or Y by "value" pixels (any Widget).
+	 */
+	POSITION(1),
+	/**
+	 * Change the Width or Height by "value" pixels (any Widget).
+	 */
+	SIZE(2),
+	/**
+	 * Change the Top or Left offset by "value" pixels (Texture only).
+	 */
+	OFFSET(3);
 	private final int id;
-	Orientation(int id) {
+
+	Animation(int id) {
 		this.id = id;
 	}
 
 	public int getId() {
 		return id;
 	}
-
-	private static final HashMap<Integer, Orientation> lookupId = new HashMap<Integer, Orientation>();
+	private static final HashMap<Integer, Animation> lookupId = new HashMap<Integer, Animation>();
 
 	static {
-		for (Orientation t : values()) {
+		for (Animation t : values()) {
 			lookupId.put(t.getId(), t);
 		}
 	}
 
-	public static Orientation getOrientationFromId(int id) {
+	public static Animation getAnimationFromId(int id) {
 		return lookupId.get(id);
 	}
 
-	public Orientation getOther() {
-		switch(this) {
-		case HORIZONTAL:
-			return VERTICAL;
-		case VERTICAL:
-			return HORIZONTAL;
+	public boolean check(Widget widget) {
+		switch (this) {
+			case POSITION:
+			case SIZE:
+				return true;
+			case OFFSET:
+				if (widget instanceof Texture) {
+					return true;
+				}
 		}
-		return null;
+		return false;
 	}
 }

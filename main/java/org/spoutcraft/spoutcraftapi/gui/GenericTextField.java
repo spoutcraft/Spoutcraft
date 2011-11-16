@@ -53,7 +53,7 @@ public class GenericTextField extends GenericControl implements TextField {
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 2;
+		return super.getVersion() + 3;
 	}
 	
 	public String getActualText() {
@@ -185,26 +185,28 @@ public class GenericTextField extends GenericControl implements TextField {
 	}
 
 	public Control setFocus(boolean focus) {
-		if (focus)
+		if (focus) {
 			Keyboard.setRepeatingEvents(true);
+		}
 		return super.setFocus(focus);
 	}
 
 	public TextField copy() {
 		// ignore focus parameter which would lead to strange behaviour!
-		return ((TextField)super.copy()).setText(getText()).setCursorPosition(getCursorPosition()).setMaximumCharacters(getMaximumCharacters()).setFieldColor(getFieldColor()).setBorderColor(getBorderColor()).setMaximumLines(getMaximumLines()).setTabIndex(getTabIndex()).setPasswordField(isPasswordField());
+		return ((TextField)super.copy()).setText(getText()).setCursorPosition(getCursorPosition()).setMaximumCharacters(getMaximumCharacters()).setFieldColor(getFieldColor()).setBorderColor(getBorderColor()).setMaximumLines(getMaximumLines()).setTabIndex(getTabIndex()).setPasswordField(isPasswordField()).setPlaceholder(getPlaceholder());
 	}
 
 	public void onTextFieldChange(TextFieldChangeEvent event) {
 		
 	}
 	
-	public void onTypingFinished() {
+	public void onTypingFinished(TextFieldChangeEvent event) {
 		
 	}
 
-	public void setPlaceholder(String text) {
+	public TextField setPlaceholder(String text) {
 		placeholder = text;
+		return this;
 	}
 
 	public String getPlaceholder() {

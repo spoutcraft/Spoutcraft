@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import javax.xml.bind.TypeConstraintException;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -30,6 +31,11 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 @UnsafeClass
 public abstract class GenericWidget implements Widget {
+
+	/**
+	 * Set if this is Spoutcraft (client), cleared if it is Spout (server)...
+	 */
+	static final protected transient boolean isSpoutcraft = true;
 	protected int X = 0;
 	protected int Y = 0;
 	protected int width = 0;
@@ -47,17 +53,34 @@ public abstract class GenericWidget implements Widget {
 	protected int marginTop = 0, marginRight = 0, marginBottom = 0, marginLeft = 0;
 	protected int minWidth = 0, maxWidth = 427, minHeight = 0, maxHeight = 240;
 	protected int orig_x = 0, orig_y = 0;
+	// Animation
+	protected Animation animType = Animation.NONE;
+	protected Orientation animAxis = Orientation.HORIZONTAL;
+	protected byte animValue = 1;
+	protected byte animCount = 0;
+	protected short animTicks = 20;
+	protected boolean animRepeat = false;
+	protected boolean animReset = true;
+	protected boolean animRunning = false;
+	protected boolean animStopping = false;
+	protected transient int animTick = 0; // Current tick
+	protected transient int animFrame = 0; // Current frame
+	protected transient int animStart = 0; // Start value per type
 
 	public GenericWidget() {
+	}
 
+	@Override
+	final public boolean isSpoutcraft() {
+		return isSpoutcraft;
 	}
 
 	public int getNumBytes() {
-		return 38 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
+		return 48 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
 	}
 
 	public int getVersion() {
-		return 3;
+		return 4;
 	}
 
 	public GenericWidget(int X, int Y, int width, int height) {
@@ -93,9 +116,18 @@ public abstract class GenericWidget implements Widget {
 		//since this is coming from the server, assume we haven't gotten the addon info yet
 		if (addon == null) {
 			addon = new ServerAddon(addonName, "", "");
-			((SimpleAddonManager)Spoutcraft.getAddonManager()).addFakeAddon((ServerAddon)addon);
+			((SimpleAddonManager) Spoutcraft.getAddonManager()).addFakeAddon((ServerAddon) addon);
 		}
 		setAddon(addon);
+		animType = Animation.getAnimationFromId(input.readByte());
+		animAxis = Orientation.getOrientationFromId(input.readByte());
+		animValue = input.readByte();
+		animCount = input.readByte();
+		animTicks = input.readShort();
+		animRepeat = input.readBoolean();
+		animReset = input.readBoolean();
+		animRunning = input.readBoolean();
+		animStopping = input.readBoolean();
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -110,6 +142,15 @@ public abstract class GenericWidget implements Widget {
 		output.writeLong(getId().getLeastSignificantBits());
 		PacketUtil.writeString(output, getTooltip());
 		PacketUtil.writeString(output, getAddon().getDescription().getName());
+		output.writeByte(animType.getId());
+		output.writeByte(animAxis.getId());
+		output.writeByte(animValue);
+		output.writeByte(animCount);
+		output.writeShort(animTicks);
+		output.writeBoolean(animRepeat);
+		output.writeBoolean(animReset);
+		output.writeBoolean(animRunning);
+		output.writeBoolean(animStopping);
 	}
 
 	public Addon getAddon() {
@@ -117,8 +158,9 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget setAddon(Addon addon) {
-		if (addon != null)
+		if (addon != null) {
 			this.addon = addon;
+		}
 		return this;
 	}
 
@@ -134,7 +176,7 @@ public abstract class GenericWidget implements Widget {
 		this.screen = screen;
 		return this;
 	}
-	
+
 	public Widget setScreen(Addon addon, Screen screen) {
 		if (this.screen != null && screen != null && screen != this.screen) {
 			this.screen.removeWidget(this);
@@ -261,20 +303,19 @@ public abstract class GenericWidget implements Widget {
 	public boolean equals(Object other) {
 		return other instanceof Widget && other.hashCode() == hashCode();
 	}
-	
+
 	public void onTick() {
-		
 	}
-	
-	public Widget setTooltip(String t){
+
+	public Widget setTooltip(String t) {
 		tooltip = t;
 		return this;
 	}
-	
-	public String getTooltip(){
+
+	public String getTooltip() {
 		return tooltip;
 	}
-	
+
 	public Container getContainer() {
 		return container;
 	}
@@ -305,15 +346,15 @@ public abstract class GenericWidget implements Widget {
 	public Widget setMargin(int marginAll) {
 		return setMargin(marginAll, marginAll, marginAll, marginAll);
 	}
-	
+
 	public Widget setMargin(int marginTopBottom, int marginLeftRight) {
 		return setMargin(marginTopBottom, marginLeftRight, marginTopBottom, marginLeftRight);
 	}
-	
+
 	public Widget setMargin(int marginTop, int marginLeftRight, int marginBottom) {
 		return setMargin(marginTop, marginLeftRight, marginBottom, marginLeftRight);
 	}
-	
+
 	public Widget setMargin(int marginTop, int marginRight, int marginBottom, int marginLeft) {
 		if (this.marginTop != marginTop || this.marginRight != marginRight || this.marginBottom != marginBottom || this.marginLeft != marginLeft) {
 			this.marginTop = marginTop;
@@ -360,15 +401,15 @@ public abstract class GenericWidget implements Widget {
 	public int getMarginTop() {
 		return marginTop;
 	}
-	
+
 	public int getMarginRight() {
 		return marginRight;
 	}
-	
+
 	public int getMarginBottom() {
 		return marginBottom;
 	}
-	
+
 	public int getMarginLeft() {
 		return marginLeft;
 	}
@@ -440,18 +481,27 @@ public abstract class GenericWidget implements Widget {
 		Y = orig_y;
 		return this;
 	}
-	
+
 	public Widget copy() {
 		try {
 			Widget copy = getType().getWidgetClass().newInstance();
-			copy.setX(getX()).setY(getY()).setWidth((int) getWidth()).setHeight((int) getHeight()).setVisible(isVisible());
-			copy.setPriority(getPriority()).setTooltip(getTooltip()).setAnchor(getAnchor());
-			copy.setMargin(getMarginTop(), getMarginRight(), getMarginBottom(), getMarginLeft());
-			copy.setMinWidth(getMinWidth()).setMaxWidth(getMaxWidth()).setMinHeight(getMinHeight()).setMaxHeight(getMaxHeight());
-			copy.setFixed(isFixed());
+			copy.setX(getX()) // Easier reading
+					.setY(getY()) //
+					.setWidth((int) getWidth()) //
+					.setHeight((int) getHeight()) //
+					.setVisible(isVisible()) //
+					.setPriority(getPriority()) //
+					.setTooltip(getTooltip()) //
+					.setAnchor(getAnchor()) //
+					.setMargin(getMarginTop(), getMarginRight(), getMarginBottom(), getMarginLeft()) //
+					.setMinWidth(getMinWidth()) //
+					.setMaxWidth(getMaxWidth()) //
+					.setMinHeight(getMinHeight()) //
+					.setMaxHeight(getMaxHeight()) //
+					.setFixed(isFixed()) //
+					.animate(animType, animAxis, animValue, animCount, animTicks, animRepeat, animReset);
 			return copy;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException("Unable to create a copy of " + getClass() + ". Does it have a valid widget type?");
 		}
 	}
@@ -464,12 +514,11 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public double getActualX() {
-		if(screen == null) {
+		if (screen == null) {
 			return getScreenX();
-		}
-		else {
-			if(screen instanceof ScrollArea) {
-				ScrollArea sa = (ScrollArea)screen;
+		} else {
+			if (screen instanceof ScrollArea) {
+				ScrollArea sa = (ScrollArea) screen;
 				return getScreenX() - sa.getScrollPosition(Orientation.HORIZONTAL) + sa.getScreenX();
 			} else {
 				return getScreenX() + screen.getScreenX();
@@ -478,16 +527,101 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public double getActualY() {
-		if(screen == null) {
+		if (screen == null) {
 			return getScreenY();
-		}
-		else {
-			if(screen instanceof ScrollArea) {
-				ScrollArea sa = (ScrollArea)screen;
+		} else {
+			if (screen instanceof ScrollArea) {
+				ScrollArea sa = (ScrollArea) screen;
 				return getScreenY() - sa.getScrollPosition(Orientation.VERTICAL) + sa.getScreenY();
 			} else {
 				return getScreenY() + screen.getScreenY();
 			}
+		}
+	}
+
+	public Widget animate(Animation type, Orientation axis, byte value, byte count, short ticks, boolean repeat, boolean reset) {
+		if (!type.check(this)) {
+			throw new TypeConstraintException("Cannot use Animation." + type.name() + " on " + getType().toString());
+		}
+		animType = type;
+		animAxis = axis;
+		animValue = value;
+		animCount = count;
+		animTicks = ticks;
+		animRepeat = repeat;
+		animReset = reset;
+		animRunning = false;
+		animStopping = false;
+		animTick = 0;
+		animFrame = 0;
+		return this;
+	}
+
+	public Widget animateStart() {
+		if (animType != Animation.NONE) {
+			animRunning = true;
+			switch (animType) {
+				case POSITION:
+					animStart = animAxis == Orientation.HORIZONTAL ? X : Y;
+					break;
+				case SIZE:
+					animStart = animAxis == Orientation.HORIZONTAL ? width : height;
+					break;
+				case OFFSET:
+					animStart = animAxis == Orientation.HORIZONTAL ? ((Texture) this).getLeft() : ((Texture) this).getTop();
+					break;
+			}
+			animStart -= animFrame * animCount;
+		}
+		return this;
+	}
+
+	public Widget animateStop(boolean finish) {
+		if (animRunning && finish) {
+			animStopping = true;
+		} else {
+			animRunning = false;
+		}
+		return this;
+	}
+
+	public void onAnimate() {
+		if (!animRunning || animTicks == 0 || ++animTick % animTicks != 0) {
+			return;
+		}
+		// We're running, and it's ready for our next frame...
+		if (++animFrame == animCount) {
+			animFrame = 0;
+			if (animStopping || !animRepeat) {
+				animRunning = false;
+				if (!animReset) {
+					return;
+				}
+			}
+		}
+		switch (animType) {
+			case POSITION:
+				if (animAxis == Orientation.HORIZONTAL) {
+					setX(animStart + (animFrame * animCount));
+				} else {
+					setY(animStart + (animFrame * animCount));
+				}
+				break;
+			case SIZE:
+				if (animAxis == Orientation.HORIZONTAL) {
+					setWidth(animStart + (animFrame * animCount));
+				} else {
+					setHeight(animStart + (animFrame * animCount));
+				}
+				break;
+			case OFFSET:
+				Texture texture = ((Texture) this);
+				if (animAxis == Orientation.HORIZONTAL) {
+					texture.setLeft(animStart + (animFrame * animCount));
+				} else {
+					texture.setTop(animStart + (animFrame * animCount));
+				}
+				break;
 		}
 	}
 }

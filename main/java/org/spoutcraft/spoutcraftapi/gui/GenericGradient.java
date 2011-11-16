@@ -71,7 +71,7 @@ public class GenericGradient extends GenericWidget implements Gradient {
 		super.readData(input);
 		this.setTopColor(PacketUtil.readColor(input));
 		this.setBottomColor(PacketUtil.readColor(input));
-		this.setOrientation(Orientation.getAnchorFromId(input.readByte()));
+		this.setOrientation(Orientation.getOrientationFromId(input.readByte()));
 	}
 
 	@Override
