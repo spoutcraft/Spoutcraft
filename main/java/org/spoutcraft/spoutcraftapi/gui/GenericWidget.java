@@ -53,7 +53,7 @@ public abstract class GenericWidget implements Widget {
 	protected int minWidth = 0, maxWidth = 427, minHeight = 0, maxHeight = 240;
 	protected int orig_x = 0, orig_y = 0;
 	// Animation
-	protected Animation animType = Animation.NONE;
+	protected WidgetAnim animType = WidgetAnim.NONE;
 	protected Orientation animAxis = Orientation.HORIZONTAL;
 	protected float animValue = 1f;
 	protected byte animCount = 0;
@@ -117,7 +117,7 @@ public abstract class GenericWidget implements Widget {
 			((SimpleAddonManager) Spoutcraft.getAddonManager()).addFakeAddon((ServerAddon) addon);
 		}
 		setAddon(addon);
-		animType = Animation.getAnimationFromId(input.readByte());
+		animType = WidgetAnim.getAnimationFromId(input.readByte());
 		animAxis = Orientation.getOrientationFromId(input.readByte());
 		animValue = input.readFloat();
 		animCount = input.readByte();
@@ -537,7 +537,7 @@ public abstract class GenericWidget implements Widget {
 		}
 	}
 
-	public Widget animate(Animation type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset) {
+	public Widget animate(WidgetAnim type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset) {
 		if (!type.check(this)) {
 			throw new UnsupportedOperationException("Cannot use Animation." + type.name() + " on " + getType().toString());
 		}
@@ -556,7 +556,7 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget animateStart() {
-		if (animType != Animation.NONE) {
+		if (animType != WidgetAnim.NONE) {
 			animRunning = true;
 			switch (animType) {
 				case POSITION:

@@ -22,7 +22,7 @@ import java.util.HashMap;
  * Types of animation, only one animation is permitted at a time, and note that
  * some types are limited to certain widget types...
  */
-public enum Animation {
+public enum WidgetAnim {
 
 	/**
 	 * No animation (default).
@@ -42,22 +42,22 @@ public enum Animation {
 	OFFSET(3);
 	private final int id;
 
-	Animation(int id) {
+	WidgetAnim(int id) {
 		this.id = id;
 	}
 
 	public int getId() {
 		return id;
 	}
-	private static final HashMap<Integer, Animation> lookupId = new HashMap<Integer, Animation>();
+	private static final HashMap<Integer, WidgetAnim> lookupId = new HashMap<Integer, WidgetAnim>();
 
 	static {
-		for (Animation t : values()) {
+		for (WidgetAnim t : values()) {
 			lookupId.put(t.getId(), t);
 		}
 	}
 
-	public static Animation getAnimationFromId(int id) {
+	public static WidgetAnim getAnimationFromId(int id) {
 		return lookupId.get(id);
 	}
 

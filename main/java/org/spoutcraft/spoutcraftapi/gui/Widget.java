@@ -469,7 +469,7 @@ public interface Widget{
 	 * @param reset should it reset back to the first frame after finishing
 	 * @return widget
 	 */
-	public Widget animate(Animation type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset);
+	public Widget animate(WidgetAnim type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset);
 
 	/**
 	 * Start the animation.
