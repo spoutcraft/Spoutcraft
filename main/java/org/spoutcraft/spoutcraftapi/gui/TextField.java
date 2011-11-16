@@ -168,11 +168,8 @@ public interface TextField extends Control {
 
 	/**
 	 * Fires when the user presses Enter.
-	 * This event will fire the onTextFieldChange method first, and the
-	 * screen listener afterwards.
-	 * @param event
 	 */
-	public void onTypingFinished(TextFieldChangeEvent event);
+	public void onTypingFinished();
 	
 	/**
 	 * Sets the placeholder to text.

@@ -31,12 +31,10 @@ public class GenericTextField extends GenericControl implements TextField {
 	public static final int PADDING = 4;
 	public static final int LINE_HEIGHT = 10;
 	public static final int LINE_SPACING = 2;
-
 	private static final char MASK_MAXLINES = 0x7F; // bits 1–7
 	private static final char MASK_TABINDEX = 0x3F80; // bits 8–14
 	private static final char FLAG_PASSWORD = 0x4000; // bit 15
 	private static final char FLAG_FOCUS = 0x8000; // bit 16
-
 	protected boolean password = false;
 	protected TextProcessor textProcessor;
 	protected int tabIndex = 0;
@@ -48,18 +46,21 @@ public class GenericTextField extends GenericControl implements TextField {
 		this.textProcessor = new GenericTextProcessor();
 	}
 
+	@Override
 	public int getNumBytes() {
 		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(textProcessor.getText());
 	}
 
+	@Override
 	public int getVersion() {
 		return super.getVersion() + 3;
 	}
-	
+
 	public String getActualText() {
-		return textProcessor.getText().isEmpty()?getPlaceholder():textProcessor.getText();
+		return textProcessor.getText().length() == 0 ? getPlaceholder() : textProcessor.getText();
 	}
 
+	@Override
 	public void readData(DataInputStream input) throws IOException {
 		super.readData(input);
 		setFieldColor(PacketUtil.readColor(input));
@@ -74,6 +75,7 @@ public class GenericTextField extends GenericControl implements TextField {
 		setText(PacketUtil.readString(input));
 	}
 
+	@Override
 	public void writeData(DataOutputStream output) throws IOException {
 		super.writeData(output);
 		PacketUtil.writeColor(output, getFieldColor());
@@ -179,11 +181,13 @@ public class GenericTextField extends GenericControl implements TextField {
 		return this;
 	}
 
+	@Override
 	public Widget setWidth(int width) {
 		textProcessor.setWidth(Math.max(0, width - (PADDING << 1)));
 		return super.setWidth(width);
 	}
 
+	@Override
 	public Control setFocus(boolean focus) {
 		if (focus) {
 			Keyboard.setRepeatingEvents(true);
@@ -191,17 +195,25 @@ public class GenericTextField extends GenericControl implements TextField {
 		return super.setFocus(focus);
 	}
 
+	@Override
 	public TextField copy() {
 		// ignore focus parameter which would lead to strange behaviour!
-		return ((TextField)super.copy()).setText(getText()).setCursorPosition(getCursorPosition()).setMaximumCharacters(getMaximumCharacters()).setFieldColor(getFieldColor()).setBorderColor(getBorderColor()).setMaximumLines(getMaximumLines()).setTabIndex(getTabIndex()).setPasswordField(isPasswordField()).setPlaceholder(getPlaceholder());
+		return ((TextField) super.copy()) //
+				.setText(getText()) //
+				.setCursorPosition(getCursorPosition()) //
+				.setMaximumCharacters(getMaximumCharacters()) //
+				.setFieldColor(getFieldColor()) //
+				.setBorderColor(getBorderColor()) //
+				.setMaximumLines(getMaximumLines()) //
+				.setTabIndex(getTabIndex()) //
+				.setPasswordField(isPasswordField()) //
+				.setPlaceholder(getPlaceholder());
 	}
 
 	public void onTextFieldChange(TextFieldChangeEvent event) {
-		
 	}
-	
-	public void onTypingFinished(TextFieldChangeEvent event) {
-		
+
+	public void onTypingFinished() {
 	}
 
 	public TextField setPlaceholder(String text) {

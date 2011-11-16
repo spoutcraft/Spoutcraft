@@ -56,7 +56,7 @@ public abstract class GenericWidget implements Widget {
 	// Animation
 	protected Animation animType = Animation.NONE;
 	protected Orientation animAxis = Orientation.HORIZONTAL;
-	protected byte animValue = 1;
+	protected float animValue = 1f;
 	protected byte animCount = 0;
 	protected short animTicks = 20;
 	protected boolean animRepeat = false;
@@ -70,13 +70,12 @@ public abstract class GenericWidget implements Widget {
 	public GenericWidget() {
 	}
 
-	@Override
 	final public boolean isSpoutcraft() {
 		return isSpoutcraft;
 	}
 
 	public int getNumBytes() {
-		return 48 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
+		return 51 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
 	}
 
 	public int getVersion() {
@@ -121,7 +120,7 @@ public abstract class GenericWidget implements Widget {
 		setAddon(addon);
 		animType = Animation.getAnimationFromId(input.readByte());
 		animAxis = Orientation.getOrientationFromId(input.readByte());
-		animValue = input.readByte();
+		animValue = input.readFloat();
 		animCount = input.readByte();
 		animTicks = input.readShort();
 		animRepeat = input.readBoolean();
@@ -144,7 +143,7 @@ public abstract class GenericWidget implements Widget {
 		PacketUtil.writeString(output, getAddon().getDescription().getName());
 		output.writeByte(animType.getId());
 		output.writeByte(animAxis.getId());
-		output.writeByte(animValue);
+		output.writeFloat(animValue);
 		output.writeByte(animCount);
 		output.writeShort(animTicks);
 		output.writeBoolean(animRepeat);
@@ -539,7 +538,7 @@ public abstract class GenericWidget implements Widget {
 		}
 	}
 
-	public Widget animate(Animation type, Orientation axis, byte value, byte count, short ticks, boolean repeat, boolean reset) {
+	public Widget animate(Animation type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset) {
 		if (!type.check(this)) {
 			throw new TypeConstraintException("Cannot use Animation." + type.name() + " on " + getType().toString());
 		}
@@ -599,27 +598,27 @@ public abstract class GenericWidget implements Widget {
 				}
 			}
 		}
+		int value = animStart + (int)Math.floor(animFrame * animValue);
 		switch (animType) {
 			case POSITION:
 				if (animAxis == Orientation.HORIZONTAL) {
-					setX(animStart + (animFrame * animCount));
+					setX(value);
 				} else {
-					setY(animStart + (animFrame * animCount));
+					setY(value);
 				}
 				break;
 			case SIZE:
 				if (animAxis == Orientation.HORIZONTAL) {
-					setWidth(animStart + (animFrame * animCount));
+					setWidth(value);
 				} else {
-					setHeight(animStart + (animFrame * animCount));
+					setHeight(value);
 				}
 				break;
 			case OFFSET:
-				Texture texture = ((Texture) this);
 				if (animAxis == Orientation.HORIZONTAL) {
-					texture.setLeft(animStart + (animFrame * animCount));
+					((Texture) this).setLeft(value);
 				} else {
-					texture.setTop(animStart + (animFrame * animCount));
+					((Texture) this).setTop(value);
 				}
 				break;
 		}
