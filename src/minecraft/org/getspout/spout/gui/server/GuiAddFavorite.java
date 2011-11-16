@@ -52,7 +52,7 @@ public class GuiAddFavorite extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, textTitle);
 		top+=25;
 		
-		labelIp = new GenericLabel("Server Adress");
+		labelIp = new GenericLabel("Server Address");
 		labelIp.setHeight(11).setWidth(250).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, labelIp);
 		top+=13;
