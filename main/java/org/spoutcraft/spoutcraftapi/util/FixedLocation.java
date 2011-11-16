@@ -17,6 +17,7 @@
 package org.spoutcraft.spoutcraftapi.util;
 
 import org.spoutcraft.spoutcraftapi.World;
+import org.spoutcraft.spoutcraftapi.block.Block;
 
 public interface FixedLocation extends FixedVector {
 
@@ -53,4 +54,11 @@ public interface FixedLocation extends FixedVector {
 	 * @return vector
 	 */
 	public Vector toVector();
+	
+	/**
+	 * Gets the block at this location
+	 * 
+	 * @return block
+	 */
+	public Block getBlock();
 }

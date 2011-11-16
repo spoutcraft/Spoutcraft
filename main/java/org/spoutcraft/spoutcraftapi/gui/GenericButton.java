@@ -32,7 +32,7 @@ public class GenericButton extends GenericControl implements Button {
 	protected String disabledText = "";
 	protected Color hoverColor = new Color(1f, 1f, 0.627F);
 	protected float scale = 1.0F;
-
+	protected int innerWidth = 0;
 	public GenericButton() {
 		label.setAlign(WidgetAnchor.TOP_CENTER);
 	}
@@ -78,16 +78,6 @@ public class GenericButton extends GenericControl implements Button {
 		return this;
 	}
 
-	@Override
-	public double getScreenX() {
-		return super.getScreenX();
-	}
-
-	@Override
-	public double getScreenY() {
-		return super.getScreenY();
-	}
-
 	public WidgetAnchor getAlign() {
 		return label.getAlign();
 	}
@@ -131,6 +121,15 @@ public class GenericButton extends GenericControl implements Button {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
 
+	public Button setInnerWidth(int width) {
+		innerWidth = width;
+		return this;
+	}
+	
+	public double getInnerWidth() {
+		return innerWidth;
+	}
+	
 	public Button setAuto(boolean auto) {
 		label.setAuto(auto);
 		return this;
@@ -155,5 +154,11 @@ public class GenericButton extends GenericControl implements Button {
 	
 	public float getScale() {
 		return scale;
+	}
+	
+	@Override
+	public Widget setWidth(int width) {
+		label.setWidth(width);
+		return super.setWidth(width);
 	}
 }

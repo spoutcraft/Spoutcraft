@@ -28,7 +28,7 @@ public enum Order {
 	/**
 	 * Called before all other handlers. Should be used for high-priority event canceling.
 	 */
-	Earlist(0),
+	Earliest(0),
 
 	/**
 	 * Called after "Earliest" handlers and before "Early" handlers. Is called even when event has been canceled. Should generally be used to uncancel events canceled in Earliest.

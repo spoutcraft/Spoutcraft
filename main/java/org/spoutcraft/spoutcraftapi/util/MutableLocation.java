@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.util;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.World;
+import org.spoutcraft.spoutcraftapi.block.Block;
 
 public class MutableLocation extends MutableVector implements Location {
 	private double pitch;
@@ -102,6 +103,10 @@ public class MutableLocation extends MutableVector implements Location {
 		vector.setZ(h * Math.cos(Math.toRadians(rotX)));
 
 		return vector;
+	}
+	
+	public Block getBlock() {
+		return world.getBlockAt(this);
 	}
 
 	@Override
