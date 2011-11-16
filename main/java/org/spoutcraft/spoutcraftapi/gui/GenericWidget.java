@@ -21,7 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.xml.bind.TypeConstraintException;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -540,7 +539,7 @@ public abstract class GenericWidget implements Widget {
 
 	public Widget animate(Animation type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset) {
 		if (!type.check(this)) {
-			throw new TypeConstraintException("Cannot use Animation." + type.name() + " on " + getType().toString());
+			throw new UnsupportedOperationException("Cannot use Animation." + type.name() + " on " + getType().toString());
 		}
 		animType = type;
 		animAxis = axis;
