@@ -19,7 +19,7 @@ public class GuiEditShortcut extends GuiScreen {
 	Shortcut item;
 	Button recordButton, doneButton, addButton, editButton, removeButton;
 	Label titleLabel, recordLabel;
-	TextField titleText;
+	TextField commandText;
 	GuiCommandsSlot slot;
 	
 	boolean recording = false;
@@ -55,8 +55,8 @@ public class GuiEditShortcut extends GuiScreen {
 		
 		recordButton = new GenericButton();
 		recordButton.setAlign(WidgetAnchor.CENTER_CENTER);
-		recordButton.setHeight(20).setWidth(200);
-		recordButton.setX(70).setY(40);
+		recordButton.setHeight(20).setWidth(100);
+		recordButton.setX(44).setY(33);
 		getScreen().attachWidget(spoutcraft, recordButton);
 		updateRecordButton();
 		
@@ -66,12 +66,13 @@ public class GuiEditShortcut extends GuiScreen {
 		titleLabel.setX(10).setY(10);
 		getScreen().attachWidget(spoutcraft, titleLabel);
 		
-		titleText = new GenericTextField();
-		titleText.setHeight(20).setWidth(200);
-		titleText.setX(70).setY(10);
-		titleText.setText(item.getTitle());
-		titleText.setFocus(true);
-		getScreen().attachWidget(spoutcraft, titleText);
+		commandText = new GenericTextField();
+		commandText.setHeight(16).setWidth(355);
+		commandText.setX(45).setY(8);
+		commandText.setText(item.getTitle());
+		commandText.setFocus(true);
+		commandText.setMaximumCharacters(99);
+		getScreen().attachWidget(spoutcraft, commandText);
 		
 		slot = new GuiCommandsSlot(this);
 		getScreen().attachWidget(spoutcraft, slot);
@@ -114,7 +115,7 @@ public class GuiEditShortcut extends GuiScreen {
 			updateRecordButton();
 		}
 		if(btn.equals(doneButton)){
-			item.setTitle(titleText.getText());
+			item.setTitle(commandText.getText());
 			if(!item.getTitle().equals("") && item.getKey() != -1) {
 				parent.getManager().unregisterShortcut(item);
 				parent.getManager().registerShortcut(item);
@@ -141,7 +142,7 @@ public class GuiEditShortcut extends GuiScreen {
 	}
 
 	public void editCommand(int i) {
-		item.setTitle(titleText.getText());
+		item.setTitle(commandText.getText());
 		GuiEditCommand gui = new GuiEditCommand(this, i);
 		mc.displayGuiScreen(gui);
 	}

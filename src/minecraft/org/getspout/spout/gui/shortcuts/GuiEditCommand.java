@@ -22,7 +22,7 @@ public class GuiEditCommand extends GuiScreen{
 	}
 	
 	public void initGui() {
-		title = new GenericLabel("Enter Command / Chat message\nFor commands, use a '/'. If you omit the slash, it'll be sent as a chat message instead.");
+		title = new GenericLabel("Enter Command / Chat message\nFor commands, use a '/'. If you omit the slash, it'll be sent as a chat message.");
 		title.setHeight(20).setWidth(200);
 		title.setX(10).setY(10);
 		getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), title);
