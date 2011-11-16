@@ -46,7 +46,7 @@ public interface Screen extends Widget {
 	 * @return set of all widgets
 	 */
 	public Set<Widget> getAttachedWidgetsAsSet();
-	
+
 	/**
 	 * Get's a set of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
 	 * 
