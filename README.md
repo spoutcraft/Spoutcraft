@@ -1,16 +1,27 @@
-[![][Project Logo]][Website]
-Spoutcraft
-==========
-Spoutcraft is the Minecraft client mod system for the Bukkit server plugin, Spout,  that exposes new API for other plugins to utilize, in an attempt to bring the Minecraft Multiplayer experience to parity with the single player modding experience.
+[![Spoutcraft][Project Logo]][Website]
+What is Spoutcraft?
+-------------------
+Spoutcraft is the Minecraft client mod system for the Bukkit server plugin, Spout, that exposes new API for other plugins to utilize, in an attempt to bring the Minecraft multiplayer experience to parity with the single-player modding experience.
 
-Copyright &copy; 2011, SpoutDev <dev@getspout.org>  
+Copyright &copy; 2011, SpoutDev <[Website]>  
 Spoutcraft is licensed under [GNU LESSER GENERAL PUBLIC LICENSE Version 3][License]
 
-Visit our [website][Website].  
-Get support on our [Bukkit forum thread][Forum].  
+Who is SpoutDev?
+----------------
+SpoutDev is the team behind Spout, SpoutAPI, Spoutcraft, SpoutcraftAPI, and Spoutcraft Launcher.  
+[![Afforess](https://secure.gravatar.com/avatar/ea0be49e1e4deac42ed9204ffd95b56c?d=mm&r=pg&s=48)](http://forums.getspout.org/members/afforess.2/) 
+[![alta189](https://secure.gravatar.com/avatar/7a087430b2bf9456b8879c5469aadb95?d=mm&r=pg&s=48)](http://forums.getspout.org/members/alta189.3/) 
+[![Wulfspider](https://secure.gravatar.com/avatar/6f2a0dcb60cd1ebee57875f9326bc98c?d=mm&r=pg&s=48)](http://forums.getspout.org/members/wulfspider.1/) 
+[![Raphfrk](https://secure.gravatar.com/avatar/68186a30d5a714f6012a9c48d2b10630?d=mm&r=pg&s=48)](http://forums.bukkit.org/members/raphfrk.294/) 
+[![narrowtux](https://secure.gravatar.com/avatar/f110a5b8feacea25275521f4efd0d7f2?d=mm&r=pg&s=48)](http://forums.getspout.org/members/narrowtux.5/) 
+[![Top_Cat](https://secure.gravatar.com/avatar/defeffc70d775f6df95b68f0ece46c9e?d=mm&r=pg&s=48)](http://forums.getspout.org/members/top_cat.4/) 
+[![Olloth](https://secure.gravatar.com/avatar/fa8429add105b86cf3b61dbe15638812?d=mm&r=pg&s=48)](http://forums.getspout.org/members/olloth.6/) 
+[![Rycochet](https://secure.gravatar.com/avatar/b06c12e72953e0edd3054a8645d76791?d=mm&r=pg&s=48)](http://forums.getspout.org/members/rycochet.10/)
+
+Visit our [website][Website] or get support on our [forums][Forums].  
 Track and submit issues and bugs on our [issue tracker][Issues].
 
-[![][Twitter Logo]][Twitter][![][Facebook Logo]][Facebook][![][Donate Logo]][Donate]
+[![Follow us on Twitter][Twitter Logo]][Twitter][![Like us on Facebook][Facebook Logo]][Facebook][![Donate to the Spout project][Donate Logo]][Donate]
 
 Source
 ------
@@ -19,6 +30,9 @@ Download the latest builds from [Jenkins].
 
 Compiling
 ---------
+Spoutcraft requires MCP (Minecraft Coder Pack) for decompiling, deobfuscating, recompiling, and reobfuscating Minecraft's source.
+There are a lot of steps involved to compile Spoutcraft, so knowing how to use MCP is a good place to start.
+
 * Download and extract the latest compatible version of Minecraft Coder Pack.  
 * Copy the latest complete, unmodified Minecraft bin directory from your .minecraft directory.  
 * Place the Minecraft bin directory under MCP's jars directory.  
@@ -49,7 +63,7 @@ Coding and Pull Request Formatting
 [Project Logo]: http://cdn.getspout.org/img/logo/spoutcraft_551x150.png
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Website]: http://www.getspout.org
-[Forum]: http://spout.in/bukkit
+[Forums]: http://forums.getspout.org
 [GitHub]: https://github.com/SpoutDev/Spoutcraft
 [Jenkins]: http://spout.in/ci
 [Issues]: http://spout.in/issues
@@ -57,6 +71,6 @@ Coding and Pull Request Formatting
 [Twitter Logo]: http://cdn.getspout.org/img/button/twitter_follow_us.png
 [Facebook]: http://spout.in/facebook
 [Facebook Logo]: http://cdn.getspout.org/img/button/facebook_like_us.png
-[Donate]: https://www.paypal.com/cgi-bin/webscr?hosted_button_id=QNJH72R72TZ64&item_name=Spoutcraft+%28from+GitHub.com%29&cmd=_s-xclick
+[Donate]: https://www.paypal.com/cgi-bin/webscr?hosted_button_id=QNJH72R72TZ64&item_name=Spoutcraft+donation+%28from+github.com%29&cmd=_s-xclick
 [Donate Logo]: http://cdn.getspout.org/img/button/donate_paypal_96x96.png
 [MCP]: http://mcp.ocean-labs.de/index.php/MCP_Releases
