@@ -72,10 +72,10 @@ public class PacketWidgetRemove implements SpoutPacket {
 	public void run(int playerId) {
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 		PopupScreen popup = mainScreen.getActivePopup();
-                Screen overlay = null;
-                if(SpoutClient.getHandle().currentScreen != null) {
-                        overlay = SpoutClient.getHandle().currentScreen.getScreen();
-                }
+		Screen overlay = null;
+		if(SpoutClient.getHandle().currentScreen != null) {
+				overlay = SpoutClient.getHandle().currentScreen.getScreen();
+		}
 
 		//Determine if this is a popup screen and if we need to update it
 		if (widget instanceof PopupScreen && popup.getId().equals(widget.getId())) {
@@ -85,11 +85,10 @@ public class PacketWidgetRemove implements SpoutPacket {
 			// Otherwise just remove it from the display
 			widget.getScreen().removeWidget(widget);
 		}
-                //Determine if this is a widget on the overlay screen
-                else if (overlay != null && screen.equals(overlay.getId()))
-                {
-                        overlay.removeWidget(widget);
-                }
+		//Determine if this is a widget on the overlay screen
+		else if (overlay != null && screen.equals(overlay.getId())) {
+				overlay.removeWidget(widget);
+		}
 	}
 
 	public PacketType getPacketType() {
