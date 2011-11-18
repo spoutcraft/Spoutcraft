@@ -112,7 +112,7 @@ public class EffectRenderer {
 					}
 					//Spout end
 					
-					var10.func_35835_b(var12.func_35115_a(var2));
+					var10.setBlendTexture(var12.func_35115_a(var2));
 					var12.renderParticle(var10, var2, var3, var7, var4, var5, var6);
 				}
 
@@ -140,7 +140,7 @@ public class EffectRenderer {
 
 			for(int var10 = 0; var10 < this.fxLayers[var8].size(); ++var10) {
 				EntityFX var11 = (EntityFX)this.fxLayers[var8].get(var10);
-				var9.func_35835_b(var11.func_35115_a(var2));
+				var9.setBlendTexture(var11.func_35115_a(var2));
 				var11.renderParticle(var9, var2, var3, var7, var4, var5, var6);
 			}
 

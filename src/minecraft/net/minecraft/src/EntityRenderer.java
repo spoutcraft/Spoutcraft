@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
 import java.util.List;
-import java.util.Random;
+import java.util.Random; 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;
@@ -32,6 +32,8 @@ import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -40,6 +42,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.lwjgl.util.vector.*;
 //Spout end
 import org.getspout.spout.config.ConfigReader;
 
@@ -100,6 +103,9 @@ public class EntityRenderer {
 	//Spout Start
 	private WorldProvider updatedWorldProvider = null;
 	private boolean showDebugInfo = false;
+	public static Matrix4f view = new Matrix4f();
+	public static Matrix4f projection = new Matrix4f();
+
 	//Spout End
 
 
@@ -330,6 +336,43 @@ public class EntityRenderer {
 		this.cloudFog = this.mc.renderGlobal.func_27307_a(var4, var6, var8, var1);
 	}
 
+	
+	//Spout Start
+	private Matrix4f createPerspective(float fov, float aspect, float znear, float zfar){
+		
+		  float ymax, xmax;
+		    float temp, temp2, temp3, temp4;
+		    ymax = znear * (float)Math.tan(fov * Math.PI / 360.0);
+		    //ymin = -ymax;
+		    //xmin = -ymax * aspectRatio;
+		    xmax = ymax * aspect;
+		
+		    temp = 2.0f * znear;
+		    temp2 = xmax - -xmax;
+		    temp3 = ymax - -ymax;
+		    temp4 = zfar - znear;
+		    
+		    
+		    Matrix4f matrix = new Matrix4f();
+		    matrix.setIdentity();
+			matrix.m00 = temp/temp2;
+			matrix.m11 = temp/temp3;
+			matrix.m20 = (xmax + -xmax) / temp2;
+			matrix.m21 = (ymax + -ymax) /temp3;
+			matrix.m22 = (-zfar - znear) / temp4;
+			matrix.m23 = -1;
+			matrix.m32 = (-temp * zfar) / temp4;
+			  
+			 return matrix;
+			
+		    
+		
+		
+		  
+		 
+	}
+	//Spout End
+	
 	private void setupCameraTransform(float var1, int var2) {
 		//Spout Start
 		this.farPlaneDistance = (float)(32 << 3 - this.mc.gameSettings.renderDistance);
@@ -348,19 +391,23 @@ public class EntityRenderer {
 		}
 		//Spout End
 
-		GL11.glMatrixMode(5889 /*GL_PROJECTION*/);
+		
+		GL11.glMatrixMode(5889 /*GL_PROJECTION*/);		
 		GL11.glLoadIdentity();
 		float var3 = 0.07F;
 		if(this.mc.gameSettings.anaglyph) {
+		
 			GL11.glTranslatef((float)(-(var2 * 2 - 1)) * var3, 0.0F, 0.0F);
 		}
 
 		if(this.cameraZoom != 1.0D) {
+			
 			GL11.glTranslatef((float)this.cameraYaw, (float)(-this.cameraPitch), 0.0F);
 			GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
+			
 			GLU.gluPerspective(this.getFOVModifier(var1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		} else {
-			GLU.gluPerspective(this.getFOVModifier(var1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
+		GLU.gluPerspective(this.getFOVModifier(var1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		}
 
 		float var4;
@@ -368,6 +415,8 @@ public class EntityRenderer {
 			var4 = 0.6666667F;
 			GL11.glScalef(1.0F, var4, 1.0F);
 		}
+
+		//Spout End
 
 		GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
 		GL11.glLoadIdentity();
@@ -441,8 +490,7 @@ public class EntityRenderer {
 				float var4 = 0.6666667F;
 				GL11.glScalef(1.0F, var4, 1.0F);
 			}
-
-			GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
+		GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
 			GL11.glLoadIdentity();
 			if(this.mc.gameSettings.anaglyph) {
 				GL11.glTranslatef((float)(var2 * 2 - 1) * 0.1F, 0.0F, 0.0F);
@@ -1077,7 +1125,7 @@ public class EntityRenderer {
 								var35 = (double)((float)var22 + 0.5F) - var41.posZ;
 								float var37 = MathHelper.sqrt_double(var33 * var33 + var35 * var35) / (float)var16;
 								float var38 = 1.0F;
-								var8.func_35835_b(var42.func_35451_b(var21, var31, var22, 0));
+								var8.setBlendTexture(var42.func_35451_b(var21, var31, var22, 0));
 								var8.setColorRGBA_F(var38, var38, var38, ((1.0F - var37 * var37) * 0.5F + 0.5F) * var2);
 								var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
 								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30), (double)((float)var28 * var30 / 4.0F + var32 * var30));
@@ -1103,7 +1151,7 @@ public class EntityRenderer {
 								double var48 = (double)((float)var22 + 0.5F) - var41.posZ;
 								float var39 = MathHelper.sqrt_double(var35 * var35 + var48 * var48) / (float)var16;
 								float var40 = 1.0F;
-								var8.func_35835_b((var42.func_35451_b(var21, var31, var22, 0) * 3 + 15728880) / 4);
+								var8.setBlendTexture((var42.func_35451_b(var21, var31, var22, 0) * 3 + 15728880) / 4);
 								var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.3F + 0.5F) * var2);
 								var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
 								var8.addVertexWithUV((double)((float)var21 - var24) + 0.5D, (double)var28, (double)((float)var22 - var25) + 0.5D, (double)(0.0F * var30 + var47), (double)((float)var28 * var30 / 4.0F + var32 * var30 + var34));
