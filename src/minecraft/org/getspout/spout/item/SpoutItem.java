@@ -54,53 +54,53 @@ public class SpoutItem extends Item {
 	}
 
 	// From super class
-	public boolean onBlockItemUse(int blockID, ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
-		if (var3.getBlockId(var4, var5, var6) == Block.snow.blockID) {
-			var7 = 0;
+	public boolean onBlockItemUse(int blockID, short metaData, ItemStack item, EntityPlayer player, World world, int blockX, int blockY, int blockZ, int face) {
+		if (world.getBlockId(blockX, blockY, blockZ) == Block.snow.blockID) {
+			face = 0;
 		} else {
-			if (var7 == 0) {
-				--var5;
+			if (face == 0) {
+				--blockY;
 			}
 
-			if (var7 == 1) {
-				++var5;
+			if (face == 1) {
+				++blockY;
 			}
 
-			if (var7 == 2) {
-				--var6;
+			if (face == 2) {
+				--blockZ;
 			}
 
-			if (var7 == 3) {
-				++var6;
+			if (face == 3) {
+				++blockZ;
 			}
 
-			if (var7 == 4) {
-				--var4;
+			if (face == 4) {
+				--blockX;
 			}
 
-			if (var7 == 5) {
-				++var4;
+			if (face == 5) {
+				++blockX;
 			}
 		}
 
-		if (var1.stackSize == 0) {
+		if (item.stackSize == 0) {
 			return false;
-		} else if (var5 == 127 && Block.blocksList[blockID].blockMaterial.isSolid()) {
+		} else if (blockY == 127 && Block.blocksList[blockID].blockMaterial.isSolid()) {
 			return false;
-		} else if (var3.canBlockBePlacedAt(blockID, var4, var5, var6, false, var7)) {
+		} else if (world.canBlockBePlacedAt(blockID, blockX, blockY, blockZ, false, face)) {
 			Block var8 = Block.blocksList[blockID];
-			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, 0)) {
-				Block.blocksList[blockID].onBlockPlaced(var3, var4, var5, var6, var7);
-				Block.blocksList[blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
+			if (world.setBlockAndMetadataWithNotify(blockX, blockY, blockZ, blockID, metaData)) {
+				Block.blocksList[blockID].onBlockPlaced(world, blockX, blockY, blockZ, face);
+				Block.blocksList[blockID].onBlockPlacedBy(world, blockX, blockY, blockZ, player);
 				
-				if (var1.itemID == MaterialData.flint.getRawId() && var1.getItemDamage() != 0) {
-					CustomBlock block = MaterialData.getCustomBlock(var1.getItemDamage());
-					Spoutcraft.getWorld().getChunkAt(var4, var5, var6).setCustomBlockId(var4, var5, var6, (short) block.getCustomId());
+				if (item.itemID == MaterialData.flint.getRawId() && item.getItemDamage() != 0) {
+					CustomBlock block = MaterialData.getCustomBlock(item.getItemDamage());
+					overrideBlock(blockX, blockY, blockZ, block.getCustomId(),0);
 				}
 				
-				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.stepSoundDir2(),
+				world.playSoundEffect((double) ((float) blockX + 0.5F), (double) ((float) blockY + 0.5F), (double) ((float) blockZ + 0.5F), var8.stepSound.stepSoundDir2(),
 						(var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
-				--var1.stackSize;
+				--item.stackSize;
 			}
 
 			return true;
