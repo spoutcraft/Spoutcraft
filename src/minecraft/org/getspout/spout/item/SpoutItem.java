@@ -20,7 +20,7 @@ import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 public class SpoutItem extends Item {
 
 	private final static TIntIntHashMap itemBlock = new TIntIntHashMap();
-	
+
 	public SpoutItem(int blockId) {
 		super(blockId);
 		this.setHasSubtypes(true);
@@ -37,7 +37,7 @@ public class SpoutItem extends Item {
 	public static void wipeMap() {
 		itemBlock.clear();
 	}
-	
+
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
 		if (stack.itemID == MaterialData.flint.getRawId()) {
 			int damage = stack.getItemDamage();
@@ -92,12 +92,12 @@ public class SpoutItem extends Item {
 			if (var3.setBlockAndMetadataWithNotify(var4, var5, var6, blockID, 0)) {
 				Block.blocksList[blockID].onBlockPlaced(var3, var4, var5, var6, var7);
 				Block.blocksList[blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
-				
+
 				if (var1.itemID == MaterialData.flint.getRawId() && var1.getItemDamage() != 0) {
 					CustomBlock block = MaterialData.getCustomBlock(var1.getItemDamage());
 					Spoutcraft.getWorld().getChunkAt(var4, var5, var6).setCustomBlockId(var4, var5, var6, (short) block.getCustomId());
 				}
-				
+
 				var3.playSoundEffect((double) ((float) var4 + 0.5F), (double) ((float) var5 + 0.5F), (double) ((float) var6 + 0.5F), var8.stepSound.stepSoundDir2(),
 						(var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
 				--var1.stackSize;
@@ -110,37 +110,37 @@ public class SpoutItem extends Item {
 	}
 
 	public static boolean renderCustomBlock(RenderBlocks renderBlocks, GenericBlockDesign design, Block block, int x, int y, int z) {
-		
+
 		if (design == null) {
 			return false;
 		}
-		
+
 		Tessellator tessallator = Tessellator.instance;
 
 		block.setBlockBounds(design.getLowXBound(), design.getLowYBound(), design.getLowZBound(), design.getHighXBound(), design.getHighYBound(), design.getHighZBound());
-		
+
 		return draw(design, tessallator, block, renderBlocks, x, y, z);
 	}
-	
+
 	public static void renderBlockOnInventory(GenericBlockDesign design, RenderBlocks renders, float brightness) {
 		Tessellator tessellator = Tessellator.instance;
-		
+
 		GL11.glColor4f(1, 1, 1, 1.0F);
-		
+
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		
+
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
-		
+
 		draw(design, tessellator, null, renders, brightness, 0, 0, 0);
-		
+
 		tessellator.draw();
 	}
-	
+
 	public static boolean draw(GenericBlockDesign design, Tessellator tessallator, Block block, RenderBlocks renders, int x, int y, int z) {
 		return draw(design, tessallator, block, renders, 1, x, y, z);
 	}
-	
+
 	public static boolean draw(GenericBlockDesign design, Tessellator tessallator, Block block, RenderBlocks renders, float inventoryBrightness, int x, int y, int z) {
 		//int color = 16777215; 
 		if (block != null) {
@@ -157,20 +157,20 @@ public class SpoutItem extends Item {
 				return false;
 			}
 		}
-		
-		
+
+
 		float red = 1.0F; //(float)(color >> 16 & 255) / 255.0F;
 		float blue = 1.0F;//(float)(color >> 8 & 255) / 255.0F;
 		float green = 1.0F;//(float)(color & 255) / 255.0F;
-		
+
 		design.setBrightness(inventoryBrightness);
 
 		for (int i = 0; i < design.getX().length; i++) {
-			
+
 			MutableIntegerVector sourceBlock = design.getLightSource(i, x, y, z);
-			
+
 			float baseBrightness;
-			
+
 			if (block != null) {
 				baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
 			} else {
@@ -178,9 +178,9 @@ public class SpoutItem extends Item {
 			}
 
 			float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
-			
+
 			tessallator.setColorOpaque_F(red * brightness, blue * brightness, green * brightness);
-			
+
 			float[] xx = design.getX()[i];
 			float[] yy = design.getY()[i];
 			float[] zz = design.getZ()[i];
