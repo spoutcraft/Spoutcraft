@@ -321,7 +321,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		int[] cursor = textField.getTextProcessor().getCursor2D();
 		int lineNum = 0;
 		int cursorOffset = 0;
-		if(textField.getText().length() == 0) {
+		if(textField.getText().length() != 0) {
 			String line;
 			Iterator<String> iter = textField.getTextProcessor().iterator();
 	
