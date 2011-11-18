@@ -28,7 +28,7 @@ public class Tessellator {
 	private int color;
 	private boolean hasColor = false;
 	private boolean hasTexture = false;
-	private boolean useBlendTExture = false;
+	private boolean useBlendTexture = false;
 	private boolean hasNormals = false;
 	private int vertexBufferIndex = 0;
 	private int addedVertices = 0;
@@ -102,7 +102,8 @@ public class Tessellator {
 					//Spout End
 				}
 
-				if(this.useBlendTExture) {
+				if(this.useBlendTexture) {
+
 					GL13.glClientActiveTexture(GL13.GL_TEXTURE1 );
 
 					if(this.useVBO) {
@@ -163,7 +164,7 @@ public class Tessellator {
 					GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 				}
 
-				if(this.useBlendTExture) {
+				if(this.useBlendTexture) {
 					
 					GL13.glClientActiveTexture(GL13.GL_TEXTURE1 );
 					GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY );
@@ -205,7 +206,7 @@ public class Tessellator {
 			this.hasNormals = false;
 			this.hasColor = false;
 			this.hasTexture = false;
-			this.useBlendTExture = false;
+			this.useBlendTexture = false;
 			this.isColorDisabled = false;
 		}
 	}
@@ -217,7 +218,7 @@ public class Tessellator {
 	}
 
 	public void setBlendTexture(int textureID) {
-		this.useBlendTExture = true;
+		this.useBlendTexture = true;
 		this.blendTexture = textureID;
 	}
 
@@ -293,7 +294,7 @@ public class Tessellator {
 					this.vertexBuffer[this.vertexBufferIndex + 4] = this.vertexBuffer[this.vertexBufferIndex - var8 + 4];
 				}
 
-				if(this.useBlendTExture) {
+				if(this.useBlendTexture) {
 					this.vertexBuffer[this.vertexBufferIndex + 7] = this.vertexBuffer[this.vertexBufferIndex - var8 + 7];
 				}
 
@@ -314,7 +315,7 @@ public class Tessellator {
 			this.vertexBuffer[this.vertexBufferIndex + 4] = Float.floatToRawIntBits((float)this.textureV);
 		}
 
-		if(this.useBlendTExture) {
+		if(this.useBlendTexture) {
 			this.vertexBuffer[this.vertexBufferIndex + 7] = this.blendTexture;
 		}
 
