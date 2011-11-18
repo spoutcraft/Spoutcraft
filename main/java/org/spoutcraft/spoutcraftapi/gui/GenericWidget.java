@@ -54,14 +54,14 @@ public abstract class GenericWidget implements Widget {
 	protected int orig_x = 0, orig_y = 0;
 	// Animation
 	protected WidgetAnim animType = WidgetAnim.NONE;
-	protected Orientation animAxis = Orientation.HORIZONTAL;
 	protected float animValue = 1f;
-	protected byte animCount = 0;
+	protected short animCount = 0;
 	protected short animTicks = 20;
-	protected boolean animRepeat = false;
-	protected boolean animReset = true;
-	protected boolean animRunning = false;
-	protected boolean animStopping = false;
+	protected final byte ANIM_REPEAT = (1<<0);
+	protected final byte ANIM_RESET = (1<<1);
+	protected final byte ANIM_RUNNING = (1<<2);
+	protected final byte ANIM_STOPPING = (1<<3);
+	protected byte animFlags = 0;
 	protected transient int animTick = 0; // Current tick
 	protected transient int animFrame = 0; // Current frame
 	protected transient int animStart = 0; // Start value per type
@@ -74,11 +74,11 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public int getNumBytes() {
-		return 51 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
+		return 48 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
 	}
 
 	public int getVersion() {
-		return 4;
+		return 5;
 	}
 
 	public GenericWidget(int X, int Y, int width, int height) {
@@ -98,18 +98,18 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public void readData(DataInputStream input) throws IOException {
-		setX(input.readInt());
-		setY(input.readInt());
-		setWidth(input.readInt());
-		setHeight(input.readInt());
-		setAnchor(WidgetAnchor.getAnchorFromId(input.readByte()));
-		setVisible(input.readBoolean());
-		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
-		long msb = input.readLong();
-		long lsb = input.readLong();
+		setX(input.readInt()); // 0 + 4 = 4
+		setY(input.readInt()); // 4 + 4 = 8
+		setWidth(input.readInt()); // 8 + 4 = 12
+		setHeight(input.readInt()); // 12 + 4 = 16
+		setAnchor(WidgetAnchor.getAnchorFromId(input.readByte())); // 16 + 1 = 17
+		setVisible(input.readBoolean()); // 17 + 1 = 18
+		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt())); // 18 + 4 = 22
+		long msb = input.readLong(); // 22 + 8 = 30
+		long lsb = input.readLong(); // 30 + 8 = 38
 		this.id = new UUID(msb, lsb);
-		setTooltip(PacketUtil.readString(input));
-		String addonName = PacketUtil.readString(input);
+		setTooltip(PacketUtil.readString(input)); // String
+		String addonName = PacketUtil.readString(input); // String
 		Addon addon = Spoutcraft.getAddonManager().getAddon(addonName);
 		//since this is coming from the server, assume we haven't gotten the addon info yet
 		if (addon == null) {
@@ -117,38 +117,30 @@ public abstract class GenericWidget implements Widget {
 			((SimpleAddonManager) Spoutcraft.getAddonManager()).addFakeAddon((ServerAddon) addon);
 		}
 		setAddon(addon);
-		animType = WidgetAnim.getAnimationFromId(input.readByte());
-		animAxis = Orientation.getOrientationFromId(input.readByte());
-		animValue = input.readFloat();
-		animCount = input.readByte();
-		animTicks = input.readShort();
-		animRepeat = input.readBoolean();
-		animReset = input.readBoolean();
-		animRunning = input.readBoolean();
-		animStopping = input.readBoolean();
+		animType = WidgetAnim.getAnimationFromId(input.readByte()); // 38 + 1 = 39
+		animFlags = input.readByte(); // 39 + 1 = 40
+		animValue = input.readFloat(); // 40 + 4 = 44
+		animTicks = input.readShort(); // 44 + 2 = 46
+		animCount = input.readShort(); // 46 + 2 = 48
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
-		output.writeInt(getX());
-		output.writeInt(getY());
-		output.writeInt((int) getActualWidth());
-		output.writeInt((int) getActualHeight());
-		output.writeByte(getAnchor().getId());
-		output.writeBoolean(isVisible());
-		output.writeInt(priority.getId());
-		output.writeLong(getId().getMostSignificantBits());
-		output.writeLong(getId().getLeastSignificantBits());
-		PacketUtil.writeString(output, getTooltip());
-		PacketUtil.writeString(output, getAddon().getDescription().getName());
-		output.writeByte(animType.getId());
-		output.writeByte(animAxis.getId());
-		output.writeFloat(animValue);
-		output.writeByte(animCount);
-		output.writeShort(animTicks);
-		output.writeBoolean(animRepeat);
-		output.writeBoolean(animReset);
-		output.writeBoolean(animRunning);
-		output.writeBoolean(animStopping);
+		output.writeInt(getX()); // 0 + 4 = 4
+		output.writeInt(getY()); // 4 + 4 = 8
+		output.writeInt((int) getActualWidth()); // 8 + 4 = 12
+		output.writeInt((int) getActualHeight()); // 12 + 4 = 16
+		output.writeByte(getAnchor().getId()); // 16 + 1 = 17
+		output.writeBoolean(isVisible()); // 17 + 1 = 18
+		output.writeInt(priority.getId()); // 18 + 4 = 22
+		output.writeLong(getId().getMostSignificantBits()); // 22 + 8 = 30
+		output.writeLong(getId().getLeastSignificantBits()); // 30 + 8 = 38
+		PacketUtil.writeString(output, getTooltip()); // String
+		PacketUtil.writeString(output, getAddon().getDescription().getName()); // String
+		output.writeByte(animType.getId()); // 38 + 1 = 39
+		output.writeByte(animFlags); // 39 + 1 = 40
+		output.writeFloat(animValue); // 40 + 4 = 44
+		output.writeShort(animTicks); // 44 + 2 = 46
+		output.writeShort(animCount); // 46 + 2 = 48
 	}
 
 	public Addon getAddon() {
@@ -497,7 +489,7 @@ public abstract class GenericWidget implements Widget {
 					.setMinHeight(getMinHeight()) //
 					.setMaxHeight(getMaxHeight()) //
 					.setFixed(isFixed()) //
-					.animate(animType, animAxis, animValue, animCount, animTicks, animRepeat, animReset);
+					.animate(animType, animValue, animCount, animTicks, (animFlags & ANIM_REPEAT) != 0, (animFlags & ANIM_RESET) != 0);
 			return copy;
 		} catch (Exception e) {
 			throw new IllegalStateException("Unable to create a copy of " + getClass() + ". Does it have a valid widget type?");
@@ -537,19 +529,25 @@ public abstract class GenericWidget implements Widget {
 		}
 	}
 
-	public Widget animate(WidgetAnim type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset) {
+	public Widget animate(WidgetAnim type, float value, short count, short ticks) {
+		animate(type, value, count, ticks, true, true);
+		return this;
+	}
+
+	public Widget animate(WidgetAnim type, float value, short count, short ticks, boolean repeat) {
+		animate(type, value, count, ticks, repeat, true);
+		return this;
+	}
+
+	public Widget animate(WidgetAnim type, float value, short count, short ticks, boolean repeat, boolean reset) {
 		if (!type.check(this)) {
 			throw new UnsupportedOperationException("Cannot use Animation." + type.name() + " on " + getType().toString());
 		}
 		animType = type;
-		animAxis = axis;
 		animValue = value;
 		animCount = count;
 		animTicks = ticks;
-		animRepeat = repeat;
-		animReset = reset;
-		animRunning = false;
-		animStopping = false;
+		animFlags = (byte) ((repeat ? ANIM_REPEAT : 0) | (reset ? ANIM_RESET : 0));
 		animTick = 0;
 		animFrame = 0;
 		return this;
@@ -557,16 +555,25 @@ public abstract class GenericWidget implements Widget {
 
 	public Widget animateStart() {
 		if (animType != WidgetAnim.NONE) {
-			animRunning = true;
+			animFlags |= ANIM_RUNNING;
 			switch (animType) {
-				case POSITION:
-					animStart = animAxis == Orientation.HORIZONTAL ? X : Y;
+				case POS_X:
+					animStart = X;
 					break;
-				case SIZE:
-					animStart = animAxis == Orientation.HORIZONTAL ? width : height;
+				case POS_Y:
+					animStart = Y;
 					break;
-				case OFFSET:
-					animStart = animAxis == Orientation.HORIZONTAL ? ((Texture) this).getLeft() : ((Texture) this).getTop();
+				case WIDTH:
+					animStart = width;
+					break;
+				case HEIGHT:
+					animStart = height;
+					break;
+				case OFFSET_LEFT:
+					animStart = ((Texture) this).getLeft();
+					break;
+				case OFFSET_TOP:
+					animStart = ((Texture) this).getTop();
 					break;
 			}
 			animStart -= animFrame * animCount;
@@ -575,51 +582,51 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget animateStop(boolean finish) {
-		if (animRunning && finish) {
-			animStopping = true;
+		if ((animFlags & ANIM_RUNNING) != 0 && finish) {
+			animFlags |= ANIM_STOPPING;
 		} else {
-			animRunning = false;
+			animFlags &= ~ANIM_RUNNING;
 		}
 		return this;
 	}
 
 	public void onAnimate() {
-		if (!animRunning || animTicks == 0 || ++animTick % animTicks != 0) {
+		if ((animFlags & ANIM_RUNNING) == 0 || animTicks == 0 || ++animTick % animTicks != 0) {
 			return;
 		}
 		// We're running, and it's ready for our next frame...
 		if (++animFrame == animCount) {
 			animFrame = 0;
-			if (animStopping || !animRepeat) {
-				animRunning = false;
-				if (!animReset) {
+			if ((animFlags & ANIM_STOPPING) != 0 || (animFlags & ANIM_REPEAT) == 0) {
+				animFlags &= ~ANIM_RUNNING;
+				if ((animFlags & ANIM_RESET) == 0) {
 					return;
 				}
 			}
 		}
 		int value = animStart + (int)Math.floor(animFrame * animValue);
 		switch (animType) {
-			case POSITION:
-				if (animAxis == Orientation.HORIZONTAL) {
-					setX(value);
-				} else {
-					setY(value);
-				}
+			case POS_X:
+				setX(value);
 				break;
-			case SIZE:
-				if (animAxis == Orientation.HORIZONTAL) {
-					setWidth(value);
-				} else {
-					setHeight(value);
-				}
+			case POS_Y:
+				setY(value);
 				break;
-			case OFFSET:
-				if (animAxis == Orientation.HORIZONTAL) {
-					((Texture) this).setLeft(value);
-				} else {
-					((Texture) this).setTop(value);
-				}
+			case WIDTH:
+				setWidth(value);
+				break;
+			case HEIGHT:
+				setHeight(value);
+				break;
+			case OFFSET_LEFT:
+				((Texture) this).setLeft(value);
+				break;
+			case OFFSET_TOP:
+				((Texture) this).setTop(value);
 				break;
 		}
+	}
+
+	public void onAnimateStop() {
 	}
 }

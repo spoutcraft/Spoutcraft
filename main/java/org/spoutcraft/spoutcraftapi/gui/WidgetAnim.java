@@ -29,17 +29,29 @@ public enum WidgetAnim {
 	 */
 	NONE(0),
 	/**
-	 * Change the X or Y by "value" pixels (any Widget).
+	 * Change the X by "value" pixels (any Widget).
 	 */
-	POSITION(1),
+	POS_X(1),
 	/**
-	 * Change the Width or Height by "value" pixels (any Widget).
+	 * Change the Y by "value" pixels (any Widget).
 	 */
-	SIZE(2),
+	POS_Y(2),
 	/**
-	 * Change the Top or Left offset by "value" pixels (Texture only).
+	 * Change the Width by "value" pixels (any Widget).
 	 */
-	OFFSET(3);
+	WIDTH(3),
+	/**
+	 * Change the Height by "value" pixels (any Widget).
+	 */
+	HEIGHT(4),
+	/**
+	 * Change the Left offset by "value" pixels (Texture only).
+	 */
+	OFFSET_LEFT(5),
+	/**
+	 * Change the Top offset by "value" pixels (Texture only).
+	 */
+	OFFSET_TOP(6);
 	private final int id;
 
 	WidgetAnim(int id) {
@@ -63,14 +75,13 @@ public enum WidgetAnim {
 
 	public boolean check(Widget widget) {
 		switch (this) {
-			case POSITION:
-			case SIZE:
-				return true;
-			case OFFSET:
+			case OFFSET_TOP:
+			case OFFSET_LEFT:
 				if (widget instanceof Texture) {
 					return true;
 				}
+				return false;
 		}
-		return false;
+		return true;
 	}
 }

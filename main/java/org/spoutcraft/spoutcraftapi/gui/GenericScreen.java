@@ -127,12 +127,12 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	@Override
 	public void onTick() {
 		for (Widget widget : widgets.keySet()) {
-			widget.onAnimate();
 			try {
 				widget.onTick();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+			widget.onAnimate();
 		}
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
