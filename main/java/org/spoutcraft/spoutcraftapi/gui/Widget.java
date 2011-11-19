@@ -456,12 +456,38 @@ public interface Widget{
 	public double getActualY();
 
 	/**
+	 * Setup a simple automatic animation that automatically repeats and resets when finished.
+	 * Please note that some animation types are limited to certain types of widget.
+	 * All animation is carried out on the client, so it isn't possible to update
+	 * the server side values affected by the animation...
+	 * @param type the type of animation to use
+	 * @param value a custom value used by some types (default: 1)
+	 * @param count how many frames
+	 * @param ticks how many ticks per "frame"
+	 * @return widget
+	 */
+	public Widget animate(WidgetAnim type, float value, short count, short ticks);
+
+	/**
+	 * Setup a simple automatic animation that resets when finished.
+	 * Please note that some animation types are limited to certain types of widget.
+	 * All animation is carried out on the client, so it isn't possible to update
+	 * the server side values affected by the animation...
+	 * @param type the type of animation to use
+	 * @param value a custom value used by some types (default: 1)
+	 * @param count how many frames
+	 * @param ticks how many ticks per "frame"
+	 * @param repeat should the animation be repeated
+	 * @return widget
+	 */
+	public Widget animate(WidgetAnim type, float value, short count, short ticks, boolean repeat);
+
+	/**
 	 * Setup a simple automatic animation.
 	 * Please note that some animation types are limited to certain types of widget.
 	 * All animation is carried out on the client, so it isn't possible to update
 	 * the server side values affected by the animation...
 	 * @param type the type of animation to use
-	 * @param axis which direction to animate (if applicable)
 	 * @param value a custom value used by some types (default: 1)
 	 * @param count how many frames
 	 * @param ticks how many ticks per "frame"
@@ -469,7 +495,7 @@ public interface Widget{
 	 * @param reset should it reset back to the first frame after finishing
 	 * @return widget
 	 */
-	public Widget animate(WidgetAnim type, Orientation axis, float value, byte count, short ticks, boolean repeat, boolean reset);
+	public Widget animate(WidgetAnim type, float value, short count, short ticks, boolean repeat, boolean reset);
 
 	/**
 	 * Start the animation.
@@ -487,7 +513,23 @@ public interface Widget{
 	public Widget animateStop(boolean finish);
 
 	/**
-	 * Called immediately before onTick, do try to be careful with it...
+	 * This handles animation every frame.
+	 * NOTE: On the server the default animation handler doesn't do anything as
+	 * all animation is handled on the client. If you are writing an animation
+	 * handler then please keep bandwidth use in mind...
 	 */
 	public void onAnimate();
+
+	/**
+	 * This is called when the animation stops, and can be used for chaining
+	 * together animations.
+	 * This is called whether the stop was automatic or manual, and occurs at
+	 * the start of the final frame (so the frame hasn't had any ticks of
+	 * visibility yet).
+	 * NOTE: On the server the values changed in the animation <b>will not<b>
+	 * have changed, this is due to the animation being client side. If you
+	 * didn't tell the animation to reset after finishing then please remember
+	 * to change them!
+	 */
+	public void onAnimateStop();
 }
