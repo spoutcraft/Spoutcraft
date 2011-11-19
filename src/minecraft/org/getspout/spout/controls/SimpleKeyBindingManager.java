@@ -225,4 +225,21 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			sh.setModifier(Shortcut.MOD_SUPER, true);
 		}
 	}
+	
+	public static byte getPressedModifiers() {
+		byte res = 0;
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			res|=Shortcut.MOD_SHIFT;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+			res|=Shortcut.MOD_CTRL;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU)) {
+			res|=Shortcut.MOD_ALT;
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA)) {
+			res|=Shortcut.MOD_SUPER;
+		}
+		return res;
+	}
 }

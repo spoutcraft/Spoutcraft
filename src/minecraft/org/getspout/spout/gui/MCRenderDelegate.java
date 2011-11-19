@@ -321,7 +321,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		int[] cursor = textField.getTextProcessor().getCursor2D();
 		int lineNum = 0;
 		int cursorOffset = 0;
-		if(!textField.getText().isEmpty()) {
+		if(textField.getText().length() != 0) {
 			String line;
 			Iterator<String> iter = textField.getTextProcessor().iterator();
 	
@@ -345,7 +345,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getAddon().getDescription().getName(), texture.getUrl());
 		if (textureBinding != null) {
 			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
-			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight(), texture.isDrawingAlphaChannel(), texture.getAlign(), texture.getLeft(), texture.getTop());
+			drawTexture(textureBinding, (int)texture.getWidth(), (int)texture.getHeight(), texture.isDrawingAlphaChannel(), texture.getLeft(), texture.getTop());
 		}
 	}
 
@@ -529,26 +529,34 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, null, 0, 0);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, -1, -1);
+	}
+
+	public void drawTexture(Texture textureBinding, int width, int height, int left, int top) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, left, top);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, null, 0, 0);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, -1, -1);
 	}
 
-	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, WidgetAnchor anchor, int left, int top) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, anchor, left, top);
+	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color) {
-		drawTexture(textureBinding, width, height, color, false, null, 0, 0);
+		drawTexture(textureBinding, width, height, color, false, -1, -1);
+	}
+
+	public void drawTexture(Texture textureBinding, int width, int height, Color color, int left, int top) {
+		drawTexture(textureBinding, width, height, color, false, left, top);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
-		drawTexture(textureBinding, width, height, color, blend, null, 0, 0);
+		drawTexture(textureBinding, width, height, color, blend, -1, -1);
 	}
 
-	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, WidgetAnchor anchor, int left, int top) {
+	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top) {
 		if(textureBinding == null) return;
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -561,45 +569,19 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		float tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
-		if (anchor != null && anchor != WidgetAnchor.SCALE) {
-			tLeft = left;
-			tTop = top;
+		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
+		if (top >= 0 && left >= 0) {
 			tWidth = Math.min(tWidth, width);
 			tHeight = Math.min(tHeight, height);
-			switch(anchor) {
-				case TOP_CENTER:
-				case CENTER_CENTER:
-				case BOTTOM_CENTER:
-					tLeft = (rWidth / 2) + left;
-					break;
-				case TOP_RIGHT:
-				case CENTER_RIGHT:
-				case BOTTOM_RIGHT:
-					tLeft = rWidth - left - width;
-					break;
-			}
-			switch(anchor) {
-				case CENTER_LEFT:
-				case CENTER_CENTER:
-				case CENTER_RIGHT:
-					tTop = (rHeight / 2) + top;
-					break;
-				case BOTTOM_LEFT:
-				case BOTTOM_CENTER:
-				case BOTTOM_RIGHT:
-					tTop = rHeight - top - height;
-					break;
-			}
-			tLeft = Math.min(Math.max(0, tLeft), rWidth);
-			tTop = Math.min(Math.max(0, tTop), rHeight);
+			tLeft = Math.min(Math.max(0, left), rWidth);
+			tTop = Math.min(Math.max(0, top), rHeight);
 		}
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, height, -90, 0.0D, 0.0D); // draw corners
-		tessellator.addVertexWithUV(width, height, -90, textureBinding.getWidth(), 0.0D);
-		tessellator.addVertexWithUV(width, 0.0D, -90, textureBinding.getWidth(), textureBinding.getHeight());
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, textureBinding.getHeight());
+		tessellator.addVertexWithUV(0.0D, height, -90, tLeft, tTop); // draw corners
+		tessellator.addVertexWithUV(width, height, -90, tWidth, tTop);
+		tessellator.addVertexWithUV(width, 0.0D, -90, tWidth, tHeight);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tHeight);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);

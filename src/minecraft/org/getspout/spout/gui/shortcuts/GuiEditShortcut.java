@@ -1,7 +1,9 @@
 package org.getspout.spout.gui.shortcuts;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.controls.Shortcut;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.getspout.spout.gui.controls.GuiControls;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -15,7 +17,7 @@ import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 import net.minecraft.src.GuiScreen;
 
 public class GuiEditShortcut extends GuiScreen {
-	GuiCommandShortcuts parent;
+	GuiControls parent;
 	Shortcut item;
 	Button recordButton, doneButton, addButton, editButton, removeButton;
 	Label titleLabel, recordLabel;
@@ -23,8 +25,8 @@ public class GuiEditShortcut extends GuiScreen {
 	GuiCommandsSlot slot;
 	
 	boolean recording = false;
-	public GuiEditShortcut(GuiCommandShortcuts parent, Shortcut item) {
-		this.parent = parent;
+	public GuiEditShortcut(GuiControls guiControls, Shortcut item) {
+		this.parent = guiControls;
 		this.item = item;
 	}
 	
@@ -117,11 +119,12 @@ public class GuiEditShortcut extends GuiScreen {
 		if(btn.equals(doneButton)){
 			item.setTitle(commandText.getText());
 			if(!item.getTitle().equals("") && item.getKey() != -1) {
-				parent.getManager().unregisterShortcut(item);
-				parent.getManager().registerShortcut(item);
+				SimpleKeyBindingManager manager = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
+				manager.unregisterShortcut(item);
+				manager.registerShortcut(item);
 			}
 			mc.displayGuiScreen(parent);
-			parent.slot.updateItems();
+			parent.getModel().refresh();
 		}
 		if(btn.equals(addButton)){
 			editCommand(-1);

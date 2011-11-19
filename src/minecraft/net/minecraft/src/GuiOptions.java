@@ -66,7 +66,7 @@ public class GuiOptions extends GuiScreen {
 
 			if(var1.id == 100) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiControls(this, this.options));
+				this.mc.displayGuiScreen(new org.getspout.spout.gui.controls.GuiControls(this)); //Spout
 			}
 
 			if(var1.id == 200) {
