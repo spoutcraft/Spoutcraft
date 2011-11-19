@@ -8,6 +8,7 @@ import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.gui.ButtonUpdater;
 import org.getspout.spout.gui.GuiSpoutScreen;
 import org.getspout.spout.gui.controls.ControlsModel.ControlsBasicItem;
+import org.getspout.spout.gui.controls.ControlsModel.KeyBindingItem;
 import org.getspout.spout.gui.controls.ControlsModel.ShortcutBindingItem;
 import org.getspout.spout.gui.shortcuts.GuiEditShortcut;
 import org.spoutcraft.spoutcraftapi.ChatColor;
@@ -57,7 +58,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		buttonRemove = new GenericButton("Remove");
 		buttonRemove.setTooltip("Remove Shortcut");
 		labelDescription = new GenericLabel();
-		labelDescription.setText("Doubleclick an item, then press the key(combination).");
+		labelDescription.setText("Double-click an item, then press the key (combination).");
 		filter = new GenericScrollArea();
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
@@ -110,6 +111,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		for(Widget w:filter.getAttachedWidgets()) {
 			w.setWidth(filter.getViewportSize(Orientation.HORIZONTAL) - 10);
 		}
+		search.setWidth((int) filter.getWidth());
 
 		top += 5 + view.getHeight();
 
@@ -134,6 +136,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 	@Override
 	protected void buttonClicked(Button btn) {
+		SimpleKeyBindingManager man = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
 		if(btn.equals(buttonDone)) {
 			mc.displayGuiScreen(parentScreen);
 			return;
@@ -151,12 +154,21 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		if(item != null && item instanceof ShortcutBindingItem) {
 			sh = (ShortcutBindingItem) item;
 		}
+		KeyBindingItem binding = null;
+		if(item != null && item instanceof KeyBindingItem) {
+			binding = (KeyBindingItem) item;
+		}
 		if(sh != null && btn.equals(buttonEdit)) {
 			editItem(sh.getShortcut());
-		}
-		if(sh != null && btn.equals(buttonRemove)) {
-			SimpleKeyBindingManager man = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
+		} else if(btn.equals(buttonEdit) && item != null) {
+			model.setEditing(item);
+		} else if(sh != null && btn.equals(buttonRemove)) {
 			man.unregisterShortcut(sh.getShortcut());
+			man.save();
+			model.refresh();
+		} else if(binding != null && btn.equals(buttonRemove)) {
+			man.unregisterControl(binding.getBinding());
+			man.save();
 			model.refresh();
 		}
 	}
@@ -168,12 +180,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 	public void updateButtons() {
 		ControlsBasicItem item = model.getItem(view.getSelectedRow());
-		boolean enabled = item != null;
-		if(enabled) {
-			enabled = item instanceof ShortcutBindingItem;
-		}
-		buttonEdit.setEnabled(enabled);
-		buttonRemove.setEnabled(enabled);
+		buttonEdit.setEnabled(item != null);
+		buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
 	}
 
 	@Override
@@ -181,8 +189,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		ControlsBasicItem item = model.getEditingItem();
 		if(item != null) {
 			if(item.useModifiers() && !SimpleKeyBindingManager.isModifierKey(i)) {
-				item.setKey(i);
 				item.setModifiers(SimpleKeyBindingManager.getPressedModifiers());
+				item.setKey(i);
 				model.finishEdit();
 			} else if(!item.useModifiers()){
 				item.setKey(i);

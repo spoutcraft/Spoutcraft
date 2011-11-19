@@ -11,6 +11,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.controls.Shortcut;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.lwjgl.input.Keyboard;
+import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
@@ -99,7 +100,6 @@ public class ControlsModel extends AbstractListModel {
 
 	@Override
 	public void onSelected(int item, boolean doubleClick) {
-		gui.updateButtons();
 	}
 	
 	protected void onItemClicked(ControlsBasicItem item, boolean doubleClicked) {
@@ -111,6 +111,11 @@ public class ControlsModel extends AbstractListModel {
 			lastEdit = item;
 		}
 		gui.updateButtons();
+	}
+	
+	public void setEditing(ControlsBasicItem item) {
+		editing = true;
+		lastEdit = item;
 	}
 	
 	public ControlsBasicItem getEditingItem() {
@@ -261,8 +266,8 @@ public class ControlsModel extends AbstractListModel {
 		@Override
 		public void setKey(int id) {
 			shortcut.setKey(id);
-			manager.save();
 			manager.updateBindings();
+			manager.save();
 		}
 
 		@Override
@@ -310,7 +315,7 @@ public class ControlsModel extends AbstractListModel {
 
 		@Override
 		public int getHeight() {
-			return 11;
+			return 20;
 		}
 
 		@Override
@@ -320,13 +325,14 @@ public class ControlsModel extends AbstractListModel {
 			int w = font.getStringWidth("B");
 			font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
 			font.drawStringWithShadow(getEditingItem() == this?"> <":Keyboard.getKeyName(getKey()), x + width / 2, y+2, 0xffcccccc);
+			font.drawStringWithShadow("Plugin/Addon: "+ChatColor.WHITE+binding.getPlugin(), x+w+4, y+11, 0xffcccccc);
 		}
 
 		@Override
 		public void setKey(int id) {
 			binding.setKey(id);
-			manager.save();
 			manager.updateBindings();
+			manager.save();
 		}
 
 		@Override
@@ -347,6 +353,10 @@ public class ControlsModel extends AbstractListModel {
 		@Override
 		public String getName() {
 			return binding.getDescription();
+		}
+
+		public org.spoutcraft.spoutcraftapi.keyboard.KeyBinding getBinding() {
+			return binding;
 		}
 		
 	}
