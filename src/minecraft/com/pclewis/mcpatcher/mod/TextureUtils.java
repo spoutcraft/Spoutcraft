@@ -225,6 +225,7 @@ public class TextureUtils {
 	public static InputStream getResourceAsStream(TexturePackBase var0, String var1) {
 		boolean wasLocked = SpoutClient.isSandboxed();
 		SpoutClient.disableSandbox();
+		if(var0 != null) var0.func_6482_a();
 		try {
 			InputStream var2 = null;
 			if(var0 != null) {

@@ -19,10 +19,11 @@ public class TexturePackItem implements ListWidgetItem {
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
 	int id = -1;
 	private String title = null;
+	private int tileSize;
 	
 	public TexturePackItem(TexturePackBase pack) {
 		this.setPack(pack);
-		TextureUtils.getTileSize(pack);
+		tileSize = TextureUtils.getTileSize(pack);
 	}
 
 	public void setListWidget(ListWidget widget) {
@@ -44,9 +45,9 @@ public class TexturePackItem implements ListWidgetItem {
 		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
 		font.drawStringWithShadow(pack.firstDescriptionLine, x+29, y+11, 0xffaaaaaa);
 		font.drawStringWithShadow(pack.secondDescriptionLine, x+29, y+20, 0xffaaaaaa);
-//		String sTileSize = tileSize+"x";
-//		int w = font.getStringWidth(sTileSize);
-//		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
+		String sTileSize = tileSize+"x";
+		int w = font.getStringWidth(sTileSize);
+		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
 		
 		//TODO: Work out why tile size is not correctly calculated
 		//TODO: Show database information (author/member who posted it)
