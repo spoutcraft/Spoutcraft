@@ -64,11 +64,7 @@ public class PacketServerPlugins implements SpoutPacket{
 		SimpleAddonManager addonManager = ((SimpleAddonManager)Spoutcraft.getAddonManager());
 		for (int i = 0; i < plugins.length; i++) {
 			Addon addon = addonManager.getAddon(plugins[i]);
-			if(addon == null) {
-				addon = new ServerAddon(plugins[i], versions[i], null);
-				addonManager.addFakeAddon((ServerAddon) addon);
-			}
-			else if(addon instanceof ServerAddon) {
+			if(addon == null || addon instanceof ServerAddon) {
 				addonManager.addFakeAddon(new ServerAddon(plugins[i], versions[i], null));
 			}
 		}

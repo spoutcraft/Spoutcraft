@@ -20,10 +20,8 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 //Spout HD Start
-import net.minecraft.client.Minecraft;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.item.SpoutCustomBlockDesign;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
@@ -50,8 +48,9 @@ public class ItemRenderer {
 	public void renderItem(EntityLiving var1, ItemStack var2) {
 		GL11.glPushMatrix();
 		//Spout Start
-		String customTexture = SpoutClient.getInstance().getItemManager().getCustomItemTexture(var2.itemID, (short) var2.getItemDamage());
-		String customTexturePlugin = SpoutClient.getInstance().getItemManager().getCustomItemTexturePlugin(var2.itemID, (short) var2.getItemDamage());
+		org.spoutcraft.spoutcraftapi.material.Item item = MaterialData.getItem(var2.itemID, (short) var2.getItemDamage());
+		String customTexture = SpoutClient.getInstance().getMaterialManager().getCustomItemTexture(item);
+		String customTexturePlugin = SpoutClient.getInstance().getMaterialManager().getCustomItemTextureAddon(item);
 		GenericBlockDesign blockType = null;
 		if(MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()) != null) {
 			blockType = (GenericBlockDesign) MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()).getBlockDesign();

@@ -20,62 +20,43 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 
-public class PacketItemName implements SpoutPacket{
-	private int id;
-	private short data;
-	private String name;
-	public PacketItemName() {
+public class PacketGenericBlock implements SpoutPacket{
+	GenericCustomBlock block = new GenericCustomBlock();
+	public PacketGenericBlock() {
 		
-	}
-	
-	public PacketItemName(int id, short data, String name) {
-		this.id = id;
-		this.data = data;
-		this.name = name;
 	}
 
 	public int getNumBytes() {
-		return 6 + PacketUtil.getNumBytes(name);
+		return block.getNumBytes();
 	}
 
 	public void readData(DataInputStream input) throws IOException {
-		id = input.readInt();
-		data = input.readShort();
-		name = PacketUtil.readString(input);
+		block.readData(input);
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
-		output.writeInt(id);
-		output.writeShort(data);
-		PacketUtil.writeString(output, name);
+		block.writeData(output);
 	}
 
-	public void run(int PlayerId) {
-		Material material = MaterialData.getOrCreateMaterial(id, data);
-		if (name.equals("[resetall]")) {
-			MaterialData.reset();
-		}
-		else if (name.equals("[reset]")) {
-			material.setName(material.getNotchianName());
-		}
-		else {
-			material.setName(name);
-		}
-	}
-
-	public PacketType getPacketType() {
-		return PacketType.PacketItemName;
-	}
-
-	public int getVersion() {
-		return 0;
+	public void run(int playerId) {
+		block.setItemDrop(new ItemStack(block, 1));
+		MaterialData.addCustomBlock(block);
 	}
 
 	public void failure(int playerId) {
-		
+
 	}
+
+	public PacketType getPacketType() {
+		return PacketType.PacketGenericBlock;
+	}
+
+	public int getVersion() {
+		return block.getVersion();
+	}
+
 }

@@ -65,7 +65,7 @@ public class CustomPacket extends Packet{
 		packetId = input.readShort();
 		int version = input.readShort(); //packet version
 		int length = input.readInt(); //packet size
-		//System.out.println("Reading Packet: " + PacketType.getPacketFromId(packetId) + " Size: " + length + " bytes, version: " + version);
+		System.out.println("Reading Packet: " + PacketType.getPacketFromId(packetId) + " Size: " + length + " bytes, version: " + version);
 		if (packetId > -1 && version > -1) {
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
@@ -94,12 +94,11 @@ public class CustomPacket extends Packet{
 				success = true;
 			}
 		}
-		catch (IOException e) {
-			throw new IOException(e);
-		}
 		catch (Exception e) {
+			System.out.println("------------------------");
+			System.out.println("Unexpected Exception: " + PacketType.getPacketFromId(packetId) + ", " + packetId);
 			e.printStackTrace();
-			throw new IllegalStateException("readData() for packetId " + packetId + " threw an exception");
+			System.out.println("------------------------");
 		}
 		if (prevOutdated != outdated) {
 			SpoutClient.getInstance().getActivePlayer().showAchievement("Update Available!", "New Spoutcraft update!", 323 /*Sign*/);

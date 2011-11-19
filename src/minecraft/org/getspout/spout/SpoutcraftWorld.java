@@ -9,6 +9,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
 import org.getspout.spout.block.SpoutcraftChunk;
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
@@ -423,5 +424,17 @@ public class SpoutcraftWorld implements World{
 	
 	public boolean isMultiplayerWorld() {
 		return Minecraft.theMinecraft.isMultiplayerWorld();
+	}
+
+	public Entity getEntityFromId(int id) {
+		net.minecraft.src.Entity e = SpoutClient.getInstance().getEntityFromId(id);
+		if (e != null) {
+			return e.spoutEntity;
+		}
+		return null;
+	}
+
+	public Entity getEntityFromUUID(UUID id) {
+		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 }

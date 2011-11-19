@@ -46,7 +46,6 @@ import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.gui.server.ServerManager;
 import org.getspout.spout.gui.texturepacks.TexturePacksDatabaseModel;
 import org.getspout.spout.gui.texturepacks.TexturePacksModel;
-import org.getspout.spout.inventory.SimpleItemManager;
 import org.getspout.spout.inventory.SimpleMaterialManager;
 import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
@@ -79,7 +78,6 @@ import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
-import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
@@ -89,13 +87,11 @@ import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
-@SuppressWarnings("deprecation")
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final long version = 0L;
 	
-	private final SimpleItemManager itemManager = new SimpleItemManager();
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final ChatManager chatManager = new ChatManager();
 	private final PacketManager packetManager = new PacketManager();
@@ -178,10 +174,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	
 	public long getServerVersion() {
 		return server;
-	}
-	
-	public ItemManager getItemManager() {
-		return itemManager;
 	}
 	
 	public SkyManager getSkyManager() {
@@ -317,7 +309,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
 		SpoutItem.wipeMap();
-		itemManager.reset();
+		MaterialData.reset();
 		FileDownloadThread.preCacheCompleted.lazySet(0);
 		entityManager.clearData();
 		if (getHandle().thePlayer != null) {

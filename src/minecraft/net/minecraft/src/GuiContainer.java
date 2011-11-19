@@ -12,6 +12,7 @@ import net.minecraft.src.StringTranslate;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
 //Spout end
@@ -84,7 +85,8 @@ public abstract class GuiContainer extends GuiScreen {
 		if(var13.getItemStack() == null && var6 != null && var6.getHasStack() && shouldShowTooltip()) { //Spout added tooltip condition.
 			String var14 = ("" + StringTranslate.getInstance().translateNamedKey(var6.getStack().getItemName())).trim();
 			//Spout Start
-			String custom = SpoutClient.getInstance().getItemManager().getItemName(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(var6.getStack().itemID, (short)(var6.getStack().getItemDamage()));
+			String custom = item.getName();
 			if (custom != null) {
 				var14 = custom;
 			}

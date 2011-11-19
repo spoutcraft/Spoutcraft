@@ -171,6 +171,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		
 	}
 	public String getCustomItemTexture(Material item) {
+		if (item == null) return null;
 		int id = item.getRawId();
 		int data = item.getRawData();
 		if (customTextures.containsKey(id, data)) {
@@ -179,6 +180,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		return null;
 	}
 	public String getCustomItemTextureAddon(Material item) {
+		if (item == null) return null;
 		int id = item.getRawId();
 		int data = item.getRawData();
 		if (customTexturesPlugin.containsKey(id, data)) {
@@ -276,9 +278,4 @@ public class SimpleMaterialManager implements MaterialManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	public ItemStack getItemDrop(CustomBlock block) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

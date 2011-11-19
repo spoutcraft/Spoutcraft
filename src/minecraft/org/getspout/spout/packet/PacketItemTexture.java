@@ -20,11 +20,12 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.inventory.ItemManager;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.material.Item;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-@SuppressWarnings("deprecation")
 public class PacketItemTexture implements SpoutPacket {
 	private int id;
 	private short data;
@@ -78,10 +79,9 @@ public class PacketItemTexture implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		ItemManager manager = SpoutClient.getInstance().getItemManager();
-		if (name.equals("[reset]"))
-			name = null;
-		manager.setItemTexture(id, data, pluginName, name);
+		Item item = MaterialData.getItem(id, data);
+		Addon addon = Spoutcraft.getAddonManager().getOrCreateAddon(pluginName);
+		Spoutcraft.getMaterialManager().setItemTexture(item, addon, name);
 	}
 
 	public PacketType getPacketType() {

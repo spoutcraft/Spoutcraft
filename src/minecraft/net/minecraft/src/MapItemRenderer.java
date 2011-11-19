@@ -11,7 +11,7 @@ import net.minecraft.src.MapData;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
 //Spout start
-import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout end
 import org.lwjgl.opengl.GL11;
 
@@ -113,7 +113,8 @@ public class MapItemRenderer {
 		ItemStack inHand = var1.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
-			customName = SpoutClient.getInstance().getItemManager().getCustomItemName(inHand.itemID, (short)(inHand.getItemDamage()));
+			org.spoutcraft.spoutcraftapi.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
+			customName = item.getName();
 		}
 		if (customName != null && customName.length() > 0) {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
