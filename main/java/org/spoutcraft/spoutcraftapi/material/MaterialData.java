@@ -7,24 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.material.block.Air;
-import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
-import org.spoutcraft.spoutcraftapi.material.block.GenericLiquid;
-import org.spoutcraft.spoutcraftapi.material.block.Grass;
-import org.spoutcraft.spoutcraftapi.material.block.LongGrass;
-import org.spoutcraft.spoutcraftapi.material.block.Sapling;
-import org.spoutcraft.spoutcraftapi.material.block.Slab;
-import org.spoutcraft.spoutcraftapi.material.block.Solid;
-import org.spoutcraft.spoutcraftapi.material.block.StoneBricks;
-import org.spoutcraft.spoutcraftapi.material.block.Tree;
-import org.spoutcraft.spoutcraftapi.material.block.Wool;
-import org.spoutcraft.spoutcraftapi.material.item.Coal;
-import org.spoutcraft.spoutcraftapi.material.item.Dye;
-import org.spoutcraft.spoutcraftapi.material.item.GenericArmor;
-import org.spoutcraft.spoutcraftapi.material.item.GenericFood;
-import org.spoutcraft.spoutcraftapi.material.item.GenericItem;
-import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
-import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
+import org.spoutcraft.spoutcraftapi.material.block.*;
+import org.spoutcraft.spoutcraftapi.material.item.*;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
 public class MaterialData {
@@ -310,6 +294,11 @@ public class MaterialData {
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
 	
 	static {
+		reset();
+	}
+	
+	public static void reset() {
+		idMap.clear();
 		Field[] fields = MaterialData.class.getFields();
 		for (Field f : fields) {
 			if (Modifier.isStatic(f.getModifiers())) {
@@ -317,6 +306,7 @@ public class MaterialData {
 					Object value = f.get(null);
 					if (value instanceof Material) {
 						Material mat = (Material)value;
+						mat.setName(mat.getNotchianName());
 						idMap.put(mat.getRawId(), mat.getRawData(), mat);
 					}
 				} catch (IllegalArgumentException e) {

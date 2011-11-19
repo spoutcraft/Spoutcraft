@@ -12,10 +12,9 @@ public abstract class GenericCubeCustomBlock extends GenericCustomBlock {
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
 	 * @param design to use for the block
-	 * @param customMetaData of the block
 	 */
-	public GenericCubeCustomBlock(Addon addon, String name, boolean isOpaque, GenericCubeBlockDesign design, int customMetaData) {
-		super(addon, name, isOpaque, design, customMetaData);
+	public GenericCubeCustomBlock(Addon addon, String name, boolean isOpaque, GenericCubeBlockDesign design) {
+		super(addon, name, isOpaque, design);
 	}
 	
 	/**

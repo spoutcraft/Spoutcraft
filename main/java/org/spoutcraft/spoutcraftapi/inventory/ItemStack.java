@@ -32,6 +32,8 @@
  */
 package org.spoutcraft.spoutcraftapi.inventory;
 
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
@@ -79,6 +81,30 @@ public class ItemStack implements Cloneable{
 
 	public ItemStack(final Material type, final int amount, final short damage, final Byte data) {
 		this(type.getRawId(), amount, damage, data);
+	}
+	
+	public ItemStack(CustomItem item) {
+		this(item.getRawId(), 1, (short)item.getRawData());
+	}
+	
+	public ItemStack(CustomItem item, int amount) {
+		this(item.getRawId(), amount, (short)item.getRawData());
+	}
+	
+	public ItemStack(CustomBlock block) {
+		this(block.getBlockItem());
+	}
+	
+	public ItemStack(CustomBlock block, int amount) {
+		this(block.getBlockItem(), amount);
+	}
+
+	/**
+	 * Is true if the item is a custom item, not in the vanilla game
+	 * @return true if custom item
+	 */
+	public boolean isCustomItem() {
+		return getType() instanceof CustomItem;
 	}
 
 	/**

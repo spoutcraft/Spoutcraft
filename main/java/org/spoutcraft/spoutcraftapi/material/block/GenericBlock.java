@@ -3,7 +3,6 @@ package org.spoutcraft.spoutcraftapi.material.block;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.Block;
-import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
 public class GenericBlock implements Block{
 	private final int id;
@@ -11,7 +10,6 @@ public class GenericBlock implements Block{
 	private final boolean subtypes;
 	private final String name;
 	private String customName;
-	private SoundEffect stepSound = SoundEffect.STONE;
 	private BlockDesign design;
 	
 	private GenericBlock(String name, int id, int data, boolean subtypes) {
@@ -47,19 +45,14 @@ public class GenericBlock implements Block{
 		}
 		return name;
 	}
+	
+	public String getNotchianName() {
+		return name;
+	}
 
 	public void setName(String name) {
 		this.customName = name;
 		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
-	}
-
-	public SoundEffect getStepSound() {
-		return stepSound;
-	}
-
-	public Block setStepSound(SoundEffect sound) {
-		stepSound = sound;
-		return this;
 	}
 
 	public float getFriction() {
@@ -78,16 +71,6 @@ public class GenericBlock implements Block{
 	public Block setHardness(float hardness) {
 		Spoutcraft.getClient().getMaterialManager().setHardness(this, hardness);
 		return this;
-	}
-
-	public float getExplosionResistence() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public Block setExplosionResistence(float resistence) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean isOpaque() {

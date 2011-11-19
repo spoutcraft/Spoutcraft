@@ -44,6 +44,10 @@ public class GenericItem implements Item {
 		}
 		return name;
 	}
+	
+	public String getNotchianName() {
+		return name;
+	}
 
 	public void setName(String name) {
 		this.customName = name;

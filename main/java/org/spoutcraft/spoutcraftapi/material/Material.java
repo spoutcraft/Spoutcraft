@@ -10,5 +10,7 @@ public interface Material {
 	
 	public String getName();
 	
+	public String getNotchianName();
+	
 	public void setName(String name);
 }

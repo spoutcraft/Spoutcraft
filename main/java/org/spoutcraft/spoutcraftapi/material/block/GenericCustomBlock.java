@@ -1,95 +1,90 @@
 package org.spoutcraft.spoutcraftapi.material.block;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.block.BlockFace;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
+import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public abstract class GenericCustomBlock extends GenericBlock implements CustomBlock {
+public class GenericCustomBlock implements CustomBlock {
 	public BlockDesign design = new GenericBlockDesign();
-	public static MaterialManager mm;
-	private final String fullName;
-	private final int customID;
-	private final Addon addon;
-	private final CustomItem item;
-	private final int blockId;
-	public int customMetaData = 0;
+	private String name;
+	private String fullName;
+	private int customId;
+	private Addon addon;
+	private CustomItem item;
+	private int blockId;
+	private boolean opaque;
 	private float hardness = 1.5F;
 	private float friction = 0.6F;
 	private int lightLevel = 0;
+	
+	/**
+	 * Creates a GenericCustomBlock with no values, used for serialization purposes only.
+	 */
+	public GenericCustomBlock() {
+		
+	}
 
 	/**
 	 * Creates a GenericCustomBlock with no model yet.
 	 * 
-	 * @param plugin creating the block
-	 * @param name of the block
-	 * @param isOpaque true if you want the block solid
-	 * @param material manager
-	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, MaterialManager manager) {
-		this(addon, name, isOpaque, new GenericCustomItem(addon, name), manager);
-	}
-	
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, CustomItem item, MaterialManager manager) {
-		super(name, isOpaque ? 1 : 20);
-		mm = manager;
-		this.blockId = isOpaque ? 1 :20;
-		this.addon = addon;
-		this.item = item;
-		this.fullName = item.getFullName();
-		this.customID = item.getCustomId();
-		MaterialData.addCustomBlock(this);
-		this.setItemDrop(mm.getCustomItemStack(this, 1));
-	}
-	
-	/**
-	 * Creates a GenericCustomBlock with no model yet.
-	 * 
-	 * @param plugin creating the block
+	 * @param addon creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
 	 */
 	public GenericCustomBlock(Addon addon, String name, boolean isOpaque) {
-		this(addon, name, isOpaque, Spoutcraft.getClient().getMaterialManager());
-	}
-
-	/**
-	 * Creates a GenericCustomBlock with a specified Design and metadata
-	 * 
-	 * @param plugin creating the block
-	 * @param name of the block
-	 * @param isOpaque true if you want the block solid
-	 * @param design to use for the block
-	 * @param customMetaData for the block
-	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design, int customMetaData) {
-		this(addon, name, isOpaque);
-		this.customMetaData = customMetaData;
-		setBlockDesign(design);
+		this(addon, name, isOpaque, new GenericCustomItem(addon, name));
 	}
 	
 	/**
 	 * Creates a GenericCustomBlock with a specified Design and metadata
 	 * 
-	 * @param plugin creating the block
+	 * @param addon creating the block
+	 * @param name of the block
+	 * @param isOpaque true if you want the block solid
+	 * @param item to use for the block
+	 */
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, CustomItem item) {
+		opaque = isOpaque;
+		this.blockId = isOpaque ? 1 :20;
+		this.addon = addon;
+		this.item = item;
+		this.name = item.getName();
+		this.fullName = item.getFullName();
+		this.customId = item.getCustomId();
+		MaterialData.addCustomBlock(this);
+		this.setItemDrop(new ItemStack(this, 1));
+	}
+
+	/**
+	 * Creates a GenericCustomBlock with a specified Design and metadata
+	 * 
+	 * @param addon creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
 	 * @param design to use for the block
-	 * @param customMetaData for the block
-	 * @param material manager
 	 */
-	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design, int customMetaData, MaterialManager manager) {
-		this(addon, name, isOpaque, manager);
-		this.customMetaData = customMetaData;
+	public GenericCustomBlock(Addon addon, String name, boolean isOpaque, BlockDesign design) {
+		this(addon, name, isOpaque);
 		setBlockDesign(design);
 	}
-
+	
 	/**
 	 * Creates a basic GenericCustomblock with no design that is opaque/solid.
 	 * 
@@ -100,10 +95,15 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 		this(addon, name, true);
 	}
 	
-	@Override
+	public String getName() {
+		return name;
+	}
+	
 	public void setName(String name) {
-		super.setName(name);
-		item.setName(name);
+		this.name = name;
+		if (item != null) {
+			item.setName(name);
+		}
 	}
 
 	public BlockDesign getBlockDesign() {
@@ -112,29 +112,36 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 
 	public CustomBlock setBlockDesign(BlockDesign design) {
 		this.design = design;
-		mm.setCustomBlockDesign(this, design);
-		mm.setCustomBlockDesign(this.getBlockItem(), design);
-		mm.setCustomItemBlock(item, this);
+		Spoutcraft.getMaterialManager().setCustomBlockDesign(this, design);
+		Spoutcraft.getMaterialManager().setCustomBlockDesign(this.getBlockItem(), design);
+		Spoutcraft.getMaterialManager().setCustomItemBlock(item, this);
+		return this;
+	}
+	
+	public boolean isOpaque() {
+		return opaque;
+	}
+	
 
+	public Block setOpaque(boolean opaque) {
+		this.opaque = opaque;
 		return this;
 	}
 
+	public boolean hasSubtypes() {
+		return true;
+	}
+
 	public int getCustomId() {
-		return customID;
+		return customId;
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
-
-	public CustomBlock setCustomMetaData(int customMetaData) {
-		this.customMetaData = customMetaData;
-
-		return this;
-	}
-
-	public int getCustomMetaData() {
-		return customMetaData;
+	
+	public String getNotchianName() {
+		return getName();
 	}
 
 	public Addon getAddon() {
@@ -145,12 +152,10 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 		return item;
 	}
 	
-	@Override
 	public int getRawId() {
 		return this.item.getRawId();
 	}
 	
-	@Override
 	public int getRawData() {
 		return this.item.getCustomId();
 	}
@@ -160,40 +165,99 @@ public abstract class GenericCustomBlock extends GenericBlock implements CustomB
 	}
 	
 	public CustomBlock setItemDrop(ItemStack item) {
-		mm.registerItemDrop(this, item);
+		Spoutcraft.getMaterialManager().registerItemDrop(this, item);
 		return this;
 	}
 	
-	@Override
 	public float getHardness() {
 		return hardness;
 	}
 	
-	@Override
 	public CustomBlock setHardness(float hardness) {
 		this.hardness = hardness;
 		return this;
 	}
 	
-	@Override
 	public float getFriction() {
 		return friction;
 	}
 	
-	@Override
 	public CustomBlock setFriction(float friction) {
 		this.friction = friction;
 		return this;
 	}
 	
-	@Override
 	public int getLightLevel() {
 		return lightLevel;
 	}
 	
-	@Override
 	public CustomBlock setLightLevel(int level) {
 		lightLevel = level;
 		return this;
+	}
+
+	public void onNeighborBlockChange(World world, int x, int y, int z, int changedId) {
+	}
+
+	public void onBlockPlace(World world, int x, int y, int z) {
+	}
+
+	public void onBlockPlace(World world, int x, int y, int z, LivingEntity living) {
+	}
+
+	public void onBlockDestroyed(World world, int x, int y, int z) {
+	}
+
+	public void onBlockDestroyed(World world, int x, int y, int z, LivingEntity living) {
+	}
+
+	public boolean onBlockInteract(World world, int x, int y, int z, Player player) {
+		return false;
+	}
+
+	public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
+	}
+
+	public void onBlockClicked(World world, int x, int y, int z, Player player) {		
+	}
+
+	public boolean isProvidingPowerTo(World world, int x, int y, int z,	BlockFace face) {
+		return false;
+	}
+
+	public boolean isIndirectlyProvidingPowerTo(World world, int x, int y, int z, BlockFace face) {
+		return false;
+	}
+
+	public int getNumBytes() {
+		return 4 + PacketUtil.getNumBytes(getName()) + PacketUtil.getNumBytes(getAddon().getDescription().getName()) + 1 + 4 + 4 + 4;
+	}
+
+	public void readData(DataInputStream input) throws IOException {
+		customId = input.readInt();
+		System.out.println("Reading Block: " + customId);
+		setName(PacketUtil.readString(input));
+		String addonName = PacketUtil.readString(input);
+		//System.out.println("Block: " + getName()  + " Id: " + customId + " Addon: " + addonName);
+		addon = Spoutcraft.getAddonManager().getOrCreateAddon(addonName);
+		opaque = input.readBoolean();
+		setFriction(input.readFloat());
+		setHardness(input.readFloat());
+		setLightLevel(input.readInt());
+		item = new GenericCustomItem(addon, name);
+	}
+
+	public void writeData(DataOutputStream output) throws IOException {
+		output.write(customId);
+		PacketUtil.writeString(output, getName());
+		PacketUtil.writeString(output, getAddon().getDescription().getName());
+		output.writeBoolean(isOpaque());
+		output.writeFloat(getFriction());
+		output.writeFloat(getHardness());
+		output.writeInt(getLightLevel());
+	}
+
+	public int getVersion() {
+		return 0;
 	}
 }

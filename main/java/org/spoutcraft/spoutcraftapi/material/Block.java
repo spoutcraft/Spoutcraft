@@ -1,13 +1,8 @@
 package org.spoutcraft.spoutcraftapi.material;
 
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
 public interface Block extends Material{
-	
-	public SoundEffect getStepSound();
-	
-	public Block setStepSound(SoundEffect sound);
 	
 	public float getFriction();
 	
@@ -16,10 +11,6 @@ public interface Block extends Material{
 	public float getHardness();
 	
 	public Block setHardness(float hardness);
-	
-	public float getExplosionResistence();
-	
-	public Block setExplosionResistence(float resistence);
 	
 	public boolean isOpaque();
 	

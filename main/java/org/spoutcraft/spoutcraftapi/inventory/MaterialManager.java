@@ -100,24 +100,6 @@ public interface MaterialManager {
 	public void setCustomItemBlock(CustomItem item, CustomBlock block);
 	
 	/**
-	 * Creates an item stack of a custom block.
-	 *
-	 * @param block to make a stack of
-	 * @param size the size of the item stack
-	 * @return an ItemStack of that item
-	 */
-	public ItemStack getCustomItemStack(CustomBlock block, int size);
-	
-	/**
-	 * Creates an item stack of a custom item.
-	 * 
-	 * @param item to make a stack of
-	 * @param size of the item stack
-	 * @return an ItemStack of that item
-	 */
-	public ItemStack getCustomItemStack(CustomItem item, int size);
-	
-	/**
 	 * Removes the custom block override from this block
 	 * 
 	 * @param block to remove the override
@@ -205,12 +187,4 @@ public interface MaterialManager {
 	 * @return true if it has an item drop
 	 */
 	public boolean hasItemDrop(CustomBlock block);
-	
-	/**
-	 * Gets the ItemStack that drops from the specified block, if it has one
-	 * 
-	 * @param block to get the drop from
-	 * @return item stack of the drop
-	 */
-	public ItemStack getItemDrop(CustomBlock block);
 }

@@ -776,6 +776,20 @@ public interface World {
 	 * @return true if the world is a multiplayer world
 	 */
 	public boolean isMultiplayerWorld();
+	
+	/**
+	 * Gets the entity from the entity id, or null if none exists
+	 * @param id to lookup
+	 * @return entity
+	 */
+	public Entity getEntityFromId(int id);
+	
+	/**
+	 * Gets the entity from the unique entity id, or null if none exists
+	 * @param id to lookup
+	 * @return entity
+	 */
+	public Entity getEntityFromUUID(UUID id);
 
 	/**
 	 * Represents various map environment types that a world may be
