@@ -67,7 +67,11 @@ public class KeyBinding implements Serializable {
 	public boolean equals(Object obj) {
 		if(obj instanceof KeyBinding){
 			KeyBinding other = (KeyBinding)obj;
-			return other.uuid.equals(this.uuid);
+			if(uuid != null && other.uuid != null) {
+				return other.uuid.equals(this.uuid);
+			} else {
+				return this == obj;
+			}
 		}
 		return false;
 	}
