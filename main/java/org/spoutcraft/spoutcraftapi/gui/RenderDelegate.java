@@ -48,6 +48,8 @@ public interface RenderDelegate {
 	
 	public void render(GenericCheckBox check);
 
+	public void render(GenericBitmap bitmap);
+
 	public void downloadTexture(String plugin, String url);
 
 	public int getScreenWidth();
