@@ -70,7 +70,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 	
 	public Location getLocation() {
-		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ);
+		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ,handle.rotationYaw,handle.rotationPitch);
 	}
 
 	public void setVelocity(Vector velocity) {
