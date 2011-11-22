@@ -363,6 +363,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		int left = bitmap.getLeft();
 		int top = bitmap.getTop();
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, bitmap.getRawWidth(), bitmap.getRawHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bitmap.getBuffer());
+		GL11.glTranslatef((float) bitmap.getScreenX(), (float) bitmap.getScreenY(), 0); // moves texture into place
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
