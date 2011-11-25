@@ -38,7 +38,7 @@ public class RenderPlayer extends RenderLiving {
 		this.modelArmor = new ModelBiped(0.5F);
 	}
 
-	protected boolean setArmorModel(EntityPlayer var1, int var2, float var3) {
+	protected int setArmorModel(EntityPlayer var1, int var2, float var3) {
 		ItemStack var4 = var1.inventory.armorItemInSlot(3 - var2);
 		if(var4 != null) {
 			Item var5 = var4.getItem();
@@ -54,25 +54,39 @@ public class RenderPlayer extends RenderLiving {
 				var7.bipedRightLeg.showModel = var2 == 2 || var2 == 3;
 				var7.bipedLeftLeg.showModel = var2 == 2 || var2 == 3;
 				this.setRenderPassModel(var7);
-				return true;
+				if(var4.func_40711_u()) {
+					return 15;
+				}
+
+				return 1;
 			}
 		}
 
-		return false;
+		return -1;
 	}
 
 	public void renderPlayer(EntityPlayer var1, double var2, double var4, double var6, float var8, float var9) {
 		ItemStack var10 = var1.inventory.getCurrentItem();
-		this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = var10 != null;
-		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = var1.isSneaking();
-		double var11 = var4 - (double)var1.yOffset;
-		if(var1.isSneaking() && !(var1 instanceof EntityPlayerSP)) {
-			var11 -= 0.125D;
+		this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = var10 != null?1:0;
+		if(var10 != null && var1.func_35205_Y() > 0) {
+			EnumAction var11 = var10.getItemUseAction();
+			if(var11 == EnumAction.block) {
+				this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = 3;
+			} else if(var11 == EnumAction.bow) {
+				this.modelArmorChestplate.field_40333_u = this.modelArmor.field_40333_u = this.modelBipedMain.field_40333_u = true;
+			}
 		}
 
-		super.doRenderLiving(var1, var2, var11, var6, var8, var9);
+		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = var1.isSneaking();
+		double var13 = var4 - (double)var1.yOffset;
+		if(var1.isSneaking() && !(var1 instanceof EntityPlayerSP)) {
+			var13 -= 0.125D;
+		}
+
+		super.doRenderLiving(var1, var2, var13, var6, var8, var9);
+		this.modelArmorChestplate.field_40333_u = this.modelArmor.field_40333_u = this.modelBipedMain.field_40333_u = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
-		this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = false;
+		this.modelArmorChestplate.field_1278_i = this.modelArmor.field_1278_i = this.modelBipedMain.field_1278_i = 0;
 	}
 
 	protected void renderName(EntityPlayer var1, double var2, double var4, double var6) {
@@ -162,15 +176,16 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glScalef(var4, -var4, var4);
 			}
 
-			this.renderManager.itemRenderer.renderItem(var1, var3);
+			this.renderManager.itemRenderer.renderItem(var1, var3, 0);
 			GL11.glPopMatrix();
 		}
 
-		float var5;
+		float var6;
+		float var7;
 		if(var1.username.equals("deadmau5") && this.loadDownloadableImageTexture(var1.skinUrl, (String)null)) {
 			for(int var19 = 0; var19 < 2; ++var19) {
-				var5 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var2 - (var1.prevRenderYawOffset + (var1.renderYawOffset - var1.prevRenderYawOffset) * var2);
-				float var6 = var1.prevRotationPitch + (var1.rotationPitch - var1.prevRotationPitch) * var2;
+				float var5 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var2 - (var1.prevRenderYawOffset + (var1.renderYawOffset - var1.prevRenderYawOffset) * var2);
+				var6 = var1.prevRotationPitch + (var1.rotationPitch - var1.prevRotationPitch) * var2;
 				GL11.glPushMatrix();
 				GL11.glRotatef(var5, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(var6, 1.0F, 0.0F, 0.0F);
@@ -178,7 +193,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-var6, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-var5, 0.0F, 1.0F, 0.0F);
-				float var7 = 1.3333334F;
+				var7 = 1.3333334F;
 				GL11.glScalef(var7, var7, var7);
 				this.modelBipedMain.renderEars(0.0625F);
 				GL11.glPopMatrix();
@@ -188,7 +203,7 @@ public class RenderPlayer extends RenderLiving {
 		if(this.loadDownloadableImageTexture(var1.playerCloakUrl, (String)null)) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double var21 = var1.field_20066_r + (var1.field_20063_u - var1.field_20066_r) * (double)var2 - (var1.prevPosX + (var1.posX - var1.prevPosX) * (double)var2);
+			double var22 = var1.field_20066_r + (var1.field_20063_u - var1.field_20066_r) * (double)var2 - (var1.prevPosX + (var1.posX - var1.prevPosX) * (double)var2);
 			double var23 = var1.field_20065_s + (var1.field_20062_v - var1.field_20065_s) * (double)var2 - (var1.prevPosY + (var1.posY - var1.prevPosY) * (double)var2);
 			double var8 = var1.field_20064_t + (var1.field_20061_w - var1.field_20064_t) * (double)var2 - (var1.prevPosZ + (var1.posZ - var1.prevPosZ) * (double)var2);
 			float var10 = var1.prevRenderYawOffset + (var1.renderYawOffset - var1.prevRenderYawOffset) * var2;
@@ -203,8 +218,8 @@ public class RenderPlayer extends RenderLiving {
 				var15 = 32.0F;
 			}
 
-			float var16 = (float)(var21 * var11 + var8 * var13) * 100.0F;
-			float var17 = (float)(var21 * var13 - var8 * var11) * 100.0F;
+			float var16 = (float)(var22 * var11 + var8 * var13) * 100.0F;
+			float var17 = (float)(var22 * var13 - var8 * var11) * 100.0F;
 			if(var16 < 0.0F) {
 				var16 = 0.0F;
 			}
@@ -223,58 +238,80 @@ public class RenderPlayer extends RenderLiving {
 			GL11.glPopMatrix();
 		}
 
-		ItemStack var20 = var1.inventory.getCurrentItem();
-		if(var20 != null) {
+		ItemStack var21 = var1.inventory.getCurrentItem();
+		if(var21 != null) {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedRightArm.postRender(0.0625F);
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 			if(var1.fishEntity != null) {
-				var20 = new ItemStack(Item.stick);
+				var21 = new ItemStack(Item.stick);
 			}
 
-			if(var20.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var20.itemID].getRenderType())) {
-				var5 = 0.5F;
+			EnumAction var20 = null;
+			if(var1.func_35205_Y() > 0) {
+				var20 = var21.getItemUseAction();
+			}
+
+			if(var21.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var21.itemID].getRenderType())) {
+				var6 = 0.5F;
 				GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
-				var5 *= 0.75F;
+				var6 *= 0.75F;
 				GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-				GL11.glScalef(var5, -var5, var5);
-			} else if(Item.itemsList[var20.itemID].isFull3D()) {
-				var5 = 0.625F;
-				if(Item.itemsList[var20.itemID].shouldRotateAroundWhenRendering()) {
+				GL11.glScalef(var6, -var6, var6);
+			} else if(var21.itemID == Item.bow.shiftedIndex) {
+				var6 = 0.625F;
+				GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+				GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+				GL11.glScalef(var6, -var6, var6);
+				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+			} else if(Item.itemsList[var21.itemID].isFull3D()) {
+				var6 = 0.625F;
+				if(Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 					GL11.glTranslatef(0.0F, -0.125F, 0.0F);
 				}
 
-				if(var1.func_35205_Y() > 0) {
-					EnumAction var22 = var20.func_35865_n();
-					if(var22 == EnumAction.block) {
-						GL11.glTranslatef(0.05F, 0.0F, -0.1F);
-						GL11.glRotatef(-60.0F, 0.0F, 1.0F, 0.0F);
-						GL11.glRotatef(-20.0F, 1.0F, 0.0F, 0.0F);
-					}
+				if(var1.func_35205_Y() > 0 && var20 == EnumAction.block) {
+					GL11.glTranslatef(0.05F, 0.0F, -0.1F);
+					GL11.glRotatef(-50.0F, 0.0F, 1.0F, 0.0F);
+					GL11.glRotatef(-10.0F, 1.0F, 0.0F, 0.0F);
+					GL11.glRotatef(-60.0F, 0.0F, 0.0F, 1.0F);
 				}
 
 				GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
-				GL11.glScalef(var5, -var5, var5);
+				GL11.glScalef(var6, -var6, var6);
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			} else {
-				var5 = 0.375F;
+				var6 = 0.375F;
 				GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
-				GL11.glScalef(var5, var5, var5);
+				GL11.glScalef(var6, var6, var6);
 				GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 			}
 
-			this.renderManager.itemRenderer.renderItem(var1, var20);
+			if(var21.itemID == Item.potion.shiftedIndex) {
+				int var24 = var21.getItem().getColorFromDamage(var21.getItemDamage());
+				var7 = (float)(var24 >> 16 & 255) / 255.0F;
+				float var25 = (float)(var24 >> 8 & 255) / 255.0F;
+				float var9 = (float)(var24 & 255) / 255.0F;
+				GL11.glColor4f(var7, var25, var9, 1.0F);
+				this.renderManager.itemRenderer.renderItem(var1, var21, 0);
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				this.renderManager.itemRenderer.renderItem(var1, var21, 1);
+			} else {
+				this.renderManager.itemRenderer.renderItem(var1, var21, 0);
+			}
+
 			GL11.glPopMatrix();
 		}
 
 	}
 
-	protected void func_186_b(EntityPlayer var1, float var2) {
+	protected void renderPlayerScale(EntityPlayer var1, float var2) {
 		float var3 = 0.9375F;
 		GL11.glScalef(var3, var3, var3);
 	}
@@ -285,7 +322,7 @@ public class RenderPlayer extends RenderLiving {
 		this.modelBipedMain.bipedRightArm.render(0.0625F);
 	}
 
-	protected void func_22016_b(EntityPlayer var1, double var2, double var4, double var6) {
+	protected void renderPlayerSleep(EntityPlayer var1, double var2, double var4, double var6) {
 		if(var1.isEntityAlive() && var1.isPlayerSleeping()) {
 			super.renderLivingAt(var1, var2 + (double)var1.field_22063_x, var4 + (double)var1.field_22062_y, var6 + (double)var1.field_22061_z);
 		} else {
@@ -314,12 +351,12 @@ public class RenderPlayer extends RenderLiving {
 	// $FF: synthetic method
 	// $FF: bridge method
 	protected void preRenderCallback(EntityLiving var1, float var2) {
-		this.func_186_b((EntityPlayer)var1, var2);
+		this.renderPlayerScale((EntityPlayer)var1, var2);
 	}
 
 	// $FF: synthetic method
 	// $FF: bridge method
-	protected boolean shouldRenderPass(EntityLiving var1, int var2, float var3) {
+	protected int shouldRenderPass(EntityLiving var1, int var2, float var3) {
 		return this.setArmorModel((EntityPlayer)var1, var2, var3);
 	}
 
@@ -338,7 +375,7 @@ public class RenderPlayer extends RenderLiving {
 	// $FF: synthetic method
 	// $FF: bridge method
 	protected void renderLivingAt(EntityLiving var1, double var2, double var4, double var6) {
-		this.func_22016_b((EntityPlayer)var1, var2, var4, var6);
+		this.renderPlayerSleep((EntityPlayer)var1, var2, var4, var6);
 	}
 
 	// $FF: synthetic method
