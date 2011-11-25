@@ -36,7 +36,7 @@ public class MapItemRenderer {
 
 	public void renderMap(EntityPlayer var1, RenderEngine var2, MapData var3) {
 		for(int var4 = 0; var4 < 16384 /*GL_LIGHT0*/; ++var4) {
-			byte var5 = var3.field_28176_f[var4];
+			byte var5 = var3.colors[var4];
 			if(var5 / 4 == 0) {
 				this.intArray[var4] = (var4 + var4 / 128 & 1) * 8 + 16 << 24;
 			} else {
@@ -84,7 +84,7 @@ public class MapItemRenderer {
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glDisable(3042 /*GL_BLEND*/);
 		var2.bindTexture(var2.getTexture("/misc/mapicons.png"));
-		Iterator var19 = var3.field_28173_i.iterator();
+		Iterator var19 = var3.playersVisibleOnMap.iterator();
 
 		while(var19.hasNext()) {
 			MapCoord var20 = (MapCoord)var19.next();
@@ -120,7 +120,7 @@ public class MapItemRenderer {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
 		}
 		else {
-			this.fontRenderer.drawString(var3.field_28168_a, var15, var16, -16777216);
+			this.fontRenderer.drawString(var3.mapName, var15, var16, -16777216);
 		}
 		//Spout End
 		GL11.glPopMatrix();
