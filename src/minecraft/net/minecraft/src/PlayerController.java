@@ -6,6 +6,7 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.PlayerControllerCreative;
 import net.minecraft.src.World;
 
 public abstract class PlayerController {
@@ -18,7 +19,7 @@ public abstract class PlayerController {
 		this.mc = var1;
 	}
 
-	public void func_717_a(World var1) {}
+	public void onWorldChange(World var1) {}
 
 	public abstract void clickBlock(int var1, int var2, int var3, int var4);
 
@@ -34,6 +35,7 @@ public abstract class PlayerController {
 			if(var6 != null && var8) {
 				var6.onBlockDestroyedByPlayer(var5, var1, var2, var3, var7);
 			}
+
 			return var8;
 		}
 	}
@@ -47,7 +49,7 @@ public abstract class PlayerController {
 	public abstract float getBlockReachDistance();
 
 	public boolean sendUseItem(EntityPlayer var1, World var2, ItemStack var3) {
-		  //Spout Start
+        //Spout Start
 		if (var3 == null) return true;
 		//Spout End
 		int var4 = var3.stackSize;
@@ -70,7 +72,9 @@ public abstract class PlayerController {
 
 	public abstract boolean shouldDrawHUD();
 
-	public void func_6473_b(EntityPlayer var1) {}
+	public void func_6473_b(EntityPlayer var1) {
+		PlayerControllerCreative.func_35645_e(var1);
+	}
 
 	public abstract boolean sendPlaceBlock(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7);
 
@@ -95,12 +99,14 @@ public abstract class PlayerController {
 		var2.craftingInventory = var2.inventorySlots;
 	}
 
+	public void func_40593_a(int var1, int var2) {}
+
 	public boolean func_35643_e() {
 		return false;
 	}
 
-	public void func_35638_c(EntityPlayer var1) {
-		var1.func_35206_ab();
+	public void onStoppedUsingItem(EntityPlayer var1) {
+		var1.stopUsingItem();
 	}
 
 	public boolean func_35642_f() {
@@ -115,7 +121,7 @@ public abstract class PlayerController {
 		return false;
 	}
 
-	public boolean func_35636_i() {
+	public boolean extendedReach() {
 		return false;
 	}
 
