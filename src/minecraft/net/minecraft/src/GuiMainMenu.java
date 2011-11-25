@@ -297,7 +297,7 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glPopMatrix();
 
 		//Spout Start
-		//this.drawString(this.fontRenderer, "Minecraft Beta 1.0.0", 2, this.height - 10, 16777215); //Spout
+		//this.drawString(this.fontRenderer, "Minecraft 1.0.0", 2, this.height - 10, 16777215); //Spout
 		//String var9 = "Copyright Mojang AB. Do not distribute!";
 		//this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215); //Spout
 		
