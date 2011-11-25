@@ -203,9 +203,9 @@ public class Tessellator {
 		this.textureV = v;
 	}
 
-	public void setBlendTexture(int textureID) {
-		this.useBlendTexture = true;
-		this.blendTexture = textureID;
+	public void setBrightness(int var1) {
+		this.hasBrightness = true;
+		this.brightness = var1;
 	}
 
 	public void setColorOpaque_F(float r, float g, float b) {
