@@ -54,11 +54,11 @@ public class CraftEnderman extends CraftMonster implements Enderman {
 	}
 
 	public Material getCarriedMaterial() {
-		return MaterialData.getMaterial(getEntityEnderman().func_35176_r(), (short) getEntityEnderman().func_35180_s());
+		return MaterialData.getMaterial(getEntityEnderman().getCarried(), (short) getEntityEnderman().getCarryingData());
 	}
 
 	public void setCarriedMaterial(Material data) {
-		getEntityEnderman().func_35177_b(data.getRawId());
-		getEntityEnderman().func_35181_c(data.getRawData());
+		getEntityEnderman().setCarried(data.getRawId());
+		getEntityEnderman().setCarryingData(data.getRawData());
 	}
 }
