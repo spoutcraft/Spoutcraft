@@ -51,7 +51,7 @@ public class PacketAirTime implements SpoutPacket{
 
 	public void run(int id) {
 		SpoutClient.getHandle().thePlayer.maxAir = airTime;
-		SpoutClient.getHandle().thePlayer.air = air;
+		SpoutClient.getHandle().thePlayer.func_41003_g(air);
 	}
 
 	public PacketType getPacketType() {
