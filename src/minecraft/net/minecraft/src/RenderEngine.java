@@ -40,7 +40,7 @@ public class RenderEngine {
 	private HashMap textureDataMap = new HashMap(); // Stores raw texture data
 	private MCHash textureNameToImageMap = new MCHash();
 	private IntBuffer singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
-    //Spout HD Start
+	 //Spout HD Start
 	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 	//Spout HD End
 	public List textureList = new ArrayList(); //Spout private -> public
@@ -50,7 +50,7 @@ public class RenderEngine {
 	public boolean blurTexture = false;
 	public TexturePackList texturePack; //Spout private -> public
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
-    //Spout Start
+	 //Spout Start
 	public TexturePackBase oldPack = null;
 	//Spout End
 
@@ -76,12 +76,12 @@ public class RenderEngine {
 				if(textureName.startsWith("##")) {
 					//Spout HD Start
 					textureContents = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, texturePack, textureName.substring(2))));
-                    //Spout HD End
+						  //Spout HD End
 				} else if(textureName.startsWith("%clamp%")) {
 					this.clampTexture = true;
 					//Spout HD Start
 					textureContents = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, texturePack, textureName.substring(7)));
-                    //Spout HD End
+						  //Spout HD End
 					this.clampTexture = false;
 				} else if(textureName.startsWith("%blur%")) {
 					//Spout HD Start
@@ -271,8 +271,8 @@ public class RenderEngine {
 			if(useMipmaps) {
 				for(int i = 1; i <= 4; ++i) {
 					//slide the colors into proper bit positions?
-					//IE:   r     g   b     a
-					//      00 - 00 - 00 - 00
+					//IE:	r	  g	b	  a
+					//		00 - 00 - 00 - 00
 					// so you can do something like
 					// int col = r + g + b + a;
 					
@@ -345,7 +345,7 @@ public class RenderEngine {
 
 		//Spout HD Start
 		this.imageData = TextureUtils.getByteBuffer(this.imageData, textureData);
-        //Spout HD End
+		  //Spout HD End
 		GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
 	}
 
@@ -388,7 +388,7 @@ public class RenderEngine {
 		if(textureData != null) {
 			--textureData.referenceCount;
 			if(textureData.referenceCount == 0) {
-                //Spout Start
+					 //Spout Start
 				if (Minecraft.theMinecraft.theWorld != null) {
 					List<EntityPlayer> players = Minecraft.theMinecraft.theWorld.playerEntities;
 					for (EntityPlayer player : players) {
@@ -439,14 +439,14 @@ public class RenderEngine {
 			textureEffect.onTick();
 			//Spout HD Start
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, textureEffect.imageData);
-            //Spout HD End
+				//Spout HD End
 			textureEffect.bindImage(this);
 
 			for(x = 0; x < textureEffect.tileSize; ++x) {
 				for(y = 0; y < textureEffect.tileSize; ++y) {
 					//Spout HD Start
 					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, textureEffect.iconIndex % 16 * TileSize.int_size + x * TileSize.int_size, textureEffect.iconIndex / 16 * TileSize.int_size + y * TileSize.int_size, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-                    //Spout HD End
+						  //Spout HD End
 					if(useMipmaps) {
 						for(depth = 1; depth <= 4; ++depth) {
 							var6 = 16 >> depth - 1;
@@ -477,7 +477,7 @@ public class RenderEngine {
 				this.imageData = TextureUtils.getByteBuffer(this.imageData, textureEffect.imageData);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEffect.textureId);
 				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-                //Spout HD End
+					 //Spout HD End
 				if(useMipmaps) {
 					for(x = 1; x <= 4; ++x) {
 						y = 16 >> x - 1;
@@ -574,7 +574,7 @@ public class RenderEngine {
 					texturePackIterator.remove();
 					continue;
 				}
-                //Spout HD End
+					 //Spout HD End
 
 				int textureID = ((Integer)this.textureMap.get(textureName)).intValue();
 				this.setupTexture(texture, textureID);
@@ -607,11 +607,11 @@ public class RenderEngine {
 				} else {
 					texture = TextureUtils.getResourceAsBufferedImage(this, texturePack, textureName);
 				}
-                if (texture == null) {
-                    texturePackIterator.remove();
-                    continue;
-                }
-                //Spout HD End
+					 if (texture == null) {
+						  texturePackIterator.remove();
+						  continue;
+					 }
+					 //Spout HD End
 
 				this.getImageContents(texture, (int[])this.textureDataMap.get(textureName));
 				this.blurTexture = false;

@@ -28,175 +28,175 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 
-   public NetClientHandler sendQueue;
-   private int inventoryUpdateTickCounter = 0;
-   private boolean field_21093_bH = false;
-   private double oldPosX;
-   private double field_9378_bz;
-   private double oldPosY;
-   private double oldPosZ;
-   private float oldRotationYaw;
-   private float oldRotationPitch;
-   private boolean field_9382_bF = false;
-   private boolean field_35227_cs = false;
-   private boolean wasSneaking = false;
-   private int field_12242_bI = 0;
+	public NetClientHandler sendQueue;
+	private int inventoryUpdateTickCounter = 0;
+	private boolean field_21093_bH = false;
+	private double oldPosX;
+	private double field_9378_bz;
+	private double oldPosY;
+	private double oldPosZ;
+	private float oldRotationYaw;
+	private float oldRotationPitch;
+	private boolean field_9382_bF = false;
+	private boolean field_35227_cs = false;
+	private boolean wasSneaking = false;
+	private int field_12242_bI = 0;
 
 
-   public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
-      super(var1, var2, var3, 0);
-      this.sendQueue = var4;
-   }
+	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
+		super(var1, var2, var3, 0);
+		this.sendQueue = var4;
+	}
 
-   public boolean attackEntityFrom(DamageSource var1, int var2) {
-      return false;
-   }
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
+		return false;
+	}
 
-   public void heal(int var1) {}
+	public void heal(int var1) {}
 
-   public void onUpdate() {
-      if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), this.worldObj.field_35472_c / 2, MathHelper.floor_double(this.posZ))) {
-         super.onUpdate();
-         this.onUpdate2();
-      }
-   }
+	public void onUpdate() {
+		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), this.worldObj.field_35472_c / 2, MathHelper.floor_double(this.posZ))) {
+			super.onUpdate();
+			this.onUpdate2();
+		}
+	}
 
-   public void onUpdate2() {
-      if(this.inventoryUpdateTickCounter++ == 20) {
-         this.sendInventoryChanged();
-         this.inventoryUpdateTickCounter = 0;
-      }
+	public void onUpdate2() {
+		if(this.inventoryUpdateTickCounter++ == 20) {
+			this.sendInventoryChanged();
+			this.inventoryUpdateTickCounter = 0;
+		}
 
-      boolean var1 = this.isSprinting();
-      if(var1 != this.wasSneaking) {
-         if(var1) {
-            this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
-         } else {
-            this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 5));
-         }
+		boolean var1 = this.isSprinting();
+		if(var1 != this.wasSneaking) {
+			if(var1) {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+			} else {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 5));
+			}
 
-         this.wasSneaking = var1;
-      }
+			this.wasSneaking = var1;
+		}
 
-      boolean var2 = this.isSneaking();
-      if(var2 != this.field_35227_cs) {
-         if(var2) {
-            this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
-         } else {
-            this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
-         }
+		boolean var2 = this.isSneaking();
+		if(var2 != this.field_35227_cs) {
+			if(var2) {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
+			} else {
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
+			}
 
-         this.field_35227_cs = var2;
-      }
+			this.field_35227_cs = var2;
+		}
 
-      double var3 = this.posX - this.oldPosX;
-      double var5 = this.boundingBox.minY - this.field_9378_bz;
-      double var7 = this.posY - this.oldPosY;
-      double var9 = this.posZ - this.oldPosZ;
-      double var11 = (double)(this.rotationYaw - this.oldRotationYaw);
-      double var13 = (double)(this.rotationPitch - this.oldRotationPitch);
-      boolean var15 = var5 != 0.0D || var7 != 0.0D || var3 != 0.0D || var9 != 0.0D;
-      boolean var16 = var11 != 0.0D || var13 != 0.0D;
-      if(this.ridingEntity != null) {
-         if(var16) {
-            this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
-         } else {
-            this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-         }
+		double var3 = this.posX - this.oldPosX;
+		double var5 = this.boundingBox.minY - this.field_9378_bz;
+		double var7 = this.posY - this.oldPosY;
+		double var9 = this.posZ - this.oldPosZ;
+		double var11 = (double)(this.rotationYaw - this.oldRotationYaw);
+		double var13 = (double)(this.rotationPitch - this.oldRotationPitch);
+		boolean var15 = var5 != 0.0D || var7 != 0.0D || var3 != 0.0D || var9 != 0.0D;
+		boolean var16 = var11 != 0.0D || var13 != 0.0D;
+		if(this.ridingEntity != null) {
+			if(var16) {
+				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
+			} else {
+				this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+			}
 
-         var15 = false;
-      } else if(var15 && var16) {
-         this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
-         this.field_12242_bI = 0;
-      } else if(var15) {
-         this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
-         this.field_12242_bI = 0;
-      } else if(var16) {
-         this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-         this.field_12242_bI = 0;
-      } else {
-         this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
-         if(this.field_9382_bF == this.onGround && this.field_12242_bI <= 200) {
-            ++this.field_12242_bI;
-         } else {
-            this.field_12242_bI = 0;
-         }
-      }
+			var15 = false;
+		} else if(var15 && var16) {
+			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+			this.field_12242_bI = 0;
+		} else if(var15) {
+			this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
+			this.field_12242_bI = 0;
+		} else if(var16) {
+			this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+			this.field_12242_bI = 0;
+		} else {
+			this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
+			if(this.field_9382_bF == this.onGround && this.field_12242_bI <= 200) {
+				++this.field_12242_bI;
+			} else {
+				this.field_12242_bI = 0;
+			}
+		}
 
-      this.field_9382_bF = this.onGround;
-      if(var15) {
-         this.oldPosX = this.posX;
-         this.field_9378_bz = this.boundingBox.minY;
-         this.oldPosY = this.posY;
-         this.oldPosZ = this.posZ;
-      }
+		this.field_9382_bF = this.onGround;
+		if(var15) {
+			this.oldPosX = this.posX;
+			this.field_9378_bz = this.boundingBox.minY;
+			this.oldPosY = this.posY;
+			this.oldPosZ = this.posZ;
+		}
 
-      if(var16) {
-         this.oldRotationYaw = this.rotationYaw;
-         this.oldRotationPitch = this.rotationPitch;
-      }
+		if(var16) {
+			this.oldRotationYaw = this.rotationYaw;
+			this.oldRotationPitch = this.rotationPitch;
+		}
 
-   }
+	}
 
-   public void dropCurrentItem() {
-      this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
-   }
+	public void dropCurrentItem() {
+		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+	}
 
-   public void sendInventoryChanged() {}
+	public void sendInventoryChanged() {}
 
-   protected void joinEntityItemWithWorld(EntityItem var1) {}
+	protected void joinEntityItemWithWorld(EntityItem var1) {}
 
-   public void sendChatMessage(String var1) {
-      this.sendQueue.addToSendQueue(new Packet3Chat(var1));
-   }
+	public void sendChatMessage(String var1) {
+		this.sendQueue.addToSendQueue(new Packet3Chat(var1));
+	}
 
-   public void swingItem() {
-      super.swingItem();
-      this.sendQueue.addToSendQueue(new Packet18Animation(this, 1));
-   }
+	public void swingItem() {
+		super.swingItem();
+		this.sendQueue.addToSendQueue(new Packet18Animation(this, 1));
+	}
 
-   public void respawnPlayer() {
-      this.sendInventoryChanged();
-      this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldSeed(), this.worldObj.field_35472_c, 0));
-   }
+	public void respawnPlayer() {
+		this.sendInventoryChanged();
+		this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldSeed(), this.worldObj.field_35472_c, 0));
+	}
 
-   public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
-      this.setEntityHealth(this.getEntityHealth() - var2);
-   }
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
+		this.setEntityHealth(this.getEntityHealth() - var2);
+	}
 
-   public void closeScreen() {
-      this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.craftingInventory.windowId));
-      this.inventory.setItemStack((ItemStack)null);
-      super.closeScreen();
-   }
+	public void closeScreen() {
+		this.sendQueue.addToSendQueue(new Packet101CloseWindow(this.craftingInventory.windowId));
+		this.inventory.setItemStack((ItemStack)null);
+		super.closeScreen();
+	}
 
-   public void setHealth(int var1) {
-      if(this.field_21093_bH) {
-         super.setHealth(var1);
-      } else {
-         this.setEntityHealth(var1);
-         this.field_21093_bH = true;
-      }
+	public void setHealth(int var1) {
+		if(this.field_21093_bH) {
+			super.setHealth(var1);
+		} else {
+			this.setEntityHealth(var1);
+			this.field_21093_bH = true;
+		}
 
-   }
+	}
 
-   public void addStat(StatBase var1, int var2) {
-      if(var1 != null) {
-         if(var1.isIndependent) {
-            super.addStat(var1, var2);
-         }
+	public void addStat(StatBase var1, int var2) {
+		if(var1 != null) {
+			if(var1.isIndependent) {
+				super.addStat(var1, var2);
+			}
 
-      }
-   }
+		}
+	}
 
-   public void func_27027_b(StatBase var1, int var2) {
-      if(var1 != null) {
-         if(!var1.isIndependent) {
-            super.addStat(var1, var2);
-         }
+	public void func_27027_b(StatBase var1, int var2) {
+		if(var1 != null) {
+			if(!var1.isIndependent) {
+				super.addStat(var1, var2);
+			}
 
-      }
-   }
+		}
+	}
 	//Spout Start
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {

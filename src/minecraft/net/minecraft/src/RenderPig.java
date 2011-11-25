@@ -18,8 +18,8 @@ public class RenderPig extends RenderLiving {
 
 	protected boolean renderSaddledPig(EntityPig var1, int var2, float var3) {
 		//Spout Start
-        loadTexture(EntitySkinType.getTexture(EntitySkinType.PIG_SADDLE, var1, "/mob/saddle.png"));
-    	//Spout End
+		  loadTexture(EntitySkinType.getTexture(EntitySkinType.PIG_SADDLE, var1, "/mob/saddle.png"));
+	 	//Spout End
 		return var2 == 0 && var1.getSaddled();
 	}
 

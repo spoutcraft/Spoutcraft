@@ -29,8 +29,8 @@ public class RenderSpider extends RenderLiving {
 			return false;
 		} else {
 			//Spout Start
-            loadTexture(EntitySkinType.getTexture(EntitySkinType.SPIDER_EYES, var1, "/mob/spider_eyes.png"));
-            //Spout End
+				loadTexture(EntitySkinType.getTexture(EntitySkinType.SPIDER_EYES, var1, "/mob/spider_eyes.png"));
+				//Spout End
 			float var4 = 1.0F;
 			GL11.glEnable(3042 /*GL_BLEND*/);
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);

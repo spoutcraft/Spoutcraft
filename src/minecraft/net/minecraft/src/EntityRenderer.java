@@ -341,20 +341,20 @@ public class EntityRenderer {
 	private Matrix4f createPerspective(float fov, float aspect, float znear, float zfar){
 		
 		  float ymax, xmax;
-		    float temp, temp2, temp3, temp4;
-		    ymax = znear * (float)Math.tan(fov * Math.PI / 360.0);
-		    //ymin = -ymax;
-		    //xmin = -ymax * aspectRatio;
-		    xmax = ymax * aspect;
+			 float temp, temp2, temp3, temp4;
+			 ymax = znear * (float)Math.tan(fov * Math.PI / 360.0);
+			 //ymin = -ymax;
+			 //xmin = -ymax * aspectRatio;
+			 xmax = ymax * aspect;
 		
-		    temp = 2.0f * znear;
-		    temp2 = xmax - -xmax;
-		    temp3 = ymax - -ymax;
-		    temp4 = zfar - znear;
-		    
-		    
-		    Matrix4f matrix = new Matrix4f();
-		    matrix.setIdentity();
+			 temp = 2.0f * znear;
+			 temp2 = xmax - -xmax;
+			 temp3 = ymax - -ymax;
+			 temp4 = zfar - znear;
+			 
+			 
+			 Matrix4f matrix = new Matrix4f();
+			 matrix.setIdentity();
 			matrix.m00 = temp/temp2;
 			matrix.m11 = temp/temp3;
 			matrix.m20 = (xmax + -xmax) / temp2;
@@ -365,7 +365,7 @@ public class EntityRenderer {
 			  
 			 return matrix;
 			
-		    
+			 
 		
 		
 		  

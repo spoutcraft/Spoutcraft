@@ -289,8 +289,8 @@ public class PlayerControllerMP extends PlayerController {
 	public boolean func_35636_i() {
 		return this.field_35649_k;
 	}
-    
-    //Spout Start
+	 
+	 //Spout Start
 	@Override
 	public boolean shouldDrawHUD() {
 		return !this.field_35649_k;
