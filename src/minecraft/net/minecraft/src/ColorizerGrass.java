@@ -6,7 +6,7 @@ public class ColorizerGrass {
 	public static int[] grassBuffer = new int[65536]; //Spout HD private -> public
 
 
-	public static void func_28181_a(int[] var0) {
+	public static void setGrassBiomeColorizer(int[] var0) {
 		grassBuffer = var0;
 	}
 
