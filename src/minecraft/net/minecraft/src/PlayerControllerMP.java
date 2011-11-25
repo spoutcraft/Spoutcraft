@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-
+import org.spoutcraft.spoutcraftapi.Spoutcraft; // Spout
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -11,12 +10,13 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.Packet102WindowClick;
 import net.minecraft.src.Packet107CreativeSetSlot;
+import net.minecraft.src.Packet108EnchantItem;
 import net.minecraft.src.Packet14BlockDig;
 import net.minecraft.src.Packet15Place;
 import net.minecraft.src.Packet16BlockItemSwitch;
 import net.minecraft.src.Packet7UseEntity;
 import net.minecraft.src.PlayerController;
-import net.minecraft.src.PlayerControllerTest;
+import net.minecraft.src.PlayerControllerCreative;
 import net.minecraft.src.World;
 
 public class PlayerControllerMP extends PlayerController {
@@ -26,10 +26,10 @@ public class PlayerControllerMP extends PlayerController {
 	private int currentblockZ = -1;
 	private float curBlockDamageMP = 0.0F;
 	private float prevBlockDamageMP = 0.0F;
-	private float field_9441_h = 0.0F;
+	private float stepSoundTickCounter = 0.0F;
 	private int blockHitDelay = 0;
 	private boolean isHittingBlock = false;
-	private boolean field_35649_k;
+	private boolean creativeMode;
 	private NetClientHandler netClientHandler;
 	private int currentPlayerItem = 0;
 
@@ -40,14 +40,14 @@ public class PlayerControllerMP extends PlayerController {
 	}
 
 	public void func_35648_a(boolean var1) {
-		this.field_35649_k = var1;
-		if(this.field_35649_k) {
-			PlayerControllerTest.func_35646_d(this.mc.thePlayer);
+		this.creativeMode = var1;
+		if(this.creativeMode) {
+			PlayerControllerCreative.func_35646_d(this.mc.thePlayer);
 			//Spout start
 			Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(false);
 			//Spout end
 		} else {
-			PlayerControllerTest.func_35645_e(this.mc.thePlayer);
+			PlayerControllerCreative.func_35645_e(this.mc.thePlayer);
 			//Spout start
 			Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(true);
 			//Spout end
@@ -59,9 +59,13 @@ public class PlayerControllerMP extends PlayerController {
 		var1.rotationYaw = -180.0F;
 	}
 
+	public boolean shouldDrawHUD() {
+		return !this.creativeMode;
+	}
+
 	public boolean sendBlockRemoved(int var1, int var2, int var3, int var4) {
-		if(this.field_35649_k) {
-			return false;
+		if(this.creativeMode) {
+			return super.sendBlockRemoved(var1, var2, var3, var4);
 		} else {
 			int var5 = this.mc.theWorld.getBlockId(var1, var2, var3);
 			boolean var6 = super.sendBlockRemoved(var1, var2, var3, var4);
@@ -79,9 +83,9 @@ public class PlayerControllerMP extends PlayerController {
 	}
 
 	public void clickBlock(int var1, int var2, int var3, int var4) {
-		if(this.field_35649_k) {
+		if(this.creativeMode) {
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, var1, var2, var3, var4));
-			PlayerControllerTest.func_35644_a(this.mc, this, var1, var2, var3, var4);
+			PlayerControllerCreative.func_35644_a(this.mc, this, var1, var2, var3, var4);
 			this.blockHitDelay = 5;
 		} else if(!this.isHittingBlock || var1 != this.currentBlockX || var2 != this.currentBlockY || var3 != this.currentblockZ) {
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, var1, var2, var3, var4));
@@ -99,7 +103,7 @@ public class PlayerControllerMP extends PlayerController {
 				this.currentblockZ = var3;
 				this.curBlockDamageMP = 0.0F;
 				this.prevBlockDamageMP = 0.0F;
-				this.field_9441_h = 0.0F;
+				this.stepSoundTickCounter = 0.0F;
 			}
 		}
 
@@ -114,10 +118,10 @@ public class PlayerControllerMP extends PlayerController {
 		this.syncCurrentPlayItem();
 		if(this.blockHitDelay > 0) {
 			--this.blockHitDelay;
-		} else if(this.field_35649_k) {
+		} else if(this.creativeMode) {
 			this.blockHitDelay = 5;
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, var1, var2, var3, var4));
-			PlayerControllerTest.func_35644_a(this.mc, this, var1, var2, var3, var4);
+			PlayerControllerCreative.func_35644_a(this.mc, this, var1, var2, var3, var4);
 		} else {
 			if(var1 == this.currentBlockX && var2 == this.currentBlockY && var3 == this.currentblockZ) {
 				int var5 = this.mc.theWorld.getBlockId(var1, var2, var3);
@@ -128,18 +132,18 @@ public class PlayerControllerMP extends PlayerController {
 
 				Block var6 = Block.blocksList[var5];
 				this.curBlockDamageMP += var6.blockStrength(this.mc.thePlayer);
-				if(this.field_9441_h % 4.0F == 0.0F && var6 != null) {
+				if(this.stepSoundTickCounter % 4.0F == 0.0F && var6 != null) {
 					this.mc.sndManager.playSound(var6.stepSound.stepSoundDir2(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);
 				}
 
-				++this.field_9441_h;
+				++this.stepSoundTickCounter;
 				if(this.curBlockDamageMP >= 1.0F) {
 					this.isHittingBlock = false;
 					this.netClientHandler.addToSendQueue(new Packet14BlockDig(2, var1, var2, var3, var4));
 					this.sendBlockRemoved(var1, var2, var3, var4);
 					this.curBlockDamageMP = 0.0F;
 					this.prevBlockDamageMP = 0.0F;
-					this.field_9441_h = 0.0F;
+					this.stepSoundTickCounter = 0.0F;
 					this.blockHitDelay = 5;
 				}
 			} else {
@@ -162,11 +166,11 @@ public class PlayerControllerMP extends PlayerController {
 	}
 
 	public float getBlockReachDistance() {
-		return this.field_35649_k?5.0F:4.0F;
+		return this.creativeMode?5.0F:4.5F;
 	}
 
-	public void func_717_a(World var1) {
-		super.func_717_a(var1);
+	public void onWorldChange(World var1) {
+		super.onWorldChange(var1);
 	}
 
 	public void updateController() {
@@ -192,7 +196,7 @@ public class PlayerControllerMP extends PlayerController {
 			return true;
 		} else if(var3 == null) {
 			return false;
-		} else if(this.field_35649_k) {
+		} else if(this.creativeMode) {
 			int var9 = var3.getItemDamage();
 			int var10 = var3.stackSize;
 			boolean var11 = var3.useItem(var1, var2, var4, var5, var6, var7);
@@ -239,25 +243,20 @@ public class PlayerControllerMP extends PlayerController {
 		return var7;
 	}
 
-	public void func_35637_a(ItemStack var1, int var2) {
-		if(this.field_35649_k) {
-			int var3 = -1;
-			int var4 = 0;
-			int var5 = 0;
-			if(var1 != null) {
-				var3 = var1.itemID;
-				var4 = var1.stackSize > 0?var1.stackSize:1;
-				var5 = var1.getItemDamage();
-			}
+	public void func_40593_a(int var1, int var2) {
+		this.netClientHandler.addToSendQueue(new Packet108EnchantItem(var1, var2));
+	}
 
-			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(var2, var3, var4, var5));
+	public void func_35637_a(ItemStack var1, int var2) {
+		if(this.creativeMode) {
+			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(var2, var1));
 		}
 
 	}
 
 	public void func_35639_a(ItemStack var1) {
-		if(this.field_35649_k && var1 != null) {
-			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(-1, var1.itemID, var1.stackSize, var1.getItemDamage()));
+		if(this.creativeMode && var1 != null) {
+			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(-1, var1));
 		}
 
 	}
@@ -268,10 +267,10 @@ public class PlayerControllerMP extends PlayerController {
 		}
 	}
 
-	public void func_35638_c(EntityPlayer var1) {
+	public void onStoppedUsingItem(EntityPlayer var1) {
 		this.syncCurrentPlayItem();
 		this.netClientHandler.addToSendQueue(new Packet14BlockDig(5, 0, 0, 0, 255));
-		super.func_35638_c(var1);
+		super.onStoppedUsingItem(var1);
 	}
 
 	public boolean func_35642_f() {
@@ -279,21 +278,21 @@ public class PlayerControllerMP extends PlayerController {
 	}
 
 	public boolean func_35641_g() {
-		return !this.field_35649_k;
+		return !this.creativeMode;
 	}
 
 	public boolean isInCreativeMode() {
-		return this.field_35649_k;
+		return this.creativeMode;
 	}
 
-	public boolean func_35636_i() {
-		return this.field_35649_k;
+	public boolean extendedReach() {
+		return this.creativeMode;
 	}
-	 
-	 //Spout Start
+    
+    //Spout Start
 	@Override
 	public boolean shouldDrawHUD() {
-		return !this.field_35649_k;
+		return !this.creativeMode;
 	}
 	//Spout End
 }
