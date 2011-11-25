@@ -5,6 +5,7 @@ import java.util.Random;
 import org.getspout.spout.config.ConfigReader;
 //Spout end
 import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.IBlockAccess;
@@ -13,7 +14,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
 public abstract class BlockFluid extends Block {
-	
+
 	protected BlockFluid(int var1, Material var2) {
 		super(var1, (var2 == Material.lava?14:12) * 16 + 13, var2);
 		float var3 = 0.0F;
@@ -22,7 +23,7 @@ public abstract class BlockFluid extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public int func_35274_i() {
+	public int getBlockColor() {
 		return 16777215;
 	}
 
@@ -103,7 +104,7 @@ public abstract class BlockFluid extends Block {
 		return 4;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, Random var2, int var3) {
 		return 0;
 	}
 
@@ -204,9 +205,9 @@ public abstract class BlockFluid extends Block {
 		return this.blockMaterial == Material.water?5:(this.blockMaterial == Material.lava?30:0);
 	}
 
-	public int func_35275_c(IBlockAccess var1, int var2, int var3, int var4) {
-		int var5 = var1.func_35451_b(var2, var3, var4, 0);
-		int var6 = var1.func_35451_b(var2, var3 + 1, var4, 0);
+	public int getMixedBrightnessForBlock(IBlockAccess var1, int var2, int var3, int var4) {
+		int var5 = var1.getLightBrightnessForSkyBlocks(var2, var3, var4, 0);
+		int var6 = var1.getLightBrightnessForSkyBlocks(var2, var3 + 1, var4, 0);
 		int var7 = var5 & 255;
 		int var8 = var6 & 255;
 		int var9 = var5 >> 16 & 255;
@@ -309,11 +310,25 @@ public abstract class BlockFluid extends Block {
 			}
 		}
 
+		double var21;
+		double var23;
+		double var22;
 		if(this.blockMaterial == Material.lava && var1.getBlockMaterial(var2, var3 + 1, var4) == Material.air && !var1.isBlockOpaqueCube(var2, var3 + 1, var4) && var5.nextInt(100) == 0) {
-			double var21 = (double)((float)var2 + var5.nextFloat());
-			double var22 = (double)var3 + this.maxY;
-			double var23 = (double)((float)var4 + var5.nextFloat());
+			var21 = (double)((float)var2 + var5.nextFloat());
+			var22 = (double)var3 + this.maxY;
+			var23 = (double)((float)var4 + var5.nextFloat());
 			var1.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+		}
+
+		if(var5.nextInt(10) == 0 && var1.isBlockNormalCube(var2, var3 - 1, var4) && !var1.getBlockMaterial(var2, var3 - 2, var4).getIsSolid()) {
+			var21 = (double)((float)var2 + var5.nextFloat());
+			var22 = (double)var3 - 1.05D;
+			var23 = (double)((float)var4 + var5.nextFloat());
+			if(this.blockMaterial == Material.water) {
+				var1.spawnParticle("dripWater", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+			} else {
+				var1.spawnParticle("dripLava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
+			}
 		}
 
 	}

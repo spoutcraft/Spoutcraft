@@ -158,7 +158,7 @@ public class BlockPortal extends BlockBreakable {
 
 	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
 		if(var5.nextInt(100) == 0) {
-			var1.playSoundEffect((double)var2 + 0.5D, (double)var3 + 0.5D, (double)var4 + 0.5D, "portal.portal", 1.0F, var5.nextFloat() * 0.4F + 0.8F);
+			var1.playSoundEffect((double)var2 + 0.5D, (double)var3 + 0.5D, (double)var4 + 0.5D, "portal.portal", 0.5F, var5.nextFloat() * 0.4F + 0.8F);
 		}
 
 		for(int var6 = 0; var6 < 4; ++var6) {

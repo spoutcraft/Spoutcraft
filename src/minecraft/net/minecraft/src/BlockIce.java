@@ -6,6 +6,7 @@ import net.minecraft.src.BlockBreakable;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EnumSkyBlock;
 import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
@@ -40,7 +41,7 @@ public class BlockIce extends BlockBreakable {
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
 		if(var1.getSavedLightValue(EnumSkyBlock.Block, var2, var3, var4) > 11 - Block.lightOpacity[this.blockID]) {
-			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
+			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4), 0);
 			var1.setBlockWithNotify(var2, var3, var4, Block.waterStill.blockID);
 		}
 
@@ -48,5 +49,9 @@ public class BlockIce extends BlockBreakable {
 
 	public int getMobilityFlag() {
 		return 0;
+	}
+
+	protected ItemStack func_41049_c_(int var1) {
+		return null;
 	}
 }

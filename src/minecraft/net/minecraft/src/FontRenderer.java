@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import net.minecraft.src.ChatAllowedCharacters;
 import net.minecraft.src.GLAllocation;
@@ -18,8 +19,10 @@ public class FontRenderer {
 
 	private int[] charWidth = new int[256];
 	public int fontTextureName = 0;
+	public int field_41063_b = 8;
 	private int fontDisplayLists;
 	private IntBuffer buffer = GLAllocation.createDirectIntBuffer(1024 /*GL_FRONT_LEFT*/);
+	public Random field_41064_c = new Random();
 
 
 	public FontRenderer(GameSettings var1, String var2, RenderEngine var3) {
@@ -50,6 +53,7 @@ public class FontRenderer {
 //Spout HD Start
 			var11 = var5 / 16 - 1;
 //Spout HD End
+
 			while(true) {
 				if(var11 >= 0) {
 //Spout HD Start
@@ -80,6 +84,7 @@ public class FontRenderer {
 //Spout HD Start
 				this.charWidth[var8] = (128 * var11 + 256) / var5;
 //Spout HD End
+
 				++var8;
 				break;
 			}
@@ -137,7 +142,7 @@ public class FontRenderer {
 		}
 
 	}
-	
+
 	public void drawStringWithShadow(String var1, int var2, int var3, int var4) {
 		this.renderString(var1, var2 + 1, var3 + 1, var4, true);
 		this.drawString(var1, var2, var3, var4);
@@ -147,7 +152,7 @@ public class FontRenderer {
 		this.renderString(var1, var2, var3, var4, false);
 	}
 
-	//Spout Start
+/Spout Start
 	//Yay, I completely decoded the field names!
 	public void renderStringInGame(String text, double x, double y, double z, float yaw, int color, float scale) {
 		if(text != null) {
@@ -209,50 +214,67 @@ public class FontRenderer {
 		}
 	}
 	//Spout End
-	
 	public void renderString(String var1, int var2, int var3, int var4, boolean var5) {
 		if(var1 != null) {
-			int var6;
+			boolean var6 = false;
+			int var7;
 			if(var5) {
-				var6 = var4 & -16777216;
+				var7 = var4 & -16777216;
 				var4 = (var4 & 16579836) >> 2;
-				var4 += var6;
+				var4 += var7;
 			}
 
 			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.fontTextureName);
-			float var10 = (float)(var4 >> 16 & 255) / 255.0F;
-			float var7 = (float)(var4 >> 8 & 255) / 255.0F;
-			float var8 = (float)(var4 & 255) / 255.0F;
-			float var9 = (float)(var4 >> 24 & 255) / 255.0F;
-			if(var9 == 0.0F) {
-				var9 = 1.0F;
+			float var11 = (float)(var4 >> 16 & 255) / 255.0F;
+			float var8 = (float)(var4 >> 8 & 255) / 255.0F;
+			float var9 = (float)(var4 & 255) / 255.0F;
+			float var10 = (float)(var4 >> 24 & 255) / 255.0F;
+			if(var10 == 0.0F) {
+				var10 = 1.0F;
 			}
 
-			GL11.glColor4f(var10, var7, var8, var9);
+			GL11.glColor4f(var11, var8, var9, var10);
 			this.buffer.clear();
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)var2, (float)var3, 0.0F);
 
-			for(var6 = 0; var6 < var1.length(); ++var6) {
-				int var11;
-				for(; var1.length() > var6 + 1 && var1.charAt(var6) == 167; var6 += 2) {
-					var11 = "0123456789abcdef".indexOf(var1.toLowerCase().charAt(var6 + 1));
-					if(var11 < 0 || var11 > 15) {
-						var11 = 15;
-					}
+			for(var7 = 0; var7 < var1.length(); ++var7) {
+				int var14;
+				for(; var1.length() > var7 + 1 && var1.charAt(var7) == 167; var7 += 2) {
+					char var13 = var1.toLowerCase().charAt(var7 + 1);
+					if(var13 == 107) {
+						var6 = true;
+					} else {
+						var6 = false;
+						var14 = "0123456789abcdef".indexOf(var13);
+						if(var14 < 0 || var14 > 15) {
+							var14 = 15;
+						}
 
-					this.buffer.put(this.fontDisplayLists + 256 + var11 + (var5?16:0));
-					if(this.buffer.remaining() == 0) {
-						this.buffer.flip();
-						GL11.glCallLists(this.buffer);
-						this.buffer.clear();
+						this.buffer.put(this.fontDisplayLists + 256 + var14 + (var5?16:0));
+						if(this.buffer.remaining() == 0) {
+							this.buffer.flip();
+							GL11.glCallLists(this.buffer);
+							this.buffer.clear();
+						}
 					}
 				}
 
-				if(var6 < var1.length()) {
-					var11 = ChatAllowedCharacters.allowedCharacters.indexOf(var1.charAt(var6));
-					if(var11 >= 0) {
-						this.buffer.put(this.fontDisplayLists + var11 + 32);
+				if(var7 < var1.length()) {
+					int var12 = ChatAllowedCharacters.allowedCharacters.indexOf(var1.charAt(var7));
+					if(var12 >= 0) {
+						if(var6) {
+							boolean var15 = false;
+
+							do {
+								var14 = this.field_41064_c.nextInt(ChatAllowedCharacters.allowedCharacters.length());
+							} while(this.charWidth[var12 + 32] != this.charWidth[var14 + 32]);
+
+							this.buffer.put(this.fontDisplayLists + 256 + this.field_41064_c.nextInt(2) + 8 + (var5?16:0));
+							this.buffer.put(this.fontDisplayLists + var14 + 32);
+						} else {
+							this.buffer.put(this.fontDisplayLists + var12 + 32);
+						}
 					}
 				}
 
@@ -291,38 +313,52 @@ public class FontRenderer {
 	}
 
 	public void drawSplitString(String var1, int var2, int var3, int var4, int var5) {
-		String[] var6 = var1.split("\n");
-		if(var6.length > 1) {
-			for(int var11 = 0; var11 < var6.length; ++var11) {
-				this.drawSplitString(var6[var11], var2, var3, var4, var5);
-				var3 += this.splitStringWidth(var6[var11], var4);
+		this.func_40609_a(var1, var2, var3, var4, var5, false);
+	}
+
+	public void func_40609_a(String var1, int var2, int var3, int var4, int var5, boolean var6) {
+		String[] var7 = var1.split("\n");
+		if(var7.length > 1) {
+			for(int var14 = 0; var14 < var7.length; ++var14) {
+				this.drawSplitString(var7[var14], var2, var3, var4, var5);
+				var3 += this.splitStringWidth(var7[var14], var4);
 			}
 
 		} else {
-			String[] var7 = var1.split(" ");
-			int var8 = 0;
+			String[] var8 = var1.split(" ");
+			int var9 = 0;
+			String var10 = "";
 
-			while(var8 < var7.length) {
-				String var9;
-				for(var9 = var7[var8++] + " "; var8 < var7.length && this.getStringWidth(var9 + var7[var8]) < var4; var9 = var9 + var7[var8++] + " ") {
+			while(var9 < var8.length) {
+				String var11;
+				for(var11 = var10 + var8[var9++] + " "; var9 < var8.length && this.getStringWidth(var11 + var8[var9]) < var4; var11 = var11 + var8[var9++] + " ") {
 					;
 				}
 
-				int var10;
-				for(; this.getStringWidth(var9) > var4; var9 = var9.substring(var10)) {
-					for(var10 = 0; this.getStringWidth(var9.substring(0, var10 + 1)) <= var4; ++var10) {
+				int var12;
+				for(; this.getStringWidth(var11) > var4; var11 = var10 + var11.substring(var12)) {
+					for(var12 = 0; this.getStringWidth(var11.substring(0, var12 + 1)) <= var4; ++var12) {
 						;
 					}
 
-					if(var9.substring(0, var10).trim().length() > 0) {
-						this.drawString(var9.substring(0, var10), var2, var3, var5);
-						var3 += 8;
+					if(var11.substring(0, var12).trim().length() > 0) {
+						String var13 = var11.substring(0, var12);
+						if(var13.lastIndexOf("\u00a7") >= 0) {
+							var10 = "\u00a7" + var13.charAt(var13.lastIndexOf("\u00a7") + 1);
+						}
+
+						this.renderString(var13, var2, var3, var5, var6);
+						var3 += this.field_41063_b;
 					}
 				}
 
-				if(var9.trim().length() > 0) {
-					this.drawString(var9, var2, var3, var5);
-					var3 += 8;
+				if(this.getStringWidth(var11.trim()) > 0) {
+					if(var11.lastIndexOf("\u00a7") >= 0) {
+						var10 = "\u00a7" + var11.charAt(var11.lastIndexOf("\u00a7") + 1);
+					}
+
+					this.renderString(var11, var2, var3, var5, var6);
+					var3 += this.field_41063_b;
 				}
 			}
 
@@ -358,23 +394,22 @@ public class FontRenderer {
 					}
 
 					if(var7.substring(0, var8).trim().length() > 0) {
-						var6 += 8;
+						var6 += this.field_41063_b;
 					}
 				}
 
 				if(var7.trim().length() > 0) {
-					var6 += 8;
+					var6 += this.field_41063_b;
 				}
 			}
+
 //Spout HD Start
 			if(var6 < var5 / 16) {
 //Spout HD End
-				var6 += 8;
 			}
 
 			return var6;
 		}
-	}
 //Spout HD Start
 	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
 		this.charWidth = new int[256];

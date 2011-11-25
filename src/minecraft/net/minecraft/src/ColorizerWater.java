@@ -17,8 +17,7 @@ public class ColorizerWater {
 	}
 
 	// Spout end
-
-	public static void func_28182_a(int[] var0) {
+	public static void getWaterBiomeColorizer(int[] var0) {
 		waterBuffer = var0;
 	}
 

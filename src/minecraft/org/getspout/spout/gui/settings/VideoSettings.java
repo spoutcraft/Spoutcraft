@@ -37,6 +37,7 @@ public class VideoSettings extends GuiScreen{
 	
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		Control control;
 		
 		GenericScrollArea screen = new GenericScrollArea();
 		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(16+24).setX(0);
@@ -48,11 +49,21 @@ public class VideoSettings extends GuiScreen{
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
 		
+		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(10).setY(height - 30);
+		getScreen().attachWidget(spoutcraft, control);
+		
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		doneButton.setX((int) (width / 2 - 200 / 2)).setY(height - 30);
 		doneButton.setHeight(20).setWidth(200);
 		getScreen().attachWidget(spoutcraft, doneButton);
+		
+		control = new OptimizeButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(width - 160).setY(height - 30);
+		getScreen().attachWidget(spoutcraft, control);
+		
+		
 		
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
@@ -76,7 +87,6 @@ public class VideoSettings extends GuiScreen{
 		
 		
 		ArrayList<CheckBox> graphicCheckboxes = new ArrayList<CheckBox>();
-		Control control;
 		control = new FancyGraphicsButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -208,10 +218,6 @@ public class VideoSettings extends GuiScreen{
 		control = new SignDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
-		control = new OptimizeButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
 		top += 22;
 		
 		
@@ -292,28 +298,6 @@ public class VideoSettings extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 		
 		top += 22;
-		
-		top += 5;
-		
-		label = new GenericLabel(ChatColor.RED + "Danger Area");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX((int) (width / 2 - size / 2)).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 11;
-		
-		linebreak = new GenericGradient();
-		linebreak.setBottomColor(grey);
-		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
-		top += 6;
-		
-		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		
-		//RIGHT CONTROL HERE!
 	}
 
 	@Override

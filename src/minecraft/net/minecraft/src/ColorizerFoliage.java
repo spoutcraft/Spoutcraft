@@ -6,7 +6,7 @@ public class ColorizerFoliage {
 	public static int[] foliageBuffer = new int[65536]; //Spout HD private->public
 
 
-	public static void func_28152_a(int[] var0) {
+	public static void getFoilageBiomeColorizer(int[] var0) {
 		foliageBuffer = var0;
 	}
 
@@ -25,7 +25,7 @@ public class ColorizerFoliage {
 		return 8431445;
 	}
 
-	public static int func_31073_c() {
+	public static int getFoliageColorBasic() {
 		return 4764952;
 	}
 

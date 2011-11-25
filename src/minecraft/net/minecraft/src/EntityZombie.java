@@ -14,13 +14,13 @@ public class EntityZombie extends EntityMob {
 		this.texture = "/mob/zombie.png";
 		this.moveSpeed = 0.5F;
 		this.attackStrength = 4;
+		//Spout start
+		this.spoutEntity = new CraftZombie(this);
+		//Spout end
 	}
 
 	public int getMaxHealth() {
 		return 20;
-		//Spout start
-		this.spoutEntity = new CraftZombie(this);
-		//Spout end
 	}
 
 	protected int func_40119_ar() {
