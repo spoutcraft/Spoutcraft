@@ -27,6 +27,13 @@ import net.minecraft.src.StepSound;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
+//Spout Start
+import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.entity.CraftLivingEntity;
+import org.getspout.spout.entity.EntityData;
+import org.getspout.spout.io.CustomTextureManager;
+//Spout End
+
 public abstract class EntityLiving extends Entity {
 
 	public int heartsHalvesLife = 20;
@@ -95,6 +102,11 @@ public abstract class EntityLiving extends Entity {
 	private Entity currentTarget;
 	protected int numTicksToChaseTarget = 0;
 
+	//Spout Start
+	private EntityData entityData = null;
+	public String displayName = null;
+	//Spout End
+
 
 	public EntityLiving(World var1) {
 		super(var1);
@@ -115,8 +127,62 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public String getEntityTexture() {
-		return this.texture;
+		//Spout Start
+		String custom = getCustomTextureUrl(getTextureToRender());
+		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){
+			return texture;
+		} else {
+			return CustomTextureManager.getTexturePathFromUrl(custom);
+		}
+		//Spout End
 	}
+
+//Spout Start
+	
+	public final EntityData getData() {
+		if (entityData == null) {
+			if (uuidValid){
+				entityData = SpoutClient.getInstance().getEntityManager().getData(uniqueId);
+			}
+			else {
+				return SpoutClient.getInstance().getEntityManager().getGenericData();
+			}
+		}
+		return entityData;
+	}
+	
+	public String getCustomTextureUrl(byte id){
+		if (getData().getCustomTextures() == null) {
+			return null;
+		}
+		return getData().getCustomTextures().get(id);
+	}
+	
+	public String getCustomTexture(byte id){
+		if(getCustomTextureUrl(id) != null)
+		{
+			return CustomTextureManager.getTexturePathFromUrl(getCustomTextureUrl(id));
+		}
+		return null;
+	}
+
+	public void setCustomTexture(String url, byte id){
+		if (url != null) {
+			CustomTextureManager.downloadTexture(url);
+		}
+		if (getData().getCustomTextures() != null) {
+			getData().getCustomTextures().put(id, url);
+		}
+	}
+	
+	public void setTextureToRender(byte textureToRender) {
+		getData().setTextureToRender(textureToRender);
+	}
+
+	public byte getTextureToRender() {
+		return getData().getTextureToRender();
+	}
+	//Spout End
 
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
@@ -523,7 +589,7 @@ public abstract class EntityLiving extends Entity {
 		return var2;
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		var2 = this.func_40115_d(var1, var2);
 		var2 = this.func_40128_b(var1, var2);
 		this.health -= var2;
@@ -629,12 +695,14 @@ public abstract class EntityLiving extends Entity {
 		double var3;
 		if(this.isInWater()) {
 			var3 = this.posY;
-			this.moveFlying(var1, var2, 0.02F);
+			moveFlying(var1, var2, (float) (0.02F * getData().getSwimmingMod())); //Spout
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
 			this.motionZ *= 0.800000011920929D;
-			this.motionY -= 0.02D;
+			//Spout start
+			motionY -= 0.02D * getData().getGravityMod();
+			//Spout end
 			if(this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var3, this.motionZ)) {
 				this.motionY = 0.30000001192092896D;
 			}
@@ -656,18 +724,44 @@ public abstract class EntityLiving extends Entity {
 				int var4 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(var4 > 0) {
 					var8 = Block.blocksList[var4].slipperiness * 0.91F;
+					//Spout start
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
+					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
+						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					}
+					//Spout end
 				}
 			}
 
 			float var9 = 0.16277136F / (var8 * var8 * var8);
-			float var5 = this.onGround?this.landMovementFactor * var9:this.jumpMovementFactor;
-			this.moveFlying(var1, var2, var5);
+			//Spout start
+			float var5 = this.field_35168_bw;
+			if (onGround) {
+				var5 = (float) (this.field_35169_bv * var9 * getData().getWalkingMod());
+			}
+			else if (!isInWater()) {
+				var5 *= getData().getAirspeedMod();
+			}
+			moveFlying(var1, var2, var5);
+			//Spout end
 			var8 = 0.91F;
 			if(this.onGround) {
 				var8 = 0.54600006F;
 				int var6 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 				if(var6 > 0) {
 					var8 = Block.blocksList[var6].slipperiness * 0.91F;
+					//Spout start
+					int x = MathHelper.floor_double(this.posX);
+					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+					int z = MathHelper.floor_double(this.posZ);
+					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
+					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
+						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					}
+					//Spout end
 				}
 			}
 
@@ -704,7 +798,7 @@ public abstract class EntityLiving extends Entity {
 				this.motionY = 0.2D;
 			}
 
-			this.motionY -= 0.08D;
+			this.motionY -= 0.08D * getData().getGravityMod(); //Spout
 			this.motionY *= 0.9800000190734863D;
 			this.motionX *= (double)var8;
 			this.motionZ *= (double)var8;
@@ -838,9 +932,9 @@ public abstract class EntityLiving extends Entity {
 		boolean var2 = this.handleLavaMovement();
 		if(this.isJumping) {
 			if(var14) {
-				this.motionY += 0.03999999910593033D;
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //Spout
 			} else if(var2) {
-				this.motionY += 0.03999999910593033D;
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //Spout
 			} else if(this.onGround && this.field_39003_d == 0) {
 				this.jump();
 				this.field_39003_d = 10;
@@ -879,7 +973,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void jump() {
-		this.motionY = 0.41999998688697815D;
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); //Spout
 		if(this.isPotionActive(Potion.potionJump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.potionJump).getAmplifier() + 1) * 0.1F);
 		}
