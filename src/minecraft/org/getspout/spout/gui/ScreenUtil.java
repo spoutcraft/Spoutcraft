@@ -1,6 +1,7 @@
 package org.getspout.spout.gui;
 
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.gui.settings.VideoSettings;
 
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiAchievements;
@@ -18,7 +19,6 @@ import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSleepMP;
 import net.minecraft.src.GuiStats;
-import net.minecraft.src.GuiVideoSettings;
 import net.minecraft.src.StatFileWriter;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
@@ -45,7 +45,7 @@ public class ScreenUtil {
 			toOpen = new GuiOptions(new GuiIngameMenu(), settings);
 			break;
 		case VIDEO_SETTINGS_MENU:
-			toOpen = new GuiVideoSettings(new GuiOptions(new GuiIngameMenu(), SpoutClient.getHandle().gameSettings), settings);
+			toOpen = new VideoSettings(new GuiIngameMenu());
 			break;
 		case CONTROLS_MENU:
 			toOpen = new GuiControls(new GuiOptions(new GuiIngameMenu(), settings), settings);
@@ -92,7 +92,7 @@ public class ScreenUtil {
 		else if (gui instanceof GuiOptions) {
 			screen = ScreenType.OPTIONS_MENU;
 		}
-		else if (gui instanceof GuiVideoSettings) {
+		else if (gui instanceof VideoSettings) {
 			screen = ScreenType.VIDEO_SETTINGS_MENU;
 		}
 		else if (gui instanceof GuiControls) {
