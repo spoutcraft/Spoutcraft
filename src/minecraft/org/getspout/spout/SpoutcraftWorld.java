@@ -102,7 +102,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public long getSeed() {
-		return handle.getRandomSeed();
+		return handle.getWorldSeed();
 	}
 
 	public boolean isChunkLoaded(Chunk chunk) {
