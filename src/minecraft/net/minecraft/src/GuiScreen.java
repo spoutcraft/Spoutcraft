@@ -23,6 +23,7 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.gui.*;
 import org.getspout.spout.packet.*;
+import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
@@ -714,11 +715,46 @@ public class GuiScreen extends Gui {
 		
 		x += 6;
 		y -= 6;
-		this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
-		int i = 0;
+		
+		int j2 = 0;
+		for(int k2 = 0; k2 < lines.length; k2++)
+		{
+			int i3 = fontRenderer.getStringWidth(lines[k2]);
+			if(i3 > j2)
+			{
+				j2 = i3;
+			}
+		}
+
+		int l2 = x + offsetX;
+		int j3 = y + offsetY;
+		int k3 = j2;
+		int l3 = 8;
+		if(lines.length > 1)
+		{
+			l3 += (lines.length - 1) * 10;
+		}
+//		zLevel = 300F;
+		int i4 = 0xf0100010;
+		drawGradientRect(l2 - 3, j3 - 4, l2 + k3 + 3, j3 - 3, i4, i4);
+		drawGradientRect(l2 - 3, j3 + l3 + 3, l2 + k3 + 3, j3 + l3 + 4, i4, i4);
+		drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, j3 + l3 + 3, i4, i4);
+		drawGradientRect(l2 - 4, j3 - 3, l2 - 3, j3 + l3 + 3, i4, i4);
+		drawGradientRect(l2 + k3 + 3, j3 - 3, l2 + k3 + 4, j3 + l3 + 3, i4, i4);
+		int j4 = 0x505000ff;
+		int k4 = (j4 & 0xfefefe) >> 1 | j4 & 0xff000000;
+		drawGradientRect(l2 - 3, (j3 - 3) + 1, (l2 - 3) + 1, (j3 + l3 + 3) - 1, j4, k4);
+		drawGradientRect(l2 + k3 + 2, (j3 - 3) + 1, l2 + k3 + 3, (j3 + l3 + 3) - 1, j4, k4);
+		drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
+		drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
+		
+		//this.drawGradientRect(x - 3 + offsetX, y - 3 + offsetY, x + tooltipWidth + 3 + offsetX, y + tooltipHeight + offsetY, -1073741824, -1073741824);
+		
+//		int i = 0;
+		GL11.glColor4f(1f, 1f, 1f, 1f);
 		for(String line:lines) {
-			this.fontRenderer.drawStringWithShadow(line, x + offsetX, y + 8 * i + offsetY, -1);
-			i++;
+			this.fontRenderer.drawStringWithShadow(line, l2, j3, -1);
+			j3+=10;
 		}
 		GL11.glPopMatrix();
 	}
