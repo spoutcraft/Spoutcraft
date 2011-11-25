@@ -33,14 +33,14 @@
 
 package org.getspout.spout.entity;
 
-import net.minecraft.src.EntityFish;
+import net.minecraft.src.EntityFishHook;
 import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.spoutcraftapi.entity.Fish;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
 public class CraftFish extends AbstractProjectile implements Fish {
-	public CraftFish(EntityFish entity) {
+	public CraftFish(EntityFishHook entity) {
 		super(entity);
 	}
 
@@ -50,8 +50,8 @@ public class CraftFish extends AbstractProjectile implements Fish {
 	}
 
 	public LivingEntity getShooter() {
-		if (((EntityFish) handle).angler != null) {
-			return (LivingEntity) ((EntityFish) handle).angler.spoutEntity;
+		if (((EntityFishHook) handle).angler != null) {
+			return (LivingEntity) ((EntityFishHook) handle).angler.spoutEntity;
 		}
 
 		return null;
@@ -60,7 +60,7 @@ public class CraftFish extends AbstractProjectile implements Fish {
 
 	public void setShooter(LivingEntity shooter) {
 		if (shooter instanceof CraftHumanEntity) {
-			((EntityFish) handle).angler = (EntityPlayer) ((CraftHumanEntity) shooter).handle;
+			((EntityFishHook) handle).angler = (EntityPlayer) ((CraftHumanEntity) shooter).handle;
 		}
 	}
 }
