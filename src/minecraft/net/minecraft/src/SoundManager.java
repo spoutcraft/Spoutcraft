@@ -38,7 +38,7 @@ public class SoundManager {
 	}
 
 	public void loadSoundSettings(GameSettings var1) {
-		this.soundPoolStreaming.field_1657_b = false;
+		this.soundPoolStreaming.isGetRandomSound = false;
 		this.options = var1;
 		if(!loaded && (var1 == null || var1.soundVolume != 0.0F || var1.musicVolume != 0.0F)) {
 			this.tryToSetLibraryAndCodecs();
