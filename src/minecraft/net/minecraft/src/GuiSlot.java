@@ -198,6 +198,18 @@ public abstract class GuiSlot {
 				this.initialClickY = (float)var2;
 			}
 		} else {
+			while(Mouse.next()) {
+				int var16 = Mouse.getEventDWheel();
+				if(var16 != 0) {
+					if(var16 > 0) {
+						var16 = -1;
+					} else if(var16 < 0) {
+						var16 = 1;
+					}
+
+					this.amountScrolled += (float)(var16 * this.slotHeight / 2);
+				}
+			}
 			this.initialClickY = -1.0F;
 		}
 		
