@@ -11,6 +11,7 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSlider;
 import net.minecraft.src.GuiSmallButton;
 import net.minecraft.src.GuiVideoSettings;
+import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 
 public class GuiOptions extends GuiScreen {
@@ -36,7 +37,13 @@ public class GuiOptions extends GuiScreen {
 		for(int var5 = 0; var5 < var4; ++var5) {
 			EnumOptions var6 = var3[var5];
 			if(!var6.getEnumFloat()) {
-				this.controlList.add(new GuiSmallButton(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6)));
+				GuiSmallButton var7 = new GuiSmallButton(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6));
+				if(var6 == EnumOptions.DIFFICULTY && this.mc.theWorld != null && this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+					var7.enabled = false;
+					var7.displayString = StatCollector.translateToLocal("options.difficulty") + ": " + StatCollector.translateToLocal("options.difficulty.hardcore");
+				}
+
+				this.controlList.add(var7);
 			} else {
 				this.controlList.add(new GuiSlider(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6), this.options.getOptionFloatValue(var6)));
 			}
