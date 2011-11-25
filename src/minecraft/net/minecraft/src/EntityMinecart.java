@@ -885,11 +885,11 @@ public class EntityMinecart extends Entity implements IInventory {
 
 	public void closeChest() {}
 
-	public void func_41024_b(int var1) {
+	public void func_41024_b(int var1) { // setDamage
 		this.dataWatcher.updateObject(19, Integer.valueOf(var1));
 	}
 
-	public int func_41025_i() {
+	public int func_41025_i() { // getDamage
 		return this.dataWatcher.getWatchableObjectInt(19);
 	}
 
