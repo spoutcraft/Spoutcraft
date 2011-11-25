@@ -59,6 +59,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 			effectiveCache = getEffectiveList();
 			sizeChanged();
 		}
+		if(row < 0 || row >= effectiveCache.size()) {
+			return null;
+		}
 		return effectiveCache.get(row);
 	}
 
