@@ -48,10 +48,11 @@ public class GuiMainMenu extends GuiScreen {
 		} catch (Exception var4) {
 			;
 		}
+
+		this.updateCounter = rand.nextFloat();
 	}
 
 	public void updateScreen() {
-		++this.updateCounter;
 		++this.field_35357_f;
 	}
 
@@ -237,6 +238,8 @@ public class GuiMainMenu extends GuiScreen {
 	private void func_35356_c(int var1, int var2, float var3) {
 		GL11.glViewport(0, 0, 256, 256);
 		this.func_35355_b(var1, var2, var3);
+		GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
 		this.func_35354_a(var3);
 		this.func_35354_a(var3);
 		this.func_35354_a(var3);
@@ -269,12 +272,20 @@ public class GuiMainMenu extends GuiScreen {
 		short var5 = 274;
 		int var6 = this.width / 2 - var5 / 2;
 		byte var7 = 30;
-		this.drawGradientRect(0, 0, this.width, this.height, -1426063361, 16777215);
-		this.drawGradientRect(0, 0, this.width, this.height, 0, -1442840576);
+		this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
+		this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
 		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
-		this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
+		if((double)this.updateCounter < 1.0E-4D) {
+			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 99, 44);
+			this.drawTexturedModalRect(var6 + 99, var7 + 0, 129, 0, 27, 44);
+			this.drawTexturedModalRect(var6 + 99 + 26, var7 + 0, 126, 0, 3, 44);
+			this.drawTexturedModalRect(var6 + 99 + 26 + 3, var7 + 0, 99, 0, 26, 44);
+			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
+		} else {
+			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
+			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
+		}
 		var4.setColorOpaque_I(16777215);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)(this.width / 2 + 90), 70.0F, 0.0F);
@@ -286,7 +297,7 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glPopMatrix();
 
 		//Spout Start
-		//this.drawString(this.fontRenderer, "Minecraft Beta 1.8.1", 2, this.height - 10, 16777215); //Spout
+		//this.drawString(this.fontRenderer, "Minecraft Beta 1.0.0", 2, this.height - 10, 16777215); //Spout
 		//String var9 = "Copyright Mojang AB. Do not distribute!";
 		//this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215); //Spout
 		
