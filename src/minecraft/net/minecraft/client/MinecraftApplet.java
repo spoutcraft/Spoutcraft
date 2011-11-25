@@ -37,7 +37,6 @@ public class MinecraftApplet extends Applet {
 		} else {
 			this.mc.session = new Session("Player", "");
 		}
-		
 		//Spout Start
 		if(this.getParameter("spoutcraftlauncher") != null) {
 			Minecraft.spoutcraftLauncher = this.getParameter("spoutcraftlauncher").equalsIgnoreCase("true");
@@ -46,12 +45,15 @@ public class MinecraftApplet extends Applet {
 			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
 		}
 		//Spout End
-
 		if(this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
 
 		this.mc.hideQuitButton = true;
+		if("true".equals(this.getParameter("stand-alone"))) {
+			this.mc.hideQuitButton = false;
+		}
+
 		this.setLayout(new BorderLayout());
 		this.add(this.mcCanvas, "Center");
 		this.mcCanvas.setFocusable(true);
