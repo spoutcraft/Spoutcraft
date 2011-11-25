@@ -160,6 +160,19 @@ public class MaterialData {
 	public static final Block fenceGate = new Solid("Fence Gate", 107);
 	public static final Block brickStairs = new Solid("Brick Stairs", 108);
 	public static final Block stoneBrickStairs = new Solid("Stone Brick Stairs", 109);
+	public static final Block mycelium = new Solid("Mycelium", 110);
+	public static final Block lilyPad = new Solid("Lily Pad", 111);
+	public static final Block netherBrick = new Solid("Nether Brick", 112);
+	public static final Block netherBrickFence = new Solid("Nether Brick Fence", 113);
+	public static final Block netherBrickStairs = new Solid("Nether Brick Stairs", 114);
+	public static final Block netherWartBlock = new Solid("Nether Wart", 115);
+	public static final Block enchantmentTable = new Solid("Enchantment Table", 116);
+	public static final Block brewingStandBlock = new Solid("Brewing Stand", 117);
+	public static final Block cauldronBlock = new Solid("Cauldron", 118);
+	public static final Block endPortal = new Solid("End Portal", 119);
+	public static final Block endPortalFrame = new Solid("End Portal Frame", 120);
+	public static final Block endStone = new Solid("End Stone", 121);
+	public static final Block dragonEgg = new Solid("Dragon Egg", 122);
 	
 	public static final Item ironShovel = new GenericTool("Iron Shovel", 256);
 	public static final Item ironPickaxe = new GenericTool("Iron Pickaxe", 257);
@@ -290,8 +303,31 @@ public class MaterialData {
 	public static final Item cookedChicken = new GenericFood("Cooked Chicken", 366);
 	public static final Item rottenFlesh = new GenericFood("Rotten Flesh", 367);
 	public static final Item enderPearl = new GenericItem("Ender Pearl", 368);
+	public static final Item blazeRod = new GenericItem("Blaze Rod", 369);
+	public static final Item ghastTear = new GenericItem("Ghast Tear", 370);
+	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
+	public static final Item netherWart = new GenericItem("Nether Wart", 372);
+	public static final Item potion = new GenericItem("Potion", 373);
+	public static final Item glassBottle = new GenericItem("Ghast Tear", 374);
+	public static final Item spiderEye = new GenericItem("Spider Eye", 375);
+	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
+	public static final Item blazePowder = new GenericItem("Blaze Powder", 377);
+	public static final Item magmaCream = new GenericItem("Magma Cream", 378);
+	public static final Item brewingStand = new GenericItem("Brewing Stand", 379);
+	public static final Item cauldron = new GenericItem("Cauldron", 380);
+	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
+
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
+	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
+	public static final Item redMusicDisc = new GenericItem("Music Disc", 2259);
+	public static final Item cyanMusicDisc = new GenericItem("Music Disc", 2260);
+	public static final Item blueMusicDisc = new GenericItem("Music Disc", 2261);
+	public static final Item purpleMusicDisc = new GenericItem("Music Disc", 2262);
+	public static final Item blackMusicDisc = new GenericItem("Music Disc", 2263);
+	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
+	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
+	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
 	
 	static {
 		reset();
