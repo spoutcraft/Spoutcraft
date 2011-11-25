@@ -7,6 +7,7 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSlider;
 import net.minecraft.src.GuiSmallButton;
 import net.minecraft.src.ScaledResolution;
+import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 
 public class GuiVideoSettings extends GuiScreen {
@@ -14,7 +15,8 @@ public class GuiVideoSettings extends GuiScreen {
 	private GuiScreen parentGuiScreen;
 	protected String field_22107_a = "Video Settings";
 	private GameSettings guiGameSettings;
-	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA};
+	private boolean field_40231_d = false;
+	private static EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS, EnumOptions.PARTICLES};
 
 
 	public GuiVideoSettings(GuiScreen var1, GameSettings var2) {
@@ -41,6 +43,19 @@ public class GuiVideoSettings extends GuiScreen {
 		}
 
 		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, var1.translateKey("gui.done")));
+		this.field_40231_d = false;
+		String[] var9 = new String[]{"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
+		String[] var10 = var9;
+		var5 = var9.length;
+
+		for(int var11 = 0; var11 < var5; ++var11) {
+			String var7 = var10[var11];
+			String var8 = System.getProperty(var7);
+			if(var8 != null && var8.indexOf("64") >= 0) {
+				this.field_40231_d = true;
+				break;
+			}
+		}
 	}
 
 	protected void actionPerformed(GuiButton var1) {
@@ -69,6 +84,11 @@ public class GuiVideoSettings extends GuiScreen {
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, this.field_22107_a, this.width / 2, 20, 16777215);
+		if(!this.field_40231_d && this.guiGameSettings.renderDistance == 0) {
+			this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning1"), this.width / 2, this.height / 6 + 144, 11468800);
+			this.drawCenteredString(this.fontRenderer, StatCollector.translateToLocal("options.farWarning2"), this.width / 2, this.height / 6 + 144 + 12, 11468800);
+		}
+
 		super.drawScreen(var1, var2, var3);
 	}
 
