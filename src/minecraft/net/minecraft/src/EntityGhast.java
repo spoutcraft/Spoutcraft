@@ -53,9 +53,6 @@ public class EntityGhast extends EntityFlying implements IMob {
 	protected void entityInit() {
 		super.entityInit();
 		this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
-		//Spout Start
-		setTextureToRender((byte) (var1 == 1? EntitySkinType.GHAST_MOUTH.getId() : 0));
-		//Spout End
 	}
 
 	public int getMaxHealth() {
@@ -66,6 +63,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		super.onUpdate();
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
 		this.texture = var1 == 1?"/mob/ghast_fire.png":"/mob/ghast.png";
+		//Spout Start
+		setTextureToRender((byte) (var1 == 1? EntitySkinType.GHAST_MOUTH.getId() : 0));
+		//Spout End
 	}
 
 	protected void updateEntityActionState() {
