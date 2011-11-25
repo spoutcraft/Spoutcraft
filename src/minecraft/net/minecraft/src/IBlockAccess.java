@@ -10,7 +10,7 @@ public interface IBlockAccess {
 
 	TileEntity getBlockTileEntity(int var1, int var2, int var3);
 
-	int func_35451_b(int var1, int var2, int var3, int var4);
+	int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4);
 
 	float getBrightness(int var1, int var2, int var3, int var4);
 
@@ -29,14 +29,14 @@ public interface IBlockAccess {
 	WorldChunkManager getWorldChunkManager();
 
 	int func_35452_b();
-	
-	//Spout start
+
+	// Spout start
 	public int getGrassColorCache(int x, int y, int z);
-	
+
 	public void setGrassColorCache(int x, int y, int z, int color);
-	
+
 	public int getWaterColorCache(int x, int y, int z);
-	
+
 	public void setWaterColorCache(int x, int y, int z, int color);
-	//Spout end
+	// Spout end
 }
