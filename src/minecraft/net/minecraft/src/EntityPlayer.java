@@ -705,7 +705,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		return this.inventory.getTotalArmorValue();
 	}
 
-	protected void damageEntity(DamageSource var1, int var2) {
+	public void damageEntity(DamageSource var1, int var2) { // Spout protected -> public
 		if(!var1.unblockable() && this.func_35162_ad()) {
 			var2 = 1 + var2 >> 1;
 		}
