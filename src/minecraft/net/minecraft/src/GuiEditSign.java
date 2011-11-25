@@ -20,14 +20,14 @@ public class GuiEditSign extends GuiScreen {
 	private static final String allowedCharacters = ChatAllowedCharacters.allowedCharacters;
 
 
-	public GuiEditSign(TileEntitySign var1) {
-		this.entitySign = var1;
+	public GuiEditSign(TileEntitySign tileentitysign) {
+		this.entitySign = tileentitysign;
 	}
 
 	public void initGui() {
-		this.controlList.clear();
+		controlList.clear();
 		Keyboard.enableRepeatEvents(true);
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
+		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120, "Done"));
 	}
 
 	public void onGuiClosed() {
@@ -46,13 +46,13 @@ public class GuiEditSign extends GuiScreen {
 		++this.updateCounter;
 	}
 
-	protected void actionPerformed(GuiButton var1) {
-		if(var1.enabled) {
-			if(var1.id == 0) {
-				this.entitySign.onInventoryChanged();
-				this.mc.displayGuiScreen((GuiScreen)null);
-			}
-
+	protected void actionPerformed(GuiButton guibutton) {
+		if(!guibutton.enabled) {
+			return;
+		}
+		if(guibutton.id == 0) {
+			this.entitySign.onInventoryChanged();
+			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 	}
 

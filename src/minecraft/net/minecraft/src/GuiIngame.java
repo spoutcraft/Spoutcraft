@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.minecraft.src;
 
 import java.awt.Color;
@@ -5,35 +21,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.ChatLine;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.FoodStats;
-import net.minecraft.src.Gui;
-import net.minecraft.src.GuiChat;
-import net.minecraft.src.GuiSavingLevelString;
-import net.minecraft.src.InventoryPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Potion;
-import net.minecraft.src.RenderHelper;
-import net.minecraft.src.RenderItem;
-import net.minecraft.src.ScaledResolution;
-import net.minecraft.src.StringTranslate;
-import net.minecraft.src.Tessellator;
-import org.lwjgl.opengl.GL11;
-//Spout Start
+
 import org.getspout.spout.chunkcache.ChunkCache;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.gui.*;
 import org.getspout.spout.player.ChatManager;
-//Spout End
+import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
+import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
 
-public class GuiIngame extends Gui {
+public class GuiIngame extends Gui{
 
 	private static RenderItem itemRenderer = new RenderItem();
 	//Spout Improved Chat Start
@@ -42,23 +40,31 @@ public class GuiIngame extends Gui {
 	//Spout Improved Chat End
 	public static final Random rand = new Random(); //Spout private -> public static final
 	private Minecraft mc;
-	public String field_933_a = null;
-	private int updateCounter = 0;
-	private String recordPlaying = "";
-	private int recordPlayingUpFor = 0;
-	private boolean recordIsPlaying = false;
+	public String field_933_a;
+	private int updateCounter;
+	private String recordPlaying;
+	private int recordPlayingUpFor;
+	private boolean recordIsPlaying;
 	public float damageGuiPartialTime;
-	float prevVignetteBrightness = 1.0F;
+	float prevVignetteBrightness;
 
-
-	public GuiIngame(Minecraft var1) {
-		this.mc = var1;
+	public GuiIngame(Minecraft minecraft)
+	{
+		chatMessageList = new ArrayList();
+		//rand = new Random();	//Spout removed
+		field_933_a = null;
+		updateCounter = 0;
+		recordPlaying = "";
+		recordPlayingUpFor = 0;
+		recordIsPlaying = false;
+		prevVignetteBrightness = 1.0F;
+		mc = minecraft;
 	}
 
 	//Spout Start
 	//Most of function rewritten
-	public void renderGameOverlay(float var1, boolean var2, int var3, int var4) {
-		
+	public void renderGameOverlay(float f, boolean flag, int i, int j)
+	{
 		SpoutClient.getInstance().onTick();
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 
@@ -66,18 +72,18 @@ public class GuiIngame extends Gui {
 		int screenWidth = scaledRes.getScaledWidth();
 		int screenHeight = scaledRes.getScaledHeight();
 		FontRenderer font = this.mc.fontRenderer;
-		this.mc.entityRenderer.func_905_b();
+		this.mc.entityRenderer.setupOverlayRendering();
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		if(Minecraft.isFancyGraphicsEnabled()) {
-			this.renderVignette(this.mc.thePlayer.getEntityBrightness(var1), screenWidth, screenHeight);
+			this.renderVignette(this.mc.thePlayer.getEntityBrightness(f), screenWidth, screenHeight);
 		}
 
 		ItemStack helmet = this.mc.thePlayer.inventory.armorItemInSlot(3);
-		if(!this.mc.gameSettings.thirdPersonView && helmet != null && helmet.itemID == Block.pumpkin.blockID) {
+		if(this.mc.gameSettings.thirdPersonView == 0 && helmet != null && helmet.itemID == Block.pumpkin.blockID) {
 			this.renderPumpkinBlur(screenWidth, screenHeight);
 		}
 
-		float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * var1;
+		float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
 		if(var10 > 0.0F) {
 			this.renderPortalOverlay(var10, screenWidth, screenHeight);
 		}
@@ -133,15 +139,15 @@ public class GuiIngame extends Gui {
 		for (var15 = 0; var15 < 9; ++var15) {
 			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
 			var17 = screenHeight - 16 - 3;
-			this.renderInventorySlot(var15, x, var17, var1);
+			this.renderInventorySlot(var15, x, var17, f);
 		}
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable('\u803a');
 
-		if (this.mc.thePlayer.func_22060_M() > 0) {
+		if (this.mc.thePlayer.getSleepTimer() > 0) {
 			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 			GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-			var15 = this.mc.thePlayer.func_22060_M();
+			var15 = this.mc.thePlayer.getSleepTimer();
 			float var26 = (float)var15 / 100.0F;
 			if(var26 > 1.0F) {
 				var26 = 1.0F - (float)(var15 - 100) / 10.0F;
@@ -205,7 +211,7 @@ public class GuiIngame extends Gui {
 		}
 
 		if(this.recordPlayingUpFor > 0) {
-			float var24 = (float)this.recordPlayingUpFor - var1;
+			float var24 = (float)this.recordPlayingUpFor - f;
 			int fontColor = (int)(var24 * 256.0F / 20.0F);
 			if(fontColor > 255) {
 				fontColor = 255;
@@ -332,137 +338,169 @@ public class GuiIngame extends Gui {
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
-	//Spout End
 
-	private void renderPumpkinBlur(int var1, int var2) {
+	private void func_41039_c()
+	{
+		if(RenderDragon.field_41038_a == null)
+		{
+			return;
+		}
+		EntityDragon entitydragon = RenderDragon.field_41038_a;
+		RenderDragon.field_41038_a = null;
+		FontRenderer fontrenderer = mc.fontRenderer;
+		ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+		int i = scaledresolution.getScaledWidth();
+		char c = '\266';
+		int j = i / 2 - c / 2;
+		int k = (int)(((float)entitydragon.func_41010_ax() / (float)entitydragon.getMaxHealth()) * (float)(c + 1));
+		byte byte0 = 12;
+		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
+		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
+		if(k > 0)
+		{
+			drawTexturedModalRect(j, byte0, 0, 79, k, 5);
+		}
+		String s = "Boss health";
+		fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xff00ff);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/gui/icons.png"));
+	}
+
+	private void renderPumpkinBlur(int i, int j)
+	{
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(770, 771);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("%blur%/misc/pumpkinblur.png"));
-		Tessellator var3 = Tessellator.instance;
-		var3.startDrawingQuads();
-		var3.addVertexWithUV(0.0D, (double)var2, -90.0D, 0.0D, 1.0D);
-		var3.addVertexWithUV((double)var1, (double)var2, -90.0D, 1.0D, 1.0D);
-		var3.addVertexWithUV((double)var1, 0.0D, -90.0D, 1.0D, 0.0D);
-		var3.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
-		var3.draw();
+		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("%blur%/misc/pumpkinblur.png"));
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(0.0D, j, -90D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(i, j, -90D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(i, 0.0D, -90D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90D, 0.0D, 0.0D);
+		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	private void renderVignette(float var1, int var2, int var3) {
-		var1 = 1.0F - var1;
-		if(var1 < 0.0F) {
-			var1 = 0.0F;
+	private void renderVignette(float f, int i, int j)
+	{
+		f = 1.0F - f;
+		if(f < 0.0F)
+		{
+			f = 0.0F;
 		}
-
-		if(var1 > 1.0F) {
-			var1 = 1.0F;
+		if(f > 1.0F)
+		{
+			f = 1.0F;
 		}
-
-		this.prevVignetteBrightness = (float)((double)this.prevVignetteBrightness + (double)(var1 - this.prevVignetteBrightness) * 0.01D);
+		prevVignetteBrightness += (double)(f - prevVignetteBrightness) * 0.01D;
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(0, 769);
-		GL11.glColor4f(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("%blur%/misc/vignette.png"));
-		Tessellator var4 = Tessellator.instance;
-		var4.startDrawingQuads();
-		var4.addVertexWithUV(0.0D, (double)var3, -90.0D, 0.0D, 1.0D);
-		var4.addVertexWithUV((double)var2, (double)var3, -90.0D, 1.0D, 1.0D);
-		var4.addVertexWithUV((double)var2, 0.0D, -90.0D, 1.0D, 0.0D);
-		var4.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 0.0D);
-		var4.draw();
+		GL11.glColor4f(prevVignetteBrightness, prevVignetteBrightness, prevVignetteBrightness, 1.0F);
+		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("%blur%/misc/vignette.png"));
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(0.0D, j, -90D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(i, j, -90D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(i, 0.0D, -90D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90D, 0.0D, 0.0D);
+		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glBlendFunc(770, 771);
 	}
 
-	private void renderPortalOverlay(float var1, int var2, int var3) {
-		if(var1 < 1.0F) {
-			var1 *= var1;
-			var1 *= var1;
-			var1 = var1 * 0.8F + 0.2F;
+	private void renderPortalOverlay(float f, int i, int j)
+	{
+		if(f < 1.0F)
+		{
+			f *= f;
+			f *= f;
+			f = f * 0.8F + 0.2F;
 		}
-
 		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glDepthMask(false);
 		GL11.glBlendFunc(770, 771);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, var1);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, this.mc.renderEngine.getTexture("/terrain.png"));
-		float var4 = (float)(Block.portal.blockIndexInTexture % 16) / 16.0F;
-		float var5 = (float)(Block.portal.blockIndexInTexture / 16) / 16.0F;
-		float var6 = (float)(Block.portal.blockIndexInTexture % 16 + 1) / 16.0F;
-		float var7 = (float)(Block.portal.blockIndexInTexture / 16 + 1) / 16.0F;
-		Tessellator var8 = Tessellator.instance;
-		var8.startDrawingQuads();
-		var8.addVertexWithUV(0.0D, (double)var3, -90.0D, (double)var4, (double)var7);
-		var8.addVertexWithUV((double)var2, (double)var3, -90.0D, (double)var6, (double)var7);
-		var8.addVertexWithUV((double)var2, 0.0D, -90.0D, (double)var6, (double)var5);
-		var8.addVertexWithUV(0.0D, 0.0D, -90.0D, (double)var4, (double)var5);
-		var8.draw();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
+		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/terrain.png"));
+		float f1 = (float)(Block.portal.blockIndexInTexture % 16) / 16F;
+		float f2 = (float)(Block.portal.blockIndexInTexture / 16) / 16F;
+		float f3 = (float)(Block.portal.blockIndexInTexture % 16 + 1) / 16F;
+		float f4 = (float)(Block.portal.blockIndexInTexture / 16 + 1) / 16F;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(0.0D, j, -90D, f1, f4);
+		tessellator.addVertexWithUV(i, j, -90D, f3, f4);
+		tessellator.addVertexWithUV(i, 0.0D, -90D, f3, f2);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90D, f1, f2);
+		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	private void renderInventorySlot(int var1, int var2, int var3, float var4) {
-		ItemStack var5 = this.mc.thePlayer.inventory.mainInventory[var1];
-		if(var5 != null) {
-			float var6 = (float)var5.animationsToGo - var4;
-			if(var6 > 0.0F) {
-				GL11.glPushMatrix();
-				float var7 = 1.0F + var6 / 5.0F;
-				GL11.glTranslatef((float)(var2 + 8), (float)(var3 + 12), 0.0F);
-				GL11.glScalef(1.0F / var7, (var7 + 1.0F) / 2.0F, 1.0F);
-				GL11.glTranslatef((float)(-(var2 + 8)), (float)(-(var3 + 12)), 0.0F);
-			}
-
-			itemRenderer.renderItemIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var5, var2, var3);
-			if(var6 > 0.0F) {
-				GL11.glPopMatrix();
-			}
-
-			itemRenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.renderEngine, var5, var2, var3);
+	private void renderInventorySlot(int i, int j, int k, float f)
+	{
+		ItemStack itemstack = mc.thePlayer.inventory.mainInventory[i];
+		if(itemstack == null)
+		{
+			return;
 		}
+		float f1 = (float)itemstack.animationsToGo - f;
+		if(f1 > 0.0F)
+		{
+			GL11.glPushMatrix();
+			float f2 = 1.0F + f1 / 5F;
+			GL11.glTranslatef(j + 8, k + 12, 0.0F);
+			GL11.glScalef(1.0F / f2, (f2 + 1.0F) / 2.0F, 1.0F);
+			GL11.glTranslatef(-(j + 8), -(k + 12), 0.0F);
+		}
+		itemRenderer.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, j, k);
+		if(f1 > 0.0F)
+		{
+			GL11.glPopMatrix();
+		}
+		itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, itemstack, j, k);
 	}
 
-	public void updateTick() {
-		if(this.recordPlayingUpFor > 0) {
-			--this.recordPlayingUpFor;
+	public void updateTick()
+	{
+		if(recordPlayingUpFor > 0)
+		{
+			recordPlayingUpFor--;
 		}
-
-		++this.updateCounter;
-
-		for(int var1 = 0; var1 < this.chatMessageList.size(); ++var1) {
-			++((ChatLine)this.chatMessageList.get(var1)).updateCounter;
+		updateCounter++;
+		for(int i = 0; i < chatMessageList.size(); i++)
+		{
+			((ChatLine)chatMessageList.get(i)).updateCounter++;
 		}
 
 	}
 
-	public void clearChatMessages() {
-		this.chatMessageList.clear();
+	public void clearChatMessages()
+	{
+		chatMessageList.clear();
 	}
 
-	public void addChatMessage(String var1) {
-		while(this.mc.fontRenderer.getStringWidth(var1) > 320) {
-			int var2;
-			for(var2 = 1; var2 < var1.length() && this.mc.fontRenderer.getStringWidth(var1.substring(0, var2 + 1)) <= 320; ++var2) {
-				;
-			}
-
-			this.addChatMessage(var1.substring(0, var2));
-			var1 = var1.substring(var2);
+	public void addChatMessage(String s)
+	{
+		int i;
+		for(; mc.fontRenderer.getStringWidth(s) > 320; s = s.substring(i))
+		{
+			for(i = 1; i < s.length() && mc.fontRenderer.getStringWidth(s.substring(0, i + 1)) <= 320; i++) { }
+			addChatMessage(s.substring(0, i));
 		}
 
-		this.chatMessageList.add(0, new ChatLine(var1));
+		chatMessageList.add(0, new ChatLine(s));
 		//Spout Improved Chat Start
 		while(this.chatMessageList.size() > 3000) {
 			this.chatMessageList.remove(this.chatMessageList.size() - 1);
@@ -470,16 +508,18 @@ public class GuiIngame extends Gui {
 		//Spout Improved Chat End
 	}
 
-	public void setRecordPlayingMessage(String var1) {
-		this.recordPlaying = "Now playing: " + var1;
-		this.recordPlayingUpFor = 60;
-		this.recordIsPlaying = true;
+	public void setRecordPlayingMessage(String s)
+	{
+		recordPlaying = (new StringBuilder()).append("Now playing: ").append(s).toString();
+		recordPlayingUpFor = 60;
+		recordIsPlaying = true;
 	}
 
-	public void addChatMessageTranslate(String var1) {
-		StringTranslate var2 = StringTranslate.getInstance();
-		String var3 = var2.translateKey(var1);
-		this.addChatMessage(var3);
+	public void addChatMessageTranslate(String s)
+	{
+		StringTranslate stringtranslate = StringTranslate.getInstance();
+		String s1 = stringtranslate.translateKey(s);
+		addChatMessage(s1);
 	}
 
 }
