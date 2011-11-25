@@ -3,9 +3,7 @@ package net.minecraft.src;
 import gnu.trove.set.hash.TLongHashSet; // Spout
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
@@ -26,7 +24,7 @@ public class ChunkProvider implements IChunkProvider {
 	private IChunkProvider chunkProvider;
 	private IChunkLoader chunkLoader;
 	private LongHashMap chunkMap = new LongHashMap();
-	private List chunkList = new ArrayList();
+	private List<Chunk> chunkList = new ArrayList<Chunk>();
 	private World worldObj;
 	private int field_35392_h;
 
@@ -192,12 +190,14 @@ public class ChunkProvider implements IChunkProvider {
 				long var2 = this.droppedChunksSet.iterator().next();
 				Chunk var3 = (Chunk)this.chunkMap.getValueByKey(var2);
 				//Spout end
-				var3.onChunkUnload();
-				this.unloadAndSaveChunk(var3);
-				this.unloadAndSaveChunkData(var3);
-				this.droppedChunksSet.remove(var2);
-				this.chunkMap.remove(var2); //Spout var2.longValue() to var2
-				this.chunkList.remove(var3);
+				if (var3 != null) {
+					var3.onChunkUnload();
+					this.unloadAndSaveChunk(var3);
+					this.unloadAndSaveChunkData(var3);
+					this.droppedChunksSet.remove(var2);
+					this.chunkMap.remove(var2); //Spout var2.longValue() to var2
+					this.chunkList.remove(var3);
+				}
 			}
 		}
 
