@@ -49,24 +49,30 @@ public class VideoSettings extends GuiScreen{
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
 		
+		int totalWidth = Math.min(width - 9, 200*3+10);
+		int cellWidth = (totalWidth - 10)/3;
+		int left = width / 2 - totalWidth / 2;
+		int center = left + cellWidth + 5;
+		int right = center + cellWidth + 5;
+		
 		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(10).setY(height - 30);
+		control.setWidth(cellWidth).setHeight(20).setX(left).setY(height - 30);
 		getScreen().attachWidget(spoutcraft, control);
 		
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
-		doneButton.setX((int) (width / 2 - 200 / 2)).setY(height - 30);
-		doneButton.setHeight(20).setWidth(200);
+		doneButton.setX(center).setY(height - 30);
+		doneButton.setHeight(20).setWidth(cellWidth);
 		getScreen().attachWidget(spoutcraft, doneButton);
 		
 		control = new OptimizeButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(width - 160).setY(height - 30);
+		control.setWidth(cellWidth).setHeight(20).setX(right).setY(height - 30);
 		getScreen().attachWidget(spoutcraft, control);
 		
 		
 		
-		int left = (int)(width / 2  - 155);
-		int right = (int)(width / 2 + 5);
+		left = (int)(width / 2  - 155);
+		right = (int)(width / 2 + 5);
 		int top = 5;
 		
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
