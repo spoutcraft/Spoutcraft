@@ -7,8 +7,9 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiTextField;
 import net.minecraft.src.ISaveFormat;
 import net.minecraft.src.MathHelper;
+import net.minecraft.src.PlayerControllerCreative;
 import net.minecraft.src.PlayerControllerSP;
-import net.minecraft.src.PlayerControllerTest;
+import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.WorldSettings;
 import org.lwjgl.input.Keyboard;
@@ -21,6 +22,7 @@ public class GuiCreateWorld extends GuiScreen {
 	private String folderName;
 	private String field_35364_f = "survival";
 	private boolean field_35365_g = true;
+	private boolean field_40232_h = false;
 	private boolean createClicked;
 	private boolean field_35368_i;
 	private GuiButton field_35366_j;
@@ -29,12 +31,16 @@ public class GuiCreateWorld extends GuiScreen {
 	private GuiButton field_35371_t;
 	private String field_35370_u;
 	private String field_35369_v;
+	private String field_41048_x;
+	private String field_41047_y;
 	
 	public static boolean normalWorld = true; //Spout world type
 
 
 	public GuiCreateWorld(GuiScreen var1) {	
 		this.parentGuiScreen = var1;
+		this.field_41048_x = "";
+		this.field_41047_y = StatCollector.translateToLocal("selectWorld.newWorld");
 	}
 
 	public void updateScreen() {
@@ -59,10 +65,10 @@ public class GuiCreateWorld extends GuiScreen {
 		this.controlList.add(this.field_35371_t = new GuiButton(5, this.width / 2 + 5, 100, 150, 20, var1.translateKey("selectWorld.mapType")));
 		this.field_35371_t.enabled2 = false;
 		this.field_35371_t.enabled = true; //Spout false->true
-		this.textboxWorldName = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, var1.translateKey("selectWorld.newWorld"));
+		this.textboxWorldName = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41047_y);
 		this.textboxWorldName.isFocused = true;
 		this.textboxWorldName.setMaxStringLength(32);
-		this.textboxSeed = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, "");
+		this.textboxSeed = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41048_x);
 		this.func_22129_j();
 		this.func_35363_g();
 	}
@@ -145,12 +151,12 @@ public class GuiCreateWorld extends GuiScreen {
 				byte var9 = 0;
 				if(this.field_35364_f.equals("creative")) {
 					var9 = 1;
-					this.mc.playerController = new PlayerControllerTest(this.mc);
+					this.mc.playerController = new PlayerControllerCreative(this.mc);
 				} else {
 					this.mc.playerController = new PlayerControllerSP(this.mc);
 				}
 
-				this.mc.startWorld(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, var9, this.field_35365_g));
+				this.mc.startWorld(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, var9, this.field_35365_g, this.field_40232_h));
 				this.mc.displayGuiScreen((GuiScreen)null);
 			} else if(var1.id == 3) {
 				this.field_35368_i = !this.field_35368_i;
@@ -167,9 +173,19 @@ public class GuiCreateWorld extends GuiScreen {
 				}
 			} else if(var1.id == 2) {
 				if(this.field_35364_f.equals("survival")) {
+					this.field_40232_h = false;
+					this.field_35364_f = "hardcore";
+					this.field_40232_h = true;
+					this.func_35363_g();
+				} else if(this.field_35364_f.equals("hardcore")) {
+					this.field_40232_h = false;
 					this.field_35364_f = "creative";
+					this.func_35363_g();
+					this.field_40232_h = false;
 				} else {
 					this.field_35364_f = "survival";
+					this.func_35363_g();
+					this.field_40232_h = false;
 				}
 
 				this.func_35363_g();
@@ -195,8 +211,10 @@ public class GuiCreateWorld extends GuiScreen {
 	protected void keyTyped(char var1, int var2) {
 		if(this.textboxWorldName.isFocused && !this.field_35368_i) {
 			this.textboxWorldName.textboxKeyTyped(var1, var2);
+			this.field_41047_y = this.textboxWorldName.getText();
 		} else if(this.textboxSeed.isFocused && this.field_35368_i) {
 			this.textboxSeed.textboxKeyTyped(var1, var2);
+			this.field_41048_x = this.textboxSeed.getText();
 		}
 
 		if(var1 == 13) {
