@@ -72,6 +72,6 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
 	}
 	
 	public int getSleepTicks() {
-		return getMCPlayer().func_22060_M();
+		return getMCPlayer().getSleepTimer();
 	}
 }
