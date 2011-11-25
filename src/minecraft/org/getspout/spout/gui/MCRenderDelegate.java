@@ -414,7 +414,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 				int iconType = 16;
 
-				if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionPoison)) {
+				if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.potionPoison)) {
 					iconType += 36;
 				}
 
@@ -467,9 +467,9 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(HungerBar bar) {
-		FoodStats foodStats = Minecraft.theMinecraft.thePlayer.func_35191_at();
+		FoodStats foodStats = Minecraft.theMinecraft.thePlayer.getFoodStats();
 
-		int foodLevel = foodStats.func_35765_a();
+		int foodLevel = foodStats.getFoodLevel();
 		float foodPercent = foodLevel / 0.2f;
 		float foodPercentPerIcon = 100f / bar.getNumOfIcons();
 
@@ -478,7 +478,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			int foodIcon = 16;
 			byte foodOutline = 0;
 
-			if (Minecraft.theMinecraft.thePlayer.func_35160_a(Potion.potionHunger)) {
+			if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.potionHunger)) {
 				foodIcon += 36;
 				foodOutline = 13;
 			}
@@ -487,7 +487,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 				int y = (int) bar.getScreenY();
 
-				if (Minecraft.theMinecraft.thePlayer.func_35191_at().func_35760_d() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
+				if (Minecraft.theMinecraft.thePlayer.getFoodStats().getFoodSaturationLevel() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
 					y += GuiIngame.rand.nextInt(3) - 1;
 				}
 
@@ -510,7 +510,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				char c = '\266';
 				int x = (int) bar.getScreenX();
 				int y = (int) bar.getScreenY();
-				int exp = (Minecraft.theMinecraft.thePlayer.currentXP * (c + 1)) / expCap;
+				int exp = (int) ((Minecraft.theMinecraft.thePlayer.currentXP * (c + 1)) / expCap);
 				RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, c, 5, 0f);
 				if (exp > 0) {
 					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
