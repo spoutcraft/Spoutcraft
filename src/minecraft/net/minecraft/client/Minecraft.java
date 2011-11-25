@@ -597,9 +597,9 @@ public abstract class Minecraft implements Runnable {
 		if (shutdown) {
 			return;
 		}
+		SpoutClient.getInstance().disableAddons();
 		shutdown = true;
 		SpoutClient.disableSandbox();
-		SpoutClient.getInstance().disableAddons();
 		// Spout End
 		try {
 			this.statFileWriter.func_27175_b();
