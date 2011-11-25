@@ -190,13 +190,13 @@ public class ChunkProvider implements IChunkProvider {
 				Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2.longValue());
 				*/
 				long var2 = this.droppedChunksSet.iterator().next();
-				Chunk var3 = (Chunk)this.chunkMap.func_35578_a(var2);
+				Chunk var3 = (Chunk)this.chunkMap.getValueByKey(var2);
 				//Spout end
 				var3.onChunkUnload();
 				this.unloadAndSaveChunk(var3);
 				this.unloadAndSaveChunkData(var3);
 				this.droppedChunksSet.remove(var2);
-				this.chunkMap.remove(var2.longValue());
+				this.chunkMap.remove(var2); //Spout var2.longValue() to var2
 				this.chunkList.remove(var3);
 			}
 		}

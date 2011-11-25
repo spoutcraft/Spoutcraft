@@ -81,7 +81,7 @@ class ContainerCreative extends Container {
 
 		for(var9 = 0; var9 < 9; ++var9) {
 			for(int var10 = 0; var10 < 8; ++var10) {
-				this.addSlot(new Slot(GuiContainerCreative.func_35310_g(), var10 + var9 * 8, 8 + var10 * 18, 18 + var9 * 18));
+				this.addSlot(new Slot(GuiContainerCreative.getInventory(), var10 + var9 * 8, 8 + var10 * 18, 18 + var9 * 18));
 			}
 		}
 
@@ -107,9 +107,9 @@ class ContainerCreative extends Container {
 			for(int var5 = 0; var5 < 8; ++var5) {
 				int var6 = var5 + (var4 + var3) * 8;
 				if(var6 >= 0 && var6 < this.itemList.size()) {
-					GuiContainerCreative.func_35310_g().setInventorySlotContents(var5 + var4 * 8, (ItemStack)this.itemList.get(var6));
+					GuiContainerCreative.getInventory().setInventorySlotContents(var5 + var4 * 8, (ItemStack)this.itemList.get(var6));
 				} else {
-					GuiContainerCreative.func_35310_g().setInventorySlotContents(var5 + var4 * 8, (ItemStack)null);
+					GuiContainerCreative.getInventory().setInventorySlotContents(var5 + var4 * 8, (ItemStack)null);
 				}
 			}
 		}
