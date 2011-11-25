@@ -137,17 +137,14 @@ public class ControlsModel extends AbstractListModel {
 			this.model = model;
 		}
 
-		@Override
 		public ListWidget getListWidget() {
 			return widget;
 		}
 
-		@Override
 		public void onClick(int x, int y, boolean doubleClick) {
 			model.onItemClicked(this, doubleClick);
 		}
 
-		@Override
 		public void setListWidget(ListWidget widget) {
 			this.widget = widget;
 		}
@@ -206,7 +203,6 @@ public class ControlsModel extends AbstractListModel {
 			return 11;
 		}
 
-		@Override
 		public void render(int x, int y, int width, int height) {
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			font.drawStringWithShadow("V", x+2, y+2, 0xffffff00);
@@ -249,12 +245,10 @@ public class ControlsModel extends AbstractListModel {
 			shortcut = sh;
 		}
 
-		@Override
 		public int getHeight() {
 			return 11;
 		}
 
-		@Override
 		public void render(int x, int y, int width, int height) {
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			font.drawStringWithShadow("S", x+2, y+2, 0xff00ff00);
@@ -313,12 +307,10 @@ public class ControlsModel extends AbstractListModel {
 			this.binding = binding;
 		}
 
-		@Override
 		public int getHeight() {
 			return 20;
 		}
 
-		@Override
 		public void render(int x, int y, int width, int height) {
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			font.drawStringWithShadow("B", x+2, y+2, 0xff0000ff);
