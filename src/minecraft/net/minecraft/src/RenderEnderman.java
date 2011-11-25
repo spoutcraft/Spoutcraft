@@ -1,125 +1,108 @@
-/*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
- * Spoutcraft is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Spoutcraft is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package net.minecraft.src;
 
 import java.util.Random;
-
-import org.getspout.spout.entity.EntitySkinType;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityEnderman;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.ModelEnderman;
+import net.minecraft.src.OpenGlHelper;
+import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
+import org.getspout.spout.entity.EntitySkinType; //Spout import
 
-public class RenderEnderman extends RenderLiving
-{
-	 private ModelEnderman field_35444_c;
-	 private Random field_35445_h;
+public class RenderEnderman extends RenderLiving {
 
-	 public RenderEnderman()
-	 {
-		  super(new ModelEnderman(), 0.5F);
-		  field_35445_h = new Random();
-		  field_35444_c = (ModelEnderman)super.mainModel;
-		  setRenderPassModel(field_35444_c);
-	 }
+	private ModelEnderman endermanModel;
+	private Random rnd = new Random();
 
-	 public void func_35442_a(EntityEnderman entityenderman, double d, double d1, double d2, 
-				float f, float f1)
-	 {
-		  field_35444_c.field_35407_a = entityenderman.func_35176_r() > 0;
-		  field_35444_c.field_35406_b = entityenderman.field_35187_a;
-		  if(entityenderman.field_35187_a)
-		  {
-				double d3 = 0.02D;
-				d += field_35445_h.nextGaussian() * d3;
-				d2 += field_35445_h.nextGaussian() * d3;
-		  }
-		  super.doRenderLiving(entityenderman, d, d1, d2, f, f1);
-	 }
+	public RenderEnderman() {
+		super(new ModelEnderman(), 0.5F);
+		this.endermanModel = (ModelEnderman) super.mainModel;
+		this.setRenderPassModel(this.endermanModel);
+	}
 
-	 protected void func_35443_a(EntityEnderman entityenderman, float f)
-	 {
-		  super.renderEquippedItems(entityenderman, f);
-		  if(entityenderman.func_35176_r() > 0)
-		  {
-				GL11.glEnable(32826 /*GL_RESCALE_NORMAL_EXT*/);
-				GL11.glPushMatrix();
-				float f1 = 0.5F;
-				GL11.glTranslatef(0.0F, 0.6875F, -0.75F);
-				f1 *= 1.0F;
-				GL11.glRotatef(20F, 1.0F, 0.0F, 0.0F);
-				GL11.glRotatef(45F, 0.0F, 1.0F, 0.0F);
-				GL11.glScalef(f1, -f1, f1);
-				int i = entityenderman.func_35115_a(f);
-				int j = i % 0x10000;
-				int k = i / 0x10000;
-				GL13.glMultiTexCoord2f(33985 /*GL_TEXTURE1_ARB*/, (float)j / 1.0F, (float)k / 1.0F);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				loadTexture("/terrain.png");
-				renderBlocks.renderBlockOnInventory(Block.blocksList[entityenderman.func_35176_r()], entityenderman.func_35180_s(), 1.0F);
-				GL11.glPopMatrix();
-				GL11.glDisable(32826 /*GL_RESCALE_NORMAL_EXT*/);
-		  }
-	 }
+	public void renderEnderman(EntityEnderman var1, double var2, double var4, double var6, float var8, float var9) {
+		this.endermanModel.isCarrying = var1.getCarried() > 0;
+		this.endermanModel.isAttacking = var1.isAttacking;
+		if (var1.isAttacking) {
+			double var10 = 0.02D;
+			var2 += this.rnd.nextGaussian() * var10;
+			var6 += this.rnd.nextGaussian() * var10;
+		}
 
-	 protected boolean func_35441_a(EntityEnderman entityenderman, int i, float f)
-	 {
-		  if(i != 0)
-		  {
-				return false;
-		  } else
-		  {
-		  	//Spout Start
-		  	loadTexture(EntitySkinType.getTexture(EntitySkinType.ENDERMAN_EYES, entityenderman, "/mob/enderman_eyes.png"));
-		  	//Spout End
-				float f1 = 1.0F;
-				GL11.glEnable(3042 /*GL_BLEND*/);
-				GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-				GL11.glBlendFunc(1, 1);
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
-				int j = 61680;
-				int k = j % 0x10000;
-				int l = j / 0x10000;
-				GL13.glMultiTexCoord2f(33985 /*GL_TEXTURE1_ARB*/, (float)k / 1.0F, (float)l / 1.0F);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, f1);
-				return true;
-		  }
-	 }
+		super.doRenderLiving(var1, var2, var4, var6, var8, var9);
+	}
 
-	 protected boolean shouldRenderPass(Entity entityliving, int i, float f)
-	 {
-		  return func_35441_a((EntityEnderman)entityliving, i, f);
-	 }
+	protected void renderCarrying(EntityEnderman var1, float var2) {
+		super.renderEquippedItems(var1, var2);
+		if (var1.getCarried() > 0) {
+			GL11.glEnable('\u803a');
+			GL11.glPushMatrix();
+			float var3 = 0.5F;
+			GL11.glTranslatef(0.0F, 0.6875F, -0.75F);
+			var3 *= 1.0F;
+			GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+			GL11.glScalef(var3, -var3, var3);
+			int var4 = var1.getEntityBrightnessForRender(var2);
+			int var5 = var4 % 65536;
+			int var6 = var4 / 65536;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float) var5 / 1.0F, (float) var6 / 1.0F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			this.loadTexture("/terrain.png");
+			this.renderBlocks.renderBlockOnInventory(Block.blocksList[var1.getCarried()], var1.getCarryingData(), 1.0F);
+			GL11.glPopMatrix();
+			GL11.glDisable('\u803a');
+		}
 
-	 protected void renderEquippedItems(EntityLiving entityliving, float f)
-	 {
-		  func_35443_a((EntityEnderman)entityliving, f);
-	 }
+	}
 
-	 public void doRenderLiving(EntityLiving entityliving, double d, double d1, double d2, 
-				float f, float f1)
-	 {
-		  func_35442_a((EntityEnderman)entityliving, d, d1, d2, f, f1);
-	 }
+	protected int renderEyes(EntityEnderman var1, int var2, float var3) {
+		if (var2 != 0) {
+			return -1;
+		} else {
+			// Spout Start
+			loadTexture(EntitySkinType.getTexture(EntitySkinType.ENDERMAN_EYES, var1, "/mob/enderman_eyes.png"));
+			// Spout End
+			float var4 = 1.0F;
+			GL11.glEnable(3042 /* GL_BLEND */);
+			GL11.glDisable(3008 /* GL_ALPHA_TEST */);
+			GL11.glBlendFunc(1, 1);
+			GL11.glDisable(2896 /* GL_LIGHTING */);
+			char var5 = '\uf0f0';
+			int var6 = var5 % 65536;
+			int var7 = var5 / 65536;
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float) var6 / 1.0F, (float) var7 / 1.0F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glEnable(2896 /* GL_LIGHTING */);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, var4);
+			return 1;
+		}
+	}
 
-	 public void doRender(Entity entity, double d, double d1, double d2, 
-				float f, float f1)
-	 {
-		  func_35442_a((EntityEnderman)entity, d, d1, d2, f, f1);
-	 }
+	// $FF: synthetic method
+	// $FF: bridge method
+	protected int shouldRenderPass(EntityLiving var1, int var2, float var3) {
+		return this.renderEyes((EntityEnderman) var1, var2, var3);
+	}
+
+	// $FF: synthetic method
+	// $FF: bridge method
+	protected void renderEquippedItems(EntityLiving var1, float var2) {
+		this.renderCarrying((EntityEnderman) var1, var2);
+	}
+
+	// $FF: synthetic method
+	// $FF: bridge method
+	public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
+		this.renderEnderman((EntityEnderman) var1, var2, var4, var6, var8, var9);
+	}
+
+	// $FF: synthetic method
+	// $FF: bridge method
+	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
+		this.renderEnderman((EntityEnderman) var1, var2, var4, var6, var8, var9);
+	}
 }
