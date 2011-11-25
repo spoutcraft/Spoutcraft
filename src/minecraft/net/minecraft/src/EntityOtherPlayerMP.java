@@ -12,141 +12,141 @@ import org.getspout.spout.player.SpoutPlayer;
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 
-	private boolean field_35218_b = false;
-	private int field_785_bg;
-	private double field_784_bh;
-	private double field_783_bi;
-	private double field_782_bj;
-	private double field_780_bk;
-	private double field_786_bl;
-	float field_20924_a = 0.0F;
+   private boolean field_35218_b = false;
+   private int otherPlayerMPPosRotationIncrements;
+   private double otherPlayerMPX;
+   private double otherPlayerMPY;
+   private double otherPlayerMPZ;
+   private double otherPlayerMPYaw;
+   private double otherPlayerMPPitch;
+   float field_20924_a = 0.0F;
 
 
-	public EntityOtherPlayerMP(World var1, String var2) {
-		super(var1);
-		this.username = var2;
-		this.yOffset = 0.0F;
-		this.stepHeight = 0.0F;
-		if(var2 != null && var2.length() > 0) {
-			this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + var2 + ".png";
-		}
+   public EntityOtherPlayerMP(World var1, String var2) {
+      super(var1);
+      this.username = var2;
+      this.yOffset = 0.0F;
+      this.stepHeight = 0.0F;
+      if(var2 != null && var2.length() > 0) {
+         this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + var2 + ".png";
+      }
 
-		this.noClip = true;
-		this.field_22062_y = 0.25F;
-		this.renderDistanceWeight = 10.0D;
+      this.noClip = true;
+      this.field_22062_y = 0.25F;
+      this.renderDistanceWeight = 10.0D;
 		//Spout start
 		displayName = username;
 		spoutEntity = new SpoutPlayer(this);
 		((SpoutPlayer) spoutEntity).setPlayer(this);
 		//Spout end
-	}
+   }
 
-	protected void resetHeight() {
-		this.yOffset = 0.0F;
-	}
+   protected void resetHeight() {
+      this.yOffset = 0.0F;
+   }
 
-	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		return true;
-	}
+   public boolean attackEntityFrom(DamageSource var1, int var2) {
+      return true;
+   }
 
-	public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
-		this.field_784_bh = var1;
-		this.field_783_bi = var3;
-		this.field_782_bj = var5;
-		this.field_780_bk = (double)var7;
-		this.field_786_bl = (double)var8;
-		this.field_785_bg = var9;
-	}
+   public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
+      this.otherPlayerMPX = var1;
+      this.otherPlayerMPY = var3;
+      this.otherPlayerMPZ = var5;
+      this.otherPlayerMPYaw = (double)var7;
+      this.otherPlayerMPPitch = (double)var8;
+      this.otherPlayerMPPosRotationIncrements = var9;
+   }
 
-	public void onUpdate() {
-		this.field_22062_y = 0.0F;
-		super.onUpdate();
-		this.field_705_Q = this.field_704_R;
-		double var1 = this.posX - this.prevPosX;
-		double var3 = this.posZ - this.prevPosZ;
-		float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
-		if(var5 > 1.0F) {
-			var5 = 1.0F;
-		}
+   public void onUpdate() {
+      this.field_22062_y = 0.0F;
+      super.onUpdate();
+      this.field_705_Q = this.field_704_R;
+      double var1 = this.posX - this.prevPosX;
+      double var3 = this.posZ - this.prevPosZ;
+      float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
+      if(var5 > 1.0F) {
+         var5 = 1.0F;
+      }
 
-		this.field_704_R += (var5 - this.field_704_R) * 0.4F;
-		this.field_703_S += this.field_704_R;
-		if(!this.field_35218_b && this.func_35114_R() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
-			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
-			this.func_35199_b(this.inventory.mainInventory[this.inventory.currentItem], Item.itemsList[var6.itemID].func_35411_c(var6));
-			this.field_35218_b = true;
-		} else if(this.field_35218_b && !this.func_35114_R()) {
-			this.func_35207_ac();
-			this.field_35218_b = false;
-		}
+      this.field_704_R += (var5 - this.field_704_R) * 0.4F;
+      this.field_703_S += this.field_704_R;
+      if(!this.field_35218_b && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
+         ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
+         this.setItemInUse(this.inventory.mainInventory[this.inventory.currentItem], Item.itemsList[var6.itemID].getMaxItemUseDuration(var6));
+         this.field_35218_b = true;
+      } else if(this.field_35218_b && !this.isEating()) {
+         this.clearItemInUse();
+         this.field_35218_b = false;
+      }
 
-	}
+   }
 
-	public float getShadowSize() {
-		return 0.0F;
-	}
+   public float getShadowSize() {
+      return 0.0F;
+   }
 
-	public void onLivingUpdate() {
-		super.updateEntityActionState();
-		if(this.field_785_bg > 0) {
-			double var1 = this.posX + (this.field_784_bh - this.posX) / (double)this.field_785_bg;
-			double var3 = this.posY + (this.field_783_bi - this.posY) / (double)this.field_785_bg;
-			double var5 = this.posZ + (this.field_782_bj - this.posZ) / (double)this.field_785_bg;
+   public void onLivingUpdate() {
+      super.updateEntityActionState();
+      if(this.otherPlayerMPPosRotationIncrements > 0) {
+         double var1 = this.posX + (this.otherPlayerMPX - this.posX) / (double)this.otherPlayerMPPosRotationIncrements;
+         double var3 = this.posY + (this.otherPlayerMPY - this.posY) / (double)this.otherPlayerMPPosRotationIncrements;
+         double var5 = this.posZ + (this.otherPlayerMPZ - this.posZ) / (double)this.otherPlayerMPPosRotationIncrements;
 
-			double var7;
-			for(var7 = this.field_780_bk - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
-				;
-			}
+         double var7;
+         for(var7 = this.otherPlayerMPYaw - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
+            ;
+         }
 
-			while(var7 >= 180.0D) {
-				var7 -= 360.0D;
-			}
+         while(var7 >= 180.0D) {
+            var7 -= 360.0D;
+         }
 
-			this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.field_785_bg);
-			this.rotationPitch = (float)((double)this.rotationPitch + (this.field_786_bl - (double)this.rotationPitch) / (double)this.field_785_bg);
-			--this.field_785_bg;
-			this.setPosition(var1, var3, var5);
-			this.setRotation(this.rotationYaw, this.rotationPitch);
-		}
+         this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.otherPlayerMPPosRotationIncrements);
+         this.rotationPitch = (float)((double)this.rotationPitch + (this.otherPlayerMPPitch - (double)this.rotationPitch) / (double)this.otherPlayerMPPosRotationIncrements);
+         --this.otherPlayerMPPosRotationIncrements;
+         this.setPosition(var1, var3, var5);
+         this.setRotation(this.rotationYaw, this.rotationPitch);
+      }
 
-		this.prevCameraYaw = this.cameraYaw;
-		float var9 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		float var2 = (float)Math.atan(-this.motionY * 0.20000000298023224D) * 15.0F;
-		if(var9 > 0.1F) {
-			var9 = 0.1F;
-		}
+      this.prevCameraYaw = this.cameraYaw;
+      float var9 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+      float var2 = (float)Math.atan(-this.motionY * 0.20000000298023224D) * 15.0F;
+      if(var9 > 0.1F) {
+         var9 = 0.1F;
+      }
 
-		if(!this.onGround || this.health <= 0) {
-			var9 = 0.0F;
-		}
+      if(!this.onGround || this.getEntityHealth() <= 0) {
+         var9 = 0.0F;
+      }
 
-		if(this.onGround || this.health <= 0) {
-			var2 = 0.0F;
-		}
+      if(this.onGround || this.getEntityHealth() <= 0) {
+         var2 = 0.0F;
+      }
 
-		this.cameraYaw += (var9 - this.cameraYaw) * 0.4F;
-		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
-	}
+      this.cameraYaw += (var9 - this.cameraYaw) * 0.4F;
+      this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
+   }
 
-	public void outfitWithItem(int var1, int var2, int var3) {
-		ItemStack var4 = null;
-		if(var2 >= 0) {
-			var4 = new ItemStack(var2, 1, var3);
-		}
+   public void outfitWithItem(int var1, int var2, int var3) {
+      ItemStack var4 = null;
+      if(var2 >= 0) {
+         var4 = new ItemStack(var2, 1, var3);
+      }
 
-		if(var1 == 0) {
-			this.inventory.mainInventory[this.inventory.currentItem] = var4;
-		} else {
-			this.inventory.armorInventory[var1 - 1] = var4;
-		}
+      if(var1 == 0) {
+         this.inventory.mainInventory[this.inventory.currentItem] = var4;
+      } else {
+         this.inventory.armorInventory[var1 - 1] = var4;
+      }
 
-	}
+   }
 
-	public void func_6420_o() {}
+   public void func_6420_o() {}
 
-	public float getEyeHeight() {
-		return 1.82F;
-	}
+   public float getEyeHeight() {
+      return 1.82F;
+   }
 	 //Spout Start
 	 public void updateCloak() {
 		  if (this.cloakUrl == null || this.playerCloakUrl == null) {
