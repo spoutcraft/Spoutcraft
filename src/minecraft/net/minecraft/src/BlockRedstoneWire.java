@@ -7,10 +7,10 @@ import java.util.Set;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkPosition;
+import net.minecraft.src.Direction;
 import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
-import net.minecraft.src.ModelBed;
 import net.minecraft.src.World;
 
 public class BlockRedstoneWire extends Block {
@@ -280,7 +280,7 @@ public class BlockRedstoneWire extends Block {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			boolean var7 = this.canPlaceBlockAt(var1, var2, var3, var4);
 			if(!var7) {
-				this.dropBlockAsItem(var1, var2, var3, var4, var6);
+				this.dropBlockAsItem(var1, var2, var3, var4, var6, 0);
 				var1.setBlockWithNotify(var2, var3, var4, 0);
 			} else {
 				this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
@@ -290,7 +290,7 @@ public class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, Random var2, int var3) {
 		return Item.redstone.shiftedIndex;
 	}
 
@@ -306,24 +306,24 @@ public class BlockRedstoneWire extends Block {
 		} else if(var5 == 1) {
 			return true;
 		} else {
-			boolean var6 = isPowerProviderOrWire(var1, var2 - 1, var3, var4, 1) || !var1.isBlockNormalCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 - 1, var4, -1);
-			boolean var7 = isPowerProviderOrWire(var1, var2 + 1, var3, var4, 3) || !var1.isBlockNormalCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 - 1, var4, -1);
-			boolean var8 = isPowerProviderOrWire(var1, var2, var3, var4 - 1, 2) || !var1.isBlockNormalCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 - 1, -1);
-			boolean var9 = isPowerProviderOrWire(var1, var2, var3, var4 + 1, 0) || !var1.isBlockNormalCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 - 1, var4 + 1, -1);
+			boolean var6 = func_41053_d(var1, var2 - 1, var3, var4, 1) || !var1.isBlockNormalCube(var2 - 1, var3, var4) && func_41053_d(var1, var2 - 1, var3 - 1, var4, -1);
+			boolean var7 = func_41053_d(var1, var2 + 1, var3, var4, 3) || !var1.isBlockNormalCube(var2 + 1, var3, var4) && func_41053_d(var1, var2 + 1, var3 - 1, var4, -1);
+			boolean var8 = func_41053_d(var1, var2, var3, var4 - 1, 2) || !var1.isBlockNormalCube(var2, var3, var4 - 1) && func_41053_d(var1, var2, var3 - 1, var4 - 1, -1);
+			boolean var9 = func_41053_d(var1, var2, var3, var4 + 1, 0) || !var1.isBlockNormalCube(var2, var3, var4 + 1) && func_41053_d(var1, var2, var3 - 1, var4 + 1, -1);
 			if(!var1.isBlockNormalCube(var2, var3 + 1, var4)) {
-				if(var1.isBlockNormalCube(var2 - 1, var3, var4) && isPowerProviderOrWire(var1, var2 - 1, var3 + 1, var4, -1)) {
+				if(var1.isBlockNormalCube(var2 - 1, var3, var4) && func_41053_d(var1, var2 - 1, var3 + 1, var4, -1)) {
 					var6 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2 + 1, var3, var4) && isPowerProviderOrWire(var1, var2 + 1, var3 + 1, var4, -1)) {
+				if(var1.isBlockNormalCube(var2 + 1, var3, var4) && func_41053_d(var1, var2 + 1, var3 + 1, var4, -1)) {
 					var7 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2, var3, var4 - 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 - 1, -1)) {
+				if(var1.isBlockNormalCube(var2, var3, var4 - 1) && func_41053_d(var1, var2, var3 + 1, var4 - 1, -1)) {
 					var8 = true;
 				}
 
-				if(var1.isBlockNormalCube(var2, var3, var4 + 1) && isPowerProviderOrWire(var1, var2, var3 + 1, var4 + 1, -1)) {
+				if(var1.isBlockNormalCube(var2, var3, var4 + 1) && func_41053_d(var1, var2, var3 + 1, var4 + 1, -1)) {
 					var9 = true;
 				}
 			}
@@ -369,13 +369,27 @@ public class BlockRedstoneWire extends Block {
 			return true;
 		} else if(var5 == 0) {
 			return false;
-		} else if(Block.blocksList[var5].canProvidePower()) {
+		} else if(Block.blocksList[var5].canProvidePower() && var4 != -1) {
 			return true;
 		} else if(var5 != Block.redstoneRepeaterIdle.blockID && var5 != Block.redstoneRepeaterActive.blockID) {
 			return false;
 		} else {
 			int var6 = var0.getBlockMetadata(var1, var2, var3);
-			return var4 == ModelBed.footInvisibleFaceRemap[var6 & 3];
+			return var4 == (var6 & 3) || var4 == Direction.footInvisibleFaceRemap[var6 & 3];
+		}
+	}
+
+	public static boolean func_41053_d(IBlockAccess var0, int var1, int var2, int var3, int var4) {
+		if(isPowerProviderOrWire(var0, var1, var2, var3, var4)) {
+			return true;
+		} else {
+			int var5 = var0.getBlockId(var1, var2, var3);
+			if(var5 == Block.redstoneRepeaterActive.blockID) {
+				int var6 = var0.getBlockMetadata(var1, var2, var3);
+				return var4 == (var6 & 3);
+			} else {
+				return false;
+			}
 		}
 	}
 }
