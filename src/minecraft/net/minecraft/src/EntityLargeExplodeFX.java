@@ -1,89 +1,73 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
-import java.util.Random;
+import net.minecraft.src.EntityFX;
+import net.minecraft.src.RenderEngine;
+import net.minecraft.src.RenderHelper;
+import net.minecraft.src.Tessellator;
+import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 
-// Referenced classes of package net.minecraft.src:
-//            EntityFX, RenderEngine, RenderHelper, Tessellator, 
-//            World
+public class EntityLargeExplodeFX extends EntityFX {
 
-public class EntityLargeExplodeFX extends EntityFX
-{
+   private int field_35130_a = 0;
+   private int field_35129_ay = 0;
+   private RenderEngine field_35128_az;
+   private float field_35131_aA;
 
-    public EntityLargeExplodeFX(RenderEngine renderengine, World world, double d, double d1, double d2, double d3, double d4, double d5)
-    {
-        super(world, d, d1, d2, 0.0D, 0.0D, 0.0D);
-        field_35130_a = 0;
-        field_35129_ay = 0;
-        field_35128_az = renderengine;
-        field_35129_ay = 6 + rand.nextInt(4);
-        particleRed = particleGreen = particleBlue = rand.nextFloat() * 0.6F + 0.4F;
-        field_35131_aA = 1.0F - (float)d3 * 0.5F;
-    }
 
-    public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5)
-    {
-        int i = (int)((((float)field_35130_a + f) * 15F) / (float)field_35129_ay);
-        if(i > 15)
-        {
-            return;
-        } else
-        {
-            field_35128_az.bindTexture(field_35128_az.getTexture("/misc/explosion.png"));
-            float f6 = (float)(i % 4) / 4F;
-            float f7 = f6 + 0.24975F;
-            float f8 = (float)(i / 4) / 4F;
-            float f9 = f8 + 0.24975F;
-            float f10 = 2.0F * field_35131_aA;
-            float f11 = (float)((prevPosX + (posX - prevPosX) * (double)f) - interpPosX);
-            float f12 = (float)((prevPosY + (posY - prevPosY) * (double)f) - interpPosY);
-            float f13 = (float)((prevPosZ + (posZ - prevPosZ) * (double)f) - interpPosZ);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(2896 /*GL_LIGHTING*/);
-            RenderHelper.disableStandardItemLighting();
-            tessellator.startDrawingQuads();
-            tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, 1.0F);
-            tessellator.setNormal(0.0F, 1.0F, 0.0F);
-            tessellator.setBlendTexture(240);
-            tessellator.addVertexWithUV(f11 - f1 * f10 - f4 * f10, f12 - f2 * f10, f13 - f3 * f10 - f5 * f10, f7, f9);
-            tessellator.addVertexWithUV((f11 - f1 * f10) + f4 * f10, f12 + f2 * f10, (f13 - f3 * f10) + f5 * f10, f7, f8);
-            tessellator.addVertexWithUV(f11 + f1 * f10 + f4 * f10, f12 + f2 * f10, f13 + f3 * f10 + f5 * f10, f6, f8);
-            tessellator.addVertexWithUV((f11 + f1 * f10) - f4 * f10, f12 - f2 * f10, (f13 + f3 * f10) - f5 * f10, f6, f9);
-            tessellator.draw();
-            GL11.glPolygonOffset(0.0F, 0.0F);
-            GL11.glEnable(2896 /*GL_LIGHTING*/);
-            return;
-        }
-    }
+   public EntityLargeExplodeFX(RenderEngine var1, World var2, double var3, double var5, double var7, double var9, double var11, double var13) {
+      super(var2, var3, var5, var7, 0.0D, 0.0D, 0.0D);
+      this.field_35128_az = var1;
+      this.field_35129_ay = 6 + this.rand.nextInt(4);
+      this.particleRed = this.particleGreen = this.particleBlue = this.rand.nextFloat() * 0.6F + 0.4F;
+      this.field_35131_aA = 1.0F - (float)var9 * 0.5F;
+   }
 
-    public int func_35115_a(float f)
-    {
-        return 61680;
-    }
+   public void renderParticle(Tessellator var1, float var2, float var3, float var4, float var5, float var6, float var7) {
+      int var8 = (int)(((float)this.field_35130_a + var2) * 15.0F / (float)this.field_35129_ay);
+      if(var8 <= 15) {
+         this.field_35128_az.bindTexture(this.field_35128_az.getTexture("/misc/explosion.png"));
+         float var9 = (float)(var8 % 4) / 4.0F;
+         float var10 = var9 + 0.24975F;
+         float var11 = (float)(var8 / 4) / 4.0F;
+         float var12 = var11 + 0.24975F;
+         float var13 = 2.0F * this.field_35131_aA;
+         float var14 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)var2 - interpPosX);
+         float var15 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)var2 - interpPosY);
+         float var16 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)var2 - interpPosZ);
+         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+         GL11.glDisable(2896 /*GL_LIGHTING*/);
+         RenderHelper.disableStandardItemLighting();
+         var1.startDrawingQuads();
+         var1.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, 1.0F);
+         var1.setNormal(0.0F, 1.0F, 0.0F);
+         var1.setBrightness(240);
+         var1.addVertexWithUV((double)(var14 - var3 * var13 - var6 * var13), (double)(var15 - var4 * var13), (double)(var16 - var5 * var13 - var7 * var13), (double)var10, (double)var12);
+         var1.addVertexWithUV((double)(var14 - var3 * var13 + var6 * var13), (double)(var15 + var4 * var13), (double)(var16 - var5 * var13 + var7 * var13), (double)var10, (double)var11);
+         var1.addVertexWithUV((double)(var14 + var3 * var13 + var6 * var13), (double)(var15 + var4 * var13), (double)(var16 + var5 * var13 + var7 * var13), (double)var9, (double)var11);
+         var1.addVertexWithUV((double)(var14 + var3 * var13 - var6 * var13), (double)(var15 - var4 * var13), (double)(var16 + var5 * var13 - var7 * var13), (double)var9, (double)var12);
+         var1.draw();
+         GL11.glPolygonOffset(0.0F, 0.0F);
+         GL11.glEnable(2896 /*GL_LIGHTING*/);
+      }
+   }
 
-    public void onUpdate()
-    {
-        prevPosX = posX;
-        prevPosY = posY;
-        prevPosZ = posZ;
-        field_35130_a++;
-        if(field_35130_a == field_35129_ay)
-        {
-            setEntityDead();
-        }
-    }
+   public int getEntityBrightnessForRender(float var1) {
+      return '\uf0f0';
+   }
 
-    public int getFXLayer()
-    {
-        return 3;
-    }
+   public void onUpdate() {
+      this.prevPosX = this.posX;
+      this.prevPosY = this.posY;
+      this.prevPosZ = this.posZ;
+      ++this.field_35130_a;
+      if(this.field_35130_a == this.field_35129_ay) {
+         this.setEntityDead();
+      }
 
-    private int field_35130_a;
-    private int field_35129_ay;
-    private RenderEngine field_35128_az;
-    private float field_35131_aA;
+   }
+
+   public int getFXLayer() {
+      return 3;
+   }
 }
