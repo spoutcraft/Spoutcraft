@@ -1,59 +1,50 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-
 package net.minecraft.src;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import net.minecraft.src.ImageBuffer;
+import net.minecraft.src.ThreadDownloadImageData;
 
-// Referenced classes of package net.minecraft.src:
-//				ThreadDownloadImageData, ImageBuffer
+class ThreadDownloadImage extends Thread {
 
-class ThreadDownloadImage extends Thread
-{
+	// $FF: synthetic field
+	final String location;
+	// $FF: synthetic field
+	final ImageBuffer buffer;
+	// $FF: synthetic field
+	final ThreadDownloadImageData imageData;
 
-	 ThreadDownloadImage(ThreadDownloadImageData threaddownloadimagedata, String s, ImageBuffer imagebuffer)
-	 {
-		  imageData = threaddownloadimagedata;
-		  location = s;
-		  buffer = imagebuffer;
-	 }
 
-	 public void run()
-	 {
-		  HttpURLConnection httpurlconnection = null;
-		  try
-		  {
-				URL url = new URL(location);
-				httpurlconnection = (HttpURLConnection)url.openConnection();
-				httpurlconnection.setDoInput(true);
-				httpurlconnection.setDoOutput(false);
-				httpurlconnection.connect();
-				if(httpurlconnection.getResponseCode() / 100 == 4)
-				{
-					 return;
-				}
-				if(buffer == null)
-				{
-					 imageData.image = ImageIO.read(httpurlconnection.getInputStream());
-				} else
-				{
-					 imageData.image = buffer.parseUserSkin(ImageIO.read(httpurlconnection.getInputStream()));
-				}
-		  }
-		  catch(Exception exception)
-		  {
-				exception.printStackTrace();
-		  }
-		  finally
-		  {
-				httpurlconnection.disconnect();
-		  }
-	 }
+	ThreadDownloadImage(ThreadDownloadImageData var1, String var2, ImageBuffer var3) {
+		this.imageData = var1;
+		this.location = var2;
+		this.buffer = var3;
+	}
 
-	 final String location; /* synthetic field */
-	 final ImageBuffer buffer; /* synthetic field */
-	 final ThreadDownloadImageData imageData; /* synthetic field */
+	public void run() {
+		HttpURLConnection var1 = null;
+
+		try {
+			URL var2 = new URL(this.location);
+			var1 = (HttpURLConnection)var2.openConnection();
+			var1.setDoInput(true);
+			var1.setDoOutput(false);
+			var1.connect();
+			if(var1.getResponseCode() / 100 == 4) {
+				return;
+			}
+
+			if(this.buffer == null) {
+				this.imageData.image = ImageIO.read(var1.getInputStream());
+			} else {
+				this.imageData.image = this.buffer.parseUserSkin(ImageIO.read(var1.getInputStream()));
+			}
+		} catch (Exception var6) {
+			var6.printStackTrace();
+		} finally {
+			var1.disconnect();
+		}
+
+	}
 }

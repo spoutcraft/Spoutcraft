@@ -15,14 +15,14 @@ public class SoundPool {
 	private Map nameToSoundPoolEntriesMapping = new HashMap();
 	private List allSoundPoolEntries = new ArrayList();
 	public int numberOfSoundPoolEntries = 0;
-	public boolean field_1657_b = true;
+	public boolean isGetRandomSound = true;
 
 
 	public SoundPoolEntry addSound(String var1, File var2) {
 		try {
 			String var3 = var1;
 			var1 = var1.substring(0, var1.indexOf("."));
-			if(this.field_1657_b) {
+			if(this.isGetRandomSound) {
 				while(Character.isDigit(var1.charAt(var1.length() - 1))) {
 					var1 = var1.substring(0, var1.length() - 1);
 				}
@@ -52,7 +52,7 @@ public class SoundPool {
 	public SoundPoolEntry getRandomSound() {
 		return this.allSoundPoolEntries.size() == 0?null:(SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
 	}
-	
+
 	//Spout Start
 	public SoundPoolEntry getSoundFromSoundPool(String s, int id) {
 		List list = (List)nameToSoundPoolEntriesMapping.get(s);

@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import net.minecraft.src.Empty1;
-import net.minecraft.src.MCHash;
+import net.minecraft.src.CompressedStreamTools;
+import net.minecraft.src.IntHashMap;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet0KeepAlive;
 import net.minecraft.src.Packet100OpenWindow;
@@ -20,6 +23,7 @@ import net.minecraft.src.Packet104WindowItems;
 import net.minecraft.src.Packet105UpdateProgressbar;
 import net.minecraft.src.Packet106Transaction;
 import net.minecraft.src.Packet107CreativeSetSlot;
+import net.minecraft.src.Packet108EnchantItem;
 import net.minecraft.src.Packet10Flying;
 import net.minecraft.src.Packet11PlayerPosition;
 import net.minecraft.src.Packet12PlayerLook;
@@ -75,22 +79,20 @@ import net.minecraft.src.Packet71Weather;
 import net.minecraft.src.Packet7UseEntity;
 import net.minecraft.src.Packet8UpdateHealth;
 import net.minecraft.src.Packet9Respawn;
-import net.minecraft.src.PacketCounter;
+import net.minecraft.src.PacketCount;
 
 public abstract class Packet {
 
-	private static MCHash packetIdToClassMap = new MCHash();
+	public static IntHashMap packetIdToClassMap = new IntHashMap();
 	private static Map packetClassToIdMap = new HashMap();
 	private static Set clientPacketIdList = new HashSet();
 	private static Set serverPacketIdList = new HashSet();
 	public final long creationTimeMillis = System.currentTimeMillis();
 	public boolean isChunkDataPacket = false;
-	private static MCHash totalPacketsCount;
-	private static int packetStats;
 
 
-	static public void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { //Spout default -> public
-		if(packetIdToClassMap.func_35858_b(var0)) {
+	public static void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { // Spout default -> public
+		if(packetIdToClassMap.containsKey(var0)) {
 			throw new IllegalArgumentException("Duplicate packet id:" + var0);
 		} else if(packetClassToIdMap.containsKey(var3)) {
 			throw new IllegalArgumentException("Duplicate packet class:" + var3);
@@ -149,18 +151,7 @@ public abstract class Packet {
 			return null;
 		}
 
-		PacketCounter var4 = (PacketCounter)totalPacketsCount.lookup(var6);
-		if(var4 == null) {
-			var4 = new PacketCounter((Empty1)null);
-			totalPacketsCount.addKey(var6, var4);
-		}
-
-		var4.addPacket(var3.getPacketSize());
-		++packetStats;
-		if(packetStats % 1000 == 0) {
-			;
-		}
-
+		PacketCount.func_40561_a(var6, (long)var3.getPacketSize());
 		return var3;
 	}
 
@@ -202,6 +193,57 @@ public abstract class Packet {
 	public abstract void processPacket(NetHandler var1);
 
 	public abstract int getPacketSize();
+
+	protected ItemStack func_40187_b(DataInputStream var1) throws IOException {
+		ItemStack var2 = null;
+		short var3 = var1.readShort();
+		if(var3 >= 0) {
+			byte var4 = var1.readByte();
+			short var5 = var1.readShort();
+			var2 = new ItemStack(var3, var4, var5);
+			if(Item.itemsList[var3].isDamageable()) {
+				var2.field_40715_d = this.func_40186_c(var1);
+			}
+		}
+
+		return var2;
+	}
+
+	protected void writeItemStack(ItemStack var1, DataOutputStream var2) throws IOException {
+		if(var1 == null) {
+			var2.writeShort(-1);
+		} else {
+			var2.writeShort(var1.itemID);
+			var2.writeByte(var1.stackSize);
+			var2.writeShort(var1.getItemDamage());
+			if(var1.getItem().isDamageable()) {
+				this.func_40189_a(var1.field_40715_d, var2);
+			}
+		}
+
+	}
+
+	protected NBTTagCompound func_40186_c(DataInputStream var1) throws IOException {
+		short var2 = var1.readShort();
+		if(var2 < 0) {
+			return null;
+		} else {
+			byte[] var3 = new byte[var2];
+			var1.readFully(var3);
+			return CompressedStreamTools.func_40592_a(var3);
+		}
+	}
+
+	protected void func_40189_a(NBTTagCompound var1, DataOutputStream var2) throws IOException {
+		if(var1 == null) {
+			var2.writeShort(-1);
+		} else {
+			byte[] var3 = CompressedStreamTools.func_40591_a(var1);
+			var2.writeShort((short)var3.length);
+			var2.write(var3);
+		}
+
+	}
 
 	static {
 		addIdClassMapping(0, true, true, Packet0KeepAlive.class);
@@ -262,13 +304,12 @@ public abstract class Packet {
 		addIdClassMapping(105, true, false, Packet105UpdateProgressbar.class);
 		addIdClassMapping(106, true, true, Packet106Transaction.class);
 		addIdClassMapping(107, true, true, Packet107CreativeSetSlot.class);
+		addIdClassMapping(108, false, true, Packet108EnchantItem.class);
 		addIdClassMapping(130, true, true, Packet130UpdateSign.class);
 		addIdClassMapping(131, true, false, Packet131MapData.class);
 		addIdClassMapping(200, true, false, Packet200Statistic.class);
 		addIdClassMapping(201, true, false, Packet201PlayerInfo.class);
 		addIdClassMapping(254, false, true, Packet254ServerPing.class);
 		addIdClassMapping(255, true, true, Packet255KickDisconnect.class);
-		totalPacketsCount = new MCHash();
-		packetStats = 0;
 	}
 }

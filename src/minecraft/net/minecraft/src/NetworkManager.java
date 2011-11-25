@@ -10,8 +10,15 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.src.NetHandler;
+import net.minecraft.src.NetworkMasterThread;
+import net.minecraft.src.NetworkReaderThread;
+import net.minecraft.src.NetworkWriterThread;
+import net.minecraft.src.Packet;
+import net.minecraft.src.ThreadCloseConnection;
 
-import org.getspout.spout.chunkcache.ChunkCache;
+
+import org.getspout.spout.chunkcache.ChunkCache; // Spout
 
 public class NetworkManager {
 
@@ -253,7 +260,7 @@ public class NetworkManager {
 	}
 
 	// $FF: synthetic method
-	static boolean func_28138_e(NetworkManager var0) {
+	static boolean getIsTerminating(NetworkManager var0) {
 		return var0.isTerminating;
 	}
 
