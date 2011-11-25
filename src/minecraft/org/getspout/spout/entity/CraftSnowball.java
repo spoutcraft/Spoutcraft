@@ -50,8 +50,8 @@ public class CraftSnowball extends AbstractProjectile implements Snowball {
 	}
 
 	public LivingEntity getShooter() {
-		if (((EntitySnowball) handle).shootingEntity != null) {
-			return (LivingEntity) ((EntitySnowball) handle).shootingEntity.spoutEntity;
+		if (((EntitySnowball) handle).field_40083_c != null) {
+			return (LivingEntity) ((EntitySnowball) handle).field_40083_c.spoutEntity;
 		}
 
 		return null;
@@ -59,7 +59,7 @@ public class CraftSnowball extends AbstractProjectile implements Snowball {
 
 	public void setShooter(LivingEntity shooter) {
 		if (shooter instanceof CraftLivingEntity) {
-			((EntitySnowball) handle).shootingEntity = (EntityLiving) ((CraftLivingEntity) shooter).handle;
+			((EntitySnowball) handle).field_40083_c = (EntityLiving) ((CraftLivingEntity) shooter).handle;
 		}
 	}
 }
