@@ -259,7 +259,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				--var2;
 			}
 
-			double var4 = this.maxspeed; //Spout
+			double var4 = this.maxSpeed; //Spout
 			double var6 = 0.0078125D;
 			int var8 = this.worldObj.getBlockId(var1, var2, var3);
 			if(BlockRail.isRailBlock(var8)) {
