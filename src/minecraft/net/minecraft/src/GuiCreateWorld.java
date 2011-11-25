@@ -61,9 +61,9 @@ public class GuiCreateWorld extends GuiScreen {
 		this.controlList.add(this.field_35366_j = new GuiButton(2, this.width / 2 - 75, 100, 150, 20, var1.translateKey("selectWorld.gameMode")));
 		this.controlList.add(this.field_35367_k = new GuiButton(3, this.width / 2 - 75, 172, 150, 20, var1.translateKey("selectWorld.moreWorldOptions")));
 		this.controlList.add(this.field_35372_s = new GuiButton(4, this.width / 2 - 155, 100, 150, 20, var1.translateKey("selectWorld.mapFeatures")));
-		this.field_35372_s.enabled2 = false;
+		this.field_35372_s.drawButton = false;
 		this.controlList.add(this.field_35371_t = new GuiButton(5, this.width / 2 + 5, 100, 150, 20, var1.translateKey("selectWorld.mapType")));
-		this.field_35371_t.enabled2 = false;
+		this.field_35371_t.drawButton = false;
 		this.field_35371_t.enabled = true; //Spout false->true
 		this.textboxWorldName = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41047_y);
 		this.textboxWorldName.isFocused = true;
@@ -160,9 +160,9 @@ public class GuiCreateWorld extends GuiScreen {
 				this.mc.displayGuiScreen((GuiScreen)null);
 			} else if(var1.id == 3) {
 				this.field_35368_i = !this.field_35368_i;
-				this.field_35366_j.enabled2 = !this.field_35368_i;
-				this.field_35372_s.enabled2 = this.field_35368_i;
-				this.field_35371_t.enabled2 = this.field_35368_i;
+				this.field_35366_j.drawButton = !this.field_35368_i;
+				this.field_35372_s.drawButton = this.field_35368_i;
+				this.field_35371_t.drawButton = this.field_35368_i;
 				StringTranslate var8;
 				if(this.field_35368_i) {
 					var8 = StringTranslate.getInstance();
