@@ -1,9 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
-
-import org.getspout.spout.entity.CraftFireball;
-
+import org.getspout.spout.entity.CraftFireball; // Spout
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
@@ -21,7 +19,6 @@ public class EntityFireball extends Entity {
 	private int zTile = -1;
 	private int inTile = 0;
 	private boolean inGround = false;
-	public int shake = 0;
 	public EntityLiving shootingEntity;
 	private int ticksAlive;
 	private int ticksInAir = 0;
@@ -32,7 +29,6 @@ public class EntityFireball extends Entity {
 	public float yield = 1F;
 	public boolean incendiary = true;
 	//Spout end
-
 
 	public EntityFireball(World var1) {
 		super(var1);
@@ -80,9 +76,9 @@ public class EntityFireball extends Entity {
 
 	public void onUpdate() {
 		super.onUpdate();
-		this.fire = 10;
-		if(this.shake > 0) {
-			--this.shake;
+		this.func_40046_d(1);
+		if(!this.worldObj.multiplayerWorld && (this.shootingEntity == null || this.shootingEntity.isDead)) {
+			this.setEntityDead();
 		}
 
 		if(this.inGround) {
@@ -121,7 +117,7 @@ public class EntityFireball extends Entity {
 
 		for(int var8 = 0; var8 < var5.size(); ++var8) {
 			Entity var9 = (Entity)var5.get(var8);
-			if(var9.canBeCollidedWith() && (var9 != this.shootingEntity || this.ticksInAir >= 25)) {
+			if(var9.canBeCollidedWith() && (!var9.func_41004_h(this.shootingEntity) || this.ticksInAir >= 25)) {
 				float var10 = 0.3F;
 				AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
 				MovingObjectPosition var12 = var11.func_1169_a(var15, var2);
@@ -140,15 +136,7 @@ public class EntityFireball extends Entity {
 		}
 
 		if(var3 != null) {
-			if(!this.worldObj.multiplayerWorld) {
-				if(var3.entityHit != null && var3.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 0)) {
-					;
-				}
-
-				this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, yield, incendiary); //Spout added yield, incendiary
-			}
-
-			this.setEntityDead();
+			this.func_40071_a(var3);
 		}
 
 		this.posX += this.motionX;
@@ -195,12 +183,23 @@ public class EntityFireball extends Entity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
+	protected void func_40071_a(MovingObjectPosition var1) {
+		if(!this.worldObj.multiplayerWorld) {
+			if(var1.entityHit != null && var1.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 4)) {
+				;
+			}
+
+			this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, yield, incendiary); //Spout added yield, incendiary
+			this.setEntityDead();
+		}
+
+	}
+
 	public void writeEntityToNBT(NBTTagCompound var1) {
 		var1.setShort("xTile", (short)this.xTile);
 		var1.setShort("yTile", (short)this.yTile);
 		var1.setShort("zTile", (short)this.zTile);
 		var1.setByte("inTile", (byte)this.inTile);
-		var1.setByte("shake", (byte)this.shake);
 		var1.setByte("inGround", (byte)(this.inGround?1:0));
 	}
 
@@ -209,7 +208,6 @@ public class EntityFireball extends Entity {
 		this.yTile = var1.getShort("yTile");
 		this.zTile = var1.getShort("zTile");
 		this.inTile = var1.getByte("inTile") & 255;
-		this.shake = var1.getByte("shake") & 255;
 		this.inGround = var1.getByte("inGround") == 1;
 	}
 
@@ -234,6 +232,10 @@ public class EntityFireball extends Entity {
 				this.accelerationZ = this.motionZ * 0.1D;
 			}
 
+			if(var1.getEntity() instanceof EntityLiving) {
+				this.shootingEntity = (EntityLiving)var1.getEntity();
+			}
+
 			return true;
 		} else {
 			return false;
@@ -242,5 +244,13 @@ public class EntityFireball extends Entity {
 
 	public float getShadowSize() {
 		return 0.0F;
+	}
+
+	public float getEntityBrightness(float var1) {
+		return 1.0F;
+	}
+
+	public int getEntityBrightnessForRender(float var1) {
+		return 15728880;
 	}
 }
