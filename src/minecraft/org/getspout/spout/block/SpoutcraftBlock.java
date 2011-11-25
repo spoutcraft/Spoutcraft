@@ -251,7 +251,7 @@ public class SpoutcraftBlock implements Block{
 	}
 
 	public double getTemperature() {
-		return chunk.getHandle().worldObj.getWorldChunkManager().func_35554_b(x, z);
+		return chunk.getHandle().worldObj.getWorldChunkManager().func_35554_b(x, y, z);
 	}
 
 	public double getHumidity() {
