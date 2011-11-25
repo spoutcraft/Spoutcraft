@@ -17,7 +17,7 @@ public class EntityXPOrb extends Entity {
 	public int xpOrbAge = 0;
 	public int unusedPickupCooldown;
 	private int xpOrbHealth = 5;
-	private int xpValue;
+	public int xpValue; //Spout private -> public
 
 
 	public EntityXPOrb(World var1, double var2, double var4, double var6, int var8) {
