@@ -58,7 +58,7 @@ public abstract class EntityLiving extends Entity {
 	public float jumpMovementFactor = 0.02F;
 	public float prevSwingProgress;
 	public float swingProgress;
-	protected int health = this.getMaxHealth();
+	public int health = this.getMaxHealth(); // Spout protected -> public
 	public int prevHealth;
 	protected int field_40129_bA;
 	private int livingSoundTime;
@@ -90,7 +90,7 @@ public abstract class EntityLiving extends Entity {
 	protected double newRotationYaw;
 	protected double newRotationPitch;
 	float field_9348_ae = 0.0F;
-	protected int naturalArmorRating = 0;
+	public int lastDamage = 0; // Spout naturalArmorRating -> lastDamage, protected -> public
 	protected int entityAge = 0;
 	protected float moveStrafing;
 	protected float moveForward;
@@ -105,6 +105,7 @@ public abstract class EntityLiving extends Entity {
 	//Spout Start
 	private EntityData entityData = null;
 	public String displayName = null;
+	public int maxAir = 300;
 	//Spout End
 
 
@@ -242,7 +243,7 @@ public abstract class EntityLiving extends Entity {
 
 			this.func_40045_B();
 		} else {
-			this.func_41003_g(300);
+			this.func_41003_g(maxAir); // Spout 300 -> maxAir
 		}
 
 		this.prevCameraPitch = this.cameraPitch;
@@ -487,15 +488,15 @@ public abstract class EntityLiving extends Entity {
 				this.field_704_R = 1.5F;
 				boolean var3 = true;
 				if((float)this.heartsLife > (float)this.heartsHalvesLife / 2.0F) {
-					if(var2 <= this.naturalArmorRating) {
+					if(var2 <= this.lastDamage) { // Spout naturalArmorRating -> lastDamage
 						return false;
 					}
 
-					this.damageEntity(var1, var2 - this.naturalArmorRating);
-					this.naturalArmorRating = var2;
+					this.damageEntity(var1, var2 - this.lastDamage); // Spout naturalArmorRating -> lastDamage
+					this.lastDamage = var2; // Spout naturalArmorRating -> lastDamage
 					var3 = false;
 				} else {
-					this.naturalArmorRating = var2;
+					this.lastDamage = var2; // Spout naturalArmorRating -> lastDamage
 					this.prevHealth = this.health;
 					this.heartsLife = this.heartsHalvesLife;
 					this.damageEntity(var1, var2);

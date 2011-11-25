@@ -132,11 +132,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public int getRemainingAir() {
-		return getEntityLiving().air;
+		return getEntityLiving().func_41001_Z();
 	}
 
 	public void setRemainingAir(int ticks) {
-		getEntityLiving().air = ticks;
+		getEntityLiving().func_41003_g(ticks);
 	}
 
 	public int getMaximumAir() {
@@ -172,11 +172,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public int getLastDamage() {
-		return getEntityLiving().field_9346_af;
+		return getEntityLiving().lastDamage;
 	}
 
 	public void setLastDamage(int damage) {
-		getEntityLiving().field_9346_af = damage;
+		getEntityLiving().lastDamage = damage;
 	}
 
 	public int getNoDamageTicks() {

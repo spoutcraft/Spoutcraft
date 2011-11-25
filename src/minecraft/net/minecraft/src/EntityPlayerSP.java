@@ -341,7 +341,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.heartsLife = this.heartsHalvesLife / 2;
 			}
 		} else {
-			this.naturalArmorRating = var2;
+			this.lastDamage = var2; // Spout naturalArmorRating -> lastDamage
 			this.setEntityHealth(this.getEntityHealth());
 			this.heartsLife = this.heartsHalvesLife;
 			this.damageEntity(DamageSource.generic, var2);

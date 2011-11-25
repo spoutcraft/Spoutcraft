@@ -1174,11 +1174,11 @@ public abstract class Entity {
 
 	}
 
-	public int func_41001_Z() {
+	public int func_41001_Z() { //getAir
 		return this.dataWatcher.func_41062_b(1);
 	}
 
-	public void func_41003_g(int var1) {
+	public void func_41003_g(int var1) { //setAir
 		this.dataWatcher.updateObject(1, Short.valueOf((short)var1));
 	}
 
