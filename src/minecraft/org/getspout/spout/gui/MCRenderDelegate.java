@@ -92,8 +92,8 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(BubbleBar bar) {
 		if (Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
-			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.air - 2) * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D));
-			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.air * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D)) - bubbles;
+			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.func_41001_Z() - 2) * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D));
+			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.func_41001_Z() * (double) bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir * 1D)) - bubbles;
 			if (bar.isVisible()) {
 				for (int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
 					if (bubble < bubbles) {
