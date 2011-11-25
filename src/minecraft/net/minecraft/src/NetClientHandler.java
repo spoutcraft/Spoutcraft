@@ -497,7 +497,7 @@ public class NetClientHandler extends NetHandler {
 				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost());
 			}
 			else if (var2 == null || var2.length == 0 || !(var2[0] instanceof String)) {
-				this.mc.displayGuiScreen(new GuiConnectFailed("disconnect.lost", var1, var2));
+				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", var1, var2));
 			}
 			else if (((String)var2[0]).toLowerCase().contains("connection reset")) {
 				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost());
