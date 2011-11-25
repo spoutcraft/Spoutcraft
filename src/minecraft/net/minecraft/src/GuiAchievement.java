@@ -154,10 +154,7 @@ public class GuiAchievement extends Gui {
 					this.theGame.fontRenderer.drawString(this.achievementStatName, var5 + 30, var6 + 18, -1);
 				}
 
-				GL11.glPushMatrix();
-				GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-				RenderHelper.enableStandardItemLighting();
-				GL11.glPopMatrix();
+				RenderHelper.func_41089_c();
 				GL11.glDisable(2896 /*GL_LIGHTING*/);
 				GL11.glEnable('\u803a');
 				GL11.glEnable(2903 /*GL_COLOR_MATERIAL*/);
