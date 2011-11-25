@@ -246,7 +246,7 @@ public class WorldRenderer {
 										blockRenderPass = design.getRenderPass();
 									}
 									
-									if (renderPass == 0 && blockRenderer.func_35927_a(dx, dy, dz, 0)) {
+									if (renderPass == 0 && blockRenderer.renderLightOnBlock(dx, dy, dz, 0)) {
 										rendered = true;
 									}
 									
