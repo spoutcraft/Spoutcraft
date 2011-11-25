@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 
 public class Start
 {
-
 	public static void main(String[] args)
 	{
 		try
@@ -25,5 +24,4 @@ public class Start
 		// start minecraft game application
 		Minecraft.main(args);
 	}
-
 }
