@@ -944,6 +944,13 @@ public class RenderGlobal implements IWorldAccess {
 			}
 			// Spout End
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+			float f19 = worldObj.getStarBrightness(var1) * var7;
+	        if(f19 > 0.0F && ConfigReader.stars) //Spout added stars condition
+	        {
+	            GL11.glColor4f(f19, f19, f19, f19);
+	            GL11.glCallList(starGLCallList);
+	        }
 			GL11.glDisable(3042 /* GL_BLEND */);
 			GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 			GL11.glEnable(2912 /* GL_FOG */);
