@@ -97,6 +97,7 @@ public class FileDownloadThread extends Thread{
 						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
 						URL url = new URL(next.getDownloadUrl());
 						URLConnection conn = url.openConnection();
+						conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 						conn.setReadTimeout(2000); //2s timeout
 						InputStream in = conn.getInputStream();
 						
