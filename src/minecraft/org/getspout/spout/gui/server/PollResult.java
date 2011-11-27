@@ -102,7 +102,6 @@ public class PollResult {
 			result = new PollResult(ip, port, uid);
 			recentResults.put(hash.hashCode(), result);
 			result.poll();
-			System.out.println("Creating new PollResult for "+ip+":"+port);
 		}
 		return result;
 	}
@@ -231,7 +230,7 @@ public class PollResult {
 					try {
 						InputStream stream  = url.openStream();
 						if(stream.read() == (int)'k') {
-							System.out.println("Deployed ping data for "+getIp()+":"+getPort()+".");
+							//Succeeded
 						}
 						stream.close();
 					} catch (IOException e) {
