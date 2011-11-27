@@ -764,7 +764,7 @@ public class RenderGlobal implements IWorldAccess {
 		++this.cloudOffsetX;
 	}
 
-	public void renderSky(float var1) {
+	public void renderSky(float f) {
 		if (this.mc.theWorld.worldProvider.worldType == 1) {
 			GL11.glDisable(2912 /* GL_FOG */);
 			GL11.glDisable(3008 /* GL_ALPHA_TEST */);
@@ -812,9 +812,9 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 		} else if (!this.mc.theWorld.worldProvider.isNether) {
 			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-			Vec3D var2 = this.worldObj.getSkyColor(this.mc.renderViewEntity, var1);
+			Vec3D var2 = this.worldObj.getSkyColor(this.mc.renderViewEntity, f);
 			// Spout Start
-			Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, var1);
+			Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, f);
 			float var3 = (float) vec3d.xCoord;
 			float var4 = (float) vec3d.yCoord;
 			float var5 = (float) vec3d.zCoord;
@@ -851,7 +851,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glEnable(3042 /* GL_BLEND */);
 			GL11.glBlendFunc(770, 771);
 			RenderHelper.disableStandardItemLighting();
-			float[] var22 = this.worldObj.worldProvider.calcSunriseSunsetColors(this.worldObj.getCelestialAngle(var1), var1);
+			float[] var22 = this.worldObj.worldProvider.calcSunriseSunsetColors(this.worldObj.getCelestialAngle(f), f);
 			float var9;
 			float var10;
 			float var11;
@@ -865,7 +865,7 @@ public class RenderGlobal implements IWorldAccess {
 				GL11.glShadeModel(7425 /* GL_SMOOTH */);
 				GL11.glPushMatrix();
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-				GL11.glRotatef(MathHelper.sin(this.worldObj.getCelestialAngleRadians(var1)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+				GL11.glRotatef(MathHelper.sin(this.worldObj.getCelestialAngleRadians(f)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
 				var8 = var22[0];
 				var9 = var22[1];
@@ -901,14 +901,14 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glEnable(3553 /* GL_TEXTURE_2D */);
 			GL11.glBlendFunc(770, 1);
 			GL11.glPushMatrix();
-			var7 = 1.0F - this.worldObj.getRainStrength(var1);
+			var7 = 1.0F - this.worldObj.getRainStrength(f);
 			var8 = 0.0F;
 			var9 = 0.0F;
 			var10 = 0.0F;
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, var7);
 			GL11.glTranslatef(var8, var9, var10);
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(this.worldObj.getCelestialAngle(var1) * 360.0F, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(this.worldObj.getCelestialAngle(f) * 360.0F, 1.0F, 0.0F, 0.0F);
 			var11 = 30.0F;
 			// Spout Start
 			float f15 = var11;
@@ -930,22 +930,29 @@ public class RenderGlobal implements IWorldAccess {
 			f15 = 20F;
 			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
 				if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
-					GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, renderEngine.getTexture("/terrain/moon.png"));
+					GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, renderEngine.getTexture("/terrain/moon_phases.png"));
 				} else {
 					GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl())));
 				}
 				double multiplier = (SpoutClient.getInstance().getSkyManager().getMoonSizePercent() / 100D);
+				int f19a = worldObj.func_40475_d(f);
+		        int l = f19a % 4;
+		        int i1 = (f19a / 4) % 2;
+		        float f25 = (float)(l + 0) / 4F;
+		        float f26 = (float)(i1 + 0) / 2.0F;
+		        float f27 = (float)(l + 1) / 4F;
+		        float f28 = (float)(i1 + 1) / 2.0F;
 				tessellator.startDrawingQuads();
-				tessellator.addVertexWithUV(-f15, -100D / multiplier, f15, 1.0D, 1.0D);
-				tessellator.addVertexWithUV(f15, -100D / multiplier, f15, 0.0D, 1.0D);
-				tessellator.addVertexWithUV(f15, -100D / multiplier, -f15, 0.0D, 0.0D);
-				tessellator.addVertexWithUV(-f15, -100D / multiplier, -f15, 1.0D, 0.0D);
+				tessellator.addVertexWithUV(-f15, -100D / multiplier, f15, f27, f28);
+				tessellator.addVertexWithUV(f15, -100D / multiplier, f15, f25, f28);
+				tessellator.addVertexWithUV(f15, -100D / multiplier, -f15, f25, f26);
+				tessellator.addVertexWithUV(-f15, -100D / multiplier, -f15, f27, f26);
 				tessellator.draw();
 			}
 			// Spout End
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-			float f19 = worldObj.getStarBrightness(var1) * var7;
+			float f19 = worldObj.getStarBrightness(f) * var7;
 	        if(f19 > 0.0F && ConfigReader.stars) //Spout added stars condition
 	        {
 	            GL11.glColor4f(f19, f19, f19, f19);
@@ -957,7 +964,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glPopMatrix();
 			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
-			double var23 = this.mc.thePlayer.getPosition(var1).yCoord - 63.0D;
+			double var23 = this.mc.thePlayer.getPosition(f).yCoord - 63.0D;
 			if (var23 < 0.0D) {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0.0F, 12.0F, 0.0F);
