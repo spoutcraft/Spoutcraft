@@ -64,11 +64,27 @@ public class ServerItem implements ListWidgetItem {
 	}
 
 	public void render(int x, int y, int width, int height) {
+		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
+		
+		if (databaseId != -1) {
+			String iconUrl = "http://servers.getspout.org/preview/"+databaseId+".png";
+			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
+			if(icon == null) {
+				CustomTextureManager.downloadTexture(iconUrl, true);
+			} else {
+				GL11.glPushMatrix();
+				GL11.glTranslated(x + 2, y + 2, 0);
+				r.drawTexture(icon, 25, 25);
+				GL11.glPopMatrix();
+			}
+		}
+		
+		int marginleft = 29;
+		
 		int ping = getPing();
 		
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		
-		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 		
 		int margin1 = 0;
 		int margin2 = 0;
@@ -84,7 +100,7 @@ public class ServerItem implements ListWidgetItem {
 			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y+11, 0xaaaaaa);
 		}
 		
-		font.drawStringWithShadow(r.getFittingText(title, width - 2 - margin1), x + 2, y + 2, 0xffffff);
+		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
 		String sMotd = "";
 		if((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
 			sMotd = "Polling...";
@@ -115,7 +131,7 @@ public class ServerItem implements ListWidgetItem {
 			color = c1.toInt();
 		}
 		
-		font.drawStringWithShadow(r.getFittingText(sMotd, width - 2 - 10 - margin2), x+2, y + 11, color);
+		font.drawStringWithShadow(r.getFittingText(sMotd, width - 10 - margin2 - marginleft), x + marginleft, y + 11, color);
 		
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 		
@@ -147,9 +163,9 @@ public class ServerItem implements ListWidgetItem {
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
 		RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
 		if(port != 25565) {
-			font.drawStringWithShadow(ip + ":" +port, x+2, y+20, 0xaaaaaa);
+			font.drawStringWithShadow(ip + ":" +port, x+marginleft, y+20, 0xaaaaaa);
 		} else {
-			font.drawStringWithShadow(ip, x+2, y+20, 0xaaaaaa);
+			font.drawStringWithShadow(ip, x+marginleft, y+20, 0xaaaaaa);
 		}
 		
 		//Icon Drawing
