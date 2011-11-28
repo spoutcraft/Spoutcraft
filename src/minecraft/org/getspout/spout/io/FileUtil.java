@@ -213,6 +213,23 @@ public class FileUtil {
 		}
 		return directory;
 	}
+	
+	public static File getSelectedTexturePackZip() {
+		boolean wasSandboxed = SpoutClient.isSandboxed();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		
+		File directory = new File(getTexturePackDirectory(), Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.texturePackFileName);
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+		
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
+		return directory;
+	}
 
 	public static String getFileName(String url) {
 		if (fileNameCache.containsKey(url)) {

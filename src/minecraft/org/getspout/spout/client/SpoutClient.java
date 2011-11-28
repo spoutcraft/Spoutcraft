@@ -510,6 +510,10 @@ public class SpoutClient extends PropertyObject implements Client {
 		return FileUtil.getTexturePackDirectory();
 	}
 	
+	public File getSelectedTexturePackZip() {
+		return FileUtil.getSelectedTexturePackZip();
+	}
+	
 	public File getStatsFolder() {
 		return FileUtil.getStatsDirectory();
 	}
