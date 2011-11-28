@@ -818,6 +818,9 @@ public abstract class Minecraft implements Runnable {
 				this.debug = this.fpsCounter + " fps, " + WorldRenderer.chunksUpdated + " chunk updates";
 				WorldRenderer.chunksUpdated = 0;
 				this.field_40004_N += 1000L;
+				//Spout start 
+				framesPerSecond = fpsCounter;
+				//Spout end
 			}
 
 			Profiler.endSection();
