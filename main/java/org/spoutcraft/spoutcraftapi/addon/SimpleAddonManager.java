@@ -130,12 +130,13 @@ public class SimpleAddonManager implements AddonManager {
 				} catch (UnknownDependencyException ex) {
 					if (finalPass) {
 						safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
+						safelyLog(Level.SEVERE, "Unknown dependancy: " + ex.getMessage(), ex);
 						itr.remove();
 					} else {
 						addon = null;
 					}
 				} catch (InvalidAddonException ex) {
-					safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': ", ex.getCause());
+					safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex.getCause());
 					itr.remove();
 				} catch (InvalidDescriptionException ex) {
 					safelyLog(Level.SEVERE, "Could not load '" + file.getPath() + "' in folder '" + directory.getPath() + "': " + ex.getMessage(), ex);
