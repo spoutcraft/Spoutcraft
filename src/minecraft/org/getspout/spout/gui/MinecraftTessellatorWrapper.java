@@ -5,7 +5,7 @@ import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 
-public class MinecraftTessellatorWrapper implements MinecraftTessellator{
+public class MinecraftTessellatorWrapper implements MinecraftTessellator {
 
 	public void draw() {
 		Tessellator.instance.draw();
@@ -13,6 +13,10 @@ public class MinecraftTessellatorWrapper implements MinecraftTessellator{
 
 	public void startDrawingQuads() {
 		Tessellator.instance.startDrawingQuads();
+	}
+
+	public void startDrawing(int drawMode) {
+		Tessellator.instance.startDrawing(drawMode);
 	}
 
 	public void setTextureUV(double s, double t) {
