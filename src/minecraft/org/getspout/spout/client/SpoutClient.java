@@ -122,13 +122,15 @@ public class SpoutClient extends PropertyObject implements Client {
 	private TexturePacksModel textureModel = new TexturePacksModel();
 	private TexturePacksDatabaseModel textureDatabaseModel = new TexturePacksDatabaseModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
+	private final ThreadGroup securityThreadGroup;
 	
 	
 	
 	private SpoutClient() {
 		instance = this;
 		securityKey = (new Random()).nextDouble();
-		securityManager = new SimpleSecurityManager(securityKey);
+		securityThreadGroup = new ThreadGroup("Sandboxed Threads");
+		securityManager = new SimpleSecurityManager(securityKey, securityThreadGroup);
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		//System.setSecurityManager(securityManager);
 		
