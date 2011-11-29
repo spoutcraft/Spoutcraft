@@ -25,12 +25,14 @@ import java.security.Permission;
 
 public final class SimpleSecurityManager extends SecurityManager {
 	private final double key;
-	private boolean locked = false;
+	private volatile boolean locked = false;
+	private final ThreadGroup securityThreadGroup;
 
-	public SimpleSecurityManager(double key) {
+	public SimpleSecurityManager(double key, ThreadGroup securityThreadGroup) {
 		if (System.getSecurityManager() instanceof SimpleSecurityManager) {
 			throw new SecurityException("Warning, Duplicate SimpleSecurityManager created!");
 		}
+		this.securityThreadGroup = securityThreadGroup;
 		this.key = key;
 	}
 
@@ -51,7 +53,12 @@ public final class SimpleSecurityManager extends SecurityManager {
 	}
 
 	public boolean isLocked() {
-		return locked && Thread.currentThread().getName().equals("Minecraft main thread");
+		return (locked && Thread.currentThread().getName().equals("Minecraft main thread")) || 
+				Thread.currentThread().getThreadGroup().equals(securityThreadGroup);
+	}
+
+	public ThreadGroup getSecurityThreadGroup() {
+		return securityThreadGroup;
 	}
 
 	private void checkAccess() {
@@ -67,12 +74,19 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(Thread t) {
-		checkAccess();
+		super.checkAccess(t);
+		if (isLocked()) {
+			if (!t.getThreadGroup().equals(securityThreadGroup)) {
+				throw new SecurityException("Addon tried to start thread outside the security thread group (" + t.getThreadGroup().getName() + ")");
+			} else if (!(t instanceof AddonSecureThread)) {
+				throw new SecurityException("Addon tried to start a thread that wasn't a subclass of AddonSecureThread");
+			}
+		}
 	}
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-		checkAccess();
+		super.checkAccess(g);
 	}
 
 	@Override
@@ -130,7 +144,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 			throw new NullPointerException("class can't be null");
 		}
 		if (which != Member.PUBLIC && isLocked()) {
-			Class<?> stack[] = getClassContext();
+			Class<?> stack[] = getClassContext();		
 			/*
 			* stack depth of 4 should be the caller of one of the
 			* methods in java.lang.Class that invoke checkMember
@@ -142,7 +156,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 			* SecurityManager.checkMemberAccess [0]
 			*
 			*/
-			if ((stack.length<4) || (stack[3].getClassLoader() != clazz.getClassLoader())) {
+			if ((stack.length<4) || (!(AddonSecureThread.class.isAssignableFrom(clazz)) && stack[3].getClassLoader() != clazz.getClassLoader())) {
 				checkAccess();
 			}
 		}

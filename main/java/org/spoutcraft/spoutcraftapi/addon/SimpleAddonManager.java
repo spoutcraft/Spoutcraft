@@ -378,5 +378,9 @@ public class SimpleAddonManager implements AddonManager {
 		addon.setEnabled(true);
 		lookupNames.put(addon.getDescription().getName(), addon);
 	}
+	
+	public ThreadGroup getSecurityThreadGroup() {
+		return securityManager.getSecurityThreadGroup();
+	}
 
 }
