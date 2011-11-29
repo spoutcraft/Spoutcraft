@@ -503,7 +503,7 @@ public abstract class GenericWidget implements Widget {
 				ScrollArea sa = (ScrollArea) screen;
 				return getScreenX() - sa.getScrollPosition(Orientation.HORIZONTAL) + sa.getScreenX();
 			} else {
-				return getScreenX() + screen.getScreenX();
+				return getScreenX();// + screen.getScreenX();
 			}
 		}
 	}
@@ -516,7 +516,7 @@ public abstract class GenericWidget implements Widget {
 				ScrollArea sa = (ScrollArea) screen;
 				return getScreenY() - sa.getScrollPosition(Orientation.VERTICAL) + sa.getScreenY();
 			} else {
-				return getScreenY() + screen.getScreenY();
+				return getScreenY();// + screen.getScreenY();
 			}
 		}
 	}
