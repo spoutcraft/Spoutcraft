@@ -31,8 +31,8 @@ public class GenericTextField extends GenericControl implements TextField {
 	public static final int PADDING = 4;
 	public static final int LINE_HEIGHT = 10;
 	public static final int LINE_SPACING = 2;
-	private static final char MASK_MAXLINES = 0x7F; // bits 1–7
-	private static final char MASK_TABINDEX = 0x3F80; // bits 8–14
+	private static final char MASK_MAXLINES = 0x7F; // bits 1-7
+	private static final char MASK_TABINDEX = 0x3F80; // bits 8-4
 	private static final char FLAG_PASSWORD = 0x4000; // bit 15
 	private static final char FLAG_FOCUS = 0x8000; // bit 16
 	protected boolean password = false;
@@ -48,7 +48,7 @@ public class GenericTextField extends GenericControl implements TextField {
 
 	@Override
 	public int getNumBytes() {
-		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(textProcessor.getText());
+		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(textProcessor.getText()) + PacketUtil.getNumBytes(placeholder);
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class GenericTextField extends GenericControl implements TextField {
 		setCursorPosition(input.readChar());
 		setMaximumCharacters(input.readChar());
 		setText(PacketUtil.readString(input));
+		setPlaceholder(PacketUtil.readString(input));
 	}
 
 	@Override
@@ -84,6 +85,7 @@ public class GenericTextField extends GenericControl implements TextField {
 		output.writeChar(getCursorPosition());
 		output.writeChar(getMaximumCharacters());
 		PacketUtil.writeString(output, getText());
+		PacketUtil.writeString(output, getPlaceholder());
 	}
 
 	public int getCursorPosition() {
