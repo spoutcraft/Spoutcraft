@@ -8,6 +8,7 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
@@ -74,7 +75,7 @@ public class GuiFavorites extends GuiScreen {
 		
 		String text = SpoutClient.getHandle().gameSettings.lastServer.replace("_", ":");
 		if(textQuickJoin != null) text = textQuickJoin.getText();
-		textQuickJoin = new GenericTextField();
+		textQuickJoin = new QuickJoin();
 		textQuickJoin.setX(left+2).setY(top+2).setHeight(16).setWidth(cellWidth*2+5-4);
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
@@ -113,6 +114,21 @@ public class GuiFavorites extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 		
 		updateButtons();
+	}
+	
+	private class QuickJoin extends GenericTextField {
+		
+		@Override
+		public boolean onKeyPressed(Keyboard key) {
+			if (key == Keyboard.KEY_RETURN && buttonQuickJoin.isEnabled()) {
+				doQuickJoin();
+				return true;
+			} else {
+				buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
+			}
+			return false;
+		}
+		
 	}
 	
 	@Override
@@ -206,7 +222,7 @@ public class GuiFavorites extends GuiScreen {
 	
 	public void updateButtons() {
 		boolean enable = true;
-		if(view.getSelectedRow() == -1) {
+		if (view != null && view.getSelectedRow() == -1) {
 			enable = false;
 		}
 		buttonEdit.setEnabled(enable);
@@ -242,7 +258,6 @@ public class GuiFavorites extends GuiScreen {
 		} else if(!buttonDelete.getText().equals("Delete")) {
 			buttonDelete.setEnabled(true);
 		}
-		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}
 }
