@@ -33,7 +33,7 @@ public class GuiAbout extends GuiScreen {
 	private static final float SCROLL_FACTOR = 10f;
 	Texture spoutcraftTexture = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
 	Texture yourkitLogo = CustomTextureManager.getTextureFromJar("/res/yourkit.png");
-	Texture lethalDriveLogo = CustomTextureManager.getTextureFromJar("/res/lethaldrive.png");
+	Texture beastNodeLogo = CustomTextureManager.getTextureFromJar("/res/beastnode.png");
 	private int sourceY = -1;
 	private int sourceWidth = -1;
 	private boolean hoveringLink = false;
@@ -73,7 +73,7 @@ public class GuiAbout extends GuiScreen {
 			browseUrl = "http://spout.in/yourkit";
 		}
 		else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(15), 33, 147, mouseX, mouseY)) {
-			browseUrl = "http://spout.in/lethal";
+			browseUrl = "http://spout.in/beast";
 		}
 		else if (this.isInBoundingRect((int)(0.0325f * this.width), (this.height - 40), (int)(44 * 0.4f), (int)(310 * 0.4f), mouseX, mouseY)) {
 			browseUrl = "http://spout.in/minecraft";
@@ -284,33 +284,37 @@ public class GuiAbout extends GuiScreen {
 			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.BLUE + "www.yourkit.com", x, y);
 		}
 		
-		int lethalDriveX = (this.width / 2 + 30);
-		int lethalDriveY = getScaledHeight(15);
-		if (lethalDriveLogo != null) {
+		int beastNodeX = (this.width / 2 + 30);
+		int beastNodeY = getScaledHeight(15);
+		if (beastNodeLogo != null) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef(lethalDriveX, lethalDriveY, 0); // moves texture into place
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, lethalDriveLogo.getTextureID());
+			GL11.glTranslatef(beastNodeX, beastNodeY, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, beastNodeLogo.getTextureID());
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 			Tessellator tessellator = Tessellator.instance;
 			//GL11.glScalef(0.5f, 0.5f, 0.5f);
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV(0.0D, 33, -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(147, 33, -90, lethalDriveLogo.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(147, 0.0D, -90, lethalDriveLogo.getWidth(), lethalDriveLogo.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, lethalDriveLogo.getHeight());
+			tessellator.addVertexWithUV(147, 33, -90, beastNodeLogo.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(147, 0.0D, -90, beastNodeLogo.getWidth(), beastNodeLogo.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, beastNodeLogo.getHeight());
 			tessellator.draw();
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}
-		if (isInBoundingRect(lethalDriveX, lethalDriveY, 33, 147, x, y)) {
-			drawTooltip("LethalDrive is the cutting edge in game servers. \nSpout trusts their server for our stuff, and you can too!\nGo to " + ChatColor.BLUE + "www.lethaldrive.com/spout" + ChatColor.WHITE + " for a discount!", x, y);
+		if (isInBoundingRect(beastNodeX, beastNodeY, 33, 147, x, y)) {
+			drawTooltip(
+				"BeastNode provides high quality Minecraft and web hosting at affordable\n" +
+				"prices and is generously sponsoring the Spout project with its hosting\n" +
+				"& server needs. Mine, build, craft, and chat with your own high quality\n" +
+				"Minecraft server with FREE mumble voice server and web hosting.", x, y);
 		}
 		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
