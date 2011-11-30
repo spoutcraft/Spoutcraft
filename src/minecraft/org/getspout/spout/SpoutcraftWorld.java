@@ -167,6 +167,14 @@ public class SpoutcraftWorld implements World{
 	public int getBlockTypeIdAt(FixedLocation location) {
 		return getBlockTypeIdAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
+	
+	public int getBlockDataAt(int x, int y, int z) {
+		return handle.getBlockMetadata(x, y, z);
+	}
+
+	public int getBlockDataAt(FixedLocation location) {
+		return getBlockDataAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+	}
 
 	public int getHighestBlockYAt(FixedLocation location) {
 		return getHighestBlockYAt(location.getBlockX(), location.getBlockZ());
