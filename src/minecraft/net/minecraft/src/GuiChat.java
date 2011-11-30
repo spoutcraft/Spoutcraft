@@ -81,7 +81,7 @@ public class GuiChat extends GuiScreen {
 		SpoutClient.getInstance().getChatManager().handleMouseWheel();
 		boolean blink = true;//((updateCounter / 6) % 2 != 0) || message.trim().length() == 0;
 		String text = message;
-		if (cursorPosition > 0 && cursorPosition < message.length()) {
+		if (cursorPosition >= 0 && cursorPosition < message.length()) {
 			if (!blink) {
 				text = message.substring(0, cursorPosition) + " " + message.substring(cursorPosition);
 			}

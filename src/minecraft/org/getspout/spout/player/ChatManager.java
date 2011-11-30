@@ -147,7 +147,7 @@ public class ChatManager {
 				if (cursor == 0) {
 					message = character + message;
 				}
-				else if (cursor > 0) {
+				else if (cursor > 0 && cursor < message.length()) {
 					message = (message.substring(0, cursor) + character + message.substring(cursor));
 				}
 				else {
