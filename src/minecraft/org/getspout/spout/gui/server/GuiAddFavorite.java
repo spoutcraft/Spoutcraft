@@ -7,6 +7,7 @@ import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 
@@ -46,7 +47,7 @@ public class GuiAddFavorite extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, labelTitle);
 		top+=13;
 		
-		textTitle = new GenericTextField();
+		textTitle = new TabField();
 		textTitle.setMaximumCharacters(0).setWidth(250).setHeight(20).setX(left).setY(top);
 		textTitle.setText(item.getTitle());
 		getScreen().attachWidget(spoutcraft, textTitle);
@@ -57,7 +58,7 @@ public class GuiAddFavorite extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, labelIp);
 		top+=13;
 		
-		textIp = new GenericTextField();
+		textIp = new TabField();
 		textIp.setMaximumCharacters(0);
 		textIp.setWidth(250);
 		textIp.setHeight(20);
@@ -69,6 +70,25 @@ public class GuiAddFavorite extends GuiScreen {
 		buttonDone = new GenericButton("Done");
 		buttonDone.setWidth(200).setHeight(20).setX(left+25).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonDone);
+	}
+	
+	private class TabField extends GenericTextField {
+		
+		@Override
+		public boolean onKeyPressed(Keyboard key) {
+			if (key == Keyboard.KEY_TAB) {
+				if (textIp.isFocus()) {
+					textIp.setFocus(false);
+					textTitle.setFocus(true);
+				} else {
+					textTitle.setFocus(false);
+					textIp.setFocus(true);
+				}
+				return true;
+			}
+			return false;
+		}
+		
 	}
 	
 	@Override
