@@ -53,8 +53,10 @@ import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
+/**
+ * A representation of the minecraft world
+ */
 public interface World {
-
 
 	/**
 	 * Gets the {@link Block} at the given coordinates
@@ -63,7 +65,6 @@ public interface World {
 	 * @param y Y-coordinate of the block
 	 * @param z Z-coordinate of the block
 	 * @return Block at the given coordinates
-	 * @see #getBlockTypeIdAt(int, int, int) Returns the current type ID of the block
 	 */
 	public Block getBlockAt(int x, int y, int z);
 
@@ -72,7 +73,6 @@ public interface World {
 	 *
 	 * @param location Location of the block
 	 * @return Block at the given location
-	 * @see #getBlockTypeIdAt(org.bukkit.Location) Returns the current type ID of the block
 	 */
 	public Block getBlockAt(FixedLocation location);
 
@@ -83,7 +83,6 @@ public interface World {
 	 * @param y Y-coordinate of the block
 	 * @param z Z-coordinate of the block
 	 * @return Type ID of the block at the given coordinates
-	 * @see #getBlockAt(int, int, int) Returns a live Block object at the given location
 	 */
 	public int getBlockTypeIdAt(int x, int y, int z);
 
@@ -92,9 +91,26 @@ public interface World {
 	 *
 	 * @param location Location of the block
 	 * @return Type ID of the block at the given location
-	 * @see #getBlockAt(org.bukkit.Location) Returns a live Block object at the given location
 	 */
 	public int getBlockTypeIdAt(FixedLocation location);
+	
+	/**
+	 * Gets the block data at the given coordinates
+	 *
+	 * @param x X-coordinate of the block
+	 * @param y Y-coordinate of the block
+	 * @param z Z-coordinate of the block
+	 * @return Type Data of the block at the given coordinates
+	 */
+	public int getBlockDataAt(int x, int y, int z);
+	
+	/**
+	 * Gets the block data at the given {@link Location}
+	 *
+	 * @param location Location of the block
+	 * @return Type Data of the block at the given location
+	 */
+	public int getBlockDataAt(FixedLocation location);
 
 	/**
 	 * Gets the highest non-air coordinate at the given coordinates
