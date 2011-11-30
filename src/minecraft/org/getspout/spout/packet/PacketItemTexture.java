@@ -79,7 +79,7 @@ public class PacketItemTexture implements SpoutPacket {
 	}
 
 	public void run(int PlayerId) {
-		Item item = MaterialData.getItem(id, data);
+		Item item = (Item) MaterialData.getOrCreateMaterial(id, data);
 		Addon addon = Spoutcraft.getAddonManager().getOrCreateAddon(pluginName);
 		Spoutcraft.getMaterialManager().setItemTexture(item, addon, name);
 	}
