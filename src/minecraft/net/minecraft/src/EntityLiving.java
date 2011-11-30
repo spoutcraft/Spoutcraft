@@ -29,7 +29,6 @@ import net.minecraft.src.World;
 
 //Spout Start
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.entity.CraftLivingEntity;
 import org.getspout.spout.entity.EntityData;
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End

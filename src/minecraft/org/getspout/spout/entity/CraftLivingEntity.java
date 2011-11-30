@@ -136,6 +136,9 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public void setRemainingAir(int ticks) {
+		if (ticks < 0) {
+			throw new IllegalArgumentException("The Maximum Air can not be below 0");
+		}
 		getEntityLiving().func_41003_g(ticks);
 	}
 
@@ -144,6 +147,9 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public void setMaximumAir(int ticks) {
+		if (ticks <= 0) {
+			throw new IllegalArgumentException("The Maximum Air can not be below 1");
+		}
 		getEntityLiving().maxAir = ticks;
 	}
 
