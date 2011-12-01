@@ -26,7 +26,13 @@ public class ServerItem implements ListWidgetItem {
 
 	//Options from the serverlist API
 	protected String country = null;
-	protected boolean whitelisted = false;
+	
+	public static final int OPEN = 0;
+	public static final int WHITELIST = 1;
+	public static final int GRAYLIST = 2;
+	public static final int BLACKLIST = 3;
+	
+	protected byte accessType = ServerItem.OPEN;
 	
 	protected boolean showPingWhilePolling = false;
 	
@@ -185,8 +191,20 @@ public class ServerItem implements ListWidgetItem {
 			}
 		}
 		
-		if(isWhitelisted()) {
-			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/lock.png");
+		if(accessType != OPEN) {
+			String name = "lock";
+			switch(accessType) {
+			case WHITELIST:
+				name="whitelist";
+				break;
+			case GRAYLIST:
+				name="graylist";
+				break;
+			case BLACKLIST:
+				name="blacklist";
+				break;
+			}
+			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/"+name+".png");
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
 			r.drawTexture(lockIcon, 7, 11);
@@ -266,11 +284,23 @@ public class ServerItem implements ListWidgetItem {
 	}
 	
 	public boolean isWhitelisted() {
-		return whitelisted;
+		return accessType == ServerItem.WHITELIST;
 	}
 
-	public void setWhitelisted(boolean whitelisted) {
-		this.whitelisted = whitelisted;
+	public boolean isGraylisted() {
+		return accessType == ServerItem.GRAYLIST;
+	}
+	
+	public boolean isBlacklisted() {
+		return accessType == ServerItem.BLACKLIST;
+	}
+	
+	public boolean isOpen() {
+		return accessType == ServerItem.OPEN;
+	}
+	
+	public void setAccessType(byte access) {
+		this.accessType = access;
 	}
 
 	public void setShowPingWhilePolling(boolean b) {

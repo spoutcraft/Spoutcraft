@@ -98,19 +98,12 @@ public class ServerListModel extends AbstractAPIModel {
 				int uid = Integer.valueOf((String)hash.get("uniqueid"));
 				int port = Integer.valueOf((String)hash.get("port"));
 				String adress = (String) hash.get("ip");
-				//int ping = Integer.valueOf((String)hash.get("ping"));
-				//int players = Integer.valueOf((String)hash.get("numplayers"));
-				//int maxplayers = Integer.valueOf((String)hash.get("maxplayers"));
-				boolean whitelisted = ((String)hash.get("whitelist")).equals("1")?true:false;
+				byte accessType = Byte.valueOf((String) hash.get("whitelist"));
 				String country = (String) hash.get("country");
 				ServerItem server = new ServerItem(name, adress, port, uid);
 				server.setFavorite(false);
-				//server.setPing(ping);
-				//server.setPlayers(players);
-				//server.setMaxPlayers(maxplayers);
 				server.setCountry(country);
-				server.setWhitelisted(whitelisted);
-				//server.setShowPingWhilePolling(true);
+				server.setAccessType(accessType);
 				entries.add(server);
 			} catch(UnsupportedEncodingException e){}
 			catch(Exception e2) { continue; }

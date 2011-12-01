@@ -89,7 +89,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 		
-		search.setWidth(100).setHeight(20).setX(5).setY(top);
+		search.setWidth(130).setHeight(20).setX(5).setY(top);
 		getScreen().attachWidget(spoutcraft, search);
 		model.addUrlElement(search);
 		
