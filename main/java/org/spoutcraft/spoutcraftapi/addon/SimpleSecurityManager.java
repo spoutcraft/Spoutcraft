@@ -16,17 +16,52 @@
  */
 package org.spoutcraft.spoutcraftapi.addon;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-
 import java.io.FileDescriptor;
 import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.security.Permission;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public final class SimpleSecurityManager extends SecurityManager {
 	private final double key;
 	private volatile boolean locked = false;
 	private final ThreadGroup securityThreadGroup;
+	private final static HashSet<String> allowedPermissions;
+	private final static HashMap<String,HashSet<String>> systemMethodWhiteList;
+	
+	static {
+		
+		// This defines permissions that are not protected
+		
+		allowedPermissions = new HashSet<String>();
+		
+		allowedPermissions.add("accessDeclaredMembers");  // Ok?
+		
+		// This defines the white list for class/methods pairs that can be used when sandboxed
+		//
+		// This is the last java.x.y class the is detected in the stack trace, before normal classes are detected.
+		// This means that the only system level classes are called between the security manager check and the calling method
+		// 
+		// This allows whitelisting of system methods that are safe, even if they use protected functionality
+		//
+		
+		systemMethodWhiteList = new HashMap<String,HashSet<String>>();
+		
+		addMethodToWhiteList("java.lang.Enum", "valueOf");
+		
+	}
+	
+	private static void addMethodToWhiteList(String className, String methodName) {
+		HashSet<String> enumMethods = systemMethodWhiteList.get(className);
+		if (enumMethods == null) {
+			enumMethods = new HashSet<String>();
+			systemMethodWhiteList.put(className, enumMethods);
+		}
+		enumMethods.add(methodName);
+	}
 
 	public SimpleSecurityManager(double key, ThreadGroup securityThreadGroup) {
 		if (System.getSecurityManager() instanceof SimpleSecurityManager) {
@@ -179,7 +214,57 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		checkAccess(); //TODO handle on case by case basis
+		if (isLocked()) {
+
+			if (allowedPermissions.contains(perm.getName())) {
+				return;
+			}
+			StackTraceElement trace[] = Thread.currentThread().getStackTrace();
+			Class<?> stack[] = getClassContext();
+
+			int nonSystemIndex = getFirstNonSystem(stack, trace, 1);
+			StackTraceElement systemClass = getIndexedStackTraceElement(trace, nonSystemIndex - 1);	
+			//StackTraceElement callerClass = getIndexedStackTraceElement(trace, nonSystemIndex);
+			
+			if (systemClass != null) {
+				String systemClassName = systemClass.getClassName();
+				HashSet<String> systemAllowedMethods = systemMethodWhiteList.get(systemClassName);
+
+				if (systemAllowedMethods != null && systemAllowedMethods.contains(systemClass.getMethodName())) {
+					return;
+				}
+			}
+
+			checkAccess(); //TODO handle on case by case basis
+		}
+	}
+	
+	private int getFirstNonSystem(Class<?> stack[], StackTraceElement trace[], int start) {
+
+		int stackPos = start;
+		int tracePos = start + 1;
+
+		while (stackPos < stack.length && stack[stackPos].getClassLoader() == null) {
+			stackPos++;
+		}
+		
+		if (stackPos >= stack.length) {
+			return trace.length;
+		}
+		
+		while (tracePos < trace.length && !trace[tracePos].getClassName().equals(stack[stackPos].getName())) {
+			tracePos ++;
+		}
+		
+		return tracePos;
+	}
+	
+	private StackTraceElement getIndexedStackTraceElement(StackTraceElement trace[], int index) {
+		if (index < 0 || index >= trace.length) {
+			return null;
+		} else {
+			return trace[index];
+		}
 	}
 
 	@Override
