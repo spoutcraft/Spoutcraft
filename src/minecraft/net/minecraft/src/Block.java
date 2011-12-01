@@ -502,7 +502,7 @@ public class Block {
 				int x = (int) target.getX();
 				int y = (int) target.getY();
 				int z = (int) target.getZ();
-				int index = ((x & 0xF) << player.getWorld().getXBitShifts()) | ((z & 0xF) << player.getWorld().getZBitShifts()) | (y & player.getWorld().getMaxHeight());
+				int index = ((x & 0xF) << player.getWorld().getXBitShifts()) | ((z & 0xF) << player.getWorld().getZBitShifts()) | (y & (player.getWorld().getMaxHeight() - 1));
 				SpoutcraftChunk chunk = (SpoutcraftChunk) target.getWorld().getChunkAt(target);
 				TIntFloatHashMap hardnessOverrides = chunk.hardnessOverrides;
 				if (hardnessOverrides.containsKey(index)) {
