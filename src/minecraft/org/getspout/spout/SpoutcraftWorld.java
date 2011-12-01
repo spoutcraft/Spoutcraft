@@ -56,7 +56,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Block getBlockAt(int x, int y, int z) {
-		return getChunkAt(x >> 4, z >> 4).getBlockAt(x & 0xF, y & getMaxHeight(), z & 0xF);
+		return getChunkAt(x >> 4, z >> 4).getBlockAt(x & 0xF, y & (getMaxHeight() - 1), z & 0xF);
 	}
 
 	public Chunk getChunkAt(Block block) {
