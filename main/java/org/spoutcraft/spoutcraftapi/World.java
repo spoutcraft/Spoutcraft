@@ -747,6 +747,10 @@ public interface World {
 	 * @return Maximum height of the world
 	 */
 	public int getMaxHeight();
+	
+	public int getXBitShifts();
+	
+	public int getZBitShifts();
 
 	/**
 	 * Gets the sea level for this world.
