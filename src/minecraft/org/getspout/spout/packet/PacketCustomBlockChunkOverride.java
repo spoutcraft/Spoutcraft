@@ -69,7 +69,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	public void run(int playerId) {
 		ByteBuffer buffer = ByteBuffer.allocate(data.length);
 		buffer.put(data);
-		short[] customIds = new short[16*16*128];
+		short[] customIds = new short[16*16*Spoutcraft.getWorld().getMaxHeight()];
 		for (int i = 0; i < customIds.length; i++) {
 			customIds[i] = buffer.getShort(i * 2);
 		}

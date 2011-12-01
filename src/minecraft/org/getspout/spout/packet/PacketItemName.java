@@ -57,7 +57,7 @@ public class PacketItemName implements SpoutPacket{
 	public void run(int PlayerId) {
 		Material material = MaterialData.getOrCreateMaterial(id, data);
 		if (material == null) {
-			System.out.println("Failed to create material for : " + id + ", " + data);
+			material = MaterialData.getCustomItem(data);
 		}
 		if (name.equals("[resetall]")) {
 			MaterialData.reset();

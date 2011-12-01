@@ -9,7 +9,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 public class PacketCustomBlockOverride implements SpoutPacket {
 	
 	private int x;
-	private byte y;
+	private short y;
 	private int z;
 	private short blockId;
 	
@@ -18,7 +18,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	
 	public PacketCustomBlockOverride(int x, int y, int z, Integer blockId) {
 		this.x = x;
-		this.y = (byte) (y & 0xFF);
+		this.y = (short) (y & 0xFFFF);
 		this.z = z;
 		setBlockId(blockId);
 	}
@@ -36,19 +36,19 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	}
 
 	public int getNumBytes() {
-		return 4 + 4 + 1 + 4;
+		return 4 + 4 + 2 + 4;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
 		x = input.readInt();
-		y = (byte) (input.readByte() & 0xFF);
+		y = (byte) (input.readShort() & 0xFFFF);
 		z = input.readInt();
 		setBlockId((int)input.readShort());
 	}
 	
 	public void writeData(DataOutputStream output) throws IOException {
 		output.writeInt(x);
-		output.writeByte(y);
+		output.writeShort(y);
 		output.writeInt(z);
 		output.writeShort(blockId);
 	}
@@ -63,7 +63,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	}
 	
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 	public void failure(int playerId) {

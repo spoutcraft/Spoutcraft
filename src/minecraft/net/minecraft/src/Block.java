@@ -499,7 +499,10 @@ public class Block {
 					return b.getHardness();
 				}
 
-				int index = getIndex((int) target.getX(), (int) target.getY(), (int) target.getZ());
+				int x = (int) target.getX();
+				int y = (int) target.getY();
+				int z = (int) target.getZ();
+				int index = ((x & 0xF) << player.getWorld().getXBitShifts()) | ((z & 0xF) << player.getWorld().getZBitShifts()) | (y & 0xFFFF);
 				SpoutcraftChunk chunk = (SpoutcraftChunk) target.getWorld().getChunkAt(target);
 				TIntFloatHashMap hardnessOverrides = chunk.hardnessOverrides;
 				if (hardnessOverrides.containsKey(index)) {
@@ -508,10 +511,6 @@ public class Block {
 			}
 		}
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
-	}
-
-	private int getIndex(int x, int y, int z) {
-		return (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
 	}
 	// Spout end
 	public final void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5, int var6) {

@@ -17,8 +17,6 @@
 package org.getspout.spout.block;
 
 import gnu.trove.map.hash.TIntFloatHashMap;
-import gnu.trove.map.hash.TIntIntHashMap;
-
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,10 +25,12 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.spoutcraft.spoutcraftapi.World;
+import org.getspout.spout.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import com.google.common.collect.MapMaker;
 
@@ -42,15 +42,23 @@ public class SpoutcraftChunk implements Chunk{
 	private final Map<Integer, Block> cache = new MapMaker().weakValues().makeMap();
 	private int x;
 	private int z;
-	public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
+	//public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
 	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	private short[] customBlockIds = null;
+	
+	transient private final int worldHeight;
+	transient private final int xBitShifts;
+	transient private final int zBitShifts;
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
 		world = getHandle().worldObj;
 		x = getHandle().xPosition;
 		z = getHandle().zPosition;
+		
+		this.worldHeight = getWorld().getMaxHeight();
+		this.xBitShifts = getWorld().getXBitShifts();
+		this.zBitShifts = getWorld().getZBitShifts();
 	}
 	
 	public net.minecraft.src.Chunk getHandle() {
@@ -63,10 +71,10 @@ public class SpoutcraftChunk implements Chunk{
 	}
 	
 	public Block getBlockAt(int x, int y, int z) {
-		int pos = (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
+		int pos = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & 0xFFFF);
 		Block block = this.cache.get(pos);
 		if (block == null) {
-			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0x7F, (getZ() << 4) | (z & 0xF));
+			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0xFFFF, (getZ() << 4) | (z & 0xF));
 			Block oldBlock = this.cache.put(pos, newBlock);
 			if (oldBlock == null) {
 				block = newBlock;
@@ -77,7 +85,7 @@ public class SpoutcraftChunk implements Chunk{
 		return block;
 	}
 
-	public World getWorld() {
+	public SpoutcraftWorld getWorld() {
 		return world.world;
 	}
 
@@ -134,20 +142,22 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public short getCustomBlockId(int x, int y, int z) {
 		if (customBlockIds != null) {
-			int key = ((x & 0xF) << 11) | ((z & 0xF) << 7) | (y & 0x7F);
+			int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & 0xFFFF);
 			return customBlockIds[key];
 		}
 		return 0;
 	}
 	
-	public void setCustomBlockId(int x, int y, int z, short id) {
+	public short setCustomBlockId(int x, int y, int z, short id) {
 		if (customBlockIds == null) {
-			customBlockIds = new short[16*16*128];
+			customBlockIds = new short[16*16*worldHeight];
 		}
 		if (id < 0) id = 0;
-		int key = ((x & 0xF) << 11) | ((z & 0xF) << 7) | (y & 0x7F);
+		int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & 0xFFFF);
+		short old = customBlockIds[key];
 		customBlockIds[key] = id;
 		Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
+		return old;
 	}
 	
 	public short[] getCustomBlockIds(){
@@ -156,7 +166,15 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public void setCustomBlockIds(short[] ids) {
 		customBlockIds = ids;
-		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, 128, z * 16 + 15);
+		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, worldHeight, z * 16 + 15);
+	}
+	
+	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block) {
+		if (block == null) {
+			throw new NullPointerException("Custom Block can not be null!");
+		}
+		short old = setCustomBlockId(x, y, z, (short) block.getCustomId());
+		return MaterialData.getCustomBlock(old);
 	}
 	
 	public int hashCode() {
@@ -174,5 +192,4 @@ public class SpoutcraftChunk implements Chunk{
 	public String toString() {
 		return "SpoutcraftChunk (" + x + ", " + z +") ";
 	}
-	
 }
