@@ -32,6 +32,9 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.entity.EntityData;
 import org.getspout.spout.io.CustomTextureManager;
 //Spout End
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public abstract class EntityLiving extends Entity {
 
@@ -728,9 +731,12 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
-					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
-						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					if (customId > 0) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							var8 = block.getFriction() * 0.98F;
+						}
 					}
 					//Spout end
 				}
@@ -757,9 +763,12 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
-					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
-						var8 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.91F;
+					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					if (customId > 0) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							var8 = block.getFriction() * 0.98F;
+						}
 					}
 					//Spout end
 				}

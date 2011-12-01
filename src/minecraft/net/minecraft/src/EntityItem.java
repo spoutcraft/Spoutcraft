@@ -1,6 +1,10 @@
 package net.minecraft.src;
 
 import org.getspout.spout.entity.CraftItem; // Spout
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
@@ -75,14 +79,17 @@ public class EntityItem extends Entity {
 			int var2 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
 			if(var2 > 0) {
 				var1 = Block.blocksList[var2].slipperiness * 0.98F;
-	//Spout start
+				//Spout start
 				if (!worldObj.multiplayerWorld) {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
-					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
-						var1 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.98F;
+					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					if (customId > 0) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							var1 = block.getFriction() * 0.98F;
+						}
 					}
 				}
 				//Spout end

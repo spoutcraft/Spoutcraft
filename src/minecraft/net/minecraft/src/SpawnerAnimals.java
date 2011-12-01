@@ -37,6 +37,12 @@ public final class SpawnerAnimals {
 			return 0;
 		} else {
 			
+			EnumCreatureType[] creatures = EnumCreatureType.values();
+			int[] entityCount = new int[EnumCreatureType.values().length];
+			for(int i = 0; i < creatures.length; i++) {
+				entityCount[i] = var0.countEntities(creatures[i].getCreatureClass());
+			}
+			
 			int loadedChunks = SpoutcraftChunk.loadedChunks.size();
 			ChunkCoordinates spawn = var0.getSpawnPoint();
 			int var3;
@@ -51,9 +57,9 @@ public final class SpawnerAnimals {
 				for(int var8 = -var7; var8 <= var7; ++var8) {
 					for(int var9 = -var7; var9 <= var7; ++var9) {
 						boolean var10 = var8 == -var7 || var8 == var7 || var9 == -var7 || var9 == var7;						
-						for(EnumCreatureType var34 : EnumCreatureType.values()) {
-							if((!var34.getPeacefulCreature() || var2) && (var34.getPeacefulCreature() || var1) && var0.countEntities(var34.getCreatureClass()) <= var34.getMaxNumberOfCreature() * loadedChunks / 256) {
-								var3 += spawnAtChunk(spawn, var34, var0, var8 + var5, var9 + var6, var10);
+						for(int i = 0; i < creatures.length; i++) {
+							if((!creatures[i].getPeacefulCreature() || var2) && (creatures[i].getPeacefulCreature() || var1) && entityCount[i] <= creatures[i].getMaxNumberOfCreature() * loadedChunks / 256) {
+								var3 += spawnAtChunk(spawn, creatures[i], var0, var8 + var5, var9 + var6, var10);
 							}
 						}
 					}
@@ -139,6 +145,11 @@ public final class SpawnerAnimals {
 	}
 
 	private static boolean canCreatureTypeSpawnAtLocation(EnumCreatureType var0, World var1, int var2, int var3, int var4) {
+		//Spout optimization start
+		if (!var1.chunkProvider.chunkExists(var2 >> 4, var4 >> 4)) {
+			return false;
+		}
+		//Spout end
 		return var0.getCreatureMaterial() == Material.water?var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.isBlockNormalCube(var2, var3 + 1, var4):var1.isBlockNormalCube(var2, var3 - 1, var4) && !var1.isBlockNormalCube(var2, var3, var4) && !var1.getBlockMaterial(var2, var3, var4).getIsLiquid() && !var1.isBlockNormalCube(var2, var3 + 1, var4);
 	}
 

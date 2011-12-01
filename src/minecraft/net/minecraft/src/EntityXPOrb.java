@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 import org.getspout.spout.entity.CraftExperienceOrb; // Spout
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
@@ -111,9 +114,12 @@ public class EntityXPOrb extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.spoutcraftapi.material.Block b = worldObj.world.getBlockAt(x, y, z).getType();
-					if (b instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock){
-						var14 = ((org.spoutcraft.spoutcraftapi.material.CustomBlock)b).getFriction() * 0.98F;
+					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					if (customId > 0) {
+						CustomBlock block = MaterialData.getCustomBlock(customId);
+						if (block != null) {
+							var14 = block.getFriction() * 0.98F;
+						}
 					}
 				}
 				//Spout end

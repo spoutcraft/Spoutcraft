@@ -57,7 +57,6 @@ import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairHashSet;
 
 import net.minecraft.client.Minecraft;
 
@@ -2402,10 +2401,11 @@ public class World implements IBlockAccess {
 	private int computeBlockLightValue(int var1, int var2, int var3, int var4, int var5, int var6) {
 		//Spout start
 		int light = Block.lightValue[var5];
-		if (var5 > 0) {
-			org.spoutcraft.spoutcraftapi.material.Block b = Spoutcraft.getWorld().getBlockAt(var2, var3, var4).getType();
-			if (b instanceof CustomBlock && b.getLightLevel() > 0) {
-				light = b.getLightLevel();
+		short customId = Spoutcraft.getWorld().getChunkAt(var2, var3, var4).getCustomBlockId(var2, var3, var4);
+		if (customId > 0) {
+			CustomBlock block = MaterialData.getCustomBlock(customId);
+			if (block != null) {
+				light = block.getLightLevel();
 			}
 		}
 		int var7 = light;
