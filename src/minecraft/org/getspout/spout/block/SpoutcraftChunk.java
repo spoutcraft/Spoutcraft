@@ -47,6 +47,7 @@ public class SpoutcraftChunk implements Chunk{
 	private short[] customBlockIds = null;
 	
 	transient private final int worldHeight;
+	transient private final int worldHeightMinusOne;
 	transient private final int xBitShifts;
 	transient private final int zBitShifts;
 	
@@ -59,6 +60,7 @@ public class SpoutcraftChunk implements Chunk{
 		this.worldHeight = world.field_35472_c;
 		this.xBitShifts = world.field_35471_b;
 		this.zBitShifts = world.field_35473_a;
+		worldHeightMinusOne = worldHeight - 1;
 	}
 	
 	public net.minecraft.src.Chunk getHandle() {
@@ -71,10 +73,10 @@ public class SpoutcraftChunk implements Chunk{
 	}
 	
 	public Block getBlockAt(int x, int y, int z) {
-		int pos = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeight);
+		int pos = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeightMinusOne);
 		Block block = this.cache.get(pos);
 		if (block == null) {
-			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & worldHeight, (getZ() << 4) | (z & 0xF));
+			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & worldHeightMinusOne, (getZ() << 4) | (z & 0xF));
 			Block oldBlock = this.cache.put(pos, newBlock);
 			if (oldBlock == null) {
 				block = newBlock;
@@ -142,7 +144,7 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public short getCustomBlockId(int x, int y, int z) {
 		if (customBlockIds != null) {
-			int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeight);
+			int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeightMinusOne);
 			return customBlockIds[key];
 		}
 		return 0;
@@ -153,7 +155,7 @@ public class SpoutcraftChunk implements Chunk{
 			customBlockIds = new short[16*16*worldHeight];
 		}
 		if (id < 0) id = 0;
-		int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeight);
+		int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeightMinusOne);
 		short old = customBlockIds[key];
 		customBlockIds[key] = id;
 		Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
@@ -166,7 +168,7 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public void setCustomBlockIds(short[] ids) {
 		customBlockIds = ids;
-		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, worldHeight, z * 16 + 15);
+		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, worldHeightMinusOne, z * 16 + 15);
 	}
 	
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block) {
