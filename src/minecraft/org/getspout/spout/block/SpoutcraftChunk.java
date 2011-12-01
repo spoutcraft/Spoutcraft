@@ -52,13 +52,13 @@ public class SpoutcraftChunk implements Chunk{
 	
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
-		world = getHandle().worldObj;
-		x = getHandle().xPosition;
-		z = getHandle().zPosition;
+		world = chunk.worldObj;
+		x = chunk.xPosition;
+		z = chunk.zPosition;
 		
-		this.worldHeight = getWorld().getMaxHeight();
-		this.xBitShifts = getWorld().getXBitShifts();
-		this.zBitShifts = getWorld().getZBitShifts();
+		this.worldHeight = world.field_35472_c;
+		this.xBitShifts = world.field_35471_b;
+		this.zBitShifts = world.field_35473_a;
 	}
 	
 	public net.minecraft.src.Chunk getHandle() {
