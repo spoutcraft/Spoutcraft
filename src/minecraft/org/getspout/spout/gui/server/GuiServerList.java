@@ -32,7 +32,8 @@ public class GuiServerList extends GuiAPIDisplay {
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonRefresh, buttonReset, buttonAddServer;
 	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
-	FilterButton hasPlayers, notFull, noWhitelist;
+	FilterButton hasPlayers, notFull;
+	AccessTypeFilter accessType;
 	CountryButton buttonCountry;
 	SearchField search;
 	
@@ -59,7 +60,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		random = new RandomButton(model);
 		hasPlayers = new FilterButton("Has Players", "hasplayers", model);
 		notFull = new FilterButton("Not Full", "notfull", model);
-		noWhitelist = new FilterButton("No Whitelist", "notwhitelisted", model);
+		accessType = new AccessTypeFilter(model);
 		search = new SearchField(model);
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);
@@ -154,9 +155,9 @@ public class GuiServerList extends GuiAPIDisplay {
 		model.addUrlElement(notFull);
 		ftop += 25;
 		
-		noWhitelist.setWidth(100).setHeight(20).setX(5).setY(ftop);
-		filters.attachWidget(spoutcraft, noWhitelist);
-		model.addUrlElement(noWhitelist);
+		accessType.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		filters.attachWidget(spoutcraft, accessType);
+		model.addUrlElement(accessType);
 		ftop += 25;
 		
 		buttonCountry.setWidth(100).setHeight(20).setX(5).setY(ftop);
