@@ -243,16 +243,16 @@ public class EntityBoat extends Entity {
 			}
 			//Spout start
 			else if (unoccupiedDeceleration >= 0) {
-					 this.motionX *= unoccupiedDeceleration;
-					 this.motionZ *= unoccupiedDeceleration;
-					 // Kill lingering speed
-					 if (motionX <= 0.00001) {
-						  motionX = 0;
-					 }
-					 if (motionZ <= 0.00001) {
-						  motionZ = 0;
-					 }
-				}
+				 this.motionX *= unoccupiedDeceleration;
+				 this.motionZ *= unoccupiedDeceleration;
+				 // Kill lingering speed
+				 if (motionX <= 0.00001) {
+					  motionX = 0;
+				 }
+				 if (motionZ <= 0.00001) {
+					  motionZ = 0;
+				 }
+			}
 			
 			var21 = this.maxSpeed;
 			//Spout end

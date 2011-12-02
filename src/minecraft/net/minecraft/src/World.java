@@ -265,11 +265,6 @@ public class World implements IBlockAccess {
 		this.isNewWorld = this.worldInfo == null;
 		if (var4 != null) {
 			this.worldProvider = var4;
-		} 
-		//Spout start
-		else if(!GuiCreateWorld.normalWorld || (this.worldInfo != null && this.worldInfo.getDimension() == 1)) {
-			worldProvider = WorldProvider.getProviderForDimension(1); //Skylands
-		//Spout end
 		} else if (this.worldInfo != null && this.worldInfo.getDimension() != 0) {
 			this.worldProvider = WorldProvider.getProviderForDimension(this.worldInfo.getDimension());
 		} else {
@@ -368,8 +363,7 @@ public class World implements IBlockAccess {
 		return this.getBlockId(var1, var3, var2);
 	}
 
-	public void emptyMethod1() {
-	}
+	public void emptyMethod1() {}
 
 	public void spawnPlayerWithLoadedChunks(EntityPlayer var1) {
 		try {
@@ -2091,106 +2085,6 @@ public class World implements IBlockAccess {
 		this.worldInfo.setIsThundering(false);
 	}
 	
-	//Spout start
-	public void updatePositions(int chunkX, int chunkZ){
-		int var3;
-		int var4;
-		int var6;
-		int var7;
-		var3 = chunkX * 16;
-		var4 = chunkZ * 16;
-		Chunk var15 = this.getChunkFromChunkCoords(chunkX, chunkZ);
-
-		var15.func_35841_j();
-		int var8;
-		int var9;
-		int var10;
-		if(this.soundCounter == 0) {
-			this.updateLCG = this.updateLCG * 3 + 1013904223;
-			var6 = this.updateLCG >> 2;
-			var7 = var6 & 15;
-			var8 = var6 >> 8 & 15;
-			var9 = var6 >> 16 & 127;
-			var10 = var15.getBlockID(var7, var9, var8);
-			var7 += var3;
-			var8 += var4;
-			if(var10 == 0 && this.getFullBlockLightValue(var7, var9, var8) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, var7, var9, var8) <= 0) {
-				EntityPlayer var11 = this.getClosestPlayer((double)var7 + 0.5D, (double)var9 + 0.5D, (double)var8 + 0.5D, 8.0D);
-				if(var11 != null && var11.getDistanceSq((double)var7 + 0.5D, (double)var9 + 0.5D, (double)var8 + 0.5D) > 4.0D) {
-					this.playSoundEffect((double)var7 + 0.5D, (double)var9 + 0.5D, (double)var8 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
-					this.soundCounter = this.rand.nextInt(12000) + 6000;
-				}
-			}
-		}
-
-		if(this.rand.nextInt(100000) == 0 && this.isRaining() && this.getIsThundering()) {
-			this.updateLCG = this.updateLCG * 3 + 1013904223;
-			var6 = this.updateLCG >> 2;
-			var7 = var3 + (var6 & 15);
-			var8 = var4 + (var6 >> 8 & 15);
-			var9 = this.func_35461_e(var7, var8);
-			if(this.canLightningStrikeAt(var7, var9, var8)) {
-				this.addWeatherEffect(new EntityLightningBolt(this, (double)var7, (double)var9, (double)var8));
-				this.lastLightningBolt = 2;
-			}
-		}
-
-		int var16;
-		if(this.rand.nextInt(16) == 0) {
-			this.updateLCG = this.updateLCG * 3 + 1013904223;
-			var6 = this.updateLCG >> 2;
-			var7 = var6 & 15;
-			var8 = var6 >> 8 & 15;
-			var9 = this.func_35461_e(var7 + var3, var8 + var4);
-			if(this.getWorldChunkManager().getBiomeGenAt(var7 + var3, var8 + var4).getEnableSnow() && var9 >= 0 && var9 < 128 && var15.getSavedLightValue(EnumSkyBlock.Block, var7, var9, var8) < 10) {
-				var10 = var15.getBlockID(var7, var9 - 1, var8);
-				var16 = var15.getBlockID(var7, var9, var8);
-				if(this.isRaining() && var16 == 0 && Block.snow.canPlaceBlockAt(this, var7 + var3, var9, var8 + var4) && var10 != 0 && var10 != Block.ice.blockID && Block.blocksList[var10].blockMaterial.getIsSolid()) {
-					this.setBlockWithNotify(var7 + var3, var9, var8 + var4, Block.snow.blockID);
-				}
-
-				if(var10 == Block.waterStill.blockID && var15.getBlockMetadata(var7, var9 - 1, var8) == 0) {
-					boolean var12 = true;
-					if(var12 && this.getBlockMaterial(var7 + var3 - 1, var9 - 1, var8 + var4) != Material.water) {
-						var12 = false;
-					}
-
-					if(var12 && this.getBlockMaterial(var7 + var3 + 1, var9 - 1, var8 + var4) != Material.water) {
-						var12 = false;
-					}
-
-					if(var12 && this.getBlockMaterial(var7 + var3, var9 - 1, var8 + var4 - 1) != Material.water) {
-						var12 = false;
-					}
-
-					if(var12 && this.getBlockMaterial(var7 + var3, var9 - 1, var8 + var4 + 1) != Material.water) {
-						var12 = false;
-					}
-
-					if(!var12) {
-						this.setBlockWithNotify(var7 + var3, var9 - 1, var8 + var4, Block.ice.blockID);
-					}
-				}
-			}
-		}
-
-		// This function totally changed, unsure what to do now or if this is nessecary anymore.
-//		this.func_35463_p(var3 + this.rand.nextInt(16), this.rand.nextInt(128), var4 + this.rand.nextInt(16));
-
-		for(var6 = 0; var6 < 80; ++var6) {
-			this.updateLCG = this.updateLCG * 3 + 1013904223;
-			var7 = this.updateLCG >> 2;
-			var8 = var7 & 15;
-			var9 = var7 >> 8 & 15;
-			var10 = var7 >> 16 & 127;
-			var16 = var15.blocks[var8 << 11 | var9 << 7 | var10] & 255;
-			if(Block.tickOnLoad[var16]) {
-				Block.blocksList[var16].updateTick(this, var8 + var3, var10, var9 + var4, this.rand);
-			}
-		}
-	}
-	//Spout end
-
 	protected void updateBlocksAndPlayCaveSounds() {
 		this.positionsToUpdate.clear();
 		Profiler.startSection("buildList");
@@ -2206,7 +2100,6 @@ public class World implements IBlockAccess {
 			for (var6 = -var5; var6 <= var5; ++var6) {
 				for (int var7 = -var5; var7 <= var5; ++var7) {
 					this.positionsToUpdate.add(new ChunkCoordIntPair(var6 + var3, var7 + var4));
-//					updatePositions(var6 + var3, var7 + var4); //Spout - Temporarily removed
 				}
 			}
 		}
@@ -2933,8 +2826,7 @@ public class World implements IBlockAccess {
 
 	}
 
-	public void sendQuittingDisconnectingPacket() {
-	}
+	public void sendQuittingDisconnectingPacket() {}
 
 	public void checkSessionLock() {
 		this.saveHandler.checkSessionLock();
@@ -2986,8 +2878,7 @@ public class World implements IBlockAccess {
 		return true;
 	}
 
-	public void setEntityState(Entity var1, byte var2) {
-	}
+	public void setEntityState(Entity var1, byte var2) {}
 
 	public void updateEntityList() {
 		this.loadedEntityList.removeAll(this.unloadedEntityList);
@@ -3174,8 +3065,7 @@ public class World implements IBlockAccess {
 		return false;
 	}
 
-	public void scheduleLightingUpdate(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-	}
+	public void scheduleLightingUpdate(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7) {}
 
 	public SpawnListEntry func_40474_a(EnumCreatureType var1, int var2, int var3, int var4) {
 		List var5 = this.getIChunkProvider().func_40377_a(var1, var2, var3, var4);

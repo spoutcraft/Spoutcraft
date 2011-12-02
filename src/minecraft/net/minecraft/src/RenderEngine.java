@@ -41,9 +41,7 @@ public class RenderEngine {
 	private HashMap textureContentsMap = new HashMap();
 	private IntHashMap textureNameToImageMap = new IntHashMap();
 	private IntBuffer singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
-	// Spout HD Start
-	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
-	// Spout HD End
+	private ByteBuffer imageData = GLAllocation.createDirectByteBuffer(16777216);
 	public List textureList = new ArrayList(); // Spout private -> public
 	private Map urlToImageDataMap = new HashMap();
 	private GameSettings options;
@@ -424,90 +422,27 @@ public class RenderEngine {
 	}
 
 	public void updateDynamicTextures() {
-		// Spout Start
-		int i;
-		TextureFX textureEffect;
-		int x;
-		int y;
-		int depth;
-		int var6;
-		int var7;
-		int var8;
-		int var9;
-		int var10;
-		int var11;
-		int var12;
-		for (i = 0; i < this.textureList.size(); ++i) {
-			textureEffect = (TextureFX) this.textureList.get(i);
-			textureEffect.anaglyphEnabled = this.options.anaglyph;
-			textureEffect.onTick();
-			this.imageData = TextureUtils.getByteBuffer(this.imageData, textureEffect.imageData);
-			textureEffect.bindImage(this);
+		int var1 = -1;
 
-			for (x = 0; x < textureEffect.tileSize; ++x) {
-				for (y = 0; y < textureEffect.tileSize; ++y) {
-					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, textureEffect.iconIndex % 16 * TileSize.int_size + x * TileSize.int_size, textureEffect.iconIndex / 16 * TileSize.int_size + y * TileSize.int_size, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-					if (useMipmaps) {
-						for (depth = 1; depth <= 4; ++depth) {
-							var6 = 16 >> depth - 1;
-							var7 = 16 >> depth;
-
-							for (var8 = 0; var8 < var7; ++var8) {
-								for (var9 = 0; var9 < var7; ++var9) {
-									var10 = this.imageData.getInt((var8 * 2 + 0 + (var9 * 2 + 0) * var6) * 4);
-									var11 = this.imageData.getInt((var8 * 2 + 1 + (var9 * 2 + 0) * var6) * 4);
-									var12 = this.imageData.getInt((var8 * 2 + 1 + (var9 * 2 + 1) * var6) * 4);
-									int var13 = this.imageData.getInt((var8 * 2 + 0 + (var9 * 2 + 1) * var6) * 4);
-									int var14 = this.averageColor(this.averageColor(var10, var11), this.averageColor(var12, var13));
-									this.imageData.putInt((var8 + var9 * var7) * 4, var14);
-								}
-							}
-
-							GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, depth, textureEffect.iconIndex % 16 * var7, textureEffect.iconIndex / 16 * var7, var7, var7, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-						}
-					}
-				}
-			}
-		}
-
-		for (i = 0; i < this.textureList.size(); ++i) {
-			textureEffect = (TextureFX) this.textureList.get(i);
-			if (textureEffect.textureId > 0) {
-				this.imageData = TextureUtils.getByteBuffer(this.imageData, textureEffect.imageData);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureEffect.textureId);
-				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-				if (useMipmaps) {
-					for (x = 1; x <= 4; ++x) {
-						y = 16 >> x - 1;
-						depth = 16 >> x;
-
-						for (var6 = 0; var6 < depth; ++var6) {
-							for (var7 = 0; var7 < depth; ++var7) {
-								var8 = this.imageData.getInt((var6 * 2 + 0 + (var7 * 2 + 0) * y) * 4);
-								var9 = this.imageData.getInt((var6 * 2 + 1 + (var7 * 2 + 0) * y) * 4);
-								var10 = this.imageData.getInt((var6 * 2 + 1 + (var7 * 2 + 1) * y) * 4);
-								var11 = this.imageData.getInt((var6 * 2 + 0 + (var7 * 2 + 1) * y) * 4);
-								var12 = this.averageColor(this.averageColor(var8, var9), this.averageColor(var10, var11));
-								this.imageData.putInt((var6 + var7 * depth) * 4, var12);
-							}
+		for(int var2 = 0; var2 < this.textureList.size(); ++var2) {
+			TextureFX var3 = (TextureFX)this.textureList.get(var2);
+			var3.anaglyphEnabled = this.options.anaglyph;
+			var3.onTick();
+//Spout HD Start
+			this.imageData = TextureUtils.getByteBuffer(this.imageData, var3.imageData);
+//Spout HD end
+			if(var3.iconIndex != var1) {
+				var3.bindImage(this);
+				var1 = var3.iconIndex;
 						}
 
-						GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, x, 0, 0, depth, depth, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-					}
+			for(int var4 = 0; var4 < var3.tileSize; ++var4) {
+				for(int var5 = 0; var5 < var3.tileSize; ++var5) {
+					GL11.glTexSubImage2D(3553 /*GL_TEXTURE_2D*/, 0, var3.iconIndex % 16 * TileSize.int_size + var4 * TileSize.int_size, var3.iconIndex / 16 * TileSize.int_size + var5 * TileSize.int_size, TileSize.int_size, TileSize.int_size, 6408 /*GL_RGBA*/, 5121 /*GL_UNSIGNED_BYTE*/, this.imageData);
 				}
 			}
 		}
 	}
-
-	private int averageColor(int color1, int color2) {
-		// RA: These are the colors without Alpha channel (averaging alphas is
-		// bad)
-		int var3 = (color1 & -16777216) >> 24 & 255;
-		int var4 = (color2 & -16777216) >> 24 & 255;
-		return (var3 + var4 >> 1 << 24) + ((color1 & 16711422) + (color2 & 16711422) >> 1);
-	}
-
-	// Spout End
 
 	private int alphaBlend(int var1, int var2) {
 		int var3 = (var1 & -16777216) >> 24 & 255;

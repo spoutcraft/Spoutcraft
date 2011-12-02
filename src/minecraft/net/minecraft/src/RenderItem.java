@@ -98,8 +98,8 @@ public class RenderItem extends Render {
 		} else {
 			this.loadTexture("/gui/items.png");
 		}
-		if (blockType != null || (!custom && var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType()))) {
 		//Spout end
+		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
 			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
 			float var22 = 0.25F;
 			var20 = Block.blocksList[var10.itemID].getRenderType();

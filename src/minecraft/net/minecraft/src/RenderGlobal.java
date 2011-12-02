@@ -355,7 +355,7 @@ public class RenderGlobal implements IWorldAccess {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].markDirty();
 						this.sortedWorldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4];
 						this.worldRenderersToUpdate.add(this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4]);
-						var2 += 4; // Spout
+						var2 += 3;
 					}
 				}
 			}
@@ -1798,8 +1798,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	}
 
-	public void doNothingWithTileEntity(int var1, int var2, int var3, TileEntity var4) {
-	}
+	public void doNothingWithTileEntity(int var1, int var2, int var3, TileEntity var4) {}
 
 	public void func_28137_f() {
 		GLAllocation.deleteDisplayLists(this.glRenderListBase);

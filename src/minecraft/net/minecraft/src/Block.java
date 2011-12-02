@@ -288,6 +288,7 @@ public class Block {
 	public float slipperiness;
 	private String blockName;
 
+
 	protected Block(int var1, Material var2) {
 		this.blockConstructorCalled = true;
 		this.enableStats = true;
@@ -313,8 +314,7 @@ public class Block {
 		return this;
 	}
 
-	protected void initializeBlock() {
-	}
+	protected void initializeBlock() {}
 
 	protected Block(int var1, int var2, Material var3) {
 		this(var1, var3);
@@ -457,27 +457,21 @@ public class Block {
 		return true;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-	}
+	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
-	}
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {}
 
-	public void onBlockDestroyedByPlayer(World var1, int var2, int var3, int var4, int var5) {
-	}
+	public void onBlockDestroyedByPlayer(World var1, int var2, int var3, int var4, int var5) {}
 
-	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-	}
+	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {}
 
 	public int tickRate() {
 		return 10;
 	}
 
-	public void onBlockAdded(World var1, int var2, int var3, int var4) {
-	}
+	public void onBlockAdded(World var1, int var2, int var3, int var4) {}
 
-	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
-	}
+	public void onBlockRemoval(World var1, int var2, int var3, int var4) {}
 
 	public int quantityDropped(Random var1) {
 		return 1;
@@ -656,8 +650,7 @@ public class Block {
 		return var1 == null ? false : var1.xCoord >= this.minX && var1.xCoord <= this.maxX && var1.yCoord >= this.minY && var1.yCoord <= this.maxY;
 	}
 
-	public void onBlockDestroyedByExplosion(World var1, int var2, int var3, int var4) {
-	}
+	public void onBlockDestroyedByExplosion(World var1, int var2, int var3, int var4) {}
 
 	public int getRenderBlockPass() {
 		return 0;
@@ -676,11 +669,9 @@ public class Block {
 		return false;
 	}
 
-	public void onEntityWalking(World var1, int var2, int var3, int var4, Entity var5) {
-	}
+	public void onEntityWalking(World var1, int var2, int var3, int var4, Entity var5) {}
 
-	public void onBlockPlaced(World var1, int var2, int var3, int var4, int var5) {
-	}
+	public void onBlockPlaced(World var1, int var2, int var3, int var4, int var5) {}
 
 	//Spout start
 	public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
@@ -691,11 +682,9 @@ public class Block {
 	}
 	//Spout end
 
-	public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {
-	}
+	public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {}
 
-	public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {
-	}
+	public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {}
 
 	public int getBlockColor() {
 		return 16777215;
@@ -717,15 +706,13 @@ public class Block {
 		return false;
 	}
 
-	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-	}
+	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {}
 
 	public boolean isIndirectlyPoweringTo(World var1, int var2, int var3, int var4, int var5) {
 		return false;
 	}
 
-	public void setBlockBoundsForItemRender() {
-	}
+	public void setBlockBoundsForItemRender() {}
 
 	public void harvestBlock(World var1, EntityPlayer var2, int var3, int var4, int var5, int var6) {
 		var2.addStat(StatList.mineBlockStatArray[this.blockID], 1);
@@ -759,8 +746,7 @@ public class Block {
 		return true;
 	}
 
-	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
-	}
+	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {}
 
 	public Block setBlockName(String var1) {
 		this.blockName = "tile." + var1;
@@ -775,8 +761,7 @@ public class Block {
 		return this.blockName;
 	}
 
-	public void powerBlock(World var1, int var2, int var3, int var4, int var5, int var6) {
-	}
+	public void powerBlock(World var1, int var2, int var3, int var4, int var5, int var6) {}
 
 	public boolean getEnableStats() {
 		return this.enableStats;

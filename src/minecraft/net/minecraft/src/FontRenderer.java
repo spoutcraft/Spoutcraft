@@ -12,6 +12,7 @@ import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 //Spout HD Start
+import com.pclewis.mcpatcher.mod.FontUtils;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 //Spout HD End
@@ -24,6 +25,9 @@ public class FontRenderer {
 	private int fontDisplayLists;
 	private IntBuffer buffer = GLAllocation.createDirectIntBuffer(1024 /* GL_FRONT_LEFT */);
 	public Random field_41064_c = new Random();
+// Spout HD Start
+	public float[] charWidthf;
+// Spout HD End
 
 	public FontRenderer(GameSettings var1, String var2, RenderEngine var3) {
 		BufferedImage var4;
@@ -38,109 +42,63 @@ public class FontRenderer {
 		int var5 = var4.getWidth();
 		int var6 = var4.getHeight();
 		int[] var7 = new int[var5 * var6];
+// Spout HD Start
 		var4.getRGB(0, 0, var5, var6, var7, 0, var5);
-		int var8 = 0;
+		this.charWidthf = FontUtils.computeCharWidths(var2, var4, var7, this.charWidth);
+		this.fontTextureName = var3.allocateAndSetupTexture(var4);
+		this.fontDisplayLists = GLAllocation.generateDisplayLists(288);
+		Tessellator var8 = Tessellator.instance;
 
 		int var9;
 		int var10;
 		int var11;
-		int var12;
-		int var15;
-		int var16;
-		while (var8 < 256) {
-			var9 = var8 % 16;
-			var10 = var8 / 16;
-			// Spout HD Start
-			var11 = var5 / 16 - 1;
-			// Spout HD End
-
-			while (true) {
-				if (var11 >= 0) {
-					// Spout HD Start
-					var12 = var9 * (var5 / 16) + var11;
-					// Spout HD End
-					boolean var13 = true;
-					// Spout HD Start
-					for (int var14 = 0; var14 < var5 / 16 && var13; ++var14) {
-						var15 = (var10 * (var5 / 16) + var14) * var5;
-						// Spout HD End
-						var16 = var7[var12 + var15] & 255;
-						if (var16 > 0) {
-							var13 = false;
-						}
-					}
-
-					if (var13) {
-						--var11;
-						continue;
-					}
-				}
-
-				if (var8 == 32) {
-					// Spout HD Start
-					var11 = var5 / 64;
-					// Spout HD End
-				}
-				// Spout HD Start
-				this.charWidth[var8] = (128 * var11 + 256) / var5;
-				// Spout HD End
-
-				++var8;
-				break;
-			}
-		}
-
-		this.fontTextureName = var3.allocateAndSetupTexture(var4);
-		this.fontDisplayLists = GLAllocation.generateDisplayLists(288);
-		Tessellator var19 = Tessellator.instance;
-
 		for (var9 = 0; var9 < 256; ++var9) {
 			GL11.glNewList(this.fontDisplayLists + var9, 4864 /* GL_COMPILE */);
-			var19.startDrawingQuads();
+			var8.startDrawingQuads();
 			var10 = var9 % 16 * 8;
 			var11 = var9 / 16 * 8;
-			float var20 = 7.99F;
-			float var21 = 0.0F;
-			float var24 = 0.0F;
-			var19.addVertexWithUV(0.0D, (double) (0.0F + var20), 0.0D, (double) ((float) var10 / 128.0F + var21), (double) (((float) var11 + var20) / 128.0F + var24));
-			var19.addVertexWithUV((double) (0.0F + var20), (double) (0.0F + var20), 0.0D, (double) (((float) var10 + var20) / 128.0F + var21), (double) (((float) var11 + var20) / 128.0F + var24));
-			var19.addVertexWithUV((double) (0.0F + var20), 0.0D, 0.0D, (double) (((float) var10 + var20) / 128.0F + var21), (double) ((float) var11 / 128.0F + var24));
-			var19.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) ((float) var10 / 128.0F + var21), (double) ((float) var11 / 128.0F + var24));
-			var19.draw();
-			GL11.glTranslatef((float) this.charWidth[var9], 0.0F, 0.0F);
+			float var12 = 7.99F;
+			float var13 = 0.0F;
+			float var14 = 0.0F;
+			var8.addVertexWithUV(0.0D, (double)(0.0F + var12), 0.0D, (double)((float)var10 / 128.0F + var13), (double)(((float)var11 + var12) / 128.0F + var14));
+			var8.addVertexWithUV((double)(0.0F + var12), (double)(0.0F + var12), 0.0D, (double)(((float)var10 + var12) / 128.0F + var13), (double)(((float)var11 + var12) / 128.0F + var14));
+			var8.addVertexWithUV((double)(0.0F + var12), 0.0D, 0.0D, (double)(((float)var10 + var12) / 128.0F + var13), (double)((float)var11 / 128.0F + var14));
+			var8.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)((float)var10 / 128.0F + var13), (double)((float)var11 / 128.0F + var14));
+			var8.draw();
+			GL11.glTranslatef(this.charWidthf[var9], 0.0F, 0.0F);
 			GL11.glEndList();
 		}
 
 		for (var9 = 0; var9 < 32; ++var9) {
 			var10 = (var9 >> 3 & 1) * 85;
 			var11 = (var9 >> 2 & 1) * 170 + var10;
-			var12 = (var9 >> 1 & 1) * 170 + var10;
-			int var22 = (var9 >> 0 & 1) * 170 + var10;
+			int var19 = (var9 >> 1 & 1) * 170 + var10;
+			int var20 = (var9 >> 0 & 1) * 170 + var10;
 			if (var9 == 6) {
 				var11 += 85;
 			}
 
-			boolean var23 = var9 >= 16;
+			boolean var21 = var9 >= 16;
 			if (var1.anaglyph) {
-				var15 = (var11 * 30 + var12 * 59 + var22 * 11) / 100;
-				var16 = (var11 * 30 + var12 * 70) / 100;
-				int var17 = (var11 * 30 + var22 * 70) / 100;
+				int var15 = (var11 * 30 + var19 * 59 + var20 * 11) / 100;
+				int var16 = (var11 * 30 + var19 * 70) / 100;
+				int var17 = (var11 * 30 + var20 * 70) / 100;
 				var11 = var15;
-				var12 = var16;
-				var22 = var17;
+				var19 = var16;
+				var20 = var17;
 			}
 
-			if (var23) {
+			if(var21) {
 				var11 /= 4;
-				var12 /= 4;
-				var22 /= 4;
+				var19 /= 4;
+				var20 /= 4;
 			}
 
 			GL11.glNewList(this.fontDisplayLists + 256 + var9, 4864 /* GL_COMPILE */);
-			GL11.glColor3f((float) var11 / 255.0F, (float) var12 / 255.0F, (float) var22 / 255.0F);
+			GL11.glColor3f((float)var11 / 255.0F, (float)var19 / 255.0F, (float)var20 / 255.0F);
 			GL11.glEndList();
 		}
-
+// Spout HD End
 	}
 
 	public void drawStringWithShadow(String var1, int var2, int var3, int var4) {
@@ -297,20 +255,24 @@ public class FontRenderer {
 		if (var1 == null) {
 			return 0;
 		} else {
-			int var2 = 0;
-
+// Spout HD Start
+			float var2 = 0.0F;
+// Spout HD End
 			for (int var3 = 0; var3 < var1.length(); ++var3) {
 				if (var1.charAt(var3) == 167) {
 					++var3;
 				} else {
 					int var4 = ChatAllowedCharacters.allowedCharacters.indexOf(var1.charAt(var3));
 					if (var4 >= 0) {
-						var2 += this.charWidth[var4 + 32];
+// Spout HD Start
+						var2 += this.charWidthf[var4 + 32];
+// Spout HD End
 					}
 				}
 			}
-
-			return var2;
+// Spout HD Start
+			return Math.round(var2);
+// Spout HD End
 		}
 	}
 
@@ -404,13 +366,13 @@ public class FontRenderer {
 					var6 += this.field_41063_b;
 				}
 			}
-
-			// Spout HD Start
-			if (var6 < var5 / 16) {
-				var6 += 8;
+// Spout HD Start
+			if(var6 < this.field_41063_b) {
+				var6 += this.field_41063_b;
 			}
+
 			return var6;
-			// Spout HD End
+// Spout HD Start
 		}
 	}
 
@@ -418,7 +380,9 @@ public class FontRenderer {
 	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
 		this.charWidth = new int[256];
 		this.fontTextureName = 0;
+		this.field_41063_b = 8;
 		this.buffer = GLAllocation.createDirectIntBuffer(1024 /* GL_FRONT_LEFT */);
+		this.field_41064_c = new Random();
 
 		BufferedImage var4;
 		try {
@@ -431,96 +395,58 @@ public class FontRenderer {
 		int var6 = var4.getHeight();
 		int[] var7 = new int[var5 * var6];
 		var4.getRGB(0, 0, var5, var6, var7, 0, var5);
-		int var8 = 0;
+		this.charWidthf = FontUtils.computeCharWidths(var2, var4, var7, this.charWidth);
+		this.fontTextureName = var3.allocateAndSetupTexture(var4);
+		this.fontDisplayLists = GLAllocation.generateDisplayLists(288);
+		Tessellator var8 = Tessellator.instance;
 
 		int var9;
 		int var10;
 		int var11;
-		int var12;
-		int var15;
-		int var16;
-		while (var8 < 256) {
-			var9 = var8 % 16;
-			var10 = var8 / 16;
-			var11 = var5 / 16 - 1;
-
-			while (true) {
-				if (var11 >= 0) {
-					var12 = var9 * (var5 / 16) + var11;
-					boolean var13 = true;
-
-					for (int var14 = 0; var14 < var5 / 16 && var13; ++var14) {
-						var15 = (var10 * (var5 / 16) + var14) * var5;
-						var16 = var7[var12 + var15] & 255;
-						if (var16 > 0) {
-							var13 = false;
-						}
-					}
-
-					if (var13) {
-						--var11;
-						continue;
-					}
-				}
-
-				if (var8 == 32) {
-					var11 = var5 / 64;
-				}
-
-				this.charWidth[var8] = (128 * var11 + 256) / var5;
-				++var8;
-				break;
-			}
-		}
-
-		this.fontTextureName = var3.allocateAndSetupTexture(var4);
-		this.fontDisplayLists = GLAllocation.generateDisplayLists(288);
-		Tessellator var19 = Tessellator.instance;
-
 		for (var9 = 0; var9 < 256; ++var9) {
 			GL11.glNewList(this.fontDisplayLists + var9, 4864 /* GL_COMPILE */);
-			var19.startDrawingQuads();
+			var8.startDrawingQuads();
 			var10 = var9 % 16 * 8;
 			var11 = var9 / 16 * 8;
-			float var20 = 7.99F;
-			float var21 = 0.0F;
-			float var24 = 0.0F;
-			var19.addVertexWithUV(0.0D, (double) (0.0F + var20), 0.0D, (double) ((float) var10 / 128.0F + var21), (double) (((float) var11 + var20) / 128.0F + var24));
-			var19.addVertexWithUV((double) (0.0F + var20), (double) (0.0F + var20), 0.0D, (double) (((float) var10 + var20) / 128.0F + var21), (double) (((float) var11 + var20) / 128.0F + var24));
-			var19.addVertexWithUV((double) (0.0F + var20), 0.0D, 0.0D, (double) (((float) var10 + var20) / 128.0F + var21), (double) ((float) var11 / 128.0F + var24));
-			var19.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) ((float) var10 / 128.0F + var21), (double) ((float) var11 / 128.0F + var24));
-			var19.draw();
-			GL11.glTranslatef((float) this.charWidth[var9], 0.0F, 0.0F);
+			float var12 = 7.99F;
+			float var13 = 0.0F;
+			float var14 = 0.0F;
+			var8.addVertexWithUV(0.0D, (double)(0.0F + var12), 0.0D, (double)((float)var10 / 128.0F + var13), (double)(((float)var11 + var12) / 128.0F + var14));
+			var8.addVertexWithUV((double)(0.0F + var12), (double)(0.0F + var12), 0.0D, (double)(((float)var10 + var12) / 128.0F + var13), (double)(((float)var11 + var12) / 128.0F + var14));
+			var8.addVertexWithUV((double)(0.0F + var12), 0.0D, 0.0D, (double)(((float)var10 + var12) / 128.0F + var13), (double)((float)var11 / 128.0F + var14));
+			var8.addVertexWithUV(0.0D, 0.0D, 0.0D, (double)((float)var10 / 128.0F + var13), (double)((float)var11 / 128.0F + var14));
+			var8.draw();
+			GL11.glTranslatef(this.charWidthf[var9], 0.0F, 0.0F);
 			GL11.glEndList();
 		}
 
 		for (var9 = 0; var9 < 32; ++var9) {
 			var10 = (var9 >> 3 & 1) * 85;
 			var11 = (var9 >> 2 & 1) * 170 + var10;
-			var12 = (var9 >> 1 & 1) * 170 + var10;
-			int var22 = (var9 >> 0 & 1) * 170 + var10;
+			int var19 = (var9 >> 1 & 1) * 170 + var10;
+			int var20 = (var9 >> 0 & 1) * 170 + var10;
 			if (var9 == 6) {
 				var11 += 85;
 			}
 
-			boolean var23 = var9 >= 16;
+			boolean var21 = var9 >= 16;
 			if (var1.anaglyph) {
-				var15 = (var11 * 30 + var12 * 59 + var22 * 11) / 100;
-				var16 = (var11 * 30 + var12 * 70) / 100;
-				int var17 = (var11 * 30 + var22 * 70) / 100;
+				int var15 = (var11 * 30 + var19 * 59 + var20 * 11) / 100;
+				int var16 = (var11 * 30 + var19 * 70) / 100;
+				int var17 = (var11 * 30 + var20 * 70) / 100;
 				var11 = var15;
-				var12 = var16;
-				var22 = var17;
+				var19 = var16;
+				var20 = var17;
 			}
 
-			if (var23) {
+			if(var21) {
 				var11 /= 4;
-				var12 /= 4;
-				var22 /= 4;
+				var19 /= 4;
+				var20 /= 4;
 			}
 
 			GL11.glNewList(this.fontDisplayLists + 256 + var9, 4864 /* GL_COMPILE */);
-			GL11.glColor3f((float) var11 / 255.0F, (float) var12 / 255.0F, (float) var22 / 255.0F);
+			GL11.glColor3f((float)var11 / 255.0F, (float)var19 / 255.0F, (float)var20 / 255.0F);
 			GL11.glEndList();
 		}
 		// Spout HD End

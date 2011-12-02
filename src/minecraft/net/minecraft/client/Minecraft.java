@@ -290,7 +290,6 @@ public abstract class Minecraft implements Runnable {
 		this.gameSettings = new GameSettings(this, this.mcDataDir);
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
 		// Spout Start
-		TextureUtils.setMinecraft(this);
 		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion());
 		// Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
@@ -334,15 +333,6 @@ public abstract class Minecraft implements Runnable {
 		this.checkGLError("Startup");
 		this.glCapabilities = new OpenGlCapsChecker();
 		this.sndManager.loadSoundSettings(this.gameSettings);
-		this.renderEngine.registerTextureFX(this.textureLavaFX);
-		this.renderEngine.registerTextureFX(this.textureWaterFX);
-		this.renderEngine.registerTextureFX(new TexturePortalFX());
-		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
-		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
-		this.renderEngine.registerTextureFX(new TextureWaterFlowFX());
-		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
 		this.renderGlobal = new RenderGlobal(this, this.renderEngine);
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
@@ -1796,8 +1786,11 @@ public abstract class Minecraft implements Runnable {
 				this.theWorld.getBlockId(var6.posX + var10, 64, var6.posZ + var8);
 				if (!this.playerController.func_35643_e()) {
 					/*
-					 * while(true) { if(this.theWorld.updatingLighting()) {
-					 * continue; } }
+					while(true) {
+						if(this.theWorld.updatingLighting()) {
+							continue;
+						}
+					}
 					 */
 				}
 			}

@@ -34,8 +34,6 @@ public class GuiCreateWorld extends GuiScreen {
 	private String field_41048_x;
 	private String field_41047_y;
 	
-	public static boolean normalWorld = true; //Spout world type
-
 
 	public GuiCreateWorld(GuiScreen var1) {	
 		this.parentGuiScreen = var1;
@@ -51,7 +49,6 @@ public class GuiCreateWorld extends GuiScreen {
 	public void initGui() {
 		//Spout start
 		Keyboard.enableRepeatEvents(true);
-		normalWorld = true;
 		//Spout end
 		StringTranslate var1 = StringTranslate.getInstance();
 		Keyboard.enableRepeatEvents(true);
@@ -64,16 +61,16 @@ public class GuiCreateWorld extends GuiScreen {
 		this.field_35372_s.drawButton = false;
 		this.controlList.add(this.field_35371_t = new GuiButton(5, this.width / 2 + 5, 100, 150, 20, var1.translateKey("selectWorld.mapType")));
 		this.field_35371_t.drawButton = false;
-		this.field_35371_t.enabled = true; //Spout false->true
+		this.field_35371_t.enabled = false;
 		this.textboxWorldName = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41047_y);
 		this.textboxWorldName.isFocused = true;
 		this.textboxWorldName.setMaxStringLength(32);
 		this.textboxSeed = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41048_x);
-		this.func_22129_j();
+		this.makeUseableName();
 		this.func_35363_g();
 	}
 
-	private void func_22129_j() {
+	private void makeUseableName() {
 		this.folderName = this.textboxWorldName.getText().trim();
 		char[] var1 = ChatAllowedCharacters.allowedCharactersArray;
 		int var2 = var1.length;
@@ -102,15 +99,8 @@ public class GuiCreateWorld extends GuiScreen {
 			this.field_35372_s.displayString = this.field_35372_s.displayString + var1.translateKey("options.off");
 		}
 
-		//Spout start
-		if (normalWorld) {
-			this.field_35371_t.displayString = StringTranslate.getInstance().translateKey("selectWorld.mapType") + " " + StringTranslate.getInstance().translateKey("selectWorld.mapType.normal");
+		this.field_35371_t.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey("selectWorld.mapType.normal");
 		}
-		else {
-			this.field_35371_t.displayString = StringTranslate.getInstance().translateKey("selectWorld.mapType") + " " + "Skylands";
-		}
-		//Spout end
-	}
 
 	public static String generateUnusedFolderName(ISaveFormat var0, String var1) {
 		while(var0.getWorldInfo(var1) != null) {
@@ -193,17 +183,6 @@ public class GuiCreateWorld extends GuiScreen {
 				this.field_35365_g = !this.field_35365_g;
 				this.func_35363_g();
 			}
-			//Spout start
-			else if (var1.id == 5) {
-				normalWorld = !normalWorld;
-				if (normalWorld) {
-					this.field_35371_t.displayString = StringTranslate.getInstance().translateKey("selectWorld.mapType") + " " + StringTranslate.getInstance().translateKey("selectWorld.mapType.normal");
-				}
-				else {
-					this.field_35371_t.displayString = StringTranslate.getInstance().translateKey("selectWorld.mapType") + " " + "Skylands";
-				}
-			}
-			//Spout end
 
 		}
 	}
@@ -222,7 +201,7 @@ public class GuiCreateWorld extends GuiScreen {
 		}
 
 		((GuiButton)this.controlList.get(0)).enabled = this.textboxWorldName.getText().length() > 0;
-		this.func_22129_j();
+		this.makeUseableName();
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {

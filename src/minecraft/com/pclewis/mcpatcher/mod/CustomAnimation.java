@@ -9,14 +9,7 @@ import net.minecraft.src.TextureFX;
 
 public class CustomAnimation extends TextureFX {
 
-	private int frame;
-	private int numFrames;
-	private byte[] src;
-	private byte[] temp;
-	private int minScrollDelay = -1;
-	private int maxScrollDelay = -1;
-	private int timer = -1;
-	private boolean isScrolling;
+   private CustomAnimation.Delegate delegate;
 	private static Random rand = new Random();
 
 
@@ -25,42 +18,24 @@ public class CustomAnimation extends TextureFX {
 		this.iconIndex = var1;
 		this.tileImage = var2;
 		this.tileSize = var3;
-		this.minScrollDelay = var5;
-		this.maxScrollDelay = var6;
-		this.isScrolling = var5 >= 0;
 		BufferedImage var7 = null;
-		String var8 = "custom_" + var4 + ".png";
+      String var8 = var2 == 0?"/terrain.png":"/gui/items.png";
 
 		try {
-			var7 = TextureUtils.getResourceAsBufferedImage("/" + var8);
-		} catch (IOException var14) {
+         String var9 = "/custom_" + var4 + ".png";
+         var7 = TextureUtils.getResourceAsBufferedImage(var9);
+         if(var7 != null) {
+            var8 = var9;
+         }
+      } catch (IOException var10) {
 			;
 		}
 
 		//MCPatcherUtils.log("new CustomAnimation %s, src=%s, buffer size=0x%x, tile=%d", new Object[]{var4, var7 == null?"terrain.png":var8, Integer.valueOf(this.imageData.length), Integer.valueOf(this.iconIndex)});
 		if(var7 == null) {
-			BufferedImage var9;
-			try {
-				var9 = TextureUtils.getResourceAsBufferedImage("/terrain.png");
-			} catch (IOException var13) {
-				var13.printStackTrace();
-				return;
-			}
-
-			int var10 = var1 % 16 * TileSize.int_size;
-			int var11 = var1 / 16 * TileSize.int_size;
-			int[] var12 = new int[TileSize.int_numPixels];
-			var9.getRGB(var10, var11, TileSize.int_size, TileSize.int_size, var12, 0, TileSize.int_size);
-			ARGBtoRGBA(var12, this.imageData);
-			if(this.isScrolling) {
-				this.temp = new byte[TileSize.int_size * 4];
-			}
+         this.delegate = new CustomAnimation.Tile(var8, var1, var5, var6);
 		} else {
-			this.numFrames = var7.getHeight() / var7.getWidth();
-			int[] var15 = new int[var7.getWidth() * var7.getHeight()];
-			var7.getRGB(0, 0, var7.getWidth(), var7.getHeight(), var15, 0, TileSize.int_size);
-			this.src = new byte[var15.length * 4];
-			ARGBtoRGBA(var15, this.src);
+         this.delegate = new CustomAnimation.Strip(var7);
 		}
 
 	}
@@ -77,22 +52,90 @@ public class CustomAnimation extends TextureFX {
 	}
 
 	public void onTick() {
-		if(this.src != null) {
-			if(++this.frame >= this.numFrames) {
-				this.frame = 0;
+      this.delegate.onTick();
 			}
 
-			System.arraycopy(this.src, this.frame * TileSize.int_size * TileSize.int_size * 4, this.imageData, 0, TileSize.int_size * TileSize.int_size * 4);
-		} else if(this.isScrolling && (this.maxScrollDelay <= 0 || --this.timer <= 0)) {
+
+   private class Strip implements CustomAnimation.Delegate {
+
+      private final int oneFrame;
+      private final byte[] src;
+      private final int numFrames;
+      private int currentFrame;
+
+
+      Strip(BufferedImage var2) {
+         this.oneFrame = TileSize.int_size * TileSize.int_size * 4;
+         this.numFrames = var2.getHeight() / var2.getWidth();
+         int[] var3 = new int[var2.getWidth() * var2.getHeight()];
+         var2.getRGB(0, 0, var2.getWidth(), var2.getHeight(), var3, 0, TileSize.int_size);
+         this.src = new byte[var3.length * 4];
+         CustomAnimation.ARGBtoRGBA(var3, this.src);
+      }
+
+      public void onTick() {
+         if(++this.currentFrame >= this.numFrames) {
+            this.currentFrame = 0;
+         }
+
+         System.arraycopy(this.src, this.currentFrame * this.oneFrame, CustomAnimation.this.imageData, 0, this.oneFrame);
+      }
+   }
+
+   private class Tile implements CustomAnimation.Delegate {
+
+      private final int allButOneRow;
+      private final int oneRow;
+      private final int minScrollDelay;
+      private final int maxScrollDelay;
+      private final boolean isScrolling;
+      private final byte[] temp;
+      private int timer;
+
+
+      Tile(String var2, int var3, int var4, int var5) {
+         this.oneRow = TileSize.int_size * 4;
+         this.allButOneRow = (TileSize.int_size - 1) * this.oneRow;
+         this.minScrollDelay = var4;
+         this.maxScrollDelay = var5;
+         this.isScrolling = this.minScrollDelay >= 0;
+         if(this.isScrolling) {
+            this.temp = new byte[this.oneRow];
+         } else {
+            this.temp = null;
+         }
+
+         BufferedImage var6;
+         try {
+            var6 = TextureUtils.getResourceAsBufferedImage(var2);
+         } catch (IOException var10) {
+            var10.printStackTrace();
+            return;
+         }
+
+         int var7 = var3 % 16 * TileSize.int_size;
+         int var8 = var3 / 16 * TileSize.int_size;
+         int[] var9 = new int[TileSize.int_numPixels];
+         var6.getRGB(var7, var8, TileSize.int_size, TileSize.int_size, var9, 0, TileSize.int_size);
+         CustomAnimation.ARGBtoRGBA(var9, CustomAnimation.this.imageData);
+      }
+
+      public void onTick() {
+         if(this.isScrolling && (this.maxScrollDelay <= 0 || --this.timer <= 0)) {
 			if(this.maxScrollDelay > 0) {
-				this.timer = rand.nextInt(this.maxScrollDelay - this.minScrollDelay + 1) + this.minScrollDelay;
+               this.timer = CustomAnimation.rand.nextInt(this.maxScrollDelay - this.minScrollDelay + 1) + this.minScrollDelay;
 			}
 
-			System.arraycopy(this.imageData, (TileSize.int_size - 1) * TileSize.int_size * 4, this.temp, 0, TileSize.int_size * 4);
-			System.arraycopy(this.imageData, 0, this.imageData, TileSize.int_size * 4, TileSize.int_size * (TileSize.int_size - 1) * 4);
-			System.arraycopy(this.temp, 0, this.imageData, 0, TileSize.int_size * 4);
+            System.arraycopy(CustomAnimation.this.imageData, this.allButOneRow, this.temp, 0, this.oneRow);
+            System.arraycopy(CustomAnimation.this.imageData, 0, CustomAnimation.this.imageData, this.oneRow, this.allButOneRow);
+            System.arraycopy(this.temp, 0, CustomAnimation.this.imageData, 0, this.oneRow);
 		}
 
 	}
+   }
 
+   private interface Delegate {
+
+      void onTick();
+   }
 }
