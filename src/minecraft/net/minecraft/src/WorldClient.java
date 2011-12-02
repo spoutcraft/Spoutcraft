@@ -25,6 +25,7 @@ public class WorldClient extends World {
 	private Set entityList = new HashSet();
 	private Set entitySpawnQueue = new HashSet();
 
+
 	public WorldClient(NetClientHandler var1, WorldSettings var2, int var3, int var4) {
 		super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(var3), var2);
 		this.sendQueue = var1;
@@ -76,11 +77,9 @@ public class WorldClient extends World {
 		this.setSpawnPoint(new ChunkCoordinates(8, 64, 8));
 	}
 
-	protected void updateBlocksAndPlayCaveSounds() {
-	}
+	protected void updateBlocksAndPlayCaveSounds() {}
 
-	public void scheduleBlockUpdate(int var1, int var2, int var3, int var4, int var5) {
-	}
+	public void scheduleBlockUpdate(int var1, int var2, int var3, int var4, int var5) {}
 
 	public boolean tickUpdates(boolean var1) {
 		return false;

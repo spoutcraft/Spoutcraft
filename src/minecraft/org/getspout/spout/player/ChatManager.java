@@ -434,6 +434,8 @@ public class ChatManager {
 	}
 	
 	public static String formatUrl(String message) {
+		//TODO make this work w/o whiting out all the text that follows...
+		/*
 		int start = -1;
 		if (start == -1) {
 			start = message.indexOf("http://");
@@ -471,7 +473,7 @@ public class ChatManager {
 			}
 			StringBuffer format = new StringBuffer(begin).append(ChatColor.AQUA.toString()).append(message.substring(start, endPos + 1)).append(ChatColor.WHITE.toString()).append(ending);
 			return format.toString();
-		}
+		}*/
 		return message;
 	}
 }

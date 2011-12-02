@@ -7,10 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.File;
-import javax.imageio.stream.FileImageInputStream;
 import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
 
 import org.getspout.spout.client.SpoutClient;
 
@@ -50,6 +50,7 @@ public class TextureUtils {
 	private static boolean customLava = true;
 	private static boolean customWater = true;
 	private static boolean customPortal = true;
+    private static boolean customOther = true;
 	public static final int LAVA_STILL_TEXTURE_INDEX = 237;
 	public static final int LAVA_FLOWING_TEXTURE_INDEX = 238;
 	public static final int WATER_STILL_TEXTURE_INDEX = 205;
@@ -59,6 +60,7 @@ public class TextureUtils {
 	public static final int PORTAL_TEXTURE_INDEX = 14;
 	private static HashMap expectedColumns = new HashMap();
 	private static boolean useTextureCache = false;
+    private static boolean reclaimGLMemory = false;
 	private static TexturePackBase lastTexturePack = null;
 	private static HashMap cache = new HashMap();
 
@@ -75,7 +77,13 @@ public class TextureUtils {
 	}
 
 	public static void setFontRenderer() {
-		minecraft.fontRenderer.initialize(minecraft.gameSettings, "/font/default.png", minecraft.renderEngine);
+		//MCPatcherUtils.log("setFontRenderer()", new Object[0]);
+		Minecraft var0 = SpoutClient.getHandle();
+		var0.fontRenderer.initialize(var0.gameSettings, "/font/default.png", var0.renderEngine);
+		if(var0.standardGalacticFontRenderer != var0.fontRenderer) {
+			var0.standardGalacticFontRenderer.initialize(var0.gameSettings, "/font/alternate.png", var0.renderEngine);
+		}
+
 	}
 
 	public static void registerTextureFX(List var0, TextureFX var1) {
@@ -89,32 +97,35 @@ public class TextureUtils {
 
 	private static TextureFX refreshTextureFX(TextureFX var0) {
 		if(!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX) && !(var0 instanceof CustomAnimation)) {
-			Class var1 = var0.getClass();
+			System.out.printf("attempting to refresh unknown animation %s\n", new Object[]{var0.getClass().getName()});
+			Minecraft var1 = SpoutClient.getHandle();
+			Class var2 = var0.getClass();
 
-			for(int var2 = 0; var2 < 3; ++var2) {
+			for(int var3 = 0; var3 < 3; ++var3) {
 				try {
-					Constructor var3;
-					switch(var2) {
+					Constructor var4;
+					switch(var3) {
 					case 0:
-						var3 = var1.getConstructor(new Class[]{Minecraft.class, Integer.TYPE});
-						return (TextureFX)var3.newInstance(new Object[]{minecraft, Integer.valueOf(TileSize.int_size)});
+						var4 = var2.getConstructor(new Class[]{Minecraft.class, Integer.TYPE});
+						return (TextureFX)var4.newInstance(new Object[]{var1, Integer.valueOf(TileSize.int_size)});
 					case 1:
-						var3 = var1.getConstructor(new Class[]{Minecraft.class});
-						return (TextureFX)var3.newInstance(new Object[]{minecraft});
+						var4 = var2.getConstructor(new Class[]{Minecraft.class});
+						return (TextureFX)var4.newInstance(new Object[]{var1});
 					case 2:
-						var3 = var1.getConstructor(new Class[0]);
-						return (TextureFX)var3.newInstance(new Object[0]);
+						var4 = var2.getConstructor(new Class[0]);
+						return (TextureFX)var4.newInstance(new Object[0]);
 					}
-				} catch (NoSuchMethodException var5) {
+				} catch (NoSuchMethodException var6) {
 					;
-				} catch (IllegalAccessException var6) {
+				} catch (IllegalAccessException var7) {
 					;
-				} catch (Exception var7) {
-					var7.printStackTrace();
+				} catch (Exception var8) {
+					var8.printStackTrace();
 				}
 			}
 
 			if(var0.imageData.length != TileSize.int_numBytes) {
+				//MCPatcherUtils.log("resizing %s buffer from %d to %d bytes", new Object[]{var2.getName(), Integer.valueOf(var0.imageData.length), Integer.valueOf(TileSize.int_numBytes)});
 				var0.imageData = new byte[TileSize.int_numBytes];
 			}
 
@@ -138,11 +149,12 @@ public class TextureUtils {
 		}
 
 		var0.clear();
-		var0.add(new TextureCompassFX(minecraft));
-		var0.add(new TextureWatchFX(minecraft));
-		TexturePackBase var6 = getSelectedTexturePack();
-		boolean var7 = var6 == null || var6 instanceof TexturePackDefault;
-		if(!var7 && customLava) {
+		Minecraft var9 = SpoutClient.getHandle();
+		var0.add(new TextureCompassFX(var9));
+		var0.add(new TextureWatchFX(var9));
+		TexturePackBase var10 = getSelectedTexturePack();
+		boolean var11 = var10 == null || var10 instanceof TexturePackDefault;
+		if(!var11 && customLava) {
 			var0.add(new CustomAnimation(237, 0, 1, "lava_still", -1, -1));
 			var0.add(new CustomAnimation(238, 0, 2, "lava_flowing", 3, 6));
 		} else if(animatedLava) {
@@ -150,7 +162,7 @@ public class TextureUtils {
 			var0.add(new TextureLavaFlowFX());
 		}
 
-		if(!var7 && customWater) {
+		if(!var11 && customWater) {
 			var0.add(new CustomAnimation(205, 0, 1, "water_still", -1, -1));
 			var0.add(new CustomAnimation(206, 0, 2, "water_flowing", 0, 0));
 		} else if(animatedWater) {
@@ -158,7 +170,7 @@ public class TextureUtils {
 			var0.add(new TextureWaterFlowFX());
 		}
 
-		if(!var7 && customFire && hasResource("/custom_fire_e_w.png") && hasResource("/custom_fire_n_s.png")) {
+		if(!var11 && customFire && hasResource("/custom_fire_e_w.png") && hasResource("/custom_fire_n_s.png")) {
 			var0.add(new CustomAnimation(47, 0, 1, "fire_n_s", 2, 4));
 			var0.add(new CustomAnimation(31, 0, 1, "fire_e_w", 2, 4));
 		} else if(animatedFire) {
@@ -166,25 +178,38 @@ public class TextureUtils {
 			var0.add(new TextureFlamesFX(1));
 		}
 
-		if(!var7 && customPortal && hasResource("/custom_portal.png")) {
+		if(!var11 && customPortal && hasResource("/custom_portal.png")) {
 			var0.add(new CustomAnimation(14, 0, 1, "portal", -1, -1));
 		} else if(animatedPortal) {
 			var0.add(new TexturePortalFX());
 		}
 
-		Iterator var8 = var1.iterator();
+		if(customOther) {
+			for(int var5 = 0; var5 < 2; ++var5) {
+				String var6 = var5 == 0?"terrain":"item";
 
-		TextureFX var5;
-		while(var8.hasNext()) {
-			var5 = (TextureFX)var8.next();
-			var0.add(var5);
+				for(int var7 = 0; var7 < 256; ++var7) {
+					String var8 = "/custom_" + var6 + "_" + var7 + ".png";
+					if(hasResource(var8)) {
+						var0.add(new CustomAnimation(var7, var5, 1, var6 + "_" + var7, 2, 4));
+					}
+				}
+		}
 		}
 
-		var8 = var0.iterator();
+		Iterator var12 = var1.iterator();
 
-		while(var8.hasNext()) {
-			var5 = (TextureFX)var8.next();
-			var5.onTick();
+		TextureFX var13;
+		while(var12.hasNext()) {
+			var13 = (TextureFX)var12.next();
+			var0.add(var13);
+		}
+
+		var12 = var0.iterator();
+
+		while(var12.hasNext()) {
+			var13 = (TextureFX)var12.next();
+			var13.onTick();
 		}
 
 		if(ColorizerWater.waterBuffer != ColorizerFoliage.foliageBuffer) {
@@ -197,7 +222,8 @@ public class TextureUtils {
 	}
 
 	public static TexturePackBase getSelectedTexturePack() {
-		return minecraft == null?null:(minecraft.texturePackList == null?null:minecraft.texturePackList.selectedTexturePack);
+		Minecraft var0 = SpoutClient.getHandle();
+		return var0 == null?null:(var0.texturePackList == null?null:var0.texturePackList.selectedTexturePack);
 	}
 
 	public static String getTexturePackName(TexturePackBase var0) {
@@ -208,7 +234,7 @@ public class TextureUtils {
 		var0.clear();
 		int var2 = var0.capacity();
 		int var3 = var1.length;
-		if(var3 > var2 || var2 >= 4 * var3) {
+		if(var3 > var2 || reclaimGLMemory && var2 >= 4 * var3) {
 			var0 = GLAllocation.createDirectByteBuffer(var3);
 		}
 
@@ -219,7 +245,7 @@ public class TextureUtils {
 	}
 
 	public static boolean isRequiredResource(String var0) {
-		return !var0.startsWith("/custom_") && !var0.equals("/terrain_nh.png") && !var0.equals("/terrain_s.png");
+		return !var0.startsWith("/custom_") && !var0.equals("/terrain_nh.png") && !var0.equals("/terrain_s.png") && !var0.matches("^/font/.*\\.properties$") && !var0.matches("^/mob/.*\\d+.png$");
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase var0, String var1) {
@@ -304,7 +330,13 @@ public class TextureUtils {
 				}
 	
 				if(!var3) {
-					Integer var11 = (Integer)expectedColumns.get(var1);
+				Integer var11;
+				if(var1.matches("^/custom_\\w+_\\d+\\.png$")) {
+					var11 = Integer.valueOf(1);
+				} else {
+					var11 = (Integer)expectedColumns.get(var1);
+				}
+
 					if(var11 != null && var2.getWidth() != var11.intValue() * TileSize.int_size) {
 						var2 = resizeImage(var2, var11.intValue() * TileSize.int_size);
 					}
@@ -314,8 +346,8 @@ public class TextureUtils {
 						cache.put(var1, var2);
 					}
 	
-					if(var1.contains("_eyes.")) {
-						//int var5 = 0;
+				if(var1.matches("^/mob/.*_eyes\\d*\\.png$")) {
+					//int var5 = 0;
 	
 						for(int var6 = 0; var6 < var2.getWidth(); ++var6) {
 							for(int var7 = 0; var7 < var2.getHeight(); ++var7) {
@@ -327,9 +359,8 @@ public class TextureUtils {
 							}
 						}
 	
-						//MCPatcherUtils.log("  fixed %d transparent pixels", new Object[]{Integer.valueOf(var5), var1});
-					}
 				}
+			}
 	
 				return var2;
 			}
@@ -407,14 +438,6 @@ public class TextureUtils {
 			var3.printStackTrace();
 		}
 
-	}
-
-	public static void setMinecraft(Minecraft var0) {
-		minecraft = var0;
-	}
-
-	public static Minecraft getMinecraft() {
-		return minecraft;
 	}
 
 	static {
