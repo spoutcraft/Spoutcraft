@@ -12,6 +12,8 @@ import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.WorldSettings;
+
+import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
 
 public class GuiCreateWorld extends GuiScreen {
@@ -34,6 +36,11 @@ public class GuiCreateWorld extends GuiScreen {
 	private String field_41048_x;
 	private String field_41047_y;
 	
+	//Spout start
+	private int height = 128;
+	GuiButton worldHeightButton;
+	//Spout end
+	
 
 	public GuiCreateWorld(GuiScreen var1) {	
 		this.parentGuiScreen = var1;
@@ -55,7 +62,7 @@ public class GuiCreateWorld extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, var1.translateKey("selectWorld.create")));
 		this.controlList.add(new GuiButton(1, this.width / 2 + 5, this.height - 28, 150, 20, var1.translateKey("gui.cancel")));
-		this.controlList.add(this.field_35366_j = new GuiButton(2, this.width / 2 - 75, 100, 150, 20, var1.translateKey("selectWorld.gameMode")));
+		this.controlList.add(this.field_35366_j = new GuiButton(2, this.width / 2 - 75, 150, 150, 20, var1.translateKey("selectWorld.gameMode")));
 		this.controlList.add(this.field_35367_k = new GuiButton(3, this.width / 2 - 75, 172, 150, 20, var1.translateKey("selectWorld.moreWorldOptions")));
 		this.controlList.add(this.field_35372_s = new GuiButton(4, this.width / 2 - 155, 100, 150, 20, var1.translateKey("selectWorld.mapFeatures")));
 		this.field_35372_s.drawButton = false;
@@ -68,6 +75,12 @@ public class GuiCreateWorld extends GuiScreen {
 		this.textboxSeed = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, 60, 200, 20, this.field_41048_x);
 		this.makeUseableName();
 		this.func_35363_g();
+		//Spout start
+		worldHeightButton = new GuiButton(666, this.width / 2 + 5, 130, 150, 20, "World Height: " + getColor() + height);
+		worldHeightButton.drawButton = false;
+		worldHeightButton.enabled = false;
+		this.controlList.add(worldHeightButton);
+		//Spout end
 	}
 
 	private void makeUseableName() {
@@ -146,13 +159,19 @@ public class GuiCreateWorld extends GuiScreen {
 					this.mc.playerController = new PlayerControllerSP(this.mc);
 				}
 
-				this.mc.startWorld(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, var9, this.field_35365_g, this.field_40232_h));
+				this.mc.startWorld(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, var9, this.field_35365_g, this.field_40232_h), height); //Spout
 				this.mc.displayGuiScreen((GuiScreen)null);
 			} else if(var1.id == 3) {
 				this.field_35368_i = !this.field_35368_i;
 				this.field_35366_j.drawButton = !this.field_35368_i;
 				this.field_35372_s.drawButton = this.field_35368_i;
 				this.field_35371_t.drawButton = this.field_35368_i;
+				
+				//Spout start
+				worldHeightButton.drawButton = field_35368_i;
+				worldHeightButton.enabled = worldHeightButton.drawButton;
+				//Spout end
+				
 				StringTranslate var8;
 				if(this.field_35368_i) {
 					var8 = StringTranslate.getInstance();
@@ -183,7 +202,15 @@ public class GuiCreateWorld extends GuiScreen {
 				this.field_35365_g = !this.field_35365_g;
 				this.func_35363_g();
 			}
-
+			//Spout start
+			else if (var1.id == 666) {
+				height *= 2;
+				if (height > 2048) {
+					height = 64;
+				}
+				worldHeightButton.displayString = "World Height: " + getColor() + height;
+			}
+			//Spout end
 		}
 	}
 
@@ -228,11 +255,31 @@ public class GuiCreateWorld extends GuiScreen {
 			this.drawString(this.fontRenderer, var4.translateKey("selectWorld.enterSeed"), this.width / 2 - 100, 47, 10526880);
 			this.drawString(this.fontRenderer, var4.translateKey("selectWorld.seedInfo"), this.width / 2 - 100, 85, 10526880);
 			this.drawString(this.fontRenderer, var4.translateKey("selectWorld.mapFeatures.info"), this.width / 2 - 150, 122, 10526880);
+			
+			//Spout start
+			if (height > 128) {
+				this.drawString(this.fontRenderer, getColor() + "Be careful, doubling the Map Height increases", this.width / 2 - 120, 151, 10526880);
+				this.drawString(this.fontRenderer, getColor()+ " the time for terrain generation exponentially!", this.width / 2 - 120, 161, 10526880);
+			}
+			//Spout end
+
 			this.textboxSeed.drawTextBox();
 		}
 
 		super.drawScreen(var1, var2, var3);
 	}
+	
+	//Spout start
+	private String getColor() {
+		if (height > 256) {
+			return ChatColor.RED.toString();
+		}
+		if (height > 128) {
+			return ChatColor.YELLOW.toString();
+		}
+		return ChatColor.GREEN.toString();
+	}
+	//Spout end
 
 	public void selectNextField() {
 		if(this.textboxWorldName.isFocused) {

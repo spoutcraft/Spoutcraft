@@ -208,6 +208,11 @@ public class World implements IBlockAccess {
 		this.lockTimestamp = var1.lockTimestamp;
 		this.saveHandler = var1.saveHandler;
 		this.worldInfo = new WorldInfo(var1.worldInfo);
+		
+		//Spout start
+		setMapHeight(worldInfo.getMapHeight());
+		//Spout end
+		
 		this.mapStorage = new MapStorage(this.saveHandler);
 		this.worldProvider = var2;
 		var2.registerWorld(this);
@@ -219,11 +224,13 @@ public class World implements IBlockAccess {
 		// Spout end
 	}
 
-	public World(ISaveHandler var1, String var2, WorldSettings var3) {
-		this(var1, var2, var3, (WorldProvider) null);
+	//Spout start
+	public World(ISaveHandler var1, String var2, WorldSettings var3, int height) {
+		this(var1, var2, var3, (WorldProvider) null, height);
 	}
 
-	public World(ISaveHandler var1, String var2, WorldSettings var3, WorldProvider var4) {
+	public World(ISaveHandler var1, String var2, WorldSettings var3, WorldProvider var4, int height) {
+	//Spout end
 		this.field_35473_a = 7;
 		this.field_35471_b = this.field_35473_a + 4;
 		this.field_35472_c = 1 << this.field_35473_a;
@@ -275,9 +282,16 @@ public class World implements IBlockAccess {
 		if (this.worldInfo == null) {
 			this.worldInfo = new WorldInfo(var3, var2);
 			var5 = true;
+			//Spout start
+			worldInfo.setMapHeight(height);
+			//Spout end
 		} else {
 			this.worldInfo.setWorldName(var2);
 		}
+		
+		//Spout start
+		setMapHeight(worldInfo.getMapHeight());
+		//Spout end
 
 		this.worldProvider.registerWorld(this);
 		this.chunkProvider = this.getChunkProvider();
@@ -3086,9 +3100,21 @@ public class World implements IBlockAccess {
 		}
 	}
 	
+	//Heights must be a power of 2!
 	public void setMapHeight(int height) {
-		this.field_35472_c = height;
-		this.field_35469_d = height - 1;
+		int shifts = 0;
+		int value = height;
+		while (value != 1) {
+			value = value >> 1;
+			shifts++;
+		}
+		field_35473_a = shifts;
+		this.field_35471_b = this.field_35473_a + 4;
+		this.field_35472_c = 1 << this.field_35473_a;
+		this.field_35469_d = this.field_35472_c - 1;
+		this.field_35470_e = this.field_35472_c / 2 - 1;
+		System.out.println("Set Map Height to " + shifts + ", " + (shifts + 4) + ", " + height + ", " + (height -1 ));
+		this.worldInfo.setMapHeight(height);
 	}
 
 	public int getGrassColorCache(int x, int y, int z) {

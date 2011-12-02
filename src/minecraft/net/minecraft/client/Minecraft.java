@@ -1545,8 +1545,14 @@ public abstract class Minecraft implements Runnable {
 	public boolean isMultiplayerWorld() {
 		return this.theWorld != null && this.theWorld.multiplayerWorld;
 	}
-
+	
+	//Spout start
 	public void startWorld(String var1, String var2, WorldSettings var3) {
+		startWorld(var1, var2, var3, 128);
+	}
+
+	public void startWorld(String var1, String var2, WorldSettings var3, int height) { //Spout added height
+	//Spout end
 		this.changeWorld1((World) null);
 		System.gc();
 		if (this.saveLoader.isOldMapFormat(var1)) {
@@ -1559,7 +1565,7 @@ public abstract class Minecraft implements Runnable {
 
 			ISaveHandler var4 = this.saveLoader.getSaveLoader(var1, false);
 			World var5 = null;
-			var5 = new World(var4, var2, var3);
+			var5 = new World(var4, var2, var3, height); //Spout
 			if (var5.isNewWorld) {
 				this.statFileWriter.readStat(StatList.createWorldStat, 1);
 				this.statFileWriter.readStat(StatList.startGameStat, 1);

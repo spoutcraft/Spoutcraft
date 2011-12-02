@@ -130,8 +130,8 @@ public class RenderGlobal implements IWorldAccess {
 	public RenderGlobal(Minecraft var1, RenderEngine var2) {
 		this.mc = var1;
 		this.renderEngine = var2;
-		byte var3 = 34;
-		byte var4 = 8;
+		byte var3 = 64; //Spout 
+		byte var4 = 64; //Spout 
 		this.glRenderListBase = GLAllocation.generateDisplayLists(var3 * var3 * var4 * 3);
 		this.occlusionEnabled = OpenGlCapsChecker.checkARBOcclusion();
 		if (this.occlusionEnabled) {
@@ -345,7 +345,13 @@ public class RenderGlobal implements IWorldAccess {
 					for (int var6 = 0; var6 < this.renderChunksDeep; ++var6) {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = new WorldRenderer(this.worldObj, this.tileEntities, var4 * 16, var5 * 16, var6 * 16, 16, this.glRenderListBase + var2);
 						if (this.occlusionEnabled) {
-							this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
+							try {
+								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
+							}
+							catch (Throwable t) {
+								System.out.println("Accessing " + var3 + ", Size: " + glOcclusionQueryBase.capacity() + " " + glOcclusionQueryBase.limit());
+								throw new RuntimeException(t);
+							}
 						}
 
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isWaitingOnOcclusionQuery = false;
