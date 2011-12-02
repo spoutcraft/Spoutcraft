@@ -36,7 +36,6 @@ import org.getspout.spout.util.PersistentMap;
 public class ChunkCache {
 
 	private final static int FULL_CHUNK = (128 * 16 * 16 * 5) / 2;
-	private final static int CACHED_SIZE = FULL_CHUNK + 40*8 + 8;
 
 	private static final PersistentMap p;
 
@@ -58,7 +57,7 @@ public class ChunkCache {
 		}
 	}
 	
-	private static byte[] hashData = new byte[CACHED_SIZE];
+	private static byte[] hashData = new byte[2048];
 	private static byte[] blank = new byte[2048];
 	
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
@@ -73,8 +72,16 @@ public class ChunkCache {
 	
 	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize, int cx, int cz) throws IOException {
 
-		if(chunkData.length != FULL_CHUNK) {
+		if(chunkData.length % FULL_CHUNK != 0) {
 			return chunkData;
+		}
+		
+		int segments = chunkData.length >> 11;
+		int height = chunkData.length / 640;
+		int heightBits = 31 - Integer.numberOfLeadingZeros(height);
+		int cachedSize = segments * (2048 + 8) + 8;
+		if (hashData.length < cachedSize) {
+			hashData = new byte[cachedSize];
 		}
 		
 		int d = totalData.addAndGet(chunkSize);
@@ -87,14 +94,12 @@ public class ChunkCache {
 		long CRC = 0;
 		boolean CRCProvided;
 		try {
-			int hashSize = inflater.inflate(hashData, chunkData.length, 40*8 + 8);
-			if(hashSize == 40*8 + 8) {
-				CRC = PartitionChunk.getHash(hashData, 40);
+			int hashSize = inflater.inflate(hashData, chunkData.length, segments*8 + 8);
+			if(hashSize == segments * 8 + 8) {
+				CRC = PartitionChunk.getHash(hashData, segments, heightBits);
 				CRCProvided = true;
-			} else if (hashSize != 40*8) {
-				return chunkData;
 			} else {
-				CRCProvided = false;
+				return chunkData;
 			}
 		} catch (DataFormatException e) {
 			return chunkData;
@@ -102,12 +107,12 @@ public class ChunkCache {
 		
 		int cacheHit = 0;
 		
-		for(int i = 0; i < 40; i++) {
-			long hash = PartitionChunk.getHash(hashData, i);
+		for(int i = 0; i < segments; i++) {
+			long hash = PartitionChunk.getHash(hashData, i, heightBits);
 			byte[] partitionData = p.get(hash, partition);
 
 			if(hash == 0) {
-				PartitionChunk.copyFromChunkData(chunkData, i, partition);
+				PartitionChunk.copyFromChunkData(chunkData, i, partition, heightBits);
 				hash = ChunkHash.hash(partition);
 				p.put(hash, partition);
 				processOverwriteQueue();
@@ -115,10 +120,10 @@ public class ChunkCache {
 				long[] brokenHash = new long[1];
 				brokenHash[0] = hash;
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(false, brokenHash));
-				PartitionChunk.copyToChunkData(chunkData, i, blank);
+				PartitionChunk.copyToChunkData(chunkData, i, blank, heightBits);
 			} else {
 				cacheHit++;
-				PartitionChunk.copyToChunkData(chunkData, i, partitionData);
+				PartitionChunk.copyToChunkData(chunkData, i, partitionData, heightBits);
 			}
 			
 			// Send hints to server about possible nearby hashes
@@ -143,13 +148,13 @@ public class ChunkCache {
 		}
 		
 		int h = hits.addAndGet(cacheHit);
-		int a = cacheAttempts.addAndGet(40);
+		int a = cacheAttempts.addAndGet(segments);
 		if(a != 0) {
 			hitPercentage.set((100 * h) / a);
 		}
 				
-		byte[] cachedChunkData = new byte[81920];
-		System.arraycopy(chunkData, 0, cachedChunkData, 0, 81920);
+		byte[] cachedChunkData = new byte[segments * 2048];
+		System.arraycopy(chunkData, 0, cachedChunkData, 0, segments * 2048);
 		
 		long CRCNew = ChunkHash.hash(cachedChunkData);
 		
