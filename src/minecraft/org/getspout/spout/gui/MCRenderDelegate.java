@@ -515,6 +515,19 @@ public class MCRenderDelegate implements RenderDelegate {
 					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
 				}
 			}
+			
+			if (Minecraft.theMinecraft.playerController.func_35642_f() && Minecraft.theMinecraft.thePlayer.playerLevel > 0) {
+				int color = 8453920;
+				String level = "" + Minecraft.theMinecraft.thePlayer.playerLevel;
+				FontRenderer font = SpoutClient.getHandle().fontRenderer;
+				int x = (int) (bar.getScreenX() + (183 / 2) - font.getStringWidth(level) + 3);
+				int y = (int) bar.getScreenY() - 6;
+				font.drawString(level, x + 1, y, 0);
+				font.drawString(level, x - 1, y, 0);
+				font.drawString(level, x, y + 1, 0);
+				font.drawString(level, x, y - 1, 0);
+				font.drawString(level, x, y, color);
+			}
 		}
 	}
 
