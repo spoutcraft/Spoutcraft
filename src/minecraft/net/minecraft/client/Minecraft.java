@@ -2003,6 +2003,12 @@ public abstract class Minecraft implements Runnable {
 			if (var1 == Block.bedrock.blockID) {
 				var1 = Block.stone.blockID;
 			}
+			
+			//Spout start
+			if (Item.itemsList[var1] == null) {
+				return;
+			}
+			//Spout end
 
 			int var2 = 0;
 			boolean var3 = false;
