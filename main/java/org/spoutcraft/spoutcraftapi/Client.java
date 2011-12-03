@@ -74,6 +74,8 @@ public interface Client extends PropertyInterface {
 	
 	public File getTexturePackFolder();
 	
+	public File getSelectedTexturePackZip();
+	
 	public File getStatsFolder();
 
 	public long getTick();
