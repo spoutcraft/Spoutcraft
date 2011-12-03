@@ -520,7 +520,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				int color = 8453920;
 				String level = "" + Minecraft.theMinecraft.thePlayer.playerLevel;
 				FontRenderer font = SpoutClient.getHandle().fontRenderer;
-				int x = (int) (bar.getScreenX() + (183 / 2) - font.getStringWidth(level) + 3);
+				int x = (int) (bar.getScreenX() + (183 / 2) - (font.getStringWidth(level) / 2));
 				int y = (int) bar.getScreenY() - 6;
 				font.drawString(level, x + 1, y, 0);
 				font.drawString(level, x - 1, y, 0);
