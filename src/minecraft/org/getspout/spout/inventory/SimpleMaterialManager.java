@@ -248,17 +248,15 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 	public boolean registerRecipe(Recipe recipe) {
 		SpoutcraftRecipe toAdd;
-		if (recipe instanceof Recipe) {
-			toAdd = (SpoutcraftRecipe) recipe;
+		
+		if (recipe instanceof ShapedRecipe) {
+			toAdd = SimpleShapedRecipe.fromSpoutRecipe((ShapedRecipe) recipe);
+		} else if (recipe instanceof ShapelessRecipe) {
+			toAdd = SimpleShapelessRecipe.fromSpoutRecipe((ShapelessRecipe) recipe);
 		} else {
-			if (recipe instanceof ShapedRecipe) {
-				toAdd = SimpleShapedRecipe.fromSpoutRecipe((ShapedRecipe) recipe);
-			} else if (recipe instanceof ShapelessRecipe) {
-				toAdd = SimpleShapelessRecipe.fromSpoutRecipe((ShapelessRecipe) recipe);
-			} else {
-				return false;
-			}
+			return false;
 		}
+		
 		toAdd.addToCraftingManager();
 		return true;
 	}
