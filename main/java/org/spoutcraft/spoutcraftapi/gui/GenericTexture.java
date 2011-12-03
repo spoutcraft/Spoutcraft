@@ -36,7 +36,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	}
 
 	public GenericTexture(String url) {
-		this.url = url;
+		setUrl(url);
 	}
 
 	public WidgetType getType() {
