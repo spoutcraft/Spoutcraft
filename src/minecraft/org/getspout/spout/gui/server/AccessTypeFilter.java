@@ -23,17 +23,14 @@ public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 		setSelection(0);
 	}
 	
-	@Override
 	public boolean isActive() {
 		return ids[getSelectedRow()] != -1;
 	}
 
-	@Override
 	public String getUrlPart() {
 		return "accessType="+ids[getSelectedRow()];
 	}
 
-	@Override
 	public void clear() {
 		setSelection(0);
 	}
