@@ -139,6 +139,10 @@ public class TileEntityRenderer {
 		this.specialRendererMap.put(TileEntitySign.class, new TileEntitySignRenderer());
 		this.specialRendererMap.put(TileEntityMobSpawner.class, new TileEntityMobSpawnerRenderer());
 		this.specialRendererMap.put(TileEntityPiston.class, new TileEntityRendererPiston());
+		this.specialRendererMap.put(TileEntityChest.class, new TileEntityChestRenderer());
+		this.specialRendererMap.put(TileEntityEnchantmentTable.class, new RenderEnchantmentTable());
+		this.specialRendererMap.put(TileEntityEndPortal.class, new RenderEndPortal());
+		
 		Iterator var1 = this.specialRendererMap.values().iterator();
 
 		while (var1.hasNext()) {
