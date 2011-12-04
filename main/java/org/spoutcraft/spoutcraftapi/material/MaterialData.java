@@ -488,7 +488,7 @@ public class MaterialData {
 		else {
 			materials = (Material[])o;
 			if (data > materials.length) {
-				materials = adjust(materials, data);
+				materials = adjust(materials, data * 2 + 1);
 			}
 			mat = materials[data];
 		}
