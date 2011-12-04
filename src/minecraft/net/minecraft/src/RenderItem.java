@@ -82,7 +82,6 @@ public class RenderItem extends Render {
 					custom = true;
 				}
 			}
-			//System.out.println("Id: " + var10.getItemDamage() + " Material: " + block + " Custom: " + custom + " blockType: " + design);
 		}
 		if (!custom) {
 			if (var10.itemID < 256) {
@@ -92,6 +91,26 @@ public class RenderItem extends Render {
 				this.loadTexture("/gui/items.png");
 			}
 		}
+		
+		if (design != null && custom) {
+			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
+			GL11.glScalef(0.25F, 0.25F, 0.25F);
+
+			for(var16 = 0; var16 < var13; ++var16) {
+				GL11.glPushMatrix();
+				if(var16 > 0) {
+					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+					var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+					var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+					GL11.glTranslatef(var17, var18, var19);
+				}
+			}
+				
+			SpoutItem.renderBlockOnInventory(design, renderBlocks, 1F);
+			
+			GL11.glPopMatrix();
+		}
+		else
 		
 		//Spout end
 		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
@@ -115,21 +134,13 @@ public class RenderItem extends Render {
 
 				var17 = 1.0F;
 				
-				// Spout Start
-				if (custom) {
-					SpoutItem.renderBlockOnInventory(design, renderBlocks, var17);
-				}
-				else {
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var17);
-				}
-				// Spout end
+				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var17);
 				
 				GL11.glPopMatrix();
 			}
 		} else if(var10.itemID == Item.potion.shiftedIndex) {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			short var14 = 141;
-			this.loadTexture("/gui/items.png");
 			float var15 = 1.0F;
 			if(this.field_27004_a) {
 				var16 = Item.itemsList[var10.itemID].getColorFromDamage(var10.getItemDamage());
@@ -147,11 +158,6 @@ public class RenderItem extends Render {
 		} else {
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 			int var21 = var10.getIconIndex();
-			if(var10.itemID < 256) {
-				this.loadTexture("/terrain.png");
-			} else {
-				this.loadTexture("/gui/items.png");
-			}
 
 			if(this.field_27004_a) {
 				var20 = Item.itemsList[var10.itemID].getColorFromDamage(var10.getItemDamage());
@@ -243,7 +249,32 @@ public class RenderItem extends Render {
 		
 		float var11;
 		float var12;
-		if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		
+		if (design != null && custom) {
+			GL11.glPushMatrix();
+			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			GL11.glScalef(10.0F, 10.0F, 10.0F);
+			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
+			GL11.glScalef(1.0F, 1.0F, -1.0F);
+			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
+			var11 = (float)(var17 >> 16 & 255) / 255.0F;
+			var12 = (float)(var17 >> 8 & 255) / 255.0F;
+			float var13 = (float)(var17 & 255) / 255.0F;
+			if (this.field_27004_a) {
+				GL11.glColor4f(var11, var12, var13, 1.0F);
+			}
+
+			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			this.renderBlocks.useInventoryTint = this.field_27004_a;
+			SpoutItem.renderBlockOnInventory(design, renderBlocks, 1.0F);
+			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			this.renderBlocks.useInventoryTint = this.field_27004_a;
+			GL11.glPopMatrix();
+			
+		}
+		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 			Block var16 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);

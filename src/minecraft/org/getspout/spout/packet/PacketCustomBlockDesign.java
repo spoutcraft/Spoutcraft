@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -45,9 +44,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	public void run(int id) {
 		CustomBlock block = MaterialData.getCustomBlock(customId);
 		if (block != null) {
-			BlockDesign old = block.getBlockDesign();
 			block.setBlockDesign(design);
-			System.out.println("Received Block Design For " + customId + " " + block + ", old design: " + old + " new design " + block.getBlockDesign());
 		}
 	}
 

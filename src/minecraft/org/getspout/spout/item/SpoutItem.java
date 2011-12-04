@@ -138,7 +138,10 @@ public class SpoutItem extends Item {
 				return false;
 			}
 		}
-
+		
+		if (design.getX() == null) {
+			return false;
+		}
 
 		float red = 1.0F; //(float)(color >> 16 & 255) / 255.0F;
 		float blue = 1.0F;//(float)(color >> 8 & 255) / 255.0F;
