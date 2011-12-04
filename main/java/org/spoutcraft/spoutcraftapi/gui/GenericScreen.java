@@ -19,11 +19,10 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import java.util.concurrent.ConcurrentHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
@@ -31,7 +30,7 @@ import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 @UnsafeClass
 public abstract class GenericScreen extends GenericWidget implements Screen {
-	protected ConcurrentHashMap<Widget, Addon> widgets = new ConcurrentHashMap<Widget, Addon>();
+	protected HashMap<Widget, Addon> widgets = new HashMap<Widget, Addon>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
