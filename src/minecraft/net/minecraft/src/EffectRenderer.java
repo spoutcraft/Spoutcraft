@@ -18,10 +18,7 @@ import java.util.LinkedList;
 
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.CustomEntityDiggingFX;
-import org.getspout.spout.item.SpoutCustomBlockDesign;
-import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 

@@ -51,7 +51,6 @@ import org.getspout.spout.io.CRCManager;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
-import org.getspout.spout.item.SpoutItem;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketAddonData;
 import org.getspout.spout.packet.PacketManager;
@@ -310,7 +309,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		ClientPlayer.getInstance().resetMainScreen();
 		Minecraft.theMinecraft.sndManager.stopMusic();
 		PacketDecompressionThread.endThread();
-		SpoutItem.wipeMap();
 		MaterialData.reset();
 		FileDownloadThread.preCacheCompleted.lazySet(0);
 		entityManager.clearData();
@@ -319,8 +317,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		server = -1L;
 		inWorldTicks = 0L;
-		MaterialData.getCustomBlocks().clear();
-		MaterialData.getCustomItems().clear();
+		MaterialData.reset();
 	}
 	
 	public void onWorldEnter() {

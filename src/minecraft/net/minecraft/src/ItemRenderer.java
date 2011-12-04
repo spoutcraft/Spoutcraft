@@ -19,12 +19,11 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-//Spout HD Start
-import org.getspout.spout.client.SpoutClient;
+//Spout Start
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import com.pclewis.mcpatcher.mod.TileSize;
@@ -49,32 +48,40 @@ public class ItemRenderer {
 	public void renderItem(EntityLiving var1, ItemStack var2, int var3) {
 		GL11.glPushMatrix();
 		// Spout Start
-		org.spoutcraft.spoutcraftapi.material.Item item = MaterialData.getItem(var2.itemID, (short) var2.getItemDamage());
-		String customTexture = SpoutClient.getInstance().getMaterialManager().getCustomItemTexture(item);
-		String customTexturePlugin = SpoutClient.getInstance().getMaterialManager().getCustomItemTextureAddon(item);
-		GenericBlockDesign blockType = null;
-		if (MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()) != null) {
-			blockType = (GenericBlockDesign) MaterialData.getBlock(var2.itemID, (short) var2.getItemDamage()).getBlockDesign();
-		}
-		Texture customTextureObject = null;
-		if (customTexture != null) {
-			customTextureObject = CustomTextureManager.getTextureFromUrl(customTexturePlugin, customTexture);
-		}
-
-		if (blockType != null) {
-			Texture customTextureBinding = CustomTextureManager.getTextureFromUrl(blockType.getTextureAddon(), blockType.getTexureURL());
-			if (customTextureBinding != null) {
-				GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, customTextureBinding.getTextureID());
+		boolean custom = false;
+		BlockDesign design = null;
+		if (var2.itemID == 318) {
+			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var2.getItemDamage());
+			if (item != null) {
+				String textureURI = item.getTexture();
+				if (textureURI == null) {
+					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var2.getItemDamage());
+					design = block != null ? block.getBlockDesign() : null;
+					textureURI = design != null ? design.getTexureURL() : null;
+				}
+				if (textureURI != null) {
+					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+					if (texture != null) {
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+						custom = true;
+					}
+				}
 			}
-		} else if (customTextureObject != null) {
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, customTextureObject.getTextureID());
-		} else if (var2.itemID < 256) {
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/terrain.png"));
-		} else {
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/items.png"));
 		}
-		if (var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/terrain.png"));
+		
+		if (!custom) {
+			if (var2.itemID < 256) {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));;
+			}
+			else {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/items.png"));
+			}
+		}
+		
+		if (design != null) {
+			SpoutItem.renderBlockOnInventory(design, this.renderBlocksInstance, 1F);
+		}
+		else if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
 			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), 1.0F);
 		} else {
 
@@ -85,11 +92,12 @@ public class ItemRenderer {
 			float var7 = ((float)(var5 % 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
 			float var8 = ((float)(var5 / 16 * TileSize.int_size) + 0.0F) / TileSize.float_size16;
 			float var9 = ((float)(var5 / 16 * TileSize.int_size) + TileSize.float_sizeMinus0_01) / TileSize.float_size16;
-			if(customTextureObject != null){
-				var5 = 0;
-				var6 = 1;
+			
+			if (custom){
+				var6 = 0;
 				var7 = 1;
-				var8 = 0;
+				var8 = 1;
+				var9 = 0;
 			}
 			//Spout end
 			float var10 = 0.0F;

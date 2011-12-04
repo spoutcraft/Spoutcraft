@@ -1,21 +1,14 @@
 package org.getspout.spout.inventory;
 
-import java.util.Iterator;
-
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.inventory.Recipe;
 import org.spoutcraft.spoutcraftapi.inventory.ShapedRecipe;
 import org.spoutcraft.spoutcraftapi.inventory.ShapelessRecipe;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairFloatHashMap;
@@ -196,11 +189,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 	}
 	public void reset() {
-		customNames.clear();
-		customTextures.clear();
-		Iterator<Material> i = MaterialData.getMaterialIterator();
-		while(i.hasNext()) {
-			Material next = i.next();
+		for (Material next : MaterialData.getMaterials()) {
 			if (next instanceof org.spoutcraft.spoutcraftapi.material.Block) {
 				org.spoutcraft.spoutcraftapi.material.Block block = (org.spoutcraft.spoutcraftapi.material.Block)next;
 				resetFriction(block);
@@ -209,42 +198,6 @@ public class SimpleMaterialManager implements MaterialManager {
 				resetLightLevel(block);
 			}
 		}
-	}
-	public int registerCustomItemName(Addon addon, String key) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	public void setCustomItemBlock(CustomItem item, CustomBlock block) {
-		// TODO Auto-generated method stub
-		
-	}
-	public ItemStack getCustomItemStack(CustomBlock block, int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public ItemStack getCustomItemStack(CustomItem item, int size) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public boolean removeBlockOverride(Block block) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public boolean overrideBlock(Block block, CustomBlock customBlock) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public boolean overrideBlock(World world, int x, int y, int z, CustomBlock customBlock) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public void setCustomBlockDesign(Material material, BlockDesign design) {
-		// TODO Auto-generated method stub
-		
-	}
-	public boolean isCustomBlock(Block block) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	public boolean registerRecipe(Recipe recipe) {
 		SpoutcraftRecipe toAdd;
@@ -259,21 +212,5 @@ public class SimpleMaterialManager implements MaterialManager {
 		
 		toAdd.addToCraftingManager();
 		return true;
-	}
-	public boolean isCustomItem(ItemStack item) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public CustomItem getCustomItem(ItemStack item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public CustomBlock registerItemDrop(CustomBlock block, ItemStack item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public boolean hasItemDrop(CustomBlock block) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
