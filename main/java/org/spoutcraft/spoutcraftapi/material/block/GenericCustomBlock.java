@@ -23,6 +23,7 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericCustomBlock implements CustomBlock {
 	public BlockDesign design = new GenericBlockDesign();
+	private ItemStack drop = null;
 	private String name;
 	private String fullName;
 	private int customId;
@@ -112,9 +113,6 @@ public class GenericCustomBlock implements CustomBlock {
 
 	public CustomBlock setBlockDesign(BlockDesign design) {
 		this.design = design;
-		Spoutcraft.getMaterialManager().setCustomBlockDesign(this, design);
-		Spoutcraft.getMaterialManager().setCustomBlockDesign(this.getBlockItem(), design);
-		Spoutcraft.getMaterialManager().setCustomItemBlock(item, this);
 		return this;
 	}
 	
@@ -122,7 +120,6 @@ public class GenericCustomBlock implements CustomBlock {
 		return opaque;
 	}
 	
-
 	public Block setOpaque(boolean opaque) {
 		this.opaque = opaque;
 		return this;
@@ -164,8 +161,12 @@ public class GenericCustomBlock implements CustomBlock {
 		return this.blockId;
 	}
 	
+	public ItemStack getItemDrop() {
+		return drop.clone();
+	}
+	
 	public CustomBlock setItemDrop(ItemStack item) {
-		Spoutcraft.getMaterialManager().registerItemDrop(this, item);
+		drop = item != null ? item.clone() : null;
 		return this;
 	}
 	
@@ -240,11 +241,15 @@ public class GenericCustomBlock implements CustomBlock {
 		String addonName = PacketUtil.readString(input);
 		//System.out.println("Block: " + getName()  + " Id: " + customId + " Addon: " + addonName);
 		addon = Spoutcraft.getAddonManager().getOrCreateAddon(addonName);
+		fullName = addon.getDescription().getFullName() + "." + getName();
 		opaque = input.readBoolean();
 		setFriction(input.readFloat());
 		setHardness(input.readFloat());
 		setLightLevel(input.readInt());
-		item = new GenericCustomItem(addon, name);
+		item = new GenericCustomItem(addon, name, customId);
+		MaterialData.addCustomBlock(this);
+		this.setItemDrop(new ItemStack(this, 1));
+		this.blockId = isOpaque() ? 1 :20;
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {

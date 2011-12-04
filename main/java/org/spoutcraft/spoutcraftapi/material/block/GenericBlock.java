@@ -52,7 +52,6 @@ public class GenericBlock implements Block{
 
 	public void setName(String name) {
 		this.customName = name;
-		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
 
 	public float getFriction() {
@@ -97,7 +96,6 @@ public class GenericBlock implements Block{
 
 	public Block setBlockDesign(BlockDesign design) {
 		this.design = design;
-		Spoutcraft.getMaterialManager().setCustomBlockDesign(this, design);
 		return this;
 	}
 }

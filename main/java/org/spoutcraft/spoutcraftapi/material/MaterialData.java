@@ -1,20 +1,24 @@
 package org.spoutcraft.spoutcraftapi.material;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.material.block.*;
 import org.spoutcraft.spoutcraftapi.material.item.*;
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
 public class MaterialData {
-	private final static TIntPairObjectHashMap<Material> idMap = new TIntPairObjectHashMap<Material>();
-	private final static List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
-	private final static List<CustomItem> customItems = new ArrayList<CustomItem>();
+	private final static Object[] idLookup = new Object[3200];
+	private final static List<CustomBlock> customBlocks = new LinkedList<CustomBlock>();
+	private final static List<CustomItem> customItems = new LinkedList<CustomItem>();
+	private final static TIntObjectHashMap<CustomItem> customItemLookup = new TIntObjectHashMap<CustomItem>(250);
+	private final static TIntObjectHashMap<CustomBlock> customBlockLookup = new TIntObjectHashMap<CustomBlock>(250);
+	private final static HashMap<String, Material> nameLookup = new HashMap<String, Material>(1000);
+	private final static int FLINT_ID = 318;
 	public static final Block air = new Air("Air");
 	public static final Block stone = new Solid("Stone", 1);
 	public static final Block grass = new Grass("Grass");
@@ -25,10 +29,10 @@ public class MaterialData {
 	public static final Block spruceSapling = new Sapling("Spruce Sapling", 1);
 	public static final Block birchSapling = new Sapling("Birch Sapling", 2);
 	public static final Block bedrock = new Solid("Bedrock", 7);
-	public static final Block water = new GenericLiquid("Water", 9, true);
-	public static final Block stationaryWater = new GenericLiquid("Stationary Water", 10, false);
-	public static final Block lava = new GenericLiquid("Lava", 11, true);
-	public static final Block stationaryLava = new GenericLiquid("Stationary Lava", 12, false);
+	public static final Block water = new GenericLiquid("Water", 8, true);
+	public static final Block stationaryWater = new GenericLiquid("Stationary Water", 9, false);
+	public static final Block lava = new GenericLiquid("Lava", 10, true);
+	public static final Block stationaryLava = new GenericLiquid("Stationary Lava", 11, false);
 	public static final Block sand = new Solid("Sand", 12, true);
 	public static final Block gravel = new Solid("Gravel", 13, true);
 	public static final Block goldOre = new Solid("Gold Ore", 14);
@@ -308,7 +312,7 @@ public class MaterialData {
 	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
 	public static final Item netherWart = new GenericItem("Nether Wart", 372);
 	public static final Item potion = new GenericItem("Potion", 373);
-	public static final Item glassBottle = new GenericItem("Ghast Tear", 374);
+	public static final Item glassBottle = new GenericItem("Glass Bottle", 374);
 	public static final Item spiderEye = new GenericItem("Spider Eye", 375);
 	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
 	public static final Item blazePowder = new GenericItem("Blaze Powder", 377);
@@ -334,7 +338,16 @@ public class MaterialData {
 	}
 	
 	public static void reset() {
-		idMap.clear();
+		//reset all values
+		for (int i = 0; i < idLookup.length; i++) {
+			idLookup[i] = null;
+		}
+		nameLookup.clear();
+		customBlocks.clear();
+		customBlockLookup.clear();
+		customItems.clear();
+		customItemLookup.clear();
+
 		Field[] fields = MaterialData.class.getFields();
 		for (Field f : fields) {
 			if (Modifier.isStatic(f.getModifiers())) {
@@ -343,7 +356,11 @@ public class MaterialData {
 					if (value instanceof Material) {
 						Material mat = (Material)value;
 						mat.setName(mat.getNotchianName());
-						idMap.put(mat.getRawId(), mat.getRawData(), mat);
+						
+						int id = mat.getRawId();
+						int data = mat.getRawData();
+						
+						insertItem(id, data, mat);
 					}
 				} catch (IllegalArgumentException e) {
 				} catch (IllegalAccessException e) {
@@ -352,13 +369,54 @@ public class MaterialData {
 		}
 	}
 	
+	private static void insertItem(int id, int data, Material mat) {
+		if (id < idLookup.length && id > -1) {
+			nameLookup.put(mat.getNotchianName().toLowerCase(), mat);
+			if (idLookup[mat.getRawId()] == null) {
+				idLookup[mat.getRawId()] = mat;
+			}
+			else if (idLookup[mat.getRawId()] instanceof Material[]) {
+				Material[] multiple = (Material[])idLookup[mat.getRawId()];
+				int size = mat.getRawData() * 2 + 1;
+				if (multiple.length < size) {
+					multiple = adjust(multiple, size);
+				}
+				multiple[mat.getRawData()] =  mat;
+				idLookup[mat.getRawId()] = multiple;
+			}
+			else if (idLookup[mat.getRawId()] instanceof Material) {
+				Material existing = (Material) idLookup[mat.getRawId()];
+				int size = Math.max(existing.getRawData(), mat.getRawData()) * 2 + 1;
+				Material[] multiple = new Material[size];
+				multiple[existing.getRawData()] = existing;
+				multiple[mat.getRawData()] = mat;
+				idLookup[mat.getRawId()] = multiple;
+			}
+			else {
+				System.out.println("WARNING! Unknown lookup contents, " + idLookup[mat.getRawId()]);
+			}
+		}
+		else {
+			System.out.println("WARNING! Material " + mat.getNotchianName() + " Could Not Fit " + id + ", " + data + " into the lookup array!");
+		}
+	}
+	
+	private static Material[] adjust(Material[] oldArray, int size) {
+		Material[] newArray = new Material[size];
+		for (int i = 0; i < oldArray.length; i++) {
+			newArray[i] = oldArray[i];
+		}
+		return newArray;
+	}
+
 	/**
 	 * Adds a custom item to the material list
 	 * @param item to add
 	 */
 	public static void addCustomItem(CustomItem item) {
-		idMap.put(318, item.getCustomId(), item);
+		customItemLookup.put(item.getCustomId(), item);
 		customItems.add(item);
+		nameLookup.put(item.getNotchianName().toLowerCase(), item);
 	}
 	
 	/**
@@ -366,8 +424,9 @@ public class MaterialData {
 	 * @param block to add
 	 */
 	public static void addCustomBlock(CustomBlock block) {
-		idMap.put(318, block.getCustomId(), block);
+		customBlockLookup.put(block.getCustomId(), block);
 		customBlocks.add(block);
+		nameLookup.put(block.getNotchianName().toLowerCase(), block);
 	}
 	
 	/**
@@ -388,11 +447,19 @@ public class MaterialData {
 	 * @return material or null if none found
 	 */
 	public static Material getMaterial(int id, short data) {
-		Material mat = (Material) idMap.get(id, 0); //Test if they id has subtypes first
-		if (mat == null || !mat.hasSubtypes()) {
-			return mat;
+		Object o = idLookup[id];
+		if (id == FLINT_ID && data >= 1024){
+			o = getCustomBlock(data);
+			if (o == null) {
+				o = getCustomItem(data);
+			}
+			return (Material)o;
 		}
-		return (Material) idMap.get(id, data);
+		if (o == null || o instanceof Material) {
+			return (Material)o;
+		}
+		Material[] materials = (Material[])o;
+		return materials[data];
 	}
 	
 	/**
@@ -407,21 +474,37 @@ public class MaterialData {
 	 * @return material found, created, or null
 	 */
 	public static Material getOrCreateMaterial(int id, short data) {
-		Material mat = (Material) idMap.get(id, 0); //Test if they id has subtypes first
-		if (mat != null && !mat.hasSubtypes()) {
+		Object o = idLookup[id];
+		Material[] materials;
+		Material mat;
+		if (o == null || o instanceof Material) {
+			mat = (Material)o;
+			materials = new Material[Math.max(mat.getRawData(), data) *2 + 1];
+			materials[mat.getRawData()] = mat;
+		}
+		else {
+			materials = (Material[])o;
+			if (data > materials.length) {
+				materials = adjust(materials, data);
+			}
+			mat = materials[data];
+		}
+		idLookup[id] = materials;
+		
+		if (mat != null) {
+			if (mat.getRawId() == id && mat.getRawData() == data) {
+				return mat;
+			}
 			Material orig = mat;
-			mat = idMap.get(id, data); //get the request material
-			if (mat == null) { //create it if it doesn't exist
-				try {
-					Class<?>[] params = {String.class, int.class, int.class};
-					Constructor<? extends Material> constructor = orig.getClass().getConstructor(params);
-					constructor.setAccessible(true);
-					mat = constructor.newInstance(orig.getName(), id, data);
-					idMap.put(id, data, mat);
-				}
-				catch (Exception e) {
-					System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
-				}
+			try {
+				Class<?>[] params = {String.class, int.class, int.class};
+				Constructor<? extends Material> constructor = orig.getClass().getConstructor(params);
+				constructor.setAccessible(true);
+				mat = constructor.newInstance(orig.getName(), id, data);
+				insertItem(id, data, mat);
+			}
+			catch (Exception e) {
+				System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
 			}
 			return mat;
 		}
@@ -450,33 +533,47 @@ public class MaterialData {
 		}
 		return null;
 	}
-	
-	public static List<CustomBlock> getCustomBlocks() {
-		return customBlocks;
+
+	/**
+	 * Gets an array of all currently registered custom blocks
+	 * @return all registered custom blocks
+	 */
+	public static CustomBlock[] getCustomBlocks() {
+		CustomBlock[] blocks = new CustomBlock[customBlocks.size()];
+		for (int i = 0; i < blocks.length; i++) {
+			blocks[i] = customBlocks.get(i);
+		}
+		return blocks;
 	}
-	
-	public static List<CustomItem> getCustomItems() {
-		return customItems;
+
+	/**
+	 * Gets an array of all currently registered custom items
+	 * @return all registered custom items
+	 */
+	public static CustomItem[] getCustomItems() {
+		CustomItem[] items = new CustomItem[customItems.size()];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = customItems.get(i);
+		}
+		return items;
 	}
-	
+
+	/**
+	 * Gets the custom block associated with the custom block id
+	 * @param customId
+	 * @return
+	 */
 	public static CustomBlock getCustomBlock(int customId) {
-		Material mat = (Material) idMap.get(318, customId);
-		if (mat instanceof CustomBlock) {
-			return (CustomBlock)mat;
-		}
-		return null;
+		return customBlockLookup.get(customId);
 	}
 	
+	/**
+	 * Gets the custom item associated with the given id
+	 * @param customId to look up from
+	 * @return custom item
+	 */
 	public static CustomItem getCustomItem(int customId) {
-		if(getCustomBlock(customId) != null) {
-			return getCustomBlock(customId).getBlockItem();
-		}
-		
-		Material mat = (Material) idMap.get(318, customId);
-		if (mat instanceof CustomItem) {
-			return (CustomItem) mat;
-		}
-		return null;
+		return customItemLookup.get(customId);
 	}
 	
 	/**
@@ -501,13 +598,35 @@ public class MaterialData {
 		}
 		return null;
 	}
+
+	/**
+	 * Returns a list of all the current materials in the game, notchian, custom, or otherwise
+	 * @return a list of all materials
+	 */
+	public static List<Material> getMaterials() {
+		LinkedList<Material> materials = new LinkedList<Material>();
+		for (int i = 0; i < idLookup.length; i++) {
+			if (idLookup[i] instanceof Material) {
+				materials.add((Material)idLookup[i]);
+			}
+			else if (idLookup[i] instanceof Material[]) {
+				for (Material mat : ((Material[])idLookup[i])) {
+					if (mat != null)
+						materials.add(mat);
+				}
+			}
+		}
+		materials.addAll(customBlocks);
+		materials.addAll(customItems);
+		return materials;
+	}
 	
 	/**
-	 * Gets an iterator for all the materials registered in the game
-	 * @return iterator
+	 * Gets the associated material with it's notchian name
+	 * @param name to lookup
+	 * @return material, or null if none found
 	 */
-	public static Iterator<Material> getMaterialIterator() {
-		return idMap.valueCollection().iterator();
+	public static Material getMaterial(String notchianName) {
+		return nameLookup.get(notchianName.toLowerCase());
 	}
-
 }
