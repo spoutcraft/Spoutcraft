@@ -180,6 +180,10 @@ public final class Spoutcraft {
 		return client.getStatsFolder();
 	}
 	
+	public static File getSelectedTexturePackZip() {
+		return client.getSelectedTexturePackZip();
+	}
+	
 	public static long getTick() {
 		return client.getTick();
 	}
