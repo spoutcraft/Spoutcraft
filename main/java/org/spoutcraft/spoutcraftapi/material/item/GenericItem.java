@@ -1,6 +1,5 @@
 package org.spoutcraft.spoutcraftapi.material.item;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.Item;
 
 public class GenericItem implements Item {
@@ -51,6 +50,5 @@ public class GenericItem implements Item {
 
 	public void setName(String name) {
 		this.customName = name;
-		Spoutcraft.getClient().getMaterialManager().setItemName(this, name);
 	}
 }

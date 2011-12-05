@@ -12,6 +12,7 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.util.UniqueItemStringMap;
 
 public class GenericCustomItem implements CustomItem {
 	private String name;
@@ -37,7 +38,7 @@ public class GenericCustomItem implements CustomItem {
 	}
 
 	public GenericCustomItem(Addon addon, String name) {
-		this(addon, name, Spoutcraft.getMaterialManager().registerCustomItemName(addon, addon.getDescription().getName() + name));
+		this(addon, name, UniqueItemStringMap.getId(addon.getDescription().getName() + name));
 	}
 
 	public GenericCustomItem(Addon addon, String name, String texture) {
@@ -64,7 +65,6 @@ public class GenericCustomItem implements CustomItem {
 	public void setName(String name) {
 		this.name = name;
 		this.fullName = addon.getDescription().getName() + name;
-		Spoutcraft.getMaterialManager().setItemName(this, name);
 	}
 
 	public int getCustomId() {
@@ -85,7 +85,6 @@ public class GenericCustomItem implements CustomItem {
 
 	public CustomItem setTexture(String texture) {
 		this.texture = texture;
-		Spoutcraft.getMaterialManager().setItemTexture(this, addon, texture);
 		return this;
 	}
 
@@ -106,8 +105,8 @@ public class GenericCustomItem implements CustomItem {
 		name = PacketUtil.readString(input);
 		addon = Spoutcraft.getAddonManager().getOrCreateAddon(PacketUtil.readString(input));
 		texture = PacketUtil.readString(input);
-		
 		setName(name);
+		MaterialData.addCustomItem(this);
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
