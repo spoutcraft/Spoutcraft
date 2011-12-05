@@ -73,7 +73,24 @@ public class RenderItem extends Render {
 		boolean custom = false;
 		BlockDesign design = null;
 		if (var10.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var10.getItemDamage());
+			if (item != null) {
+				String textureURI = item.getTexture();
+				if (textureURI == null) {
+					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+					design = block != null ? block.getBlockDesign() : null;
+					textureURI = design != null ? design.getTexureURL() : null;
+				}
+				if (textureURI != null) {
+					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+					if (texture != null) {
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+						custom = true;
+					}
+				}
+			}
+			
+			/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
 			design = block != null ? block.getBlockDesign() : null;
 			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
 				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
@@ -81,7 +98,7 @@ public class RenderItem extends Render {
 					this.renderManager.renderEngine.bindTexture(texture.getTextureID());
 					custom = true;
 				}
-			}
+			}*/
 		}
 		if (!custom) {
 			if (var10.itemID < 256) {
@@ -228,7 +245,25 @@ public class RenderItem extends Render {
 		boolean custom = false;
 		BlockDesign design = null;
 		if (var3 == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
+			
+			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var4);
+			if (item != null) {
+				String textureURI = item.getTexture();
+				if (textureURI == null) {
+					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
+					design = block != null ? block.getBlockDesign() : null;
+					textureURI = design != null ? design.getTexureURL() : null;
+				}
+				if (textureURI != null) {
+					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+					if (texture != null) {
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+						custom = true;
+					}
+				}
+			}
+			
+			/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
 			design = block != null ? block.getBlockDesign() : null;
 			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
 				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
@@ -236,7 +271,8 @@ public class RenderItem extends Render {
 					var2.bindTexture(texture.getTextureID());
 					custom = true;
 				}
-			}
+			}*/
+
 		}
 		if (!custom) {
 			if (var3 < 256) {
@@ -299,24 +335,24 @@ public class RenderItem extends Render {
 		} else {
 			float var10;
 			if(var3 == Item.potion.shiftedIndex) {
-			GL11.glDisable(2896 /* GL_LIGHTING */);
-			short var8 = 141;
-			int var9 = Item.itemsList[var3].getColorFromDamage(var4);
-			var10 = (float)(var9 >> 16 & 255) / 255.0F;
-			var11 = (float)(var9 >> 8 & 255) / 255.0F;
-			var12 = (float)(var9 & 255) / 255.0F;
-			if(this.field_27004_a) {
-				GL11.glColor4f(var10, var11, var12, 1.0F);
-			}
-
-			this.renderTexturedQuad(var6, var7, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
-			if (this.field_27004_a) {
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			}
-
-			this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
-			
-			GL11.glEnable(2896 /*GL_LIGHTING*/);
+				GL11.glDisable(2896 /* GL_LIGHTING */);
+				short var8 = 141;
+				int var9 = Item.itemsList[var3].getColorFromDamage(var4);
+				var10 = (float)(var9 >> 16 & 255) / 255.0F;
+				var11 = (float)(var9 >> 8 & 255) / 255.0F;
+				var12 = (float)(var9 & 255) / 255.0F;
+				if(this.field_27004_a) {
+					GL11.glColor4f(var10, var11, var12, 1.0F);
+				}
+	
+				this.renderTexturedQuad(var6, var7, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
+				if (this.field_27004_a) {
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+				}
+	
+				this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
+				
+				GL11.glEnable(2896 /*GL_LIGHTING*/);
 			}
 			else if(var5 >= 0) {
 				GL11.glDisable(2896 /*GL_LIGHTING*/);
