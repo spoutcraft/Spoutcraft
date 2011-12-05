@@ -34,6 +34,7 @@ import net.minecraft.src.WorldClient;
 import org.getspout.spout.ClipboardThread;
 import org.getspout.spout.DataMiningThread;
 import org.getspout.spout.PacketDecompressionThread;
+import org.getspout.spout.addon.SimpleAddonStore;
 import org.getspout.spout.block.SpoutcraftChunk;
 import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.config.MipMapUtils;
@@ -122,6 +123,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private TexturePacksDatabaseModel textureDatabaseModel = new TexturePacksDatabaseModel();
 	private String addonFolder = Minecraft.getMinecraftDir() + File.separator + "addons";
 	private final ThreadGroup securityThreadGroup;
+	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	
 	
 	
@@ -134,6 +136,8 @@ public class SpoutClient extends PropertyObject implements Client {
 		//System.setSecurityManager(securityManager);
 		
 		((SimpleKeyBindingManager)bindingManager).load();
+		addonStore.load();
+		addonStore.save();
 		serverManager.init();
 	}
 	
@@ -595,5 +599,9 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 
 		return matchedPlayers;
+	}
+	
+	public SimpleAddonStore getAddonStore() {
+		return addonStore;
 	}
 }
