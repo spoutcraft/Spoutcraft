@@ -148,22 +148,25 @@ public class SpoutItem extends Item {
 		float green = 1.0F;//(float)(color & 255) / 255.0F;
 
 		design.setBrightness(inventoryBrightness);
+		
+		int internalLightLevel = block.getMixedBrightnessForBlock(renders.blockAccess, x, y, z);
 
 		for (int i = 0; i < design.getX().length; i++) {
 
 			MutableIntegerVector sourceBlock = design.getLightSource(i, x, y, z);
 
-			float baseBrightness;
+			int sideBrightness;
 
-			if (block != null) {
-				baseBrightness = block.getBlockBrightness(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+			if (sourceBlock != null) {
+				sideBrightness = block.getMixedBrightnessForBlock(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
 			} else {
-				baseBrightness = design.getBrightness();
+				sideBrightness = internalLightLevel;
 			}
 
-			float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
+			//float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
 
-			tessallator.setColorOpaque_F(red * brightness, blue * brightness, green * brightness);
+			tessallator.setBrightness(sideBrightness);
+			tessallator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
 			float[] xx = design.getX()[i];
 			float[] yy = design.getY()[i];

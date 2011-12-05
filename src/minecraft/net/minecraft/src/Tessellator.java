@@ -27,7 +27,7 @@ public class Tessellator {
 	private int color;
 	private boolean hasColor = false;
 	private boolean hasTexture = false;
-	private boolean hasBrightness = false;
+	public boolean hasBrightness = false;
 	private boolean hasNormals = false;
 	private int rawBufferIndex = 0;
 	private int addedVertices = 0;
