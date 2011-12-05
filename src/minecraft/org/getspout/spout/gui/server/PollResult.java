@@ -1,9 +1,11 @@
 package org.getspout.spout.gui.server;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
@@ -11,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
@@ -223,7 +226,7 @@ public class PollResult {
 						return;
 					}
 				}
-				String api = "http://servers.getspout.org/senddata.php?json";
+				String api = "http://servers.getspout.org/senddata.php";
 				String json = "{";
 				int res = 0;
 				for(PollResult result:recentResults.valueCollection()) {
@@ -252,13 +255,19 @@ public class PollResult {
 						return;
 					}
 					try {
+						String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
 						URLConnection conn = url.openConnection();
 					    conn.setDoOutput(true);
 					    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-					    wr.write(json);
+					    wr.write(data);
 					    wr.flush();
 					    
+					    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+					    while (rd.readLine() != null) {
+					    }
 					    wr.close();
+					    rd.close();
+					    System.out.println("Sent DC Data");
 					} catch (IOException e) {
 					}
 				
