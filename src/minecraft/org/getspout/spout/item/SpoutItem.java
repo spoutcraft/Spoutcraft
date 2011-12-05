@@ -143,13 +143,14 @@ public class SpoutItem extends Item {
 			return false;
 		}
 
-		float red = 1.0F; //(float)(color >> 16 & 255) / 255.0F;
-		float blue = 1.0F;//(float)(color >> 8 & 255) / 255.0F;
-		float green = 1.0F;//(float)(color & 255) / 255.0F;
-
 		design.setBrightness(inventoryBrightness);
 		
-		int internalLightLevel = block.getMixedBrightnessForBlock(renders.blockAccess, x, y, z);
+		int internalLightLevel = 0;
+		if (block == null) {
+			internalLightLevel = 0x00F000F0;
+		} else {
+			internalLightLevel = block.getMixedBrightnessForBlock(renders.blockAccess, x, y, z);
+		}
 
 		for (int i = 0; i < design.getX().length; i++) {
 
@@ -157,15 +158,14 @@ public class SpoutItem extends Item {
 
 			int sideBrightness;
 
-			if (sourceBlock != null) {
+			if (block != null && sourceBlock != null) {
 				sideBrightness = block.getMixedBrightnessForBlock(renders.blockAccess, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
 			} else {
 				sideBrightness = internalLightLevel;
 			}
 
-			//float brightness = baseBrightness * design.getMaxBrightness() + (1 - baseBrightness) * design.getMinBrightness();
-
 			tessallator.setBrightness(sideBrightness);
+			
 			tessallator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
 			float[] xx = design.getX()[i];
