@@ -29,12 +29,13 @@ import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 
 public class PacketWidgetRemove implements SpoutPacket {
+
 	protected Widget widget;
 	protected UUID screen;
-	public PacketWidgetRemove() {
 
+	public PacketWidgetRemove() {
 	}
-	
+
 	public PacketWidgetRemove(Widget widget, UUID screen) {
 		this.widget = widget;
 		this.screen = screen;
@@ -54,12 +55,11 @@ public class PacketWidgetRemove implements SpoutPacket {
 			try {
 				widget = widgetType.getWidgetClass().newInstance();
 				widget.readData(input);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -68,38 +68,38 @@ public class PacketWidgetRemove implements SpoutPacket {
 		output.writeLong(screen.getLeastSignificantBits());
 		widget.writeData(output);
 	}
-	
+
 	public void run(int playerId) {
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 		PopupScreen popup = mainScreen.getActivePopup();
 		Screen overlay = null;
-		if(SpoutClient.getHandle().currentScreen != null) {
-				overlay = SpoutClient.getHandle().currentScreen.getScreen();
+		if (SpoutClient.getHandle().currentScreen != null) {
+			overlay = SpoutClient.getHandle().currentScreen.getScreen();
 		}
 
-		//Determine if this is a popup screen and if we need to update it
 		if (widget instanceof PopupScreen && popup.getId().equals(widget.getId())) {
 			// Determine if this is a popup screen and if we need to update it
 			mainScreen.closePopup();
-		} else if (widget.getScreen() != null) {
-			// Otherwise just remove it from the display
-			widget.getScreen().removeWidget(widget);
-		}
-		//Determine if this is a widget on the overlay screen
-		else if (overlay != null && screen.equals(overlay.getId())) {
-				overlay.removeWidget(widget);
+		} else if (screen.equals(mainScreen.getId()) && mainScreen.containsWidget(widget.getId())) {
+			//Determine if this is a widget on the main screen
+			mainScreen.removeWidget(widget);
+		} else if (popup != null && screen.equals(popup.getId()) && popup.containsWidget(widget.getId())) {
+			//Determine if this is a widget on the popup screen
+			popup.removeWidget(widget);
+		} else if (overlay != null && screen.equals(overlay.getId()) && overlay.containsWidget(widget.getId())) {
+			//Determine if this is a widget on an overlay screen
+			overlay.removeWidget(widget);
 		}
 	}
 
 	public PacketType getPacketType() {
 		return PacketType.PacketWidgetRemove;
 	}
-	
+
 	public int getVersion() {
 		return 0;
 	}
 
 	public void failure(int playerId) {
-		
 	}
 }
