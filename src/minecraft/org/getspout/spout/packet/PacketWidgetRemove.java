@@ -80,13 +80,13 @@ public class PacketWidgetRemove implements SpoutPacket {
 		if (widget instanceof PopupScreen && popup.getId().equals(widget.getId())) {
 			// Determine if this is a popup screen and if we need to update it
 			mainScreen.closePopup();
-		} else if (screen.equals(mainScreen.getId()) && mainScreen.containsWidget(widget.getId())) {
+		} else if (mainScreen.containsWidget(widget.getId())) {
 			//Determine if this is a widget on the main screen
 			mainScreen.removeWidget(widget);
-		} else if (popup != null && screen.equals(popup.getId()) && popup.containsWidget(widget.getId())) {
+		} else if (popup != null && popup.containsWidget(widget.getId())) {
 			//Determine if this is a widget on the popup screen
 			popup.removeWidget(widget);
-		} else if (overlay != null && screen.equals(overlay.getId()) && overlay.containsWidget(widget.getId())) {
+		} else if (overlay != null && overlay.containsWidget(widget.getId())) {
 			//Determine if this is a widget on an overlay screen
 			overlay.removeWidget(widget);
 		}
