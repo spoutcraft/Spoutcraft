@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
+import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
@@ -87,6 +88,8 @@ public interface Client extends PropertyInterface {
 	public void send(AddonPacket packet);
 	
 	public ActivePlayer getActivePlayer();
+	
+	public AddonStore getAddonStore();
 	
 	/**
 	 * Gets a list of all Players

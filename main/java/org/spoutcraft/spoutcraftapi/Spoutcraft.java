@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.Client.Mode;
 import org.spoutcraft.spoutcraftapi.addon.AddonManager;
+import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
@@ -251,5 +252,9 @@ public final class Spoutcraft {
 	 */
 	public static List<Player> matchPlayer(String name) {
 		return client.matchPlayer(name);
+	}
+	
+	public static AddonStore getAddonStore() {
+		return client.getAddonStore();
 	}
 }
