@@ -1,13 +1,19 @@
 package org.getspout.spout.gui.server;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
@@ -38,6 +44,8 @@ public class PollResult {
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
 
 	protected static TIntObjectHashMap<PollResult> recentResults = new TIntObjectHashMap<PollResult>();
+	protected static Thread send = null;
+	private boolean sent = false;
 
 	protected PollResult(String ip, int port, int uid) {
 		setIp(ip);
@@ -203,24 +211,43 @@ public class PollResult {
 	 * and will give you better search results when you order by ping. Our server then
 	 * doesn't have to ping all the servers on its own.
 	 */
-	protected void sendDCData() {
+	protected static void sendDCData() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if(wasSandboxed) SpoutClient.disableSandbox();
-		Thread send = new Thread() {
+		if(send != null) {
+			return;
+		}
+		send = new Thread() {
 			public void run() {
-				if(ping > 0 && databaseId != -1) {
-					while(numPolling > 0) {
-						try {
-							Thread.sleep(20);
-						} catch (InterruptedException e) {
-							return;
-						}
+				while(numPolling > 0) {
+					try {
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						return;
 					}
-					String api = "http://servers.getspout.org/senddata.php?";
-					api += "uid="+databaseId;
-					api += "&ping="+ping;
-					api += "&players="+players;
-					api += "&maxplayers="+maxPlayers;
+				}
+				String api = "http://servers.getspout.org/senddata.php";
+				String json = "{";
+				int res = 0;
+				for(PollResult result:recentResults.valueCollection()) {
+					if(result.ping > 0 && result.databaseId != -1 && !result.sent) {
+						if(res > 0) {
+							json += ",";
+						}
+						json +="\""+res+"\":{";
+						
+						json += keyValue("uid", result.databaseId) + ",";
+						json += keyValue("ping", result.ping) + ",";
+						json += keyValue("players", result.players) + ",";
+						json += keyValue("maxplayers", result.maxPlayers);
+						json +="}";
+						result.sent = true;
+						res ++;
+					}
+				}
+				json += "}";
+				
+				if(res > 0) {
 					URL url;
 					try {
 						url = new URL(api);
@@ -228,13 +255,31 @@ public class PollResult {
 						return;
 					}
 					try {
-						InputStream stream  = url.openStream();
-						if(stream.read() == (int)'k') {
-							//Succeeded
-						}
-						stream.close();
+						String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
+						URLConnection conn = url.openConnection();
+					    conn.setDoOutput(true);
+					    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+					    wr.write(data);
+					    wr.flush();
+					    
+					    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+					    while (rd.readLine() != null) {
+					    }
+					    wr.close();
+					    rd.close();
+					    System.out.println("Sent DC Data");
 					} catch (IOException e) {
 					}
+				
+				}
+				send = null;
+			}
+			
+			public String keyValue(String key, Object value) {
+				if(value instanceof Number) {
+					return "\""+key+"\":"+value;
+				} else {
+					return "\""+key+"\":\""+value+"\"";
 				}
 			}
 		};

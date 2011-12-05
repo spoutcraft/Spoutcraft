@@ -64,12 +64,13 @@ class ContainerCreative extends Container {
 		}
 		*/
 		
-		Iterator<org.spoutcraft.spoutcraftapi.material.Material> i = MaterialData.getMaterialIterator();
-		while(i.hasNext()) {
-			org.spoutcraft.spoutcraftapi.material.Material mat = i.next();
-			ItemStack next = new ItemStack(mat.getRawId(), 1, mat.getRawData());
-			if (next.getItem() != null) {
-				this.itemList.add(next);
+		for (org.spoutcraft.spoutcraftapi.material.Material mat : MaterialData.getMaterials()) {
+			//don't render custoom blocks, because their items are already in this list
+			if (!(mat instanceof org.spoutcraft.spoutcraftapi.material.CustomBlock)) { 
+				ItemStack next = new ItemStack(mat.getRawId(), 1, mat.getRawData());
+				if (next.getItem() != null) {
+					this.itemList.add(next);
+				}
 			}
 		}
 		Collections.sort(itemList, new MCItemStackComparator());
