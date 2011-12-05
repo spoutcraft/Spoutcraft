@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.addon.java;
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.UnsafeMethod;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -122,6 +123,11 @@ public abstract class JavaAddon implements Addon {
 	@UnsafeMethod
 	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
 		return false;
+	}
+	
+	@Override
+	public final int hashCode() {
+		return (new HashCodeBuilder().append(file).append(dataFolder).append(description!=null?description.getName():"").toHashCode());
 	}
 
 }
