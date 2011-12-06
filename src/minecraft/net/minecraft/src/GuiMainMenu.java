@@ -17,6 +17,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 
+import org.getspout.spout.gui.addon.GuiAddonsLocal;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -28,6 +29,10 @@ public class GuiMainMenu extends GuiScreen {
 	private GuiButton multiplayerButton;
 	private int field_35357_f = 0;
 	private int field_35358_g;
+	
+	// Spout Start
+	protected static final int BUTTON_ADDONS = 6;
+	// Spout End
 
 	public GuiMainMenu() {
 		try {
@@ -96,7 +101,8 @@ public class GuiMainMenu extends GuiScreen {
 			this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, 98, 20, var2.translateKey("menu.options")));
 			this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 72, 98, 20, var2.translateKey("menu.quit")));
 		}
-		this.controlList.add(new GuiButton(5, this.width / 2 - 100, var4 + 96, "About"));
+		this.controlList.add(new GuiButton(5, this.width / 2 - 100, var4 + 96, 98, 20, "About"));
+		this.controlList.add(new GuiButton(BUTTON_ADDONS, this.width / 2 + 2, var4 + 96, 98, 20, "Addons"));
 		//Spout End
 
 		if(this.mc.session == null) {
@@ -126,6 +132,9 @@ public class GuiMainMenu extends GuiScreen {
 			this.mc.shutdown();
 		}
 		//Spout Start
+		if(var1.id == BUTTON_ADDONS) {
+			this.mc.displayGuiScreen(new GuiAddonsLocal());
+		}
 		if(var1.id == 5) {
 			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
 		}

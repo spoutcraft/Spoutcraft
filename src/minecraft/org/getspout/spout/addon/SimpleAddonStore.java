@@ -78,13 +78,11 @@ public class SimpleAddonStore implements AddonStore {
 		if(addons.containsKey(name)) {
 			AddonInfo info = addons.get(name);
 			info.setAddon(addon);
-			System.out.println("Found info");
 			return info;
 		} else {
 			AddonInfo info = new AddonInfo(name);
 			info.setAddon(addon);
 			addons.put(name, info);
-			System.out.println("Did not find info - generated new one.");
 			save();
 			return info;
 		}
