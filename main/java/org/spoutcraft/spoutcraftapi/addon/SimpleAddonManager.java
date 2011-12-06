@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.util.FileUtil;
 import org.spoutcraft.spoutcraftapi.Client;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
 import org.spoutcraft.spoutcraftapi.command.AddonCommandYamlParser;
 import org.spoutcraft.spoutcraftapi.command.Command;
@@ -272,6 +273,11 @@ public class SimpleAddonManager implements AddonManager {
 			return;
 		}
 		if (!addon.isEnabled()) {
+			//Check if disabled by user
+			if(!Spoutcraft.getAddonStore().isEnabled(addon)) {
+				System.out.println("Addon "+addon.getDescription().getName()+" could not be loaded because it is disabled.");
+				return;
+			}
 			securityManager.lock(key);
 			List<Command> addonCommands = AddonCommandYamlParser.parse(addon);
 
