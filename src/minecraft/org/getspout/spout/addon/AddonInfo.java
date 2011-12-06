@@ -10,9 +10,10 @@ public class AddonInfo {
 	private boolean enabled = true;
 	private long quota = 0;
 	private boolean updateAvailable = false;
+	private String name = "";
 	
-	public AddonInfo(Addon addon) {
-		this.addon = addon;
+	public AddonInfo(String name) {
+		this.name = name;
 	}
 	
 	public Addon getAddon() {

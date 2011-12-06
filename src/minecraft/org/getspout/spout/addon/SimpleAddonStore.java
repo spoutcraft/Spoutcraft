@@ -19,7 +19,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public class SimpleAddonStore implements AddonStore {
 
-	private HashMap<Addon, AddonInfo> addons = new HashMap<Addon, AddonInfo>();
+	private HashMap<String, AddonInfo> addons = new HashMap<String, AddonInfo>();
 	private boolean loading = false;
 
 	public void downloadAddon(int databaseId, DownloadEventDelegate delegate) {
@@ -74,14 +74,20 @@ public class SimpleAddonStore implements AddonStore {
 	}
 
 	public AddonInfo getAddonInfo(Addon addon) {
-		if(addons.containsKey(addon)) {
-			return addons.get(addon);
+		String name = addon.getDescription().getName();
+		if(addons.containsKey(name)) {
+			AddonInfo info = addons.get(name);
+			info.setAddon(addon);
+			System.out.println("Found info");
+			return info;
 		} else {
-			AddonInfo info = new AddonInfo(addon);
-			addons.put(addon, info);
+			AddonInfo info = new AddonInfo(name);
+			info.setAddon(addon);
+			addons.put(name, info);
+			System.out.println("Did not find info - generated new one.");
 			save();
+			return info;
 		}
-		return null;
 	}
 
 	public void load() {
@@ -95,22 +101,22 @@ public class SimpleAddonStore implements AddonStore {
 				try {
 					HashMap<String, Object> item = (HashMap<String, Object>) obj;
 					String name = (String) item.get("name");
-					Addon addon = SpoutClient.getInstance().getAddonManager().getAddon(name);
-					if(addon != null) {
-						AddonInfo info = new AddonInfo(addon);
-						info.setDatabaseId(Integer.valueOf((String) item.get("databaseId")));
-						info.setQuota(Long.valueOf((String) item.get("quota")));
-						info.setEnabled(Boolean.valueOf((String) item.get("enabled")));
-						info.setHasInternetAccess(Boolean.valueOf((String) item.get("internetAccess")));
-						addons.put(addon, info);
-					}
-				} catch (ClassCastException ignore) {
+					AddonInfo info = new AddonInfo(name);
+					info.setDatabaseId((Integer) item.get("databaseId"));
+					info.setQuota((Integer) item.get("quota"));
+					info.setEnabled((Boolean) item.get("enabled"));
+					info.setHasInternetAccess((Boolean) item.get("internetAccess"));
+					addons.put(name, info);
+					System.out.println("Loaded addon info for "+name);
 					
+				} catch (ClassCastException ignore) {
+					ignore.printStackTrace();
 				} catch (NullPointerException e) {
 					e.printStackTrace();
 				}
 			}
 		} catch (FileNotFoundException ignore) {
+			ignore.printStackTrace();
 		} finally {
 			loading = false;
 		}

@@ -137,7 +137,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		
 		((SimpleKeyBindingManager)bindingManager).load();
 		addonStore.load();
-		addonStore.save();
 		serverManager.init();
 	}
 	
