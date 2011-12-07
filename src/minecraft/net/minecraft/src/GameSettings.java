@@ -387,9 +387,7 @@ public class GameSettings {
 			System.out.println("Failed to save options");
 			var3.printStackTrace();
 		} finally {
-			if (oldLock) {
-				SpoutClient.enableSandbox();
-			}
+			SpoutClient.enableSandbox(oldLock);
 		}
 
 	}

@@ -168,6 +168,10 @@ public class SpoutClient extends PropertyObject implements Client {
 		return getInstance().securityManager.lock(getInstance().securityKey);
 	}
 	
+	public static boolean enableSandbox(boolean enable) {
+		return getInstance().securityManager.lock(enable, getInstance().securityKey);
+	}
+	
 	public static boolean disableSandbox() {
 		return getInstance().securityManager.unlock(getInstance().securityKey);
 	}
