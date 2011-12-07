@@ -29,6 +29,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 public final class SimpleSecurityManager extends SecurityManager {
 	private final double key;
 	private volatile boolean locked = false;
+	private final Thread mainThread;
 	private final ThreadGroup securityThreadGroup;
 	private final static HashSet<String> allowedPermissions;
 	private final static HashMap<String,HashSet<String>> systemMethodWhiteList;
@@ -64,12 +65,13 @@ public final class SimpleSecurityManager extends SecurityManager {
 		enumMethods.add(methodName);
 	}
 
-	public SimpleSecurityManager(double key, ThreadGroup securityThreadGroup) {
+	public SimpleSecurityManager(double key, ThreadGroup securityThreadGroup, Thread mainThread) {
 		if (System.getSecurityManager() instanceof SimpleSecurityManager) {
 			throw new SecurityException("Warning, Duplicate SimpleSecurityManager created!");
 		}
 		this.securityThreadGroup = securityThreadGroup;
 		this.key = key;
+		this.mainThread = mainThread;
 	}
 
 	public boolean lock(double key) {
@@ -78,7 +80,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	
 	public boolean lock(boolean enabled, double key) {
 		boolean oldLock = this.locked;
-		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
+		if (Thread.currentThread() != mainThread) {
 			return oldLock;
 		} else if (enabled && key == this.key) {
 			locked = true;
@@ -90,7 +92,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	public boolean unlock(double key) {
 		boolean oldLock = this.locked;
-		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
+		if (Thread.currentThread() != mainThread) {
 			return oldLock;
 		} else if (key == this.key) {
 			locked = false;
@@ -101,7 +103,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	}
 
 	public boolean isLocked() {
-		return (locked && Thread.currentThread().getName().equals("Minecraft main thread")) || 
+		return (locked && Thread.currentThread() == mainThread) || 
 				Thread.currentThread().getThreadGroup().equals(securityThreadGroup);
 	}
 
