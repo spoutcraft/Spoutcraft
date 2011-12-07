@@ -46,7 +46,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		getScreen().attachWidget(spoutcraft, buttonDatabase);
 		getScreen().attachWidget(spoutcraft, labelTitle);
 		addonOptions.attachWidget(spoutcraft, checkPluginEnabled);
-		addonOptions.attachWidget(spoutcraft, checkInternetAccess);
+		//addonOptions.attachWidget(spoutcraft, checkInternetAccess);
 		
 		updateButtons();
 		
