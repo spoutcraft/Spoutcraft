@@ -131,7 +131,10 @@ public class SpoutClient extends PropertyObject implements Client {
 		instance = this;
 		securityKey = (new Random()).nextDouble();
 		securityThreadGroup = new ThreadGroup("Sandboxed Threads");
-		securityManager = new SimpleSecurityManager(securityKey, securityThreadGroup);
+		securityManager = new SimpleSecurityManager(securityKey, securityThreadGroup, Thread.currentThread());
+		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
+			throw new SecurityException("Main thread name mismatch");
+		}
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		//System.setSecurityManager(securityManager);
 		
