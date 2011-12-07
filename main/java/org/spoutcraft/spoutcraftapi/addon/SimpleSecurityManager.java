@@ -22,6 +22,7 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
@@ -71,20 +72,28 @@ public final class SimpleSecurityManager extends SecurityManager {
 		this.key = key;
 	}
 
-	public void lock(double key) {
-		if (key == this.key) {
+	public boolean lock(double key) {
+		boolean oldLock = this.locked;
+		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
+			return oldLock;
+		} else if (key == this.key) {
 			locked = true;
 		} else {
 			throw new SecurityException("Incorrect key!");
 		}
+		return oldLock;
 	}
 
-	public void unlock(double key) {
-		if (key == this.key) {
+	public boolean unlock(double key) {
+		boolean oldLock = this.locked;
+		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
+			return oldLock;
+		} else if (key == this.key) {
 			locked = false;
 		} else {
 			throw new SecurityException("Incorrect key!");
 		}
+		return oldLock;
 	}
 
 	public boolean isLocked() {
