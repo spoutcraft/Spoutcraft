@@ -41,6 +41,13 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		cachedTotalHeight = -1;
 		return this;
 	}
+	
+	public ListWidget addItems(ListWidgetItem... items) {
+		for (ListWidgetItem item : items) {
+			this.addItem(item);
+		}
+		return this;
+	}
 
 	public boolean removeItem(ListWidgetItem item) {
 		if(items.contains(item)){
