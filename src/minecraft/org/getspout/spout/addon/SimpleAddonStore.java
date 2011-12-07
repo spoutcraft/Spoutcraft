@@ -114,7 +114,6 @@ public class SimpleAddonStore implements AddonStore {
 				}
 			}
 		} catch (FileNotFoundException ignore) {
-			ignore.printStackTrace();
 		} finally {
 			loading = false;
 		}
