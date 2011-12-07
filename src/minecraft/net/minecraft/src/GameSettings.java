@@ -11,6 +11,8 @@ import net.minecraft.src.EnumOptionsMappingHelper;
 import net.minecraft.src.KeyBinding;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
+
+import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Keyboard;
 
 public class GameSettings {
@@ -353,6 +355,7 @@ public class GameSettings {
 	}
 
 	public void saveOptions() {
+		boolean oldLock = SpoutClient.disableSandbox();;
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
 			var1.println("music:" + this.musicVolume);
@@ -383,6 +386,10 @@ public class GameSettings {
 		} catch (Exception var3) {
 			System.out.println("Failed to save options");
 			var3.printStackTrace();
+		} finally {
+			if (oldLock) {
+				SpoutClient.enableSandbox();
+			}
 		}
 
 	}
