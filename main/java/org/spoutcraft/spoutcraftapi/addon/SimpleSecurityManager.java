@@ -73,10 +73,14 @@ public final class SimpleSecurityManager extends SecurityManager {
 	}
 
 	public boolean lock(double key) {
+		return lock(true, key);
+	}
+	
+	public boolean lock(boolean enabled, double key) {
 		boolean oldLock = this.locked;
 		if (!Thread.currentThread().getName().equals("Minecraft main thread")) {
 			return oldLock;
-		} else if (key == this.key) {
+		} else if (enabled && key == this.key) {
 			locked = true;
 		} else {
 			throw new SecurityException("Incorrect key!");
