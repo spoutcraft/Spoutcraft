@@ -25,6 +25,13 @@ public interface ListWidget extends Scrollable {
 	public ListWidget addItem(ListWidgetItem item);
 	
 	/**
+	 * Add items to the list
+	 * @param items to add
+	 * @return instance of the ListWidget
+	 */
+	 public ListWidget addItems(ListWidgetItem... items);
+	
+	/**
 	 * Removes an item from the list.
 	 * @param item to remove
 	 * @return if item was found.
