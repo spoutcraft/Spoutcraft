@@ -65,22 +65,18 @@ public class LocalAddonsModel extends AbstractListModel {
 			}
 		}
 		
-		@Override
 		public void setListWidget(ListWidget widget) {
 			this.widget = widget;
 		}
 
-		@Override
 		public ListWidget getListWidget() {
 			return widget;
 		}
 
-		@Override
 		public int getHeight() {
 			return 20;
 		}
 
-		@Override
 		public void render(int x, int y, int width, int height) {
 			MinecraftFont font = Spoutcraft.getMinecraftFont();
 			font.drawString(addon.getDescription().getName(), x+2, y+2, 0xffffffff);
@@ -90,7 +86,6 @@ public class LocalAddonsModel extends AbstractListModel {
 			font.drawString(version, x + width - vwidth - 2, y+2, 0xffffffff);
 		}
 
-		@Override
 		public void onClick(int x, int y, boolean doubleClick) {
 			
 		}
