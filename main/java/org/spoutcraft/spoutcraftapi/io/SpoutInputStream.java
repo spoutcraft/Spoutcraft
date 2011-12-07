@@ -117,7 +117,7 @@ public class SpoutInputStream extends InputStream{
 		return buffer.getChar();
 	}
 	
-	public String readString(String s){
+	public String readString(){
 		short size =  buffer.getShort();
 		StringBuilder builder = new StringBuilder(size);
 		for (int i = 0; i < size; i++) {
