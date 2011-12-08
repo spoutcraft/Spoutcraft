@@ -3,6 +3,8 @@ package org.getspout.spout.inventory;
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
+import org.getspout.commons.util.map.TIntPairFloatHashMap;
+import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.inventory.Recipe;
@@ -11,8 +13,6 @@ import org.spoutcraft.spoutcraftapi.inventory.ShapelessRecipe;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairFloatHashMap;
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 
 public class SimpleMaterialManager implements MaterialManager {
 	private final TIntPairFloatHashMap originalHardness = new TIntPairFloatHashMap();
