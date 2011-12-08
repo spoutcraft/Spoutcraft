@@ -122,7 +122,6 @@ import net.minecraft.src.World;
 //Spout Start
 import gnu.trove.map.hash.TIntFloatHashMap;
 import org.getspout.spout.block.SpoutcraftChunk;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -501,7 +500,7 @@ public class Block {
 
 				org.spoutcraft.spoutcraftapi.material.Block b = target.getBlock().getType();
 				if (b instanceof CustomBlock) {
-					return b.getHardness();
+					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / b.getHardness() / 30.0F);
 				}
 
 				int x = (int) target.getX();
