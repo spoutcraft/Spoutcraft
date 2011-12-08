@@ -57,6 +57,24 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
  * A representation of the minecraft world
  */
 public interface World {
+	
+	/**
+	 * Gets the mixed brightness value at the given x, y, z location.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return mixed brightness
+	 */
+	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z);
+	
+	/**
+	 * Is true if the block at the x, y, z location is opaque (a solid block).
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return opacity.
+	 */
+	public boolean isOpaque(int x, int y, int z);
 
 	/**
 	 * Gets the {@link Block} at the given coordinates

@@ -3,8 +3,15 @@ package org.spoutcraft.spoutcraftapi.block.design;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.entity.Item;
+import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
+import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
@@ -279,7 +286,7 @@ public class GenericBlockDesign implements BlockDesign {
 		return textureAddon;
 	}
 
-	public boolean getReset() {
+	public boolean isReset() {
 		return reset;
 	}
 
@@ -310,5 +317,146 @@ public class GenericBlockDesign implements BlockDesign {
 
 	public BlockDesign setVertex(Vertex vertex) {
 		return setVertex(vertex.getQuadNum(), vertex.getIndex(), vertex.getX(), vertex.getY(), vertex.getZ(), vertex.getTextureX(), vertex.getTextureY(), vertex.getTextureWidth(), vertex.getTextureHeight());
+	}
+
+	public boolean renderBlock(Block block, int x, int y, int z) {
+		World world = Spoutcraft.getWorld();
+		if (block != null) {
+			boolean enclosed = true;
+			enclosed &= world.isOpaque(x, y + 1, z);
+			enclosed &= world.isOpaque(x, y - 1, z);
+			enclosed &= world.isOpaque(x, y, z + 1);
+			enclosed &= world.isOpaque(x, y, z - 1);
+			enclosed &= world.isOpaque(x + 1, y, z);
+			enclosed &= world.isOpaque(x - 1, y, z);
+			if (enclosed) {
+				return false;
+			}
+		}
+		
+		if (getX() == null) {
+			return false;
+		}
+	
+		setBrightness(1F);
+		
+		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
+		
+		int internalLightLevel = 0;
+		if (block == null) {
+			internalLightLevel = 0x00F000F0;
+		} else {
+			internalLightLevel = world.getMixedBrightnessAt(block, x, y, z);
+		}
+	
+		for (int i = 0; i < getX().length; i++) {
+	
+			MutableIntegerVector sourceBlock = getLightSource(i, x, y, z);
+	
+			int sideBrightness;
+	
+			if (block != null && sourceBlock != null) {
+				sideBrightness = world.getMixedBrightnessAt(block, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
+			} else {
+				sideBrightness = internalLightLevel;
+			}
+	
+			tessellator.setBrightness(sideBrightness);
+			
+			tessellator.setColorOpaqueFloat(1.0F, 1.0F, 1.0F);
+	
+			float[] xx = getX()[i];
+			float[] yy = getY()[i];
+			float[] zz = getZ()[i];
+			float[] tx = getTextureXPos()[i];
+			float[] ty = getTextureYPos()[i];
+	
+			for (int j = 0; j < 4; j++) {
+				tessellator.addVertexWithUV(x + xx[j], y + yy[j], z + zz[j], tx[j], ty[j]);
+			}
+		}
+		return true;
+	}
+
+	public boolean renderItemstack(Item item, float x, float y, float depth, float rotation, float scale, Random rand) {
+		int items = 1;
+		if (item != null) {
+			int amt = item.getItemStack().getAmount();
+			if (amt > 1) {
+				items = 2;
+			}
+	
+			if (amt > 5) {
+				items = 3;
+			}
+	
+			if (amt > 20) {
+				items = 4;
+			}
+		}
+		
+		boolean result = false;
+		
+		GL11.glColor4f(1, 1, 1, 1);
+		GL11.glTranslatef(x, y, depth);
+		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+		GL11.glScalef(scale, scale, scale);
+		
+		Spoutcraft.getTessellator().startDrawingQuads();
+		Spoutcraft.getTessellator().setNormal(0.0F, -1.0F, 0.0F);
+
+		for (int i = 0; i < items; ++i) {
+			GL11.glPushMatrix();
+			if(i > 0) {
+				float rotX = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+				float rotY = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+				float rotZ = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
+				GL11.glTranslatef(rotX, rotY, rotZ);
+			}
+			
+			result &= renderBlock(null, 0, 0, 0);
+			
+			GL11.glPopMatrix();
+		}
+
+		Spoutcraft.getTessellator().draw();
+		return result;
+	}
+
+	public boolean renderItemOnHUD(float x, float y, float depth) {
+		/*
+		 * Block var16 = Block.blocksList[var3];
+			GL11.glPushMatrix();
+			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			GL11.glScalef(10.0F, 10.0F, 10.0F);
+			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
+			GL11.glScalef(1.0F, 1.0F, -1.0F);
+			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
+			var11 = (float)(var17 >> 16 & 255) / 255.0F;
+			var12 = (float)(var17 >> 8 & 255) / 255.0F;
+			float var13 = (float)(var17 & 255) / 255.0F;
+			if (this.field_27004_a) {
+				GL11.glColor4f(var11, var12, var13, 1.0F);
+			}
+
+			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+			this.renderBlocks.useInventoryTint = this.field_27004_a;
+			this.renderBlocks.renderBlockOnInventory(var16, var4, 1.0F);
+			this.renderBlocks.useInventoryTint = true;
+			GL11.glPopMatrix();
+		 */
+		GL11.glPushMatrix();
+		GL11.glTranslatef(x, y, depth);
+		GL11.glScalef(10.0F, 10.0F, 10.0F);
+		GL11.glTranslatef(1.0F, 0.5F, 1.0F);
+		GL11.glScalef(1.0F, 1.0F, -1.0F);
+		GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
+		GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);		
+		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		boolean result = renderBlock(null, 0, 0, 0);
+		GL11.glPopMatrix();
+		return result;
 	}
 }
