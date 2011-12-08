@@ -82,7 +82,9 @@ public final class SimpleSecurityManager extends SecurityManager {
 		boolean oldLock = this.locked;
 		if (Thread.currentThread() != mainThread) {
 			return oldLock;
-		} else if (enabled && key == this.key) {
+		} else if (!enabled) {
+			return oldLock;
+		} else if (key == this.key) {
 			locked = true;
 		} else {
 			throw new SecurityException("Incorrect key!");
