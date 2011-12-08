@@ -123,6 +123,9 @@ public class RenderBlocks {
 	private boolean aoGrassXYZPNC;
 	private boolean aoGrassXYZNNC;
 	private boolean aoGrassXYZCNP;
+	//Spout start
+	public short[] customIds = null;
+	//Spout end
 
 	public RenderBlocks(IBlockAccess var1) {
 		this.blockAccess = var1;

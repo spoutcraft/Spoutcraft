@@ -18,6 +18,10 @@ public class MinecraftTessellatorWrapper implements MinecraftTessellator {
 	public void startDrawing(int drawMode) {
 		Tessellator.instance.startDrawing(drawMode);
 	}
+	
+	public void setBrightness(int brightness) {
+		Tessellator.instance.setBrightness(brightness);
+	}
 
 	public void setTextureUV(double s, double t) {
 		Tessellator.instance.setTextureUV(s, t);

@@ -26,7 +26,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 		customId = input.readShort();
 		design = new GenericBlockDesign();
 		design.read(input);
-		if (design.getReset()) {
+		if (design.isReset()) {
 			design = null;
 		}
 	}

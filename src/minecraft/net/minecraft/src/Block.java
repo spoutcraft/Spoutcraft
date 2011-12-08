@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BlockBed;
 import net.minecraft.src.BlockBookshelf;
@@ -287,6 +289,9 @@ public class Block {
 	public final Material blockMaterial;
 	public float slipperiness;
 	private String blockName;
+	//Spout start
+	public static short[] customIds = null;
+	//Spout end
 
 
 	protected Block(int var1, Material var2) {
@@ -381,31 +386,37 @@ public class Block {
 		this.maxZ = (double) var6;
 	}
 
-	public float getBlockBrightness(IBlockAccess var1, int var2, int var3, int var4) {
+	public float getBlockBrightness(IBlockAccess var1, int x, int y, int z) {
 		// Spout start
 		int light = lightValue[this.blockID];
-		short customId = Spoutcraft.getWorld().getChunkAt(var2, var3, var4).getCustomBlockId(var2, var3, var4);
-		if (customId > 0) {
-			CustomBlock block = MaterialData.getCustomBlock(customId);
-			if (block != null) {
-				light = block.getLightLevel();
+		if (customIds != null) {
+			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.field_35471_b) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.field_35473_a) | (y & Minecraft.theMinecraft.theWorld.field_35469_d);
+			short customId = customIds[key];
+			if (customId > 0) {
+				CustomBlock block = MaterialData.getCustomBlock(customId);
+				if (block != null) {
+					light = block.getLightLevel();
+				}
 			}
 		}
-		return var1.getBrightness(var2, var3, var4, light);
+		return var1.getBrightness(x, y, z, light);
 		// Spout end
 	}
 
-	public int getMixedBrightnessForBlock(IBlockAccess var1, int var2, int var3, int var4) {
+	public int getMixedBrightnessForBlock(IBlockAccess var1, int x, int y, int z) {
 		// Spout start
 		int light = lightValue[this.blockID];
-		short customId = Spoutcraft.getWorld().getChunkAt(var2, var3, var4).getCustomBlockId(var2, var3, var4);
-		if (customId > 0) {
-			CustomBlock block = MaterialData.getCustomBlock(customId);
-			if (block != null) {
-				light = block.getLightLevel();
+		if (customIds != null) {
+			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.field_35471_b) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.field_35473_a) | (y & Minecraft.theMinecraft.theWorld.field_35469_d);
+			short customId = customIds[key];
+			if (customId > 0) {
+				CustomBlock block = MaterialData.getCustomBlock(customId);
+				if (block != null) {
+					light = block.getLightLevel();
+				}
 			}
 		}
-		return var1.getLightBrightnessForSkyBlocks(var2, var3, var4, light);
+		return var1.getLightBrightnessForSkyBlocks(x, y, z, light);
 		// Spout end
 	}
 

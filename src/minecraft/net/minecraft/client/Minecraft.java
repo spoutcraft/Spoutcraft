@@ -492,20 +492,20 @@ public abstract class Minecraft implements Runnable {
 			Screen widget = null;
 			if (this.currentScreen != null && screen == null) {
 				packet = new PacketScreenAction(ScreenAction.Close, ScreenUtil.getType(this.currentScreen));
-				event = ScreenCloseEvent.getInstance((Player)thePlayer.spoutEntity, currentScreen.screen, display);
-				widget = currentScreen.screen;
+				event = ScreenCloseEvent.getInstance((Player)thePlayer.spoutEntity, currentScreen.getScreen(), display);
+				widget = currentScreen.getScreen();
 			}
 			// Screen opened
 			if (screen != null && this.currentScreen == null) {
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display);
-				widget = screen.screen;
+				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.getScreen(), display);
+				widget = screen.getScreen();
 			}
 			// Screen swapped
 			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				packet = new PacketScreenAction(ScreenAction.Open, display);
-				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.screen, display);
-				widget = screen.screen;
+				event = ScreenOpenEvent.getInstance((Player)thePlayer.spoutEntity, screen.getScreen(), display);
+				widget = screen.getScreen();
 			}
 			boolean cancel = false;
 			if (event != null) {
