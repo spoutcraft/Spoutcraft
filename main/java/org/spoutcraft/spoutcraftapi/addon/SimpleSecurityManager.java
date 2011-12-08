@@ -79,7 +79,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	}
 	
 	public boolean lock(boolean enabled, double key) {
-		boolean oldLock = this.locked;
+		boolean oldLock = isLocked();
 		if (Thread.currentThread() != mainThread) {
 			return oldLock;
 		} else if (!enabled) {
@@ -93,7 +93,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	}
 
 	public boolean unlock(double key) {
-		boolean oldLock = this.locked;
+		boolean oldLock = isLocked();
 		if (Thread.currentThread() != mainThread) {
 			return oldLock;
 		} else if (key == this.key) {
