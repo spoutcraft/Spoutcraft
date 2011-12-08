@@ -1,6 +1,7 @@
 package org.spoutcraft.spoutcraftapi.material;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -8,8 +9,24 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.material.block.*;
-import org.spoutcraft.spoutcraftapi.material.item.*;
+import org.spoutcraft.spoutcraftapi.material.block.Air;
+import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
+import org.spoutcraft.spoutcraftapi.material.block.GenericLiquid;
+import org.spoutcraft.spoutcraftapi.material.block.Grass;
+import org.spoutcraft.spoutcraftapi.material.block.LongGrass;
+import org.spoutcraft.spoutcraftapi.material.block.Sapling;
+import org.spoutcraft.spoutcraftapi.material.block.Slab;
+import org.spoutcraft.spoutcraftapi.material.block.Solid;
+import org.spoutcraft.spoutcraftapi.material.block.StoneBricks;
+import org.spoutcraft.spoutcraftapi.material.block.Tree;
+import org.spoutcraft.spoutcraftapi.material.block.Wool;
+import org.spoutcraft.spoutcraftapi.material.item.Coal;
+import org.spoutcraft.spoutcraftapi.material.item.Dye;
+import org.spoutcraft.spoutcraftapi.material.item.GenericArmor;
+import org.spoutcraft.spoutcraftapi.material.item.GenericFood;
+import org.spoutcraft.spoutcraftapi.material.item.GenericItem;
+import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
+import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
 
 public class MaterialData {
 	private final static Object[] idLookup = new Object[3200];

@@ -18,6 +18,7 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class GenericBitmap extends GenericTexture implements Bitmap {
