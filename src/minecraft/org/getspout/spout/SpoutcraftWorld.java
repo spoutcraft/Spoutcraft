@@ -55,6 +55,21 @@ public class SpoutcraftWorld implements World{
 		return handle.spawnHostileMobs;
 	}
 
+	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z) {
+		net.minecraft.src.Block b;
+		if (block.getRawId() < net.minecraft.src.Block.blocksList.length){ 
+			b = net.minecraft.src.Block.blocksList[block.getRawId()];
+		}
+		else {
+			b = net.minecraft.src.Block.stone;
+		}
+		return b.getMixedBrightnessForBlock(handle, x, y, z);
+	}
+
+	public boolean isOpaque(int x, int y, int z) {
+		return handle.isBlockOpaqueCube(x, y, z);
+	}
+
 	public Block getBlockAt(int x, int y, int z) {
 		return getChunkAt(x >> 4, z >> 4).getBlockAt(x & 0xF, y & (getMaxHeight() - 1), z & 0xF);
 	}
@@ -450,6 +465,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Entity getEntityFromUUID(UUID id) {
+		// TODO 
 		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 }

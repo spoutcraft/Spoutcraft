@@ -1,3 +1,6 @@
+/*
+ * Serves no purpose. Just no.
+
 package net.minecraft.src;
 
 import net.minecraft.src.Block;
@@ -283,3 +286,4 @@ public class ChunkCache implements IBlockAccess {
 	}
 	// Spout end
 }
+*/

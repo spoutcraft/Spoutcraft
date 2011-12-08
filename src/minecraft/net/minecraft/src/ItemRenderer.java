@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityLiving;
@@ -21,7 +23,6 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -39,6 +40,9 @@ public class ItemRenderer {
 	private RenderBlocks renderBlocksInstance = new RenderBlocks();
 	private MapItemRenderer mapItemRenderer;
 	private int field_20099_f = -1;
+	//Spout start
+	private Random rand = new Random();
+	//Spout end
 
 	public ItemRenderer(Minecraft var1) {
 		this.mc = var1;
@@ -79,7 +83,7 @@ public class ItemRenderer {
 		}
 		
 		if (design != null) {
-			SpoutItem.renderBlockOnInventory(design, this.renderBlocksInstance, 1F);
+			design.renderItemstack(null, -0.5F, -0.5F, -0.5F, 0, 1F, rand);
 		}
 		else if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
 			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), 1.0F);

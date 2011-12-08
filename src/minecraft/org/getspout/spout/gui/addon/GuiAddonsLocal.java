@@ -5,6 +5,7 @@ import net.minecraft.src.GuiMainMenu;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.GuiSpoutScreen;
 import org.getspout.spout.gui.addon.LocalAddonsModel.AddonItem;
+import org.lwjgl.Sys;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -22,7 +23,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 	private GenericListView addonsView;
 	private GenericScrollArea addonOptions;
 	private GenericCheckBox checkPluginEnabled, checkInternetAccess;
-	private GenericButton buttonMainMenu, buttonDatabase;
+	private GenericButton buttonMainMenu, buttonDatabase, buttonOpenFolder;
 	
 	private LocalAddonsModel model = new LocalAddonsModel(this);
 	
@@ -39,12 +40,15 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		buttonDatabase = new GenericButton("Database");
 		buttonDatabase.setTooltip("Coming soon!");
 		buttonDatabase.setEnabled(false);
+		buttonOpenFolder = new GenericButton("Open Addons Folder");
+		buttonOpenFolder.setTooltip("Place your addons here manually");
 		
 		getScreen().attachWidget(spoutcraft, addonsView);
 		getScreen().attachWidget(spoutcraft, addonOptions);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 		getScreen().attachWidget(spoutcraft, buttonDatabase);
 		getScreen().attachWidget(spoutcraft, labelTitle);
+		getScreen().attachWidget(spoutcraft, buttonOpenFolder);
 		addonOptions.attachWidget(spoutcraft, checkPluginEnabled);
 		//addonOptions.attachWidget(spoutcraft, checkInternetAccess);
 		
@@ -84,6 +88,9 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		int center = left + 5 + cellWidth;
 		int right = center + 5 + cellWidth;
 		
+		
+		buttonOpenFolder.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		
 		buttonDatabase.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 		
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
@@ -122,6 +129,9 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 			if(item != null) {
 				SpoutClient.getInstance().getAddonStore().getAddonInfo(item.getAddon()).setHasInternetAccess(checkInternetAccess.isChecked());
 			}
+		}
+		if(btn.equals(buttonOpenFolder)) {
+			Sys.openURL("file://"+SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
 		}
 	}
 

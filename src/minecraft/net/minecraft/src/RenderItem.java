@@ -16,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 
 //Spout start
 import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -61,8 +60,6 @@ public class RenderItem extends Render {
 			var13 = 4;
 		}
 
-		GL11.glTranslatef((float) var2, (float) var4 + var11, (float) var6);
-		GL11.glEnable('\u803a');
 		float var17;
 		int var16;
 		float var19;
@@ -107,25 +104,13 @@ public class RenderItem extends Render {
 			else {
 				this.loadTexture("/gui/items.png");
 			}
+			GL11.glTranslatef((float) var2, (float) var4 + var11, (float) var6);
 		}
+		GL11.glEnable('\u803a');
 		
 		if (design != null && custom) {
-			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
-			GL11.glScalef(0.25F, 0.25F, 0.25F);
-
-			for(var16 = 0; var16 < var13; ++var16) {
-				GL11.glPushMatrix();
-				if(var16 > 0) {
-					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
-					var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
-					var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
-					GL11.glTranslatef(var17, var18, var19);
-				}
-			}
-				
-			SpoutItem.renderBlockOnInventory(design, renderBlocks, 1F);
-			
-			GL11.glPopMatrix();
+			//GL11.glScalef(0.25F, 0.25F, 0.25F);
+			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)var1.spoutEntity, (float)var2, (float)(var4 + var11), (float)var6, var12, 0.25F, random);
 		}
 		else
 		
@@ -262,17 +247,6 @@ public class RenderItem extends Render {
 					}
 				}
 			}
-			
-			/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
-			design = block != null ? block.getBlockDesign() : null;
-			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
-				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
-				if (texture != null) {
-					var2.bindTexture(texture.getTextureID());
-					custom = true;
-				}
-			}*/
-
 		}
 		if (!custom) {
 			if (var3 < 256) {
@@ -287,28 +261,7 @@ public class RenderItem extends Render {
 		float var12;
 		
 		if (design != null && custom) {
-			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
-			GL11.glScalef(10.0F, 10.0F, 10.0F);
-			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
-			GL11.glScalef(1.0F, 1.0F, -1.0F);
-			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
-			var11 = (float)(var17 >> 16 & 255) / 255.0F;
-			var12 = (float)(var17 >> 8 & 255) / 255.0F;
-			float var13 = (float)(var17 & 255) / 255.0F;
-			if (this.field_27004_a) {
-				GL11.glColor4f(var11, var12, var13, 1.0F);
-			}
-
-			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			SpoutItem.renderBlockOnInventory(design, renderBlocks, 1.0F);
-			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			GL11.glPopMatrix();
-			
+			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
 		}
 		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 			Block var16 = Block.blocksList[var3];

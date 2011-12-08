@@ -13,7 +13,6 @@ import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFluid;
 import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkCache;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.ChunkPosition;
@@ -2697,8 +2696,10 @@ public class World implements IBlockAccess {
 		int var11 = var4 + var7;
 		int var12 = var5 + var7;
 		int var13 = var6 + var7;
-		ChunkCache var14 = new ChunkCache(this, var8, var9, var10, var11, var12, var13);
-		PathEntity var15 = (new PathFinder(var14)).createEntityPathTo(var1, var2, var3);
+		//Spout start
+		//ChunkCache var14 = new ChunkCache(this, var8, var9, var10, var11, var12, var13);
+		PathEntity var15 = (new PathFinder(this)).createEntityPathTo(var1, var2, var3);
+		//Spout end
 		Profiler.endSection();
 		return var15;
 	}
@@ -2715,8 +2716,10 @@ public class World implements IBlockAccess {
 		int var13 = var6 + var9;
 		int var14 = var7 + var9;
 		int var15 = var8 + var9;
-		ChunkCache var16 = new ChunkCache(this, var10, var11, var12, var13, var14, var15);
-		PathEntity var17 = (new PathFinder(var16)).createEntityPathTo(var1, var2, var3, var4, var5);
+		//Spout start
+		//ChunkCache var16 = new ChunkCache(this, var10, var11, var12, var13, var14, var15);
+		PathEntity var17 = (new PathFinder(this)).createEntityPathTo(var1, var2, var3, var4, var5);
+		//Spout end
 		Profiler.endSection();
 		return var17;
 	}

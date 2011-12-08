@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkCache;
 import net.minecraft.src.Entity;
 import net.minecraft.src.ICamera;
 import net.minecraft.src.MathHelper;
@@ -119,15 +118,13 @@ public class WorldRenderer {
 			for(int renderPass = 0; renderPass < 2; ++renderPass) {
 				this.skipRenderPass[renderPass] = true;
 			}
-			
-			short[] customBlockIds = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockIds();
 
 			Chunk.isLit = false;
 			HashSet tileRenderers = new HashSet();
 			tileRenderers.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
-			ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
-			RenderBlocks blockRenderer = new RenderBlocks(chunkCache);
+			//ChunkCache chunkCache = new ChunkCache(this.worldObj, x - 1, y - 1, z - 1, sizeXOffset + 1, sizeYOffset + 1, sizeZOffset + 1);
+			RenderBlocks blockRenderer = new RenderBlocks(worldObj);
 			
 			List<String> hitTextures = new ArrayList<String>();
 			List<String> hitTexturesPlugins = new ArrayList<String>();
@@ -139,7 +136,10 @@ public class WorldRenderer {
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
 			game.renderEngine.bindTexture(defaultTexture);
 			
-			
+			short[] customBlockIds = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockIds();
+
+			blockRenderer.customIds = customBlockIds;
+
 			for (int renderPass = 0; renderPass < 2; ++renderPass) {
 				
 				boolean skipRenderPass = false;
@@ -180,20 +180,23 @@ public class WorldRenderer {
 						tessellator.startDrawingQuads();
 					}
 					
+					float[] oldBounds = new float[6];
+					
 					//The x,y,z order is important, don't change!
 					for (int dx = x; dx < sizeXOffset; ++dx) {
 						for (int dz = z; dz < sizeZOffset; ++dz) {
 							for (int dy = y; dy < sizeYOffset; ++dy) {
-								int id = chunkCache.getBlockId(dx, dy, dz);
+								int id = worldObj.getBlockId(dx, dy, dz);
 								if (id > 0) {
 									String customTexture = null; 
 									String customTextureAddon = null;
 									GenericBlockDesign design = null;
 
+									CustomBlock mat = null;
 									if (customBlockIds != null) {
 										int key = ((dx & 0xF) << 11) | ((dz & 0xF) << 7) | (dy & 0x7F);
 										if (customBlockIds[key] != 0) {
-											CustomBlock mat = MaterialData.getCustomBlock(customBlockIds[key]);
+											mat = MaterialData.getCustomBlock(customBlockIds[key]);
 											if (mat != null) {
 												design = (GenericBlockDesign) mat.getBlockDesign();
 											}
@@ -233,7 +236,7 @@ public class WorldRenderer {
 									}
 
 									if (renderPass == 0 && Block.isBlockContainer[id]) {
-										TileEntity var20 = chunkCache.getBlockTileEntity(dx, dy, dz);
+										TileEntity var20 = worldObj.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
 										}
@@ -255,7 +258,15 @@ public class WorldRenderer {
 									}
 									else {
 										if (design != null) {
-											rendered |= SpoutItem.renderCustomBlock(blockRenderer, design, block, dx, dy, dz);
+											oldBounds[0] = (float) block.minX;
+											oldBounds[1] = (float) block.minY;
+											oldBounds[2] = (float) block.minZ;
+											oldBounds[3] = (float) block.maxX;
+											oldBounds[4] = (float) block.maxY;
+											oldBounds[5] = (float) block.maxZ;
+											block.setBlockBounds(design.getLowXBound(), design.getLowYBound(), design.getLowZBound(), design.getHighXBound(), design.getHighYBound(), design.getHighZBound());
+											rendered |= design.renderBlock(mat, dx, dy, dz);
+											block.setBlockBounds(oldBounds[0], oldBounds[1], oldBounds[2], oldBounds[3], oldBounds[4], oldBounds[5]);
 										}
 										else {
 											rendered |= blockRenderer.renderBlockByRenderType(block, dx, dy, dz);
@@ -286,7 +297,7 @@ public class WorldRenderer {
 					break;
 				}
 			}
-
+			
 			HashSet var24 = new HashSet();
 			var24.addAll(this.tileEntityRenderers);
 			var24.removeAll(tileRenderers);
@@ -296,6 +307,8 @@ public class WorldRenderer {
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
+			
+			blockRenderer.customIds = null;
 		}
 	}
 
