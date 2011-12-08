@@ -4,21 +4,33 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 
-public class KeyBinding implements Serializable {
+public final class KeyBinding implements Serializable {
 	private static final long serialVersionUID = 3241524501740640147L;
 	private int key;
-	private String plugin;
+	private transient Addon addon;
 	private String id;
 	private String description;
 	private transient UUID uuid = null;
+	private String addonName;
+	private BindingExecutionDelegate myDelegate = null;
 	
 	public KeyBinding() {
 	}
 	
-	public KeyBinding(int key, String plugin, String id, String description) {
+	public KeyBinding(int key, String name, String id, String description) {
 		this.key = key;
-		this.plugin = plugin;
+		this.addonName = name;
+		this.description = description;
+		this.id = id;
+		this.addon = null;
+	}
+	
+	public KeyBinding(int key, Addon addon, String id, String description) {
+		this.key = key;
+		this.addon = addon;
 		this.description = description;
 		this.id = id;
 	}
@@ -31,12 +43,15 @@ public class KeyBinding implements Serializable {
 		this.key = key;
 	}
 
-	public String getPlugin() {
-		return plugin;
+	public Addon getAddon() {
+		if(addon == null) {
+			addon = Spoutcraft.getAddonManager().getAddon(addonName);
+		}
+		return addon;
 	}
 
-	public void setPlugin(String plugin) {
-		this.plugin = plugin;
+	public void setAddon(Addon addon) {
+		this.addon = addon;
 	}
 
 	public String getId() {
@@ -78,11 +93,31 @@ public class KeyBinding implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (new HashCodeBuilder()).append(key).append(plugin).append(id).append(uuid).toHashCode();
+		return (new HashCodeBuilder()).append(key).append(addon).append(id).append(uuid).toHashCode();
 	}
 
 	public void takeChanges(KeyBinding binding) {
 		description = binding.description;
 		uuid = binding.uuid;
+		myDelegate = binding.myDelegate;
+	}
+
+	public String getAddonName() {
+		if(addon == null) {
+			addon = Spoutcraft.getAddonManager().getAddon(addonName);
+		}
+		if(addon != null) {
+			return addon.getDescription().getName();
+		} else {
+			return addonName;
+		}
+	}
+
+	public void setDelegate(BindingExecutionDelegate myDelegate) {
+		this.myDelegate = myDelegate;
+	}
+
+	public BindingExecutionDelegate getDelegate() {
+		return myDelegate;
 	}
 }

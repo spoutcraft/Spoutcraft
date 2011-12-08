@@ -3,8 +3,11 @@ package org.spoutcraft.spoutcraftapi.block.design;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.entity.Item;
+import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public interface BlockDesign {
@@ -41,18 +44,50 @@ public interface BlockDesign {
 	 */
 	public BlockDesign setRenderPass(int renderPass);
 	
+	/**
+	 * Gets the render pass for this design
+	 * A render pass of 0 will be rendered in line with standard blocks
+	 * A render pass of 1 will be rendered after standard blocks
+	 * @return render pass
+	 */
 	public int getRenderPass();
 	
+	/**
+	 * The number of bytes stored in this design. Used for serialization.
+	 * @return bytes
+	 */
 	public int getNumBytes();
 	
+	/**
+	 * The version of this design. Used for serialization.
+	 * @return bytes
+	 */
 	public int getVersion();
 	
+	/**
+	 * Inflates this design with data from a packet.
+	 * @param input
+	 * @throws IOException
+	 */
 	public void read(DataInputStream input) throws IOException;
 	
+	/**
+	 * Writes out the default, generic version of this design
+	 * @param output
+	 */
 	public void writeReset(DataOutputStream output);
 
+	/**
+	 * Gets the number of bytes in the empty, generic design
+	 * @return
+	 */
 	public int getResetNumBytes();
 
+	/**
+	 * Writes this design out to a packet. Used for serialization.
+	 * @param output
+	 * @throws IOException
+	 */
 	public void write(DataOutputStream output) throws IOException;
 	
 	/**
@@ -165,7 +200,11 @@ public interface BlockDesign {
 	 */
 	public String getTextureAddon();
 	
-	public boolean getReset();
+	/**
+	 * True if this design has been reset.
+	 * @return
+	 */
+	public boolean isReset();
 	
 	/**
 	 * Sets the light source for the specified quad
@@ -195,4 +234,21 @@ public interface BlockDesign {
 	 * @return the texture
 	 */
 	public Texture getTexture();
+	
+	/**
+	 * Renders this block into the world
+	 * @param block material being rendered
+	 * @param x location
+	 * @param y location
+	 * @param z location
+	 */
+	public boolean renderBlock(Block block, int x, int y, int z);
+	
+	/**
+	 * Renders this design as an item in the world
+	 * @param block material being rendered
+	 */
+	public boolean renderItemstack(Item item, float x, float y, float depth, float rotation, float scale, Random rand);
+	
+	public boolean renderItemOnHUD(float x, float y, float depth);
 }

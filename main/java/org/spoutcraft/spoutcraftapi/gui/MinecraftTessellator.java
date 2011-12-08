@@ -25,6 +25,8 @@ public interface MinecraftTessellator {
 	public void startDrawingQuads();
 
 	public void startDrawing(int drawMode);
+	
+	public void setBrightness(int brightness);
 
 	public void setTextureUV(double s, double t);
 
