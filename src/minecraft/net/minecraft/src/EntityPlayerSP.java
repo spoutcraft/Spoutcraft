@@ -33,6 +33,8 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.getspout.spout.gui.ScreenUtil;
 import org.getspout.spout.packet.PacketRenderDistance;
 import org.getspout.spout.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -471,6 +473,9 @@ public class EntityPlayerSP extends EntityPlayer {
 				}
 			}
 		}
+		//Spout Start
+		((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(key, keyReleased, ScreenUtil.getType(mc.currentScreen).getCode());
+		//Spout End
 	}
 	
 	@Override

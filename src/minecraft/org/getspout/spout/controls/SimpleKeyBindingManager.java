@@ -33,7 +33,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	public void registerControl(KeyBinding binding){
 		KeyBinding result = null;
 		for(KeyBinding check:bindings){
-			if(check.getId().equals(binding.getId()) && check.getPlugin().equals(binding.getPlugin())){
+			if(check.getId().equals(binding.getId()) && check.getAddonName().equals(binding.getAddonName())){
 				result = check;
 			}
 		}
@@ -163,8 +163,16 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 
 	public void pressKey(int key, boolean keyReleased, int screen) {
 		KeyBinding binding = bindingsForKey.get(key);
-		if(!(binding==null || binding.getUniqueId() == null)){
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
+		if(binding!=null){
+			if(binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
+			} else { //Client side
+				if(!keyReleased) {
+					binding.getDelegate().onKeyPress(key, binding);
+				} else {
+					binding.getDelegate().onKeyRelease(key, binding);
+				}
+			}
 		}
 		if(screen == 0) {
 			if(!isModifierKey(key)) {
