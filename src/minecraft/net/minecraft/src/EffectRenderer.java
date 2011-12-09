@@ -19,7 +19,9 @@ import java.util.LinkedList;
 import org.getspout.spout.io.CustomTextureManager;
 import org.getspout.spout.item.CustomEntityDiggingFX;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 //Spout end
@@ -155,12 +157,13 @@ public class EffectRenderer {
 			byte var7 = 4;
 
 			// Spout start
+			//TODO this needs to be moved into BlockDesign's API
 			boolean custom = false;
 			GenericBlockDesign design = null;
 			Texture customTexture = null;
-			int data = worldObj.getBlockMetadata(var1, var2, var3);
-			if (MaterialData.getBlock(var5, (short) data) != null) {
-				design = (GenericBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
+			CustomBlock block = MaterialData.getCustomBlock(Spoutcraft.getWorld().getChunkAt(var1, var2, var3).getCustomBlockId(var1, var2, var3));
+			if (block != null) {
+				design = (GenericBlockDesign) block.getBlockDesign();
 			}
 
 			if (design != null) {
@@ -226,9 +229,10 @@ public class EffectRenderer {
 			// Spout start
 			boolean custom = false;
 			GenericBlockDesign design = null;
-			int data = worldObj.getBlockMetadata(var1, var2, var3);
-			if (MaterialData.getBlock(var5, (short) data) != null) {
-				design = (GenericBlockDesign) MaterialData.getBlock(var5, (short) data).getBlockDesign();
+			int data = this.worldObj.getBlockMetadata(var1, var2, var3);
+			CustomBlock block = MaterialData.getCustomBlock(Spoutcraft.getWorld().getChunkAt(var1, var2, var3).getCustomBlockId(var1, var2, var3));
+			if (block != null) {
+				design = (GenericBlockDesign) block.getBlockDesign();
 			}
 
 			if (design != null) {
