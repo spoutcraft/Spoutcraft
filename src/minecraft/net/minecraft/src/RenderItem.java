@@ -13,6 +13,7 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 //Spout start
 import org.getspout.spout.io.CustomTextureManager;
@@ -32,49 +33,48 @@ public class RenderItem extends Render {
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
-		this.field_194_c = 0.75F;
+		this.shadowStrength = 0.75F;
 	}
 
-	public void doRenderItem(EntityItem var1, double var2, double var4, double var6, float var8, float var9) {
+	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
 		// Spout Start
 		// Sanity Checks
-		if (var1 == null || var1.item == null) {
+		if (itemEntity == null || itemEntity.item == null) {
 			return;
 		}
 		// Spout End
 		this.random.setSeed(187L);
-		ItemStack var10 = var1.item;
-		GL11.glPushMatrix();
-		float var11 = MathHelper.sin(((float) var1.age + var9) / 10.0F + var1.field_804_d) * 0.1F + 0.1F;
-		float var12 = (((float) var1.age + var9) / 20.0F + var1.field_804_d) * 57.295776F;
-		byte var13 = 1;
-		if (var1.item.stackSize > 1) {
-			var13 = 2;
+		ItemStack itemStack = itemEntity.item;
+		float bounceAmmount = MathHelper.sin(((float) itemEntity.age + deltaTime) / 10.0F + itemEntity.field_804_d) * 0.1F + 0.1F;
+		float rotation = (((float) itemEntity.age + deltaTime) / 20.0F + itemEntity.field_804_d) * 57.295776F;
+		byte itemsOnGround = 1;
+		if (itemEntity.item.stackSize > 1) {
+			itemsOnGround = 2;
 		}
 
-		if (var1.item.stackSize > 5) {
-			var13 = 3;
+		if (itemEntity.item.stackSize > 5) {
+			itemsOnGround = 3;
 		}
 
-		if (var1.item.stackSize > 20) {
-			var13 = 4;
+		if (itemEntity.item.stackSize > 20) {
+			itemsOnGround = 4;
 		}
 
-		float var17;
-		int var16;
-		float var19;
-		float var18;
-		int var20;
+		float red;
+		int fullColor;
+		float blue;
+		float green;
+		int renderType;
 		
 		//Spout start
 		boolean custom = false;
 		BlockDesign design = null;
-		if (var10.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var10.getItemDamage());
+		if (itemStack.itemID == 318) {
+			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
 			if (item != null) {
 				String textureURI = item.getTexture();
 				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
 					design = block != null ? block.getBlockDesign() : null;
 					textureURI = design != null ? design.getTexureURL() : null;
 				}
@@ -97,95 +97,101 @@ public class RenderItem extends Render {
 				}
 			}*/
 		}
-		if (!custom) {
-			if (var10.itemID < 256) {
+	
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		
+		if (design != null && custom) {
+			//GL11.glScalef(0.25F, 0.25F, 0.25F);
+			System.out.println("This right meow");
+			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
+		}
+		else{
+			//Spout end
+			
+			GL11.glPushMatrix();
+			
+			if (itemStack.itemID < 256) {
 				this.loadTexture("/terrain.png");
 			}
 			else {
 				this.loadTexture("/gui/items.png");
 			}
-			GL11.glTranslatef((float) var2, (float) var4 + var11, (float) var6);
-		}
-		GL11.glEnable('\u803a');
-		
-		if (design != null && custom) {
-			//GL11.glScalef(0.25F, 0.25F, 0.25F);
-			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)var1.spoutEntity, (float)var2, (float)(var4 + var11), (float)var6, var12, 0.25F, random);
-		}
-		else
-		
-		//Spout end
-		if(var10.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var10.itemID].getRenderType())) {
-			GL11.glRotatef(var12, 0.0F, 1.0F, 0.0F);
-			float var22 = 0.25F;
-			var20 = Block.blocksList[var10.itemID].getRenderType();
-			if(var20 == 1 || var20 == 19 || var20 == 12 || var20 == 2) {
-				var22 = 0.5F;
-			}
-
-			GL11.glScalef(var22, var22, var22);
-
-			for(var16 = 0; var16 < var13; ++var16) {
-				GL11.glPushMatrix();
-				if(var16 > 0) {
-					var17 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
-					var18 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
-					var19 = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / var22;
-					GL11.glTranslatef(var17, var18, var19);
+			GL11.glTranslatef((float) x, (float) yOffset + bounceAmmount, (float) z);
+			
+	
+			if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemStack.itemID].getRenderType())) {
+				GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+				float renderScale = 0.25F;
+				renderType = Block.blocksList[itemStack.itemID].getRenderType();
+				if(renderType == 1 || renderType == 19 || renderType == 12 || renderType == 2) {
+					renderScale = 0.5F;
 				}
-
-				var17 = 1.0F;
-				
-				this.renderBlocks.renderBlockOnInventory(Block.blocksList[var10.itemID], var10.getItemDamage(), var17);
-				
-				GL11.glPopMatrix();
+	
+				GL11.glScalef(renderScale, renderScale, renderScale);
+	
+				for(fullColor = 0; fullColor < itemsOnGround; ++fullColor) {
+					GL11.glPushMatrix();
+					if(fullColor > 0) {
+						red = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
+						green = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
+						blue = (this.random.nextFloat() * 2.0F - 1.0F) * 0.2F / renderScale;
+						GL11.glTranslatef(red, green, blue);
+					}
+	
+					red = 1.0F;
+					
+					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
+					
+					GL11.glPopMatrix();
+				}
+			} else if(itemStack.itemID == Item.potion.shiftedIndex) {
+				GL11.glScalef(0.5F, 0.5F, 0.5F);
+				short potionIndex = 141;
+				float colorScale = 1.0F;
+				if(this.field_27004_a) {
+					fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
+					red = (float)(fullColor >> 16 & 255) / 255.0F;
+					green = (float)(fullColor >> 8 & 255) / 255.0F;
+					blue = (float)(fullColor & 255) / 255.0F;
+					GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+				}
+	
+				this.renderItemBillboard(potionIndex, itemsOnGround);
+				if (this.field_27004_a) {
+					GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
+					this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
+				}
+			} else {
+				GL11.glScalef(0.5F, 0.5F, 0.5F);
+				int iconIndex = itemStack.getIconIndex();
+	
+				if(this.field_27004_a) {
+					//The names here are wrong due to de-obfuscation renames;
+					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
+					float var23 = (float)(renderType >> 16 & 255) / 255.0F;
+					red = (float)(renderType >> 8 & 255) / 255.0F;
+					green = (float)(renderType & 255) / 255.0F;
+					blue = 1.0F;
+					GL11.glColor4f(var23 * blue, red * blue, green * blue, 1.0F);
+				}
+	
+				//Spout start
+				this.renderItemBillboard(iconIndex, itemsOnGround, custom);
+				//Spout end
 			}
-		} else if(var10.itemID == Item.potion.shiftedIndex) {
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			short var14 = 141;
-			float var15 = 1.0F;
-			if(this.field_27004_a) {
-				var16 = Item.itemsList[var10.itemID].getColorFromDamage(var10.getItemDamage());
-				var17 = (float)(var16 >> 16 & 255) / 255.0F;
-				var18 = (float)(var16 >> 8 & 255) / 255.0F;
-				var19 = (float)(var16 & 255) / 255.0F;
-				GL11.glColor4f(var17 * var15, var18 * var15, var19 * var15, 1.0F);
-			}
-
-			this.func_40267_a(var14, var13);
-			if (this.field_27004_a) {
-				GL11.glColor4f(var15, var15, var15, 1.0F);
-				this.func_40267_a(var10.getIconIndex(), var13);
-			}
-		} else {
-			GL11.glScalef(0.5F, 0.5F, 0.5F);
-			int var21 = var10.getIconIndex();
-
-			if(this.field_27004_a) {
-				var20 = Item.itemsList[var10.itemID].getColorFromDamage(var10.getItemDamage());
-				float var23 = (float)(var20 >> 16 & 255) / 255.0F;
-				var17 = (float)(var20 >> 8 & 255) / 255.0F;
-				var18 = (float)(var20 & 255) / 255.0F;
-				var19 = 1.0F;
-				GL11.glColor4f(var23 * var19, var17 * var19, var18 * var19, 1.0F);
-			}
-
-			//Spout start
-			this.func_40267_a(var21, var13, custom);
-			//Spout end
+	
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			GL11.glPopMatrix();
 		}
-
-		GL11.glDisable('\u803a');
-		GL11.glPopMatrix();
 	}
 	
 	//Spout start
-	private void func_40267_a(int var1, int var2) {
-		func_40267_a(var1, var2, false);
+	private void renderItemBillboard(int var1, int var2) {
+		renderItemBillboard(var1, var2, false);
 	}
 	//Spout end
 
-	private void func_40267_a(int var1, int var2, boolean customTexture) {
+	private void renderItemBillboard(int var1, int var2, boolean customTexture) {
 		Tessellator var3 = Tessellator.instance;
 		float var4 = (float)(var1 % 16 * 16 + 0) / 256.0F;
 		float var5 = (float)(var1 % 16 * 16 + 16) / 256.0F;
