@@ -33,7 +33,7 @@ public class RenderItem extends Render {
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
-		this.shadowStrength = 0.75F;
+		this.field_194_c = 0.75F;
 	}
 
 	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
