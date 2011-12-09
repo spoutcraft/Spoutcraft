@@ -70,6 +70,7 @@ public enum PacketType {
 	PacketGenericTool(49, PacketGenericTool.class),
 	PacketGenericBlock(50, PacketGenericBlock.class),
 	PacketCustomBlockChunkOverride(51, PacketCustomBlockChunkOverride.class),
+	PacketGenericFood(52, PacketGenericFood.class),
 	;
 	
 	private final int id;

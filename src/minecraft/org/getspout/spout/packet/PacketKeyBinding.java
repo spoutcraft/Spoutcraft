@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.getspout.spout.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 

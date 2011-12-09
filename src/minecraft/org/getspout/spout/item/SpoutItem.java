@@ -2,26 +2,42 @@ package org.getspout.spout.item;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.EnumAction;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 
-import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.spoutcraftapi.material.Food;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class SpoutItem extends Item {
 
 	public SpoutItem(int blockId) {
 		super(blockId);
 		this.setHasSubtypes(true);
+	}
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+		CustomItem customItem = MaterialData.getCustomItem(item.getItemDamage());
+		if (customItem instanceof Food) {
+			if (player.func_35197_b(false)) {
+				player.setItemInUse(item, 32);
+			}
+		}
+		return item;
+	}
+	
+	@Override
+	public EnumAction getItemUseAction(ItemStack item) {
+		CustomItem customItem = MaterialData.getCustomItem(item.getItemDamage());
+		if (customItem instanceof Food) {
+			return EnumAction.eat;
+		}
+		return EnumAction.none;
 	}
 
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
