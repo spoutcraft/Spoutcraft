@@ -37,6 +37,8 @@ public final class EasterEggs {
 			return ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
 		} if (user.equalsIgnoreCase("Olloth")) {
 			return ChatColor.DARK_RED + "Olloth";
+		} if (user.equalsIgnoreCase("Kylegar")) {
+			return ChatColor.AQUA + "Roy" + ChatColor.GREEN + "Awesome";
 		}
 		return null;
 	}
