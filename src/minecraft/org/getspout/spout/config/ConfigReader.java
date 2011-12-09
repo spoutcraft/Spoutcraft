@@ -9,7 +9,8 @@ import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.io.FileUtil;
 
 public class ConfigReader {
-	public static boolean clipboardAccess = false;
+	public static boolean clipboardaccess = false;
+	public static boolean fastLogin = false;
 	public static int advancedOpenGL = 0;
 	public static boolean anaglyph3D = false;
 	public static int autosave = 0;
@@ -123,7 +124,7 @@ public class ConfigReader {
 	}
 	
 	public static boolean isHasClipboardAccess() {
-		return clipboardAccess;
+		return clipboardaccess;
 	}
 	
 	private static boolean getOrSetBooleanProperty(SettingsHandler settings, String property, boolean defaultValue) {

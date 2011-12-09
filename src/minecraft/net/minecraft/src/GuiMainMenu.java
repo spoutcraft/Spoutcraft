@@ -18,6 +18,8 @@ import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 
 //Spout Start
+import org.bukkit.ChatColor;
+import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -39,7 +41,7 @@ public class GuiMainMenu extends GuiScreen {
 	private int field_35358_g;
 	
 	// Spout Start
-	private Button buttonSinglePlayer, buttonMultiPlayer, buttonAddons, buttonTextures, buttonOptions, buttonAbout, buttonQuit;
+	private Button buttonSinglePlayer, buttonMultiPlayer, buttonAddons, buttonTextures, buttonOptions, buttonAbout, buttonQuit, buttonFastLogin;
 	// Spout End
 
 	public GuiMainMenu() {
@@ -104,6 +106,11 @@ public class GuiMainMenu extends GuiScreen {
 		buttonOptions = new GenericButton(tr.translateKey("menu.options"));
 		buttonAbout = new GenericButton("About");
 		buttonQuit = new GenericButton(tr.translateKey("menu.quit"));
+		buttonFastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
+		if (!ConfigReader.fastLogin){
+			buttonFastLogin.setEnabled(false).setVisible(false);
+		}
+		
 		
 		int left = 5;
 		int bottom = height - 25;
@@ -122,6 +129,7 @@ public class GuiMainMenu extends GuiScreen {
 		
 		bottom -= 25;
 		buttonSinglePlayer.setX(left).setY(bottom).setWidth(width).setHeight(20);
+		buttonFastLogin.setX(right).setY(bottom).setWidth(width).setHeight(20);
 		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Screen s = getScreen();
@@ -132,6 +140,7 @@ public class GuiMainMenu extends GuiScreen {
 		s.attachWidget(spoutcraft, buttonMultiPlayer);
 		s.attachWidget(spoutcraft, buttonOptions);
 		s.attachWidget(spoutcraft, buttonSinglePlayer);
+		s.attachWidget(spoutcraft, buttonFastLogin);
 
 		if(this.mc.session == null) {
 			buttonMultiPlayer.setEnabled(false);
@@ -163,6 +172,11 @@ public class GuiMainMenu extends GuiScreen {
 		}
 		if(btn == buttonQuit) {
 			mc.shutdown();
+		}
+		if (btn == buttonFastLogin){
+			ConfigReader.fastLogin = !ConfigReader.fastLogin;
+			ConfigReader.write();
+			buttonFastLogin.setText((ConfigReader.fastLogin ? ChatColor.GREEN : ChatColor.RED) + "Fast Login");
 		}
 	}
 	//Spout End
