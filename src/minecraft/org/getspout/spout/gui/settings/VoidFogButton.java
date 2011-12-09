@@ -16,6 +16,7 @@
  */
 package org.getspout.spout.gui.settings;
 
+import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
@@ -25,7 +26,16 @@ public class VoidFogButton extends GenericCheckBox{
 	public VoidFogButton() {
 		super("Void Fog");
 		setChecked(ConfigReader.voidFog);
+		setEnabled(SpoutClient.getInstance().isVoidFogCheat());
 		setTooltip("Void Fog\nON - A dark fog that obscures vision appears at low\nlevels of the map.\nOFF - normal view distance at all height levels.");
+	}
+	
+	@Override
+	public String getTooltip() {
+		if (!isEnabled()) {
+			return "This option is not allowed by your server, it is considered cheating.";
+		}
+		return super.getTooltip();
 	}
 	
 	@Override
