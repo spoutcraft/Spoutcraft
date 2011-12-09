@@ -17,7 +17,15 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Tessellator;
 
+//Spout Start
 import org.getspout.spout.gui.addon.GuiAddonsLocal;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
+//Spout End
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -31,7 +39,7 @@ public class GuiMainMenu extends GuiScreen {
 	private int field_35358_g;
 	
 	// Spout Start
-	protected static final int BUTTON_ADDONS = 6;
+	private Button buttonSinglePlayer, buttonMultiPlayer, buttonAddons, buttonTextures, buttonOptions, buttonAbout, buttonQuit;
 	// Spout End
 
 	public GuiMainMenu() {
@@ -80,63 +88,117 @@ public class GuiMainMenu extends GuiScreen {
 		} else if(var1.get(2) + 1 == 1 && var1.get(5) == 1) {
 			this.splashText = "Happy new year!";
 		}
-		//Spout start
+		//Spout rewritten
 		else {
 			String text = org.getspout.spout.EasterEggs.getSplashTextEasterEgg();
 			if (text != null) {
 				this.splashText = text;
 			}
 		}
-		//Spout end
+		StringTranslate tr = StringTranslate.getInstance();
 
-		StringTranslate var2 = StringTranslate.getInstance();
-		int var4 = this.height / 4 + 48;
-		this.controlList.add(new GuiButton(1, this.width / 2 - 100, var4, var2.translateKey("menu.singleplayer")));
-		this.controlList.add(this.multiplayerButton = new GuiButton(2, this.width / 2 - 100, var4 + 24, var2.translateKey("menu.multiplayer")));
-		this.controlList.add(new GuiButton(3, this.width / 2 - 100, var4 + 48, "Texture Packs")); //Spout
-		//Spout Start
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, var4 + 72, 98, 20, var2.translateKey("menu.options")));
-		this.controlList.add(new GuiButton(BUTTON_ADDONS, this.width / 2 + 2, var4 + 72, 98, 20, "Addons"));
-		this.controlList.add(new GuiButton(5, this.width / 2 - 100, var4 + 96, 98, 20, "About"));
-		this.controlList.add(new GuiButton(4, this.width / 2 + 2, var4 + 96, 98, 20, var2.translateKey("menu.quit")));
-		//Spout End
+		buttonSinglePlayer = new GenericButton(tr.translateKey("menu.singleplayer"));
+		buttonMultiPlayer = new GenericButton(tr.translateKey("menu.multiplayer"));
+		buttonAddons = new GenericButton("Addons");
+		buttonTextures = new GenericButton("Textures");
+		buttonOptions = new GenericButton(tr.translateKey("menu.options"));
+		buttonAbout = new GenericButton("About");
+		buttonQuit = new GenericButton(tr.translateKey("menu.quit"));
+		
+		int left = 5;
+		int bottom = height - 25;
+		int width = 75;
+		int right = this.width - 5 - width;
+		buttonTextures.setX(left).setY(bottom).setWidth(width).setHeight(20);
+		buttonQuit.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		
+		bottom -= 25;
+		buttonAddons.setX(left).setY(bottom).setWidth(width).setHeight(20);
+		buttonAbout.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		
+		bottom -= 25;
+		buttonMultiPlayer.setX(left).setY(bottom).setWidth(width).setHeight(20);
+		buttonOptions.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		
+		bottom -= 25;
+		buttonSinglePlayer.setX(left).setY(bottom).setWidth(width).setHeight(20);
+		
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		Screen s = getScreen();
+		s.attachWidget(spoutcraft, buttonTextures);
+		s.attachWidget(spoutcraft, buttonQuit);
+		s.attachWidget(spoutcraft, buttonAddons);
+		s.attachWidget(spoutcraft, buttonAbout);
+		s.attachWidget(spoutcraft, buttonMultiPlayer);
+		s.attachWidget(spoutcraft, buttonOptions);
+		s.attachWidget(spoutcraft, buttonSinglePlayer);
 
 		if(this.mc.session == null) {
-			this.multiplayerButton.enabled = false;
-		}
-
-	}
-
-	protected void actionPerformed(GuiButton var1) {
-		if(var1.id == 0) {
-			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-		}
-
-		if(var1.id == 1) {
-			this.mc.displayGuiScreen(new GuiSelectWorld(this));
-		}
-
-		if(var1.id == 2) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this)); //Spout
-		}
-
-		if(var1.id == 3) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks()); //Spout
-		}
-
-		if(var1.id == 4) {
-			this.mc.shutdown();
-		}
-		//Spout Start
-		if(var1.id == BUTTON_ADDONS) {
-			this.mc.displayGuiScreen(new GuiAddonsLocal());
-		}
-		if(var1.id == 5) {
-			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
+			buttonMultiPlayer.setEnabled(false);
 		}
 		//Spout End
 
 	}
+
+	//Spout Start
+	@Override
+	protected void buttonClicked(Button btn) {
+		if(btn == buttonSinglePlayer) {
+			mc.displayGuiScreen(new GuiSelectWorld(this));
+		}
+		if(btn == buttonMultiPlayer) {
+			mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this));
+		}
+		if(btn == buttonAddons) {
+			this.mc.displayGuiScreen(new GuiAddonsLocal());
+		}
+		if(btn == buttonTextures) {
+			mc.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks());
+		}
+		if(btn == buttonOptions) {
+			mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
+		}
+		if(btn == buttonAbout) {
+			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
+		}
+		if(btn == buttonQuit) {
+			mc.shutdown();
+		}
+	}
+	//Spout End
+
+//	protected void actionPerformed(GuiButton var1) {
+//		if(var1.id == 0) {
+//			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+//		}
+//
+//		if(var1.id == 1) {
+//			this.mc.displayGuiScreen(new GuiSelectWorld(this));
+//		}
+//
+//		if(var1.id == 2) {
+//			this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this)); //Spout
+//		}
+//
+//		if(var1.id == 3) {
+//			this.mc.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks()); //Spout
+//		}
+//
+//		if(var1.id == 4) {
+//			this.mc.shutdown();
+//		}
+//		//Spout Start
+//		if(var1.id == BUTTON_ADDONS) {
+//			this.mc.displayGuiScreen(new GuiAddonsLocal());
+//		}
+//		if(var1.id == 5) {
+//			this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
+//		}
+//		//Spout End
+//
+//	}
+	
+	
 
 	private void func_35355_b(int var1, int var2, float var3) {
 		Tessellator var4 = Tessellator.instance;
