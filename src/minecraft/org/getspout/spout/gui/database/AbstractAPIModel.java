@@ -90,6 +90,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 			public void run() {
 				BufferedReader reader = null;
 				try {
+					System.setProperty("http.agent", "");
 					setLoading(true);
 					long start = System.currentTimeMillis();
 					URL url1 = new URL(url+"&page="+page);
@@ -114,9 +115,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					//Put a fancy error message on the list!
 					clear();
 					effectiveCache = new LinkedList<ListWidgetItem>();
-					String error = e1.getClass().getSimpleName().replaceAll("Exception", "");
-					error = error.replaceAll("([A-Z])", " $1").trim();
-					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load servers!", error, ""));
+					//String error = e1.getClass().getSimpleName().replaceAll("Exception", "");
+					//error = error.replaceAll("([A-Z])", " $1").trim();
+					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load servers!", e1.getMessage(), ""));
 					return;
 				} catch(Exception e) {}
 				finally {

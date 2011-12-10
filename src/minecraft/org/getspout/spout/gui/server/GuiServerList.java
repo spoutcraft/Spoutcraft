@@ -235,7 +235,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		if(btn.equals(buttonJoin)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			if(item != null) {
-				SpoutClient.getInstance().getServerManager().join(item, this, "Server List");
+				item.onClick(-1, -1, true);
 			} else {
 				updateButtons();
 			}
