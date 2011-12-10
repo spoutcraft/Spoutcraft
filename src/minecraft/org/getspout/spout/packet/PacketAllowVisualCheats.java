@@ -82,7 +82,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 	}
 	
 	public int getVersion() {
-		return 2;
+		return 3;
 	}
 
 	public void failure(int playerId) {
