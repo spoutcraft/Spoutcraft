@@ -163,6 +163,16 @@ public class NetClientHandler extends NetHandler {
 		this.mc.statFileWriter.readStat(StatList.joinMultiplayerStat, 1);
 		this.worldClient = new WorldClient(this, new WorldSettings(var1.mapSeed, var1.serverMode, false, false), var1.worldType, var1.difficultySetting);
 		this.worldClient.multiplayerWorld = true;
+		//Spout start
+		int height = 128;
+		if (var1.worldHeight > 0 && var1.worldHeight < 12) {
+			height = 2 << var1.worldHeight;
+		}
+		else if (var1.worldHeight >= 32) {
+			height = var1.worldHeight;
+		}
+		worldClient.setMapHeight(height);
+		//Spout end
 		this.mc.changeWorld1(this.worldClient);
 		this.mc.thePlayer.dimension = var1.worldType;
 		this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
@@ -706,6 +716,16 @@ public class NetClientHandler extends NetHandler {
 			this.field_1210_g = false;
 			this.worldClient = new WorldClient(this, new WorldSettings(var1.mapSeed, var1.creativeMode, false, false), var1.respawnDimension, var1.difficulty);
 			this.worldClient.multiplayerWorld = true;
+			//Spout start
+			int height = 128;
+			if (var1.worldHeight > 0 && var1.worldHeight < 12) {
+				height = 2 << var1.worldHeight;
+			}
+			else if (var1.worldHeight >= 32) {
+				height = var1.worldHeight;
+			}
+			worldClient.setMapHeight(height);
+			//Spout end
 			this.mc.changeWorld1(this.worldClient);
 			this.mc.thePlayer.dimension = var1.respawnDimension;
 			this.mc.displayGuiScreen(new GuiDownloadTerrain(this));
