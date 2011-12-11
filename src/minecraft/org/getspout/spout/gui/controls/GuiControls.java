@@ -198,7 +198,17 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 			}
 		}
 	}
-
+	
+	@Override
+	public void handleKeyboardInput() {
+		ControlsBasicItem item = model.getEditingItem();
+		if(item != null && org.lwjgl.input.Keyboard.getEventKeyState()) {
+			this.keyTyped(org.lwjgl.input.Keyboard.getEventCharacter(), org.lwjgl.input.Keyboard.getEventKey());
+		} else {
+			super.handleKeyboardInput();
+		}
+	}
+	
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		ControlsBasicItem item = model.getEditingItem();

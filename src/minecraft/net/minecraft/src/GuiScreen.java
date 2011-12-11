@@ -138,7 +138,8 @@ public class GuiScreen extends Gui {
 	
 	//Wrap ALL the methods!!
 
-	private void mouseClickedPre(int mouseX, int mouseY, int eventButton) {
+	//Making these protected so you can always override behaviour you don't want
+	protected void mouseClickedPre(int mouseX, int mouseY, int eventButton) {
 		mouseClicked(mouseX, mouseY, eventButton); // Call vanilla method
 		if(getScreen() == null) {
 			return;
@@ -329,7 +330,7 @@ public class GuiScreen extends Gui {
 		}
 	}
 	
-	private void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
+	protected void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
 		lastMouseMove = System.currentTimeMillis();
 		mouseMovedOrUp(mouseX, mouseY, eventButton);
 		if(getScreen() == null) {
