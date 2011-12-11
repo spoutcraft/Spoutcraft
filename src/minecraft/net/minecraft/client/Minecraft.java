@@ -117,6 +117,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
+import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
@@ -1341,6 +1342,9 @@ public abstract class Minecraft implements Runnable {
 			Profiler.endStartSection("keyboard");
 
 			while (Keyboard.next()) {
+				//Spout Start
+				((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), !Keyboard.getEventKeyState(), ScreenUtil.getType(currentScreen).getCode());
+				//Spout End
 				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); //Spout handle key presses
 				KeyBinding.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 				if (Keyboard.getEventKeyState()) {

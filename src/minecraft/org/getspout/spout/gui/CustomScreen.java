@@ -25,6 +25,7 @@ public class CustomScreen extends GuiScreen {
 	public CustomScreen(PopupScreen screen) {
 		update(screen);
 		this.setWorldAndResolution(SpoutClient.getHandle(), (int) screen.getWidth(), (int) screen.getHeight());
+		this.allowUserInput = true;
 	}
 
 	@Override
@@ -49,5 +50,15 @@ public class CustomScreen extends GuiScreen {
 		bg.setVisible(screen.isBgVisible());
 		SpoutClient.disableSandbox();
 		drawWidgets(x, y, z); //already sandboxed
+	}
+	
+	@Override
+	public boolean doesGuiPauseGame() {
+		boolean oldLock = SpoutClient.enableSandbox();
+        try {
+    		return ((PopupScreen) getScreen()).isPausingGame();
+        } finally {
+            SpoutClient.enableSandbox(oldLock);
+        }
 	}
 }

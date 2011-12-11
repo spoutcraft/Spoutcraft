@@ -473,9 +473,6 @@ public class EntityPlayerSP extends EntityPlayer {
 				}
 			}
 		}
-		//Spout Start
-		((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(key, keyReleased, ScreenUtil.getType(mc.currentScreen).getCode());
-		//Spout End
 	}
 	
 	@Override
