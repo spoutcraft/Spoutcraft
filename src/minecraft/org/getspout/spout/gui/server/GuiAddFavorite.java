@@ -3,6 +3,7 @@ package org.getspout.spout.gui.server;
 import org.getspout.spout.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
@@ -17,19 +18,35 @@ public class GuiAddFavorite extends GuiScreen {
 
 	private TextField textIp, textTitle;
 	private ServerItem item = null;
+	private ServerItem toUpdate = null;
 	private Label labelTitle, labelIp;
 	private boolean update = false;
-	private Button buttonDone;
+	private Button buttonDone, buttonCancel, buttonClear;
 	private GuiScreen parent;
 	
-	public GuiAddFavorite(GuiScreen parent) {
-		item = new ServerItem("", "", 25565, -1);
+	public GuiAddFavorite(String server, GuiScreen parent) {
+		String splt[] = server.split(":");
+		int port = 25565;
+		if(splt.length > 0) {
+			server = splt[0];
+			if(splt.length > 1) {
+				try {
+					port = Integer.valueOf(splt[1]);
+				} catch (NumberFormatException e){
+					port = 25565;
+				}
+			}
+		} else {
+			server = "";
+		}
+		item = new ServerItem("", server, port, -1);
 		update = false;
 		this.parent = parent;
 	}
 	
 	public GuiAddFavorite(ServerItem toUpdate, GuiScreen parent) {
-		item = toUpdate;
+		item = toUpdate.clone();
+		this.toUpdate = toUpdate;
 		update = true;
 		this.parent = parent;
 	}
@@ -67,13 +84,28 @@ public class GuiAddFavorite extends GuiScreen {
 		textIp.setText(item.getIp() + (item.getPort()!=25565?":"+item.getPort():""));
 		top+=25;
 		
+		buttonClear = new GenericButton("Clear");
+		buttonClear.setWidth(100).setHeight(20).setX(textIp.getX()).setY(top);
+		getScreen().attachWidget(spoutcraft, buttonClear);
+		
 		buttonDone = new GenericButton("Done");
-		buttonDone.setWidth(200).setHeight(20).setX(left+25).setY(top);
+		buttonDone.setWidth(200).setHeight(20).setX(width - 205).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, buttonDone);
+		
+		buttonCancel = new GenericButton("Cancel");
+		buttonCancel.setWidth(200).setHeight(20).setX(width - 205 - 205).setY(height - 25);
+		getScreen().attachWidget(spoutcraft, buttonCancel);
+		
+		updateButtons();
 	}
 	
 	private class TabField extends GenericTextField {
 		
+		@Override
+		public void onTextFieldChange(TextFieldChangeEvent event) {
+			updateButtons();
+		}
+
 		@Override
 		public boolean onKeyPressed(Keyboard key) {
 			if (key == Keyboard.KEY_TAB) {
@@ -99,12 +131,30 @@ public class GuiAddFavorite extends GuiScreen {
 				SpoutClient.getHandle().displayGuiScreen(parent);
 				return;
 			}
-			if(!update) {
+			if(update) {
+				//Update original item
+				toUpdate.update(item);
+			} else {				
 				SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
 			}
 			SpoutClient.getInstance().getServerManager().getFavorites().save();
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
+		if(btn.equals(buttonCancel)) {
+			SpoutClient.getHandle().displayGuiScreen(parent);
+		}
+		if(btn == buttonClear) {
+			textTitle.setText("");
+			textIp.setText("");
+			item.setTitle("");
+			item.setIp("");
+			item.setPort(25565);
+			updateButtons();
+		}
+	}
+	
+	protected void updateButtons() {
+		buttonDone.setEnabled(!textIp.getText().isEmpty() && !textTitle.getText().isEmpty());
 	}
 	
 	private void updateItem() {

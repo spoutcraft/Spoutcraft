@@ -150,7 +150,7 @@ public class GuiFavorites extends GuiScreen {
 			doQuickJoin();
 		}
 		if(btn.equals(buttonAdd)) {
-			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(this));
+			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(textQuickJoin.getText(), this));
 		}
 		if(btn.equals(buttonEdit)) {
 			ServerItem item = (ServerItem)view.getSelectedItem();

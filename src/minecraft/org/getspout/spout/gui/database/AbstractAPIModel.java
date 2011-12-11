@@ -117,7 +117,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					effectiveCache = new LinkedList<ListWidgetItem>();
 					//String error = e1.getClass().getSimpleName().replaceAll("Exception", "");
 					//error = error.replaceAll("([A-Z])", " $1").trim();
-					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load servers!", e1.getMessage(), ""));
+					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load items!", e1.getMessage(), ""));
 					return;
 				} catch(Exception e) {}
 				finally {

@@ -48,7 +48,17 @@ public class ServerItem implements ListWidgetItem {
 	
 	protected PollResult pollResult;
 	
+	public ServerItem clone() {
+		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId());
+		return clone;
+	}
 	
+	public void update(ServerItem other) {
+		this.ip = other.ip;
+		this.port = other.port;
+		this.title = other.title;
+		this.databaseId = other.databaseId;
+	}
 	
 	public ServerItem(String title, String ip, int port, int dbId) {
 		this.ip = ip;
