@@ -42,4 +42,8 @@ public interface PopupScreen extends Screen {
 	 * @return true if the screen was closed
 	 */
 	public boolean close();
+	
+	public boolean isPausingGame();
+	
+	public void setPauseGame(boolean v);
 }
