@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.io.CustomTextureManager;
+import org.getspout.spout.util.NetworkUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -231,7 +232,7 @@ public class ServerItem implements ListWidgetItem {
 	public void onClick(int x, int y, boolean doubleClick) {
 		if(doubleClick) {
 			if (databaseId != -1){
-				pingLink("http://servers.getspout.org/popular.php?uid=" + databaseId);
+				NetworkUtils.pingUrl("http://servers.getspout.org/popular.php?uid=" + databaseId);
 			}
 			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 		}
@@ -323,20 +324,5 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setShowPingWhilePolling(boolean b) {
 		this.showPingWhilePolling = b;
-	}
-	
-	@SuppressWarnings("unused")
-	private void pingLink(String Url) {
-		try {
-			URL url = new URL(Url);
-			HttpURLConnection con = (HttpURLConnection)(url.openConnection());
-			System.setProperty("http.agent", "");
-			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String str;
-			while ((str = in.readLine()) != null);
-			in.close();
-		}
-		catch (Exception e) {}
 	}
 }
