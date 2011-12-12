@@ -6,10 +6,6 @@ import net.minecraft.src.EntityPig;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.RenderLiving;
 
-//Spout Start
-import org.getspout.spout.entity.EntitySkinType;
-//Spout End
-
 public class RenderPig extends RenderLiving {
 
 	public RenderPig(ModelBase var1, ModelBase var2, float var3) {
@@ -19,8 +15,8 @@ public class RenderPig extends RenderLiving {
 
 	protected int renderSaddledPig(EntityPig var1, int var2, float var3) {
 		//Spout Start
-        loadTexture(EntitySkinType.getTexture(EntitySkinType.PIG_SADDLE, var1, "/mob/saddle.png"));
-    	//Spout End
+		loadTexture(var1.getEntityTexture());
+		//Spout End
 		return var2 == 0 && var1.getSaddled()?1:-1;
 	}
 

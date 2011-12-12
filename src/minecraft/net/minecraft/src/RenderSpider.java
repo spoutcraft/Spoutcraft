@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 //Spout Start
-import org.getspout.spout.entity.EntitySkinType;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 //Spout End
 
 public class RenderSpider extends RenderLiving {
@@ -28,7 +28,7 @@ public class RenderSpider extends RenderLiving {
 			return -1;
 		} else {
 			//Spout Start
-            loadTexture(EntitySkinType.getTexture(EntitySkinType.SPIDER_EYES, var1, "/mob/spider_eyes.png"));
+            loadTexture(var1.getCustomTexture(EntitySkinType.SPIDER_EYES, "/mob/spider_eyes.png"));
             //Spout End
 			float var4 = 1.0F;
 			GL11.glEnable(3042 /*GL_BLEND*/);

@@ -538,6 +538,7 @@ public class RenderGlobal implements IWorldAccess {
 		// Do not bother with this if we are resetting the renderers,
 		// loadRenderers clears the list anyway
 		else {
+			Profiler.startSection("addingrenderers"); //Spout
 			for (int var5 = 0; var5 < 10; ++var5) {
 				this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
 				WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
@@ -545,12 +546,9 @@ public class RenderGlobal implements IWorldAccess {
 					this.worldRenderersToUpdate.add(var6);
 				}
 			}
+			Profiler.endSection(); //Spout
 		}
 		// Spout End
-
-		if (this.mc.gameSettings.renderDistance != this.renderDistance) {
-			this.loadRenderers();
-		}
 
 		if (var2 == 0) {
 			this.renderersLoaded = 0;
@@ -571,12 +569,16 @@ public class RenderGlobal implements IWorldAccess {
 			this.prevSortX = var1.posX;
 			this.prevSortY = var1.posY;
 			this.prevSortZ = var1.posZ;
+			Profiler.startSection("markfornewposition"); //Spout
 			this.markRenderersForNewPosition(MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ));
 			Arrays.sort(this.sortedWorldRenderers, new EntitySorter(var1));
+			Profiler.endSection(); //Spout
 		}
 		// Spout start
 		if (ConfigReader.smoothFPS && var2 == 0) {
+			Profiler.startSection("smoothFPS");
 			GL11.glFinish();
+			Profiler.endSection();
 		}
 		// Spout end
 		RenderHelper.disableStandardItemLighting();
@@ -1255,6 +1257,7 @@ public class RenderGlobal implements IWorldAccess {
 	public boolean updateRenderers(EntityLiving var1, boolean var2) {
 		boolean var3 = false;
 		//Spout start
+		Profiler.startSection("setup");
 		frameCount++;
 		int renderersToUpdate = ConfigReader.chunkUpdates;
 		double tempRenderersToUpdate = renderersToUpdate;
@@ -1302,6 +1305,7 @@ public class RenderGlobal implements IWorldAccess {
 			renderersToUpdate += 3;
 		}
 		renderersToUpdateLastTick = renderersToUpdate;
+		Profiler.endSection();
 		if (renderersToUpdate <= 0) {
 			return this.worldRenderersToUpdate.size() == 0;
 		}
@@ -1334,6 +1338,7 @@ public class RenderGlobal implements IWorldAccess {
 
 			return this.worldRenderersToUpdate.size() == 0;
 		} else {
+			Profiler.startSection("sorting");
 			byte var4 = 2;
 			RenderSorter var5 = new RenderSorter(var1);
 			WorldRenderer[] var6 = new WorldRenderer[var4];
@@ -1388,6 +1393,7 @@ public class RenderGlobal implements IWorldAccess {
 				var7.add(var11);
 				this.worldRenderersToUpdate.set(var10, (Object) null);
 			}
+			Profiler.endStartSection("fastUpdateWorldRendering");
 
 			if (var7 != null) {
 				if (var7.size() > 1) {
@@ -1402,6 +1408,8 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			var10 = 0;
+			Profiler.endStartSection("standardWorldRendering");
+			
 
 			int var21;
 			for (var21 = var4 - 1; var21 >= 0; --var21) {
@@ -1418,9 +1426,10 @@ public class RenderGlobal implements IWorldAccess {
 					++var10;
 				}
 			}
-
+			
 			var21 = 0;
 			var12 = 0;
+			Profiler.endStartSection("queuingNextRenderers");
 
 			for (var13 = this.worldRenderersToUpdate.size(); var21 != var13; ++var21) {
 				WorldRenderer var14 = (WorldRenderer) this.worldRenderersToUpdate.get(var21);
@@ -1446,6 +1455,7 @@ public class RenderGlobal implements IWorldAccess {
 			while (true) {
 				--var21;
 				if (var21 < var12) {
+					Profiler.endSection();
 					return var8 == var9 + var10;
 				}
 
@@ -1954,46 +1964,6 @@ public class RenderGlobal implements IWorldAccess {
 	}
 	
 	//Spout start
-	public int immediatelyUpdateBlocks(int var1, int var2, int var3, int var4, int var5, int var6) {
-		int result = 0;
-		int var7 = MathHelper.bucketInt(var1, 16);
-		int var8 = MathHelper.bucketInt(var2, 16);
-		int var9 = MathHelper.bucketInt(var3, 16);
-		int var10 = MathHelper.bucketInt(var4, 16);
-		int var11 = MathHelper.bucketInt(var5, 16);
-		int var12 = MathHelper.bucketInt(var6, 16);
-
-		for(int var13 = var7; var13 <= var10; ++var13) {
-			int var14 = var13 % this.renderChunksWide;
-			if(var14 < 0) {
-				var14 += this.renderChunksWide;
-			}
-
-			for(int var15 = var8; var15 <= var11; ++var15) {
-				int var16 = var15 % this.renderChunksTall;
-				if(var16 < 0) {
-					var16 += this.renderChunksTall;
-				}
-
-				for(int var17 = var9; var17 <= var12; ++var17) {
-					int var18 = var17 % this.renderChunksDeep;
-					if(var18 < 0) {
-						var18 += this.renderChunksDeep;
-					}
-
-					int var19 = (var18 * this.renderChunksTall + var16) * this.renderChunksWide + var14;
-					WorldRenderer var20 = this.worldRenderers[var19];
-					var20.needsUpdate = true;
-					var20.updateRenderer();
-					worldRenderersToUpdate.remove(var20);
-					var20.needsUpdate = false;
-					result++;
-				}
-			}
-		}
-		return result;
-	}
-
 	public void updateAllRenderers() {
 		if(this.worldRenderers != null) {
 			for(int var1 = 0; var1 < this.worldRenderers.length; ++var1) {

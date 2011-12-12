@@ -27,6 +27,7 @@ import org.getspout.spout.player.SpoutPlayer;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Arrow;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
@@ -207,5 +208,9 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public void setTicksLived(int value) {
 		handle.ticksExisted = value;
+	}
+
+	public void setSkin(String skinURI, EntitySkinType type) {
+		
 	}
 }

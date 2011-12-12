@@ -42,6 +42,7 @@ import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.util.BlockIterator;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
@@ -206,5 +207,10 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		if (handle instanceof EntityPlayer) {
 			getEntityLiving().displayName = ((EntityPlayer)handle).username;
 		}
+	}
+	
+	@Override
+	public void setSkin(String skinURI, EntitySkinType type) {
+		getEntityLiving().setCustomTexture(skinURI, type.getId());
 	}
 }

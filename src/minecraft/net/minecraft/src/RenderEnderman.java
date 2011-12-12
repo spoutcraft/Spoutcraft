@@ -9,7 +9,10 @@ import net.minecraft.src.ModelEnderman;
 import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
-import org.getspout.spout.entity.EntitySkinType; //Spout import
+
+//Spout start
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
+//Spout end
 
 public class RenderEnderman extends RenderLiving {
 
@@ -64,7 +67,7 @@ public class RenderEnderman extends RenderLiving {
 			return -1;
 		} else {
 			// Spout Start
-			loadTexture(EntitySkinType.getTexture(EntitySkinType.ENDERMAN_EYES, var1, "/mob/enderman_eyes.png"));
+			loadTexture(var1.getCustomTexture(EntitySkinType.ENDERMAN_EYES, "/mob/enderman_eyes.png"));
 			// Spout End
 			float var4 = 1.0F;
 			GL11.glEnable(3042 /* GL_BLEND */);

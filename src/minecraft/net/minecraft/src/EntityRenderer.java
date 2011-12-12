@@ -904,13 +904,13 @@ public class EntityRenderer {
 			this.mc.renderGlobal.clipRenderersByFrustrum(var18, var1);
 			if (var19 == 0) {
 				Profiler.endStartSection("updatechunks");
-
-				while (!this.mc.renderGlobal.updateRenderers(var4, false) && var2 != 0L) {
-					long var21 = var2 - System.nanoTime();
-					if (var21 < 0L || var21 > 1000000000L) {
-						break;
-					}
-				}
+				this.mc.renderGlobal.updateRenderers(var4, false);
+				//while (!this.mc.renderGlobal.updateRenderers(var4, false) && var2 != 0L) {
+				//	long var21 = var2 - System.nanoTime();
+				//	if (var21 < 0L || var21 > 1000000000L) {
+				//		break;
+				//	}
+				//}
 			}
 
 			this.setupFog(0, var1);

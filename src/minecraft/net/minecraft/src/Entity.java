@@ -1,8 +1,11 @@
 package net.minecraft.src;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID; // Spout
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockFluid;
@@ -28,6 +31,9 @@ import net.minecraft.src.World;
 public abstract class Entity {
 
 	private static int nextEntityID = 0;
+	//Spout start
+	public static List<Entity> toProcess = new LinkedList<Entity>();
+	//Spout end
 	public int entityId;
 	public double renderDistanceWeight;
 	public boolean preventEntitySpawning;
@@ -97,7 +103,6 @@ public abstract class Entity {
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
-	public boolean uuidValid = true;
 	//Spout end
 
 	public Entity(World var1) {
@@ -138,6 +143,9 @@ public abstract class Entity {
 		this.entityInit();
 		//Spout Start
 		this.wasOnGround = true;
+		if (Minecraft.theMinecraft.isMultiplayerWorld()) {
+			toProcess.add(this);
+		}
 		//Spout End
 	}
 

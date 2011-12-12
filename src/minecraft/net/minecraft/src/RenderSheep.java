@@ -8,7 +8,7 @@ import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 
 //Spout Start
-import org.getspout.spout.entity.EntitySkinType;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 //Spout End
 
 public class RenderSheep extends RenderLiving {
@@ -21,7 +21,7 @@ public class RenderSheep extends RenderLiving {
 	protected int setWoolColorAndRender(EntitySheep var1, int var2, float var3) {
 		if(var2 == 0 && !var1.getSheared()) {
 			//Spout Start
-			loadTexture(EntitySkinType.getTexture(EntitySkinType.SHEEP_FUR, var1, "/mob/sheep_fur.png"));
+			loadTexture(var1.getCustomTexture(EntitySkinType.SHEEP_FUR, "/mob/sheep_fur.png"));
 			//Spout End
 			float var4 = 1.0F;
 			int var5 = var1.getFleeceColor();

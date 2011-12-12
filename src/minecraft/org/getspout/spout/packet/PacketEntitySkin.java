@@ -20,8 +20,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.entity.EntityManager;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketEntitySkin implements SpoutPacket {
@@ -49,8 +50,10 @@ public class PacketEntitySkin implements SpoutPacket {
 		if(texture.equals("[reset]")){
 			texture = null;
 		}
-		EntityManager manager = SpoutClient.getInstance().getEntityManager();
-		manager.setTexture(entityId, texture, textureId);
+		Entity entity = Spoutcraft.getWorld().getEntityFromId(entityId);
+		if (entity != null) {
+			entity.setSkin(texture, EntitySkinType.getType(textureId));
+		}
 	}
 
 	public PacketType getPacketType() {

@@ -14,7 +14,7 @@ import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 //Spout Start
 import org.getspout.spout.entity.CraftGhast;
-import org.getspout.spout.entity.EntitySkinType;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 //Spout End
 
 public class EntityGhast extends EntityFlying implements IMob {

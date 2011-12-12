@@ -4,30 +4,37 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.getspout.spout.client.SpoutClient;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
 import net.minecraft.src.WorldClient;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.entity.Entity;
 
-public class PacketUniqueId implements CompressablePacket{
-	private boolean alive = false;
+public class PacketEntityInformation implements CompressablePacket{
 	private boolean compressed = false;
 	private byte[] data = null;
 	
-	public PacketUniqueId() {
+	public PacketEntityInformation() {
 		
 	}
 	
+	public PacketEntityInformation(List<Entity> entities) {
+		ByteBuffer tempbuffer = ByteBuffer.allocate(entities.size() * 4); 
+		for (Entity e : entities) {
+			tempbuffer.putInt(e.getEntityId());
+		}
+		data = tempbuffer.array();
+	}
+	
 	public int getNumBytes() {
-		return 2 + (data != null ? data.length : 0) + 4;
+		return 1 + (data != null ? data.length : 0) + 4;
 	}
 
 	public void readData(DataInputStream input) throws IOException {
@@ -36,7 +43,6 @@ public class PacketUniqueId implements CompressablePacket{
 			data = new byte[size];
 			input.readFully(data);
 		}
-		alive = input.readBoolean();
 		compressed = input.readBoolean();
 	}
 
@@ -48,7 +54,6 @@ public class PacketUniqueId implements CompressablePacket{
 		else {
 			output.writeInt(0);
 		}
-		output.writeBoolean(alive);
 		output.writeBoolean(compressed);
 	}
 
@@ -62,20 +67,9 @@ public class PacketUniqueId implements CompressablePacket{
 				long msb = rawData.getLong(index + 8);
 				int id = rawData.getInt(index + 16);
 				
-				Entity e = null;
-				if (Minecraft.theMinecraft.thePlayer != null && id == Minecraft.theMinecraft.thePlayer.entityId) {
-					e = Minecraft.theMinecraft.thePlayer;
-				}
-				else {
-					e = ((WorldClient)Minecraft.theMinecraft.theWorld).func_709_b(id);
-				}
-				UUID current = new UUID(msb, lsb);
+				net.minecraft.src.Entity e = SpoutClient.getInstance().getEntityFromId(id);
 				if (e != null) {
-					e.uniqueId = current;
-					e.uuidValid = alive;
-				}
-				if (!alive) {
-					SpoutClient.getInstance().getEntityManager().removeData(current);
+					e.uniqueId = new UUID(msb, lsb);
 				}
 			}
 		}
@@ -86,11 +80,11 @@ public class PacketUniqueId implements CompressablePacket{
 	}
 
 	public PacketType getPacketType() {
-		return PacketType.PacketUniqueId;
+		return PacketType.PacketEntityInformation;
 	}
 
 	public int getVersion() {
-		return 2;
+		return 0;
 	}
 
 	public void compress() {

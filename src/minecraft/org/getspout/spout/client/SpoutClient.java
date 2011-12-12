@@ -18,6 +18,8 @@ package org.getspout.spout.client;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -40,8 +42,6 @@ import org.getspout.spout.config.ConfigReader;
 import org.getspout.spout.config.MipMapUtils;
 import org.getspout.spout.controls.SimpleKeyBindingManager;
 import org.getspout.spout.entity.CraftEntity;
-import org.getspout.spout.entity.EntityManager;
-import org.getspout.spout.entity.SimpleEntityManager;
 import org.getspout.spout.gui.MCRenderDelegate;
 import org.getspout.spout.gui.SimpleKeyManager;
 import org.getspout.spout.gui.server.ServerManager;
@@ -54,6 +54,7 @@ import org.getspout.spout.io.FileDownloadThread;
 import org.getspout.spout.io.FileUtil;
 import org.getspout.spout.packet.CustomPacket;
 import org.getspout.spout.packet.PacketAddonData;
+import org.getspout.spout.packet.PacketEntityInformation;
 import org.getspout.spout.packet.PacketManager;
 import org.getspout.spout.player.ChatManager;
 import org.getspout.spout.player.ClientPlayer;
@@ -95,7 +96,6 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final ChatManager chatManager = new ChatManager();
 	private final PacketManager packetManager = new PacketManager();
-	private final EntityManager entityManager = new SimpleEntityManager();
 	private final BiomeManager biomeManager = new SimpleBiomeManager();
 	private final MaterialManager materialManager = new SimpleMaterialManager();
 	private final RenderDelegate render = new MCRenderDelegate();
@@ -203,11 +203,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public ActivePlayer getActivePlayer() {
 		return player;
 	}
-	
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
-	
+
 	public BiomeManager getBiomeManager() {
 		return biomeManager;
 	}
@@ -305,6 +301,20 @@ public class SpoutClient extends PropertyObject implements Client {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 			inWorldTicks++;
 		}
+		if (isSpoutEnabled()) {
+			LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity> processed = new LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity>();
+			Iterator<Entity> i = Entity.toProcess.iterator();
+			while(i.hasNext()) {
+				Entity next = i.next();
+				if (next.spoutEntity != null) {
+					processed.add(next.spoutEntity);
+				}
+			}
+			Entity.toProcess.clear();
+			if (processed.size() > 0) {
+				getPacketManager().sendSpoutPacket(new PacketEntityInformation(processed));
+			}
+		}
 	}
 
 	public long getTick() {
@@ -330,10 +340,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		PacketDecompressionThread.endThread();
 		MaterialData.reset();
 		FileDownloadThread.preCacheCompleted.lazySet(0);
-		entityManager.clearData();
-		if (getHandle().thePlayer != null) {
-			getHandle().thePlayer.uuidValid = false;
-		}
 		server = -1L;
 		inWorldTicks = 0L;
 		MaterialData.reset();

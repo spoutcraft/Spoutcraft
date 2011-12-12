@@ -21,7 +21,7 @@ import net.minecraft.src.World;
 // Spout start
 import org.getspout.spout.entity.CraftPig;
 import org.getspout.spout.entity.CraftWolf;
-import org.getspout.spout.entity.EntitySkinType;
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 // Spout end
 
 public class EntityWolf extends EntityAnimal {
@@ -64,11 +64,10 @@ public class EntityWolf extends EntityAnimal {
 	public String getEntityTexture() {
 		//Spout Start
 		if(isWolfTamed()) {
-
-			return EntitySkinType.getTexture(EntitySkinType.WOLF_TAMED, this, "/mob/wolf_tame.png");
+			return this.getCustomTexture(EntitySkinType.WOLF_TAMED, "/mob/wolf_tame.png");
 		}
 		if(isWolfAngry()){
-			return EntitySkinType.getTexture(EntitySkinType.WOLF_ANGRY, this, "/mob/wolf_angry.png");
+			return this.getCustomTexture(EntitySkinType.WOLF_ANGRY, "/mob/wolf_angry.png");
 		} else {
 			return super.getEntityTexture();
 		}
