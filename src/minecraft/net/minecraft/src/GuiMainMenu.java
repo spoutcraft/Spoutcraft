@@ -28,6 +28,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 //Spout End
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -376,6 +377,22 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glScalef(var8, var8, var8);
 		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
 		GL11.glPopMatrix();
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+			mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this));
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			mc.displayGuiScreen(new GuiSelectWorld(new GuiMainMenu()));
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			mc.displayGuiScreen(new GuiAddonsLocal());
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
+			mc.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks());
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+			mc.displayGuiScreen(new GuiOptions(new GuiMainMenu(), mc.gameSettings));
+		}
 
 		//Spout Start
 		//this.drawString(this.fontRenderer, "Minecraft 1.0.0", 2, this.height - 10, 16777215); //Spout

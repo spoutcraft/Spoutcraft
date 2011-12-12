@@ -11,97 +11,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.List;
 import net.minecraft.client.MinecraftApplet;
-import net.minecraft.src.AchievementList;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ChunkProviderLoadOrGenerate;
-import net.minecraft.src.ColorizerFoliage;
-import net.minecraft.src.ColorizerGrass;
-import net.minecraft.src.ColorizerWater;
-import net.minecraft.src.EffectRenderer;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.EntityRenderer;
-import net.minecraft.src.EnumMovingObjectType;
-import net.minecraft.src.EnumOS2;
-import net.minecraft.src.EnumOSMappingHelper;
-import net.minecraft.src.EnumOptions;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GLAllocation;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.GameWindowListener;
-import net.minecraft.src.GuiAchievement;
-import net.minecraft.src.GuiChat;
-import net.minecraft.src.GuiConflictWarning;
-import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.GuiErrorScreen;
-import net.minecraft.src.GuiGameOver;
-import net.minecraft.src.GuiIngame;
-import net.minecraft.src.GuiIngameMenu;
-import net.minecraft.src.GuiInventory;
-import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSleepMP;
-import net.minecraft.src.GuiUnused;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.ISaveFormat;
-import net.minecraft.src.ISaveHandler;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemRenderer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.KeyBinding;
-import net.minecraft.src.LoadingScreenRenderer;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.MinecraftError;
-import net.minecraft.src.MinecraftException;
-import net.minecraft.src.MinecraftImpl;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.MouseHelper;
-import net.minecraft.src.MovementInputFromOptions;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.OpenGlCapsChecker;
-import net.minecraft.src.OpenGlHelper;
-import net.minecraft.src.PlayerController;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.Profiler;
-import net.minecraft.src.ProfilerResult;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.RenderGlobal;
-import net.minecraft.src.RenderManager;
-import net.minecraft.src.SaveConverterMcRegion;
-import net.minecraft.src.ScaledResolution;
-import net.minecraft.src.ScreenShotHelper;
-import net.minecraft.src.Session;
-import net.minecraft.src.SoundManager;
-import net.minecraft.src.StatFileWriter;
-import net.minecraft.src.StatList;
-import net.minecraft.src.StatStringFormatKeyInv;
-import net.minecraft.src.Teleporter;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.TextureCompassFX;
-import net.minecraft.src.TextureFlamesFX;
-import net.minecraft.src.TextureLavaFX;
-import net.minecraft.src.TextureLavaFlowFX;
-import net.minecraft.src.TexturePackList;
-import net.minecraft.src.TexturePortalFX;
-import net.minecraft.src.TextureWatchFX;
-import net.minecraft.src.TextureWaterFX;
-import net.minecraft.src.TextureWaterFlowFX;
-import net.minecraft.src.ThreadCheckHasPaid;
-import net.minecraft.src.ThreadDownloadResources;
-import net.minecraft.src.ThreadSleepForever;
-import net.minecraft.src.Timer;
-import net.minecraft.src.UnexpectedThrowable;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldProvider;
-import net.minecraft.src.WorldRenderer;
-import net.minecraft.src.WorldSettings;
+import net.minecraft.src.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
@@ -127,6 +37,7 @@ import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.getspout.spout.gui.ScreenUtil;
+import org.getspout.spout.gui.addon.GuiAddonsLocal;
 import org.getspout.spout.packet.PacketScreenAction;
 import org.getspout.spout.packet.ScreenAction;
 import org.getspout.spout.packet.SpoutPacket;
@@ -344,10 +255,27 @@ public abstract class Minecraft implements Runnable {
 		} catch (Exception var3) {
 			;
 		}
-
+		
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
-		if (this.serverName != null) {
+		
+		//Spout start
+		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
+			this.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(new GuiMainMenu()));
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			this.displayGuiScreen(new GuiSelectWorld(new GuiMainMenu()));
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			this.displayGuiScreen(new GuiAddonsLocal());
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
+			this.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks());
+		}
+		else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+			this.displayGuiScreen(new GuiOptions(new GuiMainMenu(), gameSettings));
+		}
+		else if (this.serverName != null) {
 			this.displayGuiScreen(new GuiConnecting(this, this.serverName, this.serverPort));
 		} else {
 			this.displayGuiScreen(new GuiMainMenu());
