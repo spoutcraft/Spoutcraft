@@ -96,8 +96,20 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD); // to ignore transient fields!!
 		try {
+			//KeyBindings saving
 			FileWriter writer = new FileWriter(getBindingsFile());
-			yaml.dump(bindings, writer);
+			ArrayList<Object> kbsave = new ArrayList<Object>();
+			for(KeyBinding binding:bindings) {
+				HashMap<String, Object> item = new HashMap<String, Object>();
+				item.put("key", binding.getKey());
+				item.put("id", binding.getId());
+				item.put("description", binding.getDescription());
+				item.put("addonName", binding.getAddonName());
+				kbsave.add(item);
+			}
+			yaml.dump(kbsave, writer);
+			
+			//Shortcuts saving
 			writer = new FileWriter(getShortcutsFile());
 			ArrayList<Object> shsave = new ArrayList<Object>();
 			for(Shortcut sh:shortcuts){
@@ -133,8 +145,20 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 		Yaml yaml = new Yaml();
 		try {
-			bindings = yaml.loadAs(new FileReader(getBindingsFile()), ArrayList.class);
+			bindings = new ArrayList<KeyBinding>();
+			ArrayList<Object> kbsave = yaml.loadAs(new FileReader(getBindingsFile()), ArrayList.class);
+			for(Object obj:kbsave) {
+				HashMap<String, Object> item = (HashMap<String, Object>) obj;
+				int key = (Integer) item.get("key");
+				String id, description, addonName;
+				id = (String) item.get("id");
+				description = (String) item.get("description");
+				addonName = (String) item.get("addonName");
+				KeyBinding binding = new KeyBinding(key, addonName, id, description);
+				bindings.add(binding);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			bindings = new ArrayList<KeyBinding>();
 		}
 		updateBindings();
@@ -153,6 +177,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				shortcuts.add(sh);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			shortcuts = new ArrayList<Shortcut>();
 		}
 		updateShortcuts();
