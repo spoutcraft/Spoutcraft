@@ -153,7 +153,13 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				String id, description, addonName;
 				id = (String) item.get("id");
 				description = (String) item.get("description");
-				addonName = (String) item.get("addonName");
+				if(item.containsKey("addonName")) {
+					addonName = (String) item.get("addonName");
+				} else if(item.containsKey("plugin")) {
+					addonName = (String) item.get("plugin");
+				} else {
+					continue; //Invalid item
+				}
 				KeyBinding binding = new KeyBinding(key, addonName, id, description);
 				bindings.add(binding);
 			}
