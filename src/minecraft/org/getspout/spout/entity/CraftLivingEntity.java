@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import net.minecraft.client.Minecraft;
 
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -213,4 +214,12 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	public void setSkin(String skinURI, EntitySkinType type) {
 		getEntityLiving().setCustomTexture(skinURI, type.getId());
 	}
+        
+        public double getGravityMultiplier(){
+                return Minecraft.theMinecraft.thePlayer.getData().getGravityMod();
+        }
+        
+        public void setGravityMultiplier(double multiplier){
+            Minecraft.theMinecraft.thePlayer.getData().setGravityMod(multiplier);
+        }
 }
