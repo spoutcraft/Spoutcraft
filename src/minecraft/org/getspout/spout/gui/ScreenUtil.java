@@ -65,6 +65,9 @@ public class ScreenUtil {
 	
 	public static ScreenType getType(GuiScreen gui) {
 		ScreenType screen = ScreenType.UNKNOWN;
+		if(gui == null) {
+			screen = ScreenType.GAME_SCREEN;
+		}
 		if (gui instanceof GuiChat) {
 			screen = ScreenType.CHAT_SCREEN;
 		}
