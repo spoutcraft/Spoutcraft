@@ -19,18 +19,21 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 @UnsafeClass
-public class GenericLabel extends GenericWidget implements Label {
+public class GenericLabel extends GenericWidget implements BasicLabel {
 	protected String text = "";
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
 	protected Color color = new Color(1f, 1f, 1f);
 	protected boolean auto = true;
+	protected boolean wrapLines = false;
 	protected float scale = 1.0F;
+	protected String[] lines = new String[0];
 
 	public GenericLabel() {
 
@@ -41,7 +44,7 @@ public class GenericLabel extends GenericWidget implements Label {
 	}
 
 	public GenericLabel(String text) {
-		this.text = text;
+		setText(text);
 	}
 
 	public WidgetType getType() {
@@ -79,6 +82,7 @@ public class GenericLabel extends GenericWidget implements Label {
 
 	public Label setText(String text) {
 		this.text = text;
+		recalculateLines();
 		return this;
 	}
 
@@ -121,7 +125,7 @@ public class GenericLabel extends GenericWidget implements Label {
 
 	@Override
 	public double getActualWidth() {
-		return auto ? getTextWidth() : super.getActualWidth();
+		return auto && !wrapLines ? getTextWidth() : super.getActualWidth();
 	}
 
 	public double getTextWidth() {
@@ -136,15 +140,66 @@ public class GenericLabel extends GenericWidget implements Label {
 
 	@Override
 	public double getActualHeight() {
-		return auto ? getTextHeight() : super.getActualHeight();
+		return auto && !wrapLines ? getTextHeight() : super.getActualHeight();
 	}
 
 	public double getTextHeight() {
 		return getText().split("\\n").length * 10;
 	}
 
+	public boolean isWrapLines() {
+		return wrapLines;
+	}
+
+	public GenericLabel setWrapLines(boolean wrapLines) {
+		this.wrapLines = wrapLines;
+		return this;
+	}
+
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
+	}
+	
+	public String [] getLines() {
+		return lines;
+	}
+	
+	public void recalculateLines() {
+		lines = text.split("\\n");
+		
+		if(isWrapLines()) {
+			ArrayList<String> linesTmp = new ArrayList<String>(lines.length);
+			for(String line:lines){
+				linesTmp.add(line);
+			}
+			for(int i = 0; i < linesTmp.size(); i++) {
+				boolean wrapForSpace = true;
+				String line = linesTmp.get(i);
+				String lineTmp = new String(line);
+				int brk = -1;
+				while(Spoutcraft.getMinecraftFont().getTextWidth(lineTmp) > super.getWidth()) {
+					brk = lineTmp.lastIndexOf(" ");
+					if(brk == -1) {
+						brk = lineTmp.length() - 2;
+						wrapForSpace = false;
+					}
+					lineTmp = lineTmp.substring(0, brk);
+				}
+				if(brk != -1) {
+					linesTmp.set(i, lineTmp);
+					String otherLine = line.substring(brk + (wrapForSpace?1:0), line.length());
+					if(!otherLine.trim().isEmpty()) {
+						linesTmp.add(i + 1, otherLine);
+					}
+				}
+			}
+			
+			lines = linesTmp.toArray(new String[0]);
+			
+			if(isAuto()) {
+				setHeight(lines.length * 11);
+			}
+		}
 	}
 
 }
