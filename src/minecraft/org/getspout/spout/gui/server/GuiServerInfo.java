@@ -16,233 +16,387 @@
  */
 package org.getspout.spout.gui.server;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import net.minecraft.src.*;
+import net.minecraft.src.GuiScreen;
 
-import org.bukkit.ChatColor;
 import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.io.CustomTextureManager;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
+import org.getspout.spout.gui.GuiSpoutScreen;
+import org.getspout.spout.util.NetworkUtils;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
+import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.yaml.snakeyaml.Yaml;
 
-public class GuiServerInfo extends GuiScreen {
+public class GuiServerInfo extends GuiSpoutScreen {
 
-	private ServerSlot info;
-	private Texture image;
-	private Texture flag;
-	private String url = "";
-	private String site = "";
-	private String forum = "";
+	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
+	private GenericLabel labelTitle, labelAddressLabel, labelAddress, labelMotdLabel, labelMotd, labelDescriptionLabel, labelDescription,
+	labelPlayersLabel, labelPlayers, labelSpoutcraftLabel, labelSpoutcraft, labelAccessLabel, labelAccess,
+	labelMCVersionLabel, labelMCVersion, labelCategoryLabel, labelCategory;
+	private LinkButton linkForum, linkSite;
+	private GenericScrollArea content;
+	private List<GenericLabel> labels = new ArrayList<GenericLabel>();
+	int labelWidth = 0;
+	private GenericTexture textureIcon;
+
+	static final int MAX_HEIGHT = 128;
+
 	private GuiScreen back;
-	private boolean hoveringSite = false;
-	private boolean hoveringForum = false;
+	private ServerItem item;
+	private Thread loadThread;
 
-	public GuiServerInfo(ServerSlot info, GuiScreen back) {
-		if (info.loaded < 2) {
-			try {
-				URL url = new URL("http://servers.getspout.org/api.php?id=" + info.uniqueid);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-				Yaml yaml = new Yaml();
-				ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
-				reader.close();
-				
-				if (list.size() > 0) {
-					Map<String, String> i = list.get(0);
-					switch (info.loaded) {
-						case 0:
-							info.country = i.get("country");
-							info.site = URLDecoder.decode(i.get("site"), "UTF-8");
-							info.forum = URLDecoder.decode(i.get("forumurl"), "UTF-8");
-						case 1:
-							info.description = URLDecoder.decode(i.get("longdescription"), "UTF-8");
-					}
-				}
-				info.loaded = 2;
-			} catch (IOException e) {}
+	public GuiServerInfo(ServerItem item, GuiScreen back) {
+		this.back = back;
+		this.item = item;
+	}
+
+	@Override
+	protected void createInstances() {
+		labels.clear();
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		buttonDone = new GenericButton("Done");
+		getScreen().attachWidget(spoutcraft, buttonDone);
+
+		buttonRefresh = new GenericButton();
+		getScreen().attachWidget(spoutcraft, buttonRefresh);
+		
+		buttonAddFavorite = new GenericButton("Add Favorite");
+		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		
+		buttonJoin = new GenericButton("Join");
+		getScreen().attachWidget(spoutcraft, buttonJoin);
+
+		content = new GenericScrollArea();
+		getScreen().attachWidget(spoutcraft, content);
+
+		labelTitle = new GenericLabel(item.getTitle());
+		getScreen().attachWidget(spoutcraft, labelTitle);
+		
+		buttonOpenBrowser = new GenericButton("More Info...");
+		content.attachWidget(spoutcraft, buttonOpenBrowser);
+
+		labelCategoryLabel = new GenericLabel("Category");
+		content.attachWidget(spoutcraft, labelCategoryLabel);
+		labels.add(labelCategoryLabel);
+
+		labelCategory = new GenericLabel("...");
+		labelCategory.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelCategory);
+
+		labelMCVersionLabel = new GenericLabel("Minecraft Version");
+		content.attachWidget(spoutcraft, labelMCVersionLabel);
+		labels.add(labelMCVersionLabel);
+
+		labelMCVersion = new GenericLabel("...");
+		labelMCVersion.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelMCVersion);
+
+		labelAccessLabel = new GenericLabel("Access Type");
+		content.attachWidget(spoutcraft, labelAccessLabel);
+		labels.add(labelAccessLabel);
+
+
+		String access = "Open";
+		switch(item.accessType) {
+		case ServerItem.WHITELIST:
+			access = "Whitelist";
+			break;
+		case ServerItem.GRAYLIST:
+			access = "Graylist";
+			break;
+		case ServerItem.BLACKLIST:
+			access = "Blacklist";
+			break;
+		}
+		labelAccess = new GenericLabel(access);
+		labelAccess.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelAccess);
+
+		labelAddress = new GenericLabel(item.getIp() + (item.getPort()!=25565?item.getPort():""));
+		labelAddress.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelAddress);
+
+		labelAddressLabel = new GenericLabel("Address");
+		content.attachWidget(spoutcraft, labelAddressLabel);
+		labels.add(labelAddressLabel);
+
+		labelMotd = new GenericLabel(item.getMotd());
+		content.attachWidget(spoutcraft, labelMotd);
+		labelMotd.setTextColor(new Color(0xffaaaaaa));
+
+		labelMotdLabel = new GenericLabel("MOTD");
+		content.attachWidget(spoutcraft, labelMotdLabel);
+		labels.add(labelMotdLabel);
+
+		labelDescription = new GenericLabel("...");
+		content.attachWidget(spoutcraft, labelDescription);
+		labelDescription.setTextColor(new Color(0xffaaaaaa));
+		labelDescription.setWrapLines(true);
+
+		labelDescriptionLabel = new GenericLabel("Description");
+		labels.add(labelDescriptionLabel);
+		content.attachWidget(spoutcraft, labelDescriptionLabel);
+
+		labelPlayersLabel = new GenericLabel("Players");
+		content.attachWidget(spoutcraft, labelPlayersLabel);
+		labels.add(labelPlayersLabel);
+
+		labelPlayers = new GenericLabel();
+		labelPlayers.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelPlayers);
+
+		linkForum = new LinkButton("Go to forum", "");
+		content.attachWidget(spoutcraft, linkForum);
+		linkSite = new LinkButton("Go to website", "");
+		content.attachWidget(spoutcraft, linkSite);
+
+		labelSpoutcraftLabel = new GenericLabel("Spoutcraft required");
+		content.attachWidget(spoutcraft, labelSpoutcraftLabel);
+		labels.add(labelSpoutcraftLabel);
+
+		labelSpoutcraft = new GenericLabel("...");
+		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
+		content.attachWidget(spoutcraft, labelSpoutcraft);
+
+		textureIcon = new GenericTexture("http://servers.getspout.org/preview/"+ item.getDatabaseId() +".png");
+		textureIcon.setFinishDelegate(new ImageUpdate());
+		textureIcon.setWidth(48).setHeight(48);
+		content.attachWidget(spoutcraft, textureIcon);
+
+		for(GenericLabel lbl:labels) {
+			labelWidth = (int) Math.max(labelWidth, lbl.getTextWidth());
+		}
+		updateButtons();
+		refresh();
+		updateData();
+	}
+
+	public void updateButtons() {
+		linkForum.setEnabled(!linkForum.getUrl().isEmpty());
+		linkSite.setEnabled(!linkSite.getUrl().isEmpty());
+
+		boolean updating = loadThread != null;
+		buttonRefresh.setEnabled(!updating);
+		if(updating) {
+			buttonRefresh.setText("Loading...");
+		} else {
+			buttonRefresh.setText("Refresh");
 		}
 		
-		int maxlen = 210;
-		this.info = info;
-		this.back = back;
-		url = "http://servers.getspout.org/preview/" + info.uniqueid + ".png";
-		site = shorten(info.site, maxlen);
-		forum = shorten(info.forum, maxlen);
-		CustomTextureManager.downloadTexture(url);
-		CustomTextureManager.downloadTexture("http://servers.getspout.org/images/flags/" + info.country.toLowerCase() + ".png");
-	}
-	
-	public String shorten(String string, int width) {
-		FontRenderer fr = SpoutClient.getHandle().fontRenderer;
-		boolean shortened = false;
-		while (fr.getStringWidth(string) > width) {
-			shortened = true;
-			string = string.substring(0, string.length() - 1);
+		buttonAddFavorite.setEnabled(!SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item));
+		if(!buttonAddFavorite.isEnabled()) {
+			buttonAddFavorite.setTooltip("You already have this server in your favorites");
+		} else {
+			buttonAddFavorite.setTooltip("");
 		}
-		return string + (shortened ? "..." : "");
+	}
+
+	@Override
+	protected void layoutWidgets() {
+		int w = Spoutcraft.getMinecraftFont().getTextWidth(labelTitle.getText());
+
+		int totalWidth = Math.min(width - 10 - 16, 200*3+10);
+		int cellWidth = (totalWidth - 10)/3;
+		int left = width / 2 - totalWidth / 2;
+		int center = left + cellWidth + 5;
+		int right = center + cellWidth + 5;
+
+
+		labelTitle.setX(width / 2 - w / 2).setY(5 + 7).setWidth(w).setHeight(11);
+
+		if(labelTitle.getX() + w > width - 110) {
+			labelTitle.setX(width - 110 - w);
+		}
+
+		buttonRefresh.setX(width - 105).setY(5).setWidth(100).setHeight(20);
+
+		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 30 - (5+7+11+5));
+
+		int valueLeft = 10 + labelWidth;
+		int labelLeft = 5;
+
+		int top = 5;
+
+		textureIcon.setX(5).setY(top);
+		updateImageWidth();
+
+		top += textureIcon.getHeight() + 5;
+
+		labelAddressLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelAddress.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelMotdLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelMotd.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelPlayersLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelPlayers.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelSpoutcraftLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelSpoutcraft.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelAccessLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelAccess.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelMCVersionLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelMCVersion.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelCategoryLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelCategory.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
+
+		top += 16;
+
+		labelDescriptionLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
+		labelDescription.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5 - 16).setHeight(11);
+		labelDescription.recalculateLines();
+
+		top += labelDescription.getHeight() + 5;
+
+		linkForum.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
+		linkSite.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		buttonOpenBrowser.setX(right).setY(top).setHeight(20).setWidth(cellWidth);
+
+		top += 25;
+		
+		buttonJoin.setX(left).setY(height - 25).setHeight(20).setWidth(cellWidth);
+		buttonAddFavorite.setX(center).setY(height - 25).setHeight(20).setWidth(cellWidth);
+		buttonDone.setX(right).setY(height - 25).setHeight(20).setWidth(cellWidth);
+
+		content.updateInnerSize();
+	}
+
+	@Override
+	protected void buttonClicked(Button btn) {
+		if(btn == buttonDone) {
+			mc.displayGuiScreen(back);
+		}
+		if(btn == buttonOpenBrowser) {
+			NetworkUtils.openInBrowser("http://servers.getspout.org/info/" + item.getDatabaseId());
+		}
+		if(btn == buttonRefresh) {
+			refresh();
+		}
+		if(btn == buttonAddFavorite) {
+			SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
+			SpoutClient.getInstance().getServerManager().getFavorites().save();
+			updateButtons();
+		}
+		if(btn == buttonJoin) {
+			item.onClick(-1, -1, true);
+		}
+	}
+
+	private void refresh() {
+		loadThread = new Thread() {
+			public void run() {
+				try {
+					URL url = new URL("http://servers.getspout.org/api2.php?id=" + item.getDatabaseId());
+					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+					Yaml yaml = new Yaml();
+					ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
+					reader.close();
+					parseYaml(list);
+				} catch(IOException e) {
+					e.printStackTrace();
+					parseYaml(null);
+				}
+			}
+		};
+		loadThread.start();
+		updateButtons();
+	}
+
+	protected void parseYaml(ArrayList<Map<String, String>> list) {
+		loadThread = null;
+		updateButtons();
+		try {
+			if(list != null && list.size() > 0) {
+				Map<String, String> i = list.get(1);
+				labelDescription.setText(URLDecoder.decode(i.get("longdescription"), "UTF-8"));
+				linkSite.setUrl(URLDecoder.decode(i.get("site"), "UTF-8"));
+				linkForum.setUrl(URLDecoder.decode(i.get("forumurl"), "UTF-8"));
+				boolean spoutcraft = i.get("spoutcraft").equals("1");
+				labelSpoutcraft.setText(spoutcraft?"Yes":"No");
+				labelMCVersion.setText(URLDecoder.decode(i.get("mcversion"), "UTF-8"));
+				labelCategory.setText(URLDecoder.decode(i.get("category"), "UTF-8"));
+			}
+		} catch(UnsupportedEncodingException e){}
+		layoutWidgets();
+		updateButtons();
 	}
 
 	@Override
 	public void updateScreen() {
-		
+		if(loadThread != null) {
+			Color color = new Color(0, 1f, 0);
+			double darkness = 0;
+			long t = System.currentTimeMillis() % 1000;
+			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
+			color.setGreen(1f - (float)darkness);
+			buttonRefresh.setDisabledColor(color);
+		}
+		super.updateScreen();
 	}
 
-	@Override
-	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
-		this.controlList.clear();
-		this.controlList.add(new GuiButton(0, this.width / 2 - 30, this.height / 4 + 150, 110, 20, var1.translateKey("Join")));
-		this.controlList.add(new GuiButton(1, this.width / 2 + 90, this.height / 4 + 150, 110, 20, var1.translateKey("Back")));
-		this.controlList.add(new GuiButton(2, this.width / 2 - 200, this.height / 4 + 150, 160, 20, var1.translateKey("Help promote this server")));
+	public void updateData() {
+		labelMotd.setText(item.getMotd());
+		labelPlayers.setText(item.getPlayers() + " / "+item.getMaxPlayers());
 	}
 
-	@Override
-	public void onGuiClosed() {
-		
-	}
+	private class ImageUpdate implements Runnable {
 
-	@Override
-	public void actionPerformed(GuiButton button) {
-		if(button.enabled) {
-			if (button.id == 0) {
-				int port = info.port.length() > 0 ? Integer.parseInt(info.port) : 25565;
-				SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), info.ip, port));
-			} else if (button.id == 1) {
-				SpoutClient.getHandle().displayGuiScreen(back);
-				if (back instanceof GuiMultiplayer) {
-					((GuiMultiplayer) back).updateList();
-				}
-			} else if (button.id == 2) {
-				openLink("http://servers.getspout.org/info/" + info.uniqueid + ".php");
-			}
+		public void run() {
+			updateImageWidth();
+			layoutWidgets();
 		}
 	}
 
-	@Override
-	public void keyTyped(char letter, int key) {
-		
-	}
-	
-	public void openLink(String url) {
-		try {
-			java.net.URI uri = new java.net.URI(url);
-			Desktop desktop = Desktop.getDesktop();
-			desktop.browse(uri);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-	}
+	public void updateImageWidth() {
+		int imgwidth, imgheight;
+		int MAX_WIDTH = width - 10 - 16;
+		imgwidth = textureIcon.getOriginalWidth();
+		imgheight = textureIcon.getOriginalHeight();
 
-	@Override
-	public void mouseClicked(int x, int y, int click) {
-		if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(site) && y >= this.height / 2 - 10 && y <= this.height / 2 - 2) {
-			openLink(info.site);
-		} else if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(forum) && y >= this.height / 2 + 15 && y <= this.height / 2 + 23) {
-			openLink(info.forum);
-		}
-		super.mouseClicked(x, y, click);
-	}
-	
-	@Override
-	public void mouseMovedOrUp(int x, int y, int click) {
-		hoveringSite = false;
-		hoveringForum = false;
-		if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(site) && y >= this.height / 2 - 10 && y <= this.height / 2 - 2) {
-			hoveringSite = true;
-		} else if (x >= this.width / 2 - 10 && x <= this.width / 2 - 10 + SpoutClient.getHandle().fontRenderer.getStringWidth(forum) && y >= this.height / 2 + 15 && y <= this.height / 2 + 23) {
-			hoveringForum = true;
-		}
-	}
+		System.out.println(imgwidth+"x"+imgheight);
 
-	@Override
-	public void drawScreen(int var1, int var2, float var3) {
-		this.drawDefaultBackground();
-		
-		if (flag != null) {
-			GL11.glPushMatrix();
-			GL11.glTranslatef(this.width / 2 + 150, this.height / 2 - 84, 0);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDepthMask(false);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, flag.getTextureID());
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			Tessellator tessellator = Tessellator.instance;
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, 6, -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(9, 6, -90, flag.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(9, 0.0D, -90, flag.getWidth(), flag.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, flag.getHeight());
-			tessellator.draw();
-			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
-		} else {
-			flag = CustomTextureManager.getTextureFromUrl("http://servers.getspout.org/images/flags/" + info.country.toLowerCase() + ".png");
+		double ratio = (double) imgwidth / (double) imgheight;
+
+		if(imgheight > MAX_HEIGHT) {
+			imgheight = MAX_HEIGHT;
+			imgwidth = (int) ((double) imgheight * ratio);
 		}
 		
-		if (image != null) {
-			GL11.glPushMatrix();
-			GL11.glTranslatef(this.width / 2 - 110 - (image.getImageWidth() / 4), this.height / 2 - 20 - (image.getImageHeight() / 4), 0);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDepthMask(false);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, image.getTextureID());
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			Tessellator tessellator = Tessellator.instance;
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, image.getImageHeight() / 2, -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(image.getImageWidth() / 2, image.getImageHeight() / 2, -90, image.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(image.getImageWidth() / 2, 0.0D, -90, image.getWidth(), image.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, image.getHeight());
-			tessellator.draw();
-			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
-		} else {
-			image = CustomTextureManager.getTextureFromUrl(url);
+		if(imgwidth > MAX_WIDTH) {
+			imgwidth = MAX_WIDTH;
+			imgheight = (int) ((double) imgwidth * (1.0/ratio));
 		}
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Server IP:Port", this.width / 2 - 20, this.height / 2 - 95, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.getFullIp(), this.width / 2 - 10, this.height / 2 - 85, 0xA0A0A0);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Name", this.width / 2 - 20, this.height / 2 - 70, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.name, this.width / 2 - 10, this.height / 2 - 60, 0xA0A0A0);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Country", this.width / 2 + 120, this.height / 2 - 95, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.country, this.width / 2 + 130, this.height / 2 - 85, 0xA0A0A0);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Players", this.width / 2 + 120, this.height / 2 - 70, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.players + "/" + info.maxPlayers, this.width / 2 + 130, this.height / 2 - 60, 0xA0A0A0);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Response", this.width / 2 - 20, this.height / 2 - 45, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.msg + ChatColor.GRAY + " (" + info.ping+"ms)", this.width / 2 - 10, this.height / 2 - 35, 0xA0A0A0);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Website", this.width / 2 - 20, this.height / 2 - 20, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, site, this.width / 2 - 10, this.height / 2 - 10, hoveringSite ? 0x0099FF : 0x40FFFF);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Forum Post", this.width / 2 - 20, this.height / 2 + 5, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, forum, this.width / 2 - 10, this.height / 2 + 15, hoveringForum ? 0x0099FF : 0x40FFFF);
-		
-		this.drawString(SpoutClient.getHandle().fontRenderer, "Description", this.width / 2 - 20, this.height / 2 + 30, 0xFFFFFF);
-		this.drawString(SpoutClient.getHandle().fontRenderer, info.description, this.width / 2 - 10, this.height / 2 + 40, 0xA0A0A0);
-		
-		super.drawScreen(var1, var2, var3);
+
+		System.out.println(imgwidth+"x"+imgheight);
+		textureIcon.setWidth(imgwidth).setHeight(imgheight);
 	}
 }

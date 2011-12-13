@@ -29,7 +29,7 @@ public class GuiServerList extends GuiAPIDisplay {
 	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
-	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonAddFavorite, buttonRefresh, buttonReset, buttonAddServer;
+	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonRefresh, buttonReset, buttonAddServer, buttonInfo;
 	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
 	RandomButton random;
 	FilterButton hasPlayers, notFull;
@@ -65,12 +65,12 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonCountry = new CountryButton();
 		view = new GenericListView(model);
 		buttonJoin = new GenericButton("Join Server");
-		buttonAddFavorite = new GenericButton("Add Favorite");
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonFavorites = new GenericButton("Favorites");
 		buttonRefresh = new GenericButton("Refresh");
 		buttonReset = new GenericButton("Reset Filters");
 		buttonAddServer = new GenericButton("Add Your Server");
+		buttonInfo = new GenericButton("More Info...");
 	}
 	
 	public void initGui() {
@@ -192,8 +192,8 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonReset.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonReset);
 		
-		buttonAddFavorite.setHeight(20).setWidth(cellWidth).setX(center).setY(top);
-		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
+		buttonInfo.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
+		getScreen().attachWidget(spoutcraft, buttonInfo);
 		
 		buttonJoin.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonJoin);
@@ -224,14 +224,6 @@ public class GuiServerList extends GuiAPIDisplay {
 		if(btn.equals(buttonFavorites)) {
 			mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
 		}
-		if(btn.equals(buttonAddFavorite)) {
-			if(view.getSelectedItem() instanceof ServerItem) {
-				FavoritesModel favs = SpoutClient.getInstance().getServerManager().getFavorites();
-				favs.addServer((ServerItem) view.getSelectedItem());
-				favs.save();
-				updateButtons();
-			}
-		}
 		if(btn.equals(buttonJoin)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			if(item != null) {
@@ -251,6 +243,14 @@ public class GuiServerList extends GuiAPIDisplay {
 		if(btn.equals(buttonAddServer)) {
 			Sys.openURL("http://servers.getspout.org/submit.php");
 		}
+		if(btn.equals(buttonInfo)) {
+			ServerItem item = (ServerItem) view.getSelectedItem();
+			if(item != null) {
+				mc.displayGuiScreen(new GuiServerInfo(item, this));
+			} else {
+				updateButtons();
+			}
+		}
 	}
 
 	public void updateButtons() {
@@ -259,16 +259,7 @@ public class GuiServerList extends GuiAPIDisplay {
 			b = false;
 		}
 		buttonJoin.setEnabled(b);
-		buttonAddFavorite.setEnabled(b);
-		buttonAddFavorite.setTooltip("");
-		
-		if(b) {
-			ServerItem item = (ServerItem) view.getSelectedItem();
-			if(SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item)) {
-				buttonAddFavorite.setEnabled(false);
-				buttonAddFavorite.setTooltip("You already have this server in your favorites");
-			}
-		}
+		buttonInfo.setEnabled(b);
 		
 		if(model.isLoading()) {
 			buttonRefresh.setEnabled(false);

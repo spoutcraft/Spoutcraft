@@ -5,6 +5,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
@@ -218,7 +219,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericLabel label) {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		String lines[] = label.getText().split("\\n");
+		String lines[] = label.getLines();
 
 		double swidth = label.getTextWidth();
 		double sheight = label.getTextHeight();
@@ -247,6 +248,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		} else if (label.getAnchor() == WidgetAnchor.SCALE) {
 			GL11.glScalef((float) (label.getScreen().getWidth() / 427f), (float) (label.getScreen().getHeight() / 240f), 1);
 		}
+
 		for (int i = 0; i < lines.length; i++) {
 			double left = 0;
 
@@ -341,8 +343,25 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTexture texture) {
-		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(texture.getAddon().getDescription().getName(), texture.getUrl());
+		String addon = texture.getAddon().getDescription().getName();
+		String url = texture.getUrl();
+		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
+
 		if (textureBinding != null) {
+			if(texture.getOriginalHeight() == -1 && texture.getOriginalWidth() == -1) {
+				texture.setOriginalWidth(textureBinding.getImageWidth());
+				texture.setOriginalHeight(textureBinding.getImageHeight());
+			}
+			if(texture.getFinishDelegate() != null) {
+				boolean oldLock = SpoutClient.enableSandbox();;
+				try {
+					texture.getFinishDelegate().run();
+				} finally {
+					SpoutClient.enableSandbox(oldLock);
+				}
+				texture.setFinishDelegate(null);
+			}
+
 			GL11.glTranslatef((float) texture.getScreenX(), (float) texture.getScreenY(), 0); // moves texture into place
 			drawTexture(textureBinding, (int) texture.getWidth(), (int) texture.getHeight(), texture.isDrawingAlphaChannel(), texture.getLeft(), texture.getTop());
 		}
@@ -515,7 +534,7 @@ public class MCRenderDelegate implements RenderDelegate {
 					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
 				}
 			}
-			
+
 			if (Minecraft.theMinecraft.playerController.func_35642_f() && Minecraft.theMinecraft.thePlayer.playerLevel > 0) {
 				int color = 8453920;
 				String level = "" + Minecraft.theMinecraft.thePlayer.playerLevel;
@@ -806,48 +825,48 @@ public class MCRenderDelegate implements RenderDelegate {
 			drawTexture(text, 16, 16, getColor(comboBox), true);
 		}
 	}
-//	public void render(GenericListWidget lw) {
-//		int scrollTop = lw.getScrollPosition();
-//		int scrollBottom = (int) (scrollTop + lw.getHeight() - 5);
-//		GL11.glTranslated(lw.getScreenX(), lw.getScreenY(), 0);
-//		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-//		scissorWidget(lw);
-//		int currentHeight = 0;
-//		RenderUtil.drawRectangle(0, 0, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
-//		GL11.glTranslated(0, -scrollTop + 5, 0);
-//		for(ListWidgetItem item:lw.getItems()) {
-//			
-//			//Only render visible items
-//			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
-//				
-//				//Draw selection border
-//				if(lw.isSelected(item)) {
-//					RenderUtil.drawRectangle(4, currentHeight-1, (int) (lw.getWidth() - 13), currentHeight-1+item.getHeight()+2, new Color(1.0F,1.0F,1.0F).toInt());
-//					RenderUtil.drawRectangle(5, currentHeight, (int) (lw.getWidth() - 14), currentHeight+item.getHeight(), new Color(0.0F,0.0F,0.0F).toInt());
-//				}
-//				
-//				//Render actual item
-//				GL11.glPushMatrix();
-//				item.render(5, currentHeight, (int) (lw.getWidth() - 15), item.getHeight());
-//				GL11.glPopMatrix();
-//			}
-//			
-//			currentHeight += item.getHeight();
-//		}
-//		GL11.glDisable(GL11.GL_SCISSOR_TEST);
-//		GL11.glTranslatef(0, scrollTop - 5, 0);
-//		GL11.glDisable(2896 /*GL_LIGHTING*/);
-//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//		
-//		RenderUtil.drawGradientRectangle(0, 0, (int)lw.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
-//		RenderUtil.drawGradientRectangle(0, (int)lw.getHeight() - 5, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
-//		
-//		Minecraft mc = SpoutClient.getHandle();
-//		int texture = mc.renderEngine.getTexture("/gui/allitems.png");
-//		mc.renderEngine.bindTexture(texture);
-//		double scrollY = 0;
-//		double p = (double)scrollTop / (double)lw.getMaxScrollPosition();
-//		scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
-//		RenderUtil.drawTexturedModalRectangle((int) (lw.getWidth() - 14), (int) scrollY, 0, 208, 16, 16, 0f);
-//	}
+	//	public void render(GenericListWidget lw) {
+	//		int scrollTop = lw.getScrollPosition();
+	//		int scrollBottom = (int) (scrollTop + lw.getHeight() - 5);
+	//		GL11.glTranslated(lw.getScreenX(), lw.getScreenY(), 0);
+	//		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+	//		scissorWidget(lw);
+	//		int currentHeight = 0;
+	//		RenderUtil.drawRectangle(0, 0, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
+	//		GL11.glTranslated(0, -scrollTop + 5, 0);
+	//		for(ListWidgetItem item:lw.getItems()) {
+	//			
+	//			//Only render visible items
+	//			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
+	//				
+	//				//Draw selection border
+	//				if(lw.isSelected(item)) {
+	//					RenderUtil.drawRectangle(4, currentHeight-1, (int) (lw.getWidth() - 13), currentHeight-1+item.getHeight()+2, new Color(1.0F,1.0F,1.0F).toInt());
+	//					RenderUtil.drawRectangle(5, currentHeight, (int) (lw.getWidth() - 14), currentHeight+item.getHeight(), new Color(0.0F,0.0F,0.0F).toInt());
+	//				}
+	//				
+	//				//Render actual item
+	//				GL11.glPushMatrix();
+	//				item.render(5, currentHeight, (int) (lw.getWidth() - 15), item.getHeight());
+	//				GL11.glPopMatrix();
+	//			}
+	//			
+	//			currentHeight += item.getHeight();
+	//		}
+	//		GL11.glDisable(GL11.GL_SCISSOR_TEST);
+	//		GL11.glTranslatef(0, scrollTop - 5, 0);
+	//		GL11.glDisable(2896 /*GL_LIGHTING*/);
+	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	//		
+	//		RenderUtil.drawGradientRectangle(0, 0, (int)lw.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
+	//		RenderUtil.drawGradientRectangle(0, (int)lw.getHeight() - 5, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
+	//		
+	//		Minecraft mc = SpoutClient.getHandle();
+	//		int texture = mc.renderEngine.getTexture("/gui/allitems.png");
+	//		mc.renderEngine.bindTexture(texture);
+	//		double scrollY = 0;
+	//		double p = (double)scrollTop / (double)lw.getMaxScrollPosition();
+	//		scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
+	//		RenderUtil.drawTexturedModalRectangle((int) (lw.getWidth() - 14), (int) scrollY, 0, 208, 16, 16, 0f);
+	//	}
 }

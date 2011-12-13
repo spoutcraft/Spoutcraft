@@ -177,7 +177,7 @@ public class GuiMultiplayer extends GuiScreen {
 	public void elementInfo(int id) {
 		synchronized(serverInfo) {
 			ServerSlot info = (ServerSlot)this.serverInfo.serverList.get(id);
-			this.mc.displayGuiScreen(new GuiServerInfo(info, this));
+			//this.mc.displayGuiScreen(new GuiServerInfo(info, this));
 		}
 	}
 

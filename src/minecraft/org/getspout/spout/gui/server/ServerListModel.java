@@ -95,6 +95,7 @@ public class ServerListModel extends AbstractAPIModel {
 			try{
 				HashMap<String, Object> hash = (HashMap<String, Object>) item;
 				String name = URLDecoder.decode((String) hash.get("name"), "UTF-8");
+				name = name.replaceAll("\\&amp\\;", "&");
 				int uid = Integer.valueOf((String)hash.get("uniqueid"));
 				int port = Integer.valueOf((String)hash.get("port"));
 				String adress = (String) hash.get("ip");

@@ -108,6 +108,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
 					int after = Integer.valueOf((String) hash.get("after"));
 					moreItems = after > 0;
+					
 					refreshList(clear);
 					
 				} catch (IOException e1) {

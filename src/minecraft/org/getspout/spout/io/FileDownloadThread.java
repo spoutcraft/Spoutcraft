@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.getspout.spout.client.SpoutClient;
+
 public class FileDownloadThread extends Thread{
 	private static FileDownloadThread instance = null;
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
@@ -33,11 +35,11 @@ public class FileDownloadThread extends Thread{
 	private final byte[] buffer = new byte[1024*1024];
 	private volatile String activeDownload = null;
 	public static AtomicLong preCacheCompleted = new AtomicLong(0L);
-	
+
 	protected FileDownloadThread() {
 		super("File Download Thread");
 	}
-	
+
 	public static FileDownloadThread getInstance() {
 		if (instance == null) {
 			instance = new FileDownloadThread();
@@ -45,7 +47,7 @@ public class FileDownloadThread extends Thread{
 		}
 		return instance;
 	}
-	
+
 	public void addToDownloadQueue(Download download){
 		downloads.add(download);
 	}
@@ -60,33 +62,41 @@ public class FileDownloadThread extends Thread{
 		}
 		return false;
 	}
-	
+
 	public void onTick() {
 		if (!actions.isEmpty()) {
 			Iterator<Runnable> i = actions.iterator();
 			while(i.hasNext()) {
 				Runnable action = i.next();
-				action.run();
+				boolean oldLock = SpoutClient.enableSandbox();
+				try {
+					action.run();
+				} catch(Exception e) {
+					System.out.println("Could not run Runnable for download finish:");
+					e.printStackTrace();
+				} finally {
+					SpoutClient.enableSandbox(oldLock);
+				}
 				i.remove();
 			}
 		}
 	}
-	
+
 	public void abort() {
 		this.interrupt();
 		downloads.clear();
 		actions.clear();
 		failedUrls.clear();
 	}
-	
+
 	public String getActiveDownload() {
 		return activeDownload;
 	}
-	
+
 	public int getDownloadsRemaining() {
 		return downloads.size();
 	}
-	
+
 	public void run() {
 		while(true) {
 			Download next = downloads.poll();
@@ -100,17 +110,17 @@ public class FileDownloadThread extends Thread{
 						conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 						conn.setReadTimeout(2000); //2s timeout
 						InputStream in = conn.getInputStream();
-						
+
 						FileOutputStream fos = new FileOutputStream(next.getTempFile());
 						BufferedOutputStream bos = new BufferedOutputStream(fos);
-						
+
 						long length = conn.getContentLength();
 						int bytes;
 						long totalBytes = 0;
 						long last = 0;
-						
+
 						long step = Math.max(1024*1024, length / 8);
-						
+
 						while ((bytes = in.read(buffer)) >= 0) {
 							bos.write(buffer, 0, bytes);
 							totalBytes += bytes;
@@ -123,7 +133,7 @@ public class FileDownloadThread extends Thread{
 							try {
 								Thread.sleep(25);
 							} catch (InterruptedException e) {
-								
+
 							}
 						}
 						in.close();

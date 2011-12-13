@@ -192,6 +192,10 @@ public class PollResult {
 				if(numPolling == 0) {
 					favorites.setPolling(false);
 				}
+				if(SpoutClient.getHandle().currentScreen instanceof GuiServerInfo) {
+					GuiServerInfo screen = (GuiServerInfo) SpoutClient.getHandle().currentScreen;
+					screen.updateData();
+				}
 				sendDCData();
 				try {
 					sock.close();
