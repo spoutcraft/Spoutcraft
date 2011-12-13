@@ -139,6 +139,13 @@ public class VideoSettings extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
 		
+		top += 22;
+		
+		control = new FancyLightingButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		graphicCheckboxes.add((CheckBox) control);
+		
 		((FancyGraphicsButton)screen.getWidget(fancyGraphics)).setLinkedButtons(graphicCheckboxes);
 		
 		top += 22;

@@ -2,6 +2,7 @@ package org.getspout.spout.config;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import net.minecraft.client.Minecraft;
 
@@ -29,6 +30,7 @@ public class ConfigReader {
 	public static boolean fancyWater = false;
 	public static boolean fancyWeather = false;
 	public static boolean farView = false;
+	public static boolean fancyLight = false;
 	public static int fastDebug = 0;
 	public static int guiScale = 0;
 	public static int performance = 0;
@@ -45,8 +47,8 @@ public class ConfigReader {
 	public static boolean weather = true;
 	public static boolean delayedTooltips = false;
 	public static float mipmapsPercent = 0F;
-	
-	public static Object[] settings = null;
+
+	public transient static Object[] settings = null;
 	
 	public static void read() {
 		System.out.println("Reading Configuration");
@@ -62,17 +64,20 @@ public class ConfigReader {
 			
 			for (int i = 0; i < fields.length; i++) {
 				Field f = fields[i];
-				Object value = f.get(null);
-				
-				ConfigReader.settings[i] = value;
-				if (value instanceof Boolean) {
-					f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean)value));
-				}
-				else if (value instanceof Integer) {
-					f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer)value));
-				}
-				else if (value instanceof Float) {
-					f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float)value));
+				if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
+					
+					Object value = f.get(null);
+					
+					ConfigReader.settings[i] = value;
+					if (value instanceof Boolean) {
+						f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean)value));
+					}
+					else if (value instanceof Integer) {
+						f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer)value));
+					}
+					else if (value instanceof Float) {
+						f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float)value));
+					}
 				}
 			}
 		}
@@ -106,12 +111,14 @@ public class ConfigReader {
 
 			Field[] fields = ConfigReader.class.getDeclaredFields();
 			for (Field f : fields) {
-				Object value = f.get(null);
-				if (settings.checkProperty(f.getName())) {
-					settings.changeProperty(f.getName(), value);
-				}
-				else {
-					settings.put(f.getName(), value);
+				if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
+					Object value = f.get(null);
+					if (settings.checkProperty(f.getName())) {
+						settings.changeProperty(f.getName(), value);
+					}
+					else {
+						settings.put(f.getName(), value);
+					}
 				}
 			}
 		}
