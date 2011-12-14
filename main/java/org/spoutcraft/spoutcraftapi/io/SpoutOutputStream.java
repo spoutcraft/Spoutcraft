@@ -65,6 +65,11 @@ public class SpoutOutputStream extends OutputStream{
 		this.writeShort((short) material.getRawData());
 	}
 	
+	public void writeUUID(UUID uuid) {
+		this.writeLong(uuid.getLeastSignificantBits());
+		this.writeLong(uuid.getMostSignificantBits());
+	}
+	
 	@Override
 	public void write(byte[] b) {
 		while(buffer.remaining() < b.length){
