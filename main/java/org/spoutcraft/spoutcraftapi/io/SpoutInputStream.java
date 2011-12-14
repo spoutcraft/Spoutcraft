@@ -18,6 +18,7 @@ package org.spoutcraft.spoutcraftapi.io;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.Block;
@@ -75,6 +76,12 @@ public class SpoutInputStream extends InputStream{
 		int id = readInt();
 		short dura = readShort();
 		return MaterialData.getMaterial(id, dura);
+	}
+	
+	public UUID readUUID() {
+		long lsb = readLong();
+		long msb = readLong();
+		return new UUID(msb, lsb);
 	}
 	
 	@Override
