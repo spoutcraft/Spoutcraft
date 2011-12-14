@@ -18,6 +18,7 @@ package org.spoutcraft.spoutcraftapi.io;
 
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
