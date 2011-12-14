@@ -31,6 +31,7 @@ public class ConfigReader {
 	public static boolean fancyWeather = false;
 	public static boolean farView = false;
 	public static boolean fancyLight = false;
+	public static boolean fancyParticles = false;
 	public static int fastDebug = 0;
 	public static int guiScale = 0;
 	public static int performance = 0;

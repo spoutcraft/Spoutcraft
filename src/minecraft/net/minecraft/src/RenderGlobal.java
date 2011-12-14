@@ -1705,6 +1705,10 @@ public class RenderGlobal implements IWorldAccess {
 				return (EntityFX) var21;
 			} else {
 				double var22 = 16.0D;
+				//Spout start
+				if (!org.getspout.spout.config.ConfigReader.fancyParticles) {
+					var22 = 6D;
+				}
 				if (var15 * var15 + var17 * var17 + var19 * var19 > var22 * var22) {
 					return null;
 				} else if (var14 > 1) {
