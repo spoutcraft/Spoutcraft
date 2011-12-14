@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.*;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -22,10 +23,14 @@ public class GenericBlockDesign implements BlockDesign {
 	protected float lowXBound;
 	protected float lowYBound;
 	protected float lowZBound;
+	
 	protected float highXBound;
 	protected float highYBound;
 	protected float highZBound;
-
+	
+	//protected Vector3f center = new Vector3f(0,0,0);
+	
+	
 	protected String textureURL;
 	protected String textureAddon;
 	
@@ -56,9 +61,11 @@ public class GenericBlockDesign implements BlockDesign {
 		this.lowXBound = lowXBound;
 		this.lowYBound = lowYBound;
 		this.lowZBound = lowZBound;
+		
 		this.highXBound = highXBound;
 		this.highYBound = highYBound;
 		this.highZBound = highZBound;
+		
 		this.textureURL = textureURL;
 		this.textureAddon = textureAddon.getDescription().getName();
 		this.xPos = xPos;
@@ -182,6 +189,9 @@ public class GenericBlockDesign implements BlockDesign {
 		lightSourceXOffset = PacketUtil.readIntArray(input);
 		lightSourceYOffset = PacketUtil.readIntArray(input);
 		lightSourceZOffset = PacketUtil.readIntArray(input);
+		
+		
+	
 	}
 
 	private final static String resetString = "[reset]";
@@ -396,11 +406,16 @@ public class GenericBlockDesign implements BlockDesign {
 		}
 		
 		boolean result = false;
+	
+		
 		
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glTranslatef(x, y, depth);
+		
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(scale, scale, scale);
+		
+	
 		
 		Spoutcraft.getTessellator().startDrawingQuads();
 		Spoutcraft.getTessellator().setNormal(0.0F, -1.0F, 0.0F);
@@ -418,45 +433,28 @@ public class GenericBlockDesign implements BlockDesign {
 			
 			GL11.glPopMatrix();
 		}
-
+		
 		Spoutcraft.getTessellator().draw();
+		
 		return result;
 	}
 
 	public boolean renderItemOnHUD(float x, float y, float depth) {
-		/*
-		 * Block var16 = Block.blocksList[var3];
-			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
-			GL11.glScalef(10.0F, 10.0F, 10.0F);
-			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
-			GL11.glScalef(1.0F, 1.0F, -1.0F);
-			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
-			var11 = (float)(var17 >> 16 & 255) / 255.0F;
-			var12 = (float)(var17 >> 8 & 255) / 255.0F;
-			float var13 = (float)(var17 & 255) / 255.0F;
-			if (this.field_27004_a) {
-				GL11.glColor4f(var11, var12, var13, 1.0F);
-			}
-
-			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			this.renderBlocks.renderBlockOnInventory(var16, var4, 1.0F);
-			this.renderBlocks.useInventoryTint = true;
-			GL11.glPopMatrix();
-		 */
+		
 		GL11.glPushMatrix();
+		Spoutcraft.getTessellator().startDrawingQuads();		
+			
 		GL11.glTranslatef(x, y, depth);
-		GL11.glScalef(10.0F, 10.0F, 10.0F);
-		GL11.glTranslatef(1.0F, 0.5F, 1.0F);
+		GL11.glScalef(10.0F, 10.0F, 10.0F);		
+		GL11.glTranslatef(1.0F, 0.5F, 1.0F);		
 		GL11.glScalef(1.0F, 1.0F, -1.0F);
 		GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);		
-		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);		
 		boolean result = renderBlock(null, 0, 0, 0);
+		Spoutcraft.getTessellator().draw();
 		GL11.glPopMatrix();
+		
 		return result;
 	}
 }
