@@ -30,6 +30,8 @@ public class GenericTexture extends GenericWidget implements Texture {
 	protected boolean drawAlpha = false;
 	protected int top;
 	protected int left;
+	protected Runnable finishDelegate = null;
+	protected int originalWidth = -1, originalHeight = -1;
 
 	public GenericTexture() {
 
@@ -124,5 +126,32 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	public int getLeft() {
 		return left;
+	}
+	
+	public Runnable getFinishDelegate() {
+		return finishDelegate;
+	}
+	
+	public GenericTexture setFinishDelegate(Runnable finishDelegate) {
+		this.finishDelegate = finishDelegate;
+		return this;
+	}
+
+	public int getOriginalWidth() {
+		return originalWidth;
+	}
+
+	public GenericTexture setOriginalWidth(int originalWidth) {
+		this.originalWidth = originalWidth;
+		return this;
+	}
+
+	public int getOriginalHeight() {
+		return originalHeight;
+	}
+
+	public GenericTexture setOriginalHeight(int originalHeight) {
+		this.originalHeight = originalHeight;
+		return this;
 	}
 }

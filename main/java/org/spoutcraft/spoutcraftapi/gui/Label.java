@@ -52,6 +52,7 @@ public interface Label extends Widget {
 
 	/**
 	 * Determines if text expands to fill width and height
+	 * If word wrapping and auto is enabled, the height of the label will reflect the heigth of all lines.
 	 * 
 	 * @param auto
 	 * @return label

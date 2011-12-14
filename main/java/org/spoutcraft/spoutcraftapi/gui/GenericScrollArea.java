@@ -65,7 +65,7 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		return this;
 	}
 
-	private void updateInnerSize() {
+	public void updateInnerSize() {
 		int height = 0;
 		int width = 0;
 		for(Widget w:widgets.keySet()) {

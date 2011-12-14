@@ -183,4 +183,12 @@ public interface Entity extends PropertyInterface {
 	 * @param value Age of entity
 	 */
 	public void setTicksLived(int value);
+	
+	/**
+	 * Sets the skin of this entity to the skin URI
+	 * 
+	 * @param skinURI
+	 * @param type
+	 */
+	public void setSkin(String skinURI, EntitySkinType type);
 }

@@ -24,7 +24,7 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public class GenericPopup extends GenericScreen implements PopupScreen {
-	protected boolean transparent = false;
+	protected boolean transparent = false, pause = true;
 	protected double mouseX, mouseY;
 
 	public GenericPopup() {
@@ -76,6 +76,14 @@ public class GenericPopup extends GenericScreen implements PopupScreen {
 
 	public ScreenType getScreenType() {
 		return ScreenType.CUSTOM_SCREEN;
+	}
+
+	public boolean isPausingGame() {
+		return pause;
+	}
+
+	public void setPauseGame(boolean v) {
+		pause = v;
 	}
 
 }

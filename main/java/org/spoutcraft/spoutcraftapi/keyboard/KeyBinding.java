@@ -15,7 +15,7 @@ public final class KeyBinding implements Serializable {
 	private String description;
 	private transient UUID uuid = null;
 	private String addonName;
-	private BindingExecutionDelegate myDelegate = null;
+	private transient BindingExecutionDelegate myDelegate = null;
 	
 	public KeyBinding() {
 	}
@@ -31,6 +31,7 @@ public final class KeyBinding implements Serializable {
 	public KeyBinding(int key, Addon addon, String id, String description) {
 		this.key = key;
 		this.addon = addon;
+		this.addonName = addon.getDescription().getName();
 		this.description = description;
 		this.id = id;
 	}

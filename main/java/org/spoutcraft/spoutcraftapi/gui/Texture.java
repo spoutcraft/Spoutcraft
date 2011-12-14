@@ -78,4 +78,28 @@ public interface Texture extends Widget {
 	 * @return left offset
 	 */
 	public int getLeft();
+	
+	/**
+	 * @see setFinishDelegate
+	 * @return the finishdelegate
+	 */
+	public Runnable getFinishDelegate();
+	
+	/**
+	 * Given deleages run()-method will be called when the download of the image has been completed. 
+	 * The internal delegate-variable will be set to null after that.
+	 * @param finishDelegate
+	 * @return instance of the texture
+	 */
+	public Texture setFinishDelegate(Runnable finishDelegate);
+	
+	/**
+	 * @return the actual width of the image
+	 */
+	public int getOriginalWidth();
+	
+	/**
+	 * @return the actual height of the image
+	 */
+	public int getOriginalHeight();
 }
