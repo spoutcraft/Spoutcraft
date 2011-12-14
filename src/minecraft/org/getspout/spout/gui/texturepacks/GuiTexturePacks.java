@@ -33,7 +33,7 @@ public class GuiTexturePacks extends GuiScreen {
 		screenTitle = new GenericLabel("Texture Packs");
 		view = new GenericListView(model);
 		buttonDone = new GenericButton("Main Menu");
-		buttonDone.setTooltip("Go back to notch's flashy Main Menu!");
+		buttonDone.setTooltip("Go back to Spoutcraft's flashy Main Menu!");
 		buttonOpenFolder = new GenericButton("Open Folder");
 		buttonOpenFolder.setTooltip("Place your Texture Packs here");
 		buttonSelect = new GenericButton("Select");
