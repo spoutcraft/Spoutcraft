@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.*;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -27,8 +26,6 @@ public class GenericBlockDesign implements BlockDesign {
 	protected float highXBound;
 	protected float highYBound;
 	protected float highZBound;
-	
-	//protected Vector3f center = new Vector3f(0,0,0);
 	
 	
 	protected String textureURL;
