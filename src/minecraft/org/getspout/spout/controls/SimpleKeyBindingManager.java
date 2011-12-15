@@ -197,7 +197,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if(binding!=null){
 			if(binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
-			} else { //Client side
+			} else if(binding.getDelegate() != null){ //Client side
 				if(!keyReleased) {
 					binding.getDelegate().onKeyPress(key, binding);
 				} else {
