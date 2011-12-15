@@ -971,8 +971,8 @@ public class EntityRenderer {
 
 				if (var16 > 0) {
 					//Spout start
-					//var5.renderAllRenderLists(1, (double) var1);
-					var5.renderAllSortedRenderers(1, (double) var1);
+					var5.renderAllRenderLists(1, (double) var1);
+					//var5.renderAllSortedRenderers(1, (double) var1);
 					//Spout end
 				}
 
