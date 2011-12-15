@@ -63,6 +63,8 @@ import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldRenderer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 //Spout Start
@@ -113,8 +115,13 @@ public class RenderGlobal implements IWorldAccess {
 	private int renderersSkippingRenderPass;
 	private int dummyRenderInt;
 	private int worldRenderersCheckIndex;
+//Spout start
+/* removed
 	private List glRenderLists = new ArrayList();
 	private RenderList[] allRenderLists = new RenderList[] { new RenderList(), new RenderList(), new RenderList(), new RenderList() };
+*/
+	private IntBuffer glListBuffer = BufferUtils.createIntBuffer(65536);
+//Spout end
 	double prevSortX = -9999.0D;
 	double prevSortY = -9999.0D;
 	double prevSortZ = -9999.0D;
@@ -265,8 +272,9 @@ public class RenderGlobal implements IWorldAccess {
 		this.worldObj = newWorld;
 		tileEntities.clear();
 		worldRenderersToUpdate.clear();
-		allRenderLists = new RenderList[] { new RenderList(), new RenderList(), new RenderList(), new RenderList() };
-		glRenderLists.clear();
+		glListBuffer.clear();
+		//allRenderLists = new RenderList[] { new RenderList(), new RenderList(), new RenderList(), new RenderList() };
+		//glRenderLists.clear();
 		if (newWorld != null) {
 			this.globalRenderBlocks = new RenderBlocks(newWorld);
 			newWorld.addWorldAccess(this);
@@ -345,13 +353,7 @@ public class RenderGlobal implements IWorldAccess {
 					for (int var6 = 0; var6 < this.renderChunksDeep; ++var6) {
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4] = new WorldRenderer(this.worldObj, this.tileEntities, var4 * 16, var5 * 16, var6 * 16, 16, this.glRenderListBase + var2);
 						if (this.occlusionEnabled) {
-							try {
-								this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
-							}
-							catch (Throwable t) {
-								System.out.println("Accessing " + var3 + ", Size: " + glOcclusionQueryBase.capacity() + " " + glOcclusionQueryBase.limit());
-								throw new RuntimeException(t);
-							}
+							this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].glOcclusionQuery = this.glOcclusionQueryBase.get(var3);
 						}
 
 						this.worldRenderers[(var6 * this.renderChunksTall + var5) * this.renderChunksWide + var4].isWaitingOnOcclusionQuery = false;
@@ -699,7 +701,12 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	private int renderSortedRenderers(int var1, int var2, int var3, double var4) {
+		//Spout start
+		/* removed
 		this.glRenderLists.clear();
+		*/
+		this.glListBuffer.clear();
+		//Spout end
 		int var6 = 0;
 
 		for (int var7 = var1; var7 < var2; ++var7) {
@@ -719,12 +726,16 @@ public class RenderGlobal implements IWorldAccess {
 			if (!this.sortedWorldRenderers[var7].skipRenderPass[var3] && this.sortedWorldRenderers[var7].isInFrustum && (!this.occlusionEnabled || this.sortedWorldRenderers[var7].isVisible)) {
 				int var8 = this.sortedWorldRenderers[var7].getGLCallListForPass(var3);
 				if (var8 >= 0) {
-					this.glRenderLists.add(this.sortedWorldRenderers[var7]);
+					//Spout start
+					//this.glRenderLists.add(this.sortedWorldRenderers[var7]);
+					this.glListBuffer.put(var8);
+					//Spout end
 					++var6;
 				}
 			}
 		}
-
+//Spout start
+/* removed
 		EntityLiving var19 = this.mc.renderViewEntity;
 		double var20 = var19.lastTickPosX + (var19.posX - var19.lastTickPosX) * var4;
 		double var10 = var19.lastTickPosY + (var19.posY - var19.lastTickPosY) * var4;
@@ -755,9 +766,23 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 		this.renderAllRenderLists(var3, var4);
+*/
+		this.glListBuffer.flip();
+		EntityLiving var14 = this.mc.renderViewEntity;
+		double var15 = var14.lastTickPosX + (var14.posX - var14.lastTickPosX) * var4;
+		double var10 = var14.lastTickPosY + (var14.posY - var14.lastTickPosY) * var4;
+		double var12 = var14.lastTickPosZ + (var14.posZ - var14.lastTickPosZ) * var4;
+		this.mc.entityRenderer.enableLightmap(var4);
+		GL11.glTranslatef((float)(-var15), (float)(-var10), (float)(-var12));
+		GL11.glCallLists(this.glListBuffer);
+		GL11.glTranslatef((float)var15, (float)var10, (float)var12);
+		this.mc.entityRenderer.disableLightmap(var4);
+//Spout end
 		return var6;
 	}
 
+	//Spout start
+	/* Removed
 	public void renderAllRenderLists(int var1, double var2) {
 		this.mc.entityRenderer.enableLightmap(var2);
 
@@ -767,6 +792,8 @@ public class RenderGlobal implements IWorldAccess {
 
 		this.mc.entityRenderer.disableLightmap(var2);
 	}
+	*/
+	//Spout end
 
 	public void updateClouds() {
 		++this.cloudOffsetX;
@@ -1971,6 +1998,9 @@ public class RenderGlobal implements IWorldAccess {
 	}
 	
 	//Spout start
+	public int renderAllSortedRenderers(int var1, double var2) {
+		return this.renderSortedRenderers(0, this.sortedWorldRenderers.length, var1, var2);
+	}
 	public void updateAllRenderers() {
 		if(this.worldRenderers != null) {
 			for(int var1 = 0; var1 < this.worldRenderers.length; ++var1) {

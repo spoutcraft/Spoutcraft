@@ -2755,16 +2755,24 @@ public class RenderBlocks {
 	public boolean renderStandardBlockWithAmbientOcclusion(Block var1, int var2, int var3, int var4, float var5, float var6, float var7) {
 		this.enableAO = true;
 		boolean var8 = false;
+		//Spout start
+		this.dirtyAmbientOcclusionCache = true;
+		/* removed
 		float var9 = this.lightValueOwn;
 		float var10 = this.lightValueOwn;
 		float var11 = this.lightValueOwn;
 		float var12 = this.lightValueOwn;
+		*/
+		float var9, var10, var11, var12;
+		//Spout end
 		boolean var13 = true;
 		boolean var14 = true;
 		boolean var15 = true;
 		boolean var16 = true;
 		boolean var17 = true;
 		boolean var18 = true;
+		//Spout start
+		/* removed
 		this.lightValueOwn = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3, var4);
 		this.aoLightValueXNeg = var1.getAmbientOcclusionLightValue(this.blockAccess, var2 - 1, var3, var4);
 		this.aoLightValueYNeg = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3 - 1, var4);
@@ -2772,13 +2780,18 @@ public class RenderBlocks {
 		this.aoLightValueXPos = var1.getAmbientOcclusionLightValue(this.blockAccess, var2 + 1, var3, var4);
 		this.aoLightValueYPos = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3 + 1, var4);
 		this.aoLightValueZPos = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3, var4 + 1);
+		*/
+		//Spout end
 		int var19 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4);
+		//Spout start
+		
 		int var20 = var19;
 		int var21 = var19;
 		int var22 = var19;
 		int var23 = var19;
 		int var24 = var19;
 		int var25 = var19;
+		/* removed
 		if (var1.minY <= 0.0D) {
 			var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3 - 1, var4);
 		}
@@ -2801,7 +2814,8 @@ public class RenderBlocks {
 
 		if (var1.maxZ >= 1.0D) {
 			var25 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 + 1);
-		}
+		}*/
+		//Spout end
 
 		Tessellator var26 = Tessellator.instance;
 		var26.setBrightness(983055);
@@ -2868,6 +2882,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 - 1, var4, 0)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.minY <= 0.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3 - 1, var4);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.minY <= 0.0D) {
 					--var3;
@@ -2966,6 +2988,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3 + 1, var4, 1)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.maxY >= 1.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3 + 1, var4);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.maxY >= 1.0D) {
 					++var3;
@@ -3064,6 +3094,14 @@ public class RenderBlocks {
 
 		int var27;
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 - 1, 2)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.minZ <= 0.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 - 1);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.minZ <= 0.0D) {
 					--var4;
@@ -3204,6 +3242,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2, var3, var4 + 1, 3)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.maxZ >= 1.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 + 1);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.maxZ >= 1.0D) {
 					++var4;
@@ -3344,6 +3390,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 - 1, var3, var4, 4)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.minX <= 0.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 - 1, var3, var4);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.minX <= 0.0D) {
 					--var2;
@@ -3484,6 +3538,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || var1.shouldSideBeRendered(this.blockAccess, var2 + 1, var3, var4, 5)) {
+			//Spout start
+			if(this.dirtyAmbientOcclusionCache) {
+				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
+			}
+			if (var1.maxX >= 1.0D) {
+				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 + 1, var3, var4);
+			}
+			//Spout end
 			if (this.aoType > 0) {
 				if (var1.maxX >= 1.0D) {
 					++var2;
@@ -5164,6 +5226,29 @@ public class RenderBlocks {
 			return lightValue;
 		}
 		return lightValue + (lightPosition - lightValue) * (1.0F - org.getspout.spout.config.ConfigReader.brightnessSlider);
+	}
+	
+	private boolean dirtyAmbientOcclusionCache = true;
+	private void calculateAmbientOcclusionLightValues(Block block, int x, int y, int z) {
+		this.aoLightValueXNeg = block.getAmbientOcclusionLightValue(this.blockAccess, x - 1, y, z);
+		this.aoLightValueYNeg = block.getAmbientOcclusionLightValue(this.blockAccess, x, y - 1, z);
+		this.aoLightValueZNeg = block.getAmbientOcclusionLightValue(this.blockAccess, x, y, z - 1);
+		this.aoLightValueXPos = block.getAmbientOcclusionLightValue(this.blockAccess, x + 1, y, z);
+		this.aoLightValueYPos = block.getAmbientOcclusionLightValue(this.blockAccess, x, y + 1, z);
+		this.aoLightValueZPos = block.getAmbientOcclusionLightValue(this.blockAccess, x, y, z + 1);
+		this.aoGrassXYZPPC = Block.canBlockGrass[this.blockAccess.getBlockId(x + 1, y + 1, z)];
+		this.aoGrassXYZPNC = Block.canBlockGrass[this.blockAccess.getBlockId(x + 1, y - 1, z)];
+		this.aoGrassXYZPCP = Block.canBlockGrass[this.blockAccess.getBlockId(x + 1, y, z + 1)];
+		this.aoGrassXYZPCN = Block.canBlockGrass[this.blockAccess.getBlockId(x + 1, y, z - 1)];
+		this.aoGrassXYZNPC = Block.canBlockGrass[this.blockAccess.getBlockId(x - 1, y + 1, z)];
+		this.aoGrassXYZNNC = Block.canBlockGrass[this.blockAccess.getBlockId(x - 1, y - 1, z)];
+		this.aoGrassXYZNCN = Block.canBlockGrass[this.blockAccess.getBlockId(x - 1, y, z - 1)];
+		this.aoGrassXYZNCP = Block.canBlockGrass[this.blockAccess.getBlockId(x - 1, y, z + 1)];
+		this.aoGrassXYZCPP = Block.canBlockGrass[this.blockAccess.getBlockId(x, y + 1, z + 1)];
+		this.aoGrassXYZCPN = Block.canBlockGrass[this.blockAccess.getBlockId(x, y + 1, z - 1)];
+		this.aoGrassXYZCNP = Block.canBlockGrass[this.blockAccess.getBlockId(x, y - 1, z + 1)];
+		this.aoGrassXYZCNN = Block.canBlockGrass[this.blockAccess.getBlockId(x, y - 1, z - 1)];
+		this.dirtyAmbientOcclusionCache = false;
 	}
 	//Spout end
 }

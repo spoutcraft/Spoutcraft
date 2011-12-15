@@ -970,7 +970,10 @@ public class EntityRenderer {
 				}
 
 				if (var16 > 0) {
-					var5.renderAllRenderLists(1, (double) var1);
+					//Spout start
+					//var5.renderAllRenderLists(1, (double) var1);
+					var5.renderAllSortedRenderers(1, (double) var1);
+					//Spout end
 				}
 
 				GL11.glShadeModel(7424 /* GL_FLAT */);
