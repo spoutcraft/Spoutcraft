@@ -192,13 +192,13 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 	}
 
-	public void pressKey(int key, boolean keyReleased, int screen) {
+	public void pressKey(int key, boolean keyPressed, int screen) {
 		KeyBinding binding = bindingsForKey.get(key);
 		if(binding!=null){
 			if(binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyReleased, screen));
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyPressed, screen));
 			} else if(binding.getDelegate() != null){ //Client side
-				if(!keyReleased) {
+				if(keyPressed) {
 					binding.getDelegate().onKeyPress(key, binding);
 				} else {
 					binding.getDelegate().onKeyRelease(key, binding);
@@ -208,7 +208,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if(screen == 0) {
 			if(!isModifierKey(key)) {
 				Shortcut shortcut = shortcutsForKey.get(getPressedShortcut(key).hashCode());
-				if(shortcut != null && !keyReleased) {
+				if(shortcut != null && !keyPressed) {
 					//TODO: send to addons!
 					for(String cmd:shortcut.getCommands()) {
 						if(SpoutClient.getHandle().isMultiplayerWorld()) {

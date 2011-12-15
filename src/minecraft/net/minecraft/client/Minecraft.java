@@ -1271,7 +1271,7 @@ public abstract class Minecraft implements Runnable {
 
 			while (Keyboard.next()) {
 				//Spout Start
-				((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), !Keyboard.getEventKeyState(), ScreenUtil.getType(currentScreen).getCode());
+				((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), Keyboard.getEventKeyState(), ScreenUtil.getType(currentScreen).getCode());
 				//Spout End
 				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); //Spout handle key presses
 				KeyBinding.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
