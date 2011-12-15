@@ -589,8 +589,7 @@ public class RenderGlobal implements IWorldAccess {
 			Profiler.endStartSection("render");
 			var34 = var17 + this.renderSortedRenderers(var18, var19, var2, var3);
 
-			//do {
-			{
+			do {
 				Profiler.endStartSection("occ");
 				int var35 = var19;
 				var19 *= 2;
@@ -665,8 +664,8 @@ public class RenderGlobal implements IWorldAccess {
 				GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 				GL11.glEnable(2912 /* GL_FOG */);
 				Profiler.endStartSection("render");
-				//var34 += this.renderSortedRenderers(var35, var19, var2, var3);
-			} //while (var19 < this.sortedWorldRenderers.length);
+				var34 += this.renderSortedRenderers(var35, var19, var2, var3);
+			} while (var19 < this.sortedWorldRenderers.length);
 		} else {
 			Profiler.endStartSection("render");
 			var34 = var17 + this.renderSortedRenderers(0, this.sortedWorldRenderers.length, var2, var3);
