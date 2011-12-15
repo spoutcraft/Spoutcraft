@@ -234,14 +234,15 @@ public class PollResult {
 				String json = "{";
 				int res = 0;
 				for(PollResult result:recentResults.valueCollection()) {
-					if(result.ping > 0 && result.databaseId != -1 && !result.sent) {
+					if(result.databaseId != -1 && !result.sent) {
+						int ping = result.ping > 0 ? result.ping : -1;
 						if(res > 0) {
 							json += ",";
 						}
 						json +="\""+res+"\":{";
 						
 						json += keyValue("uid", result.databaseId) + ",";
-						json += keyValue("ping", result.ping) + ",";
+						json += keyValue("ping", ping) + ",";
 						json += keyValue("players", result.players) + ",";
 						json += keyValue("maxplayers", result.maxPlayers);
 						json +="}";

@@ -41,10 +41,6 @@ public class GuiServerList extends GuiAPIDisplay {
 	
 	public GuiServerList() {
 		model.setCurrentGui(this);
-		
-		if(!model.getCurrentUrl().equals(model.getDefaultUrl())) {
-			model.refreshAPIData(model.getDefaultUrl(), 0, true);
-		}
 	}
 	
 	private void createInstances() {
@@ -71,6 +67,11 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonReset = new GenericButton("Reset Filters");
 		buttonAddServer = new GenericButton("Add Your Server");
 		buttonInfo = new GenericButton("More Info...");
+		
+		if(!model.getCurrentUrl().equals(model.getDefaultUrl())) {
+			model.clear();
+			model.refreshAPIData(model.getDefaultUrl(), 0, true);
+		}
 	}
 	
 	public void initGui() {

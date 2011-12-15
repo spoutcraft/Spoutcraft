@@ -29,8 +29,12 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public ServerListModel() {
 		API = "http://servers.getspout.org/api2.php";
-		refreshAPIData(getDefaultUrl(), 0, true);
+		refreshAPIData(API+"?random", 0, true);
 		loadCountries();
+	}
+	
+	public String getAPI() {
+		return API;
 	}
 
 	private void loadCountries() {

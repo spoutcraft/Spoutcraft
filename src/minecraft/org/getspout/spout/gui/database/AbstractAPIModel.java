@@ -133,8 +133,12 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		if(wasSandboxed) SpoutClient.enableSandbox();
 	}
 
-	protected void clear() {
+	public void clear() {
 		entries.clear();
+		if(effectiveCache != null) {
+			effectiveCache.clear();
+		}
+		moreItems = false;
 	}
 	
 	protected abstract void refreshList(boolean clear);
