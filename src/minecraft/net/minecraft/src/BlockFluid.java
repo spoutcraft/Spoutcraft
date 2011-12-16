@@ -29,7 +29,7 @@ public abstract class BlockFluid extends Block {
 
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
 		//Spout start - Biome water
-		if(var1.blockMaterial != Material.water) {
+		if(this.blockMaterial != Material.water) {
 			return 0xffffff;
 		}
 		if(!ConfigReader.waterBiomeColors) {
