@@ -26,7 +26,7 @@ import org.lwjgl.util.glu.GLU;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;

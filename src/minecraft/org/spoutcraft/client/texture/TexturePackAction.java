@@ -18,7 +18,7 @@ package org.spoutcraft.client.texture;
 
 import java.io.File;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.MipMapUtils;
 
 import net.minecraft.client.Minecraft;

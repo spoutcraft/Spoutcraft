@@ -29,7 +29,7 @@ import net.minecraft.src.World;
 
 //Spout Start
 //Spout End
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;

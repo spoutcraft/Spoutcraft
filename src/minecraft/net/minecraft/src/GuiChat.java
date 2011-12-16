@@ -4,7 +4,7 @@ import net.minecraft.src.ChatAllowedCharacters;
 import net.minecraft.src.GuiScreen;
 import org.lwjgl.input.Keyboard;
 //Spout Start
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.ChatBar;
 //Spout End
 

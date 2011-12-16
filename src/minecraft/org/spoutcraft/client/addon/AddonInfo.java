@@ -1,6 +1,6 @@
 package org.spoutcraft.client.addon;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 public class AddonInfo {

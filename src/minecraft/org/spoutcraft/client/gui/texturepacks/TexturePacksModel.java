@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 
 public class TexturePacksModel extends AbstractListModel {

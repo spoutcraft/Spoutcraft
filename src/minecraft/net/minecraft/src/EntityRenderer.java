@@ -42,7 +42,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 //Spout start
 import org.lwjgl.util.vector.*;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 
 //Spout end

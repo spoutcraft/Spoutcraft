@@ -10,7 +10,7 @@ import net.minecraft.src.Packet;
 //Spout Start
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 

@@ -13,7 +13,7 @@ import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet3Chat;
 
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketKeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;

@@ -16,7 +16,7 @@
  */
 package org.spoutcraft.client.packet;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;

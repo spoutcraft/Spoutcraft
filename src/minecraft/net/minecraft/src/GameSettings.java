@@ -13,7 +13,7 @@ import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 public class GameSettings {
 

@@ -19,7 +19,7 @@ import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.spoutcraft.client.ScheduledTextFieldUpdate;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.*;
 import org.spoutcraft.client.packet.*;

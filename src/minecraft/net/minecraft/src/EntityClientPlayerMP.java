@@ -21,7 +21,7 @@ import net.minecraft.src.Session;
 import net.minecraft.src.StatBase;
 import net.minecraft.src.World;
 //Spout Start
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 //Spout End

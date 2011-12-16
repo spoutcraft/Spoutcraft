@@ -30,7 +30,7 @@ import net.minecraft.src.Tessellator;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.*;
 

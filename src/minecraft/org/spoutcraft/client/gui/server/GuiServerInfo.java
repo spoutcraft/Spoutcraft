@@ -28,7 +28,7 @@ import java.util.Map;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;

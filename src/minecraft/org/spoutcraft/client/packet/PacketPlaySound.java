@@ -21,7 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import net.minecraft.src.*;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 

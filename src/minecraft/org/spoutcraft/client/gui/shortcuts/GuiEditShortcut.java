@@ -1,6 +1,6 @@
 package org.spoutcraft.client.gui.shortcuts;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.controls.GuiControls;

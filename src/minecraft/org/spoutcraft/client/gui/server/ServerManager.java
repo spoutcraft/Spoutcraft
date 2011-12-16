@@ -3,7 +3,7 @@ package org.spoutcraft.client.gui.server;
 import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 public class ServerManager {
 	private FavoritesModel favorites;

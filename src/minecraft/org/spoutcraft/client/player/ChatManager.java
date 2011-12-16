@@ -26,7 +26,7 @@ import net.minecraft.src.GuiChat;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.bukkit.ChatColor;
 import java.util.HashMap;
 import java.awt.Toolkit;

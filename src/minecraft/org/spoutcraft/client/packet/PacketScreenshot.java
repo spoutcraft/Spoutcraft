@@ -3,7 +3,7 @@ package org.spoutcraft.client.packet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ScreenShotHelper;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

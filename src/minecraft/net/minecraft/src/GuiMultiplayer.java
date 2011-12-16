@@ -15,7 +15,7 @@ import net.minecraft.src.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.server.*;
 import org.spoutcraft.client.io.CustomTextureManager;
 

@@ -21,7 +21,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.Download;

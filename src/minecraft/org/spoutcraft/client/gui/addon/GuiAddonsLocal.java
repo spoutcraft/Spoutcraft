@@ -3,7 +3,7 @@ package org.spoutcraft.client.gui.addon;
 import net.minecraft.src.GuiMainMenu;
 
 import org.lwjgl.Sys;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;

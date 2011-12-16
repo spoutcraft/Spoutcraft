@@ -2,7 +2,7 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ButtonUpdater;

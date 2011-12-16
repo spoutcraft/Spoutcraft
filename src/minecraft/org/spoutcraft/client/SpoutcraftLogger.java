@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.client.client;
+package org.spoutcraft.client;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;

@@ -5,7 +5,7 @@ import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;

@@ -18,7 +18,7 @@ package org.spoutcraft.client.player;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;

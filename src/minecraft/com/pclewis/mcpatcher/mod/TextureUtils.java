@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ColorizerFoliage;

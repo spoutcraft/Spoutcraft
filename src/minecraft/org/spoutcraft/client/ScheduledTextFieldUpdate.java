@@ -16,7 +16,6 @@
  */
 package org.spoutcraft.client;
 
-import org.spoutcraft.client.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketControlAction;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.TextField;

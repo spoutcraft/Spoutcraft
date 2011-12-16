@@ -12,7 +12,7 @@ import net.minecraft.src.WorldProviderEnd;
 import net.minecraft.src.WorldProviderHell;
 import net.minecraft.src.WorldProviderSurface;
 //Spout Start
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 //Spout End
 public abstract class WorldProvider {

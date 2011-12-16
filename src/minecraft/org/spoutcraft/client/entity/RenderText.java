@@ -17,7 +17,7 @@
 
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.RenderEntity;

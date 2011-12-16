@@ -14,7 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldClient;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
 public class PacketEntityInformation implements CompressablePacket{

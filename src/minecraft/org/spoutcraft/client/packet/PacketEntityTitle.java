@@ -23,7 +23,7 @@ import java.io.IOException;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 

@@ -3,7 +3,7 @@ package org.spoutcraft.client.gui.texturepacks;
 import java.io.File;
 
 import org.lwjgl.Sys;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;

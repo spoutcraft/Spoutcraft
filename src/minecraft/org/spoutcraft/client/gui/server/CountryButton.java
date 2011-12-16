@@ -3,7 +3,7 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 

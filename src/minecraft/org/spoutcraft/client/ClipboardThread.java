@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import net.minecraft.src.EntityClientPlayerMP;
 
-import org.spoutcraft.client.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
 
 public class ClipboardThread extends Thread {

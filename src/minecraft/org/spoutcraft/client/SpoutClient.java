@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.client.client;
+package org.spoutcraft.client;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,9 +33,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
-import org.spoutcraft.client.ClipboardThread;
-import org.spoutcraft.client.DataMiningThread;
-import org.spoutcraft.client.PacketDecompressionThread;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;

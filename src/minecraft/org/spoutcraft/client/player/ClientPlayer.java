@@ -17,7 +17,7 @@
 package org.spoutcraft.client.player;
 
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.InGameScreen;
 import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;

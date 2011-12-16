@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
 
 import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.client.SpoutClient;
 import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;

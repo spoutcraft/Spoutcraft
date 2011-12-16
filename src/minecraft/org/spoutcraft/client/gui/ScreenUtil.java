@@ -19,7 +19,7 @@ import net.minecraft.src.GuiSleepMP;
 import net.minecraft.src.GuiStats;
 import net.minecraft.src.StatFileWriter;
 
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.settings.VideoSettings;
 import org.spoutcraft.spoutcraftapi.gui.*;
 

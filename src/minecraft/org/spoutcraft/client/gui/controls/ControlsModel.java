@@ -8,7 +8,7 @@ import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.spoutcraftapi.ChatColor;

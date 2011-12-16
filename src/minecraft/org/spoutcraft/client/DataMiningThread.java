@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 
 import net.minecraft.src.World;
 
-import org.spoutcraft.client.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
 public class DataMiningThread extends Thread{
