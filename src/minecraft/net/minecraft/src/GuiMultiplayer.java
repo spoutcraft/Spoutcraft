@@ -13,11 +13,11 @@ import java.util.Collections;
 
 import net.minecraft.src.GuiButton;
 
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.gui.server.*;
-import org.getspout.spout.io.CustomTextureManager;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.gui.server.*;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiMultiplayer extends GuiScreen {
 

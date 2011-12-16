@@ -10,10 +10,9 @@ import net.minecraft.src.Packet;
 //Spout Start
 import net.minecraft.client.Minecraft;
 
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.PacketFullVersion;
-import org.getspout.spout.packet.PacketRenderDistance;
-//Spout End
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.packet.PacketFullVersion;
+import org.spoutcraft.client.packet.PacketRenderDistance;
 
 public class Packet18Animation extends Packet {
 

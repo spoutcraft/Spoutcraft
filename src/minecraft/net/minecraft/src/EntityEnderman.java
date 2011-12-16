@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftEnderman; // Spout
+import org.spoutcraft.client.entity.CraftEnderman;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;

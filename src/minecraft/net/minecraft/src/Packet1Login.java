@@ -6,8 +6,7 @@ import java.io.IOException;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
 //Spout Start
-import org.getspout.spout.DataMiningThread;
-//Spout End
+import org.spoutcraft.client.DataMiningThread;
 
 public class Packet1Login extends Packet {
 

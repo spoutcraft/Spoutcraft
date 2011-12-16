@@ -23,8 +23,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
 //Spout start
-import org.getspout.spout.block.SpoutcraftChunk;
-//Spout end
+import org.spoutcraft.client.block.SpoutcraftChunk;
 
 public class Chunk {
 

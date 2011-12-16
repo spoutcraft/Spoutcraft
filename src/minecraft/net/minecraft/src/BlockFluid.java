@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 //Spout start
-import org.getspout.spout.config.ConfigReader;
+import org.spoutcraft.client.config.ConfigReader;
 //Spout end
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.BiomeGenBase;

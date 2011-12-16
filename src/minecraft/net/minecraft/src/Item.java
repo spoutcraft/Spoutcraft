@@ -57,7 +57,7 @@ import net.minecraft.src.StringTranslate;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
-import org.getspout.spout.item.SpoutItem; //Spout Custom item block
+import org.spoutcraft.client.item.SpoutItem;
 
 public class Item {
 

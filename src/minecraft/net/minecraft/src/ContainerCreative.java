@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.getspout.spout.MCItemStackComparator;
+import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import com.google.common.collect.Lists;

@@ -16,8 +16,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 //Spout start
-import org.getspout.spout.io.CustomTextureManager;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 

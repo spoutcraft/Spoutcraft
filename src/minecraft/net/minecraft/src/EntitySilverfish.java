@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSilverfish; // Spout
+import org.spoutcraft.client.entity.CraftSilverfish;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSilverfish;
 import net.minecraft.src.DamageSource;

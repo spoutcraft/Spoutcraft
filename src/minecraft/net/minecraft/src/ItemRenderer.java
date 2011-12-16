@@ -22,8 +22,8 @@ import net.minecraft.src.RenderPlayer;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 //Spout Start
-import org.getspout.spout.io.CustomTextureManager;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 

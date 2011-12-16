@@ -18,11 +18,11 @@ import org.lwjgl.opengl.GL11;
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import org.getspout.spout.ScheduledTextFieldUpdate;
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.gui.*;
-import org.getspout.spout.packet.*;
+import org.spoutcraft.client.ScheduledTextFieldUpdate;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.*;
+import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;

@@ -20,7 +20,7 @@ public class GuiDisconnected extends GuiScreen {
 	}
 	
 	//Spout Start
-	org.getspout.spout.ReconnectManager.detectKick(var1, var2, var3);
+	org.spoutcraft.client.ReconnectManager.detectKick(var1, var2, var3);
 	//Spout End
 	}
 
@@ -47,7 +47,7 @@ public class GuiDisconnected extends GuiScreen {
 		super.drawScreen(var1, var2, var3);
 		
 		//Spout Start
-		org.getspout.spout.ReconnectManager.teleport(this.mc);
+		org.spoutcraft.client.ReconnectManager.teleport(this.mc);
 		//Spout End
 	}
 }

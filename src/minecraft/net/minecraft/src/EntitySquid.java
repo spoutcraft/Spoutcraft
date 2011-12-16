@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSquid; // Spout
+import org.spoutcraft.client.entity.CraftSquid;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityWaterMob;

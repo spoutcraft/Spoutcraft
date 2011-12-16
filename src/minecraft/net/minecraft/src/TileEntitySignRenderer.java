@@ -8,8 +8,8 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.TileEntitySpecialRenderer;
 
-import org.getspout.spout.config.ConfigReader;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 

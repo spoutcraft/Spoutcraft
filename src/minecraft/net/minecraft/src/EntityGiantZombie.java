@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftGiant; // Spout
+import org.spoutcraft.client.entity.CraftGiant;
+
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.World;
 

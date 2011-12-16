@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftPig; // Spout
+import org.spoutcraft.client.entity.CraftPig;
+
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.EntityAnimal;
 import net.minecraft.src.EntityLightningBolt;

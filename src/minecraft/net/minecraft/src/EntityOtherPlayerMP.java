@@ -7,8 +7,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.World;
 //Spout start
-import org.getspout.spout.player.SpoutPlayer;
-//Spout end
+import org.spoutcraft.client.player.SpoutPlayer;
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 

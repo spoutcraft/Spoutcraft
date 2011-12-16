@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 
-import org.getspout.spout.chunkcache.ChunkCache;
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.player.ChatManager;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.chunkcache.ChunkCache;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;

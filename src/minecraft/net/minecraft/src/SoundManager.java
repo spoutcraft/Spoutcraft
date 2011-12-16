@@ -15,8 +15,8 @@ import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 //Spout Start
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.packet.*;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 //Spout End
 

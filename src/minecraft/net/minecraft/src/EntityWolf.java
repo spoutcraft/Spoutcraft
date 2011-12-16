@@ -19,8 +19,8 @@ import net.minecraft.src.PathEntity;
 import net.minecraft.src.World;
 
 // Spout start
-import org.getspout.spout.entity.CraftPig;
-import org.getspout.spout.entity.CraftWolf;
+import org.spoutcraft.client.entity.CraftPig;
+import org.spoutcraft.client.entity.CraftWolf;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 // Spout end
 

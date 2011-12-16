@@ -6,8 +6,8 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.ThreadPollServers;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
-import org.getspout.spout.gui.server.ServerSlot;
-import org.getspout.spout.io.CustomTextureManager;
+import org.spoutcraft.client.gui.server.ServerSlot;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiSlotServer extends GuiSlot {
 	

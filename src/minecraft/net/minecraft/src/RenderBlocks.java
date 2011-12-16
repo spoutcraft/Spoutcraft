@@ -28,8 +28,8 @@ import net.minecraft.src.Tessellator;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
-import org.getspout.spout.config.ConfigReader;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class RenderBlocks {
 
@@ -2940,7 +2940,7 @@ public class RenderBlocks {
 				}
 
 				//Spout Start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueYNeg);
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueYNeg);
 					this.aoLightValueScratchYZNP = adjustAmbientOcclusion(this.aoLightValueScratchYZNP, this.aoLightValueYNeg);
@@ -3045,7 +3045,7 @@ public class RenderBlocks {
 					--var3;
 				}
 				//Spout start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueYPos);
 					this.aoLightValueScratchXYNP = adjustAmbientOcclusion(this.aoLightValueScratchXYNP, this.aoLightValueYPos);
 					this.aoLightValueScratchYZPP = adjustAmbientOcclusion(this.aoLightValueScratchYZPP, this.aoLightValueYPos);
@@ -3152,7 +3152,7 @@ public class RenderBlocks {
 				}
 				
 				//Spout start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNN = adjustAmbientOcclusion(this.aoLightValueScratchXZNN, this.aoLightValueZNeg);
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueZNeg);
 					this.aoLightValueScratchYZPN = adjustAmbientOcclusion(this.aoLightValueScratchYZPN, this.aoLightValueZNeg);
@@ -3300,7 +3300,7 @@ public class RenderBlocks {
 				}
 				
 				//Spout start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNP = adjustAmbientOcclusion(this.aoLightValueScratchXZNP, this.aoLightValueZPos);
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueZPos);
 					this.aoLightValueScratchYZPP = adjustAmbientOcclusion(this.aoLightValueScratchYZPP, this.aoLightValueZPos);
@@ -3448,7 +3448,7 @@ public class RenderBlocks {
 				}
 				
 				//Spout start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueXNeg);
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueXNeg);
 					this.aoLightValueScratchXZNP = adjustAmbientOcclusion(this.aoLightValueScratchXZNP, this.aoLightValueXNeg);
@@ -3596,7 +3596,7 @@ public class RenderBlocks {
 				}
 				
 				//Spout start
-				if(org.getspout.spout.config.ConfigReader.fancyLight && org.getspout.spout.config.ConfigReader.smoothLighting > 0F) {
+				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYPN = adjustAmbientOcclusion(this.aoLightValueScratchXYPN, this.aoLightValueXPos);
 					this.aoLightValueScratchXYZPNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNP, this.aoLightValueXPos);
 					this.aoLightValueScratchXZPP = adjustAmbientOcclusion(this.aoLightValueScratchXZPP, this.aoLightValueXPos);
@@ -5225,7 +5225,7 @@ public class RenderBlocks {
 		if (lightPosition <= Minecraft.theMinecraft.theWorld.worldProvider.lightBrightnessTable[1]) {
 			return lightValue;
 		}
-		return lightValue + (lightPosition - lightValue) * (1.0F - org.getspout.spout.config.ConfigReader.brightnessSlider);
+		return lightValue + (lightPosition - lightValue) * (1.0F - org.spoutcraft.client.config.ConfigReader.brightnessSlider);
 	}
 	
 	private boolean dirtyAmbientOcclusionCache = true;

@@ -18,10 +18,10 @@ import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 //Spout start
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.io.CustomTextureManager;
-import org.getspout.spout.item.SpoutItem;
 import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.item.SpoutItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;

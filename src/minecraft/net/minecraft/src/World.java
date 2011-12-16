@@ -51,8 +51,8 @@ import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldSavedData;
 import net.minecraft.src.WorldSettings;
 //Spout Start
-import org.getspout.spout.SpoutcraftWorld;
-import org.getspout.spout.config.ConfigReader;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -89,7 +89,7 @@ public class World implements IBlockAccess {
 	public int lightningFlash;
 	public boolean editingBlocks;
 	private long lockTimestamp;
-	public int autosavePeriod = org.getspout.spout.gui.settings.AutosaveButton.getAutosaveTicks(); // Spout protected -> public
+	public int autosavePeriod = org.spoutcraft.client.gui.settings.AutosaveButton.getAutosaveTicks(); // Spout protected -> public
 	public int difficultySetting;
 	public Random rand;
 	public boolean isNewWorld;

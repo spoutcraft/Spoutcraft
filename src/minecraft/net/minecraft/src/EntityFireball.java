@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import org.getspout.spout.entity.CraftFireball; // Spout
+
+import org.spoutcraft.client.entity.CraftFireball;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;

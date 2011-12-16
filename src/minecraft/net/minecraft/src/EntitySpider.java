@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSpider;
+import org.spoutcraft.client.entity.CraftSpider;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.EnumCreatureAttribute;

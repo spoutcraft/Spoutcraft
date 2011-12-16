@@ -12,8 +12,8 @@ import net.minecraft.src.KeyBinding;
 import net.minecraft.src.StatCollector;
 import net.minecraft.src.StringTranslate;
 
-import org.getspout.spout.client.SpoutClient;
 import org.lwjgl.input.Keyboard;
+import org.spoutcraft.client.client.SpoutClient;
 
 public class GameSettings {
 

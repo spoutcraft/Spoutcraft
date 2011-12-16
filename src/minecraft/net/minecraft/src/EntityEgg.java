@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftEgg; // Spout
+import org.spoutcraft.client.entity.CraftEgg;
+
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityChicken;
 import net.minecraft.src.EntityLiving;

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftCreeper; // Spout
+import org.spoutcraft.client.entity.CraftCreeper;
+
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLightningBolt;

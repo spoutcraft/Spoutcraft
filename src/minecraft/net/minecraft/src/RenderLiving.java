@@ -10,9 +10,9 @@ import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.Render;
 import net.minecraft.src.Tessellator;
 
-import org.getspout.spout.client.SpoutClient; //Spout
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.spoutcraft.client.client.SpoutClient;
 
 public class RenderLiving extends Render {
 

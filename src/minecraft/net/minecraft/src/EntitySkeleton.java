@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSkeleton; // Spout
+import org.spoutcraft.client.entity.CraftSkeleton;
+
 import net.minecraft.src.AchievementList;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftCow; // Spout
+import org.spoutcraft.client.entity.CraftCow;
+
 import net.minecraft.src.EntityAnimal;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;

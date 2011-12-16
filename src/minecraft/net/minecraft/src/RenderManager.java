@@ -105,13 +105,12 @@ import net.minecraft.src.RenderXPOrb;
 import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.spoutcraft.client.entity.EntityText;
+import org.spoutcraft.client.entity.EntityTexture;
+import org.spoutcraft.client.entity.RenderText;
+import org.spoutcraft.client.entity.RenderTexture;
 
 //Spout Start
-import org.getspout.spout.entity.EntityText;
-import org.getspout.spout.entity.RenderText;
-import org.getspout.spout.entity.EntityTexture;
-import org.getspout.spout.entity.RenderTexture;
-//Spout End
 
 public class RenderManager {
 

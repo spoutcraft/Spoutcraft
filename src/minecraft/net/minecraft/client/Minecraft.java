@@ -26,8 +26,13 @@ import org.lwjgl.util.glu.GLU;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.gui.ScreenUtil;
+import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
+import org.spoutcraft.client.packet.PacketScreenAction;
+import org.spoutcraft.client.packet.ScreenAction;
+import org.spoutcraft.client.packet.SpoutPacket;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
@@ -36,11 +41,6 @@ import org.spoutcraft.spoutcraftapi.event.screen.ScreenOpenEvent;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
-import org.getspout.spout.gui.ScreenUtil;
-import org.getspout.spout.gui.addon.GuiAddonsLocal;
-import org.getspout.spout.packet.PacketScreenAction;
-import org.getspout.spout.packet.ScreenAction;
-import org.getspout.spout.packet.SpoutPacket;
 
 //Spout End
 
@@ -261,7 +261,7 @@ public abstract class Minecraft implements Runnable {
 		
 		//Spout start
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
-			this.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(new GuiMainMenu()));
+			this.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(new GuiMainMenu()));
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
 			this.displayGuiScreen(new GuiSelectWorld(new GuiMainMenu()));
@@ -270,7 +270,7 @@ public abstract class Minecraft implements Runnable {
 			this.displayGuiScreen(new GuiAddonsLocal());
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			this.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks());
+			this.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			this.displayGuiScreen(new GuiOptions(new GuiMainMenu(), gameSettings));
@@ -597,7 +597,7 @@ public abstract class Minecraft implements Runnable {
 						this.theWorld = null;
 						this.changeWorld1((World)null);
 
-						this.displayGuiScreen(new org.getspout.spout.gui.error.GuiUnexpectedError());
+						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError());
 						
 						t.printStackTrace();
 					}

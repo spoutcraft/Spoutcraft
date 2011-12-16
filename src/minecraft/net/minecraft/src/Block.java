@@ -121,7 +121,8 @@ import net.minecraft.src.World;
 
 //Spout Start
 import gnu.trove.map.hash.TIntFloatHashMap;
-import org.getspout.spout.block.SpoutcraftChunk;
+
+import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;

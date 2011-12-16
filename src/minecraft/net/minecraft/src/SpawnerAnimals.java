@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-import org.getspout.spout.block.SpoutcraftChunk;
+import org.spoutcraft.client.block.SpoutcraftChunk;
 
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.ChunkCoordinates;

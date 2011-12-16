@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import org.getspout.spout.entity.CraftPigZombie; // Spout
+
+import org.spoutcraft.client.entity.CraftPigZombie;
+
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;

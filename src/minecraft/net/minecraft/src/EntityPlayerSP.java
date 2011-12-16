@@ -32,11 +32,11 @@ import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.controls.SimpleKeyBindingManager;
-import org.getspout.spout.gui.ScreenUtil;
-import org.getspout.spout.packet.PacketRenderDistance;
-import org.getspout.spout.player.ClientPlayer;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.gui.ScreenUtil;
+import org.spoutcraft.client.packet.PacketRenderDistance;
+import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end

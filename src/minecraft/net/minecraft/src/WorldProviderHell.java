@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 //Spout start
-import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.client.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 //Spout end
 

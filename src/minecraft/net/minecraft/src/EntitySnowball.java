@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSnowball;
+import org.spoutcraft.client.entity.CraftSnowball;
+
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityBlaze;
 import net.minecraft.src.EntityLiving;

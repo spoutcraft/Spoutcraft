@@ -67,9 +67,9 @@ import net.minecraft.src.WorldRenderer;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 //Spout Start
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.config.ConfigReader;
-import org.getspout.spout.io.CustomTextureManager;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
 //Spout End
@@ -1709,7 +1709,7 @@ public class RenderGlobal implements IWorldAccess {
 			} else {
 				double var22 = 16.0D;
 				//Spout start
-				if (!org.getspout.spout.config.ConfigReader.fancyParticles) {
+				if (!org.spoutcraft.client.config.ConfigReader.fancyParticles) {
 					var22 = 6D;
 				}
 				//Spout end

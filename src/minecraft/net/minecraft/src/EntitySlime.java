@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftSlime; // Spout
+import org.spoutcraft.client.entity.CraftSlime;
+
 import net.minecraft.src.Chunk;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityLiving;

@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import org.getspout.spout.entity.CraftLightningStrike; // Spout
+
+import org.spoutcraft.client.entity.CraftLightningStrike;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;

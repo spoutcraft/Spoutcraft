@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 //Spout start
-import org.getspout.spout.client.SpoutClient;
-import org.getspout.spout.io.FileDownloadThread;
+import org.spoutcraft.client.client.SpoutClient;
+import org.spoutcraft.client.io.FileDownloadThread;
 //SPout end
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
@@ -145,8 +145,8 @@ public class NetClientHandler extends NetHandler {
 		Socket var4 = new Socket(InetAddress.getByName(var2), var3);
 		this.netManager = new NetworkManager(var4, "Client", this);
 		//Spout start
-		org.getspout.spout.gui.error.GuiConnectionLost.lastServerIp = var2;
-		org.getspout.spout.gui.error.GuiConnectionLost.lastServerPort = var3;
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = var2;
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = var3;
 		//Spout end
 	}
 
@@ -504,19 +504,19 @@ public class NetClientHandler extends NetHandler {
 			//Spout start
 			System.out.println(var1);
 			if (var1 != null && var1.toLowerCase().contains("endofstream")) {
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost());
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
 			}
 			else if (var2 == null || var2.length == 0 || !(var2[0] instanceof String)) {
 				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", var1, var2));
 			}
 			else if (((String)var2[0]).toLowerCase().contains("connection reset")) {
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost());
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
 			}
 			else if (((String)var2[0]).toLowerCase().contains("connection refused")) {
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost("The server is not currently online!"));
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is not currently online!"));
 			}
 			else if (((String)var2[0]).toLowerCase().contains("overflow")) {
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.error.GuiConnectionLost("The server is currently experiencing heavy traffic. Try again later."));
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is currently experiencing heavy traffic. Try again later."));
 			}
 			else
 			//Spout end

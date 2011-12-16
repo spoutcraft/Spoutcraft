@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
-import org.getspout.spout.entity.CraftSheep; // Spout
+
+import org.spoutcraft.client.entity.CraftSheep;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityAnimal;
 import net.minecraft.src.EntityItem;

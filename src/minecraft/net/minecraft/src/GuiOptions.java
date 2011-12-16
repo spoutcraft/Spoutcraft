@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.gui.CustomScreen;
-import org.getspout.spout.gui.settings.VideoSettings;
+import org.spoutcraft.client.gui.CustomScreen;
+import org.spoutcraft.client.gui.settings.VideoSettings;
 
 import net.minecraft.src.EnumOptions;
 import net.minecraft.src.GameSettings;
@@ -73,7 +73,7 @@ public class GuiOptions extends GuiScreen {
 
 			if(var1.id == 100) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new org.getspout.spout.gui.controls.GuiControls(this)); //Spout
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.controls.GuiControls(this)); //Spout
 			}
 
 			if(var1.id == 200) {

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftZombie; // Spout
+import org.spoutcraft.client.entity.CraftZombie;
+
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.EnumCreatureAttribute;
 import net.minecraft.src.Item;

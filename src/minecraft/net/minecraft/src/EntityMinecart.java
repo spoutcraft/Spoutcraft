@@ -2,10 +2,10 @@ package net.minecraft.src;
 
 import java.util.List;
 // Spout Start
-import org.getspout.spout.entity.CraftCaveSpider;
-import org.getspout.spout.entity.CraftMinecart;
-import org.getspout.spout.entity.CraftPoweredMinecart;
-import org.getspout.spout.entity.CraftStorageMinecart;
+import org.spoutcraft.client.entity.CraftCaveSpider;
+import org.spoutcraft.client.entity.CraftMinecart;
+import org.spoutcraft.client.entity.CraftPoweredMinecart;
+import org.spoutcraft.client.entity.CraftStorageMinecart;
 // Spout End
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 //Spout start
-import org.getspout.spout.entity.CraftBoat;
+import org.spoutcraft.client.entity.CraftBoat;
 //Spout end
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;

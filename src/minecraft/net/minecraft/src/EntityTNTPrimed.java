@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftTNTPrimed;
+import org.spoutcraft.client.entity.CraftTNTPrimed;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;

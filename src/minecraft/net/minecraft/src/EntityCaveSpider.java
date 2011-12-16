@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftCaveSpider; // Spout
+import org.spoutcraft.client.entity.CraftCaveSpider;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntitySpider;

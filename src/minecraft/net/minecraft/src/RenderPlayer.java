@@ -19,9 +19,9 @@ import net.minecraft.src.Tessellator;
 
 //Spout Start
 import org.bukkit.ChatColor;
-import org.getspout.spout.EasterEggs;
 //spout End
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.EasterEggs;
 
 public class RenderPlayer extends RenderLiving {
 

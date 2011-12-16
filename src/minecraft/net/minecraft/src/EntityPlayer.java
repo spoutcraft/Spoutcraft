@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 //Spout Start
 import org.bukkit.ChatColor;
-import org.getspout.spout.entity.CraftHumanEntity;
+import org.spoutcraft.client.entity.CraftHumanEntity;
 //Spout End
 
 import net.minecraft.src.AchievementList;
@@ -320,7 +320,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void updateCloak() {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
-		String easterEgg = org.getspout.spout.EasterEggs.getEasterEggCape();
+		String easterEgg = org.spoutcraft.client.EasterEggs.getEasterEggCape();
 		if (easterEgg != null) {
 			playerCloakUrl = easterEgg;	
 		}

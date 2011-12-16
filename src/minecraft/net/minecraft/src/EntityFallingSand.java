@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.getspout.spout.entity.CraftFallingSand; // Spout
+import org.spoutcraft.client.entity.CraftFallingSand;
 
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockSand;

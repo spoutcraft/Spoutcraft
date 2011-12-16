@@ -1,7 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import org.getspout.spout.entity.CraftFish; // Spout
+
+import org.spoutcraft.client.entity.CraftFish;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.Entity;
