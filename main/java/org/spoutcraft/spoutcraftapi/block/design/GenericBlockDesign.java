@@ -405,7 +405,7 @@ public class GenericBlockDesign implements BlockDesign {
 		boolean result = false;
 	
 		
-		
+		GL11.glPushMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glTranslatef(x, y, depth);
 		
@@ -432,6 +432,7 @@ public class GenericBlockDesign implements BlockDesign {
 		}
 		
 		Spoutcraft.getTessellator().draw();
+		GL11.glPopMatrix();
 		
 		return result;
 	}
