@@ -10,6 +10,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.Potion;
 import net.minecraft.src.World;
+import org.spoutcraft.client.entity.CraftMonster; //Spout
 
 public abstract class EntityMob extends EntityCreature implements IMob {
 
@@ -19,6 +20,9 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	public EntityMob(World var1) {
 		super(var1);
 		this.field_35171_bJ = 5;
+		//Spout start
+		this.spoutEntity = new CraftMonster(this);
+		//Spout end
 	}
 
 	public void onLivingUpdate() {
