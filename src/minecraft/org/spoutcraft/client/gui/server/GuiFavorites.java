@@ -128,7 +128,7 @@ public class GuiFavorites extends GuiScreen {
 			}
 			return false;
 		}
-		
+
 	}
 	
 	@Override
@@ -258,6 +258,7 @@ public class GuiFavorites extends GuiScreen {
 		} else if(!buttonDelete.getText().equals("Delete")) {
 			buttonDelete.setEnabled(true);
 		}
+		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}
 }
