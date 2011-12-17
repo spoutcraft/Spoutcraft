@@ -39,7 +39,7 @@ import org.spoutcraft.spoutcraftapi.entity.MagmaCube;
 
 public class CraftMagmaCube extends CraftSlime implements MagmaCube {
 
-	public CraftMonster(EntityMagmaCube entity) {
+	public CraftMagmaCube(EntityMagmaCube entity) {
 		super(entity);
 	}
 

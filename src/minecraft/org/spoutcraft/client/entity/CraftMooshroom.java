@@ -39,7 +39,7 @@ import org.spoutcraft.spoutcraftapi.entity.Mooshroom;
 
 public class CraftMooshroom extends CraftCow implements Mooshroom {
 
-	public CraftMonster(EntityMooshroom entity) {
+	public CraftMooshroom(EntityMooshroom entity) {
 		super(entity);
 	}
 
