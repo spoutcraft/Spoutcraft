@@ -45,4 +45,13 @@ public interface Villager extends Creature {
 	 */
 	public Occupation getOccupation();
 
+	public enum Occupation {
+		VILLAGER,
+		FARMER,
+		LIBRARIAN,
+		PRIEST,
+		BLACKSMITH,
+		BUTCHER;
+	}
+
 }
