@@ -646,17 +646,17 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
-			tWidth = Math.min(tWidth, width);
-			tHeight = Math.min(tHeight, height);
-			tLeft = Math.min(Math.max(0, left), rWidth);
-			tTop = Math.min(Math.max(0, top), rHeight);
+			tLeft = (double)left / textureBinding.getImageWidth();
+			tTop = 1.0 - (double)(top + height) / textureBinding.getImageHeight();
+			tWidth = (double)(left + width) / textureBinding.getImageWidth();
+			tHeight = 1.0 - (double)(top) / textureBinding.getImageHeight();
 		}
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, height, -90, tLeft, tTop); // draw corners
-		tessellator.addVertexWithUV(width, height, -90, tLeft + tWidth, tTop);
-		tessellator.addVertexWithUV(width, 0.0D, -90, tLeft + tWidth, tTop + tHeight);
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tTop + tHeight);
+		tessellator.addVertexWithUV(width, height, -90, tWidth, tTop);
+		tessellator.addVertexWithUV(width, 0.0D, -90, tWidth, tHeight);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tHeight);
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
