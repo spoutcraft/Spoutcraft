@@ -30,6 +30,7 @@ import net.minecraft.src.World;
 //Spout Start
 //Spout End
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -120,6 +121,9 @@ public abstract class EntityLiving extends Entity {
 		this.field_9365_p = (float)Math.random() * 12398.0F;
 		this.rotationYaw = (float)(Math.random() * 3.1415927410125732D * 2.0D);
 		this.stepHeight = 0.5F;
+		//Spout start
+		this.spoutEntity = new CraftLivingEntity(this);
+		//Spout end
 	}
 
 	protected void entityInit() {
