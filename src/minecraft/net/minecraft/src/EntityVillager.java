@@ -8,7 +8,7 @@ import org.spoutcraft.client.entity.CraftVillager; //Spout
 
 public class EntityVillager extends EntityCreature {
 
-	private int field_40141_a;
+	public int field_40141_a; //Spout private -> public
 
 
 	public EntityVillager(World var1) {
