@@ -4,6 +4,7 @@ import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
+import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
 import net.minecraft.src.RenderBlocks;
@@ -206,6 +208,8 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslatef((float) item.getScreenX(), (float) item.getScreenY(), 0);
 		GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
 		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, item.getTypeId(), item.getData(), Item.itemsList[item.getTypeId()].getIconFromDamage(item.getData()), 0, 0);
+        	ItemStack is = new ItemStack(item.getTypeId(),/*item.getAmount()*/1,item.getData());
+        	renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, is, 0, 0);
 		GL11.glPopMatrix();
 		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
 			block.maxX = oldX;
