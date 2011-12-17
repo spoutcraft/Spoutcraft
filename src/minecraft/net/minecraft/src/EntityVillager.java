@@ -1,100 +1,86 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
-
 package net.minecraft.src;
+
+import net.minecraft.src.EntityCreature;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
 
 import org.spoutcraft.client.entity.CraftVillager; //Spout
 
-// Referenced classes of package net.minecraft.src:
-//            EntityCreature, NBTTagCompound, World
+public class EntityVillager extends EntityCreature {
 
-public class EntityVillager extends EntityCreature
-{
+	private int field_40141_a;
 
-    private int field_40141_a;
 
-    public EntityVillager(World world)
-    {
-        this(world, 0);
-	//Spout start
-	this.spoutEntity = new CraftVillager(this);
-	//Spout end
-    }
+	public EntityVillager(World var1) {
+		this(var1, 0);
+        //Spout start
+        this.spoutEntity = new CraftVillager(this);
+        //Spout end
+	}
 
-    public EntityVillager(World world, int i)
-    {
-        super(world);
-        field_40141_a = i;
-        func_40140_ac();
-        moveSpeed = 0.5F;
-    }
+	public EntityVillager(World var1, int var2) {
+		super(var1);
+		this.field_40141_a = var2;
+		this.func_40140_ac();
+		this.moveSpeed = 0.5F;
+	}
 
-    public int getMaxHealth()
-    {
-        return 20;
-    }
+	public int getMaxHealth() {
+		return 20;
+	}
 
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-    }
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+	}
 
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setInteger("Profession", field_40141_a);
-    }
+	public void writeEntityToNBT(NBTTagCompound var1) {
+		super.writeEntityToNBT(var1);
+		var1.setInteger("Profession", this.field_40141_a);
+	}
 
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-        field_40141_a = nbttagcompound.getInteger("Profession");
-        func_40140_ac();
-    }
+	public void readEntityFromNBT(NBTTagCompound var1) {
+		super.readEntityFromNBT(var1);
+		this.field_40141_a = var1.getInteger("Profession");
+		this.func_40140_ac();
+	}
 
-    private void func_40140_ac()
-    {
-        texture = "/mob/villager/villager.png";
-        if(field_40141_a == 0)
-        {
-            texture = "/mob/villager/farmer.png";
-        }
-        if(field_40141_a == 1)
-        {
-            texture = "/mob/villager/librarian.png";
-        }
-        if(field_40141_a == 2)
-        {
-            texture = "/mob/villager/priest.png";
-        }
-        if(field_40141_a == 3)
-        {
-            texture = "/mob/villager/smith.png";
-        }
-        if(field_40141_a == 4)
-        {
-            texture = "/mob/villager/butcher.png";
-        }
-    }
+	private void func_40140_ac() {
+		this.texture = "/mob/villager/villager.png";
+		if(this.field_40141_a == 0) {
+			this.texture = "/mob/villager/farmer.png";
+		}
 
-    protected boolean canDespawn()
-    {
-        return false;
-    }
+		if(this.field_40141_a == 1) {
+			this.texture = "/mob/villager/librarian.png";
+		}
 
-    protected String getLivingSound()
-    {
-        return "mob.villager.default";
-    }
+		if(this.field_40141_a == 2) {
+			this.texture = "/mob/villager/priest.png";
+		}
 
-    protected String getHurtSound()
-    {
-        return "mob.villager.defaulthurt";
-    }
+		if(this.field_40141_a == 3) {
+			this.texture = "/mob/villager/smith.png";
+		}
 
-    protected String getDeathSound()
-    {
-        return "mob.villager.defaultdeath";
-    }
+		if(this.field_40141_a == 4) {
+			this.texture = "/mob/villager/butcher.png";
+		}
+
+	}
+
+	protected boolean canDespawn() {
+		return false;
+	}
+
+	protected String getLivingSound() {
+		return "mob.villager.default";
+	}
+
+	protected String getHurtSound() {
+		return "mob.villager.defaulthurt";
+	}
+
+	protected String getDeathSound() {
+		return "mob.villager.defaultdeath";
+	}
 }

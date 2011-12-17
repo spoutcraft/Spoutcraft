@@ -1,60 +1,51 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
-
 package net.minecraft.src;
 
+import net.minecraft.src.Block;
+import net.minecraft.src.EntityAnimal;
+import net.minecraft.src.EntityCow;
+import net.minecraft.src.EntityItem;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
+import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
 import org.spoutcraft.client.entity.CraftMooshroom; //Spout
 
-// Referenced classes of package net.minecraft.src:
-//            EntityCow, EntityPlayer, InventoryPlayer, ItemStack, 
-//            Item, ItemShears, World, EntityItem, 
-//            Block, EntityAnimal
+public class EntityMooshroom extends EntityCow {
 
-public class EntityMooshroom extends EntityCow
-{
+	public EntityMooshroom(World var1) {
+		super(var1);
+		this.texture = "/mob/redcow.png";
+		this.setSize(0.9F, 1.3F);
+        //Spout start
+        this.spoutEntity = new CraftMooshroom(this);
+        //Spout end
+	}
 
-    public EntityMooshroom(World world)
-    {
-        super(world);
-        texture = "/mob/redcow.png";
-        setSize(0.9F, 1.3F);
-	//Spout start
-	this.spoutEntity = new CraftMooshroom(this);
-	//Spout end
-    }
+	public boolean interact(EntityPlayer var1) {
+		ItemStack var2 = var1.inventory.getCurrentItem();
+		if(var2 != null && var2.itemID == Item.bowlEmpty.shiftedIndex && this.func_40146_g() >= 0) {
+			var1.inventory.setInventorySlotContents(var1.inventory.currentItem, new ItemStack(Item.bowlSoup));
+			return true;
+		} else if(var2 != null && var2.itemID == Item.shears.shiftedIndex && this.func_40146_g() >= 0) {
+			this.setEntityDead();
+			EntityCow var3 = new EntityCow(this.worldObj);
+			var3.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+			var3.setEntityHealth(this.getEntityHealth());
+			var3.renderYawOffset = this.renderYawOffset;
+			this.worldObj.entityJoinedWorld(var3);
+			this.worldObj.spawnParticle("largeexplode", this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 0.0D, 0.0D, 0.0D);
 
-    public boolean interact(EntityPlayer entityplayer)
-    {
-        ItemStack itemstack = entityplayer.inventory.getCurrentItem();
-        if(itemstack != null && itemstack.itemID == Item.bowlEmpty.shiftedIndex && func_40146_g() >= 0)
-        {
-            entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, new ItemStack(Item.bowlSoup));
-            return true;
-        }
-        if(itemstack != null && itemstack.itemID == Item.shears.shiftedIndex && func_40146_g() >= 0)
-        {
-            setEntityDead();
-            EntityCow entitycow = new EntityCow(worldObj);
-            entitycow.setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
-            entitycow.setEntityHealth(getEntityHealth());
-            entitycow.renderYawOffset = renderYawOffset;
-            worldObj.entityJoinedWorld(entitycow);
-            worldObj.spawnParticle("largeexplode", posX, posY + (double)(height / 2.0F), posZ, 0.0D, 0.0D, 0.0D);
-            for(int i = 0; i < 5; i++)
-            {
-                worldObj.entityJoinedWorld(new EntityItem(worldObj, posX, posY + (double)height, posZ, new ItemStack(Block.mushroomRed)));
-            }
+			for(int var4 = 0; var4 < 5; ++var4) {
+				this.worldObj.entityJoinedWorld(new EntityItem(this.worldObj, this.posX, this.posY + (double)this.height, this.posZ, new ItemStack(Block.mushroomRed)));
+			}
 
-            return true;
-        } else
-        {
-            return super.interact(entityplayer);
-        }
-    }
+			return true;
+		} else {
+			return super.interact(var1);
+		}
+	}
 
-    protected EntityAnimal func_40145_a(EntityAnimal entityanimal)
-    {
-        return new EntityMooshroom(worldObj);
-    }
+	protected EntityAnimal func_40145_a(EntityAnimal var1) {
+		return new EntityMooshroom(this.worldObj);
+	}
 }

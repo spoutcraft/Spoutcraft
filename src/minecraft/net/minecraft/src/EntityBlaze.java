@@ -1,222 +1,188 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
-
 package net.minecraft.src;
 
-import java.util.Random;
+import net.minecraft.src.DamageSource;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntitySmallFireball;
+import net.minecraft.src.Item;
+import net.minecraft.src.MathHelper;
+import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
+
 import org.spoutcraft.client.entity.CraftBlaze; //Spout
 
-// Referenced classes of package net.minecraft.src:
-//            EntityMob, DataWatcher, World, DamageSource, 
-//            Entity, AxisAlignedBB, MathHelper, EntitySmallFireball, 
-//            Item, NBTTagCompound
+public class EntityBlaze extends EntityMob {
 
-public class EntityBlaze extends EntityMob
-{
+	private float field_40154_a = 0.5F;
+	private int field_40153_b;
+	private int field_40152_d;
 
-    private float field_40154_a;
-    private int field_40153_b;
-    private int field_40152_d;
 
-    public EntityBlaze(World world)
-    {
-        super(world);
-        field_40154_a = 0.5F;
-        texture = "/mob/fire.png";
-        isImmuneToFire = true;
-        attackStrength = 6;
-        field_35171_bJ = 10;
-	//Spout start
-	this.spoutEntity = new CraftBlaze(this);
-	//Spout end
-    }
+	public EntityBlaze(World var1) {
+		super(var1);
+		this.texture = "/mob/fire.png";
+		this.isImmuneToFire = true;
+		this.attackStrength = 6;
+		this.field_35171_bJ = 10;
+        //Spout start
+        this.spoutEntity = new CraftBlaze(this);
+        //Spout end
+	}
 
-    public int getMaxHealth()
-    {
-        return 20;
-    }
+	public int getMaxHealth() {
+		return 20;
+	}
 
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataWatcher.addObject(16, new Byte((byte)0));
-    }
+	protected void entityInit() {
+		super.entityInit();
+		this.dataWatcher.addObject(16, new Byte((byte)0));
+	}
 
-    protected String getLivingSound()
-    {
-        return "mob.blaze.breathe";
-    }
+	protected String getLivingSound() {
+		return "mob.blaze.breathe";
+	}
 
-    protected String getHurtSound()
-    {
-        return "mob.blaze.hit";
-    }
+	protected String getHurtSound() {
+		return "mob.blaze.hit";
+	}
 
-    protected String getDeathSound()
-    {
-        return "mob.blaze.death";
-    }
+	protected String getDeathSound() {
+		return "mob.blaze.death";
+	}
 
-    public boolean attackEntityFrom(DamageSource damagesource, int i)
-    {
-        return super.attackEntityFrom(damagesource, i);
-    }
+	public boolean attackEntityFrom(DamageSource var1, int var2) {
+		return super.attackEntityFrom(var1, var2);
+	}
 
-    public void onDeath(DamageSource damagesource)
-    {
-        super.onDeath(damagesource);
-    }
+	public void onDeath(DamageSource var1) {
+		super.onDeath(var1);
+	}
 
-    public int getEntityBrightnessForRender(float f)
-    {
-        return 0xf000f0;
-    }
+	public int getEntityBrightnessForRender(float var1) {
+		return 15728880;
+	}
 
-    public float getEntityBrightness(float f)
-    {
-        return 1.0F;
-    }
+	public float getEntityBrightness(float var1) {
+		return 1.0F;
+	}
 
-    public void onLivingUpdate()
-    {
-        if(!worldObj.multiplayerWorld)
-        {
-            if(isWet())
-            {
-                attackEntityFrom(DamageSource.drown, 1);
-            }
-            field_40153_b--;
-            if(field_40153_b <= 0)
-            {
-                field_40153_b = 100;
-                field_40154_a = 0.5F + (float)rand.nextGaussian() * 3F;
-            }
-            if(getEntityToAttack() != null && getEntityToAttack().posY + (double)getEntityToAttack().getEyeHeight() > posY + (double)getEyeHeight() + (double)field_40154_a)
-            {
-                motionY = motionY + (0.30000001192092896D - motionY) * 0.30000001192092896D;
-            }
-        }
-        if(rand.nextInt(24) == 0)
-        {
-            worldObj.playSoundEffect(posX + 0.5D, posY + 0.5D, posZ + 0.5D, "fire.fire", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F);
-        }
-        if(!onGround && motionY < 0.0D)
-        {
-            motionY *= 0.59999999999999998D;
-        }
-        for(int i = 0; i < 2; i++)
-        {
-            worldObj.spawnParticle("largesmoke", posX + (rand.nextDouble() - 0.5D) * (double)width, posY + rand.nextDouble() * (double)height, posZ + (rand.nextDouble() - 0.5D) * (double)width, 0.0D, 0.0D, 0.0D);
-        }
+	public void onLivingUpdate() {
+		if(!this.worldObj.multiplayerWorld) {
+			if(this.isWet()) {
+				this.attackEntityFrom(DamageSource.drown, 1);
+			}
 
-        super.onLivingUpdate();
-    }
+			--this.field_40153_b;
+			if(this.field_40153_b <= 0) {
+				this.field_40153_b = 100;
+				this.field_40154_a = 0.5F + (float)this.rand.nextGaussian() * 3.0F;
+			}
 
-    protected void attackEntity(Entity entity, float f)
-    {
-        if(attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
-        {
-            attackTime = 20;
-            attackEntityAsMob(entity);
-        } else
-        if(f < 30F)
-        {
-            double d = entity.posX - posX;
-            double d1 = (entity.boundingBox.minY + (double)(entity.height / 2.0F)) - (posY + (double)(height / 2.0F));
-            double d2 = entity.posZ - posZ;
-            if(attackTime == 0)
-            {
-                field_40152_d++;
-                if(field_40152_d == 1)
-                {
-                    attackTime = 60;
-                    func_40150_a(true);
-                } else
-                if(field_40152_d <= 4)
-                {
-                    attackTime = 6;
-                } else
-                {
-                    attackTime = 100;
-                    field_40152_d = 0;
-                    func_40150_a(false);
-                }
-                if(field_40152_d > 1)
-                {
-                    float f1 = MathHelper.sqrt_float(f) * 0.5F;
-                    worldObj.playAuxSFXAtEntity(null, 1009, (int)posX, (int)posY, (int)posZ, 0);
-                    for(int i = 0; i < 1; i++)
-                    {
-                        EntitySmallFireball entitysmallfireball = new EntitySmallFireball(worldObj, this, d + rand.nextGaussian() * (double)f1, d1, d2 + rand.nextGaussian() * (double)f1);
-                        entitysmallfireball.posY = posY + (double)(height / 2.0F) + 0.5D;
-                        worldObj.entityJoinedWorld(entitysmallfireball);
-                    }
+			if(this.getEntityToAttack() != null && this.getEntityToAttack().posY + (double)this.getEntityToAttack().getEyeHeight() > this.posY + (double)this.getEyeHeight() + (double)this.field_40154_a) {
+				this.motionY += (0.30000001192092896D - this.motionY) * 0.30000001192092896D;
+			}
+		}
 
-                }
-            }
-            rotationYaw = (float)((Math.atan2(d2, d) * 180D) / 3.1415927410125732D) - 90F;
-            hasAttacked = true;
-        }
-    }
+		if(this.rand.nextInt(24) == 0) {
+			this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire", 1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
+		}
 
-    protected void fall(float f)
-    {
-    }
+		if(!this.onGround && this.motionY < 0.0D) {
+			this.motionY *= 0.6D;
+		}
 
-    public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeEntityToNBT(nbttagcompound);
-    }
+		for(int var1 = 0; var1 < 2; ++var1) {
+			this.worldObj.spawnParticle("largesmoke", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+		}
 
-    public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-    }
+		super.onLivingUpdate();
+	}
 
-    protected int getDropItemId()
-    {
-        return Item.blazeRod.shiftedIndex;
-    }
+	protected void attackEntity(Entity var1, float var2) {
+		if(this.attackTime <= 0 && var2 < 2.0F && var1.boundingBox.maxY > this.boundingBox.minY && var1.boundingBox.minY < this.boundingBox.maxY) {
+			this.attackTime = 20;
+			this.attackEntityAsMob(var1);
+		} else if(var2 < 30.0F) {
+			double var3 = var1.posX - this.posX;
+			double var5 = var1.boundingBox.minY + (double)(var1.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
+			double var7 = var1.posZ - this.posZ;
+			if(this.attackTime == 0) {
+				++this.field_40152_d;
+				if(this.field_40152_d == 1) {
+					this.attackTime = 60;
+					this.func_40150_a(true);
+				} else if(this.field_40152_d <= 4) {
+					this.attackTime = 6;
+				} else {
+					this.attackTime = 100;
+					this.field_40152_d = 0;
+					this.func_40150_a(false);
+				}
 
-    public boolean isBurning()
-    {
-        return func_40151_ac();
-    }
+				if(this.field_40152_d > 1) {
+					float var9 = MathHelper.sqrt_float(var2) * 0.5F;
+					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1009, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 
-    protected void dropFewItems(boolean flag, int i)
-    {
-        if(flag)
-        {
-            int j = rand.nextInt(2 + i);
-            for(int k = 0; k < j; k++)
-            {
-                dropItem(Item.blazeRod.shiftedIndex, 1);
-            }
+					for(int var10 = 0; var10 < 1; ++var10) {
+						EntitySmallFireball var11 = new EntitySmallFireball(this.worldObj, this, var3 + this.rand.nextGaussian() * (double)var9, var5, var7 + this.rand.nextGaussian() * (double)var9);
+						var11.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
+						this.worldObj.entityJoinedWorld(var11);
+					}
+				}
+			}
 
-        }
-    }
+			this.rotationYaw = (float)(Math.atan2(var7, var3) * 180.0D / 3.1415927410125732D) - 90.0F;
+			this.hasAttacked = true;
+		}
 
-    public boolean func_40151_ac()
-    {
-        return (dataWatcher.getWatchableObjectByte(16) & 1) != 0;
-    }
+	}
 
-    public void func_40150_a(boolean flag)
-    {
-        byte byte0 = dataWatcher.getWatchableObjectByte(16);
-        if(flag)
-        {
-            byte0 |= 1;
-        } else
-        {
-            byte0 &= 0xfe;
-        }
-        dataWatcher.updateObject(16, Byte.valueOf(byte0));
-    }
+	protected void fall(float var1) {}
 
-    protected boolean func_40147_Y()
-    {
-        return true;
-    }
+	public void writeEntityToNBT(NBTTagCompound var1) {
+		super.writeEntityToNBT(var1);
+	}
+
+	public void readEntityFromNBT(NBTTagCompound var1) {
+		super.readEntityFromNBT(var1);
+	}
+
+	protected int getDropItemId() {
+		return Item.blazeRod.shiftedIndex;
+	}
+
+	public boolean isBurning() {
+		return this.func_40151_ac();
+	}
+
+	protected void dropFewItems(boolean var1, int var2) {
+		if(var1) {
+			int var3 = this.rand.nextInt(2 + var2);
+
+			for(int var4 = 0; var4 < var3; ++var4) {
+				this.dropItem(Item.blazeRod.shiftedIndex, 1);
+			}
+		}
+
+	}
+
+	public boolean func_40151_ac() {
+		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+	}
+
+	public void func_40150_a(boolean var1) {
+		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
+		if(var1) {
+			var2 = (byte)(var2 | 1);
+		} else {
+			var2 &= -2;
+		}
+
+		this.dataWatcher.updateObject(16, Byte.valueOf(var2));
+	}
+
+	protected boolean func_40147_Y() {
+		return true;
+	}
 }

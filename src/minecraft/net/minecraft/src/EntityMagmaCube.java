@@ -1,127 +1,94 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode fieldsfirst 
-
 package net.minecraft.src;
 
-import java.util.List;
+import net.minecraft.src.EntitySlime;
+import net.minecraft.src.World;
+
 import org.spoutcraft.client.entity.CraftMagmaCube; //Spout
 
-// Referenced classes of package net.minecraft.src:
-//            EntitySlime, World
+public class EntityMagmaCube extends EntitySlime {
 
-public class EntityMagmaCube extends EntitySlime
-{
+	public EntityMagmaCube(World var1) {
+		super(var1);
+		this.texture = "/mob/lava.png";
+		this.isImmuneToFire = true;
+		this.landMovementFactor = 0.2F;
+        //Spout start
+        this.spoutEntity = new CraftMagmaCube(this);
+        //Spout end
+	}
 
-    public EntityMagmaCube(World world)
-    {
-        super(world);
-        texture = "/mob/lava.png";
-        isImmuneToFire = true;
-        landMovementFactor = 0.2F;
-	//Spout start
-	this.spoutEntity = new CraftMagmaCube(this);
-	//Spout end
-    }
+	public boolean getCanSpawnHere() {
+		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.getIsAnyLiquid(this.boundingBox);
+	}
 
-    public boolean getCanSpawnHere()
-    {
-        return worldObj.difficultySetting > 0 && worldObj.checkIfAABBIsClear(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.getIsAnyLiquid(boundingBox);
-    }
+	protected int func_40119_ar() {
+		return this.getSlimeSize() * 3;
+	}
 
-    protected int func_40119_ar()
-    {
-        return getSlimeSize() * 3;
-    }
+	public int getEntityBrightnessForRender(float var1) {
+		return 15728880;
+	}
 
-    public int getEntityBrightnessForRender(float f)
-    {
-        return 0xf000f0;
-    }
+	public float getEntityBrightness(float var1) {
+		return 1.0F;
+	}
 
-    public float getEntityBrightness(float f)
-    {
-        return 1.0F;
-    }
+	protected String func_40135_ac() {
+		return "flame";
+	}
 
-    protected String func_40135_ac()
-    {
-        return "flame";
-    }
+	protected EntitySlime func_40132_ae() {
+		return new EntityMagmaCube(this.worldObj);
+	}
 
-    protected EntitySlime func_40132_ae()
-    {
-        return new EntityMagmaCube(worldObj);
-    }
+	protected int getDropItemId() {
+		return 0;
+	}
 
-    protected int getDropItemId()
-    {
-        return 0;
-    }
+	public boolean isBurning() {
+		return false;
+	}
 
-    public boolean isBurning()
-    {
-        return false;
-    }
+	protected int func_40131_af() {
+		return super.func_40131_af() * 4;
+	}
 
-    protected int func_40131_af()
-    {
-        return super.func_40131_af() * 4;
-    }
+	protected void func_40136_ag() {
+		this.field_40139_a *= 0.9F;
+	}
 
-    protected void func_40136_ag()
-    {
-        field_40139_a = field_40139_a * 0.9F;
-    }
+	protected void jump() {
+		this.motionY = (double)(0.42F + (float)this.getSlimeSize() * 0.1F);
+		this.isAirBorne = true;
+	}
 
-    protected void jump()
-    {
-        motionY = 0.42F + (float)getSlimeSize() * 0.1F;
-        isAirBorne = true;
-    }
+	protected void fall(float var1) {}
 
-    protected void fall(float f)
-    {
-    }
+	protected boolean func_40137_ah() {
+		return true;
+	}
 
-    protected boolean func_40137_ah()
-    {
-        return true;
-    }
+	protected int func_40130_ai() {
+		return super.func_40130_ai() + 2;
+	}
 
-    protected int func_40130_ai()
-    {
-        return super.func_40130_ai() + 2;
-    }
+	protected String getHurtSound() {
+		return "mob.slime";
+	}
 
-    protected String getHurtSound()
-    {
-        return "mob.slime";
-    }
+	protected String getDeathSound() {
+		return "mob.slime";
+	}
 
-    protected String getDeathSound()
-    {
-        return "mob.slime";
-    }
+	protected String func_40138_aj() {
+		return this.getSlimeSize() > 1?"mob.magmacube.big":"mob.magmacube.small";
+	}
 
-    protected String func_40138_aj()
-    {
-        if(getSlimeSize() > 1)
-        {
-            return "mob.magmacube.big";
-        } else
-        {
-            return "mob.magmacube.small";
-        }
-    }
+	public boolean handleLavaMovement() {
+		return false;
+	}
 
-    public boolean handleLavaMovement()
-    {
-        return false;
-    }
-
-    protected boolean func_40134_ak()
-    {
-        return true;
-    }
+	protected boolean func_40134_ak() {
+		return true;
+	}
 }
