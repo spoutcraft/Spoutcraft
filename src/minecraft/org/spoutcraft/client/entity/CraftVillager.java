@@ -60,12 +60,4 @@ public class CraftVillager extends CraftCreature implements Villager {
 		}
 	}
 
-	public Enum Occupation {
-		VILLAGER;
-		FARMER;
-		LIBRARIAN;
-		PRIEST;
-		BLACKSMITH;
-		BUTCHER;
-	}
 }
