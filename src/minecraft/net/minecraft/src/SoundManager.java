@@ -36,6 +36,10 @@ public class SoundManager {
 	public SoundManager() {
 		this.ticksBeforeMusic = this.rand.nextInt(12000);
 	}
+	
+	public SoundSystem getSoundSystem() {
+		return sndSystem;
+	}
 
 	public void loadSoundSettings(GameSettings var1) {
 		this.soundPoolStreaming.isGetRandomSound = false;
