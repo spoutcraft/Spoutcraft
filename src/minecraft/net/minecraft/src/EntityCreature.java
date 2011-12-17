@@ -7,6 +7,7 @@ import net.minecraft.src.PathEntity;
 import net.minecraft.src.Profiler;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
+import org.spoutcraft.client.entity.CraftCreature; //Spout
 
 public abstract class EntityCreature extends EntityLiving {
 
@@ -18,7 +19,9 @@ public abstract class EntityCreature extends EntityLiving {
 
 	public EntityCreature(World var1) {
 		super(var1);
+		//Spout start
 		this.spoutEntity = new CraftCreature(this);
+		//Spout end
 	}
 
 	protected boolean isMovementCeased() {
