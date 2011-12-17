@@ -18,6 +18,7 @@ public abstract class EntityCreature extends EntityLiving {
 
 	public EntityCreature(World var1) {
 		super(var1);
+		this.spoutEntity = new CraftCreature(this);
 	}
 
 	protected boolean isMovementCeased() {
