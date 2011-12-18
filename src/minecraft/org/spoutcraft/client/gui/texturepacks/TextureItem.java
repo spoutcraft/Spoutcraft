@@ -234,8 +234,7 @@ public class TextureItem implements ListWidgetItem {
 				
 				FileUtils.moveFile(temp, new File(folder, fileName));
 				
-			} catch(MalformedURLException e1) {
-				e1.printStackTrace();
+			} catch(MalformedURLException e) {
 			} catch (IOException e) {
 				downloadFail = ChatColor.RED + e.getClass().getSimpleName();
 				e.printStackTrace();

@@ -1,4 +1,6 @@
-package net.minecraft.src;
+/* Spout removed file
+ package net.minecraft.src;
+ 
 
 import net.minecraft.src.GuiMultiplayer;
 import net.minecraft.src.GuiSlot;
@@ -141,3 +143,4 @@ public class GuiSlotServer extends GuiSlot {
 	}
 
 }
+*/

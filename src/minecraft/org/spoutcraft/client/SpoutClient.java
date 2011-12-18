@@ -33,6 +33,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
+import org.newdawn.slick.util.Log;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
@@ -139,6 +140,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		((SimpleKeyBindingManager)bindingManager).load();
 		addonStore.load();
 		serverManager.init();
+		Log.setVerbose(false);
 	}
 	
 	static {
@@ -147,13 +149,14 @@ public class SpoutClient extends PropertyObject implements Client {
 		ConfigReader.read();
 		Keyboard.setKeyManager(new SimpleKeyManager());
 		CraftEntity.registerTypes();
+		FileUtil.migrateOldFiles();
 	}
 	
 	public static SpoutClient getInstance() {
 		if (instance == null) {
 			new SpoutClient();
 			Spoutcraft.setClient(instance);
-			
+						
 			//must be done after construtor
 			ServerAddon addon = new ServerAddon("Spoutcraft", Long.toString(version), null);
 			instance.addonManager.addFakeAddon(addon);
@@ -516,7 +519,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 	
 	public File getAudioCache() {
-		return FileUtil.getAudioCacheDirectory();
+		return getTemporaryCache();
 	}
 	
 	public File getTemporaryCache() {
@@ -524,7 +527,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 	
 	public File getTextureCache() {
-		return FileUtil.getTextureCacheDirectory();
+		return getTemporaryCache();
 	}
 	
 	public File getTexturePackFolder() {

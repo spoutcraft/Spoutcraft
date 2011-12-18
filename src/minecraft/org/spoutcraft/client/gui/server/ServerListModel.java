@@ -42,14 +42,14 @@ public class ServerListModel extends AbstractAPIModel {
 		if(wasSandboxed) SpoutClient.disableSandbox();
 		new Thread() {
 			public void run() {
-				long start = System.currentTimeMillis();
+				//long start = System.currentTimeMillis();
 				URL url1;
 				try {
 					url1 = new URL(API + "?countries");
 				} catch (MalformedURLException e) {
 					return;
 				}
-				System.out.println("Loading "+url1.toString());
+				//System.out.println("Loading "+url1.toString());
 				BufferedReader reader;
 				try {
 					reader = new BufferedReader(new InputStreamReader(url1.openStream()));
@@ -59,7 +59,7 @@ public class ServerListModel extends AbstractAPIModel {
 				}
 				Yaml yaml = new Yaml();
 				ArrayList<String> yamlObj = (ArrayList<String>) yaml.load(reader);
-				System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
+				//System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 				synchronized (countries) {
 					countries.clear();
 					for(String c:yamlObj) {
@@ -87,7 +87,6 @@ public class ServerListModel extends AbstractAPIModel {
 	 * @param clear
 	 */
 	protected void refreshList(boolean clear) {
-		System.out.println("refreshing list.");
 		if(clear) {
 			lastPage = 0;
 			entries.clear();

@@ -66,7 +66,7 @@ public class PacketDownloadMusic implements SpoutPacket{
 	}
 
 	public void run(int PlayerId) {
-		File directory = new File(FileUtil.getAudioCacheDirectory(), plugin);
+		File directory = new File(FileUtil.getTempDirectory(), plugin);
 		if (!directory.exists()){	
 			directory.mkdir();
 		}
@@ -75,7 +75,7 @@ public class PacketDownloadMusic implements SpoutPacket{
 			System.out.println("Rejecting download of invalid audio: " + fileName);
 			return;
 		}
-		File song = FileUtil.findAudioFile(plugin, fileName);
+		File song = FileUtil.findFile(plugin, fileName);
 		if (song == null) {
 			song = new File(directory, fileName);
 		}

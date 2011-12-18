@@ -44,7 +44,7 @@ public class Packet18Animation extends Packet {
 			((NetClientHandler)var1).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(Long.toString(SpoutClient.getClientVersion())));
-			System.out.println("Spout SP Enabled");
+			System.out.println("Detected Spout server.");
 		}
 		else {
 			var1.handleArmAnimation(this);

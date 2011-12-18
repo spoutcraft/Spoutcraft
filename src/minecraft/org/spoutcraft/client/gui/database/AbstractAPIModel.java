@@ -92,9 +92,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 				try {
 					System.setProperty("http.agent", "");
 					setLoading(true);
-					long start = System.currentTimeMillis();
+					//long start = System.currentTimeMillis();
 					URL url1 = new URL(url+"&page="+page);
-					System.out.println("Loading "+url1.toString());
+					//System.out.println("Loading "+url1.toString());
 					URLConnection conn = url1.openConnection();
 					conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
 					
@@ -103,7 +103,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					
 					Yaml yaml = new Yaml();
 					ArrayList<Object> yamlObj = (ArrayList<Object>) yaml.load(reader);
-					System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
+					//System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 					apiData = yamlObj;
 					HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
 					int after = Integer.valueOf((String) hash.get("after"));

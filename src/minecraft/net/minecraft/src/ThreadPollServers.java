@@ -1,4 +1,6 @@
+/* Spout removed file
 package net.minecraft.src;
+
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -114,3 +116,4 @@ public class ThreadPollServers extends Thread {
 //	}
 
 }
+*/

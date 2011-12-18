@@ -41,7 +41,6 @@ public class OptimizeButton extends GenericButton{
 	public void onButtonClick(ButtonClickEvent event) {
 		int cores = Runtime.getRuntime().availableProcessors();
 		int fps = Math.max(1, net.minecraft.client.Minecraft.framesPerSecond);
-		System.out.println("Optimizing Settings, Cores: " + cores + " FPS: " + fps);
 		if (fps > 150) {
 			ConfigReader.fancyFog = true;
 			Minecraft.theMinecraft.gameSettings.fancyGraphics = true;

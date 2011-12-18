@@ -31,8 +31,8 @@ public class GuiFavorites extends GuiScreen {
 	private long confirmationTimeout = 0;
 
 	public GuiFavorites(GuiScreen parent) {
-		model.setCurrentGUI(this);
 		this.parent = parent;
+		model.setCurrentGUI(this);
 	}
 	
 	@Override

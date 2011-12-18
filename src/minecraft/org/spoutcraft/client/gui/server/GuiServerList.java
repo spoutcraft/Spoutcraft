@@ -43,7 +43,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		model.setCurrentGui(this);
 	}
 	
-	private void createInstances() {
+	public void createInstances() {
 		labelTitle = new GenericLabel("Public Server List");
 		filters = new GenericScrollArea();
 		filterTitle = new GenericLabel("Sort & Filter");

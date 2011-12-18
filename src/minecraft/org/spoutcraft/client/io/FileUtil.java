@@ -40,7 +40,7 @@ public class FileUtil {
 			SpoutClient.disableSandbox();
 		}
 		
-		File directory = new File(Minecraft.getMinecraftDir(), "spout");
+		File directory = new File(getSpoutcraftDirectory(), "cache");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -101,36 +101,26 @@ public class FileUtil {
 		}
 		return directory;
 	}
+	
+	public static void migrateOldFiles() {
+		File directory = new File(Minecraft.getMinecraftDir(), "spout");
+		if (directory.exists()) {
+			try {
+				FileUtils.copyDirectory(directory, getCacheDirectory(), true);
+				FileUtils.deleteDirectory(getTempDirectory());
+			}
+			catch (Exception e) {}
+		}
+	}
 
 	public static void deleteTempDirectory() {
 		try {
 			FileUtils.deleteDirectory(getTempDirectory());
 		}
 		catch (Exception e) {}
-		try {
-			FileUtils.deleteDirectory(getTextureCacheDirectory());
-		}
-		catch (Exception e) {}
 	}
 
-	public static File getAudioCacheDirectory() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-		
-		File directory = new File(getCacheDirectory(), "audiocache");
-		if (!directory.exists()) {
-			directory.mkdir();
-		}
-		
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
-		return directory;
-	}
-	
-	public static File findGeneralFile(String plugin, String fileName) {
+	public static File findFile(String plugin, String fileName) {
 		File directory = new File(getCacheDirectory(), plugin);
 		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
@@ -142,59 +132,6 @@ public class FileUtil {
 			}
 		}
 		return null;
-	}
-	
-	public static File findAudioFile(String plugin, String fileName) {
-		File success = findGeneralFile(plugin, fileName);
-		if (success != null) {
-			return success;
-		}
-		File directory = new File(getAudioCacheDirectory(), plugin);
-		if (directory.isDirectory() && directory.exists()) {
-			Collection<File> files = FileUtils.listFiles(directory, null, true);
-			for (File file : files) {
-				String name = getFileName(file.getPath());
-				if (name != null && name.equals(fileName)) {
-					return file;
-				}
-			}
-		}
-		return null;
-	}
-	
-	public static File findTextureFile(String plugin, String fileName) {
-		File success = findGeneralFile(plugin, fileName);
-		if (success != null) {
-			return success;
-		}
-		File directory = new File(getTextureCacheDirectory(), plugin);
-		if (directory.isDirectory() && directory.exists()) {
-			Collection<File> files = FileUtils.listFiles(directory, null, true);
-			for (File file : files) {
-				String name = getFileName(file.getPath());
-				if (name != null && name.equals(fileName)) {
-					return file;
-				}
-			}
-		}
-		return null;
-	}
-
-	public static File getTextureCacheDirectory() {
-		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) {
-			SpoutClient.disableSandbox();
-		}
-		
-		File directory = new File(getCacheDirectory(), "texturecache");
-		if (!directory.exists()) {
-			directory.mkdir();
-		}
-		
-		if (wasSandboxed) {
-			SpoutClient.enableSandbox();
-		}
-		return directory;
 	}
 
 	public static File getTexturePackDirectory() {

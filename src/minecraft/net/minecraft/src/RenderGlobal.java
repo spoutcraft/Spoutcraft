@@ -258,7 +258,6 @@ public class RenderGlobal implements IWorldAccess {
 		if (this.worldObj != null) {
 			this.worldObj.removeWorldAccess(this);
 		}
-		System.out.println("Changed World: " + newWorld);
 		this.prevSortX = -9999.0D;
 		this.prevSortY = -9999.0D;
 		this.prevSortZ = -9999.0D;

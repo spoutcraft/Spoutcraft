@@ -107,7 +107,7 @@ public class CraftingManager {
 		this.addRecipe(new ItemStack(Block.enchantmentTable, 1), new Object[] { " B ", "D#D", "###", Character.valueOf('#'), Block.obsidian, Character.valueOf('B'), Item.book, Character.valueOf('D'), Item.diamond });
 		this.addShapelessRecipe(new ItemStack(Item.eyeOfEnder, 1), new Object[] { Item.enderPearl, Item.blazePowder });
 		Collections.sort(this.recipes, new RecipeSorter(this));
-		System.out.println(this.recipes.size() + " recipes");
+		//System.out.println(this.recipes.size() + " recipes"); //Spout removed
 	}
 
 	public void addRecipe(ItemStack var1, Object... var2) {	 //Spout default -> public

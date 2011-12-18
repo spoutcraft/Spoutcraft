@@ -32,7 +32,6 @@ public final class TileSize {
 
 	public static void setTileSize(int var0) {
 		int_size = var0;
-		System.out.println("Tile Size: " + var0);
 		int_sizeMinus1 = var0 - 1;
 		int_sizeHalf = var0 / 2;
 		int_glBufferSize = Math.max(int_glBufferSize, 1024 * var0 * var0);

@@ -102,7 +102,6 @@ public class RenderItem extends Render {
 		
 		if (design != null && custom) {
 			//GL11.glScalef(0.25F, 0.25F, 0.25F);
-			System.out.println("This right meow");
 			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
 		}
 		else{

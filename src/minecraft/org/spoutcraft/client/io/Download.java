@@ -35,7 +35,9 @@ public class Download {
 	}
 	
 	public File getTempFile() {
-		return new File(FileUtil.getTempDirectory(), filename);
+		File downloading = new File(FileUtil.getTempDirectory(), "downloading");
+		downloading.mkdir();
+		return new File(downloading, filename);
 	}
 	
 	public boolean isDownloaded() {

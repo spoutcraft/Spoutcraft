@@ -129,12 +129,18 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 	}
 	
-	private File getBindingsFile() {
-		return new File(FileUtil.getSpoutcraftDirectory(), "bindings.yml");
+	private File getBindingsFile() throws IOException {
+		File file = new File(FileUtil.getSpoutcraftDirectory(), "bindings.yml");
+		if (!file.exists())
+			file.createNewFile();
+		return file;
 	}
 	
-	private File getShortcutsFile() {
-		return new File(FileUtil.getSpoutcraftDirectory(), "shortcuts.yml");
+	private File getShortcutsFile() throws IOException {
+		File file = new File(FileUtil.getSpoutcraftDirectory(), "shortcuts.yml");
+		if (!file.exists())
+			file.createNewFile();
+		return file;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -147,6 +153,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		try {
 			bindings = new ArrayList<KeyBinding>();
 			ArrayList<Object> kbsave = yaml.loadAs(new FileReader(getBindingsFile()), ArrayList.class);
+			if (kbsave == null) {
+				kbsave = new ArrayList<Object>();
+			}
 			for(Object obj:kbsave) {
 				HashMap<String, Object> item = (HashMap<String, Object>) obj;
 				int key = (Integer) item.get("key");
@@ -171,6 +180,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		try {
 			shortcuts.clear();
 			ArrayList<Object> shsave = yaml.loadAs(new FileReader(getShortcutsFile()), ArrayList.class);
+			if (shsave == null) {
+				shsave = new ArrayList<Object>();
+			}
 			for(Object obj:shsave) {
 				HashMap<String, Object> item = (HashMap<String, Object>) obj;
 				Shortcut sh = new Shortcut();

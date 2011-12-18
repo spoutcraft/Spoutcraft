@@ -103,7 +103,7 @@ public class FileDownloadThread extends Thread{
 			if (next != null && !failedUrls.contains(next.getDownloadUrl())) {
 				try {
 					if (!next.isDownloaded()) {
-						System.out.println("Downloading File: " + next.getDownloadUrl());
+						//System.out.println("Downloading File: " + next.getDownloadUrl());
 						activeDownload = FileUtil.getFileName(next.getDownloadUrl());
 						URL url = new URL(next.getDownloadUrl());
 						URLConnection conn = url.openConnection();
@@ -139,7 +139,7 @@ public class FileDownloadThread extends Thread{
 						in.close();
 						bos.close();
 						next.move();
-						System.out.println("File moved to: " + next.directory.getCanonicalPath());
+						//System.out.println("File moved to: " + next.directory.getCanonicalPath());
 						try {
 							sleep(10); //cool off after heavy network useage
 						} catch (InterruptedException e) {}

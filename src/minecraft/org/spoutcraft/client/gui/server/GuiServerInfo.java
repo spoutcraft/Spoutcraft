@@ -396,7 +396,6 @@ public class GuiServerInfo extends GuiSpoutScreen {
 			imgheight = (int) ((double) imgwidth * (1.0/ratio));
 		}
 
-		System.out.println(imgwidth+"x"+imgheight);
 		textureIcon.setWidth(imgwidth).setHeight(imgheight);
 	}
 }

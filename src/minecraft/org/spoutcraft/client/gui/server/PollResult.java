@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -36,7 +35,8 @@ public class PollResult {
 	public static final int PING_BAD_MESSAGE = -4;
 	protected boolean polling = false;
 	protected long pollStart;
-	protected static int numPolling = 0;
+	protected static volatile int numPolling = 0;
+	private static final int maxPollingThreads;
 
 	protected PollThread currentThread;
 
@@ -46,6 +46,10 @@ public class PollResult {
 	protected static TIntObjectHashMap<PollResult> recentResults = new TIntObjectHashMap<PollResult>();
 	protected static Thread send = null;
 	private boolean sent = false;
+	
+	static {
+		maxPollingThreads = 2 + (5 * Runtime.getRuntime().availableProcessors());
+	}
 
 	protected PollResult(String ip, int port, int uid) {
 		setIp(ip);
@@ -138,7 +142,7 @@ public class PollResult {
 
 		@Override
 		public void run() {
-			while(numPolling >= 2) {
+			while(numPolling >= maxPollingThreads) {
 				try {
 					sleep(10);
 				} catch (InterruptedException e) {}
@@ -272,7 +276,6 @@ public class PollResult {
 					    }
 					    wr.close();
 					    rd.close();
-					    System.out.println("Sent DC Data");
 					} catch (IOException e) {
 					}
 				

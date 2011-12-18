@@ -1569,7 +1569,7 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		this.thePlayer.worldObj = this.theWorld;
-		System.out.println("Teleported to " + this.theWorld.worldProvider.worldType);
+		//System.out.println("Teleported to " + this.theWorld.worldProvider.worldType); //Spout removed
 		if (this.thePlayer.isEntityAlive() && var2 < 1) {
 			this.thePlayer.setLocationAndAngles(var3, this.thePlayer.posY, var5, this.thePlayer.rotationYaw, this.thePlayer.rotationPitch);
 			this.theWorld.updateEntityWithOptionalForce(this.thePlayer, false);

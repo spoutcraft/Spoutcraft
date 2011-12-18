@@ -51,11 +51,7 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		File file = FileUtil.findAudioFile(plugin, fileName);
-		if (file != null) {
-			file.delete();
-		}
-		file = FileUtil.findTextureFile(plugin, fileName);
+		File file = FileUtil.findFile(plugin, fileName);
 		if (file != null) {
 			file.delete();
 		}

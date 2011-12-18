@@ -52,7 +52,6 @@ public class ConfigReader {
 	public transient static Object[] settings = null;
 	
 	public static void read() {
-		System.out.println("Reading Configuration");
 		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
 		try {
 			if (!config.exists()) {
@@ -94,8 +93,6 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
-		
-		System.out.println("Finished Reading Configuration");
 	}
 	
 	public static void write() {

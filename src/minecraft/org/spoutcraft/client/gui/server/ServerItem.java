@@ -1,10 +1,5 @@
 package org.spoutcraft.client.gui.server;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
@@ -93,12 +88,12 @@ public class ServerItem implements ListWidgetItem {
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if(icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
-			} else {
-				GL11.glPushMatrix();
-				GL11.glTranslated(x + 2, y + 2, 0);
-				r.drawTexture(icon, 25, 25);
-				GL11.glPopMatrix();
+				icon = CustomTextureManager.getTextureFromJar("/res/unknown_server_icon.png");
 			}
+			GL11.glPushMatrix();
+			GL11.glTranslated(x + 2, y + 2, 0);
+			r.drawTexture(icon, 25, 25);
+			GL11.glPopMatrix();
 		}
 		
 		int marginleft = 29;

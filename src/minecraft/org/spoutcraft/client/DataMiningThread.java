@@ -108,10 +108,8 @@ public class DataMiningThread extends Thread{
 					multiplayer = world.multiplayerWorld;
 					runOnce = true;
 					onRunOnce();
-					System.out.println("Ran Once, Multiplayer: " + multiplayer);
 				}
 				if (multiplayer != world.multiplayerWorld) {
-					System.out.println("Switched to " + (world.multiplayerWorld ? "Multiplayer" : "Singleplayer"));
 					if (world.multiplayerWorld) {
 						doSinglePlayer();
 					}

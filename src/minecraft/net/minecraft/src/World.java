@@ -3116,7 +3116,6 @@ public class World implements IBlockAccess {
 		this.field_35472_c = 1 << this.field_35473_a;
 		this.field_35469_d = this.field_35472_c - 1;
 		this.field_35470_e = this.field_35472_c / 2 - 1;
-		System.out.println("Set Map Height to " + shifts + ", " + (shifts + 4) + ", " + height + ", " + (height -1 ));
 		this.worldInfo.setMapHeight(height);
 	}
 
