@@ -17,22 +17,31 @@
 
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityVillager;
 
-import org.spoutcraft.spoutcraftapi.entity.Monster;
+import org.spoutcraft.spoutcraftapi.entity.Villager;
 
-public class CraftMonster extends CraftCreature implements Monster {
+public class CraftVillager extends CraftCreature implements Villager {
 
-	public CraftMonster(EntityMob entity) {
+	public CraftVillager(EntityVillager entity) {
 		super(entity);
 	}
 
 	@Override
 	public String toString() {
-		return "CraftMonster";
+		return "CraftVillager";
 	}
 
-	public EntityMob getEntityMonster() {
-		return (EntityMob) handle;
+	public Occupation getOccupation() {
+		switch(((EntityVillager)handle).field_40141_a)
+		{
+		case 0: return Occupation.FARMER;
+		case 1: return Occupation.LIBRARIAN;
+		case 2: return Occupation.PRIEST;
+		case 3: return Occupation.BLACKSMITH;
+		case 4: return Occupation.BUTCHER;
+		default: return Occupation.VILLAGER;
+		}
 	}
+
 }
