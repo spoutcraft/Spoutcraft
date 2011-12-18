@@ -17,22 +17,19 @@
 
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityMagmaCube;
 
-import org.spoutcraft.spoutcraftapi.entity.Monster;
+import org.spoutcraft.spoutcraftapi.entity.MagmaCube;
 
-public class CraftMonster extends CraftCreature implements Monster {
+public class CraftMagmaCube extends CraftSlime implements MagmaCube {
 
-	public CraftMonster(EntityMob entity) {
+	public CraftMagmaCube(EntityMagmaCube entity) {
 		super(entity);
 	}
 
 	@Override
 	public String toString() {
-		return "CraftMonster";
+		return "CraftMagmaCube";
 	}
 
-	public EntityMob getEntityMonster() {
-		return (EntityMob) handle;
-	}
 }

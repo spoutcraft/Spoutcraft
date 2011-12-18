@@ -17,22 +17,19 @@
 
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityDragon;
 
-import org.spoutcraft.spoutcraftapi.entity.Monster;
+import org.spoutcraft.spoutcraftapi.entity.EnderDragon;
 
-public class CraftMonster extends CraftCreature implements Monster {
+public class CraftEnderDragon extends CraftLivingEntity implements EnderDragon {
 
-	public CraftMonster(EntityMob entity) {
+	public CraftEnderDragon(EntityDragon entity) {
 		super(entity);
 	}
 
 	@Override
 	public String toString() {
-		return "CraftMonster";
+		return "CraftEnderDragon";
 	}
 
-	public EntityMob getEntityMonster() {
-		return (EntityMob) handle;
-	}
 }

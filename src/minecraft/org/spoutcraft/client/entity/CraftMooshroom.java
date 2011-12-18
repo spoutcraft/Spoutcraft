@@ -17,22 +17,19 @@
 
 package org.spoutcraft.client.entity;
 
-import net.minecraft.src.EntityMob;
+import net.minecraft.src.EntityMooshroom;
 
-import org.spoutcraft.spoutcraftapi.entity.Monster;
+import org.spoutcraft.spoutcraftapi.entity.Mooshroom;
 
-public class CraftMonster extends CraftCreature implements Monster {
+public class CraftMooshroom extends CraftCow implements Mooshroom {
 
-	public CraftMonster(EntityMob entity) {
+	public CraftMooshroom(EntityMooshroom entity) {
 		super(entity);
 	}
 
 	@Override
 	public String toString() {
-		return "CraftMonster";
+		return "CraftMooshroom";
 	}
 
-	public EntityMob getEntityMonster() {
-		return (EntityMob) handle;
-	}
 }

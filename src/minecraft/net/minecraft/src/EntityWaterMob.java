@@ -4,11 +4,15 @@ import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
+import org.spoutcraft.client.entity.CraftWaterMob; //Spout
 
 public abstract class EntityWaterMob extends EntityCreature {
 
 	public EntityWaterMob(World var1) {
 		super(var1);
+		//Spout start
+		this.spoutEntity = new CraftWaterMob(this);
+		//Spout end
 	}
 
 	public boolean canBreatheUnderwater() {
