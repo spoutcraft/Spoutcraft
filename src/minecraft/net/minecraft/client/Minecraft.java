@@ -493,8 +493,11 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public void displayPreviousScreen() {
-		System.out.println(previousScreen);
 		displayGuiScreen(previousScreen, false);
+		previousScreen = null;
+	}
+	
+	public void clearPreviousScreen() {
 		previousScreen = null;
 	}
 
