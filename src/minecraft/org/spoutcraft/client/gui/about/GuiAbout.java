@@ -230,9 +230,12 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("Wulfspider - Co-Lead & Support", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("alta189 - Co-Lead & Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("Top_Cat - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
-		drawScaledString("Raphfrk - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("raphfrk - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("narrowtux - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("Olloth - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("Rycochet - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("RoyAwesome - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("zml2008 - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		
 		top += 20;
 		
