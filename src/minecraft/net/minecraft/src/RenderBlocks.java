@@ -2993,7 +2993,7 @@ public class RenderBlocks {
 				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
 			}
 			if (var1.maxY >= 1.0D) {
-				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3 + 1, var4);
+				var24 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3 + 1, var4);
 			}
 			//Spout end
 			if (this.aoType > 0) {
@@ -3099,7 +3099,7 @@ public class RenderBlocks {
 				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
 			}
 			if (var1.minZ <= 0.0D) {
-				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 - 1);
+				var22 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 - 1);
 			}
 			//Spout end
 			if (this.aoType > 0) {
@@ -3247,7 +3247,7 @@ public class RenderBlocks {
 				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
 			}
 			if (var1.maxZ >= 1.0D) {
-				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 + 1);
+				var25 = var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4 + 1);
 			}
 			//Spout end
 			if (this.aoType > 0) {
@@ -3369,7 +3369,7 @@ public class RenderBlocks {
 				}
 			}
 			//Spout end
-			this.renderWestFace(var1, (double) var2, (double) var3, (double) var4, var1.getBlockTexture(this.blockAccess, var2, var3, var4, 3));
+			this.renderWestFace(var1, (double) var2, (double) var3, (double) var4, var27);
 			if (fancyGrass && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= var5;
 				this.colorRedBottomLeft *= var5;
@@ -3395,7 +3395,7 @@ public class RenderBlocks {
 				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
 			}
 			if (var1.minX <= 0.0D) {
-				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 - 1, var3, var4);
+				var20 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 - 1, var3, var4);
 			}
 			//Spout end
 			if (this.aoType > 0) {
@@ -3543,7 +3543,7 @@ public class RenderBlocks {
 				this.calculateAmbientOcclusionLightValues(var1, var2, var3, var4);
 			}
 			if (var1.maxX >= 1.0D) {
-				var21 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 + 1, var3, var4);
+				var23 = var1.getMixedBrightnessForBlock(this.blockAccess, var2 + 1, var3, var4);
 			}
 			//Spout end
 			if (this.aoType > 0) {
