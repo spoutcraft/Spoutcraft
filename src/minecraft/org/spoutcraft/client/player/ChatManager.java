@@ -27,6 +27,7 @@ import net.minecraft.src.GuiChat;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.bukkit.ChatColor;
 import java.util.HashMap;
 import java.awt.Toolkit;
@@ -396,9 +397,6 @@ public class ChatManager {
 			else if (command.equals("/?") || command.startsWith("/client help")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Spoutcraft Client Debug Commands:");
 				SpoutClient.getHandle().ingameGUI.addChatMessage("/client gc - run the garbage collector");
-				EntityDragon var4 = new EntityDragon(Minecraft.theMinecraft.theWorld);
-				var4.setLocationAndAngles(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posY + 5, Minecraft.theMinecraft.thePlayer.posZ, (new Random()).nextFloat() * 360.0F, 0.0F);
-				Minecraft.theMinecraft.theWorld.entityJoinedWorld(var4);
 				return true;
 			}
 			else if (command.startsWith("/client gc")) {

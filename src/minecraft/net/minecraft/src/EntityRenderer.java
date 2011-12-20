@@ -1155,10 +1155,16 @@ public class EntityRenderer {
 						float var25 = this.rainXCoords[var24] * 0.5F;
 						float var26 = this.rainYCoords[var24] * 0.5F;
 						BiomeGenBase var27 = var17[var48++];
+						
+						boolean forceSnow = false;
+						boolean forceRain = false;
 						if (SpoutClient.getInstance().getBiomeManager().getSnowChanged(var27.getBiomeName())) {
-							var27.setEnableSnow(SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var27.getBiomeName()));
+							forceSnow = SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var27.getBiomeName());
 						}
-						if (var27.canSpawnLightningBolt() || var27.getEnableSnow()) {
+						if (SpoutClient.getInstance().getBiomeManager().getRainChanged(var27.getBiomeName())) {
+							forceRain = SpoutClient.getInstance().getBiomeManager().getRainEnabled(var27.getBiomeName());
+						}
+						if (var27.canSpawnLightningBolt() || var27.getEnableSnow() || forceSnow || forceRain) {
 							int var28 = var44.func_35461_e(var23, var22);
 							int var29 = var46 - var16;
 							int var30 = var46 + var16;
@@ -1176,12 +1182,13 @@ public class EntityRenderer {
 								var32 = var15;
 							}
 
-							if (var29 != var30) {
+							if (var29 != var30 || forceRain || forceSnow) {
 								this.random.setSeed((long) (var23 * var23 * 3121 /* GL_RGBA_MODE */+ var23 * 45238971 ^ var22 * var22 * 418711 + var22 * 13761));
 								float var33 = var18[var48 - 1];
 								float var34;
 								double var37;
-								if (var44.getWorldChunkManager().func_40540_a(var33, var28) >= 0.15F) {
+								double temp = var44.getWorldChunkManager().func_40540_a(var33, var28);
+								if ((temp >= 0.15F && !forceSnow) || forceRain) {
 									if (var20 != 0) {
 										if (var20 >= 0) {
 											var8.draw();
@@ -1205,7 +1212,8 @@ public class EntityRenderer {
 									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var30, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
 									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var30, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
 									var8.setTranslationD(0.0D, 0.0D, 0.0D);
-								} else {
+								}
+								if (forceSnow || (temp < 0.15F && !forceRain)) {
 									if (var20 != 1) {
 										if (var20 >= 0) {
 											var8.draw();
