@@ -100,7 +100,6 @@ public class GuiEditShortcut extends GuiScreen {
 		commandText = new GenericTextField();
 		commandText.setHeight(16).setWidth(355);
 		commandText.setX(58).setY(33);
-		commandText.setText(item.getTitle());
 		commandText.setFocus(true);
 		commandText.setMaximumCharacters(99);
 		getScreen().attachWidget(spoutcraft, commandText);
