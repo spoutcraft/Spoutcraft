@@ -165,12 +165,14 @@ public class NetClientHandler extends NetHandler {
 		this.worldClient.multiplayerWorld = true;
 		//Spout start
 		int height = 128;
+		System.out.println("Var world height: " + Integer.asString(var1.worldHeight));
 		if (var1.worldHeight > 0 && var1.worldHeight < 12) {
 			height = 2 << var1.worldHeight;
 		}
 		else if (var1.worldHeight >= 32) {
 			height = var1.worldHeight;
 		}
+		System.out.println("Height: " + Integer.asString(height));
 		worldClient.setMapHeight(height);
 		//Spout end
 		this.mc.changeWorld1(this.worldClient);
