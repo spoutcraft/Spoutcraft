@@ -21,6 +21,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
@@ -188,7 +189,7 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 				if(brk != -1) {
 					linesTmp.set(i, lineTmp);
 					String otherLine = line.substring(brk + (wrapForSpace?1:0), line.length());
-					if(!otherLine.trim().isEmpty()) {
+					if(!StringUtils.isEmpty(otherLine.trim())) {
 						linesTmp.add(i + 1, otherLine);
 					}
 				}
