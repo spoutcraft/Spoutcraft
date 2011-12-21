@@ -28,6 +28,8 @@ import net.minecraft.src.StepSound;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 
+import org.spoutcraft.client.SpoutClient; // Spout
+
 public abstract class Entity {
 
 	private static int nextEntityID = 0;
@@ -143,7 +145,7 @@ public abstract class Entity {
 		this.entityInit();
 		//Spout Start
 		this.wasOnGround = true;
-		if (Minecraft.theMinecraft.isMultiplayerWorld()) {
+		if (Minecraft.theMinecraft.isMultiplayerWorld() && SpoutClient.getInstance().isSpoutEnabled()) {
 			toProcess.add(this);
 		}
 		//Spout End
