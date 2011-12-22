@@ -646,9 +646,9 @@ public class MCRenderDelegate implements RenderDelegate {
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
 			tLeft = (double)left / textureBinding.getImageWidth();
-			tTop = 1.0 - (double)(top + height) / textureBinding.getImageHeight();
+			tTop = 1.0 - (double)(top) / textureBinding.getImageHeight();
 			tWidth = (double)(left + width) / textureBinding.getImageWidth();
-			tHeight = 1.0 - (double)(top) / textureBinding.getImageHeight();
+			tHeight = 1.0 - (double)(top + height) / textureBinding.getImageHeight();
 		}
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
