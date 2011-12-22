@@ -171,6 +171,9 @@ public class NetClientHandler extends NetHandler {
 		else if (var1.worldHeight >= 32) {
 			height = var1.worldHeight;
 		}
+		else if (var1.worldHeight == 0) {
+			height = 256;
+		}
 		worldClient.setMapHeight(height);
 		//Spout end
 		this.mc.changeWorld1(this.worldClient);
