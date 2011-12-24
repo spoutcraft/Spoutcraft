@@ -179,6 +179,7 @@ public final class EasterEggs {
 						} catch (Exception e) {
 							titleColor = -1;
 						}
+						colorUpdate = current + 600000;
 					}
 					return titleColor;
 
