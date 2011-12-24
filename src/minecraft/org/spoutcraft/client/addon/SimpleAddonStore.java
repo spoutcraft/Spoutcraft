@@ -129,6 +129,9 @@ public class SimpleAddonStore implements AddonStore {
 
 			item.put("databaseId", info.getDatabaseId());
 			//Identified by name
+			if(info.getAddon() == null) {
+				continue;
+			}
 			item.put("name", info.getAddon().getDescription().getName());
 			item.put("internetAccess", info.hasInternetAccess());
 			item.put("quota", info.getQuota());

@@ -28,6 +28,7 @@ import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxView;
 
 //Spout End
 
@@ -258,7 +259,12 @@ public class GuiScreen extends Gui {
 				ListWidgetItem current = lw.getSelectedItem();
 				current.onClick(x - 5, y - currentHeight, doubleclick);
 				lw.onSelected(lw.getSelectedRow(), doubleclick);
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
+				if(lw instanceof ComboBoxView) {
+					PacketComboBox packet = new PacketComboBox(((ComboBoxView) lw).getComboBox());
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+				} else {
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
+				}
 
 				lastClick = System.currentTimeMillis();
 				return true;
@@ -315,6 +321,10 @@ public class GuiScreen extends Gui {
 		ButtonClickEvent event = ButtonClickEvent.getInstance(getPlayer(), screen, (Button) control);
 		((Button) control).onButtonClick(event);
 		SpoutClient.getInstance().getAddonManager().callEvent(event);
+		if(control instanceof GenericComboBox) {
+			PacketComboBox packet = new PacketComboBox((GenericComboBox) control);
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+		}
 	}
 
 	protected void mouseClicked(int var1, int var2, int var3) {
