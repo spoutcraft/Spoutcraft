@@ -1,5 +1,7 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,9 +9,10 @@ import java.util.List;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericComboBox extends GenericButton implements ComboBox {
-	
+
 	private List<String> items = new ArrayList<String>();
 	private ComboBoxModel model;
 	private GenericListView view;
@@ -93,7 +96,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 	@Override
 	public String getText() {
-		return getSelectedItem();
+		return super.getText() + (super.getText().isEmpty()?"":": ") + getSelectedItem();
 	}
 	
 	@Override
@@ -133,6 +136,19 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	@Override
 	public Widget setScreen(Screen screen) {
 		return setScreen(null, screen);
+	}
+
+	@Override
+	public void readData(DataInputStream input) throws IOException {
+		super.readData(input);
+		view.setSelection(input.readInt());
+		int count = input.readInt();
+		items.clear();
+		for(int i = 0; i < count; i++) {
+			String item = PacketUtil.readString(input);
+			items.add(item);
+		}
+		model.setList(items);
 	}
 
 	protected class ComboBoxModel extends AbstractListModel {
@@ -226,10 +242,10 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		}
 	}
 	
-	protected class ComboBoxView extends GenericListView {
+	public class ComboBoxView extends GenericListView {
 		
-		ComboBox combo;
-		public ComboBoxView(AbstractListModel model, ComboBox box) {
+		GenericComboBox combo;
+		public ComboBoxView(AbstractListModel model, GenericComboBox box) {
 			super(model);
 			combo = box;
 			setBackgroundColor(new Color(0.5f,0.5f,0.5f,0.9f));
@@ -287,5 +303,18 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 				return (int) (combo.getActualY() - 5);
 			}
 		}
+
+		public GenericComboBox getComboBox() {
+			return combo;
+		}
+	}
+
+	public ComboBox setOpen(boolean open) {
+		if(open) {
+			openList();
+		} else {
+			closeList();
+		}
+		return this;
 	}
 }
