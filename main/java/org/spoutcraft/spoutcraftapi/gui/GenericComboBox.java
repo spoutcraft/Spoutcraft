@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
@@ -96,7 +97,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 	@Override
 	public String getText() {
-		return super.getText() + (super.getText().isEmpty()?"":": ") + getSelectedItem();
+		return super.getText() + (StringUtils.isEmpty(super.getText())?"":": ") + getSelectedItem();
 	}
 	
 	@Override
