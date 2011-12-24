@@ -1,11 +1,11 @@
-package org.getspout.spout.packet;
+package org.spoutcraft.client.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.getspout.spout.client.SpoutClient;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
