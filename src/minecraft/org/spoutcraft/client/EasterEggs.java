@@ -35,6 +35,8 @@ public final class EasterEggs {
 	private static final File file = new File(Minecraft.getMinecraftDir(), "spoutcraft" + File.separator + "special.yml");
 	private static final List<EasterEgg> eggs = new ArrayList<EasterEgg>();
 	private static Map<String, Object> map = null;
+	private static long colorUpdate = 0;
+	private static int titleColor = -1;
 
 	@SuppressWarnings("unchecked")
 	private static Map<String, Object> getMap() {
@@ -146,7 +148,8 @@ public final class EasterEggs {
 		}
 		if (user.equalsIgnoreCase("Olloth")) {
 			return ChatColor.DARK_RED + "Olloth";
-		} if (user.equalsIgnoreCase("Kylegar")) {
+		}
+		if (user.equalsIgnoreCase("Kylegar")) {
 			return ChatColor.AQUA + "Roy" + ChatColor.GREEN + "Awesome";
 		}
 		return null;
@@ -161,19 +164,24 @@ public final class EasterEggs {
 		for (EasterEgg egg : eggs) {
 			if (egg.getStart() <= current && egg.getEnd() >= current) {
 				if (egg.getTitlecolor() != null && !egg.getTitlecolor().isEmpty()) {
-					String result = "";
-					List<String> colors = egg.getTitlecolor();
-					if (colors.size() > 1) {
-						int index = new Random().nextInt(colors.size());
-						result =  colors.get(index);
-					} else {
-						result = colors.get(0);
+					if (current >= colorUpdate) {
+						String result = "";
+						List<String> colors = egg.getTitlecolor();
+						if (colors.size() > 1) {
+							int index = new Random().nextInt(colors.size());
+							result = colors.get(index);
+						} else {
+							result = colors.get(0);
+						}
+						try {
+							ChatColor c = ChatColor.valueOf(result);
+							titleColor = convert(c);
+						} catch (Exception e) {
+							titleColor = -1;
+						}
 					}
-					try {
-						ChatColor c = ChatColor.valueOf(result);
-						return convert(c);
-					} catch (Exception e) {
-					}
+					return titleColor;
+
 				}
 			}
 		}
@@ -241,7 +249,7 @@ public final class EasterEggs {
 			case DARK_AQUA:
 				return 0x00AAAA;
 			case DARK_BLUE:
-				return 0x0000AA;				
+				return 0x0000AA;
 			case DARK_GRAY:
 				return 0x555555;
 			case DARK_GREEN:
