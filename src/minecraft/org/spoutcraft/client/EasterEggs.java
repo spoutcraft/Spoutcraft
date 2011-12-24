@@ -152,6 +152,10 @@ public final class EasterEggs {
 		if (user.equalsIgnoreCase("Kylegar")) {
 			return ChatColor.AQUA + "Roy" + ChatColor.GREEN + "Awesome";
 		}
+
+		if (user.equalsIgnoreCase("zml2008")) {
+			return ChatColor.DARK_PURPLE + "zml2008";
+		}
 		return null;
 	}
 
