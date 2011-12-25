@@ -77,7 +77,6 @@ public class DataMiningThread extends Thread{
 		pingLink("http://bit.ly/vanillalogin");
 	}
 	
-	@SuppressWarnings("unused")
 	private void pingLink(String Url) {
 		try {
 			URL url = new URL(Url);
