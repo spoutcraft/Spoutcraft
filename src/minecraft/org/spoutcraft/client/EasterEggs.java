@@ -37,7 +37,8 @@ public final class EasterEggs {
 	private static Map<String, Object> map = null;
 	private static long colorUpdate = 0;
 	private static int titleColor = -1;
-
+	private static String lastColor = "WHITE";
+	
 	@SuppressWarnings("unchecked")
 	private static Map<String, Object> getMap() {
 		if (!file.exists())
@@ -169,21 +170,8 @@ public final class EasterEggs {
 			if (egg.getStart() <= current && egg.getEnd() >= current) {
 				if (egg.getTitlecolor() != null && !egg.getTitlecolor().isEmpty()) {
 					if (current >= colorUpdate) {
-						String result = "";
-						List<String> colors = egg.getTitlecolor();
-						if (colors.size() > 1) {
-							int index = new Random().nextInt(colors.size());
-							result = colors.get(index);
-						} else {
-							result = colors.get(0);
-						}
-						try {
-							ChatColor c = ChatColor.valueOf(result);
-							titleColor = convert(c);
-						} catch (Exception e) {
-							titleColor = -1;
-						}
-						colorUpdate = current + 600000;
+						titleColor = getNewTitleColor(egg);
+						colorUpdate = current + 300000;
 					}
 					return titleColor;
 
@@ -191,6 +179,34 @@ public final class EasterEggs {
 			}
 		}
 		return -1;
+	}
+	
+	private static int getNewTitleColor(EasterEgg egg) {
+		String result = "";
+		int tries = 0;
+		boolean stop = false;
+		while (!stop) {
+			List<String> colors = egg.getTitlecolor();
+			if (colors.size() > 1) {
+				int index = new Random().nextInt(colors.size());
+				result = colors.get(index);
+			} else {
+				result = colors.get(0);
+			}
+			if (!result.equals(lastColor) || tries > 10) {
+				stop = true;
+			}
+			tries ++;
+		}
+		lastColor = result;
+		try {
+			ChatColor c = ChatColor.valueOf(result);
+			titleColor = convert(c);
+		} catch (Exception e) {
+			titleColor = -1;
+		}
+		
+		return titleColor;
 	}
 
 	public static String getSplashTextEasterEgg() {
