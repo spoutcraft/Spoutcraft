@@ -28,6 +28,10 @@ class ThreadDownloadImage extends Thread {
 		try {
 			URL var2 = new URL(this.location);
 			var1 = (HttpURLConnection)var2.openConnection();
+			//Spout Start
+			System.setProperty("http.agent", "");
+			var1.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
+			//Spout End
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
