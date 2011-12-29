@@ -645,10 +645,11 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
-			tLeft = (double)left / textureBinding.getImageWidth();
-			tTop = 1.0 - (double)(top) / textureBinding.getImageHeight();
+			// Must be done in this order to prevent vertical reflection
+			tLeft = (double)(left) / textureBinding.getImageWidth();
+			tTop = 1.0 - (double)(top + height) / textureBinding.getImageHeight();
 			tWidth = (double)(left + width) / textureBinding.getImageWidth();
-			tHeight = 1.0 - (double)(top + height) / textureBinding.getImageHeight();
+			tHeight = 1.0 - (double)(top) / textureBinding.getImageHeight();
 		}
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
