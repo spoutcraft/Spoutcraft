@@ -40,8 +40,8 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonSelect.setTooltip("You can also doubleclick on an item");
 		buttonReservoir = new GenericButton("Database");
 		buttonReservoir.setTooltip("Get awesome new textures here!");
-		buttonDelete = new GenericButton("Delete");
-		buttonDelete.setTooltip("Deletes the Texture Pack. BEWARE!");
+		buttonDelete = new DeleteTexturepackButton(this);
+		buttonDelete.setTooltip("Deletes the Texture Pack.");
 		buttonInfo = new GenericButton("Info");
 		buttonInfo.setTooltip("Go to the online database entry");
 	}
@@ -119,20 +119,6 @@ public class GuiTexturePacks extends GuiScreen {
 		if(btn.equals(buttonReservoir)) {
 			mc.displayGuiScreen(new GuiTexturePacksDatabase());
 		}
-		if(btn.equals(buttonDelete)) {
-			try {
-				TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
-				if(pack instanceof TexturePackCustom) {
-					TexturePackCustom custom = (TexturePackCustom) pack;
-					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
-					if(d.exists()) {
-						d.delete();
-					}
-					model.update();
-				}
-			} catch(NullPointerException e) {
-			}
-		}
 		if(btn.equals(buttonInfo)) {
 			try {
 				TexturePackItem item = model.getItem(view.getSelectedRow());
@@ -150,5 +136,20 @@ public class GuiTexturePacks extends GuiScreen {
 			buttonInfo.setEnabled(item.id != -1);
 			buttonDelete.setEnabled((item.getPack() instanceof TexturePackCustom));
 		} catch(Exception e) {}
+	}
+
+	public void deleteCurrentTexturepack() {
+		try {
+			TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
+			if(pack instanceof TexturePackCustom) {
+				TexturePackCustom custom = (TexturePackCustom) pack;
+				File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
+				if(d.exists()) {
+					d.delete();
+				}
+				model.update();
+			}
+		} catch(NullPointerException e) {
+		}
 	}
 }

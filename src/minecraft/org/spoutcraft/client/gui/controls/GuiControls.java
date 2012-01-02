@@ -55,7 +55,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		buttonAdd = new GenericButton("Add Shortcut");
 		buttonEdit = new GenericButton("Edit");
 		buttonEdit.setTooltip("Edit Shortcut");
-		buttonRemove = new GenericButton("Remove");
+		buttonRemove = new DeleteControlButton(this);
 		buttonRemove.setTooltip("Remove Shortcut");
 		labelDescription = new GenericLabel();
 		labelDescription.setText("Double-click an item, then press the key (combination).");
@@ -162,14 +162,6 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 			editItem(sh.getShortcut());
 		} else if(btn.equals(buttonEdit) && item != null) {
 			model.setEditing(item);
-		} else if(sh != null && btn.equals(buttonRemove)) {
-			man.unregisterShortcut(sh.getShortcut());
-			man.save();
-			model.refresh();
-		} else if(binding != null && btn.equals(buttonRemove)) {
-			man.unregisterControl(binding.getBinding());
-			man.save();
-			model.refresh();
 		}
 	}
 	
@@ -220,6 +212,28 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 	public ControlsModel getModel() {
 		return model;
+	}
+
+	public void deleteCurrentControl() {
+		SimpleKeyBindingManager man = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
+		ControlsBasicItem item = model.getItem(view.getSelectedRow());
+		ShortcutBindingItem sh = null;
+		if(item != null && item instanceof ShortcutBindingItem) {
+			sh = (ShortcutBindingItem) item;
+		}
+		KeyBindingItem binding = null;
+		if(item != null && item instanceof KeyBindingItem) {
+			binding = (KeyBindingItem) item;
+		}
+		if(sh != null) {
+			man.unregisterShortcut(sh.getShortcut());
+			man.save();
+			model.refresh();
+		} else if(binding != null) {
+			man.unregisterControl(binding.getBinding());
+			man.save();
+			model.refresh();
+		}
 	}
 
 }

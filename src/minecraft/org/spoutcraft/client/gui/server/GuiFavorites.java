@@ -28,7 +28,6 @@ public class GuiFavorites extends GuiScreen {
 	private GenericListView view;
 	private Label title;
 	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
-	private long confirmationTimeout = 0;
 
 	public GuiFavorites(GuiScreen parent) {
 		this.parent = parent;
@@ -101,7 +100,7 @@ public class GuiFavorites extends GuiScreen {
 
 		top += 25;
 
-		buttonDelete = new GenericButton("Delete");
+		buttonDelete = new DeleteFavoriteButton(this);
 		buttonDelete.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDelete);
 		
@@ -161,16 +160,6 @@ public class GuiFavorites extends GuiScreen {
 				updateButtons();
 			}
 		}
-		if(btn.equals(buttonDelete)) {
-			if(buttonDelete.getText().equals("Delete")) {
-				buttonDelete.setText(ChatColor.RED+"Really?");
-				confirmationTimeout = System.currentTimeMillis();
-			} else {
-				model.removeServer((ServerItem)view.getSelectedItem());
-				model.save();
-				buttonDelete.setText("Delete");
-			}
-		}
 		if(btn.equals(buttonJoin)) {
 			ServerItem item = null;
 			if(view.getSelectedRow() > -1) {
@@ -203,6 +192,11 @@ public class GuiFavorites extends GuiScreen {
 				item.poll();
 			}
 		}
+	}
+	
+	public void deleteCurrentFavorite() {
+		model.removeServer((ServerItem)view.getSelectedItem());
+		model.save();
 	}
 
 	public void doQuickJoin() {
@@ -249,14 +243,6 @@ public class GuiFavorites extends GuiScreen {
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
 			color.setBlue(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
-		}
-		if(System.currentTimeMillis() - confirmationTimeout > 5000) {
-			buttonDelete.setText("Delete");
-		}
-		if(System.currentTimeMillis() - confirmationTimeout < 500) {
-			buttonDelete.setEnabled(false);
-		} else if(!buttonDelete.getText().equals("Delete")) {
-			buttonDelete.setEnabled(true);
 		}
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();

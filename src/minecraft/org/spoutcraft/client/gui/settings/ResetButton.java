@@ -2,10 +2,9 @@ package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.client.gui.SafeButton;
 
-public class ResetButton extends GenericButton {
+public class ResetButton extends SafeButton {
 	
 	VideoSettings parent;
 	
@@ -16,10 +15,10 @@ public class ResetButton extends GenericButton {
 	}
 
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
+	protected void executeAction() {
 		ConfigReader.restoreDefaults();
 		ConfigReader.write();
-
+	
 		SpoutClient.getHandle().displayGuiScreen(new VideoSettings(parent.parent));
 	}
 }
