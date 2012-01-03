@@ -521,26 +521,16 @@ public class RenderGlobal implements IWorldAccess {
 
 	public int sortAndRender(EntityLiving var1, int var2, double var3) {
 		Profiler.startSection("sortchunks");
-		// Spout Start
-		// Performance Change
-		// Do not reload if we already can see farther than the new distance
-		if (mc.gameSettings.renderDistance < renderDistance) {
+		if (mc.gameSettings.renderDistance != renderDistance) {
 			loadRenderers();
 		}
-		// Do not bother with this if we are resetting the renderers,
-		// loadRenderers clears the list anyway
-		else {
-			Profiler.startSection("addingrenderers"); //Spout
-			for (int var5 = 0; var5 < 10; ++var5) {
-				this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
-				WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
-				if (var6.needsUpdate && !this.worldRenderersToUpdate.contains(var6)) {
-					this.worldRenderersToUpdate.add(var6);
-				}
+		for (int var5 = 0; var5 < 10; ++var5) {
+			this.worldRenderersCheckIndex = (this.worldRenderersCheckIndex + 1) % this.worldRenderers.length;
+			WorldRenderer var6 = this.worldRenderers[this.worldRenderersCheckIndex];
+			if (var6.needsUpdate && !this.worldRenderersToUpdate.contains(var6)) {
+				this.worldRenderersToUpdate.add(var6);
 			}
-			Profiler.endSection(); //Spout
 		}
-		// Spout End
 
 		if (var2 == 0) {
 			this.renderersLoaded = 0;
