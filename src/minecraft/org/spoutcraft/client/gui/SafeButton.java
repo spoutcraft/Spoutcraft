@@ -8,6 +8,7 @@ public abstract class SafeButton extends GenericButton {
 	private String warningText = ChatColor.RED + "Really?";
 	private boolean reallyShown = false;
 	private long timeout = 3000;
+	protected Thread currentThread = null;
 	
 	@Override
 	public String getText() {
@@ -36,19 +37,25 @@ public abstract class SafeButton extends GenericButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
+		if(currentThread != null) {
+			currentThread.interrupt();
+			currentThread = null;
+		}
 		if(reallyShown) {
 			executeAction();
 			reallyShown = false;
 		} else {
 			reallyShown = true;
-			new Thread() {
+			currentThread = new Thread() {
 				public void run() {
 					try {
 						Thread.sleep(getTimeout());
 						reallyShown = false;
+						currentThread = null;
 					} catch(InterruptedException e) {}
 				}
-			}.start();
+			};
+			currentThread.start();
 		}
 	}
 	
