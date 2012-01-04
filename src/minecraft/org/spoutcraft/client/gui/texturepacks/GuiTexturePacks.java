@@ -123,7 +123,7 @@ public class GuiTexturePacks extends GuiScreen {
 			try {
 				TexturePackItem item = model.getItem(view.getSelectedRow());
 				if(item.id != -1) {
-					Sys.openURL("http://textures.getspout.org/info/"+item.id+".php");
+					Sys.openURL("http://textures.getspout.org/info/"+item.id);
 				}
 			} catch(Exception e) {
 			}
