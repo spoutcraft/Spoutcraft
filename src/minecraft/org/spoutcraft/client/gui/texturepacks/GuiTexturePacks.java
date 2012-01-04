@@ -150,6 +150,7 @@ public class GuiTexturePacks extends GuiScreen {
 				model.update();
 			}
 		} catch(NullPointerException e) {
+			e.printStackTrace();
 		}
 	}
 }
