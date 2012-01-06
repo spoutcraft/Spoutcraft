@@ -72,7 +72,8 @@ public enum PacketType {
 	PacketCustomBlockChunkOverride(51, PacketCustomBlockChunkOverride.class),
 	PacketGenericFood(52, PacketGenericFood.class),
 	PacketEntityInformation(53, PacketEntityInformation.class), 
-	PacketComboBox(54, PacketComboBox.class),
+	PacketComboBox(54, PacketComboBox.class), 
+	PacketFocusUpdate(55, PacketFocusUpdate.class),
 	;
 	
 	private final int id;
