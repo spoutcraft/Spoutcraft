@@ -27,6 +27,7 @@ import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
+import org.spoutcraft.spoutcraftapi.gui.WidgetManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
@@ -159,5 +160,7 @@ public interface Client extends PropertyInterface {
 		Multiplayer,
 		Menu;
 	}
+
+	public WidgetManager getWidgetManager();
 
 }

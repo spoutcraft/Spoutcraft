@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public abstract class GenericControl extends GenericWidget implements Control{
@@ -92,7 +93,10 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	}
 	
 	public Control setFocus(boolean focus) {
-		this.focus = focus;
+		if(this.focus != focus) {
+			this.focus = focus;
+			Spoutcraft.getWidgetManager().sendFocusUpdate(this, focus);
+		}
 		return this;
 	}
 

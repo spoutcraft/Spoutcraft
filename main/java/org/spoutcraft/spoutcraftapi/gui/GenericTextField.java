@@ -34,7 +34,7 @@ public class GenericTextField extends GenericControl implements TextField {
 	private static final char MASK_MAXLINES = 0x7F; // bits 1-7
 	private static final char MASK_TABINDEX = 0x3F80; // bits 8-4
 	private static final char FLAG_PASSWORD = 0x4000; // bit 15
-	private static final char FLAG_FOCUS = 0x8000; // bit 16
+	//private static final char FLAG_FOCUS = 0x8000; // bit 16 focus is already set in Control.
 	protected boolean password = false;
 	protected TextProcessor textProcessor;
 	protected int tabIndex = 0;
@@ -69,7 +69,6 @@ public class GenericTextField extends GenericControl implements TextField {
 		setPasswordField((c & FLAG_PASSWORD) > 0);
 		setMaximumLines(c & MASK_MAXLINES);
 		setTabIndex((c & MASK_TABINDEX) >>> 7);
-		setFocus((c & FLAG_FOCUS) > 0);
 		setCursorPosition(input.readChar());
 		setMaximumCharacters(input.readChar());
 		setText(PacketUtil.readString(input));
@@ -81,7 +80,7 @@ public class GenericTextField extends GenericControl implements TextField {
 		super.writeData(output);
 		PacketUtil.writeColor(output, getFieldColor());
 		PacketUtil.writeColor(output, getBorderColor());
-		output.writeChar((char) (getMaximumLines() & MASK_MAXLINES | (getTabIndex() << 7) & MASK_TABINDEX | (isPasswordField() ? FLAG_PASSWORD : 0) | (isFocus() ? FLAG_FOCUS : 0)));
+		output.writeChar((char) (getMaximumLines() & MASK_MAXLINES | (getTabIndex() << 7) & MASK_TABINDEX | (isPasswordField() ? FLAG_PASSWORD : 0)));
 		output.writeChar(getCursorPosition());
 		output.writeChar(getMaximumCharacters());
 		PacketUtil.writeString(output, getText());

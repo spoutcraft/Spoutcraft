@@ -30,6 +30,7 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
+import org.spoutcraft.spoutcraftapi.gui.WidgetManager;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
@@ -256,5 +257,9 @@ public final class Spoutcraft {
 	
 	public static AddonStore getAddonStore() {
 		return client.getAddonStore();
+	}
+	
+	public static WidgetManager getWidgetManager() {
+		return client.getWidgetManager();
 	}
 }
