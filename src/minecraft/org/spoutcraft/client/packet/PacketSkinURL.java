@@ -78,8 +78,7 @@ public class PacketSkinURL implements SpoutPacket{
 				e.skinUrl = this.skinURL;
 			}
 			if (!this.cloakURL.equals("none")) {
-				e.cloakUrl = this.cloakURL;
-				e.playerCloakUrl = this.cloakURL;
+				e.updateCloak(cloakURL);
 			}
 			if (release) {
 				e.worldObj.releaseEntitySkin(e);
