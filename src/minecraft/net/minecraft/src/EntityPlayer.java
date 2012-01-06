@@ -316,8 +316,12 @@ public abstract class EntityPlayer extends EntityLiving {
 	protected void closeScreen() {
 		this.craftingInventory = this.inventorySlots;
 	}
-
+	
 	public void updateCloak() {
+		updateCloak("http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png");
+	}
+
+	public void updateCloak(String cloak) {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
 		String easterEgg = org.spoutcraft.client.EasterEggs.getEasterEggCape();
@@ -328,7 +332,7 @@ public abstract class EntityPlayer extends EntityLiving {
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
-			this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
+			this.playerCloakUrl = cloak;
 		}
 		//Spout End
 		this.cloakUrl = this.playerCloakUrl;
