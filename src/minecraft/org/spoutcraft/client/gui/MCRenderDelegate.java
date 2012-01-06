@@ -311,6 +311,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTextField textField) {
+		scissorWidget(textField);
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		RenderUtil.drawRectangle((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
 		RenderUtil.drawRectangle((int) textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
@@ -339,6 +340,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (showCursor) {
 			font.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
+		
 	}
 
 	public void render(GenericTexture texture) {

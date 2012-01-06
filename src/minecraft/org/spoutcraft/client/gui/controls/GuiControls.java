@@ -28,7 +28,7 @@ import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
-	private Label labelTitle, labelDescription;
+	private GenericLabel labelTitle, labelDescription;
 	private Button buttonDone, buttonAdd, buttonEdit, buttonRemove;
 	public CheckBox checkVanilla, checkShortcuts, checkBindings;
 	public ControlsSearch search;
@@ -59,6 +59,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		buttonRemove.setTooltip("Remove Shortcut");
 		labelDescription = new GenericLabel();
 		labelDescription.setText("Double-click an item, then press the key (combination).");
+		labelDescription.setWrapLines(true);
 		filter = new GenericScrollArea();
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
@@ -130,6 +131,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		top+=25;
 
 		labelDescription.setHeight(20).setWidth(cellWidth * 2 + 5).setX(left).setY(top);
+		labelDescription.recalculateLines();
 
 		buttonDone.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 	}
