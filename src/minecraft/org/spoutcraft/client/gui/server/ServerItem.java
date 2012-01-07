@@ -8,6 +8,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Color;
@@ -44,8 +45,11 @@ public class ServerItem implements ListWidgetItem {
 	
 	protected PollResult pollResult;
 	
+	private static final String latestMC = "1.0";
+	protected String mcversion = latestMC;
+	
 	public ServerItem clone() {
-		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId());
+		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId(),  mcversion);
 		return clone;
 	}
 	
@@ -57,11 +61,16 @@ public class ServerItem implements ListWidgetItem {
 	}
 	
 	public ServerItem(String title, String ip, int port, int dbId) {
+		this(title, ip, port, dbId, latestMC);
+	}
+	
+	public ServerItem(String title, String ip, int port, int dbId, String version) {
 		this.ip = ip;
 		this.port = port;
 		this.title = title;
 		this.databaseId = dbId;
 		this.pollResult = PollResult.getPoll(ip, port, dbId);
+		mcversion = version;
 	}
 	
 	public void setFavorite(boolean b) {
@@ -222,12 +231,21 @@ public class ServerItem implements ListWidgetItem {
 			GL11.glPopMatrix();
 			iconMargin += 5 + 7;
 		}
+		
+		if (!mcversion.equals(latestMC)) {
+			GL11.glPushMatrix();
+			GL11.glTranslatef(x+width/5, y-0.5F, 0);
+			GL11.glRotatef(-37.5F, 0F, 0F, 1F);
+			font.drawStringWithShadow("Outdated!", 0, 0, 0xFF0000);
+			GL11.glPopMatrix();
+		}
 	}
 
 	public void onClick(int x, int y, boolean doubleClick) {
 		if(doubleClick) {
 			if (databaseId != -1){
-				NetworkUtils.pingUrl("http://servers.getspout.org/popular.php?uid=" + databaseId);
+				String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.getspout.org/popular.php?uid=");
+				NetworkUtils.pingUrl(url + databaseId);
 			}
 			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
 		}

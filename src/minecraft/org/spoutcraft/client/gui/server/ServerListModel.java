@@ -104,7 +104,8 @@ public class ServerListModel extends AbstractAPIModel {
 				String adress = (String) hash.get("ip");
 				byte accessType = Byte.valueOf((String) hash.get("whitelist"));
 				String country = (String) hash.get("country");
-				ServerItem server = new ServerItem(name, adress, port, uid);
+				String version = URLDecoder.decode((String) hash.get("mcversion"), "UTF-8");
+				ServerItem server = new ServerItem(name, adress, port, uid, version);
 				server.setFavorite(false);
 				server.setCountry(country);
 				server.setAccessType(accessType);
