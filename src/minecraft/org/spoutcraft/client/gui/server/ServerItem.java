@@ -232,13 +232,14 @@ public class ServerItem implements ListWidgetItem {
 			iconMargin += 5 + 7;
 		}
 		
-		if (!mcversion.equals(latestMC)) {
+		//TODO: outdated version alert
+		/*if (!mcversion.equals(latestMC)) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x+width/5, y-0.5F, 0);
 			GL11.glRotatef(-37.5F, 0F, 0F, 1F);
 			font.drawStringWithShadow("Outdated!", 0, 0, 0xFF0000);
 			GL11.glPopMatrix();
-		}
+		}*/
 	}
 
 	public void onClick(int x, int y, boolean doubleClick) {
