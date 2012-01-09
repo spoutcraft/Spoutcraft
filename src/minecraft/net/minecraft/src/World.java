@@ -2112,7 +2112,11 @@ public class World implements IBlockAccess {
 			EntityPlayer var2 = (EntityPlayer) this.playerEntities.get(var1);
 			int var3 = MathHelper.floor_double(var2.posX / 16.0D);
 			int var4 = MathHelper.floor_double(var2.posZ / 16.0D);
-			byte var5 = 7;
+			
+			//Spout start
+			//byte var5 = 7;
+			byte var5 = 5;
+			//Spout end
 
 			for (var6 = -var5; var6 <= var5; ++var6) {
 				for (int var7 = -var5; var7 <= var5; ++var7) {
