@@ -810,7 +810,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 		} else if (!this.mc.theWorld.worldProvider.isNether) {
 			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-			Vec3D var2 = this.worldObj.getSkyColor(this.mc.renderViewEntity, f);
+			//Vec3D var2 = this.worldObj.getSkyColor(this.mc.renderViewEntity, f);
 			// Spout Start
 			Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, f);
 			float var3 = (float) vec3d.xCoord;
