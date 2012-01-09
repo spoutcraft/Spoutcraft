@@ -84,15 +84,7 @@ public class ConfigReader {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
-		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
-		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
-		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
-		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
-		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
-		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
-		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
+		updateMCConfig();
 	}
 	
 	public static void write() {
@@ -156,6 +148,17 @@ public class ConfigReader {
 		return defaultValue;
 	}
 	
+	private static void updateMCConfig() {
+		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
+		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
+		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
+		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
+		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
+		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
+		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
+		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
+	}
+	
 	public static void restoreDefaults() {
 		if (ConfigReader.settings != null) {
 			Field[] fields = ConfigReader.class.getDeclaredFields();
@@ -172,6 +175,7 @@ public class ConfigReader {
 			}
 			write();
 		}
+		updateMCConfig();
 	}
 
 }
