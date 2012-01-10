@@ -19,7 +19,7 @@ import org.bukkit.util.config.Configuration;
 
 public class MirrorUtils {
 	private static boolean updated = false;
-	private static File mirrorsYML = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft" + File.separator + "mirrors.yml");
+	private static File mirrorsYML = new File(FileUtil.getSpoutcraftDirectory(), "mirrors.yml");
 	private static final Random rand = new Random();
 	
 	static {
