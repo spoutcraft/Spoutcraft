@@ -54,9 +54,6 @@ public class GuiCreateWorld extends GuiScreen {
 	}
 
 	public void initGui() {
-		//Spout start
-		Keyboard.enableRepeatEvents(true);
-		//Spout end
 		StringTranslate var1 = StringTranslate.getInstance();
 		Keyboard.enableRepeatEvents(true);
 		this.controlList.clear();
@@ -80,6 +77,7 @@ public class GuiCreateWorld extends GuiScreen {
 		worldHeightButton.drawButton = false;
 		worldHeightButton.enabled = false;
 		this.controlList.add(worldHeightButton);
+		field_35368_i = false;
 		//Spout end
 	}
 
@@ -131,7 +129,7 @@ public class GuiCreateWorld extends GuiScreen {
 		if(var1.enabled) {
 			if(var1.id == 1) {
 				this.mc.displayGuiScreen(this.parentGuiScreen);
-			} else if(var1.id == 0) {
+			} else if(var1.id == 0 && !field_35368_i) { //Spout 
 				this.mc.displayGuiScreen((GuiScreen)null);
 				if(this.createClicked) {
 					return;
