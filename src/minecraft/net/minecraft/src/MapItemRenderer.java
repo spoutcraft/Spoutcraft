@@ -118,7 +118,7 @@ public class MapItemRenderer {
 				customName = item.getName();
 			}
 		}
-		if (customName != null && customName.length() > 0) {
+		if (customName != null && customName.length() > 0 && !customName.equals("Map")) {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
 		}
 		else {
