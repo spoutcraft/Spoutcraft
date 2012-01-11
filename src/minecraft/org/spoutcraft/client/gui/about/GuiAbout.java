@@ -34,6 +34,7 @@ public class GuiAbout extends GuiScreen {
 	Texture spoutcraftTexture = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
 	Texture yourkitLogo = CustomTextureManager.getTextureFromJar("/res/yourkit.png");
 	Texture beastNodeLogo = CustomTextureManager.getTextureFromJar("/res/beastnode.png");
+	Texture minecraftBizLogo = CustomTextureManager.getTextureFromJar("/res/minecraft_biz.png");
 	private int sourceY = -1;
 	private int sourceWidth = -1;
 	private boolean hoveringLink = false;
@@ -74,6 +75,9 @@ public class GuiAbout extends GuiScreen {
 		}
 		else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(15), 33, 147, mouseX, mouseY)) {
 			browseUrl = "http://spout.in/beast";
+		}
+		else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(85), 33, 147, mouseX, mouseY)) {
+			browseUrl = "http://spout.in/minebiz";
 		}
 		else if (this.isInBoundingRect((int)(0.0325f * this.width), (this.height - 40), (int)(44 * 0.4f), (int)(310 * 0.4f), mouseX, mouseY)) {
 			browseUrl = "http://spout.in/minecraft";
@@ -223,7 +227,7 @@ public class GuiAbout extends GuiScreen {
 		top = 0;
 		drawScaledString("Sponsors", this.width / 2 + 30, top, 0xffffff); top += 10;
 		
-		top = 90;
+		top = 130;
 		
 		drawScaledString("Team", this.width / 2 + 30, top, 0xffffff); top += 10;
 		drawScaledString("Afforess - Lead Developer", this.width / 2 + 30, top, 0x808080); top += 10;
@@ -283,9 +287,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}
-		if (isInBoundingRect(yourkitX, yourkitY, 15, 55, x, y)) {
-			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.BLUE + "www.yourkit.com", x, y);
-		}
+		
 		
 		int beastNodeX = (this.width / 2 + 30);
 		int beastNodeY = getScaledHeight(15);
@@ -312,12 +314,47 @@ public class GuiAbout extends GuiScreen {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}
+		
+		int minecraftBizX = (this.width / 2 + 30);
+		int minecraftBizY = getScaledHeight(85);
+		if (beastNodeLogo != null) {
+			GL11.glPushMatrix();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDepthMask(false);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef(minecraftBizX, minecraftBizY, 0); // moves texture into place
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, minecraftBizLogo.getTextureID());
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+			Tessellator tessellator = Tessellator.instance;
+			//GL11.glScalef(0.5f, 0.5f, 0.5f);
+			tessellator.startDrawingQuads();
+			tessellator.addVertexWithUV(0.0D, 33, -90, 0.0D, 0.0D); // draw corners
+			tessellator.addVertexWithUV(147, 33, -90, minecraftBizLogo.getWidth(), 0.0D);
+			tessellator.addVertexWithUV(147, 0.0D, -90, minecraftBizLogo.getWidth(), minecraftBizLogo.getHeight());
+			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, minecraftBizLogo.getHeight());
+			tessellator.draw();
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glPopMatrix();
+		}
+		
+		//draw tooltips
 		if (isInBoundingRect(beastNodeX, beastNodeY, 33, 147, x, y)) {
 			drawTooltip(
 				"BeastNode provides high quality Minecraft and web hosting at affordable\n" +
 				"prices and is generously sponsoring the Spout project with its hosting\n" +
 				"& server needs. Mine, build, craft, and chat with your own high quality\n" +
 				"Minecraft server with FREE mumble voice server and web hosting.", x, y);
+		}
+		else if (isInBoundingRect(minecraftBizX, minecraftBizY, 33, 147, x, y)) {
+			drawTooltip(
+				"Minecraft in a new dimension!", x, y);
+		}
+		else if (isInBoundingRect(yourkitX, yourkitY, 15, 55, x, y)) {
+			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.BLUE + "www.yourkit.com", x, y);
 		}
 		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
