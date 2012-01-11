@@ -313,7 +313,7 @@ public class MaterialData {
 	public static final Item bed = new GenericItem("Bed", 355);
 	public static final Item redstoneRepeater = new GenericItem("Redstone Repeater", 356);
 	public static final Item cookie = new GenericFood("Cookie", 357, 1);
-	public static final Item map = new GenericItem("Map", 358);
+	public static final Item map = new GenericItem("Map (%s)", 358);
 	public static final Item shears = new GenericTool("Shears", 359);
 	public static final Item melonSlice = new GenericFood("Melon Slice", 360, 2);
 	public static final Item pumpkinSeeds = new GenericItem("Pumpkin Seeds", 361);
