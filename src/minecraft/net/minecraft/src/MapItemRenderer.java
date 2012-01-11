@@ -115,10 +115,10 @@ public class MapItemRenderer {
 		if (inHand != null) {
 			org.spoutcraft.spoutcraftapi.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
 			if(item != null) {
-				customName = item.getName();
+				customName = String.format(item.getName(), String.valueOf(inHand.getItemDamage()));
 			}
 		}
-		if (customName != null && customName.length() > 0 && !customName.equals("Map")) {
+		if (customName != null && customName.length() > 0) {
 			this.fontRenderer.drawString(customName, var15, var16, -16777216);
 		}
 		else {
