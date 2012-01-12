@@ -142,21 +142,27 @@ public class GuiTexturePacks extends GuiScreen {
 	}
 
 	public void deleteCurrentTexturepack() {
-		try {
-			TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
-			if(pack instanceof TexturePackCustom) {
-				TexturePackCustom custom = (TexturePackCustom) pack;
-				custom.closeTexturePackFile();
-				File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
-				if (!d.exists()) {
-					d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.texturePackFileName);
+		for (int tries = 0; tries < 3; tries++) {
+			try {
+				TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
+				if(pack instanceof TexturePackCustom) {
+					TexturePackCustom custom = (TexturePackCustom) pack;
+					custom.closeTexturePackFile();
+					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
+					if (!d.exists()) {
+						d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.texturePackFileName);
+					}
+					d.setWritable(true);
+					FileUtils.forceDelete(d);
+					model.update();
+					
+					if (!d.exists()) {
+						break;
+					}
+					
+					Thread.sleep(25);
 				}
-				d.setWritable(true);
-				FileUtils.forceDelete(d);
-				model.update();
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
+			} catch(Exception e) { }
 		}
 	}
 }
