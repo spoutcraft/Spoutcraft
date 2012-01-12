@@ -53,7 +53,7 @@ public class GenericListView extends GenericListWidget implements ListWidget {
 	}
 
 	public ListWidgetItem getSelectedItem() {
-		if(getSelectedRow() < 0 || getSelectedRow() > getSize()) return null;
+		if(getSelectedRow() < 0 || getSelectedRow() >= getSize()) return null;
 		return model.getItem(getSelectedRow());
 	}
 
