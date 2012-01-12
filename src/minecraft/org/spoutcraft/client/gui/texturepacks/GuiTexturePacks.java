@@ -1,7 +1,9 @@
 package org.spoutcraft.client.gui.texturepacks;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.lwjgl.Sys;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -14,6 +16,7 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.TexturePackBase;
@@ -143,13 +146,17 @@ public class GuiTexturePacks extends GuiScreen {
 			TexturePackBase pack = model.getItem(view.getSelectedRow()).getPack();
 			if(pack instanceof TexturePackCustom) {
 				TexturePackCustom custom = (TexturePackCustom) pack;
+				custom.closeTexturePackFile();
 				File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
-				if(d.exists()) {
-					d.delete();
+				if (!d.exists()) {
+					d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.texturePackFileName);
 				}
+				d.setWritable(true);
+				FileUtils.forceDelete(d);
 				model.update();
 			}
-		} catch(NullPointerException e) {
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

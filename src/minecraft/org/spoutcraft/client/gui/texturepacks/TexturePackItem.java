@@ -1,9 +1,14 @@
 package org.spoutcraft.client.gui.texturepacks;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
+import org.getspout.commons.ChatColor;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -13,17 +18,26 @@ import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class TexturePackItem implements ListWidgetItem {
+	protected final static Map<String, Integer> texturePackSize = new HashMap<String, Integer>();
+	protected volatile static TexturePackSizeThread activeThread = null;
 	
 	private TexturePackBase pack;
 	private ListWidget widget;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
 	int id = -1;
 	private String title = null;
-	private int tileSize;
+	protected volatile int tileSize = -1;
 	
 	public TexturePackItem(TexturePackBase pack) {
 		this.setPack(pack);
-		tileSize = TextureUtils.getTileSize(pack);
+		synchronized(texturePackSize) {
+			if (!texturePackSize.containsKey(getName())) {
+				calculateTexturePackSize(pack, this);
+			}
+			else {
+				tileSize = texturePackSize.get(getName());
+			}
+		}
 	}
 
 	public void setListWidget(ListWidget widget) {
@@ -39,28 +53,36 @@ public class TexturePackItem implements ListWidgetItem {
 	}
 
 	public void render(int x, int y, int width, int height) {
+		updateQueue();
+		
 		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		
 		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
 		font.drawStringWithShadow(pack.firstDescriptionLine, x+29, y+11, 0xffaaaaaa);
 		font.drawStringWithShadow(pack.secondDescriptionLine, x+29, y+20, 0xffaaaaaa);
-		String sTileSize = tileSize+"x";
+		
+		String sTileSize;
+		if (tileSize != -1) {
+			sTileSize = tileSize+"x";
+		}
+		else {
+			sTileSize = ChatColor.YELLOW + "Calculating...";
+		}
 		int w = font.getStringWidth(sTileSize);
 		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
 		
-		//TODO: Work out why tile size is not correctly calculated
 		//TODO: Show database information (author/member who posted it)
 		
 		pack.bindThumbnailTexture(SpoutClient.getHandle());
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        tessellator.startDrawingQuads();
-        tessellator.setColorOpaque(255,255,255);
-        tessellator.addVertexWithUV(x + 2, y + 27, 0.0D, 0.0D, 1.0D);
-        tessellator.addVertexWithUV(x + 27, y + 27, 0.0D, 1.0D, 1.0D);
-        tessellator.addVertexWithUV(x + 27, y + 2, 0.0D, 1.0D, 0.0D);
-        tessellator.addVertexWithUV(x + 2, y + 2, 0.0D, 0.0D, 0.0D);
-        tessellator.draw();
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		tessellator.startDrawingQuads();
+		tessellator.setColorOpaque(255,255,255);
+		tessellator.addVertexWithUV(x + 2, y + 27, 0.0D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(x + 27, y + 27, 0.0D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(x + 27, y + 2, 0.0D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(x + 2, y + 2, 0.0D, 0.0D, 0.0D);
+		tessellator.draw();
 	}
 
 	public void onClick(int x, int y, boolean doubleClick) {
@@ -100,5 +122,45 @@ public class TexturePackItem implements ListWidgetItem {
 	public void select() {
 		packList.setTexturePack(getPack());
 		SpoutClient.getHandle().renderEngine.refreshTextures();
+	}
+	
+	private static void updateQueue() {
+		if (activeThread == null) {
+			Thread thread = queued.poll();
+			if (thread != null) {
+				thread.start();
+			}
+		}
+	}
+
+	private static LinkedList<TexturePackSizeThread> queued = new LinkedList<TexturePackSizeThread>();
+	private static void calculateTexturePackSize(TexturePackBase texturePack, TexturePackItem item) {
+		if (activeThread == null) {
+			activeThread = new TexturePackSizeThread(texturePack, item);
+			activeThread.start();
+		}
+		else {
+			queued.add(new TexturePackSizeThread(texturePack, item));
+		}
+	}
+}
+
+class TexturePackSizeThread extends Thread {
+	TexturePackBase texturePack;
+	TexturePackItem item;
+	TexturePackSizeThread(TexturePackBase texturePack, TexturePackItem item) {
+		this.texturePack = texturePack;
+		this.item = item;
+	}
+	
+	@Override
+	public void run() {
+		item.tileSize = TextureUtils.getTileSize(texturePack);
+		synchronized(TexturePackItem.texturePackSize) {
+			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
+		}
+		texturePack.closeTexturePackFile();
+		
+		TexturePackItem.activeThread = null;
 	}
 }
