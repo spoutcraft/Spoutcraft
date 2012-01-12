@@ -627,6 +627,15 @@ public abstract class Minecraft implements Runnable {
 		if (this.mcApplet != null && !this.mcApplet.isActive()) {
 			this.running = false;
 		} else {
+			
+			if (theWorld == null && !(currentScreen instanceof GuiMainMenu)) {
+				try {
+					Thread.sleep(25);
+				}
+				catch(InterruptedException e) {
+					
+				}
+			}
 			AxisAlignedBB.clearBoundingBoxPool();
 			Vec3D.initialize();
 			Profiler.startSection("root");
