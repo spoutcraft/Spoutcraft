@@ -22,7 +22,6 @@ import java.util.UUID;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;

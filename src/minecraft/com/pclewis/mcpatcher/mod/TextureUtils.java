@@ -1,12 +1,10 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TileSize;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -298,12 +296,18 @@ public class TextureUtils {
 			}
 	
 			if(image == null) {
-				InputStream var4 = getResourceAsStream(texturePack, texture);
-				if(var4 != null) {
+				InputStream stream = getResourceAsStream(texturePack, texture);
+				if(stream != null) {
 					try {
-						image = ImageIO.read(var4);
-					} finally {
-						MCPatcherUtils.close((Closeable)var4);
+						image = ImageIO.read(stream);
+					}
+					finally {
+						if (stream != null) {
+							try {
+								stream.close();
+							}
+							catch (Exception e) { }
+						}
 					}
 				}
 			}
@@ -320,6 +324,14 @@ public class TextureUtils {
 				}
 				catch (Exception e) {
 					e.printStackTrace();
+				}
+				finally {
+					if (imageStream != null) {
+						try {
+							imageStream.close();
+						}
+						catch (Exception e) { }
+					}
 				}
 			}
 	
@@ -388,10 +400,17 @@ public class TextureUtils {
 					int imageSize = image.getWidth() / next.getValue();
 					max = Math.max(max, imageSize);
 				}
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				MCPatcherUtils.close((Closeable)stream);
+			}
+			finally {
+				if (stream != null) {
+					try {
+						stream.close();
+					}
+					catch (Exception e) { }
+				}
 			}
 		}
 
@@ -403,10 +422,19 @@ public class TextureUtils {
 	}
 
 	public static boolean hasResource(TexturePackBase texturePack, String texture) {
-		InputStream var2 = getResourceAsStream(texturePack, texture);
-		boolean var3 = var2 != null;
-		MCPatcherUtils.close((Closeable)var2);
-		return var3;
+		InputStream stream = null;
+		try {
+			stream = getResourceAsStream(texturePack, texture);
+			return stream != null;
+		}
+		finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				}
+				catch (Exception e) { }
+			}
+		}
 	}
 
 	public static boolean hasResource(String texture) {

@@ -1,6 +1,5 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.IOException;
@@ -138,14 +137,14 @@ public class FontUtils {
 		if(getResource != null) {
 			String var3 = var0.replace(".png", ".properties");
 
-			InputStream var4;
+			InputStream stream;
 			try {
 				Object var5 = getResource.invoke((Object)null, new Object[]{var3});
 				if(!(var5 instanceof InputStream)) {
 					return;
 				}
 
-				var4 = (InputStream)var5;
+				stream = (InputStream)var5;
 			} catch (Exception var20) {
 				var20.printStackTrace();
 				return;
@@ -155,7 +154,7 @@ public class FontUtils {
 
 			try {
 				Properties var21 = new Properties();
-				var21.load(var4);
+				var21.load(stream);
 				Iterator var6 = var21.entrySet().iterator();
 
 				while(var6.hasNext()) {
@@ -179,7 +178,12 @@ public class FontUtils {
 			} catch (IOException var18) {
 				var18.printStackTrace();
 			} finally {
-				MCPatcherUtils.close((Closeable)var4);
+				if (stream != null) {
+					try {
+						stream.close();
+					}
+					catch (Exception e) { }
+				}
 			}
 
 		}
