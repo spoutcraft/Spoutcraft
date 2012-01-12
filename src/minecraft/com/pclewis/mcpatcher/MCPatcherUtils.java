@@ -5,23 +5,23 @@ import java.io.IOException;
 import java.util.zip.ZipFile;
 
 public class MCPatcherUtils {
-	public static void close(Closeable var0) {
-		if(var0 != null) {
+	public static void close(Closeable closeable) {
+		if(closeable != null) {
 			try {
-				var0.close();
-			} catch (IOException var2) {
-				var2.printStackTrace();
+				closeable.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 
 	}
 
-	public static void close(ZipFile var0) {
-		if(var0 != null) {
+	public static void close(ZipFile zip) {
+		if(zip != null) {
 			try {
-				var0.close();
-			} catch (IOException var2) {
-				var2.printStackTrace();
+				zip.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 
