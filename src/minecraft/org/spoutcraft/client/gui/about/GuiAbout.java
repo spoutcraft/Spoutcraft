@@ -27,7 +27,7 @@ public class GuiAbout extends GuiScreen {
 	private Color scrollBarColor = new Color(0.46F, 0.46F, 0.46F, 0.55F);
 	private Color scrollBarColor2 = new Color(0.06F, 0.06F, 0.06F, 0.62F);
 	private Gradient scrollArea = new GenericGradient();
-	private static final int SCREEN_SIZE = 200;
+	private static final int SCREEN_SIZE = 230;
 	private static final int SCREEN_START = 60;
 	private static final int SCREEN_END = 94;
 	private static final float SCROLL_FACTOR = 10f;
