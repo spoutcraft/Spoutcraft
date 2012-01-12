@@ -136,8 +136,10 @@ public class GuiTexturePacks extends GuiScreen {
 	public void updateButtons() {
 		try {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
+			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			buttonSelect.setEnabled(!current);
 			buttonInfo.setEnabled(item.id != -1);
-			buttonDelete.setEnabled((item.getPack() instanceof TexturePackCustom));
+			buttonDelete.setEnabled(!current && (item.getPack() instanceof TexturePackCustom));
 		} catch(Exception e) {}
 	}
 
