@@ -1260,7 +1260,7 @@ public class RenderGlobal implements IWorldAccess {
 		int renderersUpdated = 0;
 		//Be aggressive!
 		if (ConfigReader.dynamicUpdates) {
-			if (!this.isMoving(var1, 2000) || mc.currentScreen != null) { //if we have a screen open load chunks like crazy
+			if (!this.isMoving(var1, 2000)) {
 				tempRenderersToUpdate *= 20D;
 			}
 			else if (!this.isMoving(var1, 1000)){

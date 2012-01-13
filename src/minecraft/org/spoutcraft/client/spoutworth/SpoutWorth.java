@@ -108,13 +108,25 @@ public class SpoutWorth {
 		
 		debug = "Ideal Percent: " + percent + " Current Percent: " + percentCur + " Improving: " + improving;
 		
-		if (percent > 165 || (percent > 135 && improving)) {
+		//drastic changes to temporarily improve fps
+		if (percentCur < 33 && !improving) {
+			renderingCooldown = Math.max(renderingCooldown, 5);
+		}
+		
+		if (percent > 200) {
+			if (--appearanceCooldown <= 0) {
+				appearanceCooldown = 600;
+				increaseAppearance();
+				increaseAppearance();
+			}
+		}
+		else if (percent > 150 || (percent > 125 && improving)) {
 			if (--appearanceCooldown <= 0) {
 				appearanceCooldown = 600;
 				increaseAppearance();
 			}
 		}
-		else if (percent < 33) {
+		else if (percent < 40) {
 			decreaseAppearance(true, improving ? 10 : 0);
 			appearanceCooldown = 120;
 		}
