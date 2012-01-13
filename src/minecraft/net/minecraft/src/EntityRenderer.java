@@ -1036,7 +1036,7 @@ public class EntityRenderer {
 		if (!ConfigReader.weather) {
 			return;
 		}
-		if (SpoutWorth.getInstance().isBelowIdeal())) {
+		if (SpoutWorth.getInstance().isBelowIdeal()) {
 			var1 /= 4.0F;
 		}
 		if (!ConfigReader.fancyWeather) {
