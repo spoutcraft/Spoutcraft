@@ -30,7 +30,7 @@ public class GuiServerList extends GuiAPIDisplay {
 	private GenericListView view;
 	private GenericScrollArea filters;
 	private Button buttonJoin, buttonMainMenu, buttonFavorites, buttonRefresh, buttonReset, buttonAddServer, buttonInfo;
-	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers;
+	SortButton featured, popular, byName, byFreeSlots, byPing, byPlayers, trending;
 	RandomButton random;
 	FilterButton hasPlayers, notFull;
 	AccessTypeFilter accessType;
@@ -49,6 +49,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		filterTitle = new GenericLabel("Sort & Filter");
 		featured = new SortButton("Featured", "featured", model);
 		popular = new SortButton("Popular", "popular", model);
+		trending = new SortButton("Trending", "trending", model);
 		byName = new SortButton("Name", "sortBy=name", model);
 		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false, model);
 		byPlayers = new SortButton("Players Online", "sortBy=players", false, model);
@@ -111,6 +112,12 @@ public class GuiServerList extends GuiAPIDisplay {
 		featured.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, featured);
 		model.addUrlElement(featured);
+		ftop += 25;
+		
+		trending.setAllowSorting(false);
+		trending.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		filters.attachWidget(spoutcraft, trending);
+		model.addUrlElement(trending);
 		ftop += 25;
 		
 		popular.setAllowSorting(false);
