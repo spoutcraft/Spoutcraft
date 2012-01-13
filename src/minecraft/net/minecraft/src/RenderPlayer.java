@@ -98,13 +98,13 @@ public class RenderPlayer extends RenderLiving {
 			if(var10 < var11) {
 				//Spout Start
 				String title = var1.displayName;
-				int color = EasterEggs.getEasterEggTitleColor();
+				//int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
 				//if a plugin hasn't set a title, use the easter egg title (if one exists)
-				if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
-					title = EasterEggs.getEasterEggTitle(var1.username);
-					alpha = 0.0F;
-				}
+				//if (EasterEggs.getEasterEggTitle(var1.username) != null && color == -1) {
+				//	title = EasterEggs.getEasterEggTitle(var1.username);
+				//	alpha = 0.0F;
+				//}
 				if (!title.equals("[hide]")) {
 					String lines[] = title.split("\\n");
 					double y = var4;
@@ -115,12 +115,12 @@ public class RenderPlayer extends RenderLiving {
 							if(var1.isPlayerSleeping()) {
 								this.renderLivingLabel(var1, title, var2, var4 - 1.5D, var6, 64);
 							} else {
-								if (color != -1) {
-									this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
-								}
-								else {
+								//if (color != -1) {
+								//	this.renderLivingLabel(var1, title, var2, var4, var6, 64, color, color);
+								//}
+								//else {
 									this.renderLivingLabel(var1, title, var2, var4, var6, 64);
-								}
+								//}
 							}
 						} else {
 							title = ChatColor.stripColor(title); //strip colors when sneaking
