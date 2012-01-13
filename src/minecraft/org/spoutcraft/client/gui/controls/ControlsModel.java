@@ -11,7 +11,6 @@ import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;

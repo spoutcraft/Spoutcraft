@@ -20,9 +20,8 @@ import java.util.UUID;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FancyWaterButton extends GenericCheckBox{
+public class FancyWaterButton extends AutomatedCheckBox{
 	UUID fancyGraphics;
 	public FancyWaterButton(UUID fancyGraphics) {
 		super("Fancy Water");

@@ -1,7 +1,9 @@
+/*
+ * 
+ * Unused
+
 package net.minecraft.src;
 
-import org.spoutcraft.client.gui.CustomScreen;
-import org.spoutcraft.client.gui.settings.VideoSettings;
 
 import net.minecraft.src.EnumOptions;
 import net.minecraft.src.GameSettings;
@@ -65,15 +67,12 @@ public class GuiOptions extends GuiScreen {
 
 			if(var1.id == 101) {
 				this.mc.gameSettings.saveOptions();
-				//Spout start
-				//this.mc.displayGuiScreen(new GuiVideoSettings(this, this.options));
-				this.mc.displayGuiScreen(new VideoSettings(this));
-				//Spout end
+				this.mc.displayGuiScreen(new GuiVideoSettings(this, options));
 			}
 
 			if(var1.id == 100) {
 				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.controls.GuiControls(this)); //Spout
+				this.mc.displayGuiScreen(new GuiControls(this, options));
 			}
 
 			if(var1.id == 200) {
@@ -91,3 +90,4 @@ public class GuiOptions extends GuiScreen {
 	}
 
 }
+*/

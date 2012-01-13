@@ -22,9 +22,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class BiomeColorsButton extends GenericCheckBox{
+public class BiomeColorsButton extends AutomatedCheckBox{
 	UUID fancyGraphics;
 	public BiomeColorsButton(UUID fancyGraphics) {
 		super("Fancy Biome Colors");

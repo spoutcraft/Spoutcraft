@@ -16,24 +16,25 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
-
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
+import org.spoutcraft.spoutcraftapi.gui.Label;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class OptimalGameplayButton extends GenericRadioButton {
+	Label label;
+	public OptimalGameplayButton(String title, Label label) {
+		super(title);
+		this.label = label;
 	}
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
+		ConfigReader.automatePerformance = true;
+		ConfigReader.automateMode = 1;
 		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		label.setTextColor(new Color(1F, 1F, 1F, 1F));
 	}
+
 }

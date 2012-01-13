@@ -21,9 +21,8 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.Display;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class PerformanceButton extends GenericButton{
+public class PerformanceButton extends AutomatedButton{
 	public PerformanceButton() {
 		setTooltip("FPS Limit\nMax FPS - no limit (fastest)\nBalanced - limit 120 FPS (slower)\nPower saver - limit 40 FPS (slowest)\nVSync - limit to monitor framerate (60, 30, 20)\nBalanced and Power saver decrease the FPS even if\nthe limit value is not reached.");
 	}

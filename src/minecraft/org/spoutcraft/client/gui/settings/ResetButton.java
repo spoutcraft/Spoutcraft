@@ -6,9 +6,9 @@ import org.spoutcraft.client.gui.SafeButton;
 
 public class ResetButton extends SafeButton {
 	
-	VideoSettings parent;
+	GameSettingsScreen parent;
 	
-	public ResetButton(VideoSettings parent) {
+	public ResetButton(GameSettingsScreen parent) {
 		setText("Reset to default");
 		setTooltip("Resets every setting to the default.");
 		this.parent = parent;
@@ -19,6 +19,6 @@ public class ResetButton extends SafeButton {
 		ConfigReader.restoreDefaults();
 		ConfigReader.write();
 	
-		SpoutClient.getHandle().displayGuiScreen(new VideoSettings(parent.parent));
+		SpoutClient.getHandle().displayGuiScreen(new GameSettingsScreen(parent.parent));
 	}
 }

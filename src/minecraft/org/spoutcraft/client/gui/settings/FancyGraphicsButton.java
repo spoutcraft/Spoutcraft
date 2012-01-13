@@ -23,9 +23,8 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class FancyGraphicsButton extends GenericButton{
+public class FancyGraphicsButton extends AutomatedButton{
 	public boolean custom = false;
 	private List<CheckBox> linkedButtons = null;
 	public FancyGraphicsButton() {

@@ -30,9 +30,11 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
+import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
@@ -273,7 +275,7 @@ public abstract class Minecraft implements Runnable {
 			this.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		}
 		else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-			this.displayGuiScreen(new GuiOptions(new GuiMainMenu(), gameSettings));
+			this.displayGuiScreen(new GameSettingsScreen(new GuiMainMenu()));
 		}
 		else if (this.serverName != null) {
 			this.displayGuiScreen(new GuiConnecting(this, this.serverName, this.serverPort));
@@ -751,6 +753,7 @@ public abstract class Minecraft implements Runnable {
 				this.field_40004_N += 1000L;
 				//Spout start 
 				framesPerSecond = fpsCounter;
+				SpoutWorth.getInstance().updateFPS(framesPerSecond);
 				//Spout end
 			}
 

@@ -18,9 +18,8 @@ package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class SmoothFPSButton extends GenericCheckBox{
+public class SmoothFPSButton extends AutomatedCheckBox{
 
 	public SmoothFPSButton() {
 		super("Smooth FPS");

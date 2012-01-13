@@ -20,9 +20,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FarViewButton extends GenericCheckBox{
+public class FarViewButton extends AutomatedCheckBox{
 
 	public FarViewButton() {
 		super("Far View");

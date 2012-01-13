@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.gui.server.GuiFavorites;
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiStats;
 import net.minecraft.src.MathHelper;
@@ -36,7 +36,7 @@ public class GuiIngameMenu extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.id == 0) {
-			this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
 		}
 
 		if(var1.id == 1) {

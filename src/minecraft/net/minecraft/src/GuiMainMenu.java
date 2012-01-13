@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSelectWorld;
 import net.minecraft.src.GuiTexturePacks;
@@ -21,6 +20,7 @@ import net.minecraft.src.Tessellator;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -167,7 +167,7 @@ public class GuiMainMenu extends GuiScreen {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		}
 		if (btn == buttonOptions) {
-			mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
+			mc.displayGuiScreen(new GameSettingsScreen(this));
 		}
 		if (btn == buttonAbout) {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout());
@@ -387,7 +387,7 @@ public class GuiMainMenu extends GuiScreen {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-			mc.displayGuiScreen(new GuiOptions(new GuiMainMenu(), mc.gameSettings));
+			mc.displayGuiScreen(new GameSettingsScreen(new GuiMainMenu()));
 		}
 
 		// Spout Start

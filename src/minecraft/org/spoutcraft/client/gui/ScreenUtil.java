@@ -1,11 +1,9 @@
 package org.spoutcraft.client.gui;
 
 
-import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiAchievements;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiChest;
-import net.minecraft.src.GuiControls;
 import net.minecraft.src.GuiCrafting;
 import net.minecraft.src.GuiDispenser;
 import net.minecraft.src.GuiEditSign;
@@ -13,20 +11,19 @@ import net.minecraft.src.GuiFurnace;
 import net.minecraft.src.GuiGameOver;
 import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiInventory;
-import net.minecraft.src.GuiOptions;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSleepMP;
 import net.minecraft.src.GuiStats;
 import net.minecraft.src.StatFileWriter;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.settings.VideoSettings;
+import org.spoutcraft.client.gui.controls.GuiControls;
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class ScreenUtil {
 	public static void open(ScreenType type){
 		GuiScreen toOpen = null;
-		GameSettings settings = SpoutClient.getHandle().gameSettings;
 		StatFileWriter statfile = SpoutClient.getHandle().statFileWriter;
 		switch(type)
 		{
@@ -43,13 +40,13 @@ public class ScreenUtil {
 			toOpen = new GuiIngameMenu();
 			break;
 		case OPTIONS_MENU:
-			toOpen = new GuiOptions(new GuiIngameMenu(), settings);
+			toOpen = new GameSettingsScreen(new GuiIngameMenu());
 			break;
 		case VIDEO_SETTINGS_MENU:
-			toOpen = new VideoSettings(new GuiIngameMenu());
+			toOpen = new GameSettingsScreen(new GuiIngameMenu());
 			break;
 		case CONTROLS_MENU:
-			toOpen = new GuiControls(new GuiOptions(new GuiIngameMenu(), settings), settings);
+			toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
 			break;
 		case ACHIEVEMENTS_SCREEN:
 			toOpen = new GuiAchievements(statfile);
@@ -93,10 +90,10 @@ public class ScreenUtil {
 		else if (gui instanceof GuiIngameMenu) {
 			screen = ScreenType.INGAME_MENU;
 		}
-		else if (gui instanceof GuiOptions) {
+		else if (gui instanceof GameSettingsScreen) {
 			screen = ScreenType.OPTIONS_MENU;
 		}
-		else if (gui instanceof VideoSettings) {
+		else if (gui instanceof GameSettingsScreen) {
 			screen = ScreenType.VIDEO_SETTINGS_MENU;
 		}
 		else if (gui instanceof GuiControls) {

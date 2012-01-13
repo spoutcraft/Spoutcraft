@@ -24,8 +24,8 @@ import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public class GuiScaleButton extends GenericButton{
-	VideoSettings parent;
-	public GuiScaleButton(VideoSettings parent) {
+	GameSettingsScreen parent;
+	public GuiScaleButton(GameSettingsScreen parent) {
 		this.parent = parent;
 		setTooltip("Alters how the size of the display scales.");
 	}
@@ -49,6 +49,6 @@ public class GuiScaleButton extends GenericButton{
 		ConfigReader.write();
 		
 		//Redisplay the video screen.
-		SpoutClient.getHandle().displayGuiScreen(new VideoSettings(parent.parent));
+		SpoutClient.getHandle().displayGuiScreen(new GameSettingsScreen(parent.parent));
 	}
 }

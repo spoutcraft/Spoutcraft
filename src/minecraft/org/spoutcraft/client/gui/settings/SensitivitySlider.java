@@ -16,24 +16,26 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
+import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class SensitivitySlider extends GenericSlider{
+	
+	public SensitivitySlider() {
+		super("Sensitivity");
+		setSliderPosition(Minecraft.theMinecraft.gameSettings.mouseSensitivity);
+		setTooltip("Sensitivity\nAdjusts the sensitivity of the mouse in game.");
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
-		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+	public void onSliderDrag(SliderDragEvent event) {
+		Minecraft.theMinecraft.gameSettings.mouseSensitivity = event.getNewPosition();
+		Minecraft.theMinecraft.gameSettings.saveOptions();
+	}
+	
+	public String getText() {
+		return "Sensitivity: " + (int)(this.getSliderPosition() * 200) + "%";
 	}
 }

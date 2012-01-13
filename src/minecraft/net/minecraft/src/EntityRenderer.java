@@ -1495,7 +1495,7 @@ public class EntityRenderer {
 						GL11.glFogf(2916 /* GL_FOG_END */, var5 * 0.8F);
 					} else {
 						GL11.glFogf(2915 /* GL_FOG_START */, var5 * 0.6F); //Spout changed fog start from 0.25F to 0.6F
-						GL11.glFogf(2916 /* GL_FOG_END */, var5);
+						GL11.glFogf(2916 /* GL_FOG_END */, var5 * 2);
 					}
 
 					if (GLContext.getCapabilities().GL_NV_fog_distance) {

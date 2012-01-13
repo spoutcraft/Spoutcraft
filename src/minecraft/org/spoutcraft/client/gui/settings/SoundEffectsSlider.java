@@ -16,24 +16,26 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
+import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class SoundEffectsSlider extends GenericSlider{
+	
+	public SoundEffectsSlider() {
+		super("Sound");
+		setSliderPosition(Minecraft.theMinecraft.gameSettings.soundVolume);
+		setTooltip("Sound Volume\nControls the volume of all the sound effects in game.");
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
-		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+	public void onSliderDrag(SliderDragEvent event) {
+		Minecraft.theMinecraft.gameSettings.soundVolume = event.getNewPosition();
+		Minecraft.theMinecraft.gameSettings.saveOptions();
+	}
+	
+	public String getText() {
+		return "Sound: " + (this.getSliderPosition() > 0F ? (int)(this.getSliderPosition() * 100) + "%" : "OFF");
 	}
 }

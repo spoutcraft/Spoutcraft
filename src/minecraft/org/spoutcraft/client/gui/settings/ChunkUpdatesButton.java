@@ -18,9 +18,8 @@ package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class ChunkUpdatesButton extends GenericButton{
+public class ChunkUpdatesButton extends AutomatedButton{
 	public ChunkUpdatesButton() {
 		setTooltip("Chunk updates per frame\n1 - (default) slower world loading, higher FPS\n3 - faster world loading, lower FPS\n5 - fastest world loading, lowest FPS");
 	}

@@ -48,6 +48,8 @@ public class ConfigReader {
 	public static boolean weather = true;
 	public static boolean delayedTooltips = false;
 	public static float mipmapsPercent = 0F;
+	public static boolean automatePerformance = true;
+	public static int automateMode = 0;
 
 	public transient static Object[] settings = null;
 	
@@ -92,29 +94,34 @@ public class ConfigReader {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
-		try {
-			if (!config.exists()) {
-				config.createNewFile();
-			}
-			SettingsHandler settings = new SettingsHandler(config);
-
-			Field[] fields = ConfigReader.class.getDeclaredFields();
-			for (Field f : fields) {
-				if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
-					Object value = f.get(null);
-					if (settings.checkProperty(f.getName())) {
-						settings.changeProperty(f.getName(), value);
+		Runnable write = new Runnable() {
+			public void run() {
+				File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
+				try {
+					if (!config.exists()) {
+						config.createNewFile();
 					}
-					else {
-						settings.put(f.getName(), value);
+					SettingsHandler settings = new SettingsHandler(config);
+
+					Field[] fields = ConfigReader.class.getDeclaredFields();
+					for (Field f : fields) {
+						if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
+							Object value = f.get(null);
+							if (settings.checkProperty(f.getName())) {
+								settings.changeProperty(f.getName(), value);
+							}
+							else {
+								settings.put(f.getName(), value);
+							}
+						}
 					}
 				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		};
+		(new Thread(write)).start();
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}

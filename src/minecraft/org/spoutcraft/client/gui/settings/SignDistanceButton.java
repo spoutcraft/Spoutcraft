@@ -18,9 +18,8 @@ package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class SignDistanceButton extends GenericButton{
+public class SignDistanceButton extends AutomatedButton{
 	public SignDistanceButton() {
 		setTooltip("The distance from which you can see the text on a sign\nFarther distances can decrease FPS.");
 	}

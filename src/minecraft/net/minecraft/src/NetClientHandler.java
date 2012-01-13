@@ -138,6 +138,10 @@ public class NetClientHandler extends NetHandler {
 	public List field_35786_c = new ArrayList();
 	public int field_35785_d = 20;
 	Random rand = new Random();
+	
+	//Spout start
+	boolean triedMC23 = false;
+	//Spout end
 
 
 	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {

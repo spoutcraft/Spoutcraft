@@ -16,24 +16,21 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
+import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class InvertMouseButton extends GenericCheckBox{
+	public InvertMouseButton() {
+		super("Invert Mouse");
+		setChecked(Minecraft.theMinecraft.gameSettings.invertMouse);
+		setTooltip("Invert Mouse\nInverts the mouse movement.");
 	}
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
-		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		Minecraft.theMinecraft.gameSettings.invertMouse = !Minecraft.theMinecraft.gameSettings.invertMouse;
+		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 }

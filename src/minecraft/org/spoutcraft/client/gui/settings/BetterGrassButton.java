@@ -20,9 +20,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class BetterGrassButton extends GenericButton{
+public class BetterGrassButton extends AutomatedButton{
 	public BetterGrassButton() {
 		setTooltip("Better Grass\nOFF - default side grass texture, fastest\nFast - full side grass texture, slower\nFancy - dynamic side grass texture, slowest");
 	}

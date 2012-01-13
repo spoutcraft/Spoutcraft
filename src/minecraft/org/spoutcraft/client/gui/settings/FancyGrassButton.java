@@ -22,9 +22,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FancyGrassButton extends GenericCheckBox{
+public class FancyGrassButton extends AutomatedCheckBox{
 	UUID fancyGraphics;
 	public FancyGrassButton(UUID fancyGraphics) {
 		super("Fancy Grass");

@@ -70,6 +70,7 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
 //Spout End
@@ -1249,6 +1250,9 @@ public class RenderGlobal implements IWorldAccess {
 	public boolean updateRenderers(EntityLiving var1, boolean var2) {
 		boolean var3 = false;
 		//Spout start
+		if (SpoutWorth.getInstance().isRenderingHalted()) {
+			return this.worldRenderersToUpdate.size() == 0;
+		}
 		Profiler.startSection("setup");
 		frameCount++;
 		int renderersToUpdate = ConfigReader.chunkUpdates;

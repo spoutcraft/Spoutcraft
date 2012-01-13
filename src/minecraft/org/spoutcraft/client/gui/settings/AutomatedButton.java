@@ -16,24 +16,22 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
-
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class AutomatedButton extends GenericButton{
+	
+	public AutomatedButton() {
+		super();
+	}
+	
+	public AutomatedButton(String title) {
+		super(title);
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
-		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+	public boolean isEnabled() {
+		return !ConfigReader.automatePerformance;
 	}
+
 }

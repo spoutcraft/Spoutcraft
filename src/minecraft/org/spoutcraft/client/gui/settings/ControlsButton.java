@@ -16,24 +16,23 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import java.util.UUID;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class FancyFogButton extends AutomatedCheckBox{
-	UUID fancyGraphics;
-	public FancyFogButton(UUID fancyGraphics) {
-		super("Fancy Fog");
-		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyFog);
-		setTooltip("Fog type\nFast - faster fog\nFancy - slower fog, looks better\nThe fancy fog is available only if it is supported by the\ngraphic card.");
+public class ControlsButton extends GenericButton{
+	GuiScreen parent;
+	public ControlsButton(GuiScreen parent) {
+		super("Controls");
+		setTooltip("Controls\nAdd, modify, or remove keybindings");
+		this.parent = parent;
 	}
-	
+
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyFog = !ConfigReader.fancyFog;
-		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		Minecraft.theMinecraft.displayGuiScreen(new GuiControls(parent), false);
 	}
 }

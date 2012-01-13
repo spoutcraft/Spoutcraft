@@ -18,28 +18,31 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class PreloadedChunksButton extends AutomatedButton{
-	public PreloadedChunksButton() {
-		setTooltip("Defines an area in which no chunks will be loaded\n0 - after 5m new chunks will be loaded\n2 - after 32m  new chunks will be loaded\n8 - after 128m new chunks will be loaded\nHigher values need more time to load all the chunks");
+public class FieldOfViewSlider extends GenericSlider{
+	
+	public FieldOfViewSlider() {
+		super("Field of View");
+		setSliderPosition(Minecraft.theMinecraft.gameSettings.fovSetting);
+		setTooltip("Field of View\nAdjusts the field of view in game.");
 	}
 	
 	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.preloadedChunks += 2;
-		if (ConfigReader.preloadedChunks > 8) {
-			ConfigReader.preloadedChunks = 0;
-		}
-		ConfigReader.write();
-		
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
-		}
+	public void onSliderDrag(SliderDragEvent event) {
+		Minecraft.theMinecraft.gameSettings.fovSetting = event.getNewPosition();
+		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 	
 	public String getText() {
-		return "Preloaded Chunks: " + ConfigReader.preloadedChunks;
+		String message = String.valueOf((70 + (int)(this.getSliderPosition() * 40)));
+		if (this.getSliderPosition() == 0) {
+			message = "Normal";
+		}
+		if (this.getSliderPosition() == 1) {
+			message = "Quake Pro";
+		}
+		return "FOV: " + message;
 	}
 }
