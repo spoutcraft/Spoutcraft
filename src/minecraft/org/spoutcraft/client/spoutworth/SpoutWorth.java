@@ -41,6 +41,7 @@ public class SpoutWorth {
 	long currentFPS = IDEAL_FPS;
 	long renderingCooldown;
 	String debug;
+	boolean belowIdeal = false;
 	
 	public void updateFPS(long fps) {
 		fpsList.add(fps);
@@ -106,6 +107,7 @@ public class SpoutWorth {
 		
 		boolean improving = percentCur > percent;
 		
+		belowIdeal = percent < 75;
 		debug = "Ideal Percent: " + percent + " Current Percent: " + percentCur + " Improving: " + improving;
 		
 		//drastic changes to temporarily improve fps
@@ -144,12 +146,16 @@ public class SpoutWorth {
 		}
 	}
 	
+	public boolean isBelowIdeal() {
+		return belowIdeal && ConfigReader.automatePerformance;
+	}
+	
 	public String getDebugText(){
 		return debug;
 	}
 	
 	public boolean isRenderingHalted() {
-		return renderingCooldown > 0L;
+		return renderingCooldown > 0L && ConfigReader.automatePerformance;
 	}
 	
 	public void increaseAppearance() {

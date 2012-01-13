@@ -44,6 +44,7 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.spoutworth.SpoutWorth;
 
 //Spout end
 
@@ -1031,12 +1032,17 @@ public class EntityRenderer {
 	private void addRainParticles() {
 		float var1 = this.mc.theWorld.getRainStrength(1.0F);
 		// Spout Start
-		if (!ConfigReader.fancyWeather) {
-			var1 /= 2.0F;
-		}
+		
 		if (!ConfigReader.weather) {
 			return;
 		}
+		if (SpoutWorth.getInstance().isBelowIdeal())) {
+			var1 /= 4.0F;
+		}
+		if (!ConfigReader.fancyWeather) {
+			var1 /= 2.0F;
+		}
+		
 		// Spout End
 
 		if (var1 != 0.0F) {
