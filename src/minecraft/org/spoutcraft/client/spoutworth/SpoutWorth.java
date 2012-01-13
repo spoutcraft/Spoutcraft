@@ -111,8 +111,8 @@ public class SpoutWorth {
 		debug = "Ideal Percent: " + percent + " Current Percent: " + percentCur + " Improving: " + improving;
 		
 		//drastic changes to temporarily improve fps
-		if (percentCur < 50 && !improving && isFullyLoaded()) {
-			renderingCooldown = Math.max(renderingCooldown, (percentCur < 33 ? 7 : 4));
+		if (percentCur < 33 && !improving && isFullyLoaded()) {
+			renderingCooldown = Math.max(renderingCooldown, (percentCur < 15 ? 5 : 2));
 		}
 		
 		if (percent > 200) {
