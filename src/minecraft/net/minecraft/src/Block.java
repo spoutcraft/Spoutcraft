@@ -129,6 +129,8 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
+
 //Spout End
 public class Block {
 
@@ -391,7 +393,7 @@ public class Block {
 		// Spout start
 		int light = lightValue[this.blockID];
 		if (customIds != null) {
-			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.field_35471_b) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.field_35473_a) | (y & Minecraft.theMinecraft.theWorld.field_35469_d);
+			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.xShift) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.heightShift) | (y & Minecraft.theMinecraft.theWorld.worldMaxY);
 			short customId = customIds[key];
 			if (customId > 0) {
 				CustomBlock block = MaterialData.getCustomBlock(customId);
@@ -408,7 +410,7 @@ public class Block {
 		// Spout start
 		int light = lightValue[this.blockID];
 		if (customIds != null) {
-			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.field_35471_b) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.field_35473_a) | (y & Minecraft.theMinecraft.theWorld.field_35469_d);
+			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.xShift) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.heightShift) | (y & Minecraft.theMinecraft.theWorld.worldMaxY);
 			short customId = customIds[key];
 			if (customId > 0) {
 				CustomBlock block = MaterialData.getCustomBlock(customId);

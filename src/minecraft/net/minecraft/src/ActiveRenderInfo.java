@@ -39,8 +39,8 @@ public class ActiveRenderInfo {
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
 
 		//Spout start
-		modelMatrix = field_41076_j.duplicate();
-		projectionMatrix = field_41077_k.duplicate();
+		modelMatrix = modelview.duplicate();
+		projectionMatrix = projection.duplicate();
 		//Spout end
 
 
