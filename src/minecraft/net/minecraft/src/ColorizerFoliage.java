@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 public class ColorizerFoliage {
 
 	public static int[] foliageBuffer = new int[65536]; //Spout HD private->public

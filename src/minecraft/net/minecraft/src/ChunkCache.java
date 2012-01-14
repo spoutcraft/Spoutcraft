@@ -19,7 +19,6 @@ public class ChunkCache implements IBlockAccess {
 	private Chunk[][] chunkArray;
 	private World worldObj;
 
-
 	public ChunkCache(World var1, int var2, int var3, int var4, int var5, int var6, int var7) {
 		this.worldObj = var1;
 		this.chunkX = var2 >> 4;
@@ -28,8 +27,8 @@ public class ChunkCache implements IBlockAccess {
 		int var9 = var7 >> 4;
 		this.chunkArray = new Chunk[var8 - this.chunkX + 1][var9 - this.chunkZ + 1];
 
-		for(int var10 = this.chunkX; var10 <= var8; ++var10) {
-			for(int var11 = this.chunkZ; var11 <= var9; ++var11) {
+		for (int var10 = this.chunkX; var10 <= var8; ++var10) {
+			for (int var11 = this.chunkZ; var11 <= var9; ++var11) {
 				this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var1.getChunkFromChunkCoords(var10, var11);
 			}
 		}
@@ -37,17 +36,20 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	public int getBlockId(int var1, int var2, int var3) {
-		if(var2 < 0) {
+		if (var2 < 0) {
 			return 0;
-		} else if(var2 >= this.worldObj.field_35472_c) {
+		}
+		else if (var2 >= this.worldObj.worldHeight) {
 			return 0;
-		} else {
+		}
+		else {
 			int var4 = (var1 >> 4) - this.chunkX;
 			int var5 = (var3 >> 4) - this.chunkZ;
-			if(var4 >= 0 && var4 < this.chunkArray.length && var5 >= 0 && var5 < this.chunkArray[var4].length) {
+			if (var4 >= 0 && var4 < this.chunkArray.length && var5 >= 0 && var5 < this.chunkArray[var4].length) {
 				Chunk var6 = this.chunkArray[var4][var5];
-				return var6 == null?0:var6.getBlockID(var1 & 15, var2, var3 & 15);
-			} else {
+				return var6 == null ? 0 : var6.getBlockID(var1 & 15, var2, var3 & 15);
+			}
+			else {
 				return 0;
 			}
 		}
@@ -61,7 +63,7 @@ public class ChunkCache implements IBlockAccess {
 
 	public float getBrightness(int var1, int var2, int var3, int var4) {
 		int var5 = this.getLightValue(var1, var2, var3);
-		if(var5 < var4) {
+		if (var5 < var4) {
 			var5 = var4;
 		}
 
@@ -71,7 +73,7 @@ public class ChunkCache implements IBlockAccess {
 	public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
 		int var5 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, var1, var2, var3);
 		int var6 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Block, var1, var2, var3);
-		if(var6 < var4) {
+		if (var6 < var4) {
 			var6 = var4;
 		}
 
@@ -87,30 +89,30 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	public int getLightValueExt(int var1, int var2, int var3, boolean var4) {
-		if(var1 >= -30000000 && var3 >= -30000000 && var1 < 30000000 && var3 <= 30000000) {
+		if (var1 >= -30000000 && var3 >= -30000000 && var1 < 30000000 && var3 <= 30000000) {
 			int var5;
 			int var6;
-			if(var4) {
+			if (var4) {
 				var5 = this.getBlockId(var1, var2, var3);
-				if(var5 == Block.stairSingle.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
+				if (var5 == Block.stairSingle.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
 					var6 = this.getLightValueExt(var1, var2 + 1, var3, false);
 					int var7 = this.getLightValueExt(var1 + 1, var2, var3, false);
 					int var8 = this.getLightValueExt(var1 - 1, var2, var3, false);
 					int var9 = this.getLightValueExt(var1, var2, var3 + 1, false);
 					int var10 = this.getLightValueExt(var1, var2, var3 - 1, false);
-					if(var7 > var6) {
+					if (var7 > var6) {
 						var6 = var7;
 					}
 
-					if(var8 > var6) {
+					if (var8 > var6) {
 						var6 = var8;
 					}
 
-					if(var9 > var6) {
+					if (var9 > var6) {
 						var6 = var9;
 					}
 
-					if(var10 > var6) {
+					if (var10 > var6) {
 						var6 = var10;
 					}
 
@@ -118,21 +120,24 @@ public class ChunkCache implements IBlockAccess {
 				}
 			}
 
-			if(var2 < 0) {
+			if (var2 < 0) {
 				return 0;
-			} else if(var2 >= this.worldObj.field_35472_c) {
+			}
+			else if (var2 >= this.worldObj.worldHeight) {
 				var5 = 15 - this.worldObj.skylightSubtracted;
-				if(var5 < 0) {
+				if (var5 < 0) {
 					var5 = 0;
 				}
 
 				return var5;
-			} else {
+			}
+			else {
 				var5 = (var1 >> 4) - this.chunkX;
 				var6 = (var3 >> 4) - this.chunkZ;
 				return this.chunkArray[var5][var6].getBlockLightValue(var1 & 15, var2, var3 & 15, this.worldObj.skylightSubtracted);
 			}
-		} else {
+		}
+		else {
 			return 15;
 		}
 	}
@@ -140,9 +145,11 @@ public class ChunkCache implements IBlockAccess {
 	public int getBlockMetadata(int var1, int var2, int var3) {
 		if (var2 < 0) {
 			return 0;
-		} else if (var2 >= this.worldObj.field_35472_c) {
+		}
+		else if (var2 >= this.worldObj.worldHeight) {
 			return 0;
-		} else {
+		}
+		else {
 			int var4 = (var1 >> 4) - this.chunkX;
 			int var5 = (var3 >> 4) - this.chunkZ;
 			return this.chunkArray[var4][var5].getBlockMetadata(var1 & 15, var2, var3 & 15);
@@ -178,11 +185,11 @@ public class ChunkCache implements IBlockAccess {
 			var3 = 0;
 		}
 
-		if (var3 >= this.worldObj.field_35472_c) {
-			var3 = this.worldObj.field_35472_c - 1;
+		if (var3 >= this.worldObj.worldHeight) {
+			var3 = this.worldObj.worldHeight - 1;
 		}
 
-		if (var3 >= 0 && var3 < this.worldObj.field_35472_c && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
+		if (var3 >= 0 && var3 < this.worldObj.worldHeight && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
 			int var5;
 			int var6;
 			if (Block.useNeighborBrightness[this.getBlockId(var2, var3, var4)]) {
@@ -208,12 +215,14 @@ public class ChunkCache implements IBlockAccess {
 				}
 
 				return var5;
-			} else {
+			}
+			else {
 				var5 = (var2 >> 4) - this.chunkX;
 				var6 = (var4 >> 4) - this.chunkZ;
 				return this.chunkArray[var5][var6].getSavedLightValue(var1, var2 & 15, var3, var4 & 15);
 			}
-		} else {
+		}
+		else {
 			return var1.defaultLightValue;
 		}
 	}
@@ -223,67 +232,22 @@ public class ChunkCache implements IBlockAccess {
 			var3 = 0;
 		}
 
-		if (var3 >= this.worldObj.field_35472_c) {
-			var3 = this.worldObj.field_35472_c - 1;
+		if (var3 >= this.worldObj.worldHeight) {
+			var3 = this.worldObj.worldHeight - 1;
 		}
 
-		if (var3 >= 0 && var3 < this.worldObj.field_35472_c && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
+		if (var3 >= 0 && var3 < this.worldObj.worldHeight && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
 			int var5 = (var2 >> 4) - this.chunkX;
 			int var6 = (var4 >> 4) - this.chunkZ;
 			return this.chunkArray[var5][var6].getSavedLightValue(var1, var2 & 15, var3, var4 & 15);
-		} else {
+		}
+		else {
 			return var1.defaultLightValue;
 		}
 	}
 
-	public int func_35452_b() {
-		return this.worldObj.field_35472_c;
+	public int getWorldHeight() {
+		return this.worldObj.worldHeight;
 	}
-
-	// Spout start
-	public int getGrassColorCache(int x, int y, int z) {
-		int chunkXOffset = (x >> 4) - this.chunkX;
-		int chunkZOffset = (z >> 4) - this.chunkZ;
-		if (chunkXOffset >= 0 && chunkXOffset < this.chunkArray.length && chunkZOffset >= 0 && chunkZOffset < this.chunkArray[chunkXOffset].length) {
-			Chunk chunk = this.chunkArray[chunkXOffset][chunkZOffset];
-			return chunk == null ? 0xffffff : chunk.grassColorCache;
-		} else {
-			return 0xffffff;
-		}
-	}
-
-	public void setGrassColorCache(int x, int y, int z, int color) {
-		int chunkXOffset = (x >> 4) - this.chunkX;
-		int chunkZOffset = (z >> 4) - this.chunkZ;
-		if (chunkXOffset >= 0 && chunkXOffset < this.chunkArray.length && chunkZOffset >= 0 && chunkZOffset < this.chunkArray[chunkXOffset].length) {
-			Chunk chunk = this.chunkArray[chunkXOffset][chunkZOffset];
-			if (chunk != null) {
-				chunk.grassColorCache = color;
-			}
-		}
-	}
-
-	public int getWaterColorCache(int x, int y, int z) {
-		int chunkXOffset = (x >> 4) - this.chunkX;
-		int chunkZOffset = (z >> 4) - this.chunkZ;
-		if (chunkXOffset >= 0 && chunkXOffset < this.chunkArray.length && chunkZOffset >= 0 && chunkZOffset < this.chunkArray[chunkXOffset].length) {
-			Chunk chunk = this.chunkArray[chunkXOffset][chunkZOffset];
-			return chunk == null ? 0xffffff : chunk.waterColorCache;
-		} else {
-			return 0xffffff;
-		}
-	}
-
-	public void setWaterColorCache(int x, int y, int z, int color) {
-		int chunkXOffset = (x >> 4) - this.chunkX;
-		int chunkZOffset = (z >> 4) - this.chunkZ;
-		if (chunkXOffset >= 0 && chunkXOffset < this.chunkArray.length && chunkZOffset >= 0 && chunkZOffset < this.chunkArray[chunkXOffset].length) {
-			Chunk chunk = this.chunkArray[chunkXOffset][chunkZOffset];
-			if (chunk != null) {
-				chunk.waterColorCache = color;
-			}
-		}
-	}
-	// Spout end
 }
 */

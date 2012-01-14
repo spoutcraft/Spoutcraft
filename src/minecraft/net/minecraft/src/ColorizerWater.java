@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 public class ColorizerWater {
 
 	public static int[] waterBuffer = new int[65536]; // Spout HD private -> public
@@ -17,7 +16,7 @@ public class ColorizerWater {
 	}
 
 	// Spout end
-	public static void getWaterBiomeColorizer(int[] var0) {
+	public static void setWaterBiomeColorizer(int[] var0) {
 		waterBuffer = var0;
 	}
 

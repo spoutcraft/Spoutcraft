@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,7 +16,6 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 class CanvasMojangLogo extends Canvas {
 
 	private BufferedImage logo;
-
 
 	public CanvasMojangLogo() {
 		try {
