@@ -156,7 +156,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	}
 
-	public boolean func_35162_ad() {
+	public boolean isBlocking() {
 		return this.isUsingItem() && Item.itemsList[this.itemInUse.itemID].getItemUseAction(this.itemInUse) == EnumAction.block;
 	}
 
@@ -213,7 +213,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		if(this.isBurning() && this.capabilities.disableDamage) {
-			this.func_40045_B();
+			this.extinguish();
 		}
 
 		this.field_20066_r = this.field_20063_u;
@@ -357,7 +357,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	private int func_35202_aE() {
-		return this.isPotionActive(Potion.potionDigSpeed)?6 - (1 + this.getActivePotionEffect(Potion.potionDigSpeed).getAmplifier()) * 1:(this.isPotionActive(Potion.potionDigSlow)?6 + (1 + this.getActivePotionEffect(Potion.potionDigSlow).getAmplifier()) * 2:6);
+		return this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1:(this.isPotionActive(Potion.digSlowdown)?6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2:6);
 	}
 
 	protected void updateEntityActionState() {
@@ -463,9 +463,9 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	}
 
-	protected int func_40116_f(int var1) {
+	protected int decreaseAirSupply(int var1) {
 		int var2 = EnchantmentHelper.getRespiration(this.inventory);
-		return var2 > 0 && this.rand.nextInt(var2 + 1) > 0?var1:super.func_40116_f(var1);
+		return var2 > 0 && this.rand.nextInt(var2 + 1) > 0?var1:super.decreaseAirSupply(var1);
 	}
 
 	public void dropCurrentItem() {
@@ -507,7 +507,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	protected void joinEntityItemWithWorld(EntityItem var1) {
-		this.worldObj.entityJoinedWorld(var1);
+		this.worldObj.spawnEntityInWorld(var1);
 	}
 
 	public float getCurrentPlayerStrVsBlock(Block var1) {
@@ -518,12 +518,12 @@ public abstract class EntityPlayer extends EntityLiving {
 			var3 = var2 + (float)(var4 * var4 + 1);
 		}
 
-		if(this.isPotionActive(Potion.potionDigSpeed)) {
-			var3 *= 1.0F + (float)(this.getActivePotionEffect(Potion.potionDigSpeed).getAmplifier() + 1) * 0.2F;
+		if(this.isPotionActive(Potion.digSpeed)) {
+			var3 *= 1.0F + (float)(this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
 		}
 
-		if(this.isPotionActive(Potion.potionDigSlow)) {
-			var3 *= 1.0F - (float)(this.getActivePotionEffect(Potion.potionDigSlow).getAmplifier() + 1) * 0.2F;
+		if(this.isPotionActive(Potion.digSlowdown)) {
+			var3 *= 1.0F - (float)(this.getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
 		}
 
 		if(this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this.inventory)) {
@@ -566,7 +566,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		this.foodStats.readStatsFromNBT(var1);
-		this.capabilities.func_40600_b(var1);
+		this.capabilities.readCapabilitiesFromNBT(var1);
 	}
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
@@ -585,12 +585,12 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		this.foodStats.writeStatsToNBT(var1);
-		this.capabilities.func_40601_a(var1);
+		this.capabilities.writeCapabilitiesToNBT(var1);
 	}
 
 	public void displayGUIChest(IInventory var1) {}
 
-	public void func_40181_c(int var1, int var2, int var3) {}
+	public void displayGUIEnchantment(int var1, int var2, int var3) {}
 
 	public void displayWorkbenchGUI(int var1, int var2, int var3) {}
 
@@ -650,8 +650,8 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	protected int func_40128_b(DamageSource var1, int var2) {
-		int var3 = super.func_40128_b(var1, var2);
+	protected int applyPotionDamageCalculations(DamageSource var1, int var2) {
+		int var3 = super.applyPotionDamageCalculations(var1, var2);
 		if(var3 <= 0) {
 			return 0;
 		} else {
@@ -662,9 +662,9 @@ public abstract class EntityPlayer extends EntityLiving {
 
 			if(var4 > 0 && var4 <= 20) {
 				int var5 = 25 - var4;
-				int var6 = var3 * var5 + this.field_40129_bA;
+				int var6 = var3 * var5 + this.carryoverDamage;
 				var3 = var6 / 25;
-				this.field_40129_bA = var6 % 25;
+				this.carryoverDamage = var6 % 25;
 			}
 
 			return var3;
@@ -679,7 +679,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		if(!(var1 instanceof EntityCreeper) && !(var1 instanceof EntityGhast)) {
 			if(var1 instanceof EntityWolf) {
 				EntityWolf var3 = (EntityWolf)var1;
-				if(var3.isWolfTamed() && this.username.equals(var3.getWolfOwner())) {
+				if(var3.isTamed() && this.username.equals(var3.getOwner())) {
 					return;
 				}
 			}
@@ -691,7 +691,7 @@ public abstract class EntityPlayer extends EntityLiving {
 				while(var4.hasNext()) {
 					Entity var5 = (Entity)var4.next();
 					EntityWolf var6 = (EntityWolf)var5;
-					if(var6.isWolfTamed() && var6.getEntityToAttack() == null && this.username.equals(var6.getWolfOwner()) && (!var2 || !var6.isWolfSitting())) {
+					if(var6.isTamed() && var6.getEntityToAttack() == null && this.username.equals(var6.getOwner()) && (!var2 || !var6.isSitting())) {
 						var6.setIsSitting(false);
 						var6.setEntityToAttack(var1);
 					}
@@ -705,19 +705,19 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.inventory.damageArmor(var1);
 	}
 
-	protected int func_40119_ar() {
+	public int getTotalArmorValue() {
 		return this.inventory.getTotalArmorValue();
 	}
 
 	public void damageEntity(DamageSource var1, int var2) { // Spout protected -> public
-		if(!var1.unblockable() && this.func_35162_ad()) {
+		if(!var1.isUnblockable() && this.isBlocking()) {
 			var2 = 1 + var2 >> 1;
 		}
 
-		var2 = this.func_40115_d(var1, var2);
-		var2 = this.func_40128_b(var1, var2);
+		var2 = this.applyArmorCalculations(var1, var2);
+		var2 = this.applyPotionDamageCalculations(var1, var2);
 		this.addExhaustion(var1.getHungerDamage());
-		super.damageEntity(var1, var2);
+		this.health -= var2;
 	}
 
 	public void displayGUIFurnace(TileEntityFurnace var1) {}
@@ -726,7 +726,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void displayGUIEditSign(TileEntitySign var1) {}
 
-	public void func_40180_a(TileEntityBrewingStand var1) {}
+	public void displayGUIBrewingStand(TileEntityBrewingStand var1) {}
 
 	public void useCurrentItemOnEntity(Entity var1) {
 		if(!var1.interact(this)) {
@@ -764,12 +764,12 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void attackTargetEntityWithCurrentItem(Entity var1) {
 		int var2 = this.inventory.getDamageVsEntity(var1);
-		if(this.isPotionActive(Potion.potionDamageBoost)) {
-			var2 += 3 << this.getActivePotionEffect(Potion.potionDamageBoost).getAmplifier();
+		if(this.isPotionActive(Potion.damageBoost)) {
+			var2 += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
 		}
 
-		if(this.isPotionActive(Potion.potionWeakness)) {
-			var2 -= 2 << this.getActivePotionEffect(Potion.potionWeakness).getAmplifier();
+		if(this.isPotionActive(Potion.weakness)) {
+			var2 -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
 		}
 
 		int var3 = 0;
@@ -784,7 +784,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		if(var2 > 0 || var4 > 0) {
-			boolean var5 = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.potionBlindness) && this.ridingEntity == null && var1 instanceof EntityLiving;
+			boolean var5 = this.fallDistance > 0.0F && !this.onGround && !this.isOnLadder() && !this.isInWater() && !this.isPotionActive(Potion.blindness) && this.ridingEntity == null && var1 instanceof EntityLiving;
 			if(var5) {
 				var2 += this.rand.nextInt(var2 / 2 + 2);
 			}
@@ -829,7 +829,7 @@ public abstract class EntityPlayer extends EntityLiving {
 				this.addStat(StatList.damageDealtStat, var2);
 				int var8 = EnchantmentHelper.getFireAspectModifier(this.inventory, (EntityLiving)var1);
 				if(var8 > 0) {
-					var1.func_40046_d(var8 * 4);
+					var1.setFire(var8 * 4);
 				}
 			}
 
@@ -867,7 +867,7 @@ public abstract class EntityPlayer extends EntityLiving {
 				return EnumStatus.OTHER_PROBLEM;
 			}
 
-			if(this.worldObj.worldProvider.isNether) {
+			if(this.worldObj.worldProvider.isAlternateDimension) {
 				return EnumStatus.NOT_POSSIBLE_HERE;
 			}
 
@@ -1157,12 +1157,8 @@ public abstract class EntityPlayer extends EntityLiving {
 		if(var1.itemID == Item.fishingRod.shiftedIndex && this.fishEntity != null) {
 			var3 = var1.getIconIndex() + 16;
 		} else {
-			if(var1.itemID == Item.potion.shiftedIndex) {
-				if(var2 == 1) {
-					return var1.getIconIndex();
-				}
-
-				return 141;
+			if(var1.getItem().func_46058_c()) {
+				return var1.getItem().func_46057_a(var1.getItemDamage(), var2);
 			}
 
 			if(this.itemInUse != null && var1.itemID == Item.bow.shiftedIndex) {
@@ -1194,17 +1190,26 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void increaseXP(int var1) {
 		this.score += var1;
-		this.currentXP += (float)var1 / (float)this.xpBarCap();
-		this.totalXP += var1;
+		int var2 = Integer.MAX_VALUE - this.totalXP;
 
-		while(this.currentXP >= 1.0F) {
-			--this.currentXP;
+		if(var1 > var2) {
+
+			var1 = var2;
+
+		}
+		this.currentXP += (float)var1 / (float)this.xpBarCap();
+		
+		for(this.totalXP += var1; this.currentXP >= 1.0F; this.currentXP /= (float)this.xpBarCap()) {
+
+			this.currentXP = (this.currentXP - 1.0F) * (float)this.xpBarCap();
+
 			this.increaseLevel();
+
 		}
 
 	}
 
-	public void func_40184_i(int var1) {
+	public void decreaseLevel(int var1) {
 		this.playerLevel -= var1;
 		if(this.playerLevel < 0) {
 			this.playerLevel = 0;
@@ -1233,7 +1238,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		return this.foodStats;
 	}
 
-	public boolean func_35197_b(boolean var1) {
+	public boolean canEat(boolean var1) {
 		return (var1 || this.foodStats.needFood()) && !this.capabilities.disableDamage;
 	}
 
@@ -1252,23 +1257,23 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 	}
 
-	public boolean func_35190_e(int var1, int var2, int var3) {
+	public boolean canPlayerEdit(int var1, int var2, int var3) {
 		return true;
 	}
 
-	protected int func_36001_a(EntityPlayer var1) {
+	protected int getExperiencePoints(EntityPlayer var1) {
 		int var2 = this.playerLevel * 7;
 		return var2 > 100?100:var2;
 	}
 
-	protected boolean func_35163_av() {
+	protected boolean isPlayer() {
 		return true;
 	}
 
 	public void func_40182_b(int var1) {}
 
-	public void func_41014_d(EntityPlayer var1) {
-		this.inventory.func_41022_a(var1.inventory);
+	public void copyPlayer(EntityPlayer var1) {
+		this.inventory.copyInventory(var1.inventory);
 		this.health = var1.health;
 		this.foodStats = var1.foodStats;
 		this.playerLevel = var1.playerLevel;

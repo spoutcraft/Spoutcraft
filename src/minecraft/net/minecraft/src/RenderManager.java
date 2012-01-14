@@ -104,13 +104,14 @@ import net.minecraft.src.RenderWolf;
 import net.minecraft.src.RenderXPOrb;
 import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
+//Spout Start
 import org.lwjgl.opengl.GL13;
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.entity.EntityTexture;
 import org.spoutcraft.client.entity.RenderText;
 import org.spoutcraft.client.entity.RenderTexture;
 
-//Spout Start
+//Spout end
 
 public class RenderManager {
 
@@ -217,7 +218,8 @@ public class RenderManager {
 				this.playerViewY = (float)(var9 * 90 + 180);
 				this.playerViewX = 0.0F;
 			}
-		} else {
+		}
+		else {
 			this.playerViewY = var4.prevRotationYaw + (var4.rotationYaw - var4.prevRotationYaw) * var6;
 			this.playerViewX = var4.prevRotationPitch + (var4.rotationPitch - var4.prevRotationPitch) * var6;
 		}
@@ -237,6 +239,10 @@ public class RenderManager {
 		double var7 = var1.lastTickPosZ + (var1.posZ - var1.lastTickPosZ) * (double)var2;
 		float var9 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var2;
 		int var10 = var1.getEntityBrightnessForRender(var2);
+		if (var1.isBurning()) {
+			var10 = 15728880;
+		}
+
 		int var11 = var10 % 65536;
 		int var12 = var10 / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)var11 / 1.0F, (float)var12 / 1.0F);

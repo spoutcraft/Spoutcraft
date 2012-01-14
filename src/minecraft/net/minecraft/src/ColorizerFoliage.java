@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
 
 public class ColorizerFoliage {
 
@@ -18,15 +19,15 @@ public class ColorizerFoliage {
 	}
 
 	public static int getFoliageColorPine() {
-		return 6396257;
+		return Colorizer.colorizeBiome(6396257, Colorizer.COLOR_MAP_PINE); //Spout HD
 	}
 
 	public static int getFoliageColorBirch() {
-		return 8431445;
+		return Colorizer.colorizeBiome(8431445, Colorizer.COLOR_MAP_BIRCH); //Spout HD
 	}
 
 	public static int getFoliageColorBasic() {
-		return 4764952;
+		return Colorizer.colorizeBiome(4764952, Colorizer.COLOR_MAP_FOLIAGE); //Spout HD
 	}
 
 }

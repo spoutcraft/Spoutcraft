@@ -24,7 +24,6 @@ public class TexturePackList {
 	private File texturePackDir;
 	private String currentTexturePack;
 
-
 	public TexturePackList(Minecraft var1, File var2) {
 		this.mc = var1;
 		this.texturePackDir = new File(var2, "texturepacks");
@@ -40,7 +39,8 @@ public class TexturePackList {
 	public boolean setTexturePack(TexturePackBase var1) {
 		if(var1 == this.selectedTexturePack) {
 			return false;
-		} else {
+		}
+		else {
 			this.selectedTexturePack.closeTexturePackFile();
 			this.currentTexturePack = var1.texturePackFileName;
 			this.selectedTexturePack = var1;
@@ -73,7 +73,7 @@ public class TexturePackList {
 		while(i.hasNext()) {
 			TexturePackBase texturePack = (TexturePackBase)i.next();
 			texturePack.func_6484_b(this.mc);
-			this.field_6538_d.remove(texturePack.field_6488_d);
+			this.field_6538_d.remove(texturePack.texturePackID);
 		}
 
 		this.availableTexturePacks = texturePacks;
@@ -95,7 +95,7 @@ public class TexturePackList {
 					try {
 						if(!this.field_6538_d.containsKey(var7)) {
 							TexturePackCustom var8 = new TexturePackCustom(var6);
-							var8.field_6488_d = var7;
+							var8.texturePackID = var7;
 							this.field_6538_d.put(var7, var8);
 							var8.func_6485_a(this.mc);
 						}
@@ -106,7 +106,8 @@ public class TexturePackList {
 						}
 
 						var1.add(var12);
-					} catch (IOException var9) {
+					}
+					catch (IOException var9) {
 						var9.printStackTrace();
 					}
 				}

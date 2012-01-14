@@ -14,8 +14,8 @@ import org.spoutcraft.client.entity.CraftBlaze; //Spout
 
 public class EntityBlaze extends EntityMob {
 
-	private float field_40154_a = 0.5F;
-	private int field_40153_b;
+	private float heightOffset = 0.5F;
+	private int heightOffsetUpdateTime;
 	private int field_40152_d;
 
 
@@ -24,7 +24,7 @@ public class EntityBlaze extends EntityMob {
 		this.texture = "/mob/fire.png";
 		this.isImmuneToFire = true;
 		this.attackStrength = 6;
-		this.field_35171_bJ = 10;
+		this.experienceValue = 10;
         //Spout start
         this.spoutEntity = new CraftBlaze(this);
         //Spout end
@@ -73,13 +73,13 @@ public class EntityBlaze extends EntityMob {
 				this.attackEntityFrom(DamageSource.drown, 1);
 			}
 
-			--this.field_40153_b;
-			if(this.field_40153_b <= 0) {
-				this.field_40153_b = 100;
-				this.field_40154_a = 0.5F + (float)this.rand.nextGaussian() * 3.0F;
+			--this.heightOffsetUpdateTime;
+			if(this.heightOffsetUpdateTime <= 0) {
+				this.heightOffsetUpdateTime = 100;
+				this.heightOffset = 0.5F + (float)this.rand.nextGaussian() * 3.0F;
 			}
 
-			if(this.getEntityToAttack() != null && this.getEntityToAttack().posY + (double)this.getEntityToAttack().getEyeHeight() > this.posY + (double)this.getEyeHeight() + (double)this.field_40154_a) {
+			if(this.getEntityToAttack() != null && this.getEntityToAttack().posY + (double)this.getEntityToAttack().getEyeHeight() > this.posY + (double)this.getEyeHeight() + (double)this.heightOffset) {
 				this.motionY += (0.30000001192092896D - this.motionY) * 0.30000001192092896D;
 			}
 		}
@@ -127,7 +127,7 @@ public class EntityBlaze extends EntityMob {
 					for(int var10 = 0; var10 < 1; ++var10) {
 						EntitySmallFireball var11 = new EntitySmallFireball(this.worldObj, this, var3 + this.rand.nextGaussian() * (double)var9, var5, var7 + this.rand.nextGaussian() * (double)var9);
 						var11.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
-						this.worldObj.entityJoinedWorld(var11);
+						this.worldObj.spawnEntityInWorld(var11);
 					}
 				}
 			}

@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -17,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.ZipFile;
+
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 
@@ -33,6 +37,7 @@ import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
 import net.minecraft.src.TextureLavaFlowFX;
 import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.TexturePackCustom;
 import net.minecraft.src.TexturePackDefault;
 import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWatchFX;
@@ -62,7 +67,6 @@ public class TextureUtils {
 	private static boolean reclaimGLMemory = false;
 	private static TexturePackBase lastTexturePack = null;
 	private static Map<String, BufferedImage> cache = new HashMap<String, BufferedImage>();
-
 
 	public static boolean setTileSize() {
 		int size = getTileSize();
@@ -169,7 +173,7 @@ public class TextureUtils {
 			textureFXs.add(new TextureWaterFlowFX());
 		}
 
-		if(!var11 && customFire && hasResource("/custom_fire_e_w.png") && hasResource("/custom_fire_n_s.png")) {
+		if(!var11 && customFire && hasResource("/anim//custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
 			textureFXs.add(new CustomAnimation(47, 0, 1, "fire_n_s", 2, 4));
 			textureFXs.add(new CustomAnimation(31, 0, 1, "fire_e_w", 2, 4));
 		} else if(animatedFire) {
@@ -177,9 +181,10 @@ public class TextureUtils {
 			textureFXs.add(new TextureFlamesFX(1));
 		}
 
-		if(!var11 && customPortal && hasResource("/custom_portal.png")) {
+		if (!var11 && customPortal && hasResource("/anim/custom_portal.png")) {
 			textureFXs.add(new CustomAnimation(14, 0, 1, "portal", -1, -1));
-		} else if(animatedPortal) {
+		}
+		else if(animatedPortal) {
 			textureFXs.add(new TexturePortalFX());
 		}
 
@@ -188,7 +193,7 @@ public class TextureUtils {
 				String var6 = var5 == 0?"terrain":"item";
 
 				for(int var7 = 0; var7 < 256; ++var7) {
-					String var8 = "/custom_" + var6 + "_" + var7 + ".png";
+					String var8 = "/anim/custom_" + var6 + "_" + var7 + ".png";
 					if(hasResource(var8)) {
 						textureFXs.add(new CustomAnimation(var7, var5, 1, var6 + "_" + var7, 2, 4));
 					}
@@ -244,7 +249,7 @@ public class TextureUtils {
 	}
 
 	public static boolean isRequiredResource(String texture) {
-		return !texture.startsWith("/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
+		return !texture.startsWith("/custom_") && !texture.startsWith("/anim/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase texturePack, String texture) {
@@ -263,6 +268,10 @@ public class TextureUtils {
 			
 			if(var2 == null) {
 				var2 = TextureUtils.class.getResourceAsStream(texture);
+			}
+
+			if (var2 == null && texture.startsWith("/anim/custom_")) {
+				var2 = getResourceAsStream(texturePack, texture.substring(5));
 			}
 	
 			if(var2 == null && isRequiredResource(texture)) {
@@ -345,7 +354,7 @@ public class TextureUtils {
 	
 				if(!found) {
 					Integer size = 1;
-					if(!texture.matches("^/custom_\\w+_\\d+\\.png$")) {
+					if(!texture.matches("^(/anim)?/custom_.*\\.png$")) {
 						size = expectedColumns.get(texture);
 					}
 
@@ -459,6 +468,92 @@ public class TextureUtils {
 			var3.printStackTrace();
 		}
 
+	}
+
+	public static void openTexturePackFile(TexturePackCustom var0) {
+		if (var0.texturePackZipFile != null) {
+			FileInputStream var1 = null;
+			FileOutputStream var2 = null;
+			ZipFile var3 = null;
+
+			try {
+				var0.lastModified = var0.texturePackFile.lastModified();
+				var0.tmpFile = File.createTempFile("tmpmc", ".zip");
+				var0.tmpFile.deleteOnExit();
+				if (var0.texturePackZipFile != null) {
+					try {
+						var0.texturePackZipFile.close();
+					}
+					catch (IOException e) {}
+				}
+				var1 = new FileInputStream(var0.texturePackFile);
+				var2 = new FileOutputStream(var0.tmpFile);
+				byte[] var4 = new byte[65536];
+
+				while (true) {
+					int var5 = var1.read(var4);
+					if (var5 <= 0) {
+						if (var1 != null) {
+							try {
+								var1.close();
+							}
+							catch (IOException e) {}
+						}
+						if (var2 != null) {
+							try {
+								var2.close();
+							}
+							catch (IOException e) {}
+						}
+						var3 = new ZipFile(var0.tmpFile);
+						var0.origZip = var0.texturePackZipFile;
+						var0.texturePackZipFile = var3;
+						var3 = null;
+						break;
+					}
+
+					var2.write(var4, 0, var5);
+				}
+			}
+			catch (IOException var9) {
+				var9.printStackTrace();
+			}
+			finally {
+				if (var1 != null) {
+					try {
+						var1.close();
+					}
+					catch (IOException e) {}
+				}
+				if (var2 != null) {
+					try {
+						var2.close();
+					}
+					catch (IOException e) {}
+				}
+				if (var3 != null) {
+					try {
+						var3.close();
+					}
+					catch (IOException e) {}
+				}
+			}
+		}
+	}
+
+	public static void closeTexturePackFile(TexturePackCustom var0) {
+		if (var0.origZip != null) {
+			if (var0 != null) {
+				try {
+					var0.origZip.close();
+				}
+				catch (IOException e) {}
+			}
+			var0.texturePackZipFile = var0.origZip;
+			var0.origZip = null;
+			var0.tmpFile.delete();
+			var0.tmpFile = null;
+		}
 	}
 
 	static {

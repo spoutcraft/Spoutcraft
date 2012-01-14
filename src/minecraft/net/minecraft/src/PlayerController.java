@@ -14,7 +14,6 @@ public abstract class PlayerController {
 	protected final Minecraft mc;
 	public boolean isInTestMode = false;
 
-
 	public PlayerController(Minecraft var1) {
 		this.mc = var1;
 	}
@@ -23,12 +22,13 @@ public abstract class PlayerController {
 
 	public abstract void clickBlock(int var1, int var2, int var3, int var4);
 
-	public boolean sendBlockRemoved(int var1, int var2, int var3, int var4) {
+	public boolean onPlayerDestroyBlock(int var1, int var2, int var3, int var4) {
 		World var5 = this.mc.theWorld;
 		Block var6 = Block.blocksList[var5.getBlockId(var1, var2, var3)];
 		if(var6 == null) {
 			return false;
-		} else {
+		}
+		else {
 			var5.playAuxSFX(2001, var1, var2, var3, var6.blockID + var5.getBlockMetadata(var1, var2, var3) * 256);
 			int var7 = var5.getBlockMetadata(var1, var2, var3);
 			boolean var8 = var5.setBlockWithNotify(var1, var2, var3, 0);
@@ -40,7 +40,7 @@ public abstract class PlayerController {
 		}
 	}
 
-	public abstract void sendBlockRemoving(int var1, int var2, int var3, int var4);
+	public abstract void onPlayerDamageBlock(int var1, int var2, int var3, int var4);
 
 	public abstract void resetBlockRemoving();
 
@@ -56,7 +56,8 @@ public abstract class PlayerController {
 		ItemStack var5 = var3.useItemRightClick(var2, var1);
 		if(var5 == var3 && (var5 == null || var5.stackSize == var4)) {
 			return false;
-		} else {
+		}
+		else {
 			var1.inventory.mainInventory[var1.inventory.currentItem] = var5;
 			if(var5.stackSize == 0) {
 				var1.inventory.mainInventory[var1.inventory.currentItem] = null;
@@ -73,10 +74,10 @@ public abstract class PlayerController {
 	public abstract boolean shouldDrawHUD();
 
 	public void func_6473_b(EntityPlayer var1) {
-		PlayerControllerCreative.func_35645_e(var1);
+		PlayerControllerCreative.disableAbilities(var1);
 	}
 
-	public abstract boolean sendPlaceBlock(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7);
+	public abstract boolean onPlayerRightClick(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7);
 
 	public EntityPlayer createPlayer(World var1) {
 		return new EntityPlayerSP(this.mc, var1, this.mc.session, var1.worldProvider.worldType);

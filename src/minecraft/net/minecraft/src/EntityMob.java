@@ -19,7 +19,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 
 	public EntityMob(World var1) {
 		super(var1);
-		this.field_35171_bJ = 5;
+		this.experienceValue = 5;
 		//Spout start
 		this.spoutEntity = new CraftMonster(this);
 		//Spout end
@@ -53,6 +53,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 			if(this.riddenByEntity != var3 && this.ridingEntity != var3) {
 				if(var3 != this) {
 					this.entityToAttack = var3;
+					this.field_46020_bQ = var3 instanceof EntityLiving ? (EntityLiving)var3 : null;
 				}
 
 				return true;
@@ -64,14 +65,14 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 		}
 	}
 
-	protected boolean attackEntityAsMob(Entity var1) {
+	public boolean attackEntityAsMob(Entity var1) {
 		int var2 = this.attackStrength;
-		if(this.isPotionActive(Potion.potionDamageBoost)) {
-			var2 += 3 << this.getActivePotionEffect(Potion.potionDamageBoost).getAmplifier();
+		if(this.isPotionActive(Potion.damageBoost)) {
+			var2 += 3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier();
 		}
 
-		if(this.isPotionActive(Potion.potionWeakness)) {
-			var2 -= 2 << this.getActivePotionEffect(Potion.potionWeakness).getAmplifier();
+		if(this.isPotionActive(Potion.weakness)) {
+			var2 -= 2 << this.getActivePotionEffect(Potion.weakness).getAmplifier();
 		}
 
 		return var1.attackEntityFrom(DamageSource.causeMobDamage(this), var2);
@@ -85,7 +86,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 
 	}
 
-	protected float getBlockPathWeight(int var1, int var2, int var3) {
+	public float getBlockPathWeight(int var1, int var2, int var3) {
 		return 0.5F - this.worldObj.getLightBrightness(var1, var2, var3);
 	}
 

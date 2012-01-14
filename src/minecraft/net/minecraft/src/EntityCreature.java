@@ -170,7 +170,7 @@ public abstract class EntityCreature extends EntityLiving {
 
 	protected void attackBlockedEntity(Entity var1, float var2) {}
 
-	protected float getBlockPathWeight(int var1, int var2, int var3) {
+	public float getBlockPathWeight(int var1, int var2, int var3) {
 		return 0.0F;
 	}
 
@@ -201,8 +201,8 @@ public abstract class EntityCreature extends EntityLiving {
 		this.entityToAttack = var1;
 	}
 
-	protected float func_35166_t_() {
-		float var1 = super.func_35166_t_();
+	protected float getSpeedModifier() {
+		float var1 = super.getSpeedModifier();
 		if(this.fleeingTick > 0) {
 			var1 *= 2.0F;
 		}

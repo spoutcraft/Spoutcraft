@@ -19,7 +19,6 @@ public class RenderLiving extends Render {
 	protected ModelBase mainModel;
 	protected ModelBase renderPassModel;
 
-
 	public RenderLiving(ModelBase var1, float var2) {
 		this.mainModel = var1;
 		this.shadowSize = var2;
@@ -31,7 +30,7 @@ public class RenderLiving extends Render {
 
 	public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
 		GL11.glPushMatrix();
-		GL11.glDisable(2884 /*GL_CULL_FACE*/);
+		GL11.glDisable(GL11.GL_CULL_FACE);
 		this.mainModel.onGround = this.renderSwingProgress(var1, var9);
 		if(this.renderPassModel != null) {
 			this.renderPassModel.onGround = this.mainModel.onGround;
@@ -42,7 +41,7 @@ public class RenderLiving extends Render {
 			this.renderPassModel.isRiding = this.mainModel.isRiding;
 		}
 
-		this.mainModel.field_40301_k = var1.func_40127_l();
+		this.mainModel.field_40301_k = var1.isChild();
 		if(this.renderPassModel != null) {
 			this.renderPassModel.field_40301_k = this.mainModel.field_40301_k;
 		}
@@ -61,7 +60,7 @@ public class RenderLiving extends Render {
 			GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
 			float var15 = var1.field_705_Q + (var1.field_704_R - var1.field_705_Q) * var9;
 			float var16 = var1.field_703_S - var1.field_704_R * (1.0F - var9);
-			if(var1.func_40127_l()) {
+			if (var1.isChild()) {
 				var16 *= 3.0F;
 			}
 
@@ -69,9 +68,9 @@ public class RenderLiving extends Render {
 				var15 = 1.0F;
 			}
 
-			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
+			GL11.glEnable(GL11.GL_ALPHA_TEST);
 			this.mainModel.setLivingAnimations(var1, var16, var15, var9);
-			this.func_40270_a(var1, var16, var15, var13, var11 - var10, var12, var14);
+			this.renderModel(var1, var16, var15, var13, var11 - var10, var12, var14);
 
 			float var19;
 			int var18;
@@ -80,44 +79,45 @@ public class RenderLiving extends Render {
 			for(int var17 = 0; var17 < 4; ++var17) {
 				var18 = this.shouldRenderPass(var1, var17, var9);
 				if(var18 > 0) {
+					this.renderPassModel.setLivingAnimations(var1, var16, var15, var9);
 					this.renderPassModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 					if(var18 == 15) {
 						var19 = (float)var1.ticksExisted + var9;
 						this.loadTexture("%blur%/misc/glint.png");
-						GL11.glEnable(3042 /*GL_BLEND*/);
+						GL11.glEnable(GL11.GL_BLEND);
 						var20 = 0.5F;
 						GL11.glColor4f(var20, var20, var20, 1.0F);
 						GL11.glDepthFunc(514);
 						GL11.glDepthMask(false);
 
 						for(int var21 = 0; var21 < 2; ++var21) {
-							GL11.glDisable(2896 /*GL_LIGHTING*/);
+							GL11.glDisable(GL11.GL_LIGHTING);
 							var22 = 0.76F;
 							GL11.glColor4f(0.5F * var22, 0.25F * var22, 0.8F * var22, 1.0F);
 							GL11.glBlendFunc(768, 1);
-							GL11.glMatrixMode(5890 /*GL_TEXTURE*/);
+							GL11.glMatrixMode(GL11.GL_TEXTURE);
 							GL11.glLoadIdentity();
 							float var23 = var19 * (0.0010F + (float)var21 * 0.0030F) * 20.0F;
 							float var24 = 0.33333334F;
 							GL11.glScalef(var24, var24, var24);
 							GL11.glRotatef(30.0F - (float)var21 * 60.0F, 0.0F, 0.0F, 1.0F);
 							GL11.glTranslatef(0.0F, var23, 0.0F);
-							GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
+							GL11.glMatrixMode(org.lwjgl.opengl.ARBVertexBlend.GL_MODELVIEW0_ARB);
 							this.renderPassModel.render(var1, var16, var15, var13, var11 - var10, var12, var14);
 						}
 
 						GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-						GL11.glMatrixMode(5890 /*GL_TEXTURE*/);
+						GL11.glMatrixMode(GL11.GL_TEXTURE);
 						GL11.glDepthMask(true);
 						GL11.glLoadIdentity();
-						GL11.glMatrixMode(5888 /*GL_MODELVIEW0_ARB*/);
-						GL11.glEnable(2896 /*GL_LIGHTING*/);
-						GL11.glDisable(3042 /*GL_BLEND*/);
+						GL11.glMatrixMode(org.lwjgl.opengl.ARBVertexBlend.GL_MODELVIEW0_ARB);
+						GL11.glEnable(GL11.GL_LIGHTING);
+						GL11.glDisable(GL11.GL_BLEND);
 						GL11.glDepthFunc(515);
 					}
 
-					GL11.glDisable(3042 /*GL_BLEND*/);
-					GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
 				}
 			}
 
@@ -125,12 +125,12 @@ public class RenderLiving extends Render {
 			float var26 = var1.getEntityBrightness(var9);
 			var18 = this.getColorMultiplier(var1, var26, var9);
 			OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapEnabled);
-			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapDisabled);
 			if((var18 >> 24 & 255) > 0 || var1.hurtTime > 0 || var1.deathTime > 0) {
-				GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
-				GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-				GL11.glEnable(3042 /*GL_BLEND*/);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				GL11.glDisable(GL11.GL_ALPHA_TEST);
+				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(770, 771);
 				GL11.glDepthFunc(514);
 				if(var1.hurtTime > 0 || var1.deathTime > 0) {
@@ -162,25 +162,26 @@ public class RenderLiving extends Render {
 				}
 
 				GL11.glDepthFunc(515);
-				GL11.glDisable(3042 /*GL_BLEND*/);
-				GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
-				GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glEnable(GL11.GL_ALPHA_TEST);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
 			}
 
 			GL11.glDisable('\u803a');
-		} catch (Exception var25) {
+		}
+		catch (Exception var25) {
 			var25.printStackTrace();
 		}
 
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapEnabled);
-		GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapDisabled);
-		GL11.glEnable(2884 /*GL_CULL_FACE*/);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glPopMatrix();
 		this.passSpecialRender(var1, var2, var4, var6);
 	}
 
-	protected void func_40270_a(EntityLiving var1, float var2, float var3, float var4, float var5, float var6, float var7) {
+	protected void renderModel(EntityLiving var1, float var2, float var3, float var4, float var5, float var6, float var7) {
 		this.loadDownloadableImageTexture(var1.skinUrl, var1.getEntityTexture());
 		this.mainModel.render(var1, var2, var3, var4, var5, var6, var7);
 	}
@@ -266,10 +267,10 @@ public class RenderLiving extends Render {
 			GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 			GL11.glScalef(-var13, -var13, var13);
-			GL11.glDisable(2896 /*GL_LIGHTING*/);
+			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
-			GL11.glDisable(2929 /*GL_DEPTH_TEST*/);
-			GL11.glEnable(3042 /*GL_BLEND*/);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(770, 771);
 			Tessellator var14 = Tessellator.instance;
 			byte var15 = 0;
@@ -277,7 +278,7 @@ public class RenderLiving extends Render {
 				var15 = -10;
 			}
 
-			GL11.glDisable(3553 /*GL_TEXTURE_2D*/);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			var14.startDrawingQuads();
 			int var16 = var11.getStringWidth(var2) / 2;
 			var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
@@ -286,13 +287,13 @@ public class RenderLiving extends Render {
 			var14.addVertex((double)(var16 + 1), (double)(8 + var15), 0.0D);
 			var14.addVertex((double)(var16 + 1), (double)(-1 + var15), 0.0D);
 			var14.draw();
-			GL11.glEnable(3553 /*GL_TEXTURE_2D*/);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			var11.drawString(var2, -var11.getStringWidth(var2) / 2, var15, color);  //Spout (changed to color var)
-			GL11.glEnable(2929 /*GL_DEPTH_TEST*/);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(true);
 			var11.drawString(var2, -var11.getStringWidth(var2) / 2, var15, color2);  //Spout (changed to color2 var)
-			GL11.glEnable(2896 /*GL_LIGHTING*/);
-			GL11.glDisable(3042 /*GL_BLEND*/);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}

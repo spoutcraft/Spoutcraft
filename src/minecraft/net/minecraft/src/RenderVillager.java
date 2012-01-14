@@ -21,7 +21,7 @@ public class RenderVillager extends RenderLiving {
 		return -1;
 	}
 
-	public void func_40294_a(EntityVillager var1, double var2, double var4, double var6, float var8, float var9) {
+	public void renderVillager(EntityVillager var1, double var2, double var4, double var6, float var8, float var9) {
 		super.doRenderLiving(var1, var2, var4, var6, var8, var9);
 	}
 
@@ -56,10 +56,10 @@ public class RenderVillager extends RenderLiving {
 	}
 
 	public void doRenderLiving(EntityLiving var1, double var2, double var4, double var6, float var8, float var9) {
-		this.func_40294_a((EntityVillager)var1, var2, var4, var6, var8, var9);
+		this.renderVillager((EntityVillager)var1, var2, var4, var6, var8, var9);
 	}
 
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		this.func_40294_a((EntityVillager)var1, var2, var4, var6, var8, var9);
+		this.renderVillager((EntityVillager)var1, var2, var4, var6, var8, var9);
 	}
 }

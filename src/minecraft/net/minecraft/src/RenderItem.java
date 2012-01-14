@@ -28,12 +28,11 @@ public class RenderItem extends Render {
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
 	public boolean field_27004_a = true;
- 	public float field_40268_b = 0.0F;
-
+	public float zLevel = 0.0F;
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
-		this.field_194_c = 0.75F;
+		this.shadowOpaque = 0.75F;
 	}
 
 	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
@@ -139,34 +138,35 @@ public class RenderItem extends Render {
 	
 					red = 1.0F;
 					
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
+					this.renderBlocks.renderBlockAsItem(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
 					
 					GL11.glPopMatrix();
 				}
-			} else if(itemStack.itemID == Item.potion.shiftedIndex) {
+			} else if(itemStack.getItem().func_46058_c()) {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
-				short potionIndex = 141;
-				float colorScale = 1.0F;
-				if(this.field_27004_a) {
-					fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
-					red = (float)(fullColor >> 16 & 255) / 255.0F;
-					green = (float)(fullColor >> 8 & 255) / 255.0F;
-					blue = (float)(fullColor & 255) / 255.0F;
-					GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+				for (int var14 = 0; var14 <= 1; ++var14) {
+					float colorScale = 1.0F;
+					if(this.field_27004_a) {
+						fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), var14);
+						red = (float)(fullColor >> 16 & 255) / 255.0F;
+						green = (float)(fullColor >> 8 & 255) / 255.0F;
+						blue = (float)(fullColor & 255) / 255.0F;
+						GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+					}
+		
+					if (this.field_27004_a) {
+						GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
+						this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
+					}
 				}
-	
-				this.renderItemBillboard(potionIndex, itemsOnGround);
-				if (this.field_27004_a) {
-					GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
-					this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
-				}
+				
 			} else {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				int iconIndex = itemStack.getIconIndex();
 	
 				if(this.field_27004_a) {
 					//The names here are wrong due to de-obfuscation renames;
-					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
+					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), 0);
 					float var23 = (float)(renderType >> 16 & 255) / 255.0F;
 					red = (float)(renderType >> 8 & 255) / 255.0F;
 					green = (float)(renderType & 255) / 255.0F;
@@ -231,7 +231,7 @@ public class RenderItem extends Render {
 	}
 
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
-		
+		//Spout start
 		boolean custom = false;
 		BlockDesign design = null;
 		if (var3 == 318) {
@@ -266,18 +266,19 @@ public class RenderItem extends Render {
 		float var12;
 		
 		if (design != null && custom) {
-			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 		}
 		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		//Spout end
 			Block var16 = Block.blocksList[var3];
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 			GL11.glScalef(10.0F, 10.0F, 10.0F);
 			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
+			int var17 = Item.itemsList[var3].getColorFromDamage(var4, 0);
 			var11 = (float)(var17 >> 16 & 255) / 255.0F;
 			var12 = (float)(var17 >> 8 & 255) / 255.0F;
 			float var13 = (float)(var17 & 255) / 255.0F;
@@ -287,7 +288,7 @@ public class RenderItem extends Render {
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			this.renderBlocks.renderBlockOnInventory(var16, var4, 1.0F);
+			this.renderBlocks.renderBlockAsItem(var16, var4, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
 		} else {
@@ -295,7 +296,8 @@ public class RenderItem extends Render {
 			if(var3 == Item.potion.shiftedIndex) {
 				GL11.glDisable(2896 /* GL_LIGHTING */);
 				short var8 = 141;
-				int var9 = Item.itemsList[var3].getColorFromDamage(var4);
+				for (var8 = 0; var8 <= 1; ++var8) {
+				int var9 = Item.itemsList[var3].getColorFromDamage(var4, var8);
 				var10 = (float)(var9 >> 16 & 255) / 255.0F;
 				var11 = (float)(var9 >> 8 & 255) / 255.0F;
 				var12 = (float)(var9 & 255) / 255.0F;
@@ -304,6 +306,7 @@ public class RenderItem extends Render {
 				}
 	
 				this.renderTexturedQuad(var6, var7, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
+				}
 				if (this.field_27004_a) {
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				}
@@ -315,7 +318,7 @@ public class RenderItem extends Render {
 			else if(var5 >= 0) {
 				GL11.glDisable(2896 /*GL_LIGHTING*/);
 
-				int var14 = Item.itemsList[var3].getColorFromDamage(var4);
+				int var14 = Item.itemsList[var3].getColorFromDamage(var4, 0);
 				float var15 = (float)(var14 >> 16 & 255) / 255.0F;
 				var10 = (float)(var14 >> 8 & 255) / 255.0F;
 				var11 = (float)(var14 & 255) / 255.0F;
@@ -339,7 +342,7 @@ public class RenderItem extends Render {
 			}
 		}
 
-		GL11.glEnable(2884 /* GL_CULL_FACE */);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
 	public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
@@ -347,18 +350,18 @@ public class RenderItem extends Render {
 			this.drawItemIntoGui(var1, var2, var3.itemID, var3.getItemDamage(), var3.getIconIndex(), var4, var5);
 			if(var3 != null && var3.func_40713_r()) {
 				GL11.glDepthFunc(516);
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
+				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
 				var2.bindTexture(var2.getTexture("%blur%/misc/glint.png"));
-				this.field_40268_b -= 50.0F;
-				GL11.glEnable(3042 /*GL_BLEND*/);
+				this.zLevel -= 50.0F;
+				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(774, 774);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
 				this.func_40266_a(var4 * 431278612 + var5 * 32178161, var4 - 2, var5 - 2, 20, 20);
-				GL11.glDisable(3042 /*GL_BLEND*/);
+				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glDepthMask(true);
-				this.field_40268_b += 50.0F;
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
+				this.zLevel += 50.0F;
+				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDepthFunc(515);
 			}
 
@@ -386,10 +389,10 @@ public class RenderItem extends Render {
 		}
 
 			var11.startDrawingQuads();
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + var5), (double)this.field_40268_b, (double)((var9 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + var5), (double)this.field_40268_b, (double)((var9 + (float)var4 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + 0), (double)this.field_40268_b, (double)((var9 + (float)var4) * var7), (double)((var10 + 0.0F) * var8));
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + 0), (double)this.field_40268_b, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
+			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var4 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
+			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + (float)var4) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
 			var11.draw();
 		}
 
@@ -399,28 +402,28 @@ public class RenderItem extends Render {
 		if (var3 != null) {
 			if (var3.stackSize > 1) {
 				String var6 = "" + var3.stackSize;
-				GL11.glDisable(2896 /* GL_LIGHTING */);
-				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				var1.drawStringWithShadow(var6, var4 + 19 - 2 - var1.getStringWidth(var6), var5 + 6 + 3, 16777215);
-				GL11.glEnable(2896 /* GL_LIGHTING */);
-				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 
 			if (var3.isItemDamaged()) {
 				int var11 = (int) Math.round(13.0D - (double) var3.getItemDamageForDisplay() * 13.0D / (double) var3.getMaxDamage());
 				int var7 = (int) Math.round(255.0D - (double) var3.getItemDamageForDisplay() * 255.0D / (double) var3.getMaxDamage());
-				GL11.glDisable(2896 /* GL_LIGHTING */);
-				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-				GL11.glDisable(3553 /* GL_TEXTURE_2D */);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Tessellator var8 = Tessellator.instance;
 				int var9 = 255 - var7 << 16 | var7 << 8;
 				int var10 = (255 - var7) / 4 << 16 | 16128;
 				this.renderQuad(var8, var4 + 2, var5 + 13, 13, 2, 0);
 				this.renderQuad(var8, var4 + 2, var5 + 13, 12, 1, var10);
 				this.renderQuad(var8, var4 + 2, var5 + 13, var11, 1, var9);
-				GL11.glEnable(3553 /* GL_TEXTURE_2D */);
-				GL11.glEnable(2896 /* GL_LIGHTING */);
-				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
@@ -442,15 +445,13 @@ public class RenderItem extends Render {
 		float var8 = 0.00390625F;
 		Tessellator var9 = Tessellator.instance;
 		var9.startDrawingQuads();
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)this.field_40268_b, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)this.field_40268_b, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)this.field_40268_b, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)this.field_40268_b, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
+		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + var6) * var8));
+		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + var6) * var8));
+		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
+		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
 		var9.draw();
 	}
 
-	// $FF: synthetic method
-	// $FF: bridge method
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
 		this.doRenderItem((EntityItem) var1, var2, var4, var6, var8, var9);
 	}

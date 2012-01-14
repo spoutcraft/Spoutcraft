@@ -148,7 +148,7 @@ public class EntitySilverfish extends EntityMob {
 		}
 	}
 
-	protected float getBlockPathWeight(int var1, int var2, int var3) {
+	public float getBlockPathWeight(int var1, int var2, int var3) {
 		return this.worldObj.getBlockId(var1, var2 - 1, var3) == Block.stone.blockID?10.0F:super.getBlockPathWeight(var1, var2, var3);
 	}
 
@@ -165,7 +165,7 @@ public class EntitySilverfish extends EntityMob {
 		}
 	}
 
-	public EnumCreatureAttribute func_40124_t() {
+	public EnumCreatureAttribute getCreatureAttribute() {
 		return EnumCreatureAttribute.ARTHROPOD;
 	}
 }

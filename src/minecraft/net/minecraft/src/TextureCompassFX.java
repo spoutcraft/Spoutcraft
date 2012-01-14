@@ -69,7 +69,7 @@ public class TextureCompassFX extends TextureFX {
 			double var23 = (double)var21.posX - this.mc.thePlayer.posX;
 			double var25 = (double)var21.posZ - this.mc.thePlayer.posZ;
 			var20 = (double)(this.mc.thePlayer.rotationYaw - 90.0F) * 3.141592653589793D / 180.0D - Math.atan2(var25, var23);
-			if(this.mc.theWorld.worldProvider.isNether) {
+			if(this.mc.theWorld.worldProvider.isAlternateDimension) {
 				var20 = Math.random() * 3.1415927410125732D * 2.0D;
 			}
 		}

@@ -29,7 +29,7 @@ public class BlockIce extends BlockBreakable {
 	public void harvestBlock(World var1, EntityPlayer var2, int var3, int var4, int var5, int var6) {
 		super.harvestBlock(var1, var2, var3, var4, var5, var6);
 		Material var7 = var1.getBlockMaterial(var3, var4 - 1, var5);
-		if(var7.getIsSolid() || var7.getIsLiquid()) {
+		if (var7.getIsSolid() || var7.getIsLiquid()) {
 			var1.setBlockWithNotify(var3, var4, var5, Block.waterMoving.blockID);
 		}
 
@@ -40,7 +40,7 @@ public class BlockIce extends BlockBreakable {
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		if(var1.getSavedLightValue(EnumSkyBlock.Block, var2, var3, var4) > 11 - Block.lightOpacity[this.blockID]) {
+		if (var1.getSavedLightValue(EnumSkyBlock.Block, var2, var3, var4) > 11 - Block.lightOpacity[this.blockID]) {
 			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4), 0);
 			var1.setBlockWithNotify(var2, var3, var4, Block.waterStill.blockID);
 		}
@@ -51,7 +51,7 @@ public class BlockIce extends BlockBreakable {
 		return 0;
 	}
 
-	protected ItemStack func_41049_c_(int var1) {
+	protected ItemStack createStackedBlock(int var1) {
 		return null;
 	}
 }

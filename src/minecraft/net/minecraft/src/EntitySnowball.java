@@ -32,14 +32,14 @@ public class EntitySnowball extends EntityThrowable {
 		//Spout end
 	}
 
-	protected void func_40078_a(MovingObjectPosition var1) {
+	protected void onThrowableCollision(MovingObjectPosition var1) {
 		if(var1.entityHit != null) {
 			byte var2 = 0;
 			if(var1.entityHit instanceof EntityBlaze) {
 				var2 = 3;
 			}
 
-			if(var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.field_40083_c), var2)) {
+			if(var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.throwingEntity), var2)) {
 				;
 			}
 		}

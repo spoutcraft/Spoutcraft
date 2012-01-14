@@ -57,9 +57,9 @@ public class SpoutcraftChunk implements Chunk{
 		x = chunk.xPosition;
 		z = chunk.zPosition;
 		
-		this.worldHeight = world.field_35472_c;
-		this.xBitShifts = world.field_35471_b;
-		this.zBitShifts = world.field_35473_a;
+		this.worldHeight = world.worldHeight;
+		this.xBitShifts = world.xShift;
+		this.zBitShifts = world.heightShift;
 		worldHeightMinusOne = worldHeight - 1;
 	}
 	

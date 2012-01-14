@@ -23,13 +23,13 @@ public class GuiIngameMenu extends GuiScreen {
 		this.updateCounter2 = 0;
 		this.controlList.clear();
 		byte var1 = -16;
-		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + var1, "Save and quit to title"));
+		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + var1, StatCollector.translateToLocal("menu.returnToMenu")));
 		if(this.mc.isMultiplayerWorld()) {
-			((GuiButton)this.controlList.get(0)).displayString = "Disconnect";
+			((GuiButton)this.controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
 		}
 
-		this.controlList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + var1, "Back to game"));
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + var1, "Options..."));
+		this.controlList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + var1, StatCollector.translateToLocal("menu.returnToGame")));
+		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + var1, StatCollector.translateToLocal("menu.options")));
 		this.controlList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.achievements")));
 		this.controlList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.stats")));
 	}
@@ -77,7 +77,7 @@ public class GuiIngameMenu extends GuiScreen {
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
-		boolean var4 = !this.mc.theWorld.func_650_a(this.updateCounter2++);
+		boolean var4 = !this.mc.theWorld.quickSaveWorld(this.updateCounter2++);
 		if(var4 || this.updateCounter < 20) {
 			float var5 = ((float)(this.updateCounter % 10) + var3) / 10.0F;
 			var5 = MathHelper.sin(var5 * 3.1415927F * 2.0F) * 0.2F + 0.8F;

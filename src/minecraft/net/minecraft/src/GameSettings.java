@@ -20,7 +20,7 @@ public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[] { "options.renderDistance.far", "options.renderDistance.normal", "options.renderDistance.short", "options.renderDistance.tiny" };
 	private static final String[] DIFFICULTIES = new String[] { "options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard" };
 	private static final String[] GUISCALES = new String[] { "options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large" };
-	private static final String[] field_41086_T = new String[] { "options.particles.all", "options.particles.decreased", "options.particles.minimal" };
+	private static final String[] PARTICLES = new String[] { "options.particles.all", "options.particles.decreased", "options.particles.minimal" };
 	private static final String[] LIMIT_FRAMERATES = new String[] { "performance.max", "performance.balanced", "performance.powersaver" };
 	public float musicVolume = 1.0F;
 	public float soundVolume = 1.0F;
@@ -65,7 +65,8 @@ public class GameSettings {
 	public float fovSetting;
 	public float gammaSetting;
 	public int guiScale;
-	public int field_41087_P;
+	public int particles;
+	public String field_44018_Q;
 
 	public GameSettings(Minecraft var1, File var2) {
 		this.keyBindings = new KeyBinding[] { this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindToggleFog}; //Spout added fog
@@ -82,7 +83,7 @@ public class GameSettings {
 		this.fovSetting = 0.0F;
 		this.gammaSetting = 0.0F;
 		this.guiScale = 0;
-		this.field_41087_P = 0;
+		this.particles = 0;
 		this.mc = var1;
 		this.optionsFile = new File(var2, "options.txt");
 		this.loadOptions();
@@ -103,7 +104,7 @@ public class GameSettings {
 		this.fovSetting = 0.0F;
 		this.gammaSetting = 0.0F;
 		this.guiScale = 0;
-		this.field_41087_P = 0;
+		this.particles = 0;
 	}
 
 	public String getKeyBindingDescription(int var1) {
@@ -113,10 +114,10 @@ public class GameSettings {
 
 	public String getOptionDisplayString(int var1) {
 		int var2 = this.keyBindings[var1].keyCode;
-		return func_41085_c(var2);
+		return getKeyDisplayString(var2);
 	}
 
-	public static String func_41085_c(int var0) {
+	public static String getKeyDisplayString(int var0) {
 		return var0 < 0 ? StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] { Integer.valueOf(var0 + 101) }) : Keyboard.getKeyName(var0);
 	}
 
@@ -164,7 +165,7 @@ public class GameSettings {
 		}
 
 		if (var1 == EnumOptions.PARTICLES) {
-			this.field_41087_P = (this.field_41087_P + var2) % 3;
+			this.particles = (this.particles + var2) % 3;
 		}
 
 		if (var1 == EnumOptions.VIEW_BOBBING) {
@@ -239,7 +240,7 @@ public class GameSettings {
 			boolean var4 = this.getOptionOrdinalValue(var1);
 			return var4 ? var3 + var2.translateKey("options.on") : var3 + var2.translateKey("options.off");
 		} else {
-			return var1 == EnumOptions.RENDER_DISTANCE ? var3 + var2.translateKey(RENDER_DISTANCES[this.renderDistance]) : (var1 == EnumOptions.DIFFICULTY ? var3 + var2.translateKey(DIFFICULTIES[this.difficulty]) : (var1 == EnumOptions.GUI_SCALE ? var3 + var2.translateKey(GUISCALES[this.guiScale]) : (var1 == EnumOptions.PARTICLES ? var3 + var2.translateKey(field_41086_T[this.field_41087_P]) : (var1 == EnumOptions.FRAMERATE_LIMIT ? var3 + StatCollector.translateToLocal(LIMIT_FRAMERATES[this.limitFramerate]) : (var1 == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3)))));
+			return var1 == EnumOptions.RENDER_DISTANCE ? var3 + var2.translateKey(RENDER_DISTANCES[this.renderDistance]) : (var1 == EnumOptions.DIFFICULTY ? var3 + var2.translateKey(DIFFICULTIES[this.difficulty]) : (var1 == EnumOptions.GUI_SCALE ? var3 + var2.translateKey(GUISCALES[this.guiScale]) : (var1 == EnumOptions.PARTICLES ? var3 + var2.translateKey(PARTICLES[this.particles]) : (var1 == EnumOptions.FRAMERATE_LIMIT ? var3 + StatCollector.translateToLocal(LIMIT_FRAMERATES[this.limitFramerate]) : (var1 == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3)))));
 		}
 	}
 
@@ -288,7 +289,7 @@ public class GameSettings {
 					}
 
 					if (var3[0].equals("particles")) {
-						this.field_41087_P = Integer.parseInt(var3[1]);
+						this.particles = Integer.parseInt(var3[1]);
 					}
 
 					if (var3[0].equals("bobView")) {
@@ -331,6 +332,10 @@ public class GameSettings {
 						this.lastServer = var3[1];
 					}
 
+					if(var3[0].equals("lang") && var3.length >= 2) {
+								this.field_44018_Q = var3[1];
+					}
+
 					for (int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 						if (var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 							this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -366,7 +371,7 @@ public class GameSettings {
 			var1.println("gamma:" + this.gammaSetting);
 			var1.println("viewDistance:" + this.renderDistance);
 			var1.println("guiScale:" + this.guiScale);
-			var1.println("particles:" + this.field_41087_P);
+			var1.println("particles:" + this.particles);
 			var1.println("bobView:" + this.viewBobbing);
 			var1.println("anaglyph3d:" + this.anaglyph);
 			var1.println("advancedOpengl:" + this.advancedOpengl);
@@ -377,6 +382,7 @@ public class GameSettings {
 			var1.println("clouds:" + this.clouds);
 			var1.println("skin:" + this.skin);
 			var1.println("lastServer:" + this.lastServer);
+			var1.println("lang:" + this.field_44018_Q);
 
 			for (int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

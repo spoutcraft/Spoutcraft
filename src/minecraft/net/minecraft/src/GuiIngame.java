@@ -84,9 +84,12 @@ public class GuiIngame extends Gui{
 			this.renderPumpkinBlur(screenWidth, screenHeight);
 		}
 
-		float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
-		if(var10 > 0.0F) {
-			this.renderPortalOverlay(var10, screenWidth, screenHeight);
+		float var10;
+		if(!this.mc.thePlayer.isPotionActive(Potion.confusion)) {
+			var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
+			if(var10 > 0.0F) {
+				this.renderPortalOverlay(var10, screenWidth, screenHeight);
+			}
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -104,6 +107,8 @@ public class GuiIngame extends Gui{
 		GuiIngame.rand.setSeed((long) (this.updateCounter * 312871));
 		int var15;
 		int var17;
+		
+		this.renderBossHealth();
 		
 		//better safe than sorry
 		SpoutClient.enableSandbox();
@@ -171,7 +176,7 @@ public class GuiIngame extends Gui{
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
 			if (ConfigReader.fastDebug != 2) {
-				font.drawStringWithShadow("Minecraft 1.0.0 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Minecraft 1.1.0 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
@@ -283,8 +288,8 @@ public class GuiIngame extends Gui{
 		ServerPlayerList playerList = mainScreen.getServerPlayerList();
 		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed && playerList.isVisible()) {
 			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
-			List var44 = var41.field_35786_c;
-			int var40 = var41.field_35785_d;
+			List var44 = var41.playerNames;
+			int var40 = var41.currentServerMaxPlayers;
 			int var38 = var40;
 			int var16;
 			for(var16 = 1; var38 > 20; var38 = (var40 + var16 - 1) / var16) {
@@ -308,22 +313,22 @@ public class GuiIngame extends Gui{
 				GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 				if(var20 < var44.size()) {
 					GuiSavingLevelString var50 = (GuiSavingLevelString)var44.get(var20);
-					font.drawStringWithShadow(var50.field_35624_a, var47, var22, 16777215);
+					font.drawStringWithShadow(var50.name, var47, var22, 16777215);
 					this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
 					boolean var48 = false;
 					boolean var53 = false;
 					byte var49 = 0;
 					var53 = false;
 					byte var54;
-					if(var50.field_35623_b < 0) {
+					if(var50.responseTime < 0) {
 						var54 = 5;
-					} else if(var50.field_35623_b < 150) {
+					} else if(var50.responseTime < 150) {
 						var54 = 0;
-					} else if(var50.field_35623_b < 300) {
+					} else if(var50.responseTime < 300) {
 						var54 = 1;
-					} else if(var50.field_35623_b < 600) {
+					} else if(var50.responseTime < 600) {
 						var54 = 2;
-					} else if(var50.field_35623_b < 1000) {
+					} else if(var50.responseTime < 1000) {
 						var54 = 3;
 					} else {
 						var54 = 4;
@@ -342,31 +347,29 @@ public class GuiIngame extends Gui{
 		GL11.glDisable(3042 /*GL_BLEND*/);
 	}
 
-	private void func_41039_c()
+	private void renderBossHealth()
 	{
-		if(RenderDragon.field_41038_a == null)
-		{
-			return;
+		if(RenderDragon.entityDragon != null) {
+			EntityDragon entitydragon = RenderDragon.entityDragon;
+			RenderDragon.entityDragon = null;
+			FontRenderer fontrenderer = mc.fontRenderer;
+			ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+			int i = scaledresolution.getScaledWidth();
+			char c = '\266';
+			int j = i / 2 - c / 2;
+			int k = (int)(((float)entitydragon.func_41010_ax() / (float)entitydragon.getMaxHealth()) * (float)(c + 1));
+			byte byte0 = 12;
+			drawTexturedModalRect(j, byte0, 0, 74, c, 5);
+			drawTexturedModalRect(j, byte0, 0, 74, c, 5);
+			if(k > 0)
+			{
+				drawTexturedModalRect(j, byte0, 0, 79, k, 5);
+			}
+			String s = "Boss health";
+			fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xff00ff);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/gui/icons.png"));
 		}
-		EntityDragon entitydragon = RenderDragon.field_41038_a;
-		RenderDragon.field_41038_a = null;
-		FontRenderer fontrenderer = mc.fontRenderer;
-		ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-		int i = scaledresolution.getScaledWidth();
-		char c = '\266';
-		int j = i / 2 - c / 2;
-		int k = (int)(((float)entitydragon.func_41010_ax() / (float)entitydragon.getMaxHealth()) * (float)(c + 1));
-		byte byte0 = 12;
-		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
-		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
-		if(k > 0)
-		{
-			drawTexturedModalRect(j, byte0, 0, 79, k, 5);
-		}
-		String s = "Boss health";
-		fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xff00ff);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, mc.renderEngine.getTexture("/gui/icons.png"));
 	}
 
 	private void renderPumpkinBlur(int i, int j)

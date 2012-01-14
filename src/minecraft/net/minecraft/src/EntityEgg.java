@@ -32,8 +32,8 @@ public class EntityEgg extends EntityThrowable {
 		//Spout end
 	}
 
-	protected void func_40078_a(MovingObjectPosition var1) {
-		if(var1.entityHit != null && var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.field_40083_c), 0)) {
+	protected void onThrowableCollision(MovingObjectPosition var1) {
+		if(var1.entityHit != null && var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.throwingEntity), 0)) {
 			;
 		}
 
@@ -45,9 +45,9 @@ public class EntityEgg extends EntityThrowable {
 
 			for(int var3 = 0; var3 < var2; ++var3) {
 				EntityChicken var4 = new EntityChicken(this.worldObj);
-				var4.func_40142_a_(-24000);
+				var4.setDelay(-24000);
 				var4.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-				this.worldObj.entityJoinedWorld(var4);
+				this.worldObj.spawnEntityInWorld(var4);
 			}
 		}
 

@@ -126,12 +126,12 @@ public class EntitySpider extends EntityMob {
 		return 1.0F;
 	}
 
-	public EnumCreatureAttribute func_40124_t() {
+	public EnumCreatureAttribute getCreatureAttribute() {
 		return EnumCreatureAttribute.ARTHROPOD;
 	}
 
 	public boolean func_40126_a(PotionEffect var1) {
-		return var1.getPotionID() == Potion.potionPoison.id?false:super.func_40126_a(var1);
+		return var1.getPotionID() == Potion.poison.id?false:super.func_40126_a(var1);
 	}
 
 	public boolean func_40149_l_() {

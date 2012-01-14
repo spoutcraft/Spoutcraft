@@ -27,7 +27,7 @@ public final class SpawnerAnimals {
 
 	protected static ChunkPosition getRandomSpawningPointInChunk(World var0, int var1, int var2) {
 		int var3 = var1 + var0.rand.nextInt(16);
-		int var4 = var0.rand.nextInt(var0.field_35472_c);
+		int var4 = var0.rand.nextInt(var0.worldHeight);
 		int var5 = var2 + var0.rand.nextInt(16);
 		return new ChunkPosition(var3, var4, var5);
 	}
@@ -121,7 +121,7 @@ public final class SpawnerAnimals {
 											var38.setLocationAndAngles((double)var23, (double)var24, (double)var25, var0.rand.nextFloat() * 360.0F, 0.0F);
 											if(var38.getCanSpawnHere()) {
 												++var15;
-												var0.entityJoinedWorld(var38);
+												var0.spawnEntityInWorld(var38);
 												creatureSpecificInit(var38, var0, var23, var24, var25);
 												if(var15 >= var38.getMaxSpawnedInChunk()) {
 													return var3;
@@ -157,7 +157,7 @@ public final class SpawnerAnimals {
 		if(var0 instanceof EntitySpider && var1.rand.nextInt(100) == 0) {
 			EntitySkeleton var5 = new EntitySkeleton(var1);
 			var5.setLocationAndAngles((double)var2, (double)var3, (double)var4, var0.rotationYaw, 0.0F);
-			var1.entityJoinedWorld(var5);
+			var1.spawnEntityInWorld(var5);
 			var5.mountEntity(var0);
 		} else if(var0 instanceof EntitySheep) {
 			((EntitySheep)var0).setFleeceColor(EntitySheep.getRandomFleeceColor(var1.rand));
@@ -195,7 +195,7 @@ public final class SpawnerAnimals {
 							}
 
 							var21.setLocationAndAngles((double)var18, (double)var19, (double)var20, var6.nextFloat() * 360.0F, 0.0F);
-							var0.entityJoinedWorld(var21);
+							var0.spawnEntityInWorld(var21);
 							creatureSpecificInit(var21, var0, var18, var19, var20);
 							var15 = true;
 						}

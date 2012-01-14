@@ -378,7 +378,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			return getHandle().thePlayer;
 		}
 		WorldClient world = (WorldClient)getHandle().theWorld;
-		Entity e = world.func_709_b(id);
+		Entity e = world.getEntityByID(id);
 		if (e instanceof EntityPlayer) {
 			return (EntityPlayer) e;
 		}
@@ -390,7 +390,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			return getHandle().thePlayer;
 		}
 		WorldClient world = (WorldClient)getHandle().theWorld;
-		return world.func_709_b(id);
+		return world.getEntityByID(id);
 	}
 	
 	public boolean dispatchCommand(CommandSender sender, String commandLine) {

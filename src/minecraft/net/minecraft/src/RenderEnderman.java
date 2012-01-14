@@ -55,7 +55,7 @@ public class RenderEnderman extends RenderLiving {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.loadTexture("/terrain.png");
-			this.renderBlocks.renderBlockOnInventory(Block.blocksList[var1.getCarried()], var1.getCarryingData(), 1.0F);
+			this.renderBlocks.renderBlockAsItem(Block.blocksList[var1.getCarried()], var1.getCarryingData(), 1.0F);
 			GL11.glPopMatrix();
 			GL11.glDisable('\u803a');
 		}

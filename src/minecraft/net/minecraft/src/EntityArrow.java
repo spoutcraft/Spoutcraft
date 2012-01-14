@@ -31,6 +31,9 @@ public class EntityArrow extends Entity {
 	public Entity shootingEntity;
 	private int ticksInGround;
 	private int ticksInAir = 0;
+	private double field_46026_at = 2.0D;
+
+	private int field_46027_au;
 	public boolean arrowCritical = false;
 
 
@@ -164,7 +167,7 @@ public class EntityArrow extends Entity {
 				if(var9.canBeCollidedWith() && (var9 != this.shootingEntity || this.ticksInAir >= 5)) {
 					var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-					MovingObjectPosition var12 = var11.func_1169_a(var16, var17);
+					MovingObjectPosition var12 = var11.calculateIntercept(var16, var17);
 					if(var12 != null) {
 						double var13 = var16.distanceTo(var12.hitVec);
 						if(var13 < var6 || var6 == 0.0D) {
@@ -183,7 +186,7 @@ public class EntityArrow extends Entity {
 			if(var3 != null) {
 				if(var3.entityHit != null) {
 					var19 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					int var20 = (int)Math.ceil((double)var19 * 2.0D);
+					int var20 = (int)Math.ceil((double)var19 * this.field_46026_at);
 					if(this.arrowCritical) {
 						var20 += this.rand.nextInt(var20 / 2 + 2);
 					}
@@ -195,9 +198,27 @@ public class EntityArrow extends Entity {
 						var22 = DamageSource.causeArrowDamage(this, this.shootingEntity);
 					}
 
+					if(this.isBurning()) {
+
+						var3.entityHit.setFire(5);
+
+					}
+
 					if(var3.entityHit.attackEntityFrom(var22, var20)) {
 						if(var3.entityHit instanceof EntityLiving) {
-							++((EntityLiving)var3.entityHit).field_35172_bP;
+							++((EntityLiving)var3.entityHit).arrowHitTempCounter;
+
+							if(this.field_46027_au > 0) {
+
+								float var21 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+								if(var21 > 0.0F) {
+
+									var3.entityHit.addVelocity(this.motionX * (double)this.field_46027_au * 0.6000000238418579D / (double)var21, 0.1D, this.motionZ * (double)this.field_46027_au * 0.6000000238418579D / (double)var21);
+
+								}
+
+							}
 						}
 
 						this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
@@ -288,6 +309,7 @@ public class EntityArrow extends Entity {
 		var1.setByte("shake", (byte)this.arrowShake);
 		var1.setByte("inGround", (byte)(this.inGround?1:0));
 		var1.setBoolean("player", this.doesArrowBelongToPlayer);
+		var1.setDouble("damage", this.field_46026_at);
 	}
 
 	public void readEntityFromNBT(NBTTagCompound var1) {
@@ -299,6 +321,11 @@ public class EntityArrow extends Entity {
 		this.arrowShake = var1.getByte("shake") & 255;
 		this.inGround = var1.getByte("inGround") == 1;
 		this.doesArrowBelongToPlayer = var1.getBoolean("player");
+		if(var1.hasKey("damage")) {
+
+			this.field_46026_at = var1.getDouble("damage");
+
+		}
 	}
 
 	public void onCollideWithPlayer(EntityPlayer var1) {
@@ -314,5 +341,27 @@ public class EntityArrow extends Entity {
 
 	public float getShadowSize() {
 		return 0.0F;
+	}
+
+	public void func_46024_b(double var1) {
+
+		this.field_46026_at = var1;
+
+	}
+
+
+
+	public double func_46025_l() {
+
+		return this.field_46026_at;
+
+	}
+
+
+
+	public void func_46023_b(int var1) {
+
+		this.field_46027_au = var1;
+
 	}
 }

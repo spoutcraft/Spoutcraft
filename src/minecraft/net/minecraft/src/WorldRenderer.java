@@ -93,7 +93,7 @@ public class WorldRenderer {
 			this.posZMinus = var3 - this.posZClip;
 			float var4 = 6.0F;
 			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.sizeWidth) + var4), (double)((float)(var2 + this.sizeHeight) + var4), (double)((float)(var3 + this.sizeDepth) + var4));
-			GL11.glNewList(this.glRenderList + 2, 4864 /*GL_COMPILE*/);
+			GL11.glNewList(this.glRenderList + 2, GL11.GL_COMPILE);
 			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + this.sizeWidth) + var4), (double)((float)(this.posYClip + this.sizeHeight) + var4), (double)((float)(this.posZClip + this.sizeDepth) + var4)));
 			GL11.glEndList();
 			this.markDirty();

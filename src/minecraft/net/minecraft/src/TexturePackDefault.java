@@ -13,7 +13,6 @@ public class TexturePackDefault extends TexturePackBase {
 	private int texturePackName = -1;
 	private BufferedImage texturePackThumbnail;
 
-
 	public TexturePackDefault() {
 		this.texturePackFileName = "Default";
 		this.firstDescriptionLine = "The default look of Minecraft";
@@ -42,8 +41,9 @@ public class TexturePackDefault extends TexturePackBase {
 
 		if(this.texturePackThumbnail != null) {
 			var1.renderEngine.bindTexture(this.texturePackName);
-		} else {
-			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var1.renderEngine.getTexture("/gui/unknown_pack.png"));
+		}
+		else {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var1.renderEngine.getTexture("/gui/unknown_pack.png"));
 		}
 
 	}

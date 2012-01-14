@@ -78,7 +78,7 @@ public class CraftJukebox extends CraftBlockState implements Jukebox {
 
 	public boolean eject() {
 		boolean result = isPlaying();
-		((BlockJukeBox)net.minecraft.src.Block.jukebox).func_28038_b_(world.getHandle(), getX(), getY(), getZ());
+		((BlockJukeBox)net.minecraft.src.Block.jukebox).insertDisc(world.getHandle(), getX(), getY(), getZ());
 		return result;
 	}
 }

@@ -39,7 +39,7 @@ public abstract class EntityWaterMob extends EntityCreature {
 		return true;
 	}
 
-	protected int func_36001_a(EntityPlayer var1) {
+	protected int getExperiencePoints(EntityPlayer var1) {
 		return 1 + this.worldObj.rand.nextInt(3);
 	}
 }

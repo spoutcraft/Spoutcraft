@@ -101,7 +101,7 @@ public class EntityCreeper extends EntityMob {
 	public void onDeath(DamageSource var1) {
 		super.onDeath(var1);
 		if(var1.getEntity() instanceof EntitySkeleton) {
-			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(2), 1);
+			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
 		}
 
 	}

@@ -24,7 +24,7 @@ public class SpoutItem extends Item {
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		CustomItem customItem = MaterialData.getCustomItem(item.getItemDamage());
 		if (customItem instanceof Food) {
-			if (player.func_35197_b(false)) {
+			if (player.canEat(false)) {
 				player.setItemInUse(item, 32);
 			}
 		}

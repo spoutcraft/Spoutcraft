@@ -31,6 +31,12 @@ public class EntityPigZombie extends EntityZombie {
 		//Spout end
 	}
 
+	protected boolean func_46006_aR() {
+
+		return false;
+
+	}
+
 	public void onUpdate() {
 		this.moveSpeed = this.entityToAttack != null?0.95F:0.5F;
 		if(this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {

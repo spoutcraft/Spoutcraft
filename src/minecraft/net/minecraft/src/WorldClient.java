@@ -25,7 +25,6 @@ public class WorldClient extends World {
 	private Set entityList = new HashSet();
 	private Set entitySpawnQueue = new HashSet();
 
-
 	public WorldClient(NetClientHandler var1, WorldSettings var2, int var3, int var4) {
 		super(new SaveHandlerMP(), "MpServer", WorldProvider.getProviderForDimension(var3), var2);
 		this.sendQueue = var1;
@@ -40,8 +39,9 @@ public class WorldClient extends World {
 		int var1;
 		for (var1 = 0; var1 < 10 && !this.entitySpawnQueue.isEmpty(); ++var1) {
 			Entity var2 = (Entity) this.entitySpawnQueue.iterator().next();
+			this.entitySpawnQueue.remove(var2);
 			if (!this.loadedEntityList.contains(var2)) {
-				this.entityJoinedWorld(var2);
+				this.spawnEntityInWorld(var2);
 			}
 		}
 
@@ -88,18 +88,19 @@ public class WorldClient extends World {
 	public void doPreChunk(int var1, int var2, boolean var3) {
 		if (var3) {
 			this.field_20915_C.loadChunk(var1, var2);
-		} else {
+		}
+		else {
 			this.field_20915_C.func_539_c(var1, var2);
 		}
 
 		if (!var3) {
-			this.markBlocksDirty(var1 * 16, 0, var2 * 16, var1 * 16 + 15, this.field_35472_c, var2 * 16 + 15);
+			this.markBlocksDirty(var1 * 16, 0, var2 * 16, var1 * 16 + 15, this.worldHeight, var2 * 16 + 15);
 		}
 
 	}
 
-	public boolean entityJoinedWorld(Entity var1) {
-		boolean var2 = super.entityJoinedWorld(var1);
+	public boolean spawnEntityInWorld(Entity var1) {
+		boolean var2 = super.spawnEntityInWorld(var1);
 		this.entityList.add(var1);
 		if (!var2) {
 			this.entitySpawnQueue.add(var1);
@@ -129,22 +130,22 @@ public class WorldClient extends World {
 
 	}
 
-	public void func_712_a(int var1, Entity var2) {
-		Entity var3 = this.func_709_b(var1);
+	public void addEntityToWorld(int var1, Entity var2) {
+		Entity var3 = this.getEntityByID(var1);
 		if (var3 != null) {
 			this.setEntityDead(var3);
 		}
 
 		this.entityList.add(var2);
 		var2.entityId = var1;
-		if (!this.entityJoinedWorld(var2)) {
+		if (!this.spawnEntityInWorld(var2)) {
 			this.entitySpawnQueue.add(var2);
 		}
 
 		this.entityHashSet.addKey(var1, var2);
 	}
 
-	public Entity func_709_b(int var1) {
+	public Entity getEntityByID(int var1) {
 		return (Entity) this.entityHashSet.lookup(var1);
 	}
 
@@ -164,7 +165,8 @@ public class WorldClient extends World {
 		if (super.setBlockMetadata(var1, var2, var3, var4)) {
 			this.blocksToReceive.add(new WorldBlockPositionType(this, var1, var2, var3, var5, var6));
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -175,7 +177,8 @@ public class WorldClient extends World {
 		if (super.setBlockAndMetadata(var1, var2, var3, var4, var5)) {
 			this.blocksToReceive.add(new WorldBlockPositionType(this, var1, var2, var3, var6, var7));
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -186,7 +189,8 @@ public class WorldClient extends World {
 		if (super.setBlock(var1, var2, var3, var4)) {
 			this.blocksToReceive.add(new WorldBlockPositionType(this, var1, var2, var3, var5, var6));
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -196,7 +200,8 @@ public class WorldClient extends World {
 		if (super.setBlockAndMetadata(var1, var2, var3, var4, var5)) {
 			this.notifyBlockChange(var1, var2, var3, var4);
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -214,7 +219,8 @@ public class WorldClient extends World {
 			this.prevRainingStrength = this.rainingStrength;
 			if (this.worldInfo.getIsRaining()) {
 				this.rainingStrength = (float) ((double) this.rainingStrength + 0.01D);
-			} else {
+			}
+			else {
 				this.rainingStrength = (float) ((double) this.rainingStrength - 0.01D);
 			}
 
@@ -229,7 +235,8 @@ public class WorldClient extends World {
 			this.prevThunderingStrength = this.thunderingStrength;
 			if (this.worldInfo.getIsThundering()) {
 				this.thunderingStrength = (float) ((double) this.thunderingStrength + 0.01D);
-			} else {
+			}
+			else {
 				this.thunderingStrength = (float) ((double) this.thunderingStrength - 0.01D);
 			}
 

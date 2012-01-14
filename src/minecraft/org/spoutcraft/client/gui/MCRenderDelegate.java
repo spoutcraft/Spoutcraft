@@ -1,9 +1,5 @@
 package org.spoutcraft.client.gui;
 
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-
-import gnu.trove.map.hash.TObjectIntHashMap;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +27,43 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
+import org.spoutcraft.spoutcraftapi.gui.BubbleBar;
+import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.spoutcraftapi.gui.Control;
+import org.spoutcraft.spoutcraftapi.gui.ExpBar;
+import org.spoutcraft.spoutcraftapi.gui.GenericBitmap;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+import org.spoutcraft.spoutcraftapi.gui.GenericEntityWidget;
+import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
+import org.spoutcraft.spoutcraftapi.gui.GenericItemWidget;
+import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
+import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
+import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
+import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
+import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
+import org.spoutcraft.spoutcraftapi.gui.HealthBar;
+import org.spoutcraft.spoutcraftapi.gui.HungerBar;
+import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
+import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
+import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
+import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
+import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 public class MCRenderDelegate implements RenderDelegate {
 
@@ -69,7 +101,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(ArmorBar bar) {
-		float armorPercent = Minecraft.theMinecraft.thePlayer.getPlayerArmorValue() / 0.2f;
+		float armorPercent = Minecraft.theMinecraft.thePlayer.inventory.getTotalArmorValue() / 0.2f;
 		if (bar.isVisible() && bar.getMaxNumShields() > 0) {
 			int y = (int) bar.getScreenY();
 			float armorPercentPerIcon = 100f / bar.getMaxNumShields();
@@ -92,8 +124,8 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(BubbleBar bar) {
 		if (Minecraft.theMinecraft.thePlayer.isInsideOfMaterial(Material.water)) {
-			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.func_41001_Z() - 2) * (double) bar.getMaxNumBubbles()) / ((double)Minecraft.theMinecraft.thePlayer.maxAir));
-			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.func_41001_Z() * (double) bar.getMaxNumBubbles()) / ((double)Minecraft.theMinecraft.thePlayer.maxAir)) - bubbles;
+			int bubbles = (int) Math.ceil(((double) (Minecraft.theMinecraft.thePlayer.getAir() - 2) * bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir));
+			int poppingBubbles = (int) Math.ceil(((double) Minecraft.theMinecraft.thePlayer.getAir() * bar.getMaxNumBubbles()) / (Minecraft.theMinecraft.thePlayer.maxAir)) - bubbles;
 			if (bar.isVisible()) {
 				for (int bubble = 0; bubble < bubbles + poppingBubbles; bubble++) {
 					if (bubble < bubbles) {
@@ -122,7 +154,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			RenderUtil.drawTexturedModalRectangle((int) Math.floor(width / 2), 0, 200 - (int) Math.ceil(width / 2), 46 + hoverState * 20, (int) Math.ceil(width / 2), 20, 0f);
 			Color color = getColor(button);
 
-			int left = (int) 5;
+			int left = 5;
 			WidgetAnchor align = button.getAlign();
 			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 				left = (int) ((width / 2) - (font.getStringWidth(text) / 2));
@@ -294,7 +326,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				color = slider.getDisabledColor();
 			}
 
-			int left = (int) 5;
+			int left = 5;
 			WidgetAnchor align = slider.getAlign();
 			if (align == WidgetAnchor.TOP_CENTER || align == WidgetAnchor.CENTER_CENTER || align == WidgetAnchor.BOTTOM_CENTER) {
 				left = (int) ((width / 2) - (font.getTextWidth(slider.getText()) / 2));
@@ -340,7 +372,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (showCursor) {
 			font.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
-		
+
 	}
 
 	public void render(GenericTexture texture) {
@@ -349,12 +381,12 @@ public class MCRenderDelegate implements RenderDelegate {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
 
 		if (textureBinding != null) {
-			if(texture.getOriginalHeight() == -1 && texture.getOriginalWidth() == -1) {
+			if (texture.getOriginalHeight() == -1 && texture.getOriginalWidth() == -1) {
 				texture.setOriginalWidth(textureBinding.getImageWidth());
 				texture.setOriginalHeight(textureBinding.getImageHeight());
 			}
-			if(texture.getFinishDelegate() != null) {
-				boolean oldLock = SpoutClient.enableSandbox();;
+			if (texture.getFinishDelegate() != null) {
+				boolean oldLock = SpoutClient.enableSandbox();
 				try {
 					texture.getFinishDelegate().run();
 				} finally {
@@ -434,7 +466,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 				int iconType = 16;
 
-				if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.potionPoison)) {
+				if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.poison)) {
 					iconType += 36;
 				}
 
@@ -498,7 +530,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			int foodIcon = 16;
 			byte foodOutline = 0;
 
-			if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.potionHunger)) {
+			if (Minecraft.theMinecraft.thePlayer.isPotionActive(Potion.hunger)) {
 				foodIcon += 36;
 				foodOutline = 13;
 			}
@@ -645,7 +677,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		
+
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
 			tWidth = Math.min(tWidth, width);
@@ -659,7 +691,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		tessellator.addVertexWithUV(width, height, -90, tLeft + tWidth, tTop);
 		tessellator.addVertexWithUV(width, 0.0D, -90, tLeft + tWidth, tTop + tHeight);
 		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tTop + tHeight);
-		
+
 		tessellator.draw();
 		GL11.glDepthMask(true);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -698,8 +730,8 @@ public class MCRenderDelegate implements RenderDelegate {
 		int windowWidth = SpoutClient.getHandle().displayWidth, windowHeight = SpoutClient.getHandle().displayHeight;
 		ScaledResolution scale = new ScaledResolution(SpoutClient.getHandle().gameSettings, windowWidth, windowHeight);
 		double scaleFactor = scale.scaleFactor;
-		height = (double) height * scaleFactor;
-		width = (double) width * scaleFactor;
+		height = height * scaleFactor;
+		width = width * scaleFactor;
 		x *= scaleFactor;
 		y *= scaleFactor;
 		screenHeight *= scaleFactor;

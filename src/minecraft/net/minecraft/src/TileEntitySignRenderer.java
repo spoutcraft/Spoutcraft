@@ -9,7 +9,7 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.TileEntitySpecialRenderer;
 
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.ConfigReader; //Spout
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
@@ -23,10 +23,11 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		float var12;
 		if(var9 == Block.signPost) {
 			GL11.glTranslatef((float)var2 + 0.5F, (float)var4 + 0.75F * var10, (float)var6 + 0.5F);
-			var12 = (float)(var1.getBlockMetadata() * 360) / 16.0F; //Spout (swapped from var11 to var12, var12 is the pitch)
-			GL11.glRotatef(-var12, 0.0F, 1.0F, 0.0F); //Spout (swapped from var11 to var12)
+			float var11 = (float)(var1.getBlockMetadata() * 360) / 16.0F;
+			GL11.glRotatef(-var11, 0.0F, 1.0F, 0.0F);
 			this.signModel.signStick.showModel = true;
-		} else {
+		}
+		else {
 			int var16 = var1.getBlockMetadata();
 			var12 = 0.0F;
 			if(var16 == 2) {
@@ -84,7 +85,8 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 				var15 = before + "_" + after;
 				//Spoutcraft End
 				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - var1.signText.length * 5, var13);
-			} else {
+			}
+			else {
 				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - var1.signText.length * 5, var13);
 			}
 		}
@@ -97,8 +99,6 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 	}
 
-	// $FF: synthetic method
-	// $FF: bridge method
 	public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
 		this.renderTileEntitySignAt((TileEntitySign)var1, var2, var4, var6, var8);
 	}

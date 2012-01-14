@@ -84,11 +84,11 @@ public class EntityBoat extends Entity {
 
 	public boolean attackEntityFrom(DamageSource var1, int var2) {
 		if(!this.worldObj.multiplayerWorld && !this.isDead) {
-			this.func_41017_d(-this.func_41016_i());
-			this.func_41019_c(10);
-			this.func_41015_b(this.func_41020_g() + var2 * 10);
+			this.setForwardDirection(-this.getForwardDirection());
+			this.setTimeSinceHit(10);
+			this.setDamageTaken(this.getDamageTaken() + var2 * 10);
 			this.setBeenAttacked();
-			if(this.func_41020_g() > 40) {
+			if(this.getDamageTaken() > 40) {
 				if(this.riddenByEntity != null) {
 					this.riddenByEntity.mountEntity(this);
 				}
@@ -112,9 +112,9 @@ public class EntityBoat extends Entity {
 	}
 
 	public void performHurtAnimation() {
-		this.func_41017_d(-this.func_41016_i());
-		this.func_41019_c(10);
-		this.func_41015_b(this.func_41020_g() * 11);
+		this.setForwardDirection(-this.getForwardDirection());
+		this.setTimeSinceHit(10);
+		this.setDamageTaken(this.getDamageTaken() * 11);
 	}
 
 	public boolean canBeCollidedWith() {
@@ -141,12 +141,12 @@ public class EntityBoat extends Entity {
 
 	public void onUpdate() {
 		super.onUpdate();
-		if(this.func_41018_h() > 0) {
-			this.func_41019_c(this.func_41018_h() - 1);
+		if(this.getTimeSinceHit() > 0) {
+			this.setTimeSinceHit(this.getTimeSinceHit() - 1);
 		}
 
-		if(this.func_41020_g() > 0) {
-			this.func_41015_b(this.func_41020_g() - 1);
+		if(this.getDamageTaken() > 0) {
+			this.setDamageTaken(this.getDamageTaken() - 1);
 		}
 
 		this.prevPosX = this.posX;
@@ -385,27 +385,27 @@ public class EntityBoat extends Entity {
 		}
 	}
 
-	public void func_41015_b(int var1) {
+	public void setDamageTaken(int var1) {
 		this.dataWatcher.updateObject(19, Integer.valueOf(var1));
 	}
 
-	public int func_41020_g() {
+	public int getDamageTaken() {
 		return this.dataWatcher.getWatchableObjectInt(19);
 	}
 
-	public void func_41019_c(int var1) {
+	public void setTimeSinceHit(int var1) {
 		this.dataWatcher.updateObject(17, Integer.valueOf(var1));
 	}
 
-	public int func_41018_h() {
+	public int getTimeSinceHit() {
 		return this.dataWatcher.getWatchableObjectInt(17);
 	}
 
-	public void func_41017_d(int var1) {
+	public void setForwardDirection(int var1) {
 		this.dataWatcher.updateObject(18, Integer.valueOf(var1));
 	}
 
-	public int func_41016_i() {
+	public int getForwardDirection() {
 		return this.dataWatcher.getWatchableObjectInt(18);
 	}
 }

@@ -35,7 +35,7 @@ public class GuiAchievement extends Gui {
 
 	public void queueTakenAchievement(Achievement var1) {
 		this.achievementGetLocalText = StatCollector.translateToLocal("achievement.get");
-		this.achievementStatName = var1.statName;
+		this.achievementStatName = StatCollector.translateToLocal(var1.func_44020_i());
 		this.achievementTime = System.currentTimeMillis();
 		this.theAchievement = var1;
 		this.haveAchiement = false;
@@ -47,7 +47,7 @@ public class GuiAchievement extends Gui {
 	}
 
 	public void queueAchievementInformation(Achievement var1) {
-		this.achievementGetLocalText = var1.statName;
+		this.achievementGetLocalText = StatCollector.translateToLocal(var1.func_44020_i());
 		this.achievementStatName = var1.getDescription();
 		this.achievementTime = System.currentTimeMillis() - 2500L;
 		this.theAchievement = var1;

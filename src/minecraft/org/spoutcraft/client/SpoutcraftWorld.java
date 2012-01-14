@@ -113,15 +113,15 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getMaxHeight() {
-		return handle.field_35472_c;
+		return handle.worldHeight;
 	}
 	
 	public int getXBitShifts() {
-		return handle.field_35471_b;
+		return handle.xShift;
 	}
 	
 	public int getZBitShifts() {
-		return handle.field_35473_a;
+		return handle.heightShift;
 	}
 
 	public long getSeed() {
@@ -429,7 +429,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getSeaLevel() {
-		return handle.field_35470_e;
+		return handle.seaLevel;
 	}
 
 	public boolean getKeepSpawnInMemory() {
