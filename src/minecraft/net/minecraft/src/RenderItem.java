@@ -28,12 +28,11 @@ public class RenderItem extends Render {
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
 	public boolean field_27004_a = true;
- 	public float field_40268_b = 0.0F;
-
+	public float zLevel = 0.0F;
 
 	public RenderItem() {
 		this.shadowSize = 0.15F;
-		this.field_194_c = 0.75F;
+		this.shadowOpaque = 0.75F;
 	}
 
 	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
@@ -231,7 +230,7 @@ public class RenderItem extends Render {
 	}
 
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
-		
+		//Spout start
 		boolean custom = false;
 		BlockDesign design = null;
 		if (var3 == 318) {
@@ -269,6 +268,7 @@ public class RenderItem extends Render {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
 		}
 		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
+		//Spout end
 			Block var16 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
@@ -339,7 +339,7 @@ public class RenderItem extends Render {
 			}
 		}
 
-		GL11.glEnable(2884 /* GL_CULL_FACE */);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
 	public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
@@ -347,18 +347,18 @@ public class RenderItem extends Render {
 			this.drawItemIntoGui(var1, var2, var3.itemID, var3.getItemDamage(), var3.getIconIndex(), var4, var5);
 			if(var3 != null && var3.func_40713_r()) {
 				GL11.glDepthFunc(516);
-				GL11.glDisable(2896 /*GL_LIGHTING*/);
+				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
 				var2.bindTexture(var2.getTexture("%blur%/misc/glint.png"));
-				this.field_40268_b -= 50.0F;
-				GL11.glEnable(3042 /*GL_BLEND*/);
+				this.zLevel -= 50.0F;
+				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(774, 774);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
 				this.func_40266_a(var4 * 431278612 + var5 * 32178161, var4 - 2, var5 - 2, 20, 20);
-				GL11.glDisable(3042 /*GL_BLEND*/);
+				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glDepthMask(true);
-				this.field_40268_b += 50.0F;
-				GL11.glEnable(2896 /*GL_LIGHTING*/);
+				this.zLevel += 50.0F;
+				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDepthFunc(515);
 			}
 
@@ -386,10 +386,10 @@ public class RenderItem extends Render {
 		}
 
 			var11.startDrawingQuads();
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + var5), (double)this.field_40268_b, (double)((var9 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + var5), (double)this.field_40268_b, (double)((var9 + (float)var4 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + 0), (double)this.field_40268_b, (double)((var9 + (float)var4) * var7), (double)((var10 + 0.0F) * var8));
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + 0), (double)this.field_40268_b, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
+			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var4 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
+			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + (float)var4) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
 			var11.draw();
 		}
 
@@ -399,28 +399,28 @@ public class RenderItem extends Render {
 		if (var3 != null) {
 			if (var3.stackSize > 1) {
 				String var6 = "" + var3.stackSize;
-				GL11.glDisable(2896 /* GL_LIGHTING */);
-				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				var1.drawStringWithShadow(var6, var4 + 19 - 2 - var1.getStringWidth(var6), var5 + 6 + 3, 16777215);
-				GL11.glEnable(2896 /* GL_LIGHTING */);
-				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 
 			if (var3.isItemDamaged()) {
 				int var11 = (int) Math.round(13.0D - (double) var3.getItemDamageForDisplay() * 13.0D / (double) var3.getMaxDamage());
 				int var7 = (int) Math.round(255.0D - (double) var3.getItemDamageForDisplay() * 255.0D / (double) var3.getMaxDamage());
-				GL11.glDisable(2896 /* GL_LIGHTING */);
-				GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-				GL11.glDisable(3553 /* GL_TEXTURE_2D */);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Tessellator var8 = Tessellator.instance;
 				int var9 = 255 - var7 << 16 | var7 << 8;
 				int var10 = (255 - var7) / 4 << 16 | 16128;
 				this.renderQuad(var8, var4 + 2, var5 + 13, 13, 2, 0);
 				this.renderQuad(var8, var4 + 2, var5 + 13, 12, 1, var10);
 				this.renderQuad(var8, var4 + 2, var5 + 13, var11, 1, var9);
-				GL11.glEnable(3553 /* GL_TEXTURE_2D */);
-				GL11.glEnable(2896 /* GL_LIGHTING */);
-				GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
@@ -442,15 +442,13 @@ public class RenderItem extends Render {
 		float var8 = 0.00390625F;
 		Tessellator var9 = Tessellator.instance;
 		var9.startDrawingQuads();
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)this.field_40268_b, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)this.field_40268_b, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)this.field_40268_b, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)this.field_40268_b, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
+		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + var6) * var8));
+		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + var6) * var8));
+		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
+		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
 		var9.draw();
 	}
 
-	// $FF: synthetic method
-	// $FF: bridge method
 	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
 		this.doRenderItem((EntityItem) var1, var2, var4, var6, var8, var9);
 	}
