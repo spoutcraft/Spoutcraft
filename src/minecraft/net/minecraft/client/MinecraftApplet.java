@@ -14,27 +14,27 @@ public class MinecraftApplet extends Applet {
 	private Minecraft mc;
 	private Thread mcThread = null;
 
-
 	public void init() {
 		this.mcCanvas = new CanvasMinecraftApplet(this);
 		boolean var1 = false;
-		if(this.getParameter("fullscreen") != null) {
+		if (this.getParameter("fullscreen") != null) {
 			var1 = this.getParameter("fullscreen").equalsIgnoreCase("true");
 		}
 
 		this.mc = new MinecraftAppletImpl(this, this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
 		this.mc.minecraftUri = this.getDocumentBase().getHost();
-		if(this.getDocumentBase().getPort() > 0) {
+		if (this.getDocumentBase().getPort() > 0) {
 			this.mc.minecraftUri = this.mc.minecraftUri + ":" + this.getDocumentBase().getPort();
 		}
 
-		if(this.getParameter("username") != null && this.getParameter("sessionid") != null) {
+		if (this.getParameter("username") != null && this.getParameter("sessionid") != null) {
 			this.mc.session = new Session(this.getParameter("username"), this.getParameter("sessionid"));
 			System.out.println("Setting user: " + this.mc.session.username + ", " + this.mc.session.sessionId);
-			if(this.getParameter("mppass") != null) {
+			if (this.getParameter("mppass") != null) {
 				this.mc.session.mpPassParameter = this.getParameter("mppass");
 			}
-		} else {
+		}
+		else {
 			this.mc.session = new Session("Player", "");
 		}
 		//Spout Start
@@ -45,12 +45,12 @@ public class MinecraftApplet extends Applet {
 			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
 		}
 		//Spout End
-		if(this.getParameter("server") != null && this.getParameter("port") != null) {
+		if (this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
 
 		this.mc.hideQuitButton = true;
-		if("true".equals(this.getParameter("stand-alone"))) {
+		if ("true".equals(this.getParameter("stand-alone"))) {
 			this.mc.hideQuitButton = false;
 		}
 
@@ -61,21 +61,21 @@ public class MinecraftApplet extends Applet {
 	}
 
 	public void startMainThread() {
-		if(this.mcThread == null) {
+		if (this.mcThread == null) {
 			this.mcThread = new Thread(this.mc, "Minecraft main thread");
 			this.mcThread.start();
 		}
 	}
 
 	public void start() {
-		if(this.mc != null) {
+		if (this.mc != null) {
 			this.mc.isGamePaused = false;
 		}
 
 	}
 
 	public void stop() {
-		if(this.mc != null) {
+		if (this.mc != null) {
 			this.mc.isGamePaused = true;
 		}
 
@@ -86,15 +86,17 @@ public class MinecraftApplet extends Applet {
 	}
 
 	public void shutdown() {
-		if(this.mcThread != null) {
+		if (this.mcThread != null) {
 			this.mc.shutdown();
 
 			try {
 				this.mcThread.join(10000L);
-			} catch (InterruptedException var4) {
+			}
+			catch (InterruptedException var4) {
 				try {
 					this.mc.shutdownMinecraftApplet();
-				} catch (Exception var3) {
+				}
+				catch (Exception var3) {
 					var3.printStackTrace();
 				}
 			}
@@ -111,7 +113,8 @@ public class MinecraftApplet extends Applet {
 		try {
 			this.removeAll();
 			this.validate();
-		} catch (Exception var2) {
+		}
+		catch (Exception var2) {
 			;
 		}
 
