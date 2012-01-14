@@ -641,6 +641,8 @@ public abstract class Minecraft implements Runnable {
 						throw new RuntimeException(t);
 					}
 				}
+			}
+		}
 		catch (MinecraftError var12) {
 			;
 		}
@@ -799,7 +801,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void freeMemory() {
 		try {
-			field_28006_b = new byte[0];
+			//field_28006_b = new byte[0];
 			this.renderGlobal.func_28137_f();
 		}
 		catch (Throwable var4) {
