@@ -38,7 +38,7 @@ public class PlayerControllerMP extends PlayerController {
 		this.netClientHandler = var2;
 	}
 
-	public void func_35648_a(boolean var1) {
+	public void setCreative(boolean var1) {
 		this.creativeMode = var1;
 		if (this.creativeMode) {
 			PlayerControllerCreative.enableAbilities(this.mc.thePlayer);
