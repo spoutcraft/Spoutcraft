@@ -27,15 +27,11 @@ public class VoidFogButton extends GenericCheckBox{
 		super("Void Fog");
 		setChecked(ConfigReader.voidFog);
 		setEnabled(SpoutClient.getInstance().isVoidFogCheat());
-		setTooltip("Void Fog\nON - A dark fog that obscures vision appears at low\nlevels of the map.\nOFF - normal view distance at all height levels.");
+		setTooltip("Void Fog\nRemoved from Minecraft due to unpopularity.");
 	}
 	
-	@Override
-	public String getTooltip() {
-		if (!isEnabled()) {
-			return "This option is not allowed by your server, it is considered cheating.";
-		}
-		return super.getTooltip();
+	public boolean isEnabled() {
+		return false;
 	}
 	
 	@Override
