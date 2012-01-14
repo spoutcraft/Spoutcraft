@@ -154,7 +154,7 @@ public class EntityMinecart extends Entity implements IInventory {
 								var10.motionX = (double)((float)this.rand.nextGaussian() * var11);
 								var10.motionY = (double)((float)this.rand.nextGaussian() * var11 + 0.2F);
 								var10.motionZ = (double)((float)this.rand.nextGaussian() * var11);
-								this.worldObj.entityJoinedWorld(var10);
+								this.worldObj.spawnEntityInWorld(var10);
 							}
 						}
 					}
@@ -201,7 +201,7 @@ public class EntityMinecart extends Entity implements IInventory {
 					var7.motionX = (double)((float)this.rand.nextGaussian() * var8);
 					var7.motionY = (double)((float)this.rand.nextGaussian() * var8 + 0.2F);
 					var7.motionZ = (double)((float)this.rand.nextGaussian() * var8);
-					this.worldObj.entityJoinedWorld(var7);
+					this.worldObj.spawnEntityInWorld(var7);
 				}
 			}
 		}
@@ -218,7 +218,7 @@ public class EntityMinecart extends Entity implements IInventory {
 			this.func_41024_b(this.func_41025_i() - 1);
 		}
 
-		if(this.func_41026_g() && this.rand.nextInt(4) == 0) {
+		if(this.isMinecartPowered() && this.rand.nextInt(4) == 0) {
 			this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + 0.8D, this.posZ, 0.0D, 0.0D, 0.0D);
 		}
 
@@ -546,7 +546,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				this.pushX = this.pushZ = 0.0D;
 			}
 
-			this.func_41027_b(this.fuel > 0);
+			this.setMinecartPowered(this.fuel > 0);
 		}
 	}
 
@@ -868,11 +868,11 @@ public class EntityMinecart extends Entity implements IInventory {
 		return this.isDead?false:var1.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
-	protected boolean func_41026_g() {
+	protected boolean isMinecartPowered() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
-	protected void func_41027_b(boolean var1) {
+	protected void setMinecartPowered(boolean var1) {
 		if(var1) {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(this.dataWatcher.getWatchableObjectByte(16) | 1)));
 		} else {
