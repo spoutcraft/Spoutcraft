@@ -2,12 +2,14 @@ package net.minecraft.src;
 
 import java.util.List;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EnumWorldType;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.WorldSettings;
 
 public class WorldInfo {
 
 	private long randomSeed;
+	private EnumWorldType field_46134_b;
 	private int spawnX;
 	private int spawnY;
 	private int spawnZ;
@@ -31,7 +33,17 @@ public class WorldInfo {
 
 
 	public WorldInfo(NBTTagCompound var1) {
+		this.field_46134_b = EnumWorldType.DEFAULT;
+		this.hardcore = false;
 		this.randomSeed = var1.getLong("RandomSeed");
+		if (var1.hasKey("generatorName")) {
+			String var2 = var1.getString("generatorName");
+			this.field_46134_b = EnumWorldType.func_46135_a(var2);
+			if (this.field_46134_b == null) {
+				this.field_46134_b = EnumWorldType.DEFAULT;
+			}
+		}
+
 		this.gameType = var1.getInteger("GameType");
 		if(var1.hasKey("MapFeatures")) {
 		 this.mapFeaturesEnabled = var1.getBoolean("MapFeatures");
@@ -65,15 +77,21 @@ public class WorldInfo {
 	}
 
 	public WorldInfo(WorldSettings var1, String var2) {
+		this.field_46134_b = EnumWorldType.DEFAULT;
+		this.hardcore = false;
 		this.randomSeed = var1.getSeed();
 		this.gameType = var1.getGameType();
 		this.mapFeaturesEnabled = var1.isMapFeaturesEnabled();
 		this.levelName = var2;
 		this.hardcore = var1.getHardcoreEnabled();
+		this.field_46134_b = var1.func_46107_e();
 	}
 
 	public WorldInfo(WorldInfo var1) {
+		this.field_46134_b = EnumWorldType.DEFAULT;
+		this.hardcore = false;
 		this.randomSeed = var1.randomSeed;
+		this.field_46134_b = var1.field_46134_b;
 		this.gameType = var1.gameType;
 		this.mapFeaturesEnabled = var1.mapFeaturesEnabled;
 		this.spawnX = var1.spawnX;
@@ -121,6 +139,7 @@ public class WorldInfo {
 
 	private void updateTagCompound(NBTTagCompound var1, NBTTagCompound var2) {
 		var1.setLong("RandomSeed", this.randomSeed);
+		var1.setString("generatorName", this.field_46134_b.name());
 		var1.setInteger("GameType", this.gameType);
 		var1.setBoolean("MapFeatures", this.mapFeaturesEnabled);
 		var1.setInteger("SpawnX", this.spawnX);
@@ -278,5 +297,9 @@ public class WorldInfo {
 
 	public boolean isHardcoreModeEnabled() {
 		return this.hardcore;
+	}
+
+	public EnumWorldType func_46133_t() {
+		return this.field_46134_b;
 	}
 }

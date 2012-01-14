@@ -8,13 +8,11 @@ import net.minecraft.src.ThreadDownloadImageData;
 
 class ThreadDownloadImage extends Thread {
 
-	// $FF: synthetic field
 	final String location;
-	// $FF: synthetic field
-	final ImageBuffer buffer;
-	// $FF: synthetic field
-	final ThreadDownloadImageData imageData;
 
+	final ImageBuffer buffer;
+
+	final ThreadDownloadImageData imageData;
 
 	ThreadDownloadImage(ThreadDownloadImageData var1, String var2, ImageBuffer var3) {
 		this.imageData = var1;
@@ -41,12 +39,15 @@ class ThreadDownloadImage extends Thread {
 
 			if(this.buffer == null) {
 				this.imageData.image = ImageIO.read(var1.getInputStream());
-			} else {
+			}
+			else {
 				this.imageData.image = this.buffer.parseUserSkin(ImageIO.read(var1.getInputStream()));
 			}
-		} catch (Exception var6) {
+		}
+		catch (Exception var6) {
 			var6.printStackTrace();
-		} finally {
+		}
+		finally {
 			var1.disconnect();
 		}
 

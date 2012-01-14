@@ -6,7 +6,6 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 //Spout end
 
 import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Block;
 import net.minecraft.src.ChunkProviderHell;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.Vec3D;
@@ -17,7 +16,7 @@ public class WorldProviderHell extends WorldProvider {
 
 	public void registerWorldChunkManager() {
 		this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.hell, 1.0F, 0.0F);
-		this.isNether = true;
+		this.isAlternateDimension = true;
 		this.isHellWorld = true;
 		this.hasNoSky = true;
 		this.worldType = -1;
@@ -49,8 +48,7 @@ public class WorldProviderHell extends WorldProvider {
 	}
 
 	public boolean canCoordinateBeSpawn(int var1, int var2) {
-		int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
-		return var3 == Block.bedrock.blockID ? false : (var3 == 0 ? false : Block.opaqueCubeLookup[var3]);
+		return false;
 	}
 
 	public float calculateCelestialAngle(long var1, float var3) {

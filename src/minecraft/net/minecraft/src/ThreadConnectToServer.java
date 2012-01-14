@@ -10,15 +10,13 @@ import net.minecraft.src.Packet2Handshake;
 
 class ThreadConnectToServer extends Thread {
 
-	// $FF: synthetic field
 	final Minecraft mc;
-	// $FF: synthetic field
-	final String hostName;
-	// $FF: synthetic field
-	final int port;
-	// $FF: synthetic field
-	final GuiConnecting connectingGui;
 
+	final String hostName;
+
+	final int port;
+
+	final GuiConnecting connectingGui;
 
 	ThreadConnectToServer(GuiConnecting var1, Minecraft var2, String var3, int var4) {
 		this.connectingGui = var1;
@@ -35,19 +33,22 @@ class ThreadConnectToServer extends Thread {
 			}
 
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username));
-		} catch (UnknownHostException var2) {
+		}
+		catch (UnknownHostException var2) {
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
 			this.mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[]{"Unknown host \'" + this.hostName + "\'"}));
-		} catch (ConnectException var3) {
+		}
+		catch (ConnectException var3) {
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
 			this.mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[]{var3.getMessage()}));
-		} catch (Exception var4) {
+		}
+		catch (Exception var4) {
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}

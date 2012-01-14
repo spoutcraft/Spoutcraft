@@ -7,7 +7,7 @@ public class TileEntitySign extends TileEntity {
 
 	public String[] signText = new String[]{"", "", "", ""};
 	public int lineBeingEdited = -1;
-	public int columnBeingEdited; //Spoutcraft
+	public int columnBeingEdited; //Spout
 	private boolean isEditable = true;
 	//Spout start
 	private byte text = -1; //-1 means invalid cache, 0 means false, 1 means true

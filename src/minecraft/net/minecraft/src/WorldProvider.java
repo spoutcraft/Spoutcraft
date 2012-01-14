@@ -1,13 +1,17 @@
 package net.minecraft.src;
 
+import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.ChunkProviderFlat;
 import net.minecraft.src.ChunkProviderGenerate;
+import net.minecraft.src.EnumWorldType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldChunkManager;
+import net.minecraft.src.WorldChunkManagerHell;
 import net.minecraft.src.WorldProviderEnd;
 import net.minecraft.src.WorldProviderHell;
 import net.minecraft.src.WorldProviderSurface;
@@ -18,8 +22,9 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 public abstract class WorldProvider {
 
 	public World worldObj;
+	public EnumWorldType field_46067_b;
 	public WorldChunkManager worldChunkMgr;
-	public boolean isNether = false;
+	public boolean isAlternateDimension = false;
 	public boolean isHellWorld = false;
 	public boolean hasNoSky = false;
 	public float[] lightBrightnessTable = new float[16];
@@ -28,6 +33,7 @@ public abstract class WorldProvider {
 
 	public final void registerWorld(World var1) {
 		this.worldObj = var1;
+		this.field_46067_b = var1.getWorldInfo().func_46133_t();
 		this.registerWorldChunkManager();
 		this.generateLightBrightnessTable();
 	}
@@ -43,11 +49,17 @@ public abstract class WorldProvider {
 	}
 
 	protected void registerWorldChunkManager() {
+		if (this.worldObj.getWorldInfo().func_46133_t() == EnumWorldType.FLAT) {
+			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
+		}
+		else {
 		this.worldChunkMgr = new WorldChunkManager(this.worldObj);
 	}
 
+	}
+
 	public IChunkProvider getChunkProvider() {
-		return new ChunkProviderGenerate(this.worldObj, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+		return (IChunkProvider)(this.field_46067_b == EnumWorldType.FLAT ? new ChunkProviderFlat(this.worldObj, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()) : new ChunkProviderGenerate(this.worldObj, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
 	}
 
 	public boolean canCoordinateBeSpawn(int var1, int var2) {
@@ -89,7 +101,8 @@ public abstract class WorldProvider {
 			this.colorsSunriseSunset[2] = var6 * var6 * 0.0F + 0.2F;
 			this.colorsSunriseSunset[3] = var7;
 			return this.colorsSunriseSunset;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -130,14 +143,26 @@ public abstract class WorldProvider {
 	}
 
 	public float getCloudHeight() {
-		return (float) this.worldObj.field_35472_c;
+		return (float)this.worldObj.worldHeight;
 	}
 
 	public boolean func_28112_c() {
 		return true;
 	}
 
-	public ChunkCoordinates func_40469_f() {
+	public ChunkCoordinates getEntrancePortalLocation() {
 		return null;
+	}
+
+	public int func_46066_g() {
+		return this.field_46067_b == EnumWorldType.FLAT ? 4 : this.worldObj.worldHeight / 2;
+	}
+
+	public boolean func_46064_i() {
+		return this.field_46067_b != EnumWorldType.FLAT && !this.hasNoSky;
+	}
+
+	public double func_46065_j() {
+		return this.field_46067_b == EnumWorldType.FLAT ? 1.0D : 0.03125D;
 	}
 }
