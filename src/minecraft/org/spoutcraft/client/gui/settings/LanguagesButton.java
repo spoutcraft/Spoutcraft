@@ -16,17 +16,23 @@
  */
 package org.spoutcraft.client.gui.settings;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiLanguage;
+import net.minecraft.src.GuiScreen;
+
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public class LanguagesButton extends GenericButton{
-	public LanguagesButton() {
+	GuiScreen parent;
+	public LanguagesButton(GuiScreen parent) {
 		super("Languages");
 		setTooltip("Languages\nChange the language of the game.\nNOT YET IMPLEMENTED!");
+		this.parent = parent;
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		
+		Minecraft.theMinecraft.displayGuiScreen(new GuiLanguage(parent, Minecraft.theMinecraft.gameSettings));
 	}
 }
