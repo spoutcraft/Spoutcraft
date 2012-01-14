@@ -31,6 +31,7 @@ import net.minecraft.src.ItemGlassBottle;
 import net.minecraft.src.ItemHoe;
 import net.minecraft.src.ItemMap;
 import net.minecraft.src.ItemMinecart;
+import net.minecraft.src.ItemMonsterPlacer;
 import net.minecraft.src.ItemPainting;
 import net.minecraft.src.ItemPickaxe;
 import net.minecraft.src.ItemPotion;
@@ -96,7 +97,7 @@ public class Item {
 	public static Item axeGold = (new ItemAxe(30, EnumToolMaterial.GOLD)).setIconCoord(4, 7).setItemName("hatchetGold");
 	public static Item silk = (new Item(31)).setIconCoord(8, 0).setItemName("string");
 	public static Item feather = (new Item(32)).setIconCoord(8, 1).setItemName("feather");
-	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").func_40407_b(PotionHelper.field_40373_k);
+	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").func_40407_b(PotionHelper.gunpowderEffect);
 	public static Item hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
 	public static Item hoeStone = (new ItemHoe(35, EnumToolMaterial.STONE)).setIconCoord(1, 8).setItemName("hoeStone");
 	public static Item hoeSteel = (new ItemHoe(36, EnumToolMaterial.IRON)).setIconCoord(2, 8).setItemName("hoeIron");
@@ -129,7 +130,7 @@ public class Item {
 	public static Item porkRaw = (new ItemFood(63, 3, 0.3F, true)).setIconCoord(7, 5).setItemName("porkchopRaw");
 	public static Item porkCooked = (new ItemFood(64, 8, 0.8F, true)).setIconCoord(8, 5).setItemName("porkchopCooked");
 	public static Item painting = (new ItemPainting(65)).setIconCoord(10, 1).setItemName("painting");
-	public static Item appleGold = (new ItemAppleGold(66, 10, 1.2F, false)).func_35424_o().setPotionEffect(Potion.potionRegeneration.id, 30, 0, 1.0F).setIconCoord(11, 0).setItemName("appleGold");
+	public static Item appleGold = (new ItemAppleGold(66, 4, 1.2F, false)).setAlwaysEdible().setPotionEffect(Potion.regeneration.id, 5, 0, 1.0F).setIconCoord(11, 0).setItemName("appleGold");
 	public static Item sign = (new ItemSign(67)).setIconCoord(10, 2).setItemName("sign");
 	public static Item doorWood = (new ItemDoor(68, Material.wood)).setIconCoord(11, 2).setItemName("doorWood");
 	public static Item bucketEmpty = (new ItemBucket(69, 0)).setIconCoord(10, 4).setItemName("bucket");
@@ -138,7 +139,7 @@ public class Item {
 	public static Item minecartEmpty = (new ItemMinecart(72, 0)).setIconCoord(7, 8).setItemName("minecart");
 	public static Item saddle = (new ItemSaddle(73)).setIconCoord(8, 6).setItemName("saddle");
 	public static Item doorSteel = (new ItemDoor(74, Material.iron)).setIconCoord(12, 2).setItemName("doorIron");
-	public static Item redstone = (new ItemRedstone(75)).setIconCoord(8, 3).setItemName("redstone").func_40407_b(PotionHelper.field_40375_i);
+	public static Item redstone = (new ItemRedstone(75)).setIconCoord(8, 3).setItemName("redstone").setPotionModifier(PotionHelper.redstoneEffect);
 	public static Item snowball = (new ItemSnowball(76)).setIconCoord(14, 0).setItemName("snowball");
 	public static Item boat = (new ItemBoat(77)).setIconCoord(8, 8).setItemName("boat");
 	public static Item leather = (new Item(78)).setIconCoord(7, 6).setItemName("leather");
@@ -155,12 +156,12 @@ public class Item {
 	public static Item compass = (new Item(89)).setIconCoord(6, 3).setItemName("compass");
 	public static Item fishingRod = (new ItemFishingRod(90)).setIconCoord(5, 4).setItemName("fishingRod");
 	public static Item pocketSundial = (new Item(91)).setIconCoord(6, 4).setItemName("clock");
-	public static Item lightStoneDust = (new Item(92)).setIconCoord(9, 4).setItemName("yellowDust").func_40407_b(PotionHelper.field_40372_j);
+	public static Item lightStoneDust = (new Item(92)).setIconCoord(9, 4).setItemName("yellowDust").setPotionModifier(PotionHelper.glowstoneEffect);
 	public static Item fishRaw = (new ItemFood(93, 2, 0.3F, false)).setIconCoord(9, 5).setItemName("fishRaw");
 	public static Item fishCooked = (new ItemFood(94, 5, 0.6F, false)).setIconCoord(10, 5).setItemName("fishCooked");
 	public static Item dyePowder = (new ItemDye(95)).setIconCoord(14, 4).setItemName("dyePowder");
 	public static Item bone = (new Item(96)).setIconCoord(12, 1).setItemName("bone").setFull3D();
-	public static Item sugar = (new Item(97)).setIconCoord(13, 0).setItemName("sugar").func_40407_b(PotionHelper.field_40365_b);
+	public static Item sugar = (new Item(97)).setIconCoord(13, 0).setItemName("sugar").setPotionModifier(PotionHelper.sugarEffect);
 	public static Item cake = (new ItemReed(98, Block.cake)).setMaxStackSize(1).setIconCoord(13, 1).setItemName("cake");
 	public static Item bed = (new ItemBed(99)).setMaxStackSize(1).setIconCoord(13, 2).setItemName("bed");
 	public static Item redstoneRepeater = (new ItemReed(100, Block.redstoneRepeaterIdle)).setIconCoord(6, 5).setItemName("diode");
@@ -172,24 +173,25 @@ public class Item {
 	public static Item melonSeeds = (new ItemSeeds(106, Block.melonStem.blockID, Block.tilledField.blockID)).setIconCoord(14, 3).setItemName("seeds_melon");
 	public static Item beefRaw = (new ItemFood(107, 3, 0.3F, true)).setIconCoord(9, 6).setItemName("beefRaw");
 	public static Item beefCooked = (new ItemFood(108, 8, 0.8F, true)).setIconCoord(10, 6).setItemName("beefCooked");
-	public static Item chickenRaw = (new ItemFood(109, 2, 0.3F, true)).setPotionEffect(Potion.potionHunger.id, 30, 0, 0.3F).setIconCoord(9, 7).setItemName("chickenRaw");
+	public static Item chickenRaw = (new ItemFood(109, 2, 0.3F, true)).setPotionEffect(Potion.hunger.id, 30, 0, 0.3F).setIconCoord(9, 7).setItemName("chickenRaw");
 	public static Item chickenCooked = (new ItemFood(110, 6, 0.6F, true)).setIconCoord(10, 7).setItemName("chickenCooked");
-	public static Item rottenFlesh = (new ItemFood(111, 4, 0.1F, true)).setPotionEffect(Potion.potionHunger.id, 30, 0, 0.8F).setIconCoord(11, 5).setItemName("rottenFlesh");
+	public static Item rottenFlesh = (new ItemFood(111, 4, 0.1F, true)).setPotionEffect(Potion.hunger.id, 30, 0, 0.8F).setIconCoord(11, 5).setItemName("rottenFlesh");
 	public static Item enderPearl = (new ItemEnderPearl(112)).setIconCoord(11, 6).setItemName("enderPearl");
 	public static Item blazeRod = (new Item(113)).setIconCoord(12, 6).setItemName("blazeRod");
-	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").func_40407_b(PotionHelper.field_40366_c);
+	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").setPotionModifier(PotionHelper.ghastTearEffect);
 	public static Item goldNugget = (new Item(115)).setIconCoord(12, 7).setItemName("goldNugget");
-	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").func_40407_b("+4");
+	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionModifier("+4");
 	public static ItemPotion potion = (ItemPotion) (new ItemPotion(117)).setIconCoord(13, 8).setItemName("potion");
 	public static Item glassBottle = (new ItemGlassBottle(118)).setIconCoord(12, 8).setItemName("glassBottle");
-	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.potionPoison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").func_40407_b(PotionHelper.field_40363_d);
-	public static Item fermentedSpiderEye = (new Item(120)).setIconCoord(10, 8).setItemName("fermentedSpiderEye").func_40407_b(PotionHelper.field_40364_e);
-	public static Item blazePowder = (new Item(121)).setIconCoord(13, 9).setItemName("blazePowder").func_40407_b(PotionHelper.field_40362_g);
-	public static Item magmaCream = (new Item(122)).setIconCoord(13, 10).setItemName("magmaCream").func_40407_b(PotionHelper.field_40374_h);
+	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.potionPoison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").setPotionModifier(PotionHelper.spiderEyeEffect);
+	public static Item fermentedSpiderEye = (new Item(120)).setIconCoord(10, 8).setItemName("fermentedSpiderEye").setPotionModifier(PotionHelper.fermentedSpiderEyeEffect);
+	public static Item blazePowder = (new Item(121)).setIconCoord(13, 9).setItemName("blazePowder").setPotionModifier(PotionHelper.blazePowderEffect);
+	public static Item magmaCream = (new Item(122)).setIconCoord(13, 10).setItemName("magmaCream").setPotionModifier(PotionHelper.magmaCreamEffect);
 	public static Item brewingStand = (new ItemReed(123, Block.brewingStand)).setIconCoord(12, 10).setItemName("brewingStand");
 	public static Item cauldron = (new ItemReed(124, Block.cauldron)).setIconCoord(12, 9).setItemName("cauldron");
 	public static Item eyeOfEnder = (new ItemEnderEye(125)).setIconCoord(11, 9).setItemName("eyeOfEnder");
-	public static Item speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").func_40407_b(PotionHelper.field_40361_f);
+	public static Item speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionModifier(PotionHelper.speckledMelonEffect);
+	public static Item field_44019_bC = (new ItemMonsterPlacer(127)).setIconCoord(9, 9).setItemName("monsterPlacer");
 	public static Item record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
 	public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setIconCoord(2, 15).setItemName("record");
@@ -208,7 +210,7 @@ public class Item {
 	protected boolean bFull3D = false;
 	protected boolean hasSubtypes = false;
 	private Item containerItem = null;
-	private String field_39010_c = null;
+	private String potionModifier = null;
 	private String itemName;
 
 	protected Item(int var1) {
@@ -263,7 +265,7 @@ public class Item {
 		return this.maxStackSize;
 	}
 
-	public int getPlacedBlockMetadata(int var1) {
+	public int getMetadata(int var1) {
 		return 0;
 	}
 
@@ -326,7 +328,7 @@ public class Item {
 		return this;
 	}
 
-	public String func_40400_h(ItemStack var1) {
+	public String getLocalItemName(ItemStack var1) {
 		String var2 = this.getItemNameIS(var1);
 		return var2 == null ? "" : StatCollector.translateToLocal(var2);
 	}
@@ -340,14 +342,18 @@ public class Item {
 	}
 
 	public Item setContainerItem(Item var1) {
-		if (this.maxStackSize > 1) {
-			throw new IllegalArgumentException("Max stack size must be 1 for items with crafting results");
-		} else {
-			this.containerItem = var1;
-			return this;
-		}
+		this.containerItem = var1;
+		return this;
 	}
 
+	public boolean func_46059_i(ItemStack var1) {
+		return true;
+	}
+
+	public boolean func_46056_k() {
+		return false;
+	}
+	
 	public Item getContainerItem() {
 		return this.containerItem;
 	}
@@ -360,7 +366,7 @@ public class Item {
 		return StatCollector.translateToLocal(this.getItemName() + ".name");
 	}
 
-	public int getColorFromDamage(int var1) {
+	public int getColorFromDamage(int var1, int var2) {
 		return 16777215;
 	}
 
@@ -381,36 +387,36 @@ public class Item {
 	public void onPlayerStoppedUsing(ItemStack var1, World var2, EntityPlayer var3, int var4) {
 	}
 
-	protected Item func_40407_b(String var1) {
-		this.field_39010_c = var1;
+	protected Item setPotionModifier(String var1) {
+		this.potionModifier = var1;
 		return this;
 	}
 
-	public String func_40405_m() {
-		return this.field_39010_c;
+	public String getPotionModifier() {
+		return this.potionModifier;
 	}
 
-	public boolean func_40406_n() {
-		return this.field_39010_c != null;
+	public boolean isValidBrewingIngredient() {
+		return this.potionModifier != null;
 	}
 
-	public void func_40404_a(ItemStack var1, List var2) {
+	public void addInformation(ItemStack var1, List var2) {
 	}
 
-	public String func_40397_d(ItemStack var1) {
-		String var2 = ("" + StringTranslate.getInstance().translateNamedKey(this.func_40400_h(var1))).trim();
+	public String getItemDisplayName(ItemStack var1) {
+		String var2 = ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalItemName(var1))).trim();
 		return var2;
 	}
 
-	public boolean func_40403_e(ItemStack var1) {
-		return var1.func_40711_u();
+	public boolean hasEffect(ItemStack var1) {
+		return var1.isItemEnchanted();
 	}
 
-	public EnumRarity func_40398_f(ItemStack var1) {
-		return var1.func_40711_u() ? EnumRarity.rare : EnumRarity.common;
+	public EnumRarity getRarity(ItemStack var1) {
+		return var1.isItemEnchanted() ? EnumRarity.rare : EnumRarity.common;
 	}
 
-	public boolean func_40401_i(ItemStack var1) {
+	public boolean isItemTool(ItemStack var1) {
 		return this.getItemStackLimit() == 1 && this.isDamageable();
 	}
 
@@ -438,6 +444,14 @@ public class Item {
 		return 0;
 	}
 
+	public boolean func_46058_c() {
+		return false;
+	}
+
+	public int func_46057_a(int var1, int var2) {
+		return this.getIconFromDamage(var1);
+	}
+	
 	static {
 		StatList.initStats();
 	}
