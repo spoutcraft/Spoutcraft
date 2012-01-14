@@ -49,15 +49,15 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	public boolean isAngry() {
-		return getEntityWolf().isWolfAngry();
+		return getEntityWolf().isAngry();
 	}
 
 	public void setAngry(boolean angry) {
-		getEntityWolf().setWolfAngry(angry);
+		getEntityWolf().setAngry(angry);
 	}
 
 	public boolean isSitting() {
-		return getEntityWolf().isWolfSitting();
+		return getEntityWolf().isSitting();
 	}
 
 	public void setSitting(boolean sitting) {
@@ -66,7 +66,7 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	public boolean isTamed() {
-		return getEntityWolf().isWolfTamed();
+		return getEntityWolf().isTamed();
 	}
 
 	public void setTamed(boolean tame) {
@@ -98,7 +98,7 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	String getOwnerName() {
-		return getEntityWolf().getWolfOwner();
+		return getEntityWolf().getOwner();
 	}
 
 	void setOwnerName(String ownerName) {
