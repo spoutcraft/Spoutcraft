@@ -27,7 +27,7 @@ public class LanguagesButton extends GenericButton{
 	GuiScreen parent;
 	public LanguagesButton(GuiScreen parent) {
 		super("Languages");
-		setTooltip("Languages\nChange the language of the game.\nNOT YET IMPLEMENTED!");
+		setTooltip("Languages\nChange the language of the game.");
 		this.parent = parent;
 	}
 
