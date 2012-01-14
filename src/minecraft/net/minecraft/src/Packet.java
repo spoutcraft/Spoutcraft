@@ -44,11 +44,11 @@ import net.minecraft.src.Packet21PickupSpawn;
 import net.minecraft.src.Packet22Collect;
 import net.minecraft.src.Packet23VehicleSpawn;
 import net.minecraft.src.Packet24MobSpawn;
+import net.minecraft.src.Packet250CustomPayload;
 import net.minecraft.src.Packet254ServerPing;
 import net.minecraft.src.Packet255KickDisconnect;
 import net.minecraft.src.Packet25EntityPainting;
 import net.minecraft.src.Packet26EntityExpOrb;
-import net.minecraft.src.Packet27Position;
 import net.minecraft.src.Packet28EntityVelocity;
 import net.minecraft.src.Packet29DestroyEntity;
 import net.minecraft.src.Packet2Handshake;
@@ -151,7 +151,7 @@ public abstract class Packet {
 			return null;
 		}
 
-		PacketCount.func_40561_a(var6, (long)var3.getPacketSize());
+		PacketCount.countPacket(var6, (long)var3.getPacketSize());
 		return var3;
 	}
 
@@ -201,8 +201,8 @@ public abstract class Packet {
 			byte var4 = var1.readByte();
 			short var5 = var1.readShort();
 			var2 = new ItemStack(var3, var4, var5);
-			if(Item.itemsList[var3].isDamageable()) {
-				var2.field_40715_d = this.func_40186_c(var1);
+			if(Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k()) {
+				var2.stackTagCompound = this.func_40186_c(var1);
 			}
 		}
 
@@ -216,8 +216,8 @@ public abstract class Packet {
 			var2.writeShort(var1.itemID);
 			var2.writeByte(var1.stackSize);
 			var2.writeShort(var1.getItemDamage());
-			if(var1.getItem().isDamageable()) {
-				this.func_40189_a(var1.field_40715_d, var2);
+			if(var1.getItem().isDamageable() || var1.getItem().func_46056_k()) {
+				this.func_40189_a(var1.stackTagCompound, var2);
 			}
 		}
 
@@ -230,7 +230,7 @@ public abstract class Packet {
 		} else {
 			byte[] var3 = new byte[var2];
 			var1.readFully(var3);
-			return CompressedStreamTools.func_40592_a(var3);
+			return CompressedStreamTools.loadMapFromByteArray(var3);
 		}
 	}
 
@@ -238,7 +238,7 @@ public abstract class Packet {
 		if(var1 == null) {
 			var2.writeShort(-1);
 		} else {
-			byte[] var3 = CompressedStreamTools.func_40591_a(var1);
+			byte[] var3 = CompressedStreamTools.writeMapToByteArray(var1);
 			var2.writeShort((short)var3.length);
 			var2.write(var3);
 		}
@@ -273,7 +273,6 @@ public abstract class Packet {
 		addIdClassMapping(24, true, false, Packet24MobSpawn.class);
 		addIdClassMapping(25, true, false, Packet25EntityPainting.class);
 		addIdClassMapping(26, true, false, Packet26EntityExpOrb.class);
-		addIdClassMapping(27, false, true, Packet27Position.class);
 		addIdClassMapping(28, true, false, Packet28EntityVelocity.class);
 		addIdClassMapping(29, true, false, Packet29DestroyEntity.class);
 		addIdClassMapping(30, true, false, Packet30Entity.class);
@@ -309,6 +308,7 @@ public abstract class Packet {
 		addIdClassMapping(131, true, false, Packet131MapData.class);
 		addIdClassMapping(200, true, false, Packet200Statistic.class);
 		addIdClassMapping(201, true, false, Packet201PlayerInfo.class);
+		addIdClassMapping(250, true, true, Packet250CustomPayload.class);
 		addIdClassMapping(254, false, true, Packet254ServerPing.class);
 		addIdClassMapping(255, true, true, Packet255KickDisconnect.class);
 	}
