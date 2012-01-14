@@ -281,7 +281,7 @@ public class BlockRedstoneWire extends Block {
 		}
 	}
 
-	private int getMaxCurrentStrength(World var1, int var2, int var3, int var4, int var5) {
+	public int getMaxCurrentStrength(World var1, int var2, int var3, int var4, int var5) { //Spout protected->public
 		if (var1.getBlockId(var2, var3, var4) != this.blockID) {
 			return var5;
 		}

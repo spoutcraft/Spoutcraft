@@ -212,7 +212,7 @@ public class SpoutcraftBlock implements Block{
 			return Biome.SKY;
 		} else if (base == BiomeGenBase.river) {
 			return Biome.RIVER;
-		} else if (base == BiomeGenBase.hills) {
+		} else if (base == BiomeGenBase.extremeHills) {
 			return Biome.MOUNTAINS;
 		} else if (base == BiomeGenBase.ocean) {
 			return Biome.OCEAN;
