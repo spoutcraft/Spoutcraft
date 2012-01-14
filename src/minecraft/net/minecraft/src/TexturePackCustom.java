@@ -121,12 +121,12 @@ public class TexturePackCustom extends TexturePackBase {
 			;
 		}
 		
-		TextureUtils.openTexturePackFile(this);//Spout
+		//TextureUtils.openTexturePackFile(this);//Spout
 	}
 
 	public void closeTexturePackFile() {
 		try {
-			TextureUtils.closeTexturePackFile(this);//Spout
+			//TextureUtils.closeTexturePackFile(this);//Spout
 			this.texturePackZipFile.close();
 		}
 		catch (Exception var2) {
