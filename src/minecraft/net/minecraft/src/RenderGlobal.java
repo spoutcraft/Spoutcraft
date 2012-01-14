@@ -1251,6 +1251,7 @@ public class RenderGlobal implements IWorldAccess {
 		boolean var3 = false;
 		//Spout start
 		if (SpoutWorth.getInstance().isRenderingHalted()) {
+			updateRenderer(MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ));
 			return this.worldRenderersToUpdate.size() == 0;
 		}
 		Profiler.startSection("setup");
@@ -2000,6 +2001,35 @@ public class RenderGlobal implements IWorldAccess {
 	private boolean isMovingNow(EntityLiving var1) {
 		double var2 = 0.0010D;
 		return var1.isJumping?true:(var1.isSneaking()?true:((double)var1.prevSwingProgress > var2?true:(this.mc.mouseHelper.deltaX != 0?true:(this.mc.mouseHelper.deltaY != 0?true:(Math.abs(var1.posX - var1.prevPosX) > var2?true:(Math.abs(var1.posY - var1.prevPosY) > var2?true:Math.abs(var1.posZ - var1.prevPosZ) > var2))))));
+	}
+	
+	public void updateRenderer(int x, int y, int z) {
+		int chunkX = MathHelper.bucketInt(x, 16);
+		int chunkY = MathHelper.bucketInt(y, 16);
+		int chunkZ = MathHelper.bucketInt(z, 16);
+
+		int cx = chunkX % this.renderChunksWide;
+		if (cx < 0) {
+			cx += this.renderChunksWide;
+		}
+
+		int cy = chunkY % this.renderChunksTall;
+		if (cy < 0) {
+			cy += this.renderChunksTall;
+		}
+
+		int cz = chunkZ % this.renderChunksDeep;
+		if (cz < 0) {
+			cz += this.renderChunksDeep;
+		}
+
+		int index = (cz * this.renderChunksTall + cy) * this.renderChunksWide + cx;
+		WorldRenderer renderer = this.worldRenderers[index];
+		if (renderer.needsUpdate) {
+			renderer.updateRenderer();
+			renderer.needsUpdate = false;
+		}
+
 	}
 	//Spout End
 }
