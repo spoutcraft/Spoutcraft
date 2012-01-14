@@ -17,7 +17,7 @@ public class MapGenRavine extends MapGenBase {
 		float var24 = 0.0F;
 		float var25 = 0.0F;
 		if(var16 <= 0) {
-			int var26 = this.field_1306_a * 16 - 16;
+			int var26 = this.range * 16 - 16;
 			var16 = var26 - var19.nextInt(var26 / 4);
 		}
 
@@ -29,7 +29,7 @@ public class MapGenRavine extends MapGenBase {
 
 		float var27 = 1.0F;
 
-		for(int var28 = 0; var28 < this.worldObj.field_35472_c; ++var28) {
+		for(int var28 = 0; var28 < this.worldObj.worldHeight; ++var28) {
 			if(var28 == 0 || var19.nextInt(3) == 0) {
 			var27 = 1.0F + var19.nextFloat() * var19.nextFloat() * 1.0F;
 			}
@@ -82,8 +82,8 @@ public class MapGenRavine extends MapGenBase {
 					var55 = 1;
 				}
 
-				if(var37 > this.worldObj.field_35472_c - 8) {
-					var37 = this.worldObj.field_35472_c - 8;
+				if(var37 > this.worldObj.worldHeight - 8) {
+					var37 = this.worldObj.worldHeight - 8;
 				}
 
 				if(var57 < 0) {
@@ -101,8 +101,8 @@ public class MapGenRavine extends MapGenBase {
 				for(var41 = var56; !var58 && var41 < var35; ++var41) {
 					for(int var42 = var57; !var58 && var42 < var39; ++var42) {
 						for(int var43 = var37 + 1; !var58 && var43 >= var55 - 1; --var43) {
-						var44 = (var41 * 16 + var42) * this.worldObj.field_35472_c + var43;
-						if(var43 >= 0 && var43 < this.worldObj.field_35472_c) {
+						var44 = (var41 * 16 + var42) * this.worldObj.worldHeight + var43;
+						if(var43 >= 0 && var43 < this.worldObj.worldHeight) {
 							if(var5[var44] == Block.waterMoving.blockID || var5[var44] == Block.waterStill.blockID) {
 								var58 = true;
 							}
@@ -121,7 +121,7 @@ public class MapGenRavine extends MapGenBase {
 
 						for(var44 = var57; var44 < var39; ++var44) {
 						double var45 = ((double)(var44 + var4 * 16) + 0.5D - var10) / var53;
-						int var47 = (var41 * 16 + var44) * this.worldObj.field_35472_c + var37;
+						int var47 = (var41 * 16 + var44) * this.worldObj.worldHeight + var37;
 						boolean var48 = false;
 						if(var59 * var59 + var45 * var45 < 1.0D) {
 							for(int var49 = var37 - 1; var49 >= var55; --var49) {

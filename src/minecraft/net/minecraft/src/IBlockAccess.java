@@ -28,7 +28,7 @@ public interface IBlockAccess {
 
 	WorldChunkManager getWorldChunkManager();
 
-	int func_35452_b();
+	int getWorldHeight();
 
 	// Spout start
 	public int getGrassColorCache(int x, int y, int z);
