@@ -45,7 +45,7 @@ public class TextureWatchFX extends TextureFX {
 		if(this.mc.theWorld != null && this.mc.thePlayer != null) {
 			float var3 = this.mc.theWorld.getCelestialAngle(1.0F);
 			var1 = (double)(-var3 * 3.1415927F * 2.0F);
-			if(this.mc.theWorld.worldProvider.isNether) {
+			if(this.mc.theWorld.worldProvider.isAlternateDimension) {
 				var1 = Math.random() * 3.1415927410125732D * 2.0D;
 			}
 		}

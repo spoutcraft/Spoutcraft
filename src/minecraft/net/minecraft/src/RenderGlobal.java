@@ -318,7 +318,7 @@ public class RenderGlobal implements IWorldAccess {
 			// Spout End
 
 			this.renderChunksWide = var1 / 16 + 1;
-			this.renderChunksTall = this.worldObj.field_35472_c / 16;
+			this.renderChunksTall = this.worldObj.worldHeight / 16;
 			this.renderChunksDeep = var1 / 16 + 1;
 			this.worldRenderers = new WorldRenderer[this.renderChunksWide * this.renderChunksTall * this.renderChunksDeep];
 			this.sortedWorldRenderers = new WorldRenderer[this.renderChunksWide * this.renderChunksTall * this.renderChunksDeep];
@@ -414,8 +414,8 @@ public class RenderGlobal implements IWorldAccess {
 						var8 = 0;
 					}
 
-					if (var8 >= this.worldObj.field_35472_c) {
-						var8 = this.worldObj.field_35472_c - 1;
+					if (var8 >= this.worldObj.worldHeight) {
+						var8 = this.worldObj.worldHeight - 1;
 					}
 
 					if (this.worldObj.blockExists(MathHelper.floor_double(var7.posX), var8, MathHelper.floor_double(var7.posZ))) {
@@ -809,7 +809,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glDepthMask(true);
 			GL11.glEnable(3553 /* GL_TEXTURE_2D */);
 			GL11.glEnable(3008 /* GL_ALPHA_TEST */);
-		} else if (!this.mc.theWorld.worldProvider.isNether) {
+		} else if (!this.mc.theWorld.worldProvider.isAlternateDimension) {
 			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
 			//Vec3D var2 = this.worldObj.getSkyColor(this.mc.renderViewEntity, f);
 			// Spout Start
@@ -963,7 +963,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glPopMatrix();
 			GL11.glDisable(3553 /* GL_TEXTURE_2D */);
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
-			double var23 = this.mc.thePlayer.getPosition(f).yCoord - 63.0D;
+			double var23 = this.mc.thePlayer.getPosition(f).yCoord - this.worldObj.func_46068_G();
 			if (var23 < 0.0D) {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(0.0F, 12.0F, 0.0F);
@@ -1022,7 +1022,7 @@ public class RenderGlobal implements IWorldAccess {
 			return;
 		}
 		// Spout End
-		if (!this.mc.theWorld.worldProvider.isNether && ConfigReader.sky) { // Spout
+		if (!this.mc.theWorld.worldProvider.isAlternateDimension && ConfigReader.sky) { // Spout
 			if (ConfigReader.fancyClouds) { // Spout
 				this.renderCloudsFancy(var1);
 			} else {
@@ -1683,7 +1683,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	public EntityFX func_40193_b(String var1, double var2, double var4, double var6, double var8, double var10, double var12) {
 		if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
-			int var14 = this.mc.gameSettings.field_41087_P;
+			int var14 = this.mc.gameSettings.particles;
 			if (var14 == 1 && this.worldObj.rand.nextInt(3) == 0) {
 				var14 = 2;
 			}
@@ -1725,7 +1725,7 @@ public class RenderGlobal implements IWorldAccess {
 					} else if (var1.equals("magicCrit")) {
 						var21 = new EntityCritFX(this.worldObj, var2, var4, var6, var8, var10, var12);
 						((EntityFX) var21).func_40097_b(((EntityFX) var21).func_40098_n() * 0.3F, ((EntityFX) var21).func_40101_o() * 0.8F, ((EntityFX) var21).func_40102_p());
-						((EntityFX) var21).func_40099_c(((EntityFX) var21).func_40100_q() + 1);
+						((EntityFX) var21).func_40099_c(((EntityFX) var21).getParticleTextureIndex() + 1);
 					} else if (var1.equals("smoke")) {
 						var21 = new EntitySmokeFX(this.worldObj, var2, var4, var6, var8, var10, var12);
 					} else if (var1.equals("mobSpell")) {
@@ -1912,12 +1912,12 @@ public class RenderGlobal implements IWorldAccess {
 				this.spawnParticle(var14, var33, var10, var12, var7.nextGaussian() * 0.15D, var7.nextDouble() * 0.2D, var7.nextGaussian() * 0.15D);
 			}
 
-			var15 = Item.potion.getColorFromDamage(var6);
+			var15 = Item.potion.getColorFromDamage(var6, 0);
 			float var16 = (float) (var15 >> 16 & 255) / 255.0F;
 			float var17 = (float) (var15 >> 8 & 255) / 255.0F;
 			float var18 = (float) (var15 >> 0 & 255) / 255.0F;
 			String var19 = "spell";
-			if (Item.potion.func_40432_e(var6)) {
+			if (Item.potion.isEffectInstant(var6)) {
 				var19 = "instantSpell";
 			}
 

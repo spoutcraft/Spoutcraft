@@ -11,7 +11,7 @@ public class TextureWaterFlowFX extends TextureFX {
 	protected float[] field_1137_h;
 	protected float[] field_1136_i;
 	protected float[] field_1135_j;
-	private int field_1134_k;
+	private int tickCounter;
 
 
 	public TextureWaterFlowFX() {
@@ -25,7 +25,7 @@ public class TextureWaterFlowFX extends TextureFX {
 	}
 //Spout HD end
 	public void onTick() {
-		++this.field_1134_k;
+		++this.tickCounter;
 
 		int var1;
 		int var2;
@@ -67,7 +67,7 @@ public class TextureWaterFlowFX extends TextureFX {
 		this.field_1138_g = var12;
 //Spout HD start
 		for(var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
-			var3 = this.field_1138_g[var2 - this.field_1134_k * TileSize.int_size & TileSize.int_numPixelsMinus1];
+			var3 = this.field_1138_g[var2 - this.tickCounter * TileSize.int_size & TileSize.int_numPixelsMinus1];
 //Spout HD end
 			if(var3 > 1.0F) {
 				var3 = 1.0F;
