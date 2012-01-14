@@ -8,7 +8,7 @@ import org.spoutcraft.client.entity.CraftVillager; //Spout
 
 public class EntityVillager extends EntityCreature {
 
-	public int field_40141_a; //Spout private -> public
+	public int profession; //Spout private -> public
 
 
 	public EntityVillager(World var1) {
@@ -20,8 +20,8 @@ public class EntityVillager extends EntityCreature {
 
 	public EntityVillager(World var1, int var2) {
 		super(var1);
-		this.field_40141_a = var2;
-		this.func_40140_ac();
+		this.profession = var2;
+		this.setTextureByProfession();
 		this.moveSpeed = 0.5F;
 	}
 
@@ -35,34 +35,34 @@ public class EntityVillager extends EntityCreature {
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
 		super.writeEntityToNBT(var1);
-		var1.setInteger("Profession", this.field_40141_a);
+		var1.setInteger("Profession", this.profession);
 	}
 
 	public void readEntityFromNBT(NBTTagCompound var1) {
 		super.readEntityFromNBT(var1);
-		this.field_40141_a = var1.getInteger("Profession");
-		this.func_40140_ac();
+		this.profession = var1.getInteger("Profession");
+		this.setTextureByProfession();
 	}
 
-	private void func_40140_ac() {
+	private void setTextureByProfession() {
 		this.texture = "/mob/villager/villager.png";
-		if(this.field_40141_a == 0) {
+		if(this.profession == 0) {
 			this.texture = "/mob/villager/farmer.png";
 		}
 
-		if(this.field_40141_a == 1) {
+		if(this.profession == 1) {
 			this.texture = "/mob/villager/librarian.png";
 		}
 
-		if(this.field_40141_a == 2) {
+		if(this.profession == 2) {
 			this.texture = "/mob/villager/priest.png";
 		}
 
-		if(this.field_40141_a == 3) {
+		if(this.profession == 3) {
 			this.texture = "/mob/villager/smith.png";
 		}
 
-		if(this.field_40141_a == 4) {
+		if(this.profession == 4) {
 			this.texture = "/mob/villager/butcher.png";
 		}
 

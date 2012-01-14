@@ -2,6 +2,11 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftZombie;
 
+import net.minecraft.src.EntityAIAttackOnCollide;
+import net.minecraft.src.EntityAILookIdle;
+import net.minecraft.src.EntityAISwimming;
+import net.minecraft.src.EntityAIWander;
+import net.minecraft.src.EntityAIWatchClosest;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.EnumCreatureAttribute;
 import net.minecraft.src.Item;
@@ -15,6 +20,11 @@ public class EntityZombie extends EntityMob {
 		this.texture = "/mob/zombie.png";
 		this.moveSpeed = 0.5F;
 		this.attackStrength = 4;
+		this.field_46019_bU.func_46118_a(1, new EntityAISwimming(this));
+		this.field_46019_bU.func_46118_a(2, new EntityAIAttackOnCollide(this, var1, 16.0F));
+		this.field_46019_bU.func_46118_a(3, new EntityAIWander(this));
+		this.field_46019_bU.func_46118_a(4, new EntityAIWatchClosest(this, var1, 8.0F));
+		this.field_46019_bU.func_46118_a(4, new EntityAILookIdle(this));
 		//Spout start
 		this.spoutEntity = new CraftZombie(this);
 		//Spout end
@@ -24,15 +34,19 @@ public class EntityZombie extends EntityMob {
 		return 20;
 	}
 
-	protected int func_40119_ar() {
+	public int getTotalArmorValue() {
 		return 2;
+	}
+	
+	protected boolean func_46006_aR() {
+		return false;
 	}
 
 	public void onLivingUpdate() {
 		if(this.worldObj.isDaytime() && !this.worldObj.multiplayerWorld) {
 			float var1 = this.getEntityBrightness(1.0F);
 			if(var1 > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (var1 - 0.4F) * 2.0F) {
-				this.func_40046_d(8);
+				this.setFire(8);
 			}
 		}
 
@@ -55,7 +69,7 @@ public class EntityZombie extends EntityMob {
 		return Item.rottenFlesh.shiftedIndex;
 	}
 
-	public EnumCreatureAttribute func_40124_t() {
+	public EnumCreatureAttribute getCreatureAttribute() {
 		return EnumCreatureAttribute.UNDEAD;
 	}
 }

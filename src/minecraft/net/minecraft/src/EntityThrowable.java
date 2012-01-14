@@ -13,15 +13,15 @@ import net.minecraft.src.World;
 
 public abstract class EntityThrowable extends Entity {
 
-	private int field_40079_d = -1;
-	private int field_40080_e = -1;
-	private int field_40082_ao = -1;
-	private int field_40084_ap = 0;
-	protected boolean field_40085_a = false;
-	public int field_40081_b = 0;
-	public EntityLiving field_40083_c; //Spout protected -> public
-    private int field_40087_aq;
-	private int field_40086_ar = 0;
+	private int xTile = -1;
+	private int yTile = -1;
+	private int zTile = -1;
+	private int inTile = 0;
+	protected boolean inGround = false;
+	public int throwableShake = 0;
+	public EntityLiving throwingEntity; //Spout protected -> public
+	private int ticksInGround;
+	private int ticksInAir = 0;
 
 
 	public EntityThrowable(World var1) {
@@ -39,7 +39,7 @@ public abstract class EntityThrowable extends Entity {
 
 	public EntityThrowable(World var1, EntityLiving var2) {
 		super(var1);
-		this.field_40083_c = var2;
+		this.throwingEntity = var2;
 		this.setSize(0.25F, 0.25F);
 		this.setLocationAndAngles(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, var2.rotationYaw, var2.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * 3.1415927F) * 0.16F);
@@ -56,7 +56,7 @@ public abstract class EntityThrowable extends Entity {
 
 	public EntityThrowable(World var1, double var2, double var4, double var6) {
 		super(var1);
-		this.field_40087_aq = 0;
+		this.ticksInGround = 0;
 		this.setSize(0.25F, 0.25F);
 		this.setPosition(var2, var4, var6);
 		this.yOffset = 0.0F;
@@ -87,7 +87,7 @@ public abstract class EntityThrowable extends Entity {
 		float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
 		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / 3.1415927410125732D);
 		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / 3.1415927410125732D);
-		this.field_40087_aq = 0;
+		this.ticksInGround = 0;
     }
 
 	public void setVelocity(double var1, double var3, double var5) {
@@ -107,29 +107,29 @@ public abstract class EntityThrowable extends Entity {
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
         super.onUpdate();
-		if(this.field_40081_b > 0) {
-			--this.field_40081_b;
+		if(this.throwableShake > 0) {
+			--this.throwableShake;
         }
 
-		if(this.field_40085_a) {
-			int var1 = this.worldObj.getBlockId(this.field_40079_d, this.field_40080_e, this.field_40082_ao);
-			if(var1 == this.field_40084_ap) {
-				++this.field_40087_aq;
-				if(this.field_40087_aq == 1200) {
+		if(this.inGround) {
+			int var1 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+			if(var1 == this.inTile) {
+				++this.ticksInGround;
+				if(this.ticksInGround == 1200) {
 					this.setEntityDead();
                 }
 
                 return;
             }
 
-			this.field_40085_a = false;
+			this.inGround = false;
 			this.motionX *= (double)(this.rand.nextFloat() * 0.2F);
 			this.motionY *= (double)(this.rand.nextFloat() * 0.2F);
 			this.motionZ *= (double)(this.rand.nextFloat() * 0.2F);
-			this.field_40087_aq = 0;
-			this.field_40086_ar = 0;
+			this.ticksInGround = 0;
+			this.ticksInAir = 0;
 		} else {
-			++this.field_40086_ar;
+			++this.ticksInAir;
 		}
 
 		Vec3D var15 = Vec3D.createVector(this.posX, this.posY, this.posZ);
@@ -148,10 +148,10 @@ public abstract class EntityThrowable extends Entity {
 
 			for(int var8 = 0; var8 < var5.size(); ++var8) {
 				Entity var9 = (Entity)var5.get(var8);
-				if(var9.canBeCollidedWith() && (var9 != this.field_40083_c || this.field_40086_ar >= 5)) {
+				if(var9.canBeCollidedWith() && (var9 != this.throwingEntity || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-					MovingObjectPosition var12 = var11.func_1169_a(var15, var2);
+					MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 					if(var12 != null) {
 						double var13 = var15.distanceTo(var12.hitVec);
 						if(var13 < var6 || var6 == 0.0D) {
@@ -168,7 +168,7 @@ public abstract class EntityThrowable extends Entity {
 		}
 
 		if(var3 != null) {
-			this.func_40078_a(var3);
+			this.onThrowableCollision(var3);
 		}
 
 		this.posX += this.motionX;
@@ -191,7 +191,7 @@ public abstract class EntityThrowable extends Entity {
 
 		while(this.rotationYaw - this.prevRotationYaw >= 180.0F) {
 			this.prevRotationYaw += 360.0F;
-        }
+		}
 
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
@@ -217,24 +217,24 @@ public abstract class EntityThrowable extends Entity {
         return 0.03F;
     }
 
-	protected abstract void func_40078_a(MovingObjectPosition var1);
+	protected abstract void onThrowableCollision(MovingObjectPosition var1);
 
 	public void writeEntityToNBT(NBTTagCompound var1) {
-		var1.setShort("xTile", (short)this.field_40079_d);
-		var1.setShort("yTile", (short)this.field_40080_e);
-		var1.setShort("zTile", (short)this.field_40082_ao);
-		var1.setByte("inTile", (byte)this.field_40084_ap);
-		var1.setByte("shake", (byte)this.field_40081_b);
-		var1.setByte("inGround", (byte)(this.field_40085_a?1:0));
+		var1.setShort("xTile", (short)this.xTile);
+		var1.setShort("yTile", (short)this.yTile);
+		var1.setShort("zTile", (short)this.zTile);
+		var1.setByte("inTile", (byte)this.inTile);
+		var1.setByte("shake", (byte)this.throwableShake);
+		var1.setByte("inGround", (byte)(this.inGround?1:0));
     }
 
 	public void readEntityFromNBT(NBTTagCompound var1) {
-		this.field_40079_d = var1.getShort("xTile");
-		this.field_40080_e = var1.getShort("yTile");
-		this.field_40082_ao = var1.getShort("zTile");
-		this.field_40084_ap = var1.getByte("inTile") & 255;
-		this.field_40081_b = var1.getByte("shake") & 255;
-		this.field_40085_a = var1.getByte("inGround") == 1;
+		this.xTile = var1.getShort("xTile");
+		this.yTile = var1.getShort("yTile");
+		this.zTile = var1.getShort("zTile");
+		this.inTile = var1.getByte("inTile") & 255;
+		this.throwableShake = var1.getByte("shake") & 255;
+		this.inGround = var1.getByte("inGround") == 1;
     }
 
 	public void onCollideWithPlayer(EntityPlayer var1) {}
