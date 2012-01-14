@@ -69,7 +69,7 @@ public class GuiChat extends GuiScreen {
 				this.message = this.message.substring(0, this.message.length() - 1);
 			}
 
-			if(allowedCharacters.indexOf(var1) >= 0 && this.message.length() < 100) {
+			if((allowedCharacters.indexOf(var1) >= 0 || var1 > 32) && this.message.length() < 100) {
 				this.message = this.message + var1;
 			}
 
