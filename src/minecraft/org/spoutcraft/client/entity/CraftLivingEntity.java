@@ -133,14 +133,14 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public int getRemainingAir() {
-		return getEntityLiving().func_41001_Z();
+		return getEntityLiving().getAir();
 	}
 
 	public void setRemainingAir(int ticks) {
 		if (ticks < 0) {
 			throw new IllegalArgumentException("The Remaining Air can not be below 0");
 		}
-		getEntityLiving().func_41003_g(ticks);
+		getEntityLiving().setAir(ticks);
 	}
 
 	public int getMaximumAir() {
