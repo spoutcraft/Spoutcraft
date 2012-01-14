@@ -85,7 +85,7 @@ public class EntityPig extends EntityAnimal {
 		if(!this.worldObj.multiplayerWorld) {
 			EntityPigZombie var2 = new EntityPigZombie(this.worldObj);
 			var2.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-			this.worldObj.entityJoinedWorld(var2);
+			this.worldObj.spawnEntityInWorld(var2);
 			this.setEntityDead();
 		}
 	}
@@ -98,7 +98,7 @@ public class EntityPig extends EntityAnimal {
 
 	}
 
-	protected EntityAnimal func_40145_a(EntityAnimal var1) {
+	protected EntityAnimal spawnBabyAnimal(EntityAnimal var1) {
 		return new EntityPig(this.worldObj);
 	}
 }

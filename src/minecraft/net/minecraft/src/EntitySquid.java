@@ -19,8 +19,8 @@ public class EntitySquid extends EntityWaterMob {
 	public float field_21086_f = 0.0F;
 	public float field_21085_g = 0.0F;
 	public float field_21084_h = 0.0F;
-	public float field_21083_i = 0.0F;
-	public float field_21082_j = 0.0F;
+	public float tentacleAngle = 0.0F;
+	public float lastTentacleAngle = 0.0F;
 	private float randomMotionSpeed = 0.0F;
 	private float field_21080_l = 0.0F;
 	private float field_21079_m = 0.0F;
@@ -93,7 +93,7 @@ public class EntitySquid extends EntityWaterMob {
 		this.field_21088_b = this.field_21089_a;
 		this.field_21086_f = this.field_21087_c;
 		this.field_21084_h = this.field_21085_g;
-		this.field_21082_j = this.field_21083_i;
+		this.lastTentacleAngle = this.tentacleAngle;
 		this.field_21085_g += this.field_21080_l;
 		if(this.field_21085_g > 6.2831855F) {
 			this.field_21085_g -= 6.2831855F;
@@ -106,7 +106,7 @@ public class EntitySquid extends EntityWaterMob {
 			float var1;
 			if(this.field_21085_g < 3.1415927F) {
 				var1 = this.field_21085_g / 3.1415927F;
-				this.field_21083_i = MathHelper.sin(var1 * var1 * 3.1415927F) * 3.1415927F * 0.25F;
+				this.tentacleAngle = MathHelper.sin(var1 * var1 * 3.1415927F) * 3.1415927F * 0.25F;
 				if((double)var1 > 0.75D) {
 					this.randomMotionSpeed = 1.0F;
 					this.field_21079_m = 1.0F;
@@ -114,12 +114,12 @@ public class EntitySquid extends EntityWaterMob {
 					this.field_21079_m *= 0.8F;
 				}
 			} else {
-				this.field_21083_i = 0.0F;
+				this.tentacleAngle = 0.0F;
 				this.randomMotionSpeed *= 0.9F;
 				this.field_21079_m *= 0.99F;
 			}
 
-			if(!this.isMultiplayerEntity) {
+			if(!this.worldObj.multiplayerWorld) {
 				this.motionX = (double)(this.randomMotionVecX * this.randomMotionSpeed);
 				this.motionY = (double)(this.randomMotionVecY * this.randomMotionSpeed);
 				this.motionZ = (double)(this.randomMotionVecZ * this.randomMotionSpeed);
@@ -131,8 +131,8 @@ public class EntitySquid extends EntityWaterMob {
 			this.field_21087_c += 3.1415927F * this.field_21079_m * 1.5F;
 			this.field_21089_a += (-((float)Math.atan2((double)var1, this.motionY)) * 180.0F / 3.1415927F - this.field_21089_a) * 0.1F;
 		} else {
-			this.field_21083_i = MathHelper.abs(MathHelper.sin(this.field_21085_g)) * 3.1415927F * 0.25F;
-			if(!this.isMultiplayerEntity) {
+			this.tentacleAngle = MathHelper.abs(MathHelper.sin(this.field_21085_g)) * 3.1415927F * 0.25F;
+			if(!this.worldObj.multiplayerWorld) {
 				this.motionX = 0.0D;
 				this.motionY -= 0.08D;
 				this.motionY *= 0.9800000190734863D;
@@ -163,6 +163,6 @@ public class EntitySquid extends EntityWaterMob {
 	}
 
 	public boolean getCanSpawnHere() {
-		return this.posY > 45.0D && this.posY < (double)this.worldObj.field_35470_e && super.getCanSpawnHere();
+		return this.posY > 45.0D && this.posY < (double)this.worldObj.seaLevel && super.getCanSpawnHere();
 	}
 }

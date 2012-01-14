@@ -27,7 +27,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.yOffset = 0.0F;
 		this.slimeJumpDelay = this.rand.nextInt(20) + 10;
 		this.setSlimeSize(var2);
-		this.field_35171_bJ = var2;
+		this.experienceValue = var2;
 		//Spout start
 		this.spoutEntity = new CraftSlime(this);
 		//Spout end
@@ -155,7 +155,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 				EntitySlime var6 = this.func_40132_ae();
 				var6.setSlimeSize(var1 / 2);
 				var6.setLocationAndAngles(this.posX + (double)var4, this.posY + 0.5D, this.posZ + (double)var5, this.rand.nextFloat() * 360.0F, 0.0F);
-				this.worldObj.entityJoinedWorld(var6);
+				this.worldObj.spawnEntityInWorld(var6);
 			}
 		}
 
@@ -201,7 +201,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return 0.4F * (float)this.getSlimeSize();
 	}
 
-	protected int getVerticalFaceSpeed() {
+	public int getVerticalFaceSpeed() {
 		return 0;
 	}
 

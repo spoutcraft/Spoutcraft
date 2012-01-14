@@ -92,6 +92,12 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.renderArmYaw = (float)((double)this.renderArmYaw + (double)(this.rotationYaw - this.renderArmYaw) * 0.5D);
 	}
 
+	protected boolean func_44001_ad() {
+
+		return true;
+
+	}
+
 	public void onLivingUpdate() {
 		if(this.sprintingTicksLeft > 0) {
 			--this.sprintingTicksLeft;
@@ -151,7 +157,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				}
 
 				this.inPortal = false;
-			} else if(this.isPotionActive(Potion.potionConfusion) && this.getActivePotionEffect(Potion.potionConfusion).getDuration() > 60) {
+			} else if(this.isPotionActive(Potion.confusion) && this.getActivePotionEffect(Potion.confusion).getDuration() > 60) {
 				this.timeInPortal += 0.006666667F;
 				if(this.timeInPortal > 1.0F) {
 					this.timeInPortal = 1.0F;
@@ -189,7 +195,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
 			boolean var4 = (float)this.getFoodStats().getFoodLevel() > 6.0F;
-			if(this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.isSprinting() && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.potionBlindness)) {
+			if(this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.isSprinting() && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
 				if(this.sprintToggleTimer == 0) {
 					this.sprintToggleTimer = 7;
 				} else {
@@ -253,7 +259,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			var1 *= 1.1F;
 		}
 
-		var1 *= (this.landMovementFactor * this.func_35166_t_() / this.speedOnGround + 1.0F) / 2.0F;
+		var1 *= (this.landMovementFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
 		if(this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
@@ -296,7 +302,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.worldObj, var1, var2, var3));
 	}
 
-	public void func_40181_c(int var1, int var2, int var3) {
+	public void displayGUIEnchantment(int var1, int var2, int var3) {
 		this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, var1, var2, var3));
 	}
 
@@ -304,7 +310,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiFurnace(this.inventory, var1));
 	}
 
-	public void func_40180_a(TileEntityBrewingStand var1) {
+	public void displayGUIBrewingStand(TileEntityBrewingStand var1) {
 		this.mc.displayGuiScreen(new GuiBrewingStand(this.inventory, var1));
 	}
 
@@ -323,10 +329,6 @@ public class EntityPlayerSP extends EntityPlayer {
 
 	public void onItemPickup(Entity var1, int var2) {
 		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, var1, this, -0.5F));
-	}
-
-	public int getPlayerArmorValue() {
-		return this.inventory.getTotalArmorValue();
 	}
 
 	public void sendChatMessage(String var1) {}
