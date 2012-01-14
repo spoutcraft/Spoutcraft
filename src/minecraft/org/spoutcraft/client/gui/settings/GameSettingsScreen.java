@@ -134,7 +134,7 @@ public class GameSettingsScreen extends GuiScreen{
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 		
-		Label message = new GenericLabel("SpoutWorth here, your loyal butler and assistant. Can I be of \n" +
+		Label message = new GenericLabel("Spoutworth here, your loyal butler and assistant. Can I be of \n" +
 										"assistance? Yes? Excellent. I will be to managing your graphical and\n" +
 										"performance settings to maximize framerate and quality. You can\n" +
 										"adjust his priorities, or dismiss him and manually select settings.");
