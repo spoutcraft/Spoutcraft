@@ -3204,11 +3204,11 @@ public class World implements IBlockAccess {
 			value = value >> 1;
 			shifts++;
 		}
-		field_35473_a = shifts;
-		this.field_35471_b = this.field_35473_a + 4;
-		this.field_35472_c = 1 << this.field_35473_a;
-		this.field_35469_d = this.field_35472_c - 1;
-		this.field_35470_e = this.field_35472_c / 2 - 1;
+		heightShift = shifts;
+		this.xShift = this.heightShift + 4;
+		this.worldHeight = 1 << this.heightShift;
+		this.worldMaxY = this.worldHeight - 1;
+		this.seaLevel = this.worldHeight / 2 - 1;
 		this.worldInfo.setMapHeight(height);
 	}
 

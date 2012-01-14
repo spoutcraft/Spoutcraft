@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -17,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.zip.ZipFile;
+
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 
@@ -33,6 +37,7 @@ import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
 import net.minecraft.src.TextureLavaFlowFX;
 import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.TexturePackCustom;
 import net.minecraft.src.TexturePackDefault;
 import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWatchFX;
@@ -62,7 +67,6 @@ public class TextureUtils {
 	private static boolean reclaimGLMemory = false;
 	private static TexturePackBase lastTexturePack = null;
 	private static Map<String, BufferedImage> cache = new HashMap<String, BufferedImage>();
-
 
 	public static boolean setTileSize() {
 		int size = getTileSize();
@@ -245,7 +249,7 @@ public class TextureUtils {
 	}
 
 	public static boolean isRequiredResource(String texture) {
-		return !texture.startsWith("/custom_") && !var0.startsWith("/anim/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
+		return !texture.startsWith("/custom_") && !texture.startsWith("/anim/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase texturePack, String texture) {
@@ -267,7 +271,7 @@ public class TextureUtils {
 			}
 
 			if (var2 == null && texture.startsWith("/anim/custom_")) {
-				var2 = getResourceAsStream(var0, texture.substring(5));
+				var2 = getResourceAsStream(texturePack, texture.substring(5));
 			}
 	
 			if(var2 == null && isRequiredResource(texture)) {
@@ -467,7 +471,7 @@ public class TextureUtils {
 	}
 
 	public static void openTexturePackFile(TexturePackCustom var0) {
-		if (autoRefreshTextures && var0.texturePackZipFile != null) {
+		if (var0.texturePackZipFile != null) {
 			FileInputStream var1 = null;
 			FileOutputStream var2 = null;
 			ZipFile var3 = null;
@@ -476,7 +480,12 @@ public class TextureUtils {
 				var0.lastModified = var0.texturePackFile.lastModified();
 				var0.tmpFile = File.createTempFile("tmpmc", ".zip");
 				var0.tmpFile.deleteOnExit();
-				MCPatcherUtils.close(var0.texturePackZipFile);
+				if (var0.texturePackZipFile != null) {
+					try {
+						var0.texturePackZipFile.close();
+					}
+					catch (IOException e) {}
+				}
 				var1 = new FileInputStream(var0.texturePackFile);
 				var2 = new FileOutputStream(var0.tmpFile);
 				byte[] var4 = new byte[65536];
@@ -484,13 +493,22 @@ public class TextureUtils {
 				while (true) {
 					int var5 = var1.read(var4);
 					if (var5 <= 0) {
-						MCPatcherUtils.close((Closeable)var1);
-						MCPatcherUtils.close((Closeable)var2);
+						if (var1 != null) {
+							try {
+								var1.close();
+							}
+							catch (IOException e) {}
+						}
+						if (var2 != null) {
+							try {
+								var2.close();
+							}
+							catch (IOException e) {}
+						}
 						var3 = new ZipFile(var0.tmpFile);
 						var0.origZip = var0.texturePackZipFile;
 						var0.texturePackZipFile = var3;
 						var3 = null;
-						MCPatcherUtils.log("copied %s to %s, lastModified = %d", new Object[] {var0.texturePackFile.getPath(), var0.tmpFile.getPath(), Long.valueOf(var0.lastModified)});
 						break;
 					}
 
@@ -501,73 +519,40 @@ public class TextureUtils {
 				var9.printStackTrace();
 			}
 			finally {
-				MCPatcherUtils.close((Closeable)var1);
-				MCPatcherUtils.close((Closeable)var2);
-				MCPatcherUtils.close(var3);
+				if (var1 != null) {
+					try {
+						var1.close();
+					}
+					catch (IOException e) {}
+				}
+				if (var2 != null) {
+					try {
+						var2.close();
+					}
+					catch (IOException e) {}
+				}
+				if (var3 != null) {
+					try {
+						var3.close();
+					}
+					catch (IOException e) {}
+				}
 			}
 		}
 	}
 
 	public static void closeTexturePackFile(TexturePackCustom var0) {
 		if (var0.origZip != null) {
-			MCPatcherUtils.close(var0.texturePackZipFile);
+			if (var0 != null) {
+				try {
+					var0.origZip.close();
+				}
+				catch (IOException e) {}
+			}
 			var0.texturePackZipFile = var0.origZip;
 			var0.origZip = null;
 			var0.tmpFile.delete();
-			MCPatcherUtils.log("deleted %s", new Object[] {var0.tmpFile.getPath()});
 			var0.tmpFile = null;
-		}
-	}
-
-	public static void checkTexturePackChange(Minecraft var0) {
-		if (autoRefreshTextures && ++textureRefreshCount >= 16) {
-			textureRefreshCount = 0;
-			TexturePackList var1 = var0.texturePackList;
-			if (var1.selectedTexturePack instanceof TexturePackCustom) {
-				TexturePackCustom var2 = (TexturePackCustom)var1.selectedTexturePack;
-				long var3 = var2.texturePackFile.lastModified();
-				if (var3 != var2.lastModified && var3 != 0L && var2.lastModified != 0L) {
-					MCPatcherUtils.log("%s lastModified changed from %d to %d", new Object[] {var2.texturePackFile.getPath(), Long.valueOf(var2.lastModified), Long.valueOf(var3)});
-					ZipFile var5 = null;
-
-					label90: {
-						try {
-							var5 = new ZipFile(var2.texturePackFile);
-							break label90;
-						}
-						catch (IOException var11) {
-							;
-						}
-						finally {
-							MCPatcherUtils.close(var5);
-						}
-
-						return;
-					}
-
-					var2.closeTexturePackFile();
-					var1.updateAvaliableTexturePacks();
-					Iterator var6 = var1.availableTexturePacks().iterator();
-
-					while (var6.hasNext()) {
-						TexturePackBase var7 = (TexturePackBase)var6.next();
-						if (var7 instanceof TexturePackCustom) {
-							TexturePackCustom var8 = (TexturePackCustom)var7;
-							if (var8.texturePackFile.equals(var2.texturePackFile)) {
-								MCPatcherUtils.log("setting new texture pack", new Object[0]);
-								var1.selectedTexturePack = var1.defaultTexturePack;
-								var1.setTexturePack(var8);
-								var0.renderEngine.setTileSize(var0);
-								return;
-							}
-						}
-					}
-
-					MCPatcherUtils.log("selected texture pack not found after refresh, switching to default", new Object[0]);
-					var1.setTexturePack(var1.defaultTexturePack);
-					var0.renderEngine.setTileSize(var0);
-				}
-			}
 		}
 	}
 

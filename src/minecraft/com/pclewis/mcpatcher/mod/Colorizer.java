@@ -1,8 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import java.awt.image.BufferedImage;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,6 +8,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
@@ -52,15 +54,15 @@ public class Colorizer {
 	private static final float LIGHTMAP_SCALE = 15.0F;
 	private static final int COLORMAP_SIZE = 256;
 	private static final float COLORMAP_SCALE = 255.0F;
-	private static final boolean useLightmaps = MCPatcherUtils.getBoolean("Custom Colors", "lightmaps", true);
+	private static final boolean useLightmaps = true;
 	private static HashMap lightmaps = new HashMap();
-	private static final boolean useDropColors = MCPatcherUtils.getBoolean("Custom Colors", "drop", true);
+	private static final boolean useDropColors = true;
 	public static float[] waterColor;
-	private static final boolean useEggColors = MCPatcherUtils.getBoolean("Custom Colors", "egg", true);
+	private static final boolean useEggColors = true;
 	private static final HashMap entityNamesByID = new HashMap();
 	private static final HashMap spawnerEggShellColors = new HashMap();
 	private static final HashMap spawnerEggSpotColors = new HashMap();
-	private static final int fogBlendRadius = MCPatcherUtils.getInt("Custom Colors", "fogBlendRadius", 7);
+	private static final int fogBlendRadius = 7;
 	private static final float fogBlendScale = 1.0F / (float)((2 * fogBlendRadius + 1) * (2 * fogBlendRadius + 1));
 	private static final int CLOUDS_DEFAULT = 0;
 	private static final int CLOUDS_FAST = 1;
@@ -174,13 +176,11 @@ public class Colorizer {
 				var4 = (BufferedImage)lightmaps.get(Integer.valueOf(var2));
 			}
 			else {
-				var4 = MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(var3));
+				var4 = readImage(lastTexturePack.getResourceAsStream(var3));
 				lightmaps.put(Integer.valueOf(var2), var4);
 				if (var4 == null) {
-					MCPatcherUtils.log("using default lighting for world %d", new Object[] {Integer.valueOf(var2)});
 				}
 				else {
-					MCPatcherUtils.log("using %s", new Object[] {var3});
 				}
 			}
 
@@ -201,7 +201,7 @@ public class Colorizer {
 					int[] var8 = new int[256];
 					float var9 = clamp(var1.lightningFlash > 0 ? 1.0F : 1.1666666F * (var1.func_35464_b(1.0F) - 0.2F)) * (float)(var5 - 1);
 					float var10 = clamp(var0.torchFlickerX + 0.5F) * (float)(var5 - 1);
-					float var11 = clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
+					float var11 = clamp(Minecraft.theMinecraft.gameSettings.gammaSetting);
 					float[] var12 = new float[48];
 					float[] var13 = new float[48];
 					float[] var14 = new float[3];
@@ -231,7 +231,7 @@ public class Colorizer {
 						}
 					}
 
-					MCPatcherUtils.getMinecraft().renderEngine.createTextureFromBytes(var8, 16, 16, var0.emptyTexture);
+					Minecraft.theMinecraft.renderEngine.createTextureFromBytes(var8, 16, 16, var0.emptyTexture);
 					return true;
 				}
 			}
@@ -311,7 +311,6 @@ public class Colorizer {
 				BiomeGenBase var3 = (BiomeGenBase)var2.next();
 				int var4 = (int)(255.0D * (1.0D - (double)var3.temperature));
 				int var5 = (int)(255.0D * (1.0D - (double)(var3.rainfall * var3.temperature)));
-				MCPatcherUtils.log("setupBiome #%d \"%s\" %06x (%d,%d)", new Object[] {Integer.valueOf(var3.biomeID), var3.biomeName, Integer.valueOf(var3.waterColorMultiplier), Integer.valueOf(var4), Integer.valueOf(var5)});
 			}
 		}
 	}
@@ -353,13 +352,11 @@ public class Colorizer {
 	}
 
 	public static void setupPotion(Potion var0) {
-		MCPatcherUtils.log("setupPotion #%d \"%s\" %06x", new Object[] {Integer.valueOf(var0.id), var0.name, Integer.valueOf(var0.liquidColor)});
 		var0.origColor = var0.liquidColor;
 		potions.add(var0);
 	}
 
 	public static void setupSpawnerEgg(String var0, int var1, int var2, int var3) {
-		MCPatcherUtils.log("setupSpawnerEgg #%d \"%s\" %06x %06x", new Object[] {Integer.valueOf(var1), var0, Integer.valueOf(var2), Integer.valueOf(var3)});
 		entityNamesByID.put(Integer.valueOf(var1), var0);
 	}
 
@@ -375,8 +372,8 @@ public class Colorizer {
 	}
 
 	public static void checkUpdate() {
-		if (lastTexturePack != MCPatcherUtils.getMinecraft().texturePackList.selectedTexturePack) {
-			lastTexturePack = MCPatcherUtils.getMinecraft().texturePackList.selectedTexturePack;
+		if (lastTexturePack != Minecraft.theMinecraft.texturePackList.selectedTexturePack) {
+			lastTexturePack = Minecraft.theMinecraft.texturePackList.selectedTexturePack;
 			properties = new Properties();
 			colorMaps = new int[COLOR_MAPS.length + Block.blocksList.length][];
 			colorMapDefault = new int[colorMaps.length];
@@ -416,7 +413,6 @@ public class Colorizer {
 			try {
 				var19 = lastTexturePack.getResourceAsStream("/color.properties");
 				if (var19 != null) {
-					MCPatcherUtils.log("reloading %s", new Object[] {"/color.properties"});
 					properties.load(var19);
 				}
 			}
@@ -424,21 +420,26 @@ public class Colorizer {
 				var16.printStackTrace();
 			}
 			finally {
-				MCPatcherUtils.close((Closeable)var19);
+				if (var19 != null) {
+					try {
+						var19.close();
+					}
+					catch (Exception e) { }
+				}
 			}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "water", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "water", true)) {
 				loadColorMap(5);
 				loadColorMap(6);
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "fog", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "fog", true)) {
 				loadColorMap(7);
 				loadColorMap(8);
-			}
+			//}
 
 			Iterator var20;
-			if (MCPatcherUtils.getBoolean("Custom Colors", "potion", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "potion", true)) {
 				var20 = potions.iterator();
 
 				while (var20.hasNext()) {
@@ -447,22 +448,22 @@ public class Colorizer {
 				}
 
 				loadIntColor("potion.water", waterBottleColor, 0);
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "swamp", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "swamp", true)) {
 				loadColorMap(0);
 				loadColorMap(1);
 				loadIntColor("lilypad", lilypadColor, 0);
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "tree", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "tree", true)) {
 				loadColorMap(2);
 				loadColorMap(3);
 				loadColorMap(4);
 				colorMaps[4] = null;
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "otherBlocks", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "otherBlocks", true)) {
 				var20 = properties.entrySet().iterator();
 
 				while (var20.hasNext()) {
@@ -486,7 +487,6 @@ public class Colorizer {
 											int var11 = COLOR_MAPS.length + var10;
 											colorMaps[var11] = var5;
 											colorMapDefault[var11] = colorizeBiome(colorMapDefault[var11], var11, 0.5D, 1.0D);
-											MCPatcherUtils.log("using %s for block %d, default color %06x", new Object[] {var3, Integer.valueOf(var10), Integer.valueOf(colorMapDefault[var11])});
 										}
 									}
 									catch (NumberFormatException var15) {
@@ -497,13 +497,13 @@ public class Colorizer {
 						}
 					}
 				}
-			}
+		//	}
 
 			int[] var21;
 			int var23;
 			if (useDropColors) {
 				loadFloatColor("drop.water", waterBaseColor);
-				var21 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/lavadropcolor.png")));
+				var21 = getImageRGB(readImage(lastTexturePack.getResourceAsStream("/misc/lavadropcolor.png")));
 				if (var21 != null) {
 					lavaDropColor = new float[3 * var21.length];
 
@@ -513,8 +513,8 @@ public class Colorizer {
 				}
 			}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "redstone", true)) {
-				var21 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/redstonecolor.png")));
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "redstone", true)) {
+				var21 = getImageRGB(readImage(lastTexturePack.getResourceAsStream("/misc/redstonecolor.png")));
 				if (var21 != null && var21.length >= 16) {
 					redstoneColor = new float[16][];
 
@@ -524,16 +524,16 @@ public class Colorizer {
 						redstoneColor[var23] = var25;
 					}
 				}
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "stem", true)) {
-				var21 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/stemcolor.png")));
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "stem", true)) {
+				var21 = getImageRGB(readImage(lastTexturePack.getResourceAsStream("/misc/stemcolor.png")));
 				if (var21 != null && var21.length >= 8) {
 					stemColors = var21;
 				}
-			}
+			//}
 
-			if (MCPatcherUtils.getBoolean("Custom Colors", "clouds", true)) {
+			//if (MCPatcherUtils.getBoolean("Custom Colors", "clouds", true)) {
 				String var24 = properties.getProperty("clouds", "").trim().toLowerCase();
 				if (var24.equals("fast")) {
 					cloudType = 1;
@@ -541,7 +541,7 @@ public class Colorizer {
 				else if (var24.equals("fancy")) {
 					cloudType = 2;
 				}
-			}
+			//}
 		}
 	}
 
@@ -582,7 +582,7 @@ public class Colorizer {
 	}
 
 	private static int[] loadColorMap(String var0) {
-		int[] var1 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(var0)));
+		int[] var1 = getImageRGB(readImage(lastTexturePack.getResourceAsStream(var0)));
 		if (var1 == null) {
 			return null;
 		}
@@ -600,7 +600,6 @@ public class Colorizer {
 		if (var1 != null) {
 			colorMaps[var0] = var1;
 			colorMapDefault[var0] = colorizeBiome(colorMapDefault[var0], var0, 0.5D, 1.0D);
-			MCPatcherUtils.log("using %s, default color %06x", new Object[] {COLOR_MAPS[var0], Integer.valueOf(colorMapDefault[var0])});
 		}
 	}
 
@@ -650,5 +649,40 @@ public class Colorizer {
 				var3[var4 + var11] = var8 * var9[var11] + var7 * var10[var11];
 			}
 		}
+	}
+	
+	public static int[] getImageRGB(BufferedImage var0) {
+		if (var0 == null) {
+			return null;
+		}
+		else {
+			int var1 = var0.getWidth();
+			int var2 = var0.getHeight();
+			int[] var3 = new int[var1 * var2];
+			var0.getRGB(0, 0, var1, var2, var3, 0, var1);
+			return var3;
+		}
+	}
+	
+	public static BufferedImage readImage(InputStream var0) {
+		BufferedImage var1 = null;
+		if (var0 != null) {
+			try {
+				var1 = ImageIO.read(var0);
+			}
+			catch (IOException var6) {
+				var6.printStackTrace();
+			}
+			finally {
+				if (var0 != null) {
+					try {
+						var0.close();
+					}
+					catch (Exception e) { }
+				}
+			}
+		}
+
+		return var1;
 	}
 }

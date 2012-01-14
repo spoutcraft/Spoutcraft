@@ -73,7 +73,7 @@ public class TexturePackList {
 		while(i.hasNext()) {
 			TexturePackBase texturePack = (TexturePackBase)i.next();
 			texturePack.func_6484_b(this.mc);
-			this.field_6538_d.remove(texturePack.field_6488_d);
+			this.field_6538_d.remove(texturePack.texturePackID);
 		}
 
 		this.availableTexturePacks = texturePacks;
