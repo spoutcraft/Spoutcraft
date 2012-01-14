@@ -127,7 +127,7 @@ public class GuiCreateWorld extends GuiScreen {
 
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
-			if(var1.id == 1) {
+			if(var1.id == 1 && !moreOptions) { //Spout
 				this.mc.displayGuiScreen(this.parentGuiScreen);
 			} else if(var1.id == 0 && !moreOptions) { //Spout 
 				this.mc.displayGuiScreen((GuiScreen)null);
