@@ -465,10 +465,13 @@ public class RenderBlocks {
 		int var14 = this.blockAccess.getBlockMetadata(var2, var3, var4);
 		if (var14 > 0) {
 			short var15 = 205;
+//Spout HD Start
+			Colorizer.computeWaterColor();
+			var5.setColorOpaque_F(Colorizer.waterColor[0], Colorizer.waterColor[1], Colorizer.waterColor[2]);
 			if (var14 > 3) {
 				var14 = 3;
 			}
-
+//Spout HD end
 			this.renderTopFace(var1, (double) var2, (double) ((float) var3 - 1.0F + (6.0F + (float) var14 * 3.0F) / 16.0F), (double) var4, var15);
 		}
 
@@ -1419,14 +1422,27 @@ public class RenderBlocks {
 
 		var5.setBrightness(var1.getMixedBrightnessForBlock(this.blockAccess, var2, var3, var4));
 		float var8 = 1.0F;
+//Spout HD Start
+		float var10;
+		float var11;
+		float var12;
+		if (Colorizer.computeRedstoneWireColor(var6)) {
+			var10 = Colorizer.redstoneWireRed;
+			var11 = Colorizer.redstoneWireGreen;
+			var12 = Colorizer.redstoneWireBlue;
+		}
+		else {
+//Spout HD End
 		float var9 = (float) var6 / 15.0F;
-		float var10 = var9 * 0.6F + 0.4F;
+			var10 = var9 * 0.6F + 0.4F;
 		if (var6 == 0) {
 			var10 = 0.3F;
 		}
 
-		float var11 = var9 * var9 * 0.7F - 0.5F;
-		float var12 = var9 * var9 * 0.6F - 0.7F;
+			var11 = var9 * var9 * 0.7F - 0.5F;
+			var12 = var9 * var9 * 0.6F - 0.7F;
+		}
+
 		if (var11 < 0.0F) {
 			var11 = 0.0F;
 		}
@@ -2757,43 +2773,45 @@ public class RenderBlocks {
 		if (var12 < var11) {
 			var12 = var11;
 		}
-
-		var10.setColorOpaque_F(var6 * var12, var6 * var12, var6 * var12);
+//Spout HD Start
+		Colorizer.setColorF(Colorizer.colorizeBlock(var1, var2.getWorldChunkManager(), var3, var4, var5));
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
 		this.renderBottomFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(0));
 		var12 = 1.0F;
 		if (var12 < var11) {
 			var12 = var11;
 		}
 
-		var10.setColorOpaque_F(var7 * var12, var7 * var12, var7 * var12);
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
 		this.renderTopFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(1));
 		var12 = 1.0F;
 		if (var12 < var11) {
 			var12 = var11;
 		}
 
-		var10.setColorOpaque_F(var8 * var12, var8 * var12, var8 * var12);
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
 		this.renderEastFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(2));
 		var12 = 1.0F;
 		if (var12 < var11) {
 			var12 = var11;
 		}
 
-		var10.setColorOpaque_F(var8 * var12, var8 * var12, var8 * var12);
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
 		this.renderWestFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(3));
 		var12 = 1.0F;
 		if (var12 < var11) {
 			var12 = var11;
 		}
 
-		var10.setColorOpaque_F(var9 * var12, var9 * var12, var9 * var12);
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
 		this.renderNorthFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(4));
 		var12 = 1.0F;
 		if (var12 < var11) {
 			var12 = var11;
 		}
 
-		var10.setColorOpaque_F(var9 * var12, var9 * var12, var9 * var12);
+		var10.setColorOpaque_F(Colorizer.setColor[0] * var12, Colorizer.setColor[1] * var12, Colorizer.setColor[2] * var12);
+//Spout HD end
 		this.renderSouthFace(var1, -0.5D, -0.5D, -0.5D, var1.getBlockTextureFromSide(5));
 		var10.draw();
 	}

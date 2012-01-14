@@ -704,11 +704,11 @@ public class Block {
 	}
 
 	public int getRenderColor(int var1) {
-		return 16777215;
+		return Colorizer.colorizeBlock(this); //Spout HD
 	}
 
 	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
-		return 16777215;
+		return Colorizer.colorizeBlock(this, var1.getWorldChunkManager(), var2, var3, var4); //Spout HD
 	}
 
 	public boolean isPoweringTo(IBlockAccess var1, int var2, int var3, int var4, int var5) {

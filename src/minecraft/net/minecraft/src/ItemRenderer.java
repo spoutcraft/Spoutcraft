@@ -28,6 +28,7 @@ import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import com.pclewis.mcpatcher.mod.TileSize;
+import com.pclewis.mcpatcher.mod.Colorizer;
 
 //Spout end
 
@@ -75,7 +76,7 @@ public class ItemRenderer {
 		
 		if (!custom) {
 			if (var2.itemID < 256) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));;
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			}
 			else {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/gui/items.png"));
@@ -113,16 +114,17 @@ public class ItemRenderer {
 			GL11.glRotatef(50.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
+			Colorizer.colorizeWaterBlockGL(var2.itemID); //Spout HD
 			this.func_40686_a(var4, var7, var8, var6, var9);
 			if (var2 != null && var2.func_40713_r() && var3 == 0) {
 				GL11.glDepthFunc(514);
-				GL11.glDisable(2896 /* GL_LIGHTING */);
+				GL11.glDisable(GL11.GL_LIGHTING);
 				this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("%blur%/misc/glint.png"));
-				GL11.glEnable(3042 /* GL_BLEND */);
+				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(768, 1);
 				float var13 = 0.76F;
 				GL11.glColor4f(0.5F * var13, 0.25F * var13, 0.8F * var13, 1.0F);
-				GL11.glMatrixMode(5890 /* GL_TEXTURE */);
+				GL11.glMatrixMode(GL11.GL_TEXTURE);
 				GL11.glPushMatrix();
 				float var14 = 0.125F;
 				GL11.glScalef(var14, var14, var14);
@@ -138,9 +140,9 @@ public class ItemRenderer {
 				GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
 				this.func_40686_a(var4, 0.0F, 0.0F, 1.0F, 1.0F);
 				GL11.glPopMatrix();
-				GL11.glMatrixMode(5888 /* GL_MODELVIEW0_ARB */);
-				GL11.glDisable(3042 /* GL_BLEND */);
-				GL11.glEnable(2896 /* GL_LIGHTING */);
+				GL11.glMatrixMode(org.lwjgl.opengl.ARBVertexBlend.GL_MODELVIEW0_ARB);
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDepthFunc(515);
 			}
 
@@ -268,12 +270,13 @@ public class ItemRenderer {
 		float var17;
 		float var18;
 		if (var14 != null) {
-			var15 = Item.itemsList[var14.itemID].getColorFromDamage(var14.getItemDamage());
+			var15 = Item.itemsList[var14.itemID].getColorFromDamage(var14.getItemDamage(), 0);
 			var17 = (float) (var15 >> 16 & 255) / 255.0F;
 			var18 = (float) (var15 >> 8 & 255) / 255.0F;
 			var10 = (float) (var15 & 255) / 255.0F;
 			GL11.glColor4f(var6 * var17, var6 * var18, var6 * var10, 1.0F);
-		} else {
+		}
+		else {
 			GL11.glColor4f(var6, var6, var6, 1.0F);
 		}
 
@@ -300,16 +303,16 @@ public class ItemRenderer {
 			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(var17 * -85.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glEnable('\u803a');
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
 
 			for (var9 = 0; var9 < 2; ++var9) {
-				int var26 = var9 * 2 - 1;
+				int var25 = var9 * 2 - 1;
 				GL11.glPushMatrix();
-				GL11.glTranslatef(-0.0F, -0.6F, 1.1F * (float) var26);
-				GL11.glRotatef((float) (-45 * var26), 1.0F, 0.0F, 0.0F);
+				GL11.glTranslatef(-0.0F, -0.6F, 1.1F * (float)var25);
+				GL11.glRotatef((float)(-45 * var25), 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glRotatef(59.0F, 0.0F, 0.0F, 1.0F);
-				GL11.glRotatef((float) (-65 * var26), 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef((float)(-65 * var25), 0.0F, 1.0F, 0.0F);
 				Render var21 = RenderManager.instance.getEntityRenderObject(this.mc.thePlayer);
 				RenderPlayer var24 = (RenderPlayer) var21;
 				var13 = 1.0F;
@@ -332,19 +335,20 @@ public class ItemRenderer {
 			var10 = 0.015625F;
 			GL11.glScalef(var10, var10, var10);
 			this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/misc/mapbg.png"));
-			Tessellator var27 = Tessellator.instance;
+			Tessellator var26 = Tessellator.instance;
 			GL11.glNormal3f(0.0F, 0.0F, -1.0F);
-			var27.startDrawingQuads();
-			byte var25 = 7;
-			var27.addVertexWithUV((double) (0 - var25), (double) (128 + var25), 0.0D, 0.0D, 1.0D);
-			var27.addVertexWithUV((double) (128 + var25), (double) (128 + var25), 0.0D, 1.0D, 1.0D);
-			var27.addVertexWithUV((double) (128 + var25), (double) (0 - var25), 0.0D, 1.0D, 0.0D);
-			var27.addVertexWithUV((double) (0 - var25), (double) (0 - var25), 0.0D, 0.0D, 0.0D);
-			var27.draw();
+			var26.startDrawingQuads();
+			byte var27 = 7;
+			var26.addVertexWithUV((double)(0 - var27), (double)(128 + var27), 0.0D, 0.0D, 1.0D);
+			var26.addVertexWithUV((double)(128 + var27), (double)(128 + var27), 0.0D, 1.0D, 1.0D);
+			var26.addVertexWithUV((double)(128 + var27), (double)(0 - var27), 0.0D, 1.0D, 0.0D);
+			var26.addVertexWithUV((double)(0 - var27), (double)(0 - var27), 0.0D, 0.0D, 0.0D);
+			var26.draw();
 			MapData var23 = Item.map.getMapData(var14, this.mc.theWorld);
 			this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var23);
 			GL11.glPopMatrix();
-		} else if (var14 != null) {
+		}
+		else if (var14 != null) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			float var12;
@@ -364,7 +368,8 @@ public class ItemRenderer {
 					GL11.glRotatef(var13 * 10.0F, 1.0F, 0.0F, 0.0F);
 					GL11.glRotatef(var13 * 30.0F, 0.0F, 0.0F, 1.0F);
 				}
-			} else {
+			}
+			else {
 				var17 = var3.getSwingProgress(var1);
 				var18 = MathHelper.sin(var17 * 3.1415927F);
 				var10 = MathHelper.sin(MathHelper.sqrt_float(var17) * 3.1415927F);
@@ -389,7 +394,8 @@ public class ItemRenderer {
 					GL11.glRotatef(30.0F, 0.0F, 1.0F, 0.0F);
 					GL11.glRotatef(-80.0F, 1.0F, 0.0F, 0.0F);
 					GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
-				} else if (var20 == EnumAction.bow) {
+				}
+				else if (var20 == EnumAction.bow) {
 					GL11.glRotatef(-18.0F, 0.0F, 0.0F, 1.0F);
 					GL11.glRotatef(-12.0F, 0.0F, 1.0F, 0.0F);
 					GL11.glRotatef(-8.0F, 1.0F, 0.0F, 0.0F);
@@ -421,16 +427,22 @@ public class ItemRenderer {
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 			}
 
-			if (var14.itemID == Item.potion.shiftedIndex) {
+			if (var14.getItem().func_46058_c()) {
 				this.renderItem(var3, var14, 0);
-				GL11.glColor4f(var6, var6, var6, 1.0F);
+				var9 = Item.itemsList[var14.itemID].getColorFromDamage(var14.getItemDamage(), 1);
+				var10 = (float)(var9 >> 16 & 255) / 255.0F;
+				var11 = (float)(var9 >> 8 & 255) / 255.0F;
+				var12 = (float)(var9 & 255) / 255.0F;
+				GL11.glColor4f(var6 * var10, var6 * var11, var6 * var12, 1.0F);
 				this.renderItem(var3, var14, 1);
-			} else {
+			}
+			else {
 				this.renderItem(var3, var14, 0);
 			}
 
 			GL11.glPopMatrix();
-		} else {
+		}
+		else {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var17 = var3.getSwingProgress(var1);
@@ -445,7 +457,7 @@ public class ItemRenderer {
 			var10 = MathHelper.sin(MathHelper.sqrt_float(var17) * 3.1415927F);
 			GL11.glRotatef(var10 * 70.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-var18 * 20.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
 			GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
 			GL11.glRotatef(120.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(200.0F, 1.0F, 0.0F, 0.0F);
@@ -465,11 +477,11 @@ public class ItemRenderer {
 	}
 
 	public void renderOverlays(float var1) {
-		GL11.glDisable(3008 /* GL_ALPHA_TEST */);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		int var2;
 		if (this.mc.thePlayer.isBurning()) {
 			var2 = this.mc.renderEngine.getTexture("/terrain.png");
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, var2);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
 			this.renderFireInFirstPerson(var1);
 		}
 
@@ -478,11 +490,12 @@ public class ItemRenderer {
 			int var3 = MathHelper.floor_double(this.mc.thePlayer.posY);
 			int var4 = MathHelper.floor_double(this.mc.thePlayer.posZ);
 			int var5 = this.mc.renderEngine.getTexture("/terrain.png");
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, var5);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var5);
 			int var6 = this.mc.theWorld.getBlockId(var2, var3, var4);
 			if (this.mc.theWorld.isBlockNormalCube(var2, var3, var4)) {
 				this.renderInsideOfBlock(var1, Block.blocksList[var6].getBlockTextureFromSide(2));
-			} else {
+			}
+			else {
 				for (int var7 = 0; var7 < 8; ++var7) {
 					float var8 = ((float) ((var7 >> 0) % 2) - 0.5F) * this.mc.thePlayer.width * 0.9F;
 					float var9 = ((float) ((var7 >> 1) % 2) - 0.5F) * this.mc.thePlayer.height * 0.2F;
@@ -503,11 +516,11 @@ public class ItemRenderer {
 
 		if (this.mc.thePlayer.isInsideOfMaterial(Material.water)) {
 			var2 = this.mc.renderEngine.getTexture("/misc/water.png");
-			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, var2);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
 			this.renderWarpedTextureOverlay(var1);
 		}
 
-		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
 	}
 
 	private void renderInsideOfBlock(float var1, int var2) {
@@ -540,7 +553,7 @@ public class ItemRenderer {
 		Tessellator var2 = Tessellator.instance;
 		float var3 = this.mc.thePlayer.getEntityBrightness(var1);
 		GL11.glColor4f(var3, var3, var3, 0.5F);
-		GL11.glEnable(3042 /* GL_BLEND */);
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(770, 771);
 		GL11.glPushMatrix();
 		float var4 = 4.0F;
@@ -559,13 +572,13 @@ public class ItemRenderer {
 		var2.draw();
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(3042 /* GL_BLEND */);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	private void renderFireInFirstPerson(float var1) {
 		Tessellator var2 = Tessellator.instance;
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.9F);
-		GL11.glEnable(3042 /* GL_BLEND */);
+		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(770, 771);
 		float var3 = 1.0F;
 
@@ -595,7 +608,7 @@ public class ItemRenderer {
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(3042 /* GL_BLEND */);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	public void updateEquippedItem() {
@@ -628,7 +641,6 @@ public class ItemRenderer {
 			this.itemToRender = var2;
 			this.field_20099_f = var1.inventory.currentItem;
 		}
-
 	}
 
 	public void func_9449_b() {

@@ -169,7 +169,7 @@ public class TextureUtils {
 			textureFXs.add(new TextureWaterFlowFX());
 		}
 
-		if(!var11 && customFire && hasResource("/custom_fire_e_w.png") && hasResource("/custom_fire_n_s.png")) {
+		if(!var11 && customFire && hasResource("/anim//custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
 			textureFXs.add(new CustomAnimation(47, 0, 1, "fire_n_s", 2, 4));
 			textureFXs.add(new CustomAnimation(31, 0, 1, "fire_e_w", 2, 4));
 		} else if(animatedFire) {
@@ -177,9 +177,10 @@ public class TextureUtils {
 			textureFXs.add(new TextureFlamesFX(1));
 		}
 
-		if(!var11 && customPortal && hasResource("/custom_portal.png")) {
+		if (!var11 && customPortal && hasResource("/anim/custom_portal.png")) {
 			textureFXs.add(new CustomAnimation(14, 0, 1, "portal", -1, -1));
-		} else if(animatedPortal) {
+		}
+		else if(animatedPortal) {
 			textureFXs.add(new TexturePortalFX());
 		}
 
@@ -188,7 +189,7 @@ public class TextureUtils {
 				String var6 = var5 == 0?"terrain":"item";
 
 				for(int var7 = 0; var7 < 256; ++var7) {
-					String var8 = "/custom_" + var6 + "_" + var7 + ".png";
+					String var8 = "/anim/custom_" + var6 + "_" + var7 + ".png";
 					if(hasResource(var8)) {
 						textureFXs.add(new CustomAnimation(var7, var5, 1, var6 + "_" + var7, 2, 4));
 					}
@@ -244,7 +245,7 @@ public class TextureUtils {
 	}
 
 	public static boolean isRequiredResource(String texture) {
-		return !texture.startsWith("/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
+		return !texture.startsWith("/custom_") && !var0.startsWith("/anim/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase texturePack, String texture) {
@@ -263,6 +264,10 @@ public class TextureUtils {
 			
 			if(var2 == null) {
 				var2 = TextureUtils.class.getResourceAsStream(texture);
+			}
+
+			if (var2 == null && texture.startsWith("/anim/custom_")) {
+				var2 = getResourceAsStream(var0, texture.substring(5));
 			}
 	
 			if(var2 == null && isRequiredResource(texture)) {
@@ -345,7 +350,7 @@ public class TextureUtils {
 	
 				if(!found) {
 					Integer size = 1;
-					if(!texture.matches("^/custom_\\w+_\\d+\\.png$")) {
+					if(!texture.matches("^(/anim)?/custom_.*\\.png$")) {
 						size = expectedColumns.get(texture);
 					}
 
@@ -459,6 +464,111 @@ public class TextureUtils {
 			var3.printStackTrace();
 		}
 
+	}
+
+	public static void openTexturePackFile(TexturePackCustom var0) {
+		if (autoRefreshTextures && var0.texturePackZipFile != null) {
+			FileInputStream var1 = null;
+			FileOutputStream var2 = null;
+			ZipFile var3 = null;
+
+			try {
+				var0.lastModified = var0.texturePackFile.lastModified();
+				var0.tmpFile = File.createTempFile("tmpmc", ".zip");
+				var0.tmpFile.deleteOnExit();
+				MCPatcherUtils.close(var0.texturePackZipFile);
+				var1 = new FileInputStream(var0.texturePackFile);
+				var2 = new FileOutputStream(var0.tmpFile);
+				byte[] var4 = new byte[65536];
+
+				while (true) {
+					int var5 = var1.read(var4);
+					if (var5 <= 0) {
+						MCPatcherUtils.close((Closeable)var1);
+						MCPatcherUtils.close((Closeable)var2);
+						var3 = new ZipFile(var0.tmpFile);
+						var0.origZip = var0.texturePackZipFile;
+						var0.texturePackZipFile = var3;
+						var3 = null;
+						MCPatcherUtils.log("copied %s to %s, lastModified = %d", new Object[] {var0.texturePackFile.getPath(), var0.tmpFile.getPath(), Long.valueOf(var0.lastModified)});
+						break;
+					}
+
+					var2.write(var4, 0, var5);
+				}
+			}
+			catch (IOException var9) {
+				var9.printStackTrace();
+			}
+			finally {
+				MCPatcherUtils.close((Closeable)var1);
+				MCPatcherUtils.close((Closeable)var2);
+				MCPatcherUtils.close(var3);
+			}
+		}
+	}
+
+	public static void closeTexturePackFile(TexturePackCustom var0) {
+		if (var0.origZip != null) {
+			MCPatcherUtils.close(var0.texturePackZipFile);
+			var0.texturePackZipFile = var0.origZip;
+			var0.origZip = null;
+			var0.tmpFile.delete();
+			MCPatcherUtils.log("deleted %s", new Object[] {var0.tmpFile.getPath()});
+			var0.tmpFile = null;
+		}
+	}
+
+	public static void checkTexturePackChange(Minecraft var0) {
+		if (autoRefreshTextures && ++textureRefreshCount >= 16) {
+			textureRefreshCount = 0;
+			TexturePackList var1 = var0.texturePackList;
+			if (var1.selectedTexturePack instanceof TexturePackCustom) {
+				TexturePackCustom var2 = (TexturePackCustom)var1.selectedTexturePack;
+				long var3 = var2.texturePackFile.lastModified();
+				if (var3 != var2.lastModified && var3 != 0L && var2.lastModified != 0L) {
+					MCPatcherUtils.log("%s lastModified changed from %d to %d", new Object[] {var2.texturePackFile.getPath(), Long.valueOf(var2.lastModified), Long.valueOf(var3)});
+					ZipFile var5 = null;
+
+					label90: {
+						try {
+							var5 = new ZipFile(var2.texturePackFile);
+							break label90;
+						}
+						catch (IOException var11) {
+							;
+						}
+						finally {
+							MCPatcherUtils.close(var5);
+						}
+
+						return;
+					}
+
+					var2.closeTexturePackFile();
+					var1.updateAvaliableTexturePacks();
+					Iterator var6 = var1.availableTexturePacks().iterator();
+
+					while (var6.hasNext()) {
+						TexturePackBase var7 = (TexturePackBase)var6.next();
+						if (var7 instanceof TexturePackCustom) {
+							TexturePackCustom var8 = (TexturePackCustom)var7;
+							if (var8.texturePackFile.equals(var2.texturePackFile)) {
+								MCPatcherUtils.log("setting new texture pack", new Object[0]);
+								var1.selectedTexturePack = var1.defaultTexturePack;
+								var1.setTexturePack(var8);
+								var0.renderEngine.setTileSize(var0);
+								return;
+							}
+						}
+					}
+
+					MCPatcherUtils.log("selected texture pack not found after refresh, switching to default", new Object[0]);
+					var1.setTexturePack(var1.defaultTexturePack);
+					var0.renderEngine.setTileSize(var0);
+				}
+			}
+		}
 	}
 
 	static {

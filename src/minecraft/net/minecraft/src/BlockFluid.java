@@ -32,27 +32,29 @@ public abstract class BlockFluid extends Block {
 		if (this.blockMaterial != Material.water) {
 			return 0xffffff;
 		}
-		if(!ConfigReader.waterBiomeColors) {
+		int color = var1.getWaterColorCache(var2, var3, var4);
+		if (color == -1 || ConfigReader.fancyBiomeColors) {
+		
 			int var5 = 0;
 			int var6 = 0;
 			int var7 = 0;
 
 			for (int var8 = -1; var8 <= 1; ++var8) {
 				for (int var9 = -1; var9 <= 1; ++var9) {
-					int var10 = var1.getWorldChunkManager().getBiomeGenAt(var2 + var9, var4 + var8).waterColorMultiplier;
+					int var10;
+					if(!ConfigReader.waterBiomeColors) {
+						var10 = var1.getWorldChunkManager().getBiomeGenAt(var2 + var9, var4 + var8).waterColorMultiplier;
+					}
+					else {
+						 var10 = Colorizer.colorizeWater(var1.getWorldChunkManager(), var2 + var9, var4 + var8);
+					}
 					var5 += (var10 & 16711680) >> 16;
 					var6 += (var10 & '\uff00') >> 8;
 					var7 += var10 & 255;
 				}
 			}
 
-			return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
-		}
-		int color = var1.getWaterColorCache(var2, var3, var4);
-		if (color == -1 || ConfigReader.fancyBiomeColors) {
-			double d = (double)var1.getWorldChunkManager().func_35554_b(var2, var3, var4);
-			double d1 = (double)var1.getWorldChunkManager().func_35558_c(var2, var4);
-			color =  ColorizerWater.getWaterColor(d, d1);
+			color = (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
 			var1.setWaterColorCache(var2, var3, var4, color);
 		}
 		return color;

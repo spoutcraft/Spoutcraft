@@ -582,6 +582,7 @@ public class EntityRenderer {
 
 	private void updateLightmap() {
 		World var1 = this.mc.theWorld;
+		if (!Colorizer.computeLightmap(this, var1)) { //Spout
 		if (var1 != null) {
 			for (int var2 = 0; var2 < 256; ++var2) {
 				float var3 = var1.func_35464_b(1.0F) * 0.95F + 0.05F;
@@ -666,6 +667,7 @@ public class EntityRenderer {
 			this.mc.renderEngine.createTextureFromBytes(this.lightmapColors, 16, 16, this.emptyTexture);
 		}
 	}
+	}//Spout
 
 	public void updateCameraAndRender(float var1) {
 		// Spout Start
@@ -1296,6 +1298,15 @@ public class EntityRenderer {
 		World var2 = this.mc.theWorld;
 		EntityLiving var3 = this.mc.renderViewEntity;
 		float var4 = 1.0F / (float) (4 - this.mc.gameSettings.renderDistance);
+		//Spout HD start
+		Colorizer.setupForFog(var2.getWorldChunkManager(), var3);
+		if (Colorizer.computeFogColor(Colorizer.COLOR_MAP_FOG0)) {
+			this.fogColorRed = Colorizer.setColor[0];
+			this.fogColorGreen = Colorizer.setColor[1];
+			this.fogColorBlue = Colorizer.setColor[2];
+		}
+		//Spout HD End
+
 		var4 = 1.0F - (float) Math.pow((double) var4, 0.25D);
 		Vec3D var5 = var2.getSkyColor(this.mc.renderViewEntity, var1);
 		float var6 = (float) var5.xCoord;
@@ -1356,6 +1367,13 @@ public class EntityRenderer {
 			this.fogColorRed = 0.02F;
 			this.fogColorGreen = 0.02F;
 			this.fogColorBlue = 0.2F;
+			//Spout HD start
+			if (Colorizer.computeFogColor(Colorizer.COLOR_MAP_UNDERWATER)) {
+				this.fogColorRed = Colorizer.setColor[0];
+				this.fogColorGreen = Colorizer.setColor[1];
+				this.fogColorBlue = Colorizer.setColor[2];
+			}
+			//Spout HD end
 		}
 		else if (var21 != 0 && Block.blocksList[var21].blockMaterial == Material.lava) {
 			this.fogColorRed = 0.6F;

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -361,14 +362,26 @@ public class BlockRedstoneWire extends Block {
 			double var7 = (double)var2 + 0.5D + ((double)var5.nextFloat() - 0.5D) * 0.2D;
 			double var9 = (double)((float)var3 + 0.0625F);
 			double var11 = (double)var4 + 0.5D + ((double)var5.nextFloat() - 0.5D) * 0.2D;
+ //Spout HD start
+			float var14;
+			float var15;
+			float var16;
+			if (Colorizer.computeRedstoneWireColor(var6)) {
+				var14 = Colorizer.redstoneWireRed;
+				var15 = Colorizer.redstoneWireGreen;
+				var16 = Colorizer.redstoneWireBlue;
+			}
+			else {
 			float var13 = (float)var6 / 15.0F;
-			float var14 = var13 * 0.6F + 0.4F;
+				var14 = var13 * 0.6F + 0.4F;
 			if (var6 == 0) {
 				var14 = 0.0F;
 			}
 
-			float var15 = var13 * var13 * 0.7F - 0.5F;
-			float var16 = var13 * var13 * 0.6F - 0.7F;
+				var15 = var13 * var13 * 0.7F - 0.5F;
+				var16 = var13 * var13 * 0.6F - 0.7F;
+			}
+ //Spout HD end
 			if (var15 < 0.0F) {
 				var15 = 0.0F;
 			}
