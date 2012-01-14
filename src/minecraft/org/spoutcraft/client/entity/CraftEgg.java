@@ -34,10 +34,11 @@ public class CraftEgg extends AbstractProjectile implements Egg {
 	}
 	
 	public LivingEntity getShooter() {
-		return (LivingEntity) getEgg().field_40083_c.spoutEntity;
+		return (LivingEntity) getEgg().throwingEntity.spoutEntity;
 	}
 
 	public void setShooter(LivingEntity shooter) {
-		getEgg().field_40083_c = ((CraftLivingEntity)shooter).getEntityLiving();
+		getEgg().throwingEntity = ((CraftLivingEntity)shooter).getEntityLiving();
 	}
+
 }

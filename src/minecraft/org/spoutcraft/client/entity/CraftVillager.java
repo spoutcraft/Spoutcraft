@@ -33,7 +33,7 @@ public class CraftVillager extends CraftCreature implements Villager {
 	}
 
 	public Occupation getOccupation() {
-		switch(((EntityVillager)handle).field_40141_a)
+		switch(((EntityVillager)handle).profession)
 		{
 		case 0: return Occupation.FARMER;
 		case 1: return Occupation.LIBRARIAN;
