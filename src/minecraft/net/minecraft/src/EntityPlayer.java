@@ -357,7 +357,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	private int func_35202_aE() {
-		return this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1:(this.isPotionActive(Potion.digSlow)?6 + (1 + this.getActivePotionEffect(Potion.digSlow).getAmplifier()) * 2:6);
+		return this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1:(this.isPotionActive(Potion.digSlowdown)?6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2:6);
 	}
 
 	protected void updateEntityActionState() {
@@ -518,12 +518,12 @@ public abstract class EntityPlayer extends EntityLiving {
 			var3 = var2 + (float)(var4 * var4 + 1);
 		}
 
-		if(this.isPotionActive(Potion.potiondigSpeed)) {
-			var3 *= 1.0F + (float)(this.getActivePotionEffect(Potion.potiondigSpeed).getAmplifier() + 1) * 0.2F;
+		if(this.isPotionActive(Potion.digSpeed)) {
+			var3 *= 1.0F + (float)(this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
 		}
 
-		if(this.isPotionActive(Potion.potiondigSlow)) {
-			var3 *= 1.0F - (float)(this.getActivePotionEffect(Potion.potiondigSlow).getAmplifier() + 1) * 0.2F;
+		if(this.isPotionActive(Potion.digSlowdown)) {
+			var3 *= 1.0F - (float)(this.getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
 		}
 
 		if(this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this.inventory)) {
