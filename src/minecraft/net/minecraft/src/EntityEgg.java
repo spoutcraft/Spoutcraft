@@ -33,7 +33,7 @@ public class EntityEgg extends EntityThrowable {
 	}
 
 	protected void onThrowableCollision(MovingObjectPosition var1) {
-		if(var1.entityHit != null && var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.field_40083_c), 0)) {
+		if(var1.entityHit != null && var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.throwingEntity), 0)) {
 			;
 		}
 

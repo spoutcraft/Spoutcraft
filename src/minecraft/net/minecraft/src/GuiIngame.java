@@ -86,7 +86,7 @@ public class GuiIngame extends Gui{
 
 		float var10;
 		if(!this.mc.thePlayer.isPotionActive(Potion.confusion)) {
-			var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * var1;
+			var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
 			if(var10 > 0.0F) {
 				this.renderPortalOverlay(var10, screenWidth, screenHeight);
 			}

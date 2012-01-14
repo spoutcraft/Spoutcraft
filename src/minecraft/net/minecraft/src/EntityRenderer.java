@@ -46,6 +46,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
+
 //Spout end
 
 public class EntityRenderer {
@@ -1212,7 +1214,7 @@ public class EntityRenderer {
 								float var33 = var18[var48 - 1];
 								float var34;
 								double var37;
-								if (var44.getWorldChunkManager().getTemperatureAtHeight(var33, var28) >= 0.15F) {
+								double temp = var44.getWorldChunkManager().getTemperatureAtHeight(var33, var28);
 								if ((temp >= 0.15F && !forceSnow) || forceRain) {
 									if (var20 != 0) {
 										if (var20 >= 0) {
@@ -1486,7 +1488,7 @@ public class EntityRenderer {
 					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
 					// Spout start
 					float density = 0.1F;
-					if (var3.isPotionActive(Potion.potionWaterBreathing)) {
+					if (var3.isPotionActive(Potion.waterBreathing)) {
 						density = 0.05F;
 					}
 					if (ConfigReader.clearWater) {

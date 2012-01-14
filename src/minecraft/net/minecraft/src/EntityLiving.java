@@ -314,7 +314,7 @@ private EntityMoveHelper field_46018_e;
 			this.extinguish();
 		}
 
-		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.potionWaterBreathing.id))) {
+		if(this.isEntityAlive() && this.isInsideOfMaterial(Material.water) && !this.canBreatheUnderwater() && !this.activePotionsMap.containsKey(Integer.valueOf(Potion.waterBreathing.id))) {
 			this.setAir(this.decreaseAirSupply(this.getAir()));
 			if(this.getAir() == -20) {
 				this.setAir(0);
@@ -571,7 +571,7 @@ private EntityMoveHelper field_46018_e;
 			this.entityAge = 0;
 			if(this.health <= 0) {
 				return false;
-			} else if(var1.fireDamage() && this.isPotionActive(Potion.fireReistance)) {
+			} else if(var1.fireDamage() && this.isPotionActive(Potion.fireResistance)) {
 				return false;
 			} else {
 				this.field_704_R = 1.5F;
@@ -600,7 +600,7 @@ private EntityMoveHelper field_46018_e;
 						this.attackingPlayer = (EntityPlayer)var4;
 					} else if(var4 instanceof EntityWolf) {
 						EntityWolf var5 = (EntityWolf)var4;
-						if(var5.isWolfTamed()) {
+						if(var5.isTamed()) {
 							this.recentlyHit = 60;
 							this.attackingPlayer = null;
 						}

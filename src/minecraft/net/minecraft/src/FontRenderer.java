@@ -23,10 +23,10 @@ public class FontRenderer {
 	public int FONT_HEIGHT = 8;
 	public Random field_41064_c = new Random();
 	private byte[] field_44036_e = new byte[65536];
-	private final int[] field_44034_f = new int[256];
+	private int[] field_44034_f = new int[256];
 	private int[] field_44035_g = new int[32];
 	private int field_44038_h;
-	private final RenderEngine field_44039_i;
+	private RenderEngine field_44039_i;
 	private float field_46126_j;
 	private float field_46127_k;
 	public boolean field_44037_j; // Spout HD private->public

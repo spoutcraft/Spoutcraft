@@ -13,7 +13,7 @@ public class EntitySplashFX extends EntityRainFX {
 		if (var10 == 0.0D && (var8 != 0.0D || var12 != 0.0D)) {
 			this.motionX = var8;
 			this.motionY = var10 + 0.1D;
-			this.motionxZ = var12;
+			this.motionZ = var12;
 		}
  //Spout HD start
 		if (Colorizer.computeWaterColor(this.worldObj.getWorldChunkManager(), this.posX, this.posY, this.posZ)) {

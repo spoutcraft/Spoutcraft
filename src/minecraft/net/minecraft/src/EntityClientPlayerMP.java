@@ -139,7 +139,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	public void dropCurrentItem() {
-		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0))
+		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
 	}
 
 	public void sendInventoryChanged() {}

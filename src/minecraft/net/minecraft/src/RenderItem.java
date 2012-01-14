@@ -27,7 +27,7 @@ public class RenderItem extends Render {
 
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
-	public final boolean field_27004_a = true;
+	public boolean field_27004_a = true;
 	public float zLevel = 0.0F;
 
 	public RenderItem() {
