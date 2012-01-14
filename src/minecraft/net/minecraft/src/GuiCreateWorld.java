@@ -110,8 +110,8 @@ public class GuiCreateWorld extends GuiScreen {
 			this.generateStructuresButton.displayString = this.generateStructuresButton.displayString + var1.translateKey("options.off");
 		}
 
-		this.worldTypeButton.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey("selectWorld.mapType.normal");
-		}
+		this.worldTypeButton.displayString = var1.translateKey("selectWorld.mapType") + " " + var1.translateKey(EnumWorldType.values()[this.field_46030_z].func_46136_a());
+	}
 
 	public static String generateUnusedFolderName(ISaveFormat var0, String var1) {
 		while(var0.getWorldInfo(var1) != null) {
