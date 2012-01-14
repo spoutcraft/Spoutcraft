@@ -31,7 +31,7 @@ public class RenderText extends RenderEntity {
 		String text = entitytext.getText();
 		yaw = entitytext.isRotateWithPlayer()?-this.renderManager.playerViewY:yaw;
 		RenderHelper.disableStandardItemLighting();
-		SpoutClient.getHandle().fontRenderer.renderStringInGame(text, x, y, z, yaw, 0, entitytext.getScale());	
+		//SpoutClient.getHandle().fontRenderer.renderStringInGame(text, x, y, z, yaw, 0, entitytext.getScale());	
 		RenderHelper.enableStandardItemLighting();
 	}
 }

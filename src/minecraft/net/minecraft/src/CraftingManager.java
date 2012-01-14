@@ -166,7 +166,7 @@ public class CraftingManager {
 		this.recipes.add(new ShapedRecipes(var5, var6, var15, var1));
 	}
 
-	void addShapelessRecipe(ItemStack var1, Object ... var2) {
+	public void addShapelessRecipe(ItemStack var1, Object ... var2) { //Spout protected->public
 		ArrayList var3 = new ArrayList();
 		Object[] var4 = var2;
 		int var5 = var2.length;
