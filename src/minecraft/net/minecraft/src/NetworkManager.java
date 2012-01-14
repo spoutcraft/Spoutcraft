@@ -227,11 +227,13 @@ public class NetworkManager {
 
 	}
 
-	public void func_28142_c() {
-		this.wakeThreads();
-		this.isServerTerminating = true;
-		this.readThread.interrupt();
-		(new ThreadCloseConnection(this)).start();
+	public void serverShutdown() {
+		if(!this.isServerTerminating) {
+			this.wakeThreads();
+			this.isServerTerminating = true;
+			this.readThread.interrupt();
+			(new ThreadCloseConnection(this)).start();
+		}
 	}
 
 	// $FF: synthetic method
