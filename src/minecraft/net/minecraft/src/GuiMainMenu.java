@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import net.minecraft.src.GuiButton;
+import net.minecraft.src.GuiButtonLanguage;
+import net.minecraft.src.GuiLanguage;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiSelectWorld;
 import net.minecraft.src.GuiTexturePacks;
@@ -391,7 +393,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		// Spout Start
-		// this.drawString(this.fontRenderer, "Minecraft 1.0.0", 2, this.height - 10, 16777215); //Spout
+		// this.drawString(this.fontRenderer, "Minecraft 1.1", 2, this.height - 10, 16777215); //Spout
 		// String var9 = "Copyright Mojang AB. Do not distribute!";
 		// this.drawString(this.fontRenderer, var9, this.width - this.fontRenderer.getStringWidth(var9) - 2, this.height - 10, 16777215); //Spout
 

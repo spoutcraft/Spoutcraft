@@ -13,7 +13,7 @@ import org.lwjgl.Sys;
 public class GuiTexturePacks extends GuiScreen {
 
 	protected GuiScreen guiScreen;
-	private int field_6454_o = -1;
+	private int refreshTimer = -1;
 	private String fileLocation = "";
 	private GuiTexturePackSlot guiTexturePackSlot;
 
@@ -56,9 +56,9 @@ public class GuiTexturePacks extends GuiScreen {
 
 	public void drawScreen(int var1, int var2, float var3) {
 		this.guiTexturePackSlot.drawScreen(var1, var2, var3);
-		if(this.field_6454_o <= 0) {
+		if(this.refreshTimer <= 0) {
 			this.mc.texturePackList.updateAvaliableTexturePacks();
-			this.field_6454_o += 20;
+			this.refreshTimer += 20;
 		}
 
 		StringTranslate var4 = StringTranslate.getInstance();
@@ -69,7 +69,7 @@ public class GuiTexturePacks extends GuiScreen {
 
 	public void updateScreen() {
 		super.updateScreen();
-		--this.field_6454_o;
+		--this.refreshTimer;
 	}
 
 	// $FF: synthetic method
