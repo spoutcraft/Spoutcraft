@@ -87,7 +87,7 @@ public class ItemRenderer {
 			design.renderItemstack(null, -0.5F, -0.5F, -0.5F, 0, 1F, rand);
 		}
 		else if(var2.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var2.itemID].getRenderType())) {
-			this.renderBlocksInstance.renderBlockOnInventory(Block.blocksList[var2.itemID], var2.getItemDamage(), 1.0F);
+			this.renderBlocksInstance.renderBlockAsItem(Block.blocksList[var2.itemID], var2.getItemDamage(), 1.0F);
 		} else {
 
 			Tessellator var4 = Tessellator.instance;

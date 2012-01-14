@@ -86,6 +86,8 @@ public class ItemBlock extends Item {
 
 	public String getItemName() {
 		return Block.blocksList[this.blockID].getBlockName();
+	}
+	
  //Spout HD start
 	public int getColorFromDamage(int var1, int var2) {
 		return Colorizer.getItemColorFromDamage(super.getColorFromDamage(var1, var2), this.blockID, var1);

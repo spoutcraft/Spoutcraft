@@ -31,6 +31,8 @@ import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
+
 public class RenderBlocks {
 
 	public IBlockAccess blockAccess; // Spout private -> public
@@ -2253,7 +2255,7 @@ public class RenderBlocks {
 			var15 += ((double) ((float) (var17 >> 24 & 15L) / 15.0F) - 0.5D) * 0.5D;
 		}
 
-		this.drawCrossedSquares(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), var19, var20, var15);
+		this.renderCrossedSquares(var1, this.blockAccess.getBlockMetadata(var2, var3, var4), var19, var20, var15);
 		return true;
 	}
 
@@ -4986,7 +4988,7 @@ public class RenderBlocks {
 			if (var6 == 1) {
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, -1.0F, 0.0F);
-				this.drawCrossedSquares(var1, var2, -0.5D, -0.5D, -0.5D);
+				this.renderCrossedSquares(var1, var2, -0.5D, -0.5D, -0.5D);
 				var4.draw();
 			}
 			else if (var6 == 19) {

@@ -97,7 +97,7 @@ public class Item {
 	public static Item axeGold = (new ItemAxe(30, EnumToolMaterial.GOLD)).setIconCoord(4, 7).setItemName("hatchetGold");
 	public static Item silk = (new Item(31)).setIconCoord(8, 0).setItemName("string");
 	public static Item feather = (new Item(32)).setIconCoord(8, 1).setItemName("feather");
-	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").func_40407_b(PotionHelper.gunpowderEffect);
+	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").setPotionModifier(PotionHelper.gunpowderEffect);
 	public static Item hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
 	public static Item hoeStone = (new ItemHoe(35, EnumToolMaterial.STONE)).setIconCoord(1, 8).setItemName("hoeStone");
 	public static Item hoeSteel = (new ItemHoe(36, EnumToolMaterial.IRON)).setIconCoord(2, 8).setItemName("hoeIron");
@@ -183,7 +183,7 @@ public class Item {
 	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionModifier("+4");
 	public static ItemPotion potion = (ItemPotion) (new ItemPotion(117)).setIconCoord(13, 8).setItemName("potion");
 	public static Item glassBottle = (new ItemGlassBottle(118)).setIconCoord(12, 8).setItemName("glassBottle");
-	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.potionPoison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").setPotionModifier(PotionHelper.spiderEyeEffect);
+	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.poison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").setPotionModifier(PotionHelper.spiderEyeEffect);
 	public static Item fermentedSpiderEye = (new Item(120)).setIconCoord(10, 8).setItemName("fermentedSpiderEye").setPotionModifier(PotionHelper.fermentedSpiderEyeEffect);
 	public static Item blazePowder = (new Item(121)).setIconCoord(13, 9).setItemName("blazePowder").setPotionModifier(PotionHelper.blazePowderEffect);
 	public static Item magmaCream = (new Item(122)).setIconCoord(13, 10).setItemName("magmaCream").setPotionModifier(PotionHelper.magmaCreamEffect);
@@ -307,8 +307,7 @@ public class Item {
 		return false;
 	}
 
-	public void useItemOnEntity(ItemStack var1, EntityLiving var2) {
-	}
+	public void useItemOnEntity(ItemStack var1, EntityLiving var2) {}
 
 	public Item setFull3D() {
 		this.bFull3D = true;
@@ -370,11 +369,9 @@ public class Item {
 		return 16777215;
 	}
 
-	public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {
-	}
+	public void onUpdate(ItemStack var1, World var2, Entity var3, int var4, boolean var5) {}
 
-	public void onCreated(ItemStack var1, World var2, EntityPlayer var3) {
-	}
+	public void onCreated(ItemStack var1, World var2, EntityPlayer var3) {}
 
 	public EnumAction getItemUseAction(ItemStack var1) {
 		return EnumAction.none;
@@ -384,8 +381,7 @@ public class Item {
 		return 0;
 	}
 
-	public void onPlayerStoppedUsing(ItemStack var1, World var2, EntityPlayer var3, int var4) {
-	}
+	public void onPlayerStoppedUsing(ItemStack var1, World var2, EntityPlayer var3, int var4) {}
 
 	protected Item setPotionModifier(String var1) {
 		this.potionModifier = var1;
@@ -400,8 +396,7 @@ public class Item {
 		return this.potionModifier != null;
 	}
 
-	public void addInformation(ItemStack var1, List var2) {
-	}
+	public void addInformation(ItemStack var1, List var2) {}
 
 	public String getItemDisplayName(ItemStack var1) {
 		String var2 = ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalItemName(var1))).trim();

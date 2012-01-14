@@ -90,7 +90,7 @@ public class EntityRenderer {
 	private long prevFrameTime = System.currentTimeMillis();
 	private long renderEndNanoTime = 0L;
 	private boolean lightmapUpdateNeeded = false;
-	float torchFlickerX = 0.0F;
+	public float torchFlickerX = 0.0F; //Spout private -> public
 	float torchFlickerDX = 0.0F;
 	float torchFlickerY = 0.0F;
 	float torchFlickerDY = 0.0F;

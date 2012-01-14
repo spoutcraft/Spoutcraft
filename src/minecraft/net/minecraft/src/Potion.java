@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Colorizer;
+
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;

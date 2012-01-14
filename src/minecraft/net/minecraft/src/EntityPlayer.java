@@ -590,7 +590,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void displayGUIChest(IInventory var1) {}
 
-	public void func_40181_c(int var1, int var2, int var3) {}
+	public void displayGUIEnchantment(int var1, int var2, int var3) {}
 
 	public void displayWorkbenchGUI(int var1, int var2, int var3) {}
 

@@ -3,9 +3,10 @@ package net.minecraft.src;
 import java.util.Random;
 //Spout start
 import org.spoutcraft.client.config.ConfigReader;
+
+import com.pclewis.mcpatcher.mod.Colorizer;
 //Spout end
 import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.IBlockAccess;

@@ -27,7 +27,7 @@ public class RenderItem extends Render {
 
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
-	public boolean field_27004_a = true;
+	public final boolean field_27004_a = true;
 	public float zLevel = 0.0F;
 
 	public RenderItem() {
@@ -138,34 +138,35 @@ public class RenderItem extends Render {
 	
 					red = 1.0F;
 					
-					this.renderBlocks.renderBlockOnInventory(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
+					this.renderBlocks.renderBlockAsItem(Block.blocksList[itemStack.itemID], itemStack.getItemDamage(), red);
 					
 					GL11.glPopMatrix();
 				}
-			} else if(itemStack.itemID == Item.potion.shiftedIndex) {
+			} else if(itemStack.getItem().func_46058_c()) {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
-				short potionIndex = 141;
-				float colorScale = 1.0F;
-				if(this.field_27004_a) {
-					fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
-					red = (float)(fullColor >> 16 & 255) / 255.0F;
-					green = (float)(fullColor >> 8 & 255) / 255.0F;
-					blue = (float)(fullColor & 255) / 255.0F;
-					GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+				for (int var14 = 0; var14 <= 1; ++var14) {
+					float colorScale = 1.0F;
+					if(this.field_27004_a) {
+						fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), var14);
+						red = (float)(fullColor >> 16 & 255) / 255.0F;
+						green = (float)(fullColor >> 8 & 255) / 255.0F;
+						blue = (float)(fullColor & 255) / 255.0F;
+						GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
+					}
+		
+					if (this.field_27004_a) {
+						GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
+						this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
+					}
 				}
-	
-				this.renderItemBillboard(potionIndex, itemsOnGround);
-				if (this.field_27004_a) {
-					GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
-					this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
-				}
+				
 			} else {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				int iconIndex = itemStack.getIconIndex();
 	
 				if(this.field_27004_a) {
 					//The names here are wrong due to de-obfuscation renames;
-					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage());
+					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), 0);
 					float var23 = (float)(renderType >> 16 & 255) / 255.0F;
 					red = (float)(renderType >> 8 & 255) / 255.0F;
 					green = (float)(renderType & 255) / 255.0F;
@@ -265,19 +266,19 @@ public class RenderItem extends Render {
 		float var12;
 		
 		if (design != null && custom) {
-			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 		}
 		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
 		//Spout end
 			Block var16 = Block.blocksList[var3];
 			GL11.glPushMatrix();
-			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.field_40268_b);
+			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 			GL11.glScalef(10.0F, 10.0F, 10.0F);
 			GL11.glTranslatef(1.0F, 0.5F, 1.0F);
 			GL11.glScalef(1.0F, 1.0F, -1.0F);
 			GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-			int var17 = Item.itemsList[var3].getColorFromDamage(var4);
+			int var17 = Item.itemsList[var3].getColorFromDamage(var4, 0);
 			var11 = (float)(var17 >> 16 & 255) / 255.0F;
 			var12 = (float)(var17 >> 8 & 255) / 255.0F;
 			float var13 = (float)(var17 & 255) / 255.0F;
@@ -287,7 +288,7 @@ public class RenderItem extends Render {
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 			this.renderBlocks.useInventoryTint = this.field_27004_a;
-			this.renderBlocks.renderBlockOnInventory(var16, var4, 1.0F);
+			this.renderBlocks.renderBlockAsItem(var16, var4, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
 		} else {
@@ -295,7 +296,8 @@ public class RenderItem extends Render {
 			if(var3 == Item.potion.shiftedIndex) {
 				GL11.glDisable(2896 /* GL_LIGHTING */);
 				short var8 = 141;
-				int var9 = Item.itemsList[var3].getColorFromDamage(var4);
+				for (var8 = 0; var8 <= 1; ++var8) {
+				int var9 = Item.itemsList[var3].getColorFromDamage(var4, var8);
 				var10 = (float)(var9 >> 16 & 255) / 255.0F;
 				var11 = (float)(var9 >> 8 & 255) / 255.0F;
 				var12 = (float)(var9 & 255) / 255.0F;
@@ -304,6 +306,7 @@ public class RenderItem extends Render {
 				}
 	
 				this.renderTexturedQuad(var6, var7, var8 % 16 * 16, var8 / 16 * 16, 16, 16);
+				}
 				if (this.field_27004_a) {
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				}
@@ -315,7 +318,7 @@ public class RenderItem extends Render {
 			else if(var5 >= 0) {
 				GL11.glDisable(2896 /*GL_LIGHTING*/);
 
-				int var14 = Item.itemsList[var3].getColorFromDamage(var4);
+				int var14 = Item.itemsList[var3].getColorFromDamage(var4, 0);
 				float var15 = (float)(var14 >> 16 & 255) / 255.0F;
 				var10 = (float)(var14 >> 8 & 255) / 255.0F;
 				var11 = (float)(var14 & 255) / 255.0F;
