@@ -55,7 +55,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	public void heal(int var1) {}
 
 	public void onUpdate() {
-		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), this.worldObj.field_35472_c / 2, MathHelper.floor_double(this.posZ))) {
+		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), this.worldObj.worldHeight / 2, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
 			this.onUpdate2();
 		}
@@ -139,7 +139,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	public void dropCurrentItem() {
-		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0))
 	}
 
 	public void sendInventoryChanged() {}
@@ -157,7 +157,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void respawnPlayer() {
 		this.sendInventoryChanged();
-		this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldSeed(), this.worldObj.field_35472_c, 0));
+		this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().func_46133_t(), this.worldObj.worldHeight, 0));
 	}
 
 	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
@@ -189,7 +189,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 	}
 
-	public void func_27027_b(StatBase var1, int var2) {
+	public void incrementStat(StatBase var1, int var2) {
 		if(var1 != null) {
 			if(!var1.isIndependent) {
 				super.addStat(var1, var2);

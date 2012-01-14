@@ -82,7 +82,7 @@ public class EntityCow extends EntityAnimal {
 		}
 	}
 
-	protected EntityAnimal func_40145_a(EntityAnimal var1) {
+	protected EntityAnimal spawnBabyAnimal(EntityAnimal var1) {
 		return new EntityCow(this.worldObj);
 	}
 }

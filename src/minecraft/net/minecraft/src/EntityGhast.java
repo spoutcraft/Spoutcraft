@@ -34,14 +34,14 @@ public class EntityGhast extends EntityFlying implements IMob {
 		this.texture = "/mob/ghast.png";
 		this.setSize(4.0F, 4.0F);
 		this.isImmuneToFire = true;
-		this.field_35171_bJ = 5;
+		this.experienceValue = 5;
 		//Spout start
 		this.spoutEntity = new CraftGhast(this);
 		//Spout end
 	}
 
 	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		if("fireball".equals(var1.func_40545_l()) && var1.getEntity() instanceof EntityPlayer) {
+		if("fireball".equals(var1.getDamageType()) && var1.getEntity() instanceof EntityPlayer) {
 			super.attackEntityFrom(var1, 1000);
 			((EntityPlayer)var1.getEntity()).triggerAchievement(AchievementList.ghast);
 			return true;
@@ -129,7 +129,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 					var17.posX = this.posX + var20.xCoord * var18;
 					var17.posY = this.posY + (double)(this.height / 2.0F) + 0.5D;
 					var17.posZ = this.posZ + var20.zCoord * var18;
-					this.worldObj.entityJoinedWorld(var17);
+					this.worldObj.spawnEntityInWorld(var17);
 					this.attackCounter = -40;
 				}
 			} else if(this.attackCounter > 0) {

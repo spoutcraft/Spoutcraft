@@ -55,7 +55,7 @@ public class EntityChicken extends EntityAnimal {
 		}
 
 		this.field_752_b += this.field_755_h * 2.0F;
-		if(!this.func_40127_l() && !this.worldObj.multiplayerWorld && --this.timeUntilNextEgg <= 0) {
+		if(!this.isChild() && !this.worldObj.multiplayerWorld && --this.timeUntilNextEgg <= 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
@@ -104,7 +104,7 @@ public class EntityChicken extends EntityAnimal {
 
 	}
 
-	protected EntityAnimal func_40145_a(EntityAnimal var1) {
+	protected EntityAnimal spawnBabyAnimal(EntityAnimal var1) {
 		return new EntityChicken(this.worldObj);
 	}
 }

@@ -28,7 +28,7 @@ public class EntityCaveSpider extends EntitySpider {
 		return 0.7F;
 	}
 
-	protected boolean attackEntityAsMob(Entity var1) {
+	public boolean attackEntityAsMob(Entity var1) {
 		if(super.attackEntityAsMob(var1)) {
 			if(var1 instanceof EntityLiving) {
 				byte var2 = 0;
@@ -41,7 +41,7 @@ public class EntityCaveSpider extends EntitySpider {
 				}
 
 				if(var2 > 0) {
-					((EntityLiving)var1).addPotionEffect(new PotionEffect(Potion.potionPoison.id, var2 * 20, 0));
+					((EntityLiving)var1).addPotionEffect(new PotionEffect(Potion.poison.id, var2 * 20, 0));
 				}
 			}
 

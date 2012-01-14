@@ -227,7 +227,7 @@ public class EntityFishHook extends Entity {
 				if(var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-					MovingObjectPosition var12 = var11.func_1169_a(var20, var2);
+					MovingObjectPosition var12 = var11.calculateIntercept(var20, var2);
 					if(var12 != null) {
 						var13 = var20.distanceTo(var12.hitVec);
 						if(var13 < var6 || var6 == 0.0D) {
@@ -388,7 +388,7 @@ public class EntityFishHook extends Entity {
 			var13.motionX = var3 * var11;
 			var13.motionY = var5 * var11 + (double)MathHelper.sqrt_double(var9) * 0.08D;
 			var13.motionZ = var7 * var11;
-			this.worldObj.entityJoinedWorld(var13);
+			this.worldObj.spawnEntityInWorld(var13);
 			this.angler.addStat(StatList.fishCaughtStat, 1);
 			var1 = 1;
 		}

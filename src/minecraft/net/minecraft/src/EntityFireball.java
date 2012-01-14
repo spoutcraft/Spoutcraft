@@ -78,7 +78,7 @@ public class EntityFireball extends Entity {
 
 	public void onUpdate() {
 		super.onUpdate();
-		this.func_40046_d(1);
+		this.setFire(1);
 		if(!this.worldObj.multiplayerWorld && (this.shootingEntity == null || this.shootingEntity.isDead)) {
 			this.setEntityDead();
 		}
@@ -119,10 +119,10 @@ public class EntityFireball extends Entity {
 
 		for(int var8 = 0; var8 < var5.size(); ++var8) {
 			Entity var9 = (Entity)var5.get(var8);
-			if(var9.canBeCollidedWith() && (!var9.func_41004_h(this.shootingEntity) || this.ticksInAir >= 25)) {
+			if(var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
 				float var10 = 0.3F;
 				AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-				MovingObjectPosition var12 = var11.func_1169_a(var15, var2);
+				MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
 				if(var12 != null) {
 					double var13 = var15.distanceTo(var12.hitVec);
 					if(var13 < var6 || var6 == 0.0D) {
