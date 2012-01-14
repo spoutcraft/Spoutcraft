@@ -20,7 +20,7 @@ public class TextureWaterFlowFX extends TextureFX {
 		this.field_1137_h = new float[TileSize.int_numPixels];
 		this.field_1136_i = new float[TileSize.int_numPixels];
 		this.field_1135_j = new float[TileSize.int_numPixels];
-		this.field_1134_k = 0;
+		this.tickCounter = 0;
 		this.tileSize = 2;
 	}
 //Spout HD end
