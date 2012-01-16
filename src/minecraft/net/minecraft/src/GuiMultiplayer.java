@@ -47,12 +47,12 @@ public class GuiMultiplayer extends GuiScreen {
 
 	public GuiMultiplayer(GuiScreen var1) {	
 		this.parentScreen = var1;
-		tabs.add(new ServerTab("Featured", "http://servers.getspout.org/api.php?type=1&featured"));
-		tabs.add(new ServerTab("Popular", "http://servers.getspout.org/api.php?type=1&popular"));
-		tabs.add(new ServerTab("Country", "http://servers.getspout.org/api.php?type=1&all", true));
-		tabs.add(new ServerTab("A-Z", "http://servers.getspout.org/api.php?type=1&az"));
-		tabs.add(new ServerTab("Z-A", "http://servers.getspout.org/api.php?type=1&za"));
-		tabs.add(new ServerTab("Random", "http://servers.getspout.org/api.php?type=1&random"));
+		tabs.add(new ServerTab("Featured", "http://servers.spout.org/api.php?type=1&featured"));
+		tabs.add(new ServerTab("Popular", "http://servers.spout.org/api.php?type=1&popular"));
+		tabs.add(new ServerTab("Country", "http://servers.spout.org/api.php?type=1&all", true));
+		tabs.add(new ServerTab("A-Z", "http://servers.spout.org/api.php?type=1&az"));
+		tabs.add(new ServerTab("Z-A", "http://servers.spout.org/api.php?type=1&za"));
+		tabs.add(new ServerTab("Random", "http://servers.spout.org/api.php?type=1&random"));
 	}
 
 	public void initGui() {

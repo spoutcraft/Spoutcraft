@@ -1,5 +1,5 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft (http://spout.org).
  * 
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -172,7 +172,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelSpoutcraft);
 
-		textureIcon = new GenericTexture("http://servers.getspout.org/preview/"+ item.getDatabaseId() +".png");
+		textureIcon = new GenericTexture("http://servers.spout.org/preview/"+ item.getDatabaseId() +".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
@@ -296,7 +296,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 			mc.displayGuiScreen(back);
 		}
 		if(btn == buttonOpenBrowser) {
-			NetworkUtils.openInBrowser("http://servers.getspout.org/info/" + item.getDatabaseId());
+			NetworkUtils.openInBrowser("http://servers.spout.org/info/" + item.getDatabaseId());
 		}
 		if(btn == buttonRefresh) {
 			refresh();
@@ -315,7 +315,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		loadThread = new Thread() {
 			public void run() {
 				try {
-					URL url = new URL("http://servers.getspout.org/api2.php?id=" + item.getDatabaseId());
+					URL url = new URL("http://servers.spout.org/api2.php?id=" + item.getDatabaseId());
 					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 					Yaml yaml = new Yaml();
 					ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);

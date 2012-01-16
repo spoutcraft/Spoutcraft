@@ -1,5 +1,5 @@
 /*
- * This file is part of Spoutcraft Launcher (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft Launcher (http://spout.org).
  * 
  * Spoutcraft Launcher is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

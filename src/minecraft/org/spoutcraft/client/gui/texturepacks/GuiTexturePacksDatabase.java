@@ -189,7 +189,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 			mc.displayGuiScreen(new GuiMainMenu());
 		}
 		if(btn.equals(buttonAdd)) {
-			Sys.openURL("http://textures.getspout.org/submit.php");
+			Sys.openURL("http://textures.spout.org/submit.php");
 		}
 		if(btn.equals(buttonDownload)) {
 			int sel = view.getSelectedRow();

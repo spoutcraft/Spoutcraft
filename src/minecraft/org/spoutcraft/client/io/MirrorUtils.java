@@ -96,7 +96,7 @@ public class MirrorUtils {
 	public static void updateMirrorsYMLCache() {
 		if (!updated) {
 			try {
-				URL url = new URL("http://cdn.getspout.org/mirrors.yml");
+				URL url = new URL("http://cdn.spout.org/mirrors.yml");
 				HttpURLConnection con = (HttpURLConnection)(url.openConnection());
 				System.setProperty("http.agent", "");
 				con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");

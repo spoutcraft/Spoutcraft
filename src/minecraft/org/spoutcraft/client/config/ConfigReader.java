@@ -50,6 +50,10 @@ public class ConfigReader {
 	public static float mipmapsPercent = 0F;
 	public static boolean automatePerformance = true;
 	public static int automateMode = 0;
+	public static boolean showChatColors = true;
+	public static boolean showJoinMessages = true;
+	public static boolean showDamageAlerts = true;
+	public static boolean highlightMentions = true;
 
 	public transient static Object[] settings = null;
 	

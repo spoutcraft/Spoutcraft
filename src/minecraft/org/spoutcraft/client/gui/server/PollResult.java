@@ -235,7 +235,7 @@ public class PollResult {
 						return;
 					}
 				}
-				String api = MirrorUtils.getMirrorUrl("/senddata.php", "http://servers.getspout.org/senddata.php");
+				String api = MirrorUtils.getMirrorUrl("/senddata.php", "http://servers.spout.org/senddata.php");
 				String json = "{";
 				int res = 0;
 				for(PollResult result:recentResults.valueCollection()) {

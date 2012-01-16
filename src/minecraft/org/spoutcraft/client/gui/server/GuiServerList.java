@@ -249,7 +249,7 @@ public class GuiServerList extends GuiAPIDisplay {
 			model.updateUrl();
 		}
 		if(btn.equals(buttonAddServer)) {
-			Sys.openURL("http://servers.getspout.org/submit.php");
+			Sys.openURL("http://servers.spout.org/submit.php");
 		}
 		if(btn.equals(buttonInfo)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();

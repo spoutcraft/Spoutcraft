@@ -1,7 +1,7 @@
 package org.spoutcraft.client.util;
 
 /*
- * This file is part of Spout (http://wiki.getspout.org/).
+ * This file is part of Spout (http://spout.org).
  * 
  * Spout is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

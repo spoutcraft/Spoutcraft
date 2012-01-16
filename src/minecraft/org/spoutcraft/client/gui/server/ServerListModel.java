@@ -28,7 +28,7 @@ public class ServerListModel extends AbstractAPIModel {
 	protected List<String> countries = new LinkedList<String>();
 
 	public ServerListModel() {
-		API = "http://servers.getspout.org/api2.php";
+		API = "http://servers.spout.org/api2.php";
 		refreshAPIData(API+"?random", 0, true);
 		loadCountries();
 	}

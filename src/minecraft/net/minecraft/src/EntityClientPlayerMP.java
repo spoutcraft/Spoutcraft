@@ -162,6 +162,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
 		this.setEntityHealth(this.getEntityHealth() - var2);
+		//Spout start
+		GuiChat.interruptChat();
+		//Spout end
 	}
 
 	public void closeScreen() {
@@ -200,16 +203,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	//Spout Start
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
-		//key bindings
-		if (keyReleased) {
-			String keyName = org.lwjgl.input.Keyboard.getKeyName(i);
-			if (keyName != null && keyName.length() == 1) {
-				char ch = keyName.charAt(0);
-				if (SpoutClient.getInstance().getChatManager().getBoundCommand(ch) != null) {
-					SpoutClient.getInstance().getChatManager().sendChat(SpoutClient.getInstance().getChatManager().getBoundCommand(ch));
-				}
-			}
-		}
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN));
 		}

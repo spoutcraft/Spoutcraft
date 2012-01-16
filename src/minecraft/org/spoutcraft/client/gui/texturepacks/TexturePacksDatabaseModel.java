@@ -6,7 +6,7 @@ import org.spoutcraft.client.gui.database.AbstractAPIModel;
 
 public class TexturePacksDatabaseModel extends AbstractAPIModel {
 	public TexturePacksDatabaseModel() {
-		API = "http://textures.getspout.org/api2.php";
+		API = "http://textures.spout.org/api2.php";
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class TexturePacksDatabaseModel extends AbstractAPIModel {
 	}
 	
 	public String getDefaultUrl() {
-		return "http://textures.getspout.org/api2.php?featured";
+		return "http://textures.spout.org/api2.php?featured";
 	}
 
 }

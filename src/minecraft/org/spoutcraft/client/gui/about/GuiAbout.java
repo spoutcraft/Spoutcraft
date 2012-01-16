@@ -244,8 +244,8 @@ public class GuiAbout extends GuiScreen {
 		top += 20;
 		
 		drawScaledString("Contact", this.width / 2 + 30, top, 0xffffff); top += 10;
-		drawScaledString("Email: dev@getspout.org", this.width / 2 + 30, top, 0x808080); top += 10;
-		drawScaledString("Website: getspout.org", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("Email: dev@spout.org", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("Website: spout.org", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("#spout on irc.esper.net", this.width / 2 + 30, top, 0x808080); top += 10;
 		
 		top += 20;

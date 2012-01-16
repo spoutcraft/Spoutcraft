@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI (http://spout.org).
  * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by

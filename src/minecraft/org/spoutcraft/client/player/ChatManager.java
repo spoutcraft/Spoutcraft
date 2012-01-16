@@ -1,5 +1,5 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft (http://spout.org).
  * 
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,20 +16,16 @@
  */
 package org.spoutcraft.client.player;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import java.util.LinkedList;
+import java.util.List;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityDragon;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiChat;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.bukkit.ChatColor;
-import java.util.HashMap;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -40,15 +36,29 @@ public class ChatManager {
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;
-	private HashMap<Character, String> boundCommands = new HashMap<Character, String>();
-	public ArrayList<String> pastCommands = new ArrayList<String>(100);
-	public ArrayList<String> pastMessages = new ArrayList<String>(1000);
+	public List<String> pastCommands = new LinkedList<String>();
+	public List<String> pastMessages = new LinkedList<String>();
 	public boolean onChatKeyTyped(char character, int key, GuiChat chat) {
 		try {
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && cursor > 0) {
+			
+			if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 && (!message.startsWith("/") || message.length() < 100)) {
+				if (cursor == 0) {
+					message = character + message;
+				}
+				else if (cursor > 0 && cursor < message.length()) {
+					message = (message.substring(0, cursor) + character + message.substring(cursor));
+				}
+				else {
+					message += character;
+				}
+				updateMessage(message, chat);
+				updateCursor(++cursor, chat);
+			}
+			
+			else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && cursor > 0) {
 				updateCursor(--cursor, chat);
 			}
 			
@@ -145,22 +155,6 @@ public class ChatManager {
 				updateCursor(--cursor, chat);
 				updateMessage(message, chat);
 			}
-			
-			//Messages are infinite length, commands's are limited to 100 chars
-			else if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 && (!message.startsWith("/") || message.length() < 100)) {
-				if (cursor == 0) {
-					message = character + message;
-				}
-				else if (cursor > 0 && cursor < message.length()) {
-					message = (message.substring(0, cursor) + character + message.substring(cursor));
-				}
-				else {
-					message += character;
-				}
-				updateMessage(message, chat);
-				updateCursor(++cursor, chat);
-			}
-
 			//Not handled
 			else {
 				return false;
@@ -226,119 +220,45 @@ public class ChatManager {
 	}
 	
 	public void sendChat(String message) {
-		ArrayList<String> lines = formatChat(message, false);
+		List<String> lines = formatChat(message, false);
 		for (String chat : lines) {
 			SpoutClient.getHandle().thePlayer.sendChatMessage(chat);
 		}
 	}
 	
 	public String formatChatColors(String message) {
-		String text = "";
-		ChatColor last = null;
-		for (int i = 0; i < message.length(); i++) {
-			char ch = message.charAt(i);
-			if (ch == '&' && i < message.length() - 2) {
-				char next = message.charAt(i + 1);
-				int number = -1;
-				String temp = "" + next;
-				if (Character.isDigit(next)) {
-					number = Integer.parseInt(temp);
-					i++;
-				}
-				else if (next >= 'a' && next <= 'f') {
-					number = 10 + next - 'a';
-					i++;
-				}
-				else {
-					text += ch;
-				}
-				if (number > -1 && number < 16) {
-					last = ChatColor.getByCode(number);
-				}
-				if (last != null) {
-					text += last.toString();
-				}
-			}
-			else {
-				text += ch;
-			}
-		}
-		return text;
+		return message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 	}
 	
-	public ArrayList<String> formatChat(String message, boolean display) {
-		ArrayList<String> lines = new ArrayList<String>();
-		FontRenderer font = Minecraft.theMinecraft.fontRenderer;
-		int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getActualWidth() - 6;
+	public List<String> formatChat(String message, boolean display) {
+		final LinkedList<String> lines = new LinkedList<String>();
+		final FontRenderer font = Minecraft.theMinecraft.fontRenderer;
+		final int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getWidth() - 6;
 		
 		if (message.startsWith("/")) {
-			if (message.length() > 100) {
-				lines.add(message.substring(0, 100));
-			}
-			else {
-				lines.add(message);
-			}
+			lines.add(message);
 			return lines;
 		}
 		
-		//First Pass, break up line of text into individual words
-		String[] words = message.split(" ");
-		
-		//Second pass, break up words that exceed the max width of the screen
-		ArrayList<String> properWordList = new ArrayList<String>(100);
-		for (String word : words) {
-			StringBuilder cutoff = new StringBuilder("");
-			StringBuilder newWord = new StringBuilder(word);
-			while (font.getStringWidth(newWord.toString()) > width) {
-				cutoff.append(newWord.charAt(newWord.length() - 1));
-				newWord.deleteCharAt(newWord.length() - 1);
-			}
-			properWordList.add(newWord.toString());
-			if (cutoff.length() > 0) {
-				cutoff.reverse();
-				properWordList.add(cutoff.toString());
-			}
-		}
-		
-		//Third pass, break up words that exceed the max chat length (100 chars)
-		ArrayList<String> wordList = new ArrayList<String>(100);
-		for (String word : properWordList) {
-			do {
-				int len = word.length();
-				String subWord = word.substring(0, Math.min(len, 100));
-				if (subWord.length() != len) {
-					word = word.substring(subWord.length());
-				}
-				else {
-					word = "";
-				}
-				wordList.add(subWord);
-			}
-			while (word.length() > 100);
-			if (!word.isEmpty())
-				wordList.add(word);
-		}
-
-		//Ensure we always have something
-		if (wordList.size() == 0) {
-			wordList.add("");
-		}
-		
-		//Fourth pass, build up lines of chat that are less than the width of the chat bar
-		StringBuffer curLine = new StringBuffer(wordList.get(0));
-		for (int i = 1; i < wordList.size(); i++) {
-			String word = wordList.get(i);
-			if (font.getStringWidth(curLine.toString() + word) < width && (curLine.length() + word.length() < 100)) {
-				curLine.append(" ");
-				curLine.append(word);
+		StringBuilder builder = new StringBuilder(100);
+		int lineWidth = 0;
+		for (int i = 0; i < message.length(); i++) {
+			char ch = message.charAt(i);
+			int charWidth = font.getStringWidth(String.valueOf(ch));
+			if (lineWidth + charWidth < width) {
+				builder.append(ch);
+				lineWidth += charWidth;
 			}
 			else {
-				lines.add(curLine.toString());
-				curLine = new StringBuffer(word);
+				lines.add(builder.toString());
+				builder.delete(0, builder.length());
+				builder.append(ch);
+				lineWidth = charWidth;
 			}
 		}
-		if (curLine.length() > 0) {
-			lines.add(curLine.toString());
+		
+		if (builder.length() > 0) {
+			lines.add(builder.toString());
 		}
 
 		return lines;
@@ -358,43 +278,9 @@ public class ChatManager {
 		}
 	}
 	
-	public void unbind(char ch) {
-		boundCommands.remove(ch);
-	}
-	
-	public void bindCommand(char ch, String command) {
-		boundCommands.put(ch, command);
-	}
-	
-	public String getBoundCommand(char ch) {
-		return boundCommands.get(ch);
-	}
-	
 	public boolean handleCommand(String command) {
 		try {
-			if (command.startsWith("~bind")) {
-				command = command.substring(6); //eat the ~bind prefix
-				String[] split = command.split(" ");
-				char key = split[0].toUpperCase().charAt(0);
-				if (key >= 'A' && key <= 'Z') {
-					command = command.substring(2); //eat the key and the following space
-					if (command.startsWith("/")) {
-						bindCommand(key, command);
-						SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Successfully bound key '" + key + "' to the command '" + command + "'");
-						return true;
-					}
-				}
-			}
-			else if (command.startsWith("~unbind")) {
-				command = command.substring(8); //eat the ~unbind prefix
-				if (command.length() == 1) {
-					char key = command.toUpperCase().charAt(0);
-					unbind(key);
-					SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Successfully unbound key '" + key + "'");
-					return true;
-				}
-			}
-			else if (command.equals("/?") || command.startsWith("/client help")) {
+			 if (command.equals("/?") || command.startsWith("/client help")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Spoutcraft Client Debug Commands:");
 				SpoutClient.getHandle().ingameGUI.addChatMessage("/client gc - run the garbage collector");
 				return true;

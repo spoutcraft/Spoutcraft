@@ -93,7 +93,7 @@ public class ServerItem implements ListWidgetItem {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 		
 		if (databaseId != -1) {
-			String iconUrl = "http://servers.getspout.org/preview/"+databaseId+".png";
+			String iconUrl = "http://servers.spout.org/preview/"+databaseId+".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if(icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
@@ -198,7 +198,7 @@ public class ServerItem implements ListWidgetItem {
 		int iconMargin = 2;
 		
 		if(country != null) {
-			String url = "http://cdn.getspout.org/img/flag/"+country.toLowerCase()+".png";
+			String url = "http://cdn.spout.org/img/flag/"+country.toLowerCase()+".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
 			if(icon != null) {
 				GL11.glPushMatrix();
@@ -245,7 +245,7 @@ public class ServerItem implements ListWidgetItem {
 	public void onClick(int x, int y, boolean doubleClick) {
 		if(doubleClick) {
 			if (databaseId != -1){
-				String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.getspout.org/popular.php?uid=");
+				String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
 				NetworkUtils.pingUrl(url + databaseId);
 			}
 			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");

@@ -504,6 +504,7 @@ public abstract class Minecraft implements Runnable {
 			this.currentScreen = screen;
 
 			if (screen != null) {
+				if (!(screen instanceof GuiChat))
 				this.setIngameNotInFocus();
 				ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
 				int var3 = var2.getScaledWidth();

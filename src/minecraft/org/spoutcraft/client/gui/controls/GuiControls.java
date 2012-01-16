@@ -7,9 +7,9 @@ import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.controls.ControlsModel.ControlsBasicItem;
-import org.spoutcraft.client.gui.controls.ControlsModel.KeyBindingItem;
-import org.spoutcraft.client.gui.controls.ControlsModel.ShortcutBindingItem;
+import org.spoutcraft.client.gui.controls.ControlsBasicItem;
+import org.spoutcraft.client.gui.controls.KeyBindingItem;
+import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
 import org.spoutcraft.client.gui.shortcuts.GuiEditShortcut;
 import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -28,7 +28,7 @@ import org.spoutcraft.spoutcraftapi.gui.Widget;
 public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	private GenericLabel labelTitle, labelDescription;
 	private Button buttonDone, buttonAdd, buttonEdit, buttonRemove;
-	public CheckBox checkVanilla, checkShortcuts, checkBindings;
+	public CheckBox checkVanilla, checkShortcuts, checkBindings, checkSpoutcraft;
 	public ControlsSearch search;
 	private ScrollArea filter;
 	private GenericListView view;
@@ -36,6 +36,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	private static ControlsModel model = null;
 	
 	public static final ChatColor VANILLA_COLOR = ChatColor.YELLOW;
+	public static final ChatColor SPOUTCRAFT_COLOR = ChatColor.RED;
 	public static final ChatColor SHORTCUTS_COLOR = ChatColor.GREEN;
 	public static final ChatColor BINDINGS_COLOR = ChatColor.BLUE;
 
@@ -63,11 +64,13 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		model.setCurrentGui(this);
 		
 		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR+"Vanilla Bindings");
+		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR+"Spoutcraft Bindings");
 		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR+"Shortcuts");
 		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR+"Bindings");
 		search = new ControlsSearch(this);
 		
 		filter.attachWidget(spoutcraft, checkVanilla);
+		filter.attachWidget(spoutcraft, checkSpoutcraft);
 		filter.attachWidget(spoutcraft, checkShortcuts);
 		filter.attachWidget(spoutcraft, checkBindings);
 		
@@ -103,6 +106,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		int ftop = 5;
 		checkVanilla.setX(5).setY(ftop).setWidth(100).setHeight(20);
 		ftop += 25;
+		checkSpoutcraft.setX(5).setY(ftop).setWidth(100).setHeight(20);
+		ftop += 25;
 		checkShortcuts.setX(5).setY(ftop).setWidth(100).setHeight(20);
 		ftop += 25;
 		checkBindings.setX(5).setY(ftop).setWidth(100).setHeight(20);
@@ -136,7 +141,6 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		SimpleKeyBindingManager man = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
 		if(btn.equals(buttonDone)) {
 			mc.displayGuiScreen(parentScreen);
 			return;
@@ -153,10 +157,6 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		ShortcutBindingItem sh = null;
 		if(item != null && item instanceof ShortcutBindingItem) {
 			sh = (ShortcutBindingItem) item;
-		}
-		KeyBindingItem binding = null;
-		if(item != null && item instanceof KeyBindingItem) {
-			binding = (KeyBindingItem) item;
 		}
 		if(sh != null && btn.equals(buttonEdit)) {
 			editItem(sh.getShortcut());

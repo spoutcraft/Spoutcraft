@@ -1,5 +1,5 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * This file is part of Spoutcraft (http://spout.org).
  * 
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,6 @@
  */
 package net.minecraft.src;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +28,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
 
@@ -38,6 +38,7 @@ public class GuiIngame extends Gui{
 	//Spout Improved Chat Start
 	//Increased default size, efficiency reasons
 	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(2500);
+	private static final int RED = (new Color(1.0F, 0F, 0F, 0.65F).toInt());
 	//Spout Improved Chat End
 	public static final Random rand = new Random(); //Spout private -> public static final
 	private Minecraft mc;
@@ -91,7 +92,7 @@ public class GuiIngame extends Gui{
 				this.renderPortalOverlay(var10, screenWidth, screenHeight);
 			}
 		}
-
+		GL11.glBlendFunc(770, 771);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/gui/gui.png"));
 		InventoryPlayer var11 = this.mc.thePlayer.inventory;
@@ -232,7 +233,7 @@ public class GuiIngame extends Gui{
 				GL11.glBlendFunc(770, 771);
 				var17 = 16777215;
 				if(this.recordIsPlaying) {
-					var17 = Color.HSBtoRGB(var24 / 50.0F, 0.7F, 0.6F) & 16777215;
+					var17 = java.awt.Color.HSBtoRGB(var24 / 50.0F, 0.7F, 0.6F) & 16777215;
 				}
 
 				font.drawString(this.recordPlaying, -font.getStringWidth(this.recordPlaying) / 2, -4, var17 + (fontColor << 24));
@@ -271,9 +272,12 @@ public class GuiIngame extends Gui{
 						int y = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
-						chat = ChatManager.formatUrl(chat);
-						//TODO add support for opening URL in browser if clicked?
-						drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
+						if (ConfigReader.highlightMentions && chat.contains(this.mc.thePlayer.username) && !chat.contains(this.mc.thePlayer.username + ">")) {
+							drawRect(x, y - 1, x + 320, y + 8, RED);
+						}
+						else {
+							drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
+						}
 						GL11.glEnable(3042 /*GL_BLEND*/);
 						font.drawStringWithShadow(chat, x, y, 0xffffff + (color << 24));
 					}
@@ -499,6 +503,13 @@ public class GuiIngame extends Gui{
 
 	public void addChatMessage(String s)
 	{
+		
+		//Spout start
+		if (!ConfigReader.showJoinMessages && s.toLowerCase().contains("joined the game")) {
+			return;
+		}
+		//Spout end
+		
 		int i;
 		for(; mc.fontRenderer.getStringWidth(s) > 320; s = s.substring(i))
 		{
