@@ -54,6 +54,7 @@ public class ConfigReader {
 	public static boolean showJoinMessages = true;
 	public static boolean showDamageAlerts = true;
 	public static boolean highlightMentions = true;
+	public static boolean chatGrabsMouse = true;
 
 	public transient static Object[] settings = null;
 	

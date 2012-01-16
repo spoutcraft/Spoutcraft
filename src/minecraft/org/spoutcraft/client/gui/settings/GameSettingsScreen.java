@@ -151,6 +151,12 @@ public class GameSettingsScreen extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
 
+		control = new ChatGrabsMouseCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		top += 22;
+
 		//Graphics
 		label = new GenericLabel("Graphical Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());

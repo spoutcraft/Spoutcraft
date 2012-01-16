@@ -27,6 +27,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
@@ -504,8 +505,9 @@ public abstract class Minecraft implements Runnable {
 			this.currentScreen = screen;
 
 			if (screen != null) {
-				if (!(screen instanceof GuiChat))
-				this.setIngameNotInFocus();
+				if (ConfigReader.chatGrabsMouse || !(screen instanceof GuiChat)) {
+					this.setIngameNotInFocus();
+				}
 				ScaledResolution var2 = new ScaledResolution(this.gameSettings, this.displayWidth, this.displayHeight);
 				int var3 = var2.getScaledWidth();
 				int var4 = var2.getScaledHeight();
