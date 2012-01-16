@@ -44,7 +44,7 @@ public class ChatManager {
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
 			
-			if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 && (!message.startsWith("/") || message.length() < 100)) {
+			if ((ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) && (!message.startsWith("/") || message.length() < 100)) {
 				if (cursor == 0) {
 					message = character + message;
 				}
