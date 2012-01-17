@@ -272,7 +272,23 @@ public class GuiIngame extends Gui{
 						int y = -viewedLine * 9;
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
-						if (ConfigReader.highlightMentions && chat.contains(this.mc.thePlayer.username) && !chat.contains(this.mc.thePlayer.username + ">")) {
+						
+						boolean mentioned = false;
+						if (ConfigReader.highlightMentions) {
+							String[] split = chat.toLowerCase().split(":");
+							if (split.length > 1) {
+								if (!split[0].contains(this.mc.thePlayer.username)) {
+									for (int part = 1; part < split.length; part++) {
+										if (split[part].contains(this.mc.thePlayer.username)) {
+											mentioned = true;
+											break;
+										}
+									}
+								}
+							}
+						}
+						
+						if (mentioned) {
 							drawRect(x, y - 1, x + 320, y + 8, RED);
 						}
 						else {

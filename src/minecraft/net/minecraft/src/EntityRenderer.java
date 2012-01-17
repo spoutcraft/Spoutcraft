@@ -678,6 +678,10 @@ public class EntityRenderer {
 		if (ConfigReader.betterGrass == 2) {
 			RenderBlocks.fancyGrass = true;
 		}
+		
+		if(Thread.currentThread().getPriority() != 10) {
+			Thread.currentThread().setPriority(10);
+		}
 
 		Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees);
 
