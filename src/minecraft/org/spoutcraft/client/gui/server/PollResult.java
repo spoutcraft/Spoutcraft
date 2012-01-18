@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.server;
 
 import java.io.BufferedReader;
@@ -14,20 +39,20 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
-
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class PollResult {
 	protected int ping;
 	protected int players;
 	protected int maxPlayers;
 	protected String motd = "";
-	protected String ip; 
+	protected String ip;
 	protected int port;
-	
+
 	protected int databaseId = -1;
 
 	public static final int PING_POLLING = -1;
@@ -47,7 +72,7 @@ public class PollResult {
 	protected static TIntObjectHashMap<PollResult> recentResults = new TIntObjectHashMap<PollResult>();
 	protected static Thread send = null;
 	private boolean sent = false;
-	
+
 	static {
 		maxPollingThreads = 2 + (5 * Runtime.getRuntime().availableProcessors());
 	}
@@ -100,18 +125,18 @@ public class PollResult {
 
 	public void poll() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if(wasSandboxed) SpoutClient.disableSandbox();
-		if(!isPolling()) {
+		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (!isPolling()) {
 			currentThread = new PollThread();
 			currentThread.start();
 		}
-		if(wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) SpoutClient.enableSandbox();
 	}
 
 	public static PollResult getPoll(String ip, int port, int uid) {
 		String hash = ip + ":" + port;
 		PollResult result = recentResults.get(hash.hashCode());
-		if(result == null) {
+		if (result == null) {
 			result = new PollResult(ip, port, uid);
 			recentResults.put(hash.hashCode(), result);
 			result.poll();
@@ -134,7 +159,7 @@ public class PollResult {
 	public void setDatabaseId(int databaseId) {
 		this.databaseId = databaseId;
 	}
-	
+
 	public boolean isPolling() {
 		return polling;
 	}
@@ -143,7 +168,7 @@ public class PollResult {
 
 		@Override
 		public void run() {
-			while(numPolling >= maxPollingThreads) {
+			while (numPolling >= maxPollingThreads) {
 				try {
 					sleep(10);
 				} catch (InterruptedException e) {}
@@ -169,7 +194,7 @@ public class PollResult {
 				output.write(254);
 
 				//Server will return a packet 255 with the data as string
-				if(input.read() != 255) {
+				if (input.read() != 255) {
 					ping = PING_BAD_MESSAGE;
 					return;
 				}
@@ -194,10 +219,10 @@ public class PollResult {
 			} finally {
 				polling = false;
 				numPolling--;
-				if(numPolling == 0) {
+				if (numPolling == 0) {
 					favorites.setPolling(false);
 				}
-				if(SpoutClient.getHandle().currentScreen instanceof GuiServerInfo) {
+				if (SpoutClient.getHandle().currentScreen instanceof GuiServerInfo) {
 					GuiServerInfo screen = (GuiServerInfo) SpoutClient.getHandle().currentScreen;
 					screen.updateData();
 				}
@@ -209,26 +234,26 @@ public class PollResult {
 				} catch(Exception e) {}
 			}
 		}
-
 	}
 
-
 	/**
-	 * Sends ping, playercount and maximum players to the server list database. 
-	 * No personal data (aside your IP) will be transferred and the IP won't be 
+	 * Sends ping, playercount and maximum players to the server list database.
+	 * No personal data (aside your IP) will be transferred and the IP won't be
 	 * saved. Sending this data to the server makes for a more accurate ping calculation
 	 * and will give you better search results when you order by ping. Our server then
 	 * doesn't have to ping all the servers on its own.
 	 */
 	protected static void sendDCData() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if(wasSandboxed) SpoutClient.disableSandbox();
-		if(send != null) {
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
+		if (send != null) {
 			return;
 		}
 		send = new Thread() {
 			public void run() {
-				while(numPolling > 0) {
+				while (numPolling > 0) {
 					try {
 						Thread.sleep(20);
 					} catch (InterruptedException e) {
@@ -238,14 +263,14 @@ public class PollResult {
 				String api = MirrorUtils.getMirrorUrl("/senddata.php", "http://servers.spout.org/senddata.php");
 				String json = "{";
 				int res = 0;
-				for(PollResult result:recentResults.valueCollection()) {
-					if(result.databaseId != -1 && !result.sent) {
+				for (PollResult result:recentResults.valueCollection()) {
+					if (result.databaseId != -1 && !result.sent) {
 						int ping = result.ping > 0 ? result.ping : -1;
-						if(res > 0) {
+						if (res > 0) {
 							json += ",";
 						}
 						json +="\""+res+"\":{";
-						
+
 						json += keyValue("uid", result.databaseId) + ",";
 						json += keyValue("ping", ping) + ",";
 						json += keyValue("players", result.players) + ",";
@@ -256,8 +281,8 @@ public class PollResult {
 					}
 				}
 				json += "}";
-				
-				if(res > 0) {
+
+				if (res > 0) {
 					URL url;
 					try {
 						url = new URL(api);
@@ -267,25 +292,25 @@ public class PollResult {
 					try {
 						String data = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
 						URLConnection conn = url.openConnection();
-					    conn.setDoOutput(true);
-					    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-					    wr.write(data);
-					    wr.flush();
-					    
-					    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-					    while (rd.readLine() != null) {
-					    }
-					    wr.close();
-					    rd.close();
+						conn.setDoOutput(true);
+						OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+						wr.write(data);
+						wr.flush();
+
+						BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+						while (rd.readLine() != null) {
+						}
+						wr.close();
+						rd.close();
 					} catch (IOException e) {
 					}
-				
+
 				}
 				send = null;
 			}
-			
+
 			public String keyValue(String key, Object value) {
-				if(value instanceof Number) {
+				if (value instanceof Number) {
 					return "\""+key+"\":"+value;
 				} else {
 					return "\""+key+"\":\""+value+"\"";
@@ -293,6 +318,8 @@ public class PollResult {
 			}
 		};
 		send.start();
-		if(wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 }

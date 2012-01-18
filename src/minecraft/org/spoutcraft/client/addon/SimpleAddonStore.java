@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.addon;
 
 import java.io.File;
@@ -9,37 +34,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.yaml.snakeyaml.Yaml;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.addon.AddonStore.DownloadEventDelegate;
-import org.yaml.snakeyaml.Yaml;
 
 public class SimpleAddonStore implements AddonStore {
-
 	private HashMap<String, AddonInfo> addons = new HashMap<String, AddonInfo>();
 	private boolean loading = false;
 
 	public void downloadAddon(int databaseId, DownloadEventDelegate delegate) {
-		//TODO download the addon
-		//TODO create new instance of AddonInfo with the databaseId and register here.
-//		Addon addon = Spoutcraft.getAddonManager().loadAddon(addonFile);
-//		AddonInfo info = new AddonInfo(addon);
-//		info.setDatabaseId(databaseId);
-//		addons.put(addon, info);
-//		save();
+		// TODO download the addon
+		// TODO create new instance of AddonInfo with the databaseId and register here.
+		/* Addon addon = Spoutcraft.getAddonManager().loadAddon(addonFile);
+		AddonInfo info = new AddonInfo(addon);
+		info.setDatabaseId(databaseId);
+		addons.put(addon, info);
+		save(); */
 	}
 
 	public void downloadAddon(String name, DownloadEventDelegate delegate) {
 		// TODO get database-id and call
-//		downloadAddon(databaseId, delegate);
+		/* downloadAddon(databaseId, delegate); */
 	}
 
 	public boolean hasUpdate(Addon addon) {
 		AddonInfo info = getAddonInfo(addon);
-		if(info != null) {
+		if (info != null) {
 			return info.hasUpdate();
 		} else {
 			return false;
@@ -48,7 +73,7 @@ public class SimpleAddonStore implements AddonStore {
 
 	public boolean hasInternetAccess(Addon addon) {
 		AddonInfo info = getAddonInfo(addon);
-		if(info != null) {
+		if (info != null) {
 			return info.hasInternetAccess();
 		} else {
 			return false;
@@ -57,7 +82,7 @@ public class SimpleAddonStore implements AddonStore {
 
 	public long getQuota(Addon addon) {
 		AddonInfo info = getAddonInfo(addon);
-		if(info != null) {
+		if (info != null) {
 			return info.getQuota();
 		} else {
 			return 0;
@@ -66,7 +91,7 @@ public class SimpleAddonStore implements AddonStore {
 
 	public boolean isEnabled(Addon addon) {
 		AddonInfo info = getAddonInfo(addon);
-		if(info != null) {
+		if (info != null) {
 			return info.isEnabled();
 		} else {
 			return false;
@@ -75,7 +100,7 @@ public class SimpleAddonStore implements AddonStore {
 
 	public AddonInfo getAddonInfo(Addon addon) {
 		String name = addon.getDescription().getName();
-		if(addons.containsKey(name)) {
+		if (addons.containsKey(name)) {
 			AddonInfo info = addons.get(name);
 			info.setAddon(addon);
 			return info;
@@ -94,8 +119,8 @@ public class SimpleAddonStore implements AddonStore {
 		try {
 			FileReader reader = null;
 			reader = new FileReader(getDataFile());
-			List<Object> data = (List<Object>) yaml.load(reader);			
-			for(Object obj:data) {
+			List<Object> data = (List<Object>) yaml.load(reader);
+			for (Object obj:data) {
 				try {
 					HashMap<String, Object> item = (HashMap<String, Object>) obj;
 					String name = (String) item.get("name");
@@ -106,7 +131,7 @@ public class SimpleAddonStore implements AddonStore {
 					info.setHasInternetAccess((Boolean) item.get("internetAccess"));
 					addons.put(name, info);
 					System.out.println("Loaded addon info for "+name);
-					
+
 				} catch (ClassCastException ignore) {
 					ignore.printStackTrace();
 				} catch (NullPointerException e) {
@@ -120,16 +145,16 @@ public class SimpleAddonStore implements AddonStore {
 	}
 
 	public void save() {
-		if(loading) {
+		if (loading) {
 			return;
 		}
 		List<Object> data = new ArrayList<Object>();
-		for(AddonInfo info:addons.values()) {
+		for (AddonInfo info:addons.values()) {
 			HashMap<String, Object> item = new HashMap<String, Object>();
 
 			item.put("databaseId", info.getDatabaseId());
 			//Identified by name
-			if(info.getAddon() == null) {
+			if (info.getAddon() == null) {
 				continue;
 			}
 			item.put("name", info.getAddon().getDescription().getName());
@@ -149,5 +174,4 @@ public class SimpleAddonStore implements AddonStore {
 	private File getDataFile() {
 		return new File(FileUtil.getSpoutcraftDirectory(), "addoninfo.yml");
 	}
-
 }

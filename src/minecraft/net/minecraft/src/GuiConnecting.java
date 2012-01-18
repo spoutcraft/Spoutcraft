@@ -42,7 +42,7 @@ public class GuiConnecting extends GuiScreen {
 		"Computing Optimal Bin Packing",
 		"Concatenating Sub-Contractors",
 		"Containing Existential Buffer",
-		"Dailing Mother",
+		"Dialing Mother",
 		"Debarking Ark Ramp",
 		"Debunching Unionized Commercial Services",
 		"Deciding What Message to Display Next",

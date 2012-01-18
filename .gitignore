@@ -1,6 +1,7 @@
 # Compiled source #
 ###################
 bin
+out
 target
 *.com
 *.class
@@ -49,6 +50,11 @@ build
 dist
 nbproject
 build.xml
+
+# IntelliJ IDEA files #
+#######################
+.idea
+.iml
 
 # Minecraft Coder Pack #
 ########################

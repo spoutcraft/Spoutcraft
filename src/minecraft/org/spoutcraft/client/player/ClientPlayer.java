@@ -1,22 +1,35 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.player;
 
 import org.lwjgl.input.Keyboard;
+
+import net.minecraft.src.ChunkCoordinates;
+import net.minecraft.src.EntityPlayerSP;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.InGameScreen;
 import org.spoutcraft.spoutcraftapi.GameMode;
@@ -26,9 +39,6 @@ import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
-
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.EntityPlayerSP;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	private static ClientPlayer instance = null;
@@ -43,13 +53,13 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		}
 		return instance;
 	}
-	
+
 	private ClientPlayer(EntityPlayerSP entity) {
 		super(entity);
 		min = RenderDistance.TINY;
 		max = RenderDistance.FAR;
 	}
-	
+
 	public EntityPlayerSP getHandle() {
 		return (EntityPlayerSP)super.getMCPlayer();
 	}
@@ -69,15 +79,15 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	public void setMinimumView(RenderDistance distance) {
 		min = distance;
 	}
-	
+
 	public RenderDistance getCurrentView() {
 		return RenderDistance.getRenderDistanceFromValue(SpoutClient.getHandle().gameSettings.renderDistance);
 	}
-	
-	public void setCurrentView(RenderDistance view){
+
+	public void setCurrentView(RenderDistance view) {
 		SpoutClient.getHandle().gameSettings.renderDistance = view.getValue();
 	}
-	
+
 	public RenderDistance getNextRenderDistance() {
 		int next = getCurrentView().getValue() + (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? -1 : 1);
 		if (next > min.getValue()) {
@@ -87,11 +97,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		}
 		return RenderDistance.getRenderDistanceFromValue(next);
 	}
-	
+
 	public InGameHUD getMainScreen() {
 		return mainScreen;
 	}
-	
+
 	public void resetMainScreen() {
 		mainScreen = new InGameScreen();
 	}
@@ -99,7 +109,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	public void showAchievement(String title, String message, int id) {
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id);
 	}
-	
+
 	public void showAchievement(String title, String message, int id, int data, int time) {
 		SpoutClient.getHandle().guiAchievement.queueNotification(title, message, id, (short) data, time);
 	}
@@ -147,7 +157,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setSprinting(boolean sprinting) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getExperience() {
@@ -157,7 +167,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setExperience(int exp) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getLevel() {
@@ -167,7 +177,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setLevel(int level) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getTotalExperience() {
@@ -177,7 +187,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setTotalExperience(int exp) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public float getExhaustion() {
@@ -187,7 +197,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setExhaustion(float value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public float getSaturation() {
@@ -197,7 +207,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setSaturation(float value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getFoodLevel() {
@@ -207,7 +217,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setFoodLevel(int value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public GameMode getGameMode() {
@@ -217,6 +227,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public void setGameMode(GameMode mode) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

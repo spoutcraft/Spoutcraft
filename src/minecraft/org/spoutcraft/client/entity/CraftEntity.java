@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.entity;
 
@@ -41,15 +50,15 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
 	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses = new HashMap<Class<? extends Entity>, Class<? extends CraftEntity>>();
-	
+
 	public CraftEntity() {
-		
+
 	}
-	
+
 	public CraftEntity(FixedLocation location) {
-		
+
 	}
-	
+
 	public CraftEntity(net.minecraft.src.Entity handle) {
 		this.handle = handle;
 		addProperty("location", new Property() {
@@ -69,7 +78,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 			}
 		});
 	}
-	
+
 	public Location getLocation() {
 		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ,handle.rotationYaw,handle.rotationPitch);
 	}
@@ -87,7 +96,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	public World getWorld() {
 		return handle.worldObj.world;
 	}
-	
+
 	public boolean teleport(FixedLocation location) {
 		handle.setPosition(location.getX(), location.getY(), location.getZ());
 		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
@@ -147,7 +156,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean eject() {
-		if(!isEmpty()){
+		if (!isEmpty()) {
 			handle.riddenByEntity.ridingEntity = null;
 			handle.riddenByEntity = null;
 			return true;
@@ -166,9 +175,9 @@ public class CraftEntity extends PropertyObject implements Entity {
 	public UUID getUniqueId() {
 		return handle.uniqueId;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static Entity spawn(FixedLocation loc, Class<Entity> clazz){
+	public static Entity spawn(FixedLocation loc, Class<Entity> clazz) {
 		Class<CraftEntity> craftClass = (Class<CraftEntity>) interfacedClasses.get(clazz);
 		CraftEntity ret = null;
 		try {
@@ -199,7 +208,6 @@ public class CraftEntity extends PropertyObject implements Entity {
 		interfacedClasses.put(TextEntity.class, CraftTextEntity.class);
 		interfacedClasses.put(Player.class, SpoutPlayer.class);
 		interfacedClasses.put(Arrow.class, CraftArrow.class);
-		
 	}
 
 	public int getTicksLived() {
@@ -211,6 +219,6 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setSkin(String skinURI, EntitySkinType type) {
-		
+
 	}
 }

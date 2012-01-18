@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.packet;
 
@@ -20,11 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.PacketDecompressionThread;
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
+
+import org.spoutcraft.client.PacketDecompressionThread;
+import org.spoutcraft.client.SpoutClient;
 
 public class CustomPacket extends Packet{
 	public SpoutPacket packet;
@@ -32,7 +41,7 @@ public class CustomPacket extends Packet{
 	private static final int[] nags;
 	protected static final int NAG_MSG_AMT = 10;
 	protected static boolean outdated = false;
-	
+
 	static {
 		int packets = PacketType.values()[PacketType.values().length - 1].getId();
 		nags = new int[packets];
@@ -42,22 +51,20 @@ public class CustomPacket extends Packet{
 	}
 
 	public CustomPacket() {
-		
+
 	}
-	
+
 	public CustomPacket(SpoutPacket packet) {
 		this.packet = packet;
 	}
 
-
 	public int getPacketSize() {
-		if(packet == null) {
+		if (packet == null) {
 			return 8;
 		} else {
 			return packet.getNumBytes() + 8;
 		}
 	}
-
 
 	public void readPacketData(DataInputStream input) throws IOException {
 		final boolean prevOutdated = outdated;
@@ -69,32 +76,28 @@ public class CustomPacket extends Packet{
 		if (packetId > -1 && version > -1) {
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println("Failed to identify packet id: " + packetId);
 				//e.printStackTrace();
 			}
 		}
 		try {
-			if(this.packet == null) {
+			if (this.packet == null) {
 				input.skipBytes(length);
 				System.out.println("Unknown packet " + packetId + ". Skipping contents.");
 				return;
-			}
-			else if (packet.getVersion() != version) {
+			} else if (packet.getVersion() != version) {
 				input.skipBytes(length);
 				//Keep server admins from going insane :p
 				if (nags[packetId]-- > 0) {
 					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
 				outdated = outdated ? true : version > packet.getVersion();
-			}
-			else {
+			} else {
 				packet.readData(input);
 				success = true;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("------------------------");
 			System.out.println("Unexpected Exception: " + PacketType.getPacketFromId(packetId) + ", " + packetId);
 			e.printStackTrace();
@@ -105,9 +108,8 @@ public class CustomPacket extends Packet{
 		}
 	}
 
-
 	public void writePacketData(DataOutputStream output) throws IOException {
-		if(packet == null) {
+		if (packet == null) {
 			output.writeShort(-1);
 			output.writeShort(-1);
 			output.writeInt(0);
@@ -122,38 +124,33 @@ public class CustomPacket extends Packet{
 
 
 	public void processPacket(NetHandler netHandler) {
-		if(packet != null) {
+		if (packet != null) {
 			if (success) {
 				if (packet instanceof CompressablePacket) {
 					PacketDecompressionThread.add((CompressablePacket)packet);
-				}
-				else {
+				} else {
 					try {
 						packet.run(SpoutClient.getHandle().thePlayer.entityId);
-					}
-					catch (Exception e) {
+					} catch (Exception e) {
 						System.out.println("------------------------");
 						System.out.println("Unexpected Exception: " + packet.getPacketType());
 						e.printStackTrace();
 						System.out.println("------------------------");
 					}
 				}
-			}
-			else {
+			} else {
 				try {
 					packet.failure(SpoutClient.getHandle().thePlayer.entityId);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					System.out.println("------------------------");
 					System.out.println("Unexpected Exception: " + packet.getPacketType());
 					e.printStackTrace();
 					System.out.println("------------------------");
 				}
 			}
-			
 		}
 	}
-	
+
 	public static void addClassMapping() {
 		addIdClassMapping(195, true, true, CustomPacket.class);
 	}

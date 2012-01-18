@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.gui;
 
@@ -35,7 +44,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	protected ServerPlayerList playerList;
 	protected PopupScreen activePopup = null;
 	protected LinkedList<PopupScreen> queuedScreens = new LinkedList<PopupScreen>();
-	
+
 	public InGameScreen() {
 		this.health = new HealthBar();
 		this.bubble = new BubbleBar();
@@ -45,12 +54,12 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		this.hunger = new HungerBar();
 		this.exp = new ExpBar();
 		this.playerList = new ServerPlayerList();
-		
+
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		attachWidget(spoutcraft, health).attachWidget(spoutcraft, bubble).attachWidget(spoutcraft, chat).attachWidget(spoutcraft, chatText).attachWidget(spoutcraft, armor).attachWidget(spoutcraft, hunger).attachWidget(spoutcraft, exp).attachWidget(spoutcraft, playerList);
 	}
-	
+
 	public int getVersion() {
 		return 0;
 	}
@@ -62,8 +71,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		}
 		if (activePopup != null) {
 			activePopup.onTick();
-		}
-		else{
+		} else {
 			PopupScreen queued = queuedScreens.poll();
 			if (queued != null) {
 				attachPopupScreen(queued);
@@ -71,7 +79,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		}
 		super.onTick();
 	}
-	
+
 	@Override
 	public InGameScreen attachWidget(Addon addon, Widget widget) {
 		if (canAttachWidget(widget)) {
@@ -80,54 +88,63 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		}
 		throw new UnsupportedOperationException("Unsupported widget type");
 	}
-	
+
 	@Override
 	public boolean updateWidget(Widget widget) {
-		if (widget instanceof HealthBar)
+		if (widget instanceof HealthBar) {
 			health = (HealthBar)widget;
-		else if (widget instanceof BubbleBar)
+		} else if (widget instanceof BubbleBar) {
 			bubble = (BubbleBar)widget;
-		else if (widget instanceof ChatTextBox)
+		} else if (widget instanceof ChatTextBox) {
 			chatText = (ChatTextBox)widget;
-		else if (widget instanceof ChatBar)
+		} else if (widget instanceof ChatBar) {
 			chat = (ChatBar)widget;
-		else if (widget instanceof ArmorBar)
+		} else if (widget instanceof ArmorBar) {
 			armor = (ArmorBar)widget;
-		else if (widget instanceof HungerBar)
+		} else if (widget instanceof HungerBar) {
 			hunger = (HungerBar)widget;
-		else if (widget instanceof ExpBar)
+		} else if (widget instanceof ExpBar) {
 			exp = (ExpBar)widget;
-		else if (widget instanceof ServerPlayerList)
+		} else if (widget instanceof ServerPlayerList) {
 			playerList = (ServerPlayerList)widget;
+		}
 		return super.updateWidget(widget);
 	}
 
 	@Override
 	public Screen removeWidget(Widget widget) {
-		if (widget instanceof HealthBar)
+		if (widget instanceof HealthBar) {
 			throw new UnsupportedOperationException("Cannot remove the health bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof BubbleBar)
+		}
+		if (widget instanceof BubbleBar) {
 			throw new UnsupportedOperationException("Cannot remove the bubble bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof ChatTextBox)
+		}
+		if (widget instanceof ChatTextBox) {
 			throw new UnsupportedOperationException("Cannot remove the chat text box. Use setVisible(false) to hide it instead");
-		if (widget instanceof ChatBar)
+		}
+		if (widget instanceof ChatBar) {
 			throw new UnsupportedOperationException("Cannot remove the chat bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof ArmorBar)
+		}
+		if (widget instanceof ArmorBar) {
 			throw new UnsupportedOperationException("Cannot remove the armor bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof HungerBar)
+		}
+		if (widget instanceof HungerBar) {
 			throw new UnsupportedOperationException("Cannot remove the hunger bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof ExpBar)
+		}
+		if (widget instanceof ExpBar) {
 			throw new UnsupportedOperationException("Cannot remove the exp bar. Use setVisible(false) to hide it instead");
-		if (widget instanceof ServerPlayerList)
+		}
+		if (widget instanceof ServerPlayerList) {
 			throw new UnsupportedOperationException("Cannot remove the player list. Use setVisisble(false) to hide it instead");
+		}
 		return super.removeWidget(widget);
 	}
-	
+
 	@Override
 	public UUID getId() {
 		return new UUID(0, 0);
 	}
-	
+
 	public boolean closePopup() {
 		if (getActivePopup() == null) {
 			return false;
@@ -135,43 +152,43 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		activePopup = null;
 		return true;
 	}
-	
+
 	public HealthBar getHealthBar() {
 		return health;
 	}
-	
+
 	public BubbleBar getBubbleBar() {
 		return bubble;
 	}
-	
+
 	public ChatBar getChatBar() {
 		return chat;
 	}
-	
+
 	public ChatTextBox getChatTextBox() {
 		return chatText;
 	}
-	
+
 	public ArmorBar getArmorBar() {
 		return armor;
 	}
-	
+
 	public HungerBar getHungerBar() {
 		return hunger;
 	}
-	
+
 	public ExpBar getExpBar() {
 		return exp;
 	}
-	
+
 	public ServerPlayerList getServerPlayerList() {
 		return playerList;
 	}
-	
+
 	public PopupScreen getActivePopup() {
 		return activePopup;
 	}
-	
+
 	public boolean attachPopupScreen(PopupScreen screen) {
 		if (getActivePopup() == null) {
 			SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
@@ -180,7 +197,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		queuedScreens.add(screen);
 		return false;
 	}
-	
+
 	public boolean canAttachWidget(Widget widget) {
 		if (widget instanceof Screen) {
 			return false;
@@ -194,11 +211,11 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	public WidgetType getType() {
 		return WidgetType.InGameScreen;
 	}
-	
+
 	public void clearPopup() {
 		activePopup = null;
 	}
-	
+
 	@Override
 	protected boolean canRender(Widget widget) {
 		return super.canRender(widget) && !isCustomWidget(widget);
@@ -211,7 +228,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	public ScreenType getScreenType() {
 		return ScreenType.GAME_SCREEN;
 	}
-	
+
 	public void toggleSurvivalHUD(boolean toggle) {
 		health.setVisible(toggle);
 		bubble.setVisible(toggle);

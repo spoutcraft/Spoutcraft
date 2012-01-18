@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.packet;
 
@@ -24,11 +33,12 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -40,11 +50,11 @@ public class PacketCacheFile implements CompressablePacket {
 	private byte[] fileData;
 	private String fileName;
 	private boolean compressed = false;
-	
+
 	public PacketCacheFile() {
-		
+
 	}
-	
+
 	public PacketCacheFile(String plugin, File file) {
 		this.plugin = plugin;
 		try {
@@ -54,7 +64,7 @@ public class PacketCacheFile implements CompressablePacket {
 		}
 		this.fileName = FileUtil.getFileName(file.getPath());
 	}
-	
+
 	//TODO move to separate thread?
 	public void compress() {
 		if (!compressed) {
@@ -64,26 +74,24 @@ public class PacketCacheFile implements CompressablePacket {
 			deflater.finish();
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(fileData.length);
 			byte[] buffer = new byte[1024];
-			while(!deflater.finished())
-			{
+			while (!deflater.finished()) {
 				int bytesCompressed = deflater.deflate(buffer);
 				bos.write(buffer, 0, bytesCompressed);
 			}
 			try {
 				bos.close();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			fileData = bos.toByteArray();
 			compressed = true;
 		}
 	}
-	
+
 	public boolean isCompressed() {
 		return compressed;
 	}
-	
+
 	public void decompress() {
 		if (compressed) {
 			Inflater decompressor = new Inflater();
@@ -96,16 +104,14 @@ public class PacketCacheFile implements CompressablePacket {
 				try {
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
-				}
-				catch (DataFormatException e) {
-					
+				} catch (DataFormatException e) {
+
 				}
 			}
 			try {
 				bos.close();
-			}
-			catch (IOException e) {
-				
+			} catch (IOException e) {
+
 			}
 
 			fileData = bos.toByteArray();
@@ -155,8 +161,7 @@ public class PacketCacheFile implements CompressablePacket {
 			System.out.println("WARNING, Downloaded File " + fileName + "'s CRC " + calculatedCRC + " did not match the expected CRC: " + expectedCRC);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketPreCacheFile(plugin, fileName, expectedCRC, false));
 			System.out.println("Requesting re-downloaded of File " + fileName);
-		}
-		else if (cache.exists() && FileUtil.isImageFile(fileName)) {
+		} else if (cache.exists() && FileUtil.isImageFile(fileName)) {
 			CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
 		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
@@ -164,7 +169,6 @@ public class PacketCacheFile implements CompressablePacket {
 
 	public void failure(int playerId) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public PacketType getPacketType() {
@@ -174,5 +178,4 @@ public class PacketCacheFile implements CompressablePacket {
 	public int getVersion() {
 		return 1;
 	}
-
 }

@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.chunkcache;
 
@@ -35,7 +44,6 @@ import org.spoutcraft.client.util.ChunkHash;
 import org.spoutcraft.client.util.PersistentMap;
 
 public class ChunkCache {
-
 	private final static int FULL_CHUNK = (128 * 16 * 16 * 5) / 2;
 
 	private static final PersistentMap p;
@@ -57,10 +65,10 @@ public class ChunkCache {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private static byte[] hashData = new byte[2048];
 	private static byte[] blank = new byte[2048];
-	
+
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
 	private static AtomicInteger chunks = new AtomicInteger();
 	private static AtomicInteger totalData = new AtomicInteger();
@@ -70,13 +78,12 @@ public class ChunkCache {
 	public static AtomicLong loggingStart = new AtomicLong();
 	public static AtomicInteger totalPacketUp = new AtomicInteger();
 	public static AtomicInteger totalPacketDown = new AtomicInteger();
-	
-	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize, int cx, int cz) throws IOException {
 
-		if(chunkData.length % FULL_CHUNK != 0) {
+	public static byte[] handle(byte[] chunkData, Inflater inflater, int chunkSize, int cx, int cz) throws IOException {
+		if (chunkData.length % FULL_CHUNK != 0) {
 			return chunkData;
 		}
-		
+
 		int segments = chunkData.length >> 11;
 		int height = chunkData.length / 640;
 		int heightBits = 31 - Integer.numberOfLeadingZeros(height);
@@ -84,19 +91,19 @@ public class ChunkCache {
 		if (hashData.length < cachedSize) {
 			hashData = new byte[cachedSize];
 		}
-		
+
 		int d = totalData.addAndGet(chunkSize);
 		int c = chunks.incrementAndGet();
-		
-		if(c != 0) {
+
+		if (c != 0) {
 			averageChunkSize.set(d/c);
 		}
-				
+
 		long CRC = 0;
 		boolean CRCProvided;
 		try {
 			int hashSize = inflater.inflate(hashData, chunkData.length, segments*8 + 8);
-			if(hashSize == segments * 8 + 8) {
+			if (hashSize == segments * 8 + 8) {
 				CRC = PartitionChunk.getHash(hashData, segments, heightBits);
 				CRCProvided = true;
 			} else {
@@ -105,14 +112,14 @@ public class ChunkCache {
 		} catch (DataFormatException e) {
 			return chunkData;
 		}
-		
+
 		int cacheHit = 0;
-		
-		for(int i = 0; i < segments; i++) {
+
+		for (int i = 0; i < segments; i++) {
 			long hash = PartitionChunk.getHash(hashData, i, heightBits);
 			byte[] partitionData = p.get(hash, partition);
 
-			if(hash == 0) {
+			if (hash == 0) {
 				PartitionChunk.copyFromChunkData(chunkData, i, partition, heightBits);
 				hash = ChunkHash.hash(partition);
 				p.put(hash, partition);
@@ -126,60 +133,60 @@ public class ChunkCache {
 				cacheHit++;
 				PartitionChunk.copyToChunkData(chunkData, i, partitionData, heightBits);
 			}
-			
+
 			// Send hints to server about possible nearby hashes
-			if(hashes.add(hash)) {
+			if (hashes.add(hash)) {
 				Integer index = p.getIndex(hash);
-				if(index != null) {
-					for(int j = index - 1024; j < index + 1024; j++) {
+				if (index != null) {
+					for (int j = index - 1024; j < index + 1024; j++) {
 						Long nearbyHash = p.getHash(j);
-						if(nearbyHash != null && !hashes.contains(nearbyHash) && nearbyHash != 0) {
+						if (nearbyHash != null && !hashes.contains(nearbyHash) && nearbyHash != 0) {
 							hashQueue.add(nearbyHash);
 							hashes.add(nearbyHash);
 						}
 					}
 				}
 				long[] nearbyHashes = new long[hashQueue.size()];
-				for(int j = 0; j < nearbyHashes.length; j++) {
+				for (int j = 0; j < nearbyHashes.length; j++) {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(true, nearbyHashes));
 			}
 		}
-		
+
 		int h = hits.addAndGet(cacheHit);
 		int a = cacheAttempts.addAndGet(segments);
-		if(a != 0) {
+		if (a != 0) {
 			hitPercentage.set((100 * h) / a);
 		}
-				
+
 		byte[] cachedChunkData = new byte[segments * 2048];
 		System.arraycopy(chunkData, 0, cachedChunkData, 0, segments * 2048);
-		
+
 		long CRCNew = ChunkHash.hash(cachedChunkData);
-		
+
 		if (CRCProvided && CRCNew != CRC) {
 			System.out.println("CRC error, received: " + CRC + " CRC of data: " + CRCNew);
 			System.out.println("Requesting chunk resend: " + cx + " " + cz);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketChunkRefresh(cx, cz));
 		}
-		
+
 		return cachedChunkData;
 	}
 
 	private static void processOverwriteQueue() {
 		Long hash;
-		while((hash = p.getOverwritten()) != null) {
-			if(hashes.contains(hash)) {
+		while ((hash = p.getOverwritten()) != null) {
+			if (hashes.contains(hash)) {
 				overwriteQueue.add(hash);
 			} else {
 				p.removeOverwriteBackup(hash);
 			}
 		}
-		if(overwriteQueue.size() > 128) {
+		if (overwriteQueue.size() > 128) {
 			long[] overwrittenHashes = new long[overwriteQueue.size()];
-			for(int j = 0; j < overwrittenHashes.length; j++) {
+			for (int j = 0; j < overwrittenHashes.length; j++) {
 				overwrittenHashes[j] = overwriteQueue.removeFirst();
 			}
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCacheHashUpdate(false, overwrittenHashes));
@@ -201,5 +208,4 @@ public class ChunkCache {
 		hits.set(0);
 		cacheAttempts.set(0);
 	}
-
 }

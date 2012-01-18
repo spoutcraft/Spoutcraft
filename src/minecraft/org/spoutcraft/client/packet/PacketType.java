@@ -1,5 +1,5 @@
 /* This file is part of Spoutcraft (http://spout.org).
- * 
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -43,7 +43,7 @@ public enum PacketType {
 	PacketWidgetRemove(22, PacketWidgetRemove.class),
 	PacketEntitySkin(23, PacketEntitySkin.class),
 	PacketBiomeWeather(24, PacketBiomeWeather.class),
-	PacketChunkRefresh(25, PacketChunkRefresh.class), 
+	PacketChunkRefresh(25, PacketChunkRefresh.class),
 	PacketOpenScreen(26, PacketOpenScreen.class),
 	PacketPreCacheFile(27, PacketPreCacheFile.class),
 	PacketCacheFile(28, PacketCacheFile.class),
@@ -54,11 +54,11 @@ public enum PacketType {
 	PacketFullVersion(33, PacketFullVersion.class),
 	//PacketCustomId(34, PacketCustomId.class),
 	//PacketItemTexture(35, PacketItemTexture.class),
-	//PacketBlockHardness(36, PacketBlockHardness.class), 
+	//PacketBlockHardness(36, PacketBlockHardness.class),
 	PacketOpenSignGUI(37, PacketOpenSignGUI.class),
 	PacketCustomBlockOverride(38, PacketCustomBlockOverride.class),
 	PacketCustomBlockDesign(39, PacketCustomBlockDesign.class),
-	//PacketUniqueId(40, PacketUniqueId.class), 
+	//PacketUniqueId(40, PacketUniqueId.class),
 	PacketKeyBinding(41, PacketKeyBinding.class),
 	PacketBlockData(42, PacketBlockData.class),
 	PacketCustomMultiBlockOverride(43, PacketCustomMultiBlockOverride.class),
@@ -71,11 +71,11 @@ public enum PacketType {
 	PacketGenericBlock(50, PacketGenericBlock.class),
 	PacketCustomBlockChunkOverride(51, PacketCustomBlockChunkOverride.class),
 	PacketGenericFood(52, PacketGenericFood.class),
-	PacketEntityInformation(53, PacketEntityInformation.class), 
-	PacketComboBox(54, PacketComboBox.class), 
+	PacketEntityInformation(53, PacketEntityInformation.class),
+	PacketComboBox(54, PacketComboBox.class),
 	PacketFocusUpdate(55, PacketFocusUpdate.class),
 	;
-	
+
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;
 	private static final HashMap<Integer, PacketType> lookupId = new HashMap<Integer, PacketType>();
@@ -83,20 +83,19 @@ public enum PacketType {
 		this.id = type;
 		this.packetClass = packetClass;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public Class<? extends SpoutPacket> getPacketClass() {
 		return packetClass;
 	}
-	
+
 	public static PacketType getPacketFromId(int id) {
 		return lookupId.get(id);
 	}
-	
-	
+
 	static {
 		for (PacketType packet : values()) {
 			lookupId.put(packet.getId(), packet);

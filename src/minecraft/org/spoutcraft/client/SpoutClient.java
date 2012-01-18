@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client;
 
@@ -34,6 +43,7 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
 import org.newdawn.slick.util.Log;
+
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
@@ -92,7 +102,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final long version = 0L;
-	
+
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final ChatManager chatManager = new ChatManager();
 	private final PacketManager packetManager = new PacketManager();
@@ -126,9 +136,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final ThreadGroup securityThreadGroup;
 	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
-	
-	
-	
+
 	private SpoutClient() {
 		instance = this;
 		securityKey = (new Random()).nextDouble();
@@ -139,13 +147,13 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		//System.setSecurityManager(securityManager);
-		
+
 		((SimpleKeyBindingManager)bindingManager).load();
 		addonStore.load();
 		serverManager.init();
 		Log.setVerbose(false);
 	}
-	
+
 	static {
 		dataMiningThread.start();
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
@@ -154,55 +162,55 @@ public class SpoutClient extends PropertyObject implements Client {
 		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
 	}
-	
+
 	public static SpoutClient getInstance() {
 		if (instance == null) {
 			new SpoutClient();
 			Spoutcraft.setClient(instance);
-						
+
 			//must be done after construtor
 			ServerAddon addon = new ServerAddon("Spoutcraft", Long.toString(version), null);
 			instance.addonManager.addFakeAddon(addon);
 		}
 		return instance;
 	}
-	
+
 	public static long getClientVersion() {
 		return version;
 	}
-	
+
 	public static boolean enableSandbox() {
 		return getInstance().securityManager.lock(getInstance().securityKey);
 	}
-	
+
 	public static boolean enableSandbox(boolean enable) {
 		return getInstance().securityManager.lock(enable, getInstance().securityKey);
 	}
-	
+
 	public static boolean disableSandbox() {
 		return getInstance().securityManager.unlock(getInstance().securityKey);
 	}
-	
+
 	public static boolean isSandboxed() {
 		return getInstance().securityManager.isLocked();
 	}
-	
+
 	public long getServerVersion() {
 		return server;
 	}
-	
+
 	public SkyManager getSkyManager() {
 		return skyManager;
 	}
-	
+
 	public ChatManager getChatManager() {
 		return chatManager;
 	}
-	
+
 	public PacketManager getPacketManager() {
 		return packetManager;
 	}
-	
+
 	public ActivePlayer getActivePlayer() {
 		return player;
 	}
@@ -210,11 +218,11 @@ public class SpoutClient extends PropertyObject implements Client {
 	public BiomeManager getBiomeManager() {
 		return biomeManager;
 	}
-	
+
 	public MaterialManager getMaterialManager() {
 		return materialManager;
 	}
-	
+
 	public World getWorld() {
 		return getHandle().theWorld.world;
 	}
@@ -226,7 +234,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isClearWaterCheat() {
 		return clearwater || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isStarsCheat() {
 		return stars || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -238,11 +246,11 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isTimeCheat() {
 		return time || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isCoordsCheat() {
 		return coords || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public boolean isEntityLabelCheat() {
 		return entitylabel || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
@@ -250,7 +258,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public boolean isVoidFogCheat() {
 		return voidfog || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
-	
+
 	public void setVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog) {
 		this.sky = tsky;
 		this.clearwater = tclearwater;
@@ -260,7 +268,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
 		this.voidfog = tvoidfog;
-		
+
 		if (!isSkyCheat()) {
 			ConfigReader.sky = true;
 		}
@@ -280,11 +288,11 @@ public class SpoutClient extends PropertyObject implements Client {
 			ConfigReader.voidFog = true;
 		}
 	}
-	
+
 	public boolean isSpoutEnabled() {
 		return server >= 0;
 	}
-	
+
 	public void setSpoutVersion(long version) {
 		server = version;
 	}
@@ -293,13 +301,13 @@ public class SpoutClient extends PropertyObject implements Client {
 		tick++;
 		FileDownloadThread.getInstance().onTick();
 		PacketDecompressionThread.onTick();
-		
+
 		enableSandbox();
 		player.getMainScreen().onTick();
 		disableSandbox();
-		
+
 		MipMapUtils.onTick();
-		
+
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 			inWorldTicks++;
@@ -307,7 +315,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (isSpoutEnabled()) {
 			LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity> processed = new LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity>();
 			Iterator<Entity> i = Entity.toProcess.iterator();
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Entity next = i.next();
 				if (next.spoutEntity != null) {
 					processed.add(next.spoutEntity);
@@ -323,7 +331,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public long getTick() {
 		return tick;
 	}
-	
+
 	public long getInWorldTicks() {
 		return inWorldTicks;
 	}
@@ -347,7 +355,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		inWorldTicks = 0L;
 		MaterialData.reset();
 	}
-	
+
 	public void onWorldEnter() {
 		if (player == null) {
 			player = ClientPlayer.getInstance();
@@ -357,8 +365,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
 			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
 			clipboardThread.start();
-		}
-		else if (clipboardThread != null){
+		} else if (clipboardThread != null) {
 			clipboardThread.interrupt();
 			clipboardThread = null;
 		}
@@ -368,7 +375,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
 	}
-	
+
 	public static Minecraft getHandle() {
 		return Minecraft.theMinecraft;
 	}
@@ -384,7 +391,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		return null;
 	}
-	
+
 	public Entity getEntityFromId(int id) {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;
@@ -392,7 +399,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		WorldClient world = (WorldClient)getHandle().theWorld;
 		return world.getEntityByID(id);
 	}
-	
+
 	public boolean dispatchCommand(CommandSender sender, String commandLine) {
 		if (commandMap.dispatch(sender, commandLine)) {
 			return true;
@@ -423,7 +430,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public Mode getMode() {
 		return clientMode;
 	}
-	
+
 	public void setMode(Mode clientMode) {
 		this.clientMode = clientMode;
 	}
@@ -464,14 +471,14 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public void detachCamera(boolean detach) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean isCameraDetached() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public void enableAddons(AddonLoadOrder load) {
 		Addon[] addons = addonManager.getAddons();
 
@@ -481,7 +488,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			}
 		}
 	}
-	
+
 	private void loadAddon(Addon addon) {
 		try {
 			addonManager.enableAddon(addon);
@@ -494,7 +501,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void disableAddons() {
 		addonManager.disableAddons();
 	}
-	
+
 	public void loadAddons() {
 		addonManager.registerInterface(JavaAddonLoader.class);
 
@@ -512,7 +519,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			addonDir.mkdir();
 		}
 	}
-	
+
 	public KeyBindingManager getKeyBindingManager() {
 		return bindingManager;
 	}
@@ -520,35 +527,35 @@ public class SpoutClient extends PropertyObject implements Client {
 	public File getAddonFolder() {
 		return new File(addonFolder);
 	}
-	
+
 	public File getAudioCache() {
 		return getTemporaryCache();
 	}
-	
+
 	public File getTemporaryCache() {
 		return FileUtil.getTempDirectory();
 	}
-	
+
 	public File getTextureCache() {
 		return getTemporaryCache();
 	}
-	
+
 	public File getTexturePackFolder() {
 		return FileUtil.getTexturePackDirectory();
 	}
-	
+
 	public File getSelectedTexturePackZip() {
 		return FileUtil.getSelectedTexturePackZip();
 	}
-	
+
 	public File getStatsFolder() {
 		return FileUtil.getStatsDirectory();
 	}
-	
+
 	public ServerManager getServerManager() {
 		return instance.serverManager;
 	}
-	
+
 	public void send(AddonPacket packet) {
 		getPacketManager().sendSpoutPacket(new PacketAddonData(packet));
 	}
@@ -556,13 +563,13 @@ public class SpoutClient extends PropertyObject implements Client {
 	public TexturePacksModel getTexturePacksModel() {
 		return textureModel;
 	}
-	
+
 	public TexturePacksDatabaseModel getTexturePacksDatabaseModel() {
 		return textureDatabaseModel;
 	}
 
 	public Player[] getPlayers() {
-		if (getWorld() == null){
+		if (getWorld() == null) {
 			return new Player[0];
 		}
 		List<Player> playerList = getWorld().getPlayers();
@@ -586,22 +593,23 @@ public class SpoutClient extends PropertyObject implements Client {
 					found = player;
 					delta = curDelta;
 				}
-				if (curDelta == 0) break;
+				if (curDelta == 0) {
+					break;
+				}
 			}
 		}
 		return found;
 	}
 
 	public Player getPlayerExact(String name) {
-		 String lname = name.toLowerCase();
+		String lname = name.toLowerCase();
 
-			for (Player player : getPlayers()) {
-				if (player.getName().equalsIgnoreCase(lname)) {
-					return player;
-				}
+		for (Player player : getPlayers()) {
+			if (player.getName().equalsIgnoreCase(lname)) {
+				return player;
 			}
-
-			return null;
+		}
+		return null;
 	}
 
 	public List<Player> matchPlayer(String partialName) {
@@ -624,7 +632,7 @@ public class SpoutClient extends PropertyObject implements Client {
 
 		return matchedPlayers;
 	}
-	
+
 	public SimpleAddonStore getAddonStore() {
 		return addonStore;
 	}

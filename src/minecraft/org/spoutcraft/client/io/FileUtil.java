@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.io;
 
@@ -25,10 +34,11 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 
-import net.minecraft.client.Minecraft;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.client.SpoutClient;
 
 public class FileUtil {
@@ -39,29 +49,29 @@ public class FileUtil {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(getSpoutcraftDirectory(), "cache");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
-	
+
 	public static File getSpoutcraftDirectory() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(Minecraft.getMinecraftDir(), "spoutcraft");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
@@ -73,35 +83,35 @@ public class FileUtil {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(getCacheDirectory(), "temp");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
-	
+
 	public static File getStatsDirectory() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(Minecraft.getMinecraftDir(), "stats");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
-	
+
 	public static void migrateOldFiles() {
 		File directory = new File(Minecraft.getMinecraftDir(), "spout");
 		if (directory.exists()) {
@@ -139,29 +149,29 @@ public class FileUtil {
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(Minecraft.getMinecraftDir(), "texturepacks");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
 		return directory;
 	}
-	
+
 	public static File getSelectedTexturePackZip() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
-		
+
 		File directory = new File(getTexturePackDirectory(), Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.texturePackFileName);
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		
+
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
@@ -179,7 +189,7 @@ public class FileUtil {
 		slash = slash > forwardSlash ? slash : forwardSlash;
 		end = end == -1 || lastDot > end ? url.length() : end;
 		String result = url.substring(slash + 1, end).replaceAll("%20", " ");
-		if(url.contains("?")) {
+		if (url.contains("?")) {
 			//Use hashcode instead.
 			String ext = FilenameUtils.getExtension(result);
 			result = url.hashCode() + (!ext.isEmpty()?"." + ext:"");
@@ -212,11 +222,9 @@ public class FileUtil {
 		return false;
 	}
 
-	
 	public static long getCRC(File file, byte[] buffer) {
-
 		FileInputStream in = null;
-		
+
 		try {
 			in = new FileInputStream(file);
 			return getCRC(in, buffer);
@@ -231,11 +239,10 @@ public class FileUtil {
 			}
 		}
 	}
-	
+
 	public static long getCRC(URL url, byte[] buffer) {
-		
 		InputStream in = null;
-		
+
 		try {
 			in = url.openStream();
 			return getCRC(in, buffer);
@@ -249,13 +256,12 @@ public class FileUtil {
 				}
 			}
 		}
-		
+
 	}
 
 	public static long getCRC(InputStream in, byte[] buffer) {
-		
 		long hash = 1;
-		
+
 		int read = 0;
 		int i;
 		while (read >= 0) {
@@ -270,9 +276,8 @@ public class FileUtil {
 		}
 
 		return hash;
-		
 	}
-	
+
 	public static boolean canCache(File file) {
 		String filename = FileUtil.getFileName(file.getPath());
 		return FilenameUtils.isExtension(filename, validExtensions);

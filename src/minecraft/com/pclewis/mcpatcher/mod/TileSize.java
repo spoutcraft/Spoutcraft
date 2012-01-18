@@ -1,7 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
 public final class TileSize {
-
 	public static int int_size;
 	public static int int_sizeMinus1;
 	public static int int_sizeHalf;
@@ -29,7 +28,6 @@ public final class TileSize {
 	public static double double_compassCenterMin;
 	public static double double_compassCenterMax;
 
-
 	public static void setTileSize(int var0) {
 		int_size = var0;
 		int_sizeMinus1 = var0 - 1;
@@ -52,7 +50,7 @@ public final class TileSize {
 		float_size16 = float_size * 16.0F;
 		float_reciprocal = 1.0F / float_size;
 		float_texNudge = 1.0F / (float_size * float_size * 2.0F);
-		if(var0 < 64) {
+		if (var0 < 64) {
 			float_flameNudge = 1.0F + 0.96F / float_size;
 		} else {
 			float_flameNudge = 1.0F + 1.28F / float_size;

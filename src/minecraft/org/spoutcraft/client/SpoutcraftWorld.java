@@ -1,3 +1,4 @@
+
 package org.spoutcraft.client;
 
 import java.util.ArrayList;
@@ -35,14 +36,13 @@ import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
 public class SpoutcraftWorld implements World{
-	
 	private final net.minecraft.src.World handle;
 	private Environment environment;
-	
+
 	public SpoutcraftWorld(net.minecraft.src.World world) {
 		handle = world;
 	}
-	
+
 	public net.minecraft.src.World getHandle() {
 		return handle;
 	}
@@ -57,10 +57,9 @@ public class SpoutcraftWorld implements World{
 
 	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z) {
 		net.minecraft.src.Block b;
-		if (block.getRawId() < net.minecraft.src.Block.blocksList.length){ 
+		if (block.getRawId() < net.minecraft.src.Block.blocksList.length) {
 			b = net.minecraft.src.Block.blocksList[block.getRawId()];
-		}
-		else {
+		} else {
 			b = net.minecraft.src.Block.stone;
 		}
 		return b.getMixedBrightnessForBlock(handle, x, y, z);
@@ -81,11 +80,11 @@ public class SpoutcraftWorld implements World{
 	public Chunk getChunkAt(int x, int y) {
 		return handle.getChunkFromChunkCoords(x, y).spoutChunk;
 	}
-	
+
 	public Chunk getChunkAt(int x, int y, int z) {
 		return handle.getChunkFromBlockCoords(x, z).spoutChunk;
 	}
-	
+
 	public Chunk getChunkAt(FixedLocation location) {
 		return handle.getChunkFromBlockCoords(location.getBlockX(), location.getBlockZ()).spoutChunk;
 	}
@@ -106,7 +105,7 @@ public class SpoutcraftWorld implements World{
 		Set<SpoutcraftChunk> chunks = SpoutcraftChunk.loadedChunks;
 		Chunk[] loaded = new Chunk[chunks.size()];
 		Iterator<SpoutcraftChunk> j = chunks.iterator();
-		for (int i = 0; i < chunks.size(); i++){
+		for (int i = 0; i < chunks.size(); i++) {
 			loaded[i] = j.next();
 		}
 		return loaded;
@@ -115,11 +114,11 @@ public class SpoutcraftWorld implements World{
 	public int getMaxHeight() {
 		return handle.worldHeight;
 	}
-	
+
 	public int getXBitShifts() {
 		return handle.xShift;
 	}
-	
+
 	public int getZBitShifts() {
 		return handle.heightShift;
 	}
@@ -145,7 +144,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public boolean loadChunk(int x, int z, boolean generate) {
-		//TODO ?
+		// TODO ?
 		return false;
 	}
 
@@ -168,16 +167,20 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public long getTime() {
-        long time = getFullTime() % 24000;
-        if (time < 0) time += 24000;
-        return time;
-    }
+		long time = getFullTime() % 24000;
+		if (time < 0) {
+			time += 24000;
+		}
+		return time;
+	}
 
-    public void setTime(long time) {
-        long margin = (time - getFullTime()) % 24000;
-        if (margin < 0) margin += 24000;
-        setFullTime(getFullTime() + margin);
-    }
+	public void setTime(long time) {
+		long margin = (time - getFullTime()) % 24000;
+		if (margin < 0) {
+			margin += 24000;
+		}
+		setFullTime(getFullTime() + margin);
+	}
 
 	public Block getBlockAt(FixedLocation location) {
 		return getChunkAt(location.getBlockX() >> 4, location.getBlockZ() >> 4).getBlockAt(location.getBlockX() & 0xF, location.getBlockY() & 0x7F, location.getBlockZ() & 0xF);
@@ -190,7 +193,7 @@ public class SpoutcraftWorld implements World{
 	public int getBlockTypeIdAt(FixedLocation location) {
 		return getBlockTypeIdAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 	}
-	
+
 	public int getBlockDataAt(int x, int y, int z) {
 		return handle.getBlockMetadata(x, y, z);
 	}
@@ -279,8 +282,8 @@ public class SpoutcraftWorld implements World{
 
 	public List<Entity> getEntities() {
 		ArrayList<Entity> ret = new ArrayList<Entity>();
-		for(Object mcentity:handle.loadedEntityList) {
-			if(mcentity instanceof net.minecraft.src.Entity){
+		for (Object mcentity:handle.loadedEntityList) {
+			if (mcentity instanceof net.minecraft.src.Entity) {
 				ret.add(((net.minecraft.src.Entity)mcentity).spoutEntity);
 			}
 		}
@@ -289,8 +292,8 @@ public class SpoutcraftWorld implements World{
 
 	public List<LivingEntity> getLivingEntities() {
 		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
-		for(Object mcentity:handle.loadedEntityList) {
-			if(mcentity instanceof net.minecraft.src.EntityLiving){
+		for (Object mcentity:handle.loadedEntityList) {
+			if (mcentity instanceof net.minecraft.src.EntityLiving) {
 				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEntity);
 			}
 		}
@@ -299,8 +302,8 @@ public class SpoutcraftWorld implements World{
 
 	public List<Player> getPlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
-		for(Object mcentity:handle.loadedEntityList) {
-			if(mcentity instanceof net.minecraft.src.EntityPlayer){
+		for (Object mcentity:handle.loadedEntityList) {
+			if (mcentity instanceof net.minecraft.src.EntityPlayer) {
 				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEntity);
 			}
 		}
@@ -395,12 +398,10 @@ public class SpoutcraftWorld implements World{
 
 	public void playEffect(FixedLocation location, Effect effect, int data) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public void playEffect(FixedLocation location, Effect effect, int data, int radius) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public ChunkSnapshot getEmptyChunkSnapshot(int x, int z, boolean includeBiome, boolean includeBiomeTempRain) {
@@ -410,7 +411,6 @@ public class SpoutcraftWorld implements World{
 
 	public void setSpawnFlags(boolean allowMonsters, boolean allowAnimals) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public Biome getBiome(int x, int z) {
@@ -439,7 +439,6 @@ public class SpoutcraftWorld implements World{
 
 	public void setKeepSpawnInMemory(boolean keepLoaded) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public boolean isAutoSave() {
@@ -449,9 +448,8 @@ public class SpoutcraftWorld implements World{
 
 	public void setAutoSave(boolean value) {
 		// TODO Auto-generated method stub
-		
 	}
-	
+
 	public boolean isMultiplayerWorld() {
 		return Minecraft.theMinecraft.isMultiplayerWorld();
 	}
@@ -465,7 +463,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public Entity getEntityFromUUID(UUID id) {
-		// TODO 
+		// TODO
 		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 }

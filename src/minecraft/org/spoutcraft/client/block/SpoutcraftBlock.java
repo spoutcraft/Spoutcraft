@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.block;
 
@@ -36,14 +45,14 @@ public class SpoutcraftBlock implements Block{
 	private final int x;
 	private final int y;
 	private final int z;
-	
+
 	public SpoutcraftBlock(SpoutcraftChunk chunk, int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.chunk = chunk;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
@@ -67,7 +76,7 @@ public class SpoutcraftBlock implements Block{
 	public void setHardness(float hardness) {
 		chunk.hardnessOverrides.put(getIndex(), hardness);
 	}
-	
+
 	public void resetHardness() {
 		chunk.hardnessOverrides.remove(getIndex());
 	}
@@ -107,19 +116,18 @@ public class SpoutcraftBlock implements Block{
 	public Chunk getChunk() {
 		return chunk;
 	}
-	
+
 	public byte getData() {
 		return (byte) chunk.getHandle().worldObj.getBlockMetadata(x, y, z);
 	}
-	
+
 	public void setData(byte data, boolean applyPhyiscs) {
 		if (applyPhyiscs) {
 			chunk.getHandle().worldObj.setBlockMetadataWithNotify(x, y, z, data);
-		}
-		else {
+		} else {
 			chunk.getHandle().worldObj.setBlockMetadata(x, y, z, data);
 		}
-		
+
 	}
 
 	public boolean setTypeId(int type, boolean applyPhysics) {
@@ -166,26 +174,26 @@ public class SpoutcraftBlock implements Block{
 
 	public BlockState getState() {
 		Material material = getType();
-		
+
 		if (material == MaterialData.sign || material == MaterialData.signPost || material == MaterialData.wallSign) {
 			return new CraftSign(this);
 		}
-		if (material == MaterialData.chest){
+		if (material == MaterialData.chest) {
 			return new CraftChest(this);
 		}
-		if (material == MaterialData.burningfurnace || material == MaterialData.furnace){
+		if (material == MaterialData.burningfurnace || material == MaterialData.furnace) {
 			return new CraftFurnace(this);
 		}
-		if (material == MaterialData.dispenser){
+		if (material == MaterialData.dispenser) {
 			return new CraftDispenser(this);
 		}
-		if (material == MaterialData.monsterSpawner){
+		if (material == MaterialData.monsterSpawner) {
 			return new CraftCreatureSpawner(this);
 		}
-		if (material == MaterialData.noteblock){
+		if (material == MaterialData.noteblock) {
 			return new CraftCreatureSpawner(this);
 		}
-		if (material == MaterialData.jukebox){
+		if (material == MaterialData.jukebox) {
 			return new CraftJukebox(this);
 		}
 		return new CraftBlockState(this);
@@ -241,12 +249,24 @@ public class SpoutcraftBlock implements Block{
 		int power = 0;
 		BlockRedstoneWire wire = (BlockRedstoneWire) net.minecraft.src.Block.redstoneWire;
 		net.minecraft.src.World world = chunk.getHandle().worldObj;
-		if ((face == BlockFace.DOWN || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y - 1, z, 0)) power = wire.getMaxCurrentStrength(world, x, y - 1, z, power);
-		if ((face == BlockFace.UP || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y + 1, z, 1)) power = wire.getMaxCurrentStrength(world, x, y + 1, z, power);
-		if ((face == BlockFace.EAST || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y, z - 1, 2)) power = wire.getMaxCurrentStrength(world, x, y, z - 1, power);
-		if ((face == BlockFace.WEST || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y, z + 1, 3)) power = wire.getMaxCurrentStrength(world, x, y, z + 1, power);
-		if ((face == BlockFace.NORTH || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x - 1, y, z, 4)) power = wire.getMaxCurrentStrength(world, x - 1, y, z, power);
-		if ((face == BlockFace.SOUTH || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x + 1, y, z, 5)) power = wire.getMaxCurrentStrength(world, x + 1, y, z, power);
+		if ((face == BlockFace.DOWN || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y - 1, z, 0)) {
+			power = wire.getMaxCurrentStrength(world, x, y - 1, z, power);
+		}
+		if ((face == BlockFace.UP || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y + 1, z, 1)) {
+			power = wire.getMaxCurrentStrength(world, x, y + 1, z, power);
+		}
+		if ((face == BlockFace.EAST || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y, z - 1, 2)) {
+			power = wire.getMaxCurrentStrength(world, x, y, z - 1, power);
+		}
+		if ((face == BlockFace.WEST || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x, y, z + 1, 3)) {
+			power = wire.getMaxCurrentStrength(world, x, y, z + 1, power);
+		}
+		if ((face == BlockFace.NORTH || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x - 1, y, z, 4)) {
+			power = wire.getMaxCurrentStrength(world, x - 1, y, z, power);
+		}
+		if ((face == BlockFace.SOUTH || face == BlockFace.SELF) && world.isBlockProvidingPowerTo(x + 1, y, z, 5)) {
+			power = wire.getMaxCurrentStrength(world, x + 1, y, z, power);
+		}
 		return power > 0 ? power : (face == BlockFace.SELF ? isBlockIndirectlyPowered() : isBlockFaceIndirectlyPowered(face)) ? 15 : 0;
 	}
 
@@ -257,11 +277,11 @@ public class SpoutcraftBlock implements Block{
 	public double getHumidity() {
 		return chunk.getHandle().worldObj.getWorldChunkManager().getRainfall(x, z);
 	}
-	
+
 	private int getIndex() {
 		return (x & 0xF) << 11 | (z & 0xF) << 7 | (y & 0x7F);
 	}
-	
+
 	/**
 	 * Notch uses a 0-5 to mean DOWN, UP, EAST, WEST, NORTH, SOUTH
 	 * in that order all over. This method is convenience to convert for us.
@@ -305,7 +325,7 @@ public class SpoutcraftBlock implements Block{
 				return 7;
 		}
 	}
-	
+
 	public org.spoutcraft.spoutcraftapi.material.Block getType() {
 		short customId = chunk.getCustomBlockId(x, y, z);
 		if (customId != 0) {
@@ -313,12 +333,12 @@ public class SpoutcraftBlock implements Block{
 		}
 		return MaterialData.getBlock(getTypeId(), getData());
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		return this == o;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Block{" + "chunk=" + chunk + "x=" + x + "y=" + y + "z=" + z + '}';

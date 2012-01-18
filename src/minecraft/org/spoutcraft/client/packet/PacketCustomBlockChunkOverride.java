@@ -1,18 +1,27 @@
 /*
- * This file is part of SpoutAPI (http://spout.org).
- * 
- * SpoutAPI is free software: you can redistribute it and/or modify
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SpoutAPI is distributed in the hope that it will be useful,
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.packet;
 
@@ -32,11 +41,11 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	private int chunkZ;
 	private byte[] data;
 	private boolean compressed = true;
-	
+
 	public PacketCustomBlockChunkOverride() {
-		
+
 	}
-	
+
 	public PacketCustomBlockChunkOverride(short[] customIds, int x, int z) {
 		chunkX = x;
 		chunkZ = z;
@@ -77,7 +86,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	}
 
 	public void failure(int playerId) {
-		
+
 	}
 
 	public PacketType getPacketType() {
@@ -97,15 +106,13 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 				deflater.finish();
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length);
 				byte[] buffer = new byte[1024];
-				while(!deflater.finished())
-				{
+				while (!deflater.finished()) {
 					int bytesCompressed = deflater.deflate(buffer);
 					bos.write(buffer, 0, bytesCompressed);
 				}
 				try {
 					bos.close();
-				}
-				catch (IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				data = bos.toByteArray();
@@ -126,16 +133,14 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 				try {
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
-				}
-				catch (DataFormatException e) {
-					
+				} catch (DataFormatException e) {
+
 				}
 			}
 			try {
 				bos.close();
-			}
-			catch (IOException e) {
-				
+			} catch (IOException e) {
+
 			}
 
 			data = bos.toByteArray();
@@ -145,5 +150,4 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	public boolean isCompressed() {
 		return compressed;
 	}
-
 }

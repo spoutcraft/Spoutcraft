@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.gui.server;
 
@@ -25,6 +34,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.src.GuiScreen;
 
@@ -39,10 +50,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
-import org.yaml.snakeyaml.Yaml;
 
 public class GuiServerInfo extends GuiSpoutScreen {
-
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
 	private GenericLabel labelTitle, labelAddressLabel, labelAddress, labelMotdLabel, labelMotd, labelDescriptionLabel, labelDescription,
 	labelPlayersLabel, labelPlayers, labelSpoutcraftLabel, labelSpoutcraft, labelAccessLabel, labelAccess,
@@ -73,10 +82,10 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		buttonRefresh = new GenericButton();
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
-		
+
 		buttonAddFavorite = new GenericButton("Add Favorite");
 		getScreen().attachWidget(spoutcraft, buttonAddFavorite);
-		
+
 		buttonJoin = new GenericButton("Join");
 		getScreen().attachWidget(spoutcraft, buttonJoin);
 
@@ -85,7 +94,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		labelTitle = new GenericLabel(item.getTitle());
 		getScreen().attachWidget(spoutcraft, labelTitle);
-		
+
 		buttonOpenBrowser = new GenericButton("More Info...");
 		content.attachWidget(spoutcraft, buttonOpenBrowser);
 
@@ -112,15 +121,15 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		String access = "Open";
 		switch(item.accessType) {
-		case ServerItem.WHITELIST:
-			access = "Whitelist";
-			break;
-		case ServerItem.GRAYLIST:
-			access = "Graylist";
-			break;
-		case ServerItem.BLACKLIST:
-			access = "Blacklist";
-			break;
+			case ServerItem.WHITELIST:
+				access = "Whitelist";
+				break;
+			case ServerItem.GRAYLIST:
+				access = "Graylist";
+				break;
+			case ServerItem.BLACKLIST:
+				access = "Blacklist";
+				break;
 		}
 		labelAccess = new GenericLabel(access);
 		labelAccess.setTextColor(new Color(0xffaaaaaa));
@@ -177,7 +186,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
 
-		for(GenericLabel lbl:labels) {
+		for (GenericLabel lbl:labels) {
 			labelWidth = (int) Math.max(labelWidth, lbl.getTextWidth());
 		}
 		updateButtons();
@@ -191,14 +200,14 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		boolean updating = loadThread != null;
 		buttonRefresh.setEnabled(!updating);
-		if(updating) {
+		if (updating) {
 			buttonRefresh.setText("Loading...");
 		} else {
 			buttonRefresh.setText("Refresh");
 		}
-		
+
 		buttonAddFavorite.setEnabled(!SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item));
-		if(!buttonAddFavorite.isEnabled()) {
+		if (!buttonAddFavorite.isEnabled()) {
 			buttonAddFavorite.setTooltip("You already have this server in your favorites");
 		} else {
 			buttonAddFavorite.setTooltip("");
@@ -215,10 +224,9 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 
-
 		labelTitle.setX(width / 2 - w / 2).setY(5 + 7).setWidth(w).setHeight(11);
 
-		if(labelTitle.getX() + w > width - 110) {
+		if (labelTitle.getX() + w > width - 110) {
 			labelTitle.setX(width - 110 - w);
 		}
 
@@ -282,7 +290,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		buttonOpenBrowser.setX(right).setY(top).setHeight(20).setWidth(cellWidth);
 
 		top += 25;
-		
+
 		buttonJoin.setX(left).setY(height - 25).setHeight(20).setWidth(cellWidth);
 		buttonAddFavorite.setX(center).setY(height - 25).setHeight(20).setWidth(cellWidth);
 		buttonDone.setX(right).setY(height - 25).setHeight(20).setWidth(cellWidth);
@@ -292,21 +300,21 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			mc.displayGuiScreen(back);
 		}
-		if(btn == buttonOpenBrowser) {
+		if (btn == buttonOpenBrowser) {
 			NetworkUtils.openInBrowser("http://servers.spout.org/info/" + item.getDatabaseId());
 		}
-		if(btn == buttonRefresh) {
+		if (btn == buttonRefresh) {
 			refresh();
 		}
-		if(btn == buttonAddFavorite) {
+		if (btn == buttonAddFavorite) {
 			SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
 			SpoutClient.getInstance().getServerManager().getFavorites().save();
 			updateButtons();
 		}
-		if(btn == buttonJoin) {
+		if (btn == buttonJoin) {
 			item.onClick(-1, -1, true);
 		}
 	}
@@ -335,7 +343,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		loadThread = null;
 		updateButtons();
 		try {
-			if(list != null && list.size() > 0) {
+			if (list != null && list.size() > 0) {
 				Map<String, String> i = list.get(1);
 				labelDescription.setText(URLDecoder.decode(i.get("longdescription"), "UTF-8"));
 				linkSite.setUrl(URLDecoder.decode(i.get("site"), "UTF-8"));
@@ -345,14 +353,14 @@ public class GuiServerInfo extends GuiSpoutScreen {
 				labelMCVersion.setText(URLDecoder.decode(i.get("mcversion"), "UTF-8"));
 				labelCategory.setText(URLDecoder.decode(i.get("category"), "UTF-8"));
 			}
-		} catch(UnsupportedEncodingException e){}
+		} catch(UnsupportedEncodingException e) {}
 		layoutWidgets();
 		updateButtons();
 	}
 
 	@Override
 	public void updateScreen() {
-		if(loadThread != null) {
+		if (loadThread != null) {
 			Color color = new Color(0, 1f, 0);
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
@@ -386,12 +394,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		double ratio = (double) imgwidth / (double) imgheight;
 
-		if(imgheight > MAX_HEIGHT) {
+		if (imgheight > MAX_HEIGHT) {
 			imgheight = MAX_HEIGHT;
 			imgwidth = (int) ((double) imgheight * ratio);
 		}
-		
-		if(imgwidth > MAX_WIDTH) {
+
+		if (imgwidth > MAX_WIDTH) {
 			imgwidth = MAX_WIDTH;
 			imgheight = (int) ((double) imgwidth * (1.0/ratio));
 		}

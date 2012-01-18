@@ -1,9 +1,35 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.database;
+
+import org.newdawn.slick.opengl.Texture;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.FontRenderer;
 
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -17,16 +43,16 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 	boolean preferredOrder = true;
 	boolean allowSorting = true;
 	boolean firstClick = false;
-	
+
 	protected AbstractAPIModel model;
 	String url;
-	
+
 	public SortButton(String text, String urlPart, AbstractAPIModel model) {
 		super(text);
 		url = urlPart;
 		this.model = model;
 	}
-	
+
 	public SortButton(String text, String baseUrl, boolean preferredOrder, AbstractAPIModel model) {
 		super(text);
 		url = baseUrl;
@@ -36,7 +62,7 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		if(isSelected() && !firstClick) {
+		if (isSelected() && !firstClick) {
 			topdown = !topdown;
 		}
 		updateUrl();
@@ -45,30 +71,30 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 
 	@Override
 	public RadioButton setSelected(boolean b) {
-		if(!isSelected() && b) {
+		if (!isSelected() && b) {
 			topdown = preferredOrder;
 			firstClick = true;
 		}
 		super.setSelected(b);
 		return this;
 	}
-	
+
 	private void updateUrl() {
 		model.updateUrl();
 	}
-	
+
 	public void setAllowSorting(boolean b) {
 		allowSorting = b;
 	}
-	
+
 	@Override
 	public void render() {
-		if(!allowSorting) {
+		if (!allowSorting) {
 			super.render();
 		} else {
 			MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 			String texture ="";
-			if(isSelected()&&topdown||!isSelected()&&preferredOrder) texture = "ascending.png";
+			if (isSelected()&&topdown||!isSelected()&&preferredOrder) texture = "ascending.png";
 			else texture = "descending.png";
 			Texture direction = CustomTextureManager.getTextureFromJar("/res/"+texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -76,7 +102,7 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 			r.renderBaseBox(this, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = r.getColor(this);
-			if(!isSelected()){
+			if (!isSelected()) {
 				color.setAlpha(0.2F);
 			}
 			r.drawTexture(direction, 20, 20, color, true);

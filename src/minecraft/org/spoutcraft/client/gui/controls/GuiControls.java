@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
@@ -34,14 +59,14 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	private GenericListView view;
 	private GuiScreen parentScreen;
 	private static ControlsModel model = null;
-	
+
 	public static final ChatColor VANILLA_COLOR = ChatColor.YELLOW;
 	public static final ChatColor SPOUTCRAFT_COLOR = ChatColor.RED;
 	public static final ChatColor SHORTCUTS_COLOR = ChatColor.GREEN;
 	public static final ChatColor BINDINGS_COLOR = ChatColor.BLUE;
 
 	public GuiControls(GuiScreen parent) {
-		if(model == null) {
+		if (model == null) {
 			model = new ControlsModel(this);
 		}
 		this.parentScreen = parent;
@@ -62,18 +87,18 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		filter = new GenericScrollArea();
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
-		
+
 		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR+"Vanilla Bindings");
 		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR+"Spoutcraft Bindings");
 		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR+"Shortcuts");
 		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR+"Bindings");
 		search = new ControlsSearch(this);
-		
+
 		filter.attachWidget(spoutcraft, checkVanilla);
 		filter.attachWidget(spoutcraft, checkSpoutcraft);
 		filter.attachWidget(spoutcraft, checkShortcuts);
 		filter.attachWidget(spoutcraft, checkBindings);
-		
+
 		getScreen().attachWidget(spoutcraft, search);
 		getScreen().attachWidget(spoutcraft, labelTitle);
 		getScreen().attachWidget(spoutcraft, filter);
@@ -92,7 +117,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 		int swidth = mc.fontRenderer.getStringWidth(labelTitle.getText());
 		labelTitle.setY(top + 7).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
-		
+
 		search.setX(5).setY(top).setWidth(150).setHeight(20);
 
 		top+=25;
@@ -102,7 +127,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		filter.setX(5).setY(top).setWidth(130).setHeight(sheight);
 
 		view.setX((int) (5 + filter.getX() + filter.getWidth())).setY(top).setWidth((int) (width - 15 - filter.getWidth())).setHeight(sheight);
-		
+
 		int ftop = 5;
 		checkVanilla.setX(5).setY(ftop).setWidth(100).setHeight(20);
 		ftop += 25;
@@ -111,8 +136,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		checkShortcuts.setX(5).setY(ftop).setWidth(100).setHeight(20);
 		ftop += 25;
 		checkBindings.setX(5).setY(ftop).setWidth(100).setHeight(20);
-		
-		for(Widget w:filter.getAttachedWidgets()) {
+
+		for (Widget w:filter.getAttachedWidgets()) {
 			w.setWidth(filter.getViewportSize(Orientation.HORIZONTAL) - 10);
 		}
 		search.setWidth((int) filter.getWidth());
@@ -141,12 +166,12 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn.equals(buttonDone)) {
+		if (btn.equals(buttonDone)) {
 			mc.displayGuiScreen(parentScreen);
 			return;
 		}
 
-		if(btn.equals(buttonAdd)) {
+		if (btn.equals(buttonAdd)) {
 			Shortcut sh = new Shortcut();
 			sh.setTitle("");
 			sh.setKey(Keyboard.KEY_UNKNOWN.getKeyCode());
@@ -155,16 +180,16 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		}
 		ControlsBasicItem item = model.getItem(view.getSelectedRow());
 		ShortcutBindingItem sh = null;
-		if(item != null && item instanceof ShortcutBindingItem) {
+		if (item != null && item instanceof ShortcutBindingItem) {
 			sh = (ShortcutBindingItem) item;
 		}
-		if(sh != null && btn.equals(buttonEdit)) {
+		if (sh != null && btn.equals(buttonEdit)) {
 			editItem(sh.getShortcut());
-		} else if(btn.equals(buttonEdit) && item != null) {
+		} else if (btn.equals(buttonEdit) && item != null) {
 			model.setEditing(item);
 		}
 	}
-	
+
 	public void editItem(Shortcut item) {
 		GuiEditShortcut gui = new GuiEditShortcut(this, item);
 		mc.displayGuiScreen(gui);
@@ -179,32 +204,32 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	@Override
 	protected void keyTyped(char c, int i) {
 		ControlsBasicItem item = model.getEditingItem();
-		if(item != null) {
-			if(item.useModifiers() && !SimpleKeyBindingManager.isModifierKey(i)) {
+		if (item != null) {
+			if (item.useModifiers() && !SimpleKeyBindingManager.isModifierKey(i)) {
 				item.setModifiers(SimpleKeyBindingManager.getPressedModifiers());
 				item.setKey(i);
 				model.finishEdit();
-			} else if(!item.useModifiers()){
+			} else if (!item.useModifiers()) {
 				item.setKey(i);
 				model.finishEdit();
 			}
 		}
 	}
-	
+
 	@Override
 	public void handleKeyboardInput() {
 		ControlsBasicItem item = model.getEditingItem();
-		if(item != null && org.lwjgl.input.Keyboard.getEventKeyState()) {
+		if (item != null && org.lwjgl.input.Keyboard.getEventKeyState()) {
 			this.keyTyped(org.lwjgl.input.Keyboard.getEventCharacter(), org.lwjgl.input.Keyboard.getEventKey());
 		} else {
 			super.handleKeyboardInput();
 		}
 	}
-	
+
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		ControlsBasicItem item = model.getEditingItem();
-		if(item != null && item.useMouseButtons()) {
+		if (item != null && item.useMouseButtons()) {
 			item.setKey(ControlsModel.MOUSE_OFFSET + button);
 			model.finishEdit();
 		}
@@ -218,22 +243,21 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		SimpleKeyBindingManager man = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
 		ControlsBasicItem item = model.getItem(view.getSelectedRow());
 		ShortcutBindingItem sh = null;
-		if(item != null && item instanceof ShortcutBindingItem) {
+		if (item != null && item instanceof ShortcutBindingItem) {
 			sh = (ShortcutBindingItem) item;
 		}
 		KeyBindingItem binding = null;
-		if(item != null && item instanceof KeyBindingItem) {
+		if (item != null && item instanceof KeyBindingItem) {
 			binding = (KeyBindingItem) item;
 		}
-		if(sh != null) {
+		if (sh != null) {
 			man.unregisterShortcut(sh.getShortcut());
 			man.save();
 			model.refresh();
-		} else if(binding != null) {
+		} else if (binding != null) {
 			man.unregisterControl(binding.getBinding());
 			man.save();
 			model.refresh();
 		}
 	}
-
 }

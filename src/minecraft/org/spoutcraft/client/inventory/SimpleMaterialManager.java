@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.inventory;
 
 import gnu.trove.map.hash.TIntByteHashMap;
@@ -23,19 +48,20 @@ public class SimpleMaterialManager implements MaterialManager {
 	private final TIntPairObjectHashMap<String> customNames = new TIntPairObjectHashMap<String>(100);
 	private final TIntPairObjectHashMap<String> customTextures = new TIntPairObjectHashMap<String>(100);
 	private final TIntPairObjectHashMap<String> customTexturesPlugin = new TIntPairObjectHashMap<String>(100);
-	
+
 	public float getFriction(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
-		
+
 		return net.minecraft.src.Block.blocksList[id].slipperiness;
 	}
+
 	public void setFriction(org.spoutcraft.spoutcraftapi.material.Block block, float friction) {
 		int id = block.getRawId();
 		int data = block.getRawData();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (!originalFriction.containsKey(id, data)) {
@@ -43,10 +69,11 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		net.minecraft.src.Block.blocksList[id].slipperiness = friction;
 	}
+
 	public void resetFriction(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
 		int data = block.getRawData();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (originalFriction.containsKey(id, data)) {
@@ -54,24 +81,27 @@ public class SimpleMaterialManager implements MaterialManager {
 			originalFriction.remove(id, data);
 		}
 	}
+
 	public float getHardness(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		return net.minecraft.src.Block.blocksList[id].getHardness();
 	}
+
 	public void setHardness(org.spoutcraft.spoutcraftapi.material.Block block, float hardness) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		net.minecraft.src.Block.blocksList[id].blockHardness = hardness;
 	}
+
 	public void resetHardness(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
 		int data = block.getRawData();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (originalHardness.containsKey(id, data)) {
@@ -79,16 +109,18 @@ public class SimpleMaterialManager implements MaterialManager {
 			originalHardness.remove(id, data);
 		}
 	}
+
 	public boolean isOpaque(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		return net.minecraft.src.Block.opaqueCubeLookup[id];
 	}
+
 	public void setOpaque(org.spoutcraft.spoutcraftapi.material.Block block, boolean opacity) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (!originalOpacity.containsKey(id)) {
@@ -96,27 +128,29 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		net.minecraft.src.Block.opaqueCubeLookup[id] = opacity;
 	}
+
 	public void resetOpacity(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (originalOpacity.containsKey(id)) {
 			setOpaque(block, originalOpacity.get(id) != 0);
 			originalOpacity.remove(id);
 		}
-		
 	}
+
 	public int getLightLevel(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		return net.minecraft.src.Block.lightValue[id];
 	}
+
 	public void setLightLevel(org.spoutcraft.spoutcraftapi.material.Block block, int level) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (!originalLight.containsKey(id)) {
@@ -124,28 +158,30 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		net.minecraft.src.Block.lightValue[id] = level;
 	}
+
 	public void resetLightLevel(org.spoutcraft.spoutcraftapi.material.Block block) {
 		int id = block.getRawId();
-		if(block instanceof CustomBlock) {
+		if (block instanceof CustomBlock) {
 			id = ((CustomBlock) block).getBlockId();
 		}
 		if (originalLight.containsKey(id)) {
 			setLightLevel(block, originalLight.get(id));
 			originalLight.remove(id);
 		}
-		
 	}
+
 	public void setItemName(Material item, String name) {
 		customNames.put(item.getRawId(), item.getRawData(), name);
 	}
+
 	public void resetName(Material item) {
 		int id = item.getRawId();
 		int data = item.getRawData();
 		if (customNames.containsKey(id, data)) {
 			customNames.remove(id, data);
 		}
-		
 	}
+
 	public void setItemTexture(Material item, Addon addon, String texture) {
 		int id = item.getRawId();
 		int data = item.getRawData();
@@ -161,8 +197,8 @@ public class SimpleMaterialManager implements MaterialManager {
 		} else {
 			customTexturesPlugin.put(id, data, addonName);
 		}
-		
 	}
+
 	public String getCustomItemTexture(Material item) {
 		if (item == null) return null;
 		int id = item.getRawId();
@@ -172,6 +208,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		return null;
 	}
+
 	public String getCustomItemTextureAddon(Material item) {
 		if (item == null) return null;
 		int id = item.getRawId();
@@ -181,6 +218,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		}
 		return null;
 	}
+
 	public void resetTexture(Material item) {
 		int id = item.getRawId();
 		int data = item.getRawData();
@@ -188,6 +226,7 @@ public class SimpleMaterialManager implements MaterialManager {
 			customTextures.remove(id, data);
 		}
 	}
+
 	public void reset() {
 		for (Material next : MaterialData.getMaterials()) {
 			if (next instanceof org.spoutcraft.spoutcraftapi.material.Block) {
@@ -199,9 +238,10 @@ public class SimpleMaterialManager implements MaterialManager {
 			}
 		}
 	}
+
 	public boolean registerRecipe(Recipe recipe) {
 		SpoutcraftRecipe toAdd;
-		
+
 		if (recipe instanceof ShapedRecipe) {
 			toAdd = SimpleShapedRecipe.fromSpoutRecipe((ShapedRecipe) recipe);
 		} else if (recipe instanceof ShapelessRecipe) {
@@ -209,7 +249,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		} else {
 			return false;
 		}
-		
+
 		toAdd.addToCraftingManager();
 		return true;
 	}

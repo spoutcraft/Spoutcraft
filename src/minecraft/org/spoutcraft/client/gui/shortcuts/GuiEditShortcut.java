@@ -1,4 +1,31 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.shortcuts;
+
+import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
@@ -16,8 +43,6 @@ import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-import net.minecraft.src.GuiScreen;
-
 public class GuiEditShortcut extends GuiScreen {
 	GuiControls parent;
 	Shortcut item;
@@ -27,13 +52,13 @@ public class GuiEditShortcut extends GuiScreen {
 	GuiCommandsSlot slot;
 	int editingIndex = -1;
 	Color grey = new Color(0xC0C0C0);
-	
+
 	boolean recording = false;
 	public GuiEditShortcut(GuiControls guiControls, Shortcut item) {
 		this.parent = guiControls;
 		this.item = item;
 	}
-	
+
 	public void drawScreen(int var1, int var2, float var3) {
 		typeNameHereLabel.setVisible(commandName.getText().length() == 0 && !commandName.isFocus());
 		typeCommandHereLabel.setVisible(commandText.getText().length() == 0 && !commandText.isFocus());
@@ -41,9 +66,9 @@ public class GuiEditShortcut extends GuiScreen {
 		drawDefaultBackground();
 		super.drawScreen(var1, var2, var3);
 	}
-	
+
 	protected void keyTyped(char c, int i) {
-		if(recording && !SimpleKeyBindingManager.isModifierKey(i)) {
+		if (recording && !SimpleKeyBindingManager.isModifierKey(i)) {
 			item.setKey(i);
 			item.setRawModifiers((byte)0);
 			SimpleKeyBindingManager.setModifiersToShortcut(item);
@@ -53,7 +78,7 @@ public class GuiEditShortcut extends GuiScreen {
 			super.keyTyped(c, i);
 		}
 	}
-	
+
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		recordLabel = new GenericLabel("Key:");
@@ -61,20 +86,20 @@ public class GuiEditShortcut extends GuiScreen {
 		recordLabel.setWidth(50).setHeight(20);
 		recordLabel.setX(68 + width / 2).setY(10);
 		getScreen().attachWidget(spoutcraft, recordLabel);
-		
+
 		recordButton = new GenericButton();
 		recordButton.setAlign(WidgetAnchor.CENTER_CENTER);
 		recordButton.setHeight(20).setWidth(100);
 		recordButton.setX(90 + width / 2).setY(5);
 		getScreen().attachWidget(spoutcraft, recordButton);
 		updateRecordButton();
-		
+
 		titleLabel = new GenericLabel("Name:");
 		titleLabel.setAlign(WidgetAnchor.TOP_LEFT);
 		titleLabel.setWidth(50).setHeight(20);
 		titleLabel.setX(10).setY(10);
 		getScreen().attachWidget(spoutcraft, titleLabel);
-		
+
 		commandName = new GenericTextField();
 		commandName.setHeight(16).setWidth(width / 2);
 		commandName.setX(58).setY(8);
@@ -82,7 +107,7 @@ public class GuiEditShortcut extends GuiScreen {
 		commandName.setFocus(true);
 		commandName.setMaximumCharacters(40);
 		getScreen().attachWidget(spoutcraft, commandName);
-		
+
 		typeNameHereLabel = new GenericLabel("Enter a name for your shortcut");
 		typeNameHereLabel.setAlign(WidgetAnchor.TOP_LEFT);
 		typeNameHereLabel.setWidth(width / 2).setHeight(20);
@@ -90,20 +115,20 @@ public class GuiEditShortcut extends GuiScreen {
 		typeNameHereLabel.setTextColor(grey);
 		typeNameHereLabel.setPriority(RenderPriority.Low);
 		getScreen().attachWidget(spoutcraft, typeNameHereLabel);
-		
+
 		commandLabel = new GenericLabel("Command:");
 		commandLabel.setAlign(WidgetAnchor.TOP_LEFT);
 		commandLabel.setWidth(50).setHeight(20);
 		commandLabel.setX(10).setY(36);
 		getScreen().attachWidget(spoutcraft, commandLabel);
-		
+
 		commandText = new GenericTextField();
 		commandText.setHeight(16).setWidth(355);
 		commandText.setX(58).setY(33);
 		commandText.setFocus(true);
 		commandText.setMaximumCharacters(99);
 		getScreen().attachWidget(spoutcraft, commandText);
-		
+
 		typeCommandHereLabel = new GenericLabel("Enter a command or chat message");
 		typeCommandHereLabel.setAlign(WidgetAnchor.TOP_LEFT);
 		typeCommandHereLabel.setWidth(width / 2).setHeight(20);
@@ -111,38 +136,38 @@ public class GuiEditShortcut extends GuiScreen {
 		typeCommandHereLabel.setTextColor(grey);
 		typeCommandHereLabel.setPriority(RenderPriority.Low);
 		getScreen().attachWidget(spoutcraft, typeCommandHereLabel);
-		
+
 		slot = new GuiCommandsSlot(this);
 		getScreen().attachWidget(spoutcraft, slot);
-		
+
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
 		doneButton.setX(10).setY(height-25);
 		getScreen().attachWidget(spoutcraft, doneButton);
-		
+
 		addButton = new GenericButton("Add Command");
 		addButton.setHeight(20).setWidth(100);
 		addButton.setX(70).setY(height-25);
 		getScreen().attachWidget(spoutcraft, addButton);
-		
+
 		editButton = new GenericButton("Edit Command");
 		editButton.setHeight(20).setWidth(100);
 		editButton.setX(180).setY(height-25);
 		getScreen().attachWidget(spoutcraft, editButton);
-		
+
 		removeButton = new GenericButton("Remove Command");
 		removeButton.setHeight(20).setWidth(100);
 		removeButton.setX(290).setY(height-25);
 		getScreen().attachWidget(spoutcraft, removeButton);
-		
+
 		updateButtons();
-		
+
 		commandName.setFocus(true);
 	}
-	
+
 	private void updateRecordButton() {
 		String keyname = recording?"Press a key!":"Click Here!";
-		if(item.getKey()>=0 && !recording){
+		if (item.getKey()>=0 && !recording) {
 			keyname = item.toString();
 		}
 		String name = (recording?"> ":"")+keyname+(recording?" <":"");
@@ -151,13 +176,13 @@ public class GuiEditShortcut extends GuiScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if (btn.equals(recordButton)){
+		if (btn.equals(recordButton)) {
 			recording = !recording;
 			updateRecordButton();
 		}
-		if (btn.equals(doneButton)){
+		if (btn.equals(doneButton)) {
 			item.setTitle(commandName.getText());
-			if(!item.getTitle().equals("") && item.getKey() != -1) {
+			if (!item.getTitle().equals("") && item.getKey() != -1) {
 				SimpleKeyBindingManager manager = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
 				manager.unregisterShortcut(item);
 				manager.registerShortcut(item);
@@ -165,31 +190,30 @@ public class GuiEditShortcut extends GuiScreen {
 			mc.displayGuiScreen(parent);
 			parent.getModel().refresh();
 		}
-		if (btn.equals(addButton)){
-			if (editingIndex != -1){
+		if (btn.equals(addButton)) {
+			if (editingIndex != -1) {
 				addButton.setText("Add Command");
 				item.setTitle(commandName.getText());
 				item.getCommands().set(editingIndex, commandText.getText());
 				editingIndex = -1;
-			}
-			else {
+			} else {
 				item.addCommand(commandText.getText());
 			}
-			
+
 			commandText.setText("");
 			slot.updateItems();
 			updateButtons();
 		}
-		if (btn.equals(editButton)){
+		if (btn.equals(editButton)) {
 			editCommand(slot.getSelectedRow());
 		}
-		if (btn.equals(removeButton)){
+		if (btn.equals(removeButton)) {
 			item.removeCommand(slot.getSelectedRow());
 			slot.updateItems();
 			updateButtons();
 		}
 	}
-	
+
 	public void editCommand(int index) {
 		if (index != -1) {
 			editingIndex = index;
@@ -197,12 +221,12 @@ public class GuiEditShortcut extends GuiScreen {
 			addButton.setText("Finish Editing");
 		}
 	}
-	
+
 	public void updateButtons() {
 		editButton.setEnabled(slot.getSelectedRow() != -1);
 		removeButton.setEnabled(slot.getSelectedRow() != -1);
 	}
-	
+
 	public Shortcut getShortcut() {
 		return item;
 	}

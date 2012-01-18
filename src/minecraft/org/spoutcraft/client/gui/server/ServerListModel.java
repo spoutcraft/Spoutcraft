@@ -1,6 +1,29 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.server;
-
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,15 +38,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+import org.yaml.snakeyaml.Yaml;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.AbstractAPIModel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.yaml.snakeyaml.Yaml;
 
 public class ServerListModel extends AbstractAPIModel {
-
 	protected TIntObjectHashMap<ServerDataBaseEntry> dbEntries = new TIntObjectHashMap<ServerDataBaseEntry>();
 	protected List<String> countries = new LinkedList<String>();
 
@@ -32,14 +56,14 @@ public class ServerListModel extends AbstractAPIModel {
 		refreshAPIData(API+"?random", 0, true);
 		loadCountries();
 	}
-	
+
 	public String getAPI() {
 		return API;
 	}
 
 	private void loadCountries() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if(wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) SpoutClient.disableSandbox();
 		new Thread() {
 			public void run() {
 				//long start = System.currentTimeMillis();
@@ -62,8 +86,8 @@ public class ServerListModel extends AbstractAPIModel {
 				//System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 				synchronized (countries) {
 					countries.clear();
-					for(String c:yamlObj) {
-						if(!c.trim().isEmpty()) {
+					for (String c:yamlObj) {
+						if (!c.trim().isEmpty()) {
 							countries.add(c);
 						}
 					}
@@ -75,7 +99,7 @@ public class ServerListModel extends AbstractAPIModel {
 				}
 			}
 		}.start();
-		if(wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) SpoutClient.enableSandbox();
 	}
 
 	public String getDefaultUrl() {
@@ -87,15 +111,15 @@ public class ServerListModel extends AbstractAPIModel {
 	 * @param clear
 	 */
 	protected void refreshList(boolean clear) {
-		if(clear) {
+		if (clear) {
 			lastPage = 0;
 			entries.clear();
-			for(GenericListView view:getViews()) {
+			for (GenericListView view:getViews()) {
 				view.setScrollPosition(Orientation.VERTICAL, 0);
 			}
 		}
-		for(Object item:apiData) {
-			try{
+		for (Object item:apiData) {
+			try {
 				HashMap<String, Object> hash = (HashMap<String, Object>) item;
 				String name = URLDecoder.decode((String) hash.get("name"), "UTF-8");
 				name = name.replaceAll("\\&amp\\;", "&");
@@ -110,14 +134,14 @@ public class ServerListModel extends AbstractAPIModel {
 				server.setCountry(country);
 				server.setAccessType(accessType);
 				entries.add(server);
-			} catch(UnsupportedEncodingException e){}
+			} catch(UnsupportedEncodingException e) {}
 			catch(Exception e2) { continue; }
 		}
 		update();
 	}
 
 	public ServerDataBaseEntry getServerDBEntry(int uid) {
-		if(dbEntries.contains(uid)) {
+		if (dbEntries.contains(uid)) {
 			return dbEntries.get(uid);
 		} else {
 			return null;
@@ -126,8 +150,8 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public List<ServerItem> getServers() {
 		ArrayList<ServerItem> servers = new ArrayList<ServerItem>();
-		for(ListWidgetItem item:entries) {
-			if(item instanceof ServerItem) {
+		for (ListWidgetItem item:entries) {
+			if (item instanceof ServerItem) {
 				servers.add((ServerItem)item);
 			}
 		}

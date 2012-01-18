@@ -24,8 +24,6 @@ import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.ColorizerGrass;
@@ -44,8 +42,9 @@ import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TextureWaterFlowFX;
 
-public class TextureUtils {
+import org.spoutcraft.client.SpoutClient;
 
+public class TextureUtils {
 	public static Minecraft minecraft;
 	private static boolean animatedFire = true;
 	private static boolean animatedLava = true;
@@ -70,7 +69,7 @@ public class TextureUtils {
 
 	public static boolean setTileSize() {
 		int size = getTileSize();
-		if(size == TileSize.int_size) {
+		if (size == TileSize.int_size) {
 			//unchanged
 			return false;
 		} else {
@@ -83,7 +82,7 @@ public class TextureUtils {
 		//MCPatcherUtils.log("setFontRenderer()", new Object[0]);
 		Minecraft game = SpoutClient.getHandle();
 		game.fontRenderer.initialize(game.gameSettings, "/font/default.png", game.renderEngine);
-		if(game.standardGalacticFontRenderer != game.fontRenderer) {
+		if (game.standardGalacticFontRenderer != game.fontRenderer) {
 			game.standardGalacticFontRenderer.initialize(game.gameSettings, "/font/alternate.png", game.renderEngine);
 		}
 
@@ -91,7 +90,7 @@ public class TextureUtils {
 
 	public static void registerTextureFX(List var0, TextureFX var1) {
 		TextureFX var2 = refreshTextureFX(var1);
-		if(var2 != null) {
+		if (var2 != null) {
 			var0.add(var2);
 			var2.onTick();
 		}
@@ -99,12 +98,12 @@ public class TextureUtils {
 	}
 
 	private static TextureFX refreshTextureFX(TextureFX var0) {
-		if(!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX) && !(var0 instanceof CustomAnimation)) {
+		if (!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX) && !(var0 instanceof CustomAnimation)) {
 			System.out.printf("attempting to refresh unknown animation %s\n", new Object[]{var0.getClass().getName()});
 			Minecraft var1 = SpoutClient.getHandle();
 			Class var2 = var0.getClass();
 
-			for(int var3 = 0; var3 < 3; ++var3) {
+			for (int var3 = 0; var3 < 3; ++var3) {
 				try {
 					Constructor var4;
 					switch(var3) {
@@ -127,7 +126,7 @@ public class TextureUtils {
 				}
 			}
 
-			if(var0.imageData.length != TileSize.int_numBytes) {
+			if (var0.imageData.length != TileSize.int_numBytes) {
 				//MCPatcherUtils.log("resizing %s buffer from %d to %d bytes", new Object[]{var2.getName(), Integer.valueOf(var0.imageData.length), Integer.valueOf(TileSize.int_numBytes)});
 				var0.imageData = new byte[TileSize.int_numBytes];
 			}
@@ -143,10 +142,10 @@ public class TextureUtils {
 		ArrayList var1 = new ArrayList();
 		Iterator var2 = textureFXs.iterator();
 
-		while(var2.hasNext()) {
+		while (var2.hasNext()) {
 			TextureFX var3 = (TextureFX)var2.next();
 			TextureFX var4 = refreshTextureFX(var3);
-			if(var4 != null) {
+			if (var4 != null) {
 				var1.add(var4);
 			}
 		}
@@ -157,44 +156,43 @@ public class TextureUtils {
 		textureFXs.add(new TextureWatchFX(game));
 		TexturePackBase var10 = getSelectedTexturePack();
 		boolean var11 = var10 == null || var10 instanceof TexturePackDefault;
-		if(!var11 && customLava) {
+		if (!var11 && customLava) {
 			textureFXs.add(new CustomAnimation(237, 0, 1, "lava_still", -1, -1));
 			textureFXs.add(new CustomAnimation(238, 0, 2, "lava_flowing", 3, 6));
-		} else if(animatedLava) {
+		} else if (animatedLava) {
 			textureFXs.add(new TextureLavaFX());
 			textureFXs.add(new TextureLavaFlowFX());
 		}
 
-		if(!var11 && customWater) {
+		if (!var11 && customWater) {
 			textureFXs.add(new CustomAnimation(205, 0, 1, "water_still", -1, -1));
 			textureFXs.add(new CustomAnimation(206, 0, 2, "water_flowing", 0, 0));
-		} else if(animatedWater) {
+		} else if (animatedWater) {
 			textureFXs.add(new TextureWaterFX());
 			textureFXs.add(new TextureWaterFlowFX());
 		}
 
-		if(!var11 && customFire && hasResource("/anim//custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
+		if (!var11 && customFire && hasResource("/anim//custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
 			textureFXs.add(new CustomAnimation(47, 0, 1, "fire_n_s", 2, 4));
 			textureFXs.add(new CustomAnimation(31, 0, 1, "fire_e_w", 2, 4));
-		} else if(animatedFire) {
+		} else if (animatedFire) {
 			textureFXs.add(new TextureFlamesFX(0));
 			textureFXs.add(new TextureFlamesFX(1));
 		}
 
 		if (!var11 && customPortal && hasResource("/anim/custom_portal.png")) {
 			textureFXs.add(new CustomAnimation(14, 0, 1, "portal", -1, -1));
-		}
-		else if(animatedPortal) {
+		} else if (animatedPortal) {
 			textureFXs.add(new TexturePortalFX());
 		}
 
-		if(customOther) {
-			for(int var5 = 0; var5 < 2; ++var5) {
+		if (customOther) {
+			for (int var5 = 0; var5 < 2; ++var5) {
 				String var6 = var5 == 0?"terrain":"item";
 
-				for(int var7 = 0; var7 < 256; ++var7) {
+				for (int var7 = 0; var7 < 256; ++var7) {
 					String var8 = "/anim/custom_" + var6 + "_" + var7 + ".png";
-					if(hasResource(var8)) {
+					if (hasResource(var8)) {
 						textureFXs.add(new CustomAnimation(var7, var5, 1, var6 + "_" + var7, 2, 4));
 					}
 				}
@@ -204,19 +202,19 @@ public class TextureUtils {
 		Iterator var12 = var1.iterator();
 
 		TextureFX var13;
-		while(var12.hasNext()) {
+		while (var12.hasNext()) {
 			var13 = (TextureFX)var12.next();
 			textureFXs.add(var13);
 		}
 
 		var12 = textureFXs.iterator();
 
-		while(var12.hasNext()) {
+		while (var12.hasNext()) {
 			var13 = (TextureFX)var12.next();
 			var13.onTick();
 		}
 
-		if(ColorizerWater.waterBuffer != ColorizerFoliage.foliageBuffer) {
+		if (ColorizerWater.waterBuffer != ColorizerFoliage.foliageBuffer) {
 			refreshColorizer(ColorizerWater.waterBuffer, "/misc/watercolor.png");
 		}
 
@@ -226,7 +224,9 @@ public class TextureUtils {
 	}
 
 	public static TexturePackBase getSelectedTexturePack() {
-		if (SpoutClient.getHandle().texturePackList == null) return null;
+		if (SpoutClient.getHandle().texturePackList == null) {
+			return null;
+		}
 		return SpoutClient.getHandle().texturePackList.selectedTexturePack;
 	}
 
@@ -238,7 +238,7 @@ public class TextureUtils {
 		buffer.clear();
 		int var2 = buffer.capacity();
 		int var3 = data.length;
-		if(var3 > var2 || reclaimGLMemory && var2 >= 4 * var3) {
+		if (var3 > var2 || reclaimGLMemory && var2 >= 4 * var3) {
 			buffer = GLAllocation.createDirectByteBuffer(var3);
 		}
 
@@ -255,29 +255,29 @@ public class TextureUtils {
 	public static InputStream getResourceAsStream(TexturePackBase texturePack, String texture) {
 		boolean wasLocked = SpoutClient.isSandboxed();
 		SpoutClient.disableSandbox();
-		if(texturePack != null) texturePack.func_6482_a();
+		if (texturePack != null) texturePack.func_6482_a();
 		try {
 			InputStream var2 = null;
-			if(texturePack != null) {
+			if (texturePack != null) {
 				try {
 					var2 = texturePack.getResourceAsStream(texture);
 				} catch (Exception var4) {
 					var4.printStackTrace();
 				}
 			}
-			
-			if(var2 == null) {
+
+			if (var2 == null) {
 				var2 = TextureUtils.class.getResourceAsStream(texture);
 			}
 
 			if (var2 == null && texture.startsWith("/anim/custom_")) {
 				var2 = getResourceAsStream(texturePack, texture.substring(5));
 			}
-	
-			if(var2 == null && isRequiredResource(texture)) {
+
+			if (var2 == null && isRequiredResource(texture)) {
 				var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(texture);
 			}
-	
+
 			return var2;
 		}
 		finally {
@@ -297,16 +297,16 @@ public class TextureUtils {
 		try {
 			BufferedImage image = null;
 			boolean found = false;
-			if(texturePack == lastTexturePack) {
+			if (texturePack == lastTexturePack) {
 				image = (BufferedImage)cache.get(texture);
-				if(image != null) {
+				if (image != null) {
 					found = true;
 				}
 			}
-	
-			if(image == null) {
+
+			if (image == null) {
 				InputStream stream = getResourceAsStream(texturePack, texture);
-				if(stream != null) {
+				if (stream != null) {
 					try {
 						image = ImageIO.read(stream);
 					}
@@ -314,14 +314,13 @@ public class TextureUtils {
 						if (stream != null) {
 							try {
 								stream.close();
-							}
-							catch (Exception e) { }
+							} catch (Exception e) { }
 						}
 					}
 				}
 			}
-			
-			if(image == null) {
+
+			if (image == null) {
 				//Search local files (downloaded texture)
 				FileImageInputStream imageStream = null;
 				try {
@@ -330,44 +329,41 @@ public class TextureUtils {
 						imageStream = new FileImageInputStream(test);
 						image = ImageIO.read(imageStream);
 					}
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				finally {
 					if (imageStream != null) {
 						try {
 							imageStream.close();
-						}
-						catch (Exception e) { }
+						} catch (Exception e) { }
 					}
 				}
 			}
-	
-			if(image == null) {
+
+			if (image == null) {
 				throw new IOException(texture + " image is null");
-			}
-			else {
-				if(texturePack != lastTexturePack) {
+			} else {
+				if (texturePack != lastTexturePack) {
 					cache.clear();
 				}
-	
-				if(!found) {
+
+				if (!found) {
 					Integer size = 1;
-					if(!texture.matches("^(/anim)?/custom_.*\\.png$")) {
+					if (!texture.matches("^(/anim)?/custom_.*\\.png$")) {
 						size = expectedColumns.get(texture);
 					}
 
-					if(size != null && image.getWidth() != size * TileSize.int_size) {
+					if (size != null && image.getWidth() != size * TileSize.int_size) {
 						image = resizeImage(image, size * TileSize.int_size);
 					}
-	
+
 					lastTexturePack = texturePack;
 					cache.put(texture, image);
-	
-				if(texture.matches("^/mob/.*_eyes\\d*\\.png$")) {
-					for(int pixelX = 0; pixelX < image.getWidth(); ++pixelX) {
-						for(int pixelY = 0; pixelY < image.getHeight(); ++pixelY) {
+
+				if (texture.matches("^/mob/.*_eyes\\d*\\.png$")) {
+					for (int pixelX = 0; pixelX < image.getWidth(); ++pixelX) {
+						for (int pixelY = 0; pixelY < image.getHeight(); ++pixelY) {
 							int color = image.getRGB(pixelX, pixelY);
 							if ((color & -16777216) == 0 && color != 0) {
 								image.setRGB(pixelX, pixelY, 0);
@@ -393,32 +389,30 @@ public class TextureUtils {
 	public static BufferedImage getResourceAsBufferedImage(Object var0, Object var1, String var2) throws IOException {
 		return getResourceAsBufferedImage(var2);
 	}
-	
+
 	public static int getTileSize(TexturePackBase texturePack) {
 		int max = 0;
 		Iterator<Entry<String, Integer>> i = expectedColumns.entrySet().iterator();
 
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			Entry<String, Integer> next = i.next();
 			InputStream stream = null;
 
 			try {
 				stream = getResourceAsStream(texturePack, next.getKey());
-				if(stream != null) {
+				if (stream != null) {
 					BufferedImage image = ImageIO.read(stream);
 					int imageSize = image.getWidth() / next.getValue();
 					max = Math.max(max, imageSize);
 				}
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			finally {
 				if (stream != null) {
 					try {
 						stream.close();
-					}
-					catch (Exception e) { }
+					} catch (Exception e) { }
 				}
 			}
 		}
@@ -440,8 +434,7 @@ public class TextureUtils {
 			if (stream != null) {
 				try {
 					stream.close();
-				}
-				catch (Exception e) { }
+				} catch (Exception e) { }
 			}
 		}
 	}
@@ -461,13 +454,12 @@ public class TextureUtils {
 	private static void refreshColorizer(int[] data, String texture) {
 		try {
 			BufferedImage image = getResourceAsBufferedImage(texture);
-			if(image != null) {
+			if (image != null) {
 				image.getRGB(0, 0, 256, 256, data, 0, 256);
 			}
 		} catch (IOException var3) {
 			var3.printStackTrace();
 		}
-
 	}
 
 	public static void openTexturePackFile(TexturePackCustom var0) {
@@ -483,8 +475,7 @@ public class TextureUtils {
 				if (var0.texturePackZipFile != null) {
 					try {
 						var0.texturePackZipFile.close();
-					}
-					catch (IOException e) {}
+					} catch (IOException e) {}
 				}
 				var1 = new FileInputStream(var0.texturePackFile);
 				var2 = new FileOutputStream(var0.tmpFile);
@@ -496,14 +487,12 @@ public class TextureUtils {
 						if (var1 != null) {
 							try {
 								var1.close();
-							}
-							catch (IOException e) {}
+							} catch (IOException e) {}
 						}
 						if (var2 != null) {
 							try {
 								var2.close();
-							}
-							catch (IOException e) {}
+							} catch (IOException e) {}
 						}
 						var3 = new ZipFile(var0.tmpFile);
 						var0.origZip = var0.texturePackZipFile;
@@ -514,28 +503,24 @@ public class TextureUtils {
 
 					var2.write(var4, 0, var5);
 				}
-			}
-			catch (IOException var9) {
+			} catch (IOException var9) {
 				var9.printStackTrace();
 			}
 			finally {
 				if (var1 != null) {
 					try {
 						var1.close();
-					}
-					catch (IOException e) {}
+					} catch (IOException e) {}
 				}
 				if (var2 != null) {
 					try {
 						var2.close();
-					}
-					catch (IOException e) {}
+					} catch (IOException e) {}
 				}
 				if (var3 != null) {
 					try {
 						var3.close();
-					}
-					catch (IOException e) {}
+					} catch (IOException e) {}
 				}
 			}
 		}
@@ -546,8 +531,7 @@ public class TextureUtils {
 			if (var0 != null) {
 				try {
 					var0.origZip.close();
-				}
-				catch (IOException e) {}
+				} catch (IOException e) {}
 			}
 			var0.texturePackZipFile = var0.origZip;
 			var0.origZip = null;
@@ -567,7 +551,7 @@ public class TextureUtils {
 		expectedColumns.put("/custom_fire_n_s.png", 1);
 		expectedColumns.put("/custom_fire_e_w.png", 1);
 		expectedColumns.put("/custom_portal.png", 1);
-		
+
 		expectedColumns = Collections.unmodifiableMap(expectedColumns);
 	}
 }

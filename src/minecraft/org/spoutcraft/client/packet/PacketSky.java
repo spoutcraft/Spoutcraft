@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.packet;
 
@@ -31,9 +40,9 @@ public class PacketSky implements SpoutPacket{
 	String sun = "";
 	String moon = "";
 	public PacketSky() {
-		
+
 	}
-	
+
 	public PacketSky(int cloudY, int stars, int sunPercent, int moonPercent, Color skyColor) {
 		this.cloudY = cloudY;
 		this.stars = stars;
@@ -41,7 +50,7 @@ public class PacketSky implements SpoutPacket{
 		this.moonPercent = moonPercent;
 		this.skyColor = skyColor.clone();
 	}
-	
+
 	public PacketSky(String sunUrl, String moonUrl) {
 		this.cloudY = 0;
 		this.stars = 0;
@@ -95,39 +104,37 @@ public class PacketSky implements SpoutPacket{
 		if (sun != null) {
 			if (sun.equals("[reset]")) {
 				SpoutClient.getInstance().getSkyManager().setSunTextureUrl(null);
-			}
-			else if (sun.length() > 5) {
+			} else if (sun.length() > 5) {
 				SpoutClient.getInstance().getSkyManager().setSunTextureUrl(sun);
 			}
 		}
 		if (moon != null) {
 			if (moon.equals("[reset]")) {
 				SpoutClient.getInstance().getSkyManager().setMoonTextureUrl(null);
-			}
-			else if (moon.length() > 5) {
+			} else if (moon.length() > 5) {
 				SpoutClient.getInstance().getSkyManager().setMoonTextureUrl(moon);
 			}
 		}
 		SkyManager sky = SpoutClient.getInstance().getSkyManager();
-		
+
 		//Sky
-		if(skyColor.isOverride()) {
+		if (skyColor.isOverride()) {
 			sky.setSkyColor(null);
-		} else if(!skyColor.isInvalid()) {
+		} else if (!skyColor.isInvalid()) {
 			sky.setSkyColor(skyColor);
 		}
-		
+
 		//Fog
-		if(fogColor.isOverride()) {
+		if (fogColor.isOverride()) {
 			sky.setFogColor(null);
-		} else if(!fogColor.isInvalid()) {
+		} else if (!fogColor.isInvalid()) {
 			sky.setFogColor(fogColor);
 		}
-		
+
 		//Cloud
-		if(cloudColor.isOverride()) {
+		if (cloudColor.isOverride()) {
 			sky.setCloudColor(null);
-		} else if(!cloudColor.isInvalid()) {
+		} else if (!cloudColor.isInvalid()) {
 			sky.setCloudColor(cloudColor);
 		}
 	}
@@ -135,13 +142,12 @@ public class PacketSky implements SpoutPacket{
 	public PacketType getPacketType() {
 		return PacketType.PacketSky;
 	}
-	
+
 	public int getVersion() {
 		return 2;
 	}
 
 	public void failure(int playerId) {
-		
-	}
 
+	}
 }

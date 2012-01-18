@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.config;
 
 import java.io.File;
@@ -57,7 +82,7 @@ public class ConfigReader {
 	public static boolean chatGrabsMouse = true;
 
 	public transient static Object[] settings = null;
-	
+
 	public static void read() {
 		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
 		try {
@@ -66,34 +91,31 @@ public class ConfigReader {
 			}
 			SettingsHandler settings = new SettingsHandler(config);
 			Field[] fields = ConfigReader.class.getDeclaredFields();
-			
+
 			ConfigReader.settings = new Object[fields.length];
-			
+
 			for (int i = 0; i < fields.length; i++) {
 				Field f = fields[i];
 				if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
-					
+
 					Object value = f.get(null);
-					
+
 					ConfigReader.settings[i] = value;
 					if (value instanceof Boolean) {
 						f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean)value));
-					}
-					else if (value instanceof Integer) {
+					} else if (value instanceof Integer) {
 						f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer)value));
-					}
-					else if (value instanceof Float) {
+					} else if (value instanceof Float) {
 						f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float)value));
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		updateMCConfig();
 	}
-	
+
 	public static void write() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
@@ -114,14 +136,12 @@ public class ConfigReader {
 							Object value = f.get(null);
 							if (settings.checkProperty(f.getName())) {
 								settings.changeProperty(f.getName(), value);
-							}
-							else {
+							} else {
 								settings.put(f.getName(), value);
 							}
 						}
 					}
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -131,11 +151,11 @@ public class ConfigReader {
 			SpoutClient.enableSandbox();
 		}
 	}
-	
+
 	public static boolean isHasClipboardAccess() {
 		return clipboardaccess;
 	}
-	
+
 	private static boolean getOrSetBooleanProperty(SettingsHandler settings, String property, boolean defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyBoolean(property);
@@ -143,7 +163,7 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
-	
+
 	private static int getOrSetIntegerProperty(SettingsHandler settings, String property, int defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyInteger(property);
@@ -151,7 +171,7 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
-	
+
 	private static float getOrSetFloatProperty(SettingsHandler settings, String property, float defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyDouble(property).floatValue();
@@ -159,7 +179,7 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
-	
+
 	private static void updateMCConfig() {
 		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
 		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
@@ -170,7 +190,7 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
 	}
-	
+
 	public static void restoreDefaults() {
 		if (ConfigReader.settings != null) {
 			Field[] fields = ConfigReader.class.getDeclaredFields();
@@ -189,5 +209,4 @@ public class ConfigReader {
 		}
 		updateMCConfig();
 	}
-
 }

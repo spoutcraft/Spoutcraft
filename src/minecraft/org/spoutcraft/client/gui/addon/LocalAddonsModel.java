@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.addon;
 
 import java.util.ArrayList;
@@ -12,7 +37,6 @@ import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 
 public class LocalAddonsModel extends AbstractListModel {
-	
 	private GuiAddonsLocal gui = null;
 	private List<AddonItem> items = new ArrayList<LocalAddonsModel.AddonItem>();
 
@@ -20,10 +44,10 @@ public class LocalAddonsModel extends AbstractListModel {
 		gui = guiAddonsLocal;
 		updateAddons();
 	}
-	
+
 	public void updateAddons() {
-		for(Addon addon:Spoutcraft.getAddonManager().getAddons()) {
-			if(addon.getDescription().getName().equals("Spoutcraft") || addon instanceof ServerAddon) {
+		for (Addon addon:Spoutcraft.getAddonManager().getAddons()) {
+			if (addon.getDescription().getName().equals("Spoutcraft") || addon instanceof ServerAddon) {
 				continue;
 			}
 			items.add(new AddonItem(addon));
@@ -32,7 +56,7 @@ public class LocalAddonsModel extends AbstractListModel {
 
 	@Override
 	public ListWidgetItem getItem(int row) {
-		if(row >= 0 && row < getSize()) {
+		if (row >= 0 && row < getSize()) {
 			return items.get(row);
 		}
 		return null;
@@ -47,24 +71,24 @@ public class LocalAddonsModel extends AbstractListModel {
 	public void onSelected(int item, boolean doubleClick) {
 		gui.updateButtons();
 	}
-	
+
 	public class AddonItem implements ListWidgetItem {
-		
+
 		private Addon addon;
 		private ListWidget widget;
 		private String authors;
-		
+
 		public AddonItem(Addon a) {
 			addon = a;
 			authors = "";
-			for(String author:a.getDescription().getAuthors()) {
-				if(!authors.isEmpty()) {
+			for (String author:a.getDescription().getAuthors()) {
+				if (!authors.isEmpty()) {
 					authors += ", ";
 				}
 				authors+=author;
 			}
 		}
-		
+
 		public void setListWidget(ListWidget widget) {
 			this.widget = widget;
 		}
@@ -87,13 +111,11 @@ public class LocalAddonsModel extends AbstractListModel {
 		}
 
 		public void onClick(int x, int y, boolean doubleClick) {
-			
+
 		}
-		
+
 		public Addon getAddon() {
 			return addon;
 		}
-		
 	}
-
 }

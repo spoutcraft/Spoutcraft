@@ -1,9 +1,42 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui;
 
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import gnu.trove.map.TObjectIntMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
+
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
@@ -22,9 +55,6 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
@@ -61,12 +91,7 @@ import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-import gnu.trove.map.TObjectIntMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.map.hash.TObjectIntHashMap;
-
 public class MCRenderDelegate implements RenderDelegate {
-
 	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
 	private Color scrollBarColor2 = new Color(0.1F, 0.1F, 0.1F, 0.38F);
 	public static boolean shouldRenderCursor = false;
@@ -869,33 +894,33 @@ public class MCRenderDelegate implements RenderDelegate {
 	//		int currentHeight = 0;
 	//		RenderUtil.drawRectangle(0, 0, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
 	//		GL11.glTranslated(0, -scrollTop + 5, 0);
-	//		for(ListWidgetItem item:lw.getItems()) {
-	//			
+	//		for (ListWidgetItem item:lw.getItems()) {
+	//
 	//			//Only render visible items
-	//			if(currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
-	//				
+	//			if (currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
+	//
 	//				//Draw selection border
-	//				if(lw.isSelected(item)) {
+	//				if (lw.isSelected(item)) {
 	//					RenderUtil.drawRectangle(4, currentHeight-1, (int) (lw.getWidth() - 13), currentHeight-1+item.getHeight()+2, new Color(1.0F,1.0F,1.0F).toInt());
 	//					RenderUtil.drawRectangle(5, currentHeight, (int) (lw.getWidth() - 14), currentHeight+item.getHeight(), new Color(0.0F,0.0F,0.0F).toInt());
 	//				}
-	//				
+	//
 	//				//Render actual item
 	//				GL11.glPushMatrix();
 	//				item.render(5, currentHeight, (int) (lw.getWidth() - 15), item.getHeight());
 	//				GL11.glPopMatrix();
 	//			}
-	//			
+	//
 	//			currentHeight += item.getHeight();
 	//		}
 	//		GL11.glDisable(GL11.GL_SCISSOR_TEST);
 	//		GL11.glTranslatef(0, scrollTop - 5, 0);
 	//		GL11.glDisable(2896 /*GL_LIGHTING*/);
 	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	//		
+	//
 	//		RenderUtil.drawGradientRectangle(0, 0, (int)lw.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
 	//		RenderUtil.drawGradientRectangle(0, (int)lw.getHeight() - 5, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
-	//		
+	//
 	//		Minecraft mc = SpoutClient.getHandle();
 	//		int texture = mc.renderEngine.getTexture("/gui/allitems.png");
 	//		mc.renderEngine.bindTexture(texture);

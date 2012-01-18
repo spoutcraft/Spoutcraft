@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
@@ -20,7 +22,6 @@ import net.minecraft.src.Potion;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldChunkManager;
-import org.lwjgl.opengl.GL11;
 
 public class Colorizer {
 	private static final String COLOR_PROPERTIES = "/color.properties";
@@ -88,8 +89,7 @@ public class Colorizer {
 		checkUpdate();
 		if (!colorMapIndexValid(var1)) {
 			return var0;
-		}
-		else {
+		} else {
 			int var6 = (int)(255.0D * (1.0D - var2));
 			int var7 = (int)(255.0D * (1.0D - var4 * var2));
 			return colorMaps[var1][256 * var7 + var6];
@@ -126,15 +126,13 @@ public class Colorizer {
 	public static int colorizeSpawnerEgg(int var0, int var1, int var2) {
 		if (!useEggColors) {
 			return var0;
-		}
-		else {
+		} else {
 			checkUpdate();
 			Integer var3 = null;
 			HashMap var4 = var2 == 0 ? spawnerEggShellColors : spawnerEggSpotColors;
 			if (var4.containsKey(Integer.valueOf(var1))) {
 				var3 = (Integer)var4.get(Integer.valueOf(var1));
-			}
-			else if (entityNamesByID.containsKey(Integer.valueOf(var1))) {
+			} else if (entityNamesByID.containsKey(Integer.valueOf(var1))) {
 				String var5 = (String)entityNamesByID.get(Integer.valueOf(var1));
 				if (var5 != null) {
 					int[] var6 = new int[] {var0};
@@ -174,28 +172,26 @@ public class Colorizer {
 			BufferedImage var4;
 			if (lightmaps.containsKey(Integer.valueOf(var2))) {
 				var4 = (BufferedImage)lightmaps.get(Integer.valueOf(var2));
-			}
-			else {
+			} else {
 				var4 = readImage(lastTexturePack.getResourceAsStream(var3));
 				lightmaps.put(Integer.valueOf(var2), var4);
 				if (var4 == null) {
-				}
-				else {
+
+				} else {
+
 				}
 			}
 
 			if (var4 == null) {
 				return false;
-			}
-			else {
+			} else {
 				int var5 = var4.getWidth();
 				int var6 = var4.getHeight();
 				if (var6 != 32) {
 					System.out.printf("ERROR: %s must be exactly %d pixels high\n", new Object[] {var3, Integer.valueOf(32)});
 					lightmaps.put(Integer.valueOf(var2), (Object)null);
 					return false;
-				}
-				else {
+				} else {
 					int[] var7 = new int[var5 * var6];
 					var4.getRGB(0, 0, var5, var6, var7, 0, var5);
 					int[] var8 = new int[256];
@@ -235,8 +231,7 @@ public class Colorizer {
 					return true;
 				}
 			}
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -245,8 +240,7 @@ public class Colorizer {
 		checkUpdate();
 		if (redstoneColor == null) {
 			return false;
-		}
-		else {
+		} else {
 			float[] var1 = redstoneColor[Math.max(Math.min(var0, 15), 0)];
 			redstoneWireRed = var1[0];
 			redstoneWireGreen = var1[1];
@@ -259,8 +253,7 @@ public class Colorizer {
 		checkUpdate();
 		if (!useDropColors) {
 			return false;
-		}
-		else {
+		} else {
 			int var7 = colorizeBiome(16777215, 5, var0, (int)var1, (int)var3, (int)var5);
 			float[] var8 = new float[3];
 			intToFloat3(var7, var8);
@@ -290,8 +283,7 @@ public class Colorizer {
 		checkUpdate();
 		if (lavaDropColor == null) {
 			return false;
-		}
-		else {
+		} else {
 			int var1 = 3 * Math.max(Math.min(lavaDropColor.length / 3 - 1, var0), 0);
 			lavaDropRed = lavaDropColor[var1];
 			lavaDropGreen = lavaDropColor[var1 + 1];
@@ -337,8 +329,7 @@ public class Colorizer {
 			}
 
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -415,16 +406,14 @@ public class Colorizer {
 				if (var19 != null) {
 					properties.load(var19);
 				}
-			}
-			catch (IOException var16) {
+			} catch (IOException var16) {
 				var16.printStackTrace();
 			}
 			finally {
 				if (var19 != null) {
 					try {
 						var19.close();
-					}
-					catch (Exception e) { }
+					} catch (Exception e) { }
 				}
 			}
 
@@ -488,8 +477,7 @@ public class Colorizer {
 											colorMaps[var11] = var5;
 											colorMapDefault[var11] = colorizeBiome(colorMapDefault[var11], var11, 0.5D, 1.0D);
 										}
-									}
-									catch (NumberFormatException var15) {
+									} catch (NumberFormatException var15) {
 										;
 									}
 								}
@@ -537,8 +525,7 @@ public class Colorizer {
 				String var24 = properties.getProperty("clouds", "").trim().toLowerCase();
 				if (var24.equals("fast")) {
 					cloudType = 1;
-				}
-				else if (var24.equals("fancy")) {
+				} else if (var24.equals("fancy")) {
 					cloudType = 2;
 				}
 			//}
@@ -550,8 +537,7 @@ public class Colorizer {
 		if (!var2.equals("")) {
 			try {
 				var1.liquidColor = Integer.parseInt(var2, 16);
-			}
-			catch (NumberFormatException var4) {
+			} catch (NumberFormatException var4) {
 				;
 			}
 		}
@@ -562,8 +548,7 @@ public class Colorizer {
 		if (!var3.equals("")) {
 			try {
 				var1[var2] = Integer.parseInt(var3, 16);
-			}
-			catch (NumberFormatException var5) {
+			} catch (NumberFormatException var5) {
 				;
 			}
 		}
@@ -574,8 +559,7 @@ public class Colorizer {
 		if (!var2.equals("")) {
 			try {
 				intToFloat3(Integer.parseInt(var2, 16), var1);
-			}
-			catch (NumberFormatException var4) {
+			} catch (NumberFormatException var4) {
 				;
 			}
 		}
@@ -585,12 +569,10 @@ public class Colorizer {
 		int[] var1 = getImageRGB(readImage(lastTexturePack.getResourceAsStream(var0)));
 		if (var1 == null) {
 			return null;
-		}
-		else if (var1.length != 65536) {
+		} else if (var1.length != 65536) {
 			System.out.printf("ERROR: %s must be %dx%d\n", new Object[] {var0, Integer.valueOf(256), Integer.valueOf(256)});
 			return null;
-		}
-		else {
+		} else {
 			return var1;
 		}
 	}
@@ -636,8 +618,7 @@ public class Colorizer {
 		int var6 = (int)Math.ceil((double)var2);
 		if (var5 == var6) {
 			intToFloat3(var0[var1 + var5], var3, var4);
-		}
-		else {
+		} else {
 			float var7 = var2 - (float)var5;
 			float var8 = 1.0F - var7;
 			float[] var9 = new float[3];
@@ -650,12 +631,11 @@ public class Colorizer {
 			}
 		}
 	}
-	
+
 	public static int[] getImageRGB(BufferedImage var0) {
 		if (var0 == null) {
 			return null;
-		}
-		else {
+		} else {
 			int var1 = var0.getWidth();
 			int var2 = var0.getHeight();
 			int[] var3 = new int[var1 * var2];
@@ -663,14 +643,13 @@ public class Colorizer {
 			return var3;
 		}
 	}
-	
+
 	public static BufferedImage readImage(InputStream var0) {
 		BufferedImage var1 = null;
 		if (var0 != null) {
 			try {
 				var1 = ImageIO.read(var0);
-			}
-			catch (IOException var6) {
+			} catch (IOException var6) {
 				var6.printStackTrace();
 			}
 			finally {

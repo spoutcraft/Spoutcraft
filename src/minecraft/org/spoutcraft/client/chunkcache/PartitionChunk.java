@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.chunkcache;
 
@@ -37,7 +46,6 @@ public class PartitionChunk {
 	}
 
 	private static void updateLookupTable(int heightBits) {
-
 		if (heightBits < 0 || heightBits > MAX_HEIGHT) {
 			throw new IllegalArgumentException("Height of " + heightBits + " bits for chunk height is outside of range (0 - " + MAX_HEIGHT + ")");
 		}
@@ -80,7 +88,6 @@ public class PartitionChunk {
 		startPoint[heightBits] = new AtomicReference(newStartPoint);
 
 		LUTSetup[heightBits].set(true);
-
 	}
 
 	static public void copyToChunkData(byte[] chunkData, int blockNum, byte[] partition, int heightBits) {
@@ -92,7 +99,7 @@ public class PartitionChunk {
 		int pos = start;
 
 		int partitionPos = 0;
-		
+
 		boolean clear = partition == null;
 
 		for (int outer = 0; outer < 256; outer++) {
@@ -106,11 +113,9 @@ public class PartitionChunk {
 			}
 			pos += step;
 		}
-
 	}
 
 	static public void copyFromChunkData(byte[] chunkData, int blockNum, byte[] partition, int heightBits) {
-
 		updateLookupTable(heightBits);
 		int start = startPoint[heightBits].get()[blockNum];
 		int step = step1[heightBits].get()[blockNum];
@@ -126,11 +131,9 @@ public class PartitionChunk {
 			}
 			pos += step;
 		}
-
 	}
 
 	static public long getHash(byte[] chunkData, int blockNum, int heightBits) {
-
 		int height = 1 << heightBits;
 		int size = ((height * 5) / 2) * 256;
 
@@ -148,7 +151,6 @@ public class PartitionChunk {
 	}
 
 	static public void setHash(byte[] chunkData, int blockNum, long hash, int heightBits) {
-
 		int height = 1 << heightBits;
 		int size = ((height * 5) / 2) * 256;
 
@@ -162,5 +164,4 @@ public class PartitionChunk {
 		chunkData[p++] = (byte) (hash >> 8);
 		chunkData[p++] = (byte) (hash >> 0);
 	}
-
 }

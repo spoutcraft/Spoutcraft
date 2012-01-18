@@ -1,36 +1,47 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.player;
 
-import java.util.LinkedList;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GuiChat;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.spoutcraft.client.SpoutClient;
-import org.bukkit.ChatColor;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChatAllowedCharacters;
+import net.minecraft.src.FontRenderer;
+import net.minecraft.src.GuiChat;
+
+import org.bukkit.ChatColor;
+import org.spoutcraft.client.SpoutClient;
 
 public class ChatManager {
 	public int commandScroll = 0;
@@ -43,108 +54,76 @@ public class ChatManager {
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
-			
+
 			if ((ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) && (!message.startsWith("/") || message.length() < 100)) {
 				if (cursor == 0) {
 					message = character + message;
-				}
-				else if (cursor > 0 && cursor < message.length()) {
+				} else if (cursor > 0 && cursor < message.length()) {
 					message = (message.substring(0, cursor) + character + message.substring(cursor));
-				}
-				else {
+				} else {
 					message += character;
 				}
 				updateMessage(message, chat);
 				updateCursor(++cursor, chat);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && cursor > 0) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) && cursor > 0) {
 				updateCursor(--cursor, chat);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && cursor < message.length()) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) && cursor < message.length()) {
 				updateCursor(++cursor, chat);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_DELETE) && cursor < message.length()) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_DELETE) && cursor < message.length()) {
 				message = message.substring(0, cursor) + message.substring(cursor + 1);
 				updateMessage(message, chat);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_PRIOR) && chatScroll < getChatHistorySize()) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_PRIOR) && chatScroll < getChatHistorySize()) {
 				chatScroll += 20;
 				chatScroll = Math.min(getChatHistorySize() - 1, chatScroll);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_NEXT) && chatScroll > 0) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_NEXT) && chatScroll > 0) {
 				chatScroll -= 20;
 				chatScroll = Math.max(0, chatScroll);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_HOME)) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_HOME)) {
 				chatScroll = 0;
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_END)) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_END)) {
 				chatScroll = getChatHistorySize() - 2;
 				if (chatScroll < 0) {
 					chatScroll = 0;
 				}
-			}
-			
-			else if (control && Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			} else if (control && Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 				if (commandScroll < pastCommands.size()) {
 					commandScroll++;
 					message = updateCommandScroll(chat);
 					updateMessage(message, chat);
 				}
-			}
-			
-			else if (control && Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			} else if (control && Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 				if (commandScroll > 0) {
 					commandScroll--;
 					message = updateCommandScroll(chat);
 					updateMessage(message, chat);
 				}
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_UP) && messageScroll < pastMessages.size()) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_UP) && messageScroll < pastMessages.size()) {
 				messageScroll++;
 				message = updateMessageScroll(chat);
 				updateMessage(message, chat);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && messageScroll > 0) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && messageScroll > 0) {
 				messageScroll--;
 				message = updateMessageScroll(chat);
 				updateMessage(message, chat);
-			}
-	
-			else if (control && Keyboard.isKeyDown(Keyboard.KEY_V)) {
+			} else if (control && Keyboard.isKeyDown(Keyboard.KEY_V)) {
 				String paste = paste();
 				message = (message.substring(0, cursor) + paste + message.substring(Math.min(cursor, message.length())));
 				cursor += paste.length();
 				updateMessage(message, chat);
 				updateCursor(cursor, chat);
-			}
-			
-			else if (control && Keyboard.isKeyDown(Keyboard.KEY_C)) {
+			} else if (control && Keyboard.isKeyDown(Keyboard.KEY_C)) {
 				copy(message);
-			}
-			
-			else if (Keyboard.isKeyDown(Keyboard.KEY_BACK) && message.length() > 0 && cursor > 0) {
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_BACK) && message.length() > 0 && cursor > 0) {
 				if (message.length() == 1) {
 					message = "";
-				}
-				else {
+				} else {
 					String text = message;
 					if (cursor > text.length()) {
 						cursor = text.length();
 					}
 					if (cursor > 1) {
 						text = message.substring(0, cursor - 1);
-					}
-					else {
+					} else {
 						text = "";
 					}
 					if (cursor > 0) {
@@ -154,54 +133,48 @@ public class ChatManager {
 				}
 				updateCursor(--cursor, chat);
 				updateMessage(message, chat);
-			}
-			//Not handled
-			else {
+			} else { //Not handled
 				return false;
 			}
-			
+
 			//Handled
 			return true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
+
 	public int getChatHistorySize() {
 		return SpoutClient.getHandle().ingameGUI.chatMessageList.size();
 	}
-	
+
 	public int checkCursor(String message, int cursor) {
 		if (cursor > message.length()) {
 			cursor = message.length();
-		}
-		else if (cursor < 0) {
+		} else if (cursor < 0) {
 			cursor = 0;
 		}
 		return cursor;
 	}
-	
+
 	public String updateCommandScroll(GuiChat chat) {
 		String command;
 		if (commandScroll == 0) {
 			command = "";
-		}
-		else {
+		} else {
 			command = (String)pastCommands.get(pastCommands.size() - commandScroll);
 		}
 		updateMessage(command, chat);
 		updateCursor(command.length(), chat);
 		return command;
 	}
-	
+
 	public String updateMessageScroll(GuiChat chat) {
 		String message;
 		if (messageScroll == 0) {
 			message = "";
-		}
-		else {
+		} else {
 			message = (String)pastMessages.get(pastMessages.size() - messageScroll);
 		}
 		updateMessage(message, chat);
@@ -209,37 +182,36 @@ public class ChatManager {
 		return message;
 	}
 
-
 	public void updateCursor(int position, GuiChat chat) {
 		chat.cursorPosition = checkCursor(chat.message, position);
 	}
-	
+
 	public void updateMessage(String message, GuiChat chat) {
 		chat.message = message;
 		updateCursor(chat.cursorPosition, chat);
 	}
-	
+
 	public void sendChat(String message) {
 		List<String> lines = formatChat(message, false);
 		for (String chat : lines) {
 			SpoutClient.getHandle().thePlayer.sendChatMessage(chat);
 		}
 	}
-	
+
 	public String formatChatColors(String message) {
 		return message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 	}
-	
+
 	public List<String> formatChat(String message, boolean display) {
 		final LinkedList<String> lines = new LinkedList<String>();
 		final FontRenderer font = Minecraft.theMinecraft.fontRenderer;
 		final int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getWidth() - 6;
-		
+
 		if (message.startsWith("/")) {
 			lines.add(message);
 			return lines;
 		}
-		
+
 		StringBuilder builder = new StringBuilder(100);
 		int lineWidth = 0;
 		for (int i = 0; i < message.length(); i++) {
@@ -248,44 +220,41 @@ public class ChatManager {
 			if (lineWidth + charWidth < width) {
 				builder.append(ch);
 				lineWidth += charWidth;
-			}
-			else {
+			} else {
 				lines.add(builder.toString());
 				builder.delete(0, builder.length());
 				builder.append(ch);
 				lineWidth = charWidth;
 			}
 		}
-		
+
 		if (builder.length() > 0) {
 			lines.add(builder.toString());
 		}
 
 		return lines;
 	}
-	
+
 	public void handleMouseWheel() {
 		int wheel = Mouse.getDWheel();
 		if (wheel > 0) {
 			if (chatScroll < getChatHistorySize()) {
 				chatScroll++;
 			}
-		} 
-		else if (wheel < 0) {
+		} else if (wheel < 0) {
 			if (chatScroll > 0) {
 				chatScroll--;
 			}
 		}
 	}
-	
+
 	public boolean handleCommand(String command) {
 		try {
 			 if (command.equals("/?") || command.startsWith("/client help")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Spoutcraft Client Debug Commands:");
 				SpoutClient.getHandle().ingameGUI.addChatMessage("/client gc - run the garbage collector");
 				return true;
-			}
-			else if (command.startsWith("/client gc")) {
+			} else if (command.startsWith("/client gc")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Starting Garbage Collection...");
 				long start = System.currentTimeMillis();
 				long mem = Runtime.getRuntime().freeMemory();
@@ -302,11 +271,10 @@ public class ChatManager {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + (Runtime.getRuntime().freeMemory() - mem) / (1024D * 1024D) + " mb of memory freed");
 				return true;
 			}
-		}
-		catch (Exception e) {}
+		} catch (Exception e) {}
 		return false;
 	}
-	
+
 	public static void copy(String a) {
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(a), null);
 	}
@@ -317,12 +285,11 @@ public class ChatManager {
 		if (localTransferable != null && localTransferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
 				str = (String)localTransferable.getTransferData(DataFlavor.stringFlavor);
-			}
-			catch (Exception e) {}
+			} catch (Exception e) {}
 		}
 		return str;
 	}
-	
+
 	public static String formatUrl(String message) {
 		//TODO make this work w/o whiting out all the text that follows...
 		/*
@@ -352,7 +319,7 @@ public class ChatManager {
 					break;
 				}
 			}
-			
+
 			String begin = "";
 			if (start > 0) {
 				begin = message.substring(0, start);

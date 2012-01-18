@@ -1,18 +1,27 @@
 /*
- * This file is part of Spoutcraft (http://spout.org).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
  */
 package org.spoutcraft.client.gui.error;
 
@@ -41,47 +50,47 @@ import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 public class GuiConnectionLost extends GuiScreen{
 	public static String lastServerIp;
 	public static int lastServerPort;
-	
+
 	private String message;
-	
+
 	public GuiConnectionLost() {
 		message = "The connection to the server has been lost!";
 	}
-	
+
 	public GuiConnectionLost(String message) {
 		this.message = message;
 	}
-	
+
 	@Override
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+
 		GenericScrollArea screen = new GenericScrollArea();
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
-		
+
 		GenericLabel label = new GenericLabel("Connection Lost!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
-		
+
 		int top = 5;
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
-		
+
 		label = new GenericLabel(message);
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
 		label.setTextColor(grey);
 		screen.attachWidget(spoutcraft, label);
-		
+
 		LocalTexture texture = new LocalTexture();
 		texture.setUrl("/res/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
 		texture.setHeight(128).setWidth(128);
 		screen.attachWidget(spoutcraft, texture);
-		
+
 		top += 116;
-		
+
 		Button button;
 		button = new ReconnectButton().setText("Attempt to Reconnect");
 		button.setHeight(20).setWidth(200);
@@ -90,7 +99,7 @@ public class GuiConnectionLost extends GuiScreen{
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
-		
+
 		button = new ReturnToServerList().setText("Return to "+SpoutClient.getInstance().getServerManager().getJoinedFromName());
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
@@ -98,7 +107,7 @@ public class GuiConnectionLost extends GuiScreen{
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
-		
+
 		button = new ReturnToMainMenu().setText("Return to Main Menu");
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
@@ -107,7 +116,7 @@ public class GuiConnectionLost extends GuiScreen{
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
 	}
-	
+
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
@@ -141,4 +150,3 @@ class LocalTexture extends GenericTexture {
 		}
 	}
 }
-

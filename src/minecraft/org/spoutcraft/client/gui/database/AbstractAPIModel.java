@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.database;
 
 import java.io.BufferedReader;
@@ -10,19 +35,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yaml.snakeyaml.Yaml;
+
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.yaml.snakeyaml.Yaml;
 
 public abstract class AbstractAPIModel extends AbstractListModel {
-	
-
 	protected List<UrlElement> urlElements = new LinkedList<UrlElement>();
-	protected String API = ""; 
+	protected String API = "";
 	protected boolean loading = false;
 	protected Thread currentLoader = null;
 	protected int lastPage = 1;
@@ -33,34 +57,33 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	protected GuiAPIDisplay currentGui = null;
 	protected List<ListWidgetItem> effectiveCache = null;
 	protected List<ListWidgetItem> entries = new ArrayList<ListWidgetItem>();
-	
+
 	public void loadNextPage() {
 		lastPage++;
 		refreshAPIData(getCurrentUrl(), lastPage, false);
 	}
-	
+
 	protected List<ListWidgetItem> getEffectiveList() {
 		List<ListWidgetItem> ret = new ArrayList<ListWidgetItem>();
-		
-		for(ListWidgetItem item:entries) {
+
+		for (ListWidgetItem item:entries) {
 			ret.add(item);
 		}
-		
-		if(moreItems) {
+
+		if (moreItems) {
 			itemLoadNextItems = new GenericListWidgetItem("More items on the server.", "Click to load", "");
 			ret.add(itemLoadNextItems);
 		}
 		return ret;
 	}
-	
-	
+
 	@Override
 	public ListWidgetItem getItem(int row) {
-		if(effectiveCache == null) {
+		if (effectiveCache == null) {
 			effectiveCache = getEffectiveList();
 			sizeChanged();
 		}
-		if(row < 0 || row >= effectiveCache.size()) {
+		if (row < 0 || row >= effectiveCache.size()) {
 			return null;
 		}
 		return effectiveCache.get(row);
@@ -68,23 +91,23 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 
 	@Override
 	public int getSize() {
-		if(effectiveCache == null) {
+		if (effectiveCache == null) {
 			effectiveCache = getEffectiveList();
 			sizeChanged();
 		}
 		return effectiveCache.size();
 	}
-	
+
 	public void refreshAPIData(final String url, final int page, final boolean clear) {
 		currentUrl = url;
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if(wasSandboxed) SpoutClient.disableSandbox();
-		
-		if(currentLoader != null && currentLoader.isAlive()) {
+		if (wasSandboxed) SpoutClient.disableSandbox();
+
+		if (currentLoader != null && currentLoader.isAlive()) {
 			currentLoader.interrupt();
 			System.out.println("Stopped previous loading");
 		}
-		
+
 		currentLoader = new Thread() {
 			@Override
 			public void run() {
@@ -97,10 +120,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					//System.out.println("Loading "+url1.toString());
 					URLConnection conn = url1.openConnection();
 					conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
-					
-					
+
 					reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-					
+
 					Yaml yaml = new Yaml();
 					ArrayList<Object> yamlObj = (ArrayList<Object>) yaml.load(reader);
 					//System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
@@ -108,9 +130,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					HashMap<String, Object> hash = (HashMap<String, Object>) apiData.remove(0);
 					int after = Integer.valueOf((String) hash.get("after"));
 					moreItems = after > 0;
-					
+
 					refreshList(clear);
-					
+
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					//Put a fancy error message on the list!
@@ -120,7 +142,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					//error = error.replaceAll("([A-Z])", " $1").trim();
 					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load items!", e1.getMessage(), ""));
 					return;
-				} catch(Exception e) {}
+				} catch (Exception e) {}
 				finally {
 					setLoading(false);
 					try {
@@ -130,60 +152,63 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 			}
 		};
 		currentLoader.start();
-		if(wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 
 	public void clear() {
 		entries.clear();
-		if(effectiveCache != null) {
+		if (effectiveCache != null) {
 			effectiveCache.clear();
 		}
 		moreItems = false;
 	}
-	
+
 	protected abstract void refreshList(boolean clear);
-	
+
 	public boolean isLoading() {
 		return loading;
 	}
-	
+
 	public void setLoading(boolean l) {
 		loading = l;
-		if(currentGui != null)
+		if (currentGui != null) {
 			currentGui.updateButtons();
+		}
 	}
-	
+
 	public void clearElementFilters() {
-		for(UrlElement element: urlElements) {
+		for (UrlElement element: urlElements) {
 			element.clear();
 		}
 	}
-	
 
-	
 	public void addUrlElement(UrlElement el) {
 		urlElements.add(el);
 	}
-	
+
 	public void clearUrlElements() {
 		urlElements.clear();
 	}
-	
+
 	public GuiAPIDisplay getCurrentGui() {
 		return currentGui;
 	}
-	
+
 	public void updateUrl() {
 		String url = API+"?";
 		int i = 0;
-		for(UrlElement element:urlElements) {
-			if(element.isActive()) {
-				if(i>0) url+="&";
+		for (UrlElement element:urlElements) {
+			if (element.isActive()) {
+				if (i>0) {
+					url+="&";
+				}
 				url += element.getUrlPart();
 				i++; //Only increment for active elements
 			}
 		}
-		if(i == 0) {
+		if (i == 0) {
 			Thread.dumpStack();
 		} else {
 			refreshAPIData(url, 0, true);
@@ -193,27 +218,29 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	public void update() {
 		effectiveCache = null;
 	}
-	
+
 	public void setCurrentGui(GuiAPIDisplay gui) {
 		currentGui = gui;
 	}
-	
+
 	public abstract String getDefaultUrl();
-	
+
 	public String getCurrentUrl() {
 		return currentUrl;
 	}
-	
+
 	public ArrayList<Object> getAPIData() {
 		synchronized (apiData) {
 			return apiData;
 		}
 	}
-	
+
 	@Override
 	public void onSelected(int item, boolean doubleClick) {
-		if(currentGui != null) currentGui.updateButtons();
-		if(effectiveCache.get(item) == itemLoadNextItems) {
+		if (currentGui != null) {
+			currentGui.updateButtons();
+		}
+		if (effectiveCache.get(item) == itemLoadNextItems) {
 			loadNextPage();
 			itemLoadNextItems.setTitle("Loading ...");
 			itemLoadNextItems.setText("Please wait ...");

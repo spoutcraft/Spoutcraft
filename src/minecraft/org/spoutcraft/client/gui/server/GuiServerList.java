@@ -1,6 +1,34 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.server;
 
 import org.lwjgl.Sys;
+
+import net.minecraft.src.GuiMainMenu;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.FilterButton;
 import org.spoutcraft.client.gui.database.GuiAPIDisplay;
@@ -19,13 +47,9 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
-import net.minecraft.src.GuiMainMenu;
-
 public class GuiServerList extends GuiAPIDisplay {
-
-
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
-	
+
 	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
@@ -36,13 +60,13 @@ public class GuiServerList extends GuiAPIDisplay {
 	AccessTypeFilter accessType;
 	CountryButton buttonCountry;
 	SearchField search;
-	
+
 	boolean instancesCreated = false;
-	
+
 	public GuiServerList() {
 		model.setCurrentGui(this);
 	}
-	
+
 	public void createInstances() {
 		labelTitle = new GenericLabel("Public Server List");
 		filters = new GenericScrollArea();
@@ -68,192 +92,191 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonReset = new GenericButton("Reset Filters");
 		buttonAddServer = new GenericButton("Add Your Server");
 		buttonInfo = new GenericButton("More Info...");
-		
-		if(!model.getCurrentUrl().equals(model.getDefaultUrl())) {
+
+		if (!model.getCurrentUrl().equals(model.getDefaultUrl())) {
 			model.clear();
 			model.refreshAPIData(model.getDefaultUrl(), 0, true);
 		}
 	}
-	
+
 	public void initGui() {
-		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+
 		model.clearUrlElements();
 
-		if(!instancesCreated) {
+		if (!instancesCreated) {
 			createInstances();
 		}
-		
+
 		int top = 5;
 		labelTitle.setY(top + 7).setX(width/2 - mc.fontRenderer.getStringWidth("Public Server List")/2);
 		getScreen().attachWidget(spoutcraft, labelTitle);
-		
+
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
-		
+
 		search.setWidth(128).setHeight(18).setX(6).setY(top+1);
 		getScreen().attachWidget(spoutcraft, search);
 		model.addUrlElement(search);
-		
+
 		top+=25;
-		
+
 		filters.setWidth(130).setHeight(height - top - 55);
 		filters.setX(5).setY(top);
 		getScreen().attachWidget(spoutcraft, filters);
-		
+
 		//Filter init {
 		int ftop = 5;
 		filterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filters.attachWidget(spoutcraft, filterTitle);
 		ftop += 16;
-		
+
 		featured.setAllowSorting(false);
 		featured.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, featured);
 		model.addUrlElement(featured);
 		ftop += 25;
-		
+
 		trending.setAllowSorting(false);
 		trending.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, trending);
 		model.addUrlElement(trending);
 		ftop += 25;
-		
+
 		popular.setAllowSorting(false);
 		popular.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, popular);
 		model.addUrlElement(popular);
 		ftop += 25;
-		
+
 		random.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, random);
 		model.addUrlElement(random);
 		ftop += 25;
-		
+
 		byName.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, byName);
 		model.addUrlElement(byName);
 		ftop += 25;
-		
+
 		byFreeSlots.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		byFreeSlots.setTooltip("Sorts by the number of free slots\non the server (maxplayers - players)");
 		filters.attachWidget(spoutcraft, byFreeSlots);
 		model.addUrlElement(byFreeSlots);
 		ftop += 25;
-		
+
 		byPlayers.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		byPlayers.setTooltip("Sorts by the actual number of\nonline players on the server");
 		filters.attachWidget(spoutcraft, byPlayers);
 		model.addUrlElement(byPlayers);
 		ftop += 25;
-		
+
 		byPing.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, byPing);
 		model.addUrlElement(byPing);
 		ftop += 25;
-		
+
 		hasPlayers.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, hasPlayers);
 		model.addUrlElement(hasPlayers);
 		ftop += 25;
-		
+
 		notFull.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, notFull);
 		model.addUrlElement(notFull);
 		ftop += 25;
-		
+
 		accessType.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, accessType);
 		model.addUrlElement(accessType);
 		ftop += 25;
-		
+
 		buttonCountry.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, buttonCountry);
 		model.addUrlElement(buttonCountry);
 		ftop += 25;
-		
-		
-		
+
 		//Stretch to real width
 		int fw = filters.getViewportSize(Orientation.HORIZONTAL);
 		fw-=10;
-		for(Widget w:filters.getAttachedWidgets()) {
+		for (Widget w:filters.getAttachedWidgets()) {
 			w.setWidth(fw);
 		}
-		
-		if(!instancesCreated) featured.setSelected(true);
+
+		if (!instancesCreated) {
+			featured.setSelected(true);
+		}
 		//Filter init }
-		
+
 		view.setX((int) filters.getWidth() + filters.getX() + 5).setY(top)
 			.setWidth((int) (width - filters.getWidth() - 10 - filters.getX())).setHeight(height - top - 55);
 		getScreen().attachWidget(spoutcraft, view);
-		
+
 		top += view.getHeight() + 5;
-		
+
 		int totalWidth = Math.min(width - 9, 200*3+10);
 		int cellWidth = (totalWidth - 10)/3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
-		
+
 		buttonReset.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonReset);
-		
+
 		buttonInfo.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonInfo);
-		
+
 		buttonJoin.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonJoin);
-		
+
 		top+=25;
-		
+
 		buttonAddServer.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonAddServer);
-		
+
 		buttonFavorites.setHeight(20).setWidth(cellWidth).setX(center).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonFavorites);
 
 		buttonMainMenu.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
-		
+
 		updateButtons();
 		instancesCreated = true;
 	}
-	
+
 	public void drawScreen(int a, int b, float c) {
 		drawDefaultBackground();
 	}
-	
+
 	public void buttonClicked(Button btn) {
-		if(btn.equals(buttonMainMenu)) {
+		if (btn.equals(buttonMainMenu)) {
 			mc.displayGuiScreen(new GuiMainMenu());
 		}
-		if(btn.equals(buttonFavorites)) {
+		if (btn.equals(buttonFavorites)) {
 			mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
 		}
-		if(btn.equals(buttonJoin)) {
+		if (btn.equals(buttonJoin)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
-			if(item != null) {
+			if (item != null) {
 				item.onClick(-1, -1, true);
 			} else {
 				updateButtons();
 			}
 		}
-		if(btn.equals(buttonRefresh)) {
+		if (btn.equals(buttonRefresh)) {
 			model.updateUrl();
 		}
-		if(btn.equals(buttonReset)) {
+		if (btn.equals(buttonReset)) {
 			model.clearElementFilters();
 			featured.setSelected(true);
 			model.updateUrl();
 		}
-		if(btn.equals(buttonAddServer)) {
+		if (btn.equals(buttonAddServer)) {
 			Sys.openURL("http://servers.spout.org/submit.php");
 		}
-		if(btn.equals(buttonInfo)) {
+		if (btn.equals(buttonInfo)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
-			if(item != null) {
+			if (item != null) {
 				mc.displayGuiScreen(new GuiServerInfo(item, this));
 			} else {
 				updateButtons();
@@ -263,13 +286,13 @@ public class GuiServerList extends GuiAPIDisplay {
 
 	public void updateButtons() {
 		boolean b = true;
-		if(view.getSelectedRow() == -1 || !(view.getSelectedItem() instanceof ServerItem)) {
+		if (view.getSelectedRow() == -1 || !(view.getSelectedItem() instanceof ServerItem)) {
 			b = false;
 		}
 		buttonJoin.setEnabled(b);
 		buttonInfo.setEnabled(b);
-		
-		if(model.isLoading()) {
+
+		if (model.isLoading()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Loading...");
 			buttonRefresh.setDisabledColor(new Color(0f,1f,0f));
@@ -278,11 +301,10 @@ public class GuiServerList extends GuiAPIDisplay {
 			buttonRefresh.setText("Refresh");
 		}
 	}
-	
-	
+
 	@Override
 	public void updateScreen() {
-		if(model.isLoading()) {
+		if (model.isLoading()) {
 			Color color = new Color(0, 1f, 0);
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
