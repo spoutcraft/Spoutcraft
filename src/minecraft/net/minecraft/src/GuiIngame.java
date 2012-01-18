@@ -285,10 +285,14 @@ public class GuiIngame extends Gui{
 						boolean mentioned = false;
 						if (ConfigReader.highlightMentions) {
 							String[] split = chat.toLowerCase().split(":");
+							if (split.length == 1) {
+								split = chat.toLowerCase().split(">");
+							}
 							if (split.length > 1) {
-								if (!split[0].contains(this.mc.thePlayer.username)) {
+								String name = this.mc.thePlayer.username.toLowerCase();
+								if (!split[0].contains(name)) {
 									for (int part = 1; part < split.length; part++) {
-										if (split[part].contains(this.mc.thePlayer.username)) {
+										if (split[part].contains(name)) {
 											mentioned = true;
 											break;
 										}
