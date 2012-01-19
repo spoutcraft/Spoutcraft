@@ -103,17 +103,20 @@ public class RenderItem extends Render {
 			//GL11.glScalef(0.25F, 0.25F, 0.25F);
 			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
 		}
-		else{
+		else{	
+			if(!custom)
+			{
+				GL11.glPushMatrix();
+				
+				if (itemStack.itemID < 256) {
+					this.loadTexture("/terrain.png");
+				}
+				else {
+					this.loadTexture("/gui/items.png");
+				}
+			}
 			//Spout end
 			
-			GL11.glPushMatrix();
-			
-			if (itemStack.itemID < 256) {
-				this.loadTexture("/terrain.png");
-			}
-			else {
-				this.loadTexture("/gui/items.png");
-			}
 			GL11.glTranslatef((float) x, (float) yOffset + bounceAmmount, (float) z);
 			
 	
