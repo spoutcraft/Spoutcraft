@@ -104,10 +104,9 @@ public class RenderItem extends Render {
 			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
 		}
 		else{	
+			GL11.glPushMatrix();
 			if(!custom)
-			{
-				GL11.glPushMatrix();
-				
+			{	
 				if (itemStack.itemID < 256) {
 					this.loadTexture("/terrain.png");
 				}
