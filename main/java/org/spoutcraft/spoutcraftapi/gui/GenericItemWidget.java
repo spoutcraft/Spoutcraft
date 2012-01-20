@@ -33,7 +33,7 @@ public class GenericItemWidget extends GenericWidget implements ItemWidget {
 	protected ItemStack toRender = null;
 
 	public GenericItemWidget() {
-
+		this(new ItemStack(0));
 	}
 
 	public GenericItemWidget(ItemStack item) {
