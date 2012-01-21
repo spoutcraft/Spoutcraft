@@ -34,7 +34,7 @@ public class SkyToggleButton extends GenericCheckBox{
 	public SkyToggleButton() {
 		super("Sky");
 		setChecked(ConfigReader.sky);
-		setEnabled(SpoutClient.getInstance().isSkyCheat());
+		//setEnabled(SpoutClient.getInstance().isSkyCheat());
 		setTooltip("Sky\nON - sky is visible, slower\nOFF  - sky is not visible, faster\nWhen sky is OFF the moon and sun are still visible.");
 	}
 
