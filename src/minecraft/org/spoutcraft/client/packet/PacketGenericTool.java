@@ -47,7 +47,6 @@ public class PacketGenericTool implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		MaterialData.addCustomItem(item);
 	}
 
 	public void failure(int playerId) {
