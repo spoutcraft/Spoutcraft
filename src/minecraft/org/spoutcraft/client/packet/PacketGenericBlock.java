@@ -53,7 +53,6 @@ public class PacketGenericBlock implements SpoutPacket{
 
 	public void run(int playerId) {
 		block.setItemDrop(new ItemStack(block, 1));
-		MaterialData.addCustomBlock(block);
 	}
 
 	public void failure(int playerId) {
