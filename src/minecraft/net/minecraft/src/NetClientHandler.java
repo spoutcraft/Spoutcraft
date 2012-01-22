@@ -138,6 +138,8 @@ public class NetClientHandler extends NetHandler {
 	public List playerNames = new ArrayList();
 	public int currentServerMaxPlayers = 20;
 	Random rand = new Random();
+	//Spout start
+	long timeout = System.currentTimeMillis() + 5000;
 	
 	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {
 		this.mc = var1;
@@ -155,6 +157,13 @@ public class NetClientHandler extends NetHandler {
 		}
 
 		this.netManager.wakeThreads();
+		
+		//Spout start
+		if (mc.currentScreen instanceof GuiDownloadTerrain) {
+			if (System.currentTimeMillis() > timeout) {
+				mc.displayGuiScreen(null, false);
+			}
+		}
 	}
 
 	public void handleLogin(Packet1Login var1) {
