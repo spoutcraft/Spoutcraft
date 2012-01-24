@@ -80,6 +80,13 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		widget.setScreen(this);
 		return this;
 	}
+	
+	public Screen attachWidgets(Addon addon, Widget ...widgets) {
+		for(Widget widget:widgets) {
+			attachWidget(addon, widget);
+		}
+		return this;
+	}
 
 	public Screen removeWidget(Widget widget) {
 		widgets.remove(widget);

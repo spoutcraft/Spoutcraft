@@ -64,6 +64,17 @@ public class GenericScrollArea extends GenericScrollable implements ScrollArea {
 		updateInnerSize();
 		return this;
 	}
+	
+	public Screen attachWidgets(Addon addon, Widget ...widgets) {
+		for(Widget widget:widgets) {
+			this.widgets.put(widget, addon);
+			widget.setAddon(addon);
+			widget.setAnchor(WidgetAnchor.TOP_LEFT);
+			widget.setScreen(this);
+		}
+		updateInnerSize();
+		return this;
+	}
 
 	public void updateInnerSize() {
 		int height = 0;

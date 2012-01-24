@@ -72,6 +72,15 @@ public interface Screen extends Widget {
 	 * @return screen
 	 */
 	public Screen attachWidget(Addon addon, Widget widget);
+	
+	/**
+	 * Attaches an array of widgets to this screen
+	 * 
+	 * @param addon that created this widget
+	 * @param widgets to attach
+	 * @return screen
+	 */
+	public Screen attachWidgets(Addon addon, Widget ...widgets);
 
 	/**
 	 * Removes a widget from this screen
