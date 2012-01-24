@@ -58,8 +58,8 @@ public class GuiCreateWorld extends GuiScreen {
 		StringTranslate var1 = StringTranslate.getInstance();
 		Keyboard.enableRepeatEvents(true);
 		this.controlList.clear();
-		//this.controlList.add(new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, var1.translateKey("selectWorld.create")));
-		//this.controlList.add(new GuiButton(1, this.width / 2 + 5, this.height - 28, 150, 20, var1.translateKey("gui.cancel")));
+		this.controlList.add(new GuiButton(0, this.width / 2 - 155, this.height - 28, 150, 20, var1.translateKey("selectWorld.create")));
+		this.controlList.add(new GuiButton(1, this.width / 2 + 5, this.height - 28, 150, 20, var1.translateKey("gui.cancel")));
 		this.controlList.add(this.gameModeButton = new GuiButton(2, this.width / 2 - 75, 150, 150, 20, var1.translateKey("selectWorld.gameMode")));
 		this.controlList.add(this.moreWorldOptions = new GuiButton(3, this.width / 2 - 75, 172, 150, 20, var1.translateKey("selectWorld.moreWorldOptions")));
 		this.controlList.add(this.generateStructuresButton = new GuiButton(4, this.width / 2 - 155, 100, 150, 20, var1.translateKey("selectWorld.mapFeatures")));
