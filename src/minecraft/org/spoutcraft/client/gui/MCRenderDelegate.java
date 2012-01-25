@@ -495,19 +495,24 @@ public class MCRenderDelegate implements RenderDelegate {
 					iconType += 36;
 				}
 
-				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, 0, 9, 9, 0f);
+				byte hardcore = 0;
+				if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
+					hardcore = 5 * 9;
+				}
+
+				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, hardcore, 9, 9, 0f);
 				if (whiteOutlinedHearts) {
 					if (full) {
-						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 54, 0, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 54, hardcore, 9, 9, 0f);
 					} else if (half) {
-						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 63, 0, 9, 9, 0f);
+						RenderUtil.drawTexturedModalRectangle(x, y, iconType + 63, hardcore, 9, 9, 0f);
 					}
 				}
 
 				if (full) {
-					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 36, 0, 9, 9, 0f);
+					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 36, hardcore, 9, 9, 0f);
 				} else if (half) {
-					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, 0, 9, 9, 0f);
+					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, hardcore, 9, 9, 0f);
 				}
 
 			}
