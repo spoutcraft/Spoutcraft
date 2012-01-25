@@ -147,21 +147,19 @@ public class RenderItem extends Render {
 			} else if(itemStack.getItem().func_46058_c()) {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				for (int var14 = 0; var14 <= 1; ++var14) {
+					int var15 = itemStack.getItem().func_46057_a(itemStack.getItemDamage(), var14);
 					float colorScale = 1.0F;
 					if(this.field_27004_a) {
 						fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), var14);
-						red = (float)(fullColor >> 16 & 255) / 255.0F;
-						green = (float)(fullColor >> 8 & 255) / 255.0F;
-						blue = (float)(fullColor & 255) / 255.0F;
+						red = (fullColor >> 16 & 255) / 255.0F;
+						green = (fullColor >> 8 & 255) / 255.0F;
+						blue = (fullColor & 255) / 255.0F;
 						GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
 					}
-		
-					if (this.field_27004_a) {
-						GL11.glColor4f(colorScale, colorScale, colorScale, 1.0F);
-						this.renderItemBillboard(itemStack.getIconIndex(), itemsOnGround);
-					}
+
+					this.renderItemBillboard(var15, itemsOnGround);
 				}
-				
+
 			} else {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				int iconIndex = itemStack.getIconIndex();
@@ -295,7 +293,7 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else {
 			float var10;
-			if (var3 == Item.potion.shiftedIndex || var3 == 383) {
+			if (Item.itemsList[var3].func_46058_c()) {
 				GL11.glDisable(2896 /* GL_LIGHTING */);
 				for (int var8 = 0; var8 <= 1; ++var8) {
 					int var13 = Item.itemsList[var3].func_46057_a(var4, var8);
