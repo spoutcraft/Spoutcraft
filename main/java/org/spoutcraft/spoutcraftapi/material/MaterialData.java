@@ -1,7 +1,5 @@
 package org.spoutcraft.spoutcraftapi.material;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -27,6 +25,9 @@ import org.spoutcraft.spoutcraftapi.material.item.GenericFood;
 import org.spoutcraft.spoutcraftapi.material.item.GenericItem;
 import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
 import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
+import org.spoutcraft.spoutcraftapi.material.item.SpawnEgg;
+
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class MaterialData {
 	private final static Object[] idLookup = new Object[3200];
@@ -194,7 +195,7 @@ public class MaterialData {
 	public static final Block endPortalFrame = new Solid("End Portal Frame", 120);
 	public static final Block endStone = new Solid("End Stone", 121);
 	public static final Block dragonEgg = new Solid("Dragon Egg", 122);
-	
+
 	public static final Item ironShovel = new GenericTool("Iron Shovel", 256);
 	public static final Item ironPickaxe = new GenericTool("Iron Pickaxe", 257);
 	public static final Item ironAxe = new GenericTool("Iron Axe", 258);
@@ -337,6 +338,26 @@ public class MaterialData {
 	public static final Item brewingStand = new GenericItem("Brewing Stand", 379);
 	public static final Item cauldron = new GenericItem("Cauldron", 380);
 	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
+	public static final Item spawnEggMooshroom = new SpawnEgg("Spawn Mooshroom", 383, 96);
+	public static final Item spawnEggSkeleton = new SpawnEgg("Spawn Skeleton", 383, 51);
+	public static final Item spawnEggCreeper = new SpawnEgg("Spawn Creeper", 383, 50);
+	public static final Item spawnEggSlime = new SpawnEgg("Spawn Slime", 383, 55);
+	public static final Item spawnEggZombie = new SpawnEgg("Spawn Zombie", 383, 54);
+	public static final Item spawnEggSpider = new SpawnEgg("Spawn Spider", 383, 52);
+	public static final Item spawnEggChicken = new SpawnEgg("Spawn Chicken", 383, 93);
+	public static final Item spawnEggCaveSpider = new SpawnEgg("Spawn Cave Spider", 383, 59);
+	public static final Item spawnEggCow = new SpawnEgg("Spawn Cow", 383, 92);
+	public static final Item spawnEggEnderman = new SpawnEgg("Spawn Enderman", 383, 58);
+	public static final Item spawnEggWolf = new SpawnEgg("Spawn Wolf", 383, 95);
+	public static final Item spawnEggPigZombie = new SpawnEgg("Spawn Pig Zombie", 383, 57);
+	public static final Item spawnEggSquid = new SpawnEgg("Spawn Squid", 383, 94);
+	public static final Item spawnEggGhast = new SpawnEgg("Spawn Ghast", 383, 56);
+	public static final Item spawnEggMagmaCube = new SpawnEgg("Spawn Magma Cube", 383, 62);
+	public static final Item spawnEggSheep = new SpawnEgg("Spawn Sheep", 383, 91);
+	public static final Item spawnEggBlaze = new SpawnEgg("Spawn Blaze", 383, 61);
+	public static final Item spawnEggVillager = new SpawnEgg("Spawn Villager", 383, 120);
+	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
+	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
 
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
@@ -349,11 +370,11 @@ public class MaterialData {
 	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
 	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
 	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
-	
+
 	static {
 		reset();
 	}
-	
+
 	public static void reset() {
 		//reset all values
 		for (int i = 0; i < idLookup.length; i++) {
@@ -373,10 +394,10 @@ public class MaterialData {
 					if (value instanceof Material) {
 						Material mat = (Material)value;
 						mat.setName(mat.getNotchianName());
-						
+
 						int id = mat.getRawId();
 						int data = mat.getRawData();
-						
+
 						insertItem(id, data, mat);
 					}
 				} catch (IllegalArgumentException e) {
@@ -385,7 +406,7 @@ public class MaterialData {
 			}
 		}
 	}
-	
+
 	private static void insertItem(int id, int data, Material mat) {
 		if (id < idLookup.length && id > -1) {
 			nameLookup.put(mat.getNotchianName().toLowerCase(), mat);
@@ -417,7 +438,7 @@ public class MaterialData {
 			System.out.println("WARNING! Material " + mat.getNotchianName() + " Could Not Fit " + id + ", " + data + " into the lookup array!");
 		}
 	}
-	
+
 	private static Material[] adjust(Material[] oldArray, int size) {
 		Material[] newArray = new Material[size];
 		for (int i = 0; i < oldArray.length; i++) {
@@ -435,7 +456,7 @@ public class MaterialData {
 		customItems.add(item);
 		nameLookup.put(item.getNotchianName().toLowerCase(), item);
 	}
-	
+
 	/**
 	 * Adds a custom block to the material list
 	 * @param block to add
@@ -445,19 +466,19 @@ public class MaterialData {
 		customBlocks.add(block);
 		nameLookup.put(block.getNotchianName().toLowerCase(), block);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param Gets the material from the given id
 	 * @return material, or null if none found
 	 */
 	public static Material getMaterial(int id) {
 		return getMaterial(id, (short)0);
 	}
-	
+
 	/**
 	 * Gets the material from the given id and data.
-	 * 
+	 *
 	 * If a non-zero data value is given for a material with no subtypes, the material at the id and data value of zero will be returned instead.
 	 * @param id to get
 	 * @param data to get
@@ -481,10 +502,10 @@ public class MaterialData {
 			return materials[data];
 		return m;
 	}
-	
+
 	/**
 	 * Gets the material from the given id and data, or creates it if nessecary.
-	 * 
+	 *
 	 * Creation occurs when a material exists at the given id, and zero data value, but does not have any subtypes.
 	 * A new material that is a copy of the material at the given id and zero data value is created.
 	 * If creation fails for any reason, null will be returned.
@@ -510,7 +531,7 @@ public class MaterialData {
 			mat = materials[data];
 		}
 		idLookup[id] = materials;
-		
+
 		if (mat != null) {
 			if (mat.getRawId() == id && mat.getRawData() == data) {
 				return mat;
@@ -530,7 +551,7 @@ public class MaterialData {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets the block at the given id, or null if none found
 	 * @param id to get
@@ -539,7 +560,7 @@ public class MaterialData {
 	public static Block getBlock(int id) {
 		return getBlock(id, (short)0);
 	}
-	
+
 	/**
 	 * Gets the block at the given id and data, or null if none found
 	 * @param id to get
@@ -586,7 +607,7 @@ public class MaterialData {
 	public static CustomBlock getCustomBlock(int customId) {
 		return customBlockLookup.get(customId);
 	}
-	
+
 	/**
 	 * Gets the custom item associated with the given id
 	 * @param customId to look up from
@@ -595,7 +616,7 @@ public class MaterialData {
 	public static CustomItem getCustomItem(int customId) {
 		return customItemLookup.get(customId);
 	}
-	
+
 	/**
 	 * Gets the item at the given id, or null if none found
 	 * @param id to get
@@ -604,7 +625,7 @@ public class MaterialData {
 	public static Item getItem(int id) {
 		return getItem(id, (short)0);
 	}
-	
+
 	/**
 	 * Gets the item at the given id and data, or null if none found
 	 * @param id to get
@@ -640,7 +661,7 @@ public class MaterialData {
 		materials.addAll(customItems);
 		return materials;
 	}
-	
+
 	/**
 	 * Gets the associated material with it's notchian name
 	 * @param name to lookup
