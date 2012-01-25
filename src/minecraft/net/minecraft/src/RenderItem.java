@@ -295,7 +295,7 @@ public class RenderItem extends Render {
 			GL11.glPopMatrix();
 		} else {
 			float var10;
-			if (var3 == Item.potion.shiftedIndex) {
+			if (var3 == Item.potion.shiftedIndex || var3 == 383) {
 				GL11.glDisable(2896 /* GL_LIGHTING */);
 				for (int var8 = 0; var8 <= 1; ++var8) {
 					int var13 = Item.itemsList[var3].func_46057_a(var4, var8);
