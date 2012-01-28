@@ -114,7 +114,7 @@ public abstract class GuiContainer extends GuiScreen
 			//Spout Start
 			List<String> list = itemstack.getItemNameandInformation();
 			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
-			String custom = item != null ? String.format(/*item.getName()*/"Hello\nHelo\nHi\nTest\nTest2\nTest3\nTest4\nTest5", String.valueOf(slot.getStack().getItemDamage())) : null;
+			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
 			if (custom != null && slot.getStack().itemID != MaterialData.potion.getRawId()) {
 				list.set(0, custom);
 			}
