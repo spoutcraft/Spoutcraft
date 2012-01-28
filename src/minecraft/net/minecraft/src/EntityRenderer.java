@@ -678,7 +678,7 @@ public class EntityRenderer {
 		if (ConfigReader.betterGrass == 2) {
 			RenderBlocks.fancyGrass = true;
 		}
-		
+
 	//	if(Thread.currentThread().getPriority() != 10) {
 	//		Thread.currentThread().setPriority(10);
 	//	}
@@ -1054,7 +1054,7 @@ public class EntityRenderer {
 	private void addRainParticles() {
 		float var1 = this.mc.theWorld.getRainStrength(1.0F);
 		// Spout Start
-		
+
 		if (!ConfigReader.weather) {
 			return;
 		}
@@ -1064,7 +1064,7 @@ public class EntityRenderer {
 		if (!ConfigReader.fancyWeather) {
 			var1 /= 2.0F;
 		}
-		
+
 		// Spout End
 
 		if (var1 != 0.0F) {
@@ -1186,7 +1186,7 @@ public class EntityRenderer {
 						float var25 = this.rainXCoords[var24] * 0.5F;
 						float var26 = this.rainYCoords[var24] * 0.5F;
 						BiomeGenBase var27 = var17[var48++];
-						
+
 						boolean forceSnow = false;
 						boolean forceRain = false;
 						if (SpoutClient.getInstance().getBiomeManager().getSnowChanged(var27.getBiomeName())) {
@@ -1535,12 +1535,19 @@ public class EntityRenderer {
 							if (var9 < 5.0F) {
 								var9 = 5.0F;
 							}
-							
+
 							if (var6 > var9) {
 								var6 = var9;
+							}
 						}
 					}
+
+					//Spout Start
+					if (!ConfigReader.voidFog) {
+						var6 = 0.8F * this.farPlaneDistance;
+						var12 = this.farPlaneDistance;
 					}
+					//Spout End
 
 					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
 					if (var1 < 0) {
