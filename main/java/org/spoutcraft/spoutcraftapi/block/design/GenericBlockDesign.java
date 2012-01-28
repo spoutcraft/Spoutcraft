@@ -368,6 +368,15 @@ public class GenericBlockDesign implements BlockDesign {
 				sideBrightness = internalLightLevel;
 			}
 	
+			if (block == null) {
+				if (i == 5)
+					tessellator.setNormal(0, 1, 0);
+				else if (i == 3)
+					tessellator.setNormal(0, 0, 1);
+				else if (i == 2)
+					tessellator.setNormal(1, 0, 0);
+			}
+	
 			tessellator.setBrightness(sideBrightness);
 			
 			tessellator.setColorOpaqueFloat(1.0F, 1.0F, 1.0F);
@@ -442,7 +451,7 @@ public class GenericBlockDesign implements BlockDesign {
 		GL11.glPushMatrix();
 		Spoutcraft.getTessellator().startDrawingQuads();		
 			
-		GL11.glTranslatef(x, y, depth);
+		GL11.glTranslatef(x, y+1, depth);
 		GL11.glScalef(10.0F, 10.0F, 10.0F);		
 		GL11.glTranslatef(1.0F, 0.5F, 1.0F);		
 		GL11.glScalef(1.0F, 1.0F, -1.0F);
