@@ -27,10 +27,7 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
@@ -114,11 +111,10 @@ public abstract class GuiContainer extends GuiScreen
 			//Spout Start
 			List<String> list = itemstack.getItemNameandInformation();
 			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
-			String custom = item != null ? String.format(/*item.getName()*/"Hello\nHelo\nHi\nTest\nTest2\nTest3\nTest4\nTest5", String.valueOf(slot.getStack().getItemDamage())) : null;
+			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
 			if (custom != null && slot.getStack().itemID != MaterialData.potion.getRawId()) {
 				list.set(0, custom);
 			}
-			//Spout End
 			if(list.size() > 0)
 			{
 				/*int j2 = 0;
@@ -166,7 +162,6 @@ public abstract class GuiContainer extends GuiScreen
 					}
 					//Spout Start
 					super.drawTooltip(s, (i - k) + 8, j - l - s.split("\n").length * 6);
-					//Spout End
 					//fontRenderer.drawStringWithShadow(s, l2, j3, -1);
 					/*if(l4 == 0)
 					{
@@ -174,6 +169,7 @@ public abstract class GuiContainer extends GuiScreen
 					}
 					j3 += 10;*/
 				}
+				//Spout end
 				zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
 			}
