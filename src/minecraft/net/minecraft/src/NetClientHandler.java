@@ -162,8 +162,10 @@ public class NetClientHandler extends NetHandler {
 		if (mc.currentScreen instanceof GuiDownloadTerrain) {
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
+				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
 			}
 		}
+		//Spout end
 	}
 
 	public void handleLogin(Packet1Login var1) {
