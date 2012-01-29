@@ -26,6 +26,7 @@
 package net.minecraft.src;
 
 import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -107,17 +108,16 @@ public abstract class GuiContainer extends GuiScreen
 		if(inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && shouldShowTooltip()) //Spout added tooltip condition
 		{
 			ItemStack itemstack = slot.getStack();
-			//Spout Start
+			//Spout Start Edited End
 			List<String> list = itemstack.getItemNameandInformation();
 			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
 			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
 			if (custom != null && slot.getStack().itemID != MaterialData.potion.getRawId()) {
 				list.set(0, custom);
 			}
-			//Spout End
 			if(list.size() > 0)
 			{
-				int j2 = 0;
+				/*int j2 = 0;
 				for(int k2 = 0; k2 < list.size(); k2++)
 				{
 					int i3 = fontRenderer.getStringWidth((String)list.get(k2));
@@ -149,6 +149,7 @@ public abstract class GuiContainer extends GuiScreen
 				drawGradientRect(l2 + k3 + 2, (j3 - 3) + 1, l2 + k3 + 3, (j3 + l3 + 3) - 1, j4, k4);
 				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
 				drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
+				*/
 				for(int l4 = 0; l4 < list.size(); l4++)
 				{
 					String s = (String)list.get(l4);
@@ -159,14 +160,16 @@ public abstract class GuiContainer extends GuiScreen
 					{
 						s = (new StringBuilder()).append("\2477").append(s).toString();
 					}
-					fontRenderer.drawStringWithShadow(s, l2, j3, -1);
-					if(l4 == 0)
+					//Spout Start
+					super.drawTooltip(s, (i - k) + 8, j - l - s.split("\n").length * 6);
+					//fontRenderer.drawStringWithShadow(s, l2, j3, -1);
+					/*if(l4 == 0)
 					{
 						j3 += 2;
 					}
-					j3 += 10;
+					j3 += 10;*/
 				}
-
+				//Spout end
 				zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
 			}
