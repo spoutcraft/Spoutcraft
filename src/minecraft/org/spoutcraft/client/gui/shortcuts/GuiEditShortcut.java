@@ -206,6 +206,7 @@ public class GuiEditShortcut extends GuiScreen {
 		}
 		if (btn.equals(editButton)) {
 			editCommand(slot.getSelectedRow());
+			updateButtons();
 		}
 		if (btn.equals(removeButton)) {
 			item.removeCommand(slot.getSelectedRow());
@@ -224,7 +225,7 @@ public class GuiEditShortcut extends GuiScreen {
 
 	public void updateButtons() {
 		editButton.setEnabled(slot.getSelectedRow() != -1);
-		removeButton.setEnabled(slot.getSelectedRow() != -1);
+		removeButton.setEnabled(slot.getSelectedRow() != -1 && editingIndex == -1);
 	}
 
 	public Shortcut getShortcut() {
