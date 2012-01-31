@@ -157,7 +157,7 @@ public class GuiMainMenu extends GuiScreen {
 	@Override
 	protected void buttonClicked(Button btn) {
 		if (btn == buttonSinglePlayer) {
-			mc.displayGuiScreen(new GuiSelectWorld(this));
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));
 		}
 		if (btn == buttonMultiPlayer) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
