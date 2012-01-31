@@ -368,7 +368,6 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericTextField textField) {
-		scissorWidget(textField);
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		RenderUtil.drawRectangle((int) (textField.getScreenX() - 1), (int) (textField.getScreenY() - 1), (int) (textField.getScreenX() + textField.getWidth() + 1), (int) (textField.getScreenY() + textField.getHeight() + 1), textField.getBorderColor().toInt());
 		RenderUtil.drawRectangle((int) textField.getScreenX(), (int) textField.getScreenY(), (int) (textField.getScreenX() + textField.getWidth()), (int) (textField.getScreenY() + textField.getHeight()), textField.getFieldColor().toInt());
@@ -814,8 +813,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
 			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 0, 208, 16, 16, 0f);
 
-			RenderUtil.drawGradientRectangle(0, 0, (int) gs.getWidth(), 5, new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt());
-			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 5, (int) gs.getWidth(), (int) gs.getHeight(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt());
+			RenderUtil.drawGradientRectangle(0, -1, (int) gs.getWidth(), 5, new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt());
+			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 5, (int) gs.getWidth() + 1, (int) gs.getHeight(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt());
 		}
 	}
 
