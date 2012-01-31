@@ -224,6 +224,9 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public World getWorld() {
+		if(getHandle() == null || getHandle().theWorld == null) {
+			return null;
+		}
 		return getHandle().theWorld.world;
 	}
 

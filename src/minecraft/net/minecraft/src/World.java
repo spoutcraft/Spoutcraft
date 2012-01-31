@@ -2387,7 +2387,13 @@ public class World implements IBlockAccess {
 	private int computeBlockLightValue(int var1, int var2, int var3, int var4, int var5, int var6) {
 		//Spout start
 		int light = Block.lightValue[var5];
-		short customId = Spoutcraft.getWorld().getChunkAt(var2, var3, var4).getCustomBlockId(var2, var3, var4);
+		
+		//Fix for generation-time accessing
+		org.spoutcraft.spoutcraftapi.World world = Spoutcraft.getWorld();
+		short customId = 0;
+		if(world != null) {
+			customId = world.getChunkAt(var2, var3, var4).getCustomBlockId(var2, var3, var4);
+		}
 		if (customId > 0) {
 			CustomBlock block = MaterialData.getCustomBlock(customId);
 			if (block != null) {
