@@ -69,6 +69,10 @@ public class TextureUtils {
 
 	public static boolean setTileSize() {
 		int size = getTileSize();
+		customWater = hasResource("/custom_water_still.png") || hasResource("/custom_water_flowing.png")
+			|| hasResource("/anim/custom_water_still.png") || hasResource("/anim/custom_water_flowing.png");
+		customLava = hasResource("/custom_lava_still.png") || hasResource("/custom_lava_flowing.png")
+				|| hasResource("/anim/custom_lava_still.png") || hasResource("/anim/custom_lava_flowing.png");
 		if (size == TileSize.int_size) {
 			//unchanged
 			return false;
