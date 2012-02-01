@@ -48,7 +48,6 @@ public class SpoutWorth {
 	long avgFPS = -1;
 	long appearanceCooldown = 0;
 	long currentFPS = IDEAL_FPS;
-	long renderingCooldown;
 	String debug;
 	boolean belowIdeal = false;
 
@@ -83,9 +82,6 @@ public class SpoutWorth {
 	}
 
 	public void doTick() {
-		if (renderingCooldown > 0) {
-			renderingCooldown--;
-		}
 		if (!ConfigReader.automatePerformance) {
 			return;
 		}
@@ -114,11 +110,6 @@ public class SpoutWorth {
 
 		belowIdeal = percent < 75;
 		debug = "Ideal Percent: " + percent + " Current Percent: " + percentCur + " Improving: " + improving;
-
-		//drastic changes to temporarily improve fps
-		if (percentCur < 33 && !improving && isFullyLoaded()) {
-			renderingCooldown = Math.max(renderingCooldown, (percentCur < 15 ? 5 : 2));
-		}
 
 		if (percent > 200) {
 			if (--appearanceCooldown <= 0) {
@@ -159,11 +150,17 @@ public class SpoutWorth {
 		return debug;
 	}
 
-	public boolean isRenderingHalted() {
-		return renderingCooldown > 0L && ConfigReader.automatePerformance;
-	}
-
 	public void increaseAppearance() {
+		if (!ConfigReader.sky) {
+			ConfigReader.sky = true;
+			ConfigReader.write();
+			return;
+		}
+		if (!ConfigReader.stars) {
+			ConfigReader.stars = true;
+			ConfigReader.write();
+			return;
+		}
 		if (!ConfigReader.fancyWater) {
 			ConfigReader.fancyWater = true;
 			ConfigReader.write();
@@ -225,16 +222,6 @@ public class SpoutWorth {
 			ConfigReader.write();
 			return;
 		}
-		if (ConfigReader.dynamicUpdates) {
-			ConfigReader.dynamicUpdates = false;
-			ConfigReader.write();
-			return;
-		}
-		if (ConfigReader.chunkUpdates < 3) {
-			ConfigReader.chunkUpdates++;
-			ConfigReader.write();
-			return;
-		}
 		if (ConfigReader.advancedOpenGL != 0) {
 			ConfigReader.advancedOpenGL = 0;
 			Minecraft.theMinecraft.gameSettings.advancedOpengl = false;
@@ -256,50 +243,44 @@ public class SpoutWorth {
 	}
 
 	public void decreaseAppearance(boolean drastic, long haltRenderingCount) {
-		renderingCooldown = haltRenderingCount;
 
-		int downgrade = drastic ? 3 : 1;
+		int downgrade = drastic ? 2 : 1;
 
-		if (!ConfigReader.dynamicUpdates) {
-			ConfigReader.dynamicUpdates = true;
-			ConfigReader.write();
-			return;
+		if (ConfigReader.sky) {
+			ConfigReader.sky = false;
+			if (--downgrade == 0) {
+				ConfigReader.write();
+				return;
+			}
 		}
 		if (ConfigReader.renderDistance < 2) {
 			ConfigReader.renderDistance++;
 			Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
-			ConfigReader.write();
 			if (--downgrade == 0) {
-				return;
-			}
-		}
-		if (ConfigReader.chunkUpdates > 1) {
-			ConfigReader.chunkUpdates = 0;
-			ConfigReader.write();
-			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.advancedOpenGL == 2 || ConfigReader.advancedOpenGL == 0) {
 			ConfigReader.advancedOpenGL = 1;
 			Minecraft.theMinecraft.gameSettings.advancedOpengl = true;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.signDistance > 8) {
 			ConfigReader.signDistance /= 2;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 
 		if (ConfigReader.fancyParticles) {
 			ConfigReader.fancyParticles = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
@@ -312,64 +293,71 @@ public class SpoutWorth {
 		}
 		if (ConfigReader.fancyGrass) {
 			ConfigReader.fancyGrass = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyBiomeColors) {
 			ConfigReader.fancyBiomeColors = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
+				return;
+			}
+		}
+		if (ConfigReader.stars) {
+			ConfigReader.stars = false;
+			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyLight) {
 			ConfigReader.fancyLight = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyLight) {
 			ConfigReader.fancyLight = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyClouds) {
 			ConfigReader.fancyClouds = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyTrees) {
 			ConfigReader.fancyTrees = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyWeather) {
 			ConfigReader.fancyWeather = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.betterGrass == 2) {
 			ConfigReader.betterGrass = 1;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}
 		if (ConfigReader.fancyWater) {
 			ConfigReader.fancyWater = false;
-			ConfigReader.write();
 			if (--downgrade == 0) {
+				ConfigReader.write();
 				return;
 			}
 		}

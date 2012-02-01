@@ -1253,64 +1253,6 @@ public class RenderGlobal implements IWorldAccess {
 
 	public boolean updateRenderers(EntityLiving var1, boolean var2) {
 		boolean var3 = false;
-		//Spout start
-		if (SpoutWorth.getInstance().isRenderingHalted()) {
-			updateRenderer(MathHelper.floor_double(var1.posX), MathHelper.floor_double(var1.posY), MathHelper.floor_double(var1.posZ));
-			return this.worldRenderersToUpdate.size() == 0;
-		}
-		Profiler.startSection("setup");
-		frameCount++;
-		int renderersToUpdate = ConfigReader.chunkUpdates;
-		double tempRenderersToUpdate = renderersToUpdate;
-		int renderersUpdated = 0;
-		//Be aggressive!
-		if (ConfigReader.dynamicUpdates) {
-			if (!this.isMoving(var1, 2000)) {
-				tempRenderersToUpdate *= 20D;
-			}
-			else if (!this.isMoving(var1, 1000)){
-				tempRenderersToUpdate *= 15D;
-			}
-			else if (!this.isMoving(var1, 1000)){
-				tempRenderersToUpdate *= 10D;
-			}
-			else if (!this.isMoving(var1, 500)){
-				tempRenderersToUpdate *= 5D;
-			}
-			else if (!this.isMoving(var1, 250)){
-				tempRenderersToUpdate *= 3D;
-			}
-			else if (!this.isMoving(var1, 125)){
-				tempRenderersToUpdate *= 2D;
-			}
-			else if (!this.isMoving(var1, 75)){
-				tempRenderersToUpdate *= 3D;
-				tempRenderersToUpdate /= 2D;
-			}
-			else if (!this.isMoving(var1, 35)){
-				tempRenderersToUpdate *= 5D;
-				tempRenderersToUpdate /= 4D;
-			}
-			else {
-				tempRenderersToUpdate /= 2D;
-			}
-		}
-		renderersToUpdate = (int)tempRenderersToUpdate; //casting is safe because values are always >= 0
-		if (frameCount % 5 == 0)
-			renderersToUpdate = Math.max(1, renderersToUpdate);
-		//If we have had few chunk updates, do more!
-		if (WorldRenderer.chunksUpdated < 3) {
-			renderersToUpdate += 5;
-		}
-		else if (WorldRenderer.chunksUpdated < 5) {
-			renderersToUpdate += 3;
-		}
-		renderersToUpdateLastTick = renderersToUpdate;
-		Profiler.endSection();
-		if (renderersToUpdate <= 0) {
-			return this.worldRenderersToUpdate.size() == 0;
-		}
-		//Spout end
 		if (var3) {
 			Collections.sort(this.worldRenderersToUpdate, new RenderSorter(var1));
 			int var17 = this.worldRenderersToUpdate.size() - 1;
@@ -1386,13 +1328,6 @@ public class RenderGlobal implements IWorldAccess {
 				if (var7 == null) {
 					var7 = new ArrayList();
 				}
-				
-				//Spout start
-				if (renderersUpdated > renderersToUpdate) {
-					break;
-				}
-				renderersUpdated++;
-				//Spout end
 
 				++var9;
 				var7.add(var11);

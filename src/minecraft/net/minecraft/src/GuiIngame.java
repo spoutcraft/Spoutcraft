@@ -224,6 +224,8 @@ public class GuiIngame extends Gui{
 				font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 				//font.drawStringWithShadow("Avg FPS: " + SpoutWorth.getInstance().getAverageFPS(), 4, 14, 0xFFE303);
 				//font.drawStringWithShadow(SpoutWorth.getInstance().getDebugText(), 4, 26, 0xFFE303);
+				//font.drawStringWithShadow("Chunk Cache Hits: " + ChunkProvider.cacheHits, 4, 14, 0xFFE303);
+				//font.drawStringWithShadow("Chunk Cache Misses: " + ChunkProvider.cacheMisses, 4, 26, 0xFFE303);
 			}
 			GL11.glPopMatrix();
 		}

@@ -210,6 +210,7 @@ public abstract class Minecraft implements Runnable {
 		this.texturePackList = new TexturePackList(this, this.mcDataDir);
 		// Spout Start
 		System.out.println("Launching Spoutcraft " + SpoutClient.getClientVersion());
+		System.out.println("OpenGL: " + GL11.glGetString(GL11.GL_RENDERER) + " version " + GL11.glGetString(GL11.GL_VERSION) + ", " + GL11.glGetString(GL11.GL_VENDOR) + "\n");
 		// Spout End
 		this.renderEngine = new RenderEngine(this.texturePackList, this.gameSettings);
 		// Spout Start

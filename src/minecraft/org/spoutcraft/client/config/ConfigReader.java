@@ -44,9 +44,7 @@ public class ConfigReader {
 	public static boolean fancyBiomeColors = false;
 	public static boolean waterBiomeColors = true;
 	public static float brightnessSlider = 1F;
-	public static int chunkUpdates = 1;
 	public static boolean clearWater = false;
-	public static boolean dynamicUpdates = true;
 	public static boolean fancyClouds = false;
 	public static boolean fancyFog = false;
 	public static boolean fancyGraphics = false;

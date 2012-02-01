@@ -39,14 +39,6 @@ public class StarsToggleButton extends GenericCheckBox{
 	}
 
 	@Override
-	public String getTooltip() {
-		if (!isEnabled()) {
-			return "This option is not allowed by your server, it is considered cheating.";
-		}
-		return super.getTooltip();
-	}
-
-	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.stars = !ConfigReader.stars;
 		ConfigReader.write();

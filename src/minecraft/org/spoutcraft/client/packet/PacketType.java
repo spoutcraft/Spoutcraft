@@ -74,6 +74,7 @@ public enum PacketType {
 	PacketEntityInformation(53, PacketEntityInformation.class),
 	PacketComboBox(54, PacketComboBox.class),
 	PacketFocusUpdate(55, PacketFocusUpdate.class),
+	PacketScreenResolution(56, PacketScreenResolution.class),
 	;
 
 	private final int id;

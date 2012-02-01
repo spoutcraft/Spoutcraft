@@ -65,6 +65,7 @@ import org.spoutcraft.client.packet.CustomPacket;
 import org.spoutcraft.client.packet.PacketAddonData;
 import org.spoutcraft.client.packet.PacketEntityInformation;
 import org.spoutcraft.client.packet.PacketManager;
+import org.spoutcraft.client.packet.PacketScreenResolution;
 import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.player.SimpleBiomeManager;
@@ -136,6 +137,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final ThreadGroup securityThreadGroup;
 	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
+	private int lastX = 420, lastY = 247;
 
 	private SpoutClient() {
 		instance = this;
@@ -272,15 +274,15 @@ public class SpoutClient extends PropertyObject implements Client {
 		this.entitylabel = tentitylabel;
 		this.voidfog = tvoidfog;
 
-		if (!isSkyCheat()) {
-			ConfigReader.sky = true;
-		}
+		//if (!isSkyCheat()) {
+		//	ConfigReader.sky = true;
+		//}
 		if (!isClearWaterCheat()) {
 			ConfigReader.clearWater = false;
 		}
-		if (!isStarsCheat()) {
-			ConfigReader.stars = true;
-		}
+		//if (!isStarsCheat()) {
+		//	ConfigReader.stars = true;
+		//}
 		if (!isWeatherCheat()) {
 			ConfigReader.weather = true;
 		}
@@ -308,6 +310,14 @@ public class SpoutClient extends PropertyObject implements Client {
 		enableSandbox();
 		player.getMainScreen().onTick();
 		disableSandbox();
+		
+		int x = render.getScreenWidth();
+		int y = render.getScreenHeight();
+		if (x != lastX || y != lastY) {
+			lastX = x;
+			lastY = y;
+			getPacketManager().sendSpoutPacket(new PacketScreenResolution(x, y));
+		}
 
 		MipMapUtils.onTick();
 
