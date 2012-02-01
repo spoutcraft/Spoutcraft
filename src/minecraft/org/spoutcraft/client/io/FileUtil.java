@@ -167,15 +167,16 @@ public class FileUtil {
 			SpoutClient.disableSandbox();
 		}
 
-		File directory = new File(getTexturePackDirectory(), Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.texturePackFileName);
-		if (!directory.exists()) {
-			directory.mkdir();
+		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.texturePackFileName;
+		File file = new File(getTexturePackDirectory(), fileName);
+		if (!file.exists()) {
+			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);
 		}
 
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
-		return directory;
+		return file;
 	}
 
 	public static String getFileName(String url) {
