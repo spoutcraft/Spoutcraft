@@ -24,28 +24,33 @@ public class ChunkProvider implements IChunkProvider {
 	private Chunk emptyChunk;
 	private IChunkProvider chunkProvider;
 	private IChunkLoader chunkLoader;
-	private TLongObjectHashMap<Chunk> chunkMap = new TLongObjectHashMap<Chunk>();
+	private TLongObjectHashMap<Chunk> chunkMap = new TLongObjectHashMap<Chunk>(1000); //Spout
 	//private List<Chunk> chunkList = new ArrayList<Chunk>();
 	private World worldObj;
 	private int field_35392_h;
-	
-	private int lastX, lastZ;
+	//Spout start
+	private int lastX = Integer.MAX_VALUE, lastZ = Integer.MAX_VALUE;
 	private Chunk last;
 	public static long cacheHits = 0;
 	public static long cacheMisses = 0L;
+	//Spout end
 
 	public ChunkProvider(World var1, IChunkLoader var2, IChunkProvider var3) {
 		this.emptyChunk = new EmptyChunk(var1, new byte[256 * var1.worldHeight], 0, 0);
 		this.worldObj = var1;
 		this.chunkLoader = var2;
 		this.chunkProvider = var3;
+		chunkMap.setAutoCompactionFactor(0.0F); //Spout
+		droppedChunksSet.setAutoCompactionFactor(0.0F); //Spout
 	}
 
 	public boolean chunkExists(int var1, int var2) {
+		//Spout start
 		if (var1 == lastX && var2 == lastZ) {
 			cacheHits++;
 			return true;
 		}
+		//Spout end
 		return this.chunkMap.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
 	}
 
@@ -97,28 +102,33 @@ public class ChunkProvider implements IChunkProvider {
 			var5.populateChunk(this, this, var1, var2);
 		}
 		
+		//Spout start
 		if (var5 != null) {
 			lastX = var1;
 			lastZ = var2;
 			last = var5;
 			cacheMisses++;
 		}
+		//Spout end
 
 		return var5;
 	}
 
 	public Chunk provideChunk(int var1, int var2) {
+		//Spout start
 		if (var1 == lastX && var2 == lastZ) {
 			cacheHits++;
 			return last;
 		}
 		Chunk var3 = (Chunk)this.chunkMap.get(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+		
 		if (var3 != null) {
 			lastX = var1;
 			lastZ = var2;
 			last = var3;
 			cacheMisses++;
 		}
+		//Spout end
 		return var3 == null ? this.loadChunk(var1, var2) : var3;
 	}
 
