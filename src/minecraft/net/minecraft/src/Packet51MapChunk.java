@@ -5,6 +5,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
+
+import org.spoutcraft.client.SpoutClient;
+
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
 
@@ -40,8 +43,9 @@ public class Packet51MapChunk extends Packet {
 
 		try {
 			var3.inflate(this.chunk);
-				// Spout - start
-			this.chunk = org.spoutcraft.client.chunkcache.ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
+			// Spout - start
+			if (SpoutClient.getInstance().isSpoutEnabled())
+				this.chunk = org.spoutcraft.client.chunkcache.ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
 			// Spout - end
 		} catch (DataFormatException var8) {
 			throw new IOException("Bad compressed data format");
