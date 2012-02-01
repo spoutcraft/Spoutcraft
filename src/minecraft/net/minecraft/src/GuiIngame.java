@@ -218,13 +218,13 @@ public class GuiIngame extends Gui{
 					long upBandwidth = (8 * ChunkCache.totalPacketUp.get()) / (currentTime - ChunkCache.loggingStart.get());
 					this.drawString(font, "Bandwidth (Up): " + Math.max(1, upBandwidth) + "kbps", 2, 88 + offset, 14737632);
 					this.drawString(font, "Bandwidth (Down): " + Math.max(1, downBandwidth) + "kbps", 2, 96 + offset, 14737632);
-					this.drawString(font, "Chunk Cache Hits: " + (ChunkProviderClient.cacheHits / (ChunkProviderClient.cacheMisses + ChunkProviderClient.cacheHits + 1)) * 100 + "%", 2, 104 + offset, 14737632);
+					this.drawString(font, "Chunk Cache Hits: " + ((float)ChunkProviderClient.cacheHits / (ChunkProviderClient.cacheMisses + ChunkProviderClient.cacheHits + 1F)) * 100 + "%", 2, 104 + offset, 14737632);
 				}
 				else if (mc.isMultiplayerWorld()) {
-					this.drawString(font, "Chunk Cache Hits: " + (ChunkProviderClient.cacheHits / (ChunkProviderClient.cacheMisses + ChunkProviderClient.cacheHits + 1)) * 100 + "%", 2, 64 + offset, 14737632);
+					this.drawString(font, "Chunk Cache Hits: " + ((float)ChunkProviderClient.cacheHits / (ChunkProviderClient.cacheMisses + ChunkProviderClient.cacheHits + 1F)) * 100 + "%", 2, 64 + offset, 14737632);
 				}
 				else {
-					this.drawString(font, "Chunk Cache Hits: " + (ChunkProvider.cacheHits / (ChunkProvider.cacheMisses + ChunkProvider.cacheHits + 1)) * 100 + "%", 2, 64 + offset, 14737632);
+					this.drawString(font, "Chunk Cache Hits: " + ((float)ChunkProvider.cacheHits / (ChunkProvider.cacheMisses + ChunkProvider.cacheHits + 1F)) * 100 + "%", 2, 64 + offset, 14737632);
 				}
 			}
 			else {

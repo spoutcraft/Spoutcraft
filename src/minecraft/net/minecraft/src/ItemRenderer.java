@@ -492,7 +492,7 @@ public class ItemRenderer {
 			int var5 = this.mc.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var5);
 			int var6 = this.mc.theWorld.getBlockId(var2, var3, var4);
-			if (this.mc.theWorld.isBlockNormalCube(var2, var3, var4)) {
+			if (this.mc.theWorld.isBlockNormalCube(var2, var3, var4) && Block.blocksList[var6] != null) { //Spout null check
 				this.renderInsideOfBlock(var1, Block.blocksList[var6].getBlockTextureFromSide(2));
 			}
 			else {
