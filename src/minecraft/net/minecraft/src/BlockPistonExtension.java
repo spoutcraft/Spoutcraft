@@ -176,6 +176,7 @@ public class BlockPistonExtension extends Block {
 	}
 
 	public static int func_31050_c(int var0) {
-		return var0 & 5; // Spout: 7 -> 5, to match the array lengths in Facing
+		if (var0 >= Facing.field_31057_a.length) return 0; // Spout: Make sure this returns a valid index for the array.
+		return var0 & 7;
 	}
 }
