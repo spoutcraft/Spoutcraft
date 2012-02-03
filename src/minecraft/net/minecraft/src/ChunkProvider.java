@@ -5,6 +5,8 @@ import gnu.trove.set.hash.TLongHashSet; // Spout
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkCoordinates;
@@ -46,7 +48,7 @@ public class ChunkProvider implements IChunkProvider {
 
 	public boolean chunkExists(int var1, int var2) {
 		//Spout start
-		if (var1 == lastX && var2 == lastZ) {
+		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
 			cacheHits++;
 			return true;
 		}
@@ -103,7 +105,7 @@ public class ChunkProvider implements IChunkProvider {
 		}
 		
 		//Spout start
-		if (var5 != null) {
+		if (var5 != null && Thread.currentThread() == Minecraft.mainThread) {
 			lastX = var1;
 			lastZ = var2;
 			last = var5;
@@ -116,13 +118,13 @@ public class ChunkProvider implements IChunkProvider {
 
 	public Chunk provideChunk(int var1, int var2) {
 		//Spout start
-		if (var1 == lastX && var2 == lastZ) {
+		if (var1 == lastX && var2 == lastZ  && Thread.currentThread() == Minecraft.mainThread) {
 			cacheHits++;
 			return last;
 		}
 		Chunk var3 = (Chunk)this.chunkMap.get(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
 		
-		if (var3 != null) {
+		if (var3 != null  && Thread.currentThread() == Minecraft.mainThread) {
 			lastX = var1;
 			lastZ = var2;
 			last = var3;

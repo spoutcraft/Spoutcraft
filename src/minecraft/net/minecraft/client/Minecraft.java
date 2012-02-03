@@ -118,6 +118,7 @@ public abstract class Minecraft implements Runnable {
 	public static boolean spoutcraftLauncher = false;
 	public static boolean portable = false;
 	public static int framesPerSecond = 0;
+	public static Thread mainThread;
 	// Spout End
 
 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
@@ -600,6 +601,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void run() {
 		this.running = true;
+		mainThread = Thread.currentThread(); //Spout
 
 		try {
 			this.startGame();
