@@ -318,4 +318,14 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		}
 		return this;
 	}
+
+	@Override
+	public Control setFocus(boolean focus) {
+		if(!focus && !view.isFocus()) {
+			closeList();
+		}
+		return super.setFocus(focus);
+	}
+	
+	
 }
