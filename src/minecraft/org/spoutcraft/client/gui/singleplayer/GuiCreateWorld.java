@@ -261,14 +261,14 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		String worldname = textName.getText();
 		String save = worldname;
 		
-		save = save.replaceAll("[^A-Za-z0-9\\s]", "-");
+		save = save.replaceAll("[^A-Za-z0-9]", "-");
 		String savesDir = new File(mc.mcDataDir, "saves").getAbsolutePath();
 		if((new File(savesDir, save)).exists()) {
 			int num = 1;
-			while((new File(savesDir, save + " ("+num+")")).exists()) {
+			while((new File(savesDir, save + "-("+num+")")).exists()) {
 				num ++;
 			}
-			save = save + " ("+num+")";
+			save = save + "-("+num+")";
 		}
 		
 		return save;
