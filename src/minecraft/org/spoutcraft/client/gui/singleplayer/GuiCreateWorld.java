@@ -122,7 +122,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		
 		buttonNewSeed = new GenericButton("New Seed");
 		
-		labelTitle = new GenericLabel("Create new world");
+		labelTitle = new GenericLabel("Create New world");
 		
 		labelName = new GenericLabel("Name");
 		labelFilePreview = new GenericLabel("Will be saved as World");
@@ -150,7 +150,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		
 		int ftop = 5;
 		int fleft = 5;
-		int fright = fleft + 100;
+		int fright = width / 2 - 100;
 		labelName.setX(fleft).setY(ftop + 4).setHeight(16).setWidth(100);
 		textName.setX(fright).setY(ftop).setHeight(16).setWidth(200);
 		
@@ -261,10 +261,14 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		String worldname = textName.getText();
 		String save = worldname;
 		
-		save = save.replaceAll("[^A-Za-z0-9]", "-");
+		save = save.replaceAll("[^A-Za-z0-9\\s]", "-");
 		String savesDir = new File(mc.mcDataDir, "saves").getAbsolutePath();
-		while((new File(savesDir, save)).exists()) {
-			save += "-";
+		if((new File(savesDir, save)).exists()) {
+			int num = 1;
+			while((new File(savesDir, save + " ("+num+")")).exists()) {
+				num ++;
+			}
+			save = save + " ("+num+")";
 		}
 		
 		return save;

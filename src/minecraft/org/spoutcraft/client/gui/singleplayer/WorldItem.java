@@ -63,7 +63,7 @@ public class WorldItem implements ListWidgetItem {
 	}
 
 	public int getHeight() {
-		return 24;
+		return 26;
 	}
 
 	public void render(int x, int y, int width, int height) {
