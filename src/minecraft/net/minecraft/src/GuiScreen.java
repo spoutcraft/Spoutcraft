@@ -686,10 +686,10 @@ public class GuiScreen extends Gui {
 		// Draw the tooltip!
 		String tooltip = "";
 		// Widget tooltipWidget = null;
-		for (RenderPriority priority : RenderPriority.values()) {
+		priority: for (RenderPriority priority : RenderPriority.values()) {
 			for (Widget widget : screen.getAttachedWidgets(true)) { // We need ALL the tooltips now
 				if (widget.getPriority() == priority) {
-					if (widget.isVisible() && isInBoundingRect(widget, x, y) && !widget.getTooltip().equals("")) {
+					if (widget.isVisible() && isInBoundingRect(widget, x, y) && widget.getTooltip() != null && !widget.getTooltip().equals("")) {
 						if (widget.getScreen() instanceof Scrollable) {
 							if (!isInBoundingRect(widget.getScreen(), x, y)) {
 								continue;
@@ -699,6 +699,8 @@ public class GuiScreen extends Gui {
 						// tooltipWidget = widget;
 						// No return here, when a widget that is over it comes
 						// next, tooltip will be overwritten.
+					} else if(widget.getTooltip() == null && widget.isVisible()) {
+						return;
 					}
 				}
 			}
