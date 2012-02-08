@@ -20,19 +20,26 @@ import net.minecraft.src.Tessellator;
 
 //Spout Start
 import org.bukkit.ChatColor;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 //Spout End
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.opengl.Texture;
+
+import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class GuiMainMenu extends GuiScreen {
 
@@ -118,22 +125,23 @@ public class GuiMainMenu extends GuiScreen {
 
 		int left = 5;
 		int bottom = height - 25;
-		int width = 75;
-		int right = this.width - 5 - width;
-		buttonTextures.setX(left).setY(bottom).setWidth(width).setHeight(20);
-		buttonQuit.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		int widthl = 100;
+		int widthr = 75;
+		int right = this.width - 5 - widthr;
+		buttonTextures.setX(left).setY(bottom).setWidth(widthl).setHeight(20);
+		buttonQuit.setX(right).setY(bottom).setWidth(widthr).setHeight(20);
 
 		bottom -= 25;
-		buttonAddons.setX(left).setY(bottom).setWidth(width).setHeight(20);
-		buttonAbout.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		buttonAddons.setX(left).setY(bottom).setWidth(widthl).setHeight(20);
+		buttonAbout.setX(right).setY(bottom).setWidth(widthr).setHeight(20);
 
 		bottom -= 25;
-		buttonMultiPlayer.setX(left).setY(bottom).setWidth(width).setHeight(20);
-		buttonOptions.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		buttonMultiPlayer.setX(left).setY(bottom).setWidth(widthl).setHeight(20);
+		buttonOptions.setX(right).setY(bottom).setWidth(widthr).setHeight(20);
 
 		bottom -= 25;
-		buttonSinglePlayer.setX(left).setY(bottom).setWidth(width).setHeight(20);
-		buttonFastLogin.setX(right).setY(bottom).setWidth(width).setHeight(20);
+		buttonSinglePlayer.setX(left).setY(bottom).setWidth(widthl).setHeight(20);
+		buttonFastLogin.setX(right).setY(bottom).setWidth(widthr).setHeight(20);
 
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Screen s = getScreen();
@@ -354,12 +362,15 @@ public class GuiMainMenu extends GuiScreen {
 		this.func_35356_c(var1, var2, var3);
 		Tessellator var4 = Tessellator.instance;
 		short var5 = 274;
-		int var6 = this.width / 2 - var5 / 2;
-		byte var7 = 30;
+		int var6 = 10;
+		byte var7 = 10;
 		this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
 		this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
+		GL11.glPushMatrix();
 		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glScaled(.75, .75, .75);
+		
 		if ((double) this.updateCounter < 1.0E-4D) {
 			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 99, 44);
 			this.drawTexturedModalRect(var6 + 99, var7 + 0, 129, 0, 27, 44);
@@ -370,16 +381,30 @@ public class GuiMainMenu extends GuiScreen {
 			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
 			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
 		}
+		GL11.glPopMatrix();
 		var4.setColorOpaque_I(16777215);
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) (this.width / 2 + 90), 70.0F, 0.0F);
-		GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F);
+		GL11.glTranslatef(10, 50.0F, 0.0F); //Spout adjusted position
+		//GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F); //Spout removed rotation
 		float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float) (System.currentTimeMillis() % 1000L) / 1000.0F * 3.1415927F * 2.0F) * 0.1F);
 		var8 = var8 * 100.0F / (float) (this.fontRenderer.getStringWidth(this.splashText) + 32);
 		GL11.glScalef(var8, var8, var8);
-		this.drawCenteredString(this.fontRenderer, this.splashText, 0, -8, 16776960);
+		this.drawString(this.fontRenderer, this.splashText, 0, 0, 16776960); //Spout remove centering
 		GL11.glPopMatrix();
-
+		
+		//Spout Start
+		String powered = "Powered by";
+		int stringWidth = fontRenderer.getStringWidth(powered);
+		drawString(this.fontRenderer, powered, width - stringWidth - 10, 3, 0xffbadfe6);
+		GL11.glPushMatrix();
+		GL11.glTranslated(width - 256*0.75 - 10, 8, 0);
+		GL11.glScaled(0.75, 0.75, 0.75);
+		Texture spoutcraftLogo = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
+		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
+		r.drawTexture(spoutcraftLogo, 256, 64);
+		
+		GL11.glPopMatrix();
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -391,6 +416,7 @@ public class GuiMainMenu extends GuiScreen {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			mc.displayGuiScreen(new GameSettingsScreen(new GuiMainMenu()));
 		}
+		//Spout End
 
 		// Spout Start
 		// this.drawString(this.fontRenderer, "Minecraft 1.1", 2, this.height - 10, 16777215); //Spout
