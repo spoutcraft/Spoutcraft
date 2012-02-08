@@ -254,7 +254,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 		
 		@Override
 		public String getTooltip() {
-			if(!super.getTooltip().isEmpty()) {
+			if(!super.getTooltip().equals("")) {
 				return super.getTooltip();
 			}
 			return null;
