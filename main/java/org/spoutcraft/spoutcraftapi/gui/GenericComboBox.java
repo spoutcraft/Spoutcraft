@@ -251,6 +251,14 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 			combo = box;
 			setBackgroundColor(new Color(0.5f,0.5f,0.5f,0.9f));
 		}
+		
+		@Override
+		public String getTooltip() {
+			if(!super.getTooltip().isEmpty()) {
+				return super.getTooltip();
+			}
+			return null;
+		}
 
 		@Override
 		public double getWidth() {
