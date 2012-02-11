@@ -131,7 +131,7 @@ public class MaterialData {
 	public static final Block craftingTable = new Solid("Crafting Table", 58);
 	public static final Block crops = new Solid("Seeds", 59);
 	public static final Block farmland = new Solid("Farmland", 60);
-	public static final Block furnace = new Solid("Furance", 61);
+	public static final Block furnace = new Solid("Furnace", 61);
 	public static final Block burningfurnace = new Solid("Burning Furnace", 62);
 	public static final Block signPost = new Solid("Sign Post", 63);
 	public static final Block woodenDoorBlock = new Solid("Wooden Door", 64);
