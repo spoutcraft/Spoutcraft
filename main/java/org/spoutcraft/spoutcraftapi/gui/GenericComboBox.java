@@ -329,7 +329,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 	@Override
 	public Control setFocus(boolean focus) {
-		if(!focus && !view.isFocus()) {
+		if(!focus && !view.isFocus() && isOpen()) {
 			closeList();
 		}
 		return super.setFocus(focus);

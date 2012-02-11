@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.addon;
 import java.util.logging.Logger;
 
 import org.spoutcraft.spoutcraftapi.command.CommandExecutor;
+import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 
 public interface Addon extends CommandExecutor {
 
@@ -41,6 +42,10 @@ public interface Addon extends CommandExecutor {
 	public void setNaggable(boolean b);
 	
 	public Logger getLogger();
+	
+	public boolean hasConfigurationGUI();
+	
+	public void setupConfigurationGUI(ScrollArea screen);
 
 	public enum Mode {
 		SINGLE_PLAYER,

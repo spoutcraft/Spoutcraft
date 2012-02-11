@@ -27,6 +27,9 @@ import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 
 public abstract class JavaAddon implements Addon {
 
@@ -129,5 +132,11 @@ public abstract class JavaAddon implements Addon {
 	public final int hashCode() {
 		return (new HashCodeBuilder().append(file).append(dataFolder).append(description!=null?description.getName():"").toHashCode());
 	}
+	
+	public boolean hasConfigurationGUI() {
+		return false;
+	}
 
+	public void setupConfigurationGUI(ScrollArea screen) {
+	}
 }
