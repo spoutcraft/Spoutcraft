@@ -269,7 +269,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			id = 318;
 			data = temp;
 		}
-		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[item.getTypeId()].getIconFromDamage(item.getData()), 0, 0);
+		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getData()), 0, 0);
 		GL11.glPopMatrix();
 		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
 			block.maxX = oldX;
