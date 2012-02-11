@@ -57,7 +57,7 @@ import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.Material.MaterialData;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
 import org.spoutcraft.spoutcraftapi.gui.BubbleBar;
 import org.spoutcraft.spoutcraftapi.gui.Button;
