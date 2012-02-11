@@ -48,7 +48,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 	private GenericListView addonsView;
 	private GenericScrollArea addonOptions;
 	private GenericCheckBox checkPluginEnabled, checkInternetAccess;
-	private GenericButton buttonMainMenu, buttonDatabase, buttonOpenFolder;
+	private GenericButton buttonMainMenu, buttonDatabase, buttonOpenFolder, buttonOpenConfiguration;
 
 	private LocalAddonsModel model = new LocalAddonsModel(this);
 
@@ -67,6 +67,8 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		buttonDatabase.setEnabled(false);
 		buttonOpenFolder = new GenericButton("Open Addons Folder");
 		buttonOpenFolder.setTooltip("Place your addons here manually");
+		buttonOpenConfiguration = new GenericButton("Configuration");
+		buttonOpenConfiguration.setTooltip("Open Addon-specific configuration");
 
 		getScreen().attachWidget(spoutcraft, addonsView);
 		getScreen().attachWidget(spoutcraft, addonOptions);
@@ -75,6 +77,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		getScreen().attachWidget(spoutcraft, labelTitle);
 		getScreen().attachWidget(spoutcraft, buttonOpenFolder);
 		addonOptions.attachWidget(spoutcraft, checkPluginEnabled);
+		addonOptions.attachWidget(spoutcraft, buttonOpenConfiguration);
 		//addonOptions.attachWidget(spoutcraft, checkInternetAccess);
 
 		updateButtons();
@@ -97,6 +100,8 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 
 		int ftop = 5;
 		checkPluginEnabled.setX(5).setY(ftop).setHeight(20).setWidth(100);
+		ftop+=25;
+		buttonOpenConfiguration.setX(5).setY(ftop).setHeight(20).setWidth(100);
 		ftop+=25;
 		checkInternetAccess.setX(5).setY(ftop).setHeight(20).setWidth(100);
 
@@ -125,10 +130,17 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		boolean enable = addonsView.getSelectedItem() != null;
 		checkPluginEnabled.setEnabled(enable);
 		checkInternetAccess.setEnabled(enable);
+		buttonOpenConfiguration.setEnabled(enable);
 		AddonItem item = (AddonItem) addonsView.getSelectedItem();
 		if (item != null) {
 			checkPluginEnabled.setChecked(Spoutcraft.getAddonStore().isEnabled(item.getAddon()));
 			checkInternetAccess.setChecked(Spoutcraft.getAddonStore().hasInternetAccess(item.getAddon()));
+			boolean oldLock = SpoutClient.enableSandbox();
+			try {
+				buttonOpenConfiguration.setEnabled(item.getAddon().hasConfigurationGUI());
+			} finally {
+				SpoutClient.enableSandbox(oldLock);
+			}
 		}
 
 	}
@@ -156,6 +168,14 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		}
 		if (btn.equals(buttonOpenFolder)) {
 			Sys.openURL("file://"+SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
+		}
+		if(btn.equals(buttonOpenConfiguration)) {
+			AddonItem item = (AddonItem) addonsView.getSelectedItem();
+			GuiAddonConfigurationWrapper wrapper = new GuiAddonConfigurationWrapper(item.getAddon(), this);
+			if (item != null) {
+				item.getAddon().setupConfigurationGUI(wrapper.getContentsView());
+				mc.displayGuiScreen(wrapper);
+			}
 		}
 	}
 }
