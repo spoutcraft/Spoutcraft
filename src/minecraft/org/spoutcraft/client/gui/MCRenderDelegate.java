@@ -57,6 +57,7 @@ import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
 import org.spoutcraft.spoutcraftapi.gui.BubbleBar;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -261,7 +262,14 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) item.getScreenX(), (float) item.getScreenY(), 0);
 		GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
-		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, item.getTypeId(), item.getData(), Item.itemsList[item.getTypeId()].getIconFromDamage(item.getData()), 0, 0);
+		int id = item.getTypeId();
+		int data = item.getData();
+		if (MaterialData.getCustomItem(id) != null) {
+			int temp = id;
+			id = 318;
+			data = temp;
+		}
+		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, 0, 0, 0);
 		GL11.glPopMatrix();
 		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
 			block.maxX = oldX;
