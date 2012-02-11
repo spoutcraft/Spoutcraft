@@ -12,9 +12,7 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
-import org.spoutcraft.client.packet.PacketManager;
 import org.spoutcraft.client.packet.PacketRenderDistance;
-import org.spoutcraft.client.packet.PacketScreenResolution;
 
 public class Packet18Animation extends Packet {
 
@@ -44,13 +42,8 @@ public class Packet18Animation extends Packet {
 		if (entityId == -42) {
 			SpoutClient.getInstance().setSpoutVersion(1);
 			((NetClientHandler)var1).addToSendQueue(this);
-			PacketManager manager = SpoutClient.getInstance().getPacketManager();
-			manager.sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
-			manager.sendSpoutPacket(new PacketFullVersion(Long.toString(SpoutClient.getClientVersion())));
-			
-			int x = SpoutClient.getInstance().getRenderDelegate().getScreenWidth();
-			int y = SpoutClient.getInstance().getRenderDelegate().getScreenHeight();
-			manager.sendSpoutPacket(new PacketScreenResolution(x, y));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(Long.toString(SpoutClient.getClientVersion())));
 			System.out.println("Detected Spout server.");
 		}
 		else {
