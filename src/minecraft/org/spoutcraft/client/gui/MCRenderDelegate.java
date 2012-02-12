@@ -261,7 +261,9 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) item.getScreenX(), (float) item.getScreenY(), 0);
-		GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
+		if (item.getAnchor() == WidgetAnchor.SCALE) {
+			GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
+		}
 		int id = item.getTypeId();
 		int data = item.getData();
 		if (MaterialData.getCustomItem(id) != null) {
