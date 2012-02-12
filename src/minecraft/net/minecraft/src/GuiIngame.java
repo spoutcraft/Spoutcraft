@@ -286,8 +286,8 @@ public class GuiIngame extends Gui{
 					opacity *= opacity;
 					int color = chatOpen ? 255 : (int)(255D * opacity);
 					if (color > 0) {
-						int x = 2;
-						int y = -viewedLine * 9;
+						int x = 2 + chatTextWidget.getX();
+						int y = chatTextWidget.getY() + (-viewedLine * 9);
 						String chat = chatMessageList.get(line).message;
 						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
 						
