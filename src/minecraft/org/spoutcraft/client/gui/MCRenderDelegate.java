@@ -169,7 +169,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			FontRenderer font = Minecraft.theMinecraft.fontRenderer;
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, Minecraft.theMinecraft.renderEngine.getTexture("/gui/gui.png"));
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float) button.getScreenX(), (float) button.getScreenY(), 0);
+			GL11.glTranslatef((float) Math.floor(button.getScreenX()), (float) Math.floor(button.getScreenY()), 0);
 			float width = (float) (button.getWidth() < 200 ? button.getWidth() : 200);
 			GL11.glScalef((float) button.getWidth() / width, (float) button.getHeight() / 20f, 1);
 
@@ -308,7 +308,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			aleft -= (int) (label.isAuto() ? label.getActualWidth() : label.getWidth());
 		}
 
-		GL11.glTranslatef((float) aleft, (float) top, 0);
+		GL11.glTranslatef((float) Math.floor(aleft), (float) Math.floor(top), 0);
 		if (!label.isAuto()) {
 			GL11.glScalef((float) (label.getWidth() / swidth), (float) (label.getHeight() / sheight), 1);
 		} else if (label.getAnchor() == WidgetAnchor.SCALE) {
@@ -627,7 +627,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
 			Texture checkBoxCross = CustomTextureManager.getTextureFromJar("/res/check.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float) checkBox.getScreenX(), (float) checkBox.getScreenY(), 0);
+			GL11.glTranslatef((float) Math.floor(checkBox.getScreenX()), (float) Math.floor(checkBox.getScreenY()), 0);
 			renderBaseBox(checkBox, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(checkBox);
@@ -645,7 +645,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (radioButton.isVisible()) {
 			Texture radio = CustomTextureManager.getTextureFromJar("/res/radio.png");
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef((float) radioButton.getScreenX(), (float) radioButton.getScreenY(), 0);
+			GL11.glTranslatef((float) Math.floor(radioButton.getScreenX()), (float) Math.floor(radioButton.getScreenY()), 0);
 			renderBaseBox(radioButton, true);
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
 			Color color = getColor(radioButton);
