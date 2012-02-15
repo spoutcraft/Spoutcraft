@@ -41,6 +41,7 @@ public class MusicSlider extends GenericSlider{
 	public void onSliderDrag(SliderDragEvent event) {
 		Minecraft.theMinecraft.gameSettings.musicVolume = event.getNewPosition();
 		Minecraft.theMinecraft.gameSettings.saveOptions();
+		Minecraft.theMinecraft.sndManager.onSoundOptionsChanged();
 	}
 
 	public String getText() {
