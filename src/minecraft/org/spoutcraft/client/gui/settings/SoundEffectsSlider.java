@@ -41,6 +41,7 @@ public class SoundEffectsSlider extends GenericSlider{
 	public void onSliderDrag(SliderDragEvent event) {
 		Minecraft.theMinecraft.gameSettings.soundVolume = event.getNewPosition();
 		Minecraft.theMinecraft.gameSettings.saveOptions();
+		Minecraft.theMinecraft.sndManager.onSoundOptionsChanged();
 	}
 
 	public String getText() {
