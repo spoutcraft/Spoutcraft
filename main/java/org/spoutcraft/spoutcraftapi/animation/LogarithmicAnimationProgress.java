@@ -16,16 +16,16 @@
  */
 package org.spoutcraft.spoutcraftapi.animation;
 
-public class LogorithmicAnimationProgress implements AnimationProgress {
+public class LogarithmicAnimationProgress implements AnimationProgress {
 
 	private int strength;
 	private double slog;
 
-	public LogorithmicAnimationProgress() {
+	public LogarithmicAnimationProgress() {
 		this(20);
 	}
 
-	public LogorithmicAnimationProgress(int strength) {
+	public LogarithmicAnimationProgress(int strength) {
 		this.strength = strength;
 		this.slog = Math.log(strength + 1);
 	}

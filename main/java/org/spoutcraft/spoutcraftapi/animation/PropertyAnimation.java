@@ -26,9 +26,18 @@ public class PropertyAnimation extends Animation {
 		propertyName = property;
 		this.object = object;
 		setValueDelegate(new PropertyDelegate(object, propertyName));
-		Animatable value = (Animatable) object.getProperty(propertyName);
-		setStartValue(value);
-		setEndValue(value);
+		Object val = object.getProperty(propertyName);
+		if(val instanceof Animatable) {
+			Animatable value = (Animatable) val;
+			setStartValue(value);
+			setEndValue(value);
+		} else if(val instanceof Number) {
+			Number num = (Number) val;
+			setStartNumber(num);
+			setEndNumber(num);
+		} else {
+			throw new IllegalStateException("Only subclasses of Number or Animatables allowed!");
+		}
 	}
 
 	public void setProperty(String name) {

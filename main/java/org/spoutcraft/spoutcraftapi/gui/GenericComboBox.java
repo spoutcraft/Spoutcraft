@@ -16,10 +16,13 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 	private List<String> items = new ArrayList<String>();
 	private ComboBoxModel model;
-	private GenericListView view;
+	private final GenericListView view;
 	private Screen screen;
+	private boolean open = false;
 	
 	public GenericComboBox() {
+		System.out.println("Constructing "+this  + " uuid: "+this.getId());
+		Thread.dumpStack();
 		model = new ComboBoxModel();
 		view = new ComboBoxView(model, this);
 		view.setSelection(0);
@@ -54,7 +57,10 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	public ComboBox openList() {
-
+		if(open) {
+			return this;
+		}
+		open = true;
 		screen = getScreen();
 		while (!(screen instanceof GenericScreen)) {
 			if(screen.getScreen() != null)
@@ -72,13 +78,17 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	public ComboBox closeList() {
+		if(!open) {
+			return this;
+		}
+		open = false;
 		view.setVisible(false);
 		screen.removeWidget(view);
 		return this;
 	}
 	
 	public boolean isOpen() {
-		return view.isVisible();
+		return open;
 	}
 	
 	@Override
@@ -102,12 +112,8 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
+		setOpen(!isOpen());
 		super.onButtonClick(event);
-		if(!isOpen()) {
-			openList();
-		} else {
-			closeList();
-		}
 	}
 
 

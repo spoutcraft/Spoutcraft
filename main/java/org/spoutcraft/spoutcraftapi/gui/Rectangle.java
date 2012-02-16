@@ -27,7 +27,7 @@ import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 @UnsafeClass
 public class Rectangle extends PropertyObject implements PropertyInterface, Animatable {
 	int width, height, x, y;
-
+	
 	public Rectangle(int x, int y, int width, int height) {
 		setX(x);
 		setY(y);
@@ -162,10 +162,10 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 		w = p1.width;
 		x = p1.x;
 		y = p1.y;
-		h += (h - p2.height) * p;
-		w += (w - p2.width) * p;
-		x += (x - p2.x) * p;
-		y += (y - p2.y) * p;
+		h += (p2.height - h) * p;
+		w += (p2.width - w) * p;
+		x += (p2.x - x) * p;
+		y += (p2.y - y) * p;
 		return new Rectangle(x, y, w, h);
 	}
 
@@ -186,5 +186,20 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 	@Override
 	public String toString() {
 		return super.toString() + "{ x: "+x+" y: "+y+" width: "+width+" height: "+height+" }";
+	}
+	
+	public Rectangle clone() {
+		return new Rectangle(x, y, width, height);
+	}
+	
+	/**
+	 * Copies the values from the other instance to this instance
+	 * @param other the Rectangle to copy the values from.
+	 */
+	public void copy(Rectangle other) {
+		setX(other.x);
+		setY(other.y);
+		setWidth(other.width);
+		setHeight(other.height);
 	}
 }

@@ -16,6 +16,7 @@
  */
 package org.spoutcraft.spoutcraftapi.animation;
 
+import java.math.BigInteger;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,11 +44,13 @@ public class Animation {
 	private int duration;
 
 	int currentTime;
-	private Direction direction;
-	private State state;
+	private Direction direction = Direction.FORWARD;
+	private State state = State.STOPPED;
 	private AnimationProgress animationProgress = new LinearAnimationProgress();
 	private ValueSetDelegate property;
 	private static Timer timer = new Timer();
+	private int delay = 1000 / 60;
+	
 	private AnimationRunnable animator = new AnimationRunnable(this);
 
 	public State getState() {
@@ -112,7 +115,7 @@ public class Animation {
 				currentTime = duration;
 				break;
 		}
-		timer.schedule(animator, 0, 50);
+		timer.schedule(animator, delay, delay);
 	}
 
 	public void pause() {
@@ -123,7 +126,7 @@ public class Animation {
 	public void resume() {
 		if (this.state == State.PAUSED) {
 			this.state = State.RUNNING;
-			timer.schedule(animator, 0, 50);
+			timer.schedule(animator, delay, delay);
 		}
 	}
 
@@ -168,6 +171,10 @@ public class Animation {
 	public Number getEndNumber() {
 		return endNumber;
 	}
+	
+	public void setFramesPerSecond(int fps) {
+		delay = 1000 / fps;
+	}
 
 	private class AnimationRunnable extends TimerTask {
 		public Animation animation;
@@ -182,7 +189,7 @@ public class Animation {
 				return;
 			}
 			int time = animation.getCurrentTime();
-			time += 50 * animation.getDirection().modifier; // For the direction
+			time += delay * animation.getDirection().modifier; // For the direction
 			if (time >= animation.getDuration() && animation.getDirection() == Direction.FORWARD) {
 				animation.stop();
 				time = animation.getDuration();
@@ -203,7 +210,31 @@ public class Animation {
 	}
 
 	public Number getCurrentValueNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		double p = (double) duration / (double) currentTime;
+		if(startNumber instanceof Integer) {
+			int p1 = (Integer) startNumber, p2 = (Integer) endNumber;
+			return (p2 - p1)*p;
+		}
+		if(startNumber instanceof Double) {
+			double p1 = (Double) startNumber, p2 = (Double) endNumber;
+			return (p2 - p1)*p;
+		}
+		if(startNumber instanceof Long) {
+			long p1 = (Long) startNumber, p2 = (Long) endNumber;
+			return (p2 - p1)*p;
+		}
+		if(startNumber instanceof Float) {
+			float p1 = (Float) startNumber, p2 = (Float) endNumber;
+			return (p2 - p1)*p;
+		}
+		if(startNumber instanceof Short) {
+			short p1 = (Short) startNumber, p2 = (Short) endNumber;
+			return (p2 - p1)*p;
+		}
+		if(startNumber instanceof Byte) {
+			byte p1 = (Byte) startNumber, p2 = (Byte) endNumber;
+			return (p2 - p1)*p;
+		}
+		throw new IllegalStateException("Numbers of type "+startNumber.getClass().getSimpleName() + " cannot be used.");
 	}
 }

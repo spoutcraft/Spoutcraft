@@ -25,18 +25,17 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
 @UnsafeClass
-public abstract class GenericWidget implements Widget {
+public abstract class GenericWidget extends PropertyObject implements Widget {
 
 	/**
 	 * Set if this is Spoutcraft (client), cleared if it is Spout (server)...
 	 */
 	static final protected transient boolean isSpoutcraft = true;
-	protected int X = 0;
-	protected int Y = 0;
-	protected int width = 0;
-	protected int height = 0;
+	protected Rectangle geometry = new Rectangle(0, 0, 0, 0);
 	protected boolean visible = true;
 	protected transient Screen screen = null;
 	protected RenderPriority priority = RenderPriority.Normal;
@@ -65,6 +64,19 @@ public abstract class GenericWidget implements Widget {
 	protected transient int animStart = 0; // Start value per type
 
 	public GenericWidget() {
+		initProperties();
+	}
+
+	private void initProperties() {
+		addProperty("geometry", new Property() {
+			public void set(Object value) {
+				setGeometry((Rectangle) value);
+			}
+
+			public Object get() {
+				return getGeometry();
+			}
+		});
 	}
 
 	final public boolean isSpoutcraft() {
@@ -80,10 +92,8 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public GenericWidget(int X, int Y, int width, int height) {
-		this.X = X;
-		this.Y = Y;
-		this.width = width;
-		this.height = height;
+		setGeometry(new Rectangle(X, Y, width, height));
+		initProperties();
 	}
 
 	public Widget setAnchor(WidgetAnchor anchor) {
@@ -180,16 +190,16 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public double getActualWidth() {
-		return width;
+		return getGeometry().getWidth();
 	}
 
 	public Widget setWidth(int width) {
-		this.width = width;
+		getGeometry().setWidth(width);
 		return this;
 	}
 
 	public double getActualHeight() {
-		return height;
+		return getGeometry().getHeight();
 	}
 
 	public double getWidth() {
@@ -201,20 +211,20 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget setHeight(int height) {
-		this.height = height;
+		getGeometry().setHeight(height);
 		return this;
 	}
 
 	public int getX() {
-		return X;
+		return getGeometry().getX();
 	}
 
 	public int getY() {
-		return Y;
+		return getGeometry().getY();
 	}
 
 	public double getScreenX() {
-		double left = X * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
+		double left = getX() * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getWidth() / 427f) : 1) : 1);
 		switch (anchor) {
 			case TOP_CENTER:
 			case CENTER_CENTER:
@@ -231,7 +241,7 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public double getScreenY() {
-		double top = Y * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
+		double top = getY() * (anchor == WidgetAnchor.SCALE ? (getScreen() != null ? (getScreen().getHeight() / 240f) : 1) : 1);
 		switch (anchor) {
 			case CENTER_LEFT:
 			case CENTER_CENTER:
@@ -248,12 +258,12 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget setX(int pos) {
-		this.X = pos;
+		getGeometry().setX(pos);
 		return this;
 	}
 
 	public Widget setY(int pos) {
-		this.Y = pos;
+		getGeometry().setY(pos);
 		return this;
 	}
 
@@ -401,7 +411,7 @@ public abstract class GenericWidget implements Widget {
 		if (minWidth != min) {
 			minWidth = min;
 			updateSize();
-			setWidth(width); // Enforce our new size if needed
+			setWidth((int) getWidth()); // Enforce our new size if needed
 		}
 		return this;
 	}
@@ -415,7 +425,7 @@ public abstract class GenericWidget implements Widget {
 		if (maxWidth != max) {
 			maxWidth = max;
 			updateSize();
-			setWidth(width); // Enforce our new size if needed
+			setWidth((int) getWidth()); // Enforce our new size if needed
 		}
 		return this;
 	}
@@ -429,7 +439,7 @@ public abstract class GenericWidget implements Widget {
 		if (minHeight != min) {
 			minHeight = min;
 			updateSize();
-			setHeight(height); // Enforce our new size if needed
+			setHeight((int) getHeight()); // Enforce our new size if needed
 		}
 		return this;
 	}
@@ -443,7 +453,7 @@ public abstract class GenericWidget implements Widget {
 		if (maxHeight != max) {
 			maxHeight = max;
 			updateSize();
-			setHeight(height); // Enforce our new size if needed
+			setHeight((int) getHeight()); // Enforce our new size if needed
 		}
 		return this;
 	}
@@ -453,24 +463,21 @@ public abstract class GenericWidget implements Widget {
 	}
 
 	public Widget savePos() {
-		orig_x = X;
-		orig_y = Y;
+		orig_x = getX();
+		orig_y = getY();
 		return this;
 	}
 
 	public Widget restorePos() {
-		X = orig_x;
-		Y = orig_y;
+		setX(orig_x);
+		setY(orig_y);
 		return this;
 	}
 
 	public Widget copy() {
 		try {
 			Widget copy = getType().getWidgetClass().newInstance();
-			copy.setX(getX()) // Easier reading
-					.setY(getY()) //
-					.setWidth((int) getWidth()) //
-					.setHeight((int) getHeight()) //
+			copy.setGeometry(getGeometry().clone()) //
 					.setVisible(isVisible()) //
 					.setPriority(getPriority()) //
 					.setTooltip(getTooltip()) //
@@ -550,16 +557,16 @@ public abstract class GenericWidget implements Widget {
 			animFlags |= ANIM_RUNNING;
 			switch (animType) {
 				case POS_X:
-					animStart = X;
+					animStart = getX();
 					break;
 				case POS_Y:
-					animStart = Y;
+					animStart = getY();
 					break;
 				case WIDTH:
-					animStart = width;
+					animStart = (int) getWidth();
 					break;
 				case HEIGHT:
-					animStart = height;
+					animStart = (int) getHeight();
 					break;
 				case OFFSET_LEFT:
 					animStart = ((Texture) this).getLeft();
@@ -621,4 +628,23 @@ public abstract class GenericWidget implements Widget {
 
 	public void onAnimateStop() {
 	}
+
+	public Rectangle getGeometry() {
+		return geometry;
+	}
+
+	public Widget setGeometry(Rectangle geometry) {
+		this.geometry = geometry;
+		return this;
+	}
+	
+	public Widget setGeometry(int x, int y, int width, int height) {
+		getGeometry().setX(x);
+		getGeometry().setY(y);
+		getGeometry().setWidth(width);
+		getGeometry().setHeight(height);
+		return this;
+	}
+	
+	
 }

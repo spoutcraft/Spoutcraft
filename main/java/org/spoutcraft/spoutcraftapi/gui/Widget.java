@@ -23,9 +23,10 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 
 @UnsafeClass
-public interface Widget{
+public interface Widget extends PropertyInterface{
 	
 	/**
 	 * The number of bytes of data serialized when sending or receiving data.
@@ -532,4 +533,27 @@ public interface Widget{
 	 * to change them!
 	 */
 	public void onAnimateStop();
+	
+	/**
+	 * Gets the widgets coordinates and size in one object
+	 * @return the geometry of the widget.
+	 */
+	public Rectangle getGeometry();
+	
+	/**
+	 * Sets the widgets coordinates and size with one object
+	 * @param rect the new geometry of the widget.
+	 * @return the instance
+	 */
+	public Widget setGeometry(Rectangle rect);
+	
+	/**
+	 * Sets the widgets coordinates and size
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @param width size
+	 * @param height size
+	 * @return the instance
+	 */
+	public Widget setGeometry(int x, int y, int width, int height);
 }

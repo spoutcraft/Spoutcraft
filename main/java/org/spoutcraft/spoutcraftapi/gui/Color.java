@@ -161,10 +161,10 @@ public final class Color implements Animatable {
 		g = p1.green;
 		b = p1.blue;
 		a = p1.alpha;
-		r += (r - p2.red) * p;
-		g += (g - p2.green) * p;
-		b += (b - p2.blue) * p;
-		a += (a - p2.alpha) * p;
+		r += (p2.red - r) * p;
+		g += (p2.green - g) * p;
+		b += (p2.blue - b) * p;
+		a += (p2.alpha - a) * p;
 		return new Color(r, g, b, a);
 	}
 }
