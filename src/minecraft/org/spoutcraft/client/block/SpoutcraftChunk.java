@@ -131,6 +131,10 @@ public class SpoutcraftChunk implements Chunk{
 	public boolean unload(boolean save, boolean safe) {
 		return getWorld().unloadChunk(getX(), getZ(), save, safe);
 	}
+	
+	public byte[] getRawBlockIds() {
+		return getHandle().blocks;
+	}
 
 	public Entity[] getEntities() {
 		int count = 0, index = 0;
