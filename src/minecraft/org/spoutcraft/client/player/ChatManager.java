@@ -54,8 +54,12 @@ public class ChatManager {
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
+			
+			if (message.length() > 99 && message.startsWith("/")) {
+				return true; //block long commands
+			}
 
-			if ((ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) && (!message.startsWith("/") || message.length() < 100)) {
+			if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) {
 				if (cursor == 0) {
 					message = character + message;
 				} else if (cursor > 0 && cursor < message.length()) {
