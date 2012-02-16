@@ -99,6 +99,13 @@ public interface Chunk {
 	 * @return true if the chunk has unloaded successfully, otherwise false
 	 */
 	public boolean unload(boolean save, boolean safe);
+	
+	/**
+	 * Gets the raw block ids for this chunk. Use wisely.
+	 * 
+	 * @return raw block ids
+	 */
+	public byte[] getRawBlockIds();
 
 	/**
 	 * Get a list of all entities in the chunk.
