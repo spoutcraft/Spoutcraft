@@ -8,19 +8,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiButtonLanguage;
-import net.minecraft.src.GuiLanguage;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSelectWorld;
-import net.minecraft.src.GuiTexturePacks;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.StringTranslate;
-import net.minecraft.src.Tessellator;
 
-//Spout Start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.SpoutClient;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
@@ -30,16 +23,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
-//Spout End
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.opengl.Texture;
-
-import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class GuiMainMenu extends GuiScreen {
 
@@ -158,7 +142,6 @@ public class GuiMainMenu extends GuiScreen {
 			buttonMultiPlayer.setEnabled(false);
 		}
 		// Spout End
-
 	}
 
 	// Spout Start
