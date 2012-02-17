@@ -29,6 +29,7 @@ import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxView;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 
 //Spout End
 
@@ -436,6 +437,9 @@ public class GuiScreen extends Gui {
 				boolean keyReleased = Keyboard.getEventKeyState();
 				PacketKeyPress packet = new PacketKeyPress((byte) i, keyReleased, (MovementInputFromOptions) player.movementInput, screen);
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+				//Spout Start
+				((SimpleKeyBindingManager)SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), Keyboard.getEventKeyState(), ScreenUtil.getType(this).getCode());
+				//Spout End
 			}
 			// Spout End
 			this.handleKeyboardInput();
