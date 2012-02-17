@@ -56,7 +56,7 @@ public class ChatManager {
 			int cursor = chat.cursorPosition;
 			
 			if (message.length() > 99 && message.startsWith("/")) {
-				return true; //block long commands
+				return false; //block long commands
 			}
 
 			if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) {
