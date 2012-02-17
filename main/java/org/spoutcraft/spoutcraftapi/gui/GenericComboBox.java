@@ -21,8 +21,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	private boolean open = false;
 	
 	public GenericComboBox() {
-		System.out.println("Constructing "+this  + " uuid: "+this.getId());
-		Thread.dumpStack();
 		model = new ComboBoxModel();
 		view = new ComboBoxView(model, this);
 		view.setSelection(0);
