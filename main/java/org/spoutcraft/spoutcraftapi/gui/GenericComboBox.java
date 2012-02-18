@@ -19,6 +19,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	private final GenericListView view;
 	private Screen screen;
 	private boolean open = false;
+	private String format = "%text%: %selected%";
 	
 	public GenericComboBox() {
 		model = new ComboBoxModel();
@@ -88,9 +89,6 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	public boolean isOpen() {
 		return open;
 	}
-	
-	@Override
-	public Button setText(String text) {return this;}
 
 	public String getSelectedItem() {
 		ComboBoxItem item = model.getItem(view.getSelectedRow());
@@ -105,7 +103,12 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 	@Override
 	public String getText() {
-		return super.getText() + (StringUtils.isEmpty(super.getText())?"":": ") + getSelectedItem();
+		if(StringUtils.isEmpty(super.getText())) {
+			return getSelectedItem();
+		} else {
+			String text = format.replaceAll("%text%", super.getText()).replaceAll("%selected%", getSelectedItem());
+			return text;
+		}
 	}
 	
 	@Override
@@ -154,6 +157,12 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 			items.add(item);
 		}
 		model.setList(items);
+		format = PacketUtil.readString(input);
+	}
+	
+	@Override
+	public int getVersion() {
+		return super.getVersion() + 1;
 	}
 
 	protected class ComboBoxModel extends AbstractListModel {
@@ -337,6 +346,15 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 			closeList();
 		}
 		return super.setFocus(focus);
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public ComboBox setFormat(String format) {
+		this.format = format;
+		return this;
 	}
 	
 	
