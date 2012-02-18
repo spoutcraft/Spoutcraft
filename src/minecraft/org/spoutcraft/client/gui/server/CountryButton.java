@@ -40,6 +40,7 @@ public class CountryButton extends GenericComboBox implements UrlElement {
 		countries.add("All");
 		countries.addAll(model.getCountries());
 		setItems(countries);
+		setText("Country");
 	}
 
 	public boolean isActive() {
@@ -53,10 +54,6 @@ public class CountryButton extends GenericComboBox implements UrlElement {
 	@Override
 	public void onSelectionChanged(int row, String text) {
 		model.updateUrl();
-	}
-
-	public String getText() {
-		return "Country: "+getSelectedItem();
 	}
 
 	public void setCurrentCountry(int i) {

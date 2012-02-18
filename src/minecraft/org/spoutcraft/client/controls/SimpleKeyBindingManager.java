@@ -32,27 +32,32 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraft.src.Block;
+import net.minecraft.src.BlockWorkbench;
+import net.minecraft.src.GuiScreen;
 
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.Packet3Chat;
-
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketKeyBinding;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
+import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingPress;
+import org.lwjgl.input.Keyboard;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
-	private HashMap<Integer, KeyBinding> bindingsForKey = new HashMap<Integer, KeyBinding>();
-	private HashMap<Integer, Shortcut> shortcutsForKey = new HashMap<Integer, Shortcut>();
 	private ArrayList<KeyBinding> bindings;
 	private ArrayList<Shortcut> shortcuts = new ArrayList<Shortcut>();
+	private HashMap<Integer, ArrayList<AbstractBinding>> bindingsForKey = new HashMap<Integer, ArrayList<AbstractBinding>>();
 
 	public SimpleKeyBindingManager() {
 	}
@@ -75,43 +80,46 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 
 	public void registerShortcut(Shortcut shortcut) {
 		shortcuts.add(shortcut);
-		updateShortcuts();
+		updateBindings();
 		save();
 	}
 
 	public void unregisterShortcut(Shortcut shortcut) {
 		shortcuts.remove(shortcut);
-		shortcutsForKey.remove(shortcut.getKey());
+		bindingsForKey.get(shortcut.getKey()).remove(shortcut);
 		save();
 	}
 
 	public void unregisterControl(KeyBinding binding) {
 		bindings.remove(binding);
-		bindingsForKey.remove(binding.getKey());
+		bindingsForKey.get(binding.getKey()).remove(binding);
 		save();
 	}
 
 	public void updateBindings() {
 		if (bindings == null) {
 			bindings = new ArrayList<KeyBinding>();
-			return;
+		}
+		if(shortcuts == null) {
+			shortcuts = new ArrayList<Shortcut>();
 		}
 
 		bindingsForKey.clear();
 		for (KeyBinding binding:bindings) {
-			bindingsForKey.put(binding.getKey(), binding);
+			ArrayList<AbstractBinding> bindings = bindingsForKey.get(binding.getKey());
+			if(bindings == null) {
+				bindings = new ArrayList<AbstractBinding>();
+				bindingsForKey.put(binding.getKey(), bindings);
+			}
+			bindings.add(binding);
 		}
-	}
-
-	private void updateShortcuts() {
-		if (shortcuts == null) {
-			shortcuts = new ArrayList<Shortcut>();
-			return;
-		}
-
-		shortcutsForKey.clear();
-		for (Shortcut shortcut:shortcuts) {
-			shortcutsForKey.put(shortcut.hashCode(), shortcut); //The hash also contains the modifier
+		for (Shortcut binding:shortcuts) {
+			ArrayList<AbstractBinding> bindings = bindingsForKey.get(binding.getKey());
+			if(bindings == null) {
+				bindings = new ArrayList<AbstractBinding>();
+				bindingsForKey.put(binding.getKey(), bindings);
+			}
+			bindings.add(binding);
 		}
 	}
 
@@ -227,38 +235,33 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			e.printStackTrace();
 			shortcuts = new ArrayList<Shortcut>();
 		}
-		updateShortcuts();
+		updateBindings();
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
 	}
 
 	public void pressKey(int key, boolean keyPressed, int screen) {
-		KeyBinding binding = bindingsForKey.get(key);
-		if (binding!=null) {
-			if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
-				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, keyPressed, screen));
-			} else if (binding.getDelegate() != null) { //Client side
-				if (keyPressed) {
-					binding.getDelegate().onKeyPress(key, binding);
-				} else {
-					binding.getDelegate().onKeyRelease(key, binding);
-				}
-			}
+		if(SpoutClient.getHandle().currentScreen instanceof GuiAmbigousInput) {
+			return;
 		}
-		if (screen == 0) {
-			if (!isModifierKey(key)) {
-				Shortcut shortcut = shortcutsForKey.get(getPressedShortcut(key).hashCode());
-				if (shortcut != null && !keyPressed) {
-					// TODO: send to addons!
-					for (String cmd:shortcut.getCommands()) {
-						if (SpoutClient.getHandle().isMultiplayerWorld()) {
-							EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
-							player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
-						}
-					}
+		if(bindingsForKey.containsKey(key)) {
+			ArrayList<AbstractBinding> bindings = bindingsForKey.get(key);
+			ArrayList<AbstractBinding> effective = new ArrayList<AbstractBinding>();
+			for(AbstractBinding b:bindings) {
+				if(b.matches(key)) {
+					effective.add(b);
 				}
 			}
+			if(effective.size() == 1) {
+				effective.iterator().next().summon(key, !keyPressed, screen);
+			} else if(screen == 0) {
+				GuiScreen parent = SpoutClient.getHandle().currentScreen;
+				SpoutClient.getHandle().displayGuiScreen(new GuiAmbigousInput(effective, parent));
+			} else {
+				Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key "+Keyboard.getKeyName(key), Block.workbench.blockID);
+			}
+			
 		}
 	}
 
@@ -321,5 +324,18 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			res|=Shortcut.MOD_SUPER;
 		}
 		return res;
+	}
+	
+	public void summon(KeyBinding binding, int key, boolean keyReleased, int screen) {
+		if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, !keyReleased, screen));
+		} else if (binding.getDelegate() != null) { //Client side
+			KeyBindingPress event = new KeyBindingPress(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(key), binding, ScreenType.getType(screen));
+			if (!keyReleased) {
+				binding.getDelegate().onKeyPress(event);
+			} else {
+				binding.getDelegate().onKeyRelease(event);
+			}
+		}
 	}
 }

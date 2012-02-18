@@ -29,9 +29,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
+import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Packet3Chat;
 
-public class Shortcut implements Serializable {
+import org.lwjgl.input.Keyboard;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
+
+public class Shortcut extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 4365592803468257957L;
 	private int key = -1;
 	private byte modifierKeys = 0;
@@ -156,5 +161,28 @@ public class Shortcut implements Serializable {
 
 	public void setRawModifiers(byte mod) {
 		this.modifierKeys = mod;
+	}
+
+	@Override
+	public void summon(int key, boolean keyReleased, int screen) {
+		if (!SimpleKeyBindingManager.isModifierKey(key) && keyReleased && screen == 0) {
+			for (String cmd:getCommands()) {
+				if (SpoutClient.getHandle().isMultiplayerWorld()) {
+					EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
+					player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean matches(int key) {
+		if(key != getKey()) {
+			return false;
+		}
+		if(SimpleKeyBindingManager.getPressedModifiers() != getModifiers()) {
+			return false;
+		}
+		return true;
 	}
 }
