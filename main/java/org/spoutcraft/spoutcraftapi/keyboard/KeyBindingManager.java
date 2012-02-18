@@ -1,6 +1,5 @@
 package org.spoutcraft.spoutcraftapi.keyboard;
 
-
 public interface KeyBindingManager {
 
 	public void registerControl(KeyBinding binding);
@@ -12,4 +11,6 @@ public interface KeyBindingManager {
 	public abstract void save();
 
 	public void pressKey(int key, boolean keyReleased, int screen);
+	
+	public void summon(KeyBinding binding, int key, boolean keyReleased, int screen);
 }

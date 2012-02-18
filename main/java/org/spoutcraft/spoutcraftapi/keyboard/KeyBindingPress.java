@@ -17,27 +17,29 @@
 
 package org.spoutcraft.spoutcraftapi.keyboard;
 
-public abstract class BindingExecutionDelegate {
-	@Deprecated
-	public void onKeyPress(int key, KeyBinding binding) {
-	}
-	@Deprecated
-	public void onKeyRelease(int key, KeyBinding binding) {
-	}
+import org.spoutcraft.spoutcraftapi.gui.Keyboard;
+import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+
+public class KeyBindingPress {
+	private Keyboard key;
+	private KeyBinding binding;
+	private ScreenType screen;
 	
-	/**
-	 * Called when the Keybinding is pressed.
-	 * Please check event.getScreen() when you don't want handle this binding on other screens than the main screen.
-	 * @param event
-	 */
-	public void onKeyPress(KeyBindingPress event) {
+	public KeyBindingPress(Keyboard key, KeyBinding binding, ScreenType screen) {
+		this.key = key;
+		this.binding = binding;
+		this.screen = screen;
 	}
-	
-	/**
-	 * Called when the Keybinding is released.
-	 * Please check event.getScreen() when you don't want handle this binding on other screens than the main screen.
-	 * @param event
-	 */
-	public void onKeyRelease(KeyBindingPress event) {
+
+	public Keyboard getKey() {
+		return key;
+	}
+
+	public KeyBinding getBinding() {
+		return binding;
+	}
+
+	public ScreenType getScreen() {
+		return screen;
 	}
 }

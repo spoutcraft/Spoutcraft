@@ -7,7 +7,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
-public final class KeyBinding implements Serializable {
+public final class KeyBinding extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 3241524501740640147L;
 	private int key;
 	private transient Addon addon;
@@ -66,6 +66,10 @@ public final class KeyBinding implements Serializable {
 	public String getDescription() {
 		return description;
 	}
+	
+	public String getTitle() {
+		return description;
+	}
 
 	public void setDescription(String description) {
 		this.description = description;
@@ -120,5 +124,14 @@ public final class KeyBinding implements Serializable {
 
 	public BindingExecutionDelegate getDelegate() {
 		return myDelegate;
+	}
+
+	public void summon(int key, boolean keyReleased, int screen) {
+		Spoutcraft.getKeyBindingManager().summon(this, key, keyReleased, screen);
+	}
+
+	@Override
+	public boolean matches(int key) {
+		return key == getKey();
 	}
 }
