@@ -228,7 +228,7 @@ public class GuiFavorites extends GuiScreen {
 			if (!adress.isEmpty()) {
 				String split[] = adress.split(":");
 				String ip = split[0];
-				int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
+				int port = split.length > 1 ? Integer.parseInt(split[1]) : ServerItem.DEFAULT_PORT;
 				SpoutClient.getHandle().gameSettings.lastServer = adress.replace(":", "_");
 				SpoutClient.getHandle().gameSettings.saveOptions();
 				SpoutClient.getInstance().getServerManager().join(ip, port, this, "Favorites");
