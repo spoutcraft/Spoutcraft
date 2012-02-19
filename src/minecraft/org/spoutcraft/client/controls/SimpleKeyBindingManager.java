@@ -44,6 +44,7 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketKeyBinding;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -140,6 +141,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				item.put("id", binding.getId());
 				item.put("description", binding.getDescription());
 				item.put("addonName", binding.getAddonName());
+				item.put("modifiers", binding.getModifiers());
 				kbsave.add(item);
 			}
 			yaml.dump(kbsave, writer);
@@ -199,6 +201,10 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				String id, description, addonName;
 				id = (String) item.get("id");
 				description = (String) item.get("description");
+				byte modifiers = 0;
+				if (item.containsKey("modifiers")) {
+					modifiers = (byte)(int)(Integer) item.get("modifiers");
+				}
 				if (item.containsKey("addonName")) {
 					addonName = (String) item.get("addonName");
 				} else if (item.containsKey("plugin")) {
@@ -207,13 +213,13 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 					continue; //Invalid item
 				}
 				KeyBinding binding = new KeyBinding(key, addonName, id, description);
+				binding.setRawModifiers(modifiers);
 				bindings.add(binding);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			bindings = new ArrayList<KeyBinding>();
 		}
-		updateBindings();
 		try {
 			shortcuts.clear();
 			ArrayList<Object> shsave = yaml.loadAs(new FileReader(getShortcutsFile()), ArrayList.class);
@@ -235,27 +241,27 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			e.printStackTrace();
 			shortcuts = new ArrayList<Shortcut>();
 		}
-		updateBindings();
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
+		updateBindings();
 	}
 
 	public void pressKey(int key, boolean keyPressed, int screen) {
-		if(SpoutClient.getHandle().currentScreen instanceof GuiAmbigousInput) {
+		if(SpoutClient.getHandle().currentScreen instanceof GuiAmbigousInput || SpoutClient.getHandle().currentScreen instanceof GuiControls) {
 			return;
 		}
 		if(bindingsForKey.containsKey(key)) {
 			ArrayList<AbstractBinding> bindings = bindingsForKey.get(key);
 			ArrayList<AbstractBinding> effective = new ArrayList<AbstractBinding>();
 			for(AbstractBinding b:bindings) {
-				if(b.matches(key)) {
+				if(b.matches(key, getPressedModifiers())) {
 					effective.add(b);
 				}
 			}
 			if(effective.size() == 1) {
 				effective.iterator().next().summon(key, !keyPressed, screen);
-			} else if(screen == 0) {
+			} else if(screen == 0 || (getPressedModifiers() != 0 && getPressedModifiers() != AbstractBinding.MOD_SHIFT)) {
 				GuiScreen parent = SpoutClient.getHandle().currentScreen;
 				SpoutClient.getHandle().displayGuiScreen(new GuiAmbigousInput(effective, parent));
 			} else {
@@ -296,16 +302,16 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 
 	public static void setModifiersToShortcut(Shortcut sh) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-			sh.setModifier(Shortcut.MOD_SHIFT, true);
+			sh.setModifier(AbstractBinding.MOD_SHIFT, true);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-			sh.setModifier(Shortcut.MOD_CTRL, true);
+			sh.setModifier(AbstractBinding.MOD_CTRL, true);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) || Keyboard.isKeyDown(Keyboard.KEY_RMENU)) {
-			sh.setModifier(Shortcut.MOD_ALT, true);
+			sh.setModifier(AbstractBinding.MOD_ALT, true);
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA)) {
-			sh.setModifier(Shortcut.MOD_SUPER, true);
+			sh.setModifier(AbstractBinding.MOD_SUPER, true);
 		}
 	}
 

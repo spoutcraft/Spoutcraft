@@ -50,8 +50,20 @@ public class KeyBindingItem extends ControlsBasicItem {
 		font.drawStringWithShadow("B", x+2, y+2, 0xff0000ff);
 		int w = font.getStringWidth("B");
 		font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
-		font.drawStringWithShadow(parent.getEditingItem() == this?"> <":Keyboard.getKeyName(getKey()), x + width / 2, y+2, 0xffcccccc);
+		font.drawStringWithShadow(parent.getEditingItem() == this?"> <":binding.toString(), x + width / 2, y+2, 0xffcccccc);
 		font.drawStringWithShadow(binding.getAddonName(), x+w+4, y+11, 0xffffffff);
+	}
+	
+	@Override
+	public void setModifiers(int m) {
+		binding.setRawModifiers((byte) m);
+	}
+	
+	
+
+	@Override
+	public int getModifiers() {
+		return binding.getModifiers();
 	}
 
 	@Override
@@ -68,7 +80,7 @@ public class KeyBindingItem extends ControlsBasicItem {
 
 	@Override
 	public boolean useModifiers() {
-		return false;
+		return true;
 	}
 
 	@Override
