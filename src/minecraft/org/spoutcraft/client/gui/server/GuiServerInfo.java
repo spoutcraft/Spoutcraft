@@ -135,7 +135,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelAccess.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelAccess);
 
-		labelAddress = new GenericLabel(item.getIp() + (item.getPort()!=25565?item.getPort():""));
+		labelAddress = new GenericLabel(item.getIp() + (item.getPort() != ServerItem.DEFAULT_PORT ? item.getPort() : ""));
 		labelAddress.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelAddress);
 

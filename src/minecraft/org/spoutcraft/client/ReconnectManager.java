@@ -27,6 +27,8 @@ package org.spoutcraft.client;
 
 import java.lang.String;
 
+import org.spoutcraft.client.gui.server.ServerItem;
+
 import net.minecraft.src.GuiConnecting;
 
 public class ReconnectManager {
@@ -59,7 +61,7 @@ public class ReconnectManager {
 					}
 				} else if (split.length == 2) {
 					hostName = split[1].trim();
-					portNum = 25565;
+					portNum = ServerItem.DEFAULT_PORT;
 				}
 			}
 		}
