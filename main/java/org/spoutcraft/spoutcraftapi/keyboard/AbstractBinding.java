@@ -17,12 +17,95 @@
 
 package org.spoutcraft.spoutcraftapi.keyboard;
 
+import org.lwjgl.input.Keyboard;
+
 public abstract class AbstractBinding {
+	public static final byte MOD_SHIFT = 1;
+	public static final byte MOD_CTRL = 2;
+	public static final byte MOD_ALT = 4;
+	/**
+	 * SUPER is Windows key on Windows, Super on Linux, CMD/Command on Mac OS X
+	 * On normal keyboards, this key is located between CTRL and ALT,
+	 * on Apple Keyboards (or those which are compatible with Mac OS X), the CMD key is left AND right from the Spacebar.
+	 */
+	public static final byte MOD_SUPER = 8;
+	
+	private int key = -1;
+
+	private byte modifiers = 0;
+	
+	public void setKey(int key) {
+		this.key = key;
+	}
+
+	public int getKey() {
+		return key;
+	}
+
+	
+	public byte getModifiers() {
+		return modifiers;
+	}
+
+	public void setRawModifiers(byte mod) {
+		this.modifiers = mod;
+	}
+	
+	public void setModifier(byte mod, boolean holding) {
+		if (holding) {
+			modifiers |= mod;
+		} else {
+			modifiers &= ~mod;
+		}
+	}
+	
 	public abstract void summon(int key, boolean keyReleased, int screen);
 	
-	public abstract boolean matches(int key);
-
-	public abstract int getKey();
+	public boolean matches(int key, byte modifiers) {
+		return key == getKey() && modifiers == getModifiers();
+	}
 
 	public abstract String getTitle();
+
+	public boolean hasModifier(byte mod) {
+		return (modifiers & mod) != 0;
+	}
+	
+	@Override
+	public String toString() {
+		String result = "";
+		if (hasModifier(MOD_SHIFT)) {
+			result += "SHIFT + ";
+		}
+		if (hasModifier(MOD_CTRL)) {
+			result += "CTRL + ";
+		}
+		if (hasModifier(MOD_ALT)) {
+			result += "ALT + ";
+		}
+		if (hasModifier(MOD_SUPER)) {
+			result += "SUPER + ";
+		}
+		result += Keyboard.getKeyName(key);
+
+		return result;
+	}
+	
+	@Override 
+	public boolean equals(Object other) {
+		if(other instanceof AbstractBinding) {
+			AbstractBinding a = (AbstractBinding) other;
+			return a == this;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + key;
+		result = prime * result + modifiers;
+		return result;
+	}
 }

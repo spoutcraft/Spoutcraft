@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 public final class KeyBinding extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 3241524501740640147L;
-	private int key;
 	private transient Addon addon;
 	private String id;
 	private String description;
@@ -21,7 +21,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	}
 	
 	public KeyBinding(int key, String name, String id, String description) {
-		this.key = key;
+		setKey(key);
 		this.addonName = name;
 		this.description = description;
 		this.id = id;
@@ -29,19 +29,11 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	}
 	
 	public KeyBinding(int key, Addon addon, String id, String description) {
-		this.key = key;
+		setKey(key);
 		this.addon = addon;
 		this.addonName = addon.getDescription().getName();
 		this.description = description;
 		this.id = id;
-	}
-
-	public int getKey() {
-		return key;
-	}
-
-	public void setKey(int key) {
-		this.key = key;
 	}
 
 	public Addon getAddon() {
@@ -98,7 +90,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (new HashCodeBuilder()).append(key).append(addon).append(id).append(uuid).toHashCode();
+		return (new HashCodeBuilder()).append(getKey()).append(addon).append(id).append(uuid).toHashCode();
 	}
 
 	public void takeChanges(KeyBinding binding) {
@@ -128,10 +120,5 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 
 	public void summon(int key, boolean keyReleased, int screen) {
 		Spoutcraft.getKeyBindingManager().summon(this, key, keyReleased, screen);
-	}
-
-	@Override
-	public boolean matches(int key) {
-		return key == getKey();
 	}
 }
