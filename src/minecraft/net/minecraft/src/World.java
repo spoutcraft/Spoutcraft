@@ -1444,6 +1444,10 @@ public class World implements IBlockAccess {
 				if(!(tileentity instanceof TileEntityEnchantmentTable))
 					tileentity.invalidate();
 				break;
+			case 117:
+				if(!(tileentity instanceof TileEntityBrewingStand))
+					tileentity.invalidate();
+				break;
 			default:
 				tileentity.invalidate();
 				break;
