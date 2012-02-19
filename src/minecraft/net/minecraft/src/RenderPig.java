@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPig;
@@ -15,7 +17,7 @@ public class RenderPig extends RenderLiving {
 
 	protected int renderSaddledPig(EntityPig var1, int var2, float var3) {
 		//Spout Start
-		loadTexture(var1.getEntityTexture());
+		loadTexture(var1.getCustomTexture(EntitySkinType.PIG_SADDLE, "/mob/saddle.png"));
 		//Spout End
 		return var2 == 0 && var1.getSaddled()?1:-1;
 	}
