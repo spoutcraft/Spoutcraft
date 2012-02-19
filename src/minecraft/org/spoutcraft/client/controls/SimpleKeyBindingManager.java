@@ -259,7 +259,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 					effective.add(b);
 				}
 			}
-			if(effective.size() == 1) {
+			if(effective.size() == 0) {
+				return;
+			} else if(effective.size() == 1) {
 				effective.iterator().next().summon(key, !keyPressed, screen);
 			} else if(screen == 0 || (getPressedModifiers() != 0 && getPressedModifiers() != AbstractBinding.MOD_SHIFT)) {
 				GuiScreen parent = SpoutClient.getHandle().currentScreen;
