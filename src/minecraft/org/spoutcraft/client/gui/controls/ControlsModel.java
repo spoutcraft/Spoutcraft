@@ -62,14 +62,14 @@ public class ControlsModel extends AbstractListModel {
 			}
 		}
 
-		if (gui.checkSpoutcraft.isChecked()) {
-			//Spoutcraft items
-			int n = 0;
-			for (KeyBinding binding:options.keyBindings) {
-				items.add(new VanillaBindingItem(n, binding, this));
-				n++;
-			}
-		}
+//		if (gui.checkSpoutcraft.isChecked()) {
+//			//Spoutcraft items
+//			int n = 0;
+//			for (KeyBinding binding:options.keyBindings) {
+//				items.add(new VanillaBindingItem(n, binding, this));
+//				n++;
+//			}
+//		}
 
 		if (gui.checkShortcuts.isChecked()) {
 			//Shortcuts

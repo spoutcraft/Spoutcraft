@@ -50,7 +50,9 @@ public class VanillaBindingItem extends ControlsBasicItem {
 		font.drawStringWithShadow("V", x+2, y+2, 0xffffff00);
 		int w = font.getStringWidth("V");
 		font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
-		font.drawStringWithShadow(parent.getEditingItem() == this?"> <":SpoutClient.getHandle().gameSettings.getOptionDisplayString(n), x + width / 2, y+2, 0xffcccccc);
+		String keyString = parent.getEditingItem() == this?"> <":SpoutClient.getHandle().gameSettings.getOptionDisplayString(n);
+		w = font.getStringWidth(keyString);
+		font.drawStringWithShadow(keyString, width - w, y+2, 0xffcccccc);
 	}
 
 	@Override
