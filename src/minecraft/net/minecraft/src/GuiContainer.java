@@ -108,7 +108,7 @@ public abstract class GuiContainer extends GuiScreen
 		if(inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack() && shouldShowTooltip()) //Spout added tooltip condition
 		{
 			ItemStack itemstack = slot.getStack();
-			//Spout Start Edited End
+			//Spout Start
 			List<String> list = itemstack.getItemNameandInformation();
 			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
 			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
@@ -160,7 +160,6 @@ public abstract class GuiContainer extends GuiScreen
 					{
 						s = (new StringBuilder()).append("\2477").append(s).toString();
 					}
-					//Spout Start
 					super.drawTooltip(s, (i - k) + 8, j - l - s.split("\n").length * 6);
 					//fontRenderer.drawStringWithShadow(s, l2, j3, -1);
 					/*if(l4 == 0)
