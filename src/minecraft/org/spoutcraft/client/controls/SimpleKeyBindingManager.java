@@ -86,13 +86,25 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public void unregisterShortcut(Shortcut shortcut) {
+		if(shortcut == null) {
+			return;
+		}
 		shortcuts.remove(shortcut);
+		if(bindingsForKey.get(shortcut.getKey()) == null) {
+			return;
+		}
 		bindingsForKey.get(shortcut.getKey()).remove(shortcut);
 		save();
 	}
 
 	public void unregisterControl(KeyBinding binding) {
+		if(binding == null) {
+			return;
+		}
 		bindings.remove(binding);
+		if(bindingsForKey.get(binding.getKey()) == null) {
+			return;
+		}
 		bindingsForKey.get(binding.getKey()).remove(binding);
 		save();
 	}
@@ -269,7 +281,6 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			} else {
 				Spoutcraft.getActivePlayer().showAchievement("Multiple Bindings ...", "are assigned to Key "+Keyboard.getKeyName(key), Block.workbench.blockID);
 			}
-			
 		}
 	}
 
