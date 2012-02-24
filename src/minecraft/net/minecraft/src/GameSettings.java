@@ -48,7 +48,11 @@ public class GameSettings {
 	public KeyBinding keyBindUseItem = new KeyBinding("key.use", -99);
 	public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15);
 	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
-	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", Keyboard.KEY_F); //Spout added back fog
+	//Spout start
+	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", Keyboard.KEY_F); 
+	public KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
+	public KeyBinding keyRunToggle = new KeyBinding("Run Toggle", Keyboard.KEY_RCONTROL);
+	//Spout end
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;
 	private File optionsFile;
@@ -69,7 +73,7 @@ public class GameSettings {
 	public String field_44018_Q;
 
 	public GameSettings(Minecraft var1, File var2) {
-		this.keyBindings = new KeyBinding[] { this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindToggleFog}; //Spout added fog
+		this.keyBindings = new KeyBinding[] { this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindToggleFog, this.keySneakToggle, this.keyRunToggle}; //Spout added fog
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = 0;

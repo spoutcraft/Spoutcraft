@@ -95,6 +95,10 @@ public abstract class EntityPlayer extends EntityLiving {
 	protected float speedOnGround = 0.1F;
 	protected float speedInAir = 0.02F;
 	public EntityFishHook fishEntity = null;
+	//Spout start
+	public boolean sneakToggle = false;
+	public boolean runToggle = false;
+	//Spout end
 
 
 	public EntityPlayer(World var1) {
