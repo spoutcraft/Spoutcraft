@@ -10,6 +10,8 @@ import net.minecraft.src.TileEntitySign;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import org.bukkit.ChatColor; //Spout
+
 public class GuiEditSign extends GuiScreen {
 
 	protected String screenTitle = "Edit sign message:";
