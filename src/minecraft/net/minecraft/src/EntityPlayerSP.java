@@ -99,7 +99,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void onLivingUpdate() {
-		if(this.sprintingTicksLeft > 0) {
+		if(this.sprintingTicksLeft > 0 && !runToggle) { //Spout
 			--this.sprintingTicksLeft;
 			if(this.sprintingTicksLeft == 0) {
 				this.setSprinting(false);
@@ -439,6 +439,12 @@ public class EntityPlayerSP extends EntityPlayer {
 
 		return false;
 	}
+	
+	//Spout start
+	public boolean isSprinting() {
+		return super.isSprinting() || this.runToggle;
+	}
+	//Spout end
 
 	public void setSprinting(boolean var1) {
 		super.setSprinting(var1);
@@ -457,6 +463,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 	
 	//Spout
+	
 	@Override
 	public void handleKeyPress(int key, boolean keyReleased) {
 		((MovementInputFromOptions)this.movementInput).checkKeyForMovementInput(key, keyReleased);
@@ -473,6 +480,13 @@ public class EntityPlayerSP extends EntityPlayer {
 						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 					}
 				}
+			}
+			else if (key == settings.keySneakToggle.keyCode) {
+				sneakToggle = !sneakToggle;
+			}
+			else if (key == settings.keyRunToggle.keyCode) {
+				runToggle = !runToggle;
+				setSprinting(runToggle);
 			}
 		}
 	}
