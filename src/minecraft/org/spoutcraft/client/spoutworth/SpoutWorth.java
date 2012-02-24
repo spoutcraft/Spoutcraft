@@ -82,6 +82,7 @@ public class SpoutWorth {
 	}
 
 	public void doTick() {
+		ConfigReader.signDistance = Math.max(8, ConfigReader.signDistance);
 		if (!ConfigReader.automatePerformance) {
 			return;
 		}
