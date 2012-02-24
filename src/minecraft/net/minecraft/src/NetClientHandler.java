@@ -510,6 +510,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleKickDisconnect(Packet255KickDisconnect var1) {
+		this.mc.displayGuiScreen(null); //Spout
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.disconnected = true;
 		this.mc.changeWorld1((World)null);
