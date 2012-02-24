@@ -184,9 +184,11 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
 		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
 		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
-		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
+		
+		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
+		Display.setVSyncEnabled(ConfigReader.performance == 3);
 	}
 
 	public static void restoreDefaults() {
