@@ -188,7 +188,7 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
 		
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
-		Display.setVSyncEnabled(ConfigReader.performance == 3);
+		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
 	}
 
 	public static void restoreDefaults() {
