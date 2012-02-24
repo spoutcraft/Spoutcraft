@@ -222,7 +222,9 @@ public class BlockTrapDoor extends Block
         else
         {
             Block block = Block.blocksList[i];
+            //Spout Start - edited condition
             return block == Block.glowStone || block != null && block.blockMaterial.getIsOpaque() && block.renderAsNormalBlock();
+            //Spout End
         }
     }
 }
