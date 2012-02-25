@@ -50,14 +50,14 @@ public class GuiAddFavorite extends GuiScreen {
 
 	public GuiAddFavorite(String server, GuiScreen parent) {
 		String splt[] = server.split(":");
-		int port = 25565;
+		int port = ServerItem.DEFAULT_PORT;
 		if (splt.length > 0) {
 			server = splt[0];
 			if (splt.length > 1) {
 				try {
 					port = Integer.valueOf(splt[1]);
 				} catch (NumberFormatException e) {
-					port = 25565;
+					port = ServerItem.DEFAULT_PORT;
 				}
 			}
 		} else {
@@ -105,7 +105,7 @@ public class GuiAddFavorite extends GuiScreen {
 		textIp.setHeight(20);
 		textIp.setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, textIp);
-		textIp.setText(item.getIp() + (item.getPort()!=25565?":"+item.getPort():""));
+		textIp.setText(item.getIp() + (item.getPort() != ServerItem.DEFAULT_PORT ? ":" + item.getPort() : ""));
 		top+=25;
 
 		buttonClear = new GenericButton("Clear");
@@ -171,7 +171,7 @@ public class GuiAddFavorite extends GuiScreen {
 			textIp.setText("");
 			item.setTitle("");
 			item.setIp("");
-			item.setPort(25565);
+			item.setPort(ServerItem.DEFAULT_PORT);
 			updateButtons();
 		}
 	}
@@ -191,7 +191,7 @@ public class GuiAddFavorite extends GuiScreen {
 				item.setPort(Integer.valueOf(split[1]));
 			} catch(Exception e) {
 				// Handles both InvalidNumber and OutOfRange exceptions, yay
-				item.setPort(25565);
+				item.setPort(ServerItem.DEFAULT_PORT);
 			}
 		}
 
