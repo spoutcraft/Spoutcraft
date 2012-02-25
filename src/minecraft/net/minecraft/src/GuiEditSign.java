@@ -9,6 +9,7 @@ import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.TileEntitySign;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;
 
 import org.bukkit.ChatColor; //Spout
 
@@ -18,7 +19,10 @@ public class GuiEditSign extends GuiScreen {
 	private TileEntitySign entitySign;
 	private int updateCounter;
 	private int editLine = 0;
-	private int editColumn = 0; //Spoutcraft
+	//Spout start
+	private int editColumn = 0;
+	GuiButton unicode;
+	//Spout end
 	private static final String allowedCharacters = ChatAllowedCharacters.allowedCharacters;
 
 
@@ -30,6 +34,16 @@ public class GuiEditSign extends GuiScreen {
 		controlList.clear();
 		Keyboard.enableRepeatEvents(true);
 		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120, "Done"));
+		//Spout start
+		controlList.add(unicode = new GuiButton(1, width / 2 - 100, height / 4 + 142, "Send As Unicode"));
+		if (!ConfigReader.sendColorsAsUnicode) {
+			unicode.displayString = "Send As Plain Text";
+		}
+		if (!this.mc.theWorld.multiplayerWorld) {
+			unicode.drawButton = false;
+			unicode.enabled = false;
+		}
+		//Spout end
 	}
 
 	public void onGuiClosed() {
@@ -38,9 +52,11 @@ public class GuiEditSign extends GuiScreen {
 		entitySign.columnBeingEdited = -1;
 		entitySign.recalculateText();
 		//Colorize text
-		for (int i = 0; i < entitySign.signText.length; i++) {
-			if (entitySign.signText[i] != null)
-				entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
+		if (sendAsUnicode()) {
+			for (int i = 0; i < entitySign.signText.length; i++) {
+				if (entitySign.signText[i] != null)
+					entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
+			}
 		}
 		//Spout end
 		Keyboard.enableRepeatEvents(false);
@@ -61,6 +77,17 @@ public class GuiEditSign extends GuiScreen {
 			this.entitySign.onInventoryChanged();
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
+		//Spout start
+		else if (guibutton.id == 1 && unicode.enabled) {
+			ConfigReader.sendColorsAsUnicode = !ConfigReader.sendColorsAsUnicode;
+			if (ConfigReader.sendColorsAsUnicode) {
+				unicode.displayString = "Send As Unicode";
+			}
+			else {
+				unicode.displayString = "Send As Plain Text";
+			}
+		}
+		//Spout end
 	}
 
 	//Spoutcraft - rewritten method
@@ -147,10 +174,11 @@ public class GuiEditSign extends GuiScreen {
 	}
 	//Spoutcraft End
 
-	public void drawScreen(int var1, int var2, float var3) {
+	//Spout start
+	public void drawScreen(int x, int y, float z) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);
-		//Spout start
+		
 		if (org.spoutcraft.client.config.ConfigReader.showChatColors) {
 			drawString(fontRenderer, ChatColor.BLACK + "&0 - Black", width - 90, 10, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.DARK_BLUE + "&1 - Dark Blue", width - 90, 20, 0xFFFFFFF);
@@ -169,6 +197,7 @@ public class GuiEditSign extends GuiScreen {
 			drawString(fontRenderer, ChatColor.YELLOW + "&e - Yellow", width - 90, 150, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.WHITE + "&f - White", width - 90, 160, 0xFFFFFFF);
 		}
+		
 		//Spout end
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
@@ -212,7 +241,18 @@ public class GuiEditSign extends GuiScreen {
 		entitySign.columnBeingEdited = -1;
 		//Spout end
 		GL11.glPopMatrix();
-		super.drawScreen(var1, var2, var3);
+		super.drawScreen(x, y, z); //Spout
+		//Spout start
+		if (unicode.enabled && isInBoundingRect(unicode.xPosition, unicode.yPosition, unicode.height, unicode.width, x, y)) {
+			this.drawTooltip("Some servers censor unicode characters. \nIf yours does, try sending as plain text.", x, y);
+		}
+		//Spout end
 	}
+	
+	//Spout start
+	public boolean sendAsUnicode() {
+		return ConfigReader.sendColorsAsUnicode && this.mc.theWorld.multiplayerWorld;
+	}
+	//Spout end
 
 }

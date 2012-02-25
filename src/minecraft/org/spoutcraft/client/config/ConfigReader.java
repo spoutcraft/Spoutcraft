@@ -35,8 +35,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
 public class ConfigReader {
-	public static boolean clipboardaccess = false;
-	public static boolean fastLogin = false;
+	//Client settings
 	public static int advancedOpenGL = 0;
 	public static boolean anaglyph3D = false;
 	public static int autosave = 0;
@@ -78,8 +77,22 @@ public class ConfigReader {
 	public static boolean showDamageAlerts = true;
 	public static boolean highlightMentions = true;
 	public static boolean chatGrabsMouse = true;
+	public static boolean sendColorsAsUnicode = true;
+	
+	//Launcher settings
+	public static boolean fastLogin = false;
+	public static boolean clipboardaccess = false;
+	public static int memory = 1;
+	public static int custombuild = -1;
+	public static boolean recupdate = true;
+	public static boolean devupdate = false;
+	public static boolean worldbackup = false;
+	public static boolean retryLogins = true;
+	public static boolean latestLWJGL = false;
+	public static boolean acceptUpdates = true;
 
 	public transient static Object[] settings = null;
+	public transient static String[] unknown = null;
 
 	public static void read() {
 		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
@@ -127,7 +140,7 @@ public class ConfigReader {
 						config.createNewFile();
 					}
 					SettingsHandler settings = new SettingsHandler(config);
-
+					settings.load();
 					Field[] fields = ConfigReader.class.getDeclaredFields();
 					for (Field f : fields) {
 						if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
