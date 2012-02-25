@@ -33,8 +33,6 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -85,7 +83,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		super.updateEntityActionState();
 		this.moveStrafing = this.movementInput.moveStrafe;
 		this.moveForward = this.movementInput.moveForward;
-		this.isJumping = this.movementInput.jump;
+		this.isJumping = this.movementInput.jump || this.isTreadingWater(); //Spout
 		this.prevRenderArmYaw = this.renderArmYaw;
 		this.prevRenderArmPitch = this.renderArmPitch;
 		this.renderArmPitch = (float)((double)this.renderArmPitch + (double)(this.rotationPitch - this.renderArmPitch) * 0.5D);
@@ -486,12 +484,22 @@ public class EntityPlayerSP extends EntityPlayer {
 				if (sneakToggle) {
 					runToggle = false;
 					setSprinting(false);
+					treadWaterToggle = false;
 				}
 			}
 			else if (key == settings.keyRunToggle.keyCode) {
 				runToggle = !runToggle;
 				setSprinting(runToggle);
 				if (runToggle) {
+					sneakToggle = false;
+					treadWaterToggle = false;
+				}
+			}
+			else if (key == settings.keyTreadWaterToggle.keyCode) {
+				treadWaterToggle = !treadWaterToggle;
+				if (treadWaterToggle) {
+					runToggle = false;
+					setSprinting(false);
 					sneakToggle = false;
 				}
 			}

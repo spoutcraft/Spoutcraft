@@ -49,9 +49,11 @@ public class GameSettings {
 	public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15);
 	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
 	//Spout start
-	public KeyBinding keyBindToggleFog = new KeyBinding("key.fog", Keyboard.KEY_F); 
+	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle Fog", Keyboard.KEY_F); 
 	public KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
 	public KeyBinding keyRunToggle = new KeyBinding("Run Toggle", Keyboard.KEY_RCONTROL);
+	public KeyBinding keyTreadWaterToggle = new KeyBinding("Tread Water Toggle", Keyboard.KEY_Z); 
+	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle};
 	//Spout end
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;
@@ -73,7 +75,7 @@ public class GameSettings {
 	public String field_44018_Q;
 
 	public GameSettings(Minecraft var1, File var2) {
-		this.keyBindings = new KeyBinding[] { this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.keyBindToggleFog, this.keySneakToggle, this.keyRunToggle}; //Spout added fog
+		this.keyBindings = new KeyBinding[] { this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock};
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
@@ -345,6 +347,13 @@ public class GameSettings {
 							this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
 						}
 					}
+					//Spout start
+					for (int key = 0; key < this.spoutcraftBindings.length; ++key) {
+						if (var3[0].equals("key_" + this.spoutcraftBindings[key].keyDescription)) {
+							this.spoutcraftBindings[key].keyCode = Integer.parseInt(var3[1]);
+						}
+					}
+					//Spout end
 				} catch (Exception var5) {
 					System.out.println("Skipping bad option: " + var2);
 				}
@@ -391,6 +400,11 @@ public class GameSettings {
 			for (int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
 			}
+			//Spout start
+			for (int key = 0; key < this.spoutcraftBindings.length; ++key) {
+				var1.println("key_" + this.spoutcraftBindings[key].keyDescription + ":" + this.spoutcraftBindings[key].keyCode);
+			}
+			//Spout end
 
 			var1.close();
 		} catch (Exception var3) {
