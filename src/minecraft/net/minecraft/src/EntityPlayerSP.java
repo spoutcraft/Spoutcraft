@@ -483,10 +483,17 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 			else if (key == settings.keySneakToggle.keyCode) {
 				sneakToggle = !sneakToggle;
+				if (sneakToggle) {
+					runToggle = false;
+					setSprinting(false);
+				}
 			}
 			else if (key == settings.keyRunToggle.keyCode) {
 				runToggle = !runToggle;
 				setSprinting(runToggle);
+				if (runToggle) {
+					sneakToggle = false;
+				}
 			}
 		}
 	}
