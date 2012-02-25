@@ -3,7 +3,9 @@ package net.minecraft.src;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
+// Spout start
+import java.net.InetSocketAddress;
+// Spout end
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -12,10 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-//Spout start
+
+// Spout start
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileDownloadThread;
-//SPout end
+import org.spoutcraft.client.util.NetworkUtils;
+// Spout end
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
@@ -138,14 +145,20 @@ public class NetClientHandler extends NetHandler {
 	public List playerNames = new ArrayList();
 	public int currentServerMaxPlayers = 20;
 	Random rand = new Random();
-	//Spout start
+	// Spout start
 	long timeout = System.currentTimeMillis() + 5000;
+	// Spout end
 	
 	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {
 		this.mc = var1;
-		Socket var4 = new Socket(InetAddress.getByName(var2), var3);
-		this.netManager = new NetworkManager(var4, "Client", this);
-		//Spout start
+		
+		// Spout start
+		InetSocketAddress address = NetworkUtils.resolve(var2, var3);
+		if (address.isUnresolved()) {
+			throw new UnknownHostException(address.getHostName());
+		}
+		this.netManager = new NetworkManager(new Socket(address.getAddress(), address.getPort()), "Client", this);
+		
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = var2;
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = var3;
 		//Spout end

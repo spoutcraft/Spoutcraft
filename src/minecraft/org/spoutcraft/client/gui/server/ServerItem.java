@@ -43,6 +43,11 @@ import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
 public class ServerItem implements ListWidgetItem {
+	/**
+	 * The default Minecraft server port.
+	 */
+	public static final int DEFAULT_PORT = 25565;
+	
 	protected ListWidget widget;
 
 	protected String ip;
@@ -213,7 +218,7 @@ public class ServerItem implements ListWidgetItem {
 		}
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
 		RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
-		if (port != 25565) {
+		if (port != DEFAULT_PORT) {
 			font.drawStringWithShadow(ip + ":" +port, x+marginleft, y+20, 0xaaaaaa);
 		} else {
 			font.drawStringWithShadow(ip, x+marginleft, y+20, 0xaaaaaa);

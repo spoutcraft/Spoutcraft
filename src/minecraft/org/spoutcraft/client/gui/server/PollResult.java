@@ -43,6 +43,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.MirrorUtils;
+import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PollResult {
@@ -183,7 +184,12 @@ public class PollResult {
 				long start = System.currentTimeMillis();
 				sock = new Socket();
 				sock.setSoTimeout(10000);
-				sock.connect(new InetSocketAddress(ip, port), 10000);
+				InetSocketAddress address = NetworkUtils.resolve(ip, port);
+				if (address.isUnresolved()) {
+					ping = PING_UNKNOWN;
+					return;
+				}
+				sock.connect(address, 10000);
 				sock.setTcpNoDelay(true);
 				sock.setTrafficClass(18);
 

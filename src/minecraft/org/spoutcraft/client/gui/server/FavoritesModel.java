@@ -88,7 +88,7 @@ public class FavoritesModel extends AbstractListModel {
 					for (HashMap<String, Object> item: list) {
 						String title = "";
 						String ip = "";
-						int port = 25565;
+						int port = ServerItem.DEFAULT_PORT;
 						int databaseId = -1;
 						if (item.containsKey("title")) title = (String) item.get("title");
 						if (item.containsKey("ip")) ip = (String) item.get("ip");
@@ -125,14 +125,14 @@ public class FavoritesModel extends AbstractListModel {
 						String title = args[0];
 						String split[] = args[1].split(":");
 						String ip = split[0];
-						int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
+						int port = split.length > 1 ? Integer.parseInt(split[1]) : ServerItem.DEFAULT_PORT;
 						addServer(title, ip, port);
 					}
 					if (args.length == 3) {
 						String title = args[1];
 						String split[] = args[0].split(":");
 						String ip = split[0];
-						int port = split.length > 1 ? Integer.parseInt(split[1]) : 25565;
+						int port = split.length > 1 ? Integer.parseInt(split[1]) : ServerItem.DEFAULT_PORT;
 						int databaseId = Integer.parseInt(args[2]);
 						addServer(title, ip, port, databaseId);
 					}
