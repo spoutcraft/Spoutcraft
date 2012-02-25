@@ -98,6 +98,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	//Spout start
 	public boolean sneakToggle = false;
 	public boolean runToggle = false;
+	public boolean treadWaterToggle = false;
 	//Spout end
 
 
@@ -1288,6 +1289,10 @@ public abstract class EntityPlayer extends EntityLiving {
 	//Spout added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
 		
+	}
+	
+	public boolean isTreadingWater() {
+		return (this.inWater || this.partiallyInWater) && this.treadWaterToggle;
 	}
 
 	//Spout Easter Egg

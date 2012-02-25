@@ -105,6 +105,7 @@ public abstract class Entity {
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
+	public boolean partiallyInWater = false;
 	//Spout end
 
 	public Entity(World var1) {
@@ -232,6 +233,7 @@ public abstract class Entity {
 			this.distanceWalkedModified = this.nextStepDistance;
 		}
 		this.wasOnGround = this.onGround?true:false;
+		partiallyInWater = isInsideOfMaterial(Material.water, -1);
 		//Spout end
 		
 		Profiler.startSection("entityBaseTick");
@@ -688,21 +690,25 @@ public abstract class Entity {
 		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.0010D, 0.0010D, 0.0010D), Material.water, this);
 	}
 
-	public boolean isInsideOfMaterial(Material var1) {
-		double var2 = this.posY + (double)this.getEyeHeight();
+	//Spout start
+	public boolean isInsideOfMaterial(Material material, float offset) {
+		double var2 = this.posY + (double)this.getEyeHeight() + offset;
 		int var4 = MathHelper.floor_double(this.posX);
 		int var5 = MathHelper.floor_float((float)MathHelper.floor_double(var2));
 		int var6 = MathHelper.floor_double(this.posZ);
 		int var7 = this.worldObj.getBlockId(var4, var5, var6);
-		if(var7 != 0 && Block.blocksList[var7].blockMaterial == var1) {
+		if(var7 != 0 && Block.blocksList[var7].blockMaterial == material) {
 			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
+	
+	public boolean isInsideOfMaterial(Material material) {
+		return isInsideOfMaterial(material, 0);
+	}
+	//Spout end
 
 	public float getEyeHeight() {
 		return 0.0F;
