@@ -20,6 +20,8 @@ import net.minecraft.src.Tessellator;
 //Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.EasterEggs;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End
 import org.lwjgl.opengl.GL11;
 
@@ -268,7 +270,9 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			}
-			else if (Item.itemsList[var21.itemID].isFull3D()) {
+			//spout start
+			else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.spoutcraftapi.material.Tool) {
+			//spout end
 				var6 = 0.625F;
 				if(Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
