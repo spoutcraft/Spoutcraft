@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
 
@@ -61,6 +62,19 @@ public class TextureItem implements ListWidgetItem {
 	private String downloadFail = null;
 	private boolean installed = false;
 	private long size;
+	private static HashMap<Integer, Download> downloads = new HashMap<Integer, TextureItem.Download>();
+	
+	public static void registerDownload(int id, Download download) {
+		downloads.put(id, download);
+	}
+	
+	public static void unregisterDownload(int id) {
+		downloads.remove(id);
+	}
+	
+	public static Download getDownload(int id) {
+		return downloads.get(id);
+	}
 
 	public void setListWidget(ListWidget widget) {
 		this.widget = widget;
@@ -110,7 +124,7 @@ public class TextureItem implements ListWidgetItem {
 			font.drawStringWithShadow(sStatus, x+width-sWidth-2, y+11, 0xffaaaaaa);
 		}
 
-		String iconUrl = "http://textures.spout.org/preview.php?id="+getId();
+		String iconUrl = getIconUrl();
 		Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 		if (icon == null) {
 			CustomTextureManager.downloadTexture(iconUrl, true);
@@ -154,6 +168,7 @@ public class TextureItem implements ListWidgetItem {
 
 	public void setId(int id) {
 		this.id = id;
+		download = getDownload(id);
 	}
 
 	public int getResolution() {
@@ -273,5 +288,9 @@ public class TextureItem implements ListWidgetItem {
 		public synchronized int getProgress() {
 			return progress;
 		}
+	}
+
+	public String getIconUrl() {
+		return "http://textures.spout.org/preview.php?id="+getId();
 	}
 }
