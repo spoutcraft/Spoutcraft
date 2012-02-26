@@ -200,12 +200,11 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		buttonEdit.setEnabled(item != null);
 		buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
 	}
-
-	@Override
-	protected void keyTyped(char c, int i) {
+	
+	protected void keyTyped(char c, int i, boolean pressed) {
 		ControlsBasicItem item = model.getEditingItem();
 		if (item != null) {
-			if (item.useModifiers() && !SimpleKeyBindingManager.isModifierKey(i)) {
+			if (item.useModifiers() && (!SimpleKeyBindingManager.isModifierKey(i) && pressed) || (SimpleKeyBindingManager.isModifierKey(i) && !pressed)) {
 				item.setModifiers(SimpleKeyBindingManager.getPressedModifiers());
 				item.setKey(i);
 				model.finishEdit();
@@ -219,8 +218,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	@Override
 	public void handleKeyboardInput() {
 		ControlsBasicItem item = model.getEditingItem();
-		if (item != null && org.lwjgl.input.Keyboard.getEventKeyState()) {
-			this.keyTyped(org.lwjgl.input.Keyboard.getEventCharacter(), org.lwjgl.input.Keyboard.getEventKey());
+		if (item != null) {
+			this.keyTyped(org.lwjgl.input.Keyboard.getEventCharacter(), org.lwjgl.input.Keyboard.getEventKey(), org.lwjgl.input.Keyboard.getEventKeyState());
 		} else {
 			super.handleKeyboardInput();
 		}

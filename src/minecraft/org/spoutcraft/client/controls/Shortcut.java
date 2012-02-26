@@ -89,7 +89,7 @@ public class Shortcut extends AbstractBinding implements Serializable {
 
 	@Override
 	public void summon(int key, boolean keyReleased, int screen) {
-		if (!SimpleKeyBindingManager.isModifierKey(key) && keyReleased && screen == 0) {
+		if (keyReleased && screen == 0) { 
 			for (String cmd:getCommands()) {
 				if (SpoutClient.getHandle().isMultiplayerWorld()) {
 					EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
