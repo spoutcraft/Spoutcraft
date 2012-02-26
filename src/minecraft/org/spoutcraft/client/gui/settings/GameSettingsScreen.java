@@ -185,9 +185,12 @@ public class GameSettingsScreen extends GuiScreen{
 										"performance settings to maximize framerate and quality. You can\n" +
 										"adjust his priorities, or dismiss him and manually select settings.");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, message);
-
-		top += 47;
+		
+		if (ConfigReader.automatePerformance) {
+			screen.attachWidget(spoutcraft, message);
+			
+			top += 47;
+		}
 
 		RadioButton button;
 		button = (RadioButton) new FavorPerformanceButton("Favor Performance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
