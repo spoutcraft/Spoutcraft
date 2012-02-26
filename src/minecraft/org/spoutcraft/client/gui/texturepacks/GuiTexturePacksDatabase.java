@@ -35,18 +35,27 @@ import org.spoutcraft.client.gui.database.RandomButton;
 import org.spoutcraft.client.gui.database.SortButton;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.animation.Animation;
+import org.spoutcraft.spoutcraftapi.animation.InQuadAnimationProgress;
+import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
+import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
+import org.spoutcraft.spoutcraftapi.event.Listener;
+import org.spoutcraft.spoutcraftapi.event.animation.AnimationStopEvent;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.Rectangle;
+import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
-public class GuiTexturePacksDatabase extends GuiAPIDisplay {
+public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent> {
 	private Label screenTitle, sortFilterTitle;
 	private Button buttonMainMenu, buttonLocal, buttonDownload, buttonAdd, buttonRefresh, buttonForum;
 	private boolean instancesCreated = false;
@@ -56,7 +65,14 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 	private SortButton featured, popular, byName;
 	private RandomButton random;
 	private ResolutionFilter filterResolution;
-
+	private GenericTexture animatedTexture;
+	private Animation animation;
+	
+	{
+		
+	}
+	
+	
 	private void createInstances() {
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonLocal = new GenericButton("Installed Textures");
@@ -223,6 +239,21 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 				ListWidgetItem item = model.getItem(sel);
 				if (item instanceof TextureItem) {
 					((TextureItem)item).download();
+					Rectangle itemPos = view.getItemRect(view.getSelectedRow());
+					itemPos.moveBy(2 + view.getX(), 2 - view.getScrollPosition(Orientation.VERTICAL) + view.getY());
+					itemPos.resize(25, 25);
+					Rectangle finalPos = buttonLocal.getGeometry().clone();
+					finalPos.moveBy(2, 2);
+					finalPos.resize(16, 16);
+					animatedTexture = new GenericTexture(((TextureItem)item).getIconUrl());
+					getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), animatedTexture);
+					animatedTexture.setGeometry(itemPos);
+					PropertyAnimation ani = new PropertyAnimation(animatedTexture, "geometry");
+					ani.setEndValue(finalPos);
+					ani.setDuration(1000);
+					ani.setAnimationProgress(new InQuadAnimationProgress());
+					ani.start();
+					animation = ani;
 					updateButtons();
 				}
 			}
@@ -253,5 +284,11 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay {
 			buttonRefresh.setDisabledColor(color);
 		}
 		super.updateScreen();
+	}
+
+	public void onEvent(AnimationStopEvent event) {
+		if(animatedTexture != null && event.getAnimation() == animation) {
+			animatedTexture.setVisible(false);
+		}
 	}
 }
