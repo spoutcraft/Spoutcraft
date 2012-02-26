@@ -299,18 +299,11 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public List<KeyBinding> getAllBindings() {
-		return bindings;
+		return Collections.unmodifiableList(bindings);
 	}
 
 	public List<Shortcut> getAllShortcuts() {
 		return Collections.unmodifiableList(shortcuts);
-	}
-
-	public static Shortcut getPressedShortcut(int key) {
-		Shortcut sh = new Shortcut();
-		sh.setKey(key);
-		setModifiersToShortcut(sh);
-		return sh;
 	}
 
 	public static void setModifiersToShortcut(Shortcut sh) {

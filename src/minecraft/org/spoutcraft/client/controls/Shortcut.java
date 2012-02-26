@@ -84,7 +84,7 @@ public class Shortcut extends AbstractBinding implements Serializable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		return true;
+		return false;
 	}
 
 	@Override
