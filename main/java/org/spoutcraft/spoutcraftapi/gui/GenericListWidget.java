@@ -81,7 +81,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		return this;
 	}
 	
-	protected Rectangle getItemRect(int n) {
+	public Rectangle getItemRect(int n) {
 		ListWidgetItem item = getItem(n);
 		Rectangle result = new Rectangle(0,0,0,0);
 		if(item == null) {
