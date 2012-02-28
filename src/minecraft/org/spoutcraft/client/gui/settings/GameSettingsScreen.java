@@ -181,9 +181,9 @@ public class GameSettingsScreen extends GuiScreen{
 		top += 6;
 
 		Label message = new GenericLabel("Spoutworth here, your loyal butler and assistant. Can I be of \n" +
-										"assistance? Yes? Excellent. I will be to managing your graphical and\n" +
+										"assistance? Yes? Excellent. I will be managing your graphical and\n" +
 										"performance settings to maximize framerate and quality. You can\n" +
-										"adjust his priorities, or dismiss him and manually select settings.");
+										"adjust my priorities, or dismiss me and manually select settings.");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
 		
 		if (ConfigReader.automatePerformance) {
@@ -195,13 +195,13 @@ public class GameSettingsScreen extends GuiScreen{
 		RadioButton button;
 		button = (RadioButton) new FavorPerformanceButton("Favor Performance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
-		button.setTooltip("SpoutWorth will attempt to provide smooth framerates, potentially at the cost of appearance.");
+		button.setTooltip("Spoutworth will attempt to provide smooth framerates, potentially at the cost of appearance.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 0);
 
 		button = (RadioButton) new OptimalGameplayButton("Balanced Gameplay", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
-		button.setTooltip("SpoutWorth will attempt to provide reasonable framerates and appearance.");
+		button.setTooltip("Spoutworth will attempt to provide reasonable framerates and appearance.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 1);
 
@@ -209,13 +209,13 @@ public class GameSettingsScreen extends GuiScreen{
 
 		button = (RadioButton) new FavorAppearanceButton("Favor Appearance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
-		button.setTooltip("SpoutWorth will attempt to provide the best appearance, but potentially at the cost of framerates.");
+		button.setTooltip("Spoutworth will attempt to provide the best appearance, but potentially at the cost of framerates.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 2);
 
 		button = (RadioButton) new ManualSelectionButton("Manual Selection", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
-		button.setTooltip("Dismiss SpoutWorth and adjust the settings manually yourself.");
+		button.setTooltip("Dismiss Spoutworth and adjust the settings manually yourself.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(!ConfigReader.automatePerformance);
 
