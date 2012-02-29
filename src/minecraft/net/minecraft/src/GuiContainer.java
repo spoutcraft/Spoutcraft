@@ -150,6 +150,8 @@ public abstract class GuiContainer extends GuiScreen
 				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
 				drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
 				*/
+				String tooltip = "";
+				int lines = 0;
 				for(int l4 = 0; l4 < list.size(); l4++)
 				{
 					String s = (String)list.get(l4);
@@ -160,14 +162,17 @@ public abstract class GuiContainer extends GuiScreen
 					{
 						s = (new StringBuilder()).append("\2477").append(s).toString();
 					}
-					super.drawTooltip(s, (i - k) + 8, j - l - s.split("\n").length * 6);
 					//fontRenderer.drawStringWithShadow(s, l2, j3, -1);
 					/*if(l4 == 0)
 					{
 						j3 += 2;
 					}
 					j3 += 10;*/
+					tooltip += s + "\n";
+					lines++;
 				}
+				tooltip = tooltip.trim();
+				super.drawTooltip(tooltip, (i - k) + 8, j - l - lines * 6);
 				//Spout end
 				zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
