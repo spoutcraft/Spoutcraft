@@ -57,6 +57,7 @@ public class SpoutcraftBindingItem extends ControlsBasicItem {
 	@Override
 	public void setKey(int id) {
 		binding.keyCode = id;
+		SpoutClient.getHandle().gameSettings.saveOptions();
 		KeyBinding.resetKeyBindingArrayAndHash();
 	}
 
