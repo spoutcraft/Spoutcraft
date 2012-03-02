@@ -23,14 +23,13 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-package org.spoutcraft.client.gui.shortcuts;
+package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
