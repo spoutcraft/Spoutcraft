@@ -50,6 +50,7 @@ import net.minecraft.src.TileEntityFurnace;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
+import org.spoutcraft.client.special.VIPs;
 
 public abstract class EntityPlayer extends EntityLiving {
 
@@ -99,6 +100,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean sneakToggle = false;
 	public boolean runToggle = false;
 	public boolean treadWaterToggle = false;
+	public String particles = "none";
 	//Spout end
 
 
@@ -115,6 +117,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.texture = "/mob/char.png";		
 		//Spout start
 		this.spoutEntity = new CraftHumanEntity(this);
+		VIPs.newPlayer(this);
 		//Spout end
 	}
 
@@ -263,7 +266,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		if(!this.worldObj.multiplayerWorld) {
 			this.foodStats.onUpdate(this);
 		}
-
+		// Spout start
+		if(!"none".equals(particles))
+			worldObj.spawnParticle(particles, posX, posY-1.3, posZ, 0.0D, 0.0D, 0.0D);
+		// Spout end
 	}
 
 	protected void func_35201_a(ItemStack var1, int var2) {
@@ -328,13 +334,9 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void updateCloak(String cloak) {
 		//Spout Easter Egg
-		String tempName = ChatColor.stripColor(username);
-		String easterEgg = org.spoutcraft.client.EasterEggs.getEasterEggCape();
+		String easterEgg = org.spoutcraft.client.special.EasterEggs.getEasterEggCape();
 		if (easterEgg != null) {
 			playerCloakUrl = easterEgg;	
-		}
-		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
-			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
 			this.playerCloakUrl = cloak;
