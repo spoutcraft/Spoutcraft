@@ -35,6 +35,7 @@ import net.minecraft.src.World;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
+import org.spoutcraft.client.special.VIPs;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end

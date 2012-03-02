@@ -19,7 +19,7 @@ import net.minecraft.src.Tessellator;
 
 //Spout Start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.EasterEggs;
+import org.spoutcraft.client.special.EasterEggs;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End

@@ -27,6 +27,7 @@ package org.spoutcraft.client.player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
+import org.spoutcraft.client.special.VIPs;
 
 import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
