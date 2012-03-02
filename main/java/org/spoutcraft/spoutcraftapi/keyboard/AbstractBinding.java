@@ -86,9 +86,29 @@ public abstract class AbstractBinding {
 		if (hasModifier(MOD_SUPER)) {
 			result += "SUPER + ";
 		}
-		result += Keyboard.getKeyName(key);
+		if(key > 0) {
+			result += Keyboard.getKeyName(key);
+		} else if (key == 0) {
+			result += "No key";
+		} else if (key < 0) {
+			result += getMouseButtonName(key);
+		}
 
 		return result;
+	}
+	
+	public static String getMouseButtonName(int button) {
+		button += 100;
+		switch(button) {
+		case 0:
+			return "Left button";
+		case 1: 
+			return "Right button";
+		case 2:
+			return "Middle button";
+		default:
+			return "Button "+button;
+		}
 	}
 	
 	@Override 
