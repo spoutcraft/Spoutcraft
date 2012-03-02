@@ -23,38 +23,73 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-package org.spoutcraft.client.player;
+package org.spoutcraft.client.special;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityPlayer;
-import org.spoutcraft.client.special.VIPs;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.spoutcraft.client.entity.CraftHumanEntity;
-import org.spoutcraft.spoutcraftapi.entity.Player;
+public class EasterEgg {
+	private final String name;
+	private long start = 0;
+	private long end = 0;
+	private List<String> titlecolor = new ArrayList<String>();
+	private String splash = null;
+	private String skin = null;
+	private String cape = null;
 
-public class SpoutPlayer extends CraftHumanEntity implements Player{
-	public SpoutPlayer(net.minecraft.src.EntityPlayer handle) {
-		super(handle);
-		this.handle = handle;
+	protected EasterEgg(String name) {
+		this.name = name;
 	}
 
-	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+	public long getStart() {
+		return start;
 	}
 
-	public void setPlayer(EntityPlayer player) {
-		this.handle = player;
+	public void setStart(long start) {
+		this.start = start;
 	}
 
-	public boolean isOnline() {
-		return Minecraft.theMinecraft.isMultiplayerWorld();
+	public long getEnd() {
+		return end;
 	}
 
-	public boolean isSneaking() {
-		return getMCPlayer().isSneaking();
+	public void setEnd(long end) {
+		this.end = end;
 	}
 
-	public void setSneaking(boolean sneak) {
-		getMCPlayer().setFlag(1, sneak);
+	public List<String> getTitlecolor() {
+		return titlecolor;
+	}
+
+	public void setTitlecolor(List<String> titlecolor) {
+		this.titlecolor = titlecolor;
+	}
+
+	public String getSplash() {
+		return splash;
+	}
+
+	public void setSplash(String splash) {
+		this.splash = splash;
+	}
+
+	public String getSkin() {
+		return skin;
+	}
+
+	public void setSkin(String skin) {
+		this.skin = skin;
+	}
+
+	public String getCape() {
+		return cape;
+	}
+
+	public void setCape(String cape) {
+		this.cape = cape;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

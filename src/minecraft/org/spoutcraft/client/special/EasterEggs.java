@@ -23,7 +23,7 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-package org.spoutcraft.client;
+package org.spoutcraft.client.special;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -23,73 +23,45 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-package org.spoutcraft.client;
+package org.spoutcraft.client.special;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class EasterEgg {
-	private final String name;
-	private long start = 0;
-	private long end = 0;
-	private List<String> titlecolor = new ArrayList<String>();
-	private String splash = null;
-	private String skin = null;
-	private String cape = null;
 
-	protected EasterEgg(String name) {
+public class VIPMember {
+	private String name;
+	private String cape, title;
+	
+	public VIPMember(String name) {
 		this.name = name;
+		cape = null;
+		title = null;
 	}
 
-	public long getStart() {
-		return start;
-	}
-
-	public void setStart(long start) {
-		this.start = start;
-	}
-
-	public long getEnd() {
-		return end;
-	}
-
-	public void setEnd(long end) {
-		this.end = end;
-	}
-
-	public List<String> getTitlecolor() {
-		return titlecolor;
-	}
-
-	public void setTitlecolor(List<String> titlecolor) {
-		this.titlecolor = titlecolor;
-	}
-
-	public String getSplash() {
-		return splash;
-	}
-
-	public void setSplash(String splash) {
-		this.splash = splash;
-	}
-
-	public String getSkin() {
-		return skin;
-	}
-
-	public void setSkin(String skin) {
-		this.skin = skin;
+	public boolean hasCape() {
+		return cape != null;
 	}
 
 	public String getCape() {
 		return cape;
 	}
 
-	public void setCape(String cape) {
-		this.cape = cape;
+	public boolean hasTitle() {
+		return title != null;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+	
 	public String getName() {
 		return name;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	void setCape(String cape) {
+		this.cape = cape;
 	}
 }
