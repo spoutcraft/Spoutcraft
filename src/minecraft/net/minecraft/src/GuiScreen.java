@@ -144,6 +144,7 @@ public class GuiScreen extends Gui {
 	// want
 	protected void mouseClickedPre(int mouseX, int mouseY, int eventButton) {
 		mouseClicked(mouseX, mouseY, eventButton); // Call vanilla method
+		SpoutClient.getInstance().getKeyBindingManager().pressKey(eventButton + SimpleKeyBindingManager.MOUSE_OFFSET, false, ScreenUtil.getType(this).getCode());
 		if (getScreen() == null) {
 			return;
 		}
@@ -344,6 +345,7 @@ public class GuiScreen extends Gui {
 	protected void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
 		lastMouseMove = System.currentTimeMillis();
 		mouseMovedOrUp(mouseX, mouseY, eventButton);
+		SpoutClient.getInstance().getKeyBindingManager().pressKey(eventButton + SimpleKeyBindingManager.MOUSE_OFFSET, true, ScreenUtil.getType(this).getCode());
 		if (getScreen() == null) {
 			return;
 		}

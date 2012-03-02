@@ -77,7 +77,7 @@ public class ShortcutBindingItem extends ControlsBasicItem {
 
 	@Override
 	public boolean useMouseButtons() {
-		return false;
+		return true;
 	}
 
 	@Override

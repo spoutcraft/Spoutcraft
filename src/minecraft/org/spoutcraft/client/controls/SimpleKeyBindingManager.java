@@ -59,6 +59,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<KeyBinding> bindings;
 	private ArrayList<Shortcut> shortcuts = new ArrayList<Shortcut>();
 	private HashMap<Integer, ArrayList<AbstractBinding>> bindingsForKey = new HashMap<Integer, ArrayList<AbstractBinding>>();
+	public static final int MOUSE_OFFSET = -100;
 
 	public SimpleKeyBindingManager() {
 	}

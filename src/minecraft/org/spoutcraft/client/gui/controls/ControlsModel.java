@@ -44,8 +44,6 @@ public class ControlsModel extends AbstractListModel {
 	private boolean editing = false;
 	private ControlsBasicItem lastEdit = null;
 
-	public static final int MOUSE_OFFSET = -100;
-
 	public ControlsModel(GuiControls gui) {
 		this.gui = gui;
 	}

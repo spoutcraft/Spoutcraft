@@ -229,7 +229,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	protected void mouseClicked(int x, int y, int button) {
 		ControlsBasicItem item = model.getEditingItem();
 		if (item != null && item.useMouseButtons()) {
-			item.setKey(ControlsModel.MOUSE_OFFSET + button);
+			item.setModifiers(SimpleKeyBindingManager.getPressedModifiers());
+			item.setKey(SimpleKeyBindingManager.MOUSE_OFFSET + button);
 			model.finishEdit();
 		}
 	}
