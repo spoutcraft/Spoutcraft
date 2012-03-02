@@ -68,9 +68,8 @@ public class GuiEditShortcut extends GuiScreen {
 
 	protected void keyTyped(char c, int i) {
 		if (recording && !SimpleKeyBindingManager.isModifierKey(i)) {
+			item.setRawModifiers(SimpleKeyBindingManager.getPressedModifiers());
 			item.setKey(i);
-			item.setRawModifiers((byte)0);
-			SimpleKeyBindingManager.setModifiersToShortcut(item);
 			recording = false;
 			updateRecordButton();
 		} else {
@@ -166,7 +165,7 @@ public class GuiEditShortcut extends GuiScreen {
 
 	private void updateRecordButton() {
 		String keyname = recording?"Press a key!":"Click Here!";
-		if (item.getKey()>=0 && !recording) {
+		if ((item.getKey()>=0 || item.getKey()<-1 )&& !recording) {
 			keyname = item.toString();
 		}
 		String name = (recording?"> ":"")+keyname+(recording?" <":"");
@@ -229,5 +228,18 @@ public class GuiEditShortcut extends GuiScreen {
 
 	public Shortcut getShortcut() {
 		return item;
+	}
+
+	@Override
+	protected void mouseClicked(int x, int y, int button) {
+		if(recording) {
+			System.out.println("Set mouse button to shortcut "+button);
+			item.setRawModifiers(SimpleKeyBindingManager.getPressedModifiers());
+			item.setKey(button + SimpleKeyBindingManager.MOUSE_OFFSET);
+			recording = false;
+			updateRecordButton();
+		} else {
+			super.mouseClicked(x, y, button);			
+		}
 	}
 }
