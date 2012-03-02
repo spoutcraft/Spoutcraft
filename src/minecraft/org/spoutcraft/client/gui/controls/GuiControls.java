@@ -35,7 +35,6 @@ import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.controls.ControlsBasicItem;
 import org.spoutcraft.client.gui.controls.KeyBindingItem;
 import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
-import org.spoutcraft.client.gui.shortcuts.GuiEditShortcut;
 import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
