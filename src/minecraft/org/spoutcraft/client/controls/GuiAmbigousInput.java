@@ -168,6 +168,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 			public void run() {
 				mc.displayGuiScreen(parent);
 				binding.summon(binding.getKey(), false, ScreenUtil.getType(parent).getCode());
+				binding.summon(binding.getKey(), true, ScreenUtil.getType(parent).getCode());
 			}
 		};
 		t.schedule(task, 200);
