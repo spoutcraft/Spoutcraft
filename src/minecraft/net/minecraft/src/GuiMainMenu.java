@@ -88,7 +88,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 		
 		// Spout start
-		String text = org.spoutcraft.client.EasterEggs.getSplashTextEasterEgg();
+		String text = org.spoutcraft.client.special.EasterEggs.getSplashTextEasterEgg();
 		if (text != null) {
 			this.splashText = text;
 		}

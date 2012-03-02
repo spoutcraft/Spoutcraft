@@ -1,9 +1,9 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Vanilla.
  *
- * Spoutcraft is licensed under the SpoutDev License Version 1.
+ * Vanilla is licensed under the SpoutDev License Version 1.
  *
- * Spoutcraft is free software: you can redistribute it and/or modify
+ * Vanilla is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -12,7 +12,7 @@
  * software, incorporating those changes, under the terms of the MIT license,
  * as described in the SpoutDev License Version 1.
  *
- * Spoutcraft is distributed in the hope that it will be useful,
+ * Vanilla is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -30,6 +30,7 @@ package org.spoutcraft.client.special;
 public class VIPMember {
 	private String name;
 	private String cape, title;
+	private String particles;
 	
 	public VIPMember(String name) {
 		this.name = name;
@@ -61,7 +62,19 @@ public class VIPMember {
 		this.title = title;
 	}
 
-	void setCape(String cape) {
+	public void setCape(String cape) {
 		this.cape = cape;
+	}
+
+	public void setParticles(String particles) {
+		this.particles = particles;
+	}
+	
+	public boolean hasParticles() {
+		return this.particles!=null&&!"false".equals(this.particles);
+	}
+	
+	public String getParticles() {
+		return this.particles;
 	}
 }

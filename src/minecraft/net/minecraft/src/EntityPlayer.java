@@ -100,6 +100,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean sneakToggle = false;
 	public boolean runToggle = false;
 	public boolean treadWaterToggle = false;
+	public String particles = "none";
 	//Spout end
 
 
@@ -265,7 +266,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		if(!this.worldObj.multiplayerWorld) {
 			this.foodStats.onUpdate(this);
 		}
-
+		// Spout start
+		if(!"none".equals(particles))
+			worldObj.spawnParticle(particles, posX, posY-1.3, posZ, 0.0D, 0.0D, 0.0D);
+		// Spout end
 	}
 
 	protected void func_35201_a(ItemStack var1, int var2) {

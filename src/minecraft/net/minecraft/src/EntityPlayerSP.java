@@ -73,7 +73,6 @@ public class EntityPlayerSP extends EntityPlayer {
 		spoutEntity = ClientPlayer.getInstance();
 		((ClientPlayer) spoutEntity).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;
-		VIPs.newPlayer(this);
 		//Spout end
 	}
 
