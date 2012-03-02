@@ -91,7 +91,7 @@ public class KeyBindingItem extends ControlsBasicItem {
 
 	@Override
 	public boolean useMouseButtons() {
-		return false;
+		return true;
 	}
 
 	@Override

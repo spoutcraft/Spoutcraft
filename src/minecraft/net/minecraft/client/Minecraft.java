@@ -1307,6 +1307,9 @@ public abstract class Minecraft implements Runnable {
 			Profiler.endStartSection("mouse");
 
 			while (Mouse.next()) {
+				//Spout Start
+				SpoutClient.getInstance().getKeyBindingManager().pressKey(Mouse.getEventButton() + SimpleKeyBindingManager.MOUSE_OFFSET, Mouse.getEventButtonState(), 0);
+				//Spout End
 				KeyBinding.setKeyBindState(Mouse.getEventButton() - 100, Mouse.getEventButtonState());
 				if (Mouse.getEventButtonState()) {
 					KeyBinding.onTick(Mouse.getEventButton() - 100);
