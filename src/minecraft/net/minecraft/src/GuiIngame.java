@@ -1,17 +1,19 @@
 package net.minecraft.src;
 
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+//Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
+//Spout End
 
 public class GuiIngame extends Gui
 {
@@ -394,7 +396,6 @@ public class GuiIngame extends Gui
 		{
 			drawTexturedModalRect(j, byte0, 0, 79, k, 5);
 		}
-
 		String s = "Boss health";
 		fontrenderer.drawStringWithShadow(s, i / 2 - fontrenderer.getStringWidth(s) / 2, byte0 - 10, 0xff00ff);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
