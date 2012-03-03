@@ -34,7 +34,7 @@ public class ActiveRenderInfo {
 	public static FloatBuffer projectionMatrix;
 	//Spout end	
 
-	public static void updateRenderInfo(EntityPlayer var0, boolean var1) {
+	public static void updateRenderInfo(EntityPlayer par0EntityPlayer, boolean par1) {
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
 
@@ -51,9 +51,9 @@ public class ActiveRenderInfo {
 		objectX = objectCoords.get(0);
 		objectY = objectCoords.get(1);
 		objectZ = objectCoords.get(2);
-		int var4 = var1 ? 1 : 0;
-		float var5 = var0.rotationPitch;
-		float var6 = var0.rotationYaw;
+		int var4 = par1? 1 : 0;
+		float var5 = par0EntityPlayer.rotationPitch;
+		float var6 = par0EntityPlayer.rotationYaw;
 		rotationX = MathHelper.cos(var6 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
 		rotationZ = MathHelper.sin(var6 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
 		rotationYZ = -rotationZ * MathHelper.sin(var5 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
@@ -61,25 +61,25 @@ public class ActiveRenderInfo {
 		rotationXZ = MathHelper.cos(var5 * 3.1415927F / 180.0F);
 	}
 
-	public static Vec3D projectViewFromEntity(EntityLiving var0, double var1) {
-		double var3 = var0.prevPosX + (var0.posX - var0.prevPosX) * var1;
-		double var5 = var0.prevPosY + (var0.posY - var0.prevPosY) * var1 + (double)var0.getEyeHeight();
-		double var7 = var0.prevPosZ + (var0.posZ - var0.prevPosZ) * var1;
+	public static Vec3D projectViewFromEntity(EntityLiving par0EntityLiving, double par1) {
+		double var3 = par0EntityLiving.prevPosX + (par0EntityLiving.posX - par0EntityLiving.prevPosX) * par1;
+		double var5 = par0EntityLiving.prevPosY + (par0EntityLiving.posY - par0EntityLiving.prevPosY) * par1 + (double)par0EntityLiving.getEyeHeight();
+		double var7 = par0EntityLiving.prevPosZ + (par0EntityLiving.posZ - par0EntityLiving.prevPosZ) * par1;
 		double var9 = var3 + (double)(objectX * 1.0F);
 		double var11 = var5 + (double)(objectY * 1.0F);
 		double var13 = var7 + (double)(objectZ * 1.0F);
 		return Vec3D.createVector(var9, var11, var13);
 	}
 
-	public static int getBlockIdAtEntityViewpoint(World var0, EntityLiving var1, float var2) {
-		Vec3D var3 = projectViewFromEntity(var1, (double)var2);
+	public static int getBlockIdAtEntityViewpoint(World par0World, EntityLiving par1EntityLiving, float par2) {
+		Vec3D var3 = projectViewFromEntity(par1EntityLiving, (double)par2);
 		ChunkPosition var4 = new ChunkPosition(var3);
-		int var5 = var0.getBlockId(var4.x, var4.y, var4.z);
-		if (var5 != 0 && Block.blocksList[var5].blockMaterial.getIsLiquid()) {
-			float var6 = BlockFluid.getFluidHeightPercent(var0.getBlockMetadata(var4.x, var4.y, var4.z)) - 0.11111111F;
+		int var5 = par0World.getBlockId(var4.x, var4.y, var4.z);
+		if (var5 != 0 && Block.blocksList[var5].blockMaterial.isLiquid()) {
+			float var6 = BlockFluid.getFluidHeightPercent(par0World.getBlockMetadata(var4.x, var4.y, var4.z)) - 0.11111111F;
 			float var7 = (float)(var4.y + 1) - var6;
 			if (var3.yCoord >= (double)var7) {
-				var5 = var0.getBlockId(var4.x, var4.y + 1, var4.z);
+				var5 = par0World.getBlockId(var4.x, var4.y + 1, var4.z);
 			}
 		}
 
