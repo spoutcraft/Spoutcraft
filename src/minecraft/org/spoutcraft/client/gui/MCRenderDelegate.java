@@ -578,7 +578,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				int x = (int) bar.getScreenX() - icon * bar.getIconOffset();
 				int y = (int) bar.getScreenY();
 
-				if (Minecraft.theMinecraft.thePlayer.getFoodStats().getFoodSaturationLevel() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
+				if (Minecraft.theMinecraft.thePlayer.getFoodStats().getSaturationLevel() <= 0.0F && bar.getUpdateCounter() % (foodLevel * 3 + 1) == 0) {
 					y += GuiIngame.rand.nextInt(3) - 1;
 				}
 
@@ -600,16 +600,16 @@ public class MCRenderDelegate implements RenderDelegate {
 			if (expCap > 0) {
 				int x = (int) bar.getScreenX();
 				int y = (int) bar.getScreenY();
-				int exp = (int) (Minecraft.theMinecraft.thePlayer.currentXP * 183.0F);
+				int exp = (int) (Minecraft.theMinecraft.thePlayer.experience * 183.0F);
 				RenderUtil.drawTexturedModalRectangle(x, y, 0, 64, 182, 5, 0f);
 				if (exp > 0) {
 					RenderUtil.drawTexturedModalRectangle(x, y, 0, 69, exp, 5, 0f);
 				}
 			}
 
-			if (Minecraft.theMinecraft.playerController.func_35642_f() && Minecraft.theMinecraft.thePlayer.playerLevel > 0) {
+			if (Minecraft.theMinecraft.playerController.func_35642_f() && Minecraft.theMinecraft.thePlayer.experienceLevel > 0) {
 				int color = 8453920;
-				String level = "" + Minecraft.theMinecraft.thePlayer.playerLevel;
+				String level = "" + Minecraft.theMinecraft.thePlayer.experienceLevel;
 				FontRenderer font = SpoutClient.getHandle().fontRenderer;
 				int x = (int) (bar.getScreenX() + (183 / 2) - (font.getStringWidth(level) / 2));
 				int y = (int) bar.getScreenY() - 6;

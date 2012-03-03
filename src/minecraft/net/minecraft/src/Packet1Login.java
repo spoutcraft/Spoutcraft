@@ -3,79 +3,75 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import net.minecraft.src.EnumWorldType;
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
-//Spout Start
-import org.spoutcraft.client.DataMiningThread;
+import net.minecraft.src.WorldType;
+
+import org.spoutcraft.client.DataMiningThread; //Spout
 
 public class Packet1Login extends Packet {
 
 	public int protocolVersion;
 	public String username;
-	public long mapSeed;
-	public EnumWorldType field_46032_d;
+	public WorldType terrainType;
 	public int serverMode;
-	public byte worldType;
+	public int field_48170_e;
 	public byte difficultySetting;
 	public byte worldHeight;
 	public byte maxPlayers;
 
-
 	public Packet1Login() {}
 
-	public Packet1Login(String var1, int var2) {
-		this.username = var1;
-		this.protocolVersion = var2;
+	public Packet1Login(String par1Str, int par2) {
+		this.username = par1Str;
+		this.protocolVersion = par2;
 	}
 
-	public void readPacketData(DataInputStream var1) throws IOException {
-		this.protocolVersion = var1.readInt();
-		this.username = readString(var1, 16);
-		this.mapSeed = var1.readLong();
-		String var2 = readString(var1, 16);
-		this.field_46032_d = EnumWorldType.func_46135_a(var2);
-		if(this.field_46032_d == null) {
-			this.field_46032_d = EnumWorldType.DEFAULT;
+	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
+		this.protocolVersion = par1DataInputStream.readInt();
+		this.username = readString(par1DataInputStream, 16);
+		String var2 = readString(par1DataInputStream, 16);
+		this.terrainType = WorldType.parseWorldType(var2);
+		if (this.terrainType == null) {
+			this.terrainType = WorldType.field_48635_b;
 		}
-		
-		this.serverMode = var1.readInt();
-		this.worldType = var1.readByte();
-		this.difficultySetting = var1.readByte();
-		this.worldHeight = var1.readByte();
-		this.maxPlayers = var1.readByte();
+
+		this.serverMode = par1DataInputStream.readInt();
+		this.field_48170_e = par1DataInputStream.readInt();
+		this.difficultySetting = par1DataInputStream.readByte();
+		this.worldHeight = par1DataInputStream.readByte();
+		this.maxPlayers = par1DataInputStream.readByte();
 	}
 
-	public void writePacketData(DataOutputStream var1) throws IOException {
-		var1.writeInt(this.protocolVersion);
-		writeString(this.username, var1);
-		var1.writeLong(this.mapSeed);
-		if(this.field_46032_d == null) {
-			writeString("", var1);
+	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
+		par1DataOutputStream.writeInt(this.protocolVersion);
+		writeString(this.username, par1DataOutputStream);
+		if (this.terrainType == null) {
+			writeString("", par1DataOutputStream);
 		} else {
-			writeString(this.field_46032_d.name(), var1);
+			writeString(this.terrainType.func_48628_a(), par1DataOutputStream);
 		}
-		
-		var1.writeInt(this.serverMode);
-		var1.writeByte(this.worldType);
-		var1.writeByte(this.difficultySetting);
-		var1.writeByte(this.worldHeight);
-		var1.writeByte(this.maxPlayers);
+
+		par1DataOutputStream.writeInt(this.serverMode);
+		par1DataOutputStream.writeInt(this.field_48170_e);
+		par1DataOutputStream.writeByte(this.difficultySetting);
+		par1DataOutputStream.writeByte(this.worldHeight);
+		par1DataOutputStream.writeByte(this.maxPlayers);
 	}
 
-	public void processPacket(NetHandler var1) {
+	public void processPacket(NetHandler par1NetHandler) {
 		//Spout Start
 		DataMiningThread.getInstance().onLogin();
 		//Spout End
-		var1.handleLogin(this);
+		par1NetHandler.handleLogin(this);
 	}
 
 	public int getPacketSize() {
 		int var1 = 0;
-		if(this.field_46032_d != null) {
-			var1 = this.field_46032_d.name().length();
+		if (this.terrainType != null) {
+			var1 = this.terrainType.func_48628_a().length();
 		}
 
-		return 4 + this.username.length() + 4 + 7 + 4 + var1;
+		return 4 + this.username.length() + 4 + 7 + 7 + var1;
 	}
 }

@@ -39,9 +39,6 @@ public class WorldRenderer {
 	public int posX;
 	public int posY;
 	public int posZ;
-	public int sizeWidth;
-	public int sizeHeight;
-	public int sizeDepth;
 	public int posXMinus;
 	public int posYMinus;
 	public int posZMinus;
@@ -53,7 +50,6 @@ public class WorldRenderer {
 	public int posXPlus;
 	public int posYPlus;
 	public int posZPlus;
-	public float rendererRadius;
 	public boolean needsUpdate;
 	public AxisAlignedBB rendererBoundingBox;
 	public int chunkIndex;
@@ -65,36 +61,34 @@ public class WorldRenderer {
 	public List tileEntityRenderers = new ArrayList();
 	private List tileEntities;
 
-	public WorldRenderer(World var1, List var2, int var3, int var4, int var5, int var6, int var7) {
-		this.worldObj = var1;
-		this.tileEntities = var2;
-		this.sizeWidth = this.sizeHeight = this.sizeDepth = var6;
-		this.rendererRadius = MathHelper.sqrt_float((float)(this.sizeWidth * this.sizeWidth + this.sizeHeight * this.sizeHeight + this.sizeDepth * this.sizeDepth)) / 2.0F;
-		this.glRenderList = var7;
+	public WorldRenderer(World par1World, List par2List, int par3, int par4, int par5, int par6) {
+		this.worldObj = par1World;
+		this.tileEntities = par2List;
+		this.glRenderList = par6;
 		this.posX = -999;
-		this.setPosition(var3, var4, var5);
+		this.setPosition(par3, par4, par5);
 		this.needsUpdate = false;
 	}
 
-	public void setPosition(int var1, int var2, int var3) {
-		if(var1 != this.posX || var2 != this.posY || var3 != this.posZ) {
+	public void setPosition(int par1, int par2, int par3) {
+		if (par1 != this.posX || par2 != this.posY || par3 != this.posZ) {
 			this.setDontDraw();
-			this.posX = var1;
-			this.posY = var2;
-			this.posZ = var3;
-			this.posXPlus = var1 + this.sizeWidth / 2;
-			this.posYPlus = var2 + this.sizeHeight / 2;
-			this.posZPlus = var3 + this.sizeDepth / 2;
-			this.posXClip = var1 & 1023;
-			this.posYClip = var2;
-			this.posZClip = var3 & 1023;
-			this.posXMinus = var1 - this.posXClip;
-			this.posYMinus = var2 - this.posYClip;
-			this.posZMinus = var3 - this.posZClip;
+			this.posX = par1;
+			this.posY = par2;
+			this.posZ = par3;
+			this.posXPlus = par1 + 8;
+			this.posYPlus = par2 + 8;
+			this.posZPlus = par3 + 8;
+			this.posXClip = par1 & 1023;
+			this.posYClip = par2;
+			this.posZClip = par3 & 1023;
+			this.posXMinus = par1 - this.posXClip;
+			this.posYMinus = par2 - this.posYClip;
+			this.posZMinus = par3 - this.posZClip;
 			float var4 = 6.0F;
-			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.sizeWidth) + var4), (double)((float)(var2 + this.sizeHeight) + var4), (double)((float)(var3 + this.sizeDepth) + var4));
+			this.rendererBoundingBox = AxisAlignedBB.getBoundingBox((double)((float)par1 - var4), (double)((float)par2 - var4), (double)((float)par3 - var4), (double)((float)(par1 + 16) + var4), (double)((float)(par2 + 16) + var4), (double)((float)(par3 + 16) + var4));
 			GL11.glNewList(this.glRenderList + 2, GL11.GL_COMPILE);
-			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + this.sizeWidth) + var4), (double)((float)(this.posYClip + this.sizeHeight) + var4), (double)((float)(this.posZClip + this.sizeDepth) + var4)));
+			RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.posXClip - var4), (double)((float)this.posYClip - var4), (double)((float)this.posZClip - var4), (double)((float)(this.posXClip + 16) + var4), (double)((float)(this.posYClip + 16) + var4), (double)((float)(this.posZClip + 16) + var4)));
 			GL11.glEndList();
 			this.markDirty();
 		}
@@ -111,9 +105,9 @@ public class WorldRenderer {
 			int x = this.posX;
 			int y = this.posY;
 			int z = this.posZ;
-			int sizeXOffset = this.posX + this.sizeWidth;
-			int sizeYOffset = this.posY + this.sizeHeight;
-			int sizeZOffset = this.posZ + this.sizeDepth;
+			int sizeXOffset = this.posX + 16;
+			int sizeYOffset = this.posY + 16;
+			int sizeZOffset = this.posZ + 16;
 
 			for(int renderPass = 0; renderPass < 2; ++renderPass) {
 				this.skipRenderPass[renderPass] = true;
@@ -151,9 +145,9 @@ public class WorldRenderer {
 					GL11.glNewList(this.glRenderList + renderPass, GL11.GL_COMPILE);
 					GL11.glPushMatrix();
 					this.setupGLTranslation();
-					GL11.glTranslatef((float)(-this.sizeDepth) / 2.0F, (float)(-this.sizeHeight) / 2.0F, (float)(-this.sizeDepth) / 2.0F);
+					GL11.glTranslatef(-8F, -8F, -8F);
 					GL11.glScalef(1F, 1F, 1F);
-					GL11.glTranslatef((float)this.sizeDepth / 2.0F, (float)this.sizeHeight / 2.0F, (float)this.sizeDepth / 2.0F);
+					GL11.glTranslatef(8F, 8F, 8F);
 					tessellator.startDrawingQuads();
 					tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 				}
@@ -234,23 +228,19 @@ public class WorldRenderer {
 									else if (currentTexture != 0) { 
 										continue;
 									}
-
-									if (renderPass == 0 && Block.isBlockContainer[id]) {
+									
+									Block block = Block.blocksList[id];
+									if (renderPass == 0 && block.func_48205_p()) {
 										TileEntity var20 = worldObj.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
 										}
 									}
 
-									Block block = Block.blocksList[id];
 									//Determine which pass this block needs to be rendered on
 									int blockRenderPass = block.getRenderBlockPass();
 									if (design != null) {
 										blockRenderPass = design.getRenderPass();
-									}
-									
-									if (renderPass == 0 && blockRenderer.renderLightOnBlock(dx, dy, dz, 0)) {
-										rendered = true;
 									}
 									
 									if (blockRenderPass != renderPass) {

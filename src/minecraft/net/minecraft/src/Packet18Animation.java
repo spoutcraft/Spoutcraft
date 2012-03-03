@@ -19,35 +19,33 @@ public class Packet18Animation extends Packet {
 	public int entityId;
 	public int animate;
 
-
 	public Packet18Animation() {}
 
-	public Packet18Animation(Entity var1, int var2) {
-		this.entityId = var1.entityId;
-		this.animate = var2;
+	public Packet18Animation(Entity par1Entity, int par2) {
+		this.entityId = par1Entity.entityId;
+		this.animate = par2;
 	}
 
-	public void readPacketData(DataInputStream var1) throws IOException {
-		this.entityId = var1.readInt();
-		this.animate = var1.readByte();
+	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
+		this.entityId = par1DataInputStream.readInt();
+		this.animate = par1DataInputStream.readByte();
 	}
 
-	public void writePacketData(DataOutputStream var1) throws IOException {
-		var1.writeInt(this.entityId);
-		var1.writeByte(this.animate);
+	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
+		par1DataOutputStream.writeInt(this.entityId);
+		par1DataOutputStream.writeByte(this.animate);
 	}
 
-	public void processPacket(NetHandler var1) {
+	public void processPacket(NetHandler par1NetHandler) {
 		//Spout Start
 		if (entityId == -42) {
 			SpoutClient.getInstance().setSpoutVersion(1);
-			((NetClientHandler)var1).addToSendQueue(this);
+			((NetClientHandler) par1NetHandler).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(Long.toString(SpoutClient.getClientVersion())));
 			System.out.println("Detected Spout server.");
-		}
-		else {
-			var1.handleArmAnimation(this);
+		} else {
+			par1NetHandler.handleAnimation(this);
 		}
 		//Spout End
 	}

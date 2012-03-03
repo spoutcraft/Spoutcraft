@@ -6,9 +6,9 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockEndPortal;
 import net.minecraft.src.DamageSource;
-import net.minecraft.src.DragonPart;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityDragonBase;
+import net.minecraft.src.EntityDragonPart;
 import net.minecraft.src.EntityEnderCrystal;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
@@ -26,14 +26,14 @@ public class EntityDragon extends EntityDragonBase {
 	public double targetZ;
 	public double[][] field_40162_d = new double[64][3];
 	public int field_40164_e = -1;
-	public DragonPart[] dragonPartArray;
-	public DragonPart dragonPartHead;
-	public DragonPart dragonPartBody;
-	public DragonPart field_40170_ar;
-	public DragonPart field_40169_as;
-	public DragonPart field_40168_at;
-	public DragonPart field_40175_au;
-	public DragonPart field_40174_av;
+	public EntityDragonPart[] dragonPartArray;
+	public EntityDragonPart dragonPartHead;
+	public EntityDragonPart dragonPartBody;
+	public EntityDragonPart dragonPartTail1;
+	public EntityDragonPart dragonPartTail2;
+	public EntityDragonPart dragonPartTail3;
+	public EntityDragonPart dragonPartWing1;
+	public EntityDragonPart dragonPartWing2;
 	public float field_40173_aw = 0.0F;
 	public float field_40172_ax = 0.0F;
 	public boolean field_40163_ay = false;
@@ -42,10 +42,9 @@ public class EntityDragon extends EntityDragonBase {
 	public int field_40178_aA = 0;
 	public EntityEnderCrystal healingEnderCrystal = null;
 
-
-	public EntityDragon(World var1) {
-		super(var1);
-		this.dragonPartArray = new DragonPart[]{this.dragonPartHead = new DragonPart(this, "head", 6.0F, 6.0F), this.dragonPartBody = new DragonPart(this, "body", 8.0F, 8.0F), this.field_40170_ar = new DragonPart(this, "tail", 4.0F, 4.0F), this.field_40169_as = new DragonPart(this, "tail", 4.0F, 4.0F), this.field_40168_at = new DragonPart(this, "tail", 4.0F, 4.0F), this.field_40175_au = new DragonPart(this, "wing", 4.0F, 4.0F), this.field_40174_av = new DragonPart(this, "wing", 4.0F, 4.0F)};
+	public EntityDragon(World par1World) {
+		super(par1World);
+		this.dragonPartArray = new EntityDragonPart[]{this.dragonPartHead = new EntityDragonPart(this, "head", 6.0F, 6.0F), this.dragonPartBody = new EntityDragonPart(this, "body", 8.0F, 8.0F), this.dragonPartTail1 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail2 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail3 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartWing1 = new EntityDragonPart(this, "wing", 4.0F, 4.0F), this.dragonPartWing2 = new EntityDragonPart(this, "wing", 4.0F, 4.0F)};
 		this.maxHealth = 200;
 		this.setEntityHealth(this.maxHealth);
 		this.texture = "/mob/enderdragon/ender.png";
@@ -54,7 +53,7 @@ public class EntityDragon extends EntityDragonBase {
 		this.isImmuneToFire = true;
 		this.targetY = 100.0D;
 		this.ignoreFrustumCheck = true;
-        //Spout start
+		 //Spout start
         this.spoutEntity = new CraftEnderDragon(this);
         //Spout end
 	}
@@ -64,14 +63,14 @@ public class EntityDragon extends EntityDragonBase {
 		this.dataWatcher.addObject(16, new Integer(this.maxHealth));
 	}
 
-	public double[] func_40160_a(int var1, float var2) {
+	public double[] func_40160_a(int par1, float par2) {
 		if(this.health <= 0) {
-			var2 = 0.0F;
+			par2 = 0.0F;
 		}
 
-		var2 = 1.0F - var2;
-		int var3 = this.field_40164_e - var1 * 1 & 63;
-		int var4 = this.field_40164_e - var1 * 1 - 1 & 63;
+		par2 = 1.0F - par2;
+		int var3 = this.field_40164_e - par1 * 1 & 63;
+		int var4 = this.field_40164_e - par1 * 1 - 1 & 63;
 		double[] var5 = new double[3];
 		double var6 = this.field_40162_d[var3][0];
 
@@ -84,17 +83,17 @@ public class EntityDragon extends EntityDragonBase {
 			var8 -= 360.0D;
 		}
 
-		var5[0] = var6 + var8 * (double)var2;
+		var5[0] = var6 + var8 * (double)par2;
 		var6 = this.field_40162_d[var3][1];
 		var8 = this.field_40162_d[var4][1] - var6;
-		var5[1] = var6 + var8 * (double)var2;
-		var5[2] = this.field_40162_d[var3][2] + (this.field_40162_d[var4][2] - this.field_40162_d[var3][2]) * (double)var2;
+		var5[1] = var6 + var8 * (double)par2;
+		var5[2] = this.field_40162_d[var3][2] + (this.field_40162_d[var4][2] - this.field_40162_d[var3][2]) * (double)par2;
 		return var5;
 	}
 
 	public void onLivingUpdate() {
 		this.field_40173_aw = this.field_40172_ax;
-		if(!this.worldObj.multiplayerWorld) {
+		if(!this.worldObj.isRemote) {
 			this.dataWatcher.updateObject(16, Integer.valueOf(this.health));
 		}
 
@@ -107,7 +106,7 @@ public class EntityDragon extends EntityDragonBase {
 			var3 = (this.rand.nextFloat() - 0.5F) * 8.0F;
 			this.worldObj.spawnParticle("largeexplode", this.posX + (double)var1, this.posY + 2.0D + (double)var26, this.posZ + (double)var3, 0.0D, 0.0D, 0.0D);
 		} else {
-			this.func_41011_ay();
+			this.updateDragonEnderCrystal();
 			var1 = 0.2F / (MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ) * 10.0F + 1.0F);
 			var1 *= (float)Math.pow(2.0D, this.motionY);
 			if(this.field_40161_az) {
@@ -142,7 +141,7 @@ public class EntityDragon extends EntityDragonBase {
 			double var8;
 			double var25;
 			float var33;
-			if(this.worldObj.multiplayerWorld) {
+			if(this.worldObj.isRemote) {
 				if(this.newPosRotationIncrements > 0) {
 					var25 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
 					var4 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
@@ -260,15 +259,15 @@ public class EntityDragon extends EntityDragonBase {
 
 			this.renderYawOffset = this.rotationYaw;
 			this.dragonPartHead.width = this.dragonPartHead.height = 3.0F;
-			this.field_40170_ar.width = this.field_40170_ar.height = 2.0F;
-			this.field_40169_as.width = this.field_40169_as.height = 2.0F;
-			this.field_40168_at.width = this.field_40168_at.height = 2.0F;
+			this.dragonPartTail1.width = this.dragonPartTail1.height = 2.0F;
+			this.dragonPartTail2.width = this.dragonPartTail2.height = 2.0F;
+			this.dragonPartTail3.width = this.dragonPartTail3.height = 2.0F;
 			this.dragonPartBody.height = 3.0F;
 			this.dragonPartBody.width = 5.0F;
-			this.field_40175_au.height = 2.0F;
-			this.field_40175_au.width = 4.0F;
-			this.field_40174_av.height = 3.0F;
-			this.field_40174_av.width = 4.0F;
+			this.dragonPartWing1.height = 2.0F;
+			this.dragonPartWing1.width = 4.0F;
+			this.dragonPartWing2.height = 3.0F;
+			this.dragonPartWing2.width = 4.0F;
 			var26 = (float)(this.func_40160_a(5, 1.0F)[1] - this.func_40160_a(10, 1.0F)[1]) * 10.0F / 180.0F * 3.1415927F;
 			var3 = MathHelper.cos(var26);
 			float var28 = -MathHelper.sin(var26);
@@ -277,18 +276,18 @@ public class EntityDragon extends EntityDragonBase {
 			float var7 = MathHelper.cos(var5);
 			this.dragonPartBody.onUpdate();
 			this.dragonPartBody.setLocationAndAngles(this.posX + (double)(var27 * 0.5F), this.posY, this.posZ - (double)(var7 * 0.5F), 0.0F, 0.0F);
-			this.field_40175_au.onUpdate();
-			this.field_40175_au.setLocationAndAngles(this.posX + (double)(var7 * 4.5F), this.posY + 2.0D, this.posZ + (double)(var27 * 4.5F), 0.0F, 0.0F);
-			this.field_40174_av.onUpdate();
-			this.field_40174_av.setLocationAndAngles(this.posX - (double)(var7 * 4.5F), this.posY + 2.0D, this.posZ - (double)(var27 * 4.5F), 0.0F, 0.0F);
-			if(!this.worldObj.multiplayerWorld) {
+			this.dragonPartWing1.onUpdate();
+			this.dragonPartWing1.setLocationAndAngles(this.posX + (double)(var7 * 4.5F), this.posY + 2.0D, this.posZ + (double)(var27 * 4.5F), 0.0F, 0.0F);
+			this.dragonPartWing2.onUpdate();
+			this.dragonPartWing2.setLocationAndAngles(this.posX - (double)(var7 * 4.5F), this.posY + 2.0D, this.posZ - (double)(var27 * 4.5F), 0.0F, 0.0F);
+			if(!this.worldObj.isRemote) {
 				this.func_41007_az();
 			}
 
-			if(!this.worldObj.multiplayerWorld && this.maxHurtTime == 0) {
-				this.func_41008_a(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.field_40175_au.boundingBox.expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
-				this.func_41008_a(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.field_40174_av.boundingBox.expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
-				this.func_41009_b(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartHead.boundingBox.expand(1.0D, 1.0D, 1.0D)));
+			if(!this.worldObj.isRemote && this.maxHurtTime == 0) {
+				this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartWing1.boundingBox.expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
+				this.collideWithEntities(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartWing2.boundingBox.expand(4.0D, 2.0D, 4.0D).offset(0.0D, -2.0D, 0.0D)));
+				this.attackEntitiesInList(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.dragonPartHead.boundingBox.expand(1.0D, 1.0D, 1.0D)));
 			}
 
 			double[] var30 = this.func_40160_a(5, 1.0F);
@@ -299,21 +298,21 @@ public class EntityDragon extends EntityDragonBase {
 			this.dragonPartHead.setLocationAndAngles(this.posX + (double)(var33 * 5.5F * var3), this.posY + (var9[1] - var30[1]) * 1.0D + (double)(var28 * 5.5F), this.posZ - (double)(var32 * 5.5F * var3), 0.0F, 0.0F);
 
 			for(int var29 = 0; var29 < 3; ++var29) {
-				DragonPart var31 = null;
+				EntityDragonPart var31 = null;
 				if(var29 == 0) {
-					var31 = this.field_40170_ar;
+					var31 = this.dragonPartTail1;
 				}
 
 				if(var29 == 1) {
-					var31 = this.field_40169_as;
+					var31 = this.dragonPartTail2;
 				}
 
 				if(var29 == 2) {
-					var31 = this.field_40168_at;
+					var31 = this.dragonPartTail3;
 				}
 
 				double[] var35 = this.func_40160_a(12 + var29 * 2, 1.0F);
-				float var34 = this.rotationYaw * 3.1415927F / 180.0F + this.func_40159_b(var35[0] - var30[0]) * 3.1415927F / 180.0F * 1.0F;
+				float var34 = this.rotationYaw * 3.1415927F / 180.0F + this.simplifyAngle(var35[0] - var30[0]) * 3.1415927F / 180.0F * 1.0F;
 				float var37 = MathHelper.sin(var34);
 				float var38 = MathHelper.cos(var34);
 				float var36 = 1.5F;
@@ -322,17 +321,17 @@ public class EntityDragon extends EntityDragonBase {
 				var31.setLocationAndAngles(this.posX - (double)((var27 * var36 + var37 * var39) * var3), this.posY + (var35[1] - var30[1]) * 1.0D - (double)((var39 + var36) * var28) + 1.5D, this.posZ + (double)((var7 * var36 + var38 * var39) * var3), 0.0F, 0.0F);
 			}
 
-			if(!this.worldObj.multiplayerWorld) {
-				this.field_40161_az = this.func_40158_a(this.dragonPartHead.boundingBox) | this.func_40158_a(this.dragonPartBody.boundingBox);
+			if(!this.worldObj.isRemote) {
+				this.field_40161_az = this.destroyBlocksInAABB(this.dragonPartHead.boundingBox) | this.destroyBlocksInAABB(this.dragonPartBody.boundingBox);
 			}
 
 		}
 	}
 
-	private void func_41011_ay() {
+	private void updateDragonEnderCrystal() {
 		if(this.healingEnderCrystal != null) {
 			if(this.healingEnderCrystal.isDead) {
-				if(!this.worldObj.multiplayerWorld) {
+				if(!this.worldObj.isRemote) {
 					this.attackEntityFromPart(this.dragonPartHead, DamageSource.explosion, 10);
 				}
 
@@ -363,20 +362,12 @@ public class EntityDragon extends EntityDragonBase {
 
 	}
 
-	private void func_41007_az() {
-		if(this.ticksExisted % 20 == 0) {
-			Vec3D var1 = this.getLook(1.0F);
-			double var2 = 0.0D;
-			double var4 = -1.0D;
-			double var6 = 0.0D;
-		}
+	private void func_41007_az() {}
 
-	}
-
-	private void func_41008_a(List var1) {
+	private void collideWithEntities(List par1List) {
 		double var2 = (this.dragonPartBody.boundingBox.minX + this.dragonPartBody.boundingBox.maxX) / 2.0D;
 		double var4 = (this.dragonPartBody.boundingBox.minZ + this.dragonPartBody.boundingBox.maxZ) / 2.0D;
-		Iterator var6 = var1.iterator();
+		Iterator var6 = par1List.iterator();
 
 		while(var6.hasNext()) {
 			Entity var7 = (Entity)var6.next();
@@ -390,9 +381,9 @@ public class EntityDragon extends EntityDragonBase {
 
 	}
 
-	private void func_41009_b(List var1) {
-		for(int var2 = 0; var2 < var1.size(); ++var2) {
-			Entity var3 = (Entity)var1.get(var2);
+	private void attackEntitiesInList(List par1List) {
+		for(int var2 = 0; var2 < par1List.size(); ++var2) {
+			Entity var3 = (Entity)par1List.get(var2);
 			if(var3 instanceof EntityLiving) {
 				var3.attackEntityFrom(DamageSource.causeMobDamage(this), 10);
 			}
@@ -424,25 +415,25 @@ public class EntityDragon extends EntityDragonBase {
 
 	}
 
-	private float func_40159_b(double var1) {
-		while(var1 >= 180.0D) {
-			var1 -= 360.0D;
+	private float simplifyAngle(double par1) {
+		while(par1 >= 180.0D) {
+			par1 -= 360.0D;
 		}
 
-		while(var1 < -180.0D) {
-			var1 += 360.0D;
+		while(par1 < -180.0D) {
+			par1 += 360.0D;
 		}
 
-		return (float)var1;
+		return (float)par1;
 	}
 
-	private boolean func_40158_a(AxisAlignedBB var1) {
-		int var2 = MathHelper.floor_double(var1.minX);
-		int var3 = MathHelper.floor_double(var1.minY);
-		int var4 = MathHelper.floor_double(var1.minZ);
-		int var5 = MathHelper.floor_double(var1.maxX);
-		int var6 = MathHelper.floor_double(var1.maxY);
-		int var7 = MathHelper.floor_double(var1.maxZ);
+	private boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
+		int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX);
+		int var3 = MathHelper.floor_double(par1AxisAlignedBB.minY);
+		int var4 = MathHelper.floor_double(par1AxisAlignedBB.minZ);
+		int var5 = MathHelper.floor_double(par1AxisAlignedBB.maxX);
+		int var6 = MathHelper.floor_double(par1AxisAlignedBB.maxY);
+		int var7 = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
 		boolean var8 = false;
 		boolean var9 = false;
 
@@ -463,18 +454,18 @@ public class EntityDragon extends EntityDragonBase {
 		}
 
 		if(var9) {
-			double var16 = var1.minX + (var1.maxX - var1.minX) * (double)this.rand.nextFloat();
-			double var17 = var1.minY + (var1.maxY - var1.minY) * (double)this.rand.nextFloat();
-			double var14 = var1.minZ + (var1.maxZ - var1.minZ) * (double)this.rand.nextFloat();
+			double var16 = par1AxisAlignedBB.minX + (par1AxisAlignedBB.maxX - par1AxisAlignedBB.minX) * (double)this.rand.nextFloat();
+			double var17 = par1AxisAlignedBB.minY + (par1AxisAlignedBB.maxY - par1AxisAlignedBB.minY) * (double)this.rand.nextFloat();
+			double var14 = par1AxisAlignedBB.minZ + (par1AxisAlignedBB.maxZ - par1AxisAlignedBB.minZ) * (double)this.rand.nextFloat();
 			this.worldObj.spawnParticle("largeexplode", var16, var17, var14, 0.0D, 0.0D, 0.0D);
 		}
 
 		return var8;
 	}
 
-	public boolean attackEntityFromPart(DragonPart var1, DamageSource var2, int var3) {
-		if(var1 != this.dragonPartHead) {
-			var3 = var3 / 4 + 1;
+	public boolean attackEntityFromPart(EntityDragonPart par1EntityDragonPart, DamageSource par2DamageSource, int par3) {
+		if(par1EntityDragonPart != this.dragonPartHead) {
+			par3 = par3 / 4 + 1;
 		}
 
 		float var4 = this.rotationYaw * 3.1415927F / 180.0F;
@@ -484,8 +475,8 @@ public class EntityDragon extends EntityDragonBase {
 		this.targetY = this.posY + (double)(this.rand.nextFloat() * 3.0F) + 1.0D;
 		this.targetZ = this.posZ - (double)(var6 * 5.0F) + (double)((this.rand.nextFloat() - 0.5F) * 2.0F);
 		this.target = null;
-		if(var2.getSourceOfDamage() instanceof EntityPlayer || var2 == DamageSource.explosion) {
-			this.superAttackFrom(var2, var3);
+		if(par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource == DamageSource.explosion) {
+			this.superAttackFrom(par2DamageSource, par3);
 		}
 
 		return true;
@@ -502,7 +493,7 @@ public class EntityDragon extends EntityDragonBase {
 
 		int var4;
 		int var5;
-		if(!this.worldObj.multiplayerWorld && this.field_40178_aA > 150 && this.field_40178_aA % 5 == 0) {
+		if(!this.worldObj.isRemote && this.field_40178_aA > 150 && this.field_40178_aA % 5 == 0) {
 			var4 = 1000;
 
 			while(var4 > 0) {
@@ -523,31 +514,23 @@ public class EntityDragon extends EntityDragonBase {
 				this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, var5));
 			}
 
-			var5 = 5 + this.rand.nextInt(2) * 2 - 1;
-			int var6 = 5 + this.rand.nextInt(2) * 2 - 1;
-			if(this.rand.nextInt(2) == 0) {
-				boolean var7 = false;
-			} else {
-				boolean var8 = false;
-			}
-
-			this.func_41012_a(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
+			this.createEnderPortal(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
 			this.onEntityDeath();
 			this.setEntityDead();
 		}
 
 	}
 
-	private void func_41012_a(int var1, int var2) {
-		int var3 = this.worldObj.worldHeight / 2;
+	private void createEnderPortal(int par1, int par2) {
+		byte var3 = 64;
 		BlockEndPortal.bossDefeated = true;
 		byte var4 = 4;
 
 		for(int var5 = var3 - 1; var5 <= var3 + 32; ++var5) {
-			for(int var6 = var1 - var4; var6 <= var1 + var4; ++var6) {
-				for(int var7 = var2 - var4; var7 <= var2 + var4; ++var7) {
-					double var8 = (double)(var6 - var1);
-					double var10 = (double)(var7 - var2);
+			for(int var6 = par1 - var4; var6 <= par1 + var4; ++var6) {
+				for(int var7 = par2 - var4; var7 <= par2 + var4; ++var7) {
+					double var8 = (double)(var6 - par1);
+					double var10 = (double)(var7 - par2);
 					double var12 = (double)MathHelper.sqrt_double(var8 * var8 + var10 * var10);
 					if(var12 <= (double)var4 - 0.5D) {
 						if(var5 < var3) {
@@ -566,15 +549,15 @@ public class EntityDragon extends EntityDragonBase {
 			}
 		}
 
-		this.worldObj.setBlockWithNotify(var1, var3 + 0, var2, Block.bedrock.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 1, var2, Block.bedrock.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 2, var2, Block.bedrock.blockID);
-		this.worldObj.setBlockWithNotify(var1 - 1, var3 + 2, var2, Block.torchWood.blockID);
-		this.worldObj.setBlockWithNotify(var1 + 1, var3 + 2, var2, Block.torchWood.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 2, var2 - 1, Block.torchWood.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 2, var2 + 1, Block.torchWood.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 3, var2, Block.bedrock.blockID);
-		this.worldObj.setBlockWithNotify(var1, var3 + 4, var2, Block.dragonEgg.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 0, par2, Block.bedrock.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 1, par2, Block.bedrock.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 2, par2, Block.bedrock.blockID);
+		this.worldObj.setBlockWithNotify(par1 - 1, var3 + 2, par2, Block.torchWood.blockID);
+		this.worldObj.setBlockWithNotify(par1 + 1, var3 + 2, par2, Block.torchWood.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 2, par2 - 1, Block.torchWood.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 2, par2 + 1, Block.torchWood.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 3, par2, Block.bedrock.blockID);
+		this.worldObj.setBlockWithNotify(par1, var3 + 4, par2, Block.dragonEgg.blockID);
 		BlockEndPortal.bossDefeated = false;
 	}
 

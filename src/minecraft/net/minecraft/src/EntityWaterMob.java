@@ -8,8 +8,8 @@ import org.spoutcraft.client.entity.CraftWaterMob; //Spout
 
 public abstract class EntityWaterMob extends EntityCreature {
 
-	public EntityWaterMob(World var1) {
-		super(var1);
+	public EntityWaterMob(World par1World) {
+		super(par1World);
 		//Spout start
 		this.spoutEntity = new CraftWaterMob(this);
 		//Spout end
@@ -19,12 +19,12 @@ public abstract class EntityWaterMob extends EntityCreature {
 		return true;
 	}
 
-	public void writeEntityToNBT(NBTTagCompound var1) {
-		super.writeEntityToNBT(var1);
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeEntityToNBT(par1NBTTagCompound);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound var1) {
-		super.readEntityFromNBT(var1);
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	public boolean getCanSpawnHere() {
@@ -39,7 +39,7 @@ public abstract class EntityWaterMob extends EntityCreature {
 		return true;
 	}
 
-	protected int getExperiencePoints(EntityPlayer var1) {
+	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
 		return 1 + this.worldObj.rand.nextInt(3);
 	}
 }

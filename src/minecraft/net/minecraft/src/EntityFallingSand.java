@@ -14,24 +14,23 @@ public class EntityFallingSand extends Entity {
 	public int blockID;
 	public int fallTime = 0;
 
-
-	public EntityFallingSand(World var1) {
-		super(var1);
+	public EntityFallingSand(World par1World) {
+		super(par1World);
 	}
 
-	public EntityFallingSand(World var1, double var2, double var4, double var6, int var8) {
-		super(var1);
-		this.blockID = var8;
+	public EntityFallingSand(World par1World, double par2, double par4, double par6, int par8) {
+		super(par1World);
+		this.blockID = par8;
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
-		this.setPosition(var2, var4, var6);
+		this.setPosition(par2, par4, par6);
 		this.motionX = 0.0D;
 		this.motionY = 0.0D;
 		this.motionZ = 0.0D;
-		this.prevPosX = var2;
-		this.prevPosY = var4;
-		this.prevPosZ = var6;
+		this.prevPosX = par2;
+		this.prevPosY = par4;
+		this.prevPosZ = par6;
 		//Spout start
 		this.spoutEntity = new CraftFallingSand(this);
 		//Spout end
@@ -48,7 +47,7 @@ public class EntityFallingSand extends Entity {
 	}
 
 	public void onUpdate() {
-		if(this.blockID == 0) {
+		if (this.blockID == 0) {
 			this.setEntityDead();
 		} else {
 			this.prevPosX = this.posX;
@@ -63,23 +62,23 @@ public class EntityFallingSand extends Entity {
 			int var1 = MathHelper.floor_double(this.posX);
 			int var2 = MathHelper.floor_double(this.posY);
 			int var3 = MathHelper.floor_double(this.posZ);
-			if(this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID) {
+			if (this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID) {
 				this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
-			} else if(!this.worldObj.multiplayerWorld && this.fallTime == 1) {
+			} else if (!this.worldObj.isRemote && this.fallTime == 1) {
 				this.setEntityDead();
 			}
 
-			if(this.onGround) {
+			if (this.onGround) {
 				this.motionX *= 0.699999988079071D;
 				this.motionZ *= 0.699999988079071D;
 				this.motionY *= -0.5D;
-				if(this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
+				if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
 					this.setEntityDead();
-					if((!this.worldObj.canBlockBePlacedAt(this.blockID, var1, var2, var3, true, 1) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockWithNotify(var1, var2, var3, this.blockID)) && !this.worldObj.multiplayerWorld) {
+					if ((!this.worldObj.canBlockBePlacedAt(this.blockID, var1, var2, var3, true, 1) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockWithNotify(var1, var2, var3, this.blockID)) && !this.worldObj.isRemote) {
 						this.dropItem(this.blockID, 1);
 					}
 				}
-			} else if(this.fallTime > 100 && !this.worldObj.multiplayerWorld) {
+			} else if (this.fallTime > 100 && !this.worldObj.isRemote && (var2 < 1 || var2 > 256) || this.fallTime > 600) {
 				this.dropItem(this.blockID, 1);
 				this.setEntityDead();
 			}
@@ -87,12 +86,12 @@ public class EntityFallingSand extends Entity {
 		}
 	}
 
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		var1.setByte("Tile", (byte)this.blockID);
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		par1NBTTagCompound.setByte("Tile", (byte)this.blockID);
 	}
 
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		this.blockID = var1.getByte("Tile") & 255;
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		this.blockID = par1NBTTagCompound.getByte("Tile") & 255;
 	}
 
 	public float getShadowSize() {

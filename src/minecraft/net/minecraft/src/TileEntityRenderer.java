@@ -51,75 +51,75 @@ public class TileEntityRenderer {
 		Iterator var1 = this.specialRendererMap.values().iterator();
 
 		while (var1.hasNext()) {
-			TileEntitySpecialRenderer var2 = (TileEntitySpecialRenderer) var1.next();
+			TileEntitySpecialRenderer var2 = (TileEntitySpecialRenderer)var1.next();
 			var2.setTileEntityRenderer(this);
 		}
 
 	}
 
-	public TileEntitySpecialRenderer getSpecialRendererForClass(Class var1) {
-		TileEntitySpecialRenderer var2 = (TileEntitySpecialRenderer) this.specialRendererMap.get(var1);
-		if (var2 == null && var1 != TileEntity.class) {
-			var2 = this.getSpecialRendererForClass(var1.getSuperclass());
-			this.specialRendererMap.put(var1, var2);
+	public TileEntitySpecialRenderer getSpecialRendererForClass(Class par1Class) {
+		TileEntitySpecialRenderer var2 = (TileEntitySpecialRenderer)this.specialRendererMap.get(par1Class);
+		if (var2 == null && par1Class != TileEntity.class) {
+			var2 = this.getSpecialRendererForClass(par1Class.getSuperclass());
+			this.specialRendererMap.put(par1Class, var2);
 		}
 
 		return var2;
 	}
 
-	public boolean hasSpecialRenderer(TileEntity var1) {
-		return this.getSpecialRendererForEntity(var1) != null;
+	public boolean hasSpecialRenderer(TileEntity par1TileEntity) {
+		return this.getSpecialRendererForEntity(par1TileEntity) != null;
 	}
 
-	public TileEntitySpecialRenderer getSpecialRendererForEntity(TileEntity var1) {
-		return var1 == null ? null : this.getSpecialRendererForClass(var1.getClass());
+	public TileEntitySpecialRenderer getSpecialRendererForEntity(TileEntity par1TileEntity) {
+		return par1TileEntity == null?null:this.getSpecialRendererForClass(par1TileEntity.getClass());
 	}
 
-	public void cacheActiveRenderInfo(World var1, RenderEngine var2, FontRenderer var3, EntityLiving var4, float var5) {
-		if (this.worldObj != var1) {
-			this.func_31072_a(var1);
+	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, float par5) {
+		if (this.worldObj != par1World) {
+			this.cacheSpecialRenderInfo(par1World);
 		}
 
-		this.renderEngine = var2;
-		this.entityLivingPlayer = var4;
-		this.fontRenderer = var3;
-		this.playerYaw = var4.prevRotationYaw + (var4.rotationYaw - var4.prevRotationYaw) * var5;
-		this.playerPitch = var4.prevRotationPitch + (var4.rotationPitch - var4.prevRotationPitch) * var5;
-		this.playerX = var4.lastTickPosX + (var4.posX - var4.lastTickPosX) * (double) var5;
-		this.playerY = var4.lastTickPosY + (var4.posY - var4.lastTickPosY) * (double) var5;
-		this.playerZ = var4.lastTickPosZ + (var4.posZ - var4.lastTickPosZ) * (double) var5;
+		this.renderEngine = par2RenderEngine;
+		this.entityLivingPlayer = par4EntityLiving;
+		this.fontRenderer = par3FontRenderer;
+		this.playerYaw = par4EntityLiving.prevRotationYaw + (par4EntityLiving.rotationYaw - par4EntityLiving.prevRotationYaw) * par5;
+		this.playerPitch = par4EntityLiving.prevRotationPitch + (par4EntityLiving.rotationPitch - par4EntityLiving.prevRotationPitch) * par5;
+		this.playerX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par5;
+		this.playerY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par5;
+		this.playerZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par5;
 	}
 
 	public void func_40742_a() {}
 
-	public void renderTileEntity(TileEntity var1, float var2) {
-		if (var1.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < 4096.0D) {
-			int var3 = this.worldObj.getLightBrightnessForSkyBlocks(var1.xCoord, var1.yCoord, var1.zCoord, 0);
+	public void renderTileEntity(TileEntity par1TileEntity, float par2) {
+		if (par1TileEntity.getDistanceFrom(this.playerX, this.playerY, this.playerZ) < 4096.0D) {
+			int var3 = this.worldObj.getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
 			int var4 = var3 % 65536;
 			int var5 = var3 / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float) var4 / 1.0F, (float) var5 / 1.0F);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)var4 / 1.0F, (float)var5 / 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.renderTileEntityAt(var1, (double) var1.xCoord - staticPlayerX, (double) var1.yCoord - staticPlayerY, (double) var1.zCoord - staticPlayerZ, var2);
+			this.renderTileEntityAt(par1TileEntity, (double)par1TileEntity.xCoord - staticPlayerX, (double)par1TileEntity.yCoord - staticPlayerY, (double)par1TileEntity.zCoord - staticPlayerZ, par2);
 		}
 
 	}
 
-	public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
-		TileEntitySpecialRenderer var9 = this.getSpecialRendererForEntity(var1);
+	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
+		TileEntitySpecialRenderer var9 = this.getSpecialRendererForEntity(par1TileEntity);
 		if (var9 != null) {
-			var9.renderTileEntityAt(var1, var2, var4, var6, var8);
+			var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 		}
 
 	}
 
-	public void func_31072_a(World var1) {
-		this.worldObj = var1;
+	public void cacheSpecialRenderInfo(World par1World) {
+		this.worldObj = par1World;
 		Iterator var2 = this.specialRendererMap.values().iterator();
 
 		while (var2.hasNext()) {
-			TileEntitySpecialRenderer var3 = (TileEntitySpecialRenderer) var2.next();
+			TileEntitySpecialRenderer var3 = (TileEntitySpecialRenderer)var2.next();
 			if (var3 != null) {
-				var3.func_31069_a(var1);
+				var3.cacheSpecialRenderInfo(par1World);
 			}
 		}
 
@@ -133,7 +133,6 @@ public class TileEntityRenderer {
 	public void clear() {
 		worldObj = null;
 		entityLivingPlayer = null;
-
 	}
 	// Spout end
 }

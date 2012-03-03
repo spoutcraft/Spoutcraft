@@ -14,26 +14,25 @@ public abstract class PlayerController {
 	protected final Minecraft mc;
 	public boolean isInTestMode = false;
 
-	public PlayerController(Minecraft var1) {
-		this.mc = var1;
+	public PlayerController(Minecraft par1Minecraft) {
+		this.mc = par1Minecraft;
 	}
 
-	public void onWorldChange(World var1) {}
+	public void onWorldChange(World par1World) {}
 
 	public abstract void clickBlock(int var1, int var2, int var3, int var4);
 
-	public boolean onPlayerDestroyBlock(int var1, int var2, int var3, int var4) {
+	public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4) {
 		World var5 = this.mc.theWorld;
-		Block var6 = Block.blocksList[var5.getBlockId(var1, var2, var3)];
-		if(var6 == null) {
+		Block var6 = Block.blocksList[var5.getBlockId(par1, par2, par3)];
+		if (var6 == null) {
 			return false;
-		}
-		else {
-			var5.playAuxSFX(2001, var1, var2, var3, var6.blockID + var5.getBlockMetadata(var1, var2, var3) * 256);
-			int var7 = var5.getBlockMetadata(var1, var2, var3);
-			boolean var8 = var5.setBlockWithNotify(var1, var2, var3, 0);
-			if(var6 != null && var8) {
-				var6.onBlockDestroyedByPlayer(var5, var1, var2, var3, var7);
+		} else {
+			var5.playAuxSFX(2001, par1, par2, par3, var6.blockID + (var5.getBlockMetadata(par1, par2, par3) << 12));
+			int var7 = var5.getBlockMetadata(par1, par2, par3);
+			boolean var8 = var5.setBlockWithNotify(par1, par2, par3, 0);
+			if (var6 != null && var8) {
+				var6.onBlockDestroyedByPlayer(var5, par1, par2, par3, var7);
 			}
 
 			return var8;
@@ -44,77 +43,76 @@ public abstract class PlayerController {
 
 	public abstract void resetBlockRemoving();
 
-	public void setPartialTime(float var1) {}
+	public void setPartialTime(float par1) {}
 
 	public abstract float getBlockReachDistance();
 
-	public boolean sendUseItem(EntityPlayer var1, World var2, ItemStack var3) {
-        //Spout Start
-		if (var3 == null) return true;
+	public boolean sendUseItem(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack) {
+		//Spout Start
+		if (par1EntityPlayer == null) return true;
 		//Spout End
-		int var4 = var3.stackSize;
-		ItemStack var5 = var3.useItemRightClick(var2, var1);
-		if(var5 == var3 && (var5 == null || var5.stackSize == var4)) {
+		int var4 = par3ItemStack.stackSize;
+		ItemStack var5 = par3ItemStack.useItemRightClick(par2World, par1EntityPlayer);
+		if (var5 == par3ItemStack && (var5 == null || var5.stackSize == var4)) {
 			return false;
-		}
-		else {
-			var1.inventory.mainInventory[var1.inventory.currentItem] = var5;
-			if(var5.stackSize == 0) {
-				var1.inventory.mainInventory[var1.inventory.currentItem] = null;
+		} else {
+			par1EntityPlayer.inventory.mainInventory[par1EntityPlayer.inventory.currentItem] = var5;
+			if (var5.stackSize == 0) {
+				par1EntityPlayer.inventory.mainInventory[par1EntityPlayer.inventory.currentItem] = null;
 			}
 
 			return true;
 		}
 	}
 
-	public void flipPlayer(EntityPlayer var1) {}
+	public void flipPlayer(EntityPlayer par1EntityPlayer) {}
 
 	public void updateController() {}
 
 	public abstract boolean shouldDrawHUD();
 
-	public void func_6473_b(EntityPlayer var1) {
-		PlayerControllerCreative.disableAbilities(var1);
+	public void func_6473_b(EntityPlayer par1EntityPlayer) {
+		PlayerControllerCreative.disableAbilities(par1EntityPlayer);
 	}
 
 	public abstract boolean onPlayerRightClick(EntityPlayer var1, World var2, ItemStack var3, int var4, int var5, int var6, int var7);
 
-	public EntityPlayer createPlayer(World var1) {
-		return new EntityPlayerSP(this.mc, var1, this.mc.session, var1.worldProvider.worldType);
+	public EntityPlayer createPlayer(World par1World) {
+		return new EntityPlayerSP(this.mc, par1World, this.mc.session, par1World.worldProvider.worldType);
 	}
 
-	public void interactWithEntity(EntityPlayer var1, Entity var2) {
-		var1.useCurrentItemOnEntity(var2);
+	public void interactWithEntity(EntityPlayer par1EntityPlayer, Entity par2Entity) {
+		par1EntityPlayer.useCurrentItemOnEntity(par2Entity);
 	}
 
-	public void attackEntity(EntityPlayer var1, Entity var2) {
-		var1.attackTargetEntityWithCurrentItem(var2);
+	public void attackEntity(EntityPlayer par1EntityPlayer, Entity par2Entity) {
+		par1EntityPlayer.attackTargetEntityWithCurrentItem(par2Entity);
 	}
 
-	public ItemStack windowClick(int var1, int var2, int var3, boolean var4, EntityPlayer var5) {
-		return var5.craftingInventory.slotClick(var2, var3, var4, var5);
+	public ItemStack windowClick(int par1, int par2, int par3, boolean par4, EntityPlayer par5EntityPlayer) {
+		return par5EntityPlayer.craftingInventory.slotClick(par2, par3, par4, par5EntityPlayer);
 	}
 
-	public void func_20086_a(int var1, EntityPlayer var2) {
-		var2.craftingInventory.onCraftGuiClosed(var2);
-		var2.craftingInventory = var2.inventorySlots;
+	public void func_20086_a(int par1, EntityPlayer par2EntityPlayer) {
+		par2EntityPlayer.craftingInventory.onCraftGuiClosed(par2EntityPlayer);
+		par2EntityPlayer.craftingInventory = par2EntityPlayer.inventorySlots;
 	}
 
-	public void func_40593_a(int var1, int var2) {}
+	public void func_40593_a(int par1, int par2) {}
 
 	public boolean func_35643_e() {
 		return false;
 	}
 
-	public void onStoppedUsingItem(EntityPlayer var1) {
-		var1.stopUsingItem();
+	public void onStoppedUsingItem(EntityPlayer par1EntityPlayer) {
+		par1EntityPlayer.stopUsingItem();
 	}
 
 	public boolean func_35642_f() {
 		return false;
 	}
 
-	public boolean func_35641_g() {
+	public boolean isNotCreative() {
 		return true;
 	}
 
@@ -126,7 +124,7 @@ public abstract class PlayerController {
 		return false;
 	}
 
-	public void func_35637_a(ItemStack var1, int var2) {}
+	public void sendSlotPacket(ItemStack par1ItemStack, int par2) {}
 
-	public void func_35639_a(ItemStack var1) {}
+	public void func_35639_a(ItemStack par1ItemStack) {}
 }

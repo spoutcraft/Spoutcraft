@@ -116,7 +116,7 @@ public class SpoutItem extends Item {
 
 				Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());
 
-				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var8.stepSound.stepSoundDir2(), (var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
+				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var8.stepSound.stepSoundName, (var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
 			}
 
 			return true;

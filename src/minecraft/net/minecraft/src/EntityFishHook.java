@@ -42,9 +42,8 @@ public class EntityFishHook extends Entity {
 	private double velocityY;
 	private double velocityZ;
 
-
-	public EntityFishHook(World var1) {
-		super(var1);
+	public EntityFishHook(World par1World) {
+		super(par1World);
 		this.xTile = -1;
 		this.yTile = -1;
 		this.zTile = -1;
@@ -61,14 +60,14 @@ public class EntityFishHook extends Entity {
 		//Spout end
 	}
 
-	public EntityFishHook(World var1, double var2, double var4, double var6) {
-		this(var1);
-		this.setPosition(var2, var4, var6);
+	public EntityFishHook(World par1World, double par2, double par4, double par6) {
+		this(par1World);
+		this.setPosition(par2, par4, par6);
 		this.ignoreFrustumCheck = true;
 	}
 
-	public EntityFishHook(World var1, EntityPlayer var2) {
-		super(var1);
+	public EntityFishHook(World par1World, EntityPlayer par2EntityPlayer) {
+		super(par1World);
 		this.xTile = -1;
 		this.yTile = -1;
 		this.zTile = -1;
@@ -79,10 +78,10 @@ public class EntityFishHook extends Entity {
 		this.ticksCatchable = 0;
 		this.bobber = null;
 		this.ignoreFrustumCheck = true;
-		this.angler = var2;
+		this.angler = par2EntityPlayer;
 		this.angler.fishEntity = this;
 		this.setSize(0.25F, 0.25F);
-		this.setLocationAndAngles(var2.posX, var2.posY + 1.62D - (double)var2.yOffset, var2.posZ, var2.rotationYaw, var2.rotationPitch);
+		this.setLocationAndAngles(par2EntityPlayer.posX, par2EntityPlayer.posY + 1.62D - (double)par2EntityPlayer.yOffset, par2EntityPlayer.posZ, par2EntityPlayer.rotationYaw, par2EntityPlayer.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * 3.1415927F) * 0.16F);
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * 3.1415927F) * 0.16F);
@@ -97,53 +96,53 @@ public class EntityFishHook extends Entity {
 
 	protected void entityInit() {}
 
-	public boolean isInRangeToRenderDist(double var1) {
+	public boolean isInRangeToRenderDist(double par1) {
 		double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
 		var3 *= 64.0D;
-		return var1 < var3 * var3;
+		return par1 < var3 * var3;
 	}
 
-	public void calculateVelocity(double var1, double var3, double var5, float var7, float var8) {
-		float var9 = MathHelper.sqrt_double(var1 * var1 + var3 * var3 + var5 * var5);
-		var1 /= (double)var9;
-		var3 /= (double)var9;
-		var5 /= (double)var9;
-		var1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var1 *= (double)var7;
-		var3 *= (double)var7;
-		var5 *= (double)var7;
-		this.motionX = var1;
-		this.motionY = var3;
-		this.motionZ = var5;
-		float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
-		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / 3.1415927410125732D);
-		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / 3.1415927410125732D);
+	public void calculateVelocity(double par1, double par3, double par5, float par7, float par8) {
+		float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+		par1 /= (double)var9;
+		par3 /= (double)var9;
+		par5 /= (double)var9;
+		par1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par1 *= (double)par7;
+		par3 *= (double)par7;
+		par5 *= (double)par7;
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
+		float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / 3.1415927410125732D);
+		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)var10) * 180.0D / 3.1415927410125732D);
 		this.ticksInGround = 0;
 	}
 
-	public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
-		this.fishX = var1;
-		this.fishY = var3;
-		this.fishZ = var5;
-		this.fishYaw = (double)var7;
-		this.fishPitch = (double)var8;
-		this.fishPosRotationIncrements = var9;
+	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+		this.fishX = par1;
+		this.fishY = par3;
+		this.fishZ = par5;
+		this.fishYaw = (double)par7;
+		this.fishPitch = (double)par8;
+		this.fishPosRotationIncrements = par9;
 		this.motionX = this.velocityX;
 		this.motionY = this.velocityY;
 		this.motionZ = this.velocityZ;
 	}
 
-	public void setVelocity(double var1, double var3, double var5) {
-		this.velocityX = this.motionX = var1;
-		this.velocityY = this.motionY = var3;
-		this.velocityZ = this.motionZ = var5;
+	public void setVelocity(double par1, double par3, double par5) {
+		this.velocityX = this.motionX = par1;
+		this.velocityY = this.motionY = par3;
+		this.velocityZ = this.motionZ = par5;
 	}
 
 	public void onUpdate() {
 		super.onUpdate();
-		if(this.fishPosRotationIncrements > 0) {
+		if (this.fishPosRotationIncrements > 0) {
 			double var21 = this.posX + (this.fishX - this.posX) / (double)this.fishPosRotationIncrements;
 			double var22 = this.posY + (this.fishY - this.posY) / (double)this.fishPosRotationIncrements;
 			double var23 = this.posZ + (this.fishZ - this.posZ) / (double)this.fishPosRotationIncrements;
@@ -163,16 +162,16 @@ public class EntityFishHook extends Entity {
 			this.setPosition(var21, var22, var23);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 		} else {
-			if(!this.worldObj.multiplayerWorld) {
+			if (!this.worldObj.isRemote) {
 				ItemStack var1 = this.angler.getCurrentEquippedItem();
-				if(this.angler.isDead || !this.angler.isEntityAlive() || var1 == null || var1.getItem() != Item.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0D) {
+				if (this.angler.isDead || !this.angler.isEntityAlive() || var1 == null || var1.getItem() != Item.fishingRod || this.getDistanceSqToEntity(this.angler) > 1024.0D) {
 					this.setEntityDead();
 					this.angler.fishEntity = null;
 					return;
 				}
 
-				if(this.bobber != null) {
-					if(!this.bobber.isDead) {
+				if (this.bobber != null) {
+					if (!this.bobber.isDead) {
 						this.posX = this.bobber.posX;
 						this.posY = this.bobber.boundingBox.minY + (double)this.bobber.height * 0.8D;
 						this.posZ = this.bobber.posZ;
@@ -183,15 +182,15 @@ public class EntityFishHook extends Entity {
 				}
 			}
 
-			if(this.shake > 0) {
+			if (this.shake > 0) {
 				--this.shake;
 			}
 
-			if(this.inGround) {
+			if (this.inGround) {
 				int var19 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
-				if(var19 == this.inTile) {
+				if (var19 == this.inTile) {
 					++this.ticksInGround;
-					if(this.ticksInGround == 1200) {
+					if (this.ticksInGround == 1200) {
 						this.setEntityDead();
 					}
 
@@ -213,7 +212,7 @@ public class EntityFishHook extends Entity {
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
 			var20 = Vec3D.createVector(this.posX, this.posY, this.posZ);
 			var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			if(var3 != null) {
+			if (var3 != null) {
 				var2 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
@@ -224,13 +223,13 @@ public class EntityFishHook extends Entity {
 			double var13;
 			for(int var8 = 0; var8 < var5.size(); ++var8) {
 				Entity var9 = (Entity)var5.get(var8);
-				if(var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
+				if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
 					MovingObjectPosition var12 = var11.calculateIntercept(var20, var2);
-					if(var12 != null) {
+					if (var12 != null) {
 						var13 = var20.distanceTo(var12.hitVec);
-						if(var13 < var6 || var6 == 0.0D) {
+						if (var13 < var6 || var6 == 0.0D) {
 							var4 = var9;
 							var6 = var13;
 						}
@@ -238,13 +237,13 @@ public class EntityFishHook extends Entity {
 				}
 			}
 
-			if(var4 != null) {
+			if (var4 != null) {
 				var3 = new MovingObjectPosition(var4);
 			}
 
-			if(var3 != null) {
-				if(var3.entityHit != null) {
-					if(var3.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.angler), 0)) {
+			if (var3 != null) {
+				if (var3.entityHit != null) {
+					if (var3.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.angler), 0)) {
 						this.bobber = var3.entityHit;
 					}
 				} else {
@@ -252,7 +251,7 @@ public class EntityFishHook extends Entity {
 				}
 			}
 
-			if(!this.inGround) {
+			if (!this.inGround) {
 				this.moveEntity(this.motionX, this.motionY, this.motionZ);
 				float var24 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 				this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / 3.1415927410125732D);
@@ -276,7 +275,7 @@ public class EntityFishHook extends Entity {
 				this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 				this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 				float var25 = 0.92F;
-				if(this.onGround || this.isCollidedHorizontally) {
+				if (this.onGround || this.isCollidedHorizontally) {
 					var25 = 0.5F;
 				}
 
@@ -287,21 +286,21 @@ public class EntityFishHook extends Entity {
 					double var14 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var29 + 0) / (double)var27 - 0.125D + 0.125D;
 					double var16 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var29 + 1) / (double)var27 - 0.125D + 0.125D;
 					AxisAlignedBB var18 = AxisAlignedBB.getBoundingBoxFromPool(this.boundingBox.minX, var14, this.boundingBox.minZ, this.boundingBox.maxX, var16, this.boundingBox.maxZ);
-					if(this.worldObj.isAABBInMaterial(var18, Material.water)) {
+					if (this.worldObj.isAABBInMaterial(var18, Material.water)) {
 						var26 += 1.0D / (double)var27;
 					}
 				}
 
-				if(var26 > 0.0D) {
-					if(this.ticksCatchable > 0) {
+				if (var26 > 0.0D) {
+					if (this.ticksCatchable > 0) {
 						--this.ticksCatchable;
 					} else {
 						short var28 = 500;
-						if(this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
+						if (this.worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY) + 1, MathHelper.floor_double(this.posZ))) {
 							var28 = 300;
 						}
 
-						if(this.rand.nextInt(var28) == 0) {
+						if (this.rand.nextInt(var28) == 0) {
 							this.ticksCatchable = this.rand.nextInt(30) + 10;
 							this.motionY -= 0.20000000298023224D;
 							this.worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.4F);
@@ -325,13 +324,13 @@ public class EntityFishHook extends Entity {
 					}
 				}
 
-				if(this.ticksCatchable > 0) {
+				if (this.ticksCatchable > 0) {
 					this.motionY -= (double)(this.rand.nextFloat() * this.rand.nextFloat() * this.rand.nextFloat()) * 0.2D;
 				}
 
 				var13 = var26 * 2.0D - 1.0D;
 				this.motionY += 0.03999999910593033D * var13;
-				if(var26 > 0.0D) {
+				if (var26 > 0.0D) {
 					var25 = (float)((double)var25 * 0.9D);
 					this.motionY *= 0.8D;
 				}
@@ -344,22 +343,22 @@ public class EntityFishHook extends Entity {
 		}
 	}
 
-	public void writeEntityToNBT(NBTTagCompound var1) {
-		var1.setShort("xTile", (short)this.xTile);
-		var1.setShort("yTile", (short)this.yTile);
-		var1.setShort("zTile", (short)this.zTile);
-		var1.setByte("inTile", (byte)this.inTile);
-		var1.setByte("shake", (byte)this.shake);
-		var1.setByte("inGround", (byte)(this.inGround?1:0));
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		par1NBTTagCompound.setShort("xTile", (short)this.xTile);
+		par1NBTTagCompound.setShort("yTile", (short)this.yTile);
+		par1NBTTagCompound.setShort("zTile", (short)this.zTile);
+		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
+		par1NBTTagCompound.setByte("shake", (byte)this.shake);
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
 	}
 
-	public void readEntityFromNBT(NBTTagCompound var1) {
-		this.xTile = var1.getShort("xTile");
-		this.yTile = var1.getShort("yTile");
-		this.zTile = var1.getShort("zTile");
-		this.inTile = var1.getByte("inTile") & 255;
-		this.shake = var1.getByte("shake") & 255;
-		this.inGround = var1.getByte("inGround") == 1;
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		this.xTile = par1NBTTagCompound.getShort("xTile");
+		this.yTile = par1NBTTagCompound.getShort("yTile");
+		this.zTile = par1NBTTagCompound.getShort("zTile");
+		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
+		this.shake = par1NBTTagCompound.getByte("shake") & 255;
+		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
 	}
 
 	public float getShadowSize() {
@@ -368,7 +367,7 @@ public class EntityFishHook extends Entity {
 
 	public int catchFish() {
 		byte var1 = 0;
-		if(this.bobber != null) {
+		if (this.bobber != null) {
 			double var2 = this.angler.posX - this.posX;
 			double var4 = this.angler.posY - this.posY;
 			double var6 = this.angler.posZ - this.posZ;
@@ -378,7 +377,7 @@ public class EntityFishHook extends Entity {
 			this.bobber.motionY += var4 * var10 + (double)MathHelper.sqrt_double(var8) * 0.08D;
 			this.bobber.motionZ += var6 * var10;
 			var1 = 3;
-		} else if(this.ticksCatchable > 0) {
+		} else if (this.ticksCatchable > 0) {
 			EntityItem var13 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.fishRaw));
 			double var3 = this.angler.posX - this.posX;
 			double var5 = this.angler.posY - this.posY;
@@ -393,7 +392,7 @@ public class EntityFishHook extends Entity {
 			var1 = 1;
 		}
 
-		if(this.inGround) {
+		if (this.inGround) {
 			var1 = 2;
 		}
 

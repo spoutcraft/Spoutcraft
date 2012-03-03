@@ -1,93 +1,126 @@
-/*
- * 
- * Unused
-
 package net.minecraft.src;
 
+import java.util.List;
+import net.minecraft.client.Minecraft;
 
-import net.minecraft.src.EnumOptions;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiControls;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSlider;
-import net.minecraft.src.GuiSmallButton;
-import net.minecraft.src.GuiVideoSettings;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.StringTranslate;
+public class GuiOptions extends GuiScreen
+{
+    /**
+     * A reference to the screen object that created this. Used for navigating between screens.
+     */
+    private GuiScreen parentScreen;
 
-public class GuiOptions extends GuiScreen {
+    /** The title string that is displayed in the top-center of the screen. */
+    protected String screenTitle;
 
-	private GuiScreen parentScreen;
-	protected String screenTitle = "Options";
-	private GameSettings options;
-	private static EnumOptions[] relevantOptions = new EnumOptions[]{EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptions.INVERT_MOUSE, EnumOptions.SENSITIVITY, EnumOptions.FOV, EnumOptions.DIFFICULTY};
+    /** Reference to the GameSettings object. */
+    private GameSettings options;
+    private static EnumOptions relevantOptions[];
 
+    public GuiOptions(GuiScreen par1GuiScreen, GameSettings par2GameSettings)
+    {
+        screenTitle = "Options";
+        parentScreen = par1GuiScreen;
+        options = par2GameSettings;
+    }
 
-	public GuiOptions(GuiScreen var1, GameSettings var2) {
-		this.parentScreen = var1;
-		this.options = var2;
-	}
+    /**
+     * Adds the buttons (and other controls) to the screen in question.
+     */
+    public void initGui()
+    {
+        StringTranslate stringtranslate = StringTranslate.getInstance();
+        screenTitle = stringtranslate.translateKey("options.title");
+        int i = 0;
+        EnumOptions aenumoptions[] = relevantOptions;
+        int j = aenumoptions.length;
 
-	public void initGui() {
-		StringTranslate var1 = StringTranslate.getInstance();
-		this.screenTitle = var1.translateKey("options.title");
-		int var2 = 0;
-		EnumOptions[] var3 = relevantOptions;
-		int var4 = var3.length;
+        for (int k = 0; k < j; k++)
+        {
+            EnumOptions enumoptions = aenumoptions[k];
 
-		for(int var5 = 0; var5 < var4; ++var5) {
-			EnumOptions var6 = var3[var5];
-			if(!var6.getEnumFloat()) {
-				GuiSmallButton var7 = new GuiSmallButton(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6));
-				if(var6 == EnumOptions.DIFFICULTY && this.mc.theWorld != null && this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
-					var7.enabled = false;
-					var7.displayString = StatCollector.translateToLocal("options.difficulty") + ": " + StatCollector.translateToLocal("options.difficulty.hardcore");
-				}
+            if (!enumoptions.getEnumFloat())
+            {
+                GuiSmallButton guismallbutton = new GuiSmallButton(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, options.getKeyBinding(enumoptions));
 
-				this.controlList.add(var7);
-			} else {
-				this.controlList.add(new GuiSlider(var6.returnEnumOrdinal(), this.width / 2 - 155 + var2 % 2 * 160, this.height / 6 + 24 * (var2 >> 1), var6, this.options.getKeyBinding(var6), this.options.getOptionFloatValue(var6)));
-			}
+                if (enumoptions == EnumOptions.DIFFICULTY && mc.theWorld != null && mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
+                {
+                    guismallbutton.enabled = false;
+                    guismallbutton.displayString = (new StringBuilder()).append(StatCollector.translateToLocal("options.difficulty")).append(": ").append(StatCollector.translateToLocal("options.difficulty.hardcore")).toString();
+                }
 
-			++var2;
-		}
+                controlList.add(guismallbutton);
+            }
+            else
+            {
+                controlList.add(new GuiSlider(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, options.getKeyBinding(enumoptions), options.getOptionFloatValue(enumoptions)));
+            }
 
-		this.controlList.add(new GuiButton(101, this.width / 2 - 100, this.height / 6 + 96 + 12, var1.translateKey("options.video")));
-		this.controlList.add(new GuiButton(100, this.width / 2 - 100, this.height / 6 + 120 + 12, var1.translateKey("options.controls")));
-		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, var1.translateKey("gui.done")));
-	}
+            i++;
+        }
 
-	protected void actionPerformed(GuiButton var1) {
-		if(var1.enabled) {
-			if(var1.id < 100 && var1 instanceof GuiSmallButton) {
-				this.options.setOptionValue(((GuiSmallButton)var1).returnEnumOptions(), 1);
-				var1.displayString = this.options.getKeyBinding(EnumOptions.getEnumOptions(var1.id));
-			}
+        controlList.add(new GuiButton(101, width / 2 - 100, (height / 6 + 96) - 6, stringtranslate.translateKey("options.video")));
+        controlList.add(new GuiButton(100, width / 2 - 100, (height / 6 + 120) - 6, stringtranslate.translateKey("options.controls")));
+        controlList.add(new GuiButton(102, width / 2 - 100, (height / 6 + 144) - 6, stringtranslate.translateKey("options.language")));
+        controlList.add(new GuiButton(200, width / 2 - 100, height / 6 + 168, stringtranslate.translateKey("gui.done")));
+    }
 
-			if(var1.id == 101) {
-				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiVideoSettings(this, options));
-			}
+    /**
+     * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+     */
+    protected void actionPerformed(GuiButton par1GuiButton)
+    {
+        if (!par1GuiButton.enabled)
+        {
+            return;
+        }
 
-			if(var1.id == 100) {
-				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiControls(this, options));
-			}
+        if (par1GuiButton.id < 100 && (par1GuiButton instanceof GuiSmallButton))
+        {
+            options.setOptionValue(((GuiSmallButton)par1GuiButton).returnEnumOptions(), 1);
+            par1GuiButton.displayString = options.getKeyBinding(EnumOptions.getEnumOptions(par1GuiButton.id));
+        }
 
-			if(var1.id == 200) {
-				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(this.parentScreen);
-			}
+        if (par1GuiButton.id == 101)
+        {
+            mc.gameSettings.saveOptions();
+            mc.displayGuiScreen(new GuiVideoSettings(this, options));
+        }
 
-		}
-	}
+        if (par1GuiButton.id == 100)
+        {
+            mc.gameSettings.saveOptions();
+            mc.displayGuiScreen(new GuiControls(this, options));
+        }
 
-	public void drawScreen(int var1, int var2, float var3) {
-		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-		super.drawScreen(var1, var2, var3);
-	}
+        if (par1GuiButton.id == 102)
+        {
+            mc.gameSettings.saveOptions();
+            mc.displayGuiScreen(new GuiLanguage(this, options));
+        }
 
+        if (par1GuiButton.id == 200)
+        {
+            mc.gameSettings.saveOptions();
+            mc.displayGuiScreen(parentScreen);
+        }
+    }
+
+    /**
+     * Draws the screen and all the components in it.
+     */
+    public void drawScreen(int par1, int par2, float par3)
+    {
+        drawDefaultBackground();
+        drawCenteredString(fontRenderer, screenTitle, width / 2, 20, 0xffffff);
+        super.drawScreen(par1, par2, par3);
+    }
+
+    static
+    {
+        relevantOptions = (new EnumOptions[]
+                {
+                    EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptions.INVERT_MOUSE, EnumOptions.SENSITIVITY, EnumOptions.FOV, EnumOptions.DIFFICULTY
+                });
+    }
 }
-*/

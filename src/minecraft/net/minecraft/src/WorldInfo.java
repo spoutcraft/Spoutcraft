@@ -2,14 +2,14 @@ package net.minecraft.src;
 
 import java.util.List;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EnumWorldType;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.WorldSettings;
+import net.minecraft.src.WorldType;
 
 public class WorldInfo {
 
 	private long randomSeed;
-	private EnumWorldType field_46134_b;
+	private WorldType terrainType;
 	private int spawnX;
 	private int spawnY;
 	private int spawnZ;
@@ -26,92 +26,86 @@ public class WorldInfo {
 	private int thunderTime;
 	private int gameType;
 	private boolean mapFeaturesEnabled;
-	private boolean hardcore = false;
-	//Spout start
-	private int height = 128;
-	//Spout end
+	private boolean hardcore;
 
-
-	public WorldInfo(NBTTagCompound var1) {
-		this.field_46134_b = EnumWorldType.DEFAULT;
+	public WorldInfo(NBTTagCompound par1NBTTagCompound) {
+		this.terrainType = WorldType.field_48635_b;
 		this.hardcore = false;
-		this.randomSeed = var1.getLong("RandomSeed");
-		if (var1.hasKey("generatorName")) {
-			String var2 = var1.getString("generatorName");
-			this.field_46134_b = EnumWorldType.func_46135_a(var2);
-			if (this.field_46134_b == null) {
-				this.field_46134_b = EnumWorldType.DEFAULT;
+		this.randomSeed = par1NBTTagCompound.getLong("RandomSeed");
+		if (par1NBTTagCompound.hasKey("generatorName")) {
+			String var2 = par1NBTTagCompound.getString("generatorName");
+			this.terrainType = WorldType.parseWorldType(var2);
+			if (this.terrainType == null) {
+				this.terrainType = WorldType.field_48635_b;
+			} else if (this.terrainType.func_48626_e()) {
+				int var3 = 0;
+				if (par1NBTTagCompound.hasKey("generatorVersion")) {
+					var3 = par1NBTTagCompound.getInteger("generatorVersion");
+				}
+
+				this.terrainType = this.terrainType.func_48629_a(var3);
 			}
 		}
 
-		this.gameType = var1.getInteger("GameType");
-		if(var1.hasKey("MapFeatures")) {
-		 this.mapFeaturesEnabled = var1.getBoolean("MapFeatures");
+		this.gameType = par1NBTTagCompound.getInteger("GameType");
+		if (par1NBTTagCompound.hasKey("MapFeatures")) {
+			this.mapFeaturesEnabled = par1NBTTagCompound.getBoolean("MapFeatures");
 		} else {
-		 this.mapFeaturesEnabled = true;
+			this.mapFeaturesEnabled = true;
 		}
 
-		this.spawnX = var1.getInteger("SpawnX");
-		this.spawnY = var1.getInteger("SpawnY");
-		this.spawnZ = var1.getInteger("SpawnZ");
-		this.worldTime = var1.getLong("Time");
-		this.lastTimePlayed = var1.getLong("LastPlayed");
-		this.sizeOnDisk = var1.getLong("SizeOnDisk");
-		this.levelName = var1.getString("LevelName");
-		this.saveVersion = var1.getInteger("version");
-		this.rainTime = var1.getInteger("rainTime");
-		this.raining = var1.getBoolean("raining");
-		this.thunderTime = var1.getInteger("thunderTime");
-		this.thundering = var1.getBoolean("thundering");
-		this.hardcore = var1.getBoolean("hardcore");
-		if(var1.hasKey("Player")) {
-		 this.playerTag = var1.getCompoundTag("Player");
-		 this.dimension = this.playerTag.getInteger("Dimension");
+		this.spawnX = par1NBTTagCompound.getInteger("SpawnX");
+		this.spawnY = par1NBTTagCompound.getInteger("SpawnY");
+		this.spawnZ = par1NBTTagCompound.getInteger("SpawnZ");
+		this.worldTime = par1NBTTagCompound.getLong("Time");
+		this.lastTimePlayed = par1NBTTagCompound.getLong("LastPlayed");
+		this.sizeOnDisk = par1NBTTagCompound.getLong("SizeOnDisk");
+		this.levelName = par1NBTTagCompound.getString("LevelName");
+		this.saveVersion = par1NBTTagCompound.getInteger("version");
+		this.rainTime = par1NBTTagCompound.getInteger("rainTime");
+		this.raining = par1NBTTagCompound.getBoolean("raining");
+		this.thunderTime = par1NBTTagCompound.getInteger("thunderTime");
+		this.thundering = par1NBTTagCompound.getBoolean("thundering");
+		this.hardcore = par1NBTTagCompound.getBoolean("hardcore");
+		if (par1NBTTagCompound.hasKey("Player")) {
+			this.playerTag = par1NBTTagCompound.getCompoundTag("Player");
+			this.dimension = this.playerTag.getInteger("Dimension");
 		}
-		
-		//Spout save map height
-		if (var1.hasKey("MapHeight")) {
-			height = var1.getInteger("MapHeight");
-		}
-		//Spout end
 	}
 
-	public WorldInfo(WorldSettings var1, String var2) {
-		this.field_46134_b = EnumWorldType.DEFAULT;
+	public WorldInfo(WorldSettings par1WorldSettings, String par2Str) {
+		this.terrainType = WorldType.field_48635_b;
 		this.hardcore = false;
-		this.randomSeed = var1.getSeed();
-		this.gameType = var1.getGameType();
-		this.mapFeaturesEnabled = var1.isMapFeaturesEnabled();
-		this.levelName = var2;
-		this.hardcore = var1.getHardcoreEnabled();
-		this.field_46134_b = var1.func_46107_e();
+		this.randomSeed = par1WorldSettings.getSeed();
+		this.gameType = par1WorldSettings.getGameType();
+		this.mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
+		this.levelName = par2Str;
+		this.hardcore = par1WorldSettings.getHardcoreEnabled();
+		this.terrainType = par1WorldSettings.getTerrainType();
 	}
 
-	public WorldInfo(WorldInfo var1) {
-		this.field_46134_b = EnumWorldType.DEFAULT;
+	public WorldInfo(WorldInfo par1WorldInfo) {
+		this.terrainType = WorldType.field_48635_b;
 		this.hardcore = false;
-		this.randomSeed = var1.randomSeed;
-		this.field_46134_b = var1.field_46134_b;
-		this.gameType = var1.gameType;
-		this.mapFeaturesEnabled = var1.mapFeaturesEnabled;
-		this.spawnX = var1.spawnX;
-		this.spawnY = var1.spawnY;
-		this.spawnZ = var1.spawnZ;
-		this.worldTime = var1.worldTime;
-		this.lastTimePlayed = var1.lastTimePlayed;
-		this.sizeOnDisk = var1.sizeOnDisk;
-		this.playerTag = var1.playerTag;
-		this.dimension = var1.dimension;
-		this.levelName = var1.levelName;
-		this.saveVersion = var1.saveVersion;
-		this.rainTime = var1.rainTime;
-		this.raining = var1.raining;
-		this.thunderTime = var1.thunderTime;
-		this.thundering = var1.thundering;
-		this.hardcore = var1.hardcore;
-		//Spout start
-		this.height = var1.height;
-		//Spout end
+		this.randomSeed = par1WorldInfo.randomSeed;
+		this.terrainType = par1WorldInfo.terrainType;
+		this.gameType = par1WorldInfo.gameType;
+		this.mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
+		this.spawnX = par1WorldInfo.spawnX;
+		this.spawnY = par1WorldInfo.spawnY;
+		this.spawnZ = par1WorldInfo.spawnZ;
+		this.worldTime = par1WorldInfo.worldTime;
+		this.lastTimePlayed = par1WorldInfo.lastTimePlayed;
+		this.sizeOnDisk = par1WorldInfo.sizeOnDisk;
+		this.playerTag = par1WorldInfo.playerTag;
+		this.dimension = par1WorldInfo.dimension;
+		this.levelName = par1WorldInfo.levelName;
+		this.saveVersion = par1WorldInfo.saveVersion;
+		this.rainTime = par1WorldInfo.rainTime;
+		this.raining = par1WorldInfo.raining;
+		this.thunderTime = par1WorldInfo.thunderTime;
+		this.thundering = par1WorldInfo.thundering;
+		this.hardcore = par1WorldInfo.hardcore;
 	}
 
 	public NBTTagCompound getNBTTagCompound() {
@@ -120,60 +114,48 @@ public class WorldInfo {
 		return var1;
 	}
 
-	public NBTTagCompound getNBTTagCompoundWithPlayer(List var1) {
+	public NBTTagCompound getNBTTagCompoundWithPlayers(List par1List) {
 		NBTTagCompound var2 = new NBTTagCompound();
 		EntityPlayer var3 = null;
 		NBTTagCompound var4 = null;
-		if(var1.size() > 0) {
-		 var3 = (EntityPlayer)var1.get(0);
+		if (par1List.size() > 0) {
+			var3 = (EntityPlayer)par1List.get(0);
 		}
 
-		if(var3 != null) {
-		 var4 = new NBTTagCompound();
-		 var3.writeToNBT(var4);
+		if (var3 != null) {
+			var4 = new NBTTagCompound();
+			var3.writeToNBT(var4);
 		}
 
 		this.updateTagCompound(var2, var4);
 		return var2;
 	}
 
-	private void updateTagCompound(NBTTagCompound var1, NBTTagCompound var2) {
-		var1.setLong("RandomSeed", this.randomSeed);
-		var1.setString("generatorName", this.field_46134_b.name());
-		var1.setInteger("GameType", this.gameType);
-		var1.setBoolean("MapFeatures", this.mapFeaturesEnabled);
-		var1.setInteger("SpawnX", this.spawnX);
-		var1.setInteger("SpawnY", this.spawnY);
-		var1.setInteger("SpawnZ", this.spawnZ);
-		var1.setLong("Time", this.worldTime);
-		var1.setLong("SizeOnDisk", this.sizeOnDisk);
-		var1.setLong("LastPlayed", System.currentTimeMillis());
-		var1.setString("LevelName", this.levelName);
-		var1.setInteger("version", this.saveVersion);
-		var1.setInteger("rainTime", this.rainTime);
-		var1.setBoolean("raining", this.raining);
-		var1.setInteger("thunderTime", this.thunderTime);
-		var1.setBoolean("thundering", this.thundering);
-		var1.setBoolean("hardcore", this.hardcore);
-		if(var2 != null) {
-		 var1.setCompoundTag("Player", var2);
+	private void updateTagCompound(NBTTagCompound par1NBTTagCompound, NBTTagCompound par2NBTTagCompound) {
+		par1NBTTagCompound.setLong("RandomSeed", this.randomSeed);
+		par1NBTTagCompound.setString("generatorName", this.terrainType.func_48628_a());
+		par1NBTTagCompound.setInteger("generatorVersion", this.terrainType.func_48630_c());
+		par1NBTTagCompound.setInteger("GameType", this.gameType);
+		par1NBTTagCompound.setBoolean("MapFeatures", this.mapFeaturesEnabled);
+		par1NBTTagCompound.setInteger("SpawnX", this.spawnX);
+		par1NBTTagCompound.setInteger("SpawnY", this.spawnY);
+		par1NBTTagCompound.setInteger("SpawnZ", this.spawnZ);
+		par1NBTTagCompound.setLong("Time", this.worldTime);
+		par1NBTTagCompound.setLong("SizeOnDisk", this.sizeOnDisk);
+		par1NBTTagCompound.setLong("LastPlayed", System.currentTimeMillis());
+		par1NBTTagCompound.setString("LevelName", this.levelName);
+		par1NBTTagCompound.setInteger("version", this.saveVersion);
+		par1NBTTagCompound.setInteger("rainTime", this.rainTime);
+		par1NBTTagCompound.setBoolean("raining", this.raining);
+		par1NBTTagCompound.setInteger("thunderTime", this.thunderTime);
+		par1NBTTagCompound.setBoolean("thundering", this.thundering);
+		par1NBTTagCompound.setBoolean("hardcore", this.hardcore);
+		if (par2NBTTagCompound != null) {
+			par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
 		}
-		//Spout start
-		var1.setInteger("MapHeight", height);
-		//Spout end
 	}
-	
-	//Spout start
-	public int getMapHeight() {
-		return this.height;
-	}
-	
-	public void setMapHeight(int height) {
-		this.height = height;
-	}
-	//Spout end
 
-	public long getRandomSeed() {
+	public long getSeed() {
 		return this.randomSeed;
 	}
 
@@ -205,86 +187,82 @@ public class WorldInfo {
 		return this.dimension;
 	}
 
-	public void setSpawnX(int var1) {
-		this.spawnX = var1;
+	public void setSpawnX(int par1) {
+		this.spawnX = par1;
 	}
 
-	public void setSpawnY(int var1) {
-		this.spawnY = var1;
+	public void setSpawnY(int par1) {
+		this.spawnY = par1;
 	}
 
-	public void setSpawnZ(int var1) {
-		this.spawnZ = var1;
+	public void setSpawnZ(int par1) {
+		this.spawnZ = par1;
 	}
 
-	public void setWorldTime(long var1) {
-		this.worldTime = var1;
+	public void setWorldTime(long par1) {
+		this.worldTime = par1;
 	}
 
-	public void setSizeOnDisk(long var1) {
-		this.sizeOnDisk = var1;
+	public void setPlayerNBTTagCompound(NBTTagCompound par1NBTTagCompound) {
+		this.playerTag = par1NBTTagCompound;
 	}
 
-	public void setPlayerNBTTagCompound(NBTTagCompound var1) {
-		this.playerTag = var1;
-	}
-
-	public void setSpawn(int var1, int var2, int var3) {
-		this.spawnX = var1;
-		this.spawnY = var2;
-		this.spawnZ = var3;
+	public void setSpawnPosition(int par1, int par2, int par3) {
+		this.spawnX = par1;
+		this.spawnY = par2;
+		this.spawnZ = par3;
 	}
 
 	public String getWorldName() {
 		return this.levelName;
 	}
 
-	public void setWorldName(String var1) {
-		this.levelName = var1;
+	public void setWorldName(String par1Str) {
+		this.levelName = par1Str;
 	}
 
 	public int getSaveVersion() {
 		return this.saveVersion;
 	}
 
-	public void setSaveVersion(int var1) {
-		this.saveVersion = var1;
+	public void setSaveVersion(int par1) {
+		this.saveVersion = par1;
 	}
 
 	public long getLastTimePlayed() {
 		return this.lastTimePlayed;
 	}
 
-	public boolean getIsThundering() {
+	public boolean isThundering() {
 		return this.thundering;
 	}
 
-	public void setIsThundering(boolean var1) {
-		this.thundering = var1;
+	public void setThundering(boolean par1) {
+		this.thundering = par1;
 	}
 
 	public int getThunderTime() {
 		return this.thunderTime;
 	}
 
-	public void setThunderTime(int var1) {
-		this.thunderTime = var1;
+	public void setThunderTime(int par1) {
+		this.thunderTime = par1;
 	}
 
-	public boolean getIsRaining() {
+	public boolean isRaining() {
 		return this.raining;
 	}
 
-	public void setIsRaining(boolean var1) {
-		this.raining = var1;
+	public void setRaining(boolean par1) {
+		this.raining = par1;
 	}
 
 	public int getRainTime() {
 		return this.rainTime;
 	}
 
-	public void setRainTime(int var1) {
-		this.rainTime = var1;
+	public void setRainTime(int par1) {
+		this.rainTime = par1;
 	}
 
 	public int getGameType() {
@@ -299,7 +277,11 @@ public class WorldInfo {
 		return this.hardcore;
 	}
 
-	public EnumWorldType func_46133_t() {
-		return this.field_46134_b;
+	public WorldType getTerrainType() {
+		return this.terrainType;
+	}
+
+	public void func_48619_a(WorldType par1WorldType) {
+		this.terrainType = par1WorldType;
 	}
 }

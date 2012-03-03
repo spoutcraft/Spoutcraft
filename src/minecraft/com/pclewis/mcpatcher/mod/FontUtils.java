@@ -1,5 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCPatcherUtils;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.IOException;
@@ -19,7 +20,6 @@ public class FontUtils {
 	private static Method getResource;
 
 	public static float[] computeCharWidths(String var0, BufferedImage var1, int[] var2, int[] var3) {
-		//MCPatcherUtils.log("computeCharWidths(%s)", new Object[]{var0});
 		float[] var4 = new float[var3.length];
 		int var5 = var1.getWidth();
 		int var6 = var1.getHeight();
@@ -48,10 +48,6 @@ public class FontUtils {
 						int var15 = var10 * var8 + var14;
 						int var16 = var2[var13 + var15 * var5];
 						if (isOpaque(var16)) {
-							//if (printThis(var9)) {
-							//	MCPatcherUtils.log("\'%c\' pixel (%d, %d) = %08x, colIdx = %d", new Object[]{Character.valueOf((char)var9), Integer.valueOf(var13), Integer.valueOf(var15), Integer.valueOf(var16), Integer.valueOf(var12)});
-							//}
-
 							var4[var9] = 128.0F * (float)(var12 + 1) / (float)var5 + 1.0F;
 							break;
 						}
@@ -85,9 +81,6 @@ public class FontUtils {
 
 		for (var10 = 0; var10 < var3.length; ++var10) {
 			var3[var10] = Math.round(var4[var10]);
-			//if (printThis(var10)) {
-			//	MCPatcherUtils.log("charWidth[\'%c\'] = %f", new Object[]{Character.valueOf((char)var10), Float.valueOf(var4[var10])});
-			//}
 		}
 
 		return var4;
@@ -106,10 +99,6 @@ public class FontUtils {
 
 		return (var0 & 255) > 0;
 	}
-
-	//private static boolean printThis(int var0) {
-	//	return "ABCDEF abcdef".indexOf(var0) >= 0;
-	//}
 
 	private static float defaultSpaceWidth(float[] var0) {
 		float var1 = 0.0F;
@@ -136,24 +125,23 @@ public class FontUtils {
 		if (getResource != null) {
 			String var3 = var0.replace(".png", ".properties");
 
-			InputStream stream;
+			InputStream var4;
 			try {
 				Object var5 = getResource.invoke((Object)null, new Object[]{var3});
 				if (!(var5 instanceof InputStream)) {
 					return;
 				}
 
-				stream = (InputStream)var5;
+				var4 = (InputStream)var5;
 			} catch (Exception var20) {
 				var20.printStackTrace();
 				return;
 			}
 
-			//MCPatcherUtils.log("reading character widths from %s", new Object[]{var3});
 
 			try {
 				Properties var21 = new Properties();
-				var21.load(stream);
+				var21.load(var4);
 				Iterator var6 = var21.entrySet().iterator();
 
 				while (var6.hasNext()) {
@@ -165,7 +153,6 @@ public class FontUtils {
 							int var10 = Integer.parseInt(var8.substring(6));
 							float var11 = Float.parseFloat(var9);
 							if (var10 >= 0 && var10 < var1.length) {
-								//MCPatcherUtils.log("	 setting charWidthf[%d] to %f", new Object[]{Integer.valueOf(var10), Float.valueOf(var11)});
 								var1[var10] = var11;
 								var2[var10] = true;
 							}
@@ -177,12 +164,7 @@ public class FontUtils {
 			} catch (IOException var18) {
 				var18.printStackTrace();
 			} finally {
-				if (stream != null) {
-					try {
-						stream.close();
-					}
-					catch (Exception e) { }
-				}
+				MCPatcherUtils.close((Closeable)var4);
 			}
 		}
 	}

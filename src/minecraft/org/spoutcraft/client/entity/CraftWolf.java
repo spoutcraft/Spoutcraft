@@ -65,20 +65,20 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	public boolean isSitting() {
-		return getEntityWolf().isSitting();
+		return getEntityWolf().func_48141_af();
 	}
 
 	public void setSitting(boolean sitting) {
-		getEntityWolf().setIsSitting(sitting);
+		getEntityWolf().func_48140_f(sitting);
 		setPath((PathEntity) null);
 	}
 
 	public boolean isTamed() {
-		return getEntityWolf().isTamed();
+		return getEntityWolf().func_48139_F_();
 	}
 
 	public void setTamed(boolean tame) {
-		getEntityWolf().setIsTamed(tame);
+		getEntityWolf().func_48138_b(tame);
 	}
 
 	public AnimalTamer getOwner() {
@@ -106,11 +106,11 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	String getOwnerName() {
-		return getEntityWolf().getOwner();
+		return getEntityWolf().func_48145_ag();
 	}
 
 	void setOwnerName(String ownerName) {
-		getEntityWolf().setOwner(ownerName);
+		getEntityWolf().func_48143_a(ownerName);
 	}
 
 	private void setPath(PathEntity pathentity) {

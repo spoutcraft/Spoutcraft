@@ -79,7 +79,7 @@ public class WorldItem implements ListWidgetItem {
 		String date = "Last played: " + dateFormatter.format(new Date(getWorld().getLastTimePlayed()));
 		int w = f.getTextWidth(date);
 		f.drawString(date, x + width - 2 - w, y + 2, 0xffaaaaaa);
-		String heightText = "Height: " + getWorld().getMapHeight();
+		String heightText = "Height: " + 256;
 		w = f.getTextWidth(heightText);
 		f.drawString(heightText, x + width - 2 - w, y + 13, 0xffaaaaaa);
 	}

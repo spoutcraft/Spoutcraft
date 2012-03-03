@@ -18,12 +18,12 @@ public class ClippingHelperImpl extends ClippingHelper {
 		return instance;
 	}
 
-	private void normalize(float[][] var1, int var2) {
-		float var3 = MathHelper.sqrt_float(var1[var2][0] * var1[var2][0] + var1[var2][1] * var1[var2][1] + var1[var2][2] * var1[var2][2]);
-		var1[var2][0] /= var3;
-		var1[var2][1] /= var3;
-		var1[var2][2] /= var3;
-		var1[var2][3] /= var3;
+	private void normalize(float[][] par1ArrayOfFloat, int par2) {
+		float var3 = MathHelper.sqrt_float(par1ArrayOfFloat[par2][0] * par1ArrayOfFloat[par2][0] + par1ArrayOfFloat[par2][1] * par1ArrayOfFloat[par2][1] + par1ArrayOfFloat[par2][2] * par1ArrayOfFloat[par2][2]);
+		par1ArrayOfFloat[par2][0] /= var3;
+		par1ArrayOfFloat[par2][1] /= var3;
+		par1ArrayOfFloat[par2][2] /= var3;
+		par1ArrayOfFloat[par2][3] /= var3;
 	}
 
 	private void init() {

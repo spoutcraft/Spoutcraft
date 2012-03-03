@@ -10,8 +10,8 @@ public class MovementInputFromOptions extends MovementInput {
 	public GameSettings gameSettings; //Spout
 
 
-	public MovementInputFromOptions(GameSettings var1) {
-		this.gameSettings = var1;
+	public MovementInputFromOptions(GameSettings par1GameSettings) {
+		this.gameSettings = par1GameSettings;
 	}
 
 	public void checkKeyForMovementInput(int var1, boolean var2) {
@@ -53,28 +53,28 @@ public class MovementInputFromOptions extends MovementInput {
 
 	}
 
-	public void updatePlayerMoveState(EntityPlayer var1) {
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
-		if(this.gameSettings.keyBindForward.pressed) {
+		if (this.gameSettings.keyBindForward.pressed) {
 			++this.moveForward;
 		}
 
-		if(this.gameSettings.keyBindBack.pressed) {
+		if (this.gameSettings.keyBindBack.pressed) {
 			--this.moveForward;
 		}
 
-		if(this.gameSettings.keyBindLeft.pressed) {
+		if (this.gameSettings.keyBindLeft.pressed) {
 			++this.moveStrafe;
 		}
 
-		if(this.gameSettings.keyBindRight.pressed) {
+		if (this.gameSettings.keyBindRight.pressed) {
 			--this.moveStrafe;
 		}
 
 		this.jump = this.gameSettings.keyBindJump.pressed;
-		this.sneak = this.gameSettings.keyBindSneak.pressed || var1.sneakToggle; //Spout
-		if(this.sneak) {
+		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; //Spout
+		if (this.sneak) {
 			this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);
 			this.moveForward = (float)((double)this.moveForward * 0.3D);
 		}

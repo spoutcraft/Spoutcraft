@@ -112,19 +112,19 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getMaxHeight() {
-		return handle.worldHeight;
+		return 256;
 	}
 
 	public int getXBitShifts() {
-		return handle.xShift;
+		return 8;
 	}
 
 	public int getZBitShifts() {
-		return handle.heightShift;
+		return 12;
 	}
 
 	public long getSeed() {
-		return handle.getWorldSeed();
+		return handle.getSeed();
 	}
 
 	public boolean isChunkLoaded(Chunk chunk) {
@@ -324,16 +324,16 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public boolean setSpawnLocation(int x, int y, int z) {
-		handle.worldInfo.setSpawn(x, y, z);
+		handle.worldInfo.setSpawnPosition(x, y, z);
 		return true;
 	}
 
 	public boolean hasStorm() {
-		return handle.worldInfo.getIsRaining();
+		return handle.worldInfo.isRaining();
 	}
 
 	public void setStorm(boolean hasStorm) {
-		handle.worldInfo.setIsRaining(hasStorm);
+		handle.worldInfo.setRaining(hasStorm);
 	}
 
 	public int getWeatherDuration() {
@@ -345,11 +345,11 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public boolean isThundering() {
-		return handle.worldInfo.getIsThundering();
+		return handle.worldInfo.isThundering();
 	}
 
 	public void setThundering(boolean thundering) {
-		handle.worldInfo.setIsThundering(thundering);
+		handle.worldInfo.setThundering(thundering);
 	}
 
 	public int getThunderDuration() {
@@ -429,7 +429,7 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getSeaLevel() {
-		return handle.seaLevel;
+		return getMaxHeight() / 4;
 	}
 
 	public boolean getKeepSpawnInMemory() {

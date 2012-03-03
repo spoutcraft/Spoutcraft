@@ -3,125 +3,91 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderFlat
-    implements IChunkProvider
-{
-    private World field_46055_a;
-    private Random field_46053_b;
-    private final boolean field_46054_c;
-    private MapGenVillage field_46052_d;
+public class ChunkProviderFlat implements IChunkProvider {
+	private World worldObj;
+	private Random random;
+	private final boolean useStructures;
+	private MapGenVillage villageGen = new MapGenVillage(1);
 
-    public ChunkProviderFlat(World world, long l, boolean flag)
-    {
-        field_46052_d = new MapGenVillage(1);
-        field_46055_a = world;
-        field_46054_c = flag;
-        field_46053_b = new Random(l);
-    }
+	public ChunkProviderFlat(World par1World, long par2, boolean par4) {
+		this.worldObj = par1World;
+		this.useStructures = par4;
+		this.random = new Random(par2);
+	}
 
-    private void func_46051_a(byte abyte0[])
-    {
-        int i = abyte0.length / 256;
-        for (int j = 0; j < 16; j++)
-        {
-            for (int k = 0; k < 16; k++)
-            {
-                for (int l = 0; l < i; l++)
-                {
-                    int i1 = 0;
-                    if (l == 0)
-                    {
-                        i1 = Block.bedrock.blockID;
-                    }
-                    else if (l <= 2)
-                    {
-                        i1 = Block.dirt.blockID;
-                    }
-                    else if (l == 3)
-                    {
-                        i1 = Block.grass.blockID;
-                    }
-                    abyte0[j << field_46055_a.xShift | k << field_46055_a.heightShift | l] = (byte)i1; //Spout modified shifts
-                }
-            }
-        }
-    }
+	private void generate(byte[] par1ArrayOfByte) {
+		int var2 = par1ArrayOfByte.length / 256;
 
-    public Chunk loadChunk(int i, int j)
-    {
-        return provideChunk(i, j);
-    }
+		for (int var3 = 0; var3 < 16; ++var3) {
+			for (int var4 = 0; var4 < 16; ++var4) {
+				for (int var5 = 0; var5 < var2; ++var5) {
+					int var6 = 0;
+					if (var5 == 0) {
+						var6 = Block.bedrock.blockID;
+					} else if (var5 <= 2) {
+						var6 = Block.dirt.blockID;
+					} else if (var5 == 3) {
+						var6 = Block.grass.blockID;
+					}
 
-    public Chunk provideChunk(int i, int j)
-    {
-        byte abyte0[] = new byte[16 * field_46055_a.worldHeight * 16];
-        Chunk chunk = new Chunk(field_46055_a, abyte0, i, j);
-        func_46051_a(abyte0);
-        if (field_46054_c)
-        {
-            field_46052_d.generate(this, field_46055_a, i, j, abyte0);
-        }
-        chunk.generateSkylightMap();
-        return chunk;
-    }
+					par1ArrayOfByte[var3 << 11 | var4 << 7 | var5] = (byte)var6;
+				}
+			}
+		}
+	}
 
-    public boolean chunkExists(int i, int j)
-    {
-        return true;
-    }
+	public Chunk loadChunk(int par1, int par2) {
+		return this.provideChunk(par1, par2);
+	}
 
-    public void populate(IChunkProvider ichunkprovider, int i, int j)
-    {
-        field_46053_b.setSeed(field_46055_a.getWorldSeed());
-        long l = (field_46053_b.nextLong() / 2L) * 2L + 1L;
-        long l1 = (field_46053_b.nextLong() / 2L) * 2L + 1L;
-        field_46053_b.setSeed((long)i * l + (long)j * l1 ^ field_46055_a.getWorldSeed());
-        if (field_46054_c)
-        {
-            field_46052_d.generateStructuresInChunk(field_46055_a, field_46053_b, i, j);
-        }
-    }
+	public Chunk provideChunk(int par1, int par2) {
+		byte[] var3 = new byte[32768];
+		this.generate(var3);
+		Chunk var4 = new Chunk(this.worldObj, var3, par1, par2);
+		if (this.useStructures) {
+			this.villageGen.generate(this, this.worldObj, par1, par2, var3);
+		}
 
-    public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate)
-    {
-        return true;
-    }
+		var4.generateSkylightMap();
+		return var4;
+	}
 
-    public boolean unload100OldestChunks()
-    {
-        return false;
-    }
+	public boolean chunkExists(int par1, int par2) {
+		return true;
+	}
 
-    public boolean canSave()
-    {
-        return true;
-    }
+	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
+		this.random.setSeed(this.worldObj.getSeed());
+		long var4 = this.random.nextLong() / 2L * 2L + 1L;
+		long var6 = this.random.nextLong() / 2L * 2L + 1L;
+		this.random.setSeed((long)par2 * var4 + (long)par3 * var6 ^ this.worldObj.getSeed());
+		if (this.useStructures) {
+			this.villageGen.generateStructuresInChunk(this.worldObj, this.random, par2, par3);
+		}
+	}
 
-    public String makeString()
-    {
-        return "FlatLevelSource";
-    }
+	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) {
+		return true;
+	}
 
-    public List func_40377_a(EnumCreatureType enumcreaturetype, int i, int j, int k)
-    {
-        WorldChunkManager worldchunkmanager = field_46055_a.getWorldChunkManager();
-        if (worldchunkmanager == null)
-        {
-            return null;
-        }
-        BiomeGenBase biomegenbase = worldchunkmanager.getBiomeGenAtChunkCoord(new ChunkCoordIntPair(i >> 4, k >> 4));
-        if (biomegenbase == null)
-        {
-            return null;
-        }
-        else
-        {
-            return biomegenbase.getSpawnableList(enumcreaturetype);
-        }
-    }
+	public boolean unload100OldestChunks() {
+		return false;
+	}
 
-    public ChunkPosition func_40376_a(World world, String s, int i, int j, int k)
-    {
-        return null;
-    }
+	public boolean canSave() {
+		return true;
+	}
+
+	public String makeString() {
+		return "FlatLevelSource";
+	}
+
+	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4) {
+		BiomeGenBase var5 = this.worldObj.func_48454_a(par2, par4);
+		return var5 == null?null:var5.getSpawnableList(par1EnumCreatureType);
+	}
+
+	public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5) {
+		return null;
+	}
 }

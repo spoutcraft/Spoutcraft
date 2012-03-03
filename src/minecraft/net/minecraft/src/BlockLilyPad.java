@@ -1,17 +1,11 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockFlower;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Material;
-import net.minecraft.src.World;
 
 public class BlockLilyPad extends BlockFlower {
 
-	protected BlockLilyPad(int var1, int var2) {
-		super(var1, var2);
+	protected BlockLilyPad(int par1, int par2) {
+		super(par1, par2);
 		float var3 = 0.5F;
 		float var4 = 0.015625F;
 		this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, var4, 0.5F + var3);
@@ -21,31 +15,31 @@ public class BlockLilyPad extends BlockFlower {
 		return 23;
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
-		return AxisAlignedBB.getBoundingBoxFromPool((double)var2 + this.minX, (double)var3 + this.minY, (double)var4 + this.minZ, (double)var2 + this.maxX, (double)var3 + this.maxY, (double)var4 + this.maxZ);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		return AxisAlignedBB.getBoundingBoxFromPool((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ);
 	}
 
 	public int getBlockColor() {
 		return Colorizer.getLilyPadColor();  //Spout HD
 	}
 
-	public int getRenderColor(int var1) {
+	public int getRenderColor(int par1) {
 		return Colorizer.getLilyPadColor();  //Spout HD
 	}
 
-	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		return super.canPlaceBlockAt(var1, var2, var3, var4);
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+		return super.canPlaceBlockAt(par1World, par2, par3, par4);
 	}
 
-	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
+	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		return Colorizer.getLilyPadColor();  //Spout HD
 	}
 
-	protected boolean canThisPlantGrowOnThisBlockID(int var1) {
-		return var1 == Block.waterStill.blockID;
+	protected boolean canThisPlantGrowOnThisBlockID(int par1) {
+		return par1 == Block.waterStill.blockID;
 	}
 
-	public boolean canBlockStay(World var1, int var2, int var3, int var4) {
-		return var3 >= 0 && var3 < var1.worldHeight ? var1.getBlockMaterial(var2, var3 - 1, var4) == Material.water && var1.getBlockMetadata(var2, var3 - 1, var4) == 0 : false;
+	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
+		return par3 >= 0 && par3 < 256?par1World.getBlockMaterial(par2, par3 - 1, par4) == Material.water && par1World.getBlockMetadata(par2, par3 - 1, par4) == 0:false;
 	}
 }

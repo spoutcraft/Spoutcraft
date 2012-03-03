@@ -13,14 +13,12 @@ import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderEngine;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 //Spout start
+import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-
 //Spout end
 
 public class RenderItem extends Render {
@@ -336,39 +334,39 @@ public class RenderItem extends Render {
 			}
 		}
 
-		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glEnable(2884);
 	}
 
-	public void renderItemIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
-		if (var3 != null) {
-			this.drawItemIntoGui(var1, var2, var3.itemID, var3.getItemDamage(), var3.getIconIndex(), var4, var5);
-			if(var3 != null && var3.func_40713_r()) {
+	public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+		if (par3ItemStack != null) {
+			this.drawItemIntoGui(par1FontRenderer, par2RenderEngine, par3ItemStack.itemID, par3ItemStack.getItemDamage(), par3ItemStack.getIconIndex(), par4, par5);
+			if (par3ItemStack != null && par3ItemStack.hasEffect()) {
 				GL11.glDepthFunc(516);
-				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(2896);
 				GL11.glDepthMask(false);
-				var2.bindTexture(var2.getTexture("%blur%/misc/glint.png"));
+				par2RenderEngine.bindTexture(par2RenderEngine.getTexture("%blur%/misc/glint.png"));
 				this.zLevel -= 50.0F;
-				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glEnable(3042);
 				GL11.glBlendFunc(774, 774);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
-				this.func_40266_a(var4 * 431278612 + var5 * 32178161, var4 - 2, var5 - 2, 20, 20);
-				GL11.glDisable(GL11.GL_BLEND);
+				this.func_40266_a(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
+				GL11.glDisable(3042);
 				GL11.glDepthMask(true);
 				this.zLevel += 50.0F;
-				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(2896);
 				GL11.glDepthFunc(515);
 			}
 
 		}
 	}
 
-	private void func_40266_a(int var1, int var2, int var3, int var4, int var5) {
-		for(int var6 = 0; var6 < 2; ++var6) {
-			if(var6 == 0) {
+	private void func_40266_a(int par1, int par2, int par3, int par4, int par5) {
+		for (int var6 = 0; var6 < 2; ++var6) {
+			if (var6 == 0) {
 				GL11.glBlendFunc(768, 1);
 			}
 
-			if(var6 == 1) {
+			if (var6 == 1) {
 				GL11.glBlendFunc(768, 1);
 			}
 
@@ -378,75 +376,77 @@ public class RenderItem extends Render {
 			float var10 = 0.0F;
 			Tessellator var11 = Tessellator.instance;
 			float var12 = 4.0F;
-			if(var6 == 1) {
+			if (var6 == 1) {
 				var12 = -1.0F;
-		}
+			}
 
 			var11.startDrawingQuads();
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + var5), (double)this.zLevel, (double)((var9 + (float)var4 + (float)var5 * var12) * var7), (double)((var10 + (float)var5) * var8));
-			var11.addVertexWithUV((double)(var2 + var4), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + (float)var4) * var7), (double)((var10 + 0.0F) * var8));
-			var11.addVertexWithUV((double)(var2 + 0), (double)(var3 + 0), (double)this.zLevel, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(par2 + 0), (double)(par3 + par5), (double)this.zLevel, (double)((var9 + (float)par5 * var12) * var7), (double)((var10 + (float)par5) * var8));
+			var11.addVertexWithUV((double)(par2 + par4), (double)(par3 + par5), (double)this.zLevel, (double)((var9 + (float)par4 + (float)par5 * var12) * var7), (double)((var10 + (float)par5) * var8));
+			var11.addVertexWithUV((double)(par2 + par4), (double)(par3 + 0), (double)this.zLevel, (double)((var9 + (float)par4) * var7), (double)((var10 + 0.0F) * var8));
+			var11.addVertexWithUV((double)(par2 + 0), (double)(par3 + 0), (double)this.zLevel, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
 			var11.draw();
 		}
 
 	}
 
-	public void renderItemOverlayIntoGUI(FontRenderer var1, RenderEngine var2, ItemStack var3, int var4, int var5) {
-		if (var3 != null) {
-			if (var3.stackSize > 1) {
-				String var6 = "" + var3.stackSize;
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				var1.drawStringWithShadow(var6, var4 + 19 - 2 - var1.getStringWidth(var6), var5 + 6 + 3, 16777215);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
+	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
+		if (par3ItemStack != null) {
+			if (par3ItemStack.stackSize > 1) {
+				String var6 = "" + par3ItemStack.stackSize;
+				GL11.glDisable(2896);
+				GL11.glDisable(2929);
+				par1FontRenderer.drawStringWithShadow(var6, par4 + 19 - 2 - par1FontRenderer.getStringWidth(var6), par5 + 6 + 3, 16777215);
+				GL11.glEnable(2896);
+				GL11.glEnable(2929);
 			}
 
-			if (var3.isItemDamaged()) {
-				int var11 = (int) Math.round(13.0D - (double) var3.getItemDamageForDisplay() * 13.0D / (double) var3.getMaxDamage());
-				int var7 = (int) Math.round(255.0D - (double) var3.getItemDamageForDisplay() * 255.0D / (double) var3.getMaxDamage());
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
+			if (par3ItemStack.isItemDamaged()) {
+				int var11 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
+				int var7 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
+				GL11.glDisable(2896);
+				GL11.glDisable(2929);
+				GL11.glDisable(3553);
 				Tessellator var8 = Tessellator.instance;
 				int var9 = 255 - var7 << 16 | var7 << 8;
 				int var10 = (255 - var7) / 4 << 16 | 16128;
-				this.renderQuad(var8, var4 + 2, var5 + 13, 13, 2, 0);
-				this.renderQuad(var8, var4 + 2, var5 + 13, 12, 1, var10);
-				this.renderQuad(var8, var4 + 2, var5 + 13, var11, 1, var9);
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glEnable(GL11.GL_DEPTH_TEST);
+				this.renderQuad(var8, par4 + 2, par5 + 13, 13, 2, 0);
+				this.renderQuad(var8, par4 + 2, par5 + 13, 12, 1, var10);
+				this.renderQuad(var8, par4 + 2, par5 + 13, var11, 1, var9);
+				GL11.glEnable(3553);
+				GL11.glEnable(2896);
+				GL11.glEnable(2929);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
 		}
 	}
 
-	private void renderQuad(Tessellator var1, int var2, int var3, int var4, int var5, int var6) {
-		var1.startDrawingQuads();
-		var1.setColorOpaque_I(var6);
-		var1.addVertex((double) (var2 + 0), (double) (var3 + 0), 0.0D);
-		var1.addVertex((double) (var2 + 0), (double) (var3 + var5), 0.0D);
-		var1.addVertex((double) (var2 + var4), (double) (var3 + var5), 0.0D);
-		var1.addVertex((double) (var2 + var4), (double) (var3 + 0), 0.0D);
-		var1.draw();
+	private void renderQuad(Tessellator par1Tessellator, int par2, int par3, int par4, int par5, int par6) {
+		par1Tessellator.startDrawingQuads();
+		par1Tessellator.setColorOpaque_I(par6);
+		par1Tessellator.addVertex((double)(par2 + 0), (double)(par3 + 0), 0.0D);
+		par1Tessellator.addVertex((double)(par2 + 0), (double)(par3 + par5), 0.0D);
+		par1Tessellator.addVertex((double)(par2 + par4), (double)(par3 + par5), 0.0D);
+		par1Tessellator.addVertex((double)(par2 + par4), (double)(par3 + 0), 0.0D);
+		par1Tessellator.draw();
 	}
 
-	public void renderTexturedQuad(int var1, int var2, int var3, int var4, int var5, int var6) {
+	public void renderTexturedQuad(int par1, int par2, int par3, int par4, int par5, int par6) {
 		float var7 = 0.00390625F;
 		float var8 = 0.00390625F;
 		Tessellator var9 = Tessellator.instance;
 		var9.startDrawingQuads();
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + var6), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + var6) * var8));
-		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
-		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), (double)this.zLevel, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
+		var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + par6) * var8));
+		var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)this.zLevel, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + par6) * var8));
+		var9.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + par5) * var7), (double)((float)(par4 + 0) * var8));
+		var9.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + 0) * var7), (double)((float)(par4 + 0) * var8));
 		var9.draw();
 	}
 
-	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-		this.doRenderItem((EntityItem) var1, var2, var4, var6, var8, var9);
+	
+	
+	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
+		this.doRenderItem((EntityItem)par1Entity, par2, par4, par6, par8, par9);
 	}
 }

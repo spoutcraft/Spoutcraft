@@ -2,20 +2,10 @@ package net.minecraft.src;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockFluid;
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.GLAllocation;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 public class ActiveRenderInfo {
-
 	public static float objectX = 0.0F;
 	public static float objectY = 0.0F;
 	public static float objectZ = 0.0F;
@@ -51,14 +41,14 @@ public class ActiveRenderInfo {
 		objectX = objectCoords.get(0);
 		objectY = objectCoords.get(1);
 		objectZ = objectCoords.get(2);
-		int var4 = par1? 1 : 0;
+		int var4 = par1?1:0;
 		float var5 = par0EntityPlayer.rotationPitch;
 		float var6 = par0EntityPlayer.rotationYaw;
-		rotationX = MathHelper.cos(var6 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
-		rotationZ = MathHelper.sin(var6 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
-		rotationYZ = -rotationZ * MathHelper.sin(var5 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
-		rotationXY = rotationX * MathHelper.sin(var5 * 3.1415927F / 180.0F) * (float)(1 - var4 * 2);
-		rotationXZ = MathHelper.cos(var5 * 3.1415927F / 180.0F);
+		rotationX = MathHelper.cos(var6 * (float)Math.PI / 180.0F) * (float)(1 - var4 * 2);
+		rotationZ = MathHelper.sin(var6 * (float)Math.PI / 180.0F) * (float)(1 - var4 * 2);
+		rotationYZ = -rotationZ * MathHelper.sin(var5 * (float)Math.PI / 180.0F) * (float)(1 - var4 * 2);
+		rotationXY = rotationX * MathHelper.sin(var5 * (float)Math.PI / 180.0F) * (float)(1 - var4 * 2);
+		rotationXZ = MathHelper.cos(var5 * (float)Math.PI / 180.0F);
 	}
 
 	public static Vec3D projectViewFromEntity(EntityLiving par0EntityLiving, double par1) {
@@ -85,5 +75,4 @@ public class ActiveRenderInfo {
 
 		return var5;
 	}
-
 }

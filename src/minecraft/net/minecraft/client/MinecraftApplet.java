@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://wiki.getspout.org/).
+ * 
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package net.minecraft.client;
 
 import java.applet.Applet;
@@ -33,8 +49,7 @@ public class MinecraftApplet extends Applet {
 			if (this.getParameter("mppass") != null) {
 				this.mc.session.mpPassParameter = this.getParameter("mppass");
 			}
-		}
-		else {
+		} else {
 			this.mc.session = new Session("Player", "");
 		}
 		//Spout Start
@@ -45,6 +60,7 @@ public class MinecraftApplet extends Applet {
 			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
 		}
 		//Spout End
+
 		if (this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
@@ -91,12 +107,10 @@ public class MinecraftApplet extends Applet {
 
 			try {
 				this.mcThread.join(10000L);
-			}
-			catch (InterruptedException var4) {
+			} catch (InterruptedException var4) {
 				try {
 					this.mc.shutdownMinecraftApplet();
-				}
-				catch (Exception var3) {
+				} catch (Exception var3) {
 					var3.printStackTrace();
 				}
 			}
@@ -113,8 +127,7 @@ public class MinecraftApplet extends Applet {
 		try {
 			this.removeAll();
 			this.validate();
-		}
-		catch (Exception var2) {
+		} catch (Exception var2) {
 			;
 		}
 

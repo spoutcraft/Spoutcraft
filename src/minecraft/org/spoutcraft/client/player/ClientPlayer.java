@@ -123,12 +123,12 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 
 	public void setCompassTarget(Location loc) {
-		SpoutClient.getHandle().thePlayer.setPlayerSpawnCoordinate(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-		SpoutClient.getHandle().theWorld.getWorldInfo().setSpawn(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+		SpoutClient.getHandle().thePlayer.setSpawnChunk(new ChunkCoordinates(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
+		SpoutClient.getHandle().theWorld.getWorldInfo().setSpawnPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public Location getCompassTarget() {
-		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getPlayerSpawnCoordinate();
+		ChunkCoordinates coords = SpoutClient.getHandle().thePlayer.getSpawnChunk();
 		return new MutableLocation(SpoutClient.getInstance().getWorld(), coords.posX, coords.posY, coords.posZ);
 	}
 

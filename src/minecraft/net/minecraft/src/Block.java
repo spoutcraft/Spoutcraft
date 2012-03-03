@@ -1,139 +1,23 @@
 package net.minecraft.src;
 
+import gnu.trove.map.hash.TIntFloatHashMap;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.BlockBed;
-import net.minecraft.src.BlockBookshelf;
-import net.minecraft.src.BlockBrewingStand;
-import net.minecraft.src.BlockButton;
-import net.minecraft.src.BlockCactus;
-import net.minecraft.src.BlockCake;
-import net.minecraft.src.BlockCauldron;
-import net.minecraft.src.BlockChest;
-import net.minecraft.src.BlockClay;
-import net.minecraft.src.BlockCloth;
-import net.minecraft.src.BlockCrops;
-import net.minecraft.src.BlockDeadBush;
-import net.minecraft.src.BlockDetectorRail;
-import net.minecraft.src.BlockDirt;
-import net.minecraft.src.BlockDispenser;
-import net.minecraft.src.BlockDoor;
-import net.minecraft.src.BlockDragonEgg;
-import net.minecraft.src.BlockEnchantmentTable;
-import net.minecraft.src.BlockEndPortal;
-import net.minecraft.src.BlockEndPortalFrame;
-import net.minecraft.src.BlockFarmland;
-import net.minecraft.src.BlockFence;
-import net.minecraft.src.BlockFenceGate;
-import net.minecraft.src.BlockFire;
-import net.minecraft.src.BlockFlower;
-import net.minecraft.src.BlockFlowing;
-import net.minecraft.src.BlockFurnace;
-import net.minecraft.src.BlockGlass;
-import net.minecraft.src.BlockGlowStone;
-import net.minecraft.src.BlockGrass;
-import net.minecraft.src.BlockGravel;
-import net.minecraft.src.BlockIce;
-import net.minecraft.src.BlockJukeBox;
-import net.minecraft.src.BlockLadder;
-import net.minecraft.src.BlockLeaves;
-import net.minecraft.src.BlockLever;
-import net.minecraft.src.BlockLilyPad;
-import net.minecraft.src.BlockLockedChest;
-import net.minecraft.src.BlockLog;
-import net.minecraft.src.BlockMelon;
-import net.minecraft.src.BlockMobSpawner;
-import net.minecraft.src.BlockMushroom;
-import net.minecraft.src.BlockMushroomCap;
-import net.minecraft.src.BlockMycelium;
-import net.minecraft.src.BlockNetherStalk;
-import net.minecraft.src.BlockNetherrack;
-import net.minecraft.src.BlockNote;
-import net.minecraft.src.BlockObsidian;
-import net.minecraft.src.BlockOre;
-import net.minecraft.src.BlockOreStorage;
-import net.minecraft.src.BlockPane;
-import net.minecraft.src.BlockPistonBase;
-import net.minecraft.src.BlockPistonExtension;
-import net.minecraft.src.BlockPistonMoving;
-import net.minecraft.src.BlockPortal;
-import net.minecraft.src.BlockPressurePlate;
-import net.minecraft.src.BlockPumpkin;
-import net.minecraft.src.BlockRail;
-import net.minecraft.src.BlockRedstoneOre;
-import net.minecraft.src.BlockRedstoneRepeater;
-import net.minecraft.src.BlockRedstoneTorch;
-import net.minecraft.src.BlockRedstoneWire;
-import net.minecraft.src.BlockReed;
-import net.minecraft.src.BlockSand;
-import net.minecraft.src.BlockSandStone;
-import net.minecraft.src.BlockSapling;
-import net.minecraft.src.BlockSign;
-import net.minecraft.src.BlockSilverfish;
-import net.minecraft.src.BlockSnow;
-import net.minecraft.src.BlockSnowBlock;
-import net.minecraft.src.BlockSoulSand;
-import net.minecraft.src.BlockSponge;
-import net.minecraft.src.BlockStairs;
-import net.minecraft.src.BlockStationary;
-import net.minecraft.src.BlockStem;
-import net.minecraft.src.BlockStep;
-import net.minecraft.src.BlockStone;
-import net.minecraft.src.BlockStoneBrick;
-import net.minecraft.src.BlockTNT;
-import net.minecraft.src.BlockTallGrass;
-import net.minecraft.src.BlockTorch;
-import net.minecraft.src.BlockTrapDoor;
-import net.minecraft.src.BlockVine;
-import net.minecraft.src.BlockWeb;
-import net.minecraft.src.BlockWorkbench;
-import net.minecraft.src.EnchantmentHelper;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EnumMobType;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemBlock;
-import net.minecraft.src.ItemCloth;
-import net.minecraft.src.ItemColored;
-import net.minecraft.src.ItemLeaves;
-import net.minecraft.src.ItemLilyPad;
-import net.minecraft.src.ItemMetadata;
-import net.minecraft.src.ItemPiston;
-import net.minecraft.src.ItemSapling;
-import net.minecraft.src.ItemSlab;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.StatList;
-import net.minecraft.src.StepSound;
-import net.minecraft.src.StepSoundSand;
-import net.minecraft.src.StepSoundStone;
-import net.minecraft.src.TileEntitySign;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
-//Spout Start
-import gnu.trove.map.hash.TIntFloatHashMap;
 import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
+import net.minecraft.client.Minecraft;
+//Spout start
 import com.pclewis.mcpatcher.mod.Colorizer;
+//Spout end
 
-//Spout End
 public class Block {
-
 	public static final StepSound soundPowderFootstep = new StepSound("stone", 1.0F, 1.0F);
 	public static final StepSound soundWoodFootstep = new StepSound("wood", 1.0F, 1.0F);
 	public static final StepSound soundGravelFootstep = new StepSound("gravel", 1.0F, 1.0F);
@@ -143,15 +27,13 @@ public class Block {
 	public static final StepSound soundGlassFootstep = new StepSoundStone("stone", 1.0F, 1.0F);
 	public static final StepSound soundClothFootstep = new StepSound("cloth", 1.0F, 1.0F);
 	public static final StepSound soundSandFootstep = new StepSoundSand("sand", 1.0F, 1.0F);
-	public static final Block[] blocksList = new Block[256];
-	public static final boolean[] tickOnLoad = new boolean[256];
-	public static final boolean[] opaqueCubeLookup = new boolean[256];
-	public static final boolean[] isBlockContainer = new boolean[256];
-	public static final int[] lightOpacity = new int[256];
-	public static final boolean[] canBlockGrass = new boolean[256];
-	public static final int[] lightValue = new int[256];
-	public static final boolean[] requiresSelfNotify = new boolean[256];
-	public static boolean[] useNeighborBrightness = new boolean[256];
+	public static final Block[] blocksList = new Block[4096];
+	public static final boolean[] opaqueCubeLookup = new boolean[4096];
+	public static final int[] lightOpacity = new int[4096];
+	public static final boolean[] canBlockGrass = new boolean[4096];
+	public static final int[] lightValue = new int[4096];
+	public static final boolean[] requiresSelfNotify = new boolean[4096];
+	public static boolean[] useNeighborBrightness = new boolean[4096];
 	public static final Block stone = (new BlockStone(1, 1)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep).setBlockName("stone");
 	public static final BlockGrass grass = (BlockGrass)(new BlockGrass(2)).setHardness(0.6F).setStepSound(soundGrassFootstep).setBlockName("grass");
 	public static final Block dirt = (new BlockDirt(3, 2)).setHardness(0.5F).setStepSound(soundGravelFootstep).setBlockName("dirt");
@@ -246,7 +128,7 @@ public class Block {
 	public static final Block cake = (new BlockCake(92, 121)).setHardness(0.5F).setStepSound(soundClothFootstep).setBlockName("cake").disableStats().setRequiresSelfNotify();
 	public static final Block redstoneRepeaterIdle = (new BlockRedstoneRepeater(93, false)).setHardness(0.0F).setStepSound(soundWoodFootstep).setBlockName("diode").disableStats().setRequiresSelfNotify();
 	public static final Block redstoneRepeaterActive = (new BlockRedstoneRepeater(94, true)).setHardness(0.0F).setLightValue(0.625F).setStepSound(soundWoodFootstep).setBlockName("diode").disableStats().setRequiresSelfNotify();
-	public static final Block lockedChest = (new BlockLockedChest(95)).setHardness(0.0F).setLightValue(1.0F).setStepSound(soundWoodFootstep).setBlockName("lockedchest").setTickOnLoad(true).setRequiresSelfNotify();
+	public static final Block lockedChest = (new BlockLockedChest(95)).setHardness(0.0F).setLightValue(1.0F).setStepSound(soundWoodFootstep).setBlockName("lockedchest").setTickRandomly(true).setRequiresSelfNotify();
 	public static final Block trapdoor = (new BlockTrapDoor(96, Material.wood)).setHardness(3.0F).setStepSound(soundWoodFootstep).setBlockName("trapdoor").disableStats().setRequiresSelfNotify();
 	public static final Block silverfish = (new BlockSilverfish(97)).setHardness(0.75F);
 	public static final Block stoneBrick = (new BlockStoneBrick(98)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep).setBlockName("stonebricksmooth");
@@ -274,12 +156,16 @@ public class Block {
 	public static final Block endPortalFrame = (new BlockEndPortalFrame(120)).setStepSound(soundGlassFootstep).setLightValue(0.125F).setHardness(-1.0F).setBlockName("endPortalFrame").setRequiresSelfNotify().setResistance(6000000.0F);
 	public static final Block whiteStone = (new Block(121, 175, Material.rock)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setBlockName("whiteStone");
 	public static final Block dragonEgg = (new BlockDragonEgg(122, 167)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setLightValue(0.125F).setBlockName("dragonEgg");
+	public static final Block field_48209_bL = (new BlockRedstoneLight(123, false)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
+	public static final Block field_48210_bM = (new BlockRedstoneLight(124, true)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
 	public int blockIndexInTexture;
 	public final int blockID;
-	public float blockHardness; // Spout protected->public
-	public float blockResistance; // Spout protected->public
+	public float blockHardness; //Spout protected -> public
+	public float blockResistance; //Spout protected -> public
 	protected boolean blockConstructorCalled;
 	protected boolean enableStats;
+	protected boolean field_48208_bT;
+	protected boolean field_48207_bU;
 	public double minX;
 	public double minY;
 	public double minZ;
@@ -295,25 +181,22 @@ public class Block {
 	public static short[] customIds = null;
 	//Spout end
 
-
-	protected Block(int var1, Material var2) {
+	protected Block(int par1, Material par2Material) {
 		this.blockConstructorCalled = true;
 		this.enableStats = true;
 		this.stepSound = soundPowderFootstep;
 		this.blockParticleGravity = 1.0F;
 		this.slipperiness = 0.6F;
-		if (blocksList[var1] != null) {
-			throw new IllegalArgumentException("Slot " + var1 + " is already occupied by " + blocksList[var1] + " when adding " + this);
-		}
-		else {
-			this.blockMaterial = var2;
-			blocksList[var1] = this;
-			this.blockID = var1;
+		if (blocksList[par1] != null) {
+			throw new IllegalArgumentException("Slot " + par1 + " is already occupied by " + blocksList[par1] + " when adding " + this);
+		} else {
+			this.blockMaterial = par2Material;
+			blocksList[par1] = this;
+			this.blockID = par1;
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-			opaqueCubeLookup[var1] = this.isOpaqueCube();
-			lightOpacity[var1] = this.isOpaqueCube() ? 255 : 0;
-			canBlockGrass[var1] = !var2.getCanBlockGrass();
-			isBlockContainer[var1] = false;
+			opaqueCubeLookup[par1] = this.isOpaqueCube();
+			lightOpacity[par1] = this.isOpaqueCube()?255:0;
+			canBlockGrass[par1] = !par2Material.getCanBlockGrass();
 		}
 	}
 
@@ -324,43 +207,52 @@ public class Block {
 
 	protected void initializeBlock() {}
 
-	protected Block(int var1, int var2, Material var3) {
-		this(var1, var3);
-		this.blockIndexInTexture = var2;
+	protected Block(int par1, int par2, Material par3Material) {
+		this(par1, par3Material);
+		this.blockIndexInTexture = par2;
 	}
 
-	protected Block setStepSound(StepSound var1) {
-		this.stepSound = var1;
+	protected Block setStepSound(StepSound par1StepSound) {
+		this.stepSound = par1StepSound;
 		return this;
 	}
 
-	public Block setLightOpacity(int var1) { // Spout protected -> public
-		lightOpacity[this.blockID] = var1;
+	public Block setLightOpacity(int par1) { // Spout protected -> public
+		lightOpacity[this.blockID] = par1;
 		return this;
 	}
 
-	protected Block setLightValue(float var1) {
-		lightValue[this.blockID] = (int)(15.0F * var1);
+	protected Block setLightValue(float par1) {
+		lightValue[this.blockID] = (int)(15.0F * par1);
 		return this;
 	}
 
-	protected Block setResistance(float var1) {
-		this.blockResistance = var1 * 3.0F;
+	protected Block setResistance(float par1) {
+		this.blockResistance = par1 * 3.0F;
 		return this;
+	}
+
+	public static boolean func_48206_g(int par0) {
+		Block var1 = blocksList[par0];
+		return var1 == null?false:var1.blockMaterial.isOpaque() && var1.renderAsNormalBlock();
 	}
 
 	public boolean renderAsNormalBlock() {
 		return true;
 	}
 
+	public boolean func_48204_b(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		return !this.blockMaterial.blocksMovement();
+	}
+
 	public int getRenderType() {
 		return 0;
 	}
 
-	protected Block setHardness(float var1) {
-		this.blockHardness = var1;
-		if (this.blockResistance < var1 * 5.0F) {
-			this.blockResistance = var1 * 5.0F;
+	protected Block setHardness(float par1) {
+		this.blockHardness = par1;
+		if (this.blockResistance < par1 * 5.0F) {
+			this.blockResistance = par1 * 5.0F;
 		}
 
 		return this;
@@ -375,25 +267,33 @@ public class Block {
 		return this.blockHardness;
 	}
 
-	protected Block setTickOnLoad(boolean var1) {
-		tickOnLoad[this.blockID] = var1;
+	protected Block setTickRandomly(boolean par1) {
+		this.field_48208_bT = par1;
 		return this;
 	}
 
-	public void setBlockBounds(float var1, float var2, float var3, float var4, float var5, float var6) {
-		this.minX = (double)var1;
-		this.minY = (double)var2;
-		this.minZ = (double)var3;
-		this.maxX = (double)var4;
-		this.maxY = (double)var5;
-		this.maxZ = (double)var6;
+	public boolean func_48203_o() {
+		return this.field_48208_bT;
 	}
 
-	public float getBlockBrightness(IBlockAccess var1, int x, int y, int z) {
+	public boolean func_48205_p() {
+		return this.field_48207_bU;
+	}
+
+	public void setBlockBounds(float par1, float par2, float par3, float par4, float par5, float par6) {
+		this.minX = (double)par1;
+		this.minY = (double)par2;
+		this.minZ = (double)par3;
+		this.maxX = (double)par4;
+		this.maxY = (double)par5;
+		this.maxZ = (double)par6;
+	}
+
+	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int x, int y, int z) {
 		// Spout start
 		int light = lightValue[this.blockID];
 		if (customIds != null) {
-			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.xShift) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.heightShift) | (y & Minecraft.theMinecraft.theWorld.worldMaxY);
+			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
 			short customId = customIds[key];
 			if (customId > 0) {
 				CustomBlock block = MaterialData.getCustomBlock(customId);
@@ -402,15 +302,15 @@ public class Block {
 				}
 			}
 		}
-		return var1.getBrightness(x, y, z, light);
+		return par1IBlockAccess.getBrightness(x, y, z, light);
 		// Spout end
 	}
 
-	public int getMixedBrightnessForBlock(IBlockAccess var1, int x, int y, int z) {
+	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int x, int y, int z) {
 		// Spout start
 		int light = lightValue[this.blockID];
 		if (customIds != null) {
-			int key = ((x & 0xF) << Minecraft.theMinecraft.theWorld.xShift) | ((z & 0xF) << Minecraft.theMinecraft.theWorld.heightShift) | (y & Minecraft.theMinecraft.theWorld.worldMaxY);
+			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
 			short customId = customIds[key];
 			if (customId > 0) {
 				CustomBlock block = MaterialData.getCustomBlock(customId);
@@ -419,51 +319,50 @@ public class Block {
 				}
 	}
 		}
-		return var1.getLightBrightnessForSkyBlocks(x, y, z, light);
+		return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
 		// Spout end
 	}
 
-	public boolean shouldSideBeRendered(IBlockAccess var1, int var2, int var3, int var4, int var5) {
-		return var5 == 0 && this.minY > 0.0D ? true : (var5 == 1 && this.maxY < 1.0D ? true : (var5 == 2 && this.minZ > 0.0D ? true : (var5 == 3 && this.maxZ < 1.0D ? true : (var5 == 4 && this.minX > 0.0D ? true : (var5 == 5 && this.maxX < 1.0D ? true : !var1.isBlockOpaqueCube(var2, var3, var4))))));
+	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return par5 == 0 && this.minY > 0.0D?true:(par5 == 1 && this.maxY < 1.0D?true:(par5 == 2 && this.minZ > 0.0D?true:(par5 == 3 && this.maxZ < 1.0D?true:(par5 == 4 && this.minX > 0.0D?true:(par5 == 5 && this.maxX < 1.0D?true:!par1IBlockAccess.isBlockOpaqueCube(par2, par3, par4))))));
 	}
 
-	public boolean getIsBlockSolid(IBlockAccess var1, int var2, int var3, int var4, int var5) {
-		return var1.getBlockMaterial(var2, var3, var4).isSolid();
+	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return par1IBlockAccess.getBlockMaterial(par2, par3, par4).isSolid();
 	}
 
-	public int getBlockTexture(IBlockAccess var1, int var2, int var3, int var4, int var5) {
-		return this.getBlockTextureFromSideAndMetadata(var5, var1.getBlockMetadata(var2, var3, var4));
+	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+		return this.getBlockTextureFromSideAndMetadata(par5, par1IBlockAccess.getBlockMetadata(par2, par3, par4));
 	}
 
-	public int getBlockTextureFromSideAndMetadata(int var1, int var2) {
-		return this.getBlockTextureFromSide(var1);
+	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
+		return this.getBlockTextureFromSide(par1);
 	}
 
-	public int getBlockTextureFromSide(int var1) {
+	public int getBlockTextureFromSide(int par1) {
 		return this.blockIndexInTexture;
 	}
 
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
-		return AxisAlignedBB.getBoundingBoxFromPool((double)var2 + this.minX, (double)var3 + this.minY, (double)var4 + this.minZ, (double)var2 + this.maxX, (double)var3 + this.maxY, (double)var4 + this.maxZ);
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		return AxisAlignedBB.getBoundingBoxFromPool((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ);
 	}
 
-	public void getCollidingBoundingBoxes(World var1, int var2, int var3, int var4, AxisAlignedBB var5, ArrayList var6) {
-		AxisAlignedBB var7 = this.getCollisionBoundingBoxFromPool(var1, var2, var3, var4);
-		if (var7 != null && var5.intersectsWith(var7)) {
-			var6.add(var7);
+	public void getCollidingBoundingBoxes(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList) {
+		AxisAlignedBB var7 = this.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+		if (var7 != null && par5AxisAlignedBB.intersectsWith(var7)) {
+			par6ArrayList.add(var7);
 		}
-
 	}
 
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World var1, int var2, int var3, int var4) {
-		return AxisAlignedBB.getBoundingBoxFromPool((double)var2 + this.minX, (double)var3 + this.minY, (double)var4 + this.minZ, (double)var2 + this.maxX, (double)var3 + this.maxY, (double)var4 + this.maxZ);
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
+		return AxisAlignedBB.getBoundingBoxFromPool((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ);
 	}
 
 	public boolean isOpaqueCube() {
 		return true;
 	}
 
-	public boolean canCollideCheck(int var1, boolean var2) {
+	public boolean canCollideCheck(int par1, boolean par2) {
 		return this.isCollidable();
 	}
 
@@ -471,27 +370,27 @@ public class Block {
 		return true;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {}
+	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {}
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {}
 
-	public void onBlockDestroyedByPlayer(World var1, int var2, int var3, int var4, int var5) {}
+	public void onBlockDestroyedByPlayer(World par1World, int par2, int par3, int par4, int par5) {}
 
-	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {}
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {}
 
 	public int tickRate() {
 		return 10;
 	}
 
-	public void onBlockAdded(World var1, int var2, int var3, int var4) {}
+	public void onBlockAdded(World par1World, int par2, int par3, int par4) {}
 
-	public void onBlockRemoval(World var1, int var2, int var3, int var4) {}
+	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(Random par1Random) {
 		return 1;
 	}
 
-	public int idDropped(int var1, Random var2, int var3) {
+	public int idDropped(int par1, Random par2Random, int par3) {
 		return this.blockID;
 	}
 
@@ -505,7 +404,7 @@ public class Block {
 				org.spoutcraft.spoutcraftapi.material.Block b = target.getBlock().getType();
 				if (b instanceof CustomBlock) {
 					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / b.getHardness() / 30.0F);
-	}
+				}
 
 				int x = (int) target.getX();
 				int y = (int) target.getY();
@@ -521,56 +420,56 @@ public class Block {
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
 	}
 	// Spout end
-	public final void dropBlockAsItem(World var1, int var2, int var3, int var4, int var5, int var6) {
-		this.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, 1.0F, var6);
+
+	public final void dropBlockAsItem(World par1World, int par2, int par3, int par4, int par5, int par6) {
+		this.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, 1.0F, par6);
 	}
 
-	public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6, int var7) {
-		if (!var1.multiplayerWorld) {
-			int var8 = this.quantityDroppedWithBonus(var7, var1.rand);
+	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7) {
+		if (!par1World.isRemote) {
+			int var8 = this.quantityDroppedWithBonus(par7, par1World.rand);
 
 			for (int var9 = 0; var9 < var8; ++var9) {
-				if (var1.rand.nextFloat() <= var6) {
-					int var10 = this.idDropped(var5, var1.rand, var7);
+				if (par1World.rand.nextFloat() <= par6) {
+					int var10 = this.idDropped(par5, par1World.rand, par7);
 					if (var10 > 0) {
-						this.dropBlockAsItem_do(var1, var2, var3, var4, new ItemStack(var10, 1, this.damageDropped(var5)));
+						this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(var10, 1, this.damageDropped(par5)));
 					}
 				}
 			}
-
 		}
 	}
 
-	protected void dropBlockAsItem_do(World var1, int var2, int var3, int var4, ItemStack var5) {
-		if (!var1.multiplayerWorld) {
+	protected void dropBlockAsItem_do(World par1World, int par2, int par3, int par4, ItemStack par5ItemStack) {
+		if (!par1World.isRemote) {
 			float var6 = 0.7F;
-			double var7 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-			double var9 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-			double var11 = (double)(var1.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
-			EntityItem var13 = new EntityItem(var1, (double)var2 + var7, (double)var3 + var9, (double)var4 + var11, var5);
+			double var7 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+			double var9 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+			double var11 = (double)(par1World.rand.nextFloat() * var6) + (double)(1.0F - var6) * 0.5D;
+			EntityItem var13 = new EntityItem(par1World, (double)par2 + var7, (double)par3 + var9, (double)par4 + var11, par5ItemStack);
 			var13.delayBeforeCanPickup = 10;
-			var1.spawnEntityInWorld(var13);
+			par1World.spawnEntityInWorld(var13);
 		}
 	}
 
-	protected int damageDropped(int var1) {
+	protected int damageDropped(int par1) {
 		return 0;
 	}
 
-	public float getExplosionResistance(Entity var1) {
+	public float getExplosionResistance(Entity par1Entity) {
 		return this.blockResistance / 5.0F;
 	}
 
-	public MovingObjectPosition collisionRayTrace(World var1, int var2, int var3, int var4, Vec3D var5, Vec3D var6) {
-		this.setBlockBoundsBasedOnState(var1, var2, var3, var4);
-		var5 = var5.addVector((double)(-var2), (double)(-var3), (double)(-var4));
-		var6 = var6.addVector((double)(-var2), (double)(-var3), (double)(-var4));
-		Vec3D var7 = var5.getIntermediateWithXValue(var6, this.minX);
-		Vec3D var8 = var5.getIntermediateWithXValue(var6, this.maxX);
-		Vec3D var9 = var5.getIntermediateWithYValue(var6, this.minY);
-		Vec3D var10 = var5.getIntermediateWithYValue(var6, this.maxY);
-		Vec3D var11 = var5.getIntermediateWithZValue(var6, this.minZ);
-		Vec3D var12 = var5.getIntermediateWithZValue(var6, this.maxZ);
+	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3D par5Vec3D, Vec3D par6Vec3D) {
+		this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
+		par5Vec3D = par5Vec3D.addVector((double)(-par2), (double)(-par3), (double)(-par4));
+		par6Vec3D = par6Vec3D.addVector((double)(-par2), (double)(-par3), (double)(-par4));
+		Vec3D var7 = par5Vec3D.getIntermediateWithXValue(par6Vec3D, this.minX);
+		Vec3D var8 = par5Vec3D.getIntermediateWithXValue(par6Vec3D, this.maxX);
+		Vec3D var9 = par5Vec3D.getIntermediateWithYValue(par6Vec3D, this.minY);
+		Vec3D var10 = par5Vec3D.getIntermediateWithYValue(par6Vec3D, this.maxY);
+		Vec3D var11 = par5Vec3D.getIntermediateWithZValue(par6Vec3D, this.minZ);
+		Vec3D var12 = par5Vec3D.getIntermediateWithZValue(par6Vec3D, this.maxZ);
 		if (!this.isVecInsideYZBounds(var7)) {
 			var7 = null;
 		}
@@ -596,34 +495,33 @@ public class Block {
 		}
 
 		Vec3D var13 = null;
-		if (var7 != null && (var13 == null || var5.distanceTo(var7) < var5.distanceTo(var13))) {
+		if (var7 != null && (var13 == null || par5Vec3D.distanceTo(var7) < par5Vec3D.distanceTo(var13))) {
 			var13 = var7;
 		}
 
-		if (var8 != null && (var13 == null || var5.distanceTo(var8) < var5.distanceTo(var13))) {
+		if (var8 != null && (var13 == null || par5Vec3D.distanceTo(var8) < par5Vec3D.distanceTo(var13))) {
 			var13 = var8;
 		}
 
-		if (var9 != null && (var13 == null || var5.distanceTo(var9) < var5.distanceTo(var13))) {
+		if (var9 != null && (var13 == null || par5Vec3D.distanceTo(var9) < par5Vec3D.distanceTo(var13))) {
 			var13 = var9;
 		}
 
-		if (var10 != null && (var13 == null || var5.distanceTo(var10) < var5.distanceTo(var13))) {
+		if (var10 != null && (var13 == null || par5Vec3D.distanceTo(var10) < par5Vec3D.distanceTo(var13))) {
 			var13 = var10;
 		}
 
-		if (var11 != null && (var13 == null || var5.distanceTo(var11) < var5.distanceTo(var13))) {
+		if (var11 != null && (var13 == null || par5Vec3D.distanceTo(var11) < par5Vec3D.distanceTo(var13))) {
 			var13 = var11;
 		}
 
-		if (var12 != null && (var13 == null || var5.distanceTo(var12) < var5.distanceTo(var13))) {
+		if (var12 != null && (var13 == null || par5Vec3D.distanceTo(var12) < par5Vec3D.distanceTo(var13))) {
 			var13 = var12;
 		}
 
 		if (var13 == null) {
 			return null;
-		}
-		else {
+		} else {
 			byte var14 = -1;
 			if (var13 == var7) {
 				var14 = 4;
@@ -649,44 +547,44 @@ public class Block {
 				var14 = 3;
 			}
 
-			return new MovingObjectPosition(var2, var3, var4, var14, var13.addVector((double)var2, (double)var3, (double)var4));
+			return new MovingObjectPosition(par2, par3, par4, var14, var13.addVector((double)par2, (double)par3, (double)par4));
 		}
 	}
 
-	private boolean isVecInsideYZBounds(Vec3D var1) {
-		return var1 == null ? false : var1.yCoord >= this.minY && var1.yCoord <= this.maxY && var1.zCoord >= this.minZ && var1.zCoord <= this.maxZ;
+	private boolean isVecInsideYZBounds(Vec3D par1Vec3D) {
+		return par1Vec3D == null?false:par1Vec3D.yCoord >= this.minY && par1Vec3D.yCoord <= this.maxY && par1Vec3D.zCoord >= this.minZ && par1Vec3D.zCoord <= this.maxZ;
 	}
 
-	private boolean isVecInsideXZBounds(Vec3D var1) {
-		return var1 == null ? false : var1.xCoord >= this.minX && var1.xCoord <= this.maxX && var1.zCoord >= this.minZ && var1.zCoord <= this.maxZ;
+	private boolean isVecInsideXZBounds(Vec3D par1Vec3D) {
+		return par1Vec3D == null?false:par1Vec3D.xCoord >= this.minX && par1Vec3D.xCoord <= this.maxX && par1Vec3D.zCoord >= this.minZ && par1Vec3D.zCoord <= this.maxZ;
 	}
 
-	private boolean isVecInsideXYBounds(Vec3D var1) {
-		return var1 == null ? false : var1.xCoord >= this.minX && var1.xCoord <= this.maxX && var1.yCoord >= this.minY && var1.yCoord <= this.maxY;
+	private boolean isVecInsideXYBounds(Vec3D par1Vec3D) {
+		return par1Vec3D == null?false:par1Vec3D.xCoord >= this.minX && par1Vec3D.xCoord <= this.maxX && par1Vec3D.yCoord >= this.minY && par1Vec3D.yCoord <= this.maxY;
 	}
 
-	public void onBlockDestroyedByExplosion(World var1, int var2, int var3, int var4) {}
+	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4) {}
 
 	public int getRenderBlockPass() {
 		return 0;
 	}
 
-	public boolean canPlaceBlockOnSide(World var1, int var2, int var3, int var4, int var5) {
-		return this.canPlaceBlockAt(var1, var2, var3, var4);
+	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5) {
+		return this.canPlaceBlockAt(par1World, par2, par3, par4);
 	}
 
-	public boolean canPlaceBlockAt(World var1, int var2, int var3, int var4) {
-		int var5 = var1.getBlockId(var2, var3, var4);
-		return var5 == 0 || blocksList[var5].blockMaterial.getIsGroundCover();
+	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
+		int var5 = par1World.getBlockId(par2, par3, par4);
+		return var5 == 0 || blocksList[var5].blockMaterial.isGroundCover();
 	}
 
-	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
+	public boolean blockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
 		return false;
 	}
 
-	public void onEntityWalking(World var1, int var2, int var3, int var4, Entity var5) {}
+	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
-	public void onBlockPlaced(World var1, int var2, int var3, int var4, int var5) {}
+	public void onBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {}
 
 	//Spout start
 	public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
@@ -697,23 +595,23 @@ public class Block {
 	}
 	//Spout end
 
-	public void velocityToAddToEntity(World var1, int var2, int var3, int var4, Entity var5, Vec3D var6) {}
+	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3D par6Vec3D) {}
 
-	public void setBlockBoundsBasedOnState(IBlockAccess var1, int var2, int var3, int var4) {}
+	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {}
 
 	public int getBlockColor() {
 		return 16777215;
 	}
 
-	public int getRenderColor(int var1) {
-		return Colorizer.colorizeBlock(this); //Spout HD
+	public int getRenderColor(int par1) {
+		return Colorizer.colorizeBlock(this); //Spout
 	}
 
-	public int colorMultiplier(IBlockAccess var1, int var2, int var3, int var4) {
-		return Colorizer.colorizeBlock(this, var1.getWorldChunkManager(), var2, var3, var4); //Spout HD
+	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4)); //Spout
 	}
 
-	public boolean isPoweringTo(IBlockAccess var1, int var2, int var3, int var4, int var5) {
+	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		return false;
 	}
 
@@ -721,51 +619,49 @@ public class Block {
 		return false;
 	}
 
-	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {}
+	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity) {}
 
-	public boolean isIndirectlyPoweringTo(World var1, int var2, int var3, int var4, int var5) {
+	public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5) {
 		return false;
 	}
 
 	public void setBlockBoundsForItemRender() {}
 
-	public void harvestBlock(World var1, EntityPlayer var2, int var3, int var4, int var5, int var6) {
-		var2.addStat(StatList.mineBlockStatArray[this.blockID], 1);
-		var2.addExhaustion(0.025F);
-		if (this.renderAsNormalBlock() && !isBlockContainer[this.blockID] && EnchantmentHelper.getSilkTouchModifier(var2.inventory)) {
-			ItemStack var8 = this.createStackedBlock(var6);
+	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
+		par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
+		par2EntityPlayer.addExhaustion(0.025F);
+		if (this.renderAsNormalBlock() && !this.field_48207_bU && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer.inventory)) {
+			ItemStack var8 = this.createStackedBlock(par6);
 			if (var8 != null) {
-				this.dropBlockAsItem_do(var1, var3, var4, var5, var8);
+				this.dropBlockAsItem_do(par1World, par3, par4, par5, var8);
 			}
+		} else {
+			int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer.inventory);
+			this.dropBlockAsItem(par1World, par3, par4, par5, par6, var7);
 		}
-		else {
-			int var7 = EnchantmentHelper.getFortuneModifier(var2.inventory);
-			this.dropBlockAsItem(var1, var3, var4, var5, var6, var7);
-		}
-
 	}
 
-	protected ItemStack createStackedBlock(int var1) {
+	protected ItemStack createStackedBlock(int par1) {
 		int var2 = 0;
 		if (this.blockID >= 0 && this.blockID < Item.itemsList.length && Item.itemsList[this.blockID].getHasSubtypes()) {
-			var2 = var1;
+			var2 = par1;
 		}
 
 		return new ItemStack(this.blockID, 1, var2);
 	}
 
-	public int quantityDroppedWithBonus(int var1, Random var2) {
-		return this.quantityDropped(var2);
+	public int quantityDroppedWithBonus(int par1, Random par2Random) {
+		return this.quantityDropped(par2Random);
 	}
 
-	public boolean canBlockStay(World var1, int var2, int var3, int var4) {
+	public boolean canBlockStay(World par1World, int par2, int par3, int par4) {
 		return true;
 	}
 
-	public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {}
+	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving) {}
 
-	public Block setBlockName(String var1) {
-		this.blockName = "tile." + var1;
+	public Block setBlockName(String par1Str) {
+		this.blockName = "tile." + par1Str;
 		return this;
 	}
 
@@ -777,7 +673,7 @@ public class Block {
 		return this.blockName;
 	}
 
-	public void powerBlock(World var1, int var2, int var3, int var4, int var5, int var6) {}
+	public void powerBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {}
 
 	public boolean getEnableStats() {
 		return this.enableStats;
@@ -792,11 +688,11 @@ public class Block {
 		return this.blockMaterial.getMaterialMobility();
 	}
 
-	public float getAmbientOcclusionLightValue(IBlockAccess var1, int var2, int var3, int var4) {
-		return var1.isBlockNormalCube(var2, var3, var4) ? 0.2F : 1.0F;
+	public float getAmbientOcclusionLightValue(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		return par1IBlockAccess.isBlockNormalCube(par2, par3, par4)?0.2F:1.0F;
 	}
 
-	public void func_43001_a(World var1, int var2, int var3, int var4, Entity var5, float var6) {}
+	public void onFallenUpon(World par1World, int par2, int par3, int par4, Entity par5Entity, float par6) {}
 
 	static {
 		Item.itemsList[cloth.blockID] = (new ItemCloth(cloth.blockID - 256)).setItemName("cloth");
@@ -806,7 +702,7 @@ public class Block {
 		Item.itemsList[sapling.blockID] = (new ItemSapling(sapling.blockID - 256)).setItemName("sapling");
 		Item.itemsList[leaves.blockID] = (new ItemLeaves(leaves.blockID - 256)).setItemName("leaves");
 		Item.itemsList[vine.blockID] = new ItemColored(vine.blockID - 256, false);
-		Item.itemsList[tallGrass.blockID] = (new ItemColored(tallGrass.blockID - 256, true)).setBlockNames(new String[] {"shrub", "grass", "fern"});
+		Item.itemsList[tallGrass.blockID] = (new ItemColored(tallGrass.blockID - 256, true)).setBlockNames(new String[]{"shrub", "grass", "fern"});
 		Item.itemsList[waterlily.blockID] = new ItemLilyPad(waterlily.blockID - 256);
 		Item.itemsList[pistonBase.blockID] = new ItemPiston(pistonBase.blockID - 256);
 		Item.itemsList[pistonStickyBase.blockID] = new ItemPiston(pistonStickyBase.blockID - 256);
@@ -828,6 +724,10 @@ public class Block {
 				}
 
 				if (var0 == tilledField.blockID) {
+					var1 = true;
+				}
+
+				if (canBlockGrass[var0]) {
 					var1 = true;
 				}
 

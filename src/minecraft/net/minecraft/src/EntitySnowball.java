@@ -11,44 +11,44 @@ import net.minecraft.src.World;
 
 public class EntitySnowball extends EntityThrowable {
 
-	public EntitySnowball(World var1) {
-		super(var1);
+	public EntitySnowball(World par1World) {
+		super(par1World);
 		//Spout start
 		this.spoutEntity = new CraftSnowball(this);
 		//Spout end
 	}
 
-	public EntitySnowball(World var1, EntityLiving var2) {
-		super(var1, var2);
+	public EntitySnowball(World par1World, EntityLiving par2EntityLiving) {
+		super(par1World, par2EntityLiving);
 		//Spout start
 		this.spoutEntity = new CraftSnowball(this);
 		//Spout end
 	}
 
-	public EntitySnowball(World var1, double var2, double var4, double var6) {
-		super(var1, var2, var4, var6);
+	public EntitySnowball(World par1World, double par2, double par4, double par6) {
+		super(par1World, par2, par4, par6);
 		//Spout start
 		this.spoutEntity = new CraftSnowball(this);
 		//Spout end
 	}
 
-	protected void onThrowableCollision(MovingObjectPosition var1) {
-		if(var1.entityHit != null) {
+	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
+		if (par1MovingObjectPosition.entityHit != null) {
 			byte var2 = 0;
-			if(var1.entityHit instanceof EntityBlaze) {
+			if (par1MovingObjectPosition.entityHit instanceof EntityBlaze) {
 				var2 = 3;
 			}
 
-			if(var1.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.throwingEntity), var2)) {
+			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), var2)) {
 				;
 			}
 		}
 
-		for(int var3 = 0; var3 < 8; ++var3) {
+		for (int var3 = 0; var3 < 8; ++var3) {
 			this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 		}
 
-		if(!this.worldObj.multiplayerWorld) {
+		if (!this.worldObj.isRemote) {
 			this.setEntityDead();
 		}
 

@@ -1,39 +1,23 @@
 package net.minecraft.src;
 
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Block;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ChunkProviderFlat;
-import net.minecraft.src.ChunkProviderGenerate;
-import net.minecraft.src.EnumWorldType;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldChunkManager;
-import net.minecraft.src.WorldChunkManagerHell;
-import net.minecraft.src.WorldProviderEnd;
-import net.minecraft.src.WorldProviderHell;
-import net.minecraft.src.WorldProviderSurface;
 //Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
+import com.pclewis.mcpatcher.mod.Colorizer;
 //Spout End
 public abstract class WorldProvider {
-
 	public World worldObj;
-	public EnumWorldType field_46067_b;
+	public WorldType terrainType;
 	public WorldChunkManager worldChunkMgr;
-	public boolean isAlternateDimension = false;
 	public boolean isHellWorld = false;
 	public boolean hasNoSky = false;
 	public float[] lightBrightnessTable = new float[16];
 	public int worldType = 0;
 	private float[] colorsSunriseSunset = new float[4];
 
-	public final void registerWorld(World var1) {
-		this.worldObj = var1;
-		this.field_46067_b = var1.getWorldInfo().func_46133_t();
+	public final void registerWorld(World par1World) {
+		this.worldObj = par1World;
+		this.terrainType = par1World.getWorldInfo().getTerrainType();
 		this.registerWorldChunkManager();
 		this.generateLightBrightnessTable();
 	}
@@ -42,34 +26,31 @@ public abstract class WorldProvider {
 		float var1 = 0.0F;
 
 		for (int var2 = 0; var2 <= 15; ++var2) {
-			float var3 = 1.0F - (float) var2 / 15.0F;
+			float var3 = 1.0F - (float)var2 / 15.0F;
 			this.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
 		}
-
 	}
 
 	protected void registerWorldChunkManager() {
-		if (this.worldObj.getWorldInfo().func_46133_t() == EnumWorldType.FLAT) {
+		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.field_48636_c) {
 			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
+		} else {
+			this.worldChunkMgr = new WorldChunkManager(this.worldObj);
 		}
-		else {
-		this.worldChunkMgr = new WorldChunkManager(this.worldObj);
-	}
-
 	}
 
 	public IChunkProvider getChunkProvider() {
-		return (IChunkProvider)(this.field_46067_b == EnumWorldType.FLAT ? new ChunkProviderFlat(this.worldObj, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()) : new ChunkProviderGenerate(this.worldObj, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
+		return (IChunkProvider)(this.terrainType == WorldType.field_48636_c?new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()):new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
 	}
 
-	public boolean canCoordinateBeSpawn(int var1, int var2) {
-		int var3 = this.worldObj.getFirstUncoveredBlock(var1, var2);
+	public boolean canCoordinateBeSpawn(int par1, int par2) {
+		int var3 = this.worldObj.getFirstUncoveredBlock(par1, par2);
 		return var3 == Block.grass.blockID;
 	}
 
-	public float calculateCelestialAngle(long var1, float var3) {
-		int var4 = (int) (var1 % 24000L);
-		float var5 = ((float) var4 + var3) / 24000.0F - 0.25F;
+	public float calculateCelestialAngle(long par1, float par3) {
+		int var4 = (int)(par1 % 24000L);
+		float var5 = ((float)var4 + par3) / 24000.0F - 0.25F;
 		if (var5 < 0.0F) {
 			++var5;
 		}
@@ -79,36 +60,39 @@ public abstract class WorldProvider {
 		}
 
 		float var6 = var5;
-		var5 = 1.0F - (float) ((Math.cos((double) var5 * 3.141592653589793D) + 1.0D) / 2.0D);
+		var5 = 1.0F - (float)((Math.cos((double)var5 * Math.PI) + 1.0D) / 2.0D);
 		var5 = var6 + (var5 - var6) / 3.0F;
 		return var5;
 	}
 
-	public int func_40470_b(long var1, float var3) {
-		return (int) (var1 / 24000L) % 8;
+	public int getMoonPhase(long par1, float par3) {
+		return (int)(par1 / 24000L) % 8;
 	}
 
-	public float[] calcSunriseSunsetColors(float var1, float var2) {
+	public boolean func_48217_e() {
+		return true;
+	}
+
+	public float[] calcSunriseSunsetColors(float par1, float par2) {
 		float var3 = 0.4F;
-		float var4 = MathHelper.cos(var1 * 3.1415927F * 2.0F) - 0.0F;
+		float var4 = MathHelper.cos(par1 * (float)Math.PI * 2.0F) - 0.0F;
 		float var5 = -0.0F;
 		if (var4 >= var5 - var3 && var4 <= var5 + var3) {
 			float var6 = (var4 - var5) / var3 * 0.5F + 0.5F;
-			float var7 = 1.0F - (1.0F - MathHelper.sin(var6 * 3.1415927F)) * 0.99F;
+			float var7 = 1.0F - (1.0F - MathHelper.sin(var6 * (float)Math.PI)) * 0.99F;
 			var7 *= var7;
 			this.colorsSunriseSunset[0] = var6 * 0.3F + 0.7F;
 			this.colorsSunriseSunset[1] = var6 * var6 * 0.7F + 0.2F;
 			this.colorsSunriseSunset[2] = var6 * var6 * 0.0F + 0.2F;
 			this.colorsSunriseSunset[3] = var7;
 			return this.colorsSunriseSunset;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
 
-	public Vec3D getFogColor(float var1, float var2) {
-		float var3 = MathHelper.cos(var1 * 3.1415927F * 2.0F) * 2.0F + 0.5F;
+	public Vec3D getFogColor(float par1, float par2) {
+		float var3 = MathHelper.cos(par1 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
 		if (var3 < 0.0F) {
 			var3 = 0.0F;
 		}
@@ -117,36 +101,45 @@ public abstract class WorldProvider {
 			var3 = 1.0F;
 		}
 		//Spout Start
-		
-		float var4 = 0.7529412F;
-		float var5 = 0.8470588F;
-		float var6 = 1.0F;
-		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
-		if(fogColor != null){
-			var4 = fogColor.getRedF();
-			var5 = fogColor.getGreenF();
-			var6 = fogColor.getBlueF();
+
+		float var4;
+		float var5;
+		float var6;
+		if (Colorizer.computeFogColor(Colorizer.COLOR_MAP_FOG0)) {
+			var4 = Colorizer.setColor[0];
+			var5 = Colorizer.setColor[1];
+			var6 = Colorizer.setColor[2];
+		} else {
+			var4 = 0.7529412F;
+			var5 = 0.84705883F;
+			var6 = 1.0F;
+			Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
+			if(fogColor != null){
+				var4 = fogColor.getRedF();
+				var5 = fogColor.getGreenF();
+				var6 = fogColor.getBlueF();
+			}
 		}
 		//Spout End
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;
-		return Vec3D.createVector((double) var4, (double) var5, (double) var6);
+		return Vec3D.createVector((double)var4, (double)var5, (double)var6);
 	}
 
 	public boolean canRespawnHere() {
 		return true;
 	}
 
-	public static WorldProvider getProviderForDimension(int var0) {
-		return (WorldProvider) (var0 == -1 ? new WorldProviderHell() : (var0 == 0 ? new WorldProviderSurface() : (var0 == 1 ? new WorldProviderEnd() : null)));
+	public static WorldProvider getProviderForDimension(int par0) {
+		return (WorldProvider)(par0 == -1?new WorldProviderHell():(par0 == 0?new WorldProviderSurface():(par0 == 1?new WorldProviderEnd():null)));
 	}
 
 	public float getCloudHeight() {
-		return (float)this.worldObj.worldHeight;
+		return 128.0F;
 	}
 
-	public boolean func_28112_c() {
+	public boolean isSkyColored() {
 		return true;
 	}
 
@@ -154,15 +147,19 @@ public abstract class WorldProvider {
 		return null;
 	}
 
-	public int func_46066_g() {
-		return this.field_46067_b == EnumWorldType.FLAT ? 4 : this.worldObj.worldHeight / 2;
+	public int getAverageGroundLevel() {
+		return this.terrainType == WorldType.field_48636_c?4:64;
 	}
 
-	public boolean func_46064_i() {
-		return this.field_46067_b != EnumWorldType.FLAT && !this.hasNoSky;
+	public boolean getWorldHasNoSky() {
+		return this.terrainType != WorldType.field_48636_c && !this.hasNoSky;
 	}
 
 	public double func_46065_j() {
-		return this.field_46067_b == EnumWorldType.FLAT ? 1.0D : 0.03125D;
+		return this.terrainType == WorldType.field_48636_c?1.0D:0.03125D;
+	}
+
+	public boolean func_48218_b(int par1, int par2) {
+		return false;
 	}
 }

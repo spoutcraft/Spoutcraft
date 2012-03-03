@@ -29,6 +29,7 @@ import net.minecraft.src.Packet11PlayerPosition;
 import net.minecraft.src.Packet12PlayerLook;
 import net.minecraft.src.Packet130UpdateSign;
 import net.minecraft.src.Packet131MapData;
+import net.minecraft.src.Packet132TileEntityData;
 import net.minecraft.src.Packet13PlayerLookMove;
 import net.minecraft.src.Packet14BlockDig;
 import net.minecraft.src.Packet15Place;
@@ -57,6 +58,7 @@ import net.minecraft.src.Packet31RelEntityMove;
 import net.minecraft.src.Packet32EntityLook;
 import net.minecraft.src.Packet33RelEntityMoveLook;
 import net.minecraft.src.Packet34EntityTeleport;
+import net.minecraft.src.Packet35EntityHeadRotation;
 import net.minecraft.src.Packet38EntityStatus;
 import net.minecraft.src.Packet39AttachEntity;
 import net.minecraft.src.Packet3Chat;
@@ -88,35 +90,38 @@ public abstract class Packet {
 	private static Set clientPacketIdList = new HashSet();
 	private static Set serverPacketIdList = new HashSet();
 	public final long creationTimeMillis = System.currentTimeMillis();
+	public static long field_48158_m;
+	public static long field_48156_n;
+	public static long field_48157_o;
+	public static long field_48155_p;
 	public boolean isChunkDataPacket = false;
 
-
-	public static void addIdClassMapping(int var0, boolean var1, boolean var2, Class var3) { // Spout default -> public
-		if(packetIdToClassMap.containsKey(var0)) {
-			throw new IllegalArgumentException("Duplicate packet id:" + var0);
-		} else if(packetClassToIdMap.containsKey(var3)) {
-			throw new IllegalArgumentException("Duplicate packet class:" + var3);
+	public static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class) { // Spout default -> public
+		if (packetIdToClassMap.containsItem(par0)) {
+			throw new IllegalArgumentException("Duplicate packet id:" + par0);
+		} else if (packetClassToIdMap.containsKey(par3Class)) {
+			throw new IllegalArgumentException("Duplicate packet class:" + par3Class);
 		} else {
-			packetIdToClassMap.addKey(var0, var3);
-			packetClassToIdMap.put(var3, Integer.valueOf(var0));
-			if(var1) {
-				clientPacketIdList.add(Integer.valueOf(var0));
+			packetIdToClassMap.addKey(par0, par3Class);
+			packetClassToIdMap.put(par3Class, Integer.valueOf(par0));
+			if (par1) {
+				clientPacketIdList.add(Integer.valueOf(par0));
 			}
 
-			if(var2) {
-				serverPacketIdList.add(Integer.valueOf(var0));
+			if (par2) {
+				serverPacketIdList.add(Integer.valueOf(par0));
 			}
 
 		}
 	}
 
-	public static Packet getNewPacket(int var0) {
+	public static Packet getNewPacket(int par0) {
 		try {
-			Class var1 = (Class)packetIdToClassMap.lookup(var0);
+			Class var1 = (Class)packetIdToClassMap.lookup(par0);
 			return var1 == null?null:(Packet)var1.newInstance();
 		} catch (Exception var2) {
 			var2.printStackTrace();
-			System.out.println("Skipping packet with id " + var0);
+			System.out.println("Skipping packet with id " + par0);
 			return null;
 		}
 	}
@@ -125,61 +130,67 @@ public abstract class Packet {
 		return ((Integer)packetClassToIdMap.get(this.getClass())).intValue();
 	}
 
-	public static Packet readPacket(DataInputStream var0, boolean var1) throws IOException {
+	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1) throws IOException {
 		boolean var2 = false;
 		Packet var3 = null;
 
 		int var6;
 		try {
-			var6 = var0.read();
-			if(var6 == -1) {
+			var6 = par0DataInputStream.read();
+			if (var6 == -1) {
 				return null;
 			}
 
-			if(var1 && !serverPacketIdList.contains(Integer.valueOf(var6)) || !var1 && !clientPacketIdList.contains(Integer.valueOf(var6))) {
+			if (par1 && !serverPacketIdList.contains(Integer.valueOf(var6)) || !par1 && !clientPacketIdList.contains(Integer.valueOf(var6))) {
 				throw new IOException("Bad packet id " + var6);
 			}
 
 			var3 = getNewPacket(var6);
-			if(var3 == null) {
+			if (var3 == null) {
 				throw new IOException("Bad packet id " + var6);
 			}
 
-			var3.readPacketData(var0);
+			var3.readPacketData(par0DataInputStream);
+			++field_48158_m;
+			field_48156_n += (long)var3.getPacketSize();
 		} catch (EOFException var5) {
 			System.out.println("Reached end of stream");
 			return null;
 		}
 
 		PacketCount.countPacket(var6, (long)var3.getPacketSize());
+		++field_48158_m;
+		field_48156_n += (long)var3.getPacketSize();
 		return var3;
 	}
 
-	public static void writePacket(Packet var0, DataOutputStream var1) throws IOException {
-		var1.write(var0.getPacketId());
-		var0.writePacketData(var1);
+	public static void writePacket(Packet par0Packet, DataOutputStream par1DataOutputStream) throws IOException {
+		par1DataOutputStream.write(par0Packet.getPacketId());
+		par0Packet.writePacketData(par1DataOutputStream);
+		++field_48157_o;
+		field_48155_p += (long)par0Packet.getPacketSize();
 	}
 
-	public static void writeString(String var0, DataOutputStream var1) throws IOException {
-		if(var0.length() > 32767) {
+	public static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
+		if (par0Str.length() > 32767) {
 			throw new IOException("String too big");
 		} else {
-			var1.writeShort(var0.length());
-			var1.writeChars(var0);
+			par1DataOutputStream.writeShort(par0Str.length());
+			par1DataOutputStream.writeChars(par0Str);
 		}
 	}
 
-	public static String readString(DataInputStream var0, int var1) throws IOException {
-		short var2 = var0.readShort();
-		if(var2 > var1) {
-			throw new IOException("Received string length longer than maximum allowed (" + var2 + " > " + var1 + ")");
-		} else if(var2 < 0) {
+	public static String readString(DataInputStream par0DataInputStream, int par1) throws IOException {
+		short var2 = par0DataInputStream.readShort();
+		if (var2 > par1) {
+			throw new IOException("Received string length longer than maximum allowed (" + var2 + " > " + par1 + ")");
+		} else if (var2 < 0) {
 			throw new IOException("Received string length is less than zero! Weird string!");
 		} else {
 			StringBuilder var3 = new StringBuilder();
 
-			for(int var4 = 0; var4 < var2; ++var4) {
-				var3.append(var0.readChar());
+			for (int var4 = 0; var4 < var2; ++var4) {
+				var3.append(par0DataInputStream.readChar());
 			}
 
 			return var3.toString();
@@ -194,53 +205,53 @@ public abstract class Packet {
 
 	public abstract int getPacketSize();
 
-	protected ItemStack func_40187_b(DataInputStream var1) throws IOException {
+	protected ItemStack readItemStack(DataInputStream par1DataInputStream) throws IOException {
 		ItemStack var2 = null;
-		short var3 = var1.readShort();
-		if(var3 >= 0) {
-			byte var4 = var1.readByte();
-			short var5 = var1.readShort();
+		short var3 = par1DataInputStream.readShort();
+		if (var3 >= 0) {
+			byte var4 = par1DataInputStream.readByte();
+			short var5 = par1DataInputStream.readShort();
 			var2 = new ItemStack(var3, var4, var5);
-			if(Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k()) {
-				var2.stackTagCompound = this.func_40186_c(var1);
+			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k()) {
+				var2.stackTagCompound = this.readNBTTagCompound(par1DataInputStream);
 			}
 		}
 
 		return var2;
 	}
 
-	protected void writeItemStack(ItemStack var1, DataOutputStream var2) throws IOException {
-		if(var1 == null) {
-			var2.writeShort(-1);
+	protected void writeItemStack(ItemStack par1ItemStack, DataOutputStream par2DataOutputStream) throws IOException {
+		if (par1ItemStack == null) {
+			par2DataOutputStream.writeShort(-1);
 		} else {
-			var2.writeShort(var1.itemID);
-			var2.writeByte(var1.stackSize);
-			var2.writeShort(var1.getItemDamage());
-			if(var1.getItem().isDamageable() || var1.getItem().func_46056_k()) {
-				this.func_40189_a(var1.stackTagCompound, var2);
+			par2DataOutputStream.writeShort(par1ItemStack.itemID);
+			par2DataOutputStream.writeByte(par1ItemStack.stackSize);
+			par2DataOutputStream.writeShort(par1ItemStack.getItemDamage());
+			if (par1ItemStack.getItem().isDamageable() || par1ItemStack.getItem().func_46056_k()) {
+				this.writeNBTTagCompound(par1ItemStack.stackTagCompound, par2DataOutputStream);
 			}
 		}
 
 	}
 
-	protected NBTTagCompound func_40186_c(DataInputStream var1) throws IOException {
-		short var2 = var1.readShort();
-		if(var2 < 0) {
+	protected NBTTagCompound readNBTTagCompound(DataInputStream par1DataInputStream) throws IOException {
+		short var2 = par1DataInputStream.readShort();
+		if (var2 < 0) {
 			return null;
 		} else {
 			byte[] var3 = new byte[var2];
-			var1.readFully(var3);
-			return CompressedStreamTools.loadMapFromByteArray(var3);
+			par1DataInputStream.readFully(var3);
+			return CompressedStreamTools.decompress(var3);
 		}
 	}
 
-	protected void func_40189_a(NBTTagCompound var1, DataOutputStream var2) throws IOException {
-		if(var1 == null) {
-			var2.writeShort(-1);
+	protected void writeNBTTagCompound(NBTTagCompound par1NBTTagCompound, DataOutputStream par2DataOutputStream) throws IOException {
+		if (par1NBTTagCompound == null) {
+			par2DataOutputStream.writeShort(-1);
 		} else {
-			byte[] var3 = CompressedStreamTools.writeMapToByteArray(var1);
-			var2.writeShort((short)var3.length);
-			var2.write(var3);
+			byte[] var3 = CompressedStreamTools.compress(par1NBTTagCompound);
+			par2DataOutputStream.writeShort((short)var3.length);
+			par2DataOutputStream.write(var3);
 		}
 
 	}
@@ -280,6 +291,7 @@ public abstract class Packet {
 		addIdClassMapping(32, true, false, Packet32EntityLook.class);
 		addIdClassMapping(33, true, false, Packet33RelEntityMoveLook.class);
 		addIdClassMapping(34, true, false, Packet34EntityTeleport.class);
+		addIdClassMapping(35, true, false, Packet35EntityHeadRotation.class);
 		addIdClassMapping(38, true, false, Packet38EntityStatus.class);
 		addIdClassMapping(39, true, false, Packet39AttachEntity.class);
 		addIdClassMapping(40, true, false, Packet40EntityMetadata.class);
@@ -306,6 +318,7 @@ public abstract class Packet {
 		addIdClassMapping(108, false, true, Packet108EnchantItem.class);
 		addIdClassMapping(130, true, true, Packet130UpdateSign.class);
 		addIdClassMapping(131, true, false, Packet131MapData.class);
+		addIdClassMapping(132, true, false, Packet132TileEntityData.class);
 		addIdClassMapping(200, true, false, Packet200Statistic.class);
 		addIdClassMapping(201, true, false, Packet201PlayerInfo.class);
 		addIdClassMapping(250, true, true, Packet250CustomPayload.class);

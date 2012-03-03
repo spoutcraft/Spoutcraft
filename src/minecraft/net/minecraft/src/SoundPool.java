@@ -17,24 +17,23 @@ public class SoundPool {
 	public int numberOfSoundPoolEntries = 0;
 	public boolean isGetRandomSound = true;
 
-
-	public SoundPoolEntry addSound(String var1, File var2) {
+	public SoundPoolEntry addSound(String par1Str, File par2File) {
 		try {
-			String var3 = var1;
-			var1 = var1.substring(0, var1.indexOf("."));
-			if(this.isGetRandomSound) {
-				while(Character.isDigit(var1.charAt(var1.length() - 1))) {
-					var1 = var1.substring(0, var1.length() - 1);
+			String var3 = par1Str;
+			par1Str = par1Str.substring(0, par1Str.indexOf("."));
+			if (this.isGetRandomSound) {
+				while (Character.isDigit(par1Str.charAt(par1Str.length() - 1))) {
+					par1Str = par1Str.substring(0, par1Str.length() - 1);
 				}
 			}
 
-			var1 = var1.replaceAll("/", ".");
-			if(!this.nameToSoundPoolEntriesMapping.containsKey(var1)) {
-				this.nameToSoundPoolEntriesMapping.put(var1, new ArrayList());
+			par1Str = par1Str.replaceAll("/", ".");
+			if (!this.nameToSoundPoolEntriesMapping.containsKey(par1Str)) {
+				this.nameToSoundPoolEntriesMapping.put(par1Str, new ArrayList());
 			}
 
-			SoundPoolEntry var4 = new SoundPoolEntry(var3, var2.toURI().toURL());
-			((List)this.nameToSoundPoolEntriesMapping.get(var1)).add(var4);
+			SoundPoolEntry var4 = new SoundPoolEntry(var3, par2File.toURI().toURL());
+			((List)this.nameToSoundPoolEntriesMapping.get(par1Str)).add(var4);
 			this.allSoundPoolEntries.add(var4);
 			++this.numberOfSoundPoolEntries;
 			return var4;
@@ -44,8 +43,8 @@ public class SoundPool {
 		}
 	}
 
-	public SoundPoolEntry getRandomSoundFromSoundPool(String var1) {
-		List var2 = (List)this.nameToSoundPoolEntriesMapping.get(var1);
+	public SoundPoolEntry getRandomSoundFromSoundPool(String par1Str) {
+		List var2 = (List)this.nameToSoundPoolEntriesMapping.get(par1Str);
 		return var2 == null?null:(SoundPoolEntry)var2.get(this.rand.nextInt(var2.size()));
 	}
 

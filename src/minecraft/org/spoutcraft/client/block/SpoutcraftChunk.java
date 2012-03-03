@@ -66,9 +66,9 @@ public class SpoutcraftChunk implements Chunk{
 		x = chunk.xPosition;
 		z = chunk.zPosition;
 
-		this.worldHeight = world.worldHeight;
-		this.xBitShifts = world.xShift;
-		this.zBitShifts = world.heightShift;
+		this.worldHeight = 256;
+		this.xBitShifts = 8;
+		this.zBitShifts = 12;
 		worldHeightMinusOne = worldHeight - 1;
 	}
 
@@ -133,19 +133,20 @@ public class SpoutcraftChunk implements Chunk{
 	}
 	
 	public byte[] getRawBlockIds() {
-		return getHandle().blocks;
+		//TODO: fix
+		return null;
 	}
 
 	public Entity[] getEntities() {
 		int count = 0, index = 0;
 		net.minecraft.src.Chunk chunk = getHandle();
-		for (int i = 0; i < 8; i++) {
-			count += chunk.entities[i].size();
+		for (int i = 0; i < chunk.field_48502_j.length; i++) {
+			count += chunk.field_48502_j[i].size();
 		}
 
 		Entity[] entities = new Entity[count];
-		for (int i = 0; i < 8; i++) {
-			for (Object obj: chunk.entities[i].toArray()) {
+		for (int i = 0; i < chunk.field_48502_j.length; i++) {
+			for (Object obj: chunk.field_48502_j[i].toArray()) {
 				if (!(obj instanceof net.minecraft.src.Entity)) {
 					continue;
 				}

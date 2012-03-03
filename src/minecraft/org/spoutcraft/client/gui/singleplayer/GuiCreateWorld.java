@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.src.EnumWorldType;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.PlayerControllerCreative;
 import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.WorldSettings;
+import net.minecraft.src.WorldType;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
@@ -101,7 +101,9 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		
 		comboWorldHeight = new GenericComboBox();
 		comboWorldHeight.setItems(listWorldHeights);
-		comboWorldHeight.setSelection(1); //Set to 128 by default.
+		comboWorldHeight.setSelection(2); //Set to 128 by default.
+		comboWorldHeight.setEnabled(false);
+		comboWorldHeight.setTooltip("Broken as of Minecraft 1.2 :(");
 		
 		labelWorldHeight = new GenericLabel("World Height");
 		
@@ -230,7 +232,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			boolean hardcore = comboGameType.getSelectedItem().equals("Hardcore");
 			int height = Integer.valueOf(comboWorldHeight.getSelectedItem());
 			
-			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, EnumWorldType.values()[comboWorldType.getSelectedRow()]), height);
+			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.field_48637_a[comboWorldType.getSelectedRow()]));
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 		if(btn == buttonNewSeed) {

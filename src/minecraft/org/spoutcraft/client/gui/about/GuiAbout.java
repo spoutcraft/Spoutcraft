@@ -412,16 +412,16 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 
-		drawString(this.fontRenderer, "1.1.0", (int)(this.width * 0.034f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "1.2.3", (int)(this.width * 0.034f), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.034f), this.height - 10, 0x808080);
 
 		String version = Long.toString(SpoutClient.getClientVersion());
 		drawString(this.fontRenderer, "Build " + version, (int)(this.width - 45) - fontRenderer.getStringWidth(version) + fontRenderer.getStringWidth("0"), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Licensed under LGPLv3", (int)(this.width - 129), this.height - 10, 0x808080);
 
-		getControlList().get(0).xPosition = this.width / 2 - 50;
-		getControlList().get(0).yPosition = this.height - 25;
-		getControlList().get(0).drawButton(this.mc, x, y);
+		((GuiButton)this.controlList.get(0)).xPosition = this.width / 2 - 50;
+		((GuiButton)this.controlList.get(0)).yPosition = this.height - 25;
+		((GuiButton)this.controlList.get(0)).drawButton(this.mc, x, y);
 		//super.drawScreen(x, x, z);
 
 		//Shadow magic

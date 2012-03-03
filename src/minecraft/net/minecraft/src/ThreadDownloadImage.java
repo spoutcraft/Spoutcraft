@@ -8,16 +8,17 @@ import net.minecraft.src.ThreadDownloadImageData;
 
 class ThreadDownloadImage extends Thread {
 
+	
 	final String location;
-
+	
 	final ImageBuffer buffer;
-
+	
 	final ThreadDownloadImageData imageData;
 
-	ThreadDownloadImage(ThreadDownloadImageData var1, String var2, ImageBuffer var3) {
-		this.imageData = var1;
-		this.location = var2;
-		this.buffer = var3;
+	ThreadDownloadImage(ThreadDownloadImageData par1ThreadDownloadImageData, String par2Str, ImageBuffer par3ImageBuffer) {
+		this.imageData = par1ThreadDownloadImageData;
+		this.location = par2Str;
+		this.buffer = par3ImageBuffer;
 	}
 
 	public void run() {
@@ -33,21 +34,18 @@ class ThreadDownloadImage extends Thread {
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
-			if(var1.getResponseCode() / 100 == 4) {
+			if (var1.getResponseCode() / 100 == 4) {
 				return;
 			}
 
-			if(this.buffer == null) {
+			if (this.buffer == null) {
 				this.imageData.image = ImageIO.read(var1.getInputStream());
-			}
-			else {
+			} else {
 				this.imageData.image = this.buffer.parseUserSkin(ImageIO.read(var1.getInputStream()));
 			}
-		}
-		catch (Exception var6) {
+		} catch (Exception var6) {
 			var6.printStackTrace();
-		}
-		finally {
+		} finally {
 			var1.disconnect();
 		}
 

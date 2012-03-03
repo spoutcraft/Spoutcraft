@@ -1,8 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.ChatAllowedCharacters;
-import net.minecraft.src.GuiScreen;
 
 import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
@@ -12,15 +10,22 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.gui.ChatBar;
 //Spout End
 
-public class GuiChat extends GuiScreen {
+public class GuiChat extends GuiScreen
+{
+	/** The chat message. */
+	public String message = ""; //Spout protected -> public
+
+	/** Counts the number of screen updates. Used to make the caret flash. */
+	private int updateCounter = 0; //Spout
+	
 	//Spout Improved Chat Start
-	public String message = "";
-	public int updateCounter = 0;
 	public static final String allowedCharacters = ChatAllowedCharacters.allowedCharacters;
 	private static String lastChat = "";
 	
 	public int cursorPosition = 0;
-	public GuiChat() {
+
+	public GuiChat()
+	{
 		SpoutClient.getInstance().getChatManager().chatScroll = 0;
 		SpoutClient.getInstance().getChatManager().commandScroll = 0;
 		message = GuiChat.lastChat;
@@ -29,30 +34,54 @@ public class GuiChat extends GuiScreen {
 	}
 	//Spout Improved Chat End
 
-	public void initGui() {
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
+	public void initGui()
+	{
 		Keyboard.enableRepeatEvents(true);
 	}
 
-	public void onGuiClosed() {
+	/**
+	 * Called when the screen is unloaded. Used to disable keyboard repeat events
+	 */
+	public void onGuiClosed()
+	{
 		Keyboard.enableRepeatEvents(false);
 	}
 
-	public void updateScreen() {
-		++this.updateCounter;
+	/**
+	 * Called from the main game loop to update the screen.
+	 */
+	public void updateScreen()
+	{
+		updateCounter++;
 	}
 
-	protected void keyTyped(char var1, int var2) {
+	/**
+	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
+	 */
+	protected void keyTyped(char par1, int par2)
+	{
 		//Spout Improved ChatStart
-		if (SpoutClient.getInstance().getChatManager().onChatKeyTyped(var1, var2, this)) {
+		if (SpoutClient.getInstance().getChatManager().onChatKeyTyped(par1, par2, this)) {
 			return;
 		}
 		//Spout Improved Chat End
-		if(var2 == 1) {
-			this.mc.displayGuiScreen((GuiScreen)null);
-		} else if(var2 == 28) {
-			String var3 = this.message.trim();
-			if(var3.length() > 0) {
-				String var4 = this.message.trim();
+		if (par2 == 1)
+		{
+			mc.displayGuiScreen(null);
+			return;
+		}
+
+		if (par2 == 28)
+		{
+			String s = message.trim();
+
+			if (s.length() > 0)
+			{
+				String var4 = message.trim();
+
 				//Spout Improved Chat Start
 				if (var4.startsWith("/")) {
 					SpoutClient.getInstance().getChatManager().pastCommands.add(var4);
@@ -60,30 +89,32 @@ public class GuiChat extends GuiScreen {
 				else {
 					SpoutClient.getInstance().getChatManager().pastMessages.add(var4);
 				}
-				//Spout Improved Chat End
 				//if(!this.mc.lineIsCommand(var4)) {
 				if (!SpoutClient.getInstance().getChatManager().handleCommand(var4)) {
-					//Spout Improved Chat  Start
 					SpoutClient.getInstance().getChatManager().sendChat(var4);
-					//Spout Improved Chat End
 					//this.mc.thePlayer.sendChatMessage(var4);
-					
 				}
+				//Spout Improved Chat End
 			}
 
-			this.mc.displayGuiScreen((GuiScreen)null);
-		} else {
-			if(var2 == 14 && this.message.length() > 0) {
-				this.message = this.message.substring(0, this.message.length() - 1);
-			}
+			mc.displayGuiScreen(null);
+			return;
+		}
 
-			if((allowedCharacters.indexOf(var1) >= 0 || var1 > 32) && this.message.length() < 100) {
-				this.message = this.message + var1;
-			}
+		if (par2 == 14 && message.length() > 0)
+		{
+			message = message.substring(0, message.length() - 1);
+		}
 
+		if (!(!ChatAllowedCharacters.func_48614_a(par1) || message.length() >= 100))
+		{
+			message += par1;
 		}
 	}
 
+	/**
+	 * Draws the screen and all the components in it.
+	 */
 	public void drawScreen(int var1, int var2, float var3) {
 		//Spout Improved Chat Start
 		SpoutClient.getInstance().getChatManager().handleMouseWheel();
@@ -126,28 +157,36 @@ public class GuiChat extends GuiScreen {
 		super.drawScreen(var1, var2, var3);
 	}
 
-	protected void mouseClicked(int var1, int var2, int var3) {
-		if(var3 == 0) {
-			if(this.mc.ingameGUI.field_933_a != null) {
-				if(this.message.length() > 0 && !this.message.endsWith(" ")) {
-					this.message = this.message + " ";
-				}
-
-				this.message = this.message + this.mc.ingameGUI.field_933_a;
-				//Spout Improved Chat Start
-				/*
-				byte var4 = 100;
-				if(this.message.length() > var4) {
-					this.message = this.message.substring(0, var4);
-				}
-				*/
-				super.drawScreen(var1, var2, var3);
-				//Spout Improved Chat End
-			} else {
-				super.mouseClicked(var1, var2, var3);
-			}
+	/**
+	 * Called when the mouse is clicked.
+	 */
+	protected void mouseClicked(int par1, int par2, int par3)
+	{
+		if (par3 != 0)
+		{
+			return;
 		}
 
+		if (mc.ingameGUI.field_933_a == null)
+		{
+			super.mouseClicked(par1, par2, par3);
+			return;
+		}
+
+		//Spout Improved Chat Start
+//		if (!(message.length() <= 0 || message.endsWith(" ")))
+//		{
+//			message += " ";
+//		}
+		//Spout Improved Chat End
+
+		message += mc.ingameGUI.field_933_a;
+		byte byte0 = 100;
+
+		if (message.length() > byte0)
+		{
+			message = message.substring(0, byte0);
+		}
 	}
 	
 	//Spout start
@@ -161,5 +200,4 @@ public class GuiChat extends GuiScreen {
 		}
 	}
 	//Spout end
-
 }

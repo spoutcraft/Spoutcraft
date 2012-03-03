@@ -5,72 +5,89 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
-
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
+//Spout start
+import org.spoutcraft.client.SpoutClient;
+//Spout end
 
 public class Packet51MapChunk extends Packet {
 
-	public int xPosition;
-	public int yPosition;
-	public int zPosition;
-	public int xSize;
-	public int ySize;
-	public int zSize;
-	public byte[] chunk;
-	private int chunkSize;
-
+	public int field_48177_a;
+	public int field_48175_b;
+	public int field_48176_c;
+	public int field_48173_d;
+	public byte[] field_48174_e;
+	public boolean field_48171_f;
+	private int field_48172_g;
+	private int field_48178_h;
+	private static byte[] field_48179_i = new byte[0];
 
 	public Packet51MapChunk() {
 		this.isChunkDataPacket = true;
 	}
 
-	public void readPacketData(DataInputStream var1) throws IOException {
-		this.xPosition = var1.readInt();
-		this.yPosition = var1.readShort();
-		this.zPosition = var1.readInt();
-		this.xSize = var1.read() + 1;
-		this.ySize = var1.read() + 1;
-		this.zSize = var1.read() + 1;
-		this.chunkSize = var1.readInt();
-		byte[] var2 = new byte[this.chunkSize];
-		var1.readFully(var2);
-		this.chunk = new byte[this.xSize * this.ySize * this.zSize * 5 / 2];
-		Inflater var3 = new Inflater();
-		var3.setInput(var2);
+	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
+		this.field_48177_a = par1DataInputStream.readInt();
+		this.field_48175_b = par1DataInputStream.readInt();
+		this.field_48171_f = par1DataInputStream.readBoolean();
+		this.field_48176_c = par1DataInputStream.readShort();
+		this.field_48173_d = par1DataInputStream.readShort();
+		this.field_48172_g = par1DataInputStream.readInt();
+		this.field_48178_h = par1DataInputStream.readInt();
+		if (field_48179_i.length < this.field_48172_g) {
+			field_48179_i = new byte[this.field_48172_g];
+		}
+
+		par1DataInputStream.readFully(field_48179_i, 0, this.field_48172_g);
+		int var2 = 0;
+
+		int var3;
+		for (var3 = 0; var3 < 16; ++var3) {
+			var2 += this.field_48176_c >> var3 & 1;
+		}
+
+		var3 = 12288 * var2;
+		if (this.field_48171_f) {
+			var3 += 256;
+		}
+
+		this.field_48174_e = new byte[var3];
+		Inflater var4 = new Inflater();
+		var4.setInput(field_48179_i, 0, this.field_48172_g);
 
 		try {
-			var3.inflate(this.chunk);
+			var4.inflate(this.field_48174_e);
 			// Spout - start
-			if (SpoutClient.getInstance().isSpoutEnabled())
-				this.chunk = org.spoutcraft.client.chunkcache.ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
+			//TODO: fix!
+			//if (SpoutClient.getInstance().isSpoutEnabled())
+			//	this.chunk = org.spoutcraft.client.chunkcache.ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
 			// Spout - end
-		} catch (DataFormatException var8) {
+		} catch (DataFormatException var9) {
 			throw new IOException("Bad compressed data format");
 		} finally {
-			var3.end();
+			var4.end();
 		}
 
 	}
 
-	public void writePacketData(DataOutputStream var1) throws IOException {
-		var1.writeInt(this.xPosition);
-		var1.writeShort(this.yPosition);
-		var1.writeInt(this.zPosition);
-		var1.write(this.xSize - 1);
-		var1.write(this.ySize - 1);
-		var1.write(this.zSize - 1);
-		var1.writeInt(this.chunkSize);
-		var1.write(this.chunk, 0, this.chunkSize);
+	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
+		par1DataOutputStream.writeInt(this.field_48177_a);
+		par1DataOutputStream.writeInt(this.field_48175_b);
+		par1DataOutputStream.writeBoolean(this.field_48171_f);
+		par1DataOutputStream.writeShort((short)(this.field_48176_c & '\uffff'));
+		par1DataOutputStream.writeShort((short)(this.field_48173_d & '\uffff'));
+		par1DataOutputStream.writeInt(this.field_48172_g);
+		par1DataOutputStream.writeInt(this.field_48178_h);
+		par1DataOutputStream.write(this.field_48174_e, 0, this.field_48172_g);
 	}
 
-	public void processPacket(NetHandler var1) {
-		var1.handleMapChunk(this);
+	public void processPacket(NetHandler par1NetHandler) {
+		par1NetHandler.func_48487_a(this);
 	}
 
 	public int getPacketSize() {
-		return 17 + this.chunkSize;
+		return 17 + this.field_48172_g;
 	}
+
 }

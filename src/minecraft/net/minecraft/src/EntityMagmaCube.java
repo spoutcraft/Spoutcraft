@@ -8,8 +8,8 @@ import org.spoutcraft.client.entity.CraftMagmaCube; //Spout
 
 public class EntityMagmaCube extends EntitySlime {
 
-	public EntityMagmaCube(World var1) {
-		super(var1);
+	public EntityMagmaCube(World par1World) {
+		super(par1World);
 		this.texture = "/mob/lava.png";
 		this.isImmuneToFire = true;
 		this.landMovementFactor = 0.2F;
@@ -19,57 +19,44 @@ public class EntityMagmaCube extends EntitySlime {
 	}
 
 	public boolean getCanSpawnHere() {
-		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.getIsAnyLiquid(this.boundingBox);
+		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox);
 	}
 
 	public int getTotalArmorValue() {
 		return this.getSlimeSize() * 3;
 	}
 
-	public int getEntityBrightnessForRender(float var1) {
+	public int getEntityBrightnessForRender(float par1) {
 		return 15728880;
 	}
 
-	public float getEntityBrightness(float var1) {
+	public float getEntityBrightness(float par1) {
 		return 1.0F;
 	}
 
-	protected String func_40135_ac() {
+	protected String getSlimeParticle() {
 		return "flame";
 	}
 
-	protected EntitySlime func_40132_ae() {
+	protected EntitySlime createInstance() {
 		return new EntityMagmaCube(this.worldObj);
 	}
 
 	protected int getDropItemId() {
 		return Item.magmaCream.shiftedIndex;
-
 	}
 
-
-
-	protected void dropFewItems(boolean var1, int var2) {
-
+	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.getDropItemId();
-
-		if(var3 > 0 && this.getSlimeSize() > 1) {
-
+		if (var3 > 0 && this.getSlimeSize() > 1) {
 			int var4 = this.rand.nextInt(4) - 2;
-
-			if(var2 > 0) {
-
-				var4 += this.rand.nextInt(var2 + 1);
-
+			if (par2 > 0) {
+				var4 += this.rand.nextInt(par2 + 1);
 			}
 
-
-			for(int var5 = 0; var5 < var4; ++var5) {
-
+			for (int var5 = 0; var5 < var4; ++var5) {
 				this.dropItem(var3, 1);
-
 			}
-
 		}
 
 	}
@@ -91,7 +78,7 @@ public class EntityMagmaCube extends EntitySlime {
 		this.isAirBorne = true;
 	}
 
-	protected void fall(float var1) {}
+	protected void fall(float par1) {}
 
 	protected boolean func_40137_ah() {
 		return true;

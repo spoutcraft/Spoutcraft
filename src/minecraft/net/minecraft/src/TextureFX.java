@@ -16,19 +16,17 @@ public class TextureFX {
 	public int tileSize = 1;
 	public int tileImage = 0;
 
-
-	public TextureFX(int var1) {
-		this.iconIndex = var1;
+	public TextureFX(int par1) {
+		this.iconIndex = par1;
 	}
 
 	public void onTick() {}
 
-	public void bindImage(RenderEngine var1) {
-		if(this.tileImage == 0) {
-			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var1.getTexture("/terrain.png"));
-		} else if(this.tileImage == 1) {
-			GL11.glBindTexture(3553 /*GL_TEXTURE_2D*/, var1.getTexture("/gui/items.png"));
+	public void bindImage(RenderEngine par1RenderEngine) {
+		if (this.tileImage == 0) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture("/terrain.png"));
+		} else if (this.tileImage == 1) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture("/gui/items.png"));
 		}
-
 	}
 }

@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
+import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
@@ -25,74 +26,124 @@ import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 
-public class GuiMainMenu extends GuiScreen {
-
+public class GuiMainMenu extends GuiScreen
+{
+	/** The RNG used by the Main Menu Screen. */
 	private static final Random rand = new Random();
-	private float updateCounter = 0.0F;
-	private String splashText = "missingno";
+
+	/** Counts the number of screen updates. */
+	private float updateCounter;
+
+	/** The splash message. */
+	private String splashText;
 	private GuiButton multiplayerButton;
-	private int field_35357_f = 0;
-	private int field_35358_g;
+	private int field_35357_f;
 
 	// Spout Start
 	private Button buttonSinglePlayer, buttonMultiPlayer, buttonAddons, buttonTextures, buttonOptions, buttonAbout, buttonQuit, buttonFastLogin;
 
 	// Spout End
 
-	public GuiMainMenu() {
-		try {
-			ArrayList var1 = new ArrayList();
-			BufferedReader var2 = new BufferedReader(new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
-			String var3 = "";
+	/**
+	 * Texture allocated for the current viewport of the main menu's panorama background.
+	 */
+	private int viewportTexture;
 
-			while ((var3 = var2.readLine()) != null) {
-				var3 = var3.trim();
-				if (var3.length() > 0) {
-					var1.add(var3);
+	public GuiMainMenu()
+	{
+		updateCounter = 0.0F;
+		field_35357_f = 0;
+		splashText = "missingno";
+
+		try
+		{
+			ArrayList arraylist = new ArrayList();
+			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader((net.minecraft.src.GuiMainMenu.class).getResourceAsStream("/title/splashes.txt"), Charset.forName("UTF-8")));
+			String s = "";
+
+			do
+			{
+				String s1;
+
+				if ((s1 = bufferedreader.readLine()) == null)
+				{
+					break;
+				}
+
+				s1 = s1.trim();
+
+				if (s1.length() > 0)
+				{
+					arraylist.add(s1);
 				}
 			}
+			while (true);
 
-			do {
-				this.splashText = (String) var1.get(rand.nextInt(var1.size()));
-			} while (this.splashText.hashCode() == 125780783);
-		} catch (Exception var4) {
-			;
+			do
+			{
+				splashText = (String)arraylist.get(rand.nextInt(arraylist.size()));
+			}
+			while (splashText.hashCode() == 0x77f432f);
 		}
+		catch (Exception exception) { }
 
-		this.updateCounter = rand.nextFloat();
+		updateCounter = rand.nextFloat();
 	}
 
-	public void updateScreen() {
-		++this.field_35357_f;
+	/**
+	 * Called from the main game loop to update the screen.
+	 */
+	public void updateScreen()
+	{
+		field_35357_f++;
 	}
 
-	public boolean doesGuiPauseGame() {
+	/**
+	 * Returns true if this GUI should pause the game when it is displayed in single-player
+	 */
+	public boolean doesGuiPauseGame()
+	{
 		return false;
 	}
 
-	protected void keyTyped(char var1, int var2) {
+	/**
+	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
+	 */
+	protected void keyTyped(char c, int i)
+	{
 	}
 
-	public void initGui() {
-		this.field_35358_g = this.mc.renderEngine.allocateAndSetupTexture(new BufferedImage(256, 256, 2));
-		Calendar var1 = Calendar.getInstance();
-		var1.setTime(new Date());
-		if (var1.get(2) + 1 == 11 && var1.get(5) == 9) {
-			this.splashText = "Happy birthday, ez!";
-		} else if (var1.get(2) + 1 == 6 && var1.get(5) == 1) {
-			this.splashText = "Happy birthday, Notch!";
-		} else if (var1.get(2) + 1 == 12 && var1.get(5) == 24) {
-			this.splashText = "Merry X-mas!";
-		} else if (var1.get(2) + 1 == 1 && var1.get(5) == 1) {
-			this.splashText = "Happy new year!";
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
+	public void initGui()
+	{
+		viewportTexture = mc.renderEngine.allocateAndSetupTexture(new java.awt.image.BufferedImage(256, 256, 2));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+
+		if (calendar.get(2) + 1 == 11 && calendar.get(5) == 9)
+		{
+			splashText = "Happy birthday, ez!";
 		}
-		
+		else if (calendar.get(2) + 1 == 6 && calendar.get(5) == 1)
+		{
+			splashText = "Happy birthday, Notch!";
+		}
+		else if (calendar.get(2) + 1 == 12 && calendar.get(5) == 24)
+		{
+			splashText = "Merry X-mas!";
+		}
+		else if (calendar.get(2) + 1 == 1 && calendar.get(5) == 1)
+		{
+			splashText = "Happy new year!";
+		}
+
 		// Spout start
 		String text = org.spoutcraft.client.EasterEggs.getSplashTextEasterEgg();
 		if (text != null) {
 			this.splashText = text;
 		}
-		// Spout end
 		StringTranslate tr = StringTranslate.getInstance();
 
 		buttonSinglePlayer = new GenericButton(tr.translateKey("menu.singleplayer"));
@@ -129,14 +180,7 @@ public class GuiMainMenu extends GuiScreen {
 
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Screen s = getScreen();
-		s.attachWidget(spoutcraft, buttonTextures);
-		s.attachWidget(spoutcraft, buttonQuit);
-		s.attachWidget(spoutcraft, buttonAddons);
-		s.attachWidget(spoutcraft, buttonAbout);
-		s.attachWidget(spoutcraft, buttonMultiPlayer);
-		s.attachWidget(spoutcraft, buttonOptions);
-		s.attachWidget(spoutcraft, buttonSinglePlayer);
-		s.attachWidget(spoutcraft, buttonFastLogin);
+		s.attachWidgets(spoutcraft, buttonTextures, buttonQuit, buttonAddons, buttonAbout, buttonMultiPlayer, buttonOptions, buttonSinglePlayer, buttonFastLogin);
 
 		if (this.mc.session == null) {
 			buttonMultiPlayer.setEnabled(false);
@@ -177,95 +221,113 @@ public class GuiMainMenu extends GuiScreen {
 
 	// Spout End
 
-	// protected void actionPerformed(GuiButton var1) {
-	// if(var1.id == 0) {
-	// this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
-	// }
+	/**
+	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+	 */
+	//Spout removed method because our own Gui API does that.
+	//	protected void actionPerformed(GuiButton par1GuiButton)
+	//	{
+	//		if (par1GuiButton.id == 0)
+	//		{
+	//			mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
+	//		}
 	//
-	// if(var1.id == 1) {
-	// this.mc.displayGuiScreen(new GuiSelectWorld(this));
-	// }
+	//		if (par1GuiButton.id == 5)
+	//		{
+	//			mc.displayGuiScreen(new GuiLanguage(this, mc.gameSettings));
+	//		}
 	//
-	// if(var1.id == 2) {
-	// this.mc.displayGuiScreen(new org.getspout.spout.gui.server.GuiFavorites(this)); //Spout
-	// }
+	//		if (par1GuiButton.id == 1)
+	//		{
+	//			mc.displayGuiScreen(new GuiSelectWorld(this));
+	//		}
 	//
-	// if(var1.id == 3) {
-	// this.mc.displayGuiScreen(new org.getspout.spout.gui.texturepacks.GuiTexturePacks()); //Spout
-	// }
+	//		if (par1GuiButton.id == 2)
+	//		{
+	//			mc.displayGuiScreen(new GuiMultiplayer(this));
+	//		}
 	//
-	// if(var1.id == 4) {
-	// this.mc.shutdown();
-	// }
-	// //Spout Start
-	// if(var1.id == BUTTON_ADDONS) {
-	// this.mc.displayGuiScreen(new GuiAddonsLocal());
-	// }
-	// if(var1.id == 5) {
-	// this.mc.displayGuiScreen(new org.getspout.spout.gui.about.GuiAbout());
-	// }
-	// //Spout End
+	//		if (par1GuiButton.id == 3)
+	//		{
+	//			mc.displayGuiScreen(new GuiTexturePacks(this));
+	//		}
 	//
-	// }
+	//		if (par1GuiButton.id == 4)
+	//		{
+	//			mc.shutdown();
+	//		}
+	//	}
 
-	private void func_35355_b(int var1, int var2, float var3) {
-		Tessellator var4 = Tessellator.instance;
-		GL11.glMatrixMode(5889 /* GL_PROJECTION */);
+	/**
+	 * Draws the main menu panorama
+	 */
+	private void drawPanorama(int par1, int par2, float par3)
+	{
+		Tessellator tessellator = Tessellator.instance;
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
-		GLU.gluPerspective(120.0F, 1.0F, 0.05F, 10.0F);
-		GL11.glMatrixMode(5888 /* GL_MODELVIEW0_ARB */);
+		GLU.gluPerspective(120F, 1.0F, 0.05F, 10F);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPushMatrix();
 		GL11.glLoadIdentity();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-		GL11.glEnable(3042 /* GL_BLEND */);
-		GL11.glDisable(3008 /* GL_ALPHA_TEST */);
-		GL11.glDisable(2884 /* GL_CULL_FACE */);
+		GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glDepthMask(false);
-		GL11.glBlendFunc(770, 771);
-		byte var5 = 8;
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		int i = 8;
 
-		for (int var6 = 0; var6 < var5 * var5; ++var6) {
+		for (int j = 0; j < i * i; j++)
+		{
 			GL11.glPushMatrix();
-			float var7 = ((float) (var6 % var5) / (float) var5 - 0.5F) / 64.0F;
-			float var8 = ((float) (var6 / var5) / (float) var5 - 0.5F) / 64.0F;
-			float var9 = 0.0F;
-			GL11.glTranslatef(var7, var8, var9);
-			GL11.glRotatef(MathHelper.sin(((float) this.field_35357_f + var3) / 400.0F) * 25.0F + 20.0F, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(-((float) this.field_35357_f + var3) * 0.1F, 0.0F, 1.0F, 0.0F);
+			float f = ((float)(j % i) / (float)i - 0.5F) / 64F;
+			float f1 = ((float)(j / i) / (float)i - 0.5F) / 64F;
+			float f2 = 0.0F;
+			GL11.glTranslatef(f, f1, f2);
+			GL11.glRotatef(MathHelper.sin(((float)field_35357_f + par3) / 400F) * 25F + 20F, 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(-((float)field_35357_f + par3) * 0.1F, 0.0F, 1.0F, 0.0F);
 
-			for (int var10 = 0; var10 < 6; ++var10) {
+			for (int k = 0; k < 6; k++)
+			{
 				GL11.glPushMatrix();
-				if (var10 == 1) {
-					GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+
+				if (k == 1)
+				{
+					GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
 				}
 
-				if (var10 == 2) {
-					GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+				if (k == 2)
+				{
+					GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
 				}
 
-				if (var10 == 3) {
-					GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+				if (k == 3)
+				{
+					GL11.glRotatef(-90F, 0.0F, 1.0F, 0.0F);
 				}
 
-				if (var10 == 4) {
-					GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
+				if (k == 4)
+				{
+					GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
 				}
 
-				if (var10 == 5) {
-					GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+				if (k == 5)
+				{
+					GL11.glRotatef(-90F, 1.0F, 0.0F, 0.0F);
 				}
 
-				GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/title/bg/panorama" + var10 + ".png"));
-				var4.startDrawingQuads();
-				var4.setColorRGBA_I(16777215, 255 / (var6 + 1));
-				float var11 = 0.0F;
-				var4.addVertexWithUV(-1.0D, -1.0D, 1.0D, (double) (0.0F + var11), (double) (0.0F + var11));
-				var4.addVertexWithUV(1.0D, -1.0D, 1.0D, (double) (1.0F - var11), (double) (0.0F + var11));
-				var4.addVertexWithUV(1.0D, 1.0D, 1.0D, (double) (1.0F - var11), (double) (1.0F - var11));
-				var4.addVertexWithUV(-1.0D, 1.0D, 1.0D, (double) (0.0F + var11), (double) (1.0F - var11));
-				var4.draw();
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture((new StringBuilder()).append("/title/bg/panorama").append(k).append(".png").toString()));
+				tessellator.startDrawingQuads();
+				tessellator.setColorRGBA_I(0xffffff, 255 / (j + 1));
+				float f3 = 0.0F;
+				tessellator.addVertexWithUV(-1D, -1D, 1.0D, 0.0F + f3, 0.0F + f3);
+				tessellator.addVertexWithUV(1.0D, -1D, 1.0D, 1.0F - f3, 0.0F + f3);
+				tessellator.addVertexWithUV(1.0D, 1.0D, 1.0D, 1.0F - f3, 1.0F - f3);
+				tessellator.addVertexWithUV(-1D, 1.0D, 1.0D, 0.0F + f3, 1.0F - f3);
+				tessellator.draw();
 				GL11.glPopMatrix();
 			}
 
@@ -273,108 +335,122 @@ public class GuiMainMenu extends GuiScreen {
 			GL11.glColorMask(true, true, true, false);
 		}
 
-		var4.setTranslationD(0.0D, 0.0D, 0.0D);
+		tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
 		GL11.glColorMask(true, true, true, true);
-		GL11.glMatrixMode(5889 /* GL_PROJECTION */);
+		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPopMatrix();
-		GL11.glMatrixMode(5888 /* GL_MODELVIEW0_ARB */);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glPopMatrix();
 		GL11.glDepthMask(true);
-		GL11.glEnable(2884 /* GL_CULL_FACE */);
-		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
-	private void func_35354_a(float var1) {
-		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.field_35358_g);
-		GL11.glCopyTexSubImage2D(3553 /* GL_TEXTURE_2D */, 0, 0, 0, 0, 0, 256, 256);
-		GL11.glEnable(3042 /* GL_BLEND */);
-		GL11.glBlendFunc(770, 771);
+	/**
+	 * Rotate and blurs the skybox view in the main menu
+	 */
+	private void rotateAndBlurSkybox(float par1)
+	{
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, viewportTexture);
+		GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 0, 0, 256, 256);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glColorMask(true, true, true, false);
-		Tessellator var2 = Tessellator.instance;
-		var2.startDrawingQuads();
-		byte var3 = 3;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		byte byte0 = 3;
 
-		for (int var4 = 0; var4 < var3; ++var4) {
-			var2.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F / (float) (var4 + 1));
-			int var5 = this.width;
-			int var6 = this.height;
-			float var7 = (float) (var4 - var3 / 2) / 256.0F;
-			var2.addVertexWithUV((double) var5, (double) var6, (double) this.zLevel, (double) (0.0F + var7), 0.0D);
-			var2.addVertexWithUV((double) var5, 0.0D, (double) this.zLevel, (double) (1.0F + var7), 0.0D);
-			var2.addVertexWithUV(0.0D, 0.0D, (double) this.zLevel, (double) (1.0F + var7), 1.0D);
-			var2.addVertexWithUV(0.0D, (double) var6, (double) this.zLevel, (double) (0.0F + var7), 1.0D);
+		for (int i = 0; i < byte0; i++)
+		{
+			tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F / (float)(i + 1));
+			int j = width;
+			int k = height;
+			float f = (float)(i - byte0 / 2) / 256F;
+			tessellator.addVertexWithUV(j, k, zLevel, 0.0F + f, 0.0D);
+			tessellator.addVertexWithUV(j, 0.0D, zLevel, 1.0F + f, 0.0D);
+			tessellator.addVertexWithUV(0.0D, 0.0D, zLevel, 1.0F + f, 1.0D);
+			tessellator.addVertexWithUV(0.0D, k, zLevel, 0.0F + f, 1.0D);
 		}
 
-		var2.draw();
+		tessellator.draw();
 		GL11.glColorMask(true, true, true, true);
 	}
 
-	private void func_35356_c(int var1, int var2, float var3) {
+	/**
+	 * Renders the skybox in the main menu
+	 */
+	private void renderSkybox(int par1, int par2, float par3)
+	{
 		GL11.glViewport(0, 0, 256, 256);
-		this.func_35355_b(var1, var2, var3);
-		GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-		GL11.glEnable(3553 /* GL_TEXTURE_2D */);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		this.func_35354_a(var3);
-		GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
-		GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10241 /* GL_TEXTURE_MIN_FILTER */, 9729 /* GL_LINEAR */);
-		GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10240 /* GL_TEXTURE_MAG_FILTER */, 9729 /* GL_LINEAR */);
-		Tessellator var4 = Tessellator.instance;
-		var4.startDrawingQuads();
-		float var5 = this.width > this.height ? 120.0F / (float) this.width : 120.0F / (float) this.height;
-		float var6 = (float) this.height * var5 / 256.0F;
-		float var7 = (float) this.width * var5 / 256.0F;
-		var4.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-		int var8 = this.width;
-		int var9 = this.height;
-		var4.addVertexWithUV(0.0D, (double) var9, (double) this.zLevel, (double) (0.5F - var6), (double) (0.5F + var7));
-		var4.addVertexWithUV((double) var8, (double) var9, (double) this.zLevel, (double) (0.5F - var6), (double) (0.5F - var7));
-		var4.addVertexWithUV((double) var8, 0.0D, (double) this.zLevel, (double) (0.5F + var6), (double) (0.5F - var7));
-		var4.addVertexWithUV(0.0D, 0.0D, (double) this.zLevel, (double) (0.5F + var6), (double) (0.5F + var7));
-		var4.draw();
+		drawPanorama(par1, par2, par3);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		rotateAndBlurSkybox(par3);
+		GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		float f = width <= height ? 120F / (float)height : 120F / (float)width;
+		float f1 = ((float)height * f) / 256F;
+		float f2 = ((float)width * f) / 256F;
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
+		int i = width;
+		int j = height;
+		tessellator.addVertexWithUV(0.0D, j, zLevel, 0.5F - f1, 0.5F + f2);
+		tessellator.addVertexWithUV(i, j, zLevel, 0.5F - f1, 0.5F - f2);
+		tessellator.addVertexWithUV(i, 0.0D, zLevel, 0.5F + f1, 0.5F - f2);
+		tessellator.addVertexWithUV(0.0D, 0.0D, zLevel, 0.5F + f1, 0.5F + f2);
+		tessellator.draw();
 	}
 
-	public void drawScreen(int var1, int var2, float var3) {
-		this.func_35356_c(var1, var2, var3);
-		Tessellator var4 = Tessellator.instance;
-		short var5 = 274;
-		int var6 = 10;
-		byte var7 = 10;
-		this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
-		this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
-		GL11.glPushMatrix();
-		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/title/mclogo.png"));
+	/**
+	 * Draws the screen and all the components in it.
+	 */
+	public void drawScreen(int par1, int par2, float par3)
+	{
+		renderSkybox(par1, par2, par3);
+		Tessellator tessellator = Tessellator.instance;
+		char c = 274;
+		int i = width / 2 - c / 2;
+		byte byte0 = 30;
+		drawGradientRect(0, 0, width, height, 0x80ffffff, 0xffffff);
+		drawGradientRect(0, 0, width, height, 0, 0x80000000);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glScaled(.75, .75, .75);
-		
-		if ((double) this.updateCounter < 1.0E-4D) {
-			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 99, 44);
-			this.drawTexturedModalRect(var6 + 99, var7 + 0, 129, 0, 27, 44);
-			this.drawTexturedModalRect(var6 + 99 + 26, var7 + 0, 126, 0, 3, 44);
-			this.drawTexturedModalRect(var6 + 99 + 26 + 3, var7 + 0, 99, 0, 26, 44);
-			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
-		} else {
-			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
-			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
+
+		if ((double)updateCounter < 0.0001D)
+		{
+			drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
+			drawTexturedModalRect(i + 99, byte0 + 0, 129, 0, 27, 44);
+			drawTexturedModalRect(i + 99 + 26, byte0 + 0, 126, 0, 3, 44);
+			drawTexturedModalRect(i + 99 + 26 + 3, byte0 + 0, 99, 0, 26, 44);
+			drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
 		}
-		GL11.glPopMatrix();
-		var4.setColorOpaque_I(16777215);
+		else
+		{
+			drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 155, 44);
+			drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
+		}
+
+		tessellator.setColorOpaque_I(0xffffff);
 		GL11.glPushMatrix();
 		GL11.glTranslatef(10, 50.0F, 0.0F); //Spout adjusted position
 		//GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F); //Spout removed rotation
-		float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float) (System.currentTimeMillis() % 1000L) / 1000.0F * 3.1415927F * 2.0F) * 0.1F);
-		var8 = var8 * 100.0F / (float) (this.fontRenderer.getStringWidth(this.splashText) + 32);
-		GL11.glScalef(var8, var8, var8);
-		this.drawString(this.fontRenderer, this.splashText, 0, 0, 16776960); //Spout remove centering
+		float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(System.currentTimeMillis() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
+		f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
+		GL11.glScalef(f, f, f);
+		drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
 		GL11.glPopMatrix();
-		
+
 		//Spout Start
 		String powered = "Powered by";
 		int stringWidth = fontRenderer.getStringWidth(powered);
@@ -385,9 +461,9 @@ public class GuiMainMenu extends GuiScreen {
 		Texture spoutcraftLogo = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 		r.drawTexture(spoutcraftLogo, 256, 64);
-		
+
 		GL11.glPopMatrix();
-		
+
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
@@ -408,8 +484,7 @@ public class GuiMainMenu extends GuiScreen {
 
 		// var9 = "Spoutcraft " + SpoutClient.getClientVersion().toString() + " - Minecraft Beta 1.8.1" + " - " + var9;
 		// this.drawCenteredString(this.fontRenderer, var9, this.width / 2, this.height - 10, 0x1F3C8E);
-		// Spout End
-		super.drawScreen(var1, var2, var3);
+		// Spout End- 2, height - 10, 0xffffff);
+		super.drawScreen(par1, par2, par3);
 	}
-
 }

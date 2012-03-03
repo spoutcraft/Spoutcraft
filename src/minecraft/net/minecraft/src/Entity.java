@@ -100,8 +100,8 @@ public abstract class Entity {
 	public int serverPosZ;
 	public boolean ignoreFrustumCheck;
 	public boolean isAirBorne;
-
 	//Spout start
+	public boolean partiallyInWater = false;
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
@@ -224,6 +224,9 @@ public abstract class Entity {
 		if(this.ridingEntity != null && this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		}
+		//Spout start
+		partiallyInWater = isInsideOfMaterial(Material.water, -1);
+		//Spout end
 
 		++this.ticksExisted;
 		this.prevDistanceWalkedModified = this.distanceWalkedModified;
@@ -660,21 +663,26 @@ public abstract class Entity {
 	public boolean handleWaterMovement() {
 		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.0010D, 0.0010D, 0.0010D), Material.water, this);
 	}
+	
+	//Spout start
+	public boolean isInsideOfMaterial(Material material) {
+		return isInsideOfMaterial(material, 0);
+	}
 
-	public boolean isInsideOfMaterial(Material par1Material) {
-		double var2 = this.posY + (double)this.getEyeHeight();
+	public boolean isInsideOfMaterial(Material material, float offset) {
+		double var2 = this.posY + (double)this.getEyeHeight() + offset;
 		int var4 = MathHelper.floor_double(this.posX);
 		int var5 = MathHelper.floor_float((float)MathHelper.floor_double(var2));
 		int var6 = MathHelper.floor_double(this.posZ);
 		int var7 = this.worldObj.getBlockId(var4, var5, var6);
-		if(var7 != 0 && Block.blocksList[var7].blockMaterial == par1Material) {
+		if(var7 != 0 && Block.blocksList[var7].blockMaterial == material) {
 			float var8 = BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(var4, var5, var6)) - 0.11111111F;
 			float var9 = (float)(var5 + 1) - var8;
 			return var2 < (double)var9;
-		} else {
-			return false;
 		}
+		return false;
 	}
+	//Spout end
 
 	public float getEyeHeight() {
 		return 0.0F;
@@ -904,15 +912,15 @@ public abstract class Entity {
 			this.motionZ = 0.0D;
 		}
 
-		this.prevPosX = this.lastTickPosX = this.posX = ((NBTTagDouble)var2.tagAt(0)).doubleValue;
-		this.prevPosY = this.lastTickPosY = this.posY = ((NBTTagDouble)var2.tagAt(1)).doubleValue;
-		this.prevPosZ = this.lastTickPosZ = this.posZ = ((NBTTagDouble)var2.tagAt(2)).doubleValue;
-		this.prevRotationYaw = this.rotationYaw = ((NBTTagFloat)var4.tagAt(0)).floatValue;
-		this.prevRotationPitch = this.rotationPitch = ((NBTTagFloat)var4.tagAt(1)).floatValue;
-		this.fallDistance = var1.getFloat("FallDistance");
-		this.fire = var1.getShort("Fire");
-		this.setAir(var1.getShort("Air"));
-		this.onGround = var1.getBoolean("OnGround");
+		this.prevPosX = this.lastTickPosX = this.posX = ((NBTTagDouble)var2.tagAt(0)).data;
+		this.prevPosY = this.lastTickPosY = this.posY = ((NBTTagDouble)var2.tagAt(1)).data;
+		this.prevPosZ = this.lastTickPosZ = this.posZ = ((NBTTagDouble)var2.tagAt(2)).data;
+		this.prevRotationYaw = this.rotationYaw = ((NBTTagFloat)var4.tagAt(0)).data;
+		this.prevRotationPitch = this.rotationPitch = ((NBTTagFloat)var4.tagAt(1)).data;
+		this.fallDistance = par1NBTTagCompound.getFloat("FallDistance");
+		this.fire = par1NBTTagCompound.getShort("Fire");
+		this.setAir(par1NBTTagCompound.getShort("Air"));
+		this.onGround = par1NBTTagCompound.getBoolean("OnGround");
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.setRotation(this.rotationYaw, this.rotationPitch);
 		//Spout Start
@@ -923,7 +931,7 @@ public abstract class Entity {
 			uniqueId = id;
 		}
 		//Spout End
-		this.readEntityFromNBT(var1);
+		this.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	protected final String getEntityString() {
@@ -941,7 +949,7 @@ public abstract class Entity {
 
 		for(int var5 = 0; var5 < var4; ++var5) {
 			double var6 = var3[var5];
-			var2.setTag(new NBTTagDouble((String)null, var6));
+			var2.appendTag(new NBTTagDouble((String)null, var6));
 		}
 
 		return var2;
@@ -954,7 +962,7 @@ public abstract class Entity {
 
 		for(int var5 = 0; var5 < var4; ++var5) {
 			float var6 = var3[var5];
-			var2.setTag(new NBTTagFloat((String)null, var6));
+			var2.appendTag(new NBTTagFloat((String)null, var6));
 		}
 
 		return var2;
@@ -1156,6 +1164,10 @@ public abstract class Entity {
 	public boolean isSneaking() {
 		return this.getFlag(1);
 	}
+	
+	public void func_48078_c(boolean par1) {
+		this.setFlag(1, par1);
+	}
 
 	public boolean isSprinting() {
 		return this.getFlag(3);
@@ -1290,8 +1302,13 @@ public abstract class Entity {
 		return null;
 	}
 
-	public boolean isEntityEqual(Entity var1) {
-		return this == var1;
+	public boolean isEntityEqual(Entity par1Entity) {
+		return this == par1Entity;
 	}
 
+	public void func_48079_f(float par1) {}
+
+	public boolean func_48080_j() {
+		return true;
+	}
 }

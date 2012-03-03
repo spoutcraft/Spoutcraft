@@ -14,10 +14,10 @@ public class ColorizerWater {
 		int j = (int) ((1.0D - d1) * 255D);
 		return waterBuffer[j << 8 | i];
 	}
-
 	// Spout end
-	public static void setWaterBiomeColorizer(int[] var0) {
-		waterBuffer = var0;
+	
+	public static void setWaterBiomeColorizer(int[] par0ArrayOfInteger) {
+		waterBuffer = par0ArrayOfInteger;
 	}
 
 }

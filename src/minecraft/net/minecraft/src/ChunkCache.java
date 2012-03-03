@@ -1,8 +1,7 @@
-/*
- * Serves no purpose. Just no.
-
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.EnumSkyBlock;
@@ -10,96 +9,104 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.Material;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
-import net.minecraft.src.WorldChunkManager;
 
 public class ChunkCache implements IBlockAccess {
 
 	private int chunkX;
 	private int chunkZ;
 	private Chunk[][] chunkArray;
+	private boolean field_48467_d;
 	private World worldObj;
 
-	public ChunkCache(World var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-		this.worldObj = var1;
-		this.chunkX = var2 >> 4;
-		this.chunkZ = var4 >> 4;
-		int var8 = var5 >> 4;
-		int var9 = var7 >> 4;
+	public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7) {
+		this.worldObj = par1World;
+		this.chunkX = par2 >> 4;
+		this.chunkZ = par4 >> 4;
+		int var8 = par5 >> 4;
+		int var9 = par7 >> 4;
 		this.chunkArray = new Chunk[var8 - this.chunkX + 1][var9 - this.chunkZ + 1];
+		this.field_48467_d = true;
 
 		for (int var10 = this.chunkX; var10 <= var8; ++var10) {
 			for (int var11 = this.chunkZ; var11 <= var9; ++var11) {
-				this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var1.getChunkFromChunkCoords(var10, var11);
+				Chunk var12 = par1World.getChunkFromChunkCoords(var10, var11);
+				if (var12 != null) {
+					this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var12;
+					if (!var12.func_48492_c(par3, par6)) {
+						this.field_48467_d = false;
+					}
+				}
 			}
 		}
 
 	}
 
-	public int getBlockId(int var1, int var2, int var3) {
-		if (var2 < 0) {
+	public boolean func_48452_a() {
+		return this.field_48467_d;
+	}
+
+	public int getBlockId(int par1, int par2, int par3) {
+		if (par2 < 0) {
 			return 0;
-		}
-		else if (var2 >= this.worldObj.worldHeight) {
+		} else if (par2 >= 256) {
 			return 0;
-		}
-		else {
-			int var4 = (var1 >> 4) - this.chunkX;
-			int var5 = (var3 >> 4) - this.chunkZ;
+		} else {
+			int var4 = (par1 >> 4) - this.chunkX;
+			int var5 = (par3 >> 4) - this.chunkZ;
 			if (var4 >= 0 && var4 < this.chunkArray.length && var5 >= 0 && var5 < this.chunkArray[var4].length) {
 				Chunk var6 = this.chunkArray[var4][var5];
-				return var6 == null ? 0 : var6.getBlockID(var1 & 15, var2, var3 & 15);
-			}
-			else {
+				return var6 == null?0:var6.getBlockID(par1 & 15, par2, par3 & 15);
+			} else {
 				return 0;
 			}
 		}
 	}
 
-	public TileEntity getBlockTileEntity(int var1, int var2, int var3) {
-		int var4 = (var1 >> 4) - this.chunkX;
-		int var5 = (var3 >> 4) - this.chunkZ;
-		return this.chunkArray[var4][var5].getChunkBlockTileEntity(var1 & 15, var2, var3 & 15);
+	public TileEntity getBlockTileEntity(int par1, int par2, int par3) {
+		int var4 = (par1 >> 4) - this.chunkX;
+		int var5 = (par3 >> 4) - this.chunkZ;
+		return this.chunkArray[var4][var5].getChunkBlockTileEntity(par1 & 15, par2, par3 & 15);
 	}
 
-	public float getBrightness(int var1, int var2, int var3, int var4) {
-		int var5 = this.getLightValue(var1, var2, var3);
-		if (var5 < var4) {
-			var5 = var4;
+	public float getBrightness(int par1, int par2, int par3, int par4) {
+		int var5 = this.getLightValue(par1, par2, par3);
+		if (var5 < par4) {
+			var5 = par4;
 		}
 
 		return this.worldObj.worldProvider.lightBrightnessTable[var5];
 	}
 
-	public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
-		int var5 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, var1, var2, var3);
-		int var6 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Block, var1, var2, var3);
-		if (var6 < var4) {
-			var6 = var4;
+	public int getLightBrightnessForSkyBlocks(int par1, int par2, int par3, int par4) {
+		int var5 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Sky, par1, par2, par3);
+		int var6 = this.getSkyBlockTypeBrightness(EnumSkyBlock.Block, par1, par2, par3);
+		if (var6 < par4) {
+			var6 = par4;
 		}
 
 		return var5 << 20 | var6 << 4;
 	}
 
-	public float getLightBrightness(int var1, int var2, int var3) {
-		return this.worldObj.worldProvider.lightBrightnessTable[this.getLightValue(var1, var2, var3)];
+	public float getLightBrightness(int par1, int par2, int par3) {
+		return this.worldObj.worldProvider.lightBrightnessTable[this.getLightValue(par1, par2, par3)];
 	}
 
-	public int getLightValue(int var1, int var2, int var3) {
-		return this.getLightValueExt(var1, var2, var3, true);
+	public int getLightValue(int par1, int par2, int par3) {
+		return this.getLightValueExt(par1, par2, par3, true);
 	}
 
-	public int getLightValueExt(int var1, int var2, int var3, boolean var4) {
-		if (var1 >= -30000000 && var3 >= -30000000 && var1 < 30000000 && var3 <= 30000000) {
+	public int getLightValueExt(int par1, int par2, int par3, boolean par4) {
+		if (par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 <= 30000000) {
 			int var5;
 			int var6;
-			if (var4) {
-				var5 = this.getBlockId(var1, var2, var3);
+			if (par4) {
+				var5 = this.getBlockId(par1, par2, par3);
 				if (var5 == Block.stairSingle.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
-					var6 = this.getLightValueExt(var1, var2 + 1, var3, false);
-					int var7 = this.getLightValueExt(var1 + 1, var2, var3, false);
-					int var8 = this.getLightValueExt(var1 - 1, var2, var3, false);
-					int var9 = this.getLightValueExt(var1, var2, var3 + 1, false);
-					int var10 = this.getLightValueExt(var1, var2, var3 - 1, false);
+					var6 = this.getLightValueExt(par1, par2 + 1, par3, false);
+					int var7 = this.getLightValueExt(par1 + 1, par2, par3, false);
+					int var8 = this.getLightValueExt(par1 - 1, par2, par3, false);
+					int var9 = this.getLightValueExt(par1, par2, par3 + 1, false);
+					int var10 = this.getLightValueExt(par1, par2, par3 - 1, false);
 					if (var7 > var6) {
 						var6 = var7;
 					}
@@ -120,84 +127,79 @@ public class ChunkCache implements IBlockAccess {
 				}
 			}
 
-			if (var2 < 0) {
+			if (par2 < 0) {
 				return 0;
-			}
-			else if (var2 >= this.worldObj.worldHeight) {
+			} else if (par2 >= 256) {
 				var5 = 15 - this.worldObj.skylightSubtracted;
 				if (var5 < 0) {
 					var5 = 0;
 				}
 
 				return var5;
+			} else {
+				var5 = (par1 >> 4) - this.chunkX;
+				var6 = (par3 >> 4) - this.chunkZ;
+				return this.chunkArray[var5][var6].getBlockLightValue(par1 & 15, par2, par3 & 15, this.worldObj.skylightSubtracted);
 			}
-			else {
-				var5 = (var1 >> 4) - this.chunkX;
-				var6 = (var3 >> 4) - this.chunkZ;
-				return this.chunkArray[var5][var6].getBlockLightValue(var1 & 15, var2, var3 & 15, this.worldObj.skylightSubtracted);
-			}
-		}
-		else {
+		} else {
 			return 15;
 		}
 	}
 
-	public int getBlockMetadata(int var1, int var2, int var3) {
-		if (var2 < 0) {
+	public int getBlockMetadata(int par1, int par2, int par3) {
+		if (par2 < 0) {
 			return 0;
-		}
-		else if (var2 >= this.worldObj.worldHeight) {
+		} else if (par2 >= 256) {
 			return 0;
+		} else {
+			int var4 = (par1 >> 4) - this.chunkX;
+			int var5 = (par3 >> 4) - this.chunkZ;
+			return this.chunkArray[var4][var5].getBlockMetadata(par1 & 15, par2, par3 & 15);
 		}
-		else {
-			int var4 = (var1 >> 4) - this.chunkX;
-			int var5 = (var3 >> 4) - this.chunkZ;
-			return this.chunkArray[var4][var5].getBlockMetadata(var1 & 15, var2, var3 & 15);
-		}
 	}
 
-	public Material getBlockMaterial(int var1, int var2, int var3) {
-		int var4 = this.getBlockId(var1, var2, var3);
-		return var4 == 0 ? Material.air : Block.blocksList[var4].blockMaterial;
+	public Material getBlockMaterial(int par1, int par2, int par3) {
+		int var4 = this.getBlockId(par1, par2, par3);
+		return var4 == 0?Material.air:Block.blocksList[var4].blockMaterial;
 	}
 
-	public WorldChunkManager getWorldChunkManager() {
-		return this.worldObj.getWorldChunkManager();
+	public BiomeGenBase func_48454_a(int par1, int par2) {
+		return this.worldObj.func_48454_a(par1, par2);
 	}
 
-	public boolean isBlockOpaqueCube(int var1, int var2, int var3) {
-		Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
-		return var4 == null ? false : var4.isOpaqueCube();
+	public boolean isBlockOpaqueCube(int par1, int par2, int par3) {
+		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
+		return var4 == null?false:var4.isOpaqueCube();
 	}
 
-	public boolean isBlockNormalCube(int var1, int var2, int var3) {
-		Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
-		return var4 == null ? false : var4.blockMaterial.getIsSolid() && var4.renderAsNormalBlock();
+	public boolean isBlockNormalCube(int par1, int par2, int par3) {
+		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
+		return var4 == null?false:var4.blockMaterial.blocksMovement() && var4.renderAsNormalBlock();
 	}
 
-	public boolean isAirBlock(int var1, int var2, int var3) {
-		Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
+	public boolean isAirBlock(int par1, int par2, int par3) {
+		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
 		return var4 == null;
 	}
 
-	public int getSkyBlockTypeBrightness(EnumSkyBlock var1, int var2, int var3, int var4) {
-		if (var3 < 0) {
-			var3 = 0;
+	public int getSkyBlockTypeBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
+		if (par3 < 0) {
+			par3 = 0;
 		}
 
-		if (var3 >= this.worldObj.worldHeight) {
-			var3 = this.worldObj.worldHeight - 1;
+		if (par3 >= 256) {
+			par3 = 255;
 		}
 
-		if (var3 >= 0 && var3 < this.worldObj.worldHeight && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
+		if (par3 >= 0 && par3 < 256 && par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 <= 30000000) {
 			int var5;
 			int var6;
-			if (Block.useNeighborBrightness[this.getBlockId(var2, var3, var4)]) {
-				var5 = this.getSpecialBlockBrightness(var1, var2, var3 + 1, var4);
-				var6 = this.getSpecialBlockBrightness(var1, var2 + 1, var3, var4);
-				int var7 = this.getSpecialBlockBrightness(var1, var2 - 1, var3, var4);
-				int var8 = this.getSpecialBlockBrightness(var1, var2, var3, var4 + 1);
-				int var9 = this.getSpecialBlockBrightness(var1, var2, var3, var4 - 1);
+			if (Block.useNeighborBrightness[this.getBlockId(par2, par3, par4)]) {
+				var5 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3 + 1, par4);
+				var6 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 + 1, par3, par4);
+				int var7 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2 - 1, par3, par4);
+				int var8 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 + 1);
+				int var9 = this.getSpecialBlockBrightness(par1EnumSkyBlock, par2, par3, par4 - 1);
 				if (var6 > var5) {
 					var5 = var6;
 				}
@@ -215,39 +217,71 @@ public class ChunkCache implements IBlockAccess {
 				}
 
 				return var5;
+			} else {
+				var5 = (par2 >> 4) - this.chunkX;
+				var6 = (par4 >> 4) - this.chunkZ;
+				return this.chunkArray[var5][var6].getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
 			}
-			else {
-				var5 = (var2 >> 4) - this.chunkX;
-				var6 = (var4 >> 4) - this.chunkZ;
-				return this.chunkArray[var5][var6].getSavedLightValue(var1, var2 & 15, var3, var4 & 15);
-			}
-		}
-		else {
-			return var1.defaultLightValue;
+		} else {
+			return par1EnumSkyBlock.defaultLightValue;
 		}
 	}
 
-	public int getSpecialBlockBrightness(EnumSkyBlock var1, int var2, int var3, int var4) {
-		if (var3 < 0) {
-			var3 = 0;
+	public int getSpecialBlockBrightness(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
+		if (par3 < 0) {
+			par3 = 0;
 		}
 
-		if (var3 >= this.worldObj.worldHeight) {
-			var3 = this.worldObj.worldHeight - 1;
+		if (par3 >= 256) {
+			par3 = 255;
 		}
 
-		if (var3 >= 0 && var3 < this.worldObj.worldHeight && var2 >= -30000000 && var4 >= -30000000 && var2 < 30000000 && var4 <= 30000000) {
-			int var5 = (var2 >> 4) - this.chunkX;
-			int var6 = (var4 >> 4) - this.chunkZ;
-			return this.chunkArray[var5][var6].getSavedLightValue(var1, var2 & 15, var3, var4 & 15);
-		}
-		else {
-			return var1.defaultLightValue;
+		if (par3 >= 0 && par3 < 256 && par2 >= -30000000 && par4 >= -30000000 && par2 < 30000000 && par4 <= 30000000) {
+			int var5 = (par2 >> 4) - this.chunkX;
+			int var6 = (par4 >> 4) - this.chunkZ;
+			return this.chunkArray[var5][var6].getSavedLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15);
+		} else {
+			return par1EnumSkyBlock.defaultLightValue;
 		}
 	}
 
-	public int getWorldHeight() {
-		return this.worldObj.worldHeight;
+	public int func_48453_b() {
+		return 256;
 	}
+
+//Spout start
+	public int getGrassColorCache(int x, int y, int z) {
+		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			return chunk.grassColorCache;
+		}
+		return 0xffffff;
+	}
+
+	public void setGrassColorCache(int x, int y, int z, int color) {
+		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			chunk.grassColorCache = color;
+		}
+	}
+
+	public int getWaterColorCache(int x, int y, int z) {
+		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			return chunk.waterColorCache;
+		}
+		return 0xffffff;
+	}
+
+	public void setWaterColorCache(int x, int y, int z, int color) {
+		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		if (chunk != null) {
+			chunk.waterColorCache = color;
+		}
+	}
+	
+	public WorldChunkManager getWorldChunkManager() {
+		return Minecraft.theMinecraft.theWorld.getWorldChunkManager();
+	}
+//Spout end
 }
-*/

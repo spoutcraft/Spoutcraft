@@ -1,52 +1,69 @@
 package net.minecraft.src;
 
+import java.util.List;
+import net.minecraft.client.Minecraft;
+
+//Spout Start
 import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+//Spout End
 
-import net.minecraft.src.GuiAchievements;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiStats;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.StatList;
-import net.minecraft.src.World;
+public class GuiIngameMenu extends GuiScreen
+{
+	/** Also counts the number of updates, not certain as to why yet. */
+	private int updateCounter2;
 
-public class GuiIngameMenu extends GuiScreen {
+	/** Counts the number of screen updates. */
+	private int updateCounter;
 
-	private int updateCounter2 = 0;
-	private int updateCounter = 0;
-
-
-	public void initGui() {
-		this.updateCounter2 = 0;
-		this.controlList.clear();
-		byte var1 = -16;
-		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + var1, StatCollector.translateToLocal("menu.returnToMenu")));
-		if(this.mc.isMultiplayerWorld()) {
-			((GuiButton)this.controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
-		}
-
-		this.controlList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + var1, StatCollector.translateToLocal("menu.returnToGame")));
-		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + var1, StatCollector.translateToLocal("menu.options")));
-		this.controlList.add(new GuiButton(5, this.width / 2 - 100, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.achievements")));
-		this.controlList.add(new GuiButton(6, this.width / 2 + 2, this.height / 4 + 48 + var1, 98, 20, StatCollector.translateToLocal("gui.stats")));
+	public GuiIngameMenu()
+	{
+		updateCounter2 = 0;
+		updateCounter = 0;
 	}
 
-	protected void actionPerformed(GuiButton var1) {
-		if(var1.id == 0) {
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
+	public void initGui()
+	{
+		updateCounter2 = 0;
+		controlList.clear();
+		byte byte0 = -16;
+		controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + byte0, StatCollector.translateToLocal("menu.returnToMenu")));
+
+		if (mc.isMultiplayerWorld())
+		{
+			((GuiButton)controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
+		}
+
+		controlList.add(new GuiButton(4, width / 2 - 100, height / 4 + 24 + byte0, StatCollector.translateToLocal("menu.returnToGame")));
+		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 96 + byte0, StatCollector.translateToLocal("menu.options")));
+		controlList.add(new GuiButton(5, width / 2 - 100, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.achievements")));
+		controlList.add(new GuiButton(6, width / 2 + 2, height / 4 + 48 + byte0, 98, 20, StatCollector.translateToLocal("gui.stats")));
+	}
+
+	/**
+	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+	 */
+	protected void actionPerformed(GuiButton par1GuiButton)
+	{
+		if (par1GuiButton.id == 0)
+		{
 			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
 		}
 
-		if(var1.id == 1) {
+		if (par1GuiButton.id == 1)
+		{
 			boolean mp = this.mc.isMultiplayerWorld(); //Spout
-			this.mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
-			if(this.mc.isMultiplayerWorld()) {
-				this.mc.theWorld.sendQuittingDisconnectingPacket();
+			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
+
+			if (mc.isMultiplayerWorld())
+			{
+				mc.theWorld.sendQuittingDisconnectingPacket();
 			}
 
-			this.mc.changeWorld1((World)null);
+			mc.changeWorld1(null);
 			//Spout Start
 			if (mp) {
 				this.mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
@@ -56,36 +73,49 @@ public class GuiIngameMenu extends GuiScreen {
 			//Spout End
 		}
 
-		if(var1.id == 4) {
-			this.mc.displayGuiScreen((GuiScreen)null);
-			this.mc.setIngameFocus();
+		if (par1GuiButton.id == 4)
+		{
+			mc.displayGuiScreen(null);
+			mc.setIngameFocus();
 		}
 
-		if(var1.id == 5) {
-			this.mc.displayGuiScreen(new GuiAchievements(this.mc.statFileWriter));
+		if (par1GuiButton.id == 5)
+		{
+			mc.displayGuiScreen(new GuiAchievements(mc.statFileWriter));
 		}
 
-		if(var1.id == 6) {
-			this.mc.displayGuiScreen(new GuiStats(this, this.mc.statFileWriter));
+		if (par1GuiButton.id == 6)
+		{
+			mc.displayGuiScreen(new GuiStats(this, mc.statFileWriter));
 		}
 	}
 
-	public void updateScreen() {
+	/**
+	 * Called from the main game loop to update the screen.
+	 */
+	public void updateScreen()
+	{
 		super.updateScreen();
-		++this.updateCounter;
+		updateCounter++;
 	}
 
-	public void drawScreen(int var1, int var2, float var3) {
-		this.drawDefaultBackground();
-		boolean var4 = !this.mc.theWorld.quickSaveWorld(this.updateCounter2++);
-		if(var4 || this.updateCounter < 20) {
-			float var5 = ((float)(this.updateCounter % 10) + var3) / 10.0F;
-			var5 = MathHelper.sin(var5 * 3.1415927F * 2.0F) * 0.2F + 0.8F;
-			int var6 = (int)(255.0F * var5);
-			this.drawString(this.fontRenderer, "Saving level..", 8, this.height - 16, var6 << 16 | var6 << 8 | var6);
+	/**
+	 * Draws the screen and all the components in it.
+	 */
+	public void drawScreen(int par1, int par2, float par3)
+	{
+		drawDefaultBackground();
+		boolean flag = !mc.theWorld.quickSaveWorld(updateCounter2++);
+
+		if (flag || updateCounter < 20)
+		{
+			float f = ((float)(updateCounter % 10) + par3) / 10F;
+			f = MathHelper.sin(f * (float)Math.PI * 2.0F) * 0.2F + 0.8F;
+			int i = (int)(255F * f);
+			drawString(fontRenderer, "Saving level..", 8, height - 16, i << 16 | i << 8 | i);
 		}
 
-		this.drawCenteredString(this.fontRenderer, "Game menu", this.width / 2, 40, 16777215);
-		super.drawScreen(var1, var2, var3);
+		drawCenteredString(fontRenderer, "Game menu", width / 2, 40, 0xffffff);
+		super.drawScreen(par1, par2, par3);
 	}
 }

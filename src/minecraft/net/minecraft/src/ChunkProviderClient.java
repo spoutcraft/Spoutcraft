@@ -1,12 +1,7 @@
 package net.minecraft.src;
 
-import gnu.trove.map.hash.TLongObjectHashMap;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkPosition;
@@ -16,6 +11,14 @@ import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.LongHashMap;
 import net.minecraft.src.World;
+
+//Spout start
+import java.util.Arrays;
+
+import gnu.trove.map.hash.TLongObjectHashMap;
+
+import net.minecraft.client.Minecraft;
+//Spout end
 
 public class ChunkProviderClient implements IChunkProvider {
 
@@ -30,9 +33,9 @@ public class ChunkProviderClient implements IChunkProvider {
 	public static long cacheMisses = 0L;
 	//Spout end
 
-	public ChunkProviderClient(World var1) {
-		this.blankChunk = new EmptyChunk(var1, new byte[256 * var1.worldHeight], 0, 0);
-		this.worldObj = var1;
+	public ChunkProviderClient(World par1World) {
+		this.blankChunk = new EmptyChunk(par1World, 0, 0);
+		this.worldObj = par1World;
 		chunkMapping.setAutoCompactionFactor(0.0F); //Spout
 	}
 
@@ -46,23 +49,21 @@ public class ChunkProviderClient implements IChunkProvider {
 		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
 	}
 
-	public void func_539_c(int var1, int var2) {
-		Chunk var3 = this.provideChunk(var1, var2);
+	public void func_539_c(int par1, int par2) {
+		Chunk var3 = this.provideChunk(par1, par2);
 		if (!var3.isEmpty()) {
 			var3.onChunkUnload();
 		}
 
-		this.chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
+		this.chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(par1, par2));
 		this.field_889_c.remove(var3);
 	}
 
-	public Chunk loadChunk(int var1, int var2) {
-		byte[] var3 = new byte[256 * this.worldObj.worldHeight];
-		Chunk var4 = new Chunk(this.worldObj, var3, var1, var2);
-		Arrays.fill(var4.skylightMap.data, (byte) - 1);
-		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(var1, var2), var4); //Spout
-		var4.isChunkLoaded = true;
-		return var4;
+	public Chunk loadChunk(int par1, int par2) {
+		Chunk var3 = new Chunk(this.worldObj, par1, par2);
+		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(par1, par2), var3); //Spout
+		var3.isChunkLoaded = true;
+		return var3;
 	}
 
 	public Chunk provideChunk(int var1, int var2) {
@@ -83,7 +84,7 @@ public class ChunkProviderClient implements IChunkProvider {
 		return var3 == null ? this.blankChunk : var3;
 	}
 
-	public boolean saveChunks(boolean var1, IProgressUpdate var2) {
+	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) {
 		return true;
 	}
 
@@ -95,17 +96,17 @@ public class ChunkProviderClient implements IChunkProvider {
 		return false;
 	}
 
-	public void populate(IChunkProvider var1, int var2, int var3) {}
+	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {}
 
 	public String makeString() {
-		return "MultiplayerChunkCache: " + this.chunkMapping.size();
+		return "MultiplayerChunkCache: " + this.chunkMapping.size(); //Spout
 	}
 
-	public List func_40377_a(EnumCreatureType var1, int var2, int var3, int var4) {
+	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4) {
 		return null;
 	}
 
-	public ChunkPosition func_40376_a(World var1, String var2, int var3, int var4, int var5) {
+	public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5) {
 		return null;
 	}
 }

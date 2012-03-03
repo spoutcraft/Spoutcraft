@@ -1,36 +1,49 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.ChatAllowedCharacters;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.Packet130UpdateSign;
-import net.minecraft.src.TileEntityRenderer;
-import net.minecraft.src.TileEntitySign;
+import java.util.List;
+import net.minecraft.client.Minecraft;
+
+import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader;
 
-import org.bukkit.ChatColor; //Spout
+public class GuiEditSign extends GuiScreen
+{
+	/** The title string that is displayed in the top-center of the screen. */
+	protected String screenTitle;
 
-public class GuiEditSign extends GuiScreen {
-
-	protected String screenTitle = "Edit sign message:";
+	/** Reference to the sign object. */
 	private TileEntitySign entitySign;
+
+	/** Counts the number of screen updates. */
 	private int updateCounter;
-	private int editLine = 0;
+
+	/** The number of the line that is being edited. */
+	private int editLine;
+
+	/**
+	 * This String is just a local copy of the characters allowed in text rendering of minecraft.
+	 */
+	private static final String allowedCharacters;
+
 	//Spout start
 	private int editColumn = 0;
 	GuiButton unicode;
 	//Spout end
-	private static final String allowedCharacters = ChatAllowedCharacters.allowedCharacters;
 
-
-	public GuiEditSign(TileEntitySign tileentitysign) {
-		this.entitySign = tileentitysign;
+	public GuiEditSign(TileEntitySign par1TileEntitySign)
+	{
+		screenTitle = "Edit sign message:";
+		editLine = 0;
+		entitySign = par1TileEntitySign;
 	}
 
-	public void initGui() {
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
+	public void initGui()
+	{
 		controlList.clear();
 		Keyboard.enableRepeatEvents(true);
 		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120, "Done"));
@@ -39,14 +52,18 @@ public class GuiEditSign extends GuiScreen {
 		if (!ConfigReader.sendColorsAsUnicode) {
 			unicode.displayString = "Send As Plain Text";
 		}
-		if (!this.mc.theWorld.multiplayerWorld) {
+		if (!this.mc.theWorld.isRemote) {
 			unicode.drawButton = false;
 			unicode.enabled = false;
 		}
 		//Spout end
 	}
 
-	public void onGuiClosed() {
+	/**
+	 * Called when the screen is unloaded. Used to disable keyboard repeat events
+	 */
+	public void onGuiClosed()
+	{
 		//Spout start
 		entitySign.lineBeingEdited = -1; 
 		entitySign.columnBeingEdited = -1;
@@ -60,25 +77,38 @@ public class GuiEditSign extends GuiScreen {
 		}
 		//Spout end
 		Keyboard.enableRepeatEvents(false);
-		if(this.mc.theWorld.multiplayerWorld) {
-			this.mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(this.entitySign.xCoord, this.entitySign.yCoord, this.entitySign.zCoord, this.entitySign.signText));
+
+		if (mc.theWorld.isRemote)
+		{
+			mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(entitySign.xCoord, entitySign.yCoord, entitySign.zCoord, entitySign.signText));
 		}
 	}
 
-	public void updateScreen() {
-		++this.updateCounter;
+	/**
+	 * Called from the main game loop to update the screen.
+	 */
+	public void updateScreen()
+	{
+		updateCounter++;
 	}
 
-	protected void actionPerformed(GuiButton guibutton) {
-		if(!guibutton.enabled) {
+	/**
+	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+	 */
+	protected void actionPerformed(GuiButton par1GuiButton)
+	{
+		if (!par1GuiButton.enabled)
+		{
 			return;
 		}
-		if(guibutton.id == 0) {
-			this.entitySign.onInventoryChanged();
-			this.mc.displayGuiScreen((GuiScreen)null);
+
+		if (par1GuiButton.id == 0)
+		{
+			entitySign.onInventoryChanged();
+			mc.displayGuiScreen(null);
 		}
 		//Spout start
-		else if (guibutton.id == 1 && unicode.enabled) {
+		else if (par1GuiButton.id == 1 && unicode.enabled) {
 			ConfigReader.sendColorsAsUnicode = !ConfigReader.sendColorsAsUnicode;
 			if (ConfigReader.sendColorsAsUnicode) {
 				unicode.displayString = "Send As Unicode";
@@ -90,8 +120,11 @@ public class GuiEditSign extends GuiScreen {
 		//Spout end
 	}
 
-	//Spoutcraft - rewritten method
-	//Spoutcraft Start
+	/**
+	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
+	 */
+	//Spout - rewritten method
+	//Spout Start
 	protected void keyTyped(char var1, int var2) {
 		if(var2 == 200) { //up
 			this.editLine = this.editLine - 1 & 3;
@@ -106,7 +139,7 @@ public class GuiEditSign extends GuiScreen {
 			editColumn++;
 			if(editColumn > entitySign.signText[editLine].length()){
 				editColumn--;
-		}
+			}
 		}
 		if(var2 == 203) {//left
 			editColumn--;
@@ -139,7 +172,7 @@ public class GuiEditSign extends GuiScreen {
 		}
 		if(allowedCharacters.indexOf(var1) >= 0 && this.entitySign.signText[this.editLine].length() < 15) { //enter
 			String line = entitySign.signText[editLine];
-			
+
 			//prevent out of bounds on the substring call
 			int endColumnStart = Math.min(editColumn,  line.length());
 			String before = "";
@@ -172,13 +205,17 @@ public class GuiEditSign extends GuiScreen {
 		}
 		entitySign.recalculateText();
 	}
-	//Spoutcraft End
+	//Spout End
 
-	//Spout start
-	public void drawScreen(int x, int y, float z) {
-		this.drawDefaultBackground();
-		this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 40, 16777215);
-		
+	/**
+	 * Draws the screen and all the components in it.
+	 */
+	public void drawScreen(int x, int y, float z)
+	{
+		drawDefaultBackground();
+		drawCenteredString(fontRenderer, screenTitle, width / 2, 40, 0xffffff);
+
+		//Spout Start
 		if (org.spoutcraft.client.config.ConfigReader.showChatColors) {
 			drawString(fontRenderer, ChatColor.BLACK + "&0 - Black", width - 90, 10, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.DARK_BLUE + "&1 - Dark Blue", width - 90, 20, 0xFFFFFFF);
@@ -197,62 +234,74 @@ public class GuiEditSign extends GuiScreen {
 			drawString(fontRenderer, ChatColor.YELLOW + "&e - Yellow", width - 90, 150, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.WHITE + "&f - White", width - 90, 160, 0xFFFFFFF);
 		}
-		
 		//Spout end
+
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float)(this.width / 2), 0.0F, 50.0F);
-		float var4 = 93.75F;
-		GL11.glScalef(-var4, -var4, -var4);
-		GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-		Block var5 = this.entitySign.getBlockType();
-		if(var5 == Block.signPost) {
-			float var6 = (float)(this.entitySign.getBlockMetadata() * 360) / 16.0F;
-			GL11.glRotatef(var6, 0.0F, 1.0F, 0.0F);
+		GL11.glTranslatef(width / 2, 0.0F, 50F);
+		float f = 93.75F;
+		GL11.glScalef(-f, -f, -f);
+		GL11.glRotatef(180F, 0.0F, 1.0F, 0.0F);
+		Block block = entitySign.getBlockType();
+
+		if (block == Block.signPost)
+		{
+			float f1 = (float)(entitySign.getBlockMetadata() * 360) / 16F;
+			GL11.glRotatef(f1, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
-		} else {
-			int var8 = this.entitySign.getBlockMetadata();
-			float var7 = 0.0F;
-			if(var8 == 2) {
-				var7 = 180.0F;
+		}
+		else
+		{
+			int i = entitySign.getBlockMetadata();
+			float f2 = 0.0F;
+
+			if (i == 2)
+			{
+				f2 = 180F;
 			}
 
-			if(var8 == 4) {
-				var7 = 90.0F;
+			if (i == 4)
+			{
+				f2 = 90F;
 			}
 
-			if(var8 == 5) {
-				var7 = -90.0F;
+			if (i == 5)
+			{
+				f2 = -90F;
 			}
 
-			GL11.glRotatef(var7, 0.0F, 1.0F, 0.0F);
+			GL11.glRotatef(f2, 0.0F, 1.0F, 0.0F);
 			GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
 		}
 
 		//Spout start
 		//if(this.updateCounter / 6 % 2 == 0) {
-			this.entitySign.lineBeingEdited = this.editLine;
-			entitySign.columnBeingEdited = editColumn;
+		this.entitySign.lineBeingEdited = this.editLine;
+		entitySign.columnBeingEdited = editColumn;
 		//}
 		//Spout end
 
-		TileEntityRenderer.instance.renderTileEntityAt(this.entitySign, -0.5D, -0.75D, -0.5D, 0.0F);
+		TileEntityRenderer.instance.renderTileEntityAt(entitySign, -0.5D, -0.75D, -0.5D, 0.0F);
 		//Spout start
 		this.entitySign.lineBeingEdited = -1; 
 		entitySign.columnBeingEdited = -1;
 		//Spout end
 		GL11.glPopMatrix();
-		super.drawScreen(x, y, z); //Spout
+		super.drawScreen(x, y, z);
 		//Spout start
 		if (unicode.enabled && isInBoundingRect(unicode.xPosition, unicode.yPosition, unicode.height, unicode.width, x, y)) {
 			this.drawTooltip("Some servers censor unicode characters. \nIf yours does, try sending as plain text.", x, y);
 		}
 		//Spout end
 	}
-	
+
 	//Spout start
 	public boolean sendAsUnicode() {
-		return ConfigReader.sendColorsAsUnicode && this.mc.theWorld.multiplayerWorld;
+		return ConfigReader.sendColorsAsUnicode && this.mc.theWorld.isRemote;
 	}
 	//Spout end
 
+	static
+	{
+		allowedCharacters = ChatAllowedCharacters.allowedCharacters;
+	}
 }

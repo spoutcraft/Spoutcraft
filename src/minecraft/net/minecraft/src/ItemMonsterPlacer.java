@@ -1,27 +1,16 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityEggInfo;
-import net.minecraft.src.EntityList;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Facing;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.StatCollector;
-import net.minecraft.src.World;
 
 public class ItemMonsterPlacer extends Item {
-
-	public ItemMonsterPlacer(int var1) {
-		super(var1);
-		this.setMaxStackSize(1);
+	public ItemMonsterPlacer(int par1) {
+		super(par1);
 		this.setHasSubtypes(true);
 	}
 
-	public String getItemDisplayName(ItemStack var1) {
+	public String getItemDisplayName(ItemStack par1ItemStack) {
 		String var2 = ("" + StatCollector.translateToLocal(this.getItemName() + ".name")).trim();
-		String var3 = EntityList.func_44040_a(var1.getItemDamage());
+		String var3 = EntityList.getStringFromID(par1ItemStack.getItemDamage());
 		if (var3 != null) {
 			var2 = var2 + " " + StatCollector.translateToLocal("entity." + var3 + ".name");
 		}
@@ -29,38 +18,52 @@ public class ItemMonsterPlacer extends Item {
 		return var2;
 	}
 
-	public int getColorFromDamage(int var1, int var2) {
-		EntityEggInfo var3 = (EntityEggInfo)EntityList.field_44041_a.get(Integer.valueOf(var1));
-		return var3 != null ? (var2 == 0 ? Colorizer.colorizeSpawnerEgg(var3.field_46061_b, var1, var2) : Colorizer.colorizeSpawnerEgg(var3.field_46062_c, var1, var2)) : Colorizer.colorizeSpawnerEgg(16777215, var1, var2); //Spout HD
+	public int getColorFromDamage(int par1, int par2) {
+		EntityEggInfo var3 = (EntityEggInfo)EntityList.entityEggs.get(Integer.valueOf(par1));
+		return var3 != null ? (par2 == 0 ? Colorizer.colorizeSpawnerEgg(var3.primaryColor, par1, par2) : Colorizer.colorizeSpawnerEgg(var3.secondaryColor, par1, par2)) : Colorizer.colorizeSpawnerEgg(16777215, par1, par2); //Spout HD
 	}
 
 	public boolean func_46058_c() {
 		return true;
 	}
 
-	public int func_46057_a(int var1, int var2) {
-		return var2 > 0 ? super.func_46057_a(var1, var2) + 16 : super.func_46057_a(var1, var2);
+	public int func_46057_a(int par1, int par2) {
+		return par2 > 0?super.func_46057_a(par1, par2) + 16:super.func_46057_a(par1, par2);
 	}
 
-	public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
-		if (var3.multiplayerWorld) {
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7) {
+		if (par3World.isRemote) {
 			return true;
-		}
-		else {
-			var4 += Facing.offsetsXForSide[var7];
-			var5 += Facing.offsetsYForSide[var7];
-			var6 += Facing.offsetsZForSide[var7];
-			Entity var8 = EntityList.createEntity(var1.getItemDamage(), var3);
-			if (var8 != null) {
-				if (!var2.capabilities.depleteBuckets) {
-					--var1.stackSize;
-				}
+		} else {
+			int var8 = par3World.getBlockId(par4, par5, par6);
+			par4 += Facing.offsetsXForSide[par7];
+			par5 += Facing.offsetsYForSide[par7];
+			par6 += Facing.offsetsZForSide[par7];
+			double var9 = 0.0D;
+			if (par7 == 1 && var8 == Block.fence.blockID || var8 == Block.netherFence.blockID) {
+				var9 = 0.5D;
+			}
 
-				var8.setLocationAndAngles((double)var4 + 0.5D, (double)var5, (double)var6 + 0.5D, 0.0F, 0.0F);
-				var3.spawnEntityInWorld(var8);
+			if (func_48440_a(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var9, (double)par6 + 0.5D) && !par2EntityPlayer.capabilities.depleteBuckets) {
+				--par1ItemStack.stackSize;
 			}
 
 			return true;
+		}
+	}
+
+	public static boolean func_48440_a(World par0World, int par1, double par2, double par4, double par6) {
+		if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1))) {
+			return false;
+		} else {
+			Entity var8 = EntityList.createEntity(par1, par0World);
+			if (var8 != null) {
+				var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
+				par0World.spawnEntityInWorld(var8);
+				((EntityLiving)var8).playLivingSound();
+			}
+
+			return var8 != null;
 		}
 	}
 }

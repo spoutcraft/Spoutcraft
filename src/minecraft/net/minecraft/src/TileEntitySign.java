@@ -31,27 +31,26 @@ public class TileEntitySign extends TileEntity {
 	}
 	//Spout end
 
-	public void writeToNBT(NBTTagCompound var1) {
-		super.writeToNBT(var1);
-		var1.setString("Text1", this.signText[0]);
-		var1.setString("Text2", this.signText[1]);
-		var1.setString("Text3", this.signText[2]);
-		var1.setString("Text4", this.signText[3]);
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setString("Text1", this.signText[0]);
+		par1NBTTagCompound.setString("Text2", this.signText[1]);
+		par1NBTTagCompound.setString("Text3", this.signText[2]);
+		par1NBTTagCompound.setString("Text4", this.signText[3]);
 	}
 
-	public void readFromNBT(NBTTagCompound var1) {
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.isEditable = false;
-		super.readFromNBT(var1);
+		super.readFromNBT(par1NBTTagCompound);
 
-		for(int var2 = 0; var2 < 4; ++var2) {
-			this.signText[var2] = var1.getString("Text" + (var2 + 1));
-			if(this.signText[var2].length() > 15) {
+		for (int var2 = 0; var2 < 4; ++var2) {
+			this.signText[var2] = par1NBTTagCompound.getString("Text" + (var2 + 1));
+			if (this.signText[var2].length() > 15) {
 				this.signText[var2] = this.signText[var2].substring(0, 15);
 			}
 		}
 		//Spout start
 		recalculateText();
 		//Spout end
-
 	}
 }

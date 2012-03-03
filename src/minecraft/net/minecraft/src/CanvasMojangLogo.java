@@ -13,15 +13,16 @@ import net.minecraft.src.PanelCrashReport;
 */
 import com.pclewis.mcpatcher.mod.TextureUtils;
 //Spout HD End
+
 class CanvasMojangLogo extends Canvas {
 
 	private BufferedImage logo;
 
 	public CanvasMojangLogo() {
 		try {
-//Spout HD Start
+			//Spout HD Start
 			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/crash_logo.png");
-//Spout HD End
+			//Spout HD End
 		} catch (IOException var2) {
 			;
 		}
@@ -31,8 +32,8 @@ class CanvasMojangLogo extends Canvas {
 		this.setMinimumSize(new Dimension(var1, var1));
 	}
 
-	public void paint(Graphics var1) {
-		super.paint(var1);
-		var1.drawImage(this.logo, this.getWidth() / 2 - this.logo.getWidth() / 2, 32, (ImageObserver)null);
+	public void paint(Graphics par1Graphics) {
+		super.paint(par1Graphics);
+		par1Graphics.drawImage(this.logo, this.getWidth() / 2 - this.logo.getWidth() / 2, 32, (ImageObserver)null);
 	}
 }

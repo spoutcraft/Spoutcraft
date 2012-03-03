@@ -26,21 +26,20 @@ public class SoundManager {
 	private SoundPool soundPoolSounds = new SoundPool();
 	private SoundPool soundPoolStreaming = new SoundPool();
 	private SoundPool soundPoolMusic = new SoundPool();
-	private int field_587_e = 0;
+	private int latestSoundID = 0;
 	private GameSettings options;
 	private static boolean loaded = false;
 	private Random rand = new Random();
 	private int ticksBeforeMusic;
 
-
 	public SoundManager() {
 		this.ticksBeforeMusic = this.rand.nextInt(12000);
 	}
 
-	public void loadSoundSettings(GameSettings var1) {
+	public void loadSoundSettings(GameSettings par1GameSettings) {
 		this.soundPoolStreaming.isGetRandomSound = false;
-		this.options = var1;
-		if(!loaded && (var1 == null || var1.soundVolume != 0.0F || var1.musicVolume != 0.0F)) {
+		this.options = par1GameSettings;
+		if (!loaded && (par1GameSettings == null || par1GameSettings.soundVolume != 0.0F || par1GameSettings.musicVolume != 0.0F)) {
 			this.tryToSetLibraryAndCodecs();
 		}
 
@@ -70,12 +69,12 @@ public class SoundManager {
 	}
 
 	public void onSoundOptionsChanged() {
-		if(!loaded && (this.options.soundVolume != 0.0F || this.options.musicVolume != 0.0F)) {
+		if (!loaded && (this.options.soundVolume != 0.0F || this.options.musicVolume != 0.0F)) {
 			this.tryToSetLibraryAndCodecs();
 		}
 
-		if(loaded) {
-			if(this.options.musicVolume == 0.0F) {
+		if (loaded) {
+			if (this.options.musicVolume == 0.0F) {
 				sndSystem.stop("BgMusic");
 			} else {
 				sndSystem.setVolume("BgMusic", this.options.musicVolume);
@@ -85,34 +84,34 @@ public class SoundManager {
 	}
 
 	public void closeMinecraft() {
-		if(loaded) {
+		if (loaded) {
 			sndSystem.cleanup();
 		}
 
 	}
 
-	public void addSound(String var1, File var2) {
-		this.soundPoolSounds.addSound(var1, var2);
+	public void addSound(String par1Str, File par2File) {
+		this.soundPoolSounds.addSound(par1Str, par2File);
 	}
 
-	public void addStreaming(String var1, File var2) {
-		this.soundPoolStreaming.addSound(var1, var2);
+	public void addStreaming(String par1Str, File par2File) {
+		this.soundPoolStreaming.addSound(par1Str, par2File);
 	}
 
-	public void addMusic(String var1, File var2) {
-		this.soundPoolMusic.addSound(var1, var2);
+	public void addMusic(String par1Str, File par2File) {
+		this.soundPoolMusic.addSound(par1Str, par2File);
 	}
 
 	public void playRandomMusicIfReady() {
-		if(loaded && this.options.musicVolume != 0.0F) {
-			if(!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming")) {
-				if(this.ticksBeforeMusic > 0) {
+		if (loaded && this.options.musicVolume != 0.0F) {
+			if (!sndSystem.playing("BgMusic") && !sndSystem.playing("streaming")) {
+				if (this.ticksBeforeMusic > 0) {
 					--this.ticksBeforeMusic;
 					return;
 				}
 
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
-				if(var1 != null) {
+				if (var1 != null) {
 					//Spout start
 					if (SpoutClient.getInstance().isSpoutEnabled()) {
 						EntityPlayer player = SpoutClient.getHandle().thePlayer;
@@ -154,13 +153,13 @@ public class SoundManager {
 		}
 	}
 
-	public void func_338_a(EntityLiving var1, float var2) {
-		if(loaded && this.options.soundVolume != 0.0F) {
-			if(var1 != null) {
-				float var3 = var1.prevRotationYaw + (var1.rotationYaw - var1.prevRotationYaw) * var2;
-				double var4 = var1.prevPosX + (var1.posX - var1.prevPosX) * (double)var2;
-				double var6 = var1.prevPosY + (var1.posY - var1.prevPosY) * (double)var2;
-				double var8 = var1.prevPosZ + (var1.posZ - var1.prevPosZ) * (double)var2;
+	public void setListener(EntityLiving par1EntityLiving, float par2) {
+		if (loaded && this.options.soundVolume != 0.0F) {
+			if (par1EntityLiving != null) {
+				float var3 = par1EntityLiving.prevRotationYaw + (par1EntityLiving.rotationYaw - par1EntityLiving.prevRotationYaw) * par2;
+				double var4 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
+				double var6 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
+				double var8 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
 				float var10 = MathHelper.cos(-var3 * 0.017453292F - 3.1415927F);
 				float var11 = MathHelper.sin(-var3 * 0.017453292F - 3.1415927F);
 				float var12 = -var11;
@@ -175,22 +174,22 @@ public class SoundManager {
 		}
 	}
 
-	public void playStreaming(String var1, float var2, float var3, float var4, float var5, float var6) {
-		if(loaded && this.options.soundVolume != 0.0F) {
+	public void playStreaming(String par1Str, float par2, float par3, float par4, float par5, float par6) {
+		if (loaded && this.options.soundVolume != 0.0F) {
 			String var7 = "streaming";
-			if(sndSystem.playing("streaming")) {
+			if (sndSystem.playing("streaming")) {
 				sndSystem.stop("streaming");
 			}
 
-			if(var1 != null) {
-				SoundPoolEntry var8 = this.soundPoolStreaming.getRandomSoundFromSoundPool(var1);
-				if(var8 != null && var5 > 0.0F) {
-					if(sndSystem.playing("BgMusic")) {
+			if (par1Str != null) {
+				SoundPoolEntry var8 = this.soundPoolStreaming.getRandomSoundFromSoundPool(par1Str);
+				if (var8 != null && par5 > 0.0F) {
+					if (sndSystem.playing("BgMusic")) {
 						sndSystem.stop("BgMusic");
 					}
 
 					float var9 = 16.0F;
-					sndSystem.newStreamingSource(true, var7, var8.soundUrl, var8.soundName, false, var2, var3, var4, 2, var9 * 4.0F);
+					sndSystem.newStreamingSource(true, var7, var8.soundUrl, var8.soundName, false, par2, par3, par4, 2, var9 * 4.0F);
 					sndSystem.setVolume(var7, 0.5F * this.options.soundVolume);
 					sndSystem.play(var7);
 				}
@@ -213,9 +212,9 @@ public class SoundManager {
 		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
 		if(soundpoolentry != null && f3 > 0.0F)
 		{
-			field_587_e = (field_587_e + 1) % 256;
+			latestSoundID = (latestSoundID + 1) % 256;
 			String s1;
-			if (soundId == -1) s1 = (new StringBuilder()).append("sound_").append(field_587_e).toString();
+			if (soundId == -1) s1 = (new StringBuilder()).append("sound_").append(latestSoundID).toString();
 			else s1 = (new StringBuilder()).append("sound_").append(soundId).toString();
 			float f5 = 16F;
 			if(f3 > 1.0F)
@@ -247,9 +246,9 @@ public class SoundManager {
 		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
 		if(soundpoolentry != null)
 		{
-			field_587_e = (field_587_e + 1) % 256;
+			latestSoundID = (latestSoundID + 1) % 256;
 			String s1;
-			if (soundId == -1) s1 = (new StringBuilder()).append("sound_").append(field_587_e).toString();
+			if (soundId == -1) s1 = (new StringBuilder()).append("sound_").append(latestSoundID).toString();
 			else s1 = (new StringBuilder()).append("sound_").append(soundId).toString();
 			sndSystem.newSource(false, s1, soundpoolentry.soundUrl, soundpoolentry.soundName, false, 0.0F, 0.0F, 0.0F, 0, 0.0F);
 			if(f > 1.0F)

@@ -1,23 +1,18 @@
-/* Spout removed file
 package net.minecraft.src;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import net.minecraft.src.GuiMultiplayer;
-import net.minecraft.src.GuiSlotServer;
-import net.minecraft.src.ServerNBTStorage;
 
 class ThreadPollServers extends Thread {
-
 	final ServerNBTStorage server;
 
 	final GuiSlotServer serverSlotContainer;
 
-	ThreadPollServers(GuiSlotServer var1, ServerNBTStorage var2) {
-		this.serverSlotContainer = var1;
-		this.server = var2;
+	ThreadPollServers(GuiSlotServer par1GuiSlotServer, ServerNBTStorage par2ServerNBTStorage) {
+		this.serverSlotContainer = par1GuiSlotServer;
+		this.server = par2ServerNBTStorage;
 	}
 
 	public void run() {
@@ -37,78 +32,70 @@ class ThreadPollServers extends Thread {
 								this.server.lag = (var3 - var1) / 1000000L;
 								var27 = false;
 								break label183;
-							}
-							catch (UnknownHostException var35) {
+							} catch (UnknownHostException var35) {
 								this.server.lag = -1L;
 								this.server.motd = "\u00a74Can\'t resolve hostname";
 								var27 = false;
-							}
-							catch (SocketTimeoutException var36) {
+							} catch (SocketTimeoutException var36) {
 								this.server.lag = -1L;
 								this.server.motd = "\u00a74Can\'t reach server";
 								var27 = false;
 								break label187;
-							}
-							catch (ConnectException var37) {
+							} catch (ConnectException var37) {
 								this.server.lag = -1L;
 								this.server.motd = "\u00a74Can\'t reach server";
 								var27 = false;
 								break label186;
-							}
-							catch (IOException var38) {
+							} catch (IOException var38) {
 								this.server.lag = -1L;
 								this.server.motd = "\u00a74Communication error";
 								var27 = false;
 								break label185;
-							}
-							catch (Exception var39) {
+							} catch (Exception var39) {
 								this.server.lag = -1L;
 								this.server.motd = "ERROR: " + var39.getClass();
 								var27 = false;
 								break label184;
-							}
-							finally {
+							} finally {
 								if (var27) {
-									synchronized (GuiMultiplayer.getLock()) {
+									synchronized(GuiMultiplayer.getLock()) {
 										GuiMultiplayer.decrementThreadsPending();
 									}
 								}
 							}
 
-							synchronized (GuiMultiplayer.getLock()) {
+							synchronized(GuiMultiplayer.getLock()) {
 								GuiMultiplayer.decrementThreadsPending();
 								return;
 							}
 						}
 
-						synchronized (GuiMultiplayer.getLock()) {
+						synchronized(GuiMultiplayer.getLock()) {
 							GuiMultiplayer.decrementThreadsPending();
 							return;
 						}
 					}
 
-					synchronized (GuiMultiplayer.getLock()) {
+					synchronized(GuiMultiplayer.getLock()) {
 						GuiMultiplayer.decrementThreadsPending();
 						return;
 					}
 				}
 
-				synchronized (GuiMultiplayer.getLock()) {
+				synchronized(GuiMultiplayer.getLock()) {
 					GuiMultiplayer.decrementThreadsPending();
 					return;
 				}
 			}
 
-			synchronized (GuiMultiplayer.getLock()) {
+			synchronized(GuiMultiplayer.getLock()) {
 				GuiMultiplayer.decrementThreadsPending();
 				return;
 			}
 		}
 
-		synchronized (GuiMultiplayer.getLock()) {
+		synchronized(GuiMultiplayer.getLock()) {
 			GuiMultiplayer.decrementThreadsPending();
 		}
-
 	}
 }
-*/

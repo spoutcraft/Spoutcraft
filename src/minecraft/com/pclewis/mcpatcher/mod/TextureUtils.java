@@ -1,10 +1,12 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TileSize;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,9 +20,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageInputStream;
 
@@ -28,6 +31,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.ColorizerGrass;
 import net.minecraft.src.ColorizerWater;
+import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.TextureCompassFX;
 import net.minecraft.src.TextureFX;
@@ -37,6 +41,7 @@ import net.minecraft.src.TextureLavaFlowFX;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
 import net.minecraft.src.TexturePackDefault;
+import net.minecraft.src.TexturePackList;
 import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
@@ -102,7 +107,7 @@ public class TextureUtils {
 	}
 
 	private static TextureFX refreshTextureFX(TextureFX var0) {
-		if (!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX) && !(var0 instanceof CustomAnimation)) {
+		if (!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX)) {
 			System.out.printf("attempting to refresh unknown animation %s\n", new Object[]{var0.getClass().getName()});
 			Minecraft var1 = SpoutClient.getHandle();
 			Class var2 = var0.getClass();
@@ -155,52 +160,68 @@ public class TextureUtils {
 		}
 
 		textureFXs.clear();
+		CustomAnimation.clear();
 		Minecraft game = SpoutClient.getHandle();
 		textureFXs.add(new TextureCompassFX(game));
 		textureFXs.add(new TextureWatchFX(game));
-		TexturePackBase var10 = getSelectedTexturePack();
-		boolean var11 = var10 == null || var10 instanceof TexturePackDefault;
-		if (!var11 && customLava) {
-			textureFXs.add(new CustomAnimation(237, 0, 1, "lava_still", -1, -1));
-			textureFXs.add(new CustomAnimation(238, 0, 2, "lava_flowing", 3, 6));
+		TexturePackBase var17 = getSelectedTexturePack();
+		boolean var18 = var17 == null || var17 instanceof TexturePackDefault;
+		if (!var18 && customLava) {
+			CustomAnimation.addStripOrTile("/terrain.png", "lava_still", 237, 1, -1, -1);
+			CustomAnimation.addStripOrTile("/terrain.png", "lava_flowing", 238, 2, 3, 6);
 		} else if (animatedLava) {
 			textureFXs.add(new TextureLavaFX());
 			textureFXs.add(new TextureLavaFlowFX());
 		}
 
-		if (!var11 && customWater) {
-			textureFXs.add(new CustomAnimation(205, 0, 1, "water_still", -1, -1));
-			textureFXs.add(new CustomAnimation(206, 0, 2, "water_flowing", 0, 0));
+		if (!var18 && customWater) {
+			CustomAnimation.addStripOrTile("/terrain.png", "water_still", 205, 1, -1, -1);
+			CustomAnimation.addStripOrTile("/terrain.png", "water_flowing", 206, 2, 0, 0);
 		} else if (animatedWater) {
 			textureFXs.add(new TextureWaterFX());
 			textureFXs.add(new TextureWaterFlowFX());
 		}
 
-		if (!var11 && customFire && hasResource("/anim//custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
-			textureFXs.add(new CustomAnimation(47, 0, 1, "fire_n_s", 2, 4));
-			textureFXs.add(new CustomAnimation(31, 0, 1, "fire_e_w", 2, 4));
+		if (!var18 && customFire && hasResource("/anim/custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
+			CustomAnimation.addStrip("/terrain.png", "fire_n_s", 47, 1);
+			CustomAnimation.addStrip("/terrain.png", "fire_e_w", 31, 1);
 		} else if (animatedFire) {
 			textureFXs.add(new TextureFlamesFX(0));
 			textureFXs.add(new TextureFlamesFX(1));
 		}
 
-		if (!var11 && customPortal && hasResource("/anim/custom_portal.png")) {
-			textureFXs.add(new CustomAnimation(14, 0, 1, "portal", -1, -1));
+		if (!var18 && customPortal && hasResource("/anim/custom_portal.png")) {
+			CustomAnimation.addStrip("/terrain.png", "portal", 14, 1);
 		} else if (animatedPortal) {
 			textureFXs.add(new TexturePortalFX());
 		}
 
 		if (customOther) {
-			for (int var5 = 0; var5 < 2; ++var5) {
-				String var6 = var5 == 0?"terrain":"item";
+			addOtherTextureFX("/terrain.png", "terrain");
+			addOtherTextureFX("/gui/items.png", "item");
+			if (var17 instanceof TexturePackCustom) {
+				TexturePackCustom var5 = (TexturePackCustom)var17;
+				Iterator var6 = Collections.list(var5.texturePackZipFile.entries()).iterator();
 
-				for (int var7 = 0; var7 < 256; ++var7) {
-					String var8 = "/anim/custom_" + var6 + "_" + var7 + ".png";
-					if (hasResource(var8)) {
-						textureFXs.add(new CustomAnimation(var7, var5, 1, var6 + "_" + var7, 2, 4));
+				while (var6.hasNext()) {
+					ZipEntry var7 = (ZipEntry)var6.next();
+					String var8 = "/" + var7.getName();
+					if (var8.startsWith("/anim/") && var8.endsWith(".properties") && !isCustomTerrainItemResource(var8)) {
+						InputStream var9 = null;
+
+						try {
+							var9 = var5.texturePackZipFile.getInputStream(var7);
+							Properties var10 = new Properties();
+							var10.load(var9);
+							CustomAnimation.addStrip(var10);
+						} catch (IOException var14) {
+							var14.printStackTrace();
+						} finally {
+							MCPatcherUtils.close((Closeable)var9);
+						}
 					}
 				}
-		}
+			}
 		}
 
 		Iterator var12 = var1.iterator();
@@ -218,6 +239,7 @@ public class TextureUtils {
 			var13.onTick();
 		}
 
+		CustomAnimation.updateAll();
 		if (ColorizerWater.waterBuffer != ColorizerFoliage.foliageBuffer) {
 			refreshColorizer(ColorizerWater.waterBuffer, "/misc/watercolor.png");
 		}
@@ -225,6 +247,15 @@ public class TextureUtils {
 		refreshColorizer(ColorizerGrass.grassBuffer, "/misc/grasscolor.png");
 		refreshColorizer(ColorizerFoliage.foliageBuffer, "/misc/foliagecolor.png");
 		System.gc();
+	}
+
+	private static void addOtherTextureFX(String var0, String var1) {
+		for (int var2 = 0; var2 < 256; ++var2) {
+			String var3 = "/anim/custom_" + var1 + "_" + var2 + ".png";
+			if (hasResource(var3)) {
+				CustomAnimation.addStrip(var0, var1 + "_" + var2, var2, 1);
+			}
+		}
 	}
 
 	public static TexturePackBase getSelectedTexturePack() {
@@ -254,6 +285,11 @@ public class TextureUtils {
 
 	public static boolean isRequiredResource(String texture) {
 		return !texture.startsWith("/custom_") && !texture.startsWith("/anim/custom_") && !texture.equals("/terrain_nh.png") && !texture.equals("/terrain_s.png") && !texture.matches("^/font/.*\\.properties$") && !texture.matches("^/mob/.*\\d+.png$");
+	}
+
+	static boolean isCustomTerrainItemResource(String var0) {
+		var0 = var0.replaceFirst("^/anim", "").replaceFirst("\\.(png|properties)$", "");
+		return var0.equals("/custom_lava_still") || var0.equals("/custom_lava_flowing") || var0.equals("/custom_water_still") || var0.equals("/custom_water_flowing") || var0.equals("/custom_fire_n_s") || var0.equals("/custom_fire_e_w") || var0.equals("/custom_portal") || var0.matches("^/custom_(terrain|item)_\\d+$");
 	}
 
 	public static InputStream getResourceAsStream(TexturePackBase texturePack, String texture) {
@@ -447,7 +483,7 @@ public class TextureUtils {
 		return hasResource(getSelectedTexturePack(), texture);
 	}
 
-	private static BufferedImage resizeImage(BufferedImage image, int width) {
+	static BufferedImage resizeImage(BufferedImage image, int width) {
 		int height = image.getHeight() * width / image.getWidth();
 		BufferedImage resizedImage = new BufferedImage(width, height, 2);
 		Graphics2D grahics = resizedImage.createGraphics();
