@@ -2,11 +2,13 @@ package net.minecraft.src;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
+<<<<<<< HEAD
 
 import org.bukkit.ChatColor;
+=======
+>>>>>>> Some Gui classes [MC 1.2]
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader;
 
 public class GuiEditSign extends GuiScreen
 {
