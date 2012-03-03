@@ -42,20 +42,19 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private boolean wasSneaking = false;
 	private int field_12242_bI = 0;
 
-
-	public EntityClientPlayerMP(Minecraft var1, World var2, Session var3, NetClientHandler var4) {
-		super(var1, var2, var3, 0);
-		this.sendQueue = var4;
+	public EntityClientPlayerMP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler) {
+		super(par1Minecraft, par2World, par3Session, 0);
+		this.sendQueue = par4NetClientHandler;
 	}
 
-	public boolean attackEntityFrom(DamageSource var1, int var2) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		return false;
 	}
 
-	public void heal(int var1) {}
+	public void heal(int par1) {}
 
 	public void onUpdate() {
-		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), this.worldObj.worldHeight / 2, MathHelper.floor_double(this.posZ))) {
+		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), 0, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
 			this.onUpdate2();
 		}
@@ -138,16 +137,17 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	}
 
-	public void dropCurrentItem() {
+	public EntityItem func_48152_as() {
 		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
+		return null;
 	}
 
 	public void sendInventoryChanged() {}
 
-	protected void joinEntityItemWithWorld(EntityItem var1) {}
+	protected void joinEntityItemWithWorld(EntityItem par1EntityItem) {}
 
-	public void sendChatMessage(String var1) {
-		this.sendQueue.addToSendQueue(new Packet3Chat(var1));
+	public void sendChatMessage(String par1Str) {
+		this.sendQueue.addToSendQueue(new Packet3Chat(par1Str));
 	}
 
 	public void swingItem() {
@@ -157,11 +157,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void respawnPlayer() {
 		this.sendInventoryChanged();
-		this.sendQueue.addToSendQueue(new Packet9Respawn((byte)this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldSeed(), this.worldObj.getWorldInfo().func_46133_t(), this.worldObj.worldHeight, 0));
+		this.sendQueue.addToSendQueue(new Packet9Respawn(this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldInfo().getTerrainType(), this.worldObj.func_48453_b(), 0));
 	}
 
-	public void damageEntity(DamageSource var1, int var2) { //Spout protected -> public
-		this.setEntityHealth(this.getEntityHealth() - var2);
+	public void damageEntity(DamageSource par1DamageSource, int par2) { //Spout protected -> public
+		this.setEntityHealth(this.getEntityHealth() - par2);
 		//Spout start
 		GuiChat.interruptChat();
 		//Spout end
@@ -173,29 +173,29 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		super.closeScreen();
 	}
 
-	public void setHealth(int var1) {
+	public void setHealth(int par1) {
 		if(this.field_21093_bH) {
-			super.setHealth(var1);
+			super.setHealth(par1);
 		} else {
-			this.setEntityHealth(var1);
+			this.setEntityHealth(par1);
 			this.field_21093_bH = true;
 		}
 
 	}
 
-	public void addStat(StatBase var1, int var2) {
-		if(var1 != null) {
-			if(var1.isIndependent) {
-				super.addStat(var1, var2);
+	public void addStat(StatBase par1StatBase, int par2) {
+		if(par1StatBase != null) {
+			if(par1StatBase.isIndependent) {
+				super.addStat(par1StatBase, par2);
 			}
 
 		}
 	}
 
-	public void incrementStat(StatBase var1, int var2) {
-		if(var1 != null) {
-			if(!var1.isIndependent) {
-				super.addStat(var1, var2);
+	public void incrementStat(StatBase par1StatBase, int par2) {
+		if(par1StatBase != null) {
+			if(!par1StatBase.isIndependent) {
+				super.addStat(par1StatBase, par2);
 			}
 
 		}

@@ -8,26 +8,25 @@ import net.minecraft.src.World;
 
 public class EntityBubbleFX extends EntityFX {
 
-	public EntityBubbleFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12) {
-		super(var1, var2, var4, var6, var8, var10, var12);
-//Spout HD start
+	public EntityBubbleFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
+		super(par1World, par2, par4, par6, par8, par10, par12);
+		//Spout HD start
 		if (Colorizer.computeWaterColor(this.worldObj.getWorldChunkManager(), this.posX, this.posY, this.posZ)) {
 			this.particleRed = Colorizer.waterColor[0];
 			this.particleGreen = Colorizer.waterColor[1];
 			this.particleBlue = Colorizer.waterColor[2];
-		}
-		else {
+		} else {
 			this.particleRed = 1.0F;
 			this.particleGreen = 1.0F;
 			this.particleBlue = 1.0F;
 		}
- //Spout HD end
+ 		//Spout HD end
 		this.setParticleTextureIndex(32);
 		this.setSize(0.02F, 0.02F);
 		this.particleScale *= this.rand.nextFloat() * 0.6F + 0.2F;
-		this.motionX = var8 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
-		this.motionY = var10 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
-		this.motionZ = var12 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
+		this.motionX = par8 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
+		this.motionY = par10 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
+		this.motionZ = par12 * 0.20000000298023224D + (double)((float)(Math.random() * 2.0D - 1.0D) * 0.02F);
 		this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
 	}
 

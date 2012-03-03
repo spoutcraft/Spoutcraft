@@ -11,8 +11,8 @@ import net.minecraft.src.World;
 
 public class EntityCaveSpider extends EntitySpider {
 
-	public EntityCaveSpider(World var1) {
-		super(var1);
+	public EntityCaveSpider(World par1World) {
+		super(par1World);
 		this.texture = "/mob/cavespider.png";
 		this.setSize(0.7F, 0.5F);
 		//Spout start
@@ -28,9 +28,9 @@ public class EntityCaveSpider extends EntitySpider {
 		return 0.7F;
 	}
 
-	public boolean attackEntityAsMob(Entity var1) {
-		if(super.attackEntityAsMob(var1)) {
-			if(var1 instanceof EntityLiving) {
+	public boolean attackEntityAsMob(Entity par1Entity) {
+		if(super.attackEntityAsMob(par1Entity)) {
+			if(par1Entity instanceof EntityLiving) {
 				byte var2 = 0;
 				if(this.worldObj.difficultySetting > 1) {
 					if(this.worldObj.difficultySetting == 2) {
@@ -41,7 +41,7 @@ public class EntityCaveSpider extends EntitySpider {
 				}
 
 				if(var2 > 0) {
-					((EntityLiving)var1).addPotionEffect(new PotionEffect(Potion.poison.id, var2 * 20, 0));
+					((EntityLiving)par1Entity).addPotionEffect(new PotionEffect(Potion.poison.id, var2 * 20, 0));
 				}
 			}
 

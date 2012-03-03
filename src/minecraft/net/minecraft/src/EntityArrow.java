@@ -31,33 +31,52 @@ public class EntityArrow extends Entity {
 	public Entity shootingEntity;
 	private int ticksInGround;
 	private int ticksInAir = 0;
-	private double field_46026_at = 2.0D;
-
+	private double damage = 2.0D;
 	private int field_46027_au;
 	public boolean arrowCritical = false;
 
-
-	public EntityArrow(World var1) {
-		super(var1);
+	public EntityArrow(World par1World) {
+		super(par1World);
 		this.setSize(0.5F, 0.5F);
+	}
+
+	public EntityArrow(World par1World, double par2, double par4, double par6) {
+		super(par1World);
+		this.setSize(0.5F, 0.5F);
+		this.setPosition(par2, par4, par6);
+		this.yOffset = 0.0F;
 		//Spout start
 		this.spoutEntity = new CraftArrow(this);
 		//Spout end
 	}
 
-	public EntityArrow(World var1, double var2, double var4, double var6) {
-		super(var1);
-		this.setSize(0.5F, 0.5F);
-		this.setPosition(var2, var4, var6);
-		this.yOffset = 0.0F;
+	public EntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5) {
+		super(par1World);
+		this.shootingEntity = par2EntityLiving;
+		this.doesArrowBelongToPlayer = par2EntityLiving instanceof EntityPlayer;
+		this.posY = par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
+		double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
+		double var8 = par3EntityLiving.posY + (double)par3EntityLiving.getEyeHeight() - 0.699999988079071D - this.posY;
+		double var10 = par3EntityLiving.posZ - par2EntityLiving.posZ;
+		double var12 = (double)MathHelper.sqrt_double(var6 * var6 + var10 * var10);
+		if(var12 >= 1.0E-7D) {
+			float var14 = (float)(Math.atan2(var10, var6) * 180.0D / 3.1415927410125732D) - 90.0F;
+			float var15 = (float)(-(Math.atan2(var8, var12) * 180.0D / 3.1415927410125732D));
+			double var16 = var6 / var12;
+			double var18 = var10 / var12;
+			this.setLocationAndAngles(par2EntityLiving.posX + var16, this.posY, par2EntityLiving.posZ + var18, var14, var15);
+			this.yOffset = 0.0F;
+			float var20 = (float)var12 * 0.2F;
+			this.setArrowHeading(var6, var8 + (double)var20, var10, par4, par5);
+		}
 	}
 
-	public EntityArrow(World var1, EntityLiving var2, float var3) {
-		super(var1);
-		this.shootingEntity = var2;
-		this.doesArrowBelongToPlayer = var2 instanceof EntityPlayer;
+	public EntityArrow(World par1World, EntityLiving par2EntityLiving, float par3) {
+		super(par1World);
+		this.shootingEntity = par2EntityLiving;
+		this.doesArrowBelongToPlayer = par2EntityLiving instanceof EntityPlayer;
 		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(var2.posX, var2.posY + (double)var2.getEyeHeight(), var2.posZ, var2.rotationYaw, var2.rotationPitch);
+		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * 3.1415927F) * 0.16F);
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * 3.1415927F) * 0.16F);
@@ -66,39 +85,39 @@ public class EntityArrow extends Entity {
 		this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * 3.1415927F) * MathHelper.cos(this.rotationPitch / 180.0F * 3.1415927F));
 		this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * 3.1415927F) * MathHelper.cos(this.rotationPitch / 180.0F * 3.1415927F));
 		this.motionY = (double)(-MathHelper.sin(this.rotationPitch / 180.0F * 3.1415927F));
-		this.setArrowHeading(this.motionX, this.motionY, this.motionZ, var3 * 1.5F, 1.0F);
+		this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
 	}
 
 	protected void entityInit() {}
 
-	public void setArrowHeading(double var1, double var3, double var5, float var7, float var8) {
-		float var9 = MathHelper.sqrt_double(var1 * var1 + var3 * var3 + var5 * var5);
-		var1 /= (double)var9;
-		var3 /= (double)var9;
-		var5 /= (double)var9;
-		var1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)var8;
-		var1 *= (double)var7;
-		var3 *= (double)var7;
-		var5 *= (double)var7;
-		this.motionX = var1;
-		this.motionY = var3;
-		this.motionZ = var5;
-		float var10 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
-		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / 3.1415927410125732D);
-		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var10) * 180.0D / 3.1415927410125732D);
+	public void setArrowHeading(double par1, double par3, double par5, float par7, float par8) {
+		float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
+		par1 /= (double)var9;
+		par3 /= (double)var9;
+		par5 /= (double)var9;
+		par1 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par3 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par5 += this.rand.nextGaussian() * 0.007499999832361937D * (double)par8;
+		par1 *= (double)par7;
+		par3 *= (double)par7;
+		par5 *= (double)par7;
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
+		float var10 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / 3.1415927410125732D);
+		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)var10) * 180.0D / 3.1415927410125732D);
 		this.ticksInGround = 0;
 	}
 
-	public void setVelocity(double var1, double var3, double var5) {
-		this.motionX = var1;
-		this.motionY = var3;
-		this.motionZ = var5;
+	public void setVelocity(double par1, double par3, double par5) {
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
 		if(this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-			float var7 = MathHelper.sqrt_double(var1 * var1 + var5 * var5);
-			this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(var1, var5) * 180.0D / 3.1415927410125732D);
-			this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(var3, (double)var7) * 180.0D / 3.1415927410125732D);
+			float var7 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
+			this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / 3.1415927410125732D);
+			this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)var7) * 180.0D / 3.1415927410125732D);
 			this.prevRotationPitch = this.rotationPitch;
 			this.prevRotationYaw = this.rotationYaw;
 			this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -186,7 +205,7 @@ public class EntityArrow extends Entity {
 			if(var3 != null) {
 				if(var3.entityHit != null) {
 					var19 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					int var20 = (int)Math.ceil((double)var19 * this.field_46026_at);
+					int var20 = (int)Math.ceil((double)var19 * this.damage);
 					if(this.arrowCritical) {
 						var20 += this.rand.nextInt(var20 / 2 + 2);
 					}
@@ -199,25 +218,17 @@ public class EntityArrow extends Entity {
 					}
 
 					if(this.isBurning()) {
-
 						var3.entityHit.setFire(5);
-
 					}
 
 					if(var3.entityHit.attackEntityFrom(var22, var20)) {
 						if(var3.entityHit instanceof EntityLiving) {
 							++((EntityLiving)var3.entityHit).arrowHitTempCounter;
-
 							if(this.field_46027_au > 0) {
-
 								float var21 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-
 								if(var21 > 0.0F) {
-
 									var3.entityHit.addVelocity(this.motionX * (double)this.field_46027_au * 0.6000000238418579D / (double)var21, 0.1D, this.motionZ * (double)this.field_46027_au * 0.6000000238418579D / (double)var21);
-
 								}
-
 							}
 						}
 
@@ -284,7 +295,7 @@ public class EntityArrow extends Entity {
 			float var23 = 0.99F;
 			var10 = 0.05F;
 			if(this.isInWater()) {
-				for(int var21 = 0; var21 < 4; ++var21) {
+				for(int var25 = 0; var25 < 4; ++var25) {
 					float var24 = 0.25F;
 					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var24, this.posY - this.motionY * (double)var24, this.posZ - this.motionZ * (double)var24, this.motionX, this.motionY, this.motionZ);
 				}
@@ -300,39 +311,38 @@ public class EntityArrow extends Entity {
 		}
 	}
 
-	public void writeEntityToNBT(NBTTagCompound var1) {
-		var1.setShort("xTile", (short)this.xTile);
-		var1.setShort("yTile", (short)this.yTile);
-		var1.setShort("zTile", (short)this.zTile);
-		var1.setByte("inTile", (byte)this.inTile);
-		var1.setByte("inData", (byte)this.inData);
-		var1.setByte("shake", (byte)this.arrowShake);
-		var1.setByte("inGround", (byte)(this.inGround?1:0));
-		var1.setBoolean("player", this.doesArrowBelongToPlayer);
-		var1.setDouble("damage", this.field_46026_at);
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		par1NBTTagCompound.setShort("xTile", (short)this.xTile);
+		par1NBTTagCompound.setShort("yTile", (short)this.yTile);
+		par1NBTTagCompound.setShort("zTile", (short)this.zTile);
+		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
+		par1NBTTagCompound.setByte("inData", (byte)this.inData);
+		par1NBTTagCompound.setByte("shake", (byte)this.arrowShake);
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
+		par1NBTTagCompound.setBoolean("player", this.doesArrowBelongToPlayer);
+		par1NBTTagCompound.setDouble("damage", this.damage);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound var1) {
-		this.xTile = var1.getShort("xTile");
-		this.yTile = var1.getShort("yTile");
-		this.zTile = var1.getShort("zTile");
-		this.inTile = var1.getByte("inTile") & 255;
-		this.inData = var1.getByte("inData") & 255;
-		this.arrowShake = var1.getByte("shake") & 255;
-		this.inGround = var1.getByte("inGround") == 1;
-		this.doesArrowBelongToPlayer = var1.getBoolean("player");
-		if(var1.hasKey("damage")) {
-
-			this.field_46026_at = var1.getDouble("damage");
-
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		this.xTile = par1NBTTagCompound.getShort("xTile");
+		this.yTile = par1NBTTagCompound.getShort("yTile");
+		this.zTile = par1NBTTagCompound.getShort("zTile");
+		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
+		this.inData = par1NBTTagCompound.getByte("inData") & 255;
+		this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
+		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
+		this.doesArrowBelongToPlayer = par1NBTTagCompound.getBoolean("player");
+		if(par1NBTTagCompound.hasKey("damage")) {
+			this.damage = par1NBTTagCompound.getDouble("damage");
 		}
+
 	}
 
-	public void onCollideWithPlayer(EntityPlayer var1) {
-		if(!this.worldObj.multiplayerWorld) {
-			if(this.inGround && this.doesArrowBelongToPlayer && this.arrowShake <= 0 && var1.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
+	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
+		if(!this.worldObj.isRemote) {
+			if(this.inGround && this.doesArrowBelongToPlayer && this.arrowShake <= 0 && par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				var1.onItemPickup(this, 1);
+				par1EntityPlayer.onItemPickup(this, 1);
 				this.setEntityDead();
 			}
 
@@ -343,25 +353,19 @@ public class EntityArrow extends Entity {
 		return 0.0F;
 	}
 
-	public void func_46024_b(double var1) {
-
-		this.field_46026_at = var1;
-
+	public void setDamage(double par1) {
+		this.damage = par1;
 	}
 
-
-
-	public double func_46025_l() {
-
-		return this.field_46026_at;
-
+	public double getDamage() {
+		return this.damage;
 	}
 
+	public void func_46023_b(int par1) {
+		this.field_46027_au = par1;
+	}
 
-
-	public void func_46023_b(int var1) {
-
-		this.field_46027_au = var1;
-
+	public boolean func_48080_j() {
+		return false;
 	}
 }

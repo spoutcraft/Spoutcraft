@@ -11,14 +11,13 @@ import org.spoutcraft.client.entity.CraftCreature; //Spout
 
 public abstract class EntityCreature extends EntityLiving {
 
-	public PathEntity pathToEntity; //Spout private->public
+	public PathEntity pathToEntity; //Spout private -> public
 	public Entity entityToAttack; //Spout protected -> public
 	protected boolean hasAttacked = false;
 	protected int fleeingTick = 0;
 
-
-	public EntityCreature(World var1) {
-		super(var1);
+	public EntityCreature(World par1World) {
+		super(par1World);
 		//Spout start
 		this.spoutEntity = new CraftCreature(this);
 		//Spout end
@@ -39,7 +38,7 @@ public abstract class EntityCreature extends EntityLiving {
 		if(this.entityToAttack == null) {
 			this.entityToAttack = this.findPlayerToAttack();
 			if(this.entityToAttack != null) {
-				this.pathToEntity = this.worldObj.getPathToEntity(this, this.entityToAttack, var1);
+				this.pathToEntity = this.worldObj.func_48463_a(this, this.entityToAttack, var1, true, false, false, true);
 			}
 		} else if(!this.entityToAttack.isEntityAlive()) {
 			this.entityToAttack = null;
@@ -54,7 +53,7 @@ public abstract class EntityCreature extends EntityLiving {
 
 		Profiler.endSection();
 		if(!this.hasAttacked && this.entityToAttack != null && (this.pathToEntity == null || this.rand.nextInt(20) == 0)) {
-			this.pathToEntity = this.worldObj.getPathToEntity(this, this.entityToAttack, var1);
+			this.pathToEntity = this.worldObj.func_48463_a(this, this.entityToAttack, var1, true, false, false, true);
 		} else if(!this.hasAttacked && (this.pathToEntity == null && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100) {
 			this.updateWanderPath();
 		}
@@ -65,7 +64,7 @@ public abstract class EntityCreature extends EntityLiving {
 		this.rotationPitch = 0.0F;
 		if(this.pathToEntity != null && this.rand.nextInt(100) != 0) {
 			Profiler.startSection("followpath");
-			Vec3D var5 = this.pathToEntity.getPosition(this);
+			Vec3D var5 = this.pathToEntity.func_48640_a(this);
 			double var6 = (double)(this.width * 2.0F);
 
 			while(var5 != null && var5.squareDistanceTo(this.posX, var5.yCoord, this.posZ) < var6 * var6) {
@@ -74,7 +73,7 @@ public abstract class EntityCreature extends EntityLiving {
 					var5 = null;
 					this.pathToEntity = null;
 				} else {
-					var5 = this.pathToEntity.getPosition(this);
+					var5 = this.pathToEntity.func_48640_a(this);
 				}
 			}
 
@@ -160,17 +159,17 @@ public abstract class EntityCreature extends EntityLiving {
 		}
 
 		if(var1) {
-			this.pathToEntity = this.worldObj.getEntityPathToXYZ(this, var2, var3, var4, 10.0F);
+			this.pathToEntity = this.worldObj.func_48460_a(this, var2, var3, var4, 10.0F, true, false, false, true);
 		}
 
 		Profiler.endSection();
 	}
 
-	protected void attackEntity(Entity var1, float var2) {}
+	protected void attackEntity(Entity par1Entity, float par2) {}
 
-	protected void attackBlockedEntity(Entity var1, float var2) {}
+	protected void attackBlockedEntity(Entity par1Entity, float par2) {}
 
-	public float getBlockPathWeight(int var1, int var2, int var3) {
+	public float getBlockPathWeight(int par1, int par2, int par3) {
 		return 0.0F;
 	}
 
@@ -189,24 +188,28 @@ public abstract class EntityCreature extends EntityLiving {
 		return this.pathToEntity != null;
 	}
 
-	public void setPathToEntity(PathEntity var1) {
-		this.pathToEntity = var1;
+	public void setPathToEntity(PathEntity par1PathEntity) {
+		this.pathToEntity = par1PathEntity;
 	}
 
 	public Entity getEntityToAttack() {
 		return this.entityToAttack;
 	}
 
-	public void setEntityToAttack(Entity var1) {
-		this.entityToAttack = var1;
+	public void setTarget(Entity par1Entity) {
+		this.entityToAttack = par1Entity;
 	}
 
 	protected float getSpeedModifier() {
-		float var1 = super.getSpeedModifier();
-		if(this.fleeingTick > 0) {
-			var1 *= 2.0F;
-		}
+		if(this.isAIEnabled()) {
+			return 1.0F;
+		} else {
+			float var1 = super.getSpeedModifier();
+			if(this.fleeingTick > 0) {
+				var1 *= 2.0F;
+			}
 
-		return var1;
+			return var1;
+		}
 	}
 }

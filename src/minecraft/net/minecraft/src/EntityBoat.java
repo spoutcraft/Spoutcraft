@@ -34,8 +34,8 @@ public class EntityBoat extends Entity {
 	public boolean landBoats = false;
 	//Spout ends
 
-	public EntityBoat(World var1) {
-		super(var1);
+	public EntityBoat(World par1World) {
+		super(par1World);
 		this.preventEntitySpawning = true;
 		this.setSize(1.5F, 0.6F);
 		this.yOffset = this.height / 2.0F;
@@ -55,8 +55,8 @@ public class EntityBoat extends Entity {
 		this.dataWatcher.addObject(19, new Integer(0));
 	}
 
-	public AxisAlignedBB getCollisionBox(Entity var1) {
-		return var1.boundingBox;
+	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
+		return par1Entity.boundingBox;
 	}
 
 	public AxisAlignedBB getBoundingBox() {
@@ -67,26 +67,26 @@ public class EntityBoat extends Entity {
 		return true;
 	}
 
-	public EntityBoat(World var1, double var2, double var4, double var6) {
-		this(var1);
-		this.setPosition(var2, var4 + (double)this.yOffset, var6);
+	public EntityBoat(World par1World, double par2, double par4, double par6) {
+		this(par1World);
+		this.setPosition(par2, par4 + (double)this.yOffset, par6);
 		this.motionX = 0.0D;
 		this.motionY = 0.0D;
 		this.motionZ = 0.0D;
-		this.prevPosX = var2;
-		this.prevPosY = var4;
-		this.prevPosZ = var6;
+		this.prevPosX = par2;
+		this.prevPosY = par4;
+		this.prevPosZ = par6;
 	}
 
 	public double getMountedYOffset() {
 		return (double)this.height * 0.0D - 0.30000001192092896D;
 	}
 
-	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		if(!this.worldObj.multiplayerWorld && !this.isDead) {
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+		if(!this.worldObj.isRemote && !this.isDead) {
 			this.setForwardDirection(-this.getForwardDirection());
 			this.setTimeSinceHit(10);
-			this.setDamageTaken(this.getDamageTaken() + var2 * 10);
+			this.setDamageTaken(this.getDamageTaken() + par2 * 10);
 			this.setBeenAttacked();
 			if(this.getDamageTaken() > 40) {
 				if(this.riddenByEntity != null) {
@@ -121,22 +121,22 @@ public class EntityBoat extends Entity {
 		return !this.isDead;
 	}
 
-	public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
-		this.boatX = var1;
-		this.boatY = var3;
-		this.boatZ = var5;
-		this.boatYaw = (double)var7;
-		this.boatPitch = (double)var8;
-		this.boatPosRotationIncrements = var9 + 4;
+	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+		this.boatX = par1;
+		this.boatY = par3;
+		this.boatZ = par5;
+		this.boatYaw = (double)par7;
+		this.boatPitch = (double)par8;
+		this.boatPosRotationIncrements = par9 + 4;
 		this.motionX = this.velocityX;
 		this.motionY = this.velocityY;
 		this.motionZ = this.velocityZ;
 	}
 
-	public void setVelocity(double var1, double var3, double var5) {
-		this.velocityX = this.motionX = var1;
-		this.velocityY = this.motionY = var3;
-		this.velocityZ = this.motionZ = var5;
+	public void setVelocity(double par1, double par3, double par5) {
+		this.velocityX = this.motionX = par1;
+		this.velocityY = this.motionY = par3;
+		this.velocityZ = this.motionZ = par5;
 	}
 
 	public void onUpdate() {
@@ -190,7 +190,7 @@ public class EntityBoat extends Entity {
 
 		double var12;
 		double var23;
-		if(this.worldObj.multiplayerWorld) {
+		if(this.worldObj.isRemote) {
 			if(this.boatPosRotationIncrements > 0) {
 				var6 = this.posX + (this.boatX - this.posX) / (double)this.boatPosRotationIncrements;
 				var8 = this.posY + (this.boatY - this.posY) / (double)this.boatPosRotationIncrements;
@@ -282,7 +282,7 @@ public class EntityBoat extends Entity {
 
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			if(this.isCollidedHorizontally && var21 > 0.2D) {
-				if(!this.worldObj.multiplayerWorld) {
+				if(!this.worldObj.isRemote) {
 					this.setEntityDead();
 
 					int var22;
@@ -365,44 +365,44 @@ public class EntityBoat extends Entity {
 		}
 	}
 
-	protected void writeEntityToNBT(NBTTagCompound var1) {}
+	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
-	protected void readEntityFromNBT(NBTTagCompound var1) {}
+	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
 	public float getShadowSize() {
 		return 0.0F;
 	}
 
-	public boolean interact(EntityPlayer var1) {
-		if(this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1) {
+	public boolean interact(EntityPlayer par1EntityPlayer) {
+		if(this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != par1EntityPlayer) {
 			return true;
 		} else {
-			if(!this.worldObj.multiplayerWorld) {
-				var1.mountEntity(this);
+			if(!this.worldObj.isRemote) {
+				par1EntityPlayer.mountEntity(this);
 			}
 
 			return true;
 		}
 	}
 
-	public void setDamageTaken(int var1) {
-		this.dataWatcher.updateObject(19, Integer.valueOf(var1));
+	public void setDamageTaken(int par1) {
+		this.dataWatcher.updateObject(19, Integer.valueOf(par1));
 	}
 
 	public int getDamageTaken() {
 		return this.dataWatcher.getWatchableObjectInt(19);
 	}
 
-	public void setTimeSinceHit(int var1) {
-		this.dataWatcher.updateObject(17, Integer.valueOf(var1));
+	public void setTimeSinceHit(int par1) {
+		this.dataWatcher.updateObject(17, Integer.valueOf(par1));
 	}
 
 	public int getTimeSinceHit() {
 		return this.dataWatcher.getWatchableObjectInt(17);
 	}
 
-	public void setForwardDirection(int var1) {
-		this.dataWatcher.updateObject(18, Integer.valueOf(var1));
+	public void setForwardDirection(int par1) {
+		this.dataWatcher.updateObject(18, Integer.valueOf(par1));
 	}
 
 	public int getForwardDirection() {

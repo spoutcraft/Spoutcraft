@@ -18,14 +18,13 @@ public class EntityBlaze extends EntityMob {
 	private int heightOffsetUpdateTime;
 	private int field_40152_d;
 
-
-	public EntityBlaze(World var1) {
-		super(var1);
+	public EntityBlaze(World par1World) {
+		super(par1World);
 		this.texture = "/mob/fire.png";
 		this.isImmuneToFire = true;
 		this.attackStrength = 6;
 		this.experienceValue = 10;
-        //Spout start
+		//Spout start
         this.spoutEntity = new CraftBlaze(this);
         //Spout end
 	}
@@ -51,24 +50,24 @@ public class EntityBlaze extends EntityMob {
 		return "mob.blaze.death";
 	}
 
-	public boolean attackEntityFrom(DamageSource var1, int var2) {
-		return super.attackEntityFrom(var1, var2);
+	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
+		return super.attackEntityFrom(par1DamageSource, par2);
 	}
 
-	public void onDeath(DamageSource var1) {
-		super.onDeath(var1);
+	public void onDeath(DamageSource par1DamageSource) {
+		super.onDeath(par1DamageSource);
 	}
 
-	public int getEntityBrightnessForRender(float var1) {
+	public int getEntityBrightnessForRender(float par1) {
 		return 15728880;
 	}
 
-	public float getEntityBrightness(float var1) {
+	public float getEntityBrightness(float par1) {
 		return 1.0F;
 	}
 
 	public void onLivingUpdate() {
-		if(!this.worldObj.multiplayerWorld) {
+		if(!this.worldObj.isRemote) {
 			if(this.isWet()) {
 				this.attackEntityFrom(DamageSource.drown, 1);
 			}
@@ -99,14 +98,14 @@ public class EntityBlaze extends EntityMob {
 		super.onLivingUpdate();
 	}
 
-	protected void attackEntity(Entity var1, float var2) {
-		if(this.attackTime <= 0 && var2 < 2.0F && var1.boundingBox.maxY > this.boundingBox.minY && var1.boundingBox.minY < this.boundingBox.maxY) {
+	protected void attackEntity(Entity par1Entity, float par2) {
+		if(this.attackTime <= 0 && par2 < 2.0F && par1Entity.boundingBox.maxY > this.boundingBox.minY && par1Entity.boundingBox.minY < this.boundingBox.maxY) {
 			this.attackTime = 20;
-			this.attackEntityAsMob(var1);
-		} else if(var2 < 30.0F) {
-			double var3 = var1.posX - this.posX;
-			double var5 = var1.boundingBox.minY + (double)(var1.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
-			double var7 = var1.posZ - this.posZ;
+			this.attackEntityAsMob(par1Entity);
+		} else if(par2 < 30.0F) {
+			double var3 = par1Entity.posX - this.posX;
+			double var5 = par1Entity.boundingBox.minY + (double)(par1Entity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
+			double var7 = par1Entity.posZ - this.posZ;
 			if(this.attackTime == 0) {
 				++this.field_40152_d;
 				if(this.field_40152_d == 1) {
@@ -121,7 +120,7 @@ public class EntityBlaze extends EntityMob {
 				}
 
 				if(this.field_40152_d > 1) {
-					float var9 = MathHelper.sqrt_float(var2) * 0.5F;
+					float var9 = MathHelper.sqrt_float(par2) * 0.5F;
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1009, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 
 					for(int var10 = 0; var10 < 1; ++var10) {
@@ -138,14 +137,14 @@ public class EntityBlaze extends EntityMob {
 
 	}
 
-	protected void fall(float var1) {}
+	protected void fall(float par1) {}
 
-	public void writeEntityToNBT(NBTTagCompound var1) {
-		super.writeEntityToNBT(var1);
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeEntityToNBT(par1NBTTagCompound);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound var1) {
-		super.readEntityFromNBT(var1);
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	protected int getDropItemId() {
@@ -156,9 +155,9 @@ public class EntityBlaze extends EntityMob {
 		return this.func_40151_ac();
 	}
 
-	protected void dropFewItems(boolean var1, int var2) {
-		if(var1) {
-			int var3 = this.rand.nextInt(2 + var2);
+	protected void dropFewItems(boolean par1, int par2) {
+		if(par1) {
+			int var3 = this.rand.nextInt(2 + par2);
 
 			for(int var4 = 0; var4 < var3; ++var4) {
 				this.dropItem(Item.blazeRod.shiftedIndex, 1);
@@ -171,9 +170,9 @@ public class EntityBlaze extends EntityMob {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
-	public void func_40150_a(boolean var1) {
+	public void func_40150_a(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
-		if(var1) {
+		if(par1) {
 			var2 = (byte)(var2 | 1);
 		} else {
 			var2 &= -2;
@@ -182,7 +181,7 @@ public class EntityBlaze extends EntityMob {
 		this.dataWatcher.updateObject(16, Byte.valueOf(var2));
 	}
 
-	protected boolean func_40147_Y() {
+	protected boolean isValidLightLevel() {
 		return true;
 	}
 }

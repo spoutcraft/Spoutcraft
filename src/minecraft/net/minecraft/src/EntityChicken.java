@@ -2,7 +2,16 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftChicken;
 
+import net.minecraft.src.EntityAIFollowParent;
+import net.minecraft.src.EntityAILookIdle;
+import net.minecraft.src.EntityAIMate;
+import net.minecraft.src.EntityAIPanic;
+import net.minecraft.src.EntityAISwimming;
+import net.minecraft.src.EntityAITempt;
+import net.minecraft.src.EntityAIWander;
+import net.minecraft.src.EntityAIWatchClosest;
 import net.minecraft.src.EntityAnimal;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
@@ -17,15 +26,28 @@ public class EntityChicken extends EntityAnimal {
 	public float field_755_h = 1.0F;
 	public int timeUntilNextEgg;
 
-
-	public EntityChicken(World var1) {
-		super(var1);
+	public EntityChicken(World par1World) {
+		super(par1World);
 		this.texture = "/mob/chicken.png";
 		this.setSize(0.3F, 0.7F);
 		this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
+		float var2 = 0.25F;
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
+		this.tasks.addTask(2, new EntityAIMate(this, var2));
+		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
+		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.28F));
+		this.tasks.addTask(5, new EntityAIWander(this, var2));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+
 		//Spout start
 		this.spoutEntity = new CraftChicken(this);
 		//Spout end
+	}
+
+	public boolean isAIEnabled() {
+		return true;
 	}
 
 	public int getMaxHealth() {
@@ -55,7 +77,7 @@ public class EntityChicken extends EntityAnimal {
 		}
 
 		this.field_752_b += this.field_755_h * 2.0F;
-		if(!this.isChild() && !this.worldObj.multiplayerWorld && --this.timeUntilNextEgg <= 0) {
+		if(!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
@@ -63,14 +85,14 @@ public class EntityChicken extends EntityAnimal {
 
 	}
 
-	protected void fall(float var1) {}
+	protected void fall(float par1) {}
 
-	public void writeEntityToNBT(NBTTagCompound var1) {
-		super.writeEntityToNBT(var1);
+	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+		super.writeEntityToNBT(par1NBTTagCompound);
 	}
 
-	public void readEntityFromNBT(NBTTagCompound var1) {
-		super.readEntityFromNBT(var1);
+	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	protected String getLivingSound() {
@@ -89,8 +111,8 @@ public class EntityChicken extends EntityAnimal {
 		return Item.feather.shiftedIndex;
 	}
 
-	protected void dropFewItems(boolean var1, int var2) {
-		int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + var2);
+	protected void dropFewItems(boolean par1, int par2) {
+		int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
 
 		for(int var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.feather.shiftedIndex, 1);
@@ -104,7 +126,7 @@ public class EntityChicken extends EntityAnimal {
 
 	}
 
-	protected EntityAnimal spawnBabyAnimal(EntityAnimal var1) {
+	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		return new EntityChicken(this.worldObj);
 	}
 }
