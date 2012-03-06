@@ -54,33 +54,18 @@ build.xml
 # IntelliJ IDEA files #
 #######################
 .idea
-.iml
+*.iml
 
 # Minecraft Coder Pack #
 ########################
 CHANGELOG
-cleanup.bat
-cleanup.sh
-decompile.bat
-decompile.sh
+LICENSE
 docs
 eclipse
 jars
 logs
-recompile.bat
-recompile.sh
 reobf
-reobfuscate.bat
-reobfuscate.sh
 runtime
-startclient.bat
-startclient.sh
-startserver.bat
-startserver.sh
 temp
-updatemcp.bat
-updatemcp.sh
-updatemd5.bat
-updatemd5.sh
-updatenames.bat
-updatenames.sh
+*.bat
+*.sh

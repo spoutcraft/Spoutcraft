@@ -1,7 +1,7 @@
-[![Spoutcraft][Project Logo]][Website]
+[![Spout][Project Logo]][Website]
 What is Spoutcraft?
 -------------------
-Spoutcraft is the Minecraft client mod system for the Bukkit server plugin, Spout, that exposes new API for other plugins to utilize, in an attempt to bring the Minecraft multiplayer experience to parity with the single-player modding experience.
+Spoutcraft is the Minecraft client mod system for the Bukkit server plugin, SpoutPlugin, that exposes new API for other plugins to utilize, in an attempt to bring the Minecraft multiplayer experience to parity with the single-player modding experience.
 
 Copyright (c) 2011-2012, SpoutDev <http://www.spout.org>
  
@@ -17,9 +17,10 @@ SpoutDev is the team behind Spout, SpoutAPI, Spoutcraft, SpoutcraftAPI, Spoutcra
 [![narrowtux](https://secure.gravatar.com/avatar/f110a5b8feacea25275521f4efd0d7f2?d=mm&r=pg&s=48)](http://forums.spout.org/members/narrowtux.5/) 
 [![Top_Cat](https://secure.gravatar.com/avatar/defeffc70d775f6df95b68f0ece46c9e?d=mm&r=pg&s=48)](http://forums.spout.org/members/top_cat.4/) 
 [![Olloth](https://secure.gravatar.com/avatar/fa8429add105b86cf3b61dbe15638812?d=mm&r=pg&s=48)](http://forums.spout.org/members/olloth.6/) 
-[![Rycochet](https://secure.gravatar.com/avatar/b06c12e72953e0edd3054a8645d76791?d=mm&r=pg&s=48)](http://forums.spout.org/members/rycochet.10/)
-[![RoyAwesome](https://secure.gravatar.com/avatar/6d258213c33a16465021daa8df299a0d?d=mm&r=pg&s=48)](http://forums.spout.org/members/royawesome.8/)
-[![zml2008](https://secure.gravatar.com/avatar/2320ab48d0715a4e9c73b7ec13fd6f3a?d=mm&r=pg&s=48)](http://forums.spout.org/members/zml2008.14/)
+[![Rycochet](https://secure.gravatar.com/avatar/b06c12e72953e0edd3054a8645d76791?d=mm&r=pg&s=48)](http://forums.spout.org/members/rycochet.10/) 
+[![RoyAwesome](https://secure.gravatar.com/avatar/6d258213c33a16465021daa8df299a0d?d=mm&r=pg&s=48)](http://forums.spout.org/members/royawesome.8/) 
+[![zml2008](https://secure.gravatar.com/avatar/2320ab48d0715a4e9c73b7ec13fd6f3a?d=mm&r=pg&s=48)](http://forums.spout.org/members/zml2008.14/) 
+[![Zidane](https://secure.gravatar.com/avatar/99532c7f117c8dac751422376116fb38?d=mm&r=pg&s=48)](http://forums.spout.org/members/zidane.7/) 
 
 Visit our [website][Website] or get support on our [forums][Forums].  
 Track and submit issues and bugs on our [issue tracker][Issues].
@@ -67,7 +68,7 @@ Coding and Pull Request Formatting
 **Please follow the above conventions if you want your pull request(s) accepted.**
 
 [Project Logo]: http://cdn.spout.org/img/logo/spoutcraft_551x150.png
-[License]: http://www.gnu.org/licenses/lgpl.html
+[License]: http://www.spout.org/SpoutDevLicenseV1.txt
 [Website]: http://www.spout.org
 [Forums]: http://forums.spout.org
 [GitHub]: https://github.com/SpoutDev/Spoutcraft
