@@ -181,7 +181,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelSpoutcraft);
 
-		textureIcon = new GenericTexture("http://servers.spout.org/preview/"+ item.getDatabaseId() +".png");
+		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/"+ item.getDatabaseId() +".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
