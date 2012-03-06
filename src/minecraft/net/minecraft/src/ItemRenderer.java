@@ -55,21 +55,20 @@ public class ItemRenderer {
 		// Spout Start
 		boolean custom = false;
 		BlockDesign design = null;
-		if (var2.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var2.getItemDamage());
-			if (item != null) {
-				String textureURI = item.getTexture();
-				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var2.getItemDamage());
-					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
-				}
-				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
-					if (texture != null) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-						custom = true;
-					}
+		Texture texture = null;
+		org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var2.getItemDamage());
+		if (item != null) {
+			String textureURI = item.getTexture().getTexture();
+			if (textureURI == null) {
+				org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var2.getItemDamage());
+				design = block != null ? block.getBlockDesign() : null;
+				textureURI = design != null ? design.getTexureURL() : null;
+			}
+			if (textureURI != null) {
+				texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+				if (texture != null) {
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+					custom = true;
 				}
 			}
 		}
