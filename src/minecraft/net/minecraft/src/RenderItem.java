@@ -68,35 +68,32 @@ public class RenderItem extends Render {
 		//Spout start
 		boolean custom = false;
 		BlockDesign design = null;
-		if (itemStack.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
-			if (item != null) {
-				String textureURI = item.getTexture();
-				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
-					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
-				}
-				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
-					if (texture != null) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-						custom = true;
-					}
-				}
+		org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
+		if (item != null) {
+			String textureURI = item.getTexture().getTexture();
+			if (textureURI == null) {
+				org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
+				design = block != null ? block.getBlockDesign() : null;
+				textureURI = design != null ? design.getTexureURL() : null;
 			}
-			
-			/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
-			design = block != null ? block.getBlockDesign() : null;
-			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
-				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
+			if (textureURI != null) {
+				Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
 				if (texture != null) {
-					this.renderManager.renderEngine.bindTexture(texture.getTextureID());
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
 					custom = true;
 				}
-			}*/
+			}
 		}
-	
+
+		/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+		design = block != null ? block.getBlockDesign() : null;
+		if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
+			Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
+			if (texture != null) {
+				this.renderManager.renderEngine.bindTexture(texture.getTextureID());
+				custom = true;
+			}
+		}*/	
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		
 		if (design != null && custom) {
@@ -234,22 +231,19 @@ public class RenderItem extends Render {
 		//Spout start
 		boolean custom = false;
 		BlockDesign design = null;
-		if (var3 == 318) {
-			
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var4);
-			if (item != null) {
-				String textureURI = item.getTexture();
-				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
-					design = block != null ? block.getBlockDesign() : null;
-					textureURI = design != null ? design.getTexureURL() : null;
-				}
-				if (textureURI != null) {
-					Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
-					if (texture != null) {
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-						custom = true;
-					}
+		org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var4);
+		if (item != null) {
+			String textureURI = item.getTexture().getTexture();
+			if (textureURI == null) {
+				org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
+				design = block != null ? block.getBlockDesign() : null;
+				textureURI = design != null ? design.getTexureURL() : null;
+			}
+			if (textureURI != null) {
+				Texture texture = CustomTextureManager.getTextureFromUrl(item.getAddon().getDescription().getName(), textureURI);
+				if (texture != null) {
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
+					custom = true;
 				}
 			}
 		}
