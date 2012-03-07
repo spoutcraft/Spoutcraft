@@ -117,12 +117,12 @@ abstract class BiomeHelper {
 
 		@Override
 		float getTemperature(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).getIntTemperature();
+			return getBiomeGenAt(i, j, k).func_48411_i();
 		}
 
 		@Override
 		float getRainfall(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).getIntRainfall();
+			return getBiomeGenAt(i, j, k).func_48414_h();
 		}
 
 		@Override
