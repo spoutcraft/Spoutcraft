@@ -25,6 +25,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 //Spout Start
+import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
@@ -124,6 +125,7 @@ public abstract class Minecraft implements Runnable {
 	// Spout End
 
 	public Minecraft(Component par1Component, Canvas par2Canvas, MinecraftApplet par3MinecraftApplet, int par4, int par5, boolean par6) {
+		MCPatcherUtils.setMinecraft(this);
 		StatList.func_27360_a();
 		this.tempDisplayHeight = par5;
 		this.fullscreen = par6;
