@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 //Spout End
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class GuiEditSign extends GuiScreen
 {
