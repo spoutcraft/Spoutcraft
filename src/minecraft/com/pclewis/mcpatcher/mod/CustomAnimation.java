@@ -1,339 +1,352 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
-import org.lwjgl.opengl.GL11;
-
 import java.awt.image.BufferedImage;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+
+import org.lwjgl.opengl.GL11;
+
 public class CustomAnimation {
 	private static final String CLASS_NAME = CustomAnimation.class.getSimpleName();
-
 	private static Random rand = new Random();
-	private static final ArrayList<CustomAnimation> animations = new ArrayList<CustomAnimation>();
-
+	private static final ArrayList animations = new ArrayList();
 	private final String textureName;
 	private final String srcName;
 	private final int textureID;
-	private final ByteBuffer imageData;
+	private final ByteBuffer f;
 	private final int tileCount;
 	private final int x;
 	private final int y;
 	private final int w;
 	private final int h;
-
 	private int currentFrame;
 	private int currentDelay;
 	private int numFrames;
-
-	private Delegate delegate;
+	private CustomAnimation.Delegate delegate;
 
 	public static void updateAll() {
-		for (CustomAnimation animation : animations) {
-			animation.update();
+		Iterator var0 = animations.iterator();
+
+		while (var0.hasNext()) {
+			CustomAnimation var1 = (CustomAnimation)var0.next();
+			var1.update();
 		}
 	}
 
 	static void clear() {
 		animations.clear();
 	}
-	
-	static void addStrip(Properties properties) {
+
+	static void addStrip(Properties var0) {
 		try {
-			String textureName = properties.getProperty("to", "");
-			String srcName = properties.getProperty("from", "");
-			int tileCount = Integer.parseInt(properties.getProperty("tiles", "1"));
-			int x = Integer.parseInt(properties.getProperty("x", ""));
-			int y = Integer.parseInt(properties.getProperty("y", ""));
-			int w = Integer.parseInt(properties.getProperty("w", ""));
-			int h = Integer.parseInt(properties.getProperty("h", ""));
-			if (!"".equals(textureName) && !"".equals(srcName)) {
-				add(newStrip(textureName, tileCount, srcName, TextureUtils.getResourceAsBufferedImage(srcName), x, y, w, h, properties));
+			String var1 = var0.getProperty("to", "");
+			String var2 = var0.getProperty("from", "");
+			int var3 = Integer.parseInt(var0.getProperty("tiles", "1"));
+			int var4 = Integer.parseInt(var0.getProperty("x", ""));
+			int var5 = Integer.parseInt(var0.getProperty("y", ""));
+			int var6 = Integer.parseInt(var0.getProperty("w", ""));
+			int var7 = Integer.parseInt(var0.getProperty("h", ""));
+			if (!"".equals(var1) && !"".equals(var2)) {
+				add(newStrip(var1, var3, var2, TextureUtils.getResourceAsBufferedImage(var2), var4, var5, var6, var7, var0));
 			}
-		} catch (IOException e) {
-		} catch (NumberFormatException e) {
-		}
-	}
-	
-	static void addStripOrTile(String textureName, String name, int tileNumber, int tileCount, int minScrollDelay, int maxScrollDelay) {
-		if (!addStrip(textureName, name, tileNumber, tileCount)) {
-			add(newTile(textureName, tileCount, tileNumber, minScrollDelay, maxScrollDelay));
-		}
-	}
-	
-	static boolean addStrip(String textureName, String name, int tileNumber, int tileCount) {
-		String srcName = "/anim/custom_" + name + ".png";
-		if (TextureUtils.hasResource(srcName)) {
-			try {
-				BufferedImage srcImage = TextureUtils.getResourceAsBufferedImage(srcName);
-				if (srcImage != null) {
-					add(newStrip(textureName, tileCount, srcName, srcImage, (tileNumber % 16) * TileSize.int_size, (tileNumber / 16) * TileSize.int_size, TileSize.int_size, TileSize.int_size, null));
-					return true;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
-	private static void add(CustomAnimation animation) {
-		if (animation != null) {
-			animations.add(animation);
-			MCPatcherUtils.log("new %s %s %dx%d -> %s @ %d,%d (%d frames)", CLASS_NAME, animation.srcName, animation.w, animation.h, animation.textureName, animation.x, animation.y, animation.numFrames);
+		} catch (IOException var8) {
+			;
+		} catch (NumberFormatException var9) {
+			;
 		}
 	}
 
-	private static CustomAnimation newStrip(String textureName, int tileCount, String srcName, BufferedImage srcImage, int x, int y, int w, int h, Properties properties) throws IOException {
-		if (x < 0 || y < 0 || w <= 0 || h <= 0 || tileCount <= 0) {
-			MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d,count=%d", CLASS_NAME, srcName, x, y, w, h, tileCount);
-			return null;
-		}
-		int textureID = MCPatcherUtils.getMinecraft().renderEngine.getTexture(textureName);
-		if (textureID <= 0) {
-			MCPatcherUtils.error("%s: invalid id %d for texture %s", CLASS_NAME, textureID, textureName);
-			return null;
-		}
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-		int destWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
-		int destHeight = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
-		if (x + tileCount * w > destWidth || y + tileCount * h > destHeight) {
-			MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d,count=%d", CLASS_NAME, srcName, x, y, w, h, tileCount);
-			return null;
-		}
-		int width = srcImage.getWidth();
-		int height = srcImage.getHeight();
-		if (width != w) {
-			srcImage = TextureUtils.resizeImage(srcImage, w);
-			width = srcImage.getWidth();
-			height = srcImage.getHeight();
-		}
-		if (width != w || height % h != 0) {
-			MCPatcherUtils.error("%s: %s dimensions %dx%d do not match %dx%d", CLASS_NAME, srcName, width, height, w, h);
-			return null;
-		}
-		ByteBuffer imageData = ByteBuffer.allocateDirect(4 * width * height);
-		int[] argb = new int[width * height];
-		byte[] rgba = new byte[4 * width * height];
-		srcImage.getRGB(0, 0, width, height, argb, 0, width);
-		ARGBtoRGBA(argb, rgba);
-		imageData.put(rgba);
-		return new CustomAnimation(srcName, textureName, textureID, tileCount, x, y, w, h, imageData, height / h, properties);
-	}
-	
-	private static CustomAnimation newTile(String textureName, int tileCount, int tileNumber, int minScrollDelay, int maxScrollDelay) {
-		int x = (tileNumber % 16) * TileSize.int_size;
-		int y = (tileNumber / 16) * TileSize.int_size;
-		int w = TileSize.int_size;
-		int h = TileSize.int_size;
-		if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + tileCount * w > 16 * TileSize.int_size || y + tileCount * h > 16 * TileSize.int_size) {
-			MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d", CLASS_NAME, textureName, x, y, w, h);
-			return null;
-		}
-		int textureID = MCPatcherUtils.getMinecraft().renderEngine.getTexture(textureName);
-		if (textureID <= 0) {
-			MCPatcherUtils.error("%s: invalid id %d for texture %s", CLASS_NAME, textureID, textureName);
-			return null;
-		}
-		try {
-			return new CustomAnimation(textureName, textureID, tileCount, x, y, w, h, minScrollDelay, maxScrollDelay);
-		} catch (IOException e) {
-			return null;
+	static void addStripOrTile(String var0, String var1, int var2, int var3, int var4, int var5) {
+		if (!addStrip(var0, var1, var2, var3)) {
+			add(newTile(var0, var3, var2, var4, var5));
 		}
 	}
-	
-	private CustomAnimation(String srcName, String textureName, int textureID, int tileCount, int x, int y, int w, int h, ByteBuffer imageData, int numFrames, Properties properties) {
-		this.srcName = srcName;
-		this.textureName = textureName;
-		this.textureID = textureID;
-		this.tileCount = tileCount;
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-		this.imageData = imageData;
-		this.numFrames = numFrames;
-		currentFrame = -1;
-		delegate = new Strip(properties);
+
+	static boolean addStrip(String var0, String var1, int var2, int var3) {
+		String var4 = "/anim/custom_" + var1 + ".png";
+		if (TextureUtils.hasResource(var4)) {
+			try {
+				BufferedImage var5 = TextureUtils.getResourceAsBufferedImage(var4);
+				if (var5 != null) {
+					add(newStrip(var0, var3, var4, var5, var2 % 16 * TileSize.int_size, var2 / 16 * TileSize.int_size, TileSize.int_size, TileSize.int_size, (Properties)null));
+					return true;
+				}
+			} catch (IOException var6) {
+				var6.printStackTrace();
+			}
+		}
+
+		return false;
 	}
-	
-	private CustomAnimation(String textureName, int textureID, int tileCount, int x, int y, int w, int h, int minScrollDelay, int maxScrollDelay) throws IOException {
-		this.srcName = textureName;
-		this.textureName = textureName;
-		this.textureID = textureID;
-		this.tileCount = tileCount;
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-		this.imageData = ByteBuffer.allocateDirect(4 * w * h);
-		this.numFrames = h;
-		currentFrame = -1;
-		delegate = new Tile(minScrollDelay, maxScrollDelay);
+
+	private static void add(CustomAnimation var0) {
+		if (var0 != null) {
+			animations.add(var0);
+		}
+	}
+
+	private static CustomAnimation newStrip(String var0, int var1, String var2, BufferedImage var3, int var4, int var5, int var6, int var7, Properties var8) throws IOException {
+		if (var4 >= 0 && var5 >= 0 && var6 > 0 && var7 > 0 && var1 > 0) {
+			int var9 = Minecraft.theMinecraft.renderEngine.getTexture(var0);
+			if (var9 <= 0) {
+				return null;
+			} else {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
+				int var10 = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+				int var11 = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+				if (var4 + var1 * var6 <= var10 && var5 + var1 * var7 <= var11) {
+					int var12 = var3.getWidth();
+					int var13 = var3.getHeight();
+					if (var12 != var6) {
+						var3 = TextureUtils.resizeImage(var3, var6);
+						var12 = var3.getWidth();
+						var13 = var3.getHeight();
+					}
+
+					if (var12 == var6 && var13 % var7 == 0) {
+						ByteBuffer var14 = ByteBuffer.allocateDirect(4 * var12 * var13);
+						int[] var15 = new int[var12 * var13];
+						byte[] var16 = new byte[4 * var12 * var13];
+						var3.getRGB(0, 0, var12, var13, var15, 0, var12);
+						ARGBtoRGBA(var15, var16);
+						var14.put(var16);
+						return new CustomAnimation(var2, var0, var9, var1, var4, var5, var6, var7, var14, var13 / var7, var8);
+					} else {
+						return null;
+					}
+				} else {
+					return null;
+				}
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private static CustomAnimation newTile(String var0, int var1, int var2, int var3, int var4) {
+		int var5 = var2 % 16 * TileSize.int_size;
+		int var6 = var2 / 16 * TileSize.int_size;
+		int var7 = TileSize.int_size;
+		int var8 = TileSize.int_size;
+		if (var5 >= 0 && var6 >= 0 && var7 > 0 && var8 > 0 && var5 + var1 * var7 <= 16 * TileSize.int_size && var6 + var1 * var8 <= 16 * TileSize.int_size) {
+			int var9 = Minecraft.theMinecraft.renderEngine.getTexture(var0);
+			if (var9 <= 0) {
+				return null;
+			} else {
+				try {
+					return new CustomAnimation(var0, var9, var1, var5, var6, var7, var8, var3, var4);
+				} catch (IOException var11) {
+					return null;
+				}
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private CustomAnimation(String var1, String var2, int var3, int var4, int var5, int var6, int var7, int var8, ByteBuffer var9, int var10, Properties var11) {
+		this.srcName = var1;
+		this.textureName = var2;
+		this.textureID = var3;
+		this.tileCount = var4;
+		this.x = var5;
+		this.y = var6;
+		this.w = var7;
+		this.h = var8;
+		this.f = var9;
+		this.numFrames = var10;
+		this.currentFrame = -1;
+		this.delegate = new CustomAnimation.Strip(var11);
+	}
+
+	private CustomAnimation(String var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) throws IOException {
+		this.srcName = var1;
+		this.textureName = var1;
+		this.textureID = var2;
+		this.tileCount = var3;
+		this.x = var4;
+		this.y = var5;
+		this.w = var6;
+		this.h = var7;
+		this.f = ByteBuffer.allocateDirect(4 * var6 * var7);
+		this.numFrames = var7;
+		this.currentFrame = -1;
+		this.delegate = new CustomAnimation.Tile(var8, var9);
 	}
 
 	void update() {
-		if (--currentDelay > 0) {
-			return;
-		}
-		if (++currentFrame >= numFrames) {
-			currentFrame = 0;
-		}
-		for (int i = 0; i < tileCount; i++) {
-			for (int j = 0; j < tileCount; j++) {
-				delegate.update(i * TileSize.int_size, j * TileSize.int_size);
+		if (--this.currentDelay <= 0) {
+			if (++this.currentFrame >= this.numFrames) {
+				this.currentFrame = 0;
 			}
-		}
-		currentDelay = delegate.getDelay();
-	}
-	
-	static void ARGBtoRGBA(int[] src, byte[] dest) {
-		for (int i = 0; i < src.length; ++i) {
-			int v = src[i];
-			dest[(i * 4) + 3] = (byte) ((v >> 24) & 0xff);
-			dest[(i * 4) + 0] = (byte) ((v >> 16) & 0xff);
-			dest[(i * 4) + 1] = (byte) ((v >> 8) & 0xff);
-			dest[(i * 4) + 2] = (byte) ((v >> 0) & 0xff);
-		}
-	}
 
-	private interface Delegate {
-		public void update(int dx, int dy);
-		public int getDelay();
-	}
-
-	private class Tile implements Delegate {
-		private final int minScrollDelay;
-		private final int maxScrollDelay;
-		private final boolean isScrolling;
-
-		Tile(int minScrollDelay, int maxScrollDelay) throws IOException {
-			this.minScrollDelay = minScrollDelay;
-			this.maxScrollDelay = maxScrollDelay;
-			isScrolling = (this.minScrollDelay >= 0);
-			BufferedImage tiles = TextureUtils.getResourceAsBufferedImage(textureName);
-			int rgbInt[] = new int[w * h];
-			byte rgbByte[] = new byte[4 * w * h];
-			tiles.getRGB(x, y, w, h, rgbInt, 0, w);
-			ARGBtoRGBA(rgbInt, rgbByte);
-			imageData.put(rgbByte);
-		}
-
-		public void update(int dx, int dy) {
-			if (isScrolling) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-				int rowOffset = h - currentFrame;
-				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, x + dx, y + dy + h - rowOffset, w, rowOffset, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) imageData.position(0));
-				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, x + dx, y + dy, w, h - rowOffset, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) imageData.position(4 * w * rowOffset));
+			for (int var1 = 0; var1 < this.tileCount; ++var1) {
+				for (int var2 = 0; var2 < this.tileCount; ++var2) {
+					this.delegate.update(var1 * TileSize.int_size, var2 * TileSize.int_size);
+				}
 			}
-		}
-		
-		public int getDelay() {
-			if (maxScrollDelay > 0) {
-				return rand.nextInt(maxScrollDelay - minScrollDelay + 1) + minScrollDelay; 
-			} else {
-				return 0;
-			}
+
+			this.currentDelay = this.delegate.getDelay();
 		}
 	}
 
-	private class Strip implements Delegate {
+	static void ARGBtoRGBA(int[] var0, byte[] var1) {
+		for (int var2 = 0; var2 < var0.length; ++var2) {
+			int var3 = var0[var2];
+			var1[var2 * 4 + 3] = (byte)(var3 >> 24 & 255);
+			var1[var2 * 4 + 0] = (byte)(var3 >> 16 & 255);
+			var1[var2 * 4 + 1] = (byte)(var3 >> 8 & 255);
+			var1[var2 * 4 + 2] = (byte)(var3 >> 0 & 255);
+		}
+	}
+
+	private class Strip implements CustomAnimation.Delegate {
 		private int[] tileOrder;
 		private int[] tileDelay;
 		private final int numTiles;
 
-		Strip(Properties properties) {
-			numTiles = numFrames;
-			InputStream inputStream = null;
-			if (properties == null) {
+		Strip(Properties var2) {
+			this.numTiles = CustomAnimation.this.numFrames;
+			InputStream var3 = null;
+			if (var2 == null) {
 				try {
-					inputStream = TextureUtils.getResourceAsStream(srcName.replaceFirst("\\.png$", ".properties"));
-					if (inputStream != null) {
-						properties = new Properties();
-						properties.load(inputStream);
+					var3 = TextureUtils.getResourceAsStream(CustomAnimation.this.srcName.replaceFirst("\\.png$", ".properties"));
+					if (var3 != null) {
+						var2 = new Properties();
+						var2.load(var3);
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
+				} catch (IOException var8) {
+					var8.printStackTrace();
 				} finally {
-					MCPatcherUtils.close(inputStream);
+					MCPatcherUtils.close((Closeable)var3);
 				}
 			}
-			loadProperties(properties);
+
+			this.loadProperties(var2);
 		}
 
-		private void loadProperties(Properties properties) {
-			loadTileOrder(properties);
-			if (tileOrder == null) {
-				tileOrder = new int[numFrames];
-				for (int i = 0; i < numFrames; i++) {
-					tileOrder[i] = i % numTiles;
-				}
-			}
-			tileDelay = new int[numFrames];
-			loadTileDelay(properties);
-			for (int i = 0; i < numFrames; i++) {
-				tileDelay[i] = Math.max(tileDelay[i], 1);
-			}
-		}
+		private void loadProperties(Properties var1) {
+			this.loadTileOrder(var1);
+			int var2;
+			if (this.tileOrder == null) {
+				this.tileOrder = new int[CustomAnimation.this.numFrames];
 
-		private void loadTileOrder(Properties properties) {
-			if (properties == null) {
-				return;
-			}
-			int i = 0;
-			for (; getIntValue(properties, "tile.", i) != null; i++) {
-			}
-			if (i > 0) {
-				numFrames = i;
-				tileOrder = new int[numFrames];
-				for (i = 0; i < numFrames; i++) {
-					tileOrder[i] = Math.abs(getIntValue(properties, "tile.", i)) % numTiles;
+				for (var2 = 0; var2 < CustomAnimation.this.numFrames; ++var2) {
+					this.tileOrder[var2] = var2 % this.numTiles;
 				}
+			}
+
+			this.tileDelay = new int[CustomAnimation.this.numFrames];
+			this.loadTileDelay(var1);
+
+			for (var2 = 0; var2 < CustomAnimation.this.numFrames; ++var2) {
+				this.tileDelay[var2] = Math.max(this.tileDelay[var2], 1);
 			}
 		}
 
-		private void loadTileDelay(Properties properties) {
-			if (properties == null) {
-				return;
-			}
-			Integer defaultValue = getIntValue(properties, "duration");
-			for (int i = 0; i < numFrames; i++) {
-				Integer value = getIntValue(properties, "duration.", i);
-				if (value != null) {
-					tileDelay[i] = value;
-				} else if (defaultValue != null) {
-					tileDelay[i] = defaultValue;
+		private void loadTileOrder(Properties var1) {
+			if (var1 != null) {
+				int var2;
+				for (var2 = 0; this.getIntValue(var1, "tile.", var2) != null; ++var2) {
+					;
+				}
+
+				if (var2 > 0) {
+					CustomAnimation.this.numFrames = var2;
+					this.tileOrder = new int[CustomAnimation.this.numFrames];
+
+					for (var2 = 0; var2 < CustomAnimation.this.numFrames; ++var2) {
+						this.tileOrder[var2] = Math.abs(this.getIntValue(var1, "tile.", var2).intValue()) % this.numTiles;
+					}
 				}
 			}
 		}
-		
-		private Integer getIntValue(Properties properties, String key) {
+
+		private void loadTileDelay(Properties var1) {
+			if (var1 != null) {
+				Integer var2 = this.getIntValue(var1, "duration");
+
+				for (int var3 = 0; var3 < CustomAnimation.this.numFrames; ++var3) {
+					Integer var4 = this.getIntValue(var1, "duration.", var3);
+					if (var4 != null) {
+						this.tileDelay[var3] = var4.intValue();
+					} else if (var2 != null) {
+						this.tileDelay[var3] = var2.intValue();
+					}
+				}
+			}
+		}
+
+		private Integer getIntValue(Properties var1, String var2) {
 			try {
-				String value = properties.getProperty(key);
-				if (value != null && value.matches("^\\d+$")) {
-					return Integer.parseInt(value);
+				String var3 = var1.getProperty(var2);
+				if (var3 != null && var3.matches("^\\d+$")) {
+					return Integer.valueOf(Integer.parseInt(var3));
 				}
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException var4) {
+				;
 			}
+
 			return null;
 		}
 
-		private Integer getIntValue(Properties properties, String prefix, int index) {
-			return getIntValue(properties, prefix + index);
+		private Integer getIntValue(Properties var1, String var2, int var3) {
+			return this.getIntValue(var1, var2 + var3);
 		}
 
-		public void update(int dx, int dy) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
-			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, x + dx, y + dy, w, h, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) imageData.position(4 * w * h * tileOrder[currentFrame]));
+		public void update(int var1, int var2) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, CustomAnimation.this.textureID);
+			GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, CustomAnimation.this.x + var1, CustomAnimation.this.y + var2, CustomAnimation.this.w, CustomAnimation.this.h, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)CustomAnimation.this.f.position(4 * CustomAnimation.this.w * CustomAnimation.this.h * this.tileOrder[CustomAnimation.this.currentFrame]));
 		}
-		
+
 		public int getDelay() {
-			return tileDelay[currentFrame];
+			return this.tileDelay[CustomAnimation.this.currentFrame];
 		}
+	}
+
+	private class Tile implements CustomAnimation.Delegate {
+		private final int minScrollDelay;
+		private final int maxScrollDelay;
+		private final boolean isScrolling;
+
+		Tile(int var2, int var3) throws IOException {
+			this.minScrollDelay = var2;
+			this.maxScrollDelay = var3;
+			this.isScrolling = this.minScrollDelay >= 0;
+			BufferedImage var4 = TextureUtils.getResourceAsBufferedImage(CustomAnimation.this.textureName);
+			int[] var5 = new int[CustomAnimation.this.w * CustomAnimation.this.h];
+			byte[] var6 = new byte[4 * CustomAnimation.this.w * CustomAnimation.this.h];
+			var4.getRGB(CustomAnimation.this.x, CustomAnimation.this.y, CustomAnimation.this.w, CustomAnimation.this.h, var5, 0, CustomAnimation.this.w);
+			CustomAnimation.ARGBtoRGBA(var5, var6);
+			CustomAnimation.this.f.put(var6);
+		}
+
+		public void update(int var1, int var2) {
+			if (this.isScrolling) {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, CustomAnimation.this.textureID);
+				int var3 = CustomAnimation.this.h - CustomAnimation.this.currentFrame;
+				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, CustomAnimation.this.x + var1, CustomAnimation.this.y + var2 + CustomAnimation.this.h - var3, CustomAnimation.this.w, var3, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)CustomAnimation.this.f.position(0));
+				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, CustomAnimation.this.x + var1, CustomAnimation.this.y + var2, CustomAnimation.this.w, CustomAnimation.this.h - var3, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)CustomAnimation.this.f.position(4 * CustomAnimation.this.w * var3));
+			}
+		}
+
+		public int getDelay() {
+			return this.maxScrollDelay > 0?CustomAnimation.rand.nextInt(this.maxScrollDelay - this.minScrollDelay + 1) + this.minScrollDelay:0;
+		}
+	}
+
+	private interface Delegate {
+		void update(int var1, int var2);
+
+		int getDelay();
 	}
 }

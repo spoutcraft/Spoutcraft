@@ -125,7 +125,6 @@ public abstract class Minecraft implements Runnable {
 	// Spout End
 
 	public Minecraft(Component par1Component, Canvas par2Canvas, MinecraftApplet par3MinecraftApplet, int par4, int par5, boolean par6) {
-		MCPatcherUtils.setMinecraft(this);
 		StatList.func_27360_a();
 		this.tempDisplayHeight = par5;
 		this.fullscreen = par6;

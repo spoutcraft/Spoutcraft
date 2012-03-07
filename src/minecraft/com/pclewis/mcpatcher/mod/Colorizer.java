@@ -1,12 +1,30 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
-import net.minecraft.src.*;
-import org.lwjgl.opengl.GL11;
-
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.*;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Map.Entry;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Block;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityRenderer;
+import net.minecraft.src.EntitySheep;
+import net.minecraft.src.IBlockAccess;
+import net.minecraft.src.ItemDye;
+import net.minecraft.src.MapColor;
+import net.minecraft.src.Potion;
+import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.World;
+import org.lwjgl.opengl.GL11;
 
 public class Colorizer {
 	private static final String COLOR_PROPERTIES = "/color.properties";
@@ -15,13 +33,10 @@ public class Colorizer {
 	private static final String STEM_COLORS = "/misc/stemcolor.png";
 	private static final String LAVA_DROP_COLORS = "/misc/lavadropcolor.png";
 	private static final String MYCELIUM_COLORS = "/misc/myceliumparticlecolor.png";
-
 	private static final String PALETTE_BLOCK_KEY = "palette.block.";
 	private static final String TEXT_KEY = "text.";
-	private static final String TEXT_CODE_KEY = TEXT_KEY + "code.";
-
+	private static final String TEXT_CODE_KEY = "text.code.";
 	private static final int COLOR_CODE_UNSET = -2;
-
 	public static final int COLOR_MAP_SWAMP_GRASS = 0;
 	public static final int COLOR_MAP_SWAMP_FOLIAGE = 1;
 	public static final int COLOR_MAP_PINE = 2;
@@ -32,191 +47,155 @@ public class Colorizer {
 	public static final int COLOR_MAP_FOG0 = 7;
 	public static final int COLOR_MAP_SKY0 = 8;
 	public static final int NUM_FIXED_COLOR_MAPS = 9;
-
-	private static final String[] MAP_MATERIALS = new String[]{
-		"air",
-		"grass",
-		"sand",
-		"cloth",
-		"tnt",
-		"ice",
-		"iron",
-		"foliage",
-		"snow",
-		"clay",
-		"dirt",
-		"stone",
-		"water",
-		"wood",
-	};
-
+	private static final String[] MAP_MATERIALS = new String[]{"air", "grass", "sand", "cloth", "tnt", "ice", "iron", "foliage", "snow", "clay", "dirt", "stone", "water", "wood"};
 	private static Properties properties;
-	private static final ColorMap[] fixedColorMaps = new ColorMap[NUM_FIXED_COLOR_MAPS]; // bitmaps from FIXED_COLOR_MAPS
-	private static ColorMap[] blockColorMaps; // bitmaps from palette.block.*
-	private static final HashMap<Float, ColorMap> blockMetaColorMaps = new HashMap<Float, ColorMap>(); // bitmaps from palette.block.*
-	private static int lilypadColor; // lilypad
-	private static float[] waterBaseColor; // particle.water
-	private static float[] lavaDropColors; // /misc/lavadropcolor.png
-	private static int waterBottleColor; // potion.water
-	private static float[][] redstoneColor; // /misc/redstonecolor.png
-	private static int[] stemColors; // /misc/stemcolor.png
-	private static ArrayList<Potion> potions = new ArrayList<Potion>(); // potion.*
-	private static final Random random = new Random(); 
-
-	private static final boolean useWaterColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "water", true);
-	private static final boolean useSwampColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "swamp", true);
-	private static final boolean useTreeColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "tree", true);
-	private static final boolean usePotionColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "potion", true);
-	private static final boolean useParticleColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "particle", true);
-	private static final boolean useLightmaps = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "lightmaps", true);
-	private static final boolean useFogColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "fog", true);
-	private static final boolean useCloudType = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "clouds", true);
-	private static final boolean useRedstoneColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "redstone", true);
-	private static final boolean useStemColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "stem", true);
-	private static final boolean useEggColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "egg", true);
-	private static final boolean useMapColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "map", true);
-	private static final boolean useSheepColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "sheep", true);
-	private static final boolean useBlockColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "otherBlocks", true);
-	private static final boolean useTextColors = MCPatcherUtils.getBoolean(MCPatcherUtils.CUSTOM_COLORS, "text", true);
-	private static final int fogBlendRadius = MCPatcherUtils.getInt(MCPatcherUtils.CUSTOM_COLORS, "fogBlendRadius", 7);
+	private static final ColorMap[] fixedColorMaps = new ColorMap[9];
+	private static ColorMap[] blockColorMaps;
+	private static final HashMap blockMetaColorMaps = new HashMap();
+	private static int lilypadColor;
+	private static float[] waterBaseColor;
+	private static float[] lavaDropColors;
+	private static int waterBottleColor;
+	private static float[][] redstoneColor;
+	private static int[] stemColors;
+	private static ArrayList potions = new ArrayList();
+	private static final Random random = new Random();
+	private static final boolean useWaterColors = true;
+	private static final boolean useSwampColors = true;
+	private static final boolean useTreeColors = true;
+	private static final boolean usePotionColors = true;
+	private static final boolean useParticleColors = true;
+	private static final boolean useLightmaps = true;
+	private static final boolean useFogColors = true;
+	private static final boolean useCloudType = true;
+	private static final boolean useRedstoneColors = true;
+	private static final boolean useStemColors = true;
+	private static final boolean useEggColors = true;
+	private static final boolean useMapColors = true;
+	private static final boolean useSheepColors = true;
+	private static final boolean useBlockColors = true;
+	private static final boolean useTextColors = true;
+	private static final int fogBlendRadius = 7;
 	private static final float fogBlendScale = getBlendScale(fogBlendRadius);
-	private static final int blockBlendRadius = MCPatcherUtils.getInt(MCPatcherUtils.CUSTOM_COLORS, "blockBlendRadius", 1);
+	private static final int blockBlendRadius = 1;
 	private static final float blockBlendScale = getBlendScale(blockBlendRadius);
-
 	static TexturePackBase lastTexturePack;
-
 	private static final int LIGHTMAP_SIZE = 16;
-	private static final float LIGHTMAP_SCALE = LIGHTMAP_SIZE - 1;
-	private static HashMap<Integer, BufferedImage> lightmaps = new HashMap<Integer, BufferedImage>();
-
+	private static final float LIGHTMAP_SCALE = 15.0F;
+	private static HashMap lightmaps = new HashMap();
 	public static final float[] setColor = new float[3];
 	public static float[] waterColor;
-	public static float[] portalColor = new float[]{1.0f, 0.3f, 0.9f};
-
-	private static final HashMap<Integer, String> entityNamesByID = new HashMap<Integer, String>();
-	private static final HashMap<Integer, Integer> spawnerEggShellColors = new HashMap<Integer, Integer>(); // egg.shell.*
-	private static final HashMap<Integer, Integer> spawnerEggSpotColors = new HashMap<Integer, Integer>(); // egg.spots.*
-
+	public static float[] portalColor = new float[]{1.0F, 0.3F, 0.9F};
+	private static final HashMap entityNamesByID = new HashMap();
+	private static final HashMap spawnerEggShellColors = new HashMap();
+	private static final HashMap spawnerEggSpotColors = new HashMap();
 	private static final int CLOUDS_DEFAULT = 0;
 	private static final int CLOUDS_FAST = 1;
 	private static final int CLOUDS_FANCY = 2;
-	private static int cloudType = CLOUDS_DEFAULT;
-
-	private static final ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+	private static int cloudType = 0;
+	private static final ArrayList biomes = new ArrayList();
 	private static boolean biomesLogged;
-
 	private static Entity fogCamera;
-	
 	public static float[] netherFogColor;
 	public static float[] endFogColor;
 	public static int endSkyColor;
-	
 	private static int[] myceliumColors;
-
-	private static final HashMap<Integer, Integer> textColorMap = new HashMap<Integer, Integer>();
+	private static final HashMap textColorMap = new HashMap();
 	private static final int[] textCodeColors = new int[32];
 
-	public static int colorizeBiome(int defaultColor, int index, double temperature, double rainfall) {
-		return fixedColorMaps[index].colorize(defaultColor, temperature, rainfall);
+	public static int colorizeBiome(int var0, int var1, double var2, double var4) {
+		return fixedColorMaps[var1].colorize(var0, var2, var4);
 	}
 
-	public static int colorizeBiome(int defaultColor, int index) {
-		return fixedColorMaps[index].colorize(defaultColor);
+	public static int colorizeBiome(int var0, int var1) {
+		return fixedColorMaps[var1].colorize(var0);
 	}
 
-	public static int colorizeBiome(int defaultColor, int index, int i, int j, int k) {
-		return fixedColorMaps[index].colorize(defaultColor, i, j, k);
+	public static int colorizeBiome(int var0, int var1, int var2, int var3, int var4) {
+		return fixedColorMaps[var1].colorize(var0, var2, var3, var4);
 	}
 
-	public static int colorizeWater(Object dummy, int i, int k) {
-		return fixedColorMaps[COLOR_MAP_WATER].colorize(BiomeHelper.instance.getWaterColorMultiplier(i, 64, k), i, 64, k);
+	public static int colorizeWater(Object var0, int var1, int var2) {
+		return fixedColorMaps[5].colorize(BiomeHelper.instance.getWaterColorMultiplier(var1, 64, var2), var1, 64, var2);
 	}
 
-	public static int colorizeBlock(Block block, int i, int j, int k, int metadata) {
-		ColorMap colorMap = null;
+	public static int colorizeBlock(Block var0, int var1, int var2, int var3, int var4) {
+		ColorMap var5 = null;
 		if (!blockMetaColorMaps.isEmpty()) {
-			colorMap = blockMetaColorMaps.get(ColorMap.getBlockMetaKey(block.blockID, metadata));
+			var5 = (ColorMap)blockMetaColorMaps.get(Float.valueOf(ColorMap.getBlockMetaKey(var0.blockID, var4)));
 		}
-		if (colorMap == null && block.blockID >= 0 && block.blockID < blockColorMaps.length) {
-			colorMap = blockColorMaps[block.blockID];
+
+		if (var5 == null && var0.blockID >= 0 && var0.blockID < blockColorMaps.length) {
+			var5 = blockColorMaps[var0.blockID];
 		}
-		if (colorMap == null || !colorMap.isCustom()) {
-			return 0xffffff;
-		} else if (!BiomeHelper.instance.useBlockBlending() || blockBlendRadius == 0) {
-			return colorMap.colorize(0xffffff, i, j, k);
+
+		if (var5 != null && var5.isCustom()) {
+			if (BiomeHelper.instance.useBlockBlending() && blockBlendRadius != 0) {
+				float[] var6 = new float[3];
+				float[] var7 = new float[3];
+
+				for (int var8 = -blockBlendRadius; var8 <= blockBlendRadius; ++var8) {
+					for (int var9 = -blockBlendRadius; var9 <= blockBlendRadius; ++var9) {
+						int var10 = var5.colorize(16777215, var1 + var8, var2, var3 + var9);
+						intToFloat3(var10, var7);
+						var6[0] += var7[0];
+						var6[1] += var7[1];
+						var6[2] += var7[2];
+					}
+				}
+
+				var6[0] *= blockBlendScale;
+				var6[1] *= blockBlendScale;
+				var6[2] *= blockBlendScale;
+				return float3ToInt(var6);
+			} else {
+				return var5.colorize(16777215, var1, var2, var3);
+			}
 		} else {
-			float[] sum = new float[3];
-			float[] sample = new float[3];
-			for (int di = -blockBlendRadius; di <= blockBlendRadius; di++) {
-				for (int dk = -blockBlendRadius; dk <= blockBlendRadius; dk++) {
-					int rgb = colorMap.colorize(0xffffff, i + di, j, k + dk);
-					intToFloat3(rgb, sample);
-					sum[0] += sample[0];
-					sum[1] += sample[1];
-					sum[2] += sample[2];
+			return 16777215;
+		}
+	}
+
+	public static int colorizeBlock(Block var0) {
+		ColorMap var1 = blockColorMaps[var0.blockID];
+		return var1 == null?16777215:var1.colorize(16777215);
+	}
+
+	public static int colorizeStem(int var0, int var1) {
+		return stemColors == null?var0:stemColors[var1 & 7];
+	}
+
+	public static int colorizeSpawnerEgg(int var0, int var1, int var2) {
+		if (!useEggColors) {
+			return var0;
+		} else {
+			Integer var3 = null;
+			HashMap var4 = var2 == 0?spawnerEggShellColors:spawnerEggSpotColors;
+			if (var4.containsKey(Integer.valueOf(var1))) {
+				var3 = (Integer)var4.get(Integer.valueOf(var1));
+			} else if (entityNamesByID.containsKey(Integer.valueOf(var1))) {
+				String var5 = (String)entityNamesByID.get(Integer.valueOf(var1));
+				if (var5 != null) {
+					int[] var6 = new int[]{var0};
+					loadIntColor((var2 == 0?"egg.shell.":"egg.spots.") + var5, var6, 0);
+					var4.put(Integer.valueOf(var1), Integer.valueOf(var6[0]));
+					var3 = Integer.valueOf(var6[0]);
 				}
 			}
-			sum[0] *= blockBlendScale;
-			sum[1] *= blockBlendScale;
-			sum[2] *= blockBlendScale;
-			return float3ToInt(sum);
+
+			return var3 == null?var0:var3.intValue();
 		}
 	}
 
-	public static int colorizeBlock(Block block) {
-		ColorMap colorMap = blockColorMaps[block.blockID];
-		if (colorMap == null) {
-			return 0xffffff;
-		} else {
-			return colorMap.colorize(0xffffff);
-		}
+	public static int colorizeText(int var0) {
+		int var1 = var0 & -16777216;
+		var0 &= 16777215;
+		Integer var2 = (Integer)textColorMap.get(Integer.valueOf(var0));
+		return var2 == null?var1 | var0:var1 | var2.intValue();
 	}
 
-	public static int colorizeStem(int defaultColor, int blockMetadata) {
-		if (stemColors == null) {
-			return defaultColor;
-		} else {
-			return stemColors[blockMetadata & 0x7];
-		}
-	}
-
-	public static int colorizeSpawnerEgg(int defaultColor, int entityID, int spots) {
-		if (!useEggColors) {
-			return defaultColor;
-		}
-		Integer value = null;
-		HashMap<Integer, Integer> eggMap = (spots == 0 ? spawnerEggShellColors : spawnerEggSpotColors);
-		if (eggMap.containsKey(entityID)) {
-			value = eggMap.get(entityID);
-		} else if (entityNamesByID.containsKey(entityID)) {
-			String name = entityNamesByID.get(entityID);
-			if (name != null) {
-				int[] tmp = new int[]{defaultColor};
-				loadIntColor((spots == 0 ? "egg.shell." : "egg.spots.") + name, tmp, 0);
-				eggMap.put(entityID, tmp[0]);
-				value = tmp[0];
-			}
-		}
-		return value == null ? defaultColor : value;
-	}
-	
-	public static int colorizeText(int defaultColor) {
-		int high = defaultColor & 0xff000000;
-		defaultColor &= 0xffffff;
-		Integer newColor = textColorMap.get(defaultColor);
-		if (newColor == null) {
-			return high | defaultColor;
-		} else {
-			return high | newColor;
-		}
-	}
-	
-	public static int colorizeText(int defaultColor, int index) {
-		if (index < 0 || index >= textCodeColors.length || textCodeColors[index] == COLOR_CODE_UNSET) {
-			return defaultColor;
-		} else {
-			return (defaultColor & 0xff000000) | textCodeColors[index];
-		}
+	public static int colorizeText(int var0, int var1) {
+		return var1 >= 0 && var1 < textCodeColors.length && textCodeColors[var1] != -2?var0 & -16777216 | textCodeColors[var1]:var0;
 	}
 
 	public static int getWaterBottleColor() {
@@ -227,196 +206,201 @@ public class Colorizer {
 		return lilypadColor;
 	}
 
-	public static int getItemColorFromDamage(int defaultColor, int blockID, int damage) {
-		if (blockID == 8 || blockID == 9) {
-			return colorizeBiome(defaultColor, COLOR_MAP_WATER);
-		} else {
-			return defaultColor;
-		}
+	public static int getItemColorFromDamage(int var0, int var1, int var2) {
+		return var1 != 8 && var1 != 9?var0:colorizeBiome(var0, 5);
 	}
 
-	public static boolean computeLightmap(EntityRenderer renderer, World world) {
-		if (world == null || !useLightmaps) {
-			return false;
-		}
-		int worldType = world.worldProvider.worldType;
-		String name = String.format(LIGHTMAP_FORMAT, worldType);
-		BufferedImage image;
-		if (lightmaps.containsKey(worldType)) {
-			image = lightmaps.get(worldType);
-		} else {
-			image = MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(name));
-			lightmaps.put(worldType, image);
-			if (image == null) {
-				MCPatcherUtils.log("using default lighting for world %d", worldType);
+	public static boolean computeLightmap(EntityRenderer var0, World var1) {
+		if (var1 != null && useLightmaps) {
+			int var2 = var1.worldProvider.worldType;
+			String var3 = String.format("/environment/lightmap%d.png", new Object[]{Integer.valueOf(var2)});
+			BufferedImage var4;
+			if (lightmaps.containsKey(Integer.valueOf(var2))) {
+				var4 = (BufferedImage)lightmaps.get(Integer.valueOf(var2));
 			} else {
-				MCPatcherUtils.log("using %s", name);
+				var4 = MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(var3));
+				lightmaps.put(Integer.valueOf(var2), var4);
 			}
-		}
-		if (image == null) {
-			return false;
-		}
-		int width = image.getWidth();
-		int height = image.getHeight();
-		if (height != 2 * LIGHTMAP_SIZE) {
-			MCPatcherUtils.error("%s must be exactly %d pixels high", name, 2 * LIGHTMAP_SIZE);
-			lightmaps.put(worldType, null);
-			return false;
-		}
-		int[] origMap = new int[width * height];
-		image.getRGB(0, 0, width, height, origMap, 0, width);
-		int[] newMap = new int[LIGHTMAP_SIZE * LIGHTMAP_SIZE];
-		float sun = clamp(world.lightningFlash > 0 ? 1.0f : 7.0f / 6.0f * (world.getCelestialAngle(1.0f) - 0.2f)) * (width - 1);
-		float torch = clamp(renderer.torchFlickerX + 0.5f) * (width - 1);
-		float gamma = clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
-		float[] sunrgb = new float[3 * LIGHTMAP_SIZE];
-		float[] torchrgb = new float[3 * LIGHTMAP_SIZE];
-		float[] rgb = new float[3];
-		for (int i = 0; i < LIGHTMAP_SIZE; i++) {
-			interpolate(origMap, i * width, sun, sunrgb, 3 * i);
-			interpolate(origMap, (i + LIGHTMAP_SIZE) * width, torch, torchrgb, 3 * i);
-		}
-		for (int s = 0; s < LIGHTMAP_SIZE; s++) {
-			for (int t = 0; t < LIGHTMAP_SIZE; t++) {
-				for (int k = 0; k < 3; k++) {
-					rgb[k] = clamp(sunrgb[3 * s + k] + torchrgb[3 * t + k]);
-				}
-				if (gamma != 0.0f) {
-					for (int k = 0; k < 3; k++) {
-						float tmp = 1.0f - rgb[k];
-						tmp = 1.0f - tmp * tmp * tmp * tmp;
-						rgb[k] = gamma * tmp + (1.0f - gamma) * rgb[k];
+
+			if (var4 == null) {
+				return false;
+			} else {
+				int var5 = var4.getWidth();
+				int var6 = var4.getHeight();
+				if (var6 != 32) {
+					lightmaps.put(Integer.valueOf(var2), (Object)null);
+					return false;
+				} else {
+					int[] var7 = new int[var5 * var6];
+					var4.getRGB(0, 0, var5, var6, var7, 0, var5);
+					int[] var8 = new int[256];
+					float var9 = clamp(var1.lightningFlash > 0?1.0F:1.1666666F * (var1.func_35464_b(1.0F) - 0.2F)) * (float)(var5 - 1);
+					float var10 = clamp(var0.torchFlickerX + 0.5F) * (float)(var5 - 1);
+					float var11 = clamp(Minecraft.theMinecraft.gameSettings.gammaSetting);
+					float[] var12 = new float[48];
+					float[] var13 = new float[48];
+					float[] var14 = new float[3];
+
+					int var15;
+					for (var15 = 0; var15 < 16; ++var15) {
+						interpolate(var7, var15 * var5, var9, var12, 3 * var15);
+						interpolate(var7, (var15 + 16) * var5, var10, var13, 3 * var15);
 					}
+
+					for (var15 = 0; var15 < 16; ++var15) {
+						for (int var16 = 0; var16 < 16; ++var16) {
+							int var17;
+							for (var17 = 0; var17 < 3; ++var17) {
+								var14[var17] = clamp(var12[3 * var15 + var17] + var13[3 * var16 + var17]);
+							}
+
+							if (var11 != 0.0F) {
+								for (var17 = 0; var17 < 3; ++var17) {
+									float var18 = 1.0F - var14[var17];
+									var18 = 1.0F - var18 * var18 * var18 * var18;
+									var14[var17] = var11 * var18 + (1.0F - var11) * var14[var17];
+								}
+							}
+
+							var8[var15 * 16 + var16] = -16777216 | float3ToInt(var14);
+						}
+					}
+
+					Minecraft.theMinecraft.renderEngine.createTextureFromBytes(var8, 16, 16, var0.lightmapTexture);
+					return true;
 				}
-				newMap[s * LIGHTMAP_SIZE + t] = 0xff000000 | float3ToInt(rgb);
 			}
+		} else {
+			return false;
 		}
-		MCPatcherUtils.getMinecraft().renderEngine.createTextureFromBytes(newMap, LIGHTMAP_SIZE, LIGHTMAP_SIZE, renderer.lightmapTexture);
-		return true;
 	}
 
-	public static boolean computeRedstoneWireColor(int current) {
+	public static boolean computeRedstoneWireColor(int var0) {
 		if (redstoneColor == null) {
 			return false;
 		} else {
-			System.arraycopy(redstoneColor[Math.max(Math.min(current, 15), 0)], 0, setColor, 0, 3);
+			System.arraycopy(redstoneColor[Math.max(Math.min(var0, 15), 0)], 0, setColor, 0, 3);
 			return true;
 		}
 	}
 
-	public static boolean computeWaterColor(double x, double y, double z) {
-		if (useParticleColors) {
-			int rgb = colorizeBiome(0xffffff, COLOR_MAP_WATER, (int) x, (int) y, (int) z);
-			float[] multiplier = new float[3];
-			intToFloat3(rgb, multiplier);
-			for (int i = 0; i < 3; i++) {
-				waterColor[i] = multiplier[i] * waterBaseColor[i];
-			}
-			return true;
-		} else {
+	public static boolean computeWaterColor(double var0, double var2, double var4) {
+		if (!useParticleColors) {
 			return false;
+		} else {
+			int var6 = colorizeBiome(16777215, 5, (int)var0, (int)var2, (int)var4);
+			float[] var7 = new float[3];
+			intToFloat3(var6, var7);
+
+			for (int var8 = 0; var8 < 3; ++var8) {
+				waterColor[var8] = var7[var8] * waterBaseColor[var8];
+			}
+
+			return true;
 		}
 	}
 
 	public static void computeWaterColor() {
-		int rgb = colorizeBiome(0xffffff, COLOR_MAP_WATER);
-		intToFloat3(rgb, waterColor);
+		int var0 = colorizeBiome(16777215, 5);
+		intToFloat3(var0, waterColor);
 	}
 
-	public static void colorizeWaterBlockGL(int blockID) {
-		if (blockID == 8 || blockID == 9) {
+	public static void colorizeWaterBlockGL(int var0) {
+		if (var0 == 8 || var0 == 9) {
 			computeWaterColor();
-			GL11.glColor4f(waterColor[0], waterColor[1], waterColor[2], 1.0f);
+			GL11.glColor4f(waterColor[0], waterColor[1], waterColor[2], 1.0F);
 		}
 	}
 
-	public static boolean computeLavaDropColor(int age) {
+	public static boolean computeLavaDropColor(int var0) {
 		if (lavaDropColors == null) {
 			return false;
 		} else {
-			int offset = 3 * Math.max(Math.min(lavaDropColors.length / 3 - 1, age), 0);
-			System.arraycopy(lavaDropColors, offset, setColor, 0, 3);
+			int var1 = 3 * Math.max(Math.min(lavaDropColors.length / 3 - 1, var0), 0);
+			System.arraycopy(lavaDropColors, var1, setColor, 0, 3);
 			return true;
 		}
 	}
 
-	public static void setupBlockAccess(IBlockAccess blockAccess, boolean newBiomes) {
+	public static void setupBlockAccess(IBlockAccess var0, boolean var1) {
 		checkUpdate();
-		if (blockAccess == null) {
+		if (var0 == null) {
 			BiomeHelper.instance = new BiomeHelper.Stub();
-		} else if (newBiomes) {
-			BiomeHelper.instance = new BiomeHelper.New(blockAccess);
 		} else {
-			BiomeHelper.instance = new BiomeHelper.Old(blockAccess);
+			BiomeHelper.instance = new BiomeHelper.New(var0);
 		}
 	}
 
-	public static void setupForFog(Entity entity) {
-		fogCamera = entity;
+	public static void setupForFog(Entity var0) {
+		fogCamera = var0;
 		if (!biomesLogged) {
 			biomesLogged = true;
-			for (BiomeGenBase biome : biomes) {
-				int x = ColorMap.getX(biome.temperature, biome.rainfall);
-				int y = ColorMap.getY(biome.temperature, biome.rainfall);
-				MCPatcherUtils.log("setupBiome #%d \"%s\" %06x (%d,%d)", biome.biomeID, biome.biomeName, biome.waterColorMultiplier, x, y);
+			Iterator var1 = biomes.iterator();
+
+			while (var1.hasNext()) {
+				BiomeGenBase var2 = (BiomeGenBase)var1.next();
+				int var3 = ColorMap.getX((double)var2.temperature, (double)var2.rainfall);
+				int var4 = ColorMap.getY((double)var2.temperature, (double)var2.rainfall);
 			}
 		}
 	}
 
-	public static boolean computeFogColor(int index) {
-		if (index < 0 || index >= fixedColorMaps.length || fogCamera == null || !fixedColorMaps[index].isCustom()) {
-			return false;
-		}
-		float[] f = new float[3];
-		int x = (int) fogCamera.posX;
-		int y = (int) fogCamera.posY;
-		int z = (int) fogCamera.posZ;
-		setColor[0] = 0.0f;
-		setColor[1] = 0.0f;
-		setColor[2] = 0.0f;
-		for (int i = -fogBlendRadius; i <= fogBlendRadius; i++) {
-			for (int j = -fogBlendRadius; j <= fogBlendRadius; j++) {
-				int rgb = colorizeBiome(0xffffff, index, x + i, y, z + j);
-				intToFloat3(rgb, f);
-				setColor[0] += f[0];
-				setColor[1] += f[1];
-				setColor[2] += f[2];
+	public static boolean computeFogColor(int var0) {
+		if (var0 >= 0 && var0 < fixedColorMaps.length && fogCamera != null && fixedColorMaps[var0].isCustom()) {
+			float[] var1 = new float[3];
+			int var2 = (int)fogCamera.posX;
+			int var3 = (int)fogCamera.posY;
+			int var4 = (int)fogCamera.posZ;
+			setColor[0] = 0.0F;
+			setColor[1] = 0.0F;
+			setColor[2] = 0.0F;
+
+			for (int var5 = -fogBlendRadius; var5 <= fogBlendRadius; ++var5) {
+				for (int var6 = -fogBlendRadius; var6 <= fogBlendRadius; ++var6) {
+					int var7 = colorizeBiome(16777215, var0, var2 + var5, var3, var4 + var6);
+					intToFloat3(var7, var1);
+					setColor[0] += var1[0];
+					setColor[1] += var1[1];
+					setColor[2] += var1[2];
+				}
 			}
-		}
-		setColor[0] *= fogBlendScale;
-		setColor[1] *= fogBlendScale;
-		setColor[2] *= fogBlendScale;
-		return true;
-	}
-	
-	public static boolean computeFogColor(World world, float f) {
-		if (world.worldProvider.worldType == 0 && computeFogColor(COLOR_MAP_FOG0)) {
-			computeLightningFlash(world, f);
+
+			setColor[0] *= fogBlendScale;
+			setColor[1] *= fogBlendScale;
+			setColor[2] *= fogBlendScale;
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public static boolean computeSkyColor(World world, float f) {
-		if (world.worldProvider.worldType == 0 && computeFogColor(COLOR_MAP_SKY0)) {
-			computeLightningFlash(world, f);
+	public static boolean computeFogColor(World var0, float var1) {
+		if (var0.worldProvider.worldType == 0 && computeFogColor(7)) {
+			computeLightningFlash(var0, var1);
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	private static void computeLightningFlash(World world, float f) {
-		if (world.lightningFlash > 0)
-		{
-			f = 0.45f * clamp(world.lightningFlash - f);
-			setColor[0] = setColor[0] * (1.0f - f) + 0.8f * f;
-			setColor[1] = setColor[1] * (1.0f - f) + 0.8f * f;
-			setColor[2] = setColor[2] * (1.0f - f) + 0.8f * f;
+
+	public static boolean computeSkyColor(World var0, float var1) {
+		if (var0.worldProvider.worldType == 0 && computeFogColor(8)) {
+			computeLightningFlash(var0, var1);
+			return true;
+		} else {
+			return false;
 		}
 	}
-	
+
+	private static void computeLightningFlash(World var0, float var1) {
+		if (var0.lightningFlash > 0) {
+			var1 = 0.45F * clamp((float)var0.lightningFlash - var1);
+			setColor[0] = setColor[0] * (1.0F - var1) + 0.8F * var1;
+			setColor[1] = setColor[1] * (1.0F - var1) + 0.8F * var1;
+			setColor[2] = setColor[2] * (1.0F - var1) + 0.8F * var1;
+		}
+	}
+
 	public static boolean computeMyceliumParticleColor() {
 		if (myceliumColors == null) {
 			return false;
@@ -426,148 +410,154 @@ public class Colorizer {
 		}
 	}
 
-	public static void setColorF(int color) {
-		intToFloat3(color, setColor);
+	public static void setColorF(int var0) {
+		intToFloat3(var0, setColor);
 	}
 
-	public static void setupBiome(BiomeGenBase biome) {
-		biomes.add(biome);
+	public static void setupBiome(BiomeGenBase var0) {
+		biomes.add(var0);
 	}
 
-	public static void setupPotion(Potion potion) {
-		//System.out.printf("potion.%s=%06x\n", potion.name, potion.color);
-		MCPatcherUtils.log("setupPotion #%d \"%s\" %06x", potion.id, potion.name, potion.liquidColor);
-		potion.origColor = potion.liquidColor;
-		potions.add(potion);
+	public static void setupPotion(Potion var0) {
+		var0.origColor = var0.liquidColor;
+		potions.add(var0);
 	}
 
-	public static void setupSpawnerEgg(String entityName, int entityID, int defaultShellColor, int defaultSpotColor) {
-		//System.out.printf("egg.shell.%s=%06x\n", entityName, defaultShellColor);
-		//System.out.printf("egg.spots.%s=%06x\n", entityName, defaultSpotColor);
-		MCPatcherUtils.log("setupSpawnerEgg #%d \"%s\" %06x %06x", entityID, entityName, defaultShellColor, defaultSpotColor);
-		entityNamesByID.put(entityID, entityName);
+	public static void setupSpawnerEgg(String var0, int var1, int var2, int var3) {
+		entityNamesByID.put(Integer.valueOf(var1), var0);
 	}
 
-	public static boolean drawFancyClouds(boolean fancyGraphics) {
-		switch (cloudType) {
-			case CLOUDS_FAST:
-				return false;
-
-			case CLOUDS_FANCY:
-				return true;
-
-			default:
-				return fancyGraphics;
+	public static boolean drawFancyClouds(boolean var0) {
+		switch(cloudType) {
+		case 1:
+			return false;
+		case 2:
+			return true;
+		default:
+			return var0;
 		}
 	}
 
 	private static void checkUpdate() {
-		if (lastTexturePack == MCPatcherUtils.getMinecraft().texturePackList.selectedTexturePack) {
-			return;
-		}
-		lastTexturePack = MCPatcherUtils.getMinecraft().texturePackList.selectedTexturePack;
+		if (lastTexturePack != Minecraft.theMinecraft.texturePackList.selectedTexturePack) {
+			lastTexturePack = Minecraft.theMinecraft.texturePackList.selectedTexturePack;
+			reset();
+			reloadColorProperties();
+			if (useFogColors) {
+				reloadFogColors();
+			}
 
-		reset();
-		reloadColorProperties();
-		if (useFogColors) {
-			reloadFogColors();
-		}
-		if (usePotionColors) {
-			reloadPotionColors();
-		}
-		if (useSwampColors) {
-			reloadSwampColors();
-		}
-		if (useBlockColors) {
-			reloadBlockColors();
-		}
-		if (useParticleColors) {
-			reloadParticleColors();
-		}
-		if (useRedstoneColors) {
-			reloadRedstoneColors();
-		}
-		if (useStemColors) {
-			reloadStemColors();
-		}
-		if (useCloudType) {
-			reloadCloudType();
-		}
-		/*if (useMapColors) {
-			reloadMapColors();
-		}*/
-		if (useSheepColors) {
-			reloadSheepColors();
-		}
-		if (useTextColors) {
-			reloadTextColors();
+			if (usePotionColors) {
+				reloadPotionColors();
+			}
+
+			if (useSwampColors) {
+				reloadSwampColors();
+			}
+
+			if (useBlockColors) {
+				reloadBlockColors();
+			}
+
+			if (useParticleColors) {
+				reloadParticleColors();
+			}
+
+			if (useRedstoneColors) {
+				reloadRedstoneColors();
+			}
+
+			if (useStemColors) {
+				reloadStemColors();
+			}
+
+			if (useCloudType) {
+				reloadCloudType();
+			}
+
+			if (useMapColors) {
+				reloadMapColors();
+			}
+
+			if (useSheepColors) {
+				reloadSheepColors();
+			}
+
+			if (useTextColors) {
+				reloadTextColors();
+			}
 		}
 	}
 
 	private static void reset() {
 		properties = new Properties();
-
-		fixedColorMaps[COLOR_MAP_SWAMP_GRASS] = new ColorMap(useSwampColors, "/misc/swampgrasscolor.png", 0x4e4e4e);
-		fixedColorMaps[COLOR_MAP_SWAMP_FOLIAGE] = new ColorMap(useSwampColors, "/misc/swampfoliagecolor.png", 0x4e4e4e);
-		fixedColorMaps[COLOR_MAP_PINE] = new ColorMap(useTreeColors, "/misc/pinecolor.png", 0x619961);
-		fixedColorMaps[COLOR_MAP_BIRCH] = new ColorMap(useTreeColors, "/misc/birchcolor.png", 0x80a755);
-		fixedColorMaps[COLOR_MAP_FOLIAGE] = new ColorMap(useTreeColors, "/misc/foliagecolor.png", 0x48b518);
-		fixedColorMaps[COLOR_MAP_FOLIAGE].clear();
-		fixedColorMaps[COLOR_MAP_WATER] = new ColorMap(useWaterColors, "/misc/watercolorX.png", 0xffffff);
-		fixedColorMaps[COLOR_MAP_UNDERWATER] = new ColorMap(useWaterColors, "/misc/underwatercolor.png", 0x050533);
-		fixedColorMaps[COLOR_MAP_FOG0] = new ColorMap(useFogColors, "/misc/fogcolor0.png", 0xc0d8ff);
-		fixedColorMaps[COLOR_MAP_SKY0] = new ColorMap(useFogColors, "/misc/skycolor0.png", 0xffffff);
-		
-		netherFogColor = new float[]{0.2f, 0.03f, 0.03f};
-		endFogColor = new float[]{0.075f, 0.075f, 0.094f};
-		endSkyColor = 0x181818;
-
+		fixedColorMaps[0] = new ColorMap(useSwampColors, "/misc/swampgrasscolor.png", 5131854);
+		fixedColorMaps[1] = new ColorMap(useSwampColors, "/misc/swampfoliagecolor.png", 5131854);
+		fixedColorMaps[2] = new ColorMap(useTreeColors, "/misc/pinecolor.png", 6396257);
+		fixedColorMaps[3] = new ColorMap(useTreeColors, "/misc/birchcolor.png", 8431445);
+		fixedColorMaps[4] = new ColorMap(useTreeColors, "/misc/foliagecolor.png", 4764952);
+		fixedColorMaps[4].clear();
+		fixedColorMaps[5] = new ColorMap(useWaterColors, "/misc/watercolorX.png", 16777215);
+		fixedColorMaps[6] = new ColorMap(useWaterColors, "/misc/underwatercolor.png", 329011);
+		fixedColorMaps[7] = new ColorMap(useFogColors, "/misc/fogcolor0.png", 12638463);
+		fixedColorMaps[8] = new ColorMap(useFogColors, "/misc/skycolor0.png", 16777215);
+		netherFogColor = new float[]{0.2F, 0.03F, 0.03F};
+		endFogColor = new float[]{0.075F, 0.075F, 0.094F};
+		endSkyColor = 1579032;
 		blockColorMaps = new ColorMap[Block.blocksList.length];
 		blockMetaColorMaps.clear();
-
-		lilypadColor = 0x208030;
-		waterBaseColor = new float[]{0.2f, 0.3f, 1.0f};
-		waterColor = new float[]{0.2f, 0.3f, 1.0f};
-		portalColor = new float[]{1.0f, 0.3f, 0.9f};
+		lilypadColor = 2129968;
+		waterBaseColor = new float[]{0.2F, 0.3F, 1.0F};
+		waterColor = new float[]{0.2F, 0.3F, 1.0F};
+		portalColor = new float[]{1.0F, 0.3F, 0.9F};
 		lavaDropColors = null;
-		waterBottleColor = 0x385dc6;
-		redstoneColor = null;
+		waterBottleColor = 3694022;
+		redstoneColor = (float[][])null;
 		stemColors = null;
 		lightmaps.clear();
 		spawnerEggShellColors.clear();
 		spawnerEggSpotColors.clear();
-		cloudType = CLOUDS_DEFAULT;
-		for (Potion potion : potions) {
-			potion.liquidColor = potion.origColor;
+		cloudType = 0;
+
+		Potion var1;
+		for (Iterator var0 = potions.iterator(); var0.hasNext(); var1.liquidColor = var1.origColor) {
+			var1 = (Potion)var0.next();
 		}
-		/*for (MapColor mapColor : MapColor.mapColorArray) {
-			if (mapColor != null) {
-				mapColor.colorValue = mapColor.origColorValue;
+
+		MapColor[] var4 = MapColor.mapColorArray;
+		int var6 = var4.length;
+
+		for (int var2 = 0; var2 < var6; ++var2) {
+			MapColor var3 = var4[var2];
+			if (var3 != null) {
+				var3.colorValue = var3.origColorValue;
 			}
-		}*/
-		EntitySheep.fleeceColorTable = EntitySheep.origFleeceColorTable.clone();
+		}
+
+		EntitySheep.fleeceColorTable = (float[][])EntitySheep.origFleeceColorTable.clone();
 		myceliumColors = null;
 		textColorMap.clear();
-		for (int i = 0; i < textCodeColors.length; i++) {
-			textCodeColors[i] = COLOR_CODE_UNSET;
+
+		for (int var5 = 0; var5 < textCodeColors.length; ++var5) {
+			textCodeColors[var5] = -2;
 		}
 	}
 
 	private static void reloadColorProperties() {
-		InputStream inputStream = null;
+		InputStream var0 = null;
+
 		try {
-			inputStream = lastTexturePack.getResourceAsStream(COLOR_PROPERTIES);
-			if (inputStream != null) {
-				MCPatcherUtils.log("reloading %s", COLOR_PROPERTIES);
-				properties.load(inputStream);
+			var0 = lastTexturePack.getResourceAsStream("/color.properties");
+			if (var0 != null) {
+				properties.load(var0);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException var5) {
+			var5.printStackTrace();
 		} finally {
-			MCPatcherUtils.close(inputStream);
+			MCPatcherUtils.close((Closeable)var0);
 		}
 	}
-	
+
 	private static void reloadFogColors() {
 		loadFloatColor("fog.nether", netherFogColor);
 		loadFloatColor("fog.end", endFogColor);
@@ -575,61 +565,70 @@ public class Colorizer {
 	}
 
 	private static void reloadPotionColors() {
-		for (Potion potion : potions) {
-			loadIntColor(potion.name, potion);
+		Iterator var0 = potions.iterator();
+
+		while (var0.hasNext()) {
+			Potion var1 = (Potion)var0.next();
+			loadIntColor(var1.name, var1);
 		}
-		int[] temp = new int[]{waterBottleColor};
-		loadIntColor("potion.water", temp, 0);
-		waterBottleColor = temp[0];
+
+		int[] var2 = new int[]{waterBottleColor};
+		loadIntColor("potion.water", var2, 0);
+		waterBottleColor = var2[0];
 	}
 
 	private static void reloadSwampColors() {
-		int[] temp = new int[]{lilypadColor};
-		loadIntColor("lilypad", temp, 0);
-		lilypadColor = temp[0];
+		int[] var0 = new int[]{lilypadColor};
+		loadIntColor("lilypad", var0, 0);
+		lilypadColor = var0[0];
 	}
 
 	private static void reloadBlockColors() {
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			if (!(entry.getKey() instanceof String) || !(entry.getValue() instanceof String)) {
-				continue;
-			}
-			String key = (String) entry.getKey();
-			String value = (String) entry.getValue();
-			if (!key.startsWith(PALETTE_BLOCK_KEY)) {
-				continue;
-			}
-			key = key.substring(PALETTE_BLOCK_KEY.length()).trim();
-			ColorMap colorMap = new ColorMap(true, key, 0xffffff);
-			if (!colorMap.isCustom()) {
-				continue;
-			}
-			for (String idString : value.split("\\s+")) {
-				String[] tokens = idString.split(":");
-				int[] tokensInt = new int[tokens.length];
-				try {
-					for (int i = 0; i < tokens.length; i++) {
-						tokensInt[i] = Integer.parseInt(tokens[i]);
-					}
-				} catch (NumberFormatException e) {
-					continue;
-				}
-				switch (tokensInt.length) {
-					case 1:
-						if (tokensInt[0] < 0 || tokensInt[0] >= blockColorMaps.length) {
-							continue;
+		Iterator var0 = properties.entrySet().iterator();
+
+		while (var0.hasNext()) {
+			Entry var1 = (Entry)var0.next();
+			if (var1.getKey() instanceof String && var1.getValue() instanceof String) {
+				String var2 = (String)var1.getKey();
+				String var3 = (String)var1.getValue();
+				if (var2.startsWith("palette.block.")) {
+					var2 = var2.substring("palette.block.".length()).trim();
+					ColorMap var4 = new ColorMap(true, var2, 16777215);
+					if (var4.isCustom()) {
+						String[] var5 = var3.split("\\s+");
+						int var6 = var5.length;
+
+						for (int var7 = 0; var7 < var6; ++var7) {
+							String var8 = var5[var7];
+							String[] var9 = var8.split(":");
+							int[] var10 = new int[var9.length];
+
+							try {
+								for (int var11 = 0; var11 < var9.length; ++var11) {
+									var10[var11] = Integer.parseInt(var9[var11]);
+								}
+							} catch (NumberFormatException var12) {
+								continue;
+							}
+
+							switch(var10.length) {
+							case 1:
+								if (var10[0] < 0 || var10[0] >= blockColorMaps.length) {
+									continue;
+								}
+
+								blockColorMaps[var10[0]] = var4;
+								break;
+							case 2:
+								blockMetaColorMaps.put(Float.valueOf(ColorMap.getBlockMetaKey(var10[0], var10[1])), var4);
+								break;
+							default:
+								continue;
+							}
+
 						}
-						blockColorMaps[tokensInt[0]] = colorMap;
-						break;
-
-					case 2:
-						blockMetaColorMaps.put(ColorMap.getBlockMetaKey(tokensInt[0], tokensInt[1]), colorMap);
-						break;
-
-					default:
-						continue;
+					}
 				}
-				MCPatcherUtils.log("using %s for block %s, default color %06x", key, idString, colorMap.colorize());
 			}
 		}
 	}
@@ -638,223 +637,218 @@ public class Colorizer {
 		loadFloatColor("drop.water", waterBaseColor);
 		loadFloatColor("particle.water", waterBaseColor);
 		loadFloatColor("particle.portal", portalColor);
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(LAVA_DROP_COLORS)));
-		if (rgb != null) {
-			lavaDropColors = new float[3 * rgb.length];
-			for (int i = 0; i < rgb.length; i++) {
-				intToFloat3(rgb[i], lavaDropColors, 3 * i);
+		int[] var0 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/lavadropcolor.png")));
+		if (var0 != null) {
+			lavaDropColors = new float[3 * var0.length];
+
+			for (int var1 = 0; var1 < var0.length; ++var1) {
+				intToFloat3(var0[var1], lavaDropColors, 3 * var1);
 			}
 		}
-		myceliumColors = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(MYCELIUM_COLORS)));
+
+		myceliumColors = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/myceliumparticlecolor.png")));
 	}
 
 	private static void reloadRedstoneColors() {
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(REDSTONE_COLORS)));
-		if (rgb != null && rgb.length >= 16) {
+		int[] var0 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/redstonecolor.png")));
+		if (var0 != null && var0.length >= 16) {
 			redstoneColor = new float[16][];
-			for (int i = 0; i < 16; i++) {
-				float[] f = new float[3];
-				intToFloat3(rgb[i], f);
-				redstoneColor[i] = f;
+
+			for (int var1 = 0; var1 < 16; ++var1) {
+				float[] var2 = new float[3];
+				intToFloat3(var0[var1], var2);
+				redstoneColor[var1] = var2;
 			}
 		}
 	}
 
 	private static void reloadStemColors() {
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(STEM_COLORS)));
-		if (rgb != null && rgb.length >= 8) {
-			stemColors = rgb;
+		int[] var0 = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream("/misc/stemcolor.png")));
+		if (var0 != null && var0.length >= 8) {
+			stemColors = var0;
 		}
 	}
 
 	private static void reloadCloudType() {
-		String value = properties.getProperty("clouds", "").trim().toLowerCase();
-		if (value.equals("fast")) {
-			cloudType = CLOUDS_FAST;
-		} else if (value.equals("fancy")) {
-			cloudType = CLOUDS_FANCY;
+		String var0 = properties.getProperty("clouds", "").trim().toLowerCase();
+		if (var0.equals("fast")) {
+			cloudType = 1;
+		} else if (var0.equals("fancy")) {
+			cloudType = 2;
 		}
 	}
 
-	/*private static void reloadMapColors() {
-		for (int i = 0; i < MapColor.mapColorArray.length; i++) {
-			if (MapColor.mapColorArray[i] != null) {
-				int[] rgb = new int[]{MapColor.mapColorArray[i].origColorValue};
-				loadIntColor("map." + getStringKey(MAP_MATERIALS, i), rgb, 0);
-				MapColor.mapColorArray[i].colorValue = rgb[0];
+	private static void reloadMapColors() {
+		for (int var0 = 0; var0 < MapColor.mapColorArray.length; ++var0) {
+			if (MapColor.mapColorArray[var0] != null) {
+				int[] var1 = new int[]{MapColor.mapColorArray[var0].origColorValue};
+				loadIntColor("map." + getStringKey(MAP_MATERIALS, var0), var1, 0);
+				MapColor.mapColorArray[var0].colorValue = var1[0];
 			}
 		}
-	}*/
+	}
 
 	private static void reloadSheepColors() {
-		for (int i = 0; i < EntitySheep.fleeceColorTable.length; i++) {
-			loadFloatColor("sheep." + getStringKey(ItemDye.dyeColorNames, EntitySheep.fleeceColorTable.length - 1 - i), EntitySheep.fleeceColorTable[i]);
+		for (int var0 = 0; var0 < EntitySheep.fleeceColorTable.length; ++var0) {
+			loadFloatColor("sheep." + getStringKey(ItemDye.dyeColorNames, EntitySheep.fleeceColorTable.length - 1 - var0), EntitySheep.fleeceColorTable[var0]);
 		}
 	}
-	
+
 	private static void reloadTextColors() {
-		for (int i = 0; i < textCodeColors.length; i++) {
-			loadIntColor(TEXT_CODE_KEY + i, textCodeColors, i);
-			if (textCodeColors[i] != COLOR_CODE_UNSET && i + 16 < textCodeColors.length) {
-				textCodeColors[i + 16] = (textCodeColors[i] & 0xfcfcfc) >> 2;
+		for (int var0 = 0; var0 < textCodeColors.length; ++var0) {
+			loadIntColor("text.code." + var0, textCodeColors, var0);
+			if (textCodeColors[var0] != -2 && var0 + 16 < textCodeColors.length) {
+				textCodeColors[var0 + 16] = (textCodeColors[var0] & 16579836) >> 2;
 			}
 		}
-		for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-			if (!(entry.getKey() instanceof String) || !(entry.getValue() instanceof String)) {
-				continue;
-			}
-			String key = (String) entry.getKey();
-			String value = (String) entry.getValue();
-			if (!key.startsWith(TEXT_KEY) || key.startsWith(TEXT_CODE_KEY)) {
-				continue;
-			}
-			key = key.substring(TEXT_KEY.length()).trim();
-			try {
-				int newColor;
-				int oldColor;
-				if (key.equals("xpbar")) {
-					oldColor = 0x80ff20;
-				} else if (key.equals("boss")) {
-					oldColor = 0xff00ff;
-				} else {
-					oldColor = Integer.parseInt(key, 16);
+
+		Iterator var7 = properties.entrySet().iterator();
+
+		while (var7.hasNext()) {
+			Entry var1 = (Entry)var7.next();
+			if (var1.getKey() instanceof String && var1.getValue() instanceof String) {
+				String var2 = (String)var1.getKey();
+				String var3 = (String)var1.getValue();
+				if (var2.startsWith("text.") && !var2.startsWith("text.code.")) {
+					var2 = var2.substring("text.".length()).trim();
+
+					try {
+						int var5;
+						if (var2.equals("xpbar")) {
+							var5 = 8453920;
+						} else if (var2.equals("boss")) {
+							var5 = 16711935;
+						} else {
+							var5 = Integer.parseInt(var2, 16);
+						}
+
+						int var4 = Integer.parseInt(var3, 16);
+						textColorMap.put(Integer.valueOf(var5), Integer.valueOf(var4));
+					} catch (NumberFormatException var6) {
+						;
+					}
 				}
-				newColor = Integer.parseInt(value, 16);
-				textColorMap.put(oldColor, newColor);
-			} catch (NumberFormatException e) {
 			}
 		}
 	}
 
-	private static String getStringKey(String[] keys, int index) {
-		if (keys != null && index >= 0 && index < keys.length && keys[index] != null) {
-			return keys[index];
-		} else {
-			return "" + index;
-		}
+	private static String getStringKey(String[] var0, int var1) {
+		return var0 != null && var1 >= 0 && var1 < var0.length && var0[var1] != null?var0[var1]:"" + var1;
 	}
 
-	private static void loadIntColor(String key, Potion potion) {
-		//System.out.printf("%s=%06x\n", key, potion.color);
-		String value = properties.getProperty(key, "");
-		if (!value.equals("")) {
+	private static void loadIntColor(String var0, Potion var1) {
+		String var2 = properties.getProperty(var0, "");
+		if (!var2.equals("")) {
 			try {
-				potion.liquidColor = Integer.parseInt(value, 16);
-			} catch (NumberFormatException e) {
+				var1.liquidColor = Integer.parseInt(var2, 16);
+			} catch (NumberFormatException var4) {
+				;
 			}
 		}
 	}
 
-	private static void loadIntColor(String key, int[] color, int index) {
-		//System.out.printf("%s=%06x\n", key, color[index]);
-		String value = properties.getProperty(key, "");
-		if (!value.equals("")) {
+	private static void loadIntColor(String var0, int[] var1, int var2) {
+		String var3 = properties.getProperty(var0, "");
+		if (!var3.equals("")) {
 			try {
-				color[index] = Integer.parseInt(value, 16);
-			} catch (NumberFormatException e) {
+				var1[var2] = Integer.parseInt(var3, 16);
+			} catch (NumberFormatException var5) {
+				;
 			}
 		}
-	}
-	
-	private static int loadIntColor(String key, int color) {
-		//System.out.printf("%s=%06x\n", key, color);
-		String value = properties.getProperty(key, "");
-		if (!value.equals("")) {
-			try {
-				color = Integer.parseInt(value, 16);
-			} catch (NumberFormatException e) {
-			}
-		}
-		return color;
 	}
 
-	private static void loadFloatColor(String key, float[] color) {
-		//System.out.printf("%s=%06x\n", key, float3ToInt(color));
-		String value = properties.getProperty(key, "");
-		if (!value.equals("")) {
+	private static int loadIntColor(String var0, int var1) {
+		String var2 = properties.getProperty(var0, "");
+		if (!var2.equals("")) {
 			try {
-				intToFloat3(Integer.parseInt(value, 16), color);
-			} catch (NumberFormatException e) {
+				var1 = Integer.parseInt(var2, 16);
+			} catch (NumberFormatException var4) {
+				;
+			}
+		}
+
+		return var1;
+	}
+
+	private static void loadFloatColor(String var0, float[] var1) {
+		String var2 = properties.getProperty(var0, "");
+		if (!var2.equals("")) {
+			try {
+				intToFloat3(Integer.parseInt(var2, 16), var1);
+			} catch (NumberFormatException var4) {
+				;
 			}
 		}
 	}
-	
-	private static float[] loadFloatColor(String key) {
-		String value = properties.getProperty(key, "");
-		if (!value.equals("")) {
+
+	private static float[] loadFloatColor(String var0) {
+		String var1 = properties.getProperty(var0, "");
+		if (!var1.equals("")) {
 			try {
-				float[] color = new float[3];
-				intToFloat3(Integer.parseInt(value, 16), color);
-				return color;
-			} catch (NumberFormatException e) {
+				float[] var2 = new float[3];
+				intToFloat3(Integer.parseInt(var1, 16), var2);
+				return var2;
+			} catch (NumberFormatException var3) {
+				;
 			}
 		}
+
 		return null;
 	}
 
-	private static void intToFloat3(int rgb, float[] f, int offset) {
-		f[offset] = (float) (rgb & 0xff0000) / (float) 0xff0000;
-		f[offset + 1] = (float) (rgb & 0xff00) / (float) 0xff00;
-		f[offset + 2] = (float) (rgb & 0xff) / (float) 0xff;
+	private static void intToFloat3(int var0, float[] var1, int var2) {
+		var1[var2] = (float)(var0 & 16711680) / 1.671168E7F;
+		var1[var2 + 1] = (float)(var0 & 65280) / 65280.0F;
+		var1[var2 + 2] = (float)(var0 & 255) / 255.0F;
 	}
 
-	private static void intToFloat3(int rgb, float[] f) {
-		intToFloat3(rgb, f, 0);
+	private static void intToFloat3(int var0, float[] var1) {
+		intToFloat3(var0, var1, 0);
 	}
 
-	private static int float3ToInt(float[] f, int offset) {
-		return ((int) (255.0f * f[offset])) << 16 | ((int) (255.0f * f[offset + 1])) << 8 | (int) (255.0f * f[offset + 2]);
+	private static int float3ToInt(float[] var0, int var1) {
+		return (int)(255.0F * var0[var1]) << 16 | (int)(255.0F * var0[var1 + 1]) << 8 | (int)(255.0F * var0[var1 + 2]);
 	}
 
-	private static int float3ToInt(float[] f) {
-		return float3ToInt(f, 0);
+	private static int float3ToInt(float[] var0) {
+		return float3ToInt(var0, 0);
 	}
 
-	private static float clamp(float f) {
-		if (f < 0.0f) {
-			return 0.0f;
-		} else if (f > 1.0f) {
-			return 1.0f;
-		} else {
-			return f;
+	private static float clamp(float var0) {
+		return var0 < 0.0F?0.0F:(var0 > 1.0F?1.0F:var0);
+	}
+
+	static double clamp(double var0) {
+		return var0 < 0.0D?0.0D:(var0 > 1.0D?1.0D:var0);
+	}
+
+	private static void clamp(float[] var0) {
+		for (int var1 = 0; var1 < var0.length; ++var1) {
+			var0[var1] = clamp(var0[var1]);
 		}
 	}
 
-	static double clamp(double d) {
-		if (d < 0.0) {
-			return 0.0;
-		} else if (d > 1.0) {
-			return 1.0;
+	private static void interpolate(int[] var0, int var1, float var2, float[] var3, int var4) {
+		int var5 = (int)Math.floor((double)var2);
+		int var6 = (int)Math.ceil((double)var2);
+		if (var5 == var6) {
+			intToFloat3(var0[var1 + var5], var3, var4);
 		} else {
-			return d;
-		}
-	}
+			float var7 = var2 - (float)var5;
+			float var8 = 1.0F - var7;
+			float[] var9 = new float[3];
+			float[] var10 = new float[3];
+			intToFloat3(var0[var1 + var5], var9);
+			intToFloat3(var0[var1 + var6], var10);
 
-	private static void clamp(float[] f) {
-		for (int i = 0; i < f.length; i++) {
-			f[i] = clamp(f[i]);
-		}
-	}
-
-	private static void interpolate(int[] map, int offset1, float x, float[] rgb, int offset2) {
-		int x0 = (int) Math.floor(x);
-		int x1 = (int) Math.ceil(x);
-		if (x0 == x1) {
-			intToFloat3(map[offset1 + x0], rgb, offset2);
-		} else {
-			float xf = x - x0;
-			float xg = 1.0f - xf;
-			float[] rgb0 = new float[3];
-			float[] rgb1 = new float[3];
-			intToFloat3(map[offset1 + x0], rgb0);
-			intToFloat3(map[offset1 + x1], rgb1);
-			for (int i = 0; i < 3; i++) {
-				rgb[offset2 + i] = xg * rgb0[i] + xf * rgb1[i];
+			for (int var11 = 0; var11 < 3; ++var11) {
+				var3[var4 + var11] = var8 * var9[var11] + var7 * var10[var11];
 			}
 		}
 	}
 
-	private static float getBlendScale(int radius) {
-		return 1.0f / ((2 * radius + 1) * (2 * radius + 1));
+	private static float getBlendScale(int var0) {
+		return 1.0F / (float)((2 * var0 + 1) * (2 * var0 + 1));
 	}
 }

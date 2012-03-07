@@ -1,166 +1,185 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
-
 import java.awt.image.BufferedImage;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Properties;
+import java.util.Map.Entry;
 
+@SuppressWarnings("unused")
 public class FontUtils {
 	private static final int ROWS = 16;
 	private static final int COLS = 16;
-
 	public static final char[] AVERAGE_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123467890".toCharArray();
-	public static final int[] SPACERS = new int[]{0x02028bfe, 0x02808080, 0x0dffffff};
-
+	public static final int[] SPACERS = new int[]{33721342, 41975936, 234881023};
 	private static final boolean showLines = false;
-
 	private static Method getResource;
 
-	static {
-		Class<?> utils;
-		try {
-			utils = Class.forName(MCPatcherUtils.TEXTURE_UTILS_CLASS);
-			try {
-				getResource = utils.getDeclaredMethod("getResourceAsStream", String.class);
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			}
-		} catch (ClassNotFoundException e) {
-		}
-	}
+	public static float[] computeCharWidths(String var0, BufferedImage var1, int[] var2, int[] var3) {
+		float[] var4 = new float[var3.length];
+		int var5 = var1.getWidth();
+		int var6 = var1.getHeight();
+		int var7 = var5 / 16;
+		int var8 = var6 / 16;
+		int var9 = 0;
 
-	public static float[] computeCharWidths(String filename, BufferedImage image, int[] rgb, int[] charWidth) {
-		MCPatcherUtils.log("computeCharWidths(%s)", filename);
-		float[] charWidthf = new float[charWidth.length];
-		int width = image.getWidth();
-		int height = image.getHeight();
-		int colWidth = width / COLS;
-		int rowHeight = height / ROWS;
-		for (int ch = 0; ch < charWidth.length; ch++) {
-			int row = ch / COLS;
-			int col = ch % COLS;
-			outer:
-			for (int colIdx = colWidth - 1; colIdx >= 0; colIdx--) {
-				int x = col * colWidth + colIdx;
-				for (int rowIdx = 0; rowIdx < rowHeight; rowIdx++) {
-					int y = row * rowHeight + rowIdx;
-					int pixel = rgb[x + y * width];
-					if (isOpaque(pixel)) {
-						if (printThis(ch)) {
-							MCPatcherUtils.log("'%c' pixel (%d, %d) = %08x, colIdx = %d", (char) ch, x, y, pixel, colIdx);
+		int var10;
+		while (var9 < var3.length) {
+			var10 = var9 / 16;
+			int var11 = var9 % 16;
+			int var12 = var7 - 1;
+
+			label68:
+			while (true) {
+				if (var12 >= 0) {
+					int var13 = var11 * var7 + var12;
+					int var14 = 0;
+
+					while (true) {
+						if (var14 >= var8) {
+							--var12;
+							continue label68;
 						}
-						charWidthf[ch] = (128.0f * (float) (colIdx + 1)) / (float) width + 1.0f;
-						if (showLines) {
-							for (int i = 0; i < rowHeight; i++) {
-								y = row * rowHeight + i;
-								for (int j = 0; j < Math.max(colWidth / 16, 1); j++) {
-									image.setRGB(x + j, y, (i == rowIdx ? 0xff0000ff : 0xffff0000));
-									image.setRGB(col * colWidth + j, y, 0xff00ff00);
-								}
-							}
+
+						int var15 = var10 * var8 + var14;
+						int var16 = var2[var13 + var15 * var5];
+						if (isOpaque(var16)) {
+							var4[var9] = 128.0F * (float)(var12 + 1) / (float)var5 + 1.0F;
+							break;
 						}
-						break outer;
+
+						++var14;
 					}
 				}
+
+				++var9;
+				break;
 			}
 		}
-		for (int ch = 0; ch < charWidthf.length; ch++) {
-			if (charWidthf[ch] <= 0.0f) {
-				charWidthf[ch] = 2.0f;
+
+		for (var9 = 0; var9 < var4.length; ++var9) {
+			if (var4[var9] <= 0.0F) {
+				var4[var9] = 2.0F;
 			}
 		}
-		boolean[] isOverride = new boolean[charWidth.length];
+
+		boolean[] var18 = new boolean[var3.length];
+
 		try {
-			getCharWidthOverrides(filename, charWidthf, isOverride);
-		} catch (Throwable e) {
-			e.printStackTrace();
+			getCharWidthOverrides(var0, var4, var18);
+		} catch (Throwable var17) {
+			var17.printStackTrace();
 		}
-		if (!isOverride[32]) {
-			charWidthf[32] = defaultSpaceWidth(charWidthf);
+
+		if (!var18[32]) {
+			var4[32] = defaultSpaceWidth(var4);
 		}
-		for (int ch = 0; ch < charWidth.length; ch++) {
-			charWidth[ch] = Math.round(charWidthf[ch]);
-			if (printThis(ch)) {
-				MCPatcherUtils.log("charWidth['%c'] = %f", (char) ch, charWidthf[ch]);
-			}
+
+		for (var10 = 0; var10 < var3.length; ++var10) {
+			var3[var10] = Math.round(var4[var10]);
 		}
-		return charWidthf;
+
+		return var4;
 	}
 
-	private static boolean isOpaque(int pixel) {
-		for (int i : SPACERS) {
-			if (pixel == i) {
+	private static boolean isOpaque(int var0) {
+		int[] var1 = SPACERS;
+		int var2 = var1.length;
+
+		for (int var3 = 0; var3 < var2; ++var3) {
+			int var4 = var1[var3];
+			if (var0 == var4) {
 				return false;
 			}
 		}
-		return (pixel & 0xff) > 0;
+
+		return (var0 & 255) > 0;
 	}
 
-	private static boolean printThis(int ch) {
-		return "ABCDEF abcdef".indexOf(ch) >= 0;
-	}
+	private static float defaultSpaceWidth(float[] var0) {
+		float var1 = 0.0F;
+		int var2 = 0;
+		char[] var3 = AVERAGE_CHARS;
+		int var4 = var3.length;
 
-	private static float defaultSpaceWidth(float[] charWidthf) {
-		float sum = 0.0f;
-		int n = 0;
-		for (char ch : AVERAGE_CHARS) {
-			if (charWidthf[ch] > 0.0f) {
-				sum += charWidthf[ch];
-				n++;
+		for (int var5 = 0; var5 < var4; ++var5) {
+			char var6 = var3[var5];
+			if (var0[var6] > 0.0F) {
+				var1 += var0[var6];
+				++var2;
 			}
 		}
-		if (n > 0) {
-			return sum / (float) n * 0.5f;
+
+		if (var2 > 0) {
+			return var1 / (float)var2 * 0.5F;
 		} else {
-			return 4.0f;
+			return 4.0F;
 		}
 	}
 
-	private static void getCharWidthOverrides(String font, float[] charWidthf, boolean[] isOverride) {
-		if (getResource == null) {
-			return;
-		}
-		String textFile = font.replace(".png", ".properties");
-		InputStream is;
-		try {
-			Object o = getResource.invoke(null, textFile);
-			if (!(o instanceof InputStream)) {
+	private static void getCharWidthOverrides(String var0, float[] var1, boolean[] var2) {
+		if (getResource != null) {
+			String var3 = var0.replace(".png", ".properties");
+
+			InputStream var4;
+			try {
+				Object var5 = getResource.invoke((Object)null, new Object[]{var3});
+				if (!(var5 instanceof InputStream)) {
+					return;
+				}
+
+				var4 = (InputStream)var5;
+			} catch (Exception var20) {
+				var20.printStackTrace();
 				return;
 			}
-			is = (InputStream) o;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
 
-		MCPatcherUtils.log("reading character widths from %s", textFile);
-		try {
-			Properties props = new Properties();
-			props.load(is);
-			for (Map.Entry entry : props.entrySet()) {
-				String key = entry.getKey().toString().trim();
-				String value = entry.getValue().toString().trim();
-				if (key.matches("^width\\.\\d+$") && !value.equals("")) {
-					try {
-						int ch = Integer.parseInt(key.substring(6));
-						float width = Float.parseFloat(value);
-						if (ch >= 0 && ch < charWidthf.length) {
-							MCPatcherUtils.log("	setting charWidthf[%d] to %f", ch, width);
-							charWidthf[ch] = width;
-							isOverride[ch] = true;
+
+			try {
+				Properties var21 = new Properties();
+				var21.load(var4);
+				Iterator var6 = var21.entrySet().iterator();
+
+				while (var6.hasNext()) {
+					Entry var7 = (Entry)var6.next();
+					String var8 = var7.getKey().toString().trim();
+					String var9 = var7.getValue().toString().trim();
+					if (var8.matches("^width\\.\\d+$") && !var9.equals("")) {
+						try {
+							int var10 = Integer.parseInt(var8.substring(6));
+							float var11 = Float.parseFloat(var9);
+							if (var10 >= 0 && var10 < var1.length) {
+								var1[var10] = var11;
+								var2[var10] = true;
+							}
+						} catch (NumberFormatException var17) {
+							;
 						}
-					} catch (NumberFormatException e) {
 					}
 				}
+			} catch (IOException var18) {
+				var18.printStackTrace();
+			} finally {
+				MCPatcherUtils.close((Closeable)var4);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			MCPatcherUtils.close(is);
+		}
+	}
+
+	static {
+		try {
+			Class var0 = Class.forName("com.pclewis.mcpatcher.mod.TextureUtils");
+
+			try {
+				getResource = var0.getDeclaredMethod("getResourceAsStream", new Class[]{String.class});
+			} catch (NoSuchMethodException var2) {
+				var2.printStackTrace();
+			}
+		} catch (ClassNotFoundException var3) {
+			;
 		}
 	}
 }
