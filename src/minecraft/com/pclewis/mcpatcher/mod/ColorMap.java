@@ -26,7 +26,7 @@ final class ColorMap {
 		if (!useCustom) {
 			return;
 		}
-		map = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(Colorizer.lastTexturePack.getInputStream(filename)));
+		map = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(Colorizer.lastTexturePack.getResourceAsStream(filename)));
 		if (map == null) {
 			return;
 		}

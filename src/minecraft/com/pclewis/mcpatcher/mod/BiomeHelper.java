@@ -106,7 +106,7 @@ abstract class BiomeHelper {
 			if (lastBiome == null || i != lastI || k != lastK) {
 				lastI = i;
 				lastK = k;
-				lastBiome = blockAccess.getBiomeGenAt(i, k);
+				lastBiome = blockAccess.getWorldChunkManager().getBiomeGenAt(i, k);
 			}
 			return lastBiome;
 		}
