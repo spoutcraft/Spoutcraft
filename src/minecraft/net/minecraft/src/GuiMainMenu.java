@@ -418,37 +418,36 @@ public class GuiMainMenu extends GuiScreen
 	public void drawScreen(int par1, int par2, float par3)
 	{
 		renderSkybox(par1, par2, par3);
-		Tessellator tessellator = Tessellator.instance;
-		char c = 274;
-		int i = width / 2 - c / 2;
-		byte byte0 = 30;
-		drawGradientRect(0, 0, width, height, 0x80ffffff, 0xffffff);
-		drawGradientRect(0, 0, width, height, 0, 0x80000000);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/title/mclogo.png"));
+		Tessellator var4 = Tessellator.instance;
+		short var5 = 274;
+		int var6 = 10;
+		byte var7 = 10;
+		this.drawGradientRect(0, 0, this.width, this.height, -2130706433, 16777215);
+		this.drawGradientRect(0, 0, this.width, this.height, 0, Integer.MIN_VALUE);
+		GL11.glPushMatrix();
+		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, this.mc.renderEngine.getTexture("/title/mclogo.png"));
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-		if ((double)updateCounter < 0.0001D)
-		{
-			drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 99, 44);
-			drawTexturedModalRect(i + 99, byte0 + 0, 129, 0, 27, 44);
-			drawTexturedModalRect(i + 99 + 26, byte0 + 0, 126, 0, 3, 44);
-			drawTexturedModalRect(i + 99 + 26 + 3, byte0 + 0, 99, 0, 26, 44);
-			drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
+		GL11.glScaled(.75, .75, .75);
+		
+		if ((double) this.updateCounter < 1.0E-4D) {
+			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 99, 44);
+			this.drawTexturedModalRect(var6 + 99, var7 + 0, 129, 0, 27, 44);
+			this.drawTexturedModalRect(var6 + 99 + 26, var7 + 0, 126, 0, 3, 44);
+			this.drawTexturedModalRect(var6 + 99 + 26 + 3, var7 + 0, 99, 0, 26, 44);
+			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
+		} else {
+			this.drawTexturedModalRect(var6 + 0, var7 + 0, 0, 0, 155, 44);
+			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
 		}
-		else
-		{
-			drawTexturedModalRect(i + 0, byte0 + 0, 0, 0, 155, 44);
-			drawTexturedModalRect(i + 155, byte0 + 0, 0, 45, 155, 44);
-		}
-
-		tessellator.setColorOpaque_I(0xffffff);
+		GL11.glPopMatrix();
+		var4.setColorOpaque_I(0xffffff);
 		GL11.glPushMatrix();
 		GL11.glTranslatef(10, 50.0F, 0.0F); //Spout adjusted position
 		//GL11.glRotatef(-20.0F, 0.0F, 0.0F, 1.0F); //Spout removed rotation
-		float f = 1.8F - MathHelper.abs(MathHelper.sin(((float)(System.currentTimeMillis() % 1000L) / 1000F) * (float)Math.PI * 2.0F) * 0.1F);
-		f = (f * 100F) / (float)(fontRenderer.getStringWidth(splashText) + 32);
-		GL11.glScalef(f, f, f);
-		drawCenteredString(fontRenderer, splashText, 0, -8, 0xffff00);
+		float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float) (System.currentTimeMillis() % 1000L) / 1000.0F * 3.1415927F * 2.0F) * 0.1F);
+		var8 = var8 * 100.0F / (float) (this.fontRenderer.getStringWidth(this.splashText) + 32);
+		GL11.glScalef(var8, var8, var8);
+		this.drawString(this.fontRenderer, this.splashText, 0, 0, 16776960); //Spout remove centering
 		GL11.glPopMatrix();
 
 		//Spout Start
