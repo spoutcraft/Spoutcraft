@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import org.lwjgl.input.Keyboard;
 
 public class GuiMultiplayer extends GuiScreen {

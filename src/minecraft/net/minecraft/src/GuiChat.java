@@ -1,13 +1,9 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-<<<<<<< HEAD
-
-import org.bukkit.ChatColor;
-=======
->>>>>>> Some Gui classes [MC 1.2]
 import org.lwjgl.input.Keyboard;
 //Spout Start
+import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.gui.ChatBar;

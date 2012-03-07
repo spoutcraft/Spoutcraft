@@ -2,11 +2,9 @@ package net.minecraft.src;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
-<<<<<<< HEAD
-
+//Spout Start
 import org.bukkit.ChatColor;
-=======
->>>>>>> Some Gui classes [MC 1.2]
+//Spout End
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
