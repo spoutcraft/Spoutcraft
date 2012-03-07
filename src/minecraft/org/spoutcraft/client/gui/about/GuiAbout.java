@@ -58,7 +58,6 @@ public class GuiAbout extends GuiScreen {
 	private static final int SCREEN_END = 94;
 	private static final float SCROLL_FACTOR = 10f;
 	Texture spoutcraftTexture = CustomTextureManager.getTextureFromJar("/res/spoutcraft.png");
-	Texture yourkitLogo = CustomTextureManager.getTextureFromJar("/res/yourkit.png");
 	Texture beastNodeLogo = CustomTextureManager.getTextureFromJar("/res/beastnode.png");
 	Texture minecraftBizLogo = CustomTextureManager.getTextureFromJar("/res/minecraft_biz.png");
 	private int sourceY = -1;
@@ -93,8 +92,6 @@ public class GuiAbout extends GuiScreen {
 			} else {
 				holdingScrollBar = true;
 			}
-		} else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(60), 15, 55, mouseX, mouseY)) {
-			browseUrl = "http://spout.in/yourkit";
 		} else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(15), 33, 147, mouseX, mouseY)) {
 			browseUrl = "http://spout.in/beast";
 		} else if (this.isInBoundingRect(this.width / 2 + 30, getScaledHeight(85), 33, 147, mouseX, mouseY)) {
@@ -253,6 +250,7 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("Rycochet - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("RoyAwesome - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 		drawScaledString("zml2008 - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
+		drawScaledString("Zidane - Developer", this.width / 2 + 30, top, 0x808080); top += 10;
 
 		top += 20;
 
@@ -272,34 +270,6 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("https://github.com/SpoutDev", this.width / 2 + 30, sourceY, hoveringLink ? 0x65A5D1 : 0x176093); top += 10;
 
 		top += 20;
-
-
-
-		int yourkitX = (this.width / 2 + 30);
-		int yourkitY = getScaledHeight(60);
-		if (yourkitLogo != null) {
-			GL11.glPushMatrix();
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDepthMask(false);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glTranslatef(yourkitX, yourkitY, 0); // moves texture into place
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, yourkitLogo.getTextureID());
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			Tessellator tessellator = Tessellator.instance;
-			//GL11.glScalef(0.5f, 0.5f, 0.5f);
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV(0.0D, 15, -90, 0.0D, 0.0D); // draw corners
-			tessellator.addVertexWithUV(55, 15, -90, yourkitLogo.getWidth(), 0.0D);
-			tessellator.addVertexWithUV(55, 0.0D, -90, yourkitLogo.getWidth(), yourkitLogo.getHeight());
-			tessellator.addVertexWithUV(0.0D, 0.0D, -90, 0.0D, yourkitLogo.getHeight());
-			tessellator.draw();
-			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
-		}
 
 		int beastNodeX = (this.width / 2 + 30);
 		int beastNodeY = getScaledHeight(15);
@@ -329,7 +299,7 @@ public class GuiAbout extends GuiScreen {
 
 		int minecraftBizX = (this.width / 2 + 30);
 		int minecraftBizY = getScaledHeight(85);
-		if (beastNodeLogo != null) {
+		if (minecraftBizLogo != null) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_BLEND);
@@ -362,9 +332,7 @@ public class GuiAbout extends GuiScreen {
 				"Minecraft server with FREE mumble voice server and web hosting.", x, y);
 		} else if (isInBoundingRect(minecraftBizX, minecraftBizY, 33, 147, x, y)) {
 			drawTooltip(
-				"Minecraft in a new dimension!", x, y);
-		} else if (isInBoundingRect(yourkitX, yourkitY, 15, 55, x, y)) {
-			drawTooltip("YourKit, LLC is the creator of innovative tools\nfor profiling Java and .NET applications.\nTake a look at their products at " + ChatColor.BLUE + "www.yourkit.com", x, y);
+				"Your Minecraft community in a new dimension!", x, y);
 		}
 
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
