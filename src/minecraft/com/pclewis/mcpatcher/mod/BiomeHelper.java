@@ -1,133 +1,83 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.WorldChunkManager;
 
 abstract class BiomeHelper {
 	static BiomeHelper instance;
-
 	IBlockAccess blockAccess;
 
-	BiomeHelper(IBlockAccess blockAccess) {
-		this.blockAccess = blockAccess;
+	BiomeHelper(IBlockAccess var1) {
+		this.blockAccess = var1;
 	}
 
 	boolean useBlockBlending() {
 		return false;
 	}
 
-	abstract BiomeGenBase getBiomeGenAt(int i, int j, int k);
+	abstract BiomeGenBase getBiomeGenAt(int var1, int var2, int var3);
 
-	abstract float getTemperature(int i, int j, int k);
+	abstract float getTemperature(int var1, int var2, int var3);
 
-	abstract float getRainfall(int i, int j, int k);
+	abstract float getRainfall(int var1, int var2, int var3);
 
-	abstract int getWaterColorMultiplier(int i, int j, int k);
+	abstract int getWaterColorMultiplier(int var1, int var2, int var3);
 
 	static class Stub extends BiomeHelper {
 		Stub() {
-			super(null);
+			super((IBlockAccess)null);
 		}
 
-		@Override
-		BiomeGenBase getBiomeGenAt(int i, int j, int k) {
+		BiomeGenBase getBiomeGenAt(int var1, int var2, int var3) {
 			return null;
 		}
 
-		@Override
-		float getTemperature(int i, int j, int k) {
-			return 0.5f;
+		float getTemperature(int var1, int var2, int var3) {
+			return 0.5F;
 		}
 
-		@Override
-		float getRainfall(int i, int j, int k) {
-			return 1.0f;
+		float getRainfall(int var1, int var2, int var3) {
+			return 1.0F;
 		}
 
-		@Override
-		int getWaterColorMultiplier(int i, int j, int k) {
-			return 0xffffff;
-		}
-	}
-
-	static class Old extends BiomeHelper {
-		WorldChunkManager chunkManager;
-
-		Old(IBlockAccess blockAccess) {
-			super(blockAccess);
-			chunkManager = blockAccess.getWorldChunkManager();
-		}
-
-		@Override
-		BiomeGenBase getBiomeGenAt(int i, int j, int k) {
-			return chunkManager.getBiomeGenAt(i, k);
-		}
-
-		@Override
-		float getTemperature(int i, int j, int k) {
-			float[] tmp = new float[1];
-			tmp = chunkManager.getTemperatures(tmp, i, k, 1, 1);
-			return tmp[0];
-		}
-
-		@Override
-		float getRainfall(int i, int j, int k) {
-			float[] tmp = new float[1];
-			tmp = chunkManager.getRainfall(tmp, i, k, 1, 1);
-			return tmp[0];
-		}
-
-		@Override
-		int getWaterColorMultiplier(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).waterColorMultiplier;
+		int getWaterColorMultiplier(int var1, int var2, int var3) {
+			return 16777215;
 		}
 	}
 
 	static class New extends BiomeHelper {
-		private static boolean logged;
-
 		private BiomeGenBase lastBiome;
 		private int lastI;
 		private int lastK;
 
-		New(IBlockAccess blockAccess) {
-			super(blockAccess);
-			if (!logged) {
-				logged = true;
-				MCPatcherUtils.log("biomes v1.2 detected");
-			}
+		New(IBlockAccess var1) {
+			super(var1);
 		}
 
-		@Override
 		boolean useBlockBlending() {
 			return true;
 		}
 
-		@Override
-		BiomeGenBase getBiomeGenAt(int i, int j, int k) {
-			if (lastBiome == null || i != lastI || k != lastK) {
-				lastI = i;
-				lastK = k;
-				lastBiome = blockAccess.getWorldChunkManager().getBiomeGenAt(i, k);
+		BiomeGenBase getBiomeGenAt(int var1, int var2, int var3) {
+			if (this.lastBiome == null || var1 != this.lastI || var3 != this.lastK) {
+				this.lastI = var1;
+				this.lastK = var3;
+				this.lastBiome = this.blockAccess.func_48454_a(var1, var3);
 			}
-			return lastBiome;
+
+			return this.lastBiome;
 		}
 
-		@Override
-		float getTemperature(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).func_48411_i();
+		float getTemperature(int var1, int var2, int var3) {
+			return this.getBiomeGenAt(var1, var2, var3).func_48411_i();
 		}
 
-		@Override
-		float getRainfall(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).func_48414_h();
+		float getRainfall(int var1, int var2, int var3) {
+			return this.getBiomeGenAt(var1, var2, var3).func_48414_h();
 		}
 
-		@Override
-		int getWaterColorMultiplier(int i, int j, int k) {
-			return getBiomeGenAt(i, j, k).waterColorMultiplier;
+		int getWaterColorMultiplier(int var1, int var2, int var3) {
+			return this.getBiomeGenAt(var1, var2, var3).waterColorMultiplier;
 		}
 	}
 }

@@ -4,66 +4,57 @@ import com.pclewis.mcpatcher.MCPatcherUtils;
 
 final class ColorMap {
 	private static final int COLORMAP_SIZE = 256;
-	private static final float COLORMAP_SCALE = COLORMAP_SIZE - 1;
-
+	private static final float COLORMAP_SCALE = 255.0F;
 	private int[] map;
 	private int mapDefault;
 
-	static int getX(double temperature, double rainfall) {
-		return (int) (COLORMAP_SCALE * (1.0 - Colorizer.clamp(temperature)));
+	static int getX(double var0, double var2) {
+		return (int)(255.0D * (1.0D - Colorizer.clamp(var0)));
 	}
 
-	static int getY(double temperature, double rainfall) {
-		return (int) (COLORMAP_SCALE * (1.0 - Colorizer.clamp(rainfall) * Colorizer.clamp(temperature)));
+	static int getY(double var0, double var2) {
+		return (int)(255.0D * (1.0D - Colorizer.clamp(var2) * Colorizer.clamp(var0)));
 	}
 
-	static float getBlockMetaKey(int blockID, int metadata) {
-		return blockID + (metadata & 0xff) / 256.0f;
+	static float getBlockMetaKey(int var0, int var1) {
+		return (float)var0 + (float)(var1 & 255) / 256.0F;
 	}
 
-	ColorMap(boolean useCustom, String filename, int defaultColor) {
-		mapDefault = defaultColor;
-		if (!useCustom) {
-			return;
+	ColorMap(boolean var1, String var2, int var3) {
+		this.mapDefault = var3;
+		if (var1) {
+			this.map = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(Colorizer.lastTexturePack.getResourceAsStream(var2)));
+			if (this.map != null) {
+				if (this.map.length != 65536) {
+					this.map = null;
+				} else {
+					this.mapDefault = this.colorize(16777215, 0.5D, 1.0D);
+				}
+			}
 		}
-		map = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(Colorizer.lastTexturePack.getResourceAsStream(filename)));
-		if (map == null) {
-			return;
-		}
-		if (map.length != COLORMAP_SIZE * COLORMAP_SIZE) {
-			MCPatcherUtils.error("%s must be %dx%d", filename, COLORMAP_SIZE, COLORMAP_SIZE);
-			map = null;
-			return;
-		}
-		mapDefault = colorize(0xffffff, 0.5, 1.0);
-		MCPatcherUtils.log("using %s, default color %06x", filename, mapDefault);
 	}
 
 	boolean isCustom() {
-		return map != null;
+		return this.map != null;
 	}
 
 	void clear() {
-		map = null;
+		this.map = null;
 	}
 
 	int colorize() {
-		return mapDefault;
+		return this.mapDefault;
 	}
 
-	int colorize(int defaultColor) {
-		return map == null ? defaultColor : mapDefault;
+	int colorize(int var1) {
+		return this.map == null?var1:this.mapDefault;
 	}
 
-	int colorize(int defaultColor, double temperature, double rainfall) {
-		if (map == null) {
-			return defaultColor;
-		} else {
-			return map[COLORMAP_SIZE * getY(temperature, rainfall) + getX(temperature, rainfall)];
-		}
+	int colorize(int var1, double var2, double var4) {
+		return this.map == null?var1:this.map[256 * getY(var2, var4) + getX(var2, var4)];
 	}
 
-	int colorize(int defaultColor, int i, int j, int k) {
-		return colorize(defaultColor, BiomeHelper.instance.getTemperature(i, j, k), BiomeHelper.instance.getRainfall(i, j, k));
+	int colorize(int var1, int var2, int var3, int var4) {
+		return this.colorize(var1, (double)BiomeHelper.instance.getTemperature(var2, var3, var4), (double)BiomeHelper.instance.getRainfall(var2, var3, var4));
 	}
 }
