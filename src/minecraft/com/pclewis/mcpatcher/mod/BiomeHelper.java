@@ -67,12 +67,16 @@ abstract class BiomeHelper {
 
 		@Override
 		float getTemperature(int i, int j, int k) {
-			return chunkManager.getTemperatures(new float[256], i, k, 16, 16)[j];
+			float[] tmp = new float[1];
+			tmp = chunkManager.getTemperatures(tmp, i, k, 1, 1);
+			return tmp[0];
 		}
 
 		@Override
 		float getRainfall(int i, int j, int k) {
-			return chunkManager.getRainfall(new float[256], i, k, 16, 16)[j];
+			float[] tmp = new float[1];
+			tmp = chunkManager.getRainfall(tmp, i, k, 1, 1);
+			return tmp[0];
 		}
 
 		@Override
