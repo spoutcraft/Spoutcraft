@@ -207,7 +207,7 @@ public class GuiAchievement extends Gui {
 			}
 		}
 		if (toRender != null) {
-			this.itemRender.renderItemIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, toRender, var5 + 8, var6 + 8);
+			this.itemRender.renderItemIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, toRender, i + 8, j + 8);
 		}
 		//Spout End
 		GL11.glDisable(GL11.GL_LIGHTING);
