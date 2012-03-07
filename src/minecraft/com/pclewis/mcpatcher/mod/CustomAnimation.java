@@ -1,7 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;

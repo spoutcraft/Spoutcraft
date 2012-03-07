@@ -77,17 +77,17 @@ public class TextureUtils {
 	}
 
 	private static void setFontRenderer(Minecraft minecraft, FontRenderer fontRenderer, String filename) {
-		boolean saveUnicode = fontRenderer.isUnicode;
+		boolean saveUnicode = fontRenderer.unicodeFlag;
 		fontRenderer.initialize(minecraft.gameSettings, filename, minecraft.renderEngine);
-		fontRenderer.isUnicode = saveUnicode;
+		fontRenderer.unicodeFlag = saveUnicode;
 	}
 
 	public static void setFontRenderer() {
 		MCPatcherUtils.log("setFontRenderer()");
 		Minecraft minecraft = MCPatcherUtils.getMinecraft();
 		setFontRenderer(minecraft, minecraft.fontRenderer, "/font/default.png");
-		if (minecraft.alternateFontRenderer != minecraft.fontRenderer) {
-			setFontRenderer(minecraft, minecraft.alternateFontRenderer, "/font/alternate.png");
+		if (minecraft.standardGalacticFontRenderer != minecraft.fontRenderer) {
+			setFontRenderer(minecraft, minecraft.standardGalacticFontRenderer, "/font/alternate.png");
 		}
 	}
 
@@ -101,14 +101,14 @@ public class TextureUtils {
 	}
 
 	private static TextureFX refreshTextureFX(TextureFX textureFX) {
-		if (textureFX instanceof Compass ||
-			textureFX instanceof Watch ||
-			textureFX instanceof StillLava ||
-			textureFX instanceof FlowLava ||
-			textureFX instanceof StillWater ||
-			textureFX instanceof FlowWater ||
-			textureFX instanceof Fire ||
-			textureFX instanceof Portal) {
+		if (textureFX instanceof TextureCompassFX ||
+			textureFX instanceof TextureWatchFX ||
+			textureFX instanceof TextureLavaFX ||
+			textureFX instanceof TextureLavaFlowFX ||
+			textureFX instanceof TextureWaterFX ||
+			textureFX instanceof TextureWaterFlowFX ||
+			textureFX instanceof TextureFlamesFX ||
+			textureFX instanceof TexturePortalFX) {
 			return null;
 		}
 		System.out.printf("attempting to refresh unknown animation %s\n", textureFX.getClass().getName());
@@ -162,8 +162,8 @@ public class TextureUtils {
 		CustomAnimation.clear();
 
 		Minecraft minecraft = MCPatcherUtils.getMinecraft();
-		textureList.add(new Compass(minecraft));
-		textureList.add(new Watch(minecraft));
+		textureList.add(new TextureCompassFX(minecraft));
+		textureList.add(new TextureWatchFX(minecraft));
 
 		TexturePackBase selectedTexturePack = getSelectedTexturePack();
 		boolean isDefault = (selectedTexturePack == null || selectedTexturePack instanceof TexturePackDefault);
@@ -172,30 +172,30 @@ public class TextureUtils {
 			CustomAnimation.addStripOrTile("/terrain.png", "lava_still", LAVA_STILL_TEXTURE_INDEX, 1, -1, -1);
 			CustomAnimation.addStripOrTile("/terrain.png", "lava_flowing", LAVA_FLOWING_TEXTURE_INDEX, 2, 3, 6);
 		} else if (animatedLava) {
-			textureList.add(new StillLava());
-			textureList.add(new FlowLava());
+			textureList.add(new TextureLavaFX());
+			textureList.add(new TextureLavaFlowFX());
 		}
 
 		if (!isDefault && customWater) {
 			CustomAnimation.addStripOrTile("/terrain.png", "water_still", WATER_STILL_TEXTURE_INDEX, 1, -1, -1);
 			CustomAnimation.addStripOrTile("/terrain.png", "water_flowing", WATER_FLOWING_TEXTURE_INDEX, 2, 0, 0);
 		} else if (animatedWater) {
-			textureList.add(new StillWater());
-			textureList.add(new FlowWater());
+			textureList.add(new TextureWaterFX());
+			textureList.add(new TextureWaterFlowFX());
 		}
 
 		if (!isDefault && customFire && hasResource("/anim/custom_fire_e_w.png") && hasResource("/anim/custom_fire_n_s.png")) {
 			CustomAnimation.addStrip("/terrain.png", "fire_n_s", FIRE_N_S_TEXTURE_INDEX, 1);
 			CustomAnimation.addStrip("/terrain.png", "fire_e_w", FIRE_E_W_TEXTURE_INDEX, 1);
 		} else if (animatedFire) {
-			textureList.add(new Fire(0));
-			textureList.add(new Fire(1));
+			textureList.add(new TextureFlamesFX(0));
+			textureList.add(new TextureFlamesFX(1));
 		}
 
 		if (!isDefault && customPortal && hasResource("/anim/custom_portal.png")) {
 			CustomAnimation.addStrip("/terrain.png", "portal", PORTAL_TEXTURE_INDEX, 1);
 		} else if (animatedPortal) {
-			textureList.add(new Portal());
+			textureList.add(new TexturePortalFX());
 		}
 
 		if (customOther) {
@@ -203,12 +203,12 @@ public class TextureUtils {
 			addOtherTextureFX("/gui/items.png", "item");
 			if (selectedTexturePack instanceof TexturePackCustom) {
 				TexturePackCustom custom = (TexturePackCustom) selectedTexturePack;
-				for (ZipEntry entry : Collections.list(custom.zipFile.entries())) {
+				for (ZipEntry entry : Collections.list(custom.texturePackZipFile.entries())) {
 					String name = "/" + entry.getName();
 					if (name.startsWith("/anim/") && name.endsWith(".properties") && !isCustomTerrainItemResource(name)) {
 						InputStream inputStream = null;
 						try {
-							inputStream = custom.zipFile.getInputStream(entry);
+							inputStream = custom.texturePackZipFile.getInputStream(entry);
 							Properties properties = new Properties();
 							properties.load(inputStream);
 							CustomAnimation.addStrip(properties);
@@ -232,11 +232,11 @@ public class TextureUtils {
 
 		CustomAnimation.updateAll();
 
-		if (ColorizerWater.colorBuffer != ColorizerFoliage.colorBuffer) {
-			refreshColorizer(ColorizerWater.colorBuffer, "/misc/watercolor.png");
+		if (ColorizerWater.waterBuffer != ColorizerFoliage.foliageBuffer) {
+			refreshColorizer(ColorizerWater.waterBuffer, "/misc/watercolor.png");
 		}
-		refreshColorizer(ColorizerGrass.colorBuffer, "/misc/grasscolor.png");
-		refreshColorizer(ColorizerFoliage.colorBuffer, "/misc/foliagecolor.png");
+		refreshColorizer(ColorizerGrass.grassBuffer, "/misc/grasscolor.png");
+		refreshColorizer(ColorizerFoliage.foliageBuffer, "/misc/foliagecolor.png");
 
 		System.gc();
 	}
@@ -301,7 +301,7 @@ public class TextureUtils {
 		InputStream is = null;
 		if (texturePack != null) {
 			try {
-				is = texturePack.getInputStream(resource);
+				is = texturePack.getResourceAsStream(resource);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -461,18 +461,18 @@ public class TextureUtils {
 	}
 
 	public static void openTexturePackFile(TexturePackCustom pack) {
-		if (!autoRefreshTextures || pack.zipFile == null) {
+		if (!autoRefreshTextures || pack.texturePackZipFile == null) {
 			return;
 		}
 		InputStream input = null;
 		OutputStream output = null;
 		ZipFile newZipFile = null;
 		try {
-			pack.lastModified = pack.file.lastModified();
+			pack.lastModified = pack.texturePackFile.lastModified();
 			pack.tmpFile = File.createTempFile("tmpmc", ".zip");
 			pack.tmpFile.deleteOnExit();
-			MCPatcherUtils.close(pack.zipFile);
-			input = new FileInputStream(pack.file);
+			MCPatcherUtils.close(pack.texturePackZipFile);
+			input = new FileInputStream(pack.texturePackFile);
 			output = new FileOutputStream(pack.tmpFile);
 			byte[] buffer = new byte[65536];
 			while (true) {
@@ -485,10 +485,10 @@ public class TextureUtils {
 			MCPatcherUtils.close(input);
 			MCPatcherUtils.close(output);
 			newZipFile = new ZipFile(pack.tmpFile);
-			pack.origZip = pack.zipFile;
-			pack.zipFile = newZipFile;
+			pack.origZip = pack.texturePackZipFile;
+			pack.texturePackZipFile = newZipFile;
 			newZipFile = null;
-			MCPatcherUtils.log("copied %s to %s, lastModified = %d", pack.file.getPath(), pack.tmpFile.getPath(), pack.lastModified);
+			MCPatcherUtils.log("copied %s to %s, lastModified = %d", pack.texturePackFile.getPath(), pack.tmpFile.getPath(), pack.lastModified);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -500,8 +500,8 @@ public class TextureUtils {
 
 	public static void closeTexturePackFile(TexturePackCustom pack) {
 		if (pack.origZip != null) {
-			MCPatcherUtils.close(pack.zipFile);
-			pack.zipFile = pack.origZip;
+			MCPatcherUtils.close(pack.texturePackZipFile);
+			pack.texturePackZipFile = pack.origZip;
 			pack.origZip = null;
 			pack.tmpFile.delete();
 			MCPatcherUtils.log("deleted %s", pack.tmpFile.getPath());
@@ -519,14 +519,14 @@ public class TextureUtils {
 			return;
 		}
 		TexturePackCustom pack = (TexturePackCustom) list.selectedTexturePack;
-		long lastModified = pack.file.lastModified();
+		long lastModified = pack.texturePackFile.lastModified();
 		if (lastModified == pack.lastModified || lastModified == 0 || pack.lastModified == 0) {
 			return;
 		}
-		MCPatcherUtils.log("%s lastModified changed from %d to %d", pack.file.getPath(), pack.lastModified, lastModified);
+		MCPatcherUtils.log("%s lastModified changed from %d to %d", pack.texturePackFile.getPath(), pack.lastModified, lastModified);
 		ZipFile zipFile = null;
 		try {
-			zipFile = new ZipFile(pack.file);
+			zipFile = new ZipFile(pack.texturePackFile);
 		} catch (IOException e) {
 			// file is still being written
 			return;
@@ -534,13 +534,13 @@ public class TextureUtils {
 			MCPatcherUtils.close(zipFile);
 		}
 		pack.closeTexturePackFile();
-		list.updateAvailableTexturePacks();
+		list.updateAvaliableTexturePacks();
 		for (TexturePackBase tp : list.availableTexturePacks()) {
 			if (!(tp instanceof TexturePackCustom)) {
 				continue;
 			}
 			TexturePackCustom tpc = (TexturePackCustom) tp;
-			if (tpc.file.equals(pack.file)) {
+			if (tpc.texturePackFile.equals(pack.texturePackFile)) {
 				MCPatcherUtils.log("setting new texture pack");
 				list.selectedTexturePack = list.defaultTexturePack;
 				list.setTexturePack(tpc);

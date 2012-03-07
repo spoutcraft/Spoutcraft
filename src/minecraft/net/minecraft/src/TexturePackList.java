@@ -131,7 +131,7 @@ public class TexturePackList {
 		}
 	}
 //Spout End
-	public List availableTexturePacks() {
+	public List<TexturePackBase> availableTexturePacks() {
 		return new ArrayList(this.availableTexturePacks);
 	}
 }

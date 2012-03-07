@@ -245,7 +245,7 @@ public class Colorizer {
 		if (lightmaps.containsKey(worldType)) {
 			image = lightmaps.get(worldType);
 		} else {
-			image = MCPatcherUtils.readImage(lastTexturePack.getInputStream(name));
+			image = MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(name));
 			lightmaps.put(worldType, image);
 			if (image == null) {
 				MCPatcherUtils.log("using default lighting for world %d", worldType);
@@ -266,7 +266,7 @@ public class Colorizer {
 		int[] origMap = new int[width * height];
 		image.getRGB(0, 0, width, height, origMap, 0, width);
 		int[] newMap = new int[LIGHTMAP_SIZE * LIGHTMAP_SIZE];
-		float sun = clamp(world.lightningFlash > 0 ? 1.0f : 7.0f / 6.0f * (world.getSunAngle(1.0f) - 0.2f)) * (width - 1);
+		float sun = clamp(world.lightningFlash > 0 ? 1.0f : 7.0f / 6.0f * (world.getCelestialAngle(1.0f) - 0.2f)) * (width - 1);
 		float torch = clamp(renderer.torchFlickerX + 0.5f) * (width - 1);
 		float gamma = clamp(MCPatcherUtils.getMinecraft().gameSettings.gammaSetting);
 		float[] sunrgb = new float[3 * LIGHTMAP_SIZE];
@@ -436,8 +436,8 @@ public class Colorizer {
 
 	public static void setupPotion(Potion potion) {
 		//System.out.printf("potion.%s=%06x\n", potion.name, potion.color);
-		MCPatcherUtils.log("setupPotion #%d \"%s\" %06x", potion.id, potion.name, potion.color);
-		potion.origColor = potion.color;
+		MCPatcherUtils.log("setupPotion #%d \"%s\" %06x", potion.id, potion.name, potion.liquidColor);
+		potion.origColor = potion.liquidColor;
 		potions.add(potion);
 	}
 
@@ -493,9 +493,9 @@ public class Colorizer {
 		if (useCloudType) {
 			reloadCloudType();
 		}
-		if (useMapColors) {
+		/*if (useMapColors) {
 			reloadMapColors();
-		}
+		}*/
 		if (useSheepColors) {
 			reloadSheepColors();
 		}
@@ -538,13 +538,13 @@ public class Colorizer {
 		spawnerEggSpotColors.clear();
 		cloudType = CLOUDS_DEFAULT;
 		for (Potion potion : potions) {
-			potion.color = potion.origColor;
+			potion.liquidColor = potion.origColor;
 		}
-		for (MapColor mapColor : MapColor.mapColorArray) {
+		/*for (MapColor mapColor : MapColor.mapColorArray) {
 			if (mapColor != null) {
 				mapColor.colorValue = mapColor.origColorValue;
 			}
-		}
+		}*/
 		EntitySheep.fleeceColorTable = EntitySheep.origFleeceColorTable.clone();
 		myceliumColors = null;
 		textColorMap.clear();
@@ -556,7 +556,7 @@ public class Colorizer {
 	private static void reloadColorProperties() {
 		InputStream inputStream = null;
 		try {
-			inputStream = lastTexturePack.getInputStream(COLOR_PROPERTIES);
+			inputStream = lastTexturePack.getResourceAsStream(COLOR_PROPERTIES);
 			if (inputStream != null) {
 				MCPatcherUtils.log("reloading %s", COLOR_PROPERTIES);
 				properties.load(inputStream);
@@ -638,18 +638,18 @@ public class Colorizer {
 		loadFloatColor("drop.water", waterBaseColor);
 		loadFloatColor("particle.water", waterBaseColor);
 		loadFloatColor("particle.portal", portalColor);
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getInputStream(LAVA_DROP_COLORS)));
+		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(LAVA_DROP_COLORS)));
 		if (rgb != null) {
 			lavaDropColors = new float[3 * rgb.length];
 			for (int i = 0; i < rgb.length; i++) {
 				intToFloat3(rgb[i], lavaDropColors, 3 * i);
 			}
 		}
-		myceliumColors = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getInputStream(MYCELIUM_COLORS)));
+		myceliumColors = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(MYCELIUM_COLORS)));
 	}
 
 	private static void reloadRedstoneColors() {
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getInputStream(REDSTONE_COLORS)));
+		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(REDSTONE_COLORS)));
 		if (rgb != null && rgb.length >= 16) {
 			redstoneColor = new float[16][];
 			for (int i = 0; i < 16; i++) {
@@ -661,7 +661,7 @@ public class Colorizer {
 	}
 
 	private static void reloadStemColors() {
-		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getInputStream(STEM_COLORS)));
+		int[] rgb = MCPatcherUtils.getImageRGB(MCPatcherUtils.readImage(lastTexturePack.getResourceAsStream(STEM_COLORS)));
 		if (rgb != null && rgb.length >= 8) {
 			stemColors = rgb;
 		}
@@ -676,7 +676,7 @@ public class Colorizer {
 		}
 	}
 
-	private static void reloadMapColors() {
+	/*private static void reloadMapColors() {
 		for (int i = 0; i < MapColor.mapColorArray.length; i++) {
 			if (MapColor.mapColorArray[i] != null) {
 				int[] rgb = new int[]{MapColor.mapColorArray[i].origColorValue};
@@ -684,7 +684,7 @@ public class Colorizer {
 				MapColor.mapColorArray[i].colorValue = rgb[0];
 			}
 		}
-	}
+	}*/
 
 	private static void reloadSheepColors() {
 		for (int i = 0; i < EntitySheep.fleeceColorTable.length; i++) {
@@ -739,7 +739,7 @@ public class Colorizer {
 		String value = properties.getProperty(key, "");
 		if (!value.equals("")) {
 			try {
-				potion.color = Integer.parseInt(value, 16);
+				potion.liquidColor = Integer.parseInt(value, 16);
 			} catch (NumberFormatException e) {
 			}
 		}
