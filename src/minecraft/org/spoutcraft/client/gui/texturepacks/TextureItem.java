@@ -237,7 +237,7 @@ public class TextureItem implements ListWidgetItem {
 			try {
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://textures.spout.org/download.php?id="+item.getId());
+				url = new URL("http://static.spout.org/texture/"+item.getId()+".zip");
 				File temp = new File(FileUtil.getTempDirectory(), FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				conn.setReadTimeout(10000);
@@ -291,6 +291,6 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public String getIconUrl() {
-		return "http://textures.spout.org/preview.php?id="+getId();
+		return "http://static.spout.org/texture/thumb/"+getId()+".png";
 	}
 }
