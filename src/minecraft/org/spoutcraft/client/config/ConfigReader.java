@@ -78,6 +78,7 @@ public class ConfigReader {
 	public static boolean highlightMentions = true;
 	public static boolean chatGrabsMouse = true;
 	public static boolean sendColorsAsUnicode = true;
+	public static boolean clientLight = false;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;

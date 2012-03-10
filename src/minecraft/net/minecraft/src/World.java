@@ -2031,7 +2031,7 @@ public class World implements IBlockAccess {
 		}
 
 		Profiler.startSection("playerCheckLight");
-		if (!this.playerEntities.isEmpty()) {
+		if (!this.playerEntities.isEmpty() && ConfigReader.clientLight) { //Spout
 			var1 = this.rand.nextInt(this.playerEntities.size());
 			var2 = (EntityPlayer)this.playerEntities.get(var1);
 			var3 = MathHelper.floor_double(var2.posX) + this.rand.nextInt(11) - 5;

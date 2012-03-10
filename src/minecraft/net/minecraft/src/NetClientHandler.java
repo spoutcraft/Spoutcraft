@@ -21,6 +21,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.util.NetworkUtils;
 // Spout end
@@ -493,8 +494,12 @@ public class NetClientHandler extends NetHandler {
 			var2.func_48494_a(par1Packet51MapChunk.field_48174_e, par1Packet51MapChunk.field_48176_c, par1Packet51MapChunk.field_48173_d, par1Packet51MapChunk.field_48171_f);
 			this.worldClient.markBlocksDirty(par1Packet51MapChunk.field_48177_a << 4, 0, par1Packet51MapChunk.field_48175_b << 4, (par1Packet51MapChunk.field_48177_a << 4) + 15, 256, (par1Packet51MapChunk.field_48175_b << 4) + 15);
 			if (!par1Packet51MapChunk.field_48171_f || !(this.worldClient.worldProvider instanceof WorldProviderSurface)) {
-				var2.func_48496_n();
-				System.out.println("Checking light " + par1Packet51MapChunk.field_48177_a + ", " + par1Packet51MapChunk.field_48175_b);
+				//Spout start
+				if (ConfigReader.clientLight) {
+					var2.func_48496_n();
+				}
+				//System.out.println("Checking light " + par1Packet51MapChunk.field_48177_a + ", " + par1Packet51MapChunk.field_48175_b); //Spout removed
+				//Spout end
 			}
 		}
 
