@@ -28,6 +28,7 @@ import net.minecraft.src.WorldChunkManager;
 //Spout start
 import org.spoutcraft.client.block.SpoutcraftChunk;
 //Spout end
+import org.spoutcraft.client.config.ConfigReader;
 
 public class Chunk {
 
@@ -812,6 +813,7 @@ public class Chunk {
 
 	public void updateSkylight() {
 		if (this.field_40741_v && !this.worldObj.worldProvider.hasNoSky) {
+			if (ConfigReader.clientLight || !this.worldObj.isRemote) //Spout
 			this.updateSkylight_do();
 		}
 
