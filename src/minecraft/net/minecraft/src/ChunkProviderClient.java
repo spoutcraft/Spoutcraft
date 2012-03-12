@@ -9,12 +9,9 @@ import net.minecraft.src.EmptyChunk;
 import net.minecraft.src.EnumCreatureType;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.LongHashMap;
 import net.minecraft.src.World;
 
-//Spout start
-import java.util.Arrays;
-
+//Spout
 import gnu.trove.map.hash.TLongObjectHashMap;
 
 import net.minecraft.client.Minecraft;
@@ -28,9 +25,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	private World worldObj;
 	//Spout start
 	private int lastX = Integer.MAX_VALUE, lastZ = Integer.MAX_VALUE;
-	private Chunk last;
-	public static long cacheHits = 0;
-	public static long cacheMisses = 0L;
+	private Chunk last = null;
 	//Spout end
 
 	public ChunkProviderClient(World par1World) {
@@ -42,8 +37,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	public boolean chunkExists(int var1, int var2) {
 		//Spout start
 		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
-			cacheHits++;
-			return true;
+			return last != null;
 		}
 		//Spout end
 		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
@@ -69,7 +63,6 @@ public class ChunkProviderClient implements IChunkProvider {
 	public Chunk provideChunk(int var1, int var2) {
 		//Spout start
 		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
-			cacheHits++;
 			return last;
 		}
 		Chunk var3 = (Chunk)this.chunkMapping.get(ChunkCoordIntPair.chunkXZ2Int(var1, var2));
@@ -78,7 +71,6 @@ public class ChunkProviderClient implements IChunkProvider {
 			lastX = var1;
 			lastZ = var2;
 			last = var3;
-			cacheMisses++;
 		}
 		//Spout end
 		return var3 == null ? this.blankChunk : var3;

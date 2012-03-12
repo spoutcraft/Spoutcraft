@@ -485,7 +485,7 @@ public class NetClientHandler extends NetHandler {
 
 	public void func_48487_a(Packet51MapChunk par1Packet51MapChunk) {
 		this.worldClient.invalidateBlockReceiveRegion(par1Packet51MapChunk.field_48177_a << 4, 0, par1Packet51MapChunk.field_48175_b << 4, (par1Packet51MapChunk.field_48177_a << 4) + 15, 256, (par1Packet51MapChunk.field_48175_b << 4) + 15);
-		if (par1Packet51MapChunk.field_48171_f) {
+		if (par1Packet51MapChunk.field_48171_f && !this.worldClient.chunkProvider.chunkExists(par1Packet51MapChunk.field_48177_a, par1Packet51MapChunk.field_48175_b)) { //Spout
 			this.worldClient.doPreChunk(par1Packet51MapChunk.field_48177_a, par1Packet51MapChunk.field_48175_b, true);
 		}
 

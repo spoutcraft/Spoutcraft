@@ -59,6 +59,8 @@ public class Packet51MapChunk extends Packet {
 		try {
 			var4.inflate(this.field_48174_e);
 			// Spout - start
+			
+			//System.out.println("Loading Chunk (" + field_48177_a + ", " + field_48175_b + ")");
 			//TODO: fix!
 			//if (SpoutClient.getInstance().isSpoutEnabled())
 			//	this.chunk = org.spoutcraft.client.chunkcache.ChunkCache.handle(this.chunk, var3, this.chunkSize, xPosition >> 4, zPosition >> 4);
