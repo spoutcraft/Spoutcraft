@@ -3,21 +3,11 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class BlockMycelium extends Block {
-	public static int[][] grassMatrix; //Spout
 
 	protected BlockMycelium(int par1) {
 		super(par1, Material.grass);
 		this.blockIndexInTexture = 77;
 		this.setTickRandomly(true);
-		//Spout start
-		if (grassMatrix == null) {
-			grassMatrix = new int[4][2];
-			grassMatrix[0][1] = -1;
-			grassMatrix[1][1] = 1;
-			grassMatrix[2][0] = -1;
-			grassMatrix[3][0] = 1;
-		}
-		//Spout end
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
@@ -30,16 +20,8 @@ public class BlockMycelium extends Block {
 		} else if (par5 == 0) {
 			return 2;
 		} else {
-			//Spout start
 			Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-			par5 -= 2;
-			if (var6 != Material.snow && var6 != Material.craftedSnow) {
-				return par1IBlockAccess.getBlockId(par2 + BlockGrass.grassMatrix[par5][0], par3 - 1, par4 + BlockGrass.grassMatrix[par5][1]) != 110?77:78;
-			} else {
-				var6 = par1IBlockAccess.getBlockMaterial(par2 + BlockGrass.grassMatrix[par5][0], par3, par4 + BlockGrass.grassMatrix[par5][1]);
-				return var6 != Material.snow && var6 != Material.craftedSnow?68:66;
-			}
-			//Spout end
+			return var6 != Material.snow && var6 != Material.craftedSnow?77:68;
 		}
 	}
 

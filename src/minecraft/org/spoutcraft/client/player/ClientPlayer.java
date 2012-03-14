@@ -151,13 +151,11 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 
 	public boolean isSprinting() {
-		// TODO Auto-generated method stub
-		return false;
+		return SpoutClient.getHandle().thePlayer.isSprinting();
 	}
 
 	public void setSprinting(boolean sprinting) {
-		// TODO Auto-generated method stub
-
+		SpoutClient.getHandle().thePlayer.setSprinting(sprinting);
 	}
 
 	public int getExperience() {
