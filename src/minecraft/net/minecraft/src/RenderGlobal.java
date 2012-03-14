@@ -914,14 +914,16 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void renderClouds(float par1) {
 		// Spout Start
-		if (!SpoutClient.getInstance().getSkyManager().isCloudsVisible()) {
+		if (!SpoutClient.getInstance().getSkyManager().isCloudsVisible() || !ConfigReader.sky) {
 			return;
 		}
 		// Spout End
-		if (!this.mc.theWorld.worldProvider.hasNoSky && ConfigReader.sky) { // Spout
-			if (ConfigReader.fancyClouds) { // Spout
+		if (this.mc.theWorld.worldProvider.func_48217_e()) {
+			//Spout start
+			if (Colorizer.drawFancyClouds(this.mc.gameSettings.fancyGraphics)) {
 				this.renderCloudsFancy(par1);
 			} else {
+			//Spout end
 				GL11.glDisable(GL11.GL_CULL_FACE);
 				float var2 = (float)(this.mc.renderViewEntity.lastTickPosY + (this.mc.renderViewEntity.posY - this.mc.renderViewEntity.lastTickPosY) * (double)par1);
 				byte var3 = 32;
