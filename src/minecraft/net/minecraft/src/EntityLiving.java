@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkCoordinates;
@@ -813,17 +814,21 @@ public abstract class EntityLiving extends Entity {
 		return 0;
 	}
 
-	protected void fall(float par1) {
-		super.fall(par1);
-		int var2 = (int)Math.ceil((double)(par1 - 3.0F));
-		if (var2 > 0) {
-			if (var2 > 4) {
+	protected void fall(float falldistance) {
+		super.fall(falldistance);
+		//FIXME This only changes the damage client-side. The server will still send us an update with the "correct" amount of damage. Needs a change within Spout/plugin to mirror this.
+		//Scales the effective "distance" fallen in respect to gravity.
+		double nfalldistance = falldistance * getData().getGravityMod(); //Spout
+		// Calculates how far the Entity fell beyond the 3 block safe distance
+		int damageDistance = (int)Math.ceil((double)(nfalldistance - 3.0F));
+		if (damageDistance > 0) {
+			if (damageDistance > 4) {
 				this.worldObj.playSoundAtEntity(this, "damage.fallbig", 1.0F, 1.0F);
 			} else {
 				this.worldObj.playSoundAtEntity(this, "damage.fallsmall", 1.0F, 1.0F);
 			}
 
-			this.attackEntityFrom(DamageSource.fall, var2);
+			this.attackEntityFrom(DamageSource.fall, damageDistance);
 			int var3 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
 			if (var3 > 0) {
 				StepSound var4 = Block.blocksList[var3].stepSound;
@@ -837,7 +842,7 @@ public abstract class EntityLiving extends Entity {
 		double var3;
 		if (this.isInWater()) {
 			var3 = this.posY;
-			this.moveFlying(par1, par2, this.isAIEnabled()?0.04F:0.02F);
+			this.moveFlying(par1, par2,  (float)((this.isAIEnabled()?0.04F:0.02F) * getData().getSwimmingMod())); //Spout
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
@@ -850,7 +855,8 @@ public abstract class EntityLiving extends Entity {
 			}
 		} else if (this.handleLavaMovement()) {
 			var3 = this.posY;
-			this.moveFlying(par1, par2, 0.02F);
+			//Need to use Swimming modifier for lava as well as water
+			this.moveFlying(par1, par2, (float)(0.02F * getData().getSwimmingMod())); //Spout
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.5D;
 			this.motionY *= 0.5D;
@@ -883,11 +889,12 @@ public abstract class EntityLiving extends Entity {
 
 			float var9 = 0.16277136F / (var8 * var8 * var8);
 			float var5;
+			//XXX check this
 			if (this.onGround) {
 				if (this.isAIEnabled()) {
-					var5 = this.func_48101_aR();
+					var5 = (float) (this.func_48101_aR() * getData().getWalkingMod()); //Spout
 				} else {
-					var5 = this.landMovementFactor;
+					var5 = (float) (this.landMovementFactor * getData().getWalkingMod()); //Spout
 				}
 
 				var5 *= var9;
@@ -953,7 +960,7 @@ public abstract class EntityLiving extends Entity {
 				this.motionY = 0.2D;
 			}
 
-			this.motionY -= 0.08D;
+			this.motionY -= 0.08D * getData().getGravityMod(); //Spout
 			this.motionY *= 0.9800000190734863D;
 			this.motionX *= (double)var8;
 			this.motionZ *= (double)var8;
@@ -1105,9 +1112,9 @@ public abstract class EntityLiving extends Entity {
 		boolean var2 = this.handleLavaMovement();
 		if (this.isJumping) {
 			if (var14) {
-				this.motionY += 0.03999999910593033D;
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //FIXME does this need to be * getData().getJumpingMod();
 			} else if (var2) {
-				this.motionY += 0.03999999910593033D;
+				this.motionY += 0.03999999910593033D * getData().getJumpingMod();
 			} else if (this.onGround && this.jumpTicks == 0) {
 				this.jump();
 				this.jumpTicks = 10;
@@ -1154,7 +1161,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	protected void jump() {
-		this.motionY = 0.41999998688697815D;
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); //FIXME does this need to be * getData().getJumpingMod();
 		if (this.isPotionActive(Potion.jump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
 		}
