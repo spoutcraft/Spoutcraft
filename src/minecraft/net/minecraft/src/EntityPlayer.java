@@ -804,6 +804,14 @@ public abstract class EntityPlayer extends EntityLiving {
 						par1Entity.addVelocity((double)(-MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F) * (float)var3 * 0.5F), 0.1D, (double)(MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F) * (float)var3 * 0.5F));
 						this.motionX *= 0.6D;
 						this.motionZ *= 0.6D;
+						//Spout start
+						if (runToggle) {
+							if (this instanceof EntityClientPlayerMP) {
+								((EntityClientPlayerMP)this).sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+							}
+						}
+						else 
+						//Spout end
 						this.setSprinting(false);
 					}
 
