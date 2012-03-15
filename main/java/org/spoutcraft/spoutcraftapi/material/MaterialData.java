@@ -171,6 +171,7 @@ public class MaterialData {
 	public static final Block stoneBricks = new StoneBricks("Stone Brick", 98, 0);
 	public static final Block mossyStoneBricks = new StoneBricks("Mossy Stone Brick", 98, 1);
 	public static final Block crackedStoneBricks = new StoneBricks("Cracked Stone Brick", 98, 2);
+	public static final Block circleStoneBricks = new StoneBricks("Circle Stone Brick", 98, 3);
 	public static final Block hugeBrownMushroom = new Solid("Huge Brown Mushroom", 99);
 	public static final Block hugeRedMushroom = new Solid("Huge Red Mushroom", 100);
 	public static final Block ironBars = new Solid("Iron Bars", 101);
@@ -195,6 +196,8 @@ public class MaterialData {
 	public static final Block endPortalFrame = new Solid("End Portal Frame", 120);
 	public static final Block endStone = new Solid("End Stone", 121);
 	public static final Block dragonEgg = new Solid("Dragon Egg", 122);
+	public static final Block redstoneLampOff = new Solid("Redstone Lamp (Off)", 123);
+	public static final Block redstoneLampOn = new Solid("Redstone Lamp", 124);
 
 	public static final Item ironShovel = new GenericTool("Iron Shovel", 256);
 	public static final Item ironPickaxe = new GenericTool("Iron Pickaxe", 257);
@@ -338,6 +341,7 @@ public class MaterialData {
 	public static final Item brewingStand = new GenericItem("Brewing Stand", 379);
 	public static final Item cauldron = new GenericItem("Cauldron", 380);
 	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
+	
 	public static final Item spawnEggMooshroom = new SpawnEgg("Spawn Mooshroom", 383, 96);
 	public static final Item spawnEggSkeleton = new SpawnEgg("Spawn Skeleton", 383, 51);
 	public static final Item spawnEggCreeper = new SpawnEgg("Spawn Creeper", 383, 50);
@@ -358,6 +362,10 @@ public class MaterialData {
 	public static final Item spawnEggVillager = new SpawnEgg("Spawn Villager", 383, 120);
 	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
 	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
+	public static final Item spawnEggOcelot = new SpawnEgg("Spawn Ocelot", 383, 98);
+	
+	public static final Item bottleOEnchanting = new GenericItem("Bottle o' Enchanting", 384);
+	public static final Item fireCharge = new GenericItem("Fire Charge", 385);
 
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
