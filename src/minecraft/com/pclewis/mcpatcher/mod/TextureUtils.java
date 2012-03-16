@@ -201,23 +201,25 @@ public class TextureUtils {
 			addOtherTextureFX("/gui/items.png", "item");
 			if (var17 instanceof TexturePackCustom) {
 				TexturePackCustom var5 = (TexturePackCustom)var17;
-				Iterator var6 = Collections.list(var5.texturePackZipFile.entries()).iterator();
-
-				while (var6.hasNext()) {
-					ZipEntry var7 = (ZipEntry)var6.next();
-					String var8 = "/" + var7.getName();
-					if (var8.startsWith("/anim/") && var8.endsWith(".properties") && !isCustomTerrainItemResource(var8)) {
-						InputStream var9 = null;
-
-						try {
-							var9 = var5.texturePackZipFile.getInputStream(var7);
-							Properties var10 = new Properties();
-							var10.load(var9);
-							CustomAnimation.addStrip(var10);
-						} catch (IOException var14) {
-							var14.printStackTrace();
-						} finally {
-							MCPatcherUtils.close((Closeable)var9);
+				if (var5.texturePackZipFile != null) {
+					Iterator var6 = Collections.list(var5.texturePackZipFile.entries()).iterator();
+	
+					while (var6.hasNext()) {
+						ZipEntry var7 = (ZipEntry)var6.next();
+						String var8 = "/" + var7.getName();
+						if (var8.startsWith("/anim/") && var8.endsWith(".properties") && !isCustomTerrainItemResource(var8)) {
+							InputStream var9 = null;
+	
+							try {
+								var9 = var5.texturePackZipFile.getInputStream(var7);
+								Properties var10 = new Properties();
+								var10.load(var9);
+								CustomAnimation.addStrip(var10);
+							} catch (IOException var14) {
+								var14.printStackTrace();
+							} finally {
+								MCPatcherUtils.close((Closeable)var9);
+							}
 						}
 					}
 				}
