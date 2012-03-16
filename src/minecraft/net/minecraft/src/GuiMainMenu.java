@@ -1,7 +1,12 @@
 package net.minecraft.src;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,6 +117,14 @@ public class GuiMainMenu extends GuiScreen
 	protected void keyTyped(char c, int i)
 	{
 	}
+	
+	//Spout start
+	private boolean isAprilFools() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		return calendar.get(2) + 1 == 4 && calendar.get(5) == 1;
+	}
+	//Spout end
 
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
@@ -140,6 +153,21 @@ public class GuiMainMenu extends GuiScreen
 		}
 
 		// Spout start
+		if (isAprilFools()) {
+			Random r = new Random();
+			switch(r.nextInt(10)) {
+				case 0: splashText = "My Little Ponies!"; break;
+				case 1: splashText = "Equestria Rules!"; break;
+				case 2: splashText = "woohoo!"; break;
+				case 3: splashText = "Winter Wrapup!"; break;
+				case 4: splashText = "The Great and Powerful Trixie!"; break;
+				case 5: splashText = "Forrrreeeeverrrr!"; break;
+				case 6: splashText = "Can you think inside a chimney?"; break;
+				case 7: splashText = "I'll make a friendship problem!"; break;
+				case 8: splashText = "Is it... ZOMBIES?!"; break;
+				case 9: splashText = "It needs to be about 20% cooler."; break;
+			}
+		}
 		String text = org.spoutcraft.client.EasterEggs.getSplashTextEasterEgg();
 		if (text != null) {
 			this.splashText = text;
@@ -207,7 +235,13 @@ public class GuiMainMenu extends GuiScreen
 			mc.displayGuiScreen(new GameSettingsScreen(this));
 		}
 		if (btn == buttonAbout) {
-			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout());
+			if (isAprilFools()) {
+				try {
+					Desktop.getDesktop().browse((new URL("http://mlp-fim.com/1")).toURI());
+				} catch (Exception e) { }
+			} else {
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout());
+			}
 		}
 		if (btn == buttonQuit) {
 			mc.shutdown();
@@ -417,8 +451,20 @@ public class GuiMainMenu extends GuiScreen
 	 */
 	public void drawScreen(int par1, int par2, float par3)
 	{
-		renderSkybox(par1, par2, par3);
 		Tessellator var4 = Tessellator.instance;
+		
+		//Spout start
+		if (isAprilFools()) {
+			GL11.glPushMatrix();
+			GL11.glScaled(0.45F, 0.45F, 0.45F);
+			GL11.glTranslatef(-800, -645.0F, 0.0F);
+			Texture logo = CustomTextureManager.getTextureFromJar("/res/nothingtoseehere.png");
+			MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
+			r.drawTexture(logo, 2708, 1580);
+			GL11.glPopMatrix();
+		} else {
+		//Spout end
+		renderSkybox(par1, par2, par3);
 		short var5 = 274;
 		int var6 = 10;
 		byte var7 = 10;
@@ -440,6 +486,7 @@ public class GuiMainMenu extends GuiScreen
 			this.drawTexturedModalRect(var6 + 155, var7 + 0, 0, 45, 155, 44);
 		}
 		GL11.glPopMatrix();
+		} //Spout
 		var4.setColorOpaque_I(0xffffff);
 		GL11.glPushMatrix();
 		GL11.glTranslatef(10, 50.0F, 0.0F); //Spout adjusted position
