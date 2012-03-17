@@ -52,18 +52,18 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		checkGrabMouse.setTooltip("Opening the chat screen grabs the mouse.\nON, players can not look around - default behavior\nOFF, players can look and pan the screen during chat.");
 		checkGrabMouse.setChecked(ConfigReader.chatGrabsMouse);
 		
-		checkIgnorePeople = new GenericCheckBox("Ignore messages from certain people");
-		checkIgnorePeople.setTooltip("This will prevent displaying chat messages from people you specified");
+		checkIgnorePeople = new GenericCheckBox("Ignore List");
+		checkIgnorePeople.setTooltip("This will prevent displaying chat messages from players in your ignore list");
 		checkIgnorePeople.setChecked(ConfigReader.ignorePeople);
 		
 		checkParseRegex = new GenericCheckBox("Use regex");
-		checkParseRegex.setTooltip("Parse highlighted words and ignored people using regular expression syntax");
+		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax");
 		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
 		
-		buttonAdvancedMentions = new GenericButton("Advanced options ...");
+		buttonAdvancedMentions = new GenericButton("Advanced options");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted");
 		
-		buttonConfigureIgnores = new GenericButton("Configure ...");
+		buttonConfigureIgnores = new GenericButton("Configure");
 		buttonConfigureIgnores.setTooltip("Configure people to ignore messages from");
 		
 		buttonDone = new GenericButton("Done");
