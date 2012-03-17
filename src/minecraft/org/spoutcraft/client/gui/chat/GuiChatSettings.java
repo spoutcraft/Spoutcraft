@@ -11,6 +11,7 @@ import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
@@ -19,7 +20,7 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 
 public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;
-	private CheckBox checkShowMentions, checkShowJoins, checkShowColors, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople;
+	private CheckBox checkShowMentions, checkShowJoins, checkShowColors, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, checkParseRegex;
 	private Button buttonAdvancedMentions, buttonConfigureIgnores, buttonDone;
 	private Label title;
 	
@@ -55,6 +56,10 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		checkIgnorePeople.setTooltip("This will prevent displaying chat messages from people you specified");
 		checkIgnorePeople.setChecked(ConfigReader.ignorePeople);
 		
+		checkParseRegex = new GenericCheckBox("Use regex");
+		checkParseRegex.setTooltip("Parse highlighted words and ignored people using regular expression syntax");
+		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
+		
 		buttonAdvancedMentions = new GenericButton("Advanced options ...");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted");
 		
@@ -64,7 +69,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		buttonDone = new GenericButton("Done");
 		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, buttonDone);
+		getScreen().attachWidgets(spoutcraft, title, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, buttonDone, checkParseRegex);
 	}
 
 	@Override
@@ -88,12 +93,15 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		checkIgnorePeople.setGeometry(5, top, 200, 20);
 		buttonConfigureIgnores.setGeometry(width - 205, top, 150, 20);
 		top += 22;
+		checkParseRegex.setGeometry(5, top, 200, 20);
+		top += 22;
 		
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
 	}
 
 	@Override
 	protected void buttonClicked(Button btn) {
+		final ChatTextBox chat = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
 		if(btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 			return;
@@ -103,15 +111,17 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			@Override
 			public void run() {
 				SpoutClient.getInstance().getChatManager().save();
+				chat.reparse();
 			}
 		};
+		boolean regex = ConfigReader.chatUsesRegex;
 		if(btn == buttonAdvancedMentions) {
-			GuiListEdit editor = new GuiListEdit(save, "Edit word highlight list", "You can use wildcarts (*/?)", this, SpoutClient.getInstance().getChatManager().wordHighlight);
+			GuiListEdit editor = new GuiListEdit(save, "Edit word highlight list", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
 			mc.displayGuiScreen(editor);
 			return;
 		}
 		if(btn == buttonConfigureIgnores) {
-			GuiListEdit editor = new GuiListEdit(save, "Edit people ignore list", "You can use wildcarts (*/?)", this, SpoutClient.getInstance().getChatManager().ignorePeople);
+			GuiListEdit editor = new GuiListEdit(save, "Edit people ignore list", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
 			mc.displayGuiScreen(editor);
 			return;
 		}
@@ -132,6 +142,10 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		}
 		if(btn == checkGrabMouse) {
 			ConfigReader.chatGrabsMouse = checkGrabMouse.isChecked();
+		}
+		if(btn == checkParseRegex) {
+			ConfigReader.chatUsesRegex = checkParseRegex.isChecked();
+			chat.reparse();
 		}
 		ConfigReader.write();
 	}

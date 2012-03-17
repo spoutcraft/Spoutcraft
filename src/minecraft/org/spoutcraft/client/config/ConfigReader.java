@@ -79,6 +79,7 @@ public class ConfigReader {
 	public static boolean highlightMentions = true;
 	public static boolean chatGrabsMouse = true;
 	public static boolean ignorePeople = false;
+	public static boolean chatUsesRegex;
 	public static boolean sendColorsAsUnicode = true;
 	public static boolean clientLight = false;
 	

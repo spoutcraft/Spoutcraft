@@ -414,4 +414,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	public boolean isShowingJoins() {
 		return ConfigReader.showJoinMessages;
 	}
+
+	@Override
+	public boolean isUsingRegex() {
+		return ConfigReader.chatUsesRegex;
+	}
 }
