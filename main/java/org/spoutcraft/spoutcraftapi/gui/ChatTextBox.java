@@ -184,7 +184,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	}
 	
 	public void addChatMessage(ChatMessage message) {
-		if(message.getUnparsedMessage().trim().isEmpty()) {
+		if(message.getUnparsedMessage().trim().equals("")) {
 			return;
 		}
 		chatMessages.add(0, message);
