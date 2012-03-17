@@ -1046,8 +1046,6 @@ public abstract class EntityLiving extends Entity {
 
 	public void setJumping(boolean par1) {
 		this.isJumping = par1;
-		if (this instanceof EntityPlayer && !par1)
-		Thread.dumpStack();
 	}
 
 	public void onLivingUpdate() {
@@ -1112,8 +1110,6 @@ public abstract class EntityLiving extends Entity {
 		Profiler.endSection();
 		boolean var14 = this.isInWater();
 		boolean var2 = this.handleLavaMovement();
-		if (this instanceof EntityPlayer)
-		System.out.println("Jumping: " + isJumping + " Ticks: " + jumpTicks);
 		if (this.isJumping) {
 			if (var14) {
 				this.motionY += 0.03999999910593033D * getData().getJumpingMod(); //FIXME does this need to be * getData().getJumpingMod();
