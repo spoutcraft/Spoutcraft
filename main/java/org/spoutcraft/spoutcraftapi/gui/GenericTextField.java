@@ -225,4 +225,18 @@ public class GenericTextField extends GenericControl implements TextField {
 	public String getPlaceholder() {
 		return placeholder;
 	}
+
+	@Override
+	public Widget setGeometry(Rectangle geometry) {
+		textProcessor.setWidth(geometry.getWidth());
+		return super.setGeometry(geometry);
+	}
+
+	@Override
+	public Widget setGeometry(int x, int y, int width, int height) {
+		textProcessor.setWidth(width);
+		return super.setGeometry(x, y, width, height);
+	}
+	
+	
 }
