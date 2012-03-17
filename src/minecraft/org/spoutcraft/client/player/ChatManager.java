@@ -29,6 +29,13 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +49,8 @@ import net.minecraft.src.GuiChat;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.FileUtil;
+import org.yaml.snakeyaml.Yaml;
 
 public class ChatManager {
 	public int commandScroll = 0;
@@ -49,6 +58,10 @@ public class ChatManager {
 	public int chatScroll = 0;
 	public List<String> pastCommands = new LinkedList<String>();
 	public List<String> pastMessages = new LinkedList<String>();
+	
+	public List<String> wordHighlight = new ArrayList<String>();
+	public List<String> ignorePeople = new ArrayList<String>();
+
 	public boolean onChatKeyTyped(char character, int key, GuiChat chat) {
 		try {
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
@@ -336,5 +349,38 @@ public class ChatManager {
 			return format.toString();
 		}*/
 		return message;
+	}
+	
+	public void load() {
+		boolean wasSandboxed = SpoutClient.disableSandbox();
+		Yaml yaml = new Yaml();
+		try {
+			Object l = yaml.load(new FileReader(getFile()));
+			HashMap<String, Object> map = (HashMap<String, Object>) l;
+			ignorePeople = (List<String>) map.get("ignore");
+			wordHighlight = (List<String>) map.get("highlight");
+		} catch (FileNotFoundException e) {
+			ignorePeople = new ArrayList<String>();
+			wordHighlight = new ArrayList<String>();
+		}
+		SpoutClient.enableSandbox(wasSandboxed);
+	}
+
+	public void save() {
+		boolean wasSandboxed = SpoutClient.disableSandbox();
+		Yaml yaml = new Yaml();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("ignore", ignorePeople);
+		map.put("highlight", wordHighlight);
+		try {
+			yaml.dump(map, new FileWriter(getFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		SpoutClient.enableSandbox(wasSandboxed);
+	}
+	
+	private File getFile() {
+		return new File(FileUtil.getSpoutcraftDirectory(), "chatSettings.yml");
 	}
 }

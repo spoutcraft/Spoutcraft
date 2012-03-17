@@ -125,41 +125,8 @@ public class GameSettingsScreen extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-
-		//Chat
-		label = new GenericLabel("Chat Settings");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX((int) (width / 2 - size / 2)).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 11;
-
-		linebreak = new GenericGradient();
-		linebreak.setBottomColor(grey);
-		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
-		screen.attachWidget(spoutcraft, linebreak);
-		top += 6;
-
-		control = new ShowMentionsCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-
-		control = new ShowDamageCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		top += 22;
-
-		control = new ShowChatColorsCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
-
-		control = new ShowJoinsCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
-		top += 22;
-
-		control = new ChatGrabsMouseCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
+		
+		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 

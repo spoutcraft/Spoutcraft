@@ -151,6 +151,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		((SimpleKeyBindingManager)bindingManager).load();
 		addonStore.load();
 		serverManager.init();
+		chatManager.load();
 		Log.setVerbose(false);
 	}
 

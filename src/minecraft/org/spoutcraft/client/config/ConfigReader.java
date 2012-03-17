@@ -28,6 +28,7 @@ package org.spoutcraft.client.config;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
@@ -77,6 +78,7 @@ public class ConfigReader {
 	public static boolean showDamageAlerts = true;
 	public static boolean highlightMentions = true;
 	public static boolean chatGrabsMouse = true;
+	public static boolean ignorePeople = false;
 	public static boolean sendColorsAsUnicode = true;
 	public static boolean clientLight = false;
 	
@@ -119,6 +121,8 @@ public class ConfigReader {
 						f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer)value));
 					} else if (value instanceof Float) {
 						f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float)value));
+					} else if (value instanceof String) {
+						f.set(null, getOrSetStringProperty(settings, f.getName(), (String) value));
 					}
 				}
 			}
@@ -187,6 +191,14 @@ public class ConfigReader {
 	private static float getOrSetFloatProperty(SettingsHandler settings, String property, float defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyDouble(property).floatValue();
+		}
+		settings.put(property, defaultValue);
+		return defaultValue;
+	}
+	
+	private static String getOrSetStringProperty(SettingsHandler settings, String property, String defaultValue) {
+		if(settings.checkProperty(property)) {
+			return settings.getPropertyString(property);
 		}
 		settings.put(property, defaultValue);
 		return defaultValue;
