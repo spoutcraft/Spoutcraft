@@ -175,7 +175,7 @@ public abstract class GuiContainer extends GuiScreen
 					lines++;
 				}
 				tooltip = tooltip.trim();
-				super.drawTooltip(tooltip, (i - k) + 8, j - guiTop - lines * 6);
+				super.drawTooltip(tooltip, (par1 - guiLeft) + 8, par2 - guiTop - lines * 6);
 				//Spout end
 				zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
