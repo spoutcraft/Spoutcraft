@@ -101,7 +101,12 @@ public class GuiChatSettings extends GuiSpoutScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		final ChatTextBox chat = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
+		final ChatTextBox chat;
+		if(Spoutcraft.getActivePlayer() != null) {
+			chat = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
+		} else {
+			chat = null;
+		}
 		if(btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 			return;
