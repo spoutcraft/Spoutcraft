@@ -54,6 +54,17 @@ public interface MinecraftFont {
 	public void drawString(String text, int x, int y, int color);
 
 	/**
+	 * Draws the given text onto the screen at the given x and y coordinates, with the given hexidecimal color
+	 * This method also adds a shadow below the text
+	 * 
+	 * @param text to draw
+	 * @param x to position the left lower corner at
+	 * @param y to position the left lower corner at
+	 * @param color, in 0XFFFFFF format (2 bytes for red, 2 bytes for green, 2 bytes for blue)
+	 */
+	public void drawShadowedString(String text, int x, int y, int color);
+
+	/**
 	 * Draws the given text centered onto the screen at the given x and y coordinates, with the given hexidecimal color
 	 * 
 	 * @param text to draw

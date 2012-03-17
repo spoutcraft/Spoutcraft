@@ -35,6 +35,7 @@ import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
+import org.spoutcraft.spoutcraftapi.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
@@ -261,5 +262,9 @@ public final class Spoutcraft {
 	
 	public static WidgetManager getWidgetManager() {
 		return client.getWidgetManager();
+	}
+	
+	public static ChatManager getChatManager() {
+		return client.getChatManager();
 	}
 }

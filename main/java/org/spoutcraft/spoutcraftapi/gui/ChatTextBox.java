@@ -19,18 +19,25 @@ package org.spoutcraft.spoutcraftapi.gui;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
+import org.lwjgl.opengl.GL11;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
+import org.spoutcraft.spoutcraftapi.player.ChatMessage;
 
 @UnsafeClass
 public class ChatTextBox extends GenericWidget implements Widget {
 	protected int visibleLines = 10;
-	protected int visibleChatLines = 20;
-	protected int fadeoutTicks = 250;
+	protected int visibleChatLines = 15;
+	protected int fadeoutTicks = 20 * 5;
+	protected List<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
 
 	public ChatTextBox() {
-
+		
 	}
 
 	public WidgetType getType() {
@@ -61,9 +68,59 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	public UUID getId() {
 		return new UUID(0, 3);
 	}
-
+	
 	public void render() {
-
+		if(!isVisible()) {
+			return;
+		}
+		int scroll = Spoutcraft.getChatManager().getScroll();
+		boolean chatOpen = false;
+		if(Spoutcraft.getActivePlayer() != null && Spoutcraft.getActivePlayer().getCurrentScreen() != null && Spoutcraft.getActivePlayer().getCurrentScreen().getScreenType() == ScreenType.CHAT_SCREEN) {
+			chatOpen = true;
+		}
+		MinecraftFont font = Spoutcraft.getMinecraftFont();
+		Iterator<ChatMessage> iter = chatMessages.iterator();
+		for(int i = 0; i < scroll; i++) {
+			if(iter.hasNext()) {
+				iter.next();
+			}
+		}
+		int lines = 0;
+		int bottom = (int) getScreen().getHeight() - 50;
+		while(iter.hasNext()) {
+			ChatMessage message = iter.next();
+			if(message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
+				continue;
+			}
+			if(message.getAge() > getFadeoutTicks() && !chatOpen) {
+				break;
+			}
+			//TODO Animation
+			int color = 0x80000000;
+			if(Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
+				color = 0x60ff0000;
+			}
+			RenderUtil.drawRectangle(3, bottom - 2, 3 + 320, bottom + 9, color);
+			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, 0xffffff);
+			bottom -= 11;
+			lines ++;
+			if(!chatOpen && lines > visibleLines) {
+				break;
+			} else if (chatOpen && lines > visibleChatLines) {
+				break;
+			}
+		}
+	}
+	
+	public void increaseAge() {
+		Iterator<ChatMessage> iter = chatMessages.iterator();
+		while(iter.hasNext()) {
+			ChatMessage message = iter.next();
+			message.onTick();
+			if(message.getAge() > getFadeoutTicks()) {
+				break;
+			}
+		}
 	}
 
 	/**
@@ -125,10 +182,19 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		fadeoutTicks = ticks;
 		return this;
 	}
+	
+	public void addChatMessage(ChatMessage message) {
+		if(message.getUnparsedMessage().trim().isEmpty()) {
+			return;
+		}
+		chatMessages.add(0, message);
+		while (chatMessages.size() > 3000) {
+			chatMessages.remove(chatMessages.size() - 1);
+		}
+	}
 
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 1;
 	}
-
 }

@@ -19,6 +19,7 @@ package org.spoutcraft.spoutcraftapi.entity;
 import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -253,4 +254,9 @@ public interface ActivePlayer extends Player, CommandSender  {
     * @param mode New game mode
     */
    public void setGameMode(GameMode mode);
+   
+   /**
+    * @returns the current screen
+    */
+   public Screen getCurrentScreen();
 }

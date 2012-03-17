@@ -32,6 +32,7 @@ import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
+import org.spoutcraft.spoutcraftapi.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -162,5 +163,7 @@ public interface Client extends PropertyInterface {
 	}
 
 	public WidgetManager getWidgetManager();
+
+	public ChatManager getChatManager();
 
 }

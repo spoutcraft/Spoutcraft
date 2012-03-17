@@ -133,8 +133,13 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	@Override
 	public void onTick() {
-		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
-		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
+		int width = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
+		int height = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
+		if(width != screenWidth || height != screenHeight) {
+			onScreenResized(screenWidth, screenHeight, width, height);
+			screenWidth = width;
+			screenHeight = height;
+		}
 		for (Widget widget : new HashSet<Widget>(widgets.keySet())) {
 			try {
 				widget.onTick();
@@ -245,5 +250,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 			}
 		}
 		return set;
+	}
+	
+	protected void onScreenResized(int oldWidth, int oldHeight, int newWidth, int newHeight) {
+		//STUB
 	}
 }
