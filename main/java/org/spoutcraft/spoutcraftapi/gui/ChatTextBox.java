@@ -89,6 +89,9 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		int bottom = (int) getScreen().getHeight() - 50;
 		while(iter.hasNext()) {
 			ChatMessage message = iter.next();
+			if(message.isIgnoredPerson() && Spoutcraft.getChatManager().isIgnoringPlayers()) {
+				continue;
+			}
 			if(message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
 				continue;
 			}
@@ -190,6 +193,12 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		chatMessages.add(0, message);
 		while (chatMessages.size() > 3000) {
 			chatMessages.remove(chatMessages.size() - 1);
+		}
+	}
+	
+	public void reparse() {
+		for(ChatMessage message:chatMessages) {
+			message.reparse();
 		}
 	}
 

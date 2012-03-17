@@ -10,4 +10,5 @@ public interface ChatManager {
 	public String formatChatColors(String text);
 	public int getScroll();
 	public boolean isShowingJoins();
+	public boolean isUsingRegex();
 }

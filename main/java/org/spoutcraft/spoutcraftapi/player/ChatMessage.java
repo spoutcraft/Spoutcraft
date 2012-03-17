@@ -19,6 +19,7 @@ public class ChatMessage {
 		"^<(.*)>\\s{0,1}(.*)$", //Vanilla format
 		"^(.*):\\s{0,1}(.*)$",
 		"^(.*)\\s{0,1}\\[.*\\]: (.*)$", //Format for teh cool admin folks
+		"^\\[(.*)\\] (.*)$", //Bukkit console say command ([Server] hello)
 	};
 	
 	static final Pattern messagePatterns[];
@@ -141,23 +142,29 @@ public class ChatMessage {
 		unparsed = Spoutcraft.getChatManager().formatChatColors(unparsed);
 		String message = unparsed;
 		for(Pattern p:messagePatterns) {
-			Matcher m = p.matcher(unparsed);
+			Matcher m = p.matcher(ChatColor.stripColor(unparsed));
 			if(m.matches()) {
 				player = m.group(1);
 				message = m.group(2);
 				break;
 			}
 		}
-		//TODO: match wildcards (*/?)
 		String playerName = Spoutcraft.getActivePlayer().getName();
 		if(!playerName.equals(player)) { //Don't highlight our own messages
 			if(message.contains(playerName)) {
 				highlighted = true;
 			} else {
 				for(String highlightWord:Spoutcraft.getChatManager().getWordsToHighlight()) {
-					if(message.contains(highlightWord)) {
-						highlighted = true;
-						break;
+					if(Spoutcraft.getChatManager().isUsingRegex()) {
+						if(message.matches(".*"+highlightWord+".*")) {
+							highlighted = true;
+							break;
+						}
+					} else {
+						if(message.contains(highlightWord)) {
+							highlighted = true;
+							break;
+						}
 					}
 				}
 			}
@@ -171,8 +178,16 @@ public class ChatMessage {
 		}
 		if(ret.hasPlayer()) {
 			for(String name:Spoutcraft.getChatManager().getIgnoredPlayers()) {
-				if(ret.getPlayer().equalsIgnoreCase(name)) {
-					ret.setIgnoredPerson(true);
+				if(Spoutcraft.getChatManager().isUsingRegex()) {
+					if(ret.getPlayer().matches(".*"+name+".*")) {
+						ret.setIgnoredPerson(true);
+						break;
+					}
+				} else {
+					if(ret.getPlayer().equalsIgnoreCase(name)) {
+						ret.setIgnoredPerson(true);
+						break;
+					}
 				}
 			}
 		}
