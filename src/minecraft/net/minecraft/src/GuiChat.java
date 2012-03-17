@@ -151,7 +151,6 @@ public class GuiChat extends GuiScreen
 			drawString(fontRenderer, ChatColor.LIGHT_PURPLE + "&d - Light Purple", width - 90, 140, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.YELLOW + "&e - Yellow", width - 90, 150, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.WHITE + "&f - White", width - 90, 160, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.WHITE + "(Disable this in chat options", width - 90, 160, 0xFFFFFFF);
 		}
 		//Spout Improved Chat End
 		super.drawScreen(var1, var2, var3);
