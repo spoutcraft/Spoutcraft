@@ -98,6 +98,8 @@ public class ChatMessage {
 		message = other.message;
 		highlighted = other.highlighted;
 		player = other.player;
+		ignoredPerson = other.ignoredPerson;
+		joinMessage = other.joinMessage;
 	}
 	
 	public ChatMessage clone() {

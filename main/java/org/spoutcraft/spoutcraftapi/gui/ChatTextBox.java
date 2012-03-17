@@ -32,7 +32,7 @@ import org.spoutcraft.spoutcraftapi.player.ChatMessage;
 @UnsafeClass
 public class ChatTextBox extends GenericWidget implements Widget {
 	protected int visibleLines = 10;
-	protected int visibleChatLines = 15;
+	protected int visibleChatLines = 20;
 	protected int fadeoutTicks = 20 * 5;
 	protected List<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
 
@@ -70,6 +70,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	}
 	
 	public void render() {
+		GL11.glEnable(GL11.GL_BLEND);
 		if(!isVisible()) {
 			return;
 		}
@@ -95,17 +96,25 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			if(message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
 				continue;
 			}
-			if(message.getAge() > getFadeoutTicks() && !chatOpen) {
+			double opacity = 1.0D - message.getAge() / getFadeoutTicks();
+			if(opacity > 1.0d) {
+				opacity = 1.0d;
+			} 
+			if(opacity < 0.0d) {
+				opacity = 0.0d;
+			}
+			if(message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
 				break;
 			}
-			//TODO Animation
-			int color = 0x80000000;
+			//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
+			int chatColor = 0xffffffff;
+			int backgroundColor = 0x80000000;
 			if(Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
-				color = 0x60ff0000;
+				backgroundColor = 0x80ff0000;
 			}
-			RenderUtil.drawRectangle(3, bottom - 2, 3 + 320, bottom + 9, color);
-			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, 0xffffff);
-			bottom -= 11;
+			RenderUtil.drawRectangle(3, bottom - 1, 3 + 320, bottom + 9, backgroundColor);
+			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, chatColor);
+			bottom -= 10;
 			lines ++;
 			if(!chatOpen && lines > visibleLines) {
 				break;
@@ -113,6 +122,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 				break;
 			}
 		}
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
 	public void increaseAge() {
