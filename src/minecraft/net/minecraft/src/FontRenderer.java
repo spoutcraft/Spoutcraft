@@ -80,7 +80,7 @@ public class FontRenderer {
 		}
 	}
 
-	private void renderDefaultChar(int par1) {
+	private void renderDefaultChar(int par1, int color) { //Spout added color argument
 		float var2 = (float)(par1 % 16 * 8);
 		float var3 = (float)(par1 / 16 * 8);
 		if (this.boundTextureName != this.fontTextureName) {
@@ -116,7 +116,7 @@ public class FontRenderer {
 		this.boundTextureName = this.glyphTextureName[par1];
 	}
 
-	private void renderUnicodeChar(char par1) {
+	private void renderUnicodeChar(char par1, int color) { //Spout added color argument
 		if (this.glyphWidth[par1] != 0) {
 			int var2 = par1 / 256;
 			if (this.glyphTextureName[var2] == 0) {
@@ -227,7 +227,7 @@ public class FontRenderer {
 		}
 	}
 
-	private void renderStringAtPos(String par1Str, boolean par2) {
+	private void renderStringAtPos(String par1Str, int color, boolean par2) { //Spout added color param
 		boolean var3 = false;
 
 		for (int var4 = 0; var4 < par1Str.length(); ++var4) {
@@ -248,8 +248,8 @@ public class FontRenderer {
 						var6 += 16;
 					}
 
-					var7 = Colorizer.colorizeText(this.colorCode[var6], var6); //Spout HD
-					GL11.glColor3f((float)(var7 >> 16) / 255.0F, (float)(var7 >> 8 & 255) / 255.0F, (float)(var7 & 255) / 255.0F);
+					var7 = Colorizer.colorizeText(this.colorCode[var6], var6) & 0xffffff | color & 0xff000000; //Spout HD
+					GL11.glColor4f((float)(var7 >> 16) / 255.0F, (float)(var7 >> 8 & 255) / 255.0F, (float)(var7 & 255) / 255.0F, (float)(var7 >> 24 & 0xff) / 255F);
 				}
 
 				++var4;
@@ -266,9 +266,9 @@ public class FontRenderer {
 				if (var5 == 32) {
 					this.posX += this.charWidthf[32];
 				} else if (var6 > 0 && !this.unicodeFlag) {
-					this.renderDefaultChar(var6 + 32);
+					this.renderDefaultChar(var6 + 32, color); //Spout added color argument
 				} else {
-					this.renderUnicodeChar(var5);
+					this.renderUnicodeChar(var5, color); //Spout added color argument
 				}
 			}
 		}
@@ -278,8 +278,8 @@ public class FontRenderer {
 		if (par1Str != null) {
 			this.boundTextureName = 0;
 			par4 = Colorizer.colorizeText(par4); //Spout HD
-			if ((par4 & -67108864) == 0) {
-				par4 |= -16777216;
+			if ((par4 & 0xff000000) == 0) { //Spout fixed condition
+				par4 |= -0xff000000;
 			}
 
 			if (par5) {
@@ -289,7 +289,7 @@ public class FontRenderer {
 			GL11.glColor4f((float)(par4 >> 16 & 255) / 255.0F, (float)(par4 >> 8 & 255) / 255.0F, (float)(par4 & 255) / 255.0F, (float)(par4 >> 24 & 255) / 255.0F);
 			this.posX = (float)par2;
 			this.posY = (float)par3;
-			this.renderStringAtPos(par1Str, par5);
+			this.renderStringAtPos(par1Str, par4, par5); //Spout added color argument
 		}
 	}
 

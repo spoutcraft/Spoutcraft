@@ -231,6 +231,7 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("knowbuddy - GUI Optimizations", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("TomyLobo - Mipmapping Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("ThVortex - FontRenderer fixes", this.width / 2 - 200, top, 0x808080); top += 10;
 
 
 		//Left half
