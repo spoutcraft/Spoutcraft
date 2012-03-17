@@ -249,7 +249,7 @@ public class FontRenderer {
 					}
 
 					var7 = Colorizer.colorizeText(this.colorCode[var6], var6) & 0xffffff | color & 0xff000000; //Spout HD
-					GL11.glColor4f((float)(var7 >> 16) / 255.0F, (float)(var7 >> 8 & 255) / 255.0F, (float)(var7 & 255) / 255.0F, (float)(var7 >> 24 & 0xff) / 255F);
+					GL11.glColor4f((float)(var7 >> 16 & 255) / 255.0F, (float)(var7 >> 8 & 255) / 255.0F, (float)(var7 & 255) / 255.0F, (float)(var7 >> 24 & 0xff) / 255F);
 				}
 
 				++var4;
@@ -279,7 +279,7 @@ public class FontRenderer {
 			this.boundTextureName = 0;
 			par4 = Colorizer.colorizeText(par4); //Spout HD
 			if ((par4 & 0xff000000) == 0) { //Spout fixed condition
-				par4 |= -0xff000000;
+				par4 |= 0xff000000;
 			}
 
 			if (par5) {

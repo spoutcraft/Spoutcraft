@@ -244,12 +244,12 @@ public class GuiIngame extends Gui
 		}
 
 		SpoutClient.enableSandbox();
-		boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
-		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
+		//boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
+		//int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
 
-		//GL11.glEnable(3042 /*GL_BLEND*/);
-		//GL11.glBlendFunc(770, 771);
-		//GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
+//		GL11.glEnable(3042 /*GL_BLEND*/);
+//		GL11.glBlendFunc(770, 771);
+//		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
 		GL11.glPushMatrix();
