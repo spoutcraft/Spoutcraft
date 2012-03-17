@@ -35,6 +35,7 @@ import org.spoutcraft.client.gui.InGameScreen;
 import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
+import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -226,5 +227,13 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	public void setGameMode(GameMode mode) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Screen getCurrentScreen() {
+		if(SpoutClient.getHandle().currentScreen == null) {
+			return null;
+		}
+		return SpoutClient.getHandle().currentScreen.getScreen();
 	}
 }

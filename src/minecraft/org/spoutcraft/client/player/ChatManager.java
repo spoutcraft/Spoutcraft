@@ -49,10 +49,11 @@ import net.minecraft.src.GuiChat;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
 import org.yaml.snakeyaml.Yaml;
 
-public class ChatManager {
+public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager{
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;
@@ -382,5 +383,35 @@ public class ChatManager {
 	
 	private File getFile() {
 		return new File(FileUtil.getSpoutcraftDirectory(), "chatSettings.yml");
+	}
+
+	@Override
+	public List<String> getIgnoredPlayers() {
+		return ignorePeople;
+	}
+
+	@Override
+	public List<String> getWordsToHighlight() {
+		return wordHighlight;
+	}
+
+	@Override
+	public boolean isHighlightingWords() {
+		return ConfigReader.highlightMentions;
+	}
+
+	@Override
+	public boolean isIgnoringPlayers() {
+		return ConfigReader.ignorePeople;
+	}
+
+	@Override
+	public int getScroll() {
+		return chatScroll;
+	}
+
+	@Override
+	public boolean isShowingJoins() {
+		return ConfigReader.showJoinMessages;
 	}
 }

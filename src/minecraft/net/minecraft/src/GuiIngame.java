@@ -9,11 +9,13 @@ import org.lwjgl.opengl.GL12;
 //Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
 //Spout End
+import org.spoutcraft.spoutcraftapi.player.ChatMessage;
 
 public class GuiIngame extends Gui
 {
@@ -245,68 +247,67 @@ public class GuiIngame extends Gui
 		boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
 		int lines = chatOpen ? mainScreen.getChatTextBox().getNumVisibleChatLines() : mainScreen.getChatTextBox().getNumVisibleLines();
 
-		GL11.glEnable(3042 /*GL_BLEND*/);
-		GL11.glBlendFunc(770, 771);
-		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
+		//GL11.glEnable(3042 /*GL_BLEND*/);
+		//GL11.glBlendFunc(770, 771);
+		//GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
-		if (chatTextWidget.isVisible()) {
-			int viewedLine = 0;
-			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size(), (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
-				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {
-					double opacity = 1.0D - chatMessageList.get(line).updateCounter / (double)chatTextWidget.getFadeoutTicks();
-					opacity *= 10D;
-					if(opacity < 0.0D) {
-						opacity = 0.0D;
-					}
-					if(opacity > 1.0D) {
-						opacity = 1.0D;
-					}
-					opacity *= opacity;
-					int color = chatOpen ? 255 : (int)(255D * opacity);
-					if (color > 0) {
-						int x = 2 + chatTextWidget.getX();
-						int y = chatTextWidget.getY() + (-viewedLine * 9);
-						String chat = chatMessageList.get(line).message;
-						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
-
-						boolean mentioned = false;
-						if (ConfigReader.highlightMentions) {
-							String[] split = chat.toLowerCase().split(":");
-							if (split.length == 1) {
-								split = chat.toLowerCase().split(">");
-							}
-							if (split.length > 1) {
-								String name = this.mc.thePlayer.username.toLowerCase();
-								if (!split[0].contains(name)) {
-									for (int part = 1; part < split.length; part++) {
-										if (split[part].contains(name)) {
-											mentioned = true;
-											break;
-										}
-									}
-								}
-							}
-						}
-
-						if (mentioned) {
-							drawRect(x, y - 1, x + 320, y + 8, RED);
-						}
-						else {
-							drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
-						}
-						GL11.glEnable(3042 /*GL_BLEND*/);
-						font.drawStringWithShadow(chat, x, y, 0xffffff + (color << 24));
-					}
-					viewedLine++;
-				}
-			}
-		}
-		SpoutClient.disableSandbox();
-
+		GL11.glPushMatrix();
+		chatTextWidget.render();
 		GL11.glPopMatrix();
+//		if (chatTextWidget.isVisible()) {
+//			int viewedLine = 0;
+//			for (int line = SpoutClient.getInstance().getChatManager().chatScroll; line < Math.min(chatMessageList.size(), (lines + SpoutClient.getInstance().getChatManager().chatScroll)); line++) {
+//				if (chatOpen || chatMessageList.get(line).updateCounter < chatTextWidget.getFadeoutTicks()) {
+//					double opacity = 1.0D - chatMessageList.get(line).updateCounter / (double)chatTextWidget.getFadeoutTicks();
+//					opacity *= 10D;
+//					if(opacity < 0.0D) {
+//						opacity = 0.0D;
+//					}
+//					if(opacity > 1.0D) {
+//						opacity = 1.0D;
+//					}
+//					opacity *= opacity;
+//					int color = chatOpen ? 255 : (int)(255D * opacity);
+//					if (color > 0) {
+//						int x = 2 + chatTextWidget.getX();
+//						int y = chatTextWidget.getY() + (-viewedLine * 9);
+//						String chat = chatMessageList.get(line).message;
+//						chat = SpoutClient.getInstance().getChatManager().formatChatColors(chat);
+//
+//						boolean mentioned = false;
+//						if (ConfigReader.highlightMentions) {
+//							String[] split = chat.toLowerCase().split(":");
+//							if (split.length == 1) {
+//								split = chat.toLowerCase().split(">");
+//							}
+//							if (split.length > 1) {
+//								String name = this.mc.thePlayer.username.toLowerCase();
+//								if (!split[0].contains(name)) {
+//									for (int part = 1; part < split.length; part++) {
+//										if (split[part].contains(name)) {
+//											mentioned = true;
+//											break;
+//										}
+//									}
+//								}
+//							}
+//						}
+//
+//						if (mentioned) {
+//							drawRect(x, y - 1, x + 320, y + 8, RED);
+//						}
+//						else {
+//							drawRect(x, y - 1, x + 320, y + 8, color / 2 << 24);
+//						}
+//						GL11.glEnable(3042 /*GL_BLEND*/);
+//						font.drawStringWithShadow(chat, x, y, 0xffffff + (color << 24));
+//					}
+//					viewedLine++;
+//				}
+//			}
+//		}
+		SpoutClient.disableSandbox();
 
 		ServerPlayerList playerList = mainScreen.getServerPlayerList();
 		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed && playerList.isVisible()) {
@@ -532,6 +533,10 @@ public class GuiIngame extends Gui
 	 */
 	public void updateTick()
 	{
+		if(Spoutcraft.getActivePlayer() != null) {
+			Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox().increaseAge();
+		}
+		
 		if (recordPlayingUpFor > 0)
 		{
 			recordPlayingUpFor--;
@@ -562,6 +567,10 @@ public class GuiIngame extends Gui
 		if (!ConfigReader.showJoinMessages && par1Str.toLowerCase().contains("joined the game")) {
 			return;
 		}
+		SpoutClient.enableSandbox();
+		ChatTextBox chatTextWidget = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
+		chatTextWidget.addChatMessage(ChatMessage.parseMessage(par1Str));
+		SpoutClient.disableSandbox();
 		//Spout end
 
 		int i;

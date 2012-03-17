@@ -99,6 +99,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 			chatText = (ChatTextBox)widget;
 		} else if (widget instanceof ChatBar) {
 			chat = (ChatBar)widget;
+			updateChatWindowSize((int) getWidth(), (int) getHeight());
 		} else if (widget instanceof ArmorBar) {
 			armor = (ArmorBar)widget;
 		} else if (widget instanceof HungerBar) {
@@ -202,7 +203,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		if (widget instanceof Screen) {
 			return false;
 		}
-		if (widget instanceof Control) {
+		if (widget instanceof Control && !(widget instanceof ChatTextBox)) {
 			return false;
 		}
 		return true;
@@ -236,4 +237,16 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		hunger.setVisible(toggle);
 		exp.setVisible(toggle);
 	}
+	
+	private void updateChatWindowSize(int screenWidth, int screenHeight) {
+		chat.setGeometry(0, 0, screenWidth, screenHeight);
+	}
+
+	@Override
+	protected void onScreenResized(int oldWidth, int oldHeight, int newWidth, int newHeight) {
+		updateChatWindowSize(newWidth, newHeight);
+		super.onScreenResized(oldWidth, oldHeight, newWidth, newHeight);
+	}
+	
+	
 }

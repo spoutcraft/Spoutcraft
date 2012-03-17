@@ -55,4 +55,9 @@ public class MinecraftFontWrapper implements MinecraftFont{
 	public void drawCenteredString(String text, int x, int y, int color) {
 		Minecraft.theMinecraft.fontRenderer.drawString(text, x, y - getTextWidth(text) / 2, color);
 	}
+
+	@Override
+	public void drawShadowedString(String text, int x, int y, int color) {
+		Minecraft.theMinecraft.fontRenderer.drawStringWithShadow(text, x, y, color);
+	}
 }
