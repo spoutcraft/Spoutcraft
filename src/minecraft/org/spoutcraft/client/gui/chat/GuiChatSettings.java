@@ -116,7 +116,9 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			@Override
 			public void run() {
 				SpoutClient.getInstance().getChatManager().save();
-				chat.reparse();
+				if(chat != null) {
+					chat.reparse();
+				}
 			}
 		};
 		boolean regex = ConfigReader.chatUsesRegex;
@@ -135,6 +137,9 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		}
 		if(btn == checkShowJoins) {
 			ConfigReader.showJoinMessages = checkShowJoins.isChecked();
+			if(chat != null) {
+				chat.reparse();
+			}
 		}
 		if(btn == checkShowColors) {
 			ConfigReader.showChatColors = checkShowColors.isChecked();
@@ -150,7 +155,9 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		}
 		if(btn == checkParseRegex) {
 			ConfigReader.chatUsesRegex = checkParseRegex.isChecked();
-			chat.reparse();
+			if(chat != null) {
+				chat.reparse();
+			}
 		}
 		ConfigReader.write();
 	}
