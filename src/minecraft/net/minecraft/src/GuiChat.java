@@ -126,7 +126,7 @@ public class GuiChat extends GuiScreen
 		}
 		ChatBar chatWidget = SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar();
 		java.util.List<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text, true);
-		drawRect((int)chatWidget.getScreenX(), (int)(chatWidget.getScreenY() - lines.size() * chatWidget.getHeight()), (int)chatWidget.getScreenX() + (int)chatWidget.getWidth(), (int)chatWidget.getScreenY(), 0x80000000);
+		this.drawRect(2, this.height - (int)(lines.size() * chatWidget.getHeight()), this.width - 2, this.height - 2, Integer.MIN_VALUE);
 		int size = lines.size();
 		int color = chatWidget.getTextColor().toInt();
 		for (int k = 0; k < lines.size(); k++) {
@@ -151,6 +151,7 @@ public class GuiChat extends GuiScreen
 			drawString(fontRenderer, ChatColor.LIGHT_PURPLE + "&d - Light Purple", width - 90, 140, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.YELLOW + "&e - Yellow", width - 90, 150, 0xFFFFFFF);
 			drawString(fontRenderer, ChatColor.WHITE + "&f - White", width - 90, 160, 0xFFFFFFF);
+			drawString(fontRenderer, ChatColor.WHITE + "(Disable this in chat options", width - 90, 160, 0xFFFFFFF);
 		}
 		//Spout Improved Chat End
 		super.drawScreen(var1, var2, var3);
