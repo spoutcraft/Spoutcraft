@@ -239,7 +239,8 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 	
 	private void updateChatWindowSize(int screenWidth, int screenHeight) {
-		chat.setGeometry(0, 0, screenWidth, screenHeight);
+		chatText.setGeometry(0, 0, 320, screenHeight);
+		//chat.setGeometry(0, 0, 320, screenHeight);
 	}
 
 	@Override
