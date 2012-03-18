@@ -85,7 +85,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax.");
 		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
 		
-		buttonAdvancedMentions = new GenericButton("Advanced options");
+		buttonAdvancedMentions = new GenericButton("Advanced Options");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted.");
 		
 		buttonConfigureIgnores = new GenericButton("Configure");
@@ -148,12 +148,12 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		};
 		boolean regex = ConfigReader.chatUsesRegex;
 		if(btn == buttonAdvancedMentions) {
-			GuiListEdit editor = new GuiListEdit(save, "Edit word highlight list", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
+			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
 			mc.displayGuiScreen(editor);
 			return;
 		}
 		if(btn == buttonConfigureIgnores) {
-			GuiListEdit editor = new GuiListEdit(save, "Edit people ignore list", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
+			GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
 			mc.displayGuiScreen(editor);
 			return;
 		}

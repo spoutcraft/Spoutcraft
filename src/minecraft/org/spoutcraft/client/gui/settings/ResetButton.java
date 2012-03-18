@@ -33,8 +33,8 @@ public class ResetButton extends SafeButton {
 	GameSettingsScreen parent;
 
 	public ResetButton(GameSettingsScreen parent) {
-		setText("Reset to default");
-		setTooltip("Resets every setting to the default.");
+		setText("Reset to Default");
+		setTooltip("Resets all options to default settings.");
 		this.parent = parent;
 	}
 
