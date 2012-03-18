@@ -120,8 +120,8 @@ public class GuiListEdit extends GuiSpoutScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonDone) {
-			if(onSave != null) {
+		if (btn == buttonDone) {
+			if (onSave != null) {
 				onSave.run();
 			}
 			mc.displayGuiScreen(parent);
@@ -129,23 +129,23 @@ public class GuiListEdit extends GuiSpoutScreen {
 		}
 		
 		ListItem listItem = (ListItem) list.getSelectedItem();
-		if(btn == buttonRemove && listItem != null) {
+		if (btn == buttonRemove && listItem != null) {
 			items.remove(listItem.getText());
 			list.removeItem(listItem);
-			if(onSave != null) {
+			if (onSave != null) {
 				onSave.run();
 			}
 			list.setSelection(-1);
 		}
-		if(btn == buttonEdit && listItem != null) {
+		if (btn == buttonEdit && listItem != null) {
 			editing = items.indexOf(listItem.getText());
 			editor.setText(listItem.getText());
 			editor.setPlaceholder("Enter new text for item");
 			buttonAdd.setText("Save");
 			editingItem = listItem;
 		}
-		if(btn == buttonAdd) {
-			if(editing != -1) {
+		if (btn == buttonAdd) {
+			if (editing != -1) {
 				items.remove(editing);
 				items.add(editing, editor.getText());
 				editingItem.setText(editor.getText());
@@ -153,7 +153,7 @@ public class GuiListEdit extends GuiSpoutScreen {
 				items.add(editor.getText());
 				list.addItem(new ListItem(editor.getText()));
 			}
-			if(onSave != null) {
+			if (onSave != null) {
 				onSave.run();
 			}
 			
@@ -211,7 +211,7 @@ public class GuiListEdit extends GuiSpoutScreen {
 	public void updateButtons() {
 		ListItem listItem = (ListItem) list.getSelectedItem();
 		boolean enable = true;
-		if(listItem == null) {
+		if (listItem == null) {
 			enable = false;
 		}
 		buttonEdit.setEnabled(enable);

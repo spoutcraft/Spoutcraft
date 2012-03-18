@@ -71,7 +71,7 @@ public class WorldModel extends FilterModel {
 	@Override
 	public void onSelected(int item, boolean doubleClick) {
 		buttonUpdater.updateButtons();
-		if(doubleClick) {
+		if (doubleClick) {
 			playWorld(item);
 		}
 	}

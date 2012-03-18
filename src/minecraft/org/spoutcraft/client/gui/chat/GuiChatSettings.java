@@ -127,12 +127,12 @@ public class GuiChatSettings extends GuiSpoutScreen {
 	@Override
 	protected void buttonClicked(Button btn) {
 		final ChatTextBox chat;
-		if(Spoutcraft.getActivePlayer() != null) {
+		if (Spoutcraft.getActivePlayer() != null) {
 			chat = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
 		} else {
 			chat = null;
 		}
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 			return;
 		}
@@ -141,46 +141,46 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			@Override
 			public void run() {
 				SpoutClient.getInstance().getChatManager().save();
-				if(chat != null) {
+				if (chat != null) {
 					chat.reparse();
 				}
 			}
 		};
 		boolean regex = ConfigReader.chatUsesRegex;
-		if(btn == buttonAdvancedMentions) {
+		if (btn == buttonAdvancedMentions) {
 			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
 			mc.displayGuiScreen(editor);
 			return;
 		}
-		if(btn == buttonConfigureIgnores) {
+		if (btn == buttonConfigureIgnores) {
 			GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
 			mc.displayGuiScreen(editor);
 			return;
 		}
-		if(btn == checkShowMentions) {
+		if (btn == checkShowMentions) {
 			ConfigReader.highlightMentions = checkShowMentions.isChecked();
 		}
-		if(btn == checkShowJoins) {
+		if (btn == checkShowJoins) {
 			ConfigReader.showJoinMessages = checkShowJoins.isChecked();
-			if(chat != null) {
+			if (chat != null) {
 				chat.reparse();
 			}
 		}
-		if(btn == checkShowColors) {
+		if (btn == checkShowColors) {
 			ConfigReader.showChatColors = checkShowColors.isChecked();
 		}
-		if(btn == checkCloseOnDamage) {
+		if (btn == checkCloseOnDamage) {
 			ConfigReader.showDamageAlerts = checkCloseOnDamage.isChecked();
 		}
-		if(btn == checkIgnorePeople) {
+		if (btn == checkIgnorePeople) {
 			ConfigReader.ignorePeople = checkIgnorePeople.isChecked();
 		}
-		if(btn == checkGrabMouse) {
+		if (btn == checkGrabMouse) {
 			ConfigReader.chatGrabsMouse = checkGrabMouse.isChecked();
 		}
-		if(btn == checkParseRegex) {
+		if (btn == checkParseRegex) {
 			ConfigReader.chatUsesRegex = checkParseRegex.isChecked();
-			if(chat != null) {
+			if (chat != null) {
 				chat.reparse();
 			}
 		}

@@ -87,7 +87,7 @@ public class GuiAddonConfigurationWrapper extends GuiSpoutScreen {
 	
 	@Override 
 	public void buttonClicked(Button btn) {
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 		}
 	}

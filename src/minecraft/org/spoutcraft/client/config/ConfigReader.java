@@ -198,7 +198,7 @@ public class ConfigReader {
 	}
 	
 	private static String getOrSetStringProperty(SettingsHandler settings, String property, String defaultValue) {
-		if(settings.checkProperty(property)) {
+		if (settings.checkProperty(property)) {
 			return settings.getPropertyString(property);
 		}
 		settings.put(property, defaultValue);

@@ -109,18 +109,18 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonMainMenu) {
+		if (btn == buttonMainMenu) {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
-		if(btn == buttonPlay) {
+		if (btn == buttonPlay) {
 			model.playWorld(view.getSelectedRow());
 		}
-		if(btn == buttonCreate) {
+		if (btn == buttonCreate) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiCreateWorld(this));
 		}
-		if(btn == buttonRename) {
+		if (btn == buttonRename) {
 			WorldItem item = (WorldItem) view.getSelectedItem();
-			if(item != null) {
+			if (item != null) {
 				final String worldname = item.getWorld().getWorldName();
 				final String worldsave = item.getFileName();
 				GuiTextDialog dialog = new GuiTextDialog("Enter a new name for '"+worldname+"'", worldname, new DialogEventHandler() {
@@ -139,7 +139,7 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 		boolean active = true;
 		try {
 			WorldItem item = (WorldItem) view.getSelectedItem();
-			if(item == null) {
+			if (item == null) {
 				active = false;
 			} else {
 				//TODO special value-based handling perhaps?

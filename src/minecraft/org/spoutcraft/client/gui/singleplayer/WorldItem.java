@@ -72,7 +72,7 @@ public class WorldItem implements ListWidgetItem {
 		StringTranslate stringtranslate = StringTranslate.getInstance();
 		f.drawString(getWorld().getWorldName(), x + 2, y + 2, 0xffffffff);
 		String type = getGameplayString(getWorld().getGameType());
-		if(save.isHardcoreModeEnabled()) {
+		if (save.isHardcoreModeEnabled()) {
 			type = stringtranslate.translateKey("gameMode.hardcore");
 		}
 		f.drawString(type, x + 2, y + 13, 0xffaaaaaa);

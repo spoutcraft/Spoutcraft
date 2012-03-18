@@ -52,11 +52,11 @@ public abstract class FilterModel extends AbstractListModel {
 			boolean matches = true;
 			for(FilterItem filter:filters) {
 				matches = filter.matches(item);
-				if(!matches) {
+				if (!matches) {
 					break;
 				}
 			}
-			if(matches) {
+			if (matches) {
 				filteredItems.add(item);
 			}
 		}
@@ -68,7 +68,7 @@ public abstract class FilterModel extends AbstractListModel {
 	
 	@Override
 	public ListWidgetItem getItem(int row) {
-		if(row >= 0 && row < filteredItems.size()) {			
+		if (row >= 0 && row < filteredItems.size()) {			
 			return filteredItems.get(row);
 		}
 		return null;

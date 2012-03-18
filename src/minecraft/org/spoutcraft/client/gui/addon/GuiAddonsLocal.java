@@ -169,7 +169,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		if (btn.equals(buttonOpenFolder)) {
 			Sys.openURL("file://"+SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
 		}
-		if(btn.equals(buttonOpenConfiguration)) {
+		if (btn.equals(buttonOpenConfiguration)) {
 			AddonItem item = (AddonItem) addonsView.getSelectedItem();
 			GuiAddonConfigurationWrapper wrapper = new GuiAddonConfigurationWrapper(item.getAddon(), this);
 			if (item != null) {

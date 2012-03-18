@@ -85,10 +85,10 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 		super.keyTyped(var1, var2);
 		try {
 			int i = Integer.valueOf(var1 + "");
-			if(i == 0) {
+			if (i == 0) {
 				i = 10;
 			}
-			if(bindings.size() >= i) {
+			if (bindings.size() >= i) {
 				AbstractBinding binding = bindings.get(i - 1);
 				summon(binding);
 			}
@@ -97,7 +97,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 	
 	@Override
 	public void buttonClicked(Button btn) {
-		if(btn == buttonCancel) {
+		if (btn == buttonCancel) {
 			mc.displayGuiScreen(parent);
 		}
 	}
@@ -127,8 +127,8 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 		}
 
 		public void render(int x, int y, int width, int height) {
-			if(index <= 10) {
-				if(pressed != binding) {
+			if (index <= 10) {
+				if (pressed != binding) {
 					RenderUtil.drawRectangle(x + 1, y + 1, x + 12, y + 12, 0xff888888);
 					RenderUtil.drawGradientRectangle(x + 2, y + 2, x + 11, y + 11, 0xffffffff, 0xffaaaaaa);
 					mc.fontRenderer.drawString(index + "", x + 4, y + 3, 0xff333333);
@@ -142,11 +142,11 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 		}
 
 		public void onClick(int x, int y, boolean doubleClick) {
-			if(x == -1 && y == -1 && !doubleClick) {
+			if (x == -1 && y == -1 && !doubleClick) {
 				return;
 			}
 			summon(binding);
-			if(!doubleClick) {
+			if (!doubleClick) {
 				Spoutcraft.getActivePlayer().showAchievement(ChatColor.WHITE + "You can use 1-9", "on your keyboard too", Item.book.shiftedIndex);
 			}
 		}
@@ -158,7 +158,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 	}
 	
 	protected void summon(final AbstractBinding binding) {
-		if(pressed != null) {
+		if (pressed != null) {
 			return;
 		}
 		Timer t = new Timer();

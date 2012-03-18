@@ -76,11 +76,11 @@ public class GuiTextDialog extends GuiSpoutScreen {
 	}
 
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonCancel) {
+		if (btn == buttonCancel) {
 			handler.onCancel(this);
 			mc.displayGuiScreen(parent);
 		}
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			handler.onDone(this);
 			mc.displayGuiScreen(parent);
 		}
@@ -88,7 +88,7 @@ public class GuiTextDialog extends GuiSpoutScreen {
 	
 	public void setTitle(String title) {
 		this.title = title;
-		if(labelTitle != null) {
+		if (labelTitle != null) {
 			labelTitle.setText(title);
 		}
 	}
@@ -99,7 +99,7 @@ public class GuiTextDialog extends GuiSpoutScreen {
 
 	public void setText(String text) {
 		this.text = text;
-		if(textText != null) {
+		if (textText != null) {
 			textText.setText(text);  //redundant text is redundant
 		}
 	}

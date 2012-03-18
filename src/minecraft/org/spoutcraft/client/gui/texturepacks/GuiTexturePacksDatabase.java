@@ -287,7 +287,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 	}
 
 	public void onEvent(AnimationStopEvent event) {
-		if(animatedTexture != null && event.getAnimation() == animation) {
+		if (animatedTexture != null && event.getAnimation() == animation) {
 			animatedTexture.setVisible(false);
 		}
 	}

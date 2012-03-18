@@ -232,7 +232,7 @@ public class GuiEditShortcut extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		if(recording) {
+		if (recording) {
 			System.out.println("Set mouse button to shortcut "+button);
 			item.setRawModifiers(SimpleKeyBindingManager.getPressedModifiers());
 			item.setKey(button + SimpleKeyBindingManager.MOUSE_OFFSET);

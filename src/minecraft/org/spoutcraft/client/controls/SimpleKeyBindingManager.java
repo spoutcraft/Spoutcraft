@@ -87,11 +87,11 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public void unregisterShortcut(Shortcut shortcut) {
-		if(shortcut == null) {
+		if (shortcut == null) {
 			return;
 		}
 		shortcuts.remove(shortcut);
-		if(bindingsForKey.get(shortcut.getKey()) == null) {
+		if (bindingsForKey.get(shortcut.getKey()) == null) {
 			return;
 		}
 		bindingsForKey.get(shortcut.getKey()).remove(shortcut);
@@ -99,11 +99,11 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public void unregisterControl(KeyBinding binding) {
-		if(binding == null) {
+		if (binding == null) {
 			return;
 		}
 		bindings.remove(binding);
-		if(bindingsForKey.get(binding.getKey()) == null) {
+		if (bindingsForKey.get(binding.getKey()) == null) {
 			return;
 		}
 		bindingsForKey.get(binding.getKey()).remove(binding);
@@ -114,14 +114,14 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if (bindings == null) {
 			bindings = new ArrayList<KeyBinding>();
 		}
-		if(shortcuts == null) {
+		if (shortcuts == null) {
 			shortcuts = new ArrayList<Shortcut>();
 		}
 
 		bindingsForKey.clear();
 		for (KeyBinding binding:bindings) {
 			ArrayList<AbstractBinding> bindings = bindingsForKey.get(binding.getKey());
-			if(bindings == null) {
+			if (bindings == null) {
 				bindings = new ArrayList<AbstractBinding>();
 				bindingsForKey.put(binding.getKey(), bindings);
 			}
@@ -129,7 +129,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 		for (Shortcut binding:shortcuts) {
 			ArrayList<AbstractBinding> bindings = bindingsForKey.get(binding.getKey());
-			if(bindings == null) {
+			if (bindings == null) {
 				bindings = new ArrayList<AbstractBinding>();
 				bindingsForKey.put(binding.getKey(), bindings);
 			}
@@ -261,22 +261,22 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public void pressKey(int key, boolean keyPressed, int screen) {
-		if(SpoutClient.getHandle().currentScreen instanceof GuiAmbigousInput || SpoutClient.getHandle().currentScreen instanceof GuiControls) {
+		if (SpoutClient.getHandle().currentScreen instanceof GuiAmbigousInput || SpoutClient.getHandle().currentScreen instanceof GuiControls) {
 			return;
 		}
-		if(bindingsForKey.containsKey(key)) {
+		if (bindingsForKey.containsKey(key)) {
 			ArrayList<AbstractBinding> bindings = bindingsForKey.get(key);
 			ArrayList<AbstractBinding> effective = new ArrayList<AbstractBinding>();
 			for(AbstractBinding b:bindings) {
-				if(b.matches(key, getPressedModifiers())) {
+				if (b.matches(key, getPressedModifiers())) {
 					effective.add(b);
 				}
 			}
-			if(effective.size() == 0) {
+			if (effective.size() == 0) {
 				return;
-			} else if(effective.size() == 1) {
+			} else if (effective.size() == 1) {
 				effective.iterator().next().summon(key, !keyPressed, screen);
-			} else if(screen == 0 || (getPressedModifiers() != 0 && getPressedModifiers() != AbstractBinding.MOD_SHIFT)) {
+			} else if (screen == 0 || (getPressedModifiers() != 0 && getPressedModifiers() != AbstractBinding.MOD_SHIFT)) {
 				GuiScreen parent = SpoutClient.getHandle().currentScreen;
 				SpoutClient.getHandle().displayGuiScreen(new GuiAmbigousInput(effective, parent));
 			} else {

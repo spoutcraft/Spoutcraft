@@ -231,7 +231,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	@Override
 	public Screen getCurrentScreen() {
-		if(SpoutClient.getHandle().currentScreen == null) {
+		if (SpoutClient.getHandle().currentScreen == null) {
 			return getMainScreen();
 		}
 		return SpoutClient.getHandle().currentScreen.getScreen();

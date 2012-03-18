@@ -46,12 +46,12 @@ public class WorldSearchField extends GenericTextField implements FilterItem{
 	}
 
 	public boolean matches(Object obj) {
-		if(getText().trim().isEmpty()) {
+		if (getText().trim().isEmpty()) {
 			return true;
 		}
-		if(obj instanceof WorldItem) {
+		if (obj instanceof WorldItem) {
 			WorldItem world = (WorldItem) obj;
-			if(world.getWorld().getWorldName().toLowerCase().contains(getText().toLowerCase())) {
+			if (world.getWorld().getWorldName().toLowerCase().contains(getText().toLowerCase())) {
 				return true;
 			}
 		}
