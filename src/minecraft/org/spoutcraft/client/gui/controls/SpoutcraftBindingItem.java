@@ -32,7 +32,7 @@ import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
 
 public class SpoutcraftBindingItem extends ControlsBasicItem {
-	private KeyBinding binding;
+	protected KeyBinding binding;
 	private ControlsModel parent;
 	public SpoutcraftBindingItem(KeyBinding binding, ControlsModel model) {
 		super(model);
@@ -76,5 +76,30 @@ public class SpoutcraftBindingItem extends ControlsBasicItem {
 
 	public String getName() {
 		return binding.keyDescription;
+	}
+	
+	@Override
+	public boolean conflicts(ControlsBasicItem other) {
+		if (other instanceof VanillaBindingItem) {
+			GameSettings settings = SpoutClient.getHandle().gameSettings;
+			VanillaBindingItem item = (VanillaBindingItem)other;
+			boolean flightKey = binding == settings.keyFlyBack ||
+				binding == settings.keyFlyLeft ||
+				binding == settings.keyFlyForward ||
+				binding == settings.keyFlyRight ||
+				binding == settings.keyFlyUp ||
+				binding == settings.keyFlyDown;
+			boolean movementKey = item.binding == settings.keyBindBack ||
+				item.binding == settings.keyBindLeft ||
+				item.binding == settings.keyBindForward ||
+				item.binding == settings.keyBindRight ||
+				item.binding == settings.keyBindJump ||
+				item.binding == settings.keyBindSneak;
+			//Allow overlaps
+			if (flightKey && movementKey) {
+				return false;
+			}
+		}
+		return super.conflicts(other);
 	}
 }

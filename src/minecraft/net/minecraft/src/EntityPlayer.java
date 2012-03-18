@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 //Spout Start
 import org.bukkit.ChatColor;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftHumanEntity;
 //Spout End
 
@@ -99,6 +100,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean sneakToggle = false;
 	public boolean runToggle = false;
 	public boolean treadWaterToggle = false;
+	public boolean autoforwardToggle = false;
 	//Spout end
 
 	public EntityPlayer(World par1World) {
@@ -1084,6 +1086,12 @@ public abstract class EntityPlayer extends EntityLiving {
 			double var9 = this.motionY;
 			float var11 = this.jumpMovementFactor;
 			this.jumpMovementFactor = 0.05F;
+			//Spout start
+			jumpMovementFactor *= ConfigReader.flightSpeedMultiplier;
+			if (this.isSprinting()) {
+				jumpMovementFactor += ConfigReader.flightSpeedMultiplier / 10;
+			}
+			//Spout end
 			super.moveEntityWithHeading(par1, par2);
 			this.motionY = var9 * 0.6D;
 			this.jumpMovementFactor = var11;

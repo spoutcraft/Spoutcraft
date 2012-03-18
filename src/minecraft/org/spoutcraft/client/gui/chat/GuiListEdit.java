@@ -174,27 +174,22 @@ public class GuiListEdit extends GuiSpoutScreen {
 			this.text = text;
 		}
 		
-		@Override
 		public void setListWidget(ListWidget widget) {
 			this.widget = widget;
 		}
 
-		@Override
 		public ListWidget getListWidget() {
 			return widget;
 		}
 
-		@Override
 		public int getHeight() {
 			return 13;
 		}
 
-		@Override
 		public void render(int x, int y, int width, int height) {
 			Spoutcraft.getMinecraftFont().drawString(text, x + 2, y + 2, 0xffffffff);
 		}
 
-		@Override
 		public void onClick(int x, int y, boolean doubleClick) {
 			updateButtons();
 		}

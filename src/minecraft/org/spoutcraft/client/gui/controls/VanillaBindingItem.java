@@ -28,10 +28,11 @@ package org.spoutcraft.client.gui.controls;
 import org.spoutcraft.client.SpoutClient;
 
 import net.minecraft.src.FontRenderer;
+import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
 
 public class VanillaBindingItem extends ControlsBasicItem {
-	private KeyBinding binding;
+	protected KeyBinding binding;
 	private int n ;
 	private ControlsModel parent;
 	public VanillaBindingItem(int n, KeyBinding binding, ControlsModel model) {
@@ -76,5 +77,30 @@ public class VanillaBindingItem extends ControlsBasicItem {
 
 	public String getName() {
 		return SpoutClient.getHandle().gameSettings.getKeyBindingDescription(n);
+	}
+	
+	@Override
+	public boolean conflicts(ControlsBasicItem other) {
+		if (other instanceof SpoutcraftBindingItem) {
+			GameSettings settings = SpoutClient.getHandle().gameSettings;
+			SpoutcraftBindingItem item = (SpoutcraftBindingItem)other;
+			boolean flightKey = item.binding == settings.keyFlyBack ||
+				item.binding == settings.keyFlyLeft ||
+				item.binding == settings.keyFlyForward ||
+				item.binding == settings.keyFlyRight ||
+				item.binding == settings.keyFlyUp ||
+				item.binding == settings.keyFlyDown;
+			boolean movementKey = binding == settings.keyBindBack ||
+				binding == settings.keyBindLeft ||
+				binding == settings.keyBindForward ||
+				binding == settings.keyBindRight ||
+				binding == settings.keyBindJump ||
+				binding == settings.keyBindSneak;
+			//Allow overlaps
+			if (flightKey && movementKey) {
+				return false;
+			}
+		}
+		return super.conflicts(other);
 	}
 }

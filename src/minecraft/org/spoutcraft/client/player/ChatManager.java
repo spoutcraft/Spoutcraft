@@ -385,37 +385,30 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		return new File(FileUtil.getSpoutcraftDirectory(), "chatSettings.yml");
 	}
 
-	@Override
 	public List<String> getIgnoredPlayers() {
 		return ignorePeople;
 	}
 
-	@Override
 	public List<String> getWordsToHighlight() {
 		return wordHighlight;
 	}
 
-	@Override
 	public boolean isHighlightingWords() {
 		return ConfigReader.highlightMentions;
 	}
 
-	@Override
 	public boolean isIgnoringPlayers() {
 		return ConfigReader.ignorePeople;
 	}
 
-	@Override
 	public int getScroll() {
 		return chatScroll;
 	}
 
-	@Override
 	public boolean isShowingJoins() {
 		return ConfigReader.showJoinMessages;
 	}
 
-	@Override
 	public boolean isUsingRegex() {
 		return ConfigReader.chatUsesRegex;
 	}

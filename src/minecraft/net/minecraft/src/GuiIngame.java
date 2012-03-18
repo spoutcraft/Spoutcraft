@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL12;
 //Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.Color;
@@ -26,6 +27,7 @@ public class GuiIngame extends Gui
 	/** A list with all the chat messages in. */
 	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(2500);
 	private static final int RED = (new Color(1.0F, 0F, 0F, 0.65F).toInt());
+	private final ZanMinimap map = new ZanMinimap();
 	//Spout Improved Chat End
 
 	public static final Random rand = new Random(); //Spout private -> public static final
@@ -134,6 +136,8 @@ public class GuiIngame extends Gui
 		// Exp Bar End
 
 		SpoutClient.disableSandbox();
+		
+		map.onRenderTick();
 
 		GL11.glDisable(3042 /* GL_BLEND */);
 		GL11.glEnable('\u803a');

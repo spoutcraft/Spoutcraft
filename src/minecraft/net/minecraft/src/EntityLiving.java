@@ -41,6 +41,7 @@ import net.minecraft.src.World;
 
 //Spout Start
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -889,7 +890,7 @@ public abstract class EntityLiving extends Entity {
 
 			float var9 = 0.16277136F / (var8 * var8 * var8);
 			float var5;
-			//XXX check this
+
 			if (this.onGround) {
 				if (this.isAIEnabled()) {
 					var5 = (float) (this.func_48101_aR() * getData().getWalkingMod()); //Spout
@@ -900,11 +901,13 @@ public abstract class EntityLiving extends Entity {
 				var5 *= var9;
 			} else {
 				var5 = this.jumpMovementFactor;
+				//Spout start
+				var5 *= getData().getAirspeedMod();
+				//Spout end
 			}
-			//Spout start
-			var5 *= getData().getAirspeedMod();
+
 			this.moveFlying(par1, par2, var5);
-			//Spout end
+			
 			var8 = 0.91F;
 			if (this.onGround) {
 				var8 = 0.54600006F;

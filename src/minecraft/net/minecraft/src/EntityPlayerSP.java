@@ -33,6 +33,7 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 //Spout start
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -217,13 +218,15 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 
 			if (this.capabilities.isFlying) {
-				if (this.movementInput.sneak) {
-					this.motionY -= 0.15D;
+				//Spout start
+				if (this.movementInput.flyingDown) { 
+					this.motionY -= 0.15D * ConfigReader.flightSpeedMultiplier;
 				}
 
-				if (this.movementInput.jump) {
-					this.motionY += 0.15D;
+				if (this.movementInput.flyingUp) {
+					this.motionY += 0.15D * ConfigReader.flightSpeedMultiplier;
 				}
+				//Spout end
 			}
 
 			super.onLivingUpdate();
@@ -499,6 +502,13 @@ public class EntityPlayerSP extends EntityPlayer {
 					setSprinting(false);
 					sneakToggle = false;
 				}
+			}
+			//Purposely it's own block, can be toggled independantly
+			else if (key == settings.keyAutoForward.keyCode) {
+				autoforwardToggle = !autoforwardToggle;
+			}
+			else if (key == settings.keyBindForward.keyCode && autoforwardToggle) {
+				autoforwardToggle = false;
 			}
 		}
 	}

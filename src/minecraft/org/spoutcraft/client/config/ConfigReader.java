@@ -82,6 +82,7 @@ public class ConfigReader {
 	public static boolean chatUsesRegex;
 	public static boolean sendColorsAsUnicode = true;
 	public static boolean clientLight = false;
+	public static float flightSpeedMultiplier = 2.0F;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;

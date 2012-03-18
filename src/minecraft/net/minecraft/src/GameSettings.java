@@ -44,10 +44,18 @@ public class GameSettings {
 	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
 	//Spout start
 	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle Fog", Keyboard.KEY_F); 
-	public KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
-	public KeyBinding keyRunToggle = new KeyBinding("Run Toggle", Keyboard.KEY_RCONTROL);
-	public KeyBinding keyTreadWaterToggle = new KeyBinding("Tread Water Toggle", Keyboard.KEY_Z); 
-	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle};
+	public final KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
+	public final KeyBinding keyRunToggle = new KeyBinding("Run Toggle", Keyboard.KEY_RCONTROL);
+	public final KeyBinding keyTreadWaterToggle = new KeyBinding("Tread Water Toggle", Keyboard.KEY_Z); 
+	public final KeyBinding keyAutoForward = new KeyBinding("Forward Toggle", Keyboard.KEY_G);
+	public final KeyBinding keyFlyForward = new KeyBinding("Fly Foward", 17);
+	public KeyBinding keyFlyLeft = new KeyBinding("Fly Left", 30);
+	public KeyBinding keyFlyBack = new KeyBinding("Fly Back", 31);
+	public KeyBinding keyFlyRight = new KeyBinding("Fly Right", 32);
+	public KeyBinding keyFlyUp = new KeyBinding("Fly Up", Keyboard.KEY_SPACE);
+	public KeyBinding keyFlyDown = new KeyBinding("Fly Down", Keyboard.KEY_LSHIFT);
+	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle, keyAutoForward,
+			keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown};
 	//Spout end
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;

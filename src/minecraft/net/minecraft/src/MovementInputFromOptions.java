@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.spoutcraft.client.config.ConfigReader;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.MovementInput;
@@ -56,7 +58,7 @@ public class MovementInputFromOptions extends MovementInput {
 	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
-		if (this.gameSettings.keyBindForward.pressed) {
+		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { //Spout
 			++this.moveForward;
 		}
 
@@ -71,6 +73,30 @@ public class MovementInputFromOptions extends MovementInput {
 		if (this.gameSettings.keyBindRight.pressed) {
 			--this.moveStrafe;
 		}
+		
+		//Spout start
+		this.flyingDown = this.gameSettings.keyFlyDown.pressed;
+		this.flyingUp = this.gameSettings.keyFlyUp.pressed;
+		if (par1EntityPlayer.capabilities.isFlying){
+			this.moveStrafe = 0.0F;
+			this.moveForward = 0.0F;
+			if (this.gameSettings.keyFlyForward.pressed || par1EntityPlayer.autoforwardToggle) { //Spout
+				++this.moveForward;
+			}
+
+			if (this.gameSettings.keyFlyBack.pressed) {
+				--this.moveForward;
+			}
+
+			if (this.gameSettings.keyFlyLeft.pressed) {
+				++this.moveStrafe;
+			}
+
+			if (this.gameSettings.keyFlyRight.pressed) {
+				--this.moveStrafe;
+			}
+		}
+		//Spout end
 
 		this.jump = this.gameSettings.keyBindJump.pressed;
 		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; //Spout
