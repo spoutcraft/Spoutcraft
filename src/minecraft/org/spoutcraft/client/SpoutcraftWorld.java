@@ -34,8 +34,6 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
 
-import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
 import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
 import org.spoutcraft.spoutcraftapi.Effect;
@@ -59,7 +57,10 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
-public class SpoutcraftWorld implements World{
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.entity.CraftEntity;
+
+public class SpoutcraftWorld implements World {
 	private final net.minecraft.src.World handle;
 	private Environment environment;
 
@@ -306,9 +307,9 @@ public class SpoutcraftWorld implements World{
 
 	public List<Entity> getEntities() {
 		ArrayList<Entity> ret = new ArrayList<Entity>();
-		for (Object mcentity:handle.loadedEntityList) {
+		for (Object mcentity : handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.Entity) {
-				ret.add(((net.minecraft.src.Entity)mcentity).spoutEntity);
+				ret.add(((net.minecraft.src.Entity) mcentity).spoutEntity);
 			}
 		}
 		return ret;
@@ -316,9 +317,9 @@ public class SpoutcraftWorld implements World{
 
 	public List<LivingEntity> getLivingEntities() {
 		ArrayList<LivingEntity> ret = new ArrayList<LivingEntity>();
-		for (Object mcentity:handle.loadedEntityList) {
+		for (Object mcentity : handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityLiving) {
-				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving)mcentity).spoutEntity);
+				ret.add((LivingEntity) ((net.minecraft.src.EntityLiving) mcentity).spoutEntity);
 			}
 		}
 		return ret;
@@ -326,9 +327,9 @@ public class SpoutcraftWorld implements World{
 
 	public List<Player> getPlayers() {
 		ArrayList<Player> ret = new ArrayList<Player>();
-		for (Object mcentity:handle.loadedEntityList) {
+		for (Object mcentity : handle.loadedEntityList) {
 			if (mcentity instanceof net.minecraft.src.EntityPlayer) {
-				ret.add((Player) ((net.minecraft.src.EntityPlayer)mcentity).spoutEntity);
+				ret.add((Player) ((net.minecraft.src.EntityPlayer) mcentity).spoutEntity);
 			}
 		}
 		return ret;

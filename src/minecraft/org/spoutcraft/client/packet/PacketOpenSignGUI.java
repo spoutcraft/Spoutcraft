@@ -37,12 +37,11 @@ import net.minecraft.src.World;
 import org.spoutcraft.client.SpoutClient;
 
 public class PacketOpenSignGUI implements SpoutPacket {
-	int x,y,z;
+	int x, y, z;
 
 	public int getNumBytes() {
 		return 12; //Never be too lazy to calculate !
 	}
-
 
 	public void readData(DataInputStream input) throws IOException {
 		x = input.readInt();
@@ -59,8 +58,8 @@ public class PacketOpenSignGUI implements SpoutPacket {
 	public void run(int playerId) {
 		World world = SpoutClient.getHandle().theWorld;
 		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if (te!=null && te instanceof TileEntitySign) {
-			TileEntitySign sign = (TileEntitySign)te;
+		if (te != null && te instanceof TileEntitySign) {
+			TileEntitySign sign = (TileEntitySign) te;
 			GuiEditSign gui = new GuiEditSign(sign);
 			SpoutClient.getHandle().displayGuiScreen(gui);
 		}

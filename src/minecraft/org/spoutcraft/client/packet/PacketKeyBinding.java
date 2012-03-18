@@ -30,9 +30,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketKeyBinding implements SpoutPacket {
 	private String id;
@@ -77,7 +78,8 @@ public class PacketKeyBinding implements SpoutPacket {
 		SpoutClient.getInstance().getKeyBindingManager().registerControl(binding);
 	}
 
-	public void failure(int playerId) {}
+	public void failure(int playerId) {
+	}
 
 	public PacketType getPacketType() {
 		return PacketType.PacketKeyBinding;

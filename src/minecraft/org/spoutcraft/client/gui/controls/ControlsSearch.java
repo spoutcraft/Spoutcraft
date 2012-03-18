@@ -26,6 +26,7 @@
 package org.spoutcraft.client.gui.controls;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
@@ -34,7 +35,7 @@ public class ControlsSearch extends GenericTextField {
 
 	public ControlsSearch(GuiControls gui) {
 		this.gui = gui;
-		setPlaceholder(ChatColor.GRAY+"Search");
+		setPlaceholder(ChatColor.GRAY + "Search");
 	}
 
 	@Override

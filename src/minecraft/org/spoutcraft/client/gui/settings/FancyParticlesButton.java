@@ -27,11 +27,13 @@ package org.spoutcraft.client.gui.settings;
 
 import java.util.UUID;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FancyParticlesButton extends AutomatedCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class FancyParticlesButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
+
 	public FancyParticlesButton(UUID fancyGraphics) {
 		super("Fancy Particles");
 		this.fancyGraphics = fancyGraphics;
@@ -43,6 +45,6 @@ public class FancyParticlesButton extends AutomatedCheckBox{
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.fancyParticles = !ConfigReader.fancyParticles;
 		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		((FancyGraphicsButton) getScreen().getWidget(fancyGraphics)).custom = true;
 	}
 }

@@ -36,19 +36,20 @@ import java.net.URLConnection;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
-
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
+
+import org.spoutcraft.spoutcraftapi.gui.ListWidget;
+import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
 public class TextureItem implements ListWidgetItem {
 	private int id;
@@ -63,15 +64,15 @@ public class TextureItem implements ListWidgetItem {
 	private boolean installed = false;
 	private long size;
 	private static HashMap<Integer, Download> downloads = new HashMap<Integer, TextureItem.Download>();
-	
+
 	public static void registerDownload(int id, Download download) {
 		downloads.put(id, download);
 	}
-	
+
 	public static void unregisterDownload(int id) {
 		downloads.remove(id);
 	}
-	
+
 	public static Download getDownload(int id) {
 		return downloads.get(id);
 	}
@@ -91,27 +92,27 @@ public class TextureItem implements ListWidgetItem {
 	public void render(int x, int y, int width, int height) {
 		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
-		font.drawStringWithShadow("by "+ChatColor.WHITE + getAuthor(), x+29, y+11, 0xffaaaaaa);
+		font.drawStringWithShadow(getName(), x + 29, y + 2, 0xffffffff);
+		font.drawStringWithShadow("by " + ChatColor.WHITE + getAuthor(), x + 29, y + 11, 0xffaaaaaa);
 
 		String sResolution = resolution + "x";
 		int sWidth = font.getStringWidth(sResolution);
-		font.drawStringWithShadow(sResolution, x + width - sWidth - 2, y+2, 0xffaaaaaa);
+		font.drawStringWithShadow(sResolution, x + width - sWidth - 2, y + 2, 0xffaaaaaa);
 		String desc = r.getFittingText(getDescription(), width - 2 - 29);
 		font.drawStringWithShadow(desc, x + 29, y + 20, 0xffaaaaaa);
 		String sStatus = "";
-		if (size > 1024*1024*9000) {
-			sStatus = ChatColor.RED+"It's over 9000! ";
+		if (size > 1024 * 1024 * 9000) {
+			sStatus = ChatColor.RED + "It's over 9000! ";
 		}
-		if (size > 1024*1024) {
-			sStatus += size / (1024*1024) + " MB";
+		if (size > 1024 * 1024) {
+			sStatus += size / (1024 * 1024) + " MB";
 		} else if (size > 1024) {
 			sStatus = size / 1024 + " KB";
 		} else {
 			sStatus = size + " Bytes";
 		}
 		if (isDownloading()) {
-			sStatus = "Downloading: "+ChatColor.WHITE + download.getProgress() + "%";
+			sStatus = "Downloading: " + ChatColor.WHITE + download.getProgress() + "%";
 		}
 		if (downloadFail != null) {
 			sStatus = downloadFail;
@@ -121,7 +122,7 @@ public class TextureItem implements ListWidgetItem {
 		}
 		if (sStatus != null) {
 			sWidth = font.getStringWidth(sStatus);
-			font.drawStringWithShadow(sStatus, x+width-sWidth-2, y+11, 0xffaaaaaa);
+			font.drawStringWithShadow(sStatus, x + width - sWidth - 2, y + 11, 0xffaaaaaa);
 		}
 
 		String iconUrl = getIconUrl();
@@ -136,7 +137,8 @@ public class TextureItem implements ListWidgetItem {
 		}
 	}
 
-	public void onClick(int x, int y, boolean doubleClick) {}
+	public void onClick(int x, int y, boolean doubleClick) {
+	}
 
 	public String getName() {
 		return name;
@@ -211,10 +213,14 @@ public class TextureItem implements ListWidgetItem {
 		if (download == null && !installed) {
 			downloadFail = null;
 			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed) SpoutClient.disableSandbox();
+			if (wasSandboxed) {
+				SpoutClient.disableSandbox();
+			}
 			download = new Download(this);
 			download.start();
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 
@@ -237,7 +243,7 @@ public class TextureItem implements ListWidgetItem {
 			try {
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://static.spout.org/texture/"+item.getId()+".zip");
+				url = new URL("http://static.spout.org/texture/" + item.getId() + ".zip");
 				File temp = new File(FileUtil.getTempDirectory(), FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				conn.setReadTimeout(10000);
@@ -251,18 +257,18 @@ public class TextureItem implements ListWidgetItem {
 				int bytes;
 				long totalBytes = 0;
 				long last = 0;
-				final byte[] buffer = new byte[1024*1024];
+				final byte[] buffer = new byte[1024 * 1024];
 
-				long step = Math.max(1024*1024, length / 8);
+				long step = Math.max(1024 * 1024, length / 8);
 
 				while ((bytes = in.read(buffer)) >= 0) {
 					bos.write(buffer, 0, bytes);
 					totalBytes += bytes;
-					progress = (int) (((double)totalBytes / (double)length) * 100);
+					progress = (int) (((double) totalBytes / (double) length) * 100);
 					if (length > 0 && totalBytes > (last + step)) {
 						last = totalBytes;
-						long mb = totalBytes/(1024*1024);
-						System.out.println("Downloading: " + url + " " + mb + "MB/" + (length/(1024*1024)));
+						long mb = totalBytes / (1024 * 1024);
+						System.out.println("Downloading: " + url + " " + mb + "MB/" + (length / (1024 * 1024)));
 					}
 					try {
 						Thread.sleep(25);
@@ -274,8 +280,7 @@ public class TextureItem implements ListWidgetItem {
 				bos.close();
 
 				FileUtils.moveFile(temp, new File(folder, fileName));
-
-			} catch(MalformedURLException e) {
+			} catch (MalformedURLException e) {
 			} catch (IOException e) {
 				downloadFail = ChatColor.RED + e.getClass().getSimpleName();
 				e.printStackTrace();
@@ -291,6 +296,6 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public String getIconUrl() {
-		return "http://static.spout.org/texture/thumb/"+getId()+".png";
+		return "http://static.spout.org/texture/thumb/" + getId() + ".png";
 	}
 }

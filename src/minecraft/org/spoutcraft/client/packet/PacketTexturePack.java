@@ -27,19 +27,20 @@ package org.spoutcraft.client.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 
 import net.minecraft.src.RenderEngine;
+
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.texture.TexturePackAction;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketTexturePack implements SpoutPacket{
+public class PacketTexturePack implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];
 	private String url;
 	private long expectedCRC;

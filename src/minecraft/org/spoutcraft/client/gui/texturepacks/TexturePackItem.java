@@ -30,23 +30,24 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.pclewis.mcpatcher.mod.TextureUtils;
+
+import org.getspout.commons.ChatColor;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
-import org.getspout.commons.ChatColor;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 
+import org.spoutcraft.client.SpoutClient;
+
 public class TexturePackItem implements ListWidgetItem {
 	protected final static Map<String, Integer> texturePackSize = new HashMap<String, Integer>();
 	protected volatile static TexturePackSizeThread activeThread = null;
-
 	private TexturePackBase pack;
 	private ListWidget widget;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
@@ -56,7 +57,7 @@ public class TexturePackItem implements ListWidgetItem {
 
 	public TexturePackItem(TexturePackBase pack) {
 		this.setPack(pack);
-		synchronized(texturePackSize) {
+		synchronized (texturePackSize) {
 			if (!texturePackSize.containsKey(getName())) {
 				calculateTexturePackSize(pack, this);
 			} else {
@@ -83,15 +84,14 @@ public class TexturePackItem implements ListWidgetItem {
 		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
-		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
-		font.drawStringWithShadow(pack.firstDescriptionLine, x+29, y+11, 0xffaaaaaa);
-		font.drawStringWithShadow(pack.secondDescriptionLine, x+29, y+20, 0xffaaaaaa);
+		font.drawStringWithShadow(getName(), x + 29, y + 2, 0xffffffff);
+		font.drawStringWithShadow(pack.firstDescriptionLine, x + 29, y + 11, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.secondDescriptionLine, x + 29, y + 20, 0xffaaaaaa);
 
 		String sTileSize;
 		if (tileSize != -1) {
-			sTileSize = tileSize+"x";
-		}
-		else {
+			sTileSize = tileSize + "x";
+		} else {
 			sTileSize = ChatColor.YELLOW + "Calculating...";
 		}
 		int w = font.getStringWidth(sTileSize);
@@ -102,7 +102,7 @@ public class TexturePackItem implements ListWidgetItem {
 		pack.bindThumbnailTexture(SpoutClient.getHandle());
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		tessellator.startDrawingQuads();
-		tessellator.setColorOpaque(255,255,255);
+		tessellator.setColorOpaque(255, 255, 255);
 		tessellator.addVertexWithUV(x + 2, y + 27, 0.0D, 0.0D, 1.0D);
 		tessellator.addVertexWithUV(x + 27, y + 27, 0.0D, 1.0D, 1.0D);
 		tessellator.addVertexWithUV(x + 27, y + 2, 0.0D, 1.0D, 0.0D);
@@ -135,7 +135,8 @@ public class TexturePackItem implements ListWidgetItem {
 			if (db != -1) {
 				try {
 					id = Integer.valueOf(name.substring(db + 4, name.length()));
-				} catch(NumberFormatException e) {}
+				} catch (NumberFormatException e) {
+				}
 				name = name.substring(0, db);
 			}
 			name = name.replaceAll("_", " ");
@@ -159,6 +160,7 @@ public class TexturePackItem implements ListWidgetItem {
 	}
 
 	private static LinkedList<TexturePackSizeThread> queued = new LinkedList<TexturePackSizeThread>();
+
 	private static void calculateTexturePackSize(TexturePackBase texturePack, TexturePackItem item) {
 		if (activeThread == null) {
 			activeThread = new TexturePackSizeThread(texturePack, item);
@@ -172,6 +174,7 @@ public class TexturePackItem implements ListWidgetItem {
 class TexturePackSizeThread extends Thread {
 	TexturePackBase texturePack;
 	TexturePackItem item;
+
 	TexturePackSizeThread(TexturePackBase texturePack, TexturePackItem item) {
 		this.texturePack = texturePack;
 		this.item = item;
@@ -180,7 +183,7 @@ class TexturePackSizeThread extends Thread {
 	@Override
 	public void run() {
 		item.tileSize = TextureUtils.getTileSize(texturePack);
-		synchronized(TexturePackItem.texturePackSize) {
+		synchronized (TexturePackItem.texturePackSize) {
 			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
 		}
 		texturePack.closeTexturePackFile();

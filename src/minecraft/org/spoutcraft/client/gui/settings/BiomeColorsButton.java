@@ -29,11 +29,13 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class BiomeColorsButton extends AutomatedCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class BiomeColorsButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
+
 	public BiomeColorsButton(UUID fancyGraphics) {
 		super("Fancy Biome Colors");
 		this.fancyGraphics = fancyGraphics;
@@ -45,7 +47,7 @@ public class BiomeColorsButton extends AutomatedCheckBox{
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.fancyBiomeColors = !ConfigReader.fancyBiomeColors;
 		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		((FancyGraphicsButton) getScreen().getWidget(fancyGraphics)).custom = true;
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

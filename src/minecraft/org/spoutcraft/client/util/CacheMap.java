@@ -30,8 +30,8 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
-public class CacheMap<K,V> {
-	private HashMap<K,SoftKeyReference<V>> cache = new HashMap<K,SoftKeyReference<V>>();
+public class CacheMap<K, V> {
+	private HashMap<K, SoftKeyReference<V>> cache = new HashMap<K, SoftKeyReference<V>>();
 	private final ReferenceQueue<V> refQueue = new ReferenceQueue<V>();
 
 	public V remove(K key) {
@@ -64,7 +64,7 @@ public class CacheMap<K,V> {
 		Reference<? extends V> r;
 		while ((r = refQueue.poll()) != null) {
 			@SuppressWarnings("unchecked")
-			SoftKeyReference<V> keyRef = (SoftKeyReference<V>)r;
+			SoftKeyReference<V> keyRef = (SoftKeyReference<V>) r;
 			if (cache.get(keyRef.getKey()).equals(nullReference)) {
 				cache.remove(keyRef.getKey());
 			}
@@ -94,7 +94,7 @@ public class CacheMap<K,V> {
 				return false;
 			}
 			@SuppressWarnings("unchecked")
-			Reference<V> s = (Reference<V>)o;
+			Reference<V> s = (Reference<V>) o;
 
 			return s.get() == null && get() == null;
 		}

@@ -27,12 +27,13 @@ package org.spoutcraft.client.player;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
-public class SimpleSkyManager implements SkyManager{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
+
+public class SimpleSkyManager implements SkyManager {
 	private int cloudHeight = -999;
 	private int starFrequency = 1500;
 	private int sunPercent = 100;
@@ -43,7 +44,7 @@ public class SimpleSkyManager implements SkyManager{
 
 	public int getCloudHeight() {
 		if (cloudHeight == -999) {
-			return (int)SpoutClient.getHandle().theWorld.worldProvider.getCloudHeight();
+			return (int) SpoutClient.getHandle().theWorld.worldProvider.getCloudHeight();
 		}
 		return cloudHeight;
 	}
@@ -151,7 +152,7 @@ public class SimpleSkyManager implements SkyManager{
 	}
 
 	public void setSkyColor(Color color) {
-		if (color!=null) {
+		if (color != null) {
 			skyColor = color.clone();
 		} else {
 			skyColor = null;
@@ -166,7 +167,7 @@ public class SimpleSkyManager implements SkyManager{
 	}
 
 	public void setFogColor(Color color) {
-		if (color!=null) {
+		if (color != null) {
 			this.fogColor = color.clone();
 		} else {
 			fogColor = null;
@@ -181,7 +182,7 @@ public class SimpleSkyManager implements SkyManager{
 	}
 
 	public void setCloudColor(Color color) {
-		if (color!=null) {
+		if (color != null) {
 			this.cloudColor = color.clone();
 		} else {
 			cloudColor = null;

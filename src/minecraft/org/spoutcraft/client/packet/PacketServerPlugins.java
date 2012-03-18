@@ -35,9 +35,10 @@ import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
 import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketServerPlugins implements SpoutPacket{
+public class PacketServerPlugins implements SpoutPacket {
 	private String[] plugins;
 	private String[] versions;
+
 	public PacketServerPlugins() {
 
 	}
@@ -70,7 +71,7 @@ public class PacketServerPlugins implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		SimpleAddonManager addonManager = ((SimpleAddonManager)Spoutcraft.getAddonManager());
+		SimpleAddonManager addonManager = ((SimpleAddonManager) Spoutcraft.getAddonManager());
 		for (int i = 0; i < plugins.length; i++) {
 			Addon addon = addonManager.getAddon(plugins[i]);
 			if (addon == null || addon instanceof ServerAddon) {

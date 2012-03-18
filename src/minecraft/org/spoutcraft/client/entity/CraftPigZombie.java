@@ -51,7 +51,7 @@ public class CraftPigZombie extends CraftZombie implements PigZombie {
 	}
 
 	public EntityPigZombie getHandle() {
-		return (EntityPigZombie)handle;
+		return (EntityPigZombie) handle;
 	}
 
 	@Override

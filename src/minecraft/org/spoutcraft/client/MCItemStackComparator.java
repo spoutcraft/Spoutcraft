@@ -37,6 +37,6 @@ public class MCItemStackComparator implements Comparator {
 	}
 
 	public int compare(Object o1, Object o2) {
-		return compare((ItemStack)o1, (ItemStack)o2);
+		return compare((ItemStack) o1, (ItemStack) o2);
 	}
 }

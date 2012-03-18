@@ -30,13 +30,14 @@ import java.util.UUID;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
-public class GameSettingsScreen extends GuiScreen{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
+public class GameSettingsScreen extends GuiScreen {
 	private Button doneButton = null;
 	public final GuiScreen parent;
 
@@ -58,8 +59,8 @@ public class GameSettingsScreen extends GuiScreen{
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
 
-		int left = (int)(width / 2  - 155);
-		int right = (int)(width / 2 + 5);
+		int left = (int) (width / 2 - 155);
+		int right = (int) (width / 2 + 5);
 
 		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 30);
@@ -86,7 +87,7 @@ public class GameSettingsScreen extends GuiScreen{
 		Gradient linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width / 2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
@@ -125,7 +126,7 @@ public class GameSettingsScreen extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-		
+
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -143,19 +144,19 @@ public class GameSettingsScreen extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width / 2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
 		Label message = new GenericLabel("Spoutworth here, your loyal butler and assistant. Can I be of \n" +
-										"assistance? Yes? Excellent. I will be managing your graphical and\n" +
-										"performance settings to maximize framerate and quality. You can\n" +
-										"adjust my priorities, or dismiss me and manually select settings.");
+				"assistance? Yes? Excellent. I will be managing your graphical and\n" +
+				"performance settings to maximize framerate and quality. You can\n" +
+				"adjust my priorities, or dismiss me and manually select settings.");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
-		
+
 		if (ConfigReader.automatePerformance) {
 			screen.attachWidget(spoutcraft, message);
-			
+
 			top += 47;
 		}
 
@@ -191,7 +192,7 @@ public class GameSettingsScreen extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width / 2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
@@ -254,20 +255,19 @@ public class GameSettingsScreen extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 		graphicCheckboxes.add((CheckBox) control);
 
-		((FancyGraphicsButton)screen.getWidget(fancyGraphics)).setLinkedButtons(graphicCheckboxes);
+		((FancyGraphicsButton) screen.getWidget(fancyGraphics)).setLinkedButtons(graphicCheckboxes);
 
 		top += 22;
 
 		control = new SmoothFPSButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
-
 
 		control = new RenderDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
@@ -291,7 +291,7 @@ public class GameSettingsScreen extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width / 2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
@@ -336,7 +336,7 @@ public class GameSettingsScreen extends GuiScreen{
 		linebreak = new GenericGradient();
 		linebreak.setBottomColor(grey);
 		linebreak.setTopColor(grey);
-		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		linebreak.setX(width / 2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 

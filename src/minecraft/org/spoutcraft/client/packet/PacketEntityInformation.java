@@ -40,10 +40,11 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldClient;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 
-public class PacketEntityInformation implements CompressablePacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketEntityInformation implements CompressablePacket {
 	private boolean compressed = false;
 	private byte[] data = null;
 
@@ -76,8 +77,7 @@ public class PacketEntityInformation implements CompressablePacket{
 		if (data != null) {
 			output.writeInt(data.length);
 			output.write(data);
-		}
-		else {
+		} else {
 			output.writeInt(0);
 		}
 		output.writeBoolean(compressed);
@@ -122,8 +122,7 @@ public class PacketEntityInformation implements CompressablePacket{
 				deflater.finish();
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length);
 				byte[] buffer = new byte[1024];
-				while (!deflater.finished())
-				{
+				while (!deflater.finished()) {
 					int bytesCompressed = deflater.deflate(buffer);
 					bos.write(buffer, 0, bytesCompressed);
 				}

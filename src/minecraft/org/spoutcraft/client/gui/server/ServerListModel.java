@@ -39,13 +39,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
+
 import org.yaml.snakeyaml.Yaml;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.AbstractAPIModel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.AbstractAPIModel;
 
 public class ServerListModel extends AbstractAPIModel {
 	protected TIntObjectHashMap<ServerDataBaseEntry> dbEntries = new TIntObjectHashMap<ServerDataBaseEntry>();
@@ -53,7 +55,7 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public ServerListModel() {
 		API = "http://servers.spout.org/api2.php";
-		refreshAPIData(API+"?random", 0, true);
+		refreshAPIData(API + "?random", 0, true);
 		loadCountries();
 	}
 
@@ -63,7 +65,9 @@ public class ServerListModel extends AbstractAPIModel {
 
 	private void loadCountries() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		new Thread() {
 			public void run() {
 				//long start = System.currentTimeMillis();
@@ -86,7 +90,7 @@ public class ServerListModel extends AbstractAPIModel {
 				//System.out.println("Loaded in " + (System.currentTimeMillis() - start) + " ms");
 				synchronized (countries) {
 					countries.clear();
-					for (String c:yamlObj) {
+					for (String c : yamlObj) {
 						if (!c.trim().isEmpty()) {
 							countries.add(c);
 						}
@@ -99,11 +103,13 @@ public class ServerListModel extends AbstractAPIModel {
 				}
 			}
 		}.start();
-		if (wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 
 	public String getDefaultUrl() {
-		return API+"?featured";
+		return API + "?featured";
 	}
 
 	/**
@@ -114,17 +120,17 @@ public class ServerListModel extends AbstractAPIModel {
 		if (clear) {
 			lastPage = 0;
 			entries.clear();
-			for (GenericListView view:getViews()) {
+			for (GenericListView view : getViews()) {
 				view.setScrollPosition(Orientation.VERTICAL, 0);
 			}
 		}
-		for (Object item:apiData) {
+		for (Object item : apiData) {
 			try {
 				HashMap<String, Object> hash = (HashMap<String, Object>) item;
 				String name = URLDecoder.decode((String) hash.get("name"), "UTF-8");
 				name = name.replaceAll("\\&amp\\;", "&");
-				int uid = Integer.valueOf((String)hash.get("uniqueid"));
-				int port = Integer.valueOf((String)hash.get("port"));
+				int uid = Integer.valueOf((String) hash.get("uniqueid"));
+				int port = Integer.valueOf((String) hash.get("port"));
 				String adress = (String) hash.get("ip");
 				byte accessType = Byte.valueOf((String) hash.get("whitelist"));
 				String country = (String) hash.get("country");
@@ -134,8 +140,10 @@ public class ServerListModel extends AbstractAPIModel {
 				server.setCountry(country);
 				server.setAccessType(accessType);
 				entries.add(server);
-			} catch(UnsupportedEncodingException e) {}
-			catch(Exception e2) { continue; }
+			} catch (UnsupportedEncodingException e) {
+			} catch (Exception e2) {
+				continue;
+			}
 		}
 		update();
 	}
@@ -150,9 +158,9 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public List<ServerItem> getServers() {
 		ArrayList<ServerItem> servers = new ArrayList<ServerItem>();
-		for (ListWidgetItem item:entries) {
+		for (ListWidgetItem item : entries) {
 			if (item instanceof ServerItem) {
-				servers.add((ServerItem)item);
+				servers.add((ServerItem) item);
 			}
 		}
 		return servers;

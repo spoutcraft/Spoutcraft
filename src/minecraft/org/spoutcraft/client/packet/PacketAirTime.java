@@ -31,7 +31,7 @@ import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public class PacketAirTime implements SpoutPacket{
+public class PacketAirTime implements SpoutPacket {
 	public int airTime;
 	public int air;
 

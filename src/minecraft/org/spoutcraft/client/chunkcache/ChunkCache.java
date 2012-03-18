@@ -45,11 +45,8 @@ import org.spoutcraft.client.util.PersistentMap;
 
 public class ChunkCache {
 	private final static int FULL_CHUNK = (128 * 16 * 16 * 5) / 2;
-
 	private static final PersistentMap p;
-
 	private static final byte[] partition = new byte[2048];
-
 	private static final HashSet<Long> hashes = new HashSet<Long>();
 	private static final ArrayList<Long> hashQueue = new ArrayList<Long>(1025);
 	private static final LinkedList<Long> overwriteQueue = new LinkedList<Long>();
@@ -60,7 +57,7 @@ public class ChunkCache {
 		dir.mkdirs();
 
 		try {
-			p = new PersistentMap(dir, "cache", 2048, 24*1024);
+			p = new PersistentMap(dir, "cache", 2048, 24 * 1024);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -68,7 +65,6 @@ public class ChunkCache {
 
 	private static byte[] hashData = new byte[2048];
 	private static byte[] blank = new byte[2048];
-
 	public static AtomicInteger averageChunkSize = new AtomicInteger();
 	private static AtomicInteger chunks = new AtomicInteger();
 	private static AtomicInteger totalData = new AtomicInteger();
@@ -96,13 +92,13 @@ public class ChunkCache {
 		int c = chunks.incrementAndGet();
 
 		if (c != 0) {
-			averageChunkSize.set(d/c);
+			averageChunkSize.set(d / c);
 		}
 
 		long CRC = 0;
 		boolean CRCProvided;
 		try {
-			int hashSize = inflater.inflate(hashData, chunkData.length, segments*8 + 8);
+			int hashSize = inflater.inflate(hashData, chunkData.length, segments * 8 + 8);
 			if (hashSize == segments * 8 + 8) {
 				CRC = PartitionChunk.getHash(hashData, segments, heightBits);
 				CRCProvided = true;

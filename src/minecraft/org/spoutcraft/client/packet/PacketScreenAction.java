@@ -29,10 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class PacketScreenAction implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketScreenAction implements SpoutPacket {
 	protected byte action = -1;
 	protected byte screen = -1; // UnknownScreen
 
@@ -41,8 +42,8 @@ public class PacketScreenAction implements SpoutPacket{
 	}
 
 	public PacketScreenAction(ScreenAction action, ScreenType screen) {
- 		this.action = (byte)action.getId();
-		this.screen = (byte)screen.getCode();
+		this.action = (byte) action.getId();
+		this.screen = (byte) screen.getCode();
 	}
 
 	public int getNumBytes() {
@@ -60,7 +61,7 @@ public class PacketScreenAction implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		switch(ScreenAction.getScreenActionFromId(action)) {
+		switch (ScreenAction.getScreenActionFromId(action)) {
 			case Open:
 				SpoutClient.getHandle().displayPreviousScreen();
 				break;

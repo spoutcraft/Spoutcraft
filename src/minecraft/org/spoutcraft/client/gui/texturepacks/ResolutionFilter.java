@@ -28,13 +28,13 @@ package org.spoutcraft.client.gui.texturepacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
 public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	TexturePacksDatabaseModel model = SpoutClient.getInstance().getTexturePacksDatabaseModel();
-
 	private int possibilities[] = {
 			8, 16, 32, 64, 128, 256, 512, 1024
 	};
@@ -42,8 +42,8 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	public ResolutionFilter() {
 		List<String> list = new ArrayList<String>();
 		list.add("All");
-		for (int r:possibilities) {
-			list.add(r+"x"+r);
+		for (int r : possibilities) {
+			list.add(r + "x" + r);
 		}
 		setItems(list);
 	}
@@ -53,7 +53,7 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "resolution="+possibilities[getSelectedRow()-1];
+		return "resolution=" + possibilities[getSelectedRow() - 1];
 	}
 
 	public void clear() {
@@ -67,6 +67,6 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 
 	@Override
 	public String getText() {
-		return "Resolution: "+getSelectedItem();
+		return "Resolution: " + getSelectedItem();
 	}
 }

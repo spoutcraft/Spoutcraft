@@ -27,9 +27,6 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.Shortcut;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -42,6 +39,10 @@ import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.controls.Shortcut;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+
 public class GuiEditShortcut extends GuiScreen {
 	GuiControls parent;
 	Shortcut item;
@@ -51,8 +52,8 @@ public class GuiEditShortcut extends GuiScreen {
 	GuiCommandsSlot slot;
 	int editingIndex = -1;
 	Color grey = new Color(0xC0C0C0);
-
 	boolean recording = false;
+
 	public GuiEditShortcut(GuiControls guiControls, Shortcut item) {
 		this.parent = guiControls;
 		this.item = item;
@@ -140,22 +141,22 @@ public class GuiEditShortcut extends GuiScreen {
 
 		doneButton = new GenericButton("Done");
 		doneButton.setHeight(20).setWidth(50);
-		doneButton.setX(10).setY(height-25);
+		doneButton.setX(10).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, doneButton);
 
 		addButton = new GenericButton("Add Command");
 		addButton.setHeight(20).setWidth(100);
-		addButton.setX(70).setY(height-25);
+		addButton.setX(70).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, addButton);
 
 		editButton = new GenericButton("Edit Command");
 		editButton.setHeight(20).setWidth(100);
-		editButton.setX(180).setY(height-25);
+		editButton.setX(180).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, editButton);
 
 		removeButton = new GenericButton("Remove Command");
 		removeButton.setHeight(20).setWidth(100);
-		removeButton.setX(290).setY(height-25);
+		removeButton.setX(290).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, removeButton);
 
 		updateButtons();
@@ -164,11 +165,11 @@ public class GuiEditShortcut extends GuiScreen {
 	}
 
 	private void updateRecordButton() {
-		String keyname = recording?"Press a key!":"Click Here!";
-		if ((item.getKey()>=0 || item.getKey()<-1 )&& !recording) {
+		String keyname = recording ? "Press a key!" : "Click Here!";
+		if ((item.getKey() >= 0 || item.getKey() < -1) && !recording) {
 			keyname = item.toString();
 		}
-		String name = (recording?"> ":"")+keyname+(recording?" <":"");
+		String name = (recording ? "> " : "") + keyname + (recording ? " <" : "");
 		recordButton.setText(name);
 	}
 
@@ -233,13 +234,13 @@ public class GuiEditShortcut extends GuiScreen {
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
 		if (recording) {
-			System.out.println("Set mouse button to shortcut "+button);
+			System.out.println("Set mouse button to shortcut " + button);
 			item.setRawModifiers(SimpleKeyBindingManager.getPressedModifiers());
 			item.setKey(button + SimpleKeyBindingManager.MOUSE_OFFSET);
 			recording = false;
 			updateRecordButton();
 		} else {
-			super.mouseClicked(x, y, button);			
+			super.mouseClicked(x, y, button);
 		}
 	}
 }

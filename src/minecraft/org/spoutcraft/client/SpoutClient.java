@@ -34,6 +34,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.newdawn.slick.util.Log;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -42,33 +44,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
-import org.newdawn.slick.util.Log;
-
-import org.spoutcraft.client.addon.SimpleAddonStore;
-import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.config.MipMapUtils;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.entity.CraftEntity;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.gui.SimpleKeyManager;
-import org.spoutcraft.client.gui.SimpleWidgetManager;
-import org.spoutcraft.client.gui.server.ServerManager;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
-import org.spoutcraft.client.inventory.SimpleMaterialManager;
-import org.spoutcraft.client.io.CRCManager;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.FileDownloadThread;
-import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.packet.CustomPacket;
-import org.spoutcraft.client.packet.PacketAddonData;
-import org.spoutcraft.client.packet.PacketEntityInformation;
-import org.spoutcraft.client.packet.PacketManager;
-import org.spoutcraft.client.player.ChatManager;
-import org.spoutcraft.client.player.ClientPlayer;
-import org.spoutcraft.client.player.SimpleBiomeManager;
-import org.spoutcraft.client.player.SimpleSkyManager;
 import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -98,11 +73,36 @@ import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
+import org.spoutcraft.client.addon.SimpleAddonStore;
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.MipMapUtils;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.entity.CraftEntity;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.gui.SimpleKeyManager;
+import org.spoutcraft.client.gui.SimpleWidgetManager;
+import org.spoutcraft.client.gui.server.ServerManager;
+import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
+import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
+import org.spoutcraft.client.inventory.SimpleMaterialManager;
+import org.spoutcraft.client.io.CRCManager;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.packet.CustomPacket;
+import org.spoutcraft.client.packet.PacketAddonData;
+import org.spoutcraft.client.packet.PacketEntityInformation;
+import org.spoutcraft.client.packet.PacketManager;
+import org.spoutcraft.client.player.ChatManager;
+import org.spoutcraft.client.player.ClientPlayer;
+import org.spoutcraft.client.player.SimpleBiomeManager;
+import org.spoutcraft.client.player.SimpleSkyManager;
+
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
 	private static final Thread dataMiningThread = new DataMiningThread();
 	private static final long version = 0L;
-
 	private final SimpleSkyManager skyManager = new SimpleSkyManager();
 	private final ChatManager chatManager = new ChatManager();
 	private final PacketManager packetManager = new PacketManager();
@@ -148,7 +148,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		addonManager = new SimpleAddonManager(this, commandMap, securityManager, securityKey);
 		//System.setSecurityManager(securityManager);
 
-		((SimpleKeyBindingManager)bindingManager).load();
+		((SimpleKeyBindingManager) bindingManager).load();
 		addonStore.load();
 		serverManager.init();
 		chatManager.load();
@@ -367,7 +367,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			getHandle().thePlayer.spoutEntity = player;
 		}
 		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
-			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
+			clipboardThread = new ClipboardThread((EntityClientPlayerMP) player.getHandle());
 			clipboardThread.start();
 		} else if (clipboardThread != null) {
 			clipboardThread.interrupt();
@@ -388,7 +388,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;
 		}
-		WorldClient world = (WorldClient)getHandle().theWorld;
+		WorldClient world = (WorldClient) getHandle().theWorld;
 		Entity e = world.getEntityByID(id);
 		if (e instanceof EntityPlayer) {
 			return (EntityPlayer) e;
@@ -400,7 +400,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		if (getHandle().thePlayer.entityId == id) {
 			return getHandle().thePlayer;
 		}
-		WorldClient world = (WorldClient)getHandle().theWorld;
+		WorldClient world = (WorldClient) getHandle().theWorld;
 		return world.getEntityByID(id);
 	}
 
@@ -500,7 +500,6 @@ public class SpoutClient extends PropertyObject implements Client {
 			Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
 		}
 	}
-
 
 	public void disableAddons() {
 		addonManager.disableAddons();

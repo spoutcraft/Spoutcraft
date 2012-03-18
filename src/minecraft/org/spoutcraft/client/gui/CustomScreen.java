@@ -26,10 +26,11 @@
 package org.spoutcraft.client.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.*;
+import net.minecraft.src.GuiScreen;
+
+import org.spoutcraft.spoutcraftapi.gui.*;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class CustomScreen extends GuiScreen {
 	public CustomScreen(PopupScreen screen) {
@@ -52,7 +53,7 @@ public class CustomScreen extends GuiScreen {
 	public void drawScreen(int x, int y, float z) {
 		SpoutClient.enableSandbox();
 		if (screen instanceof PopupScreen) {
-			if (!((PopupScreen)screen).isTransparent()) {
+			if (!((PopupScreen) screen).isTransparent()) {
 				this.drawDefaultBackground();
 			}
 		}

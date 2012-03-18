@@ -30,11 +30,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Control;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketFocusUpdate implements SpoutPacket {
 	private Control control;
@@ -71,12 +72,13 @@ public class PacketFocusUpdate implements SpoutPacket {
 		if (popup != null) {
 			Widget w = popup.getWidget(widgetId);
 			if (w != null && w instanceof Control) {
-				((Control)w).setFocus(focus);
+				((Control) w).setFocus(focus);
 			}
 		}
 	}
 
-	public void failure(int playerId) {}
+	public void failure(int playerId) {
+	}
 
 	public PacketType getPacketType() {
 		return PacketType.PacketFocusUpdate;

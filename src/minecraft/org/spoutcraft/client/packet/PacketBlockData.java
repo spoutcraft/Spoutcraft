@@ -38,9 +38,10 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class PacketBlockData implements CompressablePacket{
+public class PacketBlockData implements CompressablePacket {
 	byte[] data;
 	boolean compressed = false;
+
 	public PacketBlockData() {
 
 	}
@@ -124,13 +125,13 @@ public class PacketBlockData implements CompressablePacket{
 			for (int i = 0; i < data.length / 15; i++) {
 				int index = i * 15;
 				int id = result.get(index);
-				short rawData = result.get(index+1);
+				short rawData = result.get(index + 1);
 				Block block = MaterialData.getBlock(id, rawData);
 				if (block != null) {
-					block.setHardness(result.getFloat(index+2));
-					block.setLightLevel(result.getInt(index+6));
-					block.setFriction(result.getFloat(index+10));
-					block.setOpaque(result.get(index+14) != 0);
+					block.setHardness(result.getFloat(index + 2));
+					block.setLightLevel(result.getInt(index + 6));
+					block.setFriction(result.getFloat(index + 10));
+					block.setOpaque(result.get(index + 14) != 0);
 				}
 			}
 		}

@@ -27,10 +27,11 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FarViewButton extends AutomatedCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class FarViewButton extends AutomatedCheckBox {
 	public FarViewButton() {
 		super("Far View");
 		setChecked(ConfigReader.farView);

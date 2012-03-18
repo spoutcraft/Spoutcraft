@@ -30,56 +30,55 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UniqueItemStringMap {
-	private static final ConcurrentHashMap<Integer,String> reverse = new ConcurrentHashMap<Integer,String>();
-	private static final ConcurrentHashMap<Integer,String> reverseStable = new ConcurrentHashMap<Integer,String>();
-	private static final ConcurrentHashMap<String,Integer> forward = new ConcurrentHashMap<String,Integer>();
-
+	private static final ConcurrentHashMap<Integer, String> reverse = new ConcurrentHashMap<Integer, String>();
+	private static final ConcurrentHashMap<Integer, String> reverseStable = new ConcurrentHashMap<Integer, String>();
+	private static final ConcurrentHashMap<String, Integer> forward = new ConcurrentHashMap<String, Integer>();
 	private static final AtomicInteger idCounter = new AtomicInteger(1024);
 
-//	private static Configuration config;
+	//	private static Configuration config;
 
-//	public static void setConfigFile(Configuration config) {
-//		UniqueItemStringMap.config = config;
-//		List<String> keys = config.getKeys();
-//
-//		for (String key : keys) {
-//			Integer id = getIdFromFile(decodeKey(key));
-//			if (id != null) {
-//				forward.put(key, id);
-//				reverse.put(id, key);
-//				reverseStable.put(id, key);
-//			}
-//		}
-//	}
+	//	public static void setConfigFile(Configuration config) {
+	//		UniqueItemStringMap.config = config;
+	//		List<String> keys = config.getKeys();
+	//
+	//		for (String key : keys) {
+	//			Integer id = getIdFromFile(decodeKey(key));
+	//			if (id != null) {
+	//				forward.put(key, id);
+	//				reverse.put(id, key);
+	//				reverseStable.put(id, key);
+	//			}
+	//		}
+	//	}
 
-//	private static Integer getIdFromFile(String key) {
-//
-//		synchronized(config) {
-//			key = encodeKey(key);
-//			if (config.getProperty(key) == null) {
-//				return null;
-//			} else {
-//				int id = config.getInt(key, -1);
-//				if (id == -1) {
-//					config.removeProperty(key);
-//					return null;
-//				} else {
-//					return id;
-//				}
-//			}
-//		}
-//
-//	}
+	//	private static Integer getIdFromFile(String key) {
+	//
+	//		synchronized(config) {
+	//			key = encodeKey(key);
+	//			if (config.getProperty(key) == null) {
+	//				return null;
+	//			} else {
+	//				int id = config.getInt(key, -1);
+	//				if (id == -1) {
+	//					config.removeProperty(key);
+	//					return null;
+	//				} else {
+	//					return id;
+	//				}
+	//			}
+	//		}
+	//
+	//	}
 
-//	private static void setIdInFile(String key, int id) {
-//
-//		synchronized(config) {
-//			key = encodeKey(key);
-//			config.setProperty(key, id);
-//			config.save();
-//		}
-//
-//	}
+	//	private static void setIdInFile(String key, int id) {
+	//
+	//		synchronized(config) {
+	//			key = encodeKey(key);
+	//			config.setProperty(key, id);
+	//			config.save();
+	//		}
+	//
+	//	}
 
 	private static String encodeKey(String key) {
 		key = key.replace("*", "-*-");
@@ -97,9 +96,8 @@ public class UniqueItemStringMap {
 
 	/**
 	 * Associates a unique id for each string
-	 *
+	 * <p/>
 	 * These associations persist over reloads and server restarts
-	 *
 	 * @param string the string to be associated
 	 * @return the id associated with the string.
 	 */
@@ -140,7 +138,7 @@ public class UniqueItemStringMap {
 
 			reverseStable.put(testId, string);
 
-//			setIdInFile(decodeKey(string), id);
+			//			setIdInFile(decodeKey(string), id);
 
 			success = true;
 		}
@@ -149,11 +147,10 @@ public class UniqueItemStringMap {
 
 	/**
 	 * Returns the id associated with a string
-	 *
+	 * <p/>
 	 * These associations persist over reloads and server restarts
-	 *
+	 * <p/>
 	 * Note: . characters are replaced with * characters
-	 *
 	 * @param id the id
 	 * @return the string associated with the id, or null if no string is associated
 	 */

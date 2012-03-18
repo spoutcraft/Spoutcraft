@@ -29,46 +29,47 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.*;
+import net.minecraft.src.MovementInputFromOptions;
 
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
-public class PacketKeyPress implements SpoutPacket{
+public class PacketKeyPress implements SpoutPacket {
 	public boolean pressDown;
 	public byte key;
 	public byte settingKeys[] = new byte[10];
 	public int screenType = -1;
+
 	public PacketKeyPress() {
 	}
 
 	public PacketKeyPress(byte key, boolean pressDown, MovementInputFromOptions input) {
 		this.key = key;
 		this.pressDown = pressDown;
-		this.settingKeys[0] = (byte)input.gameSettings.keyBindForward.keyCode;
-		this.settingKeys[1] = (byte)input.gameSettings.keyBindLeft.keyCode;
-		this.settingKeys[2] = (byte)input.gameSettings.keyBindBack.keyCode;
-		this.settingKeys[3] = (byte)input.gameSettings.keyBindRight.keyCode;
-		this.settingKeys[4] = (byte)input.gameSettings.keyBindJump.keyCode;
-		this.settingKeys[5] = (byte)input.gameSettings.keyBindInventory.keyCode;
-		this.settingKeys[6] = (byte)input.gameSettings.keyBindDrop.keyCode;
-		this.settingKeys[7] = (byte)input.gameSettings.keyBindChat.keyCode;
-		this.settingKeys[8] = (byte)input.gameSettings.keyBindToggleFog.keyCode;
-		this.settingKeys[9] = (byte)input.gameSettings.keyBindSneak.keyCode;
+		this.settingKeys[0] = (byte) input.gameSettings.keyBindForward.keyCode;
+		this.settingKeys[1] = (byte) input.gameSettings.keyBindLeft.keyCode;
+		this.settingKeys[2] = (byte) input.gameSettings.keyBindBack.keyCode;
+		this.settingKeys[3] = (byte) input.gameSettings.keyBindRight.keyCode;
+		this.settingKeys[4] = (byte) input.gameSettings.keyBindJump.keyCode;
+		this.settingKeys[5] = (byte) input.gameSettings.keyBindInventory.keyCode;
+		this.settingKeys[6] = (byte) input.gameSettings.keyBindDrop.keyCode;
+		this.settingKeys[7] = (byte) input.gameSettings.keyBindChat.keyCode;
+		this.settingKeys[8] = (byte) input.gameSettings.keyBindToggleFog.keyCode;
+		this.settingKeys[9] = (byte) input.gameSettings.keyBindSneak.keyCode;
 	}
 
 	public PacketKeyPress(byte key, boolean pressDown, MovementInputFromOptions input, ScreenType type) {
 		this.key = key;
 		this.pressDown = pressDown;
-		this.settingKeys[0] = (byte)input.gameSettings.keyBindForward.keyCode;
-		this.settingKeys[1] = (byte)input.gameSettings.keyBindLeft.keyCode;
-		this.settingKeys[2] = (byte)input.gameSettings.keyBindBack.keyCode;
-		this.settingKeys[3] = (byte)input.gameSettings.keyBindRight.keyCode;
-		this.settingKeys[4] = (byte)input.gameSettings.keyBindJump.keyCode;
-		this.settingKeys[5] = (byte)input.gameSettings.keyBindInventory.keyCode;
-		this.settingKeys[6] = (byte)input.gameSettings.keyBindDrop.keyCode;
-		this.settingKeys[7] = (byte)input.gameSettings.keyBindChat.keyCode;
-		this.settingKeys[8] = (byte)input.gameSettings.keyBindToggleFog.keyCode;
-		this.settingKeys[9] = (byte)input.gameSettings.keyBindSneak.keyCode;
+		this.settingKeys[0] = (byte) input.gameSettings.keyBindForward.keyCode;
+		this.settingKeys[1] = (byte) input.gameSettings.keyBindLeft.keyCode;
+		this.settingKeys[2] = (byte) input.gameSettings.keyBindBack.keyCode;
+		this.settingKeys[3] = (byte) input.gameSettings.keyBindRight.keyCode;
+		this.settingKeys[4] = (byte) input.gameSettings.keyBindJump.keyCode;
+		this.settingKeys[5] = (byte) input.gameSettings.keyBindInventory.keyCode;
+		this.settingKeys[6] = (byte) input.gameSettings.keyBindDrop.keyCode;
+		this.settingKeys[7] = (byte) input.gameSettings.keyBindChat.keyCode;
+		this.settingKeys[8] = (byte) input.gameSettings.keyBindToggleFog.keyCode;
+		this.settingKeys[9] = (byte) input.gameSettings.keyBindSneak.keyCode;
 		this.screenType = type.getCode();
 	}
 
@@ -98,11 +99,9 @@ public class PacketKeyPress implements SpoutPacket{
 		return 1 + 1 + 4 + 10;
 	}
 
-
 	public PacketType getPacketType() {
 		return PacketType.PacketKeyPress;
 	}
-
 
 	public int getVersion() {
 		return 0;

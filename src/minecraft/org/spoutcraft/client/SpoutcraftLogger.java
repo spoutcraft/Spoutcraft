@@ -29,8 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-class SpoutcraftLogger extends Logger{
+class SpoutcraftLogger extends Logger {
 	private Logger log = Logger.getLogger(SpoutClient.class.getName());
+
 	protected SpoutcraftLogger() {
 		super(SpoutClient.class.getName(), null);
 	}
@@ -43,8 +44,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.config(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -59,8 +59,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.entering(sourceClass, sourceMethod);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -75,8 +74,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.entering(sourceClass, sourceMethod, param1);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -91,8 +89,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.entering(sourceClass, sourceMethod, params);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -107,8 +104,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.exiting(sourceClass, sourceMethod);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -123,8 +119,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.exiting(sourceClass, sourceMethod, result);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -139,8 +134,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.fine(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -155,8 +149,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.finer(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -171,8 +164,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.finest(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -187,8 +179,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.info(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -203,8 +194,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.log(level, msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -219,8 +209,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.log(level, msg, param1);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -235,8 +224,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.log(level, msg, params);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -251,8 +239,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.log(level, msg, thrown);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -267,8 +254,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.log(record);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -283,8 +269,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.severe(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}
@@ -299,8 +284,7 @@ class SpoutcraftLogger extends Logger{
 		}
 		try {
 			log.warning(msg);
-		}
-		finally {
+		} finally {
 			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
 			}

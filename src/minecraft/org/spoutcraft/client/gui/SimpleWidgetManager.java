@@ -25,12 +25,13 @@
  */
 package org.spoutcraft.client.gui;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.packet.PacketFocusUpdate;
-import org.spoutcraft.client.packet.PacketWidget;
 import org.spoutcraft.spoutcraftapi.gui.Control;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetManager;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.packet.PacketFocusUpdate;
+import org.spoutcraft.client.packet.PacketWidget;
 
 public class SimpleWidgetManager implements WidgetManager {
 	public void sendWidgetUpdate(Widget widget) {

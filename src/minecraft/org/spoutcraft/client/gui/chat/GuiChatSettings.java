@@ -25,14 +25,8 @@
  */
 package org.spoutcraft.client.gui.chat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -43,56 +37,60 @@ import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+
 public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;
 	private CheckBox checkShowMentions, checkShowJoins, checkShowColors, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, checkParseRegex;
 	private Button buttonAdvancedMentions, buttonConfigureIgnores, buttonDone;
 	private Label title;
-	
+
 	public GuiChatSettings(GuiScreen parent) {
 		this.parent = parent;
 	}
-	
+
 	@Override
 	protected void createInstances() {
 		title = new GenericLabel("Chat Options");
-		
+
 		checkShowMentions = new GenericCheckBox("Show Highlights/Mentions");
 		checkShowMentions.setTooltip("Highlight chat messages where your name or words you specified are mentioned.");
 		checkShowMentions.setChecked(ConfigReader.highlightMentions);
-		
+
 		checkShowJoins = new GenericCheckBox("Show Joins");
 		checkShowJoins.setTooltip("Show player join messages when a new player logs in.");
 		checkShowJoins.setChecked(ConfigReader.showJoinMessages);
-		
+
 		checkShowColors = new GenericCheckBox("Show Color Help/Guide");
 		checkShowColors.setTooltip("Shows an on-screen guide for chat colors.");
 		checkShowColors.setChecked(ConfigReader.showChatColors);
-		
+
 		checkCloseOnDamage = new GenericCheckBox("Close Chat Window on Damage");
 		checkCloseOnDamage.setTooltip("Close the chat screen if your player is damaged.\nYour message will be saved.");
 		checkCloseOnDamage.setChecked(ConfigReader.showDamageAlerts);
-		
+
 		checkGrabMouse = new GenericCheckBox("Chat Window Grabs Mouse");
 		checkGrabMouse.setTooltip("Opening the chat screen grabs the mouse.\nON, players can not look around - default behavior\nOFF, players can look and pan the screen during chat.");
 		checkGrabMouse.setChecked(ConfigReader.chatGrabsMouse);
-		
+
 		checkIgnorePeople = new GenericCheckBox("Ignore List");
 		checkIgnorePeople.setTooltip("Prevents displaying chat messages from players in your ignore list.");
 		checkIgnorePeople.setChecked(ConfigReader.ignorePeople);
-		
+
 		checkParseRegex = new GenericCheckBox("Enable Regex Usage");
 		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax.");
 		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
-		
+
 		buttonAdvancedMentions = new GenericButton("Advanced Options");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted.");
-		
+
 		buttonConfigureIgnores = new GenericButton("Configure");
 		buttonConfigureIgnores.setTooltip("Configure people to ignore messages from.");
-		
+
 		buttonDone = new GenericButton("Done");
-		
+
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, title, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, buttonDone, checkParseRegex);
 	}
@@ -101,9 +99,9 @@ public class GuiChatSettings extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		title.setY(12);
-		
+
 		int top = title.getY() + 13;
-		
+
 		checkShowMentions.setGeometry(5, top, 200, 20);
 		buttonAdvancedMentions.setGeometry(width - 205, top, 150, 20);
 		top += 22;
@@ -120,7 +118,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		top += 22;
 		checkParseRegex.setGeometry(5, top, 200, 20);
 		top += 22;
-		
+
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
 	}
 
@@ -137,7 +135,6 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			return;
 		}
 		Runnable save = new Runnable() {
-			
 			@Override
 			public void run() {
 				SpoutClient.getInstance().getChatManager().save();
@@ -148,12 +145,12 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		};
 		boolean regex = ConfigReader.chatUsesRegex;
 		if (btn == buttonAdvancedMentions) {
-			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
+			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex ? "You can use regular expressions." : "", this, SpoutClient.getInstance().getChatManager().wordHighlight);
 			mc.displayGuiScreen(editor);
 			return;
 		}
 		if (btn == buttonConfigureIgnores) {
-			GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().ignorePeople);
+			GuiListEdit editor = new GuiListEdit(save, "Ignore List", regex ? "You can use regular expressions." : "", this, SpoutClient.getInstance().getChatManager().ignorePeople);
 			mc.displayGuiScreen(editor);
 			return;
 		}
@@ -186,7 +183,4 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		}
 		ConfigReader.write();
 	}
-	
-	
-
 }

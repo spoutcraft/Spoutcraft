@@ -29,11 +29,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+
+import org.spoutcraft.client.gui.ScreenUtil;
 
 public class PacketOpenScreen implements SpoutPacket {
 	ScreenType type = null;
+
 	public PacketOpenScreen() {
 
 	}

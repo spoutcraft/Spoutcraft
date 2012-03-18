@@ -41,7 +41,7 @@ public class FileMap {
 	private final RandomAccessFile FATFile;
 	private final RandomAccessFile indexFile;
 	private final AtomicLong[] hashes;
-	private final ConcurrentHashMap<Long,Integer> FAT = new ConcurrentHashMap<Long,Integer>();
+	private final ConcurrentHashMap<Long, Integer> FAT = new ConcurrentHashMap<Long, Integer>();
 
 	public FileMap(File dir, String filename, long size, int entries) throws IOException {
 		this.size = size;
@@ -51,14 +51,14 @@ public class FileMap {
 		FATFile = new RandomAccessFile(new File(dir, filename + ".fat"), "rw");
 		indexFile = new RandomAccessFile(new File(dir, filename + ".index"), "rw");
 
-		if (dataFile.length() < size*entries) {
+		if (dataFile.length() < size * entries) {
 			dataFile.setLength(this.size * this.entries);
 		}
 
-		if (FATFile.length() < entries*8) {
-			FATFile.setLength(entries*8);
+		if (FATFile.length() < entries * 8) {
+			FATFile.setLength(entries * 8);
 			FATFile.seek(0);
-			FATFile.write(new byte[entries*8]);
+			FATFile.write(new byte[entries * 8]);
 		}
 
 		hashes = new AtomicLong[entries];
@@ -87,7 +87,7 @@ public class FileMap {
 	public void wipe() throws IOException {
 		for (int i = 0; i < entries; i++) {
 			FATFile.seek(0);
-			FATFile.write(new byte[entries*8]);
+			FATFile.write(new byte[entries * 8]);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class FileMap {
 	}
 
 	private long readFAT(int index) throws IOException {
-		FATFile.seek((index % entries)*8);
+		FATFile.seek((index % entries) * 8);
 		return FATFile.readLong();
 	}
 
@@ -196,15 +196,15 @@ public class FileMap {
 			FAT.put(hash, index);
 		}
 
-		FATFile.seek(index*8);
+		FATFile.seek(index * 8);
 		FATFile.writeLong(hash);
 	}
 
 	private byte[] readData(int index, byte[] data) throws IOException {
 		index = index % entries;
-		dataFile.seek(size*index);
+		dataFile.seek(size * index);
 		if (data == null || data.length != size) {
-			data = new byte[(int)size];
+			data = new byte[(int) size];
 		}
 		dataFile.readFully(data);
 		return data;
@@ -212,7 +212,7 @@ public class FileMap {
 
 	private void writeData(int index, byte[] data) throws IOException {
 		index = index % entries;
-		dataFile.seek(size*index);
+		dataFile.seek(size * index);
 		if (data == null || data.length != size) {
 			throw new IllegalArgumentException("Incorrect byte array length");
 		} else {
@@ -223,7 +223,7 @@ public class FileMap {
 	public void corruptIndex(int index) throws IOException {
 		System.out.println("Corrupting index: " + index);
 		byte[] data = readData(index, null);
-		data[123] = (byte)(data[123] + 1);
+		data[123] = (byte) (data[123] + 1);
 		writeData(index, data);
 	}
 }

@@ -47,7 +47,7 @@ public class SettingsHandler {
 	private File out;
 	private Boolean cached = false;
 	private String resource = null;
-	private HashMap<String,String> cache;
+	private HashMap<String, String> cache;
 	private InputStream input = null;
 
 	/**
@@ -56,7 +56,7 @@ public class SettingsHandler {
 	 * as this. If in a Sub directory the resource parameter
 	 * is the path to it from this class file.
 	 * @param String resource
-	 * @param File out
+	 * @param File   out
 	 */
 	public SettingsHandler(String resource, String out) {
 		this.resource = resource;
@@ -69,7 +69,7 @@ public class SettingsHandler {
 	 * as this. If in a sub directory the resource parameter
 	 * is the path to it from this class file.
 	 * @param String resource
-	 * @param File out
+	 * @param File   out
 	 */
 	public SettingsHandler(String resource, File out) {
 		this.resource = resource;
@@ -80,7 +80,7 @@ public class SettingsHandler {
 	 * Constructor for the Settings/Config file.
 	 * Note: I discourage the use of this constructor, as it is not a fully tested as it should be.
 	 * @param InputStream input
-	 * @param File out
+	 * @param File		out
 	 */
 	public SettingsHandler(InputStream input, File out) {
 		this.input = input;
@@ -94,7 +94,9 @@ public class SettingsHandler {
 	 * @throws FileNotFoundException
 	 */
 	public SettingsHandler(File out) throws FileNotFoundException {
-		if (!out.exists()) throw new FileNotFoundException("The out does not exist.");
+		if (!out.exists()) {
+			throw new FileNotFoundException("The out does not exist.");
+		}
 		this.out = out;
 	}
 
@@ -108,12 +110,13 @@ public class SettingsHandler {
 	}
 
 	/**
-	 *
 	 * @param Boolean cached
 	 */
 	public void setCached(Boolean cached) {
 		this.cached = cached;
-		if (this.cached = false) this.cache = null;
+		if (this.cached = false) {
+			this.cache = null;
+		}
 	}
 
 	/**
@@ -134,7 +137,6 @@ public class SettingsHandler {
 				while ((length = input.read(buf)) > 0) {
 					output.write(buf, 0, length);
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -143,8 +145,9 @@ public class SettingsHandler {
 				} catch (Exception ignored) {
 				}
 				try {
-					if (output != null)
+					if (output != null) {
 						output.close();
+					}
 				} catch (Exception ignored) {
 				}
 			}
@@ -166,7 +169,6 @@ public class SettingsHandler {
 				while ((length = input.read(buf)) > 0) {
 					output.write(buf, 0, length);
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -175,8 +177,9 @@ public class SettingsHandler {
 				} catch (Exception ignored) {
 				}
 				try {
-					if (output != null)
+					if (output != null) {
 						output.close();
+					}
 				} catch (Exception ignored) {
 				}
 			}
@@ -188,7 +191,7 @@ public class SettingsHandler {
 	 * @return HashMap result
 	 */
 	private HashMap<String, String> loadHashMap() {
-		HashMap<String,String> result = new HashMap<String,String>();
+		HashMap<String, String> result = new HashMap<String, String>();
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(out));
@@ -205,7 +208,6 @@ public class SettingsHandler {
 				}
 				result.put(args[0], args[1]);
 			}
-
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -228,7 +230,6 @@ public class SettingsHandler {
 		if (this.cached) {
 			this.cache = this.loadHashMap();
 		}
-
 	}
 
 	/**
@@ -241,7 +242,7 @@ public class SettingsHandler {
 			if (this.cached) {
 				return this.cache.get(property);
 			} else {
-				HashMap<String,String> contents = this.loadHashMap();
+				HashMap<String, String> contents = this.loadHashMap();
 				return contents.get(property);
 			}
 		} catch (Exception e) {
@@ -260,7 +261,7 @@ public class SettingsHandler {
 			if (this.cached) {
 				return Integer.parseInt(this.cache.get(property));
 			} else {
-				HashMap<String,String> contents = this.loadHashMap();
+				HashMap<String, String> contents = this.loadHashMap();
 				return Integer.parseInt(contents.get(property));
 			}
 		} catch (Exception e) {
@@ -280,7 +281,7 @@ public class SettingsHandler {
 			if (this.cached) {
 				result = this.cache.get(property);
 			} else {
-				HashMap<String,String> contents = this.loadHashMap();
+				HashMap<String, String> contents = this.loadHashMap();
 				result = contents.get(property);
 			}
 			if (result == null) {
@@ -308,7 +309,7 @@ public class SettingsHandler {
 			if (this.cached) {
 				result = this.cache.get(property);
 			} else {
-				HashMap<String,String> contents = this.loadHashMap();
+				HashMap<String, String> contents = this.loadHashMap();
 				result = contents.get(property);
 			}
 			if (!result.contains(".")) {
@@ -332,7 +333,7 @@ public class SettingsHandler {
 			if (this.cached) {
 				check = this.cache.get(property);
 			} else {
-				HashMap<String,String> contents = this.loadHashMap();
+				HashMap<String, String> contents = this.loadHashMap();
 				check = contents.get(property);
 			}
 			if (check != null) {
@@ -345,23 +346,21 @@ public class SettingsHandler {
 		return false;
 	}
 
-
 	// Editing the Settings/Config File Methods \\
 
 	/**
 	 * Private method that writes out the new Settings/Config file after changes are made.
 	 * If caching is enabled, it will call the
 	 * {@link #load() load()} method.
-	 *
 	 * @param HashMap newContents
 	 */
-	private void flush(HashMap<Integer,String> newContents) {
+	private void flush(HashMap<Integer, String> newContents) {
 		try {
 			this.delFile(out);
 			//noinspection ResultOfMethodCallIgnored
 			out.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new FileWriter(out));
-			for (int i = 1; i <= newContents.size(); i ++) {
+			for (int i = 1; i <= newContents.size(); i++) {
 				String line = newContents.get(i);
 				if (line == null) {
 					writer.append("\n");
@@ -397,8 +396,8 @@ public class SettingsHandler {
 	 * They are stored as lines indexed by the line number.
 	 * @return HashMap contents
 	 */
-	private HashMap<Integer,String> getAllFileContents() {
-		HashMap<Integer,String> result = new HashMap<Integer,String>();
+	private HashMap<Integer, String> getAllFileContents() {
+		HashMap<Integer, String> result = new HashMap<Integer, String>();
 		Integer i = 1;
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(out));
@@ -407,12 +406,12 @@ public class SettingsHandler {
 			while ((line = br.readLine()) != null) {
 				if (line.isEmpty()) {
 					result.put(i, null);
-					i ++;
+					i++;
 					continue;
 				}
 
 				result.put(i, line);
-				i ++;
+				i++;
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -426,27 +425,27 @@ public class SettingsHandler {
 	 * @param String comment
 	 */
 	public void insertComment(String comment) {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		contents.put(contents.size() + 1, "#" + comment);
 		this.flush(contents);
 	}
 
 	/**
 	 * Allows to add a comment at the line that you specify.
-	 * @param String comment
+	 * @param String  comment
 	 * @param Integer line
 	 */
 	public void insertComment(String comment, Integer line) {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		if (line >= contents.size() + 1) {
 			return;
 		}
-		HashMap<Integer,String> newContents = new HashMap<Integer,String>();
-		for (int i = 1; i < line; i ++) {
+		HashMap<Integer, String> newContents = new HashMap<Integer, String>();
+		for (int i = 1; i < line; i++) {
 			newContents.put(i, contents.get(i));
 		}
 		newContents.put(line, "#" + comment);
-		for (int i = line; i <= contents.size(); i ++) {
+		for (int i = line; i <= contents.size(); i++) {
 			newContents.put(i + 1, contents.get(i));
 		}
 		this.flush(newContents);
@@ -458,28 +457,28 @@ public class SettingsHandler {
 	 * @param Object obj
 	 */
 	public void put(String property, Object obj) {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		contents.put(contents.size() + 1, property + ": " + obj.toString());
 		this.flush(contents);
 	}
 
 	/**
 	 * Allows you to add a property at the line that you specify
-	 * @param String property
-	 * @param Object obj
+	 * @param String  property
+	 * @param Object  obj
 	 * @param Integer line
 	 */
 	public void put(String property, Object obj, Integer line) {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		if (line >= contents.size() + 1) {
 			return;
 		}
-		HashMap<Integer,String> newContents = new HashMap<Integer,String>();
-		for (int i = 1; i < line; i ++) {
+		HashMap<Integer, String> newContents = new HashMap<Integer, String>();
+		for (int i = 1; i < line; i++) {
 			newContents.put(i, contents.get(i));
 		}
 		newContents.put(line, property + ": " + obj.toString());
-		for (int i = line; i <= contents.size(); i ++) {
+		for (int i = line; i <= contents.size(); i++) {
 			newContents.put(i + 1, contents.get(i));
 		}
 		this.flush(newContents);
@@ -491,11 +490,11 @@ public class SettingsHandler {
 	 * @param Object obj
 	 */
 	public void changeProperty(String property, Object obj) {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		if ((contents == null)) {
 			return;
 		}
-		for (int i = 1; i <= contents.size(); i ++) {
+		for (int i = 1; i <= contents.size(); i++) {
 			if (contents.get(i) == null) {
 				continue;
 			}
@@ -517,7 +516,7 @@ public class SettingsHandler {
 	 * @return Integer lineCount
 	 */
 	public Integer getLineCount() {
-		HashMap<Integer,String> contents = this.getAllFileContents();
+		HashMap<Integer, String> contents = this.getAllFileContents();
 		return contents.size();
 	}
 }

@@ -25,14 +25,15 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftTextEntity extends CraftEntity implements TextEntity {
 	public CraftTextEntity(FixedLocation location) {
 		super(location);
-		handle = new EntityText(((SpoutcraftWorld)location.getWorld()).getHandle());
+		handle = new EntityText(((SpoutcraftWorld) location.getWorld()).getHandle());
 		teleport(location);
 	}
 
@@ -41,7 +42,7 @@ public class CraftTextEntity extends CraftEntity implements TextEntity {
 	}
 
 	public EntityText getHandle() {
-		return (EntityText)handle;
+		return (EntityText) handle;
 	}
 
 	public String getText() {

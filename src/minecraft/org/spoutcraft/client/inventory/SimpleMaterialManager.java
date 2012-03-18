@@ -30,6 +30,7 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 import org.getspout.commons.util.map.TIntPairFloatHashMap;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
+
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.inventory.Recipe;
@@ -44,7 +45,6 @@ public class SimpleMaterialManager implements MaterialManager {
 	private final TIntPairFloatHashMap originalFriction = new TIntPairFloatHashMap();
 	private final TIntByteHashMap originalOpacity = new TIntByteHashMap();
 	private final TIntIntHashMap originalLight = new TIntIntHashMap();
-
 	private final TIntPairObjectHashMap<String> customNames = new TIntPairObjectHashMap<String>(100);
 	private final TIntPairObjectHashMap<String> customTextures = new TIntPairObjectHashMap<String>(100);
 	private final TIntPairObjectHashMap<String> customTexturesPlugin = new TIntPairObjectHashMap<String>(100);
@@ -200,7 +200,9 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 
 	public String getCustomItemTexture(Material item) {
-		if (item == null) return null;
+		if (item == null) {
+			return null;
+		}
 		int id = item.getRawId();
 		int data = item.getRawData();
 		if (customTextures.containsKey(id, data)) {
@@ -210,7 +212,9 @@ public class SimpleMaterialManager implements MaterialManager {
 	}
 
 	public String getCustomItemTextureAddon(Material item) {
-		if (item == null) return null;
+		if (item == null) {
+			return null;
+		}
 		int id = item.getRawId();
 		int data = item.getRawData();
 		if (customTexturesPlugin.containsKey(id, data)) {
@@ -230,7 +234,7 @@ public class SimpleMaterialManager implements MaterialManager {
 	public void reset() {
 		for (Material next : MaterialData.getMaterials()) {
 			if (next instanceof org.spoutcraft.spoutcraftapi.material.Block) {
-				org.spoutcraft.spoutcraftapi.material.Block block = (org.spoutcraft.spoutcraftapi.material.Block)next;
+				org.spoutcraft.spoutcraftapi.material.Block block = (org.spoutcraft.spoutcraftapi.material.Block) next;
 				resetFriction(block);
 				resetHardness(block);
 				resetOpacity(block);

@@ -28,19 +28,20 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.client.gui.database.AbstractAPIModel;
-import org.spoutcraft.client.gui.database.UrlElement;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
+import org.spoutcraft.client.gui.database.AbstractAPIModel;
+import org.spoutcraft.client.gui.database.UrlElement;
+
 public class AccessTypeFilter extends GenericComboBox implements UrlElement {
-	private String[] strings = { "All", "Open", "Whitelisted", "Graylisted", "Blacklisted"};
-	private int [] ids = {-1, 0, 1, 2, 3};
+	private String[] strings = {"All", "Open", "Whitelisted", "Graylisted", "Blacklisted"};
+	private int[] ids = {-1, 0, 1, 2, 3};
 	AbstractAPIModel model;
 
 	public AccessTypeFilter(AbstractAPIModel model) {
 		this.model = model;
 		List<String> l = new ArrayList<String>();
-		for (String type:strings) {
+		for (String type : strings) {
 			l.add(type);
 		}
 		setItems(l);
@@ -52,7 +53,7 @@ public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "accessType="+ids[getSelectedRow()];
+		return "accessType=" + ids[getSelectedRow()];
 	}
 
 	public void clear() {
@@ -66,6 +67,6 @@ public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 
 	@Override
 	public String getText() {
-		return "Access: "+super.getText();
+		return "Access: " + super.getText();
 	}
 }

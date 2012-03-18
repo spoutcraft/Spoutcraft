@@ -29,7 +29,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
@@ -41,10 +40,11 @@ import java.net.URLEncoder;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PollResult {
 	protected int ping;
@@ -53,9 +53,7 @@ public class PollResult {
 	protected String motd = "";
 	protected String ip;
 	protected int port;
-
 	protected int databaseId = -1;
-
 	public static final int PING_POLLING = -1;
 	public static final int PING_UNKNOWN = -2;
 	public static final int PING_TIMEOUT = -3;
@@ -64,12 +62,9 @@ public class PollResult {
 	protected long pollStart;
 	protected static volatile int numPolling = 0;
 	private static final int maxPollingThreads;
-
 	protected PollThread currentThread;
-
 	protected FavoritesModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
-
 	protected static TIntObjectHashMap<PollResult> recentResults = new TIntObjectHashMap<PollResult>();
 	protected static Thread send = null;
 	private boolean sent = false;
@@ -126,12 +121,16 @@ public class PollResult {
 
 	public void poll() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		if (!isPolling()) {
 			currentThread = new PollThread();
 			currentThread.start();
 		}
-		if (wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 
 	public static PollResult getPoll(String ip, int port, int uid) {
@@ -166,15 +165,15 @@ public class PollResult {
 	}
 
 	protected class PollThread extends Thread {
-
 		@Override
 		public void run() {
 			while (numPolling >= maxPollingThreads) {
 				try {
 					sleep(10);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				}
 			}
-			numPolling ++;
+			numPolling++;
 			polling = true;
 			favorites.setPolling(true);
 			Socket sock = null;
@@ -215,10 +214,9 @@ public class PollResult {
 				}
 				players = Integer.valueOf(split[1]);
 				maxPlayers = Integer.valueOf(split[2]);
-
-			} catch(java.net.UnknownHostException e) {
+			} catch (java.net.UnknownHostException e) {
 				ping = PING_UNKNOWN;
-			} catch(IOException e) {
+			} catch (IOException e) {
 				ping = PING_TIMEOUT;
 			} catch (Exception e) {
 				ping = PING_BAD_MESSAGE;
@@ -237,7 +235,8 @@ public class PollResult {
 					sock.close();
 					input.close();
 					output.close();
-				} catch(Exception e) {}
+				} catch (Exception e) {
+				}
 			}
 		}
 	}
@@ -269,21 +268,21 @@ public class PollResult {
 				String api = MirrorUtils.getMirrorUrl("/senddata.php", "http://servers.spout.org/senddata.php");
 				String json = "{";
 				int res = 0;
-				for (PollResult result:recentResults.valueCollection()) {
+				for (PollResult result : recentResults.valueCollection()) {
 					if (result.databaseId != -1 && !result.sent) {
 						int ping = result.ping > 0 ? result.ping : -1;
 						if (res > 0) {
 							json += ",";
 						}
-						json +="\""+res+"\":{";
+						json += "\"" + res + "\":{";
 
 						json += keyValue("uid", result.databaseId) + ",";
 						json += keyValue("ping", ping) + ",";
 						json += keyValue("players", result.players) + ",";
 						json += keyValue("maxplayers", result.maxPlayers);
-						json +="}";
+						json += "}";
 						result.sent = true;
-						res ++;
+						res++;
 					}
 				}
 				json += "}";
@@ -310,16 +309,15 @@ public class PollResult {
 						rd.close();
 					} catch (IOException e) {
 					}
-
 				}
 				send = null;
 			}
 
 			public String keyValue(String key, Object value) {
 				if (value instanceof Number) {
-					return "\""+key+"\":"+value;
+					return "\"" + key + "\":" + value;
 				} else {
-					return "\""+key+"\":\""+value+"\"";
+					return "\"" + key + "\":\"" + value + "\"";
 				}
 			}
 		};

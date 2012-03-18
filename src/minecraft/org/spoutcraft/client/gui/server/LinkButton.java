@@ -25,9 +25,10 @@
  */
 package org.spoutcraft.client.gui.server;
 
-import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+
+import org.spoutcraft.client.util.NetworkUtils;
 
 public class LinkButton extends GenericButton {
 	private String url = "";

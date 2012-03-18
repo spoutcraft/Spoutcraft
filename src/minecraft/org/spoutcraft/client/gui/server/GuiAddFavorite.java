@@ -27,7 +27,6 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
@@ -38,6 +37,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiAddFavorite extends GuiScreen {
 	private TextField textIp, textTitle;
@@ -78,7 +79,7 @@ public class GuiAddFavorite extends GuiScreen {
 	@Override
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		int top = height / 2 - 101/2;
+		int top = height / 2 - 101 / 2;
 		int left = width / 2 - 250 / 2;
 
 		updateItem();
@@ -86,18 +87,18 @@ public class GuiAddFavorite extends GuiScreen {
 		labelTitle = new GenericLabel("Server Name");
 		labelTitle.setHeight(11).setWidth(250).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, labelTitle);
-		top+=13;
+		top += 13;
 
 		textTitle = new TabField();
 		textTitle.setMaximumCharacters(0).setWidth(250).setHeight(20).setX(left).setY(top);
 		textTitle.setText(item.getTitle());
 		getScreen().attachWidget(spoutcraft, textTitle);
-		top+=25;
+		top += 25;
 
 		labelIp = new GenericLabel("Server Address");
 		labelIp.setHeight(11).setWidth(250).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, labelIp);
-		top+=13;
+		top += 13;
 
 		textIp = new TabField();
 		textIp.setMaximumCharacters(0);
@@ -106,7 +107,7 @@ public class GuiAddFavorite extends GuiScreen {
 		textIp.setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, textIp);
 		textIp.setText(item.getIp() + (item.getPort() != ServerItem.DEFAULT_PORT ? ":" + item.getPort() : ""));
-		top+=25;
+		top += 25;
 
 		buttonClear = new GenericButton("Clear");
 		buttonClear.setWidth(100).setHeight(20).setX(textIp.getX()).setY(top);
@@ -143,7 +144,6 @@ public class GuiAddFavorite extends GuiScreen {
 			}
 			return false;
 		}
-
 	}
 
 	@Override
@@ -189,12 +189,11 @@ public class GuiAddFavorite extends GuiScreen {
 			item.setIp(split[0]);
 			try {
 				item.setPort(Integer.valueOf(split[1]));
-			} catch(Exception e) {
+			} catch (Exception e) {
 				// Handles both InvalidNumber and OutOfRange exceptions, yay
 				item.setPort(ServerItem.DEFAULT_PORT);
 			}
 		}
-
 	}
 
 	@Override

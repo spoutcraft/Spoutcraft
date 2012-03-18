@@ -27,11 +27,12 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.FontRenderer;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.controls.Shortcut;
 
 public class GuiCommandsSlot extends GenericListWidget {
 	GuiEditShortcut parent;
@@ -48,7 +49,7 @@ public class GuiCommandsSlot extends GenericListWidget {
 
 	public void updateItems() {
 		clear();
-		for (String cmd:shortcut.getCommands()) {
+		for (String cmd : shortcut.getCommands()) {
 			addItem(new CommandLWI(cmd));
 		}
 	}
@@ -64,6 +65,7 @@ public class GuiCommandsSlot extends GenericListWidget {
 	private class CommandLWI implements ListWidgetItem {
 		ListWidget widget;
 		String cmd;
+
 		public CommandLWI(String cmd) {
 			this.cmd = cmd;
 		}
@@ -82,11 +84,11 @@ public class GuiCommandsSlot extends GenericListWidget {
 
 		public void render(int x, int y, int width, int height) {
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
-			parent.drawString(font, cmd, x+2, y+2, 0xffffff);
+			parent.drawString(font, cmd, x + 2, y + 2, 0xffffff);
 			if (cmd.startsWith("/")) {
-				parent.drawString(font, "Command", x+2, y+13, 0xaaaaaa);
+				parent.drawString(font, "Command", x + 2, y + 13, 0xaaaaaa);
 			} else {
-				parent.drawString(font, "Chat Message", x+2, y+13, 0xaaaaaa);
+				parent.drawString(font, "Chat Message", x + 2, y + 13, 0xaaaaaa);
 			}
 		}
 

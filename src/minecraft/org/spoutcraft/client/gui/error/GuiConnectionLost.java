@@ -25,16 +25,14 @@
  */
 package org.spoutcraft.client.gui.error;
 
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
@@ -47,10 +45,13 @@ import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-public class GuiConnectionLost extends GuiScreen{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
+
+public class GuiConnectionLost extends GuiScreen {
 	public static String lastServerIp;
 	public static int lastServerPort;
-
 	private String message;
 
 	public GuiConnectionLost() {
@@ -66,7 +67,7 @@ public class GuiConnectionLost extends GuiScreen{
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
-		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
+		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Connection Lost!");
@@ -100,7 +101,7 @@ public class GuiConnectionLost extends GuiScreen{
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
 
-		button = new ReturnToServerList().setText("Return to "+SpoutClient.getInstance().getServerManager().getJoinedFromName());
+		button = new ReturnToServerList().setText("Return to " + SpoutClient.getInstance().getServerManager().getJoinedFromName());
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);
@@ -146,7 +147,7 @@ class LocalTexture extends GenericTexture {
 		Texture texture = CustomTextureManager.getTextureFromJar(getUrl());
 		if (texture != null) {
 			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); // moves texture into place
-			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(texture, (int)getWidth(), (int)getHeight(), isDrawingAlphaChannel());
+			((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(texture, (int) getWidth(), (int) getHeight(), isDrawingAlphaChannel());
 		}
 	}
 }

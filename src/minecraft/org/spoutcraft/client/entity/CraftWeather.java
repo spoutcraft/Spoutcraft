@@ -51,6 +51,6 @@ public class CraftWeather extends CraftEntity implements Weather {
 	}
 
 	public EntityWeatherEffect getHandle() {
-		return (EntityWeatherEffect)handle;
+		return (EntityWeatherEffect) handle;
 	}
 }

@@ -41,13 +41,14 @@
  */
 package org.spoutcraft.client.block;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockState;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftBlockState implements BlockState {
 	private final SpoutcraftWorld world;
@@ -72,7 +73,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the world which contains this Block
-	 *
 	 * @return World containing this block
 	 */
 	public World getWorld() {
@@ -81,7 +81,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the x-coordinate of this block
-	 *
 	 * @return x-coordinate
 	 */
 	public int getX() {
@@ -90,7 +89,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the y-coordinate of this block
-	 *
 	 * @return y-coordinate
 	 */
 	public int getY() {
@@ -99,7 +97,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the z-coordinate of this block
-	 *
 	 * @return z-coordinate
 	 */
 	public int getZ() {
@@ -108,7 +105,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the chunk which contains this block
-	 *
 	 * @return Containing Chunk
 	 */
 	public Chunk getChunk() {
@@ -117,7 +113,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the type-id of this block
-	 *
 	 * @return block type-id
 	 */
 	public int getTypeId() {
@@ -126,7 +121,6 @@ public class CraftBlockState implements BlockState {
 
 	/**
 	 * Gets the light level between 0-15
-	 *
 	 * @return light level
 	 */
 	public byte getLightLevel() {

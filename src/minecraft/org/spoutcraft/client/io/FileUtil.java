@@ -44,6 +44,7 @@ import org.spoutcraft.client.SpoutClient;
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
+
 	public static File getCacheDirectory() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
@@ -118,16 +119,16 @@ public class FileUtil {
 			try {
 				FileUtils.copyDirectory(directory, getCacheDirectory(), true);
 				FileUtils.deleteDirectory(getTempDirectory());
+			} catch (Exception e) {
 			}
-			catch (Exception e) {}
 		}
 	}
 
 	public static void deleteTempDirectory() {
 		try {
 			FileUtils.deleteDirectory(getTempDirectory());
+		} catch (Exception e) {
 		}
-		catch (Exception e) {}
 	}
 
 	public static File findFile(String plugin, String fileName) {
@@ -193,7 +194,7 @@ public class FileUtil {
 		if (url.contains("?")) {
 			//Use hashcode instead.
 			String ext = FilenameUtils.getExtension(result);
-			result = url.hashCode() + (!ext.isEmpty()?"." + ext:"");
+			result = url.hashCode() + (!ext.isEmpty() ? "." + ext : "");
 		}
 		fileNameCache.put(url, result);
 		return result;
@@ -257,7 +258,6 @@ public class FileUtil {
 				}
 			}
 		}
-
 	}
 
 	public static long getCRC(InputStream in, byte[] buffer) {
@@ -268,8 +268,8 @@ public class FileUtil {
 		while (read >= 0) {
 			try {
 				read = in.read(buffer);
-				for (i=0; i < read; i++) {
-					hash += (hash << 5) + (long)buffer[i];
+				for (i = 0; i < read; i++) {
+					hash += (hash << 5) + (long) buffer[i];
 				}
 			} catch (IOException ioe) {
 				return 0;

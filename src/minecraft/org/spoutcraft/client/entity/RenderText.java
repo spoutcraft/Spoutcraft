@@ -23,21 +23,18 @@
  * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
  * including the MIT license.
  */
-
 package org.spoutcraft.client.entity;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.RenderEntity;
 import net.minecraft.src.RenderHelper;
 
-import org.spoutcraft.client.SpoutClient;
-
 public class RenderText extends RenderEntity {
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
-		EntityText entitytext = (EntityText)entity;
+		EntityText entitytext = (EntityText) entity;
 		String text = entitytext.getText();
-		yaw = entitytext.isRotateWithPlayer()?-this.renderManager.playerViewY:yaw;
+		yaw = entitytext.isRotateWithPlayer() ? -this.renderManager.playerViewY : yaw;
 		RenderHelper.disableStandardItemLighting();
 		//SpoutClient.getHandle().fontRenderer.renderStringInGame(text, x, y, z, yaw, 0, entitytext.getScale());
 		RenderHelper.enableStandardItemLighting();

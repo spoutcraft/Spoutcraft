@@ -29,16 +29,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
-public class PacketSky implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketSky implements SpoutPacket {
 	private int cloudY, stars, sunPercent, moonPercent;
 	private Color skyColor, fogColor, cloudColor;
 	String sun = "";
 	String moon = "";
+
 	public PacketSky() {
 
 	}

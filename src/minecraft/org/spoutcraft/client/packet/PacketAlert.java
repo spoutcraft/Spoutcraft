@@ -29,10 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketAlert implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketAlert implements SpoutPacket {
 	String message;
 	String title;
 	int itemId;

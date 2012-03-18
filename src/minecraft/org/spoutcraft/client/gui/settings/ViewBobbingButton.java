@@ -27,11 +27,12 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class ViewBobbingButton extends GenericCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class ViewBobbingButton extends GenericCheckBox {
 	public ViewBobbingButton() {
 		super("View Bobbing");
 		setChecked(ConfigReader.viewBobbing);

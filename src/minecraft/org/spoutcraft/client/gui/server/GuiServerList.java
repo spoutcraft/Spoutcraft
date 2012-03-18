@@ -29,12 +29,6 @@ import org.lwjgl.Sys;
 
 import net.minecraft.src.GuiMainMenu;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.FilterButton;
-import org.spoutcraft.client.gui.database.GuiAPIDisplay;
-import org.spoutcraft.client.gui.database.RandomButton;
-import org.spoutcraft.client.gui.database.SearchField;
-import org.spoutcraft.client.gui.database.SortButton;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -47,9 +41,15 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.FilterButton;
+import org.spoutcraft.client.gui.database.GuiAPIDisplay;
+import org.spoutcraft.client.gui.database.RandomButton;
+import org.spoutcraft.client.gui.database.SearchField;
+import org.spoutcraft.client.gui.database.SortButton;
+
 public class GuiServerList extends GuiAPIDisplay {
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
-
 	private Label labelTitle, filterTitle;
 	private GenericListView view;
 	private GenericScrollArea filters;
@@ -60,7 +60,6 @@ public class GuiServerList extends GuiAPIDisplay {
 	AccessTypeFilter accessType;
 	CountryButton buttonCountry;
 	SearchField search;
-
 	boolean instancesCreated = false;
 
 	public GuiServerList() {
@@ -109,17 +108,17 @@ public class GuiServerList extends GuiAPIDisplay {
 		}
 
 		int top = 5;
-		labelTitle.setY(top + 7).setX(width/2 - mc.fontRenderer.getStringWidth("Public Server List")/2);
+		labelTitle.setY(top + 7).setX(width / 2 - mc.fontRenderer.getStringWidth("Public Server List") / 2);
 		getScreen().attachWidget(spoutcraft, labelTitle);
 
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 
-		search.setWidth(128).setHeight(18).setX(6).setY(top+1);
+		search.setWidth(128).setHeight(18).setX(6).setY(top + 1);
 		getScreen().attachWidget(spoutcraft, search);
 		model.addUrlElement(search);
 
-		top+=25;
+		top += 25;
 
 		filters.setWidth(130).setHeight(height - top - 55);
 		filters.setX(5).setY(top);
@@ -198,8 +197,8 @@ public class GuiServerList extends GuiAPIDisplay {
 
 		//Stretch to real width
 		int fw = filters.getViewportSize(Orientation.HORIZONTAL);
-		fw-=10;
-		for (Widget w:filters.getAttachedWidgets()) {
+		fw -= 10;
+		for (Widget w : filters.getAttachedWidgets()) {
 			w.setWidth(fw);
 		}
 
@@ -209,13 +208,13 @@ public class GuiServerList extends GuiAPIDisplay {
 		//Filter init }
 
 		view.setX((int) filters.getWidth() + filters.getX() + 5).setY(top)
-			.setWidth((int) (width - filters.getWidth() - 10 - filters.getX())).setHeight(height - top - 55);
+				.setWidth((int) (width - filters.getWidth() - 10 - filters.getX())).setHeight(height - top - 55);
 		getScreen().attachWidget(spoutcraft, view);
 
 		top += view.getHeight() + 5;
 
-		int totalWidth = Math.min(width - 9, 200*3+10);
-		int cellWidth = (totalWidth - 10)/3;
+		int totalWidth = Math.min(width - 9, 200 * 3 + 10);
+		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
@@ -229,7 +228,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		buttonJoin.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonJoin);
 
-		top+=25;
+		top += 25;
 
 		buttonAddServer.setHeight(20).setWidth(cellWidth).setX(left).setY(top);
 		getScreen().attachWidget(spoutcraft, buttonAddServer);
@@ -295,7 +294,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		if (model.isLoading()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Loading...");
-			buttonRefresh.setDisabledColor(new Color(0f,1f,0f));
+			buttonRefresh.setDisabledColor(new Color(0f, 1f, 0f));
 		} else {
 			buttonRefresh.setEnabled(true);
 			buttonRefresh.setText("Refresh");
@@ -309,7 +308,7 @@ public class GuiServerList extends GuiAPIDisplay {
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
-			color.setGreen(1f - (float)darkness);
+			color.setGreen(1f - (float) darkness);
 			buttonRefresh.setDisabledColor(color);
 		}
 		super.updateScreen();

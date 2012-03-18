@@ -31,21 +31,23 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.MapMaker;
+
 import gnu.trove.map.hash.TIntFloatHashMap;
+
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import net.minecraft.client.Minecraft;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class SpoutcraftChunk implements Chunk{
-	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
+import org.spoutcraft.client.SpoutcraftWorld;
 
+public class SpoutcraftChunk implements Chunk {
+	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private net.minecraft.src.World world;
 	private final Map<Integer, Block> cache = new MapMaker().weakValues().makeMap();
@@ -54,7 +56,6 @@ public class SpoutcraftChunk implements Chunk{
 	//public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
 	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	private short[] customBlockIds = null;
-
 	transient private final int worldHeight;
 	transient private final int worldHeightMinusOne;
 	transient private final int xBitShifts;
@@ -131,7 +132,7 @@ public class SpoutcraftChunk implements Chunk{
 	public boolean unload(boolean save, boolean safe) {
 		return getWorld().unloadChunk(getX(), getZ(), save, safe);
 	}
-	
+
 	public byte[] getRawBlockIds() {
 		//TODO: fix
 		return null;
@@ -146,7 +147,7 @@ public class SpoutcraftChunk implements Chunk{
 
 		Entity[] entities = new Entity[count];
 		for (int i = 0; i < chunk.field_48502_j.length; i++) {
-			for (Object obj: chunk.field_48502_j[i].toArray()) {
+			for (Object obj : chunk.field_48502_j[i].toArray()) {
 				if (!(obj instanceof net.minecraft.src.Entity)) {
 					continue;
 				}
@@ -166,9 +167,11 @@ public class SpoutcraftChunk implements Chunk{
 
 	public short setCustomBlockId(int x, int y, int z, short id) {
 		if (customBlockIds == null) {
-			customBlockIds = new short[16*16*worldHeight];
+			customBlockIds = new short[16 * 16 * worldHeight];
 		}
-		if (id < 0) id = 0;
+		if (id < 0) {
+			id = 0;
+		}
 		int key = ((x & 0xF) << xBitShifts) | ((z & 0xF) << zBitShifts) | (y & worldHeightMinusOne);
 		short old = customBlockIds[key];
 		customBlockIds[key] = id;
@@ -199,13 +202,13 @@ public class SpoutcraftChunk implements Chunk{
 
 	public boolean equals(Object obj) {
 		if (obj instanceof SpoutcraftChunk) {
-			SpoutcraftChunk other = (SpoutcraftChunk)obj;
+			SpoutcraftChunk other = (SpoutcraftChunk) obj;
 			return x == other.x && z == other.z;
 		}
 		return false;
 	}
 
 	public String toString() {
-		return "SpoutcraftChunk (" + x + ", " + z +") ";
+		return "SpoutcraftChunk (" + x + ", " + z + ") ";
 	}
 }

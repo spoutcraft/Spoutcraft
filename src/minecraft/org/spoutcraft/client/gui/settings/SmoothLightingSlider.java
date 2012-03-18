@@ -27,11 +27,12 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class SmoothLightingSlider extends GenericSlider{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class SmoothLightingSlider extends GenericSlider {
 	public SmoothLightingSlider() {
 		super("Smooth Lighting");
 		setSliderPosition(ConfigReader.smoothLighting);
@@ -49,6 +50,6 @@ public class SmoothLightingSlider extends GenericSlider{
 	}
 
 	public String getText() {
-		return "Smooth Lighting: " + (int)(this.getSliderPosition() * 100) + "%";
+		return "Smooth Lighting: " + (int) (this.getSliderPosition() * 100) + "%";
 	}
 }

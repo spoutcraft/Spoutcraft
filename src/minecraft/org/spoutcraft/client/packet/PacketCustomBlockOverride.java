@@ -67,7 +67,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 		x = input.readInt();
 		y = input.readShort();
 		z = input.readInt();
-		setBlockId((int)input.readShort());
+		setBlockId((int) input.readShort());
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {

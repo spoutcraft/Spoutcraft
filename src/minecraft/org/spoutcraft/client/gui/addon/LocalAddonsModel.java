@@ -46,7 +46,7 @@ public class LocalAddonsModel extends AbstractListModel {
 	}
 
 	public void updateAddons() {
-		for (Addon addon:Spoutcraft.getAddonManager().getAddons()) {
+		for (Addon addon : Spoutcraft.getAddonManager().getAddons()) {
 			if (addon.getDescription().getName().equals("Spoutcraft") || addon instanceof ServerAddon) {
 				continue;
 			}
@@ -73,7 +73,6 @@ public class LocalAddonsModel extends AbstractListModel {
 	}
 
 	public class AddonItem implements ListWidgetItem {
-
 		private Addon addon;
 		private ListWidget widget;
 		private String authors;
@@ -81,11 +80,11 @@ public class LocalAddonsModel extends AbstractListModel {
 		public AddonItem(Addon a) {
 			addon = a;
 			authors = "";
-			for (String author:a.getDescription().getAuthors()) {
+			for (String author : a.getDescription().getAuthors()) {
 				if (!authors.isEmpty()) {
 					authors += ", ";
 				}
-				authors+=author;
+				authors += author;
 			}
 		}
 
@@ -103,11 +102,11 @@ public class LocalAddonsModel extends AbstractListModel {
 
 		public void render(int x, int y, int width, int height) {
 			MinecraftFont font = Spoutcraft.getMinecraftFont();
-			font.drawString(addon.getDescription().getName(), x+2, y+2, 0xffffffff);
-			font.drawString(authors, x+2, y+11, 0xffaaaaaa);
+			font.drawString(addon.getDescription().getName(), x + 2, y + 2, 0xffffffff);
+			font.drawString(authors, x + 2, y + 11, 0xffaaaaaa);
 			String version = addon.getDescription().getVersion();
 			int vwidth = font.getTextWidth(version);
-			font.drawString(version, x + width - vwidth - 2, y+2, 0xffffffff);
+			font.drawString(version, x + width - vwidth - 2, y + 2, 0xffffffff);
 		}
 
 		public void onClick(int x, int y, boolean doubleClick) {

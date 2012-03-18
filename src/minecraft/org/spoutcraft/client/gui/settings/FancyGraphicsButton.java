@@ -29,20 +29,22 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 
-public class FancyGraphicsButton extends AutomatedButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class FancyGraphicsButton extends AutomatedButton {
 	public boolean custom = false;
 	private List<CheckBox> linkedButtons = null;
+
 	public FancyGraphicsButton() {
 		setTooltip("Visual quality\nFast  - lower quality, faster\nFancy - higher quality, slower\nChanges the appearance of clouds, leaves, water,\nshadows and grass sides.");
 	}
 
 	@Override
 	public String getText() {
-		return "Graphics: " + (custom ? "Custom" : (ConfigReader.fancyGraphics ? "Fancy" :"Fast"));
+		return "Graphics: " + (custom ? "Custom" : (ConfigReader.fancyGraphics ? "Fancy" : "Fast"));
 	}
 
 	@Override

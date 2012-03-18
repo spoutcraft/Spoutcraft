@@ -26,12 +26,11 @@
 package org.spoutcraft.client.gui.texturepacks;
 
 import java.io.File;
-import java.io.IOException;
+
+import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.apache.commons.io.FileUtils;
-
 import org.lwjgl.Sys;
-import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiMainMenu;
@@ -39,7 +38,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -47,6 +45,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 import org.spoutcraft.spoutcraftapi.gui.Label;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
@@ -57,7 +57,9 @@ public class GuiTexturePacks extends GuiScreen {
 
 	private void createInstances() {
 		model.setCurrentGui(this);
-		if (instancesCreated) return;
+		if (instancesCreated) {
+			return;
+		}
 		model.update();
 		screenTitle = new GenericLabel("Texture Packs");
 		view = new GenericListView(model);
@@ -85,14 +87,14 @@ public class GuiTexturePacks extends GuiScreen {
 		int swidth = mc.fontRenderer.getStringWidth(screenTitle.getText());
 		screenTitle.setY(top).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
 		getScreen().attachWidget(spoutcraft, screenTitle);
-		top+=15;
+		top += 15;
 
 		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 55);
 		getScreen().attachWidget(spoutcraft, view);
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -139,7 +141,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if (btn.equals(buttonOpenFolder)) {
 			System.out.println(SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
-			Sys.openURL("file://"+SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
+			Sys.openURL("file://" + SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			model.getItem(view.getSelectedRow()).select();
@@ -151,9 +153,9 @@ public class GuiTexturePacks extends GuiScreen {
 			try {
 				TexturePackItem item = model.getItem(view.getSelectedRow());
 				if (item.id != -1) {
-					Sys.openURL("http://textures.spout.org/info/"+item.id);
+					Sys.openURL("http://textures.spout.org/info/" + item.id);
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 			}
 		}
 	}
@@ -165,7 +167,8 @@ public class GuiTexturePacks extends GuiScreen {
 			buttonSelect.setEnabled(!current);
 			buttonInfo.setEnabled(item.id != -1);
 			buttonDelete.setEnabled(!current && (item.getPack() instanceof TexturePackCustom));
-		} catch(Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	public void deleteCurrentTexturepack() {
@@ -189,7 +192,8 @@ public class GuiTexturePacks extends GuiScreen {
 
 					Thread.sleep(25);
 				}
-			} catch(Exception e) { }
+			} catch (Exception e) {
+			}
 		}
 	}
 }

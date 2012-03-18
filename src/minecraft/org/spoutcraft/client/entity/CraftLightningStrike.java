@@ -51,10 +51,10 @@ public class CraftLightningStrike extends CraftEntity implements LightningStrike
 	}
 
 	public EntityLightningBolt getHandle() {
-		return (EntityLightningBolt)handle;
+		return (EntityLightningBolt) handle;
 	}
 
 	public boolean isEffect() {
-		return ((EntityLightningBolt)handle).effect;
+		return ((EntityLightningBolt) handle).effect;
 	}
 }

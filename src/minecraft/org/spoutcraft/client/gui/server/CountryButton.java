@@ -28,9 +28,10 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 
 public class CountryButton extends GenericComboBox implements UrlElement {
 	ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
@@ -48,7 +49,7 @@ public class CountryButton extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "country="+getSelectedItem();
+		return "country=" + getSelectedItem();
 	}
 
 	@Override

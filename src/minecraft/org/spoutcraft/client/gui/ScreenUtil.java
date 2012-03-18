@@ -40,47 +40,47 @@ import net.minecraft.src.GuiSleepMP;
 import net.minecraft.src.GuiStats;
 import net.minecraft.src.StatFileWriter;
 
+import org.spoutcraft.spoutcraftapi.gui.*;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.spoutcraftapi.gui.*;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {
 		GuiScreen toOpen = null;
 		StatFileWriter statfile = SpoutClient.getHandle().statFileWriter;
-		switch(type)
-		{
-		case CHAT_SCREEN:
-			toOpen = new GuiChat();
-			break;
-		case SLEEP_SCREEN:
-			toOpen = new GuiSleepMP();
-			break;
-		case PLAYER_INVENTORY:
-			toOpen = new GuiInventory(SpoutClient.getHandle().thePlayer);
-			break;
-		case INGAME_MENU:
-			toOpen = new GuiIngameMenu();
-			break;
-		case OPTIONS_MENU:
-			toOpen = new GameSettingsScreen(new GuiIngameMenu());
-			break;
-		case VIDEO_SETTINGS_MENU:
-			toOpen = new GameSettingsScreen(new GuiIngameMenu());
-			break;
-		case CONTROLS_MENU:
-			toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
-			break;
-		case ACHIEVEMENTS_SCREEN:
-			toOpen = new GuiAchievements(statfile);
-			break;
-		case STATISTICS_SCREEN:
-			toOpen = new GuiStats(new GuiIngameMenu(), statfile);
-			break;
-		case GAME_OVER_SCREEN:
-			toOpen = new GuiGameOver();
-			break;
+		switch (type) {
+			case CHAT_SCREEN:
+				toOpen = new GuiChat();
+				break;
+			case SLEEP_SCREEN:
+				toOpen = new GuiSleepMP();
+				break;
+			case PLAYER_INVENTORY:
+				toOpen = new GuiInventory(SpoutClient.getHandle().thePlayer);
+				break;
+			case INGAME_MENU:
+				toOpen = new GuiIngameMenu();
+				break;
+			case OPTIONS_MENU:
+				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				break;
+			case VIDEO_SETTINGS_MENU:
+				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				break;
+			case CONTROLS_MENU:
+				toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
+				break;
+			case ACHIEVEMENTS_SCREEN:
+				toOpen = new GuiAchievements(statfile);
+				break;
+			case STATISTICS_SCREEN:
+				toOpen = new GuiStats(new GuiIngameMenu(), statfile);
+				break;
+			case GAME_OVER_SCREEN:
+				toOpen = new GuiGameOver();
+				break;
 		}
 		SpoutClient.getHandle().displayGuiScreen(toOpen);
 	}

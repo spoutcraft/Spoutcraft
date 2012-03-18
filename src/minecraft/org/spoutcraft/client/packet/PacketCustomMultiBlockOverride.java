@@ -38,11 +38,12 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 
-public class PacketCustomMultiBlockOverride implements CompressablePacket{
+public class PacketCustomMultiBlockOverride implements CompressablePacket {
 	private int chunkX;
 	private int chunkZ;
 	private boolean compressed = true;
 	private byte[] data;
+
 	public PacketCustomMultiBlockOverride() {
 
 	}
@@ -72,9 +73,9 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 		for (int i = 0; i < data.length / 6; i++) {
 			int index = i * 6;
 			int x = result.get(index) + chunkX * 16;
-			int y = result.getShort(index+1);
-			int z = result.get(index+3) + chunkZ * 16;
-			short id = result.getShort(index+4);
+			int y = result.getShort(index + 1);
+			int z = result.get(index + 3) + chunkZ * 16;
+			short id = result.getShort(index + 4);
 			chunk.setCustomBlockId(x, y, z, id);
 		}
 	}

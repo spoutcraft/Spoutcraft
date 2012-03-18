@@ -25,15 +25,16 @@
  */
 package org.spoutcraft.client.gui.controls;
 
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
 
+import org.spoutcraft.client.SpoutClient;
+
 public class SpoutcraftBindingItem extends ControlsBasicItem {
 	private KeyBinding binding;
 	private ControlsModel parent;
+
 	public SpoutcraftBindingItem(KeyBinding binding, ControlsModel model) {
 		super(model);
 		this.binding = binding;
@@ -46,12 +47,12 @@ public class SpoutcraftBindingItem extends ControlsBasicItem {
 
 	public void render(int x, int y, int width, int height) {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow("S", x+2, y+2, 0xffff0000);
+		font.drawStringWithShadow("S", x + 2, y + 2, 0xffff0000);
 		int w = font.getStringWidth("S");
-		font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
-		String keyString = parent.getEditingItem() == this?"> <": GameSettings.getKeyDisplayString(getKey());
+		font.drawStringWithShadow(getName(), x + w + 4, y + 2, !isConflicting() ? 0xffffffff : 0xffff0000);
+		String keyString = parent.getEditingItem() == this ? "> <" : GameSettings.getKeyDisplayString(getKey());
 		w = font.getStringWidth(keyString);
-		font.drawStringWithShadow(keyString, width - w, y+2, 0xffcccccc);
+		font.drawStringWithShadow(keyString, width - w, y + 2, 0xffcccccc);
 	}
 
 	@Override

@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @SuppressWarnings("unchecked")
 public class PartitionChunk {
 	private final static int MAX_HEIGHT = 16;
-
 	private final static AtomicReference<int[]>[] startPoint;
 	private final static AtomicReference<int[]>[] step1;
 	private final static AtomicBoolean[] LUTSetup;

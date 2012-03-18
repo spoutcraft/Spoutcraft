@@ -32,8 +32,8 @@ import java.util.List;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 
 public class SimpleBiomeManager implements BiomeManager {
-	private HashMap<String,Boolean> changedSnow = new HashMap<String,Boolean>();
-	private HashMap<String,Boolean> changedRain = new HashMap<String,Boolean>();
+	private HashMap<String, Boolean> changedSnow = new HashMap<String, Boolean>();
+	private HashMap<String, Boolean> changedRain = new HashMap<String, Boolean>();
 	private List<String> defaultSnow = new ArrayList<String>();
 	private List<String> defaultRain = new ArrayList<String>();
 
@@ -92,13 +92,13 @@ public class SimpleBiomeManager implements BiomeManager {
 		if (defaultSnow.contains(biome)) {
 			changedSnow.put(biome, true);
 		} else {
-			changedSnow.put(biome,false);
+			changedSnow.put(biome, false);
 		}
 
 		if (defaultRain.contains(biome)) {
 			changedRain.put(biome, false);
 		} else {
-			changedRain.put(biome,true);
+			changedRain.put(biome, true);
 		}
 	}
 }

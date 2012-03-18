@@ -30,15 +30,16 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketPreCacheFile implements SpoutPacket{
+public class PacketPreCacheFile implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];
 	private boolean cached = false;
 	private boolean url = false;

@@ -30,12 +30,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketWidgetRemove implements SpoutPacket {
 	protected Widget widget;

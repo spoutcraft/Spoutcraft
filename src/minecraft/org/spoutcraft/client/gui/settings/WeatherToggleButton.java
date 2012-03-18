@@ -25,12 +25,13 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class WeatherToggleButton extends GenericCheckBox{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
+public class WeatherToggleButton extends GenericCheckBox {
 	public WeatherToggleButton() {
 		super("Weather");
 		setChecked(ConfigReader.weather);

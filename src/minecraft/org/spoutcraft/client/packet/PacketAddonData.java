@@ -36,17 +36,19 @@ import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketAddonData implements CompressablePacket {
 	private AddonPacket packet = null;
 	private boolean needsCompression;
 	private boolean compressed = false;
 	private byte[] data;
+
 	public PacketAddonData() {
 
 	}

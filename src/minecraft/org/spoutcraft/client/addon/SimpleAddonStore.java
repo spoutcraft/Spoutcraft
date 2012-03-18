@@ -36,12 +36,11 @@ import java.util.List;
 
 import org.yaml.snakeyaml.Yaml;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.addon.AddonStore.DownloadEventDelegate;
+
+import org.spoutcraft.client.io.FileUtil;
 
 public class SimpleAddonStore implements AddonStore {
 	private HashMap<String, AddonInfo> addons = new HashMap<String, AddonInfo>();
@@ -120,7 +119,7 @@ public class SimpleAddonStore implements AddonStore {
 			FileReader reader = null;
 			reader = new FileReader(getDataFile());
 			List<Object> data = (List<Object>) yaml.load(reader);
-			for (Object obj:data) {
+			for (Object obj : data) {
 				try {
 					HashMap<String, Object> item = (HashMap<String, Object>) obj;
 					String name = (String) item.get("name");
@@ -130,8 +129,7 @@ public class SimpleAddonStore implements AddonStore {
 					info.setEnabled((Boolean) item.get("enabled"));
 					info.setHasInternetAccess((Boolean) item.get("internetAccess"));
 					addons.put(name, info);
-					System.out.println("Loaded addon info for "+name);
-
+					System.out.println("Loaded addon info for " + name);
 				} catch (ClassCastException ignore) {
 					ignore.printStackTrace();
 				} catch (NullPointerException e) {
@@ -149,7 +147,7 @@ public class SimpleAddonStore implements AddonStore {
 			return;
 		}
 		List<Object> data = new ArrayList<Object>();
-		for (AddonInfo info:addons.values()) {
+		for (AddonInfo info : addons.values()) {
 			HashMap<String, Object> item = new HashMap<String, Object>();
 
 			item.put("databaseId", info.getDatabaseId());
@@ -168,7 +166,8 @@ public class SimpleAddonStore implements AddonStore {
 		try {
 			FileWriter writer = new FileWriter(getDataFile());
 			yaml.dump(data, writer);
-		} catch(IOException ignore) {}
+		} catch (IOException ignore) {
+		}
 	}
 
 	private File getDataFile() {

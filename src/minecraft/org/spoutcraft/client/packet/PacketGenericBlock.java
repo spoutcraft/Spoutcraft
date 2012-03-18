@@ -30,11 +30,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 
-public class PacketGenericBlock implements SpoutPacket{
+public class PacketGenericBlock implements SpoutPacket {
 	GenericCustomBlock block = new GenericCustomBlock();
+
 	public PacketGenericBlock() {
 
 	}

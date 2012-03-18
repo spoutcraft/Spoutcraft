@@ -32,7 +32,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
@@ -44,7 +43,9 @@ import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-public class GuiUnexpectedError extends GuiScreen{
+import org.spoutcraft.client.SpoutClient;
+
+public class GuiUnexpectedError extends GuiScreen {
 	public GuiUnexpectedError() {
 
 	}
@@ -53,7 +54,7 @@ public class GuiUnexpectedError extends GuiScreen{
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
-		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
+		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Oh Noes!");
@@ -73,9 +74,9 @@ public class GuiUnexpectedError extends GuiScreen{
 		top += 22;
 
 		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyway, Even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
-		"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
-		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n"+
-		"and forgive and forget.\n\nWhat were we talking about again?");
+				"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
+				"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n" +
+				"and forgive and forget.\n\nWhat were we talking about again?");
 		label.setX(10).setY(top);
 		label.setTextColor(grey);
 		screen.attachWidget(spoutcraft, label);
@@ -136,10 +137,10 @@ class ReportErrorButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		SpoutClient.disableSandbox();
 		try {
-			URL url =  new URL("https://github.com/SpoutDev/Spout/issues/new");
+			URL url = new URL("https://github.com/SpoutDev/Spout/issues/new");
 			Desktop.getDesktop().browse(url.toURI());
-		} catch (Exception e) { }
-		finally {
+		} catch (Exception e) {
+		} finally {
 			SpoutClient.enableSandbox();
 		}
 		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());

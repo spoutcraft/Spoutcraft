@@ -35,9 +35,10 @@ import net.minecraft.src.World;
 
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 
-public class CustomEntityDiggingFX extends EntityDiggingFX{
+public class CustomEntityDiggingFX extends EntityDiggingFX {
 	private Texture textureBinding = null;
 	GenericBlockDesign design;
+
 	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, GenericBlockDesign design) {
 		super(var1, var2, var4, var6, var8, var10, var12, block, var15, var16);
 		this.textureBinding = textureBinding;
@@ -51,16 +52,16 @@ public class CustomEntityDiggingFX extends EntityDiggingFX{
 		var10.startDrawingQuads();
 
 		float var12 = 0.1F * this.particleScale;
-		float var13 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)var2 - interpPosX);
-		float var14 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)var2 - interpPosY);
-		float var15 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)var2 - interpPosZ);
+		float var13 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) var2 - interpPosX);
+		float var14 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) var2 - interpPosY);
+		float var15 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) var2 - interpPosZ);
 		float var16 = 1.0F;
 		for (int i = 0; i < design.getX().length; i++) {
 			var1.setColorOpaque_F(var16 * this.particleRed, var16 * this.particleGreen, var16 * this.particleBlue);
-			var1.addVertexWithUV((double)(var13 - var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 - var5 * var12 - var7 * var12), design.getTextureXPos()[i][0], design.getTextureYPos()[i][0]);
-			var1.addVertexWithUV((double)(var13 - var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 - var5 * var12 + var7 * var12), design.getTextureXPos()[i][1], design.getTextureYPos()[i][1]);
-			var1.addVertexWithUV((double)(var13 + var3 * var12 + var6 * var12), (double)(var14 + var4 * var12), (double)(var15 + var5 * var12 + var7 * var12), design.getTextureXPos()[i][2], design.getTextureYPos()[i][2]);
-			var1.addVertexWithUV((double)(var13 + var3 * var12 - var6 * var12), (double)(var14 - var4 * var12), (double)(var15 + var5 * var12 - var7 * var12), design.getTextureXPos()[i][3], design.getTextureYPos()[i][3]);
+			var1.addVertexWithUV((double) (var13 - var3 * var12 - var6 * var12), (double) (var14 - var4 * var12), (double) (var15 - var5 * var12 - var7 * var12), design.getTextureXPos()[i][0], design.getTextureYPos()[i][0]);
+			var1.addVertexWithUV((double) (var13 - var3 * var12 + var6 * var12), (double) (var14 + var4 * var12), (double) (var15 - var5 * var12 + var7 * var12), design.getTextureXPos()[i][1], design.getTextureYPos()[i][1]);
+			var1.addVertexWithUV((double) (var13 + var3 * var12 + var6 * var12), (double) (var14 + var4 * var12), (double) (var15 + var5 * var12 + var7 * var12), design.getTextureXPos()[i][2], design.getTextureYPos()[i][2]);
+			var1.addVertexWithUV((double) (var13 + var3 * var12 - var6 * var12), (double) (var14 - var4 * var12), (double) (var15 + var5 * var12 - var7 * var12), design.getTextureXPos()[i][3], design.getTextureYPos()[i][3]);
 		}
 
 		var10.draw();

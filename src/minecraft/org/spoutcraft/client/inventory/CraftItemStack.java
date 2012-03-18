@@ -49,9 +49,9 @@ public class CraftItemStack extends ItemStack {
 
 	public CraftItemStack(net.minecraft.src.ItemStack item) {
 		super(
-			item != null ? item.itemID: 0,
-			item != null ? item.stackSize : 0,
-			(short)(item != null ? item.getItemDamage() : 0)
+				item != null ? item.itemID : 0,
+				item != null ? item.stackSize : 0,
+				(short) (item != null ? item.getItemDamage() : 0)
 		);
 		this.item = item;
 	}

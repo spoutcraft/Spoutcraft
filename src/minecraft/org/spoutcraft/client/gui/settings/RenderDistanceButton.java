@@ -27,13 +27,15 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
-public class RenderDistanceButton extends AutomatedButton{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
+public class RenderDistanceButton extends AutomatedButton {
 	RenderDistance distance = RenderDistance.getRenderDistanceFromValue(ConfigReader.renderDistance);
+
 	public RenderDistanceButton() {
 		setTooltip("Visible distance\nFar - 256m (slower\nNormal - 128m\nShort - 64m (faster)\nTiny - 32m (fastest)");
 	}

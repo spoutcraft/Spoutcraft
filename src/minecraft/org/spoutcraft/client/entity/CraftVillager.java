@@ -40,13 +40,19 @@ public class CraftVillager extends CraftCreature implements Villager {
 	}
 
 	public Occupation getOccupation() {
-		switch(((EntityVillager)handle).func_48129_t()) {
-			case 0: return Occupation.FARMER;
-			case 1: return Occupation.LIBRARIAN;
-			case 2: return Occupation.PRIEST;
-			case 3: return Occupation.BLACKSMITH;
-			case 4: return Occupation.BUTCHER;
-			default: return Occupation.VILLAGER;
+		switch (((EntityVillager) handle).func_48129_t()) {
+			case 0:
+				return Occupation.FARMER;
+			case 1:
+				return Occupation.LIBRARIAN;
+			case 2:
+				return Occupation.PRIEST;
+			case 3:
+				return Occupation.BLACKSMITH;
+			case 4:
+				return Occupation.BUTCHER;
+			default:
+				return Occupation.VILLAGER;
 		}
 	}
 }

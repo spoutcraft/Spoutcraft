@@ -28,12 +28,14 @@ package org.spoutcraft.client.gui.settings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class ControlsButton extends GenericButton{
+import org.spoutcraft.client.gui.controls.GuiControls;
+
+public class ControlsButton extends GenericButton {
 	GuiScreen parent;
+
 	public ControlsButton(GuiScreen parent) {
 		super("Controls");
 		setTooltip("Controls\nAdd, modify, or remove keybindings");

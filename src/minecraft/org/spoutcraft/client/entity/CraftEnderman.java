@@ -53,7 +53,7 @@ public class CraftEnderman extends CraftMonster implements Enderman {
 	}
 
 	public EntityEnderman getEntityEnderman() {
-		return (EntityEnderman)handle;
+		return (EntityEnderman) handle;
 	}
 
 	@Override

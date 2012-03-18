@@ -31,6 +31,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 
 public class EntityText extends Entity {
@@ -40,7 +41,7 @@ public class EntityText extends Entity {
 
 	public EntityText(World var1) {
 		super(var1);
-		setText(ChatColor.RED+"test "+ChatColor.GREEN+"Some Green Text");
+		setText(ChatColor.RED + "test " + ChatColor.GREEN + "Some Green Text");
 		setPosition(-125, 90, 1501);
 		updateGeometry();
 	}
@@ -91,7 +92,7 @@ public class EntityText extends Entity {
 
 	private void updateGeometry() {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		this.width = (float)font.getStringWidth(text)*0.0139F*scale;
-		this.height = 0.124F*scale;
+		this.width = (float) font.getStringWidth(text) * 0.0139F * scale;
+		this.height = 0.124F * scale;
 	}
 }

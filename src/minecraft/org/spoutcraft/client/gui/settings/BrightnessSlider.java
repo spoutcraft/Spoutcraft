@@ -27,11 +27,12 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class BrightnessSlider extends GenericSlider{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class BrightnessSlider extends GenericSlider {
 	public BrightnessSlider() {
 		super("Brightness");
 		setSliderPosition(ConfigReader.brightnessSlider);
@@ -52,6 +53,6 @@ public class BrightnessSlider extends GenericSlider{
 		if (getSliderPosition() == 1F) {
 			return "Brightness: Bright";
 		}
-		return "Brightness: " + (int)(this.getSliderPosition() * 100) + "%";
+		return "Brightness: " + (int) (this.getSliderPosition() * 100) + "%";
 	}
 }

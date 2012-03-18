@@ -29,11 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomTool;
 
-public class PacketGenericTool implements SpoutPacket{
+public class PacketGenericTool implements SpoutPacket {
 	GenericCustomTool item = new GenericCustomTool();
+
 	public int getNumBytes() {
 		return item.getNumBytes();
 	}

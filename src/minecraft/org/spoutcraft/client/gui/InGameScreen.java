@@ -28,12 +28,13 @@ package org.spoutcraft.client.gui;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
-public class InGameScreen extends GenericScreen implements InGameHUD{
+import org.spoutcraft.client.SpoutClient;
+
+public class InGameScreen extends GenericScreen implements InGameHUD {
 	protected HealthBar health;
 	protected BubbleBar bubble;
 	protected ChatBar chat;
@@ -92,22 +93,22 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	@Override
 	public boolean updateWidget(Widget widget) {
 		if (widget instanceof HealthBar) {
-			health = (HealthBar)widget;
+			health = (HealthBar) widget;
 		} else if (widget instanceof BubbleBar) {
-			bubble = (BubbleBar)widget;
+			bubble = (BubbleBar) widget;
 		} else if (widget instanceof ChatTextBox) {
-			chatText = (ChatTextBox)widget;
+			chatText = (ChatTextBox) widget;
 		} else if (widget instanceof ChatBar) {
-			chat = (ChatBar)widget;
+			chat = (ChatBar) widget;
 			updateChatWindowSize((int) getWidth(), (int) getHeight());
 		} else if (widget instanceof ArmorBar) {
-			armor = (ArmorBar)widget;
+			armor = (ArmorBar) widget;
 		} else if (widget instanceof HungerBar) {
-			hunger = (HungerBar)widget;
+			hunger = (HungerBar) widget;
 		} else if (widget instanceof ExpBar) {
-			exp = (ExpBar)widget;
+			exp = (ExpBar) widget;
 		} else if (widget instanceof ServerPlayerList) {
-			playerList = (ServerPlayerList)widget;
+			playerList = (ServerPlayerList) widget;
 		}
 		return super.updateWidget(widget);
 	}
@@ -237,7 +238,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		hunger.setVisible(toggle);
 		exp.setVisible(toggle);
 	}
-	
+
 	private void updateChatWindowSize(int screenWidth, int screenHeight) {
 		chatText.setGeometry(0, 0, 320, screenHeight);
 		//chat.setGeometry(0, 0, 320, screenHeight);
@@ -248,6 +249,4 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		updateChatWindowSize(newWidth, newHeight);
 		super.onScreenResized(oldWidth, oldHeight, newWidth, newHeight);
 	}
-	
-	
 }
