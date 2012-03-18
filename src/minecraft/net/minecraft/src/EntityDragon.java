@@ -54,8 +54,8 @@ public class EntityDragon extends EntityDragonBase {
 		this.targetY = 100.0D;
 		this.ignoreFrustumCheck = true;
 		 //Spout start
-        this.spoutEntity = new CraftEnderDragon(this);
-        //Spout end
+		this.spoutEntity = new CraftEnderDragon(this);
+		//Spout end
 	}
 
 	protected void entityInit() {

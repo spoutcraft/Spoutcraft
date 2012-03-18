@@ -25,8 +25,8 @@ public class EntityBlaze extends EntityMob {
 		this.attackStrength = 6;
 		this.experienceValue = 10;
 		//Spout start
-        this.spoutEntity = new CraftBlaze(this);
-        //Spout end
+		this.spoutEntity = new CraftBlaze(this);
+		//Spout end
 	}
 
 	public int getMaxHealth() {

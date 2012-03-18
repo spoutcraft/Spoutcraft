@@ -27,9 +27,9 @@ package org.spoutcraft.client;
 
 import java.lang.String;
 
-import org.spoutcraft.client.gui.server.ServerItem;
-
 import net.minecraft.src.GuiConnecting;
+
+import org.spoutcraft.client.gui.server.ServerItem;
 
 public class ReconnectManager {
 	static String hostName = null;

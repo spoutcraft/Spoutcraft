@@ -1,19 +1,3 @@
-/*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
- * Spoutcraft is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Spoutcraft is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package net.minecraft.src;
 
 import net.minecraft.src.Entity;
@@ -63,8 +47,8 @@ public class RenderVillager extends RenderLiving {
 	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		//Spout start
 		//this.func_40290_a((EntityVillager)par1EntityLiving, par2, par4, par6);
-        super.passSpecialRender(par1EntityLiving, par2, par4, par6);
-        //Spout end
+		super.passSpecialRender(par1EntityLiving, par2, par4, par6);
+		//Spout end
 	}
 
 	

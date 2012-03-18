@@ -59,7 +59,7 @@ public class TextureUtils {
 	private static boolean customLava = true;
 	private static boolean customWater = true;
 	private static boolean customPortal = true;
-    private static boolean customOther = true;
+	private static boolean customOther = true;
 	public static final int LAVA_STILL_TEXTURE_INDEX = 237;
 	public static final int LAVA_FLOWING_TEXTURE_INDEX = 238;
 	public static final int WATER_STILL_TEXTURE_INDEX = 205;

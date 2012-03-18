@@ -248,7 +248,6 @@ public final class EasterEggs {
 					return egg.getCape();
 				}
 			}
-
 		}
 		return null;
 	}

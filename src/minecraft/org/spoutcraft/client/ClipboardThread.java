@@ -24,7 +24,7 @@
  * including the MIT license.
  */
 package org.spoutcraft.client;
-//Spout
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

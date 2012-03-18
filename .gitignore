@@ -55,6 +55,8 @@ build.xml
 #######################
 .idea
 *.iml
+*.ipr
+*.iws
 
 # Minecraft Coder Pack #
 ########################

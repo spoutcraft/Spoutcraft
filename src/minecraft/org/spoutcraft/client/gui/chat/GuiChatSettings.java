@@ -1,3 +1,28 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is licensed under the SpoutDev License Version 1.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * In addition, 180 days after any changes are published, you can use the
+ * software, incorporating those changes, under the terms of the MIT license,
+ * as described in the SpoutDev License Version 1.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License,
+ * the MIT license and the SpoutDev license version 1 along with this program.
+ * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
+ * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
+ * including the MIT license.
+ */
 package org.spoutcraft.client.gui.chat;
 
 import java.util.ArrayList;
@@ -32,39 +57,39 @@ public class GuiChatSettings extends GuiSpoutScreen {
 	protected void createInstances() {
 		title = new GenericLabel("Chat Options");
 		
-		checkShowMentions = new GenericCheckBox("Show mentions");
+		checkShowMentions = new GenericCheckBox("Show Highlights/Mentions");
 		checkShowMentions.setTooltip("Highlight chat messages where your name or words you specified are mentioned.");
 		checkShowMentions.setChecked(ConfigReader.highlightMentions);
 		
-		checkShowJoins = new GenericCheckBox("Show joins");
+		checkShowJoins = new GenericCheckBox("Show Joins");
 		checkShowJoins.setTooltip("Show player join messages when a new player logs in.");
 		checkShowJoins.setChecked(ConfigReader.showJoinMessages);
 		
-		checkShowColors = new GenericCheckBox("Show colors");
-		checkShowColors.setTooltip("Shows the notation for chat color.");
+		checkShowColors = new GenericCheckBox("Show Color Help/Guide");
+		checkShowColors.setTooltip("Shows an on-screen guide for chat colors.");
 		checkShowColors.setChecked(ConfigReader.showChatColors);
 		
-		checkCloseOnDamage = new GenericCheckBox("Close chat window on damage");
+		checkCloseOnDamage = new GenericCheckBox("Close Chat Window on Damage");
 		checkCloseOnDamage.setTooltip("Close the chat screen if your player is damaged.\nYour message will be saved.");
 		checkCloseOnDamage.setChecked(ConfigReader.showDamageAlerts);
 		
-		checkGrabMouse = new GenericCheckBox("Chat window grabs mouse");
+		checkGrabMouse = new GenericCheckBox("Chat Window Grabs Mouse");
 		checkGrabMouse.setTooltip("Opening the chat screen grabs the mouse.\nON, players can not look around - default behavior\nOFF, players can look and pan the screen during chat.");
 		checkGrabMouse.setChecked(ConfigReader.chatGrabsMouse);
 		
 		checkIgnorePeople = new GenericCheckBox("Ignore List");
-		checkIgnorePeople.setTooltip("This will prevent displaying chat messages from players in your ignore list");
+		checkIgnorePeople.setTooltip("Prevents displaying chat messages from players in your ignore list.");
 		checkIgnorePeople.setChecked(ConfigReader.ignorePeople);
 		
-		checkParseRegex = new GenericCheckBox("Use regex");
-		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax");
+		checkParseRegex = new GenericCheckBox("Enable Regex Usage");
+		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax.");
 		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
 		
 		buttonAdvancedMentions = new GenericButton("Advanced options");
-		buttonAdvancedMentions.setTooltip("Configure words to be highlighted");
+		buttonAdvancedMentions.setTooltip("Configure words to be highlighted.");
 		
 		buttonConfigureIgnores = new GenericButton("Configure");
-		buttonConfigureIgnores.setTooltip("Configure people to ignore messages from");
+		buttonConfigureIgnores.setTooltip("Configure people to ignore messages from.");
 		
 		buttonDone = new GenericButton("Done");
 		

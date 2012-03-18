@@ -34,8 +34,8 @@ public class EntityVillager extends EntityAgeable {
 	public EntityVillager(World par1World) {
 		this(par1World, 0);
 		//Spout start
-        this.spoutEntity = new CraftVillager(this);
-        //Spout end
+		this.spoutEntity = new CraftVillager(this);
+		//Spout end
 	}
 
 	public EntityVillager(World par1World, int par2) {
@@ -63,8 +63,8 @@ public class EntityVillager extends EntityAgeable {
 		this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
 		this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 		//Spout start
-        this.spoutEntity = new CraftVillager(this);
-        //Spout end
+		this.spoutEntity = new CraftVillager(this);
+		//Spout end
 	}
 
 	public boolean isAIEnabled() {
