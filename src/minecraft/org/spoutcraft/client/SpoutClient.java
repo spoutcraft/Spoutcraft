@@ -53,6 +53,7 @@ import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
 import org.spoutcraft.client.gui.SimpleWidgetManager;
+import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.client.gui.server.ServerManager;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
@@ -358,6 +359,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		server = -1L;
 		inWorldTicks = 0L;
 		MaterialData.reset();
+		ZanMinimap.instance.onWorldChange();
 	}
 
 	public void onWorldEnter() {
@@ -378,6 +380,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
+		ZanMinimap.instance.onWorldChange();
 	}
 
 	public static Minecraft getHandle() {

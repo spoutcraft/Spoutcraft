@@ -188,7 +188,7 @@ public class WorldRenderer {
 
 									CustomBlock mat = null;
 									if (customBlockIds != null) {
-										int key = ((dx & 0xF) << 11) | ((dz & 0xF) << 7) | (dy & 0x7F);
+										int key = ((dx & 0xF) << 12) | ((dz & 0xF) << 8) | (dy & 0xFF);
 										if (customBlockIds[key] != 0) {
 											mat = MaterialData.getCustomBlock(customBlockIds[key]);
 											if (mat != null) {

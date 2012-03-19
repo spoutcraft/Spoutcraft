@@ -572,8 +572,10 @@ public class GuiIngame extends Gui
 			return;
 		}
 		SpoutClient.enableSandbox();
-		ChatTextBox chatTextWidget = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
-		chatTextWidget.addChatMessage(ChatMessage.parseMessage(par1Str));
+		if (Spoutcraft.getActivePlayer() != null) {
+			ChatTextBox chatTextWidget = Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox();
+			chatTextWidget.addChatMessage(ChatMessage.parseMessage(par1Str));
+		}
 		SpoutClient.disableSandbox();
 		//Spout end
 

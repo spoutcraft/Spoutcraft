@@ -80,10 +80,11 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z) {
-		net.minecraft.src.Block b;
+		net.minecraft.src.Block b = null;
 		if (block.getRawId() < net.minecraft.src.Block.blocksList.length) {
 			b = net.minecraft.src.Block.blocksList[block.getRawId()];
-		} else {
+		}
+		if (b == null) {
 			b = net.minecraft.src.Block.stone;
 		}
 		return b.getMixedBrightnessForBlock(handle, x, y, z);

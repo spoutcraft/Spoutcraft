@@ -100,6 +100,13 @@ public class GuiMinimapMenu extends GuiScreen {
 		control.setEnabled(false);
 		control.setTooltip("Feature broken.");
 		top += 22;
+		
+		//TODO waypoints
+	}
+	
+	@Override
+	public void drawScreen(int var1, int var2, float var3) {
+		drawDefaultBackground();
 	}
 	
 	@Override
