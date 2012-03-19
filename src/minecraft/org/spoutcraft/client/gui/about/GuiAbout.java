@@ -222,6 +222,7 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("Contributors", this.width / 2 - 200, top, 0xffffff); top += 10;
 		drawScaledString("The Bukkit Team - Bukkit Server API", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("lahwran - Fast Events Code", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("lahwran - Minimap Logic", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Celtic Minstrel - Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Zeerix - Threading Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Karlthepagan - OptiTick Code", this.width / 2 - 200, top, 0x808080); top += 10;
@@ -232,7 +233,6 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("TomyLobo - Mipmapping Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("ThVortex - FontRenderer fixes", this.width / 2 - 200, top, 0x808080); top += 10;
-
 
 		//Left half
 		top = 0;
