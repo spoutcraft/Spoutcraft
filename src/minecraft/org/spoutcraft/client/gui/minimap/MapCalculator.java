@@ -195,12 +195,12 @@ public class MapCalculator implements Runnable {
 						int worldY = getBlockHeight(data, worldX, worldZ);
 						
 						//4 is a fudge shift to get it to line up correctly with the image
-						int pixelX = worldX - startX + 4;
+						int pixelX = worldX - startX;
 						if (pixelX >= map.renderSize) pixelX -= map.renderSize;
 						
-						int pixelZ = worldZ - startZ + 4;
+						int pixelZ = worldZ - startZ;
 						if (pixelZ >= map.renderSize) pixelZ -= map.renderSize;
-						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2 - 2, worldX, worldZ)) {
+						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, worldX, worldZ)) {
 							int color = getBlockColor(data, worldX, worldY, worldZ);
 							if (color == 0) {
 								map.clearColorPixel(pixelX, pixelZ);

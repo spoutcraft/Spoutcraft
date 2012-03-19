@@ -132,16 +132,21 @@ public class MapRenderer {
 			} else {
 				GL11.glPushMatrix();
 
-				switch (MinimapConfig.getInstance().getZoom()) {
-				case 0: GL11.glScalef(8F, 8F, 1F); GL11.glTranslatef(56, 0, 0F); break;
-				case 1: GL11.glScalef(4F, 4F, 1F); GL11.glTranslatef(48, 0, 0F); break;
-				case 2: GL11.glScalef(2F, 2F, 1F); GL11.glTranslatef(32, 0, 0F); break;
-				}
+				
 				map.loadColorImage();
 
 				GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
 				GL11.glRotatef(this.direction + 90.0F, 0.0F, 0.0F, 1.0F);
 				GL11.glTranslatef( 32.0F, -(32.0F), 0.0F);
+				
+				switch (MinimapConfig.getInstance().getZoom()) {
+					case 0: GL11.glScalef(8F, 8F, 1F); GL11.glTranslatef(56.25F, 0.25F, 0F); break;
+					case 1: GL11.glScalef(4F, 4F, 1F); GL11.glTranslatef(48.5F, 0.5F, 0F); break;
+					case 2: GL11.glScalef(2F, 2F, 1F); GL11.glTranslatef(33F, 1F, 0F); break;
+					case 3: GL11.glTranslatef(2F, 2F, 0F); break;
+				}
+				
+				
 
 				drawOnMap();
 				
