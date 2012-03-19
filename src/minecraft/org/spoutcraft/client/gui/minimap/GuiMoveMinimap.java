@@ -85,7 +85,7 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 		float scale = sliderScale.getSliderPosition() * 4;
 		int width = (int) (65 * scale); int height = (int) (65 * scale);
 		if(MinimapConfig.getInstance().isCoords()) {
-			height += 18;
+			height += 23;
 		}
 		
 		sliderScale.setText("Size adjust: " + Math.round(scale * 100f) / 100f);
