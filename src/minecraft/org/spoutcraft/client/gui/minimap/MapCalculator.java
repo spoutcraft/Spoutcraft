@@ -122,11 +122,10 @@ public class MapCalculator implements Runnable {
 					BlockColor col = BlockColor.getBlockColor(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z));
 					color24 = col.color;
 				}
-			} else
-				color24 = 0x808080;
+			}
 		}
 		catch (Exception e) {
-			return 0xff0000;
+			return 0;
 		}
 
 		return color24;
@@ -192,7 +191,14 @@ public class MapCalculator implements Runnable {
 						int pixelZ = worldZ - startZ + 4;
 						if (pixelZ >= map.renderSize) pixelZ -= map.renderSize;
 						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2 - 2, worldX, worldZ)) {
-							map.setColorPixel(pixelX, pixelZ, getBlockColor(data, worldX, worldY, worldZ));
+							int color = getBlockColor(data, worldX, worldY, worldZ);
+							if (color == 0) {
+								map.clearColorPixel(pixelX, pixelZ);
+							}
+							else {
+								map.setColorPixel(pixelX, pixelZ, color);
+							}
+							
 							map.setHeightPixel(pixelX, pixelZ, getBlockHeightMap(data, worldX, worldY, worldZ));
 							map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));
 						}

@@ -46,7 +46,7 @@ public class BlockColor {
 			throw e;
 		}
 		System.err.println("Unable to find a block color for blockid: " + blockid + " blockmeta: " + meta);
-		return new BlockColor(0xff00ff, 0xff, TintType.NONE);
+		return new BlockColor(0, 0xff, TintType.NONE);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class BlockColor {
 		for (int i = 0; i < blockColors.length; i++) {
 			blockColors[i] = null;
 		}
-		setDefaultColor(0, 0, 0xFFFF00FF);
+		setDefaultColor(0, 0, 0);
 		setDefaultColor(1, 0, -9934744);
 		setDefaultColor(2, 0, -12096451);
 		setDefaultColor(3, 0, -8825542);
