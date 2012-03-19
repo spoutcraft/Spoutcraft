@@ -16,14 +16,20 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.Control;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.Gradient;
+import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
@@ -31,6 +37,8 @@ import net.minecraft.src.GuiScreen;
 
 public class GuiMinimapMenu extends GuiScreen {
 	private Button doneButton = null;
+	private HoldableButton xAdjustLeft, xAdjustRight, yAdjustUp, yAdjustDown, increaseScale, decreaseScale;
+	private Label xPos, yPos, scale;
 	GuiScreen parent;
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
@@ -64,6 +72,97 @@ public class GuiMinimapMenu extends GuiScreen {
 		getScreen().attachWidget(spoutcraft, doneButton);
 		
 		int top = 5;
+		final Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
+		
+		label = new GenericLabel("Minimap Position");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		label.setTextColor(grey);
+		screen.attachWidget(spoutcraft, label);
+		top += 11;
+
+		Gradient linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
+		
+		label = new GenericLabel("X Position");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		screen.attachWidget(spoutcraft, label);
+		
+		xPos = new GenericLabel("(" + (int)MinimapConfig.getInstance().getAdjustX() + ")");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(xPos.getText());
+		xPos.setX((int) (width / 2 - size / 2)).setY(top + 11);
+		screen.attachWidget(spoutcraft, xPos);
+		
+		xAdjustLeft = (HoldableButton) new HoldableButton("Left").setAlign(WidgetAnchor.TOP_CENTER);
+		xAdjustLeft.setWidth(40).setHeight(20).setX(left + 85).setY(top);
+		screen.attachWidget(spoutcraft, xAdjustLeft);
+		
+		xAdjustRight = (HoldableButton) new HoldableButton("Right").setAlign(WidgetAnchor.TOP_CENTER);
+		xAdjustRight.setWidth(40).setHeight(20).setX(right + 25).setY(top);
+		screen.attachWidget(spoutcraft, xAdjustRight);
+		
+		top += 22;
+		
+		label = new GenericLabel("Y Position");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		screen.attachWidget(spoutcraft, label);
+
+		yPos = new GenericLabel("(" + (int)MinimapConfig.getInstance().getAdjustY() + ")");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(yPos.getText());
+		yPos.setX((int) (width / 2 - size / 2)).setY(top + 11);
+		screen.attachWidget(spoutcraft, yPos);
+		
+		yAdjustUp = (HoldableButton) new HoldableButton("Up").setAlign(WidgetAnchor.TOP_CENTER);
+		yAdjustUp.setWidth(40).setHeight(20).setX(left + 85).setY(top);
+		screen.attachWidget(spoutcraft, yAdjustUp);
+		
+		yAdjustDown = (HoldableButton) new HoldableButton("Down").setAlign(WidgetAnchor.TOP_CENTER);
+		yAdjustDown.setWidth(40).setHeight(20).setX(right + 25).setY(top);
+		screen.attachWidget(spoutcraft, yAdjustDown);
+		
+		top += 22;
+		
+		label = new GenericLabel("Size Adjust");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		screen.attachWidget(spoutcraft, label);
+
+		scale = new GenericLabel("(" + (Math.round(MinimapConfig.getInstance().getSizeAdjust() * 100D)  / 100D) + "x)");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(scale.getText());
+		scale.setX((int) (width / 2 - size / 2)).setY(top + 11);
+		screen.attachWidget(spoutcraft, scale);
+		
+		increaseScale = (HoldableButton) new HoldableButton("Larger").setAlign(WidgetAnchor.TOP_CENTER);
+		increaseScale.setWidth(50).setHeight(20).setX(left + 75).setY(top);
+		screen.attachWidget(spoutcraft, increaseScale);
+		
+		decreaseScale = (HoldableButton) new HoldableButton("Smaller").setAlign(WidgetAnchor.TOP_CENTER);
+		decreaseScale.setWidth(50).setHeight(20).setX(right + 25).setY(top);
+		screen.attachWidget(spoutcraft, decreaseScale);
+		
+		top += 22;
+		
+		top += 5;
+		
+		label = new GenericLabel("Minimap Configuration");
+		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
+		label.setX((int) (width / 2 - size / 2)).setY(top);
+		label.setTextColor(grey);
+		screen.attachWidget(spoutcraft, label);
+		top += 11;
+
+		linebreak = new GenericGradient();
+		linebreak.setBottomColor(grey);
+		linebreak.setTopColor(grey);
+		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
+		screen.attachWidget(spoutcraft, linebreak);
+		top += 6;
 		
 		control = new MinimapToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
@@ -86,6 +185,16 @@ public class GuiMinimapMenu extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
 		
+		control = new ScaleToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		control = new DirectionsToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		top += 22;
+		
 		control = new MinimapModeButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -96,23 +205,62 @@ public class GuiMinimapMenu extends GuiScreen {
 		control = new ZoomModeButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
-		control.setEnabled(false);
-		control.setTooltip("Feature broken.");
-		top += 22;
-		
-		control = new ScaleToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(top);
-		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
 		
+
 		//TODO waypoints
 	}
 	
 	@Override
-	public void drawScreen(int var1, int var2, float var3) {
+	public void drawScreen(int x, int y, float z) {
 		drawDefaultBackground();
+		
+		boolean redraw = true;
+		if (xAdjustLeft.isPressed()) {
+			MinimapConfig.getInstance().setAdjustX(MinimapConfig.getInstance().getAdjustX() - 1);
+		}
+		else if (xAdjustRight.isPressed()) {
+			MinimapConfig.getInstance().setAdjustX(MinimapConfig.getInstance().getAdjustX() + 1);
+		}
+		else if (yAdjustUp.isPressed()) {
+			MinimapConfig.getInstance().setAdjustY(MinimapConfig.getInstance().getAdjustY() - 1);
+		}
+		else if (yAdjustDown.isPressed()) {
+			MinimapConfig.getInstance().setAdjustY(MinimapConfig.getInstance().getAdjustY() + 1);
+		}
+		else if (increaseScale.isPressed()) {
+			MinimapConfig.getInstance().setSizeAdjust(Math.min(5F, MinimapConfig.getInstance().getSizeAdjust() + 0.01F));
+		}
+		else if (decreaseScale.isPressed()) {
+			MinimapConfig.getInstance().setSizeAdjust(Math.max(0.05F, MinimapConfig.getInstance().getSizeAdjust() - 0.01F));
+		}
+		else {
+			redraw = false;
+		}
+		
+		if (redraw) {
+			int size;
+			
+			xPos.setText("(" + (int)MinimapConfig.getInstance().getAdjustX() + ")");
+			size = Spoutcraft.getMinecraftFont().getTextWidth(xPos.getText());
+			xPos.setX((int) (width / 2 - size / 2));
+			
+			yPos.setText("(" + (int)MinimapConfig.getInstance().getAdjustY() + ")");
+			size = Spoutcraft.getMinecraftFont().getTextWidth(yPos.getText());
+			yPos.setX((int) (width / 2 - size / 2));
+			
+			scale.setText("(" + (Math.round(MinimapConfig.getInstance().getSizeAdjust() * 100D)  / 100D) + "x)");
+			size = Spoutcraft.getMinecraftFont().getTextWidth(scale.getText());
+			scale.setX((int) (width / 2 - size / 2));
+		}
+		xAdjustLeft.onTick();
+		xAdjustRight.onTick();
+		yAdjustUp.onTick();
+		yAdjustDown.onTick();
+		increaseScale.onTick();
+		decreaseScale.onTick();
+		super.drawScreen(x, y, z);
 	}
 	
 	@Override
@@ -125,4 +273,25 @@ public class GuiMinimapMenu extends GuiScreen {
 
 }
 
-
+class HoldableButton extends GenericButton {
+	private boolean pressed = false;
+	HoldableButton(String str) {
+		super (str);
+	}
+	
+	@Override
+	public void onButtonClick(ButtonClickEvent event) {
+		pressed = true;
+	}
+	
+	public boolean isPressed() {
+		return pressed && Mouse.isButtonDown(0);
+	}
+	
+	@Override
+	public void onTick() {
+		if (!Mouse.isButtonDown(0)) {
+			pressed = false;
+		}
+	}
+}

@@ -34,7 +34,7 @@ public class MinimapConfig {
 	
 	private boolean enabled = true;
 	private boolean coords = true;
-	private int zoom = 2;
+	private int zoom = 1;
 	private boolean color = true;
 	private boolean square = false;
 	private boolean lightmap = false;
@@ -42,6 +42,10 @@ public class MinimapConfig {
 	private boolean cavemap = false;
 	private boolean firstrun = true;
 	private boolean scale = false;
+	private float xAdjust = 0;
+	private float yAdjust = 0;
+	private float sizeAdjust = 1F;
+	private boolean directions = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
 	
 	/*
@@ -70,6 +74,10 @@ public class MinimapConfig {
 			heightmap = config.getBoolean("minimap.heightmap", heightmap);
 			cavemap = config.getBoolean("minimap.cavemap", cavemap);
 			scale = config.getBoolean("minimap.scale", scale);
+			xAdjust = (float) config.getDouble("minimap.xAdjust", xAdjust);
+			yAdjust = (float) config.getDouble("minimap.yAdjust", yAdjust);
+			sizeAdjust = (float) config.getDouble("minimap.sizeAdjust", sizeAdjust);
+			directions = config.getBoolean("minimap.directions", directions);
 		}
 		firstrun = config.getBoolean("minimap.firstrun", firstrun);
 		Map<?, ?> worlds = config.getNodes("waypoints");
@@ -124,6 +132,10 @@ public class MinimapConfig {
 		config.setProperty("minimap.cavemap", cavemap);
 		config.setProperty("minimap.firstrun", firstrun);
 		config.setProperty("minimap.scale", scale);
+		config.setProperty("minimap.xAdjust", xAdjust);
+		config.setProperty("minimap.yAdjust", yAdjust);
+		config.setProperty("minimap.sizeAdjust", sizeAdjust);
+		config.setProperty("minimap.directions", directions);
 		HashMap<String, Map<String, Map<String, Integer>>> worlds = new HashMap<String, Map<String, Map<String, Integer>>>();
 		Iterator<Entry<String, List<Waypoint>>> i = waypoints.entrySet().iterator();
 		while (i.hasNext()) {
@@ -247,5 +259,37 @@ public class MinimapConfig {
 
 	public void setScale(boolean scale) {
 		this.scale = scale;
+	}
+
+	public float getAdjustX() {
+		return xAdjust;
+	}
+
+	public void setAdjustX(float xAdjust) {
+		this.xAdjust = xAdjust;
+	}
+
+	public float getAdjustY() {
+		return yAdjust;
+	}
+
+	public void setAdjustY(float yAdjust) {
+		this.yAdjust = yAdjust;
+	}
+
+	public float getSizeAdjust() {
+		return sizeAdjust;
+	}
+
+	public void setSizeAdjust(float sizeAdjust) {
+		this.sizeAdjust = sizeAdjust;
+	}
+
+	public boolean isDirections() {
+		return directions;
+	}
+
+	public void setDirections(boolean directions) {
+		this.directions = directions;
 	}
 }

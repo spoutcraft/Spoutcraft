@@ -1,7 +1,9 @@
 package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiIngameMenu;
 
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 /**
@@ -51,7 +53,7 @@ public class ZanMinimap {
 		if (Minecraft.theMinecraft.thePlayer == null)
 			return;
 		
-		if (Minecraft.theMinecraft.currentScreen != null)
+		if (Minecraft.theMinecraft.currentScreen != null && !isTransparentMenu())
 			return;
 
 		int scWidth = Spoutcraft.getRenderDelegate().getScreenWidth();
@@ -60,6 +62,9 @@ public class ZanMinimap {
 		mapcalc.onRenderTick();
 		renderer.onRenderTick(scWidth, scHeight);
 	}
-
+	
+	private boolean isTransparentMenu() {
+		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu;
+	}
 	
 }

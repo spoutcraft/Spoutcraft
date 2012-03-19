@@ -34,7 +34,7 @@ public class Map {
 	 * Zoom level currently rendering at at - used in case zoom changes in the
 	 * middle of rendering a map frame
 	 */
-	public int zoom = 0;
+	public int zoom = -1;
 
 	/**
 	 * How many blocks to x+ to shift the map rendering from the origin of the
@@ -50,13 +50,18 @@ public class Map {
 
 	public int timer = 0;
 
-	public int imageSize = 276;
+	public int imageSize = 276 * 2;
 
 	public int updatedist = 4;
+	
+	public static final int ZOOM_3 = 512;
+	public static final int ZOOM_2 = 256;
+	public static final int ZOOM_1 = 128;
+	public static final int ZOOM_0 = 64;
 
-	public final int renderSize = 256;
+	public int renderSize = 256;
 
-	public final int renderOff = 128; //used instead of dividing renderSize by two
+	public int renderOff = 128; //used instead of dividing renderSize by two
 
 	/**
 	 * Map image to which the map is rendered to.
@@ -150,7 +155,7 @@ public class Map {
 	}
 
 	public boolean isDirty(double newPlayerX, double newPlayerZ) {
-		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300;
+		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300 || zoom != MinimapConfig.getInstance().getZoom();
 	}
 
 	public float getRenderScale() {

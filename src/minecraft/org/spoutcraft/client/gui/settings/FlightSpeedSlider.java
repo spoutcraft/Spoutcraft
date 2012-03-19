@@ -39,9 +39,7 @@ public class FlightSpeedSlider extends GenericSlider{
 	@Override
 	public String getText() {
 		double pos = this.getSliderPosition() * 10;
-		String text = Integer.toString((int)pos);
-		text += "." + (int)((pos - (int)pos) * 100);
-		return "Flight Speed: " + text + "X";
+		return "Flight Speed: " + (Math.round(pos * 100D)  / 100D) + "X";
 	}
 
 	@Override

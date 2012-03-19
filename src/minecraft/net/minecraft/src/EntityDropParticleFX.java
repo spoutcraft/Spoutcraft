@@ -11,7 +11,8 @@ public class EntityDropParticleFX extends EntityFX {
 		this.motionX = this.motionY = this.motionZ = 0.0D;
 		if (par8Material == Material.water) {
 			//Spout HD start
-			if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {				this.particleRed = Colorizer.waterColor[0];
+			if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {	
+				this.particleRed = Colorizer.waterColor[0];
 				this.particleGreen = Colorizer.waterColor[1];
 				this.particleBlue = Colorizer.waterColor[2];
 			} else {

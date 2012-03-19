@@ -151,13 +151,11 @@ public class MapCalculator implements Runnable {
 		if (light < min) {
 			light = min;
 		}
-		if (MinimapConfig.getInstance().isCavemap()) {
-			if (MinimapConfig.getInstance().isLightmap()) {
-				light *= 1.3f;
-			} else {
-				light *= 0.5;
-				light += 64;
-			}
+		if (MinimapConfig.getInstance().isLightmap()) {
+			light *= 1.3f;
+		} else if (MinimapConfig.getInstance().isCavemap()){
+			light *= 0.5;
+			light += 64;
 		}
 
 		if (light > 255)
@@ -175,7 +173,19 @@ public class MapCalculator implements Runnable {
 			synchronized (map) {
 				final boolean square = MinimapConfig.getInstance().isSquare();
 				final World data = Minecraft.theMinecraft.theWorld;
-				map.zoom = MinimapConfig.getInstance().getZoom();
+				if (map.zoom != MinimapConfig.getInstance().getZoom()) {
+					map.zoom = MinimapConfig.getInstance().getZoom();
+					switch(map.zoom) {
+						case 0: map.renderSize = Map.ZOOM_0; break;
+						case 1: map.renderSize = Map.ZOOM_1; break;
+						case 2: map.renderSize = Map.ZOOM_2; break;
+						case 3: map.renderSize = Map.ZOOM_3; break;
+						default: map.renderSize = Map.ZOOM_2; break;
+					}
+					map.renderOff = map.renderSize / 2;
+					map.clear();
+				}
+				
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
 				int startX = (int) (map.getPlayerX() - map.renderOff);
 				int startZ = (int) (map.getPlayerZ() - map.renderOff);
