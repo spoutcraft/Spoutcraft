@@ -69,16 +69,17 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		return new UUID(0, 3);
 	}
 	
+	private boolean chatOpen = false;
+	public void setChatOpen(boolean chat) {
+		chatOpen = chat;
+	}
+	
 	public void render() {
 		GL11.glEnable(GL11.GL_BLEND);
 		if(!isVisible()) {
 			return;
 		}
 		int scroll = Spoutcraft.getChatManager().getScroll();
-		boolean chatOpen = false;
-		if(Spoutcraft.getActivePlayer() != null && Spoutcraft.getActivePlayer().getCurrentScreen() != null && Spoutcraft.getActivePlayer().getCurrentScreen().getScreenType() == ScreenType.CHAT_SCREEN) {
-			chatOpen = true;
-		}
 		MinecraftFont font = Spoutcraft.getMinecraftFont();
 		Iterator<ChatMessage> iter = chatMessages.iterator();
 		for(int i = 0; i < scroll; i++) {
@@ -105,6 +106,9 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			}
 			if(message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
 				break;
+			}
+			if (chatOpen) {
+				opacity = 1D;
 			}
 			//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
 			int chatColor = 0xffffffff;
