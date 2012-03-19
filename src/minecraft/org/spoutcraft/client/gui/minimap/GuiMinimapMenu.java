@@ -37,8 +37,8 @@ import net.minecraft.src.GuiScreen;
 
 public class GuiMinimapMenu extends GuiScreen {
 	private Button doneButton = null, positionButton = null;
-	private HoldableButton xAdjustLeft, xAdjustRight, yAdjustUp, yAdjustDown, increaseScale, decreaseScale;
-	private Label xPos, yPos, scale;
+	private HoldableButton increaseScale, decreaseScale;
+	private Label scale;
 	GuiScreen parent;
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
@@ -206,15 +206,6 @@ public class GuiMinimapMenu extends GuiScreen {
 		
 		if (redraw) {
 			int size;
-			
-			xPos.setText("(" + (int)MinimapConfig.getInstance().getAdjustX() + ")");
-			size = Spoutcraft.getMinecraftFont().getTextWidth(xPos.getText());
-			xPos.setX((int) (width / 2 - size / 2));
-			
-			yPos.setText("(" + (int)MinimapConfig.getInstance().getAdjustY() + ")");
-			size = Spoutcraft.getMinecraftFont().getTextWidth(yPos.getText());
-			yPos.setX((int) (width / 2 - size / 2));
-			
 			scale.setText("(" + (Math.round(MinimapConfig.getInstance().getSizeAdjust() * 100D)  / 100D) + "x)");
 			size = Spoutcraft.getMinecraftFont().getTextWidth(scale.getText());
 			scale.setX((int) (width / 2 - size / 2));
