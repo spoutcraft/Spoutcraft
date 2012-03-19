@@ -64,7 +64,7 @@ public class ZanMinimap {
 	}
 	
 	private boolean isTransparentMenu() {
-		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu;
+		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
 	}
 	
 }

@@ -41,12 +41,14 @@ import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
+import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 
 public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;
 	private CheckBox checkShowMentions, checkShowJoins, checkShowColors, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, checkParseRegex;
 	private Button buttonAdvancedMentions, buttonConfigureIgnores, buttonDone;
+	private GenericScrollArea scroll;
 	private Label title;
 	
 	public GuiChatSettings(GuiScreen parent) {
@@ -56,6 +58,8 @@ public class GuiChatSettings extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		title = new GenericLabel("Chat Options");
+		
+		scroll = new GenericScrollArea();
 		
 		checkShowMentions = new GenericCheckBox("Show Highlights/Mentions");
 		checkShowMentions.setTooltip("Highlight chat messages where your name or words you specified are mentioned.");
@@ -94,32 +98,38 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		buttonDone = new GenericButton("Done");
 		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, buttonDone, checkParseRegex);
+		scroll.attachWidgets(spoutcraft, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, checkParseRegex);
+		getScreen().attachWidgets(spoutcraft, title, scroll, buttonDone);
 	}
 
 	@Override
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
-		title.setY(12);
+		title.setY(10);
 		
 		int top = title.getY() + 13;
 		
-		checkShowMentions.setGeometry(5, top, 200, 20);
-		buttonAdvancedMentions.setGeometry(width - 205, top, 150, 20);
-		top += 22;
-		checkShowJoins.setGeometry(5, top, 200, 20);
-		top += 22;
-		checkShowColors.setGeometry(5, top, 200, 20);
-		top += 22;
-		checkCloseOnDamage.setGeometry(5, top, 200, 20);
-		top += 22;
-		checkGrabMouse.setGeometry(5, top, 200, 20);
-		top += 22;
-		checkIgnorePeople.setGeometry(5, top, 200, 20);
-		buttonConfigureIgnores.setGeometry(width - 205, top, 150, 20);
-		top += 22;
-		checkParseRegex.setGeometry(5, top, 200, 20);
-		top += 22;
+		scroll.setGeometry(0, top, width, height - top - 30);
+		scroll.updateInnerSize();
+		
+		int ftop = 5;
+		
+		checkShowMentions.setGeometry(5, ftop, 200, 20);
+		buttonAdvancedMentions.setGeometry(width - 205, ftop, 150, 20);
+		ftop += 22;
+		checkShowJoins.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
+		checkShowColors.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
+		checkCloseOnDamage.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
+		checkGrabMouse.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
+		checkIgnorePeople.setGeometry(5, ftop, 200, 20);
+		buttonConfigureIgnores.setGeometry(width - 205, ftop, 150, 20);
+		ftop += 22;
+		checkParseRegex.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
 		
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
 	}
