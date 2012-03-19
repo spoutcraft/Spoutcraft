@@ -55,6 +55,10 @@ public class ZanMinimap {
 		
 		if (Minecraft.theMinecraft.currentScreen != null && !isTransparentMenu())
 			return;
+			
+		if (!MinimapConfig.getInstance().isEnabled()) {
+			return;
+		}
 
 		int scWidth = Spoutcraft.getRenderDelegate().getScreenWidth();
 		int scHeight = Spoutcraft.getRenderDelegate().getScreenHeight();
