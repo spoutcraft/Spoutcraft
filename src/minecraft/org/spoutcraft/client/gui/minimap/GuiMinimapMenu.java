@@ -191,26 +191,10 @@ public class GuiMinimapMenu extends GuiScreen {
 	
 	@Override
 	public void updateScreen() {
-		xAdjustLeft.onTick();
-		xAdjustRight.onTick();
-		yAdjustUp.onTick();
-		yAdjustDown.onTick();
 		increaseScale.onTick();
 		decreaseScale.onTick();
 		boolean redraw = true;
-		if (xAdjustLeft.isPressed()) {
-			MinimapConfig.getInstance().setAdjustX(MinimapConfig.getInstance().getAdjustX() - 1);
-		}
-		else if (xAdjustRight.isPressed()) {
-			MinimapConfig.getInstance().setAdjustX(MinimapConfig.getInstance().getAdjustX() + 1);
-		}
-		else if (yAdjustUp.isPressed()) {
-			MinimapConfig.getInstance().setAdjustY(MinimapConfig.getInstance().getAdjustY() - 1);
-		}
-		else if (yAdjustDown.isPressed()) {
-			MinimapConfig.getInstance().setAdjustY(MinimapConfig.getInstance().getAdjustY() + 1);
-		}
-		else if (increaseScale.isPressed()) {
+		if (increaseScale.isPressed()) {
 			MinimapConfig.getInstance().setSizeAdjust(Math.min(5F, MinimapConfig.getInstance().getSizeAdjust() + 0.01F));
 		}
 		else if (decreaseScale.isPressed()) {
