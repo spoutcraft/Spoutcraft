@@ -199,6 +199,7 @@ public class MapCalculator implements Runnable {
 						if (pixelX >= map.renderSize) pixelX -= map.renderSize;
 						
 						int pixelZ = worldZ - startZ;
+						pixelZ = map.renderSize - pixelZ;
 						if (pixelZ >= map.renderSize) pixelZ -= map.renderSize;
 						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, worldX, worldZ)) {
 							int color = getBlockColor(data, worldX, worldY, worldZ);
