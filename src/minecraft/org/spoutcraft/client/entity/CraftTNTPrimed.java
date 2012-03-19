@@ -56,7 +56,7 @@ public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
 	}
 
 	public EntityTNTPrimed getHandle() {
-		return (EntityTNTPrimed)handle;
+		return (EntityTNTPrimed) handle;
 	}
 
 	public float getYield() {

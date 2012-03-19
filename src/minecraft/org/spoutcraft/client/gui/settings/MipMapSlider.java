@@ -25,12 +25,13 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class MipMapSlider extends GenericSlider{
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.MipMapUtils;
+
+public class MipMapSlider extends GenericSlider {
 	public MipMapSlider() {
 		super("Terrain Mipmaps");
 		this.setSliderPosition(ConfigReader.mipmapsPercent);
@@ -42,7 +43,7 @@ public class MipMapSlider extends GenericSlider{
 		if (this.getSliderPosition() == 0F) {
 			return "Terrain Mipmaps: OFF";
 		}
-		return "Terrain Mipmaps: " + (int)(this.getSliderPosition() * 100) + "%";
+		return "Terrain Mipmaps: " + (int) (this.getSliderPosition() * 100) + "%";
 	}
 
 	@Override

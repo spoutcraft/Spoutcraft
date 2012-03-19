@@ -30,7 +30,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class DifficultyButton extends GenericButton{
+public class DifficultyButton extends GenericButton {
 	public DifficultyButton() {
 		super("Difficulty");
 		setTooltip("Difficulty\nControls the difficulty of the game.");
@@ -42,12 +42,22 @@ public class DifficultyButton extends GenericButton{
 			return "Difficulty: Hardcore";
 		}
 		String difficulty;
-		switch(Minecraft.theMinecraft.gameSettings.difficulty) {
-			case 0: difficulty = "Peaceful"; break;
-			case 1: difficulty = "Easy"; break;
-			case 2: difficulty = "Normal"; break;
-			case 3: difficulty = "Hard;"; break;
-			default: difficulty = "Unknown"; break;
+		switch (Minecraft.theMinecraft.gameSettings.difficulty) {
+			case 0:
+				difficulty = "Peaceful";
+				break;
+			case 1:
+				difficulty = "Easy";
+				break;
+			case 2:
+				difficulty = "Normal";
+				break;
+			case 3:
+				difficulty = "Hard;";
+				break;
+			default:
+				difficulty = "Unknown";
+				break;
 		}
 		return "Difficulty: " + difficulty;
 	}
@@ -83,7 +93,9 @@ public class DifficultyButton extends GenericButton{
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.gameSettings.difficulty++;
-		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) Minecraft.theMinecraft.gameSettings.difficulty = 0;
+		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) {
+			Minecraft.theMinecraft.gameSettings.difficulty = 0;
+		}
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 }

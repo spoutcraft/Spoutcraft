@@ -46,6 +46,6 @@ public class RandomButton extends SortButton {
 
 	@Override
 	public String getUrlPart() {
-		return "random&seed="+seed;
+		return "random&seed=" + seed;
 	}
 }

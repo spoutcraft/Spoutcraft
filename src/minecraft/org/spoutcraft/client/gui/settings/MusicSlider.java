@@ -30,7 +30,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class MusicSlider extends GenericSlider{
+public class MusicSlider extends GenericSlider {
 	public MusicSlider() {
 		super("Music");
 		setSliderPosition(Minecraft.theMinecraft.gameSettings.musicVolume);
@@ -45,6 +45,6 @@ public class MusicSlider extends GenericSlider{
 	}
 
 	public String getText() {
-		return "Music: " + (this.getSliderPosition() > 0F ? (int)(this.getSliderPosition() * 100) + "%" : "OFF");
+		return "Music: " + (this.getSliderPosition() > 0F ? (int) (this.getSliderPosition() * 100) + "%" : "OFF");
 	}
 }

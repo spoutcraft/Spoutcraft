@@ -27,23 +27,30 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class AutosaveButton extends AutomatedButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class AutosaveButton extends AutomatedButton {
 	public AutosaveButton() {
 		setTooltip("Autosave interval\nDefault autosave interval (2s) is NOT RECOMMENDED.\nAutosave causes the famous Lag Spike of Death.");
 	}
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.autosave) {
-			case 0: return "Autosave: 30 min";
-			case 1: return "Autosave: 3 min";
-			case 2: return "Autosave: 1 min";
-			case 3: return "Autosave: 30 sec";
-			case 4: return "Autosave: 10 sec";
-			case 5: return "Autosave: 2 sec";
+		switch (ConfigReader.autosave) {
+			case 0:
+				return "Autosave: 30 min";
+			case 1:
+				return "Autosave: 3 min";
+			case 2:
+				return "Autosave: 1 min";
+			case 3:
+				return "Autosave: 30 sec";
+			case 4:
+				return "Autosave: 10 sec";
+			case 5:
+				return "Autosave: 2 sec";
 		}
 		return "Unknown State: " + ConfigReader.autosave;
 	}
@@ -62,14 +69,21 @@ public class AutosaveButton extends AutomatedButton{
 	}
 
 	public static int getAutosaveTicks() {
-		switch(ConfigReader.autosave) {
-			case 0: return 30 * 60 * 20;
-			case 1: return 3 * 60 * 20;
-			case 2: return 60 * 20;
-			case 3: return 30 * 20;
-			case 4: return 10 * 20;
-			case 5: return 2 * 20;
-			default: return 40;
+		switch (ConfigReader.autosave) {
+			case 0:
+				return 30 * 60 * 20;
+			case 1:
+				return 3 * 60 * 20;
+			case 2:
+				return 60 * 20;
+			case 3:
+				return 30 * 20;
+			case 4:
+				return 10 * 20;
+			case 5:
+				return 2 * 20;
+			default:
+				return 40;
 		}
 	}
 }

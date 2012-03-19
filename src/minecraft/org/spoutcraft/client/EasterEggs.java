@@ -33,11 +33,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 public final class EasterEggs {
 	private static final Yaml yaml = new Yaml(new SafeConstructor());
@@ -50,8 +51,9 @@ public final class EasterEggs {
 
 	@SuppressWarnings("unchecked")
 	private static Map<String, Object> getMap() {
-		if (!file.exists())
+		if (!file.exists()) {
 			return null;
+		}
 		Map<String, Object> result = null;
 		try {
 			result = (Map<String, Object>) yaml.load(new FileInputStream(file));
@@ -185,7 +187,6 @@ public final class EasterEggs {
 						colorUpdate = current + 300000;
 					}
 					return titleColor;
-
 				}
 			}
 		}
@@ -264,7 +265,6 @@ public final class EasterEggs {
 					return egg.getSkin();
 				}
 			}
-
 		}
 		return null;
 	}

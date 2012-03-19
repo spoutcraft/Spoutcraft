@@ -29,16 +29,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GameSettings;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
-public class PacketRenderDistance implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketRenderDistance implements SpoutPacket {
 	protected byte view = -1;
 	protected byte max = -1;
 	protected byte min = -1;
+
 	public PacketRenderDistance() {
 
 	}

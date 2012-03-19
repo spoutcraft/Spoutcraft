@@ -39,7 +39,7 @@ public class TexturePacksDatabaseModel extends AbstractAPIModel {
 		if (clear) {
 			entries.clear();
 		}
-		for (Object obj:apiData) {
+		for (Object obj : apiData) {
 			HashMap<String, Object> item = (HashMap<String, Object>) obj;
 			TextureItem t = new TextureItem();
 			t.setName((String) item.get("name"));

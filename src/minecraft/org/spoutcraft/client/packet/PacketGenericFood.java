@@ -29,11 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomFood;
 
-public class PacketGenericFood implements SpoutPacket{
+public class PacketGenericFood implements SpoutPacket {
 	GenericCustomFood item = new GenericCustomFood();
+
 	public int getNumBytes() {
 		return item.getNumBytes();
 	}

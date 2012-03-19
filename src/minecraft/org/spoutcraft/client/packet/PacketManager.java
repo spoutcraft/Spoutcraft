@@ -44,7 +44,7 @@ public class PacketManager {
 	 */
 	public boolean sendSpoutPacket(SpoutPacket packet) {
 		if (mc.thePlayer instanceof EntityClientPlayerMP && SpoutClient.getInstance().isSpoutEnabled()) {
-			EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
+			EntityClientPlayerMP player = (EntityClientPlayerMP) mc.thePlayer;
 			player.sendQueue.addToSendQueue(new CustomPacket(packet));
 			return true;
 		}
@@ -53,7 +53,7 @@ public class PacketManager {
 
 	/**
 	 * Sends the packet to the plugin when it is enabled on the server and has version >= pluginVersion
-	 * @param packet the Packet to send
+	 * @param packet		the Packet to send
 	 * @param pluginVersion the minimum version of the plugin
 	 * @returns if the sending was successful
 	 */

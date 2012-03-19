@@ -41,6 +41,7 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChatAllowedCharacters;
@@ -48,18 +49,17 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiChat;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
-import org.yaml.snakeyaml.Yaml;
 
-public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager{
+public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager {
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;
 	public List<String> pastCommands = new LinkedList<String>();
 	public List<String> pastMessages = new LinkedList<String>();
-	
 	public List<String> wordHighlight = new ArrayList<String>();
 	public List<String> ignorePeople = new ArrayList<String>();
 
@@ -68,7 +68,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
-			
+
 			if (message.length() > 99 && message.startsWith("/")) {
 				return false; //block long commands
 			}
@@ -181,7 +181,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		if (commandScroll == 0) {
 			command = "";
 		} else {
-			command = (String)pastCommands.get(pastCommands.size() - commandScroll);
+			command = (String) pastCommands.get(pastCommands.size() - commandScroll);
 		}
 		updateMessage(command, chat);
 		updateCursor(command.length(), chat);
@@ -193,7 +193,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		if (messageScroll == 0) {
 			message = "";
 		} else {
-			message = (String)pastMessages.get(pastMessages.size() - messageScroll);
+			message = (String) pastMessages.get(pastMessages.size() - messageScroll);
 		}
 		updateMessage(message, chat);
 		updateCursor(message.length(), chat);
@@ -268,7 +268,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 
 	public boolean handleCommand(String command) {
 		try {
-			 if (command.equals("/?") || command.startsWith("/client help")) {
+			if (command.equals("/?") || command.startsWith("/client help")) {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Spoutcraft Client Debug Commands:");
 				SpoutClient.getHandle().ingameGUI.addChatMessage("/client gc - run the garbage collector");
 				return true;
@@ -280,7 +280,8 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				if (command.split(" ").length > 2) {
 					try {
 						time = Long.parseLong(command.split(" ")[2]);
-					} catch(Exception ignore) {}
+					} catch (Exception ignore) {
+					}
 				}
 				while ((System.currentTimeMillis() - start) < time) {
 					System.gc();
@@ -289,7 +290,8 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + (Runtime.getRuntime().freeMemory() - mem) / (1024D * 1024D) + " mb of memory freed");
 				return true;
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		return false;
 	}
 
@@ -302,8 +304,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		Transferable localTransferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 		if (localTransferable != null && localTransferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			try {
-				str = (String)localTransferable.getTransferData(DataFlavor.stringFlavor);
-			} catch (Exception e) {}
+				str = (String) localTransferable.getTransferData(DataFlavor.stringFlavor);
+			} catch (Exception e) {
+			}
 		}
 		return str;
 	}
@@ -351,7 +354,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}*/
 		return message;
 	}
-	
+
 	public void load() {
 		boolean wasSandboxed = SpoutClient.disableSandbox();
 		Yaml yaml = new Yaml();
@@ -380,7 +383,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}
 		SpoutClient.enableSandbox(wasSandboxed);
 	}
-	
+
 	private File getFile() {
 		return new File(FileUtil.getSpoutcraftDirectory(), "chatSettings.yml");
 	}

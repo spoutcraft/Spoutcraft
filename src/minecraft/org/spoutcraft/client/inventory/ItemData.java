@@ -30,7 +30,8 @@ import java.util.HashMap;
 public class ItemData {
 	public final int id;
 	public final short data;
-	private static final HashMap<Integer, HashMap<Integer, ItemData>> itemDatas= new HashMap<Integer, HashMap<Integer, ItemData>>();
+	private static final HashMap<Integer, HashMap<Integer, ItemData>> itemDatas = new HashMap<Integer, HashMap<Integer, ItemData>>();
+
 	protected ItemData(int id) {
 		this.id = id;
 		this.data = 0;
@@ -38,13 +39,13 @@ public class ItemData {
 
 	private ItemData(int id, int data) {
 		this.id = id;
-		this.data = (short)data;
+		this.data = (short) data;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ItemData) {
-			ItemData temp = (ItemData)obj;
+			ItemData temp = (ItemData) obj;
 			return temp.id == id && temp.data == data;
 		}
 		return false;

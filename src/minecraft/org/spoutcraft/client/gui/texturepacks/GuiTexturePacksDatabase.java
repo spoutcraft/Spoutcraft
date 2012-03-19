@@ -29,15 +29,10 @@ import org.lwjgl.Sys;
 
 import net.minecraft.src.GuiMainMenu;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.GuiAPIDisplay;
-import org.spoutcraft.client.gui.database.RandomButton;
-import org.spoutcraft.client.gui.database.SortButton;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.animation.Animation;
 import org.spoutcraft.spoutcraftapi.animation.InQuadAnimationProgress;
-import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
 import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.spoutcraft.spoutcraftapi.event.animation.AnimationStopEvent;
@@ -52,8 +47,12 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Rectangle;
-import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.GuiAPIDisplay;
+import org.spoutcraft.client.gui.database.RandomButton;
+import org.spoutcraft.client.gui.database.SortButton;
 
 public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent> {
 	private Label screenTitle, sortFilterTitle;
@@ -67,12 +66,11 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 	private ResolutionFilter filterResolution;
 	private GenericTexture animatedTexture;
 	private Animation animation;
-	
+
 	{
-		
+
 	}
-	
-	
+
 	private void createInstances() {
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonLocal = new GenericButton("Installed Textures");
@@ -104,7 +102,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
-		if (!instancesCreated) createInstances();
+		if (!instancesCreated) {
+			createInstances();
+		}
 
 		int top = 5;
 
@@ -115,7 +115,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 
-		top+=25;
+		top += 25;
 
 		int sheight = height - top - 55;
 
@@ -127,7 +127,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -179,8 +179,8 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 
 		//Stretch to real width
 		int fw = filter.getViewportSize(Orientation.HORIZONTAL);
-		fw-=10;
-		for (Widget w:filter.getAttachedWidgets()) {
+		fw -= 10;
+		for (Widget w : filter.getAttachedWidgets()) {
 			w.setWidth(fw);
 		}
 
@@ -204,7 +204,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		if (sel >= 0) {
 			ListWidgetItem item = model.getItem(sel);
 			if (item instanceof TextureItem) {
-				TextureItem t = (TextureItem)item;
+				TextureItem t = (TextureItem) item;
 				//enable = true;
 				allowDownload = !(t.isDownloading() || t.isInstalled());
 				allowForum = !t.getForumlink().isEmpty();
@@ -216,7 +216,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		if (model.isLoading()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Loading...");
-			buttonRefresh.setDisabledColor(new Color(0f,1f,0f));
+			buttonRefresh.setDisabledColor(new Color(0f, 1f, 0f));
 		} else {
 			buttonRefresh.setEnabled(true);
 			buttonRefresh.setText("Refresh");
@@ -238,14 +238,14 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 			if (sel >= 0) {
 				ListWidgetItem item = model.getItem(sel);
 				if (item instanceof TextureItem) {
-					((TextureItem)item).download();
+					((TextureItem) item).download();
 					Rectangle itemPos = view.getItemRect(view.getSelectedRow());
 					itemPos.moveBy(2 + view.getX(), 2 - view.getScrollPosition(Orientation.VERTICAL) + view.getY());
 					itemPos.resize(25, 25);
 					Rectangle finalPos = buttonLocal.getGeometry().clone();
 					finalPos.moveBy(2, 2);
 					finalPos.resize(16, 16);
-					animatedTexture = new GenericTexture(((TextureItem)item).getIconUrl());
+					animatedTexture = new GenericTexture(((TextureItem) item).getIconUrl());
 					getScreen().attachWidget(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), animatedTexture);
 					animatedTexture.setGeometry(itemPos);
 					PropertyAnimation ani = new PropertyAnimation(animatedTexture, "geometry");
@@ -266,8 +266,8 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 			if (sel >= 0) {
 				ListWidgetItem item = model.getItem(sel);
 				if (item instanceof TextureItem) {
-					((TextureItem)item).download();
-					Sys.openURL(((TextureItem)item).getForumlink());
+					((TextureItem) item).download();
+					Sys.openURL(((TextureItem) item).getForumlink());
 				}
 			}
 		}
@@ -280,7 +280,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
-			color.setGreen(1f - (float)darkness);
+			color.setGreen(1f - (float) darkness);
 			buttonRefresh.setDisabledColor(color);
 		}
 		super.updateScreen();

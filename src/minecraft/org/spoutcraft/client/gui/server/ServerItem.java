@@ -25,61 +25,52 @@
  */
 package org.spoutcraft.client.gui.server;
 
-import net.minecraft.src.FontRenderer;
-
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
+import net.minecraft.src.FontRenderer;
+
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.MirrorUtils;
-import org.spoutcraft.client.util.NetworkUtils;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.MirrorUtils;
+import org.spoutcraft.client.util.NetworkUtils;
+
 public class ServerItem implements ListWidgetItem {
 	/**
 	 * The default Minecraft server port.
 	 */
 	public static final int DEFAULT_PORT = 25565;
-	
 	protected ListWidget widget;
-
 	protected String ip;
 	protected int port;
 	protected String title;
-
 	protected int databaseId = -1;
-
 	//Options from the serverlist API
 	protected String country = null;
-
 	public static final int OPEN = 0;
 	public static final int WHITELIST = 1;
 	public static final int GRAYLIST = 2;
 	public static final int BLACKLIST = 3;
-
 	protected byte accessType = ServerItem.OPEN;
-
 	protected boolean showPingWhilePolling = false;
-
 	protected FavoritesModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
-
 	protected boolean isFavorite = true;
-
 	protected PollResult pollResult;
-
 	private static final String latestMC = "1.0";
 	protected String mcversion = latestMC;
 
 	public ServerItem clone() {
-		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId(),  mcversion);
+		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId(), mcversion);
 		return clone;
 	}
 
@@ -123,7 +114,7 @@ public class ServerItem implements ListWidgetItem {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 
 		if (databaseId != -1) {
-			String iconUrl = "http://static.spout.org/server/thumb/"+databaseId+".png";
+			String iconUrl = "http://static.spout.org/server/thumb/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
@@ -141,7 +132,6 @@ public class ServerItem implements ListWidgetItem {
 
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
-
 		int margin1 = 0;
 		int margin2 = 0;
 
@@ -150,10 +140,10 @@ public class ServerItem implements ListWidgetItem {
 			int pingwidth = font.getStringWidth(sping);
 			margin1 = pingwidth + 14;
 			font.drawStringWithShadow(sping, x + width - pingwidth - 14, y + 2, 0xaaaaaa);
-			String sPlayers = getPlayers() + " / "+getMaxPlayers() + " players";
+			String sPlayers = getPlayers() + " / " + getMaxPlayers() + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			margin2 = playerswidth;
-			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y+11, 0xaaaaaa);
+			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y + 11, 0xaaaaaa);
 		}
 
 		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
@@ -161,19 +151,19 @@ public class ServerItem implements ListWidgetItem {
 		if ((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
 			sMotd = "Polling...";
 		} else if (!showPingWhilePolling) {
-			switch(getPing()) {
-			case PollResult.PING_UNKNOWN:
-				sMotd = ChatColor.RED + "Unknown Host!";
-				break;
-			case PollResult.PING_TIMEOUT:
-				sMotd = ChatColor.RED + "Operation timed out!";
-				break;
-			case PollResult.PING_BAD_MESSAGE:
-				sMotd = ChatColor.RED + "Bad Message (Server version likely outdated)!";
-				break;
-			default:
-				sMotd = ChatColor.GREEN + getMotd();
-				break;
+			switch (getPing()) {
+				case PollResult.PING_UNKNOWN:
+					sMotd = ChatColor.RED + "Unknown Host!";
+					break;
+				case PollResult.PING_TIMEOUT:
+					sMotd = ChatColor.RED + "Operation timed out!";
+					break;
+				case PollResult.PING_BAD_MESSAGE:
+					sMotd = ChatColor.RED + "Bad Message (Server version likely outdated)!";
+					break;
+				default:
+					sMotd = ChatColor.GREEN + getMotd();
+					break;
 			}
 		}
 
@@ -183,7 +173,7 @@ public class ServerItem implements ListWidgetItem {
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
-			c1.setBlue(1f - (float)darkness);
+			c1.setBlue(1f - (float) darkness);
 			color = c1.toInt();
 		}
 
@@ -196,7 +186,7 @@ public class ServerItem implements ListWidgetItem {
 		int yOffset = 0;
 		if (isPolling()) {
 			xOffset = 1;
-			yOffset = (int)(System.currentTimeMillis() / 100L & 7L);
+			yOffset = (int) (System.currentTimeMillis() / 100L & 7L);
 			if (yOffset > 4) {
 				yOffset = 8 - yOffset;
 			}
@@ -219,16 +209,16 @@ public class ServerItem implements ListWidgetItem {
 		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
 		RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
 		if (port != DEFAULT_PORT) {
-			font.drawStringWithShadow(ip + ":" +port, x+marginleft, y+20, 0xaaaaaa);
+			font.drawStringWithShadow(ip + ":" + port, x + marginleft, y + 20, 0xaaaaaa);
 		} else {
-			font.drawStringWithShadow(ip, x+marginleft, y+20, 0xaaaaaa);
+			font.drawStringWithShadow(ip, x + marginleft, y + 20, 0xaaaaaa);
 		}
 
 		//Icon Drawing
 		int iconMargin = 2;
 
 		if (country != null) {
-			String url = "http://cdn.spout.org/img/flag/"+country.toLowerCase()+".png";
+			String url = "http://cdn.spout.org/img/flag/" + country.toLowerCase() + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
 			if (icon != null) {
 				GL11.glPushMatrix();
@@ -243,18 +233,18 @@ public class ServerItem implements ListWidgetItem {
 
 		if (accessType != OPEN) {
 			String name = "lock";
-			switch(accessType) {
-			case WHITELIST:
-				name="whitelist";
-				break;
-			case GRAYLIST:
-				name="graylist";
-				break;
-			case BLACKLIST:
-				name="blacklist";
-				break;
+			switch (accessType) {
+				case WHITELIST:
+					name = "whitelist";
+					break;
+				case GRAYLIST:
+					name = "graylist";
+					break;
+				case BLACKLIST:
+					name = "blacklist";
+					break;
 			}
-			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/"+name+".png");
+			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/" + name + ".png");
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
 			r.drawTexture(lockIcon, 7, 11);
@@ -278,7 +268,7 @@ public class ServerItem implements ListWidgetItem {
 				String url = MirrorUtils.getMirrorUrl("/popular.php?uid=", "http://servers.spout.org/popular.php?uid=");
 				NetworkUtils.pingUrl(url + databaseId);
 			}
-			SpoutClient.getInstance().getServerManager().join(this, isFavorite?favorites.getCurrentGui():serverList.getCurrentGui(), isFavorite?"Favorites":"Server List");
+			SpoutClient.getInstance().getServerManager().join(this, isFavorite ? favorites.getCurrentGui() : serverList.getCurrentGui(), isFavorite ? "Favorites" : "Server List");
 		}
 	}
 

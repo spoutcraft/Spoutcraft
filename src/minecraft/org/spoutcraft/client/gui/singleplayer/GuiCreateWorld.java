@@ -37,8 +37,6 @@ import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
@@ -48,6 +46,9 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+
 public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonCancel, buttonNewSeed;
 	private GenericComboBox comboGameType, comboWorldType, comboWorldHeight;
@@ -55,13 +56,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericTextField textName, textSeed;
 	private GenericLabel labelTitle, labelName, labelSeed, labelGameType, labelWorldType, labelWorldHeight, labelFilePreview;
 	private GenericScrollArea scrollArea;
-
 	private GuiScreen parent;
-
 	private static List<String> listGameTypes = new ArrayList<String>();
 	private static List<String> listWorldTypes = new ArrayList<String>();
 	private static List<String> listWorldHeights = new ArrayList<String>();
-
 	Random seed = new Random();
 	private boolean createClicked;
 
@@ -73,8 +71,8 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		listWorldTypes.add("Normal");
 		listWorldTypes.add("Superflat");
 
-		for(int i = 6; i <= 11; i++) {
-			listWorldHeights.add(""+(int) Math.pow(2, i));
+		for (int i = 6; i <= 11; i++) {
+			listWorldHeights.add("" + (int) Math.pow(2, i));
 		}
 	}
 
@@ -148,7 +146,6 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		scrollArea.setX(5).setY(top).setHeight(height - top - 30).setWidth(width - 10);
 
-
 		int ftop = 5;
 		int fleft = 5;
 		int fright = width / 2 - 100;
@@ -201,7 +198,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
 		if (btn == buttonDone) {
-			this.mc.displayGuiScreen((GuiScreen)null);
+			this.mc.displayGuiScreen((GuiScreen) null);
 			if (this.createClicked) {
 				return;
 			}
@@ -216,7 +213,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 						seed = var5;
 					}
 				} catch (NumberFormatException var7) {
-					seed = (long)var4.hashCode();
+					seed = (long) var4.hashCode();
 				}
 			}
 
@@ -232,7 +229,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			int height = Integer.valueOf(comboWorldHeight.getSelectedItem());
 
 			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.field_48637_a[comboWorldType.getSelectedRow()]));
-			this.mc.displayGuiScreen((GuiScreen)null);
+			this.mc.displayGuiScreen((GuiScreen) null);
 		}
 		if (btn == buttonNewSeed) {
 			updateSeed();
@@ -251,7 +248,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 	}
 
 	private void updateSavePreview() {
-		labelFilePreview.setText("Saves as '"+getEffectiveSaveName()+"'");
+		labelFilePreview.setText("Saves as '" + getEffectiveSaveName() + "'");
 	}
 
 	private void updateSeed() {
@@ -266,10 +263,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		String savesDir = new File(mc.mcDataDir, "saves").getAbsolutePath();
 		if ((new File(savesDir, save)).exists()) {
 			int num = 1;
-			while((new File(savesDir, save + "-("+num+")")).exists()) {
-				num ++;
+			while ((new File(savesDir, save + "-(" + num + ")")).exists()) {
+				num++;
 			}
-			save = save + "-("+num+")";
+			save = save + "-(" + num + ")";
 		}
 
 		return save;

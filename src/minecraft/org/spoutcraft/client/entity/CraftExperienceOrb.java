@@ -51,7 +51,7 @@ public class CraftExperienceOrb extends CraftEntity implements ExperienceOrb {
 	}
 
 	public EntityXPOrb getHandle() {
-		return (EntityXPOrb)handle;
+		return (EntityXPOrb) handle;
 	}
 
 	public int getExperience() {

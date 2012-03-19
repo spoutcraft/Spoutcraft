@@ -25,12 +25,13 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class TimeButton extends GenericButton{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
+public class TimeButton extends GenericButton {
 	public TimeButton() {
 		setEnabled(SpoutClient.getInstance().isTimeCheat());
 		setTooltip("Time\nDefault - normal day/night cycles\nDay Only - day only\nNight Only - night only");
@@ -38,10 +39,13 @@ public class TimeButton extends GenericButton{
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.time) {
-			case 0: return "Time: Default";
-			case 1: return "Time: Night";
-			case 2: return "Time: Day";
+		switch (ConfigReader.time) {
+			case 0:
+				return "Time: Default";
+			case 1:
+				return "Time: Night";
+			case 2:
+				return "Time: Day";
 		}
 		return "Unknown State: " + ConfigReader.time;
 	}

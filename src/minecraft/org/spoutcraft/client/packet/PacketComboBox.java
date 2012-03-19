@@ -30,10 +30,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketComboBox implements SpoutPacket {
 	private GenericComboBox box;
@@ -80,7 +81,8 @@ public class PacketComboBox implements SpoutPacket {
 		}
 	}
 
-	public void failure(int playerId) {}
+	public void failure(int playerId) {
+	}
 
 	public PacketType getPacketType() {
 		return PacketType.PacketComboBox;

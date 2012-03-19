@@ -58,6 +58,6 @@ public class ServerSlot implements Comparable {
 	// $FF: synthetic method
 	// $FF: bridge method
 	public int compareTo(Object other) {
-		return this.compareTo((ServerSlot)other);
+		return this.compareTo((ServerSlot) other);
 	}
 }

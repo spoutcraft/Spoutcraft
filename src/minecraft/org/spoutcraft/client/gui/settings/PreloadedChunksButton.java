@@ -27,10 +27,11 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class PreloadedChunksButton extends AutomatedButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class PreloadedChunksButton extends AutomatedButton {
 	public PreloadedChunksButton() {
 		setTooltip("Defines an area in which no chunks will be loaded\n0 - after 5m new chunks will be loaded\n2 - after 32m  new chunks will be loaded\n8 - after 128m new chunks will be loaded\nHigher values need more time to load all the chunks");
 	}

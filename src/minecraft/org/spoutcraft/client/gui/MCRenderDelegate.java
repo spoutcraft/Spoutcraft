@@ -30,11 +30,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
@@ -45,7 +45,6 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.FoodStats;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
-import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
@@ -55,9 +54,6 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
 import org.spoutcraft.spoutcraftapi.gui.BubbleBar;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -91,6 +87,10 @@ import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MCRenderDelegate implements RenderDelegate {
 	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
@@ -406,7 +406,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (showCursor) {
 			font.drawStringWithShadow("_", x + cursorOffset, y + (GenericTextField.LINE_HEIGHT + GenericTextField.LINE_SPACING) * cursor[0] + 1, color);
 		}
-
 	}
 
 	public void render(GenericTexture texture) {
@@ -523,7 +522,6 @@ public class MCRenderDelegate implements RenderDelegate {
 				} else if (half) {
 					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, hardcore, 9, 9, 0f);
 				}
-
 			}
 		}
 	}
@@ -591,7 +589,6 @@ public class MCRenderDelegate implements RenderDelegate {
 				}
 			}
 		}
-
 	}
 
 	public void render(ExpBar bar) {

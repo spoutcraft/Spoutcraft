@@ -30,7 +30,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class FieldOfViewSlider extends GenericSlider{
+public class FieldOfViewSlider extends GenericSlider {
 	public FieldOfViewSlider() {
 		super("Field of View");
 		setSliderPosition(Minecraft.theMinecraft.gameSettings.fovSetting);
@@ -44,7 +44,7 @@ public class FieldOfViewSlider extends GenericSlider{
 	}
 
 	public String getText() {
-		String message = String.valueOf((70 + (int)(this.getSliderPosition() * 40)));
+		String message = String.valueOf((70 + (int) (this.getSliderPosition() * 40)));
 		if (this.getSliderPosition() == 0) {
 			message = "Normal";
 		}

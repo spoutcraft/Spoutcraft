@@ -31,8 +31,9 @@ import java.util.List;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class TexturePacksModel extends AbstractListModel {
 	TexturePackList textures = SpoutClient.getHandle().texturePackList;
@@ -64,7 +65,9 @@ public class TexturePacksModel extends AbstractListModel {
 
 	public void update() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		textures = SpoutClient.getHandle().texturePackList;
 		try {
 			textures.updateAvaliableTexturePacks();
@@ -99,13 +102,15 @@ public class TexturePacksModel extends AbstractListModel {
 				}
 			}
 		} finally {
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (wasSandboxed) {
+				SpoutClient.enableSandbox();
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TexturePackBase> getTextures() {
-		return (List<TexturePackBase>)textures.availableTexturePacks();
+		return (List<TexturePackBase>) textures.availableTexturePacks();
 	}
 
 	public void changeTexturePack(TexturePackBase pack) {

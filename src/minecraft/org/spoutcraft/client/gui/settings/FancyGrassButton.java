@@ -29,11 +29,13 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FancyGrassButton extends AutomatedCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class FancyGrassButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
+
 	public FancyGrassButton(UUID fancyGraphics) {
 		super("Fancy Grass");
 		this.fancyGraphics = fancyGraphics;
@@ -45,7 +47,7 @@ public class FancyGrassButton extends AutomatedCheckBox{
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.fancyGrass = !ConfigReader.fancyGrass;
 		ConfigReader.write();
-		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
+		((FancyGraphicsButton) getScreen().getWidget(fancyGraphics)).custom = true;
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

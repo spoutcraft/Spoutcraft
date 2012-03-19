@@ -34,6 +34,7 @@ import org.spoutcraft.client.config.ConfigReader;
 
 public class SpoutWorth {
 	private static SpoutWorth instance = null;
+
 	public static SpoutWorth getInstance() {
 		if (instance == null) {
 			instance = new SpoutWorth();
@@ -43,7 +44,6 @@ public class SpoutWorth {
 
 	private static final int MAX_FPS_TRACKED = 1000;
 	private static final int IDEAL_FPS = 60;
-
 	TLongLinkedList fpsList = new TLongLinkedList();
 	long avgFPS = -1;
 	long appearanceCooldown = 0;

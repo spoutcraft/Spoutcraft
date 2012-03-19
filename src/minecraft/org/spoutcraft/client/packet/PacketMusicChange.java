@@ -31,7 +31,7 @@ import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class PacketMusicChange implements SpoutPacket{
+public class PacketMusicChange implements SpoutPacket {
 	protected int id;
 	protected int volumePercent;
 	boolean cancel = false;
@@ -56,7 +56,7 @@ public class PacketMusicChange implements SpoutPacket{
 	public void readData(DataInputStream input) throws IOException {
 		id = input.readInt();
 		volumePercent = input.readInt();
-		cancel =  input.readBoolean();
+		cancel = input.readBoolean();
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -66,10 +66,11 @@ public class PacketMusicChange implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		if (cancel)
+		if (cancel) {
 			SpoutClient.getHandle().sndManager.cancelled = true;
-		else
+		} else {
 			SpoutClient.getHandle().sndManager.allowed = true;
+		}
 	}
 
 	public PacketType getPacketType() {

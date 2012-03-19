@@ -31,9 +31,10 @@ import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class PacketNotification extends PacketAlert{
+public class PacketNotification extends PacketAlert {
 	protected int time;
 	protected short data;
+
 	public PacketNotification() {
 
 	}

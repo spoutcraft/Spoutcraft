@@ -32,20 +32,21 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.spoutcraft.client.player.SpoutPlayer;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.entity.Arrow;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.entity.TextEntity;
-import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.property.Property;
+import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableVector;
 import org.spoutcraft.spoutcraftapi.util.Vector;
+
+import org.spoutcraft.client.player.SpoutPlayer;
 
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;
@@ -63,16 +64,18 @@ public class CraftEntity extends PropertyObject implements Entity {
 		this.handle = handle;
 		addProperty("location", new Property() {
 			public void set(Object value) {
-				teleport((Location)value);
+				teleport((Location) value);
 			}
+
 			public Object get() {
 				return getLocation();
 			}
 		});
 		addProperty("velocity", new Property() {
 			public void set(Object value) {
-				setVelocity((Vector)value);
+				setVelocity((Vector) value);
 			}
+
 			public Object get() {
 				return getVelocity();
 			}
@@ -80,7 +83,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public Location getLocation() {
-		return new MutableLocation(getWorld(),handle.posX,handle.posY,handle.posZ,handle.rotationYaw,handle.rotationPitch);
+		return new MutableLocation(getWorld(), handle.posX, handle.posY, handle.posZ, handle.rotationYaw, handle.rotationPitch);
 	}
 
 	public void setVelocity(Vector velocity) {
@@ -99,7 +102,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 
 	public boolean teleport(FixedLocation location) {
 		handle.setPosition(location.getX(), location.getY(), location.getZ());
-		handle.setAngles((float)location.getYaw(), (float)location.getPitch());
+		handle.setAngles((float) location.getYaw(), (float) location.getPitch());
 		return true;
 	}
 
@@ -111,7 +114,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 		List<net.minecraft.src.Entity> notchEntityList = handle.worldObj.getEntitiesWithinAABBExcludingEntity(handle, handle.boundingBox.expand(x, y, z));
 		Set<Entity> entities = new HashSet<Entity>(notchEntityList.size());
 
-		for (net.minecraft.src.Entity e: notchEntityList) {
+		for (net.minecraft.src.Entity e : notchEntityList) {
 			entities.add(e.spoutEntity);
 		}
 		return entities;
@@ -146,8 +149,8 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public boolean setPassenger(Entity passenger) {
-		handle.riddenByEntity = ((CraftEntity)passenger).handle;
-		((CraftEntity)passenger).handle.ridingEntity = handle;
+		handle.riddenByEntity = ((CraftEntity) passenger).handle;
+		((CraftEntity) passenger).handle.ridingEntity = handle;
 		return true;
 	}
 

@@ -32,13 +32,12 @@ import java.util.List;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet3Chat;
 
-import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class Shortcut extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 4365592803468257957L;
-
 	private String title = "";
 	private ArrayList<String> commands = new ArrayList<String>();
 
@@ -89,10 +88,10 @@ public class Shortcut extends AbstractBinding implements Serializable {
 
 	@Override
 	public void summon(int key, boolean keyReleased, int screen) {
-		if (keyReleased && screen == 0) { 
-			for (String cmd:getCommands()) {
+		if (keyReleased && screen == 0) {
+			for (String cmd : getCommands()) {
 				if (SpoutClient.getHandle().isMultiplayerWorld()) {
-					EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
+					EntityClientPlayerMP player = (EntityClientPlayerMP) SpoutClient.getHandle().thePlayer;
 					player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
 				}
 			}

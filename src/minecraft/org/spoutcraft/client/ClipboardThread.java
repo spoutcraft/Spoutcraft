@@ -33,14 +33,16 @@ import java.io.IOException;
 
 import net.minecraft.src.EntityClientPlayerMP;
 
-import org.spoutcraft.client.packet.*;
+import org.spoutcraft.client.packet.PacketClipboardText;
 
 public class ClipboardThread extends Thread {
 	public ClipboardThread(EntityClientPlayerMP player) {
 		this.player = player;
 	}
+
 	EntityClientPlayerMP player;
 	String prevClipboardText = "";
+
 	public void run() {
 		while (!isInterrupted()) {
 			try {

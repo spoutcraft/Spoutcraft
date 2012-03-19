@@ -30,14 +30,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.OverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.CustomScreen;
 
 public class PacketWidget implements SpoutPacket {
 	protected Widget widget;
@@ -88,7 +89,6 @@ public class PacketWidget implements SpoutPacket {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public void writeData(DataOutputStream output) throws IOException {
@@ -113,24 +113,22 @@ public class PacketWidget implements SpoutPacket {
 				if (popup != null) {
 					if (widget.getId().equals(popup)) {
 						if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
-							((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
+							((CustomScreen) SpoutClient.getHandle().currentScreen).update((PopupScreen) widget);
 						}
 					}
-				}
-				else {
-					mainScreen.attachPopupScreen((PopupScreen)widget);
+				} else {
+					mainScreen.attachPopupScreen((PopupScreen) widget);
 				}
 			} else if (widget instanceof OverlayScreen) { //Determine if this screen overrides another screen
 				if (SpoutClient.getHandle().currentScreen != null) {
-					SpoutClient.getHandle().currentScreen.update((OverlayScreen)widget);
-					overlay = (OverlayScreen)widget;
+					SpoutClient.getHandle().currentScreen.update((OverlayScreen) widget);
+					overlay = (OverlayScreen) widget;
 				}
 			} else if (screen.equals(mainScreen.getId())) { //Determine if this is a widget on the main screen
 				if (mainScreen.containsWidget(widget.getId())) {
 					mainScreen.updateWidget(widget);
 					widget.setScreen(mainScreen);
-				}
-				else {
+				} else {
 					widget.setScreen(mainScreen);
 					mainScreen.attachWidget(widget.getAddon(), widget);
 				}
@@ -138,8 +136,7 @@ public class PacketWidget implements SpoutPacket {
 				if (popup.containsWidget(widget.getId())) {
 					popup.updateWidget(widget);
 					widget.setScreen(popup);
-				}
-				else {
+				} else {
 					widget.setScreen(popup);
 					popup.attachWidget(widget.getAddon(), widget);
 				}

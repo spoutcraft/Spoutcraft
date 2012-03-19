@@ -25,14 +25,16 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 
+import org.spoutcraft.client.config.ConfigReader;
+
 public class OptimalGameplayButton extends GenericRadioButton {
 	Label label;
+
 	public OptimalGameplayButton(String title, Label label) {
 		super(title);
 		this.label = label;

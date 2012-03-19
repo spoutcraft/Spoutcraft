@@ -44,12 +44,13 @@ package org.spoutcraft.client.block;
 import net.minecraft.src.BlockJukeBox;
 import net.minecraft.src.TileEntityRecordPlayer;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.Effect;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Jukebox;
 import org.spoutcraft.spoutcraftapi.material.Item;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftJukebox extends CraftBlockState implements Jukebox {
 	private final SpoutcraftWorld world;
@@ -87,7 +88,7 @@ public class CraftJukebox extends CraftBlockState implements Jukebox {
 
 	public boolean eject() {
 		boolean result = isPlaying();
-		((BlockJukeBox)net.minecraft.src.Block.jukebox).ejectRecord(world.getHandle(), getX(), getY(), getZ());
+		((BlockJukeBox) net.minecraft.src.Block.jukebox).ejectRecord(world.getHandle(), getX(), getY(), getZ());
 		return result;
 	}
 }

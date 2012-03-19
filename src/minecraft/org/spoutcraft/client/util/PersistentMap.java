@@ -83,7 +83,7 @@ public class PersistentMap {
 		index = f.getIndex();
 		f.incrementIndex();
 		Long oldHash = f.indexToHash(index);
-		byte[] oldData = new byte[(int)size];
+		byte[] oldData = new byte[(int) size];
 		oldData = f.readByIndex(index, oldData);
 		if (oldData != null) {
 			overwriteBackup.put(oldHash, oldData);

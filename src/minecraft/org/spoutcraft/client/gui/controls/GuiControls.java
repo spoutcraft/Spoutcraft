@@ -27,14 +27,6 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.Shortcut;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.gui.ButtonUpdater;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.controls.ControlsBasicItem;
-import org.spoutcraft.client.gui.controls.KeyBindingItem;
-import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
 import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -49,7 +41,13 @@ import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
-public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.controls.Shortcut;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.gui.ButtonUpdater;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+
+public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 	private GenericLabel labelTitle, labelDescription;
 	private Button buttonDone, buttonAdd, buttonEdit, buttonRemove;
 	public CheckBox checkVanilla, checkShortcuts, checkBindings, checkSpoutcraft;
@@ -58,7 +56,6 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	private GenericListView view;
 	private GuiScreen parentScreen;
 	private static ControlsModel model = null;
-
 	public static final ChatColor VANILLA_COLOR = ChatColor.YELLOW;
 	public static final ChatColor SPOUTCRAFT_COLOR = ChatColor.RED;
 	public static final ChatColor SHORTCUTS_COLOR = ChatColor.GREEN;
@@ -87,10 +84,10 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
 
-		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR+"Vanilla Bindings");
-		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR+"Spoutcraft Bindings");
-		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR+"Shortcuts");
-		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR+"Bindings");
+		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR + "Vanilla Bindings");
+		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR + "Spoutcraft Bindings");
+		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR + "Shortcuts");
+		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR + "Bindings");
 		search = new ControlsSearch(this);
 
 		filter.attachWidget(spoutcraft, checkVanilla);
@@ -119,7 +116,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 		search.setX(5).setY(top).setWidth(150).setHeight(20);
 
-		top+=25;
+		top += 25;
 
 		int sheight = height - top - 55;
 
@@ -136,14 +133,14 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		ftop += 25;
 		checkBindings.setX(5).setY(ftop).setWidth(100).setHeight(20);
 
-		for (Widget w:filter.getAttachedWidgets()) {
+		for (Widget w : filter.getAttachedWidgets()) {
 			w.setWidth(filter.getViewportSize(Orientation.HORIZONTAL) - 10);
 		}
 		search.setWidth((int) filter.getWidth());
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -155,7 +152,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 
 		buttonRemove.setHeight(20).setWidth(cellWidth).setX(right).setY(top);
 
-		top+=25;
+		top += 25;
 
 		labelDescription.setHeight(20).setWidth(cellWidth * 2 + 5).setX(left).setY(top);
 		labelDescription.recalculateLines();
@@ -199,7 +196,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		buttonEdit.setEnabled(item != null);
 		buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
 	}
-	
+
 	protected void keyTyped(char c, int i, boolean pressed) {
 		ControlsBasicItem item = model.getEditingItem();
 		if (item != null) {

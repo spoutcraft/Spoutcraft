@@ -60,7 +60,8 @@ public class Download {
 			File destination = new File(directory, filename);
 			try {
 				FileUtils.moveFile(current, destination);
-			} catch (IOException e) {}
+			} catch (IOException e) {
+			}
 		}
 	}
 
@@ -75,7 +76,7 @@ public class Download {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Download) {
-			Download temp = (Download)obj;
+			Download temp = (Download) obj;
 			return temp.filename.equals(this.filename) && temp.directory.getPath().equals(this.directory.getPath()) && temp.url.equals(this.url);
 		}
 		return false;

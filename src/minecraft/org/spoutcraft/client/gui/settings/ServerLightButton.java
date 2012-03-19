@@ -27,10 +27,11 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class ServerLightButton extends AutomatedCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class ServerLightButton extends AutomatedCheckBox {
 	public ServerLightButton() {
 		super("Client Light");
 		setChecked(ConfigReader.clientLight);
@@ -42,7 +43,7 @@ public class ServerLightButton extends AutomatedCheckBox{
 		ConfigReader.clientLight = !ConfigReader.clientLight;
 		ConfigReader.write();
 	}
-	
+
 	@Override
 	public String getTooltip() {
 		if (Minecraft.theMinecraft.theWorld == null || Minecraft.theMinecraft.theWorld.isRemote) {

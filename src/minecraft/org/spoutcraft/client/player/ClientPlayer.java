@@ -30,8 +30,6 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EntityPlayerSP;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.InGameScreen;
 import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
@@ -41,7 +39,10 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 
-public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.InGameScreen;
+
+public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	private static ClientPlayer instance = null;
 	private RenderDistance min, max;
 	private InGameScreen mainScreen = new InGameScreen();
@@ -62,7 +63,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 
 	public EntityPlayerSP getHandle() {
-		return (EntityPlayerSP)super.getMCPlayer();
+		return (EntityPlayerSP) super.getMCPlayer();
 	}
 
 	public RenderDistance getMaximumView() {

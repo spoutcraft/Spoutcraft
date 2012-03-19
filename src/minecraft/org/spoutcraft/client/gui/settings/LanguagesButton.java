@@ -32,8 +32,9 @@ import net.minecraft.src.GuiScreen;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class LanguagesButton extends GenericButton{
+public class LanguagesButton extends GenericButton {
 	GuiScreen parent;
+
 	public LanguagesButton(GuiScreen parent) {
 		super("Languages");
 		setTooltip("Languages\nChange the language of the game.");

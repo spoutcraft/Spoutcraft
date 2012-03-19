@@ -33,10 +33,11 @@ import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketItemName implements SpoutPacket{
+public class PacketItemName implements SpoutPacket {
 	private int id;
 	private short data;
 	private String name;
+
 	public PacketItemName() {
 
 	}

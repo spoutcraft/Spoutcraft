@@ -25,12 +25,12 @@
  */
 package org.spoutcraft.client.packet;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ScreenShotHelper;
@@ -92,7 +92,6 @@ public class PacketScreenshot implements SpoutPacket {
 			ioe.printStackTrace();
 			SpoutClient.getInstance().getActivePlayer().showAchievement("Sending screenshot...", "Failed!", 321);
 		}
-
 	}
 
 	public void failure(int playerId) {

@@ -27,7 +27,6 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.FontRenderer;
 
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.MCRenderDelegate;
@@ -36,6 +35,7 @@ public class KeyBindingItem extends ControlsBasicItem {
 	private org.spoutcraft.spoutcraftapi.keyboard.KeyBinding binding;
 	private ControlsModel parent;
 	private SimpleKeyBindingManager manager = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
+
 	public KeyBindingItem(org.spoutcraft.spoutcraftapi.keyboard.KeyBinding binding, ControlsModel model) {
 		super(model);
 		this.parent = model;
@@ -49,23 +49,21 @@ public class KeyBindingItem extends ControlsBasicItem {
 	public void render(int x, int y, int width, int height) {
 		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow("B", x+2, y+2, 0xff0000ff);
+		font.drawStringWithShadow("B", x + 2, y + 2, 0xff0000ff);
 		int w = font.getStringWidth("B");
-		String keyString = parent.getEditingItem() == this?"> <":binding.toString();
+		String keyString = parent.getEditingItem() == this ? "> <" : binding.toString();
 		int w2 = font.getStringWidth(keyString);
-		font.drawStringWithShadow(keyString, width - w2, y+2, 0xffcccccc);
-		font.drawStringWithShadow(binding.getAddonName(), x+w+4, y+11, 0xffffffff);
+		font.drawStringWithShadow(keyString, width - w2, y + 2, 0xffcccccc);
+		font.drawStringWithShadow(binding.getAddonName(), x + w + 4, y + 11, 0xffffffff);
 		String fitting = r.getFittingText(getName(), width - w - w2 - 4);
-		
-		font.drawStringWithShadow(fitting, x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
+
+		font.drawStringWithShadow(fitting, x + w + 4, y + 2, !isConflicting() ? 0xffffffff : 0xffff0000);
 	}
-	
+
 	@Override
 	public void setModifiers(int m) {
 		binding.setRawModifiers((byte) m);
 	}
-	
-	
 
 	@Override
 	public int getModifiers() {

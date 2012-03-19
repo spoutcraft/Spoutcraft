@@ -37,12 +37,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class FileDownloadThread extends Thread{
+public class FileDownloadThread extends Thread {
 	private static FileDownloadThread instance = null;
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
 	private final ConcurrentLinkedQueue<Runnable> actions = new ConcurrentLinkedQueue<Runnable>();
 	private final HashSet<String> failedUrls = new HashSet<String>();
-	private final byte[] buffer = new byte[1024*1024];
+	private final byte[] buffer = new byte[1024 * 1024];
 	private volatile String activeDownload = null;
 	public static AtomicLong preCacheCompleted = new AtomicLong(0L);
 
@@ -81,7 +81,7 @@ public class FileDownloadThread extends Thread{
 				boolean oldLock = SpoutClient.enableSandbox();
 				try {
 					action.run();
-				} catch(Exception e) {
+				} catch (Exception e) {
 					System.out.println("Could not run Runnable for download finish:");
 					e.printStackTrace();
 				} finally {
@@ -129,16 +129,16 @@ public class FileDownloadThread extends Thread{
 						long totalBytes = 0;
 						long last = 0;
 
-						long step = Math.max(1024*1024, length / 8);
+						long step = Math.max(1024 * 1024, length / 8);
 
 						while ((bytes = in.read(buffer)) >= 0) {
 							bos.write(buffer, 0, bytes);
 							totalBytes += bytes;
-							next.setProgress((int) (((double)totalBytes / (double)length) * 100));
+							next.setProgress((int) (((double) totalBytes / (double) length) * 100));
 							if (length > 0 && totalBytes > (last + step)) {
 								last = totalBytes;
-								long mb = totalBytes/(1024*1024);
-								System.out.println("Downloading: " + next.getDownloadUrl() + " " + mb + "MB/" + (length/(1024*1024)));
+								long mb = totalBytes / (1024 * 1024);
+								System.out.println("Downloading: " + next.getDownloadUrl() + " " + mb + "MB/" + (length / (1024 * 1024)));
 							}
 							try {
 								Thread.sleep(25);
@@ -152,7 +152,8 @@ public class FileDownloadThread extends Thread{
 						//System.out.println("File moved to: " + next.directory.getCanonicalPath());
 						try {
 							sleep(10); //cool off after heavy network useage
-						} catch (InterruptedException e) {}
+						} catch (InterruptedException e) {
+						}
 					}
 					if (next.getCompletedAction() != null) {
 						actions.add(next.getCompletedAction());
@@ -165,7 +166,8 @@ public class FileDownloadThread extends Thread{
 			} else {
 				try {
 					sleep(100);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				}
 			}
 		}
 	}

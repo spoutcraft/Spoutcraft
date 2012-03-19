@@ -27,20 +27,24 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class BetterGrassButton extends AutomatedButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class BetterGrassButton extends AutomatedButton {
 	public BetterGrassButton() {
 		setTooltip("Better Grass\nOFF - default side grass texture, fastest\nFast - full side grass texture, slower\nFancy - dynamic side grass texture, slowest");
 	}
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.betterGrass) {
-			case 0: return "Better Grass: OFF";
-			case 1: return "Better Grass: Fast";
-			case 2: return "Better Grass: Fancy";
+		switch (ConfigReader.betterGrass) {
+			case 0:
+				return "Better Grass: OFF";
+			case 1:
+				return "Better Grass: Fast";
+			case 2:
+				return "Better Grass: Fancy";
 		}
 		return "Unknown State: " + ConfigReader.betterGrass;
 	}

@@ -25,11 +25,12 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class FastDebugInfoButton extends GenericButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class FastDebugInfoButton extends GenericButton {
 	public FastDebugInfoButton() {
 		setTooltip("Fast Debug Info\nFancy - default debug info screen, slower\nFast - debug info screen without lagometer, faster\nFPS Only - Shows only the frames per second, hiding debug information.");
 	}
@@ -37,9 +38,12 @@ public class FastDebugInfoButton extends GenericButton{
 	@Override
 	public String getText() {
 		switch (ConfigReader.fastDebug) {
-			case 0: return "Debug Info: Fancy";
-			case 1: return "Debug Info: Fast";
-			case 2: return "Debug Info: FPS Only";
+			case 0:
+				return "Debug Info: Fancy";
+			case 1:
+				return "Debug Info: Fast";
+			case 2:
+				return "Debug Info: FPS Only";
 		}
 		return "Unknown State: " + ConfigReader.fastDebug;
 	}

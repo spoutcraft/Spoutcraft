@@ -43,10 +43,10 @@ package org.spoutcraft.client.block;
 
 import net.minecraft.src.TileEntitySign;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.Sign;
 
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftSign extends CraftBlockState implements Sign {
 	private final SpoutcraftWorld world;

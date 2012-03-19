@@ -27,13 +27,15 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class GuiScaleButton extends GenericButton{
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
+public class GuiScaleButton extends GenericButton {
 	GameSettingsScreen parent;
+
 	public GuiScaleButton(GameSettingsScreen parent) {
 		this.parent = parent;
 		setTooltip("Alters how the size of the display scales.");
@@ -42,10 +44,14 @@ public class GuiScaleButton extends GenericButton{
 	@Override
 	public String getText() {
 		switch (ConfigReader.guiScale) {
-			case 0: return "GUI Scale: Auto";
-			case 1: return "GUI Scale: Small";
-			case 2: return "GUI Scale: Normal";
-			case 3: return "GUI Scale: Large";
+			case 0:
+				return "GUI Scale: Auto";
+			case 1:
+				return "GUI Scale: Small";
+			case 2:
+				return "GUI Scale: Normal";
+			case 3:
+				return "GUI Scale: Large";
 		}
 		return "Unknown State: " + ConfigReader.guiScale;
 	}

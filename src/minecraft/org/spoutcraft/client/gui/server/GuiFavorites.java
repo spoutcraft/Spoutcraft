@@ -28,27 +28,26 @@ package org.spoutcraft.client.gui.server;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
-import org.bukkit.ChatColor;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
+import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiFavorites extends GuiScreen {
 	@SuppressWarnings("unused")
 	private GuiScreen parent;
-
 	//GUI stuff
 	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit,
-		buttonMainMenu, buttonServerList, buttonQuickJoin,
-		buttonMoveUp, buttonMoveDown, buttonRefresh;
+			buttonMainMenu, buttonServerList, buttonQuickJoin,
+			buttonMoveUp, buttonMoveDown, buttonRefresh;
 	private TextField textQuickJoin;
 	private GenericListView view;
 	private Label title;
@@ -91,16 +90,18 @@ public class GuiFavorites extends GuiScreen {
 
 		int top = (int) (view.getY() + view.getHeight() + 5);
 
-		int totalWidth = Math.min(width - 9, 200*3+10);
-		int cellWidth = (totalWidth - 10)/3;
+		int totalWidth = Math.min(width - 9, 200 * 3 + 10);
+		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 
 		String text = SpoutClient.getHandle().gameSettings.lastServer.replace("_", ":");
-		if (textQuickJoin != null) text = textQuickJoin.getText();
+		if (textQuickJoin != null) {
+			text = textQuickJoin.getText();
+		}
 		textQuickJoin = new QuickJoin();
-		textQuickJoin.setX(left+2).setY(top+2).setHeight(16).setWidth(cellWidth*2+5-4);
+		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
 		getScreen().attachWidget(spoutcraft, textQuickJoin);
@@ -151,7 +152,6 @@ public class GuiFavorites extends GuiScreen {
 			}
 			return false;
 		}
-
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class GuiFavorites extends GuiScreen {
 			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(textQuickJoin.getText(), this));
 		}
 		if (btn.equals(buttonEdit)) {
-			ServerItem item = (ServerItem)view.getSelectedItem();
+			ServerItem item = (ServerItem) view.getSelectedItem();
 			//Produces a "hang" why ever :(
 			if (item != null) {
 				SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(item, this));
@@ -197,20 +197,20 @@ public class GuiFavorites extends GuiScreen {
 		}
 		if (btn.equals(buttonMoveUp)) {
 			if (view.getSelectedRow() != -1) {
-				model.move(view.getSelectedRow(), view.getSelectedRow()-1);
+				model.move(view.getSelectedRow(), view.getSelectedRow() - 1);
 				view.shiftSelection(-1);
 				model.save();
 			}
 		}
 		if (btn.equals(buttonMoveDown)) {
 			if (view.getSelectedRow() != -1) {
-				model.move(view.getSelectedRow(), view.getSelectedRow()+1);
+				model.move(view.getSelectedRow(), view.getSelectedRow() + 1);
 				view.shiftSelection(1);
 				model.save();
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
-			for (int i = 0; i<model.getSize(); i++) {
+			for (int i = 0; i < model.getSize(); i++) {
 				ServerItem item = (ServerItem) model.getItem(i);
 				item.poll();
 			}
@@ -218,12 +218,12 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public void deleteCurrentFavorite() {
-		model.removeServer((ServerItem)view.getSelectedItem());
+		model.removeServer((ServerItem) view.getSelectedItem());
 		model.save();
 	}
 
 	public void doQuickJoin() {
-		try	{
+		try {
 			String adress = textQuickJoin.getText();
 			if (!adress.isEmpty()) {
 				String split[] = adress.split(":");
@@ -233,7 +233,8 @@ public class GuiFavorites extends GuiScreen {
 				SpoutClient.getHandle().gameSettings.saveOptions();
 				SpoutClient.getInstance().getServerManager().join(ip, port, this, "Favorites");
 			}
-		} catch (Exception e) { }
+		} catch (Exception e) {
+		}
 	}
 
 	public void updateButtons() {
@@ -249,7 +250,7 @@ public class GuiFavorites extends GuiScreen {
 		if (model.isPolling()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Polling...");
-			buttonRefresh.setDisabledColor(new Color(0f,0f,1f));
+			buttonRefresh.setDisabledColor(new Color(0f, 0f, 1f));
 		} else {
 			buttonRefresh.setEnabled(true);
 			buttonRefresh.setText("Refresh");
@@ -263,7 +264,7 @@ public class GuiFavorites extends GuiScreen {
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
-			color.setBlue(1f - (float)darkness);
+			color.setBlue(1f - (float) darkness);
 			buttonRefresh.setDisabledColor(color);
 		}
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);

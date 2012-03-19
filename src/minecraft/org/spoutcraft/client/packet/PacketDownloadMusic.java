@@ -27,21 +27,23 @@ package org.spoutcraft.client.packet;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.sound.QueuedSound;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketDownloadMusic implements SpoutPacket{
+public class PacketDownloadMusic implements SpoutPacket {
 	int x, y, z;
 	int volume, distance;
 	boolean soundEffect, notify;
 	String url, plugin;
+
 	public PacketDownloadMusic() {
 
 	}

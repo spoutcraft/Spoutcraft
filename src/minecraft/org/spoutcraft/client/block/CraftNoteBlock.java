@@ -43,12 +43,13 @@ package org.spoutcraft.client.block;
 
 import net.minecraft.src.TileEntityNote;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.Instrument;
 import org.spoutcraft.spoutcraftapi.Note;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.NoteBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftNoteBlock extends CraftBlockState implements NoteBlock {
 	private final SpoutcraftWorld world;

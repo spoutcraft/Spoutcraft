@@ -78,7 +78,9 @@ public class MirrorUtils {
 				int index = random / 10;
 				for (int i = index; i < goodMirrors.size() + index; i++) {
 					int j = i;
-					if (j >= goodMirrors.size()) j-= goodMirrors.size();
+					if (j >= goodMirrors.size()) {
+						j -= goodMirrors.size();
+					}
 					int roll = rand.nextInt(100);
 					int chance = mirrors.get(goodMirrors.get(j));
 					if (roll < chance) {
@@ -103,7 +105,7 @@ public class MirrorUtils {
 		try {
 			URL test = new URL(url);
 			HttpURLConnection.setFollowRedirects(false);
-			HttpURLConnection urlConnect = (HttpURLConnection)test.openConnection();
+			HttpURLConnection urlConnect = (HttpURLConnection) test.openConnection();
 			urlConnect.setRequestMethod("HEAD");
 			return (urlConnect.getResponseCode() == HttpURLConnection.HTTP_OK);
 		} catch (Exception e) {
@@ -122,7 +124,7 @@ public class MirrorUtils {
 		if (!updated) {
 			try {
 				URL url = new URL("http://get.spout.org/mirrors.yml");
-				HttpURLConnection con = (HttpURLConnection)(url.openConnection());
+				HttpURLConnection con = (HttpURLConnection) (url.openConnection());
 				System.setProperty("http.agent", "");
 				con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
 				OutputStream os = new FileOutputStream(mirrorsYML);

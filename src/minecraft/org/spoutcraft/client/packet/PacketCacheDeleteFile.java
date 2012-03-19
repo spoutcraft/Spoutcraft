@@ -30,12 +30,14 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+
+import org.spoutcraft.client.io.FileUtil;
 
 public class PacketCacheDeleteFile implements SpoutPacket {
 	private String plugin;
 	private String fileName;
+
 	public PacketCacheDeleteFile() {
 
 	}

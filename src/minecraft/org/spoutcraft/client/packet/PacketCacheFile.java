@@ -36,14 +36,15 @@ import java.util.zip.Inflater;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.EntityClientPlayerMP;
+
+import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketCacheFile implements CompressablePacket {
 	private String plugin;
@@ -164,7 +165,7 @@ public class PacketCacheFile implements CompressablePacket {
 		} else if (cache.exists() && FileUtil.isImageFile(fileName)) {
 			CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
-		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
+		((EntityClientPlayerMP) Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 
 	public void failure(int playerId) {

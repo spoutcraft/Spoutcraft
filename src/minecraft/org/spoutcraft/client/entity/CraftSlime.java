@@ -56,7 +56,7 @@ public class CraftSlime extends CraftLivingEntity implements Slime {
 	}
 
 	public EntitySlime getHandle() {
-		return (EntitySlime)handle;
+		return (EntitySlime) handle;
 	}
 
 	public int getSize() {

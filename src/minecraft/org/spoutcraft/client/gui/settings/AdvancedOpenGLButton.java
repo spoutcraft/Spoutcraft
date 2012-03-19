@@ -27,10 +27,11 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class AdvancedOpenGLButton extends AutomatedButton{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class AdvancedOpenGLButton extends AutomatedButton {
 	public AdvancedOpenGLButton() {
 		setTooltip("Detect and render only visible geometry\nOFF - all geometry is rendered (slower)\nFast - only visible geometry is rendered (fastest)\nFancy - conservative, avoids visual artifacts (faster)\nThe option is available only if it is supported by the\ngraphic card.");
 	}
@@ -38,9 +39,12 @@ public class AdvancedOpenGLButton extends AutomatedButton{
 	@Override
 	public String getText() {
 		switch (ConfigReader.advancedOpenGL) {
-			case 0: return "Advanced OpenGL: OFF";
-			case 1: return "Advanced OpenGL: Fast";
-			case 2: return "Advanced OpenGL: Fancy";
+			case 0:
+				return "Advanced OpenGL: OFF";
+			case 1:
+				return "Advanced OpenGL: Fast";
+			case 2:
+				return "Advanced OpenGL: Fancy";
 		}
 		return "Unknown State: " + ConfigReader.advancedOpenGL;
 	}

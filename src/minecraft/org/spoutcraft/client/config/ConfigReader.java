@@ -28,7 +28,6 @@ package org.spoutcraft.client.config;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
@@ -82,7 +81,6 @@ public class ConfigReader {
 	public static boolean chatUsesRegex;
 	public static boolean sendColorsAsUnicode = true;
 	public static boolean clientLight = false;
-	
 	//Launcher settings
 	public static boolean fastLogin = false;
 	public static boolean clipboardaccess = false;
@@ -94,7 +92,6 @@ public class ConfigReader {
 	public static boolean retryLogins = true;
 	public static boolean latestLWJGL = false;
 	public static boolean acceptUpdates = true;
-
 	public transient static Object[] settings = null;
 	public transient static String[] unknown = null;
 
@@ -117,11 +114,11 @@ public class ConfigReader {
 
 					ConfigReader.settings[i] = value;
 					if (value instanceof Boolean) {
-						f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean)value));
+						f.set(null, getOrSetBooleanProperty(settings, f.getName(), (Boolean) value));
 					} else if (value instanceof Integer) {
-						f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer)value));
+						f.set(null, getOrSetIntegerProperty(settings, f.getName(), (Integer) value));
 					} else if (value instanceof Float) {
-						f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float)value));
+						f.set(null, getOrSetFloatProperty(settings, f.getName(), (Float) value));
 					} else if (value instanceof String) {
 						f.set(null, getOrSetStringProperty(settings, f.getName(), (String) value));
 					}
@@ -196,7 +193,7 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
-	
+
 	private static String getOrSetStringProperty(SettingsHandler settings, String property, String defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyString(property);
@@ -209,11 +206,11 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
 		Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
 		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
-		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL !=0;
+		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL != 0;
 		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
-		
+
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
 	}

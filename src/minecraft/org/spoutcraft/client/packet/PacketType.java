@@ -73,12 +73,11 @@ public enum PacketType {
 	PacketGenericFood(52, PacketGenericFood.class),
 	PacketEntityInformation(53, PacketEntityInformation.class),
 	PacketComboBox(54, PacketComboBox.class),
-	PacketFocusUpdate(55, PacketFocusUpdate.class),
-	;
-
+	PacketFocusUpdate(55, PacketFocusUpdate.class),;
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;
 	private static final HashMap<Integer, PacketType> lookupId = new HashMap<Integer, PacketType>();
+
 	PacketType(final int type, final Class<? extends SpoutPacket> packetClass) {
 		this.id = type;
 		this.packetClass = packetClass;

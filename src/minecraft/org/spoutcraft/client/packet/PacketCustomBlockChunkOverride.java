@@ -34,9 +34,10 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
-public class PacketCustomBlockChunkOverride implements CompressablePacket{
+public class PacketCustomBlockChunkOverride implements CompressablePacket {
 	private int chunkX;
 	private int chunkZ;
 	private byte[] data;
@@ -78,7 +79,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	public void run(int playerId) {
 		ByteBuffer buffer = ByteBuffer.allocate(data.length);
 		buffer.put(data);
-		short[] customIds = new short[16*16*Spoutcraft.getWorld().getMaxHeight()];
+		short[] customIds = new short[16 * 16 * Spoutcraft.getWorld().getMaxHeight()];
 		for (int i = 0; i < customIds.length; i++) {
 			customIds[i] = buffer.getShort(i * 2);
 		}

@@ -43,18 +43,19 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.client.inventory.CraftInventoryPlayer;
 import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
+import org.spoutcraft.client.inventory.CraftInventoryPlayer;
+
+public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
 	public CraftHumanEntity(EntityPlayer player) {
 		super(player);
 	}
 
 	public EntityPlayer getMCPlayer() {
-		return (EntityPlayer)handle;
+		return (EntityPlayer) handle;
 	}
 
 	public String getName() {

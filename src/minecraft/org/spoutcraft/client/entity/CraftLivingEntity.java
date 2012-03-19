@@ -170,9 +170,9 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 		net.minecraft.src.DamageSource reason = net.minecraft.src.DamageSource.generic;
 
 		if (source instanceof org.spoutcraft.spoutcraftapi.entity.HumanEntity) {
-			reason = net.minecraft.src.DamageSource.causePlayerDamage(((CraftHumanEntity)source).getMCPlayer());
+			reason = net.minecraft.src.DamageSource.causePlayerDamage(((CraftHumanEntity) source).getMCPlayer());
 		} else if (source instanceof LivingEntity) {
-			reason = net.minecraft.src.DamageSource.causeMobDamage(((CraftLivingEntity)source).getEntityLiving());
+			reason = net.minecraft.src.DamageSource.causeMobDamage(((CraftLivingEntity) source).getEntityLiving());
 		}
 
 		getEntityLiving().damageEntity(reason, amount);
@@ -213,7 +213,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	public void resetTitle() {
 		getEntityLiving().displayName = null;
 		if (handle instanceof EntityPlayer) {
-			getEntityLiving().displayName = ((EntityPlayer)handle).username;
+			getEntityLiving().displayName = ((EntityPlayer) handle).username;
 		}
 	}
 

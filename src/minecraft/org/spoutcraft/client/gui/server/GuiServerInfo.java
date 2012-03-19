@@ -39,9 +39,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -51,19 +48,21 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.util.NetworkUtils;
+
 public class GuiServerInfo extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
 	private GenericLabel labelTitle, labelAddressLabel, labelAddress, labelMotdLabel, labelMotd, labelDescriptionLabel, labelDescription,
-	labelPlayersLabel, labelPlayers, labelSpoutcraftLabel, labelSpoutcraft, labelAccessLabel, labelAccess,
-	labelMCVersionLabel, labelMCVersion, labelCategoryLabel, labelCategory;
+			labelPlayersLabel, labelPlayers, labelSpoutcraftLabel, labelSpoutcraft, labelAccessLabel, labelAccess,
+			labelMCVersionLabel, labelMCVersion, labelCategoryLabel, labelCategory;
 	private LinkButton linkForum, linkSite;
 	private GenericScrollArea content;
 	private List<GenericLabel> labels = new ArrayList<GenericLabel>();
 	int labelWidth = 0;
 	private GenericTexture textureIcon;
-
 	static final int MAX_HEIGHT = 128;
-
 	private GuiScreen back;
 	private ServerItem item;
 	private Thread loadThread;
@@ -118,9 +117,8 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		content.attachWidget(spoutcraft, labelAccessLabel);
 		labels.add(labelAccessLabel);
 
-
 		String access = "Open";
-		switch(item.accessType) {
+		switch (item.accessType) {
 			case ServerItem.WHITELIST:
 				access = "Whitelist";
 				break;
@@ -181,12 +179,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelSpoutcraft);
 
-		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/"+ item.getDatabaseId() +".png");
+		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/" + item.getDatabaseId() + ".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
 
-		for (GenericLabel lbl:labels) {
+		for (GenericLabel lbl : labels) {
 			labelWidth = (int) Math.max(labelWidth, lbl.getTextWidth());
 		}
 		updateButtons();
@@ -218,8 +216,8 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		int w = Spoutcraft.getMinecraftFont().getTextWidth(labelTitle.getText());
 
-		int totalWidth = Math.min(width - 10 - 16, 200*3+10);
-		int cellWidth = (totalWidth - 10)/3;
+		int totalWidth = Math.min(width - 10 - 16, 200 * 3 + 10);
+		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
@@ -232,7 +230,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		buttonRefresh.setX(width - 105).setY(5).setWidth(100).setHeight(20);
 
-		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 30 - (5+7+11+5));
+		content.setX(0).setY(5 + 7 + 11 + 5).setWidth(width).setHeight(height - 30 - (5 + 7 + 11 + 5));
 
 		int valueLeft = 10 + labelWidth;
 		int labelLeft = 5;
@@ -329,7 +327,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 					ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
 					reader.close();
 					parseYaml(list);
-				} catch(IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 					parseYaml(null);
 				}
@@ -349,11 +347,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 				linkSite.setUrl(URLDecoder.decode(i.get("site"), "UTF-8"));
 				linkForum.setUrl(URLDecoder.decode(i.get("forumurl"), "UTF-8"));
 				boolean spoutcraft = i.get("spoutcraft").equals("1");
-				labelSpoutcraft.setText(spoutcraft?"Yes":"No");
+				labelSpoutcraft.setText(spoutcraft ? "Yes" : "No");
 				labelMCVersion.setText(URLDecoder.decode(i.get("mcversion"), "UTF-8"));
 				labelCategory.setText(URLDecoder.decode(i.get("category"), "UTF-8"));
 			}
-		} catch(UnsupportedEncodingException e) {}
+		} catch (UnsupportedEncodingException e) {
+		}
 		layoutWidgets();
 		updateButtons();
 	}
@@ -365,7 +364,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 			double darkness = 0;
 			long t = System.currentTimeMillis() % 1000;
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
-			color.setGreen(1f - (float)darkness);
+			color.setGreen(1f - (float) darkness);
 			buttonRefresh.setDisabledColor(color);
 		}
 		super.updateScreen();
@@ -373,11 +372,10 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 	public void updateData() {
 		labelMotd.setText(item.getMotd());
-		labelPlayers.setText(item.getPlayers() + " / "+item.getMaxPlayers());
+		labelPlayers.setText(item.getPlayers() + " / " + item.getMaxPlayers());
 	}
 
 	private class ImageUpdate implements Runnable {
-
 		public void run() {
 			updateImageWidth();
 			layoutWidgets();
@@ -390,7 +388,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		imgwidth = textureIcon.getOriginalWidth();
 		imgheight = textureIcon.getOriginalHeight();
 
-		System.out.println(imgwidth+"x"+imgheight);
+		System.out.println(imgwidth + "x" + imgheight);
 
 		double ratio = (double) imgwidth / (double) imgheight;
 
@@ -401,7 +399,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		if (imgwidth > MAX_WIDTH) {
 			imgwidth = MAX_WIDTH;
-			imgheight = (int) ((double) imgwidth * (1.0/ratio));
+			imgheight = (int) ((double) imgwidth * (1.0 / ratio));
 		}
 
 		textureIcon.setWidth(imgwidth).setHeight(imgheight);

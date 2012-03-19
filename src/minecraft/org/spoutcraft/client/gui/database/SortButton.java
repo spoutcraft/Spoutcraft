@@ -25,25 +25,25 @@
  */
 package org.spoutcraft.client.gui.database;
 
-import org.newdawn.slick.opengl.Texture;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.FontRenderer;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
 import org.spoutcraft.spoutcraftapi.gui.RadioButton;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class SortButton extends GenericRadioButton implements UrlElement {
 	boolean topdown = true;
 	boolean preferredOrder = true;
 	boolean allowSorting = true;
 	boolean firstClick = false;
-
 	protected AbstractAPIModel model;
 	String url;
 
@@ -93,10 +93,13 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 			super.render();
 		} else {
 			MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
-			String texture ="";
-			if (isSelected()&&topdown||!isSelected()&&preferredOrder) texture = "ascending.png";
-			else texture = "descending.png";
-			Texture direction = CustomTextureManager.getTextureFromJar("/res/"+texture);
+			String texture = "";
+			if (isSelected() && topdown || !isSelected() && preferredOrder) {
+				texture = "ascending.png";
+			} else {
+				texture = "descending.png";
+			}
+			Texture direction = CustomTextureManager.getTextureFromJar("/res/" + texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0);
 			r.renderBaseBox(this, true);
@@ -115,8 +118,8 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		String dir = topdown?"asc":"desc";
-		String surl = url + (allowSorting?"&order="+dir:"");
+		String dir = topdown ? "asc" : "desc";
+		String surl = url + (allowSorting ? "&order=" + dir : "");
 		return surl;
 	}
 

@@ -32,13 +32,15 @@ import java.io.IOException;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketEntityTitle implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketEntityTitle implements SpoutPacket {
 	public String title;
 	public int entityId;
+
 	public PacketEntityTitle() {
 
 	}
@@ -51,7 +53,6 @@ public class PacketEntityTitle implements SpoutPacket{
 	public int getNumBytes() {
 		return 4 + PacketUtil.getNumBytes(title);
 	}
-
 
 	public void readData(DataInputStream input) throws IOException {
 		entityId = input.readInt();
@@ -66,7 +67,7 @@ public class PacketEntityTitle implements SpoutPacket{
 	public void run(int id) {
 		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
 		if (e != null && e instanceof EntityLiving) {
-			LivingEntity living = (LivingEntity)e.spoutEntity;
+			LivingEntity living = (LivingEntity) e.spoutEntity;
 			if (title.equals("reset")) {
 				living.resetTitle();
 			} else {

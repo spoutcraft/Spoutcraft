@@ -28,19 +28,19 @@ package org.spoutcraft.client.block;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.BlockRedstoneWire;
 
-import org.spoutcraft.spoutcraftapi.material.Liquid;
-import org.spoutcraft.spoutcraftapi.material.Material;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Biome;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockFace;
 import org.spoutcraft.spoutcraftapi.block.BlockState;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
+import org.spoutcraft.spoutcraftapi.material.Liquid;
+import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
-public class SpoutcraftBlock implements Block{
+public class SpoutcraftBlock implements Block {
 	private final SpoutcraftChunk chunk;
 	private final int x;
 	private final int y;
@@ -127,7 +127,6 @@ public class SpoutcraftBlock implements Block{
 		} else {
 			chunk.getHandle().worldObj.setBlockMetadata(x, y, z, data);
 		}
-
 	}
 
 	public boolean setTypeId(int type, boolean applyPhysics) {
@@ -285,30 +284,29 @@ public class SpoutcraftBlock implements Block{
 	/**
 	 * Notch uses a 0-5 to mean DOWN, UP, EAST, WEST, NORTH, SOUTH
 	 * in that order all over. This method is convenience to convert for us.
-	 *
 	 * @return BlockFace the BlockFace represented by this number
 	 */
 	public static BlockFace notchToBlockFace(int notch) {
 		switch (notch) {
-		case 0:
-			return BlockFace.DOWN;
-		case 1:
-			return BlockFace.UP;
-		case 2:
-			return BlockFace.EAST;
-		case 3:
-			return BlockFace.WEST;
-		case 4:
-			return BlockFace.NORTH;
-		case 5:
-			return BlockFace.SOUTH;
-		default:
-			return BlockFace.SELF;
+			case 0:
+				return BlockFace.DOWN;
+			case 1:
+				return BlockFace.UP;
+			case 2:
+				return BlockFace.EAST;
+			case 3:
+				return BlockFace.WEST;
+			case 4:
+				return BlockFace.NORTH;
+			case 5:
+				return BlockFace.SOUTH;
+			default:
+				return BlockFace.SELF;
 		}
 	}
 
 	public static int blockFaceToNotch(BlockFace face) {
-		switch(face) {
+		switch (face) {
 			case DOWN:
 				return 0;
 			case UP:

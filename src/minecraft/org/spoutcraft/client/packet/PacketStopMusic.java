@@ -31,9 +31,10 @@ import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class PacketStopMusic implements SpoutPacket{
+public class PacketStopMusic implements SpoutPacket {
 	private boolean resetTimer = false;
 	private int fadeTime = -1;
+
 	public PacketStopMusic() {
 
 	}

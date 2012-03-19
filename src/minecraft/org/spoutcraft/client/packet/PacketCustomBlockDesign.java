@@ -42,7 +42,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 
 	public int getNumBytes() {
-		int designBytes = (design == null) ?  (new GenericBlockDesign().getResetNumBytes()) : design.getNumBytes();
+		int designBytes = (design == null) ? (new GenericBlockDesign().getResetNumBytes()) : design.getNumBytes();
 		return designBytes + 2;
 	}
 

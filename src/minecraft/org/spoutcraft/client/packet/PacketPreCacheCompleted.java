@@ -33,7 +33,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.CustomScreen;
 import org.spoutcraft.client.io.FileDownloadThread;
 
-public class PacketPreCacheCompleted implements SpoutPacket{
+public class PacketPreCacheCompleted implements SpoutPacket {
 	public PacketPreCacheCompleted() {
 	}
 

@@ -26,7 +26,6 @@
 package org.spoutcraft.client.config;
 
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.newdawn.slick.opengl.Texture;
 
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
@@ -35,12 +34,14 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
+import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MipMapUtils {
 	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();
@@ -95,7 +96,7 @@ public class MipMapUtils {
 		int textureWidth = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
 		int tileWidth = textureWidth / 16;
 
-		setMipmapLevels(textureId, (int)Math.round(Math.log((double)tileWidth)/Math.log(2D)));
+		setMipmapLevels(textureId, (int) Math.round(Math.log((double) tileWidth) / Math.log(2D)));
 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, getMipmapLevels(textureId));
 
@@ -130,7 +131,6 @@ public class MipMapUtils {
 				}
 			}
 		}
-
 	}
 
 	public static void update(int texture) {
@@ -216,7 +216,7 @@ public class MipMapUtils {
 				GL11.glPopMatrix();
 				return;
 			} else {
-				GL11.glTexEnvf(GL14.GL_TEXTURE_FILTER_CONTROL, GL14.GL_TEXTURE_LOD_BIAS, getMipmapLevels(texture)*(currentFade-1.0f));
+				GL11.glTexEnvf(GL14.GL_TEXTURE_FILTER_CONTROL, GL14.GL_TEXTURE_LOD_BIAS, getMipmapLevels(texture) * (currentFade - 1.0f));
 			}
 		}
 

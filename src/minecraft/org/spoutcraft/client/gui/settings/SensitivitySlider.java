@@ -30,7 +30,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class SensitivitySlider extends GenericSlider{
+public class SensitivitySlider extends GenericSlider {
 	public SensitivitySlider() {
 		super("Sensitivity");
 		setSliderPosition(Minecraft.theMinecraft.gameSettings.mouseSensitivity);
@@ -44,6 +44,6 @@ public class SensitivitySlider extends GenericSlider{
 	}
 
 	public String getText() {
-		return "Sensitivity: " + (int)(this.getSliderPosition() * 200) + "%";
+		return "Sensitivity: " + (int) (this.getSliderPosition() * 200) + "%";
 	}
 }

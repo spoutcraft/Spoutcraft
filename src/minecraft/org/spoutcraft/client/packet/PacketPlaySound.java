@@ -29,13 +29,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.SoundManager;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
-public class PacketPlaySound implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketPlaySound implements SpoutPacket {
 	short soundId;
 	boolean location = false;
 	int x, y, z;
@@ -79,20 +81,20 @@ public class PacketPlaySound implements SpoutPacket{
 	public void run(int entityId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
-				SoundManager sndManager = SpoutClient.getHandle().sndManager;
-				if (soundId > -1 && soundId <= SoundEffect.getMaxId()) {
-					SoundEffect effect = SoundEffect.getSoundEffectFromId(soundId);
-					if (!location) {
-						sndManager.playSoundFX(effect.getName(), 0.5F, 0.7F, effect.getSoundId(), volume / 100F);
-					} else {
-						sndManager.playSound(effect.getName(), x, y, z, 0.5F, (distance / 16F), effect.getSoundId(), volume / 100F);
-					}
+			SoundManager sndManager = SpoutClient.getHandle().sndManager;
+			if (soundId > -1 && soundId <= SoundEffect.getMaxId()) {
+				SoundEffect effect = SoundEffect.getSoundEffectFromId(soundId);
+				if (!location) {
+					sndManager.playSoundFX(effect.getName(), 0.5F, 0.7F, effect.getSoundId(), volume / 100F);
+				} else {
+					sndManager.playSound(effect.getName(), x, y, z, 0.5F, (distance / 16F), effect.getSoundId(), volume / 100F);
 				}
-				soundId -= (1 + SoundEffect.getMaxId());
-				if (soundId > -1 && soundId <= Music.getMaxId()) {
-					Music music = Music.getMusicFromId(soundId);
-					sndManager.playMusic(music.getName(), music.getSoundId(), volume / 100F);
-				}
+			}
+			soundId -= (1 + SoundEffect.getMaxId());
+			if (soundId > -1 && soundId <= Music.getMaxId()) {
+				Music music = Music.getMusicFromId(soundId);
+				sndManager.playMusic(music.getName(), music.getSoundId(), volume / 100F);
+			}
 		}
 	}
 

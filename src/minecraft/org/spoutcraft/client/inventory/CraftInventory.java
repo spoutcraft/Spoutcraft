@@ -112,7 +112,7 @@ public class CraftInventory implements Inventory {
 	}
 
 	public boolean contains(int materialId) {
-		for (ItemStack item: getContents()) {
+		for (ItemStack item : getContents()) {
 			if (item != null && item.getTypeId() == materialId) {
 				return true;
 			}
@@ -128,7 +128,7 @@ public class CraftInventory implements Inventory {
 		if (item == null) {
 			return false;
 		}
-		for (ItemStack i: getContents()) {
+		for (ItemStack i : getContents()) {
 			if (item.equals(i)) {
 				return true;
 			}
@@ -138,7 +138,7 @@ public class CraftInventory implements Inventory {
 
 	public boolean contains(int materialId, int amount) {
 		int amt = 0;
-		for (ItemStack item: getContents()) {
+		for (ItemStack item : getContents()) {
 			if (item != null && item.getTypeId() == materialId) {
 				amt += item.getAmount();
 			}
@@ -155,7 +155,7 @@ public class CraftInventory implements Inventory {
 			return false;
 		}
 		int amt = 0;
-		for (ItemStack i: getContents()) {
+		for (ItemStack i : getContents()) {
 			if (item.equals(i)) {
 				amt += item.getAmount();
 			}

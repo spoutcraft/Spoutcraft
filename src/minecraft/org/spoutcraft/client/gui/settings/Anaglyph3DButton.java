@@ -27,11 +27,12 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class Anaglyph3DButton extends GenericCheckBox{
+import org.spoutcraft.client.config.ConfigReader;
+
+public class Anaglyph3DButton extends GenericCheckBox {
 	public Anaglyph3DButton() {
 		super("3D Anaglyph");
 		setChecked(ConfigReader.anaglyph3D);

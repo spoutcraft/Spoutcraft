@@ -37,7 +37,7 @@ public abstract class SafeButton extends GenericButton {
 
 	@Override
 	public String getText() {
-		return reallyShown?getWarningText():super.getText();
+		return reallyShown ? getWarningText() : super.getText();
 	}
 
 	public String getOriginalText() {
@@ -77,7 +77,8 @@ public abstract class SafeButton extends GenericButton {
 						Thread.sleep(getTimeout());
 						reallyShown = false;
 						currentThread = null;
-					} catch(InterruptedException e) {}
+					} catch (InterruptedException e) {
+					}
 				}
 			};
 			currentThread.start();

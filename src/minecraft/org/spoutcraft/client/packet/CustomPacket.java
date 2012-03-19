@@ -29,13 +29,13 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
+import net.minecraft.src.Packet;
 
 import org.spoutcraft.client.PacketDecompressionThread;
 import org.spoutcraft.client.SpoutClient;
 
-public class CustomPacket extends Packet{
+public class CustomPacket extends Packet {
 	public SpoutPacket packet;
 	private boolean success = false;
 	private static final int[] nags;
@@ -122,12 +122,11 @@ public class CustomPacket extends Packet{
 		packet.writeData(output);
 	}
 
-
 	public void processPacket(NetHandler netHandler) {
 		if (packet != null) {
 			if (success) {
 				if (packet instanceof CompressablePacket) {
-					PacketDecompressionThread.add((CompressablePacket)packet);
+					PacketDecompressionThread.add((CompressablePacket) packet);
 				} else {
 					try {
 						packet.run(SpoutClient.getHandle().thePlayer.entityId);

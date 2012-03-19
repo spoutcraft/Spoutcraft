@@ -31,10 +31,11 @@ import net.minecraft.src.SoundManager;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class QueuedSound implements Runnable{
+public class QueuedSound implements Runnable {
 	File song;
-	int x,y, z, volume, distance;
+	int x, y, z, volume, distance;
 	boolean soundEffect, notify;
+
 	public QueuedSound(File song, int x, int y, int z, int volume, int distance, boolean soundEffect) {
 		this.song = song;
 		this.x = x;

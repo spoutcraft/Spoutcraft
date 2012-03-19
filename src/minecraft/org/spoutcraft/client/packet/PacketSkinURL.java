@@ -29,16 +29,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketSkinURL implements SpoutPacket{
+import org.spoutcraft.client.SpoutClient;
+
+public class PacketSkinURL implements SpoutPacket {
 	public int entityId;
 	public String skinURL;
 	public String cloakURL;
 	public boolean release = true;
+
 	public PacketSkinURL() {
 
 	}

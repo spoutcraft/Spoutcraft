@@ -38,11 +38,12 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.UrlElement;
+
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+
+import org.spoutcraft.client.SpoutClient;
 
 public abstract class AbstractAPIModel extends AbstractListModel {
 	protected List<UrlElement> urlElements = new LinkedList<UrlElement>();
@@ -66,7 +67,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	protected List<ListWidgetItem> getEffectiveList() {
 		List<ListWidgetItem> ret = new ArrayList<ListWidgetItem>();
 
-		for (ListWidgetItem item:entries) {
+		for (ListWidgetItem item : entries) {
 			ret.add(item);
 		}
 
@@ -101,7 +102,9 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	public void refreshAPIData(final String url, final int page, final boolean clear) {
 		currentUrl = url;
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 
 		if (currentLoader != null && currentLoader.isAlive()) {
 			currentLoader.interrupt();
@@ -116,7 +119,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					System.setProperty("http.agent", "");
 					setLoading(true);
 					//long start = System.currentTimeMillis();
-					URL url1 = new URL(url+"&page="+page);
+					URL url1 = new URL(url + "&page=" + page);
 					//System.out.println("Loading "+url1.toString());
 					URLConnection conn = url1.openConnection();
 					conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -132,7 +135,6 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					moreItems = after > 0;
 
 					refreshList(clear);
-
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					//Put a fancy error message on the list!
@@ -140,14 +142,15 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 					effectiveCache = new LinkedList<ListWidgetItem>();
 					//String error = e1.getClass().getSimpleName().replaceAll("Exception", "");
 					//error = error.replaceAll("([A-Z])", " $1").trim();
-					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED+"Could not load items!", e1.getMessage(), ""));
+					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED + "Could not load items!", e1.getMessage(), ""));
 					return;
-				} catch (Exception e) {}
-				finally {
+				} catch (Exception e) {
+				} finally {
 					setLoading(false);
 					try {
 						reader.close();
-					} catch (Exception e) {}
+					} catch (Exception e) {
+					}
 				}
 			}
 		};
@@ -179,7 +182,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	}
 
 	public void clearElementFilters() {
-		for (UrlElement element: urlElements) {
+		for (UrlElement element : urlElements) {
 			element.clear();
 		}
 	}
@@ -197,12 +200,12 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	}
 
 	public void updateUrl() {
-		String url = API+"?";
+		String url = API + "?";
 		int i = 0;
-		for (UrlElement element:urlElements) {
+		for (UrlElement element : urlElements) {
 			if (element.isActive()) {
-				if (i>0) {
-					url+="&";
+				if (i > 0) {
+					url += "&";
 				}
 				url += element.getUrlPart();
 				i++; //Only increment for active elements

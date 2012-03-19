@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.spoutcraft.client.controls;
 
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 
 import org.spoutcraft.spoutcraftapi.ChatColor;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
@@ -38,6 +35,9 @@ import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
 
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.ScreenUtil;
+
 public class GuiAmbigousInput extends GuiSpoutScreen {
 	private Label title;
 	private Button buttonCancel;
@@ -45,40 +45,40 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 	protected GuiScreen parent;
 	private ArrayList<AbstractBinding> bindings;
 	private AbstractBinding pressed = null;
-	
+
 	public GuiAmbigousInput(ArrayList<AbstractBinding> bindings, GuiScreen parent) {
 		this.parent = parent;
 		this.bindings = bindings;
 	}
 
 	protected void createInstances() {
-		title = new GenericLabel("Ambigous bindings\n"+ChatColor.GRAY+"The key you pressed has multiple bindings assigned.\n"+ChatColor.GRAY+"Please choose which action you want to summon.");
+		title = new GenericLabel("Ambigous bindings\n" + ChatColor.GRAY + "The key you pressed has multiple bindings assigned.\n" + ChatColor.GRAY + "Please choose which action you want to summon.");
 		buttonCancel = new GenericButton("Cancel");
 		list = new GenericListWidget();
-		
+
 		int i = 1;
-		for(AbstractBinding binding:bindings) {
+		for (AbstractBinding binding : bindings) {
 			list.addItem(new BindingItem(i, binding));
 			i++;
 		}
-		
+
 		getScreen().attachWidgets(Spoutcraft.getAddonManager().getAddon("Spoutcraft"), title, buttonCancel, list);
 	}
-	
+
 	protected void layoutWidgets() {
 		int swidth = mc.fontRenderer.getStringWidth(title.getText());
 		title.setGeometry(5, 7, width - 10, 0);
 		int top = 5 + 11 * 3 + 5;
-		
+
 		list.setGeometry(5, top, width - 10, height - top - 30);
-		
+
 		top += list.getHeight();
-		
+
 		buttonCancel.setGeometry(width - 205, top + 5, 200, 20);
-		
+
 		list.setFocus(true);
 		list.setSelection(0);
-	}	
+	}
 
 	@Override
 	protected void keyTyped(char var1, int var2) {
@@ -92,21 +92,21 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 				AbstractBinding binding = bindings.get(i - 1);
 				summon(binding);
 			}
-		} catch(IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+		}
 	}
-	
+
 	@Override
 	public void buttonClicked(Button btn) {
 		if (btn == buttonCancel) {
 			mc.displayGuiScreen(parent);
 		}
 	}
-	
+
 	public class BindingItem implements ListWidgetItem {
-		
 		private AbstractBinding binding;
 		private int index;
-		
+
 		public BindingItem(int index, AbstractBinding binding) {
 			this.binding = binding;
 			this.index = index;
@@ -114,7 +114,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 
 		public void setListWidget(ListWidget widget) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public ListWidget getListWidget() {
@@ -150,20 +150,18 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 				Spoutcraft.getActivePlayer().showAchievement(ChatColor.WHITE + "You can use 1-9", "on your keyboard too", Item.book.shiftedIndex);
 			}
 		}
-		
+
 		public AbstractBinding getBinding() {
 			return binding;
 		}
-		
 	}
-	
+
 	protected void summon(final AbstractBinding binding) {
 		if (pressed != null) {
 			return;
 		}
 		Timer t = new Timer();
 		TimerTask task = new TimerTask() {
-			
 			@Override
 			public void run() {
 				mc.displayGuiScreen(parent);
@@ -172,7 +170,6 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 			}
 		};
 		t.schedule(task, 200);
-		pressed  = binding;
+		pressed = binding;
 	}
-
 }

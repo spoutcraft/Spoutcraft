@@ -50,6 +50,7 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 	}
 
 	public abstract void setKey(int id);
+
 	public abstract int getKey();
 
 	public boolean conflicts(ControlsBasicItem other) {

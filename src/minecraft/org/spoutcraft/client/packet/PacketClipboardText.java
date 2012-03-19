@@ -29,10 +29,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
-public class PacketClipboardText implements SpoutPacket{
+import org.spoutcraft.client.player.ChatManager;
+
+public class PacketClipboardText implements SpoutPacket {
 	public PacketClipboardText() {
 
 	}
@@ -40,7 +41,9 @@ public class PacketClipboardText implements SpoutPacket{
 	public PacketClipboardText(String text) {
 		this.text = text;
 	}
+
 	protected String text;
+
 	public int getNumBytes() {
 		return PacketUtil.getNumBytes(text);
 	}

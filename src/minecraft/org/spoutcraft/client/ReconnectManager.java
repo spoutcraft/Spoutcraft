@@ -25,8 +25,6 @@
  */
 package org.spoutcraft.client;
 
-import java.lang.String;
-
 import net.minecraft.src.GuiConnecting;
 
 import org.spoutcraft.client.gui.server.ServerItem;

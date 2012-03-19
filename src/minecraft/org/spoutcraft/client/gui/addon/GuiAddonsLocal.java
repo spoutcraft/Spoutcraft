@@ -29,9 +29,6 @@ import org.lwjgl.Sys;
 
 import net.minecraft.src.GuiMainMenu;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -43,13 +40,16 @@ import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
+
 public class GuiAddonsLocal extends GuiSpoutScreen {
 	private GenericLabel labelTitle;
 	private GenericListView addonsView;
 	private GenericScrollArea addonOptions;
 	private GenericCheckBox checkPluginEnabled, checkInternetAccess;
 	private GenericButton buttonMainMenu, buttonDatabase, buttonOpenFolder, buttonOpenConfiguration;
-
 	private LocalAddonsModel model = new LocalAddonsModel(this);
 
 	@Override
@@ -90,7 +90,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		int swidth = mc.fontRenderer.getStringWidth(labelTitle.getText());
 		labelTitle.setY(top + 7).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
 
-		top+=25;
+		top += 25;
 
 		int sheight = height - top - 30;
 
@@ -100,30 +100,28 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 
 		int ftop = 5;
 		checkPluginEnabled.setX(5).setY(ftop).setHeight(20).setWidth(100);
-		ftop+=25;
+		ftop += 25;
 		buttonOpenConfiguration.setX(5).setY(ftop).setHeight(20).setWidth(100);
-		ftop+=25;
+		ftop += 25;
 		checkInternetAccess.setX(5).setY(ftop).setHeight(20).setWidth(100);
 
-		for (Widget w:addonOptions.getAttachedWidgets()) {
+		for (Widget w : addonOptions.getAttachedWidgets()) {
 			w.setWidth(addonOptions.getViewportSize(Orientation.HORIZONTAL) - 10);
 		}
 
 		top += 5 + addonsView.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
 		int right = center + 5 + cellWidth;
-
 
 		buttonOpenFolder.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 
 		buttonDatabase.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
 
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
-
 	}
 
 	public void updateButtons() {
@@ -142,7 +140,6 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 				SpoutClient.enableSandbox(oldLock);
 			}
 		}
-
 	}
 
 	@Override
@@ -167,7 +164,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 			}
 		}
 		if (btn.equals(buttonOpenFolder)) {
-			Sys.openURL("file://"+SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
+			Sys.openURL("file://" + SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
 		}
 		if (btn.equals(buttonOpenConfiguration)) {
 			AddonItem item = (AddonItem) addonsView.getSelectedItem();

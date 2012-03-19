@@ -56,7 +56,6 @@ public class CraftMinecart extends CraftVehicle implements Minecart {
 		Minecart(0),
 		StorageMinecart(1),
 		PoweredMinecart(2);
-
 		private final int id;
 
 		private Type(int id) {

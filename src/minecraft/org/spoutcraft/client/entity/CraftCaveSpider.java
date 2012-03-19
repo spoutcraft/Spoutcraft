@@ -51,7 +51,7 @@ public class CraftCaveSpider extends CraftSpider implements CaveSpider {
 	}
 
 	public EntityCaveSpider getEntityCaveSpider() {
-		return (EntityCaveSpider)handle;
+		return (EntityCaveSpider) handle;
 	}
 
 	@Override

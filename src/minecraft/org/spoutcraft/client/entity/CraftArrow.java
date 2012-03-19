@@ -37,7 +37,7 @@ public class CraftArrow extends AbstractProjectile implements Arrow {
 	}
 
 	public EntityArrow getArrow() {
-		return (EntityArrow)handle;
+		return (EntityArrow) handle;
 	}
 
 	public LivingEntity getShooter() {
@@ -45,6 +45,6 @@ public class CraftArrow extends AbstractProjectile implements Arrow {
 	}
 
 	public void setShooter(LivingEntity shooter) {
-		getArrow().shootingEntity = ((CraftLivingEntity)shooter).getEntityLiving();
+		getArrow().shootingEntity = ((CraftLivingEntity) shooter).getEntityLiving();
 	}
 }

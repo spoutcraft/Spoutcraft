@@ -60,53 +60,98 @@ public class PacketBiomeWeather implements SpoutPacket {
 	public void run(int PlayerId) {
 		String biomeString = "";
 
-		switch(biome) {
-			case 0: biomeString = "Rainforest"; break;
-			case 1: biomeString = "Swampland"; break;
-			case 2: biomeString = "Seasonal Forest"; break;
-			case 3: biomeString = "Forest"; break;
-			case 4: biomeString = "Savanna"; break;
-			case 5: biomeString = "Shrubland"; break;
-			case 6: biomeString = "Taiga"; break;
-			case 7: biomeString = "Desert"; break;
-			case 8: biomeString = "Plains"; break;
-			case 9: biomeString = "Ice Desert"; break;
-			case 10: biomeString = "Tundra"; break;
-			case 11: biomeString = "Hell"; break;
-			case 12: biomeString = "Sky"; break;
-			case 13: biomeString = "Ocean"; break;
-			case 14: biomeString = "River"; break;
-			case 15: biomeString = "Extreme Hills"; break;
-			case 16: biomeString = "FrozenOcean"; break;
-			case 17: biomeString = "FrozenRiver"; break;
-			case 18: biomeString = "Ice Plains"; break;
-			case 19: biomeString = "Ice Mountains"; break;
-			case 20: biomeString = "MushroomIsland"; break;
-			case 21: biomeString = "MushroomIslandShore"; break;
-			default: break;
+		switch (biome) {
+			case 0:
+				biomeString = "Rainforest";
+				break;
+			case 1:
+				biomeString = "Swampland";
+				break;
+			case 2:
+				biomeString = "Seasonal Forest";
+				break;
+			case 3:
+				biomeString = "Forest";
+				break;
+			case 4:
+				biomeString = "Savanna";
+				break;
+			case 5:
+				biomeString = "Shrubland";
+				break;
+			case 6:
+				biomeString = "Taiga";
+				break;
+			case 7:
+				biomeString = "Desert";
+				break;
+			case 8:
+				biomeString = "Plains";
+				break;
+			case 9:
+				biomeString = "Ice Desert";
+				break;
+			case 10:
+				biomeString = "Tundra";
+				break;
+			case 11:
+				biomeString = "Hell";
+				break;
+			case 12:
+				biomeString = "Sky";
+				break;
+			case 13:
+				biomeString = "Ocean";
+				break;
+			case 14:
+				biomeString = "River";
+				break;
+			case 15:
+				biomeString = "Extreme Hills";
+				break;
+			case 16:
+				biomeString = "FrozenOcean";
+				break;
+			case 17:
+				biomeString = "FrozenRiver";
+				break;
+			case 18:
+				biomeString = "Ice Plains";
+				break;
+			case 19:
+				biomeString = "Ice Mountains";
+				break;
+			case 20:
+				biomeString = "MushroomIsland";
+				break;
+			case 21:
+				biomeString = "MushroomIslandShore";
+				break;
+			default:
+				break;
 		}
 
 		SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
 
-		switch(weather) {
-		case 0:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
-			break;
-		case 1:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, true);
-			break;
-		case 2:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, true);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
-			break;
-		case 3:
-			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
-			break;
-		default:
-			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
-			break;
+		switch (weather) {
+			case 0:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
+				break;
+			case 1:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, true);
+				break;
+			case 2:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, true);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
+				break;
+			case 3:
+				SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
+				break;
+			default:
+				SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
+				break;
 		}
 	}
 
