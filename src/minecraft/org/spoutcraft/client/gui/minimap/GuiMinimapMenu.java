@@ -37,8 +37,6 @@ import net.minecraft.src.GuiScreen;
 
 public class GuiMinimapMenu extends GuiScreen {
 	private Button doneButton = null, positionButton = null;
-	private HoldableButton increaseScale, decreaseScale;
-	private Label scale;
 	GuiScreen parent;
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
@@ -88,33 +86,9 @@ public class GuiMinimapMenu extends GuiScreen {
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 		
-		label = new GenericLabel("Minimap Position");
-		label.setGeometry(left, top + 5, 150, 20);
-		screen.attachWidget(spoutcraft, label);
-		
 		positionButton = new GenericButton("Move Minimap");
-		positionButton.setGeometry(right, top, 150, 20);
+		positionButton.setGeometry(width / 2 - 75, top, 150, 20);
 		screen.attachWidget(spoutcraft, positionButton);
-		
-		top += 22;
-		
-		label = new GenericLabel("Size Adjust");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX((int) (width / 2 - size / 2)).setY(top);
-		screen.attachWidget(spoutcraft, label);
-
-		scale = new GenericLabel("(" + (Math.round(MinimapConfig.getInstance().getSizeAdjust() * 100D)  / 100D) + "x)");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(scale.getText());
-		scale.setX((int) (width / 2 - size / 2)).setY(top + 11);
-		screen.attachWidget(spoutcraft, scale);
-		
-		increaseScale = (HoldableButton) new HoldableButton("Larger").setAlign(WidgetAnchor.TOP_CENTER);
-		increaseScale.setWidth(50).setHeight(20).setX(left + 75).setY(top);
-		screen.attachWidget(spoutcraft, increaseScale);
-		
-		decreaseScale = (HoldableButton) new HoldableButton("Smaller").setAlign(WidgetAnchor.TOP_CENTER);
-		decreaseScale.setWidth(50).setHeight(20).setX(right + 25).setY(top);
-		screen.attachWidget(spoutcraft, decreaseScale);
 		
 		top += 22;
 		
@@ -187,30 +161,6 @@ public class GuiMinimapMenu extends GuiScreen {
 		drawDefaultBackground();
 		
 		super.drawScreen(x, y, z);
-	}
-	
-	@Override
-	public void updateScreen() {
-		increaseScale.onTick();
-		decreaseScale.onTick();
-		boolean redraw = true;
-		if (increaseScale.isPressed()) {
-			MinimapConfig.getInstance().setSizeAdjust(Math.min(5F, MinimapConfig.getInstance().getSizeAdjust() + 0.01F));
-		}
-		else if (decreaseScale.isPressed()) {
-			MinimapConfig.getInstance().setSizeAdjust(Math.max(0.05F, MinimapConfig.getInstance().getSizeAdjust() - 0.01F));
-		}
-		else {
-			redraw = false;
-		}
-		
-		if (redraw) {
-			int size;
-			scale.setText("(" + (Math.round(MinimapConfig.getInstance().getSizeAdjust() * 100D)  / 100D) + "x)");
-			size = Spoutcraft.getMinecraftFont().getTextWidth(scale.getText());
-			scale.setX((int) (width / 2 - size / 2));
-		}
-		super.updateScreen();
 	}
 	
 	@Override

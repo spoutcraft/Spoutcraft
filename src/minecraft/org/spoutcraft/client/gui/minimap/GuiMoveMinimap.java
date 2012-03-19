@@ -29,13 +29,16 @@ import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 import org.spoutcraft.spoutcraftapi.gui.Gradient;
 import org.spoutcraft.spoutcraftapi.gui.Label;
+import org.spoutcraft.spoutcraftapi.gui.Slider;
 
 public class GuiMoveMinimap extends GuiSpoutScreen {
 	private Label title;
 	private Gradient minimapDrag;
 	private Button buttonDone, buttonReset;
+	private Slider sliderScale;
 	
 	private final static Color dragColor = new Color(1f, 1f, 1f, 0.5f);
 	
@@ -56,15 +59,20 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 		minimapDrag.setBottomColor(dragColor);
 		buttonDone = new GenericButton("Done");
 		buttonReset = new GenericButton("Reset to Default");
+		sliderScale = new GenericSlider();
+		float scale = MinimapConfig.getInstance().getSizeAdjust();
+		sliderScale.setSliderPosition(scale / 4);
 		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, minimapDrag, buttonDone, buttonReset);
+		getScreen().attachWidgets(spoutcraft, title, minimapDrag, buttonDone, buttonReset, sliderScale);
 	}
 
 	@Override
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		title.setY(10);
+		
+		sliderScale.setGeometry(width / 2 - 100, height - 55, 200, 20);
 		
 		buttonDone.setGeometry(width / 2 + 5, height - 30, 150, 20);
 		buttonReset.setGeometry(width / 2 - 155, height - 30, 150, 20);
@@ -74,8 +82,15 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 	public void updateScreen() {
 		int x = (int) MinimapConfig.getInstance().getAdjustX();
 		int y = (int) MinimapConfig.getInstance().getAdjustY();
-		float scale = MinimapConfig.getInstance().getSizeAdjust();
+		float scale = sliderScale.getSliderPosition() * 4;
 		int width = (int) (65 * scale); int height = (int) (65 * scale);
+		if(MinimapConfig.getInstance().isCoords()) {
+			height += 18;
+		}
+		
+		sliderScale.setText("Size adjust: " + Math.round(scale * 100f) / 100f);
+		
+		MinimapConfig.getInstance().setSizeAdjust(scale);
 		
 		minimapDrag.setGeometry(this.width + x - width, y, width, height);
 		super.updateScreen();
@@ -118,6 +133,8 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 		if(btn == buttonReset) {
 			MinimapConfig.getInstance().setAdjustX(0);
 			MinimapConfig.getInstance().setAdjustY(0);
+			MinimapConfig.getInstance().setSizeAdjust(1);
+			sliderScale.setSliderPosition(1f / 4f);
 		}
 	}
 	

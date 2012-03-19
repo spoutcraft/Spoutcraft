@@ -31,7 +31,7 @@ import org.spoutcraft.client.io.FileUtil;
 public class MinimapConfig {
 	private static volatile MinimapConfig instance;
 	private final Configuration config;
-	
+
 	private boolean enabled = true;
 	private boolean coords = true;
 	private int zoom = 1;
@@ -47,23 +47,14 @@ public class MinimapConfig {
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
-	
+
 	/*
-	minimap:
-		enabled: true
-		...
-	waypoints:
-		world1:
-			home:
-				x: 128
-				z: -82
-				enabled: 1
-			work:
-				...
-	*/
+	 * minimap: enabled: true ... waypoints: world1: home: x: 128 z: -82
+	 * enabled: 1 work: ...
+	 */
 	private MinimapConfig(boolean load) {
-		config = new Configuration(new File(FileUtil.getSpoutcraftDirectory(),"minimap.yml"));
-		if (load) { 
+		config = new Configuration(new File(FileUtil.getSpoutcraftDirectory(), "minimap.yml"));
+		if (load) {
 			config.load();
 			enabled = config.getBoolean("minimap.enabled", enabled);
 			coords = config.getBoolean("minimap.coords", coords);
@@ -86,10 +77,10 @@ public class MinimapConfig {
 			while (i.hasNext()) {
 				Object o = i.next();
 				if (o instanceof Entry) {
-					Entry<?, ?> e = (Entry)o;
+					Entry<?, ?> e = (Entry) o;
 					if (e.getKey() instanceof String && e.getValue() instanceof Map<?, ?>) {
 						try {
-							String world = (String)e.getKey();
+							String world = (String) e.getKey();
 							Map<String, Map<String, Number>> waypoints = (Map<String, Map<String, Number>>) e.getValue();
 							Iterator<Entry<String, Map<String, Number>>> j = waypoints.entrySet().iterator();
 							while (i.hasNext()) {
@@ -102,8 +93,7 @@ public class MinimapConfig {
 								enabled = locations.get("enabled").intValue() == 1;
 								addWaypoint(world, name, x, z, enabled);
 							}
-						}
-						catch (Exception ex) {
+						} catch (Exception ex) {
 							System.err.println("Error while reading waypoints: ");
 							ex.printStackTrace();
 						}
@@ -112,15 +102,15 @@ public class MinimapConfig {
 			}
 		}
 	}
-	
+
 	public static void initialize() {
 		instance = new MinimapConfig(true);
 	}
-	
+
 	public static void initialize(boolean load) {
 		instance = new MinimapConfig(load);
 	}
-	
+
 	public void save() {
 		config.setProperty("minimap.enabled", enabled);
 		config.setProperty("minimap.coords", coords);
@@ -154,7 +144,7 @@ public class MinimapConfig {
 		config.setProperty("waypoints", worlds);
 		config.save();
 	}
-	
+
 	public static MinimapConfig getInstance() {
 		return instance;
 	}
@@ -239,7 +229,7 @@ public class MinimapConfig {
 		}
 		return list;
 	}
-	
+
 	public void removeWaypoint(String world, String name) {
 		Iterator<Waypoint> i = getWaypoints(world).iterator();
 		while (i.hasNext()) {
@@ -248,7 +238,7 @@ public class MinimapConfig {
 			}
 		}
 	}
-	
+
 	public void addWaypoint(String world, String name, int x, int z, boolean enabled) {
 		getWaypoints(world).add(new Waypoint(name, x, z, enabled));
 	}
