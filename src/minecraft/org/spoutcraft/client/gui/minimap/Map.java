@@ -88,15 +88,19 @@ public class Map {
 	}
 
 	public final int toImageX(int worldz) {
-		return wrapIndex((int) (( -(worldz - playerZ)) + originOffsetX), imageSize);
+		return worldz; //return wrapIndex((int) (( -(worldz - playerZ)) + originOffsetX), imageSize);
 	}
 
 	public final int toImageY(int worldx) {
-		return wrapIndex( (int) ((worldx - playerX) + originOffsetY), imageSize);
+		return worldx;//return wrapIndex( (int) ((worldx - playerX) + originOffsetY), imageSize);
 	}
 
 	public void setColorPixel(int worldx, int worldz, int color24) {
 		colorimg.setRGB(toImageX(worldz), toImageY(worldx), color24);
+	}
+	
+	public void clearColorPixel(int worldx, int worldz) {
+		colorimg.setARGB(toImageX(worldz), toImageY(worldx), 0);
 	}
 
 	public void setHeightPixel(int worldx, int worldz, int height) {

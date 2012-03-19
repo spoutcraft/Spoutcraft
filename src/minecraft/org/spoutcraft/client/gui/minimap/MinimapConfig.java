@@ -25,10 +25,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.util.config.Configuration;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
 public class MinimapConfig {
-	private static MinimapConfig instance;
+	private static volatile MinimapConfig instance;
 	private final Configuration config;
 	
 	private boolean enabled = true;
@@ -55,17 +56,19 @@ public class MinimapConfig {
 			work:
 				...
 	*/
-	private MinimapConfig() {
-		config = new Configuration(new File(new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft"), "minimap.yml"));
-		config.load();
-		enabled = config.getBoolean("minimap.enabled", enabled);
-		coords = config.getBoolean("minimap.coords", coords);
-		zoom = config.getInt("minimap.zoom", zoom);
-		color = config.getBoolean("minimap.color", color);
-		square = config.getBoolean("minimap.square", square);
-		lightmap = config.getBoolean("minimap.lightmap", lightmap);
-		heightmap = config.getBoolean("minimap.heightmap", heightmap);
-		cavemap = config.getBoolean("minimap.cavemap", cavemap);
+	private MinimapConfig(boolean load) {
+		config = new Configuration(new File(FileUtil.getSpoutcraftDirectory(),"minimap.yml"));
+		if (load) { 
+			config.load();
+			enabled = config.getBoolean("minimap.enabled", enabled);
+			coords = config.getBoolean("minimap.coords", coords);
+			zoom = config.getInt("minimap.zoom", zoom);
+			color = config.getBoolean("minimap.color", color);
+			square = config.getBoolean("minimap.square", square);
+			lightmap = config.getBoolean("minimap.lightmap", lightmap);
+			heightmap = config.getBoolean("minimap.heightmap", heightmap);
+			cavemap = config.getBoolean("minimap.cavemap", cavemap);
+		}
 		firstrun = config.getBoolean("minimap.firstrun", firstrun);
 		Map<?, ?> worlds = config.getNodes("waypoints");
 		if (worlds != null) {
@@ -101,12 +104,11 @@ public class MinimapConfig {
 	}
 	
 	public static void initialize() {
-		if (instance == null) {
-			instance = new MinimapConfig();
-		}
-		else {
-			throw new IllegalStateException("Minimap config can not be initialized twice");
-		}
+		instance = new MinimapConfig(true);
+	}
+	
+	public static void initialize(boolean load) {
+		instance = new MinimapConfig(load);
 	}
 	
 	public void save() {
@@ -135,6 +137,7 @@ public class MinimapConfig {
 			worlds.put(world, waypoints);
 		}
 		config.setProperty("waypoints", worlds);
+		config.save();
 	}
 	
 	public static MinimapConfig getInstance() {
@@ -150,7 +153,7 @@ public class MinimapConfig {
 	}
 
 	public boolean isCoords() {
-		return coords;
+		return coords && SpoutClient.getInstance().isCoordsCheat();
 	}
 
 	public void setCoords(boolean coords) {

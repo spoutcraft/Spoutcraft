@@ -174,27 +174,44 @@ public class MapCalculator implements Runnable {
 			return;
 		try {
 			synchronized (map) {
-				World data = Minecraft.theMinecraft.theWorld;
+				final boolean square = MinimapConfig.getInstance().isSquare();
+				final World data = Minecraft.theMinecraft.theWorld;
 				map.zoom = MinimapConfig.getInstance().getZoom();
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
 				int startX = (int) (map.getPlayerX() - map.renderOff);
 				int startZ = (int) (map.getPlayerZ() - map.renderOff);
-
+				
 				for (int worldX = startX; worldX < startX + map.renderSize; worldX++) {
 					for (int worldZ = startZ; worldZ < startZ + map.renderSize; worldZ++) {
-						if (Minecraft.theMinecraft.thePlayer == null)
-							return;
 						int worldY = getBlockHeight(data, worldX, worldZ);
 						
-						map.setColorPixel(worldX, worldZ, getBlockColor(data, worldX, worldY, worldZ));
-						map.setHeightPixel(worldX, worldZ, getBlockHeightMap(data, worldX, worldY, worldZ));
-						map.setLightPixel(worldX, worldZ, getBlockLight(data, worldX, worldY, worldZ));
+						//4 is a fudge shift to get it to line up correctly with the image
+						int pixelX = worldX - startX + 4;
+						if (pixelX >= map.renderSize) pixelX -= map.renderSize;
+						
+						int pixelZ = worldZ - startZ + 4;
+						if (pixelZ >= map.renderSize) pixelZ -= map.renderSize;
+						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2 - 2, worldX, worldZ)) {
+							map.setColorPixel(pixelX, pixelZ, getBlockColor(data, worldX, worldY, worldZ));
+							map.setHeightPixel(pixelX, pixelZ, getBlockHeightMap(data, worldX, worldY, worldZ));
+							map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));
+						}
+						else {
+							map.clearColorPixel(pixelX, pixelZ);
+							map.setHeightPixel(pixelX, pixelZ, 255);
+							map.setLightPixel(pixelX, pixelZ, 255);
+						}
 					}
 				}
 			}
 		} catch (Throwable whatever) {
 			whatever.printStackTrace();
 		}
+	}
+	
+	private static boolean insideCircle(int centerX, int centerY, int radius, int x, int y) {
+		double squareDist = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y);
+		return squareDist <= radius * radius;
 	}
 
 	/**

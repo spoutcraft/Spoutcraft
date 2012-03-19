@@ -48,7 +48,6 @@ public class MapRenderer {
 				this.direction += 360.0f;
 		}
 
-
 		GL11.glPushMatrix();
 		GL11.glTranslatef(scWidth, 0.0f, 0.0f);
 		renderMap();
@@ -81,15 +80,22 @@ public class MapRenderer {
 				} else
 					map.loadColorImage();
 
-				drawMap();
+				//drawMap();
+				drawOnMap();
 
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				try {
+					GL11.glPushMatrix();
+					GL11.glScalef(1.8f, 1.8f, 1.0f);
+					GL11.glTranslatef(27, -1, 0F); //don't ask
 					texman.loadMinimap();
 					drawOnMap();
 				} catch (Exception e) {
 					System.err.println("error: minimap overlay not found!");
 					e.printStackTrace();
+				}
+				finally {
+					GL11.glPopMatrix();
 				}
 
 				try {
@@ -125,13 +131,14 @@ public class MapRenderer {
 				else
 					GL11.glTranslatef(-0.5f, -0.5f, 0.0f);
 
-				drawMap();
+				//drawMap();
+				drawOnMap();
 				GL11.glPopMatrix();
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				//renderWaypoints();
-				//drawRound();
-				//drawDirections();
+				renderWaypoints();
+				drawRound();
+				drawDirections();
 			}
 		}
 	}
@@ -282,10 +289,14 @@ public class MapRenderer {
 
 	private void drawRound() {
 		try {
+			GL11.glPushMatrix();
 			texman.loadRoundmap();
 			drawOnMap();
 		} catch (Exception localException) {
 			System.err.println("Error: minimap overlay not found!");
+		}
+		finally {
+			GL11.glPopMatrix();
 		}
 	}
 
@@ -298,6 +309,7 @@ public class MapRenderer {
 		Tessellator.instance.draw();
 	}
 
+	@SuppressWarnings("unused")
 	private void drawMap() {
 		float renderwidth = 64;
 		GL11.glPushMatrix();

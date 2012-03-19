@@ -1,5 +1,7 @@
 package org.spoutcraft.client.gui.minimap;
 
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.client.io.CustomTextureManager;
 
 /**
@@ -8,28 +10,43 @@ import org.spoutcraft.client.io.CustomTextureManager;
  */
 public class TextureManager {
 
+	private int glRoundmap = 0;
+	private int glMMArrow = 0;
+	private int glWaypoint = 0;
+	private int glMarker = 0;
+	private int glMinimap = 0;
 	/**
 	 * @param zanMinimap
 	 */
 	public TextureManager() {}
 
 	public void loadRoundmap() {
-		CustomTextureManager.getTextureFromJar("/res/minimap/roundmap.png").bind();
+		if (glRoundmap == 0)
+			glRoundmap = CustomTextureManager.getTextureFromJar("/res/minimap/roundmap.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glRoundmap);
 	}
 
 	public void loadMMArrow() {
-		CustomTextureManager.getTextureFromJar("/res/minimap/mmarrow.png").bind();
+		if (glMMArrow == 0)
+			glMMArrow = CustomTextureManager.getTextureFromJar("/res/minimap/mmarrow.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glMMArrow);
 	}
 
 	public void loadWaypoint() {
-		CustomTextureManager.getTextureFromJar("/res/minimap/waypoint.png").bind();
+		if (glWaypoint == 0)
+			glWaypoint = CustomTextureManager.getTextureFromJar("/res/minimap/waypoint.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glWaypoint);
 	}
 
 	public void loadMarker() {
-		CustomTextureManager.getTextureFromJar("/res/minimap/marker.png").bind();
+		if (glMarker == 0)
+			glMarker = CustomTextureManager.getTextureFromJar("/res/minimap/marker.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
 	}
 
 	public void loadMinimap() {
-		CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").bind();
+		if (glMinimap == 0)
+			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
 	}
 }

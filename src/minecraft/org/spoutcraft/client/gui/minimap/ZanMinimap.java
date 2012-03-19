@@ -50,6 +50,9 @@ public class ZanMinimap {
 	public void onRenderTick() {
 		if (Minecraft.theMinecraft.thePlayer == null)
 			return;
+		
+		if (Minecraft.theMinecraft.currentScreen != null)
+			return;
 
 		int scWidth = Spoutcraft.getRenderDelegate().getScreenWidth();
 		int scHeight = Spoutcraft.getRenderDelegate().getScreenHeight();
