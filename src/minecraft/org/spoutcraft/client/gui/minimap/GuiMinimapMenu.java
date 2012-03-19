@@ -101,6 +101,12 @@ public class GuiMinimapMenu extends GuiScreen {
 		control.setTooltip("Feature broken.");
 		top += 22;
 		
+		control = new ScaleToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+
+		top += 22;
+		
 		//TODO waypoints
 	}
 	

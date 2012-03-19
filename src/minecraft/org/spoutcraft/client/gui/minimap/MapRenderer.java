@@ -50,6 +50,9 @@ public class MapRenderer {
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef(scWidth, 0.0f, 0.0f);
+		if (!MinimapConfig.getInstance().isScale()) {
+			GL11.glScalef(scWidth / 427, scHeight / 240F, 1);
+		}
 		renderMap();
 		if (MinimapConfig.getInstance().isCavemap())
 			renderMapFull(0, scHeight);

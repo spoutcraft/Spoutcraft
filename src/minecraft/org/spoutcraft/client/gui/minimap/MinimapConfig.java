@@ -41,6 +41,7 @@ public class MinimapConfig {
 	private boolean heightmap = true;
 	private boolean cavemap = false;
 	private boolean firstrun = true;
+	private boolean scale = false;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
 	
 	/*
@@ -68,6 +69,7 @@ public class MinimapConfig {
 			lightmap = config.getBoolean("minimap.lightmap", lightmap);
 			heightmap = config.getBoolean("minimap.heightmap", heightmap);
 			cavemap = config.getBoolean("minimap.cavemap", cavemap);
+			scale = config.getBoolean("minimap.scale", scale);
 		}
 		firstrun = config.getBoolean("minimap.firstrun", firstrun);
 		Map<?, ?> worlds = config.getNodes("waypoints");
@@ -121,6 +123,7 @@ public class MinimapConfig {
 		config.setProperty("minimap.heightmap", heightmap);
 		config.setProperty("minimap.cavemap", cavemap);
 		config.setProperty("minimap.firstrun", firstrun);
+		config.setProperty("minimap.scale", scale);
 		HashMap<String, Map<String, Map<String, Integer>>> worlds = new HashMap<String, Map<String, Map<String, Integer>>>();
 		Iterator<Entry<String, List<Waypoint>>> i = waypoints.entrySet().iterator();
 		while (i.hasNext()) {
@@ -236,5 +239,13 @@ public class MinimapConfig {
 	
 	public void addWaypoint(String world, String name, int x, int z, boolean enabled) {
 		getWaypoints(world).add(new Waypoint(name, x, z, enabled));
+	}
+
+	public boolean isScale() {
+		return scale;
+	}
+
+	public void setScale(boolean scale) {
+		this.scale = scale;
 	}
 }
