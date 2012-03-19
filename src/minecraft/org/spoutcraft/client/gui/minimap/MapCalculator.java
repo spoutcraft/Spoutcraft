@@ -268,6 +268,7 @@ public class MapCalculator implements Runnable {
 			if (!Minecraft.theMinecraft.theWorld.isRemote){
 				tryARender();
 			}
+
 		}
 	}
 

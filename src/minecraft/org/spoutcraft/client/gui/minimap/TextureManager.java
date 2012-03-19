@@ -19,6 +19,14 @@ public class TextureManager {
 	 * @param zanMinimap
 	 */
 	public TextureManager() {}
+	
+	public void reset() {
+		glRoundmap = 0;
+		glMMArrow = 0;
+		glWaypoint = 0;
+		glMarker = 0;
+		glMinimap = 0;
+	}
 
 	public void loadRoundmap() {
 		if (glRoundmap == 0)

@@ -38,6 +38,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.minimap.ZanMinimap;
 
 public class CustomTextureManager {
 	static HashMap<String, Texture> textures = new HashMap<String, Texture>();
@@ -183,6 +184,7 @@ public class CustomTextureManager {
 		}
 		cacheTextureFiles.clear();
 		textures.clear();
+		ZanMinimap.instance.texman.reset();
 	}
 
 	public static Texture getTextureFromUrl(String url) {

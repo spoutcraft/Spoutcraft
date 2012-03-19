@@ -71,6 +71,7 @@ public class Map {
 		colorimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		heightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		lightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
+		clear();
 	}
 
 	/**
@@ -121,6 +122,16 @@ public class Map {
 
 	public void loadLightImage() {
 		lightimg.loadGLImage();
+	}
+
+	public void clear() {
+		for (int i = 0; i < imageSize; i++) {
+			for (int j = 0; j < imageSize; j++) {
+				colorimg.setARGB(i, j, 0);
+				lightimg.setARGB(i, j, 0);
+				heightimg.setARGB(i, j, 0);
+			}
+		}
 	}
 
 	public void update(double playerx, double playerz) {

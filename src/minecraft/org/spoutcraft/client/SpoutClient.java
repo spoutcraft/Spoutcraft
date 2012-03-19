@@ -359,7 +359,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		server = -1L;
 		inWorldTicks = 0L;
 		MaterialData.reset();
-		ZanMinimap.instance.onWorldChange();
 	}
 
 	public void onWorldEnter() {
@@ -380,7 +379,6 @@ public class SpoutClient extends PropertyObject implements Client {
 		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
-		ZanMinimap.instance.onWorldChange();
 	}
 
 	public static Minecraft getHandle() {
