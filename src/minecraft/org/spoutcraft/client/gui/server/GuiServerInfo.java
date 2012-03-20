@@ -50,6 +50,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
+import org.spoutcraft.spoutcraftapi.gui.Label;
+import org.spoutcraft.spoutcraftapi.gui.Texture;
 
 public class GuiServerInfo extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
@@ -61,7 +63,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	private List<GenericLabel> labels = new ArrayList<GenericLabel>();
 	int labelWidth = 0;
 	private GenericTexture textureIcon;
-
+	private List<GalleryImage> gallery = new ArrayList<GuiServerInfo.GalleryImage>();
+	private GenericLabel labelGalleryImageTitle, labelGalleryImageDesc, labelGalleryTitle;
+	private Texture textureGalleryImage;
+	private Button buttonGalleryPrev, buttonGalleryNext;
+	private int galleryCurrentImage = 0;
+	
 	static final int MAX_HEIGHT = 128;
 
 	private GuiScreen back;
@@ -96,7 +103,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		getScreen().attachWidget(spoutcraft, labelTitle);
 
 		buttonOpenBrowser = new GenericButton("More Info...");
-		content.attachWidget(spoutcraft, buttonOpenBrowser);
+		getScreen().attachWidget(spoutcraft, buttonOpenBrowser);
 
 		labelCategoryLabel = new GenericLabel("Category");
 		content.attachWidget(spoutcraft, labelCategoryLabel);
@@ -169,9 +176,9 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		content.attachWidget(spoutcraft, labelPlayers);
 
 		linkForum = new LinkButton("Go to forum", "");
-		content.attachWidget(spoutcraft, linkForum);
+		getScreen().attachWidget(spoutcraft, linkForum);
 		linkSite = new LinkButton("Go to website", "");
-		content.attachWidget(spoutcraft, linkSite);
+		getScreen().attachWidget(spoutcraft, linkSite);
 
 		labelSpoutcraftLabel = new GenericLabel("Spoutcraft required");
 		content.attachWidget(spoutcraft, labelSpoutcraftLabel);
@@ -192,6 +199,58 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		updateButtons();
 		refresh();
 		updateData();
+	}
+	
+	public boolean hasGallery() {
+		return gallery.size() != 0;
+	}
+	
+	public void setupGallery() {
+		buttonGalleryNext = new GenericButton("->");
+		buttonGalleryPrev = new GenericButton("<-");
+		labelGalleryImageTitle = new GenericLabel();
+		labelGalleryImageDesc = new GenericLabel();
+		textureGalleryImage = new GenericTexture("");
+		textureGalleryImage.setFinishDelegate(new ImageUpdate());
+		labelGalleryTitle = new GenericLabel("Gallery");
+		((GenericLabel) labelGalleryImageDesc).setWrapLines(true);
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		content.attachWidgets(spoutcraft, labelGalleryImageTitle, labelGalleryImageDesc, textureGalleryImage, buttonGalleryPrev, buttonGalleryNext, labelGalleryTitle);
+		layoutWidgets();
+		setGalleryImage(0);
+	}
+	
+	public void setGalleryImage(int n) {
+		if(!hasGallery()) {
+			return;
+		}
+		if(gallery.size() - 1 < n) {
+			n = gallery.size() - 1;
+		}
+		if(n < 0) {
+			n = 0;
+		}
+		galleryCurrentImage = n;
+		GalleryImage image = gallery.get(n);
+		labelGalleryImageTitle.setText(image.getTitle());
+		labelGalleryImageDesc.setText(image.getDesc());
+		if(labelGalleryImageDesc.getWidth() > 0) {
+			labelGalleryImageDesc.recalculateLines();
+			content.updateInnerSize();
+		}
+		textureGalleryImage.setUrl("http://static.spout.org/server/gallery/" + item.getDatabaseId() + "_" + image.getHash() + ".png");
+		textureGalleryImage.setFinishDelegate(new ImageUpdate());
+		if(n == 0) {
+			buttonGalleryPrev.setEnabled(false);
+		} else {
+			buttonGalleryPrev.setEnabled(true);
+		}
+		if(n == gallery.size() - 1) {
+			buttonGalleryNext.setEnabled(false);
+		} else {
+			buttonGalleryNext.setEnabled(true);
+		}
+		layoutWidgets();
 	}
 
 	public void updateButtons() {
@@ -232,7 +291,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		buttonRefresh.setX(width - 105).setY(5).setWidth(100).setHeight(20);
 
-		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 30 - (5+7+11+5));
+		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 55 - (5+7+11+5));
 
 		int valueLeft = 10 + labelWidth;
 		int labelLeft = 5;
@@ -240,7 +299,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		int top = 5;
 
 		textureIcon.setX(5).setY(top);
-		updateImageWidth();
+		updateImageWidth(textureIcon, totalWidth, MAX_HEIGHT);
 
 		top += textureIcon.getHeight() + 5;
 
@@ -284,12 +343,30 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelDescription.recalculateLines();
 
 		top += labelDescription.getHeight() + 5;
+		
+		if(hasGallery()) {
+			labelGalleryTitle.setGeometry(labelLeft, top, totalWidth, 10);
+			top += 15;
+			
+			textureGalleryImage.setGeometry(labelLeft, top, totalWidth, 100);
+			updateImageWidth(textureGalleryImage, totalWidth, (int) (content.getHeight() - 50));
+			w = (int) textureGalleryImage.getWidth();
+			textureGalleryImage.setX(totalWidth / 2 - w / 2);
+			top += textureGalleryImage.getHeight() + 5;
+			
+			buttonGalleryPrev.setGeometry(labelLeft, top, 20, 20);
+			buttonGalleryNext.setGeometry(labelLeft + totalWidth - 20, top, 20, 20);
+			w = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(labelGalleryImageTitle.getText());
+			labelGalleryImageTitle.setGeometry(totalWidth / 2 - w / 2, top + 5, w, 10);
+			top += 25;
+			labelGalleryImageDesc.setGeometry(labelLeft, top, totalWidth, 11);
+			((GenericLabel) labelGalleryImageDesc).recalculateLines();
+			top += labelGalleryImageDesc.getHeight() + 5;
+		}
 
-		linkForum.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
-		linkSite.setX(center).setY(top).setWidth(cellWidth).setHeight(20);
-		buttonOpenBrowser.setX(right).setY(top).setHeight(20).setWidth(cellWidth);
-
-		top += 25;
+		linkForum.setX(left).setY(height - 50).setWidth(cellWidth).setHeight(20);
+		linkSite.setX(center).setY(height - 50).setWidth(cellWidth).setHeight(20);
+		buttonOpenBrowser.setX(right).setY(height - 50).setHeight(20).setWidth(cellWidth);
 
 		buttonJoin.setX(left).setY(height - 25).setHeight(20).setWidth(cellWidth);
 		buttonAddFavorite.setX(center).setY(height - 25).setHeight(20).setWidth(cellWidth);
@@ -317,6 +394,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		if (btn == buttonJoin) {
 			item.onClick(-1, -1, true);
 		}
+		if (btn == buttonGalleryNext) {
+			setGalleryImage(galleryCurrentImage + 1);
+		}
+		if (btn == buttonGalleryPrev) {
+			setGalleryImage(galleryCurrentImage - 1);
+		}
 	}
 
 	private void refresh() {
@@ -326,7 +409,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 					URL url = new URL("http://servers.spout.org/api2.php?id=" + item.getDatabaseId());
 					BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 					Yaml yaml = new Yaml();
-					ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) yaml.load(reader);
+					ArrayList<Map<String, Object>> list = (ArrayList<Map<String, Object>>) yaml.load(reader);
 					reader.close();
 					parseYaml(list);
 				} catch(IOException e) {
@@ -339,19 +422,33 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		updateButtons();
 	}
 
-	protected void parseYaml(ArrayList<Map<String, String>> list) {
+	protected void parseYaml(ArrayList<Map<String, Object>> list) {
 		loadThread = null;
 		updateButtons();
 		try {
 			if (list != null && list.size() > 0) {
-				Map<String, String> i = list.get(1);
-				labelDescription.setText(URLDecoder.decode(i.get("longdescription"), "UTF-8"));
-				linkSite.setUrl(URLDecoder.decode(i.get("site"), "UTF-8"));
-				linkForum.setUrl(URLDecoder.decode(i.get("forumurl"), "UTF-8"));
+				Map<String, Object> i = list.get(1);
+				labelDescription.setText(URLDecoder.decode((String) i.get("longdescription"), "UTF-8"));
+				linkSite.setUrl(URLDecoder.decode((String) i.get("site"), "UTF-8"));
+				linkForum.setUrl(URLDecoder.decode((String) i.get("forumurl"), "UTF-8"));
 				boolean spoutcraft = i.get("spoutcraft").equals("1");
 				labelSpoutcraft.setText(spoutcraft?"Yes":"No");
-				labelMCVersion.setText(URLDecoder.decode(i.get("mcversion"), "UTF-8"));
-				labelCategory.setText(URLDecoder.decode(i.get("category"), "UTF-8"));
+				labelMCVersion.setText(URLDecoder.decode((String) i.get("mcversion"), "UTF-8"));
+				labelCategory.setText(URLDecoder.decode((String) i.get("category"), "UTF-8"));
+				if(i.containsKey("gallery")) {
+					System.out.println("Has gallery");
+					List<Map<String, String>> gMap = (List<Map<String, String>>) i.get("gallery");
+					gallery.clear();
+					for(Map<String, String> image:gMap) {
+						GalleryImage img = new GalleryImage(image.get("picid"), URLDecoder.decode(image.get("title")), URLDecoder.decode(image.get("desc")));
+						gallery.add(img);
+					}
+					if(buttonGalleryNext == null) {
+						setupGallery();
+					} else {
+						setGalleryImage(0);
+					}
+				}
 			}
 		} catch(UnsupportedEncodingException e) {}
 		layoutWidgets();
@@ -377,33 +474,64 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	}
 
 	private class ImageUpdate implements Runnable {
-
 		public void run() {
-			updateImageWidth();
 			layoutWidgets();
 		}
 	}
 
-	public void updateImageWidth() {
+	public void updateImageWidth(Texture texture, int maxWidth, int maxHeight) {
 		int imgwidth, imgheight;
-		int MAX_WIDTH = width - 10 - 16;
-		imgwidth = textureIcon.getOriginalWidth();
-		imgheight = textureIcon.getOriginalHeight();
+		imgwidth = texture.getOriginalWidth();
+		imgheight = texture.getOriginalHeight();
 
 		System.out.println(imgwidth+"x"+imgheight);
 
 		double ratio = (double) imgwidth / (double) imgheight;
 
-		if (imgheight > MAX_HEIGHT) {
-			imgheight = MAX_HEIGHT;
+		if (imgheight > maxHeight) {
+			imgheight = maxHeight;
 			imgwidth = (int) ((double) imgheight * ratio);
 		}
 
-		if (imgwidth > MAX_WIDTH) {
-			imgwidth = MAX_WIDTH;
+		if (imgwidth > maxWidth) {
+			imgwidth = maxWidth;
 			imgheight = (int) ((double) imgwidth * (1.0/ratio));
 		}
 
-		textureIcon.setWidth(imgwidth).setHeight(imgheight);
+		texture.setWidth(imgwidth).setHeight(imgheight);
+	}
+
+	protected class GalleryImage {
+		private String hash, title, desc;
+	
+		public GalleryImage(String hash, String title, String desc) {
+			this.hash = hash;
+			this.title = title;
+			this.desc = desc;
+		}
+	
+		public String getHash() {
+			return hash;
+		}
+	
+		public void setHash(String hash) {
+			this.hash = hash;
+		}
+	
+		public String getTitle() {
+			return title;
+		}
+	
+		public void setTitle(String title) {
+			this.title = title;
+		}
+	
+		public String getDesc() {
+			return desc;
+		}
+	
+		public void setDesc(String desc) {
+			this.desc = desc;
+		}
 	}
 }

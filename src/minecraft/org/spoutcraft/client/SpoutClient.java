@@ -43,7 +43,6 @@ import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
 import org.newdawn.slick.util.Log;
-
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
@@ -53,7 +52,6 @@ import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
 import org.spoutcraft.client.gui.SimpleWidgetManager;
-import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.client.gui.server.ServerManager;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;

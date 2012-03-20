@@ -415,7 +415,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
 
 		if (textureBinding != null) {
-			if (texture.getOriginalHeight() == -1 && texture.getOriginalWidth() == -1) {
+			if (texture.getOriginalHeight() != textureBinding.getImageWidth() || texture.getOriginalWidth() != textureBinding.getImageHeight()) {
 				texture.setOriginalWidth(textureBinding.getImageWidth());
 				texture.setOriginalHeight(textureBinding.getImageHeight());
 			}
