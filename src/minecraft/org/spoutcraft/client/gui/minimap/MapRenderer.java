@@ -53,7 +53,8 @@ public class MapRenderer {
 		GL11.glTranslatef(MinimapConfig.getInstance().getAdjustX(), MinimapConfig.getInstance().getAdjustY(), 0);
 		GL11.glScalef(MinimapConfig.getInstance().getSizeAdjust(), MinimapConfig.getInstance().getSizeAdjust(), 1F);
 		if (!MinimapConfig.getInstance().isScale()) {
-			GL11.glScalef(scWidth / 427, scHeight / 240F, 1);
+			float scaleFactor = Math.max(scWidth / 427, scHeight / 240F);
+			GL11.glScalef(scaleFactor, scaleFactor, 1);
 		}
 		renderMap();
 		if (MinimapConfig.getInstance().isCavemap())
