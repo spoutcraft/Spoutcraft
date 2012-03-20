@@ -201,6 +201,17 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 	}
 	//Spout Start
+	
+	@Override 
+	public void setSprinting(boolean sprint) {
+		if (this.runToggle){
+			sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+		}
+		else {
+			super.setSprinting(sprint);
+		}
+	}
+	
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
