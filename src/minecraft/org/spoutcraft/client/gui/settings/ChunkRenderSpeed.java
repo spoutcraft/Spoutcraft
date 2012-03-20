@@ -25,30 +25,35 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import net.minecraft.client.Minecraft;
-
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class PreloadedChunksButton extends AutomatedButton{
-	public PreloadedChunksButton() {
-		setTooltip("Defines an area in which no chunks will be loaded\n0 - after 5m new chunks will be loaded\n2 - after 32m  new chunks will be loaded\n8 - after 128m new chunks will be loaded\nHigher values need more time to load all the chunks");
+public class ChunkRenderSpeed extends AutomatedButton{
+	public ChunkRenderSpeed() {
+		
+		setTooltip("Chunk Render Speed\nControls how fast chunks will render in new areas.\n Faster rendering may adversly affect FPS.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.preloadedChunks += 2;
-		if (ConfigReader.preloadedChunks > 8) {
-			ConfigReader.preloadedChunks = 0;
+		ConfigReader.chunkRenderPasses *= 2;
+		if (ConfigReader.chunkRenderPasses > 16) {
+			ConfigReader.chunkRenderPasses = 1;
+		}
+		else if (ConfigReader.chunkRenderPasses < 1) {
+			ConfigReader.chunkRenderPasses = 1;
 		}
 		ConfigReader.write();
-
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
-		}
 	}
 
 	public String getText() {
-		return "Preloaded Chunks: " + ConfigReader.preloadedChunks;
+		switch(ConfigReader.chunkRenderPasses) {
+			case 16: return "Render Speed: Very Fast";
+			case 8: return "Render Speed: Fast";
+			case 4: return "Render Speed: Average";
+			case 2: return "Render Speed: Slow";
+			case 1: return "Render Speed: Slowest";
+		}
+		return "Error, Unknown Setting!";
 	}
 }

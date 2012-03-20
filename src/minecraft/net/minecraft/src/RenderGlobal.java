@@ -229,9 +229,7 @@ public class RenderGlobal implements IWorldAccess {
 			if (ConfigReader.farView) {
 				var1 = 512;
 			}
-
-			var1 += ConfigReader.preloadedChunks * 2 * 16;
-			if (!ConfigReader.farView && var1 > 400) {
+			else if (var1 > 400) {
 				var1 = 400;
 			}
 			// Spout End

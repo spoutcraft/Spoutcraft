@@ -58,7 +58,7 @@ public class ConfigReader {
 	public static int fastDebug = 0;
 	public static int guiScale = 0;
 	public static int performance = 0;
-	public static int preloadedChunks = 0;
+	public static int chunkRenderPasses = 1;
 	public static int renderDistance = 0;
 	public static int signDistance = 16;
 	public static boolean sky = true;

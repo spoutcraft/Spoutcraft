@@ -841,7 +841,7 @@ public class EntityRenderer {
 			var14.setCurrentChunkOver(var15, var16);
 		}
 
-		for (int var19 = 0; var19 < 2; ++var19) {
+		for (int var19 = 0; var19 < (this.mc.gameSettings.anaglyph ? 2 : 1); ++var19) { //Spout
 			if (this.mc.gameSettings.anaglyph) {
 				anaglyphField = var19;
 				if (anaglyphField == 0) {
@@ -879,13 +879,21 @@ public class EntityRenderer {
 			this.mc.renderGlobal.clipRenderersByFrustrum(var18, par1);
 			if (var19 == 0) {
 				Profiler.endStartSection("updatechunks");
-
-				while (!this.mc.renderGlobal.updateRenderers(var4, false) && par2 != 0L) {
-					long var21 = par2 - System.nanoTime();
-					if (var21 < 0L || var21 > 1000000000L) {
-						break;
+				
+				//Spout start
+				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
+					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
+						var5.sortAndRender(var4, 0, (double)par1);
 					}
 				}
+				//Spout end
+
+				//while (! && par2 != 0L) {
+				//	long var21 = par2 - System.nanoTime();
+				//	if (var21 < 0L || var21 > 1000000000L) {
+				//		break;
+				//	}
+				//}
 			}
 
 			this.setupFog(0, par1);

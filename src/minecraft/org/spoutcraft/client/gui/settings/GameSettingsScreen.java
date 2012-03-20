@@ -299,7 +299,7 @@ public class GameSettingsScreen extends GuiScreen{
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
-		control = new PreloadedChunksButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control = new ChunkRenderSpeed().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
