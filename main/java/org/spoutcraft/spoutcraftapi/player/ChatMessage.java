@@ -2,6 +2,7 @@ package org.spoutcraft.spoutcraftapi.player;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -158,10 +159,12 @@ public class ChatMessage {
 			} else {
 				for(String highlightWord:Spoutcraft.getChatManager().getWordsToHighlight()) {
 					if(Spoutcraft.getChatManager().isUsingRegex()) {
-						if(message.matches(".*"+highlightWord+".*")) {
-							highlighted = true;
-							break;
-						}
+						try {
+							if(message.matches(".*"+highlightWord+".*")) {
+								highlighted = true;
+								break;
+							}
+						} catch(PatternSyntaxException e) {}
 					} else {
 						if(message.contains(highlightWord)) {
 							highlighted = true;
@@ -181,10 +184,12 @@ public class ChatMessage {
 		if(ret.hasPlayer()) {
 			for(String name:Spoutcraft.getChatManager().getIgnoredPlayers()) {
 				if(Spoutcraft.getChatManager().isUsingRegex()) {
-					if(ret.getPlayer().matches(".*"+name+".*")) {
-						ret.setIgnoredPerson(true);
-						break;
-					}
+					try {
+						if(ret.getPlayer().matches(".*"+name+".*")) {
+							ret.setIgnoredPerson(true);
+							break;
+						}
+					} catch(PatternSyntaxException e) {}
 				} else {
 					if(ret.getPlayer().equalsIgnoreCase(name)) {
 						ret.setIgnoredPerson(true);

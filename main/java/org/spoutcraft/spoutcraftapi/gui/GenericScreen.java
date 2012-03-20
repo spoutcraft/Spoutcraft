@@ -137,9 +137,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		int height = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
 		if(width != screenWidth || height != screenHeight) {
 			onScreenResized(screenWidth, screenHeight, width, height);
-			screenWidth = width;
-			screenHeight = height;
 		}
+		screenWidth = width;
+		screenHeight = height;
 		for (Widget widget : new HashSet<Widget>(widgets.keySet())) {
 			try {
 				widget.onTick();
