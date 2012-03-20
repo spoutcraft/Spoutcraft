@@ -331,39 +331,35 @@ public class MapRenderer {
 		if (!MinimapConfig.getInstance().isDirections()) {
 			return;
 		}
-		if(!MinimapConfig.getInstance().isSquare()) {
-			float dir = this.direction;
-			GL11.glPushMatrix();
-			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-			Minecraft.theMinecraft.fontRenderer.drawString("N", - 66, 60, 0xffffff);
-			GL11.glPopMatrix();
-			
-			dir += 90;
-			
-			GL11.glPushMatrix();
-			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-dir))), (64.0D * Math.cos(Math.toRadians(-dir))), 0.0D);
-			Minecraft.theMinecraft.fontRenderer.drawString("E", - 66, 60, 0xffffff);
-			GL11.glPopMatrix();
-			
-			dir += 90;
-			
-			GL11.glPushMatrix();
-			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-			Minecraft.theMinecraft.fontRenderer.drawString("S", - 66, 60, 0xffffff);
-			GL11.glPopMatrix();
-			
-			dir += 90;
-			
-			GL11.glPushMatrix();
-			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
-			Minecraft.theMinecraft.fontRenderer.drawString("W", - 66, 60, 0xffffff);
-			GL11.glPopMatrix();
-		} else {
-			
-		}
+		float dir = this.direction;
+		GL11.glPushMatrix();
+		GL11.glScalef(0.5f, 0.5f, 1.0f);
+		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
+		Minecraft.theMinecraft.fontRenderer.drawString("N", - 66, 60, 0xffffff);
+		GL11.glPopMatrix();
+		
+		dir += 90;
+		
+		GL11.glPushMatrix();
+		GL11.glScalef(0.5f, 0.5f, 1.0f);
+		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-dir))), (64.0D * Math.cos(Math.toRadians(-dir))), 0.0D);
+		Minecraft.theMinecraft.fontRenderer.drawString("E", - 66, 60, 0xffffff);
+		GL11.glPopMatrix();
+		
+		dir += 90;
+		
+		GL11.glPushMatrix();
+		GL11.glScalef(0.5f, 0.5f, 1.0f);
+		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
+		Minecraft.theMinecraft.fontRenderer.drawString("S", - 66, 60, 0xffffff);
+		GL11.glPopMatrix();
+		
+		dir += 90;
+		
+		GL11.glPushMatrix();
+		GL11.glScalef(0.5f, 0.5f, 1.0f);
+		GL11.glTranslated((64.0D * Math.sin(Math.toRadians(-(dir)))), (64.0D * Math.cos(Math.toRadians(-(dir)))), 0.0D);
+		Minecraft.theMinecraft.fontRenderer.drawString("W", - 66, 60, 0xffffff);
+		GL11.glPopMatrix();
 	}
 }
