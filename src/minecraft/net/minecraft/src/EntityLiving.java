@@ -1564,8 +1564,12 @@ public abstract class EntityLiving extends Entity {
 	}
 //Spout Start
 	
-	public final EntityData getData() {
+	public EntityData getData() {
 		return entityData;
+	}	
+	
+	public void setData(EntityData e) {
+		this.entityData = e;
 	}
 	
 	public String getCustomTextureUrl(byte id){
