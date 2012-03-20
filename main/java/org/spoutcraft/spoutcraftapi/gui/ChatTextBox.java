@@ -34,7 +34,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	protected int visibleLines = 10;
 	protected int visibleChatLines = 20;
 	protected int fadeoutTicks = 20 * 5;
-	protected List<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
+	protected static final List<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
 
 	public ChatTextBox() {
 		
@@ -200,7 +200,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		return this;
 	}
 	
-	public void addChatMessage(ChatMessage message) {
+	public static void addChatMessage(ChatMessage message) {
 		if(message.getUnparsedMessage().trim().equals("")) {
 			return;
 		}
@@ -210,7 +210,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		}
 	}
 	
-	public void reparse() {
+	public static void reparse() {
 		for(ChatMessage message:chatMessages) {
 			message.reparse();
 		}
