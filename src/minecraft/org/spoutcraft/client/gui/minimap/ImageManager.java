@@ -16,9 +16,9 @@ public class ImageManager {
 	
 	private int glImage = 0;
 
-	private boolean hasGLImage = false;
+	private volatile boolean hasGLImage = false;
 
-	private boolean hasChanged = true;
+	private volatile boolean hasChanged = true;
 
 	/**
 	 * @param imageSize
@@ -42,10 +42,20 @@ public class ImageManager {
 	public void loadGLImage() {
 		if (hasGLImage && hasChanged) {
 			Minecraft.theMinecraft.renderEngine.deleteTexture(glImage);
+			GL11.glPushMatrix();
+			glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+			GL11.glPopMatrix();
+			hasChanged = false;
 		}
-		GL11.glPushMatrix();
-		glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
-		GL11.glPopMatrix();
-		hasGLImage = true;
+		else if (!hasGLImage) {
+			GL11.glPushMatrix();
+			glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+			GL11.glPopMatrix();
+			hasGLImage = true;
+			hasChanged = false;
+		}
+		else if (glImage > 0) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glImage);
+		}
 	}
 }

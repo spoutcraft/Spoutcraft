@@ -232,8 +232,22 @@ public class RenderEngine {
 			int textureHeight = texture.getHeight();
 			int[] texData = new int[textureWidth * textureHeight];
 			byte[] texColors = new byte[textureWidth * textureHeight * 4];
-			texture.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
-
+			//Spout start
+			//Performance reasons
+			boolean handled = false;
+			try {
+				java.awt.image.DataBuffer buf = texture.getRaster().getDataBuffer();
+				if (buf instanceof java.awt.image.DataBufferInt) {
+					int[] srcbuf = ((java.awt.image.DataBufferInt) buf).getData();
+					System.arraycopy(srcbuf, 0, texData, 0, srcbuf.length);
+					handled = true;
+				}
+			}
+			catch (Exception ignore) { }
+			if (!handled) {
+				texture.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
+			}
+			
 			int r;
 			int g;
 			int b;
@@ -260,7 +274,7 @@ public class RenderEngine {
 				texColors[i * 4 + 2] = (byte) a;
 				texColors[i * 4 + 3] = (byte) r;
 			}
-
+			//Spout end
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, texColors);
 
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
