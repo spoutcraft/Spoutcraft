@@ -6,13 +6,16 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 //Spout Start
+import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout End
 
 public abstract class GuiContainer extends GuiScreen
 {
+	//Spout moved up to GuiScreen
 	/** Stacks renderer. Icons, stack size, health, etc... */
-	protected static RenderItem itemRenderer = new RenderItem();
+//	protected static RenderItem itemRenderer = new RenderItem();
+	//Spout End
 
 	/** The X size of the inventory window in pixels. */
 	protected int xSize;
@@ -91,17 +94,19 @@ public abstract class GuiContainer extends GuiScreen
 
 		InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
 
-		if (inventoryplayer.getItemStack() != null)
-		{
-			GL11.glTranslatef(0.0F, 0.0F, 32F);
-			zLevel = 200F;
-			itemRenderer.zLevel = 200F;
-			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
-			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
-			zLevel = 0.0F;
-			itemRenderer.zLevel = 0.0F;
-		}
-
+		//Spout Start
+//		if (inventoryplayer.getItemStack() != null)
+//		{
+//			GL11.glTranslatef(0.0F, 0.0F, 32F);
+//			zLevel = 200F;
+//			itemRenderer.zLevel = 200F;
+//			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+//			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
+//			zLevel = 0.0F;
+//			itemRenderer.zLevel = 0.0F;
+//		}
+		//Spout End
+		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -307,7 +312,20 @@ public abstract class GuiContainer extends GuiScreen
 
 			if (flag)
 			{
-				k = -999;
+				//Spout Start
+				boolean isSpoutSlot = false;
+				for(Widget w : getScreen().getAttachedWidgets(true)) {
+					if(isInBoundingRect(w, par1, par2)) {
+						if(w instanceof org.spoutcraft.spoutcraftapi.gui.Slot) {
+							isSpoutSlot = true;
+							break;
+						}
+					}
+				}
+				if(!isSpoutSlot) {
+					k = -999;
+				}
+				//Spout End
 			}
 
 			if (k != -1)

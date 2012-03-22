@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -78,6 +80,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
+import org.spoutcraft.spoutcraftapi.gui.GenericSlot;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.HealthBar;
@@ -91,6 +94,7 @@ import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
 public class MCRenderDelegate implements RenderDelegate {
 	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
@@ -898,48 +902,65 @@ public class MCRenderDelegate implements RenderDelegate {
 			drawTexture(text, 16, 16, getColor(comboBox), true);
 		}
 	}
-	//	public void render(GenericListWidget lw) {
-	//		int scrollTop = lw.getScrollPosition();
-	//		int scrollBottom = (int) (scrollTop + lw.getHeight() - 5);
-	//		GL11.glTranslated(lw.getScreenX(), lw.getScreenY(), 0);
-	//		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-	//		scissorWidget(lw);
-	//		int currentHeight = 0;
-	//		RenderUtil.drawRectangle(0, 0, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.6F).toInt());
-	//		GL11.glTranslated(0, -scrollTop + 5, 0);
-	//		for (ListWidgetItem item:lw.getItems()) {
-	//
-	//			//Only render visible items
-	//			if (currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
-	//
-	//				//Draw selection border
-	//				if (lw.isSelected(item)) {
-	//					RenderUtil.drawRectangle(4, currentHeight-1, (int) (lw.getWidth() - 13), currentHeight-1+item.getHeight()+2, new Color(1.0F,1.0F,1.0F).toInt());
-	//					RenderUtil.drawRectangle(5, currentHeight, (int) (lw.getWidth() - 14), currentHeight+item.getHeight(), new Color(0.0F,0.0F,0.0F).toInt());
-	//				}
-	//
-	//				//Render actual item
-	//				GL11.glPushMatrix();
-	//				item.render(5, currentHeight, (int) (lw.getWidth() - 15), item.getHeight());
-	//				GL11.glPopMatrix();
-	//			}
-	//
-	//			currentHeight += item.getHeight();
-	//		}
-	//		GL11.glDisable(GL11.GL_SCISSOR_TEST);
-	//		GL11.glTranslatef(0, scrollTop - 5, 0);
-	//		GL11.glDisable(2896 /*GL_LIGHTING*/);
-	//		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	//
-	//		RenderUtil.drawGradientRectangle(0, 0, (int)lw.getWidth(), 5, new Color(0.0F,0.0F,0.0F,1.0F).toInt(), new Color(0.0F,0.0F,0.0F,0.0F).toInt());
-	//		RenderUtil.drawGradientRectangle(0, (int)lw.getHeight() - 5, (int)lw.getWidth(), (int)lw.getHeight(), new Color(0.0F,0.0F,0.0F,0.0F).toInt(), new Color(0.0F,0.0F,0.0F,1.0F).toInt());
-	//
-	//		Minecraft mc = SpoutClient.getHandle();
-	//		int texture = mc.renderEngine.getTexture("/gui/allitems.png");
-	//		mc.renderEngine.bindTexture(texture);
-	//		double scrollY = 0;
-	//		double p = (double)scrollTop / (double)lw.getMaxScrollPosition();
-	//		scrollY = 3 + p * (lw.getHeight() - 16.0 - 6);
-	//		RenderUtil.drawTexturedModalRectangle((int) (lw.getWidth() - 14), (int) scrollY, 0, 208, 16, 16, 0f);
-	//	}
+	
+	public void render(GenericSlot genericSlot) {
+		if(!genericSlot.isVisible()) {
+			return;
+		}
+		ItemStack item = genericSlot.getItem();
+
+		if(item.getTypeId() != 0) {
+			GL11.glDepthFunc(515);
+			RenderHelper.enableStandardItemLighting();
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			double oldX = 1;
+			double oldY = 1;
+			double oldZ = 1;
+			Block block = null;
+			if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
+				block = Block.blocksList[item.getTypeId()];
+				oldX = block.maxX;
+				oldY = block.maxY;
+				oldZ = block.maxZ;
+				block.maxX = block.maxX * genericSlot.getWidth() / 16;
+				block.maxY = block.maxY * genericSlot.getHeight() / 16;
+				block.maxZ = block.maxZ * genericSlot.getDepth() / 16;
+			} else {
+				renderer.setScale((genericSlot.getWidth() / 8D), (genericSlot.getHeight() / 8D), 1);
+			}
+			GL11.glPushMatrix();
+			GL11.glTranslatef((float) genericSlot.getScreenX(), (float) genericSlot.getScreenY(), 0);
+			if (genericSlot.getAnchor() == WidgetAnchor.SCALE) {
+				GL11.glScalef((float) (genericSlot.getScreen().getWidth() / 427f), (float) (genericSlot.getScreen().getHeight() / 240f), 1);
+			}
+			int id = item.getTypeId();
+			int data = item.getDurability();
+			if (MaterialData.getCustomItem(id) != null) {
+				int temp = id;
+				id = 318;
+				data = temp;
+			}
+			renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getDurability()), 0, 0);
+			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
+			GL11.glPopMatrix();
+			if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
+				block.maxX = oldX;
+				block.maxY = oldY;
+				block.maxZ = oldZ;
+			}
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glEnable(GL11.GL_LIGHTING);
+			RenderHelper.disableStandardItemLighting();
+		}
+		if(isHovering(genericSlot)) {
+			int x = (int) genericSlot.getScreenX();
+			int y = (int) genericSlot.getScreenY();
+			int width = (int) (x + genericSlot.getWidth());
+			int height = (int) (y + genericSlot.getHeight());
+			RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
+		}
+	}
 }

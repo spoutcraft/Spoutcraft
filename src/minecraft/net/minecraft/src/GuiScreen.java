@@ -21,7 +21,9 @@ import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxView;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.spoutcraftapi.gui.Slot;
 
 //Spout End
 
@@ -58,6 +60,7 @@ public class GuiScreen extends Gui
 	long renderEndNanoTime = 0L;
 	protected static int limitedFramerate = 120;
 	private long lastClick = 0;
+	protected static RenderItem itemRenderer = new RenderItem();
 
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -97,6 +100,24 @@ public class GuiScreen extends Gui
 			}
 
 			this.renderEndNanoTime = System.nanoTime();
+		}
+		
+		int i = 0;
+		int j = 0;
+		if(mc.thePlayer != null) {
+			InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
+			if(inventoryplayer.getItemStack() != null) {
+				RenderHelper.disableStandardItemLighting();
+				RenderHelper.enableGUIStandardItemLighting();
+				GL11.glTranslatef(0.0F, 0.0F, 32F);
+				zLevel = 200F;
+				itemRenderer.zLevel = 200F;
+				itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
+				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
+				zLevel = 0.0F;
+				itemRenderer.zLevel = 0.0F;
+				RenderHelper.enableStandardItemLighting();
+			}
 		}
 	}
 	// Spout end
@@ -213,6 +234,8 @@ public class GuiScreen extends Gui
 								} else if (control instanceof TextField) {
 									((TextField) control).setCursorPosition(((TextField) control).getText().length());
 									handled = true;
+								} else if (control instanceof Slot) {
+									handleClickOnSlot((Slot) control, 0);
 								}
 							}
 						}
@@ -236,11 +259,114 @@ public class GuiScreen extends Gui
 					break;
 				}
 			}
+		} else if (eventButton == 1) {
+			for(Widget widget : screen.getAttachedWidgets(true)) {
+				if(isInBoundingRect(widget, mouseX, mouseY)) {
+					if(widget instanceof Slot) {
+						handleClickOnSlot((Slot) widget, 1);
+						break;
+					}
+				}
+			}
 		}
 		if (openCombobox != null)
 			openCombobox.closeList();
 
 		SpoutClient.disableSandbox();
+	}
+
+	private void handleClickOnSlot(Slot slot, int button) {
+		System.out.println("handleClickOnSlot: "+slot+", "+button);
+		try {
+			if(mc.thePlayer == null) {
+				return;
+			}
+			ItemStack stackOnCursor = new ItemStack(0);
+			if(mc.thePlayer.inventory.getItemStack() != null) {
+				net.minecraft.src.ItemStack mcStack = mc.thePlayer.inventory.getItemStack();
+				stackOnCursor = new ItemStack(mcStack.itemID, mcStack.stackSize, (short) mcStack.getItemDamage());
+			}
+			ItemStack stackInSlot = slot.getItem();
+			if((stackOnCursor == null || stackOnCursor.getTypeId() == 0) && stackInSlot.getTypeId() == 0) {
+				return; //Nothing to do
+			}
+			if(stackOnCursor.getTypeId() == 0 && stackInSlot.getTypeId() != 0 && button == 1) { //Split item
+				int amountSlot = stackInSlot.getAmount() / 2;
+				int amountCursor = stackInSlot.getAmount() - amountSlot;
+				if(stackInSlot.getAmount() == 1) {
+					amountSlot = 0;
+					amountCursor = 1;
+				}
+				stackOnCursor = stackInSlot.clone();
+				stackOnCursor.setAmount(amountCursor);
+				stackInSlot.setAmount(amountSlot);
+				if(amountSlot == 0) {
+					stackInSlot = new ItemStack(0);
+				}
+				boolean success = slot.onItemTake(stackOnCursor);
+				if(success) {
+					slot.setItem(stackInSlot);
+				} else {
+					return;
+				}
+			} else if (stackOnCursor != null && (stackInSlot.getTypeId() == 0 || stackInSlot.getTypeId() == stackOnCursor.getTypeId())) { //Put item
+				ItemStack toPut = stackOnCursor.clone();
+				int putAmount = toPut.getAmount();
+				if(button == 1) {
+					putAmount = 1;
+				}
+				int amount = stackInSlot.getTypeId() == 0 ? 0 : stackInSlot.getAmount();
+				amount += putAmount;
+				System.out.println(amount);
+				int maxStackSize = toPut.getMaxStackSize();
+				if(maxStackSize == -1) {
+					maxStackSize = 64;
+				}
+				if(amount > maxStackSize) {
+					putAmount -= amount - maxStackSize;
+					amount = maxStackSize;
+				}
+				if(putAmount <= 0) {
+					return;
+				}
+				toPut.setAmount(putAmount);
+				boolean success = slot.onItemPut(toPut);
+				if(success) {
+					stackOnCursor.setAmount(stackOnCursor.getAmount() - putAmount);
+					if(stackOnCursor.getAmount() == 0) {
+						stackOnCursor = new ItemStack(0);
+					}
+					ItemStack put = toPut.clone();
+					put.setAmount(amount);
+					slot.setItem(put);
+				}
+			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { //Take item or shift click
+				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+					slot.onItemShiftClicked();
+				} else { //Take item
+					boolean success = slot.onItemTake(stackInSlot);
+					if(success) {
+						stackOnCursor = stackInSlot;
+						slot.setItem(new ItemStack(0));
+					}
+				}
+			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId()) { //Exchange slot stack and cursor stack
+				boolean success = slot.onItemExchange(stackInSlot, stackOnCursor.clone());
+				if(success) {
+					slot.setItem(stackOnCursor.clone());
+					stackOnCursor = stackInSlot;
+				}
+			}
+			
+			if(stackOnCursor == null || stackOnCursor.getTypeId() == 0) {
+				mc.thePlayer.inventory.setItemStack(null);
+			} else {
+				net.minecraft.src.ItemStack mcStack = new net.minecraft.src.ItemStack(stackOnCursor.getTypeId(), stackOnCursor.getAmount(), stackOnCursor.getDurability());
+				mc.thePlayer.inventory.setItemStack(mcStack);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void playSoundFX(String sound, float f, float f1) {
