@@ -218,22 +218,30 @@ public class GuiEditSign extends GuiScreen
 
 		//Spout Start
 		if (org.spoutcraft.client.config.ConfigReader.showChatColors) {
-			drawString(fontRenderer, ChatColor.BLACK + "&0 - Black", width - 90, 10, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_BLUE + "&1 - Dark Blue", width - 90, 20, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_GREEN + "&2 - Dark Green", width - 90, 30, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_AQUA + "&3 - Dark Aqua", width - 90, 40, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_RED + "&4 - Dark Red", width - 90, 50, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_PURPLE + "&5 - Dark Purple", width - 90, 60, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.GOLD + "&6 - Gold", width - 90, 70, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.GRAY + "&7 - Grey", width - 90, 80, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.DARK_GRAY + "&8 - Dark Grey", width - 90, 90, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.BLUE + "&9 - Blue", width - 90, 100, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.GREEN + "&a - Green", width - 90, 110, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.AQUA + "&b - Aqua", width - 90, 120, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.RED + "&c - Red", width - 90, 130, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.LIGHT_PURPLE + "&d - Light Purple", width - 90, 140, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.YELLOW + "&e - Yellow", width - 90, 150, 0xFFFFFFF);
-			drawString(fontRenderer, ChatColor.WHITE + "&f - White", width - 90, 160, 0xFFFFFFF);
+			for(int c = 0; c < 16; c++) {
+				ChatColor value = ChatColor.getByCode(c);
+				String name = value.name().toLowerCase();
+				boolean lastUnderscore = true;
+				String parsedName = "";
+				for(int chr = 0; chr < name.length(); chr++) {
+					char ch = name.charAt(chr);
+					if(lastUnderscore) {
+						ch = Character.toUpperCase(ch);
+					}
+					if(ch == '_') {
+						lastUnderscore = true;
+						ch = ' ';
+					} else {
+						lastUnderscore = false;
+					}
+					parsedName += ch;
+				}
+				char code = (char) ('0' + c);
+				if(c >= 10) {
+					code = (char) ('a' + c - 10);
+				}
+				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 10 + c * 10, 0xffffffff);
+			}
 		}
 		//Spout end
 
