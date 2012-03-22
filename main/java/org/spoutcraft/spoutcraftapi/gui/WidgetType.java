@@ -50,6 +50,7 @@ public class WidgetType {
 	public static WidgetType ListView = new WidgetType(GenericListView.class, 24);
 	public static WidgetType ComboBox = new WidgetType(GenericComboBox.class, 25);
 	public static WidgetType Polygon = new WidgetType(GenericPolygon.class, 26);
+	public static WidgetType Slot = new WidgetType(GenericSlot.class, 27);
 
 
 	private final int id;

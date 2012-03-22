@@ -70,6 +70,7 @@ public interface RenderDelegate {
 	
 	public void render(GenericComboBox comboBox);
 	
+	public void render(GenericSlot genericSlot);
+	
 	public String getFittingText(String text, int width);
-
 }
