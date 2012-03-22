@@ -49,6 +49,12 @@ public class PacketClientAddons implements SpoutPacket{
 		for (int i = 0; i < addons.length; i++) {
 			this.addons[i] = addons[i].getDescription().getName();
 			this.versions[i] = addons[i].getDescription().getVersion();
+			if (this.addons[i] == null) {
+				this.addons[i] = "";
+			}
+			if (this.versions[i] == null) {
+				this.versions[i] = "";
+			}
 		}
 	}
 
