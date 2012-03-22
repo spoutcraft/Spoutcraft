@@ -8,12 +8,18 @@ import net.minecraft.src.NetHandler;
 import net.minecraft.src.Packet;
 
 //Spout Start
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.packet.PacketClientAddons;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 public class Packet18Animation extends Packet {
 
@@ -44,7 +50,9 @@ public class Packet18Animation extends Packet {
 			((NetClientHandler) par1NetHandler).addToSendQueue(this);
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)Minecraft.theMinecraft.gameSettings.renderDistance));
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketFullVersion(Long.toString(SpoutClient.getClientVersion())));
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(SpoutClient.getInstance().getAddonManager().getAddons()));
+			List<Addon> addons = Arrays.asList(SpoutClient.getInstance().getAddonManager().getAddons());
+			for (Iterator<Addon> i = addons.iterator(); i.hasNext(); ) if(!Spoutcraft.getAddonStore().isEnabled(i.next())) i.remove();
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketClientAddons(addons.toArray(new Addon[0])));
 			System.out.println("Detected Spout server.");
 		} else {
 			par1NetHandler.handleAnimation(this);
