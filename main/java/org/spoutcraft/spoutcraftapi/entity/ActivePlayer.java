@@ -20,6 +20,7 @@ import org.spoutcraft.spoutcraftapi.GameMode;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -61,7 +62,7 @@ public interface ActivePlayer extends Player, CommandSender  {
 	 * @return current view
 	 */
 	public RenderDistance getCurrentView();
-	
+
 	/**
 	 * Sets the current render distance
 	 * @param distance to set
@@ -134,7 +135,7 @@ public interface ActivePlayer extends Player, CommandSender  {
 	 * @return command
 	 */
 	public boolean performCommand(String command);
-	
+
 	/**
 	 * Gets whether the player is sprinting or not.
 	 *
@@ -148,8 +149,8 @@ public interface ActivePlayer extends Player, CommandSender  {
 	 * @param sprinting true if the player should be sprinting
 	 */
 	public void setSprinting(boolean sprinting);
-	
-	 /**
+
+	/**
 	 * Gets the players current experience points towards the next level
 	 *
 	 * @return Current experience points
@@ -241,22 +242,36 @@ public interface ActivePlayer extends Player, CommandSender  {
 	 */
 	public void setFoodLevel(int value);
 
-   /**
-    * Gets this humans current {@link GameMode}
-    *
-    * @return Current game mode
-    */
-   public GameMode getGameMode();
+	/**
+	 * Gets this humans current {@link GameMode}
+	 *
+	 * @return Current game mode
+	 */
+	public GameMode getGameMode();
 
-   /**
-    * Sets this humans current {@link GameMode}
-    *
-    * @param mode New game mode
-    */
-   public void setGameMode(GameMode mode);
-   
-   /**
-    * @returns the current screen
-    */
-   public Screen getCurrentScreen();
+	/**
+	 * Sets this humans current {@link GameMode}
+	 *
+	 * @param mode New game mode
+	 */
+	public void setGameMode(GameMode mode);
+
+	/**
+	 * @returns the current screen
+	 */
+	public Screen getCurrentScreen();
+
+	/**
+	 * Gets the stack that is on the players cursor.
+	 * if stack.getTypeId() == 0, the player is not holding any item on his cursor
+	 * @return the stack on the cursor
+	 */
+	public ItemStack getItemStackOnCursor();
+
+	/**
+	 * Sets the stack that is on the players cursor.
+	 * If stack is null or the typeId is 0, the cursor will be deleted.
+	 * @param stack the stack that should be on the cursor
+	 */
+	public void setItemStackOnCursor(ItemStack stack);
 }
