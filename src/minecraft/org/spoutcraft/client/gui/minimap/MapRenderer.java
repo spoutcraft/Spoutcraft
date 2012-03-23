@@ -1,6 +1,7 @@
 package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
@@ -105,6 +106,8 @@ public class MapRenderer {
 				finally {
 					GL11.glPopMatrix();
 				}
+				
+				renderWaypoints();
 
 				try {
 					GL11.glPushMatrix();
@@ -122,8 +125,7 @@ public class MapRenderer {
 				
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				renderWaypoints();
-				
+
 				//render directions with fudge factor to make them line up
 				GL11.glPushMatrix();
 				GL11.glTranslatef(-2, 2, 0.0F);
@@ -147,7 +149,6 @@ public class MapRenderer {
 					case 3: GL11.glTranslatef(2F, 2F, 0F); break;
 				}
 				
-				
 
 				drawOnMap();
 				
@@ -161,59 +162,60 @@ public class MapRenderer {
 		}
 	}
 	
-	private String getWorldName() {
-		String worldname = Minecraft.theMinecraft.theWorld.getWorldInfo().getWorldName();
-		if (worldname.equals("MpServer")) {
-			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp;
-		}
-		return worldname;
-	}
+	
 
 	private void renderWaypoints() {
-		for (Waypoint pt : MinimapConfig.getInstance().getWaypoints(getWorldName())) {
+		double playerX = Minecraft.theMinecraft.thePlayer.posX;
+		double playerZ = Minecraft.theMinecraft.thePlayer.posZ;
+		for (Waypoint pt : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())) {
 			if (pt.enabled) {
-				double wayX = Minecraft.theMinecraft.thePlayer.posX - pt.x;
-				double wayY = Minecraft.theMinecraft.thePlayer.posZ - pt.z;
-				float locate = (float) Math.toDegrees(Math.atan2(wayX, wayY));
-				double hypot = Math.sqrt((wayX * wayX) + (wayY * wayY)) / (Math.pow(2.0, MinimapConfig.getInstance().getZoom()) / 2.0);
-				if (hypot >= 28.0D) {
-					try {
-						GL11.glPushMatrix();
-						GL11.glColor3f(pt.red, pt.green, pt.blue);
-						texman.loadMarker();
-						GL11.glTranslatef(-32.0F, 32.0F, 0.0F);
-						GL11.glRotatef(-locate + this.direction + 180.0F, 0.0F, 0.0F, 1.0F);
-						GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
-						GL11.glTranslated(0.0D, -34.0D, 0.0D);
-						drawOnMap();
-					} catch (Exception e) {
-						System.err.println("Error: marker overlay not found!");
-						e.printStackTrace();
-					} finally {
-						GL11.glPopMatrix();
+				double wayX = playerX - pt.x;
+				double wayY = playerZ - pt.z;
+				
+				int circleX = MathHelper.floor_double(playerX);// + map.renderSize / 2;
+				int circleY = MathHelper.floor_double(playerZ);// + map.renderSize / 2;
+				
+				boolean render = false;
+				if (MinimapConfig.getInstance().isSquare()) {
+					render = Math.abs(playerX - pt.x) < map.renderSize && Math.abs(playerZ - pt.z) < map.renderSize;
+				}
+				else {
+					render = MinimapUtils.insideCircle(circleX, circleY, map.renderSize / 2, pt.x, pt.z);
+				}
+
+				if (render) {
+					GL11.glPushMatrix();
+					GL11.glColor3f(pt.red, pt.green, pt.blue);
+					
+					//texman.loadWaypoint();
+					
+					//GL11.glPushMatrix();
+					GL11.glTranslatef(32.0f, -32.0F, 0.0F);
+					GL11.glRotatef(-(this.direction + 90.0F), 0.0F, 0.0F, 1.0F);
+					GL11.glTranslatef(-32.0F, -32.0F, 0.0F);
+					
+					GL11.glTranslatef(-33F, 29F, 0F);
+					switch (MinimapConfig.getInstance().getZoom()) {
+						case 0: GL11.glTranslated(wayY, -wayX, 0F); break;
+						case 1: GL11.glTranslated(wayY * 0.45F, -wayX * 0.45F, 0F); break;
+						case 2: GL11.glTranslated(wayY * 0.25F, -wayX * 0.28F, 0F); break;
+						case 3: GL11.glTranslated(wayY * 0.125F, -wayX * 0.125F, 0F); break;
 					}
-				} else {
-					try {
-						GL11.glPushMatrix();
-						GL11.glColor3f(pt.red, pt.green, pt.blue);
-						texman.loadWaypoint();
-						GL11.glTranslatef(- 32.0F, 32.0F, 0.0F);
-						GL11.glRotatef(-locate + this.direction + 180.0F, 0.0F, 0.0F, 1.0F);
-						GL11.glTranslated(0.0D, -hypot, 0.0D);
-						GL11.glRotatef(-(-locate + this.direction + 180.0F),
-								0.0F,
-								0.0F,
-								1.0F);
-						GL11.glTranslated(0.0D, hypot, 0.0D);
-						GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
-						GL11.glTranslated(0.0D, -hypot, 0.0D);
-						drawOnMap();
-					} catch (Exception e) {
-						System.err.println("Error: waypoint overlay not found!");
-						e.printStackTrace();
-					} finally {
-						GL11.glPopMatrix();
-					}
+					GL11.glScalef(0.25F, 0.25F, 1F);
+					//GL11.glPopMatrix();
+					
+					//GL11.glTranslatef(- 32.0F, 32.0F, 0.0F);
+					//GL11.glRotatef(-locate + this.direction + 180.0F, 0.0F, 0.0F, 1.0F);
+					//GL11.glTranslated(0.0D, -hypot, 0.0D);
+					//GL11.glRotatef(-(-locate + this.direction + 180.0F), 0.0F, 0.0F, 1.0F);
+					//GL11.glTranslated(0.0D, hypot, 0.0D);
+					//GL11.glTranslatef(32.0F, -32.0F, 0.0F);
+					//GL11.glTranslated(0.0D, -hypot, 0.0D);
+
+					//GL11.glScalef(0.25F, 0.25F, 1F);
+					//Minecraft.theMinecraft.fontRenderer.drawString(pt.name, 0, 0, 0xffffff);
+					//drawOnMap();
+					GL11.glPopMatrix();
 				}
 			}
 		}

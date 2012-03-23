@@ -16,11 +16,9 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.Control;
@@ -29,7 +27,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Gradient;
-import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
@@ -174,27 +171,4 @@ public class GuiMinimapMenu extends GuiScreen {
 		}
 	}
 
-}
-
-class HoldableButton extends GenericButton {
-	private boolean pressed = false;
-	HoldableButton(String str) {
-		super (str);
-	}
-	
-	@Override
-	public void onButtonClick(ButtonClickEvent event) {
-		pressed = true;
-	}
-	
-	public boolean isPressed() {
-		return pressed && Mouse.isButtonDown(0);
-	}
-	
-	@Override
-	public void onTick() {
-		if (!Mouse.isButtonDown(0)) {
-			pressed = false;
-		}
-	}
 }

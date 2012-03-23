@@ -332,10 +332,32 @@ public class BlockColor {
 		setDefaultColor(107, 0, -1061382046);
 		setDefaultColor(108, 0, -6591135);
 		setDefaultColor(109, 0, -8750470);
+		
+		setDefaultColor(110, 0, 0xAB8790, 0xFF);
+		setDefaultColor(111, 0, 0x158003, 0xFF);
+		setDefaultColor(112, 0, 0x40002F, 0xFF);
+		setDefaultColor(113, 0, 0x40002F, 0xFF);
+		setDefaultColor(114, 0, 0x40002F, 0xFF);
+		setDefaultColor(115, 0, 0xA30321, 0xFF);
+		setDefaultColor(116, 0, 0xF0DDE0, 0xFF);
+		setDefaultColor(117, 0, -9934744);
+		setDefaultColor(118, 0, -9934744);
+		setDefaultColor(119, 0, 0x000000, 0xFF);
+		setDefaultColor(120, 0, 0x376319, 0xFF);
+		setDefaultColor(121, 0, 0xE4E8B5, 0xFF);
+		setDefaultColor(122, 0, 0x24031E, 0xFF);
+		setDefaultColor(123, 0, 0x784C10, 0xFF);
+		setDefaultColor(124, 0, 0xE3DE54, 0xFF);
+		
+		
 	}
 
 	private static BlockColor instance(int argb, TintType tint) {
 		return new BlockColor(argb & 0xFFFFFF, (argb >> 24) & 0xFF, tint);
+	}
+	
+	private static void setDefaultColor(int id, int meta, int rgb, int alpha) {
+		setDefaultColor(id, meta, alpha << 24 | rgb);
 	}
 
 	private static void setDefaultColor(int id, int meta, int argb) {

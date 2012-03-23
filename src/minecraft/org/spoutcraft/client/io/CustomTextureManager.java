@@ -167,6 +167,9 @@ public class CustomTextureManager {
 			if (texture == null) {
 				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../.."+ path);
 			}
+			if (texture == null) {
+				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../.."+ path);
+			}
 
 			if (texture != null) {
 				textures.put(path, texture);

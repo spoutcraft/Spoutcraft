@@ -36,7 +36,7 @@ public class StringTranslate {
 					var1.put(var4[0], var4[1]);
 				}
 			}
-		} catch (IOException var5) {
+		} catch (Exception var5) {
 			var5.printStackTrace();
 			return;
 		}

@@ -7,6 +7,13 @@ public class Waypoint {
 	public float red = 0.0F;
 	public float green = 1.0F;
 	public float blue = 0.0F;
+	private int[] colors = new int[] { 0xfe0000, 0xfe8000, 0xfefe00,
+            0x80fe00, 0x00fe00, 0x00fe80, 0x00fefe, 0x0000fe, 0x8000fe,
+            0xfe00fe, 0xfefefe, 0x7f0000, 0x7f4000, 0x7f7f00, 0x407f00,
+            0x007f00, 0x007f40, 0x007f7f, 0x00007f, 0x40007f, 0x7f007f,
+            0x7f7f7f
+    };
+	private int colorIndex = 0;
 
 	/**
 	 * Initialize a waypoint with default color.
@@ -20,6 +27,15 @@ public class Waypoint {
 		this.x = x;
 		this.z = z;
 		this.enabled = enabled;
+		
+		//Initialize default color sceheme
+		this.red = ((colors[colorIndex] << 16) & 255) / 255F;
+		this.green = ((colors[colorIndex] << 8) & 255) / 255F;
+		this.red = (colors[colorIndex] & 255) / 255F;
+		colorIndex++;
+		if (colorIndex > colors.length) {
+			colorIndex = 0;
+		}
 	}
 
 	/**

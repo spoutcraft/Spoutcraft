@@ -45,7 +45,6 @@ public class ZoomModeButton extends GenericComboBox {
 	@Override
 	public void onSelectionChanged(int i, String text) {
 		MinimapConfig.getInstance().setZoom(i);
-		System.out.println("Set zoom to " + i);
 	}
 
 }

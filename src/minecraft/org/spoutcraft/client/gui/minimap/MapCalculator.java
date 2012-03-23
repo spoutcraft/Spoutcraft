@@ -194,14 +194,14 @@ public class MapCalculator implements Runnable {
 					for (int worldZ = startZ; worldZ < startZ + map.renderSize; worldZ++) {
 						int worldY = getBlockHeight(data, worldX, worldZ);
 						
-						//4 is a fudge shift to get it to line up correctly with the image
 						int pixelX = worldX - startX;
 						if (pixelX >= map.renderSize) pixelX -= map.renderSize;
 						
 						int pixelZ = worldZ - startZ;
 						pixelZ = map.renderSize - pixelZ;
 						if (pixelZ >= map.renderSize) pixelZ -= map.renderSize;
-						if (square || insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, worldX, worldZ)) {
+						
+						if (square || MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, worldX, worldZ)) {
 							int color = getBlockColor(data, worldX, worldY, worldZ);
 							if (color == 0) {
 								map.clearColorPixel(pixelX, pixelZ);
@@ -220,16 +220,56 @@ public class MapCalculator implements Runnable {
 						}
 					}
 				}
+				
+				for (Waypoint pt : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())) {
+					if (pt.enabled) {
+						boolean render = false;
+						if (square) {
+							render = Math.abs(map.getPlayerX() - pt.x) < map.renderSize && Math.abs(map.getPlayerZ() - pt.z) < map.renderSize;
+						}
+						else {
+							render = MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, pt.x, pt.z);
+						}
+						if (render) {
+							int pixelX = pt.x - startX;
+							
+							int pixelZ = pt.z - startZ;
+							pixelZ = map.renderSize - pixelZ;
+														
+							int scale = map.zoom + 2;
+							if (map.zoom > 2) { 
+								scale += 2;
+							}
+							if (map.zoom > 1) { 
+								scale += 1;
+							}
+							drawSquare(pixelX, pixelZ, scale + map.zoom + 1, 0);
+							drawSquare(pixelX, pixelZ, scale, 0xEE2C2C);
+						}
+					}
+				}
 			}
 		} catch (Throwable whatever) {
 			whatever.printStackTrace();
 		}
 	}
 	
-	private static boolean insideCircle(int centerX, int centerY, int radius, int x, int y) {
-		double squareDist = (centerX - x) * (centerX - x) + (centerY - y) * (centerY - y);
-		return squareDist <= radius * radius;
+	private void drawSquare(int x, int y, int radius, int color) {
+		try {
+			for (int dx = -radius; dx <= radius; dx++) {
+				for (int dy = -radius; dy <= radius; dy++) {
+					if (x + dx < map.renderSize && x + dx > 0 && y + dy < map.renderSize && y + dy > 0) {
+						if (MinimapUtils.insideCircle(x, y, radius, x + dx, y + dy)) {
+							map.setColorPixel(x + dx, y + dy, color);
+						}
+					}
+				}
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException ignore) { } //happens with fast movement
 	}
+	
+	
 
 	/**
 	 * Check if a render is necessary, and if so, do one.

@@ -17,12 +17,15 @@
 package org.spoutcraft.client.gui.minimap;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import net.minecraft.client.Minecraft;
 
 import org.bukkit.util.config.Configuration;
 import org.spoutcraft.client.SpoutClient;
@@ -53,7 +56,13 @@ public class MinimapConfig {
 	 * enabled: 1 work: ...
 	 */
 	private MinimapConfig(boolean load) {
-		config = new Configuration(new File(FileUtil.getSpoutcraftDirectory(), "minimap.yml"));
+		File file = new File(FileUtil.getSpoutcraftDirectory(), "minimap.yml");
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) { }
+		}
+		config = new Configuration(file);
 		if (load) {
 			config.load();
 			enabled = config.getBoolean("minimap.enabled", enabled);
@@ -111,7 +120,7 @@ public class MinimapConfig {
 		instance = new MinimapConfig(load);
 	}
 
-	public void save() {
+	public synchronized void save() {
 		config.setProperty("minimap.enabled", enabled);
 		config.setProperty("minimap.coords", coords);
 		config.setProperty("minimap.zoom", zoom);
@@ -221,7 +230,7 @@ public class MinimapConfig {
 		this.firstrun = firstrun;
 	}
 
-	public List<Waypoint> getWaypoints(String world) {
+	public synchronized List<Waypoint> getWaypoints(String world) {
 		List<Waypoint> list = waypoints.get(world);
 		if (list == null) {
 			list = new ArrayList<Waypoint>();
@@ -230,7 +239,7 @@ public class MinimapConfig {
 		return list;
 	}
 
-	public void removeWaypoint(String world, String name) {
+	public synchronized void removeWaypoint(String world, String name) {
 		Iterator<Waypoint> i = getWaypoints(world).iterator();
 		while (i.hasNext()) {
 			if (i.next().name.equalsIgnoreCase(name)) {
@@ -239,7 +248,7 @@ public class MinimapConfig {
 		}
 	}
 
-	public void addWaypoint(String world, String name, int x, int z, boolean enabled) {
+	public synchronized void addWaypoint(String world, String name, int x, int z, boolean enabled) {
 		getWaypoints(world).add(new Waypoint(name, x, z, enabled));
 	}
 
