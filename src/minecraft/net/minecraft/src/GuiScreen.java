@@ -309,7 +309,7 @@ public class GuiScreen extends Gui
 				} else {
 					return;
 				}
-			} else if (stackOnCursor != null && (stackInSlot.getTypeId() == 0 || stackInSlot.getTypeId() == stackOnCursor.getTypeId())) { //Put item
+			} else if (stackOnCursor != null && (stackInSlot.getTypeId() == 0 || (stackInSlot.getTypeId() == stackOnCursor.getTypeId() && stackInSlot.getDurability() == stackOnCursor.getDurability()))) { //Put item
 				ItemStack toPut = stackOnCursor.clone();
 				int putAmount = toPut.getAmount();
 				if(button == 1) {
@@ -350,7 +350,7 @@ public class GuiScreen extends Gui
 						slot.setItem(new ItemStack(0));
 					}
 				}
-			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId()) { //Exchange slot stack and cursor stack
+			} else if (stackOnCursor.getTypeId() != stackInSlot.getTypeId() || stackOnCursor.getDurability() != stackInSlot.getDurability()) { //Exchange slot stack and cursor stack
 				boolean success = slot.onItemExchange(stackInSlot, stackOnCursor.clone());
 				if(success) {
 					slot.setItem(stackOnCursor.clone());
