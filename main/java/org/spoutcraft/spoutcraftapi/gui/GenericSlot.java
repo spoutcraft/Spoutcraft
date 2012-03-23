@@ -1,5 +1,9 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 
@@ -55,4 +59,21 @@ public class GenericSlot extends GenericControl implements Slot {
 		return this;
 	}
 
+	@Override
+	public void readData(DataInputStream input) throws IOException {
+		super.readData(input);
+		stack.setTypeId(input.readInt());
+		stack.setAmount((int)input.readShort());
+		stack.setDurability(input.readShort());
+		depth = input.readInt();
+	}
+
+	@Override
+	public void writeData(DataOutputStream output) throws IOException {
+		super.writeData(output);
+		output.writeInt(stack.getTypeId());
+		output.writeShort((short)stack.getAmount());
+		output.writeShort(stack.getDurability());
+		output.writeInt(depth);
+	}
 }
