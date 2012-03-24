@@ -360,6 +360,9 @@ public class World implements IBlockAccess {
 
 			this.chunkProvider.saveChunks(par1, par2IProgressUpdate);
 		}
+		//Spout start
+		org.spoutcraft.client.chunkcache.HeightMapAgent.save();
+		//Spout end
 	}
 
 	private void saveLevel() {
