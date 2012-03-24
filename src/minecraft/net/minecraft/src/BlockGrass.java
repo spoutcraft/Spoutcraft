@@ -3,7 +3,6 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class BlockGrass extends Block {
-
 	protected BlockGrass(int par1) {
 		super(par1, Material.grass);
 		this.blockIndexInTexture = 3;

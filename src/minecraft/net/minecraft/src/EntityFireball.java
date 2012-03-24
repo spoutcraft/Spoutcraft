@@ -4,18 +4,7 @@ import java.util.List;
 
 import org.spoutcraft.client.entity.CraftFireball;
 
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
 public class EntityFireball extends Entity {
-
 	private int xTile = -1;
 	private int yTile = -1;
 	private int zTile = -1;
@@ -78,7 +67,7 @@ public class EntityFireball extends Entity {
 
 	public void onUpdate() {
 		if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ))) {
-			this.setEntityDead();
+			this.setDead();
 		} else {
 			super.onUpdate();
 			this.setFire(1);
@@ -87,7 +76,7 @@ public class EntityFireball extends Entity {
 				if (var1 == this.inTile) {
 					++this.ticksAlive;
 					if (this.ticksAlive == 600) {
-						this.setEntityDead();
+						this.setDead();
 					}
 
 					return;
@@ -144,9 +133,9 @@ public class EntityFireball extends Entity {
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
 			float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-			this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / 3.1415927410125732D);
+			this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-			for(this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / 3.1415927410125732D); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+			for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 
@@ -192,9 +181,8 @@ public class EntityFireball extends Entity {
 			}
 
 			this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true);
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
@@ -248,11 +236,11 @@ public class EntityFireball extends Entity {
 		return 0.0F;
 	}
 
-	public float getEntityBrightness(float par1) {
+	public float getBrightness(float par1) {
 		return 1.0F;
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float par1) {
 		return 15728880;
 	}
 }

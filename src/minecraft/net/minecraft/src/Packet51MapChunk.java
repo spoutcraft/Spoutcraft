@@ -12,52 +12,51 @@ import org.spoutcraft.client.SpoutClient;
 //Spout end
 
 public class Packet51MapChunk extends Packet {
-
-	public int field_48177_a;
-	public int field_48175_b;
-	public int field_48176_c;
-	public int field_48173_d;
-	public byte[] field_48174_e;
-	public boolean field_48171_f;
-	private int field_48172_g;
+	public int xCh;
+	public int zCh;
+	public int yChMin;
+	public int yChMax;
+	public byte[] chunkData;
+	public boolean includeInitialize;
+	private int tempLength;
 	private int field_48178_h;
-	private static byte[] field_48179_i = new byte[0];
+	private static byte[] temp = new byte[0];
 
 	public Packet51MapChunk() {
 		this.isChunkDataPacket = true;
 	}
 
 	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.field_48177_a = par1DataInputStream.readInt();
-		this.field_48175_b = par1DataInputStream.readInt();
-		this.field_48171_f = par1DataInputStream.readBoolean();
-		this.field_48176_c = par1DataInputStream.readShort();
-		this.field_48173_d = par1DataInputStream.readShort();
-		this.field_48172_g = par1DataInputStream.readInt();
+		this.xCh = par1DataInputStream.readInt();
+		this.zCh = par1DataInputStream.readInt();
+		this.includeInitialize = par1DataInputStream.readBoolean();
+		this.yChMin = par1DataInputStream.readShort();
+		this.yChMax = par1DataInputStream.readShort();
+		this.tempLength = par1DataInputStream.readInt();
 		this.field_48178_h = par1DataInputStream.readInt();
-		if (field_48179_i.length < this.field_48172_g) {
-			field_48179_i = new byte[this.field_48172_g];
+		if (temp.length < this.tempLength) {
+			temp = new byte[this.tempLength];
 		}
 
-		par1DataInputStream.readFully(field_48179_i, 0, this.field_48172_g);
+		par1DataInputStream.readFully(temp, 0, this.tempLength);
 		int var2 = 0;
 
 		int var3;
 		for (var3 = 0; var3 < 16; ++var3) {
-			var2 += this.field_48176_c >> var3 & 1;
+			var2 += this.yChMin >> var3 & 1;
 		}
 
 		var3 = 12288 * var2;
-		if (this.field_48171_f) {
+		if (this.includeInitialize) {
 			var3 += 256;
 		}
 
-		this.field_48174_e = new byte[var3];
+		this.chunkData = new byte[var3];
 		Inflater var4 = new Inflater();
-		var4.setInput(field_48179_i, 0, this.field_48172_g);
+		var4.setInput(temp, 0, this.tempLength);
 
 		try {
-			var4.inflate(this.field_48174_e);
+			var4.inflate(this.chunkData);
 			// Spout - start
 			
 			//System.out.println("Loading Chunk (" + field_48177_a + ", " + field_48175_b + ")");
@@ -70,18 +69,17 @@ public class Packet51MapChunk extends Packet {
 		} finally {
 			var4.end();
 		}
-
 	}
 
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.field_48177_a);
-		par1DataOutputStream.writeInt(this.field_48175_b);
-		par1DataOutputStream.writeBoolean(this.field_48171_f);
-		par1DataOutputStream.writeShort((short)(this.field_48176_c & '\uffff'));
-		par1DataOutputStream.writeShort((short)(this.field_48173_d & '\uffff'));
-		par1DataOutputStream.writeInt(this.field_48172_g);
+		par1DataOutputStream.writeInt(this.xCh);
+		par1DataOutputStream.writeInt(this.zCh);
+		par1DataOutputStream.writeBoolean(this.includeInitialize);
+		par1DataOutputStream.writeShort((short)(this.yChMin & 65535));
+		par1DataOutputStream.writeShort((short)(this.yChMax & 65535));
+		par1DataOutputStream.writeInt(this.tempLength);
 		par1DataOutputStream.writeInt(this.field_48178_h);
-		par1DataOutputStream.write(this.field_48174_e, 0, this.field_48172_g);
+		par1DataOutputStream.write(this.chunkData, 0, this.tempLength);
 	}
 
 	public void processPacket(NetHandler par1NetHandler) {
@@ -89,7 +87,6 @@ public class Packet51MapChunk extends Packet {
 	}
 
 	public int getPacketSize() {
-		return 17 + this.field_48172_g;
+		return 17 + this.tempLength;
 	}
-
 }

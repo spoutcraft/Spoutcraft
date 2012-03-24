@@ -38,7 +38,7 @@ public class Block {
 	public static final BlockGrass grass = (BlockGrass)(new BlockGrass(2)).setHardness(0.6F).setStepSound(soundGrassFootstep).setBlockName("grass");
 	public static final Block dirt = (new BlockDirt(3, 2)).setHardness(0.5F).setStepSound(soundGravelFootstep).setBlockName("dirt");
 	public static final Block cobblestone = (new Block(4, 16, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep).setBlockName("stonebrick");
-	public static final Block planks = (new Block(5, 4, Material.wood)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep).setBlockName("wood").setRequiresSelfNotify();
+	public static final Block planks = (new BlockWood(5)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep).setBlockName("wood").setRequiresSelfNotify();
 	public static final Block sapling = (new BlockSapling(6, 15)).setHardness(0.0F).setStepSound(soundGrassFootstep).setBlockName("sapling").setRequiresSelfNotify();
 	public static final Block bedrock = (new Block(7, 17, Material.rock)).setBlockUnbreakable().setResistance(6000000.0F).setStepSound(soundStoneFootstep).setBlockName("bedrock").disableStats();
 	public static final Block waterMoving = (new BlockFlowing(8, Material.water)).setHardness(100.0F).setLightOpacity(3).setBlockName("water").disableStats().setRequiresSelfNotify();
@@ -57,7 +57,7 @@ public class Block {
 	public static final Block oreLapis = (new BlockOre(21, 160)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setBlockName("oreLapis");
 	public static final Block blockLapis = (new Block(22, 144, Material.rock)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setBlockName("blockLapis");
 	public static final Block dispenser = (new BlockDispenser(23)).setHardness(3.5F).setStepSound(soundStoneFootstep).setBlockName("dispenser").setRequiresSelfNotify();
-	public static final Block sandStone = (new BlockSandStone(24)).setStepSound(soundStoneFootstep).setHardness(0.8F).setBlockName("sandStone");
+	public static final Block sandStone = (new BlockSandStone(24)).setStepSound(soundStoneFootstep).setHardness(0.8F).setBlockName("sandStone").setRequiresSelfNotify();
 	public static final Block music = (new BlockNote(25)).setHardness(0.8F).setBlockName("musicBlock").setRequiresSelfNotify();
 	public static final Block bed = (new BlockBed(26)).setHardness(0.2F).setBlockName("bed").disableStats().setRequiresSelfNotify();
 	public static final Block railPowered = (new BlockRail(27, 179, true)).setHardness(0.7F).setStepSound(soundMetalFootstep).setBlockName("goldenRail").setRequiresSelfNotify();
@@ -156,16 +156,16 @@ public class Block {
 	public static final Block endPortalFrame = (new BlockEndPortalFrame(120)).setStepSound(soundGlassFootstep).setLightValue(0.125F).setHardness(-1.0F).setBlockName("endPortalFrame").setRequiresSelfNotify().setResistance(6000000.0F);
 	public static final Block whiteStone = (new Block(121, 175, Material.rock)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setBlockName("whiteStone");
 	public static final Block dragonEgg = (new BlockDragonEgg(122, 167)).setHardness(3.0F).setResistance(15.0F).setStepSound(soundStoneFootstep).setLightValue(0.125F).setBlockName("dragonEgg");
-	public static final Block field_48209_bL = (new BlockRedstoneLight(123, false)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
-	public static final Block field_48210_bM = (new BlockRedstoneLight(124, true)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
+	public static final Block redstoneLampIdle = (new BlockRedstoneLight(123, false)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
+	public static final Block redstoneLampActive = (new BlockRedstoneLight(124, true)).setHardness(0.3F).setStepSound(soundGlassFootstep).setBlockName("redstoneLight");
 	public int blockIndexInTexture;
 	public final int blockID;
 	public float blockHardness; //Spout protected -> public
 	public float blockResistance; //Spout protected -> public
 	protected boolean blockConstructorCalled;
 	protected boolean enableStats;
-	protected boolean field_48208_bT;
-	protected boolean field_48207_bU;
+	protected boolean needsRandomTick;
+	protected boolean isBlockContainer;
 	public double minX;
 	public double minY;
 	public double minZ;
@@ -232,7 +232,7 @@ public class Block {
 		return this;
 	}
 
-	public static boolean func_48206_g(int par0) {
+	public static boolean isNormalCube(int par0) {
 		Block var1 = blocksList[par0];
 		return var1 == null?false:var1.blockMaterial.isOpaque() && var1.renderAsNormalBlock();
 	}
@@ -241,7 +241,7 @@ public class Block {
 		return true;
 	}
 
-	public boolean func_48204_b(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		return !this.blockMaterial.blocksMovement();
 	}
 
@@ -268,16 +268,16 @@ public class Block {
 	}
 
 	protected Block setTickRandomly(boolean par1) {
-		this.field_48208_bT = par1;
+		this.needsRandomTick = par1;
 		return this;
 	}
 
-	public boolean func_48203_o() {
-		return this.field_48208_bT;
+	public boolean getTickRandomly() {
+		return this.needsRandomTick;
 	}
 
-	public boolean func_48205_p() {
-		return this.field_48207_bU;
+	public boolean hasTileEntity() {
+		return this.isBlockContainer;
 	}
 
 	public void setBlockBounds(float par1, float par2, float par3, float par4, float par5, float par6) {
@@ -630,7 +630,7 @@ public class Block {
 	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6) {
 		par2EntityPlayer.addStat(StatList.mineBlockStatArray[this.blockID], 1);
 		par2EntityPlayer.addExhaustion(0.025F);
-		if (this.renderAsNormalBlock() && !this.field_48207_bU && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer.inventory)) {
+		if (this.func_50074_q() && EnchantmentHelper.getSilkTouchModifier(par2EntityPlayer.inventory)) {
 			ItemStack var8 = this.createStackedBlock(par6);
 			if (var8 != null) {
 				this.dropBlockAsItem_do(par1World, par3, par4, par5, var8);
@@ -639,6 +639,10 @@ public class Block {
 			int var7 = EnchantmentHelper.getFortuneModifier(par2EntityPlayer.inventory);
 			this.dropBlockAsItem(par1World, par3, par4, par5, par6, var7);
 		}
+	}
+
+	protected boolean func_50074_q() {
+		return this.renderAsNormalBlock() && !this.isBlockContainer;
 	}
 
 	protected ItemStack createStackedBlock(int par1) {
@@ -697,7 +701,9 @@ public class Block {
 	static {
 		Item.itemsList[cloth.blockID] = (new ItemCloth(cloth.blockID - 256)).setItemName("cloth");
 		Item.itemsList[wood.blockID] = (new ItemMetadata(wood.blockID - 256, wood)).setItemName("log");
+		Item.itemsList[planks.blockID] = (new ItemMetadata(planks.blockID - 256, planks)).setItemName("wood");
 		Item.itemsList[stoneBrick.blockID] = (new ItemMetadata(stoneBrick.blockID - 256, stoneBrick)).setItemName("stonebricksmooth");
+		Item.itemsList[sandStone.blockID] = (new ItemMetadata(sandStone.blockID - 256, sandStone)).setItemName("sandStone");
 		Item.itemsList[stairSingle.blockID] = (new ItemSlab(stairSingle.blockID - 256)).setItemName("stoneSlab");
 		Item.itemsList[sapling.blockID] = (new ItemSapling(sapling.blockID - 256)).setItemName("sapling");
 		Item.itemsList[leaves.blockID] = (new ItemLeaves(leaves.blockID - 256)).setItemName("leaves");

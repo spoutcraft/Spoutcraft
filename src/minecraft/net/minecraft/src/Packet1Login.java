@@ -33,7 +33,7 @@ public class Packet1Login extends Packet {
 		String var2 = readString(par1DataInputStream, 16);
 		this.terrainType = WorldType.parseWorldType(var2);
 		if (this.terrainType == null) {
-			this.terrainType = WorldType.field_48635_b;
+			this.terrainType = WorldType.DEFAULT;
 		}
 
 		this.serverMode = par1DataInputStream.readInt();

@@ -5,29 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID; // Spout
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockFluid;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.DataWatcher;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityList;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagDouble;
-import net.minecraft.src.NBTTagFloat;
-import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Profiler;
-import net.minecraft.src.StepSound;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
 import org.spoutcraft.client.SpoutClient; // Spout
 
 public abstract class Entity {
@@ -175,7 +152,7 @@ public abstract class Entity {
 		}
 	}
 
-	public void setEntityDead() {
+	public void setDead() {
 		this.isDead = true;
 	}
 
@@ -318,7 +295,6 @@ public abstract class Entity {
 			this.attackEntityFrom(DamageSource.lava, 4);
 			this.setFire(15);
 		}
-
 	}
 
 	public void setFire(int par1) {
@@ -326,7 +302,6 @@ public abstract class Entity {
 		if(this.fire < var2) {
 			this.fire = var2;
 		}
-
 	}
 
 	public void extinguish() {
@@ -334,7 +309,7 @@ public abstract class Entity {
 	}
 
 	protected void kill() {
-		this.setEntityDead();
+		this.setDead();
 	}
 
 	public boolean isOffsetPositionInLiquid(double par1, double par3, double par5) {
@@ -389,6 +364,27 @@ public abstract class Entity {
 					} else {
 						par5 += var19;
 					}
+				}
+
+				while (par1 != 0.0D && par5 != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.getOffsetBoundingBox(par1, -1.0D, par5)).size() == 0) {
+					if (par1 < var19 && par1 >= -var19) {
+						par1 = 0.0D;
+					} else if (par1 > 0.0D) {
+						par1 -= var19;
+					} else {
+						par1 += var19;
+					}
+
+					if (par5 < var19 && par5 >= -var19) {
+						par5 = 0.0D;
+					} else if (par5 > 0.0D) {
+						par5 -= var19;
+					} else {
+						par5 += var19;
+					}
+
+					var11 = par1;
+					var15 = par5;
 				}
 			}
 
@@ -548,12 +544,12 @@ public abstract class Entity {
 				}
 			}
 
-			var38 = MathHelper.floor_double(this.boundingBox.minX + 0.0010D);
-			var26 = MathHelper.floor_double(this.boundingBox.minY + 0.0010D);
-			var39 = MathHelper.floor_double(this.boundingBox.minZ + 0.0010D);
-			var28 = MathHelper.floor_double(this.boundingBox.maxX - 0.0010D);
-			int var29 = MathHelper.floor_double(this.boundingBox.maxY - 0.0010D);
-			int var30 = MathHelper.floor_double(this.boundingBox.maxZ - 0.0010D);
+			var38 = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
+			var26 = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
+			var39 = MathHelper.floor_double(this.boundingBox.minZ + 0.001D);
+			var28 = MathHelper.floor_double(this.boundingBox.maxX - 0.001D);
+			int var29 = MathHelper.floor_double(this.boundingBox.maxY - 0.001D);
+			int var30 = MathHelper.floor_double(this.boundingBox.maxZ - 0.001D);
 			if(this.worldObj.checkChunksExist(var38, var26, var39, var28, var29, var30)) {
 				for(int var31 = var38; var31 <= var28; ++var31) {
 					for(int var32 = var26; var32 <= var29; ++var32) {
@@ -568,7 +564,7 @@ public abstract class Entity {
 			}
 
 			boolean var41 = this.isWet();
-			if(this.worldObj.isBoundingBoxBurning(this.boundingBox.contract(0.0010D, 0.0010D, 0.0010D))) {
+			if (this.worldObj.isBoundingBoxBurning(this.boundingBox.contract(0.001D, 0.001D, 0.001D))) {
 				this.dealFireDamage(1);
 				if(!var41) {
 					++this.fire;
@@ -597,7 +593,6 @@ public abstract class Entity {
 		} else if(!Block.blocksList[par4].blockMaterial.isLiquid()) {
 			this.worldObj.playSoundAtEntity(this, var5.getStepSound(), var5.getVolume() * 0.15F, var5.getPitch());
 		}
-
 	}
 
 	protected boolean canTriggerWalking() {
@@ -627,7 +622,6 @@ public abstract class Entity {
 		} else if(par1 < 0.0D) {
 			this.fallDistance = (float)((double)this.fallDistance - par1);
 		}
-
 	}
 
 	public AxisAlignedBB getBoundingBox() {
@@ -638,7 +632,6 @@ public abstract class Entity {
 		if(!this.isImmuneToFire) {
 			this.attackEntityFrom(DamageSource.inFire, par1);
 		}
-
 	}
 
 	public final boolean isImmuneToFire() {
@@ -649,7 +642,6 @@ public abstract class Entity {
 		if(this.riddenByEntity != null) {
 			this.riddenByEntity.fall(par1);
 		}
-
 	}
 
 	public boolean isWet() {
@@ -661,7 +653,7 @@ public abstract class Entity {
 	}
 
 	public boolean handleWaterMovement() {
-		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.0010D, 0.0010D, 0.0010D), Material.water, this);
+		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
 	}
 	
 	//Spout start
@@ -702,14 +694,14 @@ public abstract class Entity {
 			var4 = par3 / var4;
 			par1 *= var4;
 			par2 *= var4;
-			float var5 = MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F);
-			float var6 = MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F);
+			float var5 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
+			float var6 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
 			this.motionX += (double)(par1 * var6 - par2 * var5);
 			this.motionZ += (double)(par2 * var6 + par1 * var5);
 		}
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float par1) {
 		int var2 = MathHelper.floor_double(this.posX);
 		int var3 = MathHelper.floor_double(this.posZ);
 		if(this.worldObj.blockExists(var2, 0, var3)) {
@@ -721,7 +713,7 @@ public abstract class Entity {
 		}
 	}
 
-	public float getEntityBrightness(float par1) {
+	public float getBrightness(float par1) {
 		int var2 = MathHelper.floor_double(this.posX);
 		int var3 = MathHelper.floor_double(this.posZ);
 		if(this.worldObj.blockExists(var2, 0, var3)) {
@@ -819,7 +811,6 @@ public abstract class Entity {
 				this.addVelocity(-var2, 0.0D, -var4);
 				par1Entity.addVelocity(var2, 0.0D, var4);
 			}
-
 		}
 	}
 
@@ -863,7 +854,7 @@ public abstract class Entity {
 		return par1 < var3 * var3;
 	}
 
-	public String getEntityTexture() {
+	public String getTexture() {
 		return null;
 	}
 
@@ -942,10 +933,10 @@ public abstract class Entity {
 
 	protected abstract void writeEntityToNBT(NBTTagCompound var1);
 
-	protected NBTTagList newDoubleNBTList(double ... var1) {
+	protected NBTTagList newDoubleNBTList(double ... par1ArrayOfDouble) {
 		NBTTagList var2 = new NBTTagList();
-		double[] var3 = var1;
-		int var4 = var1.length;
+		double[] var3 = par1ArrayOfDouble;
+		int var4 = par1ArrayOfDouble.length;
 
 		for(int var5 = 0; var5 < var4; ++var5) {
 			double var6 = var3[var5];
@@ -955,10 +946,10 @@ public abstract class Entity {
 		return var2;
 	}
 
-	protected NBTTagList newFloatNBTList(float ... var1) {
+	protected NBTTagList newFloatNBTList(float ... par1ArrayOfFloat) {
 		NBTTagList var2 = new NBTTagList();
-		float[] var3 = var1;
-		int var4 = var1.length;
+		float[] var3 = par1ArrayOfFloat;
+		int var4 = par1ArrayOfFloat.length;
 
 		for(int var5 = 0; var5 < var4; ++var5) {
 			float var6 = var3[var5];
@@ -972,16 +963,16 @@ public abstract class Entity {
 		return this.height / 2.0F;
 	}
 
-	public EntityItem dropItem(int var1, int var2) {
-		return this.dropItemWithOffset(var1, var2, 0.0F);
+	public EntityItem dropItem(int par1, int par2) {
+		return this.dropItemWithOffset(par1, par2, 0.0F);
 	}
 
-	public EntityItem dropItemWithOffset(int var1, int var2, float var3) {
-		return this.entityDropItem(new ItemStack(var1, var2, 0), var3);
+	public EntityItem dropItemWithOffset(int par1, int par2, float par3) {
+		return this.entityDropItem(new ItemStack(par1, par2, 0), par3);
 	}
 
-	public EntityItem entityDropItem(ItemStack var1, float var2) {
-		EntityItem var3 = new EntityItem(this.worldObj, this.posX, this.posY + (double)var2, this.posZ, var1);
+	public EntityItem entityDropItem(ItemStack par1ItemStack, float par2) {
+		EntityItem var3 = new EntityItem(this.worldObj, this.posX, this.posY + (double)par2, this.posZ, par1ItemStack);
 		var3.delayBeforeCanPickup = 10;
 		this.worldObj.spawnEntityInWorld(var3);
 		return var3;
@@ -1007,11 +998,11 @@ public abstract class Entity {
 		return false;
 	}
 
-	public boolean interact(EntityPlayer var1) {
+	public boolean interact(EntityPlayer par1EntityPlayer) {
 		return false;
 	}
 
-	public AxisAlignedBB getCollisionBox(Entity var1) {
+	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
 		return null;
 	}
 
@@ -1082,37 +1073,37 @@ public abstract class Entity {
 		return (double)this.height * 0.75D;
 	}
 
-	public void mountEntity(Entity var1) {
+	public void mountEntity(Entity par1Entity) {
 		this.entityRiderPitchDelta = 0.0D;
 		this.entityRiderYawDelta = 0.0D;
-		if(var1 == null) {
+		if (par1Entity == null) {
 			if(this.ridingEntity != null) {
 				this.setLocationAndAngles(this.ridingEntity.posX, this.ridingEntity.boundingBox.minY + (double)this.ridingEntity.height, this.ridingEntity.posZ, this.rotationYaw, this.rotationPitch);
 				this.ridingEntity.riddenByEntity = null;
 			}
 
 			this.ridingEntity = null;
-		} else if(this.ridingEntity == var1) {
+		} else if (this.ridingEntity == par1Entity) {
 			this.ridingEntity.riddenByEntity = null;
 			this.ridingEntity = null;
-			this.setLocationAndAngles(var1.posX, var1.boundingBox.minY + (double)var1.height, var1.posZ, this.rotationYaw, this.rotationPitch);
+			this.setLocationAndAngles(par1Entity.posX, par1Entity.boundingBox.minY + (double)par1Entity.height, par1Entity.posZ, this.rotationYaw, this.rotationPitch);
 		} else {
 			if(this.ridingEntity != null) {
 				this.ridingEntity.riddenByEntity = null;
 			}
 
-			if(var1.riddenByEntity != null) {
-				var1.riddenByEntity.ridingEntity = null;
+			if (par1Entity.riddenByEntity != null) {
+				par1Entity.riddenByEntity.ridingEntity = null;
 			}
 
-			this.ridingEntity = var1;
-			var1.riddenByEntity = this;
+			this.ridingEntity = par1Entity;
+			par1Entity.riddenByEntity = this;
 		}
 	}
 
-	public void setPositionAndRotation2(double var1, double var3, double var5, float var7, float var8, int var9) {
-		this.setPosition(var1, var3, var5);
-		this.setRotation(var7, var8);
+	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+		this.setPosition(par1, par3, par5);
+		this.setRotation(par7, par8);
 		List var10 = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.contract(0.03125D, 0.0D, 0.03125D));
 		if(var10.size() > 0) {
 			double var11 = 0.0D;
@@ -1124,8 +1115,8 @@ public abstract class Entity {
 				}
 			}
 
-			var3 += var11 - this.boundingBox.minY;
-			this.setPosition(var1, var3, var5);
+			par3 += var11 - this.boundingBox.minY;
+			this.setPosition(par1, par3, par5);
 		}
 	}
 
@@ -1139,19 +1130,19 @@ public abstract class Entity {
 
 	public void setInPortal() {}
 
-	public void setVelocity(double var1, double var3, double var5) {
-		this.motionX = var1;
-		this.motionY = var3;
-		this.motionZ = var5;
+	public void setVelocity(double par1, double par3, double par5) {
+		this.motionX = par1;
+		this.motionY = par3;
+		this.motionZ = par5;
 	}
 
-	public void handleHealthUpdate(byte var1) {}
+	public void handleHealthUpdate(byte par1) {}
 
 	public void performHurtAnimation() {}
 
 	public void updateCloak() {}
 
-	public void outfitWithItem(int var1, int var2, int var3) {}
+	public void outfitWithItem(int par1, int par2, int par3) {}
 
 	public boolean isBurning() {
 		return this.fire > 0 || this.getFlag(0);
@@ -1165,7 +1156,7 @@ public abstract class Entity {
 		return this.getFlag(1);
 	}
 	
-	public void func_48078_c(boolean par1) {
+	public void setSneaking(boolean par1) {
 		this.setFlag(1, par1);
 	}
 
@@ -1173,20 +1164,20 @@ public abstract class Entity {
 		return this.getFlag(3);
 	}
 
-	public void setSprinting(boolean var1) {
-		this.setFlag(3, var1);
+	public void setSprinting(boolean par1) {
+		this.setFlag(3, par1);
 	}
 
 	public boolean isEating() {
 		return this.getFlag(4);
 	}
 
-	public void setEating(boolean var1) {
-		this.setFlag(4, var1);
+	public void setEating(boolean par1) {
+		this.setFlag(4, par1);
 	}
 
-	protected boolean getFlag(int var1) {
-		return (this.dataWatcher.getWatchableObjectByte(0) & 1 << var1) != 0;
+	protected boolean getFlag(int par1) {
+		return (this.dataWatcher.getWatchableObjectByte(0) & 1 << par1) != 0;
 	}
 
 	public void setFlag(int var1, boolean var2) { // Spout protected -> public
@@ -1202,11 +1193,11 @@ public abstract class Entity {
 		return this.dataWatcher.getWatchableObjectShort(1);
 	}
 
-	public void setAir(int var1) {
-		this.dataWatcher.updateObject(1, Short.valueOf((short)var1));
+	public void setAir(int par1) {
+		this.dataWatcher.updateObject(1, Short.valueOf((short)par1));
 	}
 
-	public void onStruckByLightning(EntityLightningBolt var1) {
+	public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt) {
 		this.dealFireDamage(5);
 		++this.fire;
 		if(this.fire == 0) {
@@ -1214,15 +1205,15 @@ public abstract class Entity {
 		}
 	}
 
-	public void onKillEntity(EntityLiving var1) {}
+	public void onKillEntity(EntityLiving par1EntityLiving) {}
 
-	protected boolean pushOutOfBlocks(double var1, double var3, double var5) {
-		int var7 = MathHelper.floor_double(var1);
-		int var8 = MathHelper.floor_double(var3);
-		int var9 = MathHelper.floor_double(var5);
-		double var10 = var1 - (double)var7;
-		double var12 = var3 - (double)var8;
-		double var14 = var5 - (double)var9;
+	protected boolean pushOutOfBlocks(double par1, double par3, double par5) {
+		int var7 = MathHelper.floor_double(par1);
+		int var8 = MathHelper.floor_double(par3);
+		int var9 = MathHelper.floor_double(par5);
+		double var10 = par1 - (double)var7;
+		double var12 = par3 - (double)var8;
+		double var14 = par5 - (double)var9;
 		if(this.worldObj.isBlockNormalCube(var7, var8, var9)) {
 			boolean var16 = !this.worldObj.isBlockNormalCube(var7 - 1, var8, var9);
 			boolean var17 = !this.worldObj.isBlockNormalCube(var7 + 1, var8, var9);
@@ -1308,7 +1299,7 @@ public abstract class Entity {
 
 	public void func_48079_f(float par1) {}
 
-	public boolean func_48080_j() {
+	public boolean canAttackWithItem() {
 		return true;
 	}
 }

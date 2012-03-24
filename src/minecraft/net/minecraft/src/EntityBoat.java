@@ -16,7 +16,6 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 
 public class EntityBoat extends Entity {
-
 	private int boatPosRotationIncrements;
 	private double boatX;
 	private double boatY;
@@ -102,7 +101,7 @@ public class EntityBoat extends Entity {
 					this.dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
 				}
 
-				this.setEntityDead();
+				this.setDead();
 			}
 
 			return true;
@@ -168,8 +167,8 @@ public class EntityBoat extends Entity {
 		double var6;
 		double var8;
 		if(var21 > 0.15D) {
-			var6 = Math.cos((double)this.rotationYaw * 3.141592653589793D / 180.0D);
-			var8 = Math.sin((double)this.rotationYaw * 3.141592653589793D / 180.0D);
+			var6 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D);
+			var8 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D);
 
 			for(int var10 = 0; (double)var10 < 1.0D + var21 * 60.0D; ++var10) {
 				double var11 = (double)(this.rand.nextFloat() * 2.0F - 1.0F);
@@ -224,7 +223,6 @@ public class EntityBoat extends Entity {
 				this.motionY *= 0.949999988079071D;
 				this.motionZ *= 0.9900000095367432D;
 			}
-
 		} else {
 			if(var2 < 1.0D) {
 				var6 = var2 * 2.0D - 1.0D;
@@ -283,7 +281,7 @@ public class EntityBoat extends Entity {
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			if(this.isCollidedHorizontally && var21 > 0.2D) {
 				if(!this.worldObj.isRemote) {
-					this.setEntityDead();
+					this.setDead();
 
 					int var22;
 					for(var22 = 0; var22 < 3; ++var22) {
@@ -304,8 +302,8 @@ public class EntityBoat extends Entity {
 			var8 = (double)this.rotationYaw;
 			var23 = this.prevPosX - this.posX;
 			var12 = this.prevPosZ - this.posZ;
-			if(var23 * var23 + var12 * var12 > 0.0010D) {
-				var8 = (double)((float)(Math.atan2(var12, var23) * 180.0D / 3.141592653589793D));
+			if (var23 * var23 + var12 * var12 > 0.001D) {
+				var8 = (double)((float)(Math.atan2(var12, var23) * 180.0D / Math.PI));
 			}
 
 			double var14;
@@ -353,14 +351,13 @@ public class EntityBoat extends Entity {
 				//Spout end
 				this.riddenByEntity = null;
 			}
-
 		}
 	}
 
 	public void updateRiderPosition() {
 		if(this.riddenByEntity != null) {
-			double var1 = Math.cos((double)this.rotationYaw * 3.141592653589793D / 180.0D) * 0.4D;
-			double var3 = Math.sin((double)this.rotationYaw * 3.141592653589793D / 180.0D) * 0.4D;
+			double var1 = Math.cos((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
+			double var3 = Math.sin((double)this.rotationYaw * Math.PI / 180.0D) * 0.4D;
 			this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
 		}
 	}

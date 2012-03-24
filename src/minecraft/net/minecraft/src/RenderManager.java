@@ -3,112 +3,6 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityArrow;
-import net.minecraft.src.EntityBlaze;
-import net.minecraft.src.EntityBoat;
-import net.minecraft.src.EntityCaveSpider;
-import net.minecraft.src.EntityChicken;
-import net.minecraft.src.EntityCow;
-import net.minecraft.src.EntityCreeper;
-import net.minecraft.src.EntityDragon;
-import net.minecraft.src.EntityEgg;
-import net.minecraft.src.EntityEnderCrystal;
-import net.minecraft.src.EntityEnderEye;
-import net.minecraft.src.EntityEnderPearl;
-import net.minecraft.src.EntityEnderman;
-import net.minecraft.src.EntityExpBottle;
-import net.minecraft.src.EntityFallingSand;
-import net.minecraft.src.EntityFireball;
-import net.minecraft.src.EntityFishHook;
-import net.minecraft.src.EntityGhast;
-import net.minecraft.src.EntityGiantZombie;
-import net.minecraft.src.EntityIronGolem;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityMagmaCube;
-import net.minecraft.src.EntityMinecart;
-import net.minecraft.src.EntityMooshroom;
-import net.minecraft.src.EntityOcelot;
-import net.minecraft.src.EntityPainting;
-import net.minecraft.src.EntityPig;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPotion;
-import net.minecraft.src.EntitySheep;
-import net.minecraft.src.EntitySilverfish;
-import net.minecraft.src.EntitySkeleton;
-import net.minecraft.src.EntitySlime;
-import net.minecraft.src.EntitySmallFireball;
-import net.minecraft.src.EntitySnowball;
-import net.minecraft.src.EntitySnowman;
-import net.minecraft.src.EntitySpider;
-import net.minecraft.src.EntitySquid;
-import net.minecraft.src.EntityTNTPrimed;
-import net.minecraft.src.EntityVillager;
-import net.minecraft.src.EntityWolf;
-import net.minecraft.src.EntityXPOrb;
-import net.minecraft.src.EntityZombie;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemRenderer;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.ModelChicken;
-import net.minecraft.src.ModelCow;
-import net.minecraft.src.ModelOcelot;
-import net.minecraft.src.ModelPig;
-import net.minecraft.src.ModelSheep1;
-import net.minecraft.src.ModelSheep2;
-import net.minecraft.src.ModelSkeleton;
-import net.minecraft.src.ModelSlime;
-import net.minecraft.src.ModelSquid;
-import net.minecraft.src.ModelWolf;
-import net.minecraft.src.ModelZombie;
-import net.minecraft.src.OpenGlHelper;
-import net.minecraft.src.Render;
-import net.minecraft.src.RenderArrow;
-import net.minecraft.src.RenderBiped;
-import net.minecraft.src.RenderBlaze;
-import net.minecraft.src.RenderBoat;
-import net.minecraft.src.RenderChicken;
-import net.minecraft.src.RenderCow;
-import net.minecraft.src.RenderCreeper;
-import net.minecraft.src.RenderDragon;
-import net.minecraft.src.RenderEnderCrystal;
-import net.minecraft.src.RenderEnderman;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.RenderEntity;
-import net.minecraft.src.RenderFallingSand;
-import net.minecraft.src.RenderFireball;
-import net.minecraft.src.RenderFish;
-import net.minecraft.src.RenderGhast;
-import net.minecraft.src.RenderGiantZombie;
-import net.minecraft.src.RenderIronGolem;
-import net.minecraft.src.RenderItem;
-import net.minecraft.src.RenderLightningBolt;
-import net.minecraft.src.RenderLiving;
-import net.minecraft.src.RenderMagmaCube;
-import net.minecraft.src.RenderMinecart;
-import net.minecraft.src.RenderMooshroom;
-import net.minecraft.src.RenderOcelot;
-import net.minecraft.src.RenderPainting;
-import net.minecraft.src.RenderPig;
-import net.minecraft.src.RenderPlayer;
-import net.minecraft.src.RenderSheep;
-import net.minecraft.src.RenderSilverfish;
-import net.minecraft.src.RenderSlime;
-import net.minecraft.src.RenderSnowMan;
-import net.minecraft.src.RenderSnowball;
-import net.minecraft.src.RenderSpider;
-import net.minecraft.src.RenderSquid;
-import net.minecraft.src.RenderTNTPrimed;
-import net.minecraft.src.RenderVillager;
-import net.minecraft.src.RenderWolf;
-import net.minecraft.src.RenderXPOrb;
-import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.lwjgl.opengl.GL13;
@@ -120,7 +14,6 @@ import org.spoutcraft.client.entity.RenderTexture;
 //Spout end
 
 public class RenderManager {
-
 	private Map entityRenderMap = new HashMap();
 	public static RenderManager instance = new RenderManager();
 	private FontRenderer fontRenderer;
@@ -174,7 +67,7 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityEnderEye.class, new RenderSnowball(Item.eyeOfEnder.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityEgg.class, new RenderSnowball(Item.egg.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityPotion.class, new RenderSnowball(154));
-		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.field_48438_bD.getIconFromDamage(0)));
+		this.entityRenderMap.put(EntityExpBottle.class, new RenderSnowball(Item.expBottle.getIconFromDamage(0)));
 		this.entityRenderMap.put(EntityFireball.class, new RenderFireball(2.0F));
 		this.entityRenderMap.put(EntitySmallFireball.class, new RenderFireball(0.5F));
 		this.entityRenderMap.put(EntityItem.class, new RenderItem());
@@ -195,7 +88,6 @@ public class RenderManager {
 			Render var2 = (Render)var1.next();
 			var2.setRenderManager(this);
 		}
-
 	}
 
 	public Render getEntityClassRenderObject(Class par1Class) {
@@ -245,14 +137,14 @@ public class RenderManager {
 		double var5 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
 		double var7 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
 		float var9 = par1Entity.prevRotationYaw + (par1Entity.rotationYaw - par1Entity.prevRotationYaw) * par2;
-		int var10 = par1Entity.getEntityBrightnessForRender(par2);
+		int var10 = par1Entity.getBrightnessForRender(par2);
 		if (par1Entity.isBurning()) {
 			var10 = 15728880;
 		}
 
 		int var11 = var10 % 65536;
 		int var12 = var10 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)var11 / 1.0F, (float)var12 / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var11 / 1.0F, (float)var12 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.renderEntityWithPosYaw(par1Entity, var3 - renderPosX, var5 - renderPosY, var7 - renderPosZ, var9, par2);
 	}
@@ -263,7 +155,6 @@ public class RenderManager {
 			var10.doRender(par1Entity, par2, par4, par6, par8, par9);
 			var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
 		}
-
 	}
 
 	public void set(World par1World) {
@@ -280,5 +171,4 @@ public class RenderManager {
 	public FontRenderer getFontRenderer() {
 		return this.fontRenderer;
 	}
-
 }

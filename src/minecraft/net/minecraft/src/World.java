@@ -56,8 +56,8 @@ public class World implements IBlockAccess {
 	public boolean findingSpawnPoint;
 	private boolean allPlayersSleeping;
 	public MapStorage mapStorage;
-	public final VillageCollection field_48465_A;
-	private final VillageSiege field_48466_O;
+	public final VillageCollection villageCollectionObj;
+	private final VillageSiege villageSiegeObj;
 	private ArrayList collidingBoundingBoxes;
 	private boolean scanningTileEntities;
 	public boolean spawnHostileMobs; // Spout private -> public
@@ -109,8 +109,8 @@ public class World implements IBlockAccess {
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
-		this.field_48465_A = new VillageCollection(this);
-		this.field_48466_O = new VillageSiege(this);
+		this.villageCollectionObj = new VillageCollection(this);
+		this.villageSiegeObj = new VillageSiege(this);
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
@@ -155,8 +155,8 @@ public class World implements IBlockAccess {
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
-		this.field_48465_A = new VillageCollection(this);
-		this.field_48466_O = new VillageSiege(this);
+		this.villageCollectionObj = new VillageCollection(this);
+		this.villageSiegeObj = new VillageSiege(this);
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
@@ -206,8 +206,8 @@ public class World implements IBlockAccess {
 		this.rand = new Random();
 		this.isNewWorld = false;
 		this.worldAccesses = new ArrayList();
-		this.field_48465_A = new VillageCollection(this);
-		this.field_48466_O = new VillageSiege(this);
+		this.villageCollectionObj = new VillageCollection(this);
+		this.villageSiegeObj = new VillageSiege(this);
 		this.collidingBoundingBoxes = new ArrayList();
 		this.spawnHostileMobs = true;
 		this.spawnPeacefulMobs = true;
@@ -388,7 +388,7 @@ public class World implements IBlockAccess {
 	}
 
 	public int func_48462_d(int par1, int par2, int par3) {
-		return par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000?(par2 < 0?0:(par2 >= 256?0:this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4).func_48499_b(par1 & 15, par2, par3 & 15))):0;
+		return par1 >= -30000000 && par3 >= -30000000 && par1 < 30000000 && par3 < 30000000?(par2 < 0?0:(par2 >= 256?0:this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4).getBlockLightOpacity(par1 & 15, par2, par3 & 15))):0;
 	}
 
 	public boolean isAirBlock(int par1, int par2, int par3) {
@@ -760,7 +760,7 @@ public class World implements IBlockAccess {
 						var6.setLightValue(par1EnumSkyBlock, par2 & 15, par3, par4 & 15, par5);
 
 						for (int var7 = 0; var7 < this.worldAccesses.size(); ++var7) {
-							((IWorldAccess)this.worldAccesses.get(var7)).func_48180_b(par2, par3, par4);
+							((IWorldAccess)this.worldAccesses.get(var7)).markBlockNeedsUpdate2(par2, par3, par4);
 						}
 					}
 				}
@@ -770,7 +770,7 @@ public class World implements IBlockAccess {
 
 	public void func_48464_p(int par1, int par2, int par3) {
 		for (int var4 = 0; var4 < this.worldAccesses.size(); ++var4) {
-			((IWorldAccess)this.worldAccesses.get(var4)).func_48180_b(par1, par2, par3);
+			((IWorldAccess)this.worldAccesses.get(var4)).markBlockNeedsUpdate2(par1, par2, par3);
 		}
 	}
 
@@ -1034,7 +1034,7 @@ public class World implements IBlockAccess {
 			par1Entity.mountEntity((Entity)null);
 		}
 
-		par1Entity.setEntityDead();
+		par1Entity.setDead();
 		if (par1Entity instanceof EntityPlayer) {
 			this.playerEntities.remove((EntityPlayer)par1Entity);
 			this.updateAllPlayersSleepingFlag();
@@ -1138,7 +1138,7 @@ public class World implements IBlockAccess {
 		int var5 = MathHelper.floor_double(par1Entity.posX);
 		int var6 = MathHelper.floor_double(par1Entity.posZ);
 		BiomeGenBase var7 = this.func_48454_a(var5, var6);
-		float var8 = var7.func_48411_i();
+		float var8 = var7.getFloatTemperature();
 		int var9 = var7.getSkyColorByTemp(var8);
 		//Spout HD start
 		Colorizer.setupForFog(par1Entity);
@@ -1258,7 +1258,7 @@ public class World implements IBlockAccess {
 
 	public int getTopSolidOrLiquidBlock(int par1, int par2) {
 		Chunk var3 = this.getChunkFromBlockCoords(par1, par2);
-		int var4 = var3.func_48498_h() + 16;
+		int var4 = var3.getTopFilledSegment() + 16;
 		par1 &= 15;
 
 		for (par2 &= 15; var4 > 0; --var4) {
@@ -1836,7 +1836,7 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean isBlockNormalCube(int par1, int par2, int par3) {
-		return Block.func_48206_g(this.getBlockId(par1, par2, par3));
+		return Block.isNormalCube(this.getBlockId(par1, par2, par3));
 	}
 
 	public boolean isBlockNormalCubeDefault(int par1, int par2, int par3, boolean par4) {
@@ -1918,8 +1918,8 @@ public class World implements IBlockAccess {
 		Profiler.endStartSection("tickTiles");
 		this.tickBlocksAndAmbiance();
 		Profiler.endStartSection("village");
-		this.field_48465_A.func_48558_a();
-		this.field_48466_O.func_48573_a();
+		this.villageCollectionObj.tick();
+		this.villageSiegeObj.tick();
 		Profiler.endSection();
 	}
 
@@ -2069,7 +2069,7 @@ public class World implements IBlockAccess {
 		}
 
 		Profiler.endStartSection("checkLight");
-		par3Chunk.func_48491_o();
+		par3Chunk.enqueueRelightChecks();
 	}
 
 	protected void tickBlocksAndAmbiance() {
@@ -2119,24 +2119,24 @@ public class World implements IBlockAccess {
 			}
 
 			Profiler.endStartSection("tickTiles");
-			ExtendedBlockStorage[] var19 = var7.func_48495_i();
+			ExtendedBlockStorage[] var19 = var7.getBlockStorageArray();
 			var9 = var19.length;
 
 			for (var10 = 0; var10 < var9; ++var10) {
 				ExtendedBlockStorage var20 = var19[var10];
-				if (var20 != null && var20.func_48698_b()) {
+				if (var20 != null && var20.getNeedsRandomTick()) {
 					for (int var12 = 0; var12 < 3; ++var12) {
 						this.updateLCG = this.updateLCG * 3 + 1013904223;
 						int var13 = this.updateLCG >> 2;
 						int var14 = var13 & 15;
 						int var15 = var13 >> 8 & 15;
 						int var16 = var13 >> 16 & 15;
-						int var17 = var20.func_48703_a(var14, var16, var15);
+						int var17 = var20.getExtBlockID(var14, var16, var15);
 						++var2;
 						Block var18 = Block.blocksList[var17];
-						if (var18 != null && var18.func_48203_o()) {
+						if (var18 != null && var18.getTickRandomly()) {
 							++var1;
-							var18.updateTick(this, var14 + var5, var16 + var20.func_48707_c(), var15 + var6, this.rand);
+							var18.updateTick(this, var14 + var5, var16 + var20.getYLocation(), var15 + var6, this.rand);
 						}
 					}
 				}
@@ -2156,7 +2156,7 @@ public class World implements IBlockAccess {
 
 	public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4) {
 		BiomeGenBase var5 = this.func_48454_a(par1, par3);
-		float var6 = var5.func_48411_i();
+		float var6 = var5.getFloatTemperature();
 		if (var6 > 0.15F) {
 			return false;
 		} else {
@@ -2196,7 +2196,7 @@ public class World implements IBlockAccess {
 
 	public boolean canSnowAt(int par1, int par2, int par3) {
 		BiomeGenBase var4 = this.func_48454_a(par1, par3);
-		float var5 = var4.func_48411_i();
+		float var5 = var4.getFloatTemperature();
 		if (var5 > 0.15F) {
 			return false;
 		} else {
@@ -2583,7 +2583,7 @@ public class World implements IBlockAccess {
 		return var7;
 	}
 
-	public Entity func_48459_a(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity) {
+	public Entity findNearestEntityWithinAABB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, Entity par3Entity) {
 		List var4 = this.getEntitiesWithinAABB(par1Class, par2AxisAlignedBB);
 		Entity var5 = null;
 		double var6 = Double.MAX_VALUE;
@@ -2668,7 +2668,7 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public PathEntity func_48463_a(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7) {
+	public PathEntity getPathEntityToEntity(Entity par1Entity, Entity par2Entity, float par3, boolean par4, boolean par5, boolean par6, boolean par7) {
 		Profiler.startSection("pathfind");
 		int var8 = MathHelper.floor_double(par1Entity.posX);
 		int var9 = MathHelper.floor_double(par1Entity.posY + 1.0D);
@@ -2686,7 +2686,7 @@ public class World implements IBlockAccess {
 		return var19;
 	}
 
-	public PathEntity func_48460_a(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9) {
+	public PathEntity getEntityPathToXYZ(Entity par1Entity, int par2, int par3, int par4, float par5, boolean par6, boolean par7, boolean par8, boolean par9) {
 		Profiler.startSection("pathfind");
 		int var10 = MathHelper.floor_double(par1Entity.posX);
 		int var11 = MathHelper.floor_double(par1Entity.posY);
@@ -3019,7 +3019,7 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public int func_48453_b() {
+	public int getWorldHeight() {
 		return 256;
 	}
 
@@ -3047,7 +3047,7 @@ public class World implements IBlockAccess {
 	}
 
 	public double getSeaLevel() {
-		return this.worldInfo.getTerrainType() == WorldType.field_48636_c?0.0D:63.0D;
+		return this.worldInfo.getTerrainType() == WorldType.FLAT?0.0D:63.0D;
 	}
 	//Spout Start
 	public void doColorfulStuff() {

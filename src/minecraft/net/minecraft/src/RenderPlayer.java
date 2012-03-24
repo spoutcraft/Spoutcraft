@@ -1,22 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.EnumAction;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemArmor;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderLiving;
-import net.minecraft.src.Tessellator;
-
 //Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.EasterEggs;
@@ -26,7 +10,6 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
-
 	private ModelBiped modelBipedMain;
 	private ModelBiped modelArmorChestplate;
 	private ModelBiped modelArmor;
@@ -208,8 +191,8 @@ public class RenderPlayer extends RenderLiving {
 			double var23 = par1EntityPlayer.field_20065_s + (par1EntityPlayer.field_20062_v - par1EntityPlayer.field_20065_s) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
 			double var8 = par1EntityPlayer.field_20064_t + (par1EntityPlayer.field_20061_w - par1EntityPlayer.field_20064_t) * (double)par2 - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
 			var10 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
-			double var11 = (double)MathHelper.sin(var10 * 3.1415927F / 180.0F);
-			double var13 = (double)(-MathHelper.cos(var10 * 3.1415927F / 180.0F));
+			double var11 = (double)MathHelper.sin(var10 * (float)Math.PI / 180.0F);
+			double var13 = (double)(-MathHelper.cos(var10 * (float)Math.PI / 180.0F));
 			float var15 = (float)var23 * 10.0F;
 			if (var15 < -6.0F) {
 				var15 = -6.0F;
@@ -228,7 +211,7 @@ public class RenderPlayer extends RenderLiving {
 			float var18 = par1EntityPlayer.prevCameraYaw + (par1EntityPlayer.cameraYaw - par1EntityPlayer.prevCameraYaw) * par2;
 			var15 += MathHelper.sin((par1EntityPlayer.prevDistanceWalkedModified + (par1EntityPlayer.distanceWalkedModified - par1EntityPlayer.prevDistanceWalkedModified) * par2) * 6.0F) * 32.0F * var18;
 			if (par1EntityPlayer.isSneaking()) {
-				var15 += 25.0F;
+				var15 += 25.0F; 
 			}
 
 			GL11.glRotatef(6.0F + var16 / 2.0F + var15, 1.0F, 0.0F, 0.0F);
@@ -312,7 +295,6 @@ public class RenderPlayer extends RenderLiving {
 
 			GL11.glPopMatrix();
 		}
-
 	}
 
 	protected void renderPlayerScale(EntityPlayer par1EntityPlayer, float par2) {
@@ -332,7 +314,6 @@ public class RenderPlayer extends RenderLiving {
 		} else {
 			super.renderLivingAt(par1EntityPlayer, par2, par4, par6);
 		}
-
 	}
 
 	protected void rotatePlayer(EntityPlayer par1EntityPlayer, float par2, float par3, float par4) {
@@ -343,55 +324,37 @@ public class RenderPlayer extends RenderLiving {
 		} else {
 			super.rotateCorpse(par1EntityPlayer, par2, par3, par4);
 		}
-
 	}
 
-	
-	
 	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		this.renderName((EntityPlayer)par1EntityLiving, par2, par4, par6);
 	}
 
-	
-	
 	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {
 		this.renderPlayerScale((EntityPlayer)par1EntityLiving, par2);
 	}
 
-	
-	
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.setArmorModel((EntityPlayer)par1EntityLiving, par2, par3);
 	}
 
-	
-	
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
 		this.renderSpecials((EntityPlayer)par1EntityLiving, par2);
 	}
 
-	
-	
 	protected void rotateCorpse(EntityLiving par1EntityLiving, float par2, float par3, float par4) {
 		this.rotatePlayer((EntityPlayer)par1EntityLiving, par2, par3, par4);
 	}
 
-	
-	
 	protected void renderLivingAt(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		this.renderPlayerSleep((EntityPlayer)par1EntityLiving, par2, par4, par6);
 	}
 
-	
-	
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
 		this.renderPlayer((EntityPlayer)par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
-	
-	
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.renderPlayer((EntityPlayer)par1Entity, par2, par4, par6, par8, par9);
 	}
-
 }

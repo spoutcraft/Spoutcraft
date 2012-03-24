@@ -45,7 +45,7 @@ public class EntityEgg extends EntityThrowable {
 
 			for(int var3 = 0; var3 < var2; ++var3) {
 				EntityChicken var4 = new EntityChicken(this.worldObj);
-				var4.func_48122_d(-24000);
+				var4.setGrowingAge(-24000);
 				var4.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 				this.worldObj.spawnEntityInWorld(var4);
 			}
@@ -56,8 +56,7 @@ public class EntityEgg extends EntityThrowable {
 		}
 
 		if (!this.worldObj.isRemote) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 }

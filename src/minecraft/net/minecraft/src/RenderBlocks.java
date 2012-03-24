@@ -1,35 +1,8 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockBed;
-import net.minecraft.src.BlockBrewingStand;
-import net.minecraft.src.BlockCauldron;
-import net.minecraft.src.BlockDirectional;
-import net.minecraft.src.BlockDoor;
-import net.minecraft.src.BlockDragonEgg;
-import net.minecraft.src.BlockEndPortalFrame;
-import net.minecraft.src.BlockFence;
-import net.minecraft.src.BlockFenceGate;
-import net.minecraft.src.BlockFluid;
-import net.minecraft.src.BlockPane;
-import net.minecraft.src.BlockPistonBase;
-import net.minecraft.src.BlockPistonExtension;
-import net.minecraft.src.BlockRail;
-import net.minecraft.src.BlockRedstoneRepeater;
-import net.minecraft.src.BlockRedstoneWire;
-import net.minecraft.src.BlockStem;
-import net.minecraft.src.ChestItemRenderHelper;
-import net.minecraft.src.Direction;
-import net.minecraft.src.EntityRenderer;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
-
+import org.lwjgl.opengl.GL12;
 //Spout start
 import org.spoutcraft.client.config.ConfigReader;
 import com.pclewis.mcpatcher.mod.Colorizer;
@@ -191,7 +164,7 @@ public class RenderBlocks {
 	private boolean renderBlockBed(Block par1Block, int par2, int par3, int par4) {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
-		int var7 = BlockBed.func_48216_a(var6);
+		int var7 = BlockBed.getDirection(var6);
 		boolean var8 = BlockBed.isBlockFootOfBed(var6);
 		float var9 = 0.5F;
 		float var10 = 1.0F;
@@ -354,7 +327,7 @@ public class RenderBlocks {
 		int var18 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 
 		for (int var19 = 0; var19 < 3; ++var19) {
-			double var20 = (double)var19 * 3.141592653589793D * 2.0D / 3.0D + 1.5707963267948966D;
+			double var20 = (double)var19 * Math.PI * 2.0D / 3.0D + (Math.PI / 2D);
 			double var22 = (double)(((float)var35 + 8.0F) / 256.0F);
 			double var24 = (double)(((float)var35 + 15.99F) / 256.0F);
 			if ((var18 & 1 << var19) != 0) {
@@ -840,33 +813,33 @@ public class RenderBlocks {
 		for (int var25 = 0; var25 < 8; ++var25) {
 			if (var7) {
 				var21[var25].zCoord -= 0.0625D;
-				var21[var25].rotateAroundX(0.69813174F);
+				var21[var25].rotateAroundX(((float)Math.PI * 2F / 9F));
 			} else {
 				var21[var25].zCoord += 0.0625D;
-				var21[var25].rotateAroundX(-0.69813174F);
+				var21[var25].rotateAroundX(-((float)Math.PI * 2F / 9F));
 			}
 
 			if (var6 == 6) {
-				var21[var25].rotateAroundY(1.5707964F);
+				var21[var25].rotateAroundY(((float)Math.PI / 2F));
 			}
 
 			if (var6 < 5) {
 				var21[var25].yCoord -= 0.375D;
-				var21[var25].rotateAroundX(1.5707964F);
+				var21[var25].rotateAroundX(((float)Math.PI / 2F));
 				if (var6 == 4) {
 					var21[var25].rotateAroundY(0.0F);
 				}
 
 				if (var6 == 3) {
-					var21[var25].rotateAroundY(3.1415927F);
+					var21[var25].rotateAroundY((float)Math.PI);
 				}
 
 				if (var6 == 2) {
-					var21[var25].rotateAroundY(1.5707964F);
+					var21[var25].rotateAroundY(((float)Math.PI / 2F));
 				}
 
 				if (var6 == 1) {
-					var21[var25].rotateAroundY(-1.5707964F);
+					var21[var25].rotateAroundY(-((float)Math.PI / 2F));
 				}
 
 				var21[var25].xCoord += (double)par2 + 0.5D;
@@ -1537,7 +1510,7 @@ public class RenderBlocks {
 	}
 
 	public boolean renderBlockPane(BlockPane par1BlockPane, int par2, int par3, int par4) {
-		int var5 = this.blockAccess.func_48453_b();
+		int var5 = this.blockAccess.getWorldHeight();
 		Tessellator var6 = Tessellator.instance;
 		var6.setBrightness(par1BlockPane.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var7 = 1.0F;
@@ -2204,7 +2177,6 @@ public class RenderBlocks {
 			var12.addVertexWithUV(var32, par8 + 0.0D, var30, var16, var22);
 			var12.addVertexWithUV(var32, par8 + par4, var30, var16, var20);
 		}
-
 	}
 
 	public void renderBlockCropsImpl(Block par1Block, int par2, double par3, double par5, double par7) {
@@ -3572,36 +3544,36 @@ public class RenderBlocks {
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3, par4 - 1, 2)) {
 			var8.setBrightness(par1Block.minZ > 0.0D?var28:par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1));
 			var8.setColorOpaque_F(var16, var20, var24);
-			var8.setTranslationF(0.0F, 0.0F, var26);
+			var8.addTranslation(0.0F, 0.0F, var26);
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2));
-			var8.setTranslationF(0.0F, 0.0F, -var26);
+			var8.addTranslation(0.0F, 0.0F, -var26);
 			var9 = true;
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3, par4 + 1, 3)) {
 			var8.setBrightness(par1Block.maxZ < 1.0D?var28:par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1));
 			var8.setColorOpaque_F(var16, var20, var24);
-			var8.setTranslationF(0.0F, 0.0F, -var26);
+			var8.addTranslation(0.0F, 0.0F, -var26);
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3));
-			var8.setTranslationF(0.0F, 0.0F, var26);
+			var8.addTranslation(0.0F, 0.0F, var26);
 			var9 = true;
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2 - 1, par3, par4, 4)) {
 			var8.setBrightness(par1Block.minX > 0.0D?var28:par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4));
 			var8.setColorOpaque_F(var17, var21, var25);
-			var8.setTranslationF(var26, 0.0F, 0.0F);
+			var8.addTranslation(var26, 0.0F, 0.0F);
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 4));
-			var8.setTranslationF(-var26, 0.0F, 0.0F);
+			var8.addTranslation(-var26, 0.0F, 0.0F);
 			var9 = true;
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2 + 1, par3, par4, 5)) {
 			var8.setBrightness(par1Block.maxX < 1.0D?var28:par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4));
 			var8.setColorOpaque_F(var17, var21, var25);
-			var8.setTranslationF(-var26, 0.0F, 0.0F);
+			var8.addTranslation(-var26, 0.0F, 0.0F);
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5));
-			var8.setTranslationF(var26, 0.0F, 0.0F);
+			var8.addTranslation(var26, 0.0F, 0.0F);
 			var9 = true;
 		}
 
@@ -3731,7 +3703,7 @@ public class RenderBlocks {
 		boolean var5 = true;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		boolean var7 = BlockFenceGate.isFenceGateOpen(var6);
-		int var8 = BlockDirectional.func_48216_a(var6);
+		int var8 = BlockDirectional.getDirection(var6);
 		float var15;
 		float var17;
 		float var16;
@@ -4047,7 +4019,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var30, var32, var34, var20, var24);
 			var9.addVertexWithUV(var30, var32, var36, var14, var18);
 		}
-
 	}
 
 	public void renderTopFace(Block par1Block, double par2, double par4, double par6, int par8) {
@@ -4133,7 +4104,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var28, var32, var34, var12, var16);
 			var9.addVertexWithUV(var28, var32, var36, var22, var26);
 		}
-
 	}
 
 	public void renderEastFace(Block par1Block, double par2, double par4, double par6, int par8) {
@@ -4226,7 +4196,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var30, var32, var36, var22, var26);
 			var9.addVertexWithUV(var28, var32, var36, var14, var18);
 		}
-
 	}
 
 	public void renderWestFace(Block par1Block, double par2, double par4, double par6, int par8) {
@@ -4319,7 +4288,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var30, var32, var36, var14, var18);
 			var9.addVertexWithUV(var30, var34, var36, var20, var24);
 		}
-
 	}
 
 	public void renderNorthFace(Block par1Block, double par2, double par4, double par6, int par8) {
@@ -4412,7 +4380,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var28, var30, var34, var22, var26);
 			var9.addVertexWithUV(var28, var30, var36, var14, var18);
 		}
-
 	}
 
 	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, int par8) {
@@ -4505,7 +4472,6 @@ public class RenderBlocks {
 			var9.addVertexWithUV(var28, var32, var34, var20, var24);
 			var9.addVertexWithUV(var28, var32, var36, var12, var16);
 		}
-
 	}
 
 	public void renderBlockAsItem(Block par1Block, int par2, float par3) {
@@ -4560,32 +4526,32 @@ public class RenderBlocks {
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, 0.0F, -1.0F);
-				var4.setTranslationF(0.0F, 0.0F, var7);
+				var4.addTranslation(0.0F, 0.0F, var7);
 				this.renderEastFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(2));
-				var4.setTranslationF(0.0F, 0.0F, -var7);
+				var4.addTranslation(0.0F, 0.0F, -var7);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, 0.0F, 1.0F);
-				var4.setTranslationF(0.0F, 0.0F, -var7);
+				var4.addTranslation(0.0F, 0.0F, -var7);
 				this.renderWestFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(3));
-				var4.setTranslationF(0.0F, 0.0F, var7);
+				var4.addTranslation(0.0F, 0.0F, var7);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(-1.0F, 0.0F, 0.0F);
-				var4.setTranslationF(var7, 0.0F, 0.0F);
+				var4.addTranslation(var7, 0.0F, 0.0F);
 				this.renderNorthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(4));
-				var4.setTranslationF(-var7, 0.0F, 0.0F);
+				var4.addTranslation(-var7, 0.0F, 0.0F);
 				var4.draw();
 				var4.startDrawingQuads();
 				var4.setNormal(1.0F, 0.0F, 0.0F);
-				var4.setTranslationF(-var7, 0.0F, 0.0F);
+				var4.addTranslation(-var7, 0.0F, 0.0F);
 				this.renderSouthFace(par1Block, 0.0D, 0.0D, 0.0D, par1Block.getBlockTextureFromSide(5));
-				var4.setTranslationF(var7, 0.0F, 0.0F);
+				var4.addTranslation(var7, 0.0F, 0.0F);
 				var4.draw();
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			} else if (var6 == 22) {
 				ChestItemRenderHelper.instance.func_35609_a(par1Block, par2, par3);
-				GL11.glEnable('\u803a');
+				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			} else if (var6 == 6) {
 				var4.startDrawingQuads();
 				var4.setNormal(0.0F, -1.0F, 0.0F);
@@ -4839,7 +4805,6 @@ public class RenderBlocks {
 			var4.draw();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		}
-
 	}
 
 	public static boolean renderItemIn3d(int par0) {

@@ -105,7 +105,7 @@ public class GuiChat extends GuiScreen
 			message = message.substring(0, message.length() - 1);
 		}
 
-		if (!(!ChatAllowedCharacters.func_48614_a(par1) || message.length() >= 100))
+		if (ChatAllowedCharacters.isAllowedCharacter(par1) && message.length() < 100)
 		{
 			message += par1;
 		}

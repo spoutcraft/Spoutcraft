@@ -65,6 +65,7 @@ public class GameSettings {
 	public boolean hideGUI;
 	public int thirdPersonView;
 	public boolean showDebugInfo;
+	public boolean field_50119_G;
 	public String lastServer;
 	public boolean noclip;
 	public boolean smoothCamera;
@@ -83,6 +84,7 @@ public class GameSettings {
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
 		this.showDebugInfo = false;
+		this.field_50119_G = false;
 		this.lastServer = "";
 		this.noclip = false;
 		this.smoothCamera = false;
@@ -105,6 +107,7 @@ public class GameSettings {
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
 		this.showDebugInfo = false;
+		this.field_50119_G = false;
 		this.lastServer = "";
 		this.noclip = false;
 		this.smoothCamera = false;
@@ -159,7 +162,6 @@ public class GameSettings {
 		if (par1EnumOptions == EnumOptions.GAMMA) {
 			this.gammaSetting = par2;
 		}
-
 	}
 
 	public void setOptionValue(EnumOptions par1EnumOptions, int par2) {

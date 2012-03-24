@@ -38,7 +38,7 @@ public abstract class EntityCreature extends EntityLiving {
 		if(this.entityToAttack == null) {
 			this.entityToAttack = this.findPlayerToAttack();
 			if(this.entityToAttack != null) {
-				this.pathToEntity = this.worldObj.func_48463_a(this, this.entityToAttack, var1, true, false, false, true);
+				this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
 			}
 		} else if(!this.entityToAttack.isEntityAlive()) {
 			this.entityToAttack = null;
@@ -53,7 +53,7 @@ public abstract class EntityCreature extends EntityLiving {
 
 		Profiler.endSection();
 		if(!this.hasAttacked && this.entityToAttack != null && (this.pathToEntity == null || this.rand.nextInt(20) == 0)) {
-			this.pathToEntity = this.worldObj.func_48463_a(this, this.entityToAttack, var1, true, false, false, true);
+			this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
 		} else if(!this.hasAttacked && (this.pathToEntity == null && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100) {
 			this.updateWanderPath();
 		}
@@ -64,7 +64,7 @@ public abstract class EntityCreature extends EntityLiving {
 		this.rotationPitch = 0.0F;
 		if(this.pathToEntity != null && this.rand.nextInt(100) != 0) {
 			Profiler.startSection("followpath");
-			Vec3D var5 = this.pathToEntity.func_48640_a(this);
+			Vec3D var5 = this.pathToEntity.getCurrentNodeVec3d(this);
 			double var6 = (double)(this.width * 2.0F);
 
 			while(var5 != null && var5.squareDistanceTo(this.posX, var5.yCoord, this.posZ) < var6 * var6) {
@@ -73,7 +73,7 @@ public abstract class EntityCreature extends EntityLiving {
 					var5 = null;
 					this.pathToEntity = null;
 				} else {
-					var5 = this.pathToEntity.func_48640_a(this);
+					var5 = this.pathToEntity.getCurrentNodeVec3d(this);
 				}
 			}
 
@@ -82,7 +82,7 @@ public abstract class EntityCreature extends EntityLiving {
 				double var8 = var5.xCoord - this.posX;
 				double var10 = var5.zCoord - this.posZ;
 				double var12 = var5.yCoord - (double)var21;
-				float var14 = (float)(Math.atan2(var10, var8) * 180.0D / 3.1415927410125732D) - 90.0F;
+				float var14 = (float)(Math.atan2(var10, var8) * 180.0D / Math.PI) - 90.0F;
 				float var15 = var14 - this.rotationYaw;
 
 				for(this.moveForward = this.moveSpeed; var15 < -180.0F; var15 += 360.0F) {
@@ -106,8 +106,8 @@ public abstract class EntityCreature extends EntityLiving {
 					double var16 = this.entityToAttack.posX - this.posX;
 					double var18 = this.entityToAttack.posZ - this.posZ;
 					float var20 = this.rotationYaw;
-					this.rotationYaw = (float)(Math.atan2(var18, var16) * 180.0D / 3.1415927410125732D) - 90.0F;
-					var15 = (var20 - this.rotationYaw + 90.0F) * 3.1415927F / 180.0F;
+					this.rotationYaw = (float)(Math.atan2(var18, var16) * 180.0D / Math.PI) - 90.0F;
+					var15 = (var20 - this.rotationYaw + 90.0F) * (float)Math.PI / 180.0F;
 					this.moveStrafing = -MathHelper.sin(var15) * this.moveForward * 1.0F;
 					this.moveForward = MathHelper.cos(var15) * this.moveForward * 1.0F;
 				}
@@ -159,7 +159,7 @@ public abstract class EntityCreature extends EntityLiving {
 		}
 
 		if(var1) {
-			this.pathToEntity = this.worldObj.func_48460_a(this, var2, var3, var4, 10.0F, true, false, false, true);
+			this.pathToEntity = this.worldObj.getEntityPathToXYZ(this, var2, var3, var4, 10.0F, true, false, false, true);
 		}
 
 		Profiler.endSection();

@@ -11,7 +11,7 @@ import net.minecraft.src.Packet2Handshake;
 class ThreadConnectToServer extends Thread {
 	final Minecraft mc;
 	
-	final String field_48479_b;
+	final String ip;
 	
 	final int port;
 	
@@ -20,39 +20,45 @@ class ThreadConnectToServer extends Thread {
 	ThreadConnectToServer(GuiConnecting par1GuiConnecting, Minecraft par2Minecraft, String par3Str, int par4) {
 		this.connectingGui = par1GuiConnecting;
 		this.mc = par2Minecraft;
-		this.field_48479_b = par3Str;
+		this.ip = par3Str;
 		this.port = par4;
 	}
 
-	// Spout start
 	public void run() {
 		try {
-			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(this.mc, this.field_48479_b, this.port));
+			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(this.mc, this.ip, this.port));
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username, this.field_48479_b, this.port));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username, this.ip, this.port));
 		} catch (UnknownHostException var2) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[] { (new StringBuilder()).append("Unknown host '").append(field_48479_b).append("'").toString() }));
+			this.mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[]{"Unknown host \'" + this.ip + "\'"}));
 		} catch (ConnectException var3) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[] { var3.getMessage() }));
+			//Spout start
+			if (var3.getMessage().toLowerCase().contains("connection refused")) {
+				org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = ip;
+				org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = port;
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost("The server is not currently online!"));
+			}
+			else
+			//Spout end
+			this.mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[]{var3.getMessage()}));
 		} catch (Exception var4) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
 			var4.printStackTrace();
-			mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[] { var4.toString() }));
+			this.mc.displayGuiScreen(new GuiDisconnected("connect.failed", "disconnect.genericReason", new Object[]{var4.toString()}));
 		}
 	}
-	// Spout end
 }

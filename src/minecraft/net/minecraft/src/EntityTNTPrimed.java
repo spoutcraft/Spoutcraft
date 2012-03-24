@@ -28,7 +28,7 @@ public class EntityTNTPrimed extends Entity {
 	public EntityTNTPrimed(World par1World, double par2, double par4, double par6) {
 		this(par1World);
 		this.setPosition(par2, par4, par6);
-		float var8 = (float)(Math.random() * 3.1415927410125732D * 2.0D);
+		float var8 = (float)(Math.random() * Math.PI * 2.0D);
 		this.motionX = (double)(-((float)Math.sin((double)var8)) * 0.02F);
 		this.motionY = 0.20000000298023224D;
 		this.motionZ = (double)(-((float)Math.cos((double)var8)) * 0.02F);
@@ -65,15 +65,14 @@ public class EntityTNTPrimed extends Entity {
 
 		if (this.fuse-- <= 0) {
 			if (!this.worldObj.isRemote) {
-				this.setEntityDead();
+				this.setDead();
 				this.explode();
 			} else {
-				this.setEntityDead();
+				this.setDead();
 			}
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
 		}
-
 	}
 
 	private void explode() {

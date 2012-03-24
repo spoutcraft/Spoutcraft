@@ -1,29 +1,18 @@
 package net.minecraft.src;
 
+//Spout start
 import org.spoutcraft.client.entity.CraftItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-
-import net.minecraft.src.AchievementList;
-import net.minecraft.src.Block;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
+//Spout end
 
 public class EntityItem extends Entity {
-
 	public ItemStack item;
 	public int age = 0;
 	public int delayBeforeCanPickup;
 	private int health = 5;
-	public float field_804_d = (float)(Math.random() * 3.141592653589793D * 2.0D);
+	public float field_804_d = (float)(Math.random() * Math.PI * 2.0D);
 
 	public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
 		super(par1World);
@@ -103,9 +92,8 @@ public class EntityItem extends Entity {
 
 		++this.age;
 		if (this.age >= 6000) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	public boolean handleWaterMovement() {
@@ -120,7 +108,7 @@ public class EntityItem extends Entity {
 		this.setBeenAttacked();
 		this.health -= par2;
 		if (this.health <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		return false;
@@ -138,9 +126,8 @@ public class EntityItem extends Entity {
 		NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
 		this.item = ItemStack.loadItemStackFromNBT(var2);
 		if (this.item == null) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
@@ -166,14 +153,13 @@ public class EntityItem extends Entity {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				par1EntityPlayer.onItemPickup(this, var2);
 				if (this.item.stackSize <= 0) {
-					this.setEntityDead();
+					this.setDead();
 				}
 			}
-
 		}
 	}
 
-	public boolean func_48080_j() {
+	public boolean canAttackWithItem() {
 		return false;
 	}
 }

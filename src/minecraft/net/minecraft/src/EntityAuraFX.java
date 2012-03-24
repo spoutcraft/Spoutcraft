@@ -28,7 +28,7 @@ public class EntityAuraFX extends EntityFX {
 		this.motionY *= 0.99D;
 		this.motionZ *= 0.99D;
 		if (this.particleMaxAge-- <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 	}
 //Spout start

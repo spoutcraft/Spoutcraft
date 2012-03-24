@@ -55,7 +55,7 @@ public class EntityReddustFX extends EntityFX {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		if (this.particleAge++ >= this.particleMaxAge) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);

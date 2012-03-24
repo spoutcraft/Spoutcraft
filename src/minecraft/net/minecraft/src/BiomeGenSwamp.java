@@ -21,14 +21,14 @@ public class BiomeGenSwamp extends BiomeGenBase {
 	}
 
 	public int func_48415_j() {
-		double var1 = (double)this.func_48411_i();
-		double var3 = (double)this.func_48414_h();
+		double var1 = (double)this.getFloatTemperature();
+		double var3 = (double)this.getFloatRainfall();
 		return Colorizer.colorizeBiome(((ColorizerGrass.getGrassColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_GRASS, var1, var3);
 	}
 
 	public int func_48412_k() {
-		double var1 = (double)this.func_48411_i();
-		double var3 = (double)this.func_48414_h();
+		double var1 = (double)this.getFloatTemperature();
+		double var3 = (double)this.getFloatRainfall();
 		return Colorizer.colorizeBiome(((ColorizerFoliage.getFoliageColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_FOLIAGE, var1, var3);
 	}
 }

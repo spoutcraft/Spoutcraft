@@ -64,7 +64,7 @@ public class RenderGlobal implements IWorldAccess {
 	double prevSortY = -9999.0D;
 	double prevSortZ = -9999.0D;
 	public float damagePartialTime;
-	int frustrumCheckOffset = 0;
+	int frustumCheckOffset = 0;
 	// Spout Start
 	private long lastMovedTime = System.currentTimeMillis();
 	private long frameCount = 0;
@@ -1314,11 +1314,11 @@ public class RenderGlobal implements IWorldAccess {
 
 				GL11.glEnable(GL11.GL_ALPHA_TEST);
 				var6.startDrawingQuads();
-				var6.setTranslationD(-var10, -var12, -var14);
+				var6.setTranslation(-var10, -var12, -var14);
 				var6.disableColor();
 				this.globalRenderBlocks.renderBlockUsingTexture(var9, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ, 240 + (int)(this.damagePartialTime * 10.0F));
 				var6.draw();
-				var6.setTranslationD(0.0D, 0.0D, 0.0D);
+				var6.setTranslation(0.0D, 0.0D, 0.0D);
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
 				GL11.glPolygonOffset(0.0F, 0.0F);
 				GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -1457,7 +1457,7 @@ public class RenderGlobal implements IWorldAccess {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
-	public void func_48180_b(int par1, int par2, int par3) {
+	public void markBlockNeedsUpdate2(int par1, int par2, int par3) {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par1 + 1, par2 + 1, par3 + 1);
 	}
 
@@ -1465,14 +1465,14 @@ public class RenderGlobal implements IWorldAccess {
 		this.markBlocksForUpdate(par1 - 1, par2 - 1, par3 - 1, par4 + 1, par5 + 1, par6 + 1);
 	}
 
-	public void clipRenderersByFrustrum(ICamera par1ICamera, float par2) {
+	public void clipRenderersByFrustum(ICamera par1ICamera, float par2) {
 		for (int var3 = 0; var3 < this.worldRenderers.length; ++var3) {
-			if (!this.worldRenderers[var3].skipAllRenderPasses() && (!this.worldRenderers[var3].isInFrustum || (var3 + this.frustrumCheckOffset & 15) == 0)) {
-				this.worldRenderers[var3].updateInFrustrum(par1ICamera);
+			if (!this.worldRenderers[var3].skipAllRenderPasses() && (!this.worldRenderers[var3].isInFrustum || (var3 + this.frustumCheckOffset & 15) == 0)) {
+				this.worldRenderers[var3].updateInFrustum(par1ICamera);
 			}
 		}
 
-		++this.frustrumCheckOffset;
+		++this.frustumCheckOffset;
 	}
 
 	public void playRecord(String par1Str, int par2, int par3, int par4) {
@@ -1542,7 +1542,7 @@ public class RenderGlobal implements IWorldAccess {
 					} else if (par1Str.equals("depthsuspend")) {
 						var21 = new EntityAuraFX(this.worldObj, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("townaura")) {
-						var21 = (new EntityAuraFX(this.worldObj, par2, par4, par6, par8, par10, par12)).colorize();
+						var21 = new EntityAuraFX(this.worldObj, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("crit")) {
 						var21 = new EntityCritFX(this.worldObj, par2, par4, par6, par8, par10, par12);
 					} else if (par1Str.equals("magicCrit")) {

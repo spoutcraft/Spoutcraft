@@ -25,7 +25,7 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	}
 
 	public void onLivingUpdate() {
-		float var1 = this.getEntityBrightness(1.0F);
+		float var1 = this.getBrightness(1.0F);
 		if (var1 > 0.5F) {
 			this.entityAge += 2;
 		}
@@ -36,9 +36,8 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 	public void onUpdate() {
 		super.onUpdate();
 		if (!this.worldObj.isRemote && this.worldObj.difficultySetting == 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	protected Entity findPlayerToAttack() {
@@ -81,7 +80,6 @@ public abstract class EntityMob extends EntityCreature implements IMob {
 			this.attackTime = 20;
 			this.attackEntityAsMob(par1Entity);
 		}
-
 	}
 
 	public float getBlockPathWeight(int par1, int par2, int par3) {

@@ -202,7 +202,7 @@ public class EntityRenderer {
 				var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * par1;
 			}
 
-			if (var3.getEntityHealth() <= 0) {
+			if (var3.getHealth() <= 0) {
 				float var5 = (float)var3.deathTime + par1;
 				var4 /= (1.0F - 500.0F / (var5 + 500.0F)) * 2.0F + 1.0F;
 			}
@@ -220,7 +220,7 @@ public class EntityRenderer {
 		EntityLiving var2 = this.mc.renderViewEntity;
 		float var3 = (float)var2.hurtTime - par1;
 		float var4;
-		if (var2.getEntityHealth() <= 0) {
+		if (var2.getHealth() <= 0) {
 			var4 = (float)var2.deathTime + par1;
 			GL11.glRotatef(40.0F - 8000.0F / (var4 + 200.0F), 0.0F, 0.0F, 1.0F);
 		}
@@ -505,13 +505,13 @@ public class EntityRenderer {
 	}
 
 	public void disableLightmap(double par1) {
-		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapEnabled);
+		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapDisabled);
+		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 	}
 
 	public void enableLightmap(double par1) {
-		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapEnabled);
+		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glMatrixMode(GL11.GL_TEXTURE);
 		GL11.glLoadIdentity();
 		float var3 = 0.00390625F;
@@ -527,7 +527,7 @@ public class EntityRenderer {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapDisabled);
+		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
 	}
 
 	private void updateTorchFlicker() {
@@ -807,7 +807,6 @@ public class EntityRenderer {
 					this.mc.currentScreen.guiParticles.draw(par1);
 				}
 			}
-
 		}
 	}
 
@@ -876,7 +875,7 @@ public class EntityRenderer {
 			Profiler.endStartSection("culling");
 			Frustrum var18 = new Frustrum();
 			var18.setPosition(var7, var9, var11);
-			this.mc.renderGlobal.clipRenderersByFrustrum(var18, par1);
+			this.mc.renderGlobal.clipRenderersByFrustum(var18, par1);
 			if (var19 == 0) {
 				Profiler.endStartSection("updatechunks");
 				
@@ -1049,7 +1048,7 @@ public class EntityRenderer {
 				int var19 = var3.getPrecipitationHeight(var17, var18);
 				int var20 = var3.getBlockId(var17, var19 - 1, var18);
 				BiomeGenBase var21 = var3.func_48454_a(var17, var18);
-				if (var19 <= var5 + var7 && var19 >= var5 - var7 && var21.canSpawnLightningBolt() && var21.func_48411_i() > 0.2F) {
+				if (var19 <= var5 + var7 && var19 >= var5 - var7 && var21.canSpawnLightningBolt() && var21.getFloatTemperature() > 0.2F) {
 					float var22 = this.random.nextFloat();
 					float var23 = this.random.nextFloat();
 					if (var20 > 0) {
@@ -1077,7 +1076,6 @@ public class EntityRenderer {
 					this.mc.theWorld.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
 				}
 			}
-
 		}
 	}
 
@@ -1168,7 +1166,7 @@ public class EntityRenderer {
 
 							if (var29 != var30 || forceRain || forceSnow) {
 								this.random.setSeed((long)(var23 * var23 * GL11.GL_RGBA_MODE + var23 * 45238971 ^ var22 * var22 * 418711 + var22 * 13761));
-								float var33 = var27.func_48411_i();
+								float var33 = var27.getFloatTemperature();
 								float var34;
 								double var37;
 								double temp = var44.getWorldChunkManager().getTemperatureAtHeight(var33, var28);
@@ -1190,12 +1188,12 @@ public class EntityRenderer {
 									float var40 = 1.0F;
 									var8.setBrightness(var44.getLightBrightnessForSkyBlocks(var23, var32, var22, 0));
 									var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.5F + 0.5F) * var2);
-									var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+									var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
 									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var29, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31), (double) ((float) var29 * var31 / 4.0F + var34 * var31));
 									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var29, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31), (double) ((float) var29 * var31 / 4.0F + var34 * var31));
 									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var30, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
 									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var30, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
-									var8.setTranslationD(0.0D, 0.0D, 0.0D);
+									var8.setTranslation(0.0D, 0.0D, 0.0D);
 								}
 								if (forceSnow || (temp < 0.15F && !forceRain)) {
 									if (var20 != 1) {
@@ -1217,12 +1215,12 @@ public class EntityRenderer {
 									float var42 = 1.0F;
 									var8.setBrightness((var44.getLightBrightnessForSkyBlocks(var23, var32, var22, 0) * 3 + 15728880) / 4);
 									var8.setColorRGBA_F(var42, var42, var42, ((1.0F - var41 * var41) * 0.3F + 0.5F) * var2);
-									var8.setTranslationD(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+									var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
 									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var29, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31 + var49), (double) ((float) var29 * var31 / 4.0F + var34 * var31 + var36));
 									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var29, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31 + var49), (double) ((float) var29 * var31 / 4.0F + var34 * var31 + var36));
 									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var30, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31 + var49), (double) ((float) var30 * var31 / 4.0F + var34 * var31 + var36));
 									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var30, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31 + var49), (double) ((float) var30 * var31 / 4.0F + var34 * var31 + var36));
-									var8.setTranslationD(0.0D, 0.0D, 0.0D);
+									var8.setTranslation(0.0D, 0.0D, 0.0D);
 								}
 							}
 						}
@@ -1342,7 +1340,7 @@ public class EntityRenderer {
 		this.fogColorRed *= var22;
 		this.fogColorGreen *= var22;
 		this.fogColorBlue *= var22;
-		double var14 = (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par1) * var2.worldProvider.func_46065_j();
+		double var14 = (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par1) * var2.worldProvider.getVoidFogYFactor();
 		if (var3.isPotionActive(Potion.blindness)) {
 			int var16 = var3.getActivePotionEffect(Potion.blindness).getDuration();
 			if (var16 < 20) {
@@ -1379,7 +1377,7 @@ public class EntityRenderer {
 		EntityLiving var3 = this.mc.renderViewEntity;
 		boolean var4 = false;
 		if (var3 instanceof EntityPlayer) {
-			var4 = ((EntityPlayer)var3).capabilities.depleteBuckets;
+			var4 = ((EntityPlayer)var3).capabilities.isCreativeMode;
 		}
 
 		if (par1 == 999) {
@@ -1468,7 +1466,7 @@ public class EntityRenderer {
 				} else {
 					var6 = this.farPlaneDistance;
 					if (this.mc.theWorld.worldProvider.getWorldHasNoSky() && !var4) {
-						double var13 = (double)((var3.getEntityBrightnessForRender(par2) & 15728640) >> 20) / 16.0D + (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par2 + 4.0D) / 32.0D;
+						double var13 = (double)((var3.getBrightnessForRender(par2) & 15728640) >> 20) / 16.0D + (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par2 + 4.0D) / 32.0D;
 						if (var13 < 1.0D) {
 							if (var13 < 0.0D) {
 								var13 = 0.0D;

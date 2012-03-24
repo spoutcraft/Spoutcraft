@@ -26,11 +26,11 @@ public class EntityMagmaCube extends EntitySlime {
 		return this.getSlimeSize() * 3;
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float par1) {
 		return 15728880;
 	}
 
-	public float getEntityBrightness(float par1) {
+	public float getBrightness(float par1) {
 		return 1.0F;
 	}
 
@@ -58,7 +58,6 @@ public class EntityMagmaCube extends EntitySlime {
 				this.dropItem(var3, 1);
 			}
 		}
-
 	}
 
 	public boolean isBurning() {

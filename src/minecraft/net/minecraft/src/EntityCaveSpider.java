@@ -2,15 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftCaveSpider;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySpider;
-import net.minecraft.src.Potion;
-import net.minecraft.src.PotionEffect;
-import net.minecraft.src.World;
-
 public class EntityCaveSpider extends EntitySpider {
-
 	public EntityCaveSpider(World par1World) {
 		super(par1World);
 		this.texture = "/mob/cavespider.png";

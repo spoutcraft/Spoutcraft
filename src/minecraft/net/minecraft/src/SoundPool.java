@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import net.minecraft.src.SoundPoolEntry;
 
 public class SoundPool {
-
 	private Random rand = new Random();
 	private Map nameToSoundPoolEntriesMapping = new HashMap();
 	private List allSoundPoolEntries = new ArrayList();

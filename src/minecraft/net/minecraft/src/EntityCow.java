@@ -2,28 +2,12 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftCow;
 
-import net.minecraft.src.EntityAIFollowParent;
-import net.minecraft.src.EntityAILookIdle;
-import net.minecraft.src.EntityAIMate;
-import net.minecraft.src.EntityAIPanic;
-import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAITempt;
-import net.minecraft.src.EntityAIWander;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityAnimal;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityCow extends EntityAnimal {
-
 	public EntityCow(World par1World) {
 		super(par1World);
 		this.texture = "/mob/cow.png";
 		this.setSize(0.9F, 1.3F);
-		this.func_48084_aL().func_48664_a(true);
+		this.getNavigator().func_48664_a(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, 0.2F));
@@ -90,7 +74,6 @@ public class EntityCow extends EntityAnimal {
 				this.dropItem(Item.beefRaw.shiftedIndex, 1);
 			}
 		}
-
 	}
 
 	public boolean interact(EntityPlayer par1EntityPlayer) {

@@ -42,7 +42,6 @@ public class SoundManager {
 		if (!loaded && (par1GameSettings == null || par1GameSettings.soundVolume != 0.0F || par1GameSettings.musicVolume != 0.0F)) {
 			this.tryToSetLibraryAndCodecs();
 		}
-
 	}
 
 	private void tryToSetLibraryAndCodecs() {
@@ -80,14 +79,12 @@ public class SoundManager {
 				sndSystem.setVolume("BgMusic", this.options.musicVolume);
 			}
 		}
-
 	}
 
 	public void closeMinecraft() {
 		if (loaded) {
 			sndSystem.cleanup();
 		}
-
 	}
 
 	public void addSound(String par1Str, File par2File) {
@@ -149,7 +146,6 @@ public class SoundManager {
 					sndSystem.play("BgMusic");
 				}
 			}
-
 		}
 	}
 
@@ -160,8 +156,8 @@ public class SoundManager {
 				double var4 = par1EntityLiving.prevPosX + (par1EntityLiving.posX - par1EntityLiving.prevPosX) * (double)par2;
 				double var6 = par1EntityLiving.prevPosY + (par1EntityLiving.posY - par1EntityLiving.prevPosY) * (double)par2;
 				double var8 = par1EntityLiving.prevPosZ + (par1EntityLiving.posZ - par1EntityLiving.prevPosZ) * (double)par2;
-				float var10 = MathHelper.cos(-var3 * 0.017453292F - 3.1415927F);
-				float var11 = MathHelper.sin(-var3 * 0.017453292F - 3.1415927F);
+				float var10 = MathHelper.cos(-var3 * 0.017453292F - (float)Math.PI);
+				float var11 = MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
 				float var12 = -var11;
 				float var13 = 0.0F;
 				float var14 = -var10;

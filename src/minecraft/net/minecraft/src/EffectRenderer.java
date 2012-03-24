@@ -3,15 +3,6 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import net.minecraft.src.ActiveRenderInfo;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDiggingFX;
-import net.minecraft.src.EntityFX;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 //Spout start
 import java.util.LinkedList;
@@ -27,7 +18,6 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout end
 
 public class EffectRenderer {
-
 	protected World worldObj;
 	private List[] fxLayers = new List[4];
 	private RenderEngine renderer;
@@ -43,7 +33,6 @@ public class EffectRenderer {
 		for (int var3 = 0; var3 < 4; ++var3) {
 			this.fxLayers[var3] = new ArrayList();
 		}
-
 	}
 
 	public void addEffect(EntityFX par1EntityFX) {
@@ -65,7 +54,6 @@ public class EffectRenderer {
 				}
 			}
 		}
-
 	}
 
 	public void renderParticles(Entity par1Entity, float par2) {
@@ -109,7 +97,7 @@ public class EffectRenderer {
 						continue;
 					}
 					// Spout end
-					var10.setBrightness(var12.getEntityBrightnessForRender(par2));
+					var10.setBrightness(var12.getBrightnessForRender(par2));
 					var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
 				}
 
@@ -124,21 +112,20 @@ public class EffectRenderer {
 	}
 
 	public void func_1187_b(Entity par1Entity, float par2) {
-		float var3 = MathHelper.cos(par1Entity.rotationYaw * 3.1415927F / 180.0F);
-		float var4 = MathHelper.sin(par1Entity.rotationYaw * 3.1415927F / 180.0F);
-		float var5 = -var4 * MathHelper.sin(par1Entity.rotationPitch * 3.1415927F / 180.0F);
-		float var6 = var3 * MathHelper.sin(par1Entity.rotationPitch * 3.1415927F / 180.0F);
-		float var7 = MathHelper.cos(par1Entity.rotationPitch * 3.1415927F / 180.0F);
+		float var3 = MathHelper.cos(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
+		float var4 = MathHelper.sin(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
+		float var5 = -var4 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		float var6 = var3 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		float var7 = MathHelper.cos(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
 		byte var8 = 3;
 		if (this.fxLayers[var8].size() != 0) {
 			Tessellator var9 = Tessellator.instance;
 
 			for (int var10 = 0; var10 < this.fxLayers[var8].size(); ++var10) {
 				EntityFX var11 = (EntityFX)this.fxLayers[var8].get(var10);
-				var9.setBrightness(var11.getEntityBrightnessForRender(par2));
+				var9.setBrightness(var11.getBrightnessForRender(par2));
 				var11.renderParticle(var9, par2, var3, var7, var4, var5, var6);
 			}
-
 		}
 	}
 
@@ -148,7 +135,6 @@ public class EffectRenderer {
 		for (int var2 = 0; var2 < 4; ++var2) {
 			this.fxLayers[var2].clear();
 		}
-
 	}
 
 	public void addBlockDestroyEffects(int par1, int par2, int par3, int par4, int par5) {
@@ -191,7 +177,6 @@ public class EffectRenderer {
 					}
 				}
 			}
-
 		}
 	}
 

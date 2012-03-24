@@ -53,4 +53,11 @@ public class TileEntitySign extends TileEntity {
 		recalculateText();
 		//Spout end
 	}
+	public boolean func_50007_a() {
+		return this.isEditable;
+	}
+
+	public void func_50006_a(boolean par1) {
+		this.isEditable = par1;
+	}
 }

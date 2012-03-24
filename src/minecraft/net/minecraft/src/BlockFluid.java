@@ -16,7 +16,7 @@ public abstract class BlockFluid extends Block {
 		this.setTickRandomly(true);
 	}
 
-	public boolean func_48204_b(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		return this.blockMaterial != Material.lava;
 	}
 

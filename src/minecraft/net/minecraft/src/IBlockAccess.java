@@ -1,12 +1,6 @@
 package net.minecraft.src;
 
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Material;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.WorldChunkManager;
-
 public interface IBlockAccess {
-
 	int getBlockId(int var1, int var2, int var3);
 
 	TileEntity getBlockTileEntity(int var1, int var2, int var3);
@@ -27,11 +21,9 @@ public interface IBlockAccess {
 
 	boolean isAirBlock(int var1, int var2, int var3);
 
-	WorldChunkManager getWorldChunkManager();
-	
 	BiomeGenBase func_48454_a(int var1, int var2);
 
-	int func_48453_b();
+	int getWorldHeight();
 
 	boolean func_48452_a();
 
@@ -43,5 +35,9 @@ public interface IBlockAccess {
 	public int getWaterColorCache(int x, int y, int z);
 
 	public void setWaterColorCache(int x, int y, int z, int color);
+	
+	public WorldChunkManager getWorldChunkManager();
 	// Spout end
+
+	
 }

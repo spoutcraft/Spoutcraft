@@ -4,16 +4,6 @@ import java.util.List;
 
 import org.spoutcraft.client.entity.CraftPigZombie;
 
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EnchantmentHelper;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityZombie;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityPigZombie extends EntityZombie {
 
 	public int angerLevel = 0; // Spout private -> public
@@ -116,10 +106,9 @@ public class EntityPigZombie extends EntityZombie {
 		for (var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.goldNugget.shiftedIndex, 1);
 		}
-
 	}
 
-	protected void func_48085_j_(int par1) {
+	protected void dropRareDrop(int par1) {
 		if (par1 > 0) {
 			ItemStack var2 = new ItemStack(Item.swordGold);
 			EnchantmentHelper.func_48441_a(this.rand, var2, 5);
@@ -134,7 +123,6 @@ public class EntityPigZombie extends EntityZombie {
 				this.dropItem(Item.helmetGold.shiftedIndex, 1);
 			}
 		}
-
 	}
 
 	protected int getDropItemId() {
@@ -144,5 +132,4 @@ public class EntityPigZombie extends EntityZombie {
 	public ItemStack getHeldItem() {
 		return defaultHeldItem;
 	}
-
 }

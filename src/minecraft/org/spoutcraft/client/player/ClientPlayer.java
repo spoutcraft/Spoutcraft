@@ -237,7 +237,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return SpoutClient.getHandle().currentScreen.getScreen();
 	}
 
-	@Override
 	public ItemStack getItemStackOnCursor() {
 		ItemStack ret = new ItemStack(0);
 		if(SpoutClient.getHandle().thePlayer != null) {
@@ -249,7 +248,6 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 		return ret;
 	}
 
-	@Override
 	public void setItemStackOnCursor(ItemStack stack) {
 		if(SpoutClient.getHandle().thePlayer == null) {
 			return;

@@ -3,42 +3,42 @@ package net.minecraft.src;
 import org.lwjgl.opengl.GL11;
 
 class GuiSlotServer extends GuiSlot {
-	final GuiMultiplayer field_35410_a;
+	final GuiMultiplayer parentGui;
 
 	public GuiSlotServer(GuiMultiplayer par1GuiMultiplayer) {
 		super(par1GuiMultiplayer.mc, par1GuiMultiplayer.width, par1GuiMultiplayer.height, 32, par1GuiMultiplayer.height - 64, 36);
-		this.field_35410_a = par1GuiMultiplayer;
+		this.parentGui = par1GuiMultiplayer;
 	}
 
 	protected int getSize() {
-		return GuiMultiplayer.getServerList(this.field_35410_a).size();
+		return GuiMultiplayer.getServerList(this.parentGui).size();
 	}
 
 	protected void elementClicked(int par1, boolean par2) {
-		GuiMultiplayer.setSelectedServer(this.field_35410_a, par1);
-		boolean var3 = GuiMultiplayer.getSelectedServer(this.field_35410_a) >= 0 && GuiMultiplayer.getSelectedServer(this.field_35410_a) < this.getSize();
-		GuiMultiplayer.getButtonSelect(this.field_35410_a).enabled = var3;
-		GuiMultiplayer.getButtonEdit(this.field_35410_a).enabled = var3;
-		GuiMultiplayer.getButtonDelete(this.field_35410_a).enabled = var3;
+		GuiMultiplayer.setSelectedServer(this.parentGui, par1);
+		boolean var3 = GuiMultiplayer.getSelectedServer(this.parentGui) >= 0 && GuiMultiplayer.getSelectedServer(this.parentGui) < this.getSize();
+		GuiMultiplayer.getButtonSelect(this.parentGui).enabled = var3;
+		GuiMultiplayer.getButtonEdit(this.parentGui).enabled = var3;
+		GuiMultiplayer.getButtonDelete(this.parentGui).enabled = var3;
 		if (par2 && var3) {
-			GuiMultiplayer.joinServer(this.field_35410_a, par1);
+			GuiMultiplayer.joinServer(this.parentGui, par1);
 		}
 	}
 
 	protected boolean isSelected(int par1) {
-		return par1 == GuiMultiplayer.getSelectedServer(this.field_35410_a);
+		return par1 == GuiMultiplayer.getSelectedServer(this.parentGui);
 	}
 
 	protected int getContentHeight() {
-		return GuiMultiplayer.getServerList(this.field_35410_a).size() * 36;
+		return GuiMultiplayer.getServerList(this.parentGui).size() * 36;
 	}
 
 	protected void drawBackground() {
-		this.field_35410_a.drawDefaultBackground();
+		this.parentGui.drawDefaultBackground();
 	}
 
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
-		ServerNBTStorage var6 = (ServerNBTStorage)GuiMultiplayer.getServerList(this.field_35410_a).get(par1);
+		ServerNBTStorage var6 = (ServerNBTStorage)GuiMultiplayer.getServerList(this.parentGui).get(par1);
 		synchronized(GuiMultiplayer.getLock()) {
 			if (GuiMultiplayer.getThreadsPending() < 5 && !var6.polled) {
 				var6.polled = true;
@@ -50,12 +50,12 @@ class GuiSlotServer extends GuiSlot {
 			}
 		}
 
-		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.name, par2 + 2, par3 + 1, 16777215);
-		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.motd, par2 + 2, par3 + 12, 8421504);
-		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.playerCount, par2 + 215 - this.field_35410_a.fontRenderer.getStringWidth(var6.playerCount), par3 + 12, 8421504);
-		this.field_35410_a.drawString(this.field_35410_a.fontRenderer, var6.host, par2 + 2, par3 + 12 + 11, 3158064);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.name, par2 + 2, par3 + 1, 16777215);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.motd, par2 + 2, par3 + 12, 8421504);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.playerCount, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.playerCount), par3 + 12, 8421504);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.host, par2 + 2, par3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.field_35410_a.mc.renderEngine.bindTexture(this.field_35410_a.mc.renderEngine.getTexture("/gui/icons.png"));
+		this.parentGui.mc.renderEngine.bindTexture(this.parentGui.mc.renderEngine.getTexture("/gui/icons.png"));
 		boolean var7 = false;
 		boolean var8 = false;
 		String var9 = "";
@@ -93,10 +93,10 @@ class GuiSlotServer extends GuiSlot {
 			var9 = "Polling..";
 		}
 
-		this.field_35410_a.drawTexturedModalRect(par2 + 205, par3, 0 + var12 * 10, 176 + var13 * 8, 10, 8);
+		this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var12 * 10, 176 + var13 * 8, 10, 8);
 		byte var10 = 4;
-		if (this.field_35409_k >= par2 + 205 - var10 && this.field_35408_l >= par3 - var10 && this.field_35409_k <= par2 + 205 + 10 + var10 && this.field_35408_l <= par3 + 8 + var10) {
-			GuiMultiplayer.func_35327_a(this.field_35410_a, var9);
+		if (this.mouseX >= par2 + 205 - var10 && this.mouseY >= par3 - var10 && this.mouseX <= par2 + 205 + 10 + var10 && this.mouseY <= par3 + 8 + var10) {
+			GuiMultiplayer.setTooltipText(this.parentGui, var9);
 		}
 	}
 }

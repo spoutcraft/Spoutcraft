@@ -61,7 +61,6 @@ public class Tessellator {
 			this.vertexBuffers = GLAllocation.createDirectIntBuffer(this.vboCount);
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
-
 	}
 
 	public int draw() {
@@ -97,7 +96,7 @@ public class Tessellator {
 				}
 
 				if (this.hasBrightness) {
-					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapEnabled);
+					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
 					if (this.useVBO) {
 						GL11.glTexCoordPointer(2, GL11.GL_SHORT, 32, 28L);
 					} else {
@@ -106,7 +105,7 @@ public class Tessellator {
 					}
 
 					GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapDisabled);
+					OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
 				}
 
 				if (this.hasColor) {
@@ -140,7 +139,7 @@ public class Tessellator {
 
 				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 				if (this.drawMode == 7 && convertQuadsToTriangles) {
-					GL11.glDrawArrays(4, 0, this.vertexCount);
+					GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.vertexCount);
 				} else {
 					GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
 				}
@@ -151,9 +150,9 @@ public class Tessellator {
 				}
 
 				if (this.hasBrightness) {
-					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapEnabled);
+					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapTexUnit);
 					GL11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-					OpenGlHelper.setClientActiveTexture(OpenGlHelper.lightmapDisabled);
+					OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
 				}
 
 				if (this.hasColor) {
@@ -260,7 +259,6 @@ public class Tessellator {
 			} else {
 				this.color = par1 << 24 | par2 << 16 | par3 << 8 | par4;
 			}
-
 		}
 	}
 
@@ -321,7 +319,6 @@ public class Tessellator {
 			this.draw();
 			this.isDrawing = true;
 		}
-
 	}
 
 	public void setColorOpaque_I(int par1) {
@@ -350,16 +347,15 @@ public class Tessellator {
 		this.normal = var4 & 255 | (var5 & 255) << 8 | (var6 & 255) << 16;
 	}
 
-	public void setTranslationD(double par1, double par3, double par5) {
+	public void setTranslation(double par1, double par3, double par5) {
 		this.xOffset = par1;
 		this.yOffset = par3;
 		this.zOffset = par5;
 	}
 
-	public void setTranslationF(float par1, float par2, float par3) {
+	public void addTranslation(float par1, float par2, float par3) {
 		this.xOffset += (double)par1;
 		this.yOffset += (double)par2;
 		this.zOffset += (double)par3;
 	}
-
 }

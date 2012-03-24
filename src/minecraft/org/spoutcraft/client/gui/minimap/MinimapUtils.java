@@ -12,7 +12,7 @@ public class MinimapUtils {
 	public static String getWorldName() {
 		String worldname = Minecraft.theMinecraft.theWorld.getWorldInfo().getWorldName();
 		if (worldname.equals("MpServer")) {
-			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp;
+			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp.replaceAll("\\.", "-");
 		}
 		return worldname;
 	}

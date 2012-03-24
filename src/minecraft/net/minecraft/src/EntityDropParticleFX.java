@@ -40,12 +40,12 @@ public class EntityDropParticleFX extends EntityFX {
 		super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
-		return this.materialType == Material.water?super.getEntityBrightnessForRender(par1):257;
+	public int getBrightnessForRender(float par1) {
+		return this.materialType == Material.water?super.getBrightnessForRender(par1):257;
 	}
 
-	public float getEntityBrightness(float par1) {
-		return this.materialType == Material.water?super.getEntityBrightness(par1):1.0F;
+	public float getBrightness(float par1) {
+		return this.materialType == Material.water?super.getBrightness(par1):1.0F;
 	}
 
 	public void onUpdate() {
@@ -81,12 +81,12 @@ public class EntityDropParticleFX extends EntityFX {
 		this.motionY *= 0.98D;
 		this.motionZ *= 0.98D;
 		if (this.particleMaxAge-- <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		if (this.onGround) {
 			if (this.materialType == Material.water) {
-				this.setEntityDead();
+				this.setDead();
 				this.worldObj.spawnParticle("splash", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 			} else {
 				this.setParticleTextureIndex(114);
@@ -100,7 +100,7 @@ public class EntityDropParticleFX extends EntityFX {
 		if (var1.isLiquid() || var1.isSolid()) {
 			double var2 = (double)((float)(MathHelper.floor_double(this.posY) + 1) - BlockFluid.getFluidHeightPercent(this.worldObj.getBlockMetadata(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ))));
 			if (this.posY < var2) {
-				this.setEntityDead();
+				this.setDead();
 			}
 		}
 	}

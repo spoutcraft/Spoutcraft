@@ -369,7 +369,7 @@ public class GuiMainMenu extends GuiScreen
 			GL11.glColorMask(true, true, true, false);
 		}
 
-		tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
+		tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 		GL11.glColorMask(true, true, true, true);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPopMatrix();
@@ -513,7 +513,7 @@ public class GuiMainMenu extends GuiScreen
 		if (Keyboard.isKeyDown(Keyboard.KEY_M)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			mc.displayGuiScreen(new GuiSelectWorld(new GuiMainMenu()));
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			mc.displayGuiScreen(new GuiAddonsLocal());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {

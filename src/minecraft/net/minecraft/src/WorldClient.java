@@ -4,24 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkCoordIntPair;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ChunkProviderClient;
-import net.minecraft.src.Entity;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.IntHashMap;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Packet255KickDisconnect;
-import net.minecraft.src.Profiler;
-import net.minecraft.src.SaveHandlerMP;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldBlockPositionType;
-import net.minecraft.src.WorldProvider;
-import net.minecraft.src.WorldSettings;
 
 public class WorldClient extends World {
-
 	private LinkedList blocksToReceive = new LinkedList();
 	private NetClientHandler sendQueue;
 	private ChunkProviderClient field_20915_C;
@@ -71,7 +55,6 @@ public class WorldClient extends World {
 				this.blocksToReceive.remove(var7--);
 			}
 		}
-
 	}
 
 	protected IChunkProvider createChunkProvider() {
@@ -96,7 +79,6 @@ public class WorldClient extends World {
 			this.func_48458_a(var3, var4, var5);
 			Profiler.endSection();
 		}
-
 	}
 
 	public void scheduleBlockUpdate(int par1, int par2, int par3, int par4, int par5) {}
@@ -115,7 +97,6 @@ public class WorldClient extends World {
 		if (!par3) {
 			this.markBlocksDirty(par1 * 16, 0, par2 * 16, par1 * 16 + 15, 256, par2 * 16 + 15);
 		}
-
 	}
 
 	public boolean spawnEntityInWorld(Entity par1Entity) {
@@ -138,7 +119,6 @@ public class WorldClient extends World {
 		if (this.entitySpawnQueue.contains(var1)) {
 			this.entitySpawnQueue.remove(var1);
 		}
-
 	}
 
 	public void releaseEntitySkin(Entity var1) { // Spout protected -> public
@@ -146,7 +126,6 @@ public class WorldClient extends World {
 		if (this.entityList.contains(var1)) {
 			this.entitySpawnQueue.add(var1);
 		}
-
 	}
 
 	public void addEntityToWorld(int par1, Entity par2Entity) {
@@ -240,7 +219,6 @@ public class WorldClient extends World {
 			if (this.thunderingStrength > 1.0F) {
 				this.thunderingStrength = 1.0F;
 			}
-
 		}
 	}
 }

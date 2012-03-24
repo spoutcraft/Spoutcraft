@@ -7,26 +7,8 @@ import org.spoutcraft.client.entity.CraftMinecart;
 import org.spoutcraft.client.entity.CraftPoweredMinecart;
 import org.spoutcraft.client.entity.CraftStorageMinecart;
 // Spout End
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockRail;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityIronGolem;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IInventory;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.NBTTagList;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
 
 public class EntityMinecart extends Entity implements IInventory {
-
 	private ItemStack[] cargoItems;
 	private int fuel;
 	private boolean field_856_i;
@@ -128,7 +110,7 @@ public class EntityMinecart extends Entity implements IInventory {
 					this.riddenByEntity.mountEntity(this);
 				}
 
-				this.setEntityDead();
+				this.setDead();
 				this.dropItemWithOffset(Item.minecartEmpty.shiftedIndex, 1, 0.0F);
 				if (this.minecartType == 1) {
 					EntityMinecart var3 = this;
@@ -179,7 +161,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		return !this.isDead;
 	}
 
-	public void setEntityDead() {
+	public void setDead() {
 		for (int var1 = 0; var1 < this.getSizeInventory(); ++var1) {
 			ItemStack var2 = this.getStackInSlot(var1);
 			if (var2 != null) {
@@ -195,6 +177,10 @@ public class EntityMinecart extends Entity implements IInventory {
 
 					var2.stackSize -= var6;
 					EntityItem var7 = new EntityItem(this.worldObj, this.posX + (double)var3, this.posY + (double)var4, this.posZ + (double)var5, new ItemStack(var2.itemID, var6, var2.getItemDamage()));
+					if (var2.hasTagCompound()) {
+						var7.item.setTagCompound((NBTTagCompound)var2.getTagCompound().copy());
+					}
+
 					float var8 = 0.05F;
 					var7.motionX = (double)((float)this.rand.nextGaussian() * var8);
 					var7.motionY = (double)((float)this.rand.nextGaussian() * var8 + 0.2F);
@@ -204,7 +190,7 @@ public class EntityMinecart extends Entity implements IInventory {
 			}
 		}
 
-		super.setEntityDead();
+		super.setDead();
 	}
 
 	public void onUpdate() {
@@ -214,6 +200,10 @@ public class EntityMinecart extends Entity implements IInventory {
 
 		if (this.func_41025_i() > 0) {
 			this.func_41024_b(this.func_41025_i() - 1);
+		}
+
+		if (this.posY < -64.0D) {
+			this.kill();
 		}
 
 		if (this.isMinecartPowered() && this.rand.nextInt(4) == 0) {
@@ -244,7 +234,6 @@ public class EntityMinecart extends Entity implements IInventory {
 				this.setPosition(this.posX, this.posY, this.posZ);
 				this.setRotation(this.rotationYaw, this.rotationPitch);
 			}
-
 		} else {
 			this.prevPosX = this.posX;
 			this.prevPosY = this.posY;
@@ -429,7 +418,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				double var41;
 				if (this.minecartType == 2) {
 					var41 = (double)MathHelper.sqrt_double(this.pushX * this.pushX + this.pushZ * this.pushZ);
-					if (var41 > 0.01D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.0010D) {
+					if (var41 > 0.01D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D) {
 						this.pushX /= var41;
 						this.pushZ /= var41;
 						if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0D) {
@@ -496,8 +485,8 @@ public class EntityMinecart extends Entity implements IInventory {
 			this.rotationPitch = 0.0F;
 			double var47 = this.prevPosX - this.posX;
 			double var48 = this.prevPosZ - this.posZ;
-			if (var47 * var47 + var48 * var48 > 0.0010D) {
-				this.rotationYaw = (float)(Math.atan2(var48, var47) * 180.0D / 3.141592653589793D);
+			if (var47 * var47 + var48 * var48 > 0.001D) {
+				this.rotationYaw = (float)(Math.atan2(var48, var47) * 180.0D / Math.PI);
 				if (this.field_856_i) {
 					this.rotationYaw += 180.0F;
 				}
@@ -669,7 +658,6 @@ public class EntityMinecart extends Entity implements IInventory {
 
 			par1NBTTagCompound.setTag("Items", var2);
 		}
-
 	}
 
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -690,7 +678,6 @@ public class EntityMinecart extends Entity implements IInventory {
 				}
 			}
 		}
-
 	}
 
 	public float getShadowSize() {
@@ -728,7 +715,7 @@ public class EntityMinecart extends Entity implements IInventory {
 						double var10 = par1Entity.posX - this.posX;
 						double var12 = par1Entity.posZ - this.posZ;
 						Vec3D var14 = Vec3D.createVector(var10, 0.0D, var12).normalize();
-						Vec3D var15 = Vec3D.createVector((double)MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F)).normalize();
+						Vec3D var15 = Vec3D.createVector((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
 						double var16 = Math.abs(var14.dotProduct(var15));
 						if (var16 < 0.800000011920929D) {
 							return;
@@ -763,7 +750,6 @@ public class EntityMinecart extends Entity implements IInventory {
 						par1Entity.addVelocity(var2 / 4.0D, 0.0D, var4 / 4.0D);
 					}
 				}
-
 			}
 		}
 	}
@@ -796,7 +782,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		}
 	}
 
-	public ItemStack func_48081_b(int par1) {
+	public ItemStack getStackInSlotOnClosing(int par1) {
 		if (this.cargoItems[par1] != null) {
 			ItemStack var2 = this.cargoItems[par1];
 			this.cargoItems[par1] = null;
@@ -811,7 +797,6 @@ public class EntityMinecart extends Entity implements IInventory {
 		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
-
 	}
 
 	public String getInvName() {
@@ -886,7 +871,6 @@ public class EntityMinecart extends Entity implements IInventory {
 		} else {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(this.dataWatcher.getWatchableObjectByte(16) & -2)));
 		}
-
 	}
 
 	public void openChest() {}
@@ -916,5 +900,4 @@ public class EntityMinecart extends Entity implements IInventory {
 	public int func_41030_m() {
 		return this.dataWatcher.getWatchableObjectInt(18);
 	}
-
 }

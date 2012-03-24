@@ -92,7 +92,7 @@ public class MinecraftTessellatorWrapper implements MinecraftTessellator {
 	}
 
 	public void setTranslation(double x, double y, double z) {
-		Tessellator.instance.setTranslationD(x, y, z);
+		Tessellator.instance.setTranslation(x, y, z);
 	}
 
 	public int getMCTexture(String texture) {

@@ -44,7 +44,7 @@ public class ItemMonsterPlacer extends Item {
 				var9 = 0.5D;
 			}
 
-			if (func_48440_a(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var9, (double)par6 + 0.5D) && !par2EntityPlayer.capabilities.depleteBuckets) {
+			if (func_48440_a(par3World, par1ItemStack.getItemDamage(), (double)par4 + 0.5D, (double)par5 + var9, (double)par6 + 0.5D) && !par2EntityPlayer.capabilities.isCreativeMode) {
 				--par1ItemStack.stackSize;
 			}
 
@@ -56,7 +56,7 @@ public class ItemMonsterPlacer extends Item {
 		if (!EntityList.entityEggs.containsKey(Integer.valueOf(par1))) {
 			return false;
 		} else {
-			Entity var8 = EntityList.createEntity(par1, par0World);
+			Entity var8 = EntityList.createEntityByID(par1, par0World);
 			if (var8 != null) {
 				var8.setLocationAndAngles(par2, par4, par6, par0World.rand.nextFloat() * 360.0F, 0.0F);
 				par0World.spawnEntityInWorld(var8);

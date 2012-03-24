@@ -1,25 +1,6 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Packet101CloseWindow;
-import net.minecraft.src.Packet10Flying;
-import net.minecraft.src.Packet11PlayerPosition;
-import net.minecraft.src.Packet12PlayerLook;
-import net.minecraft.src.Packet13PlayerLookMove;
-import net.minecraft.src.Packet14BlockDig;
-import net.minecraft.src.Packet18Animation;
-import net.minecraft.src.Packet19EntityAction;
-import net.minecraft.src.Packet3Chat;
-import net.minecraft.src.Packet9Respawn;
-import net.minecraft.src.Session;
-import net.minecraft.src.StatBase;
-import net.minecraft.src.World;
 //Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
@@ -27,20 +8,19 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 //Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
-
 	public NetClientHandler sendQueue;
 	private int inventoryUpdateTickCounter = 0;
-	private boolean field_21093_bH = false;
+	private boolean hasSetHealth = false;
 	private double oldPosX;
-	private double field_9378_bz;
+	private double oldMinY;
 	private double oldPosY;
 	private double oldPosZ;
 	private float oldRotationYaw;
 	private float oldRotationPitch;
-	private boolean field_9382_bF = false;
-	private boolean field_35227_cs = false;
+	private boolean wasOnGround = false;
+	private boolean shouldStopSneaking = false;
 	private boolean wasSneaking = false;
-	private int field_12242_bI = 0;
+	private int timeSinceMoved = 0;
 
 	public EntityClientPlayerMP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler) {
 		super(par1Minecraft, par2World, par3Session, 0);
@@ -56,11 +36,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	public void onUpdate() {
 		if(this.worldObj.blockExists(MathHelper.floor_double(this.posX), 0, MathHelper.floor_double(this.posZ))) {
 			super.onUpdate();
-			this.onUpdate2();
+			this.sendMotionUpdates();
 		}
 	}
 
-	public void onUpdate2() {
+	public void sendMotionUpdates() {
 		if(this.inventoryUpdateTickCounter++ == 20) {
 			this.sendInventoryChanged();
 			this.inventoryUpdateTickCounter = 0;
@@ -78,18 +58,18 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 
 		boolean var2 = this.isSneaking();
-		if(var2 != this.field_35227_cs) {
+		if (var2 != this.shouldStopSneaking) {
 			if(var2) {
 				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 1));
 			} else {
 				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 2));
 			}
 
-			this.field_35227_cs = var2;
+			this.shouldStopSneaking = var2;
 		}
 
 		double var3 = this.posX - this.oldPosX;
-		double var5 = this.boundingBox.minY - this.field_9378_bz;
+		double var5 = this.boundingBox.minY - this.oldMinY;
 		double var7 = this.posY - this.oldPosY;
 		double var9 = this.posZ - this.oldPosZ;
 		double var11 = (double)(this.rotationYaw - this.oldRotationYaw);
@@ -106,26 +86,26 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			var15 = false;
 		} else if(var15 && var16) {
 			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
-			this.field_12242_bI = 0;
+			this.timeSinceMoved = 0;
 		} else if(var15) {
 			this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
-			this.field_12242_bI = 0;
+			this.timeSinceMoved = 0;
 		} else if(var16) {
 			this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-			this.field_12242_bI = 0;
+			this.timeSinceMoved = 0;
 		} else {
 			this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
-			if(this.field_9382_bF == this.onGround && this.field_12242_bI <= 200) {
-				++this.field_12242_bI;
+			if (this.wasOnGround == this.onGround && this.timeSinceMoved <= 200) {
+				++this.timeSinceMoved;
 			} else {
-				this.field_12242_bI = 0;
+				this.timeSinceMoved = 0;
 			}
 		}
 
-		this.field_9382_bF = this.onGround;
+		this.wasOnGround = this.onGround;
 		if(var15) {
 			this.oldPosX = this.posX;
-			this.field_9378_bz = this.boundingBox.minY;
+			this.oldMinY = this.boundingBox.minY;
 			this.oldPosY = this.posY;
 			this.oldPosZ = this.posZ;
 		}
@@ -134,10 +114,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			this.oldRotationYaw = this.rotationYaw;
 			this.oldRotationPitch = this.rotationPitch;
 		}
-
 	}
 
-	public EntityItem func_48152_as() {
+	public EntityItem dropOneItem() {
 		this.sendQueue.addToSendQueue(new Packet14BlockDig(4, 0, 0, 0, 0));
 		return null;
 	}
@@ -147,6 +126,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	protected void joinEntityItemWithWorld(EntityItem par1EntityItem) {}
 
 	public void sendChatMessage(String par1Str) {
+		//if (this.mc.ingameGUI.func_50013_c().size() == 0 || !((String)this.mc.ingameGUI.func_50013_c().get(this.mc.ingameGUI.func_50013_c().size() - 1)).equals(par1Str)) {
+		//	this.mc.ingameGUI.func_50013_c().add(par1Str);
+		//}
+
 		this.sendQueue.addToSendQueue(new Packet3Chat(par1Str));
 	}
 
@@ -157,11 +140,11 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void respawnPlayer() {
 		this.sendInventoryChanged();
-		this.sendQueue.addToSendQueue(new Packet9Respawn(this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldInfo().getTerrainType(), this.worldObj.func_48453_b(), 0));
+		this.sendQueue.addToSendQueue(new Packet9Respawn(this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldInfo().getTerrainType(), this.worldObj.getWorldHeight(), 0));
 	}
 
 	public void damageEntity(DamageSource par1DamageSource, int par2) { //Spout protected -> public
-		this.setEntityHealth(this.getEntityHealth() - par2);
+		this.setEntityHealth(this.getHealth() - par2);
 		//Spout start
 		GuiChat.interruptChat();
 		//Spout end
@@ -174,13 +157,12 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	public void setHealth(int par1) {
-		if(this.field_21093_bH) {
+		if (this.hasSetHealth) {
 			super.setHealth(par1);
 		} else {
 			this.setEntityHealth(par1);
-			this.field_21093_bH = true;
+			this.hasSetHealth = true;
 		}
-
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {
@@ -188,7 +170,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			if(par1StatBase.isIndependent) {
 				super.addStat(par1StatBase, par2);
 			}
-
 		}
 	}
 

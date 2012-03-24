@@ -35,11 +35,11 @@ public class EntityBubbleFX extends EntityFX {
 		this.motionY *= 0.85D;
 		this.motionZ *= 0.85D;
 		if (this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) != Material.water) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		if (this.particleMaxAge-- <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 	}
 }

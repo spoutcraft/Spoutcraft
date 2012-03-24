@@ -2,14 +2,6 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.MapColor;
-import net.minecraft.src.MapCoord;
-import net.minecraft.src.MapData;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.Tessellator;
 //Spout start
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout end
@@ -22,16 +14,14 @@ public class MapItemRenderer {
 	private GameSettings gameSettings;
 	private FontRenderer fontRenderer;
 
+	public MapItemRenderer(FontRenderer par1FontRenderer, GameSettings par2GameSettings, RenderEngine par3RenderEngine) {
+		this.gameSettings = par2GameSettings;
+		this.fontRenderer = par1FontRenderer;
+		this.bufferedImage = par3RenderEngine.allocateAndSetupTexture(new BufferedImage(128, 128, 2));
 
-	public MapItemRenderer(FontRenderer var1, GameSettings var2, RenderEngine var3) {
-		this.gameSettings = var2;
-		this.fontRenderer = var1;
-		this.bufferedImage = var3.allocateAndSetupTexture(new BufferedImage(128, 128, 2));
-
-		for(int var4 = 0; var4 < 16384 /*GL_LIGHT0*/; ++var4) {
+		for (int var4 = 0; var4 < 16384; ++var4) {
 			this.intArray[var4] = 0;
 		}
-
 	}
 
 	public void renderMap(EntityPlayer par1EntityPlayer, RenderEngine par2RenderEngine, MapData par3MapData) {
@@ -72,18 +62,18 @@ public class MapItemRenderer {
 		byte var16 = 0;
 		Tessellator var17 = Tessellator.instance;
 		float var18 = 0.0F;
-		GL11.glBindTexture(3553, this.bufferedImage);
-		GL11.glEnable(3042);
-		GL11.glBlendFunc(1, 771);
-		GL11.glDisable(3008);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.bufferedImage);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		var17.startDrawingQuads();
 		var17.addVertexWithUV((double)((float)(var15 + 0) + var18), (double)((float)(var16 + 128) - var18), -0.009999999776482582D, 0.0D, 1.0D);
 		var17.addVertexWithUV((double)((float)(var15 + 128) - var18), (double)((float)(var16 + 128) - var18), -0.009999999776482582D, 1.0D, 1.0D);
 		var17.addVertexWithUV((double)((float)(var15 + 128) - var18), (double)((float)(var16 + 0) + var18), -0.009999999776482582D, 1.0D, 0.0D);
 		var17.addVertexWithUV((double)((float)(var15 + 0) + var18), (double)((float)(var16 + 0) + var18), -0.009999999776482582D, 0.0D, 0.0D);
 		var17.draw();
-		GL11.glEnable(3008);
-		GL11.glDisable(3042);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glDisable(GL11.GL_BLEND);
 		par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/misc/mapicons.png"));
 		Iterator var19 = par3MapData.playersVisibleOnMap.iterator();
 

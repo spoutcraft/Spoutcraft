@@ -231,7 +231,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			boolean hardcore = comboGameType.getSelectedItem().equals("Hardcore");
 			int height = Integer.valueOf(comboWorldHeight.getSelectedItem());
 
-			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.field_48637_a[comboWorldType.getSelectedRow()]));
+			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]));
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 		if (btn == buttonNewSeed) {

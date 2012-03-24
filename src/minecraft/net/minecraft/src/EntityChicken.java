@@ -2,22 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftChicken;
 
-import net.minecraft.src.EntityAIFollowParent;
-import net.minecraft.src.EntityAILookIdle;
-import net.minecraft.src.EntityAIMate;
-import net.minecraft.src.EntityAIPanic;
-import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAITempt;
-import net.minecraft.src.EntityAIWander;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityAnimal;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityChicken extends EntityAnimal {
-
 	public boolean field_753_a = false;
 	public float field_752_b = 0.0F;
 	public float destPos = 0.0F;
@@ -82,7 +67,6 @@ public class EntityChicken extends EntityAnimal {
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
 		}
-
 	}
 
 	protected void fall(float par1) {}
@@ -123,7 +107,6 @@ public class EntityChicken extends EntityAnimal {
 		} else {
 			this.dropItem(Item.chickenRaw.shiftedIndex, 1);
 		}
-
 	}
 
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {

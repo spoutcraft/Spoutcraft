@@ -48,6 +48,13 @@ public class ChunkProviderFlat implements IChunkProvider {
 			this.villageGen.generate(this, this.worldObj, par1, par2, var3);
 		}
 
+		BiomeGenBase[] var5 = this.worldObj.getWorldChunkManager().loadBlockGeneratorData((BiomeGenBase[])null, par1 * 16, par2 * 16, 16, 16);
+		byte[] var6 = var4.getBiomeArray();
+
+		for (int var7 = 0; var7 < var6.length; ++var7) {
+			var6[var7] = (byte)var5[var7].biomeID;
+		}
+
 		var4.generateSkylightMap();
 		return var4;
 	}

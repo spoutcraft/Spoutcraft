@@ -22,7 +22,7 @@ public class ItemRenderer {
 	private float prevEquippedProgress = 0.0F;
 	private RenderBlocks renderBlocksInstance = new RenderBlocks();
 	private MapItemRenderer mapItemRenderer;
-	private int field_20099_f = -1;
+	private int equippedItemSlot = -1;
 	//Spout start
 	private Random rand = new Random();
 	//Spout end
@@ -96,7 +96,7 @@ public class ItemRenderer {
 			GL11.glRotatef(335.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glTranslatef(-0.9375F, -0.0625F, 0.0F);
 			Colorizer.colorizeWaterBlockGL(par2ItemStack.itemID); //Spout HD
-			this.func_40686_a(var4, var7, var8, var6, var9);
+			this.renderItemIn2D(var4, var7, var8, var6, var9);
 			if (par2ItemStack != null && par2ItemStack.hasEffect() && par3 == 0) {
 				GL11.glDepthFunc(GL11.GL_EQUAL);
 				GL11.glDisable(GL11.GL_LIGHTING);
@@ -112,14 +112,14 @@ public class ItemRenderer {
 				float var15 = (float)(System.currentTimeMillis() % 3000L) / 3000.0F * 8.0F;
 				GL11.glTranslatef(var15, 0.0F, 0.0F);
 				GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-				this.func_40686_a(var4, 0.0F, 0.0F, 1.0F, 1.0F);
+				this.renderItemIn2D(var4, 0.0F, 0.0F, 1.0F, 1.0F);
 				GL11.glPopMatrix();
 				GL11.glPushMatrix();
 				GL11.glScalef(var14, var14, var14);
 				var15 = (float)(System.currentTimeMillis() % 4873L) / 4873.0F * 8.0F;
 				GL11.glTranslatef(-var15, 0.0F, 0.0F);
 				GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-				this.func_40686_a(var4, 0.0F, 0.0F, 1.0F, 1.0F);
+				this.renderItemIn2D(var4, 0.0F, 0.0F, 1.0F, 1.0F);
 				GL11.glPopMatrix();
 				GL11.glMatrixMode(GL11.GL_MODELVIEW);
 				GL11.glDisable(GL11.GL_BLEND);
@@ -133,7 +133,7 @@ public class ItemRenderer {
 		GL11.glPopMatrix();
 	}
 
-	private void func_40686_a(Tessellator par1Tessellator, float par2, float par3, float par4, float par5) {
+	private void renderItemIn2D(Tessellator par1Tessellator, float par2, float par3, float par4, float par5) {
 		float var6 = 1.0F;
 		float var7 = 0.0625F;
 		par1Tessellator.startDrawingQuads();
@@ -245,7 +245,7 @@ public class ItemRenderer {
 		int var15 = this.mc.theWorld.getLightBrightnessForSkyBlocks(MathHelper.floor_double(var3.posX), MathHelper.floor_double(var3.posY), MathHelper.floor_double(var3.posZ), 0);
 		int var8 = var15 % 65536;
 		int var9 = var15 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)var8 / 1.0F, (float)var9 / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var8 / 1.0F, (float)var9 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		float var10;
 		float var17;
@@ -283,7 +283,7 @@ public class ItemRenderer {
 			GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(var17 * -85.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
 
 			for (var9 = 0; var9 < 2; ++var9) {
 				int var25 = var9 * 2 - 1;
@@ -432,7 +432,7 @@ public class ItemRenderer {
 			var10 = MathHelper.sin(MathHelper.sqrt_float(var17) * (float)Math.PI);
 			GL11.glRotatef(var10 * 70.0F, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-var18 * 20.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getEntityTexture()));
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTextureForDownloadableImage(this.mc.thePlayer.skinUrl, this.mc.thePlayer.getTexture()));
 			GL11.glTranslatef(-1.0F, 3.6F, 3.5F);
 			GL11.glRotatef(120.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glRotatef(200.0F, 1.0F, 0.0F, 0.0F);
@@ -499,7 +499,7 @@ public class ItemRenderer {
 
 	private void renderInsideOfBlock(float par1, int par2) {
 		Tessellator var3 = Tessellator.instance;
-		this.mc.thePlayer.getEntityBrightness(par1);
+		this.mc.thePlayer.getBrightness(par1);
 		float var4 = 0.1F;
 		GL11.glColor4f(var4, var4, var4, 0.5F);
 		GL11.glPushMatrix();
@@ -525,7 +525,7 @@ public class ItemRenderer {
 
 	private void renderWarpedTextureOverlay(float par1) {
 		Tessellator var2 = Tessellator.instance;
-		float var3 = this.mc.thePlayer.getEntityBrightness(par1);
+		float var3 = this.mc.thePlayer.getBrightness(par1);
 		GL11.glColor4f(var3, var3, var3, 0.5F);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -589,7 +589,7 @@ public class ItemRenderer {
 		this.prevEquippedProgress = this.equippedProgress;
 		EntityPlayerSP var1 = this.mc.thePlayer;
 		ItemStack var2 = var1.inventory.getCurrentItem();
-		boolean var4 = this.field_20099_f == var1.inventory.currentItem && var2 == this.itemToRender;
+		boolean var4 = this.equippedItemSlot == var1.inventory.currentItem && var2 == this.itemToRender;
 		if (this.itemToRender == null && var2 == null) {
 			var4 = true;
 		}
@@ -613,7 +613,7 @@ public class ItemRenderer {
 		this.equippedProgress += var7;
 		if (this.equippedProgress < 0.1F) {
 			this.itemToRender = var2;
-			this.field_20099_f = var1.inventory.currentItem;
+			this.equippedItemSlot = var1.inventory.currentItem;
 		}
 	}
 

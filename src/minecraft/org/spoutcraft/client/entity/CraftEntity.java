@@ -134,7 +134,7 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void remove() {
-		handle.setEntityDead();
+		handle.setDead();
 	}
 
 	public boolean isDead() {

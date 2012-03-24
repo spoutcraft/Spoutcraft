@@ -1,5 +1,8 @@
 package net.minecraft.src;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -1054,4 +1057,21 @@ public class GuiScreen extends Gui
 	protected void buttonClicked(Button btn) {
 	}
 	// Spout End
+	public static void func_50050_a(String par0Str) {
+		try {
+			StringSelection var1 = new StringSelection(par0Str);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(var1, (ClipboardOwner)null);
+		} catch (Exception var2) {
+			;
+		}
+	}
+
+	public static boolean func_50051_l() {
+		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
+	}
+
+	public static boolean func_50049_m() {
+		return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
+	}
+
 }

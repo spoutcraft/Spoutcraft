@@ -71,11 +71,11 @@ public class Potion {
 
 	public void performEffect(EntityLiving par1EntityLiving, int par2) {
 		if (this.id == regeneration.id) {
-			if (par1EntityLiving.getEntityHealth() < par1EntityLiving.getMaxHealth()) {
+			if (par1EntityLiving.getHealth() < par1EntityLiving.getMaxHealth()) {
 				par1EntityLiving.heal(1);
 			}
 		} else if (this.id == poison.id) {
-			if (par1EntityLiving.getEntityHealth() > 1) {
+			if (par1EntityLiving.getHealth() > 1) {
 				par1EntityLiving.attackEntityFrom(DamageSource.magic, 1);
 			}
 		} else if (this.id == hunger.id && par1EntityLiving instanceof EntityPlayer) {

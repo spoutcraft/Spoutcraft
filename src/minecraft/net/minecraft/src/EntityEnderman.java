@@ -2,21 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftEnderman;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDamageSourceIndirect;
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
 public class EntityEnderman extends EntityMob {
-
 	private static boolean[] canCarryBlocks = new boolean[256];
 	public boolean isAttacking = false;
 	private int teleportDelay = 0;
@@ -72,12 +58,12 @@ public class EntityEnderman extends EntityMob {
 		return null;
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
-		return super.getEntityBrightnessForRender(par1);
+	public int getBrightnessForRender(float par1) {
+		return super.getBrightnessForRender(par1);
 	}
 
-	public float getEntityBrightness(float par1) {
-		return super.getEntityBrightness(par1);
+	public float getBrightness(float par1) {
+		return super.getBrightness(par1);
 	}
 
 	private boolean shouldAttackPlayer(EntityPlayer par1EntityPlayer) {
@@ -136,7 +122,7 @@ public class EntityEnderman extends EntityMob {
 		}
 
 		if (this.worldObj.isDaytime() && !this.worldObj.isRemote) {
-			float var6 = this.getEntityBrightness(1.0F);
+			float var6 = this.getBrightness(1.0F);
 			if (var6 > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (var6 - 0.4F) * 2.0F) {
 				this.entityToAttack = null;
 				this.teleportRandomly();
@@ -272,7 +258,6 @@ public class EntityEnderman extends EntityMob {
 				this.dropItem(var3, 1);
 			}
 		}
-
 	}
 
 	public void setCarried(int par1) {

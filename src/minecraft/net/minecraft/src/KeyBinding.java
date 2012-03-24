@@ -3,10 +3,8 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.src.IntHashMap;
 
 public class KeyBinding {
-
 	public static List keybindArray = new ArrayList();
 	public static IntHashMap hash = new IntHashMap();
 	public String keyDescription;
@@ -59,7 +57,6 @@ public class KeyBinding {
 			KeyBinding var1 = (KeyBinding)var0.next();
 			var1.unpressKey();
 		}
-
 	}
 
 	public static void resetKeyBindingArrayAndHash() {
@@ -70,7 +67,6 @@ public class KeyBinding {
 			KeyBinding var1 = (KeyBinding)var0.next();
 			hash.addKey(var1.keyCode, var1);
 		}
-
 	}
 
 	public KeyBinding(String par1Str, int par2) {
@@ -93,5 +89,4 @@ public class KeyBinding {
 		this.pressTime = 0;
 		this.pressed = false;
 	}
-
 }

@@ -2,28 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftCreeper;
 
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityAIAttackOnCollide;
-import net.minecraft.src.EntityAIAvoidEntity;
-import net.minecraft.src.EntityAICreeperSwell;
-import net.minecraft.src.EntityAIHurtByTarget;
-import net.minecraft.src.EntityAILookIdle;
-import net.minecraft.src.EntityAINearestAttackableTarget;
-import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAIWander;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntityOcelot;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntitySkeleton;
-import net.minecraft.src.Item;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityCreeper extends EntityMob {
-
 	int timeSinceIgnited;
 	int lastActiveTime;
 
@@ -37,8 +16,8 @@ public class EntityCreeper extends EntityMob {
 		this.tasks.addTask(5, new EntityAIWander(this, 0.2F));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.field_48105_bU.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, false));
-		this.field_48105_bU.addTask(2, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
+		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 		//Spout start
 		this.spoutEntity = new CraftCreeper(this);
 		//Spout end
@@ -63,7 +42,6 @@ public class EntityCreeper extends EntityMob {
 		if(this.dataWatcher.getWatchableObjectByte(17) == 1) {
 			par1NBTTagCompound.setBoolean("powered", true);
 		}
-
 	}
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -93,7 +71,7 @@ public class EntityCreeper extends EntityMob {
 						this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 3.0F);
 					}
 
-					this.setEntityDead();
+					this.setDead();
 				}
 			}
 		}
@@ -114,7 +92,6 @@ public class EntityCreeper extends EntityMob {
 		if(par1DamageSource.getEntity() instanceof EntitySkeleton) {
 			this.dropItem(Item.record13.shiftedIndex + this.rand.nextInt(10), 1);
 		}
-
 	}
 
 	public boolean attackEntityAsMob(Entity par1Entity) {

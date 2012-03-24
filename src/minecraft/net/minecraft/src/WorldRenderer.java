@@ -31,7 +31,6 @@ import net.minecraft.client.Minecraft;
 //Spout end
 
 public class WorldRenderer {
-
 	public World worldObj;
 	private int glRenderList = -1;
 	private static Tessellator tessellator = Tessellator.instance;
@@ -149,7 +148,7 @@ public class WorldRenderer {
 					GL11.glScalef(1F, 1F, 1F);
 					GL11.glTranslatef(8F, 8F, 8F);
 					tessellator.startDrawingQuads();
-					tessellator.setTranslationD((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
+					tessellator.setTranslation((double)(-this.posX), (double)(-this.posY), (double)(-this.posZ));
 				}
 				
 				game.renderEngine.bindTexture(defaultTexture);
@@ -230,7 +229,7 @@ public class WorldRenderer {
 									}
 									
 									Block block = Block.blocksList[id];
-									if (renderPass == 0 && block.func_48205_p()) {
+									if (renderPass == 0 && block.hasTileEntity()) {
 										TileEntity var20 = worldObj.getBlockTileEntity(dx, dy, dz);
 										if (TileEntityRenderer.instance.hasSpecialRenderer(var20)) {
 											this.tileEntityRenderers.add(var20);
@@ -274,7 +273,7 @@ public class WorldRenderer {
 					GL11.glPopMatrix();
 					GL11.glEndList();
 					game.renderEngine.bindTexture(defaultTexture);
-					tessellator.setTranslationD(0.0D, 0.0D, 0.0D);
+					tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 				} else {
 					rendered = false;
 				}
@@ -323,12 +322,12 @@ public class WorldRenderer {
 		this.worldObj = null;
 	}
 
-	public int getGLCallListForPass(int var1) {
-		return !this.isInFrustum?-1:(!this.skipRenderPass[var1]?this.glRenderList + var1:-1);
+	public int getGLCallListForPass(int par1) {
+		return !this.isInFrustum?-1:(!this.skipRenderPass[par1]?this.glRenderList + par1:-1);
 	}
 
-	public void updateInFrustrum(ICamera var1) {
-		this.isInFrustum = var1.isBoundingBoxInFrustum(this.rendererBoundingBox);
+	public void updateInFrustum(ICamera par1ICamera) {
+		this.isInFrustum = par1ICamera.isBoundingBoxInFrustum(this.rendererBoundingBox);
 	}
 
 	public void callOcclusionQueryList() {
@@ -342,5 +341,4 @@ public class WorldRenderer {
 	public void markDirty() {
 		this.needsUpdate = true;
 	}
-
 }

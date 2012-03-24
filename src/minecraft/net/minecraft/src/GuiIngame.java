@@ -78,7 +78,7 @@ public class GuiIngame extends Gui
 		this.mc.entityRenderer.setupOverlayRendering();
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		if(Minecraft.isFancyGraphicsEnabled()) {
-			this.renderVignette(this.mc.thePlayer.getEntityBrightness(f), screenWidth, screenHeight);
+			this.renderVignette(this.mc.thePlayer.getBrightness(f), screenWidth, screenHeight);
 		}
 
 		ItemStack helmet = this.mc.thePlayer.inventory.armorItemInSlot(3);
@@ -184,7 +184,7 @@ public class GuiIngame extends Gui
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
-				font.drawStringWithShadow(this.mc.func_21002_o(), 2, 42, 16777215);
+				font.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
 				long maxMem = Runtime.getRuntime().maxMemory();
 				long totalMem = Runtime.getRuntime().totalMemory();
 				long freeMem = Runtime.getRuntime().freeMemory();

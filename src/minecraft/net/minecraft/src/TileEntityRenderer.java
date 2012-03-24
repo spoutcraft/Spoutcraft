@@ -3,29 +3,9 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.OpenGlHelper;
-import net.minecraft.src.RenderEnchantmentTable;
-import net.minecraft.src.RenderEndPortal;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntityChest;
-import net.minecraft.src.TileEntityChestRenderer;
-import net.minecraft.src.TileEntityEnchantmentTable;
-import net.minecraft.src.TileEntityEndPortal;
-import net.minecraft.src.TileEntityMobSpawner;
-import net.minecraft.src.TileEntityMobSpawnerRenderer;
-import net.minecraft.src.TileEntityPiston;
-import net.minecraft.src.TileEntityRendererPiston;
-import net.minecraft.src.TileEntitySign;
-import net.minecraft.src.TileEntitySignRenderer;
-import net.minecraft.src.TileEntitySpecialRenderer;
-import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
 
 public class TileEntityRenderer {
-
 	private Map specialRendererMap = new HashMap();
 	public static TileEntityRenderer instance = new TileEntityRenderer();
 	private FontRenderer fontRenderer;
@@ -54,7 +34,6 @@ public class TileEntityRenderer {
 			TileEntitySpecialRenderer var2 = (TileEntitySpecialRenderer)var1.next();
 			var2.setTileEntityRenderer(this);
 		}
-
 	}
 
 	public TileEntitySpecialRenderer getSpecialRendererForClass(Class par1Class) {
@@ -97,11 +76,10 @@ public class TileEntityRenderer {
 			int var3 = this.worldObj.getLightBrightnessForSkyBlocks(par1TileEntity.xCoord, par1TileEntity.yCoord, par1TileEntity.zCoord, 0);
 			int var4 = var3 % 65536;
 			int var5 = var3 / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)var4 / 1.0F, (float)var5 / 1.0F);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var4 / 1.0F, (float)var5 / 1.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.renderTileEntityAt(par1TileEntity, (double)par1TileEntity.xCoord - staticPlayerX, (double)par1TileEntity.yCoord - staticPlayerY, (double)par1TileEntity.zCoord - staticPlayerZ, par2);
 		}
-
 	}
 
 	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
@@ -109,7 +87,6 @@ public class TileEntityRenderer {
 		if (var9 != null) {
 			var9.renderTileEntityAt(par1TileEntity, par2, par4, par6, par8);
 		}
-
 	}
 
 	public void cacheSpecialRenderInfo(World par1World) {
@@ -122,7 +99,6 @@ public class TileEntityRenderer {
 				var3.cacheSpecialRenderInfo(par1World);
 			}
 		}
-
 	}
 
 	public FontRenderer getFontRenderer() {

@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GLContext;
 //Spout HD End
 
 public class RenderEngine {
-
 	public static boolean useMipmaps = false;
 	private HashMap textureMap = new HashMap();
 	private HashMap textureContentsMap = new HashMap();

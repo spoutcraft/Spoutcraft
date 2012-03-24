@@ -1,16 +1,7 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSnowball;
-
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityBlaze;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityThrowable;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.World;
-
 public class EntitySnowball extends EntityThrowable {
-
 	public EntitySnowball(World par1World) {
 		super(par1World);
 		//Spout start
@@ -49,8 +40,7 @@ public class EntitySnowball extends EntityThrowable {
 		}
 
 		if (!this.worldObj.isRemote) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 }

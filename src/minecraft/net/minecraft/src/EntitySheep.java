@@ -4,30 +4,11 @@ import java.util.Random;
 
 import org.spoutcraft.client.entity.CraftSheep;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityAIEatGrass;
-import net.minecraft.src.EntityAIFollowParent;
-import net.minecraft.src.EntityAILookIdle;
-import net.minecraft.src.EntityAIMate;
-import net.minecraft.src.EntityAIPanic;
-import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAITempt;
-import net.minecraft.src.EntityAIWander;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityAnimal;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntitySheep extends EntityAnimal {
 
 	public static float[][] fleeceColorTable = new float[][]{{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}};
 	private int sheepTimer;
-	private EntityAIEatGrass field_48137_c = new EntityAIEatGrass(this);
+	private EntityAIEatGrass aiEatGrass = new EntityAIEatGrass(this);
 	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone();
 
 	public EntitySheep(World par1World) {
@@ -35,13 +16,13 @@ public class EntitySheep extends EntityAnimal {
 		this.texture = "/mob/sheep.png";
 		this.setSize(0.9F, 1.3F);
 		float var2 = 0.23F;
-		this.func_48084_aL().func_48664_a(true);
+		this.getNavigator().func_48664_a(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, var2));
 		this.tasks.addTask(3, new EntityAITempt(this, 0.25F, Item.wheat.shiftedIndex, false));
 		this.tasks.addTask(4, new EntityAIFollowParent(this, 0.25F));
-		this.tasks.addTask(5, this.field_48137_c);
+		this.tasks.addTask(5, this.aiEatGrass);
 		this.tasks.addTask(6, new EntityAIWander(this, var2));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
@@ -55,7 +36,7 @@ public class EntitySheep extends EntityAnimal {
 	}
 
 	protected void updateAITasks() {
-		this.sheepTimer = this.field_48137_c.func_48396_h();
+		this.sheepTimer = this.aiEatGrass.func_48396_h();
 		super.updateAITasks();
 	}
 
@@ -80,7 +61,6 @@ public class EntitySheep extends EntityAnimal {
 		if (!this.getSheared()) {
 			this.entityDropItem(new ItemStack(Block.cloth.blockID, 1, this.getFleeceColor()), 0.0F);
 		}
-
 	}
 
 	protected int getDropItemId() {
@@ -93,7 +73,6 @@ public class EntitySheep extends EntityAnimal {
 		} else {
 			super.handleHealthUpdate(par1);
 		}
-
 	}
 
 	public float func_44003_c(float par1) {
@@ -103,9 +82,9 @@ public class EntitySheep extends EntityAnimal {
 	public float func_44002_d(float par1) {
 		if (this.sheepTimer > 4 && this.sheepTimer <= 36) {
 			float var2 = ((float)(this.sheepTimer - 4) - par1) / 32.0F;
-			return 0.62831855F + 0.21991149F * MathHelper.sin(var2 * 28.7F);
+			return ((float)Math.PI / 5F) + ((float)Math.PI * 7F / 100F) * MathHelper.sin(var2 * 28.7F);
 		} else {
-			return this.sheepTimer > 0?0.62831855F:this.rotationPitch / 57.295776F;
+			return this.sheepTimer > 0?((float)Math.PI / 5F):this.rotationPitch / (180F / (float)Math.PI);
 		}
 	}
 
@@ -174,7 +153,6 @@ public class EntitySheep extends EntityAnimal {
 		} else {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & -17)));
 		}
-
 	}
 
 	public static int getRandomFleeceColor(Random par0Random) {
@@ -194,17 +172,15 @@ public class EntitySheep extends EntityAnimal {
 		return var3;
 	}
 
-	public void func_48095_u() {
+	public void eatGrassBonus() {
 		this.setSheared(false);
 		if (this.isChild()) {
-			int var1 = this.func_48123_at() + 1200;
+			int var1 = this.getGrowingAge() + 1200;
 			if (var1 > 0) {
 				var1 = 0;
 			}
 
-			this.func_48122_d(var1);
+			this.setGrowingAge(var1);
 		}
-
 	}
-
 }

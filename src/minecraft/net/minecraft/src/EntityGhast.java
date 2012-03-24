@@ -1,24 +1,11 @@
 package net.minecraft.src;
 
-import net.minecraft.src.AchievementList;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityFireball;
-import net.minecraft.src.EntityFlying;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IMob;
-import net.minecraft.src.Item;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
 //Spout Start
 import org.spoutcraft.client.entity.CraftGhast;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 //Spout End
 
 public class EntityGhast extends EntityFlying implements IMob {
-
 	public int courseChangeCooldown = 0;
 	public double waypointX;
 	public double waypointY;
@@ -69,7 +56,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 	protected void updateEntityActionState() {
 		if (!this.worldObj.isRemote && this.worldObj.difficultySetting == 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		this.despawnEntity();
@@ -113,7 +100,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 			double var11 = this.targetedEntity.posX - this.posX;
 			double var13 = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
 			double var15 = this.targetedEntity.posZ - this.posZ;
-			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(var11, var15)) * 180.0F / 3.1415927F;
+			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(var11, var15)) * 180.0F / (float)Math.PI;
 			if (this.canEntityBeSeen(this.targetedEntity)) {
 				if (this.attackCounter == 10) {
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
@@ -135,7 +122,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 				--this.attackCounter;
 			}
 		} else {
-			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / 3.1415927F;
+			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
 			if (this.attackCounter > 0) {
 				--this.attackCounter;
 			}
@@ -148,7 +135,6 @@ public class EntityGhast extends EntityFlying implements IMob {
 				this.dataWatcher.updateObject(16, Byte.valueOf(var12));
 			}
 		}
-
 	}
 
 	private boolean isCourseTraversable(double par1, double par3, double par5, double par7) {
@@ -196,7 +182,6 @@ public class EntityGhast extends EntityFlying implements IMob {
 		for(var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.gunpowder.shiftedIndex, 1);
 		}
-
 	}
 
 	protected float getSoundVolume() {

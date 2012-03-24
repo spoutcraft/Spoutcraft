@@ -4,17 +4,7 @@ import java.util.List;
 
 import org.spoutcraft.client.entity.CraftLightningStrike;
 
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityWeatherEffect;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
 public class EntityLightningBolt extends EntityWeatherEffect {
-
 	private int lightningState;
 	public long boltVertex = 0L;
 	private int boltLivingTime;
@@ -64,7 +54,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		--this.lightningState;
 		if (this.lightningState < 0) {
 			if (this.boltLivingTime == 0) {
-				this.setEntityDead();
+				this.setDead();
 			} else if (this.lightningState < -this.rand.nextInt(10)) {
 				--this.boltLivingTime;
 				this.lightningState = 1;
@@ -95,7 +85,6 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 
 			this.worldObj.lightningFlash = 2;
 		}
-
 	}
 
 	protected void entityInit() {}

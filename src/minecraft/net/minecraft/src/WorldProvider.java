@@ -32,7 +32,7 @@ public abstract class WorldProvider {
 	}
 
 	protected void registerWorldChunkManager() {
-		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.field_48636_c) {
+		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT) {
 			this.worldChunkMgr = new WorldChunkManagerHell(BiomeGenBase.plains, 0.5F, 0.5F);
 		} else {
 			this.worldChunkMgr = new WorldChunkManager(this.worldObj);
@@ -40,7 +40,7 @@ public abstract class WorldProvider {
 	}
 
 	public IChunkProvider getChunkProvider() {
-		return (IChunkProvider)(this.terrainType == WorldType.field_48636_c?new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()):new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
+		return (IChunkProvider)(this.terrainType == WorldType.FLAT?new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()):new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
 	}
 
 	public boolean canCoordinateBeSpawn(int par1, int par2) {
@@ -148,15 +148,15 @@ public abstract class WorldProvider {
 	}
 
 	public int getAverageGroundLevel() {
-		return this.terrainType == WorldType.field_48636_c?4:64;
+		return this.terrainType == WorldType.FLAT?4:64;
 	}
 
 	public boolean getWorldHasNoSky() {
-		return this.terrainType != WorldType.field_48636_c && !this.hasNoSky;
+		return this.terrainType != WorldType.FLAT && !this.hasNoSky;
 	}
 
-	public double func_46065_j() {
-		return this.terrainType == WorldType.field_48636_c?1.0D:0.03125D;
+	public double getVoidFogYFactor() {
+		return this.terrainType == WorldType.FLAT?1.0D:0.03125D;
 	}
 
 	public boolean func_48218_b(int par1, int par2) {

@@ -27,7 +27,7 @@ class ThreadPollServers extends Thread {
 								var27 = true;
 								this.server.motd = "\u00a78Polling..";
 								long var1 = System.nanoTime();
-								GuiMultiplayer.pollServer(this.serverSlotContainer.field_35410_a, this.server);
+								GuiMultiplayer.pollServer(this.serverSlotContainer.parentGui, this.server);
 								long var3 = System.nanoTime();
 								this.server.lag = (var3 - var1) / 1000000L;
 								var27 = false;

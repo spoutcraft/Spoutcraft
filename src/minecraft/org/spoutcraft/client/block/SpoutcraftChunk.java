@@ -129,13 +129,13 @@ public class SpoutcraftChunk implements Chunk{
 	public Entity[] getEntities() {
 		int count = 0, index = 0;
 		net.minecraft.src.Chunk chunk = getHandle();
-		for (int i = 0; i < chunk.field_48502_j.length; i++) {
-			count += chunk.field_48502_j[i].size();
+		for (int i = 0; i < chunk.entityLists.length; i++) {
+			count += chunk.entityLists[i].size();
 		}
 
 		Entity[] entities = new Entity[count];
-		for (int i = 0; i < chunk.field_48502_j.length; i++) {
-			for (Object obj: chunk.field_48502_j[i].toArray()) {
+		for (int i = 0; i < chunk.entityLists.length; i++) {
+			for (Object obj: chunk.entityLists[i].toArray()) {
 				if (!(obj instanceof net.minecraft.src.Entity)) {
 					continue;
 				}

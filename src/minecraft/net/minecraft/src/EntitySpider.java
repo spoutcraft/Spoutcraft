@@ -2,18 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSpider;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EnumCreatureAttribute;
-import net.minecraft.src.Item;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.Potion;
-import net.minecraft.src.PotionEffect;
-import net.minecraft.src.World;
-
 public class EntitySpider extends EntityMob {
-
 	public EntitySpider(World par1World) {
 		super(par1World);
 		this.texture = "/mob/spider.png";
@@ -38,7 +27,6 @@ public class EntitySpider extends EntityMob {
 		if (!this.worldObj.isRemote) {
 			this.func_40148_a(this.isCollidedHorizontally);
 		}
-
 	}
 
 	public int getMaxHealth() {
@@ -54,7 +42,7 @@ public class EntitySpider extends EntityMob {
 	}
 
 	protected Entity findPlayerToAttack() {
-		float var1 = this.getEntityBrightness(1.0F);
+		float var1 = this.getBrightness(1.0F);
 		if (var1 < 0.5F) {
 			double var2 = 16.0D;
 			return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
@@ -76,7 +64,7 @@ public class EntitySpider extends EntityMob {
 	}
 
 	protected void attackEntity(Entity par1Entity, float par2) {
-		float var3 = this.getEntityBrightness(1.0F);
+		float var3 = this.getBrightness(1.0F);
 		if (var3 > 0.5F && this.rand.nextInt(100) == 0) {
 			this.entityToAttack = null;
 		} else {
@@ -92,7 +80,6 @@ public class EntitySpider extends EntityMob {
 			} else {
 				super.attackEntity(par1Entity, par2);
 			}
-
 		}
 	}
 
@@ -113,7 +100,6 @@ public class EntitySpider extends EntityMob {
 		if (par1 && (this.rand.nextInt(3) == 0 || this.rand.nextInt(1 + par2) > 0)) {
 			this.dropItem(Item.spiderEye.shiftedIndex, 1);
 		}
-
 	}
 
 	public boolean isOnLadder() {
@@ -130,8 +116,8 @@ public class EntitySpider extends EntityMob {
 		return EnumCreatureAttribute.ARTHROPOD;
 	}
 
-	public boolean isPotionAplicable(PotionEffect par1PotionEffect) {
-		return par1PotionEffect.getPotionID() == Potion.poison.id?false:super.isPotionAplicable(par1PotionEffect);
+	public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
+		return par1PotionEffect.getPotionID() == Potion.poison.id?false:super.isPotionApplicable(par1PotionEffect);
 	}
 
 	public boolean func_40149_l_() {

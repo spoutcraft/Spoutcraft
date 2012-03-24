@@ -10,19 +10,11 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.minecraft.src.NetHandler;
-import net.minecraft.src.NetworkMasterThread;
-import net.minecraft.src.NetworkReaderThread;
-import net.minecraft.src.NetworkWriterThread;
-import net.minecraft.src.Packet;
-import net.minecraft.src.ThreadMonitorConnection;
-
 //Spout start
 import org.spoutcraft.client.chunkcache.ChunkCache;
 //Spout end
 
 public class NetworkManager {
-
 	public static final Object threadSyncObject = new Object();
 	public static int numReadThreads;
 	public static int numWriteThreads;
@@ -80,7 +72,6 @@ public class NetworkManager {
 				} else {
 					this.dataPackets.add(par1Packet);
 				}
-
 			}
 		}
 	}
@@ -198,7 +189,6 @@ public class NetworkManager {
 			} catch (Throwable var4) {
 				;
 			}
-
 		}
 	}
 
@@ -227,7 +217,6 @@ public class NetworkManager {
 		if (this.isTerminating && this.readPackets.isEmpty()) {
 			this.netHandler.handleErrorMessage(this.terminationReason, this.field_20101_t);
 		}
-
 	}
 
 	public void serverShutdown() {
@@ -239,49 +228,39 @@ public class NetworkManager {
 		}
 	}
 
-	
 	static boolean isRunning(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.isRunning;
 	}
 
-	
 	static boolean isServerTerminating(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.isServerTerminating;
 	}
 
-	
 	static boolean readNetworkPacket(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.readPacket();
 	}
 
-	
 	static boolean sendNetworkPacket(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.sendPacket();
 	}
 
-	
 	static DataOutputStream getOutputStream(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.socketOutputStream;
 	}
 
-	
 	static boolean isTerminating(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.isTerminating;
 	}
 
-	
 	static void sendError(NetworkManager par0NetworkManager, Exception par1Exception) {
 		par0NetworkManager.onNetworkError(par1Exception);
 	}
 
-	
 	static Thread getReadThread(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.readThread;
 	}
 
-	
 	static Thread getWriteThread(NetworkManager par0NetworkManager) {
 		return par0NetworkManager.writeThread;
 	}
-
 }

@@ -2,15 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftFallingSand;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockSand;
-import net.minecraft.src.Entity;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityFallingSand extends Entity {
-
 	public int blockID;
 	public int fallTime = 0;
 
@@ -48,7 +40,7 @@ public class EntityFallingSand extends Entity {
 
 	public void onUpdate() {
 		if (this.blockID == 0) {
-			this.setEntityDead();
+			this.setDead();
 		} else {
 			this.prevPosX = this.posX;
 			this.prevPosY = this.posY;
@@ -65,7 +57,7 @@ public class EntityFallingSand extends Entity {
 			if (this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID) {
 				this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
 			} else if (!this.worldObj.isRemote && this.fallTime == 1) {
-				this.setEntityDead();
+				this.setDead();
 			}
 
 			if (this.onGround) {
@@ -73,16 +65,15 @@ public class EntityFallingSand extends Entity {
 				this.motionZ *= 0.699999988079071D;
 				this.motionY *= -0.5D;
 				if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
-					this.setEntityDead();
+					this.setDead();
 					if ((!this.worldObj.canBlockBePlacedAt(this.blockID, var1, var2, var3, true, 1) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockWithNotify(var1, var2, var3, this.blockID)) && !this.worldObj.isRemote) {
 						this.dropItem(this.blockID, 1);
 					}
 				}
 			} else if (this.fallTime > 100 && !this.worldObj.isRemote && (var2 < 1 || var2 > 256) || this.fallTime > 600) {
 				this.dropItem(this.blockID, 1);
-				this.setEntityDead();
+				this.setDead();
 			}
-
 		}
 	}
 

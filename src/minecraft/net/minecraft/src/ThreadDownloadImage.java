@@ -3,12 +3,8 @@ package net.minecraft.src;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
-import net.minecraft.src.ImageBuffer;
-import net.minecraft.src.ThreadDownloadImageData;
 
 class ThreadDownloadImage extends Thread {
-
-	
 	final String location;
 	
 	final ImageBuffer buffer;
@@ -48,6 +44,5 @@ class ThreadDownloadImage extends Thread {
 		} finally {
 			var1.disconnect();
 		}
-
 	}
 }

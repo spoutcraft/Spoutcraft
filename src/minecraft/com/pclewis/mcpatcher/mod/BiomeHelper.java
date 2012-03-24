@@ -69,11 +69,11 @@ abstract class BiomeHelper {
 		}
 
 		float getTemperature(int var1, int var2, int var3) {
-			return this.getBiomeGenAt(var1, var2, var3).func_48411_i();
+			return this.getBiomeGenAt(var1, var2, var3).getFloatTemperature();
 		}
 
 		float getRainfall(int var1, int var2, int var3) {
-			return this.getBiomeGenAt(var1, var2, var3).func_48414_h();
+			return this.getBiomeGenAt(var1, var2, var3).getFloatRainfall();
 		}
 
 		int getWaterColorMultiplier(int var1, int var2, int var3) {

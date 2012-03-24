@@ -31,25 +31,25 @@ import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
 
 public class Chunk {
-
 	public static boolean isLit;
-	private ExtendedBlockStorage[] field_48505_p;
-	private byte[] field_48504_q;
+	private ExtendedBlockStorage[] storageArrays;
+	private byte[] blockBiomeArray;
 	public int[] precipitationHeightMap;
 	public boolean[] updateSkylightColumns;
 	public boolean isChunkLoaded;
 	public World worldObj;
-	public int[] field_48501_f;
+	public int[] heightMap;
 	public final int xPosition;
 	public final int zPosition;
-	private boolean field_40741_v;
+	private boolean isGapLightingUpdated;
 	public Map chunkTileEntityMap;
-	public List[] field_48502_j;
+	public List[] entityLists;
 	public boolean isTerrainPopulated;
 	public boolean isModified;
 	public boolean hasEntities;
 	public long lastSaveTime;
-	private int field_48503_s;
+	public boolean field_50120_o;
+	private int queuedLightChecks;
 	boolean field_35846_u;
 
 	//Spout start
@@ -60,30 +60,31 @@ public class Chunk {
 	//Spout end
 
 	public Chunk(World par1World, int par2, int par3) {
-		this.field_48505_p = new ExtendedBlockStorage[16];
-		this.field_48504_q = new byte[256];
+		this.storageArrays = new ExtendedBlockStorage[16];
+		this.blockBiomeArray = new byte[256];
 		this.precipitationHeightMap = new int[256];
 		this.updateSkylightColumns = new boolean[256];
-		this.field_40741_v = false;
+		this.isGapLightingUpdated = false;
 		this.chunkTileEntityMap = new HashMap();
 		this.isTerrainPopulated = false;
 		this.isModified = false;
 		this.hasEntities = false;
 		this.lastSaveTime = 0L;
-		this.field_48503_s = 4096;
+		this.field_50120_o = false;
+		this.queuedLightChecks = 4096;
 		this.field_35846_u = false;
-		this.field_48502_j = new List[16];
+		this.entityLists = new List[16];
 		this.worldObj = par1World;
 		this.xPosition = par2;
 		this.zPosition = par3;
-		this.field_48501_f = new int[256];
+		this.heightMap = new int[256];
 
-		for (int var4 = 0; var4 < this.field_48502_j.length; ++var4) {
-			this.field_48502_j[var4] = new ArrayList();
+		for (int var4 = 0; var4 < this.entityLists.length; ++var4) {
+			this.entityLists[var4] = new ArrayList();
 		}
 
 		Arrays.fill(this.precipitationHeightMap, -999);
-		Arrays.fill(this.field_48504_q, (byte)-1);
+		Arrays.fill(this.blockBiomeArray, (byte)-1);
 
 		//Spout start
 		spoutChunk = new SpoutcraftChunk(this);
@@ -100,16 +101,15 @@ public class Chunk {
 					byte var9 = par2ArrayOfByte[var6 << 11 | var7 << 7 | var8];
 					if (var9 != 0) {
 						int var10 = var8 >> 4;
-					if (this.field_48505_p[var10] == null) {
-						this.field_48505_p[var10] = new ExtendedBlockStorage(var10 << 4);
+						if (this.storageArrays[var10] == null) {
+							this.storageArrays[var10] = new ExtendedBlockStorage(var10 << 4);
 					}
 
-					this.field_48505_p[var10].func_48691_a(var6, var8 & 15, var7, var9);
+						this.storageArrays[var10].setExtBlockID(var6, var8 & 15, var7, var9);
 					}
 				}
 			}
 		}
-
 	}
 
 	public boolean isAtLocation(int par1, int par2) {
@@ -117,25 +117,25 @@ public class Chunk {
 	}
 
 	public int getHeightValue(int par1, int par2) {
-		return this.field_48501_f[par2 << 4 | par1];
+		return this.heightMap[par2 << 4 | par1];
 	}
 
-	public int func_48498_h() {
-		for (int var1 = this.field_48505_p.length - 1; var1 >= 0; --var1) {
-			if (this.field_48505_p[var1] != null) {
-				return this.field_48505_p[var1].func_48707_c();
+	public int getTopFilledSegment() {
+		for (int var1 = this.storageArrays.length - 1; var1 >= 0; --var1) {
+			if (this.storageArrays[var1] != null) {
+				return this.storageArrays[var1].getYLocation();
 			}
 		}
 
 		return 0;
 	}
 
-	public ExtendedBlockStorage[] func_48495_i() {
-		return this.field_48505_p;
+	public ExtendedBlockStorage[] getBlockStorageArray() {
+		return this.storageArrays;
 	}
 
 	public void generateHeightMap() {
-		int var1 = this.func_48498_h();
+		int var1 = this.getTopFilledSegment();
 
 		for (int var2 = 0; var2 < 16; ++var2) {
 			int var3 = 0;
@@ -152,7 +152,7 @@ public class Chunk {
 							continue;
 						}
 
-						this.field_48501_f[var3 << 4 | var2] = var4;
+						this.heightMap[var3 << 4 | var2] = var4;
 					}
 
 					++var3;
@@ -165,7 +165,7 @@ public class Chunk {
 	}
 
 	public void generateSkylightMap() {
-		int var1 = this.func_48498_h();
+		int var1 = this.getTopFilledSegment();
 
 		int var2;
 		int var3;
@@ -178,12 +178,12 @@ public class Chunk {
 
 				while (true) {
 					if (var4 > 0) {
-						if (this.func_48499_b(var2, var4 - 1, var3) == 0) {
+						if (this.getBlockLightOpacity(var2, var4 - 1, var3) == 0) {
 							--var4;
 							continue;
 						}
 
-						this.field_48501_f[var3 << 4 | var2] = var4;
+						this.heightMap[var3 << 4 | var2] = var4;
 					}
 
 					if (!this.worldObj.worldProvider.hasNoSky) {
@@ -191,11 +191,11 @@ public class Chunk {
 						int var5 = var1 + 16 - 1;
 
 						do {
-							var4 -= this.func_48499_b(var2, var5, var3);
+							var4 -= this.getBlockLightOpacity(var2, var5, var3);
 							if (var4 > 0) {
-								ExtendedBlockStorage var6 = this.field_48505_p[var5 >> 4];
+								ExtendedBlockStorage var6 = this.storageArrays[var5 >> 4];
 								if (var6 != null) {
-									var6.func_48702_c(var2, var5 & 15, var3, var4);
+									var6.setExtSkylightValue(var2, var5 & 15, var3, var4);
 									this.worldObj.func_48464_p((this.xPosition << 4) + var2, var5, (this.zPosition << 4) + var3);
 								}
 							}
@@ -217,14 +217,13 @@ public class Chunk {
 				this.propagateSkylightOcclusion(var2, var3);
 			}
 		}
-
 	}
 
 	public void func_4143_d() {}
 
 	private void propagateSkylightOcclusion(int par1, int par2) {
 		this.updateSkylightColumns[par1 + par2 * 16] = true;
-		this.field_40741_v = true;
+		this.isGapLightingUpdated = true;
 	}
 
 	private void updateSkylight_do() {
@@ -262,7 +261,7 @@ public class Chunk {
 				}
 			}
 
-			this.field_40741_v = false;
+			this.isGapLightingUpdated = false;
 		}
 
 		Profiler.endSection();
@@ -275,7 +274,6 @@ public class Chunk {
 		} else if (var4 < par3) {
 			this.updateSkylightNeighborHeight(par1, par2, var4, par3 + 1);
 		}
-
 	}
 
 	private void updateSkylightNeighborHeight(int par1, int par2, int par3, int par4) {
@@ -286,23 +284,22 @@ public class Chunk {
 
 			this.isModified = true;
 		}
-
 	}
 
 	private void relightBlock(int par1, int par2, int par3) {
-		int var4 = this.field_48501_f[par3 << 4 | par1];
+		int var4 = this.heightMap[par3 << 4 | par1] & 255;
 		int var5 = var4;
 		if (par2 > var4) {
 			var5 = par2;
 		}
 
-		while (var5 > 0 && this.func_48499_b(par1, var5 - 1, par3) == 0) {
+		while (var5 > 0 && this.getBlockLightOpacity(par1, var5 - 1, par3) == 0) {
 			--var5;
 		}
 
 		if (var5 != var4) {
 			this.worldObj.markBlocksDirtyVertical(par1, par3, var5, var4);
-			this.field_48501_f[par3 << 4 | par1] = var5;
+			this.heightMap[par3 << 4 | par1] = var5;
 			int var6 = this.xPosition * 16 + par1;
 			int var7 = this.zPosition * 16 + par3;
 			int var8;
@@ -311,17 +308,17 @@ public class Chunk {
 				ExtendedBlockStorage var9;
 				if (var5 < var4) {
 					for (var8 = var5; var8 < var4; ++var8) {
-						var9 = this.field_48505_p[var8 >> 4];
+						var9 = this.storageArrays[var8 >> 4];
 						if (var9 != null) {
-							var9.func_48702_c(par1, var8 & 15, par3, 15);
+							var9.setExtSkylightValue(par1, var8 & 15, par3, 15);
 							this.worldObj.func_48464_p((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
 						}
 					}
 				} else {
 					for (var8 = var4; var8 < var5; ++var8) {
-						var9 = this.field_48505_p[var8 >> 4];
+						var9 = this.storageArrays[var8 >> 4];
 						if (var9 != null) {
-							var9.func_48702_c(par1, var8 & 15, par3, 0);
+							var9.setExtSkylightValue(par1, var8 & 15, par3, 0);
 							this.worldObj.func_48464_p((this.xPosition << 4) + par1, var8, (this.zPosition << 4) + par3);
 						}
 					}
@@ -331,7 +328,7 @@ public class Chunk {
 
 				while (var5 > 0 && var8 > 0) {
 					--var5;
-					var12 = this.func_48499_b(par1, var5, par3);
+					var12 = this.getBlockLightOpacity(par1, var5, par3);
 					if (var12 == 0) {
 						var12 = 1;
 					}
@@ -341,14 +338,14 @@ public class Chunk {
 						var8 = 0;
 					}
 
-					ExtendedBlockStorage var10 = this.field_48505_p[var5 >> 4];
+					ExtendedBlockStorage var10 = this.storageArrays[var5 >> 4];
 					if (var10 != null) {
-						var10.func_48702_c(par1, var5 & 15, par3, var8);
+						var10.setExtSkylightValue(par1, var5 & 15, par3, var8);
 					}
 				}
 			}
 
-			var8 = this.field_48501_f[par3 << 4 | par1];
+			var8 = this.heightMap[par3 << 4 | par1];
 			var12 = var4;
 			int var13 = var8;
 			if (var8 < var4) {
@@ -368,18 +365,26 @@ public class Chunk {
 		}
 	}
 
-	public int func_48499_b(int par1, int par2, int par3) {
+	public int getBlockLightOpacity(int par1, int par2, int par3) {
 		return Block.lightOpacity[this.getBlockID(par1, par2, par3)];
 	}
 
 	public int getBlockID(int par1, int par2, int par3) {
-		ExtendedBlockStorage var4 = this.field_48505_p[par2 >> 4];
-		return var4 != null?var4.func_48703_a(par1, par2 & 15, par3):0;
+		if (par2 >> 4 >= this.storageArrays.length) {
+			return 0;
+		} else {
+			ExtendedBlockStorage var4 = this.storageArrays[par2 >> 4];
+			return var4 != null?var4.getExtBlockID(par1, par2 & 15, par3):0;
+	}
 	}
 
 	public int getBlockMetadata(int par1, int par2, int par3) {
-		ExtendedBlockStorage var4 = this.field_48505_p[par2 >> 4];
-		return var4 != null?var4.func_48694_b(par1, par2 & 15, par3):0;
+		if (par2 >> 4 >= this.storageArrays.length) {
+			return 0;
+		} else {
+			ExtendedBlockStorage var4 = this.storageArrays[par2 >> 4];
+			return var4 != null?var4.getExtBlockMetadata(par1, par2 & 15, par3):0;
+	}
 	}
 
 	public boolean setBlockID(int par1, int par2, int par3, int par4) {
@@ -392,23 +397,23 @@ public class Chunk {
 			this.precipitationHeightMap[var6] = -999;
 		}
 
-		int var7 = this.field_48501_f[var6];
+		int var7 = this.heightMap[var6];
 		int var8 = this.getBlockID(par1, par2, par3);
 		if (var8 == par4 && this.getBlockMetadata(par1, par2, par3) == par5) {
 			return false;
 		} else {
-			ExtendedBlockStorage var9 = this.field_48505_p[par2 >> 4];
+			ExtendedBlockStorage var9 = this.storageArrays[par2 >> 4];
 			boolean var10 = false;
 			if (var9 == null) {
 				if (par4 == 0) {
 					return false;
 				}
 
-				var9 = this.field_48505_p[par2 >> 4] = new ExtendedBlockStorage(par2 >> 4 << 4);
+				var9 = this.storageArrays[par2 >> 4] = new ExtendedBlockStorage(par2 >> 4 << 4);
 				var10 = par2 >= var7;
 			}
 
-			var9.func_48691_a(par1, par2 & 15, par3, par4);
+			var9.setExtBlockID(par1, par2 & 15, par3, par4);
 			int var11 = this.xPosition * 16 + par1;
 			int var12 = this.zPosition * 16 + par3;
 			if (var8 != 0) {
@@ -419,12 +424,15 @@ public class Chunk {
 				}
 			}
 
-			var9.func_48690_b(par1, par2 & 15, par3, par5);
+			if (var9.getExtBlockID(par1, par2 & 15, par3) != par4) {
+				return false;
+			} else {
+				var9.setExtBlockMetadata(par1, par2 & 15, par3, par5);
 			if (var10) {
 				this.generateSkylightMap();
 			} else {
 				if (Block.lightOpacity[par4 & 4095] > 0) {
-					if (par2 > var7) {
+						if (par2 >= var7) {
 						this.relightBlock(par1, par2 + 1, par3);
 					}
 				} else if (par2 == var7 - 1) {
@@ -462,19 +470,20 @@ public class Chunk {
 			return true;
 		}
 	}
+	}
 
 	public boolean setBlockMetadata(int par1, int par2, int par3, int par4) {
-		ExtendedBlockStorage var5 = this.field_48505_p[par2 >> 4];
+		ExtendedBlockStorage var5 = this.storageArrays[par2 >> 4];
 		if (var5 == null) {
 			return false;
 		} else {
-			int var6 = var5.func_48694_b(par1, par2 & 15, par3);
+			int var6 = var5.getExtBlockMetadata(par1, par2 & 15, par3);
 			if (var6 == par4) {
 				return false;
 			} else {
 				this.isModified = true;
-				var5.func_48690_b(par1, par2 & 15, par3, par4);
-				int var7 = var5.func_48703_a(par1, par2 & 15, par3);
+				var5.setExtBlockMetadata(par1, par2 & 15, par3, par4);
+				int var7 = var5.getExtBlockID(par1, par2 & 15, par3);
 				if (var7 > 0 && Block.blocksList[var7] instanceof BlockContainer) {
 					TileEntity var8 = this.getChunkBlockTileEntity(par1, par2, par3);
 					if (var8 != null) {
@@ -489,44 +498,43 @@ public class Chunk {
 	}
 
 	public int getSavedLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4) {
-		ExtendedBlockStorage var5 = this.field_48505_p[par3 >> 4];
-		return var5 == null?par1EnumSkyBlock.defaultLightValue:(par1EnumSkyBlock == EnumSkyBlock.Sky?var5.func_48709_c(par2, par3 & 15, par4):(par1EnumSkyBlock == EnumSkyBlock.Block?var5.func_48712_d(par2, par3 & 15, par4):par1EnumSkyBlock.defaultLightValue));
+		ExtendedBlockStorage var5 = this.storageArrays[par3 >> 4];
+		return var5 == null?par1EnumSkyBlock.defaultLightValue:(par1EnumSkyBlock == EnumSkyBlock.Sky?var5.getExtSkylightValue(par2, par3 & 15, par4):(par1EnumSkyBlock == EnumSkyBlock.Block?var5.getExtBlocklightValue(par2, par3 & 15, par4):par1EnumSkyBlock.defaultLightValue));
 	}
 
 	public void setLightValue(EnumSkyBlock par1EnumSkyBlock, int par2, int par3, int par4, int par5) {
-		ExtendedBlockStorage var6 = this.field_48505_p[par3 >> 4];
+		ExtendedBlockStorage var6 = this.storageArrays[par3 >> 4];
 		if (var6 == null) {
-			var6 = this.field_48505_p[par3 >> 4] = new ExtendedBlockStorage(par3 >> 4 << 4);
+			var6 = this.storageArrays[par3 >> 4] = new ExtendedBlockStorage(par3 >> 4 << 4);
 			this.generateSkylightMap();
 		}
 
 		this.isModified = true;
 		if (par1EnumSkyBlock == EnumSkyBlock.Sky) {
 			if (!this.worldObj.worldProvider.hasNoSky) {
-				var6.func_48702_c(par2, par3 & 15, par4, par5);
+				var6.setExtSkylightValue(par2, par3 & 15, par4, par5);
 			}
 		} else {
 			if (par1EnumSkyBlock != EnumSkyBlock.Block) {
 				return;
 			}
 
-			var6.func_48699_d(par2, par3 & 15, par4, par5);
+			var6.setExtBlocklightValue(par2, par3 & 15, par4, par5);
 		}
-
 	}
 
 	public int getBlockLightValue(int par1, int par2, int par3, int par4) {
-		ExtendedBlockStorage var5 = this.field_48505_p[par2 >> 4];
+		ExtendedBlockStorage var5 = this.storageArrays[par2 >> 4];
 		if (var5 == null) {
 			return !this.worldObj.worldProvider.hasNoSky && par4 < EnumSkyBlock.Sky.defaultLightValue?EnumSkyBlock.Sky.defaultLightValue - par4:0;
 		} else {
-			int var6 = this.worldObj.worldProvider.hasNoSky?0:var5.func_48709_c(par1, par2 & 15, par3);
+			int var6 = this.worldObj.worldProvider.hasNoSky?0:var5.getExtSkylightValue(par1, par2 & 15, par3);
 			if (var6 > 0) {
 				isLit = true;
 			}
 
 			var6 -= par4;
-			int var7 = var5.func_48712_d(par1, par2 & 15, par3);
+			int var7 = var5.getExtBlocklightValue(par1, par2 & 15, par3);
 			if (var7 > var6) {
 				var6 = var7;
 			}
@@ -549,15 +557,15 @@ public class Chunk {
 			var4 = 0;
 		}
 
-		if (var4 >= this.field_48502_j.length) {
-			var4 = this.field_48502_j.length - 1;
+		if (var4 >= this.entityLists.length) {
+			var4 = this.entityLists.length - 1;
 		}
 
 		par1Entity.addedToChunk = true;
 		par1Entity.chunkCoordX = this.xPosition;
 		par1Entity.chunkCoordY = var4;
 		par1Entity.chunkCoordZ = this.zPosition;
-		this.field_48502_j[var4].add(par1Entity);
+		this.entityLists[var4].add(par1Entity);
 	}
 
 	public void removeEntity(Entity par1Entity) {
@@ -569,15 +577,15 @@ public class Chunk {
 			par2 = 0;
 		}
 
-		if (par2 >= this.field_48502_j.length) {
-			par2 = this.field_48502_j.length - 1;
+		if (par2 >= this.entityLists.length) {
+			par2 = this.entityLists.length - 1;
 		}
 
-		this.field_48502_j[par2].remove(par1Entity);
+		this.entityLists[par2].remove(par1Entity);
 	}
 
 	public boolean canBlockSeeTheSky(int par1, int par2, int par3) {
-		return par2 >= this.field_48501_f[par3 << 4 | par1];
+		return par2 >= this.heightMap[par3 << 4 | par1];
 	}
 
 	public TileEntity getChunkBlockTileEntity(int par1, int par2, int par3) {
@@ -585,7 +593,7 @@ public class Chunk {
 		TileEntity var5 = (TileEntity)this.chunkTileEntityMap.get(var4);
 		if (var5 == null) {
 			int var6 = this.getBlockID(par1, par2, par3);
-			if (var6 <= 0 || !Block.blocksList[var6].func_48205_p()) {
+			if (var6 <= 0 || !Block.blocksList[var6].hasTileEntity()) {
 				return null;
 			}
 
@@ -613,7 +621,6 @@ public class Chunk {
 		if (this.isChunkLoaded) {
 			this.worldObj.loadedTileEntityList.add(par1TileEntity);
 		}
-
 	}
 
 	public void setChunkBlockTileEntity(int par1, int par2, int par3, TileEntity par4TileEntity) {
@@ -636,15 +643,14 @@ public class Chunk {
 				var5.invalidate();
 			}
 		}
-
 	}
 
 	public void onChunkLoad() {
 		this.isChunkLoaded = true;
 		this.worldObj.addTileEntity(this.chunkTileEntityMap.values());
 
-		for (int var1 = 0; var1 < this.field_48502_j.length; ++var1) {
-			this.worldObj.addLoadedEntities(this.field_48502_j[var1]);
+		for (int var1 = 0; var1 < this.entityLists.length; ++var1) {
+			this.worldObj.addLoadedEntities(this.entityLists[var1]);
 		}
 
 		//Spout start
@@ -662,8 +668,8 @@ public class Chunk {
 			this.worldObj.markTileEntityForDespawn(var2);
 		}
 
-		for (int var3 = 0; var3 < this.field_48502_j.length; ++var3) {
-			this.worldObj.unloadEntities(this.field_48502_j[var3]);
+		for (int var3 = 0; var3 < this.entityLists.length; ++var3) {
+			this.worldObj.unloadEntities(this.entityLists[var3]);
 		}
 
 		//Spout start
@@ -682,12 +688,12 @@ public class Chunk {
 			var4 = 0;
 		}
 
-		if (var5 >= this.field_48502_j.length) {
-			var5 = this.field_48502_j.length - 1;
+		if (var5 >= this.entityLists.length) {
+			var5 = this.entityLists.length - 1;
 		}
 
 		for (int var6 = var4; var6 <= var5; ++var6) {
-			List var7 = this.field_48502_j[var6];
+			List var7 = this.entityLists[var6];
 
 			for (int var8 = 0; var8 < var7.size(); ++var8) {
 				Entity var9 = (Entity)var7.get(var8);
@@ -705,7 +711,6 @@ public class Chunk {
 				}
 			}
 		}
-
 	}
 
 	public void getEntitiesOfTypeWithinAAAB(Class par1Class, AxisAlignedBB par2AxisAlignedBB, List par3List) {
@@ -713,18 +718,18 @@ public class Chunk {
 		int var5 = MathHelper.floor_double((par2AxisAlignedBB.maxY + 2.0D) / 16.0D);
 		if (var4 < 0) {
 			var4 = 0;
-		} else if (var4 >= this.field_48502_j.length) {
-			var4 = this.field_48502_j.length - 1;
+		} else if (var4 >= this.entityLists.length) {
+			var4 = this.entityLists.length - 1;
 		}
 
-		if (var5 >= this.field_48502_j.length) {
-			var5 = this.field_48502_j.length - 1;
+		if (var5 >= this.entityLists.length) {
+			var5 = this.entityLists.length - 1;
 		} else if (var5 < 0) {
 			var5 = 0;
 		}
 
 		for (int var6 = var4; var6 <= var5; ++var6) {
-			List var7 = this.field_48502_j[var6];
+			List var7 = this.entityLists[var6];
 
 			for (int var8 = 0; var8 < var7.size(); ++var8) {
 				Entity var9 = (Entity)var7.get(var8);
@@ -733,7 +738,6 @@ public class Chunk {
 				}
 			}
 		}
-
 	}
 
 	public boolean needsSaving(boolean par1) {
@@ -757,7 +761,7 @@ public class Chunk {
 	}
 
 	public void removeUnknownBlocks() {
-		ExtendedBlockStorage[] var1 = this.field_48505_p;
+		ExtendedBlockStorage[] var1 = this.storageArrays;
 		int var2 = var1.length;
 
 		for (int var3 = 0; var3 < var2; ++var3) {
@@ -766,7 +770,6 @@ public class Chunk {
 				var4.func_48711_e();
 			}
 		}
-
 	}
 
 	public void populateChunk(IChunkProvider par1IChunkProvider, IChunkProvider par2IChunkProvider, int par3, int par4) {
@@ -785,14 +788,13 @@ public class Chunk {
 		if (par1IChunkProvider.chunkExists(par3 - 1, par4 - 1) && !par1IChunkProvider.provideChunk(par3 - 1, par4 - 1).isTerrainPopulated && par1IChunkProvider.chunkExists(par3, par4 - 1) && par1IChunkProvider.chunkExists(par3 - 1, par4)) {
 			par1IChunkProvider.populate(par2IChunkProvider, par3 - 1, par4 - 1);
 		}
-
 	}
 
 	public int getPrecipitationHeight(int par1, int par2) {
 		int var3 = par1 | par2 << 4;
 		int var4 = this.precipitationHeightMap[var3];
 		if (var4 == -999) {
-			int var5 = this.func_48498_h() + 15;
+			int var5 = this.getTopFilledSegment() + 15;
 			var4 = -1;
 
 			while (var5 > 0 && var4 == -1) {
@@ -812,18 +814,16 @@ public class Chunk {
 	}
 
 	public void updateSkylight() {
-		if (this.field_40741_v && !this.worldObj.worldProvider.hasNoSky) {
-			if (ConfigReader.clientLight || !this.worldObj.isRemote) //Spout
+		if (this.isGapLightingUpdated && !this.worldObj.worldProvider.hasNoSky) {
 			this.updateSkylight_do();
 		}
-
 	}
 
 	public ChunkCoordIntPair getChunkCoordIntPair() {
 		return new ChunkCoordIntPair(this.xPosition, this.zPosition);
 	}
 
-	public boolean func_48492_c(int par1, int par2) {
+	public boolean getAreLevelsEmpty(int par1, int par2) {
 		if (par1 < 0) {
 			par1 = 0;
 		}
@@ -833,8 +833,8 @@ public class Chunk {
 		}
 
 		for (int var3 = par1; var3 <= par2; var3 += 16) {
-			ExtendedBlockStorage var4 = this.field_48505_p[var3 >> 4];
-			if (var4 != null && !var4.func_48693_a()) {
+			ExtendedBlockStorage var4 = this.storageArrays[var3 >> 4];
+			if (var4 != null && !var4.getIsEmpty()) {
 				return false;
 			}
 		}
@@ -842,79 +842,79 @@ public class Chunk {
 		return true;
 	}
 
-	public void func_48500_a(ExtendedBlockStorage[] par1ArrayOfExtendedBlockStorage) {
-		this.field_48505_p = par1ArrayOfExtendedBlockStorage;
+	public void setStorageArrays(ExtendedBlockStorage[] par1ArrayOfExtendedBlockStorage) {
+		this.storageArrays = par1ArrayOfExtendedBlockStorage;
 	}
 
 	public void func_48494_a(byte[] par1ArrayOfByte, int par2, int par3, boolean par4) {
 		int var5 = 0;
 
 		int var6;
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
 			if ((par2 & 1 << var6) != 0) {
-				if (this.field_48505_p[var6] == null) {
-					this.field_48505_p[var6] = new ExtendedBlockStorage(var6 << 4);
+				if (this.storageArrays[var6] == null) {
+					this.storageArrays[var6] = new ExtendedBlockStorage(var6 << 4);
 				}
 
-				byte[] var7 = this.field_48505_p[var6].func_48692_g();
+				byte[] var7 = this.storageArrays[var6].func_48692_g();
 				System.arraycopy(par1ArrayOfByte, var5, var7, 0, var7.length);
 				var5 += var7.length;
-			} else if (par4 && this.field_48505_p[var6] != null) {
-				this.field_48505_p[var6] = null;
+			} else if (par4 && this.storageArrays[var6] != null) {
+				this.storageArrays[var6] = null;
 			}
 		}
 
 		NibbleArray var8;
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
-			if ((par2 & 1 << var6) != 0 && this.field_48505_p[var6] != null) {
-				var8 = this.field_48505_p[var6].func_48697_j();
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
+			if ((par2 & 1 << var6) != 0 && this.storageArrays[var6] != null) {
+				var8 = this.storageArrays[var6].func_48697_j();
 				System.arraycopy(par1ArrayOfByte, var5, var8.data, 0, var8.data.length);
 				var5 += var8.data.length;
 			}
 		}
 
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
-			if ((par2 & 1 << var6) != 0 && this.field_48505_p[var6] != null) {
-				var8 = this.field_48505_p[var6].func_48705_k();
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
+			if ((par2 & 1 << var6) != 0 && this.storageArrays[var6] != null) {
+				var8 = this.storageArrays[var6].getBlocklightArray();
 				System.arraycopy(par1ArrayOfByte, var5, var8.data, 0, var8.data.length);
 				var5 += var8.data.length;
 			}
 		}
 
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
-			if ((par2 & 1 << var6) != 0 && this.field_48505_p[var6] != null) {
-				var8 = this.field_48505_p[var6].func_48714_l();
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
+			if ((par2 & 1 << var6) != 0 && this.storageArrays[var6] != null) {
+				var8 = this.storageArrays[var6].getSkylightArray();
 				System.arraycopy(par1ArrayOfByte, var5, var8.data, 0, var8.data.length);
 				var5 += var8.data.length;
 			}
 		}
 
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
 			if ((par3 & 1 << var6) != 0) {
-				if (this.field_48505_p[var6] == null) {
+				if (this.storageArrays[var6] == null) {
 					var5 += 2048;
 				} else {
-					var8 = this.field_48505_p[var6].func_48704_i();
+					var8 = this.storageArrays[var6].getBlockMSBArray();
 					if (var8 == null) {
-						var8 = this.field_48505_p[var6].func_48696_m();
+						var8 = this.storageArrays[var6].createBlockMSBArray();
 					}
 
 					System.arraycopy(par1ArrayOfByte, var5, var8.data, 0, var8.data.length);
 					var5 += var8.data.length;
 				}
-			} else if (par4 && this.field_48505_p[var6] != null && this.field_48505_p[var6].func_48704_i() != null) {
-				this.field_48505_p[var6].func_48715_h();
+			} else if (par4 && this.storageArrays[var6] != null && this.storageArrays[var6].getBlockMSBArray() != null) {
+				this.storageArrays[var6].func_48715_h();
 			}
 		}
 
 		if (par4) {
-			System.arraycopy(par1ArrayOfByte, var5, this.field_48504_q, 0, this.field_48504_q.length);
-			int var10000 = var5 + this.field_48504_q.length;
+			System.arraycopy(par1ArrayOfByte, var5, this.blockBiomeArray, 0, this.blockBiomeArray.length);
+			int var10000 = var5 + this.blockBiomeArray.length;
 		}
 
-		for (var6 = 0; var6 < this.field_48505_p.length; ++var6) {
-			if (this.field_48505_p[var6] != null && (par2 & 1 << var6) != 0) {
-				this.field_48505_p[var6].func_48708_d();
+		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
+			if (this.storageArrays[var6] != null && (par2 & 1 << var6) != 0) {
+				this.storageArrays[var6].func_48708_d();
 			}
 		}
 
@@ -925,48 +925,47 @@ public class Chunk {
 			TileEntity var9 = (TileEntity)var10.next();
 			var9.updateContainingBlockInfo();
 		}
-
 	}
 
 	public BiomeGenBase func_48490_a(int par1, int par2, WorldChunkManager par3WorldChunkManager) {
-		int var4 = this.field_48504_q[par2 << 4 | par1] & 255;
+		int var4 = this.blockBiomeArray[par2 << 4 | par1] & 255;
 		if (var4 == 255) {
 			BiomeGenBase var5 = par3WorldChunkManager.getBiomeGenAt((this.xPosition << 4) + par1, (this.zPosition << 4) + par2);
 			var4 = var5.biomeID;
-			this.field_48504_q[par2 << 4 | par1] = (byte)(var4 & 255);
+			this.blockBiomeArray[par2 << 4 | par1] = (byte)(var4 & 255);
 		}
 
 		return BiomeGenBase.biomeList[var4] == null?BiomeGenBase.plains:BiomeGenBase.biomeList[var4];
 	}
 
-	public byte[] func_48493_m() {
-		return this.field_48504_q;
+	public byte[] getBiomeArray() {
+		return this.blockBiomeArray;
 	}
 
-	public void func_48497_a(byte[] par1ArrayOfByte) {
-		this.field_48504_q = par1ArrayOfByte;
+	public void setBiomeArray(byte[] par1ArrayOfByte) {
+		this.blockBiomeArray = par1ArrayOfByte;
 	}
 
-	public void func_48496_n() {
-		this.field_48503_s = 0;
+	public void resetRelightChecks() {
+		this.queuedLightChecks = 0;
 	}
 
-	public void func_48491_o() {
+	public void enqueueRelightChecks() {
 		for (int var1 = 0; var1 < 8; ++var1) {
-			if (this.field_48503_s >= 4096) {
+			if (this.queuedLightChecks >= 4096) {
 				return;
 			}
 
-			int var2 = this.field_48503_s % 16;
-			int var3 = this.field_48503_s / 16 % 16;
-			int var4 = this.field_48503_s / 256;
-			++this.field_48503_s;
+			int var2 = this.queuedLightChecks % 16;
+			int var3 = this.queuedLightChecks / 16 % 16;
+			int var4 = this.queuedLightChecks / 256;
+			++this.queuedLightChecks;
 			int var5 = (this.xPosition << 4) + var3;
 			int var6 = (this.zPosition << 4) + var4;
 
 			for (int var7 = 0; var7 < 16; ++var7) {
 				int var8 = (var2 << 4) + var7;
-				if (this.field_48505_p[var2] == null && (var7 == 0 || var7 == 15 || var3 == 0 || var3 == 15 || var4 == 0 || var4 == 15) || this.field_48505_p[var2] != null && this.field_48505_p[var2].func_48703_a(var3, var7, var4) == 0) {
+				if (this.storageArrays[var2] == null && (var7 == 0 || var7 == 15 || var3 == 0 || var3 == 15 || var4 == 0 || var4 == 15) || this.storageArrays[var2] != null && this.storageArrays[var2].getExtBlockID(var3, var7, var4) == 0) {
 					if (Block.lightValue[this.worldObj.getBlockId(var5, var8 - 1, var6)] > 0) {
 						this.worldObj.updateAllLightTypes(var5, var8 - 1, var6);
 					}
@@ -995,6 +994,5 @@ public class Chunk {
 				}
 			}
 		}
-
 	}
 }

@@ -71,7 +71,7 @@ public abstract class GuiContainer extends GuiScreen
 		Slot slot = null;
 		int k = 240;
 		int i1 = 240;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapEnabled, (float)k / 1.0F, (float)i1 / 1.0F);
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)i1 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		for (int l = 0; l < inventorySlots.inventorySlots.size(); l++)
@@ -165,7 +165,7 @@ public abstract class GuiContainer extends GuiScreen
 					String s = (String)list.get(l4);
 					if(l4 == 0)
 					{
-						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().field_40535_e)).append(s).toString();
+						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
 					} else
 					{
 						s = (new StringBuilder()).append("\2477").append(s).toString();

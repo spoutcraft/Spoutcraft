@@ -186,7 +186,7 @@ public abstract class Minecraft implements Runnable {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.2.3");
+		Display.setTitle("Minecraft Minecraft 1.2.4");
 
 		try {
 			PixelFormat var7 = new PixelFormat();
@@ -1224,7 +1224,7 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		if (this.currentScreen == null && this.thePlayer != null) {
-			if (this.thePlayer.getEntityHealth() <= 0) {
+			if (this.thePlayer.getHealth() <= 0) {
 				this.displayGuiScreen((GuiScreen) null);
 			} else if (this.thePlayer.isPlayerSleeping() && this.theWorld != null && this.theWorld.isRemote) {
 				this.displayGuiScreen(new GuiSleepMP());
@@ -1335,6 +1335,7 @@ public abstract class Minecraft implements Runnable {
 
 							if (Keyboard.getEventKey() == 61) {
 								this.gameSettings.showDebugInfo = !this.gameSettings.showDebugInfo;
+								this.gameSettings.field_50119_G = !GuiScreen.func_50049_m();
 							}
 
 							if (Keyboard.getEventKey() == 63) {
@@ -1356,7 +1357,7 @@ public abstract class Minecraft implements Runnable {
 							}
 						}
 
-						if (this.gameSettings.showDebugInfo) {
+						if (this.gameSettings.showDebugInfo && this.gameSettings.field_50119_G) {
 							if (Keyboard.getEventKey() == 11) {
 								this.updateDebugProfilerName(0);
 							}
@@ -1376,7 +1377,7 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			while (this.gameSettings.keyBindDrop.isPressed()) {
-				this.thePlayer.func_48152_as();
+				this.thePlayer.dropOneItem();
 			}
 
 			while (this.isMultiplayerWorld() && this.gameSettings.keyBindChat.isPressed()) {
@@ -1396,7 +1397,8 @@ public abstract class Minecraft implements Runnable {
 					this.playerController.onStoppedUsingItem(this.thePlayer);
 				}
 
-				label309: while (true) {
+				label320:
+				while (true) {
 					if (!this.gameSettings.keyBindAttack.isPressed()) {
 						while (this.gameSettings.keyBindUseItem.isPressed()) {
 							;
@@ -1406,7 +1408,7 @@ public abstract class Minecraft implements Runnable {
 							if (this.gameSettings.keyBindPickBlock.isPressed()) {
 								continue;
 							}
-							break label309;
+							break label320;
 						}
 					}
 				}
@@ -1702,7 +1704,7 @@ public abstract class Minecraft implements Runnable {
 		this.loadingScreen.printText("Converting World to " + this.saveLoader.getFormatName());
 		this.loadingScreen.displayLoadingString("This may take a while :)");
 		this.saveLoader.convertMapFormat(par1Str, this.loadingScreen);
-		this.startWorld(par1Str, par2Str, new WorldSettings(0L, 0, true, false, WorldType.field_48635_b));
+		this.startWorld(par1Str, par2Str, new WorldSettings(0L, 0, true, false, WorldType.DEFAULT));
 	}
 
 	private void preloadWorld(String par1Str) {
@@ -1778,7 +1780,7 @@ public abstract class Minecraft implements Runnable {
 		return this.renderGlobal.getDebugInfoEntities();
 	}
 
-	public String func_21002_o() {
+	public String getWorldProviderName() {
 		return this.theWorld.getProviderName();
 	}
 
@@ -1851,13 +1853,10 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public static void startMainThread1(String par0Str, String par1Str) {
-		try {
 			startMainThread(par0Str, par1Str, (String) null);
-		} catch (LWJGLException e) {
-		}
 	}
 
-	public static void startMainThread(String par0Str, String par1Str, String par2Str) throws LWJGLException {
+	public static void startMainThread(String par0Str, String par1Str, String par2Str) {
 		boolean var3 = false;
 		Frame var5 = new Frame("Minecraft");
 		Canvas var6 = new Canvas();

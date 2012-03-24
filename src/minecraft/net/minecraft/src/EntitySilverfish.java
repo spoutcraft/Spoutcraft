@@ -2,21 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSilverfish;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockSilverfish;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDamageSource;
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EnumCreatureAttribute;
-import net.minecraft.src.Facing;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntitySilverfish extends EntityMob {
-
 	private int allySummonCooldown;
 
 	public EntitySilverfish(World par1World) {
@@ -68,7 +54,6 @@ public class EntitySilverfish extends EntityMob {
 			this.attackTime = 20;
 			par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), this.attackStrength);
 		}
-
 	}
 
 	protected void playStepSound(int par1, int par2, int par3, int par4) {
@@ -135,14 +120,13 @@ public class EntitySilverfish extends EntityMob {
 				if (BlockSilverfish.getPosingIdByMetadata(var5)) {
 					this.worldObj.setBlockAndMetadataWithNotify(var1 + Facing.offsetsXForSide[var9], var2 + Facing.offsetsYForSide[var9], var3 + Facing.offsetsZForSide[var9], Block.silverfish.blockID, BlockSilverfish.getMetadataForBlockType(var5));
 					this.spawnExplosionParticle();
-					this.setEntityDead();
+					this.setDead();
 				} else {
 					this.updateWanderPath();
 				}
 			} else if (this.entityToAttack != null && !this.hasPath()) {
 				this.entityToAttack = null;
 			}
-
 		}
 	}
 

@@ -24,7 +24,7 @@ public class GuiMultiplayer extends GuiScreen {
 	private boolean addClicked = false;
 	private boolean editClicked = false;
 	private boolean directClicked = false;
-	private String field_35350_v = null;
+	private String lagTooltip = null;
 	private ServerNBTStorage tempServer = null;
 
 	public GuiMultiplayer(GuiScreen par1GuiScreen) {
@@ -182,14 +182,14 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	public void drawScreen(int par1, int par2, float par3) {
-		this.field_35350_v = null;
+		this.lagTooltip = null;
 		StringTranslate var4 = StringTranslate.getInstance();
 		this.drawDefaultBackground();
 		this.serverSlotContainer.drawScreen(par1, par2, par3);
 		this.drawCenteredString(this.fontRenderer, var4.translateKey("multiplayer.title"), this.width / 2, 20, 16777215);
 		super.drawScreen(par1, par2, par3);
-		if (this.field_35350_v != null) {
-			this.func_35325_a(this.field_35350_v, par1, par2);
+		if (this.lagTooltip != null) {
+			this.func_35325_a(this.lagTooltip, par1, par2);
 		}
 	}
 
@@ -323,7 +323,7 @@ public class GuiMultiplayer extends GuiScreen {
 			int var5 = par3 - 12;
 			int var6 = this.fontRenderer.getStringWidth(par1Str);
 			this.drawGradientRect(var4 - 3, var5 - 3, var4 + var6 + 3, var5 + 8 + 3, -1073741824, -1073741824);
-			this.fontRenderer.drawStringWithShadow(par1Str, var4, var5, -1);
+			this.fontRenderer.func_50103_a(par1Str, var4, var5, -1);
 		}
 	}
 
@@ -375,7 +375,7 @@ public class GuiMultiplayer extends GuiScreen {
 		return threadsPending--;
 	}
 
-	static String func_35327_a(GuiMultiplayer par0GuiMultiplayer, String par1Str) {
-		return par0GuiMultiplayer.field_35350_v = par1Str;
+	static String setTooltipText(GuiMultiplayer par0GuiMultiplayer, String par1Str) {
+		return par0GuiMultiplayer.lagTooltip = par1Str;
 	}
 }

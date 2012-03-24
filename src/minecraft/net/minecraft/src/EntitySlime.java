@@ -2,18 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSlime;
 
-import net.minecraft.src.Chunk;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.IMob;
-import net.minecraft.src.Item;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntitySlime extends EntityLiving implements IMob {
-
 	public float field_40139_a;
 	public float field_768_a;
 	public float field_767_b;
@@ -42,6 +31,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.setSize(0.6F * (float)par1, 0.6F * (float)par1);
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.setEntityHealth(this.getMaxHealth());
+		this.experienceValue = par1;
 	}
 
 	public int getMaxHealth() {
@@ -84,7 +74,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			int var2 = this.getSlimeSize();
 
 			for (int var3 = 0; var3 < var2 * 8; ++var3) {
-				float var4 = this.rand.nextFloat() * 3.1415927F * 2.0F;
+				float var4 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
 				float var5 = this.rand.nextFloat() * 0.5F + 0.5F;
 				float var6 = MathHelper.sin(var4) * (float)var2 * 0.5F * var5;
 				float var7 = MathHelper.cos(var4) * (float)var2 * 0.5F * var5;
@@ -128,7 +118,6 @@ public class EntitySlime extends EntityLiving implements IMob {
 				this.moveStrafing = this.moveForward = 0.0F;
 			}
 		}
-
 	}
 
 	protected void func_40136_ag() {
@@ -143,9 +132,9 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return new EntitySlime(this.worldObj);
 	}
 
-	public void setEntityDead() {
+	public void setDead() {
 		int var1 = this.getSlimeSize();
-		if (!this.worldObj.isRemote && var1 > 1 && this.getEntityHealth() <= 0) {
+		if (!this.worldObj.isRemote && var1 > 1 && this.getHealth() <= 0) {
 			int var2 = 2 + this.rand.nextInt(3);
 
 			for (int var3 = 0; var3 < var2; ++var3) {
@@ -158,7 +147,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			}
 		}
 
-		super.setEntityDead();
+		super.setDead();
 	}
 
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
@@ -168,7 +157,6 @@ public class EntitySlime extends EntityLiving implements IMob {
 				this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
-
 	}
 
 	protected boolean func_40137_ah() {

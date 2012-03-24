@@ -330,44 +330,43 @@ public class RenderItem extends Render {
 				} else
 					this.renderTexturedQuad(var6, var7, var5 % 16 * 16, var5 / 16 * 16, 16, 16);
 				// Spout End
-				GL11.glEnable(2896 /* GL_LIGHTING */);
+				GL11.glEnable(GL11.GL_LIGHTING);
 			}
 		}
 
-		GL11.glEnable(2884);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
 	public void renderItemIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
 		if (par3ItemStack != null) {
 			this.drawItemIntoGui(par1FontRenderer, par2RenderEngine, par3ItemStack.itemID, par3ItemStack.getItemDamage(), par3ItemStack.getIconIndex(), par4, par5);
 			if (par3ItemStack != null && par3ItemStack.hasEffect()) {
-				GL11.glDepthFunc(516);
-				GL11.glDisable(2896);
+				GL11.glDepthFunc(GL11.GL_GREATER);
+				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(false);
 				par2RenderEngine.bindTexture(par2RenderEngine.getTexture("%blur%/misc/glint.png"));
 				this.zLevel -= 50.0F;
-				GL11.glEnable(3042);
-				GL11.glBlendFunc(774, 774);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
 				this.func_40266_a(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
-				GL11.glDisable(3042);
+				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glDepthMask(true);
 				this.zLevel += 50.0F;
-				GL11.glEnable(2896);
-				GL11.glDepthFunc(515);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glDepthFunc(GL11.GL_LEQUAL);
 			}
-
 		}
 	}
 
 	private void func_40266_a(int par1, int par2, int par3, int par4, int par5) {
 		for (int var6 = 0; var6 < 2; ++var6) {
 			if (var6 == 0) {
-				GL11.glBlendFunc(768, 1);
+				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 			}
 
 			if (var6 == 1) {
-				GL11.glBlendFunc(768, 1);
+				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
 			}
 
 			float var7 = 0.00390625F;
@@ -387,7 +386,6 @@ public class RenderItem extends Render {
 			var11.addVertexWithUV((double)(par2 + 0), (double)(par3 + 0), (double)this.zLevel, (double)((var9 + 0.0F) * var7), (double)((var10 + 0.0F) * var8));
 			var11.draw();
 		}
-
 	}
 
 	public void renderItemOverlayIntoGUI(FontRenderer par1FontRenderer, RenderEngine par2RenderEngine, ItemStack par3ItemStack, int par4, int par5) {
@@ -404,21 +402,20 @@ public class RenderItem extends Render {
 			if (par3ItemStack.isItemDamaged()) {
 				int var11 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
 				int var7 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
-				GL11.glDisable(2896);
-				GL11.glDisable(2929);
-				GL11.glDisable(3553);
+				GL11.glDisable(GL11.GL_LIGHTING);
+				GL11.glDisable(GL11.GL_DEPTH_TEST);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				Tessellator var8 = Tessellator.instance;
 				int var9 = 255 - var7 << 16 | var7 << 8;
 				int var10 = (255 - var7) / 4 << 16 | 16128;
 				this.renderQuad(var8, par4 + 2, par5 + 13, 13, 2, 0);
 				this.renderQuad(var8, par4 + 2, par5 + 13, 12, 1, var10);
 				this.renderQuad(var8, par4 + 2, par5 + 13, var11, 1, var9);
-				GL11.glEnable(3553);
-				GL11.glEnable(2896);
-				GL11.glEnable(2929);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glEnable(GL11.GL_LIGHTING);
+				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
-
 		}
 	}
 
@@ -444,8 +441,6 @@ public class RenderItem extends Render {
 		var9.draw();
 	}
 
-	
-	
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.doRenderItem((EntityItem)par1Entity, par2, par4, par6, par8, par9);
 	}

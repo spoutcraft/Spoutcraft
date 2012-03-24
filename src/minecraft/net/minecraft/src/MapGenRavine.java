@@ -1,14 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
-import net.minecraft.src.Block;
-import net.minecraft.src.MapGenBase;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.World;
 
 public class MapGenRavine extends MapGenBase {
-
-	private float[] field_35627_a = new float[1024 * 4]; //Spout increased
+	private float[] field_35627_a = new float[1024];
 
 	protected void generateRavine(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17) {
 		Random var19 = new Random(par1);
@@ -38,7 +33,7 @@ public class MapGenRavine extends MapGenBase {
 		}
 
 		for (; par15 < par16; ++par15) {
-			double var53 = 1.5D + (double)(MathHelper.sin((float)par15 * 3.1415927F / (float)par16) * par12 * 1.0F);
+			double var53 = 1.5D + (double)(MathHelper.sin((float)par15 * (float)Math.PI / (float)par16) * par12 * 1.0F);
 			double var30 = var53 * par17;
 			var53 *= (double)var19.nextFloat() * 0.25D + 0.75D;
 			var30 *= (double)var19.nextFloat() * 0.25D + 0.75D;
@@ -157,7 +152,6 @@ public class MapGenRavine extends MapGenBase {
 				}
 			}
 		}
-
 	}
 
 	protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte) {
@@ -168,12 +162,11 @@ public class MapGenRavine extends MapGenBase {
 			byte var13 = 1;
 
 			for (int var14 = 0; var14 < var13; ++var14) {
-				float var15 = this.rand.nextFloat() * 3.1415927F * 2.0F;
+				float var15 = this.rand.nextFloat() * (float)Math.PI * 2.0F;
 				float var16 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
 				float var17 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
 				this.generateRavine(this.rand.nextLong(), par4, par5, par6ArrayOfByte, var7, var9, var11, var17, var15, var16, 0, 0, 3.0D);
 			}
-
 		}
 	}
 }

@@ -6,7 +6,6 @@ import net.minecraft.src.EntityMob;
 import net.minecraft.src.World;
 
 public class EntityGiantZombie extends EntityMob {
-
 	public EntityGiantZombie(World par1World) {
 		super(par1World);
 		this.texture = "/mob/zombie.png";

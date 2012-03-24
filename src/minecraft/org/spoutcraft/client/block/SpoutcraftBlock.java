@@ -271,11 +271,11 @@ public class SpoutcraftBlock implements Block{
 	}
 
 	public double getTemperature() {
-		return chunk.getHandle().worldObj.func_48454_a(x, z).func_48411_i();
+		return chunk.getHandle().worldObj.func_48454_a(x, z).getFloatTemperature();
 	}
 
 	public double getHumidity() {
-		return chunk.getHandle().worldObj.func_48454_a(x, z).func_48414_h();
+		return chunk.getHandle().worldObj.func_48454_a(x, z).getFloatRainfall();
 	}
 
 	private int getIndex() {

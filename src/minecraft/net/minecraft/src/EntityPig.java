@@ -1,31 +1,12 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftPig;
-
-import net.minecraft.src.AchievementList;
-import net.minecraft.src.EntityAIFollowParent;
-import net.minecraft.src.EntityAILookIdle;
-import net.minecraft.src.EntityAIMate;
-import net.minecraft.src.EntityAIPanic;
-import net.minecraft.src.EntityAISwimming;
-import net.minecraft.src.EntityAITempt;
-import net.minecraft.src.EntityAIWander;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityAnimal;
-import net.minecraft.src.EntityLightningBolt;
-import net.minecraft.src.EntityPigZombie;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityPig extends EntityAnimal {
-
 	public EntityPig(World par1World) {
 		super(par1World);
 		this.texture = "/mob/pig.png";
 		this.setSize(0.9F, 0.9F);
-		this.func_48084_aL().func_48664_a(true);
+		this.getNavigator().func_48664_a(true);
 		float var2 = 0.25F;
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
@@ -100,7 +81,6 @@ public class EntityPig extends EntityAnimal {
 		} else {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)0));
 		}
-
 	}
 
 	public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt) {
@@ -108,7 +88,7 @@ public class EntityPig extends EntityAnimal {
 			EntityPigZombie var2 = new EntityPigZombie(this.worldObj);
 			var2.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 			this.worldObj.spawnEntityInWorld(var2);
-			this.setEntityDead();
+			this.setDead();
 		}
 	}
 
@@ -117,7 +97,6 @@ public class EntityPig extends EntityAnimal {
 		if (par1 > 5.0F && this.riddenByEntity instanceof EntityPlayer) {
 			((EntityPlayer)this.riddenByEntity).triggerAchievement(AchievementList.flyPig);
 		}
-
 	}
 
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {

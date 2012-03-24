@@ -27,19 +27,13 @@ public class RenderPig extends RenderLiving {
 		super.doRenderLiving(par1EntityPig, par2, par4, par6, par8, par9);
 	}
 
-
-
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return this.renderSaddledPig((EntityPig)par1EntityLiving, par2, par3);
 	}
 
-
-
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
 		this.func_40286_a((EntityPig)par1EntityLiving, par2, par4, par6, par8, par9);
 	}
-
-
 
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.func_40286_a((EntityPig)par1Entity, par2, par4, par6, par8, par9);

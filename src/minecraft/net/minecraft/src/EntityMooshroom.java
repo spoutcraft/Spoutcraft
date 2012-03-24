@@ -23,16 +23,16 @@ public class EntityMooshroom extends EntityCow {
 
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
-		if (var2 != null && var2.itemID == Item.bowlEmpty.shiftedIndex && this.func_48123_at() >= 0) {
+		if (var2 != null && var2.itemID == Item.bowlEmpty.shiftedIndex && this.getGrowingAge() >= 0) {
 			par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bowlSoup));
 			return true;
-		} else if (var2 != null && var2.itemID == Item.shears.shiftedIndex && this.func_48123_at() >= 0) {
-			this.setEntityDead();
+		} else if (var2 != null && var2.itemID == Item.shears.shiftedIndex && this.getGrowingAge() >= 0) {
+			this.setDead();
 			this.worldObj.spawnParticle("largeexplode", this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 0.0D, 0.0D, 0.0D);
 			if (!this.worldObj.isRemote) {
 				EntityCow var3 = new EntityCow(this.worldObj);
 				var3.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-				var3.setEntityHealth(this.getEntityHealth());
+				var3.setEntityHealth(this.getHealth());
 				var3.renderYawOffset = this.renderYawOffset;
 				this.worldObj.spawnEntityInWorld(var3);
 

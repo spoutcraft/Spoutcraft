@@ -1,13 +1,8 @@
 package net.minecraft.src;
 
 import java.util.List;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.WorldSettings;
-import net.minecraft.src.WorldType;
 
 public class WorldInfo {
-
 	private long randomSeed;
 	private WorldType terrainType;
 	private int spawnX;
@@ -29,14 +24,14 @@ public class WorldInfo {
 	private boolean hardcore;
 
 	public WorldInfo(NBTTagCompound par1NBTTagCompound) {
-		this.terrainType = WorldType.field_48635_b;
+		this.terrainType = WorldType.DEFAULT;
 		this.hardcore = false;
 		this.randomSeed = par1NBTTagCompound.getLong("RandomSeed");
 		if (par1NBTTagCompound.hasKey("generatorName")) {
 			String var2 = par1NBTTagCompound.getString("generatorName");
 			this.terrainType = WorldType.parseWorldType(var2);
 			if (this.terrainType == null) {
-				this.terrainType = WorldType.field_48635_b;
+				this.terrainType = WorldType.DEFAULT;
 			} else if (this.terrainType.func_48626_e()) {
 				int var3 = 0;
 				if (par1NBTTagCompound.hasKey("generatorVersion")) {
@@ -74,7 +69,7 @@ public class WorldInfo {
 	}
 
 	public WorldInfo(WorldSettings par1WorldSettings, String par2Str) {
-		this.terrainType = WorldType.field_48635_b;
+		this.terrainType = WorldType.DEFAULT;
 		this.hardcore = false;
 		this.randomSeed = par1WorldSettings.getSeed();
 		this.gameType = par1WorldSettings.getGameType();
@@ -85,7 +80,7 @@ public class WorldInfo {
 	}
 
 	public WorldInfo(WorldInfo par1WorldInfo) {
-		this.terrainType = WorldType.field_48635_b;
+		this.terrainType = WorldType.DEFAULT;
 		this.hardcore = false;
 		this.randomSeed = par1WorldInfo.randomSeed;
 		this.terrainType = par1WorldInfo.terrainType;
@@ -134,7 +129,7 @@ public class WorldInfo {
 	private void updateTagCompound(NBTTagCompound par1NBTTagCompound, NBTTagCompound par2NBTTagCompound) {
 		par1NBTTagCompound.setLong("RandomSeed", this.randomSeed);
 		par1NBTTagCompound.setString("generatorName", this.terrainType.func_48628_a());
-		par1NBTTagCompound.setInteger("generatorVersion", this.terrainType.func_48630_c());
+		par1NBTTagCompound.setInteger("generatorVersion", this.terrainType.getGeneratorVersion());
 		par1NBTTagCompound.setInteger("GameType", this.gameType);
 		par1NBTTagCompound.setBoolean("MapFeatures", this.mapFeaturesEnabled);
 		par1NBTTagCompound.setInteger("SpawnX", this.spawnX);
@@ -281,7 +276,7 @@ public class WorldInfo {
 		return this.terrainType;
 	}
 
-	public void func_48619_a(WorldType par1WorldType) {
+	public void setTerrainType(WorldType par1WorldType) {
 		this.terrainType = par1WorldType;
 	}
 }

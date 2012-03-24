@@ -26,11 +26,11 @@ public class EntitySuspendFX extends EntityFX {
 		this.prevPosZ = this.posZ;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 		if (this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) != Material.water) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		if (this.particleMaxAge-- <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 	}
 }

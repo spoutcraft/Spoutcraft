@@ -9,7 +9,7 @@ public class EntityList {
 	private static Map classToStringMapping = new HashMap();
 	private static Map IDtoClassMapping = new HashMap();
 	private static Map classToIDMapping = new HashMap();
-	private static Map field_48506_f = new HashMap();
+	private static Map stringToIDMapping = new HashMap();
 	public static HashMap entityEggs = new HashMap();
 
 	private static void addMapping(Class par0Class, String par1Str, int par2) {
@@ -17,16 +17,15 @@ public class EntityList {
 		classToStringMapping.put(par0Class, par1Str);
 		IDtoClassMapping.put(Integer.valueOf(par2), par0Class);
 		classToIDMapping.put(par0Class, Integer.valueOf(par2));
-		field_48506_f.put(par1Str, Integer.valueOf(par2));
+		stringToIDMapping.put(par1Str, Integer.valueOf(par2));
 	}
 
 	private static void addMapping(Class par0Class, String par1Str, int par2, int par3, int par4) {
-		Colorizer.setupSpawnerEgg(par1Str, par2, par3, par4);  //Spout HD
 		addMapping(par0Class, par1Str, par2);
 		entityEggs.put(Integer.valueOf(par2), new EntityEggInfo(par2, par3, par4));
 	}
 
-	public static Entity createEntityInWorld(String par0Str, World par1World) {
+	public static Entity createEntityByName(String par0Str, World par1World) {
 		Entity var2 = null;
 
 		try {
@@ -62,7 +61,7 @@ public class EntityList {
 		return var2;
 	}
 
-	public static Entity createEntity(int par0, World par1World) {
+	public static Entity createEntityByID(int par0, World par1World) {
 		Entity var2 = null;
 
 		try {

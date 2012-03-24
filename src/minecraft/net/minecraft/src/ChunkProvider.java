@@ -4,24 +4,13 @@ import gnu.trove.map.hash.TLongObjectHashMap;
 import gnu.trove.set.hash.TLongHashSet; // Spout
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkCoordIntPair;
-import net.minecraft.src.ChunkCoordinates;
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.EmptyChunk;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EnumCreatureType;
-import net.minecraft.src.IChunkLoader;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.LongHashMap;
-import net.minecraft.src.World;
 
 public class ChunkProvider implements IChunkProvider {
-
 	private TLongHashSet droppedChunksSet = new TLongHashSet(); //Spout
 	private Chunk emptyChunk;
 	private IChunkProvider chunkProvider;
@@ -163,7 +152,6 @@ public class ChunkProvider implements IChunkProvider {
 			} catch (Exception var3) {
 				var3.printStackTrace();
 			}
-
 		}
 	}
 
@@ -175,7 +163,6 @@ public class ChunkProvider implements IChunkProvider {
 			} catch (IOException var3) {
 				var3.printStackTrace();
 			}
-
 		}
 	}
 
@@ -188,7 +175,6 @@ public class ChunkProvider implements IChunkProvider {
 				var4.setChunkModified();
 			}
 		}
-
 	}
 
 	public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate) {

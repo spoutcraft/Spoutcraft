@@ -1,21 +1,13 @@
 package net.minecraft.src;
 
+//Spout start
 import org.spoutcraft.client.entity.CraftExperienceOrb;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-
-import net.minecraft.src.Block;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
+//Spout end
 
 public class EntityXPOrb extends Entity {
-
 	public int xpColor;
 	public int xpOrbAge = 0;
 	public int field_35126_c;
@@ -46,7 +38,7 @@ public class EntityXPOrb extends Entity {
 
 	protected void entityInit() {}
 
-	public int getEntityBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float par1) {
 		float var2 = 0.5F;
 		if (var2 < 0.0F) {
 			var2 = 0.0F;
@@ -56,7 +48,7 @@ public class EntityXPOrb extends Entity {
 			var2 = 1.0F;
 		}
 
-		int var3 = super.getEntityBrightnessForRender(par1);
+		int var3 = super.getBrightnessForRender(par1);
 		int var4 = var3 & 255;
 		int var5 = var3 >> 16 & 255;
 		var4 += (int)(var2 * 15.0F * 16.0F);
@@ -135,9 +127,8 @@ public class EntityXPOrb extends Entity {
 		++this.xpColor;
 		++this.xpOrbAge;
 		if (this.xpOrbAge >= 6000) {
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	public boolean handleWaterMovement() {
@@ -152,7 +143,7 @@ public class EntityXPOrb extends Entity {
 		this.setBeenAttacked();
 		this.xpOrbHealth -= par2;
 		if (this.xpOrbHealth <= 0) {
-			this.setEntityDead();
+			this.setDead();
 		}
 
 		return false;
@@ -177,9 +168,8 @@ public class EntityXPOrb extends Entity {
 				this.worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
 				par1EntityPlayer.onItemPickup(this, 1);
 				par1EntityPlayer.addExperience(this.xpValue);
-				this.setEntityDead();
+				this.setDead();
 			}
-
 		}
 	}
 
@@ -195,7 +185,7 @@ public class EntityXPOrb extends Entity {
 		return par0 >= 2477?2477:(par0 >= 1237?1237:(par0 >= 617?617:(par0 >= 307?307:(par0 >= 149?149:(par0 >= 73?73:(par0 >= 37?37:(par0 >= 17?17:(par0 >= 7?7:(par0 >= 3?3:1)))))))));
 	}
 
-	public boolean func_48080_j() {
+	public boolean canAttackWithItem() {
 		return false;
 	}
 }

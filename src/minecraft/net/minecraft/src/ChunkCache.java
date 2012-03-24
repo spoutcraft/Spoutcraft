@@ -1,17 +1,8 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.Block;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.EnumSkyBlock;
-import net.minecraft.src.IBlockAccess;
-import net.minecraft.src.Material;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.World;
 
 public class ChunkCache implements IBlockAccess {
-
 	private int chunkX;
 	private int chunkZ;
 	private Chunk[][] chunkArray;
@@ -32,13 +23,12 @@ public class ChunkCache implements IBlockAccess {
 				Chunk var12 = par1World.getChunkFromChunkCoords(var10, var11);
 				if (var12 != null) {
 					this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var12;
-					if (!var12.func_48492_c(par3, par6)) {
+					if (!var12.getAreLevelsEmpty(par3, par6)) {
 						this.field_48467_d = false;
 					}
 				}
 			}
 		}
-
 	}
 
 	public boolean func_48452_a() {
@@ -245,7 +235,7 @@ public class ChunkCache implements IBlockAccess {
 		}
 	}
 
-	public int func_48453_b() {
+	public int getWorldHeight() {
 		return 256;
 	}
 

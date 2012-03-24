@@ -1,16 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.World;
-
 import org.spoutcraft.client.player.SpoutPlayer; //Spout
 
 public class EntityOtherPlayerMP extends EntityPlayer {
-
 	private boolean isItemInUse = false;
 	private int otherPlayerMPPosRotationIncrements;
 	private double otherPlayerMPX;
@@ -77,7 +69,6 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			this.clearItemInUse();
 			this.isItemInUse = false;
 		}
-
 	}
 
 	public float getShadowSize() {
@@ -114,11 +105,11 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			var9 = 0.1F;
 		}
 
-		if (!this.onGround || this.getEntityHealth() <= 0) {
+		if (!this.onGround || this.getHealth() <= 0) {
 			var9 = 0.0F;
 		}
 
-		if (this.onGround || this.getEntityHealth() <= 0) {
+		if (this.onGround || this.getHealth() <= 0) {
 			var2 = 0.0F;
 		}
 
@@ -137,7 +128,6 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		} else {
 			this.inventory.armorInventory[par1 - 1] = var4;
 		}
-
 	}
 
 	public void func_6420_o() {}

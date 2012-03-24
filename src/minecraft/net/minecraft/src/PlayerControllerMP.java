@@ -2,25 +2,8 @@ package net.minecraft.src;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft; // Spout
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Packet102WindowClick;
-import net.minecraft.src.Packet107CreativeSetSlot;
-import net.minecraft.src.Packet108EnchantItem;
-import net.minecraft.src.Packet14BlockDig;
-import net.minecraft.src.Packet15Place;
-import net.minecraft.src.Packet16BlockItemSwitch;
-import net.minecraft.src.Packet7UseEntity;
-import net.minecraft.src.PlayerController;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.World;
 
 public class PlayerControllerMP extends PlayerController {
-
 	private int currentBlockX = -1;
 	private int currentBlockY = -1;
 	private int currentblockZ = -1;
@@ -51,7 +34,6 @@ public class PlayerControllerMP extends PlayerController {
 			Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(true);
 			// Spout end
 		}
-
 	}
 
 	public void flipPlayer(EntityPlayer par1EntityPlayer) {
@@ -105,7 +87,6 @@ public class PlayerControllerMP extends PlayerController {
 				this.stepSoundTickCounter = 0.0F;
 			}
 		}
-
 	}
 
 	public void resetBlockRemoving() {
@@ -148,7 +129,6 @@ public class PlayerControllerMP extends PlayerController {
 			} else {
 				this.clickBlock(par1, par2, par3, par4);
 			}
-
 		}
 	}
 
@@ -161,7 +141,6 @@ public class PlayerControllerMP extends PlayerController {
 			this.mc.ingameGUI.damageGuiPartialTime = var2;
 			this.mc.renderGlobal.damagePartialTime = var2;
 		}
-
 	}
 
 	public float getBlockReachDistance() {
@@ -184,7 +163,6 @@ public class PlayerControllerMP extends PlayerController {
 			this.currentPlayerItem = var1;
 			this.netClientHandler.addToSendQueue(new Packet16BlockItemSwitch(this.currentPlayerItem));
 		}
-
 	}
 
 	public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7) {
@@ -249,14 +227,12 @@ public class PlayerControllerMP extends PlayerController {
 		if (this.creativeMode) {
 			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(par2, par1ItemStack));
 		}
-
 	}
 
 	public void func_35639_a(ItemStack par1ItemStack) {
 		if (this.creativeMode && par1ItemStack != null) {
 			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(-1, par1ItemStack));
 		}
-
 	}
 
 	public void func_20086_a(int par1, EntityPlayer par2EntityPlayer) {

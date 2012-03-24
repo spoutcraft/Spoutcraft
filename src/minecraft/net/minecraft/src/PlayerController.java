@@ -1,16 +1,8 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.World;
 
 public abstract class PlayerController {
-
 	protected final Minecraft mc;
 	public boolean isInTestMode = false;
 

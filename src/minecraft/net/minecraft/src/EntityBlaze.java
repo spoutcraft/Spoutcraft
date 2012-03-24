@@ -58,11 +58,11 @@ public class EntityBlaze extends EntityMob {
 		super.onDeath(par1DamageSource);
 	}
 
-	public int getEntityBrightnessForRender(float par1) {
+	public int getBrightnessForRender(float par1) {
 		return 15728880;
 	}
 
-	public float getEntityBrightness(float par1) {
+	public float getBrightness(float par1) {
 		return 1.0F;
 	}
 
@@ -131,10 +131,9 @@ public class EntityBlaze extends EntityMob {
 				}
 			}
 
-			this.rotationYaw = (float)(Math.atan2(var7, var3) * 180.0D / 3.1415927410125732D) - 90.0F;
+			this.rotationYaw = (float)(Math.atan2(var7, var3) * 180.0D / Math.PI) - 90.0F;
 			this.hasAttacked = true;
 		}
-
 	}
 
 	protected void fall(float par1) {}
@@ -163,7 +162,6 @@ public class EntityBlaze extends EntityMob {
 				this.dropItem(Item.blazeRod.shiftedIndex, 1);
 			}
 		}
-
 	}
 
 	public boolean func_40151_ac() {

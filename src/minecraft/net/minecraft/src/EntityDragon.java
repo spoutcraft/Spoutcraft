@@ -2,25 +2,9 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.BlockEndPortal;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityDragonBase;
-import net.minecraft.src.EntityDragonPart;
-import net.minecraft.src.EntityEnderCrystal;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityXPOrb;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-
 import org.spoutcraft.client.entity.CraftEnderDragon; //Spout
 
 public class EntityDragon extends EntityDragonBase {
-
 	public double targetX;
 	public double targetY;
 	public double targetZ;
@@ -205,7 +189,7 @@ public class EntityDragon extends EntityDragonBase {
 					this.rotationYaw -= 360.0F;
 				}
 
-				double var11 = 180.0D - Math.atan2(var25, var6) * 180.0D / 3.1415927410125732D;
+				double var11 = 180.0D - Math.atan2(var25, var6) * 180.0D / Math.PI;
 
 				double var13;
 				for(var13 = var11 - (double)this.rotationYaw; var13 < -180.0D; var13 += 360.0D) {
@@ -225,7 +209,7 @@ public class EntityDragon extends EntityDragonBase {
 				}
 
 				Vec3D var15 = Vec3D.createVector(this.targetX - this.posX, this.targetY - this.posY, this.targetZ - this.posZ).normalize();
-				Vec3D var40 = Vec3D.createVector((double)MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F))).normalize();
+				Vec3D var40 = Vec3D.createVector((double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F), this.motionY, (double)(-MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F))).normalize();
 				float var17 = (float)(var40.dotProduct(var15) + 0.5D) / 1.5F;
 				if(var17 < 0.0F) {
 					var17 = 0.0F;
@@ -268,10 +252,10 @@ public class EntityDragon extends EntityDragonBase {
 			this.dragonPartWing1.width = 4.0F;
 			this.dragonPartWing2.height = 3.0F;
 			this.dragonPartWing2.width = 4.0F;
-			var26 = (float)(this.func_40160_a(5, 1.0F)[1] - this.func_40160_a(10, 1.0F)[1]) * 10.0F / 180.0F * 3.1415927F;
+			var26 = (float)(this.func_40160_a(5, 1.0F)[1] - this.func_40160_a(10, 1.0F)[1]) * 10.0F / 180.0F * (float)Math.PI;
 			var3 = MathHelper.cos(var26);
 			float var28 = -MathHelper.sin(var26);
-			float var5 = this.rotationYaw * 3.1415927F / 180.0F;
+			float var5 = this.rotationYaw * (float)Math.PI / 180.0F;
 			float var27 = MathHelper.sin(var5);
 			float var7 = MathHelper.cos(var5);
 			this.dragonPartBody.onUpdate();
@@ -292,8 +276,8 @@ public class EntityDragon extends EntityDragonBase {
 
 			double[] var30 = this.func_40160_a(5, 1.0F);
 			double[] var9 = this.func_40160_a(0, 1.0F);
-			var33 = MathHelper.sin(this.rotationYaw * 3.1415927F / 180.0F - this.randomYawVelocity * 0.01F);
-			float var32 = MathHelper.cos(this.rotationYaw * 3.1415927F / 180.0F - this.randomYawVelocity * 0.01F);
+			var33 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
+			float var32 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
 			this.dragonPartHead.onUpdate();
 			this.dragonPartHead.setLocationAndAngles(this.posX + (double)(var33 * 5.5F * var3), this.posY + (var9[1] - var30[1]) * 1.0D + (double)(var28 * 5.5F), this.posZ - (double)(var32 * 5.5F * var3), 0.0F, 0.0F);
 
@@ -312,7 +296,7 @@ public class EntityDragon extends EntityDragonBase {
 				}
 
 				double[] var35 = this.func_40160_a(12 + var29 * 2, 1.0F);
-				float var34 = this.rotationYaw * 3.1415927F / 180.0F + this.simplifyAngle(var35[0] - var30[0]) * 3.1415927F / 180.0F * 1.0F;
+				float var34 = this.rotationYaw * (float)Math.PI / 180.0F + this.simplifyAngle(var35[0] - var30[0]) * (float)Math.PI / 180.0F * 1.0F;
 				float var37 = MathHelper.sin(var34);
 				float var38 = MathHelper.cos(var34);
 				float var36 = 1.5F;
@@ -324,7 +308,6 @@ public class EntityDragon extends EntityDragonBase {
 			if(!this.worldObj.isRemote) {
 				this.field_40161_az = this.destroyBlocksInAABB(this.dragonPartHead.boundingBox) | this.destroyBlocksInAABB(this.dragonPartBody.boundingBox);
 			}
-
 		}
 	}
 
@@ -359,7 +342,6 @@ public class EntityDragon extends EntityDragonBase {
 
 			this.healingEnderCrystal = var3;
 		}
-
 	}
 
 	private void func_41007_az() {}
@@ -378,7 +360,6 @@ public class EntityDragon extends EntityDragonBase {
 				var7.addVelocity(var8 / var12 * 4.0D, 0.20000000298023224D, var10 / var12 * 4.0D);
 			}
 		}
-
 	}
 
 	private void attackEntitiesInList(List par1List) {
@@ -388,7 +369,6 @@ public class EntityDragon extends EntityDragonBase {
 				var3.attackEntityFrom(DamageSource.causeMobDamage(this), 10);
 			}
 		}
-
 	}
 
 	private void func_41006_aA() {
@@ -412,7 +392,6 @@ public class EntityDragon extends EntityDragonBase {
 
 			this.target = null;
 		}
-
 	}
 
 	private float simplifyAngle(double par1) {
@@ -468,7 +447,7 @@ public class EntityDragon extends EntityDragonBase {
 			par3 = par3 / 4 + 1;
 		}
 
-		float var4 = this.rotationYaw * 3.1415927F / 180.0F;
+		float var4 = this.rotationYaw * (float)Math.PI / 180.0F;
 		float var5 = MathHelper.sin(var4);
 		float var6 = MathHelper.cos(var4);
 		this.targetX = this.posX + (double)(var5 * 5.0F) + (double)((this.rand.nextFloat() - 0.5F) * 2.0F);
@@ -516,9 +495,8 @@ public class EntityDragon extends EntityDragonBase {
 
 			this.createEnderPortal(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
 			this.onEntityDeath();
-			this.setEntityDead();
+			this.setDead();
 		}
-
 	}
 
 	private void createEnderPortal(int par1, int par2) {

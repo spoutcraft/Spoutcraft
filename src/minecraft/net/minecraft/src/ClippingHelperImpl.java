@@ -1,13 +1,9 @@
 package net.minecraft.src;
 
 import java.nio.FloatBuffer;
-import net.minecraft.src.ClippingHelper;
-import net.minecraft.src.GLAllocation;
-import net.minecraft.src.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class ClippingHelperImpl extends ClippingHelper {
-
 	private static ClippingHelperImpl instance = new ClippingHelperImpl();
 	private FloatBuffer projectionMatrixBuffer = GLAllocation.createDirectFloatBuffer(16);
 	private FloatBuffer modelviewMatrixBuffer = GLAllocation.createDirectFloatBuffer(16);
@@ -90,5 +86,4 @@ public class ClippingHelperImpl extends ClippingHelper {
 		this.frustum[5][3] = this.clippingMatrix[15] + this.clippingMatrix[14];
 		this.normalize(this.frustum, 5);
 	}
-
 }
