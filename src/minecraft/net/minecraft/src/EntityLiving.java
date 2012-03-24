@@ -244,7 +244,7 @@ public abstract class EntityLiving extends Entity {
 		return this.worldObj.rayTraceBlocks(Vec3D.createVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), Vec3D.createVector(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
 	}
 
-	public String getEntityTexture() {
+	public String getTexture() {
 		//Spout Start
 		String custom = getCustomTextureUrl(getTextureToRender());
 		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){

@@ -13,7 +13,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 //Spout start
 import org.lwjgl.opengl.GL13;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 //Spout end
 
 public class RenderLiving extends Render {

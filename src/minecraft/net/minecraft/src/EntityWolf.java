@@ -69,7 +69,7 @@ public class EntityWolf extends EntityTameable {
 		return false;
 	}
 
-	public String getEntityTexture() {
+	public String getTexture() {
 		//Spout Start
 		if(isTamed()) {
 			return this.getCustomTexture(EntitySkinType.WOLF_TAMED, "/mob/wolf_tame.png");
@@ -77,7 +77,7 @@ public class EntityWolf extends EntityTameable {
 		if(isAngry()){
 			return this.getCustomTexture(EntitySkinType.WOLF_ANGRY, "/mob/wolf_angry.png");
 		} else {
-			return super.getEntityTexture();
+			return super.getTexture();
 		}
 		//Spout End
 	}
