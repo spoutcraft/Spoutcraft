@@ -934,7 +934,7 @@ public class GuiScreen extends Gui
 	}
 
 	// Note: already inside of the sandbox
-	protected void drawTooltip(String tooltip, int x, int y) {
+	public void drawTooltip(String tooltip, int x, int y) {
 		GL11.glPushMatrix();
 		String lines[] = tooltip.split("\n");
 		int tooltipWidth = 0;
@@ -1004,7 +1004,7 @@ public class GuiScreen extends Gui
 	}
 
 	// This is used too many places, so we will make sure it's sandboxed
-	protected boolean isInBoundingRect(Widget widget, int x, int y) {
+	public boolean isInBoundingRect(Widget widget, int x, int y) {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (!wasSandboxed) {
 			SpoutClient.enableSandbox();
@@ -1027,7 +1027,7 @@ public class GuiScreen extends Gui
 		return false;
 	}
 
-	protected boolean isInBoundingRect(int widgetX, int widgetY, int height,
+	public boolean isInBoundingRect(int widgetX, int widgetY, int height,
 			int width, int x, int y) {
 		int left = widgetX;
 		int top = widgetY;

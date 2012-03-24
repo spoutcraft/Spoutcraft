@@ -37,6 +37,7 @@ public class GuiAddWaypoint extends GuiScreen{
 		
 		name = new GenericTextField();
 		name.setHeight(20).setWidth(300).setX(left).setY(81);
+		name.setMaximumCharacters(0);
 		name.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, name);
 		

@@ -13,6 +13,9 @@ public class HeightMapAgent {
 				int actualX = chunk.xPosition * 16 + x;
 				int actualZ = chunk.zPosition * 16 + z;
 				byte id = (byte) chunk.getBlockID(x, h, z);
+				if(chunk.getBlockID(x, h + 1, z) == 78) {
+					id = 78;
+				}
 				map.setHighestBlock(actualX, actualZ, (short) h, id);
 			}
 

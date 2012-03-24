@@ -35,6 +35,7 @@ import net.minecraft.src.World;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
+import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -512,7 +513,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				autoforwardToggle = false;
 			}
 			else if (key == settings.keyWaypoint.keyCode){
-				mc.displayGuiScreen(new GuiAddWaypoint());
+				mc.displayGuiScreen(new GuiOverviewMap());
 			}
 		}
 	}

@@ -650,7 +650,6 @@ public class Chunk {
 		//Spout start
 		//note: onChunkLoad is only called in SP
 		SpoutcraftChunk.loadedChunks.add(spoutChunk);
-		org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(this);
 		//Spout end
 	}
 
