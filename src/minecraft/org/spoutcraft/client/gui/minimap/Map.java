@@ -72,11 +72,16 @@ public class Map {
 
 	private final ImageManager lightimg;
 
-	public Map() {
+	public Map(int size) {
+		imageSize = size;
 		colorimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		heightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		lightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		clear();
+	}
+	
+	public Map() {
+		this(276 * 2);
 	}
 
 	/**

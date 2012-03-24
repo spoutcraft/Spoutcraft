@@ -27,7 +27,7 @@ public class HeightMap {
 
 	private class HeightChunk {
 		public short heightmap[] = new short[16 * 16];
-		public int x, z;
+		public final int x, z;
 		public byte[] idmap = new byte[16 * 16];
 
 		{
@@ -35,6 +35,11 @@ public class HeightMap {
 				heightmap[i] = -1;
 				idmap[i] = -1;
 			}
+		}
+		
+		public HeightChunk(int x, int z) {
+			this.x = x;
+			this.z = z;
 		}
 	}
 
@@ -104,12 +109,12 @@ public class HeightMap {
 					while(true) {
 						x = in.readInt();
 						z = in.readInt();
-						HeightChunk chunk = new HeightChunk();
+						HeightChunk chunk = new HeightChunk(x, z);
 						for(int i = 0; i < 256; i++) {
 							chunk.heightmap[i] = in.readShort();
 							chunk.idmap[i] = in.readByte();
 						}
-						addChunk(chunk, x, z);
+						addChunk(chunk);
 					}
 				} catch (EOFException e) {}
 				in.close();
@@ -124,21 +129,23 @@ public class HeightMap {
 		}
 	}
 
-	private void addChunk(HeightChunk chunk, int x, int z) {
-		cache.put(x, z, chunk);
-		chunk.x = x;
-		chunk.z = z;
-		if(!initBounds) {
-			minX = x; 
-			maxX = x;
-			minZ = z;
-			maxZ = z;
-			initBounds = true;
-		} else {
-			minX = Math.min(minX, x);
-			maxX = Math.max(maxX, x);
-			minZ = Math.min(minZ, z);
-			maxZ = Math.max(maxZ, z);
+	private void addChunk(HeightChunk chunk) {
+		synchronized (cache) {
+			int x = chunk.x;
+			int z = chunk.z;
+			cache.put(x, z, chunk);
+			if(!initBounds) {
+				minX = x; 
+				maxX = x;
+				minZ = z;
+				maxZ = z;
+				initBounds = true;
+			} else {
+				minX = Math.min(minX, x);
+				maxX = Math.max(maxX, x);
+				minZ = Math.min(minZ, z);
+				maxZ = Math.max(maxZ, z);
+			}	
 		}
 	}
 
@@ -192,8 +199,8 @@ public class HeightMap {
 	public short getHeight(int x, int z) {
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
-		x -= (cX << 4);
-		z -= (cZ << 4);
+		x &= 0xF;
+		z &= 0xF;
 		if(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
 			return lastChunk.heightmap[z << 4 | x];
 		}
@@ -210,8 +217,8 @@ public class HeightMap {
 	public byte getBlockId(int x, int z) {
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
-		x -= (cX << 4);
-		z -= (cZ << 4);
+		x &= 0xF;
+		z &= 0xF;
 		if(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
 			return lastChunk.idmap[z << 4 | x];
 		}
@@ -228,18 +235,18 @@ public class HeightMap {
 	public void setHighestBlock(int x, int z, short height, byte id) {
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
-		x -= (cX << 4);
-		z -= (cZ << 4);
+		x &= 0xF;
+		z &= 0xF;
 		synchronized (cache) {
 			if(!(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ)) {
 				if(cache.containsKey(cX, cZ)) {
 					lastChunk = cache.get(cX, cZ);
 				} else {
-					HeightChunk chunk = new HeightChunk();
+					HeightChunk chunk = new HeightChunk(cX, cZ);
 					chunk.heightmap[z << 4 | x] = height;
 					chunk.idmap [z << 4 | x] = id;
 					lastChunk = chunk;
-					addChunk(chunk, cX, cZ);
+					addChunk(chunk);
 					return;
 				}	
 			}
