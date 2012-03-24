@@ -368,7 +368,7 @@ public class NetClientHandler extends NetHandler {
 	public void func_48487_a(Packet51MapChunk par1Packet51MapChunk) {
 		this.worldClient.invalidateBlockReceiveRegion(par1Packet51MapChunk.xCh << 4, 0, par1Packet51MapChunk.zCh << 4, (par1Packet51MapChunk.xCh << 4) + 15, 256, (par1Packet51MapChunk.zCh << 4) + 15);
 		Chunk var2 = this.worldClient.getChunkFromChunkCoords(par1Packet51MapChunk.xCh, par1Packet51MapChunk.zCh);
-		if (par1Packet51MapChunk.includeInitialize || var2 == null) { //Spout && -> ||
+		if (par1Packet51MapChunk.includeInitialize && var2 == null) { //Spout && -> ||
 			this.worldClient.doPreChunk(par1Packet51MapChunk.xCh, par1Packet51MapChunk.zCh, true);
 			var2 = this.worldClient.getChunkFromChunkCoords(par1Packet51MapChunk.xCh, par1Packet51MapChunk.zCh);
 		}
