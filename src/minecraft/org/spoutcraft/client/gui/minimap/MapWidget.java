@@ -21,8 +21,9 @@ import org.spoutcraft.spoutcraftapi.property.Property;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class MapWidget extends GenericScrollable {
-	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(25);
+	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
 	static HeightMap heightMap;
+	static Map blankMap = new Map(1); //singleton instance used to indicate no pixels to draw in a chunk
 	float scale = 1f;
 	boolean dirty = true;
 	GuiScreen parent = null;
@@ -68,22 +69,30 @@ public class MapWidget extends GenericScrollable {
 			return;
 		}
 		boolean pixelSet = false;
-		for (int cx = 0; cx < 16; cx++) {
-			for (int cz = 0; cz < 16; cz++) {
-				short height = heightMap.getHeight(cx + x * 16, cz + z * 16);
-				byte id = heightMap.getBlockId(cx + x * 16, cz + z * 16);
-				if(id == -1 || height == -1) {
-					height = 0;
-					id = 0;
-				} else {
-					pixelSet = true;
+		try {
+			for (int cx = 0; cx < 16; cx++) {
+				for (int cz = 0; cz < 16; cz++) {
+					short height = heightMap.getHeight(cx + x * 16, cz + z * 16);
+					byte id = heightMap.getBlockId(cx + x * 16, cz + z * 16);
+					if(id == -1 || height == -1) {
+						height = 0;
+						id = 0;
+					} else {
+						pixelSet = true;
+					}
+					map.setHeightPixel(cz, cx, height);
+					map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 				}
-				map.setHeightPixel(cz, cx, height);
-				map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 			}
+		}
+		catch (Exception e) {
+			pixelSet = false;
 		}
 		if(pixelSet) {
 			chunks.put(x, z, map);
+		}
+		else {
+			chunks.put(x, z, blankMap);
 		}
 	}
 
@@ -132,7 +141,7 @@ public class MapWidget extends GenericScrollable {
 			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
 				drawChunk(chunkX, chunkZ, dirty);
 				Map map = chunks.get(chunkX, chunkZ);
-				if(map != null) {
+				if(map != null && map != blankMap) {
 					GL11.glPushMatrix();
 					int x = chunkX * 16;
 					int y = chunkZ * 16;

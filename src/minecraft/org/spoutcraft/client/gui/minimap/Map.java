@@ -77,7 +77,6 @@ public class Map {
 		colorimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		heightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		lightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
-		clear();
 	}
 	
 	public Map() {
