@@ -184,6 +184,16 @@ public enum ChatColor {
 
         return STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
     }
+    
+     /**
+	 * Gets the color represented by the specified color code
+	 *
+	 * @param code Code to check
+	 * @return Associative {@link Color} with the given code, or null if it doesn't exist
+	 */
+	public static ChatColor getByCode(final int code) {
+		return BY_ID.get(code);
+	}
 
     /**
      * Translates a string using an alternate color code character into a string that uses the internal
