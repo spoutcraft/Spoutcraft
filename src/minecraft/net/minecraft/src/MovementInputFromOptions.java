@@ -14,7 +14,7 @@ public class MovementInputFromOptions extends MovementInput {
 			++this.moveForward;
 		}
 
-		if (this.gameSettings.keyBindBack.pressed) {
+		if (this.gameSettings.keyBindBack.pressed || par1EntityPlayer.autoBackwardToggle) { //Spout
 			--this.moveForward;
 		}
 

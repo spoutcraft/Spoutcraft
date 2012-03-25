@@ -56,6 +56,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean runToggle = false;
 	public boolean treadWaterToggle = false;
 	public boolean autoforwardToggle = false;
+	public boolean autoBackwardToggle = false;
 	//Spout end
 
 	public EntityPlayer(World par1World) {

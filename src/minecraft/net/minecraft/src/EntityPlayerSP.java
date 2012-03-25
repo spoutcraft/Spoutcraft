@@ -435,6 +435,8 @@ public class EntityPlayerSP extends EntityPlayer {
 	public void handleKeyPress(int key, boolean keyReleased) {
 		if (keyReleased) {
 			final GameSettings settings = SpoutClient.getHandle().gameSettings;
+			
+			//Fog toggle
 			if (key == settings.keyBindToggleFog.keyCode) {
 				byte view = (byte)settings.renderDistance;
 				byte newView = (byte) SpoutClient.getInstance().getActivePlayer().getNextRenderDistance().getValue();
@@ -447,6 +449,8 @@ public class EntityPlayerSP extends EntityPlayer {
 					}
 				}
 			}
+			
+			//Sneak toggle
 			else if (key == settings.keySneakToggle.keyCode) {
 				sneakToggle = !sneakToggle;
 				if (sneakToggle) {
@@ -455,6 +459,8 @@ public class EntityPlayerSP extends EntityPlayer {
 					treadWaterToggle = false;
 				}
 			}
+			
+			//Run toggle
 			else if (key == settings.keyRunToggle.keyCode) {
 				runToggle = !runToggle;
 				setSprinting(runToggle);
@@ -463,6 +469,8 @@ public class EntityPlayerSP extends EntityPlayer {
 					treadWaterToggle = false;
 				}
 			}
+			
+			//Water tread
 			else if (key == settings.keyTreadWaterToggle.keyCode) {
 				treadWaterToggle = !treadWaterToggle;
 				if (treadWaterToggle) {
@@ -471,13 +479,28 @@ public class EntityPlayerSP extends EntityPlayer {
 					sneakToggle = false;
 				}
 			}
-			//Purposely it's own block, can be toggled independantly
+
+			//Auto forward
 			else if (key == settings.keyAutoForward.keyCode) {
 				autoforwardToggle = !autoforwardToggle;
+				autoBackwardToggle = false;
 			}
 			else if (key == settings.keyBindForward.keyCode && autoforwardToggle) {
 				autoforwardToggle = false;
+				autoBackwardToggle = false;
 			}
+			
+			//Auto backward
+			else if (key == settings.keyAutoBackward.keyCode) {
+				autoBackwardToggle = !autoBackwardToggle;
+				autoforwardToggle = false;
+			}
+			else if (key == settings.keyBindBack.keyCode && autoBackwardToggle) {
+				autoBackwardToggle = false;
+				autoforwardToggle = false;
+			}
+			
+			//Overview map
 			else if (key == settings.keyWaypoint.keyCode){
 				mc.displayGuiScreen(new GuiOverviewMap());
 			}
