@@ -215,6 +215,31 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			message.reparse();
 		}
 	}
+	
+	public static void clearChat() {
+		chatMessages.clear();
+	}
+	
+	public static int getNumChatMessages() {
+		return chatMessages.size();
+	}
+	
+	public static String getChatMessageAt(int pos) {
+		if (pos > -1 && pos < chatMessages.size()) {
+			return chatMessages.get(pos).getMessage();
+		}
+		return "";
+	}
+	
+	public static String getPlayerNameAt(int pos) {
+		if (pos > -1 && pos < chatMessages.size()) {
+			String player = chatMessages.get(pos).getPlayer();
+			if (player != null) {
+				return player;
+			}
+		}
+		return "";
+	}
 
 	@Override
 	public int getVersion() {
