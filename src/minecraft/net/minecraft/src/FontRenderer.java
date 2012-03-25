@@ -411,6 +411,7 @@ public class FontRenderer {
 		if (par1Str == null) {
 			return 0;
 		} else {
+			par1Str = org.bukkit.ChatColor.stripColor(par1Str); //Spout strip colors when calculating width.
 			int var2 = 0;
 			boolean var3 = false;
 
