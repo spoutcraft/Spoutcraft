@@ -1,5 +1,7 @@
 package org.spoutcraft.client.gui.minimap;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.Chunk;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
 
@@ -13,6 +15,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.Point;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
@@ -54,19 +57,19 @@ public class MapWidget extends GenericScrollable {
 		if (axis == Orientation.HORIZONTAL) {
 			return (int) ((double) (heightMap.getMaxX() - heightMap.getMinX() + 1) * scale * 16d);
 		} else {
-			return (int) ((double) (heightMap.getMaxZ() - heightMap.getMinZ() + 1) * scale * 16d);
+			return (int) ((double) (heightMap.getMaxZ() - heightMap.getMinZ() + 1) * scale * 16d) + 30;
 		}
 	}
 
-	public void drawChunk(int x, int z, boolean force) {
+	public Map drawChunk(int x, int z, boolean force) {
 		Map map = chunks.get(x, z);
-		if (map == null) {
+		if (map == null || (force && map == blankMap)) {
 			map = new Map(16);
 			map.originOffsetX = 0;
 			map.originOffsetY = 0;
 			map.renderSize = 16;
 		} else if (!force) {
-			return;
+			return map;
 		}
 		boolean pixelSet = false;
 		try {
@@ -75,8 +78,8 @@ public class MapWidget extends GenericScrollable {
 					short height = heightMap.getHeight(cx + x * 16, cz + z * 16);
 					byte id = heightMap.getBlockId(cx + x * 16, cz + z * 16);
 					if(id == -1 || height == -1) {
-						height = 0;
-						id = 0;
+						chunks.put(x, z, blankMap);
+						return blankMap;
 					} else {
 						pixelSet = true;
 					}
@@ -94,6 +97,37 @@ public class MapWidget extends GenericScrollable {
 		else {
 			chunks.put(x, z, blankMap);
 		}
+		return map;
+	}
+	
+	public void zoomBy(float zoom) {
+		Point center = getCenterCoord();
+		float newscale = scale + zoom;
+		if(newscale <= 0) {
+			newscale = 0.1f;
+		}
+		scale = newscale;
+		scrollTo(center);
+	}
+	
+	public Point mapOutsideToCoords(Point outside) {
+		int x = outside.getX();
+		int y = outside.getY();
+		x /= scale;
+		y /= scale;
+		x += heightMap.getMinX() * 16;
+		y += heightMap.getMinZ() * 16;
+		return new Point(x,y);
+	}
+	
+	public Point mapCoordsToOutside(Point coords) {
+		int x = coords.getX();
+		int y = coords.getY();
+		x -= heightMap.getMinX() * 16;
+		y -= heightMap.getMinZ() * 16;
+		x *= scale;
+		y *= scale;
+		return new Point(x,y);
 	}
 
 	public void showPlayer() {
@@ -102,14 +136,19 @@ public class MapWidget extends GenericScrollable {
 		scrollTo(x, z);
 	}
 	
+	public void scrollTo(Point p) {
+		scrollTo(p.getX(), p.getY());
+	}
+	
 	public void scrollTo(int x, int z) {
-		int scrollX = -heightMap.getMinX() * 16, scrollZ = -heightMap.getMinZ() * 16;
-		scrollX += x;
-		scrollZ += z;
-		scrollX *= scale;
-		scrollZ *= scale;
+		Point p = mapCoordsToOutside(new Point(x,z));
+		int scrollX = p.getX(), scrollZ = p.getY();
 		setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
 		setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
+	}
+	
+	public Point getCenterCoord() {
+		return mapOutsideToCoords(new Point((int) (getWidth() / 2) + scrollX, (int) (getHeight() / 2) + scrollY));
 	}
 
 	@Override
@@ -138,8 +177,7 @@ public class MapWidget extends GenericScrollable {
 		GL11.glPushMatrix();
 		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
 			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
-				drawChunk(chunkX, chunkZ, dirty);
-				Map map = chunks.get(chunkX, chunkZ);
+				Map map = drawChunk(chunkX, chunkZ, dirty);
 				if(map != null && map != blankMap) {
 					GL11.glPushMatrix();
 					int x = chunkX * 16;

@@ -1,5 +1,6 @@
 package org.spoutcraft.client.gui.minimap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
@@ -11,6 +12,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
+import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class GuiOverviewMap extends GuiSpoutScreen {
 	
@@ -24,7 +27,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		map = new MapWidget(this);
-		title = new GenericLabel("Map");
+		title = new GenericLabel("Overview Map");
 		buttonDone = new GenericButton("Done");
 		buttonZoomIn = new GenericButton("+");
 		buttonZoomOut = new GenericButton("-");
@@ -40,15 +43,16 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	@Override
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
-		title.setY(10);
+		title.setY(5);
 		
-		map.setGeometry(0, 26, width, height - 56);
+		map.setGeometry(0, 0, width, height);
+		map.setPriority(RenderPriority.Highest);
 
 		buttonZoomIn.setGeometry(5, height - 25, 20, 20);
 		buttonZoomOut.setGeometry(25, height - 25, 20, 20);
-		buttonDone.setGeometry(width - 105, height - 25, 100, 20);
-		buttonShowPlayer.setGeometry(50, height - 25, 100, 20);
-		buttonAddWaypoint.setGeometry(155, height - 25, 100, 20);
+		buttonDone.setGeometry(width - 55, height - 25, 50, 20);
+		buttonShowPlayer.setGeometry(50, height - 25, 50, 20);
+		buttonAddWaypoint.setGeometry(105, height - 25, 100, 20);
 	}
 	
 	@Override
@@ -57,10 +61,10 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			mc.displayGuiScreen(null);
 		}
 		if(btn == buttonZoomIn) {
-			map.setScale(map.getScale() + 0.1f);
+			map.zoomBy(0.1f);
 		}
 		if(btn == buttonZoomOut) {
-			map.setScale(map.getScale() - 0.1f);
+			map.zoomBy(-0.1f);
 		}
 		if(btn == buttonShowPlayer) {
 			map.showPlayer();
@@ -72,12 +76,24 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		if(button == 0 && isInBoundingRect(map, x, y)) {
+		if(button == 0 && isInBoundingRect(map, x, y) && !hitsWidget(x, y, map, title)) {
 			dragging = true;
 			dragStartX = x;
 			dragStartY = y;
 		}
 		super.mouseClicked(x, y, button);
+	}
+
+	private boolean hitsWidget(int x, int y, Widget ...exclude) {
+		for(Widget widget:getScreen().getAttachedWidgets(true)) {
+			if(isInBoundingRect(widget, x, y)) {
+				if(ArrayUtils.contains(exclude, widget)) {
+					continue;
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
