@@ -1,7 +1,9 @@
 package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiIngameMenu;
+import net.minecraft.src.GuiSleepMP;
 
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -53,7 +55,7 @@ public class ZanMinimap {
 		if (Minecraft.theMinecraft.thePlayer == null)
 			return;
 		
-		if (Minecraft.theMinecraft.currentScreen != null && !isTransparentMenu())
+		if (Minecraft.theMinecraft.currentScreen != null && !(isTransparentMenu() || isChatMenu()))
 			return;
 			
 		if (!MinimapConfig.getInstance().isEnabled()) {
@@ -69,6 +71,10 @@ public class ZanMinimap {
 	
 	private boolean isTransparentMenu() {
 		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
+	}
+	
+	private boolean isChatMenu() {
+		return Minecraft.theMinecraft.currentScreen instanceof GuiChat || Minecraft.theMinecraft.currentScreen instanceof GuiSleepMP;
 	}
 	
 }

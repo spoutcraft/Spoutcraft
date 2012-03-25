@@ -240,7 +240,7 @@ public class GuiEditSign extends GuiScreen
 				if(c >= 10) {
 					code = (char) ('a' + c - 10);
 				}
-				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 10 + c * 10, 0xffffffff);
+				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 70 + c * 10, 0xffffffff);
 			}
 		}
 		//Spout end

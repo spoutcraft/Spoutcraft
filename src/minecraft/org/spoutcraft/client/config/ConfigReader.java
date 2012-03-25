@@ -83,6 +83,7 @@ public class ConfigReader {
 	public static boolean sendColorsAsUnicode = true;
 	public static boolean clientLight = false;
 	public static float flightSpeedMultiplier = 2.0F;
+	public static boolean askBeforeOpeningUrl = true;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;

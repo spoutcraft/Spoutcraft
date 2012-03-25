@@ -22,13 +22,9 @@ public class GuiIngame extends Gui
 {
 	private static RenderItem itemRenderer = new RenderItem();
 
-	//Spout Improved Chat Start
-	//Increased default size, efficiency reasons
-	/** A list with all the chat messages in. */
-	public List<ChatLine> chatMessageList = new ArrayList<ChatLine>(2500);
-	private static final int RED = (new Color(1.0F, 0F, 0F, 0.65F).toInt());
+	//Spout Start
 	private final ZanMinimap map = new ZanMinimap();
-	//Spout Improved Chat End
+	//Spout End
 
 	public static final Random rand = new Random(); //Spout private -> public static final
 	private Minecraft mc;
@@ -50,7 +46,6 @@ public class GuiIngame extends Gui
 
 	public GuiIngame(Minecraft par1Minecraft)
 	{
-		chatMessageList = new ArrayList();
 		//rand = new Random();	//Spout removed
 		field_933_a = null;
 		updateCounter = 0;
@@ -548,11 +543,6 @@ public class GuiIngame extends Gui
 		}
 
 		updateCounter++;
-
-		for (int i = 0; i < chatMessageList.size(); i++)
-		{
-			((ChatLine)chatMessageList.get(i)).updateCounter++;
-		}
 	}
 
 	/**
@@ -560,7 +550,7 @@ public class GuiIngame extends Gui
 	 */
 	public void clearChatMessages()
 	{
-		chatMessageList.clear();
+		ChatTextBox.clearChat();
 	}
 
 	/**
@@ -585,14 +575,6 @@ public class GuiIngame extends Gui
 
 			addChatMessage(par1Str.substring(0, i));
 		}
-
-		chatMessageList.add(0, new ChatLine(par1Str));
-
-		//Spout Improved Chat Start
-		while(this.chatMessageList.size() > 3000) {
-			this.chatMessageList.remove(this.chatMessageList.size() - 1);
-		}
-		//Spout Improved Chat End
 	}
 
 	public void setRecordPlayingMessage(String par1Str)
@@ -610,5 +592,32 @@ public class GuiIngame extends Gui
 		StringTranslate stringtranslate = StringTranslate.getInstance();
 		String s = stringtranslate.translateKey(par1Str);
 		addChatMessage(s);
+	}
+	
+	public boolean func_50015_e() {
+		return this.mc.currentScreen instanceof GuiChat;
+	}
+	
+	public ChatClickData func_50012_a(int par1, int par2) {
+		if (!this.func_50015_e()) {
+			return null;
+		} else {
+			ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+			int chatScroll = SpoutClient.getInstance().getChatManager().chatScroll;
+			//don't ask, it's much better than vanilla matching though
+			par2 = par2 / var3.scaleFactor - 43 - ((20 - Math.min(20, chatScroll)) / 2);
+			par1 = par1 / var3.scaleFactor - 3;
+			if (par1 >= 0 && par2 >= 0) {
+				int var4 = Math.min(20, ChatTextBox.getNumChatMessages());
+				if (par1 <= 320 && par2 < this.mc.fontRenderer.FONT_HEIGHT * var4 + var4) {
+					int var5 = par2 / (this.mc.fontRenderer.FONT_HEIGHT + 1) + chatScroll;
+					return new ChatClickData(this.mc.fontRenderer, new ChatLine(ChatTextBox.getChatMessageAt(var5)), par1, par2 - (var5 - chatScroll) * this.mc.fontRenderer.FONT_HEIGHT + var5);
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
 	}
 }

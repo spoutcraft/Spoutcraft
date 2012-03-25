@@ -10,15 +10,16 @@ public class HeightMapAgent {
 		for(int x = 0; x < 16; x++) {
 			for(int z = 0; z < 16; z++) {
 				int h = chunk.getHeightValue(x, z) - 1;
-				int actualX = chunk.xPosition * 16 + x;
-				int actualZ = chunk.zPosition * 16 + z;
-				byte id = (byte) chunk.getBlockID(x, h, z);
-				if(chunk.getBlockID(x, h + 1, z) == 78) {
-					id = 78;
+				if (h > -1) {
+					int actualX = chunk.xPosition * 16 + x;
+					int actualZ = chunk.zPosition * 16 + z;
+					byte id = (byte) chunk.getBlockID(x, h, z);
+					if(chunk.getBlockID(x, h + 1, z) == 78) {
+						id = 78;
+					}
+					map.setHighestBlock(actualX, actualZ, (short) h, id);
 				}
-				map.setHighestBlock(actualX, actualZ, (short) h, id);
 			}
-
 		}
 	}
 

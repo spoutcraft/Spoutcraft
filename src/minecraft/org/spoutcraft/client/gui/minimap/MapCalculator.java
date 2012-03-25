@@ -304,6 +304,10 @@ public class MapCalculator implements Runnable {
 	 * in onRenderTick().
 	 */
 	public void run() {
+		//wait 1 s for the world to set up
+		try {
+			Thread.sleep(1000); 
+		} catch (InterruptedException e1) {}
 		while (true) {
 			try {
 				if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.theWorld != null) {

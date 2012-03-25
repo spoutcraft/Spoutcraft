@@ -51,6 +51,7 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.yaml.snakeyaml.Yaml;
 
 public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager{
@@ -164,7 +165,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	}
 
 	public int getChatHistorySize() {
-		return SpoutClient.getHandle().ingameGUI.chatMessageList.size();
+		return ChatTextBox.getNumChatMessages();
 	}
 
 	public int checkCursor(String message, int cursor) {

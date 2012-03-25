@@ -1,11 +1,17 @@
 package net.minecraft.src;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 //Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.chat.GuiURLConfirm;
 import org.spoutcraft.spoutcraftapi.gui.ChatBar;
 //Spout End
 
@@ -22,7 +28,7 @@ public class GuiChat extends GuiScreen
 	private static String lastChat = "";
 	
 	public int cursorPosition = 0;
-
+	
 	public GuiChat()
 	{
 		SpoutClient.getInstance().getChatManager().chatScroll = 0;
@@ -157,7 +163,7 @@ public class GuiChat extends GuiScreen
 				if(c >= 10) {
 					code = (char) ('a' + c - 10);
 				}
-				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 10 + c * 10, 0xffffffff);
+				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 70 + c * 10, 0xffffffff);
 			}
 		}
 		//Spout Improved Chat End
@@ -173,12 +179,23 @@ public class GuiChat extends GuiScreen
 		{
 			return;
 		}
+		
+		ChatClickData var4 = this.mc.ingameGUI.func_50012_a(Mouse.getX(), Mouse.getY());
+		if (var4 != null) {
+			URI var5 = var4.func_50089_b();
+			if (var5 != null) {
+				this.mc.displayGuiScreen(new GuiURLConfirm(this, var4.func_50088_a(), var5));
+				return;
+			}
+		}
 
 		if (mc.ingameGUI.field_933_a == null)
 		{
 			super.mouseClicked(par1, par2, par3);
 			return;
 		}
+		
+		
 
 		//Spout Improved Chat Start
 //		if (!(message.length() <= 0 || message.endsWith(" ")))
