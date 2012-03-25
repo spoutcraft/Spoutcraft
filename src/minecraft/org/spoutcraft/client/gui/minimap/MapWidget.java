@@ -108,7 +108,6 @@ public class MapWidget extends GenericScrollable {
 		scrollZ += z;
 		scrollX *= scale;
 		scrollZ *= scale;
-		System.out.println(scrollX + " " + scrollZ);
 		setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
 		setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
 	}
@@ -192,8 +191,8 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	private void drawPOI(String name, int x, int z, int color) {
-		int mouseX = (int) ((getScreen().getMouseX() - getX()) / scale + scrollX + heightMap.getMinX() * 16);
-		int mouseY = (int) ((getScreen().getMouseY() - getY()) / scale + scrollY + heightMap.getMinZ() * 16);
+		int mouseX = (int) ((getScreen().getMouseX() - getX() + scrollX) / scale + heightMap.getMinX() * 16);
+		int mouseY = (int) ((getScreen().getMouseY() - getY() + scrollY) / scale + heightMap.getMinZ() * 16);
 		int radius = (int) (2f / scale);
 		if(radius <= 0) {
 			radius = 2;
