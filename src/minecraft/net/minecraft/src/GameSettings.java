@@ -58,7 +58,7 @@ public class GameSettings {
 	public KeyBinding keyWaypoint = new KeyBinding("Overview Map", Keyboard.KEY_P);
 	
 	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle, keyAutoForward,
-			keyAutoForward, keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown, keyWaypoint};
+			keyAutoBackward, keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown, keyWaypoint};
 	//Spout end
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;
