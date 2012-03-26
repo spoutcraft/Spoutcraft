@@ -84,7 +84,8 @@ public class ConfigReader {
 	public static boolean clientLight = false;
 	public static float flightSpeedMultiplier = 2.0F;
 	public static boolean askBeforeOpeningUrl = true;
-	
+	public static boolean alphaText = true;
+
 	//Launcher settings
 	public static boolean fastLogin = false;
 	public static boolean clipboardaccess = false;
