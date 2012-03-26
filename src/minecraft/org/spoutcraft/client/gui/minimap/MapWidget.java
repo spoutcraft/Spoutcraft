@@ -122,8 +122,8 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	public Point mapCoordsToOutside(Point coords) {
-		int x = coords.getX();
-		int y = coords.getY();
+		int x = coords.getX() - scrollX;
+		int y = coords.getY() - scrollY;
 		x -= heightMap.getMinX() * 16;
 		y -= heightMap.getMinZ() * 16;
 		x *= scale;
