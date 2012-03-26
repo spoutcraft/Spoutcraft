@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,7 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.util.config.Configuration;
+import org.getspout.commons.math.Vector3;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
@@ -50,6 +52,7 @@ public class MinimapConfig {
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
+	private Waypoint focussedWaypoint = null;
 
 	/*
 	 * minimap: enabled: true ... waypoints: world1: home: x: 128 z: -82
@@ -100,7 +103,7 @@ public class MinimapConfig {
 								x = locations.get("x").intValue();
 								z = locations.get("z").intValue();
 								enabled = locations.get("enabled").intValue() == 1;
-								addWaypoint(world, name, x, z, enabled);
+								addWaypoint(world, name, x, 64, z, enabled);
 							}
 						} catch (Exception ex) {
 							System.err.println("Error while reading waypoints: ");
@@ -248,8 +251,8 @@ public class MinimapConfig {
 		}
 	}
 
-	public synchronized void addWaypoint(String world, String name, int x, int z, boolean enabled) {
-		getWaypoints(world).add(new Waypoint(name, x, z, enabled));
+	public synchronized void addWaypoint(String world, String name, int x, int y, int z, boolean enabled) {
+		getWaypoints(world).add(new Waypoint(name, x, y, z, enabled));
 	}
 
 	public boolean isScale() {
@@ -290,5 +293,28 @@ public class MinimapConfig {
 
 	public void setDirections(boolean directions) {
 		this.directions = directions;
+	}
+
+	public Waypoint getFocussedWaypoint() {
+		return focussedWaypoint;
+	}
+
+	public void setFocussedWaypoint(Waypoint focussedWaypoint) {
+		this.focussedWaypoint = focussedWaypoint;
+	}
+
+	public void removeWaypoint(Waypoint clickedWaypoint) {
+		for(List<Waypoint> list:waypoints.values()) {
+			list.remove(clickedWaypoint);
+		}
+	}
+
+	public void addWaypoint(String worldName, Waypoint waypoint) {
+		List<Waypoint> list = waypoints.get(worldName);
+		if(list == null) {
+			list = new LinkedList<Waypoint>();
+			waypoints.put(worldName, list);
+		}
+		list.add(waypoint);
 	}
 }

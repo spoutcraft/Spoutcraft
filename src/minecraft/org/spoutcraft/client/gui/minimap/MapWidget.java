@@ -5,6 +5,7 @@ import net.minecraft.src.Chunk;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
 
+import org.getspout.commons.math.Vector3;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
@@ -111,8 +112,8 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	public Point mapOutsideToCoords(Point outside) {
-		int x = outside.getX();
-		int y = outside.getY();
+		int x = outside.getX() + scrollX;
+		int y = outside.getY() + scrollY;
 		x /= scale;
 		y /= scale;
 		x += heightMap.getMinX() * 16;
@@ -121,8 +122,8 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	public Point mapCoordsToOutside(Point coords) {
-		int x = coords.getX();
-		int y = coords.getY();
+		int x = coords.getX() - scrollX;
+		int y = coords.getY() - scrollY;
 		x -= heightMap.getMinX() * 16;
 		y -= heightMap.getMinZ() * 16;
 		x *= scale;
@@ -131,9 +132,7 @@ public class MapWidget extends GenericScrollable {
 	}
 
 	public void showPlayer() {
-		int x = (int) SpoutClient.getHandle().thePlayer.posX;
-		int z = (int) SpoutClient.getHandle().thePlayer.posZ;
-		scrollTo(x, z);
+		scrollTo(getPlayerPosition());
 	}
 	
 	public void scrollTo(Point p) {
@@ -148,7 +147,7 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	public Point getCenterCoord() {
-		return mapOutsideToCoords(new Point((int) (getWidth() / 2) + scrollX, (int) (getHeight() / 2) + scrollY));
+		return mapOutsideToCoords(new Point((int) (getWidth() / 2), (int) (getHeight() / 2)));
 	}
 
 	@Override
@@ -215,7 +214,10 @@ public class MapWidget extends GenericScrollable {
 			drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
 		}
 		
-		
+		if(MinimapConfig.getInstance().getFocussedWaypoint() != null) {
+			Waypoint pos = MinimapConfig.getInstance().getFocussedWaypoint();
+			drawPOI("Marker", pos.x, pos.z, 0xff00ffff);
+		}
 		
 		GL11.glPopMatrix();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -256,4 +258,9 @@ public class MapWidget extends GenericScrollable {
 		this.scale = scale;
 	}
 
+	public Point getPlayerPosition() {
+		int x = (int) SpoutClient.getHandle().thePlayer.posX;
+		int z = (int) SpoutClient.getHandle().thePlayer.posZ;
+		return new Point(x, z);
+	}
 }

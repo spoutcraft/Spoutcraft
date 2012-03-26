@@ -2,6 +2,7 @@ package org.spoutcraft.client.gui.minimap;
 public class Waypoint {
 	public String name;
 	public int x;
+	public int y;
 	public int z;
 	public boolean enabled;
 	public float red = 0.0F;
@@ -22,7 +23,7 @@ public class Waypoint {
 	 * @param z
 	 * @param enabled
 	 */
-	public Waypoint(String name, int x, int z, boolean enabled) {
+	public Waypoint(String name, int x, int y, int z, boolean enabled) {
 		this.name = name;
 		this.x = x;
 		this.z = z;
