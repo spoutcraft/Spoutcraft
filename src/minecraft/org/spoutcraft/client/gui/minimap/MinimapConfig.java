@@ -19,6 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.util.config.Configuration;
+import org.bukkit.util.config.ConfigurationNode;
 import org.getspout.commons.math.Vector3;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
@@ -90,25 +92,32 @@ public class MinimapConfig {
 				Object o = i.next();
 				if (o instanceof Entry) {
 					Entry<?, ?> e = (Entry) o;
-					if (e.getKey() instanceof String && e.getValue() instanceof Map<?, ?>) {
+					if (e.getKey() instanceof String) {
 						try {
 							String world = (String) e.getKey();
-							Map<String, Map<String, Number>> waypoints = (Map<String, Map<String, Number>>) e.getValue();
-							Iterator<Entry<String, Map<String, Number>>> j = waypoints.entrySet().iterator();
-							while (i.hasNext()) {
-								Entry<String, Map<String, Number>> entry = j.next();
-								int x, z;
-								String name = entry.getKey();
-								Map<String, Number> locations = entry.getValue();
-								x = locations.get("x").intValue();
-								z = locations.get("z").intValue();
-								enabled = locations.get("enabled").intValue() == 1;
-								addWaypoint(world, name, x, 64, z, enabled);
+							ConfigurationNode waypoints = (ConfigurationNode) e.getValue();
+							for(String name:waypoints.getKeys()) {
+								Map<String, Object> locations = waypoints.getNode(name).getAll();
+								int x, y = 64, z;
+								x = (Integer) locations.get("x");
+								if(locations.containsKey("y")) {
+									y = (Integer) locations.get("y");
+								}
+								z = (Integer) locations.get("z");
+								enabled = (Integer) locations.get("enabled") == 1;
+								addWaypoint(world, name, x, y, z, enabled);
+								
 							}
+//							Iterator<Entry<String, Map<String, Number>>> j = waypoints.getAll();
+//							while (i.hasNext()) {
+//								Entry<String, Map<String, Number>> entry = j.next();
+//							}
 						} catch (Exception ex) {
 							System.err.println("Error while reading waypoints: ");
 							ex.printStackTrace();
 						}
+					} else {
+						System.out.println("Entry did not satisfy needs... key: " + e.getKey() + " value: " + e.getValue());
 					}
 				}
 			}
@@ -147,6 +156,7 @@ public class MinimapConfig {
 			for (Waypoint waypoint : e.getValue()) {
 				HashMap<String, Integer> values = new HashMap<String, Integer>();
 				values.put("x", waypoint.x);
+				values.put("y", waypoint.y);
 				values.put("z", waypoint.z);
 				values.put("enabled", waypoint.enabled ? 1 : 0);
 				waypoints.put(waypoint.name, values);
