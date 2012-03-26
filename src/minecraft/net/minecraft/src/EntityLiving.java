@@ -1374,7 +1374,7 @@ public abstract class EntityLiving extends Entity {
 		while (var1.hasNext()) {
 			Integer var2 = (Integer)var1.next();
 			PotionEffect var3 = (PotionEffect)this.activePotionsMap.get(var2);
-			if (!var3.onUpdate(this) && !this.worldObj.isRemote) {
+			if (!var3.onUpdate(this)/* && !this.worldObj.isRemote*/) { //Spout better way to solve this?
 				var1.remove();
 				this.onFinishedPotionEffect(var3);
 			}
