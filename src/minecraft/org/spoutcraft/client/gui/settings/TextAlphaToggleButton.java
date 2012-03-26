@@ -35,7 +35,7 @@ public class TextAlphaToggleButton extends GenericCheckBox{
 		super("Text Alpha");
 		setChecked(ConfigReader.alphaText);
 		setEnabled(true);
-		setTooltip("Text Alpha\nON - Text is colored in §4R§2G§1B§eA§f (Default)\nOFF  - Text is rendered in §4R§2G§1B§f.\nSwitching off trades transparent text for coloured text,\nrestoring colour to most machines with the white text bug.");
+		setTooltip("Text Alpha\nON - Text is colored in \u00A74R\u00A72G\u00A71B\u00A7eA\u00A7f (Default)\nOFF  - Text is rendered in \u00A74R\u00A72G\u00A71B\u00A7f.\nSwitching off trades transparent text for coloured text,\nrestoring colour to most machines with the white text bug.");
 	}
 
 	@Override
