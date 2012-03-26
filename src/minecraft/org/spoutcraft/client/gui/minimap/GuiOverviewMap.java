@@ -25,7 +25,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	
 	private MapWidget map;
 	private Label title, menuTitle;
-	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer;
+	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset;
 	private GenericScrollArea hoverMenu;
 	
 	private boolean dragging = false;
@@ -49,10 +49,11 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonZoomIn = new GenericButton("+");
 		buttonZoomOut = new GenericButton("-");
 		buttonShowPlayer = new GenericButton("Player");
+		buttonReset = new GenericButton("Reset View");
 		map = new MapWidget(this);
 		map.setGeometry(0, 0, width, height);
 		map.showPlayer();
-		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer);
+		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset);
 		
 		hoverMenu = new GenericScrollArea();
 		hoverMenu.setBackgroundColor(new Color(0x55ffffff));
@@ -80,6 +81,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonZoomOut.setGeometry(25, height - 25, 20, 20);
 		buttonDone.setGeometry(width - 55, height - 25, 50, 20);
 		buttonShowPlayer.setGeometry(50, height - 25, 50, 20);
+		buttonReset.setGeometry(105, height - 25, 75, 20);
 		
 		hoverMenu.setGeometry(width / 2 - 320 / 2, height / 2 - 46 / 2, 320, 46);
 		int w = SpoutClient.getHandle().fontRenderer.getStringWidth(menuTitle.getText());
@@ -131,6 +133,9 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 				break;
 			}
 			setMenuVisible(false);
+		}
+		if(btn == buttonReset) {
+			map.reset();
 		}
 	}
 
