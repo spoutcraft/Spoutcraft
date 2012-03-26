@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Shaders;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -46,6 +47,9 @@ public class Tessellator {
 	private int bufferSize;
 	//Spout Start
 	public int textureOverride = 0;
+	private ByteBuffer shadersBuffer;
+  private ShortBuffer shadersShortBuffer;
+  private short[] shadersData;
 	//Spout End
 
 
@@ -61,6 +65,11 @@ public class Tessellator {
 			this.vertexBuffers = GLAllocation.createDirectIntBuffer(this.vboCount);
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
+		//Spout shaders start
+		this.shadersData = new short[]{(short)-1, (short)0};
+		this.shadersBuffer = GLAllocation.createDirectByteBuffer(par1 / 8 * 4);
+		this.shadersShortBuffer = this.shadersBuffer.asShortBuffer();
+		//Spout end
 	}
 
 	public int draw() {
@@ -139,9 +148,9 @@ public class Tessellator {
 
 				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 				if (this.drawMode == 7 && convertQuadsToTriangles) {
-					GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.vertexCount);
+					Shaders.glDrawArraysWrapper(GL11.GL_TRIANGLES, 0, this.vertexCount, this.shadersShortBuffer);
 				} else {
-					GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
+					Shaders.glDrawArraysWrapper(this.drawMode, 0, this.vertexCount, this.shadersShortBuffer);
 				}
 
 				GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
@@ -171,11 +180,21 @@ public class Tessellator {
 	}
 
 	private void reset() {
+		this.shadersBuffer.clear(); //Spout
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
 	}
+	
+	
+	//Spout start
+  public void setEntity(int var1) {
+    if (Shaders.entityAttrib >= 0) {
+      this.shadersData[0] = (short)var1;
+    }
+  }
+ //Spout end
 
 	public void startDrawingQuads() {
 		this.startDrawing(7);
@@ -268,6 +287,16 @@ public class Tessellator {
 	}
 
 	public void addVertex(double par1, double par3, double par5) {
+		//Spout start
+		if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
+			this.rawBuffer[rawBufferIndex+6] = rawBuffer[rawBufferIndex - 18];
+			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+			this.rawBuffer[this.rawBufferIndex + 14] = this.rawBuffer[this.rawBufferIndex + -2];
+			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+		}
+		this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+		//Spout end
+		
 		++this.addedVertices;
 		if (this.drawMode == 7 && convertQuadsToTriangles && this.addedVertices % 4 == 0) {
 			for (int var7 = 0; var7 < 2; ++var7) {
