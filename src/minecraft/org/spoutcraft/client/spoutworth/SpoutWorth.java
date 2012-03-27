@@ -245,6 +245,13 @@ public class SpoutWorth {
 				return;
 			}
 		}
+		if (ConfigReader.chunkRenderPasses > 1) {
+			ConfigReader.chunkRenderPasses = 1;
+			if (--downgrade == 0) {
+				ConfigReader.write();
+				return;
+			}
+		}
 		if (ConfigReader.renderDistance < 2) {
 			ConfigReader.renderDistance++;
 			Minecraft.theMinecraft.gameSettings.renderDistance = ConfigReader.renderDistance;
