@@ -167,10 +167,6 @@ public final class EasterEggs {
 			return ChatColor.DARK_PURPLE + "zml2008";
 		}
 		
-		if (user.equalsIgnoreCase("Rycochet")) {
-			return ChatColor.BLUE + "Rycochet";
-		}
-		
 		if (user.equalsIgnoreCase("NinjaZidane")) {
 			return ChatColor.BLACK + "Ninja" + ChatColor.BLUE + "Zidane";
 		}
