@@ -128,7 +128,6 @@ public class PollResult {
 	public static PollResult getPoll(String ip, int port, int uid) {
 		String hash = ip + ":" + port;
 		PollResult result = recentResults.get(hash.hashCode());
-		System.out.println("Returning Poll Result " + result + " for hash " + hash);
 		if (result == null) {
 			result = new PollResult(ip, port, uid);
 			recentResults.put(hash.hashCode(), result);
