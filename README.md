@@ -9,7 +9,7 @@ Spoutcraft is licensed under [GNU LESSER GENERAL PUBLIC LICENSE Version 3][Licen
 
 Who is SpoutDev?
 ----------------
-SpoutDev is the team behind Spout, SpoutAPI, Spoutcraft, SpoutcraftAPI, Spoutcraft Launcher and LauncherAPI, SpoutPlugin, SpoutPluginAPI, Vanilla, and BukkitBridge.  
+SpoutDev is the team behind Spout, SpoutAPI, SpoutNBT, Spoutcraft, SpoutcraftAPI, Spoutcraft Launcher and LauncherAPI, SpoutPlugin, SpoutPluginAPI, Vanilla, and BukkitBridge.  
 [![Afforess](https://secure.gravatar.com/avatar/ea0be49e1e4deac42ed9204ffd95b56c?d=mm&r=pg&s=48)](http://forums.spout.org/members/afforess.2/) 
 [![alta189](https://secure.gravatar.com/avatar/7a087430b2bf9456b8879c5469aadb95?d=mm&r=pg&s=48)](http://forums.spout.org/members/alta189.3/) 
 [![Wulfspider](https://secure.gravatar.com/avatar/6f2a0dcb60cd1ebee57875f9326bc98c?d=mm&r=pg&s=48)](http://forums.spout.org/members/wulfspider.1/) 

@@ -1,27 +1,18 @@
 /*
  * This file is part of Spoutcraft (http://www.spout.org/).
  *
- * Spoutcraft is licensed under the SpoutDev License Version 1.
- *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * In addition, 180 days after any changes are published, you can use the
- * software, incorporating those changes, under the terms of the MIT license,
- * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License,
- * the MIT license and the SpoutDev license version 1 along with this program.
- * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
- * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
- * including the MIT license.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.spoutcraft.client.gui.error;
 
@@ -72,7 +63,7 @@ public class GuiUnexpectedError extends GuiScreen{
 		screen.attachWidget(spoutcraft, label);
 		top += 22;
 
-		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyway, Even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
+		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyways, even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
 		"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
 		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n"+
 		"and forgive and forget.\n\nWhat were we talking about again?");
@@ -136,7 +127,7 @@ class ReportErrorButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		SpoutClient.disableSandbox();
 		try {
-			URL url =  new URL("https://github.com/SpoutDev/Spout/issues/new");
+			URL url =  new URL("http://issues.spout.org");
 			Desktop.getDesktop().browse(url.toURI());
 		} catch (Exception e) { }
 		finally {
