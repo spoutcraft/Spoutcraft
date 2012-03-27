@@ -951,7 +951,7 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//Spout start
-			final int passes = Shaders.isEnabled() ? 3 : 3;
+			final int passes = Shaders.isEnabled() ? 3 : 2;
 			for (this.betterGrassLoop = 1; this.betterGrassLoop < passes; ++this.betterGrassLoop) {
 			//Spout end
 			GL11.glDepthMask(true);

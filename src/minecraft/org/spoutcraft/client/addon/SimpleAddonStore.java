@@ -129,8 +129,12 @@ public class SimpleAddonStore implements AddonStore {
 					e.printStackTrace();
 				}
 			}
-		} catch (FileNotFoundException ignore) {
-		} finally {
+		}
+		catch (FileNotFoundException ignore) {} 
+		catch (Exception e) {
+			e.printStackTrace(); 
+		}
+		finally {
 			loading = false;
 		}
 	}
