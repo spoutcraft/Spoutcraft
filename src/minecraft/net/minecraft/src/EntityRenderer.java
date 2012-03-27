@@ -643,6 +643,11 @@ public class EntityRenderer {
 	//	if(Thread.currentThread().getPriority() != 10) {
 	//		Thread.currentThread().setPriority(10);
 	//	}
+		
+		//keep this off
+		//advanced GL causes rendering holes
+		//TODO: fix
+		mc.gameSettings.advancedOpengl = false;
 
 		Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees);
 

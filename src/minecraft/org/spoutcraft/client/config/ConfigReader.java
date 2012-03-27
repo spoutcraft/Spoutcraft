@@ -35,6 +35,8 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
+import com.pclewis.mcpatcher.mod.Shaders;
+
 public class ConfigReader {
 	//Client settings
 	public static int advancedOpenGL = 0;
@@ -219,6 +221,8 @@ public class ConfigReader {
 		
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
+		
+		Shaders.setEnabled(fancyShaders);
 	}
 
 	public static void restoreDefaults() {

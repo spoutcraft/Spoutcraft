@@ -210,7 +210,7 @@ public class GameSettingsScreen extends GuiScreen{
 		control = new FancyShadersButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		graphicCheckboxes.add((CheckBox) control);
+		//graphicCheckboxes.add((CheckBox) control);
 		
 		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);

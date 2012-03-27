@@ -2,6 +2,7 @@ package com.pclewis.mcpatcher.mod;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
@@ -22,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
+import org.spoutcraft.client.io.FileUtil;
 
 public class Shaders {
 	private static boolean isInitialized = false;
@@ -421,6 +423,7 @@ public class Shaders {
 		if(!(enabled)) return;
 		GL11.glEnable(GL11.GL_BLEND);
 		useProgram(6);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	public static void endHand() {

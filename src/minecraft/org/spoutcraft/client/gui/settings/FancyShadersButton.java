@@ -31,20 +31,18 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
 public class FancyShadersButton extends AutomatedCheckBox {
-
 	UUID fancyGraphics;
-
 	public FancyShadersButton(UUID fancyGraphics) {
 		super("Fancy Shaders");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyClouds);
-		setTooltip("Shaders\nFast - disabled, faster\nFancy - enabled, slower\n");
+		setChecked(ConfigReader.fancyShaders);
+		setTooltip("Shaders\nWARNING: EXPERIMENTAL FEATURE!\nFast - disabled, faster\nFancy - enabled, slower\n");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		ConfigReader.fancyShaders = !ConfigReader.fancyShaders;
 		ConfigReader.write();
-		Shaders.setEnabled(!Shaders.isEnabled());
+		Shaders.setEnabled(ConfigReader.fancyShaders);
 	}
 }
