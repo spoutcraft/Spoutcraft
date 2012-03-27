@@ -96,7 +96,7 @@ public class Shaders {
 			if (programNames[var1].equals("")) {
 				programs[var1] = 0;
 			} else {
-				programs[var1] = setupProgram("shaders/" + programNames[var1] + ".vsh", "shaders/" + programNames[var1] + ".fsh");
+				programs[var1] = setupProgram(programNames[var1] + ".vsh", programNames[var1] + ".fsh");
 			}
 		}
 
@@ -690,6 +690,32 @@ public class Shaders {
 			return var5;
 		}
 	}
+	
+	private static BufferedReader getShaderFile(String fileName, int id) {
+		BufferedReader reader;
+		fileName = "/res/shaders/" + fileName;
+		try {
+			reader = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(fileName)));
+		} catch (Exception ignore) {
+			try {
+				File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../" + fileName);
+				System.out.println("Failed to find shaders, trying " + file.getAbsolutePath());
+				reader = new BufferedReader(new FileReader(file));
+			} catch (Exception ignore2) {
+				try {
+					File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../../" + fileName);
+					System.out.println("Failed to find shaders again, trying " + file.getAbsolutePath());
+					reader = new BufferedReader(new FileReader(file));
+				}
+				catch (Exception failed) {
+					System.out.println("Couldn\'t find shader file " + fileName + "!");
+					ARBShaderObjects.glDeleteObjectARB(id);
+					return null;
+				}
+			}
+		}
+		return reader;
+	}
 
 	private static int createVertShader(String var0) {
 		if(!(enabled)) return -1;
@@ -699,17 +725,9 @@ public class Shaders {
 		} else {
 			String var2 = "";
 
-			BufferedReader var4;
-			try {
-				var4 = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(var0)));
-			} catch (Exception var8) {
-				try {
-					var4 = new BufferedReader(new FileReader(new File(var0)));
-				} catch (Exception var7) {
-					System.out.println("Couldn\'t open " + var0 + "!");
-					ARBShaderObjects.glDeleteObjectARB(var1);
-					return 0;
-				}
+			BufferedReader var4 = getShaderFile(var0, var1);
+			if (var4 == null) {
+				return -1;
 			}
 
 			String var3;
@@ -741,17 +759,9 @@ public class Shaders {
 		} else {
 			String var2 = "";
 
-			BufferedReader var4;
-			try {
-				var4 = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(var0)));
-			} catch (Exception var8) {
-				try {
-					var4 = new BufferedReader(new FileReader(new File(var0)));
-				} catch (Exception var7) {
-					System.out.println("Couldn\'t open " + var0 + "!");
-					ARBShaderObjects.glDeleteObjectARB(var1);
-					return 0;
-				}
+			BufferedReader var4 = getShaderFile(var0, var1);
+			if (var4 == null) {
+				return 0;
 			}
 
 			String var3;

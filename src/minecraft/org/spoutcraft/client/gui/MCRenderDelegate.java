@@ -481,9 +481,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		float healthPercent = health / 0.2f;
 		int y = (int) bar.getScreenY();
-		if (healthPercent <= bar.getDangerPercent()) {
-			y += GuiIngame.rand.nextInt(2);
-		}
 		float healthPercentPerIcon = 100f / bar.getMaxNumHearts();
 		if (bar.isVisible() && bar.getMaxNumHearts() > 0) {
 			for (int icon = 0; icon < bar.getMaxNumHearts(); ++icon) {
@@ -501,6 +498,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 					hardcore = 5 * 9;
 				}
+				
+				int oldY = y;
+				if (healthPercent <= bar.getDangerPercent()) {
+					y += GuiIngame.rand.nextInt(2);
+				}
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, hardcore, 9, 9, 0f);
 				if (whiteOutlinedHearts) {
@@ -516,7 +518,8 @@ public class MCRenderDelegate implements RenderDelegate {
 				} else if (half) {
 					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, hardcore, 9, 9, 0f);
 				}
-
+				
+				y = oldY;
 			}
 		}
 	}
