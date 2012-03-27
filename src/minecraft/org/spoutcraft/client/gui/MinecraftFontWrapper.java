@@ -27,7 +27,7 @@ public class MinecraftFontWrapper implements MinecraftFont{
 	}
 
 	public boolean isAllowedChar(char ch) {
-		return ChatAllowedCharacters.allowedCharacters.indexOf(ch) > -1;
+		return ChatAllowedCharacters.allowedCharacters.indexOf(ch) > -1 || ch > 32;
 	}
 
 	public boolean isAllowedText(String text) {
