@@ -898,7 +898,7 @@ public class EntityRenderer {
 				//Spout start
 				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
 					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
-						 Shaders.sortAndRenderWrapper(var5, var4, pass, (double)par1);
+						 Shaders.sortAndRenderWrapper(var5, var4, pass < 2 ? pass : 0, (double)par1);
 					}
 				}
 				//Spout end
