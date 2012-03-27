@@ -134,30 +134,45 @@ public final class EasterEggs {
 		if (user.equalsIgnoreCase("Afforess")) {
 			return ChatColor.DARK_BLUE + "Afforess";
 		}
+		
 		if (user.equalsIgnoreCase("Wulfspider")) {
 			return ChatColor.BLUE + "Wulfspider";
 		}
+		
 		if (user.equalsIgnoreCase("alta189")) {
 			return ChatColor.DARK_GREEN + "alta189";
 		}
+		
 		if (user.equalsIgnoreCase("Raphfrk")) {
 			return ChatColor.GREEN + "Raphfrk";
 		}
+		
 		if (user.equalsIgnoreCase("narrowtux")) {
 			return ChatColor.GOLD + "narrowtux";
 		}
+		
 		if (user.equalsIgnoreCase("Top_Cat")) {
 			return ChatColor.RED + "T" + ChatColor.DARK_RED + "o" + ChatColor.YELLOW + "p" + ChatColor.GREEN + "_" + ChatColor.DARK_GREEN + "C" + ChatColor.BLUE + "a" + ChatColor.LIGHT_PURPLE + "t";
 		}
+		
 		if (user.equalsIgnoreCase("Olloth")) {
 			return ChatColor.DARK_RED + "Olloth";
 		}
+		
 		if (user.equalsIgnoreCase("Kylegar")) {
 			return ChatColor.AQUA + "Roy" + ChatColor.GREEN + "Awesome";
 		}
 
 		if (user.equalsIgnoreCase("zml2008")) {
 			return ChatColor.DARK_PURPLE + "zml2008";
+		}
+		
+		if (user.equalsIgnoreCase("Rycochet")) {
+			return ChatColor.BLUE + "Rycochet";
+		}
+		
+		if (user.equalsIgnoreCase("NinjaZidane")) {
+			return ChatColor.BLACK + "Ninja" + ChatColor.BLUE + "Zidane";
 		}
 		return null;
 	}

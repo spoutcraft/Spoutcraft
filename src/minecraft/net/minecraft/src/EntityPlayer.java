@@ -286,7 +286,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		if (easterEgg != null) {
 			playerCloakUrl = easterEgg;	
 		}
-		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
+		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Rycochet") || tempName.equalsIgnoreCase("Kylegar")) {
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
 		else {
@@ -1249,7 +1249,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		String tempName = ChatColor.stripColor(username);
-		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth")) {
+		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Rycochet") || tempName.equalsIgnoreCase("Kylegar")) {
 			int sparkleLoops = Math.max(1, (int) (var1 / 0.01F));
 			while (sparkleLoops > 0) {
 				if (rand.nextInt(2) == 0) {
