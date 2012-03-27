@@ -850,7 +850,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			var12 = this.worldObj.getStarBrightness(par1) * var7;
-			Shaders.setCelestialPosition();
+			Shaders.setCelestialPosition(); //Spout
 			if (var12 > 0.0F && ConfigReader.stars) { //Spout (added stars condition)
 				GL11.glColor4f(var12, var12, var12, var12);
 				GL11.glCallList(this.starGLCallList);
