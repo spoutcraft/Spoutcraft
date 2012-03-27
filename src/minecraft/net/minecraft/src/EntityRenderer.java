@@ -892,16 +892,18 @@ public class EntityRenderer {
 			Frustrum var18 = new Frustrum();
 			var18.setPosition(var7, var9, var11);
 			this.mc.renderGlobal.clipRenderersByFrustum(var18, par1);
-			if (var19 == 0) {
+			//Spout start
+			//boolean rendered = false;
+			if (var19 == 0/* && !Shaders.isShadowPass()*/) {
 				Profiler.endStartSection("updatechunks");
-				
-				//Spout start
+
 				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
 					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
-						 Shaders.sortAndRenderWrapper(var5, var4, pass < 2 ? pass : 0, (double)par1);
+						// Shaders.sortAndRenderWrapper(var5, var4, pass < 2 ? pass : 0, (double)par1);
+						// rendered = true;
 					}
 				}
-				//Spout end
+				
 
 				//while (! && par2 != 0L) {
 				//	long var21 = par2 - System.nanoTime();
@@ -910,13 +912,17 @@ public class EntityRenderer {
 				//	}
 				//}
 			}
-
+			//Spout end
 			this.setupFog(0, par1);
 			GL11.glEnable(GL11.GL_FOG);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			Profiler.endStartSection("terrain");
-			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1); //Spout start
+			//Spout start
+			//if (!rendered/* && !Shaders.isShadowPass()*/) {
+				Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
+			//}
+			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var20;
 			if (this.debugViewDirection == 0) {
@@ -945,7 +951,8 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//Spout start
-			for (this.betterGrassLoop = 1; this.betterGrassLoop < 3; ++this.betterGrassLoop) {
+			final int passes = Shaders.isEnabled() ? 3 : 3;
+			for (this.betterGrassLoop = 1; this.betterGrassLoop < passes; ++this.betterGrassLoop) {
 			//Spout end
 			GL11.glDepthMask(true);
 			this.setupFog(0, par1);
@@ -979,10 +986,11 @@ public class EntityRenderer {
 				Profiler.endStartSection("water");
 				Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); //Spout
 			}
-
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glDisable(GL11.GL_BLEND);
+			
+			}
 			if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
 				var20 = (EntityPlayer)var4;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -994,7 +1002,6 @@ public class EntityRenderer {
 
 			Profiler.endStartSection("weather");
 			//Spout start
-			}
 			Shaders.beginWeather();
 			this.renderRainSnow(par1);
 			Shaders.endWeather();

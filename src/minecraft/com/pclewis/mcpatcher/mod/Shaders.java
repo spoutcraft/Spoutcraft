@@ -265,6 +265,10 @@ public class Shaders {
 			cameraPosition[2] = var6;
 		}
 	}
+	
+	public static boolean isShadowPass() {
+		return isShadowPass;
+	}
 
 	public static void beginRender(Minecraft var0, float var1, long var2) {
 		if(!(enabled)) return;
@@ -278,6 +282,7 @@ public class Shaders {
 				resize();
 			}
 
+			//shadowPassInterval = 0;
 			if (shadowPassInterval > 0 && --shadowPassCounter <= 0) {
 				preShadowPassThirdPersonView = mc.gameSettings.thirdPersonView;
 				mc.gameSettings.thirdPersonView = 1;
@@ -639,14 +644,14 @@ public class Shaders {
 		if (var2 == 0) {
 			beginTerrain();
 		} else if (var2 == 1) {
-			beginWater();
+			//beginWater();
 		}
 
 		int var5 = var0.sortAndRender(var1, var2, var3);
 		if (var2 == 0) {
 			endTerrain();
 		} else if (var2 == 1) {
-			endWater();
+			//endWater();
 		}
 
 		return var5;

@@ -108,7 +108,7 @@ public class WorldRenderer {
 			int sizeYOffset = this.posY + 16;
 			int sizeZOffset = this.posZ + 16;
 
-			for(int renderPass = 0; renderPass < 2; ++renderPass) {
+			for(int renderPass = 0; renderPass < skipRenderPass.length; ++renderPass) {
 				this.skipRenderPass[renderPass] = true;
 			}
 
@@ -133,7 +133,7 @@ public class WorldRenderer {
 
 			blockRenderer.customIds = customBlockIds;
 
-			for (int renderPass = 0; renderPass < 3; ++renderPass) {
+			for (int renderPass = 0; renderPass < skipRenderPass.length; ++renderPass) {
 				
 				boolean skipRenderPass = false;
 				boolean rendered = false;
@@ -311,7 +311,7 @@ public class WorldRenderer {
 	}
 
 	public void setDontDraw() {
-		for(int var1 = 0; var1 <3; ++var1) { //Spout
+		for(int var1 = 0; var1 < skipRenderPass.length; ++var1) { //Spout
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -338,7 +338,15 @@ public class WorldRenderer {
 	}
 
 	public boolean skipAllRenderPasses() {
-		return !this.isInitialized?false:this.skipRenderPass[0] && this.skipRenderPass[1] && this.skipRenderPass[2];
+		if (this.isInitialized) {
+			for (int pass = 0; pass < skipRenderPass.length; pass++) {
+				if (!skipRenderPass[pass]) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	//Spout end
 

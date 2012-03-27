@@ -45,7 +45,7 @@ Bug Fixes by Kool_Kat.
 #define DARKMULT 0.08						// 0.0 = normal image. Higher values will darken dark colors.
 #define COLOR_BOOST	0.1					// 0.0 = normal saturation. Higher values mean more saturated image.
 #define MOTIONBLUR
-#define MOTIONBLUR_AMOUNT 2.5
+#define MOTIONBLUR_AMOUNT 0.3
 #define HIGHDESATURATE
 #define GAMMA 0.88							//1.0 is default brightness. lower values will brighten image, higher values will darken image	
 
