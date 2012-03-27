@@ -25,6 +25,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.CameraEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
 import org.spoutcraft.spoutcraftapi.gui.WidgetManager;
@@ -35,7 +36,7 @@ import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
-import org.spoutcraft.spoutcraftapi.util.Location;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public interface Client extends PropertyInterface {
 
@@ -134,7 +135,7 @@ public interface Client extends PropertyInterface {
 	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.
 	 * @return the location and view of the camera
 	 */
-	public Location getCamera();
+	public CameraEntity getCamera();
 
 	/**
 	 * The camera property holds the position and view of the camera. You can set it to a new location to influence it and to provide camera cutscenes.
@@ -142,7 +143,7 @@ public interface Client extends PropertyInterface {
 	 * @see detachCamera(boolean)
 	 * @param loc the location and view of the camera
 	 */
-	public void setCamera(Location loc);
+	public void setCamera(FixedLocation loc);
 	
 	/**
 	 * The detach property decides if player movements will influence the camera or not. If the camera is detached, player movements will be ignored.

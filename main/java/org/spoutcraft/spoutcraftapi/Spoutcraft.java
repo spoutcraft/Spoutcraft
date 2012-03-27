@@ -26,6 +26,7 @@ import org.spoutcraft.spoutcraftapi.addon.AddonStore;
 import org.spoutcraft.spoutcraftapi.command.AddonCommand;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.CameraEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
@@ -191,7 +192,7 @@ public final class Spoutcraft {
 		return client.getTick();
 	}
 	
-	public static Location getCamera() {
+	public static CameraEntity getCamera() {
 		return client.getCamera();
 	}
 	
