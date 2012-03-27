@@ -648,6 +648,9 @@ public class EntityRenderer {
 		//advanced GL causes rendering holes
 		//TODO: fix
 		mc.gameSettings.advancedOpengl = false;
+		if (Shaders.isEnabled()) {
+			mc.gameSettings.fancyGraphics = true;
+		}
 
 		Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees);
 

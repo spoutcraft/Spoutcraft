@@ -939,4 +939,8 @@ public class Shaders {
 			init(shaderType);
 		}
 	}
+	
+	public static boolean isEnabled() {
+		return enabled;
+	}
 }
