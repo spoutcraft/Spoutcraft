@@ -174,13 +174,23 @@ public class FavoritesModel extends AbstractListModel {
 	}
 
 	public void addServer(String title, String ip, int port) {
-		items.add(new ServerItem(title, ip, port, -1));
+		ServerItem item = new ServerItem(title, ip, port, -1);
+		item.poll();
+		items.add(item);
 		sizeChanged();
+		if (gui != null) {
+			gui.updateButtons();
+		}
 	}
 
 	public void addServer(String title, String ip, int port, int databaseId) {
-		items.add(new ServerItem(title, ip, port, databaseId));
+		ServerItem item = new ServerItem(title, ip, port, databaseId);
+		item.poll();
+		items.add(item);
 		sizeChanged();
+		if (gui != null) {
+			gui.updateButtons();
+		}
 	}
 
 	public void onSelected(int item, boolean doubleClick) {

@@ -79,6 +79,7 @@ public class ServerItem implements ListWidgetItem {
 		this.port = other.port;
 		this.title = other.title;
 		this.databaseId = other.databaseId;
+		this.pollResult = PollResult.getPoll(ip, port, databaseId);
 	}
 
 	public ServerItem(String title, String ip, int port, int dbId) {
@@ -283,6 +284,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setIp(String ip) {
 		this.ip = ip;
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
 	}
 
 	public int getPort() {
@@ -291,6 +293,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setPort(int port) {
 		this.port = port;
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
 	}
 
 	public String getTitle() {
@@ -307,6 +310,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setDatabaseId(int databaseId) {
 		this.databaseId = databaseId;
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
 	}
 
 	public int getPing() {
@@ -315,6 +319,10 @@ public class ServerItem implements ListWidgetItem {
 
 	public boolean isPolling() {
 		return pollResult.isPolling();
+	}
+	
+	public void endPolling() {
+		pollResult.endPolling();
 	}
 
 	public String getMotd() {

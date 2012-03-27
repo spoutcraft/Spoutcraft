@@ -44,6 +44,7 @@ public class GuiFavorites extends GuiScreen {
 	private GenericListView view;
 	private Label title;
 	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	private long pollTime = 0L;
 
 	public GuiFavorites(GuiScreen parent) {
 		this.parent = parent;
@@ -148,7 +149,6 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
-		//TODO: Draw the refresh button thingie
 	}
 
 	@Override
@@ -201,7 +201,8 @@ public class GuiFavorites extends GuiScreen {
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
-			for (int i = 0; i<model.getSize(); i++) {
+			pollTime = System.currentTimeMillis();
+			for (int i = 0; i < model.getSize(); i++) {
 				ServerItem item = (ServerItem) model.getItem(i);
 				item.poll();
 			}
@@ -232,6 +233,10 @@ public class GuiFavorites extends GuiScreen {
 		if (view != null && view.getSelectedRow() == -1) {
 			enable = false;
 		}
+		//GUI has not been initialized
+		if (buttonEdit == null) {
+			return;
+		}
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
@@ -256,6 +261,18 @@ public class GuiFavorites extends GuiScreen {
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
 			color.setBlue(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
+			
+			//If polling locks up and takes > 15s, unlock the button
+			if (pollTime + 15000L < System.currentTimeMillis()) {
+				for (int i = 0; i < model.getSize(); i++) {
+					ServerItem item = (ServerItem) model.getItem(i);
+					if (item.isPolling()) {
+						item.endPolling();
+					}
+				}
+				model.setPolling(false);
+				
+			}
 		}
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();

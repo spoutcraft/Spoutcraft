@@ -871,9 +871,9 @@ public class EntityRenderer {
 			//Spout start
 			Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
 			this.setupCameraTransform(par1, var19);
+			ActiveRenderInfo.updateRenderInfo(this.mc.thePlayer, this.mc.gameSettings.thirdPersonView == 2);
 			Shaders.setCamera(par1);
 			//Spout end
-			ActiveRenderInfo.updateRenderInfo(this.mc.thePlayer, this.mc.gameSettings.thirdPersonView == 2);
 			Profiler.endStartSection("frustrum");
 			ClippingHelperImpl.getInstance();
 			if (this.mc.gameSettings.renderDistance < 2 || ConfigReader.farView) { // Spout

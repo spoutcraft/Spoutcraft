@@ -66,7 +66,7 @@ public class PollResult {
 	private boolean sent = false;
 
 	static {
-		maxPollingThreads = 2 + (5 * Runtime.getRuntime().availableProcessors());
+		maxPollingThreads = 5 + (5 * Runtime.getRuntime().availableProcessors());
 	}
 
 	protected PollResult(String ip, int port, int uid) {
@@ -128,6 +128,7 @@ public class PollResult {
 	public static PollResult getPoll(String ip, int port, int uid) {
 		String hash = ip + ":" + port;
 		PollResult result = recentResults.get(hash.hashCode());
+		System.out.println("Returning Poll Result " + result + " for hash " + hash);
 		if (result == null) {
 			result = new PollResult(ip, port, uid);
 			recentResults.put(hash.hashCode(), result);
@@ -154,6 +155,13 @@ public class PollResult {
 
 	public boolean isPolling() {
 		return polling;
+	}
+	
+	public void endPolling() {
+		if (polling) {
+			polling = false;
+			numPolling--;
+		}
 	}
 
 	protected class PollThread extends Thread {
