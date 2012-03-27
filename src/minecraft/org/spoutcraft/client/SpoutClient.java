@@ -39,6 +39,7 @@ import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.entity.CraftCameraEntity;
 import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
@@ -59,7 +60,6 @@ import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.player.SimpleBiomeManager;
 import org.spoutcraft.client.player.SimpleSkyManager;
-import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.World;
@@ -75,6 +75,7 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.CameraEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
@@ -86,6 +87,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
 public class SpoutClient extends PropertyObject implements Client {
@@ -445,32 +447,39 @@ public class SpoutClient extends PropertyObject implements Client {
 		return version;
 	}
 
-	public Location getCamera() {
-		Location ret = null;
-		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		ret = new AnimatableLocation(null, cam.posX, cam.posY, cam.posZ);
-		ret.setPitch(cam.rotationPitch);
-		ret.setYaw(cam.rotationYaw);
-		return ret;
+	public CameraEntity getCamera() {
+		if(!isCameraDetached())
+			return null;
+		
+		return (CameraEntity)getHandle().renderViewEntity.spoutEntity;
 	}
 
-	public void setCamera(Location pos) {
+	public void setCamera(FixedLocation pos) {
 		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		cam.posX = pos.getX();
-		cam.posY = pos.getY();
-		cam.posZ = pos.getZ();
-		cam.rotationPitch = (float) pos.getPitch();
-		cam.rotationYaw = (float) pos.getYaw();
+		if(!(cam.spoutEntity instanceof CameraEntity))
+			return;
+		
+		((CameraEntity)cam.spoutEntity).teleport(pos);
 	}
 
 	public void detachCamera(boolean detach) {
-		// TODO Auto-generated method stub
-
+		if(detach) {
+			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+				setCamera(getActivePlayer().getLocation());
+				return;
+			}
+			getHandle().renderViewEntity = (new CraftCameraEntity(getActivePlayer().getLocation())).getHandle();
+		}
+		else {
+			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+				getHandle().renderViewEntity.spoutEntity.remove();
+				getHandle().renderViewEntity = getHandle().thePlayer;
+			}
+		}
 	}
 
 	public boolean isCameraDetached() {
-		// TODO Auto-generated method stub
-		return false;
+		return getHandle().renderViewEntity.spoutEntity instanceof CameraEntity;
 	}
 
 	public void enableAddons(AddonLoadOrder load) {
