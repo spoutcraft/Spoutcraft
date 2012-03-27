@@ -16,7 +16,6 @@
  */
 package org.spoutcraft.spoutcraftapi.animation;
 
-import java.math.BigInteger;
 import java.util.Timer;
 import java.util.TimerTask;
 

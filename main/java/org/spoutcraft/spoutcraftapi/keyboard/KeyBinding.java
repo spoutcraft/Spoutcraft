@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 

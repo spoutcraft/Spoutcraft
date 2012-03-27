@@ -27,8 +27,6 @@ import org.spoutcraft.spoutcraftapi.addon.AddonDescriptionFile;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoader;
 import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 
 public abstract class JavaAddon implements Addon {
