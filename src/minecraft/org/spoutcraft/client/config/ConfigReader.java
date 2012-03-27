@@ -48,7 +48,7 @@ public class ConfigReader {
 	public static boolean farView = false;
 	public static boolean fancyLight = false;
 	public static boolean fancyParticles = false;
-	public static boolean fancyShaders = false;
+	public static int shaderType = 0;
 	public static int fastDebug = 0;
 	public static int guiScale = 0;
 	public static int performance = 0;
@@ -213,7 +213,7 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
 		
-		Shaders.setEnabled(fancyShaders);
+		Shaders.setMode(shaderType);
 	}
 
 	public static void restoreDefaults() {

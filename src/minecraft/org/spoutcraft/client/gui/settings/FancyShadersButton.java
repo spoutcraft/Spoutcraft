@@ -21,19 +21,29 @@ import java.util.UUID;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FancyShadersButton extends AutomatedCheckBox {
+public class FancyShadersButton extends AutomatedButton {
 	UUID fancyGraphics;
 	public FancyShadersButton(UUID fancyGraphics) {
 		super("Fancy Shaders");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyShaders);
-		setTooltip("Shaders\nWARNING: EXPERIMENTAL FEATURE!\nFast - disabled, faster\nFancy - enabled, slower\n");
+		setTooltip("Shaders\nWARNING: EXPERIMENTAL FEATURE!\nShaders are post-processing effects for the graphics\nThey can have a serious impact on performance.");
+	}
+	
+	public String getText() {
+		switch(ConfigReader.shaderType) {
+			case 0: return "Shaders: OFF";
+			case 1: return "Shaders: Low";
+			case 2: return "Shaders: Medium";
+			case 3: return "Shaders: High";
+		}
+		return "Shaders: Unknown";
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyShaders = !ConfigReader.fancyShaders;
+		ConfigReader.shaderType++;
+		if (ConfigReader.shaderType > 3) ConfigReader.shaderType = 0;
 		ConfigReader.write();
-		Shaders.setEnabled(ConfigReader.fancyShaders);
+		Shaders.setMode(ConfigReader.shaderType);
 	}
 }

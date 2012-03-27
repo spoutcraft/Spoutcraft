@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
 
 public class Shaders {
@@ -84,19 +85,28 @@ public class Shaders {
 	private static int[] programBackups = new int[]{0, 0, 1, 2, 3, 4, 3, 3, 0, 0};
 	private static int[] programs = new int[10];
 	private static boolean enabled= true;
-
-	public static void init() {
+	
+	public static void setup(int type) {
 		if(!(enabled)) return;
+		mc = Minecraft.theMinecraft;
 		int var0 = GL11.glGetInteger(GL20.GL_MAX_DRAW_BUFFERS);
 		System.out.println("GL_MAX_DRAW_BUFFERS = " + var0);
 		colorAttachments = 4;
+		
+		String mode = "";
+		switch(type) {
+			case 1: mode = "low/"; break;
+			case 2: mode = "medium/"; break;
+			case 3: mode = "high/"; break;
+			default: mode = "low/";
+		}
 
 		int var1;
 		for (var1 = 0; var1 < 10; ++var1) {
 			if (programNames[var1].equals("")) {
 				programs[var1] = 0;
 			} else {
-				programs[var1] = setupProgram(programNames[var1] + ".vsh", programNames[var1] + ".fsh");
+				programs[var1] = setupProgram(mode + programNames[var1] + ".vsh", mode + programNames[var1] + ".fsh");
 			}
 		}
 
@@ -118,17 +128,13 @@ public class Shaders {
 
 		dfbTextures = BufferUtils.createIntBuffer(colorAttachments);
 		dfbRenderBuffers = BufferUtils.createIntBuffer(colorAttachments);
+	}
+
+	public static void init(int type) {
+		setup(type);
 		resize();
 		setupShadowMap();
 		isInitialized = true;
-	}
-	
-	public static boolean isEnabled() {
-		return enabled;
-	}
-	
-	public static void setEnabled(boolean newValue) {
-		enabled = newValue;
 	}
 
 	public static void destroy() {
@@ -265,7 +271,7 @@ public class Shaders {
 		if (!isShadowPass) {
 			mc = var0;
 			if (!isInitialized) {
-				init();
+				init(ConfigReader.shaderType);
 			}
 
 			if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {
@@ -920,6 +926,17 @@ public class Shaders {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			ByteBuffer var0 = ByteBuffer.allocateDirect(shadowMapWidth * shadowMapHeight * 4);
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, var0);
+		}
+	}
+
+	public static void setMode(int shaderType) {
+		enabled = shaderType > 0;
+		destroy();
+		if (Minecraft.theMinecraft.theWorld == null) {
+			setup(shaderType);
+		}
+		else {
+			init(shaderType);
 		}
 	}
 }

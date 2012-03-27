@@ -189,11 +189,11 @@ public class Tessellator {
 	
 	
 	//Spout start
-  public void setEntity(int var1) {
-    if (Shaders.entityAttrib >= 0) {
-      this.shadersData[0] = (short)var1;
-    }
-  }
+	public void setEntity(int var1) {
+		if (Shaders.entityAttrib >= 0) {
+			this.shadersData[0] = (short)var1;
+		}
+	}
  //Spout end
 
 	public void startDrawingQuads() {
