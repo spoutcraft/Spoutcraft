@@ -1830,6 +1830,8 @@ public abstract class Minecraft implements Runnable {
 		this.thePlayer = (EntityPlayerSP) this.playerController.createPlayer(this.theWorld);
 		if (par3) {
 			this.thePlayer.copyPlayer(var9);
+		} else {
+			this.thePlayer.setData(oldPlayer.getData()); //even in MP still need to copy Spout data across
 		}
 
 		this.thePlayer.dimension = par2;
