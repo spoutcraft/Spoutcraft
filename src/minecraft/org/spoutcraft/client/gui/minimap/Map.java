@@ -70,6 +70,7 @@ public class Map {
 
 	public int updatedist = 4;
 	
+	//Denotes the width or the diameter of a map
 	public static final int ZOOM_3 = 512;
 	public static final int ZOOM_2 = 256;
 	public static final int ZOOM_1 = 128;

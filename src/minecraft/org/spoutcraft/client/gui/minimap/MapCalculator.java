@@ -263,7 +263,11 @@ public class MapCalculator implements Runnable {
 								scale += 1;
 							}
 							drawSquare(pixelX, pixelZ, scale + map.zoom + 1, 0);
-							drawSquare(pixelX, pixelZ, scale, 0xEE2C2C);
+							int color = 0xEE2C2C;
+							if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
+								color = 0xff00ffff;
+							}
+							drawSquare(pixelX, pixelZ, scale, color);
 						}
 					}
 				}

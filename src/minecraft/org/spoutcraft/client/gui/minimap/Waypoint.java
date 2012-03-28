@@ -42,6 +42,7 @@ public class Waypoint {
 	public Waypoint(String name, int x, int y, int z, boolean enabled) {
 		this.name = name;
 		this.x = x;
+		this.y = y;
 		this.z = z;
 		this.enabled = enabled;
 		
@@ -65,9 +66,10 @@ public class Waypoint {
 	 * @param green green channel of color
 	 * @param blue blue channel of color
 	 */
-	public Waypoint(String name, int x, int z, boolean enabled, float red, float green, float blue) {
+	public Waypoint(String name, int x, int y, int z, boolean enabled, float red, float green, float blue) {
 		this.name = name;
 		this.x = x;
+		this.y = y;
 		this.z = z;
 		this.enabled = enabled;
 		this.red = red;
