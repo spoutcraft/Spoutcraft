@@ -87,10 +87,13 @@ public class Shaders {
 	private static boolean enabled= true;
 	
 	public static void setup(int type) {
+		System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
+		
 		if(!(enabled)) return;
 		mc = Minecraft.theMinecraft;
 		int var0 = GL11.glGetInteger(GL20.GL_MAX_DRAW_BUFFERS);
 		System.out.println("GL_MAX_DRAW_BUFFERS = " + var0);
+		
 		colorAttachments = 4;
 		
 		String mode = "";
@@ -135,6 +138,16 @@ public class Shaders {
 		resize();
 		setupShadowMap();
 		isInitialized = true;
+	}
+	
+	public static boolean isOpenGL2() {
+		try {
+			String version = GL11.glGetString(GL11.GL_VERSION);
+			return Integer.parseInt(String.valueOf(version.charAt(0))) > 1;
+		}
+		catch (Exception e) {
+			return false;
+		}
 	}
 
 	public static void destroy() {
@@ -432,17 +445,26 @@ public class Shaders {
 
 	public static void beginHand() {
 		if(!(enabled)) return;
+		boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_BLEND);
 		useProgram(6);
-		GL11.glDisable(GL11.GL_BLEND);
+		//restore the proper state
+		if (!blend) {
+			GL11.glDisable(GL11.GL_BLEND);
+		}
 	}
 
 	public static void endHand() {
 		if(!(enabled)) return;
+		boolean blend = GL11.glGetBoolean(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_BLEND);
 		useProgram(lightmapEnabled?3:2);
 		if (isShadowPass) {
 			EXTFramebufferObject.glBindFramebufferEXT(36160, sfb);
+		}
+		//restore the proper state
+		if (blend) {
+			GL11.glEnable(GL11.GL_BLEND);
 		}
 	}
 

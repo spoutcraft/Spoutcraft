@@ -893,35 +893,21 @@ public class EntityRenderer {
 			var18.setPosition(var7, var9, var11);
 			this.mc.renderGlobal.clipRenderersByFrustum(var18, par1);
 			//Spout start
-			//boolean rendered = false;
-			if (var19 == 0/* && !Shaders.isShadowPass()*/) {
+			if (var19 == 0) {
 				Profiler.endStartSection("updatechunks");
 
 				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
 					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
-						// Shaders.sortAndRenderWrapper(var5, var4, pass < 2 ? pass : 0, (double)par1);
-						// rendered = true;
+
 					}
 				}
-				
-
-				//while (! && par2 != 0L) {
-				//	long var21 = par2 - System.nanoTime();
-				//	if (var21 < 0L || var21 > 1000000000L) {
-				//		break;
-				//	}
-				//}
 			}
-			//Spout end
 			this.setupFog(0, par1);
 			GL11.glEnable(GL11.GL_FOG);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			Profiler.endStartSection("terrain");
-			//Spout start
-			//if (!rendered/* && !Shaders.isShadowPass()*/) {
-				Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
-			//}
+			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
 			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var20;
