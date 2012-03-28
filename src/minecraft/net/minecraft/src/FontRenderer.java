@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;		//spout alphaText
 
 public class FontRenderer {
 	private int[] charWidth = new int[256];
@@ -329,7 +330,13 @@ public class FontRenderer {
 					var7 = false;
 					var6 = false;
 					var5 = false;
-					GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+					//spout start alphaText
+					if (ConfigReader.alphaText) {
+						GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+					} else {
+						GL11.glColor3f(this.field_50115_n, this.field_50116_o, this.field_50118_p);
+					}
+					//spout end
 				}
 
 				++var8;
@@ -397,7 +404,13 @@ public class FontRenderer {
 			this.field_50116_o = (float)(par4 >> 8 & 255) / 255.0F;
 			this.field_50118_p = (float)(par4 & 255) / 255.0F;
 			this.field_50117_q = (float)(par4 >> 24 & 255) / 255.0F;
-			GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+			//spout start alphaText
+			if (ConfigReader.alphaText) {
+				GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+			} else {
+				GL11.glColor3f(this.field_50115_n, this.field_50116_o, this.field_50118_p);
+			}
+			//spout end
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
