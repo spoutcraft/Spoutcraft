@@ -237,25 +237,24 @@ public class MapRenderer {
 	}
 
 	private void drawFocusSquare() {
-		if(true) {
-			return;
-		}
+		
 		Waypoint focus = MinimapConfig.getInstance().getFocussedWaypoint();
 		if (focus != null) {
 			GL11.glTranslated(-map.renderSize / 4d, map.renderSize / 4d - 4, 0);
 			GL11.glRotatef(90f, 0, 0, 1f);
-			int px = (int) Minecraft.theMinecraft.thePlayer.posX;
-			int pz = (int) Minecraft.theMinecraft.thePlayer.posZ;
-			int x = focus.x;
-			int z = focus.z;
+			RenderUtil.drawRectangle(map.renderSize / 4, 0, map.renderSize / 4 + 2, 2, 0xff0000);
+			double px = Minecraft.theMinecraft.thePlayer.posX;
+			double pz = Minecraft.theMinecraft.thePlayer.posZ;
+			double x = focus.x;
+			double z = focus.z;
 
-			int radius = map.renderSize / 4 - 4;
-			int dx = x - px;
-			int dz = z - pz;
+			double radius = map.renderSize / 4d - 4d;
+			double dx = x - px;
+			double dz = z - pz;
 
 			double alpha = 0;
 			if (dx == 0) {
-				alpha = 90d;
+				alpha = 0d;
 			} else {
 				alpha = Math.atan(dz / dx);
 			}
@@ -270,16 +269,18 @@ public class MapRenderer {
 					} else {
 						fx = -map.renderSize / 4;
 					}
-					fz = (int) (1 / Math.tan(alpha) * fx);
+					fz = (int) (Math.tan(alpha) * fx);
 				} else {
 					if (dz > 0) {
 						fz = map.renderSize / 4;
 					} else {
 						fz = -map.renderSize / 4;
 					}
-					fx = (int) (Math.tan(alpha) * fz);
+					fx = (int) (1 / Math.tan(alpha) * fz);
 				}
-				RenderUtil.drawRectangle(fx - 1, fz - 1, fx + 1, fz + 1, 0xff00ffff);
+				if(Math.abs(dx) >= (map.renderSize - 5) / 2 || Math.abs(dz) >= (map.renderSize - 5) / 2) {
+					RenderUtil.drawRectangle(fx - 1, fz - 1, fx + 1, fz + 1, 0xff00ffff);
+				}
 			}
 		}
 	}
