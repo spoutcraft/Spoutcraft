@@ -278,7 +278,7 @@ public abstract class Minecraft implements Runnable {
 			this.displayGuiScreen(new GuiMainMenu());
 		}
 
-		this.loadingScreen = new LoadingScreenRenderer(this);
+		this.loadingScreen = null;//new LoadingScreenRenderer(this); //Spout loading screen is too slow
 
 		// Spout Start
 		SpoutClient.getInstance().loadAddons();
