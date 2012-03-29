@@ -335,6 +335,55 @@ public class MaterialData {
 	public static final Item ghastTear = new GenericItem("Ghast Tear", 370);
 	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
 	public static final Item netherWart = new GenericItem("Nether Wart", 372);
+	
+	public static final Item glassBottle = new GenericItem("Glass Bottle", 374);
+	public static final Item spiderEye = new GenericFood("Spider Eye", 375, 2);
+	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
+	public static final Item blazePowder = new GenericItem("Blaze Powder", 377);
+	public static final Item magmaCream = new GenericItem("Magma Cream", 378);
+	public static final Item brewingStand = new GenericItem("Brewing Stand", 379);
+	public static final Item cauldron = new GenericItem("Cauldron", 380);
+	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
+	public static final Item glisteringMelon = new GenericItem("Glistering Melon", 382);
+
+	public static final Item spawnEggMooshroom = new SpawnEgg("Spawn Mooshroom", 383, 96);
+	public static final Item spawnEggSkeleton = new SpawnEgg("Spawn Skeleton", 383, 51);
+	public static final Item spawnEggCreeper = new SpawnEgg("Spawn Creeper", 383, 50);
+	public static final Item spawnEggSlime = new SpawnEgg("Spawn Slime", 383, 55);
+	public static final Item spawnEggZombie = new SpawnEgg("Spawn Zombie", 383, 54);
+	public static final Item spawnEggSpider = new SpawnEgg("Spawn Spider", 383, 52);
+	public static final Item spawnEggChicken = new SpawnEgg("Spawn Chicken", 383, 93);
+	public static final Item spawnEggCaveSpider = new SpawnEgg("Spawn Cave Spider", 383, 59);
+	public static final Item spawnEggCow = new SpawnEgg("Spawn Cow", 383, 92);
+	public static final Item spawnEggEnderman = new SpawnEgg("Spawn Enderman", 383, 58);
+	public static final Item spawnEggWolf = new SpawnEgg("Spawn Wolf", 383, 95);
+	public static final Item spawnEggPigZombie = new SpawnEgg("Spawn Pig Zombie", 383, 57);
+	public static final Item spawnEggSquid = new SpawnEgg("Spawn Squid", 383, 94);
+	public static final Item spawnEggGhast = new SpawnEgg("Spawn Ghast", 383, 56);
+	public static final Item spawnEggMagmaCube = new SpawnEgg("Spawn Magma Cube", 383, 62);
+	public static final Item spawnEggSheep = new SpawnEgg("Spawn Sheep", 383, 91);
+	public static final Item spawnEggBlaze = new SpawnEgg("Spawn Blaze", 383, 61);
+	public static final Item spawnEggVillager = new SpawnEgg("Spawn Villager", 383, 120);
+	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
+	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
+	public static final Item spawnEggOcelot = new SpawnEgg("Spawn Ocelot", 383, 98);
+	
+	public static final Item bottleOEnchanting = new GenericItem("Bottle o' Enchanting", 384);
+	public static final Item fireCharge = new GenericItem("Fire Charge", 385);
+
+	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
+	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
+	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
+	public static final Item redMusicDisc = new GenericItem("Music Disc", 2259);
+	public static final Item cyanMusicDisc = new GenericItem("Music Disc", 2260);
+	public static final Item blueMusicDisc = new GenericItem("Music Disc", 2261);
+	public static final Item purpleMusicDisc = new GenericItem("Music Disc", 2262);
+	public static final Item blackMusicDisc = new GenericItem("Music Disc", 2263);
+	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
+	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
+	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
+	
+	
 
 	//Potions - Base
 	public static final Item waterBottle = new Potion("Water Bottle", 373, 0);
@@ -414,57 +463,10 @@ public class MaterialData {
 	public static final Item splashPotionOfHarmingII = new Potion("Splash Potion of Harming II", 373, 16428);
 	
 	//Splash Potions - Unbrewable
-	//public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
-	//public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
-	//public static final Item splashPotionOfStrengthIIExtended = new Potion("Splash Potion of Strength II", 373, 16489);
-	//public static final Item splashPotionOfPoisonIIExtended = new Potion("Splash Potion of Poison II", 373, 16484);
-	
-	public static final Item glassBottle = new GenericItem("Glass Bottle", 374);
-	public static final Item spiderEye = new GenericFood("Spider Eye", 375, 2);
-	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
-	public static final Item blazePowder = new GenericItem("Blaze Powder", 377);
-	public static final Item magmaCream = new GenericItem("Magma Cream", 378);
-	public static final Item brewingStand = new GenericItem("Brewing Stand", 379);
-	public static final Item cauldron = new GenericItem("Cauldron", 380);
-	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
-	public static final Item glisteringMelon = new GenericItem("Glistering Melon", 382);
-
-	public static final Item spawnEggMooshroom = new SpawnEgg("Spawn Mooshroom", 383, 96);
-	public static final Item spawnEggSkeleton = new SpawnEgg("Spawn Skeleton", 383, 51);
-	public static final Item spawnEggCreeper = new SpawnEgg("Spawn Creeper", 383, 50);
-	public static final Item spawnEggSlime = new SpawnEgg("Spawn Slime", 383, 55);
-	public static final Item spawnEggZombie = new SpawnEgg("Spawn Zombie", 383, 54);
-	public static final Item spawnEggSpider = new SpawnEgg("Spawn Spider", 383, 52);
-	public static final Item spawnEggChicken = new SpawnEgg("Spawn Chicken", 383, 93);
-	public static final Item spawnEggCaveSpider = new SpawnEgg("Spawn Cave Spider", 383, 59);
-	public static final Item spawnEggCow = new SpawnEgg("Spawn Cow", 383, 92);
-	public static final Item spawnEggEnderman = new SpawnEgg("Spawn Enderman", 383, 58);
-	public static final Item spawnEggWolf = new SpawnEgg("Spawn Wolf", 383, 95);
-	public static final Item spawnEggPigZombie = new SpawnEgg("Spawn Pig Zombie", 383, 57);
-	public static final Item spawnEggSquid = new SpawnEgg("Spawn Squid", 383, 94);
-	public static final Item spawnEggGhast = new SpawnEgg("Spawn Ghast", 383, 56);
-	public static final Item spawnEggMagmaCube = new SpawnEgg("Spawn Magma Cube", 383, 62);
-	public static final Item spawnEggSheep = new SpawnEgg("Spawn Sheep", 383, 91);
-	public static final Item spawnEggBlaze = new SpawnEgg("Spawn Blaze", 383, 61);
-	public static final Item spawnEggVillager = new SpawnEgg("Spawn Villager", 383, 120);
-	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
-	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
-	public static final Item spawnEggOcelot = new SpawnEgg("Spawn Ocelot", 383, 98);
-	
-	public static final Item bottleOEnchanting = new GenericItem("Bottle o' Enchanting", 384);
-	public static final Item fireCharge = new GenericItem("Fire Charge", 385);
-
-	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
-	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
-	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
-	public static final Item redMusicDisc = new GenericItem("Music Disc", 2259);
-	public static final Item cyanMusicDisc = new GenericItem("Music Disc", 2260);
-	public static final Item blueMusicDisc = new GenericItem("Music Disc", 2261);
-	public static final Item purpleMusicDisc = new GenericItem("Music Disc", 2262);
-	public static final Item blackMusicDisc = new GenericItem("Music Disc", 2263);
-	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
-	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
-	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
+	public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
+	public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
+	public static final Item splashPotionOfStrengthIIExtended = new Potion("Splash Potion of Strength II", 373, 16489);
+	public static final Item splashPotionOfPoisonIIExtended = new Potion("Splash Potion of Poison II", 373, 16484);
 
 	static {
 		reset();
