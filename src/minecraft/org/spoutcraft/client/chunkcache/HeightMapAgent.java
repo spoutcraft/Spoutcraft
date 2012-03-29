@@ -40,8 +40,7 @@ public class HeightMapAgent {
 	}
 
 	public static void save() {
-		HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
-		map.save();
+		(new Thread(new HeightMapSave())).start();
 	}
 
 	public static short getHighestBlock(Chunk chunk, int x, int z) {
@@ -55,5 +54,16 @@ public class HeightMapAgent {
 			}
 		}
 		return 0;
+	}
+}
+
+class HeightMapSave implements Runnable {
+	HeightMap map;
+	public HeightMapSave() {
+		HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+	}
+	
+	public void run() {
+		map.save();
 	}
 }
