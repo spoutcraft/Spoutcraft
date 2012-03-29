@@ -244,6 +244,11 @@ public class GuiMainMenu extends GuiScreen
 			}
 		}
 		if (btn == buttonQuit) {
+			if (isAprilFools()) {
+				try {
+					Desktop.getDesktop().browse((new URL("http://www.youtube.com/watch?v=oHg5SJYRHA0")).toURI());
+				} catch (Exception e) { }
+			}
 			mc.shutdown();
 		}
 		if (btn == buttonFastLogin) {
