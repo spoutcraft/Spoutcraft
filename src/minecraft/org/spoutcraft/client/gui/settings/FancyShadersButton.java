@@ -34,13 +34,19 @@ public class FancyShadersButton extends AutomatedButton {
 		super("Fancy Shaders");
 		this.fancyGraphics = fancyGraphics;
 		setEnabled(Shaders.isOpenGL2());
-		setTooltip("Shaders\nWARNING: EXPERIMENTAL FEATURE!\nShaders are post-processing effects for the graphics\nThey can have a serious impact on performance.");
+		setTooltip("Shaders\nShaders are post-processing effects for the graphics\nThey can have a serious impact on performance.");
 	}
-	
-	public String getText() {
-		if (!isEnabled()) {
+
+	@Override
+	public String getTooltip() {
+	`	if (!isEnabled()) {
 			return "Your graphics card does not support shaders.\nShaders require OpenGL 2.0 or greater support.";
 		}
+		return super.getTooltip();
+	}
+	
+	@Override
+	public String getText() {
 		switch(ConfigReader.shaderType) {
 			case 0: return "Shaders: OFF";
 			case 1: return "Shaders: Low";
