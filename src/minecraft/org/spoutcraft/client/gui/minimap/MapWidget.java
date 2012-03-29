@@ -16,6 +16,18 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import java.awt.Desktop;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.imageio.ImageIO;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.GuiScreen;
@@ -170,6 +182,73 @@ public class MapWidget extends GenericScrollable {
 	public Point getCenterCoord() {
 		return mapOutsideToCoords(new Point((int) (getWidth() / 2), (int) (getHeight() / 2)));
 	}
+	
+	public boolean saveToDesktop() {
+		try {
+			int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
+			int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
+			
+			int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
+					minChunkZ = heightMap.getMinZ() + scrollY / 16, 
+					maxChunkX = 0, 
+					maxChunkZ = 0;
+			int horiz = (int) (getWidth() / 16 / scale) + 1;
+			int vert = (int) (getHeight() / 16 / scale) + 1;
+			maxChunkX = minChunkX + horiz;
+			maxChunkZ = minChunkZ + vert;
+			
+			minChunkX++;
+			minChunkZ++;
+			BufferedImage fullImage = new BufferedImage((maxChunkX - minChunkX) * 16 + 32, (maxChunkZ - minChunkZ) * 16 + 32, BufferedImage.TYPE_INT_ARGB);
+			for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+				for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+					Map map = drawChunk(chunkX, chunkZ, dirty);
+					if(map != null && map != blankMap) {
+						Raster raster = map.getColorRaster();
+						int startX = (chunkX - minChunkX) * 16;
+						int startZ = (chunkZ - minChunkZ) * 16;
+						java.awt.image.DataBufferInt buf = (java.awt.image.DataBufferInt)raster.getDataBuffer();
+						int[] srcbuf = buf.getData();
+						fullImage.setRGB(startX, startZ, 16, 16, srcbuf, 0, 16);
+					}
+				}
+			}
+			
+			//Creates a file named 'minimap 3-29-2012.png' in the desktop, if possible
+			//Otherwise saves to screenshots. Appends "(1)", etc as needed to avoid overwriting existing files
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");  
+			String fileName = "minimap " + df.format(new Date());
+			File desktop = new File(System.getProperty("user.home"), "Desktop");
+			if (!desktop.exists()) {
+				desktop = new File(Minecraft.getMinecraftDir(), "screenshots");
+			}
+			String fullFileName = fileName;
+			int duplicate = 0;
+			while(true) {
+				if (!fileExists(desktop, fullFileName, ".png")) {
+					break;
+				}
+				duplicate++;
+				fullFileName = fileName + " (" + duplicate + ")";
+			}
+			ImageIO.write(fullImage, "png", new File(desktop, fullFileName + ".png"));
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private boolean fileExists(File dir, String name, String ext) {
+		name += ext;
+		for (File f : dir.listFiles()) {
+			if (f.getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public void renderContents() {
@@ -242,10 +321,7 @@ public class MapWidget extends GenericScrollable {
 		
 		GL11.glPopMatrix();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		
-		
-		
+
 		GL11.glEnable(2929);
 		GL11.glDisable(3042);
 		dirty = false;

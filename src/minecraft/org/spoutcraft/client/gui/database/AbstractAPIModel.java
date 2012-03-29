@@ -100,6 +100,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		}
 
 		currentLoader = new Thread() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				BufferedReader reader = null;
@@ -199,9 +200,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 				i++; //Only increment for active elements
 			}
 		}
-		if (i == 0) {
-			Thread.dumpStack();
-		} else {
+		if (i != 0) {
 			refreshAPIData(url, 0, true);
 		}
 	}

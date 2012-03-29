@@ -17,6 +17,7 @@
 package org.spoutcraft.client.gui.minimap;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 
 /**
  * @author lahwran
@@ -148,6 +149,10 @@ public class Map {
 
 	public void loadLightImage() {
 		lightimg.loadGLImage();
+	}
+	
+	public Raster getColorRaster() {
+		return colorimg.image.getRaster();
 	}
 
 	public void clear() {

@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class ImageManager {
 
-	private final BufferedImage image;
+	protected final BufferedImage image;
 	
 	private int glImage = 0;
 

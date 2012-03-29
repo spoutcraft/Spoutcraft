@@ -17,14 +17,12 @@
 package org.spoutcraft.client.gui.minimap;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.getspout.commons.math.Vector3;
 import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.Control;
@@ -41,7 +39,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	
 	private MapWidget map;
 	private Label title, menuTitle;
-	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset;
+	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave;
 	private GenericScrollArea hoverMenu;
 	
 	private boolean dragging = false;
@@ -66,10 +64,11 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonZoomOut = new GenericButton("-");
 		buttonShowPlayer = new GenericButton("Player");
 		buttonReset = new GenericButton("Reset View");
+		buttonSave = new GenericButton("Save to Desktop");
 		map = new MapWidget(this);
 		map.setGeometry(0, 0, width, height);
 		map.showPlayer();
-		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset);
+		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave);
 		
 		hoverMenu = new GenericScrollArea();
 		hoverMenu.setBackgroundColor(new Color(0x55ffffff));
@@ -98,6 +97,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonDone.setGeometry(width - 55, height - 25, 50, 20);
 		buttonShowPlayer.setGeometry(50, height - 25, 50, 20);
 		buttonReset.setGeometry(105, height - 25, 75, 20);
+		buttonSave.setGeometry(185, height - 25, 100, 20);
 		
 		hoverMenu.setGeometry(width / 2 - 320 / 2, height / 2 - 46 / 2, 320, 46);
 		int w = SpoutClient.getHandle().fontRenderer.getStringWidth(menuTitle.getText());
@@ -152,6 +152,20 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 		if(btn == buttonReset) {
 			map.reset();
+		}
+		if(btn == buttonSave) {
+			if (map.saveToDesktop()) {
+				Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+				Label label = new FadingLabel("Saved to Desktop!", 500).setTextColor(new Color(0x7FFF00));
+				label.setGeometry(width / 2 - Spoutcraft.getMinecraftFont().getTextWidth(label.getText()) / 2, height / 2, 100, 12);
+				getScreen().attachWidgets(spoutcraft, label);
+			}
+			else {
+				Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+				Label label = new FadingLabel("Failed to save Minimap!", 500).setTextColor(new Color(0xEE0000));
+				label.setGeometry(width / 2 - Spoutcraft.getMinecraftFont().getTextWidth(label.getText()) / 2, height / 2, 100, 12);
+				getScreen().attachWidgets(spoutcraft, label);
+			}
 		}
 	}
 
@@ -260,4 +274,24 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 		super.mouseMovedOrUp(x, y, button);
 	}
+}
+
+class FadingLabel extends GenericLabel {
+	int ticks;
+	int ticksPassed = 0;
+	FadingLabel(String text, int ticks) {
+		super(text);
+		this.ticks = ticks;
+	}
+	
+	public void render() {
+		ticksPassed++;
+		float opacity = 1F - (float)ticksPassed / (float)ticks;
+		if (ticksPassed > ticks) {
+			setVisible(false);
+		}
+		this.setTextColor(getTextColor().setAlpha(opacity));
+		super.render();
+	}
+	
 }

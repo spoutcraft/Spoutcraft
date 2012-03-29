@@ -27,7 +27,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
 public class GuiAddWaypoint extends GuiScreen{
