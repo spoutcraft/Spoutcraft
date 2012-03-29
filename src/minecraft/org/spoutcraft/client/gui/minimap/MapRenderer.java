@@ -130,11 +130,19 @@ public class MapRenderer {
 				GL11.glPopMatrix();
 
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				
 				try {
 					GL11.glPushMatrix();
 					GL11.glScalef(1.8f, 1.8f, 1.0f);
 					GL11.glTranslatef(27, -1, 0F); // don't ask
-					texman.loadMinimap();
+					if (MinimapConfig.getInstance().isShowBackground()) {
+						texman.loadMinimap();
+					}
+					else {
+						GL11.glScalef(138F / 256F, 138F / 256F, 1F);
+						GL11.glTranslatef(-54, 0, 0);
+						texman.loadWhiteMinimap();
+					}
 					drawOnMap();
 				} catch (Exception e) {
 					System.err.println("error: minimap overlay not found!");
@@ -401,7 +409,14 @@ public class MapRenderer {
 	private void drawRound() {
 		try {
 			GL11.glPushMatrix();
-			texman.loadRoundmap();
+			if (MinimapConfig.getInstance().isShowBackground()) {
+				texman.loadRoundmap();
+			}
+			else {
+				GL11.glScaled(0.95F, 0.95F, 1F);
+				GL11.glTranslatef(-2F, 2F, 0);
+				texman.loadWhiteRoundmap();
+			}
 			drawOnMap();
 		} catch (Exception localException) {
 			System.err.println("Error: minimap overlay not found!");

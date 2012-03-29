@@ -205,6 +205,7 @@ public class MapCalculator implements Runnable {
 					map.renderOff = map.renderSize / 2;
 					map.clear();
 				}
+				map.square = square;
 
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
 				int startX = (int) (map.getPlayerX() - map.renderOff);

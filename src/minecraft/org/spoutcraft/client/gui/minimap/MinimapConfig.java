@@ -50,6 +50,7 @@ public class MinimapConfig {
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
 	private boolean deathpoints = true;
+	private boolean background = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
 	private Waypoint focussedWaypoint = null;
 
@@ -76,6 +77,8 @@ public class MinimapConfig {
 			heightmap = config.getBoolean("minimap.heightmap", heightmap);
 			cavemap = config.getBoolean("minimap.cavemap", cavemap);
 			scale = config.getBoolean("minimap.scale", scale);
+			deathpoints = config.getBoolean("minimap.deathpoints", deathpoints);
+			background = config.getBoolean("minimap.background", background);
 			xAdjust = (float) config.getDouble("minimap.xAdjust", xAdjust);
 			yAdjust = (float) config.getDouble("minimap.yAdjust", yAdjust);
 			sizeAdjust = (float) config.getDouble("minimap.sizeAdjust", sizeAdjust);
@@ -88,6 +91,7 @@ public class MinimapConfig {
 			while (i.hasNext()) {
 				Object o = i.next();
 				if (o instanceof Entry) {
+					@SuppressWarnings("rawtypes")
 					Entry<?, ?> e = (Entry) o;
 					if (e.getKey() instanceof String) {
 						try {
@@ -138,6 +142,8 @@ public class MinimapConfig {
 		config.setProperty("minimap.cavemap", cavemap);
 		config.setProperty("minimap.firstrun", firstrun);
 		config.setProperty("minimap.scale", scale);
+		config.setProperty("minimap.deathpoints", deathpoints);
+		config.setProperty("minimap.background", background);
 		config.setProperty("minimap.xAdjust", xAdjust);
 		config.setProperty("minimap.yAdjust", yAdjust);
 		config.setProperty("minimap.sizeAdjust", sizeAdjust);
@@ -336,5 +342,13 @@ public class MinimapConfig {
 
 	public void setDeathpoints(boolean deathpoints) {
 		this.deathpoints = deathpoints;
+	}
+
+	public boolean isShowBackground() {
+		return background;
+	}
+
+	public void setShowBackground(boolean background) {
+		this.background = background;
 	}
 }

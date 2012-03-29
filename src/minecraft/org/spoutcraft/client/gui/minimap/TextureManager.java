@@ -31,6 +31,8 @@ public class TextureManager {
 	private int glWaypoint = 0;
 	private int glMarker = 0;
 	private int glMinimap = 0;
+	private int glWhiteRoundmap = 0;
+	private int glWhiteMinimap = 0;
 	/**
 	 * @param zanMinimap
 	 */
@@ -42,6 +44,8 @@ public class TextureManager {
 		glWaypoint = 0;
 		glMarker = 0;
 		glMinimap = 0;
+		glWhiteRoundmap = 0;
+		glWhiteMinimap = 0;
 	}
 
 	public void loadRoundmap() {
@@ -72,5 +76,17 @@ public class TextureManager {
 		if (glMinimap == 0)
 			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
+	}
+	
+	public void loadWhiteMinimap() {
+		if (glWhiteMinimap == 0)
+			glWhiteMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/squaremap_white.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glWhiteMinimap);
+	}
+	
+	public void loadWhiteRoundmap() {
+		if (glWhiteRoundmap == 0)
+			glWhiteRoundmap = CustomTextureManager.getTextureFromJar("/res/minimap/roundmap_white.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glWhiteRoundmap);
 	}
 }

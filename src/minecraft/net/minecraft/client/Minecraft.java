@@ -1830,10 +1830,12 @@ public abstract class Minecraft implements Runnable {
 		//Spout start
 		if (var9 != null) {
 			this.thePlayer.setData(var9.getData()); //even in MP still need to copy Spout data across
-			String name = "Death " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-			Waypoint death = new Waypoint(name, (int)var9.posX, (int)var9.posY, (int)var9.posZ, true);
-			death.deathpoint = true;
-			MinimapConfig.getInstance().addWaypoint(death);
+			if (var9.health <= 0) {
+				String name = "Death " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+				Waypoint death = new Waypoint(name, (int)var9.posX, (int)var9.posY, (int)var9.posZ, true);
+				death.deathpoint = true;
+				MinimapConfig.getInstance().addWaypoint(death);
+			}
 		}
 		//Spout end
 

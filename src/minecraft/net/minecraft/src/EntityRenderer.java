@@ -977,7 +977,8 @@ public class EntityRenderer {
 			GL11.glDisable(GL11.GL_BLEND);
 			
 			}
-			if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
+			//Spout
+			if (!Shaders.isShadowPass() && this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
 				var20 = (EntityPlayer)var4;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
 				Profiler.endStartSection("outline");

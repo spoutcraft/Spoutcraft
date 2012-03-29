@@ -52,6 +52,8 @@ public class Map {
 	 * middle of rendering a map frame
 	 */
 	public int zoom = -1;
+	
+	public boolean square;
 
 	/**
 	 * How many blocks to x+ to shift the map rendering from the origin of the
@@ -181,7 +183,7 @@ public class Map {
 	}
 
 	public boolean isDirty(double newPlayerX, double newPlayerZ) {
-		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300 || zoom != MinimapConfig.getInstance().getZoom();
+		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300 || zoom != MinimapConfig.getInstance().getZoom() || square != MinimapConfig.getInstance().isSquare();
 	}
 
 	public float getRenderScale() {
