@@ -149,7 +149,11 @@ public class Animation {
 				break;
 		}
 		animator.cancel();
-		property.set(getCurrentValue());
+		if(startValue != null) {
+			property.set(getCurrentValue());
+		} else {
+			property.set(getCurrentValueNumber());
+		}
 	}
 
 	public Animatable getCurrentValue() {
@@ -193,55 +197,62 @@ public class Animation {
 
 		@Override
 		public void run() {
-			if (animation.getState() != Animation.State.RUNNING) {
-				return;
-			}
-			int time = animation.getCurrentTime();
-			time += delay * animation.getDirection().modifier; // For the direction
-			if (time >= animation.getDuration() && animation.getDirection() == Direction.FORWARD) {
-				animation.stop();
-				time = animation.getDuration();
-			}
-			if (time <= 0 && animation.getDirection() == Direction.BACKWARD) {
-				animation.stop();
-				time = 0;
-			}
-			animation.setCurrentTime(time);
-			if (startNumber == null) {
-				Animatable value = animation.getCurrentValue();
-				animation.getValueDelegate().set(value);
-			} else {
-				Number value = animation.getCurrentValueNumber();
-				animation.getValueDelegate().set(value);
+			try {
+				if (animation.getState() != Animation.State.RUNNING) {
+					cancel();
+					return;
+				}
+				int time = animation.getCurrentTime();
+				time += delay * animation.getDirection().modifier; // For the direction
+				if (time >= animation.getDuration() && animation.getDirection() == Direction.FORWARD) {
+					animation.stop();
+					time = animation.getDuration();
+				}
+				if (time <= 0 && animation.getDirection() == Direction.BACKWARD) {
+					animation.stop();
+					time = 0;
+				}
+				animation.setCurrentTime(time);
+				if (startNumber == null) {
+					Animatable value = animation.getCurrentValue();
+					animation.getValueDelegate().set(value);
+				} else {
+					Number value = animation.getCurrentValueNumber();
+					animation.getValueDelegate().set(value);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				animation.state = Animation.State.STOPPED;
+				cancel();
 			}
 		}
 	}
 
 	public Number getCurrentValueNumber() {
-		double p = (double) duration / (double) currentTime;
+		double p = (double) currentTime / (double) duration;
 		if(startNumber instanceof Integer) {
 			int p1 = (Integer) startNumber, p2 = (Integer) endNumber;
-			return (p2 - p1)*p;
+			return (int) (p1 + (p2 - p1)*p);
 		}
 		if(startNumber instanceof Double) {
 			double p1 = (Double) startNumber, p2 = (Double) endNumber;
-			return (p2 - p1)*p;
+			return p1 + (p2 - p1)*p;
 		}
 		if(startNumber instanceof Long) {
 			long p1 = (Long) startNumber, p2 = (Long) endNumber;
-			return (p2 - p1)*p;
+			return (long) (p1 + (p2 - p1)*p);
 		}
 		if(startNumber instanceof Float) {
 			float p1 = (Float) startNumber, p2 = (Float) endNumber;
-			return (p2 - p1)*p;
+			return (float) (p1 + (p2 - p1)*p);
 		}
 		if(startNumber instanceof Short) {
 			short p1 = (Short) startNumber, p2 = (Short) endNumber;
-			return (p2 - p1)*p;
+			return (short) (p1 + (p2 - p1)*p);
 		}
 		if(startNumber instanceof Byte) {
 			byte p1 = (Byte) startNumber, p2 = (Byte) endNumber;
-			return (p2 - p1)*p;
+			return (byte) (p1 + (p2 - p1)*p);
 		}
 		throw new IllegalStateException("Numbers of type "+startNumber.getClass().getSimpleName() + " cannot be used.");
 	}

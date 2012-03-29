@@ -36,7 +36,7 @@ public class PropertyAnimation extends Animation {
 			setStartNumber(num);
 			setEndNumber(num);
 		} else {
-			throw new IllegalStateException("Only subclasses of Number or Animatables allowed!");
+			throw new IllegalStateException("Only subclasses of Number or Animatable allowed!");
 		}
 	}
 
