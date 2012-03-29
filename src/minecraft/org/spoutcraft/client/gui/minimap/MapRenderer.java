@@ -216,14 +216,14 @@ public class MapRenderer {
 			GL11.glTranslated(-map.renderSize / 4d, map.renderSize / 4d, 0);
 			GL11.glPushMatrix();
 			GL11.glRotatef(this.direction - 180f, 0f, 0f, 1f);
-			int px = (int) Minecraft.theMinecraft.thePlayer.posX;
-			int pz = (int) Minecraft.theMinecraft.thePlayer.posZ;
+			double px = Minecraft.theMinecraft.thePlayer.posX;
+			double pz = Minecraft.theMinecraft.thePlayer.posZ;
 			int x = focus.x;
 			int z = focus.z;
 
 			int radius = map.renderSize / 4 - 4;
-			int dx = x - px;
-			int dz = z - pz;
+			double dx = x - px;
+			double dz = z - pz;
 			double l = Math.sqrt(dx * dx + dz * dz);
 			this.distanceToFocus = l;
 			if (l > radius * 2) {

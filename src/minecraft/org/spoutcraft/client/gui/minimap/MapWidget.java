@@ -32,6 +32,8 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
+import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
@@ -57,12 +59,26 @@ public class MapWidget extends GenericScrollable {
 
 			@Override
 			public void set(Object value) {
-				setScale((float)(double)(Double) value);
+				setScale((float)(Float) value);
 			}
 
 			@Override
 			public Object get() {
 				return getScale();
+			}
+		});
+		
+		addProperty("scrollpos", new Property() {
+			
+			@Override
+			public void set(Object value) {
+				Point p = (Point) value;
+				scrollTo(p, false, 0);
+			}
+			
+			@Override
+			public Object get() {
+				return mapOutsideToCoords(new Point(0,0));
 			}
 		});
 
@@ -118,16 +134,6 @@ public class MapWidget extends GenericScrollable {
 		return map;
 	}
 	
-	public void zoomBy(float zoom) {
-		Point center = getCenterCoord();
-		float newscale = scale + zoom;
-		if(newscale <= 0) {
-			newscale = 0.1f;
-		}
-		scale = newscale;
-		scrollTo(center);
-	}
-	
 	public Point mapOutsideToCoords(Point outside) {
 		int x = outside.getX() + scrollX;
 		int y = outside.getY() + scrollY;
@@ -149,23 +155,41 @@ public class MapWidget extends GenericScrollable {
 	}
 	
 	public void reset() {
-		scale = 1.0f;
-		showPlayer();
+		setScale(1f, true, 500);
+		showPlayer(500);
 	}
 
-	public void showPlayer() {
-		scrollTo(getPlayerPosition());
+	public void showPlayer(int duration) {
+		scrollTo(getPlayerPosition(), true, duration);
+	}
+	
+	public void scrollTo(Point p, boolean animated, int duration) {
+		scrollTo(p.getX(), p.getY(), animated, duration);	
 	}
 	
 	public void scrollTo(Point p) {
-		scrollTo(p.getX(), p.getY());
+		scrollTo(p, false, 0);
 	}
 	
 	public void scrollTo(int x, int z) {
-		Point p = mapCoordsToOutside(new Point(x,z));
-		int scrollX = p.getX(), scrollZ = p.getY();
-		setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
-		setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
+		scrollTo(x,z, false, 0);
+	}
+	
+	public void scrollTo(int x, int z, boolean animated, int duration) {
+		if(!animated) {
+			Point p = mapCoordsToOutside(new Point(x,z));
+			int scrollX = p.getX(), scrollZ = p.getY();
+			setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
+			setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
+		} else {
+			Point start = getCenterCoord();
+			Point end = new Point(x, z);
+			PropertyAnimation ani = new PropertyAnimation(this, "scrollpos");
+			ani.setStartValue(start);
+			ani.setEndValue(end);
+			ani.setDuration(duration);
+			ani.start();
+		}
 	}
 	
 	public Point getCenterCoord() {
@@ -343,7 +367,30 @@ public class MapWidget extends GenericScrollable {
 	}
 
 	public void setScale(float scale) {
-		this.scale = scale;
+		setScale(scale, false, 0);
+	}
+	
+	public void setScale(float scale, boolean animated, int duration) {
+		if(!animated) {
+			Point center = getCenterCoord();
+			this.scale = scale;
+			scrollTo(center);			
+		} else {
+			PropertyAnimation ani = new PropertyAnimation(this, "scale");
+			ani.setStartNumber(this.scale);
+			ani.setEndNumber(scale);
+			ani.setDuration(duration);
+			ani.setAnimationProgress(new OutQuadAnimationProgress());
+			ani.start();
+		}
+	}
+
+	public void zoomBy(float zoom) {
+		float newscale = scale + zoom;
+		if(newscale <= 0) {
+			newscale = 0.1f;
+		}
+		setScale(newscale, true, 100);
 	}
 
 	public Point getPlayerPosition() {

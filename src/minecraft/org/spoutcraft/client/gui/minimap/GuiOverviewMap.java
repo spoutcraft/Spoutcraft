@@ -70,7 +70,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		((GenericCheckBox)buttonDeathpoints).setChecked(MinimapConfig.getInstance().isDeathpoints());
 		map = new MapWidget(this);
 		map.setGeometry(0, 0, width, height);
-		map.showPlayer();
+		map.scrollTo(map.getPlayerPosition(), false, 0);
 		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
 		
 		hoverMenu = new GenericScrollArea();
@@ -123,7 +123,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			map.zoomBy(-0.1f);
 		}
 		if(btn == buttonShowPlayer) {
-			map.showPlayer();
+			map.showPlayer(500);
 		}
 		if(btn == buttonWaypoint) {
 			switch(waypoint_mode) {
