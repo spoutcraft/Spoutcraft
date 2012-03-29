@@ -19,7 +19,6 @@ package org.spoutcraft.client.gui.minimap;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -27,11 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.Minecraft;
-
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
-import org.getspout.commons.math.Vector3;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
@@ -53,6 +49,7 @@ public class MinimapConfig {
 	private float yAdjust = 0;
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
+	private boolean deathpoints = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
 	private Waypoint focussedWaypoint = null;
 
@@ -104,14 +101,12 @@ public class MinimapConfig {
 									y = (Integer) locations.get("y");
 								}
 								z = (Integer) locations.get("z");
-								enabled = (Integer) locations.get("enabled") == 1;
-								addWaypoint(world, name, x, y, z, enabled);
-								
+								boolean enabled = (Integer) locations.get("enabled") == 1;
+								boolean deathpoint = (Integer) locations.get("deathpoint") == 1;
+								Waypoint waypoint = new Waypoint(name, x, y, z, enabled);
+								waypoint.deathpoint = deathpoint;
+								addWaypoint(world, waypoint);
 							}
-//							Iterator<Entry<String, Map<String, Number>>> j = waypoints.getAll();
-//							while (i.hasNext()) {
-//								Entry<String, Map<String, Number>> entry = j.next();
-//							}
 						} catch (Exception ex) {
 							System.err.println("Error while reading waypoints: ");
 							ex.printStackTrace();
@@ -154,12 +149,15 @@ public class MinimapConfig {
 			String world = e.getKey();
 			HashMap<String, Map<String, Integer>> waypoints = new HashMap<String, Map<String, Integer>>();
 			for (Waypoint waypoint : e.getValue()) {
-				HashMap<String, Integer> values = new HashMap<String, Integer>();
-				values.put("x", waypoint.x);
-				values.put("y", waypoint.y);
-				values.put("z", waypoint.z);
-				values.put("enabled", waypoint.enabled ? 1 : 0);
-				waypoints.put(waypoint.name, values);
+				if (!waypoint.server) { 
+					HashMap<String, Integer> values = new HashMap<String, Integer>();
+					values.put("x", waypoint.x);
+					values.put("y", waypoint.y);
+					values.put("z", waypoint.z);
+					values.put("enabled", waypoint.enabled ? 1 : 0);
+					values.put("deathpoint", waypoint.deathpoint ? 1 : 0);
+					waypoints.put(waypoint.name, values);
+				}
 			}
 			worlds.put(world, waypoints);
 		}
@@ -318,6 +316,10 @@ public class MinimapConfig {
 			list.remove(clickedWaypoint);
 		}
 	}
+	
+	public void addWaypoint(Waypoint waypoint) {
+		addWaypoint(MinimapUtils.getWorldName(), waypoint);
+	}
 
 	public void addWaypoint(String worldName, Waypoint waypoint) {
 		List<Waypoint> list = waypoints.get(worldName);
@@ -326,5 +328,13 @@ public class MinimapConfig {
 			waypoints.put(worldName, list);
 		}
 		list.add(waypoint);
+	}
+
+	public boolean isDeathpoints() {
+		return deathpoints;
+	}
+
+	public void setDeathpoints(boolean deathpoints) {
+		this.deathpoints = deathpoints;
 	}
 }

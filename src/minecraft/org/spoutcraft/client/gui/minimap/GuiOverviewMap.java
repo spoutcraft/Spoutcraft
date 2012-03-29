@@ -27,6 +27,7 @@ import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.Control;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Label;
@@ -39,7 +40,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	
 	private MapWidget map;
 	private Label title, menuTitle;
-	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave;
+	private Button buttonDone, buttonWaypoint, buttonFocus, buttonCloseMenu, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints;
 	private GenericScrollArea hoverMenu;
 	
 	private boolean dragging = false;
@@ -65,10 +66,12 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonShowPlayer = new GenericButton("Player");
 		buttonReset = new GenericButton("Reset View");
 		buttonSave = new GenericButton("Save to Desktop");
+		buttonDeathpoints = new GenericCheckBox("Deathpoints");
+		((GenericCheckBox)buttonDeathpoints).setChecked(MinimapConfig.getInstance().isDeathpoints());
 		map = new MapWidget(this);
 		map.setGeometry(0, 0, width, height);
 		map.showPlayer();
-		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave);
+		getScreen().attachWidgets(spoutcraft, map, title, buttonDone, buttonZoomIn, buttonZoomOut, buttonShowPlayer, buttonReset, buttonSave, buttonDeathpoints);
 		
 		hoverMenu = new GenericScrollArea();
 		hoverMenu.setBackgroundColor(new Color(0x55ffffff));
@@ -98,6 +101,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		buttonShowPlayer.setGeometry(50, height - 25, 50, 20);
 		buttonReset.setGeometry(105, height - 25, 75, 20);
 		buttonSave.setGeometry(185, height - 25, 100, 20);
+		buttonDeathpoints.setGeometry(290, height - 25, 75, 20);
 		
 		hoverMenu.setGeometry(width / 2 - 320 / 2, height / 2 - 46 / 2, 320, 46);
 		int w = SpoutClient.getHandle().fontRenderer.getStringWidth(menuTitle.getText());
@@ -166,6 +170,9 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 				label.setGeometry(width / 2 - Spoutcraft.getMinecraftFont().getTextWidth(label.getText()) / 2, height / 2, 100, 12);
 				getScreen().attachWidgets(spoutcraft, label);
 			}
+		}
+		if (btn == buttonDeathpoints) {
+			MinimapConfig.getInstance().setDeathpoints(!MinimapConfig.getInstance().isDeathpoints());
 		}
 	}
 

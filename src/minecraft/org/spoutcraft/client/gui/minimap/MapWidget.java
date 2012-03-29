@@ -16,12 +16,9 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,17 +26,11 @@ import java.util.Date;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Chunk;
 import net.minecraft.src.GuiScreen;
-import net.minecraft.src.Tessellator;
-
-import org.getspout.commons.math.Vector3;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
@@ -49,8 +40,6 @@ import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 import org.spoutcraft.spoutcraftapi.property.Property;
-
-import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class MapWidget extends GenericScrollable {
 	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
@@ -310,8 +299,10 @@ public class MapWidget extends GenericScrollable {
 		
 		drawPOI("You", x, z, 0xffff0000);
 		
-		for(Waypoint waypoint : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())){			
-			drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
+		for(Waypoint waypoint : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())){
+			if (!waypoint.deathpoint || MinimapConfig.getInstance().isDeathpoints()) {
+				drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
+			}
 		}
 		
 		if(MinimapConfig.getInstance().getFocussedWaypoint() != null) {

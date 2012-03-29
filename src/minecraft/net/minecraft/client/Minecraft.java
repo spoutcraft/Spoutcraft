@@ -9,6 +9,8 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import net.minecraft.client.MinecraftApplet;
 import net.minecraft.src.*;
@@ -17,15 +19,12 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-//Spout Start
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
@@ -33,8 +32,8 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
-import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
@@ -428,9 +427,7 @@ public abstract class Minecraft implements Runnable {
 				widget = screen.getScreen();
 			}
 			// Screen swapped
-			if (screen != null && this.currentScreen != null) { // Hopefully
-																// just a
-																// submenu
+			if (screen != null && this.currentScreen != null) { // Hopefully just a submenu
 				packet = new PacketScreenAction(ScreenAction.Open, display);
 				event = ScreenOpenEvent.getInstance((Player) thePlayer.spoutEntity, screen.getScreen(), display);
 				widget = screen.getScreen();
@@ -499,7 +496,6 @@ public abstract class Minecraft implements Runnable {
 	public void clearPreviousScreen() {
 		previousScreen = null;
 	}
-
 	// Spout End
 
 	private void checkGLError(String par1Str) {
@@ -1834,6 +1830,10 @@ public abstract class Minecraft implements Runnable {
 		//Spout start
 		if (var9 != null) {
 			this.thePlayer.setData(var9.getData()); //even in MP still need to copy Spout data across
+			String name = "Death " + new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+			Waypoint death = new Waypoint(name, (int)var9.posX, (int)var9.posY, (int)var9.posZ, true);
+			death.deathpoint = true;
+			MinimapConfig.getInstance().addWaypoint(death);
 		}
 		//Spout end
 

@@ -248,7 +248,6 @@ public class MapRenderer {
 			double x = focus.x;
 			double z = focus.z;
 
-			double radius = map.renderSize / 4d - 4d;
 			double dx = x - px;
 			double dz = z - pz;
 
@@ -293,12 +292,8 @@ public class MapRenderer {
 				double wayX = playerX - pt.x;
 				double wayY = playerZ - pt.z;
 
-				int circleX = MathHelper.floor_double(playerX);// +
-																// map.renderSize
-																// / 2;
-				int circleY = MathHelper.floor_double(playerZ);// +
-																// map.renderSize
-																// / 2;
+				int circleX = MathHelper.floor_double(playerX);
+				int circleY = MathHelper.floor_double(playerZ);
 
 				boolean render = false;
 				if (MinimapConfig.getInstance().isSquare()) {
@@ -310,9 +305,6 @@ public class MapRenderer {
 				if (render) {
 					GL11.glPushMatrix();
 
-					// texman.loadWaypoint();
-
-					// GL11.glPushMatrix();
 					GL11.glTranslatef(32.0f, -32.0F, 0.0F);
 					GL11.glRotatef(-(this.direction + 90.0F), 0.0F, 0.0F, 1.0F);
 					GL11.glTranslatef(-32.0F, -32.0F, 0.0F);
@@ -333,22 +325,7 @@ public class MapRenderer {
 						break;
 					}
 					GL11.glScalef(0.25F, 0.25F, 1F);
-					// GL11.glPopMatrix();
 
-					// GL11.glTranslatef(- 32.0F, 32.0F, 0.0F);
-					// GL11.glRotatef(-locate + this.direction + 180.0F, 0.0F,
-					// 0.0F, 1.0F);
-					// GL11.glTranslated(0.0D, -hypot, 0.0D);
-					// GL11.glRotatef(-(-locate + this.direction + 180.0F),
-					// 0.0F, 0.0F, 1.0F);
-					// GL11.glTranslated(0.0D, hypot, 0.0D);
-					// GL11.glTranslatef(32.0F, -32.0F, 0.0F);
-					// GL11.glTranslated(0.0D, -hypot, 0.0D);
-
-					// GL11.glScalef(0.25F, 0.25F, 1F);
-					// Minecraft.theMinecraft.fontRenderer.drawString(pt.name,
-					// 0, 0, 0xffffff);
-					// drawOnMap();
 					GL11.glPopMatrix();
 				}
 			}
@@ -411,13 +388,7 @@ public class MapRenderer {
 				Minecraft.theMinecraft.fontRenderer.drawString(text, scWidth * 2 - 32 * 2 - m / 2, 166, 0xffffff);
 			}
 			GL11.glPopMatrix();
-		}// else
-			// obfhub.write("(" + format((int)
-			// Minecraft.theMinecraft.thePlayer.posX) + ", " +
-			// Minecraft.theMinecraft.thePlayer.posY
-			// + ", " + format((int) Minecraft.theMinecraft.thePlayer.posZ) +
-			// ") " + (int) this.direction
-			// + "'", 2, 10, 0xffffff);
+		}
 	}
 
 	private String format(int coord) {

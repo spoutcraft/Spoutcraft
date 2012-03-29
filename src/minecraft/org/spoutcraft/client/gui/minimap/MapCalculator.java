@@ -249,6 +249,9 @@ public class MapCalculator implements Runnable {
 						} else {
 							render = MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, pt.x, pt.z);
 						}
+						if (pt.deathpoint && !MinimapConfig.getInstance().isDeathpoints()) {
+							render = false;
+						}
 						if (render) {
 							int pixelX = pt.x - startX;
 
@@ -262,12 +265,13 @@ public class MapCalculator implements Runnable {
 							if (map.zoom > 1) {
 								scale += 1;
 							}
-							drawSquare(pixelX, pixelZ, scale + map.zoom + 1, 0);
+							
 							int color = 0xEE2C2C;
 							if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
 								color = 0xff00ffff;
 							}
-							drawSquare(pixelX, pixelZ, scale, color);
+							drawCircle(pixelX, pixelZ, scale + map.zoom + 1, pt.deathpoint ? color : 0);
+							drawCircle(pixelX, pixelZ, scale, pt.deathpoint ? 0 : color);
 						}
 					}
 				}
@@ -277,7 +281,7 @@ public class MapCalculator implements Runnable {
 		}
 	}
 
-	private void drawSquare(int x, int y, int radius, int color) {
+	private void drawCircle(int x, int y, int radius, int color) {
 		try {
 			for (int dx = -radius; dx <= radius; dx++) {
 				for (int dy = -radius; dy <= radius; dy++) {
@@ -288,8 +292,7 @@ public class MapCalculator implements Runnable {
 					}
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ignore) {
-		} // happens with fast movement
+		} catch (ArrayIndexOutOfBoundsException ignore) {} // happens with fast movement
 	}
 
 	/**

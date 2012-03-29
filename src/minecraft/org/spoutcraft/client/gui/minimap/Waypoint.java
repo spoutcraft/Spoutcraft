@@ -22,6 +22,7 @@ public class Waypoint {
 	public int z;
 	public boolean enabled;
 	public boolean deathpoint = false;
+	public boolean server = false;
 
 	/**
 	 * Initialize a waypoint with default color.
