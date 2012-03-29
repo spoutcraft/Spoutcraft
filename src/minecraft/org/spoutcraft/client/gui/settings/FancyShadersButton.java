@@ -39,7 +39,7 @@ public class FancyShadersButton extends AutomatedButton {
 
 	@Override
 	public String getTooltip() {
-	`	if (!isEnabled()) {
+		if (!isEnabled()) {
 			return "Your graphics card does not support shaders.\nShaders require OpenGL 2.0 or greater support.";
 		}
 		return super.getTooltip();
