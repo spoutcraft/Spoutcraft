@@ -309,7 +309,6 @@ public class MapRenderer {
 
 				if (render) {
 					GL11.glPushMatrix();
-					GL11.glColor3f(pt.red, pt.green, pt.blue);
 
 					// texman.loadWaypoint();
 
