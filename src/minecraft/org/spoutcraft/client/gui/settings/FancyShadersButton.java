@@ -17,7 +17,14 @@
 package org.spoutcraft.client.gui.settings;
 
 import com.pclewis.mcpatcher.mod.Shaders;
+
+import java.io.File;
 import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+
+import org.apache.commons.io.FilenameUtils;
+import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
@@ -39,15 +46,39 @@ public class FancyShadersButton extends AutomatedButton {
 			case 1: return "Shaders: Low";
 			case 2: return "Shaders: Medium";
 			case 3: return "Shaders: High";
+			case 4: return "Shaders: Custom";
 		}
 		return "Shaders: Unknown";
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.shaderType++;
-		if (ConfigReader.shaderType > 3) ConfigReader.shaderType = 0;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			ConfigReader.shaderType = 0;
+		}
+		else {
+			ConfigReader.shaderType++;
+		}
+		if (ConfigReader.shaderType > 3) {
+			File shadersDir = new File(Minecraft.getMinecraftDir(), "shaders");
+			if (!hasShaders(shadersDir) || shadersDir.listFiles().length != 18) { //18 shader files
+				ConfigReader.shaderType = 0;
+			}
+		}
+		if (ConfigReader.shaderType > 4) {
+			ConfigReader.shaderType = 0;
+		}
 		ConfigReader.write();
 		Shaders.setMode(ConfigReader.shaderType);
+	}
+	
+	private boolean hasShaders(File dir) {
+		for (File f : dir.listFiles()) {
+			String ext = FilenameUtils.getExtension(f.getName());
+			if (ext.equalsIgnoreCase("fsh") || ext.equalsIgnoreCase("vsh")) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

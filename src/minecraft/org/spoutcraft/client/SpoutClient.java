@@ -17,6 +17,7 @@
 package org.spoutcraft.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -154,6 +155,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Keyboard.setKeyManager(new SimpleKeyManager());
 		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
+		new File(Minecraft.getMinecraftDir(), "shaders").mkdir();
 	}
 
 	public static SpoutClient getInstance() {

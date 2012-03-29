@@ -101,6 +101,7 @@ public class Shaders {
 			case 1: mode = "low/"; break;
 			case 2: mode = "medium/"; break;
 			case 3: mode = "high/"; break;
+			case 4: mode = new File(Minecraft.getMinecraftDir(), "shaders").getAbsolutePath() + "/"; break;
 			default: mode = "low/";
 		}
 
@@ -726,28 +727,44 @@ public class Shaders {
 	
 	private static BufferedReader getShaderFile(String fileName, int id) {
 		BufferedReader reader;
+		final String origFileName = fileName;
 		fileName = "/res/shaders/" + fileName;
+		
+		//Try inside jar
 		try {
 			reader = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(fileName)));
-		} catch (Exception ignore) {
-			try {
-				File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../" + fileName);
-				System.out.println("Failed to find shaders, trying " + file.getAbsolutePath());
-				reader = new BufferedReader(new FileReader(file));
-			} catch (Exception ignore2) {
-				try {
-					File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../../" + fileName);
-					System.out.println("Failed to find shaders again, trying " + file.getAbsolutePath());
-					reader = new BufferedReader(new FileReader(file));
-				}
-				catch (Exception failed) {
-					System.out.println("Couldn\'t find shader file " + fileName + "!");
-					ARBShaderObjects.glDeleteObjectARB(id);
-					return null;
-				}
-			}
+			return reader;
 		}
-		return reader;
+		catch (Exception ignore) { }
+		
+		//Try MCP path
+		try {
+			File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../" + fileName);
+			reader = new BufferedReader(new FileReader(file));
+			return reader;
+		}
+		catch (Exception ignore) { }
+		
+		//Try Eclipse Path
+		try {
+			File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../../" + fileName);
+			reader = new BufferedReader(new FileReader(file));
+			return reader;
+		}
+		catch (Exception ignore) { }
+		
+		//Try External File Path
+		try {
+			File file = new File(origFileName);
+			reader = new BufferedReader(new FileReader(file));
+			return reader;
+		}
+		catch (Exception ignore) { }
+		
+		//Failed
+		System.out.println("Couldn\'t find shader file " + fileName + "!");
+		ARBShaderObjects.glDeleteObjectARB(id);
+		return null;
 	}
 
 	private static int createVertShader(String var0) {
@@ -760,7 +777,7 @@ public class Shaders {
 
 			BufferedReader var4 = getShaderFile(var0, var1);
 			if (var4 == null) {
-				return -1;
+				return 0;
 			}
 
 			String var3;
