@@ -128,6 +128,9 @@ public class GuiAddWaypoint extends GuiScreen{
 			MinimapConfig.getInstance().removeWaypoint(toEdit);
 			MinimapConfig.getInstance().save();
 			SpoutClient.getHandle().displayGuiScreen(parent);
+			if(toEdit == MinimapConfig.getInstance().getFocussedWaypoint()) {
+				MinimapConfig.getInstance().setFocussedWaypoint(null);
+			}
 		}
 		if (btn.equals(done) && done.isEnabled()) {
 			toEdit.name = name.getText();
