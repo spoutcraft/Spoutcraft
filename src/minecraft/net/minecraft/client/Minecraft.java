@@ -1831,12 +1831,11 @@ public abstract class Minecraft implements Runnable {
 		if (par3) {
 			this.thePlayer.copyPlayer(var9);
 		}
-		if (var9 != null)
+		//Spout start
+		if (var9 != null) {
 			this.thePlayer.setData(var9.getData()); //even in MP still need to copy Spout data across
 		}
-		if (var9 != null)
-			this.thePlayer.setData(var9.getData()); //even in MP still need to copy Spout data across
-		}
+		//Spout end
 
 		this.thePlayer.dimension = par2;
 		this.renderViewEntity = this.thePlayer;
