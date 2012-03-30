@@ -116,7 +116,7 @@ public class World implements IBlockAccess {
 		this.spawnPeacefulMobs = true;
 		this.activeChunkSet = new HashSet();
 		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];
+		this.lightUpdateBlockList = new int[256]; // Spout - reduced it from 32768 - client freezes due to light updates
 		this.entitiesWithinAABBExcludingEntity = new ArrayList();
 		this.isRemote = false;
 		this.saveHandler = par1ISaveHandler;
