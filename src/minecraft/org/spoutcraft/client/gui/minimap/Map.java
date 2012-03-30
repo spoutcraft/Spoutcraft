@@ -1,6 +1,23 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.minimap;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 
 /**
  * @author lahwran
@@ -35,6 +52,8 @@ public class Map {
 	 * middle of rendering a map frame
 	 */
 	public int zoom = -1;
+	
+	public boolean square;
 
 	/**
 	 * How many blocks to x+ to shift the map rendering from the origin of the
@@ -54,6 +73,7 @@ public class Map {
 
 	public int updatedist = 4;
 	
+	//Denotes the width or the diameter of a map
 	public static final int ZOOM_3 = 512;
 	public static final int ZOOM_2 = 256;
 	public static final int ZOOM_1 = 128;
@@ -132,6 +152,10 @@ public class Map {
 	public void loadLightImage() {
 		lightimg.loadGLImage();
 	}
+	
+	public Raster getColorRaster() {
+		return colorimg.image.getRaster();
+	}
 
 	public void clear() {
 		for (int i = 0; i < imageSize; i++) {
@@ -159,7 +183,7 @@ public class Map {
 	}
 
 	public boolean isDirty(double newPlayerX, double newPlayerZ) {
-		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300 || zoom != MinimapConfig.getInstance().getZoom();
+		return Math.abs(playerX - newPlayerX) > updatedist || Math.abs(playerZ - newPlayerZ) > updatedist || timer > 300 || zoom != MinimapConfig.getInstance().getZoom() || square != MinimapConfig.getInstance().isSquare();
 	}
 
 	public float getRenderScale() {

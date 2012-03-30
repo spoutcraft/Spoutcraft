@@ -1,31 +1,23 @@
 /*
  * This file is part of Spoutcraft (http://www.spout.org/).
  *
- * Spoutcraft is licensed under the SpoutDev License Version 1.
- *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * In addition, 180 days after any changes are published, you can use the
- * software, incorporating those changes, under the terms of the MIT license,
- * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License,
- * the MIT license and the SpoutDev license version 1 along with this program.
- * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
- * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
- * including the MIT license.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.spoutcraft.client;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -48,6 +40,7 @@ import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.entity.CraftCameraEntity;
 import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
@@ -68,7 +61,6 @@ import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.player.SimpleBiomeManager;
 import org.spoutcraft.client.player.SimpleSkyManager;
-import org.spoutcraft.spoutcraftapi.AnimatableLocation;
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.World;
@@ -84,6 +76,7 @@ import org.spoutcraft.spoutcraftapi.command.Command;
 import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.command.SimpleCommandMap;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
+import org.spoutcraft.spoutcraftapi.entity.CameraEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 import org.spoutcraft.spoutcraftapi.gui.RenderDelegate;
@@ -95,6 +88,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.player.BiomeManager;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
+import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
 public class SpoutClient extends PropertyObject implements Client {
@@ -161,6 +155,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Keyboard.setKeyManager(new SimpleKeyManager());
 		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
+		new File(Minecraft.getMinecraftDir(), "shaders").mkdir();
 	}
 
 	public static SpoutClient getInstance() {
@@ -454,32 +449,39 @@ public class SpoutClient extends PropertyObject implements Client {
 		return version;
 	}
 
-	public Location getCamera() {
-		Location ret = null;
-		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		ret = new AnimatableLocation(null, cam.posX, cam.posY, cam.posZ);
-		ret.setPitch(cam.rotationPitch);
-		ret.setYaw(cam.rotationYaw);
-		return ret;
+	public CameraEntity getCamera() {
+		if(!isCameraDetached())
+			return null;
+		
+		return (CameraEntity)getHandle().renderViewEntity.spoutEntity;
 	}
 
-	public void setCamera(Location pos) {
+	public void setCamera(FixedLocation pos) {
 		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		cam.posX = pos.getX();
-		cam.posY = pos.getY();
-		cam.posZ = pos.getZ();
-		cam.rotationPitch = (float) pos.getPitch();
-		cam.rotationYaw = (float) pos.getYaw();
+		if(!(cam.spoutEntity instanceof CameraEntity))
+			return;
+		
+		((CameraEntity)cam.spoutEntity).teleport(pos);
 	}
 
 	public void detachCamera(boolean detach) {
-		// TODO Auto-generated method stub
-
+		if(detach) {
+			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+				setCamera(getActivePlayer().getLocation());
+				return;
+			}
+			getHandle().renderViewEntity = (new CraftCameraEntity(getActivePlayer().getLocation())).getHandle();
+		}
+		else {
+			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+				getHandle().renderViewEntity.spoutEntity.remove();
+				getHandle().renderViewEntity = getHandle().thePlayer;
+			}
+		}
 	}
 
 	public boolean isCameraDetached() {
-		// TODO Auto-generated method stub
-		return false;
+		return getHandle().renderViewEntity.spoutEntity instanceof CameraEntity;
 	}
 
 	public void enableAddons(AddonLoadOrder load) {

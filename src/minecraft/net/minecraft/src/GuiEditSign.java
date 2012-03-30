@@ -171,7 +171,7 @@ public class GuiEditSign extends GuiScreen
 				}
 			}
 		}
-		if(allowedCharacters.indexOf(var1) >= 0 && this.entitySign.signText[this.editLine].length() < 15) { //enter
+		if((allowedCharacters.indexOf(var1) > -1 || var1 > 32) && this.entitySign.signText[this.editLine].length() < 15) { //enter
 			String line = entitySign.signText[editLine];
 
 			//prevent out of bounds on the substring call

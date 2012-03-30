@@ -1,27 +1,18 @@
 /*
  * This file is part of Spoutcraft (http://www.spout.org/).
  *
- * Spoutcraft is licensed under the SpoutDev License Version 1.
- *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * In addition, 180 days after any changes are published, you can use the
- * software, incorporating those changes, under the terms of the MIT license,
- * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License,
- * the MIT license and the SpoutDev license version 1 along with this program.
- * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
- * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
- * including the MIT license.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.spoutcraft.client.gui;
 
@@ -490,9 +481,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		float healthPercent = health / 0.2f;
 		int y = (int) bar.getScreenY();
-		if (healthPercent <= bar.getDangerPercent()) {
-			y += GuiIngame.rand.nextInt(2);
-		}
 		float healthPercentPerIcon = 100f / bar.getMaxNumHearts();
 		if (bar.isVisible() && bar.getMaxNumHearts() > 0) {
 			for (int icon = 0; icon < bar.getMaxNumHearts(); ++icon) {
@@ -510,6 +498,11 @@ public class MCRenderDelegate implements RenderDelegate {
 				if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 					hardcore = 5 * 9;
 				}
+				
+				int oldY = y;
+				if (healthPercent <= bar.getDangerPercent()) {
+					y += GuiIngame.rand.nextInt(2);
+				}
 
 				RenderUtil.drawTexturedModalRectangle(x, y, 16 + (whiteOutlinedHearts ? 1 : 0) * 9, hardcore, 9, 9, 0f);
 				if (whiteOutlinedHearts) {
@@ -525,7 +518,8 @@ public class MCRenderDelegate implements RenderDelegate {
 				} else if (half) {
 					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, hardcore, 9, 9, 0f);
 				}
-
+				
+				y = oldY;
 			}
 		}
 	}

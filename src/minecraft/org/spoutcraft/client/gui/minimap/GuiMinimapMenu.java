@@ -1,6 +1,6 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -149,8 +149,13 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		top += 22;
 		
-
-		//TODO waypoints
+		control = new DeathpointsCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		control = new BackgroundCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, control);
 	}
 	
 	@Override

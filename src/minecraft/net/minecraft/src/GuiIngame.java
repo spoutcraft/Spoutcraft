@@ -556,24 +556,26 @@ public class GuiIngame extends Gui
 	/**
 	 * Adds a chat message to the list of chat messages. Args: msg
 	 */
-	public void addChatMessage(String par1Str)
-	{
+	public void addChatMessage(String message) {
 		//Spout start
-		if (!ConfigReader.showJoinMessages && par1Str.toLowerCase().contains("joined the game")) {
+		if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
 			return;
 		}
 		SpoutClient.enableSandbox();
-		ChatTextBox.addChatMessage(ChatMessage.parseMessage(par1Str));
+		if (Spoutcraft.getActivePlayer() != null) {
+			ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
+		}
+		else {
+			ChatTextBox.addChatMessage(new ChatMessage(message, message));
+		}
 		SpoutClient.disableSandbox();
 		//Spout end
 
 		int i;
 
-		for (; mc.fontRenderer.getStringWidth(par1Str) > 320; par1Str = par1Str.substring(i))
-		{
-			for (i = 1; i < par1Str.length() && mc.fontRenderer.getStringWidth(par1Str.substring(0, i + 1)) <= 320; i++) { }
-
-			addChatMessage(par1Str.substring(0, i));
+		for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
+			for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
+			addChatMessage(message.substring(0, i));
 		}
 	}
 

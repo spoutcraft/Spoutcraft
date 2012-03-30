@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.client.Minecraft;
@@ -15,6 +31,8 @@ public class TextureManager {
 	private int glWaypoint = 0;
 	private int glMarker = 0;
 	private int glMinimap = 0;
+	private int glWhiteRoundmap = 0;
+	private int glWhiteMinimap = 0;
 	/**
 	 * @param zanMinimap
 	 */
@@ -26,6 +44,8 @@ public class TextureManager {
 		glWaypoint = 0;
 		glMarker = 0;
 		glMinimap = 0;
+		glWhiteRoundmap = 0;
+		glWhiteMinimap = 0;
 	}
 
 	public void loadRoundmap() {
@@ -56,5 +76,17 @@ public class TextureManager {
 		if (glMinimap == 0)
 			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
+	}
+	
+	public void loadWhiteMinimap() {
+		if (glWhiteMinimap == 0)
+			glWhiteMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/squaremap_white.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glWhiteMinimap);
+	}
+	
+	public void loadWhiteRoundmap() {
+		if (glWhiteRoundmap == 0)
+			glWhiteRoundmap = CustomTextureManager.getTextureFromJar("/res/minimap/roundmap_white.png").getTextureID();
+		Minecraft.theMinecraft.renderEngine.bindTexture(glWhiteRoundmap);
 	}
 }

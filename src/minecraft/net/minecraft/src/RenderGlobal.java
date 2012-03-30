@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
+import com.pclewis.mcpatcher.mod.Shaders;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -492,10 +493,12 @@ public class RenderGlobal implements IWorldAccess {
 					var19 = this.sortedWorldRenderers.length;
 				}
 
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				GL11.glDisable(GL11.GL_LIGHTING);
-				GL11.glDisable(GL11.GL_ALPHA_TEST);
-				GL11.glDisable(GL11.GL_FOG);
+				//Spout start
+				Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
+				Shaders.glDisableWrapper(GL11.GL_LIGHTING);
+				Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
+				Shaders.glDisableWrapper(GL11.GL_FOG);
+				//Spout end
 				GL11.glColorMask(false, false, false, false);
 				GL11.glDepthMask(false);
 				Profiler.startSection("check");
@@ -555,9 +558,11 @@ public class RenderGlobal implements IWorldAccess {
 				}
 
 				GL11.glDepthMask(true);
-				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				GL11.glEnable(GL11.GL_ALPHA_TEST);
-				GL11.glEnable(GL11.GL_FOG);
+				//Spout start
+				Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
+				Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
+				Shaders.glEnableWrapper(GL11.GL_FOG);
+				//Spout end
 				Profiler.endStartSection("render");
 				var34 += this.renderSortedRenderers(var35, var19, par2, par3);
 			} while (var19 < this.sortedWorldRenderers.length);
@@ -661,9 +666,9 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void renderSky(float par1) {
 		if (this.mc.theWorld.worldProvider.worldType == 1) {
-			GL11.glDisable(GL11.GL_FOG);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
+			Shaders.glDisableWrapper(GL11.GL_FOG);
+			Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
+			Shaders.glEnableWrapper(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDepthMask(false);
@@ -703,10 +708,10 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
+			Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 		} else if (this.mc.theWorld.worldProvider.func_48217_e()) {
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			// Spout Start
 			Vec3D vec3d = worldObj.getSkyColor(mc.renderViewEntity, par1);
 			float var3 = (float) vec3d.xCoord;
@@ -733,16 +738,16 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glColor3f(var3, var4, var5);
 			Tessellator var21 = Tessellator.instance;
 			GL11.glDepthMask(false);
-			GL11.glEnable(GL11.GL_FOG);
+			Shaders.glEnableWrapper(GL11.GL_FOG);
 			GL11.glColor3f(var3, var4, var5);
 			// Spout Start
 			if (ConfigReader.sky) {
 				GL11.glCallList(this.glSkyList);
 			}
 			// Spout End
-			GL11.glDisable(GL11.GL_FOG);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
+			Shaders.glDisableWrapper(GL11.GL_FOG);
+			Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
+			Shaders.glEnableWrapper(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderHelper.disableStandardItemLighting();
 			float[] var22 = this.worldObj.worldProvider.calcSunriseSunsetColors(this.worldObj.getCelestialAngle(par1), par1);
@@ -754,8 +759,8 @@ public class RenderGlobal implements IWorldAccess {
 			int var25;
 			// Spout Start
 			if (var22 != null && ConfigReader.sky) {
+				Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 				// Spout End
-				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				GL11.glPushMatrix();
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
@@ -792,7 +797,7 @@ public class RenderGlobal implements IWorldAccess {
 				GL11.glShadeModel(GL11.GL_FLAT);
 			}
 
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glPushMatrix();
 			var7 = 1.0F - this.worldObj.getRainStrength(par1);
@@ -843,19 +848,20 @@ public class RenderGlobal implements IWorldAccess {
 			var21.addVertexWithUV((double)(-var11), -100.0D / multiplier, (double)(-var11), (double)var17, (double)var16);
 			var21.draw();
 			}
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			var12 = this.worldObj.getStarBrightness(par1) * var7;
+			Shaders.setCelestialPosition(); //Spout
 			if (var12 > 0.0F && ConfigReader.stars) { //Spout (added stars condition)
 				GL11.glColor4f(var12, var12, var12, var12);
 				GL11.glCallList(this.starGLCallList);
 			}
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_FOG);
+			Shaders.glDisableWrapper(GL11.GL_BLEND);
+			Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
+			Shaders.glEnableWrapper(GL11.GL_FOG);
 			GL11.glPopMatrix();
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
 			double var23 = this.mc.thePlayer.getPosition(par1).yCoord - this.worldObj.getSeaLevel();
 			if (var23 < 0.0D) {
@@ -905,7 +911,7 @@ public class RenderGlobal implements IWorldAccess {
 			}
 			// Spout End
 			GL11.glPopMatrix();
-			GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+			Shaders.glEnableWrapper(3553 /* GL_TEXTURE_2D */);
 			GL11.glDepthMask(true);
 		}
 	}
@@ -921,14 +927,14 @@ public class RenderGlobal implements IWorldAccess {
 			if (Colorizer.drawFancyClouds(this.mc.gameSettings.fancyGraphics)) {
 				this.renderCloudsFancy(par1);
 			} else {
-			//Spout end
-				GL11.glDisable(GL11.GL_CULL_FACE);
+				Shaders.glDisableWrapper(GL11.GL_CULL_FACE);
+				//Spout end
 				float var2 = (float)(this.mc.renderViewEntity.lastTickPosY + (this.mc.renderViewEntity.posY - this.mc.renderViewEntity.lastTickPosY) * (double)par1);
 				byte var3 = 32;
 				int var4 = 256 / var3;
 				Tessellator var5 = Tessellator.instance;
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/environment/clouds.png"));
-				GL11.glEnable(GL11.GL_BLEND);
+				Shaders.glEnableWrapper(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				Vec3D var6 = this.worldObj.drawClouds(par1);
 				float var7 = (float)var6.xCoord;
@@ -981,8 +987,8 @@ public class RenderGlobal implements IWorldAccess {
 
 				var5.draw();
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glEnable(GL11.GL_CULL_FACE);
+				Shaders.glDisableWrapper(GL11.GL_BLEND);
+				Shaders.glEnableWrapper(GL11.GL_CULL_FACE);
 			}
 		}
 	}
@@ -992,7 +998,7 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void renderCloudsFancy(float par1) {
-		GL11.glDisable(GL11.GL_CULL_FACE);
+		Shaders.glDisableWrapper(GL11.GL_CULL_FACE);
 		float var2 = (float)(this.mc.renderViewEntity.lastTickPosY + (this.mc.renderViewEntity.posY - this.mc.renderViewEntity.lastTickPosY) * (double)par1);
 		Tessellator var3 = Tessellator.instance;
 		float var4 = 12.0F;
@@ -1009,7 +1015,7 @@ public class RenderGlobal implements IWorldAccess {
 		var8 -= (double)(var13 * 2048);
 		var10 -= (double)(var14 * 2048);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/environment/clouds.png"));
-		GL11.glEnable(GL11.GL_BLEND);
+		Shaders.glEnableWrapper(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		Vec3D var15 = this.worldObj.drawClouds(par1);
 		float var16 = (float)var15.xCoord;
@@ -1138,8 +1144,8 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_CULL_FACE);
+		Shaders.glDisableWrapper(GL11.GL_BLEND);
+		Shaders.glEnableWrapper(GL11.GL_CULL_FACE);
 	}
 
 	public boolean updateRenderers(EntityLiving par1EntityLiving, boolean par2) {
@@ -1288,8 +1294,8 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void drawBlockBreaking(EntityPlayer par1EntityPlayer, MovingObjectPosition par2MovingObjectPosition, int par3, ItemStack par4ItemStack, float par5) {
 		Tessellator var6 = Tessellator.instance;
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		Shaders.glEnableWrapper(GL11.GL_BLEND);
+		Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)System.currentTimeMillis() / 100.0F) * 0.2F + 0.4F) * 0.5F);
 		int var8;
@@ -1302,9 +1308,9 @@ public class RenderGlobal implements IWorldAccess {
 				GL11.glPushMatrix();
 				var8 = this.worldObj.getBlockId(par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
 				Block var9 = var8 > 0?Block.blocksList[var8]:null;
-				GL11.glDisable(GL11.GL_ALPHA_TEST);
+				Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
 				GL11.glPolygonOffset(-3.0F, -3.0F);
-				GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+				Shaders.glEnableWrapper(GL11.GL_POLYGON_OFFSET_FILL);
 				double var10 = par1EntityPlayer.lastTickPosX + (par1EntityPlayer.posX - par1EntityPlayer.lastTickPosX) * (double)par5;
 				double var12 = par1EntityPlayer.lastTickPosY + (par1EntityPlayer.posY - par1EntityPlayer.lastTickPosY) * (double)par5;
 				double var14 = par1EntityPlayer.lastTickPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.lastTickPosZ) * (double)par5;
@@ -1312,17 +1318,17 @@ public class RenderGlobal implements IWorldAccess {
 					var9 = Block.stone;
 				}
 
-				GL11.glEnable(GL11.GL_ALPHA_TEST);
+				Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 				var6.startDrawingQuads();
 				var6.setTranslation(-var10, -var12, -var14);
 				var6.disableColor();
 				this.globalRenderBlocks.renderBlockUsingTexture(var9, par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ, 240 + (int)(this.damagePartialTime * 10.0F));
 				var6.draw();
 				var6.setTranslation(0.0D, 0.0D, 0.0D);
-				GL11.glDisable(GL11.GL_ALPHA_TEST);
+				Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
 				GL11.glPolygonOffset(0.0F, 0.0F);
-				GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
-				GL11.glEnable(GL11.GL_ALPHA_TEST);
+				Shaders.glDisableWrapper(GL11.GL_POLYGON_OFFSET_FILL);
+				Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 				GL11.glDepthMask(true);
 				GL11.glPopMatrix();
 			}
@@ -1360,17 +1366,17 @@ public class RenderGlobal implements IWorldAccess {
 			}
 		}
 
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		Shaders.glDisableWrapper(GL11.GL_BLEND);
+		Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
 	}
 
 	public void drawSelectionBox(EntityPlayer par1EntityPlayer, MovingObjectPosition par2MovingObjectPosition, int par3, ItemStack par4ItemStack, float par5) {
 		if (par3 == 0 && par2MovingObjectPosition.typeOfHit == EnumMovingObjectType.TILE) {
-			GL11.glEnable(GL11.GL_BLEND);
+			Shaders.glEnableWrapper(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.4F);
 			GL11.glLineWidth(2.0F);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			GL11.glDepthMask(false);
 			float var6 = 0.002F;
 			int var7 = this.worldObj.getBlockId(par2MovingObjectPosition.blockX, par2MovingObjectPosition.blockY, par2MovingObjectPosition.blockZ);
@@ -1383,8 +1389,8 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_BLEND);
+			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
+			Shaders.glDisableWrapper(GL11.GL_BLEND);
 		}
 	}
 

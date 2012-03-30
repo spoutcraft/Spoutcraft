@@ -1,27 +1,18 @@
 /*
  * This file is part of Spoutcraft (http://www.spout.org/).
  *
- * Spoutcraft is licensed under the SpoutDev License Version 1.
- *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * In addition, 180 days after any changes are published, you can use the
- * software, incorporating those changes, under the terms of the MIT license,
- * as described in the SpoutDev License Version 1.
  *
  * Spoutcraft is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License,
- * the MIT license and the SpoutDev license version 1 along with this program.
- * If not, see <http://www.gnu.org/licenses/> for the GNU Lesser General Public
- * License and see <http://www.spout.org/SpoutDevLicenseV1.txt> for the full license,
- * including the MIT license.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.spoutcraft.client.gui.server;
 
@@ -53,6 +44,7 @@ public class GuiFavorites extends GuiScreen {
 	private GenericListView view;
 	private Label title;
 	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	private long pollTime = 0L;
 
 	public GuiFavorites(GuiScreen parent) {
 		this.parent = parent;
@@ -157,7 +149,6 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
-		//TODO: Draw the refresh button thingie
 	}
 
 	@Override
@@ -210,7 +201,8 @@ public class GuiFavorites extends GuiScreen {
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
-			for (int i = 0; i<model.getSize(); i++) {
+			pollTime = System.currentTimeMillis();
+			for (int i = 0; i < model.getSize(); i++) {
 				ServerItem item = (ServerItem) model.getItem(i);
 				item.poll();
 			}
@@ -241,6 +233,10 @@ public class GuiFavorites extends GuiScreen {
 		if (view != null && view.getSelectedRow() == -1) {
 			enable = false;
 		}
+		//GUI has not been initialized
+		if (buttonEdit == null) {
+			return;
+		}
 		buttonEdit.setEnabled(enable);
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
@@ -265,6 +261,18 @@ public class GuiFavorites extends GuiScreen {
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
 			color.setBlue(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
+			
+			//If polling locks up and takes > 15s, unlock the button
+			if (pollTime + 15000L < System.currentTimeMillis()) {
+				for (int i = 0; i < model.getSize(); i++) {
+					ServerItem item = (ServerItem) model.getItem(i);
+					if (item.isPolling()) {
+						item.endPolling();
+					}
+				}
+				model.setPolling(false);
+				
+			}
 		}
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();

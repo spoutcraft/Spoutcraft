@@ -64,6 +64,8 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(var12, -var12, var12);
 		GL11.glNormal3f(0.0F, 0.0F, -1.0F * var12);
 		GL11.glDepthMask(false);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		byte var13 = 0;
 
 		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {

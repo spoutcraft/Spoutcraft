@@ -3937,6 +3937,7 @@ public class RenderBlocks {
 	}
 
 	public void renderBottomFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4022,6 +4023,7 @@ public class RenderBlocks {
 	}
 
 	public void renderTopFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4107,6 +4109,7 @@ public class RenderBlocks {
 	}
 
 	public void renderEastFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4199,6 +4202,7 @@ public class RenderBlocks {
 	}
 
 	public void renderWestFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4291,6 +4295,7 @@ public class RenderBlocks {
 	}
 
 	public void renderNorthFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4383,6 +4388,7 @@ public class RenderBlocks {
 	}
 
 	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, int par8) {
+		Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;

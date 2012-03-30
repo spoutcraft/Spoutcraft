@@ -244,6 +244,11 @@ public class GuiMainMenu extends GuiScreen
 			}
 		}
 		if (btn == buttonQuit) {
+			if (isAprilFools()) {
+				try {
+					Desktop.getDesktop().browse((new URL("http://www.youtube.com/watch?v=sBe5bQ1wZtI")).toURI());
+				} catch (Exception e) { }
+			}
 			mc.shutdown();
 		}
 		if (btn == buttonFastLogin) {
@@ -494,7 +499,13 @@ public class GuiMainMenu extends GuiScreen
 		float var8 = 1.8F - MathHelper.abs(MathHelper.sin((float) (System.currentTimeMillis() % 1000L) / 1000.0F * 3.1415927F * 2.0F) * 0.1F);
 		var8 = var8 * 100.0F / (float) (this.fontRenderer.getStringWidth(this.splashText) + 32);
 		GL11.glScalef(var8, var8, var8);
-		this.drawString(this.fontRenderer, this.splashText, 0, 0, 16776960); //Spout remove centering
+		if (isAprilFools()) {
+			this.drawString(this.fontRenderer, this.splashText, 0, 0, 0xFF00AA); //Spout remove centering
+		}
+		else {
+			this.drawString(this.fontRenderer, this.splashText, 0, 0, 16776960); //Spout remove centering
+		}
+		
 		GL11.glPopMatrix();
 
 		//Spout Start

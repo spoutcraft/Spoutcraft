@@ -1,17 +1,39 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.minimap;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.Chunk;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.Tessellator;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.imageio.ImageIO;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiScreen;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
+import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
@@ -20,8 +42,6 @@ import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 import org.spoutcraft.spoutcraftapi.property.Property;
-
-import com.pclewis.mcpatcher.mod.TextureUtils;
 
 public class MapWidget extends GenericScrollable {
 	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
@@ -39,12 +59,26 @@ public class MapWidget extends GenericScrollable {
 
 			@Override
 			public void set(Object value) {
-				setScale((float)(double)(Double) value);
+				setScale((float)(Float) value);
 			}
 
 			@Override
 			public Object get() {
 				return getScale();
+			}
+		});
+		
+		addProperty("scrollpos", new Property() {
+			
+			@Override
+			public void set(Object value) {
+				Point p = (Point) value;
+				scrollTo(p, false, 0);
+			}
+			
+			@Override
+			public Object get() {
+				return mapOutsideToCoords(new Point(0,0));
 			}
 		});
 
@@ -100,19 +134,9 @@ public class MapWidget extends GenericScrollable {
 		return map;
 	}
 	
-	public void zoomBy(float zoom) {
-		Point center = getCenterCoord();
-		float newscale = scale + zoom;
-		if(newscale <= 0) {
-			newscale = 0.1f;
-		}
-		scale = newscale;
-		scrollTo(center);
-	}
-	
 	public Point mapOutsideToCoords(Point outside) {
-		int x = outside.getX();
-		int y = outside.getY();
+		int x = outside.getX() + scrollX;
+		int y = outside.getY() + scrollY;
 		x /= scale;
 		y /= scale;
 		x += heightMap.getMinX() * 16;
@@ -127,28 +151,116 @@ public class MapWidget extends GenericScrollable {
 		y -= heightMap.getMinZ() * 16;
 		x *= scale;
 		y *= scale;
-		return new Point(x,y);
+		return new Point(x, y);
+	}
+	
+	public void reset() {
+		setScale(1f, true, 500);
+		showPlayer(500);
 	}
 
-	public void showPlayer() {
-		int x = (int) SpoutClient.getHandle().thePlayer.posX;
-		int z = (int) SpoutClient.getHandle().thePlayer.posZ;
-		scrollTo(x, z);
+	public void showPlayer(int duration) {
+		scrollTo(getPlayerPosition(), true, duration);
+	}
+	
+	public void scrollTo(Point p, boolean animated, int duration) {
+		scrollTo(p.getX(), p.getY(), animated, duration);	
 	}
 	
 	public void scrollTo(Point p) {
-		scrollTo(p.getX(), p.getY());
+		scrollTo(p, false, 0);
 	}
 	
 	public void scrollTo(int x, int z) {
-		Point p = mapCoordsToOutside(new Point(x,z));
-		int scrollX = p.getX(), scrollZ = p.getY();
-		setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
-		setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
+		scrollTo(x,z, false, 0);
+	}
+	
+	public void scrollTo(int x, int z, boolean animated, int duration) {
+		if(!animated) {
+			Point p = mapCoordsToOutside(new Point(x,z));
+			int scrollX = p.getX(), scrollZ = p.getY();
+			setScrollPosition(Orientation.HORIZONTAL, scrollX - (int) (getWidth() / 2));
+			setScrollPosition(Orientation.VERTICAL, scrollZ - (int) (getHeight() / 2));
+		} else {
+			Point start = getCenterCoord();
+			Point end = new Point(x, z);
+			PropertyAnimation ani = new PropertyAnimation(this, "scrollpos");
+			ani.setStartValue(start);
+			ani.setEndValue(end);
+			ani.setDuration(duration);
+			ani.start();
+		}
 	}
 	
 	public Point getCenterCoord() {
-		return mapOutsideToCoords(new Point((int) (getWidth() / 2) + scrollX, (int) (getHeight() / 2) + scrollY));
+		return mapOutsideToCoords(new Point((int) (getWidth() / 2), (int) (getHeight() / 2)));
+	}
+	
+	public boolean saveToDesktop() {
+		try {
+			int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
+			int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
+			
+			int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
+					minChunkZ = heightMap.getMinZ() + scrollY / 16, 
+					maxChunkX = 0, 
+					maxChunkZ = 0;
+			int horiz = (int) (getWidth() / 16 / scale) + 1;
+			int vert = (int) (getHeight() / 16 / scale) + 1;
+			maxChunkX = minChunkX + horiz;
+			maxChunkZ = minChunkZ + vert;
+			
+			minChunkX++;
+			minChunkZ++;
+			BufferedImage fullImage = new BufferedImage((maxChunkX - minChunkX) * 16 + 32, (maxChunkZ - minChunkZ) * 16 + 32, BufferedImage.TYPE_INT_ARGB);
+			for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+				for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+					Map map = drawChunk(chunkX, chunkZ, dirty);
+					if(map != null && map != blankMap) {
+						Raster raster = map.getColorRaster();
+						int startX = (chunkX - minChunkX) * 16;
+						int startZ = (chunkZ - minChunkZ) * 16;
+						java.awt.image.DataBufferInt buf = (java.awt.image.DataBufferInt)raster.getDataBuffer();
+						int[] srcbuf = buf.getData();
+						fullImage.setRGB(startX, startZ, 16, 16, srcbuf, 0, 16);
+					}
+				}
+			}
+			
+			//Creates a file named 'minimap 3-29-2012.png' in the desktop, if possible
+			//Otherwise saves to screenshots. Appends "(1)", etc as needed to avoid overwriting existing files
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");  
+			String fileName = "minimap " + df.format(new Date());
+			File desktop = new File(System.getProperty("user.home"), "Desktop");
+			if (!desktop.exists()) {
+				desktop = new File(Minecraft.getMinecraftDir(), "screenshots");
+			}
+			String fullFileName = fileName;
+			int duplicate = 0;
+			while(true) {
+				if (!fileExists(desktop, fullFileName, ".png")) {
+					break;
+				}
+				duplicate++;
+				fullFileName = fileName + " (" + duplicate + ")";
+			}
+			ImageIO.write(fullImage, "png", new File(desktop, fullFileName + ".png"));
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private boolean fileExists(File dir, String name, String ext) {
+		name += ext;
+		for (File f : dir.listFiles()) {
+			if (f.getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -211,18 +323,20 @@ public class MapWidget extends GenericScrollable {
 		
 		drawPOI("You", x, z, 0xffff0000);
 		
-		for(Waypoint waypoint : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())){			
-			drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
+		for(Waypoint waypoint : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())){
+			if (!waypoint.deathpoint || MinimapConfig.getInstance().isDeathpoints()) {
+				drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
+			}
 		}
 		
-		
+		if(MinimapConfig.getInstance().getFocussedWaypoint() != null) {
+			Waypoint pos = MinimapConfig.getInstance().getFocussedWaypoint();
+			drawPOI("Marker", pos.x, pos.z, 0xff00ffff);
+		}
 		
 		GL11.glPopMatrix();
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		
-		
-		
+
 		GL11.glEnable(2929);
 		GL11.glDisable(3042);
 		dirty = false;
@@ -253,7 +367,35 @@ public class MapWidget extends GenericScrollable {
 	}
 
 	public void setScale(float scale) {
-		this.scale = scale;
+		setScale(scale, false, 0);
+	}
+	
+	public void setScale(float scale, boolean animated, int duration) {
+		if(!animated) {
+			Point center = getCenterCoord();
+			this.scale = scale;
+			scrollTo(center);			
+		} else {
+			PropertyAnimation ani = new PropertyAnimation(this, "scale");
+			ani.setStartNumber(this.scale);
+			ani.setEndNumber(scale);
+			ani.setDuration(duration);
+			ani.setAnimationProgress(new OutQuadAnimationProgress());
+			ani.start();
+		}
 	}
 
+	public void zoomBy(float zoom) {
+		float newscale = scale + zoom;
+		if(newscale <= 0) {
+			newscale = 0.1f;
+		}
+		setScale(newscale, true, 100);
+	}
+
+	public Point getPlayerPosition() {
+		int x = (int) SpoutClient.getHandle().thePlayer.posX;
+		int z = (int) SpoutClient.getHandle().thePlayer.posZ;
+		return new Point(x, z);
+	}
 }

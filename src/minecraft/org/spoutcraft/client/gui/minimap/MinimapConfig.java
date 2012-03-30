@@ -1,6 +1,6 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.Minecraft;
-
 import org.bukkit.util.config.Configuration;
+import org.bukkit.util.config.ConfigurationNode;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
@@ -49,7 +49,10 @@ public class MinimapConfig {
 	private float yAdjust = 0;
 	private float sizeAdjust = 1F;
 	private boolean directions = true;
+	private boolean deathpoints = true;
+	private boolean background = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
+	private Waypoint focussedWaypoint = null;
 
 	/*
 	 * minimap: enabled: true ... waypoints: world1: home: x: 128 z: -82
@@ -74,6 +77,8 @@ public class MinimapConfig {
 			heightmap = config.getBoolean("minimap.heightmap", heightmap);
 			cavemap = config.getBoolean("minimap.cavemap", cavemap);
 			scale = config.getBoolean("minimap.scale", scale);
+			deathpoints = config.getBoolean("minimap.deathpoints", deathpoints);
+			background = config.getBoolean("minimap.background", background);
 			xAdjust = (float) config.getDouble("minimap.xAdjust", xAdjust);
 			yAdjust = (float) config.getDouble("minimap.yAdjust", yAdjust);
 			sizeAdjust = (float) config.getDouble("minimap.sizeAdjust", sizeAdjust);
@@ -86,26 +91,32 @@ public class MinimapConfig {
 			while (i.hasNext()) {
 				Object o = i.next();
 				if (o instanceof Entry) {
+					@SuppressWarnings("rawtypes")
 					Entry<?, ?> e = (Entry) o;
-					if (e.getKey() instanceof String && e.getValue() instanceof Map<?, ?>) {
+					if (e.getKey() instanceof String) {
 						try {
 							String world = (String) e.getKey();
-							Map<String, Map<String, Number>> waypoints = (Map<String, Map<String, Number>>) e.getValue();
-							Iterator<Entry<String, Map<String, Number>>> j = waypoints.entrySet().iterator();
-							while (i.hasNext()) {
-								Entry<String, Map<String, Number>> entry = j.next();
-								int x, z;
-								String name = entry.getKey();
-								Map<String, Number> locations = entry.getValue();
-								x = locations.get("x").intValue();
-								z = locations.get("z").intValue();
-								enabled = locations.get("enabled").intValue() == 1;
-								addWaypoint(world, name, x, z, enabled);
+							ConfigurationNode waypoints = (ConfigurationNode) e.getValue();
+							for(String name:waypoints.getKeys()) {
+								Map<String, Object> locations = waypoints.getNode(name).getAll();
+								int x, y = 64, z;
+								x = (Integer) locations.get("x");
+								if(locations.containsKey("y")) {
+									y = (Integer) locations.get("y");
+								}
+								z = (Integer) locations.get("z");
+								boolean enabled = (Integer) locations.get("enabled") == 1;
+								boolean deathpoint = (Integer) locations.get("deathpoint") == 1;
+								Waypoint waypoint = new Waypoint(name, x, y, z, enabled);
+								waypoint.deathpoint = deathpoint;
+								addWaypoint(world, waypoint);
 							}
 						} catch (Exception ex) {
 							System.err.println("Error while reading waypoints: ");
 							ex.printStackTrace();
 						}
+					} else {
+						System.out.println("Entry did not satisfy needs... key: " + e.getKey() + " value: " + e.getValue());
 					}
 				}
 			}
@@ -131,6 +142,8 @@ public class MinimapConfig {
 		config.setProperty("minimap.cavemap", cavemap);
 		config.setProperty("minimap.firstrun", firstrun);
 		config.setProperty("minimap.scale", scale);
+		config.setProperty("minimap.deathpoints", deathpoints);
+		config.setProperty("minimap.background", background);
 		config.setProperty("minimap.xAdjust", xAdjust);
 		config.setProperty("minimap.yAdjust", yAdjust);
 		config.setProperty("minimap.sizeAdjust", sizeAdjust);
@@ -142,11 +155,15 @@ public class MinimapConfig {
 			String world = e.getKey();
 			HashMap<String, Map<String, Integer>> waypoints = new HashMap<String, Map<String, Integer>>();
 			for (Waypoint waypoint : e.getValue()) {
-				HashMap<String, Integer> values = new HashMap<String, Integer>();
-				values.put("x", waypoint.x);
-				values.put("z", waypoint.z);
-				values.put("enabled", waypoint.enabled ? 1 : 0);
-				waypoints.put(waypoint.name, values);
+				if (!waypoint.server) { 
+					HashMap<String, Integer> values = new HashMap<String, Integer>();
+					values.put("x", waypoint.x);
+					values.put("y", waypoint.y);
+					values.put("z", waypoint.z);
+					values.put("enabled", waypoint.enabled ? 1 : 0);
+					values.put("deathpoint", waypoint.deathpoint ? 1 : 0);
+					waypoints.put(waypoint.name, values);
+				}
 			}
 			worlds.put(world, waypoints);
 		}
@@ -248,8 +265,8 @@ public class MinimapConfig {
 		}
 	}
 
-	public synchronized void addWaypoint(String world, String name, int x, int z, boolean enabled) {
-		getWaypoints(world).add(new Waypoint(name, x, z, enabled));
+	public synchronized void addWaypoint(String world, String name, int x, int y, int z, boolean enabled) {
+		getWaypoints(world).add(new Waypoint(name, x, y, z, enabled));
 	}
 
 	public boolean isScale() {
@@ -290,5 +307,48 @@ public class MinimapConfig {
 
 	public void setDirections(boolean directions) {
 		this.directions = directions;
+	}
+
+	public Waypoint getFocussedWaypoint() {
+		return focussedWaypoint;
+	}
+
+	public void setFocussedWaypoint(Waypoint focussedWaypoint) {
+		this.focussedWaypoint = focussedWaypoint;
+	}
+
+	public void removeWaypoint(Waypoint clickedWaypoint) {
+		for(List<Waypoint> list:waypoints.values()) {
+			list.remove(clickedWaypoint);
+		}
+	}
+	
+	public void addWaypoint(Waypoint waypoint) {
+		addWaypoint(MinimapUtils.getWorldName(), waypoint);
+	}
+
+	public void addWaypoint(String worldName, Waypoint waypoint) {
+		List<Waypoint> list = waypoints.get(worldName);
+		if(list == null) {
+			list = new LinkedList<Waypoint>();
+			waypoints.put(worldName, list);
+		}
+		list.add(waypoint);
+	}
+
+	public boolean isDeathpoints() {
+		return deathpoints;
+	}
+
+	public void setDeathpoints(boolean deathpoints) {
+		this.deathpoints = deathpoints;
+	}
+
+	public boolean isShowBackground() {
+		return background;
+	}
+
+	public void setShowBackground(boolean background) {
+		this.background = background;
 	}
 }

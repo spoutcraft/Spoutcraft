@@ -76,7 +76,16 @@ public class ItemBlock extends Item {
 	public String getItemName() {
 		return Block.blocksList[this.blockID].getBlockName();
 	}
-
+	
+//Spout start
+	//fix metadata for double slabs
+	public int getMetadata(int damage) {
+		if (blockID == Block.stairDouble.blockID){
+			return damage;
+		}
+		return super.getMetadata(damage);
+	}
+//Spout end
  //Spout HD start
 	public int getColorFromDamage(int var1, int var2) {
 		return Colorizer.getItemColorFromDamage(super.getColorFromDamage(var1, var2), this.blockID, var1);

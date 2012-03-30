@@ -1,3 +1,19 @@
+/*
+ * This file is part of Spoutcraft (http://www.spout.org/).
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.minimap;
 
 import java.util.Random;
@@ -189,6 +205,7 @@ public class MapCalculator implements Runnable {
 					map.renderOff = map.renderSize / 2;
 					map.clear();
 				}
+				map.square = square;
 
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
 				int startX = (int) (map.getPlayerX() - map.renderOff);
@@ -233,6 +250,9 @@ public class MapCalculator implements Runnable {
 						} else {
 							render = MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, pt.x, pt.z);
 						}
+						if (pt.deathpoint && !MinimapConfig.getInstance().isDeathpoints()) {
+							render = false;
+						}
 						if (render) {
 							int pixelX = pt.x - startX;
 
@@ -246,8 +266,13 @@ public class MapCalculator implements Runnable {
 							if (map.zoom > 1) {
 								scale += 1;
 							}
-							drawSquare(pixelX, pixelZ, scale + map.zoom + 1, 0);
-							drawSquare(pixelX, pixelZ, scale, 0xEE2C2C);
+							
+							int color = 0xEE2C2C;
+							if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
+								color = 0xff00ffff;
+							}
+							drawCircle(pixelX, pixelZ, scale + map.zoom + 1, pt.deathpoint ? color : 0);
+							drawCircle(pixelX, pixelZ, scale, pt.deathpoint ? 0 : color);
 						}
 					}
 				}
@@ -257,7 +282,7 @@ public class MapCalculator implements Runnable {
 		}
 	}
 
-	private void drawSquare(int x, int y, int radius, int color) {
+	private void drawCircle(int x, int y, int radius, int color) {
 		try {
 			for (int dx = -radius; dx <= radius; dx++) {
 				for (int dy = -radius; dy <= radius; dy++) {
@@ -268,8 +293,7 @@ public class MapCalculator implements Runnable {
 					}
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ignore) {
-		} // happens with fast movement
+		} catch (ArrayIndexOutOfBoundsException ignore) {} // happens with fast movement
 	}
 
 	/**
