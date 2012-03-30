@@ -24,6 +24,7 @@ import org.spoutcraft.client.SpoutClient;
 public class ServerManager {
 	private FavoritesModel favorites;
 	private ServerListModel serverList;
+	private LANModel lanModel;
 	private GuiScreen joinedFrom;
 	private String screenName;
 
@@ -31,6 +32,7 @@ public class ServerManager {
 		favorites = new FavoritesModel();
 		favorites.load();
 		serverList = new ServerListModel();
+		lanModel = new LANModel();
 	}
 
 	public FavoritesModel getFavorites() {
@@ -39,6 +41,10 @@ public class ServerManager {
 
 	public ServerListModel getServerList() {
 		return serverList;
+	}
+	
+	public LANModel getLANModel() {
+		return lanModel;
 	}
 
 	/**

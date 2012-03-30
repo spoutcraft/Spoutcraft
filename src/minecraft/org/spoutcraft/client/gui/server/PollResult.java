@@ -58,7 +58,7 @@ public class PollResult {
 
 	protected PollThread currentThread;
 
-	protected FavoritesModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
+	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
 
 	protected static TIntObjectHashMap<PollResult> recentResults = new TIntObjectHashMap<PollResult>();

@@ -32,40 +32,14 @@ import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
-public class FavoritesModel extends AbstractListModel {
-	private ArrayList<ServerItem> items = new ArrayList<ServerItem>();
-	private GuiFavorites gui;
-	private boolean polling = false;
-
+public class FavoritesModel extends ServerModel {
 	public FavoritesModel() {
-	}
-
-	public synchronized boolean isPolling() {
-		return polling;
-	}
-
-	public synchronized void setPolling(boolean poll) {
-		polling = poll;
-		if (gui != null) {
-			gui.updateButtons();
-		}
-	}
-
-	public void setCurrentGUI(GuiFavorites gui) {
-		this.gui = gui;
-	}
-
-	public ListWidgetItem getItem(int row) {
-		return items.get(row);
-	}
-
-	public int getSize() {
-		return items.size();
 	}
 
 	public void load() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed)
+			SpoutClient.disableSandbox();
 		try {
 			if (!getFile().exists()) {
 				importVanilla();
@@ -76,15 +50,19 @@ public class FavoritesModel extends AbstractListModel {
 
 				try {
 					ArrayList<HashMap<String, Object>> list = (ArrayList<HashMap<String, Object>>) yaml.load(new FileReader(getFile()));
-					for (HashMap<String, Object> item: list) {
+					for (HashMap<String, Object> item : list) {
 						String title = "";
 						String ip = "";
 						int port = ServerItem.DEFAULT_PORT;
 						int databaseId = -1;
-						if (item.containsKey("title")) title = (String) item.get("title");
-						if (item.containsKey("ip")) ip = (String) item.get("ip");
-						if (item.containsKey("port")) port = (Integer) item.get("port");
-						if (item.containsKey("databaseid")) databaseId = (Integer) item.get("databaseid");
+						if (item.containsKey("title"))
+							title = (String) item.get("title");
+						if (item.containsKey("ip"))
+							ip = (String) item.get("ip");
+						if (item.containsKey("port"))
+							port = (Integer) item.get("port");
+						if (item.containsKey("databaseid"))
+							databaseId = (Integer) item.get("databaseid");
 						addServer(title, ip, port, databaseId);
 					}
 				} catch (FileNotFoundException e) {
@@ -94,13 +72,15 @@ public class FavoritesModel extends AbstractListModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (wasSandboxed)
+				SpoutClient.enableSandbox();
 		}
 	}
 
 	private void importLegacyTXT() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed)
+			SpoutClient.disableSandbox();
 		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
 		if (favorites.exists()) {
 			FileReader reader;
@@ -110,7 +90,8 @@ public class FavoritesModel extends AbstractListModel {
 				BufferedReader buffer = new BufferedReader(reader);
 				while (true) {
 					String line = buffer.readLine();
-					if (line == null) break;
+					if (line == null)
+						break;
 					String args[] = line.split(">");
 					if (args.length == 2) {
 						String title = args[0];
@@ -136,7 +117,7 @@ public class FavoritesModel extends AbstractListModel {
 				e.printStackTrace();
 			}
 
-			//favorites.delete(); TODO: Check if that is working first...
+			// favorites.delete(); TODO: Check if that is working first...
 		}
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
@@ -151,7 +132,7 @@ public class FavoritesModel extends AbstractListModel {
 	public void save() {
 		Yaml yaml = new Yaml();
 		ArrayList<Object> list = new ArrayList<Object>();
-		for (ServerItem item:items) {
+		for (ServerItem item : items) {
 			HashMap<String, Object> data = new HashMap<String, Object>();
 			data.put("title", item.getTitle());
 			data.put("ip", item.getIp());
@@ -161,9 +142,11 @@ public class FavoritesModel extends AbstractListModel {
 		}
 		try {
 			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed) SpoutClient.disableSandbox();
+			if (wasSandboxed)
+				SpoutClient.disableSandbox();
 			yaml.dump(list, new FileWriter(getFile()));
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (wasSandboxed)
+				SpoutClient.enableSandbox();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -193,10 +176,6 @@ public class FavoritesModel extends AbstractListModel {
 		}
 	}
 
-	public void onSelected(int item, boolean doubleClick) {
-		gui.updateButtons();
-	}
-
 	public void removeServer(ServerItem selectedItem) {
 		items.remove(selectedItem);
 		sizeChanged();
@@ -216,15 +195,11 @@ public class FavoritesModel extends AbstractListModel {
 	}
 
 	public boolean containsSever(ServerItem item) {
-		for (ServerItem obj:items) {
+		for (ServerItem obj : items) {
 			if (obj.getIp().equals(item.getIp()) && obj.getPort() == item.getPort()) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	public GuiFavorites getCurrentGui() {
-		return gui;
 	}
 }

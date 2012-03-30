@@ -59,7 +59,7 @@ public class ServerItem implements ListWidgetItem {
 
 	protected boolean showPingWhilePolling = false;
 
-	protected FavoritesModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
+	protected ServerModel favorites = SpoutClient.getInstance().getServerManager().getFavorites();
 	protected ServerListModel serverList = SpoutClient.getInstance().getServerManager().getServerList();
 
 	protected boolean isFavorite = true;

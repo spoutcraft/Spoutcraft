@@ -22,9 +22,11 @@ import net.minecraft.src.GuiScreen;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
@@ -42,8 +44,8 @@ public class GuiFavorites extends GuiScreen {
 		buttonMoveUp, buttonMoveDown, buttonRefresh;
 	private TextField textQuickJoin;
 	private GenericListView view;
-	private Label title;
-	public FavoritesModel model = SpoutClient.getInstance().getServerManager().getFavorites();
+	private GenericComboBox comboSource;
+	public ServerModel model = SpoutClient.getInstance().getServerManager().getFavorites();
 	private long pollTime = 0L;
 
 	public GuiFavorites(GuiScreen parent) {
@@ -54,12 +56,16 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void initGui() {
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("spoutcraft");
-
-		title = new GenericLabel("Favorite Servers");
-		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
-		title.setY(12);
-		title.setHeight(15).setWidth(SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
-		getScreen().attachWidget(spoutcraft, title);
+		
+		int selection = 0;
+		if(comboSource != null) {
+			selection = comboSource.getSelectedRow();
+		}
+		
+		comboSource = new SwitchViewSourceCombo(this);
+		getScreen().attachWidget(spoutcraft, comboSource);
+		comboSource.setGeometry(width / 2 - 75, 5, 150, 20);
+		comboSource.setSelection(selection);
 
 		buttonMoveUp = new GenericButton("/\\");
 		buttonMoveUp.setTooltip("Move Item Up");
@@ -163,7 +169,14 @@ public class GuiFavorites extends GuiScreen {
 			doQuickJoin();
 		}
 		if (btn.equals(buttonAdd)) {
-			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(textQuickJoin.getText(), this));
+			String address = "";
+			if(model instanceof FavoritesModel) {
+				address = textQuickJoin.getText();
+			} else if (model instanceof LANModel) {
+				ServerItem item = (ServerItem) view.getSelectedItem();
+				address = item.ip + ":" + item.port;
+			}
+			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(address, this));
 		}
 		if (btn.equals(buttonEdit)) {
 			ServerItem item = (ServerItem)view.getSelectedItem();
@@ -186,18 +199,22 @@ public class GuiFavorites extends GuiScreen {
 				updateButtons();
 			}
 		}
-		if (btn.equals(buttonMoveUp)) {
+		FavoritesModel fav = null;
+		if(model instanceof FavoritesModel) {
+			fav = (FavoritesModel) model;
+		}
+		if (btn.equals(buttonMoveUp) && fav != null) {
 			if (view.getSelectedRow() != -1) {
-				model.move(view.getSelectedRow(), view.getSelectedRow()-1);
+				fav.move(view.getSelectedRow(), view.getSelectedRow()-1);
 				view.shiftSelection(-1);
-				model.save();
+				fav.save();
 			}
 		}
-		if (btn.equals(buttonMoveDown)) {
+		if (btn.equals(buttonMoveDown) && fav != null) {
 			if (view.getSelectedRow() != -1) {
-				model.move(view.getSelectedRow(), view.getSelectedRow()+1);
+				fav.move(view.getSelectedRow(), view.getSelectedRow()+1);
 				view.shiftSelection(1);
-				model.save();
+				fav.save();
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
@@ -210,8 +227,11 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public void deleteCurrentFavorite() {
-		model.removeServer((ServerItem)view.getSelectedItem());
-		model.save();
+		if(model instanceof FavoritesModel) {
+			FavoritesModel fav = (FavoritesModel) model;
+			fav.removeServer((ServerItem)view.getSelectedItem());
+			fav.save();
+		}
 	}
 
 	public void doQuickJoin() {
@@ -241,7 +261,23 @@ public class GuiFavorites extends GuiScreen {
 		buttonDelete.setEnabled(enable);
 		buttonJoin.setEnabled(enable);
 		buttonDelete.setText("Delete");
-
+		buttonMoveDown.setEnabled(enable);
+		buttonMoveUp.setEnabled(enable);
+		buttonAdd.setEnabled(true);
+		if (model instanceof LANModel) {
+			buttonEdit.setEnabled(false);
+			buttonDelete.setEnabled(false);
+			buttonMoveDown.setEnabled(false);
+			buttonMoveUp.setEnabled(false);
+			if(view.getSelectedItem() == null) {
+				buttonAdd.setEnabled(false);
+			} else {
+				ServerItem item = (ServerItem) view.getSelectedItem();
+				if (SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item)) {
+					buttonAdd.setEnabled(false);					
+				}
+			}
+		}
 		if (model.isPolling()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Polling...");
@@ -271,10 +307,17 @@ public class GuiFavorites extends GuiScreen {
 					}
 				}
 				model.setPolling(false);
-				
 			}
 		}
+		
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
+	}
+
+	public void setModel(ServerModel model) {
+		this.model = model;
+		view.setSelection(-1);
+		view.setModel(model);
+		model.setCurrentGUI(this);
 	}
 }
