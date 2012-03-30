@@ -10,7 +10,7 @@ public class LANModel extends ServerModel {
 	
 	public LANModel() {
 		try {
-			dns = new JmDNS();
+			dns = JmDNS.create();
 			dns.addServiceListener("_pipework._tcp.local.", new MinecraftServiceListener(this));
 			System.out.println("Listening for service...");
 		} catch (IOException e) {
