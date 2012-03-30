@@ -125,8 +125,10 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	
 	@Override
 	public Widget setScreen(Addon addon, Screen screen) {
-		
 		super.setScreen(addon, screen);
+		if(screen == null) {
+			return this;
+		}
 		
 		screen = getScreen();
 		while (!(screen instanceof GenericScreen)) {
