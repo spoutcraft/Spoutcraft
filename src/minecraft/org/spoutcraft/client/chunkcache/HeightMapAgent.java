@@ -63,7 +63,7 @@ public class HeightMapAgent {
 class HeightMapSave implements Runnable {
 	HeightMap map;
 	public HeightMapSave() {
-		HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+		map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
 	}
 	
 	public void run() {
