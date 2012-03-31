@@ -19,6 +19,7 @@ package org.spoutcraft.client;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -129,6 +130,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final ThreadGroup securityThreadGroup;
 	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
+	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
 
 	private SpoutClient() {
 		instance = this;
@@ -644,5 +646,19 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public WidgetManager getWidgetManager() {
 		return widgetManager;
+	}
+
+	@Override
+	public boolean hasPermission(String node) {
+		Boolean allow = permissions.get(node);
+		if(allow != null) {
+			return allow;
+		} else {
+			return true;
+		}
+	}
+	
+	public void setPermission(String node, boolean allow) {
+		permissions.put(node, allow);
 	}
 }
