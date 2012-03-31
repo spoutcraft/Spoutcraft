@@ -102,6 +102,12 @@ class ContainerCreative extends Container {
 
 		this.scrollTo(0.0F);
 	}
+	
+	//Spout start
+	public IInventory getInventory() {
+		return null;
+	}
+	//Spout end
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return true;

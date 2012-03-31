@@ -18,13 +18,47 @@ package org.spoutcraft.client;
 
 import java.util.Comparator;
 
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 import net.minecraft.src.ItemStack;
 
 public class MCItemStackComparator implements Comparator {
+	final boolean byName;
+	public MCItemStackComparator() {
+		this(false);
+	}
+	public MCItemStackComparator(boolean byName) {
+		this.byName = byName;
+	}
 	public int compare(ItemStack o1, ItemStack o2) {
-		int idDiff = o1.itemID - o2.itemID;
-		int dataDiff = o1.getItemDamage() - o2.getItemDamage();
-		return idDiff * 1000 - dataDiff;
+		if (o1 == null && o2 == null) {
+			return 0;
+		}
+		if (o1 != null && o2 == null) {
+			return o1.itemID;
+		}
+		if (o2 != null && o1 == null) {
+			return -o2.itemID;
+		}
+		if (byName) {
+			org.spoutcraft.spoutcraftapi.material.Material other1 = MaterialData.getMaterial(o1.itemID, (short)(o1.getItemDamage()));
+			org.spoutcraft.spoutcraftapi.material.Material other2 = MaterialData.getMaterial(o2.itemID, (short)(o2.getItemDamage()));
+			if (other1 == null && other2 == null) {
+				return 0;
+			}
+			if (other1 != null && other2 == null) {
+				return o1.itemID;
+			}
+			if (other2 != null && other1 == null) {
+				return -o2.itemID;
+			}
+			return other1.getName().compareTo(other2.getName());
+		}
+		else {
+			int idDiff = o1.itemID - o2.itemID;
+			int dataDiff = o1.getItemDamage() - o2.getItemDamage();
+			return idDiff * 1000 - dataDiff;
+		}
 	}
 
 	public int compare(Object o1, Object o2) {

@@ -1,11 +1,18 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 //Spout Start
+import org.spoutcraft.client.MCItemStackComparator;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.gui.Button;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout End
@@ -35,9 +42,12 @@ public abstract class GuiContainer extends GuiScreen
 	 * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
 	 */
 	protected int guiTop;
+	
+	//Spout start
+	private Button orderByAlphabet, orderById;
+	//Spout start
 
-	public GuiContainer(Container par1Container)
-	{
+	public GuiContainer(Container par1Container) {
 		xSize = 176;
 		ySize = 166;
 		inventorySlots = par1Container;
@@ -46,13 +56,190 @@ public abstract class GuiContainer extends GuiScreen
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	public void initGui()
-	{
+	@Override
+	public void initGui() {
 		super.initGui();
 		mc.thePlayer.craftingInventory = inventorySlots;
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
+
+	//Spout start	
+		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		orderByAlphabet = new GenericButton("Sort A-Z");
+		orderByAlphabet.setGeometry(15, 105, 75, 20);
+		orderById = new GenericButton("Sort by Id");
+		orderById.setGeometry(15, 80, 75, 20);
+		orderByAlphabet.setTooltip("Experimental Feature");
+		orderById.setTooltip("Experimental Feature");
+		IInventory inv = inventorySlots.getInventory();
+		if (inv != null) {
+			getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+		}
 	}
+	
+	@Override
+	public void drawWidgets(int x, int y, float z) {
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		super.drawWidgets(x, y, z);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+	}
+	
+	
+	public void buttonClicked(Button btn) {
+		if (btn == orderByAlphabet || btn == orderById) {
+			try {
+				IInventory inv = inventorySlots.getInventory();
+				if (inv != null) {
+					if (inv instanceof InventoryPlayer) {
+						compactInventory(inv, true);
+						sortPlayerInventory(btn == orderByAlphabet);
+					}
+					else {
+						compactInventory(inv, false);
+						sortInventory(inv, (btn == orderByAlphabet));
+					}
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void compactInventory(IInventory inventory, boolean player) {
+		//To keep mp compatibility, fake window clicks
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+				ItemStack item = inventory.getStackInSlot(i);
+				if (item != null && item.stackSize < item.getMaxStackSize()) {
+					
+					//Find a place to put this
+					int orig = i;
+					if (orig < 9 && player) orig = 36 + orig;
+					handleMouseClick(null, orig, 0, false); //pick up the item
+					
+					for (int j = 0; j < inventory.getSizeInventory(); j++) {
+						if (j != i) {
+							ItemStack other = inventory.getStackInSlot(j);
+							if (other != null && other.itemID == item.itemID && other.getItemDamage() == item.getItemDamage()) {
+								int slot = j;
+								if (slot < 9 && player) slot = 36 + slot;
+								handleMouseClick(null, slot, 0, false); //merge with the existing stack we found
+								
+								//Move onto the next item to merge if this one is completely used up
+								ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+								if (cursor == null) {
+									break;
+								}
+							}
+						}
+					}
+					
+					//If we didn't merge all of the item, put it back
+					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+					if (cursor != null) {
+						handleMouseClick(null, orig, 0, false);
+					}
+				}
+			}
+	}
+	
+	public void sortPlayerInventory(boolean byName) {
+		//To keep mp compatibility, fake window clicks
+		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
+		for (int pass = 0; pass < inventory.mainInventory.length; pass++) {
+			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+			for (int i = 0; i < inventory.mainInventory.length; i++) {
+				ItemStack item = inventory.mainInventory[i];
+				if (item == null) {
+					items.add(null);
+				}
+				else {
+					items.add(new PositionedItemStack(item, i));
+				}
+			}
+			Collections.sort(items, new MCItemStackComparator(byName));
+			
+			while (true) {
+				if (items.get(pass) instanceof PositionedItemStack) {
+					PositionedItemStack item = (PositionedItemStack) items.get(pass);
+					//Left click pick up item
+					int origSlot = item.position;
+					if (origSlot < 9) origSlot = 36 + origSlot;
+					handleMouseClick(null, origSlot, 0, false);
+					
+					//Left click place item down
+					int newSlot = pass + 9; 
+					handleMouseClick(null, newSlot, 0, false);
+					
+					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+					if (cursor != null) {
+						handleMouseClick(null, origSlot, 0, false);
+					}
+					break;
+				}
+				pass++;
+				if (pass >= inventory.mainInventory.length) {
+					break;
+				}
+			}
+		}
+	}
+	
+	public void sortInventory(IInventory inventory, boolean byName) {
+		//To keep mp compatibility, fake window clicks
+		for (int pass = 0; pass < inventory.getSizeInventory(); pass++) {
+			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+			for (int i = 0; i < inventory.getSizeInventory(); i++) {
+				ItemStack item = inventory.getStackInSlot(i);
+				if (item == null) {
+					items.add(null);
+				}
+				else {
+					items.add(new PositionedItemStack(item, i));
+				}
+			}
+			Collections.sort(items, new MCItemStackComparator(byName));
+			
+			while (true) {
+				if (items.get(pass) instanceof PositionedItemStack) {
+					PositionedItemStack item = (PositionedItemStack) items.get(pass);
+					//Left click pick up item
+					Slot orig = getSlotFromPosition(item.position);
+					handleMouseClick(orig, 0, 0, false);
+					
+					//Left click place item down
+					Slot slot = getSlotFromPosition(pass);
+					handleMouseClick(slot, 0, 0, false);
+					
+					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+					if (cursor != null) {
+						handleMouseClick(orig, 0, 0, false);
+					}
+					break;
+				}
+				pass++;
+				if (pass >= inventory.getSizeInventory()) {
+					break;
+				}
+			}
+		}
+	}
+	
+	public Slot getSlotFromPosition(int pos) {
+		for (int i = 0; i < inventorySlots.inventorySlots.size(); i++) {
+			if (inventorySlots.inventorySlots.get(i) != null) {
+				if (((Slot)inventorySlots.inventorySlots.get(i)).slotIndex == pos) {
+					return ((Slot)inventorySlots.inventorySlots.get(i));
+				}
+			}
+		}
+		return null;
+	}
+	//Spout end
 
 	/**
 	 * Draws the screen and all the components in it.
@@ -354,7 +541,6 @@ public abstract class GuiContainer extends GuiScreen
 		{
 			par2 = par1Slot.slotNumber;
 		}
-
 		mc.playerController.windowClick(inventorySlots.windowId, par2, par3, par4, mc.thePlayer);
 	}
 
@@ -406,4 +592,13 @@ public abstract class GuiContainer extends GuiScreen
 			mc.thePlayer.closeScreen();
 		}
 	}
+}
+
+class PositionedItemStack extends ItemStack {
+	final int position;
+	public PositionedItemStack(ItemStack item, int position) {
+		super(item.itemID, item.stackSize, item.getItemDamage());
+		this.position = position;
+	}
+	
 }

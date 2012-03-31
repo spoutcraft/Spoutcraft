@@ -1101,164 +1101,149 @@ public class EntityRenderer {
 		}
 	}
 
-	protected void renderRainSnow(float var1) {
-		float var2 = this.mc.theWorld.getRainStrength(var1);
+	protected void renderRainSnow(float par1) {
+		//Spout start
+		if (!ConfigReader.weather) {
+			return;
+		}
+		//Spout end
+		float var2 = this.mc.theWorld.getRainStrength(par1);
 		if (var2 > 0.0F) {
-			// Spout Start
-			if (ConfigReader.weather) {
-				this.enableLightmap((double) var1);
-				if (this.rainXCoords == null) {
-					this.rainXCoords = new float[GL11.GL_FRONT_LEFT];
-					this.rainYCoords = new float[GL11.GL_FRONT_LEFT];
+			this.enableLightmap((double)par1);
+			if (this.rainXCoords == null) {
+				this.rainXCoords = new float[GL11.GL_FRONT_LEFT];
+				this.rainYCoords = new float[GL11.GL_FRONT_LEFT];
 
-					for (int var3 = 0; var3 < 32; ++var3) {
-						for (int var4 = 0; var4 < 32; ++var4) {
-							float var5 = (float) (var4 - 16);
-							float var6 = (float) (var3 - 16);
-							float var7 = MathHelper.sqrt_float(var5 * var5 + var6 * var6);
-							this.rainXCoords[var3 << 5 | var4] = -var6 / var7;
-							this.rainYCoords[var3 << 5 | var4] = var5 / var7;
-						}
+				for (int var3 = 0; var3 < 32; ++var3) {
+					for (int var4 = 0; var4 < 32; ++var4) {
+						float var5 = (float)(var4 - 16);
+						float var6 = (float)(var3 - 16);
+						float var7 = MathHelper.sqrt_float(var5 * var5 + var6 * var6);
+						this.rainXCoords[var3 << 5 | var4] = -var6 / var7;
+						this.rainYCoords[var3 << 5 | var4] = var5 / var7;
 					}
 				}
+			}
 
-				EntityLiving var43 = this.mc.renderViewEntity;
-				World var44 = this.mc.theWorld;
-				int var45 = MathHelper.floor_double(var43.posX);
-				int var46 = MathHelper.floor_double(var43.posY);
-				int var47 = MathHelper.floor_double(var43.posZ);
-				Tessellator var8 = Tessellator.instance;
-				GL11.glDisable(GL11.GL_CULL_FACE);
-				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-				GL11.glEnable(GL11.GL_BLEND);
-				GL11.glBlendFunc(770, 771);
-				GL11.glAlphaFunc(516, 0.01F);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/snow.png"));
-				double var9 = var43.lastTickPosX + (var43.posX - var43.lastTickPosX) * (double) var1;
-				double var11 = var43.lastTickPosY + (var43.posY - var43.lastTickPosY) * (double) var1;
-				double var13 = var43.lastTickPosZ + (var43.posZ - var43.lastTickPosZ) * (double) var1;
-				int var15 = MathHelper.floor_double(var11);
-				byte var16 = 5;
-				if (ConfigReader.fancyWeather) {
-					var16 = 10;
-				}
-
-				boolean var19 = false;
-				byte var20 = -1;
-				float var21 = (float) this.rendererUpdateCount + var1;
-				if (ConfigReader.fancyWeather) {
-					var16 = 10;
-				}
-
-				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-				int var48 = 0;
-
-				for (int var22 = var47 - var16; var22 <= var47 + var16; ++var22) {
-					for (int var23 = var45 - var16; var23 <= var45 + var16; ++var23) {
-						int var24 = (var22 - var47 + 16) * 32 + var23 - var45 + 16;
-						float var25 = this.rainXCoords[var24] * 0.5F;
-						float var26 = this.rainYCoords[var24] * 0.5F;
-						BiomeGenBase var27 = var44.func_48454_a(var22, var23);
-
-						boolean forceSnow = false;
-						boolean forceRain = false;
-						if (SpoutClient.getInstance().getBiomeManager().getSnowChanged(var27.getBiomeName())) {
-							forceSnow = SpoutClient.getInstance().getBiomeManager().getSnowEnabled(var27.getBiomeName());
-						}
-						if (SpoutClient.getInstance().getBiomeManager().getRainChanged(var27.getBiomeName())) {
-							forceRain = SpoutClient.getInstance().getBiomeManager().getRainEnabled(var27.getBiomeName());
-						}
-						if (var27.canSpawnLightningBolt() || var27.getEnableSnow() || forceSnow || forceRain) {
-							int var28 = var44.getPrecipitationHeight(var23, var22);
-							int var29 = var46 - var16;
-							int var30 = var46 + var16;
-							if (var29 < var28) {
-								var29 = var28;
-							}
-
-							if (var30 < var28) {
-								var30 = var28;
-							}
-
-							float var31 = 1.0F;
-							int var32 = var28;
-							if (var28 < var15) {
-								var32 = var15;
-							}
-
-							if (var29 != var30 || forceRain || forceSnow) {
-								this.random.setSeed((long)(var23 * var23 * GL11.GL_RGBA_MODE + var23 * 45238971 ^ var22 * var22 * 418711 + var22 * 13761));
-								float var33 = var27.getFloatTemperature();
-								float var34;
-								double var37;
-								double temp = var44.getWorldChunkManager().getTemperatureAtHeight(var33, var28);
-								if ((temp >= 0.15F && !forceSnow) || forceRain) {
-									if (var20 != 0) {
-										if (var20 >= 0) {
-											var8.draw();
-										}
-
-										var20 = 0;
-										GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/rain.png"));
-										var8.startDrawingQuads();
-									}
-
-									var34 = ((float)(this.rendererUpdateCount + var23 * var23 * GL11.GL_RGBA_MODE + var23 * 45238971 + var22 * var22 * 418711 + var22 * 13761 & 31) + var1) / 32.0F * (3.0F + this.random.nextFloat());
-									double var35 = (double) ((float) var23 + 0.5F) - var43.posX;
-									var37 = (double) ((float) var22 + 0.5F) - var43.posZ;
-									float var39 = MathHelper.sqrt_double(var35 * var35 + var37 * var37) / (float) var16;
-									float var40 = 1.0F;
-									var8.setBrightness(var44.getLightBrightnessForSkyBlocks(var23, var32, var22, 0));
-									var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.5F + 0.5F) * var2);
-									var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
-									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var29, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31), (double) ((float) var29 * var31 / 4.0F + var34 * var31));
-									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var29, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31), (double) ((float) var29 * var31 / 4.0F + var34 * var31));
-									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var30, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
-									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var30, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31), (double) ((float) var30 * var31 / 4.0F + var34 * var31));
-									var8.setTranslation(0.0D, 0.0D, 0.0D);
-								}
-								if (forceSnow || (temp < 0.15F && !forceRain)) {
-									if (var20 != 1) {
-										if (var20 >= 0) {
-											var8.draw();
-										}
-
-										var20 = 1;
-										GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/snow.png"));
-										var8.startDrawingQuads();
-									}
-
-									var34 = ((float) (this.rendererUpdateCount & 511) + var1) / 512.0F;
-									float var49 = this.random.nextFloat() + var21 * 0.01F * (float) this.random.nextGaussian();
-									float var36 = this.random.nextFloat() + var21 * (float) this.random.nextGaussian() * 0.0010F;
-									var37 = (double) ((float) var23 + 0.5F) - var43.posX;
-									double var50 = (double) ((float) var22 + 0.5F) - var43.posZ;
-									float var41 = MathHelper.sqrt_double(var37 * var37 + var50 * var50) / (float) var16;
-									float var42 = 1.0F;
-									var8.setBrightness((var44.getLightBrightnessForSkyBlocks(var23, var32, var22, 0) * 3 + 15728880) / 4);
-									var8.setColorRGBA_F(var42, var42, var42, ((1.0F - var41 * var41) * 0.3F + 0.5F) * var2);
-									var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
-									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var29, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31 + var49), (double) ((float) var29 * var31 / 4.0F + var34 * var31 + var36));
-									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var29, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31 + var49), (double) ((float) var29 * var31 / 4.0F + var34 * var31 + var36));
-									var8.addVertexWithUV((double) ((float) var23 + var25) + 0.5D, (double) var30, (double) ((float) var22 + var26) + 0.5D, (double) (1.0F * var31 + var49), (double) ((float) var30 * var31 / 4.0F + var34 * var31 + var36));
-									var8.addVertexWithUV((double) ((float) var23 - var25) + 0.5D, (double) var30, (double) ((float) var22 - var26) + 0.5D, (double) (0.0F * var31 + var49), (double) ((float) var30 * var31 / 4.0F + var34 * var31 + var36));
-									var8.setTranslation(0.0D, 0.0D, 0.0D);
-								}
-							}
-						}
-					}
-				}
-
-				if (var20 >= 0) {
-					var8.draw();
-				}
-
-				GL11.glEnable(GL11.GL_CULL_FACE);
-				GL11.glDisable(GL11.GL_BLEND);
-				GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-				this.disableLightmap((double) var1);
+			EntityLiving var41 = this.mc.renderViewEntity;
+			World var42 = this.mc.theWorld;
+			int var43 = MathHelper.floor_double(var41.posX);
+			int var44 = MathHelper.floor_double(var41.posY);
+			int var45 = MathHelper.floor_double(var41.posZ);
+			Tessellator var8 = Tessellator.instance;
+			GL11.glDisable(GL11.GL_CULL_FACE);
+			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/snow.png"));
+			double var9 = var41.lastTickPosX + (var41.posX - var41.lastTickPosX) * (double)par1;
+			double var11 = var41.lastTickPosY + (var41.posY - var41.lastTickPosY) * (double)par1;
+			double var13 = var41.lastTickPosZ + (var41.posZ - var41.lastTickPosZ) * (double)par1;
+			int var15 = MathHelper.floor_double(var11);
+			byte var16 = 5;
+			//Spout start
+			if (ConfigReader.fancyWeather) {
+				var16 = 10;
 			}
 			//Spout end
+			byte var18 = -1;
+			float var19 = (float)this.rendererUpdateCount + par1;
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+			for (int var20 = var45 - var16; var20 <= var45 + var16; ++var20) {
+				for (int var21 = var43 - var16; var21 <= var43 + var16; ++var21) {
+					int var22 = (var20 - var45 + 16) * 32 + var21 - var43 + 16;
+					float var23 = this.rainXCoords[var22] * 0.5F;
+					float var24 = this.rainYCoords[var22] * 0.5F;
+					BiomeGenBase var25 = var42.func_48454_a(var21, var20);
+					if (var25.canSpawnLightningBolt() || var25.getEnableSnow()) {
+						int var26 = var42.getPrecipitationHeight(var21, var20);
+						int var27 = var44 - var16;
+						int var28 = var44 + var16;
+						if (var27 < var26) {
+							var27 = var26;
+						}
+
+						if (var28 < var26) {
+							var28 = var26;
+						}
+
+						float var29 = 1.0F;
+						int var30 = var26;
+						if (var26 < var15) {
+							var30 = var15;
+						}
+
+						if (var27 != var28) {
+							this.random.setSeed((long)(var21 * var21 * 3121 + var21 * 45238971 ^ var20 * var20 * 418711 + var20 * 13761));
+							float var31 = var25.getFloatTemperature();
+							double var35;
+							float var32;
+							if (var42.getWorldChunkManager().getTemperatureAtHeight(var31, var26) >= 0.15F) {
+								if (var18 != 0) {
+									if (var18 >= 0) {
+										var8.draw();
+									}
+
+									var18 = 0;
+									GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/rain.png"));
+									var8.startDrawingQuads();
+								}
+
+								var32 = ((float)(this.rendererUpdateCount + var21 * var21 * 3121 + var21 * 45238971 + var20 * var20 * 418711 + var20 * 13761 & 31) + par1) / 32.0F * (3.0F + this.random.nextFloat());
+								double var33 = (double)((float)var21 + 0.5F) - var41.posX;
+								var35 = (double)((float)var20 + 0.5F) - var41.posZ;
+								float var37 = MathHelper.sqrt_double(var33 * var33 + var35 * var35) / (float)var16;
+								float var38 = 1.0F;
+								var8.setBrightness(var42.getLightBrightnessForSkyBlocks(var21, var30, var20, 0));
+								var8.setColorRGBA_F(var38, var38, var38, ((1.0F - var37 * var37) * 0.5F + 0.5F) * var2);
+								var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+								var8.addVertexWithUV((double)((float)var21 - var23) + 0.5D, (double)var27, (double)((float)var20 - var24) + 0.5D, (double)(0.0F * var29), (double)((float)var27 * var29 / 4.0F + var32 * var29));
+								var8.addVertexWithUV((double)((float)var21 + var23) + 0.5D, (double)var27, (double)((float)var20 + var24) + 0.5D, (double)(1.0F * var29), (double)((float)var27 * var29 / 4.0F + var32 * var29));
+								var8.addVertexWithUV((double)((float)var21 + var23) + 0.5D, (double)var28, (double)((float)var20 + var24) + 0.5D, (double)(1.0F * var29), (double)((float)var28 * var29 / 4.0F + var32 * var29));
+								var8.addVertexWithUV((double)((float)var21 - var23) + 0.5D, (double)var28, (double)((float)var20 - var24) + 0.5D, (double)(0.0F * var29), (double)((float)var28 * var29 / 4.0F + var32 * var29));
+								var8.setTranslation(0.0D, 0.0D, 0.0D);
+							} else {
+								if (var18 != 1) {
+									if (var18 >= 0) {
+										var8.draw();
+									}
+
+									var18 = 1;
+									GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/environment/snow.png"));
+									var8.startDrawingQuads();
+								}
+
+								var32 = ((float)(this.rendererUpdateCount & 511) + par1) / 512.0F;
+								float var46 = this.random.nextFloat() + var19 * 0.01F * (float)this.random.nextGaussian();
+								float var34 = this.random.nextFloat() + var19 * (float)this.random.nextGaussian() * 0.001F;
+								var35 = (double)((float)var21 + 0.5F) - var41.posX;
+								double var47 = (double)((float)var20 + 0.5F) - var41.posZ;
+								float var39 = MathHelper.sqrt_double(var35 * var35 + var47 * var47) / (float)var16;
+								float var40 = 1.0F;
+								var8.setBrightness((var42.getLightBrightnessForSkyBlocks(var21, var30, var20, 0) * 3 + 15728880) / 4);
+								var8.setColorRGBA_F(var40, var40, var40, ((1.0F - var39 * var39) * 0.3F + 0.5F) * var2);
+								var8.setTranslation(-var9 * 1.0D, -var11 * 1.0D, -var13 * 1.0D);
+								var8.addVertexWithUV((double)((float)var21 - var23) + 0.5D, (double)var27, (double)((float)var20 - var24) + 0.5D, (double)(0.0F * var29 + var46), (double)((float)var27 * var29 / 4.0F + var32 * var29 + var34));
+								var8.addVertexWithUV((double)((float)var21 + var23) + 0.5D, (double)var27, (double)((float)var20 + var24) + 0.5D, (double)(1.0F * var29 + var46), (double)((float)var27 * var29 / 4.0F + var32 * var29 + var34));
+								var8.addVertexWithUV((double)((float)var21 + var23) + 0.5D, (double)var28, (double)((float)var20 + var24) + 0.5D, (double)(1.0F * var29 + var46), (double)((float)var28 * var29 / 4.0F + var32 * var29 + var34));
+								var8.addVertexWithUV((double)((float)var21 - var23) + 0.5D, (double)var28, (double)((float)var20 - var24) + 0.5D, (double)(0.0F * var29 + var46), (double)((float)var28 * var29 / 4.0F + var32 * var29 + var34));
+								var8.setTranslation(0.0D, 0.0D, 0.0D);
+							}
+						}
+					}
+				}
+			}
+
+			if (var18 >= 0) {
+				var8.draw();
+			}
+
+			GL11.glEnable(GL11.GL_CULL_FACE);
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+			this.disableLightmap((double)par1);
 		}
 	}
 
