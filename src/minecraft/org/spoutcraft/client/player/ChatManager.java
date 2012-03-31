@@ -42,6 +42,7 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.yaml.snakeyaml.Yaml;
 
@@ -202,6 +203,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	}
 
 	public void sendChat(String message) {
+		if(!Spoutcraft.hasPermission("spout.client.chatcolors")) {
+			message = message.replaceAll("(&([a-fA-F0-9]))", "");
+		}
 		List<String> lines = formatChat(message, false);
 		for (String chat : lines) {
 			SpoutClient.getHandle().thePlayer.sendChatMessage(chat);

@@ -64,16 +64,18 @@ public abstract class GuiContainer extends GuiScreen
 		guiTop = (height - ySize) / 2;
 
 	//Spout start	
-		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		orderByAlphabet = new GenericButton("Sort A-Z");
-		orderByAlphabet.setGeometry(15, 105, 75, 20);
-		orderById = new GenericButton("Sort by Id");
-		orderById.setGeometry(15, 80, 75, 20);
-		orderByAlphabet.setTooltip("Experimental Feature");
-		orderById.setTooltip("Experimental Feature");
-		IInventory inv = inventorySlots.getInventory();
-		if (inv != null) {
-			getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+		if(Spoutcraft.hasPermission("spout.client.sortinventory")) {
+			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+			orderByAlphabet = new GenericButton("Sort A-Z");
+			orderByAlphabet.setGeometry(15, 105, 75, 20);
+			orderById = new GenericButton("Sort by Id");
+			orderById.setGeometry(15, 80, 75, 20);
+			orderByAlphabet.setTooltip("Experimental Feature");
+			orderById.setTooltip("Experimental Feature");
+			IInventory inv = inventorySlots.getInventory();
+			if (inv != null) {
+				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+			}
 		}
 	}
 	

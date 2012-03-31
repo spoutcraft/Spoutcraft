@@ -3,6 +3,7 @@ package org.spoutcraft.client.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,6 +12,10 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketPermissionUpdate implements SpoutPacket {
 private Map<String, Boolean> permissions;
+
+	public PacketPermissionUpdate() {
+		permissions = new HashMap<String, Boolean>();
+	}
 	
 	public PacketPermissionUpdate(Map<String, Boolean> permissions) {
 		this.permissions = permissions;

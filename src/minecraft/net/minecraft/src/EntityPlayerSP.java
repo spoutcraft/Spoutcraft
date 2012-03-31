@@ -502,7 +502,9 @@ public class EntityPlayerSP extends EntityPlayer {
 			
 			//Overview map
 			else if (key == settings.keyWaypoint.keyCode){
-				mc.displayGuiScreen(new GuiOverviewMap());
+				if(Spoutcraft.hasPermission("spout.client.overviewmap")) {
+					mc.displayGuiScreen(new GuiOverviewMap());
+				}
 			}
 		}
 	}

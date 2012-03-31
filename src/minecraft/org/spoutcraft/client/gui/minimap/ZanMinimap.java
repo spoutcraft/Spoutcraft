@@ -77,6 +77,10 @@ public class ZanMinimap {
 		if (!MinimapConfig.getInstance().isEnabled()) {
 			return;
 		}
+		
+		if(!Spoutcraft.hasPermission("spout.client.minimap")) {
+			return;
+		}
 
 		int scWidth = Spoutcraft.getRenderDelegate().getScreenWidth();
 		int scHeight = Spoutcraft.getRenderDelegate().getScreenHeight();

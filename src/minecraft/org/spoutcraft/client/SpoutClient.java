@@ -661,4 +661,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void setPermission(String node, boolean allow) {
 		permissions.put(node, allow);
 	}
+	
+	public void clearPermissions() {
+		permissions.clear();
+	}
 }
