@@ -88,6 +88,7 @@ public class Shaders {
 	
 	public static void setup(int type) {
 		System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
+		System.out.println("OpenGL Platform: " + GL11.glGetString(GL11.GL_VENDOR));
 		
 		if(!(enabled)) return;
 		mc = Minecraft.theMinecraft;
