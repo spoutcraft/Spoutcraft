@@ -268,4 +268,8 @@ public final class Spoutcraft {
 	public static ChatManager getChatManager() {
 		return client.getChatManager();
 	}
+	
+	public static boolean hasPermission(String permission) {
+		return client.hasPermission(permission);
+	}
 }
