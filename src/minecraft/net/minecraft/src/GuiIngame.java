@@ -561,6 +561,16 @@ public class GuiIngame extends Gui
 		if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
 			return;
 		}
+		//Spout end
+
+		int i;
+
+		for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
+			for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
+			addChatMessage(message.substring(0, i));
+		}
+
+		//Spout start
 		SpoutClient.enableSandbox();
 		if (Spoutcraft.getActivePlayer() != null) {
 			ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
@@ -570,13 +580,6 @@ public class GuiIngame extends Gui
 		}
 		SpoutClient.disableSandbox();
 		//Spout end
-
-		int i;
-
-		for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
-			for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
-			addChatMessage(message.substring(0, i));
-		}
 	}
 
 	public void setRecordPlayingMessage(String par1Str)

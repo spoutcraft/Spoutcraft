@@ -412,104 +412,106 @@ public class FontRenderer {
 			return 0;
 		} else {
 			par1Str = org.bukkit.ChatColor.stripColor(par1Str); //Spout strip colors when calculating width.
-			int var2 = 0;
-			boolean var3 = false;
+			int width2 = 0;
+			boolean bold3 = false;
 
-			for (int var4 = 0; var4 < par1Str.length(); ++var4) {
-				char var5 = par1Str.charAt(var4);
-				int var6 = this.func_50105_a(var5);
-				if (var6 < 0 && var4 < par1Str.length() - 1) {
-					++var4;
-					var5 = par1Str.charAt(var4);
+			for (int j4 = 0; j4 < par1Str.length(); ++j4) {
+				char var5 = par1Str.charAt(j4);
+				int width6 = this.getCharHalfWidth(var5);		//  Spout - Unicode positioning fix
+				if (width6 < 0 && j4 < par1Str.length() - 1) {
+					++j4;
+					var5 = par1Str.charAt(j4);
 					if (var5 != 108 && var5 != 76) {
 						if (var5 == 114 || var5 == 82) {
-							var3 = false;
+							bold3 = false;
 						}
 					} else {
-						var3 = true;
+						bold3 = true;
 					}
 
-					var6 = this.func_50105_a(var5);
+					width6 = this.getCharHalfWidth(var5);		//  Spout - Unicode positioning fix
 				}
 
-				var2 += var6;
-				if (var3) {
-					++var2;
+				width2 += width6;
+				if (bold3) {
+					width2+=2;		//  Spout - Unicode positioning fix
 				}
 			}
 
-			return var2;
+			return width2 >> 1;		//  Spout - Unicode positioning fix
 		}
 	}
 
 	public int func_50105_a(char par1) {
+		return getCharHalfWidth(par1) >> 1;		// Spout start - Unicode text positioning fix.
+	}
+
+	private int getCharHalfWidth(char par1) {		// Spout end - Unicode text positioning fix.
 		if (par1 == 167) {
 			return -1;
-				} else {
+		} else if (par1 == 32) {		// Spout - Unicode text positioning fix.
+			return 8;		// Spout - Unicode text positioning fix.
+		} else {
 			int var2 = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
 			if (var2 >= 0 && !this.unicodeFlag) {
-				return this.charWidth[var2 + 32];
+				return this.charWidth[var2 + 32] << 1;		// Spout - Unicode text positioning fix.
 			} else if (this.glyphWidth[par1] != 0) {
 				int var3 = this.glyphWidth[par1] >> 4;
 				int var4 = this.glyphWidth[par1] & 15;
-				if (var4 > 7) {
-					var4 = 15;
-					var3 = 0;
-						}
 
-				++var4;
-				return (var4 - var3) / 2 + 1;
+				return (var4 - var3) + 3;		// Spout - Unicode text positioning fix.
 			} else {
 				return 0;
-					}
-				}
 			}
+		}
+	}
 
 	public String func_50107_a(String par1Str, int par2) {
 		return this.func_50104_a(par1Str, par2, false);
 	}
 
-	public String func_50104_a(String par1Str, int par2, boolean par3) {
-		StringBuilder var4 = new StringBuilder();
-		int var5 = 0;
+	public String func_50104_a(String par1Str, int width2, boolean par3) {
+		width2 += width2;		// Spout - Unicode positioning fix
+		StringBuilder string4 = new StringBuilder();
+		int width5 = 0;
 		int var6 = par3?par1Str.length() - 1:0;
-		int var7 = par3?-1:1;
+		int step7 = par3?-1:1;
 		boolean var8 = false;
-		boolean var9 = false;
+		boolean bold9 = false;
 
-		for (int var10 = var6; var10 >= 0 && var10 < par1Str.length() && var5 < par2; var10 += var7) {
-			char var11 = par1Str.charAt(var10);
-			int var12 = this.func_50105_a(var11);
+		for (int j10 = var6; j10 >= 0 && j10 < par1Str.length() && width5 < width2; j10 += step7) {
+			char var11 = par1Str.charAt(j10);
+			int width12 = this.getCharHalfWidth(var11);		// Spout - Unicode positioning fix
 			if (var8) {
 				var8 = false;
 				if (var11 != 108 && var11 != 76) {
 					if (var11 == 114 || var11 == 82) {
-						var9 = false;
+						bold9 = false;
 					}
 				} else {
-					var9 = true;
+					bold9 = true;
 				}
-			} else if (var12 < 0) {
+			} else if (width12 < 0) {
 				var8 = true;
 			} else {
-				var5 += var12;
-				if (var9) {
-					++var5;
+				width5 += width12;
+				if (bold9) {
+					width5+=2;		// Spout - Unicode positioning fix
 				}
 			}
 
-			if (var5 > par2) {
+			if (width5 > width2) {
 				break;
 			}
 
 			if (par3) {
-				var4.insert(0, var11);
+				string4.insert(0, var11);
 			} else {
-				var4.append(var11);
+				string4.append(var11);
+			}
 		}
-	}
 
-		return var4.toString();
+		return string4.toString();
 	}
 
 	public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5) {
@@ -640,49 +642,50 @@ public class FontRenderer {
 		}
 	}
 
-	private int func_50102_e(String par1Str, int par2) {
-		int var3 = par1Str.length();
-		int var4 = 0;
-		int var5 = 0;
-		int var6 = -1;
+	public int func_50102_e(String par1Str, int width2) {
+		width2+=width2;		//  Spout - Unicode positioning fix
+		int length3 = par1Str.length();
+		int width4 = 0;
+		int j5 = 0;
+		int j6 = -1;
 
-		for (boolean var7 = false; var5 < var3; ++var5) {
-			char var8 = par1Str.charAt(var5);
+		for (boolean bold7 = false; j5 < length3; ++j5) {
+			char var8 = par1Str.charAt(j5);
 			switch(var8) {
 			case 32:
-				var6 = var5;
+				j6 = j5;
 			case 167:
-				if (var5 != var3) {
-					++var5;
-					char var9 = par1Str.charAt(var5);
+				if (j5 != length3) {
+					++j5;
+					char var9 = par1Str.charAt(j5);
 					if (var9 != 108 && var9 != 76) {
 						if (var9 == 114 || var9 == 82) {
-							var7 = false;
+							bold7 = false;
 						}
 					} else {
-						var7 = true;
+						bold7 = true;
 					}
 				}
 				break;
 			default:
-				var4 += this.func_50105_a(var8);
-				if (var7) {
-					++var4;
+				width4 += this.getCharHalfWidth(var8);		// Spout - Unicode positioning fix
+				if (bold7) {
+					width4+=2;		// Spout - Unicode positioning fix
 				}
 			}
 
 			if (var8 == 10) {
-				++var5;
-				var6 = var5;
+				++j5;
+				j6 = j5;
 				break;
 			}
 
-			if (var4 > par2) {
+			if (width4 > width2) {
 				break;
 			}
 		}
 
-		return var5 != var3 && var6 != -1 && var6 < var5?var6:var5;
+		return j5 != length3 && j6 != -1 && j6 < j5?j6:j5;
 	}
 
 	private static boolean func_50110_b(char par0) {
