@@ -652,8 +652,6 @@ public class FontRenderer {
 		for (boolean bold7 = false; j5 < length3; ++j5) {
 			char var8 = par1Str.charAt(j5);
 			switch(var8) {
-			case 32:
-				j6 = j5;
 			case 167:
 				if (j5 != length3) {
 					++j5;
@@ -668,9 +666,12 @@ public class FontRenderer {
 				}
 				break;
 			default:
-				width4 += this.getCharHalfWidth(var8);		// Spout - Unicode positioning fix
+				if (var8 == 32){		// Spout start - Unicode positioning fix
+					j6 = j5;
+				}
+				width4 += this.getCharHalfWidth(var8);
 				if (bold7) {
-					width4+=2;		// Spout - Unicode positioning fix
+					width4+=2;		// Spout end - Unicode positioning fix
 				}
 			}
 
