@@ -568,10 +568,10 @@ public class GuiIngame extends Gui
 		for (j = 0; j < mess.length; j++) {
 			SpoutClient.enableSandbox();
 			if (Spoutcraft.getActivePlayer() != null) {
-				ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
+				ChatTextBox.addChatMessage(ChatMessage.parseMessage(mess[j]));
 			}
 			else {
-				ChatTextBox.addChatMessage(new ChatMessage(message, message));
+				ChatTextBox.addChatMessage(new ChatMessage(mess[j], mess[j]));
 			}
 			SpoutClient.disableSandbox();
 		}
