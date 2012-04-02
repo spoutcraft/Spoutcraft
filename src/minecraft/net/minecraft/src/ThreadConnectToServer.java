@@ -31,6 +31,11 @@ class ThreadConnectToServer extends Thread {
 				return;
 			}
 
+			// Spout - start
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "AutoProto:HShake"));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "ChkCache:setHash"));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("AutoProto:HShake", "VanillaProtocol"));
+			// Spout - end
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username, this.ip, this.port));
 		} catch (UnknownHostException var2) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
