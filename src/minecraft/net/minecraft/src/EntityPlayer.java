@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.List;
 //Spout Start
+import net.minecraft.client.Minecraft;
+
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftHumanEntity;
@@ -1239,27 +1241,29 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	//Spout Easter Egg
 	public void doFancyStuff() {
-		float var1 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		if(var1 > 0.1F) {
-			var1 = 0.1F;
+		if (isSneaking()) {
+			return;
 		}
-
-		if(!this.onGround || this.health <= 0) {
-			var1 = 0.0F;
+		if (this.getDistanceSqToEntity(this) > 16) {
+			return;
 		}
 
 		String tempName = ChatColor.stripColor(username);
 		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Kylegar")) {
-			int sparkleLoops = Math.max(1, (int) (var1 / 0.01F));
-			while (sparkleLoops > 0) {
-				if (rand.nextInt(2) == 0) {
-					worldObj.spawnParticle("reddust", posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.5), posZ + rand.nextFloat() - 0.5, 255.0D, 210.0D, 0.0D);
-				}
-				else {
-					worldObj.spawnParticle("portal", posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.5), posZ + rand.nextFloat() - 0.5, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D);
-				}
-				sparkleLoops--;
+			EntityFX effect;
+			if (rand.nextInt(2) == 0) {
+				effect = new EntityReddustFX(this.worldObj, posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 255.0F, 210.0F, 0.0F);
 			}
+			else {
+				effect = new EntityPortalFX(this.worldObj, posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D);
+			}
+			
+			effect.particleGravity = 0.1F - rand.nextInt(35) / 100F;
+			effect.particleBlue = 0.75F + rand.nextInt(25) / 100F;
+			effect.particleGreen = rand.nextInt(25) / 100F;
+			effect.particleRed = rand.nextInt(15) / 100F;
+			
+			Minecraft.theMinecraft.effectRenderer.addEffect(effect);
 		}
 	}
 	//Spout End
