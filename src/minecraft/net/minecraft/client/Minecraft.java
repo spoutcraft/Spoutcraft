@@ -216,7 +216,7 @@ public abstract class Minecraft implements Runnable {
 		TextureUtils.setTileSize();
 		this.renderEngine.setTileSize(this);
 		// Spout End
-		this.loadScreen();
+		//this.loadScreen();
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine, false);
 		this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, "/font/alternate.png", this.renderEngine, false);
 		if (this.gameSettings.language != null) {
