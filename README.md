@@ -5,7 +5,7 @@ Spoutcraft is the Minecraft client mod system for the Bukkit server plugin, Spou
 
 Copyright (c) 2011-2012, SpoutDev <http://www.spout.org>
  
-Spoutcraft is licensed under [GNU LESSER GENERAL PUBLIC LICENSE Version 3][License], but with a provision that files are released under the MIT license 180 days after they are published. Please see the `LICENSE.txt` file for details.
+Spoutcraft is licensed under [GNU LESSER GENERAL PUBLIC LICENSE Version 3][License].
 
 Who is SpoutDev?
 ----------------
@@ -68,7 +68,7 @@ Coding and Pull Request Formatting
 **Please follow the above conventions if you want your pull request(s) accepted.**
 
 [Project Logo]: http://cdn.spout.org/img/logo/spoutcraft_551x150.png
-[License]: http://www.spout.org/SpoutDevLicenseV1.txt
+[License]: http://www.gnu.org/licenses/lgpl.html
 [Website]: http://www.spout.org
 [Forums]: http://forums.spout.org
 [GitHub]: https://github.com/SpoutDev/Spoutcraft
