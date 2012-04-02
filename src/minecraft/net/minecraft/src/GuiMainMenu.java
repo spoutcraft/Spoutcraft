@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
@@ -55,7 +56,7 @@ public class GuiMainMenu extends GuiScreen
 	private int viewportTexture;
 
 	public GuiMainMenu()
-	{
+	{	    
 		updateCounter = 0.0F;
 		field_35357_f = 0;
 		splashText = "missingno";

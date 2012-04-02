@@ -1,12 +1,7 @@
 package net.minecraft.src;
 
-import java.util.List;
-import net.minecraft.client.Minecraft;
-
-//Spout Start
 import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-//Spout End
 
 public class GuiIngameMenu extends GuiScreen
 {

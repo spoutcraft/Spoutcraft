@@ -76,7 +76,8 @@ public enum PacketType {
 	PacketComboBox(54, PacketComboBox.class),
 	PacketFocusUpdate(55, PacketFocusUpdate.class),
 	PacketClientAddons(56, PacketClientAddons.class), 
-	PacketPermissionUpdate(57, PacketPermissionUpdate.class),
+	PacketPermissionUpdate(57, PacketPermissionUpdate.class), 
+	PacketSpawnTextEntity(58, PacketSpawnTextEntity.class),
 	;
 
 	private final int id;

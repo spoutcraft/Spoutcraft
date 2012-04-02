@@ -82,6 +82,7 @@ public abstract class Entity {
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
+	public boolean clientonly = false;
 	//Spout end
 
 	public Entity(World par1World) {

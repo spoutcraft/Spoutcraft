@@ -25,64 +25,90 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 
 public class EntityText extends Entity {
-	private String text;
-	private boolean rotateWithPlayer = true;
-	private float scale = 1.0F;
+    private String text;
 
-	public EntityText(World var1) {
-		super(var1);
-		setText(ChatColor.RED+"test "+ChatColor.GREEN+"Some Green Text");
-		setPosition(-125, 90, 1501);
-		updateGeometry();
-	}
+    private boolean rotateWithPlayer = true;
 
-	@Override
-	protected void entityInit() {
-	}
+    private float scale = 1.0F;
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		text = var1.getString("text");
-		rotateWithPlayer = var1.getBoolean("rotateWithPlayer");
-		scale = var1.getFloat("scale");
-	}
+    private int duration;
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		var1.setString("text", text);
-		var1.setBoolean("rotateWithPlayer", rotateWithPlayer);
-		var1.setFloat("scale", scale);
-	}
+    public EntityText(World var1) {
+        super(var1);
+        setText(ChatColor.RED + "test " + ChatColor.GREEN + "Some Green Text");
+        setPosition(-125, 90, 1501);
+        updateGeometry();
+        this.clientonly = true;
+        isDead = false;
+    }
 
-	public void setText(String text) {
-		this.text = text;
-		updateGeometry();
-	}
+    @Override
+    protected void entityInit() {
+    }
 
-	public String getText() {
-		return text;
-	}
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound var1) {
+        text = var1.getString("text");
+        rotateWithPlayer = var1.getBoolean("rotateWithPlayer");
+        scale = var1.getFloat("scale");
+    }
 
-	public void setRotateWithPlayer(boolean rotateWithPlayer) {
-		this.rotateWithPlayer = rotateWithPlayer;
-	}
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound var1) {
+        var1.setString("text", text);
+        var1.setBoolean("rotateWithPlayer", rotateWithPlayer);
+        var1.setFloat("scale", scale);
+    }
 
-	public boolean isRotateWithPlayer() {
-		return rotateWithPlayer;
-	}
+    public void setText(String text) {
+        this.text = text;
+        updateGeometry();
+    }
 
-	public void setScale(float scale) {
-		this.scale = scale;
-		updateGeometry();
-	}
+    public String getText() {
+        return text;
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    public void setRotateWithPlayer(boolean rotateWithPlayer) {
+        this.rotateWithPlayer = rotateWithPlayer;
+    }
 
-	private void updateGeometry() {
-		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		this.width = (float)font.getStringWidth(text)*0.0139F*scale;
-		this.height = 0.124F*scale;
-	}
+    public boolean isRotateWithPlayer() {
+        return rotateWithPlayer;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+        updateGeometry();
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    private void updateGeometry() {
+        FontRenderer font = SpoutClient.getHandle().fontRenderer;
+        this.width = (float) font.getStringWidth(text) * 0.0139F * scale;
+        this.height = 0.124F * scale;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+        if(duration > 0) {
+            if(duration < ticksExisted) {
+                this.worldObj.loadedEntityList.remove(this);
+            }
+        }
+        moveEntity(motionX, motionY, motionZ);
+    } 
+    
+    @Override
+    protected boolean canTriggerWalking() {
+        return false;
+    }
 }

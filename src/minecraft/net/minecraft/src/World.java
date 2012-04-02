@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -1358,6 +1359,8 @@ public class World implements IBlockAccess {
 
 		for (var1 = 0; var1 < this.loadedEntityList.size(); ++var1) {
 			var2 = (Entity)this.loadedEntityList.get(var1);
+			if(var2 instanceof EntityText) {
+			}
 			if (var2.ridingEntity != null) {
 				if (!var2.ridingEntity.isDead && var2.ridingEntity.riddenByEntity == var2) {
 					continue;

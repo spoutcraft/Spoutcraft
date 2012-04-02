@@ -21,16 +21,26 @@ import net.minecraft.src.Entity;
 import net.minecraft.src.RenderEntity;
 import net.minecraft.src.RenderHelper;
 
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 
 public class RenderText extends RenderEntity {
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
+	    GL11.glPushMatrix();
 		EntityText entitytext = (EntityText)entity;
 		String text = entitytext.getText();
-		yaw = entitytext.isRotateWithPlayer()?-this.renderManager.playerViewY:yaw;
+		yaw = entitytext.isRotateWithPlayer()?this.renderManager.playerViewY:yaw;
 		RenderHelper.disableStandardItemLighting();
-		//SpoutClient.getHandle().fontRenderer.renderStringInGame(text, x, y, z, yaw, 0, entitytext.getScale());
+		float scale = entitytext.getScale() * 0.124f;
+		GL11.glTranslated(x, y + 1, z);
+		GL11.glScalef(scale, scale, scale);
+		GL11.glRotatef(180f, 0, 0f, 1f);
+		int stringwidth = SpoutClient.getInstance().getRenderDelegate().getMinecraftFont().getTextWidth(text);
+		GL11.glRotatef(yaw, 0, 1f, 0);
+		GL11.glTranslated(-stringwidth / 2d, 0, 0);
+		SpoutClient.getHandle().fontRenderer.drawString(text, 0, 0, 0xffffffff);
 		RenderHelper.enableStandardItemLighting();
+		GL11.glPopMatrix();
 	}
 }
