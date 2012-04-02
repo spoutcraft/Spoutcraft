@@ -22,7 +22,7 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 	
 	@Override
 	public int getNumBytes() {
-		return PacketUtil.getNumBytes(text) + 3 * 8 + 4 + 3 * 9;
+		return PacketUtil.getNumBytes(text) + 3 * 8 + 4 + 4 + 3 * 8;
 	}
 
 	@Override

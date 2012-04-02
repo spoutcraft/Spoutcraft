@@ -27,11 +27,14 @@ import org.spoutcraft.client.SpoutClient;
 public class RenderText extends RenderEntity {
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pitch) {
-	    GL11.glPushMatrix();
 		EntityText entitytext = (EntityText)entity;
 		String text = entitytext.getText();
 		yaw = entitytext.isRotateWithPlayer()?this.renderManager.playerViewY:yaw;
 		RenderHelper.disableStandardItemLighting();
+		GL11.glDepthMask(false);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glPushMatrix();
 		float scale = entitytext.getScale() * 0.124f;
 		GL11.glTranslated(x, y + 1, z);
 		GL11.glScalef(scale, scale, scale);
@@ -40,7 +43,7 @@ public class RenderText extends RenderEntity {
 		GL11.glRotatef(yaw, 0, 1f, 0);
 		GL11.glTranslated(-stringwidth / 2d, 0, 0);
 		SpoutClient.getHandle().fontRenderer.drawString(text, 0, 0, 0xffffffff);
-		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();
+		RenderHelper.enableStandardItemLighting();
 	}
 }
