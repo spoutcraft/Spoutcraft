@@ -30,17 +30,14 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
 import net.minecraft.src.Entity;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.FoodStats;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiIngame;
-import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.Material;
 import net.minecraft.src.Potion;
-import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
@@ -237,26 +234,12 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		double oldX = 1;
-		double oldY = 1;
-		double oldZ = 1;
-		Block block = null;
-		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
-			block = Block.blocksList[item.getTypeId()];
-			oldX = block.maxX;
-			oldY = block.maxY;
-			oldZ = block.maxZ;
-			block.maxX = block.maxX * item.getWidth() / 8;
-			block.maxY = block.maxY * item.getHeight() / 8;
-			block.maxZ = block.maxZ * item.getDepth() / 8;
-		} else {
-			renderer.setScale((item.getWidth() / 8D), (item.getHeight() / 8D), 1);
-		}
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) item.getScreenX(), (float) item.getScreenY(), 0);
 		if (item.getAnchor() == WidgetAnchor.SCALE) {
 			GL11.glScalef((float) (item.getScreen().getWidth() / 427f), (float) (item.getScreen().getHeight() / 240f), 1);
 		}
+		GL11.glScaled(item.getWidth() / 16D, item.getHeight() / 16D, 1);
 		int id = item.getTypeId();
 		int data = item.getData();
 		if (MaterialData.getCustomItem(id) != null) {
@@ -266,11 +249,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getData()), 0, 0);
 		GL11.glPopMatrix();
-		if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
-			block.maxX = oldX;
-			block.maxY = oldY;
-			block.maxZ = oldZ;
-		}
+		GL11.glScaled(16D / item.getWidth(), 16D / item.getHeight(), 1);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		RenderHelper.disableStandardItemLighting();
@@ -908,26 +887,12 @@ public class MCRenderDelegate implements RenderDelegate {
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			double oldX = 1;
-			double oldY = 1;
-			double oldZ = 1;
-			Block block = null;
-			if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
-				block = Block.blocksList[item.getTypeId()];
-				oldX = block.maxX;
-				oldY = block.maxY;
-				oldZ = block.maxZ;
-				block.maxX = block.maxX * genericSlot.getWidth() / 16;
-				block.maxY = block.maxY * genericSlot.getHeight() / 16;
-				block.maxZ = block.maxZ * genericSlot.getDepth() / 16;
-			} else {
-				renderer.setScale((genericSlot.getWidth() / 8D), (genericSlot.getHeight() / 8D), 1);
-			}
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float) genericSlot.getScreenX(), (float) genericSlot.getScreenY(), 0);
 			if (genericSlot.getAnchor() == WidgetAnchor.SCALE) {
 				GL11.glScalef((float) (genericSlot.getScreen().getWidth() / 427f), (float) (genericSlot.getScreen().getHeight() / 240f), 1);
 			}
+			GL11.glScaled(genericSlot.getWidth() / 16D, genericSlot.getHeight() / 16D, 1);
 			int id = item.getTypeId();
 			int data = item.getDurability();
 			if (MaterialData.getCustomItem(id) != null) {
@@ -938,11 +903,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getDurability()), 0, 0);
 			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
 			GL11.glPopMatrix();
-			if (item.getTypeId() < 255 && RenderBlocks.renderItemIn3d(Block.blocksList[item.getTypeId()].getRenderType())) {
-				block.maxX = oldX;
-				block.maxY = oldY;
-				block.maxZ = oldZ;
-			}
+			GL11.glScaled(16D / genericSlot.getWidth(), 16D / genericSlot.getHeight(), 1);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			RenderHelper.disableStandardItemLighting();
@@ -952,6 +913,10 @@ public class MCRenderDelegate implements RenderDelegate {
 			int y = (int) genericSlot.getScreenY();
 			int width = (int) (x + genericSlot.getWidth());
 			int height = (int) (y + genericSlot.getHeight());
+			x = (int) ((x * genericSlot.getWidth()) / 16);
+			y = (int) ((y * genericSlot.getHeight()) / 16);
+			width = (int) ((width * genericSlot.getWidth()) / 16);
+			height = (int) ((height * genericSlot.getHeight()) / 16);
 			RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
 		}
 	}

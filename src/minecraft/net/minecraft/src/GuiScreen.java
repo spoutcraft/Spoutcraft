@@ -284,6 +284,8 @@ public class GuiScreen extends Gui
 			if(mc.thePlayer == null) {
 				return;
 			}
+			PacketSlotClick packet = new PacketSlotClick(slot, button,Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
 			ItemStack stackOnCursor = new ItemStack(0);
 			if(mc.thePlayer.inventory.getItemStack() != null) {
 				net.minecraft.src.ItemStack mcStack = mc.thePlayer.inventory.getItemStack();
@@ -344,7 +346,7 @@ public class GuiScreen extends Gui
 					slot.setItem(put);
 				}
 			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { //Take item or shift click
-				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 					slot.onItemShiftClicked();
 				} else { //Take item
 					boolean success = slot.onItemTake(stackInSlot);
