@@ -11,6 +11,9 @@ public class Packet250CustomPayload extends Packet {
 	public byte[] data;
 	
 	// Spout - start - they really should at least have a constructor
+	public Packet250CustomPayload() {
+	}
+	
 	public Packet250CustomPayload(String channel, String data) {
 		this(channel, getBytes(data));
 	}
