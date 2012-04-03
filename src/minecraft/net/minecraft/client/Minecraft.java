@@ -798,7 +798,7 @@ public abstract class Minecraft implements Runnable {
 		if (Keyboard.isKeyDown(60)) {
 			if (!this.isTakingScreenshot) {
 				this.isTakingScreenshot = true;
-				this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
+				if(theWorld != null) this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
 			}
 		} else {
 			this.isTakingScreenshot = false;
