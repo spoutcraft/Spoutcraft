@@ -902,22 +902,11 @@ public class MCRenderDelegate implements RenderDelegate {
 			}
 			renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getDurability()), 0, 0);
 			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
+			if(isHovering(genericSlot)) RenderUtil.drawRectangle(0, 0, 16, 16, 0x88ffffff);
 			GL11.glPopMatrix();
-			GL11.glScaled(16D / genericSlot.getWidth(), 16D / genericSlot.getHeight(), 1);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			RenderHelper.disableStandardItemLighting();
-		}
-		if(isHovering(genericSlot)) {
-			int x = (int) genericSlot.getScreenX();
-			int y = (int) genericSlot.getScreenY();
-			int width = (int) (x + genericSlot.getWidth());
-			int height = (int) (y + genericSlot.getHeight());
-			x = (int) ((x * genericSlot.getWidth()) / 16);
-			y = (int) ((y * genericSlot.getHeight()) / 16);
-			width = (int) ((width * genericSlot.getWidth()) / 16);
-			height = (int) ((height * genericSlot.getHeight()) / 16);
-			RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
 		}
 	}
 }
