@@ -33,8 +33,8 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 public class HeightMap {
 	private String worldName;
 	private final static int INITIAL_CAPACITY = 500;
-	private TIntPairObjectHashMap<HeightChunk> cache = new TIntPairObjectHashMap<HeightChunk>(INITIAL_CAPACITY);
-	private static HashMap<String, HeightMap> heightMaps = new HashMap<String, HeightMap>();
+	private final TIntPairObjectHashMap<HeightChunk> cache = new TIntPairObjectHashMap<HeightChunk>(INITIAL_CAPACITY);
+	private static final HashMap<String, HeightMap> heightMaps = new HashMap<String, HeightMap>();
 	private static HeightMap lastMap = null; //Faster access to last height-map (which will be the case in most cases)
 	private int minX = 0, maxX = 0, minZ = 0, maxZ = 0;
 	private boolean initBounds = false;

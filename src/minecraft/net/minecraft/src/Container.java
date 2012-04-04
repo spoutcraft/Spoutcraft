@@ -15,6 +15,10 @@ public abstract class Container {
 	
 	//Spout start
 	public abstract IInventory getInventory();
+	
+	public boolean isSortableInventory() {
+		return false;
+	}
 	//Spout end
 
 	protected void addSlot(Slot par1Slot) {

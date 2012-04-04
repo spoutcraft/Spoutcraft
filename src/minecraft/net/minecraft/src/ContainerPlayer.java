@@ -47,6 +47,11 @@ public class ContainerPlayer extends Container {
 	public IInventory getInventory() {
 		return Minecraft.theMinecraft.thePlayer.inventory;
 	}
+	
+	@Override
+	public boolean isSortableInventory() {
+		return true;
+	}
 	//Spout end
 
 	public void onCraftMatrixChanged(IInventory par1IInventory) {

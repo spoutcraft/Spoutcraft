@@ -33,6 +33,11 @@ public class ContainerChest extends Container {
 	public IInventory getInventory() {
 		return lowerChestInventory;
 	}
+	
+	@Override
+	public boolean isSortableInventory() {
+		return true;
+	}
 	//Spout end
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {

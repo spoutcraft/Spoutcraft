@@ -73,7 +73,7 @@ public abstract class GuiContainer extends GuiScreen
 			orderByAlphabet.setTooltip("Experimental Feature");
 			orderById.setTooltip("Experimental Feature");
 			IInventory inv = inventorySlots.getInventory();
-			if (inv != null) {
+			if (inv != null && inventorySlots.isSortableInventory()) {
 				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
 			}
 		}
