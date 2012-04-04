@@ -229,11 +229,10 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericItemWidget item) {
 		GL11.glDepthFunc(515);
-		RenderHelper.enableStandardItemLighting();
+		RenderHelper.enableGUIStandardGUItemLighting();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) item.getScreenX(), (float) item.getScreenY(), 0);
 		if (item.getAnchor() == WidgetAnchor.SCALE) {
@@ -247,11 +246,11 @@ public class MCRenderDelegate implements RenderDelegate {
 			id = 318;
 			data = temp;
 		}
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getData()), 0, 0);
 		GL11.glPopMatrix();
 		GL11.glScaled(16D / item.getWidth(), 16D / item.getHeight(), 1);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);
 		RenderHelper.disableStandardItemLighting();
 	}
 
@@ -881,11 +880,10 @@ public class MCRenderDelegate implements RenderDelegate {
 		ItemStack item = genericSlot.getItem();
 		
 		GL11.glDepthFunc(515);
-		RenderHelper.enableStandardItemLighting();
+		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) genericSlot.getScreenX(), (float) genericSlot.getScreenY(), 0);
 		if (genericSlot.getAnchor() == WidgetAnchor.SCALE) {
@@ -894,6 +892,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glScaled(genericSlot.getWidth() / 16D, genericSlot.getHeight() / 16D, 1);
 
 		if(item.getTypeId() != 0) {
+			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			int id = item.getTypeId();
 			int data = item.getDurability();
 			if (MaterialData.getCustomItem(id) != null) {
@@ -904,7 +903,6 @@ public class MCRenderDelegate implements RenderDelegate {
 			renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getDurability()), 0, 0);
 			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
 		}
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		RenderHelper.disableStandardItemLighting();
 		if(isHovering(genericSlot)) RenderUtil.drawRectangle(0, 0, 16, 16, 0x88ffffff);
