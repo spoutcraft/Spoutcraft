@@ -61,10 +61,13 @@ public class PacketItemName implements SpoutPacket{
 		}
 		if (name.equals("[resetall]")) {
 			MaterialData.reset();
-		} else if (name.equals("[reset]")) {
-			material.setName(material.getNotchianName());
-		} else {
-			material.setName(name);
+		} 
+		if (material != null) {
+			if (name.equals("[reset]")) {
+				material.setName(material.getNotchianName());
+			} else {
+				material.setName(name);
+			}
 		}
 	}
 

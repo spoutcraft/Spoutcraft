@@ -106,7 +106,12 @@ public class MinimapConfig {
 								}
 								z = (Integer) locations.get("z");
 								boolean enabled = (Integer) locations.get("enabled") == 1;
-								boolean deathpoint = (Integer) locations.get("deathpoint") == 1;
+								
+								boolean deathpoint = false;
+								if (locations.containsKey("deathpoint")) {
+									deathpoint = (Integer) locations.get("deathpoint") == 1;
+								}
+								
 								Waypoint waypoint = new Waypoint(name, x, y, z, enabled);
 								waypoint.deathpoint = deathpoint;
 								addWaypoint(world, waypoint);
