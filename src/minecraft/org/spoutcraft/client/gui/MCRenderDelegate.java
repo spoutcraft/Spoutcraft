@@ -299,7 +299,8 @@ public class MCRenderDelegate implements RenderDelegate {
 			float scale = label.getScale();
 			float reset = 1 / scale;
 			GL11.glScalef(scale, scale, scale);
-			font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			if(label.hasShadow()) font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			else font.drawString(lines[i], (int) left, i * 10, label.getTextColor().toInt());
 			GL11.glScalef(reset, reset, reset);
 		}
 		GL11.glPopMatrix();
