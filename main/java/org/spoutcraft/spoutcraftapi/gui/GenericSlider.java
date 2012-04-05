@@ -44,7 +44,7 @@ public class GenericSlider extends GenericControl implements Slider {
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 1;
+		return super.getVersion() + 2;
 	}
 
 	@Override
@@ -154,6 +154,15 @@ public class GenericSlider extends GenericControl implements Slider {
 	public Slider setAlign(WidgetAnchor align) {
 		label.setAlign(align);
 		return this;
+	}
+	
+	public Label setShadow(boolean shadow) {
+		label.setShadow(shadow);
+		return this;
+	}
+	
+	public boolean hasShadow() {
+		return label.hasShadow();
 	}
 
 }

@@ -82,4 +82,16 @@ public interface Label extends Widget {
 	 * @return scale of text
 	 */
 	public float getScale();
+	
+	/**
+	 * Sets whether or not the label has a shadow.
+	 * @param shadow
+	 */
+	public Label setShadow(boolean shadow);
+	
+	/**
+	 * Gets whether or not the label has a shadow.
+	 * @return
+	 */
+	public boolean hasShadow();
 }

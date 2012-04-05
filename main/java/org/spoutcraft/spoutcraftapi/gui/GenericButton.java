@@ -48,7 +48,7 @@ public class GenericButton extends GenericControl implements Button {
 	}
 
 	public int getVersion() {
-		return super.getVersion() + 3;
+		return super.getVersion() + 4;
 	}
 
 	@Override
@@ -160,5 +160,14 @@ public class GenericButton extends GenericControl implements Button {
 	public Widget setWidth(int width) {
 		label.setWidth(width);
 		return super.setWidth(width);
+	}
+	
+	public Label setShadow(boolean shadow) {
+		label.setShadow(shadow);
+		return this;
+	}
+	
+	public boolean hasShadow() {
+		return label.hasShadow();
 	}
 }
