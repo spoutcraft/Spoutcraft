@@ -56,7 +56,7 @@ public class HeightMapAgent {
 				lastWater = true;
 			}
 		}
-		return 0;
+		return -1;
 	}
 }
 
