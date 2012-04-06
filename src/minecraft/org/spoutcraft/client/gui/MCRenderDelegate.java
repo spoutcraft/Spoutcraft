@@ -691,20 +691,23 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-
+		
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
-			tWidth = Math.min(tWidth, width);
-			tHeight = Math.min(tHeight, height);
-			tLeft = Math.min(Math.max(0, left), rWidth);
-			tTop = Math.min(Math.max(0, top), rHeight);
+			tWidth = Math.min(tWidth, (width/(double) textureBinding.getImageWidth()) * textureBinding.getWidth());
+			tHeight = Math.min(tHeight, (height/(double)textureBinding.getImageHeight()) * textureBinding.getHeight());
+			tLeft = Math.min(Math.max(0, (left/(double)textureBinding.getImageWidth())) * textureBinding.getWidth(), rWidth);
+			tTop = Math.min(Math.max(0, (top/(double)textureBinding.getImageHeight()) * textureBinding.getHeight()), rHeight);
 		}
+		tHeight = -tHeight;
+		tTop = rHeight - tTop;
+		
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(0.0D, height, -90, tLeft, tTop); // draw corners
-		tessellator.addVertexWithUV(width, height, -90, tLeft + tWidth, tTop);
-		tessellator.addVertexWithUV(width, 0.0D, -90, tLeft + tWidth, tTop + tHeight);
-		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tTop + tHeight);
+		tessellator.addVertexWithUV(0.0D, height, -90, tLeft, tTop + tHeight); // draw corners
+		tessellator.addVertexWithUV(width, height, -90, tLeft + tWidth, tTop + tHeight);
+		tessellator.addVertexWithUV(width, 0.0D, -90, tLeft + tWidth, tTop);
+		tessellator.addVertexWithUV(0.0D, 0.0D, -90, tLeft, tTop);
 
 		tessellator.draw();
 		GL11.glDepthMask(true);
