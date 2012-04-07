@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;		//spout alphaText
 
 public class FontRenderer {
 	private static final Pattern field_52015_r = Pattern.compile("(?i)\\u00A7[0-9A-FK-OR]");
@@ -325,7 +326,13 @@ public class FontRenderer {
 					var7 = false;
 					var6 = false;
 					var5 = false;
-					GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+					//spout start alphaText
+					if (ConfigReader.alphaText) {
+						GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+					} else {
+						GL11.glColor3f(this.field_50115_n, this.field_50116_o, this.field_50118_p);
+					}
+					//spout end
 				}
 
 				++var8;
@@ -393,7 +400,13 @@ public class FontRenderer {
 			this.field_50116_o = (float)(par4 >> 8 & 255) / 255.0F;
 			this.field_50118_p = (float)(par4 & 255) / 255.0F;
 			this.field_50117_q = (float)(par4 >> 24 & 255) / 255.0F;
-			GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+			//spout start alphaText
+			if (ConfigReader.alphaText) {
+				GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+			} else {
+				GL11.glColor3f(this.field_50115_n, this.field_50116_o, this.field_50118_p);
+			}
+			//spout end
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
