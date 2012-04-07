@@ -27,8 +27,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class FancyShadersButton extends AutomatedButton {
+public class FancyShadersButton extends GenericButton {
 	UUID fancyGraphics;
 	public FancyShadersButton(UUID fancyGraphics) {
 		super("Fancy Shaders");

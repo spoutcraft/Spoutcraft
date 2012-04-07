@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.client.inventory.InventoryUtil;
+
 public class ItemStack { //Spout final -> gone
 	public int stackSize;
 	public int animationsToGo;
@@ -168,6 +170,12 @@ public class ItemStack { //Spout final -> gone
 				}
 
 				this.itemDamage = 0;
+				
+				//Spout start
+				if (stackSize == 0) {
+					InventoryUtil.replaceTool(this.itemID);
+				}
+				//Spout end
 			}
 		}
 	}

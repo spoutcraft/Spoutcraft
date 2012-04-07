@@ -9,10 +9,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 //Spout Start
 import org.spoutcraft.client.MCItemStackComparator;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.inventory.InventoryUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout End
@@ -44,7 +47,7 @@ public abstract class GuiContainer extends GuiScreen
 	protected int guiTop;
 	
 	//Spout start
-	private Button orderByAlphabet, orderById;
+	private Button orderByAlphabet, orderById, replaceTools;
 	//Spout start
 
 	public GuiContainer(Container par1Container) {
@@ -67,14 +70,20 @@ public abstract class GuiContainer extends GuiScreen
 		if(Spoutcraft.hasPermission("spout.client.sortinventory")) {
 			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("Sort A-Z");
-			orderByAlphabet.setGeometry(15, 105, 75, 20);
+			orderByAlphabet.setGeometry(10, 80, 75, 20);
 			orderById = new GenericButton("Sort by Id");
-			orderById.setGeometry(15, 80, 75, 20);
-			orderByAlphabet.setTooltip("Experimental Feature");
-			orderById.setTooltip("Experimental Feature");
+			orderById.setGeometry(10, 105, 75, 20);
+			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
+			orderById.setTooltip("Will sort the inventory contents by their id");
+			replaceTools = new GenericCheckBox("Replace tools").setChecked(ConfigReader.replaceTools);
+			replaceTools.setGeometry(10, 130, 75, 20);
+			replaceTools.setTooltip("Replaces used up tools with spares from your inventory");
 			IInventory inv = inventorySlots.getInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
-				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById);
+				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools);
+				if (!(inv instanceof InventoryPlayer)) {
+					replaceTools.setVisible(false);
+				}
 			}
 		}
 	}
@@ -110,136 +119,163 @@ public abstract class GuiContainer extends GuiScreen
 				e.printStackTrace();
 			}
 		}
+		if (btn == replaceTools) {
+			ConfigReader.replaceTools = !ConfigReader.replaceTools;
+			((GenericCheckBox)replaceTools).setChecked(ConfigReader.replaceTools);
+		}
+	}
+	
+	public int getNumItems(IInventory inventory) {
+		int used = 0;
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			if (inventory.getStackInSlot(i) != null) {
+				used++;
+			}
+		}
+		return used;
 	}
 	
 	public void compactInventory(IInventory inventory, boolean player) {
 		//To keep mp compatibility, fake window clicks
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				ItemStack item = inventory.getStackInSlot(i);
-				if (item != null && item.stackSize < item.getMaxStackSize()) {
-					
-					//Find a place to put this
-					int orig = i;
-					if (orig < 9 && player) orig = 36 + orig;
-					handleMouseClick(null, orig, 0, false); //pick up the item
-					
-					for (int j = 0; j < inventory.getSizeInventory(); j++) {
-						if (j != i) {
-							ItemStack other = inventory.getStackInSlot(j);
-							if (other != null && other.itemID == item.itemID && other.getItemDamage() == item.getItemDamage()) {
-								int slot = j;
-								if (slot < 9 && player) slot = 36 + slot;
-								handleMouseClick(null, slot, 0, false); //merge with the existing stack we found
-								
-								//Move onto the next item to merge if this one is completely used up
-								ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
-								if (cursor == null) {
-									break;
-								}
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			ItemStack item = inventory.getStackInSlot(i);
+			if (item != null && item.stackSize < item.getMaxStackSize()) {
+				
+				//Find a place to put this
+				int orig = i;
+				//Avoid the hotbar
+				if (orig < 9 && player) {
+					continue;
+				}
+				handleMouseClick(null, orig, 0, false); //pick up the item
+				
+				for (int j = 0; j < inventory.getSizeInventory(); j++) {
+					if (j != i) {
+						ItemStack other = inventory.getStackInSlot(j);
+						if (other != null && other.itemID == item.itemID && other.getItemDamage() == item.getItemDamage()) {
+							int slot = j;
+							//Avoid the hotbar
+							if (slot < 9 && player) {
+								continue;
+							}
+							handleMouseClick(null, slot, 0, false); //merge with the existing stack we found
+							
+							//Move onto the next item to merge if this one is completely used up
+							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							if (cursor == null) {
+								break;
 							}
 						}
 					}
-					
-					//If we didn't merge all of the item, put it back
-					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
-					if (cursor != null) {
-						handleMouseClick(null, orig, 0, false);
-					}
 				}
-			}
-	}
-	
-	public void sortPlayerInventory(boolean byName) {
-		//To keep mp compatibility, fake window clicks
-		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
-		for (int pass = 0; pass < inventory.mainInventory.length; pass++) {
-			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-			for (int i = 0; i < inventory.mainInventory.length; i++) {
-				ItemStack item = inventory.mainInventory[i];
-				if (item == null) {
-					items.add(null);
-				}
-				else {
-					items.add(new PositionedItemStack(item, i));
-				}
-			}
-			Collections.sort(items, new MCItemStackComparator(byName));
-			
-			while (true) {
-				if (items.get(pass) instanceof PositionedItemStack) {
-					PositionedItemStack item = (PositionedItemStack) items.get(pass);
-					//Left click pick up item
-					int origSlot = item.position;
-					if (origSlot < 9) origSlot = 36 + origSlot;
-					handleMouseClick(null, origSlot, 0, false);
-					
-					//Left click place item down
-					int newSlot = pass + 9; 
-					handleMouseClick(null, newSlot, 0, false);
-					
-					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
-					if (cursor != null) {
-						handleMouseClick(null, origSlot, 0, false);
-					}
-					break;
-				}
-				pass++;
-				if (pass >= inventory.mainInventory.length) {
-					break;
+				
+				//If we didn't merge all of the item, put it back
+				ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+				if (cursor != null) {
+					handleMouseClick(null, orig, 0, false);
 				}
 			}
 		}
 	}
 	
-	public void sortInventory(IInventory inventory, boolean byName) {
+	@SuppressWarnings("unchecked")
+	public void sortPlayerInventory(boolean byName) {
 		//To keep mp compatibility, fake window clicks
-		for (int pass = 0; pass < inventory.getSizeInventory(); pass++) {
-			ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				ItemStack item = inventory.getStackInSlot(i);
-				if (item == null) {
-					items.add(null);
+		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
+		for (int itemPass = 0; itemPass < getNumItems(inventory); itemPass++) {
+			for (int pass = 0; pass < inventory.mainInventory.length; pass++) {
+				ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+				for (int i = 0; i < inventory.mainInventory.length; i++) {
+					ItemStack item = inventory.mainInventory[i];
+					if (item == null || i < 9) {
+						items.add(null);
+					}
+					else {
+						items.add(new PositionedItemStack(item, i));
+					}
 				}
-				else {
-					items.add(new PositionedItemStack(item, i));
+				Collections.sort(items, new MCItemStackComparator(byName));
+				
+				while (true) {
+					if (items.get(pass) instanceof PositionedItemStack) {
+						PositionedItemStack item = (PositionedItemStack) items.get(pass);
+						//Left click pick up item
+						int origSlot = item.position;
+						if (origSlot < 9) {
+							break;
+						}
+						int newSlot = pass;
+						if (origSlot != newSlot) {
+							//Left click pick up item
+							handleMouseClick(null, origSlot, 0, false);
+							
+							//Left click place item down
+							handleMouseClick(null, newSlot, 0, false);
+							
+							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							if (cursor != null) {
+								handleMouseClick(null, origSlot, 0, false);
+							}
+						}
+						break;
+					}
+					pass++;
+					if (pass >= inventory.mainInventory.length) {
+						break;
+					}
 				}
 			}
-			Collections.sort(items, new MCItemStackComparator(byName));
-			
-			while (true) {
-				if (items.get(pass) instanceof PositionedItemStack) {
-					PositionedItemStack item = (PositionedItemStack) items.get(pass);
-					//Left click pick up item
-					Slot orig = getSlotFromPosition(item.position);
-					handleMouseClick(orig, 0, 0, false);
-					
-					//Left click place item down
-					Slot slot = getSlotFromPosition(pass);
-					handleMouseClick(slot, 0, 0, false);
-					
-					ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
-					if (cursor != null) {
-						handleMouseClick(orig, 0, 0, false);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void sortInventory(IInventory inventory, boolean byName) {
+		//To keep mp compatibility, fake window clicks
+		for (int itemPass = 0; itemPass < getNumItems(inventory); itemPass++) {
+			for (int pass = 0; pass < inventory.getSizeInventory(); pass++) {
+				ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+				for (int i = 0; i < inventory.getSizeInventory(); i++) {
+					ItemStack item = inventory.getStackInSlot(i);
+					if (item == null) {
+						items.add(null);
 					}
-					break;
+					else {
+						items.add(new PositionedItemStack(item, i));
+					}
 				}
-				pass++;
-				if (pass >= inventory.getSizeInventory()) {
-					break;
+				Collections.sort(items, new MCItemStackComparator(byName));
+				
+				while (true) {
+					if (items.get(pass) instanceof PositionedItemStack) {
+						PositionedItemStack item = (PositionedItemStack) items.get(pass);
+						//Left click pick up item
+						Slot origSlot = getSlotFromPosition(item.position);
+						Slot newSlot = getSlotFromPosition(pass);
+						if (newSlot != origSlot) {
+							handleMouseClick(origSlot, 0, 0, false);
+							
+							//Left click place item down
+							
+							handleMouseClick(newSlot, 0, 0, false);
+							
+							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
+							if (cursor != null) {
+								handleMouseClick(origSlot, 0, 0, false);
+							}
+						}
+						break;
+					}
+					pass++;
+					if (pass >= inventory.getSizeInventory()) {
+						break;
+					}
 				}
 			}
 		}
 	}
 	
 	public Slot getSlotFromPosition(int pos) {
-		for (int i = 0; i < inventorySlots.inventorySlots.size(); i++) {
-			if (inventorySlots.inventorySlots.get(i) != null) {
-				if (((Slot)inventorySlots.inventorySlots.get(i)).slotIndex == pos) {
-					return ((Slot)inventorySlots.inventorySlots.get(i));
-				}
-			}
-		}
-		return null;
+		return InventoryUtil.getSlotFromPosition(pos, inventorySlots);
 	}
 	//Spout end
 
