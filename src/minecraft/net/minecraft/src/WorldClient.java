@@ -124,7 +124,11 @@ public class WorldClient extends World {
 	public void releaseEntitySkin(Entity var1) { // Spout protected -> public
 		super.releaseEntitySkin(var1);
 		if (this.entityList.contains(var1)) {
-			this.entitySpawnQueue.add(var1);
+			if (var1.isEntityAlive()) {
+				this.entitySpawnQueue.add(var1);
+			} else {
+				this.entityList.remove(var1);
+			}
 		}
 	}
 
@@ -155,24 +159,6 @@ public class WorldClient extends World {
 		}
 
 		return var2;
-	}
-
-	public boolean setBlockMetadata(int par1, int par2, int par3, int par4) {
-		this.getBlockId(par1, par2, par3);
-		this.getBlockMetadata(par1, par2, par3);
-		return super.setBlockMetadata(par1, par2, par3, par4);
-	}
-
-	public boolean setBlockAndMetadata(int par1, int par2, int par3, int par4, int par5) {
-		this.getBlockId(par1, par2, par3);
-		this.getBlockMetadata(par1, par2, par3);
-		return super.setBlockAndMetadata(par1, par2, par3, par4, par5);
-	}
-
-	public boolean setBlock(int par1, int par2, int par3, int par4) {
-		this.getBlockId(par1, par2, par3);
-		this.getBlockMetadata(par1, par2, par3);
-		return super.setBlock(par1, par2, par3, par4);
 	}
 
 	public boolean setBlockAndMetadataAndInvalidate(int par1, int par2, int par3, int par4, int par5) {

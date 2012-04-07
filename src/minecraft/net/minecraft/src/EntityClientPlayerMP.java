@@ -10,7 +10,6 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 public class EntityClientPlayerMP extends EntityPlayerSP {
 	public NetClientHandler sendQueue;
 	private int inventoryUpdateTickCounter = 0;
-	private boolean hasSetHealth = false;
 	private double oldPosX;
 	private double oldMinY;
 	private double oldPosY;
@@ -21,6 +20,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	private boolean shouldStopSneaking = false;
 	private boolean wasSneaking = false;
 	private int timeSinceMoved = 0;
+	private boolean hasSetHealth = false;
 
 	public EntityClientPlayerMP(Minecraft par1Minecraft, World par2World, Session par3Session, NetClientHandler par4NetClientHandler) {
 		super(par1Minecraft, par2World, par3Session, 0);
@@ -42,7 +42,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 	public void sendMotionUpdates() {
 		if(this.inventoryUpdateTickCounter++ == 20) {
-			this.sendInventoryChanged();
 			this.inventoryUpdateTickCounter = 0;
 		}
 
@@ -121,8 +120,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		return null;
 	}
 
-	public void sendInventoryChanged() {}
-
 	protected void joinEntityItemWithWorld(EntityItem par1EntityItem) {}
 
 	public void sendChatMessage(String par1Str) {
@@ -139,8 +136,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	public void respawnPlayer() {
-		this.sendInventoryChanged();
-		this.sendQueue.addToSendQueue(new Packet9Respawn(this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldInfo().getTerrainType(), this.worldObj.getWorldHeight(), 0));
+		this.sendQueue.addToSendQueue(new Packet9Respawn(this.dimension, (byte)this.worldObj.difficultySetting, this.worldObj.getWorldInfo().getTerrainType(), this.worldObj.getHeight(), 0));
 	}
 
 	public void damageEntity(DamageSource par1DamageSource, int par2) { //Spout protected -> public

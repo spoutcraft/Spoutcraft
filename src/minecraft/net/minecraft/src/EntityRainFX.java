@@ -26,10 +26,6 @@ public class EntityRainFX extends EntityFX {
 		this.particleMaxAge = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
 	}
 
-	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7) {
-		super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
-	}
-
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;

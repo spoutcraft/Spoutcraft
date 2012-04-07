@@ -182,7 +182,7 @@ public abstract class BiomeGenBase {
 		return this.enableSnow?false:this.enableRain;
 	}
 
-	public boolean func_48413_d() {
+	public boolean isHighHumidity() {
 		return this.rainfall > 0.85F;
 	}
 
@@ -210,13 +210,13 @@ public abstract class BiomeGenBase {
 		this.biomeDecorator.decorate(par1World, par2Random, par3, par4);
 	}
 
-	public int func_48415_j() {
+	public int getBiomeGrassColor() {
 		double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(), 0.0F, 1.0F);
 		double var3 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
 		return ColorizerGrass.getGrassColor(var1, var3);
 	}
 
-	public int func_48412_k() {
+	public int getBiomeFoliageColor() {
 		double var1 = (double)MathHelper.clamp_float(this.getFloatTemperature(), 0.0F, 1.0F);
 		double var3 = (double)MathHelper.clamp_float(this.getFloatRainfall(), 0.0F, 1.0F);
 		return ColorizerFoliage.getFoliageColor(var1, var3);

@@ -10,7 +10,6 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	private double otherPlayerMPZ;
 	private double otherPlayerMPYaw;
 	private double otherPlayerMPPitch;
-	float field_20924_a = 0.0F;
 
 	public EntityOtherPlayerMP(World par1World, String par2Str) {
 		super(par1World);

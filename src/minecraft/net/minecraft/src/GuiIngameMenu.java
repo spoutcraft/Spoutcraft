@@ -43,13 +43,11 @@ public class GuiIngameMenu extends GuiScreen
 	 */
 	protected void actionPerformed(GuiButton par1GuiButton)
 	{
-		if (par1GuiButton.id == 0)
-		{
+		switch(par1GuiButton.id) {
+		case 0:
 			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
-		}
-
-		if (par1GuiButton.id == 1)
-		{
+			break;
+		case 1:
 			boolean mp = this.mc.isMultiplayerWorld(); //Spout
 			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
 
@@ -66,21 +64,18 @@ public class GuiIngameMenu extends GuiScreen
 				this.mc.displayGuiScreen(new GuiMainMenu());
 			}
 			//Spout End
-		}
-
-		if (par1GuiButton.id == 4)
-		{
+		case 2:
+		case 3:
+		default:
+			break;
+		case 4:
 			mc.displayGuiScreen(null);
 			mc.setIngameFocus();
-		}
-
-		if (par1GuiButton.id == 5)
-		{
+			break;
+		case 5:
 			mc.displayGuiScreen(new GuiAchievements(mc.statFileWriter));
-		}
-
-		if (par1GuiButton.id == 6)
-		{
+			break;
+		case 6:
 			mc.displayGuiScreen(new GuiStats(this, mc.statFileWriter));
 		}
 	}

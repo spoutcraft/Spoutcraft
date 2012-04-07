@@ -372,7 +372,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 
-		drawString(this.fontRenderer, "1.2.4", (int)(this.width * 0.034f), this.height - 20, 0xffffff);
+		drawString(this.fontRenderer, "1.2.5", (int)(this.width * 0.034f), this.height - 20, 0xffffff);
 		drawString(this.fontRenderer, "Copyright Mojang AB", (int)(this.width * 0.034f), this.height - 10, 0x808080);
 
 		String version = Long.toString(SpoutClient.getClientVersion());

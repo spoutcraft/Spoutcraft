@@ -23,7 +23,7 @@ public abstract class PlayerController {
 			var5.playAuxSFX(2001, par1, par2, par3, var6.blockID + (var5.getBlockMetadata(par1, par2, par3) << 12));
 			int var7 = var5.getBlockMetadata(par1, par2, par3);
 			boolean var8 = var5.setBlockWithNotify(par1, par2, par3, 0);
-			if (var6 != null && var8) {
+			if (var8) {
 				var6.onBlockDestroyedByPlayer(var5, par1, par2, par3, var7);
 			}
 

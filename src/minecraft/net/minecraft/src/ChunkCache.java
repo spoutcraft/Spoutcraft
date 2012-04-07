@@ -153,8 +153,8 @@ public class ChunkCache implements IBlockAccess {
 		return var4 == 0?Material.air:Block.blocksList[var4].blockMaterial;
 	}
 
-	public BiomeGenBase func_48454_a(int par1, int par2) {
-		return this.worldObj.func_48454_a(par1, par2);
+	public BiomeGenBase getBiomeGenForCoords(int par1, int par2) {
+		return this.worldObj.getBiomeGenForCoords(par1, par2);
 	}
 
 	public boolean isBlockOpaqueCube(int par1, int par2, int par3) {
@@ -235,7 +235,7 @@ public class ChunkCache implements IBlockAccess {
 		}
 	}
 
-	public int getWorldHeight() {
+	public int getHeight() {
 		return 256;
 	}
 

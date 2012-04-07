@@ -189,11 +189,11 @@ public class GuiChat extends GuiScreen
 			}
 		}
 
-		if (mc.ingameGUI.field_933_a == null)
-		{
-			super.mouseClicked(par1, par2, par3);
-			return;
-		}
+//		if (mc.ingameGUI.field_933_a == null)
+//		{
+//			super.mouseClicked(par1, par2, par3);
+//			return;
+//		}
 		
 		
 
@@ -204,7 +204,7 @@ public class GuiChat extends GuiScreen
 //		}
 		//Spout Improved Chat End
 
-		message += mc.ingameGUI.field_933_a;
+		//message += mc.ingameGUI.field_933_a;
 		byte byte0 = 100;
 
 		if (message.length() > byte0)

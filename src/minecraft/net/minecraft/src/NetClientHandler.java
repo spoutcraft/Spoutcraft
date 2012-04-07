@@ -44,18 +44,18 @@ public class NetClientHandler extends NetHandler {
 	long timeout = System.currentTimeMillis() + 5000;
 	// Spout end
 	
-	public NetClientHandler(Minecraft var1, String var2, int var3) throws UnknownHostException, IOException {
-		this.mc = var1;
+	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws UnknownHostException, IOException {
+		this.mc = par1Minecraft;
 		
 		// Spout start
-		InetSocketAddress address = NetworkUtils.resolve(var2, var3);
+		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
 		if (address.isUnresolved()) {
 			throw new UnknownHostException(address.getHostName());
 		}
 		this.netManager = new NetworkManager(new Socket(address.getAddress(), address.getPort()), "Client", this);
 		
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = var2;
-		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = var3;
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str;
+		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3;
 		//Spout end
 	}
 
@@ -550,7 +550,7 @@ public class NetClientHandler extends NetHandler {
 		var10.serverPosX = par1Packet24MobSpawn.xPosition;
 		var10.serverPosY = par1Packet24MobSpawn.yPosition;
 		var10.serverPosZ = par1Packet24MobSpawn.zPosition;
-		var10.prevRotationYaw2 = (float)(par1Packet24MobSpawn.field_48169_h * 360) / 256.0F;
+		var10.rotationYawHead = (float)(par1Packet24MobSpawn.field_48169_h * 360) / 256.0F;
 		Entity[] var11 = var10.getParts();
 		if (var11 != null) {
 			int var12 = par1Packet24MobSpawn.entityId - var10.entityId;
@@ -632,57 +632,57 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleOpenWindow(Packet100OpenWindow par1Packet100OpenWindow) {
-		if (par1Packet100OpenWindow.inventoryType == 0) {
-			InventoryBasic var2 = new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.slotsCount);
-			this.mc.thePlayer.displayGUIChest(var2);
-			this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-		} else if (par1Packet100OpenWindow.inventoryType == 2) {
-			TileEntityFurnace var3 = new TileEntityFurnace();
-			this.mc.thePlayer.displayGUIFurnace(var3);
-			this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-		} else if (par1Packet100OpenWindow.inventoryType == 5) {
-			TileEntityBrewingStand var4 = new TileEntityBrewingStand();
-			this.mc.thePlayer.displayGUIBrewingStand(var4);
-			this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-		} else if (par1Packet100OpenWindow.inventoryType == 3) {
-			TileEntityDispenser var5 = new TileEntityDispenser();
-			this.mc.thePlayer.displayGUIDispenser(var5);
-			this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-		} else {
-			EntityPlayerSP var6;
-			if (par1Packet100OpenWindow.inventoryType == 1) {
-				var6 = this.mc.thePlayer;
-				this.mc.thePlayer.displayWorkbenchGUI(MathHelper.floor_double(var6.posX), MathHelper.floor_double(var6.posY), MathHelper.floor_double(var6.posZ));
-				this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-			} else if (par1Packet100OpenWindow.inventoryType == 4) {
-				var6 = this.mc.thePlayer;
-				this.mc.thePlayer.displayGUIEnchantment(MathHelper.floor_double(var6.posX), MathHelper.floor_double(var6.posY), MathHelper.floor_double(var6.posZ));
-				this.mc.thePlayer.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
-			}
+		EntityPlayerSP var2 = this.mc.thePlayer;
+		switch(par1Packet100OpenWindow.inventoryType) {
+		case 0:
+			var2.displayGUIChest(new InventoryBasic(par1Packet100OpenWindow.windowTitle, par1Packet100OpenWindow.slotsCount));
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+			break;
+		case 1:
+			var2.displayWorkbenchGUI(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+			break;
+		case 2:
+			var2.displayGUIFurnace(new TileEntityFurnace());
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+			break;
+		case 3:
+			var2.displayGUIDispenser(new TileEntityDispenser());
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+			break;
+		case 4:
+			var2.displayGUIEnchantment(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
+			break;
+		case 5:
+			var2.displayGUIBrewingStand(new TileEntityBrewingStand());
+			var2.craftingInventory.windowId = par1Packet100OpenWindow.windowId;
 		}
 	}
 
 	public void handleSetSlot(Packet103SetSlot par1Packet103SetSlot) {
+		EntityPlayerSP var2 = this.mc.thePlayer;
 		if (par1Packet103SetSlot.windowId == -1) {
-			this.mc.thePlayer.inventory.setItemStack(par1Packet103SetSlot.myItemStack);
+			var2.inventory.setItemStack(par1Packet103SetSlot.myItemStack);
 		} else if (par1Packet103SetSlot.windowId == 0 && par1Packet103SetSlot.itemSlot >= 36 && par1Packet103SetSlot.itemSlot < 45) {
-			ItemStack var2 = this.mc.thePlayer.inventorySlots.getSlot(par1Packet103SetSlot.itemSlot).getStack();
-			if (par1Packet103SetSlot.myItemStack != null && (var2 == null || var2.stackSize < par1Packet103SetSlot.myItemStack.stackSize)) {
+			ItemStack var3 = var2.inventorySlots.getSlot(par1Packet103SetSlot.itemSlot).getStack();
+			if (par1Packet103SetSlot.myItemStack != null && (var3 == null || var3.stackSize < par1Packet103SetSlot.myItemStack.stackSize)) {
 				par1Packet103SetSlot.myItemStack.animationsToGo = 5;
 			}
 
-			this.mc.thePlayer.inventorySlots.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
-		} else if (par1Packet103SetSlot.windowId == this.mc.thePlayer.craftingInventory.windowId) {
-			this.mc.thePlayer.craftingInventory.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
+			var2.inventorySlots.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
+		} else if (par1Packet103SetSlot.windowId == var2.craftingInventory.windowId) {
+			var2.craftingInventory.putStackInSlot(par1Packet103SetSlot.itemSlot, par1Packet103SetSlot.myItemStack);
 		}
 	}
 
 	public void handleTransaction(Packet106Transaction par1Packet106Transaction) {
 		Container var2 = null;
+		EntityPlayerSP var3 = this.mc.thePlayer;
 		if (par1Packet106Transaction.windowId == 0) {
-			var2 = this.mc.thePlayer.inventorySlots;
-		} else if (par1Packet106Transaction.windowId == this.mc.thePlayer.craftingInventory.windowId) {
-			var2 = this.mc.thePlayer.craftingInventory;
+			var2 = var3.inventorySlots;
+		} else if (par1Packet106Transaction.windowId == var3.craftingInventory.windowId) {
+			var2 = var3.craftingInventory;
 		}
 
 		if (var2 != null) {
@@ -696,10 +696,11 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleWindowItems(Packet104WindowItems par1Packet104WindowItems) {
+		EntityPlayerSP var2 = this.mc.thePlayer;
 		if (par1Packet104WindowItems.windowId == 0) {
-			this.mc.thePlayer.inventorySlots.putStacksInSlots(par1Packet104WindowItems.itemStack);
-		} else if (par1Packet104WindowItems.windowId == this.mc.thePlayer.craftingInventory.windowId) {
-			this.mc.thePlayer.craftingInventory.putStacksInSlots(par1Packet104WindowItems.itemStack);
+			var2.inventorySlots.putStacksInSlots(par1Packet104WindowItems.itemStack);
+		} else if (par1Packet104WindowItems.windowId == var2.craftingInventory.windowId) {
+			var2.craftingInventory.putStacksInSlots(par1Packet104WindowItems.itemStack);
 		}
 	}
 
@@ -712,7 +713,7 @@ public class NetClientHandler extends NetHandler {
 					for (int var4 = 0; var4 < 4; ++var4) {
 						var3.signText[var4] = par1Packet130UpdateSign.signLines[var4];
 					}
-	
+					
 					var3.onInventoryChanged();
 					
 					//Spout start
@@ -733,9 +734,10 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleUpdateProgressbar(Packet105UpdateProgressbar par1Packet105UpdateProgressbar) {
+		EntityPlayerSP var2 = this.mc.thePlayer;
 		this.registerPacket(par1Packet105UpdateProgressbar);
-		if (this.mc.thePlayer.craftingInventory != null && this.mc.thePlayer.craftingInventory.windowId == par1Packet105UpdateProgressbar.windowId) {
-			this.mc.thePlayer.craftingInventory.updateProgressBar(par1Packet105UpdateProgressbar.progressBar, par1Packet105UpdateProgressbar.progressBarValue);
+		if (var2.craftingInventory != null && var2.craftingInventory.windowId == par1Packet105UpdateProgressbar.windowId) {
+			var2.craftingInventory.updateProgressBar(par1Packet105UpdateProgressbar.progressBar, par1Packet105UpdateProgressbar.progressBarValue);
 		}
 	}
 
@@ -755,20 +757,21 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleBed(Packet70Bed par1Packet70Bed) {
-		int var2 = par1Packet70Bed.bedState;
-		if (var2 >= 0 && var2 < Packet70Bed.bedChat.length && Packet70Bed.bedChat[var2] != null) {
-			this.mc.thePlayer.addChatMessage(Packet70Bed.bedChat[var2]);
+		EntityPlayerSP var2 = this.mc.thePlayer;
+		int var3 = par1Packet70Bed.bedState;
+		if (var3 >= 0 && var3 < Packet70Bed.bedChat.length && Packet70Bed.bedChat[var3] != null) {
+			var2.addChatMessage(Packet70Bed.bedChat[var3]);
 		}
 
-		if (var2 == 1) {
+		if (var3 == 1) {
 			this.worldClient.getWorldInfo().setRaining(true);
 			this.worldClient.setRainStrength(1.0F);
-		} else if (var2 == 2) {
+		} else if (var3 == 2) {
 			this.worldClient.getWorldInfo().setRaining(false);
 			this.worldClient.setRainStrength(0.0F);
-		} else if (var2 == 3) {
+		} else if (var3 == 3) {
 			((PlayerControllerMP)this.mc.playerController).setCreative(par1Packet70Bed.gameMode == 1);
-		} else if (var2 == 4) {
+		} else if (var3 == 4) {
 			this.mc.displayGuiScreen(new GuiWinGame());
 		}
 	}
@@ -830,9 +833,10 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void func_50100_a(Packet202PlayerAbilities par1Packet202PlayerAbilities) {
-		this.mc.thePlayer.capabilities.isFlying = par1Packet202PlayerAbilities.field_50070_b;
-		this.mc.thePlayer.capabilities.isCreativeMode = par1Packet202PlayerAbilities.field_50069_d;
-		this.mc.thePlayer.capabilities.disableDamage = par1Packet202PlayerAbilities.field_50072_a;
-		this.mc.thePlayer.capabilities.allowFlying = par1Packet202PlayerAbilities.field_50071_c;
+		EntityPlayerSP var2 = this.mc.thePlayer;
+		var2.capabilities.isFlying = par1Packet202PlayerAbilities.field_50070_b;
+		var2.capabilities.isCreativeMode = par1Packet202PlayerAbilities.field_50069_d;
+		var2.capabilities.disableDamage = par1Packet202PlayerAbilities.field_50072_a;
+		var2.capabilities.allowFlying = par1Packet202PlayerAbilities.field_50071_c;
 	}
 }

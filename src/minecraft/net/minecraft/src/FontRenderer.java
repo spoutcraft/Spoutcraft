@@ -7,10 +7,12 @@ import java.text.Bidi;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
 public class FontRenderer {
+	private static final Pattern field_52015_r = Pattern.compile("(?i)\\u00A7[0-9A-FK-OR]");
 	private int[] charWidth = new int[256];
 	public int fontTextureName = 0;
 	public int FONT_HEIGHT = 8;
@@ -154,7 +156,7 @@ public class FontRenderer {
 
 		BufferedImage var2;
 		try {
-			var2 = ImageIO.read(RenderEngine.class.getResourceAsStream(var3.toString()));
+			var2 = ImageIO.read(RenderEngine.class.getResourceAsStream(var3));
 		} catch (IOException var5) {
 			throw new RuntimeException(var5);
 		}
@@ -198,14 +200,8 @@ public class FontRenderer {
 			return (var7 - var6) / 2.0F + 1.0F;
 		}
 	}
-	
-//Spout start
-	public int drawStringWithShadow(String par1Str, int par2, int par3, int par4) {
-		return func_50103_a(par1Str, par2, par3, par4);
-	}
-//Spout end
 
-	public int func_50103_a(String par1Str, int par2, int par3, int par4) {
+	public int drawStringWithShadow(String par1Str, int par2, int par3, int par4) {
 		if (this.bidiFlag) {
 			par1Str = this.bidiReorder(par1Str);
 		}
@@ -699,7 +695,7 @@ public class FontRenderer {
 		int var3 = par0Str.length();
 
 		while ((var2 = par0Str.indexOf(167, var2 + 1)) != -1) {
-			if (var2 != var3) {
+			if (var2 < var3 - 1) {
 				char var4 = par0Str.charAt(var2 + 1);
 				if (func_50110_b(var4)) {
 					var1 = "\u00a7" + var4;
@@ -710,5 +706,9 @@ public class FontRenderer {
 		}
 
 		return var1;
+	}
+
+	public static String func_52014_d(String par0Str) {
+		return field_52015_r.matcher(par0Str).replaceAll("");
 	}
 }

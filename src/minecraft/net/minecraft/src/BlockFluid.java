@@ -40,7 +40,7 @@ public abstract class BlockFluid extends Block {
 				for (int var9 = -1; var9 <= 1; ++var9) {
 					int var10;
 					if(!ConfigReader.waterBiomeColors) {
-						var10 = par1IBlockAccess.getWorldChunkManager().getBiomeGenAt(par2 + var9, par4 + var8).waterColorMultiplier;
+						var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
 					}
 					else {
 						 var10 = Colorizer.colorizeWater(par1IBlockAccess.getWorldChunkManager(), par2 + var9, par4 + var8);

@@ -176,10 +176,8 @@ public class GuiScreen extends Gui
 		{
 			java.awt.datatransfer.Transferable transferable = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
-			if (transferable != null && transferable.isDataFlavorSupported(java.awt.datatransfer.DataFlavor.stringFlavor))
-			{
-				String s = (String)transferable.getTransferData(java.awt.datatransfer.DataFlavor.stringFlavor);
-				return s;
+			if (transferable != null && transferable.isDataFlavorSupported(java.awt.datatransfer.DataFlavor.stringFlavor)) {
+				return (String)transferable.getTransferData(java.awt.datatransfer.DataFlavor.stringFlavor);
 			}
 		}
 		catch (Exception exception) { }
@@ -868,8 +866,8 @@ public class GuiScreen extends Gui
 		tessellator.setColorOpaque_I(0x404040);
 		tessellator.addVertexWithUV(0.0D, height, 0.0D, 0.0D, (float)height / f + (float)par1);
 		tessellator.addVertexWithUV(width, height, 0.0D, (float)width / f, (float)height / f + (float)par1);
-		tessellator.addVertexWithUV(width, 0.0D, 0.0D, (float)width / f, 0 + par1);
-		tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0 + par1);
+		tessellator.addVertexWithUV(width, 0.0D, 0.0D, (float)width / f, par1);
+		tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, par1);
 		tessellator.draw();
 	}
 
@@ -884,7 +882,7 @@ public class GuiScreen extends Gui
 	/**
 	 * Deletes the selected world.
 	 */
-	public void deleteWorld(boolean flag, int i)
+	public void confirmClicked(boolean flag, int i)
 	{
 	}
 

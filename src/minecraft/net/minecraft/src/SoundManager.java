@@ -171,7 +171,7 @@ public class SoundManager {
 	}
 
 	public void playStreaming(String par1Str, float par2, float par3, float par4, float par5, float par6) {
-		if (loaded && this.options.soundVolume != 0.0F) {
+		if (loaded && (this.options.soundVolume != 0.0F || par1Str == null)) {
 			String var7 = "streaming";
 			if (sndSystem.playing("streaming")) {
 				sndSystem.stop("streaming");

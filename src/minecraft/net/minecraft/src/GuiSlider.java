@@ -45,7 +45,7 @@ public class GuiSlider extends GuiButton
 
 		if (dragging)
 		{
-			sliderValue = (float)(par2 - (xPosition + 4)) / (float)(width - 8);
+			sliderValue = (float)(par2 - (xPosition + 4)) / (float)(field_52008_a - 8);
 
 			if (sliderValue < 0.0F)
 			{
@@ -62,8 +62,8 @@ public class GuiSlider extends GuiButton
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		drawTexturedModalRect(xPosition + (int)(sliderValue * (float)(width - 8)), yPosition, 0, 66, 4, 20);
-		drawTexturedModalRect(xPosition + (int)(sliderValue * (float)(width - 8)) + 4, yPosition, 196, 66, 4, 20);
+		drawTexturedModalRect(xPosition + (int)(sliderValue * (float)(field_52008_a - 8)), yPosition, 0, 66, 4, 20);
+		drawTexturedModalRect(xPosition + (int)(sliderValue * (float)(field_52008_a - 8)) + 4, yPosition, 196, 66, 4, 20);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class GuiSlider extends GuiButton
 				return true;
 			}
 			//Spout End
-			sliderValue = (float)(par2 - (xPosition + 4)) / (float)(width - 8);
+			sliderValue = (float)(par2 - (xPosition + 4)) / (float)(field_52008_a - 8);
 
 			if (sliderValue < 0.0F)
 			{

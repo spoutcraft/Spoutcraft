@@ -36,10 +36,6 @@ public class EntityDropParticleFX extends EntityFX {
 		this.motionX = this.motionY = this.motionZ = 0.0D;
 	}
 
-	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7) {
-		super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
-	}
-
 	public int getBrightnessForRender(float par1) {
 		return this.materialType == Material.water?super.getBrightnessForRender(par1):257;
 	}

@@ -805,7 +805,6 @@ field_22077_f,width,0,
 field_22078_e,yPos,0,
 field_22079_d,xPos,0,
 field_22080_c,fontRenderer,0,Have the font renderer from GuiScreen to render the textbox text into the screen.
-field_22081_b,isEnabled,0,"If this value is true along isFocused, keyTyped will process the keys."
 field_22082_a,isFocused,0,"If this value is true along isEnabled, keyTyped will process the keys."
 field_22095_r,buttonRename,0,the rename button in the world selection gui
 field_22096_q,deleting,0,set to true if you arein the process of deleteing a world/save
@@ -1169,7 +1168,6 @@ field_270_aq,painting,0,
 field_27103_i,haveAchiement,0,
 field_27104_h,itemRender,0,"Holds a instance of RenderItem, used to draw the achievement icons on screen (is based on ItemStack)"
 field_27105_f,theAchievement,0,Holds the achievement that will be displayed on the GUI.
-field_27107_l,parentGuiScreen,0,"Holds the GuiScreen that the textfield is attached, used for tab purposes."
 field_27113_p,guiMapY,0,The y position of the achievement map
 field_27114_o,guiMapX,0,The x position of the achievement map
 field_27117_l,mouseY,0,The current mouse y coordinate
@@ -2528,13 +2526,13 @@ field_457_a,random,0,
 field_459_b,isOptimalFlowDirection,0,Indicates whether the flow direction is optimal. Each array index corresponds to one of the four cardinal directions.
 field_46001_c,hasMadeChest,0,
 field_46002_a,chestLoot,0,
-field_46015_bf,prevRotationYaw2,0,
-field_46016_bg,prevRotationYaw3,0,
+field_46015_bf,rotationYawHead,0,Entity head rotation yaw
+field_46016_bg,prevRotationYawHead,0,Entity head rotation yaw at previous tick
 field_46017_d,lookHelper,0,
 field_46018_e,moveHelper,0,
 field_46019_bU,tasks,0,
 field_46020_bQ,entityLivingToAttack,0,"is only being set, has no uses as of MC 1.1"
-field_46021_am,jumpHelper,0,
+field_46021_am,jumpHelper,0,Entity jumping helper
 field_46026_at,damage,0,
 field_46029_e,doneButton,0,This GUI's 'Done' button.
 field_46031_f,terrainType,0,
@@ -2562,10 +2560,14 @@ field_46061_b,primaryColor,0,Base color of the egg
 field_46062_c,secondaryColor,0,Color of the egg spots
 field_46063_a,spawnedID,0,The entityID of the spawned mob
 field_46067_b,terrainType,0,
+field_46073_d,speed,0,
 field_46074_b,worldObj,0,
+field_46075_c,currentPath,0,The PathEntity being followed.
 field_46076_a,theEntity,0,
 field_46085_a,mutexBits,0,"A bitmask telling which other tasks may not run concurrently. The test is a simple bitwise AND - if it yields zero, the two tasks may run concurrently, if not - they must run exclusively from each other."
 field_46086_d,idleTime,0,A decrementing tick that stops the entity from being idle once it reaches 0.
+field_46087_b,lookX,0,X offset to look at
+field_46088_c,lookZ,0,Z offset to look at
 field_46089_a,idleEntity,0,The entity that is looking idle.
 field_46094_c,entityTarget,0,
 field_46095_a,worldObj,0,
@@ -2662,6 +2664,8 @@ field_48256_a,entityObj,0,
 field_48259_d,theAnimal,0,
 field_48260_e,targetMate,0,
 field_48263_a,theWorld,0,
+field_48267_b,attacker,0,
+field_48268_h,classTarget,0,
 field_48277_a,temptedEntity,0,The entity using this AI that is tempted by the player.
 field_48278_l,scaredByPlayerMovement,0,Whether the entity using this AI will be scared by the tempter's sudden movement.
 field_48281_k,breedingFood,0,This field saves the ID of the items that can be used to breed entities with this behaviour.
@@ -2679,6 +2683,8 @@ field_48302_a,theCreature,0,
 field_48304_g,petPathfinder,0,
 field_48305_d,thePet,0,
 field_48306_e,theOwner,0,
+field_48307_b,maxDist,0,
+field_48308_c,minDist,0,
 field_48309_a,theWorld,0,
 field_48321_d,entityPosZ,0,
 field_48322_e,targetDoor,0,
@@ -2803,6 +2809,14 @@ field_48636_c,FLAT,0,Flat world type.
 field_48637_a,worldTypes,0,List of world types.
 field_48649_b,currentPathIndex,0,PathEntity Array Index the Entity is currently targeting
 field_48681_f,noSunPathfind,0,
+field_48682_g,totalTicks,0,"Time, in number of ticks, following the current path"
+field_48683_e,pathSearchRange,0,The number of blocks (extra) +/- in each axis that get pulled out as cache for the pathfinder's search space
+field_48684_l,avoidsWater,0,If water blocks are avoided (at least by the pathfinder)
+field_48685_m,canSwim,0,If the entity can swim. Swimming AI enables this and the pathfinder will also cause the entity to swim straight upwards when underwater
+field_48686_j,canPassOpenWoodenDoors,0,"Specifically, if a wooden door block is even considered to be passable by the pathfinder"
+field_48687_k,canPassClosedWoodenDoors,0,If door blocks are considered passable even when closed
+field_48688_h,ticksAtLastPos,0,The time when the last position check was done (to detect successful movement)
+field_48689_i,lastPosCheck,0,Coordinates of the entity's position last time a check was done (part of monitoring getting 'stuck')
 field_486_g,rotating,0,Boolean set to true if the entity is rotating.
 field_48716_f,blockMetadataArray,0,Stores the metadata associated with blocks in this ExtendedBlockStorage.
 field_48717_g,blocklightArray,0,The NibbleArray containing a block of Block-light data.
@@ -2822,6 +2836,7 @@ field_493_e,metadata,0,Metadata of the block.
 field_494_d,type,0,The new block type for the block.
 field_495_c,zPosition,0,Block Z position.
 field_499_b,xPosition,0,The X position of the object.
+field_50099_c,nameinLowerCase,0,Player name in lowercase.
 field_500_a,entityId,0,Entity ID of the object.
 field_501_e,type,0,The type of object.
 field_502_d,zPosition,0,The Z position of the object.
@@ -3398,8 +3413,6 @@ field_981_l,lowerChestInventory,0,
 field_982_j,upperChestInventory,0,
 field_983_a,netHandler,0,Network object that downloads the terrain data.
 field_984_h,updateCounter,0,Counts the number of screen updates.
-field_985_a,message,0,The chat message.
-field_986_h,updateCounter,0,Counts the number of screen updates. Used to make the caret flash.
 field_989_j,updateCounter,0,Counts the number of screen updates.
 field_992_a,errorMessage,0,The error message.
 field_993_h,errorDetail,0,The details about the error.
@@ -4235,7 +4248,7 @@ field_35340_c,expandsZ,1,
 field_35341_a,doorType,1,
 field_35345_a,doorType,1,
 field_35347_b,roomType,1,
-field_35348_c,chestloot,1,
+field_35348_c,chestLoot,1,
 field_35349_a,doorType,1,
 field_35355_a,doorType,1,
 field_35356_a,chidStructures,1,
@@ -4928,12 +4941,13 @@ field_46006_a,chestLoot,1,
 field_46011_m,damage,1,
 field_46024_aI,entityLivingToAttack,1,"is only being set, has no uses as of MC 1.1"
 field_46025_aM,tasks,1,
-field_46026_Y,prevRotationYaw3,1,
-field_46027_X,prevRotationYaw2,1,
-field_46028_f,jumpHelper,1,
+field_46026_Y,prevRotationYawHead,1,Entity head rotation yaw at previous tick
+field_46027_X,rotationYawHead,1,Entity head rotation yaw
+field_46028_f,jumpHelper,1,Entity jumping helper
 field_46030_d,lookHelper,1,
 field_46031_e,moveHelper,1,
 field_46037_b,worldObj,1,
+field_46038_c,currentPath,1,The PathEntity being followed.
 field_46039_a,theEntity,1,
 field_46043_d,villageGen,1,
 field_46044_b,random,1,
@@ -4966,6 +4980,8 @@ field_46099_a,worldObj,1,
 field_46104_a,entity,1,
 field_46105_a,theEntity,1,
 field_46111_d,idleTime,1,A decrementing tick that stops the entity from being idle once it reaches 0.
+field_46112_b,lookX,1,X offset to look at
+field_46113_c,lookZ,1,Z offset to look at
 field_46114_a,idleEntity,1,The entity that is looking idle.
 field_46117_b,isJumping,1,
 field_46118_a,entity,1,
@@ -5069,6 +5085,8 @@ field_48244_a,swellingCreeper,1,The creeper that is swelling.
 field_48246_g,petPathfinder,1,
 field_48247_d,thePet,1,
 field_48248_e,theOwner,1,
+field_48249_b,maxDist,1,
+field_48250_c,minDist,1,
 field_48251_a,theWorld,1,
 field_48255_f,theWorld,1,
 field_48256_d,shelterZ,1,

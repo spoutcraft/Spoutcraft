@@ -83,12 +83,20 @@ public class ContainerFurnace extends Container {
 				}
 
 				var3.func_48433_a(var4, var2);
-			} else if (par1 >= 3 && par1 < 30) {
-				if (!this.mergeItemStack(var4, 30, 39, false)) {
-					return null;
-				}
-			} else if (par1 >= 30 && par1 < 39) {
-				if (!this.mergeItemStack(var4, 3, 30, false)) {
+			} else if (par1 != 1 && par1 != 0) {
+				if (FurnaceRecipes.smelting().getSmeltingResult(var4.getItem().shiftedIndex) != null) {
+					if (!this.mergeItemStack(var4, 0, 1, false)) {
+						return null;
+					}
+				} else if (TileEntityFurnace.func_52005_b(var4)) {
+					if (!this.mergeItemStack(var4, 1, 2, false)) {
+						return null;
+					}
+				} else if (par1 >= 3 && par1 < 30) {
+					if (!this.mergeItemStack(var4, 30, 39, false)) {
+						return null;
+					}
+				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false)) {
 					return null;
 				}
 			} else if (!this.mergeItemStack(var4, 3, 39, false)) {

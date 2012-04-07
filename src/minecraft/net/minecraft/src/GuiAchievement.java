@@ -149,7 +149,7 @@ public class GuiAchievement extends Gui {
 
 		double d = (double) (System.currentTimeMillis() - achievementTime) / 3000D;
 
-		if (!haveAchiement && !haveAchiement && (d < 0.0D || d > 1.0D)) {
+		if (!haveAchiement && (d < 0.0D || d > 1.0D)) {
 			achievementTime = 0L;
 			return;
 		}

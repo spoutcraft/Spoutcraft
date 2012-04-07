@@ -21,9 +21,9 @@ public interface IBlockAccess {
 
 	boolean isAirBlock(int var1, int var2, int var3);
 
-	BiomeGenBase func_48454_a(int var1, int var2);
+	BiomeGenBase getBiomeGenForCoords(int var1, int var2);
 
-	int getWorldHeight();
+	int getHeight();
 
 	boolean func_48452_a();
 

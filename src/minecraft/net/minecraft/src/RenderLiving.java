@@ -64,7 +64,7 @@ public class RenderLiving extends Render {
 
 		try {
 			float var10 = this.func_48418_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-			float var11 = this.func_48418_a(par1EntityLiving.prevRotationYaw3, par1EntityLiving.prevRotationYaw2, par9);
+			float var11 = this.func_48418_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
 			float var12 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
 			this.renderLivingAt(par1EntityLiving, par2, par4, par6);
 			float var13 = this.handleRotationFloat(par1EntityLiving, par9);

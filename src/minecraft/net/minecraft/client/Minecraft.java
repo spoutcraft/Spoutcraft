@@ -129,6 +129,7 @@ public abstract class Minecraft implements Runnable {
 		this.tempDisplayHeight = par5;
 		this.fullscreen = par6;
 		this.mcApplet = par3MinecraftApplet;
+		Packet3Chat.field_52010_b = 32767;
 		new ThreadClientSleep(this, "Timer hack thread");
 		this.mcCanvas = par2Canvas;
 		this.displayWidth = par4;
@@ -185,7 +186,8 @@ public abstract class Minecraft implements Runnable {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.2.4");
+		Display.setTitle("Minecraft Minecraft 1.2.5");
+		System.out.println("LWJGL Version: " + Sys.getVersion());
 
 		try {
 			PixelFormat var7 = new PixelFormat();
@@ -243,6 +245,7 @@ public abstract class Minecraft implements Runnable {
 			var4.printStackTrace();
 		}
 
+		func_52004_D();
 		this.checkGLError("Pre startup");
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -634,18 +637,6 @@ public abstract class Minecraft implements Runnable {
 			// Spout end
 			AxisAlignedBB.clearBoundingBoxPool();
 			Vec3D.initialize();
-			PlayerUsageSnooper.field_48478_a.func_48472_a();
-			if (this.playerController == null) {
-				PlayerUsageSnooper.field_48478_a.func_48474_a("mode", "title");
-			} else if (this.playerController instanceof PlayerControllerCreative) {
-				PlayerUsageSnooper.field_48478_a.func_48474_a("mode", "single_creative");
-			} else if (this.playerController instanceof PlayerControllerDemo) {
-				PlayerUsageSnooper.field_48478_a.func_48474_a("mode", "single_demo");
-			} else if (this.playerController instanceof PlayerControllerSP) {
-				PlayerUsageSnooper.field_48478_a.func_48474_a("mode", "single_survival");
-			} else if (this.playerController instanceof PlayerControllerMP) {
-				PlayerUsageSnooper.field_48478_a.func_48474_a("mode", "multiplayer");
-			}
 
 			Profiler.startSection("root");
 			if (this.mcCanvas == null && Display.isCloseRequested()) {
@@ -1861,7 +1852,7 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	public static void startMainThread1(String par0Str, String par1Str) {
-			startMainThread(par0Str, par1Str, (String) null);
+		startMainThread(par0Str, par1Str, (String) null);
 	}
 
 	public static void startMainThread(String par0Str, String par1Str, String par2Str) {
@@ -1890,7 +1881,6 @@ public abstract class Minecraft implements Runnable {
 
 		var5.setVisible(true);
 		var5.addWindowListener(new GameWindowListener(var7, var8));
-		System.out.println("LWJGL Version: " + Sys.getVersion());
 		var8.start();
 	}
 
@@ -1940,33 +1930,66 @@ public abstract class Minecraft implements Runnable {
 
 	private void clickMiddleMouseButton() {
 		if (this.objectMouseOver != null) {
-			int var1 = this.theWorld.getBlockId(this.objectMouseOver.blockX, this.objectMouseOver.blockY, this.objectMouseOver.blockZ);
-			if (var1 == Block.grass.blockID) {
-				var1 = Block.dirt.blockID;
+			boolean var1 = this.thePlayer.capabilities.isCreativeMode;
+			int var2 = this.theWorld.getBlockId(this.objectMouseOver.blockX, this.objectMouseOver.blockY, this.objectMouseOver.blockZ);
+			if (!var1) {
+				if (var2 == Block.grass.blockID) {
+					var2 = Block.dirt.blockID;
+				}
+
+				if (var2 == Block.stairDouble.blockID) {
+					var2 = Block.stairSingle.blockID;
+				}
+
+				if (var2 == Block.bedrock.blockID) {
+					var2 = Block.stone.blockID;
+				}
 			}
 
-			if (var1 == Block.stairDouble.blockID) {
-				var1 = Block.stairSingle.blockID;
-			}
-
-			if (var1 == Block.bedrock.blockID) {
-				var1 = Block.stone.blockID;
+			int var3 = 0;
+			boolean var4 = false;
+			if (Item.itemsList[var2] != null && Item.itemsList[var2].getHasSubtypes()) {
+				var3 = this.theWorld.getBlockMetadata(this.objectMouseOver.blockX, this.objectMouseOver.blockY, this.objectMouseOver.blockZ);
+				var4 = true;
 			}
 
 			// Spout start
-			if (Item.itemsList[var1] == null) {
+			if (Item.itemsList[var2] == null) {
 				return;
 			}
 			// Spout end
 
-			int var2 = 0;
-			boolean var3 = false;
-			if (Item.itemsList[var1] != null && Item.itemsList[var1].getHasSubtypes()) {
-				var2 = this.theWorld.getBlockMetadata(this.objectMouseOver.blockX, this.objectMouseOver.blockY, this.objectMouseOver.blockZ);
-				var3 = true;
+			if (Item.itemsList[var2] != null && Item.itemsList[var2] instanceof ItemBlock) {
+				Block var5 = Block.blocksList[var2];
+				int var6 = var5.idDropped(var3, this.thePlayer.worldObj.rand, 0);
+				if (var6 > 0) {
+					var2 = var6;
+				}
 			}
 
-			this.thePlayer.inventory.setCurrentItem(var1, var2, var3, this.playerController instanceof PlayerControllerCreative);
+			this.thePlayer.inventory.setCurrentItem(var2, var3, var4, var1);
+			if (var1) {
+				int var7 = this.thePlayer.inventorySlots.inventorySlots.size() - 9 + this.thePlayer.inventory.currentItem;
+				this.playerController.sendSlotPacket(this.thePlayer.inventory.getStackInSlot(this.thePlayer.inventory.currentItem), var7);
+			}
 		}
+	}
+
+	public static String func_52003_C() {
+		return "1.2.5";
+	}
+
+	public static void func_52004_D() {
+		PlayerUsageSnooper var0 = new PlayerUsageSnooper("client");
+		var0.func_52022_a("version", func_52003_C());
+		var0.func_52022_a("os_name", System.getProperty("os.name"));
+		var0.func_52022_a("os_version", System.getProperty("os.version"));
+		var0.func_52022_a("os_architecture", System.getProperty("os.arch"));
+		var0.func_52022_a("memory_total", Long.valueOf(Runtime.getRuntime().totalMemory()));
+		var0.func_52022_a("memory_max", Long.valueOf(Runtime.getRuntime().maxMemory()));
+		var0.func_52022_a("java_version", System.getProperty("java.version"));
+		var0.func_52022_a("opengl_version", GL11.glGetString(GL11.GL_VERSION));
+		var0.func_52022_a("opengl_vendor", GL11.glGetString(GL11.GL_VENDOR));
+		var0.func_52021_a();
 	}
 }

@@ -1510,7 +1510,7 @@ public class RenderBlocks {
 	}
 
 	public boolean renderBlockPane(BlockPane par1BlockPane, int par2, int par3, int par4) {
-		int var5 = this.blockAccess.getWorldHeight();
+		int var5 = this.blockAccess.getHeight();
 		Tessellator var6 = Tessellator.instance;
 		var6.setBrightness(par1BlockPane.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var7 = 1.0F;

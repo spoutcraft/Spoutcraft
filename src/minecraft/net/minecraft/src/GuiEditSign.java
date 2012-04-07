@@ -298,7 +298,7 @@ public class GuiEditSign extends GuiScreen {
 		GL11.glPopMatrix();
 		super.drawScreen(x, y, z);
 		// Spout start
-		if (unicode.enabled && isInBoundingRect(unicode.xPosition, unicode.yPosition, unicode.height, unicode.width, x, y)) {
+		if (unicode.enabled && isInBoundingRect(unicode.xPosition, unicode.yPosition, unicode.field_52007_b, unicode.field_52008_a, x, y)) {
 			this.drawTooltip("Some servers censor unicode characters. \nIf yours does, try sending as plain text.", x, y);
 		}
 		// Spout end

@@ -7,7 +7,7 @@ public class MovementInputFromOptions extends MovementInput {
 		this.gameSettings = par1GameSettings;
 	}
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {
+	public void func_52013_a(EntityPlayer par1EntityPlayer) { //Spout - kept parameter
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
 		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { //Spout

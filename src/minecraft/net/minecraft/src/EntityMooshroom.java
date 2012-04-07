@@ -24,9 +24,18 @@ public class EntityMooshroom extends EntityCow {
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
 		if (var2 != null && var2.itemID == Item.bowlEmpty.shiftedIndex && this.getGrowingAge() >= 0) {
-			par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bowlSoup));
-			return true;
-		} else if (var2 != null && var2.itemID == Item.shears.shiftedIndex && this.getGrowingAge() >= 0) {
+			if (var2.stackSize == 1) {
+				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bowlSoup));
+				return true;
+			}
+
+			if (par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.bowlSoup)) && !par1EntityPlayer.capabilities.isCreativeMode) {
+				par1EntityPlayer.inventory.decrStackSize(par1EntityPlayer.inventory.currentItem, 1);
+				return true;
+			}
+		}
+
+		if (var2 != null && var2.itemID == Item.shears.shiftedIndex && this.getGrowingAge() >= 0) {
 			this.setDead();
 			this.worldObj.spawnParticle("largeexplode", this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 0.0D, 0.0D, 0.0D);
 			if (!this.worldObj.isRemote) {

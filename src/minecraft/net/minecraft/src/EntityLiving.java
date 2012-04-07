@@ -24,8 +24,8 @@ public abstract class EntityLiving extends Entity {
 	public float field_9363_r;
 	public float renderYawOffset = 0.0F;
 	public float prevRenderYawOffset = 0.0F;
-	public float prevRotationYaw2 = 0.0F;
-	public float prevRotationYaw3 = 0.0F;
+	public float rotationYawHead = 0.0F;
+	public float prevRotationYawHead = 0.0F;
 	protected float field_9362_u;
 	protected float field_9361_v;
 	protected float field_9360_w;
@@ -121,7 +121,7 @@ public abstract class EntityLiving extends Entity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.field_9365_p = (float)Math.random() * 12398.0F;
 		this.rotationYaw = (float)(Math.random() * Math.PI * 2.0D);
-		this.prevRotationYaw2 = this.rotationYaw;
+		this.rotationYawHead = this.rotationYaw;
 		this.stepHeight = 0.5F;
 		//Spout start
 		this.spoutEntity = new CraftLivingEntity(this);
@@ -171,7 +171,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public void func_48079_f(float par1) {
-		this.prevRotationYaw2 = par1;
+		this.rotationYawHead = par1;
 	}
 
 	public float func_48101_aR() {
@@ -355,7 +355,7 @@ public abstract class EntityLiving extends Entity {
 		this.updatePotionEffects();
 		this.field_9359_x = this.field_9360_w;
 		this.prevRenderYawOffset = this.renderYawOffset;
-		this.prevRotationYaw3 = this.prevRotationYaw2;
+		this.prevRotationYawHead = this.rotationYawHead;
 		this.prevRotationYaw = this.rotationYaw;
 		this.prevRotationPitch = this.rotationPitch;
 		Profiler.endSection();
@@ -528,12 +528,12 @@ public abstract class EntityLiving extends Entity {
 			this.prevRotationPitch += 360.0F;
 		}
 
-		while (this.prevRotationYaw2 - this.prevRotationYaw3 < -180.0F) {
-			this.prevRotationYaw3 -= 360.0F;
+		while (this.rotationYawHead - this.prevRotationYawHead < -180.0F) {
+			this.prevRotationYawHead -= 360.0F;
 		}
 
-		while (this.prevRotationYaw2 - this.prevRotationYaw3 >= 180.0F) {
-			this.prevRotationYaw3 += 360.0F;
+		while (this.rotationYawHead - this.prevRotationYawHead >= 180.0F) {
+			this.prevRotationYawHead += 360.0F;
 		}
 
 		this.field_9360_w += var7;
@@ -1064,7 +1064,7 @@ public abstract class EntityLiving extends Entity {
 				Profiler.startSection("oldAi");
 				this.updateEntityActionState();
 				Profiler.endSection();
-				this.prevRotationYaw2 = this.rotationYaw;
+				this.rotationYawHead = this.rotationYaw;
 			}
 		}
 

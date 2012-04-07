@@ -35,12 +35,13 @@ public class ChunkProviderClient implements IChunkProvider {
 	}
 
 	public boolean chunkExists(int var1, int var2) {
-		//Spout start
+		/*Spout start
 		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
 			return last != null;
 		}
 		//Spout end
-		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout
+		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout*/
+		return true;
 	}
 
 	public void func_539_c(int par1, int par2) {

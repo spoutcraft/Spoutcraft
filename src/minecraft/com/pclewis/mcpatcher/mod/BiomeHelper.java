@@ -62,7 +62,7 @@ abstract class BiomeHelper {
 			if (this.lastBiome == null || var1 != this.lastI || var3 != this.lastK) {
 				this.lastI = var1;
 				this.lastK = var3;
-				this.lastBiome = this.blockAccess.func_48454_a(var1, var3);
+				this.lastBiome = this.blockAccess.getBiomeGenForCoords(var1, var3);
 			}
 
 			return this.lastBiome;

@@ -28,7 +28,6 @@ public class GuiIngame extends Gui
 
 	public static final Random rand = new Random(); //Spout private -> public static final
 	private Minecraft mc;
-	public String field_933_a;
 	private int updateCounter;
 
 	/** The string specifying which record music is playing */
@@ -47,7 +46,6 @@ public class GuiIngame extends Gui
 	public GuiIngame(Minecraft par1Minecraft)
 	{
 		//rand = new Random();	//Spout removed
-		field_933_a = null;
 		updateCounter = 0;
 		recordPlaying = "";
 		recordPlayingUpFor = 0;
@@ -81,9 +79,8 @@ public class GuiIngame extends Gui
 			this.renderPumpkinBlur(screenWidth, screenHeight);
 		}
 
-		float var10;
 		if(!this.mc.thePlayer.isPotionActive(Potion.confusion)) {
-			var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
+			float var10 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * f;
 			if(var10 > 0.0F) {
 				this.renderPortalOverlay(var10, screenWidth, screenHeight);
 			}
@@ -596,12 +593,12 @@ public class GuiIngame extends Gui
 		addChatMessage(s);
 	}
 	
-	public boolean func_50015_e() {
+	public boolean isChatOpen() {
 		return this.mc.currentScreen instanceof GuiChat;
 	}
 	
 	public ChatClickData func_50012_a(int par1, int par2) {
-		if (!this.func_50015_e()) {
+		if (!this.isChatOpen()) {
 			return null;
 		} else {
 			ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);

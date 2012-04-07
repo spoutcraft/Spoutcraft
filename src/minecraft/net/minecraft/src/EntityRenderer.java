@@ -362,11 +362,9 @@ public class EntityRenderer {
 		if (this.cameraZoom != 1.0D) {
 			GL11.glTranslatef((float)this.cameraYaw, (float)(-this.cameraPitch), 0.0F);
 			GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
-			GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
-		} else {
-			GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		}
 
+		GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		float var4;
 		if (this.mc.playerController.func_35643_e()) {
 			var4 = 0.6666667F;
@@ -465,11 +463,9 @@ public class EntityRenderer {
 			if (this.cameraZoom != 1.0D) {
 				GL11.glTranslatef((float)this.cameraYaw, (float)(-this.cameraPitch), 0.0F);
 				GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
-				GLU.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
-			} else {
-				GLU.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 			}
 
+			GLU.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 			if (this.mc.playerController.func_35643_e()) {
 				float var4 = 0.6666667F;
 				GL11.glScalef(1.0F, var4, 1.0F);
@@ -1069,7 +1065,7 @@ public class EntityRenderer {
 				int var18 = var6 + this.random.nextInt(var7) - this.random.nextInt(var7);
 				int var19 = var3.getPrecipitationHeight(var17, var18);
 				int var20 = var3.getBlockId(var17, var19 - 1, var18);
-				BiomeGenBase var21 = var3.func_48454_a(var17, var18);
+				BiomeGenBase var21 = var3.getBiomeGenForCoords(var17, var18);
 				if (var19 <= var5 + var7 && var19 >= var5 - var7 && var21.canSpawnLightningBolt() && var21.getFloatTemperature() > 0.2F) {
 					float var22 = this.random.nextFloat();
 					float var23 = this.random.nextFloat();
@@ -1156,7 +1152,7 @@ public class EntityRenderer {
 					int var22 = (var20 - var45 + 16) * 32 + var21 - var43 + 16;
 					float var23 = this.rainXCoords[var22] * 0.5F;
 					float var24 = this.rainYCoords[var22] * 0.5F;
-					BiomeGenBase var25 = var42.func_48454_a(var21, var20);
+					BiomeGenBase var25 = var42.getBiomeGenForCoords(var21, var20);
 					if (var25.canSpawnLightningBolt() || var25.getEnableSnow()) {
 						int var26 = var42.getPrecipitationHeight(var21, var20);
 						int var27 = var44 - var16;

@@ -56,26 +56,24 @@ class GuiSlotServer extends GuiSlot {
 		this.parentGui.drawString(this.parentGui.fontRenderer, var6.host, par2 + 2, par3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.parentGui.mc.renderEngine.bindTexture(this.parentGui.mc.renderEngine.getTexture("/gui/icons.png"));
-		boolean var7 = false;
-		boolean var8 = false;
 		String var9 = "";
-		byte var12;
-		int var13;
+		byte var7;
+		int var8;
 		if (var6.polled && var6.lag != -2L) {
-			var12 = 0;
-			var8 = false;
+			var7 = 0;
+			boolean var12 = false;
 			if (var6.lag < 0L) {
-				var13 = 5;
+				var8 = 5;
 			} else if (var6.lag < 150L) {
-				var13 = 0;
+				var8 = 0;
 			} else if (var6.lag < 300L) {
-				var13 = 1;
+				var8 = 1;
 			} else if (var6.lag < 600L) {
-				var13 = 2;
+				var8 = 2;
 			} else if (var6.lag < 1000L) {
-				var13 = 3;
+				var8 = 3;
 			} else {
-				var13 = 4;
+				var8 = 4;
 			}
 
 			if (var6.lag < 0L) {
@@ -84,16 +82,16 @@ class GuiSlotServer extends GuiSlot {
 				var9 = var6.lag + "ms";
 			}
 		} else {
-			var12 = 1;
-			var13 = (int)(System.currentTimeMillis() / 100L + (long)(par1 * 2) & 7L);
-			if (var13 > 4) {
-				var13 = 8 - var13;
+			var7 = 1;
+			var8 = (int)(System.currentTimeMillis() / 100L + (long)(par1 * 2) & 7L);
+			if (var8 > 4) {
+				var8 = 8 - var8;
 			}
 
 			var9 = "Polling..";
 		}
 
-		this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var12 * 10, 176 + var13 * 8, 10, 8);
+		this.parentGui.drawTexturedModalRect(par2 + 205, par3, 0 + var7 * 10, 176 + var8 * 8, 10, 8);
 		byte var10 = 4;
 		if (this.mouseX >= par2 + 205 - var10 && this.mouseY >= par3 - var10 && this.mouseX <= par2 + 205 + 10 + var10 && this.mouseY <= par3 + 8 + var10) {
 			GuiMultiplayer.setTooltipText(this.parentGui, var9);

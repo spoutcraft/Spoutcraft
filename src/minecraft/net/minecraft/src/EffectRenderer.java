@@ -112,19 +112,19 @@ public class EffectRenderer {
 	}
 
 	public void func_1187_b(Entity par1Entity, float par2) {
-		float var3 = MathHelper.cos(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
-		float var4 = MathHelper.sin(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
-		float var5 = -var4 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
-		float var6 = var3 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
-		float var7 = MathHelper.cos(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
-		byte var8 = 3;
-		if (this.fxLayers[var8].size() != 0) {
-			Tessellator var9 = Tessellator.instance;
+		float var4 = MathHelper.cos(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
+		float var5 = MathHelper.sin(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
+		float var6 = -var5 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		float var7 = var4 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		float var8 = MathHelper.cos(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		byte var9 = 3;
+		if (this.fxLayers[var9].size() != 0) {
+			Tessellator var10 = Tessellator.instance;
 
-			for (int var10 = 0; var10 < this.fxLayers[var8].size(); ++var10) {
-				EntityFX var11 = (EntityFX)this.fxLayers[var8].get(var10);
-				var9.setBrightness(var11.getBrightnessForRender(par2));
-				var11.renderParticle(var9, par2, var3, var7, var4, var5, var6);
+			for (int var11 = 0; var11 < this.fxLayers[var9].size(); ++var11) {
+				EntityFX var12 = (EntityFX)this.fxLayers[var9].get(var11);
+				var10.setBrightness(var12.getBrightnessForRender(par2));
+				var12.renderParticle(var10, par2, var4, var8, var5, var6, var7);
 			}
 		}
 	}

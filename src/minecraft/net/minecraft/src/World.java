@@ -72,7 +72,7 @@ public class World implements IBlockAccess {
 	public SpoutcraftWorld world;
 	//Spout end
 
-	public BiomeGenBase func_48454_a(int par1, int par2) {
+	public BiomeGenBase getBiomeGenForCoords(int par1, int par2) {
 		if (this.blockExists(par1, 0, par2)) {
 			Chunk var3 = this.getChunkFromBlockCoords(par1, par2);
 			if (var3 != null) {
@@ -1138,7 +1138,7 @@ public class World implements IBlockAccess {
 
 		int var5 = MathHelper.floor_double(par1Entity.posX);
 		int var6 = MathHelper.floor_double(par1Entity.posZ);
-		BiomeGenBase var7 = this.func_48454_a(var5, var6);
+		BiomeGenBase var7 = this.getBiomeGenForCoords(var5, var6);
 		float var8 = var7.getFloatTemperature();
 		int var9 = var7.getSkyColorByTemp(var8);
 		//Spout HD start
@@ -2158,7 +2158,7 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean isBlockHydrated(int par1, int par2, int par3, boolean par4) {
-		BiomeGenBase var5 = this.func_48454_a(par1, par3);
+		BiomeGenBase var5 = this.getBiomeGenForCoords(par1, par3);
 		float var6 = var5.getFloatTemperature();
 		if (var6 > 0.15F) {
 			return false;
@@ -2198,7 +2198,7 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean canSnowAt(int par1, int par2, int par3) {
-		BiomeGenBase var4 = this.func_48454_a(par1, par3);
+		BiomeGenBase var4 = this.getBiomeGenForCoords(par1, par3);
 		float var5 = var4.getFloatTemperature();
 		if (var5 > 0.15F) {
 			return false;
@@ -2990,14 +2990,14 @@ public class World implements IBlockAccess {
 		} else if (this.getPrecipitationHeight(par1, par3) > par2) {
 			return false;
 		} else {
-			BiomeGenBase var4 = this.func_48454_a(par1, par3);
+			BiomeGenBase var4 = this.getBiomeGenForCoords(par1, par3);
 			return var4.getEnableSnow()?false:var4.canSpawnLightningBolt();
 		}
 	}
 
-	public boolean func_48455_z(int par1, int par2, int par3) {
-		BiomeGenBase var4 = this.func_48454_a(par1, par3);
-		return var4.func_48413_d();
+	public boolean isBlockHighHumidity(int par1, int par2, int par3) {
+		BiomeGenBase var4 = this.getBiomeGenForCoords(par1, par3);
+		return var4.isHighHumidity();
 	}
 
 	public void setItemData(String par1Str, WorldSavedData par2WorldSavedData) {
@@ -3022,7 +3022,7 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	public int getWorldHeight() {
+	public int getHeight() {
 		return 256;
 	}
 

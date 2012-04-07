@@ -126,7 +126,7 @@ public class GuiMultiplayer extends GuiScreen {
 		}
 	}
 
-	public void deleteWorld(boolean par1, int par2) {
+	public void confirmClicked(boolean par1, int par2) {
 		if (this.deleteClicked) {
 			this.deleteClicked = false;
 			if (par1) {
@@ -323,7 +323,7 @@ public class GuiMultiplayer extends GuiScreen {
 			int var5 = par3 - 12;
 			int var6 = this.fontRenderer.getStringWidth(par1Str);
 			this.drawGradientRect(var4 - 3, var5 - 3, var4 + var6 + 3, var5 + 8 + 3, -1073741824, -1073741824);
-			this.fontRenderer.func_50103_a(par1Str, var4, var5, -1);
+			this.fontRenderer.drawStringWithShadow(par1Str, var4, var5, -1);
 		}
 	}
 

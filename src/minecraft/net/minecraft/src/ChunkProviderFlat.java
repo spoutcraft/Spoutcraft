@@ -90,7 +90,7 @@ public class ChunkProviderFlat implements IChunkProvider {
 	}
 
 	public List getPossibleCreatures(EnumCreatureType par1EnumCreatureType, int par2, int par3, int par4) {
-		BiomeGenBase var5 = this.worldObj.func_48454_a(par2, par4);
+		BiomeGenBase var5 = this.worldObj.getBiomeGenForCoords(par2, par4);
 		return var5 == null?null:var5.getSpawnableList(par1EnumCreatureType);
 	}
 

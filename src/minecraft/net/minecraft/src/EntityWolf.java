@@ -221,7 +221,9 @@ public class EntityWolf extends EntityTameable {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
 		if (!this.isTamed()) {
 			if (var2 != null && var2.itemID == Item.bone.shiftedIndex && !this.isAngry()) {
-				--var2.stackSize;
+				if (!par1EntityPlayer.capabilities.isCreativeMode) {
+					--var2.stackSize;
+				}
 				if (var2.stackSize <= 0) {
 					par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
 				}
@@ -248,7 +250,9 @@ public class EntityWolf extends EntityTameable {
 			if (var2 != null && Item.itemsList[var2.itemID] instanceof ItemFood) {
 				ItemFood var3 = (ItemFood)Item.itemsList[var2.itemID];
 				if (var3.isWolfsFavoriteMeat() && this.dataWatcher.getWatchableObjectInt(18) < 20) {
-					--var2.stackSize;
+					if (!par1EntityPlayer.capabilities.isCreativeMode) {
+						--var2.stackSize;
+					}
 					this.heal(var3.getHealAmount());
 					if (var2.stackSize <= 0) {
 						par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
