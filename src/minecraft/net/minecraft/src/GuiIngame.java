@@ -172,7 +172,7 @@ public class GuiIngame extends Gui
 				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
 			}
 			if (ConfigReader.fastDebug != 2) {
-				font.drawStringWithShadow("Minecraft 1.2.3 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow("Minecraft 1.2.5 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
