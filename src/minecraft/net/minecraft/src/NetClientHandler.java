@@ -27,6 +27,7 @@ import org.spoutcraft.client.util.NetworkUtils;
 // Spout end
 
 import net.minecraft.client.Minecraft;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
 public class NetClientHandler extends NetHandler {
 	private boolean disconnected = false;
@@ -251,6 +252,11 @@ public class NetClientHandler extends NetHandler {
 
 		var10.setPositionAndRotation(var2, var4, var6, var8, var9);
 		this.worldClient.addEntityToWorld(par1Packet20NamedEntitySpawn.entityId, var10);
+		//Spout start: set the entity's title
+		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
+			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+		}
+		//Spout end
 	}
 
 	public void handleEntityTeleport(Packet34EntityTeleport par1Packet34EntityTeleport) {
@@ -567,6 +573,11 @@ public class NetClientHandler extends NetHandler {
 		if (var14 != null) {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var14);
 		}
+		//Spout start: set the entity's title
+		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
+			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
+		}
+		//Spout end
 	}
 
 	public void handleUpdateTime(Packet4UpdateTime par1Packet4UpdateTime) {
