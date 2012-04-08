@@ -145,31 +145,11 @@ public class Shaders {
 	public static boolean isOpenGL2() {
 		try {
 			String version = GL11.glGetString(GL11.GL_VERSION);
-			
-			//may be 3112 (for 3.1.1.2)
-			int num = Integer.parseInt(getNumber(version));
-			
-			//311
-			//31
-			//3
-			while (num > 10) {
-				num %= 10;
-			}
-			return num > 1;
+			return Integer.parseInt(String.valueOf(version.charAt(0))) > 1;
 		}
 		catch (Exception e) {
 			return false;
 		}
-	}
-	
-	public static String getNumber(String s) {
-		String n = "";
-		for (int i = 0; i < s.length(); i++){
-			char c = s.charAt(i);
-			if (Character.isDigit(c))
-				n += c;
-		}
-		return n;
 	}
 
 	public static void destroy() {
