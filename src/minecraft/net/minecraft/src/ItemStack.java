@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
 
 public class ItemStack { //Spout final -> gone
@@ -172,7 +173,7 @@ public class ItemStack { //Spout final -> gone
 				this.itemDamage = 0;
 				
 				//Spout start
-				if (stackSize == 0) {
+				if (stackSize == 0 && ConfigReader.replaceTools) {
 					InventoryUtil.replaceTool(this.itemID);
 				}
 				//Spout end

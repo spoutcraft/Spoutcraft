@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -42,6 +43,9 @@ public class NetClientHandler extends NetHandler {
 	Random rand = new Random();
 	// Spout start
 	long timeout = System.currentTimeMillis() + 5000;
+	public LinkedList<Packet> queue = new LinkedList<Packet>();
+	public long packetQueueTime = 0L;
+	public boolean queued = false;
 	// Spout end
 	
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws UnknownHostException, IOException {
@@ -434,6 +438,23 @@ public class NetClientHandler extends NetHandler {
 
 	public void addToSendQueue(Packet par1Packet) {
 		if (!this.disconnected) {
+			//Spout start
+			if (queued) {
+				int id = par1Packet.getPacketId();
+				//Always must send movement packets :(
+				if (System.currentTimeMillis() < packetQueueTime && (id > 13 || id < 10)) {
+					queue.add(par1Packet);
+					return;
+				}
+				else {
+					queued = false;
+					packetQueueTime = 0L;
+					for (Packet p : queue) {
+						this.netManager.addToSendQueue(p);
+					}
+				}
+			}
+			//Spout end
 			this.netManager.addToSendQueue(par1Packet);
 		}
 	}
