@@ -35,8 +35,10 @@ import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChatAllowedCharacters;
+import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GuiChat;
+import net.minecraft.src.GuiPlayerInfo;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
@@ -223,6 +225,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		return message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> formatChat(String message, boolean display) {
 		final LinkedList<String> lines = new LinkedList<String>();
 		final FontRenderer font = Minecraft.theMinecraft.fontRenderer;
@@ -245,10 +248,37 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 					lastWord = lastWord.substring(0, lastWord.length() - 1);
 				}
 				if (lastWord.length() > 2) {
+					//Check nearby players
 					Player p = SpoutClient.getInstance().getPlayer(lastWord);
-					if (p != null && p.getName().length() > lastWord.length()) {
-						message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + p.getName().substring(lastWord.length()) + ChatColor.RESET;
-						tabHelp = p.getName().substring(lastWord.length());
+					String playerName = p != null ? p.getName() : null;
+					
+					//Check server player list
+					if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
+						int delta = Integer.MAX_VALUE;
+						String best = null;
+						List<GuiPlayerInfo> players = ((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.playerNames;
+						for (GuiPlayerInfo info : players) {
+							String name = ChatColor.stripColor(info.name);
+							if (name.toLowerCase().startsWith(lastWord)) {
+								int curDelta = info.name.length() - lastWord.length();
+								if (curDelta < delta) {
+									best = name;
+									delta = curDelta;
+								}
+								if (curDelta == 0) {
+									break;
+								}
+							}
+						}
+						if (best != null) {
+							playerName = best;
+						}
+					}
+					
+					//Autocomplete
+					if (playerName.length() > lastWord.length()) {
+						message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
+						tabHelp = playerName.substring(lastWord.length());
 					}
 				}
 			}

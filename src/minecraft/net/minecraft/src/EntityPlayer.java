@@ -291,6 +291,9 @@ public abstract class EntityPlayer extends EntityLiving {
 		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Kylegar")) {
 			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
 		}
+		else if (tempName.equalsIgnoreCase("computer22") || tempName.equalsIgnoreCase("Kilakk") || tempName.equalsIgnoreCase("citizendog")) {
+			playerCloakUrl = "http://www.minecraft.biz/cape.png";
+		}
 		else {
 			this.playerCloakUrl = cloak;
 		}
