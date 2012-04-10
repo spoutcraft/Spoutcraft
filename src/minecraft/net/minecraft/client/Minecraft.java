@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +23,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
@@ -30,6 +33,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
@@ -505,9 +509,31 @@ public abstract class Minecraft implements Runnable {
 		int var2 = GL11.glGetError();
 		if (var2 != 0) {
 			String var3 = GLU.gluErrorString(var2);
-			System.out.println("########## GL ERROR ##########");
-			System.out.println("@ " + par1Str);
+			
+			//Spout start
+			System.out.println("-----------------A GL Error has Occured!-----------------");
+			System.out.println("OpenGL Information");
+			System.out.println("    Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
+			System.out.println("    OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
+			System.out.println("    GLSL Version: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION));
+			String extensions = "    Extensions Supported: ";
+			for(int i = 0; i < GL11.glGetInteger(GL30.GL_NUM_EXTENSIONS); i++) {
+				extensions += GL30.glGetStringi(GL11.GL_EXTENSIONS, i) + " ";
+			}
+			System.out.println(extensions);
+			System.out.println("    Max Texture Units: " + GL11.glGetInteger(GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+			
+			System.out.println("Error at " + par1Str);
 			System.out.println(var2 + ": " + var3);
+			
+			System.out.println("Spoutcraft Configuration Information");
+			try {
+				for (Field f : ConfigReader.class.getFields()) {
+					System.out.println("    " + f.getName() + " : " + f.get(null));
+				}
+			}
+			catch (Exception ignore) { }
+			//Spout end
 			throw new RuntimeException("OpenGL Error occured!");
 		}
 	}

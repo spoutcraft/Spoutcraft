@@ -464,11 +464,13 @@ public class RenderGlobal implements IWorldAccess {
 			Arrays.sort(this.sortedWorldRenderers, new EntitySorter(par1EntityLiving));
 		}
 		// Spout start
+		/* Placebo effect
 		if (ConfigReader.smoothFPS && par2 == 0) {
 			Profiler.startSection("smoothFPS");
 			GL11.glFinish();
 			Profiler.endSection();
 		}
+		*/
 		// Spout end
 		RenderHelper.disableStandardItemLighting();
 		byte var17 = 0;
