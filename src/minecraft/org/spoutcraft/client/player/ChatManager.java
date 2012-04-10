@@ -229,6 +229,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		final int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getWidth() - 6;
 
 		if (message.startsWith("/")) {
+			if (message.length() > 99) {
+				message = message.substring(0, 100);
+			}
 			lines.add(message);
 			return lines;
 		}
