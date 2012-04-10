@@ -122,6 +122,7 @@ public abstract class GuiContainer extends GuiScreen
 		if (btn == replaceTools) {
 			ConfigReader.replaceTools = !ConfigReader.replaceTools;
 			((GenericCheckBox)replaceTools).setChecked(ConfigReader.replaceTools);
+			ConfigReader.write();
 		}
 	}
 	

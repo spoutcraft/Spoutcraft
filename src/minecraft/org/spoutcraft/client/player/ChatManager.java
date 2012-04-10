@@ -276,7 +276,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 					}
 					
 					//Autocomplete
-					if (playerName.length() > lastWord.length()) {
+					if (playerName != null && playerName.length() > lastWord.length()) {
 						message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
 						tabHelp = playerName.substring(lastWord.length());
 					}
