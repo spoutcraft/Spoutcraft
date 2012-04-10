@@ -43,6 +43,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.yaml.snakeyaml.Yaml;
 
@@ -50,6 +51,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;
+	public String tabHelp = null;
 	public List<String> pastCommands = new LinkedList<String>();
 	public List<String> pastMessages = new LinkedList<String>();
 	
@@ -144,6 +146,11 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				}
 				updateCursor(--cursor, chat);
 				updateMessage(message, chat);
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && tabHelp != null && cursor == message.length()){ 
+				message = message + tabHelp + " ";
+				cursor += tabHelp.length() + 1;
+				updateMessage(message, chat);
+				updateCursor(cursor, chat);
 			} else { //Not handled
 				return false;
 			}
@@ -224,6 +231,24 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		if (message.startsWith("/")) {
 			lines.add(message);
 			return lines;
+		}
+		
+		if (display) {
+			tabHelp = null;
+			String[] words = message.split(" ");
+			if (words.length > 0) {
+				String lastWord = words[words.length - 1];
+				if (lastWord.endsWith("_")) {
+					lastWord = lastWord.substring(0, lastWord.length() - 1);
+				}
+				if (lastWord.length() > 2) {
+					Player p = SpoutClient.getInstance().getPlayer(lastWord);
+					if (p != null && p.getName().length() > lastWord.length()) {
+						message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + p.getName().substring(lastWord.length()) + ChatColor.RESET;
+						tabHelp = p.getName().substring(lastWord.length());
+					}
+				}
+			}
 		}
 
 		StringBuilder builder = new StringBuilder(100);

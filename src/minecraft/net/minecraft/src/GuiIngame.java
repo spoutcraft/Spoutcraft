@@ -604,7 +604,7 @@ public class GuiIngame extends Gui
 			ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 			int chatScroll = SpoutClient.getInstance().getChatManager().chatScroll;
 			//don't ask, it's much better than vanilla matching though
-			par2 = par2 / var3.scaleFactor - 43 - ((20 - Math.min(20, chatScroll)) / 2);
+			par2 = par2 / var3.scaleFactor - 33 - ((20 - Math.min(20, chatScroll)) / 2);
 			par1 = par1 / var3.scaleFactor - 3;
 			if (par1 >= 0 && par2 >= 0) {
 				int var4 = Math.min(20, ChatTextBox.getNumChatMessages());

@@ -132,7 +132,8 @@ public class GuiChat extends GuiScreen
 		}
 		ChatBar chatWidget = SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar();
 		java.util.List<String> lines = SpoutClient.getInstance().getChatManager().formatChat(text, true);
-		this.drawRect(2, this.height - (int)(lines.size() * chatWidget.getHeight()), this.width - 2, this.height - 2, Integer.MIN_VALUE);
+		chatWidget.setWidth(width - 2);
+		drawRect(2, this.height - (int)(lines.size() * chatWidget.getHeight()), this.width - 2, this.height - 2, Integer.MIN_VALUE);
 		int size = lines.size();
 		int color = chatWidget.getTextColor().toInt();
 		for (int k = 0; k < lines.size(); k++) {
@@ -205,12 +206,12 @@ public class GuiChat extends GuiScreen
 		//Spout Improved Chat End
 
 		//message += mc.ingameGUI.field_933_a;
-		byte byte0 = 100;
+///		byte byte0 = 100;
 
-		if (message.length() > byte0)
-		{
-			message = message.substring(0, byte0);
-		}
+//		if (message.length() > byte0)
+//		{
+//			message = message.substring(0, byte0);
+//		}
 	}
 	
 	//Spout start
