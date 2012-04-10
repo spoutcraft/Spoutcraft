@@ -35,6 +35,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
+import org.getspout.commons.ChatColor;
 import org.newdawn.slick.util.Log;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
@@ -594,7 +595,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		String lowerName = name.toLowerCase();
 		int delta = Integer.MAX_VALUE;
 		for (Player player : players) {
-			if (player.getName().toLowerCase().startsWith(lowerName)) {
+			if (ChatColor.stripColor(player.getName()).toLowerCase().startsWith(lowerName)) {
 				int curDelta = player.getName().length() - lowerName.length();
 				if (curDelta < delta) {
 					found = player;
@@ -612,7 +613,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		String lname = name.toLowerCase();
 
 		for (Player player : getPlayers()) {
-			if (player.getName().equalsIgnoreCase(lname)) {
+			if (ChatColor.stripColor(player.getName()).equalsIgnoreCase(lname)) {
 				return player;
 			}
 		}
@@ -623,7 +624,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		List<Player> matchedPlayers = new ArrayList<Player>();
 
 		for (Player iterPlayer : this.getPlayers()) {
-			String iterPlayerName = iterPlayer.getName();
+			String iterPlayerName = ChatColor.stripColor(iterPlayer.getName());
 
 			if (partialName.equalsIgnoreCase(iterPlayerName)) {
 				// Exact match
