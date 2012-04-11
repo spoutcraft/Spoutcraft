@@ -17,6 +17,8 @@ import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import com.pclewis.mcpatcher.mod.Colorizer;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 
@@ -70,6 +72,7 @@ public class World implements IBlockAccess {
 	public boolean isRemote;
 	//Spout start
 	public SpoutcraftWorld world;
+	public Map<Integer, String> customTitles = new HashMap<Integer, String>();
 	//Spout end
 
 	public BiomeGenBase getBiomeGenForCoords(int par1, int par2) {
