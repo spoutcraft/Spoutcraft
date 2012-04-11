@@ -22,8 +22,10 @@ import java.io.IOException;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
+import org.getspout.commons.World;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
@@ -60,8 +62,12 @@ public class PacketEntityTitle implements SpoutPacket{
 			LivingEntity living = (LivingEntity)e.spoutEntity;
 			if (title.equals("reset")) {
 				living.resetTitle();
+				SpoutcraftWorld spworld = (SpoutcraftWorld) living.getWorld();
+				spworld.getHandle().customTitles.remove(entityId);
 			} else {
 				living.setTitle(title);
+				SpoutcraftWorld spworld = (SpoutcraftWorld) living.getWorld();
+				spworld.getHandle().customTitles.put(living.getEntityId(), title);
 			}
 		}
 	}
