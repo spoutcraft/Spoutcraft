@@ -47,7 +47,7 @@ public abstract class GuiContainer extends GuiScreen
 	protected int guiTop;
 	
 	//Spout start
-	private Button orderByAlphabet, orderById, replaceTools;
+	private Button orderByAlphabet, orderById, replaceTools, replaceBlocks;
 	//Spout start
 
 	public GuiContainer(Container par1Container) {
@@ -75,12 +75,18 @@ public abstract class GuiContainer extends GuiScreen
 			orderById.setGeometry(10, 105, 75, 20);
 			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
 			orderById.setTooltip("Will sort the inventory contents by their id");
+			
 			replaceTools = new GenericCheckBox("Replace tools").setChecked(ConfigReader.replaceTools);
 			replaceTools.setGeometry(10, 130, 75, 20);
 			replaceTools.setTooltip("Replaces used up tools with spares from your inventory");
+			
+			replaceBlocks = new GenericCheckBox("Replace blocks").setChecked(ConfigReader.replaceBlocks);
+			replaceBlocks.setGeometry(10, 155, 75, 20);
+			replaceBlocks.setTooltip("Replaces used up blocks with spares from your inventory");
+			
 			IInventory inv = inventorySlots.getInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
-				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools);
+				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools, replaceBlocks);
 				if (!(inv instanceof InventoryPlayer)) {
 					replaceTools.setVisible(false);
 				}
@@ -122,6 +128,11 @@ public abstract class GuiContainer extends GuiScreen
 		if (btn == replaceTools) {
 			ConfigReader.replaceTools = !ConfigReader.replaceTools;
 			((GenericCheckBox)replaceTools).setChecked(ConfigReader.replaceTools);
+			ConfigReader.write();
+		}
+		if (btn == replaceBlocks) {
+			ConfigReader.replaceBlocks = !ConfigReader.replaceBlocks;
+			((GenericCheckBox)replaceBlocks).setChecked(ConfigReader.replaceBlocks);
 			ConfigReader.write();
 		}
 	}

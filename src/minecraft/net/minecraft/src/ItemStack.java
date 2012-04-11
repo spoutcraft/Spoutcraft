@@ -77,6 +77,11 @@ public class ItemStack { //Spout final -> gone
 		if (var7) {
 			par1EntityPlayer.addStat(StatList.objectUseStats[this.itemID], 1);
 		}
+		//Spout start
+		if (var7 && stackSize == 0 && getItem() instanceof ItemBlock && ConfigReader.replaceBlocks) {
+			InventoryUtil.replaceItem(this.itemID, getItem().getMetadata(this.getItemDamage()));
+		}
+		//Spout end
 
 		return var7;
 	}
@@ -174,7 +179,7 @@ public class ItemStack { //Spout final -> gone
 				
 				//Spout start
 				if (stackSize == 0 && ConfigReader.replaceTools) {
-					InventoryUtil.replaceTool(this.itemID);
+					InventoryUtil.replaceItem(this.itemID, -1);
 				}
 				//Spout end
 			}

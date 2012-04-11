@@ -10,12 +10,12 @@ import net.minecraft.src.Slot;
 
 public class InventoryUtil {
 	
-	public static void replaceTool(int id) {
+	public static void replaceItem(int id, int damage) {
 		int slot = -1;
 		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
 		for (int i = 0; i < inventory.mainInventory.length; i++) {
 			if (inventory.mainInventory[i] != null && i != inventory.currentItem) {
-				if (inventory.mainInventory[i].itemID == id) {
+				if (inventory.mainInventory[i].itemID == id && (damage == -1 || (damage == inventory.mainInventory[i].getItemDamage()))) {
 					if (!Minecraft.theMinecraft.isMultiplayerWorld()) {
 						inventory.mainInventory[inventory.currentItem].stackSize = inventory.mainInventory[i].stackSize;
 						inventory.mainInventory[inventory.currentItem].setItemDamage(inventory.mainInventory[i].getItemDamage());

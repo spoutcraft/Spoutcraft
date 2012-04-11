@@ -79,6 +79,7 @@ public class ConfigReader {
 	public static float flightSpeedMultiplier = 2.0F;
 	public static boolean askBeforeOpeningUrl = true;
 	public static boolean replaceTools = false;
+	public static boolean replaceBlocks = false;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;
