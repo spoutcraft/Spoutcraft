@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -72,7 +74,7 @@ public class World implements IBlockAccess {
 	public boolean isRemote;
 	//Spout start
 	public SpoutcraftWorld world;
-	public Map<Integer, String> customTitles = new HashMap<Integer, String>();
+	public TIntObjectHashMap<String> customTitles = new TIntObjectHashMap<String>(200);
 	//Spout end
 
 	public BiomeGenBase getBiomeGenForCoords(int par1, int par2) {
