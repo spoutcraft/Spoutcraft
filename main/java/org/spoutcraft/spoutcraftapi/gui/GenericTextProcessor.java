@@ -307,7 +307,9 @@ public class GenericTextProcessor implements TextProcessor {
 		formattedText.clear();
 		for (int i = 0; i < lineBreaks.size() && i < lineLimit; ++i) {
 			position = lineBreaks.get(i);
-			formattedText.add(textBuffer.substring(positionOld, position));
+			String buffer = textBuffer.substring(positionOld, position);
+			buffer = buffer.replaceAll(STR_NEWLINE, "");
+			formattedText.add(buffer);
 			positionOld = position;
 		}
 		return true;
