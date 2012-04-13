@@ -177,9 +177,14 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 
 		}
 	}
+
+	public void func_50009_aI() {
+		this.sendQueue.addToSendQueue(new Packet202PlayerAbilities(this.capabilities));
+	}
+
 	//Spout Start
-	
-	@Override 
+
+	@Override
 	public void setSprinting(boolean sprint) {
 		if (this.runToggle){
 			sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
@@ -188,16 +193,16 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			super.setSprinting(sprint);
 		}
 	}
-	
+
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN));
 		}
-		
+
 		super.handleKeyPress(i, keyReleased);
 	}
-	
+
 	@Override
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
