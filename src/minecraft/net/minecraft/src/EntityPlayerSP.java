@@ -143,6 +143,10 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.timeUntilPortal > 0) {
 				--this.timeUntilPortal;
 			}
+			
+			//Spout start
+			boolean wasFlightUp = movementInput.flyingUp;
+			//Spout end
 
 			var1 = this.movementInput.jump;
 			float var2 = 0.8F;
@@ -180,7 +184,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.setSprinting(false);
 			}
 
-			if (this.capabilities.allowFlying && !var1 && this.movementInput.jump) {
+			if (this.capabilities.allowFlying && !wasFlightUp && this.movementInput.flyingUp) { //Spout
 				if (this.flyToggleTimer == 0) {
 					this.flyToggleTimer = 7;
 				} else {
@@ -500,6 +504,14 @@ public class EntityPlayerSP extends EntityPlayer {
 			else if (key == settings.keyWaypoint.keyCode){
 				if(Spoutcraft.hasPermission("spout.client.overviewmap")) {
 					mc.displayGuiScreen(new GuiOverviewMap());
+				}
+			}
+			
+			if (this.capabilities.allowFlying && key == settings.keyFlyToggle.keyCode) {
+				this.capabilities.isFlying = !this.capabilities.isFlying;
+				if (this.capabilities.isFlying) {
+					posY += 0.1D;
+					this.motionY += 0.15D;
 				}
 			}
 		}
