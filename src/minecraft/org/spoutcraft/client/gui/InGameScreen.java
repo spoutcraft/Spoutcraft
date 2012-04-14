@@ -24,7 +24,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
-public class InGameScreen extends GenericScreen implements InGameHUD{
+public class InGameScreen extends GenericScreen implements InGameHUD {
 	protected HealthBar health;
 	protected BubbleBar bubble;
 	protected ChatBar chat;
@@ -138,9 +138,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 	}
 
 	public boolean closePopup() {
-		if (getActivePopup() == null) {
-			return false;
-		}
+		SpoutClient.getHandle().displayGuiScreen(null);
 		activePopup = null;
 		return true;
 	}
@@ -239,6 +237,4 @@ public class InGameScreen extends GenericScreen implements InGameHUD{
 		updateChatWindowSize(newWidth, newHeight);
 		super.onScreenResized(oldWidth, oldHeight, newWidth, newHeight);
 	}
-	
-	
 }
