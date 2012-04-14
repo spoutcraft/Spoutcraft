@@ -41,7 +41,7 @@ public class HeightMap {
 	private File file = null;
 	private HeightChunk lastChunk = null; //Faster access to last accessed chunk
 
-	private class HeightChunk {
+	public class HeightChunk {
 		public short heightmap[] = new short[16 * 16];
 		public final int x, z;
 		public byte[] idmap = new byte[16 * 16];
@@ -56,6 +56,14 @@ public class HeightMap {
 		public HeightChunk(int x, int z) {
 			this.x = x;
 			this.z = z;
+		}
+		
+		public short getHeight(int x, int z) {
+			return heightmap[z << 4 | x];
+		}
+		
+		public byte getBlockId(int x, int z) {
+			return idmap[z << 4 | x];
 		}
 	}
 
@@ -211,6 +219,17 @@ public class HeightMap {
 //			return cache.containsKey(x, z);			
 //		}
 //	}
+	
+	public HeightChunk getChunk(int x, int z) {
+		if(lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
+			return lastChunk;
+		} else {
+			synchronized (cache) {
+				lastChunk = cache.get(x, z);
+				return lastChunk;				
+			}
+		}
+	}
 
 	public short getHeight(int x, int z) {
 		int cX = (x >> 4);

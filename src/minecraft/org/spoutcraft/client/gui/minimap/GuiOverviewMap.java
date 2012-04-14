@@ -117,10 +117,10 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			mc.displayGuiScreen(null);
 		}
 		if(btn == buttonZoomIn) {
-			map.zoomBy(0.1f);
+			map.zoomBy(1.5);
 		}
 		if(btn == buttonZoomOut) {
-			map.zoomBy(-0.1f);
+			map.zoomBy(1.0/1.5);
 		}
 		if(btn == buttonShowPlayer) {
 			map.showPlayer(500);

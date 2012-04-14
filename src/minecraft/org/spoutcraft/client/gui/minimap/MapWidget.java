@@ -31,6 +31,7 @@ import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
+import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
 import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
@@ -47,9 +48,10 @@ public class MapWidget extends GenericScrollable {
 	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
 	static HeightMap heightMap;
 	static Map blankMap = new Map(1); //singleton instance used to indicate no pixels to draw in a chunk
-	float scale = 1f;
+	double scale = 1f;
 	boolean dirty = true;
 	GuiScreen parent = null;
+	BufferedImage imageBuffer = null;
 
 	public MapWidget(GuiScreen parent) {
 		this.parent = parent;
@@ -59,7 +61,7 @@ public class MapWidget extends GenericScrollable {
 
 			@Override
 			public void set(Object value) {
-				setScale((float)(Float) value);
+				setScale((double)(Double) value);
 			}
 
 			@Override
@@ -107,10 +109,15 @@ public class MapWidget extends GenericScrollable {
 		}
 		boolean pixelSet = false;
 		try {
+			HeightChunk chunk = heightMap.getChunk(x, z);
+			if(chunk == null) {
+				chunks.put(x, z, blankMap);
+				return blankMap;
+			}
 			for (int cx = 0; cx < 16; cx++) {
 				for (int cz = 0; cz < 16; cz++) {
-					short height = heightMap.getHeight(cx + x * 16, cz + z * 16);
-					byte id = heightMap.getBlockId(cx + x * 16, cz + z * 16);
+					short height = chunk.getHeight(cx, cz);
+					byte id = chunk.getBlockId(cx, cz);
 					if(id == -1 || height == -1) {
 						chunks.put(x, z, blankMap);
 						return blankMap;
@@ -196,40 +203,45 @@ public class MapWidget extends GenericScrollable {
 		return mapOutsideToCoords(new Point((int) (getWidth() / 2), (int) (getHeight() / 2)));
 	}
 	
-	public boolean saveToDesktop() {
-		try {
-			int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
-			int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
-			
-			int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
-					minChunkZ = heightMap.getMinZ() + scrollY / 16, 
-					maxChunkX = 0, 
-					maxChunkZ = 0;
-			int horiz = (int) (getWidth() / 16 / scale) + 1;
-			int vert = (int) (getHeight() / 16 / scale) + 1;
-			maxChunkX = minChunkX + horiz;
-			maxChunkZ = minChunkZ + vert;
-			
-			minChunkX++;
-			minChunkZ++;
-			BufferedImage fullImage = new BufferedImage((maxChunkX - minChunkX) * 16 + 32, (maxChunkZ - minChunkZ) * 16 + 32, BufferedImage.TYPE_INT_ARGB);
-			for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
-				for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
-					Map map = drawChunk(chunkX, chunkZ, dirty);
-					if(map != null && map != blankMap) {
-						Raster raster = map.getColorRaster();
-						int startX = (chunkX - minChunkX) * 16;
-						int startZ = (chunkZ - minChunkZ) * 16;
-						java.awt.image.DataBufferInt buf = (java.awt.image.DataBufferInt)raster.getDataBuffer();
-						int[] srcbuf = buf.getData();
-						fullImage.setRGB(startX, startZ, 16, 16, srcbuf, 0, 16);
-					}
+	public BufferedImage renderFullImage() {
+		int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
+		int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
+		
+		int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
+				minChunkZ = heightMap.getMinZ() + scrollY / 16, 
+				maxChunkX = 0, 
+				maxChunkZ = 0;
+		int horiz = (int) (getWidth() / 16 / scale) + 1;
+		int vert = (int) (getHeight() / 16 / scale) + 1;
+		maxChunkX = minChunkX + horiz;
+		maxChunkZ = minChunkZ + vert;
+		
+		minChunkX++;
+		minChunkZ++;
+		BufferedImage fullImage = new BufferedImage((maxChunkX - minChunkX) * 16 + 32, (maxChunkZ - minChunkZ) * 16 + 32, BufferedImage.TYPE_INT_ARGB);
+		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+				Map map = drawChunk(chunkX, chunkZ, dirty);
+				if(map != null && map != blankMap) {
+					Raster raster = map.getColorRaster();
+					int startX = (chunkX - minChunkX) * 16;
+					int startZ = (chunkZ - minChunkZ) * 16;
+					java.awt.image.DataBufferInt buf = (java.awt.image.DataBufferInt)raster.getDataBuffer();
+					int[] srcbuf = buf.getData();
+					fullImage.setRGB(startX, startZ, 16, 16, srcbuf, 0, 16);
 				}
 			}
+		}
+		return fullImage;
+	}
+	
+	public boolean saveToDesktop() {
+		try {
+			BufferedImage fullImage = renderFullImage();
 			
 			//Creates a file named 'minimap 3-29-2012.png' in the desktop, if possible
 			//Otherwise saves to screenshots. Appends "(1)", etc as needed to avoid overwriting existing files
-			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");  
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			String fileName = "minimap " + df.format(new Date());
 			File desktop = new File(System.getProperty("user.home"), "Desktop");
 			if (!desktop.exists()) {
@@ -274,7 +286,7 @@ public class MapWidget extends GenericScrollable {
 		int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
 		int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
 		
-		GL11.glScalef(scale, scale, scale);
+		GL11.glScaled(scale, scale, scale);
 		GL11.glTranslatef(-heightMap.getMinX() * 16, -heightMap.getMinZ() * 16, 0);
 
 		int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
@@ -285,6 +297,11 @@ public class MapWidget extends GenericScrollable {
 		int vert = (int) (getHeight() / 16 / scale) + 1;
 		maxChunkX = minChunkX + horiz;
 		maxChunkZ = minChunkZ + vert;
+		
+		minChunkX = Math.max(minChunkX, heightMap.getMinX());
+		minChunkZ = Math.max(minChunkZ, heightMap.getMinZ());
+		maxChunkX = Math.min(maxChunkX, heightMap.getMaxX());
+		maxChunkZ = Math.min(maxChunkZ, heightMap.getMaxZ());
 		
 		GL11.glPushMatrix();
 		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
@@ -362,33 +379,32 @@ public class MapWidget extends GenericScrollable {
 		return WidgetType.ScrollArea;
 	}
 
-	public float getScale() {
+	public double getScale() {
 		return scale;
 	}
 
-	public void setScale(float scale) {
-		setScale(scale, false, 0);
+	public void setScale(double value) {
+		setScale(value, false, 0);
 	}
 	
-	public void setScale(float scale, boolean animated, int duration) {
+	public void setScale(double newscale, boolean animated, int duration) {
 		if(!animated) {
 			Point center = getCenterCoord();
-			this.scale = scale;
+			this.scale = newscale;
 			scrollTo(center);			
 		} else {
 			PropertyAnimation ani = new PropertyAnimation(this, "scale");
 			ani.setStartNumber(this.scale);
-			ani.setEndNumber(scale);
+			ani.setEndNumber(newscale);
 			ani.setDuration(duration);
-			ani.setAnimationProgress(new OutQuadAnimationProgress());
 			ani.start();
 		}
 	}
 
-	public void zoomBy(float zoom) {
-		float newscale = scale + zoom;
+	public void zoomBy(double d) {
+		double newscale = scale * d;
 		if(newscale <= 0) {
-			newscale = 0.1f;
+			newscale = 0.0000001;
 		}
 		setScale(newscale, true, 100);
 	}
