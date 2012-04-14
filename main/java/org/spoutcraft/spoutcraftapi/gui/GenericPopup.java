@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericPopup extends GenericScreen implements PopupScreen {
@@ -31,23 +31,18 @@ public class GenericPopup extends GenericScreen implements PopupScreen {
 
 	}
 
-	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 1;
-	}
-
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		this.setTransparent(input.readBoolean());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(isTransparent());
 	}

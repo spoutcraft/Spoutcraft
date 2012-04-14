@@ -16,94 +16,13 @@
  */
 package org.spoutcraft.spoutcraftapi.packet;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 
 public abstract class PacketUtil {
-	public static final int maxString = 32767;
-	public static final byte FLAG_COLORINVALID = 1;
-	public static final byte FLAG_COLOROVERRIDE = 2;
-
-	public static void writeString(DataOutputStream output, String s) {
-		try {
-			output.writeShort(s.length());
-			output.writeChars(s);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static String readString(DataInputStream input) {
-		return readString(input, maxString);
-	}
-
-	public static int getNumBytes(String str) {
-		if (str != null) {
-			return 2 + str.length() * 2;
-		}
-		return 2;
-	}
-
-	public static String readString(DataInputStream input, int maxSize) {
-		try {
-			short size = input.readShort();
-
-			if (size > maxSize) {
-				throw new IOException("Received string length longer than maximum allowed (" + size + " > " + maxSize + ")");
-			} else if (size < 0) {
-				throw new IOException("Received string length is less than zero! Weird string!");
-			} else {
-				StringBuilder stringbuilder = new StringBuilder();
-
-				for (int j = 0; j < size; ++j) {
-					stringbuilder.append(input.readChar());
-				}
-
-				return stringbuilder.toString();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static void writeColor(DataOutputStream output, Color color) {
-		try {
-			byte flags = 0x0;
-
-			if (color.getRedF() == -1F)
-				flags |= FLAG_COLORINVALID;
-			else if (color.getRedF() == -2F)
-				flags |= FLAG_COLOROVERRIDE;
-
-			output.writeByte(flags);
-			output.writeInt(color.toInt());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static Color readColor(DataInputStream input) {
-		try {
-			byte flags = input.readByte();
-			int argb = input.readInt();
-
-			if ((flags & FLAG_COLORINVALID) > 0)
-				return Color.invalid();
-			if ((flags & FLAG_COLOROVERRIDE) > 0)
-				return Color.override();
-
-			return new Color(argb);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static int[] readIntArray(DataInputStream input) throws IOException {
+	public static int[] readIntArray(SpoutInputStream input) throws IOException {
 		int length = input.readInt();
 		if (length > 256) {
 			throw new IllegalArgumentException("Int array exceeded max length (" + length + ")");
@@ -115,7 +34,7 @@ public abstract class PacketUtil {
 		return newArray;
 	}
 
-	public static float[] readQuadFloat(DataInputStream input) throws IOException {
+	public static float[] readQuadFloat(SpoutInputStream input) throws IOException {
 		float[] newArray = new float[4];
 		for (int i = 0; i < 4; i++) {
 			newArray[i] = input.readFloat();
@@ -127,7 +46,7 @@ public abstract class PacketUtil {
 		return doubleArray.length * 16;
 	}
 
-	public static float[][] readDoubleArray(DataInputStream input) throws IOException {
+	public static float[][] readDoubleArray(SpoutInputStream input) throws IOException {
 		int length = input.readShort();
 		if (length > 256) {
 			throw new IllegalArgumentException("Double array exceeded max length (" + length + ")");
@@ -146,26 +65,6 @@ public abstract class PacketUtil {
 		output.writeInt(ints.length);
 		for (int i = 0; i < ints.length; i++) {
 			output.writeInt(ints[i]);
-		}
-	}
-
-	public static void writeQuadFloat(DataOutputStream output, float[] floats) throws IOException {
-		if (floats.length != 4) {
-			throw new IllegalArgumentException("Array containing " + floats.length + " floats passed to writeQuadFloat");
-		}
-		for (int i = 0; i < 4; i++) {
-			output.writeFloat(floats[i]);
-		}
-	}
-
-	public static void writeDoubleArray(DataOutputStream output, float[][] floats) throws IOException {
-		if (floats.length > 256) {
-			throw new IllegalArgumentException("Double array exceeded max length (" + floats.length + ")");
-		}
-
-		output.writeShort(floats.length);
-		for (int i = 0; i < floats.length; i++) {
-			writeQuadFloat(output, floats[i]);
 		}
 	}
 

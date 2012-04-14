@@ -16,13 +16,12 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericGradient extends GenericWidget implements Gradient {
@@ -57,29 +56,24 @@ public class GenericGradient extends GenericWidget implements Gradient {
 	}
 
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 11;
-	}
-
-	@Override
 	public int getVersion() {
 		return super.getVersion() + 2;
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
-		this.setTopColor(PacketUtil.readColor(input));
-		this.setBottomColor(PacketUtil.readColor(input));
-		this.setOrientation(Orientation.getOrientationFromId(input.readByte()));
+		this.setTopColor(input.readColor());
+		this.setBottomColor(input.readColor());
+		this.setOrientation(Orientation.getOrientationFromId(input.read()));
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
-		PacketUtil.writeColor(output, getTopColor());
-		PacketUtil.writeColor(output, getBottomColor());
-		output.writeByte(getOrientation().getId());
+		output.writeColor(getTopColor());
+		output.writeColor(getBottomColor());
+		output.write(getOrientation().getId());
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 
 public class GenericComboBox extends GenericButton implements ComboBox {
 
@@ -149,17 +148,17 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		view.setSelection(input.readInt());
 		int count = input.readInt();
 		items.clear();
 		for(int i = 0; i < count; i++) {
-			String item = PacketUtil.readString(input);
+			String item = input.readString();
 			items.add(item);
 		}
 		model.setList(items);
-		format = PacketUtil.readString(input);
+		format = input.readString();
 	}
 	
 	@Override

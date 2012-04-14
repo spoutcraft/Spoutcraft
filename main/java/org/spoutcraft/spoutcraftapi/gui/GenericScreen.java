@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +26,8 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public abstract class GenericScreen extends GenericWidget implements Screen {
@@ -178,18 +178,13 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	}
 
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 1;
-	}
-
-	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		setBgVisible(input.readBoolean());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(isBgVisible());
 	}

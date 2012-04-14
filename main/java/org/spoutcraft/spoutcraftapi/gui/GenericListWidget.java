@@ -1,13 +1,12 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class GenericListWidget extends GenericScrollable implements ListWidget {
 	private List<ListWidgetItem> items = new ArrayList<ListWidgetItem>();
@@ -171,14 +170,9 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		cachedTotalHeight = -1;
 		selected = -1;
 	}
-	
-	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 4 + 4;
-	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		setInnerSize(Orientation.HORIZONTAL, 0);
 		setInnerSize(Orientation.VERTICAL, 0);
@@ -186,13 +180,13 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		selected = input.readInt();
 		int count = input.readInt();
 		for(int i = 0; i < count; i++) {
-			GenericListWidgetItem item = new GenericListWidgetItem(PacketUtil.readString(input), PacketUtil.readString(input), PacketUtil.readString(input));
+			GenericListWidgetItem item = new GenericListWidgetItem(input.readString(), input.readString(), input.readString());
 			addItem(item);
 		}
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeInt(selected); // Write which item is selected.
 		output.writeInt(0); // Write number of items first!

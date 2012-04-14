@@ -1,7 +1,5 @@
 package org.spoutcraft.spoutcraftapi.block.design;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
@@ -11,6 +9,7 @@ import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.entity.Item;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
@@ -153,22 +152,18 @@ public class GenericBlockDesign implements BlockDesign {
 		return renderPass;
 	}
 
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(textureURL) + PacketUtil.getNumBytes(textureAddon) + PacketUtil.getDoubleArrayLength(xPos) + PacketUtil.getDoubleArrayLength(yPos) + PacketUtil.getDoubleArrayLength(zPos) + PacketUtil.getDoubleArrayLength(textXPos) + PacketUtil.getDoubleArrayLength(textYPos) + 9 * 4 + (3 + lightSourceXOffset.length + lightSourceXOffset.length + lightSourceXOffset.length) * 4;
-	}
-
 	public int getVersion() {
 		return 3;
 	}
 
-	public void read(DataInputStream input) throws IOException {
-		textureURL = PacketUtil.readString(input);
+	public void read(SpoutInputStream input) throws IOException {
+		textureURL = input.readString();
 		if (textureURL.equals(resetString)) {
 			reset = true;
 			return;
 		}
 		reset = false;
-		textureAddon = PacketUtil.readString(input);
+		textureAddon = input.readString();
 		xPos = PacketUtil.readDoubleArray(input);
 		yPos = PacketUtil.readDoubleArray(input);
 		zPos = PacketUtil.readDoubleArray(input);
@@ -192,40 +187,6 @@ public class GenericBlockDesign implements BlockDesign {
 	}
 
 	private final static String resetString = "[reset]";
-
-	public void writeReset(DataOutputStream output) {
-		PacketUtil.writeString(output, resetString);
-	}
-
-	public int getResetNumBytes() {
-		return PacketUtil.getNumBytes(resetString);
-	}
-
-	public void write(DataOutputStream output) throws IOException {
-		if (reset) {
-			PacketUtil.writeString(output, resetString);
-			return;
-		}
-		PacketUtil.writeString(output, textureURL);
-		PacketUtil.writeString(output, textureAddon);
-		PacketUtil.writeDoubleArray(output, xPos);
-		PacketUtil.writeDoubleArray(output, yPos);
-		PacketUtil.writeDoubleArray(output, zPos);
-		PacketUtil.writeDoubleArray(output, textXPos);
-		PacketUtil.writeDoubleArray(output, textYPos);
-		output.writeFloat(lowXBound);
-		output.writeFloat(lowYBound);
-		output.writeFloat(lowZBound);
-		output.writeFloat(highXBound);
-		output.writeFloat(highYBound);
-		output.writeFloat(highZBound);
-		output.writeFloat(maxBrightness);
-		output.writeFloat(minBrightness);
-		output.writeInt(renderPass);
-		PacketUtil.writeIntArray(output, lightSourceXOffset);
-		PacketUtil.writeIntArray(output, lightSourceYOffset);
-		PacketUtil.writeIntArray(output, lightSourceZOffset);
-	}
 
 	public BlockDesign setTexture(Addon addon, String textureURL) {
 		this.textureAddon = addon.getDescription().getName();

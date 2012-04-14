@@ -16,12 +16,11 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public abstract class GenericControl extends GenericWidget implements Control{
 
@@ -33,31 +32,26 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	public GenericControl() {
 		
 	}
-	
-	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 12;
-	}
-	
+
 	public int getVersion() {
 		return super.getVersion() + 3;
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		setEnabled(input.readBoolean());
-		setColor(PacketUtil.readColor(input));
-		setDisabledColor(PacketUtil.readColor(input));
+		setColor(input.readColor());
+		setDisabledColor(input.readColor());
 		setFocus(input.readBoolean());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(isEnabled());
-		PacketUtil.writeColor(output, getColor());
-		PacketUtil.writeColor(output, getDisabledColor());
+		output.writeColor(getColor());
+		output.writeColor(getDisabledColor());
 		output.writeBoolean(isFocus());
 	}
 	

@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.spoutcraftapi.material.item;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -64,14 +64,9 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 	public Block[] getStrengthModifiedBlocks() {
 		return (Block[]) strengthMods.keys();
 	}
-	
+
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 2 + 2 + strengthMods.size() * 10;
-	}
-	
-	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		setDurability(input.readShort());
 		short size = input.readShort();
@@ -88,20 +83,20 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 	}
 	
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeShort(getDurability());
 		Block[] mod = getStrengthModifiedBlocks();
-		output.writeShort(mod.length);
+		output.writeShort((short) mod.length);
 		for (int i = 0; i < mod.length; i++) {
 			Block block =  mod[i];
 			if (block instanceof CustomBlock) {
 				output.writeInt(((CustomBlock)block).getCustomId());
-				output.writeShort(-1);
+				output.writeShort((short) -1);
 			}
 			else {
 				output.writeInt(block.getRawId());
-				output.writeShort(block.getRawData());
+				output.writeShort((short) block.getRawData());
 			}
 			output.writeFloat(getStrengthModifier(block));
 		}

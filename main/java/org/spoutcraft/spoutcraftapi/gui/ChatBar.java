@@ -16,13 +16,12 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class ChatBar extends GenericWidget implements Widget {
@@ -38,24 +37,20 @@ public class ChatBar extends GenericWidget implements Widget {
 		setAnchor(WidgetAnchor.BOTTOM_LEFT);
 	}
 
-	public int getNumBytes() {
-		return super.getNumBytes() + 13;
-	}
-
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		setCursorX(input.readInt());
 		setCursorY(input.readInt());
-		setTextColor(PacketUtil.readColor(input));
+		setTextColor(input.readColor());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeInt(getCursorX());
 		output.writeInt(getCursorY());
-		PacketUtil.writeColor(output, getTextColor());
+		output.writeColor(getTextColor());
 	}
 
 	public WidgetType getType() {

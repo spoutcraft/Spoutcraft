@@ -1,7 +1,5 @@
 package org.spoutcraft.spoutcraftapi.material.item;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -9,9 +7,10 @@ import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockFace;
 import org.spoutcraft.spoutcraftapi.entity.Player;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.UniqueItemStringMap;
 
 public class GenericCustomItem implements CustomItem {
@@ -96,24 +95,20 @@ public class GenericCustomItem implements CustomItem {
 		return true;
 	}
 
-	public int getNumBytes() {
-		return 4 + PacketUtil.getNumBytes(getName()) + PacketUtil.getNumBytes(getAddon().getDescription().getName()) + PacketUtil.getNumBytes(getTexture());
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		customId = input.readInt();
-		name = PacketUtil.readString(input);
-		addon = Spoutcraft.getAddonManager().getOrCreateAddon(PacketUtil.readString(input));
-		texture = PacketUtil.readString(input);
+		name = input.readString();
+		addon = Spoutcraft.getAddonManager().getOrCreateAddon(input.readString());
+		texture = input.readString();
 		setName(name);
 		MaterialData.addCustomItem(this);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.write(customId);
-		PacketUtil.writeString(output, getName());
-		PacketUtil.writeString(output, getAddon().getDescription().getName());
-		PacketUtil.writeString(output, getTexture());
+		output.writeString(getName());
+		output.writeString(getAddon().getDescription().getName());
+		output.writeString(getTexture());
 	}
 
 	public int getVersion() {

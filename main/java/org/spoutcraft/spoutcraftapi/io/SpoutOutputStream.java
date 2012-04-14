@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.block.Block;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.util.Location;
@@ -145,6 +146,25 @@ public class SpoutOutputStream extends OutputStream{
 		for (int i = 0; i < s.length(); i++) {
 			buffer.putChar(s.charAt(i));
 		}
+	}
+	
+	public void writeBoolean(boolean b) {
+		write(b ? 1 : 0);
+	}
+	
+	public static final byte FLAG_COLORINVALID = 1;
+	public static final byte FLAG_COLOROVERRIDE = 2;
+	public void writeColor(Color c) {
+		byte flags = 0x0;
+
+		if (c.getRedF() == -1F) {
+			flags |= FLAG_COLORINVALID;
+		} else if (c.getRedF() == -2F) {
+			flags |= FLAG_COLOROVERRIDE;
+		}
+
+		write(flags);
+		writeInt(c.toInt());
 	}
 	
 	public ByteBuffer getRawBuffer() {

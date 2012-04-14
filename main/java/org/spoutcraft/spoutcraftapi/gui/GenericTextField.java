@@ -16,14 +16,13 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericTextField extends GenericControl implements TextField {
@@ -47,11 +46,6 @@ public class GenericTextField extends GenericControl implements TextField {
 	}
 
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 16 + PacketUtil.getNumBytes(textProcessor.getText()) + PacketUtil.getNumBytes(placeholder);
-	}
-
-	@Override
 	public int getVersion() {
 		return super.getVersion() + 3;
 	}
@@ -61,30 +55,30 @@ public class GenericTextField extends GenericControl implements TextField {
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
-		setFieldColor(PacketUtil.readColor(input));
-		setBorderColor(PacketUtil.readColor(input));
+		setFieldColor(input.readColor());
+		setBorderColor(input.readColor());
 		char c = input.readChar();
 		setPasswordField((c & FLAG_PASSWORD) > 0);
 		setMaximumLines(c & MASK_MAXLINES);
 		setTabIndex((c & MASK_TABINDEX) >>> 7);
 		setCursorPosition(input.readChar());
 		setMaximumCharacters(input.readChar());
-		setText(PacketUtil.readString(input));
-		setPlaceholder(PacketUtil.readString(input));
+		setText(input.readString());
+		setPlaceholder(input.readString());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
-		PacketUtil.writeColor(output, getFieldColor());
-		PacketUtil.writeColor(output, getBorderColor());
+		output.writeColor(getFieldColor());
+		output.writeColor( getBorderColor());
 		output.writeChar((char) (getMaximumLines() & MASK_MAXLINES | (getTabIndex() << 7) & MASK_TABINDEX | (isPasswordField() ? FLAG_PASSWORD : 0)));
-		output.writeChar(getCursorPosition());
-		output.writeChar(getMaximumCharacters());
-		PacketUtil.writeString(output, getText());
-		PacketUtil.writeString(output, getPlaceholder());
+		output.writeChar((char) getCursorPosition());
+		output.writeChar((char) getMaximumCharacters());
+		output.writeString(getText());
+		output.writeString(getPlaceholder());
 	}
 
 	public int getCursorPosition() {

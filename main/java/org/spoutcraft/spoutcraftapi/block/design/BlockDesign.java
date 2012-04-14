@@ -1,12 +1,11 @@
 package org.spoutcraft.spoutcraftapi.block.design;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.entity.Item;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
@@ -51,13 +50,7 @@ public interface BlockDesign {
 	 * @return render pass
 	 */
 	public int getRenderPass();
-	
-	/**
-	 * The number of bytes stored in this design. Used for serialization.
-	 * @return bytes
-	 */
-	public int getNumBytes();
-	
+
 	/**
 	 * The version of this design. Used for serialization.
 	 * @return bytes
@@ -69,27 +62,8 @@ public interface BlockDesign {
 	 * @param input
 	 * @throws IOException
 	 */
-	public void read(DataInputStream input) throws IOException;
-	
-	/**
-	 * Writes out the default, generic version of this design
-	 * @param output
-	 */
-	public void writeReset(DataOutputStream output);
+	public void read(SpoutInputStream input) throws IOException;
 
-	/**
-	 * Gets the number of bytes in the empty, generic design
-	 * @return
-	 */
-	public int getResetNumBytes();
-
-	/**
-	 * Writes this design out to a packet. Used for serialization.
-	 * @param output
-	 * @throws IOException
-	 */
-	public void write(DataOutputStream output) throws IOException;
-	
 	/**
 	 * Sets the specified Texture for this BlockDesign
 	 * 

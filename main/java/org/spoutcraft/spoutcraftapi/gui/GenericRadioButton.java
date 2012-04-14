@@ -1,13 +1,13 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericRadioButton extends GenericButton implements RadioButton {
@@ -24,19 +24,14 @@ public class GenericRadioButton extends GenericButton implements RadioButton {
 	}
 
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + 2;
-	}
-
-	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
 		selected = input.readBoolean();
 		group = input.readInt();
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(selected);
 		output.writeInt(group);

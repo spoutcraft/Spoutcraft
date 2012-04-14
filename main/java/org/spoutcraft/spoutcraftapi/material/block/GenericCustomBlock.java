@@ -1,7 +1,5 @@
 package org.spoutcraft.spoutcraftapi.material.block;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -14,12 +12,12 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class GenericCustomBlock implements CustomBlock {
 	public BlockDesign design = new GenericBlockDesign();
@@ -230,16 +228,10 @@ public class GenericCustomBlock implements CustomBlock {
 		return false;
 	}
 
-	public int getNumBytes() {
-		return 4 + PacketUtil.getNumBytes(getName()) + PacketUtil.getNumBytes(getAddon().getDescription().getName()) + 1 + 4 + 4 + 4;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		customId = input.readInt();
-		System.out.println("Reading Block: " + customId);
-		setName(PacketUtil.readString(input));
-		String addonName = PacketUtil.readString(input);
-		//System.out.println("Block: " + getName()  + " Id: " + customId + " Addon: " + addonName);
+		setName(input.readString());
+		String addonName = input.readString();
 		addon = Spoutcraft.getAddonManager().getOrCreateAddon(addonName);
 		fullName = addon.getDescription().getFullName() + "." + getName();
 		opaque = input.readBoolean();
@@ -250,16 +242,6 @@ public class GenericCustomBlock implements CustomBlock {
 		MaterialData.addCustomBlock(this);
 		this.setItemDrop(new ItemStack(this, 1));
 		this.blockId = isOpaque() ? 1 :20;
-	}
-
-	public void writeData(DataOutputStream output) throws IOException {
-		output.write(customId);
-		PacketUtil.writeString(output, getName());
-		PacketUtil.writeString(output, getAddon().getDescription().getName());
-		output.writeBoolean(isOpaque());
-		output.writeFloat(getFriction());
-		output.writeFloat(getHardness());
-		output.writeInt(getLightLevel());
 	}
 
 	public int getVersion() {

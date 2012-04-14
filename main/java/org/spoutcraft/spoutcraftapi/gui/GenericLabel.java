@@ -16,15 +16,14 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericLabel extends GenericWidget implements BasicLabel {
@@ -54,28 +53,23 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 	}
 
 	@Override
-	public int getNumBytes() {
-		return super.getNumBytes() + PacketUtil.getNumBytes(getText()) + 12;
-	}
-
-	@Override
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
-		this.setText(PacketUtil.readString(input));
-		this.setAlign(WidgetAnchor.getAnchorFromId(input.readByte()));
+		this.setText(input.readString());
+		this.setAlign(WidgetAnchor.getAnchorFromId(input.read()));
 		this.setAuto(input.readBoolean());
-		this.setTextColor(PacketUtil.readColor(input));
+		this.setTextColor(input.readColor());
 		this.setScale(input.readFloat());
 		this.setShadow(input.readBoolean());
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
-		PacketUtil.writeString(output, getText());
-		output.writeByte(align.getId());
+		output.writeString(getText());
+		output.write(align.getId());
 		output.writeBoolean(isAuto());
-		PacketUtil.writeColor(output, getTextColor());
+		output.writeColor(getTextColor());
 		output.writeFloat(scale);
 		output.writeBoolean(shadow);
 	}

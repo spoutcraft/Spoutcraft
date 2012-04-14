@@ -16,15 +16,14 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.property.Property;
 import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
@@ -83,10 +82,6 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		return isSpoutcraft;
 	}
 
-	public int getNumBytes() {
-		return 48 + PacketUtil.getNumBytes(tooltip) + PacketUtil.getNumBytes(addon.getDescription().getName());
-	}
-
 	public int getVersion() {
 		return 5;
 	}
@@ -105,44 +100,44 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		return anchor;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		setX(input.readInt()); // 0 + 4 = 4
-		setY(input.readInt()); // 4 + 4 = 8
-		setWidth(input.readInt()); // 8 + 4 = 12
-		setHeight(input.readInt()); // 12 + 4 = 16
-		setAnchor(WidgetAnchor.getAnchorFromId(input.readByte())); // 16 + 1 = 17
-		setVisible(input.readBoolean()); // 17 + 1 = 18
-		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt())); // 18 + 4 = 22
-		long msb = input.readLong(); // 22 + 8 = 30
-		long lsb = input.readLong(); // 30 + 8 = 38
+	public void readData(SpoutInputStream input) throws IOException {
+		setX(input.readInt());
+		setY(input.readInt());
+		setWidth(input.readInt());
+		setHeight(input.readInt());
+		setAnchor(WidgetAnchor.getAnchorFromId(input.read()));
+		setVisible(input.readBoolean());
+		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt())); 
+		long msb = input.readLong(); 
+		long lsb = input.readLong();
 		this.id = new UUID(msb, lsb);
-		setTooltip(PacketUtil.readString(input)); // String
-		setAddon(Spoutcraft.getAddonManager().getOrCreateAddon(PacketUtil.readString(input)));
+		setTooltip(input.readString());
+		setAddon(Spoutcraft.getAddonManager().getOrCreateAddon(input.readString()));
 		setAddon(addon);
-		animType = WidgetAnim.getAnimationFromId(input.readByte()); // 38 + 1 = 39
-		animFlags = input.readByte(); // 39 + 1 = 40
-		animValue = input.readFloat(); // 40 + 4 = 44
-		animTicks = input.readShort(); // 44 + 2 = 46
-		animCount = input.readShort(); // 46 + 2 = 48
+		animType = WidgetAnim.getAnimationFromId(input.read());
+		animFlags = (byte) input.read();
+		animValue = input.readFloat();
+		animTicks = input.readShort();
+		animCount = input.readShort();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		output.writeInt(getX()); // 0 + 4 = 4
-		output.writeInt(getY()); // 4 + 4 = 8
-		output.writeInt((int) getActualWidth()); // 8 + 4 = 12
-		output.writeInt((int) getActualHeight()); // 12 + 4 = 16
-		output.writeByte(getAnchor().getId()); // 16 + 1 = 17
-		output.writeBoolean(isVisible()); // 17 + 1 = 18
-		output.writeInt(priority.getId()); // 18 + 4 = 22
-		output.writeLong(getId().getMostSignificantBits()); // 22 + 8 = 30
-		output.writeLong(getId().getLeastSignificantBits()); // 30 + 8 = 38
-		PacketUtil.writeString(output, getTooltip()); // String
-		PacketUtil.writeString(output, getAddon().getDescription().getName()); // String
-		output.writeByte(animType.getId()); // 38 + 1 = 39
-		output.writeByte(animFlags); // 39 + 1 = 40
-		output.writeFloat(animValue); // 40 + 4 = 44
-		output.writeShort(animTicks); // 44 + 2 = 46
-		output.writeShort(animCount); // 46 + 2 = 48
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeInt(getX());
+		output.writeInt(getY());
+		output.writeInt((int) getActualWidth());
+		output.writeInt((int) getActualHeight());
+		output.write(getAnchor().getId());
+		output.writeBoolean(isVisible());
+		output.writeInt(priority.getId());
+		output.writeLong(getId().getMostSignificantBits());
+		output.writeLong(getId().getLeastSignificantBits());
+		output.writeString(getTooltip());
+		output.writeString(getAddon().getDescription().getName());
+		output.write(animType.getId());
+		output.write(animFlags);
+		output.writeFloat(animValue);
+		output.writeShort(animTicks);
+		output.writeShort(animCount);
 	}
 
 	public Addon getAddon() {

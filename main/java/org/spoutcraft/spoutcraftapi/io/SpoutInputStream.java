@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.Block;
+import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -37,7 +38,7 @@ public class SpoutInputStream extends InputStream{
 	}
 
 	@SuppressWarnings("unused")
-	public Block readBlock(){
+	public Block readBlock() {
 		int x = readInt();
 		int y = readInt();
 		int z = readInt();
@@ -77,54 +78,58 @@ public class SpoutInputStream extends InputStream{
 		short dura = readShort();
 		return MaterialData.getMaterial(id, dura);
 	}
-	
+
 	public UUID readUUID() {
 		long lsb = readLong();
 		long msb = readLong();
 		return new UUID(msb, lsb);
 	}
-	
+
 	@Override
 	public int read() {
 		return buffer.get();
 	}
-	
+
 	@Override
 	public int read(byte[] b, int len, int off) {
 		buffer.get(b, len, off);
 		return b.length;
 	}
-	
+
 	public int read(byte[] b) {
 		buffer.get(b);
 		return b.length;
 	}
-	
+
 	public short readShort() {
 		return buffer.getShort();
 	}
-	
+
 	public int readInt() {
 		return buffer.getInt();
 	}
-	
+
 	public long readLong() {
 		return buffer.getLong();
 	}
-	
+
 	public float readFloat() {
 		return buffer.getFloat();
 	}
-	
+
 	public double readDouble() {
 		return buffer.getDouble();
 	}
-	
+
 	public char readChar() {
 		return buffer.getChar();
 	}
 	
-	public String readString(){
+	public boolean readBoolean() {
+		return buffer.get() != 0;
+	}
+
+	public String readString() {
 		short size =  buffer.getShort();
 		StringBuilder builder = new StringBuilder(size);
 		for (int i = 0; i < size; i++) {
@@ -133,6 +138,20 @@ public class SpoutInputStream extends InputStream{
 		return builder.toString();
 	}
 	
+	public static final byte FLAG_COLORINVALID = 1;
+	public static final byte FLAG_COLOROVERRIDE = 2;
+	public Color readColor() {
+		int flags = read();
+		int argb = readInt();
+		if ((flags & FLAG_COLORINVALID) > 0) {
+			return Color.invalid();
+		}
+		if ((flags & FLAG_COLOROVERRIDE) > 0) {
+			return Color.override();
+		}
+		return new Color(argb);
+	}
+
 	public ByteBuffer getRawBuffer() {
 		return buffer;
 	}
