@@ -204,6 +204,12 @@ public class MapRenderer {
 				}
 
 				drawOnMap();
+				
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
+
+				map.loadHeightImage();
+
+				drawOnMap();
 
 				GL11.glPopMatrix();
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -86,11 +86,11 @@ public class Map {
 	/**
 	 * Map image to which the map is rendered to.
 	 */
-	private final ImageManager colorimg;
+	public final ImageManager colorimg;
 
-	private final ImageManager heightimg;
+	public final ImageManager heightimg;
 
-	private final ImageManager lightimg;
+	public final ImageManager lightimg;
 
 	public Map(int size) {
 		imageSize = size;

@@ -33,7 +33,6 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
 import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
@@ -124,7 +123,11 @@ public class MapWidget extends GenericScrollable {
 					} else {
 						pixelSet = true;
 					}
-					map.setHeightPixel(cz, cx, height);
+					
+					short reference = heightMap.getHeight((x << 4) + cx + 1, (z << 4) + cz + 1);
+					int color = MapCalculator.getHeightColor(height, reference);
+					map.heightimg.setARGB(cx, cz, color);
+					
 					map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 				}
 			}

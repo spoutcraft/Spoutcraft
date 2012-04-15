@@ -18,6 +18,8 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.util.Random;
 
+import org.spoutcraft.client.chunkcache.HeightMap;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Chunk;
 import net.minecraft.src.Material;
@@ -72,7 +74,8 @@ public class MapCalculator implements Runnable {
 		if (MinimapConfig.getInstance().isCavemap()) {
 			Chunk chunk = world.getChunkFromBlockCoords(x, z);
 			cmdist.setSeed((x & 0xffff) | ((z & 0xffff) << 16));
-			float dist = distance((int) Minecraft.theMinecraft.thePlayer.posX, (int) Minecraft.theMinecraft.thePlayer.posZ, x, z);
+			float dist = distance((int) Minecraft.theMinecraft.thePlayer.posX,
+					(int) Minecraft.theMinecraft.thePlayer.posZ, x, z);
 			int y = (int) Minecraft.theMinecraft.thePlayer.posY;
 			if (dist > 5)
 				y -= (cmdist.nextInt((int) (dist)) - ((int) dist / 2));
@@ -124,13 +127,17 @@ public class MapCalculator implements Runnable {
 		int color24 = 0;
 
 		try {
-			if (MinimapConfig.getInstance().isColor() && !MinimapConfig.getInstance().isCavemap()) {
+			if (MinimapConfig.getInstance().isColor()
+					&& !MinimapConfig.getInstance().isCavemap()) {
 				if (x == (int) map.getPlayerX() && z == (int) map.getPlayerZ())
 					return 0xff0000;
-				if ((world.getBlockMaterial(x, y + 1, z) == Material.ice) || (world.getBlockMaterial(x, y + 1, z) == Material.snow))
+				if ((world.getBlockMaterial(x, y + 1, z) == Material.ice)
+						|| (world.getBlockMaterial(x, y + 1, z) == Material.snow))
 					color24 = 0xffffff;
 				else {
-					BlockColor col = BlockColor.getBlockColor(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z));
+					BlockColor col = BlockColor.getBlockColor(
+							world.getBlockId(x, y, z),
+							world.getBlockMetadata(x, y, z));
 					color24 = col.color;
 				}
 			}
@@ -180,9 +187,12 @@ public class MapCalculator implements Runnable {
 		if (Minecraft.theMinecraft.thePlayer == null || Minecraft.theMinecraft.theWorld == null)
 			return;
 		try {
+			final boolean square = MinimapConfig.getInstance().isSquare();
+			final World data = Minecraft.theMinecraft.theWorld;
+			int renderSize;
+			int startX;
+			int startZ;
 			synchronized (map) {
-				final boolean square = MinimapConfig.getInstance().isSquare();
-				final World data = Minecraft.theMinecraft.theWorld;
 				if (map.zoom != MinimapConfig.getInstance().getZoom()) {
 					map.zoom = MinimapConfig.getInstance().getZoom();
 					switch (map.zoom) {
@@ -208,40 +218,46 @@ public class MapCalculator implements Runnable {
 				map.square = square;
 
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
-				int startX = (int) (map.getPlayerX() - map.renderOff);
-				int startZ = (int) (map.getPlayerZ() - map.renderOff);
+				renderSize = map.renderSize;
+				startX = (int) (map.getPlayerX() - map.renderOff);
+				startZ = (int) (map.getPlayerZ() - map.renderOff);					
+			}
 
-				for (int worldX = startX; worldX < startX + map.renderSize; worldX++) {
-					for (int worldZ = startZ; worldZ < startZ + map.renderSize; worldZ++) {
-						int worldY = getBlockHeight(data, worldX, worldZ);
+			for (int worldX = startX; worldX < startX + renderSize; worldX++) {
+				for (int worldZ = startZ; worldZ < startZ + renderSize; worldZ++) {
+					int worldY = getBlockHeight(data, worldX, worldZ);
 
-						int pixelX = worldX - startX;
-						if (pixelX >= map.renderSize)
-							pixelX -= map.renderSize;
+					int pixelX = worldX - startX;
+					if (pixelX >= renderSize)
+						pixelX -= renderSize;
 
-						int pixelZ = worldZ - startZ;
-						pixelZ = map.renderSize - pixelZ;
-						if (pixelZ >= map.renderSize)
-							pixelZ -= map.renderSize;
+					int pixelZ = worldZ - startZ;
+					pixelZ = renderSize - pixelZ;
+					if (pixelZ >= renderSize)
+						pixelZ -= renderSize;
 
-						if (square || MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, worldX, worldZ)) {
-							int color = getBlockColor(data, worldX, worldY, worldZ);
-							if (color == 0) {
-								map.clearColorPixel(pixelX, pixelZ);
-							} else {
-								map.setColorPixel(pixelX, pixelZ, color);
-							}
-
-							map.setHeightPixel(pixelX, pixelZ, getBlockHeightMap(data, worldX, worldY, worldZ));
-							map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));
-						} else {
+					if (square || MinimapUtils.insideCircle(startX + renderSize / 2, startZ + renderSize / 2, renderSize / 2, worldX, worldZ)) {
+						int color = getBlockColor(data, worldX, worldY, worldZ);
+						if (color == 0) {
 							map.clearColorPixel(pixelX, pixelZ);
-							map.setHeightPixel(pixelX, pixelZ, 255);
-							map.setLightPixel(pixelX, pixelZ, 255);
+						} else {
+							map.setColorPixel(pixelX, pixelZ, color);
 						}
+
+						short height = (short) data.getHeightValue(worldX, worldZ);
+						short reference = (short) data.getHeightValue(worldX + 1, worldZ + 1);
+						map.heightimg.setARGB(pixelZ, pixelX, getHeightColor(height, reference));
+						map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));								
+
+					} else {
+						map.clearColorPixel(pixelX, pixelZ);
+						map.heightimg.setARGB(pixelX, pixelZ, 0);
+						map.setLightPixel(pixelX, pixelZ, 255);
 					}
 				}
+			}
 
+			synchronized (map) {
 				for (Waypoint pt : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())) {
 					if (pt.enabled) {
 						boolean render = false;
@@ -266,7 +282,7 @@ public class MapCalculator implements Runnable {
 							if (map.zoom > 1) {
 								scale += 1;
 							}
-							
+
 							int color = 0xEE2C2C;
 							if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
 								color = 0xff00ffff;
@@ -286,14 +302,17 @@ public class MapCalculator implements Runnable {
 		try {
 			for (int dx = -radius; dx <= radius; dx++) {
 				for (int dy = -radius; dy <= radius; dy++) {
-					if (x + dx < map.renderSize && x + dx > 0 && y + dy < map.renderSize && y + dy > 0) {
-						if (MinimapUtils.insideCircle(x, y, radius, x + dx, y + dy)) {
+					if (x + dx < map.renderSize && x + dx > 0
+							&& y + dy < map.renderSize && y + dy > 0) {
+						if (MinimapUtils.insideCircle(x, y, radius, x + dx, y
+								+ dy)) {
 							map.setColorPixel(x + dx, y + dy, color);
 						}
 					}
 				}
 			}
-		} catch (ArrayIndexOutOfBoundsException ignore) {} // happens with fast movement
+		} catch (ArrayIndexOutOfBoundsException ignore) {
+		} // happens with fast movement
 	}
 
 	/**
@@ -306,10 +325,13 @@ public class MapCalculator implements Runnable {
 			double x = Minecraft.theMinecraft.thePlayer.posX;
 			double z = Minecraft.theMinecraft.thePlayer.posZ;
 			if (MinimapConfig.getInstance().isEnabled() && map.isDirty(x, z)) {
-				for (int cx = (int) (x - 3*16); cx <= (int) (x + 3*16); cx+=16) {
-					for (int cz = (int) (z - 3*16); cz <= (int) (z + 3*16); cz+=16) {
-						Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
-						org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(chunk);
+				int radius = 5 << 4;
+				for (int cx = (int) (x - radius); cx <= (int) (x + radius); cx += 16) {
+					for (int cz = (int) (z - radius); cz <= (int) (z + radius); cz += 16) {
+						Chunk chunk = Minecraft.theMinecraft.theWorld
+								.getChunkFromBlockCoords((int) cx, (int) cz);
+						org.spoutcraft.client.chunkcache.HeightMapAgent
+						.scanChunk(chunk);
 					}
 				}
 				mapCalc();
@@ -328,13 +350,15 @@ public class MapCalculator implements Runnable {
 	 * in onRenderTick().
 	 */
 	public void run() {
-		//wait 1 s for the world to set up
+		// wait 1 s for the world to set up
 		try {
-			Thread.sleep(1000); 
-		} catch (InterruptedException e1) {}
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+		}
 		while (true) {
 			try {
-				if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.theWorld != null) {
+				if (Minecraft.theMinecraft != null
+						&& Minecraft.theMinecraft.theWorld != null) {
 					// can not multithread in SP
 					if (!Minecraft.theMinecraft.theWorld.isRemote) {
 						Thread.sleep(1000);
@@ -357,7 +381,8 @@ public class MapCalculator implements Runnable {
 			zCalc = new Thread(this);
 			zCalc.start();
 		}
-		if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.theWorld != null) {
+		if (Minecraft.theMinecraft != null
+				&& Minecraft.theMinecraft.theWorld != null) {
 			if (!Minecraft.theMinecraft.theWorld.isRemote) {
 				tryARender();
 			}
@@ -394,5 +419,34 @@ public class MapCalculator implements Runnable {
 	 */
 	public void start() {
 		zCalc.start();
+	}
+
+	public static int getHeightColor(short height, short reference) {
+		int hdiff = height - reference;
+		int color = 0x00000000;
+		if (hdiff != 0 && reference != -1) {
+			boolean ascending = hdiff < 0;
+			hdiff *= 2;
+			hdiff += 256;
+			if (hdiff > 255) {
+				hdiff = 255;
+			}
+			if (hdiff < 0) {
+				hdiff = 0;
+			}
+			if (!ascending) {
+				hdiff = 255 - hdiff;
+			}
+			color = 0x55000000 | ((hdiff << 16) + (hdiff << 8) + hdiff);
+		}
+		return color;
+	}
+
+	public static int getHeightColor(int x, int z, HeightMap heightMap) {
+
+		short height = heightMap.getHeight(x, z);
+		short reference = heightMap.getHeight(x + 1, z + 1);
+
+		return getHeightColor(height, reference);
 	}
 }

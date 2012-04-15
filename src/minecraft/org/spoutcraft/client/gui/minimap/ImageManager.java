@@ -46,32 +46,38 @@ public class ImageManager {
 	}
 
 	public void setRGB(int X, int Y, int color) {
-		image.setRGB(X, Y, 0xff000000 | color);
-		hasChanged = true;
+		synchronized(image) {
+			image.setRGB(X, Y, 0xff000000 | color);
+			hasChanged = true;
+		}
 	}
 	
 	public void setARGB(int X, int Y, int color) {
-		image.setRGB(X, Y, color);
-		hasChanged = true;
+		synchronized(image) {
+			image.setRGB(X, Y, color);
+			hasChanged = true;
+		}	
 	}
 
 	public void loadGLImage() {
-		if (hasGLImage && hasChanged) {
-			Minecraft.theMinecraft.renderEngine.deleteTexture(glImage);
-			GL11.glPushMatrix();
-			glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
-			GL11.glPopMatrix();
-			hasChanged = false;
-		}
-		else if (!hasGLImage) {
-			GL11.glPushMatrix();
-			glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
-			GL11.glPopMatrix();
-			hasGLImage = true;
-			hasChanged = false;
-		}
-		else if (glImage > 0) {
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glImage);
+		synchronized (image) {
+			if (hasGLImage && hasChanged) {
+				Minecraft.theMinecraft.renderEngine.deleteTexture(glImage);
+				GL11.glPushMatrix();
+				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+				GL11.glPopMatrix();
+				hasChanged = false;
+			}
+			else if (!hasGLImage) {
+				GL11.glPushMatrix();
+				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
+				GL11.glPopMatrix();
+				hasGLImage = true;
+				hasChanged = false;
+			}
+			else if (glImage > 0) {
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, glImage);
+			}
 		}
 	}
 }
