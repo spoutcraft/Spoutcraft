@@ -232,6 +232,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		final int width = (int) SpoutClient.getInstance().getActivePlayer().getMainScreen().getChatBar().getWidth() - 6;
 
 		if (message.startsWith("/")) {
+			if (display) {
+				message = completeNames(message);
+			}
 			if (message.length() > 99) {
 				message = message.substring(0, 100);
 			}
@@ -240,49 +243,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}
 		
 		if (display) {
-			tabHelp = null;
-			String[] words = message.split(" ");
-			if (words.length > 0) {
-				String lastWord = words[words.length - 1];
-				if (lastWord.endsWith("_")) {
-					lastWord = lastWord.substring(0, lastWord.length() - 1);
-				}
-				if (lastWord.length() > 2) {
-					//Check nearby players
-					Player p = SpoutClient.getInstance().getPlayer(lastWord);
-					String playerName = p != null ? p.getName() : null;
-					
-					//Check server player list
-					if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
-						int delta = Integer.MAX_VALUE;
-						String best = null;
-						List<GuiPlayerInfo> players = ((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.playerNames;
-						for (GuiPlayerInfo info : players) {
-							String name = ChatColor.stripColor(info.name);
-							if (name.toLowerCase().startsWith(lastWord)) {
-								int curDelta = info.name.length() - lastWord.length();
-								if (curDelta < delta) {
-									best = name;
-									delta = curDelta;
-								}
-								if (curDelta == 0) {
-									break;
-								}
-							}
-						}
-						if (best != null) {
-							playerName = best;
-						}
-					}
-					
-					//Autocomplete
-					if (playerName != null && playerName.length() > lastWord.length()) {
-						message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
-						tabHelp = playerName.substring(lastWord.length());
-					}
-				}
-			}
+			message = completeNames(message);
 		}
+			
 
 		StringBuilder builder = new StringBuilder(100);
 		int lineWidth = 0;
@@ -305,6 +268,52 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}
 
 		return lines;
+	}
+	
+	private String completeNames(String message) {
+		tabHelp = null;
+		String[] words = message.split(" ");
+		if (words.length > 0) {
+			String lastWord = words[words.length - 1];
+			if (lastWord.endsWith("_")) {
+				lastWord = lastWord.substring(0, lastWord.length() - 1);
+			}
+			if (lastWord.length() > 2) {
+				//Check nearby players
+				Player p = SpoutClient.getInstance().getPlayer(lastWord);
+				String playerName = p != null ? p.getName() : null;
+				
+				//Check server player list
+				if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
+					int delta = Integer.MAX_VALUE;
+					String best = null;
+					List<GuiPlayerInfo> players = ((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.playerNames;
+					for (GuiPlayerInfo info : players) {
+						String name = ChatColor.stripColor(info.name);
+						if (name.toLowerCase().startsWith(lastWord)) {
+							int curDelta = info.name.length() - lastWord.length();
+							if (curDelta < delta) {
+								best = name;
+								delta = curDelta;
+							}
+							if (curDelta == 0) {
+								break;
+							}
+						}
+					}
+					if (best != null) {
+						playerName = best;
+					}
+				}
+				
+				//Autocomplete
+				if (playerName != null && playerName.length() > lastWord.length()) {
+					message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
+					tabHelp = playerName.substring(lastWord.length());
+				}
+			}
+		}
+		return message;
 	}
 
 	public void handleMouseWheel() {
