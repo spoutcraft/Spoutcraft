@@ -326,14 +326,16 @@ public class MapWidget extends GenericScrollable {
 					tessellator.draw();
 //					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 //					RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
-					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
-					map.loadHeightImage();
-					tessellator.startDrawingQuads();
-					tessellator.addVertexWithUV((double) width, (double) height, -90, 1, 1);
-					tessellator.addVertexWithUV((double) width, (double) y, -90, 1, 0);
-					tessellator.addVertexWithUV((double) x, (double) y, -90, 0, 0);
-					tessellator.addVertexWithUV((double) x, (double) height, -90, 0, 1);
-					tessellator.draw();
+					if(MinimapConfig.getInstance().isHeightmap()) {
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
+						map.loadHeightImage();
+						tessellator.startDrawingQuads();
+						tessellator.addVertexWithUV((double) width, (double) height, -90, 1, 1);
+						tessellator.addVertexWithUV((double) width, (double) y, -90, 1, 0);
+						tessellator.addVertexWithUV((double) x, (double) y, -90, 0, 0);
+						tessellator.addVertexWithUV((double) x, (double) height, -90, 0, 1);
+						tessellator.draw();
+					}
 					GL11.glPopMatrix();
 				}
 			}
