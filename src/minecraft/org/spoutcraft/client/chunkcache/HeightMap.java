@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
@@ -64,6 +65,14 @@ public class HeightMap {
 		
 		public byte getBlockId(int x, int z) {
 			return idmap[z << 4 | x];
+		}
+		
+		public void setHeight(int x, int z, short h) {
+			heightmap[z << 4 | x] = h;
+		}
+		
+		public void setBlockId(int x, int z, byte id) {
+			idmap[z << 4 | x] = id;
 		}
 	}
 
@@ -150,6 +159,19 @@ public class HeightMap {
 				initBounds = false;
 				System.out.println("Error while loading persistent copy of the heightmap. Clearing the cache.");
 			}
+			File progress = new File(file.getAbsoluteFile() + ".inProgress");
+			if(progress.exists()) {
+				System.out.println("Found in-progress file!");
+				HeightMap progressMap = getHeightMap(getWorldName(), progress);
+				progressMap.load();
+				for(HeightChunk chunk:progressMap.cache.valueCollection()) {
+					if(chunk.getHeight(0, 0) != -1) {
+						addChunk(chunk);
+					}
+				}
+				heightMaps.remove(progressMap);
+				progress.delete();
+			}
 		}
 	}
 
@@ -176,7 +198,8 @@ public class HeightMap {
 	public void save() {
 		synchronized (cache) {
 			try {
-				DataOutputStream out = new DataOutputStream(new FileOutputStream(file));
+				File progress = new File(file.getAbsoluteFile() + ".inProgress");
+				DataOutputStream out = new DataOutputStream(new FileOutputStream(progress));
 				PacketUtil.writeString(out, getWorldName());
 				out.writeInt(minX);
 				out.writeInt(maxX);
@@ -195,6 +218,12 @@ public class HeightMap {
 					}
 				}
 				out.close();
+				
+				//Make sure that we don't loose older stuff when someone quits.
+				File older = new File(file.getAbsoluteFile() + ".old");
+				file.renameTo(older);
+				progress.renameTo(file);
+				older.delete();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -221,11 +250,19 @@ public class HeightMap {
 //	}
 	
 	public HeightChunk getChunk(int x, int z) {
+		return getChunk(x, z, false);
+	}
+
+	public HeightChunk getChunk(int x, int z, boolean force) {
 		if(lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
 			return lastChunk;
 		} else {
 			synchronized (cache) {
 				lastChunk = cache.get(x, z);
+				if(lastChunk == null) {
+					lastChunk = new HeightChunk(x, z);
+					addChunk(lastChunk);
+				}
 				return lastChunk;				
 			}
 		}

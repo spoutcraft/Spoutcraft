@@ -53,6 +53,7 @@ public class MinimapConfig {
 	private boolean background = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
 	private Waypoint focussedWaypoint = null;
+	private int scanRadius = 3;
 
 	/*
 	 * minimap: enabled: true ... waypoints: world1: home: x: 128 z: -82
@@ -83,6 +84,7 @@ public class MinimapConfig {
 			yAdjust = (float) config.getDouble("minimap.yAdjust", yAdjust);
 			sizeAdjust = (float) config.getDouble("minimap.sizeAdjust", sizeAdjust);
 			directions = config.getBoolean("minimap.directions", directions);
+			scanRadius = config.getInt("minimap.scanRadius", scanRadius);
 		}
 		firstrun = config.getBoolean("minimap.firstrun", firstrun);
 		Map<?, ?> worlds = config.getNodes("waypoints");
@@ -153,6 +155,7 @@ public class MinimapConfig {
 		config.setProperty("minimap.yAdjust", yAdjust);
 		config.setProperty("minimap.sizeAdjust", sizeAdjust);
 		config.setProperty("minimap.directions", directions);
+		config.setProperty("minimap.scanRadius", scanRadius);
 		HashMap<String, Map<String, Map<String, Integer>>> worlds = new HashMap<String, Map<String, Map<String, Integer>>>();
 		Iterator<Entry<String, List<Waypoint>>> i = waypoints.entrySet().iterator();
 		while (i.hasNext()) {
@@ -355,5 +358,13 @@ public class MinimapConfig {
 
 	public void setShowBackground(boolean background) {
 		this.background = background;
+	}
+
+	public int getScanRadius() {
+		return scanRadius;
+	}
+	
+	public void setScanRadius(int radius) {
+		this.scanRadius = radius;
 	}
 }

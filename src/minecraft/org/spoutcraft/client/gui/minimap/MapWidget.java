@@ -31,7 +31,6 @@ import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
@@ -45,6 +44,8 @@ import org.spoutcraft.spoutcraftapi.property.Property;
 
 public class MapWidget extends GenericScrollable {
 	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
+	static int levelOfDetail = 1;
+	static final int MIN_LOD = 1;
 	static HeightMap heightMap;
 	static Map blankMap = new Map(1); //singleton instance used to indicate no pixels to draw in a chunk
 	double scale = 1f;
@@ -53,6 +54,7 @@ public class MapWidget extends GenericScrollable {
 	BufferedImage imageBuffer = null;
 
 	public MapWidget(GuiScreen parent) {
+		levelOfDetail = 1;
 		this.parent = parent;
 		heightMap = HeightMap.getHeightMap(MinimapUtils.getWorldName());
 
@@ -86,6 +88,19 @@ public class MapWidget extends GenericScrollable {
 		setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
 		setScrollBarPolicy(Orientation.VERTICAL, ScrollBarPolicy.SHOW_NEVER);
 	}
+	
+	private void updateLOD() {
+		int newlod = levelOfDetail;
+		newlod = (int) (1 / scale);
+		if(newlod < MIN_LOD) {
+			newlod = MIN_LOD;
+		}
+		if(newlod != levelOfDetail) {
+			System.out.println("new level of detail: "+newlod);
+			chunks.clear();
+		}
+		levelOfDetail = newlod;
+	}
 
 	@Override
 	public int getInnerSize(Orientation axis) {
@@ -108,25 +123,25 @@ public class MapWidget extends GenericScrollable {
 		}
 		boolean pixelSet = false;
 		try {
-			HeightChunk chunk = heightMap.getChunk(x, z);
-			if(chunk == null) {
-				chunks.put(x, z, blankMap);
-				return blankMap;
-			}
 			for (int cx = 0; cx < 16; cx++) {
 				for (int cz = 0; cz < 16; cz++) {
-					short height = chunk.getHeight(cx, cz);
-					byte id = chunk.getBlockId(cx, cz);
+					
+					int aX = x * 16 + cx * levelOfDetail;
+					int aZ = z * 16 + cz * levelOfDetail;
+					
+					short height = heightMap.getHeight(aX, aZ);
+					byte id = heightMap.getBlockId(aX, aZ);
 					if(id == -1 || height == -1) {
-						chunks.put(x, z, blankMap);
-						return blankMap;
+						continue;
 					} else {
 						pixelSet = true;
 					}
 					
-					short reference = heightMap.getHeight((x << 4) + cx + 1, (z << 4) + cz + 1);
-					int color = MapCalculator.getHeightColor(height, reference);
-					map.heightimg.setARGB(cx, cz, color);
+					if(levelOfDetail <= 2) {
+						short reference = heightMap.getHeight(aX + levelOfDetail, aZ + levelOfDetail);
+						int color = MapCalculator.getHeightColor(height, reference);
+						map.heightimg.setARGB(cx, cz, color);
+					}
 					
 					map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 				}
@@ -307,15 +322,15 @@ public class MapWidget extends GenericScrollable {
 		maxChunkZ = Math.min(maxChunkZ, heightMap.getMaxZ());
 		
 		GL11.glPushMatrix();
-		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
-			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX+=levelOfDetail) {
+			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ+=levelOfDetail) {
 				Map map = drawChunk(chunkX, chunkZ, dirty);
 				if(map != null && map != blankMap) {
 					GL11.glPushMatrix();
 					int x = chunkX * 16;
 					int y = chunkZ * 16;
-					int width = x + 16;
-					int height = y + 16;
+					int width = x + 16 * levelOfDetail;
+					int height = y + 16 * levelOfDetail;
 					map.loadColorImage();
 					MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 					tessellator.startDrawingQuads();
@@ -396,7 +411,8 @@ public class MapWidget extends GenericScrollable {
 		if(!animated) {
 			Point center = getCenterCoord();
 			this.scale = newscale;
-			scrollTo(center);			
+			scrollTo(center);
+			updateLOD();
 		} else {
 			PropertyAnimation ani = new PropertyAnimation(this, "scale");
 			ani.setStartNumber(this.scale);

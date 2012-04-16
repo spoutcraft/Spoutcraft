@@ -325,15 +325,17 @@ public class MapCalculator implements Runnable {
 			double x = Minecraft.theMinecraft.thePlayer.posX;
 			double z = Minecraft.theMinecraft.thePlayer.posZ;
 			if (MinimapConfig.getInstance().isEnabled() && map.isDirty(x, z)) {
-				int radius = 5 << 4;
+//				long start = System.currentTimeMillis();
+				int radius = MinimapConfig.getInstance().getScanRadius() << 4;
 				for (int cx = (int) (x - radius); cx <= (int) (x + radius); cx += 16) {
 					for (int cz = (int) (z - radius); cz <= (int) (z + radius); cz += 16) {
-						Chunk chunk = Minecraft.theMinecraft.theWorld
-								.getChunkFromBlockCoords((int) cx, (int) cz);
-						org.spoutcraft.client.chunkcache.HeightMapAgent
-						.scanChunk(chunk);
+						Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
+						org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(chunk);
 					}
 				}
+//				long dur = System.currentTimeMillis() - start;
+//				int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
+//				System.out.println("Took "+dur+"ms to scan "+chunks+" chunks.\nThat is "+(float) (dur/(float)chunks)+" per chunk!");
 				mapCalc();
 				map.timer = 1;
 			}
