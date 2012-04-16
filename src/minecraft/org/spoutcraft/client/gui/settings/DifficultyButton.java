@@ -37,7 +37,7 @@ public class DifficultyButton extends GenericButton{
 			case 0: difficulty = "Peaceful"; break;
 			case 1: difficulty = "Easy"; break;
 			case 2: difficulty = "Normal"; break;
-			case 3: difficulty = "Hard;"; break;
+			case 3: difficulty = "Hard"; break;
 			default: difficulty = "Unknown"; break;
 		}
 		return "Difficulty: " + difficulty;
