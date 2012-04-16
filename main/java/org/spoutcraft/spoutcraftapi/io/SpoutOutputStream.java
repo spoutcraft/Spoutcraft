@@ -174,6 +174,7 @@ public class SpoutOutputStream extends OutputStream{
 	private void expand() {
 		ByteBuffer replacement = ByteBuffer.allocate(buffer.capacity() * 2);
 		replacement.put(buffer.array());
+		replacement.position(buffer.position());
 		buffer = replacement;
 	}
 }

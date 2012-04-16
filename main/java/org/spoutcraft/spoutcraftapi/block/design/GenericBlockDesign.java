@@ -181,9 +181,6 @@ public class GenericBlockDesign implements BlockDesign {
 		lightSourceXOffset = PacketUtil.readIntArray(input);
 		lightSourceYOffset = PacketUtil.readIntArray(input);
 		lightSourceZOffset = PacketUtil.readIntArray(input);
-		
-		
-	
 	}
 
 	private final static String resetString = "[reset]";
