@@ -162,7 +162,8 @@ public class HeightMap {
 			File progress = new File(file.getAbsoluteFile() + ".inProgress");
 			if(progress.exists()) {
 				System.out.println("Found in-progress file!");
-				HeightMap progressMap = getHeightMap(getWorldName(), progress);
+				HeightMap progressMap = new HeightMap(getWorldName());
+				progressMap.file = progress;
 				progressMap.load();
 				for(HeightChunk chunk:progressMap.cache.valueCollection()) {
 					if(chunk.getHeight(0, 0) != -1) {
