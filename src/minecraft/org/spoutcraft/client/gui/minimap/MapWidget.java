@@ -16,17 +16,21 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import gnu.trove.map.hash.TIntObjectHashMap;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
@@ -43,7 +47,7 @@ import org.spoutcraft.spoutcraftapi.gui.WidgetType;
 import org.spoutcraft.spoutcraftapi.property.Property;
 
 public class MapWidget extends GenericScrollable {
-	static TIntPairObjectHashMap<Map> chunks = new TIntPairObjectHashMap<Map>(250);
+	static TIntObjectHashMap<TIntPairObjectHashMap<Map>> chunks = new TIntObjectHashMap<TIntPairObjectHashMap<Map>>(250);
 	static int levelOfDetail = 1;
 	static final int MIN_LOD = 1;
 	static HeightMap heightMap;
@@ -52,11 +56,27 @@ public class MapWidget extends GenericScrollable {
 	boolean dirty = true;
 	GuiScreen parent = null;
 	BufferedImage imageBuffer = null;
-
+		
+	private static MapWidgetRenderer renderer = null;
+	
+	private Point lastPlayerPos = new Point((int) Minecraft.theMinecraft.thePlayer.posX, (int) Minecraft.theMinecraft.thePlayer.posZ);
+	private static Random random = new Random();
+	
 	public MapWidget(GuiScreen parent) {
+		if(renderer == null) {
+			renderer = new MapWidgetRenderer();
+			renderer.setMapWidget(this);
+			renderer.start();
+		} else {
+			renderer.setMapWidget(this);
+		}
 		levelOfDetail = 1;
 		this.parent = parent;
-		heightMap = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+		HeightMap newheightMap = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+		if(newheightMap != heightMap) {
+			chunks.clear();
+			heightMap = newheightMap;
+		}
 
 		addProperty("scale", new Property() {
 
@@ -97,7 +117,7 @@ public class MapWidget extends GenericScrollable {
 		}
 		if(newlod != levelOfDetail) {
 			System.out.println("new level of detail: "+newlod);
-			chunks.clear();
+			renderer.renderQueue.clear();
 		}
 		levelOfDetail = newlod;
 	}
@@ -111,52 +131,63 @@ public class MapWidget extends GenericScrollable {
 		}
 	}
 
-	public Map drawChunk(int x, int z, boolean force) {
-		Map map = chunks.get(x, z);
-		if (map == null || (force && map == blankMap)) {
-			map = new Map(16);
-			map.originOffsetX = 0;
-			map.originOffsetY = 0;
-			map.renderSize = 16;
-		} else if (!force) {
-			return map;
-		}
-		boolean pixelSet = false;
-		try {
-			for (int cx = 0; cx < 16; cx++) {
-				for (int cz = 0; cz < 16; cz++) {
-					
-					int aX = x * 16 + cx * levelOfDetail;
-					int aZ = z * 16 + cz * levelOfDetail;
-					
-					short height = heightMap.getHeight(aX, aZ);
-					byte id = heightMap.getBlockId(aX, aZ);
-					if(id == -1 || height == -1) {
-						continue;
-					} else {
-						pixelSet = true;
+	public static Map drawChunk(int x, int z, boolean force) {
+		synchronized(chunks) {
+			Map map = chunks.get(levelOfDetail).get(x, z);
+			if (map == null || (force && map == blankMap)) {
+				map = new Map(16);
+				map.originOffsetX = 0;
+				map.originOffsetY = 0;
+				map.renderSize = 16;
+			} else if (!force) {
+				return map;
+			}
+			boolean pixelSet = false;
+			try {
+				for (int cx = 0; cx < 16; cx++) {
+					for (int cz = 0; cz < 16; cz++) {
+						
+						int aX = x * 16 + cx * levelOfDetail;
+						int aZ = z * 16 + cz * levelOfDetail;
+						
+						short height = heightMap.getHeight(aX, aZ);
+						byte id = heightMap.getBlockId(aX, aZ);
+						if(id == -1 || height == -1) {
+							continue;
+						} else {
+							pixelSet = true;
+						}
+						
+						if(levelOfDetail <= 2) {
+							short reference = heightMap.getHeight(aX + levelOfDetail, aZ + levelOfDetail);
+							int color = MapCalculator.getHeightColor(height, reference);
+							map.heightimg.setARGB(cx, cz, color);
+						}
+						
+						map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 					}
-					
-					if(levelOfDetail <= 2) {
-						short reference = heightMap.getHeight(aX + levelOfDetail, aZ + levelOfDetail);
-						int color = MapCalculator.getHeightColor(height, reference);
-						map.heightimg.setARGB(cx, cz, color);
-					}
-					
-					map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
 				}
 			}
+			catch (Exception e) {
+				pixelSet = false;
+			}
+			if(pixelSet) {
+				getChunkMap(levelOfDetail).put(x, z, map);
+			}
+			else {
+				getChunkMap(levelOfDetail).put(x, z, blankMap);
+			}
+			return map;
 		}
-		catch (Exception e) {
-			pixelSet = false;
+	}
+	
+	public static TIntPairObjectHashMap<Map> getChunkMap(int levelOfDetail) {
+		TIntPairObjectHashMap<Map> chunkmap = chunks.get(levelOfDetail);
+		if(chunkmap == null) {
+			chunkmap = new TIntPairObjectHashMap<Map>(500);
+			chunks.put(levelOfDetail, chunkmap);
 		}
-		if(pixelSet) {
-			chunks.put(x, z, map);
-		}
-		else {
-			chunks.put(x, z, blankMap);
-		}
-		return map;
+		return chunkmap;
 	}
 	
 	public Point mapOutsideToCoords(Point outside) {
@@ -185,7 +216,7 @@ public class MapWidget extends GenericScrollable {
 	}
 
 	public void showPlayer(int duration) {
-		scrollTo(getPlayerPosition(), true, duration);
+		scrollTo(getPlayerPosition(), duration != 0, duration);
 	}
 	
 	public void scrollTo(Point p, boolean animated, int duration) {
@@ -295,7 +326,6 @@ public class MapWidget extends GenericScrollable {
 
 	@Override
 	public void renderContents() {
-		
 		GL11.glDisable(2929);
 		GL11.glEnable(3042);
 		GL11.glDepthMask(false);
@@ -303,7 +333,7 @@ public class MapWidget extends GenericScrollable {
 		
 		int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
 		int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
-		
+				
 		GL11.glScaled(scale, scale, scale);
 		GL11.glTranslatef(-heightMap.getMinX() * 16, -heightMap.getMinZ() * 16, 0);
 
@@ -320,38 +350,43 @@ public class MapWidget extends GenericScrollable {
 		minChunkZ = Math.max(minChunkZ, heightMap.getMinZ());
 		maxChunkX = Math.min(maxChunkX, heightMap.getMaxX());
 		maxChunkZ = Math.min(maxChunkZ, heightMap.getMaxZ());
-		
+				
 		GL11.glPushMatrix();
-		for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX+=levelOfDetail) {
-			for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ+=levelOfDetail) {
-				Map map = drawChunk(chunkX, chunkZ, dirty);
-				if(map != null && map != blankMap) {
-					GL11.glPushMatrix();
-					int x = chunkX * 16;
-					int y = chunkZ * 16;
-					int width = x + 16 * levelOfDetail;
-					int height = y + 16 * levelOfDetail;
-					map.loadColorImage();
-					MinecraftTessellator tessellator = Spoutcraft.getTessellator();
-					tessellator.startDrawingQuads();
-					tessellator.addVertexWithUV((double) width, (double) height, -90, 1, 1);
-					tessellator.addVertexWithUV((double) width, (double) y, -90, 1, 0);
-					tessellator.addVertexWithUV((double) x, (double) y, -90, 0, 0);
-					tessellator.addVertexWithUV((double) x, (double) height, -90, 0, 1);
-					tessellator.draw();
-//					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//					RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
-					if(MinimapConfig.getInstance().isHeightmap()) {
-						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
-						map.loadHeightImage();
+		synchronized(chunks) {
+			for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX+=levelOfDetail) {
+				for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ+=levelOfDetail) {
+					Map map = getChunkMap(levelOfDetail).get(chunkX, chunkZ);
+					if(dirty || map == null || random .nextInt(10000) == 0) {
+						renderer.renderQueue.add(new Point(chunkX, chunkZ));
+					}
+					if(map != null && map != blankMap) {
+						GL11.glPushMatrix();
+						int x = chunkX * 16;
+						int y = chunkZ * 16;
+						int width = x + 16 * levelOfDetail;
+						int height = y + 16 * levelOfDetail;
+						map.loadColorImage();
+						MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 						tessellator.startDrawingQuads();
 						tessellator.addVertexWithUV((double) width, (double) height, -90, 1, 1);
 						tessellator.addVertexWithUV((double) width, (double) y, -90, 1, 0);
 						tessellator.addVertexWithUV((double) x, (double) y, -90, 0, 0);
 						tessellator.addVertexWithUV((double) x, (double) height, -90, 0, 1);
 						tessellator.draw();
+	//					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	//					RenderUtil.drawRectangle(x, y, width, height, 0x88ffffff);
+						if(MinimapConfig.getInstance().isHeightmap()) {
+							GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
+							map.loadHeightImage();
+							tessellator.startDrawingQuads();
+							tessellator.addVertexWithUV((double) width, (double) height, -90, 1, 1);
+							tessellator.addVertexWithUV((double) width, (double) y, -90, 1, 0);
+							tessellator.addVertexWithUV((double) x, (double) y, -90, 0, 0);
+							tessellator.addVertexWithUV((double) x, (double) height, -90, 0, 1);
+							tessellator.draw();
+						}
+						GL11.glPopMatrix();
 					}
-					GL11.glPopMatrix();
 				}
 			}
 		}
@@ -377,6 +412,12 @@ public class MapWidget extends GenericScrollable {
 		GL11.glEnable(2929);
 		GL11.glDisable(3042);
 		dirty = false;
+		
+		Point newpos = getPlayerPosition();
+		if(lastPlayerPos.getX() != newpos.getX() || lastPlayerPos.getY() != newpos.getY()) {
+			showPlayer(0);
+			lastPlayerPos = newpos;
+		}
 	}
 	
 	private void drawPOI(String name, int x, int z, int color) {
