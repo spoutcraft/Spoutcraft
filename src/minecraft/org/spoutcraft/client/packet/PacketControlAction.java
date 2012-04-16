@@ -16,14 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketControlAction implements SpoutPacket{
 	protected UUID screen;
@@ -47,11 +46,7 @@ public class PacketControlAction implements SpoutPacket{
 		this.data = data;
 	}
 
-	public int getNumBytes() {
-		return 36 + PacketUtil.getNumBytes(data);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		long msb = input.readLong();
 		long lsb = input.readLong();
 		this.screen = new UUID(msb, lsb);
@@ -59,16 +54,16 @@ public class PacketControlAction implements SpoutPacket{
 		lsb = input.readLong();
 		this.widget = new UUID(msb, lsb);
 		this.state = input.readFloat();
-		this.data = PacketUtil.readString(input);
+		this.data = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());
 		output.writeLong(widget.getMostSignificantBits());
 		output.writeLong(widget.getLeastSignificantBits());
 		output.writeFloat(state);
-		PacketUtil.writeString(output, data);
+		output.writeString(data);
 	}
 
 	public void run(int playerId) {

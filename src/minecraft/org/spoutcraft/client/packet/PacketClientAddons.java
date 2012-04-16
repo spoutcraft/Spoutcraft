@@ -16,15 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
-import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketClientAddons implements SpoutPacket{
 	private String[] addons;
@@ -49,30 +45,21 @@ public class PacketClientAddons implements SpoutPacket{
 		}
 	}
 
-	public int getNumBytes() {
-		int size = 2;
-		for (int i = 0; i < addons.length; i++) {
-			size += PacketUtil.getNumBytes(addons[i]);
-			size += PacketUtil.getNumBytes(versions[i]);
-		}
-		return size;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		int size = input.readShort();
 		addons = new String[size];
 		versions = new String[size];
 		for (int i = 0; i < size; i++) {
-			addons[i] = PacketUtil.readString(input);
-			versions[i] = PacketUtil.readString(input);
+			addons[i] = input.readString();
+			versions[i] = input.readString();
 		}
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		output.writeShort(addons.length);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeShort((short) addons.length);
 		for (int i = 0; i < addons.length; i++) {
-			PacketUtil.writeString(output, addons[i]);
-			PacketUtil.writeString(output, versions[i]);
+			output.writeString(addons[i]);
+			output.writeString(versions[i]);
 		}
 	}
 

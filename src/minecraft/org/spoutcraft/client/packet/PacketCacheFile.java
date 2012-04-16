@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
@@ -34,7 +32,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketCacheFile implements CompressablePacket {
 	private String plugin;
@@ -109,22 +108,18 @@ public class PacketCacheFile implements CompressablePacket {
 		}
 	}
 
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(fileName) + PacketUtil.getNumBytes(plugin) + fileData.length + 4;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
-		this.fileName = PacketUtil.readString(input);
-		this.plugin = PacketUtil.readString(input);
+	public void readData(SpoutInputStream input) throws IOException {
+		this.fileName = input.readString();
+		this.plugin = input.readString();
 		compressed = input.readBoolean();
 		int size = input.readInt();
 		this.fileData = new byte[size];
-		input.readFully(this.fileData);
+		input.read(fileData);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, fileName);
-		PacketUtil.writeString(output, plugin);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(fileName);
+		output.writeString(plugin);
 		output.writeBoolean(compressed);
 		output.writeInt(fileData.length);
 		output.write(fileData);

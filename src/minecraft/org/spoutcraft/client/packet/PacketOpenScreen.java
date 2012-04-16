@@ -16,12 +16,12 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketOpenScreen implements SpoutPacket {
 	ScreenType type = null;
@@ -29,15 +29,11 @@ public class PacketOpenScreen implements SpoutPacket {
 
 	}
 
-	public int getNumBytes() {
-		return 4;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		type = ScreenType.getType(input.readInt());
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(type.getCode());
 	}
 

@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.chunkcache.ChunkCache;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketCacheHashUpdate implements SpoutPacket {
 	public long[] hashes;
@@ -42,7 +42,7 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 		return 6 + 8 * hashes.length;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		this.add = input.readBoolean();
 		this.reset = input.readBoolean();
 		int length = input.readInt();
@@ -52,7 +52,7 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 		}
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeBoolean(this.add);
 		output.writeBoolean(this.reset);
 		output.writeInt(hashes.length);

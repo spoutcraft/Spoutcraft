@@ -16,12 +16,12 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketScreenAction implements SpoutPacket{
 	protected byte action = -1;
@@ -40,14 +40,14 @@ public class PacketScreenAction implements SpoutPacket{
 		return 2;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		action = input.readByte();
-		screen = input.readByte();
+	public void readData(SpoutInputStream input) throws IOException {
+		action = (byte) input.read();
+		screen = (byte) input.read();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		output.writeByte(action);
-		output.writeByte(screen);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.write(action);
+		output.write(screen);
 	}
 
 	public void run(int playerId) {

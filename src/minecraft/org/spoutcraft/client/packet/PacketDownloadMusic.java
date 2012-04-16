@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.File;
 
@@ -26,7 +24,8 @@ import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.sound.QueuedSound;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketDownloadMusic implements SpoutPacket{
 	int x, y, z;
@@ -37,13 +36,9 @@ public class PacketDownloadMusic implements SpoutPacket{
 
 	}
 
-	public int getNumBytes() {
-		return 22 + PacketUtil.getNumBytes(url) + PacketUtil.getNumBytes(plugin);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
-		url = PacketUtil.readString(input, 255);
-		plugin = PacketUtil.readString(input, 255);
+	public void readData(SpoutInputStream input) throws IOException {
+		url = input.readString();
+		plugin = input.readString();
 		distance = input.readInt();
 		x = input.readInt();
 		y = input.readInt();
@@ -53,9 +48,9 @@ public class PacketDownloadMusic implements SpoutPacket{
 		notify = input.readBoolean();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, url);
-		PacketUtil.writeString(output, plugin);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(url);
+		output.writeString(plugin);
 		output.writeInt(distance);
 		output.writeInt(x);
 		output.writeInt(y);

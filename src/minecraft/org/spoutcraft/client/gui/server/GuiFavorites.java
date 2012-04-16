@@ -218,11 +218,15 @@ public class GuiFavorites extends GuiScreen {
 			}
 		}
 		if (btn.equals(buttonRefresh)) {
-			pollTime = System.currentTimeMillis();
-			for (int i = 0; i < model.getSize(); i++) {
-				ServerItem item = (ServerItem) model.getItem(i);
-				item.poll();
-			}
+			refresh();
+		}
+	}
+	
+	public void refresh() {
+		pollTime = System.currentTimeMillis();
+		for (int i = 0; i < model.getSize(); i++) {
+			ServerItem item = (ServerItem) model.getItem(i);
+			item.poll();
 		}
 	}
 

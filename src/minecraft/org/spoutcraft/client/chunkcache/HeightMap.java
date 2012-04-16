@@ -29,7 +29,6 @@ import java.util.HashMap;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class HeightMap {
 	private String worldName;
@@ -126,7 +125,13 @@ public class HeightMap {
 			clear();
 			try {
 				DataInputStream in = new DataInputStream(new FileInputStream(file));
-				String name = PacketUtil.readString(in);
+				
+				StringBuilder builder = new StringBuilder();
+				short size = in.readShort();
+				for (int i = 0; i < size; i++) {
+					builder.append(in.readChar());
+				}
+				String name = builder.toString();
 				if(!name.equals(getWorldName())) {
 					System.out.println("World names do not match: "+name+" [file] != "+getWorldName()+" [game]. Compensating...");
 					//TODO compensate
@@ -201,7 +206,13 @@ public class HeightMap {
 			try {
 				File progress = new File(file.getAbsoluteFile() + ".inProgress");
 				DataOutputStream out = new DataOutputStream(new FileOutputStream(progress));
-				PacketUtil.writeString(out, getWorldName());
+				
+				String name = getWorldName();
+				out.writeShort(name.length());
+				for (int i = 0; i < name.length(); i++) {
+					out.writeChar(name.charAt(i));
+				}
+				
 				out.writeInt(minX);
 				out.writeInt(maxX);
 				out.writeInt(minZ);

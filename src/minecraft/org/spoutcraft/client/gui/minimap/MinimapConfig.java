@@ -52,6 +52,7 @@ public class MinimapConfig {
 	private boolean deathpoints = true;
 	private boolean background = true;
 	private final Map<String, List<Waypoint>> waypoints = new HashMap<String, List<Waypoint>>();
+	private final List<Waypoint> serverWaypoints = new LinkedList<Waypoint>();
 	private Waypoint focussedWaypoint = null;
 	private int scanRadius = 3;
 
@@ -275,6 +276,14 @@ public class MinimapConfig {
 
 	public synchronized void addWaypoint(String world, String name, int x, int y, int z, boolean enabled) {
 		getWaypoints(world).add(new Waypoint(name, x, y, z, enabled));
+	}
+	
+	public synchronized void addServerWaypoint(double x, double y, double z, String name) {
+		serverWaypoints.add(new Waypoint(name, (int)x, (int)y, (int)z, true));
+	}
+	
+	public synchronized List<Waypoint> getServerWaypoints() {
+		return serverWaypoints;
 	}
 
 	public boolean isScale() {

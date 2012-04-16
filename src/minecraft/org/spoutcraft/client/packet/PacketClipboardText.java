@@ -16,14 +16,14 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.player.ChatManager;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketClipboardText implements SpoutPacket{
+	protected String text;
 	public PacketClipboardText() {
 
 	}
@@ -31,20 +31,17 @@ public class PacketClipboardText implements SpoutPacket{
 	public PacketClipboardText(String text) {
 		this.text = text;
 	}
-	protected String text;
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(text);
+	
+
+	public void readData(SpoutInputStream input) throws IOException {
+		text = input.readString();
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		text = PacketUtil.readString(input);
-	}
-
-	public void writeData(DataOutputStream output) throws IOException {
-		if (text.length() > PacketUtil.maxString) {
-			text = text.substring(0, PacketUtil.maxString - 1);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		if (text.length() > Short.MAX_VALUE) {
+			text = text.substring(0, Short.MAX_VALUE - 1);
 		}
-		PacketUtil.writeString(output, text);
+		output.writeString(text);
 	}
 
 	public void run(int playerId) {

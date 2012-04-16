@@ -16,24 +16,20 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
 
 public class PacketGenericItem implements SpoutPacket{
 	GenericCustomItem item = new GenericCustomItem();
-	public int getNumBytes() {
-		return item.getNumBytes();
-	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		item.readData(input);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		item.writeData(output);
 	}
 

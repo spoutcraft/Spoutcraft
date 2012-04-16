@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import org.getspout.commons.ChatColor;
 import org.spoutcraft.client.player.SpoutPlayer; //Spout
 
 public class EntityOtherPlayerMP extends EntityPlayer {
@@ -16,9 +17,11 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.username = par2Str;
 		this.yOffset = 0.0F;
 		this.stepHeight = 0.0F;
+		//Spout start
 		if (par2Str != null && par2Str.length() > 0) {
-			this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + par2Str + ".png";
+			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par2Str) + ".png";
 		}
+		//Spout end
 
 		this.noClip = true;
 		this.field_22062_y = 0.25F;

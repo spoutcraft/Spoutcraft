@@ -16,12 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 
 public class PacketGenericBlock implements SpoutPacket{
@@ -30,16 +29,11 @@ public class PacketGenericBlock implements SpoutPacket{
 
 	}
 
-	public int getNumBytes() {
-		return block.getNumBytes();
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		block.readData(input);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		block.writeData(output);
+	public void writeData(SpoutOutputStream output) throws IOException {
 	}
 
 	public void run(int playerId) {

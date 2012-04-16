@@ -249,8 +249,11 @@ public class GuiIngame extends Gui
 
 		ChatTextBox chatTextWidget = mainScreen.getChatTextBox();
 		GL11.glPushMatrix();
-		chatTextWidget.setChatOpen(mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat);
-		chatTextWidget.render();
+		boolean chatOpen = mainScreen.getChatBar().isVisible() && mc.currentScreen instanceof GuiChat;
+		if (chatTextWidget.isVisible() || chatOpen) {
+			chatTextWidget.setChatOpen(chatOpen);
+			chatTextWidget.render();
+		}
 		GL11.glPopMatrix();
 //		if (chatTextWidget.isVisible()) {
 //			int viewedLine = 0;

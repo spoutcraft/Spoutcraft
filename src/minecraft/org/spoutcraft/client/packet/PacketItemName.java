@@ -16,13 +16,12 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketItemName implements SpoutPacket{
 	private int id;
@@ -38,20 +37,16 @@ public class PacketItemName implements SpoutPacket{
 		this.name = name;
 	}
 
-	public int getNumBytes() {
-		return 6 + PacketUtil.getNumBytes(name);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		id = input.readInt();
 		data = input.readShort();
-		name = PacketUtil.readString(input);
+		name = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(id);
 		output.writeShort(data);
-		PacketUtil.writeString(output, name);
+		output.writeString(name);
 	}
 
 	public void run(int PlayerId) {

@@ -16,13 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.Entity;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketSetVelocity implements SpoutPacket {
 	private double motX = 0;
@@ -45,14 +45,14 @@ public class PacketSetVelocity implements SpoutPacket {
 		return 28;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		entityId = input.readInt();
 		motX = input.readDouble();
 		motY = input.readDouble();
 		motZ = input.readDouble();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(entityId);
 		output.writeDouble(motX);
 		output.writeDouble(motY);

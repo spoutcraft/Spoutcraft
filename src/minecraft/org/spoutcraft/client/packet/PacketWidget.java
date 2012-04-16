@@ -16,9 +16,8 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import org.spoutcraft.client.SpoutClient;
@@ -29,6 +28,8 @@ import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketWidget implements SpoutPacket {
 	protected Widget widget;
@@ -51,15 +52,16 @@ public class PacketWidget implements SpoutPacket {
 		this.screen = screen;
 	}
 
-	public int getNumBytes() {
-		return (widget != null ? widget.getNumBytes() : 0) + 26;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		int id = input.readInt();
 		long msb = input.readLong();
 		long lsb = input.readLong();
+		
 		int size = input.readInt();
+		byte[] widgetData = new byte[size];
+		input.read(widgetData);
+		SpoutInputStream data = new SpoutInputStream(ByteBuffer.wrap(widgetData));
+
 		int version = input.readShort();
 		screen = new UUID(msb, lsb);
 		WidgetType widgetType = WidgetType.getWidgetFromId(id);
@@ -67,11 +69,10 @@ public class PacketWidget implements SpoutPacket {
 			try {
 				widget = widgetType.getWidgetClass().newInstance();
 				if (widget.getVersion() == version) {
-					widget.readData(input);
+					widget.readData(data);
 				} else {
-					input.skipBytes(size);
 					if (nags[id]-- > 0) {
-						System.out.println("Received invalid widget: " + widgetType + " v: " + version + " current v: " + widget.getVersion());
+						System.out.println("Received invalid widget: " + widgetType.getWidgetClass().getSimpleName() + " v: " + version + " current v: " + widget.getVersion());
 					}
 					widget = null;
 				}
@@ -82,13 +83,20 @@ public class PacketWidget implements SpoutPacket {
 
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());
-		output.writeInt(widget.getNumBytes());
-		output.writeShort(widget.getVersion());
-		widget.writeData(output);
+		
+		SpoutOutputStream data = new SpoutOutputStream();
+		widget.writeData(data);
+		ByteBuffer buffer = data.getRawBuffer();
+		byte[] widgetData = new byte[buffer.capacity() - buffer.remaining()];
+		System.arraycopy(buffer.array(), 0, widgetData, 0, widgetData.length);
+		
+		output.writeInt(widgetData.length);
+		output.writeShort((short) widget.getVersion());
+		output.write(widgetData);
 	}
 
 	public void run(int playerId) {

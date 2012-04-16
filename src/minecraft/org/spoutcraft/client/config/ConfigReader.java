@@ -80,6 +80,7 @@ public class ConfigReader {
 	public static boolean askBeforeOpeningUrl = true;
 	public static boolean replaceTools = false;
 	public static boolean replaceBlocks = false;
+	public static boolean hotbarQuickKeysEnabled = true;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;
@@ -219,6 +220,13 @@ public class ConfigReader {
 			shaderType = 0;
 		}
 		Shaders.setMode(shaderType);
+		
+		if (ConfigReader.signDistance < 8) {
+			ConfigReader.signDistance = 8;
+		}
+		else if (ConfigReader.signDistance >= 128 && ConfigReader.signDistance != Integer.MAX_VALUE) {
+			ConfigReader.signDistance = Integer.MAX_VALUE;
+		}
 	}
 
 	public static void restoreDefaults() {

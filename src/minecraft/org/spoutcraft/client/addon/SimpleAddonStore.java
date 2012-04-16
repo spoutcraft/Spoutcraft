@@ -121,7 +121,6 @@ public class SimpleAddonStore implements AddonStore {
 					info.setEnabled((Boolean) item.get("enabled"));
 					info.setHasInternetAccess((Boolean) item.get("internetAccess"));
 					addons.put(name, info);
-					System.out.println("Loaded addon info for "+name);
 
 				} catch (ClassCastException ignore) {
 					ignore.printStackTrace();

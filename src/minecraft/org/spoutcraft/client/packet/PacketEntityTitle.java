@@ -16,18 +16,15 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
-import org.getspout.commons.World;
-
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketEntityTitle implements SpoutPacket{
 	public String title;
@@ -41,19 +38,14 @@ public class PacketEntityTitle implements SpoutPacket{
 		this.title = title;
 	}
 
-	public int getNumBytes() {
-		return 4 + PacketUtil.getNumBytes(title);
-	}
-
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		entityId = input.readInt();
-		title = PacketUtil.readString(input);
+		title = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(entityId);
-		PacketUtil.writeString(output, title);
+		output.writeString(title);
 	}
 
 	public void run(int id) {

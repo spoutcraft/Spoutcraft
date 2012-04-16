@@ -18,8 +18,6 @@ package org.spoutcraft.client.packet;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
@@ -27,6 +25,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.ScreenShotHelper;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketScreenshot implements SpoutPacket {
 	byte[] ssAsPng = null;
@@ -51,16 +51,16 @@ public class PacketScreenshot implements SpoutPacket {
 		return ssAsPng.length + 5;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		isRequest = input.readBoolean();
 		if (!isRequest) {
 			int ssLen = input.readInt();
 			ssAsPng = new byte[ssLen];
-			input.readFully(ssAsPng);
+			input.read(ssAsPng);
 		}
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		if (ssAsPng == null) {
 			output.writeBoolean(true);
 		} else {

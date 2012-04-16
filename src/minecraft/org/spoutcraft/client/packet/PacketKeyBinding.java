@@ -16,14 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketKeyBinding implements SpoutPacket {
 	private String id;
@@ -43,19 +42,15 @@ public class PacketKeyBinding implements SpoutPacket {
 		this.uniqueId = binding.getUniqueId();
 	}
 
-	public int getNumBytes() {
-		return 4 + 1 + 16;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
-		id = PacketUtil.readString(input);
-		description = PacketUtil.readString(input);
-		plugin = PacketUtil.readString(input);
+	public void readData(SpoutInputStream input) throws IOException {
+		id = input.readString();
+		description = input.readString();
+		plugin = input.readString();
 		key = input.readInt();
 		uniqueId = new UUID(input.readLong(), input.readLong());
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(key);
 		output.writeBoolean(pressed);
 		output.writeLong(uniqueId.getMostSignificantBits());

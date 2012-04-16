@@ -1,13 +1,12 @@
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.entity.EntityText;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketSpawnTextEntity implements SpoutPacket {
 
@@ -17,17 +16,12 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 	private float scale;
 
 	public PacketSpawnTextEntity() {
-	    
-	}
-	
-	@Override
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(text) + 3 * 8 + 4 + 4 + 3 * 8;
+
 	}
 
 	@Override
-	public void readData(DataInputStream input) throws IOException {
-		text = PacketUtil.readString(input);
+	public void readData(SpoutInputStream input) throws IOException {
+		text = input.readString();
 		posX = input.readDouble();
 		posY = input.readDouble();
 		posZ = input.readDouble();
@@ -39,8 +33,8 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 	}
 
 	@Override
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, text);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(text);
 		output.writeDouble(posX);
 		output.writeDouble(posY);
 		output.writeDouble(posZ);

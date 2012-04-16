@@ -16,13 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.*;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
@@ -40,7 +40,7 @@ public class PacketPlaySound implements SpoutPacket{
 		return 23;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		soundId = input.readShort();
 		location = input.readBoolean();
 		x = input.readInt();
@@ -50,7 +50,7 @@ public class PacketPlaySound implements SpoutPacket{
 		volume = input.readInt();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeShort(soundId);
 		output.writeBoolean(location);
 		if (!location) {

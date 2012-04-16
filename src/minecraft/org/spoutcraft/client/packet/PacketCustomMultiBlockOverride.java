@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.zip.DataFormatException;
@@ -28,6 +26,8 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	private int chunkX;
@@ -38,19 +38,15 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 
 	}
 
-	public int getNumBytes() {
-		return 12 + (data != null ? data.length : 0);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		chunkX = input.readInt();
 		chunkZ = input.readInt();
 		int size = input.readInt();
 		data = new byte[size];
-		input.readFully(data);
+		input.read(data);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(chunkX);
 		output.writeInt(chunkZ);
 		output.writeInt(data.length);

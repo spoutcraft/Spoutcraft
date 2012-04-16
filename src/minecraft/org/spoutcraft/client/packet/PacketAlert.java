@@ -16,12 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketAlert implements SpoutPacket{
 	String message;
@@ -38,19 +37,15 @@ public class PacketAlert implements SpoutPacket{
 		this.itemId = itemId;
 	}
 
-	public int getNumBytes() {
-		return 4 + PacketUtil.getNumBytes(title) + PacketUtil.getNumBytes(message);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
-		title = PacketUtil.readString(input, 78);
-		message = PacketUtil.readString(input, 78);
+	public void readData(SpoutInputStream input) throws IOException {
+		title = input.readString();
+		message = input.readString();
 		itemId = input.readInt();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, title);
-		PacketUtil.writeString(output, message);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(title);
+		output.writeString(message);
 		output.writeInt(itemId);
 	}
 

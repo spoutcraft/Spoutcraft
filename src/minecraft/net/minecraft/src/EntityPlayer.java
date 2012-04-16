@@ -277,7 +277,9 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public void updateCloak() {
-		updateCloak("http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png");
+		//Spout start
+		updateCloak("http://static.spout.org/cape/" + ChatColor.stripColor(this.username) + ".png");
+		//Spout end
 	}
 
 	//Spout Start

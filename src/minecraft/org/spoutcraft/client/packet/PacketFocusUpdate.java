@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -26,6 +24,8 @@ import org.spoutcraft.spoutcraftapi.gui.Control;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketFocusUpdate implements SpoutPacket {
 	private Control control;
@@ -41,16 +41,12 @@ public class PacketFocusUpdate implements SpoutPacket {
 		this.focus = focus;
 	}
 
-	public int getNumBytes() {
-		return 16 + 1;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		widgetId = new UUID(input.readLong(), input.readLong());
 		focus = input.readBoolean();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeLong(control.getId().getMostSignificantBits());
 		output.writeLong(control.getId().getLeastSignificantBits());
 		output.writeBoolean(focus);

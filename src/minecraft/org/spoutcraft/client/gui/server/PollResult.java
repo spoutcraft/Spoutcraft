@@ -20,7 +20,6 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
@@ -35,7 +34,6 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PollResult {
 	protected int ping;
@@ -203,7 +201,12 @@ public class PollResult {
 					return;
 				}
 
-				String sPacket = PacketUtil.readString(input, 256);
+				StringBuilder builder = new StringBuilder();
+				short size = input.readShort();
+				for (int i = 0; i < size; i++) {
+					builder.append(input.readChar());
+				}
+				String sPacket = builder.toString();
 
 				long end = System.currentTimeMillis();
 				ping = (int) (end - start);

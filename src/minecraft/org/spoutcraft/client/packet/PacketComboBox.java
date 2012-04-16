@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -25,6 +23,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketComboBox implements SpoutPacket {
 	private GenericComboBox box;
@@ -45,14 +45,13 @@ public class PacketComboBox implements SpoutPacket {
 	public int getNumBytes() {
 		return 8 + 8 + 1 + 4;
 	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		uuid = new UUID(input.readLong(), input.readLong());
 		open = input.readBoolean();
 		selection = input.readInt();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeLong(uuid.getMostSignificantBits());
 		output.writeLong(uuid.getLeastSignificantBits());
 		output.writeBoolean(open);

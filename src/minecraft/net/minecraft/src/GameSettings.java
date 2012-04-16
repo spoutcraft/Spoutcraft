@@ -57,10 +57,12 @@ public class GameSettings {
 	public final KeyBinding keyFlyRight = new KeyBinding("Fly Right", 32);
 	public final KeyBinding keyFlyUp = new KeyBinding("Fly Up", Keyboard.KEY_SPACE);
 	public final KeyBinding keyFlyDown = new KeyBinding("Fly Down", Keyboard.KEY_LSHIFT);
+	
 	public final KeyBinding keyWaypoint = new KeyBinding("Overview Map", Keyboard.KEY_P);
+	public final KeyBinding keyHideChat = new KeyBinding("Hide Chat", Keyboard.KEY_M);
 	
 	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle, keyAutoForward,
-			keyAutoBackward, keyFlyToggle, keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown, keyWaypoint};
+			keyAutoBackward, keyFlyToggle, keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown, keyWaypoint, keyHideChat};
 	//Spout end
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;

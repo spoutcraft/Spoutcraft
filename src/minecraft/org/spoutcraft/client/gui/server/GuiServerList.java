@@ -244,7 +244,9 @@ public class GuiServerList extends GuiAPIDisplay {
 			mc.displayGuiScreen(new GuiMainMenu());
 		}
 		if (btn.equals(buttonFavorites)) {
-			mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
+			GuiFavorites fav = new GuiFavorites(new GuiMainMenu());
+			mc.displayGuiScreen(fav);
+			fav.refresh();
 		}
 		if (btn.equals(buttonJoin)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();

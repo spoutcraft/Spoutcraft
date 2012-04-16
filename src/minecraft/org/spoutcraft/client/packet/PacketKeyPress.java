@@ -16,13 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.*;
 
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketKeyPress implements SpoutPacket{
 	public boolean pressDown;
@@ -63,21 +63,21 @@ public class PacketKeyPress implements SpoutPacket{
 		this.screenType = type.getCode();
 	}
 
-	public void readData(DataInputStream datainputstream) throws IOException {
-		this.key = datainputstream.readByte();
+	public void readData(SpoutInputStream datainputstream) throws IOException {
+		this.key = (byte) datainputstream.read();
 		this.pressDown = datainputstream.readBoolean();
 		this.screenType = datainputstream.readInt();
 		for (int i = 0; i < 10; i++) {
-			this.settingKeys[i] = datainputstream.readByte();
+			this.settingKeys[i] = (byte) datainputstream.read();
 		}
 	}
 
-	public void writeData(DataOutputStream dataoutputstream) throws IOException {
-		dataoutputstream.writeByte(this.key);
+	public void writeData(SpoutOutputStream dataoutputstream) throws IOException {
+		dataoutputstream.write(this.key);
 		dataoutputstream.writeBoolean(this.pressDown);
 		dataoutputstream.writeInt(this.screenType);
 		for (int i = 0; i < 10; i++) {
-			dataoutputstream.writeByte(this.settingKeys[i]);
+			dataoutputstream.write(this.settingKeys[i]);
 		}
 	}
 

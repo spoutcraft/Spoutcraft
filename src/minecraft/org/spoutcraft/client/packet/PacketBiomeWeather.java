@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketBiomeWeather implements SpoutPacket {
 	public byte biome;
@@ -30,14 +30,14 @@ public class PacketBiomeWeather implements SpoutPacket {
 		return 2;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		biome = input.readByte();
-		weather = input.readByte();
+	public void readData(SpoutInputStream input) throws IOException {
+		biome = (byte) input.read();
+		weather = (byte) input.read();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		output.writeByte(biome);
-		output.writeByte(weather);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.write(biome);
+		output.write(weather);
 	}
 
 	public PacketType getPacketType() {

@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -27,6 +25,8 @@ import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetType;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketWidgetRemove implements SpoutPacket {
 	protected Widget widget;
@@ -40,11 +40,7 @@ public class PacketWidgetRemove implements SpoutPacket {
 		this.screen = screen;
 	}
 
-	public int getNumBytes() {
-		return widget.getNumBytes() + 20;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		int id = input.readInt();
 		long msb = input.readLong();
 		long lsb = input.readLong();
@@ -60,7 +56,7 @@ public class PacketWidgetRemove implements SpoutPacket {
 		}
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());

@@ -10,6 +10,7 @@ import net.minecraft.src.Packet;
 //Spout start
 import org.spoutcraft.client.SpoutClient;
 //Spout end
+import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 public class Packet51MapChunk extends Packet {
 	public int xCh;
@@ -54,6 +55,7 @@ public class Packet51MapChunk extends Packet {
 		this.chunkData = new byte[var3];
 		Inflater var4 = new Inflater();
 		var4.setInput(temp, 0, this.tempLength);
+		
 
 		try {
 			var4.inflate(this.chunkData);
@@ -69,6 +71,10 @@ public class Packet51MapChunk extends Packet {
 		} finally {
 			var4.end();
 		}
+		
+		//Spout start
+		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
+		//Spout end
 	}
 
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {

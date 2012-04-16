@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 //Spout start
+import org.getspout.commons.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
@@ -34,9 +35,11 @@ public class EntityPlayerSP extends EntityPlayer {
 		super(par2World);
 		this.mc = par1Minecraft;
 		this.dimension = par4;
+		//Spout start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
-			this.skinUrl = "http://s3.amazonaws.com/MinecraftSkins/" + par3Session.username + ".png";
+			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 		}
+		//Spout end
 
 		this.username = par3Session.username;
 		//Spout start
@@ -504,6 +507,12 @@ public class EntityPlayerSP extends EntityPlayer {
 			else if (key == settings.keyWaypoint.keyCode){
 				if(Spoutcraft.hasPermission("spout.client.overviewmap")) {
 					mc.displayGuiScreen(new GuiOverviewMap());
+				}
+			}
+			
+			else if (key == settings.keyHideChat.keyCode){
+				if (Spoutcraft.getActivePlayer() != null) {
+					Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox().setVisible(!Spoutcraft.getActivePlayer().getMainScreen().getChatTextBox().isVisible());
 				}
 			}
 			

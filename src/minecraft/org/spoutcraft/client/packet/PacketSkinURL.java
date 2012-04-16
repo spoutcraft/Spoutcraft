@@ -16,14 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.*;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketSkinURL implements SpoutPacket{
 	public int entityId;
@@ -53,21 +52,17 @@ public class PacketSkinURL implements SpoutPacket{
 		this.cloakURL = cloakURL;
 	}
 
-	public int getNumBytes() {
-		return 5 + PacketUtil.getNumBytes(skinURL) + PacketUtil.getNumBytes(cloakURL);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		entityId = input.readInt();
-		skinURL = PacketUtil.readString(input, 256);
-		cloakURL = PacketUtil.readString(input, 256);
+		skinURL = input.readString();
+		cloakURL = input.readString();
 		release = input.readBoolean();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(entityId);
-		PacketUtil.writeString(output, skinURL);
-		PacketUtil.writeString(output, cloakURL);
+		output.writeString(skinURL);
+		output.writeString(cloakURL);
 		output.writeBoolean(release);
 	}
 

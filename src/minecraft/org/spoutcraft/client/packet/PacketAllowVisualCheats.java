@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketAllowVisualCheats implements SpoutPacket {
 	private boolean sky = false;
@@ -47,22 +47,18 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		this.voidfog = tvoidfog;
 	}
 
-	public int getNumBytes() {
-		return 8;
+	public void readData(SpoutInputStream input) throws IOException {
+		sky = input.readBoolean();
+		clearwater = input.readBoolean();
+		stars = input.readBoolean();
+		weather = input.readBoolean();
+		time = input.readBoolean();
+		coords = input.readBoolean();
+		entitylabel = input.readBoolean();
+		voidfog = input.readBoolean();
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		this.sky = input.readBoolean();
-		this.clearwater = input.readBoolean();
-		this.stars = input.readBoolean();
-		this.weather = input.readBoolean();
-		this.time = input.readBoolean();
-		this.coords = input.readBoolean();
-		this.entitylabel = input.readBoolean();
-		this.voidfog = input.readBoolean();
-	}
-
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeBoolean(sky);
 		output.writeBoolean(clearwater);
 		output.writeBoolean(stars);

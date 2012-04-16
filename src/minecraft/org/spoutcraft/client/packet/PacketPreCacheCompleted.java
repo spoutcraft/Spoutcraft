@@ -16,13 +16,13 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.CustomScreen;
 import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketPreCacheCompleted implements SpoutPacket{
 	public PacketPreCacheCompleted() {
@@ -32,10 +32,10 @@ public class PacketPreCacheCompleted implements SpoutPacket{
 		return 0;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 	}
 
 	public void run(int playerId) {

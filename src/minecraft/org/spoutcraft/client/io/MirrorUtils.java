@@ -24,27 +24,26 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-
-import org.apache.commons.io.IOUtils;
 
 import org.bukkit.util.config.Configuration;
 
 public class MirrorUtils {
 	private static boolean updated = false;
 	private static File mirrorsYML = new File(FileUtil.getSpoutcraftDirectory(), "mirrors.yml");
-	private static final Random rand = new Random();
-
-	static {
-		updated = mirrorsYML.exists();
-	}
+	private static final String baseURL = "http://get.spout.org/";
+	private static List<String> mirrors = null;
 
 	public static String getMirrorUrl(String mirrorURI, String fallbackUrl) {
-		try {
+		if (MirrorUtils.mirrors == null) {
 			Map<String, Integer> mirrors = getMirrors();
 			Set<Entry<String, Integer>> set = mirrors.entrySet();
 
@@ -52,35 +51,27 @@ public class MirrorUtils {
 			Iterator<Entry<String, Integer>> iterator = set.iterator();
 			while (iterator.hasNext()) {
 				Entry<String, Integer> e = iterator.next();
-				String mirror = "http://" + e.getKey() + "/" + mirrorURI;
-				if (isAddressReachable(mirror)) {
+				String mirror = "http://" + e.getKey();
+				if (isAddressReachable(mirror, 250)) { //short timeout for fast mirrors
 					goodMirrors.add(e.getKey());
 				}
 			}
-
-			//safe fast return
-			if (goodMirrors.size() == 1) {
-				return "http://" + goodMirrors.get(0) + "/" + mirrorURI;
+			
+			Collections.sort(goodMirrors, new MirrorComparator(mirrors));
+			for (String mirror : goodMirrors) {
+				System.out.println("Mirror " + mirror + " value " + mirrors.get(mirror));
 			}
-
-			//the for loop may fail if random numbers are unlucky, in which case we want to try again
-			while (goodMirrors.size() > 0) {
-				int random = rand.nextInt(10 * mirrors.size());
-				int index = random / 10;
-				for (int i = index; i < goodMirrors.size() + index; i++) {
-					int j = i;
-					if (j >= goodMirrors.size()) j-= goodMirrors.size();
-					int roll = rand.nextInt(100);
-					int chance = mirrors.get(goodMirrors.get(j));
-					if (roll < chance) {
-						String mirror = "http://" + goodMirrors.get(j) + "/" + mirrorURI;
-						return mirror;
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+			MirrorUtils.mirrors = goodMirrors;
 		}
+		
+		for (String mirror : MirrorUtils.mirrors){
+			String lookup = "http://" + mirror + "/" + mirrorURI;
+			if (isAddressReachable(lookup, 1000)) {
+				return lookup;
+			}
+		}
+
 		return fallbackUrl;
 	}
 
@@ -90,12 +81,15 @@ public class MirrorUtils {
 		return (Map<String, Integer>) config.getProperty("mirrors");
 	}
 
-	public static boolean isAddressReachable(String url) {
+	public static boolean isAddressReachable(String url, int timeout) {
 		try {
 			URL test = new URL(url);
 			HttpURLConnection.setFollowRedirects(false);
-			HttpURLConnection urlConnect = (HttpURLConnection)test.openConnection();
+			HttpURLConnection urlConnect = (HttpURLConnection) test.openConnection();
+			System.setProperty("http.agent", "");
+			urlConnect.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
 			urlConnect.setRequestMethod("HEAD");
+			urlConnect.setConnectTimeout(timeout);
 			return (urlConnect.getResponseCode() == HttpURLConnection.HTTP_OK);
 		} catch (Exception e) {
 			return false;
@@ -112,19 +106,52 @@ public class MirrorUtils {
 	public static void updateMirrorsYMLCache() {
 		if (!updated) {
 			try {
-				URL url = new URL("http://get.spout.org/mirrors.yml");
-				HttpURLConnection con = (HttpURLConnection)(url.openConnection());
+				URL url = new URL("http://cdn.spout.org/mirrors.yml");
+				HttpURLConnection con = (HttpURLConnection) (url.openConnection());
 				System.setProperty("http.agent", "");
 				con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
-				OutputStream os = new FileOutputStream(mirrorsYML);
-				InputStream is = con.getInputStream();
-				IOUtils.copy(is, os);
-				is.close();
-				os.close();
+				copy(con.getInputStream(), new FileOutputStream(mirrorsYML));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			updated = true;
 		}
 	}
+	
+	public static long copy(InputStream input, OutputStream output) throws IOException {
+		byte[] buffer = new byte[1024 * 4];
+		long count = 0;
+		int n = 0;
+		while (-1 != (n = input.read(buffer))) {
+			output.write(buffer, 0, n);
+			count += n;
+		}
+		return count;
+	}
+
+	public static String getBaseURL() {
+		return baseURL;
+	}
+}
+
+class MirrorComparator implements Comparator<String> {
+	final Map<String, Integer> values = new HashMap<String, Integer>();
+	final Random rand = new Random();
+	final Map<String, Integer> mirrors;
+	public MirrorComparator(Map<String, Integer> mirrors) {
+		this.mirrors = mirrors;
+	}
+	public int compare(String o1, String o2) {
+		return getValue(o2) - getValue(o1);
+	}
+	
+	private int getValue(String mirror) {
+		if (values.containsKey(mirror)) {
+			return values.get(mirror);
+		}
+		int value = rand.nextInt(mirrors.get(mirror)) + 1;
+		values.put(mirror, value);
+		return value;
+	}
+	
 }

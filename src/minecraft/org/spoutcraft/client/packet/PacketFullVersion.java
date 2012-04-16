@@ -16,11 +16,10 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketFullVersion implements SpoutPacket {
 	private String versionString;
@@ -32,16 +31,12 @@ public class PacketFullVersion implements SpoutPacket {
 		this.versionString = versionString;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		versionString = PacketUtil.readString(input);
+	public void readData(SpoutInputStream input) throws IOException {
+		versionString = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, versionString);
-	}
-
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(versionString);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(versionString);
 	}
 
 	public void run(int playerId) {

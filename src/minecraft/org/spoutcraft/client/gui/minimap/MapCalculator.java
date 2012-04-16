@@ -292,6 +292,35 @@ public class MapCalculator implements Runnable {
 						}
 					}
 				}
+				for (Waypoint pt : MinimapConfig.getInstance().getServerWaypoints()) {
+					boolean render = false;
+					if (square) {
+						render = Math.abs(map.getPlayerX() - pt.x) < map.renderSize && Math.abs(map.getPlayerZ() - pt.z) < map.renderSize;
+					} else {
+						render = MinimapUtils.insideCircle(startX + map.renderSize / 2, startZ + map.renderSize / 2, map.renderSize / 2, pt.x, pt.z);
+					}
+					if (render) {
+						int pixelX = pt.x - startX;
+
+						int pixelZ = pt.z - startZ;
+						pixelZ = map.renderSize - pixelZ;
+
+						int scale = map.zoom + 2;
+						if (map.zoom > 2) {
+							scale += 2;
+						}
+						if (map.zoom > 1) {
+							scale += 1;
+						}
+						
+						int color = 0x3366CC;
+						if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
+							color = 0xff00ffff;
+						}
+						drawCircle(pixelX, pixelZ, scale + map.zoom + 1, 0);
+						drawCircle(pixelX, pixelZ, scale, color);
+					}
+				}
 			}
 		} catch (Throwable whatever) {
 			whatever.printStackTrace();

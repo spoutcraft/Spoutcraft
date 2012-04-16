@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
@@ -31,7 +29,6 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.AddonPacket;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 
 public class PacketAddonData implements CompressablePacket {
 	private AddonPacket packet = null;
@@ -56,29 +53,22 @@ public class PacketAddonData implements CompressablePacket {
 		if (!sandboxed) {
 			SpoutClient.disableSandbox();
 		}
-
 		ByteBuffer buffer = stream.getRawBuffer();
-		byte[] raw = new byte[buffer.capacity() - buffer.remaining()];
-		for (int i = 0; i < raw.length; i++) {
-			raw[i] = buffer.get(i);
-		}
-		data = raw;
+		data = new byte[buffer.capacity() - buffer.remaining()];
+		System.arraycopy(buffer.array(), 0, data, 0, data.length);
 		needsCompression = data.length > 512;
 	}
 
-	public int getNumBytes() {
-		return data.length + 4 + 1 + PacketUtil.getNumBytes(AddonPacket.getPacketId(packet.getClass()));
-	}
 
 	@SuppressWarnings("unchecked")
-	public void readData(DataInputStream input) throws IOException {
-		String id = PacketUtil.readString(input);
+	public void readData(SpoutInputStream input) throws IOException {
+		String packetName = input.readString();
 
 		boolean sandboxed = SpoutClient.isSandboxed();
 		SpoutClient.enableSandbox();
 
 		try {
-			Class<? extends AddonPacket> packetClass = AddonPacket.getPacketFromId(id);
+			Class<? extends AddonPacket> packetClass = AddonPacket.getPacketFromId(packetName);
 			Constructor<? extends AddonPacket> constructor = null;
 			Constructor<? extends AddonPacket>[] constructors = (Constructor<? extends AddonPacket>[]) packetClass.getConstructors();
 			for (Constructor<? extends AddonPacket> c : constructors) {
@@ -99,11 +89,11 @@ public class PacketAddonData implements CompressablePacket {
 		int size = input.readInt();
 		compressed = input.readBoolean();
 		data = new byte[size];
-		input.readFully(data);
+		input.read(data);
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, (AddonPacket.getPacketId(packet.getClass())));
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(AddonPacket.getPacketId(packet.getClass()));
 		output.writeInt(data.length);
 		output.writeBoolean(compressed);
 		output.write(data);

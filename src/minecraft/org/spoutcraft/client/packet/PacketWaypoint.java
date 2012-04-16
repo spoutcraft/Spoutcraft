@@ -18,56 +18,50 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketMusicChange implements SpoutPacket{
-	protected int id;
-	protected int volumePercent;
-	boolean cancel = false;
-
-	public PacketMusicChange() {
-
+public class PacketWaypoint implements SpoutPacket{
+	private double x, y, z;
+	private String name;
+	
+	public PacketWaypoint() { }
+	
+	public PacketWaypoint(double x, double y, double z, String name) { 
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.name = name;
 	}
 
-	public PacketMusicChange(int music, int volumePercent) {
-		this.id = music;
-		this.volumePercent = volumePercent;
-	}
-
-	public boolean isCancelled() {
-		return cancel;
-	}
-
-	public void readData(SpoutInputStream input) throws IOException {
-		id = input.readInt();
-		volumePercent = input.readInt();
-		cancel =  input.readBoolean();
+	public void readData(SpoutInputStream input) throws IOException { 
+		x = input.readDouble();
+		y = input.readDouble();
+		z = input.readDouble();
+		name = input.readString();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeInt(id);
-		output.writeInt(volumePercent);
-		output.writeBoolean(cancel);
+		output.writeDouble(x);
+		output.writeDouble(y);
+		output.writeDouble(z);
+		output.writeString(name);
 	}
 
 	public void run(int playerId) {
-		if (cancel)
-			SpoutClient.getHandle().sndManager.cancelled = true;
-		else
-			SpoutClient.getHandle().sndManager.allowed = true;
-	}
-
-	public PacketType getPacketType() {
-		return PacketType.PacketMusicChange;
-	}
-
-	public int getVersion() {
-		return 0;
+		MinimapConfig.getInstance().addServerWaypoint(x, y, z, name);
 	}
 
 	public void failure(int playerId) {
 
+	}
+
+	public PacketType getPacketType() {
+		return PacketType.PacketWaypoint;
+	}
+
+	public int getVersion() {
+		return 0;
 	}
 }

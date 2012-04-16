@@ -16,11 +16,11 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketCustomBlockOverride implements SpoutPacket {
 	private int x;
@@ -29,6 +29,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	private short blockId;
 
 	public PacketCustomBlockOverride() {
+
 	}
 
 	public PacketCustomBlockOverride(int x, int y, int z, Integer blockId) {
@@ -50,18 +51,14 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 		return blockId == -1 ? null : Integer.valueOf(blockId);
 	}
 
-	public int getNumBytes() {
-		return 4 + 4 + 2 + 4;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		x = input.readInt();
 		y = input.readShort();
 		z = input.readInt();
 		setBlockId((int)input.readShort());
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(x);
 		output.writeShort(y);
 		output.writeInt(z);

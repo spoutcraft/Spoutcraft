@@ -1364,11 +1364,15 @@ public abstract class Minecraft implements Runnable {
 						}
 
 						int var7;
-						for (var7 = 0; var7 < 9; ++var7) {
-							if (Keyboard.getEventKey() == 2 + var7) {
-								this.thePlayer.inventory.currentItem = var7;
+						//Spout start
+						if (ConfigReader.hotbarQuickKeysEnabled) { 
+							for (var7 = 0; var7 < 9; ++var7) {
+								if (Keyboard.getEventKey() == 2 + var7) {
+									this.thePlayer.inventory.currentItem = var7;
+								}
 							}
 						}
+						//Spout end
 
 						if (this.gameSettings.showDebugInfo && this.gameSettings.field_50119_G) {
 							if (Keyboard.getEventKey() == 11) {

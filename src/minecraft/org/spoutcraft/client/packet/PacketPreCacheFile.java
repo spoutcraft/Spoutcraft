@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,7 +25,8 @@ import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketPreCacheFile implements SpoutPacket{
 	private static byte[] downloadBuffer = new byte[16384];
@@ -48,24 +47,20 @@ public class PacketPreCacheFile implements SpoutPacket{
 		this.url = url;
 	}
 
-	public int getNumBytes() {
-		return 10 + PacketUtil.getNumBytes(file) + PacketUtil.getNumBytes(plugin);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		this.cached = input.readBoolean();
 		this.url = input.readBoolean();
 		this.expectedCRC = input.readLong();
-		this.file = PacketUtil.readString(input);
-		this.plugin = PacketUtil.readString(input);
+		this.file = input.readString();
+		this.plugin = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeBoolean(this.cached);
 		output.writeBoolean(this.url);
 		output.writeLong(this.expectedCRC);
-		PacketUtil.writeString(output, this.file);
-		PacketUtil.writeString(output, this.plugin);
+		output.writeString(this.file);
+		output.writeString(this.plugin);
 	}
 
 	public void run(int playerId) {

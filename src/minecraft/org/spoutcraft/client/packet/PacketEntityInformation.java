@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -33,6 +31,8 @@ import net.minecraft.src.WorldClient;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketEntityInformation implements CompressablePacket{
 	private boolean compressed = false;
@@ -50,20 +50,16 @@ public class PacketEntityInformation implements CompressablePacket{
 		data = tempbuffer.array();
 	}
 
-	public int getNumBytes() {
-		return 1 + (data != null ? data.length : 0) + 4;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		int size = input.readInt();
 		if (size > 0) {
 			data = new byte[size];
-			input.readFully(data);
+			input.read(data);
 		}
 		compressed = input.readBoolean();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		if (data != null) {
 			output.writeInt(data.length);
 			output.write(data);

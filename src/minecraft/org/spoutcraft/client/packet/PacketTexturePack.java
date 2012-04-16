@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.File;
 
@@ -28,7 +26,8 @@ import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.texture.TexturePackAction;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketTexturePack implements SpoutPacket{
 	private static byte[] downloadBuffer = new byte[16384];
@@ -44,17 +43,13 @@ public class PacketTexturePack implements SpoutPacket{
 		this.expectedCRC = expectedCRC;
 	}
 
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(url) + 8;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
-		url = PacketUtil.readString(input, 256);
+	public void readData(SpoutInputStream input) throws IOException {
+		url = input.readString();
 		expectedCRC = input.readLong();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
-		PacketUtil.writeString(output, url);
+	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(url);
 		output.writeLong(expectedCRC);
 	}
 

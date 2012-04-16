@@ -16,34 +16,29 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";
 	protected int entityId;
 	protected byte textureId = 0;
 
-	public int getNumBytes() {
-		return PacketUtil.getNumBytes(texture) + 4 + 1;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		entityId = input.readInt();
-		textureId = input.readByte();
-		texture = PacketUtil.readString(input);
+		textureId = (byte) input.read();
+		texture = input.readString();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(entityId);
-		output.writeByte(textureId);
-		PacketUtil.writeString(output, texture);
+		output.write(textureId);
+		output.writeString(texture);
 	}
 
 	public void run(int PlayerId) {

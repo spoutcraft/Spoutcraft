@@ -16,14 +16,14 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
 public class PacketRenderDistance implements SpoutPacket{
@@ -42,13 +42,13 @@ public class PacketRenderDistance implements SpoutPacket{
 		return 3;
 	}
 
-	public void readData(DataInputStream input) throws IOException {
-		view = input.readByte();
-		max = input.readByte();
-		min = input.readByte();
+	public void readData(SpoutInputStream input) throws IOException {
+		view = (byte) input.read();
+		max = (byte) input.read();
+		min = (byte) input.read();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.write(view);
 		output.write(max);
 		output.write(min);

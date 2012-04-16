@@ -17,7 +17,6 @@
 package org.spoutcraft.client;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,6 +46,7 @@ import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.SimpleKeyManager;
 import org.spoutcraft.client.gui.SimpleWidgetManager;
+import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.client.gui.server.ServerManager;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
 import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
@@ -355,6 +355,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		server = -1L;
 		inWorldTicks = 0L;
 		MaterialData.reset();
+		MinimapConfig.getInstance().getServerWaypoints().clear();
 	}
 
 	public void onWorldEnter() {
@@ -375,6 +376,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		MipMapUtils.initializeMipMaps();
 		player.getMainScreen().toggleSurvivalHUD(!Minecraft.theMinecraft.playerController.isInCreativeMode());
 		inWorldTicks = 0L;
+		MinimapConfig.getInstance().getServerWaypoints().clear();
 	}
 
 	public static Minecraft getHandle() {

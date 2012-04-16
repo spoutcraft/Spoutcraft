@@ -16,17 +16,12 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+
 public interface SpoutPacket {
-	/**
-	 * The number of bytes of data contained inside of the packet.
-	 * Packet version and other meta-data are excluded, only count bytes read by {@link #readData(DataInputStream)}.
-	 * @return Number of bytes
-	 */
-	public int getNumBytes();
 
 	/**
 	 * Reads the data from an input stream into member variables.
@@ -34,7 +29,7 @@ public interface SpoutPacket {
 	 * @param input stream to read from
 	 * @throws IOException
 	 */
-	public void readData(DataInputStream input) throws IOException;
+	public void readData(SpoutInputStream input) throws IOException;
 
 	/**
 	 * Writes the data from the packet to the output stream, to be serialized and sent to a player.
@@ -42,7 +37,7 @@ public interface SpoutPacket {
 	 * @param output stream to write to
 	 * @throws IOException
 	 */
-	public void writeData(DataOutputStream output) throws IOException;
+	public void writeData(SpoutOutputStream output) throws IOException;
 
 	/**
 	 * Performs any tasks for the packet after data has been successfully read into the packet.

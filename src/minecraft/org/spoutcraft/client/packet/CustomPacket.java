@@ -19,12 +19,15 @@ package org.spoutcraft.client.packet;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
 
 import org.spoutcraft.client.PacketDecompressionThread;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class CustomPacket extends Packet{
 	public SpoutPacket packet;
@@ -50,11 +53,11 @@ public class CustomPacket extends Packet{
 	}
 
 	public int getPacketSize() {
-		if (packet == null) {
+		//if (packet == null) {
 			return 8;
-		} else {
-			return packet.getNumBytes() + 8;
-		}
+		//} else {
+		//	return packet.getNumBytes() + 8;
+		//}
 	}
 
 	public void readPacketData(DataInputStream input) throws IOException {
@@ -68,24 +71,28 @@ public class CustomPacket extends Packet{
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
 			} catch (Exception e) {
-				System.out.println("Failed to identify packet id: " + packetId);
+				//System.out.println("Failed to identify packet id: " + packetId);
 				//e.printStackTrace();
 			}
 		}
 		try {
 			if (this.packet == null) {
 				input.skipBytes(length);
-				System.out.println("Unknown packet " + packetId + ". Skipping contents.");
+				//System.out.println("Unknown packet " + packetId + ". Skipping contents.");
 				return;
 			} else if (packet.getVersion() != version) {
 				input.skipBytes(length);
 				//Keep server admins from going insane :p
 				if (nags[packetId]-- > 0) {
-					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
+					//System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
 				outdated = outdated ? true : version > packet.getVersion();
 			} else {
-				packet.readData(input);
+				byte[] data = new byte[length];
+				input.readFully(data);
+				
+				SpoutInputStream stream = new SpoutInputStream(ByteBuffer.wrap(data));
+				packet.readData(stream);
 				success = true;
 			}
 		} catch (Exception e) {
@@ -99,6 +106,8 @@ public class CustomPacket extends Packet{
 		}
 	}
 
+	SpoutOutputStream stream = new SpoutOutputStream();
+	
 	public void writePacketData(DataOutputStream output) throws IOException {
 		if (packet == null) {
 			output.writeShort(-1);
@@ -109,10 +118,16 @@ public class CustomPacket extends Packet{
 		//System.out.println("Writing Packet Data for " + packet.getPacketType());
 		output.writeShort(packet.getPacketType().getId());
 		output.writeShort(packet.getVersion());
-		output.writeInt(getPacketSize() - 8);
-		packet.writeData(output);
-	}
+		
+		stream.getRawBuffer().clear();
+		packet.writeData(stream);
+		ByteBuffer buffer = stream.getRawBuffer();
+		byte[] data = new byte[buffer.capacity() - buffer.remaining()];
+		System.arraycopy(buffer.array(), 0, data, 0, data.length);
 
+		output.writeInt(data.length);
+		output.write(data, 0, data.length);
+	}
 
 	public void processPacket(NetHandler netHandler) {
 		if (packet != null) {

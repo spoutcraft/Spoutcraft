@@ -16,8 +16,6 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.zip.DataFormatException;
@@ -26,10 +24,13 @@ import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	private int chunkX;
 	private int chunkZ;
+	private boolean hasData = false;
 	private byte[] data;
 	private boolean compressed = true;
 
@@ -37,43 +38,43 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 
 	}
 
-	public PacketCustomBlockChunkOverride(short[] customIds, int x, int z) {
+	public PacketCustomBlockChunkOverride(int x, int z) {
 		chunkX = x;
 		chunkZ = z;
-		ByteBuffer buffer = ByteBuffer.allocate(customIds.length * 2);
-		for (int i = 0; i < customIds.length; i++) {
-			buffer.putShort(customIds[i]);
-		}
-		data = buffer.array();
+		compressed = false;
 	}
 
-	public int getNumBytes() {
-		return 12 + data.length;
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		chunkX = input.readInt();
 		chunkZ = input.readInt();
-		int size = input.readInt();
-		data = new byte[size];
-		input.readFully(data);
+		hasData = input.readBoolean();
+		if (hasData) {
+			int size = input.readInt();
+			data = new byte[size];
+			input.read(data);
+		}
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(chunkX);
 		output.writeInt(chunkZ);
-		output.writeInt(data.length);
-		output.write(data);
+		output.writeBoolean(hasData);
+		if (hasData) {
+			output.writeInt(data.length);
+			output.write(data);
+		}
 	}
 
 	public void run(int playerId) {
-		ByteBuffer buffer = ByteBuffer.allocate(data.length);
-		buffer.put(data);
-		short[] customIds = new short[16*16*Spoutcraft.getWorld().getMaxHeight()];
-		for (int i = 0; i < customIds.length; i++) {
-			customIds[i] = buffer.getShort(i * 2);
+		if (hasData) {
+			ByteBuffer buffer = ByteBuffer.allocate(data.length);
+			buffer.put(data);
+			short[] customIds = new short[16*16*Spoutcraft.getWorld().getMaxHeight()];
+			for (int i = 0; i < customIds.length; i++) {
+				customIds[i] = buffer.getShort(i * 2);
+			}
+			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
 		}
-		Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
 	}
 
 	public void failure(int playerId) {
@@ -85,11 +86,11 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	}
 
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 	public void compress() {
-		if (!compressed) {
+		if (!compressed && hasData) {
 			if (data != null) {
 				Deflater deflater = new Deflater();
 				deflater.setInput(data);
@@ -113,7 +114,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	}
 
 	public void decompress() {
-		if (compressed) {
+		if (compressed && hasData) {
 			Inflater decompressor = new Inflater();
 			decompressor.setInput(data);
 

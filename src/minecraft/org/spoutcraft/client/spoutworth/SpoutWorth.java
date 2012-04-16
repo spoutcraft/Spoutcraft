@@ -222,7 +222,7 @@ public class SpoutWorth {
 		}
 		if (ConfigReader.signDistance != Integer.MAX_VALUE) {
 			ConfigReader.signDistance *= 2;
-			if (ConfigReader.signDistance == 128) {
+			if (ConfigReader.signDistance >= 128) {
 				ConfigReader.signDistance = Integer.MAX_VALUE;
 			}
 			ConfigReader.write();

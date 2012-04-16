@@ -16,13 +16,12 @@
  */
 package org.spoutcraft.client.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
+import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
+import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
 public class PacketSky implements SpoutPacket{
@@ -51,32 +50,28 @@ public class PacketSky implements SpoutPacket{
 		this.moon = moonUrl;
 	}
 
-	public int getNumBytes() {
-		return 31 + PacketUtil.getNumBytes(sun) + PacketUtil.getNumBytes(moon);
-	}
-
-	public void readData(DataInputStream input) throws IOException {
+	public void readData(SpoutInputStream input) throws IOException {
 		cloudY = input.readInt();
 		stars = input.readInt();
 		sunPercent = input.readInt();
 		moonPercent = input.readInt();
-		sun = PacketUtil.readString(input, 256);
-		moon = PacketUtil.readString(input, 256);
-		skyColor = PacketUtil.readColor(input);
-		fogColor = PacketUtil.readColor(input);
-		cloudColor = PacketUtil.readColor(input);
+		sun = input.readString();
+		moon = input.readString();
+		skyColor = input.readColor();
+		fogColor = input.readColor();
+		cloudColor = input.readColor();
 	}
 
-	public void writeData(DataOutputStream output) throws IOException {
+	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(cloudY);
 		output.writeInt(stars);
 		output.writeInt(sunPercent);
 		output.writeInt(moonPercent);
-		PacketUtil.writeString(output, sun);
-		PacketUtil.writeString(output, moon);
-		PacketUtil.writeColor(output, skyColor);
-		PacketUtil.writeColor(output, fogColor);
-		PacketUtil.writeColor(output, cloudColor);
+		output.writeString(sun);
+		output.writeString(moon);
+		output.writeColor(skyColor);
+		output.writeColor(fogColor);
+		output.writeColor(cloudColor);
 	}
 
 	public void run(int PlayerId) {
