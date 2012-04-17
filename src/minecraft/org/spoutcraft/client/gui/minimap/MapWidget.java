@@ -116,7 +116,6 @@ public class MapWidget extends GenericScrollable {
 			newlod = MIN_LOD;
 		}
 		if(newlod != levelOfDetail) {
-			System.out.println("new level of detail: "+newlod);
 			renderer.renderQueue.clear();
 		}
 		levelOfDetail = newlod;
