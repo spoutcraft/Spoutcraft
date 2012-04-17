@@ -225,7 +225,6 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		return message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<String> formatChat(String message, boolean display) {
 		final LinkedList<String> lines = new LinkedList<String>();
 		final FontRenderer font = Minecraft.theMinecraft.fontRenderer;
@@ -252,7 +251,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		for (int i = 0; i < message.length(); i++) {
 			char ch = message.charAt(i);
 			int charWidth = font.getStringWidth(String.valueOf(ch));
-			if (lineWidth + charWidth < width) {
+			if (lineWidth + charWidth < width && (display || builder.length() < 99)) {
 				builder.append(ch);
 				lineWidth += charWidth;
 			} else {
