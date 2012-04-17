@@ -101,7 +101,7 @@ public class EntityText extends Entity {
         super.onUpdate();
         if(duration > 0) {
             if(duration < ticksExisted) {
-                this.worldObj.loadedEntityList.remove(this);
+            	this.setDead();
             }
         }
         moveEntity(motionX, motionY, motionZ);
