@@ -561,22 +561,21 @@ public class GuiIngame extends Gui
 		if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
 			return;
 		}
-		SpoutClient.enableSandbox();
-		if (Spoutcraft.getActivePlayer() != null) {
-			ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
+
+		String mess[] = mc.fontRenderer.func_50113_d(message, 320).split("\n");
+		int j = 0;
+
+		for (j = 0; j < mess.length; j++) {
+			SpoutClient.enableSandbox();
+			if (Spoutcraft.getActivePlayer() != null) {
+				ChatTextBox.addChatMessage(ChatMessage.parseMessage(mess[j]));
+			}
+			else {
+				ChatTextBox.addChatMessage(new ChatMessage(mess[j], mess[j]));
+			}
+			SpoutClient.disableSandbox();
 		}
-		else {
-			ChatTextBox.addChatMessage(new ChatMessage(message, message));
-		}
-		SpoutClient.disableSandbox();
 		//Spout end
-
-		int i;
-
-		for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
-			for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
-			addChatMessage(message.substring(0, i));
-		}
 	}
 
 	public void setRecordPlayingMessage(String par1Str)
