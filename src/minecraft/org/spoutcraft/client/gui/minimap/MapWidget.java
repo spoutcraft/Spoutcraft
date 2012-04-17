@@ -395,7 +395,7 @@ public class MapWidget extends GenericScrollable {
 		
 		drawPOI("You", x, z, 0xffff0000);
 		
-		for(Waypoint waypoint : MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())){
+		for(Waypoint waypoint : MinimapConfig.getInstance().getAllWaypoints(MinimapUtils.getWorldName())){
 			if (!waypoint.deathpoint || MinimapConfig.getInstance().isDeathpoints()) {
 				drawPOI(waypoint.name, waypoint.x, waypoint.z, 0xff00ff00);
 			}

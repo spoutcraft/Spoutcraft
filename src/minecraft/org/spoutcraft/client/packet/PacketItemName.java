@@ -64,6 +64,9 @@ public class PacketItemName implements SpoutPacket{
 				material.setName(name);
 			}
 		}
+		else {
+			System.out.println("Tried to set item name to [" + name + "] for unknown material (" + id + ", " + data + ")");
+		}
 	}
 
 	public PacketType getPacketType() {

@@ -218,7 +218,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	
 	private Waypoint getClickedWaypoint(int x, int z) {
 		Point clicked = new Point(x,z);
-		for(Waypoint waypoint:MinimapConfig.getInstance().getWaypoints(MinimapUtils.getWorldName())) {
+		for(Waypoint waypoint:MinimapConfig.getInstance().getAllWaypoints(MinimapUtils.getWorldName())) {
 			if(withinManhattanLength(new Point(waypoint.x, waypoint.z), clicked, 2)) {
 				return waypoint;
 			}

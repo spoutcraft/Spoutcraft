@@ -58,10 +58,6 @@ public class MirrorUtils {
 			}
 			
 			Collections.sort(goodMirrors, new MirrorComparator(mirrors));
-			for (String mirror : goodMirrors) {
-				System.out.println("Mirror " + mirror + " value " + mirrors.get(mirror));
-			}
-			
 			MirrorUtils.mirrors = goodMirrors;
 		}
 		

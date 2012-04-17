@@ -285,6 +285,13 @@ public class MinimapConfig {
 	public synchronized List<Waypoint> getServerWaypoints() {
 		return serverWaypoints;
 	}
+	
+	public synchronized List<Waypoint> getAllWaypoints(String world) {
+		LinkedList<Waypoint> list = new LinkedList<Waypoint>();
+		list.addAll(getWaypoints(world));
+		list.addAll(getServerWaypoints());
+		return list;
+	}
 
 	public boolean isScale() {
 		return scale;

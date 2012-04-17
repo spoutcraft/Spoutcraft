@@ -17,29 +17,28 @@
 package org.spoutcraft.client.packet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketWaypoint implements SpoutPacket{
 	private double x, y, z;
 	private String name;
+	private boolean death = false;
 	
 	public PacketWaypoint() { }
-	
-	public PacketWaypoint(double x, double y, double z, String name) { 
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.name = name;
-	}
+
 
 	public void readData(SpoutInputStream input) throws IOException { 
 		x = input.readDouble();
 		y = input.readDouble();
 		z = input.readDouble();
 		name = input.readString();
+		death = input.readBoolean();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
@@ -47,10 +46,18 @@ public class PacketWaypoint implements SpoutPacket{
 		output.writeDouble(y);
 		output.writeDouble(z);
 		output.writeString(name);
+		output.writeBoolean(death);
 	}
 
 	public void run(int playerId) {
-		MinimapConfig.getInstance().addServerWaypoint(x, y, z, name);
+		if (!death) {
+			MinimapConfig.getInstance().addServerWaypoint(x, y, z, name);
+		}
+		else {
+			Waypoint point = new Waypoint("Death " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()), (int)x, (int)y, (int)z, true);
+			point.deathpoint = true;
+			MinimapConfig.getInstance().addWaypoint(point);
+		}
 	}
 
 	public void failure(int playerId) {
