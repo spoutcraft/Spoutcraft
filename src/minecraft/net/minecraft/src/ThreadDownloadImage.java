@@ -22,6 +22,9 @@ class ThreadDownloadImage extends Thread {
 		HttpURLConnection var1 = null;
 
 		try {
+			//Spout start
+			HttpURLConnection.setFollowRedirects(true);
+			//Spout end
 			URL var2 = new URL(this.location);
 			var1 = (HttpURLConnection)var2.openConnection();
 			//Spout Start
