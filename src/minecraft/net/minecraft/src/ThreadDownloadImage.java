@@ -31,6 +31,7 @@ class ThreadDownloadImage extends Thread {
 			var1.setDoOutput(false);
 			var1.connect();
 			if (var1.getResponseCode() / 100 == 4) {
+				System.out.println("Bad Response Code [" + var1.getResponseCode() + "] downloading " + location); //Spout
 				return;
 			}
 
