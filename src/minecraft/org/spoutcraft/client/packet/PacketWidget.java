@@ -58,11 +58,11 @@ public class PacketWidget implements SpoutPacket {
 		long lsb = input.readLong();
 		
 		int size = input.readInt();
+		int version = input.readShort();
 		byte[] widgetData = new byte[size];
 		input.read(widgetData);
 		SpoutInputStream data = new SpoutInputStream(ByteBuffer.wrap(widgetData));
 
-		int version = input.readShort();
 		screen = new UUID(msb, lsb);
 		WidgetType widgetType = WidgetType.getWidgetFromId(id);
 		if (widgetType != null) {
