@@ -36,7 +36,7 @@ public class SignDistanceButton extends AutomatedButton{
 		} else if (ConfigReader.signDistance == 128) {
 			ConfigReader.signDistance = Integer.MAX_VALUE;
 		} else {
-			ConfigReader.signDistance = 4;
+			ConfigReader.signDistance = 8;
 		}
 		ConfigReader.write();
 	}
