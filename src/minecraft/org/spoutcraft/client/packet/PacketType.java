@@ -80,6 +80,7 @@ public enum PacketType {
 	PacketSpawnTextEntity(58, PacketSpawnTextEntity.class),
 	PacketSlotClick(59, PacketSlotClick.class),
 	PacketWaypoint(60, PacketWaypoint.class),
+	PacketParticle(61, PacketParticle.class),
 	;
 
 	private final int id;
