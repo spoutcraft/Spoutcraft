@@ -89,6 +89,7 @@ public abstract class GuiContainer extends GuiScreen
 				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools, replaceBlocks);
 				if (!(inv instanceof InventoryPlayer)) {
 					replaceTools.setVisible(false);
+					replaceBlocks.setVisible(false);
 				}
 			}
 		}
