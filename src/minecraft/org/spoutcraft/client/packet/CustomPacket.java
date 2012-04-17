@@ -71,20 +71,20 @@ public class CustomPacket extends Packet{
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
 			} catch (Exception e) {
-				//System.out.println("Failed to identify packet id: " + packetId);
+				System.out.println("Failed to identify packet id: " + packetId);
 				//e.printStackTrace();
 			}
 		}
 		try {
 			if (this.packet == null) {
 				input.skipBytes(length);
-				//System.out.println("Unknown packet " + packetId + ". Skipping contents.");
+				System.out.println("Unknown packet " + packetId + ". Skipping contents.");
 				return;
 			} else if (packet.getVersion() != version) {
 				input.skipBytes(length);
 				//Keep server admins from going insane :p
 				if (nags[packetId]-- > 0) {
-					//System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
+					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
 				outdated = outdated ? true : version > packet.getVersion();
 			} else {
