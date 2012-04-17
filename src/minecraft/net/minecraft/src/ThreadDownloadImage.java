@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -30,15 +31,23 @@ class ThreadDownloadImage extends Thread {
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
+			System.out.println("Response Code [" + var1.getResponseCode() + "] for " + location); //Spout
 			if (var1.getResponseCode() / 100 == 4) {
-				System.out.println("Bad Response Code [" + var1.getResponseCode() + "] downloading " + location); //Spout
 				return;
 			}
 
 			if (this.buffer == null) {
 				this.imageData.image = ImageIO.read(var1.getInputStream());
 			} else {
-				this.imageData.image = this.buffer.parseUserSkin(ImageIO.read(var1.getInputStream()));
+				//Spout start
+				BufferedImage image = ImageIO.read(var1.getInputStream());
+				if (image != null) {
+					this.imageData.image = this.buffer.parseUserSkin(image);
+				}
+				else {
+					System.out.println("No image data found for " + location);
+				}
+				//Spout end
 			}
 		} catch (Exception var6) {
 			var6.printStackTrace();

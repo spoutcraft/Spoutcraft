@@ -30,6 +30,8 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		displayName = username;
 		spoutEntity = new SpoutPlayer(this);
 		((SpoutPlayer) spoutEntity).setPlayer(this);
+		this.worldObj.releaseEntitySkin(this);
+		worldObj.obtainEntitySkin(this);
 		//Spout end
 	}
 

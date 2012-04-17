@@ -47,6 +47,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		spoutEntity = ClientPlayer.getInstance();
 		((ClientPlayer) spoutEntity).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;
+		this.worldObj.releaseEntitySkin(this);
+		this.worldObj.obtainEntitySkin(this);
 		//Spout end
 	}
 
