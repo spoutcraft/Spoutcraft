@@ -40,6 +40,8 @@ public class HeightMap {
 	private boolean initBounds = false;
 	private File file = null;
 	private HeightChunk lastChunk = null; //Faster access to last accessed chunk
+	private static HeightMapSaveThread saveThread;
+	private boolean dirty = true;
 
 	public class HeightChunk {
 		public short heightmap[] = new short[16 * 16];
@@ -78,6 +80,7 @@ public class HeightMap {
 	public void clear() {
 		cache.clear();
 		initBounds = false;
+		dirty = false;
 	}
 
 	public static HeightMap getHeightMap(String worldName) {
@@ -179,9 +182,11 @@ public class HeightMap {
 				progress.delete();
 			}
 		}
+		dirty = false;
 	}
 
 	private void addChunk(HeightChunk chunk) {
+		dirty = true;
 		synchronized (cache) {
 			int x = chunk.x;
 			int z = chunk.z;
@@ -202,6 +207,10 @@ public class HeightMap {
 	}
 
 	public void save() {
+		if(!dirty) {
+			return;
+			//Don't need to save when not touched...
+		}
 		synchronized (cache) {
 			try {
 				File progress = new File(file.getAbsoluteFile() + ".inProgress");
@@ -242,6 +251,14 @@ public class HeightMap {
 				e.printStackTrace();
 			}
 		}
+		dirty = false;
+	}
+	
+	public void saveThreaded() {
+		if(saveThread == null) {
+			saveThread = new HeightMapSaveThread();
+			saveThread.addMap(this);
+		}
 	}
 
 	private static File getFile(String worldName) {
@@ -266,6 +283,7 @@ public class HeightMap {
 	}
 
 	public HeightChunk getChunk(int x, int z, boolean force) {
+		dirty = true; //We don't know what they do with the chunk, so it could be dirtied...
 		if(lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
 			return lastChunk;
 		} else {
@@ -317,6 +335,7 @@ public class HeightMap {
 	}
 	
 	public void setHighestBlock(int x, int z, short height, byte id) {
+		dirty = true;
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
 		x &= 0xF;
@@ -357,5 +376,19 @@ public class HeightMap {
 
 	public int getMaxZ() {
 		return maxZ;
+	}
+
+	public static void joinSaveThread() {
+		if(saveThread != null) {
+			try {
+				System.out.println("Waiting for heightmap to save...");
+				saveThread.join();
+			} catch (InterruptedException e) {
+			}
+		}
+	}
+	
+	public boolean isDirty() {
+		return dirty;
 	}
 }

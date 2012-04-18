@@ -33,10 +33,12 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.minimap.MinimapUtils;
 import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
@@ -641,6 +643,15 @@ public abstract class Minecraft implements Runnable {
 			var13.printStackTrace();
 			this.onMinecraftCrash(new UnexpectedThrowable("Unexpected error", var13));
 		} finally {
+			//Spout Start
+			if(theWorld != null) {
+				HeightMap map = HeightMap.getHeightMap(MinimapUtils.getWorldName());
+				if(map.isDirty()) {
+					map.saveThreaded();
+				}
+			}
+			HeightMap.joinSaveThread();
+			//Spout End
 			this.shutdownMinecraftApplet();
 		}
 	}

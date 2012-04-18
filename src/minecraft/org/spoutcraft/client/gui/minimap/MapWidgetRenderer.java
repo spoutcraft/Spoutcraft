@@ -24,7 +24,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.spoutcraft.spoutcraftapi.gui.Point;
 
 public class MapWidgetRenderer extends Thread {
-	private MapWidget mapWidget = null;
 	public Queue<Point> renderQueue = new LinkedBlockingQueue<Point>();
 
 	public MapWidgetRenderer() {
@@ -40,6 +39,8 @@ public class MapWidgetRenderer extends Thread {
 					MapWidget.drawChunk(coords.getX(), coords.getY(), true);
 				} catch(NoSuchElementException e) {
 					break;
+				} catch(Exception e) {
+					continue;
 				}
 			}
 			try {
@@ -47,9 +48,5 @@ public class MapWidgetRenderer extends Thread {
 			} catch (InterruptedException e) {
 			}
 		}
-	}
-
-	public void setMapWidget(MapWidget widget) {
-		mapWidget = widget;
 	}
 }

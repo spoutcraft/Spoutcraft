@@ -65,10 +65,7 @@ public class MapWidget extends GenericScrollable {
 	public MapWidget(GuiScreen parent) {
 		if(renderer == null) {
 			renderer = new MapWidgetRenderer();
-			renderer.setMapWidget(this);
 			renderer.start();
-		} else {
-			renderer.setMapWidget(this);
 		}
 		levelOfDetail = 1;
 		this.parent = parent;
