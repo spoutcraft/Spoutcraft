@@ -99,7 +99,8 @@ public class ResolutionButton extends GenericButton{
 		SXGAPLUS(8, 1400, 1050),
 		WSXGAPLUS(9, 1680, 1050),
 		HD1080(10, 1920, 1080),
-		WUXGA(11, 1920, 1200)
+		WUXGA(11, 1920, 1200),
+		HD1440(12, 2560, 1440),
 		;
 		
 		final int height, width, id;
