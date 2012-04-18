@@ -114,16 +114,14 @@ public class ChunkProviderClient implements IChunkProvider {
 		
 		if (chunkMapping.size() > desiredChunks) {
 			unloadableCounter++;
-			if (unloadableCounter > 20) {
+			final int delay = 40;
+			if (unloadableCounter > delay) {
 				ArrayList<Chunk> chunks = new ArrayList<Chunk>(chunkMapping.size());
 				chunks.addAll(chunkMapping.valueCollection());
 				Collections.sort(chunks, new ChunkComparator());
-				Chunk c = chunks.get(0);
 				
-				int playerX = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posX / 16.0D);
-				int playerZ = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posZ / 16.0D);
-				
-				if (c.xPosition - range - playerX < 0 && c.zPosition - range - playerZ < 0) {
+				for (int i = 0; i < 20; i++) {
+					Chunk c = chunks.get(i);
 					if (c.canBeUnloaded) {
 						c.onChunkUnload();
 						chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(c.xPosition, c.zPosition));
