@@ -643,6 +643,8 @@ public class MaterialData {
 			}
 			catch (Exception e) {
 				System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
+				e.printStackTrace();
+				System.out.println("--------------------------------------------");
 			}
 			return mat;
 		}
