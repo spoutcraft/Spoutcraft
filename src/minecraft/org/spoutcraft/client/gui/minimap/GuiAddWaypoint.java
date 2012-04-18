@@ -18,6 +18,7 @@ package org.spoutcraft.client.gui.minimap;
 
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -80,7 +81,11 @@ public class GuiAddWaypoint extends GuiScreen{
 		name.setText(toEdit.name);
 		getScreen().attachWidget(spoutcraft, name);
 		
-		label = new GenericLabel("(" + x + ", " + y + ", " + z + ")");
+		String text = "(" + x + ", " + y + ", " + z + ")";
+		if(!SpoutClient.getInstance().isCoordsCheat()) {
+			text = "Coords not shown";
+		}
+		label = new GenericLabel(text);
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(106);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
