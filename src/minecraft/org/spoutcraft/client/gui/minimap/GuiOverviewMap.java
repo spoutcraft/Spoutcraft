@@ -281,6 +281,17 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 		super.mouseMovedOrUp(x, y, button);
 	}
+
+	@Override
+	protected void handleScroll(int x, int y, int scroll) {
+		if(scroll > 0) {
+			map.zoomBy(1.8);
+			map.scrollTo(map.mapOutsideToCoords(new Point(x, y)), true, 200);
+		} else if(scroll < 0) {
+			map.zoomBy(1/1.8);
+			map.scrollTo(map.mapOutsideToCoords(new Point(x, y)), true, 200);
+		}
+	}	
 }
 
 class FadingLabel extends GenericLabel {

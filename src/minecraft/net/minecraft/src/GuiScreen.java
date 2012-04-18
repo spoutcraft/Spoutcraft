@@ -655,27 +655,31 @@ public class GuiScreen extends Gui
 		SpoutClient.enableSandbox();
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
-			Orientation axis = Orientation.VERTICAL;
-			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				axis = Orientation.HORIZONTAL;
-			}
-			for (Widget w : getScreen().getAttachedWidgets(true)) {
-				if (w != null && isInBoundingRect(w, x, y)) {
-					if (w instanceof Scrollable) {
-						// Stupid LWJGL not recognizing vertical scrolls :(
-						Scrollable lw = (Scrollable) w;
-						if (axis == Orientation.VERTICAL) {
-							lw.scroll(0, -scroll / 30);
-						} else {
-							lw.scroll(-scroll / 30, 0);
-						}
-						PacketControlAction action = new PacketControlAction(lw.getScreen() != null ? lw.getScreen() : getScreen(), lw, axis.toString(), lw.getScrollPosition(axis));
-						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
+			handleScroll(x, y, scroll);
+		}
+		SpoutClient.disableSandbox();
+	}
+
+	protected void handleScroll(int x, int y, int scroll) {
+		Orientation axis = Orientation.VERTICAL;
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			axis = Orientation.HORIZONTAL;
+		}
+		for (Widget w : getScreen().getAttachedWidgets(true)) {
+			if (w != null && isInBoundingRect(w, x, y)) {
+				if (w instanceof Scrollable) {
+					// Stupid LWJGL not recognizing vertical scrolls :(
+					Scrollable lw = (Scrollable) w;
+					if (axis == Orientation.VERTICAL) {
+						lw.scroll(0, -scroll / 30);
+					} else {
+						lw.scroll(-scroll / 30, 0);
 					}
+					PacketControlAction action = new PacketControlAction(lw.getScreen() != null ? lw.getScreen() : getScreen(), lw, axis.toString(), lw.getScrollPosition(axis));
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(action);
 				}
 			}
 		}
-		SpoutClient.disableSandbox();
 	}
 
 	// Spout End rewritten
