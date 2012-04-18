@@ -29,7 +29,7 @@ public class ResolutionButton extends GenericButton{
 	public static Dimension defDimension;
 	Resolution current = Resolution.fromId(ConfigReader.resolution);
 	public ResolutionButton() {
-		setEnabled(SpoutClient.getInstance().isTimeCheat());
+		setEnabled(true);
 		setTooltip("Switch the resolution of the game");
 	}
 	
@@ -97,7 +97,9 @@ public class ResolutionButton extends GenericButton{
 		WIDE(6, 1366, 768),
 		WIDE2(7, 1440, 900),
 		SXGAPLUS(8, 1400, 1050),
-		HD1080(9, 1920, 1080),
+		WSXGA+(9, 1680, 1050),
+		HD1080(10, 1920, 1080),
+		WUXGA(11, 1920, 1200)
 		;
 		
 		final int height, width, id;
