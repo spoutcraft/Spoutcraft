@@ -19,6 +19,7 @@ package org.spoutcraft.client.gui.settings;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
@@ -30,16 +31,25 @@ import org.spoutcraft.spoutcraftapi.gui.*;
 public class GameSettingsScreen extends GuiScreen{
 	private Button doneButton = null;
 	public final GuiScreen parent;
+	private GenericScrollArea scrollArea;
 
 	public GameSettingsScreen(GuiScreen parent) {
 		this.parent = parent;
 	}
+	
+	public void setWorldAndResolution(Minecraft mc, int width, int height) {
+		int scroll = scrollArea == null ? 0 : scrollArea.getScrollPosition(Orientation.VERTICAL);
+		super.setWorldAndResolution(mc, width, height);
+		scrollArea.setScrollPosition(Orientation.VERTICAL, scroll);
+	}
+	
 
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Control control;
 
 		GenericScrollArea screen = new GenericScrollArea();
+		scrollArea = screen;
 		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
@@ -420,6 +430,10 @@ public class GameSettingsScreen extends GuiScreen{
 
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		control = new ResolutionButton().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 	}
 

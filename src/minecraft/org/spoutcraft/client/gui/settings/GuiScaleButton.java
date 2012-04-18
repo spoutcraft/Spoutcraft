@@ -17,6 +17,7 @@
 package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.ScaledResolution;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
@@ -49,6 +50,9 @@ public class GuiScaleButton extends GenericButton{
 		ConfigReader.write();
 
 		//Redisplay the video screen.
-		SpoutClient.getHandle().displayGuiScreen(new GameSettingsScreen(parent.parent));
+		ScaledResolution var3 = new ScaledResolution(Minecraft.theMinecraft.gameSettings, Minecraft.theMinecraft.displayWidth, Minecraft.theMinecraft.displayHeight);
+		int width = var3.getScaledWidth();
+		int height = var3.getScaledHeight();
+		SpoutClient.getHandle().currentScreen.setWorldAndResolution(Minecraft.theMinecraft, width, height);
 	}
 }
