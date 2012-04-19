@@ -499,9 +499,7 @@ public class TextureUtils {
 			if (image != null) {
 				image.getRGB(0, 0, 256, 256, data, 0, 256);
 			}
-		} catch (IOException var3) {
-			var3.printStackTrace();
-		}
+		} catch (Exception ignore) { }
 	}
 
 	public static void openTexturePackFile(TexturePackCustom var0) {
