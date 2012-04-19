@@ -261,7 +261,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 					waypoint_mode = WAYPOINT_EDIT;
 					buttonWaypoint.setText("Edit Waypoint");
 				}
-				menuTitle.setText("Position (" + coords.getX() + ":" + this.y + ":" + coords.getY() + ")");
+				menuTitle.setText(SpoutClient.getInstance().isCoordsCheat() ? "Position (" + coords.getX() + ":" + this.y + ":" + coords.getY() + ")" : "Position not shown");
 			}
 			dragging = false;
 			dragStartX = -1;
