@@ -657,8 +657,13 @@ public abstract class Minecraft implements Runnable {
 	}
 
 	private void runGameLoop() {
-		Colorizer.setupBlockAccess(this.theWorld, true); // Spout
-		mainThread = Thread.currentThread(); // Spout
+		//Spout start
+		Colorizer.setupBlockAccess(this.theWorld, true);
+		mainThread = Thread.currentThread();
+		if (sndManager != null) {
+			sndManager.tick();
+		}
+		//Spout end
 
 		if (this.mcApplet != null && !this.mcApplet.isActive()) {
 			this.running = false;

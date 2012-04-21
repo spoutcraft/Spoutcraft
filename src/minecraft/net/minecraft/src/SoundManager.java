@@ -31,6 +31,10 @@ public class SoundManager {
 	private static boolean loaded = false;
 	private Random rand = new Random();
 	private int ticksBeforeMusic;
+	//Spout start
+	private final int SOUND_EFFECTS_PER_TICK = 3;
+	private int soundEffectsLimit = SOUND_EFFECTS_PER_TICK;
+	//Spout end
 
 	public SoundManager() {
 		this.ticksBeforeMusic = this.rand.nextInt(12000);
@@ -201,8 +205,10 @@ public class SoundManager {
 	
 	public void playSound(String s, float f, float f1, float f2, float f3, float f4, int soundId, float volume)
 	{
-		if(!loaded || options.soundVolume == 0.0F)
-		{
+		if(!loaded || options.soundVolume == 0.0F) {
+			return;
+		}
+		if (soundEffectsLimit-- <= 0) {
 			return;
 		}
 		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
@@ -235,8 +241,10 @@ public class SoundManager {
 	
 	public void playSoundFX(String s, float f, float f1, int soundId, float volume)
 	{
-		if(!loaded || options.soundVolume == 0.0F)
-		{
+		if(!loaded || options.soundVolume == 0.0F) {
+			return;
+		}
+		if (soundEffectsLimit-- <= 0) {
 			return;
 		}
 		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
@@ -264,8 +272,7 @@ public class SoundManager {
 	}
 	
 	public void playMusic(String music, int id, int x, int y, int z, float volume, float distance) {
-		if(!loaded || options.musicVolume == 0.0F)
-		{
+		if(!loaded || options.musicVolume == 0.0F) {
 			return;
 		}
 		stopMusic();
@@ -289,8 +296,10 @@ public class SoundManager {
 	}
 	
 	public void playCustomSoundEffect(String music, int x, int y, int z, float volume, float distance) {
-		if(!loaded || options.soundVolume == 0.0F)
-		{
+		if(!loaded || options.soundVolume == 0.0F) {
+			return;
+		}
+		if (soundEffectsLimit-- <= 0) {
 			return;
 		}
 		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(music);
@@ -349,6 +358,10 @@ public class SoundManager {
 	
 	public void resetTime() {
 		ticksBeforeMusic = rand.nextInt(12000) + 12000;
+	}
+	
+	public void tick() {
+		soundEffectsLimit = SOUND_EFFECTS_PER_TICK;
 	}
 	
 	public SoundPoolEntry waitingSound = null;
