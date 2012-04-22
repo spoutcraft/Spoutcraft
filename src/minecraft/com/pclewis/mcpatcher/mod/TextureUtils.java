@@ -90,9 +90,9 @@ public class TextureUtils {
 	public static void setFontRenderer() {
 		//MCPatcherUtils.log("setFontRenderer()", new Object[0]);
 		Minecraft game = SpoutClient.getHandle();
-		//game.fontRenderer.initialize(game.gameSettings, "/font/default.png", game.renderEngine);
+		game.fontRenderer.initialize(game.gameSettings, "/font/default.png", game.renderEngine);
 		if (game.standardGalacticFontRenderer != game.fontRenderer) {
-			//game.standardGalacticFontRenderer.initialize(game.gameSettings, "/font/alternate.png", game.renderEngine);
+			game.standardGalacticFontRenderer.initialize(game.gameSettings, "/font/alternate.png", game.renderEngine);
 		}
 
 	}
