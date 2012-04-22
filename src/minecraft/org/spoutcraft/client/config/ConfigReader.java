@@ -218,7 +218,7 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
 		
-		if (!Shaders.isOpenGL2()) {
+		if (!Shaders.isOpenGL3()) {
 			shaderType = 0;
 		}
 		Shaders.setMode(shaderType);
