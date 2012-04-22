@@ -629,22 +629,25 @@ public class MaterialData {
 		}
 		idLookup[id] = materials;
 
-		if (mat != null) {
+		if (mat != null && id != FLINT_ID) {
 			if (mat.getRawId() == id && mat.getRawData() == data) {
 				return mat;
 			}
 			Material orig = mat;
 			try {
-				Class<?>[] params = {String.class, int.class, int.class};
+				Class<?>[] params = {String.class, int.class, int.class, boolean.class};
 				Constructor<? extends Material> constructor = orig.getClass().getConstructor(params);
 				constructor.setAccessible(true);
-				mat = constructor.newInstance(orig.getName(), id, data);
+				mat = constructor.newInstance(orig.getName(), id, data, true);
 				insertItem(id, data, mat);
 			}
 			catch (Exception e) {
-				System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
+				System.out.println("[Spoutcraft] Available constructors: ");
+				for (Constructor<?> c : orig.getClass().getConstructors()) {
+					System.out.println("[Spoutcraft]       Constructor Params: " + c.getParameterTypes());
+				}
 				e.printStackTrace();
-				System.out.println("--------------------------------------------");
+				System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
 			}
 			return mat;
 		}
