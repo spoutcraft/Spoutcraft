@@ -31,8 +31,6 @@ public class GuiEditSign extends GuiScreen {
 
 	// Spout start
 	private int editColumn = 0;
-	GuiButton unicode;
-
 	// Spout end
 
 	public GuiEditSign(TileEntitySign par1TileEntitySign) {
@@ -48,16 +46,6 @@ public class GuiEditSign extends GuiScreen {
 		controlList.clear();
 		Keyboard.enableRepeatEvents(true);
 		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120, "Done"));
-		// Spout start
-		controlList.add(unicode = new GuiButton(1, width / 2 - 100, height / 4 + 142, "Send As Unicode"));
-		if (!ConfigReader.sendColorsAsUnicode) {
-			unicode.displayString = "Send As Plain Text";
-		}
-		if (!this.mc.theWorld.isRemote) {
-			unicode.drawButton = false;
-			unicode.enabled = false;
-		}
-		// Spout end
 	}
 
 	/**
@@ -71,15 +59,9 @@ public class GuiEditSign extends GuiScreen {
 		entitySign.recalculateText();
 		// Colorize text
 		if (sendAsUnicode()) {
-			boolean allow = Spoutcraft.hasPermission("spout.client.signcolors");
 			for (int i = 0; i < entitySign.signText.length; i++) {
 				if (entitySign.signText[i] != null)
-					entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", allow?"\u00A7$2":"");
-			}
-		} else {
-			for (int i = 0; i < entitySign.signText.length; i++) {
-				if (entitySign.signText[i] != null)
-					entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", "");
+					entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 			}
 		}
 		// Spout end
@@ -116,16 +98,6 @@ public class GuiEditSign extends GuiScreen {
 			entitySign.onInventoryChanged();
 			mc.displayGuiScreen(null);
 		}
-		// Spout start
-		else if (par1GuiButton.id == 1 && unicode.enabled) {
-			ConfigReader.sendColorsAsUnicode = !ConfigReader.sendColorsAsUnicode;
-			if (ConfigReader.sendColorsAsUnicode) {
-				unicode.displayString = "Send As Unicode";
-			} else {
-				unicode.displayString = "Send As Plain Text";
-			}
-		}
-		// Spout end
 	}
 
 	/**
@@ -297,18 +269,12 @@ public class GuiEditSign extends GuiScreen {
 		// Spout end
 		GL11.glPopMatrix();
 		super.drawScreen(x, y, z);
-		// Spout start
-		if (unicode.enabled && isInBoundingRect(unicode.xPosition, unicode.yPosition, unicode.field_52007_b, unicode.field_52008_a, x, y)) {
-			this.drawTooltip("Some servers censor unicode characters. \nIf yours does, try sending as plain text.", x, y);
-		}
-		// Spout end
 	}
 
 	// Spout start
 	public boolean sendAsUnicode() {
-		return ConfigReader.sendColorsAsUnicode && this.mc.theWorld.isRemote;
+		return !this.mc.theWorld.isRemote;
 	}
-
 	// Spout end
 
 	static {
