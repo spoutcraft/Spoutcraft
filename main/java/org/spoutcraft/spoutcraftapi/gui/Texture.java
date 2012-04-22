@@ -102,4 +102,17 @@ public interface Texture extends Widget {
 	 * @return the actual height of the image
 	 */
 	public int getOriginalHeight();
+	
+	/**
+	 * True if this texture is a local texture (inside the minecraft or spoutcraft jar)
+	 * @return local texture 
+	 */
+	public boolean isLocal();
+	
+	/**
+	 * Marks this as a texture that is local (inside the minecraft or spoutcraft jar)
+	 * @param value to set
+	 * @return this
+	 */
+	public Texture setLocal(boolean value);
 }

@@ -31,6 +31,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 	protected int left;
 	protected Runnable finishDelegate = null;
 	protected int originalWidth = -1, originalHeight = -1;
+	protected boolean local = false;
 
 	public GenericTexture() {
 
@@ -146,6 +147,15 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	public GenericTexture setOriginalHeight(int originalHeight) {
 		this.originalHeight = originalHeight;
+		return this;
+	}
+	
+	public boolean isLocal() {
+		return local;
+	}
+	
+	public GenericTexture setLocal(boolean value) {
+		local = value;
 		return this;
 	}
 }
