@@ -241,10 +241,10 @@ public class GuiServerList extends GuiAPIDisplay {
 
 	public void buttonClicked(Button btn) {
 		if (btn.equals(buttonMainMenu)) {
-			mc.displayGuiScreen(new GuiMainMenu());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonFavorites)) {
-			GuiFavorites fav = new GuiFavorites(new GuiMainMenu());
+			GuiFavorites fav = new GuiFavorites(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 			mc.displayGuiScreen(fav);
 			fav.refresh();
 		}

@@ -160,7 +160,7 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void buttonClicked(Button btn) {
 		if (btn.equals(buttonMainMenu)) {
-			SpoutClient.getHandle().displayGuiScreen(new GuiMainMenu());
+			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonServerList)) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiServerList());

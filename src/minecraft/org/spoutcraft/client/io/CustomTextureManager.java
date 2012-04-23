@@ -125,7 +125,7 @@ public class CustomTextureManager {
 			try {
 				FileInputStream stream = new FileInputStream(path);
 				if (stream.available() > 0) {
-					texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+					texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
 				}
 				stream.close();
 			} catch (IOException e) { }
@@ -151,7 +151,7 @@ public class CustomTextureManager {
 			//Check inside jar
 			try {
 				InputStream stream = Minecraft.class.getResourceAsStream(path);
-				texture = TextureLoader.getTexture("PNG", stream, true,  GL11.GL_NEAREST);
+				texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
 				stream.close();
 			} catch (Exception e) { }
 			//Check MCP/Eclipse Path

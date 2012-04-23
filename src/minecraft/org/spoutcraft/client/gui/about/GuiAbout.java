@@ -66,7 +66,7 @@ public class GuiAbout extends GuiScreen {
 
 	@Override
 	public void actionPerformed(GuiButton button) {
-		this.mc.displayGuiScreen(new GuiMainMenu());
+		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 
 	@Override

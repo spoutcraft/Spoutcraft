@@ -180,7 +180,7 @@ public class GuiConnecting extends GuiScreen
 				clientHandler.disconnect();
 			}
 
-			mc.displayGuiScreen(new GuiMainMenu());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
 		}
 	}
 

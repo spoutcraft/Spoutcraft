@@ -126,7 +126,7 @@ public class GuiTexturePacks extends GuiScreen {
 	@Override
 	public void buttonClicked(Button btn) {
 		if (btn.equals(buttonDone)) {
-			SpoutClient.getHandle().displayGuiScreen(new GuiMainMenu());
+			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonOpenFolder)) {
 			System.out.println(SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());

@@ -27,6 +27,8 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.SGISGenerateMipmap;
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
@@ -384,7 +386,13 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void render(GenericTexture texture) {
 		String addon = texture.getAddon().getDescription().getName();
 		String url = texture.getUrl();
-		org.newdawn.slick.opengl.Texture textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
+		org.newdawn.slick.opengl.Texture textureBinding;
+		if (texture.isLocal()) {
+			textureBinding = CustomTextureManager.getTextureFromJar(url);
+		}
+		else {
+			textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
+		}
 
 		if (textureBinding != null) {
 			if (texture.getOriginalHeight() != textureBinding.getImageWidth() || texture.getOriginalWidth() != textureBinding.getImageHeight()) {
@@ -649,39 +657,44 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, -1, -1);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, -1, -1, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, int left, int top) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, left, top);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, left, top, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, -1, -1);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, -1, -1, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top);
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, false);
+	}
+	
+	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top, boolean mipmap) {
+		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, mipmap);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color) {
-		drawTexture(textureBinding, width, height, color, false, -1, -1);
+		drawTexture(textureBinding, width, height, color, false, -1, -1, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, int left, int top) {
-		drawTexture(textureBinding, width, height, color, false, left, top);
+		drawTexture(textureBinding, width, height, color, false, left, top, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
-		drawTexture(textureBinding, width, height, color, blend, -1, -1);
+		drawTexture(textureBinding, width, height, color, blend, -1, -1, false);
 	}
 
-	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top) {
+	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top, boolean mipmap) {
 		if (textureBinding == null) {
 			return;
 		}
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		boolean wasBlend = GL11.glGetBoolean(GL11.GL_BLEND);
 		if (blend) {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(770, 771);
@@ -691,6 +704,9 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		if (mipmap) {
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+		}
 		
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
@@ -714,7 +730,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
-		if (blend) {
+		if (blend && !wasBlend) {
 			GL11.glDisable(GL11.GL_BLEND);
 		}
 	}

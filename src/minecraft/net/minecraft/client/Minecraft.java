@@ -283,7 +283,7 @@ public abstract class Minecraft implements Runnable {
 		if (this.serverName != null) {
 			this.displayGuiScreen(new GuiConnecting(this, this.serverName, this.serverPort));
 		} else {
-			this.displayGuiScreen(new GuiMainMenu());
+			this.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
 		}
 
 		this.loadingScreen = new LoadingScreenRenderer(this); 
@@ -412,7 +412,7 @@ public abstract class Minecraft implements Runnable {
 	public void displayGuiScreen(GuiScreen screen, boolean notify) {
 		// Part of Original function
 		if (screen == null && this.theWorld == null) {
-			screen = new GuiMainMenu();
+			screen = new org.spoutcraft.client.gui.mainmenu.MainMenu();
 		} else if (screen == null && this.thePlayer.health <= 0) {
 			screen = new GuiGameOver();
 		}

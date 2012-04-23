@@ -140,7 +140,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 	protected void buttonClicked(Button btn) {
 		//TODO parent screen
 		if (btn.equals(buttonMainMenu)) {
-			mc.displayGuiScreen(new GuiMainMenu());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonDatabase)) {
 			//TODO database screen

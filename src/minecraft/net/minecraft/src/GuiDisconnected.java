@@ -61,7 +61,7 @@ public class GuiDisconnected extends GuiScreen
 	{
 		if (par1GuiButton.id == 0)
 		{
-			mc.displayGuiScreen(new GuiMainMenu());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
 		}
 	}
 

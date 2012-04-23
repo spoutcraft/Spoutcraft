@@ -431,10 +431,6 @@ public class GameSettingsScreen extends GuiScreen{
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
-		control = new ResolutionButton().setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(right).setY(top);
-		screen.attachWidget(spoutcraft, control);
 	}
 
 	@Override

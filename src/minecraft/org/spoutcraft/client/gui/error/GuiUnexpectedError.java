@@ -119,7 +119,7 @@ public class GuiUnexpectedError extends GuiScreen{
 
 class IgnoreErrorButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
+		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
@@ -133,7 +133,7 @@ class ReportErrorButton extends GenericButton {
 		finally {
 			SpoutClient.enableSandbox();
 		}
-		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
+		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 

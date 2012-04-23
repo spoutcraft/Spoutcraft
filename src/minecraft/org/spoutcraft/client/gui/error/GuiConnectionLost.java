@@ -122,7 +122,7 @@ class ReconnectButton extends GenericButton {
 
 class ReturnToMainMenu extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
-		Minecraft.theMinecraft.displayGuiScreen(new GuiMainMenu());
+		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 

@@ -59,9 +59,9 @@ public class GuiIngameMenu extends GuiScreen
 			mc.changeWorld1(null);
 			//Spout Start
 			if (mp) {
-				this.mc.displayGuiScreen(new GuiFavorites(new GuiMainMenu()));
+				this.mc.displayGuiScreen(new GuiFavorites(new org.spoutcraft.client.gui.mainmenu.MainMenu())); //Spout
 			} else {
-				this.mc.displayGuiScreen(new GuiMainMenu());
+				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
 			}
 			//Spout End
 		case 2:

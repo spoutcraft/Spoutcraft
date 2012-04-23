@@ -219,7 +219,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 			mc.displayGuiScreen(new GuiTexturePacks());
 		}
 		if (btn.equals(buttonMainMenu)) {
-			mc.displayGuiScreen(new GuiMainMenu());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonAdd)) {
 			Sys.openURL("http://textures.spout.org/submit");
