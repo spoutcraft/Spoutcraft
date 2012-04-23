@@ -64,6 +64,7 @@ public class GuiScreen extends Gui
 	protected static int limitedFramerate = 120;
 	private long lastClick = 0;
 	protected static RenderItem itemRenderer = new RenderItem();
+	private boolean firstrun = true;
 
 	public Player getPlayer() {
 		if (this.mc.thePlayer != null) {
@@ -593,11 +594,12 @@ public class GuiScreen extends Gui
 		controlList.clear();
 		//Spout Start
 		SpoutClient.enableSandbox();
-		if (!(this instanceof CustomScreen) && screen != null) {
+		if (!(this instanceof CustomScreen) && screen != null && !firstrun) {
 			for (Widget w : screen.getAttachedWidgets()) {
 				screen.removeWidget(w);
 			}
 		}
+		firstrun = false;
 		SpoutClient.disableSandbox();
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height)
 				.setWidth(this.width);
