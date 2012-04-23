@@ -200,13 +200,13 @@ public class MainMenu extends GuiScreen{
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.server.GuiFavorites(this));
 		}
 		if (textures == btn) {
-			this.mc.displayGuiScreen(new GuiAddonsLocal());
+			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		}
 		if (addons == btn) {
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
+			this.mc.displayGuiScreen(new GuiAddonsLocal());
 		}	
 		if (about == btn) {
-			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout());
+			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout(this));
 		}
 		if (options == btn) {
 			mc.displayGuiScreen(new GameSettingsScreen(this));
@@ -233,8 +233,9 @@ public class MainMenu extends GuiScreen{
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			mc.displayGuiScreen(new GameSettingsScreen(this));
 		}
+		
+		GL11.glEnable(GL11.GL_BLEND);
 	}
-	
 }
 
 class ScaledTexture extends GenericTexture {
@@ -267,6 +268,7 @@ class BackgroundTexture extends GenericTexture {
 	int maxPanTime = PAN_TIME;
 	int panTime = PAN_TIME;
 	int picture = -1;
+	boolean zoomIn = false;
 	
 	BackgroundTexture(List<String> backgrounds) {
 		super(backgrounds.get(0));
@@ -281,7 +283,8 @@ class BackgroundTexture extends GenericTexture {
 		}
 		setUrl(backgrounds.get(picture));
 		maxPanTime = PAN_TIME + rand.nextInt(EXTRA_PAN_TIME);
-		panTime = maxPanTime;
+		zoomIn = rand.nextBoolean();
+		panTime = zoomIn ? 0 : maxPanTime;
 	}
 	
 	@Override
@@ -305,7 +308,10 @@ class BackgroundTexture extends GenericTexture {
 			GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
 			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, true);
 			
-			if (panTime > 0) {
+			if (zoomIn && panTime < maxPanTime) {
+				panTime++;
+			}
+			else if (!zoomIn && panTime > 0) {
 				panTime--;
 			}
 			else {

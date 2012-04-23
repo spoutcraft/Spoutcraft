@@ -18,6 +18,7 @@ package org.spoutcraft.client.gui.singleplayer;
 
 import net.minecraft.src.GuiScreen;
 
+import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
@@ -91,7 +92,6 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 		
 		buttonDelete.setX(left).setY(top).setHeight(20).setWidth(cellWidth);
 		buttonMainMenu.setX(right).setY(top).setHeight(20).setWidth(cellWidth);
-		
 	}
 
 	public void deleteSelectedWorld() {
@@ -142,6 +142,4 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 		buttonDelete.setEnabled(active);
 		buttonRename.setEnabled(active);
 	}
-
-	
 }

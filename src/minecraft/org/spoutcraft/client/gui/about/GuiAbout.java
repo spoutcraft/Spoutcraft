@@ -27,7 +27,6 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
 
-import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
@@ -53,8 +52,10 @@ public class GuiAbout extends GuiScreen {
 	private int sourceY = -1;
 	private int sourceWidth = -1;
 	private boolean hoveringLink = false;
+	private final GuiScreen parent;
 
-	public GuiAbout() {
+	public GuiAbout(GuiScreen parent) {
+		this.parent = parent;
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class GuiAbout extends GuiScreen {
 
 	@Override
 	public void actionPerformed(GuiButton button) {
-		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
+		this.mc.displayGuiScreen(parent);
 	}
 
 	@Override
@@ -162,6 +163,8 @@ public class GuiAbout extends GuiScreen {
 	@Override
 	public void drawScreen(int x, int y, float z) {
 		super.drawBackground(0);
+		GL11.glPushMatrix();
+		
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -353,6 +356,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glDepthMask(false);
+			GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((this.width - 140), (this.height - 45), 0); // moves texture into place
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, spoutcraftTexture.getTextureID());
@@ -407,6 +411,10 @@ public class GuiAbout extends GuiScreen {
 		var16.addVertexWithUV(this.width - 12, (double)(this.height - 50 - var19), 0.0D, 1.0D, 0.0D);
 		var16.addVertexWithUV(0, (double)(this.height - 50 - var19), 0.0D, 0.0D, 0.0D);
 		var16.draw();
+		
+		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
+		
+		GL11.glPopMatrix();
 	}
 
 	private void overlayBackground(int var1, int var2, int var3, int var4) {
