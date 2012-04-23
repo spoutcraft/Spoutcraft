@@ -192,9 +192,6 @@ public class InGameScreen extends GenericScreen implements InGameHUD {
 		if (widget instanceof Screen) {
 			return false;
 		}
-		if (widget instanceof Control && !(widget instanceof ChatTextBox)) {
-			return false;
-		}
 		return true;
 	}
 
