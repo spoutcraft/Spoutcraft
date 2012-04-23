@@ -18,7 +18,6 @@ package org.spoutcraft.client.gui.error;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
 import org.lwjgl.opengl.GL11;

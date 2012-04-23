@@ -18,8 +18,6 @@ package org.spoutcraft.client.gui.addon;
 
 import org.lwjgl.Sys;
 
-import net.minecraft.src.GuiMainMenu;
-
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;

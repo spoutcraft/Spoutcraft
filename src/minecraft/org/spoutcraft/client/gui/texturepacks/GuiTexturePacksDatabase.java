@@ -18,8 +18,6 @@ package org.spoutcraft.client.gui.texturepacks;
 
 import org.lwjgl.Sys;
 
-import net.minecraft.src.GuiMainMenu;
-
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.GuiAPIDisplay;
 import org.spoutcraft.client.gui.database.RandomButton;
@@ -28,7 +26,6 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.animation.Animation;
 import org.spoutcraft.spoutcraftapi.animation.InQuadAnimationProgress;
-import org.spoutcraft.spoutcraftapi.animation.OutQuadAnimationProgress;
 import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
 import org.spoutcraft.spoutcraftapi.event.Listener;
 import org.spoutcraft.spoutcraftapi.event.animation.AnimationStopEvent;
@@ -43,7 +40,6 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Rectangle;
-import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent> {

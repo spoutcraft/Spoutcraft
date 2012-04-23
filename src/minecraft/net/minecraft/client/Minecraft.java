@@ -461,7 +461,7 @@ public abstract class Minecraft implements Runnable {
 				this.currentScreen.onGuiClosed();
 			}
 
-			if (screen instanceof GuiMainMenu) {
+			if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
 				this.statFileWriter.func_27175_b();
 			}
 
@@ -474,7 +474,7 @@ public abstract class Minecraft implements Runnable {
 				SpoutClient.enableSandbox();
 			}
 
-			if (screen instanceof GuiMainMenu) {
+			if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
 				this.ingameGUI.clearChatMessages();
 			}
 
@@ -669,7 +669,7 @@ public abstract class Minecraft implements Runnable {
 			this.running = false;
 		} else {
 			// Spout start
-			if (theWorld == null && !(currentScreen instanceof GuiMainMenu)) {
+			if (theWorld == null) {
 				try {
 					Thread.sleep(25);
 				} catch (InterruptedException e) {

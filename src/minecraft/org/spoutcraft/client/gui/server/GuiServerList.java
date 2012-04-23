@@ -18,8 +18,6 @@ package org.spoutcraft.client.gui.server;
 
 import org.lwjgl.Sys;
 
-import net.minecraft.src.GuiMainMenu;
-
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.FilterButton;
 import org.spoutcraft.client.gui.database.GuiAPIDisplay;

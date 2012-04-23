@@ -20,7 +20,6 @@ import java.awt.Desktop;
 import java.net.URL;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;

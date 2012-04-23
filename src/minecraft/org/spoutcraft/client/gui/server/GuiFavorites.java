@@ -16,21 +16,16 @@
  */
 package org.spoutcraft.client.gui.server;
 
-import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 
-import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
-import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
 import org.spoutcraft.spoutcraftapi.gui.GenericListView;
 

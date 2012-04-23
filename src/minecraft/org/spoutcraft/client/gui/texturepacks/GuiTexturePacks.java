@@ -17,15 +17,12 @@
 package org.spoutcraft.client.gui.texturepacks;
 
 import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 
 import org.lwjgl.Sys;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
