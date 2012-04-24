@@ -29,9 +29,11 @@ public class GenericSlot extends GenericControl implements Slot {
 	public Slot setItem(ItemStack item) {
 		if(item == null) {
 			stack = new ItemStack(0);
+			setTooltip("");
 			return this;
 		}
 		stack = item.clone();
+		setTooltip(Spoutcraft.getMaterialManager().getToolTip(stack));
 		return this;
 	}
 
