@@ -26,6 +26,7 @@ import org.spoutcraft.spoutcraftapi.gui.*;
 import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxView;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.Slot;
 
 //Spout End
@@ -278,7 +279,6 @@ public class GuiScreen extends Gui
 	}
 
 	private void handleClickOnSlot(Slot slot, int button) {
-		System.out.println("handleClickOnSlot: "+slot+", "+button);
 		try {
 			if(mc.thePlayer == null) {
 				return;
@@ -321,7 +321,6 @@ public class GuiScreen extends Gui
 				}
 				int amount = stackInSlot.getTypeId() == 0 ? 0 : stackInSlot.getAmount();
 				amount += putAmount;
-				System.out.println(amount);
 				int maxStackSize = toPut.getMaxStackSize();
 				if(maxStackSize == -1) {
 					maxStackSize = 64;
@@ -343,10 +342,13 @@ public class GuiScreen extends Gui
 					ItemStack put = toPut.clone();
 					put.setAmount(amount);
 					slot.setItem(put);
+				} else {
+					stackOnCursor = Spoutcraft.getActivePlayer().getItemStackOnCursor().clone();
 				}
 			} else if (stackOnCursor == null || stackOnCursor.getTypeId() == 0) { //Take item or shift click
 				if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 					slot.onItemShiftClicked();
+					stackOnCursor = Spoutcraft.getActivePlayer().getItemStackOnCursor().clone();
 				} else { //Take item
 					boolean success = slot.onItemTake(stackInSlot);
 					if(success) {
@@ -361,7 +363,6 @@ public class GuiScreen extends Gui
 					stackOnCursor = stackInSlot;
 				}
 			}
-			
 			if(stackOnCursor == null || stackOnCursor.getTypeId() == 0) {
 				mc.thePlayer.inventory.setItemStack(null);
 			} else {
