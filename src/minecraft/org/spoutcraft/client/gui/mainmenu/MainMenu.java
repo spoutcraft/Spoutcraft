@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.getspout.commons.ChatColor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
@@ -39,7 +40,7 @@ public class MainMenu extends GuiScreen{
 	final static List<String> splashes = new ArrayList<String>(1000);
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
-	Label splashText;
+	Label splashText, buildNumber;
 	final String timeOfDay;
 	final List<String> backgrounds;
 	
@@ -149,6 +150,7 @@ public class MainMenu extends GuiScreen{
 	
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
+		int textWidth;
 
 		fastLogin.setGeometry(width - 110, height - 205, 100, 20);
 		
@@ -163,6 +165,11 @@ public class MainMenu extends GuiScreen{
 		
 		addons = new GenericButton("Addons");
 		addons.setGeometry(width - 110, height - 105, 100, 20);
+		
+		buildNumber = new GenericLabel("1.2.5 b" + SpoutClient.getClientVersion());
+		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
+		buildNumber.setTextColor(new Color(0x6CC0DC));
+		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);
 		
 		about = new GenericButton("About");
 		about.setGeometry(Math.min(98, width - 288), height - 105, 51, 20);
@@ -180,7 +187,7 @@ public class MainMenu extends GuiScreen{
 		
 		splashText.setGeometry(Math.min(100, width - 245), height - 135, 200, 12);
 		splashText.setTextColor(new Color(0x6CC0DC));
-		int textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(splashText.getText());
+		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(splashText.getText());
 		float scale = ((width - 225F) / textWidth);
 		splashText.setScale(Math.min(1.5F, scale));
 		
@@ -190,7 +197,7 @@ public class MainMenu extends GuiScreen{
 		logo.setLocal(true);
 		logo.setDrawAlphaChannel(true);
 
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, about, options, background, logo, splashText, fastLogin, quit);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, fastLogin, quit);
 	}
 	
 	@Override
@@ -264,7 +271,7 @@ class ScaledTexture extends GenericTexture {
 }
 
 class BackgroundTexture extends GenericTexture {
-	static final int PAN_TIME = 400;
+	static final int PAN_TIME = 600;
 	static final int EXTRA_PAN_TIME = 150;
 	static final int HEIGHT_PERCENT = 70;
 	static final int WIDTH_PERCENT = 75;
