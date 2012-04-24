@@ -73,4 +73,6 @@ public interface RenderDelegate {
 	public void render(GenericSlot genericSlot);
 	
 	public String getFittingText(String text, int width);
+	
+	public boolean bindTexture(String path);
 }
