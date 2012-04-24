@@ -27,8 +27,8 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 public class GenericTexture extends GenericWidget implements Texture {
 	protected String url = null;
 	protected boolean drawAlpha = false;
-	protected int top;
-	protected int left;
+	protected int top = -1;
+	protected int left = -1;
 	protected Runnable finishDelegate = null;
 	protected int originalWidth = -1, originalHeight = -1;
 	protected boolean local = false;
