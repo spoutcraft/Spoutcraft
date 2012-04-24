@@ -34,7 +34,7 @@ class ThreadDownloadImage extends Thread {
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
-			System.out.println("Response Code [" + var1.getResponseCode() + "] for " + location); //Spout
+			//System.out.println("Response Code [" + var1.getResponseCode() + "] for " + location); //Spout
 			if (var1.getResponseCode() / 100 == 4) {
 				return;
 			}
@@ -48,12 +48,12 @@ class ThreadDownloadImage extends Thread {
 					this.imageData.image = this.buffer.parseUserSkin(image);
 				}
 				else {
-					System.out.println("No image data found for " + location);
+					//System.out.println("No image data found for " + location);
 				}
 				//Spout end
 			}
 		} catch (Exception var6) {
-			var6.printStackTrace();
+			//var6.printStackTrace();
 		} finally {
 			var1.disconnect();
 		}
