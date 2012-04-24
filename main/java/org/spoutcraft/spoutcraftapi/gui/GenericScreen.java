@@ -35,10 +35,12 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
+	private Addon spoutcraft;
 
 	public GenericScreen() {
 		screenWidth = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		screenHeight = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
+		spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 	}
 
 	public GenericScreen(int playerId) {
@@ -75,8 +77,11 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	}
 	
 	public Screen attachWidget(Addon addon, Widget widget) {
+		if (addon == null) {
+			addon = spoutcraft;
+		}
 		widgets.put(widget, addon);
-		//widget.setAddon(addon);
+		widget.setAddon(addon);
 		widget.setScreen(this);
 		return this;
 	}
