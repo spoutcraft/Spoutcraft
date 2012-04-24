@@ -122,7 +122,19 @@ public class FileUtil {
 	}
 
 	public static File findFile(String plugin, String fileName) {
-		File directory = new File(getCacheDirectory(), plugin);
+		File result = null;
+		result = matchFile(new File(getCacheDirectory(), plugin), fileName);
+		if (result != null) {
+			return result;
+		}
+		result = matchFile(new File(SpoutClient.getInstance().getAddonFolder(), plugin), fileName);
+		if (result != null) {
+			return result;
+		}
+		return null;
+	}
+	
+	private static File matchFile(File directory, String fileName) {
 		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
 			for (File file : files) {

@@ -1,7 +1,6 @@
 package org.spoutcraft.client.gui.mainmenu;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -38,7 +37,7 @@ import net.minecraft.src.GuiScreen;
 
 public class MainMenu extends GuiScreen{
 	final static List<String> splashes = new ArrayList<String>(1000);
-	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin;
+	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
 	Label splashText;
 	final String timeOfDay;
@@ -151,44 +150,47 @@ public class MainMenu extends GuiScreen{
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
-		fastLogin.setGeometry(width - 150, height - 205, 100, 20);
+		fastLogin.setGeometry(width - 110, height - 205, 100, 20);
 		
 		singleplayer = new GenericButton("Singleplayer");
-		singleplayer.setGeometry(width - 150, height - 180, 100, 20);
+		singleplayer.setGeometry(width - 110, height - 180, 100, 20);
 		
 		multiplayer = new GenericButton("Multiplayer");
-		multiplayer.setGeometry(width - 150, height - 155, 100, 20);
+		multiplayer.setGeometry(width - 110, height - 155, 100, 20);
 		
 		textures = new GenericButton("Textures");
-		textures.setGeometry(width - 150, height - 130, 100, 20);
+		textures.setGeometry(width - 110, height - 130, 100, 20);
 		
 		addons = new GenericButton("Addons");
-		addons.setGeometry(width - 150, height - 105, 100, 20);
+		addons.setGeometry(width - 110, height - 105, 100, 20);
 		
 		about = new GenericButton("About");
-		about.setGeometry(Math.min(100, width - 300), height - 105, 65, 20);
+		about.setGeometry(Math.min(98, width - 288), height - 105, 51, 20);
 		
 		options = new GenericButton("Options");
-		options.setGeometry(Math.min(175, width - 225), height - 105, 65, 20);
+		options.setGeometry(Math.min(159, width - 227), height - 105, 51, 20);
+		
+		quit = new GenericButton("Quit");
+		quit.setGeometry(Math.min(220, width - 166), height - 105, 51, 20);
 
 		background.setGeometry(0, 0, width, height);
 		background.setPriority(RenderPriority.Highest);
 		background.setAnchor(WidgetAnchor.TOP_LEFT);
 		background.setLocal(true);
 		
-		splashText.setGeometry(Math.min(100, width - 275), height - 135, 200, 12);
+		splashText.setGeometry(Math.min(100, width - 245), height - 135, 200, 12);
 		splashText.setTextColor(new Color(0x6CC0DC));
 		int textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(splashText.getText());
-		float scale = ((width - 255F) / textWidth);
+		float scale = ((width - 225F) / textWidth);
 		splashText.setScale(Math.min(1.5F, scale));
 		
 		logo = new ScaledTexture("/res/spoutcraft.png");
-		((ScaledTexture)logo).setScale(Math.min(1F, (width - 170F) / 256F));
+		((ScaledTexture)logo).setScale(Math.min(1F, (width - 135F) / 256F));
 		logo.setGeometry(15, height - 185, 256, 64);
 		logo.setLocal(true);
 		logo.setDrawAlphaChannel(true);
 
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, about, options, background, logo, splashText, fastLogin);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, about, options, background, logo, splashText, fastLogin, quit);
 	}
 	
 	@Override
@@ -210,6 +212,9 @@ public class MainMenu extends GuiScreen{
 		}
 		if (options == btn) {
 			mc.displayGuiScreen(new GameSettingsScreen(this));
+		}
+		if (quit == btn) {
+			mc.shutdownMinecraftApplet();
 		}
 		if (fastLogin == btn) {
 			ConfigReader.fastLogin = !ConfigReader.fastLogin;

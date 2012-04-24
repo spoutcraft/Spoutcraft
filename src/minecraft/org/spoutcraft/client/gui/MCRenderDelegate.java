@@ -26,8 +26,14 @@ import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.ContextCapabilities;
+import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.SGISGenerateMipmap;
 import org.newdawn.slick.opengl.Texture;
 
@@ -46,6 +52,7 @@ import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.gui.ArmorBar;
@@ -705,7 +712,17 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		if (mipmap) {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, 8);
+			
+			ContextCapabilities capabilities = GLContext.getCapabilities();
+			if (capabilities.OpenGL30) {
+				GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+			} else if (capabilities.GL_EXT_framebuffer_object) {
+				EXTFramebufferObject.glGenerateMipmapEXT(GL11.GL_TEXTURE_2D);
+			} else if (capabilities.OpenGL14) {
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
+			}
 		}
 		
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
