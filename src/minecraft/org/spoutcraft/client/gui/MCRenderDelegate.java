@@ -945,4 +945,8 @@ public class MCRenderDelegate implements RenderDelegate {
 		if(isHovering(genericSlot)) RenderUtil.drawRectangle(0, 0, 16, 16, 0x88ffffff);
 		GL11.glPopMatrix();
 	}
+	
+	public boolean bindTexture(String path) {
+		return CustomTextureManager.getTextureFromPath(path) != null;
+	}
 }
