@@ -25,4 +25,6 @@ public interface MaterialManager {
 	public void setLightLevel(org.spoutcraft.spoutcraftapi.material.Block block, int level);
 	
 	public void resetLightLevel(org.spoutcraft.spoutcraftapi.material.Block block);
+	
+	public String getToolTip(org.spoutcraft.spoutcraftapi.inventory.ItemStack is);
 }
