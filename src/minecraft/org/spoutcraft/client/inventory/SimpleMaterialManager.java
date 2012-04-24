@@ -16,12 +16,17 @@
  */
 package org.spoutcraft.client.inventory;
 
+import java.util.List;
+
 import gnu.trove.map.hash.TIntByteHashMap;
 import gnu.trove.map.hash.TIntIntHashMap;
+
+import net.minecraft.src.Item;
 
 import org.getspout.commons.util.map.TIntPairFloatHashMap;
 import org.getspout.commons.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;
 import org.spoutcraft.spoutcraftapi.inventory.Recipe;
 import org.spoutcraft.spoutcraftapi.inventory.ShapedRecipe;
@@ -243,5 +248,31 @@ public class SimpleMaterialManager implements MaterialManager {
 
 		toAdd.addToCraftingManager();
 		return true;
+	}
+
+	@Override
+	public String getToolTip(ItemStack is) {
+		net.minecraft.src.ItemStack itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
+		@SuppressWarnings("unchecked")
+		List<String> list = itemstack.getItemNameandInformation();
+		Material item = is.getType();
+		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
+		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
+			list.set(0, custom);
+		}
+		if(list.size() > 0) {
+			String tooltip = "";
+			int lines = 0;
+			for(int i = 0; i < list.size(); i++) {
+				String s = (String)list.get(i);
+				if(i == 0) s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
+				else s = (new StringBuilder()).append("\2477").append(s).toString();
+				tooltip += s + "\n";
+				lines++;
+			}
+			tooltip = tooltip.trim();
+			return tooltip;
+		}
+		return "";
 	}
 }
