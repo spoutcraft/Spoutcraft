@@ -947,6 +947,18 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 	
 	public boolean bindTexture(String path) {
-		return CustomTextureManager.getTextureFromPath(path) != null;
+		Texture tex = CustomTextureManager.getTextureFromPath(path);
+		if (tex != null) {
+			tex.bind();
+		}
+		return tex != null;
+	}
+	
+	public boolean bindTexture(String addon, String path) {
+		Texture tex = CustomTextureManager.getTextureFromUrl(addon, path);
+		if (tex != null) {
+			tex.bind();
+		}
+		return tex != null;
 	}
 }
