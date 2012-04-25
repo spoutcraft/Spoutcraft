@@ -64,9 +64,7 @@ public class GenericSlot extends GenericControl implements Slot {
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
-		stack.setTypeId(input.readInt());
-		stack.setAmount((int)input.readShort());
-		stack.setDurability(input.readShort());
+		setItem(new ItemStack(input.readInt(), (int) input.readShort(), input.readShort()));
 		depth = input.readInt();
 	}
 
