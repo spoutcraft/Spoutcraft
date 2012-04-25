@@ -75,4 +75,6 @@ public interface RenderDelegate {
 	public String getFittingText(String text, int width);
 	
 	public boolean bindTexture(String path);
+	
+	public boolean bindTexture(String addon, String path);
 }
