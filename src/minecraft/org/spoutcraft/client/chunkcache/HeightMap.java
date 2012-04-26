@@ -26,7 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.getspout.commons.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.client.io.FileUtil;
 

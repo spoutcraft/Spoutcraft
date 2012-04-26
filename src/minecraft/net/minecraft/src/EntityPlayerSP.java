@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 //Spout start
-import org.getspout.commons.ChatColor;
+import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;

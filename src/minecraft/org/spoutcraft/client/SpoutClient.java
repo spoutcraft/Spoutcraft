@@ -34,7 +34,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.WorldClient;
 
-import org.getspout.commons.ChatColor;
+import org.bukkit.ChatColor;
+
 import org.newdawn.slick.util.Log;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;

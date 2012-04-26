@@ -23,8 +23,8 @@ import gnu.trove.map.hash.TIntIntHashMap;
 
 import net.minecraft.src.Item;
 
-import org.getspout.commons.util.map.TIntPairFloatHashMap;
-import org.getspout.commons.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairFloatHashMap;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.MaterialManager;

@@ -31,7 +31,7 @@ import javax.imageio.ImageIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
-import org.getspout.commons.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;

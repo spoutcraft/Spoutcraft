@@ -27,7 +27,7 @@ import net.minecraft.src.FontRenderer;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackList;
 
-import org.getspout.commons.ChatColor;
+import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.ListWidget;

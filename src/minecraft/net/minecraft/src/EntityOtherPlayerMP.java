@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.getspout.commons.ChatColor;
+import org.bukkit.ChatColor;
 import org.spoutcraft.client.player.SpoutPlayer; //Spout
 
 public class EntityOtherPlayerMP extends EntityPlayer {

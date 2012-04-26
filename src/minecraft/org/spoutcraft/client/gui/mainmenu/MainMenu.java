@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
-import org.getspout.commons.ChatColor;
+import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
