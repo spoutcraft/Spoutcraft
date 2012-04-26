@@ -43,6 +43,7 @@ import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
+import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
 import org.spoutcraft.spoutcraftapi.entity.Player;
@@ -198,6 +199,7 @@ public abstract class Minecraft implements Runnable {
 		try {
 			PixelFormat var7 = new PixelFormat();
 			var7 = var7.withDepthBits(24);
+			var7 = var7.withSamples(8);
 			Display.create(var7);
 		} catch (LWJGLException var6) {
 			var6.printStackTrace();
@@ -415,6 +417,11 @@ public abstract class Minecraft implements Runnable {
 			screen = new org.spoutcraft.client.gui.mainmenu.MainMenu();
 		} else if (screen == null && this.thePlayer.health <= 0) {
 			screen = new GuiGameOver();
+		}
+		
+		//Reset Gui
+		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
+			ClientPlayer.getInstance().resetMainScreen();
 		}
 
 		ScreenType display = ScreenUtil.getType(screen);
