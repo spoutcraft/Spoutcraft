@@ -518,11 +518,6 @@ public abstract class Minecraft implements Runnable {
 			System.out.println("    Vendor: " + GL11.glGetString(GL11.GL_VENDOR));
 			System.out.println("    OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
 			System.out.println("    GLSL Version: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION));
-			String extensions = "    Extensions Supported: ";
-			for(int i = 0; i < GL11.glGetInteger(GL30.GL_NUM_EXTENSIONS); i++) {
-				extensions += GL30.glGetStringi(GL11.GL_EXTENSIONS, i) + " ";
-			}
-			System.out.println(extensions);
 			System.out.println("    Max Texture Units: " + GL11.glGetInteger(GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 			
 			System.out.println("Error at " + par1Str);
