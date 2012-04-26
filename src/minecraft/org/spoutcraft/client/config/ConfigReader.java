@@ -80,6 +80,9 @@ public class ConfigReader {
 	public static boolean replaceTools = false;
 	public static boolean replaceBlocks = false;
 	public static boolean hotbarQuickKeysEnabled = true;
+	public static boolean resizeScreenshots = false;
+	public static int resizedScreenshotWidth = 6000;
+	public static int resizedScreenshotHeight = 3200;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;
