@@ -195,26 +195,50 @@ public class SpoutcraftBlock implements Block{
 	}
 
 	public static final Biome biomeBaseToBiome(BiomeGenBase base) {
-		if (base == BiomeGenBase.swampland) {
-			return Biome.SWAMPLAND;
+		if (base == BiomeGenBase.ocean) {
+			return Biome.OCEAN;
+		} else if (base == BiomeGenBase.plains) {
+			return Biome.PLAINS;
+		} else if (base == BiomeGenBase.desert) {
+			return Biome.DESERT;
+		} else if (base == BiomeGenBase.extremeHills) {
+			return Biome.EXTREME_HILLS;
 		} else if (base == BiomeGenBase.forest) {
 			return Biome.FOREST;
 		} else if (base == BiomeGenBase.taiga) {
 			return Biome.TAIGA;
-		} else if (base == BiomeGenBase.desert) {
-			return Biome.DESERT;
-		} else if (base == BiomeGenBase.plains) {
-			return Biome.PLAINS;
+		} else if (base == BiomeGenBase.swampland) {
+			return Biome.SWAMPLAND;
+		} else if (base == BiomeGenBase.river) {
+			return Biome.RIVER;
 		} else if (base == BiomeGenBase.hell) {
 			return Biome.HELL;
 		} else if (base == BiomeGenBase.sky) {
 			return Biome.SKY;
-		} else if (base == BiomeGenBase.river) {
-			return Biome.RIVER;
-		} else if (base == BiomeGenBase.extremeHills) {
-			return Biome.MOUNTAINS;
-		} else if (base == BiomeGenBase.ocean) {
-			return Biome.OCEAN;
+		} else if (base == BiomeGenBase.frozenOcean) {
+			return Biome.FROZEN_OCEAN;
+		} else if (base == BiomeGenBase.frozenRiver) {
+			return Biome.FROZEN_RIVER;
+		} else if (base == BiomeGenBase.icePlains) {
+			return Biome.ICE_PLAINS;
+		} else if (base == BiomeGenBase.iceMountains) {
+			return Biome.ICE_MOUNTAINS;
+		} else if (base == BiomeGenBase.mushroomIsland) {
+			return Biome.MUSHROOM_ISLAND;
+		} else if (base == BiomeGenBase.mushroomIslandShore) {
+			return Biome.MUSHROOM_ISLAND_SHORE;
+		} else if (base == BiomeGenBase.beach) {
+			return Biome.BEACH;
+		} else if (base == BiomeGenBase.desertHills) {
+			return Biome.DESERT_HILLS;
+		} else if (base == BiomeGenBase.taigaHills) {
+			return Biome.TAIGA_HILLS;
+		} else if (base == BiomeGenBase.extremeHillsEdge) {
+			return Biome.EXTREME_HILLS_EDGE;
+		} else if (base == BiomeGenBase.jungle) {
+			return Biome.JUNGLE;
+		} else if (base == BiomeGenBase.jungleHills) {
+			return Biome.JUNGLE_HILLS;
 		}
 
 		return null;
