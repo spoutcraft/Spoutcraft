@@ -199,7 +199,6 @@ public abstract class Minecraft implements Runnable {
 		try {
 			PixelFormat var7 = new PixelFormat();
 			var7 = var7.withDepthBits(24);
-			var7 = var7.withSamples(8);
 			Display.create(var7);
 		} catch (LWJGLException var6) {
 			var6.printStackTrace();
