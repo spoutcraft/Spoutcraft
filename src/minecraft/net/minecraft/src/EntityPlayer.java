@@ -286,7 +286,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void updateCloak(String cloak) {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
-		String easterEgg = org.spoutcraft.client.EasterEggs.getEasterEggCape();
+		String easterEgg = org.spoutcraft.client.nothingtoseehere.EasterEggs.getEasterEggCape();
 		if (easterEgg != null) {
 			playerCloakUrl = easterEgg;	
 		}

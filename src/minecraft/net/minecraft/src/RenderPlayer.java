@@ -3,7 +3,8 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 //Spout Start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.EasterEggs;
+import org.spoutcraft.client.nothingtoseehere.EasterEggs;
+import org.spoutcraft.client.nothingtoseehere.ModelNarrowtux;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End
@@ -11,6 +12,9 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
 	private ModelBiped modelBipedMain;
+	//Spout Start
+	private ModelNarrowtux modelNarrowtux;
+	//Spout End
 	private ModelBiped modelArmorChestplate;
 	private ModelBiped modelArmor;
 	private static final String[] armorFilenamePrefix = new String[]{"cloth", "chain", "iron", "diamond", "gold"};
@@ -67,6 +71,15 @@ public class RenderPlayer extends RenderLiving {
 			var13 -= 0.125D;
 		}
 
+		//Spout Start
+//		if(par1EntityPlayer.displayName.contains("narrowtux")) {
+//			if(this.modelNarrowtux == null) {
+//				modelNarrowtux = new ModelNarrowtux(0f);
+//				this.mainModel = modelNarrowtux;
+//			}
+//		}
+		//Spout End
+		
 		super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
