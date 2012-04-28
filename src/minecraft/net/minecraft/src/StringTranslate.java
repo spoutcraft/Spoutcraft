@@ -37,7 +37,7 @@ public class StringTranslate {
 				}
 			}
 		} catch (Exception var5) {
-			var5.printStackTrace();
+			//var5.printStackTrace();
 			return;
 		}
 
@@ -94,7 +94,7 @@ public class StringTranslate {
 						}
 					}
 				} catch (Exception var9) { //Spout IOException -> Exception
-					var9.printStackTrace();
+					//var9.printStackTrace();
 					return;
 				}
 			}
