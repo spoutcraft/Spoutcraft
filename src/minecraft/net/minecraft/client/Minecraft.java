@@ -196,21 +196,45 @@ public abstract class Minecraft implements Runnable {
 		Display.setTitle("Minecraft Minecraft 1.2.5");
 		System.out.println("LWJGL Version: " + Sys.getVersion());
 
-		try {
-			PixelFormat var7 = new PixelFormat();
-			var7 = var7.withDepthBits(24);
-			Display.create(var7);
-		} catch (LWJGLException var6) {
-			var6.printStackTrace();
-
-			try {
-				Thread.sleep(1000L);
-			} catch (InterruptedException var5) {
-				;
-			}
-
-			Display.create();
-		}
+		//Spout Start
+		try
+	        {
+		   int AA = 0; //TODO Hook the AA setting into here.
+		
+		    if (AA < 0)
+		              {
+		      AA = 0;
+		       }
+		
+		    if (AA > 16)
+		      {
+		      	AA = 16;
+		      }
+	            }
+	            bufferedreader.close();
+	            PixelFormat pixelformat = new PixelFormat();
+	            pixelformat = pixelformat.withDepthBits(24);
+	            pixelformat = pixelformat.withSamples(AA);
+	            Display.create(pixelformat);
+	        }
+	        catch (LWJGLException lwjglexception)
+	        {
+	            lwjglexception.printStackTrace();
+	
+	            try
+	            {
+	                Thread.sleep(1000L);
+	            }
+	            catch (InterruptedException interruptedexception) { }
+	
+	            Display.create();
+	        }
+	        catch(Exception e)
+	        {
+	        	Display.create();
+	        	e.printStackTrace();
+	        }
+		//Spout End
 
 		OpenGlHelper.initializeTextures();
 		this.mcDataDir = getMinecraftDir();
