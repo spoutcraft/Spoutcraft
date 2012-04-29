@@ -419,7 +419,7 @@ public abstract class Minecraft implements Runnable {
 		}
 		
 		//Reset Gui
-		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
+		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu || screen instanceof org.spoutcraft.client.gui.server.GuiFavorites) {
 			ClientPlayer.getInstance().resetMainScreen();
 		}
 
