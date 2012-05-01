@@ -142,10 +142,10 @@ public class Shaders {
 		isInitialized = true;
 	}
 	
-	public static boolean isOpenGL(int version) {
+	public static boolean isOpenGL(int v) {
 		try {
 			String version = GL11.glGetString(GL11.GL_VERSION);
-			return Integer.parseInt(String.valueOf(version.charAt(0))) >= version;
+			return Integer.parseInt(String.valueOf(version.charAt(0))) >= v;
 		}
 		catch (Exception e) {
 			return false;
