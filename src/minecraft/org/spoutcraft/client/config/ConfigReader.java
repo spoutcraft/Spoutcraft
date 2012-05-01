@@ -218,15 +218,8 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
 		
-		if (Shaders.isOSX()) {
-			if (!Shaders.isOpenGL(2)) {
-				shaderType = 0;
-			}	
-		}
-		else {
-			if (!Shaders.isOpenGL(3)) {
-				shaderType = 0;
-			}
+		if (!isShadersSupported()) {
+			shaderType = 0;
 		}
 		Shaders.setMode(shaderType);
 		
@@ -236,6 +229,20 @@ public class ConfigReader {
 		else if (ConfigReader.signDistance >= 128 && ConfigReader.signDistance != Integer.MAX_VALUE) {
 			ConfigReader.signDistance = Integer.MAX_VALUE;
 		}
+	}
+	
+	public static boolean isShadersSupported() {
+		if (Shaders.isOSX()) {
+			if (!Shaders.isOpenGL(2)) {
+				return false;
+			}	
+		}
+		else {
+			if (!Shaders.isOpenGL(3)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static void restoreDefaults() {
