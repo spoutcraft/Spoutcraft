@@ -34,7 +34,7 @@ public class FancyShadersButton extends GenericButton {
 	public FancyShadersButton(UUID fancyGraphics) {
 		super("Fancy Shaders");
 		this.fancyGraphics = fancyGraphics;
-		setEnabled(Shaders.isOpenGL3());
+		setEnabled(ConfigReader.isShadersSupported());
 		setTooltip("Shaders\nShaders are post-processing effects for the graphics\nThey can have a serious impact on performance.");
 	}
 
