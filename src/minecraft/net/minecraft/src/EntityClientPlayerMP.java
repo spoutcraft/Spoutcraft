@@ -38,6 +38,15 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			super.onUpdate();
 			this.sendMotionUpdates();
 		}
+		
+		//Spout start
+		if (!this.isSprinting() && runToggle) {
+			if (canSprint()) {
+				setSprinting(true);
+				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+			}
+		}
+		//Spout end
 	}
 
 	public void sendMotionUpdates() {
@@ -183,17 +192,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	}
 
 	//Spout Start
-
-	@Override
-	public void setSprinting(boolean sprint) {
-		if (this.runToggle){
-			sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
-		}
-		else {
-			super.setSprinting(sprint);
-		}
-	}
-
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		if (SpoutClient.getInstance().isSpoutEnabled()) {

@@ -15,7 +15,7 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public class EntityPlayerSP extends EntityPlayer {
 
-	public MovementInput movementInput;
+	//public MovementInput movementInput; //Spout moved to EntityPlayer
 	protected Minecraft mc;
 	protected int sprintToggleTimer = 0;
 	public float renderArmYaw;
@@ -238,7 +238,10 @@ public class EntityPlayerSP extends EntityPlayer {
 			var1 *= 1.1F;
 		}
 
-		var1 *= (this.landMovementFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
+		//Spout start
+		float landMoveFactor = this.speedOnGround * ((isSprinting() || runToggle) ? 1.3F : 1F);
+		var1 *= (landMoveFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
+		//Spout end
 		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
@@ -417,11 +420,9 @@ public class EntityPlayerSP extends EntityPlayer {
 		return false;
 	}
 	
-	//Spout start
 	public boolean isSprinting() {
-		return super.isSprinting() || this.runToggle;
+		return super.isSprinting();
 	}
-	//Spout end
 
 	public void setSprinting(boolean par1) {
 		super.setSprinting(par1);
@@ -435,6 +436,9 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 	
 	//Spout
+	public boolean canSprint() {
+		return this.getFoodStats().getFoodLevel() > 6.0F;
+	}
 	
 	@Override
 	public void handleKeyPress(int key, boolean keyReleased) {

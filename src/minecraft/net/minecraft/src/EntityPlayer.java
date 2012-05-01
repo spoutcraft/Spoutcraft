@@ -59,6 +59,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean treadWaterToggle = false;
 	public boolean autoforwardToggle = false;
 	public boolean autoBackwardToggle = false;
+	public MovementInput movementInput;
 	//Spout end
 
 	public EntityPlayer(World par1World) {
@@ -354,7 +355,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		super.onLivingUpdate();
 		this.landMovementFactor = this.speedOnGround;
 		this.jumpMovementFactor = this.speedInAir;
-		if (this.isSprinting()) {
+		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { //Spout no sprinting while moving backwards
 			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.speedOnGround * 0.3D);
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
