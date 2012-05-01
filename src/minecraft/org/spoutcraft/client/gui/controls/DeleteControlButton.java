@@ -30,4 +30,8 @@ public class DeleteControlButton extends SafeButton {
 	protected void executeAction() {
 		parent.deleteCurrentControl();
 	}
+	
+	public void setReallyShown(boolean show) {
+		this.reallyShown = show;
+	}
 }

@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public abstract class SafeButton extends GenericButton {
 	private String warningText = ChatColor.RED + "Really?";
-	private boolean reallyShown = false;
+	protected boolean reallyShown = false;
 	private long timeout = 3000;
 	protected Thread currentThread = null;
 

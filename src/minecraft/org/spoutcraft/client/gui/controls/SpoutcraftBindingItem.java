@@ -40,9 +40,16 @@ public class SpoutcraftBindingItem extends ControlsBasicItem {
 		font.drawStringWithShadow("S", x+2, y+2, 0xffff0000);
 		int w = font.getStringWidth("S");
 		font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
-		String keyString = parent.getEditingItem() == this?"> <": GameSettings.getKeyDisplayString(getKey());
+		String keyString = parent.getEditingItem() == this?"> <": getDisplayKey();
 		w = font.getStringWidth(keyString);
 		font.drawStringWithShadow(keyString, width - w, y+2, 0xffcccccc);
+	}
+	
+	public String getDisplayKey() {
+		if (binding.keyCode == -128) {
+			return "Unbound";
+		}
+		return GameSettings.getKeyDisplayString(getKey());
 	}
 
 	@Override

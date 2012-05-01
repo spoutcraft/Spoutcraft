@@ -188,7 +188,8 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 	public void updateButtons() {
 		ControlsBasicItem item = model.getItem(view.getSelectedRow());
 		buttonEdit.setEnabled(item != null);
-		buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
+		((DeleteControlButton)buttonRemove).setReallyShown(false);
+		//buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
 	}
 	
 	protected void keyTyped(char c, int i, boolean pressed) {
@@ -243,11 +244,14 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		if (sh != null) {
 			man.unregisterShortcut(sh.getShortcut());
 			man.save();
-			model.refresh();
 		} else if (binding != null) {
 			man.unregisterControl(binding.getBinding());
 			man.save();
 			model.refresh();
 		}
+		else {
+			item.setKey(-128);
+		}
+		model.refresh();
 	}
 }

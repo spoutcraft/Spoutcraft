@@ -75,6 +75,6 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 	public abstract String getName();
 
 	public boolean isConflicting() {
-		return conflicts;
+		return conflicts || getKey() == -128;
 	}
 }
