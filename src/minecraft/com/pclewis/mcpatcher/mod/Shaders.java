@@ -142,14 +142,18 @@ public class Shaders {
 		isInitialized = true;
 	}
 	
-	public static boolean isOpenGL3() {
+	public static boolean isOpenGL(int version) {
 		try {
 			String version = GL11.glGetString(GL11.GL_VERSION);
-			return Integer.parseInt(String.valueOf(version.charAt(0))) > 2;
+			return Integer.parseInt(String.valueOf(version.charAt(0))) >= version;
 		}
 		catch (Exception e) {
 			return false;
 		}
+	}
+
+	public static boolean isOSX() {
+		return System.getProperty("os.name").toLowerCase().contains("mac");
 	}
 
 	public static void destroy() {
