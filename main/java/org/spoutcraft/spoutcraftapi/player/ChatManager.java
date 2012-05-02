@@ -11,4 +11,5 @@ public interface ChatManager {
 	public int getScroll();
 	public boolean isShowingJoins();
 	public boolean isUsingRegex();
+	public float getOpacity();
 }

@@ -71,9 +71,11 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	
 	public void render() {
 		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, 771);
 		if(!isVisible()) {
 			return;
 		}
+		float chatOpacity = Spoutcraft.getChatManager().getOpacity();
 		int scroll = Spoutcraft.getChatManager().getScroll();
 		MinecraftFont font = Spoutcraft.getMinecraftFont();
 		Iterator<ChatMessage> iter = chatMessages.iterator();
@@ -92,7 +94,12 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			if(message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
 				continue;
 			}
-			double opacity = 1.0D - message.getAge() / getFadeoutTicks();
+			double opacity = 1D;
+			
+			if(message.getAge() > getFadeoutTicks() - 20) {
+				opacity = 1D - ((double) message.getAge() - (double) getFadeoutTicks()) / 20d;
+			}
+			
 			if(opacity > 1.0d) {
 				opacity = 1.0d;
 			} 
@@ -105,11 +112,17 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			if (chatOpen) {
 				opacity = 1D;
 			}
+			if(opacity == 0) {
+				continue;
+			}
 			//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
-			int chatColor = 0xffffffff;
-			int backgroundColor = 0x80000000;
+			int chatColor = 0x00ffffff;
+			int textAlpha = (int) (opacity * 255) << 24;
+			chatColor |= textAlpha;
+			int backgroundAlpha = (int) (Math.min(chatOpacity, opacity) * 255) << 24;
+			int backgroundColor = 0x00000000 | backgroundAlpha;
 			if(Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
-				backgroundColor = 0x80ff0000;
+				backgroundColor = 0x00ff0000 | backgroundAlpha;
 			}
 			RenderUtil.drawRectangle(3, bottom - 1, 3 + 320, bottom + 9, backgroundColor);
 			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, chatColor);
