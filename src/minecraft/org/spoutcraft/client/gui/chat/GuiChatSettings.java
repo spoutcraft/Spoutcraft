@@ -39,6 +39,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;
 	private CheckBox checkShowMentions, checkShowJoins, checkShowColors, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, checkParseRegex;
 	private Button buttonAdvancedMentions, buttonConfigureIgnores, buttonDone;
+	private ChatOpacitySlider opacity;
 	private GenericScrollArea scroll;
 	private Label title;
 	
@@ -86,10 +87,12 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		buttonConfigureIgnores = new GenericButton("Configure");
 		buttonConfigureIgnores.setTooltip("Configure people to ignore messages from.");
 		
+		opacity = new ChatOpacitySlider();
+		
 		buttonDone = new GenericButton("Done");
 		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		scroll.attachWidgets(spoutcraft, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, checkParseRegex);
+		scroll.attachWidgets(spoutcraft, checkShowColors, checkShowJoins, checkShowMentions, checkCloseOnDamage, checkGrabMouse, checkIgnorePeople, buttonAdvancedMentions, buttonConfigureIgnores, checkParseRegex, opacity);
 		getScreen().attachWidgets(spoutcraft, title, scroll, buttonDone);
 	}
 
@@ -120,6 +123,8 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		buttonConfigureIgnores.setGeometry(width - 205, ftop, 150, 20);
 		ftop += 22;
 		checkParseRegex.setGeometry(5, ftop, 200, 20);
+		ftop += 22;
+		opacity.setGeometry(5, ftop, 200, 20);
 		ftop += 22;
 		
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);

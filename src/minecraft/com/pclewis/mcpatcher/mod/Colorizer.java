@@ -188,8 +188,8 @@ public class Colorizer {
 	}
 
 	public static int colorizeText(int var0) {
-		int var1 = var0 & -16777216;
-		var0 &= 16777215;
+		int var1 = var0 & 0xff000000;
+		var0 &= 0x00ffffff;
 		Integer var2 = (Integer)textColorMap.get(Integer.valueOf(var0));
 		return var2 == null?var1 | var0:var1 | var2.intValue();
 	}

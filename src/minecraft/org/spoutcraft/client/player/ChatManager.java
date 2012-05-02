@@ -475,4 +475,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	public boolean isUsingRegex() {
 		return ConfigReader.chatUsesRegex;
 	}
+
+	@Override
+	public float getOpacity() {
+		return ConfigReader.chatOpacity;
+	}
 }
