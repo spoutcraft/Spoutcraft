@@ -40,6 +40,7 @@ import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.client.gui.minimap.MinimapUtils;
 import org.spoutcraft.client.gui.minimap.Waypoint;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.packet.PacketScreenAction;
 import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
@@ -1527,6 +1528,9 @@ public abstract class Minecraft implements Runnable {
 
 	private void forceReload() {
 		System.out.println("FORCING RELOAD!");
+		//Spout Start
+		CustomTextureManager.resetTextures();
+		//Spout End
 		this.sndManager = new SoundManager();
 		this.sndManager.loadSoundSettings(this.gameSettings);
 		this.downloadResourcesThread.reloadResources();

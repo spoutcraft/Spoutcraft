@@ -16,12 +16,19 @@
  */
 package org.spoutcraft.client.gui.texturepacks;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.database.GuiAPIDisplay;
 import org.spoutcraft.client.gui.database.RandomButton;
+import org.spoutcraft.client.gui.database.SearchField;
 import org.spoutcraft.client.gui.database.SortButton;
+import org.spoutcraft.client.gui.texturepacks.TextureItem.Download;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.animation.Animation;
@@ -42,9 +49,10 @@ import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.Rectangle;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
-public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent> {
+public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent>, ButtonUpdater {
 	private Label screenTitle, sortFilterTitle;
-	private Button buttonMainMenu, buttonLocal, buttonDownload, buttonAdd, buttonRefresh, buttonForum;
+	private Button buttonMainMenu, buttonLocal, buttonDownload, buttonAdd, buttonRefresh, buttonForum, buttonCancelDownload;
+	private SearchField search;
 	private boolean instancesCreated = false;
 	private GenericListView view;
 	private TexturePacksDatabaseModel model = SpoutClient.getInstance().getTexturePacksDatabaseModel();
@@ -55,10 +63,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 	private GenericTexture animatedTexture;
 	private Animation animation;
 	
-	{
-		
+	public GuiTexturePacksDatabase() {
+		TextureItem.setButtonUpdater(this);
 	}
-	
 	
 	private void createInstances() {
 		buttonMainMenu = new GenericButton("Main Menu");
@@ -68,6 +75,8 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		buttonRefresh = new GenericButton("Refresh");
 		screenTitle = new GenericLabel("Texture Packs Database");
 		buttonForum = new GenericButton("Show Forum Thread");
+		buttonCancelDownload = new GenericButton("Cancel Download");
+		buttonCancelDownload.setTooltip("Press shift to cancel all downloads");
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
 		model.refreshAPIData(model.getDefaultUrl(), 0, true);
@@ -79,8 +88,10 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		random = new RandomButton(model);
 		filterResolution = new ResolutionFilter();
 		sortFilterTitle = new GenericLabel("Sort & Filter");
+		search = new SearchField(model);
 		model.clearUrlElements();
 		model.addUrlElement(popular);
+		model.addUrlElement(search);
 		model.addUrlElement(random);
 		model.addUrlElement(featured);
 		model.addUrlElement(byName);
@@ -122,6 +133,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 
 		buttonForum.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonForum);
+		
+		buttonCancelDownload.setGeometry(center, top, cellWidth, 20);
+		getScreen().attachWidget(spoutcraft, buttonCancelDownload);
 
 		buttonDownload.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonDownload);
@@ -143,6 +157,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		sortFilterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filter.attachWidget(spoutcraft, sortFilterTitle);
 		ftop += 16;
+		
+		search.setGeometry(5, 5, 100, 16);
+		getScreen().attachWidget(spoutcraft, search);
 
 		featured.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filter.attachWidget(spoutcraft, featured);
@@ -188,16 +205,25 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		//boolean enable = false;
 		boolean allowForum = false;
 		boolean allowDownload = false;
+		TextureItem texture = null;
 		if (sel >= 0) {
 			ListWidgetItem item = model.getItem(sel);
 			if (item instanceof TextureItem) {
-				TextureItem t = (TextureItem)item;
+				texture = (TextureItem)item;
 				//enable = true;
-				allowDownload = !(t.isDownloading() || t.isInstalled());
-				allowForum = !t.getForumlink().isEmpty();
+				allowDownload = !(texture.isDownloading() || texture.isInstalled());
+				allowForum = !texture.getForumlink().isEmpty();
 			}
 		}
 		buttonDownload.setEnabled(allowDownload);
+		buttonCancelDownload.setEnabled(TextureItem.hasDownloads());
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			buttonCancelDownload.setText("Cancel All Downloads");
+			buttonCancelDownload.setEnabled(TextureItem.hasDownloads());
+		} else {
+			buttonCancelDownload.setText("Cancel Download");
+			buttonCancelDownload.setEnabled(texture!=null&&texture.isDownloading());
+		}
 		buttonForum.setEnabled(allowForum);
 
 		if (model.isLoading()) {
@@ -258,6 +284,23 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 				}
 			}
 		}
+		if(btn.equals(buttonCancelDownload)) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+				TextureItem.cancelAllDownloads();				
+			} else {
+				int sel = view.getSelectedRow();
+				if (sel >= 0) {
+					ListWidgetItem item = model.getItem(sel);
+					if(item != null && item instanceof TextureItem) {
+						TextureItem t = (TextureItem) item;
+						if(t.isDownloading()) {
+							TextureItem.getDownload(t.getId()).cancel();
+						}
+					}
+				}
+			}
+			updateButtons();
+		}
 	}
 
 	@Override
@@ -277,5 +320,11 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		if (animatedTexture != null && event.getAnimation() == animation) {
 			animatedTexture.setVisible(false);
 		}
+	}
+
+	@Override
+	public void handleKeyboardInput() {
+		updateButtons();
+		super.handleKeyboardInput();
 	}
 }

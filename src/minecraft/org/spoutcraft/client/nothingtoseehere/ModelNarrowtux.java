@@ -28,7 +28,7 @@ public class ModelNarrowtux extends ModelBase {
 			float par5, float par6, float par7) {
 		reload(0.0f);
 		this.setRotationAngles(par2, par3, par4, par5, par6, par7);
-		CustomTextureManager.getTextureFromPath("/Users/tux/Sites/narrowtux.png").bind();
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, CustomTextureManager.getTextureFromPath("/Users/tux/Sites/narrowtux.png").getTextureID());
 		waist.render(par7);
 		leftFoot.render(par7);
 		rightFoot.render(par7);
@@ -44,7 +44,7 @@ public class ModelNarrowtux extends ModelBase {
 
 	public void reload(float scale) {
 		boxList.clear();
-		waist = new ModelRenderer(this, 4, 0);
+		waist = new ModelRenderer(this, 0, 0);
 		waist.addBox(-4f, 2f, -2f, 8, 20, 4, scale);
 		
 		
@@ -59,7 +59,7 @@ public class ModelNarrowtux extends ModelBase {
 		rightFoot.addBox(-4f, 1f, -2f, 4, 1, 1, scale);
 		rightFoot.mirror = true;
 		
-		head = new ModelRenderer(this, 4, 0);
+		head = new ModelRenderer(this, 30, 0);
 		head.addBox(-3f, -4f, -1f, 6, 6, 3, scale);
 		head.addBox(-2f, 0f, -4f, 4, 1, 3);
 		

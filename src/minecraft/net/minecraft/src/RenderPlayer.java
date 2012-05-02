@@ -71,14 +71,14 @@ public class RenderPlayer extends RenderLiving {
 			var13 -= 0.125D;
 		}
 
-		//Spout Start
+//		Spout Start
 //		if(par1EntityPlayer.displayName.contains("narrowtux")) {
 //			if(this.modelNarrowtux == null) {
 //				modelNarrowtux = new ModelNarrowtux(0f);
 //				this.mainModel = modelNarrowtux;
 //			}
 //		}
-		//Spout End
+//		Spout End
 		
 		super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;

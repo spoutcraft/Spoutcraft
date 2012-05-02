@@ -36,6 +36,7 @@ import net.minecraft.src.FontRenderer;
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
@@ -56,6 +57,11 @@ public class TextureItem implements ListWidgetItem {
 	private boolean installed = false;
 	private long size;
 	private static HashMap<Integer, Download> downloads = new HashMap<Integer, TextureItem.Download>();
+	private static ButtonUpdater buttonUpdater = null;
+	
+	public static void setButtonUpdater(ButtonUpdater updater) {
+		buttonUpdater = updater;
+	}
 	
 	public static void registerDownload(int id, Download download) {
 		downloads.put(id, download);
@@ -67,6 +73,16 @@ public class TextureItem implements ListWidgetItem {
 	
 	public static Download getDownload(int id) {
 		return downloads.get(id);
+	}
+	
+	public static boolean hasDownloads() {
+		return downloads.size() > 0;
+	}
+	
+	public static void cancelAllDownloads() {
+		for(Download d:downloads.values()) {
+			d.cancel();
+		}
 	}
 
 	public void setListWidget(ListWidget widget) {
@@ -206,6 +222,7 @@ public class TextureItem implements ListWidgetItem {
 			boolean wasSandboxed = SpoutClient.isSandboxed();
 			if (wasSandboxed) SpoutClient.disableSandbox();
 			download = new Download(this);
+			downloads.put(getId(), download);
 			download.start();
 			if (wasSandboxed) SpoutClient.enableSandbox();
 		}
@@ -215,7 +232,7 @@ public class TextureItem implements ListWidgetItem {
 		return download != null;
 	}
 
-	protected class Download extends Thread {
+	public class Download extends Thread {
 		private int progress;
 		private String fileName;
 		private File folder;
@@ -227,6 +244,7 @@ public class TextureItem implements ListWidgetItem {
 		}
 
 		public void run() {
+			boolean cancelled = false;
 			try {
 				NetworkUtils.pingUrl("http://textures.spout.org/download.php?id="+item.getId());
 				fileName = item.getFileName();
@@ -263,7 +281,12 @@ public class TextureItem implements ListWidgetItem {
 					try {
 						Thread.sleep(25);
 					} catch (InterruptedException e) {
-
+						//Download has been cancelled, remove all download cache
+						bos.close();
+						in.close();
+						fos.close();
+						temp.delete();
+						cancelled = true;
 					}
 				}
 				in.close();
@@ -273,16 +296,28 @@ public class TextureItem implements ListWidgetItem {
 
 			} catch(MalformedURLException e) {
 			} catch (IOException e) {
-				downloadFail = ChatColor.RED + e.getClass().getSimpleName();
+				if(cancelled) {
+					downloadFail = ChatColor.RED + "Download Cancelled";
+				} else {					
+					downloadFail = ChatColor.RED + e.getClass().getSimpleName();
+				}
 				e.printStackTrace();
 			} finally {
 				download = null;
+				downloads.remove(item.getId());
 				updateInstalled();
+				if(buttonUpdater != null) {
+					buttonUpdater.updateButtons();
+				}
 			}
 		}
 
 		public synchronized int getProgress() {
 			return progress;
+		}
+		
+		public void cancel() {
+			interrupt();
 		}
 	}
 
