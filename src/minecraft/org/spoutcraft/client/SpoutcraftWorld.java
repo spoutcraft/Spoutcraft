@@ -287,8 +287,14 @@ public class SpoutcraftWorld implements World{
 	}
 
 	public LightningStrike strikeLightning(FixedLocation loc) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO Should this handler.canLightningStrikeAt())?
+		// TODO Should this use handler.getPrecipitationHeight(x,z); to get y and ignore loc? Otherwise,
+		// that needs to be added to the API.
+		LightningStrike lightningstrike = EntityLightningBolt(handler, loc.getX(), loc.getY(), loc.getZ()).spoutEntity;
+		if(!handler.addWeatherEffect(lightningstrike.handle)){
+			return null;
+		}
+		return lightningstrike;
 	}
 
 	public LightningStrike strikeLightningEffect(FixedLocation loc) {
