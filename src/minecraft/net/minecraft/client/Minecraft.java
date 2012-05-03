@@ -420,7 +420,7 @@ public abstract class Minecraft implements Runnable {
 		}
 		
 		//Reset Gui
-		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu || screen instanceof org.spoutcraft.client.gui.server.GuiFavorites || org.spoutcraft.client.gui.error.GuiConnectionLost) {
+		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu || screen instanceof org.spoutcraft.client.gui.server.GuiFavorites || screen instanceof org.spoutcraft.client.gui.error.GuiConnectionLost) {
 			ClientPlayer.getInstance().resetMainScreen();
 		}
 
