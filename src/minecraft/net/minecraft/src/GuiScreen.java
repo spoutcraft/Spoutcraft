@@ -657,6 +657,7 @@ public class GuiScreen extends Gui
 		SpoutClient.enableSandbox();
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
+			scroll *= 3;
 			handleScroll(x, y, scroll);
 		}
 		SpoutClient.disableSandbox();
