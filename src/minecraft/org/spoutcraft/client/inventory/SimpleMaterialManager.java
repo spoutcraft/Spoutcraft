@@ -255,7 +255,7 @@ public class SimpleMaterialManager implements MaterialManager {
 		net.minecraft.src.ItemStack itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
 		@SuppressWarnings("unchecked")
 		List<String> list = itemstack.getItemNameandInformation();
-		Material item = is.getType();
+		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
 		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
 		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
 			list.set(0, custom);
