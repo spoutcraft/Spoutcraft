@@ -27,16 +27,18 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	private short y;
 	private int z;
 	private short blockId;
+	private byte rotation;
 
 	public PacketCustomBlockOverride() {
 
 	}
 
-	public PacketCustomBlockOverride(int x, int y, int z, Integer blockId) {
+	public PacketCustomBlockOverride(int x, int y, int z, Integer blockId, Byte rotation) {
 		this.x = x;
 		this.y = (short) (y & 0xFFFF);
 		this.z = z;
 		setBlockId(blockId);
+		setBlockRotation(rotation);
 	}
 
 	private void setBlockId(Integer blockId) {
@@ -51,11 +53,24 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 		return blockId == -1 ? null : Integer.valueOf(blockId);
 	}
 
+	private void setBlockRotation(Byte rotation) {
+		if (rotation == null) {
+			this.rotation = -1;
+		} else {
+			this.rotation = rotation.byteValue();
+		}
+	}
+
+	protected Byte getBlockRotation() {
+		return rotation == -1 ? null : Byte.valueOf(rotation);
+	}
+
 	public void readData(SpoutInputStream input) throws IOException {
 		x = input.readInt();
 		y = input.readShort();
 		z = input.readInt();
 		setBlockId((int)input.readShort());
+		setBlockRotation((byte) input.read());
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
@@ -63,10 +78,12 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 		output.writeShort(y);
 		output.writeInt(z);
 		output.writeShort(blockId);
+		output.write(rotation);
 	}
 
 	public void run(int PlayerId) {
 		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockId(x, y, z, blockId);
+		Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockRotation(x, y, z, rotation);
 	}
 
 	public PacketType getPacketType() {
@@ -74,7 +91,7 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return 2;
+		return 3;
 	}
 
 	public void failure(int playerId) {

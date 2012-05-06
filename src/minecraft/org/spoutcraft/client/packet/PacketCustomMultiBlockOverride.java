@@ -56,13 +56,15 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	public void run(int playerId) {
 		ByteBuffer result = ByteBuffer.allocate(data.length).put(data);
 		Chunk chunk = Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ);
-		for (int i = 0; i < data.length / 6; i++) {
-			int index = i * 6;
+		for (int i = 0; i < data.length / 7; i++) {
+			int index = i * 7;
 			int x = result.get(index) + chunkX * 16;
 			int y = result.getShort(index+1);
 			int z = result.get(index+3) + chunkZ * 16;
 			short id = result.getShort(index+4);
+			byte rotation = result.get(index+6);
 			chunk.setCustomBlockId(x, y, z, id);
+			chunk.setCustomBlockRotation(x, y, z, rotation);
 		}
 	}
 
@@ -75,7 +77,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	}
 
 	public int getVersion() {
-		return 3;
+		return 4;
 	}
 
 	public void compress() {
