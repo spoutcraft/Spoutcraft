@@ -168,5 +168,15 @@ public interface Chunk {
 	 * @return the previous custom block at the location, or null if none existed.
 	 */
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block);
+	
+	public byte[] getCustomBlockRotations();
+
+	public void setCustomBlockRotations(byte[] rots);
+	
+	public byte getCustomBlockRotation(int x, int y, int z);
+	
+	public byte setCustomBlockRotation(int x, int y, int z, byte rot);
+	
+	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte rotation);
 
 }
