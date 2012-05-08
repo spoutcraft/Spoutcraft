@@ -56,8 +56,7 @@ public class Chunk {
 	public SpoutcraftChunk spoutChunk;
 	int grassColorCache = -1;
 	int waterColorCache = -1;
-	//used in mp
-	public boolean canBeUnloaded = false;
+
 	//Spout end
 
 	public Chunk(World par1World, int par2, int par3) {
