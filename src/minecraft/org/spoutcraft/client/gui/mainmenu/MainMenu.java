@@ -281,9 +281,11 @@ class BackgroundTexture extends GenericTexture {
 	int panTime = PAN_TIME;
 	int picture = -1;
 	boolean zoomIn = false;
+	final boolean mipmap;
 	
 	BackgroundTexture(List<String> backgrounds) {
 		super(backgrounds.get(0));
+		mipmap = !GL11.glGetString(GL11.GL_RENDERER).toLowerCase().contains("mobile intel");
 		this.backgrounds = backgrounds;
 		cycleBackground();
 	}
@@ -318,7 +320,7 @@ class BackgroundTexture extends GenericTexture {
 			
 			GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 			GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, true);
+			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, mipmap);
 			
 			if (zoomIn && panTime < maxPanTime) {
 				panTime++;

@@ -322,9 +322,7 @@ public class MapCalculator implements Runnable {
 					}
 				}
 			}
-		} catch (Throwable whatever) {
-			whatever.printStackTrace();
-		}
+		} catch (Throwable whatever) {	}
 	}
 
 	private void drawCircle(int x, int y, int radius, int color) {
