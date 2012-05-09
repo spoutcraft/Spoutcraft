@@ -70,10 +70,13 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 			ByteBuffer buffer = ByteBuffer.allocate(data.length);
 			buffer.put(data);
 			short[] customIds = new short[16*16*Spoutcraft.getWorld().getMaxHeight()];
+			byte[] customRots = new byte[16*16*Spoutcraft.getWorld().getMaxHeight()];
 			for (int i = 0; i < customIds.length; i++) {
-				customIds[i] = buffer.getShort(i * 2);
+				customIds[i] = buffer.getShort(i * 3);
+				customRots[i] = buffer.get((i * 3) + 2);
 			}
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
+			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockRotations(customRots);
 		}
 	}
 
@@ -86,7 +89,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	}
 
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 	public void compress() {
