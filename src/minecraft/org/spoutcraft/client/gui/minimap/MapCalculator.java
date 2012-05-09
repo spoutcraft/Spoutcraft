@@ -353,11 +353,13 @@ public class MapCalculator implements Runnable {
 			double z = Minecraft.theMinecraft.thePlayer.posZ;
 			if (MinimapConfig.getInstance().isEnabled() && map.isDirty(x, z)) {
 //				long start = System.currentTimeMillis();
-				int radius = MinimapConfig.getInstance().getScanRadius() << 4;
-				for (int cx = (int) (x - radius); cx <= (int) (x + radius); cx += 16) {
-					for (int cz = (int) (z - radius); cz <= (int) (z + radius); cz += 16) {
-						Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
-						org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(chunk);
+				if (MinimapConfig.getInstance().getScanRadius() > 0) {
+					int radius = MinimapConfig.getInstance().getScanRadius() << 4;
+					for (int cx = (int) (x - radius); cx <= (int) (x + radius); cx += 16) {
+						for (int cz = (int) (z - radius); cz <= (int) (z + radius); cz += 16) {
+							Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords((int) cx, (int) cz);
+							org.spoutcraft.client.chunkcache.HeightMapAgent.scanChunk(chunk);
+						}
 					}
 				}
 //				long dur = System.currentTimeMillis() - start;

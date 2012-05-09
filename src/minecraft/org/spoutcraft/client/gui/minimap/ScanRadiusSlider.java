@@ -5,7 +5,7 @@ import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
 public class ScanRadiusSlider extends GenericSlider {
-	private static final int MIN_RADIUS = 2, MAX_RADIUS = 20;
+	private static final int MIN_RADIUS = 0, MAX_RADIUS = 7;
 	
 	public ScanRadiusSlider() {
 		updateText();
@@ -16,16 +16,16 @@ public class ScanRadiusSlider extends GenericSlider {
 	private void updateText() {
 		int radius = MinimapConfig.getInstance().getScanRadius();
 		ChatColor color = ChatColor.WHITE;
-		if(radius > 4) {
+		if(radius > 3) {
 			color = ChatColor.YELLOW;
 		}
-		if(radius > 7) {
+		if(radius > 4) {
 			color = ChatColor.GOLD;
 		}
-		if(radius > 10) {
+		if(radius > 5) {
 			color = ChatColor.RED;
 		}
-		if(radius > 15) {
+		if(radius > 6) {
 			color = ChatColor.DARK_RED;
 		}
 		setText(color + "Scan Radius: "+ radius + " chunks");

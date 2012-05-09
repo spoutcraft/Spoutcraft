@@ -476,7 +476,6 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		return ConfigReader.chatUsesRegex;
 	}
 
-	@Override
 	public float getOpacity() {
 		return ConfigReader.chatOpacity;
 	}
