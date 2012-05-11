@@ -29,11 +29,14 @@ public class FontRenderer {
 	private float posY;
 	public boolean unicodeFlag;
 	private boolean bidiFlag;
-	private float field_50115_n;
-	private float field_50116_o;
-	private float field_50118_p;
-	private float field_50117_q;
 	public float[] charWidthf;
+
+	//begin Spout AlphaText
+	private int defaultColor;	//default/base RGB for string
+	private int defaultAlpha;	//default/base alpha for string
+	private int currentColor;	//current RGB for string
+	private int currentAlpha;	//current alpha for string
+	//end spout AlphaText
 
 	FontRenderer() {
 		this.renderEngine = null;
@@ -87,32 +90,33 @@ public class FontRenderer {
 		}
 	}
 
-	private float func_50112_a(int par1, char par2, boolean par3) {
-		return par2 == 32?this.charWidthf[32]:(par1 > 0 && !this.unicodeFlag?this.func_50106_a(par1 + 32, par3):this.func_50111_a(par2, par3));
+	private float renderCharAtPos(int par1, char par2, boolean par3) {
+		return par2 == 32?this.charWidthf[32]:(par1 > 0 && !this.unicodeFlag?this.renderDefaultChar(par1 + 32, par3):this.renderUnicodeChar(par2, par3));
 	}
 
-	private float func_50106_a(int par1, boolean par2) {
-		float var3 = (float)(par1 % 16 * 8);
-		float var4 = (float)(par1 / 16 * 8);
-		float var5 = par2?1.0F:0.0F;
+	//Begin Spout AlphaText
+	private float renderDefaultChar(int k, boolean italic)
+	{
+		float Xk = ((k % 16) * 8 ) / 128F;
+		float Yk = ((k / 16) * 8 ) / 128F;
+		float Xi = italic ? 1.0F : 0.0F;
 		if (this.boundTextureName != this.fontTextureName) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.fontTextureName);
 			this.boundTextureName = this.fontTextureName;
 		}
-
-		float var6 = this.charWidthf[par1] - 0.01F;
-		GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-		GL11.glTexCoord2f(var3 / 128.0F, var4 / 128.0F);
-		GL11.glVertex3f(this.posX + var5, this.posY, 0.0F);
-		GL11.glTexCoord2f(var3 / 128.0F, (var4 + 7.99F) / 128.0F);
-		GL11.glVertex3f(this.posX - var5, this.posY + 7.99F, 0.0F);
-		GL11.glTexCoord2f((var3 + var6) / 128.0F, var4 / 128.0F);
-		GL11.glVertex3f(this.posX + var6 + var5, this.posY, 0.0F);
-		GL11.glTexCoord2f((var3 + var6) / 128.0F, (var4 + 7.99F) / 128.0F);
-		GL11.glVertex3f(this.posX + var6 - var5, this.posY + 7.99F, 0.0F);
-		GL11.glEnd();
-		return this.charWidthf[par1];
+		float Xw = this.charWidthf[k] - 0.01F;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
+		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
+		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,         0.0F, Xk,               Yk               );
+		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 7.99F, 0.0F, Xk,               Yk + 0.062421873F); //(7.99F / 128F)
+		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,         0.0F, Xk + (Xw / 128F), Yk               );
+		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 7.99F, 0.0F, Xk + (Xw / 128F), Yk + 0.062421873F); //(7.99F / 128F)
+		tessellator.draw();
+		return this.charWidthf[k];
 	}
+	//end Spout AlphaText
+
 
 	private void loadGlyphTexture(int par1) {
 		String var3 = String.format("/font/glyph_%02X.png", new Object[]{Integer.valueOf(par1)});
@@ -128,41 +132,39 @@ public class FontRenderer {
 		this.boundTextureName = this.glyphTextureName[par1];
 	}
 
-	private float func_50111_a(char par1, boolean par2) {
-		if (this.glyphWidth[par1] == 0) {
-			return 0.0F;
-		} else {
-			int var3 = par1 / 256;
-			if (this.glyphTextureName[var3] == 0) {
-				this.loadGlyphTexture(var3);
-			}
-
-			if (this.boundTextureName != this.glyphTextureName[var3]) {
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.glyphTextureName[var3]);
-				this.boundTextureName = this.glyphTextureName[var3];
-			}
-
-			int var4 = this.glyphWidth[par1] >>> 4;
-			int var5 = this.glyphWidth[par1] & 15;
-			float var6 = (float)var4;
-			float var7 = (float)(var5 + 1);
-			float var8 = (float)(par1 % 16 * 16) + var6;
-			float var9 = (float)((par1 & 255) / 16 * 16);
-			float var10 = var7 - var6 - 0.02F;
-			float var11 = par2?1.0F:0.0F;
-			GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-			GL11.glTexCoord2f(var8 / 256.0F, var9 / 256.0F);
-			GL11.glVertex3f(this.posX + var11, this.posY, 0.0F);
-			GL11.glTexCoord2f(var8 / 256.0F, (var9 + 15.98F) / 256.0F);
-			GL11.glVertex3f(this.posX - var11, this.posY + 7.99F, 0.0F);
-			GL11.glTexCoord2f((var8 + var10) / 256.0F, var9 / 256.0F);
-			GL11.glVertex3f(this.posX + var10 / 2.0F + var11, this.posY, 0.0F);
-			GL11.glTexCoord2f((var8 + var10) / 256.0F, (var9 + 15.98F) / 256.0F);
-			GL11.glVertex3f(this.posX + var10 / 2.0F - var11, this.posY + 7.99F, 0.0F);
-			GL11.glEnd();
-			return (var7 - var6) / 2.0F + 1.0F;
+	//begin Spout AlphaText
+	private float renderUnicodeChar(char c, boolean italic)
+	{
+		if (this.glyphWidth[c] == 0) {
+			return 0F;
 		}
+		int page = c / 256;
+		if (this.glyphTextureName[page] == 0) {
+			this.loadGlyphTexture(page);
+		}
+		if (this.boundTextureName != this.glyphTextureName[page]) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.glyphTextureName[page]);
+			this.boundTextureName = this.glyphTextureName[page];
+		}
+		int j = this.glyphWidth[c] >>> 4;
+		int k = this.glyphWidth[c] & 0xf;
+		float X0 = (float)j;
+		float X1 = (float)(k + 1);
+		float Xc = ((float)((c % 16) * 16) + X0) / 256F;
+		float Yc = (float)(((c & 0xff) / 16) * 16) / 256F;
+		float Xw = (X1 - X0 /*- 0.02F*/) / 2F;
+		float Xi = italic ? 1F : 0F;
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
+		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, (currentColor & 0xff), currentAlpha);
+		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,      0F, Xc,               Yc               );
+		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 8F, 0F, Xc,               Yc + 0.0625F);//(15.98F / 256F)
+		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,      0F, Xc + (Xw / 128F), Yc               );//0.062421873F
+		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 8F, 0F, Xc + (Xw / 128F), Yc + 0.0625F);//  6.24218732e-002
+		tessellator.draw();
+		return (X1 - X0) / 2F + 1F;
 	}
+	//end Spout AlphaText
 
 	public int drawStringWithShadow(String par1Str, int par2, int par3, int par4) {
 		if (this.bidiFlag) {
@@ -268,10 +270,9 @@ public class FontRenderer {
 
 					if (par2) {
 						var10 += 16;
+						currentAlpha = defaultAlpha * 10 / 7; // Spout AlphaText - transparent shadows improve readability for black text.
 					}
-
-					var11 = Colorizer.colorizeText(this.colorCode[var10], var10);
-					GL11.glColor3f((float)(var11 >> 16) / 255.0F, (float)(var11 >> 8 & 255) / 255.0F, (float)(var11 & 255) / 255.0F);
+					currentColor = Colorizer.colorizeText(this.colorCode[var10], var10); // Spout AlphaText - sets current Color from Colorizer. Alpha from Colorizer is discarded.
 				} else if (var10 == 16) {
 					var3 = true;
 				} else if (var10 == 17) {
@@ -288,7 +289,8 @@ public class FontRenderer {
 					var7 = false;
 					var6 = false;
 					var5 = false;
-					GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+					currentColor=defaultColor; // Spout AlphaText - returns to default RGBA values
+					currentAlpha=defaultAlpha;
 				}
 
 				++var8;
@@ -302,10 +304,10 @@ public class FontRenderer {
 					var10 = var11;
 				}
 
-				float var14 = this.func_50112_a(var10, var9, var5);
+				float var14 = this.renderCharAtPos(var10, var9, var5);
 				if (var4) {
 					++this.posX;
-					this.func_50112_a(var10, var9, var5);
+					this.renderCharAtPos(var10, var9, var5);
 					--this.posX;
 					++var14;
 				}
@@ -315,6 +317,7 @@ public class FontRenderer {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  //Spout AlphaText - uses tessellator to set Color.
 					var12.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
@@ -327,11 +330,12 @@ public class FontRenderer {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
-					int var13 = var6?-1:0;
-					var12.addVertex((double)(this.posX + (float)var13), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); //Spout AlphaText - uses tessellator to set Color.
+					// int var13 = var6?-1:0;	// Spout AlphaText - I do not see this as necessary, var6 (underline) should always be true at this point.
+					var12.addVertex((double)(this.posX - 1.0F /* (float)var13*/), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
-					var12.addVertex((double)(this.posX + (float)var13), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
+					var12.addVertex((double)(this.posX - 1.0F /* (float)var13*/), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D);
 					var12.draw();
 					GL11.glEnable(GL11.GL_TEXTURE_2D);
 				}
@@ -352,12 +356,12 @@ public class FontRenderer {
 			if (par5) {
 				par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
 			}
-
-			this.field_50115_n = (float)(par4 >> 16 & 255) / 255.0F;
-			this.field_50116_o = (float)(par4 >> 8 & 255) / 255.0F;
-			this.field_50118_p = (float)(par4 & 255) / 255.0F;
-			this.field_50117_q = (float)(par4 >> 24 & 255) / 255.0F;
-			GL11.glColor4f(this.field_50115_n, this.field_50116_o, this.field_50118_p, this.field_50117_q);
+			// begin Spout AlphaText
+			defaultColor = par4;	// Stores default RGBA values for this string
+			defaultAlpha = (par4 >> 24 & 0xff);
+			currentColor = par4;	// Stores current RGBA for this string.
+			currentAlpha = defaultAlpha;
+			// end Spout AlphaText
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
@@ -391,7 +395,7 @@ public class FontRenderer {
 				}
 
 				++var4;
-				return (var4 - var3) / 2 + 1;
+				return (2 + var4 - var3) / 2; // Spout Alpha Text - precision error correction.
 			} else {
 				return 0;
 			}
@@ -416,7 +420,7 @@ public class FontRenderer {
 			if (var8) {
 				var8 = false;
 				if (var11 != 108 && var11 != 76) {
-					if (var11 == 114 || var11 == 82) {
+					if (var11 == 114 || var11 == 82 || isFormatColor(var11)) {
 						var9 = false;
 					}
 				} else {
@@ -563,17 +567,17 @@ public class FontRenderer {
 	}
 
 	String func_50113_d(String par1Str, int par2) {
-		int var3 = this.func_50102_e(par1Str, par2);
+		int var3 = this.sizeStringToWidth(par1Str, par2);
 		if (par1Str.length() <= var3) {
 			return par1Str;
 		} else {
 			String var4 = par1Str.substring(0, var3);
-			String var5 = func_50114_c(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32?1:0));
+			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32?1:0));
 			return var4 + "\n" + this.func_50113_d(var5, par2);
 		}
 	}
 
-	private int func_50102_e(String par1Str, int par2) {
+	private int sizeStringToWidth(String par1Str, int par2) {
 		int var3 = par1Str.length();
 		int var4 = 0;
 		int var5 = 0;
@@ -589,7 +593,7 @@ public class FontRenderer {
 					++var5;
 					char var9 = par1Str.charAt(var5);
 					if (var9 != 108 && var9 != 76) {
-						if (var9 == 114 || var9 == 82) {
+						if (var9 == 114 || var9 == 82 || isFormatColor(var9)) {
 							var7 = false;
 						}
 					} else {
@@ -618,15 +622,15 @@ public class FontRenderer {
 		return var5 != var3 && var6 != -1 && var6 < var5?var6:var5;
 	}
 
-	private static boolean func_50110_b(char par0) {
+	private static boolean isFormatColor(char par0) {
 		return par0 >= 48 && par0 <= 57 || par0 >= 97 && par0 <= 102 || par0 >= 65 && par0 <= 70;
 	}
 
-	private static boolean func_50109_c(char par0) {
+	private static boolean isFormatStyle(char par0) {
 		return par0 >= 107 && par0 <= 111 || par0 >= 75 && par0 <= 79 || par0 == 114 || par0 == 82;
 	}
 
-	private static String func_50114_c(String par0Str) {
+	private static String getFormatFromString(String par0Str) {
 		String var1 = "";
 		int var2 = -1;
 		int var3 = par0Str.length();
@@ -634,9 +638,9 @@ public class FontRenderer {
 		while ((var2 = par0Str.indexOf(167, var2 + 1)) != -1) {
 			if (var2 < var3 - 1) {
 				char var4 = par0Str.charAt(var2 + 1);
-				if (func_50110_b(var4)) {
+				if (isFormatColor(var4)) {
 					var1 = "\u00a7" + var4;
-				} else if (func_50109_c(var4)) {
+				} else if (isFormatStyle(var4)) {
 					var1 = var1 + "\u00a7" + var4;
 				}
 			}
