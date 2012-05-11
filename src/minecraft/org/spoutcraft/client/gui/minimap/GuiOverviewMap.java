@@ -151,6 +151,9 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			case FOCUS_REMOVE:
 				MinimapConfig.getInstance().setFocussedWaypoint(null);
 				break;
+			default: 
+				System.out.println(focus_mode);
+				break;
 			}
 			setMenuVisible(false);
 		}
@@ -208,7 +211,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 	}
 	
-	private boolean withinManhattanLength(Point center, Point clicked, int length) {
+	private boolean withinManhattanLength(Point center, Point clicked, float length) {
 		int cx = center.getX();
 		int cy = center.getY();
 		int x = clicked.getX();
@@ -219,7 +222,7 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 	private Waypoint getClickedWaypoint(int x, int z) {
 		Point clicked = new Point(x,z);
 		for(Waypoint waypoint:MinimapConfig.getInstance().getAllWaypoints(MinimapUtils.getWorldName())) {
-			if(withinManhattanLength(new Point(waypoint.x, waypoint.z), clicked, 2)) {
+			if(withinManhattanLength(new Point(waypoint.x, waypoint.z), clicked, (float) (2f/map.scale))) {
 				return waypoint;
 			}
 		}
@@ -240,26 +243,26 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 				} else {
 					this.y = HeightMap.getHeightMap(MinimapUtils.getWorldName()).getHeight(coords.getX(), coords.getY());
 				}
-				if(MinimapConfig.getInstance().getFocussedWaypoint() != null) {
-					Waypoint waypoint = MinimapConfig.getInstance().getFocussedWaypoint();
-					if(withinManhattanLength(new Point(waypoint.x, waypoint.z), coords, 2)) {
-						buttonFocus.setText("Remove Focus");
-						focus_mode = FOCUS_REMOVE;
-						clickedWaypoint = waypoint;
-					}
-				} else if (clickedWaypoint == null) {
-					buttonFocus.setEnabled(false);
-					buttonFocus.setText("Set Focus");
-				} else {
-					buttonFocus.setText("Set Focus");
-					focus_mode = FOCUS_SET;
-				}
+
 				if(clickedWaypoint == null) {
 					waypoint_mode = WAYPOINT_ADD;
 					buttonWaypoint.setText("Add Waypoint");
 				} else {
 					waypoint_mode = WAYPOINT_EDIT;
 					buttonWaypoint.setText("Edit Waypoint");
+				}
+				Waypoint waypoint = MinimapConfig.getInstance().getFocussedWaypoint();
+				buttonFocus.setEnabled(true);
+				if((clickedWaypoint == null || clickedWaypoint == waypoint) && waypoint != null) {
+					buttonFocus.setText("Remove Focus");
+					focus_mode = FOCUS_REMOVE;
+					clickedWaypoint = waypoint;
+				} else if(clickedWaypoint != null) {
+					focus_mode = FOCUS_SET;
+					buttonFocus.setText("Set Focus");
+				} else {
+					buttonFocus.setText("Set Focus");
+					buttonFocus.setEnabled(false);
 				}
 				menuTitle.setText(SpoutClient.getInstance().isCoordsCheat() ? "Position (" + coords.getX() + ":" + this.y + ":" + coords.getY() + ")" : "Position not shown");
 			}
