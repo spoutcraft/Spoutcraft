@@ -557,27 +557,47 @@ public class GuiIngame extends Gui
 	 * Adds a chat message to the list of chat messages. Args: msg
 	 */
 	public void addChatMessage(String message) {
-		//Spout start
+		/* Spout start */
 		if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
 			return;
 		}
-		SpoutClient.enableSandbox();
-		if (Spoutcraft.getActivePlayer() != null) {
-			ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
-		}
-		else {
-			ChatTextBox.addChatMessage(new ChatMessage(message, message));
-		}
-		SpoutClient.disableSandbox();
-		//Spout end
 
-		int i;
-
-		for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
-			for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
-			addChatMessage(message.substring(0, i));
+		String mess[] = (mc.fontRenderer.func_50113_d(message, 320)).split("\n");
+		for(int i=0;i<mess.length;i++)
+		{
+			SpoutClient.enableSandbox();
+			if (Spoutcraft.getActivePlayer() != null) {
+				ChatTextBox.addChatMessage(ChatMessage.parseMessage(mess[i]));
+			}
+			else {
+				ChatTextBox.addChatMessage(new ChatMessage(mess[i], mess[i]));
+			}
+			SpoutClient.disableSandbox();
 		}
+		/* Spout end */
 	}
+	// public void addChatMessage(String message) {
+		// /* Spout start */
+		// if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
+			// return;
+		// }
+		// SpoutClient.enableSandbox();
+		// if (Spoutcraft.getActivePlayer() != null) {
+			// ChatTextBox.addChatMessage(ChatMessage.parseMessage(message));
+		// }
+		// else {
+			// ChatTextBox.addChatMessage(new ChatMessage(message, message));
+		// }
+		// SpoutClient.disableSandbox();
+		// /* Spout end */
+
+		// int i;
+
+		// for (; mc.fontRenderer.getStringWidth(message) > 320; message = message.substring(i)) {
+			// for (i = 1; i < message.length() && mc.fontRenderer.getStringWidth(message.substring(0, i + 1)) <= 320; i++) { }
+			// addChatMessage(message.substring(0, i));
+		// }
+	// }
 
 	public void setRecordPlayingMessage(String par1Str)
 	{
