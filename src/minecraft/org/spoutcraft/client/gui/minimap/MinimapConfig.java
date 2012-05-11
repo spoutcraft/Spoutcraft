@@ -20,11 +20,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import net.minecraft.src.Entity;
 
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
@@ -56,6 +59,8 @@ public class MinimapConfig {
 	private Waypoint focussedWaypoint = null;
 	private int scanRadius = 3;
 
+	private final HashSet<Class<? extends Entity>> blockedEntities = new HashSet<Class<? extends Entity>>();
+	private boolean showEntities = true;
 	/*
 	 * minimap: enabled: true ... waypoints: world1: home: x: 128 z: -82
 	 * enabled: 1 work: ...
@@ -86,6 +91,7 @@ public class MinimapConfig {
 			sizeAdjust = (float) config.getDouble("minimap.sizeAdjust", sizeAdjust);
 			directions = config.getBoolean("minimap.directions", directions);
 			scanRadius = config.getInt("minimap.scanRadius", scanRadius);
+			showEntities = config.getBoolean("minimap.showEntities", true);
 		}
 		firstrun = config.getBoolean("minimap.firstrun", firstrun);
 		Map<?, ?> worlds = config.getNodes("waypoints");
@@ -129,6 +135,19 @@ public class MinimapConfig {
 				}
 			}
 		}
+		List<String> blocked = config.getStringList("blockedEntities", new ArrayList<String>());
+		if(blocked != null) {
+			for(String classname : blocked) {
+				try {
+					Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(classname);
+					blockedEntities.add((Class<? extends Entity>) clazz);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassCastException e1) {
+				}
+			}
+		}
 	}
 
 	public static void initialize() {
@@ -157,6 +176,7 @@ public class MinimapConfig {
 		config.setProperty("minimap.sizeAdjust", sizeAdjust);
 		config.setProperty("minimap.directions", directions);
 		config.setProperty("minimap.scanRadius", scanRadius);
+		config.setProperty("minimap.showEntities", showEntities);
 		HashMap<String, Map<String, Map<String, Integer>>> worlds = new HashMap<String, Map<String, Map<String, Integer>>>();
 		Iterator<Entry<String, List<Waypoint>>> i = waypoints.entrySet().iterator();
 		while (i.hasNext()) {
@@ -177,6 +197,12 @@ public class MinimapConfig {
 			worlds.put(world, waypoints);
 		}
 		config.setProperty("waypoints", worlds);
+		
+		List<String> blocked = new ArrayList<String>();
+		for(Class<? extends Entity> e:blockedEntities) {
+			blocked.add(e.getName());
+		}
+		config.setProperty("blockedEntities", blocked);
 		config.save();
 	}
 
@@ -382,5 +408,25 @@ public class MinimapConfig {
 	
 	public void setScanRadius(int radius) {
 		this.scanRadius = radius;
+	}
+	
+	public void setEntityVisible(Class<? extends Entity> clazz, boolean visible) {
+		if(visible) {
+			blockedEntities.remove(clazz);
+		} else {
+			blockedEntities.add(clazz);
+		}
+	}
+	
+	public boolean isEntityVisible(Class<? extends Entity> clazz) {
+		return !blockedEntities.contains(clazz);
+	}
+
+	public boolean isShowingEntities() {
+		return showEntities;
+	}
+
+	public void setShowEntities(boolean showEntities) {
+		this.showEntities = showEntities;
 	}
 }

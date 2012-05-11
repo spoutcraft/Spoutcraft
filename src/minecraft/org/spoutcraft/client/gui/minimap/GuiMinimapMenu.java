@@ -33,7 +33,7 @@ import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 import net.minecraft.src.GuiScreen;
 
 public class GuiMinimapMenu extends GuiScreen {
-	private Button doneButton = null, positionButton = null;
+	private Button doneButton = null, positionButton = null, advancedMobsButton = null;
 	GuiScreen parent;
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
@@ -166,6 +166,16 @@ public class GuiMinimapMenu extends GuiScreen {
 		control = new ScanRadiusSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
+		
+		top += 22;
+		
+		control = new ShowEntitiesCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
+		control.setWidth(150).setHeight(20).setX(left).setY(top);
+		screen.attachWidget(spoutcraft, control);
+		
+		advancedMobsButton = new GenericButton("Select which mobs to show").setAlign(WidgetAnchor.TOP_CENTER);
+		advancedMobsButton.setWidth(150).setHeight(20).setX(right).setY(top);
+		screen.attachWidget(spoutcraft, advancedMobsButton);
 	}
 	
 	@Override
@@ -183,6 +193,9 @@ public class GuiMinimapMenu extends GuiScreen {
 		}
 		if (btn.equals(positionButton)) {
 			mc.displayGuiScreen(new GuiMoveMinimap(this));
+		}
+		if (btn.equals(advancedMobsButton)) {
+			mc.displayGuiScreen(new GuiAdvancedEntitySettings(this));
 		}
 	}
 

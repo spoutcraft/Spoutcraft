@@ -18,6 +18,7 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.util.LinkedList;
 
 /**
  * @author lahwran
@@ -92,6 +93,8 @@ public class Map {
 
 	public final ImageManager lightimg;
 
+	public LinkedList<WatchedEntity> watchedEntities = new LinkedList<WatchedEntity>();
+	
 	public Map(int size) {
 		imageSize = size;
 		colorimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);

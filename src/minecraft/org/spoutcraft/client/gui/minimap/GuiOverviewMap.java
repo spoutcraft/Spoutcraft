@@ -151,9 +151,6 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			case FOCUS_REMOVE:
 				MinimapConfig.getInstance().setFocussedWaypoint(null);
 				break;
-			default: 
-				System.out.println(focus_mode);
-				break;
 			}
 			setMenuVisible(false);
 		}

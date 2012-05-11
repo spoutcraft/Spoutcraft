@@ -18,10 +18,15 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.util.Random;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Chunk;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
@@ -366,12 +371,39 @@ public class MapCalculator implements Runnable {
 //				int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
 //				System.out.println("Took "+dur+"ms to scan "+chunks+" chunks.\nThat is "+(float) (dur/(float)chunks)+" per chunk!");
 				mapCalc();
+				
+				entityCalc();
 				map.timer = 1;
 			}
 		} catch (RuntimeException e) {
 			throw e;
 		} finally {
 			map.timer++;
+		}
+	}
+
+	private void entityCalc() {
+		synchronized(map.watchedEntities) {
+			map.watchedEntities.clear();
+			if(!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+				return;
+			}
+			if(!MinimapConfig.getInstance().isShowingEntities()) {
+				return;
+			}
+			int radius = map.renderSize / 2;
+			double playerX = map.getPlayerX();
+			double playerZ = map.getPlayerZ();
+			for(Object ob:SpoutClient.getHandle().theWorld.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(playerX - radius, 0, playerZ - radius, playerX + radius, 256, playerZ + radius))) {
+				net.minecraft.src.Entity e = (net.minecraft.src.Entity) ob;
+				if(!MinimapConfig.getInstance().isEntityVisible(e.getClass())) {
+					continue;
+				}
+				WatchedEntity w = new WatchedEntity(e);
+				if(w.textureBinding != null) {
+					map.watchedEntities.add(w);
+				}
+			}
 		}
 	}
 

@@ -17,10 +17,15 @@
 package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Entity;
+import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
 /**
@@ -133,6 +138,7 @@ public class MapRenderer {
 				GL11.glPopMatrix();
 				
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				renderEntities();
 				
 				try {
 					GL11.glPushMatrix();
@@ -220,11 +226,68 @@ public class MapRenderer {
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 				renderWaypoints();
+				renderEntities();
 				drawRound();
 				drawDirections();
 				GL11.glPushMatrix();
 				drawFocusRound();
 				GL11.glPopMatrix();
+			}
+		}
+	}
+
+	private void renderEntities() {
+		if(!MinimapConfig.getInstance().isShowingEntities()) {
+			return;
+		}
+		double playerX = map.getPlayerX(); 
+		double playerZ = map.getPlayerZ();
+		
+		synchronized (map.watchedEntities) {			
+			for(WatchedEntity w:map.watchedEntities) {
+				Entity e = w.entity;
+				double entityX = e.posX - playerX;
+				double entityZ = e.posZ - playerZ;
+				boolean render = false;
+				
+				int circleX = MathHelper.floor_double(playerX);
+				int circleY = MathHelper.floor_double(playerZ);
+				
+				if (MinimapConfig.getInstance().isSquare()) {
+					render = Math.abs(playerX - (int) e.posX) < map.renderSize && Math.abs(playerZ - (int) e.posZ) < map.renderSize;
+				} else {
+					render = MinimapUtils.insideCircle(circleX, circleY, map.renderSize / 2, (int) e.posX, (int) e.posZ);
+				}
+				if(render && w.textureBinding != null) {
+					GL11.glPushMatrix();
+					GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
+					if(!MinimapConfig.getInstance().isSquare()) {
+						GL11.glRotatef((this.direction + 90.0F), 0.0F, 0.0F, 1.0F);
+					}
+					switch (MinimapConfig.getInstance().getZoom()) {
+					case 0:
+						GL11.glTranslated(-entityZ, entityX, 0F);
+						break;
+					case 1:
+						GL11.glTranslated(-entityZ * 0.45F, entityX * 0.45F, 0F);
+						break;
+					case 2:
+						GL11.glTranslated(-entityZ * 0.25F, entityX * 0.28F, 0F);
+						break;
+					case 3:
+						GL11.glTranslated(-entityZ * 0.125F, entityX * 0.125F, 0F);
+						break;
+					}
+					GL11.glScaled(0.05, 0.05, 0.05);
+					GL11.glTranslated(-32f, -32f, 0);
+					GL11.glRotatef(180, 0, 0, 1);
+					if(!MinimapConfig.getInstance().isSquare()) {
+						GL11.glRotatef(-(this.direction + 90f), 0, 0, 1);
+					}
+					w.textureBinding.bind();
+					drawOnMap();
+					GL11.glPopMatrix();
+				}
 			}
 		}
 	}
