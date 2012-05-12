@@ -9,10 +9,9 @@ public class EntityVisibilityCheckbox extends GenericCheckBox {
 	private Class<? extends Entity> clazz;
 	private boolean save = true;
 	
-	public EntityVisibilityCheckbox(Class<? extends Entity> clazz) {
+	public EntityVisibilityCheckbox(Class<? extends Entity> clazz, String texture) {
 		this.clazz = clazz;
-		String name = clazz.getSimpleName().replaceFirst("Entity", "");
-		name = name.replaceAll("([A-Z])", " $1").trim();
+		String name = texture.substring(0, texture.length() - 4).replaceAll("_", " ").trim();
 		setText(name);
 		save = false;
 		setChecked(MinimapConfig.getInstance().isEntityVisible(clazz));

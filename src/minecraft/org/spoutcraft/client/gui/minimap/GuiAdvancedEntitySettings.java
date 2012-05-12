@@ -3,6 +3,7 @@ package org.spoutcraft.client.gui.minimap;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
@@ -14,7 +15,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 
 import net.minecraft.src.Entity;
-import net.minecraft.src.GuiScreen;
 
 public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 	
@@ -37,8 +37,8 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		
 		
-		for(Class<? extends Entity> clazz:WatchedEntity.mobFaceTextures.keySet()) {
-			EntityVisibilityCheckbox ch = new EntityVisibilityCheckbox(clazz);
+		for(Entry<Class<? extends Entity>, String> e : WatchedEntity.mobFaceTextures.entrySet()) {
+			EntityVisibilityCheckbox ch = new EntityVisibilityCheckbox(e.getKey(), e.getValue());
 			scroll.attachWidget(spoutcraft, ch);
 			checks.add(ch);
 		}
