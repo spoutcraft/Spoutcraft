@@ -3445,13 +3445,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderEastFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
-			}else{
-				this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			}
+			//Spout end
 			var9 = true;
 		}
 
@@ -3463,13 +3462,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderWestFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
-			}else{
-				this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			}
+			//Spout end
 			var9 = true;
 		}
 
@@ -3481,14 +3479,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderNorthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
-			}else{
-				this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			}
-
+			//Spout end
 			var9 = true;
 		}
 
@@ -3500,13 +3496,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderSouthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
-			}else{
-				this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
 			}
+			//Spout end
 			var9 = true;
 		}
 
