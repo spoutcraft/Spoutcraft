@@ -25,6 +25,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
@@ -258,7 +259,8 @@ public class MapRenderer {
 				} else {
 					render = MinimapUtils.insideCircle(circleX, circleY, map.renderSize / 2, (int) e.posX, (int) e.posZ);
 				}
-				if(render && w.textureBinding != null) {
+				Texture tex = w.getTexture();
+				if(render && tex != null) {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
 					if(!MinimapConfig.getInstance().isSquare()) {
@@ -284,7 +286,7 @@ public class MapRenderer {
 					if(!MinimapConfig.getInstance().isSquare()) {
 						GL11.glRotatef(-(this.direction + 90f), 0, 0, 1);
 					}
-					w.textureBinding.bind();
+					tex.bind();
 					drawOnMap();
 					GL11.glPopMatrix();
 				}

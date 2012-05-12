@@ -1,8 +1,6 @@
 package org.spoutcraft.client.gui.minimap;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
-
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
 
@@ -67,20 +65,13 @@ public class WatchedEntity {
 	}
 
 	public Entity entity;
-	public Texture textureBinding;
-	
+	private final String path;
 	public WatchedEntity(Entity entity) {
 		this.entity = entity;
-		this.textureBinding = getTextureBinding(entity.getClass());
+		path = "/res/minimap/mobfaces/" + mobFaceTextures.get(entity.getClass());
 	}
-
-	private static Texture getTextureBinding(Class<? extends Entity> class1) {
-		if(mobFaceTextureBindings.containsKey(class1)) {
-			return mobFaceTextureBindings.get(class1);
-		} else {
-			Texture t = CustomTextureManager.getTextureFromJar("/res/minimap/mobfaces/"+mobFaceTextures.get(class1));
-			mobFaceTextureBindings.put(class1, t);
-			return t;
-		}
+	
+	public Texture getTexture() {
+		return CustomTextureManager.getTextureFromJar(path);
 	}
 }

@@ -225,7 +225,7 @@ public class MapCalculator implements Runnable {
 				map.update(Minecraft.theMinecraft.thePlayer.posX, Minecraft.theMinecraft.thePlayer.posZ);
 				renderSize = map.renderSize;
 				startX = (int) (map.getPlayerX() - map.renderOff);
-				startZ = (int) (map.getPlayerZ() - map.renderOff);					
+				startZ = (int) (map.getPlayerZ() - map.renderOff);
 			}
 
 			for (int worldX = startX; worldX < startX + renderSize; worldX++) {
@@ -385,22 +385,22 @@ public class MapCalculator implements Runnable {
 	private void entityCalc() {
 		synchronized(map.watchedEntities) {
 			map.watchedEntities.clear();
-			if(!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+			if (!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
 				return;
 			}
-			if(!MinimapConfig.getInstance().isShowingEntities()) {
+			if (!MinimapConfig.getInstance().isShowingEntities()) {
 				return;
 			}
 			int radius = map.renderSize / 2;
 			double playerX = map.getPlayerX();
 			double playerZ = map.getPlayerZ();
-			for(Object ob:SpoutClient.getHandle().theWorld.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(playerX - radius, 0, playerZ - radius, playerX + radius, 256, playerZ + radius))) {
+			for (Object ob:SpoutClient.getHandle().theWorld.getEntitiesWithinAABB(EntityLiving.class, AxisAlignedBB.getBoundingBox(playerX - radius, 0, playerZ - radius, playerX + radius, 256, playerZ + radius))) {
 				net.minecraft.src.Entity e = (net.minecraft.src.Entity) ob;
-				if(!MinimapConfig.getInstance().isEntityVisible(e.getClass())) {
+				if (!MinimapConfig.getInstance().isEntityVisible(e.getClass())) {
 					continue;
 				}
 				WatchedEntity w = new WatchedEntity(e);
-				if(w.textureBinding != null) {
+				if (w.getTexture() != null) {
 					map.watchedEntities.add(w);
 				}
 			}
