@@ -45,9 +45,9 @@ public class PacketParticle implements SpoutPacket{
 			double y = location.getY();
 			double z = location.getZ();
 			if (amount > 1)	{
-				x = location.getX() + (r.nextBoolean() ? 2 : -2) * r.nextFloat();
-				y = location.getY() + (r.nextBoolean() ? 2 : -2) * r.nextFloat();
-				z = location.getZ() + (r.nextBoolean() ? 2 : -2) * r.nextFloat();
+				x += (r.nextBoolean() ? 2 : -2) * r.nextFloat();
+				y += (r.nextBoolean() ? 2 : -2) * r.nextFloat();
+				z += (r.nextBoolean() ? 2 : -2) * r.nextFloat();
 			}
 			EntityFX particle = Minecraft.theMinecraft.renderGlobal.func_40193_b(name, x, y, z, motion.getX(), motion.getY(), motion.getZ());
 			if (particle != null) {
