@@ -604,10 +604,6 @@ public class EntityRenderer {
 	public void updateCameraAndRender(float par1) {
 		// Spout Start
 		World world = this.mc.theWorld;
-		RenderBlocks.fancyGrass = ConfigReader.fancyGrass;
-		if (ConfigReader.betterGrass == 2) {
-			RenderBlocks.fancyGrass = true;
-		}
 
 	//	if(Thread.currentThread().getPriority() != 10) {
 	//		Thread.currentThread().setPriority(10);

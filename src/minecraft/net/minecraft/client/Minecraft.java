@@ -713,7 +713,7 @@ public abstract class Minecraft implements Runnable {
 			Profiler.endSection();
 			long var7 = System.nanoTime() - var6;
 			this.checkGLError("Pre render");
-			RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics;
+			//RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics;
 			Profiler.startSection("sound");
 			this.sndManager.setListener(this.thePlayer, this.timer.renderPartialTicks);
 			Profiler.endStartSection("updatelights");

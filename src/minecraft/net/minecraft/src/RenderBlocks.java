@@ -14,7 +14,7 @@ public class RenderBlocks {
 	private int overrideBlockTexture = -1;
 	private boolean flipTexture = false;
 	private boolean renderAllFaces = false;
-	public static boolean fancyGrass = true;
+	//public static boolean fancyGrass = true; //Spout removed
 	public boolean useInventoryTint = true;
 	private int uvRotateEast = 0;
 	private int uvRotateWest = 0;
@@ -2966,6 +2966,21 @@ public class RenderBlocks {
 			}
 			//Spout end
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
+				this.colorRedTopLeft *= par5;
+				this.colorRedBottomLeft *= par5;
+				this.colorRedBottomRight *= par5;
+				this.colorRedTopRight *= par5;
+				this.colorGreenTopLeft *= par6;
+				this.colorGreenBottomLeft *= par6;
+				this.colorGreenBottomRight *= par6;
+				this.colorGreenTopRight *= par6;
+				this.colorBlueTopLeft *= par7;
+				this.colorBlueBottomLeft *= par7;
+				this.colorBlueBottomRight *= par7;
+				this.colorBlueTopRight *= par7;
+				this.renderEastFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
+			}
 			var8 = true;
 		}
 
@@ -3098,6 +3113,21 @@ public class RenderBlocks {
 			}
 			//Spout end
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
+				this.colorRedTopLeft *= par5;
+				this.colorRedBottomLeft *= par5;
+				this.colorRedBottomRight *= par5;
+				this.colorRedTopRight *= par5;
+				this.colorGreenTopLeft *= par6;
+				this.colorGreenBottomLeft *= par6;
+				this.colorGreenBottomRight *= par6;
+				this.colorGreenTopRight *= par6;
+				this.colorBlueTopLeft *= par7;
+				this.colorBlueBottomLeft *= par7;
+				this.colorBlueBottomRight *= par7;
+				this.colorBlueTopRight *= par7;
+				this.renderWestFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
+			}
 			var8 = true;
 		}
 
@@ -3230,6 +3260,21 @@ public class RenderBlocks {
 			}
 			//Spout end
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
+				this.colorRedTopLeft *= par5;
+				this.colorRedBottomLeft *= par5;
+				this.colorRedBottomRight *= par5;
+				this.colorRedTopRight *= par5;
+				this.colorGreenTopLeft *= par6;
+				this.colorGreenBottomLeft *= par6;
+				this.colorGreenBottomRight *= par6;
+				this.colorGreenTopRight *= par6;
+				this.colorBlueTopLeft *= par7;
+				this.colorBlueBottomLeft *= par7;
+				this.colorBlueBottomRight *= par7;
+				this.colorBlueTopRight *= par7;
+				this.renderNorthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
+			}
 			var8 = true;
 		}
 
@@ -3362,6 +3407,21 @@ public class RenderBlocks {
 			}
 			//Spout end
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
+			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
+				this.colorRedTopLeft *= par5;
+				this.colorRedBottomLeft *= par5;
+				this.colorRedBottomRight *= par5;
+				this.colorRedTopRight *= par5;
+				this.colorGreenTopLeft *= par6;
+				this.colorGreenBottomLeft *= par6;
+				this.colorGreenBottomRight *= par6;
+				this.colorGreenTopRight *= par6;
+				this.colorBlueTopLeft *= par7;
+				this.colorBlueBottomLeft *= par7;
+				this.colorBlueBottomRight *= par7;
+				this.colorBlueTopRight *= par7;
+				this.renderSouthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
+			}
 			var8 = true;
 		}
 
@@ -3441,12 +3501,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
+			//Spout end
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderEastFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
-			//Spout end
 			var9 = true;
 		}
 
@@ -3458,12 +3518,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
+			//Spout end
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderWestFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
-			//Spout end
 			var9 = true;
 		}
 
@@ -3475,12 +3535,13 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
+			//Spout end
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderNorthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
-			//Spout end
+
 			var9 = true;
 		}
 
@@ -3492,12 +3553,12 @@ public class RenderBlocks {
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
+			//Spout end
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (fancyGrass && var28 == 3 && this.overrideBlockTexture < 0) {
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderSouthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
-			//Spout end
 			var9 = true;
 		}
 
@@ -4925,6 +4986,10 @@ public class RenderBlocks {
 		this.aoGrassXYZCNP = Block.canBlockGrass[this.blockAccess.getBlockId(x, y - 1, z + 1)];
 		this.aoGrassXYZCNN = Block.canBlockGrass[this.blockAccess.getBlockId(x, y - 1, z - 1)];
 		this.dirtyAmbientOcclusionCache = false;
+	}
+	
+	public static boolean isFancyGrass() {
+		return ConfigReader.fancyGrass || ConfigReader.betterGrass == 2;
 	}
 	//Spout end
 }
