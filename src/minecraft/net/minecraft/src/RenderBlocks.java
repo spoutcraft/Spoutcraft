@@ -2957,7 +2957,6 @@ public class RenderBlocks {
 						this.colorBlueBottomLeft *= par7;
 						this.colorBlueBottomRight *= par7;
 						this.colorBlueTopRight *= par7;
-						var27 = 38;
 					}
 				}
 
@@ -3090,7 +3089,6 @@ public class RenderBlocks {
 						this.colorBlueBottomLeft *= par7;
 						this.colorBlueBottomRight *= par7;
 						this.colorBlueTopRight *= par7;
-						var27 = 38;
 					}
 				}
 
@@ -3223,7 +3221,6 @@ public class RenderBlocks {
 						this.colorBlueBottomLeft *= par7;
 						this.colorBlueBottomRight *= par7;
 						this.colorBlueTopRight *= par7;
-						var27 = 38;
 					}
 				}
 
@@ -3356,7 +3353,6 @@ public class RenderBlocks {
 						this.colorBlueBottomLeft *= par7;
 						this.colorBlueBottomRight *= par7;
 						this.colorBlueTopRight *= par7;
-						var27 = 38;
 					}
 				}
 
