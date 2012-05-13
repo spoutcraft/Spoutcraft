@@ -130,6 +130,7 @@ public class WorldRenderer {
 			game.renderEngine.bindTexture(defaultTexture);
 			
 			short[] customBlockIds = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockIds();
+			byte[] customBlockData = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockData();
 
 			blockRenderer.customIds = customBlockIds;
 
@@ -191,7 +192,7 @@ public class WorldRenderer {
 										if (customBlockIds[key] != 0) {
 											mat = MaterialData.getCustomBlock(customBlockIds[key]);
 											if (mat != null) {
-												design = (GenericBlockDesign) mat.getBlockDesign();
+												design = (GenericBlockDesign) mat.getBlockDesign(customBlockData[key]);
 											}
 										}
 									}

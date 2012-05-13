@@ -44,7 +44,7 @@ public class SpoutcraftChunk implements Chunk{
 	private int z;
 	//public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
 	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
-	private short[] customBlockIds = null;
+	private short[] customBlockData = null;
 	private byte[] customBlockRotations = null;
 	public SpoutcraftChunk(net.minecraft.src.Chunk chunk) {
 		this.weakChunk = new WeakReference<net.minecraft.src.Chunk>(chunk);
@@ -138,31 +138,31 @@ public class SpoutcraftChunk implements Chunk{
 	}
 
 	public short getCustomBlockId(int x, int y, int z) {
-		if (customBlockIds != null) {
+		if (customBlockData != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
-			return customBlockIds[key];
+			return customBlockData[key];
 		}
 		return 0;
 	}
 
 	public short setCustomBlockId(int x, int y, int z, short id) {
-		if (customBlockIds == null) {
-			customBlockIds = new short[16*16*256];
+		if (customBlockData == null) {
+			customBlockData = new short[16*16*256];
 		}
 		if (id < 0) id = 0;
 		int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
-		short old = customBlockIds[key];
-		customBlockIds[key] = id;
+		short old = customBlockData[key];
+		customBlockData[key] = id;
 		Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
 		return old;
 	}
 
 	public short[] getCustomBlockIds() {
-		return customBlockIds;
+		return customBlockData;
 	}
 
 	public void setCustomBlockIds(short[] ids) {
-		customBlockIds = ids;
+		customBlockData = ids;
 		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
 	}
 
@@ -174,7 +174,7 @@ public class SpoutcraftChunk implements Chunk{
 		return MaterialData.getCustomBlock(old);
 	}
 
-	public byte getCustomBlockRotation(int x, int y, int z) {
+	public byte getCustomBlockData(int x, int y, int z) {
 		if (customBlockRotations != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
 			return customBlockRotations[key];
@@ -182,7 +182,7 @@ public class SpoutcraftChunk implements Chunk{
 		return 0;
 	}
 
-	public byte setCustomBlockRotation(int x, int y, int z, byte rot) {
+	public byte setCustomBlockData(int x, int y, int z, byte rot) {
 		if (customBlockRotations == null) {
 			customBlockRotations = new byte[16*16*256];
 		}
@@ -194,21 +194,21 @@ public class SpoutcraftChunk implements Chunk{
 		return old;
 	}
 	
-	public byte[] getCustomBlockRotations() {
+	public byte[] getCustomBlockData() {
 		return customBlockRotations;
 	}
 	
-	public void setCustomBlockRotations(byte[] rots) {
-		customBlockRotations = rots;
+	public void setCustomBlockData(byte[] data) {
+		customBlockRotations = data;
 		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);
 	}
 
-	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte rotation) {
+	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte data) {
 		if (block == null) {
 			throw new NullPointerException("Custom Block can not be null!");
 		}
 		short old = setCustomBlockId(x, y, z, (short) block.getCustomId());
-		setCustomBlockRotation(x, y, z, rotation);
+		setCustomBlockData(x, y, z, data);
 		return MaterialData.getCustomBlock(old);
 	}
 
