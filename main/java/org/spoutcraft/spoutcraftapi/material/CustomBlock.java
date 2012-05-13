@@ -1,6 +1,7 @@
 package org.spoutcraft.spoutcraftapi.material;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 
 public interface CustomBlock extends Block {
 	
@@ -13,4 +14,8 @@ public interface CustomBlock extends Block {
 	public CustomItem getBlockItem();
 	
 	public int getBlockId();
+	
+	public BlockDesign getBlockDesign(int id);
+	
+	public Block setBlockDesign(BlockDesign design, int id);
 }

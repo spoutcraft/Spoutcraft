@@ -20,7 +20,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomItem;
 
 public class GenericCustomBlock implements CustomBlock {
-	public BlockDesign design = new GenericBlockDesign();
+	public BlockDesign design[] = new GenericBlockDesign[256];
 	private ItemStack drop = null;
 	private String name;
 	private String fullName;
@@ -106,11 +106,19 @@ public class GenericCustomBlock implements CustomBlock {
 	}
 
 	public BlockDesign getBlockDesign() {
-		return design;
+		return getBlockDesign(0);
 	}
 
 	public CustomBlock setBlockDesign(BlockDesign design) {
-		this.design = design;
+		return setBlockDesign(design, 0);
+	}
+
+	public BlockDesign getBlockDesign(int id) {
+		return design[id + 128];
+	}
+
+	public CustomBlock setBlockDesign(BlockDesign design, int id) {
+		this.design[id + 128] = design;
 		return this;
 	}
 	

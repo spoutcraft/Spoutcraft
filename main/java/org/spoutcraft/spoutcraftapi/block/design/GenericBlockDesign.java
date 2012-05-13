@@ -315,17 +315,7 @@ public class GenericBlockDesign implements BlockDesign {
 		}
 	
 		for (int i = 0; i < getX().length; i++) {
-			double angle = (world.getChunkAt(x, y, z).getCustomBlockRotation(x, y, z) % 4);
-	
-			int side = i;
-			if(side > 0 && side < 5 && angle != 0) {
-				side--;
-				side+=(4-angle);
-				side = (side % 4) + 1;
-			}
-			MutableIntegerVector sourceBlock = getLightSource(side, x, y, z);
-	
-			angle *= (Math.PI/180) * 90;
+			MutableIntegerVector sourceBlock = getLightSource(i, x, y, z);
 			
 			int sideBrightness;
 	
@@ -354,19 +344,8 @@ public class GenericBlockDesign implements BlockDesign {
 			float[] tx = getTextureXPos()[i];
 			float[] ty = getTextureYPos()[i];
 			
-			float[][] rotmatrix = {
-					{ (float) Math.cos(angle),	0f,	(float) Math.sin(angle) },
-					{ 0f,						1f,	0f						},
-					{ (float) -Math.sin(angle),	0f, (float) Math.cos(angle) }
-			};
 			for (int j = 0; j < 4; j++) {
-				float x1 = xx[j] - 0.5f;//shift 0.5 to center around origin.
-				float y1 = yy[j] - 0.5f;
-				float z1 = zz[j] - 0.5f;
-				float x2 = (x1*rotmatrix[0][0]) + (y1*rotmatrix[0][1]) + (z1*rotmatrix[0][2]);
-				float y2 = (x1*rotmatrix[1][0]) + (y1*rotmatrix[1][1]) + (z1*rotmatrix[1][2]);
-				float z2 = (x1*rotmatrix[2][0]) + (y1*rotmatrix[2][1]) + (z1*rotmatrix[2][2]);
-				tessellator.addVertexWithUV(x + x2 + 0.5f, y + y2 + 0.5, z + z2 + 0.5, tx[j], ty[j]);//shift back 0.5
+				tessellator.addVertexWithUV(x + xx[j], y + yy[j], z + zz[j], tx[j], ty[j]);
 			}
 		}
 		return true;

@@ -169,14 +169,14 @@ public interface Chunk {
 	 */
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block);
 	
-	public byte[] getCustomBlockRotations();
+	public byte[] getCustomBlockData();
 
-	public void setCustomBlockRotations(byte[] rots);
+	public void setCustomBlockData(byte[] rots);
 	
-	public byte getCustomBlockRotation(int x, int y, int z);
+	public byte getCustomBlockData(int x, int y, int z);
 	
-	public byte setCustomBlockRotation(int x, int y, int z, byte rot);
+	public byte setCustomBlockData(int x, int y, int z, byte rot);
 	
-	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte rotation);
+	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte data);
 
 }
