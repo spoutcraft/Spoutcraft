@@ -62,9 +62,9 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 			int y = result.getShort(index+1);
 			int z = result.get(index+3) + chunkZ * 16;
 			short id = result.getShort(index+4);
-			byte rotation = result.get(index+6);
+			byte data = result.get(index+6);
 			chunk.setCustomBlockId(x, y, z, id);
-			chunk.setCustomBlockRotation(x, y, z, rotation);
+			chunk.setCustomBlockData(x, y, z, data);
 		}
 	}
 
