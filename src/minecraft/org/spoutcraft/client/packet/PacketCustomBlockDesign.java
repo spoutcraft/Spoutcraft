@@ -26,6 +26,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class PacketCustomBlockDesign implements SpoutPacket {
 	private short customId;
+	private byte data;
 	private GenericBlockDesign design;
 
 	public PacketCustomBlockDesign() {
@@ -34,6 +35,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 
 	public void readData(SpoutInputStream input) throws IOException {
 		customId = input.readShort();
+		data = (byte) input.read();
 		design = new GenericBlockDesign();
 		design.read(input);
 		if (design.isReset()) {
@@ -48,7 +50,7 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	public void run(int id) {
 		CustomBlock block = MaterialData.getCustomBlock(customId);
 		if (block != null) {
-			block.setBlockDesign(design);
+			block.setBlockDesign(design, data);
 		}
 	}
 
@@ -61,6 +63,6 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return new GenericBlockDesign().getVersion() + 2;
+		return new GenericBlockDesign().getVersion() + 3;
 	}
 }
