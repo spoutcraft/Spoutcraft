@@ -14,6 +14,7 @@ import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
@@ -40,9 +41,18 @@ public class MainMenu extends GuiScreen{
 	final static List<String> splashes = new ArrayList<String>(1000);
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
-	Label splashText, buildNumber;
+	Label splashText, buildNumber, animate, debugText;
 	final String timeOfDay;
 	final List<String> backgrounds;
+	
+	//Animate click delay
+	private static final int CLICK_DELAY = 7;
+	int clickDelay = 0;
+	
+	//debug
+	long lastTime = System.currentTimeMillis();
+	int lastFPS = 0;
+	int fpsDelay = 0;
 	
 	public MainMenu() {
 		splashText = new GenericLabel(getSplashText());
@@ -196,8 +206,21 @@ public class MainMenu extends GuiScreen{
 		logo.setGeometry(15, height - 185, 256, 64);
 		logo.setLocal(true);
 		logo.setDrawAlphaChannel(true);
+		
+		animate = new GenericLabel(ChatColor.ITALIC + "Animate");
+		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(animate.getText());
+		textWidth *= 75;
+		textWidth /= 100;
+		animate.setGeometry(width - textWidth - 2, height - 8, textWidth, 10);
+		animate.setScale(0.75F);
+		animate.setTextColor(ConfigReader.animateMainMenu ? new Color(0x00EE00) : new Color(0xFF0000));
+		
+		debugText = new GenericLabel();
+		debugText.setTextColor(new Color(0xFFE303));
+		debugText.setGeometry(1, 1, 12, 100);
+		debugText.setVisible(false);
 
-		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, fastLogin, quit);
+		this.getScreen().attachWidgets(spoutcraft, singleplayer, multiplayer, textures, addons, buildNumber, about, options, background, logo, splashText, fastLogin, quit, animate, debugText);
 	}
 	
 	@Override
@@ -244,6 +267,34 @@ public class MainMenu extends GuiScreen{
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
 			mc.displayGuiScreen(new GameSettingsScreen(this));
+		}
+		
+		long time = System.currentTimeMillis();
+		if (fpsDelay > 0) {
+			fpsDelay--;
+		} else {
+			long diff = time - lastTime;
+			int fps = (int) (1000 / Math.max(1, diff));
+			lastFPS = fps;
+			fpsDelay = CLICK_DELAY;
+		}
+		
+		lastTime = time;
+		
+		debugText.setVisible(false);
+		if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+			debugText.setVisible(true);
+			debugText.setText("FPS: " + lastFPS);
+		}
+		
+		if (clickDelay > 0) {
+			clickDelay--;
+		}
+		if (Mouse.isButtonDown(0) && this.isInBoundingRect(animate, mouseX, mouseY) && clickDelay == 0) {
+			ConfigReader.animateMainMenu = !ConfigReader.animateMainMenu;
+			ConfigReader.write();
+			animate.setTextColor(ConfigReader.animateMainMenu ? new Color(0x00EE00) : new Color(0xFF0000));
+			clickDelay = CLICK_DELAY;
 		}
 		
 		GL11.glEnable(GL11.GL_BLEND);
@@ -306,32 +357,40 @@ class BackgroundTexture extends GenericTexture {
 		org.newdawn.slick.opengl.Texture tex = CustomTextureManager.getTextureFromJar(getUrl());
 		GL11.glPushMatrix();
 		if (tex != null) {
-			int adjustedX = ((100 - HEIGHT_PERCENT) / 2) * tex.getImageHeight() * panTime;
-			adjustedX /= maxPanTime;
-			adjustedX /= 100;
-			
-			int adjustedY = ((100 - WIDTH_PERCENT) / 2) * tex.getImageWidth() * panTime;
-			adjustedY /= maxPanTime;
-			adjustedY /= 100;
-			
-			int adjustedHeight = tex.getImageHeight() - adjustedX;
-			
-			int adjustedWidth = tex.getImageWidth() - adjustedY;
-			
-			GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
-			GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, mipmap);
-			
-			if (zoomIn && panTime < maxPanTime) {
-				panTime++;
-			}
-			else if (!zoomIn && panTime > 0) {
-				panTime--;
-			}
-			else {
-				cycleBackground();
+			if (ConfigReader.animateMainMenu) {
+				animate(tex);
+			} else {
+				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight());
 			}
 		}
 		GL11.glPopMatrix();
+	}
+	
+	private void animate(org.newdawn.slick.opengl.Texture tex) {
+		int adjustedX = ((100 - HEIGHT_PERCENT) / 2) * tex.getImageHeight() * panTime;
+		adjustedX /= maxPanTime;
+		adjustedX /= 100;
+		
+		int adjustedY = ((100 - WIDTH_PERCENT) / 2) * tex.getImageWidth() * panTime;
+		adjustedY /= maxPanTime;
+		adjustedY /= 100;
+		
+		int adjustedHeight = tex.getImageHeight() - adjustedX;
+		
+		int adjustedWidth = tex.getImageWidth() - adjustedY;
+		
+		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
+		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
+		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, mipmap);
+		
+		if (zoomIn && panTime < maxPanTime) {
+			panTime++;
+		}
+		else if (!zoomIn && panTime > 0) {
+			panTime--;
+		}
+		else {
+			cycleBackground();
+		}
 	}
 }

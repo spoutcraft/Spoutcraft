@@ -84,6 +84,7 @@ public class ConfigReader {
 	public static int resizedScreenshotWidth = 6000;
 	public static int resizedScreenshotHeight = 3200;
 	public static float chatOpacity = 0.5f;
+	public static boolean animateMainMenu = true;
 	
 	//Launcher settings
 	public static boolean fastLogin = false;
