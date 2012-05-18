@@ -31,13 +31,13 @@ public class FontUtils {
             int row = ch / COLS;
             int col = ch % COLS;
             outer:
-            for (int colIdx = colWidth - 1; colIdx >= 0; colIdx--) {
+            for (int colIdx = colWidth - 2; colIdx >= 0; colIdx--) { //increased margin from right to avoid the stupid.
                 int x = col * colWidth + colIdx;
                 for (int rowIdx = 0; rowIdx < rowHeight; rowIdx++) {
                     int y = row * rowHeight + rowIdx;
                     int pixel = rgb[x + y * width];
                     if (isOpaque(pixel)) {
-                        charWidthf[ch] = (128.0f * (float) (colIdx + 1)) / (float) width + 1.0f;
+                        charWidthf[ch] = (128.0f * (float)(colIdx + 1)) / (float) width + ((colIdx==colWidth - 2)?0.5F:1F); //TextAlpha - causes problems for fullwidth.
                         if (showLines) {
                             for (int i = 0; i < rowHeight; i++) {
                                 y = row * rowHeight + i;
@@ -87,15 +87,15 @@ public class FontUtils {
             for (int i = 0; i < s.length(); i++) {
                 char c = s.charAt(i);
                 boolean isLink = false;
-                float cWidth = fontRenderer.getCharWidth(c);
+                float cWidth = fontRenderer.getCharWidthFloat(c);
                 if (cWidth < 0.0f && i < s.length() - 1) {
                     c = s.charAt(i + 1);
                     if (c == 'l' || c == 'L') {
                         isLink = true;
-                    } else if (c == 'r' || c == 'R') {
+                    } else if (c == 'r' || c == 'R' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')) {
                         isLink = false;
                     }
-                    cWidth = fontRenderer.getCharWidth(c);
+                    cWidth = fontRenderer.getCharWidthFloat(c);
                 }
                 totalWidth += cWidth;
                 if (isLink) {
@@ -112,7 +112,7 @@ public class FontUtils {
                 return false;
             }
         }
-        return (pixel & 0xff) > 0;
+        return (pixel & 0xff) > 0; //AlphaText
     }
 
     private static float defaultSpaceWidth(float[] charWidthf) {

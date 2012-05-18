@@ -32,11 +32,13 @@ public class FontRenderer {
 	public float[] charWidthf;
 
 	//begin Spout AlphaText
+	private float boldOffset;	//Meow, the stroke width/offset used for rendering bold text.
 	private int defaultColor;	//default/base RGB for string
 	private int defaultAlpha;	//default/base alpha for string
 	private int currentColor;	//current RGB for string
 	private int currentAlpha;	//current alpha for string
 	//end spout AlphaText
+
 
 	FontRenderer() {
 		this.renderEngine = null;
@@ -45,6 +47,7 @@ public class FontRenderer {
 	public FontRenderer(GameSettings par1GameSettings, String par2Str, RenderEngine par3RenderEngine, boolean par4) {
 		this.renderEngine = par3RenderEngine;
 		this.unicodeFlag = par4;
+		this.boldOffset = par4?0.5F:1F;
 
 		BufferedImage var5;
 		try {
@@ -90,33 +93,49 @@ public class FontRenderer {
 		}
 	}
 
-	private float renderCharAtPos(int par1, char par2, boolean par3) {
-		return par2 == 32?this.charWidthf[32]:(par1 > 0 && !this.unicodeFlag?this.renderDefaultChar(par1 + 32, par3):this.renderUnicodeChar(par2, par3));
+	// begin Spout AlphaText
+	private float renderCharAtPos(int ki, char ch, boolean italic, boolean bold) {
+		if (ch==' ') {
+			return this.charWidthf[32];
+		} else if (ki > 0 && !this.unicodeFlag) {
+			if(bold) {
+				this.posX+=boldOffset;
+				this.renderDefaultChar(ki + 32, italic, false);
+				this.posX-=boldOffset;
+			}
+			return (this.renderDefaultChar(ki + 32, italic, bold) + (bold?boldOffset:0F));
+		}
+		if (bold) {
+			this.posX+=boldOffset;
+			this.renderUnicodeChar(ch, italic);
+			this.posX-=boldOffset;
+		}
+		return (this.renderUnicodeChar(ch, italic) + (bold?boldOffset:0F));
 	}
+	// end Spout AlphaText
 
-	//Begin Spout AlphaText
-	private float renderDefaultChar(int k, boolean italic)
+	// begin Spout AlphaText
+	private float renderDefaultChar(int k, boolean italic, boolean bold)
 	{
-		float Xk = ((k % 16) * 8 ) / 128F;
-		float Yk = ((k / 16) * 8 ) / 128F;
+		float Xk = (float)(k % 16) / 16F;
+		float Yk = (float)(k / 16) / 16F;
 		float Xi = italic ? 1.0F : 0.0F;
+		float Xb = bold ? 0.5F : 0.0F;
 		if (this.boundTextureName != this.fontTextureName) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.fontTextureName);
 			this.boundTextureName = this.fontTextureName;
 		}
-		float Xw = this.charWidthf[k] - 0.01F;
-		Tessellator tessellator = Tessellator.instance;
+		float Xw = this.charWidthf[k] + 0.01F; //offset inverst of previous value, unknown cause.
+		Tessellator tessellator = Tessellator.instance; //tessellator allocates buffers for GL11, etc.
 		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
 		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
-		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,         0.0F, Xk,               Yk               );
-		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 7.99F, 0.0F, Xk,               Yk + 0.062421873F); //(7.99F / 128F)
-		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,         0.0F, Xk + (Xw / 128F), Yk               );
-		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 7.99F, 0.0F, Xk + (Xw / 128F), Yk + 0.062421873F); //(7.99F / 128F)
+		tessellator.addVertexWithUV(this.posX           + Xi,   this.posY,         0.0D, Xk,               Yk               );
+		tessellator.addVertexWithUV(this.posX           - Xi,   this.posY + 8.00F, 0.0D, Xk,               Yk + 0.062421873F); //(7.99F / 128F)
+		tessellator.addVertexWithUV(this.posX + Xw + Xb + Xi,   this.posY,         0.0D, Xk + (Xw / 128F), Yk               );
+		tessellator.addVertexWithUV((this.posX + Xw + Xb) - Xi, this.posY + 8.00F, 0.0D, Xk + (Xw / 128F), Yk + 0.062421873F);
 		tessellator.draw();
 		return this.charWidthf[k];
 	}
-	//end Spout AlphaText
-
 
 	private void loadGlyphTexture(int par1) {
 		String var3 = String.format("/font/glyph_%02X.png", new Object[]{Integer.valueOf(par1)});
@@ -148,23 +167,23 @@ public class FontRenderer {
 		}
 		int j = this.glyphWidth[c] >>> 4;
 		int k = this.glyphWidth[c] & 0xf;
-		float X0 = (float)j;
-		float X1 = (float)(k + 1);
-		float Xc = ((float)((c % 16) * 16) + X0) / 256F;
-		float Yc = (float)(((c & 0xff) / 16) * 16) / 256F;
-		float Xw = (X1 - X0 /*- 0.02F*/) / 2F;
+		float X1 = (float)((k + 1) - j) / 2F;
+		float Xc = ((float)((c % 16) * 16) + j) / 256F;
+		float Yc = (float)((c & 0xff) / 16) / 16F;
+		float Xw = X1 + 0.01F; //inverse of previous value, unknown cause for this to flip.
 		float Xi = italic ? 1F : 0F;
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.instance; //tessellator allocates buffers for GL11, etc.
 		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
-		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, (currentColor & 0xff), currentAlpha);
-		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,      0F, Xc,               Yc               );
-		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 8F, 0F, Xc,               Yc + 0.0625F);//(15.98F / 256F)
-		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,      0F, Xc + (Xw / 128F), Yc               );//0.062421873F
-		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 8F, 0F, Xc + (Xw / 128F), Yc + 0.0625F);//  6.24218732e-002
+		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
+		tessellator.addVertexWithUV(this.posX      + Xi, this.posY,         0D, Xc,               Yc);
+		tessellator.addVertexWithUV(this.posX      - Xi, this.posY + 7.99F, 0D, Xc,               Yc + 0.062421873F);
+		tessellator.addVertexWithUV(this.posX + Xw + Xi, this.posY,         0D, Xc + (Xw / 128F), Yc);
+		tessellator.addVertexWithUV(this.posX + Xw - Xi, this.posY + 7.99F, 0D, Xc + (Xw / 128F), Yc + 0.062421873F);
 		tessellator.draw();
-		return (X1 - X0) / 2F + 1F;
+		return X1 + 1F;
 	}
-	//end Spout AlphaText
+	// end Spout AlphaText
+
 
 	public int drawStringWithShadow(String par1Str, int par2, int par3, int par4) {
 		if (this.bidiFlag) {
@@ -272,7 +291,7 @@ public class FontRenderer {
 						var10 += 16;
 						currentAlpha = defaultAlpha * 10 / 7; // Spout AlphaText - transparent shadows improve readability for black text.
 					}
-					currentColor = Colorizer.colorizeText(this.colorCode[var10], var10); // Spout AlphaText - sets current Color from Colorizer. Alpha from Colorizer is discarded.
+					currentColor = Colorizer.colorizeText(this.colorCode[var10], var10); // Spout AlphaText - sets current Colour (but will discard alpha) from Colorizer
 				} else if (var10 == 16) {
 					var3 = true;
 				} else if (var10 == 17) {
@@ -304,20 +323,14 @@ public class FontRenderer {
 					var10 = var11;
 				}
 
-				float var14 = this.renderCharAtPos(var10, var9, var5);
-				if (var4) {
-					++this.posX;
-					this.renderCharAtPos(var10, var9, var5);
-					--this.posX;
-					++var14;
-				}
+				float var14 = this.renderCharAtPos(var10, var9, var5, var4); // Spout AlphaText
 
 				Tessellator var12;
 				if (var7) {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
-					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  //Spout AlphaText - uses tessellator to set Color.
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  //Spout AlphaText - uses tessellator to set colour now.
 					var12.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
@@ -330,7 +343,7 @@ public class FontRenderer {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
-					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); //Spout AlphaText - uses tessellator to set Color.
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); //Spout AlphaText - uses tessellator to set colour now.
 					// int var13 = var6?-1:0;	// Spout AlphaText - I do not see this as necessary, var6 (underline) should always be true at this point.
 					var12.addVertex((double)(this.posX - 1.0F /* (float)var13*/), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
@@ -356,12 +369,12 @@ public class FontRenderer {
 			if (par5) {
 				par4 = (par4 & 16579836) >> 2 | par4 & -16777216;
 			}
-			// begin Spout AlphaText
-			defaultColor = par4;	// Stores default RGBA values for this string
+			//begin Spout AlphaText
+			defaultColor = par4;	// Spout AlphaText - Stores default RGBA values for this string
 			defaultAlpha = (par4 >> 24 & 0xff);
-			currentColor = par4;	// Stores current RGBA for this string.
+			currentColor = par4;	// Spout AlphaText - Stores current RGBA for this string.
 			currentAlpha = defaultAlpha;
-			// end Spout AlphaText
+			//end Spout AlphaText
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
@@ -371,83 +384,125 @@ public class FontRenderer {
 		}
 	}
 
+	// begin Spout TextAlpha
 	public int getStringWidth(String par1Str) {
-		return (int)FontUtils.getStringWidthf(this, org.bukkit.ChatColor.stripColor(par1Str));
-	}
-	
-	public int getCharWidth(char ch) {
-		return func_50105_a(ch);
-	}
-
-	public int func_50105_a(char par1) {
-		if (par1 == 167) {
-			return -1;
-		} else {
-			int var2 = ChatAllowedCharacters.allowedCharacters.indexOf(par1);
-			if (var2 >= 0 && !this.unicodeFlag) {
-				return this.charWidth[var2 + 32];
-			} else if (this.glyphWidth[par1] != 0) {
-				int var3 = this.glyphWidth[par1] >> 4;
-				int var4 = this.glyphWidth[par1] & 15;
-				if (var4 > 7) {
-					var4 = 15;
-					var3 = 0;
+	// BOLD styling does affect the rendering width of characters, so stripColor cannot be used in its current state.
+		//return (int)FontUtils.getStringWidthf(this, org.bukkit.ChatColor.stripColor(par1Str));
+		if (par1Str == null) {
+			return 0;
+		}
+		float widthStr = 0F;
+		boolean bold = false;
+		for (int i = 0; i < par1Str.length(); i++) {
+			char ch = par1Str.charAt(i);
+			float widthCh = getCharWidthFloat(ch);
+			if (widthCh < 0F && i < par1Str.length() - 1) {
+				char chSel = par1Str.charAt(++i);
+				if (chSel == 'l' || chSel == 'L') {
+					bold = true;
 				}
+				else if (chSel == 'r' || chSel == 'R' || isFormatColor(chSel)) {
+					bold = false;
+				}
+				widthCh = getCharWidthFloat(chSel);
+			}
+			widthStr += widthCh;
+			if (bold && ch!=' ') {
+				widthStr+=boldOffset;
+			}
+		}
+		return Math.round(widthStr);
+	}
+	// end Spout TextAlpha
 
-				++var4;
-				return (2 + var4 - var3) / 2; // Spout Alpha Text - precision error correction.
+	// begin Spout TextAlpha.
+	public int getCharWidth(char ch) {
+		if (ch == 167) {
+			return -1;
+		}
+		return (int)getCharWidthFloat(ch);
+	}
+	// end Spout Text Alpha
+
+	// begin Spout TextAlpha.
+	public int func_50105_a(char ch) {
+		if (ch == 167) {
+			return -1;
+		}
+		return (int)getCharWidthFloat(ch);
+	}
+	// end Spout Text Alpha
+
+	// begin Spout TextAlpha - This is the true calculation for char widths.
+	public float getCharWidthFloat(char ch){
+		if (ch == 167) {
+			return -1F;
+		} else if (ch == 32) {  // Spout AlphaText - returns the width of spaces AS RENDERED.
+			return charWidthf[32];
+		} else {
+			int chCh = ChatAllowedCharacters.allowedCharacters.indexOf(ch);
+			if (chCh >= 0 && !this.unicodeFlag) {
+				return this.charWidthf[chCh + 32];
+			} else if (this.glyphWidth[ch] != 0) {
+				int j = this.glyphWidth[ch] >>> 4;
+				int k = this.glyphWidth[ch] & 0xf;
+				float X1 = (float)((k + 1) - j) / 2F;
+				return X1 + 1F; // Spout AlphaText - Prevents precision error from appearing
 			} else {
-				return 0;
+				return 0F;
 			}
 		}
 	}
+	// end Spout Text Alpha
 
 	public String func_50107_a(String par1Str, int par2) {
 		return this.func_50104_a(par1Str, par2, false);
 	}
 
-	public String func_50104_a(String par1Str, int par2, boolean par3) {
-		StringBuilder var4 = new StringBuilder();
-		int var5 = 0;
-		int var6 = par3?par1Str.length() - 1:0;
-		int var7 = par3?-1:1;
-		boolean var8 = false;
-		boolean var9 = false;
+	// begin Spout TextAlpha - TrimStringToWidth, returns a trimmed string to the specified length. Also handles RTL conversion.
+	public String func_50104_a(String par1Str, int width2, boolean RTL) {
+		float widthWrp = (float)width2;
+		float widthStr = 0;
+		StringBuilder str0 = new StringBuilder();
+		int frm = RTL?par1Str.length() - 1:0;
+		int stp = RTL?-1:1;
+		boolean sel = false;
+		boolean bold = false;
 
-		for (int var10 = var6; var10 >= 0 && var10 < par1Str.length() && var5 < par2; var10 += var7) {
-			char var11 = par1Str.charAt(var10);
-			int var12 = this.func_50105_a(var11);
-			if (var8) {
-				var8 = false;
-				if (var11 != 108 && var11 != 76) {
-					if (var11 == 114 || var11 == 82 || isFormatColor(var11)) {
-						var9 = false;
+		for (int ii = frm; ii >= 0 && ii < par1Str.length() && widthStr < widthWrp; ii += stp) {
+			char ch = par1Str.charAt(ii);
+			float widthCh = this.getCharWidthFloat(ch);
+			if (sel) {
+				sel = false;
+				if (ch != 108 && ch != 76) {
+					if (ch == 114 || ch == 82 || isFormatColor(ch)) {
+						bold = false;
 					}
 				} else {
-					var9 = true;
+					bold = true;
 				}
-			} else if (var12 < 0) {
-				var8 = true;
+			} else if (widthCh < 0) {
+				sel = true;
 			} else {
-				var5 += var12;
-				if (var9) {
-					++var5;
+				widthStr += widthCh;
+				if (bold && ch!=' ') {
+					widthStr+=boldOffset;
 				}
 			}
 
-			if (var5 > par2) {
+			if (widthStr > widthWrp) {
 				break;
 			}
 
-			if (par3) {
-				var4.insert(0, var11);
+			if (RTL) {
+				str0.insert(0, ch);
 			} else {
-				var4.append(var11);
+				str0.append(ch);
 			}
 		}
-
-		return var4.toString();
+		return str0.toString();
 	}
+	//end Spout TextAlpha
 
 	public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5) {
 		if (this.bidiFlag) {
@@ -556,6 +611,7 @@ public class FontRenderer {
 
 	public void setUnicodeFlag(boolean par1) {
 		this.unicodeFlag = par1;
+		this.boldOffset = par1?0.5F:1F;
 	}
 
 	public void setBidiFlag(boolean par1) {
@@ -566,61 +622,58 @@ public class FontRenderer {
 		return Arrays.asList(this.func_50113_d(par1Str, par2).split("\n"));
 	}
 
+
 	String func_50113_d(String par1Str, int par2) {
-		int var3 = this.sizeStringToWidth(par1Str, par2);
-		if (par1Str.length() <= var3) {
-			return par1Str;
-		} else {
-			String var4 = par1Str.substring(0, var3);
-			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32?1:0));
-			return var4 + "\n" + this.func_50113_d(var5, par2);
-		}
+		return this.wrapStringToWidth(par1Str,par2); //Spout AlphaText
 	}
 
-	private int sizeStringToWidth(String par1Str, int par2) {
-		int var3 = par1Str.length();
-		int var4 = 0;
-		int var5 = 0;
-		int var6 = -1;
-
-		for (boolean var7 = false; var5 < var3; ++var5) {
-			char var8 = par1Str.charAt(var5);
-			switch(var8) {
+	// Spout TextAlpha - describes how many characters of a given input string will fit within the specified screen width.
+	private int sizeStringToWidth(String par1Str, int width2) {
+		float widthSz = (float)width2;
+		float widthCh = 0F;
+		int lenStr = par1Str.length();
+		int lenSp = -1;
+		boolean bold = false;
+		int ii = 0;
+		for (; ii < lenStr; ++ii) {
+			char ch = par1Str.charAt(ii);
+			switch(ch) {
 			case 32:
-				var6 = var5;
+				lenSp = ii;
 			case 167:
-				if (var5 != var3) {
-					++var5;
-					char var9 = par1Str.charAt(var5);
-					if (var9 != 108 && var9 != 76) {
-						if (var9 == 114 || var9 == 82 || isFormatColor(var9)) {
-							var7 = false;
+				if (ii != lenStr) {
+					++ii;
+					char chSel = par1Str.charAt(ii);
+					if (chSel != 108 && chSel != 76) {
+						if (chSel == 114 || chSel == 82 || isFormatColor(chSel)) { 
+							bold = false;
 						}
 					} else {
-						var7 = true;
+						bold = true;
 					}
 				}
 				break;
 			default:
-				var4 += this.func_50105_a(var8);
-				if (var7) {
-					++var4;
+				widthCh += this.getCharWidthFloat(ch);
+				if (bold && ch!=' ') {
+					widthCh+=boldOffset;
 				}
 			}
 
-			if (var8 == 10) {
-				++var5;
-				var6 = var5;
+			if (ch == 10) {
+				++ii;
+				lenSp = ii;
 				break;
 			}
 
-			if (var4 > par2) {
+			if (widthCh > widthSz) {
 				break;
 			}
 		}
 
-		return var5 != var3 && var6 != -1 && var6 < var5?var6:var5;
+		return ii != lenStr && lenSp != -1 && lenSp < ii?lenSp:ii;
 	}
+	//end Spout TextAlpha
 
 	private static boolean isFormatColor(char par0) {
 		return par0 >= 48 && par0 <= 57 || par0 >= 97 && par0 <= 102 || par0 >= 65 && par0 <= 70;
@@ -664,6 +717,7 @@ public class FontRenderer {
 		this.colorCode = new int[32];
 		this.renderEngine = var3;
 		this.unicodeFlag = var4;
+		this.boldOffset = var4?0.5F:1F;
 
 		BufferedImage var5;
 		try {
@@ -708,4 +762,84 @@ public class FontRenderer {
 			this.colorCode[var9] = (var11 & 255) << 16 | (var12 & 255) << 8 | var13 & 255;
 		}
 	}
+
+	//begin Spout TextAlpha /** Meow, uses \n to split lines. */
+	public String wrapStringToWidth(String par1str, int width2) {
+		float maxWidth = width2;
+		float subWidth = 0;
+		int spaceIndex = -1;
+		StringBuilder selectRandom = new StringBuilder("");
+		char selectColor = 0;
+		char c;
+		boolean bold = false;
+		StringBuilder ArrStr = new StringBuilder("");
+		for (int i = 0; i < par1str.length(); i++) {
+			c = par1str.charAt(i);
+			if (c == '\247' && i + 1 < par1str.length()) {
+				i++;
+				c = par1str.charAt(i);
+				if (c>='0' && c<='9'){
+					selectColor = c;
+					selectRandom.setLength(0);
+					bold = false;
+				} else if (c == 'r' || c=='R'){
+					selectRandom.setLength(0);
+					selectColor = 0;
+					bold = false;
+				} else {
+					selectRandom.append("\u00a7" + c);
+					if (c == 'l' || c== 'L') {
+						bold = true;
+					}
+				}
+				continue;
+			}
+			if (c == ' ') {
+				spaceIndex = i;
+			}
+			if (c =='\n') {
+				ArrStr.append(par1str.substring(0,i)+'\n');
+				par1str=par1str.substring(i+1);
+				if (par1str.length() > 0){
+					if (selectRandom.length()!=0){
+						par1str=selectRandom.toString() + par1str;
+					}
+					if (selectColor!=0){
+						par1str="\247" + selectColor + par1str;
+					}
+				}
+				i=0;
+				subWidth = 0;
+				spaceIndex = -1;
+				continue;
+			}
+			subWidth += getCharWidthFloat(c);
+			if (subWidth >= maxWidth) {
+				if (spaceIndex > 4 && c!=' ') {
+					i=spaceIndex;
+				} else if (bold) {
+					subWidth += boldOffset;
+				}
+				ArrStr.append(par1str.substring(0,i)+'\n');
+				par1str=par1str.substring(i+1);
+				if (par1str.length() > 0){
+					if (selectRandom.length()!=0){
+						par1str=selectRandom.toString() + par1str;
+					}
+					if (selectColor!=0){
+						par1str="\247" + selectColor + par1str;
+					}
+				}
+				i=0;
+				subWidth = 0;
+				spaceIndex = -1;
+			}
+		}
+		if (par1str.length()>0) {
+			ArrStr.append(par1str);
+		}
+		return ArrStr.toString();
+	}
+	//end Spout TextAlpha
 }
+
