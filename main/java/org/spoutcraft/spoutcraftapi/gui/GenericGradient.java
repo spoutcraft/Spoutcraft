@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -25,12 +28,10 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericGradient extends GenericWidget implements Gradient {
-
 	protected Color color1 = new Color(0.06F, 0.06F, 0.06F, 0.75F), color2 = new Color(0.06F, 0.06F, 0.06F, 0.82F);
 	protected Orientation axis = Orientation.VERTICAL;
 
 	public GenericGradient() {
-
 	}
 
 	public Gradient setTopColor(Color color) {

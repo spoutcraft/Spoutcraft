@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -27,11 +30,11 @@ public class PropertyAnimation extends Animation {
 		this.object = object;
 		setValueDelegate(new PropertyDelegate(object, propertyName));
 		Object val = object.getProperty(propertyName);
-		if(val instanceof Animatable) {
+		if (val instanceof Animatable) {
 			Animatable value = (Animatable) val;
 			setStartValue(value);
 			setEndValue(value);
-		} else if(val instanceof Number) {
+		} else if (val instanceof Number) {
 			Number num = (Number) val;
 			setStartNumber(num);
 			setEndNumber(num);

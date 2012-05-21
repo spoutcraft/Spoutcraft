@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -29,13 +32,14 @@ public class TextFieldChangeEvent extends ScreenEvent<TextFieldChangeEvent>{
 	public TextFieldChangeEvent(Player player, Screen screen, TextField field, String newVal) {
 		super(player, screen, ScreenType.CUSTOM_SCREEN);
 		this.field = field;
-		if(field != null)
+		if (field != null) {
 			this.oldVal = field.getText();
-		else 
+		} else {
 			this.oldVal = "";
+		}
 		this.newVal = newVal;
 	}
-	
+
 	private static final TextFieldChangeEvent instance = new TextFieldChangeEvent(null, null, null, null);
 
 	/**
@@ -54,21 +58,23 @@ public class TextFieldChangeEvent extends ScreenEvent<TextFieldChangeEvent>{
 		instance.newVal = newVal;
 		return instance;
 	}
-	
+
 	public TextField getTextField() {
 		return field;
 	}
-	
+
 	public String getOldText() {
 		return oldVal;
 	}
-	
+
 	public String getNewText() {
 		return newVal;
 	}
-	
+
 	public void setNewText(String newVal) {
-		if (newVal == null) newVal = "";
+		if (newVal == null) {
+			newVal = "";
+		}
 		this.newVal = newVal;
 	}
 

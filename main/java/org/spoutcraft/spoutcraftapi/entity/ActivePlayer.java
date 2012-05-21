@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +29,6 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
 public interface ActivePlayer extends Player, CommandSender  {
-
 	/**
 	 * Gets the maximum render view that this player can view
 	 * @return maximum render view

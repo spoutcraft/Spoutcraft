@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +25,6 @@ import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 
 public class MouseDownEvent extends Event<MouseDownEvent> implements Cancellable {
-
 	private int x;
 	private int y;
 	private Mouse button;
@@ -70,5 +72,4 @@ public class MouseDownEvent extends Event<MouseDownEvent> implements Cancellable
 	protected String getEventName() {
 		return "Mouse Down Event";
 	}
-
 }

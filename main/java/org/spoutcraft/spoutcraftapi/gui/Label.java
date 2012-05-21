@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,14 +25,14 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 public interface Label extends Widget {
 	/**
 	 * Gets the text of the label
-	 * 
+	 *
 	 * @return text
 	 */
 	public String getText();
 
 	/**
 	 * Sets the text of the label
-	 * 
+	 *
 	 * @param text to set
 	 * @return label
 	 */
@@ -37,14 +40,14 @@ public interface Label extends Widget {
 
 	/**
 	 * Gets the color for the text
-	 * 
+	 *
 	 * @return color
 	 */
 	public Color getTextColor();
 
 	/**
 	 * Sets the color for the text
-	 * 
+	 *
 	 * @param color to set
 	 * @return label
 	 */
@@ -53,7 +56,7 @@ public interface Label extends Widget {
 	/**
 	 * Determines if text expands to fill width and height
 	 * If word wrapping and auto is enabled, the height of the label will reflect the heigth of all lines.
-	 * 
+	 *
 	 * @param auto
 	 * @return label
 	 */
@@ -61,7 +64,7 @@ public interface Label extends Widget {
 
 	/**
 	 * Gets if the text will expand to fill width and height
-	 * 
+	 *
 	 * @param auto
 	 * @return label
 	 */
@@ -70,25 +73,25 @@ public interface Label extends Widget {
 	public WidgetAnchor getAlign();
 
 	public Widget setAlign(WidgetAnchor pos);
-	
+
 	/**
 	 * Set the scale of the text
 	 * @param scale to set
 	 */
 	public Label setScale(float scale);
-	
+
 	/**
 	 * Gets the scale of the text
 	 * @return scale of text
 	 */
 	public float getScale();
-	
+
 	/**
 	 * Sets whether or not the label has a shadow.
 	 * @param shadow
 	 */
 	public Label setShadow(boolean shadow);
-	
+
 	/**
 	 * Gets whether or not the label has a shadow.
 	 * @return

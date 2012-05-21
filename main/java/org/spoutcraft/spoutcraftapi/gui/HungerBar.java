@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -66,9 +69,9 @@ public class HungerBar extends GenericWidget {
 
 	/**
 	 * Gets the maximum number of food icons to display on the HUD.
-	 * 
+	 *
 	 * Hunger bar is scaled to fit the number of icons appropriately.
-	 * 
+	 *
 	 * @return icons displayed
 	 */
 	public int getNumOfIcons() {
@@ -77,9 +80,9 @@ public class HungerBar extends GenericWidget {
 
 	/**
 	 * Sets the maximum number of food icons to display on the HUD.
-	 * 
+	 *
 	 * Hunger bar is scaled to fit the number of icons appropriately.
-	 * 
+	 *
 	 * @param icons to display
 	 * @return this
 	 */
@@ -90,7 +93,7 @@ public class HungerBar extends GenericWidget {
 
 	/**
 	 * Gets the number of pixels each icon is offset when drawing the next icon.
-	 * 
+	 *
 	 * @return pixel offset
 	 */
 	public int getIconOffset() {
@@ -99,7 +102,7 @@ public class HungerBar extends GenericWidget {
 
 	/**
 	 * Sets the number of pixels each icon is offset when drawing the next icon.
-	 * 
+	 *
 	 * @param iconOffset when drawing icons
 	 * @return this
 	 */

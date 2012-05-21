@@ -1,14 +1,32 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.block.design;
 
 public class Quad {
-
 	private int index;
 	private SubTexture texture;
 	private Vertex[] vertexes = new Vertex[4];
 
 	/**
 	 * Creates a new quad with the following vertexes at the specified index
-	 * 
+	 *
 	 * @param index of the quad
 	 * @param texture Subtexture to use
 	 * @param v1 first vertex
@@ -26,7 +44,7 @@ public class Quad {
 
 	/**
 	 * Creates an empty quad at index based on the SubTexture
-	 * 
+	 *
 	 * @param index of the quad
 	 * @param texture
 	 */
@@ -37,7 +55,7 @@ public class Quad {
 
 	/**
 	 * Adds a vertex to the quad with the SubTexture properties of this quad
-	 * 
+	 *
 	 * @param index of the vertex
 	 * @param x value of the vertex
 	 * @param y value of the vertex
@@ -54,7 +72,7 @@ public class Quad {
 
 	/**
 	 * Adds a vertex to the quad
-	 * 
+	 *
 	 * @param vertex to add
 	 * @return this
 	 */
@@ -63,10 +81,10 @@ public class Quad {
 
 		return this;
 	}
-	
+
 	/**
 	 * Gets the vertex of the specified index
-	 * 
+	 *
 	 * @param index of the vertex
 	 * @return the vertex
 	 */
@@ -74,10 +92,10 @@ public class Quad {
 		if (index < 0 || index > 3) {
 			throw new IllegalArgumentException("Invalid vertex index: " + index);
 		}
-		
+
 		return vertexes[index];
 	}
-	
+
 	public int getIndex() {
 		return index;
 	}

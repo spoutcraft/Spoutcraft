@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +21,7 @@ package org.spoutcraft.spoutcraftapi.util;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 
@@ -33,7 +37,7 @@ public class MutableLocation extends MutableVector implements Location {
 
 	/**
 	 * Constructs a new Location with the given coordinates
-	 * 
+	 *
 	 * @param world The world in which this location resides
 	 * @param x The x-coordinate of this new location
 	 * @param y The y-coordinate of this new location
@@ -45,7 +49,7 @@ public class MutableLocation extends MutableVector implements Location {
 
 	/**
 	 * Constructs a new Location with the given coordinates and direction
-	 * 
+	 *
 	 * @param world The world in which this location resides
 	 * @param x The x-coordinate of this new location
 	 * @param y The y-coordinate of this new location
@@ -104,7 +108,7 @@ public class MutableLocation extends MutableVector implements Location {
 
 		return vector;
 	}
-	
+
 	public Block getBlock() {
 		return world.getBlockAt(this);
 	}

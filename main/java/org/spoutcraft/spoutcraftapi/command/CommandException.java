@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +20,6 @@
 package org.spoutcraft.spoutcraftapi.command;
 
 public class CommandException extends RuntimeException {
-
 	private static final long serialVersionUID = 7936404856385100186L;
 
 	public CommandException() {
@@ -30,5 +32,4 @@ public class CommandException extends RuntimeException {
 	public CommandException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
-
 }

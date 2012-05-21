@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,16 +25,16 @@ public enum WidgetAnchor {
 	/**
 	 * Widget anchors allow you to place widgets that
 	 * stick or "anchor" to a point on the screen
-	 * 
+	 *
 	 * A widget's coordinates refer to it's top left
 	 * corner and anchors change the point they are
 	 * relative to on the screen
-	 * 
+	 *
 	 * You can choose any of 9 points to anchor to,
 	 * note that if anchoring to the bottom or right
 	 * the widget will likely be offscreen until you
 	 * set a negative y or x value
-	 * 
+	 *
 	 * The only exception is scale which assumes the
 	 * screen to always be 427x240 and moves/scales
 	 * widgets to conform

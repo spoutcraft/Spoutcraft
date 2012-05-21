@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -71,7 +74,7 @@ public class ChatBar extends GenericWidget implements Widget {
 	}
 
 	/**
-	 * Sets the x position that the cursor starts at when typing 
+	 * Sets the x position that the cursor starts at when typing
 	 * @param x position to set
 	 * @return this
 	 */
@@ -90,7 +93,7 @@ public class ChatBar extends GenericWidget implements Widget {
 	}
 
 	/**
-	 * Sets the y position that the cursor starts at when typing 
+	 * Sets the y position that the cursor starts at when typing
 	 * @param y position to set
 	 * @return this
 	 */
@@ -118,12 +121,10 @@ public class ChatBar extends GenericWidget implements Widget {
 	}
 
 	public void render() {
-
 	}
 
 	@Override
 	public int getVersion() {
 		return super.getVersion() + 2;
 	}
-
 }

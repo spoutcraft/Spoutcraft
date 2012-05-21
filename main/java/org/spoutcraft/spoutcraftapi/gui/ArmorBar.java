@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -76,9 +79,9 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * Gets the maximum number of shields displayed on the HUD.
-	 * 
+	 *
 	 * Armor is scaled to fit the number of shields appropriately.
-	 * 
+	 *
 	 * @return shields displayed
 	 */
 	public int getMaxNumShields() {
@@ -87,9 +90,9 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * Sets the maximum number of shields displayed on the HUD.
-	 * 
+	 *
 	 * Armor is scaled to fit the number of shields appropriately.
-	 * 
+	 *
 	 * @param shields to display
 	 * @return this
 	 */
@@ -100,7 +103,7 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * True if the armor bar will appear even when the player has no armor equipped.
-	 * 
+	 *
 	 * @return always visible
 	 */
 	public boolean isAlwaysVisible() {
@@ -109,7 +112,7 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * Forces the armor bar to appear, even when the player has no armor equipped.
-	 * 
+	 *
 	 * @param visible
 	 * @return this
 	 */
@@ -120,7 +123,7 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * Gets the number of pixels each shield is offset when drawing the next shield.
-	 * 
+	 *
 	 * @return pixel offset
 	 */
 	public int getIconOffset() {
@@ -129,7 +132,7 @@ public class ArmorBar extends GenericWidget {
 
 	/**
 	 * Sets the number of pixels each shield is offset when drawing the next shield.
-	 * 
+	 *
 	 * @param offset when drawing shields
 	 * @return this
 	 */
@@ -146,5 +149,4 @@ public class ArmorBar extends GenericWidget {
 	public int getVersion() {
 		return super.getVersion() + 1;
 	}
-
 }

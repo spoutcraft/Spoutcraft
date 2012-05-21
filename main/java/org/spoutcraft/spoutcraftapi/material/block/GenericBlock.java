@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.material.block;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -11,18 +30,18 @@ public class GenericBlock implements Block{
 	private final String name;
 	private String customName;
 	private BlockDesign design;
-	
+
 	private GenericBlock(String name, int id, int data, boolean subtypes) {
 		this.name = name;
 		this.id = id;
 		this.data = data;
 		this.subtypes = subtypes;
 	}
-	
+
 	protected GenericBlock(String name, int id, int data) {
 		this(name, id, data, true);
 	}
-	
+
 	protected GenericBlock(String name, int id) {
 		this(name, id, 0, false);
 	}
@@ -40,12 +59,12 @@ public class GenericBlock implements Block{
 	}
 
 	public String getName() {
-		if(customName != null) {
+		if (customName != null) {
 			return customName;
 		}
 		return name;
 	}
-	
+
 	public String getNotchianName() {
 		return name;
 	}

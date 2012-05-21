@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.gui;
 
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
@@ -6,20 +25,19 @@ import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
  * Represents one item slot where items can be put in and out.
  */
 public interface Slot extends Control {
-	
 	/**
 	 * Gets the item of this slot
 	 * @return the item of the slot
 	 */
 	public ItemStack getItem();
-	
+
 	/**
 	 * Sets a new item to this slot
 	 * @param item the new item
 	 * @return the instance
 	 */
 	public Slot setItem(ItemStack item);
-	
+
 	/**
 	 * Called when the user puts an item into the slot.
 	 * @param item the stack that the user wants to put in. \
@@ -27,7 +45,7 @@ public interface Slot extends Control {
 	 * @return false if you want to cancel that.
 	 */
 	public boolean onItemPut(ItemStack item);
-	
+
 	/**
 	 * Called when the user takes the item out of the slot
 	 * @param item the stack that the user will get. \
@@ -35,13 +53,13 @@ public interface Slot extends Control {
 	 * @return false if you want to cancel that.
 	 */
 	public boolean onItemTake(ItemStack item);
-	
+
 	/**
 	 * Called when the user shift-clicks on the slot.
 	 * If the user holds shift while left-clicking, no other actions will be done.
 	 */
 	public void onItemShiftClicked();
-	
+
 	/**
 	 * Called when the user wants to exchange the item on his cursor with that in the slot.
 	 * @param current the item that is currently in the slot
@@ -49,7 +67,7 @@ public interface Slot extends Control {
 	 * @return false, if you want to cancel the exchange
 	 */
 	public boolean onItemExchange(ItemStack current, ItemStack cursor);
-	
+
 	public Slot setDepth(int depth);
 	public int getDepth();
 }

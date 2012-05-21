@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +31,6 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public class GenericTextProcessor implements TextProcessor {
-
 	protected static final int AVERAGE_CHAR_WIDTH = 6;
 	protected static final char CHAR_NULL = '\0';
 	protected static final char CHAR_SPACE = ' ';
@@ -104,11 +106,13 @@ public class GenericTextProcessor implements TextProcessor {
 
 	protected int getCursorLine() {
 		for (int i = 0; i < lineBreaks.size(); ++i)
-			if (cursor < lineBreaks.get(i))
+			if (cursor < lineBreaks.get(i)) {
 				return i;
+			}
 
-		if (cursor == textBuffer.length() && getCharAt(cursor - 1) == CHAR_NEWLINE)
+		if (cursor == textBuffer.length() && getCharAt(cursor - 1) == CHAR_NEWLINE) {
 			return lineBreaks.size();
+		}
 		return Math.max(0, lineBreaks.size() - 1);
 	}
 
@@ -124,10 +128,12 @@ public class GenericTextProcessor implements TextProcessor {
 
 	protected int getNextWordPosition(int offset) {
 		int i = textBuffer.indexOf(STR_SPACE, offset) + 1;
-		if (i == 0)
+		if (i == 0) {
 			i = textBuffer.indexOf(STR_NEWLINE, offset) + 1;
-		if (i == 0)
+		}
+		if (i == 0) {
 			i = textBuffer.length();
+		}
 		return i;
 	}
 
@@ -226,8 +232,9 @@ public class GenericTextProcessor implements TextProcessor {
 	public void setText(String str) {
 		clear();
 		if (str.length() > 0) {
-			if (charLimit > 0 && str.length() > charLimit)
+			if (charLimit > 0 && str.length() > charLimit) {
 				str = str.substring(0, charLimit);
+			}
 
 			textBuffer.append(str);
 			cursor = str.length();
@@ -262,9 +269,8 @@ public class GenericTextProcessor implements TextProcessor {
 				lineWidth = 0;
 				lineBreaks.add(position);
 				continue;
-			}
 			// allow one whitespace not to be handled as part of the previous word (word-wrapping)
-			else if (!previousSpace && word.equals(STR_SPACE)) {
+			} else if (!previousSpace && word.equals(STR_SPACE)) {
 				lineWidth += spaceCharWidth;
 				previousSpace = true;
 				continue;
@@ -280,9 +286,8 @@ public class GenericTextProcessor implements TextProcessor {
 				lineWidth = 0;
 				word = word.substring(i);
 				skipIterator = true;
-			}
 			// check if this word would exceed the max-width of the line
-			else if (lineWidth + wordWidth > width) {
+			} else if (lineWidth + wordWidth > width) {
 				if (lineBreaks.size() + 1 < lineLimit) {
 					lineBreaks.add(position - word.length());
 					lineWidth = wordWidth;
@@ -362,23 +367,26 @@ public class GenericTextProcessor implements TextProcessor {
 			return false;
 		}
 		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				return delete(cursor, getNextWordPosition(cursor), cursor);
-			else
+			} else {
 				return deleteChar();
+			}
 		}
 		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				cursor = getPreviousWordPosition(cursor - 1);
-			else
+			} else {
 				cursorLeft();
+			}
 			return false;
 		}
 		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				cursor = getNextWordPosition(cursor + 1);
-			else
+			} else {
 				cursorRight();
+			}
 			return false;
 		}
 		if (keyId == Keyboard.KEY_UP.getKeyCode()) {

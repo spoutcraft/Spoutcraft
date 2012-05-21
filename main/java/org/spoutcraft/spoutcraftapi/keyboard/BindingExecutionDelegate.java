@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.spoutcraft.spoutcraftapi.keyboard;
 
 public abstract class BindingExecutionDelegate {
@@ -24,7 +26,7 @@ public abstract class BindingExecutionDelegate {
 	@Deprecated
 	public void onKeyRelease(int key, KeyBinding binding) {
 	}
-	
+
 	/**
 	 * Called when the Keybinding is pressed.
 	 * Please check event.getScreen() when you don't want handle this binding on other screens than the main screen.
@@ -32,7 +34,7 @@ public abstract class BindingExecutionDelegate {
 	 */
 	public void onKeyPress(KeyBindingPress event) {
 	}
-	
+
 	/**
 	 * Called when the Keybinding is released.
 	 * Please check event.getScreen() when you don't want handle this binding on other screens than the main screen.

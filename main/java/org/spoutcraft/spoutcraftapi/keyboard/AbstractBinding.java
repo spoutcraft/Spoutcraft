@@ -1,12 +1,15 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
- * Spoutcraft is free software: you can redistribute it and/or modify
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Spoutcraft is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -14,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.spoutcraft.spoutcraftapi.keyboard;
 
 import org.lwjgl.input.Keyboard;
@@ -29,11 +31,11 @@ public abstract class AbstractBinding {
 	 * on Apple Keyboards (or those which are compatible with Mac OS X), the CMD key is left AND right from the Spacebar.
 	 */
 	public static final byte MOD_SUPER = 8;
-	
+
 	private int key = -1;
 
 	private byte modifiers = 0;
-	
+
 	public void setKey(int key) {
 		this.key = key;
 	}
@@ -42,7 +44,6 @@ public abstract class AbstractBinding {
 		return key;
 	}
 
-	
 	public byte getModifiers() {
 		return modifiers;
 	}
@@ -50,7 +51,7 @@ public abstract class AbstractBinding {
 	public void setRawModifiers(byte mod) {
 		this.modifiers = mod;
 	}
-	
+
 	public void setModifier(byte mod, boolean holding) {
 		if (holding) {
 			modifiers |= mod;
@@ -58,9 +59,9 @@ public abstract class AbstractBinding {
 			modifiers &= ~mod;
 		}
 	}
-	
+
 	public abstract void summon(int key, boolean keyReleased, int screen);
-	
+
 	public boolean matches(int key, byte modifiers) {
 		return key == getKey() && modifiers == getModifiers();
 	}
@@ -70,7 +71,7 @@ public abstract class AbstractBinding {
 	public boolean hasModifier(byte mod) {
 		return (modifiers & mod) != 0;
 	}
-	
+
 	@Override
 	public String toString() {
 		String result = "";
@@ -86,7 +87,7 @@ public abstract class AbstractBinding {
 		if (hasModifier(MOD_SUPER)) {
 			result += "SUPER + ";
 		}
-		if(key > 0) {
+		if (key > 0) {
 			result += Keyboard.getKeyName(key);
 		} else if (key == 0) {
 			result += "No key";
@@ -96,24 +97,24 @@ public abstract class AbstractBinding {
 
 		return result;
 	}
-	
+
 	public static String getMouseButtonName(int button) {
 		button += 100;
 		switch(button) {
-		case 0:
-			return "Left button";
-		case 1: 
-			return "Right button";
-		case 2:
-			return "Middle button";
-		default:
-			return "Button "+button;
+			case 0:
+				return "Left button";
+			case 1:
+				return "Right button";
+			case 2:
+				return "Middle button";
+			default:
+				return "Button "+button;
 		}
 	}
-	
-	@Override 
+
+	@Override
 	public boolean equals(Object other) {
-		if(other instanceof AbstractBinding) {
+		if (other instanceof AbstractBinding) {
 			AbstractBinding a = (AbstractBinding) other;
 			return a == this;
 		}

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +17,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.spoutcraft.spoutcraftapi.keyboard;
 
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
@@ -24,7 +26,7 @@ public class KeyBindingPress {
 	private Keyboard key;
 	private KeyBinding binding;
 	private ScreenType screen;
-	
+
 	public KeyBindingPress(Keyboard key, KeyBinding binding, ScreenType screen) {
 		this.key = key;
 		this.binding = binding;

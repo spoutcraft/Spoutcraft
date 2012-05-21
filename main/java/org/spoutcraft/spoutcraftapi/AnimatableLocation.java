@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +24,6 @@ import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 
 public class AnimatableLocation extends MutableLocation implements Animatable, Location {
-
 	public AnimatableLocation(World world, double x, double y, double z) {
 		super(world, x, y, z, 0, 0);
 	}

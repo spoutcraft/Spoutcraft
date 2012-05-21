@@ -1,7 +1,9 @@
-package org.spoutcraft.spoutcraftapi.util;
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,89 +17,87 @@ package org.spoutcraft.spoutcraftapi.util;
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.spoutcraft.spoutcraftapi.util;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UniqueItemStringMap {
-
 	private static final ConcurrentHashMap<Integer,String> reverse = new ConcurrentHashMap<Integer,String>();
 	private static final ConcurrentHashMap<Integer,String> reverseStable = new ConcurrentHashMap<Integer,String>();
 	private static final ConcurrentHashMap<String,Integer> forward = new ConcurrentHashMap<String,Integer>();
 
 	private static final AtomicInteger idCounter = new AtomicInteger(1024);
 
-//	private static Configuration config;
+	/*private static Configuration config;
 
-//	public static void setConfigFile(Configuration config) {
-//		UniqueItemStringMap.config = config;
-//		List<String> keys = config.getKeys();
-//
-//		for (String key : keys) {
-//			Integer id = getIdFromFile(decodeKey(key));
-//			if (id != null) {
-//				forward.put(key, id);
-//				reverse.put(id, key);
-//				reverseStable.put(id, key);
-//			}
-//		}
-//	}
+	public static void setConfigFile(Configuration config) {
+		UniqueItemStringMap.config = config;
+		List<String> keys = config.getKeys();
 
-//	private static Integer getIdFromFile(String key) {
-//
-//		synchronized(config) {
-//			key = encodeKey(key);
-//			if (config.getProperty(key) == null) {
-//				return null;
-//			} else {
-//				int id = config.getInt(key, -1);
-//				if (id == -1) {
-//					config.removeProperty(key);
-//					return null;
-//				} else {
-//					return id;
-//				}
-//			}
-//		}
-//
-//	}
+		for (String key : keys) {
+			Integer id = getIdFromFile(decodeKey(key));
+			if (id != null) {
+				forward.put(key, id);
+				reverse.put(id, key);
+				reverseStable.put(id, key);
+			}
+		}
+	}
 
-//	private static void setIdInFile(String key, int id) {
-//
-//		synchronized(config) {
-//			key = encodeKey(key);
-//			config.setProperty(key, id);
-//			config.save();
-//		}
-//
-//	}
-	
+	private static Integer getIdFromFile(String key) {
+
+		synchronized(config) {
+			key = encodeKey(key);
+			if (config.getProperty(key) == null) {
+				return null;
+			} else {
+				int id = config.getInt(key, -1);
+				if (id == -1) {
+					config.removeProperty(key);
+					return null;
+				} else {
+					return id;
+				}
+			}
+		}
+
+	}
+
+	private static void setIdInFile(String key, int id) {
+
+		synchronized(config) {
+			key = encodeKey(key);
+			config.setProperty(key, id);
+			config.save();
+		}
+
+	}*/
+
 	private static String encodeKey(String key) {
 		key = key.replace("*", "-*-");
 		return key.replace(".", "**");
 	}
-	
+
 	private static String decodeKey(String key) {
 		key = key.replace("**", ".");
 		return key.replace("-*-", "*");
 	}
-	
+
 	public static Set<Integer> getIds() {
 		return reverse.keySet();
 	}
 
 	/**
 	 * Associates a unique id for each string
-	 * 
+	 *
 	 * These associations persist over reloads and server restarts
-	 * 
+	 *
 	 * @param string the string to be associated
 	 * @return the id associated with the string.
 	 */
-
 	public static int getId(String string) {
-		
 		string = encodeKey(string);
 
 		Integer id = null;
@@ -132,7 +132,7 @@ public class UniqueItemStringMap {
 			} else { // reverse link failed
 				continue;
 			}
-			
+
 			reverseStable.put(testId, string);
 
 //			setIdInFile(decodeKey(string), id);
@@ -147,17 +147,15 @@ public class UniqueItemStringMap {
 
 	/**
 	 * Returns the id associated with a string
-	 * 
+	 *
 	 * These associations persist over reloads and server restarts
-	 * 
+	 *
 	 * Note: . characters are replaced with * characters
-	 * 
+	 *
 	 * @param id the id
 	 * @return the string associated with the id, or null if no string is associated
 	 */
-
 	public static String getString(int id) {
 		return decodeKey(reverseStable.get(id));
 	}
-
 }

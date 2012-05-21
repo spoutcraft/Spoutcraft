@@ -1,12 +1,15 @@
 /*
- * This file is part of SpoutAPI (http://wiki.getspout.org/).
- * 
- * SpoutAPI is free software: you can redistribute it and/or modify
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SpoutAPI is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -48,7 +51,7 @@ public class SpoutInputStream extends InputStream{
 	}
 
 	@SuppressWarnings("unused")
-	public Location readLocation(){
+	public Location readLocation() {
 		double x = readDouble();
 		double y = readDouble();
 		double z = readDouble();
@@ -59,21 +62,21 @@ public class SpoutInputStream extends InputStream{
 		return new MutableLocation(Spoutcraft.getWorld(), x, y, z, yaw, pitch);
 	}
 
-	public Vector readVector(){
+	public Vector readVector() {
 		double x = readDouble();
 		double y = readDouble();
 		double z = readDouble();
 		return new MutableVector(x,y,z);
 	}
 
-	public ItemStack readItemStack(ItemStack item){
+	public ItemStack readItemStack(ItemStack item) {
 		int id = readInt();
 		short dura = readShort();
 		short amt = readShort();
 		return new ItemStack(id, amt, dura);
 	}
 
-	public Material readMaterial(){
+	public Material readMaterial() {
 		int id = readInt();
 		short dura = readShort();
 		return MaterialData.getMaterial(id, dura);
@@ -124,7 +127,7 @@ public class SpoutInputStream extends InputStream{
 	public char readChar() {
 		return buffer.getChar();
 	}
-	
+
 	public boolean readBoolean() {
 		return buffer.get() != 0;
 	}
@@ -137,7 +140,7 @@ public class SpoutInputStream extends InputStream{
 		}
 		return builder.toString();
 	}
-	
+
 	public static final byte FLAG_COLORINVALID = 1;
 	public static final byte FLAG_COLOROVERRIDE = 2;
 	public Color readColor() {

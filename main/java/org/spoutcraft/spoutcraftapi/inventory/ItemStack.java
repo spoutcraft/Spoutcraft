@@ -1,22 +1,9 @@
 /*
- * This file is part of Bukkit (http://bukkit.org/).
- * 
- * Bukkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This file is part of SpoutcraftAPI.
  *
- * Bukkit is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -36,7 +23,6 @@ import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-
 
 /**
  * Represents a stack of items
@@ -82,19 +68,19 @@ public class ItemStack implements Cloneable{
 	public ItemStack(final Material type, final int amount, final short damage, final Byte data) {
 		this(type.getRawId(), amount, damage, data);
 	}
-	
+
 	public ItemStack(CustomItem item) {
 		this(item.getRawId(), 1, (short)item.getRawData());
 	}
-	
+
 	public ItemStack(CustomItem item, int amount) {
 		this(item.getRawId(), amount, (short)item.getRawData());
 	}
-	
+
 	public ItemStack(CustomBlock block) {
 		this(block.getBlockItem());
 	}
-	
+
 	public ItemStack(CustomBlock block, int amount) {
 		this(block.getBlockItem(), amount);
 	}

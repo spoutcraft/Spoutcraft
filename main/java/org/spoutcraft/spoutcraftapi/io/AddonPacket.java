@@ -1,12 +1,15 @@
 /*
- * This file is part of SpoutAPI (http://wiki.getspout.org/).
- * 
- * SpoutAPI is free software: you can redistribute it and/or modify
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SpoutAPI is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -24,9 +27,8 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 public abstract class AddonPacket {
 	private static HashMap<String, Class<? extends AddonPacket>> packets = new HashMap<String, Class<? extends AddonPacket>>();
 	private static HashMap<Class<? extends AddonPacket>, String> packetsIds = new HashMap<Class<? extends AddonPacket>, String>();
-	
+
 	public AddonPacket() {
-		
 	}
 
 	public abstract void run();
@@ -38,7 +40,7 @@ public abstract class AddonPacket {
 	public final void send() {
 		Spoutcraft.send(this);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static void register(Class<? extends AddonPacket> packet, String uniqueId) {
 		boolean emptyConstructor = false;
@@ -52,16 +54,16 @@ public abstract class AddonPacket {
 		if (!emptyConstructor) {
 			throw new IllegalArgumentException("Any AddonPacket Must Provide An Empty Constructor");
 		}
-		
-		
+
+
 		packets.put(uniqueId, packet);
 		packetsIds.put(packet, uniqueId);
 	}
-	
+
 	public static String getPacketId(Class<? extends AddonPacket> packet) {
 		return packetsIds.get(packet);
 	}
-	
+
 	public static Class<? extends AddonPacket> getPacketFromId(String id) {
 		return packets.get(id);
 	}

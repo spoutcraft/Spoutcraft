@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.event.addon;
 
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -11,7 +30,7 @@ public class AddonEnableEvent extends AddonEvent<AddonEnableEvent> {
 	public AddonEnableEvent(Addon addon) {
 		this.addon = addon;
 	}
-	
+
 	/**
 	 * Gets the singleton, updates its state and returns it
 	 * @param addon
@@ -21,7 +40,7 @@ public class AddonEnableEvent extends AddonEvent<AddonEnableEvent> {
 		instance.addon = addon;
 		return instance;
 	}
-	
+
 	/**
 	 * Returns the Addon that was enabled
 	 * @return Addon
@@ -39,5 +58,4 @@ public class AddonEnableEvent extends AddonEvent<AddonEnableEvent> {
 	protected String getEventName() {
 		return "Addon Enable Event";
 	}
-
 }

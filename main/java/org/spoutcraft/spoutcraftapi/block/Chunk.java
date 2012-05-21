@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +24,6 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 
 public interface Chunk {
-
 	/**
 	 * Gets a block from this chunk
 	 *
@@ -67,7 +69,6 @@ public interface Chunk {
 	 */
 	public boolean load();
 
-
 	/**
 	 * Loads the chunk.
 	 *
@@ -80,7 +81,7 @@ public interface Chunk {
 	 * Unloads and optionally saves the Chunk
 	 *
 	 * @return true if the chunk has unloaded successfully, otherwise false
-	 */	 
+	 */
 	public boolean unload();
 
 	/**
@@ -99,10 +100,10 @@ public interface Chunk {
 	 * @return true if the chunk has unloaded successfully, otherwise false
 	 */
 	public boolean unload(boolean save, boolean safe);
-	
+
 	/**
 	 * Gets the raw block ids for this chunk. Use wisely.
-	 * 
+	 *
 	 * @return raw block ids
 	 */
 	public byte[] getRawBlockIds();
@@ -112,44 +113,44 @@ public interface Chunk {
 	 * @return The entities.
 	 */
 	public Entity[] getEntities();
-	
+
 	/**
 	 * Gets the custom block ids that are used for the chunk at (x, z).
-	 * 
+	 *
 	 * It may be null if there are no custom block ids.
-	 * 
+	 *
 	 * Modifying this array <b>will</b> change the contents of this chunk.
-	 * 
+	 *
 	 * @return custom block ids
 	 */
 	public short[] getCustomBlockIds();
 
 	/**
 	 * Sets the custom block ids that are used for the chunk at (x, z).
-	 * 
+	 *
 	 * This array should be 32768 in length.
-	 * 
+	 *
 	 * Modifying this array will <b>override</b> the contents of this chunk.
-	 * 
+	 *
 	 * @param ids the custom block ids
 	 */
 	public void setCustomBlockIds(short[] ids);
-	
+
 	/**
 	 * Gets the custom block id at this x, y, z location.
-	 * 
+	 *
 	 * If no custom block exists, it will return zero,
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return custom block id
 	 */
 	public short getCustomBlockId(int x, int y, int z);
-	
+
 	/**
 	 * Sets the custom block id at this x, y, z location
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -157,10 +158,10 @@ public interface Chunk {
 	 * @return the previous id at the location
 	 */
 	public short setCustomBlockId(int x, int y, int z, short id);
-	
+
 	/**
 	 * Sets the custom block at this x, y, z location
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -168,15 +169,14 @@ public interface Chunk {
 	 * @return the previous custom block at the location, or null if none existed.
 	 */
 	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block);
-	
+
 	public byte[] getCustomBlockData();
 
 	public void setCustomBlockData(byte[] rots);
-	
-	public byte getCustomBlockData(int x, int y, int z);
-	
-	public byte setCustomBlockData(int x, int y, int z, byte rot);
-	
-	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte data);
 
+	public byte getCustomBlockData(int x, int y, int z);
+
+	public byte setCustomBlockData(int x, int y, int z, byte rot);
+
+	public CustomBlock setCustomBlockId(int x, int y, int z, CustomBlock block, byte data);
 }

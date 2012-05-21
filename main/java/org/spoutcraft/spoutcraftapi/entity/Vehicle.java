@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,21 +23,18 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 
 /**
  * Represents a vehicle entity.
- * 
- * @author sk89q
  */
 public interface Vehicle extends Entity {
-
 	/**
 	 * Gets the vehicle's velocity.
-	 * 
+	 *
 	 * @return velocity vector
 	 */
 	public Vector getVelocity();
 
 	/**
 	 * Sets the vehicle's velocity.
-	 * 
+	 *
 	 * @param vel velocity vector
 	 */
 	public void setVelocity(Vector vel);

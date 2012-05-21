@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,10 +22,9 @@ package org.spoutcraft.spoutcraftapi.util;
 import org.spoutcraft.spoutcraftapi.World;
 
 public interface Location extends Vector, FixedLocation {
-
 	/**
 	 * Sets the yaw of this location
-	 * 
+	 *
 	 * @param yaw New yaw
 	 * @return this location
 	 */
@@ -30,7 +32,7 @@ public interface Location extends Vector, FixedLocation {
 
 	/**
 	 * Sets the pitch of this location
-	 * 
+	 *
 	 * @param pitch New pitch
 	 * @return this location
 	 */
@@ -38,7 +40,7 @@ public interface Location extends Vector, FixedLocation {
 
 	/**
 	 * Sets the world of this location
-	 * 
+	 *
 	 * @param world New world
 	 * @return this location
 	 */

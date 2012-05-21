@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.gui;
 
 import java.util.LinkedList;
@@ -7,10 +26,8 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class GenericPolygon extends GenericWidget implements Polygon {
-
 	LinkedList<Pair<Point, Color>> points = new LinkedList<Pair<Point,Color>>();
 	Color lastColor = null;
-
 
 	public WidgetType getType() {
 		return WidgetType.Polygon;
@@ -25,12 +42,12 @@ public class GenericPolygon extends GenericWidget implements Polygon {
 		MinecraftTessellator t = Spoutcraft.getTessellator();
 		GL11.glTranslated(getActualX(), getActualY(), 0);
 		t.startDrawingQuads();
-		for(Pair<Point, Color> point:points) {
+		for (Pair<Point, Color> point:points) {
 			Point p = point.getLeft();
 			Color c = point.getRight();
 			t.setColorRGBAFloat(c.getRedF(), c.getGreenF(), c.getBlueF(), c.getAlphaF());
 			t.addVertex(p.getX(), p.getY(), 0);
-			
+
 		}
 		t.draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
@@ -40,7 +57,7 @@ public class GenericPolygon extends GenericWidget implements Polygon {
 	}
 
 	public Polygon addPoint(Point p) throws IllegalStateException {
-		if(lastColor == null) {
+		if (lastColor == null) {
 			throw new IllegalStateException("No color set.");
 		}
 		return addPoint(p, lastColor);

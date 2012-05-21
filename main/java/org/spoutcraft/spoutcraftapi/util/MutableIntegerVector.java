@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +20,6 @@
 package org.spoutcraft.spoutcraftapi.util;
 
 public class MutableIntegerVector extends MutableVector {
-
 	public MutableIntegerVector(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -62,7 +64,5 @@ public class MutableIntegerVector extends MutableVector {
 		MutableIntegerVector other = (MutableIntegerVector) o;
 
 		return this.getIntX() == other.getIntX() && this.getIntY() == other.getIntY() && this.getIntZ() == other.getIntZ();
-
 	}
-
 }

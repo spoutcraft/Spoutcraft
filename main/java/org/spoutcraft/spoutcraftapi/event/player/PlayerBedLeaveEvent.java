@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +24,6 @@ import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.event.HandlerList;
 
 public class PlayerBedLeaveEvent extends PlayerEvent<PlayerBedLeaveEvent> {
-
 	protected Block bed;
 
 	protected PlayerBedLeaveEvent(Player player, Block bed) {
@@ -44,5 +46,4 @@ public class PlayerBedLeaveEvent extends PlayerEvent<PlayerBedLeaveEvent> {
 	protected String getEventName() {
 		return "Player Bed Enter Event";
 	}
-
 }

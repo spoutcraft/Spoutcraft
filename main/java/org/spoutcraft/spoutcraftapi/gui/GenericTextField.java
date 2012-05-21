@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +29,6 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericTextField extends GenericControl implements TextField {
-
 	public static final int PADDING = 4;
 	public static final int LINE_HEIGHT = 10;
 	public static final int LINE_SPACING = 2;
@@ -193,16 +195,7 @@ public class GenericTextField extends GenericControl implements TextField {
 	@Override
 	public TextField copy() {
 		// ignore focus parameter which would lead to strange behaviour!
-		return ((TextField) super.copy()) //
-				.setText(getText()) //
-				.setCursorPosition(getCursorPosition()) //
-				.setMaximumCharacters(getMaximumCharacters()) //
-				.setFieldColor(getFieldColor()) //
-				.setBorderColor(getBorderColor()) //
-				.setMaximumLines(getMaximumLines()) //
-				.setTabIndex(getTabIndex()) //
-				.setPasswordField(isPasswordField()) //
-				.setPlaceholder(getPlaceholder());
+		return ((TextField) super.copy()).setText(getText()).setCursorPosition(getCursorPosition()).setMaximumCharacters(getMaximumCharacters()).setFieldColor(getFieldColor()).setBorderColor(getBorderColor()).setMaximumLines(getMaximumLines()).setTabIndex(getTabIndex()).setPasswordField(isPasswordField()).setPlaceholder(getPlaceholder());
 	}
 
 	public void onTextFieldChange(TextFieldChangeEvent event) {
@@ -231,6 +224,4 @@ public class GenericTextField extends GenericControl implements TextField {
 		textProcessor.setWidth(width);
 		return super.setGeometry(x, y, width, height);
 	}
-	
-	
 }

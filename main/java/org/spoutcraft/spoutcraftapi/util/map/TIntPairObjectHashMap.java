@@ -1,12 +1,15 @@
 /*
- * This file is part of SpoutCommons (http://www.spout.org/).
+ * This file is part of SpoutcraftAPI.
  *
- * SpoutCommons is free software: you can redistribute it and/or modify
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SpoutCommons is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -24,8 +27,6 @@ import gnu.trove.set.TLongSet;
 
 /**
  * A simplistic map that supports a pair of integers for keys, using a trove long object hashmap in the backend.
- * @author Afforess
- *
  */
 public class TIntPairObjectHashMap<K>{
 	private TLongObjectHashMap<K> map;

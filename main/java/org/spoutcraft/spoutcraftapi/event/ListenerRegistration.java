@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,7 +22,6 @@ package org.spoutcraft.spoutcraftapi.event;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 /**
- * @author lahwran
  * @param <TEvent> Event class
  */
 public class ListenerRegistration<TEvent extends Event<TEvent>> {
@@ -28,7 +30,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 	private final Addon addon;
 
 	/**
-	 * 
+	 *
 	 * @param listener Listener this registration represents
 	 * @param orderslot Order position this registration is in
 	 * @param addon addon that created this registration
@@ -41,7 +43,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the listener for this registration
-	 * 
+	 *
 	 * @return Registered Listener
 	 */
 	public Listener<TEvent> getListener() {
@@ -50,7 +52,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the Addon for this registration
-	 * 
+	 *
 	 * @return Registered Addon
 	 */
 	public Addon getAddon() {
@@ -59,7 +61,7 @@ public class ListenerRegistration<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Gets the order slot for this registration
-	 * 
+	 *
 	 * @return Registered order
 	 */
 	public Order getOrder() {

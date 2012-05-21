@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -81,9 +84,9 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Gets the maximum number of hearts displayed on the HUD.
-	 * 
+	 *
 	 * Health is scaled to fit the number of hearts appropriately.
-	 * 
+	 *
 	 * @return hearts displayed
 	 */
 	public int getMaxNumHearts() {
@@ -92,9 +95,9 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Sets the maximum number of hearts displayed on the HUD.
-	 * 
+	 *
 	 * Health is scaled to fit the number of hearts appropriately.
-	 * 
+	 *
 	 * @param hearts to display
 	 * @return this
 	 */
@@ -105,7 +108,7 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Gets the number of pixels each heart is offset when drawing the next heart.
-	 * 
+	 *
 	 * @return pixel offset
 	 */
 	public int getIconOffset() {
@@ -114,7 +117,7 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Sets the number of pixels each heart is offset when drawing the next heart.
-	 * 
+	 *
 	 * @param offset when drawing hearts
 	 * @return this
 	 */
@@ -125,9 +128,9 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Gets the percent of health a player needs to fall to or below in order for the hearts to begin blinking.
-	 * 
+	 *
 	 * Valid percents are between zero and one hundred, inclusive.
-	 * 
+	 *
 	 * @return danger percent
 	 */
 	public float getDangerPercent() {
@@ -136,9 +139,9 @@ public class HealthBar extends GenericWidget {
 
 	/**
 	 * Sets the percent of health a player needs to fall to or below in order for the hearts to begin blinking.
-	 * 
+	 *
 	 * Valid percents are between zero and one hundred, inclusive.
-	 * 
+	 *
 	 * @param percent
 	 * @return this
 	 */

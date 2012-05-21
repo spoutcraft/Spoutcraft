@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -24,22 +27,20 @@ import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.IllegalAddonAccessException;
 
 /**
- * @author lahwran
  * @param <TEvent> Event type
- * 
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class HandlerList<TEvent extends Event<TEvent>> {
 	/**
 	 * handler array. this field being an array is the key to this system's speed.
-	 * 
+	 *
 	 * is initialized in bake().
 	 */
 	public Listener<TEvent>[][] handlers;
 
 	/**
 	 * Int array same length as handlers. each value in this array is the index of an Order slot, corossponding to the equivalent value in handlers.
-	 * 
+	 *
 	 * is initialized in bake().
 	 */
 	public int[] handlerids;
@@ -51,7 +52,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Whether the current handlerslist has been fully baked. When this is set to false, the Map<Order, List<Listener>> will be baked to Listener[][] next time the event is called.
-	 * 
+	 *
 	 * @see EventManager.callEvent
 	 */
 	private boolean baked = false;
@@ -104,7 +105,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Register a new listener in this handler list
-	 * 
+	 *
 	 * @param listener listener to register
 	 * @param order order location at which to call provided listener
 	 * @param addon Addon this listener belongs to
@@ -124,7 +125,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a listener from all order slots
-	 * 
+	 *
 	 * @param listener listener to purge
 	 */
 	public void unregister(Listener<TEvent> listener) {
@@ -135,7 +136,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a listener from a specific order slot
-	 * 
+	 *
 	 * @param listener listener to remove
 	 * @param order order from which to remove listener
 	 */
@@ -150,7 +151,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a plugin from all order slots
-	 * 
+	 *
 	 * @param addon plugin to remove
 	 */
 	public void unregister(Addon addon) {
@@ -161,7 +162,7 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Remove a plugin from a specific order slot
-	 * 
+	 *
 	 * @param addon plugin to remove
 	 * @param order order from which to remove plugin
 	 */
@@ -185,8 +186,9 @@ public class HandlerList<TEvent extends Event<TEvent>> {
 	 * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary
 	 */
 	public void bake() {
-		if (baked)
+		if (baked) {
 			return; // don't re-bake when still valid
+		}
 
 		ArrayList<Listener[]> handlerslist = new ArrayList<Listener[]>();
 		ArrayList<Integer> handleridslist = new ArrayList<Integer>();

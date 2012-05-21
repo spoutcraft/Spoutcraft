@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +29,6 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericButton extends GenericControl implements Button {
-
 	protected GenericLabel label = new GenericLabel();
 	protected String disabledText = "";
 	protected Color hoverColor = new Color(1f, 1f, 0.627F);
@@ -119,11 +121,11 @@ public class GenericButton extends GenericControl implements Button {
 		innerWidth = width;
 		return this;
 	}
-	
+
 	public double getInnerWidth() {
 		return innerWidth;
 	}
-	
+
 	public Button setAuto(boolean auto) {
 		label.setAuto(auto);
 		return this;
@@ -138,29 +140,28 @@ public class GenericButton extends GenericControl implements Button {
 	}
 
 	public void onButtonClick(ButtonClickEvent event) {
-		
 	}
 
 	public Label setScale(float scale) {
 		this.scale = scale;
 		return this;
 	}
-	
+
 	public float getScale() {
 		return scale;
 	}
-	
+
 	@Override
 	public Widget setWidth(int width) {
 		label.setWidth(width);
 		return super.setWidth(width);
 	}
-	
+
 	public Label setShadow(boolean shadow) {
 		label.setShadow(shadow);
 		return this;
 	}
-	
+
 	public boolean hasShadow() {
 		return label.hasShadow();
 	}

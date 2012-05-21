@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -29,7 +32,6 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
  * Represents a base entity in the world
  */
 public interface Entity extends PropertyInterface {
-
 	/**
 	 * Gets the current location of the entity
 	 * @return location
@@ -164,29 +166,29 @@ public interface Entity extends PropertyInterface {
 	 * @return unique id
 	 */
 	public UUID getUniqueId();
-	
+
 	/**
 	 * Gets the amount of ticks this entity has lived for.
 	 * <p>
 	 * This is the equivalent to "age" in entities.
-	 * 
+	 *
 	 * @return Age of entity
 	 */
 	public int getTicksLived();
-	
+
 	/**
 	 * Sets the amount of ticks this entity has lived for.
 	 * <p>
 	 * This is the equivalent to "age" in entities. May not be
 	 * less than one tick.
-	 * 
+	 *
 	 * @param value Age of entity
 	 */
 	public void setTicksLived(int value);
-	
+
 	/**
 	 * Sets the skin of this entity to the skin URI
-	 * 
+	 *
 	 * @param skinURI
 	 * @param type
 	 */

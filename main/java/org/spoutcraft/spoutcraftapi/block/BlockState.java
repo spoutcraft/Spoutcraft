@@ -1,22 +1,9 @@
 /*
- * This file is part of Bukkit (http://bukkit.org/).
- * 
- * Bukkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This file is part of SpoutcraftAPI.
  *
- * Bukkit is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -34,6 +21,7 @@ package org.spoutcraft.spoutcraftapi.block;
 
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+
 /**
  * Represents a captured state of a block, which will not change automatically.
  *
@@ -43,17 +31,16 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
  * another type entirely, causing your BlockState to become invalid.
  */
 public interface BlockState {
-
 	/**
 	 * Gets the block represented by this BlockState
 	 *
 	 * @return Block that this BlockState represents
 	 */
 	Block getBlock();
-	
+
 	/**
 	 * Gets the location represented by this blockstate
-	 * 
+	 *
 	 * @return location that this block state represents
 	 */
 	FixedLocation getLocation();

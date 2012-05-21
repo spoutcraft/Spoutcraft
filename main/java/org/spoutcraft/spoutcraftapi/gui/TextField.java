@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -21,17 +24,16 @@ import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 
 @UnsafeClass
 public interface TextField extends Control {
-
 	/**
 	 * Gets the position of the cursor in the text field. Position zero is the start of the text.
-	 * 
+	 *
 	 * @return position
 	 */
 	public int getCursorPosition();
 
 	/**
 	 * Sets the position of the cursor in the text field.
-	 * 
+	 *
 	 * @param position to set to
 	 * @return textfield
 	 */
@@ -39,14 +41,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the text typed in this text field
-	 * 
+	 *
 	 * @return text
 	 */
 	public String getText();
 
 	/**
 	 * Sets the text visible in this text field
-	 * 
+	 *
 	 * @param text inside of the text field
 	 * @return textfield
 	 */
@@ -54,14 +56,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the maximum characters that can be typed into this text field
-	 * 
+	 *
 	 * @return maximum characters
 	 */
 	public int getMaximumCharacters();
 
 	/**
 	 * Sets the maximum characters that can be typed into this text field. If zero is passed, the text field will hold as many characters as it can depending on its size.
-	 * 
+	 *
 	 * @param max characters that can be typed
 	 * @return max chars
 	 */
@@ -69,14 +71,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the maximum line this text field can hold
-	 * 
+	 *
 	 * @return max lines
 	 */
 	public int getMaximumLines();
 
 	/**
 	 * Sets the maximum lines this text field can hold. If zero is passed, the text field will hold as many lines as it can depending on its size.
-	 * 
+	 *
 	 * @param max lines (0 – 127)
 	 * @return textfield
 	 */
@@ -84,14 +86,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the color of the inner field area of the text box.
-	 * 
+	 *
 	 * @return field color
 	 */
 	public Color getFieldColor();
 
 	/**
 	 * Sets the field color of the inner field area of the text box.
-	 * 
+	 *
 	 * @param color to render as
 	 * @return textfield
 	 */
@@ -99,14 +101,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the outside color of the field area of the text box.
-	 * 
+	 *
 	 * @return border color
 	 */
 	public Color getBorderColor();
 
 	/**
 	 * Sets the outside color of the field area of the text box.
-	 * 
+	 *
 	 * @param color to render as
 	 * @return textfield
 	 */
@@ -114,13 +116,13 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the tab index for this text field
-	 * 
+	 *
 	 * @return tab index
 	 */
 	public int getTabIndex();
 
 	/**
-	 * Sets the tab index for this text field. When the player presses 
+	 * Sets the tab index for this text field. When the player presses
 	 * the tabulator key the text field with index+1 will obtain the focus.
 	 * Text fields using the same index may not obtain focus when pressing the tabulator key.
 	 * The behaviour discontinuous index sequences is undefined.
@@ -131,7 +133,7 @@ public interface TextField extends Control {
 
 	/**
 	 * Determines if this text field is a password field
-	 * 
+	 *
 	 * @return password field
 	 */
 	public boolean isPasswordField();
@@ -146,14 +148,14 @@ public interface TextField extends Control {
 
 	/**
 	 * Gets the text processor
-	 * 
+	 *
 	 * @return assigned text processor
 	 */
 	public TextProcessor getTextProcessor();
 
 	/**
 	 * Sets the text processor
-	 * 
+	 *
 	 * @param processor
 	 * @return textfield
 	 */
@@ -170,7 +172,7 @@ public interface TextField extends Control {
 	 * Fires when the user presses Enter.
 	 */
 	public void onTypingFinished();
-	
+
 	/**
 	 * Sets the placeholder to text.
 	 * The placeholder will be displayed when no text is in the TextField
@@ -178,7 +180,7 @@ public interface TextField extends Control {
 	 * @return textfield
 	 */
 	public TextField setPlaceholder(String text);
-	
+
 	/**
 	 * Gets the placeholder
 	 * @return the placeholder

@@ -1,12 +1,15 @@
 /*
- * This file is part of SpoutAPI (http://wiki.getspout.org/).
- * 
- * SpoutAPI is free software: you can redistribute it and/or modify
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * SpoutAPI is distributed in the hope that it will be useful,
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
@@ -29,9 +32,8 @@ public class GenericCustomFood extends GenericCustomItem implements Food{
 		super(addon, name, texture);
 		hunger = hungerRestored;
 	}
-	
+
 	public GenericCustomFood() {
-		
 	}
 
 	public int getHungerRestored() {
@@ -43,7 +45,7 @@ public class GenericCustomFood extends GenericCustomItem implements Food{
 		super.readData(input);
 		hunger = input.read();
 	}
-	
+
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);

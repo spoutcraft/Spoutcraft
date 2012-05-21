@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +23,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.UnsafeMethod;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -30,7 +34,6 @@ import org.spoutcraft.spoutcraftapi.command.CommandSender;
 import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 
 public abstract class JavaAddon implements Addon {
-
 	private boolean initialized = false;
 	private AddonLoader loader = null;
 	private Client client = null;
@@ -40,17 +43,15 @@ public abstract class JavaAddon implements Addon {
 	private boolean enabled = false;
 	private AddonDescriptionFile description = null;
 	private boolean naggable = false;
-	
+
 	@UnsafeMethod
-	public JavaAddon(){
-		
+	public JavaAddon() {
 	}
 
 	public final AddonDescriptionFile getDescription() {
 		return description;
 	}
 
-	
 	public final void initialize(JavaAddonLoader loader, Client client, AddonDescriptionFile description, File dataFolder, File file, AddonClassLoader classLoader) {
 		if (!initialized) {
 			this.loader = loader;
@@ -88,11 +89,11 @@ public abstract class JavaAddon implements Addon {
 	public final boolean isEnabled() {
 		return enabled;
 	}
-	
-	public final Logger getLogger(){
+
+	public final Logger getLogger() {
 		return client.getLogger();
 	}
-	
+
 	@UnsafeMethod
 	public void onLoad() {
 	}
@@ -125,12 +126,12 @@ public abstract class JavaAddon implements Addon {
 	public boolean onCommand(CommandSender paramCommandSender, Command paramCommand, String paramString, String[] paramArrayOfString) {
 		return false;
 	}
-	
+
 	@Override
 	public final int hashCode() {
 		return (new HashCodeBuilder().append(file).append(dataFolder).append(description!=null?description.getName():"").toHashCode());
 	}
-	
+
 	public boolean hasConfigurationGUI() {
 		return false;
 	}

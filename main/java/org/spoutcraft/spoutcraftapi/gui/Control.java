@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,17 +23,16 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public interface Control extends Widget {
-
 	/**
 	 * True if the control is enabled and can receive input
-	 * 
+	 *
 	 * @return enabled
 	 */
 	public boolean isEnabled();
 
 	/**
 	 * Disables input to the control, but still allows it to be visible
-	 * 
+	 *
 	 * @param enable
 	 * @return Control
 	 */
@@ -38,14 +40,14 @@ public interface Control extends Widget {
 
 	/**
 	 * Gets the color of this control
-	 * 
+	 *
 	 * @return color
 	 */
 	public Color getColor();
 
 	/**
 	 * Sets the color of this control
-	 * 
+	 *
 	 * @param color to set
 	 * @return Control
 	 */
@@ -53,14 +55,14 @@ public interface Control extends Widget {
 
 	/**
 	 * Gets the color of this control when it is disabled
-	 * 
+	 *
 	 * @return disabled color
 	 */
 	public Color getDisabledColor();
 
 	/**
 	 * Sets the color of this control when it is disabled
-	 * 
+	 *
 	 * @param color to set
 	 * @return Control
 	 */
@@ -69,14 +71,14 @@ public interface Control extends Widget {
 	public boolean isFocus();
 
 	public Control setFocus(boolean focus);
-	
+
 	/**
 	 * Will be called if this control has focus and a key was pressed.
 	 * @param key the pressed key.
 	 * @return true if you handled the keypress and it shouldn't be handled elsewhere.
 	 */
 	public boolean onKeyPressed(Keyboard key);
-	
+
 	/**
 	 * Will be called if this control has focus and a key was released.
 	 * @param key the released key.

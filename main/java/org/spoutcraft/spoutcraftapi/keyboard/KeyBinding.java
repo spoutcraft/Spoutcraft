@@ -1,9 +1,29 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.keyboard;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 
@@ -15,10 +35,10 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	private transient UUID uuid = null;
 	private String addonName;
 	private transient BindingExecutionDelegate myDelegate = null;
-	
+
 	public KeyBinding() {
 	}
-	
+
 	public KeyBinding(int key, String name, String id, String description) {
 		setKey(key);
 		this.addonName = name;
@@ -26,7 +46,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 		this.id = id;
 		this.addon = null;
 	}
-	
+
 	public KeyBinding(int key, Addon addon, String id, String description) {
 		setKey(key);
 		this.addon = addon;
@@ -36,7 +56,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	}
 
 	public Addon getAddon() {
-		if(addon == null) {
+		if (addon == null) {
 			addon = Spoutcraft.getAddonManager().getAddon(addonName);
 		}
 		return addon;
@@ -57,7 +77,7 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public String getTitle() {
 		return description;
 	}
@@ -76,9 +96,9 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof KeyBinding){
+		if (obj instanceof KeyBinding) {
 			KeyBinding other = (KeyBinding)obj;
-			if(uuid != null && other.uuid != null) {
+			if (uuid != null && other.uuid != null) {
 				return other.uuid.equals(this.uuid);
 			} else {
 				return this == obj;
@@ -99,10 +119,10 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 	}
 
 	public String getAddonName() {
-		if(addon == null) {
+		if (addon == null) {
 			addon = Spoutcraft.getAddonManager().getAddon(addonName);
 		}
-		if(addon != null) {
+		if (addon != null) {
 			return addon.getDescription().getName();
 		} else {
 			return addonName;
@@ -123,11 +143,9 @@ public final class KeyBinding extends AbstractBinding implements Serializable {
 
 	@Override
 	public boolean matches(int key, byte modifiers) {
-		if(myDelegate == null && uuid == null) {
+		if (myDelegate == null && uuid == null) {
 			return false;
 		}
 		return super.matches(key, modifiers);
 	}
-	
-	
 }

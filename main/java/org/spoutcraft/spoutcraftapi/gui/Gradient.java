@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,17 +23,16 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public interface Gradient extends Widget {
-
 	/**
 	 * Gets the top colour of the gradient to render
-	 * 
+	 *
 	 * @return color
 	 */
 	public Color getTopColor();
 
 	/**
 	 * Sets the top colour of the gradient to render
-	 * 
+	 *
 	 * @param color
 	 * @return gradient
 	 */
@@ -38,14 +40,14 @@ public interface Gradient extends Widget {
 
 	/**
 	 * Gets the bottom colour of the gradient to render
-	 * 
+	 *
 	 * @return color
 	 */
 	public Color getBottomColor();
 
 	/**
 	 * Sets the bottom colour of the gradient to render
-	 * 
+	 *
 	 * @param color
 	 * @return gradient
 	 */

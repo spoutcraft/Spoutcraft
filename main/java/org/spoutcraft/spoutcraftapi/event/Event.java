@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,11 +20,9 @@
 package org.spoutcraft.spoutcraftapi.event;
 
 /**
- * @author lahwran
  * @param <TEvent> Event class
  */
 public abstract class Event<TEvent extends Event<TEvent>> {
-
 	/**
 	 * Stores cancelled status. will be false unless a subclass publishes setCancelled.
 	 */
@@ -29,14 +30,14 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Get the static handler list of this event subclass.
-	 * 
+	 *
 	 * @return HandlerList to call event with
 	 */
 	public abstract HandlerList<TEvent> getHandlers();
 
 	/**
 	 * Get event type name.
-	 * 
+	 *
 	 * @return event name
 	 */
 	protected abstract String getEventName();
@@ -47,13 +48,13 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Set cancelled status. Events which wish to be cancellable should implement Cancellable and implement setCancelled as:
-	 * 
+	 *
 	 * <pre>
 	 * public void setCancelled(boolean cancelled) {
 	 * 	super.setCancelled(cancelled);
 	 * }
 	 * </pre>
-	 * 
+	 *
 	 * @param cancelled True to cancel event
 	 */
 	protected void setCancelled(boolean cancelled) {
@@ -62,7 +63,7 @@ public abstract class Event<TEvent extends Event<TEvent>> {
 
 	/**
 	 * Returning true will prevent calling any even Order slots.
-	 * 
+	 *
 	 * @see Order
 	 * @return false if the event is propogating; events which do not implement Cancellable should never return true here
 	 */

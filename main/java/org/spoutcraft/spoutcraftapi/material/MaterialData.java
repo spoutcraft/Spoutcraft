@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.material;
 
 import java.lang.reflect.Constructor;
@@ -6,6 +25,8 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import org.spoutcraft.spoutcraftapi.material.block.Air;
 import org.spoutcraft.spoutcraftapi.material.block.DoubleSlabs;
@@ -27,8 +48,6 @@ import org.spoutcraft.spoutcraftapi.material.item.GenericItem;
 import org.spoutcraft.spoutcraftapi.material.item.GenericTool;
 import org.spoutcraft.spoutcraftapi.material.item.GenericWeapon;
 import org.spoutcraft.spoutcraftapi.material.item.SpawnEgg;
-
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class MaterialData {
 	private final static Object[] idLookup = new Object[3200];
@@ -335,7 +354,7 @@ public class MaterialData {
 	public static final Item ghastTear = new GenericItem("Ghast Tear", 370);
 	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
 	public static final Item netherWart = new GenericItem("Nether Wart", 372);
-	
+
 	public static final Item glassBottle = new GenericItem("Glass Bottle", 374);
 	public static final Item spiderEye = new GenericFood("Spider Eye", 375, 2);
 	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
@@ -367,7 +386,7 @@ public class MaterialData {
 	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
 	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
 	public static final Item spawnEggOcelot = new SpawnEgg("Spawn Ocelot", 383, 98);
-	
+
 	public static final Item bottleOEnchanting = new GenericItem("Bottle o' Enchanting", 384);
 	public static final Item fireCharge = new GenericItem("Fire Charge", 385);
 
@@ -382,8 +401,6 @@ public class MaterialData {
 	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
 	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
 	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
-	
-	
 
 	//Potions - Base
 	public static final Item waterBottle = new Potion("Water Bottle", 373, 0);
@@ -391,7 +408,7 @@ public class MaterialData {
 	public static final Item thickPotion = new Potion("Thick Potion", 373, 32);
 	public static final Item mundanePotion = new Potion("Mundane Potion", 373, 64);
 	public static final Item mundanePotionExtended  = new Potion("Mundane Potion", 373, 8192);
-	
+
 	//Potions - Positive
 	public static final Item potionOfRegeneration = new Potion("Potion of Regeneration", 373, 8193);
 	public static final Item potionOfRegenerationExtended = new Potion("Potion of Regeneration", 373, 8257);
@@ -408,7 +425,7 @@ public class MaterialData {
 	public static final Item potionOfStrength = new Potion("Potion of Strength", 373, 8201);
 	public static final Item potionOfStrengthExtended = new Potion("Potion of Strength", 373, 8265);
 	public static final Item potionOfStrengthII = new Potion("Potion of Strength II", 373, 8233);
-	
+
 	//Potions - Negative
 	public static final Item potionOfPoison = new Potion("Potion of Poison", 373, 8196);
 	public static final Item potionOfPoisonExtended = new Potion("Potion of Poison", 373, 8260);
@@ -422,13 +439,14 @@ public class MaterialData {
 	public static final Item potionOfHarming = new Potion("Potion of Harming", 373, 8204);
 	public static final Item potionOfHarmingReverted = new Potion("Potion of Harming", 373, 8268);
 	public static final Item potionOfHarmingII = new Potion("Potion of Harming II", 373, 8236);
-	
+
 	//Potions - Unbrewable
 	public static final Item potionOfRegenerationIIExtended = new Potion("Potion of Regeneration II", 373, 8289);
 	public static final Item potionOfSwiftnessIIExtended = new Potion("Potion of Swiftness II", 373, 8290);
 	public static final Item potionOfStrengthIIExtended = new Potion("Potion of Strength II", 373, 8297);
 	public static final Item potionOfPoisonIIExtended = new Potion("Potion of Poison II", 373, 8292);
-		//Splash Potions - Base
+
+	//Splash Potions - Base
 	public static final Item splashMundanePotion = new Potion("Splash Mundane Potion", 373, 16384);
 
 	//Splash Potions - Positive
@@ -447,7 +465,7 @@ public class MaterialData {
 	public static final Item splashPotionOfStrength = new Potion("Splash Potion of Strength", 373, 16393);
 	public static final Item splashPotionOfStrengthExtended = new Potion("Splash Potion of Strength", 373, 16457);
 	public static final Item splashPotionOfStrengthII = new Potion("Splash Potion of Strength II", 373, 16425);
-	
+
 	//Splash Potions - Negative
 	public static final Item splashPotionOfPoison = new Potion("Splash Potion of Poison", 373, 16388);
 	public static final Item splashPotionOfPoisonExtended = new Potion("Splash Potion of Poison", 373, 16452);
@@ -461,7 +479,7 @@ public class MaterialData {
 	public static final Item splashPotionOfHarming = new Potion("Splash Potion of Harming", 373, 16396);
 	public static final Item splashPotionOfHarmingReverted = new Potion("Splash Potion of Harming", 373, 16460);
 	public static final Item splashPotionOfHarmingII = new Potion("Splash Potion of Harming II", 373, 16428);
-	
+
 	//Splash Potions - Unbrewable
 	public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
 	public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
@@ -509,8 +527,7 @@ public class MaterialData {
 			nameLookup.put(mat.getNotchianName().toLowerCase(), mat);
 			if (idLookup[mat.getRawId()] == null) {
 				idLookup[mat.getRawId()] = mat;
-			}
-			else if (idLookup[mat.getRawId()] instanceof Material[]) {
+			} else if (idLookup[mat.getRawId()] instanceof Material[]) {
 				Material[] multiple = (Material[])idLookup[mat.getRawId()];
 				int size = mat.getRawData() * 2 + 1;
 				if (multiple.length < size) {
@@ -518,20 +535,17 @@ public class MaterialData {
 				}
 				multiple[mat.getRawData()] =  mat;
 				idLookup[mat.getRawId()] = multiple;
-			}
-			else if (idLookup[mat.getRawId()] instanceof Material) {
+			} else if (idLookup[mat.getRawId()] instanceof Material) {
 				Material existing = (Material) idLookup[mat.getRawId()];
 				int size = Math.max(existing.getRawData(), mat.getRawData()) * 2 + 1;
 				Material[] multiple = new Material[size];
 				multiple[existing.getRawData()] = existing;
 				multiple[mat.getRawData()] = mat;
 				idLookup[mat.getRawId()] = multiple;
-			}
-			else {
+			} else {
 				System.out.println("WARNING! Unknown lookup contents, " + idLookup[mat.getRawId()]);
 			}
-		}
-		else {
+		} else {
 			System.out.println("WARNING! Material " + mat.getNotchianName() + " Could Not Fit " + id + ", " + data + " into the lookup array!");
 		}
 	}
@@ -583,7 +597,7 @@ public class MaterialData {
 	 */
 	public static Material getMaterial(int id, short data) {
 		Object o = idLookup[id];
-		if (id == FLINT_ID && data >= 1024){
+		if (id == FLINT_ID && data >= 1024) {
 			o = getCustomBlock(data);
 			if (o == null) {
 				o = getCustomItem(data);
@@ -595,8 +609,9 @@ public class MaterialData {
 		}
 		Material[] materials = (Material[])o;
 		Material m = materials[0];
-		if (data < materials.length && data > -1)
+		if (data < materials.length && data > -1) {
 			return materials[data];
+		}
 		return m;
 	}
 
@@ -619,8 +634,7 @@ public class MaterialData {
 			mat = (Material)o;
 			materials = new Material[Math.max(mat.getRawData(), data) *2 + 1];
 			materials[mat.getRawData()] = mat;
-		}
-		else {
+		} else {
 			materials = (Material[])o;
 			if (data > materials.length) {
 				materials = adjust(materials, data * 2 + 1);
@@ -640,11 +654,10 @@ public class MaterialData {
 				constructor.setAccessible(true);
 				mat = constructor.newInstance(orig.getName(), id, data, true);
 				insertItem(id, data, mat);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				System.out.println("[Spoutcraft] Available constructors: ");
 				for (Constructor<?> c : orig.getClass().getConstructors()) {
-					System.out.println("[Spoutcraft]       Constructor Params: " + c.getParameterTypes());
+					System.out.println("[Spoutcraft]	   Constructor Params: " + c.getParameterTypes());
 				}
 				e.printStackTrace();
 				System.out.println("[Spoutcraft] Failed to create a duplicate item in MaterialData.getOrCreateMaterial, for " + id + ", " + data);
@@ -751,11 +764,11 @@ public class MaterialData {
 		for (int i = 0; i < idLookup.length; i++) {
 			if (idLookup[i] instanceof Material) {
 				materials.add((Material)idLookup[i]);
-			}
-			else if (idLookup[i] instanceof Material[]) {
+			} else if (idLookup[i] instanceof Material[]) {
 				for (Material mat : ((Material[])idLookup[i])) {
-					if (mat != null)
+					if (mat != null) {
 						materials.add(mat);
+					}
 				}
 			}
 		}

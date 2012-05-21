@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +19,10 @@
  */
 package org.spoutcraft.spoutcraftapi.gui;
 
-
 public interface MinecraftFont {
-
 	/**
 	 * Gets the scaled width of the text, in terms of the minecraft screen resolution
-	 * 
+	 *
 	 * @param text
 	 * @return width
 	 */
@@ -29,7 +30,7 @@ public interface MinecraftFont {
 
 	/**
 	 * Is true if the character can be be sent via chat or rendered on the screen
-	 * 
+	 *
 	 * @param ch to check
 	 * @return if the character can be be sent via chat or rendered on the screen
 	 */
@@ -37,7 +38,7 @@ public interface MinecraftFont {
 
 	/**
 	 * Is true if all of the text can be sent via chat or rendered on the screen
-	 * 
+	 *
 	 * @param text to check
 	 * @return if all of the text can be sent via chat or rendered on the screen
 	 */
@@ -45,7 +46,7 @@ public interface MinecraftFont {
 
 	/**
 	 * Draws the given text onto the screen at the given x and y coordinates, with the given hexidecimal color
-	 * 
+	 *
 	 * @param text to draw
 	 * @param x to position the left lower corner at
 	 * @param y to position the left lower corner at
@@ -56,7 +57,7 @@ public interface MinecraftFont {
 	/**
 	 * Draws the given text onto the screen at the given x and y coordinates, with the given hexidecimal color
 	 * This method also adds a shadow below the text
-	 * 
+	 *
 	 * @param text to draw
 	 * @param x to position the left lower corner at
 	 * @param y to position the left lower corner at
@@ -66,7 +67,7 @@ public interface MinecraftFont {
 
 	/**
 	 * Draws the given text centered onto the screen at the given x and y coordinates, with the given hexidecimal color
-	 * 
+	 *
 	 * @param text to draw
 	 * @param x to position the left lower corner at
 	 * @param y to position the left lower corner at

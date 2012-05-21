@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +23,6 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * @author alta189
- * 
- */
 @Documented
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface MPOnly {
@@ -32,5 +31,4 @@ public @interface MPOnly {
 	public String version() default "1.0";
 
 	public String shortDescription() default "Indicates that the function or event only is used or runs when the client is in Multiplayer";
-
 }

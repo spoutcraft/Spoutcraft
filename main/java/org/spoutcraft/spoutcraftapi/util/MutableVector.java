@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -46,7 +49,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Construct the vector with provided integer components.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -59,7 +62,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Construct the vector with provided double components.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -72,7 +75,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Construct the vector with provided float components.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -85,7 +88,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Adds the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -98,7 +101,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Subtracts the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -111,7 +114,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Multiplies the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -124,7 +127,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Divides the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -137,7 +140,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Copies another vector
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -150,7 +153,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the magnitude of the vector, defined as sqrt(x^2+y^2+z^2). The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the length is too long.
-	 * 
+	 *
 	 * @return the magnitude
 	 */
 	public double length() {
@@ -159,7 +162,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the magnitude of the vector squared.
-	 * 
+	 *
 	 * @return the magnitude
 	 */
 	public double lengthSquared() {
@@ -168,7 +171,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Get the distance between this vector and another. The value of this method is not cached and uses a costly square-root function, so do not repeatedly call this method to get the vector's magnitude. NaN will be returned if the inner result of the sqrt() function overflows, which will be caused if the distance is too long.
-	 * 
+	 *
 	 * @return the distance
 	 */
 	public double distance(Vector o) {
@@ -177,7 +180,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Get the squared distance between this vector and another.
-	 * 
+	 *
 	 * @return the distance
 	 */
 	public double distanceSquared(Vector o) {
@@ -186,7 +189,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the angle between this vector and another in radians.
-	 * 
+	 *
 	 * @param other
 	 * @return angle in radians
 	 */
@@ -198,7 +201,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Sets this vector to the midpoint between this vector and another.
-	 * 
+	 *
 	 * @param other
 	 * @return this same vector (now a midpoint)
 	 */
@@ -211,7 +214,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets a new midpoint vector between this vector and another.
-	 * 
+	 *
 	 * @param other
 	 * @return a new midpoint vector
 	 */
@@ -224,7 +227,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Performs scalar multiplication, multiplying all components with a scalar.
-	 * 
+	 *
 	 * @param m
 	 * @return the same vector
 	 */
@@ -237,7 +240,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Performs scalar multiplication, multiplying all components with a scalar.
-	 * 
+	 *
 	 * @param m
 	 * @return the same vector
 	 */
@@ -250,7 +253,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Performs scalar multiplication, multiplying all components with a scalar.
-	 * 
+	 *
 	 * @param m
 	 * @return the same vector
 	 */
@@ -263,7 +266,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Calculates the dot product of this vector with another. The dot product is defined as x1*x2+y1*y2+z1*z2. The returned value is a scalar.
-	 * 
+	 *
 	 * @param other
 	 * @return dot product
 	 */
@@ -273,11 +276,11 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Calculates the cross product of this vector with another. The cross product is defined as:
-	 * 
+	 *
 	 * x = y1 * z2 - y2 * z1<br/>
 	 * y = z1 * x2 - z2 * x1<br/>
 	 * z = x1 * y2 - x2 * y1
-	 * 
+	 *
 	 * @param o
 	 * @return the same vector
 	 */
@@ -294,7 +297,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Converts this vector to a unit vector (a vector with length of 1).
-	 * 
+	 *
 	 * @return the same vector
 	 */
 	public Vector normalize() {
@@ -309,7 +312,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Zero this vector's components.
-	 * 
+	 *
 	 * @return the same vector
 	 */
 	public Vector zero() {
@@ -321,7 +324,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Returns whether this vector is in an axis-aligned bounding box. The minimum and maximum vectors given must be truly the minimum and maximum X, Y and Z components.
-	 * 
+	 *
 	 * @param min
 	 * @param max
 	 * @return whether this vector is in the AABB
@@ -332,7 +335,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Returns whether this vector is within a sphere.
-	 * 
+	 *
 	 * @param origin
 	 * @param radius
 	 * @return whether this vector is in the sphere
@@ -343,7 +346,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the X component.
-	 * 
+	 *
 	 * @return
 	 */
 	public double getX() {
@@ -352,7 +355,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the floored value of the X component, indicating the block that this vector is contained with.
-	 * 
+	 *
 	 * @return block X
 	 */
 	public int getBlockX() {
@@ -361,7 +364,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the Y component.
-	 * 
+	 *
 	 * @return
 	 */
 	public double getY() {
@@ -370,7 +373,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the floored value of the Y component, indicating the block that this vector is contained with.
-	 * 
+	 *
 	 * @return block y
 	 */
 	public int getBlockY() {
@@ -379,7 +382,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the Z component.
-	 * 
+	 *
 	 * @return
 	 */
 	public double getZ() {
@@ -388,7 +391,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the floored value of the Z component, indicating the block that this vector is contained with.
-	 * 
+	 *
 	 * @return block z
 	 */
 	public int getBlockZ() {
@@ -397,7 +400,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the X component.
-	 * 
+	 *
 	 * @param x
 	 * @return x
 	 */
@@ -408,7 +411,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the X component.
-	 * 
+	 *
 	 * @param x
 	 * @return x
 	 */
@@ -419,7 +422,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the X component.
-	 * 
+	 *
 	 * @param x
 	 * @return x
 	 */
@@ -430,7 +433,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Y component.
-	 * 
+	 *
 	 * @param y
 	 * @return y
 	 */
@@ -441,7 +444,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Y component.
-	 * 
+	 *
 	 * @param y
 	 * @return y
 	 */
@@ -452,7 +455,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Y component.
-	 * 
+	 *
 	 * @param y
 	 * @return y
 	 */
@@ -463,7 +466,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Z component.
-	 * 
+	 *
 	 * @param z
 	 * @return z
 	 */
@@ -474,7 +477,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Z component.
-	 * 
+	 *
 	 * @param z
 	 * @return z
 	 */
@@ -485,7 +488,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Set the Z component.
-	 * 
+	 *
 	 * @param z
 	 * @return z
 	 */
@@ -496,7 +499,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Checks to see if two objects are equal.
-	 * 
+	 *
 	 * Only two Vectors can ever return true. This method uses a fuzzy match to account for floating point errors. The epsilon can be retrieved with epsilon.
 	 */
 	@Override
@@ -512,7 +515,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Returns a hash code for this vector
-	 * 
+	 *
 	 * @return hash code
 	 */
 	@Override
@@ -527,7 +530,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Get a new vector.
-	 * 
+	 *
 	 * @return vector
 	 */
 	@Override
@@ -547,7 +550,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Returns this vector's components as x,y,z.
-	 * 
+	 *
 	 */
 	@Override
 	public String toString() {
@@ -556,7 +559,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets a Location version of this vector with yaw and pitch being 0.
-	 * 
+	 *
 	 * @param world
 	 * @return the location
 	 */
@@ -566,7 +569,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets a Location version of this vector.
-	 * 
+	 *
 	 * @param world
 	 * @return the location
 	 */
@@ -576,7 +579,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Get the threshold used for equals().
-	 * 
+	 *
 	 * @return
 	 */
 	public static double getEpsilon() {
@@ -585,7 +588,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the minimum components of two vectors.
-	 * 
+	 *
 	 * @param v1
 	 * @param v2
 	 * @return minimum
@@ -596,7 +599,7 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets the maximum components of two vectors.
-	 * 
+	 *
 	 * @param v1
 	 * @param v2
 	 * @return maximum
@@ -607,11 +610,10 @@ public class MutableVector implements Vector {
 
 	/**
 	 * Gets a random vector with components having a random value between 0 and 1.
-	 * 
+	 *
 	 * @return
 	 */
 	public static Vector getRandom() {
 		return new MutableVector(random.nextDouble(), random.nextDouble(), random.nextDouble());
 	}
-
 }

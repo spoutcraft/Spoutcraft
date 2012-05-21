@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,11 +20,10 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 public interface RenderDelegate {
-
 	public void render(ArmorBar bar);
 
 	public void render(BubbleBar bar);
-	
+
 	public void render(ExpBar bar);
 
 	public void render(GenericButton button);
@@ -39,13 +41,13 @@ public interface RenderDelegate {
 	public void render(GenericTexture texture);
 
 	public void render(HealthBar bar);
-	
+
 	public void render(HungerBar bar);
 
 	public void render(GenericEntityWidget entityWidget);
-	
+
 	public void render(GenericRadioButton radio);
-	
+
 	public void render(GenericCheckBox check);
 
 	public void render(GenericBitmap bitmap);
@@ -67,14 +69,14 @@ public interface RenderDelegate {
 	public void renderContents(GenericListWidget genericListWidget);
 
 	public void renderContents(GenericScrollArea genericScrollArea);
-	
+
 	public void render(GenericComboBox comboBox);
-	
+
 	public void render(GenericSlot genericSlot);
-	
+
 	public String getFittingText(String text, int width);
-	
+
 	public boolean bindTexture(String path);
-	
+
 	public boolean bindTexture(String addon, String path);
 }

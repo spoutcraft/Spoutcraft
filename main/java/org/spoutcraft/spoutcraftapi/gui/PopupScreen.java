@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,17 +23,16 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public interface PopupScreen extends Screen {
-
 	/**
 	 * Is true if the popup screen has no transparency layer
-	 * 
+	 *
 	 * @return transparency
 	 */
 	public boolean isTransparent();
 
 	/**
 	 * Sets the transparency layer
-	 * 
+	 *
 	 * @param value to set
 	 * @return popupscreen
 	 */
@@ -38,12 +40,12 @@ public interface PopupScreen extends Screen {
 
 	/**
 	 * Closes the screen. Functionally equivelent to InGameHUD.closePopup()
-	 * 
+	 *
 	 * @return true if the screen was closed
 	 */
 	public boolean close();
-	
+
 	public boolean isPausingGame();
-	
+
 	public void setPauseGame(boolean v);
 }

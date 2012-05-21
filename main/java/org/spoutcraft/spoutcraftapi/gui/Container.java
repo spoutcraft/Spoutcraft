@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +23,6 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public interface Container extends Widget {
-
 	/**
 	 * Adds a single widget to a container
 	 * @param child The widget to add
@@ -39,7 +41,7 @@ public interface Container extends Widget {
 	/**
 	 * Adds a list of children to a container.
 	 * @param children The widgets to add
-	 * @return 
+	 * @return
 	 */
 	public Container addChildren(Widget... children);
 
@@ -52,7 +54,7 @@ public interface Container extends Widget {
 
 	/**
 	 * Get a list of widgets inside this container.
-	 * @return 
+	 * @return
 	 */
 	public Widget[] getChildren();
 
@@ -88,39 +90,39 @@ public interface Container extends Widget {
 
 	/**
 	 * Set the contents alignment.
-	 * @return 
+	 * @return
 	 */
 	public Container setAlign(WidgetAnchor anchor);
 
 	/**
 	 * Get the contents alignment.
-	 * @return 
+	 * @return
 	 */
 	public WidgetAnchor getAlign();
 
 	/**
 	 * Reverse the drawing order (right to left or bottom to top).
 	 * @param reverse Set to reverse direction
-	 * @return 
+	 * @return
 	 */
 	public Container setReverse(boolean reverse);
 
 	/**
 	 * If this is drawing in reverse order.
-	 * @return 
+	 * @return
 	 */
 	public boolean getReverse();
 
 	/**
 	 * Determines if children expand to fill width and height
 	 * @param auto
-	 * @return 
+	 * @return
 	 */
 	public Container setAuto(boolean auto);
 
-	/** 
+	/**
 	 * True if the children will expand to fill width and height
-	 * @return 
+	 * @return
 	 */
 	public boolean isAuto();
 }

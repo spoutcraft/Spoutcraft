@@ -1,6 +1,25 @@
 /*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/*
  * This file is part of SpoutAPI (http://wiki.getspout.org/).
- * 
+ *
  * SpoutAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +37,8 @@ package org.spoutcraft.spoutcraftapi.material.item;
 
 import java.io.IOException;
 
+import gnu.trove.map.hash.TObjectFloatHashMap;
+
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
@@ -26,16 +47,14 @@ import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.Tool;
 
-import gnu.trove.map.hash.TObjectFloatHashMap;
-
 public class GenericCustomTool extends GenericCustomItem implements Tool{
 	private short durability = 1;
 	private TObjectFloatHashMap<Block> strengthMods = new TObjectFloatHashMap<Block>();
-	
-	public GenericCustomTool(){
+
+	public GenericCustomTool() {
 		super();
 	}
-	
+
 	public GenericCustomTool(Addon addon, String name, String texture) {
 		super(addon, name, texture);
 	}
@@ -81,7 +100,7 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 			setStrengthModifier(block, mod);
 		}
 	}
-	
+
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
 		super.writeData(output);
@@ -93,8 +112,7 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 			if (block instanceof CustomBlock) {
 				output.writeInt(((CustomBlock)block).getCustomId());
 				output.writeShort((short) -1);
-			}
-			else {
+			} else {
 				output.writeInt(block.getRawId());
 				output.writeShort((short) block.getRawData());
 			}
@@ -106,6 +124,4 @@ public class GenericCustomTool extends GenericCustomItem implements Tool{
 	public int getVersion() {
 		return super.getVersion() + 0;
 	}
-	
-
 }

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -62,7 +65,7 @@ public class WidgetType {
 		id = lastId;
 		lastId++;
 		lookupClass.put(this, id);
-		lookupId.put(id, this); 
+		lookupId.put(id, this);
 		client = false;
 	}
 
@@ -76,7 +79,7 @@ public class WidgetType {
 		lookupId.put(id, this);
 		client = false;
 	}
-	
+
 	public WidgetType(Class<? extends Widget> widget, boolean client) {
 		widgetClass = widget;
 		id = lastId;
@@ -104,7 +107,7 @@ public class WidgetType {
 	public final Class<? extends Widget> getWidgetClass() {
 		return widgetClass;
 	}
-	
+
 	public final boolean isClientOnly() {
 		return client;
 	}

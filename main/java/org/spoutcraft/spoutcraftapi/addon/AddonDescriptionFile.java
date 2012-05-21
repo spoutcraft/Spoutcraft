@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,9 +26,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.spoutcraft.spoutcraftapi.addon.Addon.Mode;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
+
+import org.spoutcraft.spoutcraftapi.addon.Addon.Mode;
 
 public class AddonDescriptionFile {
 	private static final Yaml yaml = new Yaml(new SafeConstructor());
@@ -76,7 +80,7 @@ public class AddonDescriptionFile {
 	public String getMain() {
 		return this.main;
 	}
-	
+
 	public AddonLoadOrder getLoad() {
 		return this.load;
 	}
@@ -110,8 +114,9 @@ public class AddonDescriptionFile {
 		try {
 			this.name = map.get("name").toString();
 
-			if (!this.name.matches("^[A-Za-z0-9 _.-]+$"))
+			if (!this.name.matches("^[A-Za-z0-9 _.-]+$")) {
 				throw new InvalidDescriptionException("name '" + this.name + "' contains invalid characters.");
+			}
 		} catch (NullPointerException ex) {
 			throw new InvalidDescriptionException(ex, "name is not defined");
 		} catch (ClassCastException ex) {
@@ -128,16 +133,21 @@ public class AddonDescriptionFile {
 
 		try {
 			this.main = map.get("main").toString();
-			if (this.main.startsWith("org.bukkit."))
+			if (this.main.startsWith("org.bukkit.")) {
 				throw new InvalidDescriptionException("main may not be within the org.bukkit namespace");
-			if (this.main.startsWith("org.getspout."))
+			}
+			if (this.main.startsWith("org.getspout.")) {
 				throw new InvalidDescriptionException("main may not be within the org.getspout namespace");
-			if (this.main.startsWith("org.spoutcraft."))
+			}
+			if (this.main.startsWith("org.spoutcraft.")) {
 				throw new InvalidDescriptionException("main may not be within the org.spoutcraft namespace");
-			if (this.main.startsWith("in.spout."))
+			}
+			if (this.main.startsWith("in.spout.")) {
 				throw new InvalidDescriptionException("main may not be within the in.spout namespace");
-			if (this.main.startsWith("net.minecraft."))
+			}
+			if (this.main.startsWith("net.minecraft.")) {
 				throw new InvalidDescriptionException("main may not be within the net.minecraft namespace");
+			}
 		} catch (NullPointerException ex) {
 			throw new InvalidDescriptionException(ex, "main is not defined");
 		} catch (ClassCastException ex) {
@@ -162,7 +172,7 @@ public class AddonDescriptionFile {
 		} catch (ClassCastException ex) {
 			throw new InvalidDescriptionException(ex, "mode is of wrong type");
 		}
-		
+
 		if (map.containsKey("load")) {
 			try {
 				this.commands = map.get("load");
@@ -231,7 +241,7 @@ public class AddonDescriptionFile {
 			}
 		}
 	}
-	
+
 	private Map<String, Object> saveMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -261,5 +271,4 @@ public class AddonDescriptionFile {
 		}
 		return map;
 	}
-
 }

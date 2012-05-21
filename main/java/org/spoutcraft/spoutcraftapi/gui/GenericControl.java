@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,14 +26,12 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public abstract class GenericControl extends GenericWidget implements Control{
-
 	protected boolean enabled = true;
 	protected Color color = new Color(0.878F, 0.878F, 0.878F);
 	protected Color disabledColor = new Color(0.625F, 0.625F, 0.625F);
 	protected boolean focus = false;
-	
+
 	public GenericControl() {
-		
 	}
 
 	public int getVersion() {
@@ -54,7 +55,7 @@ public abstract class GenericControl extends GenericWidget implements Control{
 		output.writeColor(getDisabledColor());
 		output.writeBoolean(isFocus());
 	}
-	
+
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -81,13 +82,13 @@ public abstract class GenericControl extends GenericWidget implements Control{
 		this.disabledColor = color;
 		return this;
 	}
-	
+
 	public boolean isFocus() {
 		return focus;
 	}
-	
+
 	public Control setFocus(boolean focus) {
-		if(this.focus != focus) {
+		if (this.focus != focus) {
 			this.focus = focus;
 			Spoutcraft.getWidgetManager().sendFocusUpdate(this, focus);
 		}
@@ -106,5 +107,4 @@ public abstract class GenericControl extends GenericWidget implements Control{
 	public boolean onKeyReleased(Keyboard key) {
 		return false;
 	}
-	
 }

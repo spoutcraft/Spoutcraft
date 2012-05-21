@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -88,7 +91,7 @@ public final class SimpleCommandMap implements CommandMap {
 
 	/**
 	 * Registers a command with the given name is possible, otherwise uses fallbackPrefix to create a unique name if its not an alias
-	 * 
+	 *
 	 * @param name the name of the command, without the '/'-prefix.
 	 * @param fallbackPrefix a prefix which is prepended to the command with a ':' one or more times to make the command unique
 	 * @param command the command to register
@@ -247,7 +250,6 @@ public final class SimpleCommandMap implements CommandMap {
 	}
 
 	private static class ReloadCommand extends Command {
-
 		@SuppressWarnings("unused")
 		private final Client client;
 
@@ -270,7 +272,6 @@ public final class SimpleCommandMap implements CommandMap {
 	}
 
 	private static class AddonsCommand extends Command {
-
 		private final Client client;
 
 		public AddonsCommand(String name, Client client) {

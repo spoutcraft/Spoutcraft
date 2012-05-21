@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,6 +21,7 @@ package org.spoutcraft.spoutcraftapi.gui;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.animation.Animatable;
 import org.spoutcraft.spoutcraftapi.property.Property;
@@ -27,7 +31,7 @@ import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 @UnsafeClass
 public class Rectangle extends PropertyObject implements PropertyInterface, Animatable {
 	int width, height, x, y;
-	
+
 	public Rectangle(int x, int y, int width, int height) {
 		setX(x);
 		setY(y);
@@ -107,23 +111,23 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	public int getTop() {
 		return getY();
 	}
-	
+
 	public int getLeft() {
 		return getX();
 	}
-	
+
 	public int getBottom() {
 		return getY() + getHeight();
 	}
-	
+
 	public int getRight() {
 		return getX() + getWidth();
 	}
-	
+
 	/**
 	 * Shifts the position by given x and y.
 	 * @param x
@@ -133,7 +137,7 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 		this.x += x;
 		this.y += y;
 	}
-	
+
 	/**
 	 * Resizes the rect with given width and height
 	 * @param width
@@ -143,7 +147,7 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 		this.width = width;
 		this.height = height;
 	}
-	
+
 	/**
 	 * Moves rect to given x and y position.
 	 * @param x
@@ -182,16 +186,16 @@ public class Rectangle extends PropertyObject implements PropertyInterface, Anim
 	public int hashCode() {
 		return (new HashCodeBuilder()).append(width).append(height).append(x).append(y).toHashCode();
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString() + "{ x: "+x+" y: "+y+" width: "+width+" height: "+height+" }";
 	}
-	
+
 	public Rectangle clone() {
 		return new Rectangle(x, y, width, height);
 	}
-	
+
 	/**
 	 * Copies the values from the other instance to this instance
 	 * @param other the Rectangle to copy the values from.

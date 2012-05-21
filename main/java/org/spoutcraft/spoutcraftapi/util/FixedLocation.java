@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,31 +23,30 @@ import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.block.Block;
 
 public interface FixedLocation extends FixedVector {
-
 	/**
 	 * Gets the yaw of this location
-	 * 
+	 *
 	 * @return Yaw
 	 */
 	public double getYaw();
 
 	/**
 	 * Gets the pitch of this location
-	 * 
+	 *
 	 * @return Pitch
 	 */
 	public double getPitch();
 
 	/**
 	 * Gets the world that this location resides in
-	 * 
+	 *
 	 * @return World that contains this location
 	 */
 	public World getWorld();
 
 	/**
 	 * Gets a Vector pointing in the direction that this Location is facing
-	 * 
+	 *
 	 * @return Vector
 	 */
 	public Vector getDirection();
@@ -54,10 +56,10 @@ public interface FixedLocation extends FixedVector {
 	 * @return vector
 	 */
 	public Vector toVector();
-	
+
 	/**
 	 * Gets the block at this location
-	 * 
+	 *
 	 * @return block
 	 */
 	public Block getBlock();

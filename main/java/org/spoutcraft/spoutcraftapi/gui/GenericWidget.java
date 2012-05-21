@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -29,7 +32,6 @@ import org.spoutcraft.spoutcraftapi.property.PropertyObject;
 
 @UnsafeClass
 public abstract class GenericWidget extends PropertyObject implements Widget {
-
 	/**
 	 * Set if this is Spoutcraft (client), cleared if it is Spout (server)...
 	 */
@@ -107,8 +109,8 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		setHeight(input.readInt());
 		setAnchor(WidgetAnchor.getAnchorFromId(input.read()));
 		setVisible(input.readBoolean());
-		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt())); 
-		long msb = input.readLong(); 
+		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
+		long msb = input.readLong();
 		long lsb = input.readLong();
 		this.id = new UUID(msb, lsb);
 		setTooltip(input.readString());
@@ -632,7 +634,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		this.geometry = geometry;
 		return this;
 	}
-	
+
 	public Widget setGeometry(int x, int y, int width, int height) {
 		getGeometry().setX(x);
 		getGeometry().setY(y);
@@ -640,6 +642,4 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		getGeometry().setHeight(height);
 		return this;
 	}
-	
-	
 }

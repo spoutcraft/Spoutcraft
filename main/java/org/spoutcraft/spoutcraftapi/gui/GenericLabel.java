@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
@@ -110,13 +114,13 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 		this.color = color;
 		return this;
 	}
-	
-	
+
+
 	public Label setScale(float scale) {
 		this.scale = scale;
 		return this;
 	}
-	
+
 	public float getScale() {
 		return scale;
 	}
@@ -157,56 +161,55 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 	public void render() {
 		Spoutcraft.getClient().getRenderDelegate().render(this);
 	}
-	
+
 	public String [] getLines() {
 		return lines;
 	}
-	
+
 	public void recalculateLines() {
 		lines = text.split("\\n");
-		
-		if(isWrapLines()) {
+
+		if (isWrapLines()) {
 			ArrayList<String> linesTmp = new ArrayList<String>(lines.length);
-			for(String line:lines){
+			for (String line:lines) {
 				linesTmp.add(line);
 			}
-			for(int i = 0; i < linesTmp.size(); i++) {
+			for (int i = 0; i < linesTmp.size(); i++) {
 				boolean wrapForSpace = true;
 				String line = linesTmp.get(i);
 				String lineTmp = new String(line);
 				int brk = -1;
-				while(Spoutcraft.getMinecraftFont().getTextWidth(lineTmp) > super.getWidth()) {
+				while (Spoutcraft.getMinecraftFont().getTextWidth(lineTmp) > super.getWidth()) {
 					brk = lineTmp.lastIndexOf(" ");
-					if(brk == -1) {
+					if (brk == -1) {
 						brk = lineTmp.length() - 2;
 						wrapForSpace = false;
 					}
 					lineTmp = lineTmp.substring(0, brk);
 				}
-				if(brk != -1) {
+				if (brk != -1) {
 					linesTmp.set(i, lineTmp);
 					String otherLine = line.substring(brk + (wrapForSpace?1:0), line.length());
-					if(!StringUtils.isEmpty(otherLine.trim())) {
+					if (!StringUtils.isEmpty(otherLine.trim())) {
 						linesTmp.add(i + 1, otherLine);
 					}
 				}
 			}
-			
+
 			lines = linesTmp.toArray(new String[0]);
-			
-			if(isAuto()) {
+
+			if (isAuto()) {
 				setHeight(lines.length * 11);
 			}
 		}
 	}
-	
+
 	public Label setShadow(boolean shadow) {
 		this.shadow = shadow;
 		return this;
 	}
-	
+
 	public boolean hasShadow() {
 		return shadow;
 	}
-
 }

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -26,7 +29,6 @@ import org.spoutcraft.spoutcraftapi.addon.Addon;
 
 @UnsafeClass
 public class GenericContainer extends GenericWidget implements Container {
-
 	protected List<Widget> children = new ArrayList<Widget>();
 	protected ContainerType type = ContainerType.VERTICAL;
 	protected WidgetAnchor align = WidgetAnchor.TOP_LEFT;
@@ -179,7 +181,6 @@ public class GenericContainer extends GenericWidget implements Container {
 		}
 		return this;
 	}
-
 
 	public Container setLayout(ContainerType type) {
 		if (this.type != type) {
@@ -455,8 +456,7 @@ public class GenericContainer extends GenericWidget implements Container {
 	public boolean isAuto() {
 		return auto;
 	}
-	
+
 	public void render() {
-		
 	}
 }

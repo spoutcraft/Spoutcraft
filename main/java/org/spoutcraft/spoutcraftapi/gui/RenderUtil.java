@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,10 +20,10 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public final class RenderUtil {
-	
 	/**
 	 * Draws a symmetrical polygon. Large values of segments (>50) approximate a circle.
 	 * @param cx x coordinate or the center of the circle
@@ -28,28 +31,27 @@ public final class RenderUtil {
 	 * @param r radius of the circle
 	 * @param numSegments to draw (number of sides to the polygon. Large values > 50 approximate a circle)
 	 */
-	public static void drawSymmetricalPolygon(float cx, float cy, float r, int numSegments) { 
-		float theta = 2 * 3.1415926F / ((float)numSegments); 
+	public static void drawSymmetricalPolygon(float cx, float cy, float r, int numSegments) {
+		float theta = 2 * 3.1415926F / ((float)numSegments);
 		float c = (float) Math.cos(theta);//precalculate the sine and cosine
 		float s = (float) Math.sin(theta);
 		float t;
 
-		float x = r;//we start at angle = 0 
-		float y = 0; 
-		
-		GL11.glBegin(GL11.GL_LINE_LOOP); 
-		for(int ii = 0; ii < numSegments; ii++) { 
-			
-			GL11.glVertex2f(x + cx, y + cy);//output vertex 
-			
+		float x = r;//we start at angle = 0
+		float y = 0;
+
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		for (int ii = 0; ii < numSegments; ii++) {
+			GL11.glVertex2f(x + cx, y + cy);//output vertex
+
 			//apply the rotation matrix
 			t = x;
 			x = c * x - s * y;
 			y = s * t + c * y;
-		} 
-		GL11.glEnd(); 
+		}
+		GL11.glEnd();
 	}
-	
+
 	public static void drawRectangle(int x, int y, int width, int height, int color) {
 		int temp;
 		if (x < width) {

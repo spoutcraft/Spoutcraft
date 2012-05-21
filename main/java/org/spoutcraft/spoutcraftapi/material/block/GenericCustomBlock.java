@@ -1,3 +1,22 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.material.block;
 
 import java.io.IOException;
@@ -32,17 +51,16 @@ public class GenericCustomBlock implements CustomBlock {
 	private float hardness = 1.5F;
 	private float friction = 0.6F;
 	private int lightLevel = 0;
-	
+
 	/**
 	 * Creates a GenericCustomBlock with no values, used for serialization purposes only.
 	 */
 	public GenericCustomBlock() {
-		
 	}
 
 	/**
 	 * Creates a GenericCustomBlock with no model yet.
-	 * 
+	 *
 	 * @param addon creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
@@ -50,10 +68,10 @@ public class GenericCustomBlock implements CustomBlock {
 	public GenericCustomBlock(Addon addon, String name, boolean isOpaque) {
 		this(addon, name, isOpaque, new GenericCustomItem(addon, name));
 	}
-	
+
 	/**
 	 * Creates a GenericCustomBlock with a specified Design and metadata
-	 * 
+	 *
 	 * @param addon creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
@@ -73,7 +91,7 @@ public class GenericCustomBlock implements CustomBlock {
 
 	/**
 	 * Creates a GenericCustomBlock with a specified Design and metadata
-	 * 
+	 *
 	 * @param addon creating the block
 	 * @param name of the block
 	 * @param isOpaque true if you want the block solid
@@ -83,21 +101,21 @@ public class GenericCustomBlock implements CustomBlock {
 		this(addon, name, isOpaque);
 		setBlockDesign(design);
 	}
-	
+
 	/**
 	 * Creates a basic GenericCustomblock with no design that is opaque/solid.
-	 * 
+	 *
 	 * @param plugin creating the block
 	 * @param name of the block
 	 */
 	public GenericCustomBlock(Addon addon, String name) {
 		this(addon, name, true);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 		if (item != null) {
@@ -121,11 +139,11 @@ public class GenericCustomBlock implements CustomBlock {
 		this.design[id + 128] = design;
 		return this;
 	}
-	
+
 	public boolean isOpaque() {
 		return opaque;
 	}
-	
+
 	public Block setOpaque(boolean opaque) {
 		this.opaque = opaque;
 		return this;
@@ -142,7 +160,7 @@ public class GenericCustomBlock implements CustomBlock {
 	public String getFullName() {
 		return fullName;
 	}
-	
+
 	public String getNotchianName() {
 		return getName();
 	}
@@ -154,50 +172,50 @@ public class GenericCustomBlock implements CustomBlock {
 	public CustomItem getBlockItem() {
 		return item;
 	}
-	
+
 	public int getRawId() {
 		return this.item.getRawId();
 	}
-	
+
 	public int getRawData() {
 		return this.item.getCustomId();
 	}
-	
+
 	public int getBlockId() {
 		return this.blockId;
 	}
-	
+
 	public ItemStack getItemDrop() {
 		return drop.clone();
 	}
-	
+
 	public CustomBlock setItemDrop(ItemStack item) {
 		drop = item != null ? item.clone() : null;
 		return this;
 	}
-	
+
 	public float getHardness() {
 		return hardness;
 	}
-	
+
 	public CustomBlock setHardness(float hardness) {
 		this.hardness = hardness;
 		return this;
 	}
-	
+
 	public float getFriction() {
 		return friction;
 	}
-	
+
 	public CustomBlock setFriction(float friction) {
 		this.friction = friction;
 		return this;
 	}
-	
+
 	public int getLightLevel() {
 		return lightLevel;
 	}
-	
+
 	public CustomBlock setLightLevel(int level) {
 		lightLevel = level;
 		return this;
@@ -225,7 +243,7 @@ public class GenericCustomBlock implements CustomBlock {
 	public void onEntityMoveAt(World world, int x, int y, int z, Entity entity) {
 	}
 
-	public void onBlockClicked(World world, int x, int y, int z, Player player) {		
+	public void onBlockClicked(World world, int x, int y, int z, Player player) {
 	}
 
 	public boolean isProvidingPowerTo(World world, int x, int y, int z,	BlockFace face) {

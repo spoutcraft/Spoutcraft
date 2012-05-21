@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -39,11 +42,10 @@ import org.spoutcraft.spoutcraftapi.property.PropertyInterface;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public interface Client extends PropertyInterface {
-
 	public String getName();
 
 	public long getVersion();
-	
+
 	public World getWorld();
 
 	public AddonManager getAddonManager();
@@ -57,11 +59,11 @@ public interface Client extends PropertyInterface {
 	public File getUpdateFolder();
 
 	public SkyManager getSkyManager();
-	
+
 	public KeyBindingManager getKeyBindingManager();
 
 	public BiomeManager getBiomeManager();
-	
+
 	public MaterialManager getMaterialManager();
 
 	public boolean isSpoutEnabled();
@@ -69,17 +71,17 @@ public interface Client extends PropertyInterface {
 	public long getServerVersion();
 
 	public File getAddonFolder();
-	
+
 	public File getAudioCache();
-	
+
 	public File getTemporaryCache();
-	
+
 	public File getTextureCache();
-	
+
 	public File getTexturePackFolder();
-	
+
 	public File getSelectedTexturePackZip();
-	
+
 	public File getStatsFolder();
 
 	public long getTick();
@@ -87,20 +89,20 @@ public interface Client extends PropertyInterface {
 	public Mode getMode();
 
 	public RenderDelegate getRenderDelegate();
-	
+
 	public void send(AddonPacket packet);
-	
+
 	public ActivePlayer getActivePlayer();
-	
+
 	public AddonStore getAddonStore();
-	
+
 	/**
 	 * Gets a list of all Players
 	 *
 	 * @return An array of Players
 	 */
 	public Player[] getPlayers();
-	
+
 	/**
 	 * Gets a player object by the given username
 	 *
@@ -144,13 +146,13 @@ public interface Client extends PropertyInterface {
 	 * @param loc the location and view of the camera
 	 */
 	public void setCamera(FixedLocation loc);
-	
+
 	/**
 	 * The detach property decides if player movements will influence the camera or not. If the camera is detached, player movements will be ignored.
 	 * @param detach if the camera should be detached
 	 */
 	public void detachCamera(boolean detach);
-	
+
 	/**
 	 * The detach property decides if player movements will influence the camera or not. If the camera is detached, player movements will be ignored.
 	 * @return if the camera is detached
@@ -168,5 +170,4 @@ public interface Client extends PropertyInterface {
 	public ChatManager getChatManager();
 
 	public boolean hasPermission(String permission);
-
 }

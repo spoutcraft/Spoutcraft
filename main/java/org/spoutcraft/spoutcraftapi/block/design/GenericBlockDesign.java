@@ -1,9 +1,29 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.spoutcraftapi.block.design;
 
 import java.io.IOException;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -15,21 +35,20 @@ import org.spoutcraft.spoutcraftapi.packet.PacketUtil;
 import org.spoutcraft.spoutcraftapi.util.MutableIntegerVector;
 
 public class GenericBlockDesign implements BlockDesign {
-
 	protected boolean reset = false;
 
 	protected float lowXBound;
 	protected float lowYBound;
 	protected float lowZBound;
-	
+
 	protected float highXBound;
 	protected float highYBound;
 	protected float highZBound;
-	
-	
+
+
 	protected String textureURL;
 	protected String textureAddon;
-	
+
 	protected Texture texture;
 
 	protected float[][] xPos;
@@ -57,11 +76,11 @@ public class GenericBlockDesign implements BlockDesign {
 		this.lowXBound = lowXBound;
 		this.lowYBound = lowYBound;
 		this.lowZBound = lowZBound;
-		
+
 		this.highXBound = highXBound;
 		this.highYBound = highYBound;
 		this.highZBound = highZBound;
-		
+
 		this.textureURL = textureURL;
 		this.textureAddon = textureAddon.getDescription().getName();
 		this.xPos = xPos;
@@ -71,59 +90,59 @@ public class GenericBlockDesign implements BlockDesign {
 		this.textYPos = textYPos;
 		this.renderPass = renderPass;
 	}
-	
+
 	public float[][] getX() {
 		return xPos;
 	}
-	
+
 	public float[][] getY() {
 		return yPos;
 	}
-	
+
 	public float[][] getZ() {
 		return zPos;
 	}
-	
+
 	public float[][] getTextureXPos() {
 		return textXPos;
 	}
-	
+
 	public float[][] getTextureYPos() {
 		return textYPos;
 	}
-	
+
 	public float getBrightness() {
 		return brightness;
 	}
-	
+
 	public float getMaxBrightness() {
 		return maxBrightness;
 	}
-	
+
 	public float getMinBrightness() {
 		return minBrightness;
 	}
-	
+
 	public float getLowXBound() {
 		return lowXBound;
 	}
-	
+
 	public float getLowYBound() {
 		return lowYBound;
 	}
-	
+
 	public float getLowZBound() {
 		return lowZBound;
 	}
-	
+
 	public float getHighXBound() {
 		return highXBound;
 	}
-	
+
 	public float getHighYBound() {
 		return highYBound;
 	}
-	
+
 	public float getHighZBound() {
 		return highZBound;
 	}
@@ -231,7 +250,6 @@ public class GenericBlockDesign implements BlockDesign {
 		setVertex(quadNumber, 2, x3, y3, z3, tx3, ty3, textureSizeX, textureSizeY);
 		setVertex(quadNumber, 3, x4, y4, z4, tx4, ty4, textureSizeX, textureSizeY);
 		return this;
-
 	}
 
 	public BlockDesign setVertex(int quadNumber, int vertexNumber, float x, float y, float z, int tx, int ty, int textureSizeX, int textureSizeY) {
@@ -271,7 +289,7 @@ public class GenericBlockDesign implements BlockDesign {
 		this.texture = texture;
 		return setTexture(addon, texture.getTexture());
 	}
-	
+
 	public Texture getTexture() {
 		return texture;
 	}
@@ -298,52 +316,53 @@ public class GenericBlockDesign implements BlockDesign {
 				return false;
 			}
 		}
-		
+
 		if (getX() == null) {
 			return false;
 		}
-	
+
 		setBrightness(1F);
-		
+
 		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
-		
+
 		int internalLightLevel = 0;
 		if (block == null) {
 			internalLightLevel = 0x00F000F0;
 		} else {
 			internalLightLevel = world.getMixedBrightnessAt(block, x, y, z);
 		}
-	
+
 		for (int i = 0; i < getX().length; i++) {
 			MutableIntegerVector sourceBlock = getLightSource(i, x, y, z);
-			
+
 			int sideBrightness;
-	
+
 			if (block != null && sourceBlock != null) {
 				sideBrightness = world.getMixedBrightnessAt(block, sourceBlock.getBlockX(), sourceBlock.getBlockY(), sourceBlock.getBlockZ());
 			} else {
 				sideBrightness = internalLightLevel;
 			}
-	
+
 			if (block == null) {
-				if (i == 5)
+				if (i == 5) {
 					tessellator.setNormal(0, 1, 0);
-				else if (i == 3)
+				} else if (i == 3) {
 					tessellator.setNormal(0, 0, 1);
-				else if (i == 2)
+				} else if (i == 2) {
 					tessellator.setNormal(1, 0, 0);
+				}
 			}
-	
+
 			tessellator.setBrightness(sideBrightness);
-			
+
 			tessellator.setColorOpaqueFloat(1.0F, 1.0F, 1.0F);
-	
+
 			float[] xx = getX()[i];
 			float[] yy = getY()[i];
 			float[] zz = getZ()[i];
 			float[] tx = getTextureXPos()[i];
 			float[] ty = getTextureYPos()[i];
-			
+
 			for (int j = 0; j < 4; j++) {
 				tessellator.addVertexWithUV(x + xx[j], y + yy[j], z + zz[j], tx[j], ty[j]);
 			}
@@ -358,67 +377,63 @@ public class GenericBlockDesign implements BlockDesign {
 			if (amt > 1) {
 				items = 2;
 			}
-	
+
 			if (amt > 5) {
 				items = 3;
 			}
-	
+
 			if (amt > 20) {
 				items = 4;
 			}
 		}
-		
+
 		boolean result = false;
-	
-		
+
 		GL11.glPushMatrix();
 		GL11.glColor4f(1, 1, 1, 1);
 		GL11.glTranslatef(x, y, depth);
-		
+
 		GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(scale, scale, scale);
-		
-	
-		
+
 		Spoutcraft.getTessellator().startDrawingQuads();
 		Spoutcraft.getTessellator().setNormal(0.0F, -1.0F, 0.0F);
 
 		for (int i = 0; i < items; ++i) {
 			GL11.glPushMatrix();
-			if(i > 0) {
+			if (i > 0) {
 				float rotX = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
 				float rotY = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
 				float rotZ = (rand.nextFloat() * 2.0F - 1.0F) * 0.2F / 0.25F;
 				GL11.glTranslatef(rotX, rotY, rotZ);
 			}
-			
+
 			result &= renderBlock(null, 0, 0, 0);
-			
+
 			GL11.glPopMatrix();
 		}
-		
+
 		Spoutcraft.getTessellator().draw();
 		GL11.glPopMatrix();
-		
+
 		return result;
 	}
 
 	public boolean renderItemOnHUD(float x, float y, float depth) {
-		
 		GL11.glPushMatrix();
-		Spoutcraft.getTessellator().startDrawingQuads();		
-			
+		Spoutcraft.getTessellator().startDrawingQuads();
+
 		GL11.glTranslatef(x, y+1, depth);
-		GL11.glScalef(10.0F, 10.0F, 10.0F);		
-		GL11.glTranslatef(1.0F, 0.5F, 1.0F);		
+		GL11.glScalef(10.0F, 10.0F, 10.0F);
+		GL11.glTranslatef(1.0F, 0.5F, 1.0F);
 		GL11.glScalef(1.0F, 1.0F, -1.0F);
 		GL11.glRotatef(210.0F, 1.0F, 0.0F, 0.0F);
-		GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);		
-		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);		
+		GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 		boolean result = renderBlock(null, 0, 0, 0);
 		Spoutcraft.getTessellator().draw();
 		GL11.glPopMatrix();
-		
+
 		return result;
 	}
 }

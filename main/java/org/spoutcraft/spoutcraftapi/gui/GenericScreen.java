@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,6 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -54,15 +58,15 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 
 	public Widget[] getAttachedWidgets() {
 		return getAttachedWidgets(false);
-	} 
-	
+	}
+
 	public Widget[] getAttachedWidgets(boolean recursive) {
 		Widget[] list = new Widget[widgets.size()];
 		Set<Widget> allwidgets = new HashSet<Widget>();
 		allwidgets.addAll(widgets.keySet());
-		if(recursive) {
-			for(Widget w:widgets.keySet()) {
-				if(w instanceof Screen) {
+		if (recursive) {
+			for (Widget w:widgets.keySet()) {
+				if (w instanceof Screen) {
 					allwidgets.addAll(((Screen)w).getAttachedWidgetsAsSet(true));
 				}
 			}
@@ -75,7 +79,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	public Screen attachWidget(Widget widget) {
 		return attachWidget(null, widget);
 	}
-	
+
 	public Screen attachWidget(Addon addon, Widget widget) {
 		if (addon == null) {
 			addon = spoutcraft;
@@ -85,9 +89,9 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		widget.setScreen(this);
 		return this;
 	}
-	
+
 	public Screen attachWidgets(Addon addon, Widget ...widgets) {
-		for(Widget widget:widgets) {
+		for (Widget widget:widgets) {
 			attachWidget(addon, widget);
 		}
 		return this;
@@ -98,7 +102,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		widget.setScreen(null);
 		return this;
 	}
-	
+
 	public Screen removeWidgets(Addon addon) {
 		for (Widget i : getAttachedWidgets()) {
 			if (widgets.get(i) != null && widgets.get(i).equals(addon)) {
@@ -107,15 +111,15 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		}
 		return this;
 	}
-	
+
 	public boolean containsWidget(Widget widget) {
 		return containsWidget(widget.getId());
 	}
-	
+
 	public boolean containsWidget(UUID id) {
 		return getWidget(id) != null;
 	}
-	
+
 	public Widget getWidget(UUID id) {
 		for (Widget w : widgets.keySet()) {
 			if (w.getId().equals(id)) {
@@ -124,7 +128,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		}
 		return null;
 	}
-	
+
 	public boolean updateWidget(Widget widget) {
 		if (widgets.containsKey(widget)) {
 			Addon addon = widgets.get(widget);
@@ -140,7 +144,7 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	public void onTick() {
 		int width = Spoutcraft.getClient().getRenderDelegate().getScreenWidth();
 		int height = Spoutcraft.getClient().getRenderDelegate().getScreenHeight();
-		if(width != screenWidth || height != screenHeight) {
+		if (width != screenWidth || height != screenHeight) {
 			onScreenResized(screenWidth, screenHeight, width, height);
 		}
 		screenWidth = width;
@@ -148,14 +152,14 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		for (Widget widget : new HashSet<Widget>(widgets.keySet())) {
 			try {
 				widget.onTick();
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		for (Widget widget : widgets.keySet()) {
 			try {
 				widget.onAnimate();
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -242,16 +246,16 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 	public Set<Widget> getAttachedWidgetsAsSet(boolean recursive) {
 		Set<Widget> set = new HashSet<Widget>();
 		set.addAll(widgets.keySet());
-		if(recursive) {
-			for(Widget w:widgets.keySet()) {
-				if(w instanceof Screen) {
+		if (recursive) {
+			for (Widget w:widgets.keySet()) {
+				if (w instanceof Screen) {
 					set.addAll(((Screen)w).getAttachedWidgetsAsSet(true));
 				}
 			}
 		}
 		return set;
 	}
-	
+
 	protected void onScreenResized(int oldWidth, int oldHeight, int newWidth, int newHeight) {
 		//STUB
 	}

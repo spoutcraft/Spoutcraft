@@ -1,22 +1,9 @@
 /*
- * This file is part of Bukkit (http://bukkit.org/).
- * 
- * Bukkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This file is part of SpoutcraftAPI.
  *
- * Bukkit is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -57,7 +44,6 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
  * A representation of the minecraft world
  */
 public interface World {
-	
 	/**
 	 * Gets the mixed brightness value at the given x, y, z location.
 	 * @param x
@@ -66,7 +52,7 @@ public interface World {
 	 * @return mixed brightness
 	 */
 	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z);
-	
+
 	/**
 	 * Is true if the block at the x, y, z location is opaque (a solid block).
 	 * @param x
@@ -111,7 +97,7 @@ public interface World {
 	 * @return Type ID of the block at the given location
 	 */
 	public int getBlockTypeIdAt(FixedLocation location);
-	
+
 	/**
 	 * Gets the block data at the given coordinates
 	 *
@@ -121,7 +107,7 @@ public interface World {
 	 * @return Type Data of the block at the given coordinates
 	 */
 	public int getBlockDataAt(int x, int y, int z);
-	
+
 	/**
 	 * Gets the block data at the given {@link Location}
 	 *
@@ -174,7 +160,7 @@ public interface World {
 	 * @return Chunk at the given coordinates
 	 */
 	public Chunk getChunkAt(int x, int z);
-	
+
 	/**
 	 * Gets the {@link Chunk} at the given <b>block</b> coordinates
 	 *
@@ -765,9 +751,9 @@ public interface World {
 	 * @return Maximum height of the world
 	 */
 	public int getMaxHeight();
-	
+
 	public int getXBitShifts();
-	
+
 	public int getZBitShifts();
 
 	/**
@@ -807,21 +793,21 @@ public interface World {
 	 * @param value true if the world should automatically save, otherwise false
 	 */
 	public void setAutoSave(boolean value);
-	
+
 	/**
 	 * Returns true if this is a multiplayer world
-	 * 
+	 *
 	 * @return true if the world is a multiplayer world
 	 */
 	public boolean isMultiplayerWorld();
-	
+
 	/**
 	 * Gets the entity from the entity id, or null if none exists
 	 * @param id to lookup
 	 * @return entity
 	 */
 	public Entity getEntityFromId(int id);
-	
+
 	/**
 	 * Gets the entity from the unique entity id, or null if none exists
 	 * @param id to lookup
@@ -872,5 +858,4 @@ public interface World {
 			}
 		}
 	}
-
 }

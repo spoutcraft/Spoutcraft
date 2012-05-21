@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -34,7 +37,6 @@ public class GenericTexture extends GenericWidget implements Texture {
 	protected boolean local = false;
 
 	public GenericTexture() {
-
 	}
 
 	public GenericTexture(String url) {
@@ -56,7 +58,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 		this.setUrl(input.readString());
 		this.setDrawAlphaChannel(input.readBoolean());
 		setTop(input.readShort());
-		setLeft(input.readShort()); 
+		setLeft(input.readShort());
 	}
 
 	@Override
@@ -86,10 +88,7 @@ public class GenericTexture extends GenericWidget implements Texture {
 
 	@Override
 	public Texture copy() {
-		return ((Texture)super.copy())
-				.setUrl(getUrl())
-				.setTop(getTop())
-				.setLeft(getLeft());
+		return ((Texture)super.copy()).setUrl(getUrl()).setTop(getTop()).setLeft(getLeft());
 	}
 
 	public boolean isDrawingAlphaChannel() {
@@ -122,11 +121,11 @@ public class GenericTexture extends GenericWidget implements Texture {
 	public int getLeft() {
 		return left;
 	}
-	
+
 	public Runnable getFinishDelegate() {
 		return finishDelegate;
 	}
-	
+
 	public GenericTexture setFinishDelegate(Runnable finishDelegate) {
 		this.finishDelegate = finishDelegate;
 		return this;
@@ -149,11 +148,11 @@ public class GenericTexture extends GenericWidget implements Texture {
 		this.originalHeight = originalHeight;
 		return this;
 	}
-	
+
 	public boolean isLocal() {
 		return local;
 	}
-	
+
 	public GenericTexture setLocal(boolean value) {
 		local = value;
 		return this;

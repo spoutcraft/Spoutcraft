@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
@@ -37,7 +41,6 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	protected static final List<ChatMessage> chatMessages = new LinkedList<ChatMessage>();
 
 	public ChatTextBox() {
-		
 	}
 
 	public WidgetType getType() {
@@ -63,56 +66,56 @@ public class ChatTextBox extends GenericWidget implements Widget {
 	public UUID getId() {
 		return new UUID(0, 3);
 	}
-	
+
 	private boolean chatOpen = false;
 	public void setChatOpen(boolean chat) {
 		chatOpen = chat;
 	}
-	
+
 	public void render() {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, 771);
-		if(!isVisible()) {
+		if (!isVisible()) {
 			return;
 		}
 		float chatOpacity = Spoutcraft.getChatManager().getOpacity();
 		int scroll = Spoutcraft.getChatManager().getScroll();
 		MinecraftFont font = Spoutcraft.getMinecraftFont();
 		Iterator<ChatMessage> iter = chatMessages.iterator();
-		for(int i = 0; i < scroll; i++) {
-			if(iter.hasNext()) {
+		for (int i = 0; i < scroll; i++) {
+			if (iter.hasNext()) {
 				iter.next();
 			}
 		}
 		int lines = 0;
 		int bottom = (int) getScreen().getHeight() - 50;
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			ChatMessage message = iter.next();
-			if(message.isIgnoredPerson() && Spoutcraft.getChatManager().isIgnoringPlayers()) {
+			if (message.isIgnoredPerson() && Spoutcraft.getChatManager().isIgnoringPlayers()) {
 				continue;
 			}
-			if(message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
+			if (message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
 				continue;
 			}
 			double opacity = 1D;
-			
-			if(message.getAge() > getFadeoutTicks() - 20) {
+
+			if (message.getAge() > getFadeoutTicks() - 20) {
 				opacity = 1D - ((double) message.getAge() - (double) getFadeoutTicks()) / 20d;
 			}
-			
-			if(opacity > 1.0d) {
+
+			if (opacity > 1.0d) {
 				opacity = 1.0d;
-			} 
-			if(opacity < 0.0d) {
+			}
+			if (opacity < 0.0d) {
 				opacity = 0.0d;
 			}
-			if(message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
+			if (message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
 				break;
 			}
 			if (chatOpen) {
 				opacity = 1D;
 			}
-			if(opacity == 0) {
+			if (opacity == 0) {
 				continue;
 			}
 			//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
@@ -121,14 +124,14 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			chatColor |= textAlpha;
 			int backgroundAlpha = (int) (Math.min(chatOpacity, opacity) * 255) << 24;
 			int backgroundColor = 0x00000000 | backgroundAlpha;
-			if(Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
+			if (Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
 				backgroundColor = 0x00ff0000 | backgroundAlpha;
 			}
 			RenderUtil.drawRectangle(3, bottom - 1, 3 + 320, bottom + 9, backgroundColor);
 			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, chatColor);
 			bottom -= 10;
 			lines ++;
-			if(!chatOpen && lines > visibleLines) {
+			if (!chatOpen && lines > visibleLines) {
 				break;
 			} else if (chatOpen && lines > visibleChatLines) {
 				break;
@@ -136,13 +139,13 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		}
 		GL11.glDisable(GL11.GL_BLEND);
 	}
-	
+
 	public void increaseAge() {
 		Iterator<ChatMessage> iter = chatMessages.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			ChatMessage message = iter.next();
 			message.onTick();
-			if(message.getAge() > getFadeoutTicks()) {
+			if (message.getAge() > getFadeoutTicks()) {
 				break;
 			}
 		}
@@ -150,7 +153,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * Gets the number of visible lines of chat for the player
-	 * 
+	 *
 	 * @return visible chat lines
 	 */
 	public int getNumVisibleLines() {
@@ -159,7 +162,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * Sets the number of visible lines of chat for the player
-	 * 
+	 *
 	 * @param lines to view
 	 * @return ChatTextBox
 	 */
@@ -170,7 +173,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * Gets the number of visible lines of chat for the player, when fully opened
-	 * 
+	 *
 	 * @return visible chat lines
 	 */
 	public int getNumVisibleChatLines() {
@@ -179,7 +182,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * Sets the number of visible lines of chat for the player, when fully opened
-	 * 
+	 *
 	 * @param lines to view
 	 * @return ChatTextBox
 	 */
@@ -190,7 +193,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * The number ticks until the text fades out from the main screen
-	 * 
+	 *
 	 * @return fadeout ticks
 	 */
 	public int getFadeoutTicks() {
@@ -199,7 +202,7 @@ public class ChatTextBox extends GenericWidget implements Widget {
 
 	/**
 	 * Sets the number of ticks until the text fades out from the main screen. 20 ticks is equivelent to one second.
-	 * 
+	 *
 	 * @param ticks to set
 	 * @return this
 	 */
@@ -207,9 +210,9 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		fadeoutTicks = ticks;
 		return this;
 	}
-	
+
 	public static void addChatMessage(ChatMessage message) {
-		if(message.getUnparsedMessage().trim().equals("")) {
+		if (message.getUnparsedMessage().trim().equals("")) {
 			return;
 		}
 		chatMessages.add(0, message);
@@ -217,28 +220,28 @@ public class ChatTextBox extends GenericWidget implements Widget {
 			chatMessages.remove(chatMessages.size() - 1);
 		}
 	}
-	
+
 	public static void reparse() {
-		for(ChatMessage message:chatMessages) {
+		for (ChatMessage message:chatMessages) {
 			message.reparse();
 		}
 	}
-	
+
 	public static void clearChat() {
 		chatMessages.clear();
 	}
-	
+
 	public static int getNumChatMessages() {
 		return chatMessages.size();
 	}
-	
+
 	public static String getChatMessageAt(int pos) {
 		if (pos > -1 && pos < chatMessages.size()) {
 			return chatMessages.get(pos).getMessage();
 		}
 		return "";
 	}
-	
+
 	public static String getPlayerNameAt(int pos) {
 		if (pos > -1 && pos < chatMessages.size()) {
 			String player = chatMessages.get(pos).getPlayer();

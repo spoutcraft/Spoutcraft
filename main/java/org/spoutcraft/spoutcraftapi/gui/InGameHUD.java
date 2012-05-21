@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,63 +20,62 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 public interface InGameHUD extends Screen {
-
 	/**
 	 * Gets the armor bar associated with this HUD
-	 * 
+	 *
 	 * @return armor bar
 	 */
 	public ArmorBar getArmorBar();
 
 	/**
 	 * Gets the chat text box associated with this HUD
-	 * 
+	 *
 	 * @return chat text box
 	 */
 	public ChatTextBox getChatTextBox();
 
 	/**
 	 * Gets the chat text bar associated with this HUD
-	 * 
+	 *
 	 * @return chat bar
 	 */
 	public ChatBar getChatBar();
 
 	/**
 	 * Gets the underwater bubble bar associated with this HUD
-	 * 
+	 *
 	 * @return bubble bar
 	 */
 	public BubbleBar getBubbleBar();
 
 	/**
 	 * Gets the health bar associated with this HUD
-	 * 
+	 *
 	 * @return health bar
 	 */
 	public HealthBar getHealthBar();
-	
+
 	/**
 	 * Gets the hunger bar associated with this HUD
-	 * 
+	 *
 	 * @return hunger bar
 	 */
 	public HungerBar getHungerBar();
 
 	/**
 	 * Gets the Exp bar associated with this HUD
-	 * 
+	 *
 	 * @return exp bar
 	 */
 	public ExpBar getExpBar();
-	
+
 	/**
 	 * Gets the player list associated with this HUD
-	 * 
+	 *
 	 * @return player list
 	 */
 	public ServerPlayerList getServerPlayerList();
-	
+
 	/**
 	 * Is true if the widget can be attached to the screen.
 	 * Primary controls, like the health bar can not be attached twice.
@@ -85,7 +87,7 @@ public interface InGameHUD extends Screen {
 
 	/**
 	 * Attachs a popup screen and brings it to the front of the screen
-	 * 
+	 *
 	 * @param screen to pop up
 	 * @return true if the popup screen was attached, false if there was already a popup launched
 	 */
@@ -93,21 +95,21 @@ public interface InGameHUD extends Screen {
 
 	/**
 	 * Gets the active popup screen for this player, or null if none available
-	 * 
+	 *
 	 * @return the active popup
 	 */
 	public PopupScreen getActivePopup();
 
 	/**
 	 * Closes the popup screen, or returns false on failure
-	 * 
+	 *
 	 * @return true if a popup screen was closed
 	 */
 	public boolean closePopup();
 
 	/**
 	 * Ease of use method setting all the survival mode HUD elements to setVisible(toggle);
-	 * 
+	 *
 	 * @param toggle true or false
 	 */
 	public void toggleSurvivalHUD(boolean toggle);

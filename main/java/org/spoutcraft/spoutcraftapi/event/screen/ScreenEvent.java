@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -33,23 +36,23 @@ public abstract class ScreenEvent<TEvent extends ScreenEvent<TEvent>> extends Ev
 		this.player = player;
 		this.type = type;
 	}
-	
+
 	public Screen getScreen() {
 		return screen;
 	}
-	
-	public ScreenType getScreenType(){
+
+	public ScreenType getScreenType() {
 		return type;
 	}
-		
+
 	public Player getPlayer() {
 		return player;
 	}
-	
-	public boolean isCancelled(){
+
+	public boolean isCancelled() {
 		return cancel;
 	}
-	
+
 	public void setCancelled(boolean cancel) {
 		this.cancel = cancel;
 	}

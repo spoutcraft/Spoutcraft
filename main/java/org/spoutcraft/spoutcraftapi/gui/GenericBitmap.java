@@ -1,5 +1,8 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,7 +25,6 @@ import java.nio.IntBuffer;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 public class GenericBitmap extends GenericTexture implements Bitmap {
-
 	protected final byte[] bitmap;
 	protected final ByteBuffer buffer;
 	protected final int bitmapWidth;

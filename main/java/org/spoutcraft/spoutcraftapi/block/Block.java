@@ -1,22 +1,9 @@
 /*
- * This file is part of Bukkit (http://bukkit.org/).
- * 
- * Bukkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This file is part of SpoutcraftAPI.
  *
- * Bukkit is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -38,7 +25,6 @@ import org.spoutcraft.spoutcraftapi.World;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 public interface Block {
-
 	/**
 	 * Gets the hardness of this block
 	 * @return hardnes
@@ -46,7 +32,7 @@ public interface Block {
 	@SPOnly
 	public float getHardness();
 
-	
+
 	/**
 	 * Sets the hardness of this block
 	 * @param hardness to set to
@@ -73,14 +59,14 @@ public interface Block {
 	 * @return block type-id
 	 */
 	public int getTypeId();
-	
+
 	/**
 	 * Gets the metadata for this block
 	 *
 	 * @return block metadata
-	 */	
+	 */
 	public byte getData();
-	
+
 	/**
 	 * Gets the block at the given offsets
 	 *
@@ -146,10 +132,10 @@ public interface Block {
 	 * @return z-coordinate
 	 */
 	public int getZ();
-	
+
 	/**
 	 * Gets the material that this block represents
-	 * 
+	 *
 	 * @return material
 	 */
 	public org.spoutcraft.spoutcraftapi.material.Block getType();
@@ -322,5 +308,4 @@ public interface Block {
 	 * @return Humidity of this block
 	 */
 	public double getHumidity();
-
 }

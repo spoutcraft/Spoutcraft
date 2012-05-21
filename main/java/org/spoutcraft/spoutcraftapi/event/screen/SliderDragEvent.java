@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -32,7 +35,7 @@ public class SliderDragEvent extends ScreenEvent<SliderDragEvent> {
 		this.position = position;
 		this.old = 0;
 	}
-	
+
 	private static final SliderDragEvent instance = new SliderDragEvent(null, null, null, 0);
 
 	/**
@@ -51,19 +54,19 @@ public class SliderDragEvent extends ScreenEvent<SliderDragEvent> {
 		instance.position = position;
 		return instance;
 	}
-	
+
 	public Slider getSlider() {
 		return slider;
 	}
-	
+
 	public float getOldPosition() {
 		return old;
 	}
-	
+
 	public float getNewPosition() {
 		return position;
 	}
-	
+
 	public void setNewPosition(float position) {
 		this.position = position;
 	}

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +23,9 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 
 @UnsafeClass
 public interface Texture extends Widget {
-
 	/**
 	 * Gets the url of this texture to render
-	 * 
+	 *
 	 * @return url
 	 */
 	public String getUrl();
@@ -35,13 +37,13 @@ public interface Texture extends Widget {
 	 * @return texture
 	 */
 	public Texture setUrl(String Url);
-	
+
 	/**
 	 * Gets if the texture draws the full alpha channel instead of just using a bit-mask.
 	 * @return if it's drawing the alpha channel
 	 */
 	public boolean isDrawingAlphaChannel();
-	
+
 	/**
 	 * Sets if the texture should draw the full alpha channel instead of just using a bit-mask.
 	 * @param draw to set the drawing state
@@ -78,37 +80,37 @@ public interface Texture extends Widget {
 	 * @return left offset
 	 */
 	public int getLeft();
-	
+
 	/**
 	 * @see setFinishDelegate
 	 * @return the finishdelegate
 	 */
 	public Runnable getFinishDelegate();
-	
+
 	/**
-	 * Given deleages run()-method will be called when the download of the image has been completed. 
+	 * Given deleages run()-method will be called when the download of the image has been completed.
 	 * The internal delegate-variable will be set to null after that.
 	 * @param finishDelegate
 	 * @return instance of the texture
 	 */
 	public Texture setFinishDelegate(Runnable finishDelegate);
-	
+
 	/**
 	 * @return the actual width of the image
 	 */
 	public int getOriginalWidth();
-	
+
 	/**
 	 * @return the actual height of the image
 	 */
 	public int getOriginalHeight();
-	
+
 	/**
 	 * True if this texture is a local texture (inside the minecraft or spoutcraft jar)
-	 * @return local texture 
+	 * @return local texture
 	 */
 	public boolean isLocal();
-	
+
 	/**
 	 * Marks this as a texture that is local (inside the minecraft or spoutcraft jar)
 	 * @param value to set

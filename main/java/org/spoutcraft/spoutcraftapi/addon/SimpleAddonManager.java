@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -31,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.util.FileUtil;
+
 import org.spoutcraft.spoutcraftapi.Client;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.java.JavaAddonLoader;
@@ -42,7 +46,6 @@ import org.spoutcraft.spoutcraftapi.event.HandlerList;
 import org.spoutcraft.spoutcraftapi.event.Listener;
 
 public class SimpleAddonManager implements AddonManager {
-
 	private Client client;
 	private final Map<Pattern, AddonLoader> fileAssociations = new HashMap<Pattern, AddonLoader>();
 	private final List<Addon> addons = new ArrayList<Addon>();
@@ -55,19 +58,19 @@ public class SimpleAddonManager implements AddonManager {
 	public SimpleAddonManager(Client instance, SimpleCommandMap commandMap, SimpleSecurityManager manager, double key) {
 		client = instance;
 		this.commandMap = commandMap;
-		
+
 		this.key = key;
 		securityManager = manager;
 	}
 
 	/**
 	 * Registers the specified addon loader
-	 * 
+	 *
 	 * @param loader Class name of the AddonLoader to register
 	 * @throws IllegalArgumentException Thrown when the given Class is not a valid AddonLoader
 	 */
 	public void registerInterface(Class<? extends AddonLoader> loader) throws IllegalArgumentException {
-		if (!loader.equals(JavaAddonLoader.class)){
+		if (!loader.equals(JavaAddonLoader.class)) {
 			throw new UnsupportedOperationException("Spoutcraft does not currently support non-standard addon loaders. :(");
 		}
 		AddonLoader instance;
@@ -97,10 +100,10 @@ public class SimpleAddonManager implements AddonManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * Loads the addons contained within the specified directory
-	 * 
+	 *
 	 * @param directory Directory to check for addons
 	 * @return A list of all addons loaded
 	 */
@@ -162,9 +165,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Loads the addon in the specified file
-	 * 
+	 *
 	 * File must be valid according to the current enabled Addon interfaces
-	 * 
+	 *
 	 * @param file File containing the addon to load
 	 * @return The Addon loaded, or null if it was invalid
 	 * @throws InvalidAddonException Thrown when the specified file is not a valid addon
@@ -176,9 +179,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Loads the addon in the specified file
-	 * 
+	 *
 	 * File must be valid according to the current enabled Addon interfaces
-	 * 
+	 *
 	 * @param file File containing the addon to load
 	 * @param ignoreSoftDependencies Loader will ignore soft dependencies if this flag is set to true
 	 * @return The Addon loaded, or null if it was invalid
@@ -219,18 +222,18 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is loaded and returns it when applicable
-	 * 
+	 *
 	 * Please note that the name of the addon is case-sensitive
-	 * 
+	 *
 	 * @param name Name of the addon to check
 	 * @return Addon if it exists, otherwise null
 	 */
 	public synchronized Addon getAddon(String name) {
 		return lookupNames.get(name);
 	}
-	
+
 	public synchronized Addon getOrCreateAddon(String name) {
-		if(!lookupNames.containsKey(name)) {
+		if (!lookupNames.containsKey(name)) {
 			addFakeAddon(new ServerAddon(name, null, null));
 		}
 		return lookupNames.get(name);
@@ -242,9 +245,9 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is enabled or not
-	 * 
+	 *
 	 * Please note that the name of the addon is case-sensitive.
-	 * 
+	 *
 	 * @param name Name of the addon to check
 	 * @return true if the addon is enabled, otherwise false
 	 */
@@ -256,7 +259,7 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Checks if the given addon is enabled or not
-	 * 
+	 *
 	 * @param addon Addon to check
 	 * @return true if the addon is enabled, otherwise false
 	 */
@@ -274,7 +277,7 @@ public class SimpleAddonManager implements AddonManager {
 		}
 		if (!addon.isEnabled()) {
 			//Check if disabled by user
-			if(!Spoutcraft.getAddonStore().isEnabled(addon)) {
+			if (!Spoutcraft.getAddonStore().isEnabled(addon)) {
 				System.out.println("Addon "+addon.getDescription().getName()+" could not be loaded because it is disabled.");
 				return;
 			}
@@ -326,19 +329,18 @@ public class SimpleAddonManager implements AddonManager {
 
 	/**
 	 * Call an event.
-	 * 
+	 *
 	 * @param <TEvent> Event subclass
 	 * @param event Event to handle
 	 * @author lahwran
 	 */
 	public <TEvent extends Event<TEvent>> void callEvent(TEvent event) {
-		
 		HandlerList<TEvent> handlerlist = event.getHandlers();
 		handlerlist.bake();
 
 		Listener<TEvent>[][] handlers = handlerlist.handlers;
 		int[] handlerids = handlerlist.handlerids;
-		
+
 		//We wouldn't want to open the lock prematurely if it was locked by the caller, would we now? :)
 		boolean wasLocked = securityManager.isLocked();
 		if (!wasLocked) {
@@ -346,14 +348,12 @@ public class SimpleAddonManager implements AddonManager {
 		}
 
 		for (int arrayidx = 0; arrayidx < handlers.length; arrayidx++) {
-
 			// if the order slot is even and the event has stopped propogating
 			if (event.isCancelled() && (handlerids[arrayidx] & 1) == 0)
 				continue; // then don't call this order slot
 
 			for (int handler = 0; handler < handlers[arrayidx].length; handler++) {
 				try {
-					
 					handlers[arrayidx][handler].onEvent(event);
 
 				} catch (Throwable t) {
@@ -366,10 +366,10 @@ public class SimpleAddonManager implements AddonManager {
 			securityManager.unlock(key);
 		}
 	}
-	
+
 	private void safelyLog(Level level, String message, Throwable ex) {
 		boolean relock = false;
-		if (securityManager.isLocked()){
+		if (securityManager.isLocked()) {
 			relock = true;
 			securityManager.unlock(key);
 		}
@@ -378,15 +378,14 @@ public class SimpleAddonManager implements AddonManager {
 			securityManager.lock(key);
 		}
 	}
-	
+
 	public void addFakeAddon(ServerAddon addon) {
 		addons.add(addon);
 		addon.setEnabled(true);
 		lookupNames.put(addon.getDescription().getName(), addon);
 	}
-	
+
 	public ThreadGroup getSecurityThreadGroup() {
 		return securityManager.getSecurityThreadGroup();
 	}
-
 }

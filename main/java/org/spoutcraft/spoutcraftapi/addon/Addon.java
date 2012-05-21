@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +25,6 @@ import org.spoutcraft.spoutcraftapi.command.CommandExecutor;
 import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 
 public interface Addon extends CommandExecutor {
-
 	public AddonDescriptionFile getDescription();
 
 	public void onEnable();
@@ -40,11 +42,11 @@ public interface Addon extends CommandExecutor {
 	public boolean isNaggable();
 
 	public void setNaggable(boolean b);
-	
+
 	public Logger getLogger();
-	
+
 	public boolean hasConfigurationGUI();
-	
+
 	public void setupConfigurationGUI(ScrollArea screen);
 
 	public enum Mode {
@@ -52,5 +54,4 @@ public interface Addon extends CommandExecutor {
 		MULTIPLAYER,
 		BOTH;
 	}
-
 }

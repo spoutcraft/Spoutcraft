@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -18,13 +21,10 @@ package org.spoutcraft.spoutcraftapi.event;
 
 /**
  * Order of event listener calls.
- * 
+ *
  * Odd-numbered slots are called even when events are marked "not propogating". If an event stops propogating partway through an even slot, that slot will not cease execution, but future even slots will not be called.
- * 
- * @author lahwran
  */
 public enum Order {
-
 	/**
 	 * Called before all other handlers. Should be used for high-priority event canceling.
 	 */
@@ -44,6 +44,7 @@ public enum Order {
 	 * Called after "Early" handlers and before "Default" handlers. Is called even when event has been canceled. This is for general-purpose always-run events.
 	 */
 	DefaultIgnoreCancelled(3),
+
 	/**
 	 * Default call, for general purpose handlers
 	 */

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -25,19 +28,19 @@ public interface DoubleChestInventory extends Inventory{
 	 * @return top half
 	 */
 	public Block getTopHalf();
-	
+
 	/**
 	 * Gets the block containing the bottom half of the double chest
 	 * @return bottom half
 	 */
 	public Block getBottomHalf();
-	
+
 	/**
 	 * Gets the left half of the double chest
 	 * @return left side
 	 */
 	public Block getLeftSide();
-	
+
 	/**
 	 * Gets the right half of the double chest
 	 * @return right side

@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +25,7 @@ import org.spoutcraft.spoutcraftapi.UnsafeClass;
 public interface ItemWidget extends Widget {
 	/**
 	 * Sets the type id of this item widget
-	 * 
+	 *
 	 * @param id
 	 * @return ItemWidget
 	 */
@@ -30,14 +33,14 @@ public interface ItemWidget extends Widget {
 
 	/**
 	 * Gets the type id of this item widget
-	 * 
+	 *
 	 * @return type id
 	 */
 	public int getTypeId();
 
 	/**
 	 * Sets the data of this item widget
-	 * 
+	 *
 	 * @param data to set
 	 * @return ItemWidget
 	 */
@@ -45,14 +48,14 @@ public interface ItemWidget extends Widget {
 
 	/**
 	 * Gets the data of this item widget, is zero by default
-	 * 
+	 *
 	 * @return data
 	 */
 	public short getData();
 
 	/**
 	 * Sets the z render depth for this 3-d item widget
-	 * 
+	 *
 	 * @param depth to render at
 	 * @return ItemWidget
 	 */
@@ -60,7 +63,7 @@ public interface ItemWidget extends Widget {
 
 	/**
 	 * Gets the z render depth for this 3-d item widget
-	 * 
+	 *
 	 * @return depth
 	 */
 	public int getDepth();

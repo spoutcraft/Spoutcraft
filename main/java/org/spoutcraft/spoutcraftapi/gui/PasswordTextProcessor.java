@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -34,7 +37,6 @@ public class PasswordTextProcessor implements TextProcessor {
 	protected int maxAsteriskChars = 0;
 
 	public PasswordTextProcessor() {
-
 	}
 
 	public void clear() {
@@ -152,26 +154,29 @@ public class PasswordTextProcessor implements TextProcessor {
 	public boolean handleInput(char key, int keyId) {
 		boolean ctrl = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 		if (keyId == Keyboard.KEY_BACK.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				return delete(0, cursor, 0);
-			else
+			} else {
 				return delete(cursor - 1, cursor, cursor - 1);
+			}
 		}
 		if (keyId == Keyboard.KEY_DELETE.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				return delete(cursor, textBuffer.length(), cursor);
-			else
+			} else {
 				return delete(cursor, cursor + 1, cursor);
+			}
 		}
 		if (keyId == Keyboard.KEY_UP.getKeyCode() || keyId == Keyboard.KEY_HOME.getKeyCode()) {
 			cursor = 0;
 			return false;
 		}
 		if (keyId == Keyboard.KEY_LEFT.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				cursor = 0;
-			else
+			} else {
 				cursor = Math.max(0, --cursor);
+			}
 			return false;
 		}
 		if (keyId == Keyboard.KEY_DOWN.getKeyCode() || keyId == Keyboard.KEY_END.getKeyCode()) {
@@ -179,10 +184,11 @@ public class PasswordTextProcessor implements TextProcessor {
 			return false;
 		}
 		if (keyId == Keyboard.KEY_RIGHT.getKeyCode()) {
-			if (ctrl)
+			if (ctrl) {
 				cursor = textBuffer.length();
-			else
+			} else {
 				cursor = Math.min(textBuffer.length(), ++cursor);
+			}
 			return false;
 		}
 		if (keyId == Keyboard.KEY_D.getKeyCode() || keyId == Keyboard.KEY_C.getKeyCode()) {
@@ -196,5 +202,4 @@ public class PasswordTextProcessor implements TextProcessor {
 		}
 		return false;
 	}
-
 }

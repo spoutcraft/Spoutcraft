@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -77,9 +80,9 @@ public class BubbleBar extends GenericWidget implements Widget {
 
 	/**
 	 * Gets the maximum number of bubbles displayed on the HUD.
-	 * 
+	 *
 	 * Air is scaled to fit the number of bubbles appropriately.
-	 * 
+	 *
 	 * @return bubbles displayed
 	 */
 	public int getMaxNumBubbles() {
@@ -88,9 +91,9 @@ public class BubbleBar extends GenericWidget implements Widget {
 
 	/**
 	 * Sets the maximum number of bubbles displayed on the HUD.
-	 * 
+	 *
 	 * Air is scaled to fit the number of bubbles appropriately.
-	 * 
+	 *
 	 * @param bubbles to display
 	 * @return this
 	 */
@@ -101,7 +104,7 @@ public class BubbleBar extends GenericWidget implements Widget {
 
 	/**
 	 * Gets the number of pixels each bubbles is offset when drawing the next bubble.
-	 * 
+	 *
 	 * @return pixel offset
 	 */
 	public int getIconOffset() {
@@ -110,7 +113,7 @@ public class BubbleBar extends GenericWidget implements Widget {
 
 	/**
 	 * Sets the number of pixels each bubbles is offset when drawing the next bubble.
-	 * 
+	 *
 	 * @param offset when drawing hearts
 	 * @return this
 	 */

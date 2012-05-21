@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -41,7 +44,6 @@ import org.spoutcraft.spoutcraftapi.player.SkyManager;
 import org.spoutcraft.spoutcraftapi.util.Location;
 
 public final class Spoutcraft {
-
 	private static Client client = null;
 
 	private Spoutcraft() {
@@ -61,14 +63,14 @@ public final class Spoutcraft {
 	public static Client getClient() {
 		return client;
 	}
-	
+
 	public static World getWorld() {
 		return client.getWorld();
 	}
 
 	/**
 	 * Gets the name with the version of this client.
-	 * 
+	 *
 	 * Example: 'Spoutcraft_555'
 	 * @return name
 	 */
@@ -83,7 +85,7 @@ public final class Spoutcraft {
 	public static long getVersion() {
 		return client.getVersion();
 	}
-	
+
 	/**
 	 * Gets the build version of Spout on the server, or -1 if none exists
 	 * @return version
@@ -115,7 +117,7 @@ public final class Spoutcraft {
 	public static boolean dispatchCommand(CommandSender sender, String commandLine) {
 		return client.dispatchCommand(sender, commandLine);
 	}
-	
+
 	public static File getUpdateFolder() {
 		return client.getUpdateFolder();
 	}
@@ -123,11 +125,11 @@ public final class Spoutcraft {
 	public static Mode getMode() {
 		return client.getMode();
 	}
-	
+
 	public static SkyManager getSkyManager() {
 		return client.getSkyManager();
 	}
-	
+
 	public static KeyBindingManager getKeyBindingManager() {
 		return client.getKeyBindingManager();
 	}
@@ -143,75 +145,75 @@ public final class Spoutcraft {
 	public static MinecraftTessellator getTessellator() {
 		return client.getRenderDelegate().getTessellator();
 	}
-	
+
 	public static ActivePlayer getActivePlayer() {
 		return client.getActivePlayer();
 	}
-	
-	public static BiomeManager getBiomeManager(){
+
+	public static BiomeManager getBiomeManager() {
 		return client.getBiomeManager();
 	}
-	
+
 	public static MaterialManager getMaterialManager() {
 		return client.getMaterialManager();
 	}
-	
+
 	public static boolean isSpoutEnabled() {
 		return client.isSpoutEnabled();
 	}
-	
+
 	public static File getAddonFolder() {
 		return client.getAddonFolder();
 	}
-	
+
 	public static File getAudioCache() {
 		return client.getAudioCache();
 	}
-	
+
 	public static File getTemporaryCache() {
 		return client.getTemporaryCache();
 	}
-	
+
 	public static File getTextureCache() {
 		return client.getTextureCache();
 	}
-	
+
 	public static File getTexturePackFolder() {
 		return client.getTexturePackFolder();
 	}
-	
+
 	public static File getStatsFolder() {
 		return client.getStatsFolder();
 	}
-	
+
 	public static File getSelectedTexturePackZip() {
 		return client.getSelectedTexturePackZip();
 	}
-	
+
 	public static long getTick() {
 		return client.getTick();
 	}
-	
+
 	public static CameraEntity getCamera() {
 		return client.getCamera();
 	}
-	
+
 	public static void setCamera(Location loc) {
 		client.setCamera(loc);
 	}
-	
+
 	public static void detachCamera(boolean detach) {
 		client.detachCamera(detach);
 	}
-	
+
 	public static boolean isCameraDetached() {
 		return client.isCameraDetached();
 	}
-	
+
 	public static void send(AddonPacket packet) {
 		client.send(packet);
 	}
-	
+
 	/**
 	 * Gets a list of all Players
 	 *
@@ -220,7 +222,7 @@ public final class Spoutcraft {
 	public static Player[] getPlayers() {
 		return client.getPlayers();
 	}
-	
+
 	/**
 	 * Gets a player object by the given username
 	 *
@@ -256,19 +258,19 @@ public final class Spoutcraft {
 	public static List<Player> matchPlayer(String name) {
 		return client.matchPlayer(name);
 	}
-	
+
 	public static AddonStore getAddonStore() {
 		return client.getAddonStore();
 	}
-	
+
 	public static WidgetManager getWidgetManager() {
 		return client.getWidgetManager();
 	}
-	
+
 	public static ChatManager getChatManager() {
 		return client.getChatManager();
 	}
-	
+
 	public static boolean hasPermission(String permission) {
 		return client.hasPermission(permission);
 	}

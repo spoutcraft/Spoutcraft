@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -28,7 +31,6 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 	private int entityId = 0;
 
 	public GenericEntityWidget() {
-
 	}
 
 	public GenericEntityWidget(int entityId) {
@@ -47,7 +49,7 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 	public int getEntityId() {
 		return entityId;
 	}
-	
+
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		super.readData(input);
@@ -59,7 +61,7 @@ public class GenericEntityWidget extends GenericWidget implements EntityWidget {
 		super.writeData(output);
 		output.writeInt(entityId);
 	}
-	
+
 	@Override
 	public EntityWidget copy() {
 		return ((EntityWidget)super.copy()).setEntityId(getEntityId());

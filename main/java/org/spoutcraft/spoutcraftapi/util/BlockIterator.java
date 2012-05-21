@@ -1,22 +1,9 @@
 /*
- * This file is part of Bukkit (http://bukkit.org/).
- * 
- * Bukkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This file is part of SpoutcraftAPI.
  *
- * Bukkit is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-/*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -43,9 +30,7 @@ import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 /**
  * This class performs ray tracing and iterates along blocks on a line
  */
-
 public class BlockIterator implements Iterator<Block> {
-
 	private final int	maxDistance;
 
 	private static final int	gridSize = 1 << 24;
@@ -77,7 +62,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param maxDistance This is the maximum distance in blocks for the trace. Setting this value above 140 may lead to problems with unloaded chunks. A value of 0 indicates no limit
 	 *
 	 */
-
 	public BlockIterator(World world, Vector start, Vector direction, double yOffset, int maxDistance) {
 		this.maxDistance = maxDistance;
 
@@ -198,7 +182,6 @@ public class BlockIterator implements Iterator<Block> {
 
 		// Calculate the number of planes passed to give max distance
 		maxDistanceInt = (int) Math.round(maxDistance / (Math.sqrt(mainDirection * mainDirection + secondDirection * secondDirection + thirdDirection * thirdDirection) / mainDirection));
-
 	}
 
 	private boolean blockEquals(Block a, Block b) {
@@ -207,26 +190,20 @@ public class BlockIterator implements Iterator<Block> {
 
 	private BlockFace reverseFace(BlockFace face) {
 		switch (face) {
-		case UP:
-			return BlockFace.DOWN;
-
-		case DOWN:
-			return BlockFace.UP;
-
-		case NORTH:
-			return BlockFace.SOUTH;
-
-		case SOUTH:
-			return BlockFace.NORTH;
-
-		case EAST:
-			return BlockFace.WEST;
-
-		case WEST:
-			return BlockFace.EAST;
-
-		default:
-			return null;
+			case UP:
+				return BlockFace.DOWN;
+			case DOWN:
+				return BlockFace.UP;
+			case NORTH:
+				return BlockFace.SOUTH;
+			case SOUTH:
+				return BlockFace.NORTH;
+			case EAST:
+				return BlockFace.WEST;
+			case WEST:
+				return BlockFace.EAST;
+			default:
+				return null;
 		}
 	}
 
@@ -278,7 +255,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param maxDistance This is the maximum distance in blocks for the trace. Setting this value above 140 may lead to problems with unloaded chunks. A value of 0 indicates no limit
 	 *
 	 */
-
 	public BlockIterator(FixedLocation loc, double yOffset, int maxDistance) {
 		this(loc.getWorld(), loc.toVector(), loc.getDirection(), yOffset, maxDistance);
 	}
@@ -290,7 +266,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param yOffset The trace begins vertically offset from the start vector by this value
 	 *
 	 */
-
 	public BlockIterator(FixedLocation loc, double yOffset) {
 		this(loc.getWorld(), loc.toVector(), loc.getDirection(), yOffset, 0);
 	}
@@ -301,7 +276,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param loc The location for the start of the ray trace
 	 *
 	 */
-
 	public BlockIterator(FixedLocation loc) {
 		this(loc, 0D);
 	}
@@ -313,7 +287,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param maxDistance  This is the maximum distance in blocks for the trace. Setting this value above 140 may lead to problems with unloaded chunks. A value of 0 indicates no limit
 	 *
 	 */
-
 	public BlockIterator(LivingEntity entity, int maxDistance) {
 		this(entity.getLocation(), entity.getEyeHeight(), maxDistance);
 	}
@@ -324,7 +297,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * @param entity Information from the entity is used to set up the trace
 	 *
 	 */
-
 	public BlockIterator(LivingEntity entity) {
 		this(entity, 0);
 	}
@@ -333,7 +305,6 @@ public class BlockIterator implements Iterator<Block> {
 	 * Returns true if the iteration has more elements
 	 *
 	 */
-
 	public boolean hasNext() {
 		scan();
 		return currentBlock != -1;
@@ -344,7 +315,6 @@ public class BlockIterator implements Iterator<Block> {
 	 *
 	 * @return the next Block in the trace
 	 */
-
 	public Block next() {
 		scan();
 		if (currentBlock <= -1) {

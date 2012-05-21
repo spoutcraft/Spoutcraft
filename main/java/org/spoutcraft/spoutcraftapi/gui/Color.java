@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -88,19 +91,19 @@ public final class Color implements Animatable {
 	public short getAlphaB() {
 		return alpha;
 	}
-	
+
 	public int getRedI() {
 		return (int)red;
 	}
-	
+
 	public int getGreenI() {
 		return (int)green;
 	}
-	
+
 	public int getBlueI() {
 		return (int)blue;
 	}
-	
+
 	public int getAlphaI() {
 		return (int)alpha;
 	}
@@ -128,7 +131,7 @@ public final class Color implements Animatable {
 	public Color clone() {
 		return new Color(red, green, blue, alpha);
 	}
-	
+
 	public String toString() {
 		return "r: "+red+" g: "+green+" b: "+blue+" a: "+alpha;
 	}

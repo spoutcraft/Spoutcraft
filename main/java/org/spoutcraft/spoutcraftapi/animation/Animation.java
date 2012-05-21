@@ -1,6 +1,9 @@
 /*
- * This file is part of SpoutcraftAPI (http://wiki.getspout.org/).
- * 
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
  * SpoutcraftAPI is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -54,7 +57,7 @@ public class Animation {
 	private ValueSetDelegate property;
 	private static Timer timer = new Timer();
 	private int delay = 1000 / 60;
-	
+
 	private AnimationRunnable animator = new AnimationRunnable(this);
 
 	public State getState() {
@@ -149,7 +152,7 @@ public class Animation {
 				break;
 		}
 		animator.cancel();
-		if(startValue != null) {
+		if (startValue != null) {
 			property.set(getCurrentValue());
 		} else {
 			property.set(getCurrentValueNumber());
@@ -183,7 +186,7 @@ public class Animation {
 	public Number getEndNumber() {
 		return endNumber;
 	}
-	
+
 	public void setFramesPerSecond(int fps) {
 		delay = 1000 / fps;
 	}
@@ -230,27 +233,27 @@ public class Animation {
 
 	public Number getCurrentValueNumber() {
 		double p = (double) currentTime / (double) duration;
-		if(startNumber instanceof Integer) {
+		if (startNumber instanceof Integer) {
 			int p1 = (Integer) startNumber, p2 = (Integer) endNumber;
 			return (int) (p1 + (p2 - p1)*p);
 		}
-		if(startNumber instanceof Double) {
+		if (startNumber instanceof Double) {
 			double p1 = (Double) startNumber, p2 = (Double) endNumber;
 			return p1 + (p2 - p1)*p;
 		}
-		if(startNumber instanceof Long) {
+		if (startNumber instanceof Long) {
 			long p1 = (Long) startNumber, p2 = (Long) endNumber;
 			return (long) (p1 + (p2 - p1)*p);
 		}
-		if(startNumber instanceof Float) {
+		if (startNumber instanceof Float) {
 			float p1 = (Float) startNumber, p2 = (Float) endNumber;
 			return (float) (p1 + (p2 - p1)*p);
 		}
-		if(startNumber instanceof Short) {
+		if (startNumber instanceof Short) {
 			short p1 = (Short) startNumber, p2 = (Short) endNumber;
 			return (short) (p1 + (p2 - p1)*p);
 		}
-		if(startNumber instanceof Byte) {
+		if (startNumber instanceof Byte) {
 			byte p1 = (Byte) startNumber, p2 = (Byte) endNumber;
 			return (byte) (p1 + (p2 - p1)*p);
 		}
