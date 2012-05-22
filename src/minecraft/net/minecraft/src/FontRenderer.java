@@ -385,12 +385,12 @@ public class FontRenderer {
 	}
 
 	// begin Spout TextAlpha
+	final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)\u00A7[0-F]");
 	public int getStringWidth(String par1Str) {
-	// BOLD styling does affect the rendering width of characters, so stripColor cannot be used in its current state.
-		//return (int)FontUtils.getStringWidthf(this, org.bukkit.ChatColor.stripColor(par1Str));
 		if (par1Str == null) {
 			return 0;
 		}
+		par1Str = par1Str.replaceAll("(?i)\u00A7[0-F]", ""); //strip ordinary colors
 		float widthStr = 0F;
 		boolean bold = false;
 		for (int i = 0; i < par1Str.length(); i++) {
