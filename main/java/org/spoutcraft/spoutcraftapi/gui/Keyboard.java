@@ -151,6 +151,9 @@ public enum Keyboard {
 	KEY_POWER(222),
 	KEY_SLEEP(223),
 	KEYBOARD_SIZE(256),
+	MOUSE_RIGHT(-99),
+	MOUSE_LEFT(-100),
+	MOUSE_MIDDLE(-98),
 	KEY_UNKNOWN(-1);
 
 	private final int keyCode;
