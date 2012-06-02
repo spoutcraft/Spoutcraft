@@ -946,7 +946,7 @@ public class GuiScreen extends Gui
 	// Note: already inside of the sandbox
 	public void drawTooltip(String tooltip, int x, int y) {
 		GL11.glPushMatrix();
-		String lines[] = tooltip.split("\n");
+		String lines[] = this.fontRenderer.func_50113_d(tooltip,(width-22)).split("\n");	// Meow- Autowrap tooltips to reported screen width
 		int tooltipWidth = 0;
 		int tooltipHeight = 8 * lines.length + 3;
 		for (String line : lines) {

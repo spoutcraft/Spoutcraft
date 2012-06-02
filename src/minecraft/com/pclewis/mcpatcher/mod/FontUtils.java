@@ -23,27 +23,28 @@ public class FontUtils {
 
     public static float[] computeCharWidths(String filename, BufferedImage image, int[] rgb, int[] charWidth) {
         float[] charWidthf = new float[charWidth.length];
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int colWidth = width / COLS;
-        int rowHeight = height / ROWS;
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        int colWidth = imgWidth / COLS;
+        int rowHeight = imgHeight / ROWS;
         for (int ch = 0; ch < charWidth.length; ch++) {
-            int row = ch / COLS;
-            int col = ch % COLS;
+            int Ych = ch / COLS;
+            int Xch = ch % COLS;
+            int Xfw = colWidth - 1;//Text Alpha - fullwidth
             outer:
-            for (int colIdx = colWidth - 2; colIdx >= 0; colIdx--) { //increased margin from right to avoid the stupid.
-                int x = col * colWidth + colIdx;
+            for (int X0 = Xfw; X0 >= 0; X0--) {
+                int x = Xch * colWidth + X0;
                 for (int rowIdx = 0; rowIdx < rowHeight; rowIdx++) {
-                    int y = row * rowHeight + rowIdx;
-                    int pixel = rgb[x + y * width];
-                    if (isOpaque(pixel)) {
-                        charWidthf[ch] = (128.0f * (float)(colIdx + 1)) / (float) width + ((colIdx==colWidth - 2)?0.5F:1F); //TextAlpha - causes problems for fullwidth.
+                    int y = Ych * rowHeight + rowIdx;
+                    int colIdx = rgb[x + y * imgWidth];
+                    if (isOpaque(colIdx)) {
+                        charWidthf[ch] = (128F * (float)(X0+1)) / (float)imgWidth + 1F; // textAlpha - Will still overrun character fullwidth with HD!
                         if (showLines) {
                             for (int i = 0; i < rowHeight; i++) {
-                                y = row * rowHeight + i;
+                                y = Ych * rowHeight + i;
                                 for (int j = 0; j < Math.max(colWidth / 16, 1); j++) {
                                     image.setRGB(x + j, y, (i == rowIdx ? 0xff0000ff : 0xffff0000));
-                                    image.setRGB(col * colWidth + j, y, 0xff00ff00);
+                                    image.setRGB(Xch * colWidth + j, y, 0xff00ff00);
                                 }
                             }
                         }
@@ -55,6 +56,9 @@ public class FontUtils {
         for (int ch = 0; ch < charWidthf.length; ch++) {
             if (charWidthf[ch] <= 0.0f) {
                 charWidthf[ch] = 2.0f;
+            }
+            else if (charWidthf[ch] >= 7.99f) { // textAlpha - Characters should not exceed a template's fullwidth unless overridden by the '.properties' file.
+                charWidthf[ch] = 7.99f;	
             }
         }
         boolean[] isOverride = new boolean[charWidth.length];
@@ -106,13 +110,15 @@ public class FontUtils {
         return totalWidth;
     }
 
-    private static boolean isOpaque(int pixel) {
+    private static boolean isOpaque(int colIdx) {
         for (int i : SPACERS) {
-            if (pixel == i) {
+            if (colIdx == i) {
                 return false;
             }
         }
-        return (pixel & 0xff) > 0; //AlphaText
+        colIdx >>= 24; //begin AlphaText - extracts Alpha instead of Green, and declares it opaque if 16 or greater.
+        colIdx &= 0xf0;
+        return (colIdx > 0); //end AlphaText
     }
 
     private static float defaultSpaceWidth(float[] charWidthf) {
