@@ -29,6 +29,7 @@ import java.util.zip.Inflater;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketCacheHashUpdate;
 import org.spoutcraft.client.packet.PacketChunkRefresh;
 import org.spoutcraft.client.util.ChunkHash;

@@ -24,11 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
+
+import org.spoutcraft.client.io.FileUtil;
 
 public final class EasterEggs {
 	private static final Yaml yaml = new Yaml(new SafeConstructor());
