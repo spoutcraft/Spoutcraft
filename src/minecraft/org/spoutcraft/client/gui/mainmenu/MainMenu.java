@@ -235,7 +235,7 @@ public class MainMenu extends GuiScreen {
 			this.mc.displayGuiScreen(new GuiAddonsLocal());
 		}
 		if (about == btn) {
-			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiAbout(this));
+			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
 		}
 		if (options == btn) {
 			mc.displayGuiScreen(new GameSettingsScreen(this));
