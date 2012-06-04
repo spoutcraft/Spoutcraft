@@ -55,7 +55,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		buttonDone = new GenericButton("Done");
 		scroll = new GenericScrollArea();
-		title = new GenericLabel("Preview of selected Texturepack");
+		title = new GenericLabel("Preview of selected Texture pack");
 		getScreen().attachWidgets(spoutcraft, scroll, buttonDone, title);
 
 		for (Block block : Block.blocksList) {
