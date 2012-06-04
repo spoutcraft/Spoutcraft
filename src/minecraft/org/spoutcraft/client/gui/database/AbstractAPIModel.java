@@ -62,7 +62,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		}
 
 		if (moreItems) {
-			itemLoadNextItems = new GenericListWidgetItem("More items on the server.", "Click to load", "");
+			itemLoadNextItems = new GenericListWidgetItem("More items on the server.", "Click to load", "http://localhost/~tux/test.png");
 			ret.add(itemLoadNextItems);
 		}
 		return ret;

@@ -28,6 +28,7 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
 public class MapRenderer {
@@ -233,7 +234,10 @@ public class MapRenderer {
 	}
 
 	private void renderEntities() {
-		if (!MinimapConfig.getInstance().isShowingEntities()) {
+		if(!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+			return;
+		}
+		if(!MinimapConfig.getInstance().isShowingEntities()) {
 			return;
 		}
 		double playerX = map.getPlayerX(); 

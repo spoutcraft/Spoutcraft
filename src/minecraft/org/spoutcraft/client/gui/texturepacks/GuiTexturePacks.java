@@ -50,17 +50,11 @@ public class GuiTexturePacks extends GuiScreen {
 		screenTitle = new GenericLabel("Texture Packs");
 		view = new GenericListView(model);
 		buttonDone = new GenericButton("Main Menu");
-		buttonDone.setTooltip("Go back to Spoutcraft's flashy Main Menu!");
 		buttonOpenFolder = new GenericButton("Open Folder");
-		buttonOpenFolder.setTooltip("Place your Texture Packs here");
 		buttonSelect = new GenericButton("Select");
-		buttonSelect.setTooltip("You can also doubleclick on an item");
 		buttonReservoir = new GenericButton("Database");
-		buttonReservoir.setTooltip("Get awesome new textures here!");
 		buttonDelete = new DeleteTexturepackButton(this);
-		buttonDelete.setTooltip("Deletes the Texture Pack.");
 		buttonInfo = new GenericButton("Info");
-		buttonInfo.setTooltip("Go to the online database entry");
 	}
 
 	public void initGui() {
@@ -130,7 +124,15 @@ public class GuiTexturePacks extends GuiScreen {
 			Sys.openURL("file://"+SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
-			model.getItem(view.getSelectedRow()).select();
+			TexturePackItem item = model.getItem(view.getSelectedRow());
+			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
+			if(!current) {
+				item.select();
+				updateButtons();
+			} else {
+				GuiPreviewTexturePack preview = new GuiPreviewTexturePack(this);
+				mc.displayGuiScreen(preview);
+			}
 		}
 		if (btn.equals(buttonReservoir)) {
 			mc.displayGuiScreen(new GuiTexturePacksDatabase());
@@ -150,7 +152,12 @@ public class GuiTexturePacks extends GuiScreen {
 		try {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
 			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
-			buttonSelect.setEnabled(!current);
+			buttonSelect.setEnabled(true);
+			if(current) {
+				buttonSelect.setText("Preview");
+			} else {
+				buttonSelect.setText("Select");
+			}
 			buttonInfo.setEnabled(item.id != -1);
 			buttonDelete.setEnabled(!current && (item.getPack() instanceof TexturePackCustom));
 		} catch(Exception e) {}

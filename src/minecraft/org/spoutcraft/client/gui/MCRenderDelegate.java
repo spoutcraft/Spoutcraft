@@ -768,6 +768,20 @@ public class MCRenderDelegate implements RenderDelegate {
 	}
 
 	public void render(GenericListWidgetItem lwi, int x, int y, int width, int height) {
+		if(lwi.getIconUrl() != null && !lwi.getIconUrl().isEmpty()) {
+			Texture t = CustomTextureManager.getTextureFromUrl(lwi.getIconUrl(), true);
+			if(t != null) {
+				
+				int maxHeight = height - 4;
+				float f = (float) t.getImageWidth() / (float) t.getImageHeight();
+				int w = (int) (maxHeight * f);
+				GL11.glTranslated(2, 2, 0);
+				drawTexture(t, maxHeight, w);
+				GL11.glTranslated(-2, -2, 0);
+				
+				x += 2 + w;
+			}
+		}
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 		font.drawString(lwi.getTitle(), x + 2, y + 2, new Color(1.0F, 1.0F, 1.0F).toInt());
 		font.drawString(lwi.getText(), x + 2, y + 2 + 8, new Color(0.8F, 0.8F, 0.8F).toInt());
