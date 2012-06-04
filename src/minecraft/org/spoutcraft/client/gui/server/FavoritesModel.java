@@ -81,7 +81,7 @@ public class FavoritesModel extends ServerModel {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed)
 			SpoutClient.disableSandbox();
-		File favorites = new File(FileUtil.getCacheDirectory(), "favorites.txt");
+		File favorites = new File(FileUtil.getCacheDir(), "favorites.txt");
 		if (favorites.exists()) {
 			FileReader reader;
 			try {
@@ -153,7 +153,7 @@ public class FavoritesModel extends ServerModel {
 	}
 
 	private File getFile() {
-		return new File(FileUtil.getSpoutcraftDirectory(), "favorites.yml");
+		return new File(FileUtil.getConfigDir(), "favorites.yml");
 	}
 
 	public void addServer(String title, String ip, int port) {

@@ -31,7 +31,7 @@ public class VersionFile {
 	}
 
 	public boolean create() {
-		File vFile = new File(FileUtil.getCacheDirectory(), "version");
+		File vFile = new File(FileUtil.getCacheDir(), "version");
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(vFile));
 			out.write(this.version);

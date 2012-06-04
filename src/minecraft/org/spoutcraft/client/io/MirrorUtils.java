@@ -38,7 +38,7 @@ import org.bukkit.util.config.Configuration;
 
 public class MirrorUtils {
 	private static boolean updated = false;
-	private static File mirrorsYML = new File(FileUtil.getSpoutcraftDirectory(), "mirrors.yml");
+	private static File mirrorsYML = new File(FileUtil.getConfigDir(), "mirrors.yml");
 	private static final String baseURL = "http://get.spout.org/";
 	private static List<String> mirrors = null;
 
@@ -56,12 +56,12 @@ public class MirrorUtils {
 					goodMirrors.add(e.getKey());
 				}
 			}
-			
+
 			Collections.sort(goodMirrors, new MirrorComparator(mirrors));
 			MirrorUtils.mirrors = goodMirrors;
 		}
-		
-		for (String mirror : MirrorUtils.mirrors){
+
+		for (String mirror : MirrorUtils.mirrors) {
 			String lookup = "http://" + mirror + "/" + mirrorURI;
 			if (isAddressReachable(lookup, 1000)) {
 				return lookup;
@@ -113,7 +113,7 @@ public class MirrorUtils {
 			updated = true;
 		}
 	}
-	
+
 	public static long copy(InputStream input, OutputStream output) throws IOException {
 		byte[] buffer = new byte[1024 * 4];
 		long count = 0;
@@ -140,7 +140,7 @@ class MirrorComparator implements Comparator<String> {
 	public int compare(String o1, String o2) {
 		return getValue(o2) - getValue(o1);
 	}
-	
+
 	private int getValue(String mirror) {
 		if (values.containsKey(mirror)) {
 			return values.get(mirror);
@@ -149,5 +149,5 @@ class MirrorComparator implements Comparator<String> {
 		values.put(mirror, value);
 		return value;
 	}
-	
+
 }

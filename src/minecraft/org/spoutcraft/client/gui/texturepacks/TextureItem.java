@@ -58,29 +58,29 @@ public class TextureItem implements ListWidgetItem {
 	private long size;
 	private static HashMap<Integer, Download> downloads = new HashMap<Integer, TextureItem.Download>();
 	private static ButtonUpdater buttonUpdater = null;
-	
+
 	public static void setButtonUpdater(ButtonUpdater updater) {
 		buttonUpdater = updater;
 	}
-	
+
 	public static void registerDownload(int id, Download download) {
 		downloads.put(id, download);
 	}
-	
+
 	public static void unregisterDownload(int id) {
 		downloads.remove(id);
 	}
-	
+
 	public static Download getDownload(int id) {
 		return downloads.get(id);
 	}
-	
+
 	public static boolean hasDownloads() {
 		return downloads.size() > 0;
 	}
-	
+
 	public static void cancelAllDownloads() {
-		for(Download d:downloads.values()) {
+		for (Download d:downloads.values()) {
 			d.cancel();
 		}
 	}
@@ -120,7 +120,7 @@ public class TextureItem implements ListWidgetItem {
 			sStatus = size + " Bytes";
 		}
 		if (isDownloading()) {
-			sStatus = "Downloading: "+ChatColor.WHITE + download.getProgress() + "%";
+			sStatus = "Downloading: " + ChatColor.WHITE + download.getProgress() + "%";
 		}
 		if (downloadFail != null) {
 			sStatus = downloadFail;
@@ -246,11 +246,11 @@ public class TextureItem implements ListWidgetItem {
 		public void run() {
 			boolean cancelled = false;
 			try {
-				NetworkUtils.pingUrl("http://textures.spout.org/download.php?id="+item.getId());
+				NetworkUtils.pingUrl("http://textures.spout.org/download.php?id=" + item.getId());
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://static.spout.org/texturedl/"+item.getId()+"/"+item.getFileName());
-				File temp = new File(FileUtil.getTempDirectory(), FileUtil.getFileName(url.toString()));
+				url = new URL("http://static.spout.org/texturedl/" + item.getId() + "/" + item.getFileName());
+				File temp = new File(FileUtil.getTempDir(), FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				System.setProperty("http.agent", "");
 				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
@@ -296,9 +296,9 @@ public class TextureItem implements ListWidgetItem {
 
 			} catch(MalformedURLException e) {
 			} catch (IOException e) {
-				if(cancelled) {
+				if (cancelled) {
 					downloadFail = ChatColor.RED + "Download Cancelled";
-				} else {					
+				} else {
 					downloadFail = ChatColor.RED + e.getClass().getSimpleName();
 				}
 				e.printStackTrace();
@@ -306,7 +306,7 @@ public class TextureItem implements ListWidgetItem {
 				download = null;
 				downloads.remove(item.getId());
 				updateInstalled();
-				if(buttonUpdater != null) {
+				if (buttonUpdater != null) {
 					buttonUpdater.updateButtons();
 				}
 			}
@@ -315,13 +315,13 @@ public class TextureItem implements ListWidgetItem {
 		public synchronized int getProgress() {
 			return progress;
 		}
-		
+
 		public void cancel() {
 			interrupt();
 		}
 	}
 
 	public String getIconUrl() {
-		return "http://static.spout.org/texture/thumb/"+getId()+".png";
+		return "http://static.spout.org/texture/thumb/" + getId() + ".png";
 	}
 }

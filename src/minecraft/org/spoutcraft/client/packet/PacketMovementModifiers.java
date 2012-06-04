@@ -18,12 +18,12 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-import net.minecraft.client.Minecraft;
-
-public class PacketMovementModifiers implements SpoutPacket{
+public class PacketMovementModifiers implements SpoutPacket {
 	double gravityMod = 1;
 	double walkingMod = 1;
 	double swimmingMod = 1;
@@ -31,7 +31,6 @@ public class PacketMovementModifiers implements SpoutPacket{
 	double airspeedMod = 1;
 
 	public PacketMovementModifiers() {
-
 	}
 
 	public PacketMovementModifiers(double gravity, double walking, double swimming, double jumping, double airspeed) {

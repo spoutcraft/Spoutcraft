@@ -20,8 +20,6 @@ import java.util.HashMap;
 
 /**
  * Represents the possible types of tint available for block colors
- * @author lahwran
- * 
  */
 public enum TintType
 {

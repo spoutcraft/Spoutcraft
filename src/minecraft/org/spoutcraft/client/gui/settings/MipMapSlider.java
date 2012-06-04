@@ -21,7 +21,7 @@ import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class MipMapSlider extends GenericSlider{
+public class MipMapSlider extends GenericSlider {
 	public MipMapSlider() {
 		super("Terrain Mipmaps");
 		this.setSliderPosition(ConfigReader.mipmapsPercent);

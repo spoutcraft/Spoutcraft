@@ -30,14 +30,14 @@ import org.spoutcraft.spoutcraftapi.gui.TextField;
 
 import net.minecraft.src.GuiScreen;
 
-public class GuiAddWaypoint extends GuiScreen{
+public class GuiAddWaypoint extends GuiScreen {
 	Button done, cancel, delete;
 	TextField name;
 	private GuiScreen parent;
 	private int x,y,z;
 	private Waypoint toEdit = null;
 	private boolean existed = false;
-	
+
 	public GuiAddWaypoint(GuiScreen parent, int x, int y, int z) {
 		this.parent = parent;
 		this.x = x;
@@ -46,7 +46,7 @@ public class GuiAddWaypoint extends GuiScreen{
 		toEdit = new Waypoint("", x, y, z, true);
 		existed = false;
 	}
-	
+
 	public GuiAddWaypoint(GuiScreen parent, Waypoint edit) {
 		this.parent = parent;
 		this.toEdit = edit;
@@ -58,31 +58,31 @@ public class GuiAddWaypoint extends GuiScreen{
 
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+
 		GenericLabel label = new GenericLabel("Create Waypoint");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
-		
+
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
-		
+
 		label = new GenericLabel("Waypoint Name:");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX(left).setY(70);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
-		
+
 		name = new GenericTextField();
 		name.setHeight(20).setWidth(300).setX(left).setY(81);
 		name.setMaximumCharacters(0);
 		name.setFixed(true).setPriority(RenderPriority.Lowest);
 		name.setText(toEdit.name);
 		getScreen().attachWidget(spoutcraft, name);
-		
+
 		String text = "(" + x + ", " + y + ", " + z + ")";
-		if(!SpoutClient.getInstance().isCoordsCheat()) {
+		if (!SpoutClient.getInstance().isCoordsCheat()) {
 			text = "Coords not shown";
 		}
 		label = new GenericLabel(text);
@@ -90,25 +90,25 @@ public class GuiAddWaypoint extends GuiScreen{
 		label.setX((int) (width / 2 - size / 2)).setY(106);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
-		
+
 		done = new GenericButton("Create");
-		if(existed) {
+		if (existed) {
 			done.setText("Save");
 		}
 		done.setWidth(150).setHeight(20).setX(right).setY(200);
 		getScreen().attachWidget(spoutcraft, done);
-		
+
 		cancel = new GenericButton("Cancel");
 		cancel.setWidth(150).setHeight(20).setX(left).setY(200);
 		getScreen().attachWidget(spoutcraft, cancel);
-		
-		if(existed) {
+
+		if (existed) {
 			delete = new GenericButton("Delete");
 			delete.setGeometry(left, 175, 150, 20);
 			getScreen().attachWidget(spoutcraft, delete);
 		}
 	}
-	
+
 	@Override
 	public void drawScreen(int x, int y, float z) {
 		drawDefaultBackground();
@@ -116,31 +116,30 @@ public class GuiAddWaypoint extends GuiScreen{
 		done.setEnabled(name.getText().length() > 0);
 		super.drawScreen(x, y, z);
 	}
-	
+
 	@Override
 	protected void keyTyped(char ch, int keycode) {
 		if (keycode == Keyboard.KEY_RETURN) {
 			buttonClicked(done);
-		}
-		else {
+		} else {
 			super.keyTyped(ch, keycode);
 		}
 	}
-	
+
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(existed && btn == delete) {
+		if (existed && btn == delete) {
 			MinimapConfig.getInstance().removeWaypoint(toEdit);
 			MinimapConfig.getInstance().save();
 			SpoutClient.getHandle().displayGuiScreen(parent);
-			if(toEdit == MinimapConfig.getInstance().getFocussedWaypoint()) {
+			if (toEdit == MinimapConfig.getInstance().getFocussedWaypoint()) {
 				MinimapConfig.getInstance().setFocussedWaypoint(null);
 			}
 		}
 		if (btn.equals(done) && done.isEnabled()) {
 			toEdit.name = name.getText();
-			if(!existed) {
-				MinimapConfig.getInstance().addWaypoint(MinimapUtils.getWorldName(), toEdit);				
+			if (!existed) {
+				MinimapConfig.getInstance().addWaypoint(MinimapUtils.getWorldName(), toEdit);
 			}
 			MinimapConfig.getInstance().save();
 			SpoutClient.getHandle().displayGuiScreen(parent);

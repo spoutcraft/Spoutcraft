@@ -21,7 +21,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class VoidFogButton extends GenericCheckBox{
+public class VoidFogButton extends GenericCheckBox {
 	public VoidFogButton() {
 		super("Void Fog");
 		setChecked(ConfigReader.voidFog);

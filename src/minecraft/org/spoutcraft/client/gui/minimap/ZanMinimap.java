@@ -26,11 +26,8 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
 /**
  * Main Zanminimap class where everything happens
- * 
- * @author lahwran
  */
 public class ZanMinimap {
-
 	/**
 	 * MapCalculator instance, public for things that want to plug into the minimap
 	 */
@@ -53,7 +50,7 @@ public class ZanMinimap {
 	public ZanMinimap() {
 		MinimapConfig.initialize();
 		BlockColor.initDefaultColors();
-		
+
 		map = new Map();
 		texman = new TextureManager();
 		mapcalc = new MapCalculator(this);
@@ -70,15 +67,15 @@ public class ZanMinimap {
 	public void onRenderTick() {
 		if (Minecraft.theMinecraft.thePlayer == null)
 			return;
-		
+
 		if (Minecraft.theMinecraft.currentScreen != null && !(isTransparentMenu() || isChatMenu()))
 			return;
-			
+
 		if (!MinimapConfig.getInstance().isEnabled()) {
 			return;
 		}
-		
-		if(!Spoutcraft.hasPermission("spout.client.minimap")) {
+
+		if (!Spoutcraft.hasPermission("spout.client.minimap")) {
 			return;
 		}
 
@@ -88,13 +85,12 @@ public class ZanMinimap {
 		mapcalc.onRenderTick();
 		renderer.onRenderTick(scWidth, scHeight);
 	}
-	
+
 	private boolean isTransparentMenu() {
 		return Minecraft.theMinecraft.currentScreen instanceof GuiIngameMenu || Minecraft.theMinecraft.currentScreen instanceof GameSettingsScreen || Minecraft.theMinecraft.currentScreen instanceof GuiMinimapMenu || Minecraft.theMinecraft.currentScreen instanceof GuiMoveMinimap;
 	}
-	
+
 	private boolean isChatMenu() {
 		return Minecraft.theMinecraft.currentScreen instanceof GuiChat || Minecraft.theMinecraft.currentScreen instanceof GuiSleepMP;
 	}
-	
 }

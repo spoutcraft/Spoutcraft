@@ -31,7 +31,7 @@ import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
-public class SpoutcraftBlock implements Block{
+public class SpoutcraftBlock implements Block {
 	private final SpoutcraftChunk chunk;
 	private final int x;
 	private final int y;

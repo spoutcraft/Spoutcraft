@@ -31,7 +31,6 @@ public class PacketSetVelocity implements SpoutPacket {
 	private int entityId = 0;
 
 	public PacketSetVelocity() {
-
 	}
 
 	public PacketSetVelocity(int entityId, double motX, double motY, double motZ) {
@@ -69,7 +68,6 @@ public class PacketSetVelocity implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

@@ -26,7 +26,7 @@ import net.minecraft.src.World;
 
 import org.spoutcraft.client.io.FileUtil;
 
-public class DataMiningThread extends Thread{
+public class DataMiningThread extends Thread {
 	private volatile boolean onLogin = false;
 	private volatile boolean multiplayer = false;
 	private boolean runOnce = false;
@@ -59,13 +59,12 @@ public class DataMiningThread extends Thread{
 	}
 
 	private void onRunOnce() {
-		File runOnce = new File(FileUtil.getCacheDirectory(), "spout");
+		File runOnce = new File(FileUtil.getConfigDir(), "runonce");
 		if (!runOnce.exists()) {
 			try {
 				runOnce.createNewFile();
 				pingLink("http://bit.ly/spoutcraftinstall");
 			} catch (Exception e) {
-
 			}
 		}
 	}

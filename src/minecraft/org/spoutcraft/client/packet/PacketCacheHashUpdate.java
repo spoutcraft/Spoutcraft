@@ -80,6 +80,5 @@ public class PacketCacheHashUpdate implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

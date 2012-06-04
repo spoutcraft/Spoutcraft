@@ -30,7 +30,6 @@ public class PacketCustomBlockOverride implements SpoutPacket {
 	private byte data;
 
 	public PacketCustomBlockOverride() {
-
 	}
 
 	public PacketCustomBlockOverride(int x, int y, int z, Integer blockId, Byte data) {

@@ -22,13 +22,12 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketAlert implements SpoutPacket{
+public class PacketAlert implements SpoutPacket {
 	String message;
 	String title;
 	int itemId;
 
 	public PacketAlert() {
-
 	}
 
 	public PacketAlert(String title, String message, int itemId) {
@@ -62,6 +61,5 @@ public class PacketAlert implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

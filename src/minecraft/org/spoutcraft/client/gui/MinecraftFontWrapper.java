@@ -21,7 +21,7 @@ import net.minecraft.src.ChatAllowedCharacters;
 
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 
-public class MinecraftFontWrapper implements MinecraftFont{
+public class MinecraftFontWrapper implements MinecraftFont {
 	public int getTextWidth(String text) {
 		return Minecraft.theMinecraft.fontRenderer.getStringWidth(text);
 	}

@@ -22,7 +22,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class SmoothLightingSlider extends GenericSlider{
+public class SmoothLightingSlider extends GenericSlider {
 	public SmoothLightingSlider() {
 		super("Smooth Lighting");
 		setSliderPosition(ConfigReader.smoothLighting);

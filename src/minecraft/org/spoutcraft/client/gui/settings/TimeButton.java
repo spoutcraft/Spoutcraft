@@ -21,7 +21,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class TimeButton extends GenericButton{
+public class TimeButton extends GenericButton {
 	public TimeButton() {
 		setEnabled(SpoutClient.getInstance().isTimeCheat());
 		setTooltip("Time\nDefault - normal day/night cycles\nDay Only - day only\nNight Only - night only");

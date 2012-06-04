@@ -9,7 +9,6 @@ import net.minecraft.src.Packet101CloseWindow;
 import net.minecraft.src.Slot;
 
 public class InventoryUtil {
-	
 	public static void replaceItem(int id, int damage) {
 		int slot = -1;
 		InventoryPlayer inventory = Minecraft.theMinecraft.thePlayer.inventory;
@@ -42,7 +41,7 @@ public class InventoryUtil {
 			inventory.mainInventory[slot] = null;
 		}
 	}
-	
+
 	public static Slot getSlotFromPosition(int pos, Container inventorySlots) {
 		for (int i = 0; i < inventorySlots.inventorySlots.size(); i++) {
 			if (inventorySlots.inventorySlots.get(i) != null) {

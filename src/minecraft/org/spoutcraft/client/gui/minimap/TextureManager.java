@@ -20,12 +20,7 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.io.CustomTextureManager;
 
-/**
- * @author lahwran
- *
- */
 public class TextureManager {
-
 	private int glRoundmap = 0;
 	private int glMMArrow = 0;
 	private int glWaypoint = 0;
@@ -37,7 +32,7 @@ public class TextureManager {
 	 * @param zanMinimap
 	 */
 	public TextureManager() {}
-	
+
 	public void reset() {
 		glRoundmap = 0;
 		glMMArrow = 0;
@@ -77,13 +72,13 @@ public class TextureManager {
 			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
 	}
-	
+
 	public void loadWhiteMinimap() {
 		if (glWhiteMinimap == 0)
 			glWhiteMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/squaremap_white.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glWhiteMinimap);
 	}
-	
+
 	public void loadWhiteRoundmap() {
 		if (glWhiteRoundmap == 0)
 			glWhiteRoundmap = CustomTextureManager.getTextureFromJar("/res/minimap/roundmap_white.png").getTextureID();

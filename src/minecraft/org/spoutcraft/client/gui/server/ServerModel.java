@@ -7,14 +7,13 @@ import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
 public class ServerModel extends AbstractListModel {
-	
 	protected List<ServerItem> items = new ArrayList<ServerItem>();
 	protected GuiFavorites gui;
 	private boolean polling = false;
 
 	@Override
 	public ListWidgetItem getItem(int row) {
-		if(row >= 0 && row < getSize()) {
+		if (row >= 0 && row < getSize()) {
 			return items.get(row);
 		}
 		return null;
@@ -24,7 +23,7 @@ public class ServerModel extends AbstractListModel {
 	public int getSize() {
 		return items.size();
 	}
-	
+
 	public void onSelected(int item, boolean doubleClick) {
 		gui.updateButtons();
 	}
@@ -47,5 +46,4 @@ public class ServerModel extends AbstractListModel {
 	public GuiFavorites getCurrentGui() {
 		return gui;
 	}
-
 }

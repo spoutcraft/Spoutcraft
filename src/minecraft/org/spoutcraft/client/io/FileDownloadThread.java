@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class FileDownloadThread extends Thread{
+public class FileDownloadThread extends Thread {
 	private static FileDownloadThread instance = null;
 	private final ConcurrentLinkedQueue<Download> downloads = new ConcurrentLinkedQueue<Download>();
 	private final ConcurrentLinkedQueue<Runnable> actions = new ConcurrentLinkedQueue<Runnable>();
@@ -134,7 +134,6 @@ public class FileDownloadThread extends Thread{
 							try {
 								Thread.sleep(25);
 							} catch (InterruptedException e) {
-
 							}
 						}
 						in.close();

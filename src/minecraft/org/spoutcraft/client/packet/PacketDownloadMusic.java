@@ -27,13 +27,12 @@ import org.spoutcraft.client.sound.QueuedSound;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketDownloadMusic implements SpoutPacket{
+public class PacketDownloadMusic implements SpoutPacket {
 	int x, y, z;
 	int volume, distance;
 	boolean soundEffect, notify;
 	String url, plugin;
 	public PacketDownloadMusic() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -61,7 +60,7 @@ public class PacketDownloadMusic implements SpoutPacket{
 	}
 
 	public void run(int PlayerId) {
-		File directory = new File(FileUtil.getTempDirectory(), plugin);
+		File directory = new File(FileUtil.getTempDir(), plugin);
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -92,6 +91,5 @@ public class PacketDownloadMusic implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

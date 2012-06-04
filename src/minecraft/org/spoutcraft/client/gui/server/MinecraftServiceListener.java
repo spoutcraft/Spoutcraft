@@ -7,7 +7,6 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceListener;
 
 public class MinecraftServiceListener implements ServiceListener {
-
 	private LANModel model;
 	private Timer timer;
 
@@ -20,7 +19,6 @@ public class MinecraftServiceListener implements ServiceListener {
 	public void serviceAdded(final ServiceEvent arg0) {
 		System.out.println("Service Added "+arg0);
 		timer.schedule(new TimerTask() {
-			
 			@Override
 			public void run() {
 				model.dns.requestServiceInfo(arg0.getType(), arg0.getName(), 5000);

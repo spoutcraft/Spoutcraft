@@ -31,7 +31,7 @@ public class RenderText extends RenderEntity {
 		String text = entitytext.getText();
 		yaw = entitytext.isRotateWithPlayer()?this.renderManager.playerViewY:yaw;
 		RenderHelper.disableStandardItemLighting();
-        GL11.glPushMatrix();
+		GL11.glPushMatrix();
 		float scale = entitytext.getScale() * 0.124f;
 		GL11.glTranslated(x, y + 1, z);
 		GL11.glScalef(scale, scale, scale);

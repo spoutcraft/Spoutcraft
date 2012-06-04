@@ -23,10 +23,9 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
 
-public class PacketGenericBlock implements SpoutPacket{
+public class PacketGenericBlock implements SpoutPacket {
 	GenericCustomBlock block = new GenericCustomBlock();
 	public PacketGenericBlock() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -41,7 +40,6 @@ public class PacketGenericBlock implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

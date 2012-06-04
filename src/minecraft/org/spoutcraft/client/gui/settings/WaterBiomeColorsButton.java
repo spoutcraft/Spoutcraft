@@ -22,7 +22,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class WaterBiomeColorsButton extends GenericCheckBox{
+public class WaterBiomeColorsButton extends GenericCheckBox {
 	public WaterBiomeColorsButton() {
 		super("Water Biome Colors");
 		this.setChecked(ConfigReader.waterBiomeColors);

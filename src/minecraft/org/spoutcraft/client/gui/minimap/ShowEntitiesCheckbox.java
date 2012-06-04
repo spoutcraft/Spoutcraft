@@ -14,5 +14,5 @@ public class ShowEntitiesCheckbox extends GenericCheckBox {
 		MinimapConfig.getInstance().setShowEntities(checked);
 		MinimapConfig.getInstance().save();
 		return super.setChecked(checked);
-	}	
+	}
 }

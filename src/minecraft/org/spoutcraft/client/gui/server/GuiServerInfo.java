@@ -59,7 +59,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	private Texture textureGalleryImage;
 	private Button buttonGalleryPrev, buttonGalleryNext;
 	private int galleryCurrentImage = 0;
-	
+
 	static final int MAX_HEIGHT = 128;
 
 	private GuiScreen back;
@@ -191,11 +191,11 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		refresh();
 		updateData();
 	}
-	
+
 	public boolean hasGallery() {
 		return gallery.size() != 0;
 	}
-	
+
 	public void setupGallery() {
 		buttonGalleryNext = new GenericButton("->");
 		buttonGalleryPrev = new GenericButton("<-");
@@ -210,33 +210,33 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		layoutWidgets();
 		setGalleryImage(0);
 	}
-	
+
 	public void setGalleryImage(int n) {
-		if(!hasGallery()) {
+		if (!hasGallery()) {
 			return;
 		}
-		if(gallery.size() - 1 < n) {
+		if (gallery.size() - 1 < n) {
 			n = gallery.size() - 1;
 		}
-		if(n < 0) {
+		if (n < 0) {
 			n = 0;
 		}
 		galleryCurrentImage = n;
 		GalleryImage image = gallery.get(n);
 		labelGalleryImageTitle.setText(image.getTitle());
 		labelGalleryImageDesc.setText(image.getDesc());
-		if(labelGalleryImageDesc.getWidth() > 0) {
+		if (labelGalleryImageDesc.getWidth() > 0) {
 			labelGalleryImageDesc.recalculateLines();
 			content.updateInnerSize();
 		}
 		textureGalleryImage.setUrl("http://static.spout.org/server/gallery/" + item.getDatabaseId() + "_" + image.getHash() + ".png");
 		textureGalleryImage.setFinishDelegate(new ImageUpdate());
-		if(n == 0) {
+		if (n == 0) {
 			buttonGalleryPrev.setEnabled(false);
 		} else {
 			buttonGalleryPrev.setEnabled(true);
 		}
-		if(n == gallery.size() - 1) {
+		if (n == gallery.size() - 1) {
 			buttonGalleryNext.setEnabled(false);
 		} else {
 			buttonGalleryNext.setEnabled(true);
@@ -334,17 +334,17 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelDescription.recalculateLines();
 
 		top += labelDescription.getHeight() + 5;
-		
-		if(hasGallery()) {
+
+		if (hasGallery()) {
 			labelGalleryTitle.setGeometry(labelLeft, top, totalWidth, 10);
 			top += 15;
-			
+
 			textureGalleryImage.setGeometry(labelLeft, top, totalWidth, 100);
 			updateImageWidth(textureGalleryImage, totalWidth, (int) (content.getHeight() - 50));
 			w = (int) textureGalleryImage.getWidth();
 			textureGalleryImage.setX(totalWidth / 2 - w / 2);
 			top += textureGalleryImage.getHeight() + 5;
-			
+
 			buttonGalleryPrev.setGeometry(labelLeft, top, 20, 20);
 			buttonGalleryNext.setGeometry(labelLeft + totalWidth - 20, top, 20, 20);
 			w = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(labelGalleryImageTitle.getText());
@@ -426,15 +426,15 @@ public class GuiServerInfo extends GuiSpoutScreen {
 				labelSpoutcraft.setText(spoutcraft?"Yes":"No");
 				labelMCVersion.setText(URLDecoder.decode((String) i.get("mcversion"), "UTF-8"));
 				labelCategory.setText(URLDecoder.decode((String) i.get("category"), "UTF-8"));
-				if(i.containsKey("gallery")) {
+				if (i.containsKey("gallery")) {
 					System.out.println("Has gallery");
 					List<Map<String, String>> gMap = (List<Map<String, String>>) i.get("gallery");
 					gallery.clear();
-					for(Map<String, String> image:gMap) {
+					for (Map<String, String> image:gMap) {
 						GalleryImage img = new GalleryImage(image.get("picid"), URLDecoder.decode(image.get("title")), URLDecoder.decode(image.get("desc")));
 						gallery.add(img);
 					}
-					if(buttonGalleryNext == null) {
+					if (buttonGalleryNext == null) {
 						setupGallery();
 					} else {
 						setGalleryImage(0);
@@ -494,33 +494,33 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 	protected class GalleryImage {
 		private String hash, title, desc;
-	
+
 		public GalleryImage(String hash, String title, String desc) {
 			this.hash = hash;
 			this.title = title;
 			this.desc = desc;
 		}
-	
+
 		public String getHash() {
 			return hash;
 		}
-	
+
 		public void setHash(String hash) {
 			this.hash = hash;
 		}
-	
+
 		public String getTitle() {
 			return title;
 		}
-	
+
 		public void setTitle(String title) {
 			this.title = title;
 		}
-	
+
 		public String getDesc() {
 			return desc;
 		}
-	
+
 		public void setDesc(String desc) {
 			this.desc = desc;
 		}

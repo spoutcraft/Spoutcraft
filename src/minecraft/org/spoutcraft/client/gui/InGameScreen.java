@@ -223,7 +223,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD {
 		hunger.setVisible(toggle);
 		exp.setVisible(toggle);
 	}
-	
+
 	private void updateChatWindowSize(int screenWidth, int screenHeight) {
 		chatText.setGeometry(0, 0, 320, screenHeight);
 		//chat.setGeometry(0, 0, 320, screenHeight);

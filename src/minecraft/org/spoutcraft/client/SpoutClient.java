@@ -455,30 +455,29 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public CameraEntity getCamera() {
-		if(!isCameraDetached())
+		if (!isCameraDetached())
 			return null;
-		
+
 		return (CameraEntity)getHandle().renderViewEntity.spoutEntity;
 	}
 
 	public void setCamera(FixedLocation pos) {
 		EntityLiving cam = SpoutClient.getHandle().renderViewEntity;
-		if(!(cam.spoutEntity instanceof CameraEntity))
+		if (!(cam.spoutEntity instanceof CameraEntity))
 			return;
-		
+
 		((CameraEntity)cam.spoutEntity).teleport(pos);
 	}
 
 	public void detachCamera(boolean detach) {
-		if(detach) {
-			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+		if (detach) {
+			if (getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
 				setCamera(getActivePlayer().getLocation());
 				return;
 			}
 			getHandle().renderViewEntity = (new CraftCameraEntity(getActivePlayer().getLocation())).getHandle();
-		}
-		else {
-			if(getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
+		} else {
+			if (getHandle().renderViewEntity.spoutEntity instanceof CameraEntity) {
 				getHandle().renderViewEntity.spoutEntity.remove();
 				getHandle().renderViewEntity = getHandle().thePlayer;
 			}
@@ -543,7 +542,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public File getTemporaryCache() {
-		return FileUtil.getTempDirectory();
+		return FileUtil.getTempDir();
 	}
 
 	public File getTextureCache() {
@@ -551,7 +550,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public File getTexturePackFolder() {
-		return FileUtil.getTexturePackDirectory();
+		return FileUtil.getTexturePackDir();
 	}
 
 	public File getSelectedTexturePackZip() {
@@ -559,7 +558,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	}
 
 	public File getStatsFolder() {
-		return FileUtil.getStatsDirectory();
+		return FileUtil.getStatsDir();
 	}
 
 	public ServerManager getServerManager() {
@@ -654,17 +653,17 @@ public class SpoutClient extends PropertyObject implements Client {
 	@Override
 	public boolean hasPermission(String node) {
 		Boolean allow = permissions.get(node);
-		if(allow != null) {
+		if (allow != null) {
 			return allow;
 		} else {
 			return true;
 		}
 	}
-	
+
 	public void setPermission(String node, boolean allow) {
 		permissions.put(node, allow);
 	}
-	
+
 	public void clearPermissions() {
 		permissions.clear();
 	}

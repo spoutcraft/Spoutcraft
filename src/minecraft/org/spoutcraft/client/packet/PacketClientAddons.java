@@ -22,14 +22,13 @@ import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketClientAddons implements SpoutPacket{
+public class PacketClientAddons implements SpoutPacket {
 	private String[] addons;
 	private String[] versions;
-	
-	public PacketClientAddons() {
 
+	public PacketClientAddons() {
 	}
-	
+
 	public PacketClientAddons(Addon[] addons) {
 		this.addons = new String[addons.length];
 		this.versions = new String[addons.length];
@@ -64,11 +63,9 @@ public class PacketClientAddons implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

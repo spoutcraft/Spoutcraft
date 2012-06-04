@@ -21,7 +21,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class AutosaveButton extends AutomatedButton{
+public class AutosaveButton extends AutomatedButton {
 	public AutosaveButton() {
 		setTooltip("Autosave interval\nDefault autosave interval (2s) is NOT RECOMMENDED.\nAutosave causes the famous Lag Spike of Death.");
 	}

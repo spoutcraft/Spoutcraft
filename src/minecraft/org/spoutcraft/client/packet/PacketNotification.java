@@ -22,11 +22,10 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketNotification extends PacketAlert{
+public class PacketNotification extends PacketAlert {
 	protected int time;
 	protected short data;
 	public PacketNotification() {
-
 	}
 
 	public PacketNotification(String title, String message, int itemId, short data, int time) {

@@ -25,11 +25,10 @@ import org.spoutcraft.spoutcraftapi.addon.SimpleAddonManager;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketServerPlugins implements SpoutPacket{
+public class PacketServerPlugins implements SpoutPacket {
 	private String[] plugins;
 	private String[] versions;
 	public PacketServerPlugins() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -61,7 +60,6 @@ public class PacketServerPlugins implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

@@ -20,17 +20,17 @@ import java.io.IOException;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketEntityTitle implements SpoutPacket{
+public class PacketEntityTitle implements SpoutPacket {
 	public String title;
 	public int entityId;
 	public PacketEntityTitle() {
-
 	}
 
 	public PacketEntityTitle(int entityId, String title) {
@@ -73,6 +73,5 @@ public class PacketEntityTitle implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

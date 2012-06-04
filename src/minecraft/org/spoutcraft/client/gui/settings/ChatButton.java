@@ -23,7 +23,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public class ChatButton extends GenericButton {
 	GameSettingsScreen parent;
-	
+
 	public ChatButton(GameSettingsScreen parent) {
 		super("Chat Options");
 		this.parent = parent;

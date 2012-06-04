@@ -24,13 +24,12 @@ import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketControlAction implements SpoutPacket{
+public class PacketControlAction implements SpoutPacket {
 	protected UUID screen;
 	protected UUID widget;
 	protected float state;
 	protected String data = "";
 	public PacketControlAction() {
-
 	}
 
 	public PacketControlAction(Screen screen, Widget widget, float state) {
@@ -79,6 +78,5 @@ public class PacketControlAction implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

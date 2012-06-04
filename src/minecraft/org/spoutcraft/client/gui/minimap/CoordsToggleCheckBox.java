@@ -20,14 +20,14 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class CoordsToggleCheckBox extends GenericCheckBox{
+public class CoordsToggleCheckBox extends GenericCheckBox {
 	public CoordsToggleCheckBox() {
 		super("Show Coordinates");
 		setChecked(MinimapConfig.getInstance().isCoords());
 		setEnabled(SpoutClient.getInstance().isCoordsCheat());
 		setTooltip("Minimap Enabled\nEnables or disables the minimap on the HUD.");
 	}
-	
+
 	@Override
 	public String getTooltip() {
 		if (!isEnabled()) {

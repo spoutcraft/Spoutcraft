@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class MinimapToggleCheckBox extends GenericCheckBox{
+public class MinimapToggleCheckBox extends GenericCheckBox {
 	public MinimapToggleCheckBox() {
 		super("Minimap Enabled");
 		setChecked(MinimapConfig.getInstance().isEnabled());

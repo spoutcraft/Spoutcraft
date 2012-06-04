@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomTool;
 
-public class PacketGenericTool implements SpoutPacket{
+public class PacketGenericTool implements SpoutPacket {
 	GenericCustomTool item = new GenericCustomTool();
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -37,7 +37,6 @@ public class PacketGenericTool implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

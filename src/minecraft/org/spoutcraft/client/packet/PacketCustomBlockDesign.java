@@ -30,7 +30,6 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	private GenericBlockDesign design;
 
 	public PacketCustomBlockDesign() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -55,7 +54,6 @@ public class PacketCustomBlockDesign implements SpoutPacket {
 	}
 
 	public void failure(int id) {
-
 	}
 
 	public PacketType getPacketType() {

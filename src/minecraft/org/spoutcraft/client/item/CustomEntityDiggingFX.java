@@ -26,7 +26,7 @@ import net.minecraft.src.World;
 
 import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 
-public class CustomEntityDiggingFX extends EntityDiggingFX{
+public class CustomEntityDiggingFX extends EntityDiggingFX {
 	private Texture textureBinding = null;
 	GenericBlockDesign design;
 	public CustomEntityDiggingFX(World var1, double var2, double var4, double var6, double var8, double var10, double var12, Block block, int var15, int var16, Texture textureBinding, GenericBlockDesign design) {

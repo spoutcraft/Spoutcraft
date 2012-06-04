@@ -260,13 +260,16 @@ public class SimpleMaterialManager implements MaterialManager {
 		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
 			list.set(0, custom);
 		}
-		if(list.size() > 0) {
+		if (list.size() > 0) {
 			String tooltip = "";
 			int lines = 0;
-			for(int i = 0; i < list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				String s = (String)list.get(i);
-				if(i == 0) s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
-				else s = (new StringBuilder()).append("\2477").append(s).toString();
+				if (i == 0) {
+					s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
+				} else {
+					s = (new StringBuilder()).append("\2477").append(s).toString();
+				}
 				tooltip += s + "\n";
 				lines++;
 			}

@@ -19,9 +19,8 @@ package org.spoutcraft.client.gui.settings;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class ChunkRenderSpeed extends AutomatedButton{
+public class ChunkRenderSpeed extends AutomatedButton {
 	public ChunkRenderSpeed() {
-		
 		setTooltip("Chunk Render Speed\nControls how fast chunks will render in new areas.\n Faster rendering may adversly affect FPS.");
 	}
 
@@ -30,8 +29,7 @@ public class ChunkRenderSpeed extends AutomatedButton{
 		ConfigReader.chunkRenderPasses *= 2;
 		if (ConfigReader.chunkRenderPasses > 16) {
 			ConfigReader.chunkRenderPasses = 1;
-		}
-		else if (ConfigReader.chunkRenderPasses < 1) {
+		} else if (ConfigReader.chunkRenderPasses < 1) {
 			ConfigReader.chunkRenderPasses = 1;
 		}
 		ConfigReader.write();

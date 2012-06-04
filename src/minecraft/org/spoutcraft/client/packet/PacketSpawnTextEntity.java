@@ -9,14 +9,12 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketSpawnTextEntity implements SpoutPacket {
-
 	private String text;
 	private double posX, posY, posZ, moveX, moveY, moveZ;
 	private int duration;
 	private float scale;
 
 	public PacketSpawnTextEntity() {
-
 	}
 
 	@Override
@@ -72,5 +70,4 @@ public class PacketSpawnTextEntity implements SpoutPacket {
 	public int getVersion() {
 		return 0;
 	}
-
 }

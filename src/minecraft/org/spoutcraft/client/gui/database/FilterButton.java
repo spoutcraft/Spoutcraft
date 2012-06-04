@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.database;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class FilterButton extends GenericCheckBox implements UrlElement{
+public class FilterButton extends GenericCheckBox implements UrlElement {
 	protected AbstractAPIModel model;
 	protected String url = "";
 

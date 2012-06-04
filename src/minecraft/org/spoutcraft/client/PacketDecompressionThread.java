@@ -25,7 +25,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import org.spoutcraft.client.packet.CompressablePacket;
 import org.spoutcraft.client.packet.SpoutPacket;
 
-public class PacketDecompressionThread extends Thread{
+public class PacketDecompressionThread extends Thread {
 	private static PacketDecompressionThread instance = null;
 
 	private static final int QUEUE_CAPACITY = 1024 * 10;
@@ -33,7 +33,6 @@ public class PacketDecompressionThread extends Thread{
 	private final List<CompressablePacket> decompressed = Collections.synchronizedList(new LinkedList<CompressablePacket>());
 
 	private PacketDecompressionThread() {
-
 	}
 
 	public static void startThread() {

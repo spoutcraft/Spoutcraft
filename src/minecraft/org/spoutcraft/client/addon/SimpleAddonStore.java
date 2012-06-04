@@ -166,6 +166,6 @@ public class SimpleAddonStore implements AddonStore {
 	}
 
 	private File getDataFile() {
-		return new File(FileUtil.getSpoutcraftDirectory(), "addoninfo.yml");
+		return new File(FileUtil.getConfigDir(), "addoninfo.yml");
 	}
 }

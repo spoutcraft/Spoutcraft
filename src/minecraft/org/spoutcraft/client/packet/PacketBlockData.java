@@ -29,11 +29,10 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.Block;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class PacketBlockData implements CompressablePacket{
+public class PacketBlockData implements CompressablePacket {
 	byte[] data;
 	boolean compressed = false;
 	public PacketBlockData() {
-
 	}
 
 	public void compress() {
@@ -71,13 +70,11 @@ public class PacketBlockData implements CompressablePacket{
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 
 			data = bos.toByteArray();
@@ -124,7 +121,6 @@ public class PacketBlockData implements CompressablePacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

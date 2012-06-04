@@ -82,7 +82,6 @@ public class PartitionChunk {
 	}
 
 	static public void copyToChunkData(byte[] chunkData, int blockNum, byte[] partition, int heightBits) {
-
 		updateLookupTable(heightBits);
 		int start = startPoint[heightBits].get()[blockNum];
 		int step = step1[heightBits].get()[blockNum];

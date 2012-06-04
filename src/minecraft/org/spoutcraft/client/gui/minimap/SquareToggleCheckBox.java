@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class SquareToggleCheckBox extends GenericCheckBox{
+public class SquareToggleCheckBox extends GenericCheckBox {
 	public SquareToggleCheckBox() {
 		super("Square Minimap");
 		setChecked(MinimapConfig.getInstance().isSquare());

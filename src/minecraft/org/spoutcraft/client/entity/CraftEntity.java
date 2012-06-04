@@ -43,11 +43,9 @@ public class CraftEntity extends PropertyObject implements Entity {
 	protected static HashMap<Class<? extends Entity>, Class<? extends CraftEntity>> interfacedClasses = new HashMap<Class<? extends Entity>, Class<? extends CraftEntity>>();
 
 	public CraftEntity() {
-
 	}
 
 	public CraftEntity(FixedLocation location) {
-
 	}
 
 	public CraftEntity(net.minecraft.src.Entity handle) {
@@ -210,6 +208,5 @@ public class CraftEntity extends PropertyObject implements Entity {
 	}
 
 	public void setSkin(String skinURI, EntitySkinType type) {
-
 	}
 }

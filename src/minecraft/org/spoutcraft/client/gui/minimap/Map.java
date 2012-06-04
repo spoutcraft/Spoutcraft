@@ -20,12 +20,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.util.LinkedList;
 
-/**
- * @author lahwran
- *
- */
 public class Map {
-
 	/**
 	 * Used to track world changes and force a rerender when the world
 	 * changes.
@@ -53,7 +48,7 @@ public class Map {
 	 * middle of rendering a map frame
 	 */
 	public int zoom = -1;
-	
+
 	public boolean square;
 
 	/**
@@ -73,7 +68,7 @@ public class Map {
 	public int imageSize = 276 * 2;
 
 	public int updatedist = 4;
-	
+
 	//Denotes the width or the diameter of a map
 	public static final int ZOOM_3 = 512;
 	public static final int ZOOM_2 = 256;
@@ -94,14 +89,14 @@ public class Map {
 	public final ImageManager lightimg;
 
 	public LinkedList<WatchedEntity> watchedEntities = new LinkedList<WatchedEntity>();
-	
+
 	public Map(int size) {
 		imageSize = size;
 		colorimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		heightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		lightimg = new ImageManager(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 	}
-	
+
 	public Map() {
 		this(276 * 2);
 	}
@@ -114,10 +109,11 @@ public class Map {
 	 * @return wrapped index
 	 */
 	private final int wrapIndex(int index, int arraysize) {
-		if (index < 0)
+		if (index < 0) {
 			return arraysize + ((index+1) % arraysize) - 1;
-		else
+		} else {
 			return index % arraysize;
+		}
 	}
 
 	public final int toImageX(int worldz) {
@@ -131,7 +127,7 @@ public class Map {
 	public void setColorPixel(int worldx, int worldz, int color24) {
 		colorimg.setRGB(toImageX(worldz), toImageY(worldx), color24);
 	}
-	
+
 	public void clearColorPixel(int worldx, int worldz) {
 		colorimg.setARGB(toImageX(worldz), toImageY(worldx), 0);
 	}
@@ -155,7 +151,7 @@ public class Map {
 	public void loadLightImage() {
 		lightimg.loadGLImage();
 	}
-	
+
 	public Raster getColorRaster() {
 		return colorimg.image.getRaster();
 	}

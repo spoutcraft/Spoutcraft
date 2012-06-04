@@ -34,12 +34,11 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketEntityInformation implements CompressablePacket{
+public class PacketEntityInformation implements CompressablePacket {
 	private boolean compressed = false;
 	private byte[] data = null;
 
 	public PacketEntityInformation() {
-
 	}
 
 	public PacketEntityInformation(List<Entity> entities) {
@@ -63,8 +62,7 @@ public class PacketEntityInformation implements CompressablePacket{
 		if (data != null) {
 			output.writeInt(data.length);
 			output.write(data);
-		}
-		else {
+		} else {
 			output.writeInt(0);
 		}
 		output.writeBoolean(compressed);
@@ -89,7 +87,6 @@ public class PacketEntityInformation implements CompressablePacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {
@@ -138,13 +135,11 @@ public class PacketEntityInformation implements CompressablePacket{
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 
 			data = bos.toByteArray();

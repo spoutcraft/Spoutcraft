@@ -47,16 +47,16 @@ public class KeyBindingItem extends ControlsBasicItem {
 		font.drawStringWithShadow(keyString, width - w2, y+2, 0xffcccccc);
 		font.drawStringWithShadow(binding.getAddonName(), x+w+4, y+11, 0xffffffff);
 		String fitting = r.getFittingText(getName(), width - w - w2 - 4);
-		
+
 		font.drawStringWithShadow(fitting, x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
 	}
-	
+
 	@Override
 	public void setModifiers(int m) {
 		binding.setRawModifiers((byte) m);
 	}
-	
-	
+
+
 
 	@Override
 	public int getModifiers() {

@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-class SpoutcraftLogger extends Logger{
+class SpoutcraftLogger extends Logger {
 	private Logger log = Logger.getLogger(SpoutClient.class.getName());
 	protected SpoutcraftLogger() {
 		super(SpoutClient.class.getName(), null);

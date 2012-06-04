@@ -33,7 +33,6 @@ public class PacketKeyBinding implements SpoutPacket {
 	private UUID uniqueId;
 
 	public PacketKeyBinding() {
-
 	}
 
 	public PacketKeyBinding(KeyBinding binding, int key, boolean pressed, int screen) {

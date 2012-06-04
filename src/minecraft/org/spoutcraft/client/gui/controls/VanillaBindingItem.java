@@ -46,7 +46,7 @@ public class VanillaBindingItem extends ControlsBasicItem {
 		w = font.getStringWidth(keyString);
 		font.drawStringWithShadow(keyString, width - w, y+2, 0xffcccccc);
 	}
-	
+
 	public String getDisplayKey() {
 		if (binding.keyCode == -128) {
 			return "Unbound";
@@ -76,7 +76,7 @@ public class VanillaBindingItem extends ControlsBasicItem {
 	public String getName() {
 		return SpoutClient.getHandle().gameSettings.getKeyBindingDescription(n);
 	}
-	
+
 	@Override
 	public boolean conflicts(ControlsBasicItem other) {
 		if (other instanceof SpoutcraftBindingItem) {

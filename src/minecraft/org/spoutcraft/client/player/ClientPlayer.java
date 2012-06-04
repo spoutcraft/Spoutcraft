@@ -33,7 +33,7 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 
-public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
+public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	private static ClientPlayer instance = null;
 	private RenderDistance min, max;
 	private InGameScreen mainScreen = new InGameScreen();
@@ -230,9 +230,9 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 
 	public ItemStack getItemStackOnCursor() {
 		ItemStack ret = new ItemStack(0);
-		if(SpoutClient.getHandle().thePlayer != null) {
+		if (SpoutClient.getHandle().thePlayer != null) {
 			net.minecraft.src.ItemStack mcStack = SpoutClient.getHandle().thePlayer.inventory.getItemStack();
-			if(mcStack != null) {
+			if (mcStack != null) {
 				ret = new ItemStack(mcStack.itemID, mcStack.stackSize, (short) mcStack.getItemDamage());
 			}
 		}
@@ -240,10 +240,10 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer{
 	}
 
 	public void setItemStackOnCursor(ItemStack stack) {
-		if(SpoutClient.getHandle().thePlayer == null) {
+		if (SpoutClient.getHandle().thePlayer == null) {
 			return;
 		}
-		if(stack == null || stack.getTypeId() == 0) {
+		if (stack == null || stack.getTypeId() == 0) {
 			SpoutClient.getHandle().thePlayer.inventory.setItemStack(null);
 		} else {
 			net.minecraft.src.ItemStack mcStack = new net.minecraft.src.ItemStack(stack.getTypeId(), stack.getAmount(), stack.getDurability());

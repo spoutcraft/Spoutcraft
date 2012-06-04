@@ -28,7 +28,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.*;
 
-public class GameSettingsScreen extends GuiScreen{
+public class GameSettingsScreen extends GuiScreen {
 	private Button doneButton = null;
 	public final GuiScreen parent;
 	private GenericScrollArea scrollArea;
@@ -36,13 +36,13 @@ public class GameSettingsScreen extends GuiScreen{
 	public GameSettingsScreen(GuiScreen parent) {
 		this.parent = parent;
 	}
-	
+
 	public void setWorldAndResolution(Minecraft mc, int width, int height) {
 		int scroll = scrollArea == null ? 0 : scrollArea.getScrollPosition(Orientation.VERTICAL);
 		super.setWorldAndResolution(mc, width, height);
 		scrollArea.setScrollPosition(Orientation.VERTICAL, scroll);
 	}
-	
+
 
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
@@ -126,11 +126,11 @@ public class GameSettingsScreen extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-		
+
 		control = new ChatButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new MinimapButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -157,10 +157,10 @@ public class GameSettingsScreen extends GuiScreen{
 										"performance settings to maximize framerate and quality. You can\n" +
 										"adjust my priorities, or dismiss me and manually select settings.");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
-		
+
 		if (ConfigReader.automatePerformance) {
 			screen.attachWidget(spoutcraft, message);
-			
+
 			top += 47;
 		}
 
@@ -201,7 +201,7 @@ public class GameSettingsScreen extends GuiScreen{
 		top += 6;
 
 		ArrayList<CheckBox> graphicCheckboxes = new ArrayList<CheckBox>();
-		
+
 		control = new FancyGraphicsButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX((int) (width / 2 - size / 2) - 75/2).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -212,7 +212,7 @@ public class GameSettingsScreen extends GuiScreen{
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		//graphicCheckboxes.add((CheckBox) control);
-		
+
 		control = new FancyCloudsButton(fancyGraphics).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -273,7 +273,7 @@ public class GameSettingsScreen extends GuiScreen{
 		control = new SmoothFPSButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new ServerLightButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -421,11 +421,11 @@ public class GameSettingsScreen extends GuiScreen{
 		control = new MipMapSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new FlightSpeedSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
 
 		control = new HotbarQuickKeysButton().setAlign(WidgetAnchor.TOP_CENTER);
@@ -433,9 +433,9 @@ public class GameSettingsScreen extends GuiScreen{
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
-		
+
 		top += 5;
-		
+
 		label = new GenericLabel("Screenshot Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);

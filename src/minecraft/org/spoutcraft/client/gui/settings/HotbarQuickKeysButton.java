@@ -20,7 +20,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class HotbarQuickKeysButton extends GenericCheckBox{
+public class HotbarQuickKeysButton extends GenericCheckBox {
 	public HotbarQuickKeysButton() {
 		super("Num Keys Switch Items");
 		setChecked(ConfigReader.hotbarQuickKeysEnabled);

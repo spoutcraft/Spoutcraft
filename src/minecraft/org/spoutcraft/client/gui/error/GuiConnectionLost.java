@@ -37,7 +37,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-public class GuiConnectionLost extends GuiScreen{
+public class GuiConnectionLost extends GuiScreen {
 	public static String lastServerIp;
 	public static int lastServerPort;
 

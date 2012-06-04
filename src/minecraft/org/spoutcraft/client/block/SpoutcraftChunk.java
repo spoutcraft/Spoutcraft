@@ -34,7 +34,7 @@ import org.spoutcraft.spoutcraftapi.entity.Entity;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class SpoutcraftChunk implements Chunk{
+public class SpoutcraftChunk implements Chunk {
 	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
 
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
@@ -112,7 +112,7 @@ public class SpoutcraftChunk implements Chunk{
 	public boolean unload(boolean save, boolean safe) {
 		return getWorld().unloadChunk(getX(), getZ(), save, safe);
 	}
-	
+
 	public byte[] getRawBlockIds() {
 		//TODO: fix
 		return null;
@@ -193,11 +193,11 @@ public class SpoutcraftChunk implements Chunk{
 		Minecraft.theMinecraft.theWorld.markBlockNeedsUpdate(x, y, z);
 		return old;
 	}
-	
+
 	public byte[] getCustomBlockData() {
 		return customBlockRotations;
 	}
-	
+
 	public void setCustomBlockData(byte[] data) {
 		customBlockRotations = data;
 		Minecraft.theMinecraft.theWorld.markBlocksDirty(x * 16, 0, z * 16, x * 16 + 15, 255, z * 16 + 15);

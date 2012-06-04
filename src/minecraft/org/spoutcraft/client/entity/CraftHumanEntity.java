@@ -39,7 +39,7 @@ import org.spoutcraft.spoutcraftapi.entity.HumanEntity;
 import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
 
-public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity{
+public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
 	public CraftHumanEntity(EntityPlayer player) {
 		super(player);
 	}

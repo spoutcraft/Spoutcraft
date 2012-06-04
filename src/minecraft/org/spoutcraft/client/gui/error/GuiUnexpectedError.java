@@ -34,9 +34,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
-public class GuiUnexpectedError extends GuiScreen{
+public class GuiUnexpectedError extends GuiScreen {
 	public GuiUnexpectedError() {
-
 	}
 
 	public void initGui() {

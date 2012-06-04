@@ -33,13 +33,13 @@ public class ResizeScreenshotHeightField extends GenericTextField {
 		setEnabled(ConfigReader.resizeScreenshots);
 		super.onTick();
 	}
-	
+
 	@Override
 	public void onTypingFinished() {
-		if(getText().equals("")) return;
+		if (getText().equals("")) return;
 		try {
 			int height = Integer.parseInt(getText());
-			if(height < 1) throw new RuntimeException("Must be at least 1");
+			if (height < 1) throw new RuntimeException("Must be at least 1");
 			ConfigReader.resizedScreenshotHeight = height;
 			ConfigReader.write();
 			setPlaceholder("" + height);
@@ -49,14 +49,14 @@ public class ResizeScreenshotHeightField extends GenericTextField {
 			setFocus(false);
 		}
 	}
-	
+
 	@Override
 	public Control setFocus(boolean focus) {
 		super.setFocus(focus);
-		if(!focus) {
+		if (!focus) {
 			try {
 				int height = Integer.parseInt(getText());
-				if(height < 1) throw new RuntimeException("Must be at least 1");
+				if (height < 1) throw new RuntimeException("Must be at least 1");
 				ConfigReader.resizedScreenshotHeight = height;
 				ConfigReader.write();
 				setText("");

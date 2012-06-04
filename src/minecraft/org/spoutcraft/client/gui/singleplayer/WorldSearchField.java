@@ -22,9 +22,9 @@ import org.spoutcraft.spoutcraftapi.ChatColor;
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
-public class WorldSearchField extends GenericTextField implements FilterItem{
+public class WorldSearchField extends GenericTextField implements FilterItem {
 	private FilterModel model;
-	
+
 	public WorldSearchField(FilterModel model) {
 		this.model = model;
 		model.getFilters().add(this);
@@ -48,6 +48,6 @@ public class WorldSearchField extends GenericTextField implements FilterItem{
 		}
 		return false;
 	}
-	
-	
+
+
 }

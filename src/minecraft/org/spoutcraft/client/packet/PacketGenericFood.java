@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.item.GenericCustomFood;
 
-public class PacketGenericFood implements SpoutPacket{
+public class PacketGenericFood implements SpoutPacket {
 	GenericCustomFood item = new GenericCustomFood();
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -37,7 +37,6 @@ public class PacketGenericFood implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

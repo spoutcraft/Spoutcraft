@@ -8,7 +8,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 public class EntityVisibilityCheckbox extends GenericCheckBox {
 	private Class<? extends Entity> clazz;
 	private boolean save = true;
-	
+
 	public EntityVisibilityCheckbox(Class<? extends Entity> clazz, String texture) {
 		this.clazz = clazz;
 		String name = texture.substring(0, texture.length() - 4).replaceAll("_", " ").trim();
@@ -20,12 +20,12 @@ public class EntityVisibilityCheckbox extends GenericCheckBox {
 
 	@Override
 	public CheckBox setChecked(boolean checked) {
-		if(save) {
+		if (save) {
 			MinimapConfig.getInstance().setEntityVisible(clazz, checked);
 			MinimapConfig.getInstance().save();
 		}
 		return super.setChecked(checked);
 	}
-	
-	
+
+
 }

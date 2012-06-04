@@ -38,7 +38,7 @@ public class ServerItem implements ListWidgetItem {
 	 * The default Minecraft server port.
 	 */
 	public static final int DEFAULT_PORT = 25565;
-	
+
 	protected ListWidget widget;
 
 	protected String ip;
@@ -320,7 +320,7 @@ public class ServerItem implements ListWidgetItem {
 	public boolean isPolling() {
 		return pollResult.isPolling();
 	}
-	
+
 	public void endPolling() {
 		pollResult.endPolling();
 	}

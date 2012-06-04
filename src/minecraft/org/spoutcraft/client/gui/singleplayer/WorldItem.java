@@ -32,13 +32,12 @@ import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
 
 public class WorldItem implements ListWidgetItem {
-
 	private ListWidget widget;
 	private WorldInfo world;
 	private String fileName;
 	private SaveFormatComparator save;
 	private static DateFormat dateFormatter = new SimpleDateFormat();
-	
+
 	public WorldItem(SaveFormatComparator save, ISaveFormat access) {
 		this.save = save;
 		this.setWorld(access.getWorldInfo(save.getFileName()));
@@ -77,14 +76,14 @@ public class WorldItem implements ListWidgetItem {
 
 	public void onClick(int x, int y, boolean doubleClick) {
 	}
-	
+
 	public static String getGameplayString(int id) {
 		StringTranslate stringtranslate = StringTranslate.getInstance();
 		switch(id) {
-		case 0:
-			return stringtranslate.translateKey("gameMode.survival");
-		case 1:
-			return stringtranslate.translateKey("gameMode.creative");
+			case 0:
+				return stringtranslate.translateKey("gameMode.survival");
+			case 1:
+				return stringtranslate.translateKey("gameMode.creative");
 		}
 		return "Unknown gameplay id "+id;
 	}
@@ -92,7 +91,7 @@ public class WorldItem implements ListWidgetItem {
 	private void setWorld(WorldInfo world) {
 		this.world = world;
 	}
-	
+
 	public WorldInfo getWorld() {
 		return world;
 	}

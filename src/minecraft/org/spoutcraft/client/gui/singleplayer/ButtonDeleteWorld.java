@@ -19,17 +19,15 @@ package org.spoutcraft.client.gui.singleplayer;
 import org.spoutcraft.client.gui.SafeButton;
 
 public class ButtonDeleteWorld extends SafeButton {
-
 	GuiWorldSelection parent;
-	
+
 	public ButtonDeleteWorld(GuiWorldSelection parent) {
 		setText("Delete");
 		this.parent = parent;
 	}
-	
+
 	@Override
 	protected void executeAction() {
 		parent.deleteSelectedWorld();
 	}
-
 }

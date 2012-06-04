@@ -59,6 +59,5 @@ public class PacketChunkRefresh implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

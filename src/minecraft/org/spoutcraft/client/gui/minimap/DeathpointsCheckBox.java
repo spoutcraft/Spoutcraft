@@ -3,7 +3,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class DeathpointsCheckBox extends GenericCheckBox{
+public class DeathpointsCheckBox extends GenericCheckBox {
 	public DeathpointsCheckBox() {
 		super("Deathpoints");
 		setChecked(MinimapConfig.getInstance().isDeathpoints());

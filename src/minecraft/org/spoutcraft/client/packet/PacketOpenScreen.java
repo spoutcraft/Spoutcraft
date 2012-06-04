@@ -26,7 +26,6 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 public class PacketOpenScreen implements SpoutPacket {
 	ScreenType type = null;
 	public PacketOpenScreen() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -42,7 +41,6 @@ public class PacketOpenScreen implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

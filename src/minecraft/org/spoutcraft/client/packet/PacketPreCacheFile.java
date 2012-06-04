@@ -28,7 +28,7 @@ import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketPreCacheFile implements SpoutPacket{
+public class PacketPreCacheFile implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];
 	private boolean cached = false;
 	private boolean url = false;
@@ -37,7 +37,6 @@ public class PacketPreCacheFile implements SpoutPacket{
 	private String plugin;
 
 	public PacketPreCacheFile() {
-
 	}
 
 	public PacketPreCacheFile(String plugin, String file, long expectedCRC, boolean url) {
@@ -68,7 +67,7 @@ public class PacketPreCacheFile implements SpoutPacket{
 			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + file);
 			return;
 		}
-		final File directory = new File(FileUtil.getCacheDirectory(), plugin);
+		final File directory = new File(FileUtil.getCacheDir(), plugin);
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -113,7 +112,6 @@ public class PacketPreCacheFile implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

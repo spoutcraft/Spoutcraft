@@ -24,13 +24,12 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
-public class PacketSky implements SpoutPacket{
+public class PacketSky implements SpoutPacket {
 	private int cloudY, stars, sunPercent, moonPercent;
 	private Color skyColor, fogColor, cloudColor;
 	String sun = "";
 	String moon = "";
 	public PacketSky() {
-
 	}
 
 	public PacketSky(int cloudY, int stars, int sunPercent, int moonPercent, Color skyColor) {
@@ -134,6 +133,5 @@ public class PacketSky implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

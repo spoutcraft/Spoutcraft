@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.yaml.snakeyaml.Yaml;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -41,22 +43,22 @@ import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiPlayerInfo;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.entity.Player;
 import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
-import org.yaml.snakeyaml.Yaml;
 
-public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager{
+public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager {
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;
 	public String tabHelp = null;
 	public List<String> pastCommands = new LinkedList<String>();
 	public List<String> pastMessages = new LinkedList<String>();
-	
+
 	public List<String> wordHighlight = new ArrayList<String>();
 	public List<String> ignorePeople = new ArrayList<String>();
 
@@ -65,7 +67,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 			boolean control = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 			String message = chat.message;
 			int cursor = chat.cursorPosition;
-			
+
 			if (message.length() > 99 && message.startsWith("/")) {
 				return false; //block long commands
 			}
@@ -148,7 +150,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				}
 				updateCursor(--cursor, chat);
 				updateMessage(message, chat);
-			} else if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && tabHelp != null && cursor == message.length()){ 
+			} else if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && tabHelp != null && cursor == message.length()) { 
 				message = message + tabHelp + " ";
 				cursor += tabHelp.length() + 1;
 				updateMessage(message, chat);
@@ -212,7 +214,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	}
 
 	public void sendChat(String message) {
-		if(!Spoutcraft.hasPermission("spout.client.chatcolors")) {
+		if (!Spoutcraft.hasPermission("spout.client.chatcolors")) {
 			message = message.replaceAll("(&([a-fA-F0-9]))", "");
 		}
 		List<String> lines = formatChat(message, false);
@@ -240,11 +242,11 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 			lines.add(message);
 			return lines;
 		}
-		
+
 		if (display) {
 			message = completeNames(message);
 		}
-			
+
 
 		StringBuilder builder = new StringBuilder(100);
 		int lineWidth = 0;
@@ -268,7 +270,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 
 		return lines;
 	}
-	
+
 	private String completeNames(String message) {
 		tabHelp = null;
 		String[] words = message.split(" ");
@@ -281,7 +283,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				//Check nearby players
 				Player p = SpoutClient.getInstance().getPlayer(lastWord);
 				String playerName = p != null ? p.getName() : null;
-				
+
 				//Check server player list
 				if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
 					int delta = Integer.MAX_VALUE;
@@ -305,7 +307,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 						playerName = best;
 					}
 				}
-				
+
 				//Autocomplete
 				if (playerName != null && playerName.length() > lastWord.length()) {
 					message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
@@ -414,7 +416,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}*/
 		return message;
 	}
-	
+
 	public void load() {
 		boolean wasSandboxed = SpoutClient.disableSandbox();
 		Yaml yaml = new Yaml();
@@ -443,9 +445,9 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 		}
 		SpoutClient.enableSandbox(wasSandboxed);
 	}
-	
+
 	private File getFile() {
-		return new File(FileUtil.getSpoutcraftDirectory(), "chatSettings.yml");
+		return new File(FileUtil.getConfigDir(), "chatSettings.yml");
 	}
 
 	public List<String> getIgnoredPlayers() {

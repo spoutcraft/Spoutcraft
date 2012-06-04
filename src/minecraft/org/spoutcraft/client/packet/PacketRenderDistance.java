@@ -26,12 +26,11 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.player.RenderDistance;
 
-public class PacketRenderDistance implements SpoutPacket{
+public class PacketRenderDistance implements SpoutPacket {
 	protected byte view = -1;
 	protected byte max = -1;
 	protected byte min = -1;
 	public PacketRenderDistance() {
-
 	}
 
 	public PacketRenderDistance(byte view) {
@@ -85,6 +84,5 @@ public class PacketRenderDistance implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

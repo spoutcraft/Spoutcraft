@@ -42,7 +42,7 @@ public class ServerManager {
 	public ServerListModel getServerList() {
 		return serverList;
 	}
-	
+
 	public LANModel getLANModel() {
 		return lanModel;
 	}

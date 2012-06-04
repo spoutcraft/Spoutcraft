@@ -29,13 +29,12 @@ import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketCustomMultiBlockOverride implements CompressablePacket{
+public class PacketCustomMultiBlockOverride implements CompressablePacket {
 	private int chunkX;
 	private int chunkZ;
 	private boolean compressed = true;
 	private byte[] data;
 	public PacketCustomMultiBlockOverride() {
-
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -69,7 +68,6 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {
@@ -117,13 +115,11 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket{
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 			compressed = false;
 			data = bos.toByteArray();

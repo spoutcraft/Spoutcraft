@@ -80,28 +80,27 @@ public class PacketBiomeWeather implements SpoutPacket {
 		SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
 
 		switch(weather) {
-		case 0:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
-			break;
-		case 1:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, true);
-			break;
-		case 2:
-			SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, true);
-			SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
-			break;
-		case 3:
-			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
-			break;
-		default:
-			SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
-			break;
+			case 0:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
+				break;
+			case 1:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, false);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, true);
+				break;
+			case 2:
+				SpoutClient.getInstance().getBiomeManager().setSnowEnabled(biomeString, true);
+				SpoutClient.getInstance().getBiomeManager().setRainEnabled(biomeString, false);
+				break;
+			case 3:
+				SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
+				break;
+			default:
+				SpoutClient.getInstance().getBiomeManager().resetWeather(biomeString);
+				break;
 		}
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

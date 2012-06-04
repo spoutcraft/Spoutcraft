@@ -51,12 +51,12 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void initGui() {
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("spoutcraft");
-		
+
 		int selection = 0;
-		if(comboSource != null) {
+		if (comboSource != null) {
 			selection = comboSource.getSelectedRow();
 		}
-		
+
 		comboSource = new SwitchViewSourceCombo(this);
 		getScreen().attachWidget(spoutcraft, comboSource);
 		comboSource.setGeometry(width / 2 - 75, 5, 150, 20);
@@ -165,7 +165,7 @@ public class GuiFavorites extends GuiScreen {
 		}
 		if (btn.equals(buttonAdd)) {
 			String address = "";
-			if(model instanceof FavoritesModel) {
+			if (model instanceof FavoritesModel) {
 				address = textQuickJoin.getText();
 			} else if (model instanceof LANModel) {
 				ServerItem item = (ServerItem) view.getSelectedItem();
@@ -195,7 +195,7 @@ public class GuiFavorites extends GuiScreen {
 			}
 		}
 		FavoritesModel fav = null;
-		if(model instanceof FavoritesModel) {
+		if (model instanceof FavoritesModel) {
 			fav = (FavoritesModel) model;
 		}
 		if (btn.equals(buttonMoveUp) && fav != null) {
@@ -216,7 +216,7 @@ public class GuiFavorites extends GuiScreen {
 			refresh();
 		}
 	}
-	
+
 	public void refresh() {
 		pollTime = System.currentTimeMillis();
 		for (int i = 0; i < model.getSize(); i++) {
@@ -226,7 +226,7 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public void deleteCurrentFavorite() {
-		if(model instanceof FavoritesModel) {
+		if (model instanceof FavoritesModel) {
 			FavoritesModel fav = (FavoritesModel) model;
 			fav.removeServer((ServerItem)view.getSelectedItem());
 			fav.save();
@@ -268,12 +268,12 @@ public class GuiFavorites extends GuiScreen {
 			buttonDelete.setEnabled(false);
 			buttonMoveDown.setEnabled(false);
 			buttonMoveUp.setEnabled(false);
-			if(view.getSelectedItem() == null) {
+			if (view.getSelectedItem() == null) {
 				buttonAdd.setEnabled(false);
 			} else {
 				ServerItem item = (ServerItem) view.getSelectedItem();
 				if (SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item)) {
-					buttonAdd.setEnabled(false);					
+					buttonAdd.setEnabled(false);
 				}
 			}
 		}
@@ -296,7 +296,7 @@ public class GuiFavorites extends GuiScreen {
 			darkness = Math.cos(t * 2 * Math.PI / 1000) * 0.2 + 0.2;
 			color.setBlue(1f - (float)darkness);
 			buttonRefresh.setDisabledColor(color);
-			
+
 			//If polling locks up and takes > 15s, unlock the button
 			if (pollTime + 15000L < System.currentTimeMillis()) {
 				for (int i = 0; i < model.getSize(); i++) {
@@ -308,7 +308,7 @@ public class GuiFavorites extends GuiScreen {
 				model.setPolling(false);
 			}
 		}
-		
+
 		buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 		super.updateScreen();
 	}

@@ -230,7 +230,7 @@ public class GuiEditShortcut extends GuiScreen {
 			recording = false;
 			updateRecordButton();
 		} else {
-			super.mouseClicked(x, y, button);			
+			super.mouseClicked(x, y, button);
 		}
 	}
 }

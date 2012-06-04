@@ -22,7 +22,6 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public interface SpoutPacket {
-
 	/**
 	 * Reads the data from an input stream into member variables.
 	 * The number of bytes read must be equal to the result of {@link #getNumBytes()}.

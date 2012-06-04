@@ -26,19 +26,20 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import org.spoutcraft.client.gui.server.ServerItem;
 import org.xbill.DNS.Lookup;
 import org.xbill.DNS.Record;
 import org.xbill.DNS.SRVRecord;
 import org.xbill.DNS.TextParseException;
 import org.xbill.DNS.Type;
 
+import org.spoutcraft.client.gui.server.ServerItem;
+
 public class NetworkUtils {
 	/**
 	 * A {@link Pattern} matching valid DNS hostnames (as opposed to IP addresses).
 	 */
 	private static final Pattern HOSTNAME_PATTERN = Pattern.compile("[a-zA-Z-]");
-	
+
 	public static void pingUrl(String Url) {
 		try {
 			URL url = new URL(Url);
@@ -63,7 +64,7 @@ public class NetworkUtils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Resolves a hostname to an {@link InetSocketAddress}, encapsulating an IP address and
 	 * port. <code>hostname</code> may represent a valid DNS hostname or an IP address. If
@@ -81,7 +82,7 @@ public class NetworkUtils {
 	public static InetSocketAddress resolve(String hostname, int port) {
 		return resolve(hostname, port, true);
 	}
-	
+
 	/**
 	 * Resolves a hostname to an {@link InetSocketAddress}, encapsulating an IP address and
 	 * port. An optional <a href="http://en.wikipedia.org/wiki/SRV_record">SRV record</a>
@@ -111,10 +112,10 @@ public class NetworkUtils {
 				// Do nothing: fall back on a regular DNS lookup before failing
 			}
 		}
-		
+
 		return new InetSocketAddress(hostname, port);
 	}
-	
+
 	/**
 	 * Resolves a hostname to an {@link InetSocketAddress}, encapsulating an IP address and
 	 * port, using a <a href="http://en.wikipedia.org/wiki/SRV_record">SRV record</a> lookup.
@@ -135,10 +136,10 @@ public class NetworkUtils {
 	public static InetSocketAddress resolve(String hostname) throws TextParseException {
 		String query = "_minecraft._tcp." + hostname.trim();
 		Record[] records = new Lookup(query, Type.SRV).run();
-		
+
 		if ((records != null) && (records.length > 0)) {
 			SRVRecord srv = (SRVRecord)records[0];
-			
+
 			if (records.length > 1) {
 				for (int i = 1; i < records.length; i++) {
 					SRVRecord record = (SRVRecord)records[i];
@@ -147,12 +148,12 @@ public class NetworkUtils {
 					}
 				}
 			}
-			
+
 			String host = srv.getTarget().toString().replaceAll("\\.+$", "");
 			int port = srv.getPort();
 			return new InetSocketAddress(host, port);
 		}
-		
+
 		return null;
 	}
 }

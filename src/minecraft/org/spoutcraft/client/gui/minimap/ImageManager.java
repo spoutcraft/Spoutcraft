@@ -18,18 +18,13 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.awt.image.BufferedImage;
 
-import net.minecraft.client.Minecraft;
-
 import org.lwjgl.opengl.GL11;
 
-/**
- * @author lahwran
- *
- */
-public class ImageManager {
+import net.minecraft.client.Minecraft;
 
+public class ImageManager {
 	protected final BufferedImage image;
-	
+
 	private int glImage = 0;
 
 	private volatile boolean hasGLImage = false;
@@ -51,12 +46,12 @@ public class ImageManager {
 			hasChanged = true;
 		}
 	}
-	
+
 	public void setARGB(int X, int Y, int color) {
 		synchronized(image) {
 			image.setRGB(X, Y, color);
 			hasChanged = true;
-		}	
+		}
 	}
 
 	public void loadGLImage() {
@@ -67,15 +62,13 @@ public class ImageManager {
 				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasChanged = false;
-			}
-			else if (!hasGLImage) {
+			} else if (!hasGLImage) {
 				GL11.glPushMatrix();
 				glImage = Minecraft.theMinecraft.renderEngine.allocateAndSetupTexture(image);
 				GL11.glPopMatrix();
 				hasGLImage = true;
 				hasChanged = false;
-			}
-			else if (glImage > 0) {
+			} else if (glImage > 0) {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, glImage);
 			}
 		}

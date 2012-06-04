@@ -19,7 +19,7 @@ package org.spoutcraft.client.pluginloader;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class ClassLoader extends URLClassLoader{
+public class ClassLoader extends URLClassLoader {
 	public ClassLoader(final URL[] urls, final ClassLoader parent) {
 		super(urls, parent);
 	}

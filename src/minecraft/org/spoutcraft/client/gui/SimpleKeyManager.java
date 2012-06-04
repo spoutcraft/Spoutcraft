@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui;
 import org.spoutcraft.spoutcraftapi.gui.KeyManager;
 import org.spoutcraft.spoutcraftapi.gui.Keyboard;
 
-public class SimpleKeyManager implements KeyManager{
+public class SimpleKeyManager implements KeyManager {
 	public boolean isKeyDown(Keyboard key) {
 		return org.lwjgl.input.Keyboard.isKeyDown(key.getKeyCode());
 	}

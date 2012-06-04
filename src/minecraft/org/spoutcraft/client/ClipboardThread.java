@@ -46,9 +46,7 @@ public class ClipboardThread extends Thread {
 					try {
 						text = (String) contents.getTransferData(DataFlavor.stringFlavor);
 					} catch (UnsupportedFlavorException e) {
-
 					} catch (IOException e) {
-
 					}
 					if (text != null) {
 						if (!text.equals(prevClipboardText)) {
@@ -58,7 +56,6 @@ public class ClipboardThread extends Thread {
 					}
 				}
 			} catch (Exception e2) {
-
 			}
 		}
 	}

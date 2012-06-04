@@ -42,7 +42,6 @@ public class PacketCacheFile implements CompressablePacket {
 	private boolean compressed = false;
 
 	public PacketCacheFile() {
-
 	}
 
 	public PacketCacheFile(String plugin, File file) {
@@ -95,13 +94,11 @@ public class PacketCacheFile implements CompressablePacket {
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 
 			fileData = bos.toByteArray();
@@ -131,7 +128,7 @@ public class PacketCacheFile implements CompressablePacket {
 			System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
 			return;
 		}
-		File directory = new File(FileUtil.getCacheDirectory(), plugin);
+		File directory = new File(FileUtil.getCacheDir(), plugin);
 		if (!directory.exists()) {
 			directory.mkdir();
 		}

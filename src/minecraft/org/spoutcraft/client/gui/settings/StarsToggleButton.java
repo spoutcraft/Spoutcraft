@@ -21,7 +21,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class StarsToggleButton extends GenericCheckBox{
+public class StarsToggleButton extends GenericCheckBox {
 	public StarsToggleButton() {
 		super("Stars");
 		setChecked(ConfigReader.stars);

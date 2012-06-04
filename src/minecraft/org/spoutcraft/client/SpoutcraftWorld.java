@@ -50,7 +50,7 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 import org.spoutcraft.spoutcraftapi.util.MutableLocation;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
-public class SpoutcraftWorld implements World{
+public class SpoutcraftWorld implements World {
 	private final net.minecraft.src.World handle;
 	private Environment environment;
 

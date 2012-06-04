@@ -164,7 +164,7 @@ public class GuiAbout extends GuiScreen {
 	public void drawScreen(int x, int y, float z) {
 		super.drawBackground(0);
 		GL11.glPushMatrix();
-		
+
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glDisable(2912 /*GL_FOG*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -411,9 +411,9 @@ public class GuiAbout extends GuiScreen {
 		var16.addVertexWithUV(this.width - 12, (double)(this.height - 50 - var19), 0.0D, 1.0D, 0.0D);
 		var16.addVertexWithUV(0, (double)(this.height - 50 - var19), 0.0D, 0.0D, 0.0D);
 		var16.draw();
-		
+
 		GL11.glEnable(3008 /*GL_ALPHA_TEST*/);
-		
+
 		GL11.glPopMatrix();
 	}
 

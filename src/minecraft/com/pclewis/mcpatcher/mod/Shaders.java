@@ -744,7 +744,7 @@ public class Shaders {
 		
 		//Try MCP path
 		try {
-			File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../" + fileName);
+			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../" + fileName);
 			reader = new BufferedReader(new FileReader(file));
 			return reader;
 		}
@@ -752,7 +752,7 @@ public class Shaders {
 		
 		//Try Eclipse Path
 		try {
-			File file = new File(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../../" + fileName);
+			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../../" + fileName);
 			reader = new BufferedReader(new FileReader(file));
 			return reader;
 		}

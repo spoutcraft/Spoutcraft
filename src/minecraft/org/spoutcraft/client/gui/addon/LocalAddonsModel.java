@@ -64,7 +64,6 @@ public class LocalAddonsModel extends AbstractListModel {
 	}
 
 	public class AddonItem implements ListWidgetItem {
-
 		private Addon addon;
 		private ListWidget widget;
 		private String authors;
@@ -102,7 +101,6 @@ public class LocalAddonsModel extends AbstractListModel {
 		}
 
 		public void onClick(int x, int y, boolean doubleClick) {
-
 		}
 
 		public Addon getAddon() {

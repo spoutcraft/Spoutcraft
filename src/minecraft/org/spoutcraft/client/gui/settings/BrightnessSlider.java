@@ -22,7 +22,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class BrightnessSlider extends GenericSlider{
+public class BrightnessSlider extends GenericSlider {
 	public BrightnessSlider() {
 		super("Brightness");
 		setSliderPosition(ConfigReader.brightnessSlider);

@@ -172,7 +172,7 @@ public class ScreenUtil {
 		} else if (gui instanceof GuiURLConfirm) {
 			screen = ScreenType.CONFIRM_URL;
 		}
-		
+
 		return screen;
 	}
 }

@@ -23,11 +23,12 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketCustomBlockChunkOverride implements CompressablePacket{
+public class PacketCustomBlockChunkOverride implements CompressablePacket {
 	private int chunkX;
 	private int chunkZ;
 	private boolean hasData = false;
@@ -35,7 +36,6 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	private boolean compressed = true;
 
 	public PacketCustomBlockChunkOverride() {
-
 	}
 
 	public PacketCustomBlockChunkOverride(int x, int z) {
@@ -81,7 +81,6 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {
@@ -129,13 +128,11 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket{
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 
 			data = bos.toByteArray();

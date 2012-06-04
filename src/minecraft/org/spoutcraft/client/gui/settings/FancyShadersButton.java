@@ -45,7 +45,7 @@ public class FancyShadersButton extends GenericButton {
 		}
 		return super.getTooltip();
 	}
-	
+
 	@Override
 	public String getText() {
 		switch(ConfigReader.shaderType) {
@@ -62,8 +62,7 @@ public class FancyShadersButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 			ConfigReader.shaderType = 0;
-		}
-		else {
+		} else {
 			ConfigReader.shaderType++;
 		}
 		if (ConfigReader.shaderType > 3) {
@@ -78,7 +77,7 @@ public class FancyShadersButton extends GenericButton {
 		ConfigReader.write();
 		Shaders.setMode(ConfigReader.shaderType);
 	}
-	
+
 	private boolean hasShaders(File dir) {
 		for (File f : dir.listFiles()) {
 			String ext = FilenameUtils.getExtension(f.getName());

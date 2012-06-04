@@ -235,7 +235,6 @@ public class SpoutWorth {
 	}
 
 	public void decreaseAppearance(boolean drastic, long haltRenderingCount) {
-
 		int downgrade = drastic ? 2 : 1;
 
 		if (ConfigReader.sky) {

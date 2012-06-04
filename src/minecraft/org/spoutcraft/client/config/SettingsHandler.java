@@ -31,7 +31,6 @@ import java.util.HashMap;
  * <b>Settings Handler</b><br>
  * A new better way of handling settings/configs without the complexity of
  * YAML or using Bukkit's Configuration Class (If this is for a Bukkit plugin).
- * @author alta189
  * @version 1.4
  */
 public class SettingsHandler {

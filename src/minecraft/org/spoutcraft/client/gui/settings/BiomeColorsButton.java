@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class BiomeColorsButton extends AutomatedCheckBox{
+public class BiomeColorsButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public BiomeColorsButton(UUID fancyGraphics) {
 		super("Fancy Biome Colors");

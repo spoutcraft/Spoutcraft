@@ -16,6 +16,9 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Entity;
@@ -24,17 +27,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 
-/**
- * @author lahwran
- * 
- */
 public class MapRenderer {
-
 	/** Direction you're facing */
 	public float direction = 0.0f;
 
@@ -48,7 +44,7 @@ public class MapRenderer {
 
 	/**
 	 * @param minimap
-	 *            minimap instance to init with
+	 *			minimap instance to init with
 	 */
 	public MapRenderer(ZanMinimap minimap) {
 		map = minimap.map;
@@ -59,9 +55,9 @@ public class MapRenderer {
 	 * Do rendering
 	 * 
 	 * @param scWidth
-	 *            screen width
+	 *			screen width
 	 * @param scHeight
-	 *            screen height
+	 *			screen height
 	 */
 	public void onRenderTick(int scWidth, int scHeight) {
 		if (this.oldDir != Minecraft.theMinecraft.thePlayer.rotationYaw) {
@@ -127,28 +123,27 @@ public class MapRenderer {
 				map.loadColorImage();
 
 				drawOnMap();
-				
-				if(MinimapConfig.getInstance().isHeightmap()) {
+
+				if (MinimapConfig.getInstance().isHeightmap()) {
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
-					
+
 					map.loadHeightImage();
-					
+
 					drawOnMap();
 				}
-				
+
 				GL11.glPopMatrix();
-				
+
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				renderEntities();
-				
+
 				try {
 					GL11.glPushMatrix();
 					GL11.glScalef(1.8f, 1.8f, 1.0f);
 					GL11.glTranslatef(27, -1, 0F); // don't ask
 					if (MinimapConfig.getInstance().isShowBackground()) {
 						texman.loadMinimap();
-					}
-					else {
+					} else {
 						GL11.glScalef(138F / 256F, 138F / 256F, 1F);
 						GL11.glTranslatef(-54, 0, 0);
 						texman.loadWhiteMinimap();
@@ -214,12 +209,12 @@ public class MapRenderer {
 				}
 
 				drawOnMap();
-				
-				if(MinimapConfig.getInstance().isHeightmap()) {
+
+				if (MinimapConfig.getInstance().isHeightmap()) {
 					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_COLOR);
-					
+
 					map.loadHeightImage();
-					
+
 					drawOnMap();
 				}
 
@@ -238,32 +233,32 @@ public class MapRenderer {
 	}
 
 	private void renderEntities() {
-		if(!MinimapConfig.getInstance().isShowingEntities()) {
+		if (!MinimapConfig.getInstance().isShowingEntities()) {
 			return;
 		}
 		double playerX = map.getPlayerX(); 
 		double playerZ = map.getPlayerZ();
-		
-		synchronized (map.watchedEntities) {			
-			for(WatchedEntity w:map.watchedEntities) {
+
+		synchronized (map.watchedEntities) {
+			for (WatchedEntity w:map.watchedEntities) {
 				Entity e = w.entity;
 				double entityX = e.posX - playerX;
 				double entityZ = e.posZ - playerZ;
 				boolean render = false;
-				
+
 				int circleX = MathHelper.floor_double(playerX);
 				int circleY = MathHelper.floor_double(playerZ);
-				
+
 				if (MinimapConfig.getInstance().isSquare()) {
 					render = Math.abs(playerX - (int) e.posX) < map.renderSize && Math.abs(playerZ - (int) e.posZ) < map.renderSize;
 				} else {
 					render = MinimapUtils.insideCircle(circleX, circleY, map.renderSize / 2, (int) e.posX, (int) e.posZ);
 				}
 				Texture tex = w.getTexture();
-				if(render && tex != null) {
+				if (render && tex != null) {
 					GL11.glPushMatrix();
 					GL11.glTranslatef(-32.0f, 32.0F, 0.0F);
-					if(!MinimapConfig.getInstance().isSquare()) {
+					if (!MinimapConfig.getInstance().isSquare()) {
 						GL11.glRotatef((this.direction + 90.0F), 0.0F, 0.0F, 1.0F);
 					}
 					switch (MinimapConfig.getInstance().getZoom()) {
@@ -283,7 +278,7 @@ public class MapRenderer {
 					GL11.glScaled(0.05, 0.05, 0.05);
 					GL11.glTranslated(-32f, -32f, 0);
 					GL11.glRotatef(180, 0, 0, 1);
-					if(!MinimapConfig.getInstance().isSquare()) {
+					if (!MinimapConfig.getInstance().isSquare()) {
 						GL11.glRotatef(-(this.direction + 90f), 0, 0, 1);
 					}
 					tex.bind();
@@ -321,7 +316,6 @@ public class MapRenderer {
 	}
 
 	private void drawFocusSquare() {
-		
 		Waypoint focus = MinimapConfig.getInstance().getFocussedWaypoint();
 		if (focus != null) {
 			GL11.glTranslated(-map.renderSize / 4d, map.renderSize / 4d - 4, 0);
@@ -361,7 +355,7 @@ public class MapRenderer {
 					}
 					fx = (int) (1 / Math.tan(alpha) * fz);
 				}
-				if(Math.abs(dx) >= (map.renderSize - 5) / 2 || Math.abs(dz) >= (map.renderSize - 5) / 2) {
+				if (Math.abs(dx) >= (map.renderSize - 5) / 2 || Math.abs(dz) >= (map.renderSize - 5) / 2) {
 					RenderUtil.drawRectangle(fx - 1, fz - 1, fx + 1, fz + 1, 0xff00ffff);
 				}
 			}
@@ -476,10 +470,11 @@ public class MapRenderer {
 	}
 
 	private String format(int coord) {
-		if (coord < 0)
+		if (coord < 0) {
 			return "-" + Math.abs(coord + 1);
-		else
+		} else {
 			return "+" + coord;
+		}
 	}
 
 	private void drawRound() {
@@ -487,8 +482,7 @@ public class MapRenderer {
 			GL11.glPushMatrix();
 			if (MinimapConfig.getInstance().isShowBackground()) {
 				texman.loadRoundmap();
-			}
-			else {
+			} else {
 				GL11.glScaled(0.95F, 0.95F, 1F);
 				GL11.glTranslatef(-2F, 2F, 0);
 				texman.loadWhiteRoundmap();

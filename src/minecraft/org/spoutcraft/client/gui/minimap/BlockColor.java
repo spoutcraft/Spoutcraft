@@ -18,7 +18,6 @@ package org.spoutcraft.client.gui.minimap;
 
 /**
  * Represents a block color.
- * @author lahwran
  */
 public class BlockColor {
 	/**
@@ -27,7 +26,7 @@ public class BlockColor {
 	 * @see blockColorID
 	 */
 	private static final BlockColor[] blockColors = new BlockColor[4096];
-	
+
 	/**
 	 * turn a block ID and a metadata value into an index in blockColors
 	 * @param blockid block ID
@@ -64,11 +63,11 @@ public class BlockColor {
 		System.err.println("Unable to find a block color for blockid: " + blockid + " blockmeta: " + meta);
 		return new BlockColor(0, 0xff, TintType.NONE);
 	}
-	
+
 	/**
 	 * Initialize the default colors in the block color array
 	 */
-	
+
 	public static void initDefaultColors() {
 		for (int i = 0; i < blockColors.length; i++) {
 			blockColors[i] = null;
@@ -348,7 +347,7 @@ public class BlockColor {
 		setDefaultColor(107, 0, -1061382046);
 		setDefaultColor(108, 0, -6591135);
 		setDefaultColor(109, 0, -8750470);
-		
+
 		setDefaultColor(110, 0, 0xAB8790, 0xFF);
 		setDefaultColor(111, 0, 0x158003, 0xFF);
 		setDefaultColor(112, 0, 0x40002F, 0xFF);
@@ -364,14 +363,14 @@ public class BlockColor {
 		setDefaultColor(122, 0, 0x24031E, 0xFF);
 		setDefaultColor(123, 0, 0x784C10, 0xFF);
 		setDefaultColor(124, 0, 0xE3DE54, 0xFF);
-		
-		
+
+
 	}
 
 	private static BlockColor instance(int argb, TintType tint) {
 		return new BlockColor(argb & 0xFFFFFF, (argb >> 24) & 0xFF, tint);
 	}
-	
+
 	private static void setDefaultColor(int id, int meta, int rgb, int alpha) {
 		setDefaultColor(id, meta, alpha << 24 | rgb);
 	}
@@ -401,7 +400,7 @@ public class BlockColor {
 				if ((meta != 1) && (meta != 2)) break; tint = TintType.TALL_GRASS;
 		}
 
-		
+
 		blockColors[blockColorID(id, meta)] = instance(argb, tint);
 	}
 

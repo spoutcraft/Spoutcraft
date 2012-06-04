@@ -34,7 +34,7 @@ import net.minecraft.src.EntityZombie;
 public class WatchedEntity {
 	public static HashMap<Class<? extends Entity>, String> mobFaceTextures = new HashMap<Class<? extends Entity>, String>();
 	public static HashMap<Class<? extends Entity>, Texture> mobFaceTextureBindings = new HashMap<Class<? extends Entity>, Texture>();
-	
+
 	static {
 		mobFaceTextures.put(EntityBlaze.class, "Blaze.png");
 		mobFaceTextures.put(EntityCaveSpider.class, "Cave_Spider.png");
@@ -61,7 +61,7 @@ public class WatchedEntity {
 		mobFaceTextures.put(EntityWolf.class, "Wolf.png");
 		mobFaceTextures.put(EntityZombie.class, "Zombie.png");
 		mobFaceTextures.put(EntityPigZombie.class, "Zombie_Pigman.png");
-		
+
 	}
 
 	public Entity entity;
@@ -70,7 +70,7 @@ public class WatchedEntity {
 		this.entity = entity;
 		path = "/res/minimap/mobfaces/" + mobFaceTextures.get(entity.getClass());
 	}
-	
+
 	public Texture getTexture() {
 		return CustomTextureManager.getTextureFromJar(path);
 	}

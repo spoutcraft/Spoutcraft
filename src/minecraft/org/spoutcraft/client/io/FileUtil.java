@@ -35,13 +35,13 @@ import org.spoutcraft.client.SpoutClient;
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
-	public static File getCacheDirectory() {
+	public static File getCacheDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
 
-		File directory = new File(getSpoutcraftDirectory(), "cache");
+		File directory = new File(Minecraft.getMinecraftDir(), "cache");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -52,13 +52,13 @@ public class FileUtil {
 		return directory;
 	}
 
-	public static File getSpoutcraftDirectory() {
+	public static File getConfigDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
 
-		File directory = new File(Minecraft.getMinecraftDir(), "spoutcraft");
+		File directory = new File(Minecraft.getMinecraftDir(), "config");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -69,13 +69,13 @@ public class FileUtil {
 		return directory;
 	}
 
-	public static File getTempDirectory() {
+	public static File getTempDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
 		}
 
-		File directory = new File(getCacheDirectory(), "temp");
+		File directory = new File(getCacheDir(), "temp");
 		if (!directory.exists()) {
 			directory.mkdir();
 		}
@@ -86,7 +86,7 @@ public class FileUtil {
 		return directory;
 	}
 
-	public static File getStatsDirectory() {
+	public static File getStatsDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
@@ -107,8 +107,8 @@ public class FileUtil {
 		File directory = new File(Minecraft.getMinecraftDir(), "spout");
 		if (directory.exists()) {
 			try {
-				FileUtils.copyDirectory(directory, getCacheDirectory(), true);
-				FileUtils.deleteDirectory(getTempDirectory());
+				FileUtils.copyDirectory(directory, getCacheDir(), true);
+				FileUtils.deleteDirectory(getTempDir());
 			}
 			catch (Exception e) {}
 		}
@@ -116,14 +116,14 @@ public class FileUtil {
 
 	public static void deleteTempDirectory() {
 		try {
-			FileUtils.deleteDirectory(getTempDirectory());
+			FileUtils.deleteDirectory(getTempDir());
 		}
 		catch (Exception e) {}
 	}
 
 	public static File findFile(String plugin, String fileName) {
 		File result = null;
-		result = matchFile(new File(getCacheDirectory(), plugin), fileName);
+		result = matchFile(new File(getCacheDir(), plugin), fileName);
 		if (result != null) {
 			return result;
 		}
@@ -133,7 +133,7 @@ public class FileUtil {
 		}
 		return null;
 	}
-	
+
 	private static File matchFile(File directory, String fileName) {
 		if (directory.isDirectory() && directory.exists()) {
 			Collection<File> files = FileUtils.listFiles(directory, null, true);
@@ -147,7 +147,7 @@ public class FileUtil {
 		return null;
 	}
 
-	public static File getTexturePackDirectory() {
+	public static File getTexturePackDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
@@ -171,7 +171,7 @@ public class FileUtil {
 		}
 
 		String fileName = Minecraft.theMinecraft.renderEngine.texturePack.selectedTexturePack.texturePackFileName;
-		File file = new File(getTexturePackDirectory(), fileName);
+		File file = new File(getTexturePackDir(), fileName);
 		if (!file.exists()) {
 			file = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), fileName);
 		}

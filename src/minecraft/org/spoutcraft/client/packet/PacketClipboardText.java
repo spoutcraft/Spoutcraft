@@ -22,16 +22,15 @@ import org.spoutcraft.client.player.ChatManager;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketClipboardText implements SpoutPacket{
+public class PacketClipboardText implements SpoutPacket {
 	protected String text;
 	public PacketClipboardText() {
-
 	}
 
 	public PacketClipboardText(String text) {
 		this.text = text;
 	}
-	
+
 
 	public void readData(SpoutInputStream input) throws IOException {
 		text = input.readString();
@@ -57,6 +56,5 @@ public class PacketClipboardText implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

@@ -18,10 +18,6 @@ package org.spoutcraft.client.gui.minimap;
 
 import java.util.Random;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Chunk;
@@ -30,21 +26,20 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
-/**
- * @author lahwran
- * 
- */
-public class MapCalculator implements Runnable {
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.HeightMap;
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
 
+public class MapCalculator implements Runnable {
 	/**
 	 * Multiply two colors by each other. Treats 0xff as 1.0.
 	 * 
 	 * Yourself came up with the algorithm, I'm sure it makes sense to someone
 	 * 
 	 * @param x
-	 *            Color to multiply
+	 *			Color to multiply
 	 * @param y
-	 *            Other color to multiply
+	 *			Other color to multiply
 	 * @return multiplied color
 	 */
 	public int colorMult(int x, int y) {
@@ -87,10 +82,11 @@ public class MapCalculator implements Runnable {
 			x &= 0xf;
 			z &= 0xf;
 
-			if (y < 0)
+			if (y < 0) {
 				y = 0;
-			else if (y > 255)
+			} else if (y > 255) {
 				y = 255;
+			}
 
 			if (blockIsSolid(chunk, x, y, z)) {
 				int itery = y;
@@ -136,13 +132,10 @@ public class MapCalculator implements Runnable {
 					&& !MinimapConfig.getInstance().isCavemap()) {
 				if (x == (int) map.getPlayerX() && z == (int) map.getPlayerZ())
 					return 0xff0000;
-				if ((world.getBlockMaterial(x, y + 1, z) == Material.ice)
-						|| (world.getBlockMaterial(x, y + 1, z) == Material.snow))
+				if ((world.getBlockMaterial(x, y + 1, z) == Material.ice) || (world.getBlockMaterial(x, y + 1, z) == Material.snow)) {
 					color24 = 0xffffff;
-				else {
-					BlockColor col = BlockColor.getBlockColor(
-							world.getBlockId(x, y, z),
-							world.getBlockMetadata(x, y, z));
+				} else {
+					BlockColor col = BlockColor.getBlockColor(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z));
 					color24 = col.color;
 				}
 			}
@@ -180,10 +173,11 @@ public class MapCalculator implements Runnable {
 			light += 64;
 		}
 
-		if (light > 255)
+		if (light > 255) {
 			light = 255;
-		else if (light < 0)
+		} else if (light < 0) {
 			light = 0;
+		}
 
 		return light;
 	}
@@ -252,7 +246,7 @@ public class MapCalculator implements Runnable {
 						short height = (short) data.getHeightValue(worldX, worldZ);
 						short reference = (short) data.getHeightValue(worldX + 1, worldZ + 1);
 						map.heightimg.setARGB(pixelZ, pixelX, getHeightColor(height, reference));
-						map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));								
+						map.setLightPixel(pixelX, pixelZ, getBlockLight(data, worldX, worldY, worldZ));
 
 					} else {
 						map.clearColorPixel(pixelX, pixelZ);
@@ -289,7 +283,7 @@ public class MapCalculator implements Runnable {
 							}
 
 							int color = 0xEE2C2C;
-							if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
+							if (pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
 								color = 0xff00ffff;
 							}
 							drawCircle(pixelX, pixelZ, scale + map.zoom + 1, pt.deathpoint ? color : 0);
@@ -317,9 +311,9 @@ public class MapCalculator implements Runnable {
 						if (map.zoom > 1) {
 							scale += 1;
 						}
-						
+
 						int color = 0x3366CC;
-						if(pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
+						if (pt == MinimapConfig.getInstance().getFocussedWaypoint()) {
 							color = 0xff00ffff;
 						}
 						drawCircle(pixelX, pixelZ, scale + map.zoom + 1, 0);
@@ -371,7 +365,7 @@ public class MapCalculator implements Runnable {
 //				int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
 //				System.out.println("Took "+dur+"ms to scan "+chunks+" chunks.\nThat is "+(float) (dur/(float)chunks)+" per chunk!");
 				mapCalc();
-				
+
 				entityCalc();
 				map.timer = 1;
 			}
@@ -469,7 +463,7 @@ public class MapCalculator implements Runnable {
 	 * This constructor inits state, but does not start the thread.
 	 * 
 	 * @param minimap
-	 *            Minimap instance to initialize off
+	 *			Minimap instance to initialize off
 	 */
 	public MapCalculator(ZanMinimap minimap) {
 		map = minimap.map;
@@ -506,7 +500,6 @@ public class MapCalculator implements Runnable {
 	}
 
 	public static int getHeightColor(int x, int z, HeightMap heightMap) {
-
 		short height = heightMap.getHeight(x, z);
 		short reference = heightMap.getHeight(x + 1, z + 1);
 

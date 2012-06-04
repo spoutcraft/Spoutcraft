@@ -23,7 +23,7 @@ import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class ControlsButton extends GenericButton{
+public class ControlsButton extends GenericButton {
 	GuiScreen parent;
 	public ControlsButton(GuiScreen parent) {
 		super("Controls");

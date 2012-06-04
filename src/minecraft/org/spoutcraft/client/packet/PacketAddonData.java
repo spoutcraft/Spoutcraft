@@ -36,7 +36,6 @@ public class PacketAddonData implements CompressablePacket {
 	private boolean compressed = false;
 	private byte[] data;
 	public PacketAddonData() {
-
 	}
 
 	public PacketAddonData(AddonPacket packet) {
@@ -119,7 +118,6 @@ public class PacketAddonData implements CompressablePacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {
@@ -167,13 +165,11 @@ public class PacketAddonData implements CompressablePacket {
 					int count = decompressor.inflate(buf);
 					bos.write(buf, 0, count);
 				} catch (DataFormatException e) {
-
 				}
 			}
 			try {
 				bos.close();
 			} catch (IOException e) {
-
 			}
 
 			data = bos.toByteArray();

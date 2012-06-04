@@ -24,7 +24,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class GuiScaleButton extends GenericButton{
+public class GuiScaleButton extends GenericButton {
 	GameSettingsScreen parent;
 	public GuiScaleButton(GameSettingsScreen parent) {
 		this.parent = parent;

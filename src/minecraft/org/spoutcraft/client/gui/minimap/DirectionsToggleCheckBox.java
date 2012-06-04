@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class DirectionsToggleCheckBox extends GenericCheckBox{
+public class DirectionsToggleCheckBox extends GenericCheckBox {
 	public DirectionsToggleCheckBox() {
 		super("Compass Directions");
 		setChecked(MinimapConfig.getInstance().isDirections());

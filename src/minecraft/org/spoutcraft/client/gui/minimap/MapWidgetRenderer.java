@@ -21,6 +21,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.spoutcraft.spoutcraftapi.gui.Point;
 
 public class MapWidgetRenderer extends Thread {
@@ -32,7 +33,7 @@ public class MapWidgetRenderer extends Thread {
 
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			while (!renderQueue.isEmpty()) {
 				try {
 					Point coords = renderQueue.remove();

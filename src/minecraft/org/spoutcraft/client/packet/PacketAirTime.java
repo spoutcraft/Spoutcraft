@@ -22,12 +22,11 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketAirTime implements SpoutPacket{
+public class PacketAirTime implements SpoutPacket {
 	public int airTime;
 	public int air;
 
 	public PacketAirTime() {
-
 	}
 
 	public PacketAirTime(int maxTime, int time) {
@@ -59,6 +58,5 @@ public class PacketAirTime implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

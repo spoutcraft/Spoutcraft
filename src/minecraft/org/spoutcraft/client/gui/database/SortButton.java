@@ -85,8 +85,11 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 		} else {
 			MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 			String texture ="";
-			if (isSelected()&&topdown||!isSelected()&&preferredOrder) texture = "ascending.png";
-			else texture = "descending.png";
+			if (isSelected()&&topdown||!isSelected()&&preferredOrder) {
+				texture = "ascending.png";
+			} else {
+				texture = "descending.png";
+			}
 			Texture direction = CustomTextureManager.getTextureFromJar("/res/"+texture);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0);

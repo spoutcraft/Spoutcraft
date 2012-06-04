@@ -49,29 +49,29 @@ public class HeightMap {
 		public byte[] idmap = new byte[16 * 16];
 
 		{
-			for(int i = 0; i < 256; i++) {
+			for (int i = 0; i < 256; i++) {
 				heightmap[i] = -1;
 				idmap[i] = -1;
 			}
 		}
-		
+
 		public HeightChunk(int x, int z) {
 			this.x = x;
 			this.z = z;
 		}
-		
+
 		public short getHeight(int x, int z) {
 			return heightmap[z << 4 | x];
 		}
-		
+
 		public byte getBlockId(int x, int z) {
 			return idmap[z << 4 | x];
 		}
-		
+
 		public void setHeight(int x, int z, short h) {
 			heightmap[z << 4 | x] = h;
 		}
-		
+
 		public void setBlockId(int x, int z, byte id) {
 			idmap[z << 4 | x] = id;
 		}
@@ -88,19 +88,19 @@ public class HeightMap {
 	}
 
 	public static HeightMap getHeightMap(String worldName, File file) {
-		if(lastMap != null && lastMap.getWorldName().equals(worldName)) {
+		if (lastMap != null && lastMap.getWorldName().equals(worldName)) {
 			lastMap.file = file;
 			return lastMap;
 		}
 		HeightMap ret = null;
-		if(heightMaps.containsKey(worldName)) {
+		if (heightMaps.containsKey(worldName)) {
 			ret = heightMaps.get(worldName);
 			ret.file = file;
 		} else {
 			HeightMap map = new HeightMap(worldName);
 			map.file = file;
 			heightMaps.put(worldName, map);
-			if(file.exists()) {
+			if (file.exists()) {
 				map.load();
 			}
 			ret = map;
@@ -128,14 +128,14 @@ public class HeightMap {
 			clear();
 			try {
 				DataInputStream in = new DataInputStream(new FileInputStream(file));
-				
+
 				StringBuilder builder = new StringBuilder();
 				short size = in.readShort();
 				for (int i = 0; i < size; i++) {
 					builder.append(in.readChar());
 				}
 				String name = builder.toString();
-				if(!name.equals(getWorldName())) {
+				if (!name.equals(getWorldName())) {
 					System.out.println("World names do not match: "+name+" [file] != "+getWorldName()+" [game]. Compensating...");
 					//TODO compensate
 				}
@@ -147,11 +147,11 @@ public class HeightMap {
 				int x = minX;
 				int z = minZ;
 				try {
-					while(true) {
+					while (true) {
 						x = in.readInt();
 						z = in.readInt();
 						HeightChunk chunk = new HeightChunk(x, z);
-						for(int i = 0; i < 256; i++) {
+						for (int i = 0; i < 256; i++) {
 							chunk.heightmap[i] = in.readShort();
 							chunk.idmap[i] = in.readByte();
 						}
@@ -168,13 +168,13 @@ public class HeightMap {
 				System.out.println("Error while loading persistent copy of the heightmap. Clearing the cache.");
 			}
 			File progress = new File(file.getAbsoluteFile() + ".inProgress");
-			if(progress.exists()) {
+			if (progress.exists()) {
 				System.out.println("Found in-progress file!");
 				HeightMap progressMap = new HeightMap(getWorldName());
 				progressMap.file = progress;
 				progressMap.load();
-				for(HeightChunk chunk:progressMap.cache.valueCollection()) {
-					if(chunk.getHeight(0, 0) != -1) {
+				for (HeightChunk chunk:progressMap.cache.valueCollection()) {
+					if (chunk.getHeight(0, 0) != -1) {
 						addChunk(chunk);
 					}
 				}
@@ -191,7 +191,7 @@ public class HeightMap {
 			int x = chunk.x;
 			int z = chunk.z;
 			cache.put(x, z, chunk);
-			if(!initBounds) {
+			if (!initBounds) {
 				minX = x; 
 				maxX = x;
 				minZ = z;
@@ -202,12 +202,12 @@ public class HeightMap {
 				maxX = Math.max(maxX, x);
 				minZ = Math.min(minZ, z);
 				maxZ = Math.max(maxZ, z);
-			}	
+			}
 		}
 	}
 
 	public void save() {
-		if(!dirty) {
+		if (!dirty) {
 			return;
 			//Don't need to save when not touched...
 		}
@@ -215,31 +215,31 @@ public class HeightMap {
 			try {
 				File progress = new File(file.getAbsoluteFile() + ".inProgress");
 				DataOutputStream out = new DataOutputStream(new FileOutputStream(progress));
-				
+
 				String name = getWorldName();
 				out.writeShort(name.length());
 				for (int i = 0; i < name.length(); i++) {
 					out.writeChar(name.charAt(i));
 				}
-				
+
 				out.writeInt(minX);
 				out.writeInt(maxX);
 				out.writeInt(minZ);
 				out.writeInt(maxZ);
-				for(HeightChunk chunk : cache.valueCollection()) {
-					if(chunk == null) {
+				for (HeightChunk chunk : cache.valueCollection()) {
+					if (chunk == null) {
 						continue;
 					} else {
 						out.writeInt(chunk.x);
 						out.writeInt(chunk.z);
-						for(int i = 0; i < 256; i++) {
+						for (int i = 0; i < 256; i++) {
 							out.writeShort(chunk.heightmap[i]);
 							out.writeByte(chunk.idmap[i]);
 						}
 					}
 				}
 				out.close();
-				
+
 				//Make sure that we don't loose older stuff when someone quits.
 				File older = new File(file.getAbsoluteFile() + ".old");
 				file.renameTo(older);
@@ -253,47 +253,47 @@ public class HeightMap {
 		}
 		dirty = false;
 	}
-	
+
 	public void saveThreaded() {
-		if(saveThread == null) {
+		if (saveThread == null) {
 			saveThread = new HeightMapSaveThread();
 			saveThread.addMap(this);
 		}
 	}
 
 	private static File getFile(String worldName) {
-		File folder = new File(FileUtil.getSpoutcraftDirectory(), "heightmap");
-		if(!folder.isDirectory()) {
+		File folder = new File(FileUtil.getConfigDir(), "heightmap");
+		if (!folder.isDirectory()) {
 			folder.delete();
 		}
-		if(!folder.exists()){
+		if (!folder.exists()) {
 			folder.mkdirs();
 		}
-		return new File(FileUtil.getSpoutcraftDirectory(), "heightmap/"+worldName+".hma");
+		return new File(FileUtil.getConfigDir(), "heightmap/"+worldName+".hma");
 	}
 
 //	public boolean hasHeight(int x, int z) {
 //		synchronized (cache) {
-//			return cache.containsKey(x, z);			
+//			return cache.containsKey(x, z);
 //		}
 //	}
-	
+
 	public HeightChunk getChunk(int x, int z) {
 		return getChunk(x, z, false);
 	}
 
 	public HeightChunk getChunk(int x, int z, boolean force) {
 		dirty = true; //We don't know what they do with the chunk, so it could be dirtied...
-		if(lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
+		if (lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
 			return lastChunk;
 		} else {
 			synchronized (cache) {
 				lastChunk = cache.get(x, z);
-				if(lastChunk == null) {
+				if (lastChunk == null) {
 					lastChunk = new HeightChunk(x, z);
 					addChunk(lastChunk);
 				}
-				return lastChunk;				
+				return lastChunk;
 			}
 		}
 	}
@@ -303,37 +303,37 @@ public class HeightMap {
 		int cZ = (z >> 4);
 		x &= 0xF;
 		z &= 0xF;
-		if(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
+		if (lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
 			return lastChunk.heightmap[z << 4 | x];
 		}
 		synchronized (cache) {
-			if(cache.containsKey(cX, cZ)) {
+			if (cache.containsKey(cX, cZ)) {
 				lastChunk = cache.get(cX, cZ);
 				return lastChunk.heightmap[z << 4 | x];
 			} else {
 				return -1;
-			}			
+			}
 		}
 	}
-	
+
 	public byte getBlockId(int x, int z) {
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
 		x &= 0xF;
 		z &= 0xF;
-		if(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
+		if (lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
 			return lastChunk.idmap[z << 4 | x];
 		}
 		synchronized (cache) {
-			if(cache.containsKey(cX, cZ)) {
+			if (cache.containsKey(cX, cZ)) {
 				lastChunk = cache.get(cX, cZ);
 				return lastChunk.idmap[z << 4 | x];
 			} else {
 				return -1;
-			}			
+			}
 		}
 	}
-	
+
 	public void setHighestBlock(int x, int z, short height, byte id) {
 		dirty = true;
 		int cX = (x >> 4);
@@ -341,8 +341,8 @@ public class HeightMap {
 		x &= 0xF;
 		z &= 0xF;
 		synchronized (cache) {
-			if(!(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ)) {
-				if(cache.containsKey(cX, cZ)) {
+			if (!(lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ)) {
+				if (cache.containsKey(cX, cZ)) {
 					lastChunk = cache.get(cX, cZ);
 				} else {
 					HeightChunk chunk = new HeightChunk(cX, cZ);
@@ -351,7 +351,7 @@ public class HeightMap {
 					lastChunk = chunk;
 					addChunk(chunk);
 					return;
-				}	
+				}
 			}
 			lastChunk.heightmap[z << 4 | x] = height;
 			lastChunk.idmap[z << 4 | x] = id;
@@ -379,7 +379,7 @@ public class HeightMap {
 	}
 
 	public static void joinSaveThread() {
-		if(saveThread != null) {
+		if (saveThread != null) {
 			try {
 				System.out.println("Waiting for heightmap to save...");
 				saveThread.join();
@@ -387,7 +387,7 @@ public class HeightMap {
 			}
 		}
 	}
-	
+
 	public boolean isDirty() {
 		return dirty;
 	}

@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.settings;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class AutomatedCheckBox extends GenericCheckBox{
+public class AutomatedCheckBox extends GenericCheckBox {
 	public AutomatedCheckBox() {
 		super();
 	}

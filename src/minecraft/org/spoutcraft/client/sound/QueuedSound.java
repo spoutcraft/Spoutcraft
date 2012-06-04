@@ -22,7 +22,7 @@ import net.minecraft.src.SoundManager;
 
 import org.spoutcraft.client.SpoutClient;
 
-public class QueuedSound implements Runnable{
+public class QueuedSound implements Runnable {
 	File song;
 	int x,y, z, volume, distance;
 	boolean soundEffect, notify;

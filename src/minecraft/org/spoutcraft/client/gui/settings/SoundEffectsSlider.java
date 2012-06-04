@@ -21,7 +21,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class SoundEffectsSlider extends GenericSlider{
+public class SoundEffectsSlider extends GenericSlider {
 	public SoundEffectsSlider() {
 		super("Sound");
 		setSliderPosition(Minecraft.theMinecraft.gameSettings.soundVolume);

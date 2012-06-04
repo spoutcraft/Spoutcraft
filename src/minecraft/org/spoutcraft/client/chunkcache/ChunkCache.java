@@ -46,7 +46,7 @@ public class ChunkCache {
 	private static final LinkedList<Long> overwriteQueue = new LinkedList<Long>();
 
 	static {
-		File dir = new File(Minecraft.getMinecraftDir(), "chunkcache");
+		File dir = new File(FileUtil.getCacheDir(), "chunk");
 
 		dir.mkdirs();
 

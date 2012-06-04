@@ -21,7 +21,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
-public class DifficultyButton extends GenericButton{
+public class DifficultyButton extends GenericButton {
 	public DifficultyButton() {
 		super("Difficulty");
 		setTooltip("Difficulty\nControls the difficulty of the game.");

@@ -26,7 +26,7 @@ public class HDImageBufferDownload implements ImageBuffer {
 			func_884_b(0, 0, imageWidth / 2, imageHeight / 2);
 			func_885_a(imageWidth / 2, 0, imageWidth, imageHeight);
 			func_884_b(0, imageHeight / 2, imageWidth, imageHeight);
-			
+
 			for (int i = 0; i < imageData.length; i++) {
 				imageData[i] &= 0xFFFFFF;
 			}

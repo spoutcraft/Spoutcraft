@@ -25,11 +25,11 @@ import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketWaypoint implements SpoutPacket{
+public class PacketWaypoint implements SpoutPacket {
 	private double x, y, z;
 	private String name;
 	private boolean death = false;
-	
+
 	public PacketWaypoint() { }
 
 
@@ -52,8 +52,7 @@ public class PacketWaypoint implements SpoutPacket{
 	public void run(int playerId) {
 		if (!death) {
 			MinimapConfig.getInstance().addServerWaypoint(x, y, z, name);
-		}
-		else {
+		} else {
 			Waypoint point = new Waypoint("Death " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()), (int)x, (int)y, (int)z, true);
 			point.deathpoint = true;
 			MinimapConfig.getInstance().addWaypoint(point);
@@ -61,7 +60,6 @@ public class PacketWaypoint implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 
 	public PacketType getPacketType() {

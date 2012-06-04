@@ -60,6 +60,5 @@ public class PacketEntitySkin implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

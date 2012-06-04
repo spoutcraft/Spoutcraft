@@ -23,12 +23,11 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketScreenAction implements SpoutPacket{
+public class PacketScreenAction implements SpoutPacket {
 	protected byte action = -1;
 	protected byte screen = -1; // UnknownScreen
 
 	public PacketScreenAction() {
-
 	}
 
 	public PacketScreenAction(ScreenAction action, ScreenType screen) {
@@ -73,6 +72,5 @@ public class PacketScreenAction implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

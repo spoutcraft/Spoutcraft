@@ -24,7 +24,7 @@ import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketPreCacheCompleted implements SpoutPacket{
+public class PacketPreCacheCompleted implements SpoutPacket {
 	public PacketPreCacheCompleted() {
 	}
 

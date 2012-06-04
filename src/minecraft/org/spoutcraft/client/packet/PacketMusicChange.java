@@ -22,13 +22,12 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketMusicChange implements SpoutPacket{
+public class PacketMusicChange implements SpoutPacket {
 	protected int id;
 	protected int volumePercent;
 	boolean cancel = false;
 
 	public PacketMusicChange() {
-
 	}
 
 	public PacketMusicChange(int music, int volumePercent) {
@@ -53,10 +52,11 @@ public class PacketMusicChange implements SpoutPacket{
 	}
 
 	public void run(int playerId) {
-		if (cancel)
+		if (cancel) {
 			SpoutClient.getHandle().sndManager.cancelled = true;
-		else
+		} else {
 			SpoutClient.getHandle().sndManager.allowed = true;
+		}
 	}
 
 	public PacketType getPacketType() {
@@ -68,6 +68,5 @@ public class PacketMusicChange implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

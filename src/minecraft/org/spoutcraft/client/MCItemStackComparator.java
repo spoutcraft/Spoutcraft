@@ -53,8 +53,7 @@ public class MCItemStackComparator implements Comparator {
 				return -o2.itemID;
 			}
 			return other1.getName().compareTo(other2.getName());
-		}
-		else {
+		} else {
 			int idDiff = o1.itemID - o2.itemID;
 			int dataDiff = o1.getItemDamage() - o2.getItemDamage();
 			return idDiff * 1000 - dataDiff;

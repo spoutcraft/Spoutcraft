@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FancyLightingButton extends AutomatedCheckBox{
+public class FancyLightingButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyLightingButton(UUID fancyGraphics) {
 		super("Fancy Light");

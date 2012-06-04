@@ -38,18 +38,18 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 	private Gradient minimapDrag;
 	private Button buttonDone, buttonReset;
 	private Slider sliderScale;
-	
+
 	private final static Color dragColor = new Color(1f, 1f, 1f, 0.5f);
-	
+
 	private GuiScreen parent;
-	
+
 	private boolean dragging = false;
 	private int dragStartX = 0, dragStartY = 0;
-	
+
 	public GuiMoveMinimap(GuiScreen parent) {
 		this.parent = parent;
 	}
-	
+
 	@Override
 	protected void createInstances() {
 		title = new GenericLabel("Drag the minimap around");
@@ -61,7 +61,7 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 		sliderScale = new GenericSlider();
 		float scale = MinimapConfig.getInstance().getSizeAdjust();
 		sliderScale.setSliderPosition(scale / 4);
-		
+
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, title, minimapDrag, buttonDone, buttonReset, sliderScale);
 	}
@@ -70,34 +70,34 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		title.setY(10);
-		
+
 		sliderScale.setGeometry(width / 2 - 100, height - 55, 200, 20);
-		
+
 		buttonDone.setGeometry(width / 2 + 5, height - 30, 150, 20);
 		buttonReset.setGeometry(width / 2 - 155, height - 30, 150, 20);
 	}
-	
+
 	@Override
 	public void updateScreen() {
 		int x = (int) MinimapConfig.getInstance().getAdjustX();
 		int y = (int) MinimapConfig.getInstance().getAdjustY();
 		float scale = sliderScale.getSliderPosition() * 4;
 		int width = (int) (65 * scale); int height = (int) (65 * scale);
-		if(MinimapConfig.getInstance().isCoords()) {
+		if (MinimapConfig.getInstance().isCoords()) {
 			height += 18 * scale;
 		}
-		
+
 		sliderScale.setText("Size adjust: " + Math.round(scale * 100f) / 100f);
-		
+
 		MinimapConfig.getInstance().setSizeAdjust(scale);
-		
+
 		minimapDrag.setGeometry(this.width + x - width, y, width, height);
 		super.updateScreen();
 	}
 
 	@Override
 	protected void mouseClicked(int x, int y, int button) {
-		if(button == 0 && isInBoundingRect(minimapDrag, x, y)) {
+		if (button == 0 && isInBoundingRect(minimapDrag, x, y)) {
 			dragging = true;
 			dragStartX = x;
 			dragStartY = y;
@@ -107,17 +107,17 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 
 	@Override
 	protected void mouseMovedOrUp(int x, int y, int button) {
-		if(button == 0 && !Mouse.isButtonDown(button)) {
+		if (button == 0 && !Mouse.isButtonDown(button)) {
 			dragging = false;
 		}
-		if(dragging) {
+		if (dragging) {
 			int mX = (int) MinimapConfig.getInstance().getAdjustX();
 			int mY = (int) MinimapConfig.getInstance().getAdjustY();
 			mX += x - dragStartX;
 			mY += y - dragStartY;
 			MinimapConfig.getInstance().setAdjustX(mX);
 			MinimapConfig.getInstance().setAdjustY(mY);
-			
+
 			dragStartX = x;
 			dragStartY = y;
 		}
@@ -126,18 +126,18 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 		}
-		if(btn == buttonReset) {
+		if (btn == buttonReset) {
 			MinimapConfig.getInstance().setAdjustX(0);
 			MinimapConfig.getInstance().setAdjustY(0);
 			MinimapConfig.getInstance().setSizeAdjust(1);
 			sliderScale.setSliderPosition(1f / 4f);
 		}
 	}
-	
-	
 
-	
+
+
+
 }

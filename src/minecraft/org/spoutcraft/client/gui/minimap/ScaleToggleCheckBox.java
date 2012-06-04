@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class ScaleToggleCheckBox extends GenericCheckBox{
+public class ScaleToggleCheckBox extends GenericCheckBox {
 	public ScaleToggleCheckBox() {
 		super("Scale Minimap");
 		setChecked(MinimapConfig.getInstance().isScale());

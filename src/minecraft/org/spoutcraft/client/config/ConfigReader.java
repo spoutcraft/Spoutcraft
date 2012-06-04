@@ -21,15 +21,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import com.pclewis.mcpatcher.mod.Shaders;
+
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
-import com.pclewis.mcpatcher.mod.Shaders;
-
 public class ConfigReader {
-	//Client settings
+	// Client settings
 	public static int advancedOpenGL = 0;
 	public static boolean anaglyph3D = false;
 	public static int autosave = 0;
@@ -85,8 +85,8 @@ public class ConfigReader {
 	public static int resizedScreenshotHeight = 3200;
 	public static float chatOpacity = 0.5f;
 	public static boolean animateMainMenu = true;
-	
-	//Launcher settings
+
+	// Launcher settings
 	public static boolean fastLogin = false;
 	public static boolean clipboardaccess = false;
 	public static int memory = 1;
@@ -102,7 +102,7 @@ public class ConfigReader {
 	public transient static String[] unknown = null;
 
 	public static void read() {
-		File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
+		File config = new File(FileUtil.getConfigDir(), "spoutcraft.properties");
 		try {
 			if (!config.exists()) {
 				config.createNewFile();
@@ -115,7 +115,6 @@ public class ConfigReader {
 			for (int i = 0; i < fields.length; i++) {
 				Field f = fields[i];
 				if (Modifier.isStatic(f.getModifiers()) && !Modifier.isTransient(f.getModifiers())) {
-
 					Object value = f.get(null);
 
 					ConfigReader.settings[i] = value;
@@ -143,7 +142,7 @@ public class ConfigReader {
 		}
 		Runnable write = new Runnable() {
 			public void run() {
-				File config = new File(FileUtil.getSpoutcraftDirectory(), "spoutcraft.properties");
+				File config = new File(FileUtil.getConfigDir(), "spoutcraft.properties");
 				try {
 					if (!config.exists()) {
 						config.createNewFile();
@@ -199,7 +198,7 @@ public class ConfigReader {
 		settings.put(property, defaultValue);
 		return defaultValue;
 	}
-	
+
 	private static String getOrSetStringProperty(SettingsHandler settings, String property, String defaultValue) {
 		if (settings.checkProperty(property)) {
 			return settings.getPropertyString(property);
@@ -216,30 +215,28 @@ public class ConfigReader {
 		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
 		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
 		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
-		
+
 		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
 		org.lwjgl.opengl.Display.setVSyncEnabled(ConfigReader.performance == 3);
-		
+
 		if (!isShadersSupported()) {
 			shaderType = 0;
 		}
 		Shaders.setMode(shaderType);
-		
+
 		if (ConfigReader.signDistance < 8) {
 			ConfigReader.signDistance = 8;
-		}
-		else if (ConfigReader.signDistance >= 128 && ConfigReader.signDistance != Integer.MAX_VALUE) {
+		} else if (ConfigReader.signDistance >= 128 && ConfigReader.signDistance != Integer.MAX_VALUE) {
 			ConfigReader.signDistance = Integer.MAX_VALUE;
 		}
 	}
-	
+
 	public static boolean isShadersSupported() {
 		if (Shaders.isOSX()) {
 			if (!Shaders.isOpenGL(2)) {
 				return false;
-			}	
-		}
-		else {
+			}
+		} else {
 			if (!Shaders.isOpenGL(3)) {
 				return false;
 			}

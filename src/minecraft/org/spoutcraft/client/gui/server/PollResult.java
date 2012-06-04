@@ -153,7 +153,7 @@ public class PollResult {
 	public boolean isPolling() {
 		return polling;
 	}
-	
+
 	public void endPolling() {
 		if (polling) {
 			polling = false;
@@ -162,7 +162,6 @@ public class PollResult {
 	}
 
 	protected class PollThread extends Thread {
-
 		@Override
 		public void run() {
 			while (numPolling >= maxPollingThreads) {

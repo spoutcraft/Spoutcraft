@@ -35,7 +35,6 @@ import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
 public class WorldModel extends FilterModel {
-
 	ISaveFormat access;
 	List<SaveFormatComparator> worlds;
 	private ButtonUpdater buttonUpdater;
@@ -50,12 +49,11 @@ public class WorldModel extends FilterModel {
 		worlds = access.getSaveList();
 		Collections.sort(worlds);
 		items.clear();
-		for(SaveFormatComparator world:worlds) {
+		for (SaveFormatComparator world:worlds) {
 			WorldItem item = new WorldItem(world, access);
 			items.add(item);
 		}
-		
-		
+
 		sizeChanged();
 	}
 
@@ -70,17 +68,13 @@ public class WorldModel extends FilterModel {
 	public void playWorld(int i) {
 		Minecraft mc = SpoutClient.getHandle();
 		int gameType = worlds.get(i).getGameType();
-		if (gameType == 0)
-		{
+		if (gameType == 0) {
 			mc.playerController = new PlayerControllerSP(mc);
-		}
-		else
-		{
+		} else {
 			mc.playerController = new PlayerControllerCreative(mc);
 		}
 		String s = worlds.get(i).getFileName();
-		if (s == null)
-		{
+		if (s == null) {
 			s = (new StringBuilder()).append("World").append(i).toString();
 		}
 		mc.startWorld(s, worlds.get(i).getDisplayName(), null);
@@ -103,5 +97,4 @@ public class WorldModel extends FilterModel {
 		access.renameWorld(oldworld, newworld);
 		refresh();
 	}
-
 }

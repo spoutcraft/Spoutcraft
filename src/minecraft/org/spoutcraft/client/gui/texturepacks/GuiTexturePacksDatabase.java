@@ -62,11 +62,11 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 	private ResolutionFilter filterResolution;
 	private GenericTexture animatedTexture;
 	private Animation animation;
-	
+
 	public GuiTexturePacksDatabase() {
 		TextureItem.setButtonUpdater(this);
 	}
-	
+
 	private void createInstances() {
 		buttonMainMenu = new GenericButton("Main Menu");
 		buttonLocal = new GenericButton("Installed Textures");
@@ -133,7 +133,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 
 		buttonForum.setX(left).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonForum);
-		
+
 		buttonCancelDownload.setGeometry(center, top, cellWidth, 20);
 		getScreen().attachWidget(spoutcraft, buttonCancelDownload);
 
@@ -157,7 +157,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		sortFilterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filter.attachWidget(spoutcraft, sortFilterTitle);
 		ftop += 16;
-		
+
 		search.setGeometry(5, 5, 100, 16);
 		getScreen().attachWidget(spoutcraft, search);
 
@@ -217,7 +217,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		}
 		buttonDownload.setEnabled(allowDownload);
 		buttonCancelDownload.setEnabled(TextureItem.hasDownloads());
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 			buttonCancelDownload.setText("Cancel All Downloads");
 			buttonCancelDownload.setEnabled(TextureItem.hasDownloads());
 		} else {
@@ -284,16 +284,16 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 				}
 			}
 		}
-		if(btn.equals(buttonCancelDownload)) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-				TextureItem.cancelAllDownloads();				
+		if (btn.equals(buttonCancelDownload)) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+				TextureItem.cancelAllDownloads();
 			} else {
 				int sel = view.getSelectedRow();
 				if (sel >= 0) {
 					ListWidgetItem item = model.getItem(sel);
-					if(item != null && item instanceof TextureItem) {
+					if (item != null && item instanceof TextureItem) {
 						TextureItem t = (TextureItem) item;
-						if(t.isDownloading()) {
+						if (t.isDownloading()) {
 							TextureItem.getDownload(t.getId()).cancel();
 						}
 					}

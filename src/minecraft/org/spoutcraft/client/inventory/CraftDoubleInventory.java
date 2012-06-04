@@ -22,7 +22,7 @@ import org.spoutcraft.spoutcraftapi.block.Block;
 import org.spoutcraft.spoutcraftapi.block.BlockFace;
 import org.spoutcraft.spoutcraftapi.inventory.DoubleChestInventory;
 
-public class CraftDoubleInventory extends CraftInventory implements DoubleChestInventory{
+public class CraftDoubleInventory extends CraftInventory implements DoubleChestInventory {
 	protected Block top;
 	protected Block bottom;
 	public CraftDoubleInventory(IInventory inventory, Block top, Block bottom) {

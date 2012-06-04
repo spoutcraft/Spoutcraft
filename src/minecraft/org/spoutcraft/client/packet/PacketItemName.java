@@ -23,12 +23,11 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.material.Material;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-public class PacketItemName implements SpoutPacket{
+public class PacketItemName implements SpoutPacket {
 	private int id;
 	private short data;
 	private String name;
 	public PacketItemName() {
-
 	}
 
 	public PacketItemName(int id, short data, String name) {
@@ -63,8 +62,7 @@ public class PacketItemName implements SpoutPacket{
 			} else {
 				material.setName(name);
 			}
-		}
-		else {
+		} else {
 			//System.out.println("Tried to set item name to [" + name + "] for unknown material (" + id + ", " + data + ")");
 		}
 	}
@@ -78,6 +76,5 @@ public class PacketItemName implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

@@ -9,11 +9,11 @@ public class ChatOpacitySlider extends GenericSlider {
 		setSliderPosition(ConfigReader.chatOpacity);
 		updateText();
 	}
-	
+
 	private void updateText() {
 		setText("Background opacity: "+ (int) (getSliderPosition()*100) + "%");
 	}
-	
+
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
 		ConfigReader.chatOpacity = event.getNewPosition();

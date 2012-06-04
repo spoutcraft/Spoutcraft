@@ -38,24 +38,24 @@ public class GuiMinimapMenu extends GuiScreen {
 	public GuiMinimapMenu(GuiScreen parent) {
 		this.parent = parent;
 	}
-	
+
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		Control control;
-		
+
 		GenericScrollArea screen = new GenericScrollArea();
 		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
-		
+
 		GenericLabel label = new GenericLabel("Minimap Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
-		
+
 		int left = (int)(width / 2  - 155);
 		int right = (int)(width / 2 + 5);
-		
+
 		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 30);
 		getScreen().attachWidget(spoutcraft, control);
@@ -65,10 +65,10 @@ public class GuiMinimapMenu extends GuiScreen {
 		doneButton.setX(right).setY(height - 30);
 		doneButton.setHeight(20).setWidth(150);
 		getScreen().attachWidget(spoutcraft, doneButton);
-		
+
 		int top = 5;
 		final Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
-		
+
 		label = new GenericLabel("Minimap Position");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -82,15 +82,15 @@ public class GuiMinimapMenu extends GuiScreen {
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
-		
+
 		positionButton = new GenericButton("Move Minimap");
 		positionButton.setGeometry(width / 2 - 75, top, 150, 20);
 		screen.attachWidget(spoutcraft, positionButton);
-		
+
 		top += 22;
-		
+
 		top += 5;
-		
+
 		label = new GenericLabel("Minimap Configuration");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -104,7 +104,7 @@ public class GuiMinimapMenu extends GuiScreen {
 		linebreak.setX(width/2 - 318 / 2).setY(top).setHeight(3).setWidth(318);
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
-		
+
 		control = new MinimapToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -112,11 +112,11 @@ public class GuiMinimapMenu extends GuiScreen {
 		control = new ColorToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control.setEnabled(false);
 		control.setTooltip("Feature broken.");
 		top += 22;
-		
+
 		control = new CoordsToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
@@ -125,21 +125,21 @@ public class GuiMinimapMenu extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
 		top += 22;
-		
+
 		control = new ScaleToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new DirectionsToggleCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
-		
+
 		control = new MinimapModeButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control.setEnabled(false);
 		control.setTooltip("Feature broken.");
 
@@ -148,43 +148,43 @@ public class GuiMinimapMenu extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
-		
+
 		control = new DeathpointsCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new BackgroundCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
-		
+
 		control = new HeightMapCheckBox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		control = new ScanRadiusSlider().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		top += 22;
-		
+
 		control = new ShowEntitiesCheckbox().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
-		
+
 		advancedMobsButton = new GenericButton("Select which mobs to show").setAlign(WidgetAnchor.TOP_CENTER);
 		advancedMobsButton.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, advancedMobsButton);
 	}
-	
+
 	@Override
 	public void drawScreen(int x, int y, float z) {
 		drawDefaultBackground();
-		
+
 		super.drawScreen(x, y, z);
 	}
-	
+
 	@Override
 	protected void buttonClicked(Button btn) {
 		if (btn.equals(doneButton)) {

@@ -22,11 +22,10 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketStopMusic implements SpoutPacket{
+public class PacketStopMusic implements SpoutPacket {
 	private boolean resetTimer = false;
 	private int fadeTime = -1;
 	public PacketStopMusic() {
-
 	}
 
 	public PacketStopMusic(boolean resetTimer, int fadeTime) {
@@ -68,6 +67,5 @@ public class PacketStopMusic implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

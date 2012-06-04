@@ -24,7 +24,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.CheckBox;
 
-public class FancyGraphicsButton extends AutomatedButton{
+public class FancyGraphicsButton extends AutomatedButton {
 	public boolean custom = false;
 	private List<CheckBox> linkedButtons = null;
 	public FancyGraphicsButton() {

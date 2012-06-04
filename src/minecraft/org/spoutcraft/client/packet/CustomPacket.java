@@ -29,7 +29,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class CustomPacket extends Packet{
+public class CustomPacket extends Packet {
 	public SpoutPacket packet;
 	private boolean success = false;
 	private static final int[] nags;
@@ -45,7 +45,6 @@ public class CustomPacket extends Packet{
 	}
 
 	public CustomPacket() {
-
 	}
 
 	public CustomPacket(SpoutPacket packet) {
@@ -90,7 +89,7 @@ public class CustomPacket extends Packet{
 			} else {
 				byte[] data = new byte[length];
 				input.readFully(data);
-				
+
 				SpoutInputStream stream = new SpoutInputStream(ByteBuffer.wrap(data));
 				packet.readData(stream);
 				success = true;
@@ -107,7 +106,7 @@ public class CustomPacket extends Packet{
 	}
 
 	SpoutOutputStream stream = new SpoutOutputStream();
-	
+
 	public void writePacketData(DataOutputStream output) throws IOException {
 		if (packet == null) {
 			output.writeShort(-1);
@@ -118,7 +117,7 @@ public class CustomPacket extends Packet{
 		//System.out.println("Writing Packet Data for " + packet.getPacketType());
 		output.writeShort(packet.getPacketType().getId());
 		output.writeShort(packet.getVersion());
-		
+
 		stream.getRawBuffer().clear();
 		packet.writeData(stream);
 		ByteBuffer buffer = stream.getRawBuffer();

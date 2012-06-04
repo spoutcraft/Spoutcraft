@@ -21,7 +21,7 @@ import java.util.UUID;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 
-public class FancyCloudsButton extends AutomatedCheckBox{
+public class FancyCloudsButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyCloudsButton(UUID fancyGraphics) {
 		super("Fancy Clouds");

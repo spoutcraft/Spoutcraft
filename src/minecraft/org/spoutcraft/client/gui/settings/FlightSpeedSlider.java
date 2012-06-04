@@ -20,7 +20,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class FlightSpeedSlider extends GenericSlider{
+public class FlightSpeedSlider extends GenericSlider {
 	public FlightSpeedSlider() {
 		super("Flight Speed");
 		this.setSliderPosition(ConfigReader.flightSpeedMultiplier / 10);

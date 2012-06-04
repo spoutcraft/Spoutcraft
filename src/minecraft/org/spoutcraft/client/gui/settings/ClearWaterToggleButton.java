@@ -24,7 +24,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class ClearWaterToggleButton extends GenericCheckBox{
+public class ClearWaterToggleButton extends GenericCheckBox {
 	public ClearWaterToggleButton() {
 		super("Clear Water");
 		setChecked(ConfigReader.clearWater);

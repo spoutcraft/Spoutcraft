@@ -11,13 +11,13 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.util.Location;
 import org.spoutcraft.spoutcraftapi.util.Vector;
 
-public class PacketParticle implements SpoutPacket{
+public class PacketParticle implements SpoutPacket {
 	String name;
 	Location location;
 	Vector motion;
 	float scale, gravity, particleRed, particleBlue, particleGreen;
 	int maxAge, amount;
-	
+
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		name = input.readString();
@@ -34,7 +34,6 @@ public class PacketParticle implements SpoutPacket{
 
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
-	
 	}
 
 	@Override
@@ -71,7 +70,6 @@ public class PacketParticle implements SpoutPacket{
 
 	@Override
 	public void failure(int playerId) {
-
 	}
 
 	@Override

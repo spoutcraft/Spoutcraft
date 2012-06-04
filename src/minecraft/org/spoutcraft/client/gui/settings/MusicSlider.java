@@ -21,7 +21,7 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
 
-public class MusicSlider extends GenericSlider{
+public class MusicSlider extends GenericSlider {
 	public MusicSlider() {
 		super("Music");
 		setSliderPosition(Minecraft.theMinecraft.gameSettings.musicVolume);

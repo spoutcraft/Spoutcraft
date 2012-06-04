@@ -307,8 +307,11 @@ public class MCRenderDelegate implements RenderDelegate {
 			float scale = label.getScale();
 			float reset = 1 / scale;
 			GL11.glScalef(scale, scale, scale);
-			if(label.hasShadow()) font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
-			else font.drawString(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			if (label.hasShadow()) {
+				font.drawStringWithShadow(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			} else {
+				font.drawString(lines[i], (int) left, i * 10, label.getTextColor().toInt());
+			}
 			GL11.glScalef(reset, reset, reset);
 		}
 		GL11.glPopMatrix();
@@ -396,8 +399,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		org.newdawn.slick.opengl.Texture textureBinding;
 		if (texture.isLocal()) {
 			textureBinding = CustomTextureManager.getTextureFromJar(url);
-		}
-		else {
+		} else {
 			textureBinding = CustomTextureManager.getTextureFromUrl(addon, url);
 		}
 
@@ -492,7 +494,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
 					hardcore = 5 * 9;
 				}
-				
+
 				int oldY = y;
 				if (healthPercent <= bar.getDangerPercent()) {
 					y += GuiIngame.rand.nextInt(2);
@@ -512,7 +514,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				} else if (half) {
 					RenderUtil.drawTexturedModalRectangle(x, y, iconType + 45, hardcore, 9, 9, 0f);
 				}
-				
+
 				y = oldY;
 			}
 		}
@@ -555,7 +557,6 @@ public class MCRenderDelegate implements RenderDelegate {
 		float foodPercentPerIcon = 100f / bar.getNumOfIcons();
 
 		if (bar.isVisible() && bar.getNumOfIcons() > 0) {
-
 			int foodIcon = 16;
 			byte foodOutline = 0;
 
@@ -678,7 +679,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top) {
 		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, false);
 	}
-	
+
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top, boolean mipmap) {
 		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, mipmap);
 	}
@@ -714,7 +715,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		if (mipmap) {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, 8);
-			
+
 			ContextCapabilities capabilities = GLContext.getCapabilities();
 			if (capabilities.OpenGL30) {
 				GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
@@ -724,7 +725,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_GENERATE_MIPMAP, GL11.GL_TRUE);
 			}
 		}
-		
+
 		double tLeft = 0, tTop = 0, rWidth = textureBinding.getWidth(), rHeight = textureBinding.getHeight(), tWidth = rWidth, tHeight = rHeight;
 		if (top >= 0 && left >= 0) {
 			tWidth = Math.min(tWidth, (width/(double) textureBinding.getImageWidth()) * textureBinding.getWidth());
@@ -734,7 +735,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		tHeight = -tHeight;
 		tTop = rHeight - tTop;
-		
+
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV(0.0D, height, -90, tLeft, tTop + tHeight); // draw corners
@@ -846,8 +847,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		for (ListWidgetItem item : lw.getItems()) {
 			//Only render visible items
 			if (currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
-
-				//Draw selection border
+				// Draw selection border
 				if (lw.isSelected(item)) {
 					RenderUtil.drawRectangle(4, currentHeight - 1, lw.getViewportSize(Orientation.HORIZONTAL) - 3, currentHeight - 1 + item.getHeight() + 2, new Color(1.0F, 1.0F, 1.0F).toInt());
 					RenderUtil.drawRectangle(5, currentHeight, lw.getViewportSize(Orientation.HORIZONTAL) - 4, currentHeight + item.getHeight(), new Color(0.0F, 0.0F, 0.0F).toInt());
@@ -909,13 +909,13 @@ public class MCRenderDelegate implements RenderDelegate {
 			drawTexture(text, 16, 16, getColor(comboBox), true);
 		}
 	}
-	
+
 	public void render(GenericSlot genericSlot) {
-		if(!genericSlot.isVisible()) {
+		if (!genericSlot.isVisible()) {
 			return;
 		}
 		ItemStack item = genericSlot.getItem();
-		
+
 		GL11.glDepthFunc(515);
 		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -928,7 +928,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		GL11.glScaled(genericSlot.getWidth() / 16D, genericSlot.getHeight() / 16D, 1);
 
-		if(item.getTypeId() != 0) {
+		if (item.getTypeId() != 0) {
 			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 			int id = item.getTypeId();
 			int data = item.getDurability();
@@ -942,10 +942,10 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		GL11.glEnable(GL11.GL_LIGHTING);
 		RenderHelper.disableStandardItemLighting();
-		if(isHovering(genericSlot)) RenderUtil.drawRectangle(0, 0, 16, 16, 0x88ffffff);
+		if (isHovering(genericSlot)) RenderUtil.drawRectangle(0, 0, 16, 16, 0x88ffffff);
 		GL11.glPopMatrix();
 	}
-	
+
 	public boolean bindTexture(String path) {
 		Texture tex = CustomTextureManager.getTextureFromPath(path);
 		if (tex != null) {
@@ -953,7 +953,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		}
 		return tex != null;
 	}
-	
+
 	public boolean bindTexture(String addon, String path) {
 		Texture tex = CustomTextureManager.getTextureFromUrl(addon, path);
 		if (tex != null) {

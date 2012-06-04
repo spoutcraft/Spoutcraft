@@ -40,7 +40,7 @@ import org.spoutcraft.spoutcraftapi.gui.Orientation;
 import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
-public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
+public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 	private GenericLabel labelTitle, labelDescription;
 	private Button buttonDone, buttonAdd, buttonEdit, buttonRemove;
 	public CheckBox checkVanilla, checkShortcuts, checkBindings, checkSpoutcraft;
@@ -191,7 +191,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 		((DeleteControlButton)buttonRemove).setReallyShown(false);
 		//buttonRemove.setEnabled(item instanceof ShortcutBindingItem || item instanceof KeyBindingItem);
 	}
-	
+
 	protected void keyTyped(char c, int i, boolean pressed) {
 		ControlsBasicItem item = model.getEditingItem();
 		if (item != null) {
@@ -248,8 +248,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater{
 			man.unregisterControl(binding.getBinding());
 			man.save();
 			model.refresh();
-		}
-		else {
+		} else {
 			item.setKey(-128);
 		}
 		model.refresh();

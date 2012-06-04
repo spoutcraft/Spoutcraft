@@ -24,13 +24,12 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketSkinURL implements SpoutPacket{
+public class PacketSkinURL implements SpoutPacket {
 	public int entityId;
 	public String skinURL;
 	public String cloakURL;
 	public boolean release = true;
 	public PacketSkinURL() {
-
 	}
 
 	public PacketSkinURL(int id, String skinURL, String cloakURL) {
@@ -91,6 +90,5 @@ public class PacketSkinURL implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

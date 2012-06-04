@@ -26,14 +26,13 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 import org.spoutcraft.spoutcraftapi.sound.SoundEffect;
 
-public class PacketPlaySound implements SpoutPacket{
+public class PacketPlaySound implements SpoutPacket {
 	short soundId;
 	boolean location = false;
 	int x, y, z;
 	int volume, distance;
 
 	public PacketPlaySound() {
-
 	}
 
 	public int getNumBytes() {
@@ -96,6 +95,5 @@ public class PacketPlaySound implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

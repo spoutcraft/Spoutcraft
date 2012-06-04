@@ -7,7 +7,7 @@ import javax.jmdns.JmDNS;
 
 public class LANModel extends ServerModel {
 	protected JmDNS dns;
-	
+
 	public LANModel() {
 		try {
 			dns = JmDNS.create();
@@ -17,17 +17,17 @@ public class LANModel extends ServerModel {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void addItem(ServerItem item) {
 		items.add(item);
 		item.poll();
 	}
-	
+
 	protected void removeItem(String unqalifiedServiceName) {
 		Iterator<ServerItem> iter = items.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			ServerItem item = iter.next();
-			if(unqalifiedServiceName.equals(item.getTitle())) {
+			if (unqalifiedServiceName.equals(item.getTitle())) {
 				iter.remove();
 				return;
 			}

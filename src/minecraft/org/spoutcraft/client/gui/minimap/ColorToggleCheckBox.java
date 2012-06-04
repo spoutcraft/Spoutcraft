@@ -19,7 +19,7 @@ package org.spoutcraft.client.gui.minimap;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class ColorToggleCheckBox extends GenericCheckBox{
+public class ColorToggleCheckBox extends GenericCheckBox {
 	public ColorToggleCheckBox() {
 		super("Black and White");
 		setChecked(!MinimapConfig.getInstance().isColor());

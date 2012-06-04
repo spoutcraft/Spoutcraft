@@ -29,13 +29,12 @@ import org.spoutcraft.client.texture.TexturePackAction;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketTexturePack implements SpoutPacket{
+public class PacketTexturePack implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];
 	private String url;
 	private long expectedCRC;
 
 	public PacketTexturePack() {
-
 	}
 
 	public PacketTexturePack(String url, long expectedCRC) {
@@ -67,11 +66,11 @@ public class PacketTexturePack implements SpoutPacket{
 				System.out.println("Rejecting Invalid Texture Pack: " + fileName);
 				return;
 			}
-			File texturePack = new File(FileUtil.getTexturePackDirectory(), fileName);
+			File texturePack = new File(FileUtil.getTexturePackDir(), fileName);
 			if (FileUtil.getCRC(texturePack, downloadBuffer) != expectedCRC && expectedCRC != 0) {
 				texturePack.delete();
 			}
-			Download download = new Download(fileName, FileUtil.getTexturePackDirectory(), url, new TexturePackAction(fileName, FileUtil.getTexturePackDirectory()));
+			Download download = new Download(fileName, FileUtil.getTexturePackDir(), url, new TexturePackAction(fileName, FileUtil.getTexturePackDir()));
 			FileDownloadThread.getInstance().addToDownloadQueue(download);
 		}
 	}
@@ -85,6 +84,5 @@ public class PacketTexturePack implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

@@ -33,13 +33,13 @@ public class ResizeScreenshotWidthField extends GenericTextField {
 		setEnabled(ConfigReader.resizeScreenshots);
 		super.onTick();
 	}
-	
+
 	@Override
 	public void onTypingFinished() {
-		if(getText().equals("")) return;
+		if (getText().equals("")) return;
 		try {
 			int width = Integer.parseInt(getText());
-			if(width < 1) throw new RuntimeException("Must be at least 1");
+			if (width < 1) throw new RuntimeException("Must be at least 1");
 			ConfigReader.resizedScreenshotWidth = width;
 			ConfigReader.write();
 			setPlaceholder("" + width);
@@ -49,14 +49,14 @@ public class ResizeScreenshotWidthField extends GenericTextField {
 			setFocus(false);
 		}
 	}
-	
+
 	@Override
 	public Control setFocus(boolean focus) {
 		super.setFocus(focus);
-		if(!focus) {
+		if (!focus) {
 			try {
 				int width = Integer.parseInt(getText());
-				if(width < 1) throw new RuntimeException("Must be at least 1");
+				if (width < 1) throw new RuntimeException("Must be at least 1");
 				ConfigReader.resizedScreenshotWidth = width;
 				ConfigReader.write();
 				setText("");

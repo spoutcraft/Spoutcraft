@@ -23,7 +23,7 @@ import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.player.SkyManager;
 
-public class SimpleSkyManager implements SkyManager{
+public class SimpleSkyManager implements SkyManager {
 	private int cloudHeight = -999;
 	private int starFrequency = 1500;
 	private int sunPercent = 100;

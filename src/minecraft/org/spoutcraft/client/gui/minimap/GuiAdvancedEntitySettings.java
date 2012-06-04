@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
+import net.minecraft.src.Entity;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -14,10 +16,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 
-import net.minecraft.src.Entity;
-
 public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
-	
 	GuiMinimapMenu parent = null;
 	GenericScrollArea scroll;
 	GenericButton buttonDone;
@@ -33,11 +32,10 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 		title = new GenericLabel("Select which mobs to show");
 		buttonDone = new GenericButton("Done");
 		scroll = new GenericScrollArea();
-		
+
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
-		
-		for(Entry<Class<? extends Entity>, String> e : WatchedEntity.mobFaceTextures.entrySet()) {
+
+		for (Entry<Class<? extends Entity>, String> e : WatchedEntity.mobFaceTextures.entrySet()) {
 			EntityVisibilityCheckbox ch = new EntityVisibilityCheckbox(e.getKey(), e.getValue());
 			scroll.attachWidget(spoutcraft, ch);
 			checks.add(ch);
@@ -48,7 +46,7 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 				return o1.getText().compareTo(o2.getText());
 			}
 		});
-		
+
 		getScreen().attachWidgets(spoutcraft, buttonDone, title, scroll);
 	}
 
@@ -56,40 +54,40 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		title.setX(width / 2 - SpoutClient.getHandle().fontRenderer.getStringWidth(title.getText()) / 2);
 		title.setY(10);
-		
+
 		scroll.setGeometry(0, 25, width, height - 25 - 30);
-		
+
 		int top = 5;
 		int i = 0;
 		int left = 5;
 		int center = left + 100 + 5;
 		int right = center + 100 + 5;
-		for(EntityVisibilityCheckbox ch : checks) {
+		for (EntityVisibilityCheckbox ch : checks) {
 			ch.setGeometry(0, top, 100, 20);
 			switch(i%3) {
-			case 0:
-				ch.setX(left);
-				break;
-			case 1:
-				ch.setX(center);
-				break;
-			case 2:
-				ch.setX(right);
-				break;
+				case 0:
+					ch.setX(left);
+					break;
+				case 1:
+					ch.setX(center);
+					break;
+				case 2:
+					ch.setX(right);
+					break;
 			}
 			i++;
-			if(i%3==0) {
+			if (i%3==0) {
 				top += 22;
 			}
 		}
 		scroll.updateInnerSize(); 
-		
+
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
 	}
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		if(btn == buttonDone) {
+		if (btn == buttonDone) {
 			mc.displayGuiScreen(parent);
 		}
 	}

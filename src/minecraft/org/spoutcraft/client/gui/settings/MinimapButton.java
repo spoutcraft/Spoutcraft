@@ -23,7 +23,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 
 public class MinimapButton extends GenericButton {
 	GameSettingsScreen parent;
-	
+
 	public MinimapButton(GameSettingsScreen parent) {
 		super("Minimap Options");
 		this.parent = parent;

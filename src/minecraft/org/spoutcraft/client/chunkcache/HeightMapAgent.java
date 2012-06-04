@@ -32,7 +32,7 @@ public class HeightMapAgent {
 						int h = getHighestBlock(chunk, x, z);
 						if (h > -1) {
 							byte id = (byte) chunk.getBlockID(x, h, z);
-							
+
 							//Check if block above is snow
 							if (chunk.getBlockID(x, h + 1, z) == 78) {
 								id = 78;
@@ -41,7 +41,7 @@ public class HeightMapAgent {
 							hchunk.setBlockId(x, z, id);
 						}
 					}
-				}				
+				}
 			}
 		}
 		catch (ArrayIndexOutOfBoundsException ignore) { }

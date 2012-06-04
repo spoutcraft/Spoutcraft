@@ -24,7 +24,7 @@ import org.spoutcraft.spoutcraftapi.gui.ScreenType;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
-public class PacketKeyPress implements SpoutPacket{
+public class PacketKeyPress implements SpoutPacket {
 	public boolean pressDown;
 	public byte key;
 	public byte settingKeys[] = new byte[10];
@@ -82,7 +82,6 @@ public class PacketKeyPress implements SpoutPacket{
 	}
 
 	public void run(int id) {
-
 	}
 
 	public int getNumBytes() {
@@ -100,6 +99,5 @@ public class PacketKeyPress implements SpoutPacket{
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

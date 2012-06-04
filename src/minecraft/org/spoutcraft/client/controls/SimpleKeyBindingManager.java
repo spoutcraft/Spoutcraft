@@ -171,7 +171,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	private File getBindingsFile() throws IOException {
-		File file = new File(FileUtil.getSpoutcraftDirectory(), "bindings.yml");
+		File file = new File(FileUtil.getConfigDir(), "bindings.yml");
 		if (!file.exists()) {
 			file.createNewFile();
 		}
@@ -179,7 +179,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	private File getShortcutsFile() throws IOException {
-		File file = new File(FileUtil.getSpoutcraftDirectory(), "shortcuts.yml");
+		File file = new File(FileUtil.getConfigDir(), "shortcuts.yml");
 		if (!file.exists()) {
 			file.createNewFile();
 		}
@@ -258,7 +258,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if (bindingsForKey.containsKey(key)) {
 			ArrayList<AbstractBinding> bindings = bindingsForKey.get(key);
 			ArrayList<AbstractBinding> effective = new ArrayList<AbstractBinding>();
-			for(AbstractBinding b:bindings) {
+			for (AbstractBinding b:bindings) {
 				if (b.matches(key, getPressedModifiers())) {
 					effective.add(b);
 				}
@@ -329,7 +329,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		}
 		return res;
 	}
-	
+
 	public void summon(KeyBinding binding, int key, boolean keyReleased, int screen) {
 		if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, !keyReleased, screen));

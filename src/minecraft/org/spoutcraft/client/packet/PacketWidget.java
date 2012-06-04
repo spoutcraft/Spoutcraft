@@ -44,7 +44,6 @@ public class PacketWidget implements SpoutPacket {
 	}
 
 	public PacketWidget() {
-
 	}
 
 	public PacketWidget(Widget widget, UUID screen) {
@@ -56,7 +55,7 @@ public class PacketWidget implements SpoutPacket {
 		int id = input.readInt();
 		long msb = input.readLong();
 		long lsb = input.readLong();
-		
+
 		int size = input.readInt();
 		int version = input.readShort();
 		byte[] widgetData = new byte[size];
@@ -87,13 +86,13 @@ public class PacketWidget implements SpoutPacket {
 		output.writeInt(widget.getType().getId());
 		output.writeLong(screen.getMostSignificantBits());
 		output.writeLong(screen.getLeastSignificantBits());
-		
+
 		SpoutOutputStream data = new SpoutOutputStream();
 		widget.writeData(data);
 		ByteBuffer buffer = data.getRawBuffer();
 		byte[] widgetData = new byte[buffer.capacity() - buffer.remaining()];
 		System.arraycopy(buffer.array(), 0, widgetData, 0, widgetData.length);
-		
+
 		output.writeInt(widgetData.length);
 		output.writeShort((short) widget.getVersion());
 		output.write(widgetData);
@@ -115,8 +114,7 @@ public class PacketWidget implements SpoutPacket {
 							((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
 						}
 					}
-				}
-				else {
+				} else {
 					mainScreen.attachPopupScreen((PopupScreen)widget);
 				}
 			} else if (widget instanceof OverlayScreen) { //Determine if this screen overrides another screen
@@ -128,8 +126,7 @@ public class PacketWidget implements SpoutPacket {
 				if (mainScreen.containsWidget(widget.getId())) {
 					mainScreen.updateWidget(widget);
 					widget.setScreen(mainScreen);
-				}
-				else {
+				} else {
 					widget.setScreen(mainScreen);
 					mainScreen.attachWidget(widget.getAddon(), widget);
 				}
@@ -137,8 +134,7 @@ public class PacketWidget implements SpoutPacket {
 				if (popup.containsWidget(widget.getId())) {
 					popup.updateWidget(widget);
 					widget.setScreen(popup);
-				}
-				else {
+				} else {
 					widget.setScreen(popup);
 					popup.attachWidget(widget.getAddon(), widget);
 				}
@@ -163,6 +159,5 @@ public class PacketWidget implements SpoutPacket {
 	}
 
 	public void failure(int playerId) {
-
 	}
 }

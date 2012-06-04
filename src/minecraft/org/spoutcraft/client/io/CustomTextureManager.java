@@ -51,9 +51,9 @@ public class CustomTextureManager {
 			if (!ignoreEnding && !FileUtil.isImageFile(fileName)) {
 				System.out.println("Rejecting download of invalid texture: " + fileName);
 			} else if (!isTextureDownloading(url) && !isTextureDownloaded(plugin, url)) {
-				File dir = FileUtil.getTempDirectory();
+				File dir = FileUtil.getTempDir();
 				if (plugin != null) {
-					dir = new File(FileUtil.getCacheDirectory(), plugin);
+					dir = new File(FileUtil.getCacheDir(), plugin);
 					dir.mkdir();
 				}
 				Download download = new Download(fileName, dir, url, null);
@@ -108,7 +108,7 @@ public class CustomTextureManager {
 					return file;
 				}
 			}
-			return new File(FileUtil.getTempDirectory(), fileName);
+			return new File(FileUtil.getTempDir(), fileName);
 		} finally {
 			SpoutClient.enableSandbox(wasSandboxed);
 		}
@@ -156,10 +156,10 @@ public class CustomTextureManager {
 			} catch (Exception e) { }
 			//Check MCP/Eclipse Path
 			if (texture == null) {
-				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../.."+ path);
+				texture = getTextureFromPath(FileUtil.getConfigDir().getAbsolutePath() + "/../.."+ path);
 			}
 			if (texture == null) {
-				texture = getTextureFromPath(FileUtil.getSpoutcraftDirectory().getAbsolutePath() + "/../../.."+ path);
+				texture = getTextureFromPath(FileUtil.getConfigDir().getAbsolutePath() + "/../../.."+ path);
 			}
 
 			if (texture != null) {
@@ -224,7 +224,7 @@ public class CustomTextureManager {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		SpoutClient.disableSandbox();
 		try {
-			File download = new File(FileUtil.getTempDirectory(), FileUtil.getFileName(url));
+			File download = new File(FileUtil.getTempDir(), FileUtil.getFileName(url));
 			try {
 				return download.getCanonicalPath();
 			} catch (IOException e) {

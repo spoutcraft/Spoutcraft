@@ -20,7 +20,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
-public class SkyToggleButton extends GenericCheckBox{
+public class SkyToggleButton extends GenericCheckBox {
 	public SkyToggleButton() {
 		super("Sky");
 		setChecked(ConfigReader.sky);
