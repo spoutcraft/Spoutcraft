@@ -469,7 +469,7 @@ public abstract class Minecraft implements Runnable {
 			}
 
 			if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
-				this.statFileWriter.func_27175_b();
+//				this.statFileWriter.func_27175_b();
 			}
 
 			boolean wasSandboxed = SpoutClient.isSandboxed();
