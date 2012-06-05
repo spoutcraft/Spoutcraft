@@ -179,7 +179,7 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 				String line = linesTmp.get(i);
 				String lineTmp = new String(line);
 				int brk = -1;
-				while (Spoutcraft.getMinecraftFont().getTextWidth(lineTmp) > super.getWidth()) {
+				while (Spoutcraft.getMinecraftFont().getTextWidth(lineTmp) > super.getWidth() && super.getWidth() >= 5 && !lineTmp.isEmpty()) {
 					brk = lineTmp.lastIndexOf(" ");
 					if (brk == -1) {
 						brk = lineTmp.length() - 2;
