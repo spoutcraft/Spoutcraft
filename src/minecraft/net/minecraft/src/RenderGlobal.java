@@ -1516,6 +1516,10 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
+		return func_40193_b(par1Str, par2, par4, par6, par8, par10, par12, 16.0);
+	}
+
+	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, double var22) { //Spout
 		if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
 			int var14 = this.mc.gameSettings.particleSetting;
 			if (var14 == 1 && this.worldObj.rand.nextInt(3) == 0) {
@@ -1535,7 +1539,6 @@ public class RenderGlobal implements IWorldAccess {
 			if (var21 != null) {
 				return (EntityFX)var21;
 			} else {
-				double var22 = 16.0D;
 				//Spout start
 				if (!org.spoutcraft.client.config.ConfigReader.fancyParticles) {
 					var22 = 6D;
