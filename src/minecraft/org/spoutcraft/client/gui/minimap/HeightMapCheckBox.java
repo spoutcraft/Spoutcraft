@@ -5,7 +5,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 
 public class HeightMapCheckBox extends GenericCheckBox {
 	public HeightMapCheckBox() {
-		super("Show Height map");
+		super("Show Height Map");
 		setChecked(MinimapConfig.getInstance().isHeightmap());
 		setTooltip("If enabled, shows a heightmap in the minimap and the overview map.");
 	}
