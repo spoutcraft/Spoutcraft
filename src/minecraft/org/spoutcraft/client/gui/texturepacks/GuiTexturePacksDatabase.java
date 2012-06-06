@@ -113,6 +113,9 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		buttonRefresh.setX(width - 5 - 100).setY(top).setWidth(100).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 
+		search.setGeometry(5, 5, 130, 16);
+		getScreen().attachWidget(spoutcraft, search);
+
 		top+=25;
 
 		int sheight = height - top - 55;
@@ -157,9 +160,6 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		sortFilterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filter.attachWidget(spoutcraft, sortFilterTitle);
 		ftop += 16;
-
-		search.setGeometry(5, 5, 100, 16);
-		getScreen().attachWidget(spoutcraft, search);
 
 		featured.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filter.attachWidget(spoutcraft, featured);
