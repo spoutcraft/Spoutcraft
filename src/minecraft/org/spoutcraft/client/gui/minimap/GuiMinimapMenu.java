@@ -44,7 +44,7 @@ public class GuiMinimapMenu extends GuiScreen {
 		Control control;
 
 		GenericScrollArea screen = new GenericScrollArea();
-		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(24).setX(0);
+		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Minimap Settings");
@@ -173,7 +173,7 @@ public class GuiMinimapMenu extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(top);
 		screen.attachWidget(spoutcraft, control);
 
-		advancedMobsButton = new GenericButton("Select which mobs to show").setAlign(WidgetAnchor.TOP_CENTER);
+		advancedMobsButton = new GenericButton("Filter Mobs").setAlign(WidgetAnchor.TOP_CENTER);
 		advancedMobsButton.setWidth(150).setHeight(20).setX(right).setY(top);
 		screen.attachWidget(spoutcraft, advancedMobsButton);
 	}
