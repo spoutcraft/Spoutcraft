@@ -166,12 +166,12 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelPlayers.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelPlayers);
 
-		linkForum = new LinkButton("Go to forum", "");
+		linkForum = new LinkButton("Go to Forum", "");
 		getScreen().attachWidget(spoutcraft, linkForum);
-		linkSite = new LinkButton("Go to website", "");
+		linkSite = new LinkButton("Go to Website", "");
 		getScreen().attachWidget(spoutcraft, linkSite);
 
-		labelSpoutcraftLabel = new GenericLabel("Spoutcraft required");
+		labelSpoutcraftLabel = new GenericLabel("Spoutcraft");
 		content.attachWidget(spoutcraft, labelSpoutcraftLabel);
 		labels.add(labelSpoutcraftLabel);
 
@@ -423,7 +423,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 				linkSite.setUrl(URLDecoder.decode((String) i.get("site"), "UTF-8"));
 				linkForum.setUrl(URLDecoder.decode((String) i.get("forumurl"), "UTF-8"));
 				boolean spoutcraft = i.get("spoutcraft").equals("1");
-				labelSpoutcraft.setText(spoutcraft?"Yes":"No");
+				labelSpoutcraft.setText(spoutcraft?"Required":"Not Required");
 				labelMCVersion.setText(URLDecoder.decode((String) i.get("mcversion"), "UTF-8"));
 				labelCategory.setText(URLDecoder.decode((String) i.get("category"), "UTF-8"));
 				if (i.containsKey("gallery")) {
