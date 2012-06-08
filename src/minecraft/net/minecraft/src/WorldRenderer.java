@@ -192,7 +192,7 @@ public class WorldRenderer {
 										if (customBlockIds[key] != 0) {
 											mat = MaterialData.getCustomBlock(customBlockIds[key]);
 											if (mat != null) {
-												design = (GenericBlockDesign) mat.getBlockDesign(customBlockData[key]);
+												design = (GenericBlockDesign) mat.getBlockDesign(customBlockData == null ? 0 : customBlockData[key]);
 											}
 										}
 									}
