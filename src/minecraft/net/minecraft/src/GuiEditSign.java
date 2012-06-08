@@ -89,12 +89,13 @@ public class GuiEditSign extends GuiScreen {
 		}
 
 		if (par1GuiButton.id == 0) {
-			
+			// Spout start
 			if (!Spoutcraft.hasPermission("spout.client.signcolors")) {
 				for (int i = 0; i < entitySign.signText.length; i++) {
 					entitySign.signText[i] = ChatColor.stripColor(entitySign.signText[i]);
 				}
 			}
+			// Spout end
 			entitySign.onInventoryChanged();
 			mc.displayGuiScreen(null);
 		}
