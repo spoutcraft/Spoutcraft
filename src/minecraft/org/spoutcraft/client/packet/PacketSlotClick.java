@@ -42,7 +42,7 @@ public class PacketSlotClick implements SpoutPacket {
 	public void readData(SpoutInputStream input) throws IOException {
 		long msb = input.readLong();
 		long lsb = input.readLong();
-		screen = new UUID(msb,lsb);msb = input.readLong();
+		screen = new UUID(msb,lsb);
 		msb = input.readLong();
 		lsb = input.readLong();
 		slot = new UUID(msb,lsb);
