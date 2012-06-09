@@ -116,8 +116,13 @@ public class RenderItem extends Render {
 			
 			GL11.glTranslatef((float) x, (float) yOffset + bounceAmmount, (float) z);
 			
-	
-			if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[itemStack.itemID].getRenderType())) {
+			//Spout start
+			Block block = Block.blocksList[itemStack.itemID];
+			if ((itemStack.itemID < 256 && block == null) {
+				//Invalid item
+			}
+			else if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(block.getRenderType())) {
+			//Spout end
 				GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 				float renderScale = 0.25F;
 				renderType = Block.blocksList[itemStack.itemID].getRenderType();
