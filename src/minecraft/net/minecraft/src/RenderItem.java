@@ -118,7 +118,7 @@ public class RenderItem extends Render {
 			
 			//Spout start
 			Block block = Block.blocksList[itemStack.itemID];
-			if ((itemStack.itemID < 256 && block == null) {
+			if (itemStack.itemID < 256 && block == null) {
 				//Invalid item
 			}
 			else if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(block.getRenderType())) {
