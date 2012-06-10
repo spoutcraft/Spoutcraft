@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,7 +86,6 @@ public class GuiNewAbout extends GuiSpoutScreen {
 					List<Section> sections = new LinkedList<Section>();
 					LinkedHashMap<String, Object> secs = (LinkedHashMap<String, Object>) col;
 					for (Object sec : secs.values()) {
-						System.out.println("Section");
 						LinkedHashMap<String, Object> section = (LinkedHashMap<String, Object>) sec;
 						String title = "Untitled";
 						if (section.containsKey("title")) {
@@ -93,7 +93,6 @@ public class GuiNewAbout extends GuiSpoutScreen {
 						}
 						Set<String> keys = section.keySet();
 						if (keys.size() > 2) {
-							System.out.println("Too many keys");
 							continue;
 						}
 						String sectionType = "";
@@ -104,13 +103,9 @@ public class GuiNewAbout extends GuiSpoutScreen {
 						}
 						Section sectionObject = Section.getSection(sectionType);
 						if (sectionObject == null) {
-							System.out.println("type " + sectionType
-									+ " not found");
 							continue;
 						}
 						sectionObject.init(this, title, section.get(sectionType));
-						System.out.println("Section " + title + " of type "
-								+ sectionObject.getClass().getSimpleName());
 						scroll.attachWidgets(spoutcraft, sectionObject
 								.getWidgets().toArray(new Widget[0]));
 						sections.add(sectionObject);
@@ -144,7 +139,9 @@ public class GuiNewAbout extends GuiSpoutScreen {
 					* columnMargin)
 					/ (columnCount);
 			int columnX = columnMargin;
-			for (List<Section> column : columns) {
+			Iterator<List<Section>> iter = columns.iterator();
+			while (iter.hasNext()) {
+				List<Section> column = iter.next();
 				int sectionY = columnMargin;
 				for (Section section : column) {
 					section.setX(columnX);
