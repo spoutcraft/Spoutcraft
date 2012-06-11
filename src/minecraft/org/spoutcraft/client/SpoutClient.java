@@ -170,6 +170,8 @@ public class SpoutClient extends PropertyObject implements Client {
 			//must be done after construtor
 			ServerAddon addon = new ServerAddon("Spoutcraft", Long.toString(version), null);
 			instance.addonManager.addFakeAddon(addon);
+			
+			System.out.println("Available Memory: " + Runtime.getRuntime().maxMemory() + " mb");
 		}
 		return instance;
 	}
@@ -192,6 +194,10 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public static boolean isSandboxed() {
 		return getInstance().securityManager.isLocked();
+	}
+	
+	public static boolean hasAvailableRAM() {
+		return Runtime.getRuntime().maxMemory() > 756L;
 	}
 
 	public long getServerVersion() {

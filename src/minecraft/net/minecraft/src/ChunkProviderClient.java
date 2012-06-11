@@ -1,7 +1,13 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.spoutcraft.client.ChunkComparator;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+
 import net.minecraft.src.Chunk;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.ChunkPosition;
@@ -21,11 +27,12 @@ public class ChunkProviderClient implements IChunkProvider {
 
 	private Chunk blankChunk;
 	private TLongObjectHashMap<Chunk> chunkMapping = new TLongObjectHashMap<Chunk>(1000); //Spout
-	private List field_889_c = new ArrayList();
+	//private List field_889_c = new ArrayList();
 	private World worldObj;
 	//Spout start
 	private int lastX = Integer.MAX_VALUE, lastZ = Integer.MAX_VALUE;
 	private Chunk last = null;
+	private int unloadableCounter = 0;
 	//Spout end
 
 	public ChunkProviderClient(World par1World) {
@@ -46,12 +53,18 @@ public class ChunkProviderClient implements IChunkProvider {
 
 	public void func_539_c(int par1, int par2) {
 		Chunk var3 = this.provideChunk(par1, par2);
+		//Spout start
+		if (!var3.isEmpty() && SpoutClient.hasAvailableRAM()) {
+			var3.canBeUnloaded = true;
+			return;
+		}
+		
 		if (!var3.isEmpty()) {
 			var3.onChunkUnload();
 		}
 
 		this.chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(par1, par2));
-		this.field_889_c.remove(var3);
+		//this.field_889_c.remove(var3); //Spout
 	}
 
 	public Chunk loadChunk(int par1, int par2) {
@@ -82,6 +95,42 @@ public class ChunkProviderClient implements IChunkProvider {
 	}
 
 	public boolean unload100OldestChunks() {
+		//Spout start
+		if (!SpoutClient.hasAvailableRAM()) {
+			return false;
+		}
+		int desiredChunks;
+		int range;
+		switch(Minecraft.theMinecraft.gameSettings.renderDistance) {
+			case 0: desiredChunks = 600; range = 10; break;
+			case 1: desiredChunks = 400; range = 8; break;
+			case 2: desiredChunks = 200; range = 7; break;
+			case 3: desiredChunks = 100; range = 5; break;
+			default: desiredChunks = 200; range = 7; break;
+		}
+		if (ConfigReader.farView){
+			desiredChunks *= 2;
+		}
+		
+		if (chunkMapping.size() > desiredChunks) {
+			unloadableCounter++;
+			final int delay = 40;
+			if (unloadableCounter > delay) {
+				ArrayList<Chunk> chunks = new ArrayList<Chunk>(chunkMapping.size());
+				chunks.addAll(chunkMapping.valueCollection());
+				Collections.sort(chunks, new ChunkComparator());
+				
+				for (int i = 0; i < 20; i++) {
+					Chunk c = chunks.get(i);
+					if (c.canBeUnloaded) {
+						c.onChunkUnload();
+						chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(c.xPosition, c.zPosition));
+					}
+				}
+				unloadableCounter = 0;
+			}
+		}
+		//Spout end
 		return false;
 	}
 
