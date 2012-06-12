@@ -29,7 +29,7 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 
 	@Override
 	protected void createInstances() {
-		title = new GenericLabel("Select which mobs to show");
+		title = new GenericLabel("Filter Mobs");
 		buttonDone = new GenericButton("Done");
 		scroll = new GenericScrollArea();
 
@@ -57,9 +57,10 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 
 		scroll.setGeometry(0, 25, width, height - 25 - 30);
 
+		int needed = 315;
 		int top = 5;
 		int i = 0;
-		int left = 5;
+		int left = width / 2 - needed / 2;
 		int center = left + 100 + 5;
 		int right = center + 100 + 5;
 		for (EntityVisibilityCheckbox ch : checks) {
@@ -82,7 +83,7 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 		}
 		scroll.updateInnerSize(); 
 
-		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
+		buttonDone.setGeometry(width / 2 + 5, height - 25, 150, 20);
 	}
 
 	@Override

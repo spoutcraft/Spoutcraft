@@ -46,7 +46,7 @@ import org.spoutcraft.spoutcraftapi.gui.Texture;
 
 public class GuiServerInfo extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
-	private GenericLabel labelTitle, labelAddressLabel, labelAddress, labelMotdLabel, labelMotd, labelDescriptionLabel, labelDescription,
+	private GenericLabel labelTitle, labelAddressLabel, labelAddress, labelMotdLabel, labelMotd, labelDescription,
 	labelPlayersLabel, labelPlayers, labelSpoutcraftLabel, labelSpoutcraft, labelAccessLabel, labelAccess,
 	labelMCVersionLabel, labelMCVersion, labelCategoryLabel, labelCategory;
 	private LinkButton linkForum, linkSite;
@@ -153,10 +153,6 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		content.attachWidget(spoutcraft, labelDescription);
 		labelDescription.setTextColor(new Color(0xffaaaaaa));
 		labelDescription.setWrapLines(true);
-
-		labelDescriptionLabel = new GenericLabel("Description");
-		labels.add(labelDescriptionLabel);
-		content.attachWidget(spoutcraft, labelDescriptionLabel);
 
 		labelPlayersLabel = new GenericLabel("Players");
 		content.attachWidget(spoutcraft, labelPlayersLabel);
@@ -268,7 +264,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		int w = Spoutcraft.getMinecraftFont().getTextWidth(labelTitle.getText());
 
-		int totalWidth = Math.min(width - 10 - 16, 200*3+10);
+		int totalWidth = Math.min(width - 9, 200*3+10);
 		int cellWidth = (totalWidth - 10)/3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
@@ -284,15 +280,16 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 55 - (5+7+11+5));
 
-		int valueLeft = 10 + labelWidth;
-		int labelLeft = 5;
 
 		int top = 5;
 
 		textureIcon.setX(5).setY(top);
-		updateImageWidth(textureIcon, totalWidth, MAX_HEIGHT);
+		updateImageWidth(textureIcon, cellWidth, MAX_HEIGHT);
 
-		top += textureIcon.getHeight() + 5;
+		int labelLeft = (int) (10 + textureIcon.getWidth());
+		int valueLeft = labelLeft + 5 + labelWidth;
+		
+		top += 5;
 
 		labelAddressLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
 		labelAddress.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
@@ -328,9 +325,13 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelCategory.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
 
 		top += 16;
+		
+		labelLeft = 5;
+		valueLeft = labelLeft + labelWidth + 5;
+		
+		top = (int) Math.max(top, 5 + textureIcon.getHeight() + 5);
 
-		labelDescriptionLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
-		labelDescription.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5 - 16).setHeight(11);
+		labelDescription.setX(5).setY(top).setWidth(totalWidth).setHeight(11);
 		labelDescription.recalculateLines();
 
 		top += labelDescription.getHeight() + 5;
@@ -474,8 +475,6 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		int imgwidth, imgheight;
 		imgwidth = texture.getOriginalWidth();
 		imgheight = texture.getOriginalHeight();
-
-		System.out.println(imgwidth+"x"+imgheight);
 
 		double ratio = (double) imgwidth / (double) imgheight;
 

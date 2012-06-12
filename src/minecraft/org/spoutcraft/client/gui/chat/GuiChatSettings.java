@@ -107,27 +107,30 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		scroll.updateInnerSize();
 
 		int ftop = 5;
+		int left = (int)(width / 2  - 155);
+		int right = (int)(width / 2 + 5);
+		int cellWidth = 150;
 
-		checkShowMentions.setGeometry(5, ftop, 200, 20);
-		buttonAdvancedMentions.setGeometry(width - 205, ftop, 150, 20);
+		checkShowMentions.setGeometry(left, ftop, cellWidth, 20);
+		buttonAdvancedMentions.setGeometry(right, ftop, cellWidth, 20);
 		ftop += 22;
-		checkShowJoins.setGeometry(5, ftop, 200, 20);
+		checkShowJoins.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
-		checkShowColors.setGeometry(5, ftop, 200, 20);
+		checkShowColors.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
-		checkCloseOnDamage.setGeometry(5, ftop, 200, 20);
+		checkCloseOnDamage.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
-		checkGrabMouse.setGeometry(5, ftop, 200, 20);
+		checkGrabMouse.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
-		checkIgnorePeople.setGeometry(5, ftop, 200, 20);
-		buttonConfigureIgnores.setGeometry(width - 205, ftop, 150, 20);
+		checkIgnorePeople.setGeometry(left, ftop, cellWidth, 20);
+		buttonConfigureIgnores.setGeometry(right, ftop, cellWidth, 20);
 		ftop += 22;
-		checkParseRegex.setGeometry(5, ftop, 200, 20);
+		checkParseRegex.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
-		opacity.setGeometry(5, ftop, 200, 20);
+		opacity.setGeometry(left, ftop, cellWidth, 20);
 		ftop += 22;
 
-		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
+		buttonDone.setGeometry(right, height - 25, cellWidth, 20);
 	}
 
 	@Override

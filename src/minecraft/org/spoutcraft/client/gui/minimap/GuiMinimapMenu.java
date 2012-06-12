@@ -57,12 +57,12 @@ public class GuiMinimapMenu extends GuiScreen {
 		int right = (int)(width / 2 + 5);
 
 		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(height - 30);
+		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
-		doneButton.setX(right).setY(height - 30);
+		doneButton.setX(right).setY(height - 25);
 		doneButton.setHeight(20).setWidth(150);
 		getScreen().attachWidget(spoutcraft, doneButton);
 

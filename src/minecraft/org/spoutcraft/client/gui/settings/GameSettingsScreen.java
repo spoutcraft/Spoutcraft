@@ -50,7 +50,7 @@ public class GameSettingsScreen extends GuiScreen {
 
 		GenericScrollArea screen = new GenericScrollArea();
 		scrollArea = screen;
-		screen.setHeight(height - 16 - 24 - 40).setWidth(width).setY(24).setX(0);
+		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Game Settings");
@@ -63,12 +63,12 @@ public class GameSettingsScreen extends GuiScreen {
 		int right = (int)(width / 2 + 5);
 
 		control = new ResetButton(this).setAlign(WidgetAnchor.TOP_CENTER);
-		control.setWidth(150).setHeight(20).setX(left).setY(height - 30);
+		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
-		doneButton.setX(right).setY(height - 30);
+		doneButton.setX(right).setY(height - 25);
 		doneButton.setHeight(20).setWidth(150);
 		getScreen().attachWidget(spoutcraft, doneButton);
 
@@ -456,7 +456,7 @@ public class GameSettingsScreen extends GuiScreen {
 		top += 22;
 
 		label = new GenericLabel("Screenshot Width:");
-		label.setWidth(150).setHeight(20).setX(left).setY(top);
+		label.setWidth(150).setHeight(20).setX(left).setY(top + 6);
 		screen.attachWidget(spoutcraft, label);
 
 		control = new ResizeScreenshotWidthField();
@@ -465,7 +465,7 @@ public class GameSettingsScreen extends GuiScreen {
 		top += 22;
 
 		label = new GenericLabel("Screenshot Height:");
-		label.setWidth(150).setHeight(20).setX(left).setY(top);
+		label.setWidth(150).setHeight(20).setX(left).setY(top + 6);
 		screen.attachWidget(spoutcraft, label);
 
 		control = new ResizeScreenshotHeightField();

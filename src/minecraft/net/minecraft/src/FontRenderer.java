@@ -273,6 +273,11 @@ public class FontRenderer {
 
 		for (int var8 = 0; var8 < par1Str.length(); ++var8) {
 			char var9 = par1Str.charAt(var8);
+			//Spout Stupid unicode box character fix
+			if (var9 < 30) {
+				continue;
+			}
+			//Spout end
 			int var10;
 			int var11;
 			if (var9 == 167 && var8 + 1 < par1Str.length()) {
@@ -435,6 +440,9 @@ public class FontRenderer {
 
 	// begin Spout TextAlpha - This is the true calculation for char widths.
 	public float getCharWidthFloat(char ch){
+		if (ch < 30) {
+			return 0;
+		}
 		if (ch == 167) {
 			return -1F;
 		} else if (ch == 32) {  // Spout AlphaText - returns the width of spaces AS RENDERED.

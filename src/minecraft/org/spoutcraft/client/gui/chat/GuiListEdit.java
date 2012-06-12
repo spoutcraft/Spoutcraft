@@ -84,20 +84,20 @@ public class GuiListEdit extends GuiSpoutScreen {
 
 		int top = 5 + 13;
 
-		editor.setGeometry(5, top, 250, 20);
-		buttonAdd.setGeometry(260, top, 100, 20);
+		editor.setGeometry(5, top + 1, width - 115, 18);
+		buttonAdd.setGeometry(width - 105, top, 100, 20);
 
 		top += 25;
 
-		list.setGeometry(0, top, width, height - top - (2 + 11 + 2 + 20 + 5));
+		list.setGeometry(0, top, width, height - top - 30);
 		list.updateSize();
 
-		top += (int) list.getHeight() + 2;
+		top += (int) list.getHeight();
 
 		helpLabel.setGeometry(5, top, width - 10, 11);
 
-		top += 13;
-
+		top += 5;
+		
 		int totalWidth = Math.min(width - 9, 200*3+10);
 		int cellWidth = (totalWidth - 10)/3;
 		int left = width / 2 - totalWidth / 2;

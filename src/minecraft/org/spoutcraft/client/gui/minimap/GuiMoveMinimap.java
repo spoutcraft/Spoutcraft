@@ -73,8 +73,8 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 
 		sliderScale.setGeometry(width / 2 - 100, height - 55, 200, 20);
 
-		buttonDone.setGeometry(width / 2 + 5, height - 30, 150, 20);
-		buttonReset.setGeometry(width / 2 - 155, height - 30, 150, 20);
+		buttonDone.setGeometry(width / 2 + 5, height - 25, 150, 20);
+		buttonReset.setGeometry(width / 2 - 155, height - 25, 150, 20);
 	}
 
 	@Override

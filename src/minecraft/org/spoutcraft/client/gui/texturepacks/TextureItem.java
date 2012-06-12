@@ -80,7 +80,7 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public static void cancelAllDownloads() {
-		for (Download d:downloads.values()) {
+		for (Download d : downloads.values()) {
 			d.cancel();
 		}
 	}
@@ -98,29 +98,32 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public void render(int x, int y, int width, int height) {
-		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
+		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance()
+				.getRenderDelegate();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
-		font.drawStringWithShadow("by "+ChatColor.WHITE + getAuthor(), x+29, y+11, 0xffaaaaaa);
 
 		String sResolution = resolution + "x";
 		int sWidth = font.getStringWidth(sResolution);
-		font.drawStringWithShadow(sResolution, x + width - sWidth - 2, y+2, 0xffaaaaaa);
-		String desc = r.getFittingText(getDescription(), width - 2 - 29);
-		font.drawStringWithShadow(desc, x + 29, y + 20, 0xffaaaaaa);
+		font.drawStringWithShadow(sResolution, x + width - sWidth - 2, y + 2,
+				0xffaaaaaa);
+
+		String name = r.getFittingText(getName(), width - 29 - sWidth - 2 - x);
+		font.drawStringWithShadow(name, x + 29, y + 2, 0xffffffff);
+
 		String sStatus = "";
-		if (size > 1024*1024*9000) {
-			sStatus = ChatColor.RED+"It's over 9000! ";
+		if (size > 1024 * 1024 * 9000) {
+			sStatus = ChatColor.RED + "It's over 9000! ";
 		}
-		if (size > 1024*1024) {
-			sStatus += size / (1024*1024) + " MB";
+		if (size > 1024 * 1024) {
+			sStatus += size / (1024 * 1024) + " MB";
 		} else if (size > 1024) {
 			sStatus = size / 1024 + " KB";
 		} else {
 			sStatus = size + " Bytes";
 		}
 		if (isDownloading()) {
-			sStatus = "Downloading: " + ChatColor.WHITE + download.getProgress() + "%";
+			sStatus = "Downloading: " + ChatColor.WHITE
+					+ download.getProgress() + "%";
 		}
 		if (downloadFail != null) {
 			sStatus = downloadFail;
@@ -130,8 +133,16 @@ public class TextureItem implements ListWidgetItem {
 		}
 		if (sStatus != null) {
 			sWidth = font.getStringWidth(sStatus);
-			font.drawStringWithShadow(sStatus, x+width-sWidth-2, y+11, 0xffaaaaaa);
+			font.drawStringWithShadow(sStatus, x + width - sWidth - 2, y + 11,
+					0xffaaaaaa);
 		}
+
+		String author = "by " + ChatColor.WHITE + getAuthor();
+		author = r.getFittingText(author, width - 29 - sWidth - 2 - x);
+		font.drawStringWithShadow(author, x + 29, y + 11, 0xffaaaaaa);
+
+		String desc = r.getFittingText(getDescription(), width - 2 - 29);
+		font.drawStringWithShadow(desc, x + 29, y + 20, 0xffaaaaaa);
 
 		String iconUrl = getIconUrl();
 		Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
@@ -145,7 +156,8 @@ public class TextureItem implements ListWidgetItem {
 		}
 	}
 
-	public void onClick(int x, int y, boolean doubleClick) {}
+	public void onClick(int x, int y, boolean doubleClick) {
+	}
 
 	public String getName() {
 		return name;
@@ -205,7 +217,8 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public void updateInstalled() {
-		installed = (new File(SpoutClient.getInstance().getTexturePackFolder(), getFileName()).exists());
+		installed = (new File(SpoutClient.getInstance().getTexturePackFolder(),
+				getFileName()).exists());
 	}
 
 	public boolean isInstalled() {
@@ -220,11 +233,13 @@ public class TextureItem implements ListWidgetItem {
 		if (download == null && !installed) {
 			downloadFail = null;
 			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed) SpoutClient.disableSandbox();
+			if (wasSandboxed)
+				SpoutClient.disableSandbox();
 			download = new Download(this);
 			downloads.put(getId(), download);
 			download.start();
-			if (wasSandboxed) SpoutClient.enableSandbox();
+			if (wasSandboxed)
+				SpoutClient.enableSandbox();
 		}
 	}
 
@@ -246,14 +261,20 @@ public class TextureItem implements ListWidgetItem {
 		public void run() {
 			boolean cancelled = false;
 			try {
-				NetworkUtils.pingUrl("http://textures.spout.org/download.php?id=" + item.getId());
+				NetworkUtils
+						.pingUrl("http://textures.spout.org/download.php?id="
+								+ item.getId());
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://static.spout.org/texturedl/" + item.getId() + "/" + item.getFileName());
-				File temp = new File(FileUtil.getTempDir(), FileUtil.getFileName(url.toString()));
+				url = new URL("http://static.spout.org/texturedl/"
+						+ item.getId() + "/" + item.getFileName());
+				File temp = new File(FileUtil.getTempDir(),
+						FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				System.setProperty("http.agent", "");
-				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
+				conn.setRequestProperty(
+						"User-Agent",
+						"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
 				conn.setReadTimeout(10000);
 
 				FileOutputStream fos = new FileOutputStream(temp);
@@ -265,23 +286,25 @@ public class TextureItem implements ListWidgetItem {
 				int bytes;
 				long totalBytes = 0;
 				long last = 0;
-				final byte[] buffer = new byte[1024*1024];
+				final byte[] buffer = new byte[1024 * 1024];
 
-				long step = Math.max(1024*1024, length / 8);
+				long step = Math.max(1024 * 1024, length / 8);
 
 				while ((bytes = in.read(buffer)) >= 0) {
 					bos.write(buffer, 0, bytes);
 					totalBytes += bytes;
-					progress = (int) (((double)totalBytes / (double)length) * 100);
+					progress = (int) (((double) totalBytes / (double) length) * 100);
 					if (length > 0 && totalBytes > (last + step)) {
 						last = totalBytes;
-						long mb = totalBytes/(1024*1024);
-						System.out.println("Downloading: " + url + " " + mb + "MB/" + (length/(1024*1024)));
+						long mb = totalBytes / (1024 * 1024);
+						System.out.println("Downloading: " + url + " " + mb
+								+ "MB/" + (length / (1024 * 1024)));
 					}
 					try {
 						Thread.sleep(25);
 					} catch (InterruptedException e) {
-						//Download has been cancelled, remove all download cache
+						// Download has been cancelled, remove all download
+						// cache
 						bos.close();
 						in.close();
 						fos.close();
@@ -294,7 +317,7 @@ public class TextureItem implements ListWidgetItem {
 
 				FileUtils.moveFile(temp, new File(folder, fileName));
 
-			} catch(MalformedURLException e) {
+			} catch (MalformedURLException e) {
 			} catch (IOException e) {
 				if (cancelled) {
 					downloadFail = ChatColor.RED + "Download Cancelled";
