@@ -7,12 +7,13 @@ import javax.jmdns.JmDNS;
 
 public class LANModel extends ServerModel {
 	protected JmDNS dns;
+	private static final String SERVICE = "_pipework._tcp.local.";
 
 	public LANModel() {
 		try {
 			dns = JmDNS.create();
-			dns.addServiceListener("_pipework._tcp.local.", new MinecraftServiceListener(this));
-			System.out.println("Listening for service...");
+			dns.addServiceListener(SERVICE, new MinecraftServiceListener(this));
+			System.out.println("Listening for ZeroConf Service '"+SERVICE+"' ...");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,5 +34,4 @@ public class LANModel extends ServerModel {
 			}
 		}
 	}
-
 }

@@ -32,6 +32,7 @@ import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.LinkButton;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
