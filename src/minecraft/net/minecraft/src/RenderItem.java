@@ -32,6 +32,18 @@ public class RenderItem extends Render {
 		this.shadowSize = 0.15F;
 		this.shadowOpaque = 0.75F;
 	}
+	
+	//Spout start
+	@Override
+	protected void loadTexture(String texture) {
+		if (this.renderManager != null && this.renderManager.renderEngine != null) {
+			int textureId = this.renderManager.renderEngine.getTexture(texture);
+			if (textureId >= 0) {
+				this.renderManager.renderEngine.bindTexture(textureId);
+			}
+		}
+	}
+	//Spout end
 
 	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
 		// Spout Start
