@@ -20,6 +20,8 @@ import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 //Spout End
 
+import de.cuina.fireandfuel.CodecJLayerMP3;
+
 public class SoundManager {
 
 	private static SoundSystem sndSystem;
@@ -59,6 +61,9 @@ public class SoundManager {
 			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 			SoundSystemConfig.setCodec("mus", CodecMus.class);
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
+			//Spout start
+			SoundSystemConfig.setCodec("mp3", CodecJLayerMP3.class);
+			//Spout  end
 			sndSystem = new SoundSystem();
 			this.options.soundVolume = var1;
 			this.options.musicVolume = var2;

@@ -205,7 +205,7 @@ public class FileUtil {
 	public static boolean isAudioFile(String file) {
 		String extension = FilenameUtils.getExtension(file);
 		if (extension != null) {
-			return extension.equalsIgnoreCase("ogg") || extension.equalsIgnoreCase("wav") || extension.matches(".*[mM][iI][dD][iI]?$");
+			return extension.equalsIgnoreCase("ogg") || extension.equalsIgnoreCase("wav") || extension.equalsIgnoreCase("mp3") || extension.matches(".*[mM][iI][dD][iI]?$");
 		}
 		return false;
 	}
