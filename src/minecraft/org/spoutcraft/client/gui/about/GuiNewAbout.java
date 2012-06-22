@@ -11,8 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -20,16 +23,19 @@ import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 import org.yaml.snakeyaml.Yaml;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;
 	private GenericButton buttonDone;
-	private GenericLabel title;
+	private GenericLabel title, labelSpoutcraftVersion, labelMinecraftVersion;
 	private GenericScrollArea scroll;
 	private List<List<Section>> columns = new LinkedList<List<Section>>();
 	private int sectionMargin = 20, columnMargin = 20;
+	private ClientTexture textureSpoutcraft, textureMinecraft;
 
 	public GuiNewAbout(GuiScreen parent) {
 		this.parent = parent;
@@ -40,9 +46,14 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		title = new GenericLabel("About");
 		buttonDone = new GenericButton("Main Menu");
 		scroll = new GenericScrollArea();
+		labelSpoutcraftVersion = new GenericLabel("Spoutcraft "+SpoutClient.getClientVersion()+"\nLicensed under LGPLv3");
+		labelMinecraftVersion = new GenericLabel("Minecraft 1.2.5\nCopyright Mojang AB" );
+		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
+		textureSpoutcraft = new ClientTexture("/res/spoutcraft.png");
+		textureMinecraft = new ClientTexture("/res/minecraft.png");
 
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		getScreen().attachWidgets(spoutcraft, title, buttonDone, scroll);
+		getScreen().attachWidgets(spoutcraft, title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);
 
 		Thread load = new Thread() {
 			@Override
@@ -128,9 +139,15 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		title.setY(top).setX(width / 2 - swidth / 2).setHeight(11)
 				.setWidth(swidth);
 
-		scroll.setGeometry(5, title.getY() + 16, width - 10,
-				height - title.getY() - 16 - 30);
+		int viewheight = height - title.getY() - 16 - 53;
+		
+		scroll.setGeometry(5, title.getY() + 16, width - 10, viewheight);
 
+		textureSpoutcraft.setGeometry(width - 133, height - 48, 128, 32);
+		textureMinecraft.setGeometry(5, height - 46, 128, 20);
+		
+		labelMinecraftVersion.setGeometry(5, height - 25, width - (width / 2 - 50) - 5, 21);
+		labelSpoutcraftVersion.setGeometry(width - 5, height - 25, width - (width / 2 + 55), 21);
 		buttonDone.setGeometry(width / 2 - 50, height - 25, 100, 20);
 
 		int columnCount = columns.size();
