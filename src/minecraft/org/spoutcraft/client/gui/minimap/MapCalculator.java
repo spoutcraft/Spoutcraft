@@ -345,7 +345,7 @@ public class MapCalculator implements Runnable {
 	 * Check if a render is necessary, and if so, do one.
 	 */
 	private void tryARender() {
-		if (Minecraft.theMinecraft.thePlayer == null)
+		if (Minecraft.theMinecraft.thePlayer == null || Minecraft.theMinecraft.theWorld == null)
 			return;
 		try {
 			double x = Minecraft.theMinecraft.thePlayer.posX;
