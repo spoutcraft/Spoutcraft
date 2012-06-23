@@ -75,7 +75,7 @@ public class GuiConnectionLost extends GuiScreen {
 		screen.attachWidget(spoutcraft, label);
 
 		LocalTexture texture = new LocalTexture();
-		texture.setUrl("/res/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
+		texture.setUrl("/res/misc/disconnected.png").setX((int) (width / 2 - 64)).setY(top);
 		texture.setHeight(128).setWidth(128);
 		screen.attachWidget(spoutcraft, texture);
 

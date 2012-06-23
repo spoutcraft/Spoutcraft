@@ -36,31 +36,31 @@ public class WatchedEntity {
 	public static HashMap<Class<? extends Entity>, Texture> mobFaceTextureBindings = new HashMap<Class<? extends Entity>, Texture>();
 
 	static {
-		mobFaceTextures.put(EntityBlaze.class, "Blaze.png");
-		mobFaceTextures.put(EntityCaveSpider.class, "Cave_Spider.png");
-		mobFaceTextures.put(EntityChicken.class, "Chicken.png");
-		mobFaceTextures.put(EntityCow.class, "Cow.png");
-		mobFaceTextures.put(EntityCreeper.class, "Creeper.png");
-		mobFaceTextures.put(EntityDragon.class, "Ender_Dragon.png");
-		mobFaceTextures.put(EntityEnderman.class, "Enderman.png");
-		mobFaceTextures.put(EntityGhast.class, "Ghast.png");
-		mobFaceTextures.put(EntityPlayer.class, "Human.png");
-		mobFaceTextures.put(EntityIronGolem.class, "Iron_Golem.png");
-		mobFaceTextures.put(EntityMagmaCube.class, "Magma_Cube.png");
-		mobFaceTextures.put(EntityMooshroom.class, "Mooshroom.png");
-		mobFaceTextures.put(EntityOcelot.class, "Ocelot.png");
-		mobFaceTextures.put(EntityPig.class, "Pig.png");
-		mobFaceTextures.put(EntitySheep.class, "Sheep.png");
-		mobFaceTextures.put(EntitySilverfish.class, "Silverfish.png");
-		mobFaceTextures.put(EntitySkeleton.class, "Skeleton.png");
-		mobFaceTextures.put(EntitySlime.class, "Slime.png");
-		mobFaceTextures.put(EntitySnowman.class, "Snow_Golem.png");
-		mobFaceTextures.put(EntitySpider.class, "Spider.png");
-		mobFaceTextures.put(EntitySquid.class, "Squid.png");
-		mobFaceTextures.put(EntityVillager.class, "Villager.png");
-		mobFaceTextures.put(EntityWolf.class, "Wolf.png");
-		mobFaceTextures.put(EntityZombie.class, "Zombie.png");
-		mobFaceTextures.put(EntityPigZombie.class, "Zombie_Pigman.png");
+		mobFaceTextures.put(EntityBlaze.class, "blaze.png");
+		mobFaceTextures.put(EntityCaveSpider.class, "cave_spider.png");
+		mobFaceTextures.put(EntityChicken.class, "chicken.png");
+		mobFaceTextures.put(EntityCow.class, "cow.png");
+		mobFaceTextures.put(EntityCreeper.class, "creeper.png");
+		mobFaceTextures.put(EntityDragon.class, "ender_dragon.png");
+		mobFaceTextures.put(EntityEnderman.class, "enderman.png");
+		mobFaceTextures.put(EntityGhast.class, "ghast.png");
+		mobFaceTextures.put(EntityPlayer.class, "human.png");
+		mobFaceTextures.put(EntityIronGolem.class, "iron_golem.png");
+		mobFaceTextures.put(EntityMagmaCube.class, "magma_cube.png");
+		mobFaceTextures.put(EntityMooshroom.class, "mooshroom.png");
+		mobFaceTextures.put(EntityOcelot.class, "ocelot.png");
+		mobFaceTextures.put(EntityPig.class, "pig.png");
+		mobFaceTextures.put(EntitySheep.class, "sheep.png");
+		mobFaceTextures.put(EntitySilverfish.class, "silverfish.png");
+		mobFaceTextures.put(EntitySkeleton.class, "skeleton.png");
+		mobFaceTextures.put(EntitySlime.class, "slime.png");
+		mobFaceTextures.put(EntitySnowman.class, "snow_golem.png");
+		mobFaceTextures.put(EntitySpider.class, "spider.png");
+		mobFaceTextures.put(EntitySquid.class, "squid.png");
+		mobFaceTextures.put(EntityVillager.class, "villager.png");
+		mobFaceTextures.put(EntityWolf.class, "wolf.png");
+		mobFaceTextures.put(EntityZombie.class, "zombie.png");
+		mobFaceTextures.put(EntityPigZombie.class, "zombie_pigman.png");
 
 	}
 
@@ -68,7 +68,7 @@ public class WatchedEntity {
 	private final String path;
 	public WatchedEntity(Entity entity) {
 		this.entity = entity;
-		path = "/res/minimap/mobfaces/" + mobFaceTextures.get(entity.getClass());
+		path = "/res/mobface/" + mobFaceTextures.get(entity.getClass());
 	}
 
 	public Texture getTexture() {

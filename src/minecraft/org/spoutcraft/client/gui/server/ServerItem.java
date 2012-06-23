@@ -119,7 +119,7 @@ public class ServerItem implements ListWidgetItem {
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
-				icon = CustomTextureManager.getTextureFromJar("/res/unknown_server_icon.png");
+				icon = CustomTextureManager.getTextureFromJar("/res/icon/unknown_server.png");
 			}
 			GL11.glPushMatrix();
 			GL11.glTranslated(x + 2, y + 2, 0);
@@ -246,7 +246,7 @@ public class ServerItem implements ListWidgetItem {
 				name="blacklist";
 				break;
 			}
-			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/"+name+".png");
+			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/" + name + ".png");
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x + width - iconMargin - 7, y + 20, 0);
 			r.drawTexture(lockIcon, 7, 11);

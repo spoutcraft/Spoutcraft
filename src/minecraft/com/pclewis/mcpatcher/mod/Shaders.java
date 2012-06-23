@@ -733,7 +733,7 @@ public class Shaders {
 	private static BufferedReader getShaderFile(String fileName, int id) {
 		BufferedReader reader;
 		final String origFileName = fileName;
-		fileName = "/res/shaders/" + fileName;
+		fileName = "/res/shader/" + fileName;
 		
 		//Try inside jar
 		try {

@@ -65,7 +65,7 @@ public class MainMenu extends GuiScreen {
 		StringBuilder builder = new StringBuilder();
 		backgrounds = new ArrayList<String>();
 		while (true) {
-			builder.append("/res/splash/");
+			builder.append("/res/background/");
 			builder.append(timeOfDay);
 			builder.append("/");
 			builder.append(timeOfDay);
@@ -96,7 +96,7 @@ public class MainMenu extends GuiScreen {
 
 		if (backgrounds.size() == 0) {
 			System.out.println("Failed to find any backgrounds for " + timeOfDay);
-			backgrounds.add("/res/splash/day/day1.jpg");
+			backgrounds.add("/res/background/day/day1.jpg");
 		}
 
 		background = new BackgroundTexture(backgrounds);
@@ -198,7 +198,7 @@ public class MainMenu extends GuiScreen {
 		float scale = ((width - 225F) / textWidth);
 		splashText.setScale(Math.min(1.5F, scale));
 
-		logo = new ScaledTexture("/res/spoutcraft.png");
+		logo = new ScaledTexture("/res/logo/spoutcraft.png");
 		((ScaledTexture)logo).setScale(Math.min(1F, (width - 135F) / 256F));
 		logo.setGeometry(15, height - 185, 256, 64);
 		logo.setLocal(true);

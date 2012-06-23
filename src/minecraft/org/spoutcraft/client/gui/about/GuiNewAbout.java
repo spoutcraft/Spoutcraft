@@ -49,8 +49,8 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		labelSpoutcraftVersion = new GenericLabel("Spoutcraft "+SpoutClient.getClientVersion()+"\nLicensed under LGPLv3");
 		labelMinecraftVersion = new GenericLabel("Minecraft 1.2.5\nCopyright Mojang AB" );
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
-		textureSpoutcraft = new ClientTexture("/res/spoutcraft.png");
-		textureMinecraft = new ClientTexture("/res/minecraft.png");
+		textureSpoutcraft = new ClientTexture("/res/logo/spoutcraft.png");
+		textureMinecraft = new ClientTexture("/res/logo/minecraft.png");
 
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);

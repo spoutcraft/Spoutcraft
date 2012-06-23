@@ -28,6 +28,7 @@ public class TextureManager {
 	private int glMinimap = 0;
 	private int glWhiteRoundmap = 0;
 	private int glWhiteMinimap = 0;
+
 	/**
 	 * @param zanMinimap
 	 */
@@ -51,7 +52,7 @@ public class TextureManager {
 
 	public void loadMMArrow() {
 		if (glMMArrow == 0)
-			glMMArrow = CustomTextureManager.getTextureFromJar("/res/minimap/mmarrow.png").getTextureID();
+			glMMArrow = CustomTextureManager.getTextureFromJar("/res/minimap/arrow.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glMMArrow);
 	}
 
@@ -69,7 +70,7 @@ public class TextureManager {
 
 	public void loadMinimap() {
 		if (glMinimap == 0)
-			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/minimap.png").getTextureID();
+			glMinimap = CustomTextureManager.getTextureFromJar("/res/minimap/squaremap.png").getTextureID();
 		Minecraft.theMinecraft.renderEngine.bindTexture(glMinimap);
 	}
 
