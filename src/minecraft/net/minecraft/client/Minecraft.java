@@ -1432,6 +1432,7 @@ public abstract class Minecraft implements Runnable {
 			if (this.isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_SLASH) {
 				GuiChat chat = new GuiChat();
 				chat.message = "/";
+				chat.cursorPosition = 1;
 				this.displayGuiScreen(chat);
 			}
 			// Spout end
