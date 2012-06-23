@@ -1,4 +1,4 @@
-package org.spoutcraft.client.nothingtoseehere;
+package org.spoutcraft.client.sponsers;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;

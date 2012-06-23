@@ -2,6 +2,8 @@ package net.minecraft.src;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.player.SpoutPlayer; //Spout
+import org.spoutcraft.client.sponsers.Resources;
+import org.spoutcraft.client.sponsers.VIP;
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
@@ -20,6 +22,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		//Spout start
 		if (par2Str != null && par2Str.length() > 0) {
 			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par2Str) + ".png";
+			this.vip = Resources.getVIP(ChatColor.stripColor(par2Str));
 		}
 		//Spout end
 
@@ -27,7 +30,11 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.field_22062_y = 0.25F;
 		this.renderDistanceWeight = 10.0D;
 		//Spout start
-		displayName = username;
+		if (vip != null) {
+			displayName = vip.getTitle();
+		} else {
+			displayName = username;
+		}
 		spoutEntity = new SpoutPlayer(this);
 		((SpoutPlayer) spoutEntity).setPlayer(this);
 		this.worldObj.releaseEntitySkin(this);

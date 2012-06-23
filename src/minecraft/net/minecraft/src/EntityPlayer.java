@@ -9,6 +9,9 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftHumanEntity;
 //Spout End
+import org.spoutcraft.client.sponsers.Holiday;
+import org.spoutcraft.client.sponsers.Resources;
+import org.spoutcraft.client.sponsers.VIP;
 
 public abstract class EntityPlayer extends EntityLiving {
 	public InventoryPlayer inventory = new InventoryPlayer(this);
@@ -60,6 +63,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public boolean autoforwardToggle = false;
 	public boolean autoBackwardToggle = false;
 	public MovementInput movementInput;
+	public VIP vip = null;
 	//Spout end
 
 	public EntityPlayer(World par1World) {
@@ -287,18 +291,14 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void updateCloak(String cloak) {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
-		String easterEgg = org.spoutcraft.client.nothingtoseehere.EasterEggs.getEasterEggCape();
-		if (easterEgg != null) {
-			playerCloakUrl = easterEgg;	
-		}
-		else if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Kylegar")) {
-			playerCloakUrl = "http://thomasc.co.uk/SpoutCloak.png";
-		}
-		else if (tempName.equalsIgnoreCase("computer22") || tempName.equalsIgnoreCase("Kilakk") || tempName.equalsIgnoreCase("citizendog") || tempName.equalsIgnoreCase("Bloodkiller93")) {
-			playerCloakUrl = "http://www.minecraft.biz/cape.png";
-		}
-		else {
-			this.playerCloakUrl = cloak;
+		VIP vip = Resources.getVIP(tempName);
+		if (vip != null) {
+			playerCloakUrl = vip.getCape();
+		} else {
+			Holiday holiday = Resources.getHoliday();
+			if (holiday != null) {
+				playerCloakUrl = holiday.getCape();
+			}
 		}
 		this.cloakUrl = this.playerCloakUrl;
 	}
@@ -1250,22 +1250,9 @@ public abstract class EntityPlayer extends EntityLiving {
 			return;
 		}
 
-		String tempName = ChatColor.stripColor(username);
-		if (tempName.equalsIgnoreCase("Afforess") || tempName.equalsIgnoreCase("Alta189") || tempName.equalsIgnoreCase("Wulfspider") || tempName.equalsIgnoreCase("Top_Cat") || tempName.equalsIgnoreCase("Raphfrk") || tempName.equalsIgnoreCase("Narrowtux") || tempName.equalsIgnoreCase("Olloth") || tempName.equalsIgnoreCase("NinjaZidane") || tempName.equalsIgnoreCase("Kylegar")) {
-			EntityFX effect;
-			if (rand.nextInt(2) == 0) {
-				effect = new EntityReddustFX(this.worldObj, posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 255.0F, 210.0F, 0.0F);
-			}
-			else {
-				effect = new EntityPortalFX(this.worldObj, posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D, (rand.nextFloat() - 0.5D) * 0.5D);
-			}
-			
-			effect.particleGravity = 0.1F - rand.nextInt(35) / 100F;
-			effect.particleBlue = 0.75F + rand.nextInt(25) / 100F;
-			effect.particleGreen = rand.nextInt(25) / 100F;
-			effect.particleRed = rand.nextInt(15) / 100F;
-			
-			Minecraft.theMinecraft.effectRenderer.addEffect(effect);
+		if (vip != null) {
+			Minecraft.theMinecraft.renderGlobal.func_40193_b(vip.getParticle(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 255.0F, 210.0F, 0.0F);
+			//Minecraft.theMinecraft.effectRenderer.addEffect(effect);
 		}
 	}
 	//Spout End

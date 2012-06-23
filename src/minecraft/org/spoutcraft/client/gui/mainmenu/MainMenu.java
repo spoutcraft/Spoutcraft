@@ -23,6 +23,8 @@ import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.sponsers.Holiday;
+import org.spoutcraft.client.sponsers.Resources;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -59,6 +61,11 @@ public class MainMenu extends GuiScreen {
 		fastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
 		fastLogin.setVisible(ConfigReader.fastLogin);
 		timeOfDay = getTimeFolder();
+		
+		Holiday holiday = Resources.getHoliday();
+		if (holiday != null) {
+			splashText.setText(holiday.getSplash());
+		}
 
 		int picture = 1;
 		int pass = 0;

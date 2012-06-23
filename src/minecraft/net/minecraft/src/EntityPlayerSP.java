@@ -9,6 +9,7 @@ import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
+import org.spoutcraft.client.sponsers.Resources;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end
@@ -38,6 +39,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		//Spout start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
 			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
+			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
 		}
 		//Spout end
 

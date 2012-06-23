@@ -35,6 +35,10 @@ import org.spoutcraft.client.SpoutClient;
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
 	private static final HashMap<String, String> fileNameCache = new HashMap<String, String>();
+	public static File getSpoutcraftBaseDir() {
+		return Minecraft.getMinecraftDir();
+	}
+	
 	public static File getCacheDir() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		if (wasSandboxed) {

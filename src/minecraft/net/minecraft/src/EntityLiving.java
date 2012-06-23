@@ -801,7 +801,7 @@ public abstract class EntityLiving extends Entity {
 		double var3;
 		if (this.isInWater()) {
 			var3 = this.posY;
-			this.moveFlying(par1, par2, this.isAIEnabled()?0.04F:0.02F);
+			this.moveFlying(par1, par2, (float)((this.isAIEnabled()?0.04F:0.02F) * getData().getSwimmingMod()));
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
