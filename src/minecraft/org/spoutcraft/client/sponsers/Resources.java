@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.util.config.Configuration;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 
 public enum Resources implements YAMLResource {
@@ -38,6 +38,7 @@ public enum Resources implements YAMLResource {
 				Configuration config = Special.getYAML();
 				for (String key : config.getKeys()) {
 					try {
+						@SuppressWarnings("unchecked")
 						Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
 						long start = (Long) values.get("start");
 						long end = (Long) values.get("end");
@@ -71,9 +72,11 @@ public enum Resources implements YAMLResource {
 			Configuration config = VIP.getYAML();
 			for (String key : config.getKeys()) {
 				try {
+					@SuppressWarnings("unchecked")
 					Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
 					key = key.toLowerCase();
 					String title = (String) values.get("title");
+					title = SpoutClient.getInstance().getChatManager().formatChatColors(title);
 					String cape = (String) values.get("cape");
 					String particle = (String) values.get("particle");
 					VIP vip = new VIP(key, title, cape, particle);
