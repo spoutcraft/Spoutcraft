@@ -125,7 +125,7 @@ public class FontRenderer {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.fontTextureName);
 			this.boundTextureName = this.fontTextureName;
 		}
-		float Xw = this.charWidthf[k] + 0.01F; //offset inverst of previous value, unknown cause.
+		float Xw = this.charWidthf[k] + 0.01F; //offset inverse of previous value, unknown cause.
 		Tessellator tessellator = Tessellator.instance; //tessellator allocates buffers for GL11, etc.
 		tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
 		tessellator.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);
@@ -383,13 +383,14 @@ public class FontRenderer {
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
+			GL11.glColor4f((float)(currentColor>>16 & 0xff)/255.0F, (float)(currentColor>>8 & 0xff)/255.0F, (float)(currentColor & 0xff)/255.0F, (float)currentAlpha/255.0F);		//Spout AlphaText - some mods rely on fontRenderer to make this specific call to set the drawing colour to that last used in a string.
 			return (int)this.posX;
 		} else {
 			return 0;
 		}
 	}
 
-	// begin Spout TextAlpha
+	// begin Spout AlphaText
 	final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)\u00A7[0-F]");
 	public int getStringWidth(String par1Str) {
 		if (par1Str == null) {
@@ -418,9 +419,9 @@ public class FontRenderer {
 		}
 		return Math.round(widthStr);
 	}
-	// end Spout TextAlpha
+	// end Spout AlphaText
 
-	// begin Spout TextAlpha.
+	// begin Spout AlphaText.
 	public int getCharWidth(char ch) {
 		if (ch == 167) {
 			return -1;
@@ -429,7 +430,7 @@ public class FontRenderer {
 	}
 	// end Spout Text Alpha
 
-	// begin Spout TextAlpha.
+	// begin Spout AlphaText.
 	public int func_50105_a(char ch) {
 		if (ch == 167) {
 			return -1;
@@ -438,10 +439,10 @@ public class FontRenderer {
 	}
 	// end Spout Text Alpha
 
-	// begin Spout TextAlpha - This is the true calculation for char widths.
+	// begin Spout AlphaText - This is the true calculation for char widths.
 	public float getCharWidthFloat(char ch){
 		if (ch < 30) {
-			return 0;
+			return 0F;
 		}
 		if (ch == 167) {
 			return -1F;
@@ -467,7 +468,7 @@ public class FontRenderer {
 		return this.func_50104_a(par1Str, par2, false);
 	}
 
-	// begin Spout TextAlpha - TrimStringToWidth, returns a trimmed string to the specified length. Also handles RTL conversion.
+	// begin Spout AlphaText - TrimStringToWidth, returns a trimmed string to the specified length. Also handles RTL conversion.
 	public String func_50104_a(String par1Str, int width2, boolean RTL) {
 		float widthWrp = (float)width2;
 		float widthStr = 0;
@@ -510,7 +511,7 @@ public class FontRenderer {
 		}
 		return str0.toString();
 	}
-	//end Spout TextAlpha
+	//end Spout AlphaText
 
 	public void drawSplitString(String par1Str, int par2, int par3, int par4, int par5) {
 		if (this.bidiFlag) {
@@ -635,7 +636,7 @@ public class FontRenderer {
 		return this.wrapStringToWidth(par1Str,par2); //Spout AlphaText
 	}
 
-	// Spout TextAlpha - describes how many characters of a given input string will fit within the specified screen width.
+	// Spout AlphaText - describes how many characters of a given input string will fit within the specified screen width.
 	private int sizeStringToWidth(String par1Str, int width2) {
 		float widthSz = (float)width2;
 		float widthCh = 0F;
@@ -681,14 +682,14 @@ public class FontRenderer {
 
 		return ii != lenStr && lenSp != -1 && lenSp < ii?lenSp:ii;
 	}
-	//end Spout TextAlpha
+	//end Spout AlphaText
 
 	private static boolean isFormatColor(char par0) {
-		return par0 >= 48 && par0 <= 57 || par0 >= 97 && par0 <= 102 || par0 >= 65 && par0 <= 70;
+		return par0 >= '0' && /*par0 <= '9' || par0 >= 'A' &&*/ par0 <= 'F' || par0 >= 'a' && par0 <= 'f'; // Spout AlphaText - Close enough
 	}
 
 	private static boolean isFormatStyle(char par0) {
-		return par0 >= 107 && par0 <= 111 || par0 >= 75 && par0 <= 79 || par0 == 114 || par0 == 82;
+		return par0 >= 'k' && par0 <= 'o' || par0 >= 'K' && par0 <= 'O' || par0 == 'r' || par0 == 'R';
 	}
 
 	private static String getFormatFromString(String par0Str) {
@@ -771,7 +772,7 @@ public class FontRenderer {
 		}
 	}
 
-	//begin Spout TextAlpha /** Meow, uses \n to split lines. */
+	//begin Spout AlphaText /** Meow, uses \n to split lines. */
 	public String wrapStringToWidth(String par1str, int width2) {
 		float maxWidth = width2;
 		float subWidth = 0;
@@ -785,8 +786,8 @@ public class FontRenderer {
 			c = par1str.charAt(i);
 			if (c == '\247' && i + 1 < par1str.length()) {
 				i++;
-				c = Character.toLowerCase(par1str.charAt(i));
-				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')){
+				c = Character.toUpperCase(par1str.charAt(i));
+				if ((c >= '0' && /*c <= '9') || (c >= 'A' &&*/ c <= 'F')){	//close enough.
 					selectColor = c;
 					selectRandom.setLength(0);
 					bold = false;
@@ -848,6 +849,6 @@ public class FontRenderer {
 		}
 		return ArrStr.toString();
 	}
-	//end Spout TextAlpha
+	//end Spout AlphaText
 }
 
