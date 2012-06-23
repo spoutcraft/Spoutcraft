@@ -785,18 +785,18 @@ public class FontRenderer {
 			c = par1str.charAt(i);
 			if (c == '\247' && i + 1 < par1str.length()) {
 				i++;
-				c = par1str.charAt(i);
-				if (c>='0' && c<='9'){
+				c = Character.toLowerCase(par1str.charAt(i));
+				if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')){
 					selectColor = c;
 					selectRandom.setLength(0);
 					bold = false;
-				} else if (c == 'r' || c=='R'){
+				} else if (c == 'r'){
 					selectRandom.setLength(0);
 					selectColor = 0;
 					bold = false;
 				} else {
 					selectRandom.append("\u00a7" + c);
-					if (c == 'l' || c== 'L') {
+					if (c == 'l') {
 						bold = true;
 					}
 				}
