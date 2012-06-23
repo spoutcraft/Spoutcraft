@@ -126,7 +126,7 @@ public abstract class Minecraft implements Runnable {
 	// Spout Start
 	public static Thread mainThread;
 	private boolean shutdown = false;
-	public static boolean spoutcraftLauncher = false;
+	public static boolean spoutcraftLauncher = true;
 	public static boolean portable = false;
 	public static int framesPerSecond = 0;
 

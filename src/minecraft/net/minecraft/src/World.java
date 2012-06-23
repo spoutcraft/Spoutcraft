@@ -3061,9 +3061,9 @@ public class World implements IBlockAccess {
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {
 			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);
-			//if (ep != Minecraft.theMinecraft.thePlayer) { 
+			if (ep != Minecraft.theMinecraft.thePlayer || Minecraft.theMinecraft.gameSettings.thirdPersonView != 0) { 
 				ep.doFancyStuff();
-			//}
+			}
 		}
 	}
 

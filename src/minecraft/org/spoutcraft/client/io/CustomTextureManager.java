@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
@@ -128,7 +129,8 @@ public class CustomTextureManager {
 					texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
 				}
 				stream.close();
-			} catch (IOException e) { }
+			} catch (IOException e) {
+			}
 
 			if (texture != null) {
 				textures.put(path, texture);
@@ -156,10 +158,26 @@ public class CustomTextureManager {
 			} catch (Exception e) { }
 			//Check MCP/Eclipse Path
 			if (texture == null) {
-				texture = getTextureFromPath(FileUtil.getConfigDir().getAbsolutePath() + "/../.."+ path);
-			}
-			if (texture == null) {
-				texture = getTextureFromPath(FileUtil.getConfigDir().getAbsolutePath() + "/../../.."+ path);
+				String pathToJar;
+				File jar = new File(CustomTextureManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+				try {
+					pathToJar = jar.getCanonicalPath();
+				} catch (IOException e1) {
+					pathToJar = jar.getAbsolutePath();
+				}
+				try {
+					pathToJar = URLDecoder.decode(pathToJar, "UTF-8");
+				} catch (java.io.UnsupportedEncodingException ignore) { }
+
+				File relative = new File(pathToJar + "../../../../"+ path);
+
+				try {
+					pathToJar = relative.getCanonicalPath();
+				} catch (IOException e) {
+					pathToJar = relative.getAbsolutePath();
+				}
+
+				texture = getTextureFromPath(pathToJar);
 			}
 
 			if (texture != null) {

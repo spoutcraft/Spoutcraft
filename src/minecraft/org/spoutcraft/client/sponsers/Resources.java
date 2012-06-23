@@ -38,7 +38,6 @@ public enum Resources implements YAMLResource {
 				Configuration config = Special.getYAML();
 				for (String key : config.getKeys()) {
 					try {
-						System.out.println("Key: " + key + " Value: " + config.getProperty(key));
 						Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
 						long start = (Long) values.get("start");
 						long end = (Long) values.get("end");
@@ -72,19 +71,19 @@ public enum Resources implements YAMLResource {
 			Configuration config = VIP.getYAML();
 			for (String key : config.getKeys()) {
 				try {
-					System.out.println("Key: " + key + " Value: " + config.getProperty(key));
 					Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
+					key = key.toLowerCase();
 					String title = (String) values.get("title");
 					String cape = (String) values.get("cape");
 					String particle = (String) values.get("particle");
 					VIP vip = new VIP(key, title, cape, particle);
-					vips.put(username, vip);
+					vips.put(key, vip);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 
-		return vips.get(username);
+		return vips.get(username.toLowerCase());
 	}
 }
