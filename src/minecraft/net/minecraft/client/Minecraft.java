@@ -481,7 +481,7 @@ public abstract class Minecraft implements Runnable {
 				SpoutClient.enableSandbox();
 			}
 
-			if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu) {
+			if (theWorld == null && thePlayer == null && this.ingameGUI != null) {
 				this.ingameGUI.clearChatMessages();
 			}
 
