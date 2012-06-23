@@ -37,6 +37,7 @@ import net.minecraft.src.WorldClient;
 import org.bukkit.ChatColor;
 
 import org.newdawn.slick.util.Log;
+import org.newdawn.slick.util.LogSystem;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.config.ConfigReader;
@@ -150,6 +151,24 @@ public class SpoutClient extends PropertyObject implements Client {
 		serverManager.init();
 		chatManager.load();
 		Log.setVerbose(false);
+		Log.setLogSystem(new SilencedLogSystem());
+	}
+	
+	private class SilencedLogSystem implements LogSystem {
+		@Override
+		public void debug(String debug) {}
+		@Override
+		public void error(Throwable t) {}
+		@Override
+		public void error(String error) {}
+		@Override
+		public void error(String error, Throwable t) {}
+		@Override
+		public void info(String info) {}
+		@Override
+		public void warn(String warn) {}
+		@Override
+		public void warn(String warn, Throwable t) {}
 	}
 
 	static {
