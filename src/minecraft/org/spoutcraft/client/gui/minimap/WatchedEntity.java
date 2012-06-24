@@ -1,8 +1,26 @@
+/*
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.minimap;
 
 import java.util.HashMap;
 import org.newdawn.slick.opengl.Texture;
-import org.spoutcraft.client.io.CustomTextureManager;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityBlaze;
@@ -30,6 +48,8 @@ import net.minecraft.src.EntitySquid;
 import net.minecraft.src.EntityVillager;
 import net.minecraft.src.EntityWolf;
 import net.minecraft.src.EntityZombie;
+
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class WatchedEntity {
 	public static HashMap<Class<? extends Entity>, String> mobFaceTextures = new HashMap<Class<? extends Entity>, String>();
@@ -61,7 +81,6 @@ public class WatchedEntity {
 		mobFaceTextures.put(EntityWolf.class, "wolf.png");
 		mobFaceTextures.put(EntityZombie.class, "zombie.png");
 		mobFaceTextures.put(EntityPigZombie.class, "zombie_pigman.png");
-
 	}
 
 	public Entity entity;

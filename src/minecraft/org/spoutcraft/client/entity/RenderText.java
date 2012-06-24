@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,14 +17,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.spoutcraft.client.entity;
+
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.RenderEntity;
 import net.minecraft.src.RenderHelper;
 
-import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 
 public class RenderText extends RenderEntity {

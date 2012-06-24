@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +20,7 @@
 package org.spoutcraft.client.gui.controls;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 

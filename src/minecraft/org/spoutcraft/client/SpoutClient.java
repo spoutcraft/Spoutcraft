@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -153,7 +156,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		Log.setVerbose(false);
 		Log.setLogSystem(new SilencedLogSystem());
 	}
-	
+
 	private class SilencedLogSystem implements LogSystem {
 		@Override
 		public void debug(String debug) {}
@@ -189,7 +192,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			//must be done after construtor
 			ServerAddon addon = new ServerAddon("Spoutcraft", Long.toString(version), null);
 			instance.addonManager.addFakeAddon(addon);
-			
+
 			System.out.println("Available Memory: " + Runtime.getRuntime().maxMemory() + " mb");
 		}
 		return instance;
@@ -214,7 +217,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	public static boolean isSandboxed() {
 		return getInstance().securityManager.isLocked();
 	}
-	
+
 	public static boolean hasAvailableRAM() {
 		return Runtime.getRuntime().maxMemory() > 756L;
 	}
@@ -530,7 +533,6 @@ public class SpoutClient extends PropertyObject implements Client {
 			Logger.getLogger(SpoutClient.class.getName()).log(Level.SEVERE, ex.getMessage() + " loading " + addon.getDescription().getFullName() + " (Is it up to date?)", ex);
 		}
 	}
-
 
 	public void disableAddons() {
 		addonManager.disableAddons();

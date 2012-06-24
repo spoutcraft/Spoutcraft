@@ -1,6 +1,9 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -14,27 +17,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.client.sponsers;
+package org.spoutcraft.client.special;
 
 public class VIP {
 	private final String username;
 	private final String title;
 	private final String cape;
-	private final String particle;
+	private final String particles;
 
-	public VIP(String username, String title, String cape, String particle) {
+	public VIP(String username, String title, String cape, String particles) {
 		this.username = username;
 		this.title = title;
 		this.cape = cape;
-		this.particle = particle;
+		this.particles = particles;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public String getParticle() {
-		return particle;
+	public String getParticles() {
+		return particles;
 	}
 
 	public String getCape() {

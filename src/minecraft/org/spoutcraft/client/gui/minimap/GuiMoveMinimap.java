@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,9 +19,10 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.src.GuiScreen;
 
-import org.lwjgl.input.Mouse;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -136,7 +140,6 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 			sliderScale.setSliderPosition(1f / 4f);
 		}
 	}
-
 
 
 

@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,11 +19,11 @@
  */
 package org.spoutcraft.client.gui.controls;
 
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class VanillaBindingItem extends ControlsBasicItem {
 	protected KeyBinding binding;

@@ -9,9 +9,9 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftHumanEntity;
 //Spout End
-import org.spoutcraft.client.sponsers.Holiday;
-import org.spoutcraft.client.sponsers.Resources;
-import org.spoutcraft.client.sponsers.VIP;
+import org.spoutcraft.client.special.Holiday;
+import org.spoutcraft.client.special.Resources;
+import org.spoutcraft.client.special.VIP;
 
 public abstract class EntityPlayer extends EntityLiving {
 	public InventoryPlayer inventory = new InventoryPlayer(this);

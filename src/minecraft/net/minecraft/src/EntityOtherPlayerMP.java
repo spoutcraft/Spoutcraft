@@ -2,8 +2,8 @@ package net.minecraft.src;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.player.SpoutPlayer; //Spout
-import org.spoutcraft.client.sponsers.Resources;
-import org.spoutcraft.client.sponsers.VIP;
+import org.spoutcraft.client.special.Resources;
+import org.spoutcraft.client.special.VIP;
 
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;

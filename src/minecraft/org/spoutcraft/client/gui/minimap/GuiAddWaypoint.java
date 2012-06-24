@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +20,9 @@
 package org.spoutcraft.client.gui.minimap;
 
 import org.lwjgl.input.Keyboard;
+
+import net.minecraft.src.GuiScreen;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -27,8 +33,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.TextField;
-
-import net.minecraft.src.GuiScreen;
 
 public class GuiAddWaypoint extends GuiScreen {
 	Button done, cancel, delete;
@@ -149,5 +153,4 @@ public class GuiAddWaypoint extends GuiScreen {
 		}
 	}
 }
-
 

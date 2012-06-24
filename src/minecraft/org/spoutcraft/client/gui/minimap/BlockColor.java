@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -364,7 +367,6 @@ public class BlockColor {
 		setDefaultColor(123, 0, 0x784C10, 0xFF);
 		setDefaultColor(124, 0, 0xE3DE54, 0xFF);
 
-
 	}
 
 	private static BlockColor instance(int argb, TintType tint) {
@@ -399,7 +401,6 @@ public class BlockColor {
 			case 31:
 				if ((meta != 1) && (meta != 2)) break; tint = TintType.TALL_GRASS;
 		}
-
 
 		blockColors[blockColorID(id, meta)] = instance(argb, tint);
 	}

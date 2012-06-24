@@ -1,3 +1,22 @@
+/*
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.about;
 
 import java.util.LinkedHashMap;
@@ -11,7 +30,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 
 public class TableSection extends Section {
-
 	private int maxCaption = 0;
 	private int height = 0;
 	protected class Row {
@@ -26,9 +44,9 @@ public class TableSection extends Section {
 			text.setWrapLines(true);
 		}
 	}
-	
+
 	private LinkedList<Row> rows = new LinkedList<TableSection.Row>();
-	
+
 	@Override
 	public void setX(int x) {
 		super.setX(x);
@@ -59,7 +77,7 @@ public class TableSection extends Section {
 			right = left + textLeftWidth + 5;
 		}
 		height = 0;
-		for(Row row:rows) {
+		for (Row row:rows) {
 			row.caption.setX(left);
 			row.caption.setY(y);
 			row.caption.setWidth(textLeftWidth);
@@ -77,7 +95,7 @@ public class TableSection extends Section {
 	@Override
 	public List<Widget> getWidgets() {
 		List<Widget> ret = super.getWidgets();
-		for(Row row:rows) {
+		for (Row row:rows) {
 			ret.add(row.caption);
 			ret.add(row.text);
 		}
@@ -88,7 +106,7 @@ public class TableSection extends Section {
 	public void init(GuiNewAbout screen, String title, Object yaml) {
 		setTitle(title);
 		LinkedHashMap<String, String> r = (LinkedHashMap<String, String>) yaml;
-		for(Entry<String, String> entry:r.entrySet()) {
+		for (Entry<String, String> entry:r.entrySet()) {
 			Row row = new Row();
 			row.caption.setText(entry.getKey());
 			maxCaption = Math.max(maxCaption, Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(row.caption.getText()));
@@ -96,5 +114,4 @@ public class TableSection extends Section {
 			rows.add(row);
 		}
 	}
-
 }

@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -57,7 +60,6 @@ public class PacketAddonData implements CompressablePacket {
 		System.arraycopy(buffer.array(), 0, data, 0, data.length);
 		needsCompression = data.length > 512;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	public void readData(SpoutInputStream input) throws IOException {

@@ -1,3 +1,22 @@
+/*
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.about;
 
 import java.io.IOException;
@@ -10,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
@@ -26,7 +47,6 @@ import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
-import org.yaml.snakeyaml.Yaml;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -140,12 +160,12 @@ public class GuiNewAbout extends GuiSpoutScreen {
 				.setWidth(swidth);
 
 		int viewheight = height - title.getY() - 16 - 53;
-		
+
 		scroll.setGeometry(5, title.getY() + 16, width - 10, viewheight);
 
 		textureSpoutcraft.setGeometry(width - 133, height - 48, 128, 32);
 		textureMinecraft.setGeometry(5, height - 46, 128, 20);
-		
+
 		labelMinecraftVersion.setGeometry(5, height - 25, width - (width / 2 - 50) - 5, 21);
 		labelSpoutcraftVersion.setGeometry(width - 5, height - 25, width - (width / 2 + 55), 21);
 		buttonDone.setGeometry(width / 2 - 50, height - 25, 100, 20);
@@ -182,5 +202,4 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	public void update() {
 		layoutWidgets();
 	}
-
 }

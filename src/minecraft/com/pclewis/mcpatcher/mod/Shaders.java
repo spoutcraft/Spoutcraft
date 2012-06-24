@@ -85,18 +85,18 @@ public class Shaders {
 	private static int[] programBackups = new int[]{0, 0, 1, 2, 3, 4, 3, 3, 0, 0};
 	private static int[] programs = new int[10];
 	private static boolean enabled= true;
-	
+
 	public static void setup(int type) {
 		System.out.println("OpenGL Version: " + GL11.glGetString(GL11.GL_VERSION));
 		System.out.println("OpenGL Platform: " + GL11.glGetString(GL11.GL_VENDOR));
-		
+
 		if(!(enabled)) return;
 		mc = Minecraft.theMinecraft;
 		int var0 = GL11.glGetInteger(GL20.GL_MAX_DRAW_BUFFERS);
 		System.out.println("GL_MAX_DRAW_BUFFERS = " + var0);
-		
+
 		colorAttachments = 4;
-		
+
 		String mode = "";
 		switch(type) {
 			case 1: mode = "low/"; break;
@@ -141,7 +141,7 @@ public class Shaders {
 		setupShadowMap();
 		isInitialized = true;
 	}
-	
+
 	public static boolean isOpenGL(int v) {
 		try {
 			String version = GL11.glGetString(GL11.GL_VERSION);
@@ -284,7 +284,7 @@ public class Shaders {
 			cameraPosition[2] = var6;
 		}
 	}
-	
+
 	public static boolean isShadowPass() {
 		return isShadowPass;
 	}
@@ -729,19 +729,19 @@ public class Shaders {
 			return var5;
 		}
 	}
-	
+
 	private static BufferedReader getShaderFile(String fileName, int id) {
 		BufferedReader reader;
 		final String origFileName = fileName;
 		fileName = "/res/shader/" + fileName;
-		
+
 		//Try inside jar
 		try {
 			reader = new BufferedReader(new InputStreamReader(Shaders.class.getResourceAsStream(fileName)));
 			return reader;
 		}
 		catch (Exception ignore) { }
-		
+
 		//Try MCP path
 		try {
 			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../" + fileName);
@@ -749,7 +749,7 @@ public class Shaders {
 			return reader;
 		}
 		catch (Exception ignore) { }
-		
+
 		//Try Eclipse Path
 		try {
 			File file = new File(FileUtil.getConfigDir().getAbsolutePath() + "/../../../" + fileName);
@@ -757,7 +757,7 @@ public class Shaders {
 			return reader;
 		}
 		catch (Exception ignore) { }
-		
+
 		//Try External File Path
 		try {
 			File file = new File(origFileName);
@@ -765,7 +765,7 @@ public class Shaders {
 			return reader;
 		}
 		catch (Exception ignore) { }
-		
+
 		//Failed
 		System.out.println("Couldn\'t find shader file " + fileName + "!");
 		ARBShaderObjects.glDeleteObjectARB(id);
@@ -988,7 +988,7 @@ public class Shaders {
 			init(shaderType);
 		}
 	}
-	
+
 	public static boolean isEnabled() {
 		return enabled;
 	}

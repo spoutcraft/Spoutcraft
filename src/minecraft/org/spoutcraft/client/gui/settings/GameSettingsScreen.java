@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -42,7 +45,6 @@ public class GameSettingsScreen extends GuiScreen {
 		super.setWorldAndResolution(mc, width, height);
 		scrollArea.setScrollPosition(Orientation.VERTICAL, scroll);
 	}
-
 
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
@@ -279,7 +281,6 @@ public class GameSettingsScreen extends GuiScreen {
 		screen.attachWidget(spoutcraft, control);
 
 		top += 22;
-
 
 		control = new RenderDistanceButton().setAlign(WidgetAnchor.TOP_CENTER);
 		control.setWidth(150).setHeight(20).setX(left).setY(top);

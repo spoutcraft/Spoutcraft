@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +22,7 @@ package org.spoutcraft.client.gui.server;
 import net.minecraft.src.GuiScreen;
 
 import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.LinkButton;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
@@ -100,7 +104,7 @@ public class GuiFavorites extends GuiScreen {
 		labelLookingForServers.setX(15).setVisible(helpVisible);
 		labelLookingForServers.setPriority(RenderPriority.Low);
 		getScreen().attachWidget(spoutcraft, labelLookingForServers);
-		
+
 		labelDescriptionISeeYou = new GenericLabel(
 						"If your server should be displayed here, "
 						+ "assure that it is turned on, the network address is "
@@ -118,7 +122,7 @@ public class GuiFavorites extends GuiScreen {
 		labelDescriptionISeeYou.setX(15);
 		labelDescriptionISeeYou.setVisible(helpVisible);
 		getScreen().attachWidget(spoutcraft, labelDescriptionISeeYou);
-		
+
 		labelLookingForServers.setY(labelDescriptionISeeYou.getY() - 16);
 
 		buttonGetISeeYou.setX(width / 2 - 150 / 2).setPriority(RenderPriority.Low);

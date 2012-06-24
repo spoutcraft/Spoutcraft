@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -269,7 +272,7 @@ public class HeightMap {
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}
-		return new File(FileUtil.getConfigDir(), "heightmap/"+worldName+".hma");
+		return new File(FileUtil.getConfigDir(), "heightmap/" + worldName + ".hma");
 	}
 
 //	public boolean hasHeight(int x, int z) {

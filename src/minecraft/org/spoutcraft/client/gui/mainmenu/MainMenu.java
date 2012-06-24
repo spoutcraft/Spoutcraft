@@ -1,3 +1,22 @@
+/*
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
+ * Spoutcraft is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Spoutcraft is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.spoutcraft.client.gui.mainmenu;
 
 import java.io.BufferedReader;
@@ -12,10 +31,14 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
-import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import net.minecraft.src.GuiScreen;
+
+import org.bukkit.ChatColor;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.MCRenderDelegate;
@@ -23,8 +46,8 @@ import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.sponsers.Holiday;
-import org.spoutcraft.client.sponsers.Resources;
+import org.spoutcraft.client.special.Holiday;
+import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -36,8 +59,6 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
-
-import net.minecraft.src.GuiScreen;
 
 public class MainMenu extends GuiScreen {
 	final static List<String> splashes = new ArrayList<String>(1000);
@@ -61,7 +82,7 @@ public class MainMenu extends GuiScreen {
 		fastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
 		fastLogin.setVisible(ConfigReader.fastLogin);
 		timeOfDay = getTimeFolder();
-		
+
 		Holiday holiday = Resources.getHoliday();
 		if (holiday != null) {
 			splashText.setText(holiday.getSplash());

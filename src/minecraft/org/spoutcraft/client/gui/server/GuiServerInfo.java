@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -116,7 +119,6 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelAccessLabel = new GenericLabel("Access Type");
 		content.attachWidget(spoutcraft, labelAccessLabel);
 		labels.add(labelAccessLabel);
-
 
 		String access = "Open";
 		switch(item.accessType) {
@@ -281,7 +283,6 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 55 - (5+7+11+5));
 
-
 		int top = 5;
 
 		textureIcon.setX(5).setY(top);
@@ -289,7 +290,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		int labelLeft = (int) (10 + textureIcon.getWidth());
 		int valueLeft = labelLeft + 5 + labelWidth;
-		
+
 		top += 5;
 
 		labelAddressLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
@@ -326,10 +327,10 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelCategory.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
 
 		top += 16;
-		
+
 		labelLeft = 5;
 		valueLeft = labelLeft + labelWidth + 5;
-		
+
 		top = (int) Math.max(top, 5 + textureIcon.getHeight() + 5);
 
 		labelDescription.setX(5).setY(top).setWidth(totalWidth).setHeight(11);

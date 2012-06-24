@@ -1,6 +1,9 @@
 /*
- * This file is part of Spoutcraft (http://wiki.getspout.org/).
- * 
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
+ *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -14,7 +17,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.spoutcraft.client.sponsers;
+package org.spoutcraft.client.special;
 
 public class Holiday {
 	private final String name;
@@ -23,7 +26,7 @@ public class Holiday {
 	private final String cape;
 	private final String splash;
 	private final boolean particles;
-	
+
 	public Holiday(String name, long start, long end, String cape, String splash, boolean particles) {
 		this.name = name;
 		this.start = start;

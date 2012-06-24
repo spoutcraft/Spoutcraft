@@ -22,7 +22,7 @@ public class ActiveRenderInfo {
 	//Spout start
 	public static FloatBuffer modelMatrix;
 	public static FloatBuffer projectionMatrix;
-	//Spout end	
+	//Spout end
 
 	public static void updateRenderInfo(EntityPlayer par0EntityPlayer, boolean par1) {
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);

@@ -9,7 +9,7 @@ import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
-import org.spoutcraft.client.sponsers.Resources;
+import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 //Spout end

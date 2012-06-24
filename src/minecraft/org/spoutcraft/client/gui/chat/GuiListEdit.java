@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -97,7 +100,7 @@ public class GuiListEdit extends GuiSpoutScreen {
 		helpLabel.setGeometry(5, top, width - 10, 11);
 
 		top += 5;
-		
+
 		int totalWidth = Math.min(width - 9, 200*3+10);
 		int cellWidth = (totalWidth - 10)/3;
 		int left = width / 2 - totalWidth / 2;

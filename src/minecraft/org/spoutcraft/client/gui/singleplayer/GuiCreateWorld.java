@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -138,7 +141,6 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		top += 25;
 
 		scrollArea.setX(5).setY(top).setHeight(height - top - 30).setWidth(width - 10);
-
 
 		int ftop = 5;
 		int fleft = 5;

@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,12 +30,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.lwjgl.input.Keyboard;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
+
 import net.minecraft.src.Block;
 import net.minecraft.src.BlockWorkbench;
 import net.minecraft.src.GuiScreen;
-
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.controls.GuiControls;
@@ -44,7 +48,6 @@ import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
 import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingPress;
-import org.lwjgl.input.Keyboard;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<KeyBinding> bindings;

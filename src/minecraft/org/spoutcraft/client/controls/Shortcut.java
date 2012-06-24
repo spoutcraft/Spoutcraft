@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -20,10 +23,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet3Chat;
 
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
 

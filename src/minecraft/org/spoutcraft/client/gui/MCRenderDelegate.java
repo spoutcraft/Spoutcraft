@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -21,11 +24,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
@@ -771,14 +773,14 @@ public class MCRenderDelegate implements RenderDelegate {
 		if(lwi.getIconUrl() != null && !lwi.getIconUrl().isEmpty()) {
 			Texture t = CustomTextureManager.getTextureFromUrl(lwi.getIconUrl(), true);
 			if(t != null) {
-				
+
 				int maxHeight = height - 4;
 				float f = (float) t.getImageWidth() / (float) t.getImageHeight();
 				int w = (int) (maxHeight * f);
 				GL11.glTranslated(2, 2, 0);
 				drawTexture(t, maxHeight, w);
 				GL11.glTranslated(-2, -2, 0);
-				
+
 				x += 2 + w;
 			}
 		}

@@ -3,7 +3,7 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 //Spout Start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.sponsers.ModelNarrowtux;
+import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End

@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -21,24 +24,19 @@ import java.util.HashMap;
 /**
  * Represents the possible types of tint available for block colors
  */
-public enum TintType
-{
+public enum TintType {
 	//so it turns out that redstone is actually based on the metadata ...
 	NONE, GRASS, TALL_GRASS, FOLIAGE, PINE, BIRCH, REDSTONE, GLASS, WATER, COLORMULT;
 	public static final HashMap<String, TintType> map;
 
-	public static TintType get(String name)
-	{
+	public static TintType get(String name) {
 		return map.get(name);
 	}
 
-	static
-	{
+	static {
 		map = new HashMap<String, TintType>();
-		for (TintType t : TintType.values())
-		{
+		for (TintType t : TintType.values()) {
 			map.put(t.name(), t);
 		}
 	}
-
 }

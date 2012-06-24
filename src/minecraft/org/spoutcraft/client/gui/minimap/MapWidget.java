@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,8 +19,6 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import gnu.trove.map.hash.TIntObjectHashMap;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
@@ -28,6 +29,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;

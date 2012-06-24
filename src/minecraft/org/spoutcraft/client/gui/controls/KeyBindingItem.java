@@ -1,5 +1,8 @@
 /*
- * This file is part of Spoutcraft (http://www.spout.org/).
+ * This file is part of Spoutcraft.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,9 +19,10 @@
  */
 package org.spoutcraft.client.gui.controls;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.src.FontRenderer;
 
-import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.MCRenderDelegate;
@@ -55,8 +59,6 @@ public class KeyBindingItem extends ControlsBasicItem {
 	public void setModifiers(int m) {
 		binding.setRawModifiers((byte) m);
 	}
-
-
 
 	@Override
 	public int getModifiers() {
