@@ -1251,7 +1251,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		}
 
 		if (vip != null && rand.nextInt(4) == 0) {
-			Minecraft.theMinecraft.renderGlobal.func_40193_b(vip.getParticle(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
+			Minecraft.theMinecraft.renderGlobal.func_40193_b(vip.getParticles(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
 		}
 	}
 	//Spout End
