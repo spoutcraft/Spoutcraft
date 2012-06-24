@@ -85,20 +85,20 @@ public enum Resources implements YAMLResource {
 	}
 
 	private static Map<String, VIP> vips;
+	@SuppressWarnings("unchecked")
 	public static VIP getVIP(String username) {
 		if (vips == null) {
 			vips = new ConcurrentHashMap<String, VIP>();
 			Configuration config = VIP.getYAML();
 			for (String key : config.getKeys()) {
 				try {
-					@SuppressWarnings("unchecked")
 					Map<String, Object> values = (Map<String, Object>) config.getProperty(key);
 					key = key.toLowerCase();
 					String title = (String) values.get("title");
 					title = SpoutClient.getInstance().getChatManager().formatChatColors(title);
 					String cape = (String) values.get("cape");
-					String particle = (String) values.get("particle");
-					VIP vip = new VIP(key, title, cape, particle);
+					Map<String, Integer> particles = (Map<String, Integer>) values.get("particles");
+					VIP vip = new VIP(key, title, cape, particles);
 					vips.put(key, vip);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 //Spout Start
 import net.minecraft.client.Minecraft;
 
@@ -1250,8 +1251,12 @@ public abstract class EntityPlayer extends EntityLiving {
 			return;
 		}
 
-		if (vip != null && rand.nextInt(4) == 0) {
-			Minecraft.theMinecraft.renderGlobal.func_40193_b(vip.getParticles(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
+		if (vip != null) {
+			for (Entry<String, Integer> particle : vip.getParticles().entrySet()) {
+				if (rand.nextInt(particle.getValue()) == 0) {
+					Minecraft.theMinecraft.renderGlobal.func_40193_b(particle.getKey(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
+				}
+			}
 		}
 	}
 	//Spout End

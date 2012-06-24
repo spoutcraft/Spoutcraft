@@ -19,24 +19,31 @@
  */
 package org.spoutcraft.client.special;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class VIP {
 	private final String username;
 	private final String title;
 	private final String cape;
-	private final String particles;
+	private final Map<String, Integer> particles;
 
-	public VIP(String username, String title, String cape, String particles) {
+	public VIP(String username, String title, String cape, Map<String, Integer> particles) {
 		this.username = username;
 		this.title = title;
 		this.cape = cape;
-		this.particles = particles;
+		if (particles != null) {
+			this.particles = new HashMap<String, Integer>(particles);
+		} else {
+			this.particles = new HashMap<String, Integer>(1);
+		}
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public String getParticles() {
+	public Map<String, Integer> getParticles() {
 		return particles;
 	}
 

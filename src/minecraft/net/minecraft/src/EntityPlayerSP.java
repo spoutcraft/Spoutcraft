@@ -40,12 +40,16 @@ public class EntityPlayerSP extends EntityPlayer {
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
 			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
+			if (vip != null) {
+				this.displayName = vip.getTitle();
+			} else {
+				displayName = par3Session.username;
+			}
 		}
 		//Spout end
 
 		this.username = par3Session.username;
 		//Spout start
-		displayName = username;
 		spoutEntity = ClientPlayer.getInstance();
 		((ClientPlayer) spoutEntity).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;

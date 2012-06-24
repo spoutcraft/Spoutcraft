@@ -1525,6 +1525,12 @@ public class RenderGlobal implements IWorldAccess {
 			if (var14 == 1 && this.worldObj.rand.nextInt(3) == 0) {
 				var14 = 2;
 			}
+			
+			//Spout start
+			 if (par1Str == null) {
+				 return null;
+			 }
+			 //Spout end
 
 			double var15 = this.mc.renderViewEntity.posX - par2;
 			double var17 = this.mc.renderViewEntity.posY - par4;

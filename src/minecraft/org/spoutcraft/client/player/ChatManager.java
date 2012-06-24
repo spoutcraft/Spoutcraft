@@ -227,7 +227,10 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 	}
 
 	public String formatChatColors(String message) {
-		return message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
+		message = message.replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
+		message = message.replaceAll("(&([k-oK-O0-9]))", "\u00A7$2");
+		message = message.replaceAll("(&([r|R]))", "\u00A7$2");
+		return message;
 	}
 
 	public List<String> formatChat(String message, boolean display) {
