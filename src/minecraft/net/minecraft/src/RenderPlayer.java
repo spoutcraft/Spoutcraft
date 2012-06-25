@@ -3,11 +3,14 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 //Spout Start
 import org.bukkit.ChatColor;
+import org.spoutcraft.client.HDImageBufferDownload;
+import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
 
 public class RenderPlayer extends RenderLiving {
 	private ModelBiped modelBipedMain;
@@ -31,7 +34,15 @@ public class RenderPlayer extends RenderLiving {
 			Item var5 = var4.getItem();
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
+				//Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2?2:1) + ".png");
+				if (par1EntityPlayer.username.equals("draconis99")) {
+					String url = "http://cdn.spout.org/legacy/model/draconis_" + (par2 == 2 ? 2 : 1) + ".png";
+					if (!this.loadDownloadableImageTexture(url, (String) null)) {
+						Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
+					}
+				}
+				//Spout End
 				ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
