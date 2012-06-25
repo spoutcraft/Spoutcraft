@@ -293,6 +293,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		//Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
 		VIP vip = Resources.getVIP(tempName);
+		playerCloakUrl = cloak;
 		if (vip != null) {
 			playerCloakUrl = vip.getCape();
 		} else {
@@ -300,7 +301,7 @@ public abstract class EntityPlayer extends EntityLiving {
 			if (holiday != null) {
 				playerCloakUrl = holiday.getCape();
 			}
-		}
+		}	
 		this.cloakUrl = this.playerCloakUrl;
 	}
 	//Spout End
