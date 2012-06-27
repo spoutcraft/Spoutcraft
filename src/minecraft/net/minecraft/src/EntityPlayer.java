@@ -1248,6 +1248,9 @@ public abstract class EntityPlayer extends EntityLiving {
 		if (isSneaking()) {
 			return;
 		}
+		if (Minecraft.theMinecraft.isGamePaused) {
+			return;
+		}
 		if (Minecraft.theMinecraft.thePlayer.getDistanceSqToEntity(this) > 16) {
 			return;
 		}
