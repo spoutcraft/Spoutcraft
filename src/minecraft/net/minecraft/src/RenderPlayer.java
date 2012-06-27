@@ -38,7 +38,7 @@ public class RenderPlayer extends RenderLiving {
 				ItemArmor var6 = (ItemArmor)var5;
 				//Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2?2:1) + ".png");
-				VIP vip = Resources.getVIP(par1EntityPlayer.username);
+				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
 				if (vip != null && vip.getArmor(armorId) != null) {
 					String url = vip.getArmor(armorId);
