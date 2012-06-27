@@ -26,12 +26,14 @@ public class VIP {
 	private final String username;
 	private final String title;
 	private final String cape;
+	private final String armorBaseUrl;
 	private final Map<String, Integer> particles;
 
-	public VIP(String username, String title, String cape, Map<String, Integer> particles) {
+	public VIP(String username, String title, String cape, Map<String, Integer> particles, String armor) {
 		this.username = username;
 		this.title = title;
 		this.cape = cape;
+		this.armorBaseUrl = armor;
 		if (particles != null) {
 			this.particles = new HashMap<String, Integer>(particles);
 		} else {
@@ -69,5 +71,13 @@ public class VIP {
 
 	public String getUsername() {
 		return username;
+	}
+	
+	public String getArmor(int id) {
+		if(armorBaseUrl != null) {
+			return armorBaseUrl + "_" + id + ".png";
+		} else {
+			return null;
+		}
 	}
 }

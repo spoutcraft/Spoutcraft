@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.special.ModelNarrowtux;
+import org.spoutcraft.client.special.Resources;
+import org.spoutcraft.client.special.VIP;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout End
@@ -36,8 +38,10 @@ public class RenderPlayer extends RenderLiving {
 				ItemArmor var6 = (ItemArmor)var5;
 				//Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2?2:1) + ".png");
-				if (par1EntityPlayer.username.equals("draconis99")) {
-					String url = "http://cdn.spout.org/legacy/model/draconis_" + (par2 == 2 ? 2 : 1) + ".png";
+				VIP vip = Resources.getVIP(par1EntityPlayer.username);
+				int armorId = (par2 == 2 ? 2 : 1);
+				if (vip != null && vip.getArmor(armorId) != null) {
+					String url = vip.getArmor(armorId);
 					if (!this.loadDownloadableImageTexture(url, (String) null)) {
 						Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
 					}

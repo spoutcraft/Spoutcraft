@@ -97,8 +97,9 @@ public enum Resources implements YAMLResource {
 					String title = (String) values.get("title");
 					title = SpoutClient.getInstance().getChatManager().formatChatColors(title);
 					String cape = (String) values.get("cape");
+					String armor = (String) values.get("armor");
 					Map<String, Integer> particles = (Map<String, Integer>) values.get("particles");
-					VIP vip = new VIP(key, title, cape, particles);
+					VIP vip = new VIP(key, title, cape, particles, armor);
 					vips.put(key, vip);
 				} catch (Exception e) {
 					e.printStackTrace();
