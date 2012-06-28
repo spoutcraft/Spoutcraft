@@ -66,7 +66,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		title = new GenericLabel("About");
 		buttonDone = new GenericButton("Main Menu");
 		scroll = new GenericScrollArea();
-		labelSpoutcraftVersion = new GenericLabel("Spoutcraft "+SpoutClient.getClientVersion()+"\nLicensed under LGPLv3");
+		labelSpoutcraftVersion = new GenericLabel("Spoutcraft " + SpoutClient.getClientVersion() + "\nLicensed under LGPLv3");
 		labelMinecraftVersion = new GenericLabel("Minecraft 1.2.5\nCopyright Mojang AB" );
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
 		textureSpoutcraft = new ClientTexture("/res/logo/spoutcraft.png");

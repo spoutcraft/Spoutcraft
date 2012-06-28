@@ -139,7 +139,7 @@ public class HeightMap {
 				}
 				String name = builder.toString();
 				if (!name.equals(getWorldName())) {
-					System.out.println("World names do not match: "+name+" [file] != "+getWorldName()+" [game]. Compensating...");
+					System.out.println("World names do not match: " + name + " [file] != " + getWorldName() + " [game]. Compensating...");
 					//TODO compensate
 				}
 				minX = in.readInt();

@@ -30,7 +30,7 @@ public class ChatOpacitySlider extends GenericSlider {
 	}
 
 	private void updateText() {
-		setText("Background opacity: "+ (int) (getSliderPosition()*100) + "%");
+		setText("Background opacity: " + (int) (getSliderPosition()*100) + "%");
 	}
 
 	@Override

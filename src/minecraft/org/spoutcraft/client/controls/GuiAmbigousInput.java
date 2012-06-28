@@ -54,7 +54,7 @@ public class GuiAmbigousInput extends GuiSpoutScreen {
 	}
 
 	protected void createInstances() {
-		title = new GenericLabel("Ambigous bindings\n"+ChatColor.GRAY+"The key you pressed has multiple bindings assigned.\n"+ChatColor.GRAY+"Please choose which action you want to summon.");
+		title = new GenericLabel("Ambigous bindings\n" + ChatColor.GRAY + "The key you pressed has multiple bindings assigned.\n" + ChatColor.GRAY + "Please choose which action you want to summon.");
 		buttonCancel = new GenericButton("Cancel");
 		list = new GenericListWidget();
 

@@ -81,10 +81,10 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
 
-		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR+"Vanilla Bindings");
-		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR+"Spoutcraft Bindings");
-		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR+"Shortcuts");
-		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR+"Bindings");
+		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR + "Vanilla Bindings");
+		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR + "Spoutcraft Bindings");
+		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR + "Shortcuts");
+		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR + "Bindings");
 		search = new ControlsSearch(this);
 
 		filter.attachWidget(spoutcraft, checkVanilla);
@@ -137,7 +137,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;

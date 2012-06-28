@@ -47,7 +47,7 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public ServerListModel() {
 		API = "http://servers.spout.org/api2.php";
-		refreshAPIData(API+"?random", 0, true);
+		refreshAPIData(API + "?random", 0, true);
 		loadCountries();
 	}
 
@@ -67,7 +67,7 @@ public class ServerListModel extends AbstractAPIModel {
 				} catch (MalformedURLException e) {
 					return;
 				}
-				//System.out.println("Loading "+url1.toString());
+				//System.out.println("Loading " + url1.toString());
 				BufferedReader reader;
 				try {
 					reader = new BufferedReader(new InputStreamReader(url1.openStream()));
@@ -97,7 +97,7 @@ public class ServerListModel extends AbstractAPIModel {
 	}
 
 	public String getDefaultUrl() {
-		return API+"?featured";
+		return API + "?featured";
 	}
 
 	/**

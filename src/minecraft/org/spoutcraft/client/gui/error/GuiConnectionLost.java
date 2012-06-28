@@ -59,7 +59,7 @@ public class GuiConnectionLost extends GuiScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
-		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
+		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Connection Lost!");
@@ -93,7 +93,7 @@ public class GuiConnectionLost extends GuiScreen {
 		screen.attachWidget(spoutcraft, button);
 		top += 26;
 
-		button = new ReturnToServerList().setText("Return to "+SpoutClient.getInstance().getServerManager().getJoinedFromName());
+		button = new ReturnToServerList().setText("Return to " + SpoutClient.getInstance().getServerManager().getJoinedFromName());
 		button.setHeight(20).setWidth(200);
 		button.setX((int) (width / 2 - button.getWidth() / 2));
 		button.setY(top);

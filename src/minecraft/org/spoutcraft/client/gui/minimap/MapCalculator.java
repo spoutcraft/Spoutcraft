@@ -366,7 +366,7 @@ public class MapCalculator implements Runnable {
 				}
 //				long dur = System.currentTimeMillis() - start;
 //				int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
-//				System.out.println("Took "+dur+"ms to scan "+chunks+" chunks.\nThat is "+(float) (dur/(float)chunks)+" per chunk!");
+//				System.out.println("Took " + dur + "ms to scan "+chunks+" chunks.\nThat is " + (float) (dur/(float)chunks) + " per chunk!");
 				mapCalc();
 
 				entityCalc();

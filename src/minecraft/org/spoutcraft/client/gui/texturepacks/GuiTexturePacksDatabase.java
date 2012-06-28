@@ -131,7 +131,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;

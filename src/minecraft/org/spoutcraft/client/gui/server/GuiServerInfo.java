@@ -178,7 +178,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelSpoutcraft.setTextColor(new Color(0xffaaaaaa));
 		content.attachWidget(spoutcraft, labelSpoutcraft);
 
-		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/"+ item.getDatabaseId() +".png");
+		textureIcon = new GenericTexture("http://static.spout.org/server/thumb/" + item.getDatabaseId() + ".png");
 		textureIcon.setFinishDelegate(new ImageUpdate());
 		textureIcon.setWidth(48).setHeight(48);
 		content.attachWidget(spoutcraft, textureIcon);
@@ -267,7 +267,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 	protected void layoutWidgets() {
 		int w = Spoutcraft.getMinecraftFont().getTextWidth(labelTitle.getText());
 
-		int totalWidth = Math.min(width - 9, 200*3+10);
+		int totalWidth = Math.min(width - 9, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10)/3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
@@ -281,7 +281,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		buttonRefresh.setX(width - 105).setY(5).setWidth(100).setHeight(20);
 
-		content.setX(0).setY(5+7+11+5).setWidth(width).setHeight(height - 55 - (5+7+11+5));
+		content.setX(0).setY(5 + 7 + 11 + 5).setWidth(width).setHeight(height - 55 - (5 + 7 + 11 + 5));
 
 		int top = 5;
 
@@ -464,7 +464,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 	public void updateData() {
 		labelMotd.setText(item.getMotd());
-		labelPlayers.setText(item.getPlayers() + " / "+item.getMaxPlayers());
+		labelPlayers.setText(item.getPlayers() + " / " + item.getMaxPlayers());
 	}
 
 	private class ImageUpdate implements Runnable {

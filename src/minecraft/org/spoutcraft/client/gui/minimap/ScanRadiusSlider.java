@@ -47,7 +47,7 @@ public class ScanRadiusSlider extends GenericSlider {
 		if (radius > 6) {
 			color = ChatColor.DARK_RED;
 		}
-		setText(color + "Scan Radius: "+ radius + " chunks");
+		setText(color + "Scan Radius: " + radius + " chunks");
 	}
 
 	private void updateSliderPosition() {

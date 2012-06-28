@@ -29,7 +29,7 @@ public class ControlsSearch extends GenericTextField {
 
 	public ControlsSearch(GuiControls gui) {
 		this.gui = gui;
-		setPlaceholder(ChatColor.GRAY+"Search");
+		setPlaceholder(ChatColor.GRAY + "Search");
 	}
 
 	@Override

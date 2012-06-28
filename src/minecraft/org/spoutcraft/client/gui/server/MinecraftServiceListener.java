@@ -37,7 +37,7 @@ public class MinecraftServiceListener implements ServiceListener {
 
 	@Override
 	public void serviceAdded(final ServiceEvent arg0) {
-//		System.out.println("Service Added "+arg0);
+//		System.out.println("Service Added " + arg0);
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -48,13 +48,13 @@ public class MinecraftServiceListener implements ServiceListener {
 
 	@Override
 	public void serviceRemoved(ServiceEvent arg0) {
-//		System.out.println("Service Removed "+arg0);
+//		System.out.println("Service Removed " + arg0);
 		model.removeItem(arg0.getName());
 	}
 
 	@Override
 	public void serviceResolved(ServiceEvent arg0) {
-//		System.out.println("Service Resolved "+arg0);
+//		System.out.println("Service Resolved " + arg0);
 		InetAddress[] addresses = arg0.getInfo().getInetAddresses();
 		if (addresses.length > 0) {
 			InetAddress address = addresses[0];

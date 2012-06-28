@@ -45,7 +45,7 @@ public class GuiUnexpectedError extends GuiScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 
 		GenericScrollArea screen = new GenericScrollArea();
-		screen.setHeight(height - 16 - 24).setWidth(width).setY(16+24).setX(0);
+		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
 		GenericLabel label = new GenericLabel("Oh Noes!");
@@ -66,7 +66,7 @@ public class GuiUnexpectedError extends GuiScreen {
 
 		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyways, even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
 		"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
-		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n"+
+		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n" +
 		"and forgive and forget.\n\nWhat were we talking about again?");
 		label.setX(10).setY(top);
 		label.setTextColor(grey);

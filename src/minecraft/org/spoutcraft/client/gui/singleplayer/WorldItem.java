@@ -88,7 +88,7 @@ public class WorldItem implements ListWidgetItem {
 			case 1:
 				return stringtranslate.translateKey("gameMode.creative");
 		}
-		return "Unknown gameplay id "+id;
+		return "Unknown gameplay id " + id;
 	}
 
 	private void setWorld(WorldInfo world) {

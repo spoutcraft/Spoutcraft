@@ -46,7 +46,7 @@ public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "accessType="+ids[getSelectedRow()];
+		return "accessType=" + ids[getSelectedRow()];
 	}
 
 	public void clear() {
@@ -60,6 +60,6 @@ public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 
 	@Override
 	public String getText() {
-		return "Access: "+super.getText();
+		return "Access: " + super.getText();
 	}
 }

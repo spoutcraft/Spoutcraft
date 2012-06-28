@@ -81,7 +81,7 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 
 		top = height - 50;
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -117,7 +117,7 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 			if (item != null) {
 				final String worldname = item.getWorld().getWorldName();
 				final String worldsave = item.getFileName();
-				GuiTextDialog dialog = new GuiTextDialog("Enter a new name for '"+worldname+"'", worldname, new DialogEventHandler() {
+				GuiTextDialog dialog = new GuiTextDialog("Enter a new name for '" + worldname + "'", worldname, new DialogEventHandler() {
 					public void onDone(GuiTextDialog dialog) {
 						model.rename(worldsave, dialog.getText());
 					}

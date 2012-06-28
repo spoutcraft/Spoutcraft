@@ -278,7 +278,7 @@ public class PollResult {
 						if (res > 0) {
 							json += ",";
 						}
-						json +="\""+res+"\":{";
+						json +="\"" + res + "\":{";
 
 						json += keyValue("uid", result.databaseId) + ",";
 						json += keyValue("ping", ping) + ",";
@@ -320,9 +320,9 @@ public class PollResult {
 
 			public String keyValue(String key, Object value) {
 				if (value instanceof Number) {
-					return "\""+key+"\":"+value;
+					return "\"" + key + "\":" + value;
 				} else {
-					return "\""+key+"\":\""+value+"\"";
+					return "\"" + key + "\":\"" + value + "\"";
 				}
 			}
 		};

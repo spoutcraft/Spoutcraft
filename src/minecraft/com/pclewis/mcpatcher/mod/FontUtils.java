@@ -1,14 +1,15 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
-import net.minecraft.src.FontRenderer;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Properties;
+
+import net.minecraft.src.FontRenderer;
+
+import com.pclewis.mcpatcher.MCPatcherUtils;
 
 public class FontUtils {
 	private static final int ROWS = 16;
@@ -38,7 +39,7 @@ public class FontUtils {
 					int y = Ych * rowHeight + rowIdx;
 					int colIdx = rgb[x + y * imgWidth];
 					if (isOpaque(colIdx)) {
-						charWidthf[ch] = (128F * (float)(X0+1)) / (float)imgWidth + 1F; // textAlpha - Will still overrun character fullwidth with HD!
+						charWidthf[ch] = (128F * (float)(X0 + 1)) / (float)imgWidth + 1F; // textAlpha - Will still overrun character fullwidth with HD!
 						if (showLines) {
 							for (int i = 0; i < rowHeight; i++) {
 								y = Ych * rowHeight + i;

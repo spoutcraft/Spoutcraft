@@ -68,7 +68,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		listWorldTypes.add("Superflat");
 
 		for (int i = 6; i <= 11; i++) {
-			listWorldHeights.add(""+(int) Math.pow(2, i));
+			listWorldHeights.add("" + (int) Math.pow(2, i));
 		}
 	}
 
@@ -244,7 +244,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 	}
 
 	private void updateSavePreview() {
-		labelFilePreview.setText("Saves as '"+getEffectiveSaveName()+"'");
+		labelFilePreview.setText("Saves as '" + getEffectiveSaveName() + "'");
 	}
 
 	private void updateSeed() {
@@ -259,10 +259,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		String savesDir = new File(mc.mcDataDir, "saves").getAbsolutePath();
 		if ((new File(savesDir, save)).exists()) {
 			int num = 1;
-			while ((new File(savesDir, save + "-("+num+")")).exists()) {
+			while ((new File(savesDir, save + "-(" + num + ")")).exists()) {
 				num ++;
 			}
-			save = save + "-("+num+")";
+			save = save + "-(" + num + ")";
 		}
 
 		return save;

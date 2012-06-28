@@ -42,7 +42,7 @@ public class CountryButton extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "country="+getSelectedItem();
+		return "country=" + getSelectedItem();
 	}
 
 	@Override

@@ -77,7 +77,7 @@ public class GuiTexturePacks extends GuiScreen {
 
 		top += 5 + view.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -124,7 +124,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 		if (btn.equals(buttonOpenFolder)) {
 			System.out.println(SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
-			Sys.openURL("file://"+SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
+			Sys.openURL("file://" + SpoutClient.getInstance().getTexturePackFolder().getAbsolutePath());
 		}
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
@@ -144,7 +144,7 @@ public class GuiTexturePacks extends GuiScreen {
 			try {
 				TexturePackItem item = model.getItem(view.getSelectedRow());
 				if (item.id != -1) {
-					Sys.openURL("http://textures.spout.org/info/"+item.id);
+					Sys.openURL("http://textures.spout.org/info/" + item.id);
 				}
 			} catch(Exception e) {
 			}

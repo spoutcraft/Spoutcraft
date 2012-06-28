@@ -119,7 +119,7 @@ public class ServerItem implements ListWidgetItem {
 		MCRenderDelegate r = (MCRenderDelegate) Spoutcraft.getRenderDelegate();
 
 		if (databaseId != -1) {
-			String iconUrl = "http://static.spout.org/server/thumb/"+databaseId+".png";
+			String iconUrl = "http://static.spout.org/server/thumb/" + databaseId + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl(iconUrl);
 			if (icon == null) {
 				CustomTextureManager.downloadTexture(iconUrl, true);
@@ -145,10 +145,10 @@ public class ServerItem implements ListWidgetItem {
 			int pingwidth = font.getStringWidth(sping);
 			margin1 = pingwidth + 14;
 			font.drawStringWithShadow(sping, x + width - pingwidth - 14, y + 2, 0xaaaaaa);
-			String sPlayers = getPlayers() + " / "+getMaxPlayers() + " players";
+			String sPlayers = getPlayers() + " / " + getMaxPlayers() + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			margin2 = playerswidth;
-			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y+11, 0xaaaaaa);
+			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y + 11, 0xaaaaaa);
 		}
 
 		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
@@ -156,19 +156,19 @@ public class ServerItem implements ListWidgetItem {
 		if ((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
 			sMotd = "Polling...";
 		} else if (!showPingWhilePolling) {
-			switch(getPing()) {
-			case PollResult.PING_UNKNOWN:
-				sMotd = ChatColor.RED + "Unknown Host!";
-				break;
-			case PollResult.PING_TIMEOUT:
-				sMotd = ChatColor.RED + "Operation timed out!";
-				break;
-			case PollResult.PING_BAD_MESSAGE:
-				sMotd = ChatColor.RED + "Bad Message (Server version likely outdated)!";
-				break;
-			default:
-				sMotd = ChatColor.GREEN + getMotd();
-				break;
+			switch (getPing()) {
+				case PollResult.PING_UNKNOWN:
+					sMotd = ChatColor.RED + "Unknown Host!";
+					break;
+				case PollResult.PING_TIMEOUT:
+					sMotd = ChatColor.RED + "Operation timed out!";
+					break;
+				case PollResult.PING_BAD_MESSAGE:
+					sMotd = ChatColor.RED + "Bad Message (Server version likely outdated)!";
+					break;
+				default:
+					sMotd = ChatColor.GREEN + getMotd();
+					break;
 			}
 		}
 
@@ -223,7 +223,7 @@ public class ServerItem implements ListWidgetItem {
 		int iconMargin = 2;
 
 		if (country != null) {
-			String url = "http://cdn.spout.org/img/flag/"+country.toLowerCase()+".png";
+			String url = "http://cdn.spout.org/img/flag/" + country.toLowerCase() + ".png";
 			Texture icon = CustomTextureManager.getTextureFromUrl("Spoutcraft", url);
 			if (icon != null) {
 				GL11.glPushMatrix();

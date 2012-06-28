@@ -37,7 +37,7 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 		List<String> list = new ArrayList<String>();
 		list.add("All");
 		for (int r:possibilities) {
-			list.add(r+"x"+r);
+			list.add(r + "x" + r);
 		}
 		setItems(list);
 	}
@@ -47,7 +47,7 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		return "resolution="+possibilities[getSelectedRow()-1];
+		return "resolution=" + possibilities[getSelectedRow()-1];
 	}
 
 	public void clear() {
@@ -61,6 +61,6 @@ public class ResolutionFilter extends GenericComboBox implements UrlElement {
 
 	@Override
 	public String getText() {
-		return "Resolution: "+getSelectedItem();
+		return "Resolution: " + getSelectedItem();
 	}
 }

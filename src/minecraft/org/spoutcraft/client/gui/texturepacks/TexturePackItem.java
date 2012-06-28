@@ -83,7 +83,7 @@ public class TexturePackItem implements ListWidgetItem {
 
 		String sTileSize;
 		if (tileSize != -1) {
-			sTileSize = tileSize+"x";
+			sTileSize = tileSize + "x";
 		} else {
 			sTileSize = ChatColor.YELLOW + "Calculating...";
 		}

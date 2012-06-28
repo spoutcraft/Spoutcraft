@@ -103,7 +103,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 
 		top += 5 + addonsView.getHeight();
 
-		int totalWidth = Math.min(width - 10, 200*3+10);
+		int totalWidth = Math.min(width - 10, 200 * 3 + 10);
 		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + 5 + cellWidth;
@@ -158,7 +158,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 			}
 		}
 		if (btn.equals(buttonOpenFolder)) {
-			Sys.openURL("file://"+SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
+			Sys.openURL("file://" + SpoutClient.getInstance().getAddonFolder().getAbsolutePath());
 		}
 		if (btn.equals(buttonOpenConfiguration)) {
 			AddonItem item = (AddonItem) addonsView.getSelectedItem();

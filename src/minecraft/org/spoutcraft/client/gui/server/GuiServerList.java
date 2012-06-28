@@ -206,8 +206,8 @@ public class GuiServerList extends GuiAPIDisplay {
 
 		top += view.getHeight() + 5;
 
-		int totalWidth = Math.min(width - 9, 200*3+10);
-		int cellWidth = (totalWidth - 10)/3;
+		int totalWidth = Math.min(width - 9, 200 * 3 + 10);
+		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
