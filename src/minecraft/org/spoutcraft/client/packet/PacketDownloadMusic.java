@@ -73,9 +73,14 @@ public class PacketDownloadMusic implements SpoutPacket {
 			return;
 		}
 		File song = FileUtil.findFile(plugin, fileName);
-		if (song == null) {
+		if (song != null && song.exists()) {
+			QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
+			action.run();
+			return;
+		} else {
 			song = new File(directory, fileName);
 		}
+		
 		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
 		Download download = new Download(fileName, directory, url, action);
 		action.setNotify(!download.isDownloaded() && notify);
