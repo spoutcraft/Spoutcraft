@@ -35,7 +35,7 @@ public class GenericItem implements Item {
 		this.subtypes = subtypes;
 	}
 
-	protected GenericItem(String name, int id, int data) {
+	public GenericItem(String name, int id, int data) {
 		this(name, id, data, false);
 	}
 
