@@ -136,7 +136,8 @@ public abstract class Packet {
 			byte var4 = par1DataInputStream.readByte();
 			short var5 = par1DataInputStream.readShort();
 			var2 = new ItemStack(var3, var4, var5);
-			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k()) {
+			boolean override = SpoutClient.getInstance().isSpoutActive() && var3==MaterialData.flint.getRawId();
+			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k() || override) {
 				var2.stackTagCompound = this.readNBTTagCompound(par1DataInputStream);
 			}
 		}
