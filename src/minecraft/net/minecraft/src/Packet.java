@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+
 public abstract class Packet {
 	public static IntHashMap packetIdToClassMap = new IntHashMap();
 	private static Map packetClassToIdMap = new HashMap();
