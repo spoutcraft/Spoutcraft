@@ -63,6 +63,7 @@ public class CustomPacket extends Packet {
 	}
 
 	public void readPacketData(DataInputStream input) throws IOException {
+		SpoutClient.getInstance().setSpoutActive(true);
 		final boolean prevOutdated = outdated;
 		int packetId = -1;
 		packetId = input.readShort();

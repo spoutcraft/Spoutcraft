@@ -415,10 +415,28 @@ public class RenderItem extends Render {
 				GL11.glEnable(2896);
 				GL11.glEnable(2929);
 			}
-
-			if (par3ItemStack.isItemDamaged()) {
-				int var11 = (int)Math.round(13.0D - (double)par3ItemStack.getItemDamageForDisplay() * 13.0D / (double)par3ItemStack.getMaxDamage());
-				int var7 = (int)Math.round(255.0D - (double)par3ItemStack.getItemDamageForDisplay() * 255.0D / (double)par3ItemStack.getMaxDamage());
+			
+			//Spout start
+			NBTTagList list = par3ItemStack.getEnchantmentTagList();
+			short max = -1;
+			short amnt = -1;
+			if(list != null) {
+				for(int i = 0; i < list.tagCount(); i++) {
+					NBTBase tag = list.tagAt(i);
+					if(tag instanceof NBTTagCompound) {
+						NBTTagCompound ench = (NBTTagCompound) tag;
+						short id = ench.getShort("id");
+						short lvl = ench.getShort("lvl");
+						if(id == 254) amnt = lvl; //Enchantment DURABILITY = new SpoutEnchantment(254);
+						if(id == 255) max = lvl;  //Enchantment MAX_DURABILITY = new SpoutEnchantment(255);
+					}
+				}
+			}
+			boolean override = max > 0 && amnt > 0 && amnt < max;
+			if (par3ItemStack.isItemDamaged() || override) {
+				int var11 = (int)Math.round(13.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 13.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
+				int var7 = (int)Math.round(255.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 255.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
+				//Spout end
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
