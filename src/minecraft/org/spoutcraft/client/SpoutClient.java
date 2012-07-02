@@ -137,6 +137,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+	private boolean active = false;
 
 	private SpoutClient() {
 		instance = this;
@@ -325,6 +326,14 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public void setSpoutVersion(long version) {
 		server = version;
+	}
+	
+	public boolean isSpoutActive() {
+		return active;
+	}
+	
+	public void setSpoutActive(boolean active) {
+		this.active = active;
 	}
 
 	public void onTick() {
