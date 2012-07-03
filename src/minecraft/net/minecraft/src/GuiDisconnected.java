@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
+
+import org.spoutcraft.client.SpoutClient;
+
 import net.minecraft.client.Minecraft;
 
 public class GuiDisconnected extends GuiScreen
@@ -51,7 +54,9 @@ public class GuiDisconnected extends GuiScreen
 	{
 		StringTranslate stringtranslate = StringTranslate.getInstance();
 		controlList.clear();
-		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, stringtranslate.translateKey("gui.toMenu")));
+		//Spout Start
+		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Back to "+SpoutClient.getInstance().getServerManager().getJoinedFromName()));
+		//Spout End
 	}
 
 	/**
@@ -61,7 +66,7 @@ public class GuiDisconnected extends GuiScreen
 	{
 		if (par1GuiButton.id == 0)
 		{
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
+			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
 		}
 	}
 
