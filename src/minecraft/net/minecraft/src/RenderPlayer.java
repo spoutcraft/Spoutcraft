@@ -18,6 +18,7 @@ public class RenderPlayer extends RenderLiving {
 	private ModelBiped modelBipedMain;
 	//Spout Start
 	private ModelNarrowtux modelNarrowtux;
+	private float lastScale = 1f;
 	//Spout End
 	private ModelBiped modelArmorChestplate;
 	private ModelBiped modelArmor;
@@ -94,7 +95,19 @@ public class RenderPlayer extends RenderLiving {
 //		}
 //		Spout End
 		
-		super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
+		//Spout Start
+		VIP vip = par1EntityPlayer.vip;
+		if (vip != null) {
+			float s = vip.getScale();
+			GL11.glPushMatrix();
+			GL11.glTranslated(0, (s - 1) * 1.6, 0);
+			GL11.glScalef(s, s, s);
+			super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
+			GL11.glPopMatrix();
+		} else {
+			super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
+		}
+		//Spout End
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
 		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;

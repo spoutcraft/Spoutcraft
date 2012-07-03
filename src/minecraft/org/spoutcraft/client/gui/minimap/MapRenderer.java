@@ -154,8 +154,8 @@ public class MapRenderer {
 					}
 					drawOnMap();
 				} catch (Exception e) {
-					System.err.println("error: minimap overlay not found!");
-					e.printStackTrace();
+//					System.err.println("error: minimap overlay not found!");
+//					e.printStackTrace();
 				} finally {
 					GL11.glPopMatrix();
 				}
@@ -170,7 +170,7 @@ public class MapRenderer {
 					GL11.glTranslatef(32.0F, -(32.0F), 0.0F);
 					drawOnMap();
 				} catch (Exception e) {
-					System.err.println("Error: minimap arrow not found!");
+//					System.err.println("Error: minimap arrow not found!");
 					e.printStackTrace();
 				} finally {
 					GL11.glPopMatrix();
@@ -440,7 +440,7 @@ public class MapRenderer {
 			Tessellator.instance.addVertexWithUV((scWidth) / 2 - 32, (scHeight) / 2 - 32, 1.0D, 0.0D, 0.0D);
 			Tessellator.instance.draw();
 		} catch (Exception e) {
-			System.err.println("Error: minimap arrow not found!");
+//			System.err.println("Error: minimap arrow not found!");
 			e.printStackTrace();
 		} finally {
 			GL11.glPopMatrix();
@@ -496,7 +496,7 @@ public class MapRenderer {
 			}
 			drawOnMap();
 		} catch (Exception localException) {
-			System.err.println("Error: minimap overlay not found!");
+//			System.err.println("Error: minimap overlay not found!");
 		} finally {
 			GL11.glPopMatrix();
 		}

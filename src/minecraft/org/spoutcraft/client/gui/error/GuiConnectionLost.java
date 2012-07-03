@@ -22,6 +22,7 @@ package org.spoutcraft.client.gui.error;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.RenderEngine;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;

@@ -98,8 +98,12 @@ public enum Resources implements YAMLResource {
 					title = SpoutClient.getInstance().getChatManager().formatChatColors(title);
 					String cape = (String) values.get("cape");
 					String armor = (String) values.get("armor");
+					float scale = 1f;
+					if (values.containsKey("scale")) {
+						scale = (float)(double)(Double) values.get("scale");
+					}
 					Map<String, Integer> particles = (Map<String, Integer>) values.get("particles");
-					VIP vip = new VIP(key, title, cape, particles, armor);
+					VIP vip = new VIP(key, title, cape, particles, armor, scale);
 					vips.put(key, vip);
 				} catch (Exception e) {
 					e.printStackTrace();
