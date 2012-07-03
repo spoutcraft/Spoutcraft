@@ -117,4 +117,9 @@ public class SpoutItem extends Item {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean hasEffect(ItemStack par1ItemStack) {
+		return shiftedIndex == MaterialData.flint.getRawId() ? false : super.hasEffect(par1ItemStack);
+	}
 }
