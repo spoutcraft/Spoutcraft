@@ -2,6 +2,9 @@ package net.minecraft.src;
 
 import java.io.PrintStream;
 import java.util.List;
+
+import org.spoutcraft.client.SpoutClient;
+
 import net.minecraft.client.Minecraft;
 
 public class GuiConnecting extends GuiScreen
@@ -180,7 +183,7 @@ public class GuiConnecting extends GuiScreen
 				clientHandler.disconnect();
 			}
 
-			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
+			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
 		}
 	}
 
