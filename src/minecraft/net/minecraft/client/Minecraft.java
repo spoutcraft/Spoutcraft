@@ -1426,11 +1426,11 @@ public abstract class Minecraft implements Runnable {
 
 			// Spout start
 			// Open chat in SP with debug key
-			if (!isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_GRAVE) {
+			if (currentScreen == null && !isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_GRAVE) {
 				this.displayGuiScreen(new GuiChat());
 				thePlayer.sendChatMessage(ChatColor.RED + "Debug Console Opened");
 			}
-			if (this.isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_SLASH) {
+			if (currentScreen == null && this.isMultiplayerWorld() && Keyboard.getEventKey() == Keyboard.KEY_SLASH) {
 				GuiChat chat = new GuiChat();
 				chat.message = "/";
 				chat.cursorPosition = 1;
