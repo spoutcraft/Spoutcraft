@@ -636,7 +636,7 @@ public class MaterialData {
 			materials[mat.getRawData()] = mat;
 		} else {
 			materials = (Material[])o;
-			if (data > materials.length) {
+			if (data >= materials.length) {
 				materials = adjust(materials, data * 2 + 1);
 			}
 			mat = materials[data];
