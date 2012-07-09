@@ -29,13 +29,15 @@ public class VIP {
 	private final String armorBaseUrl;
 	private final float scale;
 	private final Map<String, Integer> particles;
+	private final Map<String, String> acs;
 
-	public VIP(String username, String title, String cape, Map<String, Integer> particles, String armor, float scale) {
+	public VIP(String username, String title, String cape, Map<String, Integer> particles, Map<String, String> acs, String armor, float scale) {
 		this.username = username;
 		this.title = title;
 		this.cape = cape;
 		this.armorBaseUrl = armor;
 		this.scale = scale;
+		this.acs = acs;
 		if (particles != null) {
 			this.particles = new HashMap<String, Integer>(particles);
 		} else {
@@ -85,5 +87,9 @@ public class VIP {
 		} else {
 			return null;
 		}
+	}
+
+	public Map<String, String> Accessories() {
+		return acs;
 	}
 }

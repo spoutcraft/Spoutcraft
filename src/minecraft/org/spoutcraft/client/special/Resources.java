@@ -103,7 +103,8 @@ public enum Resources implements YAMLResource {
 						scale = ((Number) values.get("scale")).floatValue();
 					}
 					Map<String, Integer> particles = (Map<String, Integer>) values.get("particles");
-					VIP vip = new VIP(key, title, cape, particles, armor, scale);
+					Map<String, String> acs = (Map<String, String>) values.get("accessories");
+					VIP vip = new VIP(key, title, cape, particles, acs, armor, scale);
 					vips.put(key, vip);
 				} catch (Exception e) {
 					e.printStackTrace();
