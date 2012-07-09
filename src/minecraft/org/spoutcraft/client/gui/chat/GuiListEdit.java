@@ -73,6 +73,7 @@ public class GuiListEdit extends GuiSpoutScreen {
 		}
 		editor = new GenericTextField();
 		editor.setPlaceholder("Enter new item ...");
+		editor.setMaxHeight(0);
 
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, title, helpLabel, buttonDone, buttonAdd, buttonEdit, buttonRemove, list, editor);
