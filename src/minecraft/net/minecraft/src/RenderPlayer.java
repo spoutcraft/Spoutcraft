@@ -4,12 +4,11 @@ import net.minecraft.client.Minecraft;
 //Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.special.ModelNarrowtux;
-import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.client.player.accessories.AccessoryHandler;
+import org.spoutcraft.client.player.accessories.TopHat;
 //spout End
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -85,17 +84,12 @@ public class RenderPlayer extends RenderLiving {
 		if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP)) {
 			var13 -= 0.125D;
 		}
-
-//		Spout Start
-//		if(par1EntityPlayer.displayName.contains("narrowtux")) {
-//			if(this.modelNarrowtux == null) {
-//				modelNarrowtux = new ModelNarrowtux(0f);
-//				this.mainModel = modelNarrowtux;
-//			}
-//		}
-//		Spout End
-		
 		//Spout Start
+		if(modelBipedMain.aHandler == null) {
+			 modelBipedMain.aHandler = new AccessoryHandler();
+			 modelBipedMain.aHandler.addAccessoriesFor(modelBipedMain, par1EntityPlayer);
+		} 
+		
 		VIP vip = par1EntityPlayer.vip;
 		if (vip != null) {
 			float s = vip.getScale();
@@ -203,6 +197,7 @@ public class RenderPlayer extends RenderLiving {
 			this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var3, 0);
 			GL11.glPopMatrix();
 		}
+		modelBipedMain.aHandler.renderAllAccessories(par1EntityPlayer, this, 0.0625F, par2); //Spout
 
 		float var6;
 		if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null)) {
