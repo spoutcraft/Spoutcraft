@@ -186,4 +186,9 @@ public class Wings extends Accessory{
 		RightWingPart8.render(f);
 	}
 
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.WINGS;
+	}
+
 }

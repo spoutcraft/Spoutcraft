@@ -75,4 +75,9 @@ public class Sunglasses extends Accessory{
 		RightSunglassesBridge.render(f);
 	}
 
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.SUNGLASSES;
+	}
+
 }

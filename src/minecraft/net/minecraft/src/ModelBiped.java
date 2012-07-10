@@ -19,8 +19,6 @@ public class ModelBiped extends ModelBase {
 	public int heldItemRight;
 	public boolean isSneak;
 	public boolean aimedBow;
-	
-	public AccessoryHandler aHandler; //Spout
 
 	public ModelBiped() {
 		this(0.0F);
