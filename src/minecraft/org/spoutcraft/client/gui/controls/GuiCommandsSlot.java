@@ -32,9 +32,6 @@ public class GuiCommandsSlot extends GenericListWidget {
 	Shortcut shortcut;
 
 	public GuiCommandsSlot(GuiEditShortcut parent) {
-		setWidth(parent.width);
-		setHeight(parent.height - 70 - 25);
-		setX(0).setY(60);
 		this.parent = parent;
 		this.shortcut = parent.getShortcut();
 		updateItems();

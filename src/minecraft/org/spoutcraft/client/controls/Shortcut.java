@@ -36,6 +36,7 @@ public class Shortcut extends AbstractBinding implements Serializable {
 
 	private String title = "";
 	private ArrayList<String> commands = new ArrayList<String>();
+	private int delay = 0;
 
 	public Shortcut() {
 	}
@@ -67,6 +68,14 @@ public class Shortcut extends AbstractBinding implements Serializable {
 	public void setCommands(ArrayList<String> commands) {
 		this.commands = commands;
 	}
+	
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+	
+	public int getDelay() {
+		return delay;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -83,14 +92,23 @@ public class Shortcut extends AbstractBinding implements Serializable {
 	}
 
 	@Override
-	public void summon(int key, boolean keyReleased, int screen) {
-		if (keyReleased && screen == 0) { 
-			for (String cmd:getCommands()) {
-				if (SpoutClient.getHandle().isMultiplayerWorld()) {
-					EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
-					player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+	public void summon(int key, final boolean keyReleased, final int screen) {
+		new Thread() {
+			public void run() {
+				if (keyReleased && screen == 0) { 
+					for (String cmd:getCommands()) {
+						if (SpoutClient.getHandle().isMultiplayerWorld()) {
+							EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;
+							player.sendQueue.addToSendQueue(new Packet3Chat(cmd));
+						}
+						if (delay > 0) {
+							try {
+								sleep(delay);
+							} catch (InterruptedException e) {}
+						}
+					}
 				}
-			}
-		}
+			};
+		}.start();
 	}
 }

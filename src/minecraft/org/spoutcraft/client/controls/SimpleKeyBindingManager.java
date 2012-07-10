@@ -162,6 +162,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				item.put("key", sh.getKey());
 				item.put("modifiers", sh.getModifiers());
 				item.put("commands", sh.getCommands());
+				item.put("delay", sh.getDelay());
 				shsave.add(item);
 			}
 			yaml.dump(shsave, writer);
@@ -241,6 +242,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				sh.setCommands((ArrayList<String>)item.get("commands"));
 				if (item.containsKey("modifiers")) {
 					sh.setRawModifiers((byte)(int)(Integer)item.get("modifiers"));
+				}
+				if (item.containsKey("delay")) {
+					sh.setDelay((Integer) item.get("delay"));
 				}
 				shortcuts.add(sh);
 			}
