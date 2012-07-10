@@ -8,13 +8,12 @@ import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
-import org.spoutcraft.client.player.accessories.TopHat;
 //spout End
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 public class RenderPlayer extends RenderLiving {
-	private ModelBiped modelBipedMain;
+	public ModelBiped modelBipedMain; // Spout: private to public
 	//Spout Start
 	private ModelNarrowtux modelNarrowtux;
 	private float lastScale = 1f;
@@ -85,9 +84,8 @@ public class RenderPlayer extends RenderLiving {
 			var13 -= 0.125D;
 		}
 		//Spout Start
-		if(modelBipedMain.aHandler == null) {
-			 modelBipedMain.aHandler = new AccessoryHandler();
-			 modelBipedMain.aHandler.addAccessoriesFor(modelBipedMain, par1EntityPlayer);
+		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
+			 AccessoryHandler.addAccessoriesFor(par1EntityPlayer);
 		} 
 		
 		VIP vip = par1EntityPlayer.vip;
@@ -197,7 +195,7 @@ public class RenderPlayer extends RenderLiving {
 			this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var3, 0);
 			GL11.glPopMatrix();
 		}
-		modelBipedMain.aHandler.renderAllAccessories(par1EntityPlayer, this, 0.0625F, par2); //Spout
+		AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); //Spout
 
 		float var6;
 		if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null)) {

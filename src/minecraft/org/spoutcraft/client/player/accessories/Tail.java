@@ -70,4 +70,9 @@ public class Tail extends Accessory {
 		Tail.render(f);
 		GL11.glPopMatrix();
 	}
+
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.TAIL;
+	}
 }

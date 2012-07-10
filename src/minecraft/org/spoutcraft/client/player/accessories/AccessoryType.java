@@ -19,32 +19,29 @@
  */
 package org.spoutcraft.client.player.accessories;
 
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.ModelRenderer;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Ears extends Accessory {
+public enum AccessoryType {
 
-	public ModelRenderer bipedEars2;
-
-	public Ears(ModelBiped mb) {
-		super(mb);
-		bipedEars2 = new ModelRenderer(mb, 0, 0);
-		bipedEars2.addBox(-3F, -6F, -1F, 6, 6, 1);
-
+	TOPHAT(1), NOTCHHAT(2), BRACELET(3), WINGS(4), EARS(5), SUNGLASSES(6), TAIL(7);
+	
+	private static Map<Integer, AccessoryType> types = new HashMap<Integer, AccessoryType>();
+	private int id;
+	private AccessoryType(int id) {
+		this.id = id;
+		addID(id, this);
 	}
-
-	@Override
-	public void render(EntityPlayer plr, float f) {
-		bipedEars2.rotateAngleY = getModel().bipedHead.rotateAngleY;
-		bipedEars2.rotateAngleX = getModel().bipedHead.rotateAngleX;
-		bipedEars2.rotationPointX = 0.0F;
-		bipedEars2.rotationPointY = 0.0F;
-		bipedEars2.render(f);
+	
+	private static void addID(int id, AccessoryType type) {
+		types.put(id, type);
 	}
-
-	@Override
-	public AccessoryType getType() {
-		return AccessoryType.EARS;
+	
+	public int getId() {
+		return id;
+	}
+	
+	public static AccessoryType byId(int id) {
+		return types.get(id);
 	}
 }

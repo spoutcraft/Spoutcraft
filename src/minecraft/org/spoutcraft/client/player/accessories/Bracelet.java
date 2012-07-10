@@ -69,4 +69,9 @@ public class Bracelet extends Accessory{
 		bipedRightBracelet.render(f);
 	}
 
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.BRACELET;
+	}
+
 }

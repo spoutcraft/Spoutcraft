@@ -51,4 +51,9 @@ public class NotchHat extends Accessory{
 		NotchHatBottom.render(f);
 	}
 
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.NOTCHHAT;
+	}
+
 }

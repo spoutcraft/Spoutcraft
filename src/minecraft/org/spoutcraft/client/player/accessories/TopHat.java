@@ -51,4 +51,9 @@ public class TopHat extends Accessory{
 		bipedTopHat.render(f);
 	}
 
+	@Override
+	public AccessoryType getType() {
+		return AccessoryType.TOPHAT;
+	}
+
 }
