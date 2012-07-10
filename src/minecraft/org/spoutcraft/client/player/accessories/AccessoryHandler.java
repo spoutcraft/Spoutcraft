@@ -58,13 +58,13 @@ public class AccessoryHandler {
 		if(vip == null)
 			return;
 		Map<String, String> vAcs = vip.Accessories();
-		String that = vAcs.get("TopHat");
-		String nhat = vAcs.get("NotchHat");
-		String brace = vAcs.get("Bracelet");
-		String wings = vAcs.get("Wings");
-		String ears = vAcs.get("Ears");
-		String glasses = vAcs.get("Sunglasses");
-		String tail = vAcs.get("Tail");
+		String that = vAcs.get("tophat");
+		String nhat = vAcs.get("notchhat");
+		String brace = vAcs.get("bracelet");
+		String wings = vAcs.get("wings");
+		String ears = vAcs.get("ears");
+		String glasses = vAcs.get("sunglasses");
+		String tail = vAcs.get("tail");
 		if(that!=null) addAccessory(new TopHat(modelBipedMain), that);
 		if(nhat!=null) addAccessory(new NotchHat(modelBipedMain), that);
 		if(brace!=null) addAccessory(new Bracelet(modelBipedMain), that);
