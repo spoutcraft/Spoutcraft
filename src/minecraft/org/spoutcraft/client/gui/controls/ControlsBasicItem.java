@@ -48,7 +48,7 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 
 	public boolean conflicts(ControlsBasicItem other) {
 		//TODO better handling for modifiers
-		return getKey() == other.getKey() && getModifiers() == other.getModifiers();
+		return  getKey() != -128 && getKey() == other.getKey() && getModifiers() == other.getModifiers();
 	}
 
 	/**
@@ -78,6 +78,6 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 	public abstract String getName();
 
 	public boolean isConflicting() {
-		return conflicts || getKey() == -128;
+		return conflicts;
 	}
 }
