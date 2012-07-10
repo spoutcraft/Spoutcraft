@@ -292,7 +292,7 @@ public class ItemStack { //Spout final -> gone
 
 	public NBTTagList getEnchantmentTagList() {
 		// Spout start
-		NBTagList list = getAllEnchantmentTagList();
+		NBTTagList list = getAllEnchantmentTagList();
 		if (list == null) {
 			return null;
 		}
