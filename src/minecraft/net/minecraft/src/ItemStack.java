@@ -288,6 +288,27 @@ public class ItemStack { //Spout final -> gone
 	}
 
 	public NBTTagList getEnchantmentTagList() {
+		// Spout start
+		NBTagList list = getAllEnchantmentTagList();
+		if (list == null) {
+			return null;
+		}
+		list = list.clone();
+		for (int i = 0; i < list.tagCount(); i++) {
+			NBTBase tag = list.tagAt(i);
+			if (tag instanceof NBTTagCompound) {
+				NBTTagCompound ench = (NBTTagCompound) tag;
+				short id = ench.getShort("id");
+				if (id > 200) {
+					list.tagList.remove(ench);
+				}
+			}
+		}
+		return list;
+	}
+
+	public NBTTagList getAllEnchantmentTagList() {
+		//Spout end
 		return this.stackTagCompound == null?null:(NBTTagList)this.stackTagCompound.getTag("ench");
 	}
 

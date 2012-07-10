@@ -417,7 +417,7 @@ public class RenderItem extends Render {
 			}
 			
 			//Spout start
-			NBTTagList list = par3ItemStack.getEnchantmentTagList();
+			NBTTagList list = par3ItemStack.getAllEnchantmentTagList();
 			short max = -1;
 			short amnt = -1;
 			if(list != null) {

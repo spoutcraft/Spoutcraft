@@ -128,7 +128,7 @@ class ReportErrorButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		SpoutClient.disableSandbox();
 		try {
-			URL url =  new URL("http://issues.spout.org");
+			URL url =  new URL("http://spout.in/issues");
 			Desktop.getDesktop().browse(url.toURI());
 		} catch (Exception e) { }
 		finally {
