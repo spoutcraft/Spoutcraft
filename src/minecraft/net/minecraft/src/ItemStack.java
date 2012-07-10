@@ -296,7 +296,7 @@ public class ItemStack { //Spout final -> gone
 		if (list == null) {
 			return null;
 		}
-		list = list.clone();
+		list = (NBTTagList) list.copy();
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTBase tag = list.tagAt(i);
 			if (tag instanceof NBTTagCompound) {

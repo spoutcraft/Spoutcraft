@@ -14,7 +14,7 @@ import org.spoutcraft.client.entity.RenderTexture;
 //Spout end
 
 public class RenderManager {
-	private Map entityRenderMap = new HashMap();
+	public Map entityRenderMap = new HashMap(); // Spout: private to public
 	public static RenderManager instance = new RenderManager();
 	private FontRenderer fontRenderer;
 	public static double renderPosX;

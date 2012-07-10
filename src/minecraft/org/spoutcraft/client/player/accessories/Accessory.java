@@ -41,5 +41,7 @@ public abstract class Accessory {
 	public void render(EntityPlayer player, float f, float par2) {
 		render(player, f);
 	}
+	
+	public abstract AccessoryType getType();
 
 }

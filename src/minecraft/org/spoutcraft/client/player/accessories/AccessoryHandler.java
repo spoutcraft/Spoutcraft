@@ -19,12 +19,14 @@
  */
 package org.spoutcraft.client.player.accessories;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
+import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spoutcraft.client.HDImageBufferDownload;
@@ -32,31 +34,44 @@ import org.spoutcraft.client.special.VIP;
 
 public class AccessoryHandler {
 
-	private Set<Pair<Accessory, String>> acs;
+	private static Map<String, Set<Pair<Accessory, String>>> sacs = new HashMap<String, Set<Pair<Accessory, String>>>();
 	private static Set<String> downloaded = new HashSet<String>();
+	private static RenderPlayer renderer = (RenderPlayer) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
+	private static ModelBiped modelBipedMain = ((RenderPlayer) RenderManager.instance.entityRenderMap.get(EntityPlayer.class)).modelBipedMain;
 	
-	public void addAccessory(Accessory n, String url) {
-		if(!(downloaded.contains(url))) {
-				Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
-				downloaded.add(url);
+	private AccessoryHandler() {
+	}
+
+	public static void addAccessory(EntityPlayer player, Accessory n, String url) {
+		if (!(downloaded.contains(url))) {
+			Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
+			downloaded.add(url);
 		}
-		if(acs == null) {
+		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
+		if (acs == null) {
 			acs = new HashSet<Pair<Accessory, String>>();
+			sacs.put(player.username, acs);
 		}
 		acs.add(Pair.of(n, url));
 	}
 
-	public void renderAllAccessories(EntityPlayer player, RenderPlayer renderer, float f, float par2) {
-		for(Pair<Accessory, String> a : acs) {
-			if(renderer.loadDownloadableImageTexture(a.getRight(), null))
+	public static void renderAllAccessories(EntityPlayer player, float f, float par2) {
+		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
+		if (acs == null) {
+			return;
+		}
+		for (Pair<Accessory, String> a : acs) {
+			if (renderer.loadDownloadableImageTexture(a.getRight(), null)) {
 				a.getLeft().render(player, f, par2);
+			}
 		}
 	}
-	
-	public void addAccessoriesFor(ModelBiped modelBipedMain, EntityPlayer par1EntityPlayer) {
-		VIP vip = par1EntityPlayer.vip;
-		if(vip == null)
+
+	public static void addAccessoriesFor(EntityPlayer player) {
+		VIP vip = player.vip;
+		if (vip == null) {
 			return;
+		}
 		Map<String, String> vAcs = vip.Accessories();
 		String that = vAcs.get("tophat");
 		String nhat = vAcs.get("notchhat");
@@ -65,12 +80,76 @@ public class AccessoryHandler {
 		String ears = vAcs.get("ears");
 		String glasses = vAcs.get("sunglasses");
 		String tail = vAcs.get("tail");
-		if(that!=null) addAccessory(new TopHat(modelBipedMain), that);
-		if(nhat!=null) addAccessory(new NotchHat(modelBipedMain), that);
-		if(brace!=null) addAccessory(new Bracelet(modelBipedMain), that);
-		if(wings!=null) addAccessory(new Wings(modelBipedMain), that);
-		if(ears!=null) addAccessory(new Ears(modelBipedMain), that);
-		if(glasses!=null) addAccessory(new Sunglasses(modelBipedMain), that);
-		if(tail!=null) addAccessory(new Tail(modelBipedMain), that);
+		if (that != null) {
+			addAccessory(player, new TopHat(modelBipedMain), that);
+		}
+		if (nhat != null) {
+			addAccessory(player, new NotchHat(modelBipedMain), nhat);
+		}
+		if (brace != null) {
+			addAccessory(player, new Bracelet(modelBipedMain), brace);
+		}
+		if (wings != null) {
+			addAccessory(player, new Wings(modelBipedMain), wings);
+		}
+		if (ears != null) {
+			addAccessory(player, new Ears(modelBipedMain), ears);
+		}
+		if (glasses != null) {
+			addAccessory(player, new Sunglasses(modelBipedMain), glasses);
+		}
+		if (tail != null) {
+			addAccessory(player, new Tail(modelBipedMain), tail);
+		}
+	}
+
+	public static void addAccessoryType(EntityPlayer player, AccessoryType type, String url) {
+		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
+		if (acs == null) {
+			acs = new HashSet<Pair<Accessory, String>>();
+			sacs.put(player.username, acs);
+		}
+		for (Pair<Accessory, String> a : acs) {
+			if (a.getKey().getType() == type) {
+				acs.remove(a);
+			}
+		}
+		if (url.equals("")) {
+			return;
+		}
+		Accessory toCreate;
+		switch (type) {
+			case BRACELET:
+				toCreate = new Bracelet(modelBipedMain);
+				break;
+			case EARS:
+				toCreate = new Ears(modelBipedMain);
+				break;
+			case NOTCHHAT:
+				toCreate = new NotchHat(modelBipedMain);
+				break;
+			case SUNGLASSES:
+				toCreate = new Sunglasses(modelBipedMain);
+				break;
+			case TAIL:
+				toCreate = new Tail(modelBipedMain);
+				break;
+			case TOPHAT:
+				toCreate = new TopHat(modelBipedMain);
+				break;
+			case WINGS:
+				toCreate = new Wings(modelBipedMain);
+				break;
+			default:
+				toCreate = null;
+				break;
+		}
+		if (toCreate != null) {
+			addAccessory(player, toCreate, url);
+		}
+	}
+
+	public static boolean isHandled(String username) {
+		return sacs.containsKey(username);
 	}
 }
