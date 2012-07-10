@@ -3,8 +3,11 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
+//Spout start
+import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
+//Spout end
 
 public class ItemStack { //Spout final -> gone
 	public int stackSize;
