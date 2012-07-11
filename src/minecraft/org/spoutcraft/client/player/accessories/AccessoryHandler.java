@@ -29,6 +29,7 @@ import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
 import org.apache.commons.lang3.tuple.Pair;
+
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.VIP;
 
@@ -50,9 +51,18 @@ public class AccessoryHandler {
 		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
 		if (acs == null) {
 			acs = new HashSet<Pair<Accessory, String>>();
-			sacs.put(player.username, acs);
 		}
 		acs.add(Pair.of(n, url));
+		sacs.put(player.username, acs);
+	}
+
+	public static void removeAccessory(EntityPlayer player, Accessory n, String url) {
+		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
+		if (acs == null) {
+			return;
+		}
+		acs.remove(Pair.of(n, url));
+		sacs.put(player.username, acs);
 	}
 
 	public static void renderAllAccessories(EntityPlayer player, float f, float par2) {
@@ -112,14 +122,6 @@ public class AccessoryHandler {
 			acs = new HashSet<Pair<Accessory, String>>();
 			sacs.put(player.username, acs);
 		}
-		for (Pair<Accessory, String> a : acs) {
-			if (a.getKey().getType() == type) {
-				acs.remove(a);
-			}
-		}
-		if (url.equals("")) {
-			return;
-		}
 		Accessory toCreate;
 		switch (type) {
 			case BRACELET:
@@ -149,6 +151,18 @@ public class AccessoryHandler {
 		}
 		if (toCreate != null) {
 			addAccessory(player, toCreate, url);
+		}
+	}
+
+	public static void removeAccessoryType(EntityPlayer player, AccessoryType type, String url) {
+		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
+		if (acs == null) {
+			return;
+		}
+		for (Pair<Accessory, String> accessory : acs) {
+			if (accessory.getLeft().getType().equals(type) && accessory.getRight().equals(url)) {
+				removeAccessory(player, accessory.getLeft(), accessory.getRight());
+			}
 		}
 	}
 

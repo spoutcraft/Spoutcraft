@@ -33,31 +33,43 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 public class PacketAccessory implements SpoutPacket{
 	private AccessoryType type;
 	private String url;
-	
+	private boolean add;
+
 	public PacketAccessory() {
 	}
 
 	public PacketAccessory(AccessoryType type, String url) {
+		this(type, url, true);
+	}
+
+	public PacketAccessory(AccessoryType type, String url, boolean add) {
 		this.type = type;
 		this.url = url;
+		this.add = add;
 	}
 
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
 		type = AccessoryType.get(input.readInt());
 		url = input.readString();
+		add = input.readBoolean();
 	}
 
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(type.getId());
 		output.writeString(url);
+		output.writeBoolean(add);
 	}
 
 	@Override
 	public void run(int playerId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(playerId);
-		AccessoryHandler.addAccessoryType(e, type, url);
+		if (add) {
+			AccessoryHandler.addAccessoryType(e, type, url);
+		} else {
+			AccessoryHandler.removeAccessoryType(e, type);
+		}
 	}
 
 	@Override
@@ -71,7 +83,7 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 
 }
