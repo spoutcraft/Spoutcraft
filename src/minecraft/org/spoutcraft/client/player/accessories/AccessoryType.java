@@ -47,7 +47,7 @@ public enum AccessoryType {
 		return id;
 	}
 
-	public static AccessoryType get(int id) {
+	public static AccessoryType byId(int id) {
 		return types.get(id);
 	}
 }
