@@ -73,6 +73,9 @@ public class AccessoryHandler {
 			return;
 		}
 		Map<String, String> vAcs = vip.Accessories();
+                   if (vAcs == null) {
+                       return;
+                   }
 		String that = vAcs.get("tophat");
 		String nhat = vAcs.get("notchhat");
 		String brace = vAcs.get("bracelet");
