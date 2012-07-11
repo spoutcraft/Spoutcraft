@@ -23,24 +23,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum AccessoryType {
-
-	TOPHAT(1), NOTCHHAT(2), BRACELET(3), WINGS(4), EARS(5), SUNGLASSES(6), TAIL(7);
-	
+	TOPHAT(1),
+	NOTCHHAT(2),
+	BRACELET(3),
+	WINGS(4),
+	EARS(5),
+	SUNGLASSES(6),
+	TAIL(7);
+	private final int id;
 	private static Map<Integer, AccessoryType> types = new HashMap<Integer, AccessoryType>();
-	private int id;
+
+	static {
+		for (AccessoryType type : AccessoryType.values()) {
+			types.put(type.getId(), type);
+		}
+	}
+
 	private AccessoryType(int id) {
 		this.id = id;
-		addID(id, this);
 	}
-	
-	private static void addID(int id, AccessoryType type) {
-		types.put(id, type);
-	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public static AccessoryType byId(int id) {
 		return types.get(id);
 	}
