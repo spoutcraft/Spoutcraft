@@ -68,7 +68,7 @@ public class PacketAccessory implements SpoutPacket{
 		if (add) {
 			AccessoryHandler.addAccessoryType(e, type, url);
 		} else {
-			AccessoryHandler.removeAccessoryType(e, type);
+			AccessoryHandler.removeAccessoryType(e, type, url);
 		}
 	}
 
