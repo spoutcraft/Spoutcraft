@@ -44,7 +44,7 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
-		type = AccessoryType.byId(input.readInt());
+		type = AccessoryType.get(input.readInt());
 		url = input.readString();
 	}
 

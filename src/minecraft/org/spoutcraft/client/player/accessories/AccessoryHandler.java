@@ -67,15 +67,15 @@ public class AccessoryHandler {
 		}
 	}
 
-	public static void addAccessoriesFor(EntityPlayer player) {
+	public static void addVIPAccessoriesFor(EntityPlayer player) {
 		VIP vip = player.vip;
 		if (vip == null) {
 			return;
 		}
 		Map<String, String> vAcs = vip.Accessories();
-                   if (vAcs == null) {
-                       return;
-                   }
+		if (vAcs == null) {
+			return;
+		}
 		String that = vAcs.get("tophat");
 		String nhat = vAcs.get("notchhat");
 		String brace = vAcs.get("bracelet");

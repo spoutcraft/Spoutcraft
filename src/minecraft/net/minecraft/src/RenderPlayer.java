@@ -85,7 +85,7 @@ public class RenderPlayer extends RenderLiving {
 		}
 		//Spout Start
 		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
-			 AccessoryHandler.addAccessoriesFor(par1EntityPlayer);
+			 AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		} 
 		
 		VIP vip = par1EntityPlayer.vip;
