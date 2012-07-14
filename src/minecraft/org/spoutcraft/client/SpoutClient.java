@@ -129,6 +129,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	private boolean coords = false;
 	private boolean entitylabel = false;
 	private boolean voidfog = false;
+	private boolean sprint = false;
 	private Mode clientMode = Mode.Menu;
 	private TexturePacksModel textureModel = new TexturePacksModel();
 	private TexturePacksDatabaseModel textureDatabaseModel = new TexturePacksDatabaseModel();
@@ -290,7 +291,11 @@ public class SpoutClient extends PropertyObject implements Client {
 		return voidfog || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
 	}
 
-	public void setVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog) {
+	public boolean isSprintCheat() {
+		return sprint || !getHandle().isMultiplayerWorld() || !isSpoutEnabled();
+	}
+
+	public void setVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean tsprint) {
 		this.sky = tsky;
 		this.clearwater = tclearwater;
 		this.stars = tstars;
@@ -299,6 +304,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
 		this.voidfog = tvoidfog;
+		this.sprint = tsprint;
 
 		//if (!isSkyCheat()) {
 		//	ConfigReader.sky = true;
