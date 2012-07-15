@@ -10,7 +10,7 @@ import net.minecraft.src.SoundPool;
 import net.minecraft.src.SoundPoolEntry;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.codecs.CodecJOrbis;
+//import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
@@ -18,6 +18,7 @@ import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.sound.Music;
+import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
 //Spout End
 
 import de.cuina.fireandfuel.CodecJLayerMP3;
