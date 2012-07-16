@@ -178,6 +178,7 @@ public class GuiMinimapMenu extends GuiScreen {
 
 		advancedMobsButton = new GenericButton("Filter Mobs").setAlign(WidgetAnchor.TOP_CENTER);
 		advancedMobsButton.setWidth(150).setHeight(20).setX(right).setY(top);
+		advancedMobsButton.setTooltip("Select which mobs are shown on the minimap");
 		screen.attachWidget(spoutcraft, advancedMobsButton);
 	}
 

@@ -33,7 +33,7 @@ public class TopHat extends Accessory{
 		super(model);
 		bipedBottomHat = new ModelRenderer(model, 0, 0);
 		bipedBottomHat.addBox(-5.5F, -9F, -5.5F, 11, 2, 11);
-		bipedTopHat = new ModelRenderer(model, 0, 13);	  
+		bipedTopHat = new ModelRenderer(model, 0, 13);
 		bipedTopHat.addBox(-3.5F, -17F, -3.5F, 7, 8, 7);
 	}
 	
