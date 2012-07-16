@@ -65,9 +65,9 @@ public class MainMenu extends GuiScreen {
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
-	final String timeOfDay;
-	final List<String> backgrounds;
-
+	static String timeOfDay = "";
+	final static List<String> backgrounds = new ArrayList<String>();
+	
 	//Animate click delay
 	private static final int CLICK_DELAY = 7;
 	int clickDelay = 0;
@@ -81,34 +81,12 @@ public class MainMenu extends GuiScreen {
 		splashText = new GenericLabel(getSplashText());
 		fastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
 		fastLogin.setVisible(ConfigReader.fastLogin);
-		timeOfDay = getTimeFolder();
+		
+		updateBackgrounds();
 
 		Holiday holiday = Resources.getHoliday();
 		if (holiday != null) {
 			splashText.setText(holiday.getSplash());
-		}
-
-		int picture = 1;
-		int pass = 0;
-		StringBuilder builder = new StringBuilder();
-		backgrounds = new ArrayList<String>();
-		while (true) {
-			builder.append("/res/background/");
-			builder.append(timeOfDay);
-			builder.append("/");
-			builder.append(timeOfDay);
-			builder.append(picture);
-			builder.append(pass == 0 ? ".png" : ".jpg");
-			if (CustomTextureManager.getTextureFromJar(builder.toString()) != null) {
-				backgrounds.add(builder.toString());
-				picture++;
-				pass = 0;
-			} else if (pass == 0) {
-				pass++;
-			} else {
-				break;
-			}
-			builder.setLength(0); //reset
 		}
 
 		//Randomize background order
@@ -128,6 +106,37 @@ public class MainMenu extends GuiScreen {
 		}
 
 		background = new BackgroundTexture(backgrounds);
+	}
+	
+	private static void updateBackgrounds() {
+		if(!timeOfDay.equals(getTimeFolder())) {
+			timeOfDay = getTimeFolder();			
+		} else {
+			return;
+		}
+		
+		int picture = 1;
+		int pass = 0;
+		StringBuilder builder = new StringBuilder();
+		backgrounds.clear();
+		while (true) {
+			builder.append("/res/background/");
+			builder.append(timeOfDay);
+			builder.append("/");
+			builder.append(timeOfDay);
+			builder.append(picture);
+			builder.append(pass == 0 ? ".png" : ".jpg");
+			if (CustomTextureManager.getTextureFromJar(builder.toString()) != null) {
+				backgrounds.add(builder.toString());
+				picture++;
+				pass = 0;
+			} else if (pass == 0) {
+				pass++;
+			} else {
+				break;
+			}
+			builder.setLength(0); //reset
+		}
 	}
 
 	private static String getSplashText() {
