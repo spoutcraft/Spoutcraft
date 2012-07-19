@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.Shaders;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -134,7 +135,10 @@ public class WorldRenderer {
 
 			blockRenderer.customIds = customBlockIds;
 
-			for (int renderPass = 0; renderPass < skipRenderPass.length; ++renderPass) {
+			int limit = skipRenderPass.length;
+			if(!Shaders.isEnabled())
+				limit--;
+			for (int renderPass = 0; renderPass < limit; ++renderPass) {  //Spout - 3 passes for shaders, 2 without
 				
 				boolean skipRenderPass = false;
 				boolean rendered = false;

@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL12;
 //Spout start
 import org.spoutcraft.client.config.ConfigReader;
 import com.pclewis.mcpatcher.mod.Colorizer;
+import com.pclewis.mcpatcher.mod.Shaders;
 //Spout end
 
 public class RenderBlocks {
@@ -4013,7 +4014,8 @@ public class RenderBlocks {
 	}
 
 	public void renderBottomFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4099,7 +4101,8 @@ public class RenderBlocks {
 	}
 
 	public void renderTopFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4185,7 +4188,8 @@ public class RenderBlocks {
 	}
 
 	public void renderEastFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4278,7 +4282,8 @@ public class RenderBlocks {
 	}
 
 	public void renderWestFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4371,7 +4376,8 @@ public class RenderBlocks {
 	}
 
 	public void renderNorthFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
@@ -4464,7 +4470,8 @@ public class RenderBlocks {
 	}
 
 	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
+		if(Shaders.isEnabled())
+			Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;

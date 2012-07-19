@@ -288,13 +288,15 @@ public class Tessellator {
 
 	public void addVertex(double par1, double par3, double par5) {
 		//Spout start
-		if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
-			this.rawBuffer[rawBufferIndex+6] = rawBuffer[rawBufferIndex - 18];
-			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
-			this.rawBuffer[this.rawBufferIndex + 14] = this.rawBuffer[this.rawBufferIndex + -2];
+		if(Shaders.isEnabled()) {
+			if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
+				this.rawBuffer[rawBufferIndex+6] = rawBuffer[rawBufferIndex - 18];
+				this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+				this.rawBuffer[this.rawBufferIndex + 14] = this.rawBuffer[this.rawBufferIndex + -2];
+				this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+			}
 			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
 		}
-		this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
 		//Spout end
 		
 		++this.addedVertices;
