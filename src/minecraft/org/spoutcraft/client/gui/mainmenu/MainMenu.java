@@ -394,7 +394,7 @@ class BackgroundTexture extends GenericTexture {
 			if (ConfigReader.animateMainMenu) {
 				animate(tex);
 			} else {
-				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight(), white, false, -1, -1, false, GL11.LINEAR);
+				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
 			}
 		}
 		GL11.glPopMatrix();
@@ -416,7 +416,7 @@ class BackgroundTexture extends GenericTexture {
 
 		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.LINEAR);
+		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.GL_LINEAR);
 
 		if (zoomIn && panTime < maxPanTime) {
 			panTime++;
