@@ -666,24 +666,25 @@ public class MCRenderDelegate implements RenderDelegate {
 		drawTexture(usedTexture, 20, 20, blend);
 	}
 
+	private static final Color white = new Color(1.0F, 1.0F, 1.0F);
 	public void drawTexture(Texture textureBinding, int width, int height) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, -1, -1, false);
+		drawTexture(textureBinding, width, height, white, false, -1, -1, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, int left, int top) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), false, left, top, false);
+		drawTexture(textureBinding, width, height, white, false, left, top, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, -1, -1, false);
+		drawTexture(textureBinding, width, height, white, blend, -1, -1, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, false);
+		drawTexture(textureBinding, width, height, white, blend, left, top, false);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, boolean blend, int left, int top, boolean mipmap) {
-		drawTexture(textureBinding, width, height, new Color(1.0F, 1.0F, 1.0F), blend, left, top, mipmap);
+		drawTexture(textureBinding, width, height, white, blend, left, top, mipmap);
 	}
 
 	public void drawTexture(Texture textureBinding, int width, int height, Color color) {
@@ -697,8 +698,12 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
 		drawTexture(textureBinding, width, height, color, blend, -1, -1, false);
 	}
-
+	
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top, boolean mipmap) {
+		drawTexture(textureBinding, width, height, color, blend, left, top, mipmap, GL11.GL_NEAREST);
+	}
+
+	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top, boolean mipmap, int filter) {
 		if (textureBinding == null) {
 			return;
 		}
@@ -712,8 +717,8 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glDepthMask(false);
 		bindColor(color);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureBinding.getTextureID());
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
 		if (mipmap) {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL12.GL_TEXTURE_MAX_LOD, 8);
