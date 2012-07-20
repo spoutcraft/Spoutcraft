@@ -394,12 +394,13 @@ class BackgroundTexture extends GenericTexture {
 			if (ConfigReader.animateMainMenu) {
 				animate(tex);
 			} else {
-				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight());
+				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight(), white, false, -1, -1, false, GL11.LINEAR);
 			}
 		}
 		GL11.glPopMatrix();
 	}
 
+	private static final Color white = new Color(1.0F, 1.0F, 1.0F);
 	private void animate(org.newdawn.slick.opengl.Texture tex) {
 		int adjustedX = ((100 - HEIGHT_PERCENT) / 2) * tex.getImageHeight() * panTime;
 		adjustedX /= maxPanTime;
@@ -415,7 +416,7 @@ class BackgroundTexture extends GenericTexture {
 
 		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, false, -1, -1, mipmap);
+		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.LINEAR);
 
 		if (zoomIn && panTime < maxPanTime) {
 			panTime++;
