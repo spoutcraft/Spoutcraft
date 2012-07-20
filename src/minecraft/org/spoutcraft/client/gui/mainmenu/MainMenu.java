@@ -416,7 +416,7 @@ class BackgroundTexture extends GenericTexture {
 
 		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.GL_NEAREST_MIPMAP_NEAREST);
+		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.GL_NEAREST);
 
 		if (zoomIn && panTime < maxPanTime) {
 			panTime++;
