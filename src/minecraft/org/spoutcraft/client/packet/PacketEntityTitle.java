@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.SpoutcraftWorld;
@@ -55,6 +56,13 @@ public class PacketEntityTitle implements SpoutPacket {
 		Entity e = SpoutClient.getInstance().getEntityFromId(entityId);
 		if (e != null && e instanceof EntityLiving) {
 			LivingEntity living = (LivingEntity)e.spoutEntity;
+			//Check to see if this title is our username, if so, use defaults
+			if (e instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer)e;
+				if (player.vip != null && title.equals(player.username)) {
+					title = player.vip.getTitle();	
+				}
+			}
 			if (title.equals("reset")) {
 				living.resetTitle();
 				SpoutcraftWorld spworld = (SpoutcraftWorld) living.getWorld();
