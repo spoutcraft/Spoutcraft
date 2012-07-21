@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 //Spout Start
+import java.io.File;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
@@ -185,7 +186,20 @@ public class GuiChat extends GuiScreen
 		if (var4 != null) {
 			URI var5 = var4.func_50089_b();
 			if (var5 != null) {
-				this.mc.displayGuiScreen(new GuiURLConfirm(this, var4.func_50088_a(), var5));
+				//Spout start
+				//Check if screenshot
+				if (var4.getMessage().startsWith("Saved screenshot as")) {
+					String fileName = var4.func_50088_a();
+					File screenshotsDir = new File(Minecraft.getMinecraftDir(), "screenshots");
+					File screenshot = new File(screenshotsDir, fileName);
+					try {
+						Desktop.getDesktop().open(screenshot);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					this.mc.displayGuiScreen(new GuiURLConfirm(this, var4.func_50088_a(), var5));
+				}
 				return;
 			}
 		}
