@@ -106,7 +106,7 @@ public class RenderPlayer extends RenderLiving {
 	}
 
 	protected void renderName(EntityPlayer var1, double var2, double var4, double var6) {
-		if(Minecraft.isGuiEnabled() && (var1 != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null)) {
+		if(Minecraft.isGuiEnabled() && (var1 != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {
 			float var8 = 1.6F;
 			float var9 = 0.016666668F * var8;
 			float var10 = var1.getDistanceToEntity(this.renderManager.livingPlayer);
