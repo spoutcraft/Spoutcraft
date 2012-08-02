@@ -50,7 +50,7 @@ public class BiomeDecorator {
 		this.ironGen = new WorldGenMinable(Block.oreIron.blockID, 8);
 		this.goldGen = new WorldGenMinable(Block.oreGold.blockID, 8);
 		this.redstoneGen = new WorldGenMinable(Block.oreRedstone.blockID, 7);
-		this.diamondGen = new WorldGenMinable(Block.oreDiamond.blockID, 7);
+		this.diamondGen = new WorldGenMinable(Block.field_72073_aw.blockID, 7);
 		this.lapisGen = new WorldGenMinable(Block.oreLapis.blockID, 6);
 		this.plantYellowGen = new WorldGenFlowers(Block.plantYellow.blockID);
 		this.plantRedGen = new WorldGenFlowers(Block.plantRed.blockID);
@@ -158,7 +158,7 @@ public class BiomeDecorator {
 			var3 = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
 			var4 = this.randomGenerator.nextInt(128);
 			var7 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
-			WorldGenerator var6 = this.biome.func_48410_b(this.randomGenerator);
+			WorldGenerator var6 = this.biome.getRandomWorldGenForGrass(this.randomGenerator);
 			var6.generate(this.currentWorld, this.randomGenerator, var3, var4, var7);
 		}
 
