@@ -1,8 +1,10 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
+
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -40,16 +42,17 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4) {
-		return par1World.isBlockNormalCube(par2, par3 - 1, par4) || par1World.getBlockId(par2, par3 - 1, par4) == Block.glowStone.blockID;
+		return par1World.func_72797_t(par2, par3 - 1, par4) || par1World.getBlockId(par2, par3 - 1, par4) == Block.glowStone.blockID;
 	}
 
 	private void updateAndPropagateCurrentStrength(World par1World, int par2, int par3, int par4) {
 		this.calculateCurrentChanges(par1World, par2, par3, par4, par2, par3, par4);
 		ArrayList var5 = new ArrayList(this.blocksNeedingUpdate);
 		this.blocksNeedingUpdate.clear();
+		Iterator var6 = var5.iterator();
 
-		for (int var6 = 0; var6 < var5.size(); ++var6) {
-			ChunkPosition var7 = (ChunkPosition)var5.get(var6);
+		while (var6.hasNext()) {
+			ChunkPosition var7 = (ChunkPosition)var6.next();
 			par1World.notifyBlocksOfNeighborChange(var7.x, var7.y, var7.z, this.blockID);
 		}
 	}
@@ -217,8 +220,8 @@ public class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {
-		super.onBlockRemoval(par1World, par2, par3, par4);
+	public void func_71852_a(World par1World, int par2, int par3, int par4, int par5, int par6) {
+		super.func_71852_a(par1World, par2, par3, par4, par5, par6);
 		if (!par1World.isRemote) {
 			par1World.notifyBlocksOfNeighborChange(par2, par3 + 1, par4, this.blockID);
 			par1World.notifyBlocksOfNeighborChange(par2, par3 - 1, par4, this.blockID);
@@ -262,7 +265,7 @@ public class BlockRedstoneWire extends Block {
 			return par5;
 		} else {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
-			return var6 > par5?var6:par5;
+			return var6 > par5 ? var6 : par5;
 		}
 	}
 
@@ -270,11 +273,12 @@ public class BlockRedstoneWire extends Block {
 		if (!par1World.isRemote) {
 			int var6 = par1World.getBlockMetadata(par2, par3, par4);
 			boolean var7 = this.canPlaceBlockAt(par1World, par2, par3, par4);
-			if (!var7) {
+
+			if (var7) {
+				this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
+			} else {
 				this.dropBlockAsItem(par1World, par2, par3, par4, var6, 0);
 				par1World.setBlockWithNotify(par2, par3, par4, 0);
-			} else {
-				this.updateAndPropagateCurrentStrength(par1World, par2, par3, par4);
 			}
 
 			super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
@@ -286,7 +290,7 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	public boolean isIndirectlyPoweringTo(World par1World, int par2, int par3, int par4, int par5) {
-		return !this.wiresProvidePower?false:this.isPoweringTo(par1World, par2, par3, par4, par5);
+		return !this.wiresProvidePower ? false : this.isPoweringTo(par1World, par2, par3, par4, par5);
 	}
 
 	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
@@ -319,7 +323,7 @@ public class BlockRedstoneWire extends Block {
 				}
 			}
 
-			return !var8 && !var7 && !var6 && !var9 && par5 >= 2 && par5 <= 5?true:(par5 == 2 && var8 && !var6 && !var7?true:(par5 == 3 && var9 && !var6 && !var7?true:(par5 == 4 && var6 && !var8 && !var9?true:par5 == 5 && var7 && !var8 && !var9)));
+			return !var8 && !var7 && !var6 && !var9 && par5 >= 2 && par5 <= 5 ? true : (par5 == 2 && var8 && !var6 && !var7 ? true : (par5 == 3 && var9 && !var6 && !var7 ? true : (par5 == 4 && var6 && !var8 && !var9 ? true : par5 == 5 && var7 && !var8 && !var9)));
 		}
 	}
 
@@ -390,5 +394,9 @@ public class BlockRedstoneWire extends Block {
 				return false;
 			}
 		}
+	}
+
+	public int func_71922_a(World par1World, int par2, int par3, int par4) {
+		return Item.redstone.shiftedIndex;
 	}
 }

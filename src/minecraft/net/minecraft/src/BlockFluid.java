@@ -9,7 +9,7 @@ import com.pclewis.mcpatcher.mod.Colorizer;
 
 public abstract class BlockFluid extends Block {
 	protected BlockFluid(int par1, Material par2Material) {
-		super(par1, (par2Material == Material.lava?14:12) * 16 + 13, par2Material);
+		super(par1, (par2Material == Material.lava ? 14 : 12) * 16 + 13, par2Material);
 		float var3 = 0.0F;
 		float var4 = 0.0F;
 		this.setBlockBounds(0.0F + var4, 0.0F + var3, 0.0F + var4, 1.0F + var4, 1.0F + var3, 1.0F + var4);
@@ -63,16 +63,15 @@ public abstract class BlockFluid extends Block {
 			par0 = 0;
 		}
 
-		float var1 = (float)(par0 + 1) / 9.0F;
-		return var1;
+		return (float)(par0 + 1) / 9.0F;
 	}
 
 	public int getBlockTextureFromSide(int par1) {
-		return par1 != 0 && par1 != 1?this.blockIndexInTexture + 1:this.blockIndexInTexture;
+		return par1 != 0 && par1 != 1 ? this.blockIndexInTexture + 1 : this.blockIndexInTexture;
 	}
 
 	protected int getFlowDecay(World par1World, int par2, int par3, int par4) {
-		return par1World.getBlockMaterial(par2, par3, par4) != this.blockMaterial?-1:par1World.getBlockMetadata(par2, par3, par4);
+		return par1World.getBlockMaterial(par2, par3, par4) == this.blockMaterial ? par1World.getBlockMetadata(par2, par3, par4) : -1;
 	}
 
 	protected int getEffectiveFlowDecay(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -102,12 +101,12 @@ public abstract class BlockFluid extends Block {
 
 	public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
-		return var6 == this.blockMaterial?false:(par5 == 1?true:(var6 == Material.ice?false:super.isBlockSolid(par1IBlockAccess, par2, par3, par4, par5)));
+		return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false : super.isBlockSolid(par1IBlockAccess, par2, par3, par4, par5)));
 	}
 
 	public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
 		Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3, par4);
-		return var6 == this.blockMaterial?false:(par5 == 1?true:(var6 == Material.ice?false:super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
+		return var6 == this.blockMaterial ? false : (par5 == 1 ? true : (var6 == Material.ice ? false:super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5)));
 	}
 
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
@@ -127,7 +126,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	private Vec3D getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		Vec3D var5 = Vec3D.createVector(0.0D, 0.0D, 0.0D);
+		Vec3D var5 = Vec3D.func_72437_a().func_72345_a(0.0D, 0.0D, 0.0D);
 		int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
 		for (int var7 = 0; var7 < 4; ++var7) {
@@ -216,7 +215,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	public int tickRate() {
-		return this.blockMaterial == Material.water?5:(this.blockMaterial == Material.lava?30:0);
+		return this.blockMaterial == Material.water ? 5 : (this.blockMaterial == Material.lava ? 30 : 0);
 	}
 
 	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -226,7 +225,7 @@ public abstract class BlockFluid extends Block {
 		int var8 = var6 & 255;
 		int var9 = var5 >> 16 & 255;
 		int var10 = var6 >> 16 & 255;
-		return (var7 > var8?var7:var8) | (var9 > var10?var9:var10) << 16;
+		return (var7 > var8 ? var7 : var8) | (var9 > var10 ? var9 : var10) << 16;
 	}
 
 	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -240,7 +239,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	public int getRenderBlockPass() {
-		return this.blockMaterial == Material.water?1:0;
+		return this.blockMaterial == Material.water ? 1 : 0;
 	}
 
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
@@ -320,7 +319,7 @@ public abstract class BlockFluid extends Block {
 		if (this.blockMaterial == Material.water && par5Random.nextInt(64) == 0) {
 			var6 = par1World.getBlockMetadata(par2, par3, par4);
 			if (var6 > 0 && var6 < 8) {
-				par1World.playSoundEffect((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+				par1World.func_72980_b((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
 			}
 		}
 
@@ -333,15 +332,15 @@ public abstract class BlockFluid extends Block {
 				var22 = (double)par3 + this.maxY;
 				var23 = (double)((float)par4 + par5Random.nextFloat());
 				par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
-				par1World.playSoundEffect(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.func_72980_b(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
 			}
 
 			if (par5Random.nextInt(200) == 0) {
-				par1World.playSoundEffect((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.func_72980_b((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
 			}
 		}
 
-		if (par5Random.nextInt(10) == 0 && par1World.isBlockNormalCube(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement()) {
+		if (par5Random.nextInt(10) == 0 && par1World.func_72797_t(par2, par3 - 1, par4) && !par1World.getBlockMaterial(par2, par3 - 2, par4).blocksMovement()) {
 			var21 = (double)((float)par2 + par5Random.nextFloat());
 			var22 = (double)par3 - 1.05D;
 			var23 = (double)((float)par4 + par5Random.nextFloat());
@@ -353,7 +352,7 @@ public abstract class BlockFluid extends Block {
 		}
 	}
 
-	public static double func_293_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material) {
+	public static double func_72204_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material) {
 		Vec3D var5 = null;
 		if (par4Material == Material.water) {
 			var5 = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
@@ -363,7 +362,7 @@ public abstract class BlockFluid extends Block {
 			var5 = ((BlockFluid)Block.lavaMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
 		}
 
-		return var5.xCoord == 0.0D && var5.zCoord == 0.0D?-1000.0D:Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
+		return var5.xCoord == 0.0D && var5.zCoord == 0.0D ? -1000.0D : Math.atan2(var5.zCoord, var5.xCoord) - (Math.PI / 2D);
 	}
 
 	public void onBlockAdded(World par1World, int par2, int par3, int par4) {

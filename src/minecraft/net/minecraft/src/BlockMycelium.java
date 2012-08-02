@@ -7,10 +7,11 @@ public class BlockMycelium extends Block {
 		super(par1, Material.grass);
 		this.blockIndexInTexture = 77;
 		this.setTickRandomly(true);
+		this.func_71849_a(CreativeTabs.field_78030_b);
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return par1 == 1?78:(par1 == 0?2:77);
+		return par1 == 1 ? 78 : (par1 == 0 ? 2 : 77);
 	}
 
 	public int getBlockTexture(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
@@ -20,7 +21,7 @@ public class BlockMycelium extends Block {
 			return 2;
 		} else {
 			Material var6 = par1IBlockAccess.getBlockMaterial(par2, par3 + 1, par4);
-			return var6 != Material.snow && var6 != Material.craftedSnow?77:68;
+			return var6 != Material.snow && var6 != Material.craftedSnow ? 77 : 68;
 		}
 	}
 

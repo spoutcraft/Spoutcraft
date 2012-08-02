@@ -11,6 +11,7 @@ public class BlockTrapDoor extends Block {
 		float var3 = 0.5F;
 		float var4 = 1.0F;
 		this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, var4, 0.5F + var3);
+		this.func_71849_a(CreativeTabs.field_78028_d);
 	}
 
 	public boolean isOpaqueCube() {
@@ -71,15 +72,15 @@ public class BlockTrapDoor extends Block {
 	}
 
 	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
-		this.blockActivated(par1World, par2, par3, par4, par5EntityPlayer);
+		this.func_71903_a(par1World, par2, par3, par4, par5EntityPlayer, 0, 0.0F, 0.0F, 0.0F);
 	}
 
-	public boolean blockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {
+	public boolean func_71903_a(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9) {
 		if (this.blockMaterial == Material.iron) {
 			return true;
 		} else {
-			int var6 = par1World.getBlockMetadata(par2, par3, par4);
-			par1World.setBlockMetadataWithNotify(par2, par3, par4, var6 ^ 4);
+			int var10 = par1World.getBlockMetadata(par2, par3, par4);
+			par1World.setBlockMetadataWithNotify(par2, par3, par4, var10 ^ 4);
 			par1World.playAuxSFXAtEntity(par5EntityPlayer, 1003, par2, par3, par4, 0);
 			return true;
 		}
@@ -132,25 +133,26 @@ public class BlockTrapDoor extends Block {
 		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3D, par6Vec3D);
 	}
 
-	public void onBlockPlaced(World par1World, int par2, int par3, int par4, int par5) {
-		byte var6 = 0;
+	public void func_71909_a(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8) {
+		byte var9 = 0;
+
 		if (par5 == 2) {
-			var6 = 0;
+			var9 = 0;
 		}
 
 		if (par5 == 3) {
-			var6 = 1;
+			var9 = 1;
 		}
 
 		if (par5 == 4) {
-			var6 = 2;
+			var9 = 2;
 		}
 
 		if (par5 == 5) {
-			var6 = 3;
+			var9 = 3;
 		}
 
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, var6);
+		par1World.setBlockMetadataWithNotify(par2, par3, par4, var9);
 	}
 
 	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5) {

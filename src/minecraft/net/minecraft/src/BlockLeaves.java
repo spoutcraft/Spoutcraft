@@ -1,17 +1,21 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
+
+import java.util.List;
 import java.util.Random;
 
 public class BlockLeaves extends BlockLeavesBase {
 
 	private int baseIndexInPNG;
+	public static final String[] field_72136_a = new String[] {"oak", "spruce", "birch", "jungle"};
 	int[] adjacentTreeBlocks;
 
 	protected BlockLeaves(int par1, int par2) {
 		super(par1, par2, Material.leaves, false);
 		this.baseIndexInPNG = par2;
 		this.setTickRandomly(true);
+		this.func_71849_a(CreativeTabs.field_78031_c);
 	}
 
 	public int getBlockColor() {
@@ -21,7 +25,7 @@ public class BlockLeaves extends BlockLeavesBase {
 	}
 
 	public int getRenderColor(int par1) {
-		return (par1 & 3) == 1?ColorizerFoliage.getFoliageColorPine():((par1 & 3) == 2?ColorizerFoliage.getFoliageColorBirch():ColorizerFoliage.getFoliageColorBasic());
+		return (par1 & 3) == 1 ? ColorizerFoliage.getFoliageColorPine() : ((par1 & 3) == 2 ? ColorizerFoliage.getFoliageColorBirch() : ColorizerFoliage.getFoliageColorBasic());
 	}
 
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
@@ -48,17 +52,19 @@ public class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	public void onBlockRemoval(World par1World, int par2, int par3, int par4) {
-		byte var5 = 1;
-		int var6 = var5 + 1;
-		if (par1World.checkChunksExist(par2 - var6, par3 - var6, par4 - var6, par2 + var6, par3 + var6, par4 + var6)) {
-			for (int var7 = -var5; var7 <= var5; ++var7) {
-				for (int var8 = -var5; var8 <= var5; ++var8) {
-					for (int var9 = -var5; var9 <= var5; ++var9) {
-						int var10 = par1World.getBlockId(par2 + var7, par3 + var8, par4 + var9);
-						if (var10 == Block.leaves.blockID) {
-							int var11 = par1World.getBlockMetadata(par2 + var7, par3 + var8, par4 + var9);
-							par1World.setBlockMetadata(par2 + var7, par3 + var8, par4 + var9, var11 | 8);
+	public void func_71852_a(World par1World, int par2, int par3, int par4, int par5, int par6) {
+		byte var7 = 1;
+		int var8 = var7 + 1;
+
+		if (par1World.checkChunksExist(par2 - var8, par3 - var8, par4 - var8, par2 + var8, par3 + var8, par4 + var8)) {
+			for (int var9 = -var7; var9 <= var7; ++var9) {
+				for (int var10 = -var7; var10 <= var7; ++var10) {
+					for (int var11 = -var7; var11 <= var7; ++var11) {
+						int var12 = par1World.getBlockId(par2 + var9, par3 + var10, par4 + var11);
+
+						if (var12 == Block.leaves.blockID) {
+							int var13 = par1World.getBlockMetadata(par2 + var9, par3 + var10, par4 + var11);
+							par1World.setBlockMetadata(par2 + var9, par3 + var10, par4 + var11, var13 | 8);
 						}
 					}
 				}
@@ -144,13 +150,22 @@ public class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
+		if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.func_72797_t(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1) {
+			double var6 = (double)((float)par2 + par5Random.nextFloat());
+			double var8 = (double)par3 - 0.05D;
+			double var10 = (double)((float)par4 + par5Random.nextFloat());
+			par1World.spawnParticle("dripWater", var6, var8, var10, 0.0D, 0.0D, 0.0D);
+		}
+	}
+
 	private void removeLeaves(World par1World, int par2, int par3, int par4) {
 		this.dropBlockAsItem(par1World, par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4), 0);
 		par1World.setBlockWithNotify(par2, par3, par4, 0);
 	}
 
 	public int quantityDropped(Random par1Random) {
-		return par1Random.nextInt(20) == 0?1:0;
+		return par1Random.nextInt(20) == 0 ? 1 : 0;
 	}
 
 	public int idDropped(int par1, Random par2Random, int par3) {
@@ -193,15 +208,18 @@ public class BlockLeaves extends BlockLeavesBase {
 	}
 
 	public int getBlockTextureFromSideAndMetadata(int par1, int par2) {
-		return (par2 & 3) == 1?this.blockIndexInTexture + 80:((par2 & 3) == 3?this.blockIndexInTexture + 144:this.blockIndexInTexture);
+		return (par2 & 3) == 1 ? this.blockIndexInTexture + 80 : ((par2 & 3) == 3 ? this.blockIndexInTexture + 144 : this.blockIndexInTexture);
 	}
 
 	public void setGraphicsLevel(boolean par1) {
 		this.graphicsLevel = par1;
-		this.blockIndexInTexture = this.baseIndexInPNG + (par1?0:1);
+		this.blockIndexInTexture = this.baseIndexInPNG + (par1 ? 0 : 1);
 	}
 
-	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) {
-		super.onEntityWalking(par1World, par2, par3, par4, par5Entity);
+	public void func_71879_a(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
 	}
 }

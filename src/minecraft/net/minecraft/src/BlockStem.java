@@ -12,6 +12,7 @@ public class BlockStem extends BlockFlower {
 		this.setTickRandomly(true);
 		float var3 = 0.125F;
 		this.setBlockBounds(0.5F - var3, 0.0F, 0.5F - var3, 0.5F + var3, 0.25F, 0.5F + var3);
+		this.func_71849_a((CreativeTabs)null);
 	}
 
 	protected boolean canThisPlantGrowOnThisBlockID(int par1) {
@@ -146,9 +147,9 @@ public class BlockStem extends BlockFlower {
 		return 19;
 	}
 
-	public int func_35296_f(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+	public int getState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
-		return var5 < 7?-1:(par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == this.fruitType.blockID?0:(par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == this.fruitType.blockID?1:(par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == this.fruitType.blockID?2:(par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == this.fruitType.blockID?3:-1))));
+		return var5 < 7 ? -1 : (par1IBlockAccess.getBlockId(par2 - 1, par3, par4) == this.fruitType.blockID ? 0 : (par1IBlockAccess.getBlockId(par2 + 1, par3, par4) == this.fruitType.blockID ? 1 : (par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == this.fruitType.blockID ? 2 : (par1IBlockAccess.getBlockId(par2, par3, par4 + 1) == this.fruitType.blockID?3:-1))));
 	}
 
 	public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7) {
@@ -178,14 +179,14 @@ public class BlockStem extends BlockFlower {
 	}
 
 	public int idDropped(int par1, Random par2Random, int par3) {
-		if (par1 == 7) {
-			;
-		}
-
 		return -1;
 	}
 
 	public int quantityDropped(Random par1Random) {
 		return 1;
+	}
+
+	public int func_71922_a(World par1World, int par2, int par3, int par4) {
+		return this.fruitType == Block.pumpkin ? Item.pumpkinSeeds.shiftedIndex : (this.fruitType == Block.melon ? Item.melonSeeds.shiftedIndex : 0);
 	}
 }

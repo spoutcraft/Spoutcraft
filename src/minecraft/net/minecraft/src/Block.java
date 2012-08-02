@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import gnu.trove.map.hash.TIntFloatHashMap;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.spoutcraft.client.block.SpoutcraftChunk;
