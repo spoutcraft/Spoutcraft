@@ -15,13 +15,13 @@ public class WorldProviderHell extends WorldProvider {
 		this.worldType = -1;
 	}
 
-	public Vec3D getFogColor(float par1, float par2) {
+	public Vec3 getFogColor(float par1, float par2) {
 		// Spout Start
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if (fogColor != null) {
-			return Vec3D.createVector(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
+			return Vec3.func_72437_a().func_72345_a(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3D.createVector((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+			return Vec3.func_72437_a().func_72345_ar((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
 		}
 		// Spout End
 	}
@@ -39,7 +39,7 @@ public class WorldProviderHell extends WorldProvider {
 		return new ChunkProviderHell(this.worldObj, this.worldObj.getSeed());
 	}
 
-	public boolean func_48217_e() {
+	public boolean isSurfaceWorld() {
 		return false;
 	}
 
@@ -55,7 +55,7 @@ public class WorldProviderHell extends WorldProvider {
 		return false;
 	}
 
-	public boolean func_48218_b(int par1, int par2) {
+	public boolean func_76568_b(int par1, int par2) {
 		return true;
 	}
 }

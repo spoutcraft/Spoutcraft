@@ -40,7 +40,7 @@ public abstract class WorldProvider {
 	}
 
 	public IChunkProvider getChunkProvider() {
-		return (IChunkProvider)(this.terrainType == WorldType.FLAT?new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()):new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
+		return (IChunkProvider)(this.terrainType == WorldType.FLAT ? new ChunkProviderFlat(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()) : new ChunkProviderGenerate(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled()));
 	}
 
 	public boolean canCoordinateBeSpawn(int par1, int par2) {
@@ -69,7 +69,7 @@ public abstract class WorldProvider {
 		return (int)(par1 / 24000L) % 8;
 	}
 
-	public boolean func_48217_e() {
+	public boolean isSurfaceWorld() {
 		return true;
 	}
 
@@ -91,7 +91,7 @@ public abstract class WorldProvider {
 		}
 	}
 
-	public Vec3D getFogColor(float par1, float par2) {
+	public Vec3 getFogColor(float par1, float par2) {
 		float var3 = MathHelper.cos(par1 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
 		if (var3 < 0.0F) {
 			var3 = 0.0F;
@@ -124,7 +124,7 @@ public abstract class WorldProvider {
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;
-		return Vec3D.createVector((double)var4, (double)var5, (double)var6);
+		return Vec3.func_72437_a().func_72345_a((double)var4, (double)var5, (double)var6);
 	}
 
 	public boolean canRespawnHere() {
@@ -132,7 +132,7 @@ public abstract class WorldProvider {
 	}
 
 	public static WorldProvider getProviderForDimension(int par0) {
-		return (WorldProvider)(par0 == -1?new WorldProviderHell():(par0 == 0?new WorldProviderSurface():(par0 == 1?new WorldProviderEnd():null)));
+		return (WorldProvider)(par0 == -1?new WorldProviderHell():(par0 == 0 ? new WorldProviderSurface() : (par0 == 1 ? new WorldProviderEnd() : null)));
 	}
 
 	public float getCloudHeight() {
@@ -148,18 +148,18 @@ public abstract class WorldProvider {
 	}
 
 	public int getAverageGroundLevel() {
-		return this.terrainType == WorldType.FLAT?4:64;
+		return this.terrainType == WorldType.FLAT ? 4 : 64;
 	}
 
-	public boolean getWorldHasNoSky() {
+	public boolean getWorldHasVoidParticles() {
 		return this.terrainType != WorldType.FLAT && !this.hasNoSky;
 	}
 
 	public double getVoidFogYFactor() {
-		return this.terrainType == WorldType.FLAT?1.0D:0.03125D;
+		return this.terrainType == WorldType.FLAT ? 1.0D : 0.03125D;
 	}
 
-	public boolean func_48218_b(int par1, int par2) {
+	public boolean func_76568_b(int par1, int par2) {
 		return false;
 	}
 }
