@@ -25,7 +25,9 @@ public interface IBlockAccess {
 
 	int getHeight();
 
-	boolean func_48452_a();
+	boolean func_72806_N();
+
+	boolean func_72797_t(int var1, int var2, int var3);
 
 	// Spout start
 	public int getGrassColorCache(int x, int y, int z);
