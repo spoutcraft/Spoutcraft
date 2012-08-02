@@ -43,11 +43,11 @@ public class SoundPool {
 
 	public SoundPoolEntry getRandomSoundFromSoundPool(String par1Str) {
 		List var2 = (List)this.nameToSoundPoolEntriesMapping.get(par1Str);
-		return var2 == null?null:(SoundPoolEntry)var2.get(this.rand.nextInt(var2.size()));
+		return var2 == null ? null : (SoundPoolEntry)var2.get(this.rand.nextInt(var2.size()));
 	}
 
 	public SoundPoolEntry getRandomSound() {
-		return this.allSoundPoolEntries.size() == 0?null:(SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
+		return this.allSoundPoolEntries.isEmpty() ? null : (SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
 	}
 
 	//Spout Start

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
+import java.util.IllegalFormatException;
 import java.util.Properties;
 import java.util.TreeMap;
 
@@ -15,9 +16,9 @@ public class StringTranslate {
 	private String currentLanguage;
 	private boolean isUnicode;
 
-	private StringTranslate() {
+	public StringTranslate(String par1Str) {
 		this.loadLanguageList();
-		this.setLanguage("en_US");
+		this.setLanguage(par1Str);
 	}
 
 	public static StringTranslate getInstance() {
@@ -42,6 +43,7 @@ public class StringTranslate {
 		}
 
 		this.languageList = var1;
+		this.languageList.put("en_US", "English (US)");
 	}
 
 	public TreeMap getLanguageList() {
@@ -118,14 +120,19 @@ public class StringTranslate {
 
 	public String translateKeyFormat(String par1Str, Object ... par2ArrayOfObj) {
 		String var3 = this.translateTable.getProperty(par1Str, par1Str);
-		return String.format(var3, par2ArrayOfObj);
-	}
+
+		try {
+			return String.format(var3, par2ArrayOfObj);
+		} catch (IllegalFormatException var5) {
+			return "Format error: " + var3;
+		}
+}
 
 	public String translateNamedKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str + ".name", "");
 	}
 
-	public static boolean isBidrectional(String par0Str) {
+	public static boolean isBidirectional(String par0Str) {
 		return "ar_SA".equals(par0Str) || "he_IL".equals(par0Str);
 	}
 
