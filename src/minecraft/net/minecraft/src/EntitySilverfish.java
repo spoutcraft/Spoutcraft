@@ -42,7 +42,7 @@ public class EntitySilverfish extends EntityMob {
 	}
 
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		if (this.allySummonCooldown <= 0 && par1DamageSource instanceof EntityDamageSource) {
+		if (this.allySummonCooldown <= 0 &&  (par1DamageSource instanceof EntityDamageSource || par1DamageSource == DamageSource.magic)) {
 			this.allySummonCooldown = 20;
 		}
 
@@ -92,9 +92,9 @@ public class EntitySilverfish extends EntityMob {
 					var3 = MathHelper.floor_double(this.posZ);
 					boolean var4 = false;
 
-					for (var5 = 0; !var4 && var5 <= 5 && var5 >= -5; var5 = var5 <= 0?1 - var5:0 - var5) {
-						for (int var6 = 0; !var4 && var6 <= 10 && var6 >= -10; var6 = var6 <= 0?1 - var6:0 - var6) {
-							for (int var7 = 0; !var4 && var7 <= 10 && var7 >= -10; var7 = var7 <= 0?1 - var7:0 - var7) {
+					for (var5 = 0; !var4 && var5 <= 5 && var5 >= -5; var5 = var5 <= 0 ? 1 - var5 : 0 - var5) {
+						for (int var6 = 0; !var4 && var6 <= 10 && var6 >= -10; var6 = var6 <= 0 ? 1 - var6 : 0 - var6) {
+							for (int var7 = 0; !var4 && var7 <= 10 && var7 >= -10; var7 = var7 <= 0 ? 1 - var7 : 0 - var7) {
 								int var8 = this.worldObj.getBlockId(var1 + var6, var2 + var5, var3 + var7);
 								if (var8 == Block.silverfish.blockID) {
 									this.worldObj.playAuxSFX(2001, var1 + var6, var2 + var5, var3 + var7, Block.silverfish.blockID + (this.worldObj.getBlockMetadata(var1 + var6, var2 + var5, var3 + var7) << 12));
@@ -131,7 +131,7 @@ public class EntitySilverfish extends EntityMob {
 	}
 
 	public float getBlockPathWeight(int par1, int par2, int par3) {
-		return this.worldObj.getBlockId(par1, par2 - 1, par3) == Block.stone.blockID?10.0F:super.getBlockPathWeight(par1, par2, par3);
+		return this.worldObj.getBlockId(par1, par2 - 1, par3) == Block.stone.blockID ? 10.0F : super.getBlockPathWeight(par1, par2, par3);
 	}
 
 	protected boolean isValidLightLevel() {

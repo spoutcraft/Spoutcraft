@@ -6,7 +6,7 @@ import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import org.spoutcraft.client.entity.CraftWaterMob; //Spout
 
-public abstract class EntityWaterMob extends EntityCreature {
+public abstract class EntityWaterMob extends EntityCreature implements IAnimals {
 
 	public EntityWaterMob(World par1World) {
 		super(par1World);
@@ -17,14 +17,6 @@ public abstract class EntityWaterMob extends EntityCreature {
 
 	public boolean canBreatheUnderwater() {
 		return true;
-	}
-
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-	}
-
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
 	}
 
 	public boolean getCanSpawnHere() {

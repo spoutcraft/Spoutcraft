@@ -14,13 +14,14 @@ import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
 //Spout End
 
-public abstract class EntityPlayer extends EntityLiving {
+public abstract class EntityPlayer extends EntityLiving implements ICommandSender {
 	public InventoryPlayer inventory = new InventoryPlayer(this);
+	private InventoryEnderChest field_71078_a = new InventoryEnderChest();
 	public Container inventorySlots;
 	public Container craftingInventory;
 	protected FoodStats foodStats = new FoodStats();
 	protected int flyToggleTimer = 0;
-	public byte field_9371_f = 0;
+	public byte field_71098_bD = 0;
 	public int score = 0;
 	public float prevCameraYaw;
 	public float cameraYaw;
@@ -30,18 +31,18 @@ public abstract class EntityPlayer extends EntityLiving {
 	public int dimension;
 	public String playerCloakUrl;
 	public int xpCooldown = 0;
-	public double field_20066_r;
-	public double field_20065_s;
-	public double field_20064_t;
-	public double field_20063_u;
-	public double field_20062_v;
-	public double field_20061_w;
+	public double field_71091_bM;
+	public double field_71096_bN;
+	public double field_71097_bO;
+	public double field_71094_bP;
+	public double field_71095_bQ;
+	public double field_71085_bR;
 	protected boolean sleeping;
 	public ChunkCoordinates playerLocation;
 	private int sleepTimer;
-	public float field_22063_x;
-	public float field_22062_y;
-	public float field_22061_z;
+	public float field_71079_bU;
+	public float field_71082_cx;
+	public float field_71089_bV;
 	private ChunkCoordinates spawnChunk;
 	private ChunkCoordinates startMinecartRidingCoordinate;
 	public int timeUntilPortal = 20;
@@ -75,7 +76,7 @@ public abstract class EntityPlayer extends EntityLiving {
 		ChunkCoordinates var2 = par1World.getSpawnPoint();
 		this.setLocationAndAngles((double)var2.posX + 0.5D, (double)(var2.posY + 1), (double)var2.posZ + 0.5D, 0.0F, 0.0F);
 		this.entityType = "humanoid";
-		this.field_9353_B = 180.0F;
+		this.field_70741_aB = 180.0F;
 		this.fireResistance = 20;
 		this.texture = "/mob/char.png";
 		//Spout start
@@ -106,7 +107,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public int getItemInUseDuration() {
-		return this.isUsingItem()?this.itemInUse.getMaxItemUseDuration() - this.itemInUseCount:0;
+		return this.isUsingItem() ? this.itemInUse.getMaxItemUseDuration() - this.itemInUseCount : 0;
 	}
 
 	public void stopUsingItem() {
@@ -132,9 +133,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	public void onUpdate() {
 		if (this.itemInUse != null) {
 			ItemStack var1 = this.inventory.getCurrentItem();
-			if (var1 != this.itemInUse) {
-				this.clearItemInUse();
-			} else {
+			if (var1 == this.itemInUse) {
 				if (this.itemInUseCount <= 25 && this.itemInUseCount % 4 == 0) {
 					this.updateItemUse(var1, 5);
 				}
@@ -142,6 +141,8 @@ public abstract class EntityPlayer extends EntityLiving {
 				if (--this.itemInUseCount == 0 && !this.worldObj.isRemote) {
 					this.onItemUseFinish();
 				}
+			} else  {
+				this.clearItemInUse();
 			}
 		}
 
@@ -185,40 +186,41 @@ public abstract class EntityPlayer extends EntityLiving {
 			this.extinguish();
 		}
 
-		this.field_20066_r = this.field_20063_u;
-		this.field_20065_s = this.field_20062_v;
-		this.field_20064_t = this.field_20061_w;
-		double var10 = this.posX - this.field_20063_u;
-		double var3 = this.posY - this.field_20062_v;
-		double var5 = this.posZ - this.field_20061_w;
+		this.field_71091_bM = this.field_71094_bP;
+		this.field_71096_bN = this.field_71095_bQ;
+		this.field_71097_bO = this.field_71085_bR;
+		double var9 = this.posX - this.field_71094_bP;
+		double var3 = this.posY - this.field_71095_bQ;
+		double var5 = this.posZ - this.field_71085_bR;
 		double var7 = 10.0D;
-		if (var10 > var7) {
-			this.field_20066_r = this.field_20063_u = this.posX;
+
+		if (var9 > var7) {
+			this.field_71091_bM = this.field_71094_bP = this.posX;
 		}
 
 		if (var5 > var7) {
-			this.field_20064_t = this.field_20061_w = this.posZ;
+			this.field_71097_bO = this.field_71085_bR = this.posZ;
 		}
 
 		if (var3 > var7) {
-			this.field_20065_s = this.field_20062_v = this.posY;
+			this.field_71096_bN = this.field_71095_bQ = this.posY;
 		}
 
-		if (var10 < -var7) {
-			this.field_20066_r = this.field_20063_u = this.posX;
+		if (var9 < -var7) {
+			this.field_71091_bM = this.field_71094_bP = this.posX;
 		}
 
 		if (var5 < -var7) {
-			this.field_20064_t = this.field_20061_w = this.posZ;
+			this.field_71097_bO = this.field_71085_bR = this.posZ;
 		}
 
 		if (var3 < -var7) {
-			this.field_20065_s = this.field_20062_v = this.posY;
+			this.field_71096_bN = this.field_71095_bQ = this.posY;
 		}
 
-		this.field_20063_u += var10 * 0.25D;
-		this.field_20061_w += var5 * 0.25D;
-		this.field_20062_v += var3 * 0.25D;
+		this.field_71094_bP += var9 * 0.25D;
+		this.field_71085_bR += var5 * 0.25D;
+		this.field_71095_bQ += var3 * 0.25D;
 		this.addStat(StatList.minutesPlayedStat, 1);
 		if (this.ridingEntity == null) {
 			this.startMinecartRidingCoordinate = null;
@@ -236,10 +238,10 @@ public abstract class EntityPlayer extends EntityLiving {
 
 		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
 			for (int var3 = 0; var3 < par2; ++var3) {
-				Vec3D var4 = Vec3D.createVector(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+				Vec3 var4 = Vec3.func_72437_a().func_72345_a((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 				var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-				Vec3D var5 = Vec3D.createVector(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+				Vec3 var5 = Vec3.func_72437_a().func_72345_a((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
@@ -325,7 +327,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	private int getSwingSpeedModifier() {
-		return this.isPotionActive(Potion.digSpeed)?6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1:(this.isPotionActive(Potion.digSlowdown)?6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2:6);
+		return this.isPotionActive(Potion.digSpeed) ? 6 - (1 + this.getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1 : (this.isPotionActive(Potion.digSlowdown) ? 6 + (1 + this.getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2 : 6);
 	}
 
 	protected void updateEntityActionState() {
@@ -355,10 +357,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		this.inventory.decrementAnimations();
 		this.prevCameraYaw = this.cameraYaw;
 		super.onLivingUpdate();
-		this.landMovementFactor = this.speedOnGround;
+		this.landMovementFactor = this.capabilities.func_75094_b();
 		this.jumpMovementFactor = this.speedInAir;
 		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { //Spout no sprinting while moving backwards
-			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.speedOnGround * 0.3D);
+			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.capabilities.func_75094_b() * 0.3D);
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
 
@@ -381,8 +383,11 @@ public abstract class EntityPlayer extends EntityLiving {
 		if (this.getHealth() > 0) {
 			List var3 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 0.0D, 1.0D));
 			if (var3 != null) {
-				for (int var4 = 0; var4 < var3.size(); ++var4) {
-					Entity var5 = (Entity)var3.get(var4);
+				Iterator var4 = var3.iterator();
+
+				while (var4.hasNext()) {
+					Entity var5 = (Entity)var4.next();
+
 					if (!var5.isDead) {
 						this.collideWithPlayer(var5);
 					}
@@ -431,7 +436,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	protected int decreaseAirSupply(int par1) {
 		int var2 = EnchantmentHelper.getRespiration(this.inventory);
-		return var2 > 0 && this.rand.nextInt(var2 + 1) > 0?par1:super.decreaseAirSupply(par1);
+		return var2 > 0 && this.rand.nextInt(var2 + 1) > 0 ? par1 : super.decreaseAirSupply(par1);
 	}
 
 	public EntityItem dropOneItem() {
@@ -481,29 +486,29 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public float getCurrentPlayerStrVsBlock(Block par1Block) {
 		float var2 = this.inventory.getStrVsBlock(par1Block);
-		float var3 = var2;
-		int var4 = EnchantmentHelper.getEfficiencyModifier(this.inventory);
-		if (var4 > 0 && this.inventory.canHarvestBlock(par1Block)) {
-			var3 = var2 + (float)(var4 * var4 + 1);
+		int var3 = EnchantmentHelper.getEfficiencyModifier(this.inventory);
+
+		if (var3 > 0 && this.inventory.canHarvestBlock(par1Block)) {
+			var2 += (float)(var3 * var3 + 1);
 		}
 
 		if (this.isPotionActive(Potion.digSpeed)) {
-			var3 *= 1.0F + (float)(this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
+			var2 *= 1.0F + (float)(this.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1) * 0.2F;
 		}
 
 		if (this.isPotionActive(Potion.digSlowdown)) {
-			var3 *= 1.0F - (float)(this.getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
+			var2 *= 1.0F - (float)(this.getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
 		}
 
 		if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this.inventory)) {
-			var3 /= 5.0F;
+			var2 /= 5.0F;
 		}
 
 		if (!this.onGround) {
-			var3 /= 5.0F;
+			var2 /= 5.0F;
 		}
 
-		return var3;
+		return var2;
 	}
 
 	public boolean canHarvestBlock(Block par1Block) {
@@ -531,6 +536,11 @@ public abstract class EntityPlayer extends EntityLiving {
 
 		this.foodStats.readNBT(par1NBTTagCompound);
 		this.capabilities.readCapabilitiesFromNBT(par1NBTTagCompound);
+
+		if (par1NBTTagCompound.hasKey("EnderItems")) {
+			NBTTagList var3 = par1NBTTagCompound.getTagList("EnderItems");
+			this.field_71078_a.func_70486_a(var3);
+		}
 	}
 
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
@@ -550,6 +560,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 		this.foodStats.writeNBT(par1NBTTagCompound);
 		this.capabilities.writeCapabilitiesToNBT(par1NBTTagCompound);
+		par1NBTTagCompound.setTag("EnderItems", this.field_71078_a.func_70487_g());
 	}
 
 	public void displayGUIChest(IInventory par1IInventory) {}
@@ -581,7 +592,7 @@ public abstract class EntityPlayer extends EntityLiving {
 				}
 
 				Entity var3 = par1DamageSource.getEntity();
-				if (var3 instanceof EntityMob || var3 instanceof EntityArrow) {
+				if (par1DamageSource.func_76350_n()) {
 					if (this.worldObj.difficultySetting == 0) {
 						par2 = 0;
 					}
@@ -598,9 +609,10 @@ public abstract class EntityPlayer extends EntityLiving {
 				if (par2 == 0) {
 					return false;
 				} else {
-					Entity var4 = var3;
-					if (var3 instanceof EntityArrow && ((EntityArrow)var3).shootingEntity != null) {
-						var4 = ((EntityArrow)var3).shootingEntity;
+					Entity var4 = par1DamageSource.getEntity();
+
+					if (var4 instanceof EntityArrow && ((EntityArrow)var4).shootingEntity != null) {
+						var4 = ((EntityArrow)var4).shootingEntity;
 					}
 
 					if (var4 instanceof EntityLiving) {
@@ -649,15 +661,15 @@ public abstract class EntityPlayer extends EntityLiving {
 			}
 
 			if (!(par1EntityLiving instanceof EntityPlayer) || this.isPVPEnabled()) {
-				List var7 = this.worldObj.getEntitiesWithinAABB(EntityWolf.class, AxisAlignedBB.getBoundingBoxFromPool(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
-				Iterator var4 = var7.iterator();
+				List var6 = this.worldObj.getEntitiesWithinAABB(EntityWolf.class, AxisAlignedBB.func_72332_a().func_72299_a(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
+				Iterator var4 = var6.iterator();
 
 				while (var4.hasNext()) {
-					Entity var5 = (Entity)var4.next();
-					EntityWolf var6 = (EntityWolf)var5;
-					if (var6.isTamed() && var6.getEntityToAttack() == null && this.username.equals(var6.getOwnerName()) && (!par2 || !var6.isSitting())) {
-						var6.func_48140_f(false);
-						var6.setTarget(par1EntityLiving);
+					EntityWolf var5 = (EntityWolf)var4.next();
+
+					if (var5.isTamed() && var5.getEntityToAttack() == null && this.username.equals(var5.getOwnerName()) && (!par2 || !var5.isSitting())) {
+						var5.setSitting(false);
+						var5.setTarget(par1EntityLiving);
 					}
 				}
 			}
@@ -691,16 +703,31 @@ public abstract class EntityPlayer extends EntityLiving {
 
 	public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand) {}
 
-	public void useCurrentItemOnEntity(Entity par1Entity) {
-		if (!par1Entity.interact(this)) {
+	public void func_71030_a(IMerchant par1IMerchant) {}
+
+	public void func_71048_c(ItemStack par1ItemStack) {}
+
+	public boolean func_70998_m(Entity par1Entity) {
+		if (par1Entity.interact(this)) {
+			return true;
+		} else {
 			ItemStack var2 = this.getCurrentEquippedItem();
+
 			if (var2 != null && par1Entity instanceof EntityLiving) {
-				var2.useItemOnEntity((EntityLiving)par1Entity);
-				if (var2.stackSize <= 0) {
-					var2.onItemDestroyedByUse(this);
-					this.destroyCurrentEquippedItem();
+				if (this.capabilities.isCreativeMode) {
+					var2 = var2.copy();
+				}
+
+				if (var2.func_77947_a((EntityLiving)par1Entity)) {
+					if (var2.stackSize <= 0 && !this.capabilities.isCreativeMode) {
+						this.destroyCurrentEquippedItem();
+					}
+
+					return true;
 				}
 			}
+
+			return false;
 		}
 	}
 
@@ -824,13 +851,17 @@ public abstract class EntityPlayer extends EntityLiving {
 		return !this.sleeping && super.isEntityInsideOpaqueBlock();
 	}
 
+	public boolean func_71066_bF() {
+		return false;
+	}
+
 	public EnumStatus sleepInBedAt(int par1, int par2, int par3) {
 		if (!this.worldObj.isRemote) {
 			if (this.isPlayerSleeping() || !this.isEntityAlive()) {
 				return EnumStatus.OTHER_PROBLEM;
 			}
 
-			if (!this.worldObj.worldProvider.func_48217_e()) {
+			if (!this.worldObj.worldProvider.isSurfaceWorld()) {
 				return EnumStatus.NOT_POSSIBLE_HERE;
 			}
 
@@ -844,7 +875,7 @@ public abstract class EntityPlayer extends EntityLiving {
 
 			double var4 = 8.0D;
 			double var6 = 5.0D;
-			List var8 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getBoundingBoxFromPool((double)par1 - var4, (double)par2 - var6, (double)par3 - var4, (double)par1 + var4, (double)par2 + var6, (double)par3 + var4));
+			List var8 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.func_72332_a().func_72299_a((double)par1 - var4, (double)par2 - var6, (double)par3 - var4, (double)par1 + var4, (double)par2 + var6, (double)par3 + var4));
 			if (!var8.isEmpty()) {
 				return EnumStatus.NOT_SAFE;
 			}
@@ -858,20 +889,20 @@ public abstract class EntityPlayer extends EntityLiving {
 			float var10 = 0.5F;
 			float var7 = 0.5F;
 			switch(var5) {
-			case 0:
-				var7 = 0.9F;
-				break;
-			case 1:
-				var10 = 0.1F;
-				break;
-			case 2:
-				var7 = 0.1F;
-				break;
-			case 3:
-				var10 = 0.9F;
+				case 0:
+					var7 = 0.9F;
+					break;
+				case 1:
+					var10 = 0.1F;
+					break;
+				case 2:
+					var7 = 0.1F;
+					break;
+				case 3:
+					var10 = 0.9F;
 			}
 
-			this.func_22052_e(var5);
+			this.func_71013_b(var5);
 			this.setPosition((double)((float)par1 + var10), (double)((float)par2 + 0.9375F), (double)((float)par3 + var7));
 		} else {
 			this.setPosition((double)((float)par1 + 0.5F), (double)((float)par2 + 0.9375F), (double)((float)par3 + 0.5F));
@@ -888,21 +919,25 @@ public abstract class EntityPlayer extends EntityLiving {
 		return EnumStatus.OK;
 	}
 
-	private void func_22052_e(int par1) {
-		this.field_22063_x = 0.0F;
-		this.field_22061_z = 0.0F;
-		switch(par1) {
-		case 0:
-			this.field_22061_z = -1.8F;
-			break;
-		case 1:
-			this.field_22063_x = 1.8F;
-			break;
-		case 2:
-			this.field_22061_z = 1.8F;
-			break;
-		case 3:
-			this.field_22063_x = -1.8F;
+	private void func_71013_b(int par1) {
+		this.field_71079_bU = 0.0F;
+		this.field_71089_bV = 0.0F;
+
+		switch (par1) {
+			case 0:
+				this.field_71089_bV = -1.8F;
+				break;
+
+			case 1:
+				this.field_71079_bU = 1.8F;
+				break;
+
+			case 2:
+				this.field_71089_bV = 1.8F;
+				break;
+
+			case 3:
+				this.field_71079_bU = -1.8F;
 		}
 	}
 
@@ -959,15 +994,19 @@ public abstract class EntityPlayer extends EntityLiving {
 		if (this.playerLocation != null) {
 			int var1 = this.worldObj.getBlockMetadata(this.playerLocation.posX, this.playerLocation.posY, this.playerLocation.posZ);
 			int var2 = BlockBed.getDirection(var1);
-			switch(var2) {
-			case 0:
-				return 90.0F;
-			case 1:
-				return 0.0F;
-			case 2:
-				return 270.0F;
-			case 3:
-				return 180.0F;
+
+			switch (var2) {
+				case 0:
+					return 90.0F;
+
+				case 1:
+					return 0.0F;
+
+				case 2:
+					return 270.0F;
+
+				case 3:
+					return 180.0F;
 			}
 		}
 
@@ -1020,10 +1059,10 @@ public abstract class EntityPlayer extends EntityLiving {
 		double var3 = this.posX;
 		double var5 = this.posY;
 		double var7 = this.posZ;
-		if (this.capabilities.isFlying) {
+		if (this.capabilities.isFlying && this.ridingEntity == null) {
 			double var9 = this.motionY;
 			float var11 = this.jumpMovementFactor;
-			this.jumpMovementFactor = 0.05F;
+			this.jumpMovementFactor =this.capabilities.func_75093_a();
 			//Spout start
 			jumpMovementFactor *= ConfigReader.flightSpeedMultiplier;
 			if (this.isSprinting()) {
@@ -1086,7 +1125,7 @@ public abstract class EntityPlayer extends EntityLiving {
 					this.addStat(StatList.distanceByMinecartStat, var7);
 					if (this.startMinecartRidingCoordinate == null) {
 						this.startMinecartRidingCoordinate = new ChunkCoordinates(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
-					} else if (this.startMinecartRidingCoordinate.getEuclideanDistanceTo(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) >= 1000.0D) {
+					} else if ((double)this.startMinecartRidingCoordinate.getDistanceSquared(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) >= 1000000.0D) {
 						this.addStat(AchievementList.onARail, 1);
 					}
 				} else if (this.ridingEntity instanceof EntityBoat) {
@@ -1119,8 +1158,8 @@ public abstract class EntityPlayer extends EntityLiving {
 		if (par1ItemStack.itemID == Item.fishingRod.shiftedIndex && this.fishEntity != null) {
 			var3 = par1ItemStack.getIconIndex() + 16;
 		} else {
-			if (par1ItemStack.getItem().func_46058_c()) {
-				return par1ItemStack.getItem().func_46057_a(par1ItemStack.getItemDamage(), par2);
+			if (par1ItemStack.getItem().requiresMultipleRenderPasses()) {
+				return par1ItemStack.getItem().getIconFromDamageForRenderPass(par1ItemStack.getItemDamage(), par2);
 			}
 
 			if (this.itemInUse != null && par1ItemStack.itemID == Item.bow.shiftedIndex) {
@@ -1173,7 +1212,7 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public int xpBarCap() {
-		return 7 + (this.experienceLevel * 7 >> 1);
+		return this.experienceLevel >= 30 ? 62 + (this.experienceLevel - 30) * 7 : (this.experienceLevel >= 15 ? 17 + (this.experienceLevel - 15) * 3 : 17);
 	}
 
 	private void increaseLevel() {
@@ -1211,28 +1250,36 @@ public abstract class EntityPlayer extends EntityLiving {
 	}
 
 	public boolean canPlayerEdit(int par1, int par2, int par3) {
-		return true;
+		return this.capabilities.field_75099_e;
 	}
 
 	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
 		int var2 = this.experienceLevel * 7;
-		return var2 > 100?100:var2;
+		return var2 > 100 ? 100 : var2;
 	}
 
 	protected boolean isPlayer() {
 		return true;
 	}
 
+	public String func_70023_ak() {
+		return this.username;
+	}
+
 	public void travelToTheEnd(int par1) {}
 
-	public void copyPlayer(EntityPlayer par1EntityPlayer) {
-		this.inventory.copyInventory(par1EntityPlayer.inventory);
-		this.health = par1EntityPlayer.health;
-		this.foodStats = par1EntityPlayer.foodStats;
-		this.experienceLevel = par1EntityPlayer.experienceLevel;
-		this.experienceTotal = par1EntityPlayer.experienceTotal;
-		this.experience = par1EntityPlayer.experience;
-		this.score = par1EntityPlayer.score;
+	public void func_71049_a(EntityPlayer par1EntityPlayer, boolean par2) {
+		if (par2) {
+			this.inventory.copyInventory(par1EntityPlayer.inventory);
+			this.health = par1EntityPlayer.health;
+			this.foodStats = par1EntityPlayer.foodStats;
+			this.experienceLevel = par1EntityPlayer.experienceLevel;
+			this.experienceTotal = par1EntityPlayer.experienceTotal;
+			this.experience = par1EntityPlayer.experience;
+			this.score = par1EntityPlayer.score;
+		}
+
+		this.field_71078_a = par1EntityPlayer.field_71078_a;
 	}
 	//Spout added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
@@ -1269,5 +1316,24 @@ public abstract class EntityPlayer extends EntityLiving {
 		return !this.capabilities.isFlying;
 	}
 
-	public void func_50009_aI() {}
+	public void func_71016_p() {}
+
+	public void func_71033_a(EnumGameType par1EnumGameType) {}
+
+	public String func_70005_c_() {
+		return this.username;
+	}
+
+	public StringTranslate func_71025_t() {
+		return StringTranslate.getInstance();
+	}
+
+	public String func_70004_a(String par1Str, Object ... par2ArrayOfObj) {
+		return this.func_71025_t().translateKeyFormat(par1Str, par2ArrayOfObj);
+	}
+
+	public InventoryEnderChest func_71005_bN() {
+		return this.field_71078_a;
+	}
+}
 }

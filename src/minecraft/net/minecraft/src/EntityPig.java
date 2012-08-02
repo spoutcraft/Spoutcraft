@@ -6,7 +6,7 @@ public class EntityPig extends EntityAnimal {
 		super(par1World);
 		this.texture = "/mob/pig.png";
 		this.setSize(0.9F, 0.9F);
-		this.getNavigator().func_48664_a(true);
+		this.getNavigator().setAvoidsWater(true);
 		float var2 = 0.25F;
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
@@ -68,7 +68,19 @@ public class EntityPig extends EntityAnimal {
 	}
 
 	protected int getDropItemId() {
-		return this.isBurning()?Item.porkCooked.shiftedIndex:Item.porkRaw.shiftedIndex;
+		return this.isBurning() ? Item.porkCooked.shiftedIndex : Item.porkRaw.shiftedIndex;
+	}
+
+	protected void dropFewItems(boolean par1, int par2) {
+		int var3 = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);
+
+		for (int var4 = 0; var4 < var3; ++var4) {
+			if (this.isBurning()) {
+				this.dropItem(Item.porkCooked.shiftedIndex, 1);
+			} else {
+				this.dropItem(Item.porkRaw.shiftedIndex, 1);
+			}
+		}
 	}
 
 	public boolean getSaddled() {

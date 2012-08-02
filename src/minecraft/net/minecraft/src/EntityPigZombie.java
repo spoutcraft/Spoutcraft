@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftPigZombie;
@@ -26,7 +27,7 @@ public class EntityPigZombie extends EntityZombie {
 	}
 
 	public void onUpdate() {
-		this.moveSpeed = this.entityToAttack != null?0.95F:0.5F;
+		this.moveSpeed = this.entityToAttack != null ? 0.95F : 0.5F;
 		if (this.randomSoundDelay > 0 && --this.randomSoundDelay == 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.zombiepig.zpigangry", this.getSoundVolume() * 2.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 1.8F);
 		}
@@ -35,7 +36,7 @@ public class EntityPigZombie extends EntityZombie {
 	}
 
 	public boolean getCanSpawnHere() {
-		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox);
+		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
 	}
 
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
@@ -49,7 +50,7 @@ public class EntityPigZombie extends EntityZombie {
 	}
 
 	protected Entity findPlayerToAttack() {
-		return this.angerLevel == 0?null:super.findPlayerToAttack();
+		return this.angerLevel == 0 ? null : super.findPlayerToAttack();
 	}
 
 	public void onLivingUpdate() {
@@ -60,9 +61,10 @@ public class EntityPigZombie extends EntityZombie {
 		Entity var3 = par1DamageSource.getEntity();
 		if (var3 instanceof EntityPlayer) {
 			List var4 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(32.0D, 32.0D, 32.0D));
+			Iterator var5 = var4.iterator();
 
-			for (int var5 = 0; var5 < var4.size(); ++var5) {
-				Entity var6 = (Entity)var4.get(var5);
+			while (var5.hasNext()) {
+				Entity var6 = (Entity)var5.next();
 				if (var6 instanceof EntityPigZombie) {
 					EntityPigZombie var7 = (EntityPigZombie)var6;
 					var7.becomeAngryAt(var3);
@@ -95,8 +97,8 @@ public class EntityPigZombie extends EntityZombie {
 
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(2 + par2);
-
 		int var4;
+
 		for (var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.rottenFlesh.shiftedIndex, 1);
 		}
@@ -111,7 +113,7 @@ public class EntityPigZombie extends EntityZombie {
 	protected void dropRareDrop(int par1) {
 		if (par1 > 0) {
 			ItemStack var2 = new ItemStack(Item.swordGold);
-			EnchantmentHelper.func_48441_a(this.rand, var2, 5);
+			EnchantmentHelper.func_77504_a(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
 		} else {
 			int var3 = this.rand.nextInt(3);

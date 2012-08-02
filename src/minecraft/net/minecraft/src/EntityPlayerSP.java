@@ -24,7 +24,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	public float renderArmPitch;
 	public float prevRenderArmYaw;
 	public float prevRenderArmPitch;
-	private MouseFilter field_21903_bJ = new MouseFilter();
+	private MouseFilter field_71162_ch = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
 	//Spout start
@@ -89,7 +89,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			--this.sprintToggleTimer;
 		}
 
-		if (this.mc.playerController.func_35643_e()) {
+		if (this.mc.field_71442_b.func_78747_a()) {
 			this.posX = this.posZ = 0.5D;
 			this.posX = 0.0D;
 			this.posZ = 0.0D;
@@ -102,12 +102,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 
 			this.prevTimeInPortal = this.timeInPortal;
-			boolean var1;
 			if (this.inPortal) {
-				if (!this.worldObj.isRemote && this.ridingEntity != null) {
-					this.mountEntity((Entity)null);
-				}
-
 				if (this.mc.currentScreen != null) {
 					this.mc.displayGuiScreen((GuiScreen)null);
 				}
@@ -119,20 +114,6 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.timeInPortal += 0.0125F;
 				if (this.timeInPortal >= 1.0F) {
 					this.timeInPortal = 1.0F;
-					if (!this.worldObj.isRemote) {
-						this.timeUntilPortal = 10;
-						this.mc.sndManager.playSoundFX("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-						var1 = false;
-						byte var5;
-						if (this.dimension == -1) {
-							var5 = 0;
-						} else {
-							var5 = -1;
-						}
-
-						this.mc.usePortal(var5);
-						this.triggerAchievement(AchievementList.portal);
-					}
 				}
 
 				this.inPortal = false;
@@ -159,10 +140,10 @@ public class EntityPlayerSP extends EntityPlayer {
 			boolean wasFlightUp = movementInput.flyingUp;
 			//Spout end
 
-			var1 = this.movementInput.jump;
+			boolean var1 = this.movementInput.jump;
 			float var2 = 0.8F;
 			boolean var3 = this.movementInput.moveForward >= var2;
-			this.movementInput.func_52013_a(this); //Spout - kept parameter
+			this.movementInput.updatePlayerMoveState(this); //Spout - kept parameter
 			if (this.isUsingItem()) {
 				this.movementInput.moveStrafe *= 0.2F;
 				this.movementInput.moveForward *= 0.2F;
@@ -177,7 +158,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ - (double)this.width * 0.35D);
 			this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.boundingBox.minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-			boolean var4 = (float)this.getFoodStats().getFoodLevel() > 6.0F;
+			boolean var4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 			if (this.onGround && !var3 && this.movementInput.moveForward >= var2 && !this.isSprinting() && var4 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
 				if (this.sprintToggleTimer == 0) {
 					this.sprintToggleTimer = 7;
@@ -200,7 +181,7 @@ public class EntityPlayerSP extends EntityPlayer {
 					this.flyToggleTimer = 7;
 				} else {
 					this.capabilities.isFlying = !this.capabilities.isFlying;
-					this.func_50009_aI();
+					this.func_71016_p();
 					this.flyToggleTimer = 0;
 				}
 			}
@@ -220,7 +201,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			super.onLivingUpdate();
 			if (this.onGround && this.capabilities.isFlying) {
 				this.capabilities.isFlying = false;
-				this.func_50009_aI();
+				this.func_71016_p();
 			}
 		}
 	}
@@ -278,6 +259,16 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen((GuiScreen)null);
 	}
 
+	public void func_71048_c(ItemStack par1ItemStack) {
+		Item var2 = par1ItemStack.getItem();
+
+		if (var2 == Item.field_77823_bG) {
+			this.mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, false));
+		} else if (var2 == Item.field_77821_bF) {
+			this.mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, true));
+		}
+	}
+
 	public void displayGUIEditSign(TileEntitySign par1TileEntitySign) {
 		this.mc.displayGuiScreen(new GuiEditSign(par1TileEntitySign));
 	}
@@ -306,17 +297,21 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiDispenser(this.inventory, par1TileEntityDispenser));
 	}
 
+	public void func_71030_a(IMerchant par1IMerchant) {
+		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj));
+	}
+
 	public void onCriticalHit(Entity par1Entity) {
-		this.mc.effectRenderer.addEffect(new EntityCrit2FX(this.mc.theWorld, par1Entity));
+		this.mc.effectRenderer.addEffect(new EntityCrit2FX(this.mc.field_71441_e, par1Entity));
 	}
 
 	public void onEnchantmentCritical(Entity par1Entity) {
-		EntityCrit2FX var2 = new EntityCrit2FX(this.mc.theWorld, par1Entity, "magicCrit");
+		EntityCrit2FX var2 = new EntityCrit2FX(this.mc.field_71441_e, par1Entity, "magicCrit");
 		this.mc.effectRenderer.addEffect(var2);
 	}
 
 	public void onItemPickup(Entity par1Entity, int par2) {
-		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, par1Entity, this, -0.5F));
+		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.field_71441_e, par1Entity, this, -0.5F));
 	}
 
 	public void sendChatMessage(String par1Str) {}
@@ -333,7 +328,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.heartsLife = this.heartsHalvesLife / 2;
 			}
 		} else {
-			this.lastDamage = var2; // Spout naturalArmorRating -> lastDamage
+			this.lastDamage = var2;
 			this.setEntityHealth(this.getHealth());
 			this.heartsLife = this.heartsHalvesLife;
 			this.damageEntity(DamageSource.generic, var2);
@@ -348,7 +343,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	public void func_6420_o() {}
 
 	public void addChatMessage(String par1Str) {
-		this.mc.ingameGUI.addChatMessageTranslate(par1Str);
+		this.mc.ingameGUI.func_73827_b().func_73757_a(par1Str, new Object[0]);
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {
@@ -432,7 +427,7 @@ public class EntityPlayerSP extends EntityPlayer {
 
 	public void setSprinting(boolean par1) {
 		super.setSprinting(par1);
-		this.sprintingTicksLeft = par1?600:0;
+		this.sprintingTicksLeft = par1 ? 600 : 0;
 	}
 
 	public void setXPStats(float par1, int par2, int par3) {
@@ -440,8 +435,16 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.experienceTotal = par2;
 		this.experienceLevel = par3;
 	}
+
+	public void func_70006_a(String par1Str) {
+		this.mc.ingameGUI.func_73827_b().func_73765_a(par1Str);
+	}
+
+	public boolean func_70003_b(String par1Str) {
+		return this.worldObj.getWorldInfo().func_76086_u();
+	}
 	
-	//Spout
+	//Spout                                                                                                N
 	public boolean canSprint() {
 		return this.getFoodStats().getFoodLevel() > 6.0F;
 	}

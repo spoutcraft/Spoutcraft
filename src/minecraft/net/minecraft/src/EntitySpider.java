@@ -18,14 +18,10 @@ public class EntitySpider extends EntityMob {
 		this.dataWatcher.addObject(16, new Byte((byte)0));
 	}
 
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-	}
-
 	public void onUpdate() {
 		super.onUpdate();
 		if (!this.worldObj.isRemote) {
-			this.func_40148_a(this.isCollidedHorizontally);
+			this.setBesideClimbableBlock(this.isCollidedHorizontally);
 		}
 	}
 
@@ -83,14 +79,6 @@ public class EntitySpider extends EntityMob {
 		}
 	}
 
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-	}
-
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-	}
-
 	protected int getDropItemId() {
 		return Item.silk.shiftedIndex;
 	}
@@ -103,7 +91,7 @@ public class EntitySpider extends EntityMob {
 	}
 
 	public boolean isOnLadder() {
-		return this.func_40149_l_();
+		return this.isBesideClimbableBlock();
 	}
 
 	public void setInWeb() {}
@@ -117,14 +105,14 @@ public class EntitySpider extends EntityMob {
 	}
 
 	public boolean isPotionApplicable(PotionEffect par1PotionEffect) {
-		return par1PotionEffect.getPotionID() == Potion.poison.id?false:super.isPotionApplicable(par1PotionEffect);
+		return par1PotionEffect.getPotionID() == Potion.poison.id ? false : super.isPotionApplicable(par1PotionEffect);
 	}
 
-	public boolean func_40149_l_() {
+	public boolean isBesideClimbableBlock() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
-	public void func_40148_a(boolean par1) {
+	public void setBesideClimbableBlock(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 		if (par1) {
 			var2 = (byte)(var2 | 1);

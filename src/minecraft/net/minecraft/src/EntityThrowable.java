@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class EntityThrowable extends Entity {
@@ -39,8 +40,8 @@ public abstract class EntityThrowable extends Entity {
 		float var3 = 0.4F;
 		this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
 		this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI) * var3);
-		this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_40074_d()) / 180.0F * (float)Math.PI) * var3);
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_40077_c(), 1.0F);
+		this.motionY = (double)(-MathHelper.sin((this.rotationPitch + this.func_70183_g()) / 180.0F * (float)Math.PI) * var3);
+		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, this.func_70182_d(), 1.0F);
 	}
 
 	public EntityThrowable(World par1World, double par2, double par4, double par6) {
@@ -51,11 +52,11 @@ public abstract class EntityThrowable extends Entity {
 		this.yOffset = 0.0F;
 	}
 
-	protected float func_40077_c() {
+	protected float func_70182_d() {
 		return 1.5F;
 	}
 
-	protected float func_40074_d() {
+	protected float func_70183_g() {
 		return 0.0F;
 	}
 
@@ -120,22 +121,25 @@ public abstract class EntityThrowable extends Entity {
 			++this.ticksInAir;
 		}
 
-		Vec3D var15 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-		Vec3D var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		Vec3 var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+		Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-		var15 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-		var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+		var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+
 		if (var3 != null) {
-			var2 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+			var2 = Vec3.func_72437_a().func_72345_a(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 		}
 
 		if (!this.worldObj.isRemote) {
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
+			Iterator var8 = var5.iterator();
 
-			for (int var8 = 0; var8 < var5.size(); ++var8) {
-				Entity var9 = (Entity)var5.get(var8);
+			while (var8.hasNext()) {
+				Entity var9 = (Entity)var8.next();
+
 				if (var9.canBeCollidedWith() && (var9 != this.thrower || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
@@ -184,7 +188,7 @@ public abstract class EntityThrowable extends Entity {
 		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 		float var17 = 0.99F;
-		float var18 = this.func_40075_e();
+		float var18 = this.getGravityVelocity();
 		if (this.isInWater()) {
 			for (int var7 = 0; var7 < 4; ++var7) {
 				float var19 = 0.25F;
@@ -201,7 +205,7 @@ public abstract class EntityThrowable extends Entity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
-	protected float func_40075_e() {
+	protected float getGravityVelocity() {
 		return 0.03F;
 	}
 
@@ -213,7 +217,7 @@ public abstract class EntityThrowable extends Entity {
 		par1NBTTagCompound.setShort("zTile", (short)this.zTile);
 		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
 		par1NBTTagCompound.setByte("shake", (byte)this.throwableShake);
-		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 	}
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -224,8 +228,6 @@ public abstract class EntityThrowable extends Entity {
 		this.throwableShake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
 	}
-
-	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {}
 
 	public float getShadowSize() {
 		return 0.0F;

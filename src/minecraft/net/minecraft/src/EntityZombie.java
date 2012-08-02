@@ -69,18 +69,18 @@ public class EntityZombie extends EntityMob {
 	}
 
 	protected void dropRareDrop(int par1) {
-		switch(this.rand.nextInt(4)) {
-		case 0:
-			this.dropItem(Item.swordSteel.shiftedIndex, 1);
-			break;
-		case 1:
-			this.dropItem(Item.helmetSteel.shiftedIndex, 1);
-			break;
-		case 2:
-			this.dropItem(Item.ingotIron.shiftedIndex, 1);
-			break;
-		case 3:
-			this.dropItem(Item.shovelSteel.shiftedIndex, 1);
-		}
+		switch (this.rand.nextInt(4)) {
+			case 0:
+				this.dropItem(Item.swordSteel.shiftedIndex, 1);
+				break;
+			case 1:
+				this.dropItem(Item.helmetSteel.shiftedIndex, 1);
+				break;
+			case 2:
+				this.dropItem(Item.ingotIron.shiftedIndex, 1);
+				break;
+			case 3:
+				this.dropItem(Item.shovelSteel.shiftedIndex, 1);
+			}
 	}
 }

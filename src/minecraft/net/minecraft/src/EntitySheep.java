@@ -16,7 +16,7 @@ public class EntitySheep extends EntityAnimal {
 		this.texture = "/mob/sheep.png";
 		this.setSize(0.9F, 1.3F);
 		float var2 = 0.23F;
-		this.getNavigator().func_48664_a(true);
+		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, var2));
@@ -36,7 +36,7 @@ public class EntitySheep extends EntityAnimal {
 	}
 
 	protected void updateAITasks() {
-		this.sheepTimer = this.aiEatGrass.func_48396_h();
+		this.sheepTimer = this.aiEatGrass.func_75362_f();
 		super.updateAITasks();
 	}
 
@@ -75,16 +75,16 @@ public class EntitySheep extends EntityAnimal {
 		}
 	}
 
-	public float func_44003_c(float par1) {
-		return this.sheepTimer <= 0?0.0F:(this.sheepTimer >= 4 && this.sheepTimer <= 36?1.0F:(this.sheepTimer < 4?((float)this.sheepTimer - par1) / 4.0F:-((float)(this.sheepTimer - 40) - par1) / 4.0F));
+	public float func_70894_j(float par1) {
+		return this.sheepTimer <= 0 ? 0.0F : (this.sheepTimer >= 4 && this.sheepTimer <= 36?1.0F:(this.sheepTimer < 4 ? ((float)this.sheepTimer - par1) / 4.0F : -((float)(this.sheepTimer - 40) - par1) / 4.0F));
 	}
 
-	public float func_44002_d(float par1) {
+	public float func_70890_k(float par1) {
 		if (this.sheepTimer > 4 && this.sheepTimer <= 36) {
 			float var2 = ((float)(this.sheepTimer - 4) - par1) / 32.0F;
 			return ((float)Math.PI / 5F) + ((float)Math.PI * 7F / 100F) * MathHelper.sin(var2 * 28.7F);
 		} else {
-			return this.sheepTimer > 0?((float)Math.PI / 5F):this.rotationPitch / (180F / (float)Math.PI);
+			return this.sheepTimer > 0 ? ((float)Math.PI / 5F) : this.rotationPitch / (180F / (float)Math.PI);
 		}
 	}
 
@@ -157,7 +157,7 @@ public class EntitySheep extends EntityAnimal {
 
 	public static int getRandomFleeceColor(Random par0Random) {
 		int var1 = par0Random.nextInt(100);
-		return var1 < 5?15:(var1 < 10?7:(var1 < 15?8:(var1 < 18?12:(par0Random.nextInt(500) == 0?6:0))));
+		return var1 < 5 ? 15 : (var1 < 10 ? 7 : (var1 < 15 ? 8 : (var1 < 18 ? 12 : (par0Random.nextInt(500) == 0 ? 6 : 0))));
 	}
 
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {

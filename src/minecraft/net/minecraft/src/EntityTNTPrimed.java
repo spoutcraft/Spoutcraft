@@ -64,11 +64,10 @@ public class EntityTNTPrimed extends Entity {
 		}
 
 		if (this.fuse-- <= 0) {
+			this.setDead();
+
 			if (!this.worldObj.isRemote) {
-				this.setDead();
 				this.explode();
-			} else {
-				this.setDead();
 			}
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);

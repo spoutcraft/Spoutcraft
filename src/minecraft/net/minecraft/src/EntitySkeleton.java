@@ -79,8 +79,8 @@ public class EntitySkeleton extends EntityMob {
 
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(3 + par2);
-
 		int var4;
+
 		for (var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.arrow.shiftedIndex, 1);
 		}
@@ -95,7 +95,7 @@ public class EntitySkeleton extends EntityMob {
 	protected void dropRareDrop(int par1) {
 		if (par1 > 0) {
 			ItemStack var2 = new ItemStack(Item.bow);
-			EnchantmentHelper.func_48441_a(this.rand, var2, 5);
+			EnchantmentHelper.func_77504_a(this.rand, var2, 5);
 			this.entityDropItem(var2, 0.0F);
 		} else {
 			this.dropItem(Item.bow.shiftedIndex, 1);

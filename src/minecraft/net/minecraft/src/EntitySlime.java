@@ -3,9 +3,9 @@ package net.minecraft.src;
 import org.spoutcraft.client.entity.CraftSlime;
 
 public class EntitySlime extends EntityLiving implements IMob {
-	public float field_40139_a;
-	public float field_768_a;
-	public float field_767_b;
+	public float field_70813_a;
+	public float field_70811_b;
+	public float field_70812_c;
 	private int slimeJumpDelay = 0;
 
 	public EntitySlime(World par1World) {
@@ -57,7 +57,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return "slime";
 	}
 
-	protected String func_40138_aj() {
+	protected String getJumpSound() {
 		return "mob.slime";
 	}
 
@@ -66,8 +66,8 @@ public class EntitySlime extends EntityLiving implements IMob {
 			this.isDead = true;
 		}
 
-		this.field_768_a += (this.field_40139_a - this.field_768_a) * 0.5F;
-		this.field_767_b = this.field_768_a;
+		this.field_70811_b += (this.field_70813_a - this.field_70811_b) * 0.5F;
+		this.field_70812_c = this.field_70811_b;
 		boolean var1 = this.onGround;
 		super.onUpdate();
 		if (this.onGround && !var1) {
@@ -81,11 +81,13 @@ public class EntitySlime extends EntityLiving implements IMob {
 				this.worldObj.spawnParticle(this.getSlimeParticle(), this.posX + (double)var6, this.boundingBox.minY, this.posZ + (double)var7, 0.0D, 0.0D, 0.0D);
 			}
 
-			if (this.func_40134_ak()) {
-				this.worldObj.playSoundAtEntity(this, this.func_40138_aj(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
+			if (this.makesSoundOnLand()) {
+				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) / 0.8F);
 			}
 
-			this.field_40139_a = -0.5F;
+			this.field_70813_a = -0.5F;
+		} else if (!this.onGround && var1) {
+			this.field_70813_a = 1.0F;
 		}
 
 		this.func_40136_ag();
@@ -99,14 +101,16 @@ public class EntitySlime extends EntityLiving implements IMob {
 		}
 
 		if (this.onGround && this.slimeJumpDelay-- <= 0) {
-			this.slimeJumpDelay = this.func_40131_af();
+			this.slimeJumpDelay = this.getJumpDelay();
+
 			if (var1 != null) {
 				this.slimeJumpDelay /= 3;
 			}
 
 			this.isJumping = true;
-			if (this.func_40133_ao()) {
-				this.worldObj.playSoundAtEntity(this, this.func_40138_aj(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+
+			if (this.makesSoundOnJump()) {
+				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 			}
 
 			this.field_40139_a = 1.0F;
@@ -120,11 +124,11 @@ public class EntitySlime extends EntityLiving implements IMob {
 		}
 	}
 
-	protected void func_40136_ag() {
-		this.field_40139_a *= 0.6F;
+	protected void func_70808_l() {
+		this.field_70813_a *= 0.6F;
 	}
 
-	protected int func_40131_af() {
+	protected int getJumpDelay() {
 		return this.rand.nextInt(20) + 10;
 	}
 
@@ -151,19 +155,19 @@ public class EntitySlime extends EntityLiving implements IMob {
 	}
 
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
-		if (this.func_40137_ah()) {
+		if (this.canDamagePlayer()) {
 			int var2 = this.getSlimeSize();
-			if (this.canEntityBeSeen(par1EntityPlayer) && (double)this.getDistanceToEntity(par1EntityPlayer) < 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.func_40130_ai())) {
+			if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.6D * (double)var2 * 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength())) {
 				this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
 	}
 
-	protected boolean func_40137_ah() {
+	protected boolean canDamagePlayer() {
 		return this.getSlimeSize() > 1;
 	}
 
-	protected int func_40130_ai() {
+	protected int getAttackStrength() {
 		return this.getSlimeSize();
 	}
 
@@ -176,12 +180,12 @@ public class EntitySlime extends EntityLiving implements IMob {
 	}
 
 	protected int getDropItemId() {
-		return this.getSlimeSize() == 1?Item.slimeBall.shiftedIndex:0;
+		return this.getSlimeSize() == 1 ? Item.slimeBall.shiftedIndex : 0;
 	}
 
 	public boolean getCanSpawnHere() {
 		Chunk var1 = this.worldObj.getChunkFromBlockCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
-		return (this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) && this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D?super.getCanSpawnHere():false;
+		return this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && this.rand.nextInt(4) != 1 ? false : ((this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) && this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D ? super.getCanSpawnHere() : false);
 	}
 
 	protected float getSoundVolume() {
@@ -192,11 +196,11 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return 0;
 	}
 
-	protected boolean func_40133_ao() {
+	protected boolean makesSoundOnJump() {
 		return this.getSlimeSize() > 1;
 	}
 
-	protected boolean func_40134_ak() {
+	protected boolean makesSoundOnLand() {
 		return this.getSlimeSize() > 2;
 	}
 }

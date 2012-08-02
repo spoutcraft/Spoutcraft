@@ -10,7 +10,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 public class EntityXPOrb extends Entity {
 	public int xpColor;
 	public int xpOrbAge = 0;
-	public int field_35126_c;
+	public int field_70532_c;
 	private int xpOrbHealth = 5;
 	public int xpValue; //Spout private -> public
 
@@ -61,8 +61,8 @@ public class EntityXPOrb extends Entity {
 
 	public void onUpdate() {
 		super.onUpdate();
-		if (this.field_35126_c > 0) {
-			--this.field_35126_c;
+		if (this.field_70532_c > 0) {
+			--this.field_70532_c;
 		}
 
 		this.prevPosX = this.posX;
@@ -163,7 +163,7 @@ public class EntityXPOrb extends Entity {
 
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		if (!this.worldObj.isRemote) {
-			if (this.field_35126_c == 0 && par1EntityPlayer.xpCooldown == 0) {
+			if (this.field_70532_c == 0 && par1EntityPlayer.xpCooldown == 0) {
 				par1EntityPlayer.xpCooldown = 2;
 				this.worldObj.playSoundAtEntity(this, "random.orb", 0.1F, 0.5F * ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.8F));
 				par1EntityPlayer.onItemPickup(this, 1);
@@ -178,11 +178,11 @@ public class EntityXPOrb extends Entity {
 	}
 
 	public int getTextureByXP() {
-		return this.xpValue >= 2477?10:(this.xpValue >= 1237?9:(this.xpValue >= 617?8:(this.xpValue >= 307?7:(this.xpValue >= 149?6:(this.xpValue >= 73?5:(this.xpValue >= 37?4:(this.xpValue >= 17?3:(this.xpValue >= 7?2:(this.xpValue >= 3?1:0)))))))));
+		return this.xpValue >= 2477 ? 10 : (this.xpValue >= 1237 ? 9 : (this.xpValue >= 617 ? 8 : (this.xpValue >= 307 ? 7 : (this.xpValue >= 149 ? 6 : (this.xpValue >= 73 ? 5 : (this.xpValue >= 37 ? 4 : (this.xpValue >= 17 ? 3 : (this.xpValue >= 7 ? 2 : (this.xpValue >= 3 ? 1 : 0)))))))));
 	}
 
 	public static int getXPSplit(int par0) {
-		return par0 >= 2477?2477:(par0 >= 1237?1237:(par0 >= 617?617:(par0 >= 307?307:(par0 >= 149?149:(par0 >= 73?73:(par0 >= 37?37:(par0 >= 17?17:(par0 >= 7?7:(par0 >= 3?3:1)))))))));
+		return par0 >= 2477 ? 2477 : (par0 >= 1237 ? 1237 : (par0 >= 617 ? 617 : (par0 >= 307 ? 307 : (par0 >= 149 ? 149 : (par0 >= 73 ? 73 : (par0 >= 37 ? 37 : (par0 >= 17 ? 17 : (par0 >= 7 ? 7 : (par0 >= 3 ? 3 : 1)))))))));
 	}
 
 	public boolean canAttackWithItem() {
