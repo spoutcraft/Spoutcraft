@@ -6,7 +6,7 @@ import com.pclewis.mcpatcher.mod.Colorizer;
 
 public class Potion {
 	public static final Potion[] potionTypes = new Potion[32];
-	public static final Potion field_35676_b = null;
+	public static final Potion field_76423_b = null;
 	public static final Potion moveSpeed = (new Potion(1, false, 8171462)).setPotionName("potion.moveSpeed").setIconIndex(0, 0);
 	public static final Potion moveSlowdown = (new Potion(2, true, 5926017)).setPotionName("potion.moveSlowdown").setIconIndex(1, 0);
 	public static final Potion digSpeed = (new Potion(3, false, 14270531)).setPotionName("potion.digSpeed").setIconIndex(2, 0).setEffectiveness(1.5D);
@@ -25,19 +25,19 @@ public class Potion {
 	public static final Potion nightVision = (new Potion(16, false, 2039713)).setPotionName("potion.nightVision").setIconIndex(4, 1).setPotionUnusable();
 	public static final Potion hunger = (new Potion(17, true, 5797459)).setPotionName("potion.hunger").setIconIndex(1, 1);
 	public static final Potion weakness = (new Potion(18, true, 4738376)).setPotionName("potion.weakness").setIconIndex(5, 0);
-	public static final Potion poison = (new Potion(19, true, 5149489)).setPotionName("potion.poison").setIconIndex(6, 0).setEffectiveness(0.25D);
-	public static final Potion field_35688_v = null;
-	public static final Potion field_35687_w = null;
-	public static final Potion field_35697_x = null;
-	public static final Potion field_35696_y = null;
-	public static final Potion field_35695_z = null;
-	public static final Potion field_35667_A = null;
-	public static final Potion field_35668_B = null;
-	public static final Potion field_35669_C = null;
-	public static final Potion field_35663_D = null;
-	public static final Potion field_35664_E = null;
-	public static final Potion field_35665_F = null;
-	public static final Potion field_35666_G = null;
+	public static final Potion poison = (new Potion(19, true, 5149489)).setPotionName("potion.poison").setIconIndex(6, 0).setEffectiveness(0.25D);0.25D);
+	public static final Potion field_76435_v = null;
+	public static final Potion field_76434_w = null;
+	public static final Potion field_76444_x = null;
+	public static final Potion field_76443_y = null;
+	public static final Potion field_76442_z = null;
+	public static final Potion field_76409_A = null;
+	public static final Potion field_76410_B = null;
+	public static final Potion field_76411_C = null;
+	public static final Potion field_76405_D = null;
+	public static final Potion field_76406_E = null;
+	public static final Potion field_76407_F = null;
+	public static final Potion field_76408_G = null;
 	public final int id;
 	public String name = ""; //Spout private->public
 	private int statusIconIndex = -1;
@@ -115,7 +115,7 @@ public class Potion {
 			return this.id == hunger.id;
 		} else {
 			int var3 = 25 >> par2;
-			return var3 > 0?par1 % var3 == 0:true;
+			return var3 > 0 ? par1 % var3 == 0 : true;
 		}
 	}
 
@@ -143,10 +143,7 @@ public class Potion {
 
 	public static String getDurationString(PotionEffect par0PotionEffect) {
 		int var1 = par0PotionEffect.getDuration();
-		int var2 = var1 / 20;
-		int var3 = var2 / 60;
-		var2 %= 60;
-		return var2 < 10?var3 + ":0" + var2:var3 + ":" + var2;
+		return StringUtils.func_76337_a(var1);
 	}
 
 	protected Potion setEffectiveness(double par1) {

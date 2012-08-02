@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class PotionHelper {
-	public static final String field_40367_a = null;
+	public static final String field_77924_a = null;
 	public static final String sugarEffect;
 	public static final String ghastTearEffect = "+0-1-2-3&4-4+13";
 	public static final String spiderEyeEffect;
@@ -20,8 +20,8 @@ public class PotionHelper {
 	public static final String glowstoneEffect;
 	public static final String gunpowderEffect;
 	private static final HashMap potionRequirements = new HashMap();
-	private static final HashMap field_40371_m = new HashMap();
-	private static final HashMap field_40368_n;
+	private static final HashMap field_77928_m = new HashMap();
+	private static final HashMap field_77925_n;
 	private static final String[] potionPrefixes;
 
 	public static boolean checkFlag(int par0, int par1) {
@@ -29,18 +29,18 @@ public class PotionHelper {
 	}
 
 	private static int isFlagSet(int par0, int par1) {
-		return checkFlag(par0, par1)?1:0;
+		return checkFlag(par0, par1) ? 1 : 0;
 	}
 
 	private static int isFlagUnset(int par0, int par1) {
-		return checkFlag(par0, par1)?0:1;
+		return checkFlag(par0, par1) ? 0 : 1;
 	}
 
-	public static int func_40352_a(int par0) {
-		return func_40351_a(par0, 5, 4, 3, 2, 1);
+	public static int func_77909_a(int par0) {
+		return func_77908_a(par0, 5, 4, 3, 2, 1);
 	}
 
-	public static int func_40354_a(Collection par0Collection) {
+	public static int calcPotionLiquidColor(Collection par0Collection) {
 		int var1 = Colorizer.getWaterBottleColor(); //Spout HD
 		if (par0Collection != null && !par0Collection.isEmpty()) {
 			float var2 = 0.0F;
@@ -70,26 +70,26 @@ public class PotionHelper {
 		}
 	}
 
-	public static int func_40358_a(int par0, boolean par1) {
+	public static int func_77915_a(int par0, boolean par1) {
 		if (!par1) {
-			if (field_40368_n.containsKey(Integer.valueOf(par0))) {
-				return ((Integer)field_40368_n.get(Integer.valueOf(par0))).intValue();
+			if (field_77925_n.containsKey(Integer.valueOf(par0))) {
+				return ((Integer) field_77925_n.get(Integer.valueOf(par0))).intValue();
 			} else {
-				int var2 = func_40354_a(getPotionEffects(par0, false));
-				field_40368_n.put(Integer.valueOf(par0), Integer.valueOf(var2));
+				int var2 = calcPotionLiquidColor(getPotionEffects(par0, false));
+				field_77925_n.put(Integer.valueOf(par0), Integer.valueOf(var2));
 				return var2;
 			}
 		} else {
-			return func_40354_a(getPotionEffects(par0, par1));
+			return calcPotionLiquidColor(getPotionEffects(par0, par1));
 		}
 	}
 
-	public static String func_40359_b(int par0) {
-		int var1 = func_40352_a(par0);
+	public static String func_77905_c(int par0) {
+		int var1 = func_77909_a(par0);
 		return potionPrefixes[var1];
 	}
 
-	private static int func_40347_a(boolean par0, boolean par1, boolean par2, int par3, int par4, int par5, int par6) {
+	private static int func_77904_a(boolean par0, boolean par1, boolean par2, int par3, int par4, int par5, int par6) {
 		int var7 = 0;
 		if (par0) {
 			var7 = isFlagUnset(par6, par4);
@@ -125,28 +125,28 @@ public class PotionHelper {
 		return var1;
 	}
 
-	private static int func_40355_a(String par0Str, int par1, int par2, int par3) {
+	private static int parsePotionEffects(String par0Str, int par1, int par2, int par3) {
 		if (par1 < par0Str.length() && par2 >= 0 && par1 < par2) {
 			int var4 = par0Str.indexOf(124, par1);
 			int var5;
 			int var17;
 			if (var4 >= 0 && var4 < par2) {
-				var5 = func_40355_a(par0Str, par1, var4 - 1, par3);
+				var5 = parsePotionEffects(par0Str, par1, var4 - 1, par3);
 				if (var5 > 0) {
 					return var5;
 				} else {
-					var17 = func_40355_a(par0Str, var4 + 1, par2, par3);
-					return var17 > 0?var17:0;
+					var17 = parsePotionEffects(par0Str, var4 + 1, par2, par3);
+					return var17 > 0 ? var17 : 0;
 				}
 			} else {
 				var5 = par0Str.indexOf(38, par1);
 				if (var5 >= 0 && var5 < par2) {
-					var17 = func_40355_a(par0Str, par1, var5 - 1, par3);
+					var17 = parsePotionEffects(par0Str, par1, var5 - 1, par3);
 					if (var17 <= 0) {
 						return 0;
 					} else {
-						int var18 = func_40355_a(par0Str, var5 + 1, par2, par3);
-						return var18 <= 0?0:(var17 > var18?var17:var18);
+						int var18 = parsePotionEffects(par0Str, var5 + 1, par2, par3);
+						return var18 <= 0 ? 0 : (var17 > var18 ? var17 : var18);
 					}
 				} else {
 					boolean var6 = false;
@@ -174,7 +174,7 @@ public class PotionHelper {
 							var6 = true;
 						} else if (var16 == 33) {
 							if (var8) {
-								var14 += func_40347_a(var9, var7, var10, var11, var12, var13, par3);
+								var14 += func_77904_a(var9, var7, var10, var11, var12, var13, par3);
 								var9 = false;
 								var10 = false;
 								var6 = false;
@@ -188,7 +188,7 @@ public class PotionHelper {
 							var9 = true;
 						} else if (var16 == 45) {
 							if (var8) {
-								var14 += func_40347_a(var9, var7, var10, var11, var12, var13, par3);
+								var14 += func_77904_a(var9, var7, var10, var11, var12, var13, par3);
 								var9 = false;
 								var10 = false;
 								var6 = false;
@@ -202,7 +202,7 @@ public class PotionHelper {
 							var10 = true;
 						} else if (var16 != 61 && var16 != 60 && var16 != 62) {
 							if (var16 == 43 && var8) {
-								var14 += func_40347_a(var9, var7, var10, var11, var12, var13, par3);
+								var14 += func_77904_a(var9, var7, var10, var11, var12, var13, par3);
 								var9 = false;
 								var10 = false;
 								var6 = false;
@@ -214,7 +214,7 @@ public class PotionHelper {
 							}
 						} else {
 							if (var8) {
-								var14 += func_40347_a(var9, var7, var10, var11, var12, var13, par3);
+								var14 += func_77904_a(var9, var7, var10, var11, var12, var13, par3);
 								var9 = false;
 								var10 = false;
 								var6 = false;
@@ -236,7 +236,7 @@ public class PotionHelper {
 					}
 
 					if (var8) {
-						var14 += func_40347_a(var9, var7, var10, var11, var12, var13, par3);
+						var14 += func_77904_a(var9, var7, var10, var11, var12, var13, par3);
 					}
 
 					return var14;
@@ -257,12 +257,12 @@ public class PotionHelper {
 			if (var6 != null && (!var6.isUsable() || par1)) {
 				String var7 = (String)potionRequirements.get(Integer.valueOf(var6.getId()));
 				if (var7 != null) {
-					int var8 = func_40355_a(var7, 0, var7.length(), par0);
+					int var8 = parsePotionEffects(var7, 0, var7.length(), par0);
 					if (var8 > 0) {
 						int var9 = 0;
-						String var10 = (String)field_40371_m.get(Integer.valueOf(var6.getId()));
+						String var10 = (String) field_77928_m.get(Integer.valueOf(var6.getId()));
 						if (var10 != null) {
-							var9 = func_40355_a(var10, 0, var10.length(), par0);
+							var9 = parsePotionEffects(var10, 0, var10.length(), par0);
 							if (var9 < 0) {
 								var9 = 0;
 							}
@@ -300,10 +300,10 @@ public class PotionHelper {
 		} else if (par2) {
 			par0 &= ~(1 << par1);
 		} else if (par3) {
-			if ((par0 & 1 << par1) != 0) {
-				par0 &= ~(1 << par1);
-			} else {
+			if ((par0 & 1 << par1) == 0) {
 				par0 |= 1 << par1;
+			} else {
+				par0 &= ~(1 << par1);
 			}
 		} else {
 			par0 |= 1 << par1;
@@ -379,8 +379,8 @@ public class PotionHelper {
 		return par0 & 32767;
 	}
 
-	public static int func_40351_a(int par0, int par1, int par2, int par3, int par4, int par5) {
-		return (checkFlag(par0, par1)?16:0) | (checkFlag(par0, par2)?8:0) | (checkFlag(par0, par3)?4:0) | (checkFlag(par0, par4)?2:0) | (checkFlag(par0, par5)?1:0);
+	public static int func_77908_a(int par0, int par1, int par2, int par3, int par4, int par5) {
+		return (checkFlag(par0, par1) ? 16 : 0) | (checkFlag(par0, par2) ? 8 : 0) | (checkFlag(par0, par3) ? 4 : 0) | (checkFlag(par0, par4) ? 2 : 0) | (checkFlag(par0, par5) ? 1 : 0);
 	}
 
 	static {
@@ -400,17 +400,17 @@ public class PotionHelper {
 		blazePowderEffect = "+0-1-2+3&4-4+13";
 		potionRequirements.put(Integer.valueOf(Potion.damageBoost.getId()), "0 & !1 & !2 & 3 & 3+6");
 		glowstoneEffect = "+5-6-7";
-		field_40371_m.put(Integer.valueOf(Potion.moveSpeed.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.digSpeed.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.damageBoost.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.regeneration.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.harm.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.heal.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.resistance.getId()), "5");
-		field_40371_m.put(Integer.valueOf(Potion.poison.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.moveSpeed.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.digSpeed.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.damageBoost.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.regeneration.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.harm.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.heal.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.resistance.getId()), "5");
+		field_77928_m.put(Integer.valueOf(Potion.poison.getId()), "5");
 		redstoneEffect = "-5+6-7";
 		gunpowderEffect = "+14&13-13";
-		field_40368_n = new HashMap();
+		field_77925_n = new HashMap();
 		potionPrefixes = new String[]{"potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat", "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming", "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid", "potion.prefix.gross", "potion.prefix.stinky"};
 	}
 }
