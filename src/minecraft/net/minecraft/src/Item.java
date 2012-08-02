@@ -15,11 +15,11 @@ public class Item {
 	public static Item flintAndSteel = (new ItemFlintAndSteel(3)).setIconCoord(5, 0).setItemName("flintAndSteel");
 	public static Item appleRed = (new ItemFood(4, 4, 0.3F, false)).setIconCoord(10, 0).setItemName("apple");
 	public static Item bow = (new ItemBow(5)).setIconCoord(5, 1).setItemName("bow");
-	public static Item arrow = (new Item(6)).setIconCoord(5, 2).setItemName("arrow");
+	public static Item arrow = (new Item(6)).setIconCoord(5, 2).setItemName("arrow").func_77637_a(CreativeTabs.field_78037_j);
 	public static Item coal = (new ItemCoal(7)).setIconCoord(7, 0).setItemName("coal");
-	public static Item diamond = (new Item(8)).setIconCoord(7, 3).setItemName("emerald");
-	public static Item ingotIron = (new Item(9)).setIconCoord(7, 1).setItemName("ingotIron");
-	public static Item ingotGold = (new Item(10)).setIconCoord(7, 2).setItemName("ingotGold");
+	public static Item field_77702_n = (new Item(8)).setIconCoord(7, 3).setItemName("diamond").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item ingotIron = (new Item(9)).setIconCoord(7, 1).setItemName("ingotIron").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item ingotGold = (new Item(10)).setIconCoord(7, 2).setItemName("ingotGold").func_77637_a(CreativeTabs.field_78035_l);;
 	public static Item swordSteel = (new ItemSword(11, EnumToolMaterial.IRON)).setIconCoord(2, 4).setItemName("swordIron");
 	public static Item swordWood = (new ItemSword(12, EnumToolMaterial.WOOD)).setIconCoord(0, 4).setItemName("swordWood");
 	public static Item shovelWood = (new ItemSpade(13, EnumToolMaterial.WOOD)).setIconCoord(0, 5).setItemName("shovelWood");
@@ -33,23 +33,23 @@ public class Item {
 	public static Item shovelDiamond = (new ItemSpade(21, EnumToolMaterial.EMERALD)).setIconCoord(3, 5).setItemName("shovelDiamond");
 	public static Item pickaxeDiamond = (new ItemPickaxe(22, EnumToolMaterial.EMERALD)).setIconCoord(3, 6).setItemName("pickaxeDiamond");
 	public static Item axeDiamond = (new ItemAxe(23, EnumToolMaterial.EMERALD)).setIconCoord(3, 7).setItemName("hatchetDiamond");
-	public static Item stick = (new Item(24)).setIconCoord(5, 3).setFull3D().setItemName("stick");
-	public static Item bowlEmpty = (new Item(25)).setIconCoord(7, 4).setItemName("bowl");
+	public static Item stick = (new Item(24)).setIconCoord(5, 3).setFull3D().setItemName("stick").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item bowlEmpty = (new Item(25)).setIconCoord(7, 4).setItemName("bowl").func_77637_a(CreativeTabs.field_78035_l);
 	public static Item bowlSoup = (new ItemSoup(26, 8)).setIconCoord(8, 4).setItemName("mushroomStew");
 	public static Item swordGold = (new ItemSword(27, EnumToolMaterial.GOLD)).setIconCoord(4, 4).setItemName("swordGold");
 	public static Item shovelGold = (new ItemSpade(28, EnumToolMaterial.GOLD)).setIconCoord(4, 5).setItemName("shovelGold");
 	public static Item pickaxeGold = (new ItemPickaxe(29, EnumToolMaterial.GOLD)).setIconCoord(4, 6).setItemName("pickaxeGold");
 	public static Item axeGold = (new ItemAxe(30, EnumToolMaterial.GOLD)).setIconCoord(4, 7).setItemName("hatchetGold");
-	public static Item silk = (new Item(31)).setIconCoord(8, 0).setItemName("string");
-	public static Item feather = (new Item(32)).setIconCoord(8, 1).setItemName("feather");
-	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").setPotionEffect(PotionHelper.gunpowderEffect);
+	public static Item silk = (new ItemReed(31, Block.field_72062_bU)).setIconCoord(8, 0).setItemName("string").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item feather = (new Item(32)).setIconCoord(8, 1).setItemName("feather").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").setPotionEffect(PotionHelper.gunpowderEffect).func_77637_a(CreativeTabs.field_78035_l);
 	public static Item hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
 	public static Item hoeStone = (new ItemHoe(35, EnumToolMaterial.STONE)).setIconCoord(1, 8).setItemName("hoeStone");
 	public static Item hoeSteel = (new ItemHoe(36, EnumToolMaterial.IRON)).setIconCoord(2, 8).setItemName("hoeIron");
 	public static Item hoeDiamond = (new ItemHoe(37, EnumToolMaterial.EMERALD)).setIconCoord(3, 8).setItemName("hoeDiamond");
 	public static Item hoeGold = (new ItemHoe(38, EnumToolMaterial.GOLD)).setIconCoord(4, 8).setItemName("hoeGold");
 	public static Item seeds = (new ItemSeeds(39, Block.crops.blockID, Block.tilledField.blockID)).setIconCoord(9, 0).setItemName("seeds");
-	public static Item wheat = (new Item(40)).setIconCoord(9, 1).setItemName("wheat");
+	public static Item wheat = (new Item(40)).setIconCoord(9, 1).setItemName("wheat").func_77637_a(CreativeTabs.field_78035_l);
 	public static Item bread = (new ItemFood(41, 5, 0.6F, false)).setIconCoord(9, 2).setItemName("bread");
 	public static Item helmetLeather = (new ItemArmor(42, EnumArmorMaterial.CLOTH, 0, 0)).setIconCoord(0, 0).setItemName("helmetCloth");
 	public static Item plateLeather = (new ItemArmor(43, EnumArmorMaterial.CLOTH, 0, 1)).setIconCoord(0, 1).setItemName("chestplateCloth");
@@ -71,14 +71,14 @@ public class Item {
 	public static Item plateGold = (new ItemArmor(59, EnumArmorMaterial.GOLD, 4, 1)).setIconCoord(4, 1).setItemName("chestplateGold");
 	public static Item legsGold = (new ItemArmor(60, EnumArmorMaterial.GOLD, 4, 2)).setIconCoord(4, 2).setItemName("leggingsGold");
 	public static Item bootsGold = (new ItemArmor(61, EnumArmorMaterial.GOLD, 4, 3)).setIconCoord(4, 3).setItemName("bootsGold");
-	public static Item flint = (new SpoutItem(62)).setIconCoord(6, 0).setItemName("flint"); //Spout changed to SpoutItemBlock
+	public static Item flint = (new SpoutItem(62)).setIconCoord(6, 0).setItemName("flint").func_77637_a(CreativeTabs.field_78035_l); //Spout changed to SpoutItemBlock
 	public static Item porkRaw = (new ItemFood(63, 3, 0.3F, true)).setIconCoord(7, 5).setItemName("porkchopRaw");
 	public static Item porkCooked = (new ItemFood(64, 8, 0.8F, true)).setIconCoord(8, 5).setItemName("porkchopCooked");
 	public static Item painting = (new ItemPainting(65)).setIconCoord(10, 1).setItemName("painting");
 	public static Item appleGold = (new ItemAppleGold(66, 4, 1.2F, false)).setAlwaysEdible().setPotionEffect(Potion.regeneration.id, 5, 0, 1.0F).setIconCoord(11, 0).setItemName("appleGold");
 	public static Item sign = (new ItemSign(67)).setIconCoord(10, 2).setItemName("sign");
 	public static Item doorWood = (new ItemDoor(68, Material.wood)).setIconCoord(11, 2).setItemName("doorWood");
-	public static Item bucketEmpty = (new ItemBucket(69, 0)).setIconCoord(10, 4).setItemName("bucket");
+	public static Item bucketEmpty = (new ItemBucket(69, 0)).setIconCoord(10, 4).setItemName("bucket").setMaxStackSize(16);
 	public static Item bucketWater = (new ItemBucket(70, Block.waterMoving.blockID)).setIconCoord(11, 4).setItemName("bucketWater").setContainerItem(bucketEmpty);
 	public static Item bucketLava = (new ItemBucket(71, Block.lavaMoving.blockID)).setIconCoord(12, 4).setItemName("bucketLava").setContainerItem(bucketEmpty);
 	public static Item minecartEmpty = (new ItemMinecart(72, 0)).setIconCoord(7, 8).setItemName("minecart");
@@ -87,30 +87,30 @@ public class Item {
 	public static Item redstone = (new ItemRedstone(75)).setIconCoord(8, 3).setItemName("redstone").setPotionEffect(PotionHelper.redstoneEffect);
 	public static Item snowball = (new ItemSnowball(76)).setIconCoord(14, 0).setItemName("snowball");
 	public static Item boat = (new ItemBoat(77)).setIconCoord(8, 8).setItemName("boat");
-	public static Item leather = (new Item(78)).setIconCoord(7, 6).setItemName("leather");
+	public static Item leather = (new Item(78)).setIconCoord(7, 6).setItemName("leather").func_77637_a(CreativeTabs.field_78035_l);
 	public static Item bucketMilk = (new ItemBucketMilk(79)).setIconCoord(13, 4).setItemName("milk").setContainerItem(bucketEmpty);
-	public static Item brick = (new Item(80)).setIconCoord(6, 1).setItemName("brick");
-	public static Item clay = (new Item(81)).setIconCoord(9, 3).setItemName("clay");
-	public static Item reed = (new ItemReed(82, Block.reed)).setIconCoord(11, 1).setItemName("reeds");
-	public static Item paper = (new Item(83)).setIconCoord(10, 3).setItemName("paper");
-	public static Item book = (new Item(84)).setIconCoord(11, 3).setItemName("book");
-	public static Item slimeBall = (new Item(85)).setIconCoord(14, 1).setItemName("slimeball");
+	public static Item brick = (new Item(80)).setIconCoord(6, 1).setItemName("brick").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item clay = (new Item(81)).setIconCoord(9, 3).setItemName("clay").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item reed = (new ItemReed(82, Block.reed)).setIconCoord(11, 1).setItemName("reeds").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item paper = (new Item(83)).setIconCoord(10, 3).setItemName("paper").func_77637_a(CreativeTabs.field_78026_f);
+	public static Item book = (new Item(84)).setIconCoord(11, 3).setItemName("book").func_77637_a(CreativeTabs.field_78026_f);
+	public static Item slimeBall = (new Item(85)).setIconCoord(14, 1).setItemName("slimeball").func_77637_a(CreativeTabs.field_78026_f);
 	public static Item minecartCrate = (new ItemMinecart(86, 1)).setIconCoord(7, 9).setItemName("minecartChest");
 	public static Item minecartPowered = (new ItemMinecart(87, 2)).setIconCoord(7, 10).setItemName("minecartFurnace");
 	public static Item egg = (new ItemEgg(88)).setIconCoord(12, 0).setItemName("egg");
-	public static Item compass = (new Item(89)).setIconCoord(6, 3).setItemName("compass");
+	public static Item compass = (new Item(89)).setIconCoord(6, 3).setItemName("compass").func_77637_a(CreativeTabs.field_78040_i);
 	public static Item fishingRod = (new ItemFishingRod(90)).setIconCoord(5, 4).setItemName("fishingRod");
-	public static Item pocketSundial = (new Item(91)).setIconCoord(6, 4).setItemName("clock");
-	public static Item lightStoneDust = (new Item(92)).setIconCoord(9, 4).setItemName("yellowDust").setPotionEffect(PotionHelper.glowstoneEffect);
+	public static Item pocketSundial = (new Item(91)).setIconCoord(6, 4).setItemName("clock").func_77637_a(CreativeTabs.field_78040_i);
+	public static Item lightStoneDust = (new Item(92)).setIconCoord(9, 4).setItemName("yellowDust").setPotionEffect(PotionHelper.glowstoneEffect).func_77637_a(CreativeTabs.field_78035_l);
 	public static Item fishRaw = (new ItemFood(93, 2, 0.3F, false)).setIconCoord(9, 5).setItemName("fishRaw");
 	public static Item fishCooked = (new ItemFood(94, 5, 0.6F, false)).setIconCoord(10, 5).setItemName("fishCooked");
 	public static Item dyePowder = (new ItemDye(95)).setIconCoord(14, 4).setItemName("dyePowder");
-	public static Item bone = (new Item(96)).setIconCoord(12, 1).setItemName("bone").setFull3D();
-	public static Item sugar = (new Item(97)).setIconCoord(13, 0).setItemName("sugar").setPotionEffect(PotionHelper.sugarEffect);
-	public static Item cake = (new ItemReed(98, Block.cake)).setMaxStackSize(1).setIconCoord(13, 1).setItemName("cake");
+	public static Item bone = (new Item(96)).setIconCoord(12, 1).setItemName("bone").setFull3D().func_77637_a(CreativeTabs.field_78026_f);
+	public static Item sugar = (new Item(97)).setIconCoord(13, 0).setItemName("sugar").setPotionEffect(PotionHelper.sugarEffect).func_77637_a(CreativeTabs.field_78035_l);
+	public static Item cake = (new ItemReed(98, Block.cake)).setMaxStackSize(1).setIconCoord(13, 1).setItemName("cake").func_77637_a(CreativeTabs.field_78039_h);
 	public static Item bed = (new ItemBed(99)).setMaxStackSize(1).setIconCoord(13, 2).setItemName("bed");
-	public static Item redstoneRepeater = (new ItemReed(100, Block.redstoneRepeaterIdle)).setIconCoord(6, 5).setItemName("diode");
-	public static Item cookie = (new ItemFood(101, 1, 0.1F, false)).setIconCoord(12, 5).setItemName("cookie");
+	public static Item redstoneRepeater = (new ItemReed(100, Block.redstoneRepeaterIdle)).setIconCoord(6, 5).setItemName("diode").func_77637_a(CreativeTabs.field_78028_d);
+	public static Item cookie = (new ItemFood(101, 2, 0.1F, false)).setIconCoord(12, 5).setItemName("cookie");
 	public static ItemMap map = (ItemMap)(new ItemMap(102)).setIconCoord(12, 3).setItemName("map");
 	public static ItemShears shears = (ItemShears)(new ItemShears(103)).setIconCoord(13, 5).setItemName("shears");
 	public static Item melon = (new ItemFood(104, 2, 0.3F, false)).setIconCoord(13, 6).setItemName("melon");
@@ -122,23 +122,22 @@ public class Item {
 	public static Item chickenCooked = (new ItemFood(110, 6, 0.6F, true)).setIconCoord(10, 7).setItemName("chickenCooked");
 	public static Item rottenFlesh = (new ItemFood(111, 4, 0.1F, true)).setPotionEffect(Potion.hunger.id, 30, 0, 0.8F).setIconCoord(11, 5).setItemName("rottenFlesh");
 	public static Item enderPearl = (new ItemEnderPearl(112)).setIconCoord(11, 6).setItemName("enderPearl");
-	public static Item blazeRod = (new Item(113)).setIconCoord(12, 6).setItemName("blazeRod");
-	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").setPotionEffect(PotionHelper.ghastTearEffect);
-	public static Item goldNugget = (new Item(115)).setIconCoord(12, 7).setItemName("goldNugget");
+	public static Item blazeRod = (new Item(113)).setIconCoord(12, 6).setItemName("blazeRod").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").setPotionEffect(PotionHelper.ghastTearEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item goldNugget = (new Item(115)).setIconCoord(12, 7).setItemName("goldNugget").func_77637_a(CreativeTabs.field_78035_l);
 	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionEffect("+4");
 	public static ItemPotion potion = (ItemPotion)(new ItemPotion(117)).setIconCoord(13, 8).setItemName("potion");
 	public static Item glassBottle = (new ItemGlassBottle(118)).setIconCoord(12, 8).setItemName("glassBottle");
-	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.poison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").setPotionEffect(PotionHelper.spiderEyeEffect);
-	public static Item fermentedSpiderEye = (new Item(120)).setIconCoord(10, 8).setItemName("fermentedSpiderEye").setPotionEffect(PotionHelper.fermentedSpiderEyeEffect);
-	public static Item blazePowder = (new Item(121)).setIconCoord(13, 9).setItemName("blazePowder").setPotionEffect(PotionHelper.blazePowderEffect);
-	public static Item magmaCream = (new Item(122)).setIconCoord(13, 10).setItemName("magmaCream").setPotionEffect(PotionHelper.magmaCreamEffect);
-	public static Item brewingStand = (new ItemReed(123, Block.brewingStand)).setIconCoord(12, 10).setItemName("brewingStand");
-	public static Item cauldron = (new ItemReed(124, Block.cauldron)).setIconCoord(12, 9).setItemName("cauldron");
-	public static Item eyeOfEnder = (new ItemEnderEye(125)).setIconCoord(11, 9).setItemName("eyeOfEnder");
-	public static Item speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionEffect(PotionHelper.speckledMelonEffect);
-	public static Item monsterPlacer = (new ItemMonsterPlacer(127)).setIconCoord(9, 9).setItemName("monsterPlacer");
+	public static Item enderPearl = (new ItemEnderPearl(112)).setIconCoord(11, 6).setItemName("enderPearl");
+	public static Item blazeRod = (new Item(113)).setIconCoord(12, 6).setItemName("blazeRod").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").setPotionEffect(PotionHelper.ghastTearEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item goldNugget = (new Item(115)).setIconCoord(12, 7).setItemName("goldNugget").func_77637_a(CreativeTabs.field_78035_l);
+	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionEffect("+4");
 	public static Item expBottle = (new ItemExpBottle(128)).setIconCoord(11, 10).setItemName("expBottle");
 	public static Item fireballCharge = (new ItemFireball(129)).setIconCoord(14, 2).setItemName("fireball");
+	public static Item field_77821_bF = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").func_77637_a(CreativeTabs.field_78026_f);
+	public static Item field_77823_bG = (new ItemEditableBook(131)).setIconCoord(12, 11).setItemName("writtenBook");
+	public static Item diamond = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").func_77637_a(CreativeTabs.field_78035_l);
 	public static Item record13 = (new ItemRecord(2000, "13")).setIconCoord(0, 15).setItemName("record");
 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconCoord(1, 15).setItemName("record");
 	public static Item recordBlocks = (new ItemRecord(2002, "blocks")).setIconCoord(2, 15).setItemName("record");
@@ -192,7 +191,7 @@ public class Item {
 		return this.getIconFromDamage(par1ItemStack.getItemDamage());
 	}
 
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7) {
+	public boolean func_77648_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		return false;
 	}
 
@@ -242,7 +241,7 @@ public class Item {
 		return false;
 	}
 
-	public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving) {
+	public boolean func_77660_a(ItemStack par1ItemStack, World par2World, int par3, int par4, int par5, int par6, EntityLiving par7EntityLiving) {
 		return false;
 	}
 
@@ -254,7 +253,9 @@ public class Item {
 		return false;
 	}
 
-	public void useItemOnEntity(ItemStack par1ItemStack, EntityLiving par2EntityLiving) {}
+	public boolean func_77646_a(ItemStack par1ItemStack, EntityLiving par2EntityLiving) {
+		return false;
+	}
 
 	public Item setFull3D() {
 		this.bFull3D = true;
@@ -276,7 +277,7 @@ public class Item {
 
 	public String getLocalItemName(ItemStack par1ItemStack) {
 		String var2 = this.getItemNameIS(par1ItemStack);
-		return var2 == null?"":StatCollector.translateToLocal(var2);
+		return var2 == null ? "" : StatCollector.translateToLocal(var2);
 	}
 
 	public String getItemName() {
@@ -296,7 +297,7 @@ public class Item {
 		return true;
 	}
 
-	public boolean func_46056_k() {
+	public boolean func_77651_p() {
 		return false;
 	}
 
@@ -308,8 +309,8 @@ public class Item {
 		return this.containerItem != null;
 	}
 
-	public String getStatName() {
-		return StatCollector.translateToLocal(this.getItemName() + ".name");
+	public String func_77653_i(ItemStack par1ItemStack) {
+		return StatCollector.translateToLocal(this.getItemNameIS(par1ItemStack) + ".name");
 	}
 
 	public int getColorFromDamage(int par1, int par2) {
@@ -319,6 +320,10 @@ public class Item {
 	public void onUpdate(ItemStack par1ItemStack, World par2World, Entity par3Entity, int par4, boolean par5) {}
 
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {}
+
+	public boolean func_77643_m_() {
+		return false;
+	}
 
 	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
 		return EnumAction.none;
@@ -346,8 +351,7 @@ public class Item {
 	public void addInformation(ItemStack par1ItemStack, List par2List) {}
 
 	public String getItemDisplayName(ItemStack par1ItemStack) {
-		String var2 = ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalItemName(par1ItemStack))).trim();
-		return var2;
+		return ("" + StringTranslate.getInstance().translateNamedKey(this.getLocalItemName(par1ItemStack))).trim();
 	}
 
 	public boolean hasEffect(ItemStack par1ItemStack) {
@@ -355,7 +359,7 @@ public class Item {
 	}
 
 	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return par1ItemStack.isItemEnchanted()?EnumRarity.rare:EnumRarity.common;
+		return par1ItemStack.isItemEnchanted() ? EnumRarity.rare : EnumRarity.common;
 	}
 
 	public boolean isItemTool(ItemStack par1ItemStack) {
@@ -369,7 +373,7 @@ public class Item {
 		double var7 = par2EntityPlayer.prevPosX + (par2EntityPlayer.posX - par2EntityPlayer.prevPosX) * (double)var4;
 		double var9 = par2EntityPlayer.prevPosY + (par2EntityPlayer.posY - par2EntityPlayer.prevPosY) * (double)var4 + 1.62D - (double)par2EntityPlayer.yOffset;
 		double var11 = par2EntityPlayer.prevPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.prevPosZ) * (double)var4;
-		Vec3D var13 = Vec3D.createVector(var7, var9, var11);
+		Vec3 var13 = Vec3.func_72437_a().func_72345_a(var7, var9, var11);
 		float var14 = MathHelper.cos(-var6 * 0.017453292F - (float)Math.PI);
 		float var15 = MathHelper.sin(-var6 * 0.017453292F - (float)Math.PI);
 		float var16 = -MathHelper.cos(-var5 * 0.017453292F);
@@ -378,20 +382,32 @@ public class Item {
 		float var20 = var14 * var16;
 		double var21 = 5.0D;
 		Vec3D var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
-		MovingObjectPosition var24 = par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
-		return var24;
+		return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
 	}
 
 	public int getItemEnchantability() {
 		return 0;
 	}
 
-	public boolean func_46058_c() {
+	public boolean requiresMultipleRenderPasses() {
 		return false;
 	}
 
-	public int func_46057_a(int par1, int par2) {
+	public int getIconFromDamageForRenderPass(int par1, int par2) {
 		return this.getIconFromDamage(par1);
+	}
+
+	public void func_77633_a(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+	}
+
+	public CreativeTabs func_77640_w() {
+		return this.field_77701_a;
+	}
+
+	public Item func_77637_a(CreativeTabs par1CreativeTabs) {
+		this.field_77701_a = par1CreativeTabs;
+		return this;
 	}
 
 	static {
