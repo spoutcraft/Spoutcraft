@@ -243,7 +243,7 @@ public abstract class Minecraft implements Runnable {
 		this.statFileWriter = new StatFileWriter(this.session, this.mcDataDir);
 		AchievementList.openInventory.setStatStringFormatter(new StatStringFormatKeyInv(this));
 		this.loadScreen();
-		Keyboard.create();
+		Keyboard.create(); // Spout 
 		Mouse.create();
 		this.mouseHelper = new MouseHelper(this.mcCanvas);
 
@@ -536,10 +536,9 @@ public abstract class Minecraft implements Runnable {
 				for (Field f : ConfigReader.class.getFields()) {
 					System.out.println("    " + f.getName() + " : " + f.get(null));
 				}
-			}
-			catch (Exception ignore) { }
-			//Spout end
+			} catch (Exception ignore) { }
 			throw new RuntimeException("OpenGL Error occured!");
+			//Spout end
 		}
 	}
 
@@ -806,7 +805,7 @@ public abstract class Minecraft implements Runnable {
 
 	public void freeMemory() {
 		try {
-			// field_28006_b = new byte[0];
+			// field_28006_b = new byte[0]; // Spout removed
 			this.renderGlobal.func_28137_f();
 		} catch (Throwable var4) {
 			;
@@ -834,7 +833,7 @@ public abstract class Minecraft implements Runnable {
 		if (Keyboard.isKeyDown(60)) {
 			if (!this.isTakingScreenshot) {
 				this.isTakingScreenshot = true;
-				if(theWorld != null) this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
+				if(theWorld != null) this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight)); // Spout - Null check
 			}
 		} else {
 			this.isTakingScreenshot = false;
@@ -1191,7 +1190,7 @@ public abstract class Minecraft implements Runnable {
 		}
 	}
 
-	public void resize(int par1, int par2) {
+	public void resize(int par1, int par2) { // spout -> public to private
 		if (par1 <= 0) {
 			par1 = 1;
 		}
@@ -1328,10 +1327,7 @@ public abstract class Minecraft implements Runnable {
 				// Spout Start
 				((SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager()).pressKey(Keyboard.getEventKey(), Keyboard.getEventKeyState(), ScreenUtil.getType(currentScreen).getCode());
 				// Spout End
-				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); // Spout
-																									// handle
-																									// key
-																									// presses
+				this.thePlayer.handleKeyPress(Keyboard.getEventKey(), Keyboard.getEventKeyState()); // Spout handle key press
 				KeyBinding.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());
 				if (Keyboard.getEventKeyState()) {
 					KeyBinding.onTick(Keyboard.getEventKey());
@@ -1632,8 +1628,7 @@ public abstract class Minecraft implements Runnable {
 		}
 
 		this.thePlayer.worldObj = this.theWorld;
-		// System.out.println("Teleported to " +
-		// this.theWorld.worldProvider.worldType); //Spout removed
+		// System.out.println("Teleported to " + this.theWorld.worldProvider.worldType); //Spout removed
 		if (this.thePlayer.isEntityAlive() && var2 < 1) {
 			this.thePlayer.setLocationAndAngles(var3, this.thePlayer.posY, var5, this.thePlayer.rotationYaw, this.thePlayer.rotationPitch);
 			this.theWorld.updateEntityWithOptionalForce(this.thePlayer, false);
