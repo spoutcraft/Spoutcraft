@@ -3,62 +3,82 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import net.minecraft.src.NetHandler;
-import net.minecraft.src.Packet;
-import net.minecraft.src.WorldType;
 
 import org.spoutcraft.client.DataMiningThread; //Spout
 
 public class Packet1Login extends Packet {
-
-	public int protocolVersion;
-	public String username;
+	public int field_73561_a = 0;
 	public WorldType terrainType;
-	public int serverMode;
-	public int field_48170_e;
+	public boolean field_73560_c;
+	public EnumGameType field_73557_d;
+	public int field_73558_e;
+
+	/** The difficulty setting byte. */
 	public byte difficultySetting;
+
+	/** Defaults to 128 */
 	public byte worldHeight;
+
+	/** The maximum players. */
 	public byte maxPlayers;
 
 	public Packet1Login() {}
 
-	public Packet1Login(String par1Str, int par2) {
-		this.username = par1Str;
-		this.protocolVersion = par2;
+	public Packet1Login(int par1, WorldType par2WorldType, EnumGameType par3EnumGameType, boolean par4, int par5, int par6, int par7, int par8) {
+		this.field_73561_a = par1;
+		this.terrainType = par2WorldType;
+		this.field_73558_e = par5;
+		this.difficultySetting = (byte)par6;
+		this.field_73557_d = par3EnumGameType;
+		this.worldHeight = (byte)par7;
+		this.maxPlayers = (byte)par8;
+		this.field_73560_c = par4;
 	}
 
+	/**
+	 * Abstract. Reads the raw packet data from the data stream.
+	 */
 	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.protocolVersion = par1DataInputStream.readInt();
-		this.username = readString(par1DataInputStream, 16);
+		this.field_73561_a = par1DataInputStream.readInt();
 		String var2 = readString(par1DataInputStream, 16);
 		this.terrainType = WorldType.parseWorldType(var2);
+
 		if (this.terrainType == null) {
 			this.terrainType = WorldType.DEFAULT;
 		}
 
-		this.serverMode = par1DataInputStream.readInt();
-		this.field_48170_e = par1DataInputStream.readInt();
+		byte var3 = par1DataInputStream.readByte();
+		this.field_73560_c = (var3 & 8) == 8;
+		int var4 = var3 & -9;
+		this.field_73557_d = EnumGameType.func_77146_a(var4);
+		this.field_73558_e = par1DataInputStream.readByte();
 		this.difficultySetting = par1DataInputStream.readByte();
 		this.worldHeight = par1DataInputStream.readByte();
 		this.maxPlayers = par1DataInputStream.readByte();
 	}
 
+	/**
+	 * Abstract. Writes the raw packet data to the data stream.
+	 */
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.protocolVersion);
-		writeString(this.username, par1DataOutputStream);
-		if (this.terrainType == null) {
-			writeString("", par1DataOutputStream);
-		} else {
-			writeString(this.terrainType.func_48628_a(), par1DataOutputStream);
+		par1DataOutputStream.writeInt(this.field_73561_a);
+		writeString(this.terrainType == null ? "" : this.terrainType.getWorldTypeName(), par1DataOutputStream);
+		int var2 = this.field_73557_d.func_77148_a();
+
+		if (this.field_73560_c) {
+			var2 |= 8;
 		}
 
-		par1DataOutputStream.writeInt(this.serverMode);
-		par1DataOutputStream.writeInt(this.field_48170_e);
+		par1DataOutputStream.writeByte(var2);
+		par1DataOutputStream.writeByte(this.field_73558_e);
 		par1DataOutputStream.writeByte(this.difficultySetting);
 		par1DataOutputStream.writeByte(this.worldHeight);
 		par1DataOutputStream.writeByte(this.maxPlayers);
 	}
 
+	/**
+	 * Passes this Packet on to the NetHandler for processing.
+	 */
 	public void processPacket(NetHandler par1NetHandler) {
 		//Spout Start
 		DataMiningThread.getInstance().onLogin();
@@ -66,12 +86,16 @@ public class Packet1Login extends Packet {
 		par1NetHandler.handleLogin(this);
 	}
 
+	/**
+	 * Abstract. Return the size of the packet (not counting the header).
+	 */
 	public int getPacketSize() {
 		int var1 = 0;
+
 		if (this.terrainType != null) {
-			var1 = this.terrainType.func_48628_a().length();
+			var1 = this.terrainType.getWorldTypeName().length();
 		}
 
-		return 4 + this.username.length() + 4 + 7 + 7 + var1;
+		return 6 + 2 * var1 + 4 + 4 + 1 + 1 + 1;
 	}
 }

@@ -18,10 +18,10 @@ public abstract class Packet {
 	private static Set clientPacketIdList = new HashSet();
 	private static Set serverPacketIdList = new HashSet();
 	public final long creationTimeMillis = System.currentTimeMillis();
-	public static long field_48158_m;
-	public static long field_48156_n;
-	public static long field_48157_o;
-	public static long field_48155_p;
+	public static long field_73292_n;
+	public static long field_73293_o;
+	public static long field_73290_p;
+	public static long field_73289_q;
 	public boolean isChunkDataPacket = false;
 
 	public static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class) { // Spout default -> public
@@ -45,11 +45,28 @@ public abstract class Packet {
 	public static Packet getNewPacket(int par0) {
 		try {
 			Class var1 = (Class)packetIdToClassMap.lookup(par0);
-			return var1 == null?null:(Packet)var1.newInstance();
+			return var1 == null ? null : (Packet)var1.newInstance();
 		} catch (Exception var2) {
 			var2.printStackTrace();
 			System.out.println("Skipping packet with id " + par0);
 			return null;
+		}
+	}
+
+	public static void func_73274_a(DataOutputStream par0DataOutputStream, byte[] par1ArrayOfByte) throws IOException {
+		par0DataOutputStream.writeShort(par1ArrayOfByte.length);
+		par0DataOutputStream.write(par1ArrayOfByte);
+	}
+
+	public static byte[] func_73280_b(DataInputStream par0DataInputStream) throws IOException {
+		short var1 = par0DataInputStream.readShort();
+
+		if (var1 < 0) {
+			throw new IOException("Key was smaller than nothing!  Weird key!");
+		} else {
+			byte[] var2 = new byte[var1];
+			par0DataInputStream.read(var2);
+			return var2;
 		}
 	}
 
@@ -60,8 +77,8 @@ public abstract class Packet {
 	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1) throws IOException {
 		boolean var2 = false;
 		Packet var3 = null;
-
 		int var6;
+
 		try {
 			var6 = par0DataInputStream.read();
 			if (var6 == -1) {
@@ -78,24 +95,24 @@ public abstract class Packet {
 			}
 
 			var3.readPacketData(par0DataInputStream);
-			++field_48158_m;
-			field_48156_n += (long)var3.getPacketSize();
+			++field_73292_n;
+			field_73293_o += (long)var3.getPacketSize();
 		} catch (EOFException var5) {
 			System.out.println("Reached end of stream");
 			return null;
 		}
 
 		PacketCount.countPacket(var6, (long)var3.getPacketSize());
-		++field_48158_m;
-		field_48156_n += (long)var3.getPacketSize();
+		++field_73292_n;
+		field_73293_o += (long)var3.getPacketSize();
 		return var3;
 	}
 
 	public static void writePacket(Packet par0Packet, DataOutputStream par1DataOutputStream) throws IOException {
 		par1DataOutputStream.write(par0Packet.getPacketId());
 		par0Packet.writePacketData(par1DataOutputStream);
-		++field_48157_o;
-		field_48155_p += (long)par0Packet.getPacketSize();
+		++field_73290_p;
+		field_73289_q += (long)par0Packet.getPacketSize();
 	}
 
 	public static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
@@ -132,61 +149,84 @@ public abstract class Packet {
 
 	public abstract int getPacketSize();
 
-	protected ItemStack readItemStack(DataInputStream par1DataInputStream) throws IOException {
-		ItemStack var2 = null;
-		short var3 = par1DataInputStream.readShort();
-		if (var3 >= 0) {
-			byte var4 = par1DataInputStream.readByte();
-			short var5 = par1DataInputStream.readShort();
-			var2 = new ItemStack(var3, var4, var5);
-			boolean override = SpoutClient.getInstance().isSpoutActive() && var3==MaterialData.flint.getRawId();
-			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k() || override) {
-				var2.stackTagCompound = this.readNBTTagCompound(par1DataInputStream);
-			}
-		}
-
-		return var2;
+	public boolean func_73278_e() {
+		return false;
 	}
 
-	protected void writeItemStack(ItemStack par1ItemStack, DataOutputStream par2DataOutputStream) throws IOException {
-		if (par1ItemStack == null) {
-			par2DataOutputStream.writeShort(-1);
+	public boolean func_73268_a(Packet par1Packet) {
+		return false;
+	}
+
+	public boolean func_73277_a_() {
+		return false;
+	}
+	public String toString() {
+		String var1 = this.getClass().getSimpleName();
+		return var1;
+	}
+
+	/**
+	 * Reads a ItemStack from the InputStream
+	 */
+	public static ItemStack readItemStack(DataInputStream par0DataInputStream) throws IOException {
+		ItemStack var1 = null;
+		short var2 = par0DataInputStream.readShort();
+
+		if (var2 >= 0) {
+			byte var3 = par0DataInputStream.readByte();
+			short var4 = par0DataInputStream.readShort();
+			var1 = new ItemStack(var2, var3, var4);
+			/*boolean override = SpoutClient.getInstance().isSpoutActive() && var3==MaterialData.flint.getRawId(); // Spout
+			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k() || override) { // Spout || override*/
+			var1.stackTagCompound = readNBTTagCompound(par0DataInputStream);
+		}
+
+		return var1;
+	}
+
+	public static void writeItemStack(ItemStack par0ItemStack, DataOutputStream par1DataOutputStream) throws IOException {
+		if (par0ItemStack == null) {
+			par1DataOutputStream.writeShort(-1);
 		} else {
-			par2DataOutputStream.writeShort(par1ItemStack.itemID);
-			par2DataOutputStream.writeByte(par1ItemStack.stackSize);
-			par2DataOutputStream.writeShort(par1ItemStack.getItemDamage());
-			if (par1ItemStack.getItem().isDamageable() || par1ItemStack.getItem().func_46056_k()) {
-				this.writeNBTTagCompound(par1ItemStack.stackTagCompound, par2DataOutputStream);
-			}
-		}
+			par1DataOutputStream.writeShort(par0ItemStack.itemID);
+			par1DataOutputStream.writeByte(par0ItemStack.stackSize);
+			par1DataOutputStream.writeShort(par0ItemStack.getItemDamage());
+			NBTTagCompound var2 = null;
 
+			if (par0ItemStack.getItem().isDamageable() || par0ItemStack.getItem().func_77651_p()) {
+				var2 = par0ItemStack.stackTagCompound;
+			}
+
+			writeNBTTagCompound(var2, par1DataOutputStream);
+		}
 	}
 
-	protected NBTTagCompound readNBTTagCompound(DataInputStream par1DataInputStream) throws IOException {
-		short var2 = par1DataInputStream.readShort();
-		if (var2 < 0) {
+	public static NBTTagCompound readNBTTagCompound(DataInputStream par0DataInputStream) throws IOException {
+		short var1 = par0DataInputStream.readShort();
+
+		if (var1 < 0) {
 			return null;
 		} else {
-			byte[] var3 = new byte[var2];
-			par1DataInputStream.readFully(var3);
-			return CompressedStreamTools.decompress(var3);
+			byte[] var2 = new byte[var1];
+			par0DataInputStream.readFully(var2);
+			return CompressedStreamTools.decompress(var2);
 		}
 	}
 
-	protected void writeNBTTagCompound(NBTTagCompound par1NBTTagCompound, DataOutputStream par2DataOutputStream) throws IOException {
-		if (par1NBTTagCompound == null) {
-			par2DataOutputStream.writeShort(-1);
+	protected static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream par1DataOutputStream) throws IOException {
+		if (par0NBTTagCompound == null) {
+			par1DataOutputStream.writeShort(-1);
 		} else {
-			byte[] var3 = CompressedStreamTools.compress(par1NBTTagCompound);
-			par2DataOutputStream.writeShort((short)var3.length);
-			par2DataOutputStream.write(var3);
+			byte[] var2 = CompressedStreamTools.compress(par0NBTTagCompound);
+			par1DataOutputStream.writeShort((short)var2.length);
+			par1DataOutputStream.write(var2);
 		}
 	}
 
 	static {
 		addIdClassMapping(0, true, true, Packet0KeepAlive.class);
 		addIdClassMapping(1, true, true, Packet1Login.class);
-		addIdClassMapping(2, true, true, Packet2Handshake.class);
+		addIdClassMapping(2, false, true, Packet2ClientProtocol.class);
 		addIdClassMapping(3, true, true, Packet3Chat.class);
 		addIdClassMapping(4, true, false, Packet4UpdateTime.class);
 		addIdClassMapping(5, true, false, Packet5PlayerInventory.class);
@@ -225,14 +265,16 @@ public abstract class Packet {
 		addIdClassMapping(41, true, false, Packet41EntityEffect.class);
 		addIdClassMapping(42, true, false, Packet42RemoveEntityEffect.class);
 		addIdClassMapping(43, true, false, Packet43Experience.class);
-		addIdClassMapping(50, true, false, Packet50PreChunk.class);
 		addIdClassMapping(51, true, false, Packet51MapChunk.class);
 		addIdClassMapping(52, true, false, Packet52MultiBlockChange.class);
 		addIdClassMapping(53, true, false, Packet53BlockChange.class);
 		addIdClassMapping(54, true, false, Packet54PlayNoteBlock.class);
+		addIdClassMapping(55, true, false, Packet55BlockDestroy.class);
+		addIdClassMapping(56, true, false, Packet56MapChunks.class);
 		addIdClassMapping(60, true, false, Packet60Explosion.class);
 		addIdClassMapping(61, true, false, Packet61DoorChange.class);
-		addIdClassMapping(70, true, false, Packet70Bed.class);
+		addIdClassMapping(62, true, false, Packet62LevelSound.class);
+		addIdClassMapping(70, true, false, Packet70GameEvent.class);
 		addIdClassMapping(71, true, false, Packet71Weather.class);
 		addIdClassMapping(100, true, false, Packet100OpenWindow.class);
 		addIdClassMapping(101, true, true, Packet101CloseWindow.class);
@@ -249,7 +291,12 @@ public abstract class Packet {
 		addIdClassMapping(200, true, false, Packet200Statistic.class);
 		addIdClassMapping(201, true, false, Packet201PlayerInfo.class);
 		addIdClassMapping(202, true, true, Packet202PlayerAbilities.class);
+		addIdClassMapping(203, true, true, Packet203AutoComplete.class);
+		addIdClassMapping(204, false, true, Packet204ClientInfo.class);
+		addIdClassMapping(205, false, true, Packet205ClientCommand.class);
 		addIdClassMapping(250, true, true, Packet250CustomPayload.class);
+		addIdClassMapping(252, true, true, Packet252SharedKey.class);
+		addIdClassMapping(253, true, false, Packet253ServerAuthData.class);
 		addIdClassMapping(254, false, true, Packet254ServerPing.class);
 		addIdClassMapping(255, true, true, Packet255KickDisconnect.class);
 	}
