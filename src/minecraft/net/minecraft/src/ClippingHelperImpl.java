@@ -7,7 +7,7 @@ public class ClippingHelperImpl extends ClippingHelper {
 	private static ClippingHelperImpl instance = new ClippingHelperImpl();
 	private FloatBuffer projectionMatrixBuffer = GLAllocation.createDirectFloatBuffer(16);
 	private FloatBuffer modelviewMatrixBuffer = GLAllocation.createDirectFloatBuffer(16);
-	private FloatBuffer field_1691_h = GLAllocation.createDirectFloatBuffer(16);
+	private FloatBuffer field_78564_h = GLAllocation.createDirectFloatBuffer(16);
 
 	public static ClippingHelper getInstance() {
 		instance.init();
@@ -27,7 +27,7 @@ public class ClippingHelperImpl extends ClippingHelper {
 		/*
 		this.projectionMatrixBuffer.clear();
 		this.modelviewMatrixBuffer.clear();
-		this.field_1691_h.clear();
+		this.field_78564_h.clear();
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, this.projectionMatrixBuffer);
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, this.modelviewMatrixBuffer);
 		*/
