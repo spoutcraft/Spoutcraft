@@ -41,7 +41,7 @@ public class ActiveRenderInfo {
 		objectX = objectCoords.get(0);
 		objectY = objectCoords.get(1);
 		objectZ = objectCoords.get(2);
-		int var4 = par1?1:0;
+		int var4 = par1 ? 1 : 0;
 		float var5 = par0EntityPlayer.rotationPitch;
 		float var6 = par0EntityPlayer.rotationYaw;
 		rotationX = MathHelper.cos(var6 * (float)Math.PI / 180.0F) * (float)(1 - var4 * 2);
@@ -51,18 +51,18 @@ public class ActiveRenderInfo {
 		rotationXZ = MathHelper.cos(var5 * (float)Math.PI / 180.0F);
 	}
 
-	public static Vec3D projectViewFromEntity(EntityLiving par0EntityLiving, double par1) {
+	public static Vec3 projectViewFromEntity(EntityLiving par0EntityLiving, double par1) {
 		double var3 = par0EntityLiving.prevPosX + (par0EntityLiving.posX - par0EntityLiving.prevPosX) * par1;
 		double var5 = par0EntityLiving.prevPosY + (par0EntityLiving.posY - par0EntityLiving.prevPosY) * par1 + (double)par0EntityLiving.getEyeHeight();
 		double var7 = par0EntityLiving.prevPosZ + (par0EntityLiving.posZ - par0EntityLiving.prevPosZ) * par1;
 		double var9 = var3 + (double)(objectX * 1.0F);
 		double var11 = var5 + (double)(objectY * 1.0F);
 		double var13 = var7 + (double)(objectZ * 1.0F);
-		return Vec3D.createVector(var9, var11, var13);
+		return Vec3.func_72437_a().func_72345_a(var9, var11, var13);
 	}
 
 	public static int getBlockIdAtEntityViewpoint(World par0World, EntityLiving par1EntityLiving, float par2) {
-		Vec3D var3 = projectViewFromEntity(par1EntityLiving, (double)par2);
+		Vec3 var3 = projectViewFromEntity(par1EntityLiving, (double)par2);
 		ChunkPosition var4 = new ChunkPosition(var3);
 		int var5 = par0World.getBlockId(var4.x, var4.y, var4.z);
 		if (var5 != 0 && Block.blocksList[var5].blockMaterial.isLiquid()) {

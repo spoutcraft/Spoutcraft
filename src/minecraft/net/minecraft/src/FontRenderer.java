@@ -15,7 +15,6 @@ import org.lwjgl.opengl.GL11;
 
 //Spout rewritten - not even going to try to figure out where the changes are...
 public class FontRenderer {
-	private static final Pattern field_52015_r = Pattern.compile("(?i)\\u00A7[0-9A-FK-OR]");
 	private int[] charWidth = new int[256];
 	public int fontTextureName = 0;
 	public int FONT_HEIGHT = 8;

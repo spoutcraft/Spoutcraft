@@ -13,24 +13,24 @@ public class ContainerWorkbench extends Container {
 		this.posX = par3;
 		this.posY = par4;
 		this.posZ = par5;
-		this.addSlot(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 124, 35));
+		this.func_75146_a(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 124, 35));
 
 		int var6;
 		int var7;
 		for (var6 = 0; var6 < 3; ++var6) {
 			for (var7 = 0; var7 < 3; ++var7) {
-				this.addSlot(new Slot(this.craftMatrix, var7 + var6 * 3, 30 + var7 * 18, 17 + var6 * 18));
+				this.func_75146_a(new Slot(this.craftMatrix, var7 + var6 * 3, 30 + var7 * 18, 17 + var6 * 18));
 			}
 		}
 
 		for (var6 = 0; var6 < 3; ++var6) {
 			for (var7 = 0; var7 < 9; ++var7) {
-				this.addSlot(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 84 + var6 * 18));
+				this.func_75146_a(new Slot(par1InventoryPlayer, var7 + var6 * 9 + 9, 8 + var7 * 18, 84 + var6 * 18));
 			}
 		}
 
 		for (var6 = 0; var6 < 9; ++var6) {
-			this.addSlot(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 142));
+			this.func_75146_a(new Slot(par1InventoryPlayer, var6, 8 + var6 * 18, 142));
 		}
 
 		this.onCraftMatrixChanged(this.craftMatrix);
@@ -59,7 +59,7 @@ public class ContainerWorkbench extends Container {
 	}
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
-		return this.worldObj.getBlockId(this.posX, this.posY, this.posZ) != Block.workbench.blockID?false:par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
+		return this.worldObj.getBlockId(this.posX, this.posY, this.posZ) != Block.workbench.blockID ? false : par1EntityPlayer.getDistanceSq((double)this.posX + 0.5D, (double)this.posY + 0.5D, (double)this.posZ + 0.5D) <= 64.0D;
 	}
 
 	public ItemStack transferStackInSlot(int par1) {
@@ -73,7 +73,7 @@ public class ContainerWorkbench extends Container {
 					return null;
 				}
 
-				var3.func_48433_a(var4, var2);
+				var3.func_75220_a(var4, var2);
 			} else if (par1 >= 10 && par1 < 37) {
 				if (!this.mergeItemStack(var4, 37, 46, false)) {
 					return null;

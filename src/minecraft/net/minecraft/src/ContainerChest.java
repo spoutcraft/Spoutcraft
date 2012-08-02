@@ -14,18 +14,18 @@ public class ContainerChest extends Container {
 		int var5;
 		for (var4 = 0; var4 < this.numRows; ++var4) {
 			for (var5 = 0; var5 < 9; ++var5) {
-				this.addSlot(new Slot(par2IInventory, var5 + var4 * 9, 8 + var5 * 18, 18 + var4 * 18));
+				this.func_75146_a(new Slot(par2IInventory, var5 + var4 * 9, 8 + var5 * 18, 18 + var4 * 18));
 			}
 		}
 
 		for (var4 = 0; var4 < 3; ++var4) {
 			for (var5 = 0; var5 < 9; ++var5) {
-				this.addSlot(new Slot(par1IInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 + var3));
+				this.func_75146_a(new Slot(par1IInventory, var5 + var4 * 9 + 9, 8 + var5 * 18, 103 + var4 * 18 + var3));
 			}
 		}
 
 		for (var4 = 0; var4 < 9; ++var4) {
-			this.addSlot(new Slot(par1IInventory, var4, 8 + var4 * 18, 161 + var3));
+			this.func_75146_a(new Slot(par1IInventory, var4, 8 + var4 * 18, 161 + var3));
 		}
 	}
 	

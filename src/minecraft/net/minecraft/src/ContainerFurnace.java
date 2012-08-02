@@ -8,19 +8,19 @@ public class ContainerFurnace extends Container {
 
 	public ContainerFurnace(InventoryPlayer par1InventoryPlayer, TileEntityFurnace par2TileEntityFurnace) {
 		this.furnace = par2TileEntityFurnace;
-		this.addSlot(new Slot(par2TileEntityFurnace, 0, 56, 17));
-		this.addSlot(new Slot(par2TileEntityFurnace, 1, 56, 53));
-		this.addSlot(new SlotFurnace(par1InventoryPlayer.player, par2TileEntityFurnace, 2, 116, 35));
-
+		this.func_75146_a(new Slot(par2TileEntityFurnace, 0, 56, 17));
+		this.func_75146_a(new Slot(par2TileEntityFurnace, 1, 56, 53));
+		this.func_75146_a(new SlotFurnace(par1InventoryPlayer.player, par2TileEntityFurnace, 2, 116, 35));
 		int var3;
+
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlot(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.func_75146_a(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlot(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+			this.func_75146_a(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
 		}
 	}
 	
@@ -30,11 +30,19 @@ public class ContainerFurnace extends Container {
 	}
 	//Spout end
 
+	public void func_75132_a(ICrafting par1ICrafting) {
+		super.func_75132_a(par1ICrafting);
+		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
+		par1ICrafting.updateCraftingInventoryInfo(this, 1, this.furnace.furnaceBurnTime);
+		par1ICrafting.updateCraftingInventoryInfo(this, 2, this.furnace.currentItemBurnTime);
+	}
+
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
+		Iterator var1 = this.crafters.iterator();
 
-		for (int var1 = 0; var1 < this.crafters.size(); ++var1) {
-			ICrafting var2 = (ICrafting)this.crafters.get(var1);
+		while (var1.hasNext()) {
+			ICrafting var2 = (ICrafting)var1.next();
 			if (this.lastCookTime != this.furnace.furnaceCookTime) {
 				var2.updateCraftingInventoryInfo(this, 0, this.furnace.furnaceCookTime);
 			}
@@ -82,13 +90,13 @@ public class ContainerFurnace extends Container {
 					return null;
 				}
 
-				var3.func_48433_a(var4, var2);
+				var3.func_75220_a(var4, var2);
 			} else if (par1 != 1 && par1 != 0) {
 				if (FurnaceRecipes.smelting().getSmeltingResult(var4.getItem().shiftedIndex) != null) {
 					if (!this.mergeItemStack(var4, 0, 1, false)) {
 						return null;
 					}
-				} else if (TileEntityFurnace.func_52005_b(var4)) {
+				} else if (TileEntityFurnace.isItemFuel(var4)) {
 					if (!this.mergeItemStack(var4, 1, 2, false)) {
 						return null;
 					}

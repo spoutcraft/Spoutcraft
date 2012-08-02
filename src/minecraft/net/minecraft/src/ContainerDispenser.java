@@ -10,18 +10,18 @@ public class ContainerDispenser extends Container {
 		int var4;
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (var4 = 0; var4 < 3; ++var4) {
-				this.addSlot(new Slot(par2TileEntityDispenser, var4 + var3 * 3, 62 + var4 * 18, 17 + var3 * 18));
+				this.func_75146_a(new Slot(par2TileEntityDispenser, var4 + var3 * 3, 62 + var4 * 18, 17 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
-				this.addSlot(new Slot(par1IInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.func_75146_a(new Slot(par1IInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlot(new Slot(par1IInventory, var3, 8 + var3 * 18, 142));
+			this.func_75146_a(new Slot(par1IInventory, var3, 8 + var3 * 18, 142));
 		}
 	}
 	

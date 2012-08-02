@@ -16,28 +16,28 @@ public class ContainerPlayer extends Container {
 		this.craftResult = new InventoryCraftResult();
 		this.isLocalWorld = false;
 		this.isLocalWorld = par2;
-		this.addSlot(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
+		this.func_75146_a(new SlotCrafting(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
 
 		int var3;
 		int var4;
 		for (var3 = 0; var3 < 2; ++var3) {
 			for (var4 = 0; var4 < 2; ++var4) {
-				this.addSlot(new Slot(this.craftMatrix, var4 + var3 * 2, 88 + var4 * 18, 26 + var3 * 18));
+				this.func_75146_a(new Slot(this.craftMatrix, var4 + var3 * 2, 88 + var4 * 18, 26 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 4; ++var3) {
-			this.addSlot(new SlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - var3, 8, 8 + var3 * 18, var3));
+			this.func_75146_a(new SlotArmor(this, par1InventoryPlayer, par1InventoryPlayer.getSizeInventory() - 1 - var3, 8, 8 + var3 * 18, var3));
 		}
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
-				this.addSlot(new Slot(par1InventoryPlayer, var4 + (var3 + 1) * 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.func_75146_a(new Slot(par1InventoryPlayer, var4 + (var3 + 1) * 9, 8 + var4 * 18, 84 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlot(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+			this.func_75146_a(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
 		}
 
 		this.onCraftMatrixChanged(this.craftMatrix);
@@ -86,7 +86,21 @@ public class ContainerPlayer extends Container {
 					return null;
 				}
 
-				var3.func_48433_a(var4, var2);
+				var3.func_75220_a(var4, var2);
+			} else if (par1 >= 1 && par1 < 5) {
+				if (!this.mergeItemStack(var4, 9, 45, false)) {
+					return null;
+				}
+			} else if (par1 >= 5 && par1 < 9) {
+				if (!this.mergeItemStack(var4, 9, 45, false)) {
+					return null;
+				}
+			} else if (var2.getItem() instanceof ItemArmor && !((Slot)this.inventorySlots.get(5 + ((ItemArmor)var2.getItem()).armorType)).getHasStack()) {
+				int var5 = 5 + ((ItemArmor)var2.getItem()).armorType;
+
+				if (!this.mergeItemStack(var4, var5, var5 + 1, false)) {
+					return null;
+				}
 			} else if (par1 >= 9 && par1 < 36) {
 				if (!this.mergeItemStack(var4, 36, 45, false)) {
 					return null;
