@@ -43,11 +43,9 @@ public class GuiAchievement extends Gui {
 	 * Queue a taken achievement to be displayed.
 	 */
 	public void queueTakenAchievement(Achievement par1Achievement) {
-		achievementGetLocalText = StatCollector
-				.translateToLocal("achievement.get");
-		achievementStatName = StatCollector.translateToLocal(par1Achievement
-				.getName());
-		achievementTime = System.currentTimeMillis();
+		achievementGetLocalText = StatCollector.translateToLocal("achievement.get");
+		achievementStatName = StatCollector.translateToLocal(par1Achievemen.getName());
+		achievementTime = Minecraft.func_71386_F();
 		theAchievement = par1Achievement;
 		haveAchiement = false;
 		//Spout Start
@@ -63,7 +61,7 @@ public class GuiAchievement extends Gui {
 	public void queueAchievementInformation(Achievement par1Achievement) {
 		achievementGetLocalText = StatCollector.translateToLocal(par1Achievement.getName());
 		achievementStatName = par1Achievement.getDescription();
-		achievementTime = System.currentTimeMillis() - 2500L;
+		achievementTime = Minecraft.func_71386_F() - 2500L;
 		theAchievement = par1Achievement;
 		haveAchiement = true;
 		//Spout Start
@@ -77,7 +75,7 @@ public class GuiAchievement extends Gui {
 	public void queueNotification(String title, String message, int toRender) {
 		achievementGetLocalText = title;
 		achievementStatName = message;
-		achievementTime = System.currentTimeMillis();
+		achievementTime = Minecraft.func_71386_F();
 		theAchievement = null;
 		haveAchiement = false;
 		customNotification = true;
@@ -89,7 +87,7 @@ public class GuiAchievement extends Gui {
 	public void queueNotification(String title, String message, int toRender, short data, int time) {
 		achievementGetLocalText = title;
 		achievementStatName = message;
-		achievementTime = System.currentTimeMillis();
+		achievementTime = Minecraft.func_71386_F();
 		theAchievement = null;
 		haveAchiement = false;
 		customNotification = true;
@@ -110,9 +108,7 @@ public class GuiAchievement extends Gui {
 		GL11.glLoadIdentity();
 		achievementWindowWidth = theGame.displayWidth;
 		achievementWindowHeight = theGame.displayHeight;
-		ScaledResolution scaledresolution = new ScaledResolution(
-				theGame.gameSettings, theGame.displayWidth,
-				theGame.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(theGame.gameSettings, theGame.displayWidth, theGame.displayHeight);
 		achievementWindowWidth = scaledresolution.getScaledWidth();
 		achievementWindowHeight = scaledresolution.getScaledHeight();
 		GL11.glClear(256);
