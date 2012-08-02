@@ -8,15 +8,6 @@ import org.spoutcraft.client.ChunkComparator;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 
-import net.minecraft.src.Chunk;
-import net.minecraft.src.ChunkCoordIntPair;
-import net.minecraft.src.ChunkPosition;
-import net.minecraft.src.EmptyChunk;
-import net.minecraft.src.EnumCreatureType;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.IProgressUpdate;
-import net.minecraft.src.World;
-
 //Spout
 import gnu.trove.map.hash.TLongObjectHashMap;
 
@@ -51,7 +42,7 @@ public class ChunkProviderClient implements IChunkProvider {
 		return true;
 	}
 
-	public void func_539_c(int par1, int par2) {
+	public void unloadChunk(int par1, int par2) {
 		Chunk var3 = this.provideChunk(par1, par2);
 		//Spout start
 		if (!var3.isEmpty() && SpoutClient.hasAvailableRAM()) {
@@ -150,5 +141,9 @@ public class ChunkProviderClient implements IChunkProvider {
 
 	public ChunkPosition findClosestStructure(World par1World, String par2Str, int par3, int par4, int par5) {
 		return null;
+	}
+
+	public int func_73152_e() {
+		return chunkMapping.size(); // Spout - this.chunkListing.size();
 	}
 }

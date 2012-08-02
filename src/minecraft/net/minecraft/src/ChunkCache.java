@@ -6,7 +6,7 @@ public class ChunkCache implements IBlockAccess {
 	private int chunkX;
 	private int chunkZ;
 	private Chunk[][] chunkArray;
-	private boolean field_48467_d;
+	private boolean field_72814_d;
 	private World worldObj;
 
 	public ChunkCache(World par1World, int par2, int par3, int par4, int par5, int par6, int par7) {
@@ -16,7 +16,7 @@ public class ChunkCache implements IBlockAccess {
 		int var8 = par5 >> 4;
 		int var9 = par7 >> 4;
 		this.chunkArray = new Chunk[var8 - this.chunkX + 1][var9 - this.chunkZ + 1];
-		this.field_48467_d = true;
+		this.field_72814_d = true;
 
 		for (int var10 = this.chunkX; var10 <= var8; ++var10) {
 			for (int var11 = this.chunkZ; var11 <= var9; ++var11) {
@@ -24,15 +24,15 @@ public class ChunkCache implements IBlockAccess {
 				if (var12 != null) {
 					this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var12;
 					if (!var12.getAreLevelsEmpty(par3, par6)) {
-						this.field_48467_d = false;
+						this.field_72814_d = false;
 					}
 				}
 			}
 		}
 	}
 
-	public boolean func_48452_a() {
-		return this.field_48467_d;
+	public boolean func_72806_N() {
+		return this.field_72814_d;
 	}
 
 	public int getBlockId(int par1, int par2, int par3) {
@@ -45,7 +45,7 @@ public class ChunkCache implements IBlockAccess {
 			int var5 = (par3 >> 4) - this.chunkZ;
 			if (var4 >= 0 && var4 < this.chunkArray.length && var5 >= 0 && var5 < this.chunkArray[var4].length) {
 				Chunk var6 = this.chunkArray[var4][var5];
-				return var6 == null?0:var6.getBlockID(par1 & 15, par2, par3 & 15);
+				return var6 == null ? 0 : var6.getBlockID(par1 & 15, par2, par3 & 15);
 			} else {
 				return 0;
 			}
@@ -91,7 +91,7 @@ public class ChunkCache implements IBlockAccess {
 			int var6;
 			if (par4) {
 				var5 = this.getBlockId(par1, par2, par3);
-				if (var5 == Block.stairSingle.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
+				if (var5 == Block.field_72079_ak.blockID || var5 == Block.field_72092_bO.blockID || var5 == Block.tilledField.blockID || var5 == Block.stairCompactPlanks.blockID || var5 == Block.stairCompactCobblestone.blockID) {
 					var6 = this.getLightValueExt(par1, par2 + 1, par3, false);
 					int var7 = this.getLightValueExt(par1 + 1, par2, par3, false);
 					int var8 = this.getLightValueExt(par1 - 1, par2, par3, false);
@@ -150,7 +150,7 @@ public class ChunkCache implements IBlockAccess {
 
 	public Material getBlockMaterial(int par1, int par2, int par3) {
 		int var4 = this.getBlockId(par1, par2, par3);
-		return var4 == 0?Material.air:Block.blocksList[var4].blockMaterial;
+		return var4 == 0 ? Material.air : Block.blocksList[var4].blockMaterial;
 	}
 
 	public BiomeGenBase getBiomeGenForCoords(int par1, int par2) {
@@ -159,12 +159,17 @@ public class ChunkCache implements IBlockAccess {
 
 	public boolean isBlockOpaqueCube(int par1, int par2, int par3) {
 		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
-		return var4 == null?false:var4.isOpaqueCube();
+		return var4 == null ? false : var4.isOpaqueCube();
 	}
 
 	public boolean isBlockNormalCube(int par1, int par2, int par3) {
 		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
-		return var4 == null?false:var4.blockMaterial.blocksMovement() && var4.renderAsNormalBlock();
+		return var4 == null ? false : var4.blockMaterial.blocksMovement() && var4.renderAsNormalBlock();
+	}
+
+	public boolean func_72797_t(int par1, int par2, int par3) {
+		Block var4 = Block.blocksList[this.getBlockId(par1, par2, par3)];
+		return var4 == null ? false : (var4.blockMaterial.isOpaque() && var4.renderAsNormalBlock() ? true : (var4 instanceof BlockStairs ? (this.getBlockMetadata(par1, par2, par3) & 4) == 4 : (var4 instanceof BlockHalfSlab ? (this.getBlockMetadata(par1, par2, par3) & 8) == 8 : false)));
 	}
 
 	public boolean isAirBlock(int par1, int par2, int par3) {
