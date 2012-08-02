@@ -70,7 +70,7 @@ public class EffectRenderer {
 		LinkedList<CustomEntityDiggingFX> specialParticles = new LinkedList<CustomEntityDiggingFX>();
 		// Spout end
 		for (int var8 = 0; var8 < 3; ++var8) {
-			if (this.fxLayers[var8].size() != 0) {
+			if (!this.fxLayers[var8].isEmpty()) {
 				int var9 = 0;
 				if (var8 == 0) {
 					var9 = this.renderer.getTexture("/particles.png");
@@ -111,14 +111,14 @@ public class EffectRenderer {
 		// Spout end
 	}
 
-	public void func_1187_b(Entity par1Entity, float par2) {
+	public void func_78872_b(Entity par1Entity, float par2) {
 		float var4 = MathHelper.cos(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
 		float var5 = MathHelper.sin(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
 		float var6 = -var5 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
 		float var7 = var4 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
 		float var8 = MathHelper.cos(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
 		byte var9 = 3;
-		if (this.fxLayers[var9].size() != 0) {
+		if (!this.fxLayers[var9].isEmpty()) {
 			Tessellator var10 = Tessellator.instance;
 
 			for (int var11 = 0; var11 < this.fxLayers[var9].size(); ++var11) {
@@ -169,11 +169,11 @@ public class EffectRenderer {
 						int var17 = this.rand.nextInt(6);
 						//Spout start
 						if (custom) {
-							this.addEffect((new CustomEntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5, customTexture, design)).func_4041_a(par1, par2, par3));
+							this.addEffect((new CustomEntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5, customTexture, design)).func_70596_a(par1, par2, par3));
 						}
 						else
 						//Spout end
-						this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5)).func_4041_a(par1, par2, par3));
+						this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5)).func_70596_a(par1, par2, par3));
 					}
 				}
 			}
@@ -225,11 +225,11 @@ public class EffectRenderer {
 				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
 					custom = true;
-					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data, customTexture, design)).func_4041_a(par1, par2, par3).multiplyVelocity(0.2F).func_405_d(0.6F));
+					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data, customTexture, design)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
 				}
 			}
 			if (!custom) {
-				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_4041_a(par1, par2, par3).multiplyVelocity(0.2F).func_405_d(0.6F));
+				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_4041_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
 			}
 			// Spout end
 		}
