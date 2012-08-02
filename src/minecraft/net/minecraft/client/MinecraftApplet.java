@@ -16,12 +16,9 @@ public class MinecraftApplet extends Applet {
 
 	public void init() {
 		this.mcCanvas = new CanvasMinecraftApplet(this);
-		boolean var1 = false;
-		if (this.getParameter("fullscreen") != null) {
-			var1 = this.getParameter("fullscreen").equalsIgnoreCase("true");
-		}
+		boolean var1 = "true".equalsIgnoreCase(this.getParameter("fullscreen"));
 
-		this.mc = new MinecraftAppletImpl(this, this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
+		this.mc = new MinecraftAppletImpl(this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
 		this.mc.minecraftUri = this.getDocumentBase().getHost();
 		if (this.getDocumentBase().getPort() > 0) {
 			this.mc.minecraftUri = this.mc.minecraftUri + ":" + this.getDocumentBase().getPort();
@@ -30,9 +27,6 @@ public class MinecraftApplet extends Applet {
 		if (this.getParameter("username") != null && this.getParameter("sessionid") != null) {
 			this.mc.session = new Session(this.getParameter("username"), this.getParameter("sessionid"));
 			System.out.println("Setting user: " + this.mc.session.username + ", " + this.mc.session.sessionId);
-			if (this.getParameter("mppass") != null) {
-				this.mc.session.mpPassParameter = this.getParameter("mppass");
-			}
 		} else {
 			this.mc.session = new Session("Player", "");
 		}
@@ -49,10 +43,8 @@ public class MinecraftApplet extends Applet {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
 
-		this.mc.hideQuitButton = true;
-		if ("true".equals(this.getParameter("stand-alone"))) {
-			this.mc.hideQuitButton = false;
-		}
+		this.mc.func_71390_a("true".equals(this.getParameter("demo")));
+		this.mc.hideQuitButton = !"true".equals(this.getParameter("stand-alone"));
 
 		this.setLayout(new BorderLayout());
 		this.add(this.mcCanvas, "Center");
