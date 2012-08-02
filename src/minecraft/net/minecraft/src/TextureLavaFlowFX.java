@@ -3,16 +3,14 @@ package net.minecraft.src;
 //Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
 //Spout HD End
-import net.minecraft.src.Block;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.TextureFX;
 
 public class TextureLavaFlowFX extends TextureFX {
 	//Spout HD Start
-	protected float[] field_1143_g = new float[TileSize.int_numPixels];
-	protected float[] field_1142_h = new float[TileSize.int_numPixels];
-	protected float[] field_1141_i = new float[TileSize.int_numPixels];
-	protected float[] field_1140_j = new float[TileSize.int_numPixels];
+	protected float[] field_76871_g = new float[TileSize.int_numPixels];
+	protected float[] field_76874_h = new float[TileSize.int_numPixels];
+	protected float[] field_76875_i = new float[TileSize.int_numPixels];
+	protected float[] field_76872_j = new float[TileSize.int_numPixels];
 	//Spout HD End
 	int field_1139_k = 0;
 
@@ -44,34 +42,34 @@ public class TextureLavaFlowFX extends TextureFX {
 						//Spout HD Start
 						var8 = var6 + var4 & TileSize.int_sizeMinus1;
 						var9 = var7 + var5 & TileSize.int_sizeMinus1;
-						var3 += this.field_1143_g[var8 + var9 * TileSize.int_size];
+						var3 += this.field_76871_g[var8 + var9 * TileSize.int_size];
 						//Spout HD End
 					}
 				}
 
 				//Spout HD Start
-				this.field_1142_h[var1 + var2 * TileSize.int_size] = var3 / 10.0F + (this.field_1141_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_1141_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size]) / 4.0F * 0.8F;
-				this.field_1141_i[var1 + var2 * TileSize.int_size] += this.field_1140_j[var1 + var2 * TileSize.int_size] * 0.01F;
-				if (this.field_1141_i[var1 + var2 * TileSize.int_size] < 0.0F) {
-					this.field_1141_i[var1 + var2 * TileSize.int_size] = 0.0F;
+				this.field_76874_h[var1 + var2 * TileSize.int_size] = var3 / 10.0F + (this.field_76875_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76875_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 0 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76875_i[(var1 + 1 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size] + this.field_76875_i[(var1 + 0 & TileSize.int_sizeMinus1) + (var2 + 1 & TileSize.int_sizeMinus1) * TileSize.int_size]) / 4.0F * 0.8F;
+				this.field_76875_i[var1 + var2 * TileSize.int_size] += this.field_76872_j[var1 + var2 * TileSize.int_size] * 0.01F;
+				if (this.field_76875_i[var1 + var2 * TileSize.int_size] < 0.0F) {
+					this.field_76875_i[var1 + var2 * TileSize.int_size] = 0.0F;
 					//Spout HD End
 				}
 
 				//Spout HD Start
-				this.field_1140_j[var1 + var2 * TileSize.int_size] -= 0.06F;
+				this.field_76872_j[var1 + var2 * TileSize.int_size] -= 0.06F;
 				if (Math.random() < 0.005D) {
-					this.field_1140_j[var1 + var2 * TileSize.int_size] = 1.5F;
+					this.field_76872_j[var1 + var2 * TileSize.int_size] = 1.5F;
 					//Spout HD End
 				}
 			}
 		}
 
-		float[] var11 = this.field_1142_h;
-		this.field_1142_h = this.field_1143_g;
-		this.field_1143_g = var11;
+		float[] var11 = this.field_76874_h;
+		this.field_76874_h = this.field_76871_g;
+		this.field_76871_g = var11;
 		//Spout HD Start
 		for (var2 = 0; var2 < TileSize.int_numPixels; ++var2) {
-			var3 = this.field_1143_g[var2 - this.field_1139_k / 3 * TileSize.int_size & TileSize.int_numPixelsMinus1] * 2.0F;
+			var3 = this.field_76871_g[var2 - this.field_1139_k / 3 * TileSize.int_size & TileSize.int_numPixelsMinus1] * 2.0F;
 			//Spout HD End
 			if (var3 > 1.0F) {
 				var3 = 1.0F;

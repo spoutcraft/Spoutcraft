@@ -3,14 +3,13 @@ package net.minecraft.src;
 //Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
 //Spout HD End
-import net.minecraft.src.Block;
-import net.minecraft.src.TextureFX;
+
 
 public class TextureFlamesFX extends TextureFX {
 
 	//Spout HD Start
-	protected float[] field_1133_g = new float[TileSize.int_flameArraySize];
-	protected float[] field_1132_h = new float[TileSize.int_flameArraySize];
+	protected float[] field_76869_g = new float[TileSize.int_flameArraySize];
+	protected float[] field_76870_h = new float[TileSize.int_flameArraySize];
 	//Spout HD End
 
 	public TextureFlamesFX(int par1) {
@@ -27,14 +26,14 @@ public class TextureFlamesFX extends TextureFX {
 				//Spout HD End
 				var3 = 18;
 				//Spout HD Start
-				var4 = this.field_1133_g[var1 + (var2 + 1) % TileSize.int_flameHeight * TileSize.int_size] * (float)var3;
+				var4 = this.field_76869_g[var1 + (var2 + 1) % TileSize.int_flameHeight * TileSize.int_size] * (float)var3;
 				//Spout HD End
 
 				for (int var5 = var1 - 1; var5 <= var1 + 1; ++var5) {
 					for (var6 = var2; var6 <= var2 + 1; ++var6) {
 						//Spout HD Start
 						if (var5 >= 0 && var6 >= 0 && var5 < TileSize.int_size && var6 < TileSize.int_flameHeight) {
-							var4 += this.field_1133_g[var5 + var6 * TileSize.int_size];
+							var4 += this.field_76869_g[var5 + var6 * TileSize.int_size];
 						}
 						//Spout HD End
 
@@ -43,22 +42,22 @@ public class TextureFlamesFX extends TextureFX {
 				}
 
 				//Spout HD Start
-				this.field_1132_h[var1 + var2 * TileSize.int_size] = var4 / ((float)var3 * TileSize.float_flameNudge);
+				this.field_76870_h[var1 + var2 * TileSize.int_size] = var4 / ((float)var3 * TileSize.float_flameNudge);
 				if (var2 >= TileSize.int_flameHeightMinus1) {
-					this.field_1132_h[var1 + var2 * TileSize.int_size] = (float)(Math.random() * Math.random() * Math.random() * 4.0D + Math.random() * 0.1D + 0.2D);
+					this.field_76870_h[var1 + var2 * TileSize.int_size] = (float)(Math.random() * Math.random() * Math.random() * 4.0D + Math.random() * 0.1D + 0.2D);
 					//Spout HD End
 				}
 			}
 		}
 
-		float[] var13 = this.field_1132_h;
-		this.field_1132_h = this.field_1133_g;
-		this.field_1133_g = var13;
+		float[] var13 = this.field_76870_h;
+		this.field_76870_h = this.field_76869_g;
+		this.field_76869_g = var13;
 
 		//Spout HD Start
 		for (var3 = 0; var3 < TileSize.int_numPixels; ++var3) {
 			//Spout HD End
-			var4 = this.field_1133_g[var3] * 1.8F;
+			var4 = this.field_76869_g[var3] * 1.8F;
 			if (var4 > 1.0F) {
 				var4 = 1.0F;
 			}

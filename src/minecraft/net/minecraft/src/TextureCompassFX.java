@@ -14,8 +14,8 @@ public class TextureCompassFX extends TextureFX {
 	//Spout HD Start
 	private int[] compassIconImageData = new int[TileSize.int_numPixels];
 	//Spout HD End
-	private double field_4229_i;
-	private double field_4228_j;
+	private double field_76868_i;
+	private double field_76866_j;
 
 	public TextureCompassFX(Minecraft par1Minecraft) {
 		super(Item.compass.getIconFromDamage(0));
@@ -59,18 +59,18 @@ public class TextureCompassFX extends TextureFX {
 		}
 
 		double var20 = 0.0D;
-		if (this.mc.theWorld != null && this.mc.thePlayer != null) {
-			ChunkCoordinates var21 = this.mc.theWorld.getSpawnPoint();
-			double var23 = (double)var21.posX - this.mc.thePlayer.posX;
-			double var25 = (double)var21.posZ - this.mc.thePlayer.posZ;
-			var20 = (double)(this.mc.thePlayer.rotationYaw - 90.0F) * Math.PI / 180.0D - Math.atan2(var25, var23);
-			if (!this.mc.theWorld.worldProvider.func_48217_e()) {
+		if (this.mc.field_71441_e != null && this.mc.field_71439_g != null) {
+			ChunkCoordinates var21 = this.mc.field_71441_e.getSpawnPoint();
+			double var23 = (double)var21.posX - this.mc.field_71439_g.posX;
+			double var25 = (double)var21.posZ - this.mc.field_71439_g.posZ;
+			var20 = (double)(this.mc.field_71439_g.rotationYaw - 90.0F) * Math.PI / 180.0D - Math.atan2(var25, var23);
+			if (!this.mc.field_71441_e.worldProvider.isSurfaceWorld()) {
 				var20 = Math.random() * Math.PI * 2.0D;
 			}
 		}
 
 		double var22;
-		for (var22 = var20 - this.field_4229_i; var22 < -Math.PI; var22 += (Math.PI * 2D)) {
+		for (var22 = var20 - this.field_76868_i; var22 < -Math.PI; var22 += (Math.PI * 2D)) {
 			;
 		}
 
@@ -86,11 +86,11 @@ public class TextureCompassFX extends TextureFX {
 			var22 = 1.0D;
 		}
 
-		this.field_4228_j += var22 * 0.1D;
-		this.field_4228_j *= 0.8D;
-		this.field_4229_i += this.field_4228_j;
-		double var24 = Math.sin(this.field_4229_i);
-		double var26 = Math.cos(this.field_4229_i);
+		this.field_76866_j += var22 * 0.1D;
+		this.field_76866_j *= 0.8D;
+		this.field_76868_i += this.field_76866_j;
+		double var24 = Math.sin(this.field_76868_i);
+		double var26 = Math.cos(this.field_76868_i);
 
 		int var9;
 		int var10;
@@ -134,9 +134,9 @@ public class TextureCompassFX extends TextureFX {
 			var11 = (int)(TileSize.double_compassCenterMin + var26 * (double)var9 * 0.3D * 0.5D);
 			var12 = var11 * TileSize.int_size + var10;
 			//Spout HD End
-			var13 = var9 >= 0?255:100;
-			var14 = var9 >= 0?20:100;
-			var15 = var9 >= 0?20:100;
+			var13 = var9 >= 0 ? 255 : 100;
+			var14 = var9 >= 0 ? 20 : 100;
+			var15 = var9 >= 0 ? 20 : 100;
 			var16 = 255;
 			if (this.anaglyphEnabled) {
 				var17 = (var13 * 30 + var14 * 59 + var15 * 11) / 100;

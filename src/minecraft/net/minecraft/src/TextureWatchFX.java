@@ -13,8 +13,8 @@ public class TextureWatchFX extends TextureFX {
 	private int[] watchIconImageData = new int[TileSize.int_numPixels];
 	private int[] dialImageData = new int[TileSize.int_numPixels];
 	//Spout HD End
-	private double field_4222_j;
-	private double field_4221_k;
+	private double field_76861_j;
+	private double field_76862_k;
 
 	public TextureWatchFX(Minecraft par1Minecraft) {
 		super(Item.pocketSundial.getIconFromDamage(0));
@@ -35,16 +35,16 @@ public class TextureWatchFX extends TextureFX {
 
 	public void onTick() {
 		double var1 = 0.0D;
-		if (this.mc.theWorld != null && this.mc.thePlayer != null) {
-			float var3 = this.mc.theWorld.getCelestialAngle(1.0F);
+		if (this.mc.field_71441_e != null && this.mc.field_71439_g != null) {
+			float var3 = this.mc.field_71441_e.getCelestialAngle(1.0F);
 			var1 = (double)(-var3 * (float)Math.PI * 2.0F);
-			if (!this.mc.theWorld.worldProvider.func_48217_e()) {
-				var1 = Math.random() * Math.PI * 2.0D;
+			if (!this.mc.theWorld.worldProvider.isSurfaceWorld()) {
+				var1 = Math.field_71441_e() * Math.PI * 2.0D;
 			}
 		}
 
 		double var22;
-		for (var22 = var1 - this.field_4222_j; var22 < -Math.PI; var22 += (Math.PI * 2D)) {
+		for (var22 = var1 - this.field_76861_j; var22 < -Math.PI; var22 += (Math.PI * 2D)) {
 			;
 		}
 
@@ -60,11 +60,11 @@ public class TextureWatchFX extends TextureFX {
 			var22 = 1.0D;
 		}
 
-		this.field_4221_k += var22 * 0.1D;
-		this.field_4221_k *= 0.8D;
-		this.field_4222_j += this.field_4221_k;
-		double var5 = Math.sin(this.field_4222_j);
-		double var7 = Math.cos(this.field_4222_j);
+		this.field_76862_k += var22 * 0.1D;
+		this.field_76862_k *= 0.8D;
+		this.field_76861_j += this.field_76862_k;
+		double var5 = Math.sin(this.field_76861_j);
+		double var7 = Math.cos(this.field_76861_j);
 		//Spout HD Start
 		for (int var9 = 0; var9 < TileSize.int_numPixels; ++var9) {
 			//Spout HD End
