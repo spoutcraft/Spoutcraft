@@ -19,9 +19,15 @@ public class WorldInfo {
 	private int rainTime;
 	private boolean thundering;
 	private int thunderTime;
-	private int gameType;
+	private EnumGameType field_76113_q;
 	private boolean mapFeaturesEnabled;
 	private boolean hardcore;
+	private boolean field_76110_t;
+	private boolean field_76109_u;
+
+	protected WorldInfo() {
+		this.terrainType = WorldType.DEFAULT;
+	}
 
 	public WorldInfo(NBTTagCompound par1NBTTagCompound) {
 		this.terrainType = WorldType.DEFAULT;
@@ -32,17 +38,17 @@ public class WorldInfo {
 			this.terrainType = WorldType.parseWorldType(var2);
 			if (this.terrainType == null) {
 				this.terrainType = WorldType.DEFAULT;
-			} else if (this.terrainType.func_48626_e()) {
+			} else if (this.terrainType.func_77125_e()) {
 				int var3 = 0;
 				if (par1NBTTagCompound.hasKey("generatorVersion")) {
 					var3 = par1NBTTagCompound.getInteger("generatorVersion");
 				}
 
-				this.terrainType = this.terrainType.func_48629_a(var3);
+				this.terrainType = this.terrainType.getWorldTypeForGeneratorVersion(var3);
 			}
 		}
 
-		this.gameType = par1NBTTagCompound.getInteger("GameType");
+		this.field_76113_q = EnumGameType.func_77146_a(par1NBTTagCompound.getInteger("GameType"));
 		if (par1NBTTagCompound.hasKey("MapFeatures")) {
 			this.mapFeaturesEnabled = par1NBTTagCompound.getBoolean("MapFeatures");
 		} else {
@@ -62,6 +68,19 @@ public class WorldInfo {
 		this.thunderTime = par1NBTTagCompound.getInteger("thunderTime");
 		this.thundering = par1NBTTagCompound.getBoolean("thundering");
 		this.hardcore = par1NBTTagCompound.getBoolean("hardcore");
+
+		if (par1NBTTagCompound.hasKey("initialized")) {
+			this.field_76109_u = par1NBTTagCompound.getBoolean("initialized");
+		} else {
+			this.field_76109_u = true;
+		}
+
+		if (par1NBTTagCompound.hasKey("allowCommands")) {
+			this.field_76110_t = par1NBTTagCompound.getBoolean("allowCommands");
+		} else {
+			this.field_76110_t = this.field_76113_q == EnumGameType.CREATIVE;
+		}
+
 		if (par1NBTTagCompound.hasKey("Player")) {
 			this.playerTag = par1NBTTagCompound.getCompoundTag("Player");
 			this.dimension = this.playerTag.getInteger("Dimension");
@@ -72,11 +91,13 @@ public class WorldInfo {
 		this.terrainType = WorldType.DEFAULT;
 		this.hardcore = false;
 		this.randomSeed = par1WorldSettings.getSeed();
-		this.gameType = par1WorldSettings.getGameType();
+		this.field_76113_q = par1WorldSettings.func_77162_e();
 		this.mapFeaturesEnabled = par1WorldSettings.isMapFeaturesEnabled();
 		this.levelName = par2Str;
 		this.hardcore = par1WorldSettings.getHardcoreEnabled();
 		this.terrainType = par1WorldSettings.getTerrainType();
+		this.field_76110_t = par1WorldSettings.func_77163_i();
+		this.field_76109_u = false;
 	}
 
 	public WorldInfo(WorldInfo par1WorldInfo) {
@@ -84,7 +105,7 @@ public class WorldInfo {
 		this.hardcore = false;
 		this.randomSeed = par1WorldInfo.randomSeed;
 		this.terrainType = par1WorldInfo.terrainType;
-		this.gameType = par1WorldInfo.gameType;
+		this.field_76113_q = par1WorldInfo.field_76113_q;
 		this.mapFeaturesEnabled = par1WorldInfo.mapFeaturesEnabled;
 		this.spawnX = par1WorldInfo.spawnX;
 		this.spawnY = par1WorldInfo.spawnY;
@@ -101,6 +122,8 @@ public class WorldInfo {
 		this.thunderTime = par1WorldInfo.thunderTime;
 		this.thundering = par1WorldInfo.thundering;
 		this.hardcore = par1WorldInfo.hardcore;
+		this.field_76110_t = par1WorldInfo.field_76110_t;
+		this.field_76109_u = par1WorldInfo.field_76109_u;
 	}
 
 	public NBTTagCompound getNBTTagCompound() {
@@ -109,28 +132,17 @@ public class WorldInfo {
 		return var1;
 	}
 
-	public NBTTagCompound getNBTTagCompoundWithPlayers(List par1List) {
+	public NBTTagCompound func_76082_a(NBTTagCompound par1NBTTagCompound) {
 		NBTTagCompound var2 = new NBTTagCompound();
-		EntityPlayer var3 = null;
-		NBTTagCompound var4 = null;
-		if (par1List.size() > 0) {
-			var3 = (EntityPlayer)par1List.get(0);
-		}
-
-		if (var3 != null) {
-			var4 = new NBTTagCompound();
-			var3.writeToNBT(var4);
-		}
-
-		this.updateTagCompound(var2, var4);
+		this.updateTagCompound(var2, par1NBTTagCompound);
 		return var2;
 	}
 
 	private void updateTagCompound(NBTTagCompound par1NBTTagCompound, NBTTagCompound par2NBTTagCompound) {
 		par1NBTTagCompound.setLong("RandomSeed", this.randomSeed);
-		par1NBTTagCompound.setString("generatorName", this.terrainType.func_48628_a());
+		par1NBTTagCompound.setString("generatorName", this.terrainType.getWorldTypeName());
 		par1NBTTagCompound.setInteger("generatorVersion", this.terrainType.getGeneratorVersion());
-		par1NBTTagCompound.setInteger("GameType", this.gameType);
+		par1NBTTagCompound.setInteger("GameType", this.field_76113_q.func_77148_a());
 		par1NBTTagCompound.setBoolean("MapFeatures", this.mapFeaturesEnabled);
 		par1NBTTagCompound.setInteger("SpawnX", this.spawnX);
 		par1NBTTagCompound.setInteger("SpawnY", this.spawnY);
@@ -145,6 +157,9 @@ public class WorldInfo {
 		par1NBTTagCompound.setInteger("thunderTime", this.thunderTime);
 		par1NBTTagCompound.setBoolean("thundering", this.thundering);
 		par1NBTTagCompound.setBoolean("hardcore", this.hardcore);
+		par1NBTTagCompound.setBoolean("allowCommands", this.field_76110_t);
+		par1NBTTagCompound.setBoolean("initialized", this.field_76109_u);
+
 		if (par2NBTTagCompound != null) {
 			par1NBTTagCompound.setCompoundTag("Player", par2NBTTagCompound);
 		}
@@ -196,10 +211,6 @@ public class WorldInfo {
 
 	public void setWorldTime(long par1) {
 		this.worldTime = par1;
-	}
-
-	public void setPlayerNBTTagCompound(NBTTagCompound par1NBTTagCompound) {
-		this.playerTag = par1NBTTagCompound;
 	}
 
 	public void setSpawnPosition(int par1, int par2, int par3) {
@@ -260,12 +271,16 @@ public class WorldInfo {
 		this.rainTime = par1;
 	}
 
-	public int getGameType() {
-		return this.gameType;
+	public EnumGameType func_76077_q() {
+		return this.field_76113_q;
 	}
 
 	public boolean isMapFeaturesEnabled() {
 		return this.mapFeaturesEnabled;
+	}
+
+	public void func_76060_a(EnumGameType par1EnumGameType) {
+		this.field_76113_q = par1EnumGameType;
 	}
 
 	public boolean isHardcoreModeEnabled() {
@@ -278,5 +293,17 @@ public class WorldInfo {
 
 	public void setTerrainType(WorldType par1WorldType) {
 		this.terrainType = par1WorldType;
+	}
+
+	public boolean func_76086_u() {
+		return this.field_76110_t;
+	}
+
+	public boolean func_76070_v() {
+		return this.field_76109_u;
+	}
+
+	public void func_76091_d(boolean par1) {
+		this.field_76109_u = par1;
 	}
 }
