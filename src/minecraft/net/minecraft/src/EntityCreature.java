@@ -28,7 +28,7 @@ public abstract class EntityCreature extends EntityLiving {
 	}
 
 	protected void updateEntityActionState() {
-		Profiler.startSection("ai");
+		this.worldObj.field_72984_F.startSection("ai");
 		if(this.fleeingTick > 0) {
 			--this.fleeingTick;
 		}
@@ -40,18 +40,17 @@ public abstract class EntityCreature extends EntityLiving {
 			if(this.entityToAttack != null) {
 				this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
 			}
-		} else if(!this.entityToAttack.isEntityAlive()) {
-			this.entityToAttack = null;
-		} else {
+		} else if(this.entityToAttack.isEntityAlive()) {
 			float var2 = this.entityToAttack.getDistanceToEntity(this);
-			if(this.canEntityBeSeen(this.entityToAttack)) {
+
+			if (this.canEntityBeSeen(this.entityToAttack)) {
 				this.attackEntity(this.entityToAttack, var2);
-			} else {
-				this.attackBlockedEntity(this.entityToAttack, var2);
 			}
+		}  else {
+			this.entityToAttack = null;
 		}
 
-		Profiler.endSection();
+		this.worldObj.field_72984_F.endSection();
 		if(!this.hasAttacked && this.entityToAttack != null && (this.pathToEntity == null || this.rand.nextInt(20) == 0)) {
 			this.pathToEntity = this.worldObj.getPathEntityToEntity(this, this.entityToAttack, var1, true, false, false, true);
 		} else if(!this.hasAttacked && (this.pathToEntity == null && this.rand.nextInt(180) == 0 || this.rand.nextInt(120) == 0 || this.fleeingTick > 0) && this.entityAge < 100) {
@@ -63,8 +62,8 @@ public abstract class EntityCreature extends EntityLiving {
 		boolean var4 = this.handleLavaMovement();
 		this.rotationPitch = 0.0F;
 		if(this.pathToEntity != null && this.rand.nextInt(100) != 0) {
-			Profiler.startSection("followpath");
-			Vec3D var5 = this.pathToEntity.getCurrentNodeVec3d(this);
+			this.worldObj.field_72984_F.startSection("followpath");
+			Vec3 var5 = this.pathToEntity.getPosition(this);
 			double var6 = (double)(this.width * 2.0F);
 
 			while(var5 != null && var5.squareDistanceTo(this.posX, var5.yCoord, this.posZ) < var6 * var6) {
@@ -73,7 +72,7 @@ public abstract class EntityCreature extends EntityLiving {
 					var5 = null;
 					this.pathToEntity = null;
 				} else {
-					var5 = this.pathToEntity.getCurrentNodeVec3d(this);
+					var5 = this.pathToEntity.getPosition(this);
 				}
 			}
 
@@ -83,15 +82,9 @@ public abstract class EntityCreature extends EntityLiving {
 				double var10 = var5.zCoord - this.posZ;
 				double var12 = var5.yCoord - (double)var21;
 				float var14 = (float)(Math.atan2(var10, var8) * 180.0D / Math.PI) - 90.0F;
-				float var15 = var14 - this.rotationYaw;
+				float var15 = MathHelper.func_76142_g(var14 - this.rotationYaw);
 
-				for(this.moveForward = this.moveSpeed; var15 < -180.0F; var15 += 360.0F) {
-					;
-				}
-
-				while(var15 >= 180.0F) {
-					var15 -= 360.0F;
-				}
+				this.moveForward = this.moveSpeed;
 
 				if(var15 > 30.0F) {
 					var15 = 30.0F;
@@ -129,7 +122,7 @@ public abstract class EntityCreature extends EntityLiving {
 				this.isJumping = true;
 			}
 
-			Profiler.endSection();
+			this.worldObj.field_72984_F.endSection();
 		} else {
 			super.updateEntityActionState();
 			this.pathToEntity = null;
@@ -137,7 +130,7 @@ public abstract class EntityCreature extends EntityLiving {
 	}
 
 	protected void updateWanderPath() {
-		Profiler.startSection("stroll");
+		this.worldObj.field_72984_F.startSection("stroll");
 		boolean var1 = false;
 		int var2 = -1;
 		int var3 = -1;
@@ -162,12 +155,10 @@ public abstract class EntityCreature extends EntityLiving {
 			this.pathToEntity = this.worldObj.getEntityPathToXYZ(this, var2, var3, var4, 10.0F, true, false, false, true);
 		}
 
-		Profiler.endSection();
+		this.worldObj.field_72984_F.endSection();
 	}
 
 	protected void attackEntity(Entity par1Entity, float par2) {}
-
-	protected void attackBlockedEntity(Entity par1Entity, float par2) {}
 
 	public float getBlockPathWeight(int par1, int par2, int par3) {
 		return 0.0F;

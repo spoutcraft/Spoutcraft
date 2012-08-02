@@ -3,12 +3,12 @@ package net.minecraft.src;
 import org.spoutcraft.client.entity.CraftChicken;
 
 public class EntityChicken extends EntityAnimal {
-	public boolean field_753_a = false;
-	public float field_752_b = 0.0F;
+	public boolean field_70885_d = false;
+	public float field_70886_e = 0.0F;
 	public float destPos = 0.0F;
-	public float field_757_d;
-	public float field_756_e;
-	public float field_755_h = 1.0F;
+	public float field_70884_g;
+	public float field_70888_h;
+	public float field_70889_i = 1.0F;
 	public int timeUntilNextEgg;
 
 	public EntityChicken(World par1World) {
@@ -41,9 +41,9 @@ public class EntityChicken extends EntityAnimal {
 
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		this.field_756_e = this.field_752_b;
-		this.field_757_d = this.destPos;
-		this.destPos = (float)((double)this.destPos + (double)(this.onGround?-1:4) * 0.3D);
+		this.field_70888_h = this.field_70886_e;
+		this.field_70884_g = this.destPos;
+		this.destPos = (float)((double)this.destPos + (double)(this.onGround ? -1 : 4) * 0.3D);
 		if(this.destPos < 0.0F) {
 			this.destPos = 0.0F;
 		}
@@ -52,16 +52,16 @@ public class EntityChicken extends EntityAnimal {
 			this.destPos = 1.0F;
 		}
 
-		if(!this.onGround && this.field_755_h < 1.0F) {
-			this.field_755_h = 1.0F;
+		if(!this.onGround && this.field_70889_i < 1.0F) {
+			this.field_70889_i = 1.0F;
 		}
 
-		this.field_755_h = (float)((double)this.field_755_h * 0.9D);
+		this.field_70889_i = (float)((double)this.field_70889_i * 0.9D);
 		if(!this.onGround && this.motionY < 0.0D) {
 			this.motionY *= 0.6D;
 		}
 
-		this.field_752_b += this.field_755_h * 2.0F;
+		this.field_70886_e += this.field_70889_i * 2.0F;
 		if(!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);

@@ -4,15 +4,26 @@ import org.spoutcraft.client.entity.CraftFallingSand;
 
 public class EntityFallingSand extends Entity {
 	public int blockID;
+	public int field_70285_b;
 	public int fallTime = 0;
+	public boolean field_70284_d;
 
 	public EntityFallingSand(World par1World) {
 		super(par1World);
+		this.fallTime = 0;
+		this.field_70284_d = true;
 	}
 
 	public EntityFallingSand(World par1World, double par2, double par4, double par6, int par8) {
+		this(par1World, par2, par4, par6, par8, 0);
+	}
+
+	public EntityFallingSand(World par1World, double par2, double par4, double par6, int par8, int par9) {
 		super(par1World);
+		this.fallTime = 0;
+		this.field_70284_d = true;
 		this.blockID = par8;
+		this.field_70285_b = par9;
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.98F);
 		this.yOffset = this.height / 2.0F;
@@ -79,10 +90,23 @@ public class EntityFallingSand extends Entity {
 
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setByte("Tile", (byte)this.blockID);
+		par1NBTTagCompound.setByte("Data", (byte)this.field_70285_b);
+		par1NBTTagCompound.setByte("Time", (byte)this.fallTime);
+		par1NBTTagCompound.setBoolean("DropItem", this.field_70284_d);
 	}
 
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.blockID = par1NBTTagCompound.getByte("Tile") & 255;
+		this.field_70285_b = par1NBTTagCompound.getByte("Data") & 255;
+		this.fallTime = par1NBTTagCompound.getByte("Time") & 255;
+
+		if (par1NBTTagCompound.hasKey("DropItem")) {
+			this.field_70284_d = par1NBTTagCompound.getBoolean("DropItem");
+		}
+
+		if (this.blockID == 0) {
+			this.blockID = Block.sand.blockID;
+		}
 	}
 
 	public float getShadowSize() {

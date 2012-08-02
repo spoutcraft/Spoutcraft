@@ -3,10 +3,9 @@ package net.minecraft.src;
 import org.spoutcraft.client.entity.CraftEnderman;
 
 public class EntityEnderman extends EntityMob {
-	private static boolean[] canCarryBlocks = new boolean[256];
-	public boolean isAttacking = false;
+	private static boolean[] carriableBlocks = new boolean[256];
 	private int teleportDelay = 0;
-	private int field_35185_e = 0;
+	private int field_70826_g = 0;
 
 	public EntityEnderman(World par1World) {
 		super(par1World);
@@ -28,6 +27,7 @@ public class EntityEnderman extends EntityMob {
 		super.entityInit();
 		this.dataWatcher.addObject(16, new Byte((byte)0));
 		this.dataWatcher.addObject(17, new Byte((byte)0));
+		this.dataWatcher.addObject(18, new Byte((byte)0));
 	}
 
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
@@ -46,12 +46,13 @@ public class EntityEnderman extends EntityMob {
 		EntityPlayer var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this, 64.0D);
 		if (var1 != null) {
 			if (this.shouldAttackPlayer(var1)) {
-				if (this.field_35185_e++ == 5) {
-					this.field_35185_e = 0;
+				if (this.field_70826_g++ == 5) {
+					this.field_70826_g = 0;
+					this.func_70819_e(true);
 					return var1;
 				}
 			} else {
-				this.field_35185_e = 0;
+				this.field_70826_g = 0;
 			}
 		}
 
@@ -71,12 +72,12 @@ public class EntityEnderman extends EntityMob {
 		if (var2 != null && var2.itemID == Block.pumpkin.blockID) {
 			return false;
 		} else {
-			Vec3D var3 = par1EntityPlayer.getLook(1.0F).normalize();
-			Vec3D var4 = Vec3D.createVector(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
+			Vec3 var3 = par1EntityPlayer.getLook(1.0F).normalize();
+			Vec3 var4 = Vec3.func_72437_a().func_72345_a(this.posX - par1EntityPlayer.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - (par1EntityPlayer.posY + (double)par1EntityPlayer.getEyeHeight()), this.posZ - par1EntityPlayer.posZ);
 			double var5 = var4.lengthVector();
 			var4 = var4.normalize();
 			double var7 = var3.dotProduct(var4);
-			return var7 > 1.0D - 0.025D / var5?par1EntityPlayer.canEntityBeSeen(this):false;
+			return var7 > 1.0D - 0.025D / var5 ? par1EntityPlayer.canEntityBeSeen(this) : false;
 		}
 	}
 
@@ -86,7 +87,7 @@ public class EntityEnderman extends EntityMob {
 		}
 
 		this.isAttacking = this.entityToAttack != null;
-		this.moveSpeed = this.entityToAttack != null?6.5F:0.3F;
+		this.moveSpeed = this.entityToAttack != null ? 6.5F : 0.3F;
 		int var1;
 		if (!this.worldObj.isRemote) {
 			int var2;
@@ -98,7 +99,7 @@ public class EntityEnderman extends EntityMob {
 					var2 = MathHelper.floor_double(this.posY + this.rand.nextDouble() * 3.0D);
 					var3 = MathHelper.floor_double(this.posZ - 2.0D + this.rand.nextDouble() * 4.0D);
 					var4 = this.worldObj.getBlockId(var1, var2, var3);
-					if (canCarryBlocks[var4]) {
+					if (carriableBlocks[var4]) {
 						this.setCarried(this.worldObj.getBlockId(var1, var2, var3));
 						this.setCarryingData(this.worldObj.getBlockMetadata(var1, var2, var3));
 						this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
@@ -125,12 +126,14 @@ public class EntityEnderman extends EntityMob {
 			float var6 = this.getBrightness(1.0F);
 			if (var6 > 0.5F && this.worldObj.canBlockSeeTheSky(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) && this.rand.nextFloat() * 30.0F < (var6 - 0.4F) * 2.0F) {
 				this.entityToAttack = null;
+				this.func_70819_e(false);
 				this.teleportRandomly();
 			}
 		}
 
 		if (this.isWet()) {
 			this.entityToAttack = null;
+			this.func_70819_e(false);
 			this.teleportRandomly();
 		}
 
@@ -153,6 +156,7 @@ public class EntityEnderman extends EntityMob {
 					this.teleportDelay = 0;
 				}
 			} else {
+				this.func_70819_e(false);
 				this.teleportDelay = 0;
 			}
 		}
@@ -168,7 +172,7 @@ public class EntityEnderman extends EntityMob {
 	}
 
 	protected boolean teleportToEntity(Entity par1Entity) {
-		Vec3D var2 = Vec3D.createVector(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
+		Vec3 var2 = Vec3.func_72437_a().func_72345_a((this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
 		var2 = var2.normalize();
 		double var3 = 16.0D;
 		double var5 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
@@ -204,7 +208,7 @@ public class EntityEnderman extends EntityMob {
 
 			if (var17) {
 				this.setPosition(this.posX, this.posY, this.posZ);
-				if (this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox)) {
+				if (this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox)) {
 					var13 = true;
 				}
 			}
@@ -286,24 +290,36 @@ public class EntityEnderman extends EntityMob {
 
 			return false;
 		} else {
+			if (par1DamageSource.getEntity() instanceof EntityPlayer) {
+				this.func_70819_e(true);
+			}
+
 			return super.attackEntityFrom(par1DamageSource, par2);
 		}
 	}
 
+	public boolean func_70823_r() {
+		return this.dataWatcher.getWatchableObjectByte(18) > 0;
+	}
+
+	public void func_70819_e(boolean par1) {
+		this.dataWatcher.updateObject(18, Byte.valueOf((byte)(par1 ? 1 : 0)));
+	}
+
 	static {
-		canCarryBlocks[Block.grass.blockID] = true;
-		canCarryBlocks[Block.dirt.blockID] = true;
-		canCarryBlocks[Block.sand.blockID] = true;
-		canCarryBlocks[Block.gravel.blockID] = true;
-		canCarryBlocks[Block.plantYellow.blockID] = true;
-		canCarryBlocks[Block.plantRed.blockID] = true;
-		canCarryBlocks[Block.mushroomBrown.blockID] = true;
-		canCarryBlocks[Block.mushroomRed.blockID] = true;
-		canCarryBlocks[Block.tnt.blockID] = true;
-		canCarryBlocks[Block.cactus.blockID] = true;
-		canCarryBlocks[Block.blockClay.blockID] = true;
-		canCarryBlocks[Block.pumpkin.blockID] = true;
-		canCarryBlocks[Block.melon.blockID] = true;
-		canCarryBlocks[Block.mycelium.blockID] = true;
+		carriableBlocks[Block.grass.blockID] = true;
+		carriableBlocks[Block.dirt.blockID] = true;
+		carriableBlocks[Block.sand.blockID] = true;
+		carriableBlocks[Block.gravel.blockID] = true;
+		carriableBlocks[Block.plantYellow.blockID] = true;
+		carriableBlocks[Block.plantRed.blockID] = true;
+		carriableBlocks[Block.mushroomBrown.blockID] = true;
+		carriableBlocks[Block.mushroomRed.blockID] = true;
+		carriableBlocks[Block.tnt.blockID] = true;
+		carriableBlocks[Block.cactus.blockID] = true;
+		carriableBlocks[Block.blockClay.blockID] = true;
+		carriableBlocks[Block.pumpkin.blockID] = true;
+		carriableBlocks[Block.melon.blockID] = true;
+		carriableBlocks[Block.mycelium.blockID] = true;
 	}
 }

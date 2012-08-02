@@ -45,27 +45,27 @@ public class EntityFX extends Entity {
 		return this;
 	}
 
-	public EntityFX func_405_d(float par1) {
+	public EntityFX func_70541_f(float par1) {
 		this.setSize(0.2F * par1, 0.2F * par1);
 		this.particleScale *= par1;
 		return this;
 	}
 
-	public void func_40097_b(float par1, float par2, float par3) {
+	public void setRBGColorF(float par1, float par2, float par3) {
 		this.particleRed = par1;
 		this.particleGreen = par2;
 		this.particleBlue = par3;
 	}
 
-	public float func_40098_n() {
+	public float getRedColorF() {
 		return this.particleRed;
 	}
 
-	public float func_40101_o() {
+	public float getGreenColorF() {
 		return this.particleGreen;
 	}
 
-	public float func_40102_p() {
+	public float getBlueColorF() {
 		return this.particleBlue;
 	}
 

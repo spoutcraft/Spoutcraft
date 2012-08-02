@@ -33,7 +33,7 @@ public class EntityCreeper extends EntityMob {
 
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(16, Byte.valueOf((byte)-1));
+		this.dataWatcher.addObject(16, Byte.valueOf((byte) - 1));
 		this.dataWatcher.addObject(17, Byte.valueOf((byte)0));
 	}
 
@@ -46,7 +46,7 @@ public class EntityCreeper extends EntityMob {
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
-		this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered")?1:0)));
+		this.dataWatcher.updateObject(17, Byte.valueOf((byte)(par1NBTTagCompound.getBoolean("powered") ? 1 : 0)));
 	}
 
 	public void onUpdate() {

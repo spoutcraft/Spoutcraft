@@ -7,7 +7,7 @@ public class EntityCow extends EntityAnimal {
 		super(par1World);
 		this.texture = "/mob/cow.png";
 		this.setSize(0.9F, 1.3F);
-		this.getNavigator().func_48664_a(true);
+		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIPanic(this, 0.38F));
 		this.tasks.addTask(2, new EntityAIMate(this, 0.2F));
@@ -59,8 +59,8 @@ public class EntityCow extends EntityAnimal {
 
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
-
 		int var4;
+
 		for(var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.leather.shiftedIndex, 1);
 		}
@@ -79,7 +79,12 @@ public class EntityCow extends EntityAnimal {
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
 		if(var2 != null && var2.itemID == Item.bucketEmpty.shiftedIndex) {
-			par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketMilk));
+			if (--var2.stackSize <= 0) {
+				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketMilk));
+			} else if (!par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.bucketMilk))) {
+				par1EntityPlayer.dropPlayerItem(new ItemStack(Item.bucketMilk.shiftedIndex, 1, 0));
+			}
+
 			return true;
 		} else {
 			return super.interact(par1EntityPlayer);

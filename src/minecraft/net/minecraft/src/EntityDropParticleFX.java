@@ -37,11 +37,11 @@ public class EntityDropParticleFX extends EntityFX {
 	}
 
 	public int getBrightnessForRender(float par1) {
-		return this.materialType == Material.water?super.getBrightnessForRender(par1):257;
+		return this.materialType == Material.water ? super.getBrightnessForRender(par1) : 257;
 	}
 
 	public float getBrightness(float par1) {
-		return this.materialType == Material.water?super.getBrightness(par1):1.0F;
+		return this.materialType == Material.water ? super.getBrightness(par1) : 1.0F;
 	}
 
 	public void onUpdate() {

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftFireball;
@@ -92,21 +93,24 @@ public class EntityFireball extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3D var15 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			Vec3D var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-			var15 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+
 			if (var3 != null) {
-				var2 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = Vec3.func_72437_a().func_72345_a(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
+			Iterator var8 = var5.iterator();
 
-			for(int var8 = 0; var8 < var5.size(); ++var8) {
-				Entity var9 = (Entity)var5.get(var8);
+			while (var8.hasNext()) {
+				Entity var9 = (Entity)var8.next();
+
 				if (var9.canBeCollidedWith() && (!var9.isEntityEqual(this.shootingEntity) || this.ticksInAir >= 25)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
@@ -126,7 +130,7 @@ public class EntityFireball extends Entity {
 			}
 
 			if (var3 != null) {
-				this.func_40071_a(var3);
+				this.onImpact(var3);
 			}
 
 			this.posX += this.motionX;
@@ -174,10 +178,10 @@ public class EntityFireball extends Entity {
 		}
 	}
 
-	protected void func_40071_a(MovingObjectPosition par1MovingObjectPosition) {
+	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		if (!this.worldObj.isRemote) {
-			if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 4)) {
-				;
+			if (par1MovingObjectPosition.entityHit != null) {
+				par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6);
 			}
 
 			this.worldObj.newExplosion((Entity)null, this.posX, this.posY, this.posZ, 1.0F, true);
@@ -190,7 +194,8 @@ public class EntityFireball extends Entity {
 		par1NBTTagCompound.setShort("yTile", (short)this.yTile);
 		par1NBTTagCompound.setShort("zTile", (short)this.zTile);
 		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
-		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
+		par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
 	}
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -199,6 +204,15 @@ public class EntityFireball extends Entity {
 		this.zTile = par1NBTTagCompound.getShort("zTile");
 		this.inTile = par1NBTTagCompound.getByte("inTile") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
+
+		if (par1NBTTagCompound.hasKey("direction")) {
+			NBTTagList var2 = par1NBTTagCompound.getTagList("direction");
+			this.motionX = ((NBTTagDouble)var2.tagAt(0)).data;
+			this.motionY = ((NBTTagDouble)var2.tagAt(1)).data;
+			this.motionZ = ((NBTTagDouble)var2.tagAt(2)).data;
+		} else {
+			this.setDead();
+		}
 	}
 
 	public boolean canBeCollidedWith() {

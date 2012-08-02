@@ -1,6 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
+
+import java.util.Iterator;
+
 //Spout start
 import org.spoutcraft.client.entity.CraftArrow;
 //Spout end
@@ -12,14 +15,13 @@ public class EntityArrow extends Entity {
 	private int inTile = 0;
 	private int inData = 0;
 	private boolean inGround = false;
-	public boolean doesArrowBelongToPlayer = false;
+	public int field_70251_a = 0;
 	public int arrowShake = 0;
 	public Entity shootingEntity;
 	private int ticksInGround;
 	private int ticksInAir = 0;
 	private double damage = 2.0D;
-	private int field_46027_au;
-	public boolean arrowCritical = false;
+	private int knockbackStrength;
 
 	public EntityArrow(World par1World) {
 		super(par1World);
@@ -39,7 +41,11 @@ public class EntityArrow extends Entity {
 	public EntityArrow(World par1World, EntityLiving par2EntityLiving, EntityLiving par3EntityLiving, float par4, float par5) {
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
-		this.doesArrowBelongToPlayer = par2EntityLiving instanceof EntityPlayer;
+
+		if (par2EntityLiving instanceof EntityPlayer) {
+			this.field_70251_a = 1;
+		}
+
 		this.posY = par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight() - 0.10000000149011612D;
 		double var6 = par3EntityLiving.posX - par2EntityLiving.posX;
 		double var8 = par3EntityLiving.posY + (double)par3EntityLiving.getEyeHeight() - 0.699999988079071D - this.posY;
@@ -60,7 +66,11 @@ public class EntityArrow extends Entity {
 	public EntityArrow(World par1World, EntityLiving par2EntityLiving, float par3) {
 		super(par1World);
 		this.shootingEntity = par2EntityLiving;
-		this.doesArrowBelongToPlayer = par2EntityLiving instanceof EntityPlayer;
+
+		if (par2EntityLiving instanceof EntityPlayer) {
+			this.field_70251_a = 1;
+		}
+
 		this.setSize(0.5F, 0.5F);
 		this.setLocationAndAngles(par2EntityLiving.posX, par2EntityLiving.posY + (double)par2EntityLiving.getEyeHeight(), par2EntityLiving.posZ, par2EntityLiving.rotationYaw, par2EntityLiving.rotationPitch);
 		this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
@@ -74,7 +84,9 @@ public class EntityArrow extends Entity {
 		this.setArrowHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
 	}
 
-	protected void entityInit() {}
+	protected void entityInit() {
+		this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
+	}
 
 	public void setArrowHeading(double par1, double par3, double par5, float par7, float par8) {
 		float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
@@ -94,6 +106,11 @@ public class EntityArrow extends Entity {
 		this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
 		this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(par3, (double)var10) * 180.0D / Math.PI);
 		this.ticksInGround = 0;
+	}
+
+	public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
+		this.setPosition(par1, par3, par5);
+		this.setRotation(par7, par8);
 	}
 
 	public void setVelocity(double par1, double par3, double par5) {
@@ -119,11 +136,11 @@ public class EntityArrow extends Entity {
 			this.prevRotationPitch = this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var1) * 180.0D / Math.PI);
 		}
 
-		int var15 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
-		if(var15 > 0) {
-			Block.blocksList[var15].setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
-			AxisAlignedBB var2 = Block.blocksList[var15].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
-			if(var2 != null && var2.isVecInside(Vec3D.createVector(this.posX, this.posY, this.posZ))) {
+		int var16 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+		if(var16 > 0) {
+			Block.blocksList[var16].setBlockBoundsBasedOnState(this.worldObj, this.xTile, this.yTile, this.zTile);
+			AxisAlignedBB var2 = Block.blocksList[var16].getCollisionBoundingBoxFromPool(this.worldObj, this.xTile, this.yTile, this.zTile);
+			if(var2 != null && var2.isVecInside(Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
 		}
@@ -133,9 +150,9 @@ public class EntityArrow extends Entity {
 		}
 
 		if(this.inGround) {
-			var15 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
-			int var18 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-			if(var15 == this.inTile && var18 == this.inData) {
+			int var18 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+			int var19 = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
+			if(var18 == this.inTile && var19 == this.inData) {
 				++this.ticksInGround;
 				if(this.ticksInGround == 1200) {
 					this.setDead();
@@ -150,68 +167,74 @@ public class EntityArrow extends Entity {
 			}
 		} else {
 			++this.ticksInAir;
-			Vec3D var16 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			Vec3D var17 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks_do_do(var16, var17, false, true);
-			var16 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			var17 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			if(var3 != null) {
-				var17 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+			Vec3 var17 = Vec3D.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			Vec3 var3 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks_do_do(var17, var3, false, true);
+			var17 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			var3 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			if(var4 != null) {
+				var3 = Vec3.func_72437_a().func_72345_a(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
 			}
 
-			Entity var4 = null;
-			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
-			double var6 = 0.0D;
+			Entity var5 = null;
+			List var6 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+			double var7 = 0.0D;
+			Iterator var9 = var6.iterator();
+			float var11;
 
-			int var8;
-			float var10;
-			for(var8 = 0; var8 < var5.size(); ++var8) {
-				Entity var9 = (Entity)var5.get(var8);
-				if(var9.canBeCollidedWith() && (var9 != this.shootingEntity || this.ticksInAir >= 5)) {
-					var10 = 0.3F;
-					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-					MovingObjectPosition var12 = var11.calculateIntercept(var16, var17);
-					if(var12 != null) {
-						double var13 = var16.distanceTo(var12.hitVec);
-						if(var13 < var6 || var6 == 0.0D) {
-							var4 = var9;
-							var6 = var13;
+			while (var9.hasNext()) {
+				Entity var10 = (Entity)var10.next();
+				if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5)) {
+					var11 = 0.3F;
+					AxisAlignedBB var12 = var10.boundingBox.expand((double)var11, (double)var11, (double)var11);
+					MovingObjectPosition var13 = var12.calculateIntercept(var17, var3);
+
+					if (var13 != null) {
+						double var14 = var17.distanceTo(var13.hitVec);
+
+						if (var14 < var7 || var7 == 0.0D) {
+							var5 = var10;
+							var7 = var14;
 						}
 					}
 				}
 			}
 
-			if(var4 != null) {
-				var3 = new MovingObjectPosition(var4);
+			if(var5 != null) {
+				var4 = new MovingObjectPosition(var4);
 			}
 
-			float var19;
-			if(var3 != null) {
-				if(var3.entityHit != null) {
-					var19 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					int var20 = (int)Math.ceil((double)var19 * this.damage);
-					if(this.arrowCritical) {
-						var20 += this.rand.nextInt(var20 / 2 + 2);
+			float var20;
+			if (var4 != null) {
+				if (var4.entityHit != null) {
+					var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+					int var24 = MathHelper.func_76143_f((double)var20 * this.damage);
+
+					if (this.func_70241_g()) {
+						var24 += this.rand.nextInt(var24 / 2 + 2);
 					}
 
 					DamageSource var22 = null;
-					if(this.shootingEntity == null) {
+
+					if (this.shootingEntity == null) {
 						var22 = DamageSource.causeArrowDamage(this, this);
 					} else {
 						var22 = DamageSource.causeArrowDamage(this, this.shootingEntity);
 					}
 
-					if(this.isBurning()) {
-						var3.entityHit.setFire(5);
+					if (this.isBurning()) {
+						var4.entityHit.setFire(5);
 					}
 
-					if(var3.entityHit.attackEntityFrom(var22, var20)) {
-						if(var3.entityHit instanceof EntityLiving) {
-							++((EntityLiving)var3.entityHit).arrowHitTempCounter;
-							if(this.field_46027_au > 0) {
-								float var21 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-								if(var21 > 0.0F) {
-									var3.entityHit.addVelocity(this.motionX * (double)this.field_46027_au * 0.6000000238418579D / (double)var21, 0.1D, this.motionZ * (double)this.field_46027_au * 0.6000000238418579D / (double)var21);
+					if (var4.entityHit.attackEntityFrom(var22, var24)) {
+						if (var4.entityHit instanceof EntityLiving) {
+							++((EntityLiving)var4.entityHit).arrowHitTempCounter;
+
+							if (this.knockbackStrength > 0) {
+								float var25 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+
+								if (var25 > 0.0F) {
+									var4.entityHit.addVelocity(this.motionX * (double)this.knockbackStrength * 0.6000000238418579D / (double)var25, 0.1D, this.motionZ * (double)this.knockbackStrength * 0.6000000238418579D / (double)var25);
 								}
 							}
 						}
@@ -227,38 +250,37 @@ public class EntityArrow extends Entity {
 						this.ticksInAir = 0;
 					}
 				} else {
-					this.xTile = var3.blockX;
-					this.yTile = var3.blockY;
-					this.zTile = var3.blockZ;
+					this.xTile = var4.blockX;
+					this.yTile = var4.blockY;
+					this.zTile = var4.blockZ;
 					this.inTile = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
 					this.inData = this.worldObj.getBlockMetadata(this.xTile, this.yTile, this.zTile);
-					this.motionX = (double)((float)(var3.hitVec.xCoord - this.posX));
-					this.motionY = (double)((float)(var3.hitVec.yCoord - this.posY));
-					this.motionZ = (double)((float)(var3.hitVec.zCoord - this.posZ));
-					var19 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-					this.posX -= this.motionX / (double)var19 * 0.05000000074505806D;
-					this.posY -= this.motionY / (double)var19 * 0.05000000074505806D;
-					this.posZ -= this.motionZ / (double)var19 * 0.05000000074505806D;
+					this.motionX = (double)((float)(var4.hitVec.xCoord - this.posX));
+					this.motionY = (double)((float)(var4.hitVec.yCoord - this.posY));
+					this.motionZ = (double)((float)(var4.hitVec.zCoord - this.posZ));
+					var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+					this.posX -= this.motionX / (double)var20 * 0.05000000074505806D;
+					this.posY -= this.motionY / (double)var20 * 0.05000000074505806D;
+					this.posZ -= this.motionZ / (double)var20 * 0.05000000074505806D;
 					this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 					this.inGround = true;
 					this.arrowShake = 7;
-					this.arrowCritical = false;
+					this.func_70243_d(false);
 				}
 			}
-
-			if(this.arrowCritical) {
-				for(var8 = 0; var8 < 4; ++var8) {
-					this.worldObj.spawnParticle("crit", this.posX + this.motionX * (double)var8 / 4.0D, this.posY + this.motionY * (double)var8 / 4.0D, this.posZ + this.motionZ * (double)var8 / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+			if(this.func_70241_g()) {
+				for (int var21 = 0; var21 < 4; ++var21) {
+					this.worldObj.spawnParticle("crit", this.posX + this.motionX * (double)var21 / 4.0D, this.posY + this.motionY * (double)var21 / 4.0D, this.posZ + this.motionZ * (double)var21 / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
 				}
 			}
 
 			this.posX += this.motionX;
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
-			var19 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float)(Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
-			for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var19) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+			for (this.rotationPitch = (float)(Math.atan2(this.motionY, (double)var20) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
 				;
 			}
 
@@ -277,11 +299,11 @@ public class EntityArrow extends Entity {
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 			float var23 = 0.99F;
-			var10 = 0.05F;
+			var11 = 0.05F;
 			if(this.isInWater()) {
-				for(int var25 = 0; var25 < 4; ++var25) {
-					float var24 = 0.25F;
-					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var24, this.posY - this.motionY * (double)var24, this.posZ - this.motionZ * (double)var24, this.motionX, this.motionY, this.motionZ);
+				for (int var26 = 0; var26 < 4; ++var26) {
+					float var27 = 0.25F;
+					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var27, this.posY - this.motionY * (double)var27, this.posZ - this.motionZ * (double)var27, this.motionX, this.motionY, this.motionZ);
 				}
 
 				var23 = 0.8F;
@@ -290,8 +312,9 @@ public class EntityArrow extends Entity {
 			this.motionX *= (double)var23;
 			this.motionY *= (double)var23;
 			this.motionZ *= (double)var23;
-			this.motionY -= (double)var10;
+			this.motionY -= (double)var11;
 			this.setPosition(this.posX, this.posY, this.posZ);
+			this.func_70017_D();
 		}
 	}
 
@@ -302,8 +325,8 @@ public class EntityArrow extends Entity {
 		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
 		par1NBTTagCompound.setByte("inData", (byte)this.inData);
 		par1NBTTagCompound.setByte("shake", (byte)this.arrowShake);
-		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
-		par1NBTTagCompound.setBoolean("player", this.doesArrowBelongToPlayer);
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
+		par1NBTTagCompound.setByte("pickup", (byte)this.field_70251_a);
 		par1NBTTagCompound.setDouble("damage", this.damage);
 	}
 
@@ -319,11 +342,23 @@ public class EntityArrow extends Entity {
 		if(par1NBTTagCompound.hasKey("damage")) {
 			this.damage = par1NBTTagCompound.getDouble("damage");
 		}
+
+		if (par1NBTTagCompound.hasKey("pickup")) {
+			this.field_70251_a = par1NBTTagCompound.getByte("pickup");
+		} else if (par1NBTTagCompound.hasKey("player")) {
+			this.field_70251_a = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
+		}
 	}
 
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
-		if(!this.worldObj.isRemote) {
-			if(this.inGround && this.doesArrowBelongToPlayer && this.arrowShake <= 0 && par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
+		if (!this.worldObj.isRemote && this.inGround && this.arrowShake <= 0) {
+			boolean var2 = this.field_70251_a == 1 || this.field_70251_a == 2 && par1EntityPlayer.capabilities.isCreativeMode;
+
+			if (this.field_70251_a == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Item.arrow, 1))) {
+				var2 = false;
+			}
+
+			if (var2) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				par1EntityPlayer.onItemPickup(this, 1);
 				this.setDead();
@@ -343,11 +378,26 @@ public class EntityArrow extends Entity {
 		return this.damage;
 	}
 
-	public void func_46023_b(int par1) {
-		this.field_46027_au = par1;
+	public void setKnockbackStrength(int par1) {
+		this.knockbackStrength = par1;
 	}
 
 	public boolean canAttackWithItem() {
 		return false;
+	}
+
+	public void func_70243_d(boolean par1) {
+		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
+
+		if (par1) {
+			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 | 1)));
+		} else {
+			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & -2)));
+		}
+	}
+
+	public boolean func_70241_g() {
+		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
+		return (var1 & 1) != 0;
 	}
 }

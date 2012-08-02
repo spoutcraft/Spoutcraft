@@ -16,7 +16,7 @@ public class EntityBlaze extends EntityMob {
 
 	private float heightOffset = 0.5F;
 	private int heightOffsetUpdateTime;
-	private int field_40152_d;
+	private int field_70846_g;
 
 	public EntityBlaze(World par1World) {
 		super(par1World);
@@ -48,14 +48,6 @@ public class EntityBlaze extends EntityMob {
 
 	protected String getDeathSound() {
 		return "mob.blaze.death";
-	}
-
-	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-		return super.attackEntityFrom(par1DamageSource, par2);
-	}
-
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
 	}
 
 	public int getBrightnessForRender(float par1) {
@@ -107,19 +99,19 @@ public class EntityBlaze extends EntityMob {
 			double var5 = par1Entity.boundingBox.minY + (double)(par1Entity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
 			double var7 = par1Entity.posZ - this.posZ;
 			if(this.attackTime == 0) {
-				++this.field_40152_d;
-				if(this.field_40152_d == 1) {
+				++this.field_70846_g;
+				if(this.field_70846_g == 1) {
 					this.attackTime = 60;
-					this.func_40150_a(true);
-				} else if(this.field_40152_d <= 4) {
+					this.func_70844_e(true);
+				} else if(this.field_70846_g <= 4) {
 					this.attackTime = 6;
 				} else {
 					this.attackTime = 100;
-					this.field_40152_d = 0;
-					this.func_40150_a(false);
+					this.field_70846_g = 0;
+					this.func_70844_e(false);
 				}
 
-				if(this.field_40152_d > 1) {
+				if(this.field_70846_g > 1) {
 					float var9 = MathHelper.sqrt_float(par2) * 0.5F;
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1009, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 
@@ -151,7 +143,7 @@ public class EntityBlaze extends EntityMob {
 	}
 
 	public boolean isBurning() {
-		return this.func_40151_ac();
+		return this.func_70845_n();
 	}
 
 	protected void dropFewItems(boolean par1, int par2) {
@@ -164,11 +156,11 @@ public class EntityBlaze extends EntityMob {
 		}
 	}
 
-	public boolean func_40151_ac() {
+	public boolean func_70845_n() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
-	public void func_40150_a(boolean par1) {
+	public void func_70844_e(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
 		if(par1) {
 			var2 = (byte)(var2 | 1);

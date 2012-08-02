@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftFish;
@@ -44,12 +45,13 @@ public class EntityFishHook extends Entity {
 		//Spout end
 	}
 
-	public EntityFishHook(World par1World, double par2, double par4, double par6) {
+	public EntityFishHook(World par1World, double par2, double par4, double par6, EntityPlayer par8EntityPlayer) {
 		this(par1World);
 		this.setPosition(par2, par4, par6);
 		this.ignoreFrustumCheck = true;
+		this.angler = par8EntityPlayer;
+		par8EntityPlayer.fishEntity = this;
 	}
-
 	public EntityFishHook(World par1World, EntityPlayer par2EntityPlayer) {
 		super(par1World);
 		this.xTile = -1;
@@ -131,14 +133,7 @@ public class EntityFishHook extends Entity {
 			double var22 = this.posY + (this.fishY - this.posY) / (double)this.fishPosRotationIncrements;
 			double var23 = this.posZ + (this.fishZ - this.posZ) / (double)this.fishPosRotationIncrements;
 
-			double var7;
-			for(var7 = this.fishYaw - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
-				;
-			}
-
-			while(var7 >= 180.0D) {
-				var7 -= 360.0D;
-			}
+			double var7 = MathHelper.func_76138_g(this.fishYaw - (double)this.rotationYaw);
 
 			this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.fishPosRotationIncrements);
 			this.rotationPitch = (float)((double)this.rotationPitch + (this.fishPitch - (double)this.rotationPitch) / (double)this.fishPosRotationIncrements);
@@ -191,22 +186,24 @@ public class EntityFishHook extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3D var20 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			Vec3D var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var20 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var20, var2);
-			var20 = Vec3D.createVector(this.posX, this.posY, this.posZ);
-			var2 = Vec3D.createVector(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var20 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+
 			if (var3 != null) {
-				var2 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = Vec3.func_72437_a().func_72345_a(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
-
+			Iterator var8 = var5.iterator();
 			double var13;
-			for(int var8 = 0; var8 < var5.size(); ++var8) {
-				Entity var9 = (Entity)var5.get(var8);
+
+			while (var8.hasNext()) {
+				Entity var9 = (Entity)var8.next();
 				if (var9.canBeCollidedWith() && (var9 != this.angler || this.ticksInAir >= 5)) {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
@@ -269,7 +266,7 @@ public class EntityFishHook extends Entity {
 				for(int var29 = 0; var29 < var27; ++var29) {
 					double var14 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var29 + 0) / (double)var27 - 0.125D + 0.125D;
 					double var16 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var29 + 1) / (double)var27 - 0.125D + 0.125D;
-					AxisAlignedBB var18 = AxisAlignedBB.getBoundingBoxFromPool(this.boundingBox.minX, var14, this.boundingBox.minZ, this.boundingBox.maxX, var16, this.boundingBox.maxZ);
+					AxisAlignedBB var18 = AxisAlignedBB.func_72332_a().func_72299_a(this.boundingBox.minX, var14, this.boundingBox.minZ, this.boundingBox.maxX, var16, this.boundingBox.maxZ);
 					if (this.worldObj.isAABBInMaterial(var18, Material.water)) {
 						var26 += 1.0D / (double)var27;
 					}
@@ -333,7 +330,7 @@ public class EntityFishHook extends Entity {
 		par1NBTTagCompound.setShort("zTile", (short)this.zTile);
 		par1NBTTagCompound.setByte("inTile", (byte)this.inTile);
 		par1NBTTagCompound.setByte("shake", (byte)this.shake);
-		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround?1:0));
+		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 	}
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -350,38 +347,50 @@ public class EntityFishHook extends Entity {
 	}
 
 	public int catchFish() {
-		byte var1 = 0;
-		if (this.bobber != null) {
-			double var2 = this.angler.posX - this.posX;
-			double var4 = this.angler.posY - this.posY;
-			double var6 = this.angler.posZ - this.posZ;
-			double var8 = (double)MathHelper.sqrt_double(var2 * var2 + var4 * var4 + var6 * var6);
-			double var10 = 0.1D;
-			this.bobber.motionX += var2 * var10;
-			this.bobber.motionY += var4 * var10 + (double)MathHelper.sqrt_double(var8) * 0.08D;
-			this.bobber.motionZ += var6 * var10;
-			var1 = 3;
-		} else if (this.ticksCatchable > 0) {
-			EntityItem var13 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.fishRaw));
-			double var3 = this.angler.posX - this.posX;
-			double var5 = this.angler.posY - this.posY;
-			double var7 = this.angler.posZ - this.posZ;
-			double var9 = (double)MathHelper.sqrt_double(var3 * var3 + var5 * var5 + var7 * var7);
-			double var11 = 0.1D;
-			var13.motionX = var3 * var11;
-			var13.motionY = var5 * var11 + (double)MathHelper.sqrt_double(var9) * 0.08D;
-			var13.motionZ = var7 * var11;
-			this.worldObj.spawnEntityInWorld(var13);
-			this.angler.addStat(StatList.fishCaughtStat, 1);
-			var1 = 1;
-		}
+		if (this.worldObj.isRemote) {
+			return 0;
+		} else {
+			byte var1 = 0;
+			if (this.bobber != null) {
+				double var2 = this.angler.posX - this.posX;
+				double var4 = this.angler.posY - this.posY;
+				double var6 = this.angler.posZ - this.posZ;
+				double var8 = (double)MathHelper.sqrt_double(var2 * var2 + var4 * var4 + var6 * var6);
+				double var10 = 0.1D;
+				this.bobber.motionX += var2 * var10;
+				this.bobber.motionY += var4 * var10 + (double)MathHelper.sqrt_double(var8) * 0.08D;
+				this.bobber.motionZ += var6 * var10;
+				var1 = 3;
+			} else if (this.ticksCatchable > 0) {
+				EntityItem var13 = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, new ItemStack(Item.fishRaw));
+				double var3 = this.angler.posX - this.posX;
+				double var5 = this.angler.posY - this.posY;
+				double var7 = this.angler.posZ - this.posZ;
+				double var9 = (double)MathHelper.sqrt_double(var3 * var3 + var5 * var5 + var7 * var7);
+				double var11 = 0.1D;
+				var13.motionX = var3 * var11;
+				var13.motionY = var5 * var11 + (double)MathHelper.sqrt_double(var9) * 0.08D;
+				var13.motionZ = var7 * var11;
+				this.worldObj.spawnEntityInWorld(var13);
+				this.angler.addStat(StatList.fishCaughtStat, 1);
+				var1 = 1;
+			}
 
-		if (this.inGround) {
-			var1 = 2;
-		}
+			if (this.inGround) {
+				var1 = 2;
+			}
 
-		this.setDead();
-		this.angler.fishEntity = null;
-		return var1;
+			this.setDead();
+			this.angler.fishEntity = null;
+			return var1;
+		}
+	}
+
+	public void setDead() {
+		super.setDead();
+
+		if (this.angler != null) {
+			this.angler.fishEntity = null;
+		}
 	}
 }

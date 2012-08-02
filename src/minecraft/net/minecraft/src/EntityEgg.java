@@ -33,8 +33,8 @@ public class EntityEgg extends EntityThrowable {
 	}
 
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), 0)) {
-			;
+		if (par1MovingObjectPosition.entityHit != null) {
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), 0);
 		}
 
 		if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0) {
