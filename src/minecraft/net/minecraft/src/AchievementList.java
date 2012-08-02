@@ -26,7 +26,7 @@ public class AchievementList {
 	public static Achievement killCow = (new Achievement(14, "killCow", 7, -3, Item.leather, buildSword)).registerAchievement();
 	public static Achievement flyPig = (new Achievement(15, "flyPig", 8, -4, Item.saddle, killCow)).setSpecial().registerAchievement();
 	public static Achievement snipeSkeleton = (new Achievement(16, "snipeSkeleton", 7, 0, Item.bow, killEnemy)).setSpecial().registerAchievement();
-	public static Achievement diamonds = (new Achievement(17, "diamonds", -1, 5, Item.diamond, acquireIron)).registerAchievement();
+	public static Achievement diamonds = (new Achievement(17, "diamonds", -1, 5, Item.field_77702_n, acquireIron)).registerAchievement();
 	public static Achievement portal = (new Achievement(18, "portal", -1, 7, Block.obsidian, diamonds)).registerAchievement();
 	public static Achievement ghast = (new Achievement(19, "ghast", -4, 8, Item.ghastTear, portal)).setSpecial().registerAchievement();
 	public static Achievement blazeRod = (new Achievement(20, "blazeRod", 0, 9, Item.blazeRod, portal)).registerAchievement();
