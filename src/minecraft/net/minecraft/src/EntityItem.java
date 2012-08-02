@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
+
 //Spout start
 import org.spoutcraft.client.entity.CraftItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -12,7 +14,7 @@ public class EntityItem extends Entity {
 	public int age = 0;
 	public int delayBeforeCanPickup;
 	private int health = 5;
-	public float field_804_d = (float)(Math.random() * Math.PI * 2.0D);
+	public float hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 
 	public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
 		super(par1World);
@@ -51,21 +53,35 @@ public class EntityItem extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.motionY -= 0.03999999910593033D;
-		if (this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) == Material.lava) {
-			this.motionY = 0.20000000298023224D;
-			this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-			this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
-			this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
-		}
-
 		this.pushOutOfBlocks(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		float var1 = 0.98F;
+		boolean var1 = (int)this.prevPosX != (int)this.posX || (int)this.prevPosY != (int)this.posY || (int)this.prevPosZ != (int)this.posZ;
+
+		if (var1) {
+			if (this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) == Material.lava) {
+				this.motionY = 0.20000000298023224D;
+				this.motionX = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+				this.motionZ = (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F);
+				this.worldObj.playSoundAtEntity(this, "random.fizz", 0.4F, 2.0F + this.rand.nextFloat() * 0.4F);
+			}
+
+			if (!this.worldObj.isRemote) {
+				Iterator var2 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
+
+				while (var2.hasNext()) {
+					EntityItem var3 = (EntityItem)var2.next();
+					this.func_70289_a(var3);
+				}
+			}
+		}
+
+		float var4 = 0.98F;
 		if (this.onGround) {
-			var1 = 0.58800006F;
-			int var2 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
-			if (var2 > 0) {
-				var1 = Block.blocksList[var2].slipperiness * 0.98F;
+			var4 = 0.58800006F;
+			int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
+
+			if (var5 > 0) {
+				var4 = Block.blocksList[var5].slipperiness * 0.98F;
 				//Spout start
 				if (!worldObj.isRemote) {
 					int x = MathHelper.floor_double(this.posX);
@@ -75,7 +91,7 @@ public class EntityItem extends Entity {
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
-							var1 = block.getFriction() * 0.98F;
+							var4 = block.getFriction() * 0.98F;
 						}
 					}
 				}
@@ -83,9 +99,9 @@ public class EntityItem extends Entity {
 			}
 		}
 
-		this.motionX *= (double)var1;
+		this.motionX *= (double)var4;
 		this.motionY *= 0.9800000190734863D;
-		this.motionZ *= (double)var1;
+		this.motionZ *= (double)var4;
 		if (this.onGround) {
 			this.motionY *= -0.5D;
 		}
@@ -94,6 +110,34 @@ public class EntityItem extends Entity {
 		if (this.age >= 6000) {
 			this.setDead();
 		}
+	}
+
+	public boolean func_70289_a(EntityItem par1EntityItem) {
+		if (par1EntityItem == this) {
+			return false;
+		} else if (par1EntityItem.isEntityAlive() && this.isEntityAlive()) {
+			if (par1EntityItem.item.getItem() != this.item.getItem()) {
+				return false;
+			} else if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage()) {
+				return false;
+			} else if (par1EntityItem.item.stackSize < this.item.stackSize) {
+				return par1EntityItem.func_70289_a(this);
+			} else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize()) {
+				return false;
+			} else {
+				par1EntityItem.item.stackSize += this.item.stackSize;
+				par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
+				par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
+				this.setDead();
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public void func_70288_d() {
+		this.age = 4800;
 	}
 
 	public boolean handleWaterMovement() {
@@ -117,7 +161,9 @@ public class EntityItem extends Entity {
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
 		par1NBTTagCompound.setShort("Age", (short)this.age);
-		par1NBTTagCompound.setCompoundTag("Item", this.item.writeToNBT(new NBTTagCompound()));
+		if (this.item != null) {
+			par1NBTTagCompound.setCompoundTag("Item", this.item.writeToNBT(new NBTTagCompound()));
+		}
 	}
 
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
@@ -142,7 +188,7 @@ public class EntityItem extends Entity {
 					par1EntityPlayer.triggerAchievement(AchievementList.killCow);
 				}
 
-				if (this.item.itemID == Item.diamond.shiftedIndex) {
+				if (this.item.itemID == Item.field_77702_n.shiftedIndex) {
 					par1EntityPlayer.triggerAchievement(AchievementList.diamonds);
 				}
 
@@ -157,6 +203,10 @@ public class EntityItem extends Entity {
 				}
 			}
 		}
+	}
+
+	public String func_70023_ak() {
+		return StatCollector.translateToLocal("item." + this.item.func_77977_a());
 	}
 
 	public boolean canAttackWithItem() {

@@ -48,9 +48,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 	public void onUpdate() {
 		super.onUpdate();
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
-		this.texture = var1 == 1?"/mob/ghast_fire.png":"/mob/ghast.png";
+		this.texture = var1 == 1 ? "/mob/ghast_fire.png" : "/mob/ghast.png";
 		//Spout Start
-		setTextureToRender((byte) (var1 == 1? EntitySkinType.GHAST_MOUTH.getId() : 0));
+		setTextureToRender((byte) (var1 == 1 ? EntitySkinType.GHAST_MOUTH.getId() : 0));
 		//Spout End
 	}
 
@@ -64,8 +64,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		double var1 = this.waypointX - this.posX;
 		double var3 = this.waypointY - this.posY;
 		double var5 = this.waypointZ - this.posZ;
-		double var7 = (double)MathHelper.sqrt_double(var1 * var1 + var3 * var3 + var5 * var5);
-		if (var7 < 1.0D || var7 > 60.0D) {
+		double var7 = var1 * var1 + var3 * var3 + var5 * var5;
+
+		if (var7 < 1.0D || var7 > 3600.0D) {
 			this.waypointX = this.posX + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			this.waypointY = this.posY + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			this.waypointZ = this.posZ + (double)((this.rand.nextFloat() * 2.0F - 1.0F) * 16.0F);
@@ -73,6 +74,8 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 		if (this.courseChangeCooldown-- <= 0) {
 			this.courseChangeCooldown += this.rand.nextInt(5) + 2;
+			var7 = (double)MathHelper.sqrt_double(var7);
+
 			if (this.isCourseTraversable(this.waypointX, this.waypointY, this.waypointZ, var7)) {
 				this.motionX += var1 / var7 * 0.1D;
 				this.motionY += var3 / var7 * 0.1D;
@@ -130,7 +133,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 		if (!this.worldObj.isRemote) {
 			byte var21 = this.dataWatcher.getWatchableObjectByte(16);
-			byte var12 = (byte)(this.attackCounter > 10?1:0);
+			byte var12 = (byte)(this.attackCounter > 10 ? 1 : 0);
 			if (var21 != var12) {
 				this.dataWatcher.updateObject(16, Byte.valueOf(var12));
 			}
@@ -145,7 +148,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 		for(int var16 = 1; (double)var16 < par7; ++var16) {
 			var15.offset(var9, var11, var13);
-			if (this.worldObj.getCollidingBoundingBoxes(this, var15).size() > 0) {
+			if (!this.worldObj.getCollidingBoundingBoxes(this, var15).isEmpty()) {
 				return false;
 			}
 		}
@@ -171,8 +174,8 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(2) + this.rand.nextInt(1 + par2);
-
 		int var4;
+
 		for(var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.ghastTear.shiftedIndex, 1);
 		}

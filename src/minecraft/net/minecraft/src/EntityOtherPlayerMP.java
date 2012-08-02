@@ -1,10 +1,12 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+// Spout start
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.player.SpoutPlayer; //Spout
+import org.spoutcraft.client.player.SpoutPlayer;
 import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
-
+// Spout end
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
 	private int otherPlayerMPPosRotationIncrements;
@@ -27,7 +29,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		//Spout end
 
 		this.noClip = true;
-		this.field_22062_y = 0.25F;
+		this.field_71082_cx = 0.25F;
 		this.renderDistanceWeight = 10.0D;
 		//Spout start
 		if (vip != null) {
@@ -60,9 +62,9 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	public void onUpdate() {
-		this.field_22062_y = 0.0F;
+		this.field_71082_cx = 0.0F;
 		super.onUpdate();
-		this.field_705_Q = this.field_704_R;
+		this.field_70722_aY = this.field_70721_aZ;
 		double var1 = this.posX - this.prevPosX;
 		double var3 = this.posZ - this.prevPosZ;
 		float var5 = MathHelper.sqrt_double(var1 * var1 + var3 * var3) * 4.0F;
@@ -70,8 +72,8 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			var5 = 1.0F;
 		}
 
-		this.field_704_R += (var5 - this.field_704_R) * 0.4F;
-		this.field_703_S += this.field_704_R;
+		this.field_70721_aZ += (var5 - this.field_70721_aZ) * 0.4F;
+		this.field_70754_ba += this.field_70721_aZ;
 		if (!this.isItemInUse && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
 			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
 			this.setItemInUse(this.inventory.mainInventory[this.inventory.currentItem], Item.itemsList[var6.itemID].getMaxItemUseDuration(var6));
@@ -92,8 +94,9 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 			double var1 = this.posX + (this.otherPlayerMPX - this.posX) / (double)this.otherPlayerMPPosRotationIncrements;
 			double var3 = this.posY + (this.otherPlayerMPY - this.posY) / (double)this.otherPlayerMPPosRotationIncrements;
 			double var5 = this.posZ + (this.otherPlayerMPZ - this.posZ) / (double)this.otherPlayerMPPosRotationIncrements;
-
 			double var7;
+
+
 			for (var7 = this.otherPlayerMPYaw - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
 				;
 			}
@@ -128,23 +131,24 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.cameraPitch += (var2 - this.cameraPitch) * 0.8F;
 	}
 
-	public void outfitWithItem(int par1, int par2, int par3) {
-		ItemStack var4 = null;
-		if (par2 >= 0) {
-			var4 = new ItemStack(par2, 1, par3);
-		}
-
+	public void func_70062_b(int par1, ItemStack par2ItemStack) {
 		if (par1 == 0) {
-			this.inventory.mainInventory[this.inventory.currentItem] = var4;
+			this.inventory.mainInventory[this.inventory.currentItem] = par2ItemStack;
 		} else {
-			this.inventory.armorInventory[par1 - 1] = var4;
+			this.inventory.armorInventory[par1 - 1] = par2ItemStack;
 		}
 	}
 
-	public void func_6420_o() {}
-
 	public float getEyeHeight() {
 		return 1.82F;
+	}
+
+	public void func_70006_a(String par1Str) {
+		Minecraft.func_71410_x().ingameGUI.func_73827_b().func_73765_a(par1Str);
+	}
+
+	public boolean func_70003_b(String par1Str) {
+		return false;
 	}
 
 	//Spout Start

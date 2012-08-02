@@ -11,11 +11,11 @@ import org.spoutcraft.client.entity.CraftStorageMinecart;
 public class EntityMinecart extends Entity implements IInventory {
 	private ItemStack[] cargoItems;
 	private int fuel;
-	private boolean field_856_i;
+	private boolean field_70499_f;
 	public int minecartType;
 	public double pushX;
 	public double pushZ;
-	private static final int[][][] field_855_j = new int[][][]{{{0, 0, -1}, {0, 0, 1}}, {{-1, 0, 0}, {1, 0, 0}}, {{-1, -1, 0}, {1, 0, 0}}, {{-1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, {-1, 0, 0}}, {{0, 0, -1}, {-1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
+	private static final int[][][] field_70500_g = new int[][][]{{{0, 0, -1}, {0, 0, 1}}, {{-1, 0, 0}, {1, 0, 0}}, {{-1, -1, 0}, {1, 0, 0}}, {{-1, 0, 0}, {1, -1, 0}}, {{0, 0, -1}, {0, -1, 1}}, {{0, -1, -1}, {0, 0, 1}}, {{0, 0, 1}, {1, 0, 0}}, {{0, 0, 1}, {-1, 0, 0}}, {{0, 0, -1}, {-1, 0, 0}}, {{0, 0, -1}, {1, 0, 0}}};
 	private int turnProgress;
 	private double minecartX;
 	private double minecartY;
@@ -44,7 +44,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		super(par1World);
 		this.cargoItems = new ItemStack[27]; // Spout 36 -> 27
 		this.fuel = 0;
-		this.field_856_i = false;
+		this.field_70499_f = false;
 		this.preventEntitySpawning = true;
 		this.setSize(0.98F, 0.7F);
 		this.yOffset = this.height / 2.0F;
@@ -101,11 +101,16 @@ public class EntityMinecart extends Entity implements IInventory {
 
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		if (!this.worldObj.isRemote && !this.isDead) {
-			this.func_41029_h(-this.func_41030_m());
-			this.func_41028_c(10);
+			this.func_70494_i(-this.func_70493_k());
+			this.func_70497_h(10);
 			this.setBeenAttacked();
-			this.func_41024_b(this.func_41025_i() + par2 * 10);
-			if (this.func_41025_i() > 40) {
+			this.setDamage(this.getDamage() + par2 * 10);
+
+			if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode) {
+				this.setDamage(100);
+			}
+
+			if (this.getDamage() > 40) {
 				if (this.riddenByEntity != null) {
 					this.riddenByEntity.mountEntity(this);
 				}
@@ -152,9 +157,9 @@ public class EntityMinecart extends Entity implements IInventory {
 	}
 
 	public void performHurtAnimation() {
-		this.func_41029_h(-this.func_41030_m());
-		this.func_41028_c(10);
-		this.func_41024_b(this.func_41025_i() + this.func_41025_i() * 10);
+		this.func_70494_i(-this.func_70493_k());
+		this.func_70497_h(10);
+		this.setDamage(this.getDamage() + this.getDamage() * 10);
 	}
 
 	public boolean canBeCollidedWith() {
@@ -194,12 +199,12 @@ public class EntityMinecart extends Entity implements IInventory {
 	}
 
 	public void onUpdate() {
-		if (this.func_41023_l() > 0) {
-			this.func_41028_c(this.func_41023_l() - 1);
+		if (this.func_70496_j() > 0) {
+			this.func_70497_h(this.func_70496_j() - 1);
 		}
 
-		if (this.func_41025_i() > 0) {
-			this.func_41024_b(this.func_41025_i() - 1);
+		if (this.getDamage() > 0) {
+			this.setDamage(this.getDamage() - 1);
 		}
 
 		if (this.posY < -64.0D) {
@@ -216,10 +221,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				double var46 = this.posY + (this.minecartY - this.posY) / (double)this.turnProgress;
 				double var5 = this.posZ + (this.minecartZ - this.posZ) / (double)this.turnProgress;
 
-				double var7;
-				for (var7 = this.minecartYaw - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
-					;
-				}
+				double var7 = MathHelper.func_76138_g(this.minecartYaw - (double)this.rotationYaw);
 
 				while (var7 >= 180.0D) {
 					var7 -= 360.0D;
@@ -250,7 +252,7 @@ public class EntityMinecart extends Entity implements IInventory {
 			double var6 = 0.0078125D;
 			int var8 = this.worldObj.getBlockId(var1, var2, var3);
 			if (BlockRail.isRailBlock(var8)) {
-				Vec3D var9 = this.func_514_g(this.posX, this.posY, this.posZ);
+				Vec3 var9 = this.func_70489_a(this.posX, this.posY, this.posZ);
 				int var10 = this.worldObj.getBlockMetadata(var1, var2, var3);
 				this.posY = (double)var2;
 				boolean var11 = false;
@@ -284,7 +286,7 @@ public class EntityMinecart extends Entity implements IInventory {
 					this.motionZ -= var6;
 				}
 
-				int[][] var13 = field_855_j[var10];
+				int[][] var13 = field_70500_g[var10];
 				double var14 = (double)(var13[1][0] - var13[0][0]);
 				double var16 = (double)(var13[1][2] - var13[0][2]);
 				double var18 = Math.sqrt(var14 * var14 + var16 * var16);
@@ -298,6 +300,19 @@ public class EntityMinecart extends Entity implements IInventory {
 				this.motionX = var22 * var14 / var18;
 				this.motionZ = var22 * var16 / var18;
 				double var24;
+				double var26;
+
+				if (this.riddenByEntity != null) {
+					var24 = this.riddenByEntity.motionX * this.riddenByEntity.motionX + this.riddenByEntity.motionZ * this.riddenByEntity.motionZ;
+					var26 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+
+					if (var24 > 1.0E-4D && var26 < 0.01D) {
+						this.motionX += this.riddenByEntity.motionX * 0.1D;
+						this.motionZ += this.riddenByEntity.motionZ * 0.1D;
+						var12 = false;
+					}
+				}
+
 				if (var12) {
 					var24 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 					if (var24 < 0.03D) {
@@ -312,14 +327,13 @@ public class EntityMinecart extends Entity implements IInventory {
 				}
 
 				var24 = 0.0D;
-				double var26 = (double)var1 + 0.5D + (double)var13[0][0] * 0.5D;
+				var26 = (double)var1 + 0.5D + (double)var13[0][0] * 0.5D;
 				double var28 = (double)var3 + 0.5D + (double)var13[0][2] * 0.5D;
 				double var30 = (double)var1 + 0.5D + (double)var13[1][0] * 0.5D;
 				double var32 = (double)var3 + 0.5D + (double)var13[1][2] * 0.5D;
 				var14 = var30 - var26;
 				var16 = var32 - var28;
 				double var34;
-				double var38;
 				double var36;
 				if (var14 == 0.0D) {
 					this.posX = (double)var1 + 0.5D;
@@ -330,8 +344,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				} else {
 					var34 = this.posX - var26;
 					var36 = this.posZ - var28;
-					var38 = (var34 * var14 + var36 * var16) * 2.0D;
-					var24 = var38;
+					var24 = (var34 * var14 + var36 * var16) * 2.0D;
 				}
 
 				this.posX = var26 + var14 * var24;
@@ -373,8 +386,10 @@ public class EntityMinecart extends Entity implements IInventory {
 					this.motionZ *= 0.996999979019165D;
 				} else {
 					if (this.minecartType == 2) {
-						var38 = (double)MathHelper.sqrt_double(this.pushX * this.pushX + this.pushZ * this.pushZ);
-						if (var38 > 0.01D) {
+						double var38 = this.pushX * this.pushX + this.pushZ * this.pushZ;
+
+						if (var38 > 1.0E-4D) {
+							var38 = (double)MathHelper.sqrt_double(var38);
 							this.pushX /= var38;
 							this.pushZ /= var38;
 							double var40 = 0.04D;
@@ -395,7 +410,7 @@ public class EntityMinecart extends Entity implements IInventory {
 					this.motionZ *= 0.9599999785423279D;
 				}
 
-				Vec3D var52 = this.func_514_g(this.posX, this.posY, this.posZ);
+				Vec3 var52 = this.func_70489_a(this.posX, this.posY, this.posZ);
 				if (var52 != null && var9 != null) {
 					double var39 = (var9.yCoord - var52.yCoord) * 0.05D;
 					var22 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -417,8 +432,9 @@ public class EntityMinecart extends Entity implements IInventory {
 
 				double var41;
 				if (this.minecartType == 2) {
-					var41 = (double)MathHelper.sqrt_double(this.pushX * this.pushX + this.pushZ * this.pushZ);
-					if (var41 > 0.01D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D) {
+					var41 = this.pushX * this.pushX + this.pushZ * this.pushZ;
+					if (var41 > 1.0E-4D && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.001D) {
+						var41 = (double)MathHelper.sqrt_double(var41);
 						this.pushX /= var41;
 						this.pushZ /= var41;
 						if (this.pushX * this.motionX + this.pushZ * this.motionZ < 0.0D) {
@@ -451,6 +467,8 @@ public class EntityMinecart extends Entity implements IInventory {
 						}
 					}
 				}
+
+				this.func_70017_D();
 			} else {
 				if (this.motionX < -var4) {
 					this.motionX = -var4;
@@ -487,28 +505,22 @@ public class EntityMinecart extends Entity implements IInventory {
 			double var48 = this.prevPosZ - this.posZ;
 			if (var47 * var47 + var48 * var48 > 0.001D) {
 				this.rotationYaw = (float)(Math.atan2(var48, var47) * 180.0D / Math.PI);
-				if (this.field_856_i) {
+				if (this.field_70499_f) {
 					this.rotationYaw += 180.0F;
 				}
 			}
 
-			double var49;
-			for (var49 = (double)(this.rotationYaw - this.prevRotationYaw); var49 >= 180.0D; var49 -= 360.0D) {
-				;
-			}
-
-			while (var49 < -180.0D) {
-				var49 += 360.0D;
-			}
+			double var49 = (double)MathHelper.func_76142_g(this.rotationYaw - this.prevRotationYaw);
 
 			if (var49 < -170.0D || var49 >= 170.0D) {
 				this.rotationYaw += 180.0F;
-				this.field_856_i = !this.field_856_i;
+				this.field_70499_f = !this.field_70499_f;
 			}
 
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 			List var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-			if (var15 != null && var15.size() > 0) {
+
+			if (var15 != null && !var15.isEmpty()) {
 				for (int var50 = 0; var50 < var15.size(); ++var50) {
 					Entity var17 = (Entity)var15.get(var50);
 					if (var17 != this.riddenByEntity && var17.canBePushed() && var17 instanceof EntityMinecart) {
@@ -537,7 +549,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		}
 	}
 
-	public Vec3D func_515_a(double par1, double par3, double par5, double par7) {
+	public Vec3 func_70495_a(double par1, double par3, double par5, double par7) {
 		int var9 = MathHelper.floor_double(par1);
 		int var10 = MathHelper.floor_double(par3);
 		int var11 = MathHelper.floor_double(par5);
@@ -559,7 +571,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				par3 = (double)(var10 + 1);
 			}
 
-			int[][] var14 = field_855_j[var13];
+			int[][] var14 = field_70500_g[var13];
 			double var15 = (double)(var14[1][0] - var14[0][0]);
 			double var17 = (double)(var14[1][2] - var14[0][2]);
 			double var19 = Math.sqrt(var15 * var15 + var17 * var17);
@@ -573,11 +585,11 @@ public class EntityMinecart extends Entity implements IInventory {
 				par3 += (double)var14[1][1];
 			}
 
-			return this.func_514_g(par1, par3, par5);
+			return this.func_70489_a(par1, par3, par5);
 		}
 	}
 
-	public Vec3D func_514_g(double par1, double par3, double par5) {
+	public Vec3 func_70489_a(double par1, double par3, double par5) {
 		int var7 = MathHelper.floor_double(par1);
 		int var8 = MathHelper.floor_double(par3);
 		int var9 = MathHelper.floor_double(par5);
@@ -597,7 +609,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				par3 = (double)(var8 + 1);
 			}
 
-			int[][] var12 = field_855_j[var11];
+			int[][] var12 = field_70500_g[var11];
 			double var13 = 0.0D;
 			double var15 = (double)var7 + 0.5D + (double)var12[0][0] * 0.5D;
 			double var17 = (double)var8 + 0.5D + (double)var12[0][1] * 0.5D;
@@ -617,8 +629,7 @@ public class EntityMinecart extends Entity implements IInventory {
 			} else {
 				double var33 = par1 - var15;
 				double var35 = par5 - var19;
-				double var37 = (var33 * var27 + var35 * var31) * 2.0D;
-				var13 = var37;
+				var13 = (var33 * var27 + var35 * var31) * 2.0D;
 			}
 
 			par1 = var15 + var27 * var13;
@@ -632,7 +643,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				par3 += 0.5D;
 			}
 
-			return Vec3D.createVector(par1, par3, par5);
+			return Vec3.func_72437_a().func_72345_a(par1, par3, par5);
 		} else {
 			return null;
 		}
@@ -714,8 +725,8 @@ public class EntityMinecart extends Entity implements IInventory {
 					if (par1Entity instanceof EntityMinecart) {
 						double var10 = par1Entity.posX - this.posX;
 						double var12 = par1Entity.posZ - this.posZ;
-						Vec3D var14 = Vec3D.createVector(var10, 0.0D, var12).normalize();
-						Vec3D var15 = Vec3D.createVector((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
+						Vec3 var14 = Vec3.func_72437_a().func_72345_a(var10, 0.0D, var12).normalize();
+						Vec3 var15 = Vec3.func_72437_a().func_72345_a((double)MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F), 0.0D, (double)MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F)).normalize();
 						double var16 = Math.abs(var14.dotProduct(var15));
 						if (var16 < 0.800000011920929D) {
 							return;
@@ -858,7 +869,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	}
 
 	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-		return this.isDead?false:par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
+		return this.isDead ? false : par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
 	}
 
 	protected boolean isMinecartPowered() {
@@ -877,27 +888,27 @@ public class EntityMinecart extends Entity implements IInventory {
 
 	public void closeChest() {}
 
-	public void func_41024_b(int par1) {
+	public void setDamage(int par1) {
 		this.dataWatcher.updateObject(19, Integer.valueOf(par1));
 	}
 
-	public int func_41025_i() {
+	public int getDamage() {
 		return this.dataWatcher.getWatchableObjectInt(19);
 	}
 
-	public void func_41028_c(int par1) {
+	public void func_70497_h(int par1) {
 		this.dataWatcher.updateObject(17, Integer.valueOf(par1));
 	}
 
-	public int func_41023_l() {
+	public int func_70496_j() {
 		return this.dataWatcher.getWatchableObjectInt(17);
 	}
 
-	public void func_41029_h(int par1) {
+	public void func_70494_i(int par1) {
 		this.dataWatcher.updateObject(18, Integer.valueOf(par1));
 	}
 
-	public int func_41030_m() {
+	public int func_70493_k() {
 		return this.dataWatcher.getWatchableObjectInt(18);
 	}
 }

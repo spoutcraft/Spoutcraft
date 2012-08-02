@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EntityList {
@@ -10,7 +11,7 @@ public class EntityList {
 	private static Map IDtoClassMapping = new HashMap();
 	private static Map classToIDMapping = new HashMap();
 	private static Map stringToIDMapping = new HashMap();
-	public static HashMap entityEggs = new HashMap();
+	public static HashMap entityEggs = new LinkedHashMap();
 
 	private static void addMapping(Class par0Class, String par1Str, int par2) {
 		stringToClassMapping.put(par1Str, par0Class);
@@ -67,7 +68,7 @@ public class EntityList {
 		try {
 			Class var3 = (Class)IDtoClassMapping.get(Integer.valueOf(par0));
 			if (var3 != null) {
-				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{par1World});
+				var2 = (Entity)var3.getConstructor(new Class[] {World.class}).newInstance(new Object[] {par1World});
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
@@ -81,7 +82,8 @@ public class EntityList {
 	}
 
 	public static int getEntityID(Entity par0Entity) {
-		return ((Integer)classToIDMapping.get(par0Entity.getClass())).intValue();
+		Class var1 = par0Entity.getClass();
+		return classToIDMapping.containsKey(var1) ? ((Integer)classToIDMapping.get(var1)).intValue() : 0;
 	}
 
 	public static String getEntityString(Entity par0Entity) {
@@ -90,7 +92,7 @@ public class EntityList {
 
 	public static String getStringFromID(int par0) {
 		Class var1 = (Class)IDtoClassMapping.get(Integer.valueOf(par0));
-		return var1 != null?(String)classToStringMapping.get(var1):null;
+		return var1 != null ? (String)classToStringMapping.get(var1) : null;
 	}
 
 	static {

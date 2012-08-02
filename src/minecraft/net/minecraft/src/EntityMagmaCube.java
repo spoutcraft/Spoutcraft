@@ -19,7 +19,7 @@ public class EntityMagmaCube extends EntitySlime {
 	}
 
 	public boolean getCanSpawnHere() {
-		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox);
+		return this.worldObj.difficultySetting > 0 && this.worldObj.checkIfAABBIsClear(this.boundingBox) && this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).isEmpty() && !this.worldObj.isAnyLiquid(this.boundingBox);
 	}
 
 	public int getTotalArmorValue() {
@@ -64,12 +64,12 @@ public class EntityMagmaCube extends EntitySlime {
 		return false;
 	}
 
-	protected int func_40131_af() {
-		return super.func_40131_af() * 4;
+	protected int getJumpDelay() {
+		return super.getJumpDelay() * 4;
 	}
 
-	protected void func_40136_ag() {
-		this.field_40139_a *= 0.9F;
+	protected void func_70808_l() {
+		this.field_70813_a *= 0.9F;
 	}
 
 	protected void jump() {
@@ -79,12 +79,12 @@ public class EntityMagmaCube extends EntitySlime {
 
 	protected void fall(float par1) {}
 
-	protected boolean func_40137_ah() {
+	protected boolean canDamagePlayer() {
 		return true;
 	}
 
-	protected int func_40130_ai() {
-		return super.func_40130_ai() + 2;
+	protected int getAttackStrength() {
+		return super.getAttackStrength() + 2;
 	}
 
 	protected String getHurtSound() {
@@ -95,15 +95,15 @@ public class EntityMagmaCube extends EntitySlime {
 		return "mob.slime";
 	}
 
-	protected String func_40138_aj() {
-		return this.getSlimeSize() > 1?"mob.magmacube.big":"mob.magmacube.small";
+	protected String getJumpSound() {
+		return this.getSlimeSize() > 1 ? "mob.magmacube.big" : "mob.magmacube.small";
 	}
 
 	public boolean handleLavaMovement() {
 		return false;
 	}
 
-	protected boolean func_40134_ak() {
+	protected boolean makesSoundOnLand() {
 		return true;
 	}
 }

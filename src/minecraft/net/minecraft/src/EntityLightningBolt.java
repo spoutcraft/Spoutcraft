@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.spoutcraft.client.entity.CraftLightningStrike;
@@ -76,10 +77,11 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		if(!effect && this.lightningState >= 0) {
 		//Spout end
 			double var6 = 3.0D;
-			List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBoxFromPool(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
+			List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.func_72332_a().func_72299_a(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
+			Iterator var4 = var7.iterator();
 
-			for (int var4 = 0; var4 < var7.size(); ++var4) {
-				Entity var5 = (Entity)var7.get(var4);
+			while (var4.hasNext()) {
+				Entity var5 = (Entity)var4.next();
 				var5.onStruckByLightning(this);
 			}
 
