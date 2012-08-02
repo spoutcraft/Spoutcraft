@@ -1190,7 +1190,7 @@ public abstract class Minecraft implements Runnable {
 		}
 	}
 
-	public void resize(int par1, int par2) { // spout -> public to private
+	public void resize(int par1, int par2) { // spout -> private to public
 		if (par1 <= 0) {
 			par1 = 1;
 		}
