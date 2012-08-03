@@ -53,11 +53,18 @@ public class TileEntitySign extends TileEntity {
 		recalculateText();
 		//Spout end
 	}
-	public boolean func_50007_a() {
+
+	public Packet func_70319_e() {
+		String[] var1 = new String[4];
+		System.arraycopy(this.signText, 0, var1, 0, 4);
+		return new Packet130UpdateSign(this.xCoord, this.yCoord, this.zCoord, var1);
+	}
+
+	public boolean isEditable() {
 		return this.isEditable;
 	}
 
-	public void func_50006_a(boolean par1) {
+	public void setEditable(boolean par1) {
 		this.isEditable = par1;
 	}
 }

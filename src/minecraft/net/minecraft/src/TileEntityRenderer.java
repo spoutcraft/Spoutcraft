@@ -26,6 +26,7 @@ public class TileEntityRenderer {
 		this.specialRendererMap.put(TileEntityMobSpawner.class, new TileEntityMobSpawnerRenderer());
 		this.specialRendererMap.put(TileEntityPiston.class, new TileEntityRendererPiston());
 		this.specialRendererMap.put(TileEntityChest.class, new TileEntityChestRenderer());
+		this.specialRendererMap.put(TileEntityEnderChest.class, new TileEntityEnderChestRenderer());
 		this.specialRendererMap.put(TileEntityEnchantmentTable.class, new RenderEnchantmentTable());
 		this.specialRendererMap.put(TileEntityEndPortal.class, new RenderEndPortal());
 		Iterator var1 = this.specialRendererMap.values().iterator();
@@ -51,12 +52,12 @@ public class TileEntityRenderer {
 	}
 
 	public TileEntitySpecialRenderer getSpecialRendererForEntity(TileEntity par1TileEntity) {
-		return par1TileEntity == null?null:this.getSpecialRendererForClass(par1TileEntity.getClass());
+		return par1TileEntity == null ? null : this.getSpecialRendererForClass(par1TileEntity.getClass());
 	}
 
 	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, float par5) {
 		if (this.worldObj != par1World) {
-			this.cacheSpecialRenderInfo(par1World);
+			this.setWorld(par1World);
 		}
 
 		this.renderEngine = par2RenderEngine;
@@ -89,14 +90,14 @@ public class TileEntityRenderer {
 		}
 	}
 
-	public void cacheSpecialRenderInfo(World par1World) {
+	public void setWorld(World par1World) {
 		this.worldObj = par1World;
 		Iterator var2 = this.specialRendererMap.values().iterator();
 
 		while (var2.hasNext()) {
 			TileEntitySpecialRenderer var3 = (TileEntitySpecialRenderer)var2.next();
 			if (var3 != null) {
-				var3.cacheSpecialRenderInfo(par1World);
+				var3.onWorldChange(par1World);
 			}
 		}
 	}
