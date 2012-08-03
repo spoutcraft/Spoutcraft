@@ -18,7 +18,7 @@ public class NBTTagList extends NBTBase {
 	}
 
 	void write(DataOutput par1DataOutput) throws IOException {
-		if (tagList.size() > 0) {
+		if (!tagList.isEmpty()) {
 			tagType = ((NBTBase)tagList.get(0)).getId();
 		} else {
 			tagType = 1;
@@ -26,9 +26,11 @@ public class NBTTagList extends NBTBase {
 
 		par1DataOutput.writeByte(tagType);
 		par1DataOutput.writeInt(tagList.size());
+		Iterator var2 = this.tagList.iterator();
 
-		for (int i = 0; i < tagList.size(); i++) {
-			((NBTBase)tagList.get(i)).write(par1DataOutput);
+		while (var2.hasNext()) {
+			NBTBase var3 = (NBTBase)var2.next();
+			var3.write(par1DataOutput);
 		}
 	}
 
@@ -55,6 +57,10 @@ public class NBTTagList extends NBTBase {
 	public void appendTag(NBTBase par1NBTBase) {
 		tagType = par1NBTBase.getId();
 		tagList.add(par1NBTBase);
+	}
+
+	public NBTBase func_74744_a(int par1) {
+		return (NBTBase)this.tagList.remove(par1);
 	}
 
 	public NBTBase tagAt(int par1) {

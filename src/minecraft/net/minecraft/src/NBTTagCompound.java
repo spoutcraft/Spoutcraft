@@ -83,7 +83,7 @@ public class NBTTagCompound extends NBTBase {
 		this.tagMap.put(par1Str, new NBTTagByteArray(par1Str, par2ArrayOfByte));
 	}
 
-	public void func_48183_a(String par1Str, int[] par2ArrayOfInteger) {
+	public void setIntArray(String par1Str, int[] par2ArrayOfInteger) {
 		this.tagMap.put(par1Str, new NBTTagIntArray(par1Str, par2ArrayOfInteger));
 	}
 
@@ -92,7 +92,7 @@ public class NBTTagCompound extends NBTBase {
 	}
 
 	public void setBoolean(String par1Str, boolean par2) {
-		this.setByte(par1Str, (byte)(par2?1:0));
+		this.setByte(par1Str, (byte)(par2 ? 1 : 0));
 	}
 
 	public NBTBase getTag(String par1Str) {
@@ -106,7 +106,7 @@ public class NBTTagCompound extends NBTBase {
 	//Spout try-catch
 	public byte getByte(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0:((NBTTagByte)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0 : ((NBTTagByte)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -114,7 +114,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public short getShort(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0:((NBTTagShort)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0 : ((NBTTagShort)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -122,7 +122,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public int getInteger(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0:((NBTTagInt)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0 : ((NBTTagInt)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -130,7 +130,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public long getLong(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0L:((NBTTagLong)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0L : ((NBTTagLong)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -138,7 +138,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public float getFloat(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0.0F:((NBTTagFloat)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0.0F : ((NBTTagFloat)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -146,7 +146,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public double getDouble(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?0.0D:((NBTTagDouble)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? 0.0D : ((NBTTagDouble)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return 0;
 		}
@@ -154,7 +154,7 @@ public class NBTTagCompound extends NBTBase {
 
 	public String getString(String par1Str) {
 		try {
-		return !this.tagMap.containsKey(par1Str)?"":((NBTTagString)this.tagMap.get(par1Str)).data;
+		return !this.tagMap.containsKey(par1Str) ? "" : ((NBTTagString)this.tagMap.get(par1Str)).data;
 		} catch (ClassCastException ignore) {
 			return "";
 		}
@@ -162,19 +162,19 @@ public class NBTTagCompound extends NBTBase {
 	//Spout end
 
 	public byte[] getByteArray(String par1Str) {
-		return !this.tagMap.containsKey(par1Str)?new byte[0]:((NBTTagByteArray)this.tagMap.get(par1Str)).byteArray;
+		return !this.tagMap.containsKey(par1Str) ? new byte[0] : ((NBTTagByteArray)this.tagMap.get(par1Str)).byteArray;
 	}
 
-	public int[] func_48182_l(String par1Str) {
-		return !this.tagMap.containsKey(par1Str)?new int[0]:((NBTTagIntArray)this.tagMap.get(par1Str)).field_48181_a;
+	public int[] getIntArray(String par1Str) {
+		return !this.tagMap.containsKey(par1Str) ? new int[0] : ((NBTTagIntArray)this.tagMap.get(par1Str)).field_48181_a;
 	}
 
 	public NBTTagCompound getCompoundTag(String par1Str) {
-		return !this.tagMap.containsKey(par1Str)?new NBTTagCompound(par1Str):(NBTTagCompound)this.tagMap.get(par1Str);
+		return !this.tagMap.containsKey(par1Str) ? new NBTTagCompound(par1Str) : (NBTTagCompound)this.tagMap.get(par1Str);
 	}
 
 	public NBTTagList getTagList(String par1Str) {
-		return !this.tagMap.containsKey(par1Str)?new NBTTagList(par1Str):(NBTTagList)this.tagMap.get(par1Str);
+		return !this.tagMap.containsKey(par1Str) ? new NBTTagList(par1Str) : (NBTTagList)this.tagMap.get(par1Str);
 	}
 
 	public boolean getBoolean(String par1Str) {
