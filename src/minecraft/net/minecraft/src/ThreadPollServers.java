@@ -6,15 +6,14 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 class ThreadPollServers extends Thread {
-	final ServerNBTStorage server;
+	final ServerData field_78318_a;
 
 	final GuiSlotServer serverSlotContainer;
 
-	ThreadPollServers(GuiSlotServer par1GuiSlotServer, ServerNBTStorage par2ServerNBTStorage) {
+	ThreadPollServers(GuiSlotServer par1GuiSlotServer, ServerData par2ServerData) {
 		this.serverSlotContainer = par1GuiSlotServer;
-		this.server = par2ServerNBTStorage;
+		this.field_78318_a = par2ServerData;
 	}
-
 	public void run() {
 		boolean var27 = false;
 
@@ -25,35 +24,35 @@ class ThreadPollServers extends Thread {
 						label187: {
 							try {
 								var27 = true;
-								this.server.motd = "\u00a78Polling..";
+								this.field_78318_a.field_78843_d = "\u00a78Polling..";
 								long var1 = System.nanoTime();
-								GuiMultiplayer.pollServer(this.serverSlotContainer.parentGui, this.server);
+								GuiMultiplayer.func_74013_a(this.serverSlotContainer.parentGui, this.field_78318_a);
 								long var3 = System.nanoTime();
-								this.server.lag = (var3 - var1) / 1000000L;
+								this.field_78318_a.field_78844_e = (var3 - var1) / 1000000L;
 								var27 = false;
 								break label183;
 							} catch (UnknownHostException var35) {
-								this.server.lag = -1L;
-								this.server.motd = "\u00a74Can\'t resolve hostname";
+								this.field_78318_a.field_78844_e = -1L;
+								this.field_78318_a.field_78843_d = "\u00a74Can\'t resolve hostname";
 								var27 = false;
 							} catch (SocketTimeoutException var36) {
-								this.server.lag = -1L;
-								this.server.motd = "\u00a74Can\'t reach server";
+								this.field_78318_a.field_78844_e = -1L;
+								this.field_78318_a.field_78843_d = "\u00a74Can\'t reach server";
 								var27 = false;
 								break label187;
 							} catch (ConnectException var37) {
-								this.server.lag = -1L;
-								this.server.motd = "\u00a74Can\'t reach server";
+								this.field_78318_a.field_78844_e = -1L;
+								this.field_78318_a.field_78843_d = "\u00a74Can\'t reach server";
 								var27 = false;
 								break label186;
 							} catch (IOException var38) {
-								this.server.lag = -1L;
-								this.server.motd = "\u00a74Communication error";
+								this.field_78318_a.field_78844_e = -1L;
+								this.field_78318_a.field_78843_d = "\u00a74Communication error";
 								var27 = false;
 								break label185;
 							} catch (Exception var39) {
-								this.server.lag = -1L;
-								this.server.motd = "ERROR: " + var39.getClass();
+								this.field_78318_a.field_78844_e = -1L;
+								this.field_78318_a.field_78843_d = "ERROR: " + var39.getClass();
 								var27 = false;
 								break label184;
 							} finally {
@@ -64,38 +63,38 @@ class ThreadPollServers extends Thread {
 								}
 							}
 
-							synchronized(GuiMultiplayer.getLock()) {
-								GuiMultiplayer.decrementThreadsPending();
+							synchronized (GuiMultiplayer.func_74011_h()) {
+								GuiMultiplayer.func_74018_k();
 								return;
 							}
 						}
 
-						synchronized(GuiMultiplayer.getLock()) {
-							GuiMultiplayer.decrementThreadsPending();
+						synchronized (GuiMultiplayer.func_74011_h()) {
+							GuiMultiplayer.func_74018_k();
 							return;
 						}
 					}
 
-					synchronized(GuiMultiplayer.getLock()) {
-						GuiMultiplayer.decrementThreadsPending();
+					synchronized (GuiMultiplayer.func_74011_h()) {
+						GuiMultiplayer.func_74018_k();
 						return;
 					}
 				}
 
-				synchronized(GuiMultiplayer.getLock()) {
-					GuiMultiplayer.decrementThreadsPending();
+				synchronized (GuiMultiplayer.func_74011_h()) {
+					GuiMultiplayer.func_74018_k();
 					return;
 				}
 			}
 
-			synchronized(GuiMultiplayer.getLock()) {
-				GuiMultiplayer.decrementThreadsPending();
+			synchronized (GuiMultiplayer.func_74011_h()) {
+				GuiMultiplayer.func_74018_k();
 				return;
 			}
 		}
 
-		synchronized(GuiMultiplayer.getLock()) {
-			GuiMultiplayer.decrementThreadsPending();
+		synchronized (GuiMultiplayer.func_74011_h()) {
+			GuiMultiplayer.func_74018_k();
 		}
 	}
 }

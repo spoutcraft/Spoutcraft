@@ -9,7 +9,6 @@ import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.Packet2Handshake;
 
 class ThreadConnectToServer extends Thread {
-	final Minecraft mc;
 	
 	final String ip;
 	
@@ -17,16 +16,15 @@ class ThreadConnectToServer extends Thread {
 	
 	final GuiConnecting connectingGui;
 
-	ThreadConnectToServer(GuiConnecting par1GuiConnecting, Minecraft par2Minecraft, String par3Str, int par4) {
+	ThreadConnectToServer(GuiConnecting par1GuiConnecting, String par2Str, int par3) {
 		this.connectingGui = par1GuiConnecting;
-		this.mc = par2Minecraft;
-		this.ip = par3Str;
-		this.port = par4;
+		this.ip = par2Str;
+		this.port = par3;
 	}
 
 	public void run() {
 		try {
-			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(this.mc, this.ip, this.port));
+			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(GuiConnecting.func_74256_a(this.connectingGui), this.ip, this.port));
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
@@ -36,7 +34,7 @@ class ThreadConnectToServer extends Thread {
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("REGISTER", "ChkCache:setHash"));
 			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet250CustomPayload("AutoProto:HShake", "VanillaProtocol"));
 			// Spout - end
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username, this.ip, this.port));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2ClientProtocol(39, GuiConnecting.func_74254_c(this.connectingGui).session.username, this.ip, this.port));
 		} catch (UnknownHostException var2) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
@@ -44,7 +42,7 @@ class ThreadConnectToServer extends Thread {
 
 			displayConnectionIssue(ip, port, "Unknown host \'" + this.ip + "\'");
 		} catch (ConnectException var3) {
-			if (GuiConnecting.isCancelled(this.connectingGui)) {
+			if (GuiConnecting.func_74257_b(this.connectingGui)) {
 				return;
 			}
 
@@ -71,7 +69,7 @@ class ThreadConnectToServer extends Thread {
 	private void displayConnectionIssue(String ip, int port, String message) {
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = ip;
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = port;
-		this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost(message));
+		Minecraft.func_71410_x().displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost(message));
 	}
 	//Spout End
 }
