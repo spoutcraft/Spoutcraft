@@ -1,27 +1,30 @@
 package net.minecraft.src;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GuiButton;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.GuiSmallButton;
-import net.minecraft.src.GuiTexturePackSlot;
-import net.minecraft.src.StringTranslate;
 import org.lwjgl.Sys;
 
 public class GuiTexturePacks extends GuiScreen {
-
 	protected GuiScreen guiScreen;
 	private int refreshTimer = -1;
+
+	/** the absolute location of this texture pack */
 	private String fileLocation = "";
+
+	/**
+	 * the GuiTexturePackSlot that contains all the texture packs and their descriptions
+	 */
 	private GuiTexturePackSlot guiTexturePackSlot;
 
-
-	public GuiTexturePacks(GuiScreen var1) {
-		this.guiScreen = var1;
+	public GuiTexturePacks(GuiScreen par1GuiScreen) {
+		this.guiScreen = par1GuiScreen;
 	}
 
+	/**
+	 * Adds the buttons (and other controls) to the screen in question.
+	 */
 	public void initGui() {
 		StringTranslate var1 = StringTranslate.getInstance();
 		this.controlList.add(new GuiSmallButton(5, this.width / 2 - 154, this.height - 48, var1.translateKey("texturePack.openFolder")));
@@ -32,31 +35,77 @@ public class GuiTexturePacks extends GuiScreen {
 		this.guiTexturePackSlot.registerScrollButtons(this.controlList, 7, 8);
 	}
 
-	protected void actionPerformed(GuiButton var1) {
-		if(var1.enabled) {
-			if(var1.id == 5) {
-				Sys.openURL("file://" + this.fileLocation);
-			} else if(var1.id == 6) {
+	/**
+	 * Fired when a control is clicked. This is the equivalent of ActionListener.actionPerformed(ActionEvent e).
+	 */
+	protected void actionPerformed(GuiButton par1GuiButton) {
+		if (par1GuiButton.enabled) {
+			if (par1GuiButton.id == 5) {
+				if (Minecraft.getOs() == EnumOS.MACOS) {
+					try {
+						System.out.println(this.fileLocation);
+						Runtime.getRuntime().exec(new String[] {"/usr/bin/open", this.fileLocation});
+						return;
+					} catch (IOException var7) {
+						var7.printStackTrace();
+					}
+				} else if (Minecraft.getOs() == EnumOS.WINDOWS) {
+					String var2 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {this.fileLocation});
+
+					try {
+						Runtime.getRuntime().exec(var2);
+						return;
+					} catch (IOException var6) {
+						var6.printStackTrace();
+					}
+				}
+
+				boolean var8 = false;
+
+				try {
+					Class var3 = Class.forName("java.awt.Desktop");
+					Object var4 = var3.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
+					var3.getMethod("browse", new Class[] {URI.class}).invoke(var4, new Object[] {(new File(Minecraft.getMinecraftDir(), "texturepacks")).toURI()});
+				} catch (Throwable var5) {
+					var5.printStackTrace();
+					var8 = true;
+				}
+
+				if (var8) {
+					System.out.println("Opening via system class!");
+					Sys.openURL("file://" + this.fileLocation);
+				}
+			} else if (par1GuiButton.id == 6) {
 				this.mc.renderEngine.refreshTextures();
 				this.mc.displayGuiScreen(this.guiScreen);
 			} else {
-				this.guiTexturePackSlot.actionPerformed(var1);
+				this.guiTexturePackSlot.actionPerformed(par1GuiButton);
 			}
-
 		}
 	}
 
-	protected void mouseClicked(int var1, int var2, int var3) {
-		super.mouseClicked(var1, var2, var3);
+	/**
+	 * Called when the mouse is clicked.
+	 */
+	protected void mouseClicked(int par1, int par2, int par3) {
+		super.mouseClicked(par1, par2, par3);
 	}
 
-	protected void mouseMovedOrUp(int var1, int var2, int var3) {
-		super.mouseMovedOrUp(var1, var2, var3);
+	/**
+	 * Called when the mouse is moved or a mouse button is released.  Signature: (mouseX, mouseY, which) which==-1 is
+	 * mouseMove, which==0 or which==1 is mouseUp
+	 */
+	protected void mouseMovedOrUp(int par1, int par2, int par3) {
+		super.mouseMovedOrUp(par1, par2, par3);
 	}
 
-	public void drawScreen(int var1, int var2, float var3) {
-		this.guiTexturePackSlot.drawScreen(var1, var2, var3);
-		if(this.refreshTimer <= 0) {
+	/**
+	 * Draws the screen and all the components in it.
+	 */
+	public void drawScreen(int par1, int par2, float par3) {
+		this.guiTexturePackSlot.drawScreen(par1, par2, par3);
+
+		if (this.refreshTimer <= 0) {
 			this.mc.texturePackList.updateAvaliableTexturePacks();
 			this.refreshTimer += 20;
 		}
@@ -64,81 +113,70 @@ public class GuiTexturePacks extends GuiScreen {
 		StringTranslate var4 = StringTranslate.getInstance();
 		this.drawCenteredString(this.fontRenderer, var4.translateKey("texturePack.title"), this.width / 2, 20, 16777215); //Spout changed pos from 16 -> 20
 		this.drawCenteredString(this.fontRenderer, var4.translateKey("texturePack.folderInfo"), this.width / 2 - 77, this.height - 26, 8421504);
-		super.drawScreen(var1, var2, var3);
+		super.drawScreen(par1, par2, par3);
 	}
 
+	/**
+	 * Called from the main game loop to update the screen.
+	 */
 	public void updateScreen() {
 		super.updateScreen();
 		--this.refreshTimer;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22124_a(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73950_a(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22126_b(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73955_b(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22119_c(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73958_c(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22122_d(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73951_d(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22117_e(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73952_e(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_35307_f(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73962_f(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_35308_g(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73959_g(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22118_f(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73957_h(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22116_g(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73956_i(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22121_h(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73953_j(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static Minecraft func_22123_i(GuiTexturePacks var0) {
-		return var0.mc;
+	static Minecraft func_73961_k(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.mc;
 	}
 
-	// $FF: synthetic method
-	static FontRenderer func_22127_j(GuiTexturePacks var0) {
-		return var0.fontRenderer;
+	static FontRenderer func_73960_l(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.fontRenderer;
 	}
 
-	// $FF: synthetic method
-	static FontRenderer func_22120_k(GuiTexturePacks var0) {
-		return var0.fontRenderer;
+	static FontRenderer func_73963_m(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.fontRenderer;
 	}
 
-	// $FF: synthetic method
-	static FontRenderer func_22125_l(GuiTexturePacks var0) {
-		return var0.fontRenderer;
+	static FontRenderer func_73954_n(GuiTexturePacks par0GuiTexturePacks) {
+		return par0GuiTexturePacks.fontRenderer;
 	}
 }
