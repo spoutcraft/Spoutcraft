@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class MapGenRavine extends MapGenBase {
-	private float[] field_35627_a = new float[1024];
+	private float[] field_75046_d = new float[1024];
 
 	protected void generateRavine(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17) {
 		Random var19 = new Random(par1);
@@ -29,7 +29,7 @@ public class MapGenRavine extends MapGenBase {
 				var27 = 1.0F + var19.nextFloat() * var19.nextFloat() * 1.0F;
 			}
 
-			this.field_35627_a[var28] = var27 * var27;
+			this.field_75046_d[var28] = var27 * var27;
 		}
 
 		for (; par15 < par16; ++par15) {
@@ -121,7 +121,7 @@ public class MapGenRavine extends MapGenBase {
 								if (var59 * var59 + var45 * var45 < 1.0D) {
 									for (int var49 = var37 - 1; var49 >= var55; --var49) {
 										double var50 = ((double)var49 + 0.5D - par8) / var30;
-										if ((var59 * var59 + var45 * var45) * (double)this.field_35627_a[var49] + var50 * var50 / 6.0D < 1.0D) {
+										if ((var59 * var59 + var45 * var45) * (double)this.field_75046_d[var49] + var50 * var50 / 6.0D < 1.0D) {
 											byte var52 = par5ArrayOfByte[var47];
 											if (var52 == Block.grass.blockID) {
 												var48 = true;
