@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import org.lwjgl.opengl.GL11;
 //Spout Start
-import org.lwjgl.opengl.GL13;
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.entity.EntityTexture;
 import org.spoutcraft.client.entity.RenderText;
@@ -27,9 +26,9 @@ public class RenderManager {
 	public float playerViewY;
 	public float playerViewX;
 	public GameSettings options;
-	public double field_1222_l;
-	public double field_1221_m;
-	public double field_1220_n;
+	public double field_78730_l;
+	public double field_78731_m;
+	public double field_78728_n;
 
 	private RenderManager() {
 		this.entityRenderMap.put(EntitySpider.class, new RenderSpider());
@@ -127,9 +126,9 @@ public class RenderManager {
 			this.playerViewY += 180.0F;
 		}
 
-		this.field_1222_l = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
-		this.field_1221_m = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
-		this.field_1220_n = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
+		this.field_78730_l = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
+		this.field_78731_m = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
+		this.field_78728_n = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
 	}
 
 	public void renderEntity(Entity par1Entity, float par2) {
@@ -162,9 +161,9 @@ public class RenderManager {
 	}
 
 	public double getDistanceToCamera(double par1, double par3, double par5) {
-		double var7 = par1 - this.field_1222_l;
-		double var9 = par3 - this.field_1221_m;
-		double var11 = par5 - this.field_1220_n;
+		double var7 = par1 - this.field_78730_l;
+		double var9 = par3 - this.field_78731_m;
+		double var11 = par5 - this.field_78728_n;
 		return var7 * var7 + var9 * var9 + var11 * var11;
 	}
 

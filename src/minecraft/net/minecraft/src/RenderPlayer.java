@@ -36,7 +36,7 @@ public class RenderPlayer extends RenderLiving {
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
 				//Spout Start
-				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2?2:1) + ".png");
+				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
 				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
 				if (vip != null && vip.getArmor(armorId) != null) {
@@ -68,7 +68,7 @@ public class RenderPlayer extends RenderLiving {
 
 	public void renderPlayer(EntityPlayer par1EntityPlayer, double par2, double par4, double par6, float par8, float par9) {
 		ItemStack var10 = par1EntityPlayer.inventory.getCurrentItem();
-		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = var10 != null?1:0;
+		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = var10 != null ? 1 : 0;
 		if (var10 != null && par1EntityPlayer.getItemInUseCount() > 0) {
 			EnumAction var11 = var10.getItemUseAction();
 			if (var11 == EnumAction.block) {
@@ -109,9 +109,9 @@ public class RenderPlayer extends RenderLiving {
 		if(Minecraft.isGuiEnabled() && (var1 != this.renderManager.livingPlayer || (Minecraft.theMinecraft.gameSettings.thirdPersonView != 0 && Minecraft.theMinecraft.currentScreen == null))) {
 			float var8 = 1.6F;
 			float var9 = 0.016666668F * var8;
-			float var10 = var1.getDistanceToEntity(this.renderManager.livingPlayer);
-			float var11 = var1.isSneaking()?32.0F:64.0F;
-			if(var10 < var11) {
+			double var10 = var1.getDistanceSqToEntity(this.renderManager.livingPlayer);
+			float var12 = var1.isSneaking() ? 32.0F : 64.0F;
+			if(var10 <  (double)(var12 * var12)) {
 				//Spout Start
 				String title = var1.displayName;
 				//int color = EasterEggs.getEasterEggTitleColor();
@@ -188,7 +188,7 @@ public class RenderPlayer extends RenderLiving {
 			if (RenderBlocks.renderItemIn3d(Block.blocksList[var3.itemID].getRenderType())) {
 				float var4 = 0.625F;
 				GL11.glTranslatef(0.0F, -0.25F, 0.0F);
-				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
+				GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glScalef(var4, -var4, var4);
 			}
 
@@ -220,9 +220,9 @@ public class RenderPlayer extends RenderLiving {
 		if (this.loadDownloadableImageTexture(par1EntityPlayer.playerCloakUrl, (String)null)) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double var22 = par1EntityPlayer.field_20066_r + (par1EntityPlayer.field_20063_u - par1EntityPlayer.field_20066_r) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
-			double var23 = par1EntityPlayer.field_20065_s + (par1EntityPlayer.field_20062_v - par1EntityPlayer.field_20065_s) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
-			double var8 = par1EntityPlayer.field_20064_t + (par1EntityPlayer.field_20061_w - par1EntityPlayer.field_20064_t) * (double)par2 - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
+			double var22 = par1EntityPlayer.field_71091_bM + (par1EntityPlayer.field_71094_bP - par1EntityPlayer.field_71091_bM) * (double)par2 - (par1EntityPlayer.prevPosX + (par1EntityPlayer.posX - par1EntityPlayer.prevPosX) * (double)par2);
+			double var23 = par1EntityPlayer.field_71096_bN + (par1EntityPlayer.field_71095_bQ - par1EntityPlayer.field_71096_bN) * (double)par2 - (par1EntityPlayer.prevPosY + (par1EntityPlayer.posY - par1EntityPlayer.prevPosY) * (double)par2);
+			double var8 = par1EntityPlayer.field_71097_bO + (par1EntityPlayer.field_71085_bR - par1EntityPlayer.field_71097_bO) * (double)par2 - (par1EntityPlayer.prevPosZ + (par1EntityPlayer.posZ - par1EntityPlayer.prevPosZ) * (double)par2);
 			var10 = par1EntityPlayer.prevRenderYawOffset + (par1EntityPlayer.renderYawOffset - par1EntityPlayer.prevRenderYawOffset) * par2;
 			double var11 = (double)MathHelper.sin(var10 * (float)Math.PI / 180.0F);
 			double var13 = (double)(-MathHelper.cos(var10 * (float)Math.PI / 180.0F));
@@ -313,7 +313,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
 			}
 
-			if (var21.getItem().func_46058_c()) {
+			if (var21.getItem().requiresMultipleRenderPasses()) {
 				for (int var25 = 0; var25 <= 1; ++var25) {
 					int var24 = var21.getItem().getColorFromDamage(var21.getItemDamage(), var25);
 					float var26 = (float)(var24 >> 16 & 255) / 255.0F;
@@ -343,7 +343,7 @@ public class RenderPlayer extends RenderLiving {
 
 	protected void renderPlayerSleep(EntityPlayer par1EntityPlayer, double par2, double par4, double par6) {
 		if (par1EntityPlayer.isEntityAlive() && par1EntityPlayer.isPlayerSleeping()) {
-			super.renderLivingAt(par1EntityPlayer, par2 + (double)par1EntityPlayer.field_22063_x, par4 + (double)par1EntityPlayer.field_22062_y, par6 + (double)par1EntityPlayer.field_22061_z);
+			super.renderLivingAt(par1EntityPlayer, par2 + (double)par1EntityPlayer.field_71079_bU, par4 + (double)par1EntityPlayer.field_71082_cx, par6 + (double)par1EntityPlayer.field_71089_bV);
 		} else {
 			super.renderLivingAt(par1EntityPlayer, par2, par4, par6);
 		}

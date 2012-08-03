@@ -10,7 +10,7 @@ public class RenderVillager extends RenderLiving {
 		this.field_40295_c = (ModelVillager)this.mainModel;
 	}
 
-	protected int func_40293_a(EntityVillager par1EntityVillager, int par2, float par3) {
+	protected int func_77053_a(EntityVillager par1EntityVillager, int par2, float par3) {
 		return -1;
 	}
 
@@ -18,13 +18,13 @@ public class RenderVillager extends RenderLiving {
 		super.doRenderLiving(par1EntityVillager, par2, par4, par6, par8, par9);
 	}
 
-	protected void func_40290_a(EntityVillager par1EntityVillager, double par2, double par4, double par6) {}
+	protected void func_77055_a(EntityVillager par1EntityVillager, double par2, double par4, double par6) {}
 
-	protected void func_40291_a(EntityVillager par1EntityVillager, float par2) {
+	protected void func_77051_a(EntityVillager par1EntityVillager, float par2) {
 		super.renderEquippedItems(par1EntityVillager, par2);
 	}
 
-	protected void func_40292_b(EntityVillager par1EntityVillager, float par2) {
+	protected void func_77052_b(EntityVillager par1EntityVillager, float par2) {
 		float var3 = 0.9375F;
 		if (par1EntityVillager.getGrowingAge() < 0) {
 			var3 = (float)((double)var3 * 0.5D);
@@ -37,19 +37,19 @@ public class RenderVillager extends RenderLiving {
 	}
 
 	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
-		this.func_40290_a((EntityVillager)par1EntityLiving, par2, par4, par6);
+		this.func_77055_a((EntityVillager)par1EntityLiving, par2, par4, par6);
 	}
 
 	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {
-		this.func_40292_b((EntityVillager)par1EntityLiving, par2);
+		this.func_77052_b((EntityVillager)par1EntityLiving, par2);
 	}
 
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
-		return this.func_40293_a((EntityVillager)par1EntityLiving, par2, par3);
+		return this.func_77053_a((EntityVillager)par1EntityLiving, par2, par3);
 	}
 
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-		this.func_40291_a((EntityVillager)par1EntityLiving, par2);
+		this.func_77051_a((EntityVillager)par1EntityLiving, par2);
 	}
 
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {

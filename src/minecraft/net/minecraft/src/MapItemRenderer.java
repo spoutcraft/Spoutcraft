@@ -84,10 +84,10 @@ public class MapItemRenderer {
 			GL11.glRotatef((float)(var20.iconRotation * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glScalef(4.0F, 4.0F, 3.0F);
 			GL11.glTranslatef(-0.125F, 0.125F, 0.0F);
-			float var21 = (float)(var20.field_28217_a % 4 + 0) / 4.0F;
-			float var23 = (float)(var20.field_28217_a / 4 + 0) / 4.0F;
-			float var22 = (float)(var20.field_28217_a % 4 + 1) / 4.0F;
-			float var24 = (float)(var20.field_28217_a / 4 + 1) / 4.0F;
+			float var21 = (float)(var20.field_76216_a % 4 + 0) / 4.0F;
+			float var23 = (float)(var20.field_76216_a / 4 + 0) / 4.0F;
+			float var22 = (float)(var20.field_76216_a % 4 + 1) / 4.0F;
+			float var24 = (float)(var20.field_76216_a / 4 + 1) / 4.0F;
 			var17.startDrawingQuads();
 			var17.addVertexWithUV(-1.0D, 1.0D, 0.0D, (double)var21, (double)var23);
 			var17.addVertexWithUV(1.0D, 1.0D, 0.0D, (double)var22, (double)var23);

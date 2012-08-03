@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GLContext;
 //Spout HD End
 
 public class RenderEngine {
-	public static boolean useMipmaps = false;
 	private HashMap textureMap = new HashMap();
 	private HashMap textureContentsMap = new HashMap();
 	private IntHashMap textureNameToImageMap = new IntHashMap();
@@ -59,37 +58,38 @@ public class RenderEngine {
 	}
 
 	public int[] getTextureContents(String par1Str) {
-		TexturePackBase var2 = this.texturePack.selectedTexturePack;
+		TexturePackBase var2 = this.texturePack.func_77292_e();
 		int[] var3 = (int[])this.textureContentsMap.get(par1Str);
 		if (var3 != null) {
 			return var3;
 		} else {
 			try {
-				Object var6 = null;
+				Object var4 = null;
+				int[] var7;
 				if (par1Str.startsWith("##")) {
 					// Spout HD Start
-					var3 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(2))));
+					var7 = this.getImageContentsAndAllocate(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(2))));
 					// Spout HD End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
 					// Spout HD Start
-					var3 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(7)));
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(7)));
 					// Spout HD End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					// Spout HD Start
 					this.blurTexture = true;
 					this.clampTexture = true;
-					var3 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
+					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
 					this.clampTexture = false;
 					// Spout HD end
 					this.blurTexture = false;
 				} else {
-					InputStream var7 = var2.getResourceAsStream(par1Str);
-					if (var7 == null) {
-						var3 = this.getImageContentsAndAllocate(this.missingTextureImage);
+					InputStream var8 = var2.getResourceAsStream(par1Str);
+					if (var8 == null) {
+						var7 = this.getImageContentsAndAllocate(this.missingTextureImage);
 					} else {
-						var3 = this.getImageContentsAndAllocate(this.readTextureImage(var7));
+						var7 = this.getImageContentsAndAllocate(this.readTextureImage(var8));
 					}
 				}
 
@@ -126,50 +126,50 @@ public class RenderEngine {
 	}
 
 	public int getTexture(String par1Str) {
-		TexturePackBase var2 = this.texturePack.selectedTexturePack;
-		Integer var3 = (Integer)this.textureMap.get(par1Str);
-		if (var3 != null) {
-			return var3.intValue();
+		Integer var2 = (Integer)this.textureMap.get(par1Str);
+		if (var2 != null) {
+			return var2.intValue();
 		} else {
+			TexturePackBase var6 = this.texturePack.func_77292_e();
 			try {
 				this.singleIntBuffer.clear();
 				GLAllocation.generateTextureNames(this.singleIntBuffer);
-				int var6 = this.singleIntBuffer.get(0);
+				int var3 = this.singleIntBuffer.get(0);
 				if (par1Str.startsWith("##")) {
 					// Spout HD Start
-					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(2))), var6);
+					this.setupTexture(this.unwrapImageByColumns(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(2))), var3);
 					// Spout HD End
 				} else if (par1Str.startsWith("%clamp%")) {
 					this.clampTexture = true;
 					// Spout HD Start
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(7)), var6);
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(7)), var3);
 					// Spout HD End
 					this.clampTexture = false;
 				} else if (par1Str.startsWith("%blur%")) {
 					// Spout HD Start
 					this.blurTexture = true;
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)), var6);
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(6)), var3);
 					this.blurTexture = false;
 					// Spout HD end
 				} else if (par1Str.startsWith("%blurclamp%")) {
 					// Spout HD Start
 					this.blurTexture = true;
 					this.clampTexture = true;
-					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(11)), var6);
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(11)), var3);
 					this.blurTexture = false;
 					this.clampTexture = false;
 					// Spout HD end
 				} else {
-					InputStream var7 = var2.getResourceAsStream(par1Str);
+					InputStream var7 = var6.getResourceAsStream(par1Str);
 					if (var7 == null) {
-						this.setupTexture(this.missingTextureImage, var6);
+						this.setupTexture(this.missingTextureImage, var3);
 					} else {
-						this.setupTexture(this.readTextureImage(var7), var6);
+						this.setupTexture(this.readTextureImage(var7), var3);
 					}
 				}
 
-				this.textureMap.put(par1Str, Integer.valueOf(var6));
-				return var6;
+				this.textureMap.put(par1Str, Integer.valueOf(var3));
+				return var3;
 			} catch (Exception var5) {
 				var5.printStackTrace();
 				GLAllocation.generateTextureNames(this.singleIntBuffer);
@@ -207,13 +207,8 @@ public class RenderEngine {
 		// Spout HD Start
 		if (texture != null) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
-			if (useMipmaps) {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			} else {
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-			}
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
 			if (this.blurTexture) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -277,32 +272,6 @@ public class RenderEngine {
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, texColors);
 
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-			if (useMipmaps) {
-				for (int i = 1; i <= 4; ++i) {
-					// slide the colors into proper bit positions?
-					// IE: r g b a
-					// 00 - 00 - 00 - 00
-					// so you can do something like
-					// int col = r + g + b + a;
-
-					r = textureWidth >> i - 1;
-					g = textureWidth >> i;
-					b = textureHeight >> i;
-
-					for (a = 0; a < g; ++a) {
-						for (j = 0; j < b; ++j) {
-							var13 = this.imageData.getInt((a * 2 + 0 + (j * 2 + 0) * r) * 4);
-							var14 = this.imageData.getInt((a * 2 + 1 + (j * 2 + 0) * r) * 4);
-							int var15 = this.imageData.getInt((a * 2 + 1 + (j * 2 + 1) * r) * 4);
-							int var16 = this.imageData.getInt((a * 2 + 0 + (j * 2 + 1) * r) * 4);
-							int var17 = this.alphaBlend(this.alphaBlend(var13, var14), this.alphaBlend(var15, var16));
-							this.imageData.putInt((a + j * g) * 4, var17);
-						}
-					}
-
-					GL11.glTexImage2D(GL11.GL_TEXTURE_2D, i, GL11.GL_RGBA, g, b, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
-				}
-			}
 
 		}
 	}
@@ -311,13 +280,9 @@ public class RenderEngine {
 
 	public void createTextureFromBytes(int[] par1ArrayOfInteger, int par2, int par3, int par4) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par4);
-		if (useMipmaps) {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		} else {
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		}
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
 
 		if (this.blurTexture) {
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -380,7 +345,7 @@ public class RenderEngine {
 			var3.textureSetupComplete = true;
 		}
 
-		return var3 != null && var3.textureName >= 0?var3.textureName:(par2Str == null?-1:this.getTexture(par2Str));
+		return var3 != null && var3.textureName >= 0 ? var3.textureName : (par2Str == null ? -1 : this.getTexture(par2Str));
 	}
 
 	public ThreadDownloadImageData obtainImageData(String par1Str, ImageBuffer par2ImageBuffer) {
@@ -432,9 +397,10 @@ public class RenderEngine {
 
 	public void updateDynamicTextures() {
 		int var1 = -1;
+		Iterator var2 = this.textureList.iterator();
 
-		for (int var2 = 0; var2 < this.textureList.size(); ++var2) {
-			TextureFX var3 = (TextureFX)this.textureList.get(var2);
+		while (var2.hasNext()) {
+			TextureFX var3 = (TextureFX)var2.next();
 			var3.anaglyphEnabled = this.options.anaglyph;
 			var3.onTick();
 //Spout HD Start
@@ -455,38 +421,8 @@ public class RenderEngine {
 		CustomAnimation.updateAll();
 	}
 
-	private int alphaBlend(int par1, int par2) {
-		int var3 = (par1 & -16777216) >> 24 & 255;
-		int var4 = (par2 & -16777216) >> 24 & 255;
-		short var5 = 255;
-		short var15;
-		short var16;
-		if (var3 + var4 < 255) {
-			var5 = 0;
-			var15 = 1;
-			var16 = 1;
-		} else if (var3 > var4) {
-			var15 = 255;
-			var16 = 1;
-		} else {
-			var15 = 1;
-			var16 = 255;
-		}
-
-		int var6 = (par1 >> 16 & 255) * var15;
-		int var7 = (par1 >> 8 & 255) * var15;
-		int var8 = (par1 & 255) * var15;
-		int var9 = (par2 >> 16 & 255) * var16;
-		int var10 = (par2 >> 8 & 255) * var16;
-		int var11 = (par2 & 255) * var16;
-		int var12 = (var6 + var9) / (var15 + var16);
-		int var13 = (var7 + var10) / (var15 + var16);
-		int var14 = (var8 + var11) / (var15 + var16);
-		return var5 << 24 | var12 << 16 | var13 << 8 | var14;
-	}
-
 	public void refreshTextures() {
-		TexturePackBase var1 = this.texturePack.selectedTexturePack;
+		TexturePackBase var1 = this.texturePack.func_77292_e();
 		Iterator var2 = this.textureNameToImageMap.getKeySet().iterator();
 
 		BufferedImage var4;

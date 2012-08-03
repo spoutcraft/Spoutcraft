@@ -1,12 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 //spout start
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
@@ -15,7 +8,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 public class RenderBiped extends RenderLiving {
 
 	protected ModelBiped modelBipedMain;
-	protected float field_40296_d;
+	protected float field_77070_b;
 
 	public RenderBiped(ModelBiped par1ModelBiped, float par2) {
 		this(par1ModelBiped, par2, 1.0F);
@@ -25,7 +18,7 @@ public class RenderBiped extends RenderLiving {
 	public RenderBiped(ModelBiped par1ModelBiped, float par2, float par3) {
 		super(par1ModelBiped, par2);
 		this.modelBipedMain = par1ModelBiped;
-		this.field_40296_d = par3;
+		this.field_77070_b = par3;
 	}
 
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
@@ -68,7 +61,7 @@ public class RenderBiped extends RenderLiving {
 			}
 
 			this.renderManager.itemRenderer.renderItem(par1EntityLiving, var3, 0);
-			if (var3.getItem().func_46058_c()) {
+			if (var3.getItem().requiresMultipleRenderPasses()) {
 				this.renderManager.itemRenderer.renderItem(par1EntityLiving, var3, 1);
 			}
 

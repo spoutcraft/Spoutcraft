@@ -1,17 +1,7 @@
 package net.minecraft.src;
 
 import java.util.Random;
-import net.minecraft.src.Block;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.Render;
-import net.minecraft.src.RenderBlocks;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.Tessellator;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 //Spout start
 import org.lwjgl.opengl.GL12;
@@ -25,7 +15,7 @@ public class RenderItem extends Render {
 
 	private RenderBlocks renderBlocks = new RenderBlocks();
 	private Random random = new Random();
-	public boolean field_27004_a = true;
+	public boolean field_77024_a = true;
 	public float zLevel = 0.0F;
 
 	public RenderItem() {
@@ -54,8 +44,8 @@ public class RenderItem extends Render {
 		// Spout End
 		this.random.setSeed(187L);
 		ItemStack itemStack = itemEntity.item;
-		float bounceAmmount = MathHelper.sin(((float) itemEntity.age + deltaTime) / 10.0F + itemEntity.field_804_d) * 0.1F + 0.1F;
-		float rotation = (((float) itemEntity.age + deltaTime) / 20.0F + itemEntity.field_804_d) * 57.295776F;
+		float bounceAmmount = MathHelper.sin(((float) itemEntity.age + deltaTime) / 10.0F + itemEntity.hoverStart) * 0.1F + 0.1F;
+		float rotation = (((float) itemEntity.age + deltaTime) / 20.0F + itemEntity.hoverStart) * 57.295776F;
 		byte itemsOnGround = 1;
 		if (itemEntity.item.stackSize > 1) {
 			itemsOnGround = 2;
@@ -106,7 +96,6 @@ public class RenderItem extends Render {
 				}
 			}*/
 		}
-	
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		
 		if (design != null && custom) {
@@ -159,12 +148,12 @@ public class RenderItem extends Render {
 					
 					GL11.glPopMatrix();
 				}
-			} else if(itemStack.getItem().func_46058_c()) {
+			} else if(itemStack.getItem().requiresMultipleRenderPasses()) {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				for (int var14 = 0; var14 <= 1; ++var14) {
-					int var15 = itemStack.getItem().func_46057_a(itemStack.getItemDamage(), var14);
+					int var15 = itemStack.getItem().getIconFromDamageForRenderPass(itemStack.getItemDamage(), var14);
 					float colorScale = 1.0F;
-					if(this.field_27004_a) {
+					if(this.field_77024_a) {
 						fullColor = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), var14);
 						red = (fullColor >> 16 & 255) / 255.0F;
 						green = (fullColor >> 8 & 255) / 255.0F;
@@ -179,7 +168,7 @@ public class RenderItem extends Render {
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 				int iconIndex = itemStack.getIconIndex();
 	
-				if(this.field_27004_a) {
+				if(this.field_77024_a) {
 					//The names here are wrong due to de-obfuscation renames;
 					renderType = Item.itemsList[itemStack.itemID].getColorFromDamage(itemStack.getItemDamage(), 0);
 					float var23 = (float)(renderType >> 16 & 255) / 255.0F;
@@ -200,7 +189,7 @@ public class RenderItem extends Render {
 	}
 	
 	//Spout start
-	private void renderItemBillboard(int var1, int var2) {
+	private void func_40267_a(int var1, int var2) {
 		renderItemBillboard(var1, var2, false);
 	}
 	//Spout end
@@ -297,26 +286,26 @@ public class RenderItem extends Render {
 			var11 = (float)(var17 >> 16 & 255) / 255.0F;
 			var12 = (float)(var17 >> 8 & 255) / 255.0F;
 			float var13 = (float)(var17 & 255) / 255.0F;
-			if (this.field_27004_a) {
+			if (this.field_77024_a) {
 				GL11.glColor4f(var11, var12, var13, 1.0F);
 			}
 
 			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			this.renderBlocks.useInventoryTint = this.field_27004_a;
+			this.renderBlocks.useInventoryTint = this.field_77024_a;
 			this.renderBlocks.renderBlockAsItem(var16, var4, 1.0F);
 			this.renderBlocks.useInventoryTint = true;
 			GL11.glPopMatrix();
 		} else {
 			float var10;
-			if (Item.itemsList[var3].func_46058_c()) {
+			if (Item.itemsList[var3].requiresMultipleRenderPasses()) {
 				GL11.glDisable(2896 /* GL_LIGHTING */);
 				for (int var8 = 0; var8 <= 1; ++var8) {
-					int var13 = Item.itemsList[var3].func_46057_a(var4, var8);
+					int var13 = Item.itemsList[var3].getIconFromDamageForRenderPass(var4, var8);
 					int var9 = Item.itemsList[var3].getColorFromDamage(var4, var8);
 					var10 = (var9 >> 16 & 255) / 255.0F;
 					var11 = (var9 >> 8 & 255) / 255.0F;
 					var12 = (var9 & 255) / 255.0F;
-					if (field_27004_a) {
+					if (field_77024_a) {
 						GL11.glColor4f(var10, var11, var12, 1.0F);
 					}
 
@@ -331,7 +320,7 @@ public class RenderItem extends Render {
 				float var15 = (float)(var14 >> 16 & 255) / 255.0F;
 				var10 = (float)(var14 >> 8 & 255) / 255.0F;
 				var11 = (float)(var14 & 255) / 255.0F;
-				if(this.field_27004_a) {
+				if(this.field_77024_a) {
 					GL11.glColor4f(var15, var10, var11, 1.0F);
 				}
 
@@ -366,7 +355,7 @@ public class RenderItem extends Render {
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);
-				this.func_40266_a(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
+				this.func_77018_a(par4 * 431278612 + par5 * 32178161, par4 - 2, par5 - 2, 20, 20);
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glDepthMask(true);
 				this.zLevel += 50.0F;
@@ -376,7 +365,7 @@ public class RenderItem extends Render {
 		}
 	}
 
-	private void func_40266_a(int par1, int par2, int par3, int par4, int par5) {
+	private void func_77018_a(int par1, int par2, int par3, int par4, int par5) {
 		for (int var6 = 0; var6 < 2; ++var6) {
 			if (var6 == 0) {
 				GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
@@ -388,7 +377,7 @@ public class RenderItem extends Render {
 
 			float var7 = 0.00390625F;
 			float var8 = 0.00390625F;
-			float var9 = (float)(System.currentTimeMillis() % (long)(3000 + var6 * 1873)) / (3000.0F + (float)(var6 * 1873)) * 256.0F;
+			float var9 = (float)(Minecraft.func_71386_F() % (long)(3000 + var6 * 1873)) / (3000.0F + (float)(var6 * 1873)) * 256.0F;
 			float var10 = 0.0F;
 			Tessellator var11 = Tessellator.instance;
 			float var12 = 4.0F;

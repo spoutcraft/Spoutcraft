@@ -31,7 +31,7 @@ public class RenderLiving extends Render {
 		this.renderPassModel = par1ModelBase;
 	}
 
-	private float func_48418_a(float par1, float par2, float par3) {
+	private float func_77034_a(float par1, float par2, float par3) {
 		float var4;
 		for (var4 = par2 - par1; var4 < -180.0F; var4 += 360.0F) {
 			;
@@ -63,8 +63,8 @@ public class RenderLiving extends Render {
 		}
 
 		try {
-			float var10 = this.func_48418_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
-			float var11 = this.func_48418_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
+			float var10 = this.func_77034_a(par1EntityLiving.prevRenderYawOffset, par1EntityLiving.renderYawOffset, par9);
+			float var11 = this.func_77034_a(par1EntityLiving.prevRotationYawHead, par1EntityLiving.rotationYawHead, par9);
 			float var12 = par1EntityLiving.prevRotationPitch + (par1EntityLiving.rotationPitch - par1EntityLiving.prevRotationPitch) * par9;
 			this.renderLivingAt(par1EntityLiving, par2, par4, par6);
 			float var13 = this.handleRotationFloat(par1EntityLiving, par9);
@@ -74,8 +74,8 @@ public class RenderLiving extends Render {
 			GL11.glScalef(-1.0F, -1.0F, 1.0F);
 			this.preRenderCallback(par1EntityLiving, par9);
 			GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
-			float var15 = par1EntityLiving.field_705_Q + (par1EntityLiving.field_704_R - par1EntityLiving.field_705_Q) * par9;
-			float var16 = par1EntityLiving.field_703_S - par1EntityLiving.field_704_R * (1.0F - par9);
+			float var15 = par1EntityLiving.field_70722_aY + (par1EntityLiving.field_70721_aZ - par1EntityLiving.field_70722_aY) * par9;
+			float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.field_70721_aZ * (1.0F - par9);
 			if (par1EntityLiving.isChild()) {
 				var16 *= 3.0F;
 			}
@@ -270,46 +270,45 @@ public class RenderLiving extends Render {
 
 	protected void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9, int color, int color2) {
 	//Spout end
-		float var10 = par1EntityLiving.getDistanceToEntity(this.renderManager.livingPlayer);
-		if (var10 <= (float)par9) {
-			FontRenderer var11 = this.getFontRendererFromRenderManager();
-			float var12 = 1.6F;
-			float var13 = 0.016666668F * var12;
+		double var10 = par1EntityLiving.getDistanceSqToEntity(this.renderManager.livingPlayer);
+		if (var10 <= (double)(par9 * par9)) {
+			FontRenderer var12 = this.getFontRendererFromRenderManager();
+			float var13 = 1.6F;
+			float var14 = 0.016666668F * var13;
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)par3 + 0.0F, (float)par5 + 2.3F, (float)par7);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 			GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-			GL11.glScalef(-var13, -var13, var13);
+			GL11.glScalef(-var14, -var14, var14);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
 			GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			Tessellator var14 = Tessellator.instance;
-			byte var15 = 0;
+			Tessellator var15 = Tessellator.instance;
+			byte var16 = 0;
 			if (par2Str.equals("deadmau5")) {
-				var15 = -10;
+				var16 = -10;
 			}
 
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			var14.startDrawingQuads();
-			int var16 = var11.getStringWidth(par2Str) / 2;
-			var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-			var14.addVertex((double)(-var16 - 1), (double)(-1 + var15), 0.0D);
-			var14.addVertex((double)(-var16 - 1), (double)(8 + var15), 0.0D);
-			var14.addVertex((double)(var16 + 1), (double)(8 + var15), 0.0D);
-			var14.addVertex((double)(var16 + 1), (double)(-1 + var15), 0.0D);
-			var14.draw();
+			var15.startDrawingQuads();
+			int var17 = var12.getStringWidth(par2Str) / 2;
+			var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+			var15.addVertex((double)(-var17 - 1), (double)(-1 + var16), 0.0D);
+			var15.addVertex((double)(-var17 - 1), (double)(8 + var16), 0.0D);
+			var15.addVertex((double)(var17 + 1), (double)(8 + var16), 0.0D);
+			var15.addVertex((double)(var17 + 1), (double)(-1 + var16), 0.0D);
+			var15.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			var11.drawString(par2Str, -var11.getStringWidth(par2Str) / 2, var15, 553648127);
+			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(true);
-			var11.drawString(par2Str, -var11.getStringWidth(par2Str) / 2, var15, -1);
+			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST); //Spout
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glPopMatrix();
 		}

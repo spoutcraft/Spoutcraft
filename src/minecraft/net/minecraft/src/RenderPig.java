@@ -20,10 +20,10 @@ public class RenderPig extends RenderLiving {
 		//Spout Start
 		loadTexture(par1EntityPig.getCustomTexture(EntitySkinType.PIG_SADDLE, "/mob/saddle.png"));
 		//Spout End
-		return par2 == 0 && par1EntityPig.getSaddled()?1:-1;
+		return par2 == 0 && par1EntityPig.getSaddled() ? 1 : -1;
 	}
 
-	public void func_40286_a(EntityPig par1EntityPig, double par2, double par4, double par6, float par8, float par9) {
+	public void func_77098_a(EntityPig par1EntityPig, double par2, double par4, double par6, float par8, float par9) {
 		super.doRenderLiving(par1EntityPig, par2, par4, par6, par8, par9);
 	}
 
@@ -32,10 +32,10 @@ public class RenderPig extends RenderLiving {
 	}
 
 	public void doRenderLiving(EntityLiving par1EntityLiving, double par2, double par4, double par6, float par8, float par9) {
-		this.func_40286_a((EntityPig)par1EntityLiving, par2, par4, par6, par8, par9);
+		this.func_77098_a((EntityPig)par1EntityLiving, par2, par4, par6, par8, par9);
 	}
 
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		this.func_40286_a((EntityPig)par1Entity, par2, par4, par6, par8, par9);
+		this.func_77098_a((EntityPig)par1Entity, par2, par4, par6, par8, par9);
 	}
 }
