@@ -13,5 +13,5 @@ public class MovementInput {
 	public boolean flyingDown = false;
 	//Spout end
 
-	public void func_52013_a(EntityPlayer par1EntityPlayer) {} //Spout - kept parameter
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} //Spout - kept parameter
 }
