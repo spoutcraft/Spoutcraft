@@ -9,7 +9,6 @@ import java.io.IOException;
 //Spout HD Start
 /*
 import javax.imageio.ImageIO;
-import net.minecraft.src.PanelCrashReport;
 */
 import com.pclewis.mcpatcher.mod.TextureUtils;
 //Spout HD End

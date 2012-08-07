@@ -21,10 +21,6 @@ import net.minecraft.client.Minecraft;
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Dimension;
-import org.lwjgl.opengl.GLContext;
 
 //Spout HD End
 
@@ -160,12 +156,7 @@ public class RenderEngine {
 					this.clampTexture = false;
 					// Spout HD end
 				} else {
-					InputStream var7 = var6.getResourceAsStream(par1Str);
-					if (var7 == null) {
-						this.setupTexture(this.missingTextureImage, var3);
-					} else {
-						this.setupTexture(this.readTextureImage(var7), var3);
-					}
+					this.setupTexture(TextureUtils.getResourceAsBufferedImage(par1Str), var3); // Spout HD
 				}
 
 				this.textureMap.put(par1Str, Integer.valueOf(var3));
@@ -203,9 +194,8 @@ public class RenderEngine {
 		return var2;
 	}
 
-	public void setupTexture(BufferedImage texture, int var2) {
-		// Spout HD Start
-		if (texture != null) {
+	public void setupTexture(BufferedImage par1BufferedImage, int var2) {
+		if (par1BufferedImage != null) {    // Spout HD
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -222,15 +212,15 @@ public class RenderEngine {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 			}
-			int textureWidth = texture.getWidth();
-			int textureHeight = texture.getHeight();
+			int textureWidth = par1BufferedImage.getWidth();
+			int textureHeight = par1BufferedImage.getHeight();
 			int[] texData = new int[textureWidth * textureHeight];
 			byte[] texColors = new byte[textureWidth * textureHeight * 4];
 			//Spout start
 			//Performance reasons
 			boolean handled = false;
 			try {
-				java.awt.image.DataBuffer buf = texture.getRaster().getDataBuffer();
+				java.awt.image.DataBuffer buf = par1BufferedImage.getRaster().getDataBuffer();
 				if (buf instanceof java.awt.image.DataBufferInt) {
 					int[] srcbuf = ((java.awt.image.DataBufferInt) buf).getData();
 					System.arraycopy(srcbuf, 0, texData, 0, srcbuf.length);
@@ -239,7 +229,7 @@ public class RenderEngine {
 			}
 			catch (Exception ignore) { }
 			if (!handled) {
-				texture.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
+				par1BufferedImage.getRGB(0, 0, textureWidth, textureHeight, texData, 0, textureWidth);
 			}
 			
 			int r;
@@ -413,12 +403,12 @@ public class RenderEngine {
 
 			for (int var4 = 0; var4 < var3.tileSize; ++var4) {
 				for (int var5 = 0; var5 < var3.tileSize; ++var5) {
-					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, var3.iconIndex % 16 * TileSize.int_size + var4 * TileSize.int_size, var3.iconIndex / 16 * TileSize.int_size + var5 * TileSize.int_size, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
+					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, var3.iconIndex % 16 * TileSize.int_size + var4 * TileSize.int_size, var3.iconIndex / 16 * TileSize.int_size + var5 * TileSize.int_size, TileSize.int_size, TileSize.int_size, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData); // Spout HD
 				}
 			}
 		}
 
-		CustomAnimation.updateAll();
+		CustomAnimation.updateAll();  // Spout HD
 	}
 
 	public void refreshTextures() {
@@ -529,7 +519,7 @@ public class RenderEngine {
 	}
 
 	//Spout HD Start
-	public void setTileSize(Minecraft minecraft) {
+	public void setTileSize(Minecraft var1) {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
