@@ -50,7 +50,7 @@ public class FontRenderer {
 
 		BufferedImage var5;
 		try {
-			var5 = TextureUtils.getResourceAsBufferedImage(par2Str);
+			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, par2Str); // Spout HD
 			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
 			var6.read(this.glyphWidth);
 		} catch (IOException var17) {
@@ -141,7 +141,7 @@ public class FontRenderer {
 
 		BufferedImage var2;
 		try {
-			var2 = TextureUtils.getResourceAsBufferedImage(var3);
+			var2 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var3);
 		} catch (IOException var5) {
 			throw new RuntimeException(var5);
 		}
@@ -849,5 +849,68 @@ public class FontRenderer {
 		return ArrStr.toString();
 	}
 	//end Spout AlphaText
+	// Spout HD
+	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
+		boolean var4 = false;
+		this.charWidth = new int[256];
+		this.fontTextureName = 0;
+		this.FONT_HEIGHT = 9;
+		this.fontRandom = new Random();
+		this.glyphWidth = new byte[65536];
+		this.glyphTextureName = new int[256];
+		this.colorCode = new int[32];
+	/*	this.field_78303_s = false; Unknown merges due to AlphaText's mass renaming
+		this.field_78302_t = false;
+		this.field_78301_u = false;
+		this.field_78300_v = false;
+		this.field_78299_w = false;*/
+		this.renderEngine = var3;
+		this.unicodeFlag = var4;
+		BufferedImage var5;
+
+		try {
+			var5 = TextureUtils.getResourceAsBufferedImage((Object)RenderEngine.class, var2);
+			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
+			var6.read(this.glyphWidth);
+		} catch (IOException var17) {
+			throw new RuntimeException(var17);
+		}
+
+		int var18 = var5.getWidth();
+		int var7 = var5.getHeight();
+		int[] var8 = new int[var18 * var7];
+		var5.getRGB(0, 0, var18, var7, var8, 0, var18);
+		this.charWidthf = FontUtils.computeCharWidths(var2, var5, var8, this.charWidth);
+		this.fontTextureName = var3.allocateAndSetupTexture(var5);
+
+		for (int var9 = 0; var9 < 32; ++var9) {
+			int var10 = (var9 >> 3 & 1) * 85;
+			int var11 = (var9 >> 2 & 1) * 170 + var10;
+			int var12 = (var9 >> 1 & 1) * 170 + var10;
+			int var13 = (var9 >> 0 & 1) * 170 + var10;
+
+			if (var9 == 6) {
+				var11 += 85;
+			}
+
+			if (var1.anaglyph) {
+				int var14 = (var11 * 30 + var12 * 59 + var13 * 11) / 100;
+				int var15 = (var11 * 30 + var12 * 70) / 100;
+				int var16 = (var11 * 30 + var13 * 70) / 100;
+				var11 = var14;
+				var12 = var15;
+				var13 = var16;
+			}
+
+			if (var9 >= 16) {
+				var11 /= 4;
+				var12 /= 4;
+				var13 /= 4;
+			}
+
+			this.colorCode[var9] = (var11 & 255) << 16 | (var12 & 255) << 8 | var13 & 255;
+		}
+	}
+	// Spout HD
 }
 
