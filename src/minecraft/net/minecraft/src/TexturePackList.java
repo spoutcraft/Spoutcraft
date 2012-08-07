@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
+import com.pclewis.mcpatcher.mod.TextureUtils; // Spout HD
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +59,12 @@ public class TexturePackList {
 			this.selectedTexturePack = par1TexturePackBase;
 			this.field_77312_b.gameSettings.skin = par1TexturePackBase.func_77538_c();
 			this.field_77312_b.gameSettings.saveOptions();
+			// Spout HD
+			TextureUtils.setTileSize();
+			Minecraft var10000 = MCPatcherUtils.getMinecraft();
+			var10000.renderEngine.setTileSize(var10000);
+			TextureUtils.setFontRenderer();
+			// Spout HD
 			return true;
 		}
 	}
@@ -188,4 +196,17 @@ public class TexturePackList {
 	static Minecraft func_77306_b(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.field_77312_b;
 	}
+	// Spout HD start
+	public TexturePackImplementation getDefaultTexturePack() {
+		return (TexturePackImplementation)defaultTexturePack;
+	}
+
+	public TexturePackImplementation getSelectedTexturePack() {
+		return (TexturePackImplementation)this.selectedTexturePack;
+	}
+
+	public boolean a(TexturePackImplementation var1) {
+		return this.setTexturePack(var1);
+	}
+	// Spout HD end
 }
