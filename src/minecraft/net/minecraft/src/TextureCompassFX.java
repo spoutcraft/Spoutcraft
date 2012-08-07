@@ -12,19 +12,20 @@ public class TextureCompassFX extends TextureFX {
 
 	private Minecraft mc;
 	//Spout HD Start
-	private int[] compassIconImageData = new int[TileSize.int_numPixels];
+	private int[] compassIconImageData; // Spout HD
 	//Spout HD End
 	private double field_76868_i;
 	private double field_76866_j;
 
 	public TextureCompassFX(Minecraft par1Minecraft) {
 		super(Item.compass.getIconFromDamage(0));
+		this.compassIconImageData = new int[TileSize.int_numPixels]; // Spout HD
 		this.mc = par1Minecraft;
 		this.tileImage = 1;
 
 		try {
 			//Spout HD Start
-			BufferedImage var2 = TextureUtils.getResourceAsBufferedImage("/gui/items.png");
+			BufferedImage var2 = TextureUtils.getResourceAsBufferedImage((Object)Minecraft.class, "/gui/items.png");
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
