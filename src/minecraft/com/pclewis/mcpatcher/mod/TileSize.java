@@ -1,5 +1,8 @@
 package com.pclewis.mcpatcher.mod;
 
+import com.pclewis.mcpatcher.MCPatcherUtils;
+import java.lang.reflect.Field;
+
 public final class TileSize {
 	public static int int_size;
 	public static int int_sizeMinus1;
@@ -50,6 +53,7 @@ public final class TileSize {
 		float_size16 = float_size * 16.0F;
 		float_reciprocal = 1.0F / float_size;
 		float_texNudge = 1.0F / (float_size * float_size * 2.0F);
+
 		if (var0 < 64) {
 			float_flameNudge = 1.0F + 0.96F / float_size;
 		} else {
@@ -60,6 +64,23 @@ public final class TileSize {
 		double_sizeMinus1 = double_size - 1.0D;
 		double_compassCenterMin = double_size / 2.0D - 0.5D;
 		double_compassCenterMax = double_size / 2.0D + 0.5D;
+	}
+
+	private static void dump() {
+		Field[] var0 = TileSize.class.getDeclaredFields();
+		int var1 = var0.length;
+
+		for (int var2 = 0; var2 < var1; ++var2) {
+			Field var3 = var0[var2];
+
+			if (var3.getName().contains("_")) {
+				try {
+					MCPatcherUtils.debug("%s = %s", new Object[] {var3.getName(), var3.get((Object)null)});
+				} catch (Exception var5) {
+					MCPatcherUtils.debug("%s: %s", new Object[] {var3.getName(), var5.toString()});
+				}
+			}
+		}
 	}
 
 	static {
