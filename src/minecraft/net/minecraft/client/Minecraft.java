@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
+import com.pclewis.mcpatcher.MCPatcherUtils;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import org.bukkit.ChatColor;
@@ -160,6 +160,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	// Spout End
 
 	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {
+		MCPatcherUtils.setMinecraft(this); // Spout HD
+		MCPatcherUtils.setVersions("1.3.1", "2.4.1_01"); // Spout HD
 		StatList.func_75919_a();
 		this.tempDisplayHeight = par4;
 		this.fullscreen = par5;
@@ -262,6 +264,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		//this.loadScreen();
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine, false);
 		this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, "/font/alternate.png", this.renderEngine, false);
+		TextureUtils.setTileSize(); // Spout HD
+		this.renderEngine.setTileSize(this); // Spout HD
 		if (this.gameSettings.language != null) {
 			StringTranslate.getInstance().setLanguage(this.gameSettings.language);
 			this.fontRenderer.setUnicodeFlag(StringTranslate.getInstance().isUnicode());
@@ -1221,6 +1225,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	}
 
 	public void runTick() {
+		TextureUtils.checkTexturePackChange(this); // Spout HD
 		if (this.rightClickDelayTimer > 0) {
 			--this.rightClickDelayTimer;
 		}
