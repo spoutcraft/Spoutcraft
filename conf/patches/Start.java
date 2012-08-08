@@ -11,7 +11,7 @@ public class Start
         {
             // set new minecraft data folder to prevent it from using the .minecraft folder
             // this makes it a portable version
-            Field f = Minecraft.class.getDeclaredField("field_6275_Z");
+            Field f = Minecraft.class.getDeclaredField("field_71463_am");
             Field.setAccessible(new Field[] { f }, true);
             f.set(null, new File("."));
         }
