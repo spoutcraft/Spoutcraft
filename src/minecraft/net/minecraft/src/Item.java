@@ -7,6 +7,8 @@ import org.spoutcraft.client.item.SpoutItem;
 //Spout end
 
 public class Item {
+	private CreativeTabs field_77701_a = null;
+
 	protected static Random itemRand = new Random();
 	public static Item[] itemsList = new Item[32000];
 	public static Item shovelSteel = (new ItemSpade(0, EnumToolMaterial.IRON)).setIconCoord(2, 5).setItemName("shovelIron");
