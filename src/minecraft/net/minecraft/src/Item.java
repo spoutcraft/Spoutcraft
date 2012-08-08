@@ -128,11 +128,15 @@ public class Item {
 	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionEffect("+4");
 	public static ItemPotion potion = (ItemPotion)(new ItemPotion(117)).setIconCoord(13, 8).setItemName("potion");
 	public static Item glassBottle = (new ItemGlassBottle(118)).setIconCoord(12, 8).setItemName("glassBottle");
-	public static Item enderPearl = (new ItemEnderPearl(112)).setIconCoord(11, 6).setItemName("enderPearl");
-	public static Item blazeRod = (new Item(113)).setIconCoord(12, 6).setItemName("blazeRod").func_77637_a(CreativeTabs.field_78035_l);
-	public static Item ghastTear = (new Item(114)).setIconCoord(11, 7).setItemName("ghastTear").setPotionEffect(PotionHelper.ghastTearEffect).func_77637_a(CreativeTabs.field_78038_k);
-	public static Item goldNugget = (new Item(115)).setIconCoord(12, 7).setItemName("goldNugget").func_77637_a(CreativeTabs.field_78035_l);
-	public static Item netherStalkSeeds = (new ItemSeeds(116, Block.netherStalk.blockID, Block.slowSand.blockID)).setIconCoord(13, 7).setItemName("netherStalkSeeds").setPotionEffect("+4");
+	public static Item spiderEye = (new ItemFood(119, 2, 0.8F, false)).setPotionEffect(Potion.poison.id, 5, 0, 1.0F).setIconCoord(11, 8).setItemName("spiderEye").setPotionEffect(PotionHelper.spiderEyeEffect);
+	public static Item fermentedSpiderEye = (new Item(120)).setIconCoord(10, 8).setItemName("fermentedSpiderEye").setPotionEffect(PotionHelper.fermentedSpiderEyeEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item blazePowder = (new Item(121)).setIconCoord(13, 9).setItemName("blazePowder").setPotionEffect(PotionHelper.blazePowderEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item magmaCream = (new Item(122)).setIconCoord(13, 10).setItemName("magmaCream").setPotionEffect(PotionHelper.magmaCreamEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item brewingStand = (new ItemReed(123, Block.brewingStand)).setIconCoord(12, 10).setItemName("brewingStand").func_77637_a(CreativeTabs.field_78038_k);
+	public static Item cauldron = (new ItemReed(124, Block.cauldron)).setIconCoord(12, 9).setItemName("cauldron").func_77637_a(CreativeTabs.field_78038_k);
+	public static Item eyeOfEnder = (new ItemEnderEye(125)).setIconCoord(11, 9).setItemName("eyeOfEnder");
+	public static Item speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionEffect(PotionHelper.speckledMelonEffect).func_77637_a(CreativeTabs.field_78038_k);
+	public static Item monsterPlacer = (new ItemMonsterPlacer(127)).setIconCoord(9, 9).setItemName("monsterPlacer");
 	public static Item expBottle = (new ItemExpBottle(128)).setIconCoord(11, 10).setItemName("expBottle");
 	public static Item fireballCharge = (new ItemFireball(129)).setIconCoord(14, 2).setItemName("fireball");
 	public static Item field_77821_bF = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").func_77637_a(CreativeTabs.field_78026_f);
@@ -381,7 +385,7 @@ public class Item {
 		float var18 = var15 * var16;
 		float var20 = var14 * var16;
 		double var21 = 5.0D;
-		Vec3D var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
+		Vec3 var23 = var13.addVector((double)var18 * var21, (double)var17 * var21, (double)var20 * var21);
 		return par1World.rayTraceBlocks_do_do(var13, var23, par3, !par3);
 	}
 
