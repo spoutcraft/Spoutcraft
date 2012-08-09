@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import gnu.trove.map.hash.TIntFloatHashMap;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -13,9 +14,6 @@ import org.spoutcraft.spoutcraftapi.util.FastLocation;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 
 import net.minecraft.client.Minecraft;
-//Spout start
-import com.pclewis.mcpatcher.mod.Colorizer;
-//Spout end
 
 public class Block {
 	private CreativeTabs field_71969_a;
@@ -105,7 +103,7 @@ public class Block {
 	public static final Block torchWood = (new BlockTorch(50, 80)).setHardness(0.0F).setLightValue(0.9375F).setStepSound(soundWoodFootstep).setBlockName("torch").setRequiresSelfNotify();
 	public static final BlockFire fire = (BlockFire)(new BlockFire(51, 31)).setHardness(0.0F).setLightValue(1.0F).setStepSound(soundWoodFootstep).setBlockName("fire").disableStats();
 	public static final Block mobSpawner = (new BlockMobSpawner(52, 65)).setHardness(5.0F).setStepSound(soundMetalFootstep).setBlockName("mobSpawner").disableStats();
-	public static final Block stairCompactPlanks = (new BlockStairs(53, planks, 0).setBlockName("stairsWood").setRequiresSelfNotify();
+	public static final Block stairCompactPlanks = (new BlockStairs(53, planks, 0).setBlockName("stairsWood").setRequiresSelfNotify());
 	public static final Block chest = (new BlockChest(54)).setHardness(2.5F).setStepSound(soundWoodFootstep).setBlockName("chest").setRequiresSelfNotify();
 	public static final Block redstoneWire = (new BlockRedstoneWire(55, 164)).setHardness(0.0F).setStepSound(soundPowderFootstep).setBlockName("redstoneDust").disableStats().setRequiresSelfNotify();
 	public static final Block field_72073_aw = (new BlockOre(56, 50)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep).setBlockName("oreDiamond");
@@ -214,6 +212,7 @@ public class Block {
 	/**
 	 * set to true when Block's constructor is called through the chain of super()'s. Note: Never used
 	 */
+	protected boolean blockConstructorCalled;
 
 	/**
 	 * If this field is true, the block is counted for statistics (mined or placed)
@@ -644,15 +643,15 @@ public class Block {
 	}
 
 	private boolean isVecInsideYZBounds(Vec3 par1Vec3) {
-		return par1Vec3D == null ? false : par1Vec3.yCoord >= this.minY && par1Vec3.yCoord <= this.maxY && par1Vec3.zCoord >= this.minZ && par1Vec3.zCoord <= this.maxZ;
+		return par1Vec3 == null ? false : par1Vec3.yCoord >= this.minY && par1Vec3.yCoord <= this.maxY && par1Vec3.zCoord >= this.minZ && par1Vec3.zCoord <= this.maxZ;
 	}
 
 	private boolean isVecInsideXZBounds(Vec3 par1Vec3) {
-		return par1Vec3D == null ? false : par1Vec3.xCoord >= this.minX && par1Vec3.xCoord <= this.maxX && par1Vec3.zCoord >= this.minZ && par1Vec3.zCoord <= this.maxZ;
+		return par1Vec3 == null ? false : par1Vec3.xCoord >= this.minX && par1Vec3.xCoord <= this.maxX && par1Vec3.zCoord >= this.minZ && par1Vec3.zCoord <= this.maxZ;
 	}
 
-	private boolean isVecInsideXYBounds(Vec3 par1Vec3D) {
-		return par1Vec3D == null ? false : par1Vec3D.xCoord >= this.minX && par1Vec3D.xCoord <= this.maxX && par1Vec3D.yCoord >= this.minY && par1Vec3D.yCoord <= this.maxY;
+	private boolean isVecInsideXYBounds(Vec3 par1Vec3) {
+		return par1Vec3 == null ? false : par1Vec3.xCoord >= this.minX && par1Vec3.xCoord <= this.maxX && par1Vec3.yCoord >= this.minY && par1Vec3.yCoord <= this.maxY;
 	}
 
 	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4) {}
@@ -687,7 +686,7 @@ public class Block {
 	}
 	//Spout end
 
-	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3D par6Vec3D) {}
+	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3D) {}
 
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {}
 
@@ -696,11 +695,11 @@ public class Block {
 	}
 
 	public int getRenderColor(int par1) {
-		return Colorizer.colorizeBlock(this); //Spout
+		return 16777215;
 	}
 
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		return Colorizer.colorizeBlock(this, par2, par3, par4, par1IBlockAccess.getBlockMetadata(par2, par3, par4)); //Spout
+		return 16777215;
 	}
 
 	public boolean isPoweringTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {

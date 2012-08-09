@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +142,6 @@ public abstract class BiomeGenBase {
 
 	protected BiomeGenBase setBiomeName(String par1Str) {
 		this.biomeName = par1Str;
-		Colorizer.setupBiome(this); //Spout HD
 		return this;
 	}
 

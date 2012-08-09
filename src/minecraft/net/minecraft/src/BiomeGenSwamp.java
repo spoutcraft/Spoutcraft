@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;//Spout HD
 import java.util.Random;
 
 public class BiomeGenSwamp extends BiomeGenBase {
@@ -16,19 +15,28 @@ public class BiomeGenSwamp extends BiomeGenBase {
 		this.waterColorMultiplier = 14745518;
 	}
 
+	/**
+	 * Gets a WorldGen appropriate for this biome.
+	 */
 	public WorldGenerator getRandomWorldGenForTrees(Random par1Random) {
 		return this.worldGenSwamp;
 	}
 
+	/**
+	 * Provides the basic grass color based on the biome temperature and rainfall
+	 */
 	public int getBiomeGrassColor() {
 		double var1 = (double)this.getFloatTemperature();
 		double var3 = (double)this.getFloatRainfall();
-		return Colorizer.colorizeBiome(((ColorizerGrass.getGrassColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_GRASS, var1, var3);
+		return ((ColorizerGrass.getGrassColor(var1, var3) & 16711422) + 5115470) / 2;
 	}
 
+	/**
+	 * Provides the basic foliage color based on the biome temperature and rainfall
+	 */
 	public int getBiomeFoliageColor() {
 		double var1 = (double)this.getFloatTemperature();
 		double var3 = (double)this.getFloatRainfall();
-		return Colorizer.colorizeBiome(((ColorizerFoliage.getFoliageColor(var1, var3) & 16711422) + 5115470) / 2, Colorizer.COLOR_MAP_SWAMP_FOLIAGE, var1, var3);
+		return ((ColorizerFoliage.getFoliageColor(var1, var3) & 16711422) + 5115470) / 2;
 	}
 }

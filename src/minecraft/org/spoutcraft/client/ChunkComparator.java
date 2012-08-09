@@ -26,8 +26,8 @@ import net.minecraft.src.Chunk;
 import net.minecraft.src.MathHelper;
 
 public class ChunkComparator implements Comparator<Chunk>{
-	private int playerX = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posX / 16.0D);
-	private int playerZ = MathHelper.floor_double(Minecraft.theMinecraft.thePlayer.posZ / 16.0D);
+	private int playerX = MathHelper.floor_double(Minecraft.theMinecraft.field_71439_g.posX / 16.0D);
+	private int playerZ = MathHelper.floor_double(Minecraft.theMinecraft.field_71439_g.posZ / 16.0D);
 
 	@Override
 	public int compare(Chunk o1, Chunk o2) {
