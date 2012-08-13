@@ -471,14 +471,14 @@ public abstract class Entity {
 				}
 
 				this.boundingBox.offset(0.0D, par3, 0.0D);
-				if(!this.field_9293_aM && var13 != par3) {
+				if(!this.field_70135_K && var13 != par3) {
 					par5 = 0.0D;
 					par3 = 0.0D;
 					par1 = 0.0D;
 				}
 
-				for(var28 = 0; var28 < var35.size(); ++var28) {
-					par1 = ((AxisAlignedBB)var35.get(var28)).calculateXOffset(this.boundingBox, par1);
+				for (var32 = var30.iterator(); var32.hasNext(); par1 = var22.calculateXOffset(this.boundingBox, par1)) {
+					var22 = (AxisAlignedBB)var32.next();
 				}
 
 				this.boundingBox.offset(par1, 0.0D, 0.0D);
@@ -489,8 +489,8 @@ public abstract class Entity {
 					par1 = 0.0D;
 				}
 
-				for (var28 = var30.iterator(); var28.hasNext(); par1 = var29.calculateXOffset(this.boundingBox, par1)) {
-					var29 = (AxisAlignedBB)var28.next();
+				for (var32 = var30.iterator(); var32.hasNext(); par5 = var22.calculateZOffset(this.boundingBox, par5)) {
+					var22 = (AxisAlignedBB)var32.next();
 				}
 
 				this.boundingBox.offset(0.0D, 0.0D, par5);
@@ -550,11 +550,11 @@ public abstract class Entity {
 				this.motionZ = 0.0D;
 			}
 
-			var37 = this.posX - var7;
+			var33 = this.posX - var7;
 			var23 = this.posZ - var9;
 
 			if(this.canTriggerWalking() && !var18 && this.ridingEntity == null) {
-				this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(var37 * var37 + var23 * var23) * 0.6D);
+				this.distanceWalkedModified = (float)((double)this.distanceWalkedModified + (double)MathHelper.sqrt_double(var33 * var33 + var23 * var23) * 0.6D);
 				int var34 = MathHelper.floor_double(this.posX);
 				int var26 = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
 				int var36 = MathHelper.floor_double(this.posZ);
@@ -874,7 +874,7 @@ public abstract class Entity {
 
 	public void addToPlayerScore(Entity par1Entity, int par2) {}
 
-	public boolean isInRangeToRenderVec3D(Vec3D par1Vec3D) {
+	public boolean isInRangeToRenderVec3D(Vec3 par1Vec3D) {
 		double var2 = this.posX - par1Vec3D.xCoord;
 		double var4 = this.posY - par1Vec3D.yCoord;
 		double var6 = this.posZ - par1Vec3D.zCoord;
@@ -1196,7 +1196,7 @@ public abstract class Entity {
 		return 0.1F;
 	}
 
-	public Vec3D getLookVec() {
+	public Vec3 getLookVec() {
 		return null;
 	}
 

@@ -338,7 +338,7 @@ public class WorldClient extends World {
 		return par1CrashReport;
 	}
 
-	public void func_72980_b(double par1, double par3, double par5, String par7Str, float par8, float par9) {
+	public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9) {
 		float var10 = 16.0F;
 
 		if (par8 > 1.0F) {

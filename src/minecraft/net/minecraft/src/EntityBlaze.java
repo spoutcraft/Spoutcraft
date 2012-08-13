@@ -1,15 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntitySmallFireball;
-import net.minecraft.src.Item;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 import org.spoutcraft.client.entity.CraftBlaze; //Spout
 
 public class EntityBlaze extends EntityMob {

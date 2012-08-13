@@ -167,12 +167,14 @@ public class EntityArrow extends Entity {
 			}
 		} else {
 			++this.ticksInAir;
-			Vec3 var17 = Vec3D.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			++this.ticksInAir;
+			Vec3 var17 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
 			Vec3 var3 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks_do_do(var17, var3, false, true);
+			MovingObjectPosition var4 = this.worldObj.rayTraceBlocks_do_do(var17, var3, false, true);
 			var17 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
 			var3 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			if(var4 != null) {
+
+			if (var4 != null) {
 				var3 = Vec3.func_72437_a().func_72345_a(var4.hitVec.xCoord, var4.hitVec.yCoord, var4.hitVec.zCoord);
 			}
 
@@ -183,7 +185,7 @@ public class EntityArrow extends Entity {
 			float var11;
 
 			while (var9.hasNext()) {
-				Entity var10 = (Entity)var10.next();
+				Entity var10 = (Entity)var9.next();
 				if (var10.canBeCollidedWith() && (var10 != this.shootingEntity || this.ticksInAir >= 5)) {
 					var11 = 0.3F;
 					AxisAlignedBB var12 = var10.boundingBox.expand((double)var11, (double)var11, (double)var11);
@@ -201,7 +203,7 @@ public class EntityArrow extends Entity {
 			}
 
 			if(var5 != null) {
-				var4 = new MovingObjectPosition(var4);
+				var4 = new MovingObjectPosition(var5);
 			}
 
 			float var20;
@@ -338,7 +340,6 @@ public class EntityArrow extends Entity {
 		this.inData = par1NBTTagCompound.getByte("inData") & 255;
 		this.arrowShake = par1NBTTagCompound.getByte("shake") & 255;
 		this.inGround = par1NBTTagCompound.getByte("inGround") == 1;
-		this.doesArrowBelongToPlayer = par1NBTTagCompound.getBoolean("player");
 		if(par1NBTTagCompound.hasKey("damage")) {
 			this.damage = par1NBTTagCompound.getDouble("damage");
 		}

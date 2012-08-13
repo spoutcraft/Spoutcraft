@@ -17,12 +17,10 @@ import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 
 //Spout Start
-import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
 //Spout End
@@ -1860,28 +1858,28 @@ public class RenderGlobal implements IWorldAccess {
 
 		switch (par2) {
 			case 1000:
-				this.field_72769_h.func_72980_b((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3, (double) par4, (double) par5, "random.click", 1.0F, 1.0F);
 				break;
 
 			case 1001:
-				this.field_72769_h.func_72980_b((double)par3, (double)par4, (double)par5, "random.click", 1.0F, 1.2F);
+				this.field_72769_h.playSoundEffect((double) par3, (double) par4, (double) par5, "random.click", 1.0F, 1.2F);
 				break;
 
 			case 1002:
-				this.field_72769_h.func_72980_b((double)par3, (double)par4, (double)par5, "random.bow", 1.0F, 1.2F);
+				this.field_72769_h.playSoundEffect((double) par3, (double) par4, (double) par5, "random.bow", 1.0F, 1.2F);
 				break;
 
 			case 1003:
 				if (Math.random() < 0.5D) {
-					this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_open", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+					this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.door_open", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
 				} else {
-					this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.door_close", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+					this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.door_close", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
 				}
 
 				break;
 
 			case 1004:
-				this.field_72769_h.func_72980_b((double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F);
+				this.field_72769_h.playSoundEffect((double) ((float) par3 + 0.5F), (double) ((float) par4 + 0.5F), (double) ((float) par5 + 0.5F), "random.fizz", 0.5F, 2.6F + (var7.nextFloat() - var7.nextFloat()) * 0.8F);
 				break;
 
 			case 1005:
@@ -1894,23 +1892,23 @@ public class RenderGlobal implements IWorldAccess {
 				break;
 
 			case 1007:
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.ghast.charge", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1008:
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.ghast.fireball", 10.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1010:
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.wood", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1011:
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.metal", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 1012:
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "mob.zombie.woodbreak", 2.0F, (var7.nextFloat() - var7.nextFloat()) * 0.2F + 1.0F);
 				break;
 
 			case 2000:
@@ -1979,7 +1977,7 @@ public class RenderGlobal implements IWorldAccess {
 					}
 				}
 
-				this.field_72769_h.func_72980_b((double)par3 + 0.5D, (double)par4 + 0.5D, (double)par5 + 0.5D, "random.glass", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
+				this.field_72769_h.playSoundEffect((double) par3 + 0.5D, (double) par4 + 0.5D, (double) par5 + 0.5D, "random.glass", 1.0F, this.field_72769_h.rand.nextFloat() * 0.1F + 0.9F);
 				break;
 
 			case 2003:

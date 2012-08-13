@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -15,7 +14,6 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
 //Spout start
 import org.lwjgl.util.vector.*;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 
@@ -1025,9 +1023,9 @@ public class EntityRenderer {
 			if (var14 > 0 && this.random.nextInt(3) < this.rainSoundCounter++) {
 				this.rainSoundCounter = 0;
 				if (var10 > var2.posY + 1.0D && var3.getPrecipitationHeight(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posZ)) > MathHelper.floor_double(var2.posY)) {
-					this.mc.field_71441_e.func_72980_b(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
+					this.mc.field_71441_e.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
 				} else {
-					this.mc.field_71441_e.func_72980_b(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
+					this.mc.field_71441_e.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
 				}
 			}
 		}

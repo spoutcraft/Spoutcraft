@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout
-
 public class EntityAuraFX extends EntityFX {
 	public EntityAuraFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
 		super(par1World, par2, par4, par6, par8, par10, par12);
@@ -31,15 +29,4 @@ public class EntityAuraFX extends EntityFX {
 			this.setDead();
 		}
 	}
-//Spout start
-	public EntityAuraFX colorize() {
-		if (Colorizer.computeMyceliumParticleColor()) {
-			this.particleRed = Colorizer.setColor[0];
-			this.particleGreen = Colorizer.setColor[1];
-			this.particleBlue = Colorizer.setColor[2];
-		}
-
-		return this;
-	}
-//Spout end
 }

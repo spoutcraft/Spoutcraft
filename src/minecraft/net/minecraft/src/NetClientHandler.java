@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 // Spout start
-import java.net.InetSocketAddress;
 // Spout end
 import java.math.BigInteger;
 import java.net.InetAddress;
@@ -1106,7 +1105,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void func_72457_a(Packet62LevelSound par1Packet62LevelSound) {
-		this.mc.field_71441_e.func_72980_b(par1Packet62LevelSound.func_73572_f(), par1Packet62LevelSound.func_73568_g(), par1Packet62LevelSound.func_73569_h(), par1Packet62LevelSound.func_73570_d(), par1Packet62LevelSound.func_73571_i(), par1Packet62LevelSound.func_73573_j());
+		this.mc.field_71441_e.playSoundEffect(par1Packet62LevelSound.func_73572_f(), par1Packet62LevelSound.func_73568_g(), par1Packet62LevelSound.func_73569_h(), par1Packet62LevelSound.func_73570_d(), par1Packet62LevelSound.func_73571_i(), par1Packet62LevelSound.func_73573_j());
 	}
 
 	public void handleCustomPayload(Packet250CustomPayload par1Packet250CustomPayload) {

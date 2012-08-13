@@ -18,9 +18,6 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.client.Minecraft;
 
 //Spout End
@@ -807,7 +804,7 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
-	public void func_72980_b(double par1, double par3, double par5, String par7Str, float par8, float par9) {
+	public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9) {
 		if (par7Str != null) {
 			Iterator var10 = this.worldAccesses.iterator();
 
@@ -1930,7 +1927,7 @@ public abstract class World implements IBlockAccess {
 			if (var8 == 0 && this.getFullBlockLightValue(var5, var7, var6) <= this.rand.nextInt(8) && this.getSavedLightValue(EnumSkyBlock.Sky, var5, var7, var6) <= 0) {
 				EntityPlayer var9 = this.getClosestPlayer((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, 8.0D);
 				if (var9 != null && var9.getDistanceSq((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D) > 4.0D) {
-					this.func_72980_b((double)var5 + 0.5D, (double)var7 + 0.5D, (double)var6 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
+					this.playSoundEffect((double) var5 + 0.5D, (double) var7 + 0.5D, (double) var6 + 0.5D, "ambient.cave.cave", 0.7F, 0.8F + this.rand.nextFloat() * 0.2F);
 					this.ambientTickCountdown = this.rand.nextInt(12000) + 6000;
 				}
 			}

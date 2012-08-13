@@ -311,7 +311,7 @@ public abstract class BlockFluid extends Block {
 		if (this.blockMaterial == Material.water && par5Random.nextInt(64) == 0) {
 			var6 = par1World.getBlockMetadata(par2, par3, par4);
 			if (var6 > 0 && var6 < 8) {
-				par1World.func_72980_b((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
+				par1World.playSoundEffect((double) ((float) par2 + 0.5F), (double) ((float) par3 + 0.5F), (double) ((float) par4 + 0.5F), "liquid.water", par5Random.nextFloat() * 0.25F + 0.75F, par5Random.nextFloat() * 1.0F + 0.5F);
 			}
 		}
 
@@ -324,11 +324,11 @@ public abstract class BlockFluid extends Block {
 				var22 = (double)par3 + this.maxY;
 				var23 = (double)((float)par4 + par5Random.nextFloat());
 				par1World.spawnParticle("lava", var21, var22, var23, 0.0D, 0.0D, 0.0D);
-				par1World.func_72980_b(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.playSoundEffect(var21, var22, var23, "liquid.lavapop", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
 			}
 
 			if (par5Random.nextInt(200) == 0) {
-				par1World.func_72980_b((double)par2, (double)par3, (double)par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
+				par1World.playSoundEffect((double) par2, (double) par3, (double) par4, "liquid.lava", 0.2F + par5Random.nextFloat() * 0.2F, 0.9F + par5Random.nextFloat() * 0.15F);
 			}
 		}
 
@@ -404,7 +404,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	protected void triggerLavaMixEffects(World par1World, int par2, int par3, int par4) {
-		par1World.func_72980_b((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+		par1World.playSoundEffect((double) ((float) par2 + 0.5F), (double) ((float) par3 + 0.5F), (double) ((float) par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
 		for (int var5 = 0; var5 < 8; ++var5) {
 			par1World.spawnParticle("largesmoke", (double)par2 + Math.random(), (double)par3 + 1.2D, (double)par4 + Math.random(), 0.0D, 0.0D, 0.0D);
