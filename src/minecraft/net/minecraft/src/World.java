@@ -18,7 +18,6 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,26 +126,6 @@ public abstract class World implements IBlockAccess {
 
 	public WorldChunkManager getWorldChunkManager() {
 		return this.worldProvider.worldChunkMgr;
-	}
-
-
-	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler par5Profiler) {
-		this.ambientTickCountdown = this.rand.nextInt(12000);
-		this.lightUpdateBlockList = new int[32768];
-		this.entitiesWithinAABBExcludingEntity = new ArrayList();
-		this.isRemote = false;
-		this.saveHandler = par1ISaveHandler;
-		this.field_72984_F = par5Profiler;
-		this.worldInfo = new WorldInfo(par4WorldSettings, par2Str);
-		this.worldProvider = par3WorldProvider;
-		this.mapStorage = new MapStorage(par1ISaveHandler);
-		par3WorldProvider.registerWorld(this);
-		this.chunkProvider = this.createChunkProvider();
-		this.calculateInitialSkylight();
-		this.calculateInitialWeather();
-		// Spout start
-		world = new SpoutcraftWorld(this);
-		// Spout end
 	}
 
 	public World(ISaveHandler par1ISaveHandler, String par2Str, WorldSettings par3WorldSettings, WorldProvider par4WorldProvider, Profiler par5Profiler) {
@@ -1056,6 +1035,7 @@ public abstract class World implements IBlockAccess {
 	public Vec3 getSkyColor(Entity par1Entity, float par2) {
 		float var3 = this.getCelestialAngle(par2);
 		float var4 = MathHelper.cos(var3 * (float)Math.PI * 2.0F) * 2.0F + 0.5F;
+
 		if (var4 < 0.0F) {
 			var4 = 0.0F;
 		}
@@ -1069,28 +1049,16 @@ public abstract class World implements IBlockAccess {
 		BiomeGenBase var7 = this.getBiomeGenForCoords(var5, var6);
 		float var8 = var7.getFloatTemperature();
 		int var9 = var7.getSkyColorByTemp(var8);
-		//Spout HD start
-		Colorizer.setupForFog(par1Entity);
-		float var10;
-		float var11;
-		float var12;
-		if (Colorizer.computeSkyColor(this, par2)) {
-			var10 = Colorizer.setColor[0];
-			var11 = Colorizer.setColor[1];
-			var12 = Colorizer.setColor[2];
-		} else {
-			var10 = (float)(var9 >> 16 & 255) / 255.0F;
-			var11 = (float)(var9 >> 8 & 255) / 255.0F;
-			var12 = (float)(var9 & 255) / 255.0F;
-		}
-		//Spout HD end
-
+		float var10 = (float)(var9 >> 16 & 255) / 255.0F;
+		float var11 = (float)(var9 >> 8 & 255) / 255.0F;
+		float var12 = (float)(var9 & 255) / 255.0F;
 		var10 *= var4;
 		var11 *= var4;
 		var12 *= var4;
 		float var13 = this.getRainStrength(par2);
 		float var14;
 		float var15;
+
 		if (var13 > 0.0F) {
 			var14 = (var10 * 0.3F + var11 * 0.59F + var12 * 0.11F) * 0.6F;
 			var15 = 1.0F - var13 * 0.75F;
@@ -1100,6 +1068,7 @@ public abstract class World implements IBlockAccess {
 		}
 
 		var14 = this.getWeightedThunderStrength(par2);
+
 		if (var14 > 0.0F) {
 			var15 = (var10 * 0.3F + var11 * 0.59F + var12 * 0.11F) * 0.2F;
 			float var16 = 1.0F - var14 * 0.75F;
@@ -1110,6 +1079,7 @@ public abstract class World implements IBlockAccess {
 
 		if (this.lightningFlash > 0) {
 			var15 = (float)this.lightningFlash - par2;
+
 			if (var15 > 1.0F) {
 				var15 = 1.0F;
 			}
@@ -1304,10 +1274,12 @@ public abstract class World implements IBlockAccess {
 
 			if (var6.isInvalid()) {
 				var5.remove();
-				if (this.chunkExists(var5.xCoord >> 4, var5.zCoord >> 4)) {
-					Chunk var7 = this.getChunkFromChunkCoords(var5.xCoord >> 4, var5.zCoord >> 4);
-					if (var7 != null) {
-						var7.removeChunkBlockTileEntity(var5.xCoord & 15, var5.yCoord, var5.zCoord & 15);
+
+				if (this.chunkExists(var6.xCoord >> 4, var6.zCoord >> 4)) {
+					Chunk var8 = this.getChunkFromChunkCoords(var6.xCoord >> 4, var6.zCoord >> 4);
+
+					if (var8 != null) {
+						var8.removeChunkBlockTileEntity(var6.xCoord & 15, var6.yCoord, var6.zCoord & 15);
 					}
 				}
 			}
@@ -1330,10 +1302,12 @@ public abstract class World implements IBlockAccess {
 						this.loadedTileEntityList.add(var9);
 					}
 
+
 					if (this.chunkExists(var9.xCoord >> 4, var9.zCoord >> 4)) {
-						Chunk var10 = this.getChunkFromChunkCoords(var10.xCoord >> 4, var10.zCoord >> 4);
+						Chunk var10 = this.getChunkFromChunkCoords(var9.xCoord >> 4, var9.zCoord >> 4);
+
 						if (var10 != null) {
-							var10.setChunkBlockTileEntity(var10.xCoord & 15, var10.yCoord, var10.zCoord & 15, var10);
+							var10.setChunkBlockTileEntity(var9.xCoord & 15, var9.yCoord, var9.zCoord & 15, var9);
 						}
 					}
 
@@ -1803,16 +1777,6 @@ public abstract class World implements IBlockAccess {
 			}
 		} else {
 			return par4;
-		}
-	}
-
-	public void saveWorldIndirectly(IProgressUpdate par1IProgressUpdate) {
-		this.saveWorld(true, par1IProgressUpdate);
-
-		try {
-			ThreadedFileIOBase.threadedIOInstance.waitForFinish();
-		} catch (InterruptedException var3) {
-			var3.printStackTrace();
 		}
 	}
 
@@ -2319,27 +2283,6 @@ public abstract class World implements IBlockAccess {
 		return false;
 	}
 
-	public List getPendingBlockUpdates(Chunk par1Chunk, boolean par2) {
-		return null;
-	}
-
-	public void randomDisplayUpdates(int par1, int par2, int par3) {
-		byte var4 = 16;
-		Random var5 = new Random();
-
-		for (int var6 = 0; var6 < 1000; ++var6) {
-			int var7 = par1 + this.rand.nextInt(var4) - this.rand.nextInt(var4);
-			int var8 = par2 + this.rand.nextInt(var4) - this.rand.nextInt(var4);
-			int var9 = par3 + this.rand.nextInt(var4) - this.rand.nextInt(var4);
-			int var10 = this.getBlockId(var7, var8, var9);
-			if (var10 == 0 && this.rand.nextInt(8) > var8 && this.worldProvider.getWorldHasNoSky()) {
-				this.spawnParticle("depthsuspend", (double)((float)var7 + this.rand.nextFloat()), (double)((float)var8 + this.rand.nextFloat()), (double)((float)var9 + this.rand.nextFloat()), 0.0D, 0.0D, 0.0D);
-			} else if (var10 > 0) {
-				Block.blocksList[var10].randomDisplayTick(this, var7, var8, var9, var5);
-			}
-		}
-	}
-
 	public List getEntitiesWithinAABBExcludingEntity(Entity par1Entity, AxisAlignedBB par2AxisAlignedBB) {
 		this.entitiesWithinAABBExcludingEntity.clear();
 		int var3 = MathHelper.floor_double((par2AxisAlignedBB.minX - 2.0D) / 16.0D);
@@ -2403,10 +2346,6 @@ public abstract class World implements IBlockAccess {
 	public void updateTileEntityChunkAndDoNothing(int par1, int par2, int par3, TileEntity par4TileEntity) {
 		if (this.blockExists(par1, par2, par3)) {
 			this.getChunkFromBlockCoords(par1, par3).setChunkModified();
-		}
-
-		for (int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
-			((IWorldAccess)this.worldAccesses.get(var5)).doNothingWithTileEntity(par1, par2, par3, par4TileEntity);
 		}
 	}
 
@@ -2639,39 +2578,6 @@ public abstract class World implements IBlockAccess {
 
 	public void updateAllPlayersSleepingFlag() {}
 
-	protected void wakeUpAllPlayers() {
-		this.allPlayersSleeping = false;
-		Iterator var1 = this.playerEntities.iterator();
-
-		while (var1.hasNext()) {
-			EntityPlayer var2 = (EntityPlayer)var1.next();
-			if (var2.isPlayerSleeping()) {
-				var2.wakeUpPlayer(false, false, true);
-			}
-		}
-
-		this.clearWeather();
-	}
-
-	public boolean isAllPlayersFullyAsleep() {
-		if (this.allPlayersSleeping && !this.isRemote) {
-			Iterator var1 = this.playerEntities.iterator();
-
-			EntityPlayer var2;
-			do {
-				if (!var1.hasNext()) {
-					return true;
-				}
-
-				var2 = (EntityPlayer)var1.next();
-			} while (var2.isPlayerFullyAsleep());
-
-			return false;
-		} else {
-			return false;
-		}
-	}
-
 	public float getWeightedThunderStrength(float par1) {
 		return (this.prevThunderingStrength + (this.thunderingStrength - this.prevThunderingStrength) * par1) * this.getRainStrength(par1);
 	}
@@ -2788,7 +2694,7 @@ public abstract class World implements IBlockAccess {
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {
 			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);
-			if (ep != Minecraft.theMinecraft.thePlayer || Minecraft.theMinecraft.gameSettings.thirdPersonView != 0) { 
+			if (ep != Minecraft.theMinecraft.field_71439_g || Minecraft.theMinecraft.gameSettings.thirdPersonView != 0) {
 				ep.doFancyStuff();
 			}
 		}
