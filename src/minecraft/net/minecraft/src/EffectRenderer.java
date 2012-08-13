@@ -229,7 +229,7 @@ public class EffectRenderer {
 				}
 			}
 			if (!custom) {
-				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_4041_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
+				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
 			}
 			// Spout end
 		}
