@@ -3,8 +3,6 @@ package net.minecraft.src;
 import java.util.Random;
 //Spout start
 import org.spoutcraft.client.config.ConfigReader;
-
-import com.pclewis.mcpatcher.mod.Colorizer;
 //Spout end
 
 public abstract class BlockFluid extends Block {
@@ -38,13 +36,7 @@ public abstract class BlockFluid extends Block {
 
 			for (int var8 = -1; var8 <= 1; ++var8) {
 				for (int var9 = -1; var9 <= 1; ++var9) {
-					int var10;
-					if(!ConfigReader.waterBiomeColors) {
-						var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
-					}
-					else {
-						 var10 = Colorizer.colorizeWater(par1IBlockAccess.getWorldChunkManager(), par2 + var9, par4 + var8);
-					}
+					int var10 = par1IBlockAccess.getBiomeGenForCoords(par2 + var9, par4 + var8).waterColorMultiplier;
 					var5 += (var10 & 16711680) >> 16;
 					var6 += (var10 & 65280) >> 8;
 					var7 += var10 & 255;
@@ -125,8 +117,8 @@ public abstract class BlockFluid extends Block {
 		return 0;
 	}
 
-	private Vec3D getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		Vec3D var5 = Vec3D.func_72437_a().func_72345_a(0.0D, 0.0D, 0.0D);
+	private Vec3 getFlowVector(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
+		Vec3 var5 = Vec3.func_72437_a().func_72345_a(0.0D, 0.0D, 0.0D);
 		int var6 = this.getEffectiveFlowDecay(par1IBlockAccess, par2, par3, par4);
 
 		for (int var7 = 0; var7 < 4; ++var7) {
@@ -207,8 +199,8 @@ public abstract class BlockFluid extends Block {
 		return var5;
 	}
 
-	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3D par6Vec3D) {
-		Vec3D var7 = this.getFlowVector(par1World, par2, par3, par4);
+	public void velocityToAddToEntity(World par1World, int par2, int par3, int par4, Entity par5Entity, Vec3 par6Vec3D) {
+		Vec3 var7 = this.getFlowVector(par1World, par2, par3, par4);
 		par6Vec3D.xCoord += var7.xCoord;
 		par6Vec3D.yCoord += var7.yCoord;
 		par6Vec3D.zCoord += var7.zCoord;
@@ -353,7 +345,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	public static double func_72204_a(IBlockAccess par0IBlockAccess, int par1, int par2, int par3, Material par4Material) {
-		Vec3D var5 = null;
+		Vec3 var5 = null;
 		if (par4Material == Material.water) {
 			var5 = ((BlockFluid)Block.waterMoving).getFlowVector(par0IBlockAccess, par1, par2, par3);
 		}
@@ -412,7 +404,7 @@ public abstract class BlockFluid extends Block {
 	}
 
 	protected void triggerLavaMixEffects(World par1World, int par2, int par3, int par4) {
-		par1World.playSoundEffect((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
+		par1World.func_72980_b((double)((float)par2 + 0.5F), (double)((float)par3 + 0.5F), (double)((float)par4 + 0.5F), "random.fizz", 0.5F, 2.6F + (par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.8F);
 
 		for (int var5 = 0; var5 < 8; ++var5) {
 			par1World.spawnParticle("largesmoke", (double)par2 + Math.random(), (double)par3 + 1.2D, (double)par4 + Math.random(), 0.0D, 0.0D, 0.0D);

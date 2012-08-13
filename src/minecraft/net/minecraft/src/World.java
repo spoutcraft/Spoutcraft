@@ -807,7 +807,7 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
-	public void playSoundEffect(double par1, double par3, double par5, String par7Str, float par8, float par9) {
+	public void func_72980_b(double par1, double par3, double par5, String par7Str, float par8, float par9) {
 		if (par7Str != null) {
 			Iterator var10 = this.worldAccesses.iterator();
 
