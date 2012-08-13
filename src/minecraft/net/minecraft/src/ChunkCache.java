@@ -246,7 +246,7 @@ public class ChunkCache implements IBlockAccess {
 
 //Spout start
 	public int getGrassColorCache(int x, int y, int z) {
-		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		Chunk chunk = Minecraft.theMinecraft.field_71441_e.getChunkFromBlockCoords(x, z);
 		if (chunk != null) {
 			return chunk.grassColorCache;
 		}
@@ -254,14 +254,14 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	public void setGrassColorCache(int x, int y, int z, int color) {
-		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		Chunk chunk = Minecraft.theMinecraft.field_71441_e.getChunkFromBlockCoords(x, z);
 		if (chunk != null) {
 			chunk.grassColorCache = color;
 		}
 	}
 
 	public int getWaterColorCache(int x, int y, int z) {
-		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		Chunk chunk = Minecraft.theMinecraft.field_71441_e.getChunkFromBlockCoords(x, z);
 		if (chunk != null) {
 			return chunk.waterColorCache;
 		}
@@ -269,14 +269,14 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	public void setWaterColorCache(int x, int y, int z, int color) {
-		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
+		Chunk chunk = Minecraft.theMinecraft.field_71441_e.getChunkFromBlockCoords(x, z);
 		if (chunk != null) {
 			chunk.waterColorCache = color;
 		}
 	}
 	
 	public WorldChunkManager getWorldChunkManager() {
-		return Minecraft.theMinecraft.theWorld.getWorldChunkManager();
+		return Minecraft.theMinecraft.field_71441_e.getWorldChunkManager();
 	}
 //Spout end
 }

@@ -463,12 +463,12 @@ public class FontRenderer {
 	}
 	// end Spout Text Alpha
 
-	public String func_50107_a(String par1Str, int par2) {
-		return this.func_50104_a(par1Str, par2, false);
+	public String trimStringToWidth(String par1Str, int par2) {
+		return this.trimStringToWidth(par1Str, par2, false);
 	}
 
 	// begin Spout AlphaText - TrimStringToWidth, returns a trimmed string to the specified length. Also handles RTL conversion.
-	public String func_50104_a(String par1Str, int width2, boolean RTL) {
+	public String trimStringToWidth(String par1Str, int width2, boolean RTL) {
 		float widthWrp = (float)width2;
 		float widthStr = 0;
 		StringBuilder str0 = new StringBuilder();

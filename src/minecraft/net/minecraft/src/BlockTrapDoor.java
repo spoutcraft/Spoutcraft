@@ -128,7 +128,7 @@ public class BlockTrapDoor extends Block {
 		}
 	}
 
-	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3D par5Vec3D, Vec3D par6Vec3D) {
+	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3D, Vec3 par6Vec3D) {
 		this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
 		return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3D, par6Vec3D);
 	}

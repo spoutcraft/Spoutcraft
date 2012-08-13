@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
 import java.util.Random;
 
 public class BlockStem extends BlockFlower {
@@ -121,7 +120,7 @@ public class BlockStem extends BlockFlower {
 		int var2 = par1 * 32;
 		int var3 = 255 - par1 * 8;
 		int var4 = par1 * 4;
-		return Colorizer.colorizeStem(var2 << 16 | var3 << 8 | var4, par1);  //Spout HD
+		return var2 << 16 | var3 << 8 | var4;
 	}
 
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {

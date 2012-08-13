@@ -452,7 +452,7 @@ public class Chunk {
 			TileEntity var14;
 			if (par4 != 0) {
 				if (!this.worldObj.isRemote) {
-					Block.blocksList[par4].onBlockAdded(this.worldObj, var11, par2, var12);
+					Block.blocksList[par4].onBlockAdded(this.worldObj, var12, par2, var13);
 				}
 
 				if (Block.blocksList[par4] instanceof BlockContainer) {
@@ -771,18 +771,6 @@ public class Chunk {
 		return false;
 	}
 
-	public void removeUnknownBlocks() {
-		ExtendedBlockStorage[] var1 = this.storageArrays;
-		int var2 = var1.length;
-
-		for (int var3 = 0; var3 < var2; ++var3) {
-			ExtendedBlockStorage var4 = var1[var3];
-			if (var4 != null) {
-				var4.func_48711_e();
-			}
-		}
-	}
-
 	public void populateChunk(IChunkProvider par1IChunkProvider, IChunkProvider par2IChunkProvider, int par3, int par4) {
 		if (!this.isTerrainPopulated && par1IChunkProvider.chunkExists(par3 + 1, par4 + 1) && par1IChunkProvider.chunkExists(par3, par4 + 1) && par1IChunkProvider.chunkExists(par3 + 1, par4)) {
 			par1IChunkProvider.populate(par2IChunkProvider, par3, par4);
@@ -925,7 +913,7 @@ public class Chunk {
 
 		for (var6 = 0; var6 < this.storageArrays.length; ++var6) {
 			if (this.storageArrays[var6] != null && (par2 & 1 << var6) != 0) {
-				this.storageArrays[var6].func_48708_d();
+				this.storageArrays[var6].func_76658_g();
 			}
 		}
 
