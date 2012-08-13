@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -333,29 +331,21 @@ public class BlockRedstoneWire extends Block {
 
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		int var6 = par1World.getBlockMetadata(par2, par3, par4);
+
 		if (var6 > 0) {
 			double var7 = (double)par2 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
 			double var9 = (double)((float)par3 + 0.0625F);
 			double var11 = (double)par4 + 0.5D + ((double)par5Random.nextFloat() - 0.5D) * 0.2D;
-			 //Spout HD start
-			float var14;
-			float var15;
-			float var16;
-			if (Colorizer.computeRedstoneWireColor(var6)) {
-				var14 = Colorizer.setColor[0];
-				var15 = Colorizer.setColor[1];
-				var16 = Colorizer.setColor[2];
-			} else {
-				float var13 = (float)var6 / 15.0F;
-				var14 = var13 * 0.6F + 0.4F;
-				if (var6 == 0) {
-					var14 = 0.0F;
-				}
+			float var13 = (float)var6 / 15.0F;
+			float var14 = var13 * 0.6F + 0.4F;
 
-				var15 = var13 * var13 * 0.7F - 0.5F;
-				var16 = var13 * var13 * 0.6F - 0.7F;
+			if (var6 == 0) {
+				var14 = 0.0F;
 			}
- 			//Spout HD end
+
+			float var15 = var13 * var13 * 0.7F - 0.5F;
+			float var16 = var13 * var13 * 0.6F - 0.7F;
+
 			if (var15 < 0.0F) {
 				var15 = 0.0F;
 			}
