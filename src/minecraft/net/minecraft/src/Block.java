@@ -428,7 +428,7 @@ public class Block {
 		return AxisAlignedBB.func_72332_a().func_72299_a((double)par2 + this.minX, (double)par3 + this.minY, (double)par4 + this.minZ, (double)par2 + this.maxX, (double)par3 + this.maxY, (double)par4 + this.maxZ);
 	}
 
-	public void func_71871_a(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, ArrayList par6ArrayList, Entity par7Entity) {
+	public void func_71871_a(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6ArrayList, Entity par7Entity) {
 		AxisAlignedBB var8 = this.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
 		if (var8 != null && par5AxisAlignedBB.intersectsWith(var8)) {
 			par6ArrayList.add(var8);

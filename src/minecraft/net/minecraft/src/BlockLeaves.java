@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
-
 import java.util.List;
 import java.util.Random;
 
@@ -31,9 +29,9 @@ public class BlockLeaves extends BlockLeavesBase {
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		int var5 = par1IBlockAccess.getBlockMetadata(par2, par3, par4);
 		if ((var5 & 3) == 1) {
-			return Colorizer.colorizeBiome(ColorizerFoliage.getFoliageColorPine(), Colorizer.COLOR_MAP_PINE, par2, par3, par4); //Spout 
+			return ColorizerFoliage.getFoliageColorPine();
 		} else if ((var5 & 3) == 2) {
-			return Colorizer.colorizeBiome(ColorizerFoliage.getFoliageColorBirch(), Colorizer.COLOR_MAP_BIRCH, par2, par3, par4); //Spout
+			return ColorizerFoliage.getFoliageColorBirch();
 		} else {
 			int var6 = 0;
 			int var7 = 0;
