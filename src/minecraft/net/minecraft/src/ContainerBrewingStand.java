@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 public class ContainerBrewingStand extends Container {
 	private TileEntityBrewingStand tileBrewingStand;
+	private final Slot field_75186_f;
 	private int brewTime = 0;
 
 	public ContainerBrewingStand(InventoryPlayer par1InventoryPlayer, TileEntityBrewingStand par2TileEntityBrewingStand) {

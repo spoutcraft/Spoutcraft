@@ -45,7 +45,7 @@ public class ContainerPlayer extends Container {
 	
 	//Spout start
 	public IInventory getInventory() {
-		return Minecraft.theMinecraft.thePlayer.inventory;
+		return Minecraft.theMinecraft.field_71439_g.inventory;
 	}
 	
 	@Override

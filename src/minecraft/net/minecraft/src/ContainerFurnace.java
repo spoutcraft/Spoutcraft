@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.Iterator;
+
 public class ContainerFurnace extends Container {
 	private TileEntityFurnace furnace;
 	private int lastCookTime = 0;
