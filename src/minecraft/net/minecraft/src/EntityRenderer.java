@@ -16,10 +16,6 @@ import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.*;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-
-import com.pclewis.mcpatcher.mod.Colorizer;
-import com.pclewis.mcpatcher.mod.Shaders;
-
 //Spout end
 
 public class EntityRenderer {
@@ -135,7 +131,7 @@ public class EntityRenderer {
 				double var2 = (double)this.mc.field_71442_b.getBlockReachDistance();
 				this.mc.objectMouseOver = this.mc.renderViewEntity.rayTrace(var2, par1);
 				double var4 = var2;
-				Vec3D var6 = this.mc.renderViewEntity.getPosition(par1);
+				Vec3 var6 = this.mc.renderViewEntity.getPosition(par1);
 				if (this.mc.field_71442_b.extendedReach()) {
 					var2 = 6.0D;
 					var4 = 6.0D;
@@ -151,8 +147,8 @@ public class EntityRenderer {
 					var4 = this.mc.objectMouseOver.hitVec.distanceTo(var6);
 				}
 
-				Vec3D var7 = this.mc.renderViewEntity.getLook(par1);
-				Vec3D var8 = var6.addVector(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2);
+				Vec3 var7 = this.mc.renderViewEntity.getLook(par1);
+				Vec3 var8 = var6.addVector(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2);
 				this.pointedEntity = null;
 				float var9 = 1.0F;
 				List var10 = this.mc.field_71441_e.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2).expand((double)var9, (double)var9, (double)var9));
@@ -369,7 +365,7 @@ public class EntityRenderer {
 
 		GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		float var4;
-		if (this.mc.playerController.func_35643_e()) {
+		if (this.mc.field_71442_b.func_78747_a()) {
 			var4 = 0.6666667F;
 			GL11.glScalef(1.0F, var4, 1.0F);
 		}
@@ -475,7 +471,6 @@ public class EntityRenderer {
 	}
 
 	public void disableLightmap(double par1) {
-		Shaders.disableLightmap(); 
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -499,7 +494,6 @@ public class EntityRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-		Shaders.enableLightmap();
 	}
 
 	private void updateTorchFlicker() {
@@ -514,7 +508,6 @@ public class EntityRenderer {
 
 	private void updateLightmap() {
 		WorldClient var1 = this.mc.field_71441_e;
-		if (!Colorizer.computeLightmap(this, var1)) { //Spout
 		if (var1 != null) {
 			for (int var2 = 0; var2 < 256; ++var2) {
 				float var3 = var1.func_72971_b(1.0F) * 0.95F + 0.05F;
@@ -599,11 +592,10 @@ public class EntityRenderer {
 			this.mc.renderEngine.createTextureFromBytes(this.lightmapColors, 16, 16, this.lightmapTexture);
 		}
 	}
-	}//Spout
 
 	public void updateCameraAndRender(float par1) {
 		// Spout Start
-		World world = this.mc.theWorld;
+		World world = this.mc.field_71441_e;
 
 	//	if(Thread.currentThread().getPriority() != 10) {
 	//		Thread.currentThread().setPriority(10);
@@ -613,9 +605,9 @@ public class EntityRenderer {
 		//advanced GL causes rendering holes
 		//TODO: fix
 		mc.gameSettings.advancedOpengl = false;
-		if (Shaders.isEnabled()) {
+		/*if (Shaders.isEnabled()) {
 			mc.gameSettings.fancyGraphics = true;
-		}
+		}*/
 
 		Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees);
 
@@ -710,7 +702,7 @@ public class EntityRenderer {
 				this.mc.field_71424_I.endStartSection("gui");
 
 				this.renderEndNanoTime = System.nanoTime();
-				Profiler.endStartSection("gui");
+				this.mc.field_71424_I.endStartSection("gui");
 				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					// Spout Start
 					if (ConfigReader.fastDebug != 0) {
@@ -723,7 +715,7 @@ public class EntityRenderer {
 						}
 					}
 
-					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var16, var17);
+					this.mc.ingameGUI.renderGameOverlay(par1, this.mc.currentScreen != null, var11, var13);
 					if (ConfigReader.fastDebug != 0) {
 						this.mc.gameSettings.showDebugInfo = false;
 					}
@@ -755,8 +747,6 @@ public class EntityRenderer {
 	}
 
 	public void renderWorld(float par1, long par2) {
-		Shaders.beginRender(this.mc, par1, par2); //Spout
-
 		this.mc.field_71424_I.startSection("lightTex");
 
 		if (this.lightmapUpdateNeeded) {
@@ -769,7 +759,7 @@ public class EntityRenderer {
 			this.mc.renderViewEntity = this.mc.field_71439_g;
 		}
 
-		Profiler.endStartSection("pick");
+		this.mc.field_71424_I.endStartSection("pick");
 		this.getMouseOver(par1);
 		EntityLiving var4 = this.mc.renderViewEntity;
 		RenderGlobal var5 = this.mc.renderGlobal;
@@ -796,10 +786,10 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			this.mc.field_71424_I.endStartSection("camera");
 			//Spout start
-			Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
+			//Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
 			this.setupCameraTransform(par1, var13);
 			ActiveRenderInfo.updateRenderInfo(this.mc.field_71439_g, this.mc.gameSettings.thirdPersonView == 2);
-			Shaders.setCamera(par1);
+			//Shaders.setCamera(par1);
 			//Spout end
 			this.mc.field_71424_I.endStartSection("frustrum");
 			ClippingHelperImpl.getInstance();
@@ -834,7 +824,7 @@ public class EntityRenderer {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			this.mc.field_71424_I.endStartSection("terrain");
-			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
+			//Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
 			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var17;
@@ -864,7 +854,7 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//Spout start
-			final int passes = Shaders.isEnabled() ? 3 : 2;
+			final int passes = 2;
 			for (this.betterGrassLoop = 1; this.betterGrassLoop < passes; ++this.betterGrassLoop) {
 			//Spout end
 			GL11.glDepthMask(true);
@@ -879,7 +869,7 @@ public class EntityRenderer {
 				}
 
 				GL11.glColorMask(false, false, false, false);
-				int var18 = Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); //Spout
+				int var18 = var5.sortAndRender(var4, 1, (double)par1);
 				if (this.mc.gameSettings.anaglyph) {
 					if (anaglyphField == 0) {
 						GL11.glColorMask(false, true, true, true);
@@ -897,7 +887,7 @@ public class EntityRenderer {
 				GL11.glShadeModel(GL11.GL_FLAT);
 			} else {
 				this.mc.field_71424_I.endStartSection("water");
-				Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); //Spout
+				var5.sortAndRender(var4, 1, (double)par1);
 			}
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);
@@ -905,7 +895,7 @@ public class EntityRenderer {
 			
 			}
 			//Spout
-			if (!Shaders.isShadowPass() && this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
+			if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
 				var17 = (EntityPlayer)var4;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
 				this.mc.field_71424_I.endStartSection("outline");
@@ -922,9 +912,9 @@ public class EntityRenderer {
 			this.mc.field_71424_I.endStartSection("weather");
 
 			//Spout start
-			Shaders.beginWeather();
+			//Shaders.beginWeather();
 			this.renderRainSnow(par1);
-			Shaders.endWeather();
+			//Shaders.endWeather();
 			//Spout end
 			GL11.glDisable(GL11.GL_FOG);
 
@@ -942,21 +932,21 @@ public class EntityRenderer {
 			this.mc.field_71424_I.endStartSection("hand");
 			if (this.cameraZoom == 1.0D) {
 				GL11.glClear(256);
-				Shaders.beginHand(); //Spout start
-				this.renderHand(par1, var19);
-				Shaders.endHand(); //Spout start
+				//Shaders.beginHand(); //Spout start
+				this.renderHand(par1, var13);
+				//Shaders.endHand(); //Spout start
 			}
 
 			if (!this.mc.gameSettings.anaglyph) {
 				this.mc.field_71424_I.endSection();
-				Shaders.endRender(); // Spout
+				//Shaders.endRender(); // Spout
 				return;
 			}
 		}
 
 		GL11.glColorMask(true, true, true, false);
-		Profiler.endSection();
-		Shaders.endRender(); //Spout
+		this.mc.field_71424_I.endSection();
+		//Shaders.endRender(); //Spout
 	}
 
 	private void addRainParticles() {
@@ -1192,15 +1182,6 @@ public class EntityRenderer {
 		WorldClient var2 = this.mc.field_71441_e;
 		EntityLiving var3 = this.mc.renderViewEntity;
 		float var4 = 1.0F / (float)(4 - this.mc.gameSettings.renderDistance);
-		//Spout HD start
-		Colorizer.setupForFog(var3);
-		if (Colorizer.computeFogColor(var2, par1)) {
-			this.fogColorRed = Colorizer.setColor[0];
-			this.fogColorGreen = Colorizer.setColor[1];
-			this.fogColorBlue = Colorizer.setColor[2];
-		}
-		//Spout HD end
-
 		var4 = 1.0F - (float)Math.pow((double)var4, 0.25D);
 		Vec3 var5 = var2.getSkyColor(this.mc.renderViewEntity, par1);
 		float var6 = (float)var5.xCoord;
@@ -1252,7 +1233,7 @@ public class EntityRenderer {
 
 		int var21 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.field_71441_e, var3, par1);
 		if (this.cloudFog) {
-			Vec3D var13 = var2.drawClouds(par1);
+			Vec3 var13 = var2.drawClouds(par1);
 			this.fogColorRed = (float)var13.xCoord;
 			this.fogColorGreen = (float)var13.yCoord;
 			this.fogColorBlue = (float)var13.zCoord;
@@ -1260,13 +1241,6 @@ public class EntityRenderer {
 			this.fogColorRed = 0.02F;
 			this.fogColorGreen = 0.02F;
 			this.fogColorBlue = 0.2F;
-			//Spout HD start
-			if (Colorizer.computeFogColor(Colorizer.COLOR_MAP_UNDERWATER)) {
-				this.fogColorRed = Colorizer.setColor[0];
-				this.fogColorGreen = Colorizer.setColor[1];
-				this.fogColorBlue = Colorizer.setColor[2];
-			}
-			//Spout HD end
 		} else if (var21 != 0 && Block.blocksList[var21].blockMaterial == Material.lava) {
 			this.fogColorRed = 0.6F;
 			this.fogColorGreen = 0.1F;
