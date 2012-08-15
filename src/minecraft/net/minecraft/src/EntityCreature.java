@@ -1,12 +1,5 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.PathEntity;
-import net.minecraft.src.Profiler;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
 import org.spoutcraft.client.entity.CraftCreature; //Spout
 
 public abstract class EntityCreature extends EntityLiving {

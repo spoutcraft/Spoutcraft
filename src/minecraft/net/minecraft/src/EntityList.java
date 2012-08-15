@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;

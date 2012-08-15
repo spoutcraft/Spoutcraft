@@ -75,8 +75,8 @@ public abstract class EntityLiving extends Entity {
 	private EntityJumpHelper jumpHelper;
 	private EntityBodyHelper bodyHelper;
 	private PathNavigate navigator;
-	protected final EntityAITasks tasks = new EntityAITasks();
-	protected final EntityAITasks targetTasks = new EntityAITasks();
+	protected final EntityAITasks tasks;
+	protected final EntityAITasks targetTasks;
 	private EntityLiving attackTarget;
 	private EntitySenses senses;
 	private float AIMoveSpeed;
@@ -473,7 +473,7 @@ public abstract class EntityLiving extends Entity {
 		this.field_70766_av += (var8 - this.field_70766_av) * 0.3F;
 		this.worldObj.field_72984_F.startSection("headTurn");
 		if (this.isAIEnabled()) {
-			this.bodyHelper.func_48650_a();
+			this.bodyHelper.func_75664_a();
 		} else {
 			float var9 = MathHelper.func_76142_g(var6 - this.renderYawOffset);
 
@@ -1043,7 +1043,7 @@ public abstract class EntityLiving extends Entity {
 
 		this.worldObj.field_72984_F.startSection("ai");
 
-		Profiler.startSection("ai");
+		this.worldObj.field_72984_F.startSection("ai");
 		if (this.isMovementBlocked()) {
 			this.isJumping = false;
 			this.moveStrafing = 0.0F;
@@ -1087,7 +1087,7 @@ public abstract class EntityLiving extends Entity {
 		float var15 = this.landMovementFactor;
 		this.landMovementFactor *= this.getSpeedModifier();
 		this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
-		this.landMovementFactor = var9;
+		this.landMovementFactor = var15;
 		this.worldObj.field_72984_F.endSection();
 		this.worldObj.field_72984_F.startSection("push");
 
@@ -1166,25 +1166,25 @@ public abstract class EntityLiving extends Entity {
 
 	protected void updateAITasks() {
 		++this.entityAge;
-		his.worldObj.field_72984_F.startSection("checkDespawn");
+		this.worldObj.field_72984_F.startSection("checkDespawn");
 		this.despawnEntity();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("sensing");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("sensing");
 		this.senses.clearSensingCache();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("targetSelector");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("targetSelector");
 		this.targetTasks.onUpdateTasks();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("goalSelector");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("goalSelector");
 		this.tasks.onUpdateTasks();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("navigation");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("navigation");
 		this.navigator.onUpdateNavigation();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("mob tick");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("mob tick");
 		this.updateAITick();
-		his.worldObj.field_72984_F.endSection();
-		his.worldObj.field_72984_F.startSection("controls");
+		this.worldObj.field_72984_F.endSection();
+		this.worldObj.field_72984_F.startSection("controls");
 		this.worldObj.field_72984_F.startSection("move");
 		this.moveHelper.onUpdateMoveHelper();
 		this.worldObj.field_72984_F.endStartSection("look");
@@ -1507,7 +1507,7 @@ public abstract class EntityLiving extends Entity {
 			Vec3 var3 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			var3.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 			var3.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-			Vec3 var4 = Vec3.func_72437_a().func_72345_a((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+			Vec3 var4 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 			var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 			var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 			var4 = var4.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);

@@ -252,7 +252,7 @@ public class EntityDragon extends EntityDragonBase {
 			var33 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
 			float var32 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F - this.randomYawVelocity * 0.01F);
 			this.dragonPartHead.onUpdate();
-			this.dragonPartHead.setLocationAndAngles(this.posX + (double)(var33 * 5.5F * var3), this.posY + (var9[1] - var30[1]) * 1.0D + (double)(var28 * 5.5F), this.posZ - (double)(var32 * 5.5F * var3), 0.0F, 0.0F);
+			this.dragonPartHead.setLocationAndAngles(this.posX + (double)(var33 * 5.5F * var3), this.posY + (var9[1] - var29[1]) * 1.0D + (double)(var28 * 5.5F), this.posZ - (double)(var32 * 5.5F * var3), 0.0F, 0.0F);
 
 			for (int var30 = 0; var30 < 3; ++var30) {
 				EntityDragonPart var31 = null;
@@ -454,7 +454,7 @@ public class EntityDragon extends EntityDragonBase {
 
 		this.moveEntity(0.0D, 0.10000000149011612D, 0.0D);
 		this.renderYawOffset = this.rotationYaw += 20.0F;
-		if(this.field_40178_aA == 200) {
+		if(this.deathTicks == 200) {
 			var4 = 10000;
 
 			while(var4 > 0) {

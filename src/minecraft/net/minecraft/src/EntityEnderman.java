@@ -86,7 +86,6 @@ public class EntityEnderman extends EntityMob {
 			this.attackEntityFrom(DamageSource.drown, 1);
 		}
 
-		this.isAttacking = this.entityToAttack != null;
 		this.moveSpeed = this.entityToAttack != null ? 6.5F : 0.3F;
 		int var1;
 		if (!this.worldObj.isRemote) {
@@ -172,7 +171,7 @@ public class EntityEnderman extends EntityMob {
 	}
 
 	protected boolean teleportToEntity(Entity par1Entity) {
-		Vec3 var2 = Vec3.func_72437_a().func_72345_a((this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
+		Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX - par1Entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - par1Entity.posY + (double)par1Entity.getEyeHeight(), this.posZ - par1Entity.posZ);
 		var2 = var2.normalize();
 		double var3 = 16.0D;
 		double var5 = this.posX + (this.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;

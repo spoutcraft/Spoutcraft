@@ -238,10 +238,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
 			for (int var3 = 0; var3 < par2; ++var3) {
-				Vec3 var4 = Vec3.func_72437_a().func_72345_a((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+				Vec3 var4 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 				var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-				Vec3 var5 = Vec3.func_72437_a().func_72345_a((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+				Vec3 var5 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
@@ -1298,7 +1298,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		if (Minecraft.theMinecraft.isGamePaused) {
 			return;
 		}
-		if (Minecraft.theMinecraft.thePlayer.getDistanceSqToEntity(this) > 16) {
+		if (Minecraft.theMinecraft.field_71439_g.getDistanceSqToEntity(this) > 16) {
 			return;
 		}
 

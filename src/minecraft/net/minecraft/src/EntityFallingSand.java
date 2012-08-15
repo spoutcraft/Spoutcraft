@@ -77,7 +77,7 @@ public class EntityFallingSand extends Entity {
 				this.motionY *= -0.5D;
 				if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
 					this.setDead();
-					if ((!this.worldObj.canBlockBePlacedAt(this.blockID, var1, var2, var3, true, 1) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockWithNotify(var1, var2, var3, this.blockID)) && !this.worldObj.isRemote) {
+					if ((!this.worldObj.func_72931_a(this.blockID, var1, var2, var3, true, 1, (Entity)null) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockAndMetadataWithNotify(var1, var2, var3, this.blockID, this.field_70285_b)) && !this.worldObj.isRemote && this.field_70284_d) {
 						this.dropItem(this.blockID, 1);
 					}
 				}

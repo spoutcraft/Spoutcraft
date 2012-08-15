@@ -226,7 +226,7 @@ public class EntityFireball extends Entity {
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		this.setBeenAttacked();
 		if (par1DamageSource.getEntity() != null) {
-			Vec3D var3 = par1DamageSource.getEntity().getLookVec();
+			Vec3 var3 = par1DamageSource.getEntity().getLookVec();
 			if (var3 != null) {
 				this.motionX = var3.xCoord;
 				this.motionY = var3.yCoord;

@@ -95,7 +95,7 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
-	public boolean isInRangeToRenderVec3D(Vec3D par1Vec3D) {
+	public boolean isInRangeToRenderVec3D(Vec3 par1Vec3D) {
 		return this.lightningState >= 0;
 	}
 }
