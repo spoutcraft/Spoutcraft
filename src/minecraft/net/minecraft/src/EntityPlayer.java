@@ -835,7 +835,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void respawnPlayer() {}
 
-	public abstract void func_6420_o();
+	public void func_6420_o();
 
 	public void onItemStackChanged(ItemStack par1ItemStack) {}
 
@@ -1305,7 +1305,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		if (vip != null) {
 			for (Entry<String, Integer> particle : vip.getParticles().entrySet()) {
 				if (rand.nextInt(particle.getValue()) == 0) {
-					Minecraft.theMinecraft.renderGlobal.func_40193_b(particle.getKey(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
+					Minecraft.theMinecraft.renderGlobal.func_72726_b(particle.getKey(), posX + rand.nextFloat() - 0.5, boundingBox.minY + Math.max(0, rand.nextFloat() - 0.25F), posZ + rand.nextFloat() - 0.5, 0, 0, 0.0F);
 				}
 			}
 		}
@@ -1335,5 +1335,4 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public InventoryEnderChest func_71005_bN() {
 		return this.field_71078_a;
 	}
-}
 }

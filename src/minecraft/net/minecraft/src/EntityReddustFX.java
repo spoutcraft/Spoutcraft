@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout
-
 public class EntityReddustFX extends EntityFX {
 	float reddustParticleScale;
 
@@ -11,23 +9,17 @@ public class EntityReddustFX extends EntityFX {
 
 	public EntityReddustFX(World par1World, double par2, double par4, double par6, float par8, float par9, float par10, float par11) {
 		super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-		this.motionX *= 0.1D;
-		this.motionY *= 0.1D;
-		this.motionZ *= 0.1D;
+		this.motionX *= 0.10000000149011612D;
+		this.motionY *= 0.10000000149011612D;
+		this.motionZ *= 0.10000000149011612D;
 		if (par9 == 0.0F) {
-			//Spout HD start
-			if (Colorizer.computeRedstoneWireColor(15)) {
-				par9 = Colorizer.setColor[0];
-				par10 = Colorizer.setColor[1];
-				par11 = Colorizer.setColor[2];
-			}
-			//Spout HD end
+			par9 = 1.0F;
 		}
 
 		float var12 = (float)Math.random() * 0.4F + 0.6F;
-		this.particleRed = ((float)(Math.random() * 0.2D) + 0.8F) * par9 * var12;
-		this.particleGreen = ((float)(Math.random() * 0.2D) + 0.8F) * par10 * var12;
-		this.particleBlue = ((float)(Math.random() * 0.2D) + 0.8F) * par11 * var12;
+		this.particleRed = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * par9 * var12;
+		this.particleGreen = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * par10 * var12;
+		this.particleBlue = ((float)(Math.random() * 0.20000000298023224D) + 0.8F) * par11 * var12;
 		this.particleScale *= 0.75F;
 		this.particleScale *= par8;
 		this.reddustParticleScale = this.particleScale;
@@ -65,12 +57,12 @@ public class EntityReddustFX extends EntityFX {
 			this.motionZ *= 1.1D;
 		}
 
-		this.motionX *= 0.96D;
-		this.motionY *= 0.96D;
-		this.motionZ *= 0.96D;
+		this.motionX *= 0.9599999785423279D;
+		this.motionY *= 0.9599999785423279D;
+		this.motionZ *= 0.9599999785423279D;
 		if (this.onGround) {
-			this.motionX *= 0.7D;
-			this.motionZ *= 0.7D;
+			this.motionX *= 0.699999988079071D;
+			this.motionZ *= 0.699999988079071D;
 		}
 	}
 }

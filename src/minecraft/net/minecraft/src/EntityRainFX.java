@@ -1,25 +1,14 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout
-
 public class EntityRainFX extends EntityFX {
 	public EntityRainFX(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-		this.motionX *= 0.3D;
+		this.motionX *= 0.30000001192092896D;
 		this.motionY = (double)((float)Math.random() * 0.2F + 0.1F);
-		this.motionZ *= 0.3D;
-		//Spout HD start
-		if (Colorizer.computeWaterColor(this.posX, this.posY, this.posZ)) {
-			this.particleRed = Colorizer.waterColor[0];
-			this.particleGreen = Colorizer.waterColor[1];
-			this.particleBlue = Colorizer.waterColor[2];
-		} else {
-			this.particleRed = 0.2F;
-			this.particleGreen = 0.3F;
-			this.particleBlue = 1.0F;
-		}
-		//Spout HD end
-
+		this.motionZ *= 0.30000001192092896D;
+		this.particleRed = 1.0F;
+		this.particleGreen = 1.0F;
+		this.particleBlue = 1.0F;
 		this.setParticleTextureIndex(19 + this.rand.nextInt(4));
 		this.setSize(0.01F, 0.01F);
 		this.particleGravity = 0.06F;
@@ -32,9 +21,9 @@ public class EntityRainFX extends EntityFX {
 		this.prevPosZ = this.posZ;
 		this.motionY -= (double)this.particleGravity;
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
-		this.motionX *= 0.98D;
-		this.motionY *= 0.98D;
-		this.motionZ *= 0.98D;
+		this.motionX *= 0.9800000190734863D;
+		this.motionY *= 0.9800000190734863D;
+		this.motionZ *= 0.9800000190734863D;
 		if (this.particleMaxAge-- <= 0) {
 			this.setDead();
 		}
@@ -44,8 +33,8 @@ public class EntityRainFX extends EntityFX {
 				this.setDead();
 			}
 
-			this.motionX *= 0.7D;
-			this.motionZ *= 0.7D;
+			this.motionX *= 0.699999988079071D;
+			this.motionZ *= 0.699999988079071D;
 		}
 
 		Material var1 = this.worldObj.getBlockMaterial(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));

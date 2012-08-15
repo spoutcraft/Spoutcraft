@@ -206,19 +206,6 @@ public class EntityPlayerSP extends EntityPlayer {
 		}
 	}
 
-	public void travelToTheEnd(int par1) {
-		if (!this.worldObj.isRemote) {
-			if (this.dimension == 1 && par1 == 1) {
-				this.triggerAchievement(AchievementList.theEnd2);
-				this.mc.displayGuiScreen(new GuiWinGame());
-			} else {
-				this.triggerAchievement(AchievementList.theEnd);
-				this.mc.sndManager.playSoundFX("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-				this.mc.usePortal(1);
-			}
-		}
-	}
-
 	public float getFOVMultiplier() {
 		float var1 = 1.0F;
 		if (this.capabilities.isFlying) {
@@ -336,14 +323,8 @@ public class EntityPlayerSP extends EntityPlayer {
 		}
 	}
 
-	public void respawnPlayer() {
-		this.mc.respawn(false, 0, false);
-	}
-
-	public void func_6420_o() {}
-
 	public void addChatMessage(String par1Str) {
-		this.mc.ingameGUI.func_73827_b().func_73757_a(par1Str, new Object[0]);
+		this.mc.ingameGUI.addChatMessageTranslate(par1Str); // Spout - keep old chat GUI
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {
@@ -437,7 +418,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void func_70006_a(String par1Str) {
-		this.mc.ingameGUI.func_73827_b().func_73765_a(par1Str);
+		//this.mc.ingameGUI.func_73827_b().func_73765_a(par1Str); // Spout removed
 	}
 
 	public boolean func_70003_b(String par1Str) {

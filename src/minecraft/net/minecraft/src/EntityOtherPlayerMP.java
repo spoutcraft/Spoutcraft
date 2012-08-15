@@ -144,7 +144,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	}
 
 	public void func_70006_a(String par1Str) {
-		Minecraft.func_71410_x().ingameGUI.func_73827_b().func_73765_a(par1Str);
+		//Minecraft.func_71410_x().ingameGUI.func_73827_b().func_73765_a(par1Str); // Spout removed TODO
 	}
 
 	public boolean func_70003_b(String par1Str) {
