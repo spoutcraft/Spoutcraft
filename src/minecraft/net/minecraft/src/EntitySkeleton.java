@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSkeleton;
+import org.spoutcraft.client.entity.CraftSkeleton; // Spout
 public class EntitySkeleton extends EntityMob {
 	private static final ItemStack defaultHeldItem = new ItemStack(Item.bow, 1);
 

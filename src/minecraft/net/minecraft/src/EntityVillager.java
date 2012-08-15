@@ -2,6 +2,11 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftVillager; //Spout
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 	private int randomTickDivider;
 	private boolean isMating;

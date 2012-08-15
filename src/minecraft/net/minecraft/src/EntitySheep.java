@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Random;
 
-import org.spoutcraft.client.entity.CraftSheep;
+import org.spoutcraft.client.entity.CraftSheep; // Spout
 
 public class EntitySheep extends EntityAnimal {
 

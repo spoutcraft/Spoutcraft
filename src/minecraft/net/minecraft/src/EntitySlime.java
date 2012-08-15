@@ -90,7 +90,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			this.field_70813_a = 1.0F;
 		}
 
-		this.func_40136_ag();
+		this.func_70808_l();
 	}
 
 	protected void updateEntityActionState() {
@@ -113,7 +113,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 			}
 
-			this.field_40139_a = 1.0F;
+			this.field_70813_a = 1.0F;
 			this.moveStrafing = 1.0F - this.rand.nextFloat() * 2.0F;
 			this.moveForward = (float)(1 * this.getSlimeSize());
 		} else {

@@ -1,16 +1,11 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer;
-
 public class EntitySuspendFX extends EntityFX {
 	public EntitySuspendFX(World par1World, double par2, double par4, double par6, double par8, double par10, double par12) {
 		super(par1World, par2, par4 - 0.125D, par6, par8, par10, par12);
-		//Spout HD start
-		Colorizer.setColorF(Colorizer.colorizeBiome(6710962, Colorizer.COLOR_MAP_UNDERWATER, (int)par2, (int)par4, (int)par6));
-		this.particleRed = Colorizer.setColor[0];
-		this.particleGreen = Colorizer.setColor[1];
-		this.particleBlue = Colorizer.setColor[2];
-		//Spout HD end
+		this.particleRed = 0.4F;
+		this.particleGreen = 0.4F;
+		this.particleBlue = 0.7F;
 		this.setParticleTextureIndex(0);
 		this.setSize(0.01F, 0.01F);
 		this.particleScale *= this.rand.nextFloat() * 0.6F + 0.2F;

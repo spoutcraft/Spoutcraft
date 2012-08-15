@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftSilverfish;
+import org.spoutcraft.client.entity.CraftSilverfish; // Spout
 
 public class EntitySilverfish extends EntityMob {
 	private int allySummonCooldown;
