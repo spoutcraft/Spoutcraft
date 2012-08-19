@@ -11,6 +11,8 @@ public class EntityGhast extends EntityFlying implements IMob {
 	public double waypointY;
 	public double waypointZ;
 	private Entity targetedEntity = null;
+
+	/** Cooldown time between target loss and new target aquirement. */
 	private int aggroCooldown = 0;
 	public int prevAttackCounter = 0;
 	public int attackCounter = 0;
@@ -26,6 +28,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		//Spout end
 	}
 
+	/**
+	 * Called when the entity is attacked.
+	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		if ("fireball".equals(par1DamageSource.getDamageType()) && par1DamageSource.getEntity() instanceof EntityPlayer) {
 			super.attackEntityFrom(par1DamageSource, 1000);
@@ -45,6 +50,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		return 10;
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		super.onUpdate();
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
@@ -93,23 +101,27 @@ public class EntityGhast extends EntityFlying implements IMob {
 
 		if (this.targetedEntity == null || this.aggroCooldown-- <= 0) {
 			this.targetedEntity = this.worldObj.getClosestVulnerablePlayerToEntity(this, 100.0D);
+
 			if (this.targetedEntity != null) {
 				this.aggroCooldown = 20;
 			}
 		}
 
 		double var9 = 64.0D;
+
 		if (this.targetedEntity != null && this.targetedEntity.getDistanceSqToEntity(this) < var9 * var9) {
 			double var11 = this.targetedEntity.posX - this.posX;
 			double var13 = this.targetedEntity.boundingBox.minY + (double)(this.targetedEntity.height / 2.0F) - (this.posY + (double)(this.height / 2.0F));
 			double var15 = this.targetedEntity.posZ - this.posZ;
 			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(var11, var15)) * 180.0F / (float)Math.PI;
+
 			if (this.canEntityBeSeen(this.targetedEntity)) {
 				if (this.attackCounter == 10) {
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1007, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 				}
 
 				++this.attackCounter;
+
 				if (this.attackCounter == 20) {
 					this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1008, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
 					EntityFireball var17 = new EntityFireball(this.worldObj, this, var11, var13, var15);
@@ -126,6 +138,7 @@ public class EntityGhast extends EntityFlying implements IMob {
 			}
 		} else {
 			this.renderYawOffset = this.rotationYaw = -((float)Math.atan2(this.motionX, this.motionZ)) * 180.0F / (float)Math.PI;
+
 			if (this.attackCounter > 0) {
 				--this.attackCounter;
 			}
@@ -134,20 +147,25 @@ public class EntityGhast extends EntityFlying implements IMob {
 		if (!this.worldObj.isRemote) {
 			byte var21 = this.dataWatcher.getWatchableObjectByte(16);
 			byte var12 = (byte)(this.attackCounter > 10 ? 1 : 0);
+
 			if (var21 != var12) {
 				this.dataWatcher.updateObject(16, Byte.valueOf(var12));
 			}
 		}
 	}
 
+	/**
+	 * True if the ghast has an unobstructed line of travel to the waypoint.
+	 */
 	private boolean isCourseTraversable(double par1, double par3, double par5, double par7) {
 		double var9 = (this.waypointX - this.posX) / par7;
 		double var11 = (this.waypointY - this.posY) / par7;
 		double var13 = (this.waypointZ - this.posZ) / par7;
 		AxisAlignedBB var15 = this.boundingBox.copy();
 
-		for(int var16 = 1; (double)var16 < par7; ++var16) {
+		for (int var16 = 1; (double)var16 < par7; ++var16) {
 			var15.offset(var9, var11, var13);
+
 			if (!this.worldObj.getCollidingBoundingBoxes(this, var15).isEmpty()) {
 				return false;
 			}
@@ -156,45 +174,69 @@ public class EntityGhast extends EntityFlying implements IMob {
 		return true;
 	}
 
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return "mob.ghast.moan";
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.ghast.scream";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.ghast.death";
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return Item.gunpowder.shiftedIndex;
 	}
 
+	/**
+	 * Drop 0-2 items of this living's type
+	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(2) + this.rand.nextInt(1 + par2);
 		int var4;
 
-		for(var4 = 0; var4 < var3; ++var4) {
+		for (var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.ghastTear.shiftedIndex, 1);
 		}
 
 		var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
 
-		for(var4 = 0; var4 < var3; ++var4) {
+		for (var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.gunpowder.shiftedIndex, 1);
 		}
 	}
 
+	/**
+	 * Returns the volume for the sounds this mob makes.
+	 */
 	protected float getSoundVolume() {
 		return 10.0F;
 	}
 
+	/**
+	 * Checks if the entity's current position is a valid location to spawn this entity.
+	 */
 	public boolean getCanSpawnHere() {
 		return this.rand.nextInt(20) == 0 && super.getCanSpawnHere() && this.worldObj.difficultySetting > 0;
 	}
 
+	/**
+	 * Will return how many at most can spawn in a chunk at once.
+	 */
 	public int getMaxSpawnedInChunk() {
 		return 1;
 	}

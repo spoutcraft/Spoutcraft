@@ -5,6 +5,8 @@ import java.util.List;
 import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
 
 public class ItemBlock extends Item {
+
+	/** The block ID of the Block associated with this ItemBlock */
 	private int blockID;
 
 	public ItemBlock(int par1) {
@@ -13,12 +15,16 @@ public class ItemBlock extends Item {
 		this.setIconIndex(Block.blocksList[par1 + 256].getBlockTextureFromSide(2));
 	}
 
+	/**
+	 * Returns the blockID for this Item
+	 */
 	public int getBlockID() {
 		return this.blockID;
 	}
 
-	public boolean func_77648_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+	public boolean tryPlaceIntoWorld(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		int var11 = par3World.getBlockId(par4, par5, par6);
+
 		if (var11 == Block.snow.blockID) {
 			par7 = 1;
 		} else if (var11 != Block.vine.blockID && var11 != Block.tallGrass.blockID && var11 != Block.deadBush.blockID) {
@@ -53,11 +59,12 @@ public class ItemBlock extends Item {
 			return false;
 		} else if (par5 == 255 && Block.blocksList[this.blockID].blockMaterial.isSolid()) {
 			return false;
-		} else if (par3World.func_72931_a(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer)) {
+		} else if (par3World.canPlaceEntityOnSide(this.blockID, par4, par5, par6, false, par7, par2EntityPlayer)) {
 			Block var12 = Block.blocksList[this.blockID];
+
 			if (par3World.setBlockAndMetadataWithNotify(par4, par5, par6, this.blockID, this.getMetadata(par1ItemStack.getItemDamage()))) {
 				if (par3World.getBlockId(par4, par5, par6) == this.blockID) {
-					Block.blocksList[this.blockID].func_71909_a(par3World, par4, par5, par6, par7, par8, par9, par10);
+					Block.blocksList[this.blockID].updateBlockMetadata(par3World, par4, par5, par6, par7, par8, par9, par10);
 					Block.blocksList[this.blockID].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer);
 				}
 
@@ -71,7 +78,10 @@ public class ItemBlock extends Item {
 		}
 	}
 
-	public boolean func_77884_a(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {
+	/**
+	 * Returns true if the given ItemBlock can be placed on the given side of the given block position.
+	 */
+	public boolean canPlaceItemBlockOnSide(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer, ItemStack par7ItemStack) {
 		int var8 = par1World.getBlockId(par2, par3, par4);
 
 		if (var8 == Block.snow.blockID) {
@@ -102,7 +112,7 @@ public class ItemBlock extends Item {
 			}
 		}
 
-		return par1World.func_72931_a(this.getBlockID(), par2, par3, par4, false, par5, (Entity)null);
+		return par1World.canPlaceEntityOnSide(this.getBlockID(), par2, par3, par4, false, par5, (Entity)null);
 	}
 
 	public String getItemNameIS(ItemStack par1ItemStack) {
@@ -113,12 +123,18 @@ public class ItemBlock extends Item {
 		return Block.blocksList[this.blockID].getBlockName();
 	}
 
-	public CreativeTabs func_77640_w() {
-		return Block.blocksList[this.blockID].func_71882_w();
+	/**
+	 * gets the CreativeTab this item is displayed on
+	 */
+	public CreativeTabs getCreativeTab() {
+		return Block.blocksList[this.blockID].getCreativeTabToDisplayOn();
 	}
 
-	public void func_77633_a(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		Block.blocksList[this.blockID].func_71879_a(par1, par2CreativeTabs, par3List);
+	/**
+	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+	 */
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
 	
 //Spout start

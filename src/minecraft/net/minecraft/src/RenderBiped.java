@@ -6,7 +6,6 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //spout end
 
 public class RenderBiped extends RenderLiving {
-
 	protected ModelBiped modelBipedMain;
 	protected float field_77070_b;
 
@@ -24,11 +23,13 @@ public class RenderBiped extends RenderLiving {
 	protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
 		super.renderEquippedItems(par1EntityLiving, par2);
 		ItemStack var3 = par1EntityLiving.getHeldItem();
+
 		if (var3 != null) {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedRightArm.postRender(0.0625F);
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 			float var4;
+
 			if (var3.itemID < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3.itemID].getRenderType())) {
 				var4 = 0.5F;
 				GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
@@ -61,12 +62,12 @@ public class RenderBiped extends RenderLiving {
 			}
 
 			this.renderManager.itemRenderer.renderItem(par1EntityLiving, var3, 0);
+
 			if (var3.getItem().requiresMultipleRenderPasses()) {
 				this.renderManager.itemRenderer.renderItem(par1EntityLiving, var3, 1);
 			}
 
 			GL11.glPopMatrix();
 		}
-
 	}
 }

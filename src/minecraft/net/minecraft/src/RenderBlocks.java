@@ -166,7 +166,7 @@ public class RenderBlocks {
 		Tessellator var5 = Tessellator.instance;
 		int var6 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		int var7 = BlockBed.getDirection(var6);
-		boolean var8 = BlockBed.isBlockFootOfBed(var6);
+		boolean var8 = BlockBed.isBlockHeadOfBed(var6);
 		float var9 = 0.5F;
 		float var10 = 1.0F;
 		float var11 = 0.8F;
@@ -807,14 +807,14 @@ public class RenderBlocks {
 		float var22 = 0.0625F;
 		float var23 = 0.0625F;
 		float var24 = 0.625F;
-		var21[0] = Vec3.func_72437_a().func_72345_a((double)(-var22), 0.0D, (double)(-var23));
-		var21[1] = Vec3.func_72437_a().func_72345_a((double)var22, 0.0D, (double)(-var23));
-		var21[2] = Vec3.func_72437_a().func_72345_a((double)var22, 0.0D, (double)var23);
-		var21[3] = Vec3.func_72437_a().func_72345_a((double)(-var22), 0.0D, (double)var23);
-		var21[4] = Vec3.func_72437_a().func_72345_a((double)(-var22), (double)var24, (double)(-var23));
-		var21[5] = Vec3.func_72437_a().func_72345_a((double)var22, (double)var24, (double)(-var23));
-		var21[6] = Vec3.func_72437_a().func_72345_a((double)var22, (double)var24, (double)var23);
-		var21[7] = Vec3.func_72437_a().func_72345_a((double)(-var22), (double)var24, (double)var23);
+		var21[0] = Vec3.getVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)(-var23));
+		var21[1] = Vec3.getVec3Pool().getVecFromPool((double)var22, 0.0D, (double)(-var23));
+		var21[2] = Vec3.getVec3Pool().getVecFromPool((double)var22, 0.0D, (double)var23);
+		var21[3] = Vec3.getVec3Pool().getVecFromPool((double)(-var22), 0.0D, (double)var23);
+		var21[4] = Vec3.getVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)(-var23));
+		var21[5] = Vec3.getVec3Pool().getVecFromPool((double)var22, (double)var24, (double)(-var23));
+		var21[6] = Vec3.getVec3Pool().getVecFromPool((double)var22, (double)var24, (double)var23);
+		var21[7] = Vec3.getVec3Pool().getVecFromPool((double)(-var22), (double)var24, (double)var23);
 
 		for (int var25 = 0; var25 < 8; ++var25) {
 			if (var7) {
@@ -827,7 +827,7 @@ public class RenderBlocks {
 
 
 			if (var6 == 0 || var6 == 7) {
-				var21[var25].func_72446_c((float)Math.PI);
+				var21[var25].rotateAroundZ((float)Math.PI);
 			}
 
 			if (var6 == 6 || var6 == 0) {
@@ -932,7 +932,7 @@ public class RenderBlocks {
 		int var7 = var6 & 3;
 		boolean var8 = (var6 & 4) == 4;
 		boolean var9 = (var6 & 8) == 8;
-		boolean var10 = !this.blockAccess.func_72797_t(par2, par3 - 1, par4);
+		boolean var10 = !this.blockAccess.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4);
 		boolean var11 = this.overrideBlockTexture >= 0;
 
 		if (!var11) {
@@ -985,14 +985,14 @@ public class RenderBlocks {
 		float var26 = 0.046875F;
 		float var27 = 0.046875F;
 		float var28 = 0.3125F;
-		var25[0] = Vec3.func_72437_a().func_72345_a((double)(-var26), 0.0D, (double)(-var27));
-		var25[1] = Vec3.func_72437_a().func_72345_a((double)var26, 0.0D, (double)(-var27));
-		var25[2] = Vec3.func_72437_a().func_72345_a((double)var26, 0.0D, (double)var27);
-		var25[3] = Vec3.func_72437_a().func_72345_a((double)(-var26), 0.0D, (double)var27);
-		var25[4] = Vec3.func_72437_a().func_72345_a((double)(-var26), (double)var28, (double)(-var27));
-		var25[5] = Vec3.func_72437_a().func_72345_a((double)var26, (double)var28, (double)(-var27));
-		var25[6] = Vec3.func_72437_a().func_72345_a((double)var26, (double)var28, (double)var27);
-		var25[7] = Vec3.func_72437_a().func_72345_a((double)(-var26), (double)var28, (double)var27);
+		var25[0] = Vec3.getVec3Pool().getVecFromPool((double)(-var26), 0.0D, (double)(-var27));
+		var25[1] = Vec3.getVec3Pool().getVecFromPool((double)var26, 0.0D, (double)(-var27));
+		var25[2] = Vec3.getVec3Pool().getVecFromPool((double)var26, 0.0D, (double)var27);
+		var25[3] = Vec3.getVec3Pool().getVecFromPool((double)(-var26), 0.0D, (double)var27);
+		var25[4] = Vec3.getVec3Pool().getVecFromPool((double)(-var26), (double)var28, (double)(-var27));
+		var25[5] = Vec3.getVec3Pool().getVecFromPool((double)var26, (double)var28, (double)(-var27));
+		var25[6] = Vec3.getVec3Pool().getVecFromPool((double)var26, (double)var28, (double)var27);
+		var25[7] = Vec3.getVec3Pool().getVecFromPool((double)(-var26), (double)var28, (double)var27);
 
 		for (int var29 = 0; var29 < 8; ++var29) {
 			var25[var29].zCoord += 0.0625D;
@@ -1090,14 +1090,14 @@ public class RenderBlocks {
 		float var62 = 0.09375F;
 		float var38 = 0.09375F;
 		float var39 = 0.03125F;
-		var25[0] = Vec3.func_72437_a().func_72345_a((double)(-var62), 0.0D, (double)(-var38));
-		var25[1] = Vec3.func_72437_a().func_72345_a((double)var62, 0.0D, (double)(-var38));
-		var25[2] = Vec3.func_72437_a().func_72345_a((double)var62, 0.0D, (double)var38);
-		var25[3] = Vec3.func_72437_a().func_72345_a((double)(-var62), 0.0D, (double)var38);
-		var25[4] = Vec3.func_72437_a().func_72345_a((double)(-var62), (double)var39, (double)(-var38));
-		var25[5] = Vec3.func_72437_a().func_72345_a((double)var62, (double)var39, (double)(-var38));
-		var25[6] = Vec3.func_72437_a().func_72345_a((double)var62, (double)var39, (double)var38);
-		var25[7] = Vec3.func_72437_a().func_72345_a((double)(-var62), (double)var39, (double)var38);
+		var25[0] = Vec3.getVec3Pool().getVecFromPool((double)(-var62), 0.0D, (double)(-var38));
+		var25[1] = Vec3.getVec3Pool().getVecFromPool((double)var62, 0.0D, (double)(-var38));
+		var25[2] = Vec3.getVec3Pool().getVecFromPool((double)var62, 0.0D, (double)var38);
+		var25[3] = Vec3.getVec3Pool().getVecFromPool((double)(-var62), 0.0D, (double)var38);
+		var25[4] = Vec3.getVec3Pool().getVecFromPool((double)(-var62), (double)var39, (double)(-var38));
+		var25[5] = Vec3.getVec3Pool().getVecFromPool((double)var62, (double)var39, (double)(-var38));
+		var25[6] = Vec3.getVec3Pool().getVecFromPool((double)var62, (double)var39, (double)var38);
+		var25[7] = Vec3.getVec3Pool().getVecFromPool((double)(-var62), (double)var39, (double)var38);
 
 		for (int var40 = 0; var40 < 8; ++var40) {
 			var25[var40].zCoord += 0.21875D;
@@ -1192,8 +1192,8 @@ public class RenderBlocks {
 			float var46 = 0.03125F;
 			float var47 = 0.5F - var46 / 2.0F;
 			float var48 = var47 + var46;
-			int var49 = (Block.field_72062_bU.blockIndexInTexture & 15) << 4;
-			int var50 = Block.field_72062_bU.blockIndexInTexture & 240;
+			int var49 = (Block.tripWire.blockIndexInTexture & 15) << 4;
+			int var50 = Block.tripWire.blockIndexInTexture & 240;
 			double var51 = (double)((float)var49 / 256.0F);
 			double var53 = (double)((float)(var49 + 16) / 256.0F);
 			double var55 = (double)((float)(var50 + (var8 ? 2 : 0)) / 256.0F);
@@ -1392,7 +1392,7 @@ public class RenderBlocks {
 		double var28;
 		double var30;
 		double var32;
-		if (!this.blockAccess.func_72797_t(par2, par3 - 1, par4) && !Block.fire.canBlockCatchFire(this.blockAccess, par2, par3 - 1, par4)) {
+		if (!this.blockAccess.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && !Block.fire.canBlockCatchFire(this.blockAccess, par2, par3 - 1, par4)) {
 			float var36 = 0.2F;
 			float var19 = 0.0625F;
 			if ((par2 + par3 + par4 & 1) == 1) {
@@ -2723,7 +2723,7 @@ public class RenderBlocks {
 			if (this.renderAllFaces || var10) {
 				var13 = true;
 				var34 = par1Block.getBlockTextureFromSideAndMetadata(1, var23);
-				float var35 = (float)BlockFluid.func_72204_a(this.blockAccess, par2, par3, par4, var22);
+				float var35 = (float)BlockFluid.getFlowDirection(this.blockAccess, par2, par3, par4, var22);
 				if (var35 > -999.0F) {
 					var34 = par1Block.getBlockTextureFromSideAndMetadata(2, var23);
 				}

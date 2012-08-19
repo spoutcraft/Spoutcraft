@@ -9,20 +9,20 @@ public class ContainerBrewingStand extends Container {
 
 	public ContainerBrewingStand(InventoryPlayer par1InventoryPlayer, TileEntityBrewingStand par2TileEntityBrewingStand) {
 		this.tileBrewingStand = par2TileEntityBrewingStand;
-		this.func_75146_a(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 0, 56, 46));
-		this.func_75146_a(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 1, 79, 53));
-		this.func_75146_a(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 2, 102, 46));
-		this.field_75186_f = this.func_75146_a(new SlotBrewingStandIngredient(this, par2TileEntityBrewingStand, 3, 79, 17));
+		this.addSlotToContainer(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 0, 56, 46));
+		this.addSlotToContainer(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 1, 79, 53));
+		this.addSlotToContainer(new SlotBrewingStandPotion(par1InventoryPlayer.player, par2TileEntityBrewingStand, 2, 102, 46));
+		this.field_75186_f = this.addSlotToContainer(new SlotBrewingStandIngredient(this, par2TileEntityBrewingStand, 3, 79, 17));
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.func_75146_a(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+				this.addSlotToContainer(new Slot(par1InventoryPlayer, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.func_75146_a(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
+			this.addSlotToContainer(new Slot(par1InventoryPlayer, var3, 8 + var3 * 18, 142));
 		}
 	}
 	
@@ -32,17 +32,21 @@ public class ContainerBrewingStand extends Container {
 	}
 	//Spout end
 
-	public void func_75132_a(ICrafting par1ICrafting) {
-		super.func_75132_a(par1ICrafting);
+	public void addCraftingToCrafters(ICrafting par1ICrafting) {
+		super.addCraftingToCrafters(par1ICrafting);
 		par1ICrafting.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
 	}
 
+	/**
+	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none
+	 */
 	public void updateCraftingResults() {
 		super.updateCraftingResults();
 		Iterator var1 = this.crafters.iterator();
 
 		while (var1.hasNext()) {
 			ICrafting var2 = (ICrafting)var1.next();
+
 			if (this.brewTime != this.tileBrewingStand.getBrewTime()) {
 				var2.updateCraftingInventoryInfo(this, 0, this.tileBrewingStand.getBrewTime());
 			}
@@ -61,12 +65,17 @@ public class ContainerBrewingStand extends Container {
 		return this.tileBrewingStand.isUseableByPlayer(par1EntityPlayer);
 	}
 
+	/**
+	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
+	 */
 	public ItemStack transferStackInSlot(int par1) {
 		ItemStack var2 = null;
 		Slot var3 = (Slot)this.inventorySlots.get(par1);
+
 		if (var3 != null && var3.getHasStack()) {
 			ItemStack var4 = var3.getStack();
 			var2 = var4.copy();
+
 			if ((par1 < 0 || par1 > 2) && par1 != 3) {
 				if (!this.field_75186_f.getHasStack() && this.field_75186_f.isItemValid(var4)) {
 					if (!this.mergeItemStack(var4, 3, 4, false)) {
@@ -92,7 +101,7 @@ public class ContainerBrewingStand extends Container {
 					return null;
 				}
 
-				var3.func_75220_a(var4, var2);
+				var3.onSlotChange(var4, var2);
 			}
 
 			if (var4.stackSize == 0) {

@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSnowball;
+
 public class EntitySnowball extends EntityThrowable {
 	public EntitySnowball(World par1World) {
 		super(par1World);
@@ -23,16 +24,18 @@ public class EntitySnowball extends EntityThrowable {
 		//Spout end
 	}
 
+	/**
+	 * Called when this EntityThrowable hits a block or entity.
+	 */
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		if (par1MovingObjectPosition.entityHit != null) {
 			byte var2 = 0;
+
 			if (par1MovingObjectPosition.entityHit instanceof EntityBlaze) {
 				var2 = 3;
 			}
 
-			if (par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), var2)) {
-				;
-			}
+			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), var2);
 		}
 
 		for (int var3 = 0; var3 < 8; ++var3) {

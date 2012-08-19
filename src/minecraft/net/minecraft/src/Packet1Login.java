@@ -7,11 +7,15 @@ import java.io.IOException;
 import org.spoutcraft.client.DataMiningThread; //Spout
 
 public class Packet1Login extends Packet {
-	public int field_73561_a = 0;
+
+	/** The player's entity ID */
+	public int clientEntityId = 0;
 	public WorldType terrainType;
 	public boolean field_73560_c;
-	public EnumGameType field_73557_d;
-	public int field_73558_e;
+	public EnumGameType gameType;
+
+	/** -1: The Nether, 0: The Overworld, 1: The End */
+	public int dimension;
 
 	/** The difficulty setting byte. */
 	public byte difficultySetting;
@@ -25,11 +29,11 @@ public class Packet1Login extends Packet {
 	public Packet1Login() {}
 
 	public Packet1Login(int par1, WorldType par2WorldType, EnumGameType par3EnumGameType, boolean par4, int par5, int par6, int par7, int par8) {
-		this.field_73561_a = par1;
+		this.clientEntityId = par1;
 		this.terrainType = par2WorldType;
-		this.field_73558_e = par5;
+		this.dimension = par5;
 		this.difficultySetting = (byte)par6;
-		this.field_73557_d = par3EnumGameType;
+		this.gameType = par3EnumGameType;
 		this.worldHeight = (byte)par7;
 		this.maxPlayers = (byte)par8;
 		this.field_73560_c = par4;
@@ -39,7 +43,7 @@ public class Packet1Login extends Packet {
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
 	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
-		this.field_73561_a = par1DataInputStream.readInt();
+		this.clientEntityId = par1DataInputStream.readInt();
 		String var2 = readString(par1DataInputStream, 16);
 		this.terrainType = WorldType.parseWorldType(var2);
 
@@ -50,8 +54,8 @@ public class Packet1Login extends Packet {
 		byte var3 = par1DataInputStream.readByte();
 		this.field_73560_c = (var3 & 8) == 8;
 		int var4 = var3 & -9;
-		this.field_73557_d = EnumGameType.func_77146_a(var4);
-		this.field_73558_e = par1DataInputStream.readByte();
+		this.gameType = EnumGameType.getByID(var4);
+		this.dimension = par1DataInputStream.readByte();
 		this.difficultySetting = par1DataInputStream.readByte();
 		this.worldHeight = par1DataInputStream.readByte();
 		this.maxPlayers = par1DataInputStream.readByte();
@@ -61,16 +65,16 @@ public class Packet1Login extends Packet {
 	 * Abstract. Writes the raw packet data to the data stream.
 	 */
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
-		par1DataOutputStream.writeInt(this.field_73561_a);
+		par1DataOutputStream.writeInt(this.clientEntityId);
 		writeString(this.terrainType == null ? "" : this.terrainType.getWorldTypeName(), par1DataOutputStream);
-		int var2 = this.field_73557_d.func_77148_a();
+		int var2 = this.gameType.getID();
 
 		if (this.field_73560_c) {
 			var2 |= 8;
 		}
 
 		par1DataOutputStream.writeByte(var2);
-		par1DataOutputStream.writeByte(this.field_73558_e);
+		par1DataOutputStream.writeByte(this.dimension);
 		par1DataOutputStream.writeByte(this.difficultySetting);
 		par1DataOutputStream.writeByte(this.worldHeight);
 		par1DataOutputStream.writeByte(this.maxPlayers);

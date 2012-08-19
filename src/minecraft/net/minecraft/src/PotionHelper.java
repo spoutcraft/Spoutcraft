@@ -22,16 +22,27 @@ public class PotionHelper {
 	private static final HashMap potionRequirements = new HashMap();
 	private static final HashMap field_77928_m = new HashMap();
 	private static final HashMap field_77925_n;
+
+	/** An array of possible potion prefix names, as translation IDs. */
 	private static final String[] potionPrefixes;
 
+	/**
+	 * Is the bit given set to 1?
+	 */
 	public static boolean checkFlag(int par0, int par1) {
 		return (par0 & 1 << par1) != 0;
 	}
 
+	/**
+	 * Returns 1 if the flag is set, 0 if it is not set.
+	 */
 	private static int isFlagSet(int par0, int par1) {
 		return checkFlag(par0, par1) ? 1 : 0;
 	}
 
+	/**
+	 * Returns 0 if the flag is set, 1 if it is not set.
+	 */
 	private static int isFlagUnset(int par0, int par1) {
 		return checkFlag(par0, par1) ? 0 : 1;
 	}
@@ -40,6 +51,9 @@ public class PotionHelper {
 		return func_77908_a(par0, 5, 4, 3, 2, 1);
 	}
 
+	/**
+	 * Given a {@link Collection}<{@link PotionEffect}> will return an Integer color.
+	 */
 	public static int calcPotionLiquidColor(Collection par0Collection) {
 		int var1 = Colorizer.getWaterBottleColor(); //Spout HD
 		if (par0Collection != null && !par0Collection.isEmpty()) {
@@ -73,7 +87,7 @@ public class PotionHelper {
 	public static int func_77915_a(int par0, boolean par1) {
 		if (!par1) {
 			if (field_77925_n.containsKey(Integer.valueOf(par0))) {
-				return ((Integer) field_77925_n.get(Integer.valueOf(par0))).intValue();
+				return ((Integer)field_77925_n.get(Integer.valueOf(par0))).intValue();
 			} else {
 				int var2 = calcPotionLiquidColor(getPotionEffects(par0, false));
 				field_77925_n.put(Integer.valueOf(par0), Integer.valueOf(var2));
@@ -91,6 +105,7 @@ public class PotionHelper {
 
 	private static int func_77904_a(boolean par0, boolean par1, boolean par2, int par3, int par4, int par5, int par6) {
 		int var7 = 0;
+
 		if (par0) {
 			var7 = isFlagUnset(par6, par4);
 		} else if (par3 != -1) {
@@ -116,8 +131,12 @@ public class PotionHelper {
 		return var7;
 	}
 
+	/**
+	 * Count the number of bits in an integer set to ON.
+	 */
 	private static int countSetFlags(int par0) {
 		int var1;
+
 		for (var1 = 0; par0 > 0; ++var1) {
 			par0 &= par0 - 1;
 		}
@@ -130,8 +149,10 @@ public class PotionHelper {
 			int var4 = par0Str.indexOf(124, par1);
 			int var5;
 			int var17;
+
 			if (var4 >= 0 && var4 < par2) {
 				var5 = parsePotionEffects(par0Str, par1, var4 - 1, par3);
+
 				if (var5 > 0) {
 					return var5;
 				} else {
@@ -140,8 +161,10 @@ public class PotionHelper {
 				}
 			} else {
 				var5 = par0Str.indexOf(38, par1);
+
 				if (var5 >= 0 && var5 < par2) {
 					var17 = parsePotionEffects(par0Str, par1, var5 - 1, par3);
+
 					if (var17 <= 0) {
 						return 0;
 					} else {
@@ -161,6 +184,7 @@ public class PotionHelper {
 
 					for (int var15 = par1; var15 < par2; ++var15) {
 						char var16 = par0Str.charAt(var15);
+
 						if (var16 >= 48 && var16 <= 57) {
 							if (var6) {
 								var13 = var16 - 48;
@@ -247,6 +271,9 @@ public class PotionHelper {
 		}
 	}
 
+	/**
+	 * Returns a list of effects for the specified potion damage value.
+	 */
 	public static List getPotionEffects(int par0, boolean par1) {
 		ArrayList var2 = null;
 		Potion[] var3 = Potion.potionTypes;
@@ -254,15 +281,20 @@ public class PotionHelper {
 
 		for (int var5 = 0; var5 < var4; ++var5) {
 			Potion var6 = var3[var5];
+
 			if (var6 != null && (!var6.isUsable() || par1)) {
 				String var7 = (String)potionRequirements.get(Integer.valueOf(var6.getId()));
+
 				if (var7 != null) {
 					int var8 = parsePotionEffects(var7, 0, var7.length(), par0);
+
 					if (var8 > 0) {
 						int var9 = 0;
-						String var10 = (String) field_77928_m.get(Integer.valueOf(var6.getId()));
+						String var10 = (String)field_77928_m.get(Integer.valueOf(var6.getId()));
+
 						if (var10 != null) {
 							var9 = parsePotionEffects(var10, 0, var10.length(), par0);
+
 							if (var9 < 0) {
 								var9 = 0;
 							}
@@ -274,6 +306,7 @@ public class PotionHelper {
 							var8 = 1200 * (var8 * 3 + (var8 - 1) * 2);
 							var8 >>= var9;
 							var8 = (int)Math.round((double)var8 * var6.getEffectiveness());
+
 							if ((par0 & 16384) != 0) {
 								var8 = (int)Math.round((double)var8 * 0.75D + 0.5D);
 							}
@@ -292,6 +325,11 @@ public class PotionHelper {
 		return var2;
 	}
 
+	/**
+	 * Does bit operations for brewPotionData, given data, the index of the bit being operated upon, whether the bit will
+	 * be removed, whether the bit will be toggled (NOT), or whether the data field will be set to 0 if the bit is not
+	 * present.
+	 */
 	private static int brewBitOperations(int par0, int par1, boolean par2, boolean par3, boolean par4) {
 		if (par4) {
 			if (!checkFlag(par0, par1)) {
@@ -312,6 +350,10 @@ public class PotionHelper {
 		return par0;
 	}
 
+	/**
+	 * Generate a data value for a potion, given its previous data value and the encoded string of new effects it will
+	 * receive
+	 */
 	public static int applyIngredient(int par0, String par1Str) {
 		byte var2 = 0;
 		int var3 = par1Str.length();
@@ -323,6 +365,7 @@ public class PotionHelper {
 
 		for (int var9 = var2; var9 < var3; ++var9) {
 			char var10 = par1Str.charAt(var9);
+
 			if (var10 >= 48 && var10 <= 57) {
 				var8 *= 10;
 				var8 += var10 - 48;
@@ -411,6 +454,6 @@ public class PotionHelper {
 		redstoneEffect = "-5+6-7";
 		gunpowderEffect = "+14&13-13";
 		field_77925_n = new HashMap();
-		potionPrefixes = new String[]{"potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat", "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming", "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid", "potion.prefix.gross", "potion.prefix.stinky"};
+		potionPrefixes = new String[] {"potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat", "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming", "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid", "potion.prefix.gross", "potion.prefix.stinky"};
 	}
 }

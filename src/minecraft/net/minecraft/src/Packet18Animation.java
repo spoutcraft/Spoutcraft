@@ -3,17 +3,12 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import net.minecraft.src.Entity;
-import net.minecraft.src.NetHandler;
-import net.minecraft.src.Packet;
 
 //Spout Start
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
@@ -22,9 +17,11 @@ import org.spoutcraft.client.packet.PacketClientAddons;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
+//Spout End
 
 public class Packet18Animation extends Packet {
 
+	/** The entity ID, in this case it's the player ID. */
 	public int entityId;
 	public int animate;
 
@@ -35,16 +32,25 @@ public class Packet18Animation extends Packet {
 		this.animate = par2;
 	}
 
+	/**
+	 * Abstract. Reads the raw packet data from the data stream.
+	 */
 	public void readPacketData(DataInputStream par1DataInputStream) throws IOException {
 		this.entityId = par1DataInputStream.readInt();
 		this.animate = par1DataInputStream.readByte();
 	}
 
+	/**
+	 * Abstract. Writes the raw packet data to the data stream.
+	 */
 	public void writePacketData(DataOutputStream par1DataOutputStream) throws IOException {
 		par1DataOutputStream.writeInt(this.entityId);
 		par1DataOutputStream.writeByte(this.animate);
 	}
 
+	/**
+	 * Passes this Packet on to the NetHandler for processing.
+	 */
 	public void processPacket(NetHandler par1NetHandler) {
 		//Spout Start
 		if (entityId == -42) {
@@ -65,6 +71,9 @@ public class Packet18Animation extends Packet {
 		//Spout End
 	}
 
+	/**
+	 * Abstract. Return the size of the packet (not counting the header).
+	 */
 	public int getPacketSize() {
 		return 5;
 	}

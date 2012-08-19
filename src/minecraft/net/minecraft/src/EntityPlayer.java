@@ -16,7 +16,7 @@ import org.spoutcraft.client.special.VIP;
 
 public abstract class EntityPlayer extends EntityLiving implements ICommandSender {
 	public InventoryPlayer inventory = new InventoryPlayer(this);
-	private InventoryEnderChest field_71078_a = new InventoryEnderChest();
+	private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
 	public Container inventorySlots;
 	public Container craftingInventory;
 	protected FoodStats foodStats = new FoodStats();
@@ -238,10 +238,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (par1ItemStack.getItemUseAction() == EnumAction.eat) {
 			for (int var3 = 0; var3 < par2; ++var3) {
-				Vec3 var4 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+				Vec3 var4 = Vec3.getVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 				var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-				Vec3 var5 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+				Vec3 var5 = Vec3.getVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 				var5.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 				var5.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 				var5 = var5.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
@@ -357,10 +357,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.inventory.decrementAnimations();
 		this.prevCameraYaw = this.cameraYaw;
 		super.onLivingUpdate();
-		this.landMovementFactor = this.capabilities.func_75094_b();
+		this.landMovementFactor = this.capabilities.getWalkSpeed();
 		this.jumpMovementFactor = this.speedInAir;
 		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { //Spout no sprinting while moving backwards
-			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.capabilities.func_75094_b() * 0.3D);
+			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.capabilities.getWalkSpeed() * 0.3D);
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
 
@@ -539,7 +539,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		if (par1NBTTagCompound.hasKey("EnderItems")) {
 			NBTTagList var3 = par1NBTTagCompound.getTagList("EnderItems");
-			this.field_71078_a.func_70486_a(var3);
+			this.theInventoryEnderChest.loadInventoryFromNBT(var3);
 		}
 	}
 
@@ -560,14 +560,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		this.foodStats.writeNBT(par1NBTTagCompound);
 		this.capabilities.writeCapabilitiesToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setTag("EnderItems", this.field_71078_a.func_70487_g());
+		par1NBTTagCompound.setTag("EnderItems", this.theInventoryEnderChest.saveInventoryToNBT());
 	}
 
 	public void displayGUIChest(IInventory par1IInventory) {}
 
 	public void displayGUIEnchantment(int par1, int par2, int par3) {}
 
-	public void displayWorkbenchGUI(int par1, int par2, int par3) {}
+	public void displayGUIWorkbench(int par1, int par2, int par3) {}
 
 	public void onItemPickup(Entity par1Entity, int par2) {}
 
@@ -661,7 +661,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			}
 
 			if (!(par1EntityLiving instanceof EntityPlayer) || this.isPVPEnabled()) {
-				List var6 = this.worldObj.getEntitiesWithinAABB(EntityWolf.class, AxisAlignedBB.func_72332_a().func_72299_a(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
+				List var6 = this.worldObj.getEntitiesWithinAABB(EntityWolf.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
 				Iterator var4 = var6.iterator();
 
 				while (var4.hasNext()) {
@@ -703,11 +703,11 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void displayGUIBrewingStand(TileEntityBrewingStand par1TileEntityBrewingStand) {}
 
-	public void func_71030_a(IMerchant par1IMerchant) {}
+	public void displayGUIMerchant(IMerchant par1IMerchant) {}
 
-	public void func_71048_c(ItemStack par1ItemStack) {}
+	public void displayGUIBook(ItemStack par1ItemStack) {}
 
-	public boolean func_70998_m(Entity par1Entity) {
+	public boolean interactWith(Entity par1Entity) {
 		if (par1Entity.interact(this)) {
 			return true;
 		} else {
@@ -718,7 +718,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 					var2 = var2.copy();
 				}
 
-				if (var2.func_77947_a((EntityLiving)par1Entity)) {
+				if (var2.interactWith((EntityLiving)par1Entity)) {
 					if (var2.stackSize <= 0 && !this.capabilities.isCreativeMode) {
 						this.destroyCurrentEquippedItem();
 					}
@@ -861,7 +861,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 				return EnumStatus.OTHER_PROBLEM;
 			}
 
-			if (!this.worldObj.worldProvider.isSurfaceWorld()) {
+			if (!this.worldObj.provider.isSurfaceWorld()) {
 				return EnumStatus.NOT_POSSIBLE_HERE;
 			}
 
@@ -875,7 +875,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 			double var4 = 8.0D;
 			double var6 = 5.0D;
-			List var8 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.func_72332_a().func_72299_a((double)par1 - var4, (double)par2 - var6, (double)par3 - var4, (double)par1 + var4, (double)par2 + var6, (double)par3 + var4));
+			List var8 = this.worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool((double)par1 - var4, (double)par2 - var6, (double)par3 - var4, (double)par1 + var4, (double)par2 + var6, (double)par3 + var4));
 			if (!var8.isEmpty()) {
 				return EnumStatus.NOT_SAFE;
 			}
@@ -1062,7 +1062,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		if (this.capabilities.isFlying && this.ridingEntity == null) {
 			double var9 = this.motionY;
 			float var11 = this.jumpMovementFactor;
-			this.jumpMovementFactor =this.capabilities.func_75093_a();
+			this.jumpMovementFactor =this.capabilities.getFlySpeed();
 			//Spout start
 			jumpMovementFactor *= ConfigReader.flightSpeedMultiplier;
 			if (this.isSprinting()) {
@@ -1250,7 +1250,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public boolean canPlayerEdit(int par1, int par2, int par3) {
-		return this.capabilities.field_75099_e;
+		return this.capabilities.allowEdit;
 	}
 
 	protected int getExperiencePoints(EntityPlayer par1EntityPlayer) {
@@ -1262,13 +1262,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return true;
 	}
 
-	public String func_70023_ak() {
+	public String getEntityName() {
 		return this.username;
 	}
 
 	public void travelToTheEnd(int par1) {}
 
-	public void func_71049_a(EntityPlayer par1EntityPlayer, boolean par2) {
+	public void clonePlayer(EntityPlayer par1EntityPlayer, boolean par2) {
 		if (par2) {
 			this.inventory.copyInventory(par1EntityPlayer.inventory);
 			this.health = par1EntityPlayer.health;
@@ -1279,7 +1279,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			this.score = par1EntityPlayer.score;
 		}
 
-		this.field_71078_a = par1EntityPlayer.field_71078_a;
+		this.theInventoryEnderChest = par1EntityPlayer.theInventoryEnderChest;
 	}
 	//Spout added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
@@ -1316,23 +1316,23 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return !this.capabilities.isFlying;
 	}
 
-	public void func_71016_p() {}
+	public void sendPlayerAbilities() {}
 
-	public void func_71033_a(EnumGameType par1EnumGameType) {}
+	public void sendGameTypeToPlayer(EnumGameType par1EnumGameType) {}
 
-	public String func_70005_c_() {
+	public String getCommandSenderName() {
 		return this.username;
 	}
 
-	public StringTranslate func_71025_t() {
+	public StringTranslate getTranslator() {
 		return StringTranslate.getInstance();
 	}
 
-	public String func_70004_a(String par1Str, Object ... par2ArrayOfObj) {
-		return this.func_71025_t().translateKeyFormat(par1Str, par2ArrayOfObj);
+	public String translateString(String par1Str, Object ... par2ArrayOfObj) {
+		return this.getTranslator().translateKeyFormat(par1Str, par2ArrayOfObj);
 	}
 
-	public InventoryEnderChest func_71005_bN() {
-		return this.field_71078_a;
+	public InventoryEnderChest getInventoryEnderChest() {
+		return this.theInventoryEnderChest;
 	}
 }

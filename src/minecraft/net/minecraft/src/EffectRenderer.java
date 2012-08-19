@@ -18,9 +18,13 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout end
 
 public class EffectRenderer {
+
+	/** Reference to the World object. */
 	protected World worldObj;
 	private List[] fxLayers = new List[4];
 	private RenderEngine renderer;
+
+	/** RNG. */
 	private Random rand = new Random();
 
 	public EffectRenderer(World par1World, RenderEngine par2RenderEngine) {
@@ -37,6 +41,7 @@ public class EffectRenderer {
 
 	public void addEffect(EntityFX par1EntityFX) {
 		int var2 = par1EntityFX.getFXLayer();
+
 		if (this.fxLayers[var2].size() >= 4000) {
 			this.fxLayers[var2].remove(0);
 		}
@@ -49,6 +54,7 @@ public class EffectRenderer {
 			for (int var2 = 0; var2 < this.fxLayers[var1].size(); ++var2) {
 				EntityFX var3 = (EntityFX)this.fxLayers[var1].get(var2);
 				var3.onUpdate();
+
 				if (var3.isDead) {
 					this.fxLayers[var1].remove(var2--);
 				}
@@ -56,6 +62,9 @@ public class EffectRenderer {
 		}
 	}
 
+	/**
+	 * Renders all current particles. Args player, partialTickTime
+	 */
 	public void renderParticles(Entity par1Entity, float par2) {
 		float var3 = ActiveRenderInfo.rotationX;
 		float var4 = ActiveRenderInfo.rotationZ;
@@ -72,6 +81,7 @@ public class EffectRenderer {
 		for (int var8 = 0; var8 < 3; ++var8) {
 			if (!this.fxLayers[var8].isEmpty()) {
 				int var9 = 0;
+
 				if (var8 == 0) {
 					var9 = this.renderer.getTexture("/particles.png");
 				}
@@ -112,12 +122,13 @@ public class EffectRenderer {
 	}
 
 	public void func_78872_b(Entity par1Entity, float par2) {
-		float var4 = MathHelper.cos(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
-		float var5 = MathHelper.sin(par1Entity.rotationYaw * (float)Math.PI / 180.0F);
-		float var6 = -var5 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
-		float var7 = var4 * MathHelper.sin(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
-		float var8 = MathHelper.cos(par1Entity.rotationPitch * (float)Math.PI / 180.0F);
+		float var4 = MathHelper.cos(par1Entity.rotationYaw * 0.017453292F);
+		float var5 = MathHelper.sin(par1Entity.rotationYaw * 0.017453292F);
+		float var6 = -var5 * MathHelper.sin(par1Entity.rotationPitch * 0.017453292F);
+		float var7 = var4 * MathHelper.sin(par1Entity.rotationPitch * 0.017453292F);
+		float var8 = MathHelper.cos(par1Entity.rotationPitch * 0.017453292F);
 		byte var9 = 3;
+
 		if (!this.fxLayers[var9].isEmpty()) {
 			Tessellator var10 = Tessellator.instance;
 
@@ -180,14 +191,19 @@ public class EffectRenderer {
 		}
 	}
 
+	/**
+	 * Adds block hit particles for the specified block. Args: x, y, z, sideHit
+	 */
 	public void addBlockHitEffects(int par1, int par2, int par3, int par4) {
 		int var5 = this.worldObj.getBlockId(par1, par2, par3);
+
 		if (var5 != 0) {
 			Block var6 = Block.blocksList[var5];
 			float var7 = 0.1F;
 			double var8 = (double)par1 + this.rand.nextDouble() * (var6.maxX - var6.minX - (double)(var7 * 2.0F)) + (double)var7 + var6.minX;
 			double var10 = (double)par2 + this.rand.nextDouble() * (var6.maxY - var6.minY - (double)(var7 * 2.0F)) + (double)var7 + var6.minY;
 			double var12 = (double)par3 + this.rand.nextDouble() * (var6.maxZ - var6.minZ - (double)(var7 * 2.0F)) + (double)var7 + var6.minZ;
+
 			if (par4 == 0) {
 				var10 = (double)par2 + var6.minY - (double)var7;
 			}
@@ -225,11 +241,11 @@ public class EffectRenderer {
 				Texture customTexture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
 				if (customTexture != null) {
 					custom = true;
-					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data, customTexture, design)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
+					this.addEffect((new CustomEntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data, customTexture, design)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
 				}
 			}
 			if (!custom) {
-				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).func_70541_f(0.6F));
+				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
 			}
 			// Spout end
 		}

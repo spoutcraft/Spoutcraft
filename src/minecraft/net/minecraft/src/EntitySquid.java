@@ -2,24 +2,18 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftSquid;
 
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityWaterMob;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.Material;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntitySquid extends EntityWaterMob {
-
 	public float field_70861_d = 0.0F;
 	public float field_70862_e = 0.0F;
 	public float field_70859_f = 0.0F;
 	public float field_70860_g = 0.0F;
 	public float field_70867_h = 0.0F;
 	public float field_70868_i = 0.0F;
+
+	/** angle of the tentacles in radians */
 	public float tentacleAngle = 0.0F;
+
+	/** the last calculated angle of the tentacles in radians */
 	public float lastTentacleAngle = 0.0F;
 	private float randomMotionSpeed = 0.0F;
 	private float field_70864_bA = 0.0F;
@@ -42,34 +36,44 @@ public class EntitySquid extends EntityWaterMob {
 		return 10;
 	}
 
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-	}
-
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-	}
-
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return null;
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return null;
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return null;
 	}
 
+	/**
+	 * Returns the volume for the sounds this mob makes.
+	 */
 	protected float getSoundVolume() {
 		return 0.4F;
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return 0;
 	}
 
+	/**
+	 * Drop 0-2 items of this living's type
+	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(3 + par2) + 1;
 
@@ -78,12 +82,18 @@ public class EntitySquid extends EntityWaterMob {
 		}
 	}
 
+	/**
+	 * Checks if this entity is inside water (if inWater field is true as a result of handleWaterMovement() returning true)
+	 */
 	public boolean isInWater() {
 		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.6000000238418579D, 0.0D), Material.water, this);
 	}
 
+	/**
+	 * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons use
+	 * this to react to sunlight and start to burn.
+	 */
 	public void onLivingUpdate() {
-		super.onLivingUpdate();
 		super.onLivingUpdate();
 		this.field_70862_e = this.field_70861_d;
 		this.field_70860_g = this.field_70859_f;
@@ -93,6 +103,7 @@ public class EntitySquid extends EntityWaterMob {
 
 		if (this.field_70867_h > ((float)Math.PI * 2F)) {
 			this.field_70867_h -= ((float)Math.PI * 2F);
+
 			if (this.rand.nextInt(10) == 0) {
 				this.field_70864_bA = 1.0F / (this.rand.nextFloat() + 1.0F) * 0.2F;
 			}
@@ -100,9 +111,11 @@ public class EntitySquid extends EntityWaterMob {
 
 		if (this.isInWater()) {
 			float var1;
+
 			if (this.field_70867_h < (float)Math.PI) {
 				var1 = this.field_70867_h / (float)Math.PI;
 				this.tentacleAngle = MathHelper.sin(var1 * var1 * (float)Math.PI) * (float)Math.PI * 0.25F;
+
 				if ((double)var1 > 0.75D) {
 					this.randomMotionSpeed = 1.0F;
 					this.field_70871_bB = 1.0F;
@@ -140,12 +153,16 @@ public class EntitySquid extends EntityWaterMob {
 		}
 	}
 
+	/**
+	 * Moves the entity based on the specified heading.  Args: strafe, forward
+	 */
 	public void moveEntityWithHeading(float par1, float par2) {
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 	}
 
 	protected void updateEntityActionState() {
 		++this.entityAge;
+
 		if (this.entityAge > 100) {
 			this.randomMotionVecX = this.randomMotionVecY = this.randomMotionVecZ = 0.0F;
 		} else if (this.rand.nextInt(50) == 0 || !this.inWater || this.randomMotionVecX == 0.0F && this.randomMotionVecY == 0.0F && this.randomMotionVecZ == 0.0F) {
@@ -158,6 +175,9 @@ public class EntitySquid extends EntityWaterMob {
 		this.despawnEntity();
 	}
 
+	/**
+	 * Checks if the entity's current position is a valid location to spawn this entity.
+	 */
 	public boolean getCanSpawnHere() {
 		return this.posY > 45.0D && this.posY < 63.0D && super.getCanSpawnHere();
 	}

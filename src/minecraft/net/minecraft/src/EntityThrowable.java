@@ -10,6 +10,10 @@ public abstract class EntityThrowable extends Entity {
 	private int inTile = 0;
 	protected boolean inGround = false;
 	public int throwableShake = 0;
+
+	/**
+	 * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
+	 */
 	public EntityLiving thrower; //Spout protected -> public
 	private int ticksInGround;
 	private int ticksInAir = 0;
@@ -21,6 +25,10 @@ public abstract class EntityThrowable extends Entity {
 
 	protected void entityInit() {}
 
+	/**
+	 * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge length
+	 * * 64 * renderDistanceWeight Args: distance
+	 */
 	public boolean isInRangeToRenderDist(double par1) {
 		double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
 		var3 *= 64.0D;
@@ -60,6 +68,9 @@ public abstract class EntityThrowable extends Entity {
 		return 0.0F;
 	}
 
+	/**
+	 * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
+	 */
 	public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8) {
 		float var9 = MathHelper.sqrt_double(par1 * par1 + par3 * par3 + par5 * par5);
 		par1 /= (double)var9;
@@ -80,10 +91,14 @@ public abstract class EntityThrowable extends Entity {
 		this.ticksInGround = 0;
 	}
 
+	/**
+	 * Sets the velocity to the args. Args: x, y, z
+	 */
 	public void setVelocity(double par1, double par3, double par5) {
 		this.motionX = par1;
 		this.motionY = par3;
 		this.motionZ = par5;
+
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
 			float var7 = MathHelper.sqrt_double(par1 * par1 + par5 * par5);
 			this.prevRotationYaw = this.rotationYaw = (float)(Math.atan2(par1, par5) * 180.0D / Math.PI);
@@ -91,19 +106,25 @@ public abstract class EntityThrowable extends Entity {
 		}
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		this.lastTickPosX = this.posX;
 		this.lastTickPosY = this.posY;
 		this.lastTickPosZ = this.posZ;
 		super.onUpdate();
+
 		if (this.throwableShake > 0) {
 			--this.throwableShake;
 		}
 
 		if (this.inGround) {
 			int var1 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+
 			if (var1 == this.inTile) {
 				++this.ticksInGround;
+
 				if (this.ticksInGround == 1200) {
 					this.setDead();
 				}
@@ -121,14 +142,14 @@ public abstract class EntityThrowable extends Entity {
 			++this.ticksInAir;
 		}
 
-		Vec3 var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
-		Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+		Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-		var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
-		var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+		var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 		if (var3 != null) {
-			var2 = Vec3.func_72437_a().func_72345_a(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+			var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 		}
 
 		if (!this.worldObj.isRemote) {
@@ -144,8 +165,10 @@ public abstract class EntityThrowable extends Entity {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
 					MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+
 					if (var12 != null) {
 						double var13 = var15.distanceTo(var12.hitVec);
+
 						if (var13 < var6 || var6 == 0.0D) {
 							var4 = var9;
 							var6 = var13;
@@ -189,6 +212,7 @@ public abstract class EntityThrowable extends Entity {
 		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 		float var17 = 0.99F;
 		float var18 = this.getGravityVelocity();
+
 		if (this.isInWater()) {
 			for (int var7 = 0; var7 < 4; ++var7) {
 				float var19 = 0.25F;
@@ -205,12 +229,21 @@ public abstract class EntityThrowable extends Entity {
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
+	/**
+	 * Gets the amount of gravity to apply to the thrown entity with each tick.
+	 */
 	protected float getGravityVelocity() {
 		return 0.03F;
 	}
 
+	/**
+	 * Called when this EntityThrowable hits a block or entity.
+	 */
 	protected abstract void onImpact(MovingObjectPosition var1);
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setShort("xTile", (short)this.xTile);
 		par1NBTTagCompound.setShort("yTile", (short)this.yTile);
@@ -220,6 +253,9 @@ public abstract class EntityThrowable extends Entity {
 		par1NBTTagCompound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.xTile = par1NBTTagCompound.getShort("xTile");
 		this.yTile = par1NBTTagCompound.getShort("yTile");

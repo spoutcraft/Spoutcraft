@@ -175,7 +175,10 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}
 	}
 
-	public void func_71016_p() {
+	/**
+	 * Sends the player's abilities to the server (if there is one).
+	 */
+	public void sendPlayerAbilities() {
 		this.sendQueue.addToSendQueue(new Packet202PlayerAbilities(this.capabilities));
 	}
 

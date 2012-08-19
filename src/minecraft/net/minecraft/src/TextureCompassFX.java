@@ -60,12 +60,13 @@ public class TextureCompassFX extends TextureFX {
 		}
 
 		double var20 = 0.0D;
-		if (this.mc.field_71441_e != null && this.mc.field_71439_g != null) {
-			ChunkCoordinates var21 = this.mc.field_71441_e.getSpawnPoint();
-			double var23 = (double)var21.posX - this.mc.field_71439_g.posX;
-			double var25 = (double)var21.posZ - this.mc.field_71439_g.posZ;
-			var20 = (double)(this.mc.field_71439_g.rotationYaw - 90.0F) * Math.PI / 180.0D - Math.atan2(var25, var23);
-			if (!this.mc.field_71441_e.worldProvider.isSurfaceWorld()) {
+		if (this.mc.theWorld != null && this.mc.thePlayer != null) {
+			ChunkCoordinates var21 = this.mc.theWorld.getSpawnPoint();
+			double var23 = (double)var21.posX - this.mc.thePlayer.posX;
+			double var25 = (double)var21.posZ - this.mc.thePlayer.posZ;
+			var20 = (double)(this.mc.thePlayer.rotationYaw - 90.0F) * Math.PI / 180.0D - Math.atan2(var25, var23);
+
+			if (!this.mc.theWorld.provider.isSurfaceWorld()) {
 				var20 = Math.random() * Math.PI * 2.0D;
 			}
 		}

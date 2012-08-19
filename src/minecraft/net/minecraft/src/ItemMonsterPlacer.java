@@ -9,7 +9,7 @@ public class ItemMonsterPlacer extends Item {
 	public ItemMonsterPlacer(int par1) {
 		super(par1);
 		this.setHasSubtypes(true);
-		this.func_77637_a(CreativeTabs.field_78026_f);
+		this.setTabToDisplayOn(CreativeTabs.tabMisc);
 	}
 
 	public String getItemDisplayName(ItemStack par1ItemStack) {
@@ -39,7 +39,7 @@ public class ItemMonsterPlacer extends Item {
 		return par2 > 0 ? super.getIconFromDamageForRenderPass(par1, par2) + 16 : super.getIconFromDamageForRenderPass(par1, par2);
 	}
 
-	public boolean func_77648_a(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+	public boolean tryPlaceIntoWorld(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
 		if (par3World.isRemote) {
 			return true;
 		} else {
@@ -89,7 +89,10 @@ public class ItemMonsterPlacer extends Item {
 		}
 	}
 
-	public void func_77633_a(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+	/**
+	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
+	 */
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		Iterator var4 = EntityList.entityEggs.values().iterator();
 
 		while (var4.hasNext()) {

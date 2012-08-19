@@ -2,18 +2,16 @@ package net.minecraft.src;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.GuiDisconnected;
-import net.minecraft.src.NetClientHandler;
-import net.minecraft.src.Packet2Handshake;
 
 class ThreadConnectToServer extends Thread {
-	
+
+	/** The IP address or domain used to connect. */
 	final String ip;
-	
+
+	/** The port used to connect. */
 	final int port;
-	
+
+	/** A reference to the GuiConnecting object. */
 	final GuiConnecting connectingGui;
 
 	ThreadConnectToServer(GuiConnecting par1GuiConnecting, String par2Str, int par3) {
@@ -25,6 +23,7 @@ class ThreadConnectToServer extends Thread {
 	public void run() {
 		try {
 			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(GuiConnecting.func_74256_a(this.connectingGui), this.ip, this.port));
+
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
@@ -40,9 +39,9 @@ class ThreadConnectToServer extends Thread {
 				return;
 			}
 
-			displayConnectionIssue(ip, port, "Unknown host \'" + this.ip + "\'");
+			displayConnectionIssue(ip, port, "Unknown host \'" + this.ip + "\'"); // Spout
 		} catch (ConnectException var3) {
-			if (GuiConnecting.func_74257_b(this.connectingGui)) {
+			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 

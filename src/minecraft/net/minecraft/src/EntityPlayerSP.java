@@ -89,7 +89,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			--this.sprintToggleTimer;
 		}
 
-		if (this.mc.field_71442_b.func_78747_a()) {
+		if (this.mc.playerController.func_78747_a()) {
 			this.posX = this.posZ = 0.5D;
 			this.posX = 0.0D;
 			this.posZ = 0.0D;
@@ -181,7 +181,7 @@ public class EntityPlayerSP extends EntityPlayer {
 					this.flyToggleTimer = 7;
 				} else {
 					this.capabilities.isFlying = !this.capabilities.isFlying;
-					this.func_71016_p();
+					this.sendPlayerAbilities();
 					this.flyToggleTimer = 0;
 				}
 			}
@@ -201,7 +201,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			super.onLivingUpdate();
 			if (this.onGround && this.capabilities.isFlying) {
 				this.capabilities.isFlying = false;
-				this.func_71016_p();
+				this.sendPlayerAbilities();
 			}
 		}
 	}
@@ -246,12 +246,12 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen((GuiScreen)null);
 	}
 
-	public void func_71048_c(ItemStack par1ItemStack) {
+	public void displayGUIBook(ItemStack par1ItemStack) {
 		Item var2 = par1ItemStack.getItem();
 
-		if (var2 == Item.field_77823_bG) {
+		if (var2 == Item.writtenBook) {
 			this.mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, false));
-		} else if (var2 == Item.field_77821_bF) {
+		} else if (var2 == Item.writableBook) {
 			this.mc.displayGuiScreen(new GuiScreenBook(this, par1ItemStack, true));
 		}
 	}
@@ -264,7 +264,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiChest(this.inventory, par1IInventory));
 	}
 
-	public void displayWorkbenchGUI(int par1, int par2, int par3) {
+	public void displayGUIWorkbench(int par1, int par2, int par3) {
 		this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.worldObj, par1, par2, par3));
 	}
 
@@ -284,21 +284,21 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.mc.displayGuiScreen(new GuiDispenser(this.inventory, par1TileEntityDispenser));
 	}
 
-	public void func_71030_a(IMerchant par1IMerchant) {
+	public void displayGUIMerchant(IMerchant par1IMerchant) {
 		this.mc.displayGuiScreen(new GuiMerchant(this.inventory, par1IMerchant, this.worldObj));
 	}
 
 	public void onCriticalHit(Entity par1Entity) {
-		this.mc.effectRenderer.addEffect(new EntityCrit2FX(this.mc.field_71441_e, par1Entity));
+		this.mc.effectRenderer.addEffect(new EntityCrit2FX(this.mc.theWorld, par1Entity));
 	}
 
 	public void onEnchantmentCritical(Entity par1Entity) {
-		EntityCrit2FX var2 = new EntityCrit2FX(this.mc.field_71441_e, par1Entity, "magicCrit");
+		EntityCrit2FX var2 = new EntityCrit2FX(this.mc.theWorld, par1Entity, "magicCrit");
 		this.mc.effectRenderer.addEffect(var2);
 	}
 
 	public void onItemPickup(Entity par1Entity, int par2) {
-		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.field_71441_e, par1Entity, this, -0.5F));
+		this.mc.effectRenderer.addEffect(new EntityPickupFX(this.mc.theWorld, par1Entity, this, -0.5F));
 	}
 
 	public void sendChatMessage(String par1Str) {}
@@ -312,14 +312,14 @@ public class EntityPlayerSP extends EntityPlayer {
 		if (var2 <= 0) {
 			this.setEntityHealth(par1);
 			if (var2 < 0) {
-				this.heartsLife = this.heartsHalvesLife / 2;
+				this.hurtResistantTime = this.maxHurtResistantTime / 2;
 			}
 		} else {
 			this.lastDamage = var2;
 			this.setEntityHealth(this.getHealth());
 			this.heartsLife = this.heartsHalvesLife;
 			this.damageEntity(DamageSource.generic, var2);
-			this.hurtTime = this.maxHurtTime = 10;
+			this.hurtResistantTime = this.maxHurtResistantTime = 10;
 		}
 	}
 
@@ -417,15 +417,15 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.experienceLevel = par3;
 	}
 
-	public void func_70006_a(String par1Str) {
-		//this.mc.ingameGUI.func_73827_b().func_73765_a(par1Str); // Spout removed
+	public void sendChatToPlayer(String par1Str) {
+		//this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str); // Spout removed
 	}
 
-	public boolean func_70003_b(String par1Str) {
-		return this.worldObj.getWorldInfo().func_76086_u();
+	public boolean canCommandSenderUseCommand(String par1Str) {
+		return this.worldObj.getWorldInfo().areCommandsAllowed();
 	}
 	
-	//Spout                                                                                                N
+	//Spout
 	public boolean canSprint() {
 		return this.getFoodStats().getFoodLevel() > 6.0F;
 	}

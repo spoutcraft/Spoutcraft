@@ -124,7 +124,7 @@ public abstract class WorldProvider {
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;
-		return Vec3.func_72437_a().func_72345_a((double)var4, (double)var5, (double)var6);
+		return Vec3.getVec3Pool().getVecFromPool((double)var4, (double)var5, (double)var6);
 	}
 
 	public boolean canRespawnHere() {
@@ -159,7 +159,12 @@ public abstract class WorldProvider {
 		return this.terrainType == WorldType.FLAT ? 1.0D : 0.03125D;
 	}
 
-	public boolean func_76568_b(int par1, int par2) {
+	/**
+	 * Returns true if the given X,Z coordinate should show environmental fog.
+	 */
+	public boolean doesXZShowFog(int par1, int par2) {
 		return false;
 	}
+
+	public abstract String func_80007_l();
 }

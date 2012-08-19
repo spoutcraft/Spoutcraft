@@ -56,7 +56,7 @@ public class EntityRenderer {
 	private double cameraZoom = 1.0D;
 	private double cameraYaw = 0.0D;
 	private double cameraPitch = 0.0D;
-	private long prevFrameTime = Minecraft.func_71386_F();
+	private long prevFrameTime = Minecraft.getSystemTime();
 	private long renderEndNanoTime = 0L;
 	private boolean lightmapUpdateNeeded = false;
 	public float torchFlickerX = 0.0F; //Spout private -> public
@@ -113,10 +113,10 @@ public class EntityRenderer {
 		}
 
 		if (this.mc.renderViewEntity == null) {
-			this.mc.renderViewEntity = this.mc.field_71439_g;
+			this.mc.renderViewEntity = this.mc.thePlayer;
 		}
 
-		var1 = this.mc.field_71441_e.getLightBrightness(MathHelper.floor_double(this.mc.renderViewEntity.posX), MathHelper.floor_double(this.mc.renderViewEntity.posY), MathHelper.floor_double(this.mc.renderViewEntity.posZ));
+		var1 = this.mc.theWorld.getLightBrightness(MathHelper.floor_double(this.mc.renderViewEntity.posX), MathHelper.floor_double(this.mc.renderViewEntity.posY), MathHelper.floor_double(this.mc.renderViewEntity.posZ));
 		var2 = (float)(3 - this.mc.gameSettings.renderDistance) / 3.0F;
 		float var3 = var1 * (1.0F - var2) + var2;
 		this.fogColor1 += (var3 - this.fogColor1) * 0.1F;
@@ -127,12 +127,12 @@ public class EntityRenderer {
 
 	public void getMouseOver(float par1) {
 		if (this.mc.renderViewEntity != null) {
-			if (this.mc.field_71441_e != null) {
-				double var2 = (double)this.mc.field_71442_b.getBlockReachDistance();
+			if (this.mc.theWorld != null) {
+				double var2 = (double)this.mc.playerController.getBlockReachDistance();
 				this.mc.objectMouseOver = this.mc.renderViewEntity.rayTrace(var2, par1);
 				double var4 = var2;
 				Vec3 var6 = this.mc.renderViewEntity.getPosition(par1);
-				if (this.mc.field_71442_b.extendedReach()) {
+				if (this.mc.playerController.extendedReach()) {
 					var2 = 6.0D;
 					var4 = 6.0D;
 				} else {
@@ -151,7 +151,7 @@ public class EntityRenderer {
 				Vec3 var8 = var6.addVector(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2);
 				this.pointedEntity = null;
 				float var9 = 1.0F;
-				List var10 = this.mc.field_71441_e.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2).expand((double)var9, (double)var9, (double)var9));
+				List var10 = this.mc.theWorld.getEntitiesWithinAABBExcludingEntity(this.mc.renderViewEntity, this.mc.renderViewEntity.boundingBox.addCoord(var7.xCoord * var2, var7.yCoord * var2, var7.zCoord * var2).expand((double)var9, (double)var9, (double)var9));
 				double var11 = var4;
 				Iterator var13 = var10.iterator();
 
@@ -207,7 +207,7 @@ public class EntityRenderer {
 				var4 /= (1.0F - 500.0F / (var5 + 500.0F)) * 2.0F + 1.0F;
 			}
 
-			int var6 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.field_71441_e, var3, par1);
+			int var6 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.theWorld, var3, par1);
 			if (var6 != 0 && Block.blocksList[var6].blockMaterial == Material.water) {
 				var4 = var4 * 60.0F / 70.0F;
 			}
@@ -260,9 +260,9 @@ public class EntityRenderer {
 			var3 = (float)((double)var3 + 1.0D);
 			GL11.glTranslatef(0.0F, 0.3F, 0.0F);
 			if (!this.mc.gameSettings.debugCamEnable) {
-				int var10 = this.mc.field_71441_e.getBlockId(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+				int var10 = this.mc.theWorld.getBlockId(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
 				if (var10 == Block.bed.blockID) {
-					int var11 = this.mc.field_71441_e.getBlockMetadata(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
+					int var11 = this.mc.theWorld.getBlockMetadata(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posY), MathHelper.floor_double(var2.posZ));
 					int var12 = var11 & 3;
 					GL11.glRotatef((float)(var12 * 90), 0.0F, 1.0F, 0.0F);
 				}
@@ -298,9 +298,9 @@ public class EntityRenderer {
 					var21 *= 0.1F;
 					var22 *= 0.1F;
 					var23 *= 0.1F;
-					MovingObjectPosition var24 = this.mc.field_71441_e.rayTraceBlocks(Vec3.func_72437_a().func_72345_a(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), Vec3.func_72437_a().func_72345_a(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
+					MovingObjectPosition var24 = this.mc.theWorld.rayTraceBlocks(Vec3.getVec3Pool().getVecFromPool(var4 + (double)var21, var6 + (double)var22, var8 + (double)var23), Vec3.getVec3Pool().getVecFromPool(var4 - var14 + (double)var21 + (double)var23, var6 - var18 + (double)var22, var8 - var16 + (double)var23));
 					if (var24 != null) {
-						double var25 = var24.hitVec.distanceTo(Vec3.func_72437_a().func_72345_a(var4, var6, var8));
+						double var25 = var24.hitVec.distanceTo(Vec3.getVec3Pool().getVecFromPool(var4, var6, var8));
 						if (var25 < var27) {
 							var27 = var25;
 						}
@@ -365,7 +365,7 @@ public class EntityRenderer {
 
 		GLU.gluPerspective(this.getFOVModifier(par1, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 		float var4;
-		if (this.mc.field_71442_b.func_78747_a()) {
+		if (this.mc.playerController.func_78747_a()) {
 			var4 = 0.6666667F;
 			GL11.glScalef(1.0F, var4, 1.0F);
 		}
@@ -381,10 +381,10 @@ public class EntityRenderer {
 			this.setupViewBobbing(par1);
 		}
 
-		var4 = this.mc.field_71439_g.prevTimeInPortal + (this.mc.field_71439_g.timeInPortal - this.mc.field_71439_g.prevTimeInPortal) * par1;
+		var4 = this.mc.thePlayer.prevTimeInPortal + (this.mc.thePlayer.timeInPortal - this.mc.thePlayer.prevTimeInPortal) * par1;
 		if (var4 > 0.0F) {
 			byte var5 = 20;
-			if (this.mc.field_71439_g.isPotionActive(Potion.confusion)) {
+			if (this.mc.thePlayer.isPotionActive(Potion.confusion)) {
 				var5 = 7;
 			}
 
@@ -435,7 +435,7 @@ public class EntityRenderer {
 			}
 
 			GLU.gluPerspective(this.getFOVModifier(par1, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
-			if (this.mc.field_71442_b.func_78747_a()) {
+			if (this.mc.playerController.func_78747_a()) {
 				float var4 = 0.6666667F;
 				GL11.glScalef(1.0F, var4, 1.0F);
 			}
@@ -452,7 +452,7 @@ public class EntityRenderer {
 				this.setupViewBobbing(par1);
 			}
 
-			if (this.mc.gameSettings.thirdPersonView == 0 && !this.mc.renderViewEntity.isPlayerSleeping() && !this.mc.gameSettings.hideGUI && !this.mc.field_71442_b.func_78747_a()) {
+			if (this.mc.gameSettings.thirdPersonView == 0 && !this.mc.renderViewEntity.isPlayerSleeping() && !this.mc.gameSettings.hideGUI && !this.mc.playerController.func_78747_a()) {
 				this.enableLightmap((double)par1);
 				this.itemRenderer.renderItemInFirstPerson(par1);
 				this.disableLightmap((double)par1);
@@ -507,14 +507,14 @@ public class EntityRenderer {
 	}
 
 	private void updateLightmap() {
-		WorldClient var1 = this.mc.field_71441_e;
+		WorldClient var1 = this.mc.theWorld;
 		if (var1 != null) {
 			for (int var2 = 0; var2 < 256; ++var2) {
 				float var3 = var1.func_72971_b(1.0F) * 0.95F + 0.05F;
-				float var4 = var1.worldProvider.lightBrightnessTable[var2 / 16] * var3;
-				float var5 = var1.worldProvider.lightBrightnessTable[var2 % 16] * (this.torchFlickerX * 0.1F + 1.5F);
+				float var4 = var1.provider.lightBrightnessTable[var2 / 16] * var3;
+				float var5 = var1.provider.lightBrightnessTable[var2 % 16] * (this.torchFlickerX * 0.1F + 1.5F);
 				if (var1.lightningFlash > 0) {
-					var4 = var1.worldProvider.lightBrightnessTable[var2 / 16];
+					var4 = var1.provider.lightBrightnessTable[var2 / 16];
 				}
 
 				float var6 = var4 * (var1.func_72971_b(1.0F) * 0.65F + 0.35F);
@@ -527,7 +527,7 @@ public class EntityRenderer {
 				var12 = var12 * 0.96F + 0.03F;
 				var13 = var13 * 0.96F + 0.03F;
 				var14 = var14 * 0.96F + 0.03F;
-				if (var1.worldProvider.worldType == 1) {
+				if (var1.provider.worldType == 1) {
 					var12 = 0.22F + var5 * 0.75F;
 					var13 = 0.28F + var10 * 0.75F;
 					var14 = 0.25F + var11 * 0.75F;
@@ -595,7 +595,7 @@ public class EntityRenderer {
 
 	public void updateCameraAndRender(float par1) {
 		// Spout Start
-		World world = this.mc.field_71441_e;
+		World world = this.mc.theWorld;
 
 	//	if(Thread.currentThread().getPriority() != 10) {
 	//		Thread.currentThread().setPriority(10);
@@ -639,21 +639,21 @@ public class EntityRenderer {
 			}
 		}
 		// Spout End
-		this.mc.field_71424_I.startSection("lightTex");
+		this.mc.mcProfiler.startSection("lightTex");
 		if (this.lightmapUpdateNeeded) {
 			this.updateLightmap();
 		}
 
-		this.mc.field_71424_I.endSection();
+		this.mc.mcProfiler.endSection();
 
 		if (Display.isActive()) {
-			this.prevFrameTime = Minecraft.func_71386_F();
-		} else if (Minecraft.func_71386_F() - this.prevFrameTime > 500L) {
+			this.prevFrameTime = Minecraft.getSystemTime();
+		} else if (Minecraft.getSystemTime() - this.prevFrameTime > 500L) {
 			this.mc.displayInGameMenu();
 		}
 
 
-		this.mc.field_71424_I.startSection("mouse");
+		this.mc.mcProfiler.startSection("mouse");
 		if (this.mc.inGameHasFocus) {
 			this.mc.mouseHelper.mouseXYChange();
 			float var2 = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
@@ -672,13 +672,13 @@ public class EntityRenderer {
 				this.smoothCamPartialTicks = par1;
 				var4 = this.smoothCamFilterX * var7;
 				var5 = this.smoothCamFilterY * var7;
-				this.mc.field_71439_g.setAngles(var4, var5 * (float)var6);
+				this.mc.thePlayer.setAngles(var4, var5 * (float)var6);
 			} else {
-				this.mc.field_71439_g.setAngles(var4, var5 * (float)var6);
+				this.mc.thePlayer.setAngles(var4, var5 * (float)var6);
 			}
 		}
 
-		this.mc.field_71424_I.endSection();
+		this.mc.mcProfiler.endSection();
 		if (!this.mc.skipRenderWorld) {
 			anaglyphEnable = this.mc.gameSettings.anaglyph;
 			ScaledResolution var8 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -689,8 +689,8 @@ public class EntityRenderer {
 			short var18 = 200;
 			int var12 = func_78465_a(this.mc.gameSettings.limitFramerate);
 
-			if (this.mc.field_71441_e != null) {
-				this.mc.field_71424_I.startSection("level");
+			if (this.mc.theWorld != null) {
+				this.mc.mcProfiler.startSection("level");
 
 				if (this.mc.gameSettings.limitFramerate == 0) {
 					this.renderWorld(par1, 0L);
@@ -699,10 +699,8 @@ public class EntityRenderer {
 				}
 
 				this.renderEndNanoTime = System.nanoTime();
-				this.mc.field_71424_I.endStartSection("gui");
+				this.mc.mcProfiler.endStartSection("gui");
 
-				this.renderEndNanoTime = System.nanoTime();
-				this.mc.field_71424_I.endStartSection("gui");
 				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					// Spout Start
 					if (ConfigReader.fastDebug != 0) {
@@ -722,7 +720,7 @@ public class EntityRenderer {
 					// Spout End
 				}
 
-				this.mc.field_71424_I.endSection();
+				this.mc.mcProfiler.endSection();
 			} else {
 				GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
 				GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -747,7 +745,7 @@ public class EntityRenderer {
 	}
 
 	public void renderWorld(float par1, long par2) {
-		this.mc.field_71424_I.startSection("lightTex");
+		this.mc.mcProfiler.startSection("lightTex");
 
 		if (this.lightmapUpdateNeeded) {
 			this.updateLightmap();
@@ -756,10 +754,10 @@ public class EntityRenderer {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		if (this.mc.renderViewEntity == null) {
-			this.mc.renderViewEntity = this.mc.field_71439_g;
+			this.mc.renderViewEntity = this.mc.thePlayer;
 		}
 
-		this.mc.field_71424_I.endStartSection("pick");
+		this.mc.mcProfiler.endStartSection("pick");
 		this.getMouseOver(par1);
 		EntityLiving var4 = this.mc.renderViewEntity;
 		RenderGlobal var5 = this.mc.renderGlobal;
@@ -767,7 +765,7 @@ public class EntityRenderer {
 		double var7 = var4.lastTickPosX + (var4.posX - var4.lastTickPosX) * (double)par1;
 		double var9 = var4.lastTickPosY + (var4.posY - var4.lastTickPosY) * (double)par1;
 		double var11 = var4.lastTickPosZ + (var4.posZ - var4.lastTickPosZ) * (double)par1;
-		this.mc.field_71424_I.endStartSection("center");
+		this.mc.mcProfiler.endStartSection("center");
 
 		for (int var13 = 0; var13 < (this.mc.gameSettings.anaglyph ? 2 : 1); ++var13) { //Spout
 			if (this.mc.gameSettings.anaglyph) {
@@ -779,23 +777,23 @@ public class EntityRenderer {
 				}
 			}
 
-			this.mc.field_71424_I.endStartSection("clear");
+			this.mc.mcProfiler.endStartSection("clear");
 			GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
 			this.updateFogColor(par1);
 			GL11.glClear(16640);
 			GL11.glEnable(GL11.GL_CULL_FACE);
-			this.mc.field_71424_I.endStartSection("camera");
+			this.mc.mcProfiler.endStartSection("camera");
 			//Spout start
 			//Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
 			this.setupCameraTransform(par1, var13);
-			ActiveRenderInfo.updateRenderInfo(this.mc.field_71439_g, this.mc.gameSettings.thirdPersonView == 2);
+			ActiveRenderInfo.updateRenderInfo(this.mc.thePlayer, this.mc.gameSettings.thirdPersonView == 2);
 			//Shaders.setCamera(par1);
 			//Spout end
-			this.mc.field_71424_I.endStartSection("frustrum");
+			this.mc.mcProfiler.endStartSection("frustrum");
 			ClippingHelperImpl.getInstance();
 			if (this.mc.gameSettings.renderDistance < 2 || ConfigReader.farView) { // Spout
 				this.setupFog(-1, par1);
-				this.mc.field_71424_I.endStartSection("sky");
+				this.mc.mcProfiler.endStartSection("sky");
 				var5.renderSky(par1);
 			}
 
@@ -805,13 +803,13 @@ public class EntityRenderer {
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 			}
 
-			this.mc.field_71424_I.endStartSection("culling");
+			this.mc.mcProfiler.endStartSection("culling");
 			Frustrum var14 = new Frustrum();
 			var14.setPosition(var7, var9, var11);
 			this.mc.renderGlobal.clipRenderersByFrustum(var14, par1);
 			//Spout start
 			if (var13 == 0) {
-				this.mc.field_71424_I.endStartSection("updatechunks");
+				this.mc.mcProfiler.endStartSection("updatechunks");
 
 				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
 					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
@@ -823,27 +821,27 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_FOG);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
-			this.mc.field_71424_I.endStartSection("terrain");
+			this.mc.mcProfiler.endStartSection("terrain");
 			//Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
 			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var17;
 			if (this.debugViewDirection == 0) {
 				RenderHelper.enableStandardItemLighting();
-				this.mc.field_71424_I.endStartSection("entities");
+				this.mc.mcProfiler.endStartSection("entities");
 				var5.renderEntities(var4.getPosition(par1), var14, par1);
 				this.enableLightmap((double)par1);
-				this.mc.field_71424_I.endStartSection("litParticles");
+				this.mc.mcProfiler.endStartSection("litParticles");
 				var6.func_78872_b(var4, par1);
 				RenderHelper.disableStandardItemLighting();
 				this.setupFog(0, par1);
-				this.mc.field_71424_I.endStartSection("particles");
+				this.mc.mcProfiler.endStartSection("particles");
 				var6.renderParticles(var4, par1);
 				this.disableLightmap((double)par1);
 				if (this.mc.objectMouseOver != null && var4.isInsideOfMaterial(Material.water) && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI) {
 					var17 = (EntityPlayer)var4;
 					GL11.glDisable(GL11.GL_ALPHA_TEST);
-					this.mc.field_71424_I.endStartSection("outline");
+					this.mc.mcProfiler.endStartSection("outline");
 					var5.drawBlockBreaking(var17, this.mc.objectMouseOver, 0, var17.inventory.getCurrentItem(), par1);
 					var5.drawSelectionBox(var17, this.mc.objectMouseOver, 0, var17.inventory.getCurrentItem(), par1);
 					GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -863,7 +861,7 @@ public class EntityRenderer {
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			if (this.mc.gameSettings.fancyGraphics) {
-				this.mc.field_71424_I.endStartSection("water");
+				this.mc.mcProfiler.endStartSection("water");
 				if (this.mc.gameSettings.ambientOcclusion) {
 					GL11.glShadeModel(GL11.GL_SMOOTH);
 				}
@@ -886,7 +884,7 @@ public class EntityRenderer {
 
 				GL11.glShadeModel(GL11.GL_FLAT);
 			} else {
-				this.mc.field_71424_I.endStartSection("water");
+				this.mc.mcProfiler.endStartSection("water");
 				var5.sortAndRender(var4, 1, (double)par1);
 			}
 			GL11.glDepthMask(true);
@@ -898,18 +896,18 @@ public class EntityRenderer {
 			if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
 				var17 = (EntityPlayer)var4;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
-				this.mc.field_71424_I.endStartSection("outline");
+				this.mc.mcProfiler.endStartSection("outline");
 				var5.drawBlockBreaking(var17, this.mc.objectMouseOver, 0, var17.inventory.getCurrentItem(), par1);
 				var5.drawSelectionBox(var17, this.mc.objectMouseOver, 0, var17.inventory.getCurrentItem(), par1);
 				GL11.glEnable(GL11.GL_ALPHA_TEST);
 			}
 
-			this.mc.field_71424_I.endStartSection("destroyProgress");
+			this.mc.mcProfiler.endStartSection("destroyProgress");
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			var5.func_72717_a(Tessellator.instance, (EntityPlayer)var4, par1);
 			GL11.glDisable(GL11.GL_BLEND);
-			this.mc.field_71424_I.endStartSection("weather");
+			this.mc.mcProfiler.endStartSection("weather");
 
 			//Spout start
 			//Shaders.beginWeather();
@@ -919,7 +917,7 @@ public class EntityRenderer {
 			GL11.glDisable(GL11.GL_FOG);
 
 			if (this.mc.gameSettings.shouldRenderClouds()) {
-				this.mc.field_71424_I.endStartSection("clouds");
+				this.mc.mcProfiler.endStartSection("clouds");
 				GL11.glPushMatrix();
 				this.setupFog(0, par1);
 				GL11.glEnable(GL11.GL_FOG);
@@ -929,7 +927,7 @@ public class EntityRenderer {
 				GL11.glPopMatrix();
 			}
 
-			this.mc.field_71424_I.endStartSection("hand");
+			this.mc.mcProfiler.endStartSection("hand");
 			if (this.cameraZoom == 1.0D) {
 				GL11.glClear(256);
 				//Shaders.beginHand(); //Spout start
@@ -938,19 +936,19 @@ public class EntityRenderer {
 			}
 
 			if (!this.mc.gameSettings.anaglyph) {
-				this.mc.field_71424_I.endSection();
+				this.mc.mcProfiler.endSection();
 				//Shaders.endRender(); // Spout
 				return;
 			}
 		}
 
 		GL11.glColorMask(true, true, true, false);
-		this.mc.field_71424_I.endSection();
+		this.mc.mcProfiler.endSection();
 		//Shaders.endRender(); //Spout
 	}
 
 	private void addRainParticles() {
-		float var1 = this.mc.field_71441_e.getRainStrength(1.0F);
+		float var1 = this.mc.theWorld.getRainStrength(1.0F);
 		// Spout Start
 
 		if (!ConfigReader.weather) {
@@ -968,7 +966,7 @@ public class EntityRenderer {
 		if (var1 != 0.0F) {
 			this.random.setSeed((long)this.rendererUpdateCount * 312987231L);
 			EntityLiving var2 = this.mc.renderViewEntity;
-			WorldClient var3 = this.mc.field_71441_e;
+			WorldClient var3 = this.mc.theWorld;
 			int var4 = MathHelper.floor_double(var2.posX);
 			int var5 = MathHelper.floor_double(var2.posY);
 			int var6 = MathHelper.floor_double(var2.posZ);
@@ -1013,9 +1011,9 @@ public class EntityRenderer {
 			if (var14 > 0 && this.random.nextInt(3) < this.rainSoundCounter++) {
 				this.rainSoundCounter = 0;
 				if (var10 > var2.posY + 1.0D && var3.getPrecipitationHeight(MathHelper.floor_double(var2.posX), MathHelper.floor_double(var2.posZ)) > MathHelper.floor_double(var2.posY)) {
-					this.mc.field_71441_e.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
+					this.mc.theWorld.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.1F, 0.5F);
 				} else {
-					this.mc.field_71441_e.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
+					this.mc.theWorld.playSoundEffect(var8, var10, var12, "ambient.weather.rain", 0.2F, 1.0F);
 				}
 			}
 		}
@@ -1027,7 +1025,7 @@ public class EntityRenderer {
 			return;
 		}
 		//Spout end
-		float var2 = this.mc.field_71441_e.getRainStrength(par1);
+		float var2 = this.mc.theWorld.getRainStrength(par1);
 		if (var2 > 0.0F) {
 			this.enableLightmap((double)par1);
 			if (this.rainXCoords == null) {
@@ -1046,7 +1044,7 @@ public class EntityRenderer {
 			}
 
 			EntityLiving var41 = this.mc.renderViewEntity;
-			WorldClient var42 = this.mc.field_71441_e;
+			WorldClient var42 = this.mc.theWorld;
 			int var43 = MathHelper.floor_double(var41.posX);
 			int var44 = MathHelper.floor_double(var41.posY);
 			int var45 = MathHelper.floor_double(var41.posZ);
@@ -1172,14 +1170,14 @@ public class EntityRenderer {
 		GL11.glClear(256);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, var1.func_78327_c(), var1.func_78324_d(), 0.0D, 1000.0D, 3000.0D);
+		GL11.glOrtho(0.0D, var1.getScaledWidth_double(), var1.func_78324_d(), 0.0D, 1000.0D, 3000.0D);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
 	}
 
 	private void updateFogColor(float par1) {
-		WorldClient var2 = this.mc.field_71441_e;
+		WorldClient var2 = this.mc.theWorld;
 		EntityLiving var3 = this.mc.renderViewEntity;
 		float var4 = 1.0F / (float)(4 - this.mc.gameSettings.renderDistance);
 		var4 = 1.0F - (float)Math.pow((double)var4, 0.25D);
@@ -1193,14 +1191,14 @@ public class EntityRenderer {
 		this.fogColorBlue = (float)var9.zCoord;
 		float var11;
 		if (this.mc.gameSettings.renderDistance < 2) {
-			Vec3 var10 = MathHelper.sin(var2.getCelestialAngleRadians(par1)) > 0.0F ? Vec3.func_72437_a().func_72345_a(-1.0D, 0.0D, 0.0D) : Vec3.func_72437_a().func_72345_a(1.0D, 0.0D, 0.0D);
+			Vec3 var10 = MathHelper.sin(var2.getCelestialAngleRadians(par1)) > 0.0F ? Vec3.getVec3Pool().getVecFromPool(-1.0D, 0.0D, 0.0D) : Vec3.getVec3Pool().getVecFromPool(1.0D, 0.0D, 0.0D);
 			var11 = (float)var3.getLook(par1).dotProduct(var10);
 			if (var11 < 0.0F) {
 				var11 = 0.0F;
 			}
 
 			if (var11 > 0.0F) {
-				float[] var12 = var2.worldProvider.calcSunriseSunsetColors(var2.getCelestialAngle(par1), par1);
+				float[] var12 = var2.provider.calcSunriseSunsetColors(var2.getCelestialAngle(par1), par1);
 				if (var12 != null) {
 					var11 *= var12[3];
 					this.fogColorRed = this.fogColorRed * (1.0F - var11) + var12[0] * var11;
@@ -1231,7 +1229,7 @@ public class EntityRenderer {
 			this.fogColorBlue *= var20;
 		}
 
-		int var21 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.field_71441_e, var3, par1);
+		int var21 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.theWorld, var3, par1);
 		if (this.cloudFog) {
 			Vec3 var13 = var2.drawClouds(par1);
 			this.fogColorRed = (float)var13.xCoord;
@@ -1251,7 +1249,7 @@ public class EntityRenderer {
 		this.fogColorRed *= var22;
 		this.fogColorGreen *= var22;
 		this.fogColorBlue *= var22;
-		double var14 = (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par1) * var2.worldProvider.getVoidFogYFactor();
+		double var14 = (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par1) * var2.provider.getVoidFogYFactor();
 		if (var3.isPotionActive(Potion.blindness)) {
 			int var16 = var3.getActivePotionEffect(Potion.blindness).getDuration();
 			if (var16 < 20) {
@@ -1305,7 +1303,7 @@ public class EntityRenderer {
 			GL11.glFog(GL11.GL_FOG_COLOR, this.setFogColorBuffer(this.fogColorRed, this.fogColorGreen, this.fogColorBlue, 1.0F));
 			GL11.glNormal3f(0.0F, -1.0F, 0.0F);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			int var5 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.field_71441_e, var3, par2);
+			int var5 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.theWorld, var3, par2);
 			float var6;
 			if (var3.isPotionActive(Potion.blindness)) {
 				var6 = 5.0F;
@@ -1376,7 +1374,7 @@ public class EntityRenderer {
 					}
 				} else {
 					var6 = this.farPlaneDistance;
-					if (this.mc.field_71441_e.worldProvider.getWorldHasVoidParticles() && !var4) {
+					if (this.mc.theWorld.provider.getWorldHasVoidParticles() && !var4) {
 						double var13 = (double)((var3.getBrightnessForRender(par2) & 15728640) >> 20) / 16.0D + (var3.lastTickPosY + (var3.posY - var3.lastTickPosY) * (double)par2 + 4.0D) / 32.0D;
 						if (var13 < 1.0D) {
 							if (var13 < 0.0D) {
@@ -1421,7 +1419,7 @@ public class EntityRenderer {
 						// Spout end
 					}
 
-					if (this.mc.field_71441_e.worldProvider.func_76568_b((int)var3.posX, (int)var3.posZ)) {
+					if (this.mc.theWorld.provider.func_76568_b((int)var3.posX, (int)var3.posZ)) {
 						GL11.glFogf(GL11.GL_FOG_START, var6 * 0.05F);
 						GL11.glFogf(GL11.GL_FOG_END, Math.min(var6, 192.0F) * 0.5F);
 					}

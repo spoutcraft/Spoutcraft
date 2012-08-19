@@ -8,8 +8,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.lwjgl.opengl.GL11;
 
 public class MapItemRenderer {
-
-	private int[] intArray = new int[16384 /*GL_LIGHT0*/];
+	private int[] intArray = new int[16384];
 	private int bufferedImage;
 	private GameSettings gameSettings;
 	private FontRenderer fontRenderer;
@@ -27,12 +26,14 @@ public class MapItemRenderer {
 	public void renderMap(EntityPlayer par1EntityPlayer, RenderEngine par2RenderEngine, MapData par3MapData) {
 		for (int var4 = 0; var4 < 16384; ++var4) {
 			byte var5 = par3MapData.colors[var4];
+
 			if (var5 / 4 == 0) {
 				this.intArray[var4] = (var4 + var4 / 128 & 1) * 8 + 16 << 24;
 			} else {
 				int var6 = MapColor.mapColorArray[var5 / 4].colorValue;
 				int var7 = var5 & 3;
 				short var8 = 220;
+
 				if (var7 == 2) {
 					var8 = 255;
 				}
@@ -44,6 +45,7 @@ public class MapItemRenderer {
 				int var9 = (var6 >> 16 & 255) * var8 / 255;
 				int var10 = (var6 >> 8 & 255) * var8 / 255;
 				int var11 = (var6 & 255) * var8 / 255;
+
 				if (this.gameSettings.anaglyph) {
 					int var12 = (var9 * 30 + var10 * 59 + var11 * 11) / 100;
 					int var13 = (var9 * 30 + var10 * 70) / 100;
@@ -84,10 +86,10 @@ public class MapItemRenderer {
 			GL11.glRotatef((float)(var20.iconRotation * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
 			GL11.glScalef(4.0F, 4.0F, 3.0F);
 			GL11.glTranslatef(-0.125F, 0.125F, 0.0F);
-			float var21 = (float)(var20.field_76216_a % 4 + 0) / 4.0F;
-			float var23 = (float)(var20.field_76216_a / 4 + 0) / 4.0F;
-			float var22 = (float)(var20.field_76216_a % 4 + 1) / 4.0F;
-			float var24 = (float)(var20.field_76216_a / 4 + 1) / 4.0F;
+			float var21 = (float)(var20.iconSize % 4 + 0) / 4.0F;
+			float var23 = (float)(var20.iconSize / 4 + 0) / 4.0F;
+			float var22 = (float)(var20.iconSize % 4 + 1) / 4.0F;
+			float var24 = (float)(var20.iconSize / 4 + 1) / 4.0F;
 			var17.startDrawingQuads();
 			var17.addVertexWithUV(-1.0D, 1.0D, 0.0D, (double)var21, (double)var23);
 			var17.addVertexWithUV(1.0D, 1.0D, 0.0D, (double)var22, (double)var23);

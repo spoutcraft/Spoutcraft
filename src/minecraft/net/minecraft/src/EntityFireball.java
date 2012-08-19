@@ -32,6 +32,10 @@ public class EntityFireball extends Entity {
 
 	protected void entityInit() {}
 
+	/**
+	 * Checks if the entity is in range to render by using the past in distance and comparing it to its average edge length
+	 * * 64 * renderDistanceWeight Args: distance
+	 */
 	public boolean isInRangeToRenderDist(double par1) {
 		double var3 = this.boundingBox.getAverageEdgeLength() * 4.0D;
 		var3 *= 64.0D;
@@ -66,16 +70,22 @@ public class EntityFireball extends Entity {
 		this.accelerationZ = par7 / var9 * 0.1D;
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		if (!this.worldObj.isRemote && (this.shootingEntity != null && this.shootingEntity.isDead || !this.worldObj.blockExists((int)this.posX, (int)this.posY, (int)this.posZ))) {
 			this.setDead();
 		} else {
 			super.onUpdate();
 			this.setFire(1);
+
 			if (this.inGround) {
 				int var1 = this.worldObj.getBlockId(this.xTile, this.yTile, this.zTile);
+
 				if (var1 == this.inTile) {
 					++this.ticksAlive;
+
 					if (this.ticksAlive == 600) {
 						this.setDead();
 					}
@@ -93,14 +103,14 @@ public class EntityFireball extends Entity {
 				++this.ticksInAir;
 			}
 
-			Vec3 var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
-			Vec3 var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-			var15 = Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
-			var2 = Vec3.func_72437_a().func_72345_a(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			var15 = Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			var2 = Vec3.getVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (var3 != null) {
-				var2 = Vec3.func_72437_a().func_72345_a(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+				var2 = Vec3.getVec3Pool().getVecFromPool(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 			}
 
 			Entity var4 = null;
@@ -115,8 +125,10 @@ public class EntityFireball extends Entity {
 					float var10 = 0.3F;
 					AxisAlignedBB var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
 					MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+
 					if (var12 != null) {
 						double var13 = var15.distanceTo(var12.hitVec);
+
 						if (var13 < var6 || var6 == 0.0D) {
 							var4 = var9;
 							var6 = var13;
@@ -143,23 +155,24 @@ public class EntityFireball extends Entity {
 				;
 			}
 
-			while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
+			while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
 				this.prevRotationPitch += 360.0F;
 			}
 
-			while(this.rotationYaw - this.prevRotationYaw < -180.0F) {
+			while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
 				this.prevRotationYaw -= 360.0F;
 			}
 
-			while(this.rotationYaw - this.prevRotationYaw >= 180.0F) {
+			while (this.rotationYaw - this.prevRotationYaw >= 180.0F) {
 				this.prevRotationYaw += 360.0F;
 			}
 
 			this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
 			this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
 			float var17 = 0.95F;
+
 			if (this.isInWater()) {
-				for(int var19 = 0; var19 < 4; ++var19) {
+				for (int var19 = 0; var19 < 4; ++var19) {
 					float var18 = 0.25F;
 					this.worldObj.spawnParticle("bubble", this.posX - this.motionX * (double)var18, this.posY - this.motionY * (double)var18, this.posZ - this.motionZ * (double)var18, this.motionX, this.motionY, this.motionZ);
 				}
@@ -178,6 +191,9 @@ public class EntityFireball extends Entity {
 		}
 	}
 
+	/**
+	 * Called when this EntityFireball hits a block or entity.
+	 */
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		if (!this.worldObj.isRemote) {
 			if (par1MovingObjectPosition.entityHit != null) {
@@ -189,6 +205,9 @@ public class EntityFireball extends Entity {
 		}
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setShort("xTile", (short)this.xTile);
 		par1NBTTagCompound.setShort("yTile", (short)this.yTile);
@@ -198,6 +217,9 @@ public class EntityFireball extends Entity {
 		par1NBTTagCompound.setTag("direction", this.newDoubleNBTList(new double[] {this.motionX, this.motionY, this.motionZ}));
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.xTile = par1NBTTagCompound.getShort("xTile");
 		this.yTile = par1NBTTagCompound.getShort("yTile");
@@ -215,6 +237,9 @@ public class EntityFireball extends Entity {
 		}
 	}
 
+	/**
+	 * Returns true if other Entities should be prevented from moving through this Entity.
+	 */
 	public boolean canBeCollidedWith() {
 		return true;
 	}
@@ -223,10 +248,15 @@ public class EntityFireball extends Entity {
 		return 1.0F;
 	}
 
+	/**
+	 * Called when the entity is attacked.
+	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		this.setBeenAttacked();
+
 		if (par1DamageSource.getEntity() != null) {
 			Vec3 var3 = par1DamageSource.getEntity().getLookVec();
+
 			if (var3 != null) {
 				this.motionX = var3.xCoord;
 				this.motionY = var3.yCoord;
@@ -250,6 +280,9 @@ public class EntityFireball extends Entity {
 		return 0.0F;
 	}
 
+	/**
+	 * Gets how bright this entity is.
+	 */
 	public float getBrightness(float par1) {
 		return 1.0F;
 	}

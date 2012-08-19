@@ -9,6 +9,8 @@ public class EntityChicken extends EntityAnimal {
 	public float field_70884_g;
 	public float field_70888_h;
 	public float field_70889_i = 1.0F;
+
+	/** The time until the next egg is spawned. */
 	public int timeUntilNextEgg;
 
 	public EntityChicken(World par1World) {
@@ -31,6 +33,9 @@ public class EntityChicken extends EntityAnimal {
 		//Spout end
 	}
 
+	/**
+	 * Returns true if the newer Entity AI code should be run
+	 */
 	public boolean isAIEnabled() {
 		return true;
 	}
@@ -39,76 +44,96 @@ public class EntityChicken extends EntityAnimal {
 		return 4;
 	}
 
+	/**
+	 * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons use
+	 * this to react to sunlight and start to burn.
+	 */
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		this.field_70888_h = this.field_70886_e;
 		this.field_70884_g = this.destPos;
 		this.destPos = (float)((double)this.destPos + (double)(this.onGround ? -1 : 4) * 0.3D);
-		if(this.destPos < 0.0F) {
+
+		if (this.destPos < 0.0F) {
 			this.destPos = 0.0F;
 		}
 
-		if(this.destPos > 1.0F) {
+		if (this.destPos > 1.0F) {
 			this.destPos = 1.0F;
 		}
 
-		if(!this.onGround && this.field_70889_i < 1.0F) {
+		if (!this.onGround && this.field_70889_i < 1.0F) {
 			this.field_70889_i = 1.0F;
 		}
 
 		this.field_70889_i = (float)((double)this.field_70889_i * 0.9D);
-		if(!this.onGround && this.motionY < 0.0D) {
+
+		if (!this.onGround && this.motionY < 0.0D) {
 			this.motionY *= 0.6D;
 		}
 
 		this.field_70886_e += this.field_70889_i * 2.0F;
-		if(!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
+
+		if (!this.isChild() && !this.worldObj.isRemote && --this.timeUntilNextEgg <= 0) {
 			this.worldObj.playSoundAtEntity(this, "mob.chickenplop", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			this.dropItem(Item.egg.shiftedIndex, 1);
 			this.timeUntilNextEgg = this.rand.nextInt(6000) + 6000;
 		}
 	}
 
+	/**
+	 * Called when the mob is falling. Calculates and applies fall damage.
+	 */
 	protected void fall(float par1) {}
 
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
-	}
-
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
-	}
-
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return "mob.chicken";
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.chickenhurt";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.chickenhurt";
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return Item.feather.shiftedIndex;
 	}
 
+	/**
+	 * Drop 0-2 items of this living's type
+	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(3) + this.rand.nextInt(1 + par2);
 
-		for(int var4 = 0; var4 < var3; ++var4) {
+		for (int var4 = 0; var4 < var3; ++var4) {
 			this.dropItem(Item.feather.shiftedIndex, 1);
 		}
 
-		if(this.isBurning()) {
+		if (this.isBurning()) {
 			this.dropItem(Item.chickenCooked.shiftedIndex, 1);
 		} else {
 			this.dropItem(Item.chickenRaw.shiftedIndex, 1);
 		}
 	}
 
+	/**
+	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
+	 */
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		return new EntityChicken(this.worldObj);
 	}

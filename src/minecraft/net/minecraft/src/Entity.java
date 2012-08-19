@@ -61,7 +61,7 @@ public abstract class Entity {
 	public int fireResistance;
 	public int fire; // Spout private -> public
 	protected boolean inWater;
-	public int heartsLife;
+	public int hurtResistantTime;
 	private boolean firstUpdate;
 	public String skinUrl;
 	public String cloakUrl;
@@ -85,7 +85,7 @@ public abstract class Entity {
 	public boolean wasOnGround;
 	public boolean clientonly = false;
 	//Spout end
-	public EnumEntitySize field_70168_am;
+	public EnumEntitySize myEntitySize;
 
 	public Entity(World par1World) {
 		this.entityId = nextEntityID++;
@@ -113,12 +113,12 @@ public abstract class Entity {
 		this.fireResistance = 1;
 		this.fire = 0;
 		this.inWater = false;
-		this.heartsLife = 0;
+		this.hurtResistantTime = 0;
 		this.firstUpdate = true;
 		this.isImmuneToFire = false;
 		this.dataWatcher = new DataWatcher();
 		this.addedToChunk = false;
-		this.field_70168_am = EnumEntitySize.SIZE_2;
+		this.myEntitySize = EnumEntitySize.SIZE_2;
 		this.worldObj = par1World;
 		this.setPosition(0.0D, 0.0D, 0.0D);
 		this.dataWatcher.addObject(0, Byte.valueOf((byte)0));
@@ -166,17 +166,17 @@ public abstract class Entity {
 		float var3 = par1 % 2.0F;
 
 		if ((double)var3 < 0.375D) {
-			this.field_70168_am = EnumEntitySize.SIZE_1;
+			this.myEntitySize = EnumEntitySize.SIZE_1;
 		} else if ((double)var3 < 0.75D) {
-			this.field_70168_am = EnumEntitySize.SIZE_2;
+			this.myEntitySize = EnumEntitySize.SIZE_2;
 		} else if ((double)var3 < 1.0D) {
-			this.field_70168_am = EnumEntitySize.SIZE_3;
+			this.myEntitySize = EnumEntitySize.SIZE_3;
 		} else if ((double)var3 < 1.375D) {
-			this.field_70168_am = EnumEntitySize.SIZE_4;
+			this.myEntitySize = EnumEntitySize.SIZE_4;
 		} else if ((double)var3 < 1.75D) {
-			this.field_70168_am = EnumEntitySize.SIZE_5;
+			this.myEntitySize = EnumEntitySize.SIZE_5;
 		} else {
-			this.field_70168_am = EnumEntitySize.SIZE_6;
+			this.myEntitySize = EnumEntitySize.SIZE_6;
 		}
 	}
 
@@ -216,7 +216,7 @@ public abstract class Entity {
 	}
 
 	public void onEntityUpdate() {
-		this.worldObj.field_72984_F.startSection("entityBaseTick");
+		this.worldObj.theProfiler.startSection("entityBaseTick");
 		if(this.ridingEntity != null && this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		}
@@ -306,7 +306,7 @@ public abstract class Entity {
 		}
 
 		this.firstUpdate = false;
-		this.worldObj.field_72984_F.endSection();
+		this.worldObj.theProfiler.endSection();
 	}
 
 	protected void setOnFireFromLava() {
@@ -344,7 +344,7 @@ public abstract class Entity {
 			this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
 			this.posZ = (this.boundingBox.minZ + this.boundingBox.maxZ) / 2.0D;
 		} else {
-			this.worldObj.field_72984_F.startSection("move");
+			this.worldObj.theProfiler.startSection("move");
 			this.ySize *= 0.4F;
 			double var7 = this.posX;
 			double var9 = this.posZ;
@@ -528,8 +528,8 @@ public abstract class Entity {
 				}
 			}
 
-			this.worldObj.field_72984_F.endSection();
-			this.worldObj.field_72984_F.startSection("rest");
+			this.worldObj.theProfiler.endSection();
+			this.worldObj.theProfiler.startSection("rest");
 			this.posX = (this.boundingBox.minX + this.boundingBox.maxX) / 2.0D;
 			this.posY = this.boundingBox.minY + (double)this.yOffset - (double)this.ySize;
 			this.posZ = (this.boundingBox.minZ + this.boundingBox.maxZ) / 2.0D;
@@ -570,7 +570,7 @@ public abstract class Entity {
 				}
 			}
 
-			this.func_70017_D();
+			this.doBlockCollisions();
 			boolean var35 = this.isWet();
 
 			if (this.worldObj.isBoundingBoxBurning(this.boundingBox.contract(0.001D, 0.001D, 0.001D))) {
@@ -590,11 +590,11 @@ public abstract class Entity {
 				this.fire = -this.fireResistance;
 			}
 
-			this.worldObj.field_72984_F.endSection();
+			this.worldObj.theProfiler.endSection();
 		}
 	}
 
-	protected void func_70017_D() {
+	protected void doBlockCollisions() {
 		int var1 = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
 		int var2 = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
 		int var3 = MathHelper.floor_double(this.boundingBox.minZ + 0.001D);
@@ -1123,7 +1123,7 @@ public abstract class Entity {
 
 			this.ridingEntity = null;
 		} else if (this.ridingEntity == par1Entity) {
-			this.func_70061_h(par1Entity);
+			this.unmountEntity(par1Entity);
 			this.ridingEntity.riddenByEntity = null;
 			this.ridingEntity = null;
 			this.setLocationAndAngles(par1Entity.posX, par1Entity.boundingBox.minY + (double)par1Entity.height, par1Entity.posZ, this.rotationYaw, this.rotationPitch);
@@ -1141,7 +1141,7 @@ public abstract class Entity {
 		}
 	}
 
-	public void func_70061_h(Entity par1Entity) {
+	public void unmountEntity(Entity par1Entity) {
 		double var3 = par1Entity.posX;
 		double var5 = par1Entity.boundingBox.minY + (double)par1Entity.height;
 		double var7 = par1Entity.posZ;
@@ -1153,8 +1153,8 @@ public abstract class Entity {
 					int var14 = (int)(this.posZ + var11);
 					AxisAlignedBB var2 = this.boundingBox.getOffsetBoundingBox(var9, 1.0D, var11);
 
-					if (this.worldObj.func_72840_a(var2).isEmpty()) {
-						if (this.worldObj.func_72797_t(var13, (int)this.posY, var14)) {
+					if (this.worldObj.getAllCollidingBoundingBoxes(var2).isEmpty()) {
+						if (this.worldObj.doesBlockHaveSolidTopSurface(var13, (int)this.posY, var14)) {
 							this.setLocationAndAngles(this.posX + var9, this.posY + 1.0D, this.posZ + var11, this.rotationYaw, this.rotationPitch);
 							return;
 						}
@@ -1214,7 +1214,7 @@ public abstract class Entity {
 
 	public void updateCloak() {}
 
-	public ItemStack[] func_70035_c() {
+	public ItemStack[] getLastActiveItems() {
 		return null;
 	}
 
@@ -1365,7 +1365,7 @@ public abstract class Entity {
 		this.fallDistance = 0.0F;
 	}
 
-	public String func_70023_ak() {
+	public String getEntityName() {
 		String var1 = EntityList.getEntityString(this);
 
 		if (var1 == null) {
@@ -1394,6 +1394,6 @@ public abstract class Entity {
 	}
 
 	public String toString() {
-		return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.func_70023_ak(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
+		return String.format("%s[\'%s\'/%d, l=\'%s\', x=%.2f, y=%.2f, z=%.2f]", new Object[] {this.getClass().getSimpleName(), this.getEntityName(), Integer.valueOf(this.entityId), this.worldObj == null ? "~NULL~" : this.worldObj.getWorldInfo().getWorldName(), Double.valueOf(this.posX), Double.valueOf(this.posY), Double.valueOf(this.posZ)});
 	}
 }

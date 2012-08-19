@@ -9,8 +9,18 @@ public class EntityFX extends Entity {
 	public int particleMaxAge = 0;
 	public float particleScale;
 	public float particleGravity;
+
+	/** The red amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0. */
 	public float particleRed;
+
+	/**
+	 * The green amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
+	 */
 	public float particleGreen;
+
+	/**
+	 * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
+	 */
 	public float particleBlue;
 	//Spout end
 	public static double interpPosX;
@@ -45,7 +55,7 @@ public class EntityFX extends Entity {
 		return this;
 	}
 
-	public EntityFX func_70541_f(float par1) {
+	public EntityFX multipleParticleScaleBy(float par1) {
 		this.setSize(0.2F * par1, 0.2F * par1);
 		this.particleScale *= par1;
 		return this;
@@ -69,16 +79,24 @@ public class EntityFX extends Entity {
 		return this.particleBlue;
 	}
 
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
 	protected boolean canTriggerWalking() {
 		return false;
 	}
 
 	protected void entityInit() {}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
+
 		if (this.particleAge++ >= this.particleMaxAge) {
 			this.setDead();
 		}
@@ -88,6 +106,7 @@ public class EntityFX extends Entity {
 		this.motionX *= 0.9800000190734863D;
 		this.motionY *= 0.9800000190734863D;
 		this.motionZ *= 0.9800000190734863D;
+
 		if (this.onGround) {
 			this.motionX *= 0.699999988079071D;
 			this.motionZ *= 0.699999988079071D;
@@ -115,10 +134,19 @@ public class EntityFX extends Entity {
 		return 0;
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
 
+	/**
+	 * Public method to set private field particleTextureIndex.
+	 */
 	public void setParticleTextureIndex(int par1) {
 		this.particleTextureIndex = par1;
 	}
@@ -127,6 +155,9 @@ public class EntityFX extends Entity {
 		return this.particleTextureIndex;
 	}
 
+	/**
+	 * If returns false, the item will not inflict any damage against entities.
+	 */
 	public boolean canAttackWithItem() {
 		return false;
 	}

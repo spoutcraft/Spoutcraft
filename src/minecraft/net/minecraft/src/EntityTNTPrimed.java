@@ -2,12 +2,9 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftTNTPrimed;
 
-import net.minecraft.src.Entity;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
-
 public class EntityTNTPrimed extends Entity {
 
+	/** How long the fuse is */
 	public int fuse;
 	//Spout start
 	public float yield = 4F;
@@ -40,14 +37,24 @@ public class EntityTNTPrimed extends Entity {
 
 	protected void entityInit() {}
 
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
 	protected boolean canTriggerWalking() {
 		return false;
 	}
 
+	/**
+	 * Returns true if other Entities should be prevented from moving through this Entity.
+	 */
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -57,6 +64,7 @@ public class EntityTNTPrimed extends Entity {
 		this.motionX *= 0.9800000190734863D;
 		this.motionY *= 0.9800000190734863D;
 		this.motionZ *= 0.9800000190734863D;
+
 		if (this.onGround) {
 			this.motionX *= 0.699999988079071D;
 			this.motionZ *= 0.699999988079071D;
@@ -80,10 +88,16 @@ public class EntityTNTPrimed extends Entity {
 		//Spout end
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setByte("Fuse", (byte)this.fuse);
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.fuse = par1NBTTagCompound.getByte("Fuse");
 	}

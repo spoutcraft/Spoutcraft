@@ -14,11 +14,15 @@ import net.minecraft.client.Minecraft;
 
 public class TexturePackList {
 	private static final TexturePackBase field_77314_a = new TexturePackDefault();
-	private final Minecraft field_77312_b;
+
+	/** The Minecraft instance. */
+	private final Minecraft mc;
 
 	/** The directory the texture packs will be loaded from. */
 	private final File texturePackDir;
-	private final File field_77310_d;
+
+	/** Folder for the multi-player texturepacks. Returns File. */
+	private final File mpTexturePackFolder;
 
 	/** The list of the available texture packs. */
 	private List availableTexturePacks = new ArrayList();
@@ -29,9 +33,9 @@ public class TexturePackList {
 	private boolean field_77315_h;
 
 	public TexturePackList(File par1File, Minecraft par2Minecraft) {
-		this.field_77312_b = par2Minecraft;
+		this.mc = par2Minecraft;
 		this.texturePackDir = new File(par1File, "texturepacks");
-		this.field_77310_d = new File(par1File, "texturepacks-mp-cache");
+		this.mpTexturePackFolder = new File(par1File, "texturepacks-mp-cache");
 		this.func_77307_h();
 		this.updateAvaliableTexturePacks();
 	}
@@ -42,9 +46,9 @@ public class TexturePackList {
 			this.texturePackDir.mkdirs();
 		}
 
-		if (!this.field_77310_d.isDirectory()) {
-			this.field_77310_d.delete();
-			this.field_77310_d.mkdirs();
+		if (!this.mpTexturePackFolder.isDirectory()) {
+			this.mpTexturePackFolder.delete();
+			this.mpTexturePackFolder.mkdirs();
 		}
 	}
 
@@ -57,8 +61,8 @@ public class TexturePackList {
 		} else {
 			this.field_77315_h = false;
 			this.selectedTexturePack = par1TexturePackBase;
-			this.field_77312_b.gameSettings.skin = par1TexturePackBase.func_77538_c();
-			this.field_77312_b.gameSettings.saveOptions();
+			this.mc.gameSettings.skin = par1TexturePackBase.func_77538_c();
+			this.mc.gameSettings.saveOptions();
 			// Spout HD
 			TextureUtils.setTileSize();
 			Minecraft var10000 = MCPatcherUtils.getMinecraft();
@@ -69,7 +73,10 @@ public class TexturePackList {
 		}
 	}
 
-	public void func_77296_a(String par1Str) {
+	/**
+	 * filename must end in .zip
+	 */
+	public void requestDownloadOfTexture(String par1Str) {
 		String var2 = par1Str.substring(par1Str.lastIndexOf("/") + 1);
 
 		if (var2.contains("?")) {
@@ -77,20 +84,20 @@ public class TexturePackList {
 		}
 
 		if (var2.endsWith(".zip")) {
-			File var3 = new File(this.field_77310_d, var2);
-			this.func_77297_a(par1Str, var3);
+			File var3 = new File(this.mpTexturePackFolder, var2);
+			this.downloadTexture(par1Str, var3);
 		}
 	}
 
-	private void func_77297_a(String par1Str, File par2File) {
+	private void downloadTexture(String par1Str, File par2File) {
 		HashMap var3 = new HashMap();
 		GuiProgress var4 = new GuiProgress();
-		var3.put("X-Minecraft-Username", this.field_77312_b.session.username);
-		var3.put("X-Minecraft-Version", "1.3.1");
+		var3.put("X-Minecraft-Username", this.mc.session.username);
+		var3.put("X-Minecraft-Version", "1.3.2");
 		var3.put("X-Minecraft-Supported-Resolutions", "16");
 		this.field_77315_h = true;
-		this.field_77312_b.displayGuiScreen(var4);
-		HttpUtil.func_76182_a(par2File, par1Str, new TexturePackDownloadSuccess(this), var3, 10000000, var4);
+		this.mc.displayGuiScreen(var4);
+		HttpUtil.downloadTexturePack(par2File, par1Str, new TexturePackDownloadSuccess(this), var3, 10000000, var4);
 	}
 
 	public boolean func_77295_a() {
@@ -100,7 +107,7 @@ public class TexturePackList {
 	public void func_77304_b() {
 		this.field_77315_h = false;
 		this.updateAvaliableTexturePacks();
-		this.field_77312_b.func_71395_y();
+		this.mc.func_71395_y();
 	}
 
 	/**
@@ -124,7 +131,7 @@ public class TexturePackList {
 					this.field_77308_f.put(var4, var5);
 				}
 
-				if (((TexturePackBase)var5).func_77538_c().equals(this.field_77312_b.gameSettings.skin)) {
+				if (((TexturePackBase)var5).func_77538_c().equals(this.mc.gameSettings.skin)) {
 					this.selectedTexturePack = (TexturePackBase)var5;
 				}
 
@@ -137,7 +144,7 @@ public class TexturePackList {
 
 		while (var2.hasNext()) {
 			TexturePackBase var6 = (TexturePackBase)var2.next();
-			var6.func_77533_a(this.field_77312_b.renderEngine);
+			var6.func_77533_a(this.mc.renderEngine);
 			this.field_77308_f.remove(var6.func_77536_b());
 		}
 
@@ -159,25 +166,25 @@ public class TexturePackList {
 		return Collections.unmodifiableList(this.availableTexturePacks);
 	}
 
-	public TexturePackBase func_77292_e() {
+	public TexturePackBase getSelectedTexturePack() {
 		return this.selectedTexturePack;
 	}
 
 	public boolean func_77300_f() {
-		if (!this.field_77312_b.gameSettings.field_74356_s) {
+		if (!this.mc.gameSettings.serverTextures) {
 			return false;
 		} else {
-			ServerData var1 = this.field_77312_b.func_71362_z();
+			ServerData var1 = this.mc.getServerData();
 			return var1 == null ? true : var1.func_78840_c();
 		}
 	}
 
-	public boolean func_77298_g() {
-		if (!this.field_77312_b.gameSettings.field_74356_s) {
+	public boolean getAcceptsTextures() {
+		if (!this.mc.gameSettings.serverTextures) {
 			return false;
 		} else {
-			ServerData var1 = this.field_77312_b.func_71362_z();
-			return var1 == null ? false : var1.func_78839_b();
+			ServerData var1 = this.mc.getServerData();
+			return var1 == null ? false : var1.getAcceptsTextures();
 		}
 	}
 
@@ -193,8 +200,8 @@ public class TexturePackList {
 		return par0TexturePackList.func_77302_a(par1File);
 	}
 
-	static Minecraft func_77306_b(TexturePackList par0TexturePackList) {
-		return par0TexturePackList.field_77312_b;
+	static Minecraft getMinecraft(TexturePackList par0TexturePackList) {
+		return par0TexturePackList.mc;
 	}
 	// Spout HD start
 	public TexturePackImplementation getDefaultTexturePack() {

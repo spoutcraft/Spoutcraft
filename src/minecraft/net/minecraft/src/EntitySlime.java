@@ -6,6 +6,8 @@ public class EntitySlime extends EntityLiving implements IMob {
 	public float field_70813_a;
 	public float field_70811_b;
 	public float field_70812_c;
+
+	/** the time between each jump of the slime */
 	private int slimeJumpDelay = 0;
 
 	public EntitySlime(World par1World) {
@@ -15,7 +17,6 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.yOffset = 0.0F;
 		this.slimeJumpDelay = this.rand.nextInt(20) + 10;
 		this.setSlimeSize(var2);
-		this.experienceValue = var2;
 		//Spout start
 		this.spoutEntity = new CraftSlime(this);
 		//Spout end
@@ -39,28 +40,46 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return var1 * var1;
 	}
 
+	/**
+	 * Returns the size of the slime.
+	 */
 	public int getSlimeSize() {
 		return this.dataWatcher.getWatchableObjectByte(16);
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setInteger("Size", this.getSlimeSize() - 1);
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.setSlimeSize(par1NBTTagCompound.getInteger("Size") + 1);
 	}
 
+	/**
+	 * Returns the name of a particle effect that may be randomly created by EntitySlime.onUpdate()
+	 */
 	protected String getSlimeParticle() {
 		return "slime";
 	}
 
+	/**
+	 * Returns the name of the sound played when the slime jumps.
+	 */
 	protected String getJumpSound() {
 		return "mob.slime";
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		if (!this.worldObj.isRemote && this.worldObj.difficultySetting == 0 && this.getSlimeSize() > 0) {
 			this.isDead = true;
@@ -70,6 +89,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.field_70812_c = this.field_70811_b;
 		boolean var1 = this.onGround;
 		super.onUpdate();
+
 		if (this.onGround && !var1) {
 			int var2 = this.getSlimeSize();
 
@@ -96,6 +116,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 	protected void updateEntityActionState() {
 		this.despawnEntity();
 		EntityPlayer var1 = this.worldObj.getClosestVulnerablePlayerToEntity(this, 16.0D);
+
 		if (var1 != null) {
 			this.faceEntity(var1, 10.0F, 20.0F);
 		}
@@ -113,11 +134,11 @@ public class EntitySlime extends EntityLiving implements IMob {
 				this.worldObj.playSoundAtEntity(this, this.getJumpSound(), this.getSoundVolume(), ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 			}
 
-			this.field_70813_a = 1.0F;
 			this.moveStrafing = 1.0F - this.rand.nextFloat() * 2.0F;
 			this.moveForward = (float)(1 * this.getSlimeSize());
 		} else {
 			this.isJumping = false;
+
 			if (this.onGround) {
 				this.moveStrafing = this.moveForward = 0.0F;
 			}
@@ -128,6 +149,9 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.field_70813_a *= 0.6F;
 	}
 
+	/**
+	 * Gets the amount of time the slime needs to wait between jumps.
+	 */
 	protected int getJumpDelay() {
 		return this.rand.nextInt(20) + 10;
 	}
@@ -136,8 +160,12 @@ public class EntitySlime extends EntityLiving implements IMob {
 		return new EntitySlime(this.worldObj);
 	}
 
+	/**
+	 * Will get destroyed next tick.
+	 */
 	public void setDead() {
 		int var1 = this.getSlimeSize();
+
 		if (!this.worldObj.isRemote && var1 > 1 && this.getHealth() <= 0) {
 			int var2 = 2 + this.rand.nextInt(3);
 
@@ -154,52 +182,87 @@ public class EntitySlime extends EntityLiving implements IMob {
 		super.setDead();
 	}
 
+	/**
+	 * Called by a player entity when they collide with an entity
+	 */
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		if (this.canDamagePlayer()) {
 			int var2 = this.getSlimeSize();
+
 			if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.6D * (double)var2 * 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength())) {
 				this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
 	}
 
+	/**
+	 * Indicates weather the slime is able to damage the player (based upon the slime's size)
+	 */
 	protected boolean canDamagePlayer() {
 		return this.getSlimeSize() > 1;
 	}
 
+	/**
+	 * Gets the amount of damage dealt to the player when "attacked" by the slime.
+	 */
 	protected int getAttackStrength() {
 		return this.getSlimeSize();
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.slime";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.slime";
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return this.getSlimeSize() == 1 ? Item.slimeBall.shiftedIndex : 0;
 	}
 
+	/**
+	 * Checks if the entity's current position is a valid location to spawn this entity.
+	 */
 	public boolean getCanSpawnHere() {
 		Chunk var1 = this.worldObj.getChunkFromBlockCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
 		return this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && this.rand.nextInt(4) != 1 ? false : ((this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) && this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D ? super.getCanSpawnHere() : false);
 	}
 
+	/**
+	 * Returns the volume for the sounds this mob makes.
+	 */
 	protected float getSoundVolume() {
 		return 0.4F * (float)this.getSlimeSize();
 	}
 
+	/**
+	 * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
+	 * use in wolves.
+	 */
 	public int getVerticalFaceSpeed() {
 		return 0;
 	}
 
+	/**
+	 * Returns true if the slime makes a sound when it jumps (based upon the slime's size)
+	 */
 	protected boolean makesSoundOnJump() {
 		return this.getSlimeSize() > 1;
 	}
 
+	/**
+	 * Returns true if the slime makes a sound when it lands after a jump (based upon the slime's size)
+	 */
 	protected boolean makesSoundOnLand() {
 		return this.getSlimeSize() > 2;
 	}

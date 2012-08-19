@@ -377,7 +377,7 @@ public class RenderItem extends Render {
 
 			float var7 = 0.00390625F;
 			float var8 = 0.00390625F;
-			float var9 = (float)(Minecraft.func_71386_F() % (long)(3000 + var6 * 1873)) / (3000.0F + (float)(var6 * 1873)) * 256.0F;
+			float var9 = (float)(Minecraft.getSystemTime() % (long)(3000 + var6 * 1873)) / (3000.0F + (float)(var6 * 1873)) * 256.0F;
 			float var10 = 0.0F;
 			Tessellator var11 = Tessellator.instance;
 			float var12 = 4.0F;

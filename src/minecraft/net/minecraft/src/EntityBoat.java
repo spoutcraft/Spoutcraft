@@ -164,7 +164,7 @@ public class EntityBoat extends Entity {
 		for(int var4 = 0; var4 < var1; ++var4) {
 			double var5 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 0) / (double)var1 - 0.125D;
 			double var7 = this.boundingBox.minY + (this.boundingBox.maxY - this.boundingBox.minY) * (double)(var4 + 1) / (double)var1 - 0.125D;
-			AxisAlignedBB var9 = AxisAlignedBB.func_72332_a().func_72299_a(this.boundingBox.minX, var5, this.boundingBox.minZ, this.boundingBox.maxX, var7, this.boundingBox.maxZ);
+			AxisAlignedBB var9 = AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.boundingBox.minX, var5, this.boundingBox.minZ, this.boundingBox.maxX, var7, this.boundingBox.maxZ);
 			if(this.worldObj.isAABBInMaterial(var9, Material.water)) {
 				var2 += 1.0D / (double)var1;
 			}
@@ -202,7 +202,7 @@ public class EntityBoat extends Entity {
 				var8 = this.posY + (this.boatY - this.posY) / (double)this.boatPosRotationIncrements;
 				var26 = this.posZ + (this.boatZ - this.posZ) / (double)this.boatPosRotationIncrements;
 
-				var12 = MathHelper.func_76138_g(this.boatYaw - (double)this.rotationYaw);
+				var12 = MathHelper.wrapAngleTo180_double(this.boatYaw - (double)this.rotationYaw);
 
 				this.rotationYaw = (float)((double)this.rotationYaw + var12 / (double)this.boatPosRotationIncrements);
 				this.rotationPitch = (float)((double)this.rotationPitch + (this.boatPitch - (double)this.rotationPitch) / (double)this.boatPosRotationIncrements);
@@ -314,7 +314,7 @@ public class EntityBoat extends Entity {
 				var8 = (double)((float)(Math.atan2(var12, var26) * 180.0D / Math.PI));
 			}
 
-			double var14 = MathHelper.func_76138_g(var8 - (double)this.rotationYaw);
+			double var14 = MathHelper.wrapAngleTo180_double(var8 - (double)this.rotationYaw);
 
 			if(var14 > 20.0D) {
 				var14 = 20.0D;

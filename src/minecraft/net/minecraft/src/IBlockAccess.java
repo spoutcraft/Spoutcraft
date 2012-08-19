@@ -25,9 +25,15 @@ public interface IBlockAccess {
 
 	int getHeight();
 
-	boolean func_72806_N();
+	/**
+	 * set by !chunk.getAreLevelsEmpty
+	 */
+	boolean extendedLevelsInChunkCache();
 
-	boolean func_72797_t(int var1, int var2, int var3);
+	/**
+	 * Returns true if the block at the given coordinate has a solid (buildable) top surface.
+	 */
+	boolean doesBlockHaveSolidTopSurface(int var1, int var2, int var3);
 
 	// Spout start
 	public int getGrassColorCache(int x, int y, int z);

@@ -19,7 +19,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout End
 
 public abstract class EntityLiving extends Entity {
-	public int heartsHalvesLife = 20;
+	public int maxHurtResistantTime = 20;
 	public float field_70769_ao;
 	public float field_70770_ap;
 	public float renderYawOffset = 0.0F;
@@ -57,8 +57,8 @@ public abstract class EntityLiving extends Entity {
 	protected int experienceValue;
 	public int field_70731_aW = -1;
 	public float field_70730_aX = (float)(Math.random() * 0.8999999761581421D + 0.10000000149011612D);
-	public float field_70722_aY;
-	public float field_70721_aZ;
+	public float prevLegYaw;
+	public float legYaw;
 	public float field_70754_ba;
 	protected EntityPlayer attackingPlayer = null;
 	protected int recentlyHit = 0;
@@ -111,8 +111,8 @@ public abstract class EntityLiving extends Entity {
 	public EntityLiving(World par1World) {
 		super(par1World);
 		this.preventEntitySpawning = true;
-		this.tasks = new EntityAITasks(par1World != null && par1World.field_72984_F != null ? par1World.field_72984_F : null);
-		this.targetTasks = new EntityAITasks(par1World != null && par1World.field_72984_F != null ? par1World.field_72984_F : null);
+		this.tasks = new EntityAITasks(par1World != null && par1World.theProfiler != null ? par1World.theProfiler : null);
+		this.targetTasks = new EntityAITasks(par1World != null && par1World.theProfiler != null ? par1World.theProfiler : null);
 		this.lookHelper = new EntityLookHelper(this);
 		this.moveHelper = new EntityMoveHelper(this);
 		this.jumpHelper = new EntityJumpHelper(this);
@@ -248,7 +248,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	public boolean canEntityBeSeen(Entity par1Entity) {
-		return this.worldObj.rayTraceBlocks(Vec3.func_72437_a().func_72345_a(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), Vec3.func_72437_a().func_72345_a(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
+		return this.worldObj.rayTraceBlocks(Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ), Vec3.getVec3Pool().getVecFromPool(par1Entity.posX, par1Entity.posY + (double)par1Entity.getEyeHeight(), par1Entity.posZ)) == null;
 	}
 
 	public String getTexture() {
@@ -288,7 +288,7 @@ public abstract class EntityLiving extends Entity {
 	public void onEntityUpdate() {
 		this.prevSwingProgress = this.swingProgress;
 		super.onEntityUpdate();
-		this.worldObj.field_72984_F.startSection("mobBaseTick");
+		this.worldObj.theProfiler.startSection("mobBaseTick");
 
 		if (this.isEntityAlive() && this.rand.nextInt(1000) < this.livingSoundTime++) {
 			this.livingSoundTime = -this.getTalkInterval();
@@ -332,8 +332,8 @@ public abstract class EntityLiving extends Entity {
 			--this.hurtTime;
 		}
 
-		if (this.heartsLife > 0) {
-			--this.heartsLife;
+		if (this.hurtResistantTime > 0) {
+			--this.hurtResistantTime;
 		}
 
 		if (this.health <= 0) {
@@ -366,7 +366,7 @@ public abstract class EntityLiving extends Entity {
 		this.prevRotationYawHead = this.rotationYawHead;
 		this.prevRotationYaw = this.rotationYaw;
 		this.prevRotationPitch = this.rotationPitch;
-		this.worldObj.field_72984_F.endSection();
+		this.worldObj.theProfiler.endSection();
 	}
 
 	protected void onDeathUpdate() {
@@ -471,14 +471,14 @@ public abstract class EntityLiving extends Entity {
 		}
 
 		this.field_70766_av += (var8 - this.field_70766_av) * 0.3F;
-		this.worldObj.field_72984_F.startSection("headTurn");
+		this.worldObj.theProfiler.startSection("headTurn");
 		if (this.isAIEnabled()) {
 			this.bodyHelper.func_75664_a();
 		} else {
-			float var9 = MathHelper.func_76142_g(var6 - this.renderYawOffset);
+			float var9 = MathHelper.wrapAngleTo180_float(var6 - this.renderYawOffset);
 
 			this.renderYawOffset += var9 * 0.3F;
-			float var10 = MathHelper.func_76142_g(this.rotationYaw - this.renderYawOffset);
+			float var10 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
 			boolean var11 = var10 < -90.0F || var10 >= 90.0F;
 
 			if (var10 < -75.0F) {
@@ -499,8 +499,8 @@ public abstract class EntityLiving extends Entity {
 			}
 		}
 
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("rangeChecks");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("rangeChecks");
 
 		while (this.rotationYaw - this.prevRotationYaw < -180.0F) {
 			this.prevRotationYaw -= 360.0F;
@@ -534,7 +534,7 @@ public abstract class EntityLiving extends Entity {
 			this.prevRotationYawHead += 360.0F;
 		}
 
-		this.worldObj.field_72984_F.endSection();
+		this.worldObj.theProfiler.endSection();
 		this.field_70764_aw += var7;
 	}
 
@@ -545,7 +545,7 @@ public abstract class EntityLiving extends Entity {
 				this.health = this.getMaxHealth();
 			}
 
-			this.heartsLife = this.heartsHalvesLife / 2;
+			this.hurtResistantTime = this.maxHurtResistantTime / 2;
 		}
 	}
 
@@ -572,9 +572,9 @@ public abstract class EntityLiving extends Entity {
 			} else if (par1DamageSource.fireDamage() && this.isPotionActive(Potion.fireResistance)) {
 				return false;
 			} else {
-				this.field_70721_aZ = 1.5F;
+				this.legYaw = 1.5F;
 				boolean var3 = true;
-				if ((float)this.heartsLife > (float)this.heartsHalvesLife / 2.0F) {
+				if ((float)this.hurtResistantTime > (float)this.maxHurtResistantTime / 2.0F) {
 					if (par2 <= this.lastDamage) {
 						return false;
 					}
@@ -585,7 +585,7 @@ public abstract class EntityLiving extends Entity {
 				} else {
 					this.lastDamage = par2;
 					this.prevHealth = this.health;
-					this.heartsLife = this.heartsHalvesLife;
+					this.hurtResistantTime = this.maxHurtResistantTime;
 					this.damageEntity(par1DamageSource, par2);
 					this.hurtTime = this.maxHurtTime = 10;
 				}
@@ -926,7 +926,7 @@ public abstract class EntityLiving extends Entity {
 			this.motionZ *= (double)var3;
 		}
 
-		this.field_70722_aY = this.field_70721_aZ;
+		this.field_70722_aY = this.legYaw;
 		var9 = this.posX - this.prevPosX;
 		double var12 = this.posZ - this.prevPosZ;
 		float var11 = MathHelper.sqrt_double(var9 * var9 + var12 * var12) * 4.0F;
@@ -934,8 +934,8 @@ public abstract class EntityLiving extends Entity {
 			var11 = 1.0F;
 		}
 
-		this.field_70721_aZ += (var11 - this.field_70721_aZ) * 0.4F;
-		this.field_70754_ba += this.field_70721_aZ;
+		this.legYaw += (var11 - this.legYaw) * 0.4F;
+		this.field_70754_ba += this.legYaw;
 	}
 
 	public boolean isOnLadder() {
@@ -1020,7 +1020,7 @@ public abstract class EntityLiving extends Entity {
 			double var3 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
 			double var5 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
 
-			double var7 = MathHelper.func_76138_g(this.newRotationYaw - (double)this.rotationYaw);
+			double var7 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - (double)this.rotationYaw);
 
 			this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.newPosRotationIncrements);
 			this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
@@ -1041,9 +1041,9 @@ public abstract class EntityLiving extends Entity {
 			this.motionZ = 0.0D;
 		}
 
-		this.worldObj.field_72984_F.startSection("ai");
+		this.worldObj.theProfiler.startSection("ai");
 
-		this.worldObj.field_72984_F.startSection("ai");
+		this.worldObj.theProfiler.startSection("ai");
 		if (this.isMovementBlocked()) {
 			this.isJumping = false;
 			this.moveStrafing = 0.0F;
@@ -1051,20 +1051,19 @@ public abstract class EntityLiving extends Entity {
 			this.randomYawVelocity = 0.0F;
 		} else if (this.isClientWorld()) {
 			if (this.isAIEnabled()) {
-				this.worldObj.field_72984_F.startSection("newAi");
+				this.worldObj.theProfiler.startSection("newAi");
 				this.updateAITasks();
-				this.worldObj.field_72984_F.endSection();
+				this.worldObj.theProfiler.endSection();
 			} else {
-				this.worldObj.field_72984_F.startSection("oldAi");
+				this.worldObj.theProfiler.startSection("oldAi");
 				this.updateEntityActionState();
-				this.worldObj.field_72984_F.endSection();
+				this.worldObj.theProfiler.endSection();
 				this.rotationYawHead = this.rotationYaw;
 			}
 		}
 
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("jump");
-		this.worldObj.field_72984_F.startSection("jump");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("jump");
 
 		if (this.isJumping) {
 			if (!this.isInWater() && !this.handleLavaMovement()) {
@@ -1079,8 +1078,8 @@ public abstract class EntityLiving extends Entity {
 			this.jumpTicks = 0;
 		}
 
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("travel");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("travel");
 		this.moveStrafing *= 0.98F;
 		this.moveForward *= 0.98F;
 		this.randomYawVelocity *= 0.9F;
@@ -1088,8 +1087,8 @@ public abstract class EntityLiving extends Entity {
 		this.landMovementFactor *= this.getSpeedModifier();
 		this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
 		this.landMovementFactor = var15;
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("push");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("push");
 
 		if (!this.worldObj.isRemote) {
 			List var2 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
@@ -1107,7 +1106,7 @@ public abstract class EntityLiving extends Entity {
 			}
 		}
 
-		this.worldObj.field_72984_F.endSection();
+		this.worldObj.theProfiler.endSection();
 	}
 
 	protected boolean isAIEnabled() {
@@ -1166,33 +1165,33 @@ public abstract class EntityLiving extends Entity {
 
 	protected void updateAITasks() {
 		++this.entityAge;
-		this.worldObj.field_72984_F.startSection("checkDespawn");
+		this.worldObj.theProfiler.startSection("checkDespawn");
 		this.despawnEntity();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("sensing");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("sensing");
 		this.senses.clearSensingCache();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("targetSelector");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("targetSelector");
 		this.targetTasks.onUpdateTasks();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("goalSelector");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("goalSelector");
 		this.tasks.onUpdateTasks();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("navigation");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("navigation");
 		this.navigator.onUpdateNavigation();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("mob tick");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("mob tick");
 		this.updateAITick();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.startSection("controls");
-		this.worldObj.field_72984_F.startSection("move");
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.startSection("controls");
+		this.worldObj.theProfiler.startSection("move");
 		this.moveHelper.onUpdateMoveHelper();
-		this.worldObj.field_72984_F.endStartSection("look");
+		this.worldObj.theProfiler.endStartSection("look");
 		this.lookHelper.onUpdateLook();
-		this.worldObj.field_72984_F.endStartSection("jump");
+		this.worldObj.theProfiler.endStartSection("jump");
 		this.jumpHelper.doJump();
-		this.worldObj.field_72984_F.endSection();
-		this.worldObj.field_72984_F.endSection();
+		this.worldObj.theProfiler.endSection();
+		this.worldObj.theProfiler.endSection();
 	}
 
 	protected void updateAITick() {}
@@ -1257,7 +1256,7 @@ public abstract class EntityLiving extends Entity {
 	}
 
 	private float updateRotation(float par1, float par2, float par3) {
-		float var4 = MathHelper.func_76142_g(par2 - par1);
+		float var4 = MathHelper.wrapAngleTo180_float(par2 - par1);
 
 		if (var4 > par3) {
 			var4 = par3;
@@ -1291,12 +1290,12 @@ public abstract class EntityLiving extends Entity {
 
 	public Vec3 getPosition(float par1) {
 		if (par1 == 1.0F) {
-			return Vec3.func_72437_a().func_72345_a(this.posX, this.posY, this.posZ);
+			return Vec3.getVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
 		} else {
 			double var2 = this.prevPosX + (this.posX - this.prevPosX) * (double)par1;
 			double var4 = this.prevPosY + (this.posY - this.prevPosY) * (double)par1;
 			double var6 = this.prevPosZ + (this.posZ - this.prevPosZ) * (double)par1;
-			return Vec3.func_72437_a().func_72345_a(var2, var4, var6);
+			return Vec3.getVec3Pool().getVecFromPool(var2, var4, var6);
 		}
 	}
 
@@ -1314,7 +1313,7 @@ public abstract class EntityLiving extends Entity {
 			var3 = MathHelper.sin(-this.rotationYaw * 0.017453292F - (float)Math.PI);
 			var4 = -MathHelper.cos(-this.rotationPitch * 0.017453292F);
 			var5 = MathHelper.sin(-this.rotationPitch * 0.017453292F);
-			return Vec3.func_72437_a().func_72345_a((double)(var3 * var4), (double)var5, (double)(var2 * var4));
+			return Vec3.getVec3Pool().getVecFromPool((double)(var3 * var4), (double)var5, (double)(var2 * var4));
 		} else {
 			var2 = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * par1;
 			var3 = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * par1;
@@ -1322,7 +1321,7 @@ public abstract class EntityLiving extends Entity {
 			var5 = MathHelper.sin(-var3 * 0.017453292F - (float)Math.PI);
 			float var6 = -MathHelper.cos(-var2 * 0.017453292F);
 			float var7 = MathHelper.sin(-var2 * 0.017453292F);
-			return Vec3.func_72437_a().func_72345_a((double)(var5 * var6), (double)var7, (double)(var4 * var6));
+			return Vec3.getVec3Pool().getVecFromPool((double)(var5 * var6), (double)var7, (double)(var4 * var6));
 		}
 	}
 
@@ -1347,8 +1346,8 @@ public abstract class EntityLiving extends Entity {
 
 	public void handleHealthUpdate(byte par1) {
 		if (par1 == 2) {
-			this.field_70721_aZ = 1.5F;
-			this.heartsLife = this.heartsHalvesLife;
+			this.legYaw = 1.5F;
+			this.hurtResistantTime = this.maxHurtResistantTime;
 			this.hurtTime = this.maxHurtTime = 10;
 			this.attackedAtYaw = 0.0F;
 			this.worldObj.playSoundAtEntity(this, this.getHurtSound(), this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
@@ -1504,10 +1503,10 @@ public abstract class EntityLiving extends Entity {
 		this.worldObj.playSoundAtEntity(this, "random.break", 0.8F, 0.8F + this.worldObj.rand.nextFloat() * 0.4F);
 
 		for (int var2 = 0; var2 < 5; ++var2) {
-			Vec3 var3 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+			Vec3 var3 = Vec3.getVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
 			var3.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 			var3.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
-			Vec3 var4 = Vec3.func_72437_a().func_72345_a(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+			Vec3 var4 = Vec3.getVec3Pool().getVecFromPool(((double)this.rand.nextFloat() - 0.5D) * 0.3D, (double)(-this.rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
 			var4.rotateAroundX(-this.rotationPitch * (float)Math.PI / 180.0F);
 			var4.rotateAroundY(-this.rotationYaw * (float)Math.PI / 180.0F);
 			var4 = var4.addVector(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);

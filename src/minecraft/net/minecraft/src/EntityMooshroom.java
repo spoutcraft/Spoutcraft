@@ -1,17 +1,8 @@
 package net.minecraft.src;
 
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityAnimal;
-import net.minecraft.src.EntityCow;
-import net.minecraft.src.EntityItem;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.World;
 import org.spoutcraft.client.entity.CraftMooshroom; //Spout
 
 public class EntityMooshroom extends EntityCow {
-
 	public EntityMooshroom(World par1World) {
 		super(par1World);
 		this.texture = "/mob/redcow.png";
@@ -21,8 +12,12 @@ public class EntityMooshroom extends EntityCow {
 		//Spout end
 	}
 
+	/**
+	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+	 */
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
+
 		if (var2 != null && var2.itemID == Item.bowlEmpty.shiftedIndex && this.getGrowingAge() >= 0) {
 			if (var2.stackSize == 1) {
 				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, new ItemStack(Item.bowlSoup));
@@ -38,6 +33,7 @@ public class EntityMooshroom extends EntityCow {
 		if (var2 != null && var2.itemID == Item.shears.shiftedIndex && this.getGrowingAge() >= 0) {
 			this.setDead();
 			this.worldObj.spawnParticle("largeexplode", this.posX, this.posY + (double)(this.height / 2.0F), this.posZ, 0.0D, 0.0D, 0.0D);
+
 			if (!this.worldObj.isRemote) {
 				EntityCow var3 = new EntityCow(this.worldObj);
 				var3.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -56,6 +52,9 @@ public class EntityMooshroom extends EntityCow {
 		}
 	}
 
+	/**
+	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
+	 */
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		return new EntityMooshroom(this.worldObj);
 	}

@@ -13,17 +13,37 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public abstract class Packet {
+
+	/** Maps packet id to packet class */
 	public static IntHashMap packetIdToClassMap = new IntHashMap();
+
+	/** Maps packet class to packet id */
 	private static Map packetClassToIdMap = new HashMap();
+
+	/** List of the client's packet IDs. */
 	private static Set clientPacketIdList = new HashSet();
+
+	/** List of the server's packet IDs. */
 	private static Set serverPacketIdList = new HashSet();
+
+	/** the system time in milliseconds when this packet was created. */
 	public final long creationTimeMillis = System.currentTimeMillis();
-	public static long field_73292_n;
-	public static long field_73293_o;
-	public static long field_73290_p;
-	public static long field_73289_q;
+	public static long recievedID;
+	public static long recievedSize;
+
+	/** assumed to be sequential by the profiler */
+	public static long sentID;
+	public static long sentSize;
+
+	/**
+	 * Only true for Packet51MapChunk, Packet52MultiBlockChange, Packet53BlockChange and Packet59ComplexEntity. Used to
+	 * separate them into a different send queue.
+	 */
 	public boolean isChunkDataPacket = false;
 
+	/**
+	 * Adds a two way mapping between the packet ID and packet class.
+	 */
 	public static void addIdClassMapping(int par0, boolean par1, boolean par2, Class par3Class) { // Spout default -> public
 		if (packetIdToClassMap.containsItem(par0)) {
 			throw new IllegalArgumentException("Duplicate packet id:" + par0);
@@ -32,6 +52,7 @@ public abstract class Packet {
 		} else {
 			packetIdToClassMap.addKey(par0, par3Class);
 			packetClassToIdMap.put(par3Class, Integer.valueOf(par0));
+
 			if (par1) {
 				clientPacketIdList.add(Integer.valueOf(par0));
 			}
@@ -42,6 +63,9 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Returns a new instance of the specified Packet class.
+	 */
 	public static Packet getNewPacket(int par0) {
 		try {
 			Class var1 = (Class)packetIdToClassMap.lookup(par0);
@@ -53,12 +77,18 @@ public abstract class Packet {
 		}
 	}
 
-	public static void func_73274_a(DataOutputStream par0DataOutputStream, byte[] par1ArrayOfByte) throws IOException {
+	/**
+	 * Writes a byte array to the DataOutputStream
+	 */
+	public static void writeByteArray(DataOutputStream par0DataOutputStream, byte[] par1ArrayOfByte) throws IOException {
 		par0DataOutputStream.writeShort(par1ArrayOfByte.length);
 		par0DataOutputStream.write(par1ArrayOfByte);
 	}
 
-	public static byte[] func_73280_b(DataInputStream par0DataInputStream) throws IOException {
+	/**
+	 * the first short in the stream indicates the number of bytes to read
+	 */
+	public static byte[] readBytesFromStream(DataInputStream par0DataInputStream) throws IOException {
 		short var1 = par0DataInputStream.readShort();
 
 		if (var1 < 0) {
@@ -70,10 +100,16 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Returns the ID of this packet.
+	 */
 	public final int getPacketId() {
 		return ((Integer)packetClassToIdMap.get(this.getClass())).intValue();
 	}
 
+	/**
+	 * Read a packet, prefixed by its ID, from the data stream.
+	 */
 	public static Packet readPacket(DataInputStream par0DataInputStream, boolean par1) throws IOException {
 		boolean var2 = false;
 		Packet var3 = null;
@@ -81,6 +117,7 @@ public abstract class Packet {
 
 		try {
 			var6 = par0DataInputStream.read();
+
 			if (var6 == -1) {
 				return null;
 			}
@@ -90,31 +127,38 @@ public abstract class Packet {
 			}
 
 			var3 = getNewPacket(var6);
+
 			if (var3 == null) {
 				throw new IOException("Bad packet id " + var6);
 			}
 
 			var3.readPacketData(par0DataInputStream);
-			++field_73292_n;
-			field_73293_o += (long)var3.getPacketSize();
+			++recievedID;
+			recievedSize += (long)var3.getPacketSize();
 		} catch (EOFException var5) {
 			System.out.println("Reached end of stream");
 			return null;
 		}
 
 		PacketCount.countPacket(var6, (long)var3.getPacketSize());
-		++field_73292_n;
-		field_73293_o += (long)var3.getPacketSize();
+		++recievedID;
+		recievedSize += (long)var3.getPacketSize();
 		return var3;
 	}
 
+	/**
+	 * Writes a packet, prefixed by its ID, to the data stream.
+	 */
 	public static void writePacket(Packet par0Packet, DataOutputStream par1DataOutputStream) throws IOException {
 		par1DataOutputStream.write(par0Packet.getPacketId());
 		par0Packet.writePacketData(par1DataOutputStream);
-		++field_73290_p;
-		field_73289_q += (long)par0Packet.getPacketSize();
+		++sentID;
+		sentSize += (long)par0Packet.getPacketSize();
 	}
 
+	/**
+	 * Writes a String to the DataOutputStream
+	 */
 	public static void writeString(String par0Str, DataOutputStream par1DataOutputStream) throws IOException {
 		if (par0Str.length() > 32767) {
 			throw new IOException("String too big");
@@ -124,8 +168,12 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Reads a string from a packet
+	 */
 	public static String readString(DataInputStream par0DataInputStream, int par1) throws IOException {
 		short var2 = par0DataInputStream.readShort();
+
 		if (var2 > par1) {
 			throw new IOException("Received string length longer than maximum allowed (" + var2 + " > " + par1 + ")");
 		} else if (var2 < 0) {
@@ -141,25 +189,48 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Abstract. Reads the raw packet data from the data stream.
+	 */
 	public abstract void readPacketData(DataInputStream var1) throws IOException;
 
+	/**
+	 * Abstract. Writes the raw packet data to the data stream.
+	 */
 	public abstract void writePacketData(DataOutputStream var1) throws IOException;
 
+	/**
+	 * Passes this Packet on to the NetHandler for processing.
+	 */
 	public abstract void processPacket(NetHandler var1);
 
+	/**
+	 * Abstract. Return the size of the packet (not counting the header).
+	 */
 	public abstract int getPacketSize();
 
-	public boolean func_73278_e() {
+	/**
+	 * only false for the abstract Packet class, all real packets return true
+	 */
+	public boolean isRealPacket() {
 		return false;
 	}
 
-	public boolean func_73268_a(Packet par1Packet) {
+	/**
+	 * eg return packet30entity.entityId == entityId; WARNING : will throw if you compare a packet to a different packet
+	 * class
+	 */
+	public boolean containsSameEntityIDAs(Packet par1Packet) {
 		return false;
 	}
 
-	public boolean func_73277_a_() {
+	/**
+	 * if this returns false, processPacket is deffered for processReadPackets to handle
+	 */
+	public boolean isWritePacket() {
 		return false;
 	}
+
 	public String toString() {
 		String var1 = this.getClass().getSimpleName();
 		return var1;
@@ -176,14 +247,15 @@ public abstract class Packet {
 			byte var3 = par0DataInputStream.readByte();
 			short var4 = par0DataInputStream.readShort();
 			var1 = new ItemStack(var2, var3, var4);
-			/*boolean override = SpoutClient.getInstance().isSpoutActive() && var3==MaterialData.flint.getRawId(); // Spout
-			if (Item.itemsList[var3].isDamageable() || Item.itemsList[var3].func_46056_k() || override) { // Spout || override*/
 			var1.stackTagCompound = readNBTTagCompound(par0DataInputStream);
 		}
 
 		return var1;
 	}
 
+	/**
+	 * Writes the ItemStack's ID (short), then size (byte), then damage. (short)
+	 */
 	public static void writeItemStack(ItemStack par0ItemStack, DataOutputStream par1DataOutputStream) throws IOException {
 		if (par0ItemStack == null) {
 			par1DataOutputStream.writeShort(-1);
@@ -193,7 +265,7 @@ public abstract class Packet {
 			par1DataOutputStream.writeShort(par0ItemStack.getItemDamage());
 			NBTTagCompound var2 = null;
 
-			if (par0ItemStack.getItem().isDamageable() || par0ItemStack.getItem().func_77651_p()) {
+			if (par0ItemStack.getItem().isDamageable() || par0ItemStack.getItem().getShareTag()) {
 				var2 = par0ItemStack.stackTagCompound;
 			}
 
@@ -201,6 +273,9 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Reads a compressed NBTTagCompound from the InputStream
+	 */
 	public static NBTTagCompound readNBTTagCompound(DataInputStream par0DataInputStream) throws IOException {
 		short var1 = par0DataInputStream.readShort();
 
@@ -213,6 +288,9 @@ public abstract class Packet {
 		}
 	}
 
+	/**
+	 * Writes a compressed NBTTagCompound to the OutputStream
+	 */
 	protected static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream par1DataOutputStream) throws IOException {
 		if (par0NBTTagCompound == null) {
 			par1DataOutputStream.writeShort(-1);

@@ -1,31 +1,42 @@
 package net.minecraft.src;
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class NBTTagList extends NBTBase {
-	public List tagList; //Spout: private to public
+
+	/** The array list containing the tags encapsulated in this list. */
+	public List tagList = new ArrayList();; //Spout: private to public
+
+	/**
+	 * The type byte for the tags in the list - they must all be of the same type.
+	 */
 	private byte tagType;
 
 	public NBTTagList() {
 		super("");
-		tagList = new ArrayList();
 	}
 
 	public NBTTagList(String par1Str) {
 		super(par1Str);
-		tagList = new ArrayList();
 	}
 
+	/**
+	 * Write the actual data contents of the tag, implemented in NBT extension classes
+	 */
 	void write(DataOutput par1DataOutput) throws IOException {
-		if (!tagList.isEmpty()) {
-			tagType = ((NBTBase)tagList.get(0)).getId();
+		if (!this.tagList.isEmpty()) {
+			this.tagType = ((NBTBase)this.tagList.get(0)).getId();
 		} else {
-			tagType = 1;
+			this.tagType = 1;
 		}
 
-		par1DataOutput.writeByte(tagType);
-		par1DataOutput.writeInt(tagList.size());
+		par1DataOutput.writeByte(this.tagType);
+		par1DataOutput.writeInt(this.tagList.size());
 		Iterator var2 = this.tagList.iterator();
 
 		while (var2.hasNext()) {
@@ -34,62 +45,82 @@ public class NBTTagList extends NBTBase {
 		}
 	}
 
+	/**
+	 * Read the actual data contents of the tag, implemented in NBT extension classes
+	 */
 	void load(DataInput par1DataInput) throws IOException {
-		tagType = par1DataInput.readByte();
-		int i = par1DataInput.readInt();
-		tagList = new ArrayList();
+		this.tagType = par1DataInput.readByte();
+		int var2 = par1DataInput.readInt();
+		this.tagList = new ArrayList();
 
-		for (int j = 0; j < i; j++) {
-			NBTBase nbtbase = NBTBase.newTag(tagType, null);
-			nbtbase.load(par1DataInput);
-			tagList.add(nbtbase);
+		for (int var3 = 0; var3 < var2; ++var3) {
+			NBTBase var4 = NBTBase.newTag(this.tagType, (String)null);
+			var4.load(par1DataInput);
+			this.tagList.add(var4);
 		}
 	}
 
+	/**
+	 * Gets the type byte for the tag.
+	 */
 	public byte getId() {
-		return 9;
+		return (byte)9;
 	}
 
 	public String toString() {
-		return (new StringBuilder()).append("").append(tagList.size()).append(" entries of type ").append(NBTBase.getTagName(tagType)).toString();
+		return "" + this.tagList.size() + " entries of type " + NBTBase.getTagName(this.tagType);
 	}
 
+	/**
+	 * Adds the provided tag to the end of the list. There is no check to verify this tag is of the same type as any
+	 * previous tag.
+	 */
 	public void appendTag(NBTBase par1NBTBase) {
-		tagType = par1NBTBase.getId();
-		tagList.add(par1NBTBase);
+		this.tagType = par1NBTBase.getId();
+		this.tagList.add(par1NBTBase);
 	}
 
 	public NBTBase func_74744_a(int par1) {
 		return (NBTBase)this.tagList.remove(par1);
 	}
 
+	/**
+	 * Retrieves the tag at the specified index from the list.
+	 */
 	public NBTBase tagAt(int par1) {
-		return (NBTBase)tagList.get(par1);
+		return (NBTBase)this.tagList.get(par1);
 	}
 
+	/**
+	 * Returns the number of tags in the list.
+	 */
 	public int tagCount() {
-		return tagList.size();
+		return this.tagList.size();
 	}
 
+	/**
+	 * Creates a clone of the tag.
+	 */
 	public NBTBase copy() {
-		NBTTagList nbttaglist = new NBTTagList(getName());
-		nbttaglist.tagType = tagType;
-		NBTBase nbtbase1;
+		NBTTagList var1 = new NBTTagList(this.getName());
+		var1.tagType = this.tagType;
+		Iterator var2 = this.tagList.iterator();
 
-		for (Iterator iterator = tagList.iterator(); iterator.hasNext(); nbttaglist.tagList.add(nbtbase1)) {
-			NBTBase nbtbase = (NBTBase)iterator.next();
-			nbtbase1 = nbtbase.copy();
+		while (var2.hasNext()) {
+			NBTBase var3 = (NBTBase)var2.next();
+			NBTBase var4 = var3.copy();
+			var1.tagList.add(var4);
 		}
 
-		return nbttaglist;
+		return var1;
 	}
 
 	public boolean equals(Object par1Obj) {
 		if (super.equals(par1Obj)) {
-			NBTTagList nbttaglist = (NBTTagList)par1Obj;
+			NBTTagList var2 = (NBTTagList)par1Obj;
 
-			if (tagType == nbttaglist.tagType) {
-				return tagList.equals(nbttaglist.tagList);
+			if (this.tagType == var2.tagType) {
+				return this.tagList.equals(var2.tagList);
 			}
 		}
 
@@ -97,6 +128,6 @@ public class NBTTagList extends NBTBase {
 	}
 
 	public int hashCode() {
-		return super.hashCode() ^ tagList.hashCode();
+		return super.hashCode() ^ this.tagList.hashCode();
 	}
 }

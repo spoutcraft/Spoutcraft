@@ -43,7 +43,7 @@ public class MinecraftApplet extends Applet {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
 		}
 
-		this.mc.func_71390_a("true".equals(this.getParameter("demo")));
+		this.mc.setDemo("true".equals(this.getParameter("demo")));
 		this.mc.hideQuitButton = !"true".equals(this.getParameter("stand-alone"));
 
 		this.setLayout(new BorderLayout());

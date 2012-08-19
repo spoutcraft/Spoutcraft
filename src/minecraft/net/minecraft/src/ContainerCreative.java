@@ -14,12 +14,12 @@ class ContainerCreative extends Container {
 
 		for (var3 = 0; var3 < 5; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.func_75146_a(new Slot(GuiContainerCreative.getInventory(), var3 * 9 + var4, 9 + var4 * 18, 18 + var3 * 18));
+				this.addSlotToContainer(new Slot(GuiContainerCreative.getInventory(), var3 * 9 + var4, 9 + var4 * 18, 18 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.func_75146_a(new Slot(var2, var3, 9 + var3 * 18, 112));
+			this.addSlotToContainer(new Slot(var2, var3, 9 + var3 * 18, 112));
 		}
 
 		this.scrollTo(0.0F);
@@ -53,7 +53,10 @@ class ContainerCreative extends Container {
 		}
 	}
 
-	public boolean func_75184_d() {
+	/**
+	 * theCreativeContainer seems to be hard coded to 9x5 items
+	 */
+	public boolean hasMoreThan1PageOfItemsInList() {
 		return this.itemList.size() > 45;
 	}
 

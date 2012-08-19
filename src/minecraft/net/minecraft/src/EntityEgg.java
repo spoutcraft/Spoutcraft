@@ -2,15 +2,7 @@ package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftEgg;
 
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityChicken;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityThrowable;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.World;
-
 public class EntityEgg extends EntityThrowable {
-
 	public EntityEgg(World par1World) {
 		super(par1World);
 		//Spout start
@@ -32,6 +24,9 @@ public class EntityEgg extends EntityThrowable {
 		//Spout end
 	}
 
+	/**
+	 * Called when this EntityThrowable hits a block or entity.
+	 */
 	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
 		if (par1MovingObjectPosition.entityHit != null) {
 			par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.thrower), 0);
@@ -39,11 +34,12 @@ public class EntityEgg extends EntityThrowable {
 
 		if (!this.worldObj.isRemote && this.rand.nextInt(8) == 0) {
 			byte var2 = 1;
+
 			if (this.rand.nextInt(32) == 0) {
 				var2 = 4;
 			}
 
-			for(int var3 = 0; var3 < var2; ++var3) {
+			for (int var3 = 0; var3 < var2; ++var3) {
 				EntityChicken var4 = new EntityChicken(this.worldObj);
 				var4.setGrowingAge(-24000);
 				var4.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
@@ -51,7 +47,7 @@ public class EntityEgg extends EntityThrowable {
 			}
 		}
 
-		for(int var5 = 0; var5 < 8; ++var5) {
+		for (int var5 = 0; var5 < 8; ++var5) {
 			this.worldObj.spawnParticle("snowballpoof", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 		}
 

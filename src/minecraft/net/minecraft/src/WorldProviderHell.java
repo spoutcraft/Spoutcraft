@@ -19,9 +19,9 @@ public class WorldProviderHell extends WorldProvider {
 		// Spout Start
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if (fogColor != null) {
-			return Vec3.func_72437_a().func_72345_a(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
+			return Vec3.getVec3Pool().getVecFromPool(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3.func_72437_a().func_72345_ar((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+			return Vec3.getVec3Pool().func_72345_ar((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
 		}
 		// Spout End
 	}
@@ -55,7 +55,14 @@ public class WorldProviderHell extends WorldProvider {
 		return false;
 	}
 
-	public boolean func_76568_b(int par1, int par2) {
+	/**
+	 * Returns true if the given X,Z coordinate should show environmental fog.
+	 */
+	public boolean doesXZShowFog(int par1, int par2) {
 		return true;
+	}
+	
+	public String func_80007_l() {
+		return "Nether";
 	}
 }

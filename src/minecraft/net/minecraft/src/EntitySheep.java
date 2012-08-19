@@ -6,10 +6,19 @@ import org.spoutcraft.client.entity.CraftSheep; // Spout
 
 public class EntitySheep extends EntityAnimal {
 
-	public static float[][] fleeceColorTable = new float[][]{{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}};
+	/**
+	 * Holds the RGB table of the sheep colors - in OpenGL glColor3f values - used to render the sheep colored fleece.
+	 */
+	public static final float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}};
+
+	/**
+	 * Used to control movement as well as wool regrowth. Set to 40 on handleHealthUpdate and counts down with each tick.
+	 */
 	private int sheepTimer;
+
+	/** The eat grass AI task for this mob. */
 	private EntityAIEatGrass aiEatGrass = new EntityAIEatGrass(this);
-	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone();
+	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone(); //Spout
 
 	public EntitySheep(World par1World) {
 		super(par1World);
@@ -31,6 +40,9 @@ public class EntitySheep extends EntityAnimal {
 		//Spout end
 	}
 
+	/**
+	 * Returns true if the newer Entity AI code should be run
+	 */
 	protected boolean isAIEnabled() {
 		return true;
 	}
@@ -40,6 +52,10 @@ public class EntitySheep extends EntityAnimal {
 		super.updateAITasks();
 	}
 
+	/**
+	 * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons use
+	 * this to react to sunlight and start to burn.
+	 */
 	public void onLivingUpdate() {
 		if (this.worldObj.isRemote) {
 			this.sheepTimer = Math.max(0, this.sheepTimer - 1);
@@ -57,12 +73,18 @@ public class EntitySheep extends EntityAnimal {
 		this.dataWatcher.addObject(16, new Byte((byte)0));
 	}
 
+	/**
+	 * Drop 0-2 items of this living's type
+	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		if (!this.getSheared()) {
 			this.entityDropItem(new ItemStack(Block.cloth.blockID, 1, this.getFleeceColor()), 0.0F);
 		}
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return Block.cloth.blockID;
 	}
@@ -76,7 +98,7 @@ public class EntitySheep extends EntityAnimal {
 	}
 
 	public float func_70894_j(float par1) {
-		return this.sheepTimer <= 0 ? 0.0F : (this.sheepTimer >= 4 && this.sheepTimer <= 36?1.0F:(this.sheepTimer < 4 ? ((float)this.sheepTimer - par1) / 4.0F : -((float)(this.sheepTimer - 40) - par1) / 4.0F));
+		return this.sheepTimer <= 0 ? 0.0F : (this.sheepTimer >= 4 && this.sheepTimer <= 36 ? 1.0F : (this.sheepTimer < 4 ? ((float)this.sheepTimer - par1) / 4.0F : -((float)(this.sheepTimer - 40) - par1) / 4.0F));
 	}
 
 	public float func_70890_k(float par1) {
@@ -88,8 +110,12 @@ public class EntitySheep extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+	 */
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
+
 		if (var2 != null && var2.itemID == Item.shears.shiftedIndex && !this.getSheared() && !this.isChild()) {
 			if (!this.worldObj.isRemote) {
 				this.setSheared(true);
@@ -109,26 +135,41 @@ public class EntitySheep extends EntityAnimal {
 		return super.interact(par1EntityPlayer);
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setBoolean("Sheared", this.getSheared());
 		par1NBTTagCompound.setByte("Color", (byte)this.getFleeceColor());
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.setSheared(par1NBTTagCompound.getBoolean("Sheared"));
 		this.setFleeceColor(par1NBTTagCompound.getByte("Color"));
 	}
 
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return "mob.sheep";
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.sheep";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.sheep";
 	}
@@ -142,12 +183,19 @@ public class EntitySheep extends EntityAnimal {
 		this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 & 240 | par1 & 15)));
 	}
 
+	/**
+	 * returns true if a sheeps wool has been sheared
+	 */
 	public boolean getSheared() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 16) != 0;
 	}
 
+	/**
+	 * make a sheep sheared if set to true
+	 */
 	public void setSheared(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
+
 		if (par1) {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 | 16)));
 		} else {
@@ -155,14 +203,21 @@ public class EntitySheep extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * This method is called when a sheep spawns in the world to select the color of sheep fleece.
+	 */
 	public static int getRandomFleeceColor(Random par0Random) {
 		int var1 = par0Random.nextInt(100);
 		return var1 < 5 ? 15 : (var1 < 10 ? 7 : (var1 < 15 ? 8 : (var1 < 18 ? 12 : (par0Random.nextInt(500) == 0 ? 6 : 0))));
 	}
 
+	/**
+	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
+	 */
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		EntitySheep var2 = (EntitySheep)par1EntityAnimal;
 		EntitySheep var3 = new EntitySheep(this.worldObj);
+
 		if (this.rand.nextBoolean()) {
 			var3.setFleeceColor(this.getFleeceColor());
 		} else {
@@ -172,10 +227,16 @@ public class EntitySheep extends EntityAnimal {
 		return var3;
 	}
 
+	/**
+	 * This function applies the benefits of growing back wool and faster growing up to the acting entity. (This function
+	 * is used in the AIEatGrass)
+	 */
 	public void eatGrassBonus() {
 		this.setSheared(false);
+
 		if (this.isChild()) {
 			int var1 = this.getGrowingAge() + 1200;
+
 			if (var1 > 0) {
 				var1 = 0;
 			}

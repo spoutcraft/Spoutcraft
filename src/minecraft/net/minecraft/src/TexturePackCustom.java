@@ -22,7 +22,9 @@ public class TexturePackCustom extends TexturePackImplementation {
 		super.func_77533_a(par1RenderEngine);
 
 		try {
-			this.field_77550_e.close();
+			if (this.field_77550_e != null) {
+				this.field_77550_e.close();
+			}
 		} catch (IOException var3) {
 			;
 		}

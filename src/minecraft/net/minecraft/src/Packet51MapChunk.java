@@ -169,7 +169,7 @@ public class Packet51MapChunk extends Packet {
 
 		for (var8 = 0; var8 < var4.length; ++var8) {
 			if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
-				byte[] var9 = var4[var8].func_76658_g();
+				byte[] var9 = var4[var8].getBlockLSBArray();
 				System.arraycopy(var9, 0, var7, var3, var9.length);
 				var3 += var9.length;
 			}
@@ -179,7 +179,7 @@ public class Packet51MapChunk extends Packet {
 
 		for (var8 = 0; var8 < var4.length; ++var8) {
 			if (var4[var8] != null && (!par1 || !var4[var8].isEmpty()) && (par2 & 1 << var8) != 0) {
-				var10 = var4[var8].func_76669_j();
+				var10 = var4[var8].getMetadataArray();
 				System.arraycopy(var10.data, 0, var7, var3, var10.data.length);
 				var3 += var10.data.length;
 			}

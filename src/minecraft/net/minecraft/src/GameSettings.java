@@ -12,12 +12,16 @@ import org.lwjgl.opengl.Display;
 import org.spoutcraft.client.SpoutClient;
 //Spout end
 public class GameSettings {
-	private static final String[] RENDER_DISTANCES = new String[]{"options.renderDistance.far", "options.renderDistance.normal", "options.renderDistance.short", "options.renderDistance.tiny"};
-	private static final String[] DIFFICULTIES = new String[]{"options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard"};
-	private static final String[] GUISCALES = new String[]{"options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large"};
+	private static final String[] RENDER_DISTANCES = new String[] {"options.renderDistance.far", "options.renderDistance.normal", "options.renderDistance.short", "options.renderDistance.tiny"};
+	private static final String[] DIFFICULTIES = new String[] {"options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard"};
+
+	/** GUI scale values */
+	private static final String[] GUISCALES = new String[] {"options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large"};
 	private static final String[] field_74369_af = new String[] {"options.chat.visibility.full", "options.chat.visibility.system", "options.chat.visibility.hidden"};
-	private static final String[] PARTICLES = new String[]{"options.particles.all", "options.particles.decreased", "options.particles.minimal"};
-	private static final String[] LIMIT_FRAMERATES = new String[]{"performance.max", "performance.balanced", "performance.powersaver"};
+	private static final String[] PARTICLES = new String[] {"options.particles.all", "options.particles.decreased", "options.particles.minimal"};
+
+	/** Limit framerate labels */
+	private static final String[] LIMIT_FRAMERATES = new String[] {"performance.max", "performance.balanced", "performance.powersaver"};
 	public float musicVolume = 1.0F;
 	public float soundVolume = 1.0F;
 	public float mouseSensitivity = 0.5F;
@@ -25,21 +29,30 @@ public class GameSettings {
 	public int renderDistance = 0;
 	public boolean viewBobbing = true;
 	public boolean anaglyph = false;
+
+	/** Advanced OpenGL */
 	public boolean advancedOpengl = false;
 	public int limitFramerate = 1;
 	public boolean fancyGraphics = true;
+
+	/** Smooth Lighting */
 	public boolean ambientOcclusion = true;
+
+	/** Clouds flag */
 	public boolean clouds = true;
+
+	/** The name of the selected texture pack. */
 	public String skin = "Default";
-	public int field_74343_n = 0;
-	public boolean field_74344_o = true;
-	public boolean field_74359_p = true;
-	public boolean field_74358_q = true;
-	public float field_74357_r = 1.0F;
-	public boolean field_74356_s = true;
-	public boolean field_74355_t = true;
-	public boolean field_74353_u = false;
-	public boolean field_74352_v = false;
+	public int chatVisibility = 0;
+	public boolean chatColours = true;
+	public boolean chatLinks = true;
+	public boolean chatLinksPrompt = true;
+	public float chatOpacity = 1.0F;
+	public boolean serverTextures = true;
+	public boolean snooperEnabled = true;
+	public boolean fullScreen = false;
+	public boolean enableVsync = false;
+	public boolean field_80005_w = false;
 	public KeyBinding keyBindForward = new KeyBinding("key.forward", 17);
 	public KeyBinding keyBindLeft = new KeyBinding("key.left", 30);
 	public KeyBinding keyBindBack = new KeyBinding("key.back", 31);
@@ -82,18 +95,36 @@ public class GameSettings {
 	public int difficulty;
 	public boolean hideGUI;
 	public int thirdPersonView;
+
+	/** true if debug info should be displayed instead of version */
 	public boolean showDebugInfo;
 	public boolean field_74329_Q;
+
+	/** The lastServer string. */
 	public String lastServer;
+
+	/** No clipping for singleplayer */
 	public boolean noclip;
+
+	/** Smooth Camera Toggle */
 	public boolean smoothCamera;
 	public boolean debugCamEnable;
+
+	/** No clipping movement rate */
 	public float noclipRate;
+
+	/** Change rate for debug camera */
 	public float debugCamRate;
 	public float fovSetting;
 	public float gammaSetting;
+
+	/** GUI scale */
 	public int guiScale;
+
+	/** Determines amount of particles. 0 = All, 1 = Decreased, 2 = Minimal */
 	public int particleSetting;
+
+	/** Game settings language */
 	public String language;
 
 	public GameSettings(Minecraft par1Minecraft, File par2File) {
@@ -120,7 +151,7 @@ public class GameSettings {
 	}
 
 	public GameSettings() {
-		this.keyBindings = new KeyBinding[]{this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.field_74323_J};
+		this.keyBindings = new KeyBinding[] {this.keyBindAttack, this.keyBindUseItem, this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindPlayerList, this.keyBindPickBlock, this.field_74323_J};
 		this.difficulty = 2;
 		this.hideGUI = false;
 		this.thirdPersonView = 0;
@@ -144,20 +175,32 @@ public class GameSettings {
 		return var2.translateKey(this.keyBindings[par1].keyDescription);
 	}
 
+	/**
+	 * The string that appears inside the button/slider in the options menu.
+	 */
 	public String getOptionDisplayString(int par1) {
 		int var2 = this.keyBindings[par1].keyCode;
 		return getKeyDisplayString(var2);
 	}
 
+	/**
+	 * Represents a key or mouse button as a string. Args: key
+	 */
 	public static String getKeyDisplayString(int par0) {
-		return par0 < 0 ? StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}) : Keyboard.getKeyName(par0);
+		return par0 < 0 ? StatCollector.translateToLocalFormatted("key.mouseButton", new Object[] {Integer.valueOf(par0 + 101)}): Keyboard.getKeyName(par0);
 	}
 
+	/**
+	 * Sets a key binding.
+	 */
 	public void setKeyBinding(int par1, int par2) {
 		this.keyBindings[par1].keyCode = par2;
 		this.saveOptions();
 	}
 
+	/**
+	 * If the specified option is controlled by a slider (float value), this will set the float value.
+	 */
 	public void setOptionFloatValue(EnumOptions par1EnumOptions, float par2) {
 		if (par1EnumOptions == EnumOptions.MUSIC) {
 			this.musicVolume = par2;
@@ -182,10 +225,13 @@ public class GameSettings {
 		}
 
 		if (par1EnumOptions == EnumOptions.CHAT_OPACITY) {
-			this.field_74357_r = par2;
+			this.chatOpacity = par2;
 		}
 	}
 
+	/**
+	 * For non-float options. Toggles the option on/off, or cycles through the list i.e. render distances.
+	 */
 	public void setOptionValue(EnumOptions par1EnumOptions, int par2) {
 		if (par1EnumOptions == EnumOptions.INVERT_MOUSE) {
 			this.invertMouse = !this.invertMouse;
@@ -240,51 +286,51 @@ public class GameSettings {
 		}
 
 		if (par1EnumOptions == EnumOptions.CHAT_VISIBILITY) {
-			this.field_74343_n = (this.field_74343_n + par2) % 3;
+			this.chatVisibility = (this.chatVisibility + par2) % 3;
 		}
 
 		if (par1EnumOptions == EnumOptions.CHAT_COLOR) {
-			this.field_74344_o = !this.field_74344_o;
+			this.chatColours = !this.chatColours;
 		}
 
 		if (par1EnumOptions == EnumOptions.CHAT_LINKS) {
-			this.field_74359_p = !this.field_74359_p;
+			this.chatLinks = !this.chatLinks;
 		}
 
 		if (par1EnumOptions == EnumOptions.CHAT_LINKS_PROMPT) {
-			this.field_74358_q = !this.field_74358_q;
+			this.chatLinksPrompt = !this.chatLinksPrompt;
 		}
 
 		if (par1EnumOptions == EnumOptions.USE_SERVER_TEXTURES) {
-			this.field_74356_s = !this.field_74356_s;
+			this.serverTextures = !this.serverTextures;
 		}
 
 		if (par1EnumOptions == EnumOptions.SNOOPER_ENABLED) {
-			this.field_74355_t = !this.field_74355_t;
+			this.snooperEnabled = !this.snooperEnabled;
 		}
 
 		if (par1EnumOptions == EnumOptions.USE_FULLSCREEN) {
-			this.field_74353_u = !this.field_74353_u;
+			this.fullScreen = !this.fullScreen;
 
-			if (this.mc.func_71372_G() != this.field_74353_u) {
+			if (this.mc.isFullScreen() != this.fullScreen) {
 				this.mc.toggleFullscreen();
 			}
 		}
 
 		if (par1EnumOptions == EnumOptions.ENABLE_VSYNC) {
-			this.field_74352_v = !this.field_74352_v;
-			Display.setVSyncEnabled(this.field_74352_v);
+			this.enableVsync = !this.enableVsync;
+			Display.setVSyncEnabled(this.enableVsync);
 		}
 
 		this.saveOptions();
 	}
 
 	public float getOptionFloatValue(EnumOptions par1EnumOptions) {
-		return par1EnumOptions == EnumOptions.FOV ? this.fovSetting : (par1EnumOptions == EnumOptions.GAMMA ? this.gammaSetting : (par1EnumOptions == EnumOptions.MUSIC ? this.musicVolume : (par1EnumOptions == EnumOptions.SOUND ? this.soundVolume : (par1EnumOptions == EnumOptions.SENSITIVITY ? this.mouseSensitivity : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? this.field_74357_r : 0.0F)))));
+		return par1EnumOptions == EnumOptions.FOV ? this.fovSetting : (par1EnumOptions == EnumOptions.GAMMA ? this.gammaSetting : (par1EnumOptions == EnumOptions.MUSIC ? this.musicVolume : (par1EnumOptions == EnumOptions.SOUND ? this.soundVolume : (par1EnumOptions == EnumOptions.SENSITIVITY ? this.mouseSensitivity : (par1EnumOptions == EnumOptions.CHAT_OPACITY ? this.chatOpacity : 0.0F)))));
 	}
 
 	public boolean getOptionOrdinalValue(EnumOptions par1EnumOptions) {
-		switch (EnumOptionsMappingHelper.enumOptionsMappingHelperArray[par1EnumOptions.ordinal()]) {
+		switch (EnumOptionsHelper.enumOptionsMappingHelperArray[par1EnumOptions.ordinal()]) {
 			case 1:
 				return this.invertMouse;
 
@@ -304,25 +350,25 @@ public class GameSettings {
 				return this.clouds;
 
 			case 7:
-				return this.field_74344_o;
+				return this.chatColours;
 
 			case 8:
-				return this.field_74359_p;
+				return this.chatLinks;
 
 			case 9:
-				return this.field_74358_q;
+				return this.chatLinksPrompt;
 
 			case 10:
-				return this.field_74356_s;
+				return this.serverTextures;
 
 			case 11:
-				return this.field_74355_t;
+				return this.snooperEnabled;
 
 			case 12:
-				return this.field_74353_u;
+				return this.fullScreen;
 
 			case 13:
-				return this.field_74352_v;
+				return this.enableVsync;
 
 			default:
 				return false;
@@ -338,6 +384,9 @@ public class GameSettings {
 		return var2.translateKey(par0ArrayOfStr[par1]);
 	}
 
+	/**
+	 * Gets a key binding.
+	 */
 	public String getKeyBinding(EnumOptions par1EnumOptions) {
 		StringTranslate var2 = StringTranslate.getInstance();
 		String var3 = var2.translateKey(par1EnumOptions.getEnumString()) + ": ";
@@ -349,10 +398,13 @@ public class GameSettings {
 			boolean var4 = this.getOptionOrdinalValue(par1EnumOptions);
 			return var4 ? var3 + var2.translateKey("options.on") : var3 + var2.translateKey("options.off");
 		} else {
-			return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? var3 + func_74299_a(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? var3 + func_74299_a(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? var3 + func_74299_a(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? var3 + func_74299_a(field_74369_af, this.field_74343_n) : (par1EnumOptions == EnumOptions.PARTICLES ? var3 + func_74299_a(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? var3 + func_74299_a(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3))))));
+			return par1EnumOptions == EnumOptions.RENDER_DISTANCE ? var3 + func_74299_a(RENDER_DISTANCES, this.renderDistance) : (par1EnumOptions == EnumOptions.DIFFICULTY ? var3 + func_74299_a(DIFFICULTIES, this.difficulty) : (par1EnumOptions == EnumOptions.GUI_SCALE ? var3 + func_74299_a(GUISCALES, this.guiScale) : (par1EnumOptions == EnumOptions.CHAT_VISIBILITY ? var3 + func_74299_a(field_74369_af, this.chatVisibility) : (par1EnumOptions == EnumOptions.PARTICLES ? var3 + func_74299_a(PARTICLES, this.particleSetting) : (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT ? var3 + func_74299_a(LIMIT_FRAMERATES, this.limitFramerate) : (par1EnumOptions == EnumOptions.GRAPHICS ? (this.fancyGraphics ? var3 + var2.translateKey("options.graphics.fancy") : var3 + var2.translateKey("options.graphics.fast")) : var3))))));
 		}
 	}
 
+	/**
+	 * Loads the options from the options file. It appears that this has replaced the previous 'loadOptions'
+	 */
 	public void loadOptions() {
 		try {
 			if (!this.optionsFile.exists()) {
@@ -365,6 +417,7 @@ public class GameSettings {
 			while ((var2 = var1.readLine()) != null) {
 				try {
 					String[] var3 = var2.split(":");
+
 					if (var3[0].equals("music")) {
 						this.musicVolume = this.parseFloat(var3[1]);
 					}
@@ -446,39 +499,43 @@ public class GameSettings {
 					}
 
 					if (var3[0].equals("chatVisibility")) {
-						this.field_74343_n = Integer.parseInt(var3[1]);
+						this.chatVisibility = Integer.parseInt(var3[1]);
 					}
 
 					if (var3[0].equals("chatColors")) {
-						this.field_74344_o = var3[1].equals("true");
+						this.chatColours = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("chatLinks")) {
-						this.field_74359_p = var3[1].equals("true");
+						this.chatLinks = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("chatLinksPrompt")) {
-						this.field_74358_q = var3[1].equals("true");
+						this.chatLinksPrompt = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("chatOpacity")) {
-						this.field_74357_r = this.parseFloat(var3[1]);
+						this.chatOpacity = this.parseFloat(var3[1]);
 					}
 
 					if (var3[0].equals("serverTextures")) {
-						this.field_74356_s = var3[1].equals("true");
+						this.serverTextures = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("snooperEnabled")) {
-						this.field_74355_t = var3[1].equals("true");
+						this.snooperEnabled = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("fullscreen")) {
-						this.field_74353_u = var3[1].equals("true");
+						this.fullScreen = var3[1].equals("true");
 					}
 
 					if (var3[0].equals("enableVsync")) {
-						this.field_74352_v = var3[1].equals("true");
+						this.enableVsync = var3[1].equals("true");
+					}
+
+					if (var3[0].equals("hideServerAddress")) {
+						this.field_80005_w = var3[1].equals("true");
 					}
 
 					KeyBinding[] var4 = this.keyBindings;
@@ -511,10 +568,16 @@ public class GameSettings {
 		}
 	}
 
+	/**
+	 * Parses a string into a float.
+	 */
 	private float parseFloat(String par1Str) {
 		return par1Str.equals("true") ? 1.0F : (par1Str.equals("false") ? 0.0F : Float.parseFloat(par1Str));
 	}
 
+	/**
+	 * Saves the options to the options file.
+	 */
 	public void saveOptions() {
 		//Spout start
 		boolean oldLock = SpoutClient.disableSandbox();
@@ -541,15 +604,16 @@ public class GameSettings {
 			var1.println("skin:" + this.skin);
 			var1.println("lastServer:" + this.lastServer);
 			var1.println("lang:" + this.language);
-			var1.println("chatVisibility:" + this.field_74343_n);
-			var1.println("chatColors:" + this.field_74344_o);
-			var1.println("chatLinks:" + this.field_74359_p);
-			var1.println("chatLinksPrompt:" + this.field_74358_q);
-			var1.println("chatOpacity:" + this.field_74357_r);
-			var1.println("serverTextures:" + this.field_74356_s);
-			var1.println("snooperEnabled:" + this.field_74355_t);
-			var1.println("fullscreen:" + this.field_74353_u);
-			var1.println("enableVsync:" + this.field_74352_v);
+			var1.println("chatVisibility:" + this.chatVisibility);
+			var1.println("chatColors:" + this.chatColours);
+			var1.println("chatLinks:" + this.chatLinks);
+			var1.println("chatLinksPrompt:" + this.chatLinksPrompt);
+			var1.println("chatOpacity:" + this.chatOpacity);
+			var1.println("serverTextures:" + this.serverTextures);
+			var1.println("snooperEnabled:" + this.snooperEnabled);
+			var1.println("fullscreen:" + this.fullScreen);
+			var1.println("enableVsync:" + this.enableVsync);
+			var1.println("hideServerAddress:" + this.field_80005_w);
 			KeyBinding[] var2 = this.keyBindings;
 			int var3 = var2.length;
 
@@ -573,11 +637,14 @@ public class GameSettings {
 		}
 		//Spout end
 
-		if (this.mc.field_71439_g != null) {
-			this.mc.field_71439_g.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.field_74343_n, this.field_74344_o, this.difficulty));
+		if (this.mc.thePlayer != null) {
+			this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty));
 		}
 	}
 
+	/**
+	 * Should render clouds
+	 */
 	public boolean shouldRenderClouds() {
 		return this.renderDistance < 2 && this.clouds;
 	}

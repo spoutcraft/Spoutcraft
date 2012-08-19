@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.entity.CraftPig;
+
 public class EntityPig extends EntityAnimal {
 	public EntityPig(World par1World) {
 		super(par1World);
@@ -21,6 +22,9 @@ public class EntityPig extends EntityAnimal {
 		//Spout end
 	}
 
+	/**
+	 * Returns true if the newer Entity AI code should be run
+	 */
 	public boolean isAIEnabled() {
 		return true;
 	}
@@ -34,28 +38,46 @@ public class EntityPig extends EntityAnimal {
 		this.dataWatcher.addObject(16, Byte.valueOf((byte)0));
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setBoolean("Saddle", this.getSaddled());
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.setSaddled(par1NBTTagCompound.getBoolean("Saddle"));
 	}
 
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return "mob.pig";
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.pig";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.pigdeath";
 	}
 
+	/**
+	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+	 */
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		if (super.interact(par1EntityPlayer)) {
 			return true;
@@ -67,10 +89,16 @@ public class EntityPig extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return this.isBurning() ? Item.porkCooked.shiftedIndex : Item.porkRaw.shiftedIndex;
 	}
 
+	/**
+	 * Drop 0-2 items of this living's type
+	 */
 	protected void dropFewItems(boolean par1, int par2) {
 		int var3 = this.rand.nextInt(3) + 1 + this.rand.nextInt(1 + par2);
 
@@ -83,10 +111,16 @@ public class EntityPig extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * Returns true if the pig is saddled.
+	 */
 	public boolean getSaddled() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
 	}
 
+	/**
+	 * Set or remove the saddle of the pig.
+	 */
 	public void setSaddled(boolean par1) {
 		if (par1) {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)1));
@@ -95,6 +129,9 @@ public class EntityPig extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * Called when a lightning bolt hits the entity.
+	 */
 	public void onStruckByLightning(EntityLightningBolt par1EntityLightningBolt) {
 		if (!this.worldObj.isRemote) {
 			EntityPigZombie var2 = new EntityPigZombie(this.worldObj);
@@ -104,13 +141,20 @@ public class EntityPig extends EntityAnimal {
 		}
 	}
 
+	/**
+	 * Called when the mob is falling. Calculates and applies fall damage.
+	 */
 	protected void fall(float par1) {
 		super.fall(par1);
+
 		if (par1 > 5.0F && this.riddenByEntity instanceof EntityPlayer) {
 			((EntityPlayer)this.riddenByEntity).triggerAchievement(AchievementList.flyPig);
 		}
 	}
 
+	/**
+	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
+	 */
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		return new EntityPig(this.worldObj);
 	}

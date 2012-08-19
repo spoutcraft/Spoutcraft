@@ -5,7 +5,9 @@ import org.spoutcraft.client.entity.CraftFallingSand;
 public class EntityFallingSand extends Entity {
 	public int blockID;
 	public int field_70285_b;
-	public int fallTime = 0;
+
+	/** How long the block has been falling for. */
+	public int fallTime;
 	public boolean field_70284_d;
 
 	public EntityFallingSand(World par1World) {
@@ -39,16 +41,26 @@ public class EntityFallingSand extends Entity {
 		//Spout end
 	}
 
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
 	protected boolean canTriggerWalking() {
 		return false;
 	}
 
 	protected void entityInit() {}
 
+	/**
+	 * Returns true if other Entities should be prevented from moving through this Entity.
+	 */
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		if (this.blockID == 0) {
 			this.setDead();
@@ -62,32 +74,46 @@ public class EntityFallingSand extends Entity {
 			this.motionX *= 0.9800000190734863D;
 			this.motionY *= 0.9800000190734863D;
 			this.motionZ *= 0.9800000190734863D;
-			int var1 = MathHelper.floor_double(this.posX);
-			int var2 = MathHelper.floor_double(this.posY);
-			int var3 = MathHelper.floor_double(this.posZ);
-			if (this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID) {
-				this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
-			} else if (!this.worldObj.isRemote && this.fallTime == 1) {
-				this.setDead();
-			}
 
-			if (this.onGround) {
-				this.motionX *= 0.699999988079071D;
-				this.motionZ *= 0.699999988079071D;
-				this.motionY *= -0.5D;
-				if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
-					this.setDead();
-					if ((!this.worldObj.func_72931_a(this.blockID, var1, var2, var3, true, 1, (Entity)null) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockAndMetadataWithNotify(var1, var2, var3, this.blockID, this.field_70285_b)) && !this.worldObj.isRemote && this.field_70284_d) {
-						this.dropItem(this.blockID, 1);
+			if (!this.worldObj.isRemote) {
+				int var1 = MathHelper.floor_double(this.posX);
+				int var2 = MathHelper.floor_double(this.posY);
+				int var3 = MathHelper.floor_double(this.posZ);
+
+				if (this.fallTime == 1) {
+					if (this.fallTime == 1 && this.worldObj.getBlockId(var1, var2, var3) == this.blockID) {
+						this.worldObj.setBlockWithNotify(var1, var2, var3, 0);
+					} else {
+						this.setDead();
 					}
 				}
-			} else if (this.fallTime > 100 && !this.worldObj.isRemote && (var2 < 1 || var2 > 256) || this.fallTime > 600) {
-				this.dropItem(this.blockID, 1);
-				this.setDead();
+
+				if (this.onGround) {
+					this.motionX *= 0.699999988079071D;
+					this.motionZ *= 0.699999988079071D;
+					this.motionY *= -0.5D;
+
+					if (this.worldObj.getBlockId(var1, var2, var3) != Block.pistonMoving.blockID) {
+						this.setDead();
+
+						if ((!this.worldObj.canPlaceEntityOnSide(this.blockID, var1, var2, var3, true, 1, (Entity)null) || BlockSand.canFallBelow(this.worldObj, var1, var2 - 1, var3) || !this.worldObj.setBlockAndMetadataWithNotify(var1, var2, var3, this.blockID, this.field_70285_b)) && !this.worldObj.isRemote && this.field_70284_d) {
+							this.entityDropItem(new ItemStack(this.blockID, 1, this.field_70285_b), 0.0F);
+						}
+					}
+				} else if (this.fallTime > 100 && !this.worldObj.isRemote && (var2 < 1 || var2 > 256) || this.fallTime > 600) {
+					if (this.field_70284_d) {
+						this.dropItem(this.blockID, 1);
+					}
+
+					this.setDead();
+				}
 			}
 		}
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setByte("Tile", (byte)this.blockID);
 		par1NBTTagCompound.setByte("Data", (byte)this.field_70285_b);
@@ -95,6 +121,9 @@ public class EntityFallingSand extends Entity {
 		par1NBTTagCompound.setBoolean("DropItem", this.field_70284_d);
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.blockID = par1NBTTagCompound.getByte("Tile") & 255;
 		this.field_70285_b = par1NBTTagCompound.getByte("Data") & 255;

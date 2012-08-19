@@ -10,7 +10,13 @@ import java.util.TreeMap;
 
 public class StringTranslate {
 
-	private static StringTranslate instance = new StringTranslate();
+	/** Is the private singleton instance of StringTranslate. */
+	private static StringTranslate instance = new StringTranslate("en_US");
+
+	/**
+	 * Contains all key/value pairs to be translated - is loaded from '/lang/en_US.lang' when the StringTranslate is
+	 * created.
+	 */
 	private Properties translateTable = new Properties();
 	private TreeMap languageList;
 	private String currentLanguage;
@@ -21,6 +27,9 @@ public class StringTranslate {
 		this.setLanguage(par1Str);
 	}
 
+	/**
+	 * Return the StringTranslate singleton instance
+	 */
 	public static StringTranslate getInstance() {
 		return instance;
 	}
@@ -33,12 +42,13 @@ public class StringTranslate {
 
 			for (String var3 = var2.readLine(); var3 != null; var3 = var2.readLine()) {
 				String[] var4 = var3.split("=");
+
 				if (var4 != null && var4.length == 2) {
 					var1.put(var4[0], var4[1]);
 				}
 			}
-		} catch (Exception var5) {
-			//var5.printStackTrace();
+		} catch (Exception var5) { //Spout IOException -> Exception
+			//var5.printStackTrace(); //Spout
 			return;
 		}
 
@@ -50,19 +60,20 @@ public class StringTranslate {
 		return this.languageList;
 	}
 
-	private void loadLanguage(Properties par1Properties, String par2Str) throws Exception { //Spout IOException -> Exception
+	private void loadLanguage(Properties par1Properties, String par2Str) throws IOException {
 		BufferedReader var3 = new BufferedReader(new InputStreamReader(StringTranslate.class.getResourceAsStream("/lang/" + par2Str + ".lang"), "UTF-8"));
 
 		for (String var4 = var3.readLine(); var4 != null; var4 = var3.readLine()) {
 			var4 = var4.trim();
+
 			if (!var4.startsWith("#")) {
 				String[] var5 = var4.split("=");
+
 				if (var5 != null && var5.length == 2) {
 					par1Properties.setProperty(var5[0], var5[1]);
 				}
 			}
 		}
-
 	}
 
 	public void setLanguage(String par1Str) {
@@ -76,6 +87,7 @@ public class StringTranslate {
 			}
 
 			this.isUnicode = false;
+
 			if (!"en_US".equals(par1Str)) {
 				try {
 					this.loadLanguage(var2, par1Str);
@@ -84,6 +96,7 @@ public class StringTranslate {
 					while (var3.hasMoreElements() && !this.isUnicode) {
 						Object var4 = var3.nextElement();
 						Object var5 = var2.get(var4);
+
 						if (var5 != null) {
 							String var6 = var5.toString();
 
@@ -96,7 +109,7 @@ public class StringTranslate {
 						}
 					}
 				} catch (Exception var9) { //Spout IOException -> Exception
-					//var9.printStackTrace();
+					//var9.printStackTrace(); //Spout
 					return;
 				}
 			}
@@ -114,10 +127,16 @@ public class StringTranslate {
 		return this.isUnicode;
 	}
 
+	/**
+	 * Translate a key to current language.
+	 */
 	public String translateKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str, par1Str);
 	}
 
+	/**
+	 * Translate a key to current language applying String.format()
+	 */
 	public String translateKeyFormat(String par1Str, Object ... par2ArrayOfObj) {
 		String var3 = this.translateTable.getProperty(par1Str, par1Str);
 
@@ -126,8 +145,11 @@ public class StringTranslate {
 		} catch (IllegalFormatException var5) {
 			return "Format error: " + var3;
 		}
-}
+	}
 
+	/**
+	 * Translate a key with a extra '.name' at end added, is used by blocks and items.
+	 */
 	public String translateNamedKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str + ".name", "");
 	}
@@ -135,5 +157,4 @@ public class StringTranslate {
 	public static boolean isBidirectional(String par0Str) {
 		return "ar_SA".equals(par0Str) || "he_IL".equals(par0Str);
 	}
-
 }

@@ -4,31 +4,43 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.lwjgl.opengl.GL11;
+
 //Spout Start
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.entity.EntityTexture;
 import org.spoutcraft.client.entity.RenderText;
 import org.spoutcraft.client.entity.RenderTexture;
-
 //Spout end
 
 public class RenderManager {
+
+	/** A map of entity classes and the associated renderer. */
 	public Map entityRenderMap = new HashMap(); // Spout: private to public
+
+	/** The static instance of RenderManager. */
 	public static RenderManager instance = new RenderManager();
+
+	/** Renders fonts */
 	private FontRenderer fontRenderer;
 	public static double renderPosX;
 	public static double renderPosY;
 	public static double renderPosZ;
 	public RenderEngine renderEngine;
 	public ItemRenderer itemRenderer;
+
+	/** Reference to the World object. */
 	public World worldObj;
+
+	/** Rendermanager's variable for the player */
 	public EntityLiving livingPlayer;
 	public float playerViewY;
 	public float playerViewX;
+
+	/** Reference to the GameSettings object. */
 	public GameSettings options;
-	public double field_78730_l;
-	public double field_78731_m;
-	public double field_78728_n;
+	public double viewerPosX;
+	public double viewerPosY;
+	public double viewerPosZ;
 
 	private RenderManager() {
 		this.entityRenderMap.put(EntitySpider.class, new RenderSpider());
@@ -91,6 +103,7 @@ public class RenderManager {
 
 	public Render getEntityClassRenderObject(Class par1Class) {
 		Render var2 = (Render)this.entityRenderMap.get(par1Class);
+
 		if (var2 == null && par1Class != Entity.class) {
 			var2 = this.getEntityClassRenderObject(par1Class.getSuperclass());
 			this.entityRenderMap.put(par1Class, var2);
@@ -103,14 +116,20 @@ public class RenderManager {
 		return this.getEntityClassRenderObject(par1Entity.getClass());
 	}
 
+	/**
+	 * Caches the current frame's active render info, including the current World, RenderEngine, GameSettings and
+	 * FontRenderer settings, as well as interpolated player position, pitch and yaw.
+	 */
 	public void cacheActiveRenderInfo(World par1World, RenderEngine par2RenderEngine, FontRenderer par3FontRenderer, EntityLiving par4EntityLiving, GameSettings par5GameSettings, float par6) {
 		this.worldObj = par1World;
 		this.renderEngine = par2RenderEngine;
 		this.options = par5GameSettings;
 		this.livingPlayer = par4EntityLiving;
 		this.fontRenderer = par3FontRenderer;
+
 		if (par4EntityLiving.isPlayerSleeping()) {
 			int var7 = par1World.getBlockId(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
+
 			if (var7 == Block.bed.blockID) {
 				int var8 = par1World.getBlockMetadata(MathHelper.floor_double(par4EntityLiving.posX), MathHelper.floor_double(par4EntityLiving.posY), MathHelper.floor_double(par4EntityLiving.posZ));
 				int var9 = var8 & 3;
@@ -126,17 +145,21 @@ public class RenderManager {
 			this.playerViewY += 180.0F;
 		}
 
-		this.field_78730_l = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
-		this.field_78731_m = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
-		this.field_78728_n = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
+		this.viewerPosX = par4EntityLiving.lastTickPosX + (par4EntityLiving.posX - par4EntityLiving.lastTickPosX) * (double)par6;
+		this.viewerPosY = par4EntityLiving.lastTickPosY + (par4EntityLiving.posY - par4EntityLiving.lastTickPosY) * (double)par6;
+		this.viewerPosZ = par4EntityLiving.lastTickPosZ + (par4EntityLiving.posZ - par4EntityLiving.lastTickPosZ) * (double)par6;
 	}
 
+	/**
+	 * Will render the specified entity at the specified partial tick time. Args: entity, partialTickTime
+	 */
 	public void renderEntity(Entity par1Entity, float par2) {
 		double var3 = par1Entity.lastTickPosX + (par1Entity.posX - par1Entity.lastTickPosX) * (double)par2;
 		double var5 = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
 		double var7 = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
 		float var9 = par1Entity.prevRotationYaw + (par1Entity.rotationYaw - par1Entity.prevRotationYaw) * par2;
 		int var10 = par1Entity.getBrightnessForRender(par2);
+
 		if (par1Entity.isBurning()) {
 			var10 = 15728880;
 		}
@@ -148,25 +171,36 @@ public class RenderManager {
 		this.renderEntityWithPosYaw(par1Entity, var3 - renderPosX, var5 - renderPosY, var7 - renderPosZ, var9, par2);
 	}
 
+	/**
+	 * Renders the specified entity with the passed in position, yaw, and partialTickTime. Args: entity, x, y, z, yaw,
+	 * partialTickTime
+	 */
 	public void renderEntityWithPosYaw(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		Render var10 = this.getEntityRenderObject(par1Entity);
+
 		if (var10 != null) {
 			var10.doRender(par1Entity, par2, par4, par6, par8, par9);
 			var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
 		}
 	}
 
+	/**
+	 * World sets this RenderManager's worldObj to the world provided
+	 */
 	public void set(World par1World) {
 		this.worldObj = par1World;
 	}
 
 	public double getDistanceToCamera(double par1, double par3, double par5) {
-		double var7 = par1 - this.field_78730_l;
-		double var9 = par3 - this.field_78731_m;
-		double var11 = par5 - this.field_78728_n;
+		double var7 = par1 - this.viewerPosX;
+		double var9 = par3 - this.viewerPosY;
+		double var11 = par5 - this.viewerPosZ;
 		return var7 * var7 + var9 * var9 + var11 * var11;
 	}
 
+	/**
+	 * Returns the font renderer
+	 */
 	public FontRenderer getFontRenderer() {
 		return this.fontRenderer;
 	}

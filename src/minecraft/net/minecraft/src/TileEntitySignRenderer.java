@@ -1,18 +1,11 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.Block;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.ModelSign;
-import net.minecraft.src.TileEntity;
-import net.minecraft.src.TileEntitySign;
-import net.minecraft.src.TileEntitySpecialRenderer;
-
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader; //Spout
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
+	/** The ModelSign instance used by the TileEntitySignRenderer */
 	private ModelSign modelSign = new ModelSign();
 
 	public void renderTileEntitySignAt(TileEntitySign par1TileEntitySign, double par2, double par4, double par6, float par8) {
@@ -20,6 +13,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		float var10 = 0.6666667F;
 		float var12;
+
 		if (var9 == Block.signPost) {
 			GL11.glTranslatef((float)par2 + 0.5F, (float)par4 + 0.75F * var10, (float)par6 + 0.5F);
 			float var11 = (float)(par1TileEntitySign.getBlockMetadata() * 360) / 16.0F;
@@ -28,6 +22,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		} else {
 			int var16 = par1TileEntitySign.getBlockMetadata();
 			var12 = 0.0F;
+
 			if (var16 == 2) {
 				var12 = 180.0F;
 			}
@@ -97,8 +92,6 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glPopMatrix();
 	}
 
-	
-	
 	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8) {
 		this.renderTileEntitySignAt((TileEntitySign)par1TileEntity, par2, par4, par6, par8);
 	}

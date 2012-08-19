@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-
 // Spout start
 import org.spoutcraft.client.entity.CraftPig;
 import org.spoutcraft.client.entity.CraftWolf;
@@ -10,8 +9,14 @@ import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 public class EntityWolf extends EntityTameable {
 	private float field_70926_e;
 	private float field_70924_f;
+
+	/** true is the wolf is wet else false */
 	private boolean isShaking;
 	private boolean field_70928_h;
+
+	/**
+	 * This time increases while wolf is shaking and emitting water particles.
+	 */
 	private float timeWolfIsShaking;
 	private float prevTimeWolfIsShaking;
 
@@ -40,20 +45,30 @@ public class EntityWolf extends EntityTameable {
 		//Spout end
 	}
 
+	/**
+	 * Returns true if the newer Entity AI code should be run
+	 */
 	public boolean isAIEnabled() {
 		return true;
 	}
 
+	/**
+	 * Sets the active target the Task system uses for tracking
+	 */
 	public void setAttackTarget(EntityLiving par1EntityLiving) {
 		super.setAttackTarget(par1EntityLiving);
+
 		if (par1EntityLiving instanceof EntityPlayer) {
 			this.setAngry(true);
 		}
 	}
 
+	/**
+	 * main AI tick function, replaces updateEntityActionState
+	 */
 	protected void updateAITick() {
 		this.dataWatcher.updateObject(18, Integer.valueOf(this.getHealth()));
-		this.dataWatcher.addObject(19, new Byte((byte)0));
+		//this.dataWatcher.addObject(19, new Byte((byte)0)); //Where
 	}
 
 	public int getMaxHealth() {
@@ -63,12 +78,20 @@ public class EntityWolf extends EntityTameable {
 	protected void entityInit() {
 		super.entityInit();
 		this.dataWatcher.addObject(18, new Integer(this.getHealth()));
+		this.dataWatcher.addObject(19, new Byte((byte)0));
 	}
 
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
 	protected boolean canTriggerWalking() {
 		return false;
 	}
 
+	/**
+	 * Returns the texture's file path as a String.
+	 */
 	public String getTexture() {
 		//Spout Start
 		if(isTamed()) {
@@ -82,42 +105,71 @@ public class EntityWolf extends EntityTameable {
 		//Spout End
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 		par1NBTTagCompound.setBoolean("Angry", this.isAngry());
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 		this.setAngry(par1NBTTagCompound.getBoolean("Angry"));
 	}
 
+	/**
+	 * Determines if an entity can be despawned, used on idle far away entities
+	 */
 	protected boolean canDespawn() {
 		return this.isAngry();
 	}
 
+	/**
+	 * Returns the sound this mob makes while it's alive.
+	 */
 	protected String getLivingSound() {
 		return this.isAngry() ? "mob.wolf.growl" : (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.dataWatcher.getWatchableObjectInt(18) < 10 ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark");
 	}
 
+	/**
+	 * Returns the sound this mob makes when it is hurt.
+	 */
 	protected String getHurtSound() {
 		return "mob.wolf.hurt";
 	}
 
+	/**
+	 * Returns the sound this mob makes on death.
+	 */
 	protected String getDeathSound() {
 		return "mob.wolf.death";
 	}
 
+	/**
+	 * Returns the volume for the sounds this mob makes.
+	 */
 	protected float getSoundVolume() {
 		return 0.4F;
 	}
 
+	/**
+	 * Returns the item ID for the item the mob drops on death.
+	 */
 	protected int getDropItemId() {
 		return -1;
 	}
 
+	/**
+	 * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons use
+	 * this to react to sunlight and start to burn.
+	 */
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
+
 		if (!this.worldObj.isRemote && this.isShaking && !this.field_70928_h && !this.hasPath() && this.onGround) {
 			this.field_70928_h = true;
 			this.timeWolfIsShaking = 0.0F;
@@ -126,9 +178,13 @@ public class EntityWolf extends EntityTameable {
 		}
 	}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		super.onUpdate();
 		this.field_70924_f = this.field_70926_e;
+
 		if (this.func_70922_bv()) {
 			this.field_70926_e += (1.0F - this.field_70926_e) * 0.4F;
 		} else {
@@ -151,6 +207,7 @@ public class EntityWolf extends EntityTameable {
 
 			this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
 			this.timeWolfIsShaking += 0.05F;
+
 			if (this.prevTimeWolfIsShaking >= 2.0F) {
 				this.isShaking = false;
 				this.field_70928_h = false;
@@ -175,12 +232,16 @@ public class EntityWolf extends EntityTameable {
 		return this.isShaking;
 	}
 
+	/**
+	 * Used when calculating the amount of shading to apply while the wolf is shaking.
+	 */
 	public float getShadingWhileShaking(float par1) {
 		return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * par1) / 2.0F * 0.25F;
 	}
 
 	public float getShakeAngle(float par1, float par2) {
 		float var3 = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * par1 + par2) / 1.8F;
+
 		if (var3 < 0.0F) {
 			var3 = 0.0F;
 		} else if (var3 > 1.0F) {
@@ -198,13 +259,21 @@ public class EntityWolf extends EntityTameable {
 		return this.height * 0.8F;
 	}
 
+	/**
+	 * The speed it takes to move the entityliving's rotationPitch through the faceEntity method. This is only currently
+	 * use in wolves.
+	 */
 	public int getVerticalFaceSpeed() {
 		return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
 	}
 
+	/**
+	 * Called when the entity is attacked.
+	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		Entity var3 = par1DamageSource.getEntity();
 		this.aiSit.setSitting(false);
+
 		if (var3 != null && !(var3 instanceof EntityPlayer) && !(var3 instanceof EntityArrow)) {
 			par2 = (par2 + 1) / 2;
 		}
@@ -217,6 +286,9 @@ public class EntityWolf extends EntityTameable {
 		return par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), var2);
 	}
 
+	/**
+	 * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
+	 */
 	public boolean interact(EntityPlayer par1EntityPlayer) {
 		ItemStack var2 = par1EntityPlayer.inventory.getCurrentItem();
 
@@ -289,20 +361,33 @@ public class EntityWolf extends EntityTameable {
 		return this.isAngry() ? 1.5393804F : (this.isTamed() ? (0.55F - (float)(20 - this.dataWatcher.getWatchableObjectInt(18)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F));
 	}
 
+	/**
+	 * Checks if the parameter is an wheat item.
+	 */
 	public boolean isWheat(ItemStack par1ItemStack) {
 		return par1ItemStack == null ? false : (!(Item.itemsList[par1ItemStack.itemID] instanceof ItemFood) ? false : ((ItemFood)Item.itemsList[par1ItemStack.itemID]).isWolfsFavoriteMeat());
 	}
 
+	/**
+	 * Will return how many at most can spawn in a chunk at once.
+	 */
 	public int getMaxSpawnedInChunk() {
 		return 8;
 	}
 
+	/**
+	 * Determines whether this wolf is angry or not.
+	 */
 	public boolean isAngry() {
 		return (this.dataWatcher.getWatchableObjectByte(16) & 2) != 0;
 	}
 
+	/**
+	 * Sets whether this wolf is angry or not.
+	 */
 	public void setAngry(boolean par1) {
 		byte var2 = this.dataWatcher.getWatchableObjectByte(16);
+
 		if (par1) {
 			this.dataWatcher.updateObject(16, Byte.valueOf((byte)(var2 | 2)));
 		} else {
@@ -310,6 +395,9 @@ public class EntityWolf extends EntityTameable {
 		}
 	}
 
+	/**
+	 * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
+	 */
 	public EntityAnimal spawnBabyAnimal(EntityAnimal par1EntityAnimal) {
 		EntityWolf var2 = new EntityWolf(this.worldObj);
 		var2.setOwner(this.getOwnerName());
@@ -327,6 +415,9 @@ public class EntityWolf extends EntityTameable {
 		}
 	}
 
+	/**
+	 * Returns true if the mob is currently able to mate with the specified mob.
+	 */
 	public boolean canMateWith(EntityAnimal par1EntityAnimal) {
 		if (par1EntityAnimal == this) {
 			return false;

@@ -6,10 +6,14 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 class ThreadDownloadImage extends Thread {
+
+	/** The URL of the image to download. */
 	final String location;
-	
+
+	/** The image buffer to use. */
 	final ImageBuffer buffer;
-	
+
+	/** The image data. */
 	final ThreadDownloadImageData imageData;
 
 	ThreadDownloadImage(ThreadDownloadImageData par1ThreadDownloadImageData, String par2Str, ImageBuffer par3ImageBuffer) {
@@ -34,7 +38,7 @@ class ThreadDownloadImage extends Thread {
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
-			//System.out.println("Response Code [" + var1.getResponseCode() + "] for " + location); //Spout
+
 			if (var1.getResponseCode() / 100 == 4) {
 				return;
 			}
@@ -53,7 +57,7 @@ class ThreadDownloadImage extends Thread {
 				//Spout end
 			}
 		} catch (Exception var6) {
-			//var6.printStackTrace();
+			//var6.printStackTrace(); //Spout
 		} finally {
 			var1.disconnect();
 		}

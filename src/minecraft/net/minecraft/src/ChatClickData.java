@@ -21,7 +21,7 @@ public class ChatClickData {
 		this.line = par2ChatLine;
 		this.field_78312_d = par3;
 		this.field_78313_e = par4;
-		this.field_78310_f = par1FontRenderer.trimStringToWidth(par2ChatLine.func_74538_a(), par3);
+		this.field_78310_f = par1FontRenderer.trimStringToWidth(par2ChatLine.getChatLineString(), par3);
 		this.field_78311_g = this.func_78307_h();
 	}
 
@@ -29,15 +29,21 @@ public class ChatClickData {
 		return this.field_78311_g;
 	}
 
+	/**
+	 * computes the URI from the clicked chat data object
+	 */
 	public URI getURI() {
 		String var1 = this.func_78309_f();
+
 		if (var1 == null) {
 			return null;
 		} else {
 			Matcher var2 = pattern.matcher(var1);
+
 			if (var2.matches()) {
 				try {
 					String var3 = var2.group(0);
+
 					if (var2.group(1) == null) {
 						var3 = "http://" + var3;
 					}
@@ -54,17 +60,18 @@ public class ChatClickData {
 
 	private String func_78307_h() {
 		int var1 = this.field_78310_f.lastIndexOf(" ", this.field_78310_f.length()) + 1;
+
 		if (var1 < 0) {
 			var1 = 0;
 		}
 
-		int var2 = this.line.func_74538_a().indexOf(" ", var1);
+		int var2 = this.line.getChatLineString().indexOf(" ", var1);
+
 		if (var2 < 0) {
-			var2 = this.line.func_74538_a().length();
+			var2 = this.line.getChatLineString().length();
 		}
 
-		FontRenderer var10000 = this.fontR;
-		return StringUtils.func_76338_a(this.line.func_74538_a().substring(var1, var2));
+		return StringUtils.stripControlCodes(this.line.getChatLineString().substring(var1, var2));
 	}
 	
 	//Spout start
@@ -72,4 +79,5 @@ public class ChatClickData {
 		return line.func_74538_a();
 	}
 	//Spout end
+	
 }

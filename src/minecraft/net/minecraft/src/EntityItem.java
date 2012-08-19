@@ -10,10 +10,20 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 //Spout end
 
 public class EntityItem extends Entity {
+
+	/** The item stack of this EntityItem. */
 	public ItemStack item;
+
+	/**
+	 * The age of this EntityItem (used to animate it up and down as well as expire it)
+	 */
 	public int age = 0;
 	public int delayBeforeCanPickup;
+
+	/** The health of this EntityItem. (For example, damage for tools) */
 	private int health = 5;
+
+	/** The EntityItem's random initial float height. */
 	public float hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 
 	public EntityItem(World par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
@@ -31,6 +41,10 @@ public class EntityItem extends Entity {
 		//Spout end
 	}
 
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
 	protected boolean canTriggerWalking() {
 		return false;
 	}
@@ -43,8 +57,12 @@ public class EntityItem extends Entity {
 
 	protected void entityInit() {}
 
+	/**
+	 * Called to update the entity's position/logic.
+	 */
 	public void onUpdate() {
 		super.onUpdate();
+
 		if (this.delayBeforeCanPickup > 0) {
 			--this.delayBeforeCanPickup;
 		}
@@ -76,6 +94,7 @@ public class EntityItem extends Entity {
 		}
 
 		float var4 = 0.98F;
+
 		if (this.onGround) {
 			var4 = 0.58800006F;
 			int var5 = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.boundingBox.minY) - 1, MathHelper.floor_double(this.posZ));
@@ -102,11 +121,13 @@ public class EntityItem extends Entity {
 		this.motionX *= (double)var4;
 		this.motionY *= 0.9800000190734863D;
 		this.motionZ *= (double)var4;
+
 		if (this.onGround) {
 			this.motionY *= -0.5D;
 		}
 
 		++this.age;
+
 		if (this.age >= 6000) {
 			this.setDead();
 		}
@@ -140,17 +161,27 @@ public class EntityItem extends Entity {
 		this.age = 4800;
 	}
 
+	/**
+	 * Returns if this entity is in water and will end up adding the waters velocity to the entity
+	 */
 	public boolean handleWaterMovement() {
 		return this.worldObj.handleMaterialAcceleration(this.boundingBox, Material.water, this);
 	}
 
+	/**
+	 * Will deal the specified amount of damage to the entity if the entity isn't immune to fire damage. Args: amountDamage
+	 */
 	protected void dealFireDamage(int par1) {
 		this.attackEntityFrom(DamageSource.inFire, par1);
 	}
 
+	/**
+	 * Called when the entity is attacked.
+	 */
 	public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
 		this.setBeenAttacked();
 		this.health -= par2;
+
 		if (this.health <= 0) {
 			this.setDead();
 		}
@@ -158,27 +189,39 @@ public class EntityItem extends Entity {
 		return false;
 	}
 
+	/**
+	 * (abstract) Protected helper method to write subclass entity data to NBT.
+	 */
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		par1NBTTagCompound.setShort("Health", (short)((byte)this.health));
 		par1NBTTagCompound.setShort("Age", (short)this.age);
+
 		if (this.item != null) {
 			par1NBTTagCompound.setCompoundTag("Item", this.item.writeToNBT(new NBTTagCompound()));
 		}
 	}
 
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		this.health = par1NBTTagCompound.getShort("Health") & 255;
 		this.age = par1NBTTagCompound.getShort("Age");
 		NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
 		this.item = ItemStack.loadItemStackFromNBT(var2);
+
 		if (this.item == null) {
 			this.setDead();
 		}
 	}
 
+	/**
+	 * Called by a player entity when they collide with an entity
+	 */
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		if (!this.worldObj.isRemote) {
 			int var2 = this.item.stackSize;
+
 			if (this.delayBeforeCanPickup == 0 && par1EntityPlayer.inventory.addItemStackToInventory(this.item)) {
 				if (this.item.itemID == Block.wood.blockID) {
 					par1EntityPlayer.triggerAchievement(AchievementList.mineWood);
@@ -188,7 +231,7 @@ public class EntityItem extends Entity {
 					par1EntityPlayer.triggerAchievement(AchievementList.killCow);
 				}
 
-				if (this.item.itemID == Item.field_77702_n.shiftedIndex) {
+				if (this.item.itemID == Item.diamond.shiftedIndex) {
 					par1EntityPlayer.triggerAchievement(AchievementList.diamonds);
 				}
 
@@ -198,6 +241,7 @@ public class EntityItem extends Entity {
 
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				par1EntityPlayer.onItemPickup(this, var2);
+
 				if (this.item.stackSize <= 0) {
 					this.setDead();
 				}
@@ -205,10 +249,16 @@ public class EntityItem extends Entity {
 		}
 	}
 
-	public String func_70023_ak() {
+	/**
+	 * Gets the username of the entity.
+	 */
+	public String getEntityName() {
 		return StatCollector.translateToLocal("item." + this.item.func_77977_a());
 	}
 
+	/**
+	 * If returns false, the item will not inflict any damage against entities.
+	 */
 	public boolean canAttackWithItem() {
 		return false;
 	}

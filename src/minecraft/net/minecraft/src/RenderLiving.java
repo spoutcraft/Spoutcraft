@@ -1,16 +1,9 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.Entity;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.ModelBase;
-import net.minecraft.src.OpenGlHelper;
-import net.minecraft.src.Render;
-import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
 //Spout start
 import org.lwjgl.opengl.GL13;
 import org.newdawn.slick.opengl.Texture;
@@ -20,6 +13,8 @@ import org.spoutcraft.client.io.CustomTextureManager;
 
 public class RenderLiving extends Render {
 	protected ModelBase mainModel;
+
+	/** The model to be used during the render passes. */
 	protected ModelBase renderPassModel;
 
 	public RenderLiving(ModelBase par1ModelBase, float par2) {
@@ -27,12 +22,17 @@ public class RenderLiving extends Render {
 		this.shadowSize = par2;
 	}
 
+	/**
+	 * Sets the model to be used in the current render pass (the first render pass is done after the primary model is
+	 * rendered) Args: model
+	 */
 	public void setRenderPassModel(ModelBase par1ModelBase) {
 		this.renderPassModel = par1ModelBase;
 	}
 
 	private float func_77034_a(float par1, float par2, float par3) {
 		float var4;
+
 		for (var4 = par2 - par1; var4 < -180.0F; var4 += 360.0F) {
 			;
 		}
@@ -48,16 +48,19 @@ public class RenderLiving extends Render {
 		GL11.glPushMatrix();
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		this.mainModel.onGround = this.renderSwingProgress(par1EntityLiving, par9);
+
 		if (this.renderPassModel != null) {
 			this.renderPassModel.onGround = this.mainModel.onGround;
 		}
 
 		this.mainModel.isRiding = par1EntityLiving.isRiding();
+
 		if (this.renderPassModel != null) {
 			this.renderPassModel.isRiding = this.mainModel.isRiding;
 		}
 
 		this.mainModel.isChild = par1EntityLiving.isChild();
+
 		if (this.renderPassModel != null) {
 			this.renderPassModel.isChild = this.mainModel.isChild;
 		}
@@ -74,8 +77,9 @@ public class RenderLiving extends Render {
 			GL11.glScalef(-1.0F, -1.0F, 1.0F);
 			this.preRenderCallback(par1EntityLiving, par9);
 			GL11.glTranslatef(0.0F, -24.0F * var14 - 0.0078125F, 0.0F);
-			float var15 = par1EntityLiving.field_70722_aY + (par1EntityLiving.field_70721_aZ - par1EntityLiving.field_70722_aY) * par9;
-			float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.field_70721_aZ * (1.0F - par9);
+			float var15 = par1EntityLiving.prevLegYaw + (par1EntityLiving.legYaw - par1EntityLiving.prevLegYaw) * par9;
+			float var16 = par1EntityLiving.field_70754_ba - par1EntityLiving.legYaw * (1.0F - par9);
+
 			if (par1EntityLiving.isChild()) {
 				var16 *= 3.0F;
 			}
@@ -87,16 +91,18 @@ public class RenderLiving extends Render {
 			GL11.glEnable(GL11.GL_ALPHA_TEST);
 			this.mainModel.setLivingAnimations(par1EntityLiving, var16, var15, par9);
 			this.renderModel(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
-
 			float var19;
 			int var18;
 			float var20;
 			float var22;
+
 			for (int var17 = 0; var17 < 4; ++var17) {
 				var18 = this.shouldRenderPass(par1EntityLiving, var17, par9);
+
 				if (var18 > 0) {
 					this.renderPassModel.setLivingAnimations(par1EntityLiving, var16, var15, par9);
 					this.renderPassModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
+
 					if (var18 == 15) {
 						var19 = (float)par1EntityLiving.ticksExisted + par9;
 						this.loadTexture("%blur%/misc/glint.png");
@@ -143,12 +149,14 @@ public class RenderLiving extends Render {
 			OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+
 			if ((var18 >> 24 & 255) > 0 || par1EntityLiving.hurtTime > 0 || par1EntityLiving.deathTime > 0) {
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				GL11.glDepthFunc(GL11.GL_EQUAL);
+
 				if (par1EntityLiving.hurtTime > 0 || par1EntityLiving.deathTime > 0) {
 					GL11.glColor4f(var26, 0.0F, 0.0F, 0.4F);
 					this.mainModel.render(par1EntityLiving, var16, var15, var13, var11 - var10, var12, var14);
@@ -196,20 +204,28 @@ public class RenderLiving extends Render {
 		this.passSpecialRender(par1EntityLiving, par2, par4, par6);
 	}
 
+	/**
+	 * Renders the model in RenderLiving
+	 */
 	protected void renderModel(EntityLiving par1EntityLiving, float par2, float par3, float par4, float par5, float par6, float par7) {
 		this.loadDownloadableImageTexture(par1EntityLiving.skinUrl, par1EntityLiving.getTexture());
 		this.mainModel.render(par1EntityLiving, par2, par3, par4, par5, par6, par7);
 	}
 
+	/**
+	 * Sets a simple glTranslate on a LivingEntity.
+	 */
 	protected void renderLivingAt(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		GL11.glTranslatef((float)par2, (float)par4, (float)par6);
 	}
 
 	protected void rotateCorpse(EntityLiving par1EntityLiving, float par2, float par3, float par4) {
 		GL11.glRotatef(180.0F - par3, 0.0F, 1.0F, 0.0F);
+
 		if (par1EntityLiving.deathTime > 0) {
 			float var5 = ((float)par1EntityLiving.deathTime + par4 - 1.0F) / 20.0F * 1.6F;
 			var5 = MathHelper.sqrt_float(var5);
+
 			if (var5 > 1.0F) {
 				var5 = 1.0F;
 			}
@@ -222,6 +238,9 @@ public class RenderLiving extends Render {
 		return par1EntityLiving.getSwingProgress(par2);
 	}
 
+	/**
+	 * Defines what float the third param in setRotationAngles of ModelBase is
+	 */
 	protected float handleRotationFloat(EntityLiving par1EntityLiving, float par2) {
 		return (float)par1EntityLiving.ticksExisted + par2;
 	}
@@ -232,6 +251,9 @@ public class RenderLiving extends Render {
 		return this.shouldRenderPass(par1EntityLiving, par2, par3);
 	}
 
+	/**
+	 * Queries whether should render the specified pass or not.
+	 */
 	protected int shouldRenderPass(EntityLiving par1EntityLiving, int par2, float par3) {
 		return -1;
 	}
@@ -240,23 +262,33 @@ public class RenderLiving extends Render {
 		return 90.0F;
 	}
 
+	/**
+	 * Returns an ARGB int color back. Args: entityLiving, lightBrightness, partialTickTime
+	 */
 	protected int getColorMultiplier(EntityLiving par1EntityLiving, float par2, float par3) {
 		return 0;
 	}
 
+	/**
+	 * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args: entityLiving,
+	 * partialTickTime
+	 */
 	protected void preRenderCallback(EntityLiving par1EntityLiving, float par2) {}
 
-	protected void passSpecialRender(EntityLiving var1, double var2, double var4, double var6) {
+	/**
+	 * Passes the specialRender and renders it
+	 */
+	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
 		//Spout Start
 		if(Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
-			this.renderLivingLabel(var1, Integer.toString(var1.entityId), var2, var4, var6, 64);
+			this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
 		}
 		else {
-			String title = var1.displayName;
+			String title = par1EntityLiving.displayName;
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");
 				for (int i = 0; i < lines.length; i++){
-					renderLivingLabel(var1, lines[i], var2, var4 + (0.275D * (lines.length - i - 1)), var6, 64);
+					renderLivingLabel(var1, lines[i], par2, par4 + (0.275D * (lines.length - i - 1)), par6, 64);
 				}
 			}
 		}
@@ -268,9 +300,13 @@ public class RenderLiving extends Render {
 		renderLivingLabel(var1, var2, var3, var5, var7, var9, 0xFFFFFF, -1);
 	}
 
+	/**
+	 * Draws the debug or playername text above a living
+	 */
 	protected void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9, int color, int color2) {
 	//Spout end
 		double var10 = par1EntityLiving.getDistanceSqToEntity(this.renderManager.livingPlayer);
+
 		if (var10 <= (double)(par9 * par9)) {
 			FontRenderer var12 = this.getFontRendererFromRenderManager();
 			float var13 = 1.6F;
@@ -289,6 +325,7 @@ public class RenderLiving extends Render {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			Tessellator var15 = Tessellator.instance;
 			byte var16 = 0;
+
 			if (par2Str.equals("deadmau5")) {
 				var16 = -10;
 			}
@@ -314,6 +351,12 @@ public class RenderLiving extends Render {
 		}
 	}
 
+	/**
+	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
+	 * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
+	 * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
+	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
+	 */
 	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
 		this.doRenderLiving((EntityLiving)par1Entity, par2, par4, par6, par8, par9);
 	}

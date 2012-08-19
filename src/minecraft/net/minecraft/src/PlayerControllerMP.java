@@ -5,7 +5,7 @@ import org.spoutcraft.spoutcraftapi.Spoutcraft; // Spout
 import net.minecraft.client.Minecraft;
 
 public class PlayerControllerMP {
-	private final Minecraft field_78776_a;
+	private final Minecraft mc;
 	private final NetClientHandler netClientHandler;
 
 	/** PosX of the current block being destroyed */
@@ -35,37 +35,40 @@ public class PlayerControllerMP {
 
 	/** Tells if the player is hitting a block */
 	private boolean isHittingBlock = false;
-	private EnumGameType field_78779_k;
+
+	/** Current game type for the player */
+	private EnumGameType currentGameType;
 
 	/** Index of the current item held by the player in the inventory hotbar */
 	private int currentPlayerItem;
 
 	public PlayerControllerMP(Minecraft par1Minecraft, NetClientHandler par2NetClientHandler) {
-		this.field_78779_k = EnumGameType.SURVIVAL;
+		this.currentGameType = EnumGameType.SURVIVAL;
 		this.currentPlayerItem = 0;
-		this.field_78776_a = par1Minecraft;
+		this.mc = par1Minecraft;
 		this.netClientHandler = par2NetClientHandler;
 	}
 
 	public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5) {
-		if (!par0Minecraft.field_71441_e.func_72886_a(par0Minecraft.field_71439_g, par2, par3, par4, par5)) {
+		if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.field_71439_g, par2, par3, par4, par5)) {
 			par1PlayerControllerMP.onPlayerDestroyBlock(par2, par3, par4, par5);
 		}
 	}
 
 	public void func_78748_a(EntityPlayer par1EntityPlayer) {
-		this.field_78779_k.func_77147_a(par1EntityPlayer.capabilities);
+		this.currentGameType.configurePlayerCapabilities(par1EntityPlayer.capabilities);
 	}
 
 	public boolean func_78747_a() {
 		return false;
 	}
 
-	public void func_78746_a(EnumGameType par1EnumGameType) {
-		this.field_78779_k = par1EnumGameType;
-		// TODO IMPLEMENT
-		//Spoutcraft.getClient().getActivePlayer().getMainScreen().toggleSurvivalHUD(false); false - creative mode | true - anything else
-		this.field_78779_k.func_77147_a(this.field_78776_a.field_71439_g.capabilities);
+	/**
+	 * Sets the game type for the player.
+	 */
+	public void setGameType(EnumGameType par1EnumGameType) {
+		this.currentGameType = par1EnumGameType;
+		this.currentGameType.configurePlayerCapabilities(this.mc.thePlayer.capabilities);
 	}
 
 	/**
@@ -76,17 +79,17 @@ public class PlayerControllerMP {
 	}
 
 	public boolean shouldDrawHUD() {
-		return this.field_78779_k.func_77144_e();
+		return this.currentGameType.func_77144_e();
 	}
 
 	/**
 	 * Called when a player completes the destruction of a block
 	 */
 	public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4) {
-		if (this.field_78779_k.func_77150_c()) {
+		if (this.currentGameType.func_77150_c()) {
 			return false;
 		} else {
-			WorldClient var5 = this.field_78776_a.field_71441_e;
+			WorldClient var5 = this.mc.theWorld;
 			Block var6 = Block.blocksList[var5.getBlockId(par1, par2, par3)];
 
 			if (var6 == null) {
@@ -100,14 +103,14 @@ public class PlayerControllerMP {
 					var6.onBlockDestroyedByPlayer(var5, par1, par2, par3, var7);
 				}
 
-				if (!this.field_78779_k.func_77145_d()) {
-					ItemStack var9 = this.field_78776_a.field_71439_g.getCurrentEquippedItem();
+				if (!this.currentGameType.isCreative()) {
+					ItemStack var9 = this.mc.field_71439_g.getCurrentEquippedItem();
 
 					if (var9 != null) {
-						var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.field_78776_a.field_71439_g);
+						var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.mc.field_71439_g);
 
 						if (var9.stackSize == 0) {
-							this.field_78776_a.field_71439_g.destroyCurrentEquippedItem();
+							this.mc.field_71439_g.destroyCurrentEquippedItem();
 						}
 					}
 				}
@@ -121,20 +124,20 @@ public class PlayerControllerMP {
 	 * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
 	 */
 	public void clickBlock(int par1, int par2, int par3, int par4) {
-		if (!this.field_78779_k.func_77150_c()) {
-			if (this.field_78779_k.func_77145_d()) {
+		if (!this.currentGameType.func_77150_c()) {
+			if (this.currentGameType.isCreative()) {
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
-				func_78744_a(this.field_78776_a, this, par1, par2, par3, par4);
+				func_78744_a(this.mc, this, par1, par2, par3, par4);
 				this.blockHitDelay = 5;
 			} else if (!this.isHittingBlock || par1 != this.currentBlockX || par2 != this.currentBlockY || par3 != this.currentblockZ) {
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
-				int var5 = this.field_78776_a.field_71441_e.getBlockId(par1, par2, par3);
+				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
 				if (var5 > 0 && this.curBlockDamageMP == 0.0F) {
-					Block.blocksList[var5].onBlockClicked(this.field_78776_a.field_71441_e, par1, par2, par3, this.field_78776_a.field_71439_g);
+					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.field_71439_g);
 				}
 
-				if (var5 > 0 && Block.blocksList[var5].func_71908_a(this.field_78776_a.field_71439_g, this.field_78776_a.field_71439_g.worldObj, par1, par2, par3) >= 1.0F) {
+				if (var5 > 0 && Block.blocksList[var5].func_71908_a(this.mc.field_71439_g, this.mc.field_71439_g.worldObj, par1, par2, par3) >= 1.0F) {
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 				} else {
 					this.isHittingBlock = true;
@@ -144,7 +147,7 @@ public class PlayerControllerMP {
 					this.curBlockDamageMP = 0.0F;
 					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
-					this.field_78776_a.field_71441_e.func_72888_f(this.field_78776_a.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+					this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 				}
 			}
 		}
@@ -160,7 +163,7 @@ public class PlayerControllerMP {
 
 		this.isHittingBlock = false;
 		this.curBlockDamageMP = 0.0F;
-		this.field_78776_a.field_71441_e.func_72888_f(this.field_78776_a.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
+		this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
 	}
 
 	/**
@@ -171,13 +174,13 @@ public class PlayerControllerMP {
 
 		if (this.blockHitDelay > 0) {
 			--this.blockHitDelay;
-		} else if (this.field_78779_k.func_77145_d()) {
+		} else if (this.currentGameType.isCreative()) {
 			this.blockHitDelay = 5;
 			this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
-			func_78744_a(this.field_78776_a, this, par1, par2, par3, par4);
+			func_78744_a(this.mc, this, par1, par2, par3, par4);
 		} else {
 			if (par1 == this.currentBlockX && par2 == this.currentBlockY && par3 == this.currentblockZ) {
-				int var5 = this.field_78776_a.field_71441_e.getBlockId(par1, par2, par3);
+				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
 				if (var5 == 0) {
 					this.isHittingBlock = false;
@@ -185,10 +188,10 @@ public class PlayerControllerMP {
 				}
 
 				Block var6 = Block.blocksList[var5];
-				this.curBlockDamageMP += var6.func_71908_a(this.field_78776_a.field_71439_g, this.field_78776_a.field_71439_g.worldObj, par1, par2, par3);
+				this.curBlockDamageMP += var6.func_71908_a(this.mc.field_71439_g, this.mc.field_71439_g.worldObj, par1, par2, par3);
 
 				if (this.stepSoundTickCounter % 4.0F == 0.0F && var6 != null) {
-					this.field_78776_a.sndManager.playSound(var6.stepSound.getStepSound(), (float)par1 + 0.5F, (float)par2 + 0.5F, (float)par3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);
+					this.mc.sndManager.playSound(var6.stepSound.getStepSound(), (float)par1 + 0.5F, (float)par2 + 0.5F, (float)par3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);
 				}
 
 				++this.stepSoundTickCounter;
@@ -203,7 +206,7 @@ public class PlayerControllerMP {
 					this.blockHitDelay = 5;
 				}
 
-				this.field_78776_a.field_71441_e.func_72888_f(this.field_78776_a.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+				this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 			} else {
 				this.clickBlock(par1, par2, par3, par4);
 			}
@@ -214,20 +217,20 @@ public class PlayerControllerMP {
 	 * player reach distance = 4F
 	 */
 	public float getBlockReachDistance() {
-		return this.field_78779_k.func_77145_d() ? 5.0F : 4.5F;
+		return this.currentGameType.isCreative() ? 5.0F : 4.5F;
 	}
 
 	public void updateController() {
 		this.syncCurrentPlayItem();
 		this.prevBlockDamageMP = this.curBlockDamageMP;
-		this.field_78776_a.sndManager.playRandomMusicIfReady();
+		this.mc.sndManager.playRandomMusicIfReady();
 	}
 
 	/**
 	 * Syncs the current player item with the server
 	 */
 	private void syncCurrentPlayItem() {
-		int var1 = this.field_78776_a.field_71439_g.inventory.currentItem;
+		int var1 = this.mc.field_71439_g.inventory.currentItem;
 
 		if (var1 != this.currentPlayerItem) {
 			this.currentPlayerItem = var1;
@@ -235,7 +238,10 @@ public class PlayerControllerMP {
 		}
 	}
 
-	public boolean func_78760_a(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3) {
+	/**
+	 * Handles a players right click. Args: player, world, x, y, z, side, hitVec
+	 */
+	public boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3) {
 		this.syncCurrentPlayItem();
 		float var9 = (float)par8Vec3.xCoord - (float)par4;
 		float var10 = (float)par8Vec3.yCoord - (float)par5;
@@ -243,14 +249,14 @@ public class PlayerControllerMP {
 		boolean var12 = false;
 		int var13 = par2World.getBlockId(par4, par5, par6);
 
-		if (var13 > 0 && Block.blocksList[var13].func_71903_a(par2World, par4, par5, par6, par1EntityPlayer, par7, var9, var10, var11)) {
+		if (var13 > 0 && Block.blocksList[var13].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, var9, var10, var11)) {
 			var12 = true;
 		}
 
 		if (!var12 && par3ItemStack != null && par3ItemStack.getItem() instanceof ItemBlock) {
 			ItemBlock var14 = (ItemBlock)par3ItemStack.getItem();
 
-			if (!var14.func_77884_a(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack)) {
+			if (!var14.canPlaceItemBlockOnSide(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack)) {
 				return false;
 			}
 		}
@@ -261,15 +267,15 @@ public class PlayerControllerMP {
 			return true;
 		} else if (par3ItemStack == null) {
 			return false;
-		} else if (this.field_78779_k.func_77145_d()) {
+		} else if (this.currentGameType.isCreative()) {
 			int var17 = par3ItemStack.getItemDamage();
 			int var15 = par3ItemStack.stackSize;
-			boolean var16 = par3ItemStack.func_77943_a(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
+			boolean var16 = par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
 			par3ItemStack.setItemDamage(var17);
 			par3ItemStack.stackSize = var15;
 			return var16;
 		} else {
-			return par3ItemStack.func_77943_a(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
+			return par3ItemStack.tryPlaceItemIntoWorld(par1EntityPlayer, par2World, par4, par5, par6, par7, var9, var10, var11);
 		}
 	}
 
@@ -296,7 +302,7 @@ public class PlayerControllerMP {
 	}
 
 	public EntityClientPlayerMP func_78754_a(World par1World) {
-		return new EntityClientPlayerMP(this.field_78776_a, par1World, this.field_78776_a.session, this.netClientHandler);
+		return new EntityClientPlayerMP(this.mc, par1World, this.mc.session, this.netClientHandler);
 	}
 
 	/**
@@ -311,7 +317,7 @@ public class PlayerControllerMP {
 	public boolean func_78768_b(EntityPlayer par1EntityPlayer, Entity par2Entity) {
 		this.syncCurrentPlayItem();
 		this.netClientHandler.addToSendQueue(new Packet7UseEntity(par1EntityPlayer.entityId, par2Entity.entityId, 0));
-		return par1EntityPlayer.func_70998_m(par2Entity);
+		return par1EntityPlayer.interactWith(par2Entity);
 	}
 
 	public ItemStack windowClick(int par1, int par2, int par3, boolean par4, EntityPlayer par5EntityPlayer) {
@@ -333,13 +339,13 @@ public class PlayerControllerMP {
 	 * Used in PlayerControllerMP to update the server with an ItemStack in a slot.
 	 */
 	public void sendSlotPacket(ItemStack par1ItemStack, int par2) {
-		if (this.field_78779_k.func_77145_d()) {
+		if (this.currentGameType.isCreative()) {
 			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(par2, par1ItemStack));
 		}
 	}
 
 	public void func_78752_a(ItemStack par1ItemStack) {
-		if (this.field_78779_k.func_77145_d() && par1ItemStack != null) {
+		if (this.currentGameType.isCreative() && par1ItemStack != null) {
 			this.netClientHandler.addToSendQueue(new Packet107CreativeSetSlot(-1, par1ItemStack));
 		}
 	}
@@ -358,20 +364,20 @@ public class PlayerControllerMP {
 	 * Checks if the player is not creative, used for checking if it should break a block instantly
 	 */
 	public boolean isNotCreative() {
-		return !this.field_78779_k.func_77145_d();
+		return !this.currentGameType.isCreative();
 	}
 
 	/**
 	 * returns true if player is in creative mode
 	 */
 	public boolean isInCreativeMode() {
-		return this.field_78779_k.func_77145_d();
+		return this.currentGameType.isCreative();
 	}
 
 	/**
 	 * true for hitting entities far away.
 	 */
 	public boolean extendedReach() {
-		return this.field_78779_k.func_77145_d();
+		return this.currentGameType.isCreative();
 	}
 }
