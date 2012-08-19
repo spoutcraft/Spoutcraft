@@ -168,9 +168,6 @@ public class GuiIngame extends Gui
 		String var23;
 		if(this.mc.gameSettings.showDebugInfo) {
 			GL11.glPushMatrix();
-			if(Minecraft.hasPaidCheckTime > 0L) {
-				GL11.glTranslatef(0.0F, 32.0F, 0.0F);
-			}
 			if (ConfigReader.fastDebug != 2) {
 				font.drawStringWithShadow("Minecraft 1.2.5 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
@@ -195,7 +192,7 @@ public class GuiIngame extends Gui
 					this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
 					offset = 40;
 				}
-				if (mc.isMultiplayerWorld() && SpoutClient.getInstance().isSpoutEnabled()) {
+				if (mc.isIntegratedServerRunning() && SpoutClient.getInstance().isSpoutEnabled()) {
 					this.drawString(font, "Spout Map Data Cache Info:", 2, 64 + offset, 0xE0E000);
 					this.drawString(font, "Average packet size: " + org.spoutcraft.client.chunkcache.ChunkCache.averageChunkSize.get() + " bytes", 2, 72 + offset, 14737632);
 					this.drawString(font, "Cache hit percent: " + org.spoutcraft.client.chunkcache.ChunkCache.hitPercentage.get(), 2, 80 + offset, 14737632);
@@ -312,7 +309,7 @@ public class GuiIngame extends Gui
 		ServerPlayerList playerList = mainScreen.getServerPlayerList();
 		if(this.mc.thePlayer instanceof EntityClientPlayerMP && this.mc.gameSettings.keyBindPlayerList.pressed && playerList.isVisible()) {
 			NetClientHandler var41 = ((EntityClientPlayerMP)this.mc.thePlayer).sendQueue;
-			List var44 = var41.playerNames;
+			List var44 = var41.playerInfoList;
 			int var40 = var41.currentServerMaxPlayers;
 			int var38 = var40;
 			int var16;
@@ -388,7 +385,7 @@ public class GuiIngame extends Gui
 		int i = scaledresolution.getScaledWidth();
 		char c = '\266';
 		int j = i / 2 - c / 2;
-		int k = (int)(((float)entitydragon.func_41010_ax() / (float)entitydragon.getMaxHealth()) * (float)(c + 1));
+		int k = (int)(((float)entitydragon.getDragonHealth() / (float)entitydragon.getMaxHealth()) * (float)(c + 1));
 		byte byte0 = 12;
 		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
 		drawTexturedModalRect(j, byte0, 0, 74, c, 5);
@@ -609,10 +606,10 @@ public class GuiIngame extends Gui
 	/**
 	 * Adds the string to chat message after translate it with the language file.
 	 */
-	public void addChatMessageTranslate(String par1Str)
+	public void addChatMessageTranslate(String par1Str, Object ... par2ArrayOfObj)
 	{
 		StringTranslate stringtranslate = StringTranslate.getInstance();
-		String s = stringtranslate.translateKey(par1Str);
+		String s = stringtranslate.translateKeyFormat(par1Str, par2ArrayOfObj);
 		addChatMessage(s);
 	}
 	
@@ -627,13 +624,13 @@ public class GuiIngame extends Gui
 			ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 			int chatScroll = SpoutClient.getInstance().getChatManager().chatScroll;
 			//don't ask, it's much better than vanilla matching though
-			par2 = par2 / var3.scaleFactor - 33 - ((20 - Math.min(20, chatScroll)) / 2);
-			par1 = par1 / var3.scaleFactor - 3;
+			par2 = par2 / var3.getScaleFactor() - 33 - ((20 - Math.min(20, chatScroll)) / 2);
+			par1 = par1 / var3.getScaleFactor() - 3;
 			if (par1 >= 0 && par2 >= 0) {
 				int var4 = Math.min(20, ChatTextBox.getNumChatMessages());
 				if (par1 <= 320 && par2 < this.mc.fontRenderer.FONT_HEIGHT * var4 + var4) {
 					int var5 = par2 / (this.mc.fontRenderer.FONT_HEIGHT + 1) + chatScroll;
-					return new ChatClickData(this.mc.fontRenderer, new ChatLine(ChatTextBox.getChatMessageAt(var5)), par1, par2 - (var5 - chatScroll) * this.mc.fontRenderer.FONT_HEIGHT + var5);
+					return new ChatClickData(this.mc.fontRenderer, new ChatLine(this.mc.ingameGUI.getUpdateCounter(), ChatTextBox.getChatMessageAt(var5), par2), par1, par2 - (var5 - chatScroll) * this.mc.fontRenderer.FONT_HEIGHT + var5);
 				} else {
 					return null;
 				}
@@ -642,4 +639,8 @@ public class GuiIngame extends Gui
 			}
 		}
 	}
+	
+	public int getUpdateCounter() {
+ 		return this.updateCounter++;
+ 	}
 }

@@ -47,7 +47,7 @@ public class GuiCreateWorld extends GuiScreen {
 		this.controlList.add(this.worldTypeButton = new GuiButton(5, this.width / 2 + 5, 100, 150, 20, var1.translateKey("selectWorld.mapType")));
 		this.worldTypeButton.drawButton = false;
 		this.textboxWorldName = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
-		this.textboxWorldName.func_50033_b(true);
+		this.textboxWorldName.setFocused(true);
 		this.textboxWorldName.setText(this.localizedNewWorldText);
 		this.textboxSeed = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 60, 200, 20);
 		this.textboxSeed.setText(this.seed);
@@ -57,7 +57,7 @@ public class GuiCreateWorld extends GuiScreen {
 
 	private void makeUseableName() {
 		this.folderName = this.textboxWorldName.getText().trim();
-		char[] var1 = ChatAllowedCharacters.allowedCharactersArray;
+		char[] var1 = ChatAllowedCharacters.invalidFilenameCharacters;
 		int var2 = var1.length;
 
 		for (int var3 = 0; var3 < var2; ++var3) {
@@ -123,15 +123,7 @@ public class GuiCreateWorld extends GuiScreen {
 					}
 				}
 
-				byte var9 = 0;
-				if (this.gameMode.equals("creative")) {
-					var9 = 1;
-					this.mc.playerController = new PlayerControllerCreative(this.mc);
-				} else {
-					this.mc.playerController = new PlayerControllerSP(this.mc);
-				}
-
-				this.mc.startWorld(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, var9, this.field_35365_g, this.field_40232_h, WorldType.worldTypes[this.field_46030_z]));
+				this.mc.launchIntegratedServer(this.folderName, this.textboxWorldName.getText(), new WorldSettings(var2, EnumGameType.getByName(this.gameMode), this.field_35365_g, this.field_40232_h, WorldType.worldTypes[this.field_46030_z]));
 				this.mc.displayGuiScreen((GuiScreen)null);
 			} else if (par1GuiButton.id == 3) {
 				this.moreOptions = !this.moreOptions;
@@ -186,11 +178,11 @@ public class GuiCreateWorld extends GuiScreen {
 	}
 
 	protected void keyTyped(char par1, int par2) {
-		if (this.textboxWorldName.func_50025_j() && !this.moreOptions) {
-			this.textboxWorldName.func_50037_a(par1, par2);
+		if (this.textboxWorldName.isFocused() && !this.moreOptions) {
+			this.textboxWorldName.textboxKeyTyped(par1, par2);
 			this.localizedNewWorldText = this.textboxWorldName.getText();
-		} else if (this.textboxSeed.func_50025_j() && this.moreOptions) {
-			this.textboxSeed.func_50037_a(par1, par2);
+		} else if (this.textboxSeed.isFocused() && this.moreOptions) {
+			this.textboxSeed.textboxKeyTyped(par1, par2);
 			this.seed = this.textboxSeed.getText();
 		}
 

@@ -50,7 +50,7 @@ public class PlayerControllerMP {
 	}
 
 	public static void func_78744_a(Minecraft par0Minecraft, PlayerControllerMP par1PlayerControllerMP, int par2, int par3, int par4, int par5) {
-		if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.field_71439_g, par2, par3, par4, par5)) {
+		if (!par0Minecraft.theWorld.extinguishFire(par0Minecraft.thePlayer, par2, par3, par4, par5)) {
 			par1PlayerControllerMP.onPlayerDestroyBlock(par2, par3, par4, par5);
 		}
 	}
@@ -86,7 +86,7 @@ public class PlayerControllerMP {
 	 * Called when a player completes the destruction of a block
 	 */
 	public boolean onPlayerDestroyBlock(int par1, int par2, int par3, int par4) {
-		if (this.currentGameType.func_77150_c()) {
+		if (this.currentGameType.isAdventure()) {
 			return false;
 		} else {
 			WorldClient var5 = this.mc.theWorld;
@@ -104,13 +104,13 @@ public class PlayerControllerMP {
 				}
 
 				if (!this.currentGameType.isCreative()) {
-					ItemStack var9 = this.mc.field_71439_g.getCurrentEquippedItem();
+					ItemStack var9 = this.mc.thePlayer.getCurrentEquippedItem();
 
 					if (var9 != null) {
-						var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.mc.field_71439_g);
+						var9.func_77941_a(var5, var6.blockID, par1, par2, par3, this.mc.thePlayer);
 
 						if (var9.stackSize == 0) {
-							this.mc.field_71439_g.destroyCurrentEquippedItem();
+							this.mc.thePlayer.destroyCurrentEquippedItem();
 						}
 					}
 				}
@@ -124,7 +124,7 @@ public class PlayerControllerMP {
 	 * Called by Minecraft class when the player is hitting a block with an item. Args: x, y, z, side
 	 */
 	public void clickBlock(int par1, int par2, int par3, int par4) {
-		if (!this.currentGameType.func_77150_c()) {
+		if (!this.currentGameType.isAdventure()) {
 			if (this.currentGameType.isCreative()) {
 				this.netClientHandler.addToSendQueue(new Packet14BlockDig(0, par1, par2, par3, par4));
 				func_78744_a(this.mc, this, par1, par2, par3, par4);
@@ -134,10 +134,10 @@ public class PlayerControllerMP {
 				int var5 = this.mc.theWorld.getBlockId(par1, par2, par3);
 
 				if (var5 > 0 && this.curBlockDamageMP == 0.0F) {
-					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.field_71439_g);
+					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.thePlayer);
 				}
 
-				if (var5 > 0 && Block.blocksList[var5].func_71908_a(this.mc.field_71439_g, this.mc.field_71439_g.worldObj, par1, par2, par3) >= 1.0F) {
+				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) { //Spout
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 				} else {
 					this.isHittingBlock = true;
@@ -147,7 +147,7 @@ public class PlayerControllerMP {
 					this.curBlockDamageMP = 0.0F;
 					this.prevBlockDamageMP = 0.0F;
 					this.stepSoundTickCounter = 0.0F;
-					this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+					this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 				}
 			}
 		}
@@ -163,7 +163,7 @@ public class PlayerControllerMP {
 
 		this.isHittingBlock = false;
 		this.curBlockDamageMP = 0.0F;
-		this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
+		this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, -1);
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class PlayerControllerMP {
 				}
 
 				Block var6 = Block.blocksList[var5];
-				this.curBlockDamageMP += var6.func_71908_a(this.mc.field_71439_g, this.mc.field_71439_g.worldObj, par1, par2, par3);
+				this.curBlockDamageMP += var6.getPlayerRelativeBlockHardness(this.mc.thePlayer); //Spout
 
 				if (this.stepSoundTickCounter % 4.0F == 0.0F && var6 != null) {
 					this.mc.sndManager.playSound(var6.stepSound.getStepSound(), (float)par1 + 0.5F, (float)par2 + 0.5F, (float)par3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);
@@ -206,7 +206,7 @@ public class PlayerControllerMP {
 					this.blockHitDelay = 5;
 				}
 
-				this.mc.theWorld.func_72888_f(this.mc.field_71439_g.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
+				this.mc.theWorld.destroyBlockInWorldPartially(this.mc.thePlayer.entityId, this.currentBlockX, this.currentBlockY, this.currentblockZ, (int)(this.curBlockDamageMP * 10.0F) - 1);
 			} else {
 				this.clickBlock(par1, par2, par3, par4);
 			}
@@ -230,7 +230,7 @@ public class PlayerControllerMP {
 	 * Syncs the current player item with the server
 	 */
 	private void syncCurrentPlayItem() {
-		int var1 = this.mc.field_71439_g.inventory.currentItem;
+		int var1 = this.mc.thePlayer.inventory.currentItem;
 
 		if (var1 != this.currentPlayerItem) {
 			this.currentPlayerItem = var1;

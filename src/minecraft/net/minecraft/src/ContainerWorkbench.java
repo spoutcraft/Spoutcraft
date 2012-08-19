@@ -39,7 +39,7 @@ public class ContainerWorkbench extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return null;
 	}
 	//Spout end

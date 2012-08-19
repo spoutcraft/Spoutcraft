@@ -30,7 +30,7 @@ public class ContainerChest extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return lowerChestInventory;
 	}
 	

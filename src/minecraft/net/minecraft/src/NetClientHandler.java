@@ -20,6 +20,10 @@ import java.util.Random;
 import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
 public class NetClientHandler extends NetHandler {
 	private boolean field_72554_f = false;
@@ -606,7 +610,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleChat(Packet3Chat par1Packet3Chat) {
-		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Packet3Chat.message);
+		this.mc.ingameGUI.addChatMessage(par1Packet3Chat.message);
 	}
 
 	public void handleAnimation(Packet18Animation par1Packet18Animation) {
@@ -692,7 +696,7 @@ public class NetClientHandler extends NetHandler {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var17);
 		}
 		//Spout start: set the entity's title
-		if(var10.field_71441_e.customTitles.containsKey(var10.entityId)) {
+		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
 			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
 		//Spout end
@@ -998,11 +1002,11 @@ public class NetClientHandler extends NetHandler {
 			if (var4 == 0) {
 				this.mc.displayGuiScreen(new GuiScreenDemo());
 			} else if (var4 == 101) {
-				this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
+				this.mc.ingameGUI.addChatMessageTranslate("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
 			} else if (var4 == 102) {
-				this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
+				this.mc.ingameGUI.addChatMessageTranslate("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
 			} else if (var4 == 103) {
-				this.mc.ingameGUI.getChatGUI().func_73757_a("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
+				this.mc.ingameGUI.addChatMessageTranslate("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
 			}
 		}
 	}
@@ -1103,8 +1107,8 @@ public class NetClientHandler extends NetHandler {
 		String[] var2 = par1Packet203AutoComplete.func_73473_d().split("\u0000");
 
 		if (this.mc.currentScreen instanceof GuiChat) {
-			GuiChat var3 = (GuiChat)this.mc.currentScreen;
-			var3.func_73894_a(var2);
+			//GuiChat var3 = (GuiChat)this.mc.currentScreen; //Spout
+			//var3.func_73894_a(var2);
 		}
 	}
 

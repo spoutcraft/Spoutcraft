@@ -38,48 +38,48 @@ class GuiSlotServer extends GuiSlot {
 	}
 
 	protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
-		ServerNBTStorage var6 = (ServerNBTStorage)GuiMultiplayer.getServerList(this.parentGui).get(par1);
+		ServerData var6 = (ServerData)GuiMultiplayer.getServerList(this.parentGui).get(par1);
 		synchronized(GuiMultiplayer.getLock()) {
-			if (GuiMultiplayer.getThreadsPending() < 5 && !var6.polled) {
-				var6.polled = true;
-				var6.lag = -2L;
-				var6.motd = "";
-				var6.playerCount = "";
+			if (GuiMultiplayer.getThreadsPending() < 5 && !var6.field_78841_f) {
+				var6.field_78841_f = true;
+				var6.field_78844_e = -2L;
+				var6.serverMOTD = "";
+				var6.field_78846_c = "";
 				GuiMultiplayer.incrementThreadsPending();
 				(new ThreadPollServers(this, var6)).start();
 			}
 		}
 
-		this.parentGui.drawString(this.parentGui.fontRenderer, var6.name, par2 + 2, par3 + 1, 16777215);
-		this.parentGui.drawString(this.parentGui.fontRenderer, var6.motd, par2 + 2, par3 + 12, 8421504);
-		this.parentGui.drawString(this.parentGui.fontRenderer, var6.playerCount, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.playerCount), par3 + 12, 8421504);
-		this.parentGui.drawString(this.parentGui.fontRenderer, var6.host, par2 + 2, par3 + 12 + 11, 3158064);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverName, par2 + 2, par3 + 1, 16777215);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverMOTD, par2 + 2, par3 + 12, 8421504);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.field_78846_c, par2 + 215 - this.parentGui.fontRenderer.getStringWidth(var6.field_78846_c), par3 + 12, 8421504);
+		this.parentGui.drawString(this.parentGui.fontRenderer, var6.serverIP, par2 + 2, par3 + 12 + 11, 3158064);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.parentGui.mc.renderEngine.bindTexture(this.parentGui.mc.renderEngine.getTexture("/gui/icons.png"));
 		String var9 = "";
 		byte var7;
 		int var8;
-		if (var6.polled && var6.lag != -2L) {
+		if (var6.field_78841_f && var6.field_78844_e != -2L) {
 			var7 = 0;
 			boolean var12 = false;
-			if (var6.lag < 0L) {
+			if (var6.field_78844_e < 0L) {
 				var8 = 5;
-			} else if (var6.lag < 150L) {
+			} else if (var6.field_78844_e < 150L) {
 				var8 = 0;
-			} else if (var6.lag < 300L) {
+			} else if (var6.field_78844_e < 300L) {
 				var8 = 1;
-			} else if (var6.lag < 600L) {
+			} else if (var6.field_78844_e < 600L) {
 				var8 = 2;
-			} else if (var6.lag < 1000L) {
+			} else if (var6.field_78844_e < 1000L) {
 				var8 = 3;
 			} else {
 				var8 = 4;
 			}
 
-			if (var6.lag < 0L) {
+			if (var6.field_78844_e < 0L) {
 				var9 = "(no connection)";
 			} else {
-				var9 = var6.lag + "ms";
+				var9 = var6.field_78844_e + "ms";
 			}
 		} else {
 			var7 = 1;

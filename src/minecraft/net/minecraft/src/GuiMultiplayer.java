@@ -25,7 +25,7 @@ public class GuiMultiplayer extends GuiScreen {
 	private boolean editClicked = false;
 	private boolean directClicked = false;
 	private String lagTooltip = null;
-	private ServerNBTStorage tempServer = null;
+	private ServerData tempServer = null;
 
 	public GuiMultiplayer(GuiScreen par1GuiScreen) {
 		this.parentScreen = par1GuiScreen;
@@ -48,7 +48,7 @@ public class GuiMultiplayer extends GuiScreen {
 			this.serverList.clear();
 
 			for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
-				this.serverList.add(ServerNBTStorage.createServerNBTStorage((NBTTagCompound)var2.tagAt(var3)));
+				this.serverList.add(ServerData.getServerDataFromNBTCompound((NBTTagCompound)var2.tagAt(var3)));
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
@@ -60,7 +60,7 @@ public class GuiMultiplayer extends GuiScreen {
 			NBTTagList var1 = new NBTTagList();
 
 			for (int var2 = 0; var2 < this.serverList.size(); ++var2) {
-				var1.appendTag(((ServerNBTStorage)this.serverList.get(var2)).getCompoundTag());
+				var1.appendTag(((ServerData)this.serverList.get(var2)).getNBTCompound());
 			}
 
 			NBTTagCompound var4 = new NBTTagCompound();
@@ -93,7 +93,7 @@ public class GuiMultiplayer extends GuiScreen {
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.enabled) {
 			if (par1GuiButton.id == 2) {
-				String var2 = ((ServerNBTStorage)this.serverList.get(this.selectedServer)).name;
+				String var2 = ((ServerData)this.serverList.get(this.selectedServer)).serverName;
 				if (var2 != null) {
 					this.deleteClicked = true;
 					StringTranslate var3 = StringTranslate.getInstance();
@@ -108,14 +108,14 @@ public class GuiMultiplayer extends GuiScreen {
 				this.joinServer(this.selectedServer);
 			} else if (par1GuiButton.id == 4) {
 				this.directClicked = true;
-				this.mc.displayGuiScreen(new GuiScreenServerList(this, this.tempServer = new ServerNBTStorage(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+				this.mc.displayGuiScreen(new GuiScreenServerList(this, this.tempServer = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
 			} else if (par1GuiButton.id == 3) {
 				this.addClicked = true;
-				this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.tempServer = new ServerNBTStorage(StatCollector.translateToLocal("selectServer.defaultName"), "")));
+				this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.tempServer = new ServerData(StatCollector.translateToLocal("selectServer.defaultName"), "")));
 			} else if (par1GuiButton.id == 7) {
 				this.editClicked = true;
-				ServerNBTStorage var9 = (ServerNBTStorage)this.serverList.get(this.selectedServer);
-				this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.tempServer = new ServerNBTStorage(var9.name, var9.host)));
+				ServerData var9 = (ServerData)this.serverList.get(this.selectedServer);
+				this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.tempServer = new ServerData(var9.serverName, var9.serverIP)));
 			} else if (par1GuiButton.id == 0) {
 				this.mc.displayGuiScreen(this.parentScreen);
 			} else if (par1GuiButton.id == 8) {
@@ -153,9 +153,9 @@ public class GuiMultiplayer extends GuiScreen {
 		} else if (this.editClicked) {
 			this.editClicked = false;
 			if (par1) {
-				ServerNBTStorage var3 = (ServerNBTStorage)this.serverList.get(this.selectedServer);
-				var3.name = this.tempServer.name;
-				var3.host = this.tempServer.host;
+				ServerData var3 = (ServerData)this.serverList.get(this.selectedServer);
+				var3.serverName = this.tempServer.serverName;
+				var3.serverIP = this.tempServer.serverIP;
 				this.saveServerList();
 			}
 
@@ -194,11 +194,11 @@ public class GuiMultiplayer extends GuiScreen {
 	}
 
 	private void joinServer(int par1) {
-		this.joinServer((ServerNBTStorage)this.serverList.get(par1));
+		this.joinServer((ServerData)this.serverList.get(par1));
 	}
 
-	private void joinServer(ServerNBTStorage par1ServerNBTStorage) {
-		String var2 = par1ServerNBTStorage.host;
+	private void joinServer(ServerData par1ServerNBTStorage) {
+		String var2 = par1ServerNBTStorage.serverIP;
 		String[] var3 = var2.split(":");
 		if (var2.startsWith("[")) {
 			int var4 = var2.indexOf("]");
@@ -221,8 +221,8 @@ public class GuiMultiplayer extends GuiScreen {
 		this.mc.displayGuiScreen(new GuiConnecting(this.mc, var3[0], var3.length > 1?this.parseIntWithDefault(var3[1], 25565):25565));
 	}
 
-	private void pollServer(ServerNBTStorage par1ServerNBTStorage) throws IOException {
-		String var2 = par1ServerNBTStorage.host;
+	private void pollServer(ServerData par1ServerNBTStorage) throws IOException {
+		String var2 = par1ServerNBTStorage.serverIP;
 		String[] var3 = var2.split(":");
 		if (var2.startsWith("[")) {
 			int var4 = var2.indexOf("]");
@@ -284,11 +284,11 @@ public class GuiMultiplayer extends GuiScreen {
 				;
 			}
 
-			par1ServerNBTStorage.motd = "\u00a77" + var9;
+			par1ServerNBTStorage.serverMOTD = "\u00a77" + var9;
 			if (var11 >= 0 && var12 > 0) {
-				par1ServerNBTStorage.playerCount = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
+				par1ServerNBTStorage.field_78846_c = "\u00a77" + var11 + "\u00a78/\u00a77" + var12;
 			} else {
-				par1ServerNBTStorage.playerCount = "\u00a78???";
+				par1ServerNBTStorage.field_78846_c = "\u00a78???";
 			}
 		} finally {
 			try {
@@ -367,7 +367,7 @@ public class GuiMultiplayer extends GuiScreen {
 		return threadsPending++;
 	}
 
-	static void pollServer(GuiMultiplayer par0GuiMultiplayer, ServerNBTStorage par1ServerNBTStorage) throws IOException {
+	static void pollServer(GuiMultiplayer par0GuiMultiplayer, ServerData par1ServerNBTStorage) throws IOException {
 		par0GuiMultiplayer.pollServer(par1ServerNBTStorage);
 	}
 

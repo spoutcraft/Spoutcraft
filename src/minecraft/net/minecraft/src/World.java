@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.Set;
 
 // Spout start
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.EntityText;
@@ -3294,7 +3296,7 @@ public abstract class World implements IBlockAccess {
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {
 			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);
-			if (ep != Minecraft.theMinecraft.field_71439_g || Minecraft.theMinecraft.gameSettings.thirdPersonView != 0) {
+			if (ep != Minecraft.theMinecraft.thePlayer || Minecraft.theMinecraft.gameSettings.thirdPersonView != 0) {
 				ep.doFancyStuff();
 			}
 		}

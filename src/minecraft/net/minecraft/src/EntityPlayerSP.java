@@ -317,7 +317,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		} else {
 			this.lastDamage = var2;
 			this.setEntityHealth(this.getHealth());
-			this.heartsLife = this.heartsHalvesLife;
+			this.hurtResistantTime = this.maxHurtResistantTime;
 			this.damageEntity(DamageSource.generic, var2);
 			this.hurtResistantTime = this.maxHurtResistantTime = 10;
 		}

@@ -166,7 +166,7 @@ public class NBTTagCompound extends NBTBase {
 	}
 
 	public int[] getIntArray(String par1Str) {
-		return !this.tagMap.containsKey(par1Str) ? new int[0] : ((NBTTagIntArray)this.tagMap.get(par1Str)).field_48181_a;
+		return !this.tagMap.containsKey(par1Str) ? new int[0] : ((NBTTagIntArray)this.tagMap.get(par1Str)).intArray;
 	}
 
 	public NBTTagCompound getCompoundTag(String par1Str) {

@@ -1064,7 +1064,7 @@ public class GuiScreen extends Gui
 	protected void buttonClicked(Button btn) {
 	}
 	// Spout End
-	public static void func_50050_a(String par0Str) {
+	public static void setClipboardString(String par0Str) {
 		try {
 			StringSelection var1 = new StringSelection(par0Str);
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(var1, (ClipboardOwner)null);
@@ -1073,11 +1073,11 @@ public class GuiScreen extends Gui
 		}
 	}
 
-	public static boolean func_50051_l() {
+	public static boolean isCtrlKeyDown() {
 		return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
 	}
 
-	public static boolean func_50049_m() {
+	public static boolean isShiftKeyDown() {
 		return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
 	}
 

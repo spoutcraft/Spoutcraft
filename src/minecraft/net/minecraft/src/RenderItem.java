@@ -161,7 +161,7 @@ public class RenderItem extends Render {
 						GL11.glColor4f(red * colorScale, green * colorScale, blue * colorScale, 1.0F);
 					}
 
-					this.renderItemBillboard(var15, itemsOnGround);
+					this.func_40267_a(var15, itemsOnGround);
 				}
 
 			} else {

@@ -184,12 +184,12 @@ public class GuiChat extends GuiScreen
 		
 		ChatClickData var4 = this.mc.ingameGUI.func_50012_a(Mouse.getX(), Mouse.getY());
 		if (var4 != null) {
-			URI var5 = var4.func_50089_b();
+			URI var5 = var4.getURI();
 			if (var5 != null) {
 				//Spout start
 				//Check if screenshot
 				if (var4.getMessage().startsWith("Saved screenshot as")) {
-					String fileName = var4.func_50088_a();
+					String fileName = var4.func_78309_f();
 					File screenshotsDir = new File(Minecraft.getMinecraftDir(), "screenshots");
 					File screenshot = new File(screenshotsDir, fileName);
 					try {
@@ -198,7 +198,7 @@ public class GuiChat extends GuiScreen
 						e.printStackTrace();
 					}
 				} else {
-					this.mc.displayGuiScreen(new GuiURLConfirm(this, var4.func_50088_a(), var5));
+					this.mc.displayGuiScreen(new GuiURLConfirm(this, var4.func_78309_f(), var5));
 				}
 				return;
 			}

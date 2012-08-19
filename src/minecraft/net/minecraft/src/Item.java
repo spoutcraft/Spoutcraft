@@ -42,7 +42,7 @@ public class Item {
 	public static Item shovelGold = (new ItemSpade(28, EnumToolMaterial.GOLD)).setIconCoord(4, 5).setItemName("shovelGold");
 	public static Item pickaxeGold = (new ItemPickaxe(29, EnumToolMaterial.GOLD)).setIconCoord(4, 6).setItemName("pickaxeGold");
 	public static Item axeGold = (new ItemAxe(30, EnumToolMaterial.GOLD)).setIconCoord(4, 7).setItemName("hatchetGold");
-	public static Item silk = (new ItemReed(31, Block.field_72062_bU)).setIconCoord(8, 0).setItemName("string").setTabToDisplayOn(CreativeTabs.tabMaterials);
+	public static Item silk = (new ItemReed(31, Block.tripWire)).setIconCoord(8, 0).setItemName("string").setTabToDisplayOn(CreativeTabs.tabMaterials);
 	public static Item feather = (new Item(32)).setIconCoord(8, 1).setItemName("feather").setTabToDisplayOn(CreativeTabs.tabMaterials);
 	public static Item gunpowder = (new Item(33)).setIconCoord(8, 2).setItemName("sulphur").setPotionEffect(PotionHelper.gunpowderEffect).setTabToDisplayOn(CreativeTabs.tabMaterials);
 	public static Item hoeWood = (new ItemHoe(34, EnumToolMaterial.WOOD)).setIconCoord(0, 8).setItemName("hoeWood");
@@ -319,6 +319,10 @@ public class Item {
 
 	public boolean hasContainerItem() {
 		return this.containerItem != null;
+	}
+	
+	public String getStatName() {
+		return StatCollector.translateToLocal(this.getItemName() + ".name");
 	}
 
 	public String func_77653_i(ItemStack par1ItemStack) {

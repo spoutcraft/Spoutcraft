@@ -76,7 +76,7 @@ public class ChatClickData {
 	
 	//Spout start
 	public String getMessage() {
-		return line.func_74538_a();
+		return line.getChatLineString();
 	}
 	//Spout end
 	

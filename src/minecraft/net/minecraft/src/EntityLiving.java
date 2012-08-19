@@ -926,7 +926,7 @@ public abstract class EntityLiving extends Entity {
 			this.motionZ *= (double)var3;
 		}
 
-		this.field_70722_aY = this.legYaw;
+		this.prevLegYaw = this.legYaw;
 		var9 = this.posX - this.prevPosX;
 		double var12 = this.posZ - this.prevPosZ;
 		float var11 = MathHelper.sqrt_double(var9 * var9 + var12 * var12) * 4.0F;

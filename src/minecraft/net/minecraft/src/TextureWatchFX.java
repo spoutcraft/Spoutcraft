@@ -48,11 +48,11 @@ public class TextureWatchFX extends TextureFX {
 	public void onTick() {
 		double var1 = 0.0D;
 
-		if (this.mc.field_71441_e != null && this.mc.field_71439_g != null) {
-			float var3 = this.mc.field_71441_e.getCelestialAngle(1.0F);
+		if (this.mc.theWorld != null && this.mc.thePlayer != null) {
+			float var3 = this.mc.theWorld.getCelestialAngle(1.0F);
 			var1 = (double)(-var3 * (float)Math.PI * 2.0F);
 
-			if (!this.mc.field_71441_e.worldProvider.isSurfaceWorld()) {
+			if (!this.mc.theWorld.provider.isSurfaceWorld()) {
 				var1 = Math.random() * Math.PI * 2.0D;
 			}
 		}

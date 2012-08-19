@@ -42,7 +42,7 @@ public class ContainerEnchantment extends Container {
 	}
 
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return tableInventory;
 	}
 	//Spout end
@@ -214,10 +214,6 @@ public class ContainerEnchantment extends Container {
 					--var4.stackSize;
 				}
 			}
-
-			//if (!this.mergeItemStack(var4, 1, 37, true)) { //What is this? Where did it come from?
-			//	return null;
-			//}
 
 			if (var4.stackSize == 0) {
 				var3.putStack((ItemStack)null);

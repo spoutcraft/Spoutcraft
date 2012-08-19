@@ -442,7 +442,7 @@ public class RenderGlobal implements IWorldAccess {
 			while (var8.hasNext()) {
 				TileEntity var9 = (TileEntity)var8.next();
 				// Spout start
-				this.worldObj.checkEntityTile(tileentity);
+				this.theWorld.checkEntityTile(var9);
 				if (!var9.isInvalid()) {
 					TileEntityRenderer.instance.renderTileEntity(var9, par3);
 				}
@@ -808,7 +808,7 @@ public class RenderGlobal implements IWorldAccess {
 	 * Renders the sky with the partial tick time. Args: partialTickTime
 	 */
 	public void renderSky(float par1) {
-		if (this.mc.field_71441_e.provider.worldType == 1) {
+		if (this.mc.theWorld.provider.worldType == 1) {
 			// Spout start
 			Shaders.glDisableWrapper(GL11.GL_FOG);
 			Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
@@ -858,7 +858,7 @@ public class RenderGlobal implements IWorldAccess {
 			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
 			Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 			// Spout end
-		} else if (this.mc.field_71441_e.provider.isSurfaceWorld()) {
+		} else if (this.mc.theWorld.provider.isSurfaceWorld()) {
 			// Spout Start
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			Vec3 var2 = this.theWorld.getSkyColor(this.mc.renderViewEntity, par1);
@@ -872,7 +872,6 @@ public class RenderGlobal implements IWorldAccess {
 				var5 = skyColor.getBlueF();
 			}
 			// Spout End
-			float var7;
 			float var8;
 
 			if (this.mc.gameSettings.anaglyph) {
@@ -1018,7 +1017,7 @@ public class RenderGlobal implements IWorldAccess {
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 			// Spout end
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
-			double var25 = this.mc.field_71439_g.getPosition(par1).yCoord - this.theWorld.getHorizon();
+			double var25 = this.mc.thePlayer.getPosition(par1).yCoord - this.theWorld.getHorizon();
 
 			if (var25 < 0.0D) {
 				GL11.glPushMatrix();
@@ -1078,7 +1077,7 @@ public class RenderGlobal implements IWorldAccess {
 			return;
 		}
 		// Spout End
-		if (this.mc.field_71441_e.provider.isSurfaceWorld()) {
+		if (this.mc.theWorld.provider.isSurfaceWorld()) {
 			//Spout start
 			if (Colorizer.drawFancyClouds(this.mc.gameSettings.fancyGraphics)) {
 				this.renderCloudsFancy(par1);
@@ -1449,12 +1448,12 @@ public class RenderGlobal implements IWorldAccess {
 		Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 		// Spout end
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)Minecraft.func_71386_F() / 100.0F) * 0.2F + 0.4F) * 0.5F);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)Minecraft.getSystemTime() / 100.0F) * 0.2F + 0.4F) * 0.5F);
 
 		if (par3 != 0 && par4ItemStack != null) {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			float var7 = MathHelper.sin((float)Minecraft.func_71386_F() / 100.0F) * 0.2F + 0.8F;
-			GL11.glColor4f(var7, var7, var7, MathHelper.sin((float)Minecraft.func_71386_F() / 200.0F) * 0.2F + 0.5F);
+			float var7 = MathHelper.sin((float)Minecraft.getSystemTime() / 100.0F) * 0.2F + 0.8F;
+			GL11.glColor4f(var7, var7, var7, MathHelper.sin((float)Minecraft.getSystemTime() / 200.0F) * 0.2F + 0.5F);
 			int var8 = this.renderEngine.getTexture("/terrain.png");
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var8);
 		}
@@ -1677,7 +1676,7 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
 		//Spout Start
-		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
 		//Spout End
 		this.func_72726_b(par1Str, par2, par4, par6, par8, par10, par12);
 	}
@@ -1844,7 +1843,7 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6) {
 		//Spout Start
-		if (mc == null || worldObj == null || mc.renderViewEntity == null) return;
+		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
 		//Spout End
 		Random var7 = this.theWorld.rand;
 		double var8;

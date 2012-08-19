@@ -76,7 +76,7 @@ public class Potion {
 	private boolean usable;
 
 	/** Is the color of the liquid for this potion. */
-	public final int liquidColor; //Spout private->public
+	public int liquidColor; //Spout private->public, removed final
 	public int origColor; //Spout
 
 	protected Potion(int par1, boolean par2, int par3) {

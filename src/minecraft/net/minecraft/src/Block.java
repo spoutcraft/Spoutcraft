@@ -686,6 +686,10 @@ public class Block {
 	protected int damageDropped(int par1) {
 		return 0;
 	}
+	
+	public float getHardness() { //Spout removed random params
+ 		return this.blockHardness;
+ 	}
 
 	/**
 	 * Returns how much this block can resist explosions from the passed in entity.

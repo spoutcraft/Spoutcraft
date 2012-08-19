@@ -68,7 +68,6 @@ public class EntityWolf extends EntityTameable {
 	 */
 	protected void updateAITick() {
 		this.dataWatcher.updateObject(18, Integer.valueOf(this.getHealth()));
-		//this.dataWatcher.addObject(19, new Byte((byte)0)); //Where
 	}
 
 	public int getMaxHealth() {

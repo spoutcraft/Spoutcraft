@@ -27,7 +27,7 @@ public class ContainerFurnace extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return furnace;
 	}
 	//Spout end

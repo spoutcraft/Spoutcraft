@@ -710,67 +710,6 @@ public class FontRenderer {
 		return var1;
 	}
 
-	public static String func_52014_d(String par0Str) {
-		return field_52015_r.matcher(par0Str).replaceAll("");
-	}
-
-	public void initialize(GameSettings var1, String var2, RenderEngine var3) {
-		boolean var4 = false;
-		this.charWidth = new int[256];
-		this.fontTextureName = 0;
-		this.FONT_HEIGHT = 8;
-		this.fontRandom = new Random();
-		this.glyphWidth = new byte[65536];
-		this.glyphTextureName = new int[256];
-		this.colorCode = new int[32];
-		this.renderEngine = var3;
-		this.unicodeFlag = var4;
-		this.boldOffset = var4?0.5F:1F;
-
-		BufferedImage var5;
-		try {
-			var5 = TextureUtils.getResourceAsBufferedImage(var2);
-			InputStream var6 = RenderEngine.class.getResourceAsStream("/font/glyph_sizes.bin");
-			var6.read(this.glyphWidth);
-		} catch (IOException var17) {
-			throw new RuntimeException(var17);
-		}
-
-		int var18 = var5.getWidth();
-		int var7 = var5.getHeight();
-		int[] var8 = new int[var18 * var7];
-		var5.getRGB(0, 0, var18, var7, var8, 0, var18);
-		this.charWidthf = FontUtils.computeCharWidths(var2, var5, var8, this.charWidth);
-		this.fontTextureName = var3.allocateAndSetupTexture(var5);
-
-		for (int var9 = 0; var9 < 32; ++var9) {
-			int var10 = (var9 >> 3 & 1) * 85;
-			int var11 = (var9 >> 2 & 1) * 170 + var10;
-			int var12 = (var9 >> 1 & 1) * 170 + var10;
-			int var13 = (var9 >> 0 & 1) * 170 + var10;
-			if (var9 == 6) {
-				var11 += 85;
-			}
-
-			if (var1.anaglyph) {
-				int var14 = (var11 * 30 + var12 * 59 + var13 * 11) / 100;
-				int var15 = (var11 * 30 + var12 * 70) / 100;
-				int var16 = (var11 * 30 + var13 * 70) / 100;
-				var11 = var14;
-				var12 = var15;
-				var13 = var16;
-			}
-
-			if (var9 >= 16) {
-				var11 /= 4;
-				var12 /= 4;
-				var13 /= 4;
-			}
-
-			this.colorCode[var9] = (var11 & 255) << 16 | (var12 & 255) << 8 | var13 & 255;
-		}
-	}
-
 	//begin Spout AlphaText /** Meow, uses \n to split lines. */
 	public String wrapStringToWidth(String par1str, int width2) {
 		float maxWidth = width2;
@@ -911,6 +850,26 @@ public class FontRenderer {
 			this.colorCode[var9] = (var11 & 255) << 16 | (var12 & 255) << 8 | var13 & 255;
 		}
 	}
+	
+	public boolean getBidiFlag() {
+ 		return this.bidiFlag;
+ 	}
 	// Spout HD
+	
+	String wrapFormattedStringToWidth(String par1Str, int par2) {
+		int var3 = this.sizeStringToWidth(par1Str, par2);
+		
+		if (par1Str.length() <= var3) {
+			return par1Str;
+		} else {
+			String var4 = par1Str.substring(0, var3);
+			String var5 = getFormatFromString(var4) + par1Str.substring(var3 + (par1Str.charAt(var3) == 32 ? 1 : 0));
+			return var4 + "\n" + this.wrapFormattedStringToWidth(var5, par2);
+		}
+	}
+	
+	public List listFormattedStringToWidth(String par1Str, int par2) {
+		return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
+	}
 }
 

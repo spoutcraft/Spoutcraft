@@ -27,27 +27,16 @@ public class GuiGameOver extends GuiScreen {
 	protected void keyTyped(char par1, int par2) {}
 
 	protected void actionPerformed(GuiButton par1GuiButton) {
-		switch(par1GuiButton.id) {
-		case 1:
-			if (this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
-				String var2 = this.mc.theWorld.getSaveHandler().getSaveDirectoryName();
-				this.mc.exitToMainMenu("Deleting world");
-				ISaveFormat var3 = this.mc.getSaveLoader();
-				var3.flushCache();
-				var3.deleteWorldDirectory(var2);
-				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
-			} else {
+		switch (par1GuiButton.id) {
+			case 1:
 				this.mc.thePlayer.respawnPlayer();
 				this.mc.displayGuiScreen((GuiScreen)null);
-			}
-			break;
-		case 2:
-			if (this.mc.isMultiplayerWorld()) {
+				break;
+	
+			case 2:
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
-			}
-
-			this.mc.changeWorld1((World)null);
-			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
+				this.mc.loadWorld((WorldClient)null);
+				this.mc.displayGuiScreen(new GuiMainMenu());
 		}
 	}
 

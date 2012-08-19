@@ -27,7 +27,7 @@ public class GuiIngameMenu extends GuiScreen
 		byte byte0 = -16;
 		controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + byte0, StatCollector.translateToLocal("menu.returnToMenu")));
 
-		if (mc.isMultiplayerWorld())
+		if (mc.isIntegratedServerRunning())
 		{
 			((GuiButton)controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
 		}
@@ -48,15 +48,15 @@ public class GuiIngameMenu extends GuiScreen
 			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
 			break;
 		case 1:
-			boolean mp = this.mc.isMultiplayerWorld(); //Spout
+			boolean mp = this.mc.isIntegratedServerRunning(); //Spout
 			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
 
-			if (mc.isMultiplayerWorld())
+			if (mc.isIntegratedServerRunning())
 			{
 				mc.theWorld.sendQuittingDisconnectingPacket();
 			}
 
-			mc.changeWorld1(null);
+			mc.loadWorld(null);
 			//Spout Start
 			if (mp) {
 				this.mc.displayGuiScreen(new GuiFavorites(new org.spoutcraft.client.gui.mainmenu.MainMenu())); //Spout
@@ -95,15 +95,6 @@ public class GuiIngameMenu extends GuiScreen
 	public void drawScreen(int par1, int par2, float par3)
 	{
 		drawDefaultBackground();
-		boolean flag = !mc.theWorld.quickSaveWorld(updateCounter2++);
-
-		if (flag || updateCounter < 20)
-		{
-			float f = ((float)(updateCounter % 10) + par3) / 10F;
-			f = MathHelper.sin(f * (float)Math.PI * 2.0F) * 0.2F + 0.8F;
-			int i = (int)(255F * f);
-			drawString(fontRenderer, "Saving level..", 8, height - 16, i << 16 | i << 8 | i);
-		}
 
 		drawCenteredString(fontRenderer, "Game menu", width / 2, 40, 0xffffff);
 		super.drawScreen(par1, par2, par3);

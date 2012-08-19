@@ -807,7 +807,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 				if (var7 != null && par1Entity instanceof EntityLiving) {
 					var7.hitEntity((EntityLiving)par1Entity, this);
 					if (var7.stackSize <= 0) {
-						var7.onItemDestroyedByUse(this);
 						this.destroyCurrentEquippedItem();
 					}
 				}
@@ -834,8 +833,6 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public void onEnchantmentCritical(Entity par1Entity) {}
 
 	public void respawnPlayer() {}
-
-	public void func_6420_o();
 
 	public void onItemStackChanged(ItemStack par1ItemStack) {}
 
@@ -1298,7 +1295,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		if (Minecraft.theMinecraft.isGamePaused) {
 			return;
 		}
-		if (Minecraft.theMinecraft.field_71439_g.getDistanceSqToEntity(this) > 16) {
+		if (Minecraft.theMinecraft.thePlayer.getDistanceSqToEntity(this) > 16) {
 			return;
 		}
 

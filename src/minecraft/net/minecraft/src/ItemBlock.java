@@ -140,7 +140,7 @@ public class ItemBlock extends Item {
 //Spout start
 	//fix metadata for double slabs
 	public int getMetadata(int damage) {
-		if (blockID == Block.stairDouble.blockID){
+		if (blockID == Block.stoneDoubleSlab.blockID){
 			return damage;
 		}
 		return super.getMetadata(damage);

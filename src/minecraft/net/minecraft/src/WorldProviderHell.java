@@ -21,7 +21,7 @@ public class WorldProviderHell extends WorldProvider {
 		if (fogColor != null) {
 			return Vec3.getVec3Pool().getVecFromPool(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3.getVec3Pool().func_72345_ar((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+			return Vec3.getVec3Pool().getVecFromPool((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
 		}
 		// Spout End
 	}

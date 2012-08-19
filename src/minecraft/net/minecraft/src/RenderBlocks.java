@@ -867,10 +867,10 @@ public class RenderBlocks {
 			}
 		}
 
-		Vec3D var30 = null;
-		Vec3D var26 = null;
-		Vec3D var27 = null;
-		Vec3D var28 = null;
+		Vec3 var30 = null;
+		Vec3 var26 = null;
+		Vec3 var27 = null;
+		Vec3 var28 = null;
 
 		for (int var29 = 0; var29 < 6; ++var29) {
 			if (var29 == 0) {
@@ -5597,13 +5597,13 @@ public class RenderBlocks {
 	}
 	
 	public static float adjustAmbientOcclusion(float lightValue, float lightPosition) {
-		if(Minecraft.theMinecraft.theWorld.worldProvider.lightBrightnessTable == null) {
+		if(Minecraft.theMinecraft.theWorld.provider.lightBrightnessTable == null) {
 			return lightValue;
 		}
-		if(lightValue > Minecraft.theMinecraft.theWorld.worldProvider.lightBrightnessTable[0]) {
+		if(lightValue > Minecraft.theMinecraft.theWorld.provider.lightBrightnessTable[0]) {
 			return lightValue;
 		}
-		if (lightPosition <= Minecraft.theMinecraft.theWorld.worldProvider.lightBrightnessTable[1]) {
+		if (lightPosition <= Minecraft.theMinecraft.theWorld.provider.lightBrightnessTable[1]) {
 			return lightValue;
 		}
 		return lightValue + (lightPosition - lightValue) * (1.0F - org.spoutcraft.client.config.ConfigReader.brightnessSlider);

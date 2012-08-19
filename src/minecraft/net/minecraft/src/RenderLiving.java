@@ -288,7 +288,7 @@ public class RenderLiving extends Render {
 			if (title != null && !title.equals("[hide]")) {
 				String lines[] = title.split("\\n");
 				for (int i = 0; i < lines.length; i++){
-					renderLivingLabel(var1, lines[i], par2, par4 + (0.275D * (lines.length - i - 1)), par6, 64);
+					renderLivingLabel(par1EntityLiving, lines[i], par2, par4 + (0.275D * (lines.length - i - 1)), par6, 64);
 				}
 			}
 		}

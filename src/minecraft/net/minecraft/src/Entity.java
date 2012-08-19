@@ -1159,7 +1159,7 @@ public abstract class Entity {
 							return;
 						}
 
-						if (this.worldObj.func_72797_t(var13, (int)this.posY - 1, var14) || this.worldObj.getBlockMaterial(var13, (int)this.posY - 1, var14) == Material.water) {
+						if (this.worldObj.doesBlockHaveSolidTopSurface(var13, (int)this.posY - 1, var14) || this.worldObj.getBlockMaterial(var13, (int)this.posY - 1, var14) == Material.water) {
 							var3 = this.posX + var9;
 							var5 = this.posY + 1.0D;
 							var7 = this.posZ + var11;

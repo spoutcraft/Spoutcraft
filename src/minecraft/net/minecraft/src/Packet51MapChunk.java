@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.SpoutClient; // Spout
+import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

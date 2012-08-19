@@ -23,7 +23,7 @@ public abstract class Container {
 	private Set playerList = new HashSet();
 	
 	//Spout start
-	public abstract IInventory getInventory();
+	public abstract IInventory getIInventory();
 	
 	public boolean isSortableInventory() {
 		return false;

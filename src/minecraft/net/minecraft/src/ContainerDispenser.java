@@ -26,7 +26,7 @@ public class ContainerDispenser extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return tileEntityDispenser;
 	}
 	//Spout end

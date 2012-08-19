@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
@@ -84,7 +85,7 @@ public abstract class GuiContainer extends GuiScreen
 			replaceBlocks.setGeometry(10, 155, 75, 20);
 			replaceBlocks.setTooltip("Replaces used up blocks with spares from your inventory");
 			
-			IInventory inv = inventorySlots.getInventory();
+			IInventory inv = inventorySlots.getIInventory();
 			if (inv != null && inventorySlots.isSortableInventory()) {
 				getScreen().attachWidgets(spoutcraft, orderByAlphabet, orderById, replaceTools, replaceBlocks);
 				if (!(inv instanceof InventoryPlayer)) {
@@ -110,7 +111,7 @@ public abstract class GuiContainer extends GuiScreen
 	public void buttonClicked(Button btn) {
 		if (btn == orderByAlphabet || btn == orderById) {
 			try {
-				IInventory inv = inventorySlots.getInventory();
+				IInventory inv = inventorySlots.getIInventory();
 				if (inv != null) {
 					if (inv instanceof InventoryPlayer) {
 						compactInventory(inv, true);
@@ -403,7 +404,7 @@ public abstract class GuiContainer extends GuiScreen
 					String s = (String)list.get(l4);
 					if(l4 == 0)
 					{
-						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().nameColor)).append(s).toString();
+						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s).toString();
 					} else
 					{
 						s = (new StringBuilder()).append("\2477").append(s).toString();
@@ -431,6 +432,100 @@ public abstract class GuiContainer extends GuiScreen
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
+	protected void func_74184_a(ItemStack par1ItemStack, int par2, int par3) {
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		List var4 = par1ItemStack.getItemNameandInformation();
+
+		if (!var4.isEmpty()) {
+			int var5 = 0;
+			Iterator var6 = var4.iterator();
+
+			while (var6.hasNext()) {
+				String var7 = (String)var6.next();
+				int var8 = this.fontRenderer.getStringWidth(var7);
+
+				if (var8 > var5) {
+					var5 = var8;
+				}
+			}
+
+			int var15 = par2 + 12;
+			int var16 = par3 - 12;
+			int var9 = 8;
+
+			if (var4.size() > 1) {
+				var9 += 2 + (var4.size() - 1) * 10;
+			}
+
+			this.zLevel = 300.0F;
+			itemRenderer.zLevel = 300.0F;
+			int var10 = -267386864;
+			this.drawGradientRect(var15 - 3, var16 - 4, var15 + var5 + 3, var16 - 3, var10, var10);
+			this.drawGradientRect(var15 - 3, var16 + var9 + 3, var15 + var5 + 3, var16 + var9 + 4, var10, var10);
+			this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 + var9 + 3, var10, var10);
+			this.drawGradientRect(var15 - 4, var16 - 3, var15 - 3, var16 + var9 + 3, var10, var10);
+			this.drawGradientRect(var15 + var5 + 3, var16 - 3, var15 + var5 + 4, var16 + var9 + 3, var10, var10);
+			int var11 = 1347420415;
+			int var12 = (var11 & 16711422) >> 1 | var11 & -16777216;
+			this.drawGradientRect(var15 - 3, var16 - 3 + 1, var15 - 3 + 1, var16 + var9 + 3 - 1, var11, var12);
+			this.drawGradientRect(var15 + var5 + 2, var16 - 3 + 1, var15 + var5 + 3, var16 + var9 + 3 - 1, var11, var12);
+			this.drawGradientRect(var15 - 3, var16 - 3, var15 + var5 + 3, var16 - 3 + 1, var11, var11);
+			this.drawGradientRect(var15 - 3, var16 + var9 + 2, var15 + var5 + 3, var16 + var9 + 3, var12, var12);
+
+			for (int var13 = 0; var13 < var4.size(); ++var13) {
+				String var14 = (String)var4.get(var13);
+
+				if (var13 == 0) {
+					var14 = "\u00a7" + Integer.toHexString(par1ItemStack.getRarity().rarityColor) + var14;
+				} else {
+					var14 = "\u00a77" + var14;
+				}
+
+				this.fontRenderer.drawStringWithShadow(var14, var15, var16, -1);
+
+				if (var13 == 0) {
+					var16 += 2;
+				}
+
+				var16 += 10;
+			}
+
+			this.zLevel = 0.0F;
+			itemRenderer.zLevel = 0.0F;
+		}
+	}
+
+	protected void func_74190_a(String par1Str, int par2, int par3) {
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		int var4 = this.fontRenderer.getStringWidth(par1Str);
+		int var5 = par2 + 12;
+		int var6 = par3 - 12;
+		byte var8 = 8;
+		this.zLevel = 300.0F;
+		itemRenderer.zLevel = 300.0F;
+		int var9 = -267386864;
+		this.drawGradientRect(var5 - 3, var6 - 4, var5 + var4 + 3, var6 - 3, var9, var9);
+		this.drawGradientRect(var5 - 3, var6 + var8 + 3, var5 + var4 + 3, var6 + var8 + 4, var9, var9);
+		this.drawGradientRect(var5 - 3, var6 - 3, var5 + var4 + 3, var6 + var8 + 3, var9, var9);
+		this.drawGradientRect(var5 - 4, var6 - 3, var5 - 3, var6 + var8 + 3, var9, var9);
+		this.drawGradientRect(var5 + var4 + 3, var6 - 3, var5 + var4 + 4, var6 + var8 + 3, var9, var9);
+		int var10 = 1347420415;
+		int var11 = (var10 & 16711422) >> 1 | var10 & -16777216;
+		this.drawGradientRect(var5 - 3, var6 - 3 + 1, var5 - 3 + 1, var6 + var8 + 3 - 1, var10, var11);
+		this.drawGradientRect(var5 + var4 + 2, var6 - 3 + 1, var5 + var4 + 3, var6 + var8 + 3 - 1, var10, var11);
+		this.drawGradientRect(var5 - 3, var6 - 3, var5 + var4 + 3, var6 - 3 + 1, var10, var10);
+		this.drawGradientRect(var5 - 3, var6 + var8 + 2, var5 + var4 + 3, var6 + var8 + 3, var11, var11);
+		this.fontRenderer.drawStringWithShadow(par1Str, var5, var6, -1);
+		this.zLevel = 0.0F;
+		itemRenderer.zLevel = 0.0F;
+	}
+	
 	/**
 	 * Draw the foreground layer for the GuiContainer (everythin in front of the items)
 	 */
@@ -579,11 +674,15 @@ public abstract class GuiContainer extends GuiScreen
 	 */
 	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3)
 	{
-		int i = guiLeft;
-		int j = guiTop;
-		par2 -= i;
-		par3 -= j;
-		return par2 >= par1Slot.xDisplayPosition - 1 && par2 < par1Slot.xDisplayPosition + 16 + 1 && par3 >= par1Slot.yDisplayPosition - 1 && par3 < par1Slot.yDisplayPosition + 16 + 1;
+		return this.func_74188_c(par1Slot.xDisplayPosition, par1Slot.yDisplayPosition, 16, 16, par2, par3);
+	}
+	
+	protected boolean func_74188_c(int par1, int par2, int par3, int par4, int par5, int par6) {
+		int var7 = this.guiLeft;
+		int var8 = this.guiTop;
+		par5 -= var7;
+		par6 -= var8;
+		return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
 	}
 
 	protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
@@ -618,7 +717,6 @@ public abstract class GuiContainer extends GuiScreen
 		else
 		{
 			inventorySlots.onCraftGuiClosed(mc.thePlayer);
-			mc.playerController.func_20086_a(inventorySlots.windowId, mc.thePlayer);
 			return;
 		}
 	}

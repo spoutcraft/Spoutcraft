@@ -40,7 +40,7 @@ public class TexturePackList {
 		this.updateAvaliableTexturePacks();
 	}
 
-	private void func_77307_h() {
+	public void func_77307_h() { // Spout private -> public
 		if (!this.texturePackDir.isDirectory()) {
 			this.texturePackDir.delete();
 			this.texturePackDir.mkdirs();
@@ -204,11 +204,7 @@ public class TexturePackList {
 		return par0TexturePackList.mc;
 	}
 	// Spout HD start
-	public TexturePackImplementation getDefaultTexturePack() {
-		return (TexturePackImplementation)defaultTexturePack;
-	}
-
-	public TexturePackImplementation getSelectedTexturePack() {
+	public TexturePackImplementation getSelectedTexturePackImplementation() {
 		return (TexturePackImplementation)this.selectedTexturePack;
 	}
 

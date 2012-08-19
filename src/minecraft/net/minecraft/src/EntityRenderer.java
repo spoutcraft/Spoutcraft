@@ -1170,7 +1170,7 @@ public class EntityRenderer {
 		GL11.glClear(256);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, var1.getScaledWidth_double(), var1.func_78324_d(), 0.0D, 1000.0D, 3000.0D);
+		GL11.glOrtho(0.0D, var1.getScaledWidth_double(), var1.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
@@ -1419,7 +1419,7 @@ public class EntityRenderer {
 						// Spout end
 					}
 
-					if (this.mc.theWorld.provider.func_76568_b((int)var3.posX, (int)var3.posZ)) {
+					if (this.mc.theWorld.provider.doesXZShowFog((int)var3.posX, (int)var3.posZ)) {
 						GL11.glFogf(GL11.GL_FOG_START, var6 * 0.05F);
 						GL11.glFogf(GL11.GL_FOG_END, Math.min(var6, 192.0F) * 0.5F);
 					}

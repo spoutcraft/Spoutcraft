@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader; //Spout
 

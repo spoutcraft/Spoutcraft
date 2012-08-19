@@ -27,7 +27,7 @@ public class ContainerBrewingStand extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
+	public IInventory getIInventory() {
 		return tileBrewingStand;
 	}
 	//Spout end

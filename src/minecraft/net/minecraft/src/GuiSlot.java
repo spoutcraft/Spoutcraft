@@ -55,16 +55,15 @@ public abstract class GuiSlot
 
 	/** the time when this button was last clicked. */
 	private long lastClicked;
-	private boolean field_25123_p;
-	private boolean field_27262_q;
-	private int field_27261_r;
+	private boolean field_77244_r = true;
+	private boolean field_77243_s;
+	private int field_77242_t;
 
 	public GuiSlot(Minecraft par1Minecraft, int par2, int par3, int par4, int par5, int par6)
 	{
 		initialClickY = -2F;
 		selectedElement = -1;
 		lastClicked = 0L;
-		field_25123_p = true;
 		mc = par1Minecraft;
 		width = par2;
 		height = par3;
@@ -74,19 +73,19 @@ public abstract class GuiSlot
 		right = par2;
 	}
 
-	public void func_27258_a(boolean par1)
+	public void func_77216_a(boolean par1)
 	{
-		field_25123_p = par1;
+		field_77244_r = par1;
 	}
 
-	protected void func_27259_a(boolean par1, int par2)
+	protected void func_77223_a(boolean par1, int par2)
 	{
-		field_27262_q = par1;
-		field_27261_r = par2;
+		field_77243_s = par1;
+		field_77242_t = par2;
 
 		if (!par1)
 		{
-			field_27261_r = 0;
+			field_77242_t = 0;
 		}
 	}
 
@@ -110,30 +109,30 @@ public abstract class GuiSlot
 	  */
 	 protected int getContentHeight()
 	 {
-		 return getSize() * slotHeight + field_27261_r;
+		 return getSize() * slotHeight + field_77242_t;
 	 }
 
 	 protected abstract void drawBackground();
 
 	 protected abstract void drawSlot(int i, int j, int k, int l, Tessellator tessellator);
 
-	 protected void func_27260_a(int i, int j, Tessellator tessellator)
+	 protected void func_77222_a(int i, int j, Tessellator tessellator)
 	 {
 	 }
 
-	 protected void func_27255_a(int i, int j)
+	 protected void func_77224_a(int i, int j)
 	 {
 	 }
 
-	 protected void func_27257_b(int i, int j)
+	 protected void func_77215_b(int i, int j)
 	 {
 	 }
 
-	 public int func_27256_c(int par1, int par2)
+	 public int func_77210_c(int par1, int par2)
 	 {
 		 int i = width / 2 - 110;
 		 int j = width / 2 + 110;
-		 int k = ((par2 - top - field_27261_r) + (int)amountScrolled) - 4;
+		 int k = ((par2 - top - field_77242_t) + (int)amountScrolled) - 4;
 		 int l = k / slotHeight;
 
 		 if (par1 >= i && par1 <= j && l >= 0 && k >= 0 && l < getSize())
@@ -221,7 +220,7 @@ public abstract class GuiSlot
 				  {
 					  int i1 = width / 2 - 110;
 					  int j1 = width / 2 + 110;
-					  int l1 = ((par2 - top - field_27261_r) + (int)amountScrolled) - 4;
+					  int l1 = ((par2 - top - field_77242_t) + (int)amountScrolled) - 4;
 					  int j2 = l1 / slotHeight;
 
 					  if (par1 >= i1 && par1 <= j1 && j2 >= 0 && l1 >= 0 && j2 < i)
@@ -233,7 +232,7 @@ public abstract class GuiSlot
 					  }
 					  else if (par1 >= i1 && par1 <= j1 && l1 < 0)
 					  {
-						  func_27255_a(par1 - i1, ((par2 - top) + (int)amountScrolled) - 4);
+						  func_77224_a(par1 - i1, ((par2 - top) + (int)amountScrolled) - 4);
 						  flag = false;
 					  }
 
@@ -333,14 +332,14 @@ public abstract class GuiSlot
 		  int k1 = width / 2 - 92 - 16;
 		  int i2 = (top + 4) - (int)amountScrolled;
 
-		  if (field_27262_q)
+		  if (field_77243_s)
 		  {
-			  func_27260_a(k1, i2, tessellator);
+			  func_77222_a(k1, i2, tessellator);
 		  }
 
 		  for (int k2 = 0; k2 < i; k2++)
 		  {
-			  int i3 = i2 + k2 * slotHeight + field_27261_r;
+			  int i3 = i2 + k2 * slotHeight + field_77242_t;
 			  int l3 = slotHeight - 4;
 
 			  if (i3 > bottom || i3 + l3 < top)
@@ -348,7 +347,7 @@ public abstract class GuiSlot
 				  continue;
 			  }
 
-			  if (field_25123_p && isSelected(k2))
+			  if (field_77244_r && isSelected(k2))
 			  {
 				  int j4 = width / 2 - 110;
 				  int l4 = width / 2 + 110;
@@ -443,7 +442,7 @@ public abstract class GuiSlot
 			  tessellator.draw();
 		  }
 
-		  func_27257_b(par1, par2);
+		  func_77215_b(par1, par2);
 		  GL11.glEnable(GL11.GL_TEXTURE_2D);
 		  GL11.glShadeModel(GL11.GL_FLAT);
 		  GL11.glEnable(GL11.GL_ALPHA_TEST);

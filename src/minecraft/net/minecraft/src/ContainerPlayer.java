@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+
 public class ContainerPlayer extends Container {
 
 	/** The crafting matrix inventory. */
@@ -46,8 +48,8 @@ public class ContainerPlayer extends Container {
 	}
 	
 	//Spout start
-	public IInventory getInventory() {
-		return Minecraft.theMinecraft.field_71439_g.inventory;
+	public IInventory getIInventory() {
+		return Minecraft.theMinecraft.thePlayer.inventory;
 	}
 	
 	@Override

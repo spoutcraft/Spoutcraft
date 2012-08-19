@@ -137,8 +137,8 @@ public class GuiConnecting extends GuiScreen
 	{
 		cancelled = false;
 		System.out.println((new StringBuilder()).append("Connecting to ").append(par2Str).append(", ").append(par3).toString());
-		par1Minecraft.changeWorld1(null);
-		(new ThreadConnectToServer(this, par1Minecraft, par2Str, par3)).start();
+		par1Minecraft.loadWorld(null);
+		(new ThreadConnectToServer(this, par2Str, par3)).start();
 	}
 
 	/**
@@ -203,19 +203,19 @@ public class GuiConnecting extends GuiScreen
 		else
 		{
 			drawCenteredString(fontRenderer, stringtranslate.translateKey("connect.authorizing"), width / 2, height / 2 - 50, 0xffffff);
-			drawCenteredString(fontRenderer, clientHandler.field_1209_a, width / 2, height / 2 - 10, 0xffffff);
+			drawCenteredString(fontRenderer, clientHandler.field_72560_a, width / 2, height / 2 - 10, 0xffffff);
 		}
 
 		//Spout Start
 		if (counter == 4500 || currentMsg == null) {
 			counter = 0;
 			currentMsg = highlyInformativeMessages[(new java.util.Random()).nextInt(highlyInformativeMessages.length)];
-			currentMsg = org.bukkit.ChatColor.GREEN.toString() + currentMsg + "...";
+			currentMsg = currentMsg + "...";
 		}
 		else {
 			counter++;
 		}
-		drawString(fontRenderer, currentMsg, 7, height / 2 - 115, 0xffffff);
+		drawString(fontRenderer, currentMsg, 7, height / 2 - 115, 0x00ff00);
 		//Spout End
 
 		super.drawScreen(par1, par2, par3);
@@ -243,5 +243,9 @@ public class GuiConnecting extends GuiScreen
 	static NetClientHandler getNetClientHandler(GuiConnecting par0GuiConnecting)
 	{
 		return par0GuiConnecting.clientHandler;
+	}
+	
+	static Minecraft func_74254_c(GuiConnecting par0GuiConnecting) {
+		return par0GuiConnecting.mc;
 	}
 }
