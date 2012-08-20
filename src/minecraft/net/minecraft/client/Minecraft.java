@@ -650,7 +650,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		try {
 			while (this.running) {
 				if (this.hasCrashed && this.crashReporter != null) {
-					this.displayCrashReport(this.field_71433_S);
+					this.displayCrashReport(this.crashReporter);
 					return;
 				}
 
@@ -674,7 +674,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 							SpoutClient.disableSandbox();
 						}
 						this.theWorld = null;
-						this.func_71403_a((WorldClient) null);
+						this.loadWorld((WorldClient) null);
 
 						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError());
 
@@ -1356,7 +1356,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 							if (Keyboard.getEventKey() == 61) {
 								this.gameSettings.showDebugInfo = !this.gameSettings.showDebugInfo;
-								this.gameSettings.field_74329_Q = !GuiScreen.func_50049_m(); // Spout keep old gui code
+								this.gameSettings.field_74329_Q = !GuiScreen.isShiftKeyDown();
 							}
 
 							if (Keyboard.getEventKey() == 63) {
@@ -1712,9 +1712,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		return "P: " + this.effectRenderer.getStatistics() + ". T: " + this.theWorld.getDebugLoadedEntities();
 	}
 
-	public void func_71354_a(int par1) {
+	public void setDimensionAndSpawnPlayer(int par1) {
 		this.theWorld.setSpawnLocation();
-		this.theWorld.func_73022_a();
+		this.theWorld.removeAllEntities();
 		int var2 = 0;
 
 		if (this.thePlayer != null) {
@@ -1886,7 +1886,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 				var4 = Item.itemsList[var2].getHasSubtypes();
 				int var9 = var2 >= 256 ? var8.blockID : var2;
-				var3 = Block.blocksList[var9].func_71873_h(this.theWorld, var5, var6, var7);
+				var3 = Block.blocksList[var9].getDamageValue(this.theWorld, var5, var6, var7);
 			} else {
 				if (this.objectMouseOver.typeOfHit != EnumMovingObjectType.ENTITY || this.objectMouseOver.entityHit == null || !var1) {
 					return;
@@ -2072,4 +2072,10 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	public boolean isFullScreen() {
 		return this.fullscreen;
 	}
+
+	//Spout start
+	public boolean isMultiplayerWorld() {
+		return theWorld != null && theWorld.isRemote;
+	}
+	//Spout end
 }

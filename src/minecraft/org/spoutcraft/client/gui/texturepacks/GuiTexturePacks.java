@@ -173,9 +173,9 @@ public class GuiTexturePacks extends GuiScreen {
 				if (pack instanceof TexturePackCustom) {
 					TexturePackCustom custom = (TexturePackCustom) pack;
 					custom.closeTexturePackFile();
-					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.texturePackFileName);
+					File d = new File(SpoutClient.getInstance().getTexturePackFolder(), custom.func_77538_c());
 					if (!d.exists()) {
-						d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.texturePackFileName);
+						d = new File(new File(Minecraft.getAppDir("minecraft"), "texturepacks"), custom.func_77538_c());
 					}
 					d.setWritable(true);
 					FileUtils.forceDelete(d);

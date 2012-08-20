@@ -158,7 +158,7 @@ public class EffectRenderer {
 			boolean custom = false;
 			GenericBlockDesign design = null;
 			Texture customTexture = null;
-			CustomBlock block = MaterialData.getCustomBlock(Spoutcraft.getWorld().getChunkAt(par1, par2, par3).getCustomBlockId(par1, par2, par3));
+			CustomBlock block = MaterialData.getCustomBlock(worldObj.world.getChunkAt(par1, par2, par3).getCustomBlockId(par1, par2, par3));
 			if (block != null) {
 				design = (GenericBlockDesign) block.getBlockDesign();
 			}
@@ -232,7 +232,7 @@ public class EffectRenderer {
 			boolean custom = false;
 			GenericBlockDesign design = null;
 			int data = this.worldObj.getBlockMetadata(par1, par2, par3);
-			CustomBlock block = MaterialData.getCustomBlock(Spoutcraft.getWorld().getChunkAt(par1, par2, par3).getCustomBlockId(par1, par2, par3));
+			CustomBlock block = MaterialData.getCustomBlock(worldObj.world.getChunkAt(par1, par2, par3).getCustomBlockId(par1, par2, par3));
 			if (block != null) {
 				design = (GenericBlockDesign) block.getBlockDesign();
 			}

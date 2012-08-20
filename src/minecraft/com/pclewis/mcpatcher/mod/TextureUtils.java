@@ -305,7 +305,7 @@ public class TextureUtils {
 
 	public static TexturePackImplementation getSelectedTexturePack() {
 		Minecraft var0 = MCPatcherUtils.getMinecraft();
-		return var0 == null ? null : (var0.texturePackList == null ? null : var0.texturePackList.getSelectedTexturePack());
+		return (TexturePackImplementation) (var0 == null ? null : (var0.texturePackList == null ? null : var0.texturePackList.getSelectedTexturePack()));
 	}
 
 	public static String getTexturePackName(TexturePackImplementation var0) {
@@ -626,7 +626,7 @@ public class TextureUtils {
 					}
 
 					MCPatcherUtils.debug("selected texture pack not found after refresh, switching to default", new Object[0]);
-					var1.a(var1.getDefaultTexturePack());
+					var1.a((TexturePackImplementation) TexturePackList.field_77314_a);
 					var0.renderEngine.setTileSize(var0);
 				}
 			}

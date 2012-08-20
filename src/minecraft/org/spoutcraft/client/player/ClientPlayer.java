@@ -134,7 +134,7 @@ public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 
 	public void disconnect(String message) {
 		SpoutClient.getHandle().theWorld.sendQuittingDisconnectingPacket();
-		SpoutClient.getHandle().changeWorld1(null);
+		SpoutClient.getHandle().loadWorld(null);
 	}
 
 	public void chat(String msg) {

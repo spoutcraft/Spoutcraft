@@ -139,8 +139,8 @@ public abstract class World implements IBlockAccess {
 	 */
 	public boolean isRemote;
 	//Spout start
-	public SpoutcraftWorld world;
-	public TIntObjectHashMap<String> customTitles = new TIntObjectHashMap<String>(200);
+	public final SpoutcraftWorld world = new SpoutcraftWorld(this);
+	public final TIntObjectHashMap<String> customTitles = new TIntObjectHashMap<String>(200);
 	//Spout end
 
 	/**
@@ -212,9 +212,6 @@ public abstract class World implements IBlockAccess {
 
 		this.calculateInitialSkylight();
 		this.calculateInitialWeather();
-		//Spout start
-		world = new SpoutcraftWorld(this);
-		//Spout end
 	}
 
 	/**

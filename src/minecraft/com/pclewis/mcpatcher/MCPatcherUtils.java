@@ -48,12 +48,12 @@ public class MCPatcherUtils {
 	static File getDefaultGameDir() {
 		String var0 = System.getProperty("os.name").toLowerCase();
 		String var1 = null;
-		String var2 = ".minecraft";
+		String var2 = ".spoutcraft";
 
 		if (var0.contains("win")) {
 			var1 = System.getenv("APPDATA");
 		} else if (var0.contains("mac")) {
-			var2 = "Library/Application Support/minecraft";
+			var2 = "Library/Application Support/spoutcraft";
 		}
 
 		if (var1 == null) {
@@ -75,19 +75,7 @@ public class MCPatcherUtils {
 
 	private static boolean loadProperties() {
 		config = null;
-
-		if (minecraftDir != null && minecraftDir.exists()) {
-			try {
-				config = new Config(minecraftDir);
-			} catch (Exception var1) {
-				var1.printStackTrace();
-			}
-
-			debug = getBoolean("debug", false);
-			return true;
-		} else {
-			return false;
-		}
+		return true;
 	}
 
 	public static File getMinecraftPath(String ... var0) {
@@ -184,13 +172,11 @@ public class MCPatcherUtils {
 	}
 
 	public static boolean getBoolean(String var0, String var1, boolean var2) {
-		String var3 = getString(var0, var1, Boolean.valueOf(var2)).toLowerCase();
-		return var3.equals("false") ? false : (var3.equals("true") ? true : var2);
+		return var2;
 	}
 
 	public static boolean getBoolean(String var0, boolean var1) {
-		String var2 = getString(var0, Boolean.valueOf(var1)).toLowerCase();
-		return var2.equals("false") ? false : (var2.equals("true") ? true : var1);
+		return var1;
 	}
 
 	public static void set(String var0, String var1, Object var2) {

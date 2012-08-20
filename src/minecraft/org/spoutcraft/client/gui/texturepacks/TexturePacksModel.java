@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
 import org.spoutcraft.client.SpoutClient;
@@ -89,7 +90,7 @@ public class TexturePacksModel extends AbstractListModel {
 					}
 				}
 				if (!found) {
-					items.add(new TexturePackItem(pack));
+					items.add(new TexturePackItem((TexturePackImplementation) pack));
 				}
 			}
 		} finally {

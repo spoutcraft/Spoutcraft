@@ -473,8 +473,8 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(HealthBar bar) {
 		int health = Minecraft.theMinecraft.thePlayer.health;
-		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.heartsLife / 3 % 2 == 1;
-		if (Minecraft.theMinecraft.thePlayer.heartsLife < 10) {
+		boolean whiteOutlinedHearts = Minecraft.theMinecraft.thePlayer.hurtResistantTime / 3 % 2 == 1;
+		if (Minecraft.theMinecraft.thePlayer.hurtResistantTime < 10) {
 			whiteOutlinedHearts = false;
 		}
 		float healthPercent = health / 0.2f;
@@ -600,7 +600,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				}
 			}
 
-			if (Minecraft.theMinecraft.playerController.func_35642_f() && Minecraft.theMinecraft.thePlayer.experienceLevel > 0) {
+			if (Minecraft.theMinecraft.playerController.func_78763_f() && Minecraft.theMinecraft.thePlayer.experienceLevel > 0) {
 				int color = 8453920;
 				String level = "" + Minecraft.theMinecraft.thePlayer.experienceLevel;
 				FontRenderer font = SpoutClient.getHandle().fontRenderer;
@@ -800,7 +800,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		screenHeight = getScreenHeight();
 		int windowWidth = SpoutClient.getHandle().displayWidth, windowHeight = SpoutClient.getHandle().displayHeight;
 		ScaledResolution scale = new ScaledResolution(SpoutClient.getHandle().gameSettings, windowWidth, windowHeight);
-		double scaleFactor = scale.scaleFactor;
+		double scaleFactor = scale.getScaleFactor();
 		height = height * scaleFactor;
 		width = width * scaleFactor;
 		x *= scaleFactor;

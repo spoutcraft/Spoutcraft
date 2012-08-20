@@ -58,7 +58,8 @@ public class SpoutItem extends Item {
 		return EnumAction.none;
 	}
 
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face) {
+	@Override
+	public boolean tryPlaceIntoWorld(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face, float xOffset, float yOffset, float zOffset) {
 		if (stack.itemID == MaterialData.flint.getRawId()) {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
@@ -67,17 +68,17 @@ public class SpoutItem extends Item {
 				if (block == null) {
 					return true;
 				}
-				if (onBlockItemUse(block, player, world, x, y, z, face)) {
+				if (onBlockItemUse(block, player, world, x, y, z, face, xOffset, yOffset, zOffset)) {
 					return true;
 				}
 				return false;
 			}
 		}
-		return super.onItemUse(stack, player, world, x, y, z, face);
+		return super.tryPlaceIntoWorld(stack, player, world, x, y, z, face, xOffset, yOffset, zOffset);
 	}
 
 	// From super class
-	public boolean onBlockItemUse(CustomBlock block, EntityPlayer player, World world, int x, int y, int z, int side) {
+	public boolean onBlockItemUse(CustomBlock block, EntityPlayer player, World world, int x, int y, int z, int side, float xOffset, float yOffset, float zOffset) {
 		if (world.getBlockId(x, y, z) == Block.snow.blockID) {
 			side = 0;
 		} else {
@@ -102,13 +103,13 @@ public class SpoutItem extends Item {
 		}
 
 		int id = block.getBlockId();
-		if (world.canBlockBePlacedAt(id, x, y, z, false, side)) {
+		if (world.canPlaceEntityOnSide(id, x, y, z, false, side, player)) {
 			Block var8 = Block.blocksList[id];
 			if (world.setBlockAndMetadataWithNotify(x, y, z, id, 0)) {
-				Block.blocksList[id].onBlockPlaced(world, x, y, z, side);
+				Block.blocksList[id].updateBlockMetadata(world, x, y, z, side, xOffset, yOffset, zOffset);
 				Block.blocksList[id].onBlockPlacedBy(world, x, y, z, player);
 
-				Spoutcraft.getWorld().getChunkAt(x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());
+				world.world.getChunkAt(x, y, z).setCustomBlockId(x, y, z, (short) block.getCustomId());
 
 				world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), var8.stepSound.stepSoundName, (var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
 			}

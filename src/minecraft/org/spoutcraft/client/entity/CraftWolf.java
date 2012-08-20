@@ -47,7 +47,7 @@ public class CraftWolf extends CraftAnimals implements Wolf {
 	}
 
 	public void setSitting(boolean sitting) {
-		getEntityWolf().func_48140_f(sitting);
+		getEntityWolf().setSitting(sitting);
 		setPath((PathEntity) null);
 	}
 

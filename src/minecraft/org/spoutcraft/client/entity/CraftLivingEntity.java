@@ -157,11 +157,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public int getMaximumNoDamageTicks() {
-		return getEntityLiving().heartsHalvesLife;
+		return getEntityLiving().maxHurtResistantTime;
 	}
 
 	public void setMaximumNoDamageTicks(int ticks) {
-		getEntityLiving().heartsHalvesLife = ticks;
+		getEntityLiving().maxHurtResistantTime = ticks;
 	}
 
 	public int getLastDamage() {
@@ -173,11 +173,11 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	}
 
 	public int getNoDamageTicks() {
-		return getEntityLiving().heartsLife;
+		return getEntityLiving().hurtResistantTime;
 	}
 
 	public void setNoDamageTicks(int ticks) {
-		getEntityLiving().heartsLife = ticks;
+		getEntityLiving().hurtResistantTime = ticks;
 	}
 
 	public String getTitle() {

@@ -130,8 +130,8 @@ public class WorldRenderer {
 			int defaultTexture = game.renderEngine.getTexture("/terrain.png");
 			game.renderEngine.bindTexture(defaultTexture);
 			
-			short[] customBlockIds = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockIds();
-			byte[] customBlockData = Spoutcraft.getWorld().getChunkAt(posX, posY, posZ).getCustomBlockData();
+			short[] customBlockIds = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockIds();
+			byte[] customBlockData = worldObj.world.getChunkAt(posX, posY, posZ).getCustomBlockData();
 
 			blockRenderer.customIds = customBlockIds;
 

@@ -73,7 +73,7 @@ public class CraftNoteBlock extends CraftBlockState implements NoteBlock {
 
 		synchronized (block) {
 			if (block.getType() == MaterialData.noteblock) {
-				world.getHandle().playNoteAt(getX(), getY(), getZ(), instrument, note);
+				world.getHandle().playAuxSFX(getX(), getY(), getZ(), instrument, note);
 				return true;
 			} else {
 				return false;
@@ -86,7 +86,7 @@ public class CraftNoteBlock extends CraftBlockState implements NoteBlock {
 
 		synchronized (block) {
 			if (block.getType() == MaterialData.noteblock) {
-				world.getHandle().playNoteAt(getX(), getY(), getZ(), instrument.getType(), note.getId());
+				world.getHandle().playAuxSFX(getX(), getY(), getZ(), instrument.getType(), note.getId());
 				return true;
 			} else {
 				return false;

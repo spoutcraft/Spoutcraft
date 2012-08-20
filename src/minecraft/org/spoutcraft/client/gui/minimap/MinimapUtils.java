@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import net.minecraft.client.Minecraft;
+import org.spoutcraft.client.SpoutClient;
 
 public class MinimapUtils {
 	public static boolean insideCircle(int centerX, int centerY, int radius, int x, int y) {
@@ -28,8 +28,8 @@ public class MinimapUtils {
 	}
 
 	public static String getWorldName() {
-		String worldname = Minecraft.theMinecraft.theWorld.getWorldInfo().getWorldName();
-		if (worldname.equals("MpServer")) {
+		String worldname = SpoutClient.getInstance().getRawWorld().getWorldInfo().getWorldName();
+		if (worldname.equals("MpServer") && org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp != null) {
 			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp.replaceAll("\\.", "-");
 		}
 		return worldname;

@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.TexturePackBase;
+import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
@@ -41,14 +42,14 @@ public class TexturePackItem implements ListWidgetItem {
 	protected final static Map<String, Integer> texturePackSize = new HashMap<String, Integer>();
 	protected volatile static TexturePackSizeThread activeThread = null;
 
-	private TexturePackBase pack;
+	private TexturePackImplementation pack;
 	private ListWidget widget;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
 	int id = -1;
 	private String title = null;
 	protected volatile int tileSize = -1;
 
-	public TexturePackItem(TexturePackBase pack) {
+	public TexturePackItem(TexturePackImplementation pack) {
 		this.setPack(pack);
 		synchronized(texturePackSize) {
 			if (!texturePackSize.containsKey(getName())) {
@@ -78,8 +79,8 @@ public class TexturePackItem implements ListWidgetItem {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
 		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
-		font.drawStringWithShadow(pack.firstDescriptionLine, x+29, y+11, 0xffaaaaaa);
-		font.drawStringWithShadow(pack.secondDescriptionLine, x+29, y+20, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.func_77531_d(), x+29, y+11, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.func_77537_e(), x+29, y+20, 0xffaaaaaa);
 
 		String sTileSize;
 		if (tileSize != -1) {
@@ -92,7 +93,7 @@ public class TexturePackItem implements ListWidgetItem {
 
 		//TODO: Show database information (author/member who posted it)
 
-		pack.bindThumbnailTexture(SpoutClient.getHandle());
+		pack.func_77535_b(SpoutClient.getHandle().renderEngine);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		tessellator.startDrawingQuads();
 		tessellator.setColorOpaque(255,255,255);
@@ -109,17 +110,17 @@ public class TexturePackItem implements ListWidgetItem {
 		}
 	}
 
-	public void setPack(TexturePackBase pack) {
+	public void setPack(TexturePackImplementation pack) {
 		this.pack = pack;
 	}
 
-	public TexturePackBase getPack() {
+	public TexturePackImplementation getPack() {
 		return pack;
 	}
 
 	public String getName() {
 		if (title == null) {
-			String name = pack.texturePackFileName;
+			String name = pack.func_77538_c();
 			int suffix = name.lastIndexOf(".zip");
 			if (suffix != -1) {
 				name = name.substring(0, suffix);
@@ -152,7 +153,7 @@ public class TexturePackItem implements ListWidgetItem {
 	}
 
 	private static LinkedList<TexturePackSizeThread> queued = new LinkedList<TexturePackSizeThread>();
-	private static void calculateTexturePackSize(TexturePackBase texturePack, TexturePackItem item) {
+	private static void calculateTexturePackSize(TexturePackImplementation texturePack, TexturePackItem item) {
 		if (activeThread == null) {
 			activeThread = new TexturePackSizeThread(texturePack, item);
 			activeThread.start();
@@ -163,9 +164,9 @@ public class TexturePackItem implements ListWidgetItem {
 }
 
 class TexturePackSizeThread extends Thread {
-	TexturePackBase texturePack;
+	TexturePackImplementation texturePack;
 	TexturePackItem item;
-	TexturePackSizeThread(TexturePackBase texturePack, TexturePackItem item) {
+	TexturePackSizeThread(TexturePackImplementation texturePack, TexturePackItem item) {
 		this.texturePack = texturePack;
 		this.item = item;
 	}

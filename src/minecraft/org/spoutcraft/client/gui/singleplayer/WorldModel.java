@@ -25,9 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ISaveFormat;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.SaveFormatComparator;
 
 import org.spoutcraft.client.SpoutClient;
@@ -70,17 +69,12 @@ public class WorldModel extends FilterModel {
 
 	public void playWorld(int i) {
 		Minecraft mc = SpoutClient.getHandle();
-		int gameType = worlds.get(i).getGameType();
-		if (gameType == 0) {
-			mc.playerController = new PlayerControllerSP(mc);
-		} else {
-			mc.playerController = new PlayerControllerCreative(mc);
-		}
+		EnumGameType gameType = worlds.get(i).func_75790_f();
 		String s = worlds.get(i).getFileName();
 		if (s == null) {
 			s = (new StringBuilder()).append("World").append(i).toString();
 		}
-		mc.startWorld(s, worlds.get(i).getDisplayName(), null);
+		mc.launchIntegratedServer(s, worlds.get(i).getDisplayName(), null);
 		mc.displayGuiScreen(null);
 	}
 

@@ -37,7 +37,7 @@ public class SimpleSkyManager implements SkyManager {
 
 	public int getCloudHeight() {
 		if (cloudHeight == -999) {
-			return (int)SpoutClient.getHandle().theWorld.worldProvider.getCloudHeight();
+			return (int)SpoutClient.getHandle().theWorld.provider.getCloudHeight();
 		}
 		return cloudHeight;
 	}

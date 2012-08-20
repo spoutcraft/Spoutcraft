@@ -24,10 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.src.EnumGameType;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.PlayerControllerSP;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 
@@ -213,18 +212,18 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 				}
 			}
 
-			byte var9 = 0;
+			EnumGameType var9 = EnumGameType.SURVIVAL;
 			if (comboGameType.getSelectedItem().equals("Creative")) {
-				var9 = 1;
-				this.mc.playerController = new PlayerControllerCreative(this.mc);
+				var9 = EnumGameType.CREATIVE;
+				//this.mc.playerController = new PlayerControllerCreative(this.mc);
 			} else {
-				this.mc.playerController = new PlayerControllerSP(this.mc);
+				//this.mc.playerController = new PlayerControllerSP(this.mc);
 			}
 
 			boolean hardcore = comboGameType.getSelectedItem().equals("Hardcore");
 			int height = Integer.valueOf(comboWorldHeight.getSelectedItem());
 
-			this.mc.startWorld(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]));
+			this.mc.launchIntegratedServer(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]));
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 		if (btn == buttonNewSeed) {

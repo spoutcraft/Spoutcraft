@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.minecraft.src.EnumGameType;
 import net.minecraft.src.ISaveFormat;
 import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.StringTranslate;
@@ -80,15 +81,21 @@ public class WorldItem implements ListWidgetItem {
 	public void onClick(int x, int y, boolean doubleClick) {
 	}
 
-	public static String getGameplayString(int id) {
+	public static String getGameplayString(EnumGameType enumGameType) {
 		StringTranslate stringtranslate = StringTranslate.getInstance();
-		switch(id) {
-			case 0:
+		switch(enumGameType) {
+			case SURVIVAL:
 				return stringtranslate.translateKey("gameMode.survival");
-			case 1:
+			case CREATIVE:
 				return stringtranslate.translateKey("gameMode.creative");
+			case ADVENTURE:
+				return stringtranslate.translateKey("gameMode.adventure");
+			case NOT_SET:
+				break;
+			default:
+				break;
 		}
-		return "Unknown gameplay id " + id;
+		return "Unknown gameplay id " + enumGameType;
 	}
 
 	private void setWorld(WorldInfo world) {

@@ -36,7 +36,7 @@ public class TexturePackAction implements Runnable {
 	}
 
 	public void run() {
-		TexturePackCustom pack = new TexturePackCustom(texturePackFile);
+		TexturePackCustom pack = new TexturePackCustom(texturePackFile.getName().substring(0, texturePackFile.getName().length() - 4), texturePackFile);
 		Minecraft game = SpoutClient.getHandle();
 		if (game.renderEngine.oldPack == null) {
 			game.renderEngine.oldPack = game.renderEngine.texturePack.selectedTexturePack;

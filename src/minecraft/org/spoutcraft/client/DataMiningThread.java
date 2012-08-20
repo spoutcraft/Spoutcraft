@@ -103,7 +103,7 @@ public class DataMiningThread extends Thread {
 				doLogin();
 				onLogin = false;
 			}
-			World world = SpoutClient.getHandle().field_71441_e;
+			World world = SpoutClient.getHandle().theWorld;
 			if (world != null) {
 				if (!runOnce) {
 					multiplayer = world.isRemote;

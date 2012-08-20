@@ -293,7 +293,7 @@ public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatMana
 				if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
 					int delta = Integer.MAX_VALUE;
 					String best = null;
-					final List<GuiPlayerInfo> players = ((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.playerNames;
+					final List<GuiPlayerInfo> players = ((EntityClientPlayerMP)SpoutClient.getHandle().thePlayer).sendQueue.playerInfoList;
 					final String toLower = lastWord.toLowerCase();
 					for (GuiPlayerInfo info : players) {
 						String name = ChatColor.stripColor(info.name);

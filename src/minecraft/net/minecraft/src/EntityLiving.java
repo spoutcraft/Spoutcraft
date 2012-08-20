@@ -836,7 +836,9 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					org.spoutcraft.spoutcraftapi.World world = this.worldObj.world;
+					org.spoutcraft.spoutcraftapi.block.Chunk chunk = world.getChunkAt(x, y, z);
+					short customId = chunk.getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
@@ -875,7 +877,7 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					short customId = Spoutcraft.getWorld().getChunkAt(x, y, z).getCustomBlockId(x, y, z);
+					short customId = worldObj.world.getChunkAt(x, y, z).getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);
 						if (block != null) {
