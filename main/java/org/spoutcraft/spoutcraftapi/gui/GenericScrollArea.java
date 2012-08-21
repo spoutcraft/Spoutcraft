@@ -20,12 +20,12 @@
 package org.spoutcraft.spoutcraftapi.gui;
 
 import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.UnsafeClass;
@@ -35,7 +35,7 @@ import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 @UnsafeClass
 public class GenericScrollArea extends GenericScrollable implements ScrollArea {
-	protected HashMap<Widget, Addon> widgets = new ConcurrentHashMap<Widget, Addon>();
+	protected Map<Widget, Addon> widgets = new ConcurrentHashMap<Widget, Addon>();
 	protected int playerId;
 	protected boolean bgvis;
 	protected int mouseX = -1, mouseY = -1;
