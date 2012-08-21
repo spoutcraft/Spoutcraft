@@ -28,11 +28,9 @@ final class ColorMap {
 
 			if (this.map != null) {
 				if (this.map.length != 65536) {
-					MCPatcherUtils.error("%s must be %dx%d", new Object[] {var2, Integer.valueOf(256), Integer.valueOf(256)});
 					this.map = null;
 				} else {
 					this.mapDefault = this.colorize(16777215, 0.5D, 1.0D);
-					MCPatcherUtils.debug("using %s, default color %06x", new Object[] {var2, Integer.valueOf(this.mapDefault)});
 				}
 			}
 		}

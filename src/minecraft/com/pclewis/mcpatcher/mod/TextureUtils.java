@@ -23,6 +23,8 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ColorizerFoliage;
 import net.minecraft.src.ColorizerGrass;
@@ -45,15 +47,15 @@ import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TextureWaterFlowFX;
 
 public class TextureUtils {
-	private static boolean animatedFire = MCPatcherUtils.getBoolean("HD Textures", "animatedFire", true);
-	private static boolean animatedLava = MCPatcherUtils.getBoolean("HD Textures", "animatedLava", true);
-	private static boolean animatedWater = MCPatcherUtils.getBoolean("HD Textures", "animatedWater", true);
-	private static boolean animatedPortal = MCPatcherUtils.getBoolean("HD Textures", "animatedPortal", true);
-	private static boolean customFire = MCPatcherUtils.getBoolean("HD Textures", "customFire", true);
-	private static boolean customLava = MCPatcherUtils.getBoolean("HD Textures", "customLava", true);
-	private static boolean customWater = MCPatcherUtils.getBoolean("HD Textures", "customWater", true);
-	private static boolean customPortal = MCPatcherUtils.getBoolean("HD Textures", "customPortal", true);
-	private static boolean customOther = MCPatcherUtils.getBoolean("HD Textures", "customOther", true);
+	private static boolean animatedFire = true;
+	private static boolean animatedLava = true;
+	private static boolean animatedWater = true;
+	private static boolean animatedPortal = true;
+	private static boolean customFire = true;
+	private static boolean customLava = true;
+	private static boolean customWater = true;
+	private static boolean customPortal = true;
+	private static boolean customOther = true;
 	public static final int LAVA_STILL_TEXTURE_INDEX = 237;
 	public static final int LAVA_FLOWING_TEXTURE_INDEX = 238;
 	public static final int WATER_STILL_TEXTURE_INDEX = 205;
@@ -62,9 +64,9 @@ public class TextureUtils {
 	public static final int FIRE_N_S_TEXTURE_INDEX = 47;
 	public static final int PORTAL_TEXTURE_INDEX = 14;
 	private static HashMap expectedColumns = new HashMap();
-	private static boolean useTextureCache = MCPatcherUtils.getBoolean("HD Textures", "useTextureCache", false);
-	private static boolean reclaimGLMemory = MCPatcherUtils.getBoolean("HD Textures", "reclaimGLMemory", false);
-	private static boolean autoRefreshTextures = MCPatcherUtils.getBoolean("HD Textures", "autoRefreshTextures", false);
+	private static boolean useTextureCache = false;
+	private static boolean reclaimGLMemory = false;
+	private static boolean autoRefreshTextures = false;
 	private static TexturePackImplementation lastTexturePack = null;
 	private static HashMap cache = new HashMap();
 	private static int textureRefreshCount;
@@ -74,14 +76,11 @@ public class TextureUtils {
 	private static boolean bindImageReentry;
 
 	public static boolean setTileSize() {
-		MCPatcherUtils.debug("\nchanging skin to %s", new Object[] {getTexturePackName(getSelectedTexturePack())});
 		int var0 = getTileSize();
 
 		if (var0 == TileSize.int_size) {
-			MCPatcherUtils.debug("tile size %d unchanged", new Object[] {Integer.valueOf(var0)});
 			return false;
 		} else {
-			MCPatcherUtils.debug("setting tile size to %d (was %d)", new Object[] {Integer.valueOf(var0), Integer.valueOf(TileSize.int_size)});
 			TileSize.setTileSize(var0);
 			return true;
 		}
@@ -94,7 +93,6 @@ public class TextureUtils {
 	}
 
 	public static void setFontRenderer() {
-		MCPatcherUtils.debug("setFontRenderer()", new Object[0]);
 		Minecraft var0 = MCPatcherUtils.getMinecraft();
 		setFontRenderer(var0, var0.fontRenderer, "/font/default.png");
 
@@ -107,7 +105,6 @@ public class TextureUtils {
 		TextureFX var2 = refreshTextureFX(var1);
 
 		if (var2 != null) {
-			MCPatcherUtils.debug("registering new TextureFX class %s", new Object[] {var1.getClass().getName()});
 			var0.add(var2);
 			var2.onTick();
 		}
@@ -115,7 +112,6 @@ public class TextureUtils {
 
 	private static TextureFX refreshTextureFX(TextureFX var0) {
 		if (!(var0 instanceof TextureCompassFX) && !(var0 instanceof TextureWatchFX) && !(var0 instanceof TextureLavaFX) && !(var0 instanceof TextureLavaFlowFX) && !(var0 instanceof TextureWaterFX) && !(var0 instanceof TextureWaterFlowFX) && !(var0 instanceof TextureFlamesFX) && !(var0 instanceof TexturePortalFX)) {
-			MCPatcherUtils.info("attempting to refresh unknown animation %s", new Object[] {var0.getClass().getName()});
 			Minecraft var1 = MCPatcherUtils.getMinecraft();
 			Class var2 = var0.getClass();
 
@@ -146,7 +142,6 @@ public class TextureUtils {
 			}
 
 			if (var0.imageData.length != TileSize.int_numBytes) {
-				MCPatcherUtils.debug("resizing %s buffer from %d to %d bytes", new Object[] {var2.getName(), Integer.valueOf(var0.imageData.length), Integer.valueOf(TileSize.int_numBytes)});
 				var0.imageData = new byte[TileSize.int_numBytes];
 			}
 
@@ -157,7 +152,6 @@ public class TextureUtils {
 	}
 
 	public static void refreshTextureFX(List var0) {
-		MCPatcherUtils.debug("refreshTextureFX()", new Object[0]);
 		ArrayList var1 = new ArrayList();
 		Iterator var2 = var0.iterator();
 
@@ -365,7 +359,6 @@ public class TextureUtils {
 
 		if (var2 == null && isRequiredResource(var1)) {
 			var2 = Thread.currentThread().getContextClassLoader().getResourceAsStream(var1);
-			MCPatcherUtils.warn("falling back on thread class loader for %s: %s", new Object[] {var1, var2 == null ? "failed" : "success"});
 		}
 
 		return var2;
@@ -375,83 +368,97 @@ public class TextureUtils {
 		return getResourceAsStream(getSelectedTexturePack(), var0);
 	}
 
-	public static BufferedImage getResourceAsBufferedImage(TexturePackImplementation var0, String var1) throws IOException {
-		BufferedImage var2 = null;
+	public static BufferedImage getResourceAsBufferedImage(TexturePackImplementation var0, String texture) throws IOException {
+		BufferedImage image = null;
 		boolean var3 = false;
 
 		if (useTextureCache && var0 == lastTexturePack) {
-			var2 = (BufferedImage)cache.get(var1);
+			image = (BufferedImage)cache.get(texture);
 
-			if (var2 != null) {
+			if (image != null) {
 				var3 = true;
 			}
 		}
 
-		if (var2 == null) {
-			InputStream var4 = getResourceAsStream(var0, var1);
+		if (image == null) {
+			InputStream var4 = getResourceAsStream(var0, texture);
 
 			if (var4 != null) {
 				try {
-					var2 = ImageIO.read(var4);
+					image = ImageIO.read(var4);
 				} finally {
 					MCPatcherUtils.close((Closeable)var4);
 				}
 			}
 		}
+		
+		if (image == null) {
+			//Search local files (downloaded texture)
+			FileImageInputStream imageStream = null;
+			try {
+				File test = new File(texture);
+				if (test.exists()) {
+					imageStream = new FileImageInputStream(test);
+					image = ImageIO.read(imageStream);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			finally {
+				if (imageStream != null) {
+					try {
+						imageStream.close();
+					} catch (Exception e) { }
+				}
+			}
+		}
 
-		if (var2 == null) {
-			if (isRequiredResource(var1)) {
-				throw new IOException(var1 + " image is null");
+		if (image == null) {
+			if (isRequiredResource(texture)) {
+				throw new IOException(texture + " image is null");
 			} else {
 				return null;
 			}
 		} else {
 			if (useTextureCache && !var3 && var0 != lastTexturePack) {
-				MCPatcherUtils.debug("clearing texture cache (%d items)", new Object[] {Integer.valueOf(cache.size())});
 				cache.clear();
 			}
-
-			MCPatcherUtils.debug("opened %s %dx%d from %s", new Object[] {var1, Integer.valueOf(var2.getWidth()), Integer.valueOf(var2.getHeight()), var3 ? "cache" : getTexturePackName(var0)});
 
 			if (!var3) {
 				Integer var11;
 
-				if (isCustomTerrainItemResource(var1)) {
+				if (isCustomTerrainItemResource(texture)) {
 					var11 = Integer.valueOf(1);
 				} else {
-					var11 = (Integer)expectedColumns.get(var1);
+					var11 = (Integer)expectedColumns.get(texture);
 				}
 
-				if (var11 != null && var2.getWidth() != var11.intValue() * TileSize.int_size) {
-					var2 = resizeImage(var2, var11.intValue() * TileSize.int_size);
+				if (var11 != null && image.getWidth() != var11.intValue() * TileSize.int_size) {
+					image = resizeImage(image, var11.intValue() * TileSize.int_size);
 				}
 
 				if (useTextureCache) {
 					lastTexturePack = var0;
-					cache.put(var1, var2);
+					cache.put(texture, image);
 				}
 
-				if (var1.matches("^/mob/.*_eyes\\d*\\.png$")) {
+				if (texture.matches("^/mob/.*_eyes\\d*\\.png$")) {
 					int var5 = 0;
 
-					for (int var6 = 0; var6 < var2.getWidth(); ++var6) {
-						for (int var7 = 0; var7 < var2.getHeight(); ++var7) {
-							int var8 = var2.getRGB(var6, var7);
+					for (int var6 = 0; var6 < image.getWidth(); ++var6) {
+						for (int var7 = 0; var7 < image.getHeight(); ++var7) {
+							int var8 = image.getRGB(var6, var7);
 
 							if ((var8 & -16777216) == 0 && var8 != 0) {
-								var2.setRGB(var6, var7, 0);
+								image.setRGB(var6, var7, 0);
 								++var5;
 							}
 						}
 					}
-
-					if (var5 > 0) {
-						MCPatcherUtils.debug("  fixed %d transparent pixels", new Object[] {Integer.valueOf(var5), var1});
-					}
 				}
 			}
 
-			return var2;
+			return image;
 		}
 	}
 
@@ -481,7 +488,6 @@ public class TextureUtils {
 				if (var4 != null) {
 					BufferedImage var5 = ImageIO.read(var4);
 					int var6 = var5.getWidth() / ((Integer)var3.getValue()).intValue();
-					MCPatcherUtils.debug("  %s tile size is %d", new Object[] {var3.getKey(), Integer.valueOf(var6)});
 					var1 = Math.max(var1, var6);
 				}
 			} catch (Exception var10) {
@@ -511,7 +517,6 @@ public class TextureUtils {
 
 	static BufferedImage resizeImage(BufferedImage var0, int var1) {
 		int var2 = var0.getHeight() * var1 / var0.getWidth();
-		MCPatcherUtils.debug("  resizing to %dx%d", new Object[] {Integer.valueOf(var1), Integer.valueOf(var2)});
 		BufferedImage var3 = new BufferedImage(var1, var2, 2);
 		Graphics2D var4 = var3.createGraphics();
 		var4.drawImage(var0, 0, 0, var1, var2, (ImageObserver)null);
@@ -555,7 +560,6 @@ public class TextureUtils {
 						var0.origZip = var0.field_77550_e;
 						var0.field_77550_e = var3;
 						var3 = null;
-						MCPatcherUtils.debug("copied %s to %s, lastModified = %d", new Object[] {var0.field_77548_a.getPath(), var0.tmpFile.getPath(), Long.valueOf(var0.lastModified)});
 						break;
 					}
 
@@ -577,7 +581,6 @@ public class TextureUtils {
 			var0.field_77550_e = var0.origZip;
 			var0.origZip = null;
 			var0.tmpFile.delete();
-			MCPatcherUtils.debug("deleted %s", new Object[] {var0.tmpFile.getPath()});
 			var0.tmpFile = null;
 		}
 	}
@@ -592,7 +595,6 @@ public class TextureUtils {
 				long var3 = var2.field_77548_a.lastModified();
 
 				if (var3 != var2.lastModified && var3 != 0L && var2.lastModified != 0L) {
-					MCPatcherUtils.debug("%s lastModified changed from %d to %d", new Object[] {var2.field_77548_a.getPath(), Long.valueOf(var2.lastModified), Long.valueOf(var3)});
 					ZipFile var5 = null;
 					label90: {
 						try {
@@ -617,7 +619,6 @@ public class TextureUtils {
 							TexturePackCustom var8 = (TexturePackCustom)var7;
 
 							if (var8.field_77548_a.equals(var2.field_77548_a)) {
-								MCPatcherUtils.debug("setting new texture pack", new Object[0]);
 								var1.a(var8);
 								var0.renderEngine.setTileSize(var0);
 								return;
@@ -625,7 +626,6 @@ public class TextureUtils {
 						}
 					}
 
-					MCPatcherUtils.debug("selected texture pack not found after refresh, switching to default", new Object[0]);
 					var1.a((TexturePackImplementation) TexturePackList.field_77314_a);
 					var0.renderEngine.setTileSize(var0);
 				}
@@ -635,7 +635,6 @@ public class TextureUtils {
 
 	public static boolean bindImageBegin() {
 		if (bindImageReentry) {
-			MCPatcherUtils.warn("caught TextureFX.bindImage recursion", new Object[0]);
 			return false;
 		} else {
 			bindImageReentry = true;

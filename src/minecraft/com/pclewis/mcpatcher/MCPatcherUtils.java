@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 
 public class MCPatcherUtils {
 	private static File minecraftDir = null;
-	private static boolean debug = false;
 	private static boolean isGame = true;
 	static Config config = null;
 	private static Minecraft minecraft;
@@ -91,116 +90,8 @@ public class MCPatcherUtils {
 		return var1;
 	}
 
-	public static void log(String var0, Object ... var1) {
-		debug(var0, var1);
-	}
-
 	public static boolean isGame() {
 		return isGame;
-	}
-
-	public static void warn(String var0, Object ... var1) {
-		System.out.printf("WARNING: " + var0 + "\n", var1);
-	}
-
-	public static void error(String var0, Object ... var1) {
-		System.out.printf("ERROR: " + var0 + "\n", var1);
-	}
-
-	public static void info(String var0, Object ... var1) {
-		System.out.printf(var0 + "\n", var1);
-	}
-
-	public static void debug(String var0, Object ... var1) {
-		if (debug) {
-			System.out.printf(var0 + "\n", var1);
-		}
-	}
-
-	public static String getString(String var0, String var1, Object var2) {
-		if (config == null) {
-			return var2 == null ? null : var2.toString();
-		} else {
-			String var3 = config.getModConfigValue(var0, var1);
-
-			if (var3 == null && var2 != null) {
-				var3 = var2.toString();
-				config.setModConfigValue(var0, var1, var3);
-			}
-
-			return var3;
-		}
-	}
-
-	public static String getString(String var0, Object var1) {
-		if (config == null) {
-			return var1 == null ? null : var1.toString();
-		} else {
-			String var2 = config.getConfigValue(var0);
-
-			if (var2 == null && var1 != null) {
-				var2 = var1.toString();
-				config.setConfigValue(var0, var2);
-			}
-
-			return var2;
-		}
-	}
-
-	public static int getInt(String var0, String var1, int var2) {
-		int var3;
-
-		try {
-			var3 = Integer.parseInt(getString(var0, var1, Integer.valueOf(var2)));
-		} catch (NumberFormatException var5) {
-			var3 = var2;
-		}
-
-		return var3;
-	}
-
-	public static int getInt(String var0, int var1) {
-		int var2;
-
-		try {
-			var2 = Integer.parseInt(getString(var0, Integer.valueOf(var1)));
-		} catch (NumberFormatException var4) {
-			var2 = var1;
-		}
-
-		return var2;
-	}
-
-	public static boolean getBoolean(String var0, String var1, boolean var2) {
-		return var2;
-	}
-
-	public static boolean getBoolean(String var0, boolean var1) {
-		return var1;
-	}
-
-	public static void set(String var0, String var1, Object var2) {
-		if (config != null) {
-			config.setModConfigValue(var0, var1, var2.toString());
-		}
-	}
-
-	static void set(String var0, Object var1) {
-		if (config != null) {
-			config.setConfigValue(var0, var1.toString());
-		}
-	}
-
-	public static void remove(String var0, String var1) {
-		if (config != null) {
-			config.remove(config.getModConfig(var0, var1));
-		}
-	}
-
-	static void remove(String var0) {
-		if (config != null) {
-			config.remove(config.getConfig(var0));
-		}
 	}
 
 	public static void close(Closeable var0) {

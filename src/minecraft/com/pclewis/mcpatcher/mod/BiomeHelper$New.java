@@ -1,22 +1,15 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.IBlockAccess;
 
 class BiomeHelper$New extends BiomeHelper {
-	private static boolean logged;
 	private BiomeGenBase lastBiome;
 	private int lastI;
 	private int lastK;
 
 	BiomeHelper$New(IBlockAccess var1) {
 		super(var1);
-
-		if (!logged) {
-			logged = true;
-			MCPatcherUtils.debug("biomes v1.2 detected", new Object[0]);
-		}
 	}
 
 	boolean useBlockBlending() {

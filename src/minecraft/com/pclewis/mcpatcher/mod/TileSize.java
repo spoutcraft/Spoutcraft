@@ -66,23 +66,6 @@ public final class TileSize {
 		double_compassCenterMax = double_size / 2.0D + 0.5D;
 	}
 
-	private static void dump() {
-		Field[] var0 = TileSize.class.getDeclaredFields();
-		int var1 = var0.length;
-
-		for (int var2 = 0; var2 < var1; ++var2) {
-			Field var3 = var0[var2];
-
-			if (var3.getName().contains("_")) {
-				try {
-					MCPatcherUtils.debug("%s = %s", new Object[] {var3.getName(), var3.get((Object)null)});
-				} catch (Exception var5) {
-					MCPatcherUtils.debug("%s: %s", new Object[] {var3.getName(), var5.toString()});
-				}
-			}
-		}
-	}
-
 	static {
 		setTileSize(16);
 	}

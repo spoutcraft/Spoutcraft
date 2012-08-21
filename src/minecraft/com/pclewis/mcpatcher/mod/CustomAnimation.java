@@ -14,7 +14,6 @@ import java.util.Random;
 import org.lwjgl.opengl.GL11;
 
 public class CustomAnimation {
-	private static final String CLASS_NAME = CustomAnimation.class.getSimpleName();
 	private static Random rand = new Random();
 	private static final ArrayList animations = new ArrayList();
 	private final String textureName;
@@ -92,7 +91,6 @@ public class CustomAnimation {
 	private static void add(CustomAnimation var0) {
 		if (var0 != null) {
 			animations.add(var0);
-			MCPatcherUtils.debug("new %s %s %dx%d -> %s @ %d,%d (%d frames)", new Object[] {CLASS_NAME, var0.srcName, Integer.valueOf(var0.w), Integer.valueOf(var0.h), var0.textureName, Integer.valueOf(var0.x), Integer.valueOf(var0.y), Integer.valueOf(var0.numFrames)});
 		}
 	}
 
@@ -101,7 +99,6 @@ public class CustomAnimation {
 			int var9 = MCPatcherUtils.getMinecraft().renderEngine.getTexture(var0);
 
 			if (var9 <= 0) {
-				MCPatcherUtils.error("%s: invalid id %d for texture %s", new Object[] {CLASS_NAME, Integer.valueOf(var9), var0});
 				return null;
 			} else {
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var9);
@@ -127,16 +124,13 @@ public class CustomAnimation {
 						var14.put(var16);
 						return new CustomAnimation(var2, var0, var9, var1, var4, var5, var6, var7, var14, var13 / var7, var8);
 					} else {
-						MCPatcherUtils.error("%s: %s dimensions %dx%d do not match %dx%d", new Object[] {CLASS_NAME, var2, Integer.valueOf(var12), Integer.valueOf(var13), Integer.valueOf(var6), Integer.valueOf(var7)});
 						return null;
 					}
 				} else {
-					MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d,count=%d", new Object[] {CLASS_NAME, var2, Integer.valueOf(var4), Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var7), Integer.valueOf(var1)});
 					return null;
 				}
 			}
 		} else {
-			MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d,count=%d", new Object[] {CLASS_NAME, var2, Integer.valueOf(var4), Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var7), Integer.valueOf(var1)});
 			return null;
 		}
 	}
@@ -151,7 +145,6 @@ public class CustomAnimation {
 			int var9 = MCPatcherUtils.getMinecraft().renderEngine.getTexture(var0);
 
 			if (var9 <= 0) {
-				MCPatcherUtils.error("%s: invalid id %d for texture %s", new Object[] {CLASS_NAME, Integer.valueOf(var9), var0});
 				return null;
 			} else {
 				try {
@@ -161,7 +154,6 @@ public class CustomAnimation {
 				}
 			}
 		} else {
-			MCPatcherUtils.error("%s: %s invalid dimensions x=%d,y=%d,w=%d,h=%d", new Object[] {CLASS_NAME, var0, Integer.valueOf(var5), Integer.valueOf(var6), Integer.valueOf(var7), Integer.valueOf(var8)});
 			return null;
 		}
 	}
