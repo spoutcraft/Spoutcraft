@@ -8,13 +8,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
+
+import org.spoutcraft.client.SpoutClient;
+
 import net.minecraft.client.Minecraft;
 
 public class MCPatcherUtils {
-	private static File minecraftDir = null;
-	private static boolean isGame = true;
-	static Config config = null;
-	private static Minecraft minecraft;
 	private static String minecraftVersion;
 	private static String patcherVersion;
 	public static final String HD_TEXTURES = "HD Textures";
@@ -62,38 +61,6 @@ public class MCPatcherUtils {
 		return new File(var1, var2);
 	}
 
-	static boolean setGameDir(File var0) {
-		if (var0 != null && var0.isDirectory() && (new File(var0, "bin/lwjgl.jar")).exists() && (new File(var0, "resources")).isDirectory()) {
-			minecraftDir = var0.getAbsoluteFile();
-		} else {
-			minecraftDir = null;
-		}
-
-		return loadProperties();
-	}
-
-	private static boolean loadProperties() {
-		config = null;
-		return true;
-	}
-
-	public static File getMinecraftPath(String ... var0) {
-		File var1 = minecraftDir;
-		String[] var2 = var0;
-		int var3 = var0.length;
-
-		for (int var4 = 0; var4 < var3; ++var4) {
-			String var5 = var2[var4];
-			var1 = new File(var1, var5);
-		}
-
-		return var1;
-	}
-
-	public static boolean isGame() {
-		return isGame;
-	}
-
 	public static void close(Closeable var0) {
 		if (var0 != null) {
 			try {
@@ -114,9 +81,6 @@ public class MCPatcherUtils {
 		}
 	}
 
-	public static void setMinecraft(Minecraft var0) {
-		minecraft = var0;
-	}
 
 	public static void setVersions(String var0, String var1) {
 		minecraftVersion = var0;
@@ -124,7 +88,7 @@ public class MCPatcherUtils {
 	}
 
 	public static Minecraft getMinecraft() {
-		return minecraft;
+		return SpoutClient.getHandle();
 	}
 
 	public static String getMinecraftVersion() {
@@ -208,25 +172,5 @@ public class MCPatcherUtils {
 		}
 
 		return var14;
-	}
-
-	static {
-		try {
-			if (Class.forName("com.pclewis.mcpatcher.MCPatcher") != null) {
-				isGame = false;
-			}
-		} catch (ClassNotFoundException var1) {
-			;
-		} catch (Throwable var2) {
-			var2.printStackTrace();
-		}
-
-		if (isGame) {
-			if (!setGameDir(new File(".")) && !setGameDir(getDefaultGameDir())) {
-				System.out.println("MCPatcherUtils initialized. Current directory " + (new File(".")).getAbsolutePath());
-			} else {
-				System.out.println("MCPatcherUtils initialized. Directory " + minecraftDir.getPath());
-			}
-		}
 	}
 }
