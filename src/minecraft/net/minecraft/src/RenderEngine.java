@@ -60,7 +60,6 @@ public class RenderEngine {
 			return var3;
 		} else {
 			try {
-				Object var4 = null;
 				int[] var7;
 				if (par1Str.startsWith("##")) {
 					// Spout HD Start
@@ -89,8 +88,8 @@ public class RenderEngine {
 					}
 				}
 
-				this.textureContentsMap.put(par1Str, var3);
-				return var3;
+				this.textureContentsMap.put(par1Str, var7);
+				return var7;
 			} catch (IOException var5) {
 				var5.printStackTrace();
 				int[] var4 = this.getImageContentsAndAllocate(this.missingTextureImage);

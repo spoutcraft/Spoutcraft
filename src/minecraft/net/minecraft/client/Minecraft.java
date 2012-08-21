@@ -669,6 +669,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				catch (Throwable t) {
 					// try to handle errors gracefuly
 					try {
+						t.printStackTrace();
 						if (SpoutClient.isSandboxed()) {
 							SpoutClient.disableSandbox();
 						}
@@ -677,7 +678,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError());
 
-						t.printStackTrace();
 					} catch (Throwable failed) {
 						SpoutClient.disableSandbox();
 						failed.printStackTrace();

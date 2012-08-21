@@ -406,31 +406,9 @@ public class MapCalculator implements Runnable {
 
 	/**
 	 * the run() to implement runnable - the main function of the other thread.
-	 * when threading is disabled, this simply idles and the actual work is done
-	 * in onRenderTick().
+	 * this simply idles and the actual work is done in onRenderTick().
 	 */
 	public void run() {
-		// wait 1 s for the world to set up
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-		}
-		while (true) {
-			try {
-				if (Minecraft.theMinecraft != null
-						&& Minecraft.theMinecraft.theWorld != null) {
-					// can not multithread in SP
-					if (!Minecraft.theMinecraft.theWorld.isRemote) {
-						Thread.sleep(1000);
-					} else {
-						tryARender();
-					}
-				}
-				Thread.sleep(100);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 	/**
