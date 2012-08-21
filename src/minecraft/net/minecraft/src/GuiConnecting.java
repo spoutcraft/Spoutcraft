@@ -135,6 +135,8 @@ public class GuiConnecting extends GuiScreen
 
 	public GuiConnecting(Minecraft par1Minecraft, String par2Str, int par3)
 	{
+		this.mc = par1Minecraft;
+		
 		cancelled = false;
 		System.out.println((new StringBuilder()).append("Connecting to ").append(par2Str).append(", ").append(par3).toString());
 		par1Minecraft.loadWorld(null);
