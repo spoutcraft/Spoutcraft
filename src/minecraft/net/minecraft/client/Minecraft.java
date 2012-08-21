@@ -164,7 +164,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	// Spout End
 
 	public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5) {
-		MCPatcherUtils.setMinecraft(this); // Spout HD
 		MCPatcherUtils.setVersions("1.3.1", "2.4.1_01"); // Spout HD
 		StatList.func_75919_a();
 		this.tempDisplayHeight = par4;
