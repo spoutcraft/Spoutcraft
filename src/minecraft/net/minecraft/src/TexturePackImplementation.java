@@ -124,11 +124,11 @@ public abstract class TexturePackImplementation implements TexturePackBase {
 	}
 	// Spout HD start
 	public void openTexturePackFile() {
-		this.func_77533_a(MCPatcherUtils.getMinecraft().renderEngine);
+		this.func_77535_b(MCPatcherUtils.getMinecraft().renderEngine);
 	}
 
 	public void closeTexturePackFile() {
-		this.func_77535_b(MCPatcherUtils.getMinecraft().renderEngine);
+		this.func_77533_a(MCPatcherUtils.getMinecraft().renderEngine);
 	}
 	// Spout HD end
 }

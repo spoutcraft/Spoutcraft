@@ -61,6 +61,8 @@ import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
 public class MainMenu extends GuiScreen {
+	public static String mcVersion = "1.3.2";
+
 	final static List<String> splashes = new ArrayList<String>(1000);
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
@@ -210,7 +212,7 @@ public class MainMenu extends GuiScreen {
 		addons = new GenericButton("Addons");
 		addons.setGeometry(width - 110, height - 105, 100, 20);
 
-		buildNumber = new GenericLabel("1.3.2 b" + SpoutClient.getClientVersion());
+		buildNumber = new GenericLabel(mcVersion+" b" + SpoutClient.getClientVersion());
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
 		buildNumber.setTextColor(new Color(0x6CC0DC));
 		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);

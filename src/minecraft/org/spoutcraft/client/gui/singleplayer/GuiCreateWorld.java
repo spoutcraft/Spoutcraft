@@ -21,6 +21,7 @@ package org.spoutcraft.client.gui.singleplayer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -43,33 +44,20 @@ import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
 
 public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonCancel, buttonNewSeed;
-	private GenericComboBox comboGameType, comboWorldType, comboWorldHeight;
+	private GenericComboBox comboGameType, comboWorldType;
+	private GenericCheckBox checkHardcore;
 	private GenericCheckBox checkGenerateStructures;
 	private GenericTextField textName, textSeed;
-	private GenericLabel labelTitle, labelName, labelSeed, labelGameType, labelWorldType, labelWorldHeight, labelFilePreview;
+	private GenericLabel labelTitle, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview;
 	private GenericScrollArea scrollArea;
 
 	private GuiScreen parent;
 
-	private static List<String> listGameTypes = new ArrayList<String>();
-	private static List<String> listWorldTypes = new ArrayList<String>();
-	private static List<String> listWorldHeights = new ArrayList<String>();
+	private static List<String> listGameTypes = Arrays.asList("Survival","Creative","Adventure");
+	private static List<String> listWorldTypes = Arrays.asList("Normal","Superflat");
 
 	Random seed = new Random();
 	private boolean createClicked;
-
-	static {
-		listGameTypes.add("Survival");
-		listGameTypes.add("Creative");
-		listGameTypes.add("Hardcore");
-
-		listWorldTypes.add("Normal");
-		listWorldTypes.add("Superflat");
-
-		for (int i = 6; i <= 11; i++) {
-			listWorldHeights.add("" + (int) Math.pow(2, i));
-		}
-	}
 
 	public GuiCreateWorld(GuiScreen parent) {
 		this.parent = parent;
@@ -91,14 +79,10 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		labelWorldType = new GenericLabel("World Type");
 
-		comboWorldHeight = new GenericComboBox();
-		comboWorldHeight.setItems(listWorldHeights);
-		comboWorldHeight.setSelection(2); //Set to 128 by default.
-		comboWorldHeight.setEnabled(false);
-		comboWorldHeight.setTooltip("Broken as of Minecraft 1.2 :(");
-
-		labelWorldHeight = new GenericLabel("World Height");
-
+		checkHardcore = new GenericCheckBox("Hardcore mode");
+		checkHardcore.setTooltip("You only live once!");
+		checkHardcore.setChecked(false);
+		
 		checkGenerateStructures = new GenericCheckBox("Generate Structures");
 		checkGenerateStructures.setTooltip("Villages, Dungeons, Strongholds, etc.");
 		checkGenerateStructures.setChecked(true);
@@ -128,7 +112,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, labelTitle, scrollArea, buttonDone, buttonCancel);
-		scrollArea.attachWidgets(spoutcraft, comboGameType, comboWorldHeight, comboWorldType, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelWorldHeight, labelFilePreview, buttonNewSeed);
+		scrollArea.attachWidgets(spoutcraft, comboGameType, comboWorldType, checkHardcore, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview, buttonNewSeed);
 	}
 
 	@Override
@@ -164,14 +148,13 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		ftop += 25;
 
-		labelWorldHeight.setX(fleft).setY(ftop + 6).setWidth(200).setHeight(20);
-		comboWorldHeight.setX(fright).setY(ftop).setWidth(200).setHeight(20);
-
-		ftop += 25;
-
 		labelWorldType.setX(fleft).setY(ftop + 6).setWidth(200).setHeight(20);
 		comboWorldType.setX(fright).setY(ftop).setWidth(200).setHeight(20);
 
+		ftop += 25;
+		
+		checkHardcore.setX(fright).setY(ftop).setWidth(200).setHeight(20);
+		
 		ftop += 25;
 
 		checkGenerateStructures.setX(fright).setY(ftop).setWidth(200).setHeight(20);
@@ -215,13 +198,15 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			EnumGameType var9 = EnumGameType.SURVIVAL;
 			if (comboGameType.getSelectedItem().equals("Creative")) {
 				var9 = EnumGameType.CREATIVE;
-				//this.mc.playerController = new PlayerControllerCreative(this.mc);
-			} else {
-				//this.mc.playerController = new PlayerControllerSP(this.mc);
 			}
-
-			boolean hardcore = comboGameType.getSelectedItem().equals("Hardcore");
-			int height = Integer.valueOf(comboWorldHeight.getSelectedItem());
+			if (comboGameType.getSelectedItem().equals("Survival")) {
+				var9 = EnumGameType.SURVIVAL;
+			}
+			if (comboGameType.getSelectedItem().equals("Adventure")) {
+				var9 = EnumGameType.ADVENTURE;
+			}
+			
+			boolean hardcore = checkHardcore.isChecked();
 
 			this.mc.launchIntegratedServer(getEffectiveSaveName(), textName.getText(), new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]));
 			this.mc.displayGuiScreen((GuiScreen)null);

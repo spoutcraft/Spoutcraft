@@ -177,7 +177,6 @@ class TexturePackSizeThread extends Thread {
 		synchronized(TexturePackItem.texturePackSize) {
 			TexturePackItem.texturePackSize.put(getName(), item.tileSize);
 		}
-		texturePack.closeTexturePackFile();
 
 		TexturePackItem.activeThread = null;
 	}

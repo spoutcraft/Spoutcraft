@@ -38,6 +38,7 @@ import net.minecraft.src.GuiScreen;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.gui.Button;
@@ -67,7 +68,7 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		buttonDone = new GenericButton("Main Menu");
 		scroll = new GenericScrollArea();
 		labelSpoutcraftVersion = new GenericLabel("Spoutcraft " + SpoutClient.getClientVersion() + "\nLicensed under LGPLv3");
-		labelMinecraftVersion = new GenericLabel("Minecraft 1.2.5\nCopyright Mojang AB" );
+		labelMinecraftVersion = new GenericLabel("Minecraft "+MainMenu.mcVersion+"\nCopyright Mojang AB" );
 		labelSpoutcraftVersion.setAlign(WidgetAnchor.TOP_RIGHT);
 		textureSpoutcraft = new ClientTexture("/res/logo/spoutcraft.png");
 		textureMinecraft = new ClientTexture("/res/logo/minecraft.png");
@@ -113,7 +114,6 @@ public class GuiNewAbout extends GuiSpoutScreen {
 				LinkedHashMap<String, Object> columns = (LinkedHashMap<String, Object>) root
 						.get("columns");
 				for (Object col : columns.values()) {
-					System.out.println("Column");
 					List<Section> sections = new LinkedList<Section>();
 					LinkedHashMap<String, Object> secs = (LinkedHashMap<String, Object>) col;
 					for (Object sec : secs.values()) {
