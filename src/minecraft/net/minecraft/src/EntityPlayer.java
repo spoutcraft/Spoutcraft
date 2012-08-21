@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.client.special.Holiday;
@@ -64,7 +65,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public boolean treadWaterToggle = false;
 	public boolean autoforwardToggle = false;
 	public boolean autoBackwardToggle = false;
-	public MovementInput movementInput;
+	public MovementInput movementInput = new MovementInputFromOptions(SpoutClient.getHandle().gameSettings); // Spout - always have an instance!
 	public VIP vip = null;
 	//Spout end
 

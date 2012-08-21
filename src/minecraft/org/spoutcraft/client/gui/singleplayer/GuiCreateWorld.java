@@ -54,7 +54,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 	private GuiScreen parent;
 
 	private static List<String> listGameTypes = Arrays.asList("Survival","Creative","Adventure");
-	private static List<String> listWorldTypes = Arrays.asList("Normal","Superflat");
+	private static List<String> listWorldTypes = Arrays.asList("Normal","Superflat","Large Biomes");
 
 	Random seed = new Random();
 	private boolean createClicked;
