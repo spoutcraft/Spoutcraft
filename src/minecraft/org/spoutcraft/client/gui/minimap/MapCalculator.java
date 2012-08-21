@@ -421,10 +421,7 @@ public class MapCalculator implements Runnable {
 		}
 		if (Minecraft.theMinecraft != null
 				&& Minecraft.theMinecraft.theWorld != null) {
-			if (!Minecraft.theMinecraft.theWorld.isRemote) {
-				tryARender();
-			}
-
+			tryARender();
 		}
 	}
 
