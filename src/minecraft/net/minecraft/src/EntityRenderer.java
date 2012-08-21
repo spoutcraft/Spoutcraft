@@ -822,7 +822,7 @@ public class EntityRenderer {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			this.mc.mcProfiler.endStartSection("terrain");
-			//Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
+			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
 			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var17;
