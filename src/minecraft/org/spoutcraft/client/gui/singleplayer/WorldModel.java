@@ -33,6 +33,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.FilterItem;
 import org.spoutcraft.client.gui.FilterModel;
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
 import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
 import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
 
@@ -75,6 +76,7 @@ public class WorldModel extends FilterModel {
 			s = (new StringBuilder()).append("World").append(i).toString();
 		}
 		mc.launchIntegratedServer(s, worlds.get(i).getDisplayName(), null);
+		SpoutClient.getInstance().getServerManager().setJoinedFrom(new MainMenu(), "Main Menu");
 		mc.displayGuiScreen(null);
 	}
 

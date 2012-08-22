@@ -23,6 +23,7 @@ import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
 
 public class ServerManager {
 	private FavoritesModel favorites;
@@ -75,5 +76,10 @@ public class ServerManager {
 
 	public String getJoinedFromName() {
 		return screenName;
+	}
+
+	public void setJoinedFrom(MainMenu screen, String name) {
+		joinedFrom = screen;
+		screenName = name;
 	}
 }

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 
@@ -27,7 +28,7 @@ public class GuiIngameMenu extends GuiScreen
 		byte byte0 = -16;
 		controlList.add(new GuiButton(1, width / 2 - 100, height / 4 + 120 + byte0, StatCollector.translateToLocal("menu.returnToMenu")));
 
-		if (mc.isIntegratedServerRunning())
+		if (!mc.isIntegratedServerRunning())
 		{
 			((GuiButton)controlList.get(0)).displayString = StatCollector.translateToLocal("menu.disconnect");
 		}
@@ -58,11 +59,7 @@ public class GuiIngameMenu extends GuiScreen
 
 			mc.loadWorld(null);
 			//Spout Start
-			if (mp) {
-				this.mc.displayGuiScreen(new GuiFavorites(new org.spoutcraft.client.gui.mainmenu.MainMenu())); //Spout
-			} else {
-				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
-			}
+			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
 			//Spout End
 		case 2:
 		case 3:
