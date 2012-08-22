@@ -106,6 +106,11 @@ public class GuiIngame extends Gui
 
 		//better safe than sorry
 		SpoutClient.enableSandbox();
+		
+		//Toggle visibility if needed
+		if(mainScreen.isVisible() == mc.playerController.isInCreativeMode()) {
+			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
+		}
 
 		// Hunger Bar Begin
 		mainScreen.getHungerBar().render();
