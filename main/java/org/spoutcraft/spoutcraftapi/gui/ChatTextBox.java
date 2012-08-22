@@ -81,72 +81,76 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		float chatOpacity = Spoutcraft.getChatManager().getOpacity();
 		int scroll = Spoutcraft.getChatManager().getScroll();
 		MinecraftFont font = Spoutcraft.getMinecraftFont();
-		Iterator<ChatMessage> iter = chatMessages.iterator();
-		for (int i = 0; i < scroll; i++) {
-			if (iter.hasNext()) {
-				iter.next();
+		synchronized(chatMessages) {
+			Iterator<ChatMessage> iter = chatMessages.iterator();
+			for (int i = 0; i < scroll; i++) {
+				if (iter.hasNext()) {
+					iter.next();
+				}
 			}
-		}
-		int lines = 0;
-		int bottom = (int) getScreen().getHeight() - 50;
-		while (iter.hasNext()) {
-			ChatMessage message = iter.next();
-			if (message.isIgnoredPerson() && Spoutcraft.getChatManager().isIgnoringPlayers()) {
-				continue;
-			}
-			if (message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
-				continue;
-			}
-			double opacity = 1D;
-
-			if (message.getAge() > getFadeoutTicks() - 20) {
-				opacity = 1D - ((double) message.getAge() - (double) getFadeoutTicks()) / 20d;
-			}
-
-			if (opacity > 1.0d) {
-				opacity = 1.0d;
-			}
-			if (opacity < 0.0d) {
-				opacity = 0.0d;
-			}
-			if (message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
-				break;
-			}
-			if (chatOpen) {
-				opacity = 1D;
-			}
-			if (opacity == 0) {
-				continue;
-			}
-			//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
-			int chatColor = 0x00ffffff;
-			int textAlpha = (int) (opacity * 255) << 24;
-			chatColor |= textAlpha;
-			int backgroundAlpha = (int) (Math.min(chatOpacity, opacity) * 255) << 24;
-			int backgroundColor = 0x00000000 | backgroundAlpha;
-			if (Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
-				backgroundColor = 0x00ff0000 | backgroundAlpha;
-			}
-			RenderUtil.drawRectangle(3, bottom - 1, 3 + 320, bottom + 9, backgroundColor);
-			font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, chatColor);
-			bottom -= 10;
-			lines ++;
-			if (!chatOpen && lines > visibleLines) {
-				break;
-			} else if (chatOpen && lines > visibleChatLines) {
-				break;
+			int lines = 0;
+			int bottom = (int) getScreen().getHeight() - 50;
+			while (iter.hasNext()) {
+				ChatMessage message = iter.next();
+				if (message.isIgnoredPerson() && Spoutcraft.getChatManager().isIgnoringPlayers()) {
+					continue;
+				}
+				if (message.isJoinMessage() && !Spoutcraft.getChatManager().isShowingJoins()) {
+					continue;
+				}
+				double opacity = 1D;
+	
+				if (message.getAge() > getFadeoutTicks() - 20) {
+					opacity = 1D - ((double) message.getAge() - (double) getFadeoutTicks()) / 20d;
+				}
+	
+				if (opacity > 1.0d) {
+					opacity = 1.0d;
+				}
+				if (opacity < 0.0d) {
+					opacity = 0.0d;
+				}
+				if (message.getAge() > getFadeoutTicks() + 20 && !chatOpen) {
+					break;
+				}
+				if (chatOpen) {
+					opacity = 1D;
+				}
+				if (opacity == 0) {
+					continue;
+				}
+				//int chatColor =  (chatOpen ? 255 : (int)(255D * opacity));
+				int chatColor = 0x00ffffff;
+				int textAlpha = (int) (opacity * 255) << 24;
+				chatColor |= textAlpha;
+				int backgroundAlpha = (int) (Math.min(chatOpacity, opacity) * 255) << 24;
+				int backgroundColor = 0x00000000 | backgroundAlpha;
+				if (Spoutcraft.getChatManager().isHighlightingWords() && message.isHighlighted() && !message.isJoinMessage()) {
+					backgroundColor = 0x00ff0000 | backgroundAlpha;
+				}
+				RenderUtil.drawRectangle(3, bottom - 1, 3 + 320, bottom + 9, backgroundColor);
+				font.drawShadowedString(message.getUnparsedMessage(), 4, bottom, chatColor);
+				bottom -= 10;
+				lines ++;
+				if (!chatOpen && lines > visibleLines) {
+					break;
+				} else if (chatOpen && lines > visibleChatLines) {
+					break;
+				}
 			}
 		}
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	public void increaseAge() {
-		Iterator<ChatMessage> iter = chatMessages.iterator();
-		while (iter.hasNext()) {
-			ChatMessage message = iter.next();
-			message.onTick();
-			if (message.getAge() > getFadeoutTicks()) {
-				break;
+		synchronized (chatMessages) {
+			Iterator<ChatMessage> iter = chatMessages.iterator();
+			while (iter.hasNext()) {
+				ChatMessage message = iter.next();
+				message.onTick();
+				if (message.getAge() > getFadeoutTicks()) {
+					break;
+				}
 			}
 		}
 	}
@@ -215,38 +219,50 @@ public class ChatTextBox extends GenericWidget implements Widget {
 		if (message.getUnparsedMessage().trim().equals("")) {
 			return;
 		}
-		chatMessages.add(0, message);
-		while (chatMessages.size() > 3000) {
-			chatMessages.remove(chatMessages.size() - 1);
+		synchronized (chatMessages) {
+			chatMessages.add(0, message);
+			while (chatMessages.size() > 3000) {
+				chatMessages.remove(chatMessages.size() - 1);
+			}
 		}
 	}
 
 	public static void reparse() {
-		for (ChatMessage message:chatMessages) {
-			message.reparse();
+		synchronized (chatMessages) {
+			for (ChatMessage message:chatMessages) {
+				message.reparse();
+			}
 		}
 	}
 
 	public static void clearChat() {
-		chatMessages.clear();
+		synchronized (chatMessages) {
+			chatMessages.clear();
+		}
 	}
 
 	public static int getNumChatMessages() {
-		return chatMessages.size();
+		synchronized (chatMessages) {
+			return chatMessages.size();
+		}
 	}
 
 	public static String getChatMessageAt(int pos) {
-		if (pos > -1 && pos < chatMessages.size()) {
-			return chatMessages.get(pos).getMessage();
+		synchronized (chatMessages) {
+			if (pos > -1 && pos < chatMessages.size()) {
+				return chatMessages.get(pos).getMessage();
+			}
 		}
 		return "";
 	}
 
 	public static String getPlayerNameAt(int pos) {
-		if (pos > -1 && pos < chatMessages.size()) {
-			String player = chatMessages.get(pos).getPlayer();
-			if (player != null) {
-				return player;
+		synchronized (chatMessages) {
+			if (pos > -1 && pos < chatMessages.size()) {
+				String player = chatMessages.get(pos).getPlayer();
+				if (player != null) {
+					return player;
+				}
 			}
 		}
 		return "";
