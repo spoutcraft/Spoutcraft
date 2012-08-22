@@ -63,7 +63,7 @@ public class GuiScreen extends Gui
 	long renderEndNanoTime = 0L;
 	protected static int limitedFramerate = 120;
 	private long lastClick = 0;
-	protected static RenderItem itemRenderer = new RenderItem();
+	protected static RenderItem ourItemRenderer = new RenderItem();
 	private boolean firstrun = true;
 
 	public Player getPlayer() {
@@ -115,11 +115,11 @@ public class GuiScreen extends Gui
 				RenderHelper.enableGUIStandardItemLighting();
 				GL11.glTranslatef(0.0F, 0.0F, 32F);
 				zLevel = 200F;
-				itemRenderer.zLevel = 200F;
-				itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
-				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
+				ourItemRenderer.zLevel = 200F;
+				ourItemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
+				ourItemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), x - i - 8, y - j - 8);
 				zLevel = 0.0F;
-				itemRenderer.zLevel = 0.0F;
+				ourItemRenderer.zLevel = 0.0F;
 				RenderHelper.enableStandardItemLighting();
 			}
 		}

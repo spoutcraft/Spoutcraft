@@ -23,10 +23,8 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public abstract class GuiContainer extends GuiScreen
 {
-	//Spout moved up to GuiScreen
 	/** Stacks renderer. Icons, stack size, health, etc... */
-//	protected static RenderItem itemRenderer = new RenderItem();
-	//Spout End
+	protected static RenderItem itemRenderer = new RenderItem();
 
 	/** The X size of the inventory window in pixels. */
 	protected int xSize;
