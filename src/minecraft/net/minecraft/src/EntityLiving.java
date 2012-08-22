@@ -609,7 +609,7 @@ public abstract class EntityLiving extends Entity {
 					}
 				}
 
-				if (var3 && DamageSource.drown != par1DamageSource) { //Spout
+				if (var3) {
 					this.worldObj.setEntityState(this, (byte)2);
 
 					if (par1DamageSource != DamageSource.drown && par1DamageSource != DamageSource.field_76375_l) {
