@@ -42,10 +42,8 @@ public class SpoutcraftChunk implements Chunk {
 
 	private WeakReference<net.minecraft.src.Chunk> weakChunk;
 	private net.minecraft.src.World world;
-	private final Map<Integer, Block> cache = new MapMaker().weakValues().makeMap();
 	private int x;
 	private int z;
-	//public final TIntIntHashMap powerOverrides = new TIntIntHashMap();
 	public final TIntFloatHashMap hardnessOverrides = new TIntFloatHashMap();
 	private short[] customBlockData = null;
 	private byte[] customBlockRotations = null;
@@ -66,18 +64,7 @@ public class SpoutcraftChunk implements Chunk {
 	}
 
 	public Block getBlockAt(int x, int y, int z) {
-		int pos = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 0xFF);
-		Block block = this.cache.get(pos);
-		if (block == null) {
-			Block newBlock = new SpoutcraftBlock(this, (getX() << 4) | (x & 0xF), y & 0xFF, (getZ() << 4) | (z & 0xF));
-			Block oldBlock = this.cache.put(pos, newBlock);
-			if (oldBlock == null) {
-				block = newBlock;
-			} else {
-				block = oldBlock;
-			}
-		}
-		return block;
+		return new SpoutcraftBlock(this,x,y,z);
 	}
 
 	public SpoutcraftWorld getWorld() {

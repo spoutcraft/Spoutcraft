@@ -354,7 +354,24 @@ public class SpoutcraftBlock implements Block {
 
 	@Override
 	public boolean equals(Object o) {
-		return this == o;
+		if(o == null) {
+			return false;
+		}
+		if(!(o instanceof SpoutcraftBlock)) {
+			return false;
+		}
+		SpoutcraftBlock other = (SpoutcraftBlock) o;
+		return other.x == x && other.y == y && other.z == z && other.getWorld().getName().equals(getWorld().getName());
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 5;
+		hash = 79 * hash + chunk.getWorld().getName().hashCode();
+		hash = 79 * hash + this.x;
+		hash = 79 * hash + this.y;
+		hash = 79 * hash + this.z;
+		return hash;
 	}
 
 	@Override
