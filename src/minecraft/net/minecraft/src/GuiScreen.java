@@ -263,10 +263,13 @@ public class GuiScreen extends Gui
 			}
 		} else if (eventButton == 1) {
 			for(Widget widget : screen.getAttachedWidgets(true)) {
-				if(isInBoundingRect(widget, mouseX, mouseY)) {
-					if(widget instanceof Slot) {
-						handleClickOnSlot((Slot) widget, 1);
-						break;
+				if (widget instanceof Control) {
+					Control c = (Control) widget;
+					if(c.isEnabled() && c.isVisible() && isInBoundingRect(widget, mouseX, mouseY)) {
+						if(widget instanceof Slot) {
+							handleClickOnSlot((Slot) widget, 1);
+							break;
+						}
 					}
 				}
 			}
