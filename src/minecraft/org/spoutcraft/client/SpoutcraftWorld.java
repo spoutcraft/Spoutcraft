@@ -56,7 +56,6 @@ import org.spoutcraft.spoutcraftapi.util.Vector;
 public class SpoutcraftWorld implements World {
 	private final net.minecraft.src.World handle;
 	private Environment environment;
-	private UUID uid = UUID.randomUUID();
 
 	public SpoutcraftWorld(net.minecraft.src.World world) {
 		handle = world;
@@ -485,13 +484,5 @@ public class SpoutcraftWorld implements World {
 	public Entity getEntityFromUUID(UUID id) {
 		// TODO
 		throw new UnsupportedOperationException("Not yet implemented!");
-	}
-
-	public void setId(UUID worldId) {
-		this.uid = worldId;
-	}
-	
-	public UUID getId() {
-		return uid;
 	}
 }
