@@ -755,6 +755,8 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			for (int var3 = 0; var3 < this.timer.elapsedTicks; ++var3) {
 				this.runTick();
 			}
+			
+			this.mcProfiler.endSection();
 
 			this.mcProfiler.endStartSection("preRenderErrors");
 			long var7 = System.nanoTime() - var6;
