@@ -1412,7 +1412,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 			// Spout start
 			// Open chat in SP with debug key
-			if (this.currentScreen == null && this.gameSettings.field_74323_J.isPressed() && var4) {
+			if (this.currentScreen == null && this.gameSettings.field_74323_J.isPressed() && var4 && Keyboard.getEventKey() != Keyboard.KEY_SLASH && isIntegratedServerRunning()) {
 				this.displayGuiScreen(new GuiChat());
 				thePlayer.sendChatMessage(ChatColor.RED + "Debug Console Opened");
 			}
