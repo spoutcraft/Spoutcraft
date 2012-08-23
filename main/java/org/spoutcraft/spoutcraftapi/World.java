@@ -814,13 +814,6 @@ public interface World {
 	 * @return entity
 	 */
 	public Entity getEntityFromUUID(UUID id);
-	
-	/**
-	 * Gets the unique world id
-	 * Is only persistent when in multiplayer with SpoutPlugin installed.
-	 * @return uuid
-	 */
-	public UUID getId();
 
 	/**
 	 * Represents various map environment types that a world may be
