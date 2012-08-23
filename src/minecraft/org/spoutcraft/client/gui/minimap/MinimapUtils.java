@@ -33,7 +33,7 @@ public class MinimapUtils {
 			worldName = SpoutClient.getHandle().getIntegratedServer().getWorldName();
 		}
 		if (worldName.equals("MpServer") && org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp != null) {
-			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp.replaceAll("\\.", "-");
+			return org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp.replaceAll("\\.", "-") + "-" + SpoutClient.getInstance().getWorld().getUID().toString();
 		}
 		return worldName;
 	}
