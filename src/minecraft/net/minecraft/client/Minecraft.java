@@ -676,7 +676,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 						this.theWorld = null;
 						this.loadWorld((WorldClient) null);
 
-						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError());
+						this.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiUnexpectedError(t));
 
 					} catch (Throwable failed) {
 						SpoutClient.disableSandbox();
