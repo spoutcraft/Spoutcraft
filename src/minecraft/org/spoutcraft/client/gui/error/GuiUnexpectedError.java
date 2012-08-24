@@ -20,10 +20,18 @@
 package org.spoutcraft.client.gui.error;
 
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+import org.bukkit.ChatColor;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -37,8 +45,17 @@ import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
+
 public class GuiUnexpectedError extends GuiScreen {
-	public GuiUnexpectedError() {
+
+	private Throwable caused;
+	private GenericLabel hastebinLink;
+	
+	private String hastebinURL;
+	private boolean generated = false;
+
+	public GuiUnexpectedError(Throwable caused) {
+		this.caused = caused;
 	}
 
 	public void initGui() {
@@ -48,90 +65,114 @@ public class GuiUnexpectedError extends GuiScreen {
 		screen.setHeight(height - 16 - 24).setWidth(width).setY(16 + 24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
-		GenericLabel label = new GenericLabel("Oh Noes!");
+		GenericLabel label = new GenericLabel("Oh Noes! An Error has occured!");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(16);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
 		getScreen().attachWidget(spoutcraft, label);
 
-		int top = 5;
+		int top = 60;
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
 
-		label = new GenericLabel("Spoutcraft has encounted an unexpected error! How shall we proceed?");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX((int) (width / 2 - size / 2)).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 22;
+		hastebinLink = new GenericLabel("Generating hastie...");
+		hastebinLink.setX(95).setY(top);
+		hastebinLink.setTextColor(grey);
+		screen.attachWidget(spoutcraft, hastebinLink);
+		generateHastie();
+		
+		Button button = new CopyErrorURL(this).setText("Copy link");
+		button.setHeight(20).setWidth(80);
+		button.setX((int) (hastebinLink.getWidth()+hastebinLink.getX()+10.0));
+		button.setY(top-5);
+		button.setAlign(WidgetAnchor.TOP_CENTER);
+		screen.attachWidget(spoutcraft, button);
+		
+		top += 25;
 
-		label = new GenericLabel("1.) It's just a fluke. I'm a good person, errors don't happen to me. \nAnyways, even if an error did happen, I'm sure it was just a cosmic mistake.\n" +
-		"This error was just the result of Bill Gates/Steve Jobs/Linus Torvalds\nsummoning a forbidden spirit, and is unlikely to occur more than once,\n" +
-		"maybe twice in a blue moon. But that's all superstious mumbo-jumbo anyway.\nThe point is that this will never happen again, so let's just move past it\n" +
-		"and forgive and forget.\n\nWhat were we talking about again?");
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 11 * 10;
-
-		Button button = new IgnoreErrorButton().setText("Ignore & Return To Main Menu");
-		button.setHeight(20).setWidth(200);
-		button.setX((int) (width / 2 - button.getWidth() / 2));
+		button = new ReportErrorButton().setText("Report");
+		button.setHeight(20).setWidth(70);
+		button.setX((int) (width / 2 - button.getWidth() - button.getWidth()/2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		top += 32;
-
-		label = new GenericLabel("2.) Oh dear, an error. I should report this right away so it can get fixed!");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 22;
-
-		button = new ReportErrorButton().setText("Report & Return To Main Menu");
-		button.setHeight(20).setWidth(200);
-		button.setX((int) (width / 2 - button.getWidth() / 2));
+		
+		button = new IgnoreErrorButton().setText("Ignore");
+		button.setHeight(20).setWidth(70);
+		button.setX((int) (width / 2 + button.getWidth() /2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		top += 32;
-
-		label = new GenericLabel("3.) An error? Fits this crummy mod like a glove. Get me out of here!");
-		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
-		label.setX(10).setY(top);
-		label.setTextColor(grey);
-		screen.attachWidget(spoutcraft, label);
-		top += 22;
-
-		button = new ExitGameButton().setText("Exit This Crummy Game");
-		button.setHeight(20).setWidth(200);
-		button.setX((int) (width / 2 - button.getWidth() / 2));
-		button.setY(top);
-		button.setAlign(WidgetAnchor.TOP_CENTER);
-		screen.attachWidget(spoutcraft, button);
-		top += 32;
+		top += 30;
 	}
 
 	@Override
 	public void drawScreen(int var1, int var2, float var3) {
 		drawDefaultBackground();
 	}
+
+	private void generateHastie() {
+		if(generated) {
+			hastebinLink.setText("Error link: "+ChatColor.GREEN+hastebinURL);
+			return;
+		}
+		try {
+			String data = "Spoutcraft b"+SpoutClient.getClientVersion()+" error:"+"\n\n";
+			data += caused.toString()+"\n";
+			for(StackTraceElement ele : caused.getStackTrace()) {
+				data+=ele.toString()+"\n";
+			}
+			
+			URL url = new URL("http://www.hastebin.com/documents");
+			URLConnection conn = url.openConnection();
+			conn.setDoOutput(true);
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			wr.write(data);
+			wr.flush();
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String line = rd.readLine();
+			hastebinURL = "hastebin.com/"+line.substring(8, line.length()-2); //get rid of the json stuff
+			hastebinLink.setText("Error: "+ChatColor.GREEN+hastebinURL);
+			generated = true;
+			wr.close();
+			rd.close();
+		} catch (Exception e) {
+			hastebinLink.setText("Connection error!");
+		}
+	}
+
+	protected void copyErrorToClipboard() {
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(hastebinURL), null);
+	}
+}
+class CopyErrorURL extends GenericButton {
+	
+	private GuiUnexpectedError error;
+	CopyErrorURL(GuiUnexpectedError error) {
+		this.error = error;
+	}
+	
+	public void onButtonClick(ButtonClickEvent event) {
+		error.copyErrorToClipboard();
+	}
 }
 
 class IgnoreErrorButton extends GenericButton {
+
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ReportErrorButton extends GenericButton {
+
 	public void onButtonClick(ButtonClickEvent event) {
 		SpoutClient.disableSandbox();
 		try {
-			URL url =  new URL("http://spout.in/issues");
+			URL url = new URL("http://spout.in/issues");
 			Desktop.getDesktop().browse(url.toURI());
-		} catch (Exception e) { }
-		finally {
+		} catch (Exception e) {
+		} finally {
 			SpoutClient.enableSandbox();
 		}
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
@@ -139,6 +180,7 @@ class ReportErrorButton extends GenericButton {
 }
 
 class ExitGameButton extends GenericButton {
+
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.shutdownMinecraftApplet();
 	}

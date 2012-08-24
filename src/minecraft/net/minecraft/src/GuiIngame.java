@@ -108,7 +108,7 @@ public class GuiIngame extends Gui
 		SpoutClient.enableSandbox();
 		
 		//Toggle visibility if needed
-		if(mainScreen.isVisible() == mc.playerController.isInCreativeMode()) {
+		if(mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
 			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
 		}
 
