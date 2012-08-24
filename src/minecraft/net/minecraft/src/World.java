@@ -3330,7 +3330,7 @@ public abstract class World implements IBlockAccess {
 	}
 	//Spout End
 	
-	//Spout start
+	//Spout start - Update this for new tile entities, or they WILL be broken!
 	public void checkEntityTile(TileEntity tileentity)
 	{
 		if(tileentity instanceof TileEntityPiston)
@@ -3338,9 +3338,20 @@ public abstract class World implements IBlockAccess {
 
 		switch(getBlockId(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord))
 		{
-			case 63:
-			case 68:
-				if(!(tileentity instanceof TileEntitySign))
+			case 23:
+				if(!(tileentity instanceof TileEntityDispenser)) 
+					tileentity.invalidate();
+				break;
+			case 25:
+				if(!(tileentity instanceof TileEntityNote))
+					tileentity.invalidate();
+				break;
+			case 52:
+				if(!(tileentity instanceof TileEntityMobSpawner))
+					tileentity.invalidate();
+				break;
+			case 54:
+				if(!(tileentity instanceof TileEntityChest))
 					tileentity.invalidate();
 				break;
 			case 61:
@@ -3348,24 +3359,13 @@ public abstract class World implements IBlockAccess {
 				if(!(tileentity instanceof TileEntityFurnace))
 					tileentity.invalidate();
 				break;
+			case 63:
+			case 68:
+				if(!(tileentity instanceof TileEntitySign))
+					tileentity.invalidate();
+				break;
 			case 84:
 				if(!(tileentity instanceof TileEntityRecordPlayer))
-					tileentity.invalidate();
-				break;
-			case 23:
-				if(!(tileentity instanceof TileEntityDispenser))
-					tileentity.invalidate();
-				break;
-			case 54:
-				if(!(tileentity instanceof TileEntityChest))
-					tileentity.invalidate();
-				break;
-			case 52:
-				if(!(tileentity instanceof TileEntityMobSpawner))
-					tileentity.invalidate();
-				break;
-			case 25:
-				if(!(tileentity instanceof TileEntityNote))
 					tileentity.invalidate();
 				break;
 			case 116:
@@ -3374,6 +3374,14 @@ public abstract class World implements IBlockAccess {
 				break;
 			case 117:
 				if(!(tileentity instanceof TileEntityBrewingStand))
+					tileentity.invalidate();
+				break;
+			case 119:
+				if(!(tileentity instanceof TileEntityEndPortal))
+					tileentity.invalidate();
+				break;
+			case 130:
+				if(!(tileentity instanceof TileEntityEnderChest))
 					tileentity.invalidate();
 				break;
 			default:
