@@ -61,19 +61,17 @@ import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
 public class MainMenu extends GuiScreen {
-	public static String mcVersion = "1.3.2";
 
+	public static String mcVersion = "1.3.2";
 	final static List<String> splashes = new ArrayList<String>(1000);
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
 	final static List<String> backgrounds = new ArrayList<String>();
-	
 	//Animate click delay
 	private static final int CLICK_DELAY = 7;
 	int clickDelay = 0;
-
 	//debug
 	long lastTime = System.currentTimeMillis();
 	int lastFPS = 0;
@@ -83,7 +81,7 @@ public class MainMenu extends GuiScreen {
 		splashText = new GenericLabel(getSplashText());
 		fastLogin = new GenericButton(ChatColor.GREEN + "Fast Login");
 		fastLogin.setVisible(ConfigReader.fastLogin);
-		
+
 		updateBackgrounds();
 
 		Holiday holiday = Resources.getHoliday();
@@ -109,14 +107,14 @@ public class MainMenu extends GuiScreen {
 
 		background = new BackgroundTexture(backgrounds);
 	}
-	
+
 	private static void updateBackgrounds() {
-		if(!timeOfDay.equals(getTimeFolder())) {
-			timeOfDay = getTimeFolder();			
+		if (!timeOfDay.equals(getTimeFolder())) {
+			timeOfDay = getTimeFolder();
 		} else {
 			return;
 		}
-		
+
 		int picture = 1;
 		int pass = 0;
 		StringBuilder builder = new StringBuilder();
@@ -171,23 +169,24 @@ public class MainMenu extends GuiScreen {
 			return splashes.get((new Random()).nextInt(splashes.size()));
 		} catch (Exception e) {
 			return "I <3 Spout";
-		}
-		finally {
+		} finally {
 			if (br != null) {
 				try {
 					br.close();
+				} catch (Exception ignore) {
 				}
-				catch (Exception ignore) { }
 			}
 		}
 	}
 
 	private static String getTimeFolder() {
 		int hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-		if (hours < 6)
+		if (hours < 6) {
 			return "night";
-		if (hours < 12)
+		}
+		if (hours < 12) {
 			return "day";
+		}
 		if (hours < 20) {
 			return "evening";
 		}
@@ -212,7 +211,7 @@ public class MainMenu extends GuiScreen {
 		addons = new GenericButton("Addons");
 		addons.setGeometry(width - 110, height - 105, 100, 20);
 
-		buildNumber = new GenericLabel(mcVersion+" b" + SpoutClient.getClientVersion());
+		buildNumber = new GenericLabel(mcVersion + " b" + SpoutClient.getClientVersion());
 		textWidth = Spoutcraft.getRenderDelegate().getMinecraftFont().getTextWidth(buildNumber.getText());
 		buildNumber.setTextColor(new Color(0x6CC0DC));
 		buildNumber.setGeometry(Math.min(90 - textWidth, width - 296 - textWidth), height - 99, 75, 20);
@@ -238,7 +237,7 @@ public class MainMenu extends GuiScreen {
 		splashText.setScale(Math.min(1.5F, scale));
 
 		logo = new ScaledTexture("/res/logo/spoutcraft.png");
-		((ScaledTexture)logo).setScale(Math.min(1F, (width - 135F) / 256F));
+		((ScaledTexture) logo).setScale(Math.min(1F, (width - 135F) / 256F));
 		logo.setGeometry(15, height - 185, 256, 64);
 		logo.setLocal(true);
 		logo.setDrawAlphaChannel(true);
@@ -249,7 +248,17 @@ public class MainMenu extends GuiScreen {
 		textWidth /= 100;
 		animate.setGeometry(width - textWidth - 2, height - 8, textWidth, 10);
 		animate.setScale(0.75F);
-		animate.setTextColor(ConfigReader.animateMainMenu ? new Color(0x00EE00) : new Color(0xFF0000));
+		switch (ConfigReader.mainMenuState) {
+			case 1:
+				animate.setTextColor(new Color(0x00EE00));
+				break;
+			case 2:
+				animate.setTextColor(new Color(0xFFFF00));
+				break;
+			case 3:
+				animate.setTextColor(new Color(0xFF0000));
+				break;
+		}
 
 		debugText = new GenericLabel();
 		debugText.setTextColor(new Color(0xFFE303));
@@ -327,9 +336,22 @@ public class MainMenu extends GuiScreen {
 			clickDelay--;
 		}
 		if (Mouse.isButtonDown(0) && this.isInBoundingRect(animate, mouseX, mouseY) && clickDelay == 0) {
-			ConfigReader.animateMainMenu = !ConfigReader.animateMainMenu;
+			ConfigReader.mainMenuState++;
+			if (ConfigReader.mainMenuState > 3) {
+				ConfigReader.mainMenuState = 1;
+			}
 			ConfigReader.write();
-			animate.setTextColor(ConfigReader.animateMainMenu ? new Color(0x00EE00) : new Color(0xFF0000));
+			switch (ConfigReader.mainMenuState) {
+				case 1:
+					animate.setTextColor(new Color(0x00EE00));
+					break;
+				case 2:
+					animate.setTextColor(new Color(0xFFFF00));
+					break;
+				case 3:
+					animate.setTextColor(new Color(0xFF0000));
+					break;
+			}
 			clickDelay = CLICK_DELAY;
 		}
 
@@ -338,7 +360,9 @@ public class MainMenu extends GuiScreen {
 }
 
 class ScaledTexture extends GenericTexture {
+
 	float scale;
+
 	ScaledTexture(String path) {
 		super(path);
 	}
@@ -358,6 +382,7 @@ class ScaledTexture extends GenericTexture {
 }
 
 class BackgroundTexture extends GenericTexture {
+
 	static final int PAN_TIME = 600;
 	static final int EXTRA_PAN_TIME = 150;
 	static final int HEIGHT_PERCENT = 70;
@@ -368,11 +393,9 @@ class BackgroundTexture extends GenericTexture {
 	int panTime = PAN_TIME;
 	int picture = -1;
 	boolean zoomIn = false;
-	final boolean mipmap;
 
 	BackgroundTexture(List<String> backgrounds) {
 		super(backgrounds.get(0));
-		mipmap = !GL11.glGetString(GL11.GL_RENDERER).toLowerCase().contains("mobile intel");
 		this.backgrounds = backgrounds;
 		cycleBackground();
 	}
@@ -393,16 +416,16 @@ class BackgroundTexture extends GenericTexture {
 		org.newdawn.slick.opengl.Texture tex = CustomTextureManager.getTextureFromJar(getUrl());
 		GL11.glPushMatrix();
 		if (tex != null) {
-			if (ConfigReader.animateMainMenu) {
+			if (ConfigReader.mainMenuState != 3) {
 				animate(tex);
 			} else {
-				((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, (int)this.getActualWidth(), (int)this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
+				((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, (int) this.getActualWidth(), (int) this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
 			}
 		}
 		GL11.glPopMatrix();
 	}
-
 	private static final Color white = new Color(1.0F, 1.0F, 1.0F);
+
 	private void animate(org.newdawn.slick.opengl.Texture tex) {
 		int adjustedX = ((100 - HEIGHT_PERCENT) / 2) * tex.getImageHeight() * panTime;
 		adjustedX /= maxPanTime;
@@ -418,7 +441,7 @@ class BackgroundTexture extends GenericTexture {
 
 		GL11.glScaled(this.getActualWidth() / (adjustedWidth - adjustedX), this.getActualHeight() / (adjustedHeight - adjustedY), 1D);
 		GL11.glTranslatef(-adjustedX, -adjustedY, 0F);
-		((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, mipmap, GL11.GL_NEAREST);
+		((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, adjustedWidth, adjustedHeight, white, false, -1, -1, ConfigReader.mainMenuState == 1, GL11.GL_NEAREST);
 
 		if (zoomIn && panTime < maxPanTime) {
 			panTime++;

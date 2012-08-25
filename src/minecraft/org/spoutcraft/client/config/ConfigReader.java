@@ -87,7 +87,7 @@ public class ConfigReader {
 	public static int resizedScreenshotWidth = 6000;
 	public static int resizedScreenshotHeight = 3200;
 	public static float chatOpacity = 0.5f;
-	public static boolean animateMainMenu = isShadersSupported();
+	public static int mainMenuState = defaultMenuState();
 
 	// Launcher settings
 	public static boolean fastLogin = false;
@@ -232,6 +232,16 @@ public class ConfigReader {
 		} else if (ConfigReader.signDistance >= 128 && ConfigReader.signDistance != Integer.MAX_VALUE) {
 			ConfigReader.signDistance = Integer.MAX_VALUE;
 		}
+	}
+	
+	public static int defaultMenuState() {
+		if(Shaders.isOpenGL(3)) {
+			return 1;
+		}
+		if(Shaders.isOpenGL(2)) {
+			return 2;
+		}
+		return 3;
 	}
 
 	public static boolean isShadersSupported() {
