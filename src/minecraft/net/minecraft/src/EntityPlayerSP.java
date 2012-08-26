@@ -461,11 +461,15 @@ public class EntityPlayerSP extends EntityPlayer {
 			
 			//Run toggle
 			else if (key == settings.keyRunToggle.keyCode) {
-				runToggle = !runToggle;
-				setSprinting(runToggle);
-				if (runToggle) {
-					sneakToggle = false;
-					treadWaterToggle = false;
+				if (SpoutClient.getInstance().isSprintCheat()) {
+					runToggle = !runToggle;
+					setSprinting(runToggle);
+					if (runToggle) {
+						sneakToggle = false;
+						treadWaterToggle = false;
+					}
+				} else {
+					SpoutClient.getInstance().getActivePlayer().sendMessage(ChatColor.RED + "Doing that is not allowed by your server, it is considered cheating.");
 				}
 			}
 			

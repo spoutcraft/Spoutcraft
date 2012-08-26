@@ -26,6 +26,7 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketAllowVisualCheats implements SpoutPacket {
+	private boolean sprint = false;
 	private boolean sky = false;
 	private boolean clearwater = false;
 	private boolean stars = false;
@@ -38,7 +39,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 	public PacketAllowVisualCheats() {
 	}
 
-	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog) {
+	public PacketAllowVisualCheats(boolean tsky, boolean tclearwater, boolean tstars, boolean tweather, boolean ttime, boolean tcoords, boolean tentitylabel, boolean tvoidfog, boolean tsprint) {
 		this.sky = tsky;
 		this.clearwater = tclearwater;
 		this.stars = tstars;
@@ -47,6 +48,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		this.coords = tcoords;
 		this.entitylabel = tentitylabel;
 		this.voidfog = tvoidfog;
+		this.sprint = tsprint;
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -58,6 +60,7 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		coords = input.readBoolean();
 		entitylabel = input.readBoolean();
 		voidfog = input.readBoolean();
+		sprint = input.readBoolean();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
@@ -69,10 +72,11 @@ public class PacketAllowVisualCheats implements SpoutPacket {
 		output.writeBoolean(coords);
 		output.writeBoolean(entitylabel);
 		output.writeBoolean(voidfog);
+		output.writeBoolean(sprint);
 	}
 
 	public void run(int playerId) {
-		SpoutClient.getInstance().setVisualCheats(sky, clearwater, stars, weather, time, coords, entitylabel, voidfog);
+		SpoutClient.getInstance().setVisualCheats(sky, clearwater, stars, weather, time, coords, entitylabel, voidfog, sprint);
 	}
 
 	public PacketType getPacketType() {
