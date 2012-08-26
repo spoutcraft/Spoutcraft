@@ -1399,7 +1399,7 @@ public abstract class EntityLiving extends Entity {
 	 * Causes this entity to do an upwards motion (jumping).
 	 */
 	protected void jump() {
-		this.motionY = 0.41999998688697815D;
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); //Spout - added jumping modifier!
 
 		if (this.isPotionActive(Potion.jump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
