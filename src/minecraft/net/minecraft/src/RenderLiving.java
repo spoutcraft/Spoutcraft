@@ -299,6 +299,7 @@ public class RenderLiving extends Render {
 	 * Draws the debug or playername text above a living
 	 */
 	protected void renderLivingLabel(EntityLiving par1EntityLiving, String par2Str, double par3, double par5, double par7, int par9) {
+	//Spout end
 		double var10 = par1EntityLiving.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
 		if (var10 <= (double)(par9 * par9)) {
@@ -314,7 +315,7 @@ public class RenderLiving extends Render {
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
+			GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			Tessellator var15 = Tessellator.instance;
@@ -335,7 +336,6 @@ public class RenderLiving extends Render {
 			var15.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
-			GL11.glEnable(GL11.GL_ALPHA_TEST); //Spout - ?
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(true);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);
