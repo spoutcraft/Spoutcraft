@@ -142,7 +142,7 @@ public class MainMenu extends GuiScreen {
 	private static String getSplashText() {
 		BufferedReader br = null;
 		try {
-			if (splashes.size() == 0) {
+			if (splashes.isEmpty()) {
 				File splashTextFile = new File(FileUtil.getConfigDir(), "splashes.txt");
 				//refresh every day
 				if (!splashTextFile.exists() || (System.currentTimeMillis() - splashTextFile.lastModified() > (1L * 24 * 60 * 60 * 1000))) {
@@ -155,6 +155,9 @@ public class MainMenu extends GuiScreen {
 					if (temp.exists()) {
 						temp.delete();
 					}
+					
+					splashTextFile.delete();
+					
 					FileUtils.copyInputStreamToFile(urlConnect.getInputStream(), temp);
 					FileUtils.moveFile(temp, splashTextFile);
 				}
@@ -168,7 +171,8 @@ public class MainMenu extends GuiScreen {
 			}
 			return splashes.get((new Random()).nextInt(splashes.size()));
 		} catch (Exception e) {
-			return "I <3 Spout";
+			e.printStackTrace();
+			return "I <3 Spout's "+e.getMessage();
 		} finally {
 			if (br != null) {
 				try {
