@@ -51,7 +51,7 @@ public class DifficultyButton extends GenericButton {
 		if (Minecraft.theMinecraft.theWorld == null) {
 			return "Can not change difficulty outside of the game";
 		}
-		if (Minecraft.theMinecraft.isMultiplayerWorld()) {
+		if (!Minecraft.theMinecraft.isSingleplayer()) {
 			return "Can not change difficulty in multiplayer";
 		}
 		if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
@@ -65,7 +65,7 @@ public class DifficultyButton extends GenericButton {
 		if (Minecraft.theMinecraft.theWorld == null) {
 			return false;
 		}
-		if (Minecraft.theMinecraft.isMultiplayerWorld()) {
+		if (!Minecraft.theMinecraft.isSingleplayer()) {
 			return false;
 		}
 		if (Minecraft.theMinecraft.theWorld.getWorldInfo().isHardcoreModeEnabled()) {
