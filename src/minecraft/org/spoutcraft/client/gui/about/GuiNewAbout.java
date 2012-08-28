@@ -19,9 +19,6 @@
  */
 package org.spoutcraft.client.gui.about;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,10 +26,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.yaml.snakeyaml.Yaml;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
@@ -45,7 +43,6 @@ import org.spoutcraft.spoutcraftapi.gui.Button;
 import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
@@ -57,6 +54,19 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	private List<List<Section>> columns = new LinkedList<List<Section>>();
 	private int sectionMargin = 20, columnMargin = 20;
 	private ClientTexture textureSpoutcraft, textureMinecraft;
+	private static HashMap<String, Object> root;
+	
+	static {
+		updateRoot();
+	}
+	
+	private static void updateRoot() {
+		try {
+			root = (HashMap<String, Object>) (new Yaml()).load((new URL("http://get.spout.org/about.yml")).openStream());
+		} catch (Exception ex) {
+			Logger.getLogger(GuiNewAbout.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
 	public GuiNewAbout(GuiScreen parent) {
 		this.parent = parent;
@@ -76,30 +86,14 @@ public class GuiNewAbout extends GuiSpoutScreen {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, title, buttonDone, scroll, labelMinecraftVersion, labelSpoutcraftVersion, textureMinecraft, textureSpoutcraft);
 
-		Thread load = new Thread() {
-			@Override
-			public void run() {
-				try {
-					load((new URL("http://get.spout.org/about.yml"))
-							.openStream());
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		load.start();
+		load();
 	}
 
 	@SuppressWarnings("unchecked")
-	public void load(InputStream input) {
+	public void load() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		scroll.removeWidgets(spoutcraft);
 		try {
-			Yaml yaml = new Yaml();
-			HashMap<String, Object> root = (HashMap<String, Object>) yaml
-					.load(input);
 			if (root.containsKey("options")) {
 				HashMap<String, Object> options = (HashMap<String, Object>) root
 						.get("options");
@@ -190,6 +184,11 @@ public class GuiNewAbout extends GuiSpoutScreen {
 			}
 			scroll.updateInnerSize();
 		}
+	}
+
+	@Override
+	public void onGuiClosed() {
+		super.onGuiClosed();
 	}
 
 	@Override
