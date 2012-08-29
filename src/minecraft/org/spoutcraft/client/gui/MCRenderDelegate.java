@@ -776,7 +776,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 	public void render(GenericListWidgetItem lwi, int x, int y, int width, int height) {
 		if(lwi.getIconUrl() != null && !lwi.getIconUrl().isEmpty()) {
-			Texture t = CustomTextureManager.getTextureFromUrl(lwi.getIconUrl(), true);
+			Texture t = CustomTextureManager.getTextureFromUrl(lwi.getIconUrl());
 			if(t != null) {
 
 				int maxHeight = height - 4;
