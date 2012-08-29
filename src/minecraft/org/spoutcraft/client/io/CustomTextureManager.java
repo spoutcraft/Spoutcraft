@@ -203,41 +203,41 @@ public class CustomTextureManager {
 	}
 
 	public static Texture getTextureFromUrl(String url) {
-		return getTextureFromUrl(null, url, true);
-	}
-
-	public static Texture getTextureFromUrl(String url, boolean download) {
-		return getTextureFromUrl(null, url);
+		Texture tex = getTextureFromUrl(null, url);
+		if(tex == null) {
+			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+		}
+		return tex;
 	}
 
 	public static Texture getTextureFromUrl(String plugin, String url) {
-		return getTextureFromUrl(plugin, url, true);
-	}
-
-	public static Texture getTextureFromUrl(String plugin, String url, boolean download) {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
 		SpoutClient.disableSandbox();
 		try {
 			File texture = getTextureFile(plugin, url);
 			if (!texture.exists()) {
-				return null;
+				return getTextureFromJar("/res/block/spout.png");
 			}
 			try {
-				return getTextureFromPath(texture.getCanonicalPath());
+				Texture toRet = getTextureFromPath(texture.getCanonicalPath());
+				if(toRet == null) {
+					toRet = getTextureFromJar("/res/block/spout.png");
+				}
+				return toRet;
 			} catch (IOException e) {
 				e.printStackTrace();
-				return null;
+				return getTextureFromJar("/res/block/spout.png");
 			}
 		} finally {
 			SpoutClient.enableSandbox(wasSandboxed);
 		}
 	}
 
-	public static String getTexturePathFromUrl(String url) {
+	public static String getTexturePathFromUrl(String url) { //only used for sky, null-checks not needed!
 		return getTexturePathFromUrl(null, url);
 	}
 
-	public static String getTexturePathFromUrl(String plugin, String url) {
+	public static String getTexturePathFromUrl(String plugin, String url) { // only used above!
 		if (!isTextureDownloaded(plugin, url)) {
 			return null;
 		}
