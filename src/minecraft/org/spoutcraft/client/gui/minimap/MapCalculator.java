@@ -415,20 +415,11 @@ public class MapCalculator implements Runnable {
 	 * Called each tick of the render.
 	 */
 	void onRenderTick() {
-		if (zCalc == null || !zCalc.isAlive()) {
-			zCalc = new Thread(this);
-			zCalc.start();
-		}
 		if (Minecraft.theMinecraft != null
 				&& Minecraft.theMinecraft.theWorld != null) {
 			tryARender();
 		}
 	}
-
-	/**
-	 * Map calculation thread
-	 */
-	public Thread zCalc = new Thread(this);
 
 	/**
 	 * Random used to distort cave map
@@ -453,7 +444,6 @@ public class MapCalculator implements Runnable {
 	 * the thread will be restarted by the keep-alive in onRenderTick().
 	 */
 	public void start() {
-		zCalc.start();
 	}
 
 	public static int getHeightColor(short height, short reference) {
