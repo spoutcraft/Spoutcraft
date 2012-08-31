@@ -29,9 +29,8 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
+public class Sunglasses extends Accessory {
 
-
-public class Sunglasses extends Accessory{
 	public ModelRenderer SunglassesFront;
 	public ModelRenderer SunglassesFront2;
 	public ModelRenderer SunglassesBridge;
@@ -39,7 +38,7 @@ public class Sunglasses extends Accessory{
 	public ModelRenderer LeftSunglasses;
 	public ModelRenderer RightSunglassesBridge;
 	public ModelRenderer LeftSunglassesBridge;
-	
+
 	public Sunglasses(ModelBiped acs) {
 		super(acs);
 		SunglassesFront = new ModelRenderer(acs, 0, 0);
@@ -48,6 +47,14 @@ public class Sunglasses extends Accessory{
 		SunglassesFront2.addBox(1F, -4F, -5F, 2, 2, 1);
 		SunglassesBridge = new ModelRenderer(acs, 0, 4);
 		SunglassesBridge.addBox(-1F, -4F, -5F, 2, 1, 1);
+		RightSunglasses = new ModelRenderer(acs, 0, 6);
+		RightSunglasses.addBox(4.0F, -4.0F, -4.0F, 1, 1, 4);
+		LeftSunglasses = new ModelRenderer(acs, 12, 0);
+		LeftSunglasses.addBox(-5.0F, -4.0F, -4.0F, 1, 1, 4);
+		LeftSunglassesBridge = new ModelRenderer(acs, 6, 5);
+		LeftSunglassesBridge.addBox(-5.0F, -4.0F, -5.0F, 2, 1, 1);
+		RightSunglassesBridge = new ModelRenderer(acs, 6, 7);
+		RightSunglassesBridge.addBox(3.0F, -4.0F, -5.0F, 2, 1, 1);
 	}
 
 	@Override
@@ -79,5 +86,4 @@ public class Sunglasses extends Accessory{
 	public AccessoryType getType() {
 		return AccessoryType.SUNGLASSES;
 	}
-
 }
