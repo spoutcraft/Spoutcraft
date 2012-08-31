@@ -140,10 +140,9 @@ public class RenderPlayer extends RenderLiving {
 							}
 						} else {
 							title = ChatColor.stripColor(title); //strip colors when sneaking
-							
-							FontRenderer var13 = this.getFontRendererFromRenderManager();
+							FontRenderer var14 = this.getFontRendererFromRenderManager();
 							GL11.glPushMatrix();
-							GL11.glTranslatef((float)var2 + 0.0F, (float)var4 + 2.3F, (float)var6);
+							GL11.glTranslatef((float) var2 + 0.0F, (float) var4 + 2.3F, (float) var6);
 							GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 							GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 							GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
@@ -151,21 +150,23 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDisable(GL11.GL_LIGHTING);
 							GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
 							GL11.glDepthMask(false);
+							GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
 							GL11.glEnable(GL11.GL_BLEND);
-							GL11.glBlendFunc(770, 771);
-							Tessellator var14 = Tessellator.instance;
+							GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+							Tessellator var15 = Tessellator.instance;
 							GL11.glDisable(GL11.GL_TEXTURE_2D);
-							var14.startDrawingQuads();
-							int var15 = var13.getStringWidth(title) / 2;
-							var14.setColorRGBA_F(0.0F, 0.0F, 0.0F, alpha);
-							var14.addVertex((double)(-var15 - 1), -1.0D, 0.0D);
-							var14.addVertex((double)(-var15 - 1), 8.0D, 0.0D);
-							var14.addVertex((double)(var15 + 1), 8.0D, 0.0D);
-							var14.addVertex((double)(var15 + 1), -1.0D, 0.0D);
-							var14.draw();
+							var15.startDrawingQuads();
+							int var16 = var14.getStringWidth(title) / 2;
+							var15.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
+							var15.addVertex((double) (-var16 - 1), -1.0D, 0.0D);
+							var15.addVertex((double) (-var16 - 1), 8.0D, 0.0D);
+							var15.addVertex((double) (var16 + 1), 8.0D, 0.0D);
+							var15.addVertex((double) (var16 + 1), -1.0D, 0.0D);
+							var15.draw();
 							GL11.glEnable(GL11.GL_TEXTURE_2D);
+							GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
 							GL11.glDepthMask(true);
-							var13.drawString(title, -var13.getStringWidth(title) / 2, 0, 553648127);
+							var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
 							GL11.glEnable(GL11.GL_LIGHTING);
 							GL11.glDisable(GL11.GL_BLEND);
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
