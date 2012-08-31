@@ -204,9 +204,9 @@ public class CustomTextureManager {
 
 	public static Texture getTextureFromUrl(String url) {
 		Texture tex = getTextureFromUrl(null, url);
-		if(tex == null) {
+		/*if(tex == null) {
 			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
-		}
+		}*/
 		return tex;
 	}
 
@@ -215,18 +215,11 @@ public class CustomTextureManager {
 		SpoutClient.disableSandbox();
 		try {
 			File texture = getTextureFile(plugin, url);
-			if (!texture.exists()) {
-				return getTextureFromJar("/res/block/spout.png");
-			}
 			try {
-				Texture toRet = getTextureFromPath(texture.getCanonicalPath());
-				if(toRet == null) {
-					toRet = getTextureFromJar("/res/block/spout.png");
-				}
-				return toRet;
+				return getTextureFromPath(texture.getCanonicalPath());
 			} catch (IOException e) {
 				e.printStackTrace();
-				return getTextureFromJar("/res/block/spout.png");
+				return null;
 			}
 		} finally {
 			SpoutClient.enableSandbox(wasSandboxed);

@@ -163,6 +163,9 @@ public class WorldRenderer {
 					//This design is to avoid unnessecary glBindTexture calls.
 					if(currentTexture > 0) {
 						Texture customTexture = CustomTextureManager.getTextureFromUrl(hitTexturesPlugins.get(currentTexture), hitTextures.get(currentTexture));
+						if (customTexture == null) {
+							customTexture = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
+						}
 						if (customTexture != null) {
 							texture = customTexture.getTextureID();
 							game.renderEngine.bindTexture(texture);
