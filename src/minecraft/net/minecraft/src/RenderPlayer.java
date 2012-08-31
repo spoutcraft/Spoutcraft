@@ -164,7 +164,7 @@ public class RenderPlayer extends RenderLiving {
 							var15.addVertex((double) (var16 + 1), -1.0D, 0.0D);
 							var15.draw();
 							GL11.glEnable(GL11.GL_TEXTURE_2D);
-							GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
+							GL11.glEnable(GL11.GL_ALPHA_TEST); //Spout - ?
 							GL11.glDepthMask(true);
 							var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
 							GL11.glEnable(GL11.GL_LIGHTING);
