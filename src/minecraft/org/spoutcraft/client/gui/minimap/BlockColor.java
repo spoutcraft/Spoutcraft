@@ -366,6 +366,25 @@ public class BlockColor {
 		setDefaultColor(122, 0, 0x24031E, 0xFF);
 		setDefaultColor(123, 0, 0x784C10, 0xFF);
 		setDefaultColor(124, 0, 0xE3DE54, 0xFF);
+		setDefaultColor(125, 0, 0x9F824B);
+		setDefaultColor(126, 0, 0x9F824B);
+		setDefaultColor(127, 0, 0xAE6616);
+		setDefaultColor(128, 0, 0xCBC594);
+		setDefaultColor(129, 0, 0x46A56A);
+		setDefaultColor(130, 0, 0x283A3C);
+		setDefaultColor(131, 0, 0xAC8B54);
+		setDefaultColor(132, 0, 0xD5D5D5);
+		setDefaultColor(133, 0, 0x4CD473);
+		setDefaultColor(134, 0, 0x6E512C);
+		setDefaultColor(135, 0, 0xC4B87B);
+		setDefaultColor(136, 0, 0x986C46);
+		setDefaultColor(137, 0, 0xAD9D8F);
+		setDefaultColor(138, 0, 0x64A6A2);
+		setDefaultColor(139, 0, 0x929292);
+		setDefaultColor(140, 0, 0x3A2017);
+		setDefaultColor(141, 0, 0xC28600);
+		setDefaultColor(142, 0, 0x9C931D);
+		setDefaultColor(143, 0, 0xA4864F);
 
 	}
 
