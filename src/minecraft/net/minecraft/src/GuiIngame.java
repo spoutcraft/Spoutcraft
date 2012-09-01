@@ -187,7 +187,7 @@ public class GuiIngame extends Gui
 			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 2, 14737632);
 			var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
 			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
-			if(!(SpoutClient.getInstance().isCoordsCheat())) {
+			if(SpoutClient.getInstance().isCoordsCheat()) {
 				this.drawString(font, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
 				this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
 				this.drawString(font, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
