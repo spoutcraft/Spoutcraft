@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
+import org.bukkit.ChatColor;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -42,15 +43,19 @@ import org.spoutcraft.spoutcraftapi.gui.Label;
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
 	private Label screenTitle;
+	private Label loadingTexture;
 	private Button buttonDone, buttonOpenFolder, buttonSelect, buttonReservoir, buttonDelete, buttonInfo;
 	private boolean instancesCreated = false;
 	private TexturePacksModel model = SpoutClient.getInstance().getTexturePacksModel();
 
 	private void createInstances() {
 		model.setCurrentGui(this);
-		if (instancesCreated) return;
+		if (instancesCreated) {
+			return;
+		}
 		model.update();
 		screenTitle = new GenericLabel("Texture Packs");
+		loadingTexture = new GenericLabel(ChatColor.GREEN+"Loading texture...");
 		view = new GenericListView(model);
 		buttonDone = new GenericButton("Main Menu");
 		buttonOpenFolder = new GenericButton("Open Folder");
@@ -70,6 +75,12 @@ public class GuiTexturePacks extends GuiScreen {
 		int swidth = mc.fontRenderer.getStringWidth(screenTitle.getText());
 		screenTitle.setY(top).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
 		getScreen().attachWidget(spoutcraft, screenTitle);
+		
+		swidth = mc.fontRenderer.getStringWidth(loadingTexture.getText());
+		loadingTexture.setVisible(false);
+		loadingTexture.setY(top).setX(width / 2 + swidth).setHeight(11).setWidth(swidth);
+		getScreen().attachWidget(spoutcraft, loadingTexture);
+		
 		top+=15;
 
 		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 55);
@@ -189,5 +200,9 @@ public class GuiTexturePacks extends GuiScreen {
 				}
 			} catch(Exception e) { }
 		}
+	}
+	
+	public void setLoading(boolean newValue) {
+		loadingTexture.setVisible(newValue);
 	}
 }

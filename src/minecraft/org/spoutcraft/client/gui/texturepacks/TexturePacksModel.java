@@ -90,7 +90,7 @@ public class TexturePacksModel extends AbstractListModel {
 					}
 				}
 				if (!found) {
-					items.add(new TexturePackItem((TexturePackImplementation) pack));
+					items.add(new TexturePackItem(this, (TexturePackImplementation) pack));
 				}
 			}
 		} finally {

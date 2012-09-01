@@ -43,14 +43,16 @@ public class TexturePackItem implements ListWidgetItem {
 	protected volatile static TexturePackSizeThread activeThread = null;
 
 	private TexturePackImplementation pack;
+	private TexturePacksModel model;
 	private ListWidget widget;
 	private TexturePackList packList = SpoutClient.getHandle().texturePackList;
-	int id = -1;
+	int id = -1, tick = -1;
 	private String title = null;
 	protected volatile int tileSize = -1;
 
-	public TexturePackItem(TexturePackImplementation pack) {
+	public TexturePackItem(TexturePacksModel model, TexturePackImplementation pack) {
 		this.setPack(pack);
+		this.model = model;
 		synchronized(texturePackSize) {
 			if (!texturePackSize.containsKey(getName())) {
 				calculateTexturePackSize(pack, this);
@@ -74,6 +76,16 @@ public class TexturePackItem implements ListWidgetItem {
 
 	public void render(int x, int y, int width, int height) {
 		updateQueue();
+		
+		if(tick == 1) {
+			packList.setTexturePack(getPack());
+			SpoutClient.getHandle().renderEngine.refreshTextures();
+			model.currentGui.setLoading(false);
+			tick = -1;
+		}
+		if(tick == 0) {
+			tick++;
+		}
 
 		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
@@ -131,7 +143,7 @@ public class TexturePackItem implements ListWidgetItem {
 					id = Integer.valueOf(name.substring(db + 4, name.length()));
 				} catch(NumberFormatException e) {}
 				name = name.substring(0, db);
-			}
+		}
 			name = name.replaceAll("_", " ");
 			title = name;
 		}
@@ -139,8 +151,8 @@ public class TexturePackItem implements ListWidgetItem {
 	}
 
 	public void select() {
-		packList.setTexturePack(getPack());
-		SpoutClient.getHandle().renderEngine.refreshTextures();
+		model.currentGui.setLoading(true);
+		tick = 0;
 	}
 
 	private static void updateQueue() {
