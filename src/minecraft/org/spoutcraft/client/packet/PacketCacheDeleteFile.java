@@ -48,10 +48,11 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		File file = FileUtil.findFile(plugin, fileName);
-		if (file != null) {
-			file.delete();
-		}
+		//TODO: Fix, security vulnerability: http://pastie.org/private/qdmx5veidnood1ectllkcq
+		//File file = FileUtil.findFile(plugin, fileName);
+		//if (file != null) {
+		//	file.delete();
+		//}
 	}
 
 	public void failure(int playerId) {
