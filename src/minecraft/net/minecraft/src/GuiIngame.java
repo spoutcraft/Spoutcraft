@@ -141,8 +141,8 @@ public class GuiIngame extends Gui
 		GL11.glEnable('\u803a');
 		GL11.glPushMatrix();
 		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-		RenderHelper.enableStandardItemLighting();
 		GL11.glPopMatrix();
+		RenderHelper.enableGUIStandardItemLighting();
 
 		for (var15 = 0; var15 < 9; ++var15) {
 			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
