@@ -757,8 +757,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 			
 			this.mcProfiler.endSection();
-
-			this.mcProfiler.endStartSection("preRenderErrors");
 			long var7 = System.nanoTime() - var6;
 			this.checkGLError("Pre render");
 			//RenderBlocks.fancyGrass = this.gameSettings.fancyGraphics; // Spout removed
