@@ -441,12 +441,9 @@ public class RenderGlobal implements IWorldAccess {
 
 			while (var8.hasNext()) {
 				TileEntity var9 = (TileEntity)var8.next();
-				// Spout start
-				this.theWorld.checkEntityTile(var9);
 				if (!var9.isInvalid()) {
 					TileEntityRenderer.instance.renderTileEntity(var9, par3);
 				}
-				// Spout end
 			}
 
 			this.mc.entityRenderer.disableLightmap((double)par3);
