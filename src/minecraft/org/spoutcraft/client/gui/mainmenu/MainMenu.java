@@ -22,6 +22,7 @@ package org.spoutcraft.client.gui.mainmenu;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,6 +58,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
 import org.spoutcraft.spoutcraftapi.gui.Label;
 import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
+import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
 import org.spoutcraft.spoutcraftapi.gui.Texture;
 import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
 
@@ -161,11 +163,11 @@ public class MainMenu extends GuiScreen {
 					FileUtils.copyInputStreamToFile(urlConnect.getInputStream(), temp);
 					FileUtils.moveFile(temp, splashTextFile);
 				}
-				br = new BufferedReader(new InputStreamReader(new FileInputStream(splashTextFile)));
+				br = new BufferedReader(new FileReader(splashTextFile));
 				String line;
 				splashes.clear();
 				while ((line = br.readLine()) != null) {
-					splashes.add(line);
+					splashes.add(new String(line.getBytes(), "UTF-8"));
 				}
 				br.close();
 			}
@@ -425,6 +427,8 @@ class BackgroundTexture extends GenericTexture {
 			} else {
 				((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, (int) this.getActualWidth(), (int) this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
 			}
+		} else {
+			RenderUtil.drawRectangle(0, 0, (int) getWidth(), (int) getHeight(), 0xff000000); 
 		}
 		GL11.glPopMatrix();
 	}
