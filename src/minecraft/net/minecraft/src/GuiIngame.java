@@ -62,7 +62,6 @@ public class GuiIngame extends Gui
 	//Most of function rewritten
 	public void renderGameOverlay(float f, boolean flag, int i, int j)
 	{
-		SpoutClient.getInstance().onTick();
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 
 		ScaledResolution scaledRes = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);

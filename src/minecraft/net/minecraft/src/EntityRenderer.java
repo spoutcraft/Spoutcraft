@@ -15,6 +15,7 @@ import org.lwjgl.util.glu.GLU;
 //Spout start
 import com.pclewis.mcpatcher.mod.Shaders;
 import org.lwjgl.util.vector.*;
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 //Spout end
@@ -701,7 +702,8 @@ public class EntityRenderer {
 
 				this.renderEndNanoTime = System.nanoTime();
 				this.mc.mcProfiler.endStartSection("gui");
-
+				
+				SpoutClient.getInstance().onTick();
 				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					// Spout Start
 					if (ConfigReader.fastDebug != 0) {
