@@ -139,9 +139,6 @@ public class GuiIngame extends Gui
 
 		GL11.glDisable(3042 /* GL_BLEND */);
 		GL11.glEnable('\u803a');
-		GL11.glPushMatrix();
-		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
-		GL11.glPopMatrix();
 		RenderHelper.enableGUIStandardItemLighting();
 
 		for (var15 = 0; var15 < 9; ++var15) {
