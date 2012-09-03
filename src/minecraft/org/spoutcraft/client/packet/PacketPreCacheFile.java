@@ -76,10 +76,7 @@ public class PacketPreCacheFile implements SpoutPacket {
 		}
 		final String fileName = FileUtil.getFileName(file);
 		final File expected = new File(directory, fileName);
-		if (expected.exists()) {
-			long crc = FileUtil.getCRC(expected, downloadBuffer);
-			this.cached = expectedCRC != 0 && crc == expectedCRC;
-		}
+		this.cached = expected.exists();
 		System.out.println("Received Precache for [" + fileName + "]. File " + (expected.exists() ? ("exists" + (cached ? " and is valid" : "and is invalid")) : "does not exist"));
 		if (!cached) {
 			final long finalCRC = expectedCRC;

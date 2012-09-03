@@ -141,13 +141,7 @@ public class PacketCacheFile implements CompressablePacket {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		long expectedCRC = CRCManager.getCRC(fileName);
-		long calculatedCRC = FileUtil.getCRC(cache, new byte[16384]);
-		if (expectedCRC != calculatedCRC) {
-			System.out.println("WARNING, Downloaded File " + fileName + "'s CRC " + calculatedCRC + " did not match the expected CRC: " + expectedCRC);
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketPreCacheFile(plugin, fileName, expectedCRC, false));
-			System.out.println("Requesting re-downloaded of File " + fileName);
-		} else if (cache.exists() && FileUtil.isImageFile(fileName)) {
+		if (cache.exists() && FileUtil.isImageFile(fileName)) {
 			CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
 		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
