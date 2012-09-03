@@ -69,6 +69,7 @@ public class PlayerControllerMP {
 	public void setGameType(EnumGameType par1EnumGameType) {
 		this.currentGameType = par1EnumGameType;
 		this.currentGameType.configurePlayerCapabilities(this.mc.thePlayer.capabilities);
+		GuiIngame.dirtySurvival();
 	}
 
 	/**

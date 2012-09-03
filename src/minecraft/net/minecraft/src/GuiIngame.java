@@ -24,6 +24,7 @@ public class GuiIngame extends Gui
 
 	//Spout Start
 	private final ZanMinimap map = new ZanMinimap();
+	private static boolean needsUpdate = true;
 	//Spout End
 
 	public static final Random rand = new Random(); //Spout private -> public static final
@@ -108,9 +109,10 @@ public class GuiIngame extends Gui
 		SpoutClient.enableSandbox();
 		
 		//Toggle visibility if needed
-		if(mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
+		if(needsUpdate && mainScreen.getHealthBar().isVisible() == mc.playerController.isInCreativeMode()) {
 			mainScreen.toggleSurvivalHUD(!mc.playerController.isInCreativeMode());
 		}
+		needsUpdate = false;
 
 		// Hunger Bar Begin
 		mainScreen.getHungerBar().render();
@@ -138,6 +140,9 @@ public class GuiIngame extends Gui
 
 		GL11.glDisable(3042 /* GL_BLEND */);
 		GL11.glEnable('\u803a');
+		GL11.glPushMatrix();
+		GL11.glRotatef(120.0F, 1.0F, 0.0F, 0.0F);
+		GL11.glPopMatrix();
 		RenderHelper.enableGUIStandardItemLighting();
 
 		for (var15 = 0; var15 < 9; ++var15) {
@@ -633,4 +638,8 @@ public class GuiIngame extends Gui
 	public int getUpdateCounter() {
  		return this.updateCounter++;
  	}
+	
+	public static void dirtySurvival() {
+		needsUpdate = true;
+	}
 }
