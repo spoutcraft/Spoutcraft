@@ -618,12 +618,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		if(inside) {
 			func_74190_a("Custom items", x, y);
 			if(isClicked) {
-			field_74241_p = CreativeTabs.tabSpout.getTabIndex();
-			ContainerCreative var3 = (ContainerCreative)this.inventorySlots;
-			var3.itemList.clear();
-			CreativeTabs.tabSpout.displayAllReleventItems(var3.itemList);
-			this.currentScroll = 0.0F;
-			var3.scrollTo(0.0F);
+				field_74241_p = CreativeTabs.tabSpout.getTabIndex();
+				ContainerCreative var3 = (ContainerCreative)this.inventorySlots;
+				var3.itemList.clear();
+				CreativeTabs.tabSpout.displayAllReleventItems(var3.itemList);
+				this.currentScroll = 0.0F;
+				var3.scrollTo(0.0F);
 			}
 		}
 	}
@@ -633,33 +633,27 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			return;
 		}
 		this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/allitems.png"));
-		boolean var3 = true;
-		int var4 = 7;
-		int var7 = this.guiLeft + 28 * (var4 - 2);
-		int var8 = this.guiTop;
 		byte var9 = 32;
-
-		if (var4 == 5) {
-			var7 = this.guiLeft + this.xSize - 28;
-		} else if (var4 > 0) {
-			var7 += var4;
-		}
-
-		if (var3) {
-			var8 -= 28;
-		} else {
-			var8 += this.ySize - 4;
+		
+		
+		int startY = 0;
+		int diff = 75;
+		if(!beforeBackground) {
+			startY = 32;
+			diff=79;
 		}
 		
-		var8 = this.guiTop;
-		var7 = this.guiLeft-26;
+		int var8 = this.guiTop;
+		int var7 = this.guiLeft-21;
 
 		GL11.glDisable(GL11.GL_LIGHTING);
-		this.drawTexturedModalRect(var7, var8, 56, 0, 28, var9);
+		//this.drawTexturedModalRect(var7, var8, 56, 0, 28, var9);
+		this.drawTexturedModalRect(var7, var8, 56, startY, 25, var9/2);
+		this.drawTexturedModalRect(var7, var8 + var9/2, 56, startY+diff, 25, var9/2);
 		this.zLevel = 100.0F;
 		itemRenderer.zLevel = 100.0F;
 		var7 += 6;
-		var8 += 8 + (var3 ? 1 : -1);
+		var8 += 7;
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		//Spout start - bypass stupidity
