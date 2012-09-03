@@ -630,7 +630,10 @@ public class MaterialData {
 		Object o = idLookup[id];
 		Material[] materials;
 		Material mat;
-		if (o == null || o instanceof Material) {
+		if(idLookup[id] == null) {
+			return null;
+		}
+		if (o instanceof Material) {
 			mat = (Material)o;
 			materials = new Material[Math.max(mat.getRawData(), data) *2 + 1];
 			materials[mat.getRawData()] = mat;
