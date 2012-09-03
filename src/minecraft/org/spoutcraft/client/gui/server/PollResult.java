@@ -36,6 +36,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.MirrorUtils;
+import org.spoutcraft.client.io.ProxyManager;
 import org.spoutcraft.client.util.NetworkUtils;
 
 public class PollResult {
@@ -180,17 +181,23 @@ public class PollResult {
 			DataOutputStream output = null;
 			try {
 				long start = System.currentTimeMillis();
-				sock = new Socket();
-				sock.setSoTimeout(10000);
-				InetSocketAddress address = NetworkUtils.resolve(ip, port);
-				if (address.isUnresolved()) {
-					ping = PING_UNKNOWN;
-					return;
-				}
-				sock.connect(address, 10000);
-				sock.setTcpNoDelay(true);
-				sock.setTrafficClass(18);
+        
+        if(ProxyManager.isEnabled()){
+          sock = ProxyManager.proxyConnect(ip, port);
+        }
+        else{
+          sock = new Socket();
+          sock.setSoTimeout(10000);
+          InetSocketAddress address = NetworkUtils.resolve(ip, port);
+          if (address.isUnresolved()) {
+            ping = PING_UNKNOWN;
+            return;
+          }
 
+          sock.connect(address, 10000);
+          sock.setTcpNoDelay(true);
+          sock.setTrafficClass(18);
+        }
 				input = new DataInputStream(sock.getInputStream());
 				output = new DataOutputStream(sock.getOutputStream());
 

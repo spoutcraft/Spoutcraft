@@ -23,6 +23,7 @@ import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.client.io.ProxyManager;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 
 public class NetClientHandler extends NetHandler {
@@ -63,7 +64,15 @@ public class NetClientHandler extends NetHandler {
 	
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws IOException {
 		this.mc = par1Minecraft;
-		Socket var4 = new Socket(InetAddress.getByName(par2Str), par3);
+    //spout start
+    Socket var4;
+    if(ProxyManager.isEnabled()){
+      var4 = ProxyManager.proxyConnect(par2Str, par3);
+    }
+    else{
+		  var4 = new Socket(InetAddress.getByName(par2Str), par3);
+    }
+    //spout end :)
 		this.netManager = new TcpConnection(var4, "Client", this);
 
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str; // Spout
