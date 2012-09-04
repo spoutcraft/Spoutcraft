@@ -20,21 +20,15 @@
 package org.spoutcraft.client.player.accessories;
 
 import java.io.IOException;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.RenderManager;
-import net.minecraft.src.RenderPlayer;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketType;
 import org.spoutcraft.client.packet.SpoutPacket;
-import org.spoutcraft.client.player.accessories.AccessoryHandler;
-import org.spoutcraft.client.player.accessories.AccessoryType;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 
 public class PacketAccessory implements SpoutPacket{
 	private AccessoryType type;
-	private String url;
+	private String url, who;
 	private boolean add;
 
 	public PacketAccessory() {
@@ -52,6 +46,7 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
+		who = input.readString();
 		type = AccessoryType.get(input.readInt());
 		url = input.readString();
 		add = input.readBoolean();
@@ -59,6 +54,7 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
+		output.writeString(who);
 		output.writeInt(type.getId());
 		output.writeString(url);
 		output.writeBoolean(add);
@@ -66,11 +62,10 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public void run(int playerId) {
-		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(playerId);
 		if (add) {
-			AccessoryHandler.addAccessoryType(e, type, url);
+			AccessoryHandler.addAccessoryType(who, type, url);
 		} else {
-			AccessoryHandler.removeAccessoryType(e, type, url);
+			AccessoryHandler.removeAccessoryType(who, type, url);
 		}
 	}
 
@@ -85,7 +80,7 @@ public class PacketAccessory implements SpoutPacket{
 
 	@Override
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 }
