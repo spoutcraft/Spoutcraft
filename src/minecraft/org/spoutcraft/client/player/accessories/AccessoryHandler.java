@@ -51,6 +51,15 @@ public class AccessoryHandler {
 		if (acs == null) {
 			acs = new HashSet<Pair<Accessory, String>>();
 		}
+		
+		Set<Pair<Accessory, String>> toRemove = new HashSet<Pair<Accessory, String>>();
+		for(Pair<Accessory, String> pr : acs) {
+			if(pr.getLeft().getType().equals(n.getType())) {
+				toRemove.add(pr);
+			}
+		}
+		
+		acs.removeAll(toRemove);
 		acs.add(Pair.of(n, url));
 		sacs.put(player, acs);
 	}
