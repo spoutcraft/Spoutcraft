@@ -616,7 +616,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		int var5 = guiLeft - 26;
 		boolean inside = x >= var5 && x <= var5 + 28 && y >= var7 && y <= var7 + 32;
 		if(inside) {
-			func_74190_a("Custom items", x, y);
+			func_74190_a("Custom Items", x, y);
 			if(isClicked) {
 				field_74241_p = CreativeTabs.tabSpout.getTabIndex();
 				ContainerCreative var3 = (ContainerCreative)this.inventorySlots;
