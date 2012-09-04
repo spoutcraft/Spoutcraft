@@ -32,7 +32,7 @@ public class CreativeTabCustom extends CreativeTabs{
 
 	@Override
 	public String getTranslatedTabLabel() {
-		return "Custom items";
+		return "Custom Items";
 	}
 
 	@Override
