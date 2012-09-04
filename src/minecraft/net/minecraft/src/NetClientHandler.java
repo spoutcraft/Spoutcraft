@@ -20,10 +20,14 @@ import java.util.Random;
 import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+
+//Spout start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+//Spout end
 
 public class NetClientHandler extends NetHandler {
 	private boolean field_72554_f = false;
@@ -968,6 +972,11 @@ public class NetClientHandler extends NetHandler {
 					var5.resetRelightChecks();
 				}
 			}
+			
+			
+			//Spout start
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(var5.xPosition, var5.zPosition));
+			//Spout end
 		}
 	}
 

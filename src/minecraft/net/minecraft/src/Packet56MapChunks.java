@@ -51,10 +51,6 @@ public class Packet56MapChunks extends Packet {
 			this.field_73590_a[var4] = var6.field_74580_b;
 			this.field_73588_b[var4] = var6.field_74581_c;
 			this.field_73584_f[var4] = var6.field_74582_a;
-			
-			//Spout start
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(var5.xPosition, var5.zPosition));
-			//Spout end
 		}
 
 		Deflater var11 = new Deflater(-1);
