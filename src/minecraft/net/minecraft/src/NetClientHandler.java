@@ -526,7 +526,9 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
-		this.mc.thePlayer.closeScreen(); //Spout - close the active screen first!
+		if(this.mc.thePlayer != null) {
+			this.mc.thePlayer.closeScreen(); //Spout - close the active screen first!
+		}
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.field_72554_f = true;
 		this.mc.loadWorld((WorldClient)null);
