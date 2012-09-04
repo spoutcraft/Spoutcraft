@@ -622,6 +622,9 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 				ContainerCreative var3 = (ContainerCreative)this.inventorySlots;
 				var3.itemList.clear();
 				CreativeTabs.tabSpout.displayAllReleventItems(var3.itemList);
+				this.field_74237_t.func_73790_e(false);
+				this.field_74237_t.setCanLoseFocus(true);
+				this.field_74237_t.setFocused(false);
 				this.currentScroll = 0.0F;
 				var3.scrollTo(0.0F);
 			}
