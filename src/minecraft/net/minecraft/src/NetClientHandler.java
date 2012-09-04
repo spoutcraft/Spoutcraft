@@ -972,11 +972,6 @@ public class NetClientHandler extends NetHandler {
 					var5.resetRelightChecks();
 				}
 			}
-			
-			
-			//Spout start
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(var5.xPosition, var5.zPosition));
-			//Spout end
 		}
 	}
 
