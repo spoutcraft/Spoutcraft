@@ -64,15 +64,6 @@ public class AccessoryHandler {
 		sacs.put(player, acs);
 	}
 
-	public static void removeAccessory(String player, Accessory n, String url) {
-		Set<Pair<Accessory, String>> acs = sacs.get(player);
-		if (acs == null) {
-			return;
-		}
-		acs.remove(Pair.of(n, url));
-		sacs.put(player, acs);
-	}
-
 	public static void renderAllAccessories(EntityPlayer player, float f, float par2) {
 		Set<Pair<Accessory, String>> acs = sacs.get(player.username);
 		if (acs == null) {
@@ -162,16 +153,19 @@ public class AccessoryHandler {
 		}
 	}
 
-	public static void removeAccessoryType(String player, AccessoryType type, String url) {
+	public static void removeAccessoryType(String player, AccessoryType type) {
 		Set<Pair<Accessory, String>> acs = sacs.get(player);
 		if (acs == null) {
 			return;
 		}
+		Pair<Accessory, String> toRemove = null;
 		for (Pair<Accessory, String> accessory : acs) {
-			if (accessory.getLeft().getType().equals(type) && accessory.getRight().equals(url)) {
-				removeAccessory(player, accessory.getLeft(), accessory.getRight());
+			if (accessory.getLeft().getType().equals(type)) {
+				toRemove = accessory;
+				break;
 			}
 		}
+		acs.remove(toRemove);
 	}
 
 	public static boolean isHandled(String username) {
