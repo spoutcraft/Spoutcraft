@@ -702,8 +702,6 @@ public class EntityRenderer {
 
 				this.renderEndNanoTime = System.nanoTime();
 				this.mc.mcProfiler.endStartSection("gui");
-				
-				SpoutClient.getInstance().onTick();
 				if (!this.mc.gameSettings.hideGUI || this.mc.currentScreen != null) {
 					// Spout Start
 					if (ConfigReader.fastDebug != 0) {

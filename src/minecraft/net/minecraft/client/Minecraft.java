@@ -724,6 +724,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (this.mcApplet != null && !this.mcApplet.isActive()) {
 			this.running = false;
 		} else {
+			this.checkGLError("First render check"); //Spout
 			// Spout start
 			if (theWorld == null) {
 				try {
@@ -740,6 +741,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			if (this.mcCanvas == null && Display.isCloseRequested()) {
 				this.shutdown();
 			}
+			this.checkGLError("Pre*3 render"); //Spout
 
 			if (this.isGamePaused && this.theWorld != null) {
 				float var1 = this.timer.renderPartialTicks;
@@ -748,6 +750,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			} else {
 				this.timer.updateTimer();
 			}
+			this.checkGLError("Pre pre render"); //Spout
 
 			long var6 = System.nanoTime();
 			this.mcProfiler.startSection("tick");
@@ -766,8 +769,14 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			if (this.theWorld != null) {
 				this.theWorld.updatingLighting();
 			}
-
 			this.mcProfiler.endSection();
+			
+			if (this.thePlayer != null) {
+				this.mcProfiler.startSection("spoutclient");
+				SpoutClient.getInstance().onTick(); //Spout - tick
+				this.mcProfiler.endSection();
+			}
+			
 			this.mcProfiler.startSection("render");
 			this.mcProfiler.startSection("display");
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
