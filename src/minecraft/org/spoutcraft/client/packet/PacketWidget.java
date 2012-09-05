@@ -112,7 +112,7 @@ public class PacketWidget implements SpoutPacket {
 			//Determine if this is a popup screen and if we need to update it
 			if (widget instanceof PopupScreen) {
 				if (popup != null) {
-					if (widget.getId().equals(popup)) {
+					if (widget.getId().equals(popup.getId())) {
 						if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
 							((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
 						}
