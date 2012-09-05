@@ -116,8 +116,7 @@ public class WorldClient extends World {
 
 	public void doPreChunk(int par1, int par2, boolean par3) {
 		if (par3) {
-			this.clientChunkProvider.loadChunk(par1, par2);
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(par1, par2));
+			SpoutClient.getInstance().requestChunk(this.clientChunkProvider.loadChunk(par1, par2)); //Spout
 		} else {
 			this.clientChunkProvider.unloadChunk(par1, par2);
 		}

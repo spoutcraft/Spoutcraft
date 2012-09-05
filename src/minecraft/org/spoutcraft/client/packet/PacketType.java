@@ -84,7 +84,8 @@ public enum PacketType {
 	PacketSlotClick(59, PacketSlotClick.class),
 	PacketWaypoint(60, PacketWaypoint.class),
 	PacketParticle(61, PacketParticle.class),
-	PacketAccessory(62, org.spoutcraft.client.player.accessories.PacketAccessory.class);
+	PacketAccessory(62, org.spoutcraft.client.player.accessories.PacketAccessory.class),
+	PacketCustomChunks(63, PacketCustomChunks.class);
 
 	private final int id;
 	private final Class<? extends SpoutPacket> packetClass;

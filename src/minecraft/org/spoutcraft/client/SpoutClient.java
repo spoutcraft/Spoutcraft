@@ -22,6 +22,7 @@ package org.spoutcraft.client;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.Chunk;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityLiving;
@@ -62,6 +64,7 @@ import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.CustomPacket;
 import org.spoutcraft.client.packet.PacketAddonData;
+import org.spoutcraft.client.packet.PacketCustomChunks;
 import org.spoutcraft.client.packet.PacketEntityInformation;
 import org.spoutcraft.client.packet.PacketManager;
 import org.spoutcraft.client.player.ChatManager;
@@ -137,6 +140,8 @@ public class SpoutClient extends PropertyObject implements Client {
 	private final SimpleAddonStore addonStore = new SimpleAddonStore();
 	private final WidgetManager widgetManager = new SimpleWidgetManager();
 	private final HashMap<String, Boolean> permissions = new HashMap<String, Boolean>();
+	private final HashSet<Chunk> toRequestCustom = new HashSet<Chunk>();
+	private int requestDelay;
 	private boolean active = false;
 
 	private SpoutClient() {
@@ -342,6 +347,15 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void setSpoutActive(boolean active) {
 		this.active = active;
 	}
+	
+	public void requestChunk(int chunkX, int chunkZ) {
+		requestChunk(getHandle().theWorld.getChunkProvider().provideChunk(chunkX, chunkZ));
+	}
+	
+	public void requestChunk(Chunk chunk) {
+		toRequestCustom.add(chunk);
+		requestDelay = 40;
+	}
 
 	public void onTick() {
 		tick++;
@@ -358,6 +372,15 @@ public class SpoutClient extends PropertyObject implements Client {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 			inWorldTicks++;
 		}
+		
+		if(requestDelay > 0) {
+			requestDelay--;
+			if(requestDelay == 0 || toRequestCustom.size() > 20) {
+				getPacketManager().sendSpoutPacket(new PacketCustomChunks(toRequestCustom));
+				toRequestCustom.clear();
+			}
+		}
+		
 		if (isSpoutEnabled()) {
 			LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity> processed = new LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity>();
 			Iterator<Entity> i = Entity.toProcess.iterator();
