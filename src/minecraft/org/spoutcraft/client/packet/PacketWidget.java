@@ -20,11 +20,14 @@
 package org.spoutcraft.client.packet;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.*;
+import org.spoutcraft.spoutcraftapi.gui.GenericWidget;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.OverlayScreen;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
@@ -35,9 +38,15 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketWidget implements SpoutPacket {
-	protected Widget widget;
+	private Widget widget;
 	protected UUID screen;
 	private static final int[] nags;
+	ByteBuffer widgetData;
+	WidgetType widgetType;
+	private int version;
+	private UUID widgetId;
+	
+	static HashMap<UUID, Widget> allWidgets = new HashMap<UUID, Widget>();
 
 	static {
 		nags = new int[WidgetType.getNumWidgetTypes()];
@@ -56,39 +65,41 @@ public class PacketWidget implements SpoutPacket {
 
 	public void readData(SpoutInputStream input) throws IOException {
 		int id = input.readInt();
-		long msb = input.readLong();
-		long lsb = input.readLong();
+		screen = input.readUUID();
+		widgetId = input.readUUID();
 
 		int size = input.readInt();
-		int version = input.readShort();
+		version = input.readShort();
 		byte[] widgetData = new byte[size];
 		input.read(widgetData);
-		SpoutInputStream data = new SpoutInputStream(ByteBuffer.wrap(widgetData));
-
-		screen = new UUID(msb, lsb);
-		WidgetType widgetType = WidgetType.getWidgetFromId(id);
-		if (widgetType != null) {
-			try {
-				widget = widgetType.getWidgetClass().newInstance();
-				if (widget.getVersion() == version) {
-					widget.readData(data);
-				} else {
-					if (nags[id]-- > 0) {
-						System.out.println("Received invalid widget: " + widgetType.getWidgetClass().getSimpleName() + " v: " + version + " current v: " + widget.getVersion());
-					}
-					widget = null;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		this.widgetData = ByteBuffer.wrap(widgetData);
+		widgetType = WidgetType.getWidgetFromId(id);
+		
+		
+		
+//		SpoutInputStream data = new SpoutInputStream(ByteBuffer.wrap(widgetData));
+//		if (widgetType != null) {
+//			try {
+//				widget = widgetType.getWidgetClass().newInstance();
+//				if (widget.getVersion() == version) {
+//					widget.readData(data);
+//				} else {
+//					if (nags[id]-- > 0) {
+//						System.out.println("Received invalid widget: " + widgetType.getWidgetClass().getSimpleName() + " v: " + version + " current v: " + widget.getVersion());
+//					}
+//					widget = null;
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeInt(widget.getType().getId());
-		output.writeLong(screen.getMostSignificantBits());
-		output.writeLong(screen.getLeastSignificantBits());
+		output.writeUUID(widget.getScreen().getId());
+		output.writeUUID(widget.getId());
 
 		SpoutOutputStream data = new SpoutOutputStream();
 		widget.writeData(data);
@@ -102,10 +113,35 @@ public class PacketWidget implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
+		try {
+			if (allWidgets.containsKey(widgetId)) {
+				widget = allWidgets.get(widgetId);
+				if (widget.getVersion() == version) {
+					widget.readData(new SpoutInputStream(widgetData));
+				}
+			} else {
+				widget = widgetType.getWidgetClass().newInstance();
+				
+				// hackish way to set the id w/o a setter
+				((GenericWidget) widget).setId(widgetId);
+				if (widget.getVersion() == version) {
+					widget.readData(new SpoutInputStream(widgetData));
+				} else {
+					if (nags[widgetType.getId()]-- > 0) {
+						System.out.println("Received invalid widget: " + widgetType.getWidgetClass().getSimpleName() + " v: " + version + " current v: " + widget.getVersion());
+					}
+					widget = null;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (widget != null) {
+			allWidgets.put(widgetId, widget);
 			InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 			PopupScreen popup = mainScreen.getActivePopup();
 			Screen overlay = null;
+			
 			if (SpoutClient.getHandle().currentScreen != null) {
 				overlay = SpoutClient.getHandle().currentScreen.getScreen();
 			}
@@ -158,7 +194,7 @@ public class PacketWidget implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return 1;
+		return 2;
 	}
 
 	public void failure(int playerId) {
