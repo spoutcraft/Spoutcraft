@@ -85,7 +85,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 	}
 
 	public int getVersion() {
-		return 5;
+		return 6;
 	}
 
 	public GenericWidget(int X, int Y, int width, int height) {
@@ -110,9 +110,6 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		setAnchor(WidgetAnchor.getAnchorFromId(input.read()));
 		setVisible(input.readBoolean());
 		setPriority(RenderPriority.getRenderPriorityFromId(input.readInt()));
-		long msb = input.readLong();
-		long lsb = input.readLong();
-		this.id = new UUID(msb, lsb);
 		setTooltip(input.readString());
 		setAddon(Spoutcraft.getAddonManager().getOrCreateAddon(input.readString()));
 		setAddon(addon);
@@ -131,8 +128,6 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		output.write(getAnchor().getId());
 		output.writeBoolean(isVisible());
 		output.writeInt(priority.getId());
-		output.writeLong(getId().getMostSignificantBits());
-		output.writeLong(getId().getLeastSignificantBits());
 		output.writeString(getTooltip());
 		output.writeString(getAddon().getDescription().getName());
 		output.write(animType.getId());
@@ -155,6 +150,10 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 
 	public UUID getId() {
 		return id;
+	}
+	
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public Screen getScreen() {
