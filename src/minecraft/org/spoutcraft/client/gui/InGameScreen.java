@@ -184,6 +184,7 @@ public class InGameScreen extends GenericScreen implements InGameHUD {
 
 	public boolean attachPopupScreen(PopupScreen screen) {
 		if (getActivePopup() == null) {
+			activePopup = screen;
 			SpoutClient.getHandle().displayGuiScreen(new CustomScreen(screen));
 			return true;
 		}
