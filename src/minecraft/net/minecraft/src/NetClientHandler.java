@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
+import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
 //Spout end
 
@@ -67,11 +70,17 @@ public class NetClientHandler extends NetHandler {
 	
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws IOException {
 		this.mc = par1Minecraft;
-		Socket var4 = new Socket(InetAddress.getByName(par2Str), par3);
-		this.netManager = new TcpConnection(var4, "Client", this);
+		
+		//Spout start
+		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
+		if(address.isUnresolved()) {
+			throw new UnknownHostException(address.getHostName());
+		}
+		this.netManager = new TcpConnection(new Socket(address.getAddress(), address.getPort()), "Client", this);
 
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str; // Spout
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3; // Spout
+		//Spout end
 	}
 
 	public NetClientHandler(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException {
