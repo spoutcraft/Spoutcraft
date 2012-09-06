@@ -474,18 +474,18 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		var8 = this.guiTop + 18;
 		var9 = var8 + 112;
 		
+		this.mc.renderEngine.bindTexture(var4);
+
+		if (var5.shouldHidePlayerInventory()) {
+			this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
+		}
+		
 		//Spout start
 		renderInInventory(false); //Spout - render ours separately
 		if(field_74241_p == 12) { //Return, useless code now!
 			return;
 		}
 		//Spout end
-		
-		this.mc.renderEngine.bindTexture(var4);
-
-		if (var5.shouldHidePlayerInventory()) {
-			this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
-		}
 
 		this.func_74233_a(var5);
 
