@@ -8,16 +8,11 @@ import org.spoutcraft.client.SpoutClient;
 public final class GameWindowListener extends WindowAdapter {
 
 	public void windowClosing(WindowEvent par1WindowEvent) {
-		SpoutClient.getHandle().shutdown();
-
+		SpoutClient.getHandle().shutdownMinecraftApplet();
+		
 		try {
 			SpoutClient.getHandle().mainThread.join(10000L);
 		} catch (InterruptedException var4) {
-			try {
-				SpoutClient.getHandle().shutdownMinecraftApplet();
-			} catch (Exception var3) {
-				var3.printStackTrace();
-			}
 		}
 		System.exit(0);
 	}
