@@ -842,7 +842,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			scrollX = 3 + p * (gs.getViewportSize(Orientation.HORIZONTAL) - 16.0 - 6);
 			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 16, (int) gs.getWidth(), (int) gs.getHeight(), scrollBarColor.toInt(), scrollBarColor2.toInt());
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
-			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 16, 16, 0f);
+			RenderUtil.drawTexturedModalRectangle((int) scrollX, (int) (gs.getHeight() - 16), 232, 0, 12, 15, 0f);
 		}
 		if (gs.needsScrollBar(Orientation.VERTICAL)) {
 			Minecraft mc = SpoutClient.getHandle();
@@ -853,7 +853,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			scrollY = 3 + p * (gs.getViewportSize(Orientation.VERTICAL) - 16.0 - 6);
 			RenderUtil.drawGradientRectangle((int) gs.getWidth() - 16, 0, (int) gs.getWidth(), (int) gs.getHeight(), scrollBarColor.toInt(), scrollBarColor2.toInt());
 			GL11.glColor3f(1.0f, 1.0f, 1.0f);
-			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 232, 0, 16, 16, 0f);
+			RenderUtil.drawTexturedModalRectangle((int) (gs.getWidth() - 16), (int) scrollY, 232, 0, 12, 15, 0f);
 
 			RenderUtil.drawGradientRectangle(0, -1, (int) gs.getWidth(), 5, new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt());
 			RenderUtil.drawGradientRectangle(0, (int) gs.getHeight() - 5, (int) gs.getWidth() + 1, (int) gs.getHeight(), new Color(0.0F, 0.0F, 0.0F, 0.0F).toInt(), new Color(0.0F, 0.0F, 0.0F, 1.0F).toInt());
