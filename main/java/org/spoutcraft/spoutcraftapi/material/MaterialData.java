@@ -60,9 +60,12 @@ public class MaterialData {
 	public static final Block air = new Air("Air");
 	public static final Block stone = new Solid("Stone", 1);
 	public static final Block grass = new Grass("Grass");
-	public static final Block dirt = new Solid("Dirt",3);
+	public static final Block dirt = new Solid("Dirt", 3);
 	public static final Block cobblestone = new Solid("Cobblestone", 4);
-	public static final Block wood = new Solid("Wooden Planks", 5);
+	public static final Block wood = new Solid("Wooden Planks", 5, 0);
+	public static final Block spruceWood = new Solid("Wooden Planks", 5, 1);
+	public static final Block birchWood = new Solid("Wooden Planks", 5, 2);
+	public static final Block jungleWood = new Solid("Wooden Planks", 5, 3);
 	public static final Block sapling = new Sapling("Sapling", 0);
 	public static final Block spruceSapling = new Sapling("Spruce Sapling", 1);
 	public static final Block birchSapling = new Sapling("Birch Sapling", 2);
@@ -83,13 +86,16 @@ public class MaterialData {
 	public static final Block jungleLog = new Tree("Jungle Wood", 17, 3);
 	public static final Block leaves = new Tree("Leaves", 18, 0);
 	public static final Block spruceLeaves = new Tree("Leaves", 18, 1);
-	public static final Block birchLeaves= new Tree("Leaves", 18, 2);
+	public static final Block birchLeaves = new Tree("Leaves", 18, 2);
+	public static final Block jungleLeaves = new Tree("Leaves", 18, 3);
 	public static final Block sponge = new Solid("Sponge", 19);
 	public static final Block glass = new Solid("Glass", 20);
 	public static final Block lapisOre = new Solid("Lapis Lazuli Ore", 21);
 	public static final Block lapisBlock = new Solid("Lapis Lazuli Block", 22);
 	public static final Block dispenser = new Solid("Dispenser", 23);
-	public static final Block sandstone = new Solid("Sandstone", 24);
+	public static final Block sandstone = new Solid("Sandstone", 24, 0);
+	public static final Block decorativeSandstone = new Solid("Sandstone", 24, 1);
+	public static final Block smoothSandstone = new Solid("Sandstone", 24, 2);
 	public static final Block noteblock = new Solid("Note Block", 25);
 	public static final Block bedBlock = new Solid("Bed", 26);
 	public static final Block poweredRail = new Solid("Powered Rail", 27);
@@ -102,22 +108,22 @@ public class MaterialData {
 	public static final Block deadBush = new LongGrass("Dead Shrubs", 32, 0);
 	public static final Block pistonBase = new Solid("Piston", 33);
 	public static final Block pistonExtension = new Solid("Piston (Head)", 34);
-	public static final Block whiteWool = new Wool("Wool", 35,0);
-	public static final Block orangeWool = new Wool("Orange Wool", 35,1);
-	public static final Block magentaWool = new Wool("Magenta Wool", 35,2);
-	public static final Block lightBlueWool = new Wool("Light Blue Wool", 35,3);
-	public static final Block yellowWool = new Wool("Yellow Wool", 35,4);
-	public static final Block limeWool = new Wool("Light Green Wool", 35,5);
-	public static final Block pinkWool = new Wool("Pink Wool", 35,6);
-	public static final Block greyWool = new Wool("Grey Wool", 35,7);
-	public static final Block lightGreyWool = new Wool("Light Grey Wool", 35,8);
-	public static final Block cyanWool = new Wool("Cyan Wool", 35,9);
-	public static final Block purpleWool = new Wool("Purple Wool", 35,10);
-	public static final Block blueWool = new Wool("Blue Wool", 35,11);
-	public static final Block brownWool = new Wool("Brown Wool", 35,12);
-	public static final Block greenWool = new Wool("Dark Green Wool", 35,13);
-	public static final Block redWool = new Wool("Red Wool", 35,14);
-	public static final Block blackWool = new Wool("Black Wool", 35,15);
+	public static final Block whiteWool = new Wool("Wool", 35, 0);
+	public static final Block orangeWool = new Wool("Orange Wool", 35, 1);
+	public static final Block magentaWool = new Wool("Magenta Wool", 35, 2);
+	public static final Block lightBlueWool = new Wool("Light Blue Wool", 35, 3);
+	public static final Block yellowWool = new Wool("Yellow Wool", 35, 4);
+	public static final Block limeWool = new Wool("Light Green Wool", 35, 5);
+	public static final Block pinkWool = new Wool("Pink Wool", 35, 6);
+	public static final Block greyWool = new Wool("Grey Wool", 35, 7);
+	public static final Block lightGreyWool = new Wool("Light Grey Wool", 35, 8);
+	public static final Block cyanWool = new Wool("Cyan Wool", 35, 9);
+	public static final Block purpleWool = new Wool("Purple Wool", 35, 10);
+	public static final Block blueWool = new Wool("Blue Wool", 35, 11);
+	public static final Block brownWool = new Wool("Brown Wool", 35, 12);
+	public static final Block greenWool = new Wool("Dark Green Wool", 35, 13);
+	public static final Block redWool = new Wool("Red Wool", 35, 14);
+	public static final Block blackWool = new Wool("Black Wool", 35, 15);
 	public static final Block movedByPiston = new Solid("Moved By Piston", 36);
 	public static final Block dandelion = new Solid("Dandelion", 37);
 	public static final Block rose = new Solid("Rose", 38);
@@ -125,18 +131,16 @@ public class MaterialData {
 	public static final Block redMushroom = new Solid("Red Mushroom", 40);
 	public static final Block goldBlock = new Solid("Gold Block", 41);
 	public static final Block ironBlock = new Solid("Iron Block", 42);
-	public static final Block stoneDoubleSlabs = new DoubleSlabs("Stone Double Slab", 43,0);
-	public static final Block sandstoneDoubleSlabs = new DoubleSlabs("Sandstone Double Slab", 43,1);
-	public static final Block woodenDoubleSlabs = new DoubleSlabs("Wooden Double Slab", 43,2);
-	public static final Block cobblestoneDoubleSlabs = new DoubleSlabs("Stone Double Slab", 43,3);
-	public static final Block brickDoubleSlabs = new DoubleSlabs("Brick Double Slab", 43,4);
-	public static final Block stoneBrickDoubleSlabs = new DoubleSlabs("Stone Brick Double Slab", 43,5);
-	public static final Block stoneSlab = new Slab("Stone Slab", 44,0);
-	public static final Block sandstoneSlab = new Slab("Sandstone Slab", 44,1);
-	public static final Block woodenSlab = new Slab("Wooden Slab", 44,2);
-	public static final Block cobblestoneSlab = new Slab("Stone Slab", 44,3);
-	public static final Block brickSlab = new Slab("Brick Slab", 44,4);
-	public static final Block stoneBrickSlab = new Slab("Stone Brick Slab", 44,5);
+	public static final Block stoneDoubleSlabs = new DoubleSlabs("Stone Double Slab", 43, 0);
+	public static final Block sandstoneDoubleSlabs = new DoubleSlabs("Sandstone Double Slab", 43, 1);
+	public static final Block cobblestoneDoubleSlabs = new DoubleSlabs("Stone Double Slab", 43, 3);
+	public static final Block brickDoubleSlabs = new DoubleSlabs("Brick Double Slab", 43, 4);
+	public static final Block stoneBrickDoubleSlabs = new DoubleSlabs("Stone Brick Double Slab", 43, 5);
+	public static final Block stoneSlab = new Slab("Stone Slab", 44, 0);
+	public static final Block sandstoneSlab = new Slab("Sandstone Slab", 44, 1);
+	public static final Block cobblestoneSlab = new Slab("Stone Slab", 44, 3);
+	public static final Block brickSlab = new Slab("Brick Slab", 44, 4);
+	public static final Block stoneBrickSlab = new Slab("Stone Brick Slab", 44, 5);
 	public static final Block brick = new Solid("Brick Block", 45);
 	public static final Block tnt = new Solid("TNT", 46);
 	public static final Block bookshelf = new Solid("Bookshelf", 47);
@@ -220,7 +224,23 @@ public class MaterialData {
 	public static final Block dragonEgg = new Solid("Dragon Egg", 122);
 	public static final Block redstoneLampOff = new Solid("Redstone Lamp (Off)", 123);
 	public static final Block redstoneLampOn = new Solid("Redstone Lamp", 124);
-
+	public static final Block oakWoodDoubleSlabs = new DoubleSlabs("Oak Wood Double Slab", 125, 0);
+	public static final Block spruceWoodDoubleSlabs = new DoubleSlabs("Spruce Wood Double Slab", 125, 1);
+	public static final Block birchWoodDoubleSlabs = new DoubleSlabs("Birch Wood Double Slab", 125, 2);
+	public static final Block jungleWoodDoubleSlabs = new DoubleSlabs("Jungle Wood Double Slab", 125, 3);
+	public static final Block oakWoodSlab = new Slab("Oak Wood Slab", 126, 0);
+	public static final Block spruceWoodSlab = new Slab("Spruce Wood Slab", 126, 1);
+	public static final Block birchWoodSlab = new Slab("Birch Wood Slab", 126, 2);
+	public static final Block jungleWoodSlab = new Slab("Jungle Wood Slab", 126, 3);
+	public static final Block sandstoneStairs = new Solid("Sandstone Stairs", 128);
+	public static final Block emeraldOre = new Solid("Emerald Ore", 129);
+	public static final Block enderChest = new Solid("Ender Chest", 130);
+	public static final Block tripwireHook = new Solid("Tripwire Hook", 131);
+	public static final Block tripwire = new Solid("Tripwire", 132);
+	public static final Block emeraldBlock = new Solid("Block of Emerald", 133);
+	public static final Block spruceWoodStairs = new Solid("Spruce Wood Stairs", 134);
+	public static final Block birchWoodStairs = new Solid("Birch Wood Stairs", 135);
+	public static final Block jungleWoodStairs = new Solid("Jungle Wood Stairs", 136);
 	public static final Item ironShovel = new GenericTool("Iron Shovel", 256);
 	public static final Item ironPickaxe = new GenericTool("Iron Pickaxe", 257);
 	public static final Item ironAxe = new GenericTool("Iron Axe", 258);
@@ -228,8 +248,8 @@ public class MaterialData {
 	public static final Item redApple = new GenericFood("Apple", 260, 4);
 	public static final Item bow = new GenericWeapon("Bow", 261);
 	public static final Item arrow = new GenericItem("Arrow", 262);
-	public static final Item coal = new Coal("Coal", 263,0);
-	public static final Item charcoal = new Coal("Charcoal", 263,1);
+	public static final Item coal = new Coal("Coal", 263, 0);
+	public static final Item charcoal = new Coal("Charcoal", 263, 1);
 	public static final Item diamond = new GenericItem("Diamond", 264);
 	public static final Item ironIngot = new GenericItem("Iron Ingot", 265);
 	public static final Item goldIngot = new GenericItem("Gold Ingot", 266);
@@ -317,22 +337,22 @@ public class MaterialData {
 	public static final Item glowstoneDust = new GenericItem("Glowstone Dust", 348);
 	public static final Item rawFish = new GenericFood("Raw Fish", 349, 2);
 	public static final Item cookedFish = new GenericFood("Cooked Fish", 350, 5);
-	public static final Item inkSac = new Dye("Ink Sac", 351,0);
-	public static final Item roseRed = new Dye("Rose Red", 351,1);
-	public static final Item cactusGreen = new Dye("Cactus Green", 351,2);
-	public static final Item cocoaBeans = new Dye("Cocoa Beans", 351,3);
-	public static final Item lapisLazuli = new Dye("Lapis Lazuli", 351,4);
-	public static final Item purpleDye = new Dye("Purple Dye", 351,5);
-	public static final Item cyanDye = new Dye("Cyan Dye", 351,6);
-	public static final Item lightGrayDye = new Dye("Light Gray Dye", 351,7);
-	public static final Item grayDye = new Dye("Gray Dye", 351,8);
-	public static final Item pinkDye = new Dye("Pink Dye", 351,9);
-	public static final Item limeDye = new Dye("Lime Dye", 351,10);
-	public static final Item dandelionYellow = new Dye("Dandelion Yellow", 351,11);
-	public static final Item lightBlueDye = new Dye("Light Blue Dye", 351,12);
-	public static final Item magentaDye = new Dye("Magenta Dye", 351,13);
-	public static final Item orangeDye = new Dye("Orange Dye", 351,14);
-	public static final Item boneMeal = new Dye("Bone Meal", 351,15);
+	public static final Item inkSac = new Dye("Ink Sac", 351, 0);
+	public static final Item roseRed = new Dye("Rose Red", 351, 1);
+	public static final Item cactusGreen = new Dye("Cactus Green", 351, 2);
+	public static final Item cocoaBeans = new Dye("Cocoa Beans", 351, 3);
+	public static final Item lapisLazuli = new Dye("Lapis Lazuli", 351, 4);
+	public static final Item purpleDye = new Dye("Purple Dye", 351, 5);
+	public static final Item cyanDye = new Dye("Cyan Dye", 351, 6);
+	public static final Item lightGrayDye = new Dye("Light Gray Dye", 351, 7);
+	public static final Item grayDye = new Dye("Gray Dye", 351, 8);
+	public static final Item pinkDye = new Dye("Pink Dye", 351, 9);
+	public static final Item limeDye = new Dye("Lime Dye", 351, 10);
+	public static final Item dandelionYellow = new Dye("Dandelion Yellow", 351, 11);
+	public static final Item lightBlueDye = new Dye("Light Blue Dye", 351, 12);
+	public static final Item magentaDye = new Dye("Magenta Dye", 351, 13);
+	public static final Item orangeDye = new Dye("Orange Dye", 351, 14);
+	public static final Item boneMeal = new Dye("Bone Meal", 351, 15);
 	public static final Item bone = new GenericItem("Bone", 352);
 	public static final Item sugar = new GenericItem("Sugar", 353);
 	public static final Item cake = new GenericItem("Cake", 354);
@@ -354,7 +374,83 @@ public class MaterialData {
 	public static final Item ghastTear = new GenericItem("Ghast Tear", 370);
 	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
 	public static final Item netherWart = new GenericItem("Nether Wart", 372);
+	//Potions - Base
+	public static final Item waterBottle = new Potion("Water Bottle", 373, 0);
+	public static final Item awkwardPotion = new Potion("Awkward Potion", 373, 16);
+	public static final Item thickPotion = new Potion("Thick Potion", 373, 32);
+	public static final Item mundanePotion = new Potion("Mundane Potion", 373, 64);
+	public static final Item mundanePotionExtended = new Potion("Mundane Potion", 373, 8192);
+	//Potions - Positive
+	public static final Item potionOfRegeneration = new Potion("Potion of Regeneration", 373, 8193);
+	public static final Item potionOfRegenerationExtended = new Potion("Potion of Regeneration", 373, 8257);
+	public static final Item potionOfRegenerationII = new Potion("Potion of Regeneration II", 373, 8225);
+	public static final Item potionOfSwiftness = new Potion("Potion of Swiftness", 373, 8194);
+	public static final Item potionOfSwiftnessExt = new Potion("Potion of Swiftness", 373, 8258);
+	public static final Item potionOfSwiftnessII = new Potion("Potion of Swiftness II", 373, 8226);
+	public static final Item potionOfFireResistance = new Potion("Potion of Fire Resistance", 373, 8195);
+	public static final Item potionOfFireResistanceExtended = new Potion("Potion of Fire Resistance", 373, 8259);
+	public static final Item potionOfFireResistanceReverted = new Potion("Potion of Fire Resistance", 373, 8227);
+	public static final Item potionOfHealing = new Potion("Potion of Healing", 373, 8197);
+	public static final Item potionOfHealingReverted = new Potion("Potion of Healing", 373, 8261);
+	public static final Item potionOfHealingII = new Potion("Potion of Healing II", 373, 8229);
+	public static final Item potionOfStrength = new Potion("Potion of Strength", 373, 8201);
+	public static final Item potionOfStrengthExtended = new Potion("Potion of Strength", 373, 8265);
+	public static final Item potionOfStrengthII = new Potion("Potion of Strength II", 373, 8233);
+	//Potions - Negative
+	public static final Item potionOfPoison = new Potion("Potion of Poison", 373, 8196);
+	public static final Item potionOfPoisonExtended = new Potion("Potion of Poison", 373, 8260);
+	public static final Item potionOfPoisonII = new Potion("Potion of Poison II", 373, 8228);
+	public static final Item potionOfWeakness = new Potion("Potion of Weakness", 373, 8200);
+	public static final Item potionOfWeaknessExtended = new Potion("Potion of Weakness", 373, 8264);
+	public static final Item potionOfWeaknessReverted = new Potion("Potion of Weakness", 373, 8232);
+	public static final Item potionOfSlowness = new Potion("Potion of Slowness", 373, 8202);
+	public static final Item potionOfSlownessExtended = new Potion("Potion of Slowness", 373, 8266);
+	public static final Item potionOfSlownessReverted = new Potion("Potion of Slowness", 373, 8234);
+	public static final Item potionOfHarming = new Potion("Potion of Harming", 373, 8204);
+	public static final Item potionOfHarmingReverted = new Potion("Potion of Harming", 373, 8268);
+	public static final Item potionOfHarmingII = new Potion("Potion of Harming II", 373, 8236);
+	//Potions - Unbrewable
+	public static final Item potionOfRegenerationIIExtended = new Potion("Potion of Regeneration II", 373, 8289);
+	public static final Item potionOfSwiftnessIIExtended = new Potion("Potion of Swiftness II", 373, 8290);
+	public static final Item potionOfStrengthIIExtended = new Potion("Potion of Strength II", 373, 8297);
+	public static final Item potionOfPoisonIIExtended = new Potion("Potion of Poison II", 373, 8292);
+	//Splash Potions - Base
+	public static final Item splashMundanePotion = new Potion("Splash Mundane Potion", 373, 16384);
+	//Splash Potions - Positive
+	public static final Item splashPotionOfRegeneration = new Potion("Splash Potion of Regeneration", 373, 16385);
+	public static final Item splashPotionOfRegenerationExtended = new Potion("Splash Potion of Regeneration", 373, 16449);
+	public static final Item splashPotionOfRegenerationII = new Potion("Splash Potion of Regeneration II", 373, 16417);
+	public static final Item splashPotionOfSwiftness = new Potion("Splash Potion of Swiftness", 373, 16386);
+	public static final Item splashPotionOfSwiftnessExt = new Potion("Splash Potion of Swiftness", 373, 16450);
+	public static final Item splashPotionOfSwiftnessII = new Potion("Splash Potion of Swiftness II", 373, 16418);
+	public static final Item splashPotionOfFireResistance = new Potion("Splash Potion of Fire Resistance", 373, 16387);
+	public static final Item splashPotionOfFireResistanceExtended = new Potion("Splash Potion of Fire Resistance", 373, 16451);
+	public static final Item splashPotionOfFireResistanceReverted = new Potion("Splash Potion of Fire Resistance", 373, 16419);
+	public static final Item splashPotionOfHealing = new Potion("Splash Potion of Healing", 373, 16389);
+	public static final Item splashPotionOfHealingReverted = new Potion("Splash Potion of Healing", 373, 16453);
+	public static final Item splashPotionOfHealingII = new Potion("Splash Potion of Healing II", 373, 16421);
+	public static final Item splashPotionOfStrength = new Potion("Splash Potion of Strength", 373, 16393);
+	public static final Item splashPotionOfStrengthExtended = new Potion("Splash Potion of Strength", 373, 16457);
+	public static final Item splashPotionOfStrengthII = new Potion("Splash Potion of Strength II", 373, 16425);
+	//Splash Potions - Negative
+	public static final Item splashPotionOfPoison = new Potion("Splash Potion of Poison", 373, 16388);
+	public static final Item splashPotionOfPoisonExtended = new Potion("Splash Potion of Poison", 373, 16452);
+	public static final Item splashPotionOfPoisonII = new Potion("Splash Potion of Poison II", 373, 16420);
+	public static final Item splashPotionOfWeakness = new Potion("Splash Potion of Weakness", 373, 16392);
+	public static final Item splashPotionOfWeaknessExtended = new Potion("Splash Potion of Weakness", 373, 16456);
+	public static final Item splashPotionOfWeaknessReverted = new Potion("Splash Potion of Weakness", 373, 16424);
+	public static final Item splashPotionOfSlowness = new Potion("Splash Potion of Slowness", 373, 16394);
+	public static final Item splashPotionOfSlownessExtended = new Potion("Splash Potion of Slowness", 373, 16458);
+	public static final Item splashPotionOfSlownessReverted = new Potion("Splash Potion of Slowness", 373, 16426);
+	public static final Item splashPotionOfHarming = new Potion("Splash Potion of Harming", 373, 16396);
+	public static final Item splashPotionOfHarmingReverted = new Potion("Splash Potion of Harming", 373, 16460);
+	public static final Item splashPotionOfHarmingII = new Potion("Splash Potion of Harming II", 373, 16428);
 
+	//Splash Potions - Unbrewable
+	//public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
+	//public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
+	//public static final Item splashPotionOfStrengthIIExtended = new Potion("Splash Potion of Strength II", 373, 16489);
+	//public static final Item splashPotionOfPoisonIIExtended = new Potion("Splash Potion of Poison II", 373, 16484);
 	public static final Item glassBottle = new GenericItem("Glass Bottle", 374);
 	public static final Item spiderEye = new GenericFood("Spider Eye", 375, 2);
 	public static final Item fermentedSpiderEye = new GenericItem("Fermented Spider Eye", 376);
@@ -364,7 +460,6 @@ public class MaterialData {
 	public static final Item cauldron = new GenericItem("Cauldron", 380);
 	public static final Item eyeOfEnder = new GenericItem("Eye of Ender", 381);
 	public static final Item glisteringMelon = new GenericItem("Glistering Melon", 382);
-
 	public static final Item spawnEggMooshroom = new SpawnEgg("Spawn Mooshroom", 383, 96);
 	public static final Item spawnEggSkeleton = new SpawnEgg("Spawn Skeleton", 383, 51);
 	public static final Item spawnEggCreeper = new SpawnEgg("Spawn Creeper", 383, 50);
@@ -386,10 +481,11 @@ public class MaterialData {
 	public static final Item spawnEggSilverfish = new SpawnEgg("Spawn Silverfish", 383, 60);
 	public static final Item spawnEggPig = new SpawnEgg("Spawn Pig", 383, 90);
 	public static final Item spawnEggOcelot = new SpawnEgg("Spawn Ocelot", 383, 98);
-
 	public static final Item bottleOEnchanting = new GenericItem("Bottle o' Enchanting", 384);
 	public static final Item fireCharge = new GenericItem("Fire Charge", 385);
-
+	public static final Item bookAndQuill = new GenericItem("Book And Quill", 386);
+	public static final Item writtenBook = new GenericItem("Written Book", 387);
+	public static final Item emerald = new GenericItem("Emerald", 388);
 	public static final Item goldMusicDisc = new GenericItem("Music Disc", 2256);
 	public static final Item greenMusicDisc = new GenericItem("Music Disc", 2257);
 	public static final Item orangeMusicDisc = new GenericItem("Music Disc", 2258);
@@ -401,90 +497,6 @@ public class MaterialData {
 	public static final Item whiteMusicDisc = new GenericItem("Music Disc", 2264);
 	public static final Item forestGreenMusicDisc = new GenericItem("Music Disc", 2265);
 	public static final Item brokenMusicDisc = new GenericItem("Music Disc", 2266);
-
-	//Potions - Base
-	public static final Item waterBottle = new Potion("Water Bottle", 373, 0);
-	public static final Item awkwardPotion = new Potion("Awkward Potion", 373, 16);
-	public static final Item thickPotion = new Potion("Thick Potion", 373, 32);
-	public static final Item mundanePotion = new Potion("Mundane Potion", 373, 64);
-	public static final Item mundanePotionExtended  = new Potion("Mundane Potion", 373, 8192);
-
-	//Potions - Positive
-	public static final Item potionOfRegeneration = new Potion("Potion of Regeneration", 373, 8193);
-	public static final Item potionOfRegenerationExtended = new Potion("Potion of Regeneration", 373, 8257);
-	public static final Item potionOfRegenerationII = new Potion("Potion of Regeneration II", 373, 8225);
-	public static final Item potionOfSwiftness = new Potion("Potion of Swiftness", 373, 8194);
-	public static final Item potionOfSwiftnessExt = new Potion("Potion of Swiftness", 373, 8258);
-	public static final Item potionOfSwiftnessII = new Potion("Potion of Swiftness II", 373, 8226);
-	public static final Item potionOfFireResistance = new Potion("Potion of Fire Resistance", 373, 8195);
-	public static final Item potionOfFireResistanceExtended = new Potion("Potion of Fire Resistance", 373, 8259);
-	public static final Item potionOfFireResistanceReverted = new Potion("Potion of Fire Resistance", 373, 8227);
-	public static final Item potionOfHealing = new Potion("Potion of Healing", 373, 8197);
-	public static final Item potionOfHealingReverted = new Potion("Potion of Healing", 373, 8261);
-	public static final Item potionOfHealingII = new Potion("Potion of Healing II", 373, 8229);
-	public static final Item potionOfStrength = new Potion("Potion of Strength", 373, 8201);
-	public static final Item potionOfStrengthExtended = new Potion("Potion of Strength", 373, 8265);
-	public static final Item potionOfStrengthII = new Potion("Potion of Strength II", 373, 8233);
-
-	//Potions - Negative
-	public static final Item potionOfPoison = new Potion("Potion of Poison", 373, 8196);
-	public static final Item potionOfPoisonExtended = new Potion("Potion of Poison", 373, 8260);
-	public static final Item potionOfPoisonII = new Potion("Potion of Poison II", 373, 8228);
-	public static final Item potionOfWeakness = new Potion("Potion of Weakness", 373, 8200);
-	public static final Item potionOfWeaknessExtended = new Potion("Potion of Weakness", 373, 8264);
-	public static final Item potionOfWeaknessReverted = new Potion("Potion of Weakness", 373, 8232);
-	public static final Item potionOfSlowness = new Potion("Potion of Slowness", 373, 8202);
-	public static final Item potionOfSlownessExtended = new Potion("Potion of Slowness", 373, 8266);
-	public static final Item potionOfSlownessReverted = new Potion("Potion of Slowness", 373, 8234);
-	public static final Item potionOfHarming = new Potion("Potion of Harming", 373, 8204);
-	public static final Item potionOfHarmingReverted = new Potion("Potion of Harming", 373, 8268);
-	public static final Item potionOfHarmingII = new Potion("Potion of Harming II", 373, 8236);
-
-	//Potions - Unbrewable
-	public static final Item potionOfRegenerationIIExtended = new Potion("Potion of Regeneration II", 373, 8289);
-	public static final Item potionOfSwiftnessIIExtended = new Potion("Potion of Swiftness II", 373, 8290);
-	public static final Item potionOfStrengthIIExtended = new Potion("Potion of Strength II", 373, 8297);
-	public static final Item potionOfPoisonIIExtended = new Potion("Potion of Poison II", 373, 8292);
-
-	//Splash Potions - Base
-	public static final Item splashMundanePotion = new Potion("Splash Mundane Potion", 373, 16384);
-
-	//Splash Potions - Positive
-	public static final Item splashPotionOfRegeneration = new Potion("Splash Potion of Regeneration", 373, 16385);
-	public static final Item splashPotionOfRegenerationExtended = new Potion("Splash Potion of Regeneration", 373, 16449);
-	public static final Item splashPotionOfRegenerationII = new Potion("Splash Potion of Regeneration II", 373, 16417);
-	public static final Item splashPotionOfSwiftness = new Potion("Splash Potion of Swiftness", 373, 16386);
-	public static final Item splashPotionOfSwiftnessExt = new Potion("Splash Potion of Swiftness", 373, 16450);
-	public static final Item splashPotionOfSwiftnessII = new Potion("Splash Potion of Swiftness II", 373, 16418);
-	public static final Item splashPotionOfFireResistance = new Potion("Splash Potion of Fire Resistance", 373, 16387);
-	public static final Item splashPotionOfFireResistanceExtended = new Potion("Splash Potion of Fire Resistance", 373, 16451);
-	public static final Item splashPotionOfFireResistanceReverted = new Potion("Splash Potion of Fire Resistance", 373, 16419);
-	public static final Item splashPotionOfHealing = new Potion("Splash Potion of Healing", 373, 16389);
-	public static final Item splashPotionOfHealingReverted = new Potion("Splash Potion of Healing", 373, 16453);
-	public static final Item splashPotionOfHealingII = new Potion("Splash Potion of Healing II", 373, 16421);
-	public static final Item splashPotionOfStrength = new Potion("Splash Potion of Strength", 373, 16393);
-	public static final Item splashPotionOfStrengthExtended = new Potion("Splash Potion of Strength", 373, 16457);
-	public static final Item splashPotionOfStrengthII = new Potion("Splash Potion of Strength II", 373, 16425);
-
-	//Splash Potions - Negative
-	public static final Item splashPotionOfPoison = new Potion("Splash Potion of Poison", 373, 16388);
-	public static final Item splashPotionOfPoisonExtended = new Potion("Splash Potion of Poison", 373, 16452);
-	public static final Item splashPotionOfPoisonII = new Potion("Splash Potion of Poison II", 373, 16420);
-	public static final Item splashPotionOfWeakness = new Potion("Splash Potion of Weakness", 373, 16392);
-	public static final Item splashPotionOfWeaknessExtended = new Potion("Splash Potion of Weakness", 373, 16456);
-	public static final Item splashPotionOfWeaknessReverted = new Potion("Splash Potion of Weakness", 373, 16424);
-	public static final Item splashPotionOfSlowness = new Potion("Splash Potion of Slowness", 373, 16394);
-	public static final Item splashPotionOfSlownessExtended = new Potion("Splash Potion of Slowness", 373, 16458);
-	public static final Item splashPotionOfSlownessReverted = new Potion("Splash Potion of Slowness", 373, 16426);
-	public static final Item splashPotionOfHarming = new Potion("Splash Potion of Harming", 373, 16396);
-	public static final Item splashPotionOfHarmingReverted = new Potion("Splash Potion of Harming", 373, 16460);
-	public static final Item splashPotionOfHarmingII = new Potion("Splash Potion of Harming II", 373, 16428);
-
-	//Splash Potions - Unbrewable
-	public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
-	public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
-	public static final Item splashPotionOfStrengthIIExtended = new Potion("Splash Potion of Strength II", 373, 16489);
-	public static final Item splashPotionOfPoisonIIExtended = new Potion("Splash Potion of Poison II", 373, 16484);
 
 	static {
 		reset();
