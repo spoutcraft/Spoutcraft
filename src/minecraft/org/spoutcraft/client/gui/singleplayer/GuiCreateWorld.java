@@ -81,7 +81,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		labelWorldType = new GenericLabel("World Type");
 
-		checkHardcore = new GenericCheckBox("Hardcore mode");
+		checkHardcore = new GenericCheckBox("Hardcore Mode");
 		checkHardcore.setTooltip("You only live once!");
 		checkHardcore.setChecked(false);
 		
@@ -93,8 +93,8 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		allowCheats.setTooltip("Enable cheating.");
 		allowCheats.setChecked(false);
 		
-		bonusChest = new GenericCheckBox("Bonus chests");
-		bonusChest.setTooltip("Enable bonus chests.");
+		bonusChest = new GenericCheckBox("Bonus Chests");
+		bonusChest.setTooltip("Enable bonus Chests.");
 		bonusChest.setChecked(false);
 
 		textName = new GenericTextField();
@@ -108,7 +108,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		textSeed.setWidth(200);
 		updateSeed();
 
-		buttonNewSeed = new GenericButton("New Seed");
+		buttonNewSeed = new GenericButton("Random");
 
 		labelTitle = new GenericLabel("Create New World");
 
