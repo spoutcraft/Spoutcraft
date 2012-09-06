@@ -8,6 +8,10 @@ import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.spoutcraftapi.material.item.GenericCustomArmor;
+import org.newdawn.slick.opengl.Texture;
+import org.spoutcraft.client.io.CustomTextureManager;
 //spout End
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -33,36 +37,43 @@ public class RenderPlayer extends RenderLiving {
 		ItemStack var4 = par1EntityPlayer.inventory.armorItemInSlot(3 - par2);
 		if (var4 != null) {
 			Item var5 = var4.getItem();
-			if (var5 instanceof ItemArmor) {
+			if( var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				//Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
-				VIP vip = par1EntityPlayer.vip;
-				int armorId = (par2 == 2 ? 2 : 1);
-				if (vip != null && vip.getArmor(armorId) != null) {
-					String url = vip.getArmor(armorId);
-					if (!this.loadDownloadableImageTexture(url, (String) null)) {
-						Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
+			//Spout start
+			} else if( var4.itemID == 318 ) {
+				CustomItem item = MaterialData.getCustomItem(var4.getItemDamage());
+				if( item != null ) {
+					if( item instanceof GenericCustomArmor ) {
+						String textureURI = (par2 == 2 ? ((GenericCustomArmor)item).getArmorTexture(1) : ((GenericCustomArmor)item).getArmorTexture(0));
+						if (textureURI != null) {
+							GL11.glBindTexture(GL11.GL_TEXTURE_2D,  this.renderManager.renderEngine.getArmorTexture(
+										item.getAddon().getDescription().getName(), textureURI));
+						}
+					} else {
+						return -1;
 					}
+				} else {
+					return -1;
 				}
-				//Spout End
-				ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
-				var7.bipedHead.showModel = par2 == 0;
-				var7.bipedHeadwear.showModel = par2 == 0;
-				var7.bipedBody.showModel = par2 == 1 || par2 == 2;
-				var7.bipedRightArm.showModel = par2 == 1;
-				var7.bipedLeftArm.showModel = par2 == 1;
-				var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-				var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-				this.setRenderPassModel(var7);
-				if (var4.isItemEnchanted()) {
-					return 15;
-				}
-
-				return 1;
+			} else {
+				return -1;
 			}
+			//Spout End
+			ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
+			var7.bipedHead.showModel = par2 == 0;
+			var7.bipedHeadwear.showModel = par2 == 0;
+			var7.bipedBody.showModel = par2 == 1 || par2 == 2;
+			var7.bipedRightArm.showModel = par2 == 1;
+			var7.bipedLeftArm.showModel = par2 == 1;
+			var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
+			var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+			this.setRenderPassModel(var7);
+			if (var4.isItemEnchanted()) {
+				return 15;
+			}
+			return 1;
 		}
-
 		return -1;
 	}
 

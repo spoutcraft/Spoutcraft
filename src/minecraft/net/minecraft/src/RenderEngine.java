@@ -1,11 +1,13 @@
 package net.minecraft.src;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -15,14 +17,16 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
+
 //Spout HD Start
 import net.minecraft.client.Minecraft;
 
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-
+import org.spoutcraft.client.io.CustomTextureManager;
 //Spout HD End
+
 
 public class RenderEngine {
 	private HashMap textureMap = new HashMap();
@@ -119,7 +123,37 @@ public class RenderEngine {
 		}
 		// Spout HD end
 	}
-
+	
+	//Spout HD start
+	public int getArmorTexture(String plugin, String url) {
+		Integer var2 = (Integer)this.textureMap.get(plugin + "/" + url);
+		if (var2 != null) {
+			return var2.intValue();
+		}
+			
+		File file = CustomTextureManager.getTextureFile(plugin, url);
+		if( file == null ) {
+			return 0;
+		}
+		int var3 = 0;
+		try {
+			singleIntBuffer.clear();
+			GLAllocation.generateTextureNames(this.singleIntBuffer);
+			var3 = this.singleIntBuffer.get(0);
+			setupTexture(readTextureImage(new FileInputStream(file)), var3);
+			textureMap.put(plugin + "/" + url, Integer.valueOf(var3));
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			GLAllocation.generateTextureNames(this.singleIntBuffer);
+			int var4 = this.singleIntBuffer.get(0);
+			this.setupTexture(this.missingTextureImage, var4);
+			this.textureMap.put(plugin + "/" + url, Integer.valueOf(var4));
+			return var4;
+		}
+		return var3;
+	}
+	//Spout HD end
+	
 	public int getTexture(String par1Str) {
 		Integer var2 = (Integer)this.textureMap.get(par1Str);
 		if (var2 != null) {
