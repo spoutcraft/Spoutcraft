@@ -44,8 +44,7 @@ public class FancyShadersButton extends GenericButton {
 	@Override
 	public String getTooltip() {
 		if (!isEnabled()) {
-			return "Temporarily disabled, until proper fixing :<";
-			//return "Your graphics card does not support shaders.\nShaders require OpenGL 2.0 or greater support.";
+			return "Your graphics card does not support shaders.\nShaders require OpenGL 2.0 or greater support.";
 		}
 		return super.getTooltip();
 	}

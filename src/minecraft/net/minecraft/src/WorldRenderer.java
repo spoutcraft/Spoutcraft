@@ -254,7 +254,7 @@ public class WorldRenderer {
 										skipRenderPass = true;
 									}
 									else {
-										Tessellator.instance.setEntity(block.blockID); //shaders
+										Tessellator.instance.setEntity(block.blockID); //Spout
 										if (design != null) {
 											oldBounds[0] = (float) block.minX;
 											oldBounds[1] = (float) block.minY;
@@ -301,7 +301,7 @@ public class WorldRenderer {
 			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
 			tileRenderers.removeAll(this.tileEntityRenderers);
-			Tessellator.instance.setEntity(-1); //shaders
+			Tessellator.instance.setEntity(-1); //Spout shaders
 			//Spout End
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;

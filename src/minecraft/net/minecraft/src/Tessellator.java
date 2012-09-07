@@ -234,9 +234,9 @@ public class Tessellator {
 				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
 				if (this.drawMode == 7 && convertQuadsToTriangles) {
-					GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.vertexCount);
+					Shaders.glDrawArraysWrapper(GL11.GL_TRIANGLES, 0, this.vertexCount, shadersShortBuffer); //Spout
 				} else {
-					GL11.glDrawArrays(this.drawMode, 0, this.vertexCount);
+					Shaders.glDrawArraysWrapper(this.drawMode, 0, this.vertexCount, shadersShortBuffer); //Spout
 				}
 
 				GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);

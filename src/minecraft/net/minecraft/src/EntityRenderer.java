@@ -473,6 +473,7 @@ public class EntityRenderer {
 	}
 
 	public void disableLightmap(double par1) {
+		Shaders.disableLightmap(); //Spout
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -496,6 +497,7 @@ public class EntityRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+		Shaders.enableLightmap(); //Spout
 	}
 
 	private void updateTorchFlicker() {
@@ -746,6 +748,7 @@ public class EntityRenderer {
 	}
 
 	public void renderWorld(float par1, long par2) {
+		Shaders.beginRender(this.mc, par1, par2);//Spout
 		this.mc.mcProfiler.startSection("lightTex");
 
 		if (this.lightmapUpdateNeeded) {
@@ -785,10 +788,10 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			this.mc.mcProfiler.endStartSection("camera");
 			//Spout start
-			//Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
+			Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
 			this.setupCameraTransform(par1, var13);
 			ActiveRenderInfo.updateRenderInfo(this.mc.thePlayer, this.mc.gameSettings.thirdPersonView == 2);
-			//Shaders.setCamera(par1);
+			Shaders.setCamera(par1);
 			//Spout end
 			this.mc.mcProfiler.endStartSection("frustrum");
 			ClippingHelperImpl.getInstance();
@@ -808,13 +811,14 @@ public class EntityRenderer {
 			Frustrum var14 = new Frustrum();
 			var14.setPosition(var7, var9, var11);
 			this.mc.renderGlobal.clipRenderersByFrustum(var14, par1);
-			//Spout start
 			if (var13 == 0) {
 				this.mc.mcProfiler.endStartSection("updatechunks");
+				//FIXME Something changed here with 1.3...
+				while (!this.mc.renderGlobal.updateRenderers(var4, false) && par2 != 0L) {
+					long var15 = par2 - System.nanoTime();
 
-				for (int pass = 0; pass < Math.max(1, ConfigReader.chunkRenderPasses); pass++) {
-					if (this.mc.renderGlobal.updateRenderers(var4, false)) {
-
+					if (var15 < 0L || var15 > 1000000000L) {
+						break;
 					}
 				}
 			}
@@ -823,6 +827,7 @@ public class EntityRenderer {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			this.mc.mcProfiler.endStartSection("terrain");
+			//Spout start
 			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
 			//Spout end
 			GL11.glShadeModel(GL11.GL_FLAT);
@@ -853,7 +858,7 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			//Spout start
-			final int passes = 2;
+			final int passes = Shaders.isEnabled() ? 3 : 2;
 			for (this.betterGrassLoop = 1; this.betterGrassLoop < passes; ++this.betterGrassLoop) {
 			//Spout end
 			GL11.glDepthMask(true);
@@ -868,7 +873,7 @@ public class EntityRenderer {
 				}
 
 				GL11.glColorMask(false, false, false, false);
-				int var18 = var5.sortAndRender(var4, 1, (double)par1);
+				int var18 = Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); //Spout
 				if (this.mc.gameSettings.anaglyph) {
 					if (anaglyphField == 0) {
 						GL11.glColorMask(false, true, true, true);
@@ -886,7 +891,7 @@ public class EntityRenderer {
 				GL11.glShadeModel(GL11.GL_FLAT);
 			} else {
 				this.mc.mcProfiler.endStartSection("water");
-				var5.sortAndRender(var4, 1, (double)par1);
+				Shaders.sortAndRenderWrapper(var5, var4, betterGrassLoop, (double)par1); //Spout
 			}
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);
@@ -911,9 +916,9 @@ public class EntityRenderer {
 			this.mc.mcProfiler.endStartSection("weather");
 
 			//Spout start
-			//Shaders.beginWeather();
+			Shaders.beginWeather();
 			this.renderRainSnow(par1);
-			//Shaders.endWeather();
+			Shaders.endWeather();
 			//Spout end
 			GL11.glDisable(GL11.GL_FOG);
 
@@ -931,21 +936,21 @@ public class EntityRenderer {
 			this.mc.mcProfiler.endStartSection("hand");
 			if (this.cameraZoom == 1.0D) {
 				GL11.glClear(256);
-				//Shaders.beginHand(); //Spout start
+				Shaders.beginHand(); //Spout start
 				this.renderHand(par1, var13);
-				//Shaders.endHand(); //Spout start
+				Shaders.endHand(); //Spout start
 			}
 
 			if (!this.mc.gameSettings.anaglyph) {
 				this.mc.mcProfiler.endSection();
-				//Shaders.endRender(); // Spout
+				Shaders.endRender(); // Spout
 				return;
 			}
 		}
 
 		GL11.glColorMask(true, true, true, false);
 		this.mc.mcProfiler.endSection();
-		//Shaders.endRender(); //Spout
+		Shaders.endRender(); //Spout
 	}
 
 	private void addRainParticles() {
