@@ -21,6 +21,7 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.ServerData;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
@@ -56,7 +57,9 @@ public class ServerManager {
 	 * @param serverItem
 	 */
 	public void join(ServerItem serverItem, GuiScreen from, String name) {
-		join(serverItem.getIp(), serverItem.getPort(), from, name);
+		//join(serverItem.getIp(), serverItem.getPort(), from, name);
+		SpoutServerData serverData = new SpoutServerData(name, serverItem);
+		join(serverData, from, name);
 	}
 
 	/**
@@ -67,7 +70,13 @@ public class ServerManager {
 	public void join(String ip, int port, GuiScreen from, String name) {
 		this.joinedFrom = from;
 		this.screenName = name;
-		SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), ip, port));
+		SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), new ServerData(name, ip+":"+port)));
+	}
+	
+	public void join(SpoutServerData serverData, GuiScreen from, String name) {
+		this.joinedFrom = from;
+		this.screenName = name;
+		SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), serverData));
 	}
 
 	public GuiScreen getJoinedFrom() {

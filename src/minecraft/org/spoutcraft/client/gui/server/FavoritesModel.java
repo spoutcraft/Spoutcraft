@@ -58,6 +58,7 @@ public class FavoritesModel extends ServerModel {
 						String ip = "";
 						int port = ServerItem.DEFAULT_PORT;
 						int databaseId = -1;
+						Boolean acceptsTextures = null;
 						if (item.containsKey("title"))
 							title = (String) item.get("title");
 						if (item.containsKey("ip"))
@@ -66,7 +67,9 @@ public class FavoritesModel extends ServerModel {
 							port = (Integer) item.get("port");
 						if (item.containsKey("databaseid"))
 							databaseId = (Integer) item.get("databaseid");
-						addServer(title, ip, port, databaseId);
+						if (item.containsKey("acceptsTextures"))
+							acceptsTextures = (Boolean) item.get("acceptsTextures");
+						addServer(title, ip, port, databaseId, acceptsTextures);
 					}
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -141,6 +144,9 @@ public class FavoritesModel extends ServerModel {
 			data.put("ip", item.getIp());
 			data.put("port", item.getPort());
 			data.put("databaseid", item.getDatabaseId());
+			if (item.getAcceptsTextures() != null) {
+				data.put("acceptsTextures", item.getAcceptsTextures().booleanValue());
+			}
 			list.add(data);
 		}
 		try {
@@ -178,7 +184,20 @@ public class FavoritesModel extends ServerModel {
 			gui.updateButtons();
 		}
 	}
-
+	
+	public void addServer(String title, String ip, int port, int databaseId, Boolean acceptsTextures) {
+		ServerItem item = new ServerItem(title, ip, port, databaseId);
+		if (acceptsTextures != null) {
+			item.setAcceptsTextures(acceptsTextures);
+		}
+		item.poll();
+		items.add(item);
+		sizeChanged();
+		if (gui != null) {
+			gui.updateButtons();
+		}
+	}
+	
 	public void removeServer(ServerItem selectedItem) {
 		items.remove(selectedItem);
 		sizeChanged();

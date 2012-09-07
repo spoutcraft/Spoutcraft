@@ -133,6 +133,14 @@ public class GuiConnecting extends GuiScreen
 	/** True if the connection attempt has been cancelled. */
 	private boolean cancelled;
 
+	public GuiConnecting(Minecraft par1Minecraft, ServerData par2ServerData) {
+		this.mc = par1Minecraft;
+		ServerAddress var3 = ServerAddress.func_78860_a(par2ServerData.serverIP);
+		par1Minecraft.loadWorld((WorldClient)null);
+		par1Minecraft.setServerData(par2ServerData);
+		this.spawnNewServerThread(var3.getIP(), var3.getPort());
+	}
+	
 	public GuiConnecting(Minecraft par1Minecraft, String par2Str, int par3)
 	{
 		this.mc = par1Minecraft;
@@ -140,9 +148,15 @@ public class GuiConnecting extends GuiScreen
 		cancelled = false;
 		System.out.println((new StringBuilder()).append("Connecting to ").append(par2Str).append(", ").append(par3).toString());
 		par1Minecraft.loadWorld(null);
-		(new ThreadConnectToServer(this, par2Str, par3)).start();
+		//(new ThreadConnectToServer(this, par2Str, par3)).start();
+		this.spawnNewServerThread(par2Str, par3);
 	}
 
+	private void spawnNewServerThread(String par1Str, int par2) {
+		System.out.println("Connecting to " + par1Str + ", " + par2);
+		(new ThreadConnectToServer(this, par1Str, par2)).start();
+	}
+	
 	/**
 	 * Called from the main game loop to update the screen.
 	 */

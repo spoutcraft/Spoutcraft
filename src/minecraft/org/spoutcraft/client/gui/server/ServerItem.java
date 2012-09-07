@@ -50,6 +50,8 @@ public class ServerItem implements ListWidgetItem {
 	protected String title;
 
 	protected int databaseId = -1;
+	
+	protected Boolean acceptsTextures;
 
 	//Options from the serverlist API
 	protected String country = null;
@@ -370,5 +372,13 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setShowPingWhilePolling(boolean b) {
 		this.showPingWhilePolling = b;
+	}
+	
+	public Boolean getAcceptsTextures() {
+		return this.acceptsTextures;
+	}
+	
+	public void setAcceptsTextures(boolean acceptsTextures) {
+		this.acceptsTextures = acceptsTextures;
 	}
 }
