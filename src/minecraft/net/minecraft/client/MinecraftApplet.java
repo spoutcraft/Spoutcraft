@@ -7,6 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.CanvasMinecraftApplet;
 import net.minecraft.src.MinecraftAppletImpl;
 import net.minecraft.src.Session;
+//Spout start
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+//Spout end
 
 public class MinecraftApplet extends Applet {
 
@@ -36,6 +40,17 @@ public class MinecraftApplet extends Applet {
 		}
 		if(this.getParameter("portable") != null) {
 			Minecraft.portable = this.getParameter("portable").equalsIgnoreCase("true");
+		}
+		if (this.getParameter("proxy_host") != null) {
+			System.setProperty("http.proxyHost", this.getParameter("proxy_host"));
+			System.setProperty("https.proxyHost", this.getParameter("proxy_host"));
+			if (this.getParameter("proxy_port") != null) {
+				System.setProperty("http.proxyPort", this.getParameter("proxy_port"));
+				System.setProperty("https.proxyPort", this.getParameter("proxy_port"));
+			}
+			if (this.getParameter("proxy_user") != null && this.getParameter("proxy_pass") != null) {
+				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass") != null)));
+			}
 		}
 		//Spout End
 
