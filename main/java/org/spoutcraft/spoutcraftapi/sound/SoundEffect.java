@@ -64,7 +64,7 @@ public enum SoundEffect {
 	WATER(31, "liquid.water"),
 
 	/* Mob Sound Effects */
-	BLAZE_BREATHE_1(91, "mob.blaze.breathe", 0),
+	BLAZE_BREATHE_1(283, "mob.blaze.breathe", 0),
 	BLAZE_BREATHE_2(92, "mob.blaze.breathe", 1),
 	BLAZE_BREATHE_3(93, "mob.blaze.breathe", 2),
 	BLAZE_BREATHE_4(94, "mob.blaze.breathe", 3),
