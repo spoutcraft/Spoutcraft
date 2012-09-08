@@ -74,12 +74,21 @@ public class ServerItem implements ListWidgetItem {
 
 	private static final String latestMC = "1.0";
 	protected String mcversion = latestMC;
+	private boolean showPing = false;
 
 	public ServerItem clone() {
 		ServerItem clone = new ServerItem(getTitle(), getIp(), getPort(), getDatabaseId(),  mcversion);
 		return clone;
 	}
 
+	public void setShowPing(boolean showPing) {
+		this.showPing = showPing;
+	}
+	
+	public boolean isShowPing() {
+		return showPing;
+	}
+	
 	public void update(ServerItem other) {
 		this.ip = other.ip;
 		this.port = other.port;
@@ -142,21 +151,25 @@ public class ServerItem implements ListWidgetItem {
 		int margin1 = 0;
 		int margin2 = 0;
 
+		
 		if (getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
-			String sping = getPing() + " ms";
-			int pingwidth = font.getStringWidth(sping);
-			margin1 = pingwidth + 14;
-			font.drawStringWithShadow(sping, x + width - pingwidth - 14, y + 2, 0xaaaaaa);
+			if (isShowPing()) {
+				String sping = getPing() + " ms";
+				int pingwidth = font.getStringWidth(sping);
+				margin1 = pingwidth + 14;
+				font.drawStringWithShadow(sping, x + width - pingwidth - 14, y + 2, 0xaaaaaa);
+			}
 			String sPlayers = getPlayers() + " / " + getMaxPlayers() + " players";
 			int playerswidth = font.getStringWidth(sPlayers);
 			margin2 = playerswidth;
 			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y + 11, 0xaaaaaa);
 		}
+		
 
 		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
 		String sMotd = "";
 		if ((getPing() == PollResult.PING_POLLING || isPolling()) && !showPingWhilePolling) {
-			sMotd = "Polling...";
+			sMotd = showPing ? "Polling ..." : "Retrieving MOTD";
 		} else if (!showPingWhilePolling) {
 			switch (getPing()) {
 				case PollResult.PING_UNKNOWN:
@@ -191,13 +204,13 @@ public class ServerItem implements ListWidgetItem {
 		//FANCY ICONS!
 		int xOffset = 0;
 		int yOffset = 0;
-		if (isPolling()) {
+		if (isPolling() && isShowPing()) {
 			xOffset = 1;
 			yOffset = (int)(System.currentTimeMillis() / 100L & 7L);
 			if (yOffset > 4) {
 				yOffset = 8 - yOffset;
 			}
-		} else {
+		} else if (isShowPing()) {
 			xOffset = 0;
 			if (ping < 0L) {
 				yOffset = 5;
@@ -213,8 +226,10 @@ public class ServerItem implements ListWidgetItem {
 				yOffset = 4;
 			}
 		}
-		SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
-		RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
+		if (isShowPing()) {
+			SpoutClient.getHandle().renderEngine.bindTexture(SpoutClient.getHandle().renderEngine.getTexture("/gui/icons.png"));
+			RenderUtil.drawTexturedModalRectangle(x + width - 2 - 10, y + 2, 0 + xOffset * 10, 176 + yOffset * 8, 10, 8, 0f);
+		}
 		if (port != DEFAULT_PORT) {
 			font.drawStringWithShadow(ip + ":" +port, x+marginleft, y+20, 0xaaaaaa);
 		} else {

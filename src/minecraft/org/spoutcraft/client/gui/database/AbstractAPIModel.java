@@ -45,7 +45,7 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 	protected boolean loading = false;
 	protected Thread currentLoader = null;
 	protected int lastPage = 1;
-	protected String currentUrl;
+	protected String currentUrl = "";
 	protected boolean moreItems = false;
 	protected GenericListWidgetItem itemLoadNextItems = null;
 	protected ArrayList<Object> apiData = null;

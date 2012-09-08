@@ -177,6 +177,7 @@ public class FavoritesModel extends ServerModel {
 
 	public void addServer(String title, String ip, int port, int databaseId) {
 		ServerItem item = new ServerItem(title, ip, port, databaseId);
+		item.setShowPing(true);
 		item.poll();
 		items.add(item);
 		sizeChanged();
@@ -187,6 +188,7 @@ public class FavoritesModel extends ServerModel {
 	
 	public void addServer(String title, String ip, int port, int databaseId, Boolean acceptsTextures) {
 		ServerItem item = new ServerItem(title, ip, port, databaseId);
+		item.setShowPing(true);
 		if (acceptsTextures != null) {
 			item.setAcceptsTextures(acceptsTextures);
 		}

@@ -61,6 +61,8 @@ public class GuiTexturePacks extends GuiScreen {
 		buttonOpenFolder = new GenericButton("Open Folder");
 		buttonSelect = new GenericButton("Select");
 		buttonReservoir = new GenericButton("Database");
+		buttonReservoir.setEnabled(false);
+		buttonReservoir.setTooltip("Disabled until further notice");
 		buttonDelete = new DeleteTexturepackButton(this);
 		buttonInfo = new GenericButton("Info");
 	}
