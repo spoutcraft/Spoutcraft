@@ -49,7 +49,7 @@ public class MinecraftApplet extends Applet {
 				System.setProperty("https.proxyPort", this.getParameter("proxy_port"));
 			}
 			if (this.getParameter("proxy_user") != null && this.getParameter("proxy_pass") != null) {
-				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass") != null)));
+				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass")));
 			}
 		}
 		//Spout End
