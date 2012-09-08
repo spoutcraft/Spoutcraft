@@ -123,4 +123,17 @@ public class MinecraftApplet extends Applet {
 		}
 
 	}
+	
+	//Spout start
+	private static class ProxyAuthenticator extends Authenticator {
+		final String user, pass;
+		ProxyAuthenticator(String user, String pass) {
+			this.user = user;
+			this.pass = pass;
+		}
+		protected PasswordAuthentication getPasswordAuthentication() {
+			return new PasswordAuthentication(user, pass.toCharArray());
+		}
+	}
+	//Spout end
 }
