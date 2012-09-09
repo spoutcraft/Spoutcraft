@@ -217,7 +217,11 @@ public class SoundManager {
 		if (soundEffectsLimit-- <= 0) {
 			return;
 		}
-		SoundPoolEntry soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
+		
+		SoundPoolEntry soundpoolentry;
+		if (soundId > -1) soundpoolentry = soundPoolSounds.getSoundFromSoundPool(s, soundId);
+		else soundpoolentry = soundPoolSounds.getRandomSoundFromSoundPool(s);
+		
 		if(soundpoolentry != null && f3 > 0.0F)
 		{
 			latestSoundID = (latestSoundID + 1) % 256;
