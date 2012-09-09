@@ -37,6 +37,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.StringTranslate;
 
 import org.bukkit.ChatColor;
 
@@ -66,7 +67,7 @@ public class MainMenu extends GuiScreen {
 
 	public static String mcVersion = "1.3.2";
 	final static List<String> splashes = new ArrayList<String>(1000);
-	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit;
+	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit, language;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
@@ -202,16 +203,18 @@ public class MainMenu extends GuiScreen {
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		int textWidth;
-
+		
+		StringTranslate translate = StringTranslate.getInstance();
+		
 		fastLogin.setGeometry(width - 110, height - 205, 100, 20);
 
-		singleplayer = new GenericButton("Singleplayer");
+		singleplayer = new GenericButton(translate.translateKey("menu.singleplayer"));
 		singleplayer.setGeometry(width - 110, height - 180, 100, 20);
 
-		multiplayer = new GenericButton("Multiplayer");
+		multiplayer = new GenericButton(translate.translateKey("menu.multiplayer"));
 		multiplayer.setGeometry(width - 110, height - 155, 100, 20);
 
-		textures = new GenericButton("Textures");
+		textures = new GenericButton(translate.translateKey("menu.mods"));
 		textures.setGeometry(width - 110, height - 130, 100, 20);
 
 		addons = new GenericButton("Addons");
@@ -225,10 +228,10 @@ public class MainMenu extends GuiScreen {
 		about = new GenericButton("About");
 		about.setGeometry(Math.min(98, width - 288), height - 105, 51, 20);
 
-		options = new GenericButton("Options");
+		options = new GenericButton(translate.translateKey("menu.options"));
 		options.setGeometry(Math.min(159, width - 227), height - 105, 51, 20);
 
-		quit = new GenericButton("Quit");
+		quit = new GenericButton(translate.translateKey("menu.quit"));
 		quit.setGeometry(Math.min(220, width - 166), height - 105, 51, 20);
 
 		background.setGeometry(0, 0, width, height);
