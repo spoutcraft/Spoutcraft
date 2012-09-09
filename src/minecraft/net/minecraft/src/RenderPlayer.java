@@ -6,7 +6,9 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.material.item.GenericCustomArmor;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 //spout End
 import org.lwjgl.opengl.GL11;
@@ -46,20 +48,37 @@ public class RenderPlayer extends RenderLiving {
 					}
 				}
 				//Spout End
-				ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
-				var7.bipedHead.showModel = par2 == 0;
-				var7.bipedHeadwear.showModel = par2 == 0;
-				var7.bipedBody.showModel = par2 == 1 || par2 == 2;
-				var7.bipedRightArm.showModel = par2 == 1;
-				var7.bipedLeftArm.showModel = par2 == 1;
-				var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
-				var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
-				this.setRenderPassModel(var7);
-				if (var4.isItemEnchanted()) {
-					return 15;
-				}
-
 				return 1;
+			}//Spout Start
+			else if (var4.itemID == 318) {
+				CustomItem item = MaterialData.getCustomItem(var4.getItemDamage());
+				if (item != null) {
+					if (item instanceof GenericCustomArmor) {
+						String textureURI = (par2 == 2 ? ((GenericCustomArmor) item).getArmorTexture(1) : ((GenericCustomArmor) item).getArmorTexture(0));
+						if (textureURI != null) {
+							GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderManager.renderEngine.getArmorTexture(item.getAddon().getDescription().getName(), textureURI));
+						}
+					} else {
+						return -1;
+					}
+				} else {
+					return -1;
+				}
+			} else {
+			    return -1;
+			}
+			//Spout End
+			ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
+			var7.bipedHead.showModel = par2 == 0;
+			var7.bipedHeadwear.showModel = par2 == 0;
+			var7.bipedBody.showModel = par2 == 1 || par2 == 2;
+			var7.bipedRightArm.showModel = par2 == 1;
+			var7.bipedLeftArm.showModel = par2 == 1;
+			var7.bipedRightLeg.showModel = par2 == 2 || par2 == 3;
+			var7.bipedLeftLeg.showModel = par2 == 2 || par2 == 3;
+			this.setRenderPassModel(var7);
+			if (var4.isItemEnchanted()) {
+				return 15;
 			}
 		}
 
