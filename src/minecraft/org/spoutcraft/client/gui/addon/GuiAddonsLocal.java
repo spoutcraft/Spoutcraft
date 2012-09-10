@@ -19,6 +19,8 @@
  */
 package org.spoutcraft.client.gui.addon;
 
+import net.minecraft.src.StringTranslate;
+
 import org.lwjgl.Sys;
 
 import org.spoutcraft.client.SpoutClient;
@@ -47,20 +49,22 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-
-		labelTitle = new GenericLabel("Installed Addons");
+		
+		StringTranslate t = StringTranslate.getInstance();
+		
+		labelTitle = new GenericLabel(t.translateKey("spout.addon.title", "Installed Addons"));
 		addonsView = new GenericListView(model);
 		addonOptions = new GenericScrollArea();
-		checkPluginEnabled = new GenericCheckBox("Active");
-		checkInternetAccess = new GenericCheckBox("Internet Access");
-		buttonMainMenu = new GenericButton("Main Menu");
-		buttonDatabase = new GenericButton("Database");
-		buttonDatabase.setTooltip("Coming soon!");
+		checkPluginEnabled = new GenericCheckBox(t.translateKey("spout.addon.active", "Active"));
+		checkInternetAccess = new GenericCheckBox(t.translateKey("spout.addon.internet", "Internet Access"));
+		buttonMainMenu = new GenericButton(t.translateKey("gui.done", "Main Menu"));
+		buttonDatabase = new GenericButton(t.translateKey("spout.addon.database", "Database"));
+		buttonDatabase.setTooltip(t.translateKey("spout.addon.tip.database", "Coming soon!"));
 		buttonDatabase.setEnabled(false);
-		buttonOpenFolder = new GenericButton("Open Addons Folder");
-		buttonOpenFolder.setTooltip("Place your addons here manually");
-		buttonOpenConfiguration = new GenericButton("Configuration");
-		buttonOpenConfiguration.setTooltip("Open Addon-specific configuration");
+		buttonOpenFolder = new GenericButton(t.translateKey("spout.addon.open", "Open Addons Folder"));
+		buttonOpenFolder.setTooltip(t.translateKey("spout.addon.tip.open", "Place your addons here manually"));
+		buttonOpenConfiguration = new GenericButton(t.translateKey("spout.addon.config", "Configuration"));
+		buttonOpenConfiguration.setTooltip(t.translateKey("spout.addon.tip.config", "Open Addon-specific configuration"));
 
 		getScreen().attachWidget(spoutcraft, addonsView);
 		getScreen().attachWidget(spoutcraft, addonOptions);
