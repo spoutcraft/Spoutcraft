@@ -133,7 +133,22 @@ public class StringTranslate {
 	public String translateKey(String par1Str) {
 		return this.translateTable.getProperty(par1Str, par1Str);
 	}
-
+	
+	//spout start
+	/**
+	 * Translate a key to a current language, with fallback if a key is not present.
+	 * @param key
+	 * @param fallback
+	 * @return
+	 */
+	public String translateKey(String key, String fallback) {
+		if (this.translateTable.containsKey(key)) {
+			return translateKey(key);
+		}
+		return fallback;
+	}
+	//spout end
+	
 	/**
 	 * Translate a key to current language applying String.format()
 	 */

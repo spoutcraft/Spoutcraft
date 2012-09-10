@@ -217,7 +217,7 @@ public class MainMenu extends GuiScreen {
 		textures = new GenericButton(translate.translateKey("menu.mods"));
 		textures.setGeometry(width - 110, height - 130, 100, 20);
 
-		addons = new GenericButton("Addons");
+		addons = new GenericButton(translate.translateKey("spout.menu.addons","Addons"));
 		addons.setGeometry(width - 110, height - 105, 100, 20);
 
 		buildNumber = new GenericLabel(mcVersion + " b" + SpoutClient.getClientVersion());
