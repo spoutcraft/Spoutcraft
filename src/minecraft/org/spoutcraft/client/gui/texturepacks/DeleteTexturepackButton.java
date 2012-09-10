@@ -24,8 +24,8 @@ import org.spoutcraft.client.gui.SafeButton;
 public class DeleteTexturepackButton extends SafeButton {
 	private GuiTexturePacks parent;
 
-	public DeleteTexturepackButton(GuiTexturePacks parent) {
-		setText("Delete");
+	public DeleteTexturepackButton(GuiTexturePacks parent, String label) {
+		setText(label);
 		this.parent = parent;
 	}
 

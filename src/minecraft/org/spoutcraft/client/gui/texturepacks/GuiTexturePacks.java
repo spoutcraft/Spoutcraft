@@ -27,6 +27,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
 import org.bukkit.ChatColor;
@@ -53,18 +54,21 @@ public class GuiTexturePacks extends GuiScreen {
 		if (instancesCreated) {
 			return;
 		}
+		
+		StringTranslate t = StringTranslate.getInstance();
+		
 		model.update();
-		screenTitle = new GenericLabel("Texture Packs");
-		loadingTexture = new GenericLabel(ChatColor.GREEN+"Loading texture...");
+		screenTitle = new GenericLabel(t.translateKey("texturePack.title", "Texture Packs"));
+		loadingTexture = new GenericLabel(ChatColor.GREEN+t.translateKey("spout.texturepack.loading", "Loading texture..."));
 		view = new GenericListView(model);
-		buttonDone = new GenericButton("Main Menu");
-		buttonOpenFolder = new GenericButton("Open Folder");
-		buttonSelect = new GenericButton("Select");
-		buttonReservoir = new GenericButton("Database");
+		buttonDone = new GenericButton(t.translateKey("gui.done", "Main Menu"));
+		buttonOpenFolder = new GenericButton(t.translateKey("texturePack.openFolder", "Open Folder"));
+		buttonSelect = new GenericButton(t.translateKey("spout.texturepack.select", "Select"));
+		buttonReservoir = new GenericButton(t.translateKey("spout.texturepack.database", "Database"));
 		buttonReservoir.setEnabled(false);
-		buttonReservoir.setTooltip("Disabled until further notice");
-		buttonDelete = new DeleteTexturepackButton(this);
-		buttonInfo = new GenericButton("Info");
+		buttonReservoir.setTooltip(t.translateKey("spout.texturepack.tip.database", "Disabled until further notice"));
+		buttonDelete = new DeleteTexturepackButton(this, t.translateKey("spout.texturepack.delete", "Delete"));
+		buttonInfo = new GenericButton(t.translateKey("spout.texturepack.info", "Info"));
 	}
 
 	public void initGui() {
@@ -166,13 +170,14 @@ public class GuiTexturePacks extends GuiScreen {
 
 	public void updateButtons() {
 		try {
+			StringTranslate t = StringTranslate.getInstance();
 			TexturePackItem item = model.getItem(view.getSelectedRow());
 			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
 			buttonSelect.setEnabled(true);
 			if(current) {
-				buttonSelect.setText("Preview");
+				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));
 			} else {
-				buttonSelect.setText("Select");
+				buttonSelect.setText(t.translateKey("spout.texturepack.select", "Select"));
 			}
 			buttonInfo.setEnabled(item.id != -1);
 			buttonDelete.setEnabled(!current && (item.getPack() instanceof TexturePackCustom));

@@ -25,6 +25,7 @@ import java.util.List;
 import net.minecraft.src.Block;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
+import net.minecraft.src.StringTranslate;
 
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
@@ -54,10 +55,12 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 
 	@Override
 	protected void createInstances() {
+		StringTranslate t = StringTranslate.getInstance();
+		
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		buttonDone = new GenericButton("Done");
+		buttonDone = new GenericButton(t.translateKey("gui.done", "Done"));
 		scroll = new GenericScrollArea();
-		title = new GenericLabel("Preview of selected Texture pack");
+		title = new GenericLabel(t.translateKey("spout.texturepack.preview.title", "Preview of selected Texture pack"));
 		getScreen().attachWidgets(spoutcraft, scroll, buttonDone, title);
 
 		for (Block block : Block.blocksList) {
