@@ -78,6 +78,7 @@ public class MainMenu extends GuiScreen {
 	long lastTime = System.currentTimeMillis();
 	int lastFPS = 0;
 	int fpsDelay = 1;
+	int poorFPSCount = 0;
 
 	public MainMenu() {
 		splashText = new GenericLabel(getSplashText());
@@ -332,6 +333,11 @@ public class MainMenu extends GuiScreen {
 			lastFPS = fps;
 			fpsDelay = CLICK_DELAY;
 			if (fps < 10) {
+				poorFPSCount++;
+			} else {
+				poorFPSCount = 0;
+			}
+			if (poorFPSCount > 3) {
 				ConfigReader.mainMenuState = 3;
 			}
 		}
