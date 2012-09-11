@@ -20,6 +20,7 @@
 package org.spoutcraft.client.config;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
@@ -132,7 +133,8 @@ public class ConfigReader {
 					}
 				}
 			}
-		} catch (Exception e) {
+		} catch (FileNotFoundException ignore) { }
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		updateMCConfig();
