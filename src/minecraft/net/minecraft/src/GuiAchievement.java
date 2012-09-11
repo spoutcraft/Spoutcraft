@@ -20,18 +20,18 @@ public class GuiAchievement extends Gui {
 	/** Holds the achievement that will be displayed on the GUI. */
 	private Achievement theAchievement;
 	private long achievementTime;
-	//Spout Start
-	private boolean customNotification = false;
-	private int itemId;
-	private short data = -1;
-	private int time = -1;
-	//Spout End
 
 	/**
 	 * Holds a instance of RenderItem, used to draw the achievement icons on screen (is based on ItemStack)
 	 */
 	private RenderItem itemRender;
 	private boolean haveAchiement;
+	//Spout Start
+	private boolean customNotification = false;
+	private int itemId;
+	private short data = -1;
+	private int time = -1;
+	//Spout End
 
 	public GuiAchievement(Minecraft par1Minecraft) {
 		this.theGame = par1Minecraft;
@@ -47,11 +47,6 @@ public class GuiAchievement extends Gui {
 		this.achievementTime = Minecraft.getSystemTime();
 		this.theAchievement = par1Achievement;
 		this.haveAchiement = false;
-		//Spout Start
-		customNotification = false;
-		time = -1;
-		data = -1;
-		//Spout End
 	}
 
 	/**
@@ -63,24 +58,13 @@ public class GuiAchievement extends Gui {
 		this.achievementTime = Minecraft.getSystemTime() - 2500L;
 		this.theAchievement = par1Achievement;
 		this.haveAchiement = true;
-		//Spout Start
-		customNotification = false;
-		time = -1;
-		data = -1;
-		//Spout End
 	}
+	
+	
 	
 	//Spout Start
 	public void queueNotification(String title, String message, int toRender) {
-		achievementGetLocalText = title;
-		achievementStatName = message;
-		achievementTime = Minecraft.getSystemTime();
-		theAchievement = null;
-		haveAchiement = false;
-		customNotification = true;
-		this.itemId = toRender;
-		this.time = -1;
-		data = -1;
+		queueNotification(title, message, toRender, (short) -1, -1);
 	}
 
 	public void queueNotification(String title, String message, int toRender, short data, int time) {
@@ -125,7 +109,7 @@ public class GuiAchievement extends Gui {
 	public void updateAchievementWindow() {
 		if (this.theAchievement != null && this.achievementTime != 0L) {
 			//Spout Start
-			double delayTime = 3000;
+			double delayTime = 3000.0D;
 			if (customNotification) {
 				if (time < 1) {
 					delayTime = 7500;
@@ -133,7 +117,7 @@ public class GuiAchievement extends Gui {
 					delayTime = time;
 				}
 			}
-			double var1 = (double)(System.currentTimeMillis() - this.achievementTime) / delayTime;
+			double var1 = (double)(Minecraft.getSystemTime() - this.achievementTime) / delayTime;
 			//Spout End
 
 			if (!this.haveAchiement && (var1 < 0.0D || var1 > 1.0D)) {
