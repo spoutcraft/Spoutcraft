@@ -74,8 +74,42 @@ public class StringTranslate {
 				}
 			}
 		}
+		
+		// spout start
+		this.loadSpoutLanguage(par1Properties, par2Str);
+		// spout end
 	}
-
+	
+	// spout start
+	/**
+	 * Identical to loadLanguage except looks for spout langs instead.
+	 * Chose not to throw exception but catch internally so as not to interupt the existing process.
+	 * @param properties
+	 * @param lang
+	 */
+	private void loadSpoutLanguage(Properties properties, String lang) {
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(StringTranslate.class.getResourceAsStream("/lang/spout/" + lang + ".lang"), "UTF-8"));
+		
+			for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+				line = line.trim();
+				
+				if (!line.startsWith("#")) {
+					String[] keyValPair = line.split("=");
+					
+					if (keyValPair != null && keyValPair.length == 2) {
+						properties.setProperty(keyValPair[0], keyValPair[1]);
+					}
+				}
+			}
+		} catch (Exception e) {
+			//If a spout lang couldn't load it shouldnt be a big deal, since
+			//the en_US will provide soft fallback, and I have gui's also using a hard fallback.
+			System.out.println("Unable to load Spout lang: " + lang);
+		}
+	}
+	// spout end
+	
 	public void setLanguage(String par1Str) {
 		if (!par1Str.equals(this.currentLanguage)) {
 			Properties var2 = new Properties();
@@ -85,7 +119,7 @@ public class StringTranslate {
 			} catch (Exception var8) { //Spout IOException -> Exception
 				;
 			}
-
+			
 			this.isUnicode = false;
 
 			if (!"en_US".equals(par1Str)) {
