@@ -67,6 +67,7 @@ public class MainMenu extends GuiScreen {
 
 	public static String mcVersion = "1.3.2";
 	final static List<String> splashes = new ArrayList<String>(1000);
+	public static boolean hasLoaded = false;
 	Button singleplayer, multiplayer, textures, addons, about, options, fastLogin, quit, language;
 	Texture background, logo;
 	Label splashText, buildNumber, animate, debugText;
@@ -279,6 +280,7 @@ public class MainMenu extends GuiScreen {
 
 	@Override
 	public void buttonClicked(Button btn) {
+		hasLoaded = true;
 		if (singleplayer == btn) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.singleplayer.GuiWorldSelection(this));
 		}
