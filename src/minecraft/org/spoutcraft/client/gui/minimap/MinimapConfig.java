@@ -141,17 +141,19 @@ public class MinimapConfig {
 		}
 		List<String> blocked = config.getStringList("blockedEntities", new ArrayList<String>());
 		if (blocked != null) {
-			for (String classname : blocked) {
+			Iterator<String> i = blocked.iterator();
+			while (i.hasNext()) {
 				try {
-					Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(classname);
+					Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(i.next());
 					blockedEntities.add((Class<? extends Entity>) clazz);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					i.remove();
 				} catch (ClassCastException e1) {
 				}
 			}
 		}
+		config.setProperty("blockedEntities", blocked);
+		config.save();
 	}
 
 	public static void initialize() {
@@ -206,8 +208,6 @@ public class MinimapConfig {
 		for (Class<? extends Entity> e:blockedEntities) {
 			blocked.add(e.getName());
 		}
-		config.setProperty("blockedEntities", blocked);
-		config.save();
 	}
 
 	public static MinimapConfig getInstance() {
