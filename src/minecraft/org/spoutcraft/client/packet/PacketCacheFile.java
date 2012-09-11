@@ -142,7 +142,7 @@ public class PacketCacheFile implements CompressablePacket {
 			e.printStackTrace();
 		}
 		if (cache.exists() && FileUtil.isImageFile(fileName)) {
-			CustomTextureManager.getTextureFromUrl(plugin, fileName);
+		//	CustomTextureManager.getTextureFromUrl(plugin, fileName);
 		}
 		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
