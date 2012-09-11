@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.HeightMapAgent;
 import org.spoutcraft.client.gui.server.GuiFavorites;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
 
@@ -52,6 +53,10 @@ public class GuiIngameMenu extends GuiScreen
 			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
 			break;
 		case 1:
+			// Spout Start
+			HeightMapAgent.save();
+			// Spout End
+			
 			boolean mp = this.mc.isIntegratedServerRunning(); //Spout
 			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
 
@@ -64,6 +69,7 @@ public class GuiIngameMenu extends GuiScreen
 			//Spout Start
 			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
 			//Spout End
+			
 		case 2:
 		case 3:
 		default:

@@ -146,7 +146,11 @@ public class MapWidget extends GenericScrollable {
 						int aZ = z * 16 + cz * levelOfDetail;
 
 						short height = heightMap.getHeight(aX, aZ);
-						byte id = heightMap.getBlockId(aX, aZ);
+						int id = heightMap.getBlockId(aX, aZ);
+						byte data = heightMap.getData(aX, aZ);
+						if (id < 0) {
+							id = 256 + id;
+						}
 						if (id == -1 || height == -1) {
 							continue;
 						} else {
@@ -159,7 +163,7 @@ public class MapWidget extends GenericScrollable {
 							map.heightimg.setARGB(cx, cz, color);
 						}
 
-						map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, 0).color | 0xff000000);
+						map.setColorPixel(cz, cx, BlockColor.getBlockColor(id, data).color | 0xff000000);
 					}
 				}
 			}

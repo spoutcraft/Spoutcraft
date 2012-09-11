@@ -50,6 +50,7 @@ public class HeightMap {
 		public short heightmap[] = new short[16 * 16];
 		public final int x, z;
 		public byte[] idmap = new byte[16 * 16];
+		public byte [] datamap = new byte[16 * 16];
 
 		{
 			for (int i = 0; i < 256; i++) {
@@ -77,6 +78,14 @@ public class HeightMap {
 
 		public void setBlockId(int x, int z, byte id) {
 			idmap[z << 4 | x] = id;
+		}
+		
+		public byte getData(int x, int z) {
+			return datamap[z << 4 | x];
+		}
+		
+		public void setData(int x, int z, byte data) {
+			datamap[z << 4 | x] = data;
 		}
 	}
 
@@ -131,7 +140,11 @@ public class HeightMap {
 			clear();
 			try {
 				DataInputStream in = new DataInputStream(new FileInputStream(file));
-
+				
+				int version = 0;
+				if (file.getAbsolutePath().endsWith(".hm2")) {
+					version = in.readInt(); // Read version
+				}
 				StringBuilder builder = new StringBuilder();
 				short size = in.readShort();
 				for (int i = 0; i < size; i++) {
@@ -157,6 +170,9 @@ public class HeightMap {
 						for (int i = 0; i < 256; i++) {
 							chunk.heightmap[i] = in.readShort();
 							chunk.idmap[i] = in.readByte();
+							if (version >= 1) {
+								chunk.datamap[i] = in.readByte();
+							}
 						}
 						addChunk(chunk);
 					}
@@ -170,7 +186,7 @@ public class HeightMap {
 				initBounds = false;
 				System.out.println("Error while loading persistent copy of the heightmap. Clearing the cache.");
 			}
-			File progress = new File(file.getAbsoluteFile() + ".inProgress");
+			File progress = new File(file.getAbsoluteFile() + ".inProgress.hm2");
 			if (progress.exists()) {
 				System.out.println("Found in-progress file!");
 				HeightMap progressMap = new HeightMap(getWorldName());
@@ -184,6 +200,9 @@ public class HeightMap {
 				heightMaps.remove(progressMap);
 				progress.delete();
 			}
+		}
+		if (file.getAbsolutePath().endsWith(".hma")) {
+			file = new File(file.getAbsolutePath().replace(".hma", ".hm2"));
 		}
 		dirty = false;
 	}
@@ -216,8 +235,9 @@ public class HeightMap {
 		}
 		synchronized (cache) {
 			try {
-				File progress = new File(file.getAbsoluteFile() + ".inProgress");
+				File progress = new File(file.getAbsoluteFile() + ".inProgress.hm2");
 				DataOutputStream out = new DataOutputStream(new FileOutputStream(progress));
+				out.writeInt(1); // this is the version
 
 				String name = getWorldName();
 				out.writeShort(name.length());
@@ -238,6 +258,7 @@ public class HeightMap {
 						for (int i = 0; i < 256; i++) {
 							out.writeShort(chunk.heightmap[i]);
 							out.writeByte(chunk.idmap[i]);
+							out.writeByte(chunk.datamap[i]);
 						}
 					}
 				}
@@ -272,7 +293,12 @@ public class HeightMap {
 		if (!folder.exists()) {
 			folder.mkdirs();
 		}
-		return new File(FileUtil.getConfigDir(), "heightmap/" + worldName + ".hma");
+		File oldFormat = new File(FileUtil.getConfigDir(), "heightmap/" + worldName + ".hma");
+		File newFormat = new File(FileUtil.getConfigDir(), "heightmap/" + worldName + ".hm2");
+		if (newFormat.exists() || !oldFormat.exists()) {
+			return newFormat;
+		}
+		return oldFormat;
 	}
 
 //	public boolean hasHeight(int x, int z) {
@@ -336,6 +362,24 @@ public class HeightMap {
 			}
 		}
 	}
+	
+	public byte getData(int x, int z) {
+		int cX = (x >> 4);
+		int cZ = (z >> 4);
+		x &= 0xF;
+		z &= 0xF;
+		if (lastChunk != null && lastChunk.x == cX && lastChunk.z == cZ) {
+			return lastChunk.datamap[z << 4 | x];
+		}
+		synchronized (cache) {
+			if (cache.containsKey(cX, cZ)) {
+				lastChunk = cache.get(cX, cZ);
+				return lastChunk.datamap[z << 4 | x];
+			} else {
+				return -1;
+			}
+		}
+	}
 
 	public void setHighestBlock(int x, int z, short height, byte id) {
 		dirty = true;
@@ -394,4 +438,5 @@ public class HeightMap {
 	public boolean isDirty() {
 		return dirty;
 	}
+
 }

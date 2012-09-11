@@ -41,6 +41,7 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
+import org.spoutcraft.client.chunkcache.HeightMapAgent;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.ScreenUtil;
@@ -61,6 +62,7 @@ import org.spoutcraft.spoutcraftapi.event.screen.ScreenOpenEvent;
 import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
 import org.spoutcraft.spoutcraftapi.gui.Screen;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.xbill.DNS.utils.HMAC;
 
 //Spout End
 
