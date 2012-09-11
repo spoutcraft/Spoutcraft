@@ -165,6 +165,7 @@ public class ConfigReader {
 							}
 						}
 					}
+				} catch (FileNotFoundException ignore) {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

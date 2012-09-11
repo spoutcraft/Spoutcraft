@@ -345,19 +345,22 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public void onTick() {
 		tick++;
+		getHandle().mcProfiler.startSection("httpdownloads");
 		FileDownloadThread.getInstance().onTick();
+		getHandle().mcProfiler.endStartSection("packet_decompression");
 		PacketDecompressionThread.onTick();
-
+		getHandle().mcProfiler.endStartSection("widgets");
 		enableSandbox();
 		player.getMainScreen().onTick();
 		disableSandbox();
-
+		getHandle().mcProfiler.endStartSection("mipmapping");
 		MipMapUtils.onTick();
-
+		getHandle().mcProfiler.endStartSection("special_effects");
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.theWorld.doColorfulStuff();
 			inWorldTicks++;
 		}
+		getHandle().mcProfiler.endStartSection("entity_info");
 		if (isSpoutEnabled()) {
 			LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity> processed = new LinkedList<org.spoutcraft.spoutcraftapi.entity.Entity>();
 			Iterator<Entity> i = Entity.toProcess.iterator();
@@ -372,6 +375,7 @@ public class SpoutClient extends PropertyObject implements Client {
 				getPacketManager().sendSpoutPacket(new PacketEntityInformation(processed));
 			}
 		}
+		getHandle().mcProfiler.endSection();
 	}
 
 	public long getTick() {

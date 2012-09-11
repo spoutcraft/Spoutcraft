@@ -138,6 +138,7 @@ public class CustomPacket extends Packet {
 				if (packet instanceof CompressablePacket) {
 					PacketDecompressionThread.add((CompressablePacket)packet);
 				} else {
+					SpoutClient.getHandle().mcProfiler.startSection("spoutpacket_" + packet.getClass().getSimpleName());
 					try {
 						packet.run(SpoutClient.getHandle().thePlayer.entityId);
 					} catch (Exception e) {
@@ -146,6 +147,7 @@ public class CustomPacket extends Packet {
 						e.printStackTrace();
 						System.out.println("------------------------");
 					}
+					SpoutClient.getHandle().mcProfiler.endSection();
 				}
 			} else {
 				try {

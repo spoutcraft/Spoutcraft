@@ -156,14 +156,16 @@ public class MipMapUtils {
 
 			onTick(terrain, targetFade, currentFade);
 
-			for (CustomBlock block : MaterialData.getCustomBlocks()) {
-				if (block.getBlockDesign() != null) {
-					String texture = block.getBlockDesign().getTexureURL();
-					String textureAddon = block.getBlockDesign().getTextureAddon();
-					if (texture != null && textureAddon != null) {
-						Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
-						if (tex != null) {
-							onTick(tex.getTextureID(), targetFade, currentFade);
+			if (targetFade != currentFade) {
+				for (CustomBlock block : MaterialData.getCustomBlocks()) {
+					if (block.getBlockDesign() != null) {
+						String texture = block.getBlockDesign().getTexureURL();
+						String textureAddon = block.getBlockDesign().getTextureAddon();
+						if (texture != null && textureAddon != null) {
+							Texture tex = CustomTextureManager.getTextureFromUrl(textureAddon, texture);
+							if (tex != null) {
+								onTick(tex.getTextureID(), targetFade, currentFade);
+							}
 						}
 					}
 				}
