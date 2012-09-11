@@ -563,7 +563,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	private void checkGLError(String par1Str) {
 		int var2 = GL11.glGetError();
 		if (var2 != 0) {
-			if(org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
+			if(!org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
 				return;
 			}
 			String var3 = GLU.gluErrorString(var2);
