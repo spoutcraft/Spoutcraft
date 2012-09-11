@@ -713,6 +713,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	}
 
 	private void runGameLoop() {
+		this.checkGLError("Game loop start");
 		//Spout start
 		// Colorizer.setupBlockAccess(this.theWorld, true); TODO MCPatcher Removed this
 		mainThread = Thread.currentThread();
@@ -843,6 +844,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			if (this.isIntegratedServerRunning() && this.thePlayer != null && this.thePlayer.sendQueue != null && this.isGamePaused != var5) {
 				((MemoryConnection)this.thePlayer.sendQueue.getNetManager()).setGamePaused(this.isGamePaused);
 			}
+		this.checkGLError("Late render");
 
 			while (getSystemTime() >= this.debugUpdateTime + 1000L) {
 				field_71470_ab = this.fpsCounter;
@@ -862,12 +864,15 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 
 			this.mcProfiler.endSection();
+			this.checkGLError("Very late render");
 
 			if (this.gameSettings.limitFramerate > 0) {
 				EntityRenderer var10000 = this.entityRenderer;
 				Display.sync(EntityRenderer.func_78465_a(this.gameSettings.limitFramerate));
 			}
+			this.checkGLError("AFter sync");
 		}
+		this.checkGLError("Game loop end");
 	}
 
 	public void freeMemory() {
