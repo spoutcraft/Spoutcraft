@@ -853,7 +853,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				this.debugUpdateTime += 1000L;
 				// Spout start
 				framesPerSecond = fpsCounter;
+				checkGLError("Late render b4 fps");
 				SpoutWorth.getInstance().updateFPS(framesPerSecond);
+				checkGLError("Late render after fps");
 				// Spout end
 				this.fpsCounter = 0;
 				this.usageSnooper.addMemoryStatsToSnooper();
