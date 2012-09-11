@@ -563,6 +563,9 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	private void checkGLError(String par1Str) {
 		int var2 = GL11.glGetError();
 		if (var2 != 0) {
+			if(org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
+				return;
+			}
 			String var3 = GLU.gluErrorString(var2);
 			
 			//Spout start
@@ -582,9 +585,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					System.out.println("    " + f.getName() + " : " + f.get(null));
 				}
 			} catch (Exception ignore) { }
-			
-			if(org.spoutcraft.client.gui.mainmenu.MainMenu.hasLoaded) {
-				throw new RuntimeException("OpenGL Error occured!");
+			throw new RuntimeException("OpenGL Error occured!");
 			}
 			//Spout end
 		}
