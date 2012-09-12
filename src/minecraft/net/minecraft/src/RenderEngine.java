@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -14,8 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.io.CustomTextureManager;
+
 //Spout HD Start
+
 import net.minecraft.client.Minecraft;
 
 import com.pclewis.mcpatcher.mod.CustomAnimation;
@@ -39,7 +45,6 @@ public class RenderEngine {
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
 	// Spout Start
 	public TexturePackBase oldPack = null;
-
 	// Spout End
 
 	public RenderEngine(TexturePackList par1TexturePackList, GameSettings par2GameSettings) {
@@ -98,6 +103,35 @@ public class RenderEngine {
 			}
 		}
 	}
+	
+	//Spout Start
+    public int getArmorTexture(String plugin, String url) {
+        Integer var2 = (Integer) this.textureMap.get(plugin + "/" + url);
+        if (var2 != null) {
+            return var2.intValue();
+        }
+        File file = CustomTextureManager.getTextureFile(plugin, url);
+        if (file == null) {
+            return 0;
+        }
+        int var3 = 0;
+        try {
+            singleIntBuffer.clear();
+            GLAllocation.generateTextureNames(this.singleIntBuffer);
+            var3 = this.singleIntBuffer.get(0);
+            setupTexture(readTextureImage(new FileInputStream(file)), var3);
+            textureMap.put(plugin + "/" + url, Integer.valueOf(var3));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            GLAllocation.generateTextureNames(this.singleIntBuffer);
+            int var4 = this.singleIntBuffer.get(0);
+            this.setupTexture(this.missingTextureImage, var4);
+            this.textureMap.put(plugin + "/" + url, Integer.valueOf(var4));
+            return var4;
+        }
+        return var3;
+    }
+	//Spout End
 
 	private int[] getImageContentsAndAllocate(BufferedImage par1BufferedImage) {
 		int var2 = par1BufferedImage.getWidth();
