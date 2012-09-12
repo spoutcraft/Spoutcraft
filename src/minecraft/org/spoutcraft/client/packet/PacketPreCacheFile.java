@@ -107,7 +107,7 @@ public class PacketPreCacheFile implements SpoutPacket {
 			}
 		} else {
 			if (FileUtil.isImageFile(fileName)) {
-			//	CustomTextureManager.getTextureFromUrl(plugin, fileName);
+				CustomTextureManager.getTextureFromUrl(plugin, fileName);
 			}
 		}
 	}
