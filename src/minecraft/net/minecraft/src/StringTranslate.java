@@ -75,12 +75,12 @@ public class StringTranslate {
 			}
 		}
 		
-		// spout start
+		//Spout start
 		this.loadSpoutLanguage(par1Properties, par2Str);
-		// spout end
+		//Spout end
 	}
 	
-	// spout start
+	//Spout start
 	/**
 	 * Identical to loadLanguage except looks for spout langs instead.
 	 * Chose not to throw exception but catch internally so as not to interupt the existing process.
@@ -103,12 +103,11 @@ public class StringTranslate {
 				}
 			}
 		} catch (Exception e) {
-			//If a spout lang couldn't load it shouldnt be a big deal, since
-			//the en_US will provide soft fallback, and I have gui's also using a hard fallback.
+			//If a Spout language file cannot be loaded, it will fallback to en_US or hard-coded strings.
 			System.out.println("Unable to load Spout lang: " + lang);
 		}
 	}
-	// spout end
+	//Spout end
 	
 	public void setLanguage(String par1Str) {
 		if (!par1Str.equals(this.currentLanguage)) {
@@ -168,7 +167,7 @@ public class StringTranslate {
 		return this.translateTable.getProperty(par1Str, par1Str);
 	}
 	
-	//spout start
+	//Spout start
 	/**
 	 * Translate a key to a current language, with fallback if a key is not present.
 	 * @param key
@@ -181,7 +180,7 @@ public class StringTranslate {
 		}
 		return fallback;
 	}
-	//spout end
+	//Spout end
 	
 	/**
 	 * Translate a key to current language applying String.format()
