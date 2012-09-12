@@ -112,7 +112,7 @@ public class GuiAchievement extends Gui {
 			double delayTime = 3000.0D;
 			if (customNotification) {
 				if (time < 1) {
-					delayTime = 7500;
+					delayTime = 7500.0D;
 				} else {
 					delayTime = time;
 				}
