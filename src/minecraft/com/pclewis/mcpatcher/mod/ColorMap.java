@@ -57,6 +57,9 @@ final class ColorMap {
 	}
 
 	int colorize(int var1, int var2, int var3, int var4) {
+		if (BiomeHelper.instance == null) {
+			return var1;
+		}
 		return this.colorize(var1, (double)BiomeHelper.instance.getTemperature(var2, var3, var4), (double)BiomeHelper.instance.getRainfall(var2, var3, var4));
 	}
 }

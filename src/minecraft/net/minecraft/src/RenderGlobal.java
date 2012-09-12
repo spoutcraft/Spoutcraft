@@ -19,8 +19,10 @@ import org.lwjgl.opengl.GL11;
 //Spout Start
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.TileEntityComparator;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
 //Spout End
@@ -437,14 +439,24 @@ public class RenderGlobal implements IWorldAccess {
 
 			this.theWorld.theProfiler.endStartSection("tileentities");
 			RenderHelper.enableStandardItemLighting();
+			//Spout start
+			int max = tileEntities.size();
+			int threshold = (int) Math.min(1000, (Math.max(100, (SpoutWorth.getInstance().getAverageFPS() * 8))));
+			if (tileEntities.size() > threshold) {
+				Collections.sort((List<TileEntity>)tileEntities, new TileEntityComparator());
+				max = threshold / 2;
+			}
 			Iterator var8 = this.tileEntities.iterator();
 
-			while (var8.hasNext()) {
+			int i = 0;
+			while (var8.hasNext() && (i < max)) {
+				i++;
 				TileEntity var9 = (TileEntity)var8.next();
 				if (!var9.isInvalid()) {
 					TileEntityRenderer.instance.renderTileEntity(var9, par3);
 				}
 			}
+			//Spout end
 
 			this.mc.entityRenderer.disableLightmap((double)par3);
 			this.theWorld.theProfiler.endSection();

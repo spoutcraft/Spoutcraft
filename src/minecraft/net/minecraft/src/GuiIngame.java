@@ -172,35 +172,39 @@ public class GuiIngame extends Gui
 		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
-			font.drawStringWithShadow("Minecraft 1.3.2 (" + this.mc.debug + ")", 2, 2, 16777215);
-			font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
-			font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
-			font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
-			font.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
-			long var41 = Runtime.getRuntime().maxMemory();
-			long var34 = Runtime.getRuntime().totalMemory();
-			long var42 = Runtime.getRuntime().freeMemory();
-			long var43 = var34 - var42;
-			String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
-			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 2, 14737632);
-			var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
-			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
-			if(SpoutClient.getInstance().isCoordsCheat()) {
-				this.drawString(font, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
-				this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-				this.drawString(font, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
-				this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+			if (ConfigReader.fastDebug != 2) {
+				font.drawStringWithShadow("Minecraft 1.3.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
+				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
+				font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
+				font.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
+				long var41 = Runtime.getRuntime().maxMemory();
+				long var34 = Runtime.getRuntime().totalMemory();
+				long var42 = Runtime.getRuntime().freeMemory();
+				long var43 = var34 - var42;
+				String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
+				this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 2, 14737632);
+				var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
+				this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
+				if(SpoutClient.getInstance().isCoordsCheat()) {
+					this.drawString(font, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
+					this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+					this.drawString(font, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
+					this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+				}
+				int var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
+				int var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
+				int var233 = MathHelper.floor_double(this.mc.thePlayer.posZ);
+	
+				if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var233)) {
+					Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var233);
+					this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var233 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var233 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var233 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var233 & 15, 0), 2, 96, 14737632);
+				}
+	
+				this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround)}), 2, 104, 14737632);
+			} else {
+				font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 			}
-			int var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
-			int var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
-			int var233 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-
-			if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var233)) {
-				Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var233);
-				this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var233 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var233 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var233 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var233 & 15, 0), 2, 96, 14737632);
-			}
-
-			this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround)}), 2, 104, 14737632);
 			GL11.glPopMatrix();
 			this.mc.mcProfiler.endSection();
 		}
