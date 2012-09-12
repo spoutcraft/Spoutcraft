@@ -55,12 +55,8 @@ public class PacketWidgetRemove implements SpoutPacket {
 		PopupScreen popup = mainScreen.getActivePopup();
 		
 		Widget w = PacketWidget.allWidgets.get(widget);
-		
-		if (w == null) {
-			return;
-		}
-		
-		if (!(w instanceof Screen)) {
+
+		if (w != null && w.getScreen() != null && !(w instanceof Screen)) {
 			w.getScreen().removeWidget(w);
 		}
 
@@ -68,6 +64,8 @@ public class PacketWidgetRemove implements SpoutPacket {
 			// Determine if this is a popup screen and if we need to update it
 			mainScreen.closePopup();
 		}
+		
+		PacketWidget.allWidgets.remove(widget);
 	}
 
 	public PacketType getPacketType() {
