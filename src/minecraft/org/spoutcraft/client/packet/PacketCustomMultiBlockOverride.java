@@ -27,6 +27,7 @@ import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.block.Chunk;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
@@ -67,6 +68,10 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket {
 			byte data = result.get(index+6);
 			chunk.setCustomBlockId(x, y, z, id);
 			chunk.setCustomBlockData(x, y, z, data);
+			int[] old = SpoutClient.getInstance().getRawWorld().lightUpdateBlockList;
+			SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = PacketCustomBlockChunkOverride.lightingBlockList;
+			SpoutClient.getInstance().getRawWorld().updateAllLightTypes(x, y, z);
+			SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = old;
 		}
 	}
 

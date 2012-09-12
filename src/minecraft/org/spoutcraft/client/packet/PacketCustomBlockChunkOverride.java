@@ -37,7 +37,7 @@ import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket {
-	private static final int[] lightingBlockList = new int[32768 * 4];
+	protected static final int[] lightingBlockList = new int[32768 * 32];
 	private int chunkX;
 	private int chunkZ;
 	private boolean hasData = false;
