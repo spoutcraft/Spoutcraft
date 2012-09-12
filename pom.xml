@@ -365,8 +365,8 @@
 								<resource>
 									<runIf>
 										{{
+											if (new File(project.basedir, "src/backup/minecraft/" + minecraftVersion).isDirectory()) { return false; }
 											if (new File(project.basedir, "src/minecraft").isDirectory()) { return true; }
-											if (!(new File(project.basedir, "src/minecraft/" + minecraftVersion).isDirectory())) { return true; }
 											return false;
 										}}
 									</runIf>
@@ -391,9 +391,8 @@
 								<resource>
 									<runIf>
 										{{
-											if (new File(project.basedir, "src/minecraft").isDirectory()) { return true; }
-											if (new File(project.basedir, "src/minecraft/" + minecraftVersion).isDirectory()) { return true; }
-											return false;
+											if (!(new File(project.basedir, "src/backup/minecraft/" + minecraftVersion).isDirectory())) { return false; }
+											return true;
 										}}
 									</runIf>
 									<directory>${project.basedir}/src/backup/minecraft/${minecraftVersion}</directory>
@@ -467,7 +466,7 @@
 							<goal>copy</goal>
 						</goals>
 					</execution>
-					<!-- Remove MCP files from the workspace -->
+					<!-- Cleanup workspace -->
 					<execution>
 						<id>clean-workspace</id>
 						<configuration>
@@ -479,6 +478,7 @@
 									<includes>
 										<include>logs/**</include>
 										<include>reobf/**</include>
+										<include>src/minecraft</include>
 									</includes>
 									<clean>true</clean>
 									<cleanEmptyDirectories>true</cleanEmptyDirectories>
@@ -657,10 +657,11 @@
 	<profiles>
 		<!-- Activate on Windows -->
 		<profile>
-			<id>package-win</id>
+			<id>mcp-windows</id>
 			<activation>
+				<activeByDefault>true</activeByDefault>
 				<os>
-					<family>Windows</family>
+					<family>windows</family>
 				</os>
 			</activation>
 			<build>
@@ -722,10 +723,10 @@
 		</profile>
 		<!-- Activate on Linux -->
 		<profile>
-			<id>package-nix</id>
+			<id>mcp-unix</id>
 			<activation>
 				<os>
-					<family>Linux</family>
+					<family>unix</family>
 				</os>
 			</activation>
 			<build>
