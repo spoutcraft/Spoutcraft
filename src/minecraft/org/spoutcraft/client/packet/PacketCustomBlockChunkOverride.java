@@ -25,13 +25,19 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import net.minecraft.src.Chunk;
+
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket {
+	private static final int[] lightingBlockList = new int[32768 * 4];
 	private int chunkX;
 	private int chunkZ;
 	private boolean hasData = false;
@@ -70,6 +76,10 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 
 	public void run(int playerId) {
 		if (hasData) {
+			if (!SpoutClient.getInstance().getRawWorld().chunkProvider.chunkExists(chunkX, chunkZ)) {
+				return;
+			}
+
 			ByteBuffer buffer = ByteBuffer.allocate(data.length);
 			buffer.put(data);
 			short[] customIds = new short[16*16*256];
@@ -77,6 +87,17 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 			for (int i = 0; i < customIds.length; i++) {
 				customIds[i] = buffer.getShort(i * 3);
 				customData[i] = buffer.get((i * 3) + 2);
+				CustomBlock cb = MaterialData.getCustomBlock(customIds[i]);
+				if (cb != null && cb.getLightLevel() != 0) {
+					int bx = (i >> 12) & 0xF;
+					int by = i & 0xFF;
+					int bz = (i >> 8) & 0xF;
+					int[] old = SpoutClient.getInstance().getRawWorld().lightUpdateBlockList;
+					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = lightingBlockList;
+					SpoutClient.getInstance().getRawWorld().updateAllLightTypes(chunkX * 16 + bx, by, chunkZ * 16 + bz);
+					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = old;
+					
+				}
 			}
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockData(customData);

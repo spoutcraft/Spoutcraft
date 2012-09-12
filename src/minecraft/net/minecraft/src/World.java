@@ -125,7 +125,7 @@ public abstract class World implements IBlockAccess {
 	 * 4-bit L is a light level used when darkening blocks. 6-bit numbers x, y and z represent the block's offset from the
 	 * original block, plus 32 (i.e. value of 31 would mean a -1 offset
 	 */
-	int[] lightUpdateBlockList;
+	public int[] lightUpdateBlockList; //Spout private -> public
 
 	/**
 	 * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity var1,

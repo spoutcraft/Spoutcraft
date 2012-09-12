@@ -56,6 +56,10 @@ public class PacketWidgetRemove implements SpoutPacket {
 		
 		Widget w = PacketWidget.allWidgets.get(widget);
 		
+		if (w == null) {
+			return;
+		}
+		
 		if (!(w instanceof Screen)) {
 			w.getScreen().removeWidget(w);
 		}
