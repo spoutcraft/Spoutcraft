@@ -1107,7 +1107,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 		}
 	}
-
+	
 	private void clickMouse(int par1) {
 		if (par1 != 0 || this.leftClickCounter <= 0) {
 			if (par1 == 0) {
@@ -1288,8 +1288,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 			while (Mouse.next()) {
 				// Spout Start
-				if(!(Mouse.getEventButton()>2))
+				if(!(Mouse.getEventButton()>2)){
 					((SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager()).pressKey(Mouse.getEventButton()-100, Mouse.getEventButtonState(), ScreenUtil.getType(currentScreen).getCode());
+					
+					if(this.currentScreen == null){	
+						this.thePlayer.handleKeyPress(Mouse.getEventButton()-100, Mouse.getEventButtonState()); //spout handle mouse click when in main screen
+					}
+				}
 				// Spout End
 				KeyBinding.setKeyBindState(Mouse.getEventButton() - 100, Mouse.getEventButtonState());
 				if (Mouse.getEventButtonState()) {

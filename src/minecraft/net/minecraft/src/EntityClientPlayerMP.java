@@ -61,6 +61,8 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			if (canSprint()) {
 				setSprinting(true);
 				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
+			}else{
+				setSprinting(false);
 			}
 		}
 		//Spout end
