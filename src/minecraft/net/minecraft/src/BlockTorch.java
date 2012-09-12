@@ -200,7 +200,7 @@ public class BlockTorch extends Block {
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		//Spout custom blocks start
 		Chunk c = par1World.getChunkFromBlockCoords(par2, par4);
-		if (c.spoutChunk.getCustomBlockData(par2, par3, par4) > 0) {
+		if (c.spoutChunk.getCustomBlockId(par2, par3, par4) > 0) {
 			return;
 		}
 		int var6 = c.getBlockMetadata(par2 & 0xF, par3, par4 & 0xF);
