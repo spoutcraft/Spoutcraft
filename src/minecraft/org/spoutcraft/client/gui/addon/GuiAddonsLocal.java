@@ -64,7 +64,7 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		buttonOpenFolder = new GenericButton(t.translateKey("spout.addon.open", "Open Addons Folder"));
 		buttonOpenFolder.setTooltip(t.translateKey("spout.addon.tip.open", "Place your addons here manually"));
 		buttonOpenConfiguration = new GenericButton(t.translateKey("spout.addon.config", "Configuration"));
-		buttonOpenConfiguration.setTooltip(t.translateKey("spout.addon.tip.config", "Open Addon-specific configuration"));
+		buttonOpenConfiguration.setTooltip(t.translateKey("spout.addon.tip.config", "Open addon specific configuration"));
 
 		getScreen().attachWidget(spoutcraft, addonsView);
 		getScreen().attachWidget(spoutcraft, addonOptions);
