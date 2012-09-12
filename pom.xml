@@ -1,0 +1,791 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Project information -->
+	<name>Spoutcraft</name>
+	<groupId>org.spoutcraft</groupId>
+	<artifactId>spoutcraft</artifactId>
+	<version>1.3.2-SNAPSHOT</version>
+	<url>http://www.spout.org</url>
+	<inceptionYear>2011</inceptionYear>
+	<description>Spoutcraft is a modified version of the Minecraft client, which you can access through the the Spoutcraft Launcher, 
+	and when connecting to a server with SpoutPlugin, it allows you to unlock most of the features of SpoutPlugin, such as custom blocks, 
+	items, texture packs, etc. It also gives several speed improvements, a minimap, an overview map, custom shaders, etc.</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<currentYear>2012</currentYear>
+		<minecraftVersion>1.3.2</minecraftVersion>
+		<lwjglVersion>2.8.3</lwjglVersion>
+		<mcpVersion>72</mcpVersion>
+		<apiVersion>dev-SNAPSHOT</apiVersion>
+		<buildNumber>0</buildNumber>
+	</properties>
+
+	<!-- Company information -->
+	<organization>
+		<name>SpoutDev</name>
+		<url>http://www.spout.org</url>
+	</organization>
+
+	<!-- License information -->
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License Version 3</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- Source code access -->
+	<scm>
+		<developerConnection>scm:git:git@github.com:spoutdev/spoutcraft.git</developerConnection>
+		<connection>scm:git:git://github.com/spoutdev/spoutcraft.git</connection>
+		<url>https://github.com/spoutdev/spoutcraft</url>
+	</scm>
+
+	<!-- Build server -->
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://build.spout.org/job/spoutcraft</url>
+	</ciManagement>
+
+	<!-- Issue tracker -->
+	<issueManagement>
+		<system>jira</system>
+		<url>http://issues.spout.org/browse/spoutcraft</url>
+	</issueManagement>
+
+	<!-- Dependency repositories -->
+	<repositories>
+		<repository>
+			<id>spout-repo</id>
+			<url>http://repo.spout.org</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<!-- Build plugin repositories -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spout-repo</id>
+			<url>http://repo.spout.org</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!-- Distribution management -->
+	<distributionManagement>
+		<!-- Publish releases here -->
+		<repository>
+			<id>spout-releases</id>
+			<url>http://nexus.spout.org/content/repositories/releases</url>
+		</repository>
+		<!-- Publish snapshots here -->
+		<snapshotRepository>
+			<id>spout-snapshots</id>
+			<url>http://nexus.spout.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!-- Build settings -->
+	<build>
+		<defaultGoal>clean package</defaultGoal>
+
+		<!-- Resources -->
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<targetPath>.</targetPath>
+				<directory>${project.basedir}</directory>
+				<includes>
+					<include>LICENSE.txt</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<!-- Build plugins -->
+		<plugins>
+			<!-- License headers plugin -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<executions>
+					<execution>
+						<configuration>
+							<properties>
+								<name>${project.name}</name>
+								<url>${project.organization.url}</url>
+								<copyright>Copyright (c) ${project.inceptionYear}-${currentYear}, ${project.organization.name}</copyright>
+							</properties>
+							<quiet>true</quiet>
+							<encoding>UTF-8</encoding>
+							<strictCheck>true</strictCheck>
+							<header>${project.basedir}/HEADER.txt</header>
+							<mapping>
+								<java>SLASHSTAR_STYLE</java>
+							</mapping>
+							<keywords>
+								<keyword>${project.name}</keyword>
+								<keyword>license</keyword>
+							</keywords>
+							<includes>
+								<include>src/main/java/org/spoutcraft/**</include>
+								<include>src/test/java/**</include>
+							</includes>
+						</configuration>
+						<phase>clean</phase>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- File downloading plugin -->
+			<plugin>
+				<groupId>com.github.goldin</groupId>
+				<artifactId>copy-maven-plugin</artifactId>
+				<version>0.2.5</version>
+				<executions>
+					<execution>
+						<id>setup-workspace</id>
+						<configuration>
+							<verbose>false</verbose>
+							<failIfNotFound>false</failIfNotFound>
+							<skipIdentical>true</skipIdentical>
+							<resources>
+								<!-- Check if MCP download is needed and unpack -->
+								<resource>
+									<runIf>
+										{{
+											if (!(new File(project.basedir, "runtime").isDirectory())) { return true; }
+											if (!(new File(project.basedir, "conf/version.cfg").isFile())) { return true; }
+											new File(project.basedir, "conf/version.cfg").eachLine { line -> if (!(line.contains(mcpVersion))) return true; }
+											return false;
+										}}
+									</runIf>
+									<targetPath>${project.basedir}</targetPath>
+									<file>http://mcp.ocean-labs.de/files/mcp${mcpVersion}.zip</file>
+									<unpack>true</unpack>
+									<useTrueZipForUnpack>false</useTrueZipForUnpack>
+									<preservePath>true</preservePath>
+									<zipEntries>
+										<zipEntry>conf/version.cfg</zipEntry>
+										<zipEntry>runtime/**</zipEntry>
+									</zipEntries>
+								</resource>
+								<!-- Download the latest minecraft.jar if needed -->
+								<resource>
+									<runIf>
+										{{
+											file = new File(project.basedir, "jars/bin/minecraft.jar")
+											if (!file.isFile()) { return true; }
+											java.util.jar.JarFile jar = new java.util.jar.JarFile(file);
+											entry = jar.getEntry("net/minecraft/client/Minecraft.class")
+											if (entry == null) { return true; }
+											java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(jar.getInputStream(entry)));
+											while ((line = reader.readLine()) != null) { if (line.contains(minecraftVersion)) { return false; } }
+											return true;
+										}}
+									</runIf>
+									<targetPath>${project.basedir}/jars/bin</targetPath>
+									<destFileName>minecraft.jar</destFileName>
+									<file>http://s3.amazonaws.com/MinecraftDownload/minecraft.jar</file>
+									<!-- TODO: Implement byte patching to downgrade jar to required version if needed -->
+								</resource>
+								<!-- Download remaining dependencies -->
+								<resource>
+									<targetPath>${project.basedir}/lib</targetPath>
+									<dependencies>
+										<dependency>
+											<groupId>org.spoutcraft</groupId>
+											<artifactId>spoutcraftapi</artifactId>
+											<version>${apiVersion}</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl</artifactId>
+											<version>${lwjglVersion}</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>commons-io</groupId>
+											<artifactId>commons-io</artifactId>
+											<version>2.4</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>org.apache.commons</groupId>
+											<artifactId>commons-lang3</artifactId>
+											<version>3.1</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>dnsjava</groupId>
+											<artifactId>dnsjava</artifactId>
+											<version>2.1.1</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>com.google.guava</groupId>
+											<artifactId>guava</artifactId>
+											<version>13.0.1</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>org.spout</groupId>
+											<artifactId>slick</artifactId>
+											<version>0.4-SNAPSHOT</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>org.yaml</groupId>
+											<artifactId>snakeyaml</artifactId>
+											<version>1.10</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>net.sf.trove4j</groupId>
+											<artifactId>trove4j</artifactId>
+											<version>3.0.3</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>javax.jmdns</groupId>
+											<artifactId>jmdns</artifactId>
+											<version>3.4.1</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>de.cuina.fireandfuel</groupId>
+											<artifactId>codecjlayermp3</artifactId>
+											<version>r2</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>cc.thedudeguy</groupId>
+											<artifactId>codecjorbis</artifactId>
+											<version>r0</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+									</dependencies>
+								</resource>
+								<!-- Copy LWJGL jars to MCP bin folder -->
+								<resource>
+									<targetPath>${project.basedir}/jars/bin</targetPath>
+									<dependencies>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl</artifactId>
+											<version>${lwjglVersion}</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl_util</artifactId>
+											<version>${lwjglVersion}</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>net.java.jinput</groupId>
+											<artifactId>jinput</artifactId>
+											<version>2.0.5</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+									</dependencies>
+								</resource>
+								<!-- Copy and unpack LWJGL natives to MCP bin folder -->
+								<resource>
+									<runIf>{{ osName.contains("Windows") }}</runIf>
+									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<dependencies>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl-platform</artifactId>
+											<version>${lwjglVersion}</version>
+											<classifier>natives-windows</classifier>
+											<stripVersion>true</stripVersion>
+										</dependency>
+									</dependencies>
+									<unpack>true</unpack>
+									<useTrueZipForUnpack>false</useTrueZipForUnpack>
+									<zipEntry>**/*.dll</zipEntry>
+								</resource>
+								<resource>
+									<runIf>{{ osName.contains("Mac") }}</runIf>
+									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<dependencies>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl-platform</artifactId>
+											<version>${lwjglVersion}</version>
+											<classifier>natives-osx</classifier>
+											<stripVersion>true</stripVersion>
+										</dependency>
+									</dependencies>
+									<unpack>true</unpack>
+									<useTrueZipForUnpack>false</useTrueZipForUnpack>
+									<zipEntry>**/*.*lib</zipEntry>
+								</resource>
+								<resource>
+									<runIf>{{ osName.contains("Linux") }}</runIf>
+									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
+									<dependencies>
+										<dependency>
+											<groupId>org.lwjgl.lwjgl</groupId>
+											<artifactId>lwjgl-platform</artifactId>
+											<version>${lwjglVersion}</version>
+											<classifier>natives-linux</classifier>
+											<stripVersion>true</stripVersion>
+										</dependency>
+									</dependencies>
+									<unpack>true</unpack>
+									<useTrueZipForUnpack>false</useTrueZipForUnpack>
+									<zipEntry>**/*.so</zipEntry>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Backup decompiled Minecraft source -->
+					<execution>
+						<id>backup-source</id>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>
+										{{
+											if (new File(project.basedir, "src/minecraft").isDirectory()) { return true; }
+											if (!(new File(project.basedir, "src/minecraft/" + minecraftVersion).isDirectory())) { return true; }
+											return false;
+										}}
+									</runIf>
+									<directory>${project.basedir}/src/minecraft</directory>
+									<targetPath>${project.basedir}/src/backup/minecraft/${minecraftVersion}</targetPath>
+									<include>**/*</include>
+									<preservePath>true</preservePath>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Refresh source code for building -->
+					<execution>
+						<id>refresh-source</id>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>
+										{{
+											if (new File(project.basedir, "src/minecraft").isDirectory()) { return true; }
+											if (new File(project.basedir, "src/minecraft/" + minecraftVersion).isDirectory()) { return true; }
+											return false;
+										}}
+									</runIf>
+									<directory>${project.basedir}/src/backup/minecraft/${minecraftVersion}</directory>
+									<targetPath>${project.basedir}/src/minecraft</targetPath>
+									<include>**/*</include>
+									<preservePath>true</preservePath>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Copy project source to Minecraft directory -->
+					<execution>
+						<id>copy-source</id>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>
+										{{
+											if (new File(project.basedir, "src").isDirectory()) { return true; }
+											return false;
+										}}
+									</runIf>
+									<directory>${project.basedir}/src/main/java</directory>
+									<targetPath>${project.basedir}/src/minecraft</targetPath>
+									<include>**/*</include>
+									<preservePath>true</preservePath>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Add version and build to source -->
+					<execution>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>
+										{{
+											if (!(new File(project.basedir, "src/minecraft/org/spoutcraft/client").isDirectory())) { return false; }
+											if (!(new File(project.basedir, "src/minecraft/org/spoutcraft/client/SpoutClient.java").isFile())) { return false; }
+											List lines = new File(project.basedir, "src/minecraft/org/spoutcraft/client/SpoutClient.java").readLines();
+											for (line in lines) { if (line.contains("Unknown Version")) { return true; } }
+											return false;
+										}}
+									</runIf>
+									<directory>${project.basedir}/src/minecraft/org/spoutcraft/client</directory>
+									<targetPath>${project.basedir}/src/minecraft/org/spoutcraft/client</targetPath>
+									<includes>
+										<include>SpoutClient.java</include>
+									</includes>
+									<replaces>
+										<replace>
+											<from>Unknown Version</from>
+											<to>${releaseVersion} b${buildNumber}</to>
+										</replace>
+									</replaces>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Remove MCP files from the workspace -->
+					<execution>
+						<id>clean-workspace</id>
+						<configuration>
+							<verbose>false</verbose>
+							<failIfNotFound>false</failIfNotFound>
+							<resources>
+								<resource>
+									<directory>${project.basedir}</directory>
+									<includes>
+										<include>logs/**</include>
+										<include>reobf/**</include>
+									</includes>
+									<clean>true</clean>
+									<cleanEmptyDirectories>true</cleanEmptyDirectories>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>clean</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Copy compiled classes to target directory -->
+					<execution>
+						<id>copy-compiled</id>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>
+										{{
+											if (new File(project.basedir, "target").isDirectory()) { return true; }
+											return false;
+										}}
+									</runIf>
+									<directory>${project.basedir}/reobf/minecraft</directory>
+									<targetPath>${project.basedir}/target/classes</targetPath>
+									<include>**/*</include>
+									<preservePath>true</preservePath>
+								</resource>
+							</resources>
+						</configuration>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+					<!-- Copy compiled jar to user folder -->
+					<execution>
+						<id>install-artifact</id>
+						<configuration>
+							<verbose>false</verbose>
+							<resources>
+								<resource>
+									<runIf>{{ osName.contains("Windows") }}</runIf>
+									<directory>${project.basedir}/target</directory>
+									<targetPath>${user.home}/AppData/Roaming/.spoutcraft/bin</targetPath>
+									<include>${project.artifactId}-${project.version}.jar</include>
+									<destFileName>${project.artifactId}.jar</destFileName>
+									<preservePath>true</preservePath>
+								</resource>
+								<resource>
+									<runIf>{{ osName.contains("Mac") }}</runIf>
+									<directory>${project.basedir}/target</directory>
+									<targetPath>${user.home}/Application Support/.spoutcraft/bin</targetPath>
+									<include>${project.artifactId}-${project.version}.jar</include>
+									<destFileName>${project.artifactId}.jar</destFileName>
+									<preservePath>true</preservePath>
+								</resource>
+								<resource>
+									<runIf>{{ osName.contains("Linux") }}</runIf>
+									<directory>${project.basedir}/target</directory>
+									<targetPath>${user.home}/.spoutcraft/bin</targetPath>
+									<include>${project.artifactId}-${project.version}.jar</include>
+									<destFileName>${project.artifactId}.jar</destFileName>
+									<preservePath>true</preservePath>
+								</resource>
+								<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
+							</resources>
+						</configuration>
+						<phase>install</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Version strip plugin -->
+			<plugin>
+				<groupId>com.sourcesense.maven</groupId>
+				<artifactId>maven-nosnapshot-plugin</artifactId>
+				<version>0.0.7-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<configuration>
+							<version>${project.version}</version>
+							<propertyName>releaseVersion</propertyName>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>strip</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Disable compiler plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!-- JAR dependency addition plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.7.1</version>
+				<executions>
+					<execution>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>org.spoutcraft:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.txt</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<artifactSet>
+								<includes>
+									<include>org.spoutcraft:*</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<!-- Plugin management -->
+		<pluginManagement>
+			<plugins>
+				<!-- Eclipse exclusions -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.sourcesense.maven</groupId>
+										<artifactId>maven-nosnapshot-plugin</artifactId>
+										<versionRange>[0.0.7-SNAPSHOT,)</versionRange>
+										<goals>
+											<goal>strip</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<!-- Build profiles -->
+	<profiles>
+		<!-- Activate on Windows -->
+		<profile>
+			<id>package-win</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Program executor plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<!-- Decompile Minecraft using MCP -->
+							<execution>
+								<id>setup-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
+									<arguments>
+										<argument>runtime/decompile.py</argument>
+										<argument>%*</argument>
+									</arguments>
+								</configuration>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+							<!-- Compile Minecraft using MCP -->
+							<execution>
+								<id>recompile-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
+									<arguments>
+										<argument>runtime/recompile.py</argument>
+										<argument>%*</argument>
+									</arguments>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>reobfuscate-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
+									<arguments>
+										<argument>runtime/reobfuscate.py</argument>
+										<argument>%*</argument>
+									</arguments>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- Activate on Linux -->
+		<profile>
+			<id>package-nix</id>
+			<activation>
+				<os>
+					<family>Linux</family>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Program executor plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<!-- Decompile Minecraft using MCP -->
+							<execution>
+								<id>setup-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<arguments>
+										<argument>runtime/decompile.py</argument>
+										<argument>"$@"</argument>
+									</arguments>
+								</configuration>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+							<!-- Compile Minecraft using MCP -->
+							<execution>
+								<id>recompile-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<arguments>
+										<argument>runtime/recompile.py</argument>
+										<argument>"$@"</argument>
+									</arguments>
+								</configuration>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+							<!-- Reobfuscate Minecraft using MCP -->
+							<execution>
+								<id>reobfuscate-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<arguments>
+										<argument>runtime/reobfuscate.py</argument>
+										<argument>"$@"</argument>
+									</arguments>
+								</configuration>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
