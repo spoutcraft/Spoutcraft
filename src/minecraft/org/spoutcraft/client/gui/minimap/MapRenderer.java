@@ -451,10 +451,10 @@ public class MapRenderer {
 		if (MinimapConfig.getInstance().isCoords()) {
 			GL11.glPushMatrix();
 			GL11.glScalef(0.5f, 0.5f, 1.0f);
-			String xy = format((int) Minecraft.theMinecraft.thePlayer.posX) + ", " + format((int) Minecraft.theMinecraft.thePlayer.posZ);
+			String xy = format((float) Minecraft.theMinecraft.thePlayer.posX) + ", " + format((float) Minecraft.theMinecraft.thePlayer.posZ);
 			int m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
 			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 146, 0xffffff);
-			xy = Integer.toString((int) Minecraft.theMinecraft.thePlayer.posY);
+			xy = Integer.toString((int) (Minecraft.theMinecraft.thePlayer.posY - 1.620d)); //substract eyes pos
 			m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
 			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 156, 0xffffff);
 			if (MinimapConfig.getInstance().getFocussedWaypoint() != null) {
@@ -476,12 +476,12 @@ public class MapRenderer {
 		}
 	}
 
-	private String format(int coord) {
-		if (coord < 0) {
-			return "-" + Math.abs(coord + 1);
-		} else {
-			return "+" + coord;
+	private String format(float coord) {
+		int r = Math.round(coord);
+		if (r >= 0) {
+			return "+"+r;
 		}
+		return ""+r;
 	}
 
 	private void drawRound() {
