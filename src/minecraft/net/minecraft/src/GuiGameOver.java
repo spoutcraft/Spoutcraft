@@ -2,6 +2,7 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
 
 public class GuiGameOver extends GuiScreen {
 	private int cooldownTimer;
@@ -36,7 +37,10 @@ public class GuiGameOver extends GuiScreen {
 			case 2:
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
-				this.mc.displayGuiScreen(new GuiMainMenu());
+				//Spout start
+				//this.mc.displayGuiScreen(new GuiMainMenu());
+				this.mc.displayGuiScreen(new MainMenu());
+				//Spout end
 		}
 	}
 
