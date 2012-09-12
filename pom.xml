@@ -741,7 +741,7 @@
 							<execution>
 								<id>setup-mc</id>
 								<configuration>
-									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<executable>python</executable>
 									<arguments>
 										<argument>runtime/decompile.py</argument>
 										<argument>"$@"</argument>
@@ -756,7 +756,7 @@
 							<execution>
 								<id>recompile-mc</id>
 								<configuration>
-									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<executable>python</executable>
 									<arguments>
 										<argument>runtime/recompile.py</argument>
 										<argument>"$@"</argument>
@@ -771,7 +771,7 @@
 							<execution>
 								<id>reobfuscate-mc</id>
 								<configuration>
-									<executable>${project.basedir}/runtime/bin/python/python</executable>
+									<executable>python</executable>
 									<arguments>
 										<argument>runtime/reobfuscate.py</argument>
 										<argument>"$@"</argument>
