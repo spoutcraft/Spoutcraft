@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
-import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.client.io.FileUtil;
 
 public class HeightMap {
@@ -101,13 +100,13 @@ public class HeightMap {
 
 	public static HeightMap getHeightMap(String worldName, File file) {
 		if (lastMap != null && lastMap.getWorldName().equals(worldName)) {
-			lastMap.file = file;
+//			lastMap.file = file;
 			return lastMap;
 		}
 		HeightMap ret = null;
 		if (heightMaps.containsKey(worldName)) {
 			ret = heightMaps.get(worldName);
-			ret.file = file;
+//			ret.file = file;
 		} else {
 			HeightMap map = new HeightMap(worldName);
 			map.file = file;
