@@ -1,23 +1,24 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-// Spout Start
+//Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
-// Spout End
+import org.spoutcraft.client.player.accessories.AccessoryType;
+//spout End
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 public class RenderPlayer extends RenderLiving {
 	public ModelBiped modelBipedMain; // Spout: private to public
-	// Spout Start
+	//Spout Start
 	private ModelNarrowtux modelNarrowtux;
 	private float lastScale = 1f;
-	// Spout End
+	//Spout End
 	private ModelBiped modelArmorChestplate;
 	private ModelBiped modelArmor;
 	private static final String[] armorFilenamePrefix = new String[]{"cloth", "chain", "iron", "diamond", "gold"};
@@ -35,7 +36,7 @@ public class RenderPlayer extends RenderLiving {
 			Item var5 = var4.getItem();
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				// Spout Start
+				//Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
 				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
@@ -45,7 +46,7 @@ public class RenderPlayer extends RenderLiving {
 						Minecraft.theMinecraft.renderEngine.obtainImageData(url, new HDImageBufferDownload());
 					}
 				}
-				// Spout End
+				//Spout End
 				ModelBiped var7 = par2 == 2?this.modelArmor:this.modelArmorChestplate;
 				var7.bipedHead.showModel = par2 == 0;
 				var7.bipedHeadwear.showModel = par2 == 0;
@@ -83,7 +84,7 @@ public class RenderPlayer extends RenderLiving {
 		if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP)) {
 			var13 -= 0.125D;
 		}
-		// Spout Start
+		//Spout Start
 		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
 			 AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		} 
@@ -99,7 +100,7 @@ public class RenderPlayer extends RenderLiving {
 		} else {
 			super.doRenderLiving(par1EntityPlayer, par2, var13, par6, par8, par9);
 		}
-		// Spout End
+		//Spout End
 		this.modelArmorChestplate.aimedBow = this.modelArmor.aimedBow = this.modelBipedMain.aimedBow = false;
 		this.modelArmorChestplate.isSneak = this.modelArmor.isSneak = this.modelBipedMain.isSneak = false;
 		this.modelArmorChestplate.heldItemRight = this.modelArmor.heldItemRight = this.modelBipedMain.heldItemRight = 0;
@@ -112,7 +113,7 @@ public class RenderPlayer extends RenderLiving {
 			double var10 = var1.getDistanceSqToEntity(this.renderManager.livingPlayer);
 			float var12 = var1.isSneaking() ? 32.0F : 64.0F;
 			if(var10 <  (double)(var12 * var12)) {
-				// Spout Start
+				//Spout Start
 				String title = var1.displayName;
 				//int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
@@ -127,6 +128,13 @@ public class RenderPlayer extends RenderLiving {
 					for (int line = 0; line < lines.length; line++) {
 						title = lines[line];
 						var4 = y + (0.275D * (lines.length - line - 1));
+						
+						if (AccessoryHandler.hasAccessory(var1.username, AccessoryType.NOTCHHAT)) {
+							var4 = var4 + 0.275d;
+						} else if (AccessoryHandler.hasAccessory(var1.username, AccessoryType.TOPHAT)) {
+							var4 = var4 + 0.5d;
+						}
+						
 						if(!var1.isSneaking()) {
 							if(var1.isPlayerSleeping()) {
 								this.renderLivingLabel(var1, title, var2, var4 - 1.5D, var6, 64);
@@ -150,7 +158,7 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDisable(GL11.GL_LIGHTING);
 							GL11.glTranslatef(0.0F, 0.25F / var9, 0.0F);
 							GL11.glDepthMask(false);
-							GL11.glDisable(GL11.GL_ALPHA_TEST); // Spout - ?
+							GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
 							GL11.glEnable(GL11.GL_BLEND);
 							GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 							Tessellator var15 = Tessellator.instance;
@@ -167,14 +175,14 @@ public class RenderPlayer extends RenderLiving {
 							GL11.glDepthMask(true);
 							var14.drawString(title, -var14.getStringWidth(title) / 2, 0, 553648127);
 							GL11.glEnable(GL11.GL_LIGHTING);
-							GL11.glEnable(GL11.GL_ALPHA_TEST); // Spout - ?
+							GL11.glEnable(GL11.GL_ALPHA_TEST); //Spout - ?
 							GL11.glDisable(GL11.GL_BLEND);
 							GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 							GL11.glPopMatrix();
 						}
 					}
 				}
-				// Spout End
+				//Spout End
 			}
 		}
 
@@ -196,7 +204,7 @@ public class RenderPlayer extends RenderLiving {
 			this.renderManager.itemRenderer.renderItem(par1EntityPlayer, var3, 0);
 			GL11.glPopMatrix();
 		}
-		AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); // Spout
+		AccessoryHandler.renderAllAccessories(par1EntityPlayer, 0.0625F, par2); //Spout
 
 		float var6;
 		if (par1EntityPlayer.username.equals("deadmau5") && this.loadDownloadableImageTexture(par1EntityPlayer.skinUrl, (String)null)) {
@@ -285,9 +293,9 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			}
-			// Spout Start
+			//spout start
 			else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.spoutcraftapi.material.Tool) {
-			// Spout End
+			//spout end
 				var6 = 0.625F;
 				if (Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {
 					GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
