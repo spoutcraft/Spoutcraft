@@ -171,4 +171,19 @@ public class AccessoryHandler {
 	public static boolean isHandled(String username) {
 		return sacs.containsKey(username);
 	}
+	
+	public static boolean hasAccessory(String username, AccessoryType type) {
+		
+		if (!sacs.containsKey(username)) {
+			return false;
+		}
+		
+		for (Pair<Accessory, String> accessory : sacs.get(username)) {
+			if (accessory.getLeft().getType().equals(type)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-//Spout Start
+// Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.ModelNarrowtux;
@@ -9,13 +9,13 @@ import org.spoutcraft.client.special.VIP;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 import org.spoutcraft.client.player.accessories.AccessoryType;
-//spout End
+// Spout End
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 public class RenderPlayer extends RenderLiving {
 	public ModelBiped modelBipedMain; // Spout: private to public
-	//Spout Start
+	// Spout Start
 	private ModelNarrowtux modelNarrowtux;
 	private float lastScale = 1f;
 	//Spout End
@@ -36,7 +36,7 @@ public class RenderPlayer extends RenderLiving {
 			Item var5 = var4.getItem();
 			if (var5 instanceof ItemArmor) {
 				ItemArmor var6 = (ItemArmor)var5;
-				//Spout Start
+				// Spout Start
 				this.loadTexture("/armor/" + armorFilenamePrefix[var6.renderIndex] + "_" + (par2 == 2 ? 2 : 1) + ".png");
 				VIP vip = par1EntityPlayer.vip;
 				int armorId = (par2 == 2 ? 2 : 1);
@@ -84,7 +84,7 @@ public class RenderPlayer extends RenderLiving {
 		if (par1EntityPlayer.isSneaking() && !(par1EntityPlayer instanceof EntityPlayerSP)) {
 			var13 -= 0.125D;
 		}
-		//Spout Start
+		// Spout Start
 		if(!AccessoryHandler.isHandled(par1EntityPlayer.username)) {
 			 AccessoryHandler.addVIPAccessoriesFor(par1EntityPlayer);
 		} 
@@ -113,7 +113,7 @@ public class RenderPlayer extends RenderLiving {
 			double var10 = var1.getDistanceSqToEntity(this.renderManager.livingPlayer);
 			float var12 = var1.isSneaking() ? 32.0F : 64.0F;
 			if(var10 <  (double)(var12 * var12)) {
-				//Spout Start
+				// Spout Start
 				String title = var1.displayName;
 				//int color = EasterEggs.getEasterEggTitleColor();
 				float alpha = 0.25F;
@@ -293,7 +293,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			}
-			//spout start
+			// Spout Start
 			else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.spoutcraftapi.material.Tool) {
 			//spout end
 				var6 = 0.625F;
