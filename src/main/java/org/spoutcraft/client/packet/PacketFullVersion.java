@@ -25,21 +25,28 @@ import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
 import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
 
 public class PacketFullVersion implements SpoutPacket {
-	private String versionString;
+	private long version;
 
 	public PacketFullVersion() {
 	}
 
 	public PacketFullVersion(String versionString) {
-		this.versionString = versionString;
+		try {
+			//Will break if builds are < 1000 or > 9999
+			//1.3.2 b1111
+			version = Integer.parseInt(versionString.substring(7));
+		} catch (Exception e) {
+			e.printStackTrace();
+			version = 1;
+		}
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
-		versionString = input.readString();
+		version = input.readLong();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeString(versionString);
+		output.writeLong(versionString);
 	}
 
 	public void run(int playerId) {
