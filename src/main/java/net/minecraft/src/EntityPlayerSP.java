@@ -481,8 +481,10 @@ public class EntityPlayerSP extends EntityPlayer {
 
 			//Auto forward
 			else if (key == settings.keyAutoForward.keyCode) {
-				autoforwardToggle = !autoforwardToggle;
-				autoBackwardToggle = false;
+				if (Spoutcraft.hasPermission("spout.client.autorun.forward")) {
+					autoforwardToggle = !autoforwardToggle;
+					autoBackwardToggle = false;
+				}
 			}
 			else if (key == settings.keyBindForward.keyCode && autoforwardToggle) {
 				autoforwardToggle = false;
@@ -491,8 +493,10 @@ public class EntityPlayerSP extends EntityPlayer {
 			
 			//Auto backward
 			else if (key == settings.keyAutoBackward.keyCode) {
-				autoBackwardToggle = !autoBackwardToggle;
-				autoforwardToggle = false;
+				if (Spoutcraft.hasPermission("spout.client.autorun.backward")) {
+					autoBackwardToggle = !autoBackwardToggle;
+					autoforwardToggle = false;
+				}
 			}
 			else if (key == settings.keyBindBack.keyCode && autoBackwardToggle) {
 				autoBackwardToggle = false;
