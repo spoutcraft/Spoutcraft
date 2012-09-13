@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-// Spout start
+// Spout Start
 import org.spoutcraft.client.entity.CraftPig;
 import org.spoutcraft.client.entity.CraftWolf;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-// Spout end
+// Spout End
 
 public class EntityWolf extends EntityTameable {
 	private float field_70926_e;
@@ -40,9 +40,9 @@ public class EntityWolf extends EntityTameable {
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
 		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySheep.class, 16.0F, 200, false));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftWolf(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class EntityWolf extends EntityTameable {
 	 * Returns the texture's file path as a String.
 	 */
 	public String getTexture() {
-		//Spout Start
+		// Spout Start
 		if(isTamed()) {
 			return this.getCustomTexture(EntitySkinType.WOLF_TAMED, "/mob/wolf_tame.png");
 		}
@@ -101,7 +101,7 @@ public class EntityWolf extends EntityTameable {
 		} else {
 			return super.getTexture();
 		}
-		//Spout End
+		// Spout End
 	}
 
 	/**

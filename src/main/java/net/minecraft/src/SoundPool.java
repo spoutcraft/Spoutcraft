@@ -50,7 +50,7 @@ public class SoundPool {
 		return this.allSoundPoolEntries.isEmpty() ? null : (SoundPoolEntry)this.allSoundPoolEntries.get(this.rand.nextInt(this.allSoundPoolEntries.size()));
 	}
 
-	//Spout Start
+	// Spout Start
 	public SoundPoolEntry getSoundFromSoundPool(String s, int id) {
 		List list = (List)nameToSoundPoolEntriesMapping.get(s);
 		if (list == null) {
@@ -73,5 +73,5 @@ public class SoundPool {
 		}
 	}
 	
-	//Spout End
+	// Spout End
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
@@ -15,19 +15,19 @@ import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
-//Spout End
+// Spout End
 import org.spoutcraft.spoutcraftapi.player.ChatMessage;
 
 public class GuiIngame extends Gui
 {
 	private static RenderItem itemRenderer = new RenderItem();
 
-	//Spout Start
+	// Spout Start
 	private final ZanMinimap map = new ZanMinimap();
 	private static boolean needsUpdate = true;
-	//Spout End
+	// Spout End
 
-	public static final Random rand = new Random(); //Spout private -> public static final
+	public static final Random rand = new Random(); // Spout private -> public static final
 	private Minecraft mc;
 	private int updateCounter;
 
@@ -46,7 +46,7 @@ public class GuiIngame extends Gui
 
 	public GuiIngame(Minecraft par1Minecraft)
 	{
-		//rand = new Random();	//Spout removed
+		//rand = new Random();	// Spout removed
 		updateCounter = 0;
 		recordPlaying = "";
 		recordPlayingUpFor = 0;
@@ -58,7 +58,7 @@ public class GuiIngame extends Gui
 	/**
 	 * Render the ingame overlay with quick icon bar, ...
 	 */
-	//Spout Start
+	// Spout Start
 	//TODO Rewrite again, it's in a horrible state, i'm surprised it works...
 	//Most of function rewritten
 	public void renderGameOverlay(float f, boolean flag, int i, int j)

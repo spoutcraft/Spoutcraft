@@ -3,7 +3,7 @@ package net.minecraft.src;
 public class Slot {
 
 	/** The index of the slot in the inventory. */
-	public final int slotIndex; //Spout private -> public
+	public final int slotIndex; // Spout private -> public
 
 	/** The inventory we want to extract a slot from. */
 	public final IInventory inventory;

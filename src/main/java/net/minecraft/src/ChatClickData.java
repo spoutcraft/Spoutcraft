@@ -74,10 +74,10 @@ public class ChatClickData {
 		return StringUtils.stripControlCodes(this.line.getChatLineString().substring(var1, var2));
 	}
 	
-	//Spout start
+	// Spout Start
 	public String getMessage() {
 		return line.getChatLineString();
 	}
-	//Spout end
+	// Spout End
 	
 }

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-import org.spoutcraft.client.entity.CraftEnderDragon; //Spout
+import org.spoutcraft.client.entity.CraftEnderDragon; // Spout
 
 public class EntityDragon extends EntityDragonBase {
 	public double targetX;
@@ -65,9 +65,9 @@ public class EntityDragon extends EntityDragonBase {
 		this.isImmuneToFire = true;
 		this.targetY = 100.0D;
 		this.ignoreFrustumCheck = true;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftEnderDragon(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected void entityInit() {

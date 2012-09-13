@@ -14,7 +14,7 @@ public abstract class EntityThrowable extends Entity {
 	/**
 	 * Is the entity that throws this 'thing' (snowball, ender pearl, eye of ender or potion)
 	 */
-	public EntityLiving thrower; //Spout protected -> public
+	public EntityLiving thrower; // Spout protected -> public
 	private int ticksInGround;
 	private int ticksInAir = 0;
 

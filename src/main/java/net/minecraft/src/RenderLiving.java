@@ -4,12 +4,12 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-//Spout start
+// Spout Start
 import org.lwjgl.opengl.GL13;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
-//Spout end
+// Spout End
 
 public class RenderLiving extends Render {
 	protected ModelBase mainModel;
@@ -279,7 +279,7 @@ public class RenderLiving extends Render {
 	 * Passes the specialRender and renders it
 	 */
 	protected void passSpecialRender(EntityLiving par1EntityLiving, double par2, double par4, double par6) {
-		//Spout Start
+		// Spout Start
 		if(Minecraft.isDebugInfoEnabled() && SpoutClient.getInstance().isEntityLabelCheat()) {
 			this.renderLivingLabel(par1EntityLiving, Integer.toString(par1EntityLiving.entityId), par2, par4, par6, 64);
 		}
@@ -292,7 +292,7 @@ public class RenderLiving extends Render {
 				}
 			}
 		}
-		//Spout End
+		// Spout End
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class RenderLiving extends Render {
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDepthMask(false);
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
-			GL11.glDisable(GL11.GL_ALPHA_TEST); //Spout - ?
+			GL11.glDisable(GL11.GL_ALPHA_TEST); // Spout - ?
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			Tessellator var15 = Tessellator.instance;
@@ -335,7 +335,7 @@ public class RenderLiving extends Render {
 			var15.draw();
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, 553648127);
-			GL11.glEnable(GL11.GL_ALPHA_TEST); //Spout - ?
+			GL11.glEnable(GL11.GL_ALPHA_TEST); // Spout - ?
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			GL11.glDepthMask(true);
 			var12.drawString(par2Str, -var12.getStringWidth(par2Str) / 2, var16, -1);

@@ -23,14 +23,14 @@ import javax.crypto.SecretKey;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-//Spout end
+// Spout End
 
 public class NetClientHandler extends NetHandler {
 	private boolean field_72554_f = false;
@@ -61,17 +61,17 @@ public class NetClientHandler extends NetHandler {
 
 	/** RNG. */
 	Random rand = new Random();
-	// Spout start
+	// Spout Start
 	long timeout = System.currentTimeMillis() + 5000;
 	public LinkedList<Packet> queue = new LinkedList<Packet>();
 	public long packetQueueTime = 0L;
 	public boolean queued = false;
-	// Spout end
+	// Spout End
 	
 	public NetClientHandler(Minecraft par1Minecraft, String par2Str, int par3) throws IOException {
 		this.mc = par1Minecraft;
 		
-		//Spout start
+		// Spout Start
 		InetSocketAddress address = NetworkUtils.resolve(par2Str, par3);
 		if(address.isUnresolved()) {
 			throw new UnknownHostException(address.getHostName());
@@ -80,7 +80,7 @@ public class NetClientHandler extends NetHandler {
 
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str; // Spout
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3; // Spout
-		//Spout end
+		// Spout End
 	}
 
 	public NetClientHandler(Minecraft par1Minecraft, IntegratedServer par2IntegratedServer) throws IOException {
@@ -113,14 +113,14 @@ public class NetClientHandler extends NetHandler {
 			this.netManager.wakeThreads();
 		}
 
-		//Spout start
+		// Spout Start
 		if (mc.currentScreen instanceof GuiDownloadTerrain) {
 			if (System.currentTimeMillis() > timeout) {
 				mc.displayGuiScreen(null, false);
 				SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new org.spoutcraft.client.packet.PacketPreCacheCompleted());
 			}
 		}
-		//Spout end
+		// Spout End
 	}
 
 	public void handleServerAuthData(Packet253ServerAuthData par1Packet253ServerAuthData) {
@@ -372,11 +372,11 @@ public class NetClientHandler extends NetHandler {
 		if (var12 != null) {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var12);
 		}
-		//Spout start: set the entity's title
+		// Spout Start: set the entity's title
 		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
 			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
-		//Spout end
+		// Spout End
 	}
 
 	public void handleEntityTeleport(Packet34EntityTeleport par1Packet34EntityTeleport) {
@@ -460,13 +460,13 @@ public class NetClientHandler extends NetHandler {
 			this.mc.thePlayer.prevPosZ = this.mc.thePlayer.posZ;
 			this.doneLoadingTerrain = true;
 
-			//Spout Start
+			// Spout Start
 			if (SpoutClient.getInstance().isSpoutEnabled()) {
 				if (FileDownloadThread.preCacheCompleted.get() == 0L) {
 					return;
 				}
 			}
-			//Spout End
+			// Spout End
 			this.mc.displayGuiScreen((GuiScreen)null);
 		}
 	}
@@ -521,11 +521,11 @@ public class NetClientHandler extends NetHandler {
 			this.worldClient.markBlocksDirty(par1Packet51MapChunk.xCh << 4, 0, par1Packet51MapChunk.zCh << 4, (par1Packet51MapChunk.xCh << 4) + 15, 256, (par1Packet51MapChunk.zCh << 4) + 15);
 
 			if (!par1Packet51MapChunk.includeInitialize || !(this.worldClient.provider instanceof WorldProviderSurface)) {
-				//Spout start
+				// Spout Start
 				if (ConfigReader.clientLight) {
 					var2.resetRelightChecks();
 				}
-				//Spout end
+				// Spout End
 			}
 		}
 	}
@@ -536,7 +536,7 @@ public class NetClientHandler extends NetHandler {
 
 	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
 		if(this.mc.thePlayer != null) {
-			this.mc.thePlayer.closeScreen(); //Spout - close the active screen first!
+			this.mc.thePlayer.closeScreen(); // Spout - close the active screen first!
 		}
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.field_72554_f = true;
@@ -548,7 +548,7 @@ public class NetClientHandler extends NetHandler {
 		if (!this.field_72554_f) {
 			this.field_72554_f = true;
 			this.mc.loadWorld((WorldClient)null);
-			//Spout start
+			// Spout Start
 			System.out.println(par1Str);
 			if (par1Str != null && par1Str.toLowerCase().contains("endofstream")) {
 				this.mc.displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost());
@@ -568,7 +568,7 @@ public class NetClientHandler extends NetHandler {
 			else {
 				this.mc.displayGuiScreen(new GuiDisconnected("disconnect.lost", par1Str, par2ArrayOfObj));
 			}
-			// Spout end
+			// Spout End
 		}
 	}
 
@@ -584,7 +584,7 @@ public class NetClientHandler extends NetHandler {
 	 */
 	public void addToSendQueue(Packet par1Packet) {
 		if (!this.field_72554_f) {
-			//Spout start
+			// Spout Start
 			if (queued) {
 				int id = par1Packet.getPacketId();
 				//Always must send movement packets :(
@@ -600,7 +600,7 @@ public class NetClientHandler extends NetHandler {
 					}
 				}
 			}
-			//Spout end
+			// Spout End
 			this.netManager.addToSendQueue(par1Packet);
 		}
 	}
@@ -711,11 +711,11 @@ public class NetClientHandler extends NetHandler {
 		if (var17 != null) {
 			var10.getDataWatcher().updateWatchedObjectsFromList(var17);
 		}
-		//Spout start: set the entity's title
+		// Spout Start: set the entity's title
 		if(var10.worldObj.customTitles.containsKey(var10.entityId)) {
 			((LivingEntity)SpoutClient.getInstance().getEntityFromId(var10.entityId).spoutEntity).setTitle(var10.worldObj.customTitles.get(var10.entityId));
 		}
-		//Spout end
+		// Spout End
 	}
 
 	public void handleUpdateTime(Packet4UpdateTime par1Packet4UpdateTime) {
@@ -915,9 +915,9 @@ public class NetClientHandler extends NetHandler {
 
 					var3.onInventoryChanged();
 
-					//Spout start
+					// Spout Start
 					var3.recalculateText();
-					//Spout end
+					// Spout End
 				}
 			}
 		}
@@ -1123,7 +1123,7 @@ public class NetClientHandler extends NetHandler {
 		String[] var2 = par1Packet203AutoComplete.func_73473_d().split("\u0000");
 
 		if (this.mc.currentScreen instanceof GuiChat) {
-			//GuiChat var3 = (GuiChat)this.mc.currentScreen; //Spout
+			//GuiChat var3 = (GuiChat)this.mc.currentScreen; // Spout
 			//var3.func_73894_a(var2);
 		}
 	}

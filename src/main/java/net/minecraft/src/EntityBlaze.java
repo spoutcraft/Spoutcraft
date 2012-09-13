@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftBlaze; //Spout
+import org.spoutcraft.client.entity.CraftBlaze; // Spout
 
 public class EntityBlaze extends EntityMob {
 
@@ -17,9 +17,9 @@ public class EntityBlaze extends EntityMob {
 		this.isImmuneToFire = true;
 		this.attackStrength = 6;
 		this.experienceValue = 10;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftBlaze(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {

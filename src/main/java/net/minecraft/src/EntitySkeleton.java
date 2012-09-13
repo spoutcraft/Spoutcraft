@@ -20,9 +20,9 @@ public class EntitySkeleton extends EntityMob {
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftSkeleton(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

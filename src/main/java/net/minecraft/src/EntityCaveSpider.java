@@ -7,9 +7,9 @@ public class EntityCaveSpider extends EntitySpider {
 		super(par1World);
 		this.texture = "/mob/cavespider.png";
 		this.setSize(0.7F, 0.5F);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftCaveSpider(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {

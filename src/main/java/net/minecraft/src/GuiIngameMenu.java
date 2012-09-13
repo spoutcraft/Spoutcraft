@@ -50,14 +50,14 @@ public class GuiIngameMenu extends GuiScreen
 	{
 		switch(par1GuiButton.id) {
 		case 0:
-			this.mc.displayGuiScreen(new GameSettingsScreen(this)); //Spout
+			this.mc.displayGuiScreen(new GameSettingsScreen(this)); // Spout
 			break;
 		case 1:
 			// Spout Start
 			HeightMapAgent.save();
 			// Spout End
 			
-			boolean mp = this.mc.isIntegratedServerRunning(); //Spout
+			boolean mp = this.mc.isIntegratedServerRunning(); // Spout
 			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
 
 			if (mc.isIntegratedServerRunning())
@@ -66,9 +66,9 @@ public class GuiIngameMenu extends GuiScreen
 			}
 
 			mc.loadWorld(null);
-			//Spout Start
-			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
-			//Spout End
+			// Spout Start
+			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
+			// Spout End
 			
 		case 2:
 		case 3:

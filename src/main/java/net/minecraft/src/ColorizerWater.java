@@ -4,7 +4,7 @@ public class ColorizerWater {
 
 	public static int[] waterBuffer = new int[65536]; // Spout HD private -> public
 
-	// Spout start
+	// Spout Start
 	public ColorizerWater() {
 	}
 
@@ -14,7 +14,7 @@ public class ColorizerWater {
 		int j = (int) ((1.0D - d1) * 255D);
 		return waterBuffer[j << 8 | i];
 	}
-	// Spout end
+	// Spout End
 	
 	public static void setWaterBiomeColorizer(int[] par0ArrayOfInteger) {
 		waterBuffer = par0ArrayOfInteger;

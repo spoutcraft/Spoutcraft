@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-//Spout start
+// Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
@@ -12,11 +12,11 @@ import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-//Spout end
+// Spout End
 
 public class EntityPlayerSP extends EntityPlayer {
 
-	//public MovementInput movementInput; //Spout moved to EntityPlayer
+	//public MovementInput movementInput; // Spout moved to EntityPlayer
 	protected Minecraft mc;
 	protected int sprintToggleTimer = 0;
 	public float renderArmYaw;
@@ -27,16 +27,16 @@ public class EntityPlayerSP extends EntityPlayer {
 	private MouseFilter field_71162_ch = new MouseFilter();
 	private MouseFilter field_21904_bK = new MouseFilter();
 	private MouseFilter field_21902_bL = new MouseFilter();
-	//Spout start
+	// Spout Start
 	public FixedLocation lastClickLocation = null;
 	private KeyBinding fogKey = null;
-	//Spout end
+	// Spout End
 
 	public EntityPlayerSP(Minecraft par1Minecraft, World par2World, Session par3Session, int par4) {
 		super(par2World);
 		this.mc = par1Minecraft;
 		this.dimension = par4;
-		//Spout start
+		// Spout Start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
 			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
@@ -46,16 +46,16 @@ public class EntityPlayerSP extends EntityPlayer {
 				displayName = par3Session.username;
 			}
 		}
-		//Spout end
+		// Spout End
 
 		this.username = par3Session.username;
-		//Spout start
+		// Spout Start
 		spoutEntity = ClientPlayer.getInstance();
 		((ClientPlayer) spoutEntity).setPlayer(this);
 		SpoutClient.getInstance().player = (ClientPlayer) spoutEntity;
 		this.worldObj.releaseEntitySkin(this);
 		this.worldObj.obtainEntitySkin(this);
-		//Spout end
+		// Spout End
 	}
 
 	public void moveEntity(double par1, double par3, double par5) {
@@ -66,7 +66,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		super.updateEntityActionState();
 		this.moveStrafing = this.movementInput.moveStrafe;
 		this.moveForward = this.movementInput.moveForward;
-		this.isJumping = this.movementInput.jump || this.isTreadingWater(); //Spout
+		this.isJumping = this.movementInput.jump || this.isTreadingWater(); // Spout
 		this.prevRenderArmYaw = this.renderArmYaw;
 		this.prevRenderArmPitch = this.renderArmPitch;
 		this.renderArmPitch = (float)((double)this.renderArmPitch + (double)(this.rotationPitch - this.renderArmPitch) * 0.5D);
@@ -78,7 +78,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void onLivingUpdate() {
-		if (this.sprintingTicksLeft > 0 && !runToggle) { //Spout
+		if (this.sprintingTicksLeft > 0 && !runToggle) { // Spout
 			--this.sprintingTicksLeft;
 			if (this.sprintingTicksLeft == 0) {
 				this.setSprinting(false);
@@ -98,7 +98,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			this.posY = 68.5D;
 		} else {
 			if (!this.mc.statFileWriter.hasAchievementUnlocked(AchievementList.openInventory)) {
-				//this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory); //Spout this was bugging me
+				//this.mc.guiAchievement.queueAchievementInformation(AchievementList.openInventory); // Spout this was bugging me
 			}
 
 			this.prevTimeInPortal = this.timeInPortal;
@@ -136,14 +136,14 @@ public class EntityPlayerSP extends EntityPlayer {
 				--this.timeUntilPortal;
 			}
 			
-			//Spout start
+			// Spout Start
 			boolean wasFlightUp = movementInput.flyingUp;
-			//Spout end
+			// Spout End
 
 			boolean var1 = this.movementInput.jump;
 			float var2 = 0.8F;
 			boolean var3 = this.movementInput.moveForward >= var2;
-			this.movementInput.updatePlayerMoveState(this); //Spout - kept parameter
+			this.movementInput.updatePlayerMoveState(this); // Spout - kept parameter
 			if (this.isUsingItem()) {
 				this.movementInput.moveStrafe *= 0.2F;
 				this.movementInput.moveForward *= 0.2F;
@@ -176,7 +176,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				this.setSprinting(false);
 			}
 
-			if (this.capabilities.allowFlying && !wasFlightUp && this.movementInput.flyingUp) { //Spout
+			if (this.capabilities.allowFlying && !wasFlightUp && this.movementInput.flyingUp) { // Spout
 				if (this.flyToggleTimer == 0) {
 					this.flyToggleTimer = 7;
 				} else {
@@ -187,7 +187,7 @@ public class EntityPlayerSP extends EntityPlayer {
 			}
 
 			if (this.capabilities.isFlying) {
-				//Spout start
+				// Spout Start
 				if (this.movementInput.flyingDown) { 
 					this.motionY -= 0.15D * ConfigReader.flightSpeedMultiplier;
 				}
@@ -195,7 +195,7 @@ public class EntityPlayerSP extends EntityPlayer {
 				if (this.movementInput.flyingUp) {
 					this.motionY += 0.15D * ConfigReader.flightSpeedMultiplier;
 				}
-				//Spout end
+				// Spout End
 			}
 
 			super.onLivingUpdate();
@@ -212,10 +212,10 @@ public class EntityPlayerSP extends EntityPlayer {
 			var1 *= 1.1F;
 		}
 
-		//Spout start
+		// Spout Start
 		float landMoveFactor = this.speedOnGround * ((isSprinting() || runToggle) ? 1.3F : 1F);
 		var1 *= (landMoveFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
-		//Spout end
+		// Spout End
 		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
@@ -425,7 +425,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		return this.worldObj.getWorldInfo().areCommandsAllowed();
 	}
 	
-	//Spout
+	// Spout
 	public boolean canSprint() {
 		return this.getFoodStats().getFoodLevel() > 6.0F;
 	}
@@ -534,5 +534,5 @@ public class EntityPlayerSP extends EntityPlayer {
 		}
 		super.onUpdate();
 	}
-	//Spout end
+	// Spout End
 }

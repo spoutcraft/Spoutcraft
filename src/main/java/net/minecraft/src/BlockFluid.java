@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
-//Spout start
+// Spout Start
 import org.spoutcraft.client.config.ConfigReader;
-//Spout end
+// Spout End
 
 public abstract class BlockFluid extends Block {
 	protected BlockFluid(int par1, Material par2Material) {
@@ -27,7 +27,7 @@ public abstract class BlockFluid extends Block {
 	 * first determining what to render.
 	 */
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-		//Spout start - Biome water
+		// Spout Start - Biome water
 		if (this.blockMaterial != Material.water) {
 			return 0xffffff;
 		}
@@ -51,7 +51,7 @@ public abstract class BlockFluid extends Block {
 			par1IBlockAccess.setWaterColorCache(par2, par3, par4, color);
 		}
 		return color;
-		//Spout end - Biome Water
+		// Spout End - Biome Water
 	}
 
 	/**

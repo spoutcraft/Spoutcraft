@@ -198,13 +198,13 @@ public class BlockTorch extends Block {
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-		//Spout custom blocks start
+		// Spout custom blocks start
 		Chunk c = par1World.getChunkFromBlockCoords(par2, par4);
 		if (c.spoutChunk.getCustomBlockId(par2, par3, par4) > 0) {
 			return;
 		}
 		int var6 = c.getBlockMetadata(par2 & 0xF, par3, par4 & 0xF);
-		//Spout custom blocks end
+		// Spout custom blocks end
 		double var7 = (double)((float)par2 + 0.5F);
 		double var9 = (double)((float)par3 + 0.7F);
 		double var11 = (double)((float)par4 + 0.5F);

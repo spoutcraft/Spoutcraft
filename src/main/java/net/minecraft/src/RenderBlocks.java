@@ -3,11 +3,11 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-//Spout start
+// Spout Start
 import org.spoutcraft.client.config.ConfigReader;
 import com.pclewis.mcpatcher.mod.Colorizer;
 import com.pclewis.mcpatcher.mod.Shaders;
-//Spout end
+// Spout End
 
 public class RenderBlocks {
 
@@ -15,7 +15,7 @@ public class RenderBlocks {
 	private int overrideBlockTexture = -1;
 	private boolean flipTexture = false;
 	private boolean renderAllFaces = false;
-	//public static boolean fancyGrass = true; //Spout removed
+	//public static boolean fancyGrass = true; // Spout removed
 	public boolean useInventoryTint = true;
 	private int uvRotateEast = 0;
 	private int uvRotateWest = 0;
@@ -100,9 +100,9 @@ public class RenderBlocks {
 	private boolean aoGrassXYZPNC;
 	private boolean aoGrassXYZNNC;
 	private boolean aoGrassXYZCNP;
-	//Spout start
+	// Spout Start
 	public short[] customIds = null;
-	//Spout end
+	// Spout End
 
 	public RenderBlocks(IBlockAccess par1IBlockAccess) {
 		this.blockAccess = par1IBlockAccess;
@@ -387,13 +387,13 @@ public class RenderBlocks {
 		int var14 = this.blockAccess.getBlockMetadata(par2, par3, par4);
 		if (var14 > 0) {
 			short var15 = 205;
-//Spout HD Start
+// Spout HD Start
 			Colorizer.computeWaterColor();
 			var5.setColorOpaque_F(Colorizer.waterColor[0], Colorizer.waterColor[1], Colorizer.waterColor[2]);
 			if (var14 > 3) {
 				var14 = 3;
 			}
-//Spout HD end
+// Spout HD End
 			this.renderTopFace(par1BlockCauldron, (double)par2, (double)((float)par3 - 1.0F + (6.0F + (float)var14 * 3.0F) / 16.0F), (double)par4, var15);
 		}
 
@@ -1567,7 +1567,7 @@ public class RenderBlocks {
 
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var8 = 1.0F;
-//Spout HD Start
+// Spout HD Start
 		float var10;
 		float var11;
 		float var12;
@@ -1585,7 +1585,7 @@ public class RenderBlocks {
 			var11 = var9 * var9 * 0.7F - 0.5F;
 			var12 = var9 * var9 * 0.6F - 0.7F;
 		}
-//Spout HD end
+// Spout HD End
 		if (var11 < 0.0F) {
 			var11 = 0.0F;
 		}
@@ -2472,13 +2472,13 @@ public class RenderBlocks {
 		var12.addVertexWithUV(var28, par4 + 1.0D, par6 - var36, (double)var17, (double)var18);
 	}
 
-	// Spout start
+	// Spout Start
 	public void drawCrossedSquares(Block var1, int var2, double var3, double var5, double var7) {
 		drawCrossedSquares(var1, var2, var3, var5, var7, false);
 	}
 
 	public void drawCrossedSquares(Block par1Block, int par2, double par3, double par5, double par7, boolean customUV) {
-		// Spout end
+		// Spout End
 		Tessellator var9 = Tessellator.instance;
 		int var10 = par1Block.getBlockTextureFromSideAndMetadata(0, par2);
 		if (this.overrideBlockTexture >= 0) {
@@ -2495,14 +2495,14 @@ public class RenderBlocks {
 		double var23 = par3 + 0.5D + 0.45D;
 		double var25 = par7 + 0.5D - 0.45D;
 		double var27 = par7 + 0.5D + 0.45D;
-		// Spout start
+		// Spout Start
 		if (customUV) {
 			var13 = 1;
 			var15 = 0;
 			var17 = 1;
 			var19 = 0;
 		}
-		// Spout end
+		// Spout End
 		var9.addVertexWithUV(var21, par5 + 1.0D, var25, var13, var17);
 		var9.addVertexWithUV(var21, par5 + 0.0D, var25, var13, var19);
 		var9.addVertexWithUV(var23, par5 + 0.0D, var27, var15, var19);
@@ -2892,7 +2892,7 @@ public class RenderBlocks {
 		if (var13 < var12) {
 			var13 = var12;
 		}
-//Spout HD Start
+// Spout HD Start
 		Colorizer.setColorF(Colorizer.colorizeBlock(par1Block, par3, par4, par5, 0));
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
 		this.renderBottomFace(par1Block, -0.5D, -0.5D, -0.5D, par1Block.getBlockTextureFromSideAndMetadata(0, par6));
@@ -2930,7 +2930,7 @@ public class RenderBlocks {
 		}
 
 		var11.setColorOpaque_F(Colorizer.setColor[0] * var13, Colorizer.setColor[1] * var13, Colorizer.setColor[2] * var13);
-//Spout HD end
+// Spout HD End
 		this.renderSouthFace(par1Block, -0.5D, -0.5D, -0.5D, par1Block.getBlockTextureFromSideAndMetadata(0, par6));
 		var11.draw();
 	}
@@ -2979,7 +2979,7 @@ public class RenderBlocks {
 	public boolean renderStandardBlockWithAmbientOcclusion(Block par1Block, int par2, int par3, int par4, float par5, float par6, float par7) {
 		this.enableAO = true;
 		boolean var8 = false;
-		//Spout start
+		// Spout Start
 		this.dirtyAmbientOcclusionCache = true;
 		/* removed
 		float var9 = this.lightValueOwn;
@@ -2988,14 +2988,14 @@ public class RenderBlocks {
 		float var12 = this.lightValueOwn;
 		*/
 		float var9, var10, var11, var12;
-		//Spout end
+		// Spout End
 		boolean var13 = true;
 		boolean var14 = true;
 		boolean var15 = true;
 		boolean var16 = true;
 		boolean var17 = true;
 		boolean var18 = true;
-		//Spout start
+		// Spout Start
 		/* removed
 		this.lightValueOwn = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3, var4);
 		this.aoLightValueXNeg = var1.getAmbientOcclusionLightValue(this.blockAccess, var2 - 1, var3, var4);
@@ -3005,9 +3005,9 @@ public class RenderBlocks {
 		this.aoLightValueYPos = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3 + 1, var4);
 		this.aoLightValueZPos = var1.getAmbientOcclusionLightValue(this.blockAccess, var2, var3, var4 + 1);
 		*/
-		//Spout end
+		// Spout End
 		int var19 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4);
-		//Spout start
+		// Spout Start
 		
 		int var20 = var19;
 		int var21 = var19;
@@ -3055,7 +3055,7 @@ public class RenderBlocks {
 
 		*/
 
-		//Spout end
+		// Spout End
 
 		Tessellator var26 = Tessellator.instance;
 		var26.setBrightness(983055);
@@ -3065,7 +3065,7 @@ public class RenderBlocks {
 			var16 = false;
 			var15 = false;
 			var13 = false;
-			// Spout HD start
+			// Spout HD Start
 			if (par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2) == 0) {
 				var15 = true;
 			}
@@ -3081,7 +3081,7 @@ public class RenderBlocks {
 			if (par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5) == 0) {
 				var18 = true;
 			}
-			// Spout HD end
+			// Spout HD End
 		}
 
 		if (this.overrideBlockTexture >= 0) {
@@ -3090,7 +3090,7 @@ public class RenderBlocks {
 			var16 = false;
 			var15 = false;
 			var13 = false;
-			// Spout HD start
+			// Spout HD Start
 			if (par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2) == 0) {
 				var15 = true;
 			}
@@ -3106,18 +3106,18 @@ public class RenderBlocks {
 			if (par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5) == 0) {
 				var18 = true;
 			}
-			// Spout HD end
+			// Spout HD End
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3 - 1, par4, 0)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.minY <= 0.0D) {
 				var21 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 - 1, par4);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.minY <= 0.0D) {
 					--par3;
@@ -3166,7 +3166,7 @@ public class RenderBlocks {
 				if (par1Block.minY <= 0.0D) {
 					++par3;
 				}
-				//Spout Start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueYNeg);
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueYNeg);
@@ -3177,7 +3177,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNN, this.aoLightValueYNeg);
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueYNeg);
 				}
-				//Spout end
+				// Spout End
 				
 				var9 = (this.aoLightValueScratchXYZNNP + this.aoLightValueScratchXYNN + this.aoLightValueScratchYZNP + this.aoLightValueYNeg) / 4.0F;
 				var12 = (this.aoLightValueScratchYZNP + this.aoLightValueYNeg + this.aoLightValueScratchXYZPNP + this.aoLightValueScratchXYPN) / 4.0F;
@@ -3215,14 +3215,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3 + 1, par4, 1)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.maxY >= 1.0D) {
 				var24 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.maxY >= 1.0D) {
 					++par3;
@@ -3271,7 +3271,7 @@ public class RenderBlocks {
 				if (par1Block.maxY >= 1.0D) {
 					--par3;
 				}
-				//Spout start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueYPos);
 					this.aoLightValueScratchXYNP = adjustAmbientOcclusion(this.aoLightValueScratchXYNP, this.aoLightValueYPos);
@@ -3282,7 +3282,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPPN, this.aoLightValueYPos);
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueYPos);
 				}
-				//Spout end
+				// Spout End
 
 				var12 = (this.aoLightValueScratchXYZNPP + this.aoLightValueScratchXYNP + this.aoLightValueScratchYZPP + this.aoLightValueYPos) / 4.0F;
 				var9 = (this.aoLightValueScratchYZPP + this.aoLightValueYPos + this.aoLightValueScratchXYZPPP + this.aoLightValueScratchXYPP) / 4.0F;
@@ -3321,14 +3321,14 @@ public class RenderBlocks {
 
 		int var27;
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3, par4 - 1, 2)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.minZ <= 0.0D) {
 				var22 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.minZ <= 0.0D) {
 					--par4;
@@ -3377,7 +3377,7 @@ public class RenderBlocks {
 				if (par1Block.minZ <= 0.0D) {
 					++par4;
 				}	
-				//Spout start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNN = adjustAmbientOcclusion(this.aoLightValueScratchXZNN, this.aoLightValueZNeg);
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueZNeg);
@@ -3388,7 +3388,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNN, this.aoLightValueZNeg);
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueZNeg);
 				}
-				//Spout end
+				// Spout End
 
 				var9 = (this.aoLightValueScratchXZNN + this.aoLightValueScratchXYZNPN + this.aoLightValueZNeg + this.aoLightValueScratchYZPN) / 4.0F;
 				var10 = (this.aoLightValueZNeg + this.aoLightValueScratchYZPN + this.aoLightValueScratchXZPN + this.aoLightValueScratchXYZPPN) / 4.0F;
@@ -3422,7 +3422,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2);
-			//Spout start
+			// Spout Start
 			if (ConfigReader.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 2);
@@ -3446,7 +3446,7 @@ public class RenderBlocks {
 					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 2);
 				}
 			}
-			//Spout end
+			// Spout End
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
@@ -3467,14 +3467,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2, par3, par4 + 1, 3)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.maxZ >= 1.0D) {
 				var25 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.maxZ >= 1.0D) {
 					++par4;
@@ -3524,7 +3524,7 @@ public class RenderBlocks {
 					--par4;
 				}
 
-				//Spout start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXZNP = adjustAmbientOcclusion(this.aoLightValueScratchXZNP, this.aoLightValueZPos);
 					this.aoLightValueScratchXYZNPP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPP, this.aoLightValueZPos);
@@ -3535,7 +3535,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNP, this.aoLightValueZPos);
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueZPos);
 				}
-				//Spout end
+				// Spout End
 
 				var9 = (this.aoLightValueScratchXZNP + this.aoLightValueScratchXYZNPP + this.aoLightValueZPos + this.aoLightValueScratchYZPP) / 4.0F;
 				var12 = (this.aoLightValueZPos + this.aoLightValueScratchYZPP + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYZPPP) / 4.0F;
@@ -3569,7 +3569,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);
-			//Spout start
+			// Spout Start
 			if (ConfigReader.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 3);
@@ -3593,7 +3593,7 @@ public class RenderBlocks {
 					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 3);
 				}
 			}
-			//Spout end
+			// Spout End
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
@@ -3614,14 +3614,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2 - 1, par3, par4, 4)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.minX <= 0.0D) {
 				var20 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.minX <= 0.0D) {
 					--par2;
@@ -3671,7 +3671,7 @@ public class RenderBlocks {
 					++par2;
 				}
 
-				//Spout start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYNN = adjustAmbientOcclusion(this.aoLightValueScratchXYNN, this.aoLightValueXNeg);
 					this.aoLightValueScratchXYZNNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNP, this.aoLightValueXNeg);
@@ -3682,7 +3682,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZNPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNPN, this.aoLightValueXNeg);
 					this.aoLightValueScratchXYZNNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZNNN, this.aoLightValueXNeg);
 				}
-				//Spout end
+				// Spout End
 
 				var12 = (this.aoLightValueScratchXYNN + this.aoLightValueScratchXYZNNP + this.aoLightValueXNeg + this.aoLightValueScratchXZNP) / 4.0F;
 				var9 = (this.aoLightValueXNeg + this.aoLightValueScratchXZNP + this.aoLightValueScratchXYNP + this.aoLightValueScratchXYZNPP) / 4.0F;
@@ -3716,7 +3716,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 4);
-			//Spout start
+			// Spout Start
 			if (ConfigReader.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 4);
@@ -3740,7 +3740,7 @@ public class RenderBlocks {
 					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 4);
 				}
 			}
-			//Spout end
+			// Spout End
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
@@ -3761,14 +3761,14 @@ public class RenderBlocks {
 		}
 
 		if (this.renderAllFaces || par1Block.shouldSideBeRendered(this.blockAccess, par2 + 1, par3, par4, 5)) {
-			//Spout start
+			// Spout Start
 			if(this.dirtyAmbientOcclusionCache) {
 				this.calculateAmbientOcclusionLightValues(par1Block, par2, par3, par4);
 			}
 			if (par1Block.maxX >= 1.0D) {
 				var23 = par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4);
 			}
-			//Spout end
+			// Spout End
 			if (this.aoType > 0) {
 				if (par1Block.maxX >= 1.0D) {
 					++par2;
@@ -3818,7 +3818,7 @@ public class RenderBlocks {
 					--par2;
 				}
 
-				//Spout start
+				// Spout Start
 				if(org.spoutcraft.client.config.ConfigReader.fancyLight && org.spoutcraft.client.config.ConfigReader.smoothLighting > 0F) {
 					this.aoLightValueScratchXYPN = adjustAmbientOcclusion(this.aoLightValueScratchXYPN, this.aoLightValueXPos);
 					this.aoLightValueScratchXYZPNP = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNP, this.aoLightValueXPos);
@@ -3829,7 +3829,7 @@ public class RenderBlocks {
 					this.aoLightValueScratchXYZPPN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPPN, this.aoLightValueXPos);
 					this.aoLightValueScratchXYZPNN = adjustAmbientOcclusion(this.aoLightValueScratchXYZPNN, this.aoLightValueXPos);
 				}
-				//Spout end
+				// Spout End
 
 				var9 = (this.aoLightValueScratchXYPN + this.aoLightValueScratchXYZPNP + this.aoLightValueXPos + this.aoLightValueScratchXZPP) / 4.0F;
 				var12 = (this.aoLightValueXPos + this.aoLightValueScratchXZPP + this.aoLightValueScratchXYPP + this.aoLightValueScratchXYZPPP) / 4.0F;
@@ -3863,7 +3863,7 @@ public class RenderBlocks {
 			this.colorGreenTopRight *= var12;
 			this.colorBlueTopRight *= var12;
 			var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5);
-			//Spout start
+			// Spout Start
 			if (ConfigReader.betterGrass != 0) {
 				if(var27 == 3) {
 					var27 = getSideGrassTexture(this.blockAccess, par2, par3, par4, 5);
@@ -3887,7 +3887,7 @@ public class RenderBlocks {
 					var27 = getSideSnowGrassTexture(this.blockAccess, par2, par3, par4, 5);
 				}
 			}
-			//Spout end
+			// Spout End
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var27);
 			if (isFancyGrass() && var27 == 3 && this.overrideBlockTexture < 0) {
 				this.colorRedTopLeft *= par5;
@@ -3979,13 +3979,13 @@ public class RenderBlocks {
 			var8.setBrightness(par1Block.minZ > 0.0D ? var26 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 - 1));
 			var8.setColorOpaque_F(var18, var21, var24);
 			var28 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 2);
-			//Spout start
+			// Spout Start
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			// Spout End
 			this.renderEastFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { // Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderEastFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
@@ -3996,13 +3996,13 @@ public class RenderBlocks {
 			var8.setBrightness(par1Block.maxZ < 1.0D ? var26 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4 + 1));
 			var8.setColorOpaque_F(var18, var21, var24);
 			var28 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 3);
-			//Spout start
+			// Spout Start
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			// Spout End
 			this.renderWestFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { // Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderWestFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
@@ -4013,13 +4013,13 @@ public class RenderBlocks {
 			var8.setBrightness(par1Block.minX > 0.0D ? var26 : par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 - 1, par3, par4));
 			var8.setColorOpaque_F(var19, var22, var25);
 			var28 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 4);
-			//Spout start
+			// Spout Start
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			// Spout End
 			this.renderNorthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { // Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderNorthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
@@ -4031,13 +4031,13 @@ public class RenderBlocks {
 			var8.setBrightness(par1Block.maxX < 1.0D?var26:par1Block.getMixedBrightnessForBlock(this.blockAccess, par2 + 1, par3, par4));
 			var8.setColorOpaque_F(var19, var22, var25);
 			var28 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 5);
-			//Spout start
+			// Spout Start
 			if(var28 == 0) {
 				var8.setColorOpaque_F(par5 * par5, par6 * par6, par7 * par7);
 			}
-			//Spout end
+			// Spout End
 			this.renderSouthFace(par1Block, (double)par2, (double)par3, (double)par4, var28);
-			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { //Spout isFancyGrass()
+			if (isFancyGrass() && var28 == 3 && this.overrideBlockTexture < 0) { // Spout isFancyGrass()
 				var8.setColorOpaque_F(var18 * par5, var21 * par6, var24 * par7);
 				this.renderSouthFace(par1Block, (double) par2, (double) par3, (double) par4, 38);
 			}
@@ -5536,7 +5536,7 @@ public class RenderBlocks {
 	public static boolean renderItemIn3d(int par0) {
 		return par0 == 0 ? true : (par0 == 31 ? true : (par0 == 13 ? true : (par0 == 10 ? true : (par0 == 11 ? true : (par0 == 27 ? true : (par0 == 22 ? true : (par0 == 21 ? true : (par0 == 16 ? true : par0 == 26))))))));
 	}
-	//Spout start
+	// Spout Start
 	public static int getSideGrassTexture(IBlockAccess world, int x, int y, int z, int blockface) {
 		if (ConfigReader.betterGrass == 0) {
 			return 3;
@@ -5635,5 +5635,5 @@ public class RenderBlocks {
 	public static boolean isFancyGrass() {
 		return ConfigReader.fancyGrass || ConfigReader.betterGrass == 2;
 	}
-	//Spout end
+	// Spout End
 }

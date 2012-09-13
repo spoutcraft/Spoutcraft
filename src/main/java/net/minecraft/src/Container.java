@@ -22,13 +22,13 @@ public abstract class Container {
 	protected List crafters = new ArrayList();
 	private Set playerList = new HashSet();
 	
-	//Spout start
+	// Spout Start
 	public abstract IInventory getIInventory();
 	
 	public boolean isSortableInventory() {
 		return false;
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * the slot is assumed empty

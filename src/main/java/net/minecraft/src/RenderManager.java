@@ -5,12 +5,12 @@ import java.util.Iterator;
 import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.client.entity.EntityTexture;
 import org.spoutcraft.client.entity.RenderText;
 import org.spoutcraft.client.entity.RenderTexture;
-//Spout end
+// Spout End
 
 public class RenderManager {
 
@@ -89,10 +89,10 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityBoat.class, new RenderBoat());
 		this.entityRenderMap.put(EntityFishHook.class, new RenderFish());
 		this.entityRenderMap.put(EntityLightningBolt.class, new RenderLightningBolt());
-		//Spout Start
+		// Spout Start
 		this.entityRenderMap.put(EntityText.class, new RenderText());
 		this.entityRenderMap.put(EntityTexture.class, new RenderTexture());
-		//Spout End
+		// Spout End
 		Iterator var1 = this.entityRenderMap.values().iterator();
 
 		while (var1.hasNext()) {

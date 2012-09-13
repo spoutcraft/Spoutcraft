@@ -138,7 +138,7 @@ public class PlayerControllerMP {
 					Block.blocksList[var5].onBlockClicked(this.mc.theWorld, par1, par2, par3, this.mc.thePlayer);
 				}
 
-				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) { //Spout
+				if (var5 > 0 && Block.blocksList[var5].getPlayerRelativeBlockHardness(this.mc.thePlayer) >= 1.0F) { // Spout
 					this.onPlayerDestroyBlock(par1, par2, par3, par4);
 				} else {
 					this.isHittingBlock = true;
@@ -189,7 +189,7 @@ public class PlayerControllerMP {
 				}
 
 				Block var6 = Block.blocksList[var5];
-				this.curBlockDamageMP += var6.getPlayerRelativeBlockHardness(this.mc.thePlayer); //Spout
+				this.curBlockDamageMP += var6.getPlayerRelativeBlockHardness(this.mc.thePlayer); // Spout
 
 				if (this.stepSoundTickCounter % 4.0F == 0.0F && var6 != null) {
 					this.mc.sndManager.playSound(var6.stepSound.getStepSound(), (float)par1 + 0.5F, (float)par2 + 0.5F, (float)par3 + 0.5F, (var6.stepSound.getVolume() + 1.0F) / 8.0F, var6.stepSound.getPitch() * 0.5F);

@@ -3,7 +3,7 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader; //Spout
+import org.spoutcraft.client.config.ConfigReader; // Spout
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
@@ -48,7 +48,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glScalef(var10, -var10, -var10);
 		this.modelSign.renderSign();
 		GL11.glPopMatrix();
-		//Spout start
+		// Spout Start
 		if (par1TileEntitySign.hasText()) {
 		EntityLiving viewer = Minecraft.theMinecraft.renderViewEntity;
 		if (viewer == null) {
@@ -68,7 +68,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		for (int var14 = 0; var14 < par1TileEntitySign.signText.length; ++var14) {
 			String var15 = par1TileEntitySign.signText[var14];
 			if (var14 == par1TileEntitySign.lineBeingEdited) {
-				//Spout Start
+				// Spout Start
 				int endColumnStart = Math.min(par1TileEntitySign.columnBeingEdited,  var15.length());
 				String before = "";
 				if (endColumnStart > 0) {
@@ -79,7 +79,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 					after = var15.substring(par1TileEntitySign.columnBeingEdited, var15.length());
 				}
 				var15 = before + "_" + after;
-				//Spout End
+				// Spout End
 				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
 			} else {
 				var17.drawString(var15, -var17.getStringWidth(var15) / 2, var14 * 10 - par1TileEntitySign.signText.length * 5, var13);
@@ -90,7 +90,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		}
-		//Spout end
+		// Spout End
 		GL11.glPopMatrix();
 	}
 

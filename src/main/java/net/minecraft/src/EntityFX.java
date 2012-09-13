@@ -4,7 +4,7 @@ public class EntityFX extends Entity {
 	private int particleTextureIndex;
 	protected float particleTextureJitterX;
 	protected float particleTextureJitterY;
-	//Spout protected -> public
+	// Spout protected -> public
 	public int particleAge = 0;
 	public int particleMaxAge = 0;
 	public float particleScale;
@@ -22,7 +22,7 @@ public class EntityFX extends Entity {
 	 * The blue amount of color. Used as a percentage, 1.0 = 255 and 0.0 = 0.
 	 */
 	public float particleBlue;
-	//Spout end
+	// Spout End
 	public static double interpPosX;
 	public static double interpPosY;
 	public static double interpPosZ;

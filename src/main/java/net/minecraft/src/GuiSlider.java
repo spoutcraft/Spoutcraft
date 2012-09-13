@@ -74,11 +74,11 @@ public class GuiSlider extends GuiButton
 	{
 		if (super.mousePressed(par1Minecraft, par2, par3))
 		{
-			//Spout start
+			// Spout Start
 			if (!this.enabled){
 				return true;
 			}
-			//Spout End
+			// Spout End
 			sliderValue = (float)(par2 - (xPosition + 4)) / (float)(width - 8);
 
 			if (sliderValue < 0.0F)

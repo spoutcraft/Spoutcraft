@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftCreature; //Spout
+import org.spoutcraft.client.entity.CraftCreature; // Spout
 
 public abstract class EntityCreature extends EntityLiving {
-	public PathEntity pathToEntity; //Spout private -> public
+	public PathEntity pathToEntity; // Spout private -> public
 	
 	/** The Entity this EntityCreature is set to attack. */
-	public Entity entityToAttack; //Spout protected -> public
+	public Entity entityToAttack; // Spout protected -> public
 
 	/**
 	 * returns true if a creature has attacked recently only used for creepers and skeletons
@@ -18,9 +18,9 @@ public abstract class EntityCreature extends EntityLiving {
 
 	public EntityCreature(World par1World) {
 		super(par1World);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftCreature(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

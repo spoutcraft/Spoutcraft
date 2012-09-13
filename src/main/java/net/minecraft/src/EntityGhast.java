@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.entity.CraftGhast;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-//Spout End
+// Spout End
 
 public class EntityGhast extends EntityFlying implements IMob {
 	public int courseChangeCooldown = 0;
@@ -23,9 +23,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		this.setSize(4.0F, 4.0F);
 		this.isImmuneToFire = true;
 		this.experienceValue = 5;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftGhast(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -57,9 +57,9 @@ public class EntityGhast extends EntityFlying implements IMob {
 		super.onUpdate();
 		byte var1 = this.dataWatcher.getWatchableObjectByte(16);
 		this.texture = var1 == 1 ? "/mob/ghast_fire.png" : "/mob/ghast.png";
-		//Spout Start
+		// Spout Start
 		setTextureToRender((byte) (var1 == 1 ? EntitySkinType.GHAST_MOUTH.getId() : 0));
-		//Spout End
+		// Spout End
 	}
 
 	protected void updateEntityActionState() {

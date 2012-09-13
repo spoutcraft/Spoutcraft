@@ -8,11 +8,11 @@ import java.util.zip.ZipFile;
 
 public class TexturePackCustom extends TexturePackImplementation {
 	public ZipFile field_77550_e; // Spout HD private -> public
-	// Spout HD start
+	// Spout HD Start
 	public ZipFile origZip;
 	public File tmpFile;
 	public long lastModified;
-	// Spout HD end
+	// Spout HD End
 
 	public TexturePackCustom(String par1Str, File par2File) {
 		super(par1Str, par2File, par2File.getName());

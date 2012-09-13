@@ -6,14 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout end
+// Spout End
 
 public abstract class EntityLiving extends Entity {
 	public int maxHurtResistantTime = 20;
@@ -60,7 +60,7 @@ public abstract class EntityLiving extends Entity {
 	public float jumpMovementFactor = 0.02F;
 	public float prevSwingProgress;
 	public float swingProgress;
-	public int health = this.getMaxHealth(); //Spout - protected to public!
+	public int health = this.getMaxHealth(); // Spout - protected to public!
 	public int prevHealth;
 
 	/**
@@ -170,7 +170,7 @@ public abstract class EntityLiving extends Entity {
 	float field_70706_bo = 0.0F;
 
 	/** Amount of damage taken in last hit, in half-hearts */
-	public int lastDamage = 0; //Spout - protected to public!
+	public int lastDamage = 0; // Spout - protected to public!
 
 	/** Holds the living entity age, used to control the despawn. */
 	protected int entityAge = 0;
@@ -192,11 +192,11 @@ public abstract class EntityLiving extends Entity {
 	/** How long to keep a specific target entity */
 	protected int numTicksToChaseTarget = 0;
 	
-	//Spout start
+	// Spout Start
 	private EntityData entityData = new EntityData();
 	public String displayName = null;
 	public int maxAir = 300;
-	//Spout End
+	// Spout End
 
 	public EntityLiving(World par1World) {
 		super(par1World);
@@ -216,9 +216,9 @@ public abstract class EntityLiving extends Entity {
 		this.rotationYawHead = this.rotationYaw;
 		this.stepHeight = 0.5F;
 		
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftLivingEntity(this);
-		//Spout end
+		// Spout End
 	}
 
 	public EntityLookHelper getLookHelper() {
@@ -373,14 +373,14 @@ public abstract class EntityLiving extends Entity {
 	 * Returns the texture's file path as a String.
 	 */
 	public String getTexture() {
-		//Spout Start
+		// Spout Start
 		String custom = getCustomTextureUrl(getTextureToRender());
 		if(custom == null || CustomTextureManager.getTexturePathFromUrl(custom) == null){
 			return texture;
 		} else {
 			return CustomTextureManager.getTexturePathFromUrl(custom);
 		}
-		//Spout End
+		// Spout End
 	}
 
 	/**
@@ -458,7 +458,7 @@ public abstract class EntityLiving extends Entity {
 
 			this.extinguish();
 		} else {
-			this.setAir(maxAir); //Spout - 300 to maxAir
+			this.setAir(maxAir); // Spout - 300 to maxAir
 		}
 
 		this.prevCameraPitch = this.cameraPitch;
@@ -884,7 +884,7 @@ public abstract class EntityLiving extends Entity {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { //Spout - protected to public!
+	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - protected to public!
 		par2 = this.applyArmorCalculations(par1DamageSource, par2);
 		par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
 		this.health -= par2;
@@ -1010,7 +1010,7 @@ public abstract class EntityLiving extends Entity {
 	protected void fall(float par1) {
 		super.fall(par1);
 		
-		par1 *= getData().getGravityMod(); //Spout - added gravity mod.
+		par1 *= getData().getGravityMod(); // Spout - added gravity mod.
 		
 		int var2 = MathHelper.ceiling_float_int(par1 - 3.0F);
 
@@ -1039,19 +1039,19 @@ public abstract class EntityLiving extends Entity {
 
 		if (this.isInWater() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var9 = this.posY;
-			this.moveFlying(par1, par2, ((float) ((this.isAIEnabled() ? 0.04F : 0.02F) * getData().getSwimmingMod()))); //Spout - added swimming mod
+			this.moveFlying(par1, par2, ((float) ((this.isAIEnabled() ? 0.04F : 0.02F) * getData().getSwimmingMod()))); // Spout - added swimming mod
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.800000011920929D;
 			this.motionY *= 0.800000011920929D;
 			this.motionZ *= 0.800000011920929D;
-			this.motionY -= 0.02D * getData().getGravityMod(); //Spout - added gravity modifier!
+			this.motionY -= 0.02D * getData().getGravityMod(); // Spout - added gravity modifier!
 
 			if (this.isCollidedHorizontally && this.isOffsetPositionInLiquid(this.motionX, this.motionY + 0.6000000238418579D - this.posY + var9, this.motionZ)) {
 				this.motionY = 0.30000001192092896D;
 			}
 		} else if (this.handleLavaMovement() && (!(this instanceof EntityPlayer) || !((EntityPlayer)this).capabilities.isFlying)) {
 			var9 = this.posY;
-			this.moveFlying(par1, par2, (float)(0.02F * getData().getSwimmingMod())); //Spout - added swimming modifier!
+			this.moveFlying(par1, par2, (float)(0.02F * getData().getSwimmingMod())); // Spout - added swimming modifier!
 			this.moveEntity(this.motionX, this.motionY, this.motionZ);
 			this.motionX *= 0.5D;
 			this.motionY *= 0.5D;
@@ -1070,7 +1070,7 @@ public abstract class EntityLiving extends Entity {
 
 				if (var4 > 0) {
 					var3 = Block.blocksList[var4].slipperiness * 0.91F;
-					//Spout start
+					// Spout Start
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
@@ -1083,7 +1083,7 @@ public abstract class EntityLiving extends Entity {
 							var3 = block.getFriction() * 0.98F;
 						}
 					}
-					//Spout end
+					// Spout End
 				}
 			}
 
@@ -1092,14 +1092,14 @@ public abstract class EntityLiving extends Entity {
 
 			if (this.onGround) {
 				if (this.isAIEnabled()) {
-					var5 = (float) (this.getAIMoveSpeed() * getData().getWalkingMod()); //Spout
+					var5 = (float) (this.getAIMoveSpeed() * getData().getWalkingMod()); // Spout
 				} else {
-					var5 = (float) (this.landMovementFactor * getData().getWalkingMod()); //Spout
+					var5 = (float) (this.landMovementFactor * getData().getWalkingMod()); // Spout
 				}
 
 				var5 *= var8;
 			} else {
-				var5 = (float) (this.jumpMovementFactor * getData().getAirspeedMod()); //Spout - added AirSpeed modifier!
+				var5 = (float) (this.jumpMovementFactor * getData().getAirspeedMod()); // Spout - added AirSpeed modifier!
 			}
 
 			this.moveFlying(par1, par2, var5);
@@ -1111,7 +1111,7 @@ public abstract class EntityLiving extends Entity {
 
 				if (var6 > 0) {
 					var3 = Block.blocksList[var6].slipperiness * 0.91F;
-					//Spout start
+					// Spout Start
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
@@ -1122,7 +1122,7 @@ public abstract class EntityLiving extends Entity {
 							var3 = block.getFriction() * 0.98F;
 						}
 					}
-					//Spout end
+					// Spout End
 				}
 			}
 
@@ -1164,7 +1164,7 @@ public abstract class EntityLiving extends Entity {
 				this.motionY = 0.2D;
 			}
 
-			this.motionY -= 0.08D * getData().getGravityMod(); //Spout - added gravity multipler!
+			this.motionY -= 0.08D * getData().getGravityMod(); // Spout - added gravity multipler!
 			this.motionY *= 0.9800000190734863D;
 			this.motionX *= (double)var3;
 			this.motionZ *= (double)var3;
@@ -1399,7 +1399,7 @@ public abstract class EntityLiving extends Entity {
 	 * Causes this entity to do an upwards motion (jumping).
 	 */
 	protected void jump() {
-		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); //Spout - added jumping modifier!
+		this.motionY = 0.41999998688697815D * getData().getJumpingMod(); // Spout - added jumping modifier!
 
 		if (this.isPotionActive(Potion.jump)) {
 			this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
@@ -1712,7 +1712,7 @@ public abstract class EntityLiving extends Entity {
 			Integer var2 = (Integer)var1.next();
 			PotionEffect var3 = (PotionEffect)this.activePotionsMap.get(var2);
 
-			if (!var3.onUpdate(this) /*&& !this.worldObj.isRemote*/) { //Spout - better way to solve this? <- depends, what are we solving?
+			if (!var3.onUpdate(this) /*&& !this.worldObj.isRemote*/) { // Spout - better way to solve this? <- depends, what are we solving?
 				var1.remove();
 				this.onFinishedPotionEffect(var3);
 			}
@@ -1884,7 +1884,7 @@ public abstract class EntityLiving extends Entity {
 		}
 	}
 	
-	//Spout Start
+	// Spout Start
 
 	public EntityData getData() {
 		return entityData;
@@ -1932,6 +1932,6 @@ public abstract class EntityLiving extends Entity {
 	public byte getTextureToRender() {
 		return getData().getTextureToRender();
 	}
-	//Spout End
+	// Spout End
 	
 }

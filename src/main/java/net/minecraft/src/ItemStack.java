@@ -3,13 +3,13 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 
-//Spout start
+// Spout Start
 import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
-//Spout end
+// Spout End
 
-public class ItemStack { //Spout final -> gone
+public class ItemStack { // Spout final -> gone
 
 	/** Size of the stack. */
 	public int stackSize;
@@ -105,11 +105,11 @@ public class ItemStack { //Spout final -> gone
 		if (var10) {
 			par1EntityPlayer.addStat(StatList.objectUseStats[this.itemID], 1);
 		}
-		//Spout start
+		// Spout Start
 		if (var10 && stackSize == 0 && getItem() instanceof ItemBlock && ConfigReader.replaceBlocks) {
 			InventoryUtil.replaceItem(this.itemID, getItem().getMetadata(this.getItemDamage()));
 		}
-		//Spout end
+		// Spout End
 
 		return var10;
 	}
@@ -253,11 +253,11 @@ public class ItemStack { //Spout final -> gone
 
 				this.itemDamage = 0;
 				
-				//Spout start
+				// Spout Start
 				if (stackSize == 0 && ConfigReader.replaceTools) {
 					InventoryUtil.replaceItem(this.itemID, -1);
 				}
-				//Spout end
+				// Spout End
 			}
 		}
 	}
@@ -404,7 +404,7 @@ public class ItemStack { //Spout final -> gone
 	}
 
 	public NBTTagList getEnchantmentTagList() {
-		// Spout start
+		// Spout Start
 		NBTTagList list = getAllEnchantmentTagList();
 		if (list == null) {
 			return null;
@@ -424,7 +424,7 @@ public class ItemStack { //Spout final -> gone
 	}
 
 	public NBTTagList getAllEnchantmentTagList() {
-		//Spout end
+		// Spout End
 		return this.stackTagCompound == null ? null : (NBTTagList)this.stackTagCompound.getTag("ench");
 	}
 

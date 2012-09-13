@@ -17,17 +17,17 @@ public class EntityFireball extends Entity {
 	public double accelerationX;
 	public double accelerationY;
 	public double accelerationZ;
-	//Spout start
+	// Spout Start
 	public float yield = 1F;
 	public boolean incendiary = true;
-	//Spout end
+	// Spout End
 
 	public EntityFireball(World par1World) {
 		super(par1World);
 		this.setSize(1.0F, 1.0F);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftFireball(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected void entityInit() {}

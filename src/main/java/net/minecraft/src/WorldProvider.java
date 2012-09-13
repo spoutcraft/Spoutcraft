@@ -1,10 +1,11 @@
 package net.minecraft.src;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 import com.pclewis.mcpatcher.mod.Colorizer;
-//Spout End
+// Spout End
+
 public abstract class WorldProvider {
 	public World worldObj;
 	public WorldType terrainType;
@@ -100,7 +101,7 @@ public abstract class WorldProvider {
 		if (var3 > 1.0F) {
 			var3 = 1.0F;
 		}
-		//Spout Start
+		// Spout Start
 
 		float var4;
 		float var5;
@@ -120,7 +121,7 @@ public abstract class WorldProvider {
 				var6 = fogColor.getBlueF();
 			}
 		}
-		//Spout End
+		// Spout End
 		var4 *= var3 * 0.94F + 0.06F;
 		var5 *= var3 * 0.94F + 0.06F;
 		var6 *= var3 * 0.91F + 0.09F;

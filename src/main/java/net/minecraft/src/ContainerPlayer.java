@@ -47,7 +47,7 @@ public class ContainerPlayer extends Container {
 		this.onCraftMatrixChanged(this.craftMatrix);
 	}
 	
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return Minecraft.theMinecraft.thePlayer.inventory;
 	}
@@ -56,7 +56,7 @@ public class ContainerPlayer extends Container {
 	public boolean isSortableInventory() {
 		return true;
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * Callback for when the crafting matrix is changed.

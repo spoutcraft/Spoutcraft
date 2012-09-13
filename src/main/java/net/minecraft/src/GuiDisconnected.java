@@ -28,9 +28,9 @@ public class GuiDisconnected extends GuiScreen
 			errorDetail = stringtranslate.translateKey(par2Str);
 		}
 
-		//Spout Start
+		// Spout Start
 		org.spoutcraft.client.ReconnectManager.detectKick(par1Str, par2Str, par3ArrayOfObj);
-		//Spout End
+		// Spout End
 	}
 
 	/**
@@ -54,9 +54,9 @@ public class GuiDisconnected extends GuiScreen
 	{
 		StringTranslate stringtranslate = StringTranslate.getInstance();
 		controlList.clear();
-		//Spout Start
+		// Spout Start
 		controlList.add(new GuiButton(0, width / 2 - 100, height / 4 + 120 + 12, "Back to "+SpoutClient.getInstance().getServerManager().getJoinedFromName()));
-		//Spout End
+		// Spout End
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class GuiDisconnected extends GuiScreen
 	{
 		if (par1GuiButton.id == 0)
 		{
-			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
+			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
 		}
 	}
 
@@ -80,8 +80,8 @@ public class GuiDisconnected extends GuiScreen
 		drawCenteredString(fontRenderer, errorDetail, width / 2, height / 2 - 10, 0xffffff);
 		super.drawScreen(par1, par2, par3);
 
-		//Spout Start
+		// Spout Start
 		org.spoutcraft.client.ReconnectManager.teleport(this.mc);
-		//Spout End
+		// Spout End
 	}
 }

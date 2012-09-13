@@ -31,7 +31,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	private double velocityX;
 	private double velocityY;
 	private double velocityZ;
-	//Spout start
+	// Spout Start
 	public boolean slowWhenEmpty = true;
 	public double derailedX = 0.5;
 	public double derailedY = 0.5;
@@ -44,7 +44,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	public ItemStack[] getContents() {
 		return this.cargoItems;
 	}
-	//Spout end
+	// Spout End
 
 	public EntityMinecart(World par1World) {
 		super(par1World);
@@ -104,7 +104,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		this.prevPosZ = par6;
 		this.minecartType = par8;
 		
-		//Spout start
+		// Spout Start
 		if (minecartType == CraftMinecart.Type.Minecart.getId()) {
 			this.spoutEntity = new CraftMinecart(this);
 		} else if (minecartType == CraftMinecart.Type.PoweredMinecart.getId()) {
@@ -112,7 +112,7 @@ public class EntityMinecart extends Entity implements IInventory {
 		} else {
 			this.spoutEntity = new CraftStorageMinecart(this);
 		}
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				--var2;
 			}
 
-			double var4 = this.maxSpeed; //Spout
+			double var4 = this.maxSpeed; // Spout
 			double var6 = 0.0078125D;
 			int var8 = this.worldObj.getBlockId(var1, var2, var3);
 

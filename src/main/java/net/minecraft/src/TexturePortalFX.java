@@ -23,12 +23,12 @@ public class TexturePortalFX extends TextureFX {
 					int var6;
 
 					for (var6 = 0; var6 < 2; ++var6) {
-						// Spout HD start
+						// Spout HD Start
 						float var7 = (float)(var6 * TileSize.int_size) * 0.5F;
 						float var8 = (float)(var6 * TileSize.int_size) * 0.5F;
 						float var9 = ((float)var3 - var7) / TileSize.float_size * 2.0F;
 						float var10 = ((float)var4 - var8) / TileSize.float_size * 2.0F;
-						// Spout HD end
+						// Spout HD End
 
 						if (var9 < -1.0F) {
 							var9 += 2.0F;

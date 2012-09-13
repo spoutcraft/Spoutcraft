@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout HD
 import com.pclewis.mcpatcher.mod.Shaders;
 
 import java.nio.IntBuffer;
@@ -16,7 +16,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
@@ -25,7 +25,7 @@ import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.spoutcraftapi.gui.Color;
 
-//Spout End
+// Spout End
 
 public class RenderGlobal implements IWorldAccess {
 	public List tileEntities = new ArrayList();
@@ -164,8 +164,8 @@ public class RenderGlobal implements IWorldAccess {
 	public RenderGlobal(Minecraft par1Minecraft, RenderEngine par2RenderEngine) {
 		this.mc = par1Minecraft;
 		this.renderEngine = par2RenderEngine;
-		byte var3 = 64; //Spout 
-		byte var4 = 64; //Spout 
+		byte var3 = 64; // Spout 
+		byte var4 = 64; // Spout 
 		this.glRenderListBase = GLAllocation.generateDisplayLists(var3 * var3 * var4 * 3);
 		this.occlusionEnabled = OpenGlCapsChecker.checkARBOcclusion();
 
@@ -439,7 +439,7 @@ public class RenderGlobal implements IWorldAccess {
 
 			this.theWorld.theProfiler.endStartSection("tileentities");
 			RenderHelper.enableStandardItemLighting();
-			//Spout start
+			// Spout Start
 			int max = tileEntities.size();
 			int threshold = (int) Math.min(1000, (Math.max(100, (SpoutWorth.getInstance().getAverageFPS() * 8))));
 			if (tileEntities.size() > threshold) {
@@ -456,7 +456,7 @@ public class RenderGlobal implements IWorldAccess {
 					TileEntityRenderer.instance.renderTileEntity(var9, par3);
 				}
 			}
-			//Spout end
+			// Spout End
 
 			this.mc.entityRenderer.disableLightmap((double)par3);
 			this.theWorld.theProfiler.endSection();
@@ -623,12 +623,12 @@ public class RenderGlobal implements IWorldAccess {
 					var19 = this.sortedWorldRenderers.length;
 				}
 
-				//Spout start
+				// Spout Start
 				Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 				Shaders.glDisableWrapper(GL11.GL_LIGHTING);
 				Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
 				Shaders.glDisableWrapper(GL11.GL_FOG);
-				//Spout end
+				// Spout End
 				GL11.glColorMask(false, false, false, false);
 				GL11.glDepthMask(false);
 				this.theWorld.theProfiler.startSection("check");
@@ -691,11 +691,11 @@ public class RenderGlobal implements IWorldAccess {
 				}
 
 				GL11.glDepthMask(true);
-				//Spout start
+				// Spout Start
 				Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
 				Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 				Shaders.glEnableWrapper(GL11.GL_FOG);
-				//Spout end
+				// Spout End
 				this.theWorld.theProfiler.endStartSection("render");
 				var34 += this.renderSortedRenderers(var35, var19, par2, par3);
 			} while (var19 < this.sortedWorldRenderers.length);
@@ -818,11 +818,11 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void renderSky(float par1) {
 		if (this.mc.theWorld.provider.worldType == 1) {
-			// Spout start
+			// Spout Start
 			Shaders.glDisableWrapper(GL11.GL_FOG);
 			Shaders.glDisableWrapper(GL11.GL_ALPHA_TEST);
 			Shaders.glEnableWrapper(GL11.GL_BLEND);
-			// Spout end
+			// Spout End
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDepthMask(false);
@@ -853,7 +853,7 @@ public class RenderGlobal implements IWorldAccess {
 				}
 
 				var21.startDrawingQuads();
-				var21.setColorOpaque_I(Colorizer.endSkyColor); //Spout
+				var21.setColorOpaque_I(Colorizer.endSkyColor); // Spout
 				var21.addVertexWithUV(-100.0D, -100.0D, -100.0D, 0.0D, 0.0D);
 				var21.addVertexWithUV(-100.0D, -100.0D, 100.0D, 0.0D, 16.0D);
 				var21.addVertexWithUV(100.0D, -100.0D, 100.0D, 16.0D, 16.0D);
@@ -863,10 +863,10 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			GL11.glDepthMask(true);
-			// Spout start
+			// Spout Start
 			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
 			Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
-			// Spout end
+			// Spout End
 		} else if (this.mc.theWorld.provider.isSurfaceWorld()) {
 			// Spout Start
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
@@ -912,7 +912,7 @@ public class RenderGlobal implements IWorldAccess {
 			float var10;
 			float var11;
 			float var12;
-			// Spout start
+			// Spout Start
 			if (var24 != null && ConfigReader.sky) {
 				Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 				// Spout End
@@ -966,7 +966,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glRotatef(this.theWorld.getCelestialAngle(par1) * 360.0F, 1.0F, 0.0F, 0.0F);
 			var12 = 30.0F;
 
-			// Spout start
+			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isSunVisible()) {
 				if (SpoutClient.getInstance().getSkyManager().getSunTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl()) == null) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain/sun.png"));
@@ -974,7 +974,7 @@ public class RenderGlobal implements IWorldAccess {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture(CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getSunTextureUrl())));
 				}
 				double multiplier = (SpoutClient.getInstance().getSkyManager().getSunSizePercent() / 100D);
-				// Spout end
+				// Spout End
 				var23.startDrawingQuads();
 				var23.addVertexWithUV((double)(-var12), 100.0D / multiplier, (double)(-var12), 0.0D, 0.0D);
 				var23.addVertexWithUV((double)var12, 100.0D / multiplier, (double)(-var12), 1.0D, 0.0D);
@@ -982,9 +982,9 @@ public class RenderGlobal implements IWorldAccess {
 				var23.addVertexWithUV((double)(-var12), 100.0D / multiplier, (double)var12, 0.0D, 1.0D);
 				var23.draw();
 			}
-			// Spout end
+			// Spout End
 			var12 = 20.0F;
-			// Spout start
+			// Spout Start
 			if (SpoutClient.getInstance().getSkyManager().isMoonVisible()) {
 				if (SpoutClient.getInstance().getSkyManager().getMoonTextureUrl() == null || CustomTextureManager.getTexturePathFromUrl(SpoutClient.getInstance().getSkyManager().getMoonTextureUrl()) == null) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain/moon_phases.png"));
@@ -1008,23 +1008,23 @@ public class RenderGlobal implements IWorldAccess {
 				var23.draw();
 			}
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
-			// Spout end
+			// Spout End
 			float var20 = this.theWorld.getStarBrightness(par1) * var8;
 
-			Shaders.setCelestialPosition(); //Spout
-			if (var12 > 0.0F && ConfigReader.stars) { //Spout (added stars condition)
+			Shaders.setCelestialPosition(); // Spout
+			if (var12 > 0.0F && ConfigReader.stars) { // Spout (added stars condition)
 				GL11.glColor4f(var20, var20, var20, var20);
 				GL11.glCallList(this.starGLCallList);
 			}
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			//Spout start
+			// Spout Start
 			Shaders.glDisableWrapper(GL11.GL_BLEND);
 			Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
 			Shaders.glEnableWrapper(GL11.GL_FOG);
 			GL11.glPopMatrix();
 			Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
-			// Spout end
+			// Spout End
 			GL11.glColor3f(0.0F, 0.0F, 0.0F);
 			double var25 = this.mc.thePlayer.getPosition(par1).yCoord - this.theWorld.getHorizon();
 
@@ -1087,7 +1087,7 @@ public class RenderGlobal implements IWorldAccess {
 		}
 		// Spout End
 		if (this.mc.theWorld.provider.isSurfaceWorld()) {
-			//Spout start
+			// Spout Start
 			if (Colorizer.drawFancyClouds(this.mc.gameSettings.fancyGraphics)) {
 				this.renderCloudsFancy(par1);
 			} else {
@@ -1306,10 +1306,10 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		// Spout start
+		// Spout Start
 		Shaders.glDisableWrapper(GL11.GL_BLEND);
 		Shaders.glEnableWrapper(GL11.GL_CULL_FACE);
-		// Spout end
+		// Spout End
 	}
 
 	/**
@@ -1452,10 +1452,10 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void drawBlockBreaking(EntityPlayer par1EntityPlayer, MovingObjectPosition par2MovingObjectPosition, int par3, ItemStack par4ItemStack, float par5) {
 		Tessellator var6 = Tessellator.instance;
-		// Spout start
+		// Spout Start
 		Shaders.glEnableWrapper(GL11.GL_BLEND);
 		Shaders.glEnableWrapper(GL11.GL_ALPHA_TEST);
-		// Spout end
+		// Spout End
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, (MathHelper.sin((float)Minecraft.getSystemTime() / 100.0F) * 0.2F + 0.4F) * 0.5F);
 
@@ -1545,10 +1545,10 @@ public class RenderGlobal implements IWorldAccess {
 			}
 
 			GL11.glDepthMask(true);
-			// Spout start
+			// Spout Start
 			Shaders.glEnableWrapper(GL11.GL_TEXTURE_2D);
 			Shaders.glDisableWrapper(GL11.GL_BLEND);
-			// Spout end
+			// Spout End
 		}
 	}
 
@@ -1684,9 +1684,9 @@ public class RenderGlobal implements IWorldAccess {
 	 * Spawns a particle. Arg: particleType, x, y, z, velX, velY, velZ
 	 */
 	public void spawnParticle(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12) {
-		//Spout Start
+		// Spout Start
 		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
-		//Spout End
+		// Spout End
 		this.func_72726_b(par1Str, par2, par4, par6, par8, par10, par12);
 	}
 
@@ -1694,7 +1694,7 @@ public class RenderGlobal implements IWorldAccess {
 		return func_40193_b(par1Str, par2, par4, par6, par8, par10, par12, 16.0);
 	}
 
-	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, double var22) { //Spout
+	public EntityFX func_40193_b(String par1Str, double par2, double par4, double par6, double par8, double par10, double par12, double var22) { // Spout
 		if (this.mc != null && this.mc.renderViewEntity != null && this.mc.effectRenderer != null) {
 			int var14 = this.mc.gameSettings.particleSetting;
 
@@ -1702,11 +1702,11 @@ public class RenderGlobal implements IWorldAccess {
 				var14 = 2;
 			}
 
-			//Spout start
+			// Spout Start
 			if (par1Str == null) {
 				return null;
 			}
-			//Spout end
+			// Spout End
 
 			double var15 = this.mc.renderViewEntity.posX - par2;
 			double var17 = this.mc.renderViewEntity.posY - par4;
@@ -1722,11 +1722,11 @@ public class RenderGlobal implements IWorldAccess {
 			if (var21 != null) {
 				return (EntityFX)var21;
 			} else {
-				//Spout start
+				// Spout Start
 				if (!org.spoutcraft.client.config.ConfigReader.fancyParticles) {
 					var22 = 6D;
 				}
-				//Spout end
+				// Spout End
 
 				if (var15 * var15 + var17 * var17 + var19 * var19 > var22 * var22) {
 					return null;
@@ -1851,9 +1851,9 @@ public class RenderGlobal implements IWorldAccess {
 	 * Plays a pre-canned sound effect along with potentially auxiliary data-driven one-shot behaviour (particles, etc).
 	 */
 	public void playAuxSFX(EntityPlayer par1EntityPlayer, int par2, int par3, int par4, int par5, int par6) {
-		//Spout Start
+		// Spout Start
 		if (mc == null || theWorld == null || mc.renderViewEntity == null) return;
-		//Spout End
+		// Spout End
 		Random var7 = this.theWorld.rand;
 		double var8;
 		double var10;
@@ -2038,7 +2038,7 @@ public class RenderGlobal implements IWorldAccess {
 		}
 	}
 
-	//Spout start
+	// Spout Start
 	public int renderAllSortedRenderers(int var1, double var2) {
 		return this.renderSortedRenderers(0, this.sortedWorldRenderers.length, var1, var2);
 	}
@@ -2104,5 +2104,5 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 	}
-	//Spout End
+	// Spout End
 }

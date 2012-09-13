@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-// Spout start
+// Spout Start
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutcraftWorld;
@@ -19,7 +19,7 @@ import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout End
+// Spout End
 
 public abstract class World implements IBlockAccess {
 
@@ -125,7 +125,7 @@ public abstract class World implements IBlockAccess {
 	 * 4-bit L is a light level used when darkening blocks. 6-bit numbers x, y and z represent the block's offset from the
 	 * original block, plus 32 (i.e. value of 31 would mean a -1 offset
 	 */
-	public int[] lightUpdateBlockList; //Spout private -> public
+	public int[] lightUpdateBlockList; // Spout private -> public
 
 	/**
 	 * entities within AxisAlignedBB excluding one, set and returned in getEntitiesWithinAABBExcludingEntity(Entity var1,
@@ -138,10 +138,10 @@ public abstract class World implements IBlockAccess {
 	 * the integrated server, this will always return true.
 	 */
 	public boolean isRemote;
-	//Spout start
+	// Spout Start
 	public final SpoutcraftWorld world = new SpoutcraftWorld(this);
 	public final TIntObjectHashMap<String> customTitles = new TIntObjectHashMap<String>(200);
-	//Spout end
+	// Spout End
 
 	/**
 	 * Gets the biome for a given set of x/z coordinates
@@ -1086,7 +1086,7 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
 	 */
-	public void obtainEntitySkin(Entity par1Entity) { //Spout protected -> public
+	public void obtainEntitySkin(Entity par1Entity) { // Spout protected -> public
 		Iterator var2 = this.worldAccesses.iterator();
 
 		while (var2.hasNext()) {
@@ -1098,7 +1098,7 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * Decrement the reference counter for this entity's skin image data
 	 */
-	public void releaseEntitySkin(Entity par1Entity) { //Spout protected -> public
+	public void releaseEntitySkin(Entity par1Entity) { // Spout protected -> public
 		Iterator var2 = this.worldAccesses.iterator();
 
 		while (var2.hasNext()) {
@@ -2311,7 +2311,7 @@ public abstract class World implements IBlockAccess {
 
 		this.theProfiler.startSection("playerCheckLight");
 
-		if (!this.playerEntities.isEmpty() && ConfigReader.clientLight) { //Spout
+		if (!this.playerEntities.isEmpty() && ConfigReader.clientLight) { // Spout
 			var1 = this.rand.nextInt(this.playerEntities.size());
 			var2 = (EntityPlayer)this.playerEntities.get(var1);
 			var3 = MathHelper.floor_double(var2.posX) + this.rand.nextInt(11) - 5;
@@ -2495,7 +2495,7 @@ public abstract class World implements IBlockAccess {
 	}
 
 	private int computeBlockLightValue(int par1, int par2, int par3, int par4, int par5, int par6) {
-		//Spout start
+		// Spout Start
 		int light = Block.lightValue[par5];
 		
 		//Fix for generation-time accessing
@@ -2511,7 +2511,7 @@ public abstract class World implements IBlockAccess {
 			}
 		}
 		int var7 = light;
-		//Spout end
+		// Spout End
 		int var8 = this.getSavedLightValue(EnumSkyBlock.Block, par2 - 1, par3, par4) - par6;
 		int var9 = this.getSavedLightValue(EnumSkyBlock.Block, par2 + 1, par3, par4) - par6;
 		int var10 = this.getSavedLightValue(EnumSkyBlock.Block, par2, par3 - 1, par4) - par6;
@@ -3027,11 +3027,11 @@ public abstract class World implements IBlockAccess {
 	 * Sets the world time.
 	 */
 	public void setWorldTime(long par1) {
-		//Spout start
+		// Spout Start
 		if (ConfigReader.time != 0) {
 			return;
 		}
-		//Spout end
+		// Spout End
 		this.worldInfo.setWorldTime(par1);
 	}
 
@@ -3289,7 +3289,7 @@ public abstract class World implements IBlockAccess {
 		}
 	}
 
-	//Spout Start
+	// Spout Start
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {
 			EntityPlayer ep = (EntityPlayer)this.playerEntities.get(i);
@@ -3328,5 +3328,5 @@ public abstract class World implements IBlockAccess {
 			chunk.waterColorCache = color;
 		}
 	}
-	//Spout End
+	// Spout End
 }

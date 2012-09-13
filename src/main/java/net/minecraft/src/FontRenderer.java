@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 import org.lwjgl.opengl.GL11;
 
-//Spout rewritten - not even going to try to figure out where the changes are...
+// Spout rewritten - not even going to try to figure out where the changes are...
 public class FontRenderer {
 	private int[] charWidth = new int[256];
 	public int fontTextureName = 0;
@@ -272,11 +272,11 @@ public class FontRenderer {
 
 		for (int var8 = 0; var8 < par1Str.length(); ++var8) {
 			char var9 = par1Str.charAt(var8);
-			//Spout Stupid unicode box character fix
+			// Spout Stupid unicode box character fix
 			if (var9 < 30) {
 				continue;
 			}
-			//Spout end
+			// Spout End
 			int var10;
 			int var11;
 			if (var9 == 167 && var8 + 1 < par1Str.length()) {
@@ -334,7 +334,7 @@ public class FontRenderer {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
-					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  //Spout AlphaText - uses tessellator to set colour now.
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha);  // Spout AlphaText - uses tessellator to set colour now.
 					var12.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D);
@@ -347,7 +347,7 @@ public class FontRenderer {
 					var12 = Tessellator.instance;
 					GL11.glDisable(GL11.GL_TEXTURE_2D);
 					var12.startDrawingQuads();
-					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); //Spout AlphaText - uses tessellator to set colour now.
+					var12.setColorRGBA(currentColor >> 16 & 0xff, currentColor >> 8 & 0xff, currentColor & 0xff, currentAlpha); // Spout AlphaText - uses tessellator to set colour now.
 					// int var13 = var6?-1:0;	// Spout AlphaText - I do not see this as necessary, var6 (underline) should always be true at this point.
 					var12.addVertex((double)(this.posX - 1.0F /* (float)var13*/), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
 					var12.addVertex((double)(this.posX + var14), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D);
@@ -382,7 +382,7 @@ public class FontRenderer {
 			this.posX = (float)par2;
 			this.posY = (float)par3;
 			this.renderStringAtPos(par1Str, par5);
-			GL11.glColor4f((float)(currentColor>>16 & 0xff)/255.0F, (float)(currentColor>>8 & 0xff)/255.0F, (float)(currentColor & 0xff)/255.0F, (float)currentAlpha/255.0F);		//Spout AlphaText - some mods rely on fontRenderer to make this specific call to set the drawing colour to that last used in a string.
+			GL11.glColor4f((float)(currentColor>>16 & 0xff)/255.0F, (float)(currentColor>>8 & 0xff)/255.0F, (float)(currentColor & 0xff)/255.0F, (float)currentAlpha/255.0F);		// Spout AlphaText - some mods rely on fontRenderer to make this specific call to set the drawing colour to that last used in a string.
 			return (int)this.posX;
 		} else {
 			return 0;
@@ -632,7 +632,7 @@ public class FontRenderer {
 
 
 	String func_50113_d(String par1Str, int par2) {
-		return this.wrapStringToWidth(par1Str,par2); //Spout AlphaText
+		return this.wrapStringToWidth(par1Str,par2); // Spout AlphaText
 	}
 
 	// Spout AlphaText - describes how many characters of a given input string will fit within the specified screen width.

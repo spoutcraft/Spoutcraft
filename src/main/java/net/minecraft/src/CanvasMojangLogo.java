@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
-//Spout HD Start
+// Spout HD Start
 /*
 import javax.imageio.ImageIO;
 */
 import com.pclewis.mcpatcher.mod.TextureUtils;
-//Spout HD End
+// Spout HD End
 
 class CanvasMojangLogo extends Canvas {
 
@@ -19,9 +19,9 @@ class CanvasMojangLogo extends Canvas {
 
 	public CanvasMojangLogo() {
 		try {
-			//Spout HD Start
+			// Spout HD Start
 			this.logo = TextureUtils.getResourceAsBufferedImage("/gui/crash_logo.png");
-			//Spout HD End
+			// Spout HD End
 		} catch (IOException var2) {
 			;
 		}

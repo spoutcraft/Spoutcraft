@@ -210,10 +210,10 @@ public class Block {
 	public final int blockID;
 
 	/** Indicates how many hits it takes to break a block. */
-	public float blockHardness; //Spout protected -> public
+	public float blockHardness; // Spout protected -> public
 
 	/** Indicates the blocks resistance to explosions. */
-	public float blockResistance; //Spout protected -> public
+	public float blockResistance; // Spout protected -> public
 
 	/**
 	 * set to true when Block's constructor is called through the chain of super()'s. Note: Never used
@@ -264,9 +264,9 @@ public class Block {
 	 */
 	public float slipperiness;
 	private String blockName;
-	//Spout start
+	// Spout Start
 	public static short[] customIds = null;
-	//Spout end
+	// Spout End
 
 	protected Block(int par1, Material par2Material) {
 		this.blockConstructorCalled = true;
@@ -425,7 +425,7 @@ public class Block {
 	}
 
 	public float getBlockBrightness(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		// Spout start
+		// Spout Start
 		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
 		if (customIds != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
@@ -438,11 +438,11 @@ public class Block {
 			}
 		}
 		return par1IBlockAccess.getBrightness(x, y, z, light);
-		// Spout end
+		// Spout End
 	}
 
 	public int getMixedBrightnessForBlock(IBlockAccess par1IBlockAccess, int x, int y, int z) {
-		// Spout start
+		// Spout Start
 		int light = lightValue[par1IBlockAccess.getBlockId(x, y, z)];
 		if (customIds != null) {
 			int key = ((x & 0xF) << 12) | ((z & 0xF) << 8) | (y & 256);
@@ -455,7 +455,7 @@ public class Block {
 	}
 		}
 		return par1IBlockAccess.getLightBrightnessForSkyBlocks(x, y, z, light);
-		// Spout end
+		// Spout End
 	}
 
 	/**
@@ -599,7 +599,7 @@ public class Block {
 	 * Gets the hardness of block at the given coordinates in the given world, relative to the ability of the given
 	 * EntityPlayer.
 	 */
-	// Spout start
+	// Spout Start
 	public final float getPlayerRelativeBlockHardness(EntityPlayer entityhuman) {
 		if (entityhuman instanceof EntityPlayerSP) {
 			ActivePlayer player = (ActivePlayer) ((EntityPlayerSP) entityhuman).spoutEntity;
@@ -624,7 +624,7 @@ public class Block {
 		}
 		return this.blockHardness < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / this.blockHardness / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / this.blockHardness / 30.0F);
 	}
-	// Spout end
+	// Spout End
 
 	/**
 	 * Drops the specified block items
@@ -687,7 +687,7 @@ public class Block {
 		return 0;
 	}
 	
-	public float getHardness() { //Spout removed random params
+	public float getHardness() { // Spout removed random params
  		return this.blockHardness;
  	}
 
@@ -864,14 +864,14 @@ public class Block {
 	/**
 	 * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
 	 */
-	//Spout start
+	// Spout Start
 	public void onBlockClicked(World var1, int var2, int var3, int var4, EntityPlayer var5) {
 		if (var5 instanceof EntityPlayerSP) {
 			FixedLocation location = new FastLocation(var2, var3, var4, 0, 0, var1.world);
 			((EntityPlayerSP)var5).lastClickLocation = location;
 		}
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * Can add to the passed in vector for a movement vector to be applied to the entity. Args: x, y, z, entity, vec3d

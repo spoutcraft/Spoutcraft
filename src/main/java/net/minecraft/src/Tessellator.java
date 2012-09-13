@@ -124,12 +124,12 @@ public class Tessellator {
 
 	/** The size of the buffers used (in integers). */
 	private int bufferSize;
-	//Spout Start
+	// Spout Start
 	public int textureOverride = 0;
 	private ByteBuffer shadersBuffer;
 	private ShortBuffer shadersShortBuffer;
 	private short[] shadersData;
-	//Spout End
+	// Spout End
 
 	private Tessellator(int par1) {
 		this.bufferSize = par1;
@@ -144,11 +144,11 @@ public class Tessellator {
 			this.vertexBuffers = GLAllocation.createDirectIntBuffer(this.vboCount);
 			ARBVertexBufferObject.glGenBuffersARB(this.vertexBuffers);
 		}
-		//Spout shaders start
+		// Spout shaders start
 		this.shadersData = new short[]{(short)-1, (short)0};
 		this.shadersBuffer = GLAllocation.createDirectByteBuffer(par1 / 8 * 4);
 		this.shadersShortBuffer = this.shadersBuffer.asShortBuffer();
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -182,10 +182,10 @@ public class Tessellator {
 
 					GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
-					//Spout Start
+					// Spout Start
 					if(textureOverride > 0)
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureOverride);
-					//Spout End
+					// Spout End
 				}
 
 				if (this.hasBrightness) {
@@ -234,9 +234,9 @@ public class Tessellator {
 				GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
 				if (this.drawMode == 7 && convertQuadsToTriangles) {
-					Shaders.glDrawArraysWrapper(GL11.GL_TRIANGLES, 0, this.vertexCount, shadersShortBuffer); //Spout
+					Shaders.glDrawArraysWrapper(GL11.GL_TRIANGLES, 0, this.vertexCount, shadersShortBuffer); // Spout
 				} else {
-					Shaders.glDrawArraysWrapper(this.drawMode, 0, this.vertexCount, shadersShortBuffer); //Spout
+					Shaders.glDrawArraysWrapper(this.drawMode, 0, this.vertexCount, shadersShortBuffer); // Spout
 				}
 
 				GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
@@ -270,20 +270,20 @@ public class Tessellator {
 	 * Clears the tessellator state in preparation for new drawing.
 	 */
 	private void reset() {
-		this.shadersBuffer.clear(); //Spout
+		this.shadersBuffer.clear(); // Spout
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
 		this.rawBufferIndex = 0;
 		this.addedVertices = 0;
 	}
 	
-	//Spout start
+	// Spout Start
 	public void setEntity(int var1) {
 		if (Shaders.entityAttrib >= 0) {
 			this.shadersData[0] = (short)var1;
 		}
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * Sets draw mode in the tessellator to draw quads.
@@ -404,7 +404,7 @@ public class Tessellator {
 	 * Adds a vertex with the specified x,y,z to the current draw call. It will trigger a draw() if the buffer gets full.
 	 */
 	public void addVertex(double par1, double par3, double par5) {
-		//Spout start
+		// Spout Start
 		if(Shaders.isEnabled()) {
 			if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
 				this.rawBuffer[rawBufferIndex+6] = rawBuffer[rawBufferIndex - 18];
@@ -414,7 +414,7 @@ public class Tessellator {
 			}
 			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
 		}
-		//Spout end
+		// Spout End
 		
 		++this.addedVertices;
 

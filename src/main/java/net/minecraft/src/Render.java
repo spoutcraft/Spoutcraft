@@ -32,7 +32,7 @@ public abstract class Render {
 	/**
 	 * loads the specified downloadable texture or alternative built in texture
 	 */
-	public boolean loadDownloadableImageTexture(String par1Str, String par2Str) { //Spout: changed protected to public
+	public boolean loadDownloadableImageTexture(String par1Str, String par2Str) { // Spout: changed protected to public
 		RenderEngine var3 = this.renderManager.renderEngine;
 		int var4 = var3.getTextureForDownloadableImage(par1Str, par2Str);
 

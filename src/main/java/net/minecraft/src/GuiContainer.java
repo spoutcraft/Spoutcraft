@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
@@ -19,7 +19,7 @@ import org.spoutcraft.spoutcraftapi.gui.GenericButton;
 import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
 import org.spoutcraft.spoutcraftapi.gui.Widget;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout End
+// Spout End
 
 public abstract class GuiContainer extends GuiScreen
 {
@@ -45,12 +45,12 @@ public abstract class GuiContainer extends GuiScreen
 	 */
 	protected int guiTop;
 	
-	//Spout start
+	// Spout Start
 	private Button orderByAlphabet, orderById, replaceTools, replaceBlocks;
-	//Spout start
+	// Spout Start
 	
 	static {
-	    itemRenderer = GuiScreen.ourItemRenderer; //Spout
+	    itemRenderer = GuiScreen.ourItemRenderer; // Spout
 	}
 
 	public GuiContainer(Container par1Container) {
@@ -69,7 +69,7 @@ public abstract class GuiContainer extends GuiScreen
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 
-	//Spout start	
+	// Spout Start	
 		if(Spoutcraft.hasPermission("spout.client.sortinventory")) {
 			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("Sort A-Z");
@@ -293,7 +293,7 @@ public abstract class GuiContainer extends GuiScreen
 	public Slot getSlotFromPosition(int pos) {
 		return InventoryUtil.getSlotFromPosition(pos, inventorySlots);
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * Draws the screen and all the components in it.
@@ -335,7 +335,7 @@ public abstract class GuiContainer extends GuiScreen
 
 		InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
 
-		//Spout Start
+		// Spout Start
 //		if (inventoryplayer.getItemStack() != null)
 //		{
 //			GL11.glTranslatef(0.0F, 0.0F, 32F);
@@ -346,7 +346,7 @@ public abstract class GuiContainer extends GuiScreen
 //			zLevel = 0.0F;
 //			itemRenderer.zLevel = 0.0F;
 //		}
-		//Spout End
+		// Spout End
 		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
@@ -357,7 +357,7 @@ public abstract class GuiContainer extends GuiScreen
 		if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack())
 		{
 			ItemStack itemstack = slot.getStack();
-			//Spout Start
+			// Spout Start
 			List<String> list = itemstack.getItemNameandInformation();
 			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
 			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
@@ -422,7 +422,7 @@ public abstract class GuiContainer extends GuiScreen
 				}
 				tooltip = tooltip.trim();
 				super.drawTooltip(tooltip, (par1 - guiLeft) + 8, par2 - guiTop - lines * 6);
-				//Spout end
+				// Spout End
 				zLevel = 0.0F;
 				itemRenderer.zLevel = 0.0F;
 			}
@@ -647,7 +647,7 @@ public abstract class GuiContainer extends GuiScreen
 
 			if (flag)
 			{
-				//Spout Start
+				// Spout Start
 				boolean isSpoutSlot = false;
 				for(Widget w : getScreen().getAttachedWidgets(true)) {
 					if(isInBoundingRect(w, par1, par2)) {
@@ -660,7 +660,7 @@ public abstract class GuiContainer extends GuiScreen
 				if(!isSpoutSlot) {
 					k = -999;
 				}
-				//Spout End
+				// Spout End
 			}
 
 			if (k != -1)

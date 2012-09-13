@@ -1,30 +1,30 @@
 package net.minecraft.src;
 
-//Spout HD Start
+// Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-//Spout HD End
+// Spout HD End
 import net.minecraft.src.RenderEngine;
 import org.lwjgl.opengl.GL11;
 
 public class TextureFX {
-	//Spout HD Start
+	// Spout HD Start
 	public byte[] imageData;
 	public int iconIndex;
 	public boolean anaglyphEnabled;
 	public int textureId;
 	public int tileSize;
 	public int tileImage;
-	//Spout HD End
+	// Spout HD End
 
 	public TextureFX(int par1) {
-		// Spout HD start
+		// Spout HD Start
 		this.imageData = new byte[TileSize.int_numBytes];
 		this.anaglyphEnabled = false;
 		this.textureId = 0;
 		this.tileSize = 1;
 		this.tileImage = 0;
-		// Spout HD end
+		// Spout HD End
 		this.iconIndex = par1;
 	}
 
@@ -37,9 +37,9 @@ public class TextureFX {
 		} else if (this.tileImage == 1) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1RenderEngine.getTexture("/gui/items.png"));
 		}
-		// Spout HD start
+		// Spout HD Start
 			TextureUtils.bindImageEnd();
 		}
-		// Spout HD end
+		// Spout HD End
 	}
 }

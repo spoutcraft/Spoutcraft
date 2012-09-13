@@ -27,9 +27,9 @@ public class EntityCreeper extends EntityMob {
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
 		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftCreeper(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -140,11 +140,11 @@ public class EntityCreeper extends EntityMob {
 		return this.dataWatcher.getWatchableObjectByte(17) == 1;
 	}
 
-	//Spout start
+	// Spout Start
 	public void setPowered(boolean power) {
 		this.dataWatcher.updateObject(17, power ? 1 : 0);
 	}
-	//Spout end
+	// Spout End
 
 	/**
 	 * Connects the the creeper flashes to the creeper's color multiplier

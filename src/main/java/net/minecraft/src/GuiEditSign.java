@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.util.List;
 import net.minecraft.client.Minecraft;
-//Spout Start
+// Spout Start
 import org.bukkit.ChatColor;
-//Spout End
+// Spout End
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader;
@@ -29,9 +29,9 @@ public class GuiEditSign extends GuiScreen {
 	 */
 	private static final String allowedCharacters;
 
-	// Spout start
+	// Spout Start
 	private int editColumn = 0;
-	// Spout end
+	// Spout End
 
 	public GuiEditSign(TileEntitySign par1TileEntitySign) {
 		screenTitle = "Edit sign message:";
@@ -53,7 +53,7 @@ public class GuiEditSign extends GuiScreen {
 	 * events
 	 */
 	public void onGuiClosed() {
-		// Spout start
+		// Spout Start
 		entitySign.lineBeingEdited = -1;
 		entitySign.columnBeingEdited = -1;
 		entitySign.recalculateText();
@@ -64,7 +64,7 @@ public class GuiEditSign extends GuiScreen {
 					entitySign.signText[i] = entitySign.signText[i].replaceAll("(&([a-fA-F0-9]))", "\u00A7$2");
 			}
 		}
-		// Spout end
+		// Spout End
 		Keyboard.enableRepeatEvents(false);
 
 		if (mc.theWorld.isRemote) {
@@ -89,13 +89,13 @@ public class GuiEditSign extends GuiScreen {
 		}
 
 		if (par1GuiButton.id == 0) {
-			// Spout start
+			// Spout Start
 			if (!Spoutcraft.hasPermission("spout.client.signcolors")) {
 				for (int i = 0; i < entitySign.signText.length; i++) {
 					entitySign.signText[i] = ChatColor.stripColor(entitySign.signText[i]);
 				}
 			}
-			// Spout end
+			// Spout End
 			entitySign.onInventoryChanged();
 			mc.displayGuiScreen(null);
 		}
@@ -223,7 +223,7 @@ public class GuiEditSign extends GuiScreen {
 				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 70 + c * 10, 0xffffffff);
 			}
 		}
-		// Spout end
+		// Spout End
 
 		GL11.glPushMatrix();
 		GL11.glTranslatef(width / 2, 0.0F, 50F);
@@ -256,27 +256,27 @@ public class GuiEditSign extends GuiScreen {
 			GL11.glTranslatef(0.0F, -1.0625F, 0.0F);
 		}
 
-		// Spout start
+		// Spout Start
 		// if(this.updateCounter / 6 % 2 == 0) {
 		this.entitySign.lineBeingEdited = this.editLine;
 		entitySign.columnBeingEdited = editColumn;
 		// }
-		// Spout end
+		// Spout End
 
 		TileEntityRenderer.instance.renderTileEntityAt(entitySign, -0.5D, -0.75D, -0.5D, 0.0F);
-		// Spout start
+		// Spout Start
 		this.entitySign.lineBeingEdited = -1;
 		entitySign.columnBeingEdited = -1;
-		// Spout end
+		// Spout End
 		GL11.glPopMatrix();
 		super.drawScreen(x, y, z);
 	}
 
-	// Spout start
+	// Spout Start
 	public boolean sendAsUnicode() {
 		return !this.mc.theWorld.isRemote;
 	}
-	// Spout end
+	// Spout End
 
 	static {
 		allowedCharacters = ChatAllowedCharacters.allowedCharacters;

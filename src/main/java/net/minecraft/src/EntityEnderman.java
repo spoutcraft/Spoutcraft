@@ -18,9 +18,9 @@ public class EntityEnderman extends EntityMob {
 		this.attackStrength = 7;
 		this.setSize(0.6F, 2.9F);
 		this.stepHeight = 1.0F;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftEnderman(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {

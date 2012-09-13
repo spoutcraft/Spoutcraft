@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-//Spout Start
+// Spout Start
 import java.util.IdentityHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -28,7 +28,7 @@ import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.spoutcraftapi.gui.Slot;
 
-//Spout End
+// Spout End
 
 public class GuiScreen extends Gui
 {
@@ -87,7 +87,7 @@ public class GuiScreen extends Gui
 	/**
 	 * Draws the screen with widgets - do not override - use drawScreen() instead
 	 */
-	// Spout start
+	// Spout Start
 	public void drawScreenPre(int x, int y, float z) {
 		drawScreen(x, y, z);
 		drawWidgets(x, y, z);
@@ -124,7 +124,7 @@ public class GuiScreen extends Gui
 			}
 		}
 	}
-	// Spout end
+	// Spout End
 
 	/**
 	 * Draws the screen and all the components in it.
@@ -146,11 +146,11 @@ public class GuiScreen extends Gui
 		if (par2 == 1)
 		{
 			mc.displayGuiScreen(null);
-			// Spout start
+			// Spout Start
 			if (mc.currentScreen == null) {
 				this.mc.setIngameFocus();
 			}
-			// Spout end
+			// Spout End
 		}
 	}
 
@@ -186,7 +186,7 @@ public class GuiScreen extends Gui
 		return null;
 	}
 
-	//Spout Start
+	// Spout Start
 	// Wrap ALL the methods!!
 
 	// Making these protected so you can always override behaviour you don't
@@ -487,7 +487,7 @@ public class GuiScreen extends Gui
 		}
 	}
 
-	//Spout End
+	// Spout End
 
 	/**
 	 * Called when the mouse is clicked.
@@ -510,7 +510,7 @@ public class GuiScreen extends Gui
 		}
 	}
 
-	//Spout Start
+	// Spout Start
 	protected void mouseMovedOrUpPre(int mouseX, int mouseY, int eventButton) {
 		lastMouseMove = System.currentTimeMillis();
 		mouseMovedOrUp(mouseX, mouseY, eventButton);
@@ -561,7 +561,7 @@ public class GuiScreen extends Gui
 		return !ConfigReader.delayedTooltips
 				|| System.currentTimeMillis() - TOOLTIP_DELAY > lastMouseMove;
 	}
-	//Spout End
+	// Spout End
 
 	/**
 	 * Called when the mouse is moved or a mouse button is released.  Signature: (mouseX, mouseY, which) which==-1 is
@@ -595,7 +595,7 @@ public class GuiScreen extends Gui
 		width = par2;
 		height = par3;
 		controlList.clear();
-		//Spout Start
+		// Spout Start
 		SpoutClient.enableSandbox();
 		if (!(this instanceof CustomScreen) && screen != null && !firstrun) {
 			for (Widget w : screen.getAttachedWidgets()) {
@@ -606,7 +606,7 @@ public class GuiScreen extends Gui
 		SpoutClient.disableSandbox();
 		bg = (GenericGradient) new GenericGradient().setHeight(this.height)
 				.setWidth(this.width);
-		//Spout End
+		// Spout End
 		initGui();
 	}
 

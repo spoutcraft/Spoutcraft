@@ -17,9 +17,9 @@ public class EntityPig extends EntityAnimal {
 		this.tasks.addTask(5, new EntityAIWander(this, var2));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftPig(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

@@ -8,9 +8,9 @@ public class EntitySpider extends EntityMob {
 		this.texture = "/mob/spider.png";
 		this.setSize(1.4F, 0.9F);
 		this.moveSpeed = 0.8F;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftSpider(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected void entityInit() {

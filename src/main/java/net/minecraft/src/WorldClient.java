@@ -274,10 +274,10 @@ public class WorldClient extends World {
 		byte var4 = 16;
 		Random var5 = new Random();
 
-		//Spout start
+		// Spout Start
 		int num = ConfigReader.fancyParticles ? 1000 : 250;
 		for (int var6 = 0; var6 < num; ++var6) {
-		//Spout end
+		// Spout End
 			int var7 = par1 + this.rand.nextInt(var4) - this.rand.nextInt(var4);
 			int var8 = par2 + this.rand.nextInt(var4) - this.rand.nextInt(var4);
 			int var9 = par3 + this.rand.nextInt(var4) - this.rand.nextInt(var4);

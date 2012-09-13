@@ -192,7 +192,7 @@ public abstract class BiomeGenBase {
 	/**
 	 * sets enableSnow to true during biome initialization. returns BiomeGenBase.
 	 */
-	// Spout start
+	// Spout Start
 	protected BiomeGenBase setEnableSnow(boolean bool) {
 		enableSnow = bool;
 		return this;
@@ -206,7 +206,7 @@ public abstract class BiomeGenBase {
 	protected String getBiomeName() {
 		return biomeName;
 	}
-	// Spout end
+	// Spout End
 
 	/**
 	 * Gets a WorldGen appropriate for this biome.

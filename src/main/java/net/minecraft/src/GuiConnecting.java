@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 
 public class GuiConnecting extends GuiScreen
 {
-	//Spout Start
+	// Spout Start
 	private int counter = 0;
 	private String currentMsg = null;
 	private final String[] highlyInformativeMessages = {
@@ -125,7 +125,7 @@ public class GuiConnecting extends GuiScreen
 			"Zeroing Creeper Network",
 			"Teaching Wibbly Wobbly Timey Wimey to humans"
 	};
-	//Spout End
+	// Spout End
 
 	/** A reference to the NetClientHandler. */
 	private NetClientHandler clientHandler;
@@ -199,7 +199,7 @@ public class GuiConnecting extends GuiScreen
 				clientHandler.disconnect();
 			}
 
-			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); //Spout
+			mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout
 		}
 	}
 
@@ -222,7 +222,7 @@ public class GuiConnecting extends GuiScreen
 			drawCenteredString(fontRenderer, clientHandler.field_72560_a, width / 2, height / 2 - 10, 0xffffff);
 		}
 
-		//Spout Start
+		// Spout Start
 		if (counter == 4500 || currentMsg == null) {
 			counter = 0;
 			currentMsg = highlyInformativeMessages[(new java.util.Random()).nextInt(highlyInformativeMessages.length)];
@@ -232,7 +232,7 @@ public class GuiConnecting extends GuiScreen
 			counter++;
 		}
 		drawString(fontRenderer, currentMsg, 7, height / 2 - 115, 0x00ff00);
-		//Spout End
+		// Spout End
 
 		super.drawScreen(par1, par2, par3);
 	}

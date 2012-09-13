@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class ColorizerFoliage {
 
-	public static int[] foliageBuffer = new int[65536]; //Spout HD private->public
+	public static int[] foliageBuffer = new int[65536]; // Spout HD private->public
 
 	public static void getFoilageBiomeColorizer(int[] par0ArrayOfInteger) {
 		foliageBuffer = par0ArrayOfInteger;

@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
-//Spout start
+// Spout Start
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout end
+// Spout End
 import org.lwjgl.opengl.GL11;
 
 public class MapItemRenderer {
@@ -102,7 +102,7 @@ public class MapItemRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(0.0F, 0.0F, -0.04F);
 		GL11.glScalef(1.0F, 1.0F, 1.0F);
-		//Spout Start
+		// Spout Start
 		ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
@@ -117,7 +117,7 @@ public class MapItemRenderer {
 		else {
 			this.fontRenderer.drawString(par3MapData.mapName, var15, var16, -16777216);
 		}
-		//Spout End
+		// Spout End
 		GL11.glPopMatrix();
 	}
 }

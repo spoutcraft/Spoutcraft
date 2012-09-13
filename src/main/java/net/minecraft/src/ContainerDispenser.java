@@ -25,11 +25,11 @@ public class ContainerDispenser extends Container {
 		}
 	}
 	
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return tileEntityDispenser;
 	}
-	//Spout end
+	// Spout End
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return this.tileEntityDispenser.isUseableByPlayer(par1EntityPlayer);

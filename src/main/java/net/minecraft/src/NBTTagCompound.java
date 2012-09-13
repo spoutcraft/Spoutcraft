@@ -103,7 +103,7 @@ public class NBTTagCompound extends NBTBase {
 		return this.tagMap.containsKey(par1Str);
 	}
 
-	//Spout try-catch
+	// Spout try-catch
 	public byte getByte(String par1Str) {
 		try {
 		return !this.tagMap.containsKey(par1Str) ? 0 : ((NBTTagByte)this.tagMap.get(par1Str)).data;
@@ -159,7 +159,7 @@ public class NBTTagCompound extends NBTBase {
 			return "";
 		}
 	}
-	//Spout end
+	// Spout End
 
 	public byte[] getByteArray(String par1Str) {
 		return !this.tagMap.containsKey(par1Str) ? new byte[0] : ((NBTTagByteArray)this.tagMap.get(par1Str)).byteArray;

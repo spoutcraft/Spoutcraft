@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-//Spout HD start
+// Spout HD Start
 import com.pclewis.mcpatcher.mod.Colorizer;
-//Spout HD end
+// Spout HD End
 
 public class Potion {
 
@@ -63,7 +63,7 @@ public class Potion {
 	public final int id;
 
 	/** The name of the Potion. */
-	public String name = ""; //Spout private->public
+	public String name = ""; // Spout private->public
 
 	/** The index for the icon displayed when the potion effect is active. */
 	private int statusIconIndex = -1;
@@ -76,8 +76,8 @@ public class Potion {
 	private boolean usable;
 
 	/** Is the color of the liquid for this potion. */
-	public int liquidColor; //Spout private->public, removed final
-	public int origColor; //Spout
+	public int liquidColor; // Spout private->public, removed final
+	public int origColor; // Spout
 
 	protected Potion(int par1, boolean par2, int par3) {
 		this.id = par1;
@@ -174,7 +174,7 @@ public class Potion {
 	 */
 	public Potion setPotionName(String par1Str) {
 		this.name = par1Str;
-		Colorizer.setupPotion(this); //Spout HD
+		Colorizer.setupPotion(this); // Spout HD
 		return this;
 	}
 

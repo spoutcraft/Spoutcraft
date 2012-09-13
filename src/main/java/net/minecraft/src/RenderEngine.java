@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
-//Spout HD Start
+// Spout HD Start
 import net.minecraft.client.Minecraft;
 
 import com.pclewis.mcpatcher.mod.CustomAnimation;
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
 
-//Spout HD End
+// Spout HD End
 
 public class RenderEngine {
 	private HashMap textureMap = new HashMap();
@@ -77,7 +77,7 @@ public class RenderEngine {
 					this.clampTexture = true;
 					var7 = this.getImageContentsAndAllocate(TextureUtils.getResourceAsBufferedImage(this, var2, par1Str.substring(6)));
 					this.clampTexture = false;
-					// Spout HD end
+					// Spout HD End
 					this.blurTexture = false;
 				} else {
 					InputStream var8 = var2.getResourceAsStream(par1Str);
@@ -108,7 +108,7 @@ public class RenderEngine {
 	}
 
 	private int[] getImageContents(BufferedImage par1BufferedImage, int[] par2ArrayOfInteger) {
-		// Spout HD start
+		// Spout HD Start
 		if (par1BufferedImage == null) {
 			return par2ArrayOfInteger;
 		} else {
@@ -117,7 +117,7 @@ public class RenderEngine {
 			par1BufferedImage.getRGB(0, 0, var3, var4, par2ArrayOfInteger, 0, var3);
 			return par2ArrayOfInteger;
 		}
-		// Spout HD end
+		// Spout HD End
 	}
 
 	public int getTexture(String par1Str) {
@@ -145,7 +145,7 @@ public class RenderEngine {
 					this.blurTexture = true;
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(6)), var3);
 					this.blurTexture = false;
-					// Spout HD end
+					// Spout HD End
 				} else if (par1Str.startsWith("%blurclamp%")) {
 					// Spout HD Start
 					this.blurTexture = true;
@@ -153,7 +153,7 @@ public class RenderEngine {
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(this, var6, par1Str.substring(11)), var3);
 					this.blurTexture = false;
 					this.clampTexture = false;
-					// Spout HD end
+					// Spout HD End
 				} else {
 					this.setupTexture(TextureUtils.getResourceAsBufferedImage(par1Str), var3); // Spout HD
 				}
@@ -215,7 +215,7 @@ public class RenderEngine {
 			int textureHeight = par1BufferedImage.getHeight();
 			int[] texData = new int[textureWidth * textureHeight];
 			byte[] texColors = new byte[textureWidth * textureHeight * 4];
-			//Spout start
+			// Spout Start
 			//Performance reasons
 			boolean handled = false;
 			try {
@@ -257,7 +257,7 @@ public class RenderEngine {
 				texColors[i * 4 + 2] = (byte) a;
 				texColors[i * 4 + 3] = (byte) r;
 			}
-			//Spout end
+			// Spout End
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, texColors);
 
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, textureWidth, textureHeight, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageData);
@@ -265,7 +265,7 @@ public class RenderEngine {
 		}
 	}
 
-	// Spout HD end
+	// Spout HD End
 
 	public void createTextureFromBytes(int[] par1ArrayOfInteger, int par2, int par3, int par4) {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, par4);
@@ -379,9 +379,9 @@ public class RenderEngine {
 	}
 
 	public void registerTextureFX(TextureFX par1TextureFX) {
-		// Spout HD start
+		// Spout HD Start
 		TextureUtils.registerTextureFX(this.textureList, par1TextureFX);
-		// Spout HD end
+		// Spout HD End
 	}
 
 	public void updateDynamicTextures() {
@@ -392,9 +392,9 @@ public class RenderEngine {
 			TextureFX var3 = (TextureFX)var2.next();
 			var3.anaglyphEnabled = this.options.anaglyph;
 			var3.onTick();
-//Spout HD Start
+// Spout HD Start
 			this.imageData = TextureUtils.getByteBuffer(this.imageData, var3.imageData);
-//Spout HD end
+// Spout HD End
 			if (var3.iconIndex != var1) {
 				var3.bindImage(this);
 				var1 = var3.iconIndex;
@@ -496,11 +496,11 @@ public class RenderEngine {
 				this.blurTexture = false;
 				this.clampTexture = false;
 			} catch (IOException var6) {
-				//Spout HD Start
+				// Spout HD Start
 				//Gracefully handle errors
 				var2.remove();
 				//var6.printStackTrace();
-				//Spout HD End
+				// Spout HD End
 			}
 		}
 	}
@@ -517,11 +517,11 @@ public class RenderEngine {
 		}
 	}
 
-	//Spout HD Start
+	// Spout HD Start
 	public void setTileSize(Minecraft var1) {
 		this.imageData = GLAllocation.createDirectByteBuffer(TileSize.int_glBufferSize);
 		this.refreshTextures();
 		TextureUtils.refreshTextureFX(this.textureList);
 	}
-	//Spout HD End
+	// Spout HD End
 }

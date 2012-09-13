@@ -10,10 +10,10 @@ public class TileEntitySign extends TileEntity {
 	 * really used when the > < are going to be visible.
 	 */
 	public int lineBeingEdited = -1;
-	public int columnBeingEdited; //Spout
+	public int columnBeingEdited; // Spout
 	private boolean isEditable = true;
 
-	//Spout start
+	// Spout Start
 	private byte text = -1; //-1 means invalid cache, 0 means false, 1 means true
 	
 	public boolean hasText() {
@@ -33,7 +33,7 @@ public class TileEntitySign extends TileEntity {
 	public void recalculateText() {
 		text = -1;
 	}
-	//Spout end
+	// Spout End
 	
 	/**
 	 * Writes a tile entity to NBT.
@@ -60,9 +60,9 @@ public class TileEntitySign extends TileEntity {
 				this.signText[var2] = this.signText[var2].substring(0, 15);
 			}
 		}
-		//Spout start
+		// Spout Start
 		recalculateText();
-		//Spout end
+		// Spout End
 	}
 
 	/**

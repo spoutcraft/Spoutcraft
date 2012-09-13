@@ -1,11 +1,11 @@
 package net.minecraft.src;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.entity.CraftExperienceOrb;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout end
+// Spout End
 
 public class EntityXPOrb extends Entity {
 
@@ -22,7 +22,7 @@ public class EntityXPOrb extends Entity {
 	private int xpOrbHealth = 5;
 
 	/** This is how much XP this orb has. */
-	public int xpValue; //Spout private -> public
+	public int xpValue; // Spout private -> public
 	private EntityPlayer field_80001_f;
 	private int field_80002_g;
 
@@ -134,7 +134,7 @@ public class EntityXPOrb extends Entity {
 
 			if (var4 > 0) {
 				var13 = Block.blocksList[var4].slipperiness * 0.98F;
-				//Spout start
+				// Spout Start
 				if (!worldObj.isRemote) {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
@@ -147,7 +147,7 @@ public class EntityXPOrb extends Entity {
 						}
 					}
 				}
-				//Spout end
+				// Spout End
 			}
 		}
 

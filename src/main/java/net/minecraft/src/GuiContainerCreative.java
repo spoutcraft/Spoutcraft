@@ -8,10 +8,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
-//Spout end
+// Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {
 	private static InventoryBasic inventory = new InventoryBasic("tmp", 45);
@@ -268,7 +268,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 				}
 			}
 			
-			handleSpoutMouse(par1, par2, true); //Spout
+			handleSpoutMouse(par1, par2, true); // Spout
 		}
 
 		super.mouseClicked(par1, par2, par3);
@@ -432,7 +432,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			}
 		}
 		
-		handleSpoutMouse(par1, par2, false); //Spout
+		handleSpoutMouse(par1, par2, false); // Spout
 
 		if (this.field_74235_v != null && field_74241_p == CreativeTabs.tabInventory.getTabIndex() && this.func_74188_c(this.field_74235_v.xDisplayPosition, this.field_74235_v.yDisplayPosition, 16, 16, par1, par2)) {
 			this.func_74190_a(StringTranslate.getInstance().translateKey("inventory.binSlot"), par1, par2);
@@ -455,7 +455,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		int var8 = var7.length;
 		int var9;
 
-		for (var9 = 0; var9 < var8 - 1; ++var9) { //Spout - don't render the last one, we handle that!
+		for (var9 = 0; var9 < var8 - 1; ++var9) { // Spout - don't render the last one, we handle that!
 			CreativeTabs var10 = var7[var9];
 			this.mc.renderEngine.bindTexture(var4);
 
@@ -464,7 +464,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			}
 		}
 		
-		renderInInventory(true); //Spout - render ours separately
+		renderInInventory(true); // Spout - render ours separately
 
 		this.mc.renderEngine.bindTexture(var6);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
@@ -480,12 +480,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			this.drawTexturedModalRect(var11, var8 + (int)((float)(var9 - var8 - 17) * this.currentScroll), 232 + (this.needsScrollBars() ? 0 : 12), 0, 12, 15);
 		}
 		
-		//Spout start
-		renderInInventory(false); //Spout - render ours separately
+		// Spout Start
+		renderInInventory(false); // Spout - render ours separately
 		if(field_74241_p == 12) { //Return, useless code now!
 			return;
 		}
-		//Spout end
+		// Spout End
 
 		this.func_74233_a(var5);
 
@@ -610,7 +610,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		return inventory;
 	}
 	
-	//Spout start
+	// Spout Start
 	public void handleSpoutMouse(int x, int y, boolean isClicked) {
 		int var7 = guiTop;
 		int var5 = guiLeft - 26;
@@ -659,7 +659,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		var8 += 7;
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		//Spout start - bypass stupidity
+		// Spout Start - bypass stupidity
 		ItemStack var10;
 		if(MaterialData.getCustomItems().length == 0) { 
 			var10 = new ItemStack(Item.flint);		
@@ -667,12 +667,12 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 			CustomItem cItem = MaterialData.getCustomItems()[0];
 			var10 = new ItemStack(cItem.getRawId(), 1, cItem.getRawData());
 		}
-		//Spout end 
+		// Spout End 
 		itemRenderer.renderItemIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
 		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var10, var7, var8);
 		GL11.glDisable(GL11.GL_LIGHTING);
 		itemRenderer.zLevel = 0.0F;
 		this.zLevel = 0.0F;
 	}
-	//Spout end
+	// Spout End
 }

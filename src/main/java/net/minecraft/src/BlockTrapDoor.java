@@ -242,9 +242,9 @@ public class BlockTrapDoor extends Block {
 			return false;
 		} else {
 			Block var1 = Block.blocksList[par0];
-			//Spout Start - edited condition
+			// Spout Start - edited condition
 			return var1 == Block.glowStone || var1 != null && var1.blockMaterial.isOpaque() && var1.renderAsNormalBlock();
-			//Spout End
+			// Spout End
 		}
 	}
 }

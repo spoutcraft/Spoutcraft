@@ -612,7 +612,7 @@ public class WorldServer extends World {
 	/**
 	 * Start the skin for this entity downloading, if necessary, and increment its reference counter
 	 */
-	public void obtainEntitySkin(Entity par1Entity) { //Spout protected -> public
+	public void obtainEntitySkin(Entity par1Entity) { // Spout protected -> public
 		super.obtainEntitySkin(par1Entity);
 		this.entityIdMap.addKey(par1Entity.entityId, par1Entity);
 		Entity[] var2 = par1Entity.getParts();
@@ -631,7 +631,7 @@ public class WorldServer extends World {
 	/**
 	 * Decrement the reference counter for this entity's skin image data
 	 */
-	public void releaseEntitySkin(Entity par1Entity) { //Spout protected -> public
+	public void releaseEntitySkin(Entity par1Entity) { // Spout protected -> public
 		super.releaseEntitySkin(par1Entity);
 		this.entityIdMap.removeObject(par1Entity.entityId);
 		Entity[] var2 = par1Entity.getParts();

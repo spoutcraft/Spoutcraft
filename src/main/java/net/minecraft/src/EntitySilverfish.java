@@ -15,9 +15,9 @@ public class EntitySilverfish extends EntityMob {
 		this.setSize(0.3F, 0.7F);
 		this.moveSpeed = 0.6F;
 		this.attackStrength = 1;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftSilverfish(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {

@@ -19,18 +19,18 @@ import org.spoutcraft.client.config.ConfigReader;
 public class ScreenShotHelper {
 
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
-	//Spout Start -- moved to be local variables
+	// Spout Start -- moved to be local variables
 	/*private static ByteBuffer buffer;
 	private static byte[] pixelData;
 	private static int[] imageData;*/
-	//Spout End
+	// Spout End
 
 	public static String saveScreenshot(File par0File, int par1, int par2) {
 		if(ConfigReader.resizeScreenshots) return saveResizedScreenshot(par0File, ConfigReader.resizedScreenshotWidth, ConfigReader.resizedScreenshotHeight);
 		else return saveScreenshot(par0File, (String)null, par1, par2);
 	}
 
-	//Spout Start - method renamed from func_35879_a to saveScreenshot
+	// Spout Start - method renamed from func_35879_a to saveScreenshot
 	public static String saveScreenshot(File file, String imageFileName, int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
 		byte[] pixelData = new byte[screenWidth * screenHeight * 3];
@@ -39,7 +39,7 @@ public class ScreenShotHelper {
 			// Spout -- renamed from file1
 			File screenshotsDir = new File(file, "screenshots");
 			screenshotsDir.mkdir();
-			// Spout start -- just intialise it up there!
+			// Spout Start -- just intialise it up there!
 			/*if (buffer == null || buffer.capacity() < i * j) {
 					 buffer = BufferUtils.createByteBuffer(i * j * 3);
 				}
@@ -47,13 +47,13 @@ public class ScreenShotHelper {
 					 pixelData = new byte[i * j * 3];
 					 imageData = new int[i * j];
 				}*/
-			// Spout end
-			//Spout start -- use constants instead of magic numbers
+			// Spout End
+			// Spout Start -- use constants instead of magic numbers
 			GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
 			GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 			buffer.clear();
 			GL11.glReadPixels(0, 0, screenWidth, screenHeight, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, buffer);
-			//Spout end
+			// Spout End
 			buffer.clear();
 			String s1 = (new StringBuilder()).append("").append(dateFormat.format(new Date())).toString();
 			File file2;
@@ -86,7 +86,7 @@ public class ScreenShotHelper {
 		}
 	}
 
-	//Spout start -- new method
+	// Spout Start -- new method
 	public static BufferedImage getScreenshot(int screenWidth, int screenHeight) {
 		ByteBuffer buffer = BufferUtils.createByteBuffer(screenWidth * screenHeight * 3);
 		byte[] pixelData = new byte[screenWidth * screenHeight * 3];
@@ -111,7 +111,7 @@ public class ScreenShotHelper {
 		bufferedimage.setRGB(0, 0, screenWidth, screenHeight, imageData, 0, screenWidth);
 		return bufferedimage;
 	}
-	//Spout end
+	// Spout End
 	
 	public static String saveResizedScreenshot(File base, int width, int height) {
 		int texture = GL11.glGenTextures();

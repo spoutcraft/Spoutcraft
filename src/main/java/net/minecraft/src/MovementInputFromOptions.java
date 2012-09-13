@@ -1,20 +1,20 @@
 package net.minecraft.src;
 
 public class MovementInputFromOptions extends MovementInput {
-	public GameSettings gameSettings; //Spout private -> public
+	public GameSettings gameSettings; // Spout private -> public
 
 	public MovementInputFromOptions(GameSettings par1GameSettings) {
 		this.gameSettings = par1GameSettings;
 	}
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) { //Spout - kept parameter
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) { // Spout - kept parameter
 		this.moveStrafe = 0.0F;
 		this.moveForward = 0.0F;
-		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { //Spout
+		if (this.gameSettings.keyBindForward.pressed || par1EntityPlayer.autoforwardToggle) { // Spout
 			++this.moveForward;
 		}
 
-		if (this.gameSettings.keyBindBack.pressed || par1EntityPlayer.autoBackwardToggle) { //Spout
+		if (this.gameSettings.keyBindBack.pressed || par1EntityPlayer.autoBackwardToggle) { // Spout
 			--this.moveForward;
 		}
 
@@ -26,13 +26,13 @@ public class MovementInputFromOptions extends MovementInput {
 			--this.moveStrafe;
 		}
 		
-		//Spout start
+		// Spout Start
 		this.flyingDown = this.gameSettings.keyFlyDown.pressed;
 		this.flyingUp = this.gameSettings.keyFlyUp.pressed;
 		if (par1EntityPlayer.capabilities.isFlying){
 			this.moveStrafe = 0.0F;
 			this.moveForward = 0.0F;
-			if (this.gameSettings.keyFlyForward.pressed || par1EntityPlayer.autoforwardToggle) { //Spout
+			if (this.gameSettings.keyFlyForward.pressed || par1EntityPlayer.autoforwardToggle) { // Spout
 				++this.moveForward;
 			}
 
@@ -48,10 +48,10 @@ public class MovementInputFromOptions extends MovementInput {
 				--this.moveStrafe;
 			}
 		}
-		//Spout end
+		// Spout End
 
 		this.jump = this.gameSettings.keyBindJump.pressed;
-		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; //Spout
+		this.sneak = this.gameSettings.keyBindSneak.pressed || par1EntityPlayer.sneakToggle; // Spout
 		if (this.sneak) {
 			this.moveStrafe = (float)((double)this.moveStrafe * 0.3D);
 			this.moveForward = (float)((double)this.moveForward * 0.3D);

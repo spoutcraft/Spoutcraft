@@ -10,12 +10,12 @@ public class TextureLavaFX extends TextureFX {
 
 	public TextureLavaFX() {
 		super(Block.lavaMoving.blockIndexInTexture);
-		// Spout HD start
+		// Spout HD Start
 		this.field_76876_g = new float[TileSize.int_numPixels];
 		this.field_76878_h = new float[TileSize.int_numPixels];
 		this.field_76879_i = new float[TileSize.int_numPixels];
 		this.field_76877_j = new float[TileSize.int_numPixels];
-		// Spout HD end
+		// Spout HD End
 	}
 
 	public void onTick() {
@@ -35,11 +35,11 @@ public class TextureLavaFX extends TextureFX {
 
 				for (var6 = var1 - 1; var6 <= var1 + 1; ++var6) {
 					for (var7 = var2 - 1; var7 <= var2 + 1; ++var7) {
-						// Spout HD start
+						// Spout HD Start
 						var8 = var6 + var4 & TileSize.int_sizeMinus1;
 						var9 = var7 + var5 & TileSize.int_sizeMinus1;
 						var3 += this.field_76876_g[var8 + var9 * TileSize.int_size];
-						// Spout HD end
+						// Spout HD End
 					}
 				}
 				// Spout HD 
@@ -50,7 +50,7 @@ public class TextureLavaFX extends TextureFX {
 					this.field_76879_i[var1 + var2 * TileSize.int_size] = 0.0F;
 				}
 				this.field_76877_j[var1 + var2 * TileSize.int_size] -= 0.06F;
-				// Spout HD end
+				// Spout HD End
 				if (Math.random() < 0.005D) {
 					this.field_76877_j[var1 + var2 * TileSize.int_size] = 1.5F; // Spout HD 
 				}

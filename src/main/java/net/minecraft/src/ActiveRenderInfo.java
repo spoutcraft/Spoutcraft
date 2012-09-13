@@ -47,10 +47,10 @@ public class ActiveRenderInfo {
 	 */
 	public static float rotationXY;
 
-	//Spout start
+	// Spout Start
 	public static FloatBuffer modelMatrix;
 	public static FloatBuffer projectionMatrix;
-	//Spout end
+	// Spout End
 	
 	/**
 	 * Updates the current render info and camera location based on entity look angles and 1st/3rd person view mode
@@ -59,10 +59,10 @@ public class ActiveRenderInfo {
 		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
 
-		//Spout start
+		// Spout Start
 		modelMatrix = modelview.duplicate();
 		projectionMatrix = projection.duplicate();
-		//Spout end
+		// Spout End
 
 
 		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);

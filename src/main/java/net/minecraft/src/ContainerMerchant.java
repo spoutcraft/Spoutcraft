@@ -33,11 +33,11 @@ public class ContainerMerchant extends Container {
 		super.addCraftingToCrafters(par1ICrafting);
 	}
 
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return merchantInventory;
 	}
-	//Spout end
+	// Spout End
 	
 	/**
 	 * Updates crafting matrix; called from onCraftMatrixChanged. Args: none

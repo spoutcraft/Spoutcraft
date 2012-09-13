@@ -60,11 +60,11 @@ class ContainerCreative extends Container {
 		return this.itemList.size() > 45;
 	}
 
-	// Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return null;
 	}
-	// Spout end
+	// Spout End
 
 	protected void retrySlotClick(int par1, int par2, boolean par3, EntityPlayer par4EntityPlayer) {}
 

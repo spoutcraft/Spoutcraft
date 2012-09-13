@@ -26,11 +26,11 @@ public class ContainerFurnace extends Container {
 		}
 	}
 	
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return furnace;
 	}
-	//Spout end
+	// Spout End
 
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);

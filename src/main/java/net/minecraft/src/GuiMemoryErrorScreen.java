@@ -12,7 +12,7 @@ public class GuiMemoryErrorScreen extends GuiScreen {
 
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {
-			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); //Spout
+			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu()); // Spout
 		} else if (par1GuiButton.id == 1) {
 			this.mc.shutdown();
 		}

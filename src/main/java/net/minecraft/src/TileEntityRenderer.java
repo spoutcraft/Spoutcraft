@@ -154,10 +154,10 @@ public class TileEntityRenderer {
 		return this.fontRenderer;
 	}
 
-	// Spout start
+	// Spout Start
 	public void clear() {
 		worldObj = null;
 		entityLivingPlayer = null;
 	}
-	// Spout end
+	// Spout End
 }

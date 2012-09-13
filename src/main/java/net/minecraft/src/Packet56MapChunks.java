@@ -8,10 +8,10 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-//Spout end
+// Spout End
 
 public class Packet56MapChunks extends Packet {
 	private int[] field_73589_c;

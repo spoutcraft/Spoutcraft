@@ -11,9 +11,9 @@ import org.spoutcraft.client.SpoutClient; // Spout
 public abstract class Entity {
 
 	private static int nextEntityID = 0;
-	//Spout start
+	// Spout Start
 	public static List<Entity> toProcess = new LinkedList<Entity>();
-	//Spout end
+	// Spout End
 	public int entityId;
 	public double renderDistanceWeight;
 	public boolean preventEntitySpawning;
@@ -78,13 +78,13 @@ public abstract class Entity {
 	public int serverPosZ;
 	public boolean ignoreFrustumCheck;
 	public boolean isAirBorne;
-	//Spout start
+	// Spout Start
 	public boolean partiallyInWater = false;
 	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
 	public boolean clientonly = false;
-	//Spout end
+	// Spout End
 	public EnumEntitySize myEntitySize;
 
 	public Entity(World par1World) {
@@ -220,9 +220,9 @@ public abstract class Entity {
 		if(this.ridingEntity != null && this.ridingEntity.isDead) {
 			this.ridingEntity = null;
 		}
-		//Spout start
+		// Spout Start
 		partiallyInWater = isInsideOfMaterial(Material.water, -1);
-		//Spout end
+		// Spout End
 
 		++this.ticksExisted;
 		this.prevDistanceWalkedModified = this.distanceWalkedModified;
@@ -688,7 +688,7 @@ public abstract class Entity {
 		return this.worldObj.handleMaterialAcceleration(this.boundingBox.expand(0.0D, -0.4000000059604645D, 0.0D).contract(0.001D, 0.001D, 0.001D), Material.water, this);
 	}
 	
-	//Spout start
+	// Spout Start
 	public boolean isInsideOfMaterial(Material material) {
 		return isInsideOfMaterial(material, 0);
 	}
@@ -706,7 +706,7 @@ public abstract class Entity {
 		}
 		return false;
 	}
-	//Spout end
+	// Spout End
 
 	public float getEyeHeight() {
 		return 0.0F;
@@ -911,10 +911,10 @@ public abstract class Entity {
 		par1NBTTagCompound.setShort("Fire", (short)this.fire);
 		par1NBTTagCompound.setShort("Air", (short)this.getAir());
 		par1NBTTagCompound.setBoolean("OnGround", this.onGround);
-		//Spout start
+		// Spout Start
 		par1NBTTagCompound.setLong("ID_LSB", uniqueId.getLeastSignificantBits());
 		par1NBTTagCompound.setLong("ID_MSB", uniqueId.getMostSignificantBits());
-		//Spout end
+		// Spout End
 		this.writeEntityToNBT(par1NBTTagCompound);
 	}
 
@@ -948,14 +948,14 @@ public abstract class Entity {
 		this.onGround = par1NBTTagCompound.getBoolean("OnGround");
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.setRotation(this.rotationYaw, this.rotationPitch);
-		//Spout Start
+		// Spout Start
 		long lsb = par1NBTTagCompound.getLong("ID_LSB");
 		long msb = par1NBTTagCompound.getLong("ID_MSB");
 		UUID id = new UUID(msb, lsb);
 		if (!id.equals(new UUID(0, 0))) {
 			uniqueId = id;
 		}
-		//Spout End
+		// Spout End
 		this.readEntityFromNBT(par1NBTTagCompound);
 	}
 

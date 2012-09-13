@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.block.SpoutcraftChunk;
-//Spout end
+// Spout End
 import org.spoutcraft.client.config.ConfigReader;
 
 public class Chunk {
@@ -84,13 +84,13 @@ public class Chunk {
 	private int queuedLightChecks;
 	boolean field_76653_p;
 
-	//Spout start
+	// Spout Start
 	public SpoutcraftChunk spoutChunk;
 	int grassColorCache = -1;
 	int waterColorCache = -1;
 	//used in mp
 	public boolean canBeUnloaded = false;
-	//Spout end
+	// Spout End
 
 	public Chunk(World par1World, int par2, int par3) {
 		this.storageArrays = new ExtendedBlockStorage[16];
@@ -119,9 +119,9 @@ public class Chunk {
 		Arrays.fill(this.precipitationHeightMap, -999);
 		Arrays.fill(this.blockBiomeArray, (byte) - 1);
 
-		//Spout start
+		// Spout Start
 		spoutChunk = new SpoutcraftChunk(this);
-		//Spout end
+		// Spout End
 	}
 
 	public Chunk(World par1World, byte[] par2ArrayOfByte, int par3, int par4) {
@@ -813,10 +813,10 @@ public class Chunk {
 			this.worldObj.addLoadedEntities(var4);
 		}
 
-		//Spout start
+		// Spout Start
 		//note: onChunkLoad is only called in SP
 		SpoutcraftChunk.loadedChunks.add(spoutChunk);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -839,9 +839,9 @@ public class Chunk {
 			this.worldObj.unloadEntities(var4);
 		}
 
-		//Spout start
+		// Spout Start
 		SpoutcraftChunk.loadedChunks.remove(spoutChunk);
-		//Spout end
+		// Spout End
 	}
 
 	/**

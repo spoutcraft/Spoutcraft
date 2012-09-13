@@ -8,11 +8,11 @@ import org.spoutcraft.client.ChunkComparator;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 
-//Spout
+// Spout
 import gnu.trove.map.hash.TLongObjectHashMap;
 
 import net.minecraft.client.Minecraft;
-//Spout end
+// Spout End
 
 public class ChunkProviderClient implements IChunkProvider {
 
@@ -24,21 +24,21 @@ public class ChunkProviderClient implements IChunkProvider {
 	/**
 	 * The mapping between ChunkCoordinates and Chunks that ChunkProviderClient maintains.
 	 */
-	private TLongObjectHashMap<Chunk> chunkMapping = new TLongObjectHashMap<Chunk>(1000); //Spout
+	private TLongObjectHashMap<Chunk> chunkMapping = new TLongObjectHashMap<Chunk>(1000); // Spout
 	//private List field_889_c = new ArrayList();
 
 	/** Reference to the World object. */
 	private World worldObj;
-	//Spout start
+	// Spout Start
 	private int lastX = Integer.MAX_VALUE, lastZ = Integer.MAX_VALUE;
 	private Chunk last = null;
 	private int unloadableCounter = 0;
-	//Spout end
+	// Spout End
 
 	public ChunkProviderClient(World par1World) {
 		this.blankChunk = new EmptyChunk(par1World, 0, 0);
 		this.worldObj = par1World;
-		chunkMapping.setAutoCompactionFactor(0.0F); //Spout
+		chunkMapping.setAutoCompactionFactor(0.0F); // Spout
 	}
 
 	/**
@@ -49,8 +49,8 @@ public class ChunkProviderClient implements IChunkProvider {
 		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
 			return last != null;
 		}
-		//Spout end
-		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); //Spout*/
+		// Spout End
+		return this != null ? true : this.chunkMapping.containsKey(ChunkCoordIntPair.chunkXZ2Int(var1, var2)); // Spout*/
 		return true;
 	}
 
@@ -60,7 +60,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 */
 	public void unloadChunk(int par1, int par2) {
 		Chunk var3 = this.provideChunk(par1, par2);
-		//Spout start
+		// Spout Start
 		if (!var3.isEmpty() && SpoutClient.hasAvailableRAM()) {
 			var3.canBeUnloaded = true;
 			return;
@@ -71,7 +71,7 @@ public class ChunkProviderClient implements IChunkProvider {
 		}
 
 		this.chunkMapping.remove(ChunkCoordIntPair.chunkXZ2Int(par1, par2));
-		//this.field_889_c.remove(var3); //Spout
+		//this.field_889_c.remove(var3); // Spout
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 */
 	public Chunk loadChunk(int par1, int par2) {
 		Chunk var3 = new Chunk(this.worldObj, par1, par2);
-		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(par1, par2), var3); //Spout
+		this.chunkMapping.put(ChunkCoordIntPair.chunkXZ2Int(par1, par2), var3); // Spout
 		var3.isChunkLoaded = true;
 		return var3;
 	}
@@ -89,7 +89,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * specified chunk from the map seed and chunk seed
 	 */
 	public Chunk provideChunk(int var1, int var2) {
-		//Spout start
+		// Spout Start
 		if (var1 == lastX && var2 == lastZ && Thread.currentThread() == Minecraft.mainThread) {
 			return last;
 		}
@@ -100,7 +100,7 @@ public class ChunkProviderClient implements IChunkProvider {
 			lastZ = var2;
 			last = var3;
 		}
-		//Spout end
+		// Spout End
 		return var3 == null ? this.blankChunk : var3;
 	}
 
@@ -117,7 +117,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * always empty and will not remove any chunks.
 	 */
 	public boolean unload100OldestChunks() {
-		//Spout start
+		// Spout Start
 		if (!SpoutClient.hasAvailableRAM()) {
 			return false;
 		}
@@ -152,7 +152,7 @@ public class ChunkProviderClient implements IChunkProvider {
 				unloadableCounter = 0;
 			}
 		}
-		//Spout end
+		// Spout End
 		return false;
 	}
 
@@ -172,7 +172,7 @@ public class ChunkProviderClient implements IChunkProvider {
 	 * Converts the instance data to a readable string.
 	 */
 	public String makeString() {
-		return "MultiplayerChunkCache: " + this.chunkMapping.size(); //Spout
+		return "MultiplayerChunkCache: " + this.chunkMapping.size(); // Spout
 	}
 
 	/**

@@ -58,7 +58,7 @@ class ThreadPollServers extends Thread {
 								break label184;
 							} finally {
 								if (var27) {
-									//Spout Start
+									// Spout Start
 									synchronized (GuiMultiplayer.getLock()) {
 										GuiMultiplayer.decrementThreadsPending();
 									}
@@ -98,6 +98,6 @@ class ThreadPollServers extends Thread {
 		synchronized (GuiMultiplayer.getLock()) {
 			GuiMultiplayer.decrementThreadsPending();
 		}
-		//Spout End
+		// Spout End
 	}
 }

@@ -47,30 +47,30 @@ class ThreadConnectToServer extends Thread {
 				return;
 			}
 
-			//Spout start
+			// Spout Start
 			if (var3.getMessage().toLowerCase().contains("connection refused")) {
 				displayConnectionIssue(ip, port, "The server is not currently online!");
 			} else {
 				displayConnectionIssue(ip, port, var3.getMessage());
 			}
-			//Spout end
+			// Spout End
 		} catch (Exception var4) {
 			if (GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
 			var4.printStackTrace();
-			//Spout Start
+			// Spout Start
 			displayConnectionIssue(ip, port, var4.toString());
-			//Spout End
+			// Spout End
 		}
 	}
 	
-	//Spout Start
+	// Spout Start
 	private void displayConnectionIssue(String ip, int port, String message) {
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = ip;
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = port;
 		Minecraft.getMinecraft().displayGuiScreen(new org.spoutcraft.client.gui.error.GuiConnectionLost(message));
 	}
-	//Spout End
+	// Spout End
 }

@@ -26,15 +26,15 @@ class ThreadDownloadImage extends Thread {
 		HttpURLConnection var1 = null;
 
 		try {
-			//Spout start
+			// Spout Start
 			HttpURLConnection.setFollowRedirects(true);
-			//Spout end
+			// Spout End
 			URL var2 = new URL(this.location);
 			var1 = (HttpURLConnection)var2.openConnection();
-			//Spout Start
+			// Spout Start
 			System.setProperty("http.agent", "");
 			var1.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
-			//Spout End
+			// Spout End
 			var1.setDoInput(true);
 			var1.setDoOutput(false);
 			var1.connect();
@@ -46,7 +46,7 @@ class ThreadDownloadImage extends Thread {
 			if (this.buffer == null) {
 				this.imageData.image = ImageIO.read(var1.getInputStream());
 			} else {
-				//Spout start
+				// Spout Start
 				BufferedImage image = ImageIO.read(var1.getInputStream());
 				if (image != null) {
 					this.imageData.image = this.buffer.parseUserSkin(image);
@@ -54,10 +54,10 @@ class ThreadDownloadImage extends Thread {
 				else {
 					//System.out.println("No image data found for " + location);
 				}
-				//Spout end
+				// Spout End
 			}
 		} catch (Exception var6) {
-			//var6.printStackTrace(); //Spout
+			//var6.printStackTrace(); // Spout
 		} finally {
 			var1.disconnect();
 		}

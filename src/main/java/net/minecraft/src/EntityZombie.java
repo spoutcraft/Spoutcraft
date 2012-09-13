@@ -21,9 +21,9 @@ public class EntityZombie extends EntityMob {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 16.0F, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 16.0F, 0, false));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftZombie(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {

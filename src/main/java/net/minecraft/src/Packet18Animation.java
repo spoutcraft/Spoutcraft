@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-//Spout Start
+// Spout Start
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ import org.spoutcraft.client.packet.PacketClientAddons;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.addon.Addon;
 import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
-//Spout End
+// Spout End
 
 public class Packet18Animation extends Packet {
 
@@ -54,7 +54,7 @@ public class Packet18Animation extends Packet {
 	 * Passes this Packet on to the NetHandler for processing.
 	 */
 	public void processPacket(NetHandler par1NetHandler) {
-		//Spout Start
+		// Spout Start
 		if (entityId == -42) {
 			SpoutClient.getInstance().setSpoutVersion(1);
 			((NetClientHandler) par1NetHandler).addToSendQueue(this);
@@ -70,7 +70,7 @@ public class Packet18Animation extends Packet {
 		} else {
 			par1NetHandler.handleAnimation(this);
 		}
-		//Spout End
+		// Spout End
 	}
 
 	/**

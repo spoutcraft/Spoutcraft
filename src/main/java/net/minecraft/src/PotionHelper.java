@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import com.pclewis.mcpatcher.mod.Colorizer; //Spout HD
+import com.pclewis.mcpatcher.mod.Colorizer; // Spout HD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class PotionHelper {
 	 * Given a {@link Collection}<{@link PotionEffect}> will return an Integer color.
 	 */
 	public static int calcPotionLiquidColor(Collection par0Collection) {
-		int var1 = Colorizer.getWaterBottleColor(); //Spout HD
+		int var1 = Colorizer.getWaterBottleColor(); // Spout HD
 		if (par0Collection != null && !par0Collection.isEmpty()) {
 			float var2 = 0.0F;
 			float var3 = 0.0F;

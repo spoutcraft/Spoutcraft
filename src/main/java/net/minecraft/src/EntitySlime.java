@@ -17,9 +17,9 @@ public class EntitySlime extends EntityLiving implements IMob {
 		this.yOffset = 0.0F;
 		this.slimeJumpDelay = this.rand.nextInt(20) + 10;
 		this.setSlimeSize(var2);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftSlime(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected void entityInit() {

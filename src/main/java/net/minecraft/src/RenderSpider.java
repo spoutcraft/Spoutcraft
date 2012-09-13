@@ -7,9 +7,9 @@ import net.minecraft.src.OpenGlHelper;
 import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-//Spout End
+// Spout End
 
 public class RenderSpider extends RenderLiving {
 
@@ -26,9 +26,9 @@ public class RenderSpider extends RenderLiving {
 		if (par2 != 0) {
 			return -1;
 		} else {
-			//Spout Start
+			// Spout Start
 			loadTexture(par1EntitySpider.getCustomTexture(EntitySkinType.SPIDER_EYES, "/mob/spider_eyes.png"));
-			//Spout End
+			// Spout End
 			float var4 = 1.0F;
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);

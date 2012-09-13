@@ -35,7 +35,7 @@ public interface IBlockAccess {
 	 */
 	boolean doesBlockHaveSolidTopSurface(int var1, int var2, int var3);
 
-	// Spout start
+	// Spout Start
 	public int getGrassColorCache(int x, int y, int z);
 
 	public void setGrassColorCache(int x, int y, int z, int color);
@@ -45,7 +45,7 @@ public interface IBlockAccess {
 	public void setWaterColorCache(int x, int y, int z, int color);
 	
 	public WorldChunkManager getWorldChunkManager();
-	// Spout end
+	// Spout End
 
 	
 }

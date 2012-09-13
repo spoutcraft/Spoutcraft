@@ -2,11 +2,11 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketKeyPress;
 import org.spoutcraft.spoutcraftapi.gui.ScreenType;
-//Spout end
+// Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {
 	public NetClientHandler sendQueue;
@@ -56,14 +56,14 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			this.sendMotionUpdates();
 		}
 
-		//Spout start
+		// Spout Start
 		if (!this.isSprinting() && runToggle) {
 			if (canSprint()) {
 				setSprinting(true);
 				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
 			}
 		}
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -173,9 +173,9 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	 * Deals damage to the entity. If its a EntityPlayer then will take damage from the armor first and then health second
 	 * with the reduced value. Args: damageAmount
 	 */
-	public void damageEntity(DamageSource par1DamageSource, int par2) { //Spout - public
+	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - public
 		this.setEntityHealth(this.getHealth() - par2);
-		GuiChat.interruptChat(); //Spout
+		GuiChat.interruptChat(); // Spout
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		return true;
 	}
 
-	//Spout Start
+	// Spout Start
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
@@ -248,5 +248,5 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			super.updateCloak();
 		}
 	}
-	//Spout End
+	// Spout End
 }

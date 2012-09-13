@@ -48,7 +48,7 @@ public abstract class GuiSlot
 	private float scrollMultiplier;
 
 	/** how far down this slot has been scrolled */
-	public float amountScrolled; //Spout private -> public
+	public float amountScrolled; // Spout private -> public
 
 	/** the element in the list that was selected */
 	private int selectedElement;
@@ -454,7 +454,7 @@ public abstract class GuiSlot
 	   */
 	  private void overlayBackground(int par1, int par2, int par3, int par4)
 	  {
-		  GL11.glPushMatrix(); //Spout
+		  GL11.glPushMatrix(); // Spout
 		  Tessellator tessellator = Tessellator.instance;
 		  GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/background.png"));
 		  GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -468,6 +468,6 @@ public abstract class GuiSlot
 		  tessellator.addVertexWithUV(width, par1, 0.0D, (float)width / f, (float)par1 / f);
 		  tessellator.addVertexWithUV(0.0D, par1, 0.0D, 0.0D, (float)par1 / f);
 		  tessellator.draw();
-		  GL11.glPopMatrix(); //Spout
+		  GL11.glPopMatrix(); // Spout
 	  }
 }

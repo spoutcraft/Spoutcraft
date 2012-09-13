@@ -26,12 +26,12 @@ public class GuiAchievement extends Gui {
 	 */
 	private RenderItem itemRender;
 	private boolean haveAchiement;
-	//Spout Start
+	// Spout Start
 	private boolean customNotification = false;
 	private int itemId;
 	private short data = -1;
 	private int time = -1;
-	//Spout End
+	// Spout End
 
 	public GuiAchievement(Minecraft par1Minecraft) {
 		this.theGame = par1Minecraft;
@@ -62,7 +62,7 @@ public class GuiAchievement extends Gui {
 	
 	
 	
-	//Spout Start
+	// Spout Start
 	public void queueNotification(String title, String message, int toRender) {
 		queueNotification(title, message, toRender, (short) -1, -1);
 	}
@@ -78,7 +78,7 @@ public class GuiAchievement extends Gui {
 		this.time = time;
 		this.data = data;
 	}
-	//Spout End
+	// Spout End
 
 	/**
 	 * Update the display of the achievement window to match the game window.
@@ -108,7 +108,7 @@ public class GuiAchievement extends Gui {
 	 */
 	public void updateAchievementWindow() {
 		if (this.theAchievement != null && this.achievementTime != 0L) {
-			//Spout Start
+			// Spout Start
 			double delayTime = 3000.0D;
 			if (customNotification) {
 				if (time < 1) {
@@ -118,7 +118,7 @@ public class GuiAchievement extends Gui {
 				}
 			}
 			double var1 = (double)(Minecraft.getSystemTime() - this.achievementTime) / delayTime;
-			//Spout End
+			// Spout End
 
 			if (!this.haveAchiement && (var1 < 0.0D || var1 > 1.0D)) {
 				this.achievementTime = 0L;
@@ -162,7 +162,7 @@ public class GuiAchievement extends Gui {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 				GL11.glEnable(GL11.GL_LIGHTING);
-				//Spout Start
+				// Spout Start
 				ItemStack toRender = theAchievement != null ? theAchievement.theItemStack : null;
 				if (customNotification){
 					if (data < 1) {
@@ -174,7 +174,7 @@ public class GuiAchievement extends Gui {
 				if (toRender != null) {
 					this.itemRender.renderItemIntoGUI(this.theGame.fontRenderer, this.theGame.renderEngine, toRender, var5 + 8, var6 + 8);
 				}
-				//Spout End
+				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDepthMask(true);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);

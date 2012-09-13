@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
-//Spout Start
+// Spout Start
 import java.util.Random;
 import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
@@ -13,7 +13,7 @@ import org.spoutcraft.spoutcraftapi.material.MaterialData;
 import com.pclewis.mcpatcher.mod.TileSize;
 import com.pclewis.mcpatcher.mod.Colorizer;
 
-//Spout end
+// Spout End
 
 public class ItemRenderer {
 	private Minecraft mc;
@@ -23,9 +23,9 @@ public class ItemRenderer {
 	private RenderBlocks renderBlocksInstance = new RenderBlocks();
 	private MapItemRenderer mapItemRenderer;
 	private int equippedItemSlot = -1;
-	//Spout start
+	// Spout Start
 	private Random rand = new Random();
-	//Spout end
+	// Spout End
 
 	public ItemRenderer(Minecraft par1Minecraft) {
 		this.mc = par1Minecraft;
@@ -156,11 +156,11 @@ public class ItemRenderer {
 		float var9;
 		float var10;
 		float var11;
-		//Spout HD Start
+		// Spout HD Start
 		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
 			var9 = (float)var8 / TileSize.float_size;
 			var10 = par2 + (par4 - par2) * var9 - TileSize.float_texNudge;
-			//Spout HD End
+			// Spout HD End
 			var11 = var6 * var9;
 			par1Tessellator.addVertexWithUV((double)var11, 0.0D, (double)(0.0F - var7), (double)var10, (double)par5);
 			par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
@@ -172,12 +172,12 @@ public class ItemRenderer {
 		par1Tessellator.startDrawingQuads();
 		par1Tessellator.setNormal(1.0F, 0.0F, 0.0F);
 
-		//Spout HD Start
+		// Spout HD Start
 		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
 			var9 = (float)var8 / TileSize.float_size;
 			var10 = par2 + (par4 - par2) * var9 - TileSize.float_texNudge;
 			var11 = var6 * var9 + TileSize.float_reciprocal;
-			//Spout HD End
+			// Spout HD End
 			par1Tessellator.addVertexWithUV((double)var11, 1.0D, (double)(0.0F - var7), (double)var10, (double)par3);
 			par1Tessellator.addVertexWithUV((double)var11, 1.0D, 0.0D, (double)var10, (double)par3);
 			par1Tessellator.addVertexWithUV((double)var11, 0.0D, 0.0D, (double)var10, (double)par5);
@@ -188,12 +188,12 @@ public class ItemRenderer {
 		par1Tessellator.startDrawingQuads();
 		par1Tessellator.setNormal(0.0F, 1.0F, 0.0F);
 
-		//Spout HD Start
+		// Spout HD Start
 		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
 			var9 = (float)var8 / TileSize.float_size;
 			var10 = par5 + (par3 - par5) * var9 - TileSize.float_texNudge;
 			var11 = var6 * var9 + TileSize.float_reciprocal;
-			//Spout HD End
+			// Spout HD End
 			par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);
 			par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
 			par1Tessellator.addVertexWithUV((double)var6, (double)var11, (double)(0.0F - var7), (double)par4, (double)var10);
@@ -204,11 +204,11 @@ public class ItemRenderer {
 		par1Tessellator.startDrawingQuads();
 		par1Tessellator.setNormal(0.0F, -1.0F, 0.0F);
 
-		//Spout HD Start
+		// Spout HD Start
 		for (var8 = 0; var8 < TileSize.int_size; ++var8) {
 			var9 = (float)var8 / TileSize.float_size;
 			var10 = par5 + (par3 - par5) * var9 - TileSize.float_texNudge;
-			//Spout HD End
+			// Spout HD End
 			var11 = var6 * var9;
 			par1Tessellator.addVertexWithUV((double)var6, (double)var11, 0.0D, (double)par4, (double)var10);
 			par1Tessellator.addVertexWithUV(0.0D, (double)var11, 0.0D, (double)par2, (double)var10);

@@ -18,7 +18,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntityRenderer;
 import net.minecraft.src.World;
 import org.lwjgl.opengl.GL11;
-//Spout start
+// Spout Start
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -29,7 +29,7 @@ import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
 import net.minecraft.client.Minecraft;
-//Spout end
+// Spout End
 
 public class WorldRenderer {
 	public World worldObj;
@@ -46,7 +46,7 @@ public class WorldRenderer {
 	public int posYClip;
 	public int posZClip;
 	public boolean isInFrustum = false;
-	public boolean[] skipRenderPass = new boolean[3]; //Spout
+	public boolean[] skipRenderPass = new boolean[3]; // Spout
 	public int posXPlus;
 	public int posYPlus;
 	public int posZPlus;
@@ -99,7 +99,7 @@ public class WorldRenderer {
 	}
 
 	public void updateRenderer() {
-		//Spout Start
+		// Spout Start
 		if(this.needsUpdate) {
 			++chunksUpdated;
 			int x = this.posX;
@@ -138,7 +138,7 @@ public class WorldRenderer {
 			int limit = skipRenderPass.length;
 			if(!Shaders.isEnabled())
 				limit--;
-			for (int renderPass = 0; renderPass < limit; ++renderPass) {  //Spout - 3 passes for shaders, 2 without
+			for (int renderPass = 0; renderPass < limit; ++renderPass) {  // Spout - 3 passes for shaders, 2 without
 				
 				boolean skipRenderPass = false;
 				boolean rendered = false;
@@ -254,7 +254,7 @@ public class WorldRenderer {
 										skipRenderPass = true;
 									}
 									else {
-										Tessellator.instance.setEntity(block.blockID); //Spout
+										Tessellator.instance.setEntity(block.blockID); // Spout
 										if (design != null) {
 											oldBounds[0] = (float) block.minX;
 											oldBounds[1] = (float) block.minY;
@@ -301,8 +301,8 @@ public class WorldRenderer {
 			var24.removeAll(tileRenderers);
 			this.tileEntities.addAll(var24);
 			tileRenderers.removeAll(this.tileEntityRenderers);
-			Tessellator.instance.setEntity(-1); //Spout shaders
-			//Spout End
+			Tessellator.instance.setEntity(-1); // Spout shaders
+			// Spout End
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
@@ -319,7 +319,7 @@ public class WorldRenderer {
 	}
 
 	public void setDontDraw() {
-		for(int var1 = 0; var1 < skipRenderPass.length; ++var1) { //Spout
+		for(int var1 = 0; var1 < skipRenderPass.length; ++var1) { // Spout
 			this.skipRenderPass[var1] = true;
 		}
 
@@ -331,7 +331,7 @@ public class WorldRenderer {
 		this.setDontDraw();
 		this.worldObj = null;
 	}
-	//Spout start
+	// Spout Start
 
 	 public int getGLCallListForPass(int par1) {
 		return !this.isInFrustum ? -1 : (!this.skipRenderPass[par1] ? this.glRenderList + par1 : -1);
@@ -356,7 +356,7 @@ public class WorldRenderer {
 		}
 		return false;
 	}
-	//Spout end
+	// Spout End
 
 	public void markDirty() {
 		this.needsUpdate = true;

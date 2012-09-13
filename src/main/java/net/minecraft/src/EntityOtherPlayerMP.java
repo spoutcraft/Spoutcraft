@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
-// Spout start
+// Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.player.SpoutPlayer;
 import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
-// Spout end
+// Spout End
 public class EntityOtherPlayerMP extends EntityPlayer {
 	private boolean isItemInUse = false;
 	private int otherPlayerMPPosRotationIncrements;
@@ -21,17 +21,17 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.username = par2Str;
 		this.yOffset = 0.0F;
 		this.stepHeight = 0.0F;
-		//Spout start
+		// Spout Start
 		if (par2Str != null && par2Str.length() > 0) {
 			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par2Str) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par2Str));
 		}
-		//Spout end
+		// Spout End
 
 		this.noClip = true;
 		this.field_71082_cx = 0.25F;
 		this.renderDistanceWeight = 10.0D;
-		//Spout start
+		// Spout Start
 		if (vip != null) {
 			displayName = vip.getTitle();
 		} else {
@@ -41,7 +41,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		((SpoutPlayer) spoutEntity).setPlayer(this);
 		this.worldObj.releaseEntitySkin(this);
 		worldObj.obtainEntitySkin(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -174,11 +174,11 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		return false;
 	}
 
-	//Spout Start
+	// Spout Start
 	public void updateCloak() {
 		if (this.cloakUrl == null || this.playerCloakUrl == null) {
 			super.updateCloak();
 		}
 	}
-	//Spout End
+	// Spout End
 }

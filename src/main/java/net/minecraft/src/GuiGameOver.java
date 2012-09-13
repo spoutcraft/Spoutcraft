@@ -37,10 +37,10 @@ public class GuiGameOver extends GuiScreen {
 			case 2:
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 				this.mc.loadWorld((WorldClient)null);
-				//Spout start
+				// Spout Start
 				//this.mc.displayGuiScreen(new GuiMainMenu());
 				this.mc.displayGuiScreen(new MainMenu());
-				//Spout end
+				// Spout End
 		}
 	}
 

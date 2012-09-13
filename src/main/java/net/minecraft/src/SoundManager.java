@@ -14,12 +14,12 @@ import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
-//Spout Start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
 import org.spoutcraft.spoutcraftapi.sound.Music;
 import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
-//Spout End
+// Spout End
 
 import de.cuina.fireandfuel.CodecJLayerMP3;
 
@@ -34,10 +34,10 @@ public class SoundManager {
 	private static boolean loaded = false;
 	private Random rand = new Random();
 	private int ticksBeforeMusic;
-	//Spout start
+	// Spout Start
 	private final int SOUND_EFFECTS_PER_TICK = 3;
 	private int soundEffectsLimit = SOUND_EFFECTS_PER_TICK;
-	//Spout end
+	// Spout End
 
 	public SoundManager() {
 		this.ticksBeforeMusic = this.rand.nextInt(12000);
@@ -62,9 +62,9 @@ public class SoundManager {
 			SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 			SoundSystemConfig.setCodec("mus", CodecMus.class);
 			SoundSystemConfig.setCodec("wav", CodecWav.class);
-			//Spout start
+			// Spout Start
 			SoundSystemConfig.setCodec("mp3", CodecJLayerMP3.class);
-			//Spout  end
+			// Spout  end
 			sndSystem = new SoundSystem();
 			this.options.soundVolume = var1;
 			this.options.musicVolume = var2;
@@ -119,7 +119,7 @@ public class SoundManager {
 
 				SoundPoolEntry var1 = this.soundPoolMusic.getRandomSound();
 				if (var1 != null) {
-					//Spout start
+					// Spout Start
 					if (SpoutClient.getInstance().isSpoutEnabled()) {
 						EntityPlayer player = SpoutClient.getHandle().thePlayer;
 						if (player instanceof EntityClientPlayerMP) {
@@ -149,7 +149,7 @@ public class SoundManager {
 							}
 						}
 					}
-					//Spout end
+					// Spout End
 					this.ticksBeforeMusic = this.rand.nextInt(12000) + 12000;
 					sndSystem.backgroundMusic("BgMusic", var1.soundUrl, var1.soundName, false);
 					sndSystem.setVolume("BgMusic", this.options.musicVolume);
@@ -204,7 +204,7 @@ public class SoundManager {
 		}
 	}
 
-	//Spout start
+	// Spout Start
 	public void playSound(String s, float f, float f1, float f2, float f3, float f4) {
 		playSound(s, f, f1, f2, f3, f4, -1, 1.0F);
 	}
@@ -377,6 +377,6 @@ public class SoundManager {
 	public SoundPoolEntry waitingSound = null;
 	public boolean allowed = false;
 	public boolean cancelled = false;
-	//Spout end
+	// Spout End
 
 }

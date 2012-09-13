@@ -29,7 +29,7 @@ public class ContainerChest extends Container {
 		}
 	}
 	
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return lowerChestInventory;
 	}
@@ -38,7 +38,7 @@ public class ContainerChest extends Container {
 	public boolean isSortableInventory() {
 		return true;
 	}
-	//Spout end
+	// Spout End
 
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
 		return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);

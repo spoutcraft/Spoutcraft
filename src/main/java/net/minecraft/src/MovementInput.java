@@ -15,10 +15,10 @@ public class MovementInput {
 	public float moveForward = 0.0F;
 	public boolean jump = false;
 	public boolean sneak = false;
-	//Spout start
+	// Spout Start
 	public boolean flyingUp = false;
 	public boolean flyingDown = false;
-	//Spout end
+	// Spout End
 
-	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} //Spout - kept parameter
+	public void updatePlayerMoveState(EntityPlayer par1EntityPlayer) {} // Spout - kept parameter
 }

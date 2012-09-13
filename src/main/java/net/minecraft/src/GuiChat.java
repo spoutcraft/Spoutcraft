@@ -7,24 +7,24 @@ import java.net.URI;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-//Spout Start
+// Spout Start
 import java.io.File;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.chat.GuiURLConfirm;
 import org.spoutcraft.spoutcraftapi.gui.ChatBar;
-//Spout End
+// Spout End
 
 public class GuiChat extends GuiScreen
 {
 	/** The chat message. */
-	public String message = ""; //Spout protected -> public
+	public String message = ""; // Spout protected -> public
 
 	/** Counts the number of screen updates. Used to make the caret flash. */
-	private int updateCounter = 0; //Spout
+	private int updateCounter = 0; // Spout
 	
-	//Spout Improved Chat Start
+	// Spout Improved Chat Start
 	public static final String allowedCharacters = ChatAllowedCharacters.allowedCharacters;
 	private static String lastChat = "";
 	
@@ -38,7 +38,7 @@ public class GuiChat extends GuiScreen
 		SpoutClient.getInstance().getChatManager().updateCursor(message.length(), this);
 		GuiChat.lastChat = "";
 	}
-	//Spout Improved Chat End
+	// Spout Improved Chat End
 
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
@@ -69,11 +69,11 @@ public class GuiChat extends GuiScreen
 	 */
 	protected void keyTyped(char par1, int par2)
 	{
-		//Spout Improved ChatStart
+		// Spout Improved ChatStart
 		if (SpoutClient.getInstance().getChatManager().onChatKeyTyped(par1, par2, this)) {
 			return;
 		}
-		//Spout Improved Chat End
+		// Spout Improved Chat End
 		if (par2 == 1)
 		{
 			mc.displayGuiScreen(null);
@@ -88,7 +88,7 @@ public class GuiChat extends GuiScreen
 			{
 				String var4 = message.trim();
 
-				//Spout Improved Chat Start
+				// Spout Improved Chat Start
 				if (var4.startsWith("/")) {
 					SpoutClient.getInstance().getChatManager().pastCommands.add(var4);
 				}
@@ -100,7 +100,7 @@ public class GuiChat extends GuiScreen
 					SpoutClient.getInstance().getChatManager().sendChat(var4);
 					//this.mc.thePlayer.sendChatMessage(var4);
 				}
-				//Spout Improved Chat End
+				// Spout Improved Chat End
 			}
 
 			mc.displayGuiScreen(null);
@@ -122,7 +122,7 @@ public class GuiChat extends GuiScreen
 	 * Draws the screen and all the components in it.
 	 */
 	public void drawScreen(int var1, int var2, float var3) {
-		//Spout Improved Chat Start
+		// Spout Improved Chat Start
 		SpoutClient.getInstance().getChatManager().handleMouseWheel();
 		String text = message;
 		if (cursorPosition >= 0 && cursorPosition < message.length()) {
@@ -168,7 +168,7 @@ public class GuiChat extends GuiScreen
 				fontRenderer.drawStringWithShadow("&" + code + " - " + value + parsedName, width - 90, 70 + c * 10, 0xffffffff);
 			}
 		}
-		//Spout Improved Chat End
+		// Spout Improved Chat End
 		super.drawScreen(var1, var2, var3);
 	}
 
@@ -186,7 +186,7 @@ public class GuiChat extends GuiScreen
 		if (var4 != null) {
 			URI var5 = var4.getURI();
 			if (var5 != null) {
-				//Spout start
+				// Spout Start
 				//Check if screenshot
 				if (var4.getMessage().startsWith("Saved screenshot as")) {
 					String fileName = var4.func_78309_f();
@@ -212,12 +212,12 @@ public class GuiChat extends GuiScreen
 		
 		
 
-		//Spout Improved Chat Start
+		// Spout Improved Chat Start
 //		if (!(message.length() <= 0 || message.endsWith(" ")))
 //		{
 //			message += " ";
 //		}
-		//Spout Improved Chat End
+		// Spout Improved Chat End
 
 		//message += mc.ingameGUI.field_933_a;
 ///		byte byte0 = 100;
@@ -228,7 +228,7 @@ public class GuiChat extends GuiScreen
 //		}
 	}
 	
-	//Spout start
+	// Spout Start
 	public static void interruptChat() {
 		if (Minecraft.theMinecraft.currentScreen instanceof GuiChat) {
 			if (ConfigReader.showDamageAlerts) {
@@ -238,5 +238,5 @@ public class GuiChat extends GuiScreen
 			}
 		}
 	}
-	//Spout end
+	// Spout End
 }

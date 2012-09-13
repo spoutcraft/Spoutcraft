@@ -3,23 +3,23 @@ package net.minecraft.src;
 import com.pclewis.mcpatcher.mod.TileSize; // Spout HD
 
 public class TextureLavaFlowFX extends TextureFX {
-	// Spout HD start
+	// Spout HD Start
 	protected float[] field_76871_g;
 	protected float[] field_76874_h;
 	protected float[] field_76875_i;
 	protected float[] field_76872_j;
 	int field_76873_k;
-	// Spout HD end
+	// Spout HD End
 
 	public TextureLavaFlowFX() {
 		super(Block.lavaMoving.blockIndexInTexture + 1);
-		// Spout HD start
+		// Spout HD Start
 		this.field_76871_g = new float[TileSize.int_numPixels];
 		this.field_76874_h = new float[TileSize.int_numPixels];
 		this.field_76875_i = new float[TileSize.int_numPixels];
 		this.field_76872_j = new float[TileSize.int_numPixels];
 		this.field_76873_k = 0;
-		// Spout HD end
+		// Spout HD End
 		this.tileSize = 2;
 	}
 

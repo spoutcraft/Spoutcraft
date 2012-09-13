@@ -2,12 +2,12 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.entity.CraftItem;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout end
+// Spout End
 
 public class EntityItem extends Entity {
 
@@ -36,9 +36,9 @@ public class EntityItem extends Entity {
 		this.motionX = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D));
 		this.motionY = 0.20000000298023224D;
 		this.motionZ = (double)((float)(Math.random() * 0.20000000298023224D - 0.10000000149011612D));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftItem(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class EntityItem extends Entity {
 
 			if (var5 > 0) {
 				var4 = Block.blocksList[var5].slipperiness * 0.98F;
-				//Spout start
+				// Spout Start
 				if (!worldObj.isRemote) {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
@@ -114,7 +114,7 @@ public class EntityItem extends Entity {
 						}
 					}
 				}
-				//Spout end
+				// Spout End
 			}
 		}
 

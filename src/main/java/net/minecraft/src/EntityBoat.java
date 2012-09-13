@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 import java.util.Iterator;
 import java.util.List;
-//Spout start
+// Spout Start
 import org.spoutcraft.client.entity.CraftBoat;
-//Spout end
+// Spout End
 
 public class EntityBoat extends Entity {
 	private boolean field_70279_a;
@@ -19,12 +19,12 @@ public class EntityBoat extends Entity {
 	private double velocityY;
 	private double velocityZ;
 
-	//Spout start
+	// Spout Start
 	public double maxSpeed = 0.4D;
 	public double occupiedDeceleration = 0.2D;
 	public double unoccupiedDeceleration = -1;
 	public boolean landBoats = false;
-	//Spout ends
+	// Spout Ends
 
 	public EntityBoat(World par1World) {
 		super(par1World);
@@ -34,9 +34,9 @@ public class EntityBoat extends Entity {
 		this.setSize(1.5F, 0.6F);
 		this.yOffset = this.height / 2.0F;
 
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftBoat(this);
-		//Spout end
+		// Spout End
 	}
 
 	protected boolean canTriggerWalking() {
@@ -240,7 +240,7 @@ public class EntityBoat extends Entity {
 				this.motionX += this.riddenByEntity.motionX * this.field_70276_b;
 				this.motionZ += this.riddenByEntity.motionZ * this.field_70276_b;
 			}
-			//Spout start
+			// Spout Start
 			else if (unoccupiedDeceleration >= 0) {
 				 this.motionX *= unoccupiedDeceleration;
 				 this.motionZ *= unoccupiedDeceleration;
@@ -254,7 +254,7 @@ public class EntityBoat extends Entity {
 			}
 			
 			var24 = this.maxSpeed;
-			//Spout end
+			// Spout End
 
 			var6 = Math.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 

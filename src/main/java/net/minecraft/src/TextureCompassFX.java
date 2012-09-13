@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-//Spout HD Start
+// Spout HD Start
 import com.pclewis.mcpatcher.mod.TextureUtils;
 import com.pclewis.mcpatcher.mod.TileSize;
-//Spout HD End
+// Spout HD End
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import net.minecraft.client.Minecraft;
@@ -11,9 +11,9 @@ import net.minecraft.client.Minecraft;
 public class TextureCompassFX extends TextureFX {
 
 	private Minecraft mc;
-	//Spout HD Start
+	// Spout HD Start
 	private int[] compassIconImageData; // Spout HD
-	//Spout HD End
+	// Spout HD End
 	private double field_76868_i;
 	private double field_76866_j;
 
@@ -24,12 +24,12 @@ public class TextureCompassFX extends TextureFX {
 		this.tileImage = 1;
 
 		try {
-			//Spout HD Start
+			// Spout HD Start
 			BufferedImage var2 = TextureUtils.getResourceAsBufferedImage((Object)Minecraft.class, "/gui/items.png");
 			int var3 = this.iconIndex % 16 * TileSize.int_size;
 			int var4 = this.iconIndex / 16 * TileSize.int_size;
 			var2.getRGB(var3, var4, TileSize.int_size, TileSize.int_size, this.compassIconImageData, 0, TileSize.int_size);
-			//Spout HD End
+			// Spout HD End
 		} catch (IOException var5) {
 			var5.printStackTrace();
 		}
@@ -37,9 +37,9 @@ public class TextureCompassFX extends TextureFX {
 	}
 
 	public void onTick() {
-		//Spout HD Start
+		// Spout HD Start
 		for (int var1 = 0; var1 < TileSize.int_numPixels; ++var1) {
-			//Spout HD End
+			// Spout HD End
 			int var2 = this.compassIconImageData[var1] >> 24 & 255;
 			int var3 = this.compassIconImageData[var1] >> 16 & 255;
 			int var4 = this.compassIconImageData[var1] >> 8 & 255;
@@ -105,12 +105,12 @@ public class TextureCompassFX extends TextureFX {
 		short var16;
 		int var19;
 		int var18;
-		//Spout HD start
+		// Spout HD Start
 		for (var9 = TileSize.int_compassCrossMin; var9 <= TileSize.int_compassCrossMax; ++var9) {
 			var10 = (int)(TileSize.double_compassCenterMax + var26 * (double)var9 * 0.3D);
 			var11 = (int)(TileSize.double_compassCenterMin - var24 * (double)var9 * 0.3D * 0.5D);
 			var12 = var11 * TileSize.int_size + var10;
-			//Spout HD end
+			// Spout HD End
 			var13 = 100;
 			var14 = 100;
 			var15 = 100;
@@ -130,12 +130,12 @@ public class TextureCompassFX extends TextureFX {
 			this.imageData[var12 * 4 + 3] = (byte)var16;
 		}
 
-		//Spout HD Start
+		// Spout HD Start
 		for (var9 = TileSize.int_compassNeedleMin; var9 <= TileSize.int_compassNeedleMax; ++var9) {
 			var10 = (int)(TileSize.double_compassCenterMax + var24 * (double)var9 * 0.3D);
 			var11 = (int)(TileSize.double_compassCenterMin + var26 * (double)var9 * 0.3D * 0.5D);
 			var12 = var11 * TileSize.int_size + var10;
-			//Spout HD End
+			// Spout HD End
 			var13 = var9 >= 0 ? 255 : 100;
 			var14 = var9 >= 0 ? 20 : 100;
 			var15 = var9 >= 0 ? 20 : 100;

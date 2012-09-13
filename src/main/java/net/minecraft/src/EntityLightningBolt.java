@@ -21,9 +21,9 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 	 * Determines the time before the EntityLightningBolt is destroyed. It is a random integer decremented over time.
 	 */
 	private int boltLivingTime;
-	//Spout start
+	// Spout Start
 	public boolean effect = false;
-	//Spout end
+	// Spout End
 
 	public EntityLightningBolt(World par1World, double par2, double par4, double par6) {
 		super(par1World);
@@ -31,9 +31,9 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 		this.lightningState = 2;
 		this.boltVertex = this.rand.nextLong();
 		this.boltLivingTime = this.rand.nextInt(3) + 1;
-		//Spout start
+		// Spout Start
 		if (!effect && par1World.difficultySetting >= 2 && par1World.doChunksNearChunkExist(MathHelper.floor_double(par2), MathHelper.floor_double(par4), MathHelper.floor_double(par6), 10)) {
-		//Spout end
+		// Spout End
 			int var8 = MathHelper.floor_double(par2);
 			int var9 = MathHelper.floor_double(par4);
 			int var10 = MathHelper.floor_double(par6);
@@ -53,9 +53,9 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 			}
 		}
 		
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftLightningStrike(this);
-		//Spout end
+		// Spout End
 
 	}
 
@@ -79,9 +79,9 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 				--this.boltLivingTime;
 				this.lightningState = 1;
 				this.boltVertex = this.rand.nextLong();
-				//Spout start
+				// Spout Start
 				if (!effect && this.worldObj.doChunksNearChunkExist(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 10)) {
-				//Spout end
+				// Spout End
 					int var1 = MathHelper.floor_double(this.posX);
 					int var2 = MathHelper.floor_double(this.posY);
 					int var3 = MathHelper.floor_double(this.posZ);
@@ -93,9 +93,9 @@ public class EntityLightningBolt extends EntityWeatherEffect {
 			}
 		}
 
-		//Spout start
+		// Spout Start
 		if(!effect && this.lightningState >= 0) {
-		//Spout end
+		// Spout End
 			double var6 = 3.0D;
 			List var7 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getAABBPool().addOrModifyAABBInPool(this.posX - var6, this.posY - var6, this.posZ - var6, this.posX + var6, this.posY + 6.0D + var6, this.posZ + var6));
 			Iterator var4 = var7.iterator();

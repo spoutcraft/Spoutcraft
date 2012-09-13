@@ -2,12 +2,12 @@ package net.minecraft.src;
 
 import java.util.List;
 
-//Spout start
+// Spout Start
 import org.spoutcraft.client.gui.inventory.CreativeTabCustom;
-//Spout end
+// Spout End
 
 public class CreativeTabs {
-	public static final CreativeTabs[] creativeTabArray = new CreativeTabs[13]; //Spout - one moar
+	public static final CreativeTabs[] creativeTabArray = new CreativeTabs[13]; // Spout - one moar
 	public static final CreativeTabs tabBlock = new CreativeTabBlock(0, "buildingBlocks");
 	public static final CreativeTabs tabDeco = new CreativeTabDeco(1, "decorations");
 	public static final CreativeTabs tabRedstone = new CreativeTabRedstone(2, "redstone");
@@ -20,7 +20,7 @@ public class CreativeTabs {
 	public static final CreativeTabs tabBrewing = new CreativeTabBrewing(9, "brewing");
 	public static final CreativeTabs tabMaterials = new CreativeTabMaterial(10, "materials");
 	public static final CreativeTabs tabInventory = (new CreativeTabInventory(11, "inventory")).setBackgroundImageName("survival_inv.png").setNoScrollbar().setNoTitle();
-	public static final CreativeTabs tabSpout = new CreativeTabCustom(12, "custom"); //Spout
+	public static final CreativeTabs tabSpout = new CreativeTabCustom(12, "custom"); // Spout
 	private final int tabIndex;
 	private final String tabLabel;
 

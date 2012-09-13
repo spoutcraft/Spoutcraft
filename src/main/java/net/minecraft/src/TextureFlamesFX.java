@@ -1,30 +1,30 @@
 package net.minecraft.src;
 
-//Spout HD Start
+// Spout HD Start
 import com.pclewis.mcpatcher.mod.TileSize;
-//Spout HD End
+// Spout HD End
 
 
 public class TextureFlamesFX extends TextureFX {
 
-	//Spout HD Start
+	// Spout HD Start
 	protected float[] field_76869_g;
 	protected float[] field_76870_h;
-	//Spout HD End
+	// Spout HD End
 
 	public TextureFlamesFX(int par1) {
 		super(Block.fire.blockIndexInTexture + par1 * 16);
-		// Spout HD start
+		// Spout HD Start
 		this.field_76869_g = new float[TileSize.int_flameArraySize];
 		this.field_76870_h = new float[TileSize.int_flameArraySize];
-		// Spout HD end
+		// Spout HD End
 	}
 
 	public void onTick() {
 		int var3;
 		float var4;
 		int var6;
-		// Spout HD start
+		// Spout HD Start
 		for (int var1 = 0; var1 < TileSize.int_size; ++var1) {
 			for (int var2 = 0; var2 < TileSize.int_flameHeight; ++var2) {
 				var3 = 18;
@@ -44,7 +44,7 @@ public class TextureFlamesFX extends TextureFX {
 
 				if (var2 >= TileSize.int_flameHeightMinus1) {
 					this.field_76870_h[var1 + var2 * TileSize.int_size] = (float)(Math.random() * Math.random() * Math.random() * 4.0D + Math.random() * 0.10000000149011612D + 0.20000000298023224D);
-					// Spout HD end
+					// Spout HD End
 				}
 			}
 		}

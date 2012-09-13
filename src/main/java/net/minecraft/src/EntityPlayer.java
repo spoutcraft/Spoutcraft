@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-//Spout Start
+// Spout Start
 import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
@@ -13,7 +13,7 @@ import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.client.special.Holiday;
 import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.client.special.VIP;
-//Spout End
+// Spout End
 
 public abstract class EntityPlayer extends EntityLiving implements ICommandSender {
 	public InventoryPlayer inventory = new InventoryPlayer(this);
@@ -59,7 +59,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	protected float speedOnGround = 0.1F;
 	protected float speedInAir = 0.02F;
 	public EntityFishHook fishEntity = null;
-	//Spout start
+	// Spout Start
 	public boolean sneakToggle = false;
 	public boolean runToggle = false;
 	public boolean treadWaterToggle = false;
@@ -67,7 +67,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	public boolean autoBackwardToggle = false;
 	public MovementInput movementInput = new MovementInputFromOptions(SpoutClient.getHandle().gameSettings); // Spout - always have an instance!
 	public VIP vip = null;
-	//Spout end
+	// Spout End
 
 	public EntityPlayer(World par1World) {
 		super(par1World);
@@ -80,9 +80,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		this.field_70741_aB = 180.0F;
 		this.fireResistance = 20;
 		this.texture = "/mob/char.png";
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftHumanEntity(this);
-		//Spout end
+		// Spout End
 	}
 
 	public int getMaxHealth() {
@@ -286,14 +286,14 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public void updateCloak() {
-		//Spout start
+		// Spout Start
 		updateCloak("http://static.spout.org/cape/" + ChatColor.stripColor(this.username) + ".png");
-		//Spout end
+		// Spout End
 	}
 
-	//Spout Start
+	// Spout Start
 	public void updateCloak(String cloak) {
-		//Spout Easter Egg
+		// Spout Easter Egg
 		String tempName = ChatColor.stripColor(username);
 		VIP vip = Resources.getVIP(tempName);
 		playerCloakUrl = cloak;
@@ -307,7 +307,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		}	
 		this.cloakUrl = this.playerCloakUrl;
 	}
-	//Spout End
+	// Spout End
 
 	public void updateRidden() {
 		double var1 = this.posX;
@@ -360,7 +360,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		super.onLivingUpdate();
 		this.landMovementFactor = this.capabilities.getWalkSpeed();
 		this.jumpMovementFactor = this.speedInAir;
-		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { //Spout no sprinting while moving backwards
+		if (this.isSprinting() && this.movementInput.moveForward >= 0F) { // Spout no sprinting while moving backwards
 			this.landMovementFactor = (float)((double)this.landMovementFactor + (double)this.capabilities.getWalkSpeed() * 0.3D);
 			this.jumpMovementFactor = (float)((double)this.jumpMovementFactor + (double)this.speedInAir * 0.3D);
 		}
@@ -1061,12 +1061,12 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			double var9 = this.motionY;
 			float var11 = this.jumpMovementFactor;
 			this.jumpMovementFactor =this.capabilities.getFlySpeed();
-			//Spout start
+			// Spout Start
 			jumpMovementFactor *= ConfigReader.flightSpeedMultiplier;
 			if (this.isSprinting()) {
 				jumpMovementFactor += ConfigReader.flightSpeedMultiplier / 10;
 			}
-			//Spout end
+			// Spout End
 			super.moveEntityWithHeading(par1, par2);
 			this.motionY = var9 * 0.6D;
 			this.jumpMovementFactor = var11;
@@ -1279,7 +1279,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		this.theInventoryEnderChest = par1EntityPlayer.theInventoryEnderChest;
 	}
-	//Spout added back handle key press
+	// Spout added back handle key press
 	public void handleKeyPress(int i, boolean keyReleased) {
 		
 	}
@@ -1288,7 +1288,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		return (this.inWater || this.partiallyInWater) && this.treadWaterToggle;
 	}
 
-	//Spout Easter Egg
+	// Spout Easter Egg
 	public void doFancyStuff() {
 		if (isSneaking()) {
 			return;
@@ -1308,7 +1308,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			}
 		}
 	}
-	//Spout End
+	// Spout End
 	
 	protected boolean canTriggerWalking() {
 		return !this.capabilities.isFlying;

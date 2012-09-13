@@ -28,9 +28,9 @@ public class TexturePackFolder extends TexturePackImplementation {
 		return super.getResourceAsStream(par1Str);
 	}
 
-	// Spout HD start
+	// Spout HD Start
 	public File getFolder() {
 		return this.field_77548_a;
 	}
-	// Spout HD end
+	// Spout HD End
 }

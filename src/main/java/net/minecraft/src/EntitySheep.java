@@ -9,7 +9,7 @@ public class EntitySheep extends EntityAnimal {
 	/**
 	 * Holds the RGB table of the sheep colors - in OpenGL glColor3f values - used to render the sheep colored fleece.
 	 */
-	public static float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}}; //Spout removed final
+	public static float[][] fleeceColorTable = new float[][] {{1.0F, 1.0F, 1.0F}, {0.95F, 0.7F, 0.2F}, {0.9F, 0.5F, 0.85F}, {0.6F, 0.7F, 0.95F}, {0.9F, 0.9F, 0.2F}, {0.5F, 0.8F, 0.1F}, {0.95F, 0.7F, 0.8F}, {0.3F, 0.3F, 0.3F}, {0.6F, 0.6F, 0.6F}, {0.3F, 0.6F, 0.7F}, {0.7F, 0.4F, 0.9F}, {0.2F, 0.4F, 0.8F}, {0.5F, 0.4F, 0.3F}, {0.4F, 0.5F, 0.2F}, {0.8F, 0.3F, 0.3F}, {0.1F, 0.1F, 0.1F}}; // Spout removed final
 
 	/**
 	 * Used to control movement as well as wool regrowth. Set to 40 on handleHealthUpdate and counts down with each tick.
@@ -18,7 +18,7 @@ public class EntitySheep extends EntityAnimal {
 
 	/** The eat grass AI task for this mob. */
 	private EntityAIEatGrass aiEatGrass = new EntityAIEatGrass(this);
-	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone(); //Spout
+	public static float[][] origFleeceColorTable = (float[][])fleeceColorTable.clone(); // Spout
 
 	public EntitySheep(World par1World) {
 		super(par1World);
@@ -35,9 +35,9 @@ public class EntitySheep extends EntityAnimal {
 		this.tasks.addTask(6, new EntityAIWander(this, var2));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftSheep(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

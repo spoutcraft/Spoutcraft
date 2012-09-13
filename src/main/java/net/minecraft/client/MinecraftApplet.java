@@ -7,10 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.CanvasMinecraftApplet;
 import net.minecraft.src.MinecraftAppletImpl;
 import net.minecraft.src.Session;
-//Spout start
+// Spout Start
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-//Spout end
+// Spout End
 
 public class MinecraftApplet extends Applet {
 
@@ -34,7 +34,7 @@ public class MinecraftApplet extends Applet {
 		} else {
 			this.mc.session = new Session("Player", "");
 		}
-		//Spout Start
+		// Spout Start
 		if(this.getParameter("spoutcraftlauncher") != null) {
 			Minecraft.spoutcraftLauncher = this.getParameter("spoutcraftlauncher").equalsIgnoreCase("true");
 		}
@@ -52,7 +52,7 @@ public class MinecraftApplet extends Applet {
 				Authenticator.setDefault(new ProxyAuthenticator(this.getParameter("proxy_user"), this.getParameter("proxy_pass")));
 			}
 		}
-		//Spout End
+		// Spout End
 
 		if (this.getParameter("server") != null && this.getParameter("port") != null) {
 			this.mc.setServer(this.getParameter("server"), Integer.parseInt(this.getParameter("port")));
@@ -124,7 +124,7 @@ public class MinecraftApplet extends Applet {
 
 	}
 	
-	//Spout start
+	// Spout Start
 	private static class ProxyAuthenticator extends Authenticator {
 		final String user, pass;
 		ProxyAuthenticator(String user, String pass) {
@@ -135,5 +135,5 @@ public class MinecraftApplet extends Applet {
 			return new PasswordAuthentication(user, pass.toCharArray());
 		}
 	}
-	//Spout end
+	// Spout End
 }

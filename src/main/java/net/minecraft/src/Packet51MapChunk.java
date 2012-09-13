@@ -108,9 +108,9 @@ public class Packet51MapChunk extends Packet {
 		} finally {
 			var4.end();
 		}
-		//Spout start
+		// Spout Start
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
-		//Spout end
+		// Spout End
 	}
 
 	/**

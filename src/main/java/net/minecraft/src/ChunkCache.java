@@ -312,7 +312,7 @@ public class ChunkCache implements IBlockAccess {
 		return 256;
 	}
 
-//Spout start
+// Spout Start
 	public int getGrassColorCache(int x, int y, int z) {
 		Chunk chunk = Minecraft.theMinecraft.theWorld.getChunkFromBlockCoords(x, z);
 		if (chunk != null) {
@@ -346,5 +346,5 @@ public class ChunkCache implements IBlockAccess {
 	public WorldChunkManager getWorldChunkManager() {
 		return Minecraft.theMinecraft.theWorld.getWorldChunkManager();
 	}
-	//Spout end
+	// Spout End
 }

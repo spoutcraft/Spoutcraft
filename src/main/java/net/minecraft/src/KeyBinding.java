@@ -13,7 +13,7 @@ public class KeyBinding {
 	public int pressTime = 0;
 
 	public static void onTick(int par0) {
-		//Spout start
+		// Spout Start
 		/*
 		KeyBinding var1 = (KeyBinding)hash.lookup(par0);
 		if (var1 != null) {
@@ -28,11 +28,11 @@ public class KeyBinding {
 				key.pressTime++;
 			}
 		}
-		//Spout end
+		// Spout End
 	}
 
 	public static void setKeyBindState(int par0, boolean par1) {
-		//Spout start
+		// Spout Start
 		/*
 		KeyBinding var2 = (KeyBinding)hash.lookup(par0);
 		if (var2 != null) {
@@ -47,7 +47,7 @@ public class KeyBinding {
 				key.pressed = par1;
 			}
 		}
-		//Spout end
+		// Spout End
 	}
 
 	public static void unPressAllKeys() {

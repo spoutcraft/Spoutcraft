@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class ColorizerGrass {
 
-	public static int[] grassBuffer = new int[65536]; //Spout HD private -> public
+	public static int[] grassBuffer = new int[65536]; // Spout HD private -> public
 
 	public static void setGrassBiomeColorizer(int[] par0ArrayOfInteger) {
 		grassBuffer = par0ArrayOfInteger;

@@ -41,11 +41,11 @@ public class ContainerEnchantment extends Container {
 		}
 	}
 
-	//Spout start
+	// Spout Start
 	public IInventory getIInventory() {
 		return tableInventory;
 	}
-	//Spout end
+	// Spout End
 	
 	public void addCraftingToCrafters(ICrafting par1ICrafting) {
 		super.addCraftingToCrafters(par1ICrafting);

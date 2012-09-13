@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftVillager; //Spout
+import org.spoutcraft.client.entity.CraftVillager; // Spout
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -68,9 +68,9 @@ public class EntityVillager extends EntityAgeable implements INpc, IMerchant {
 		this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityVillager.class, 5.0F, 0.02F));
 		this.tasks.addTask(9, new EntityAIWander(this, 0.3F));
 		this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftVillager(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

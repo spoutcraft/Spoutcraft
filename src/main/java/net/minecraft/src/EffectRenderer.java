@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
-//Spout start
+// Spout Start
 import java.util.LinkedList;
 
 import org.newdawn.slick.opengl.Texture;
@@ -15,7 +15,7 @@ import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
-//Spout end
+// Spout End
 
 public class EffectRenderer {
 
@@ -75,9 +75,9 @@ public class EffectRenderer {
 		EntityFX.interpPosY = par1Entity.lastTickPosY + (par1Entity.posY - par1Entity.lastTickPosY) * (double)par2;
 		EntityFX.interpPosZ = par1Entity.lastTickPosZ + (par1Entity.posZ - par1Entity.lastTickPosZ) * (double)par2;
 
-		// Spout start
+		// Spout Start
 		LinkedList<CustomEntityDiggingFX> specialParticles = new LinkedList<CustomEntityDiggingFX>();
-		// Spout end
+		// Spout End
 		for (int var8 = 0; var8 < 3; ++var8) {
 			if (!this.fxLayers[var8].isEmpty()) {
 				int var9 = 0;
@@ -101,12 +101,12 @@ public class EffectRenderer {
 
 				for (int var11 = 0; var11 < this.fxLayers[var8].size(); ++var11) {
 					EntityFX var12 = (EntityFX)this.fxLayers[var8].get(var11);
-					// Spout start
+					// Spout Start
 					if (var12 instanceof CustomEntityDiggingFX) {
 						specialParticles.add((CustomEntityDiggingFX) var12);
 						continue;
 					}
-					// Spout end
+					// Spout End
 					var10.setBrightness(var12.getBrightnessForRender(par2));
 					var12.renderParticle(var10, par2, var3, var7, var4, var5, var6);
 				}
@@ -114,11 +114,11 @@ public class EffectRenderer {
 				var10.draw();
 			}
 		}
-		// Spout start
+		// Spout Start
 		for (CustomEntityDiggingFX customFX : specialParticles) {
 			customFX.renderParticle(Tessellator.instance, par2, var3, var7, var4, var5, var6);
 		}
-		// Spout end
+		// Spout End
 	}
 
 	public void func_78872_b(Entity par1Entity, float par2) {
@@ -153,7 +153,7 @@ public class EffectRenderer {
 			Block var6 = Block.blocksList[par4];
 			byte var7 = 4;
 
-			// Spout start
+			// Spout Start
 			//TODO this needs to be moved into BlockDesign's API
 			boolean custom = false;
 			GenericBlockDesign design = null;
@@ -169,7 +169,7 @@ public class EffectRenderer {
 					custom = true;
 				}
 			}
-			// Spout end
+			// Spout End
 
 			for (int var8 = 0; var8 < var7; ++var8) {
 				for (int var9 = 0; var9 < var7; ++var9) {
@@ -178,12 +178,12 @@ public class EffectRenderer {
 						double var13 = (double)par2 + ((double)var9 + 0.5D) / (double)var7;
 						double var15 = (double)par3 + ((double)var10 + 0.5D) / (double)var7;
 						int var17 = this.rand.nextInt(6);
-						//Spout start
+						// Spout Start
 						if (custom) {
 							this.addEffect((new CustomEntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5, customTexture, design)).func_70596_a(par1, par2, par3));
 						}
 						else
-						//Spout end
+						// Spout End
 						this.addEffect((new EntityDiggingFX(this.worldObj, var11, var13, var15, var11 - (double)par1 - 0.5D, var13 - (double)par2 - 0.5D, var15 - (double)par3 - 0.5D, var6, var17, par5)).func_70596_a(par1, par2, par3));
 					}
 				}
@@ -228,7 +228,7 @@ public class EffectRenderer {
 				var8 = (double)par1 + var6.maxX + (double)var7;
 			}
 
-			// Spout start
+			// Spout Start
 			boolean custom = false;
 			GenericBlockDesign design = null;
 			int data = this.worldObj.getBlockMetadata(par1, par2, par3);
@@ -247,7 +247,7 @@ public class EffectRenderer {
 			if (!custom) {
 				this.addEffect((new EntityDiggingFX(this.worldObj, var8, var10, var12, 0.0D, 0.0D, 0.0D, var6, par4, data)).func_70596_a(par1, par2, par3).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
 			}
-			// Spout end
+			// Spout End
 		}
 	}
 

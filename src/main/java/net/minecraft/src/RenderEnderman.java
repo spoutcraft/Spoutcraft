@@ -3,9 +3,9 @@ package net.minecraft.src;
 import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-//Spout start
+// Spout Start
 import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-//Spout end
+// Spout End
 
 public class RenderEnderman extends RenderLiving {
 	private ModelEnderman endermanModel;

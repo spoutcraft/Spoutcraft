@@ -47,8 +47,8 @@ public class StringTranslate {
 					var1.put(var4[0], var4[1]);
 				}
 			}
-		} catch (Exception var5) { //Spout IOException -> Exception
-			//var5.printStackTrace(); //Spout
+		} catch (Exception var5) { // Spout IOException -> Exception
+			//var5.printStackTrace(); // Spout
 			return;
 		}
 
@@ -75,12 +75,12 @@ public class StringTranslate {
 			}
 		}
 		
-		// spout start
+		// Spout Start
 		this.loadSpoutLanguage(par1Properties, par2Str);
-		// spout end
+		// Spout End
 	}
 	
-	// spout start
+	// Spout Start
 	/**
 	 * Identical to loadLanguage except looks for spout langs instead.
 	 * Chose not to throw exception but catch internally so as not to interupt the existing process.
@@ -108,7 +108,7 @@ public class StringTranslate {
 			System.out.println("Unable to load Spout lang: " + lang);
 		}
 	}
-	// spout end
+	// Spout End
 	
 	public void setLanguage(String par1Str) {
 		if (!par1Str.equals(this.currentLanguage)) {
@@ -116,7 +116,7 @@ public class StringTranslate {
 
 			try {
 				this.loadLanguage(var2, "en_US");
-			} catch (Exception var8) { //Spout IOException -> Exception
+			} catch (Exception var8) { // Spout IOException -> Exception
 				;
 			}
 			
@@ -142,8 +142,8 @@ public class StringTranslate {
 							}
 						}
 					}
-				} catch (Exception var9) { //Spout IOException -> Exception
-					//var9.printStackTrace(); //Spout
+				} catch (Exception var9) { // Spout IOException -> Exception
+					//var9.printStackTrace(); // Spout
 					return;
 				}
 			}
@@ -168,7 +168,7 @@ public class StringTranslate {
 		return this.translateTable.getProperty(par1Str, par1Str);
 	}
 	
-	//spout start
+	// Spout Start
 	/**
 	 * Translate a key to a current language, with fallback if a key is not present.
 	 * @param key
@@ -181,7 +181,7 @@ public class StringTranslate {
 		}
 		return fallback;
 	}
-	//spout end
+	// Spout End
 	
 	/**
 	 * Translate a key to current language applying String.format()

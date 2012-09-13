@@ -3,13 +3,13 @@ package net.minecraft.src;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
-//Spout start
+// Spout Start
 import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
-//Spout end
+// Spout End
 
 public class RenderItem extends Render {
 
@@ -23,7 +23,7 @@ public class RenderItem extends Render {
 		this.shadowOpaque = 0.75F;
 	}
 	
-	//Spout start
+	// Spout Start
 	@Override
 	protected void loadTexture(String texture) {
 		if (this.renderManager != null && this.renderManager.renderEngine != null) {
@@ -33,7 +33,7 @@ public class RenderItem extends Render {
 			}
 		}
 	}
-	//Spout end
+	// Spout End
 
 	public void doRenderItem(EntityItem itemEntity, double x, double yOffset, double z, float var8, float deltaTime) {
 		// Spout Start
@@ -65,7 +65,7 @@ public class RenderItem extends Render {
 		float green;
 		int renderType;
 		
-		//Spout start
+		// Spout Start
 		boolean custom = false;
 		BlockDesign design = null;
 		if (itemStack.itemID == 318) {
@@ -113,17 +113,17 @@ public class RenderItem extends Render {
 					this.loadTexture("/gui/items.png");
 				}
 			}
-			//Spout end
+			// Spout End
 			
 			GL11.glTranslatef((float) x, (float) yOffset + bounceAmmount, (float) z);
 			
-			//Spout start
+			// Spout Start
 			Block block = Block.blocksList[itemStack.itemID];
 			if (itemStack.itemID < 256 && block == null) {
 				//Invalid item
 			}
 			else if(itemStack.itemID < 256 && RenderBlocks.renderItemIn3d(block.getRenderType())) {
-			//Spout end
+			// Spout End
 				GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
 				float renderScale = 0.25F;
 				renderType = Block.blocksList[itemStack.itemID].getRenderType();
@@ -178,9 +178,9 @@ public class RenderItem extends Render {
 					GL11.glColor4f(var23 * blue, red * blue, green * blue, 1.0F);
 				}
 	
-				//Spout start
+				// Spout Start
 				this.renderItemBillboard(iconIndex, itemsOnGround, custom);
-				//Spout end
+				// Spout End
 			}
 	
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -188,11 +188,11 @@ public class RenderItem extends Render {
 		}
 	}
 	
-	//Spout start
+	// Spout Start
 	private void func_40267_a(int var1, int var2) {
 		renderItemBillboard(var1, var2, false);
 	}
-	//Spout end
+	// Spout End
 
 	private void renderItemBillboard(int var1, int var2, boolean customTexture) {
 		Tessellator var3 = Tessellator.instance;
@@ -204,14 +204,14 @@ public class RenderItem extends Render {
 		float var9 = 0.5F;
 		float var10 = 0.25F;
 		
-		//Spout start
+		// Spout Start
 		if (customTexture) {
 			var4 = 0F;
 			var5 = 1F;
 			var6 = 1F;
 			var7 = 0F;
 		}
-		//Spout end
+		// Spout End
 
 		for(int var11 = 0; var11 < var2; ++var11) {
 			GL11.glPushMatrix();
@@ -235,7 +235,7 @@ public class RenderItem extends Render {
 	}
 
 	public void drawItemIntoGui(FontRenderer var1, RenderEngine var2, int var3, int var4, int var5, int var6, int var7) {
-		//Spout start
+		// Spout Start
 		boolean custom = false;
 		BlockDesign design = null;
 		if (var3 == 318) {
@@ -273,7 +273,7 @@ public class RenderItem extends Render {
 			design.renderItemOnHUD((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
 		}
 		else if(var3 < 256 && RenderBlocks.renderItemIn3d(Block.blocksList[var3].getRenderType())) {
-		//Spout end
+		// Spout End
 			Block var16 = Block.blocksList[var3];
 			GL11.glPushMatrix();
 			GL11.glTranslatef((float)(var6 - 2), (float)(var7 + 3), -3.0F + this.zLevel);
@@ -405,7 +405,7 @@ public class RenderItem extends Render {
 				GL11.glEnable(2929);
 			}
 			
-			//Spout start
+			// Spout Start
 			NBTTagList list = par3ItemStack.getAllEnchantmentTagList();
 			short max = -1;
 			short amnt = -1;
@@ -425,7 +425,7 @@ public class RenderItem extends Render {
 			if (par3ItemStack.isItemDamaged() || override) {
 				int var11 = (int)Math.round(13.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 13.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
 				int var7 = (int)Math.round(255.0D - (double)(override ? amnt : par3ItemStack.getItemDamageForDisplay()) * 255.0D / (double)(override ? max : par3ItemStack.getMaxDamage()));
-				//Spout end
+				// Spout End
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glDisable(GL11.GL_TEXTURE_2D);

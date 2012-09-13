@@ -13,7 +13,7 @@ import java.util.Map;
 import net.minecraft.client.Minecraft;
 
 public class TexturePackList {
-	public static final TexturePackBase field_77314_a = new TexturePackDefault(); //Spout private -> public
+	public static final TexturePackBase field_77314_a = new TexturePackDefault(); // Spout private -> public
 
 	/** The Minecraft instance. */
 	private final Minecraft mc;
@@ -29,7 +29,7 @@ public class TexturePackList {
 	private Map field_77308_f = new HashMap();
 
 	/** The TexturePack that will be used. */
-	public TexturePackBase selectedTexturePack; //Spout private -> public
+	public TexturePackBase selectedTexturePack; // Spout private -> public
 	private boolean field_77315_h;
 
 	public TexturePackList(File par1File, Minecraft par2Minecraft) {
@@ -203,7 +203,7 @@ public class TexturePackList {
 	static Minecraft getMinecraft(TexturePackList par0TexturePackList) {
 		return par0TexturePackList.mc;
 	}
-	// Spout HD start
+	// Spout HD Start
 	public TexturePackImplementation getSelectedTexturePackImplementation() {
 		return (TexturePackImplementation)this.selectedTexturePack;
 	}
@@ -211,5 +211,5 @@ public class TexturePackList {
 	public boolean a(TexturePackImplementation var1) {
 		return this.setTexturePack(var1);
 	}
-	// Spout HD end
+	// Spout HD End
 }

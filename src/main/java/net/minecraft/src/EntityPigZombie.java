@@ -22,9 +22,9 @@ public class EntityPigZombie extends EntityZombie {
 		this.moveSpeed = 0.5F;
 		this.attackStrength = 5;
 		this.isImmuneToFire = true;
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftPigZombie(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

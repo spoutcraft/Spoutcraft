@@ -1,15 +1,15 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.entity.CraftMooshroom; //Spout
+import org.spoutcraft.client.entity.CraftMooshroom; // Spout
 
 public class EntityMooshroom extends EntityCow {
 	public EntityMooshroom(World par1World) {
 		super(par1World);
 		this.texture = "/mob/redcow.png";
 		this.setSize(0.9F, 1.3F);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftMooshroom(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

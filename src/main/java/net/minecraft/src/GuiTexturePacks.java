@@ -111,7 +111,7 @@ public class GuiTexturePacks extends GuiScreen {
 		}
 
 		StringTranslate var4 = StringTranslate.getInstance();
-		this.drawCenteredString(this.fontRenderer, var4.translateKey("texturePack.title"), this.width / 2, 20, 16777215); //Spout changed pos from 16 -> 20
+		this.drawCenteredString(this.fontRenderer, var4.translateKey("texturePack.title"), this.width / 2, 20, 16777215); // Spout changed pos from 16 -> 20
 		this.drawCenteredString(this.fontRenderer, var4.translateKey("texturePack.folderInfo"), this.width / 2 - 77, this.height - 26, 8421504);
 		super.drawScreen(par1, par2, par3);
 	}

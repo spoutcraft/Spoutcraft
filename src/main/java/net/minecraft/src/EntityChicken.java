@@ -28,9 +28,9 @@ public class EntityChicken extends EntityAnimal {
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftChicken(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

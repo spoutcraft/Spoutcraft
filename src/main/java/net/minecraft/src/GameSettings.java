@@ -8,9 +8,9 @@ import java.io.PrintWriter;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-//Spout start
+// Spout Start
 import org.spoutcraft.client.SpoutClient;
-//Spout end
+// Spout End
 public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[] {"options.renderDistance.far", "options.renderDistance.normal", "options.renderDistance.short", "options.renderDistance.tiny"};
 	private static final String[] DIFFICULTIES = new String[] {"options.difficulty.peaceful", "options.difficulty.easy", "options.difficulty.normal", "options.difficulty.hard"};
@@ -67,7 +67,7 @@ public class GameSettings {
 	public KeyBinding keyBindPlayerList = new KeyBinding("key.playerlist", 15);
 	public KeyBinding keyBindPickBlock = new KeyBinding("key.pickItem", -98);
 	public KeyBinding field_74323_J = new KeyBinding("key.command", 53);
-	//Spout start
+	// Spout Start
 	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle Fog", Keyboard.KEY_F); 
 	public final KeyBinding keySneakToggle = new KeyBinding("Sneak Toggle", Keyboard.KEY_LCONTROL);
 	public final KeyBinding keyRunToggle = new KeyBinding("Run Toggle", Keyboard.KEY_RCONTROL);
@@ -88,7 +88,7 @@ public class GameSettings {
 	
 	public final KeyBinding[] spoutcraftBindings = {keyBindToggleFog, keySneakToggle, keyRunToggle, keyTreadWaterToggle, keyAutoForward,
 			keyAutoBackward, keyFlyToggle, keyFlyForward, keyFlyLeft, keyFlyBack, keyFlyRight, keyFlyUp, keyFlyDown, keyWaypoint, keyHideChat};
-	//Spout end
+	// Spout End
 	public KeyBinding[] keyBindings;
 	protected Minecraft mc;
 	private File optionsFile;
@@ -548,13 +548,13 @@ public class GameSettings {
 							var7.keyCode = Integer.parseInt(var3[1]);
 						}
 					}
-					//Spout start
+					// Spout Start
 					for (int key = 0; key < this.spoutcraftBindings.length; ++key) {
 						if (var3[0].equals("key_" + this.spoutcraftBindings[key].keyDescription)) {
 							this.spoutcraftBindings[key].keyCode = Integer.parseInt(var3[1]);
 						}
 					}
-					//Spout end
+					// Spout End
 				} catch (Exception var8) {
 					System.out.println("Skipping bad option: " + var2);
 				}
@@ -579,9 +579,9 @@ public class GameSettings {
 	 * Saves the options to the options file.
 	 */
 	public void saveOptions() {
-		//Spout start
+		// Spout Start
 		boolean oldLock = SpoutClient.disableSandbox();
-		//Spout end
+		// Spout End
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
 			var1.println("music:" + this.musicVolume);
@@ -621,21 +621,21 @@ public class GameSettings {
 				KeyBinding var5 = var2[var4];
 				var1.println("key_" + var5.keyDescription + ":" + var5.keyCode);
 			}
-			//Spout start
+			// Spout Start
 			for (int key = 0; key < this.spoutcraftBindings.length; ++key) {
 				var1.println("key_" + this.spoutcraftBindings[key].keyDescription + ":" + this.spoutcraftBindings[key].keyCode);
 			}
-			//Spout end
+			// Spout End
 
 			var1.close();
 		} catch (Exception var6) {
 			System.out.println("Failed to save options");
 			var6.printStackTrace();
-		//Spout start
+		// Spout Start
 		} finally {
 			SpoutClient.enableSandbox(oldLock);
 		}
-		//Spout end
+		// Spout End
 
 		if (this.mc.thePlayer != null) {
 			this.mc.thePlayer.sendQueue.addToSendQueue(new Packet204ClientInfo(this.language, this.renderDistance, this.chatVisibility, this.chatColours, this.difficulty));

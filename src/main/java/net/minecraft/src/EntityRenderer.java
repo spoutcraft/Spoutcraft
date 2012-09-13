@@ -12,13 +12,13 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
-//Spout start
+// Spout Start
 import com.pclewis.mcpatcher.mod.Shaders;
 import org.lwjgl.util.vector.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-//Spout end
+// Spout End
 
 public class EntityRenderer {
 	public static boolean anaglyphEnable = false;
@@ -61,7 +61,7 @@ public class EntityRenderer {
 	private long prevFrameTime = Minecraft.getSystemTime();
 	private long renderEndNanoTime = 0L;
 	private boolean lightmapUpdateNeeded = false;
-	public float torchFlickerX = 0.0F; //Spout private -> public
+	public float torchFlickerX = 0.0F; // Spout private -> public
 	float torchFlickerDX = 0.0F;
 	float torchFlickerY = 0.0F;
 	float torchFlickerDY = 0.0F;
@@ -473,7 +473,7 @@ public class EntityRenderer {
 	}
 
 	public void disableLightmap(double par1) {
-		Shaders.disableLightmap(); //Spout
+		Shaders.disableLightmap(); // Spout
 		OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -497,7 +497,7 @@ public class EntityRenderer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-		Shaders.enableLightmap(); //Spout
+		Shaders.enableLightmap(); // Spout
 	}
 
 	private void updateTorchFlicker() {
@@ -748,7 +748,7 @@ public class EntityRenderer {
 	}
 
 	public void renderWorld(float par1, long par2) {
-		Shaders.beginRender(this.mc, par1, par2);//Spout
+		Shaders.beginRender(this.mc, par1, par2);// Spout
 		this.mc.mcProfiler.startSection("lightTex");
 
 		if (this.lightmapUpdateNeeded) {
@@ -771,7 +771,7 @@ public class EntityRenderer {
 		double var11 = var4.lastTickPosZ + (var4.posZ - var4.lastTickPosZ) * (double)par1;
 		this.mc.mcProfiler.endStartSection("center");
 
-		for (int var13 = 0; var13 < (this.mc.gameSettings.anaglyph ? 2 : 1); ++var13) { //Spout
+		for (int var13 = 0; var13 < (this.mc.gameSettings.anaglyph ? 2 : 1); ++var13) { // Spout
 			if (this.mc.gameSettings.anaglyph) {
 				anaglyphField = var13;
 				if (anaglyphField == 0) {
@@ -787,12 +787,12 @@ public class EntityRenderer {
 			GL11.glClear(16640);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			this.mc.mcProfiler.endStartSection("camera");
-			//Spout start
+			// Spout Start
 			Shaders.setClearColor(this.fogColorRed, this.fogColorGreen, this.fogColorBlue);
 			this.setupCameraTransform(par1, var13);
 			ActiveRenderInfo.updateRenderInfo(this.mc.thePlayer, this.mc.gameSettings.thirdPersonView == 2);
 			Shaders.setCamera(par1);
-			//Spout end
+			// Spout End
 			this.mc.mcProfiler.endStartSection("frustrum");
 			ClippingHelperImpl.getInstance();
 			if (this.mc.gameSettings.renderDistance < 2 || ConfigReader.farView) { // Spout
@@ -827,9 +827,9 @@ public class EntityRenderer {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
 			RenderHelper.disableStandardItemLighting();
 			this.mc.mcProfiler.endStartSection("terrain");
-			//Spout start
+			// Spout Start
 			Shaders.sortAndRenderWrapper(var5, var4, 0, (double)par1);
-			//Spout end
+			// Spout End
 			GL11.glShadeModel(GL11.GL_FLAT);
 			EntityPlayer var17;
 			if (this.debugViewDirection == 0) {
@@ -857,10 +857,10 @@ public class EntityRenderer {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			//Spout start
+			// Spout Start
 			final int passes = Shaders.isEnabled() ? 3 : 2;
 			for (this.betterGrassLoop = 1; this.betterGrassLoop < passes; ++this.betterGrassLoop) {
-			//Spout end
+			// Spout End
 			GL11.glDepthMask(true);
 			this.setupFog(0, par1);
 			GL11.glEnable(GL11.GL_BLEND);
@@ -873,7 +873,7 @@ public class EntityRenderer {
 				}
 
 				GL11.glColorMask(false, false, false, false);
-				int var18 = Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); //Spout
+				int var18 = Shaders.sortAndRenderWrapper(var5, var4, this.betterGrassLoop, (double)par1); // Spout
 				if (this.mc.gameSettings.anaglyph) {
 					if (anaglyphField == 0) {
 						GL11.glColorMask(false, true, true, true);
@@ -885,20 +885,20 @@ public class EntityRenderer {
 				}
 
 				if (var18 > 0) {
-					var5.renderAllRenderLists(this.betterGrassLoop, (double)par1); //Spout
+					var5.renderAllRenderLists(this.betterGrassLoop, (double)par1); // Spout
 				}
 
 				GL11.glShadeModel(GL11.GL_FLAT);
 			} else {
 				this.mc.mcProfiler.endStartSection("water");
-				Shaders.sortAndRenderWrapper(var5, var4, betterGrassLoop, (double)par1); //Spout
+				Shaders.sortAndRenderWrapper(var5, var4, betterGrassLoop, (double)par1); // Spout
 			}
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glDisable(GL11.GL_BLEND);
 			
 			}
-			//Spout
+			// Spout
 			if (this.cameraZoom == 1.0D && var4 instanceof EntityPlayer && !this.mc.gameSettings.hideGUI && this.mc.objectMouseOver != null && !var4.isInsideOfMaterial(Material.water)) {
 				var17 = (EntityPlayer)var4;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -915,11 +915,11 @@ public class EntityRenderer {
 			GL11.glDisable(GL11.GL_BLEND);
 			this.mc.mcProfiler.endStartSection("weather");
 
-			//Spout start
+			// Spout Start
 			Shaders.beginWeather();
 			this.renderRainSnow(par1);
 			Shaders.endWeather();
-			//Spout end
+			// Spout End
 			GL11.glDisable(GL11.GL_FOG);
 
 			if (this.mc.gameSettings.shouldRenderClouds()) {
@@ -936,9 +936,9 @@ public class EntityRenderer {
 			this.mc.mcProfiler.endStartSection("hand");
 			if (this.cameraZoom == 1.0D) {
 				GL11.glClear(256);
-				Shaders.beginHand(); //Spout start
+				Shaders.beginHand(); // Spout Start
 				this.renderHand(par1, var13);
-				Shaders.endHand(); //Spout start
+				Shaders.endHand(); // Spout Start
 			}
 
 			if (!this.mc.gameSettings.anaglyph) {
@@ -950,7 +950,7 @@ public class EntityRenderer {
 
 		GL11.glColorMask(true, true, true, false);
 		this.mc.mcProfiler.endSection();
-		Shaders.endRender(); //Spout
+		Shaders.endRender(); // Spout
 	}
 
 	private void addRainParticles() {
@@ -1026,11 +1026,11 @@ public class EntityRenderer {
 	}
 
 	protected void renderRainSnow(float par1) {
-		//Spout start
+		// Spout Start
 		if (!ConfigReader.weather) {
 			return;
 		}
-		//Spout end
+		// Spout End
 		float var2 = this.mc.theWorld.getRainStrength(par1);
 		if (var2 > 0.0F) {
 			this.enableLightmap((double)par1);
@@ -1066,11 +1066,11 @@ public class EntityRenderer {
 			double var13 = var41.lastTickPosZ + (var41.posZ - var41.lastTickPosZ) * (double)par1;
 			int var15 = MathHelper.floor_double(var11);
 			byte var16 = 5;
-			//Spout start
+			// Spout Start
 			if (ConfigReader.fancyWeather) {
 				var16 = 10;
 			}
-			//Spout end
+			// Spout End
 			byte var18 = -1;
 			float var19 = (float)this.rendererUpdateCount + par1;
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -1349,7 +1349,7 @@ public class EntityRenderer {
 					}
 				} else if (var5 > 0 && Block.blocksList[var5].blockMaterial == Material.water) {
 					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_EXP);
-					// Spout start
+					// Spout Start
 					float density = 0.1F;
 					if (var3.isPotionActive(Potion.waterBreathing)) {
 						density = 0.05F;
@@ -1358,7 +1358,7 @@ public class EntityRenderer {
 						density = 0.02F;
 					}
 					GL11.glFogf(GL11.GL_FOG_DENSITY, density);
-					// Spout end
+					// Spout End
 					var6 = 0.4F;
 					var12 = 0.4F;
 					var8 = 0.9F;
@@ -1399,12 +1399,12 @@ public class EntityRenderer {
 						}
 					}
 
-					//Spout Start
+					// Spout Start
 					if (!ConfigReader.voidFog) {
 						var6 = 0.8F * this.farPlaneDistance;
 						var12 = this.farPlaneDistance;
 					}
-					//Spout End
+					// Spout End
 
 					GL11.glFogi(GL11.GL_FOG_MODE, GL11.GL_LINEAR);
 					if (par1 < 0) {
@@ -1416,13 +1416,13 @@ public class EntityRenderer {
 					}
 
 					if (GLContext.getCapabilities().GL_NV_fog_distance) {
-						// Spout start
+						// Spout Start
 						if (ConfigReader.fancyFog) {
 							GL11.glFogi('\u855a', '\u855b');
 						} else {
 							GL11.glFogi('\u855a', '\u855c');
 						}
-						// Spout end
+						// Spout End
 					}
 
 					if (this.mc.theWorld.provider.doesXZShowFog((int)var3.posX, (int)var3.posZ)) {

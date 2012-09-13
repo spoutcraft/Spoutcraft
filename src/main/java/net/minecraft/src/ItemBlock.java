@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 
-import com.pclewis.mcpatcher.mod.Colorizer;  //Spout HD
+import com.pclewis.mcpatcher.mod.Colorizer;  // Spout HD
 
 public class ItemBlock extends Item {
 
@@ -137,7 +137,7 @@ public class ItemBlock extends Item {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
 	
-//Spout start
+// Spout Start
 	//fix metadata for double slabs
 	public int getMetadata(int damage) {
 		if (blockID == Block.stoneDoubleSlab.blockID){
@@ -145,10 +145,10 @@ public class ItemBlock extends Item {
 		}
 		return super.getMetadata(damage);
 	}
-//Spout end
- //Spout HD start
+// Spout End
+ // Spout HD Start
 	public int getColorFromDamage(int var1, int var2) {
 		return Colorizer.getItemColorFromDamage(super.getColorFromDamage(var1, var2), this.blockID, var1);
 	}
- //Spout HD end
+ // Spout HD End
 }

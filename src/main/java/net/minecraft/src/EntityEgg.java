@@ -5,23 +5,23 @@ import org.spoutcraft.client.entity.CraftEgg;
 public class EntityEgg extends EntityThrowable {
 	public EntityEgg(World par1World) {
 		super(par1World);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftEgg(this);
-		//Spout end
+		// Spout End
 	}
 
 	public EntityEgg(World par1World, EntityLiving par2EntityLiving) {
 		super(par1World, par2EntityLiving);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftEgg(this);
-		//Spout end
+		// Spout End
 	}
 
 	public EntityEgg(World par1World, double par2, double par4, double par6) {
 		super(par1World, par2, par4, par6);
-		//Spout start
+		// Spout Start
 		this.spoutEntity = new CraftEgg(this);
-		//Spout end
+		// Spout End
 	}
 
 	/**

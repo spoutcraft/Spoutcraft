@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.spoutcraft.client.DataMiningThread; //Spout
+import org.spoutcraft.client.DataMiningThread; // Spout
 
 public class Packet1Login extends Packet {
 
@@ -84,9 +84,9 @@ public class Packet1Login extends Packet {
 	 * Passes this Packet on to the NetHandler for processing.
 	 */
 	public void processPacket(NetHandler par1NetHandler) {
-		//Spout Start
+		// Spout Start
 		DataMiningThread.getInstance().onLogin();
-		//Spout End
+		// Spout End
 		par1NetHandler.handleLogin(this);
 	}
 

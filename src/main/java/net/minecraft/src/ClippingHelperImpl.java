@@ -23,7 +23,7 @@ public class ClippingHelperImpl extends ClippingHelper {
 	}
 
 	private void init() {
-		//Spout start
+		// Spout Start
 		/*
 		this.projectionMatrixBuffer.clear();
 		this.modelviewMatrixBuffer.clear();
@@ -33,7 +33,7 @@ public class ClippingHelperImpl extends ClippingHelper {
 		*/
 		modelviewMatrixBuffer = ActiveRenderInfo.modelMatrix.duplicate();
 		projectionMatrixBuffer = ActiveRenderInfo.projectionMatrix.duplicate();
-		//Spout end
+		// Spout End
 		
 		this.projectionMatrixBuffer.flip().limit(16);
 		this.projectionMatrixBuffer.get(this.projectionMatrix);
