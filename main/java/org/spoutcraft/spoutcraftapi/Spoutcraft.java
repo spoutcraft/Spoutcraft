@@ -82,7 +82,7 @@ public final class Spoutcraft {
 	 * Gets the build version of the client.
 	 * @return version
 	 */
-	public static long getVersion() {
+	public static String getVersion() {
 		return client.getVersion();
 	}
 

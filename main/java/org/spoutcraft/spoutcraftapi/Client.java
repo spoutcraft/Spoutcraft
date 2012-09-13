@@ -44,7 +44,7 @@ import org.spoutcraft.spoutcraftapi.util.FixedLocation;
 public interface Client extends PropertyInterface {
 	public String getName();
 
-	public long getVersion();
+	public String getVersion();
 
 	public World getWorld();
 
