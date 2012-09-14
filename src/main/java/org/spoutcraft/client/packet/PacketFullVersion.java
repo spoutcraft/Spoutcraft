@@ -60,6 +60,6 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public int getVersion() {
-		return 1;
+		return 0;
 	}
 }
