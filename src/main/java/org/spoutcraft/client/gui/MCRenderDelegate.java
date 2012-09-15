@@ -909,7 +909,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		int remove = 0;
 		while (font.getStringWidth(t) > width) {
 			remove++;
-			t = text.substring(0, text.length() - 1 - remove) + "...";
+			t = text.substring(0, Math.max(0, text.length() - 1 - remove)) + "...";
 		}
 		optimalWidth.put(hash, t);
 		return t;
