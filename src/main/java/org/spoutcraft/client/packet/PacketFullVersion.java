@@ -31,14 +31,7 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public PacketFullVersion(String versionString) {
-		try {
-			//Will break if builds are < 1000 or > 9999
-			//1.3.2 b1111
-			version = Integer.parseInt(versionString.substring(7));
-		} catch (Exception e) {
-			e.printStackTrace();
-			version = 1;
-		}
+		version = 1700L;
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
