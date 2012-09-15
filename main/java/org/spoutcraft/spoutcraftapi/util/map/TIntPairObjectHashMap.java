@@ -39,6 +39,10 @@ public class TIntPairObjectHashMap<K>{
 		map = new TLongObjectHashMap<K>(capacity);
 	}
 
+	public TIntPairObjectHashMap(TLongObjectHashMap<K> raw) {
+		map = raw;
+	}
+
 	public K put(int key1, int key2, K value) {
 		long key = (((long)key1)<<32) | (((long)key2) & 0xFFFFFFFFL);
 		return map.put(key, value);
