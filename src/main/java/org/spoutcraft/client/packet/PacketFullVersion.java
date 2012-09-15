@@ -39,7 +39,7 @@ public class PacketFullVersion implements SpoutPacket {
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeLong(version);
+		output.writeLong(versionString);
 	}
 
 	public void run(int playerId) {
