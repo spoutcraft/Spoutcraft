@@ -1287,8 +1287,13 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 
 			while (Mouse.next()) {
 				// Spout Start
-				if(!(Mouse.getEventButton()>2))
+				if(!(Mouse.getEventButton()>2)){
 					((SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager()).pressKey(Mouse.getEventButton()-100, Mouse.getEventButtonState(), ScreenUtil.getType(currentScreen).getCode());
+					
+					if(this.currentScreen == null){
+						this.thePlayer.handleKeyPress(Mouse.getEventButton()-100, Mouse.getEventButtonState()); //spout handle mouse click when in game screen
+					}
+				}
 				// Spout End
 				KeyBinding.setKeyBindState(Mouse.getEventButton() - 100, Mouse.getEventButtonState());
 				if (Mouse.getEventButtonState()) {
