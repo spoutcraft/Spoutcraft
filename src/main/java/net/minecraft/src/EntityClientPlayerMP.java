@@ -65,7 +65,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		}else if(this.isSprinting && !this.canSprint){
 		    setSprinting(false);
 		    runToggle = false;
-                }
+		}
 		// Spout End
 	}
 
