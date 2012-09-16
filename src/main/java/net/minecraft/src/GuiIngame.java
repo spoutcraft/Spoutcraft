@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import net.minecraft.client.Minecraft;
 
+// Spout Start
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
@@ -18,6 +19,7 @@ import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
 import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
 import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
 import org.spoutcraft.spoutcraftapi.player.ChatMessage;
+// Spout End
 
 public class GuiIngame extends Gui
 {
