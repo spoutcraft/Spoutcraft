@@ -1,14 +1,15 @@
 package net.minecraft.src;
 
-import org.spoutcraft.client.SpoutClient; // Spout
-import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.ChunkNetCache;
+import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 public class Packet51MapChunk extends Packet {
 
@@ -67,7 +68,9 @@ public class Packet51MapChunk extends Packet {
 			var5.end();
 		}
 	}
-
+	// Spout Start
+	private static final byte[] inflateBuffer = new byte[196864];
+	// Spout End
 	/**
 	 * Abstract. Reads the raw packet data from the data stream.
 	 */
@@ -97,18 +100,19 @@ public class Packet51MapChunk extends Packet {
 			var3 += 256;
 		}
 
-		this.field_73596_g = new byte[var3];
+		// Spout Start
 		Inflater var4 = new Inflater();
 		var4.setInput(temp, 0, this.tempLength);
 
+		int length = 0;
 		try {
-			var4.inflate(this.field_73596_g);
+			length = var4.inflate(inflateBuffer);
 		} catch (DataFormatException var9) {
 			throw new IOException("Bad compressed data format");
 		} finally {
 			var4.end();
 		}
-		// Spout Start
+		this.field_73596_g = ChunkNetCache.handle(inflateBuffer, length, this.tempLength, this.includeInitialize ? 16 : var2, xCh, zCh);
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
 		// Spout End
 	}

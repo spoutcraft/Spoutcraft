@@ -21,6 +21,8 @@ package org.spoutcraft.client.packet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
+import net.minecraft.src.Packet;
+import net.minecraft.src.Packet250CustomPayload;
 
 import org.spoutcraft.client.SpoutClient;
 
@@ -43,6 +45,22 @@ public class PacketManager {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Sends a minecraft custom packet to the server
+	 * 
+	 * @param channel the channel name
+	 * @param data the data array
+	 */
+	public void sendCustomPacket(String channel, byte[] data) {
+		sendPacket(new Packet250CustomPayload(channel, data));
+	}
+	
+	
+	private void sendPacket(Packet packet) {
+		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
+		player.sendQueue.addToSendQueue(packet);
 	}
 
 	/**

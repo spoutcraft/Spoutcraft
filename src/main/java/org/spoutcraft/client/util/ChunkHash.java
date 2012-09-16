@@ -20,10 +20,16 @@
 package org.spoutcraft.client.util;
 
 public class ChunkHash {
-	public static long hash(byte[] a) {
+	
+	public static long hash(final byte[] a) {
+		return hash(a, 0, a.length);
+	}
+	
+	public static long hash(final byte[] a, final int off, final int len) {
 		long h = 1;
-		for (byte b : a) {
-			h += (h<<5) + (long)b;
+		int end = off + len;
+		for (int i = off; i < end; i++) {
+			h += (h << 5) + (long) a[i];
 		}
 		return h;
 	}
