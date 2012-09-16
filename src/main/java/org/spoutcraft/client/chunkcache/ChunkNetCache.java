@@ -135,7 +135,7 @@ public class ChunkNetCache {
 
 		if (CRCNew != CRC) {
 			System.out.println("Cache Error: CRC mismatch, received: " + CRC + " CRC of data: " + CRCNew);
-			System.out.println("Cache Error: Chunk coords chunk resend: " + cx + " " + cz);
+			System.out.println("Cache Error: Chunk coords: " + cx + " " + cz);
 		}
 		
 		cacheInUse.set(true);
