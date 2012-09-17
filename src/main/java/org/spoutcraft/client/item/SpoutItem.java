@@ -29,6 +29,7 @@ import net.minecraft.src.World;
 import org.spoutcraft.spoutcraftapi.Spoutcraft;
 import org.spoutcraft.spoutcraftapi.material.CustomBlock;
 import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.spoutcraftapi.material.Weapon;
 import org.spoutcraft.spoutcraftapi.material.Food;
 import org.spoutcraft.spoutcraftapi.material.MaterialData;
 
@@ -45,6 +46,11 @@ public class SpoutItem extends Item {
 			if (player.canEat(false)) {
 				player.setItemInUse(item, 32);
 			}
+		} else if(customItem instanceof Weapon) {
+			Weapon weaponItem = (Weapon)customItem;
+			if( weaponItem.isBlockFlag() ) {
+				player.setItemInUse(item, 72000);
+			}
 		}
 		return item;
 	}
@@ -54,6 +60,8 @@ public class SpoutItem extends Item {
 		CustomItem customItem = MaterialData.getCustomItem(item.getItemDamage());
 		if (customItem instanceof Food) {
 			return EnumAction.eat;
+		} else if(customItem instanceof Weapon) {
+			return EnumAction.block;
 		}
 		return EnumAction.none;
 	}

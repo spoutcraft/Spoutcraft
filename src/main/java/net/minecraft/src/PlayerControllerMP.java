@@ -1,6 +1,14 @@
 package net.minecraft.src;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft; // Spout
+//Spout start
+import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.spoutcraftapi.material.Armor;
+import org.spoutcraft.spoutcraftapi.material.Weapon;
+import org.spoutcraft.spoutcraftapi.material.Tool;
+//Spout end
+
 
 import net.minecraft.client.Minecraft;
 
@@ -260,8 +268,17 @@ public class PlayerControllerMP {
 			if (!var14.canPlaceItemBlockOnSide(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack)) {
 				return false;
 			}
+		} 
+		//Spout start
+		else if(par3ItemStack != null && par3ItemStack.itemID == 318) {
+			// This will fix animation targeting a block.
+			CustomItem item = MaterialData.getCustomItem(par3ItemStack.getItemDamage()); 
+			if( item != null && ((item instanceof Weapon) || (item instanceof Armor) || (item instanceof Tool))) {
+				return sendUseItem(par1EntityPlayer, par2World, par3ItemStack);
+			}
 		}
-
+		//Spout end
+		
 		this.netClientHandler.addToSendQueue(new Packet15Place(par4, par5, par6, par7, par1EntityPlayer.inventory.getCurrentItem(), var9, var10, var11));
 
 		if (var12) {
