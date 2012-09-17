@@ -7,8 +7,6 @@ import java.util.List;
 import net.minecraft.src.NBTTagList;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
 // Spout End
 
 public class ItemStack { // Spout final -> gone
@@ -174,14 +172,6 @@ public class ItemStack { // Spout final -> gone
 	 * Returns true if the ItemStack can hold 2 or more units of the item.
 	 */
 	public boolean isStackable() {
-		// Spout start
-		if( itemID == 318 ) {
-			CustomItem item = MaterialData.getCustomItem(getItemDamage());
-			if( item != null && !item.isStackable() ) {
-				return false;
-			}
-		}
-		//Spout end
 		return this.getMaxStackSize() > 1 && (!this.isItemStackDamageable() || !this.isItemDamaged());
 	}
 
