@@ -425,8 +425,16 @@ public class NetClientHandler extends NetHandler {
 			this.worldClient.removeEntityFromWorld(par1Packet29DestroyEntity.entityId[var2]);
 		}
 	}
-
+	// Spout Start
+	private boolean cachePacketSent = false;
+	// Spout End
 	public void handleFlying(Packet10Flying par1Packet10Flying) {
+		// Spout Start
+		if (!cachePacketSent) {
+			cachePacketSent = true;
+			this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
+		}
+		// Spout End
 		EntityClientPlayerMP var2 = this.mc.thePlayer;
 		double var3 = var2.posX;
 		double var5 = var2.posY;

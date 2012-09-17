@@ -118,7 +118,7 @@ public class ChunkNetCache {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				//sendHashHints(nearbyHashes);
+				sendHashHints(nearbyHashes);
 			}
 		}
 

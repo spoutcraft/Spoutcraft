@@ -60,7 +60,9 @@ public class PacketManager {
 	
 	private void sendPacket(Packet packet) {
 		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
-		player.sendQueue.addToSendQueue(packet);
+		if (player != null) {
+			player.sendQueue.addToSendQueue(packet);
+		}
 	}
 
 	/**
