@@ -29,7 +29,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.util.ChunkHash;
 
 public class ChunkNetCache {
 	private static final SimpleFileCache p;
@@ -75,13 +74,11 @@ public class ChunkNetCache {
 			return crop(chunkData, decompressedSize);
 		}
 		
-		System.out.println("Handling chunk");
-		
 		int dataLength = PartitionChunk.getInt(chunkData, 0, decompressedSize - 5);
 		long CRC = PartitionChunk.getHash(chunkData, 0, decompressedSize - 13);
 		
 		int segments = dataLength >> 11;
-		if ((dataLength & 0x3FF) != 0) {
+		if ((dataLength & 0x7FF) != 0) {
 			segments++;
 		}
 		
@@ -89,19 +86,19 @@ public class ChunkNetCache {
 		System.arraycopy(chunkData, 0, newChunkData, 0, dataLength);
 
 		int cacheHit = 0;
-
+		
 		for (int i = 0; i < segments; i++) {
-			long hash = PartitionChunk.getHash(newChunkData, i, dataLength);
+			long hash = PartitionChunk.getHash(chunkData, i, dataLength);
 			byte[] partitionData = p.getData(hash);
 
 			if (hash == 0) {
-				PartitionChunk.copyFromChunkData(newChunkData, i, partition);
+				PartitionChunk.copyFromChunkData(chunkData, i, partition, dataLength);
 				hash = p.putData(partition);
 			} else if (partitionData == null) {
 				System.out.println("Cache Error: Unable to find hash " + Long.toHexString(hash));
 			} else {
 				cacheHit++;
-				PartitionChunk.copyToChunkData(newChunkData, i, partitionData);
+				PartitionChunk.copyToChunkData(newChunkData, i, partitionData, dataLength);
 			}
 
 			// Send hints to server about possible nearby hashes
@@ -121,7 +118,7 @@ public class ChunkNetCache {
 					nearbyHashes[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				sendHashHints(nearbyHashes);
+				//sendHashHints(nearbyHashes);
 			}
 		}
 
@@ -131,7 +128,7 @@ public class ChunkNetCache {
 			hitPercentage.set((100 * h) / a);
 		}
 
-		long CRCNew = ChunkHash.hash(newChunkData);
+		long CRCNew = PartitionChunk.hash(newChunkData);
 
 		if (CRCNew != CRC) {
 			System.out.println("Cache Error: CRC mismatch, received: " + CRC + " CRC of data: " + CRCNew);
@@ -139,7 +136,7 @@ public class ChunkNetCache {
 		}
 		
 		cacheInUse.set(true);
-
+		
 		return newChunkData;
 	}
 	

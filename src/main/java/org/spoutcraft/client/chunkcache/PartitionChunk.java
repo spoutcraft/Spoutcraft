@@ -20,32 +20,35 @@
 package org.spoutcraft.client.chunkcache;
 
 
-@SuppressWarnings("unchecked")
 public class PartitionChunk {
 	
-	static public void copyToChunkData(byte[] chunkData, int blockNum, byte[] partition) {
+	static public void copyToChunkData(byte[] chunkData, int blockNum, byte[] partition, int dataLength) {
 		
 		int j = blockNum << 11;
-
+		
 		boolean clear = partition == null;
 		
 		if (clear) {
-			for (int i = 0; i < 2048 && j < chunkData.length; i++) {
+			for (int i = 0; i < 2048 && j < dataLength; i++) {
 				chunkData[j++] = 0;
 			}
 		} else {
-			for (int i = 0; i < 2048 && j < chunkData.length; i++) {
+			for (int i = 0; i < 2048 && j < dataLength; i++) {
 				chunkData[j++] = partition[i];
 			}
 		}
 	}
 
-	static public void copyFromChunkData(byte[] chunkData, int blockNum, byte[] partition) {
+	static public void copyFromChunkData(byte[] chunkData, int blockNum, byte[] partition, int dataLength) {
 
 		int j = blockNum << 11;
 
-		for (int i = 0; i < 2048 && j < chunkData.length; i++) {
+		int i = 0;
+		for (i = 0; i < 2048 && j < dataLength; i++) {
 			partition[i] = chunkData[j++];
+		}
+		for (; i < 2048; i++) {
+			partition[i] = 0;
 		}
 	}
 	
@@ -91,5 +94,18 @@ public class PartitionChunk {
 		chunkData[p++] = (byte) (hash >> 16);
 		chunkData[p++] = (byte) (hash >> 8);
 		chunkData[p++] = (byte) (hash >> 0);
+	}
+	
+	public static long hash(final byte[] a) {
+		return hash(a, 0, a.length);
+	}
+	
+	public static long hash(final byte[] a, final int off, final int len) {
+		long h = 1;
+		int end = off + len;
+		for (int i = off; i < end; i++) {
+			h += (h << 5) + (long) a[i];
+		}
+		return h;
 	}
 }

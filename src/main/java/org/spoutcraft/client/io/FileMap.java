@@ -25,7 +25,7 @@ import java.io.RandomAccessFile;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.spoutcraft.client.util.ChunkHash;
+import org.spoutcraft.client.chunkcache.PartitionChunk;
 
 public class FileMap {
 	private final long size;
@@ -92,7 +92,7 @@ public class FileMap {
 		if (data.length != size) {
 			throw new IllegalArgumentException("Data array of incorrect length (" + data.length + ") passed to FileIO.write()");
 		}
-		if (ChunkHash.hash(data) != hash) {
+		if (PartitionChunk.hash(data) != hash) {
 			throw new IllegalArgumentException("Hash mismatch for data passed to FileIO.write()");
 		}
 		if (index < 0) {
@@ -113,7 +113,7 @@ public class FileMap {
 		index = index % entries;
 		long hash = readFAT(index);
 		data = readData(index, data);
-		long dataHash = ChunkHash.hash(data);
+		long dataHash = PartitionChunk.hash(data);
 		if (dataHash != hash) {
 			return null;
 		} else {
@@ -128,7 +128,7 @@ public class FileMap {
 		}
 		index = index % entries;
 		data = readData(index, data);
-		long dataHash = ChunkHash.hash(data);
+		long dataHash = PartitionChunk.hash(data);
 		if (dataHash != hash) {
 			this.writeFAT(index, 0);
 			return null;

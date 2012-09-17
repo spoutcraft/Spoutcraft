@@ -35,8 +35,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.spoutcraft.client.util.ChunkHash;
-
 public class SimpleFileCache {
 	
 	private static final int VERSION = 1;
@@ -74,6 +72,9 @@ public class SimpleFileCache {
 		
 		prune(files);
 		
+		files = dir.listFiles();
+		Arrays.sort(files, fileCompare);
+		
 		readFAT(files);
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -99,10 +100,9 @@ public class SimpleFileCache {
 				size += file.length();
 			}
 		}
-
 		int cnt = 0;
 
-		while(size > limit && cnt < files.length) {
+		while(size > (limit << 10) && cnt < files.length) {
 			File current = files[cnt++];
 			if(current.isFile()) {
 				size -= current.length();
@@ -175,7 +175,7 @@ public class SimpleFileCache {
 			for (int i = 0; i < entries; i++) {
 				byte[] array = new byte[2048];
 				din.readFully(array);
-				long newHash = ChunkHash.hash(array);
+				long newHash = PartitionChunk.hash(array);
 				if (newHash == hash[i]) {
 					cache.put(hash[i], new SoftReference<byte[]>(array));
 					if (hash[i] == needle) {
@@ -364,7 +364,7 @@ public class SimpleFileCache {
 
 		public void run() {
 			File file = getFileFromInt(id);
-
+			
 			DataOutputStream dos = null;
 			
 			try {
@@ -431,7 +431,7 @@ public class SimpleFileCache {
 			}
 			this.data = new byte[data.length];
 			System.arraycopy(data, 0, this.data, 0, data.length);
-			this.hash = ChunkHash.hash(this.data);
+			this.hash = PartitionChunk.hash(this.data);
 		}
 		
 		public long getHash() {
