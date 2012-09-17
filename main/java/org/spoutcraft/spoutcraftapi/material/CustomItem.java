@@ -31,4 +31,6 @@ public interface CustomItem extends Item {
 	public CustomItem setTexture(String texture);
 
 	public String getTexture();
+	
+	public boolean isStackable();
 }

@@ -38,7 +38,8 @@ public class GenericCustomItem implements CustomItem {
 	private Addon addon;
 	private int customId;
 	public String texture;
-
+	public boolean isStackable;
+	
 	/**
 	 * Creates a GenericCustomItem with no values, used for serialization purposes only.
 	 */
@@ -109,6 +110,10 @@ public class GenericCustomItem implements CustomItem {
 		return texture;
 	}
 
+	public boolean isStackable() {
+		return isStackable;
+	}
+	
 	public boolean onItemInteract(Player player, Block block, BlockFace face) {
 		return true;
 	}
@@ -118,6 +123,7 @@ public class GenericCustomItem implements CustomItem {
 		name = input.readString();
 		addon = Spoutcraft.getAddonManager().getOrCreateAddon(input.readString());
 		texture = input.readString();
+		isStackable = input.readBoolean();
 		setName(name);
 		MaterialData.addCustomItem(this);
 	}
@@ -127,9 +133,10 @@ public class GenericCustomItem implements CustomItem {
 		output.writeString(getName());
 		output.writeString(getAddon().getDescription().getName());
 		output.writeString(getTexture());
+		output.writeBoolean(isStackable());
 	}
 
 	public int getVersion() {
-		return 0;
+		return 1;
 	}
 }
