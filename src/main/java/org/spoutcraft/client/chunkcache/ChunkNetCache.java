@@ -145,6 +145,9 @@ public class ChunkNetCache {
 		for (int i = 0; i < array.length; i++) {
 			PartitionChunk.setHash(hashes, i, array[i], 0);
 		}
+		if(hashes.length < 1) {
+			hashes = new byte[1];
+		}
 		SpoutClient.getInstance().getPacketManager().sendCustomPacket("ChkCache:setHash", hashes);
 	}
 	
