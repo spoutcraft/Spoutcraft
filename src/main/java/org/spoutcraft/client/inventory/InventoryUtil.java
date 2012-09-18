@@ -55,8 +55,10 @@ public class InventoryUtil {
 			((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.packetQueueTime = System.currentTimeMillis() + 30L;
 
 			ItemStack current = inventory.mainInventory[inventory.currentItem];
-			current.stackSize = replacement.stackSize;
-			current.setItemDamage(replacement.getItemDamage());
+			if(replacement != null && current != null) {
+				current.stackSize = replacement.stackSize;
+				current.setItemDamage(replacement.getItemDamage());
+			}
 			inventory.mainInventory[slot] = null;
 		}
 	}
