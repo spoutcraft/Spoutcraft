@@ -62,9 +62,6 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 				setSprinting(true);
 				this.sendQueue.addToSendQueue(new Packet19EntityAction(this, 4));
 			}
-		}else if(this.isSprinting() && !canSprint()){
-		    setSprinting(false);
-		    runToggle = false;
 		}
 		// Spout End
 	}
