@@ -107,7 +107,7 @@ public class GuiAchievement extends Gui {
 	 * Updates the small achievement tooltip window, showing a queued achievement if is needed.
 	 */
 	public void updateAchievementWindow() {
-		if (this.theAchievement != null && this.achievementTime != 0L) {
+		if ( (this.theAchievement != null || this.customNotification == true) && this.achievementTime != 0L) { //Spout
 			// Spout Start
 			double delayTime = 3000.0D;
 			if (customNotification) {
