@@ -41,6 +41,8 @@ import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
 import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
 import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
 import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
 
 public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonCancel, buttonNewSeed;
@@ -119,7 +121,8 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		labelSeed = new GenericLabel("Seed");
 
 		scrollArea = new GenericScrollArea();
-
+		scrollArea.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
+		
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, labelTitle, scrollArea, buttonDone, buttonCancel);
 		scrollArea.attachWidgets(spoutcraft, allowCheats, bonusChest, comboGameType, comboWorldType, checkHardcore, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview, buttonNewSeed);
