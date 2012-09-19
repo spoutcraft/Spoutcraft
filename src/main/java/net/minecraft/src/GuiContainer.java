@@ -12,13 +12,13 @@ import org.lwjgl.opengl.GL12;
 import org.spoutcraft.client.MCItemStackComparator;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.inventory.InventoryUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public abstract class GuiContainer extends GuiScreen
@@ -359,7 +359,7 @@ public abstract class GuiContainer extends GuiScreen
 			ItemStack itemstack = slot.getStack();
 			// Spout Start
 			List<String> list = itemstack.getItemNameandInformation();
-			org.spoutcraft.spoutcraftapi.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
+			org.spoutcraft.api.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
 			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
 			if (custom != null && slot.getStack().itemID != Item.potion.shiftedIndex) {
 				list.set(0, custom);
@@ -651,7 +651,7 @@ public abstract class GuiContainer extends GuiScreen
 				boolean isSpoutSlot = false;
 				for(Widget w : getScreen().getAttachedWidgets(true)) {
 					if(isInBoundingRect(w, par1, par2)) {
-						if(w instanceof org.spoutcraft.spoutcraftapi.gui.Slot) {
+						if(w instanceof org.spoutcraft.api.gui.Slot) {
 							isSpoutSlot = true;
 							break;
 						}

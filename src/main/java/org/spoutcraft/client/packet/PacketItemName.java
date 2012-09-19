@@ -21,10 +21,10 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.Material;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.Material;
+import org.spoutcraft.api.material.MaterialData;
 
 public class PacketItemName implements SpoutPacket {
 	private int id;

@@ -17,7 +17,7 @@ import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.*;
-import org.spoutcraft.spoutcraftapi.sound.Music;
+import org.spoutcraft.api.sound.Music;
 import thedudeguy.paulscode.sound.codecs.CodecJOrbis;
 // Spout End
 

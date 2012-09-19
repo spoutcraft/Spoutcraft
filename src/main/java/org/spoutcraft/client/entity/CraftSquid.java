@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySquid;
 
-import org.spoutcraft.spoutcraftapi.entity.Squid;
+import org.spoutcraft.api.entity.Squid;
 
 public class CraftSquid extends CraftWaterMob implements Squid {
 	public CraftSquid(EntitySquid entity) {

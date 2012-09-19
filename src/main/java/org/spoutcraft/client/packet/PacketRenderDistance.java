@@ -25,9 +25,9 @@ import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.player.RenderDistance;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.player.RenderDistance;
 
 public class PacketRenderDistance implements SpoutPacket {
 	protected byte view = -1;

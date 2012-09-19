@@ -25,14 +25,14 @@ import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
-import org.spoutcraft.spoutcraftapi.gui.TextField;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.TextField;
 
 public class GuiAddWaypoint extends GuiScreen {
 	Button done, cancel, delete;

@@ -25,7 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import org.spoutcraft.spoutcraftapi.gui.Point;
+import org.spoutcraft.api.gui.Point;
 
 public class MapWidgetRenderer extends Thread {
 	public Queue<Point> renderQueue = new LinkedBlockingQueue<Point>();

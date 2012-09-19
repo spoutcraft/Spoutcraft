@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityDragon;
 
-import org.spoutcraft.spoutcraftapi.entity.EnderDragon;
+import org.spoutcraft.api.entity.EnderDragon;
 
 public class CraftEnderDragon extends CraftLivingEntity implements EnderDragon {
 	public CraftEnderDragon(EntityDragon entity) {

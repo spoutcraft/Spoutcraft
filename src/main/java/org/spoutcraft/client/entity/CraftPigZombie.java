@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityPigZombie;
 
-import org.spoutcraft.spoutcraftapi.entity.PigZombie;
+import org.spoutcraft.api.entity.PigZombie;
 
 public class CraftPigZombie extends CraftZombie implements PigZombie {
 	public CraftPigZombie(EntityPigZombie entity) {

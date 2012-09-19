@@ -21,9 +21,9 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.item.GenericCustomFood;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.item.GenericCustomFood;
 
 public class PacketGenericFood implements SpoutPacket {
 	GenericCustomFood item = new GenericCustomFood();

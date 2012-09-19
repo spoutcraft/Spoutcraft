@@ -20,8 +20,8 @@
 package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.gui.Control;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.api.gui.Control;
+import org.spoutcraft.api.gui.GenericTextField;
 
 public class ResizeScreenshotWidthField extends GenericTextField {
 	public ResizeScreenshotWidthField() {

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityPig;
 
-import org.spoutcraft.spoutcraftapi.entity.Pig;
+import org.spoutcraft.api.entity.Pig;
 
 public class CraftPig extends CraftAnimals implements Pig {
 	public CraftPig(EntityPig entity) {

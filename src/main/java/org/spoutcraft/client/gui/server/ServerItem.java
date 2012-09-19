@@ -31,11 +31,11 @@ import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.MirrorUtils;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.RenderUtil;
 
 public class ServerItem implements ListWidgetItem {
 	/**

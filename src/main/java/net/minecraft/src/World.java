@@ -16,9 +16,9 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.entity.EntityText;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public abstract class World implements IBlockAccess {
@@ -2499,7 +2499,7 @@ public abstract class World implements IBlockAccess {
 		int light = Block.lightValue[par5];
 		
 		//Fix for generation-time accessing
-		org.spoutcraft.spoutcraftapi.World world = Spoutcraft.getWorld();
+		org.spoutcraft.api.World world = Spoutcraft.getWorld();
 		short customId = 0;
 		if(world != null) {
 			customId = world.getChunkAt(par2, par3, par4).getCustomBlockId(par2, par3, par4);

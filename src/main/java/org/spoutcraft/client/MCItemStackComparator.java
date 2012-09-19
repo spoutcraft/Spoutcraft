@@ -21,7 +21,7 @@ package org.spoutcraft.client;
 
 import java.util.Comparator;
 
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.MaterialData;
 
 import net.minecraft.src.ItemStack;
 
@@ -44,8 +44,8 @@ public class MCItemStackComparator implements Comparator {
 			return -o2.itemID;
 		}
 		if (byName) {
-			org.spoutcraft.spoutcraftapi.material.Material other1 = MaterialData.getMaterial(o1.itemID, (short)(o1.getItemDamage()));
-			org.spoutcraft.spoutcraftapi.material.Material other2 = MaterialData.getMaterial(o2.itemID, (short)(o2.getItemDamage()));
+			org.spoutcraft.api.material.Material other1 = MaterialData.getMaterial(o1.itemID, (short)(o1.getItemDamage()));
+			org.spoutcraft.api.material.Material other2 = MaterialData.getMaterial(o2.itemID, (short)(o2.getItemDamage()));
 			if (other1 == null && other2 == null) {
 				return 0;
 			}

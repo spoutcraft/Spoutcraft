@@ -3,7 +3,7 @@ package net.minecraft.src;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import com.pclewis.mcpatcher.mod.Colorizer;
-import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.api.gui.Color;
 // Spout End
 
 public class WorldProviderHell extends WorldProvider {

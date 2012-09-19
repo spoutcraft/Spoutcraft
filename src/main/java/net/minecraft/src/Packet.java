@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.MaterialData;
 
 public abstract class Packet {
 

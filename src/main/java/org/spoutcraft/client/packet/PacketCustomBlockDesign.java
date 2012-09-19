@@ -21,11 +21,11 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.block.design.GenericBlockDesign;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 
 public class PacketCustomBlockDesign implements SpoutPacket {
 	private short customId;

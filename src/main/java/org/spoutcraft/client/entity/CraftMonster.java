@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMob;
 
-import org.spoutcraft.spoutcraftapi.entity.Monster;
+import org.spoutcraft.api.entity.Monster;
 
 public class CraftMonster extends CraftCreature implements Monster {
 	public CraftMonster(EntityMob entity) {

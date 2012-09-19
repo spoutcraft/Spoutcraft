@@ -21,8 +21,8 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class InvertMouseButton extends GenericCheckBox {
 	public InvertMouseButton() {

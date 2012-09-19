@@ -26,11 +26,11 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.World;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
-import org.spoutcraft.spoutcraftapi.material.Food;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.CustomItem;
+import org.spoutcraft.api.material.Food;
+import org.spoutcraft.api.material.MaterialData;
 
 public class SpoutItem extends Item {
 	public SpoutItem(int blockId) {

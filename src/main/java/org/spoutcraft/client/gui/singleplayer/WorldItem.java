@@ -31,9 +31,9 @@ import net.minecraft.src.WorldInfo;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.MinecraftFont;
 
 public class WorldItem implements ListWidgetItem {
 	private ListWidget widget;

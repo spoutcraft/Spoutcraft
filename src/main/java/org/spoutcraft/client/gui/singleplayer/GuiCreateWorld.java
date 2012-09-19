@@ -33,16 +33,16 @@ import net.minecraft.src.WorldType;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.ScrollBarPolicy;
 
 public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonCancel, buttonNewSeed;

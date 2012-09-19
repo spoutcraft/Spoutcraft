@@ -22,8 +22,8 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityArrow;
 
-import org.spoutcraft.spoutcraftapi.entity.Arrow;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.api.entity.Arrow;
+import org.spoutcraft.api.entity.LivingEntity;
 
 public class CraftArrow extends AbstractProjectile implements Arrow {
 	public CraftArrow(Entity entity) {

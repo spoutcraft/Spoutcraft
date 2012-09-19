@@ -3,7 +3,7 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 // Spout Start
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 import org.lwjgl.opengl.GL11;
 
@@ -106,7 +106,7 @@ public class MapItemRenderer {
 		ItemStack inHand = par1EntityPlayer.inventory.getCurrentItem();
 		String customName = null;
 		if (inHand != null) {
-			org.spoutcraft.spoutcraftapi.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
+			org.spoutcraft.api.material.Item item = MaterialData.getItem(inHand.itemID, (short) inHand.getItemDamage());
 			if(item != null) {
 				customName = String.format(item.getName(), String.valueOf(inHand.getItemDamage()));
 			}

@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.spoutcraftapi.entity.Projectile;
+import org.spoutcraft.api.entity.Projectile;
 
 public abstract class AbstractProjectile extends CraftEntity implements Projectile {
 	private boolean doesBounce;

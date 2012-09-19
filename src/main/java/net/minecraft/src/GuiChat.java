@@ -13,7 +13,7 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.chat.GuiURLConfirm;
-import org.spoutcraft.spoutcraftapi.gui.ChatBar;
+import org.spoutcraft.api.gui.ChatBar;
 // Spout End
 
 public class GuiChat extends GuiScreen

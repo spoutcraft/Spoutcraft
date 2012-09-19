@@ -54,14 +54,14 @@ import org.spoutcraft.client.packet.ScreenAction;
 import org.spoutcraft.client.packet.SpoutPacket;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-import org.spoutcraft.spoutcraftapi.addon.AddonLoadOrder;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.event.screen.ScreenCloseEvent;
-import org.spoutcraft.spoutcraftapi.event.screen.ScreenEvent;
-import org.spoutcraft.spoutcraftapi.event.screen.ScreenOpenEvent;
-import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
-import org.spoutcraft.spoutcraftapi.gui.Screen;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.api.addon.AddonLoadOrder;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.event.screen.ScreenCloseEvent;
+import org.spoutcraft.api.event.screen.ScreenEvent;
+import org.spoutcraft.api.event.screen.ScreenOpenEvent;
+import org.spoutcraft.api.gui.PopupScreen;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.ScreenType;
 import org.xbill.DNS.utils.HMAC;
 // Spout End
 

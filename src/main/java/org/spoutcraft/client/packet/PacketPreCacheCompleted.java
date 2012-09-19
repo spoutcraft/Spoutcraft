@@ -26,8 +26,8 @@ import net.minecraft.src.GuiYesNo;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.CustomScreen;
 import org.spoutcraft.client.io.FileDownloadThread;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketPreCacheCompleted implements SpoutPacket {
 	public PacketPreCacheCompleted() {

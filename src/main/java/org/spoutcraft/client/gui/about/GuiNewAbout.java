@@ -37,14 +37,14 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ClientTexture;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;

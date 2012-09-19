@@ -22,8 +22,8 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.EntityFishHook;
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.spoutcraftapi.entity.Fish;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.api.entity.Fish;
+import org.spoutcraft.api.entity.LivingEntity;
 
 public class CraftFish extends AbstractProjectile implements Fish {
 	public CraftFish(EntityFishHook entity) {

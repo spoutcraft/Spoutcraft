@@ -36,17 +36,17 @@ import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.animation.PropertyAnimation;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollable;
-import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.spoutcraft.spoutcraftapi.gui.Point;
-import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
-import org.spoutcraft.spoutcraftapi.gui.ScrollBarPolicy;
-import org.spoutcraft.spoutcraftapi.gui.WidgetType;
-import org.spoutcraft.spoutcraftapi.property.Property;
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.animation.PropertyAnimation;
+import org.spoutcraft.api.gui.GenericScrollable;
+import org.spoutcraft.api.gui.MinecraftTessellator;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.Point;
+import org.spoutcraft.api.gui.RenderUtil;
+import org.spoutcraft.api.gui.ScrollBarPolicy;
+import org.spoutcraft.api.gui.WidgetType;
+import org.spoutcraft.api.property.Property;
+import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
 
 public class MapWidget extends GenericScrollable {
 	static TIntObjectHashMap<TIntPairObjectHashMap<Map>> chunks = new TIntObjectHashMap<TIntPairObjectHashMap<Map>>(250);

@@ -23,8 +23,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.player.SkyManager;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.player.SkyManager;
 
 public class SimpleSkyManager implements SkyManager {
 	private int cloudHeight = -999;

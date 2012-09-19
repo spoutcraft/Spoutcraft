@@ -26,16 +26,16 @@ import org.lwjgl.Sys;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericListView;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.Widget;
 
 public class GuiAddonsLocal extends GuiSpoutScreen {
 	private GenericLabel labelTitle;

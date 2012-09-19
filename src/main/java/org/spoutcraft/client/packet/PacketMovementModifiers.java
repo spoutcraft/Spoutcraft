@@ -23,8 +23,8 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketMovementModifiers implements SpoutPacket {
 	double gravityMod = 1;

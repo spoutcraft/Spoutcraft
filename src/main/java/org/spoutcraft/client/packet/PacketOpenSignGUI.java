@@ -27,8 +27,8 @@ import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketOpenSignGUI implements SpoutPacket {
 	int x,y,z;

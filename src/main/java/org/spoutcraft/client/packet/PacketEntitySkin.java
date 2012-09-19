@@ -21,11 +21,11 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.entity.EntitySkinType;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketEntitySkin implements SpoutPacket {
 	protected String texture = "";

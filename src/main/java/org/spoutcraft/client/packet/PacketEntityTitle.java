@@ -27,9 +27,9 @@ import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.entity.LivingEntity;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketEntityTitle implements SpoutPacket {
 	public String title;

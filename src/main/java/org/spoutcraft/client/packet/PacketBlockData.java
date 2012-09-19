@@ -27,10 +27,10 @@ import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.Block;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.Block;
+import org.spoutcraft.api.material.MaterialData;
 
 public class PacketBlockData implements CompressablePacket {
 	byte[] data;

@@ -21,8 +21,8 @@ package org.spoutcraft.client.inventory;
 
 import net.minecraft.src.InventoryPlayer;
 
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.PlayerInventory;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.inventory.PlayerInventory;
 
 public class CraftInventoryPlayer extends CraftInventory implements PlayerInventory {
 	public CraftInventoryPlayer(net.minecraft.src.InventoryPlayer inventory) {

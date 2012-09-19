@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketKeyPress;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
+import org.spoutcraft.api.gui.ScreenType;
 // Spout End
 
 public class EntityClientPlayerMP extends EntityPlayerSP {

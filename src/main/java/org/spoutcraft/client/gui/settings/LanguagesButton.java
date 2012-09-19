@@ -23,8 +23,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiLanguage;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericButton;
 
 public class LanguagesButton extends GenericButton {
 	GuiScreen parent;

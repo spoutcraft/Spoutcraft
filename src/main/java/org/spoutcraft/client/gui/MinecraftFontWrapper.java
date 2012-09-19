@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChatAllowedCharacters;
 
-import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.api.gui.MinecraftFont;
 
 public class MinecraftFontWrapper implements MinecraftFont {
 	public int getTextWidth(String text) {

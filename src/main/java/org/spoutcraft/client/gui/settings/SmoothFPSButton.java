@@ -20,7 +20,7 @@
 package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
 
 public class SmoothFPSButton extends AutomatedCheckBox {
 	public SmoothFPSButton() {

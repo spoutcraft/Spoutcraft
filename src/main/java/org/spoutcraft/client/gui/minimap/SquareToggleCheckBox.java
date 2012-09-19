@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class SquareToggleCheckBox extends GenericCheckBox {
 	public SquareToggleCheckBox() {

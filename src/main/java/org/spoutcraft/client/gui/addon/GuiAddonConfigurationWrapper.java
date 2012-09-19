@@ -21,12 +21,12 @@ package org.spoutcraft.client.gui.addon;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
 
 public class GuiAddonConfigurationWrapper extends GuiSpoutScreen {
 	private GuiAddonsLocal parent = null;

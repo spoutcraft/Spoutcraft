@@ -23,9 +23,9 @@ import net.minecraft.src.FontRenderer;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
-import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.GenericListWidget;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class GuiCommandsSlot extends GenericListWidget {
 	GuiEditShortcut parent;

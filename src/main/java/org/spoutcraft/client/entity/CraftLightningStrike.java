@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityLightningBolt;
 
-import org.spoutcraft.spoutcraftapi.entity.LightningStrike;
+import org.spoutcraft.api.entity.LightningStrike;
 
 public class CraftLightningStrike extends CraftEntity implements LightningStrike {
 	public CraftLightningStrike(EntityLightningBolt entity) {

@@ -37,16 +37,16 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.LinkButton;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.Texture;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.GenericTexture;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.Texture;
 
 public class GuiServerInfo extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;

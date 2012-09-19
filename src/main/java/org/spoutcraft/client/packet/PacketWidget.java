@@ -27,15 +27,15 @@ import java.util.UUID;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.*;
-import org.spoutcraft.spoutcraftapi.gui.GenericWidget;
-import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
-import org.spoutcraft.spoutcraftapi.gui.OverlayScreen;
-import org.spoutcraft.spoutcraftapi.gui.PopupScreen;
-import org.spoutcraft.spoutcraftapi.gui.Screen;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.gui.WidgetType;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.gui.GenericWidget;
+import org.spoutcraft.api.gui.InGameHUD;
+import org.spoutcraft.api.gui.OverlayScreen;
+import org.spoutcraft.api.gui.PopupScreen;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.gui.WidgetType;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketWidget implements SpoutPacket {
 	private Widget widget;

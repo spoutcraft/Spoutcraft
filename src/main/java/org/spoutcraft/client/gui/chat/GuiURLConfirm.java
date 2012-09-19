@@ -30,15 +30,15 @@ import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.SafeButton;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.Control;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
-import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.Control;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiURLConfirm extends GuiScreen {
 	private Button doneButton = null, doneAndNeverAskButton = null, cancelButton = null, copyLinkButton = null;

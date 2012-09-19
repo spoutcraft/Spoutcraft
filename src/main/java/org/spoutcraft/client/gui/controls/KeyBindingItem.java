@@ -28,10 +28,10 @@ import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 
 public class KeyBindingItem extends ControlsBasicItem {
-	private org.spoutcraft.spoutcraftapi.keyboard.KeyBinding binding;
+	private org.spoutcraft.api.keyboard.KeyBinding binding;
 	private ControlsModel parent;
 	private SimpleKeyBindingManager manager = (SimpleKeyBindingManager) SpoutClient.getInstance().getKeyBindingManager();
-	public KeyBindingItem(org.spoutcraft.spoutcraftapi.keyboard.KeyBinding binding, ControlsModel model) {
+	public KeyBindingItem(org.spoutcraft.api.keyboard.KeyBinding binding, ControlsModel model) {
 		super(model);
 		this.parent = model;
 		this.binding = binding;
@@ -92,7 +92,7 @@ public class KeyBindingItem extends ControlsBasicItem {
 		return binding.getDescription();
 	}
 
-	public org.spoutcraft.spoutcraftapi.keyboard.KeyBinding getBinding() {
+	public org.spoutcraft.api.keyboard.KeyBinding getBinding() {
 		return binding;
 	}
 }

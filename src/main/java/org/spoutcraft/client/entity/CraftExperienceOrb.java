@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityXPOrb;
 
-import org.spoutcraft.spoutcraftapi.entity.ExperienceOrb;
+import org.spoutcraft.api.entity.ExperienceOrb;
 
 public class CraftExperienceOrb extends CraftEntity implements ExperienceOrb {
 	public CraftExperienceOrb(EntityXPOrb entity) {

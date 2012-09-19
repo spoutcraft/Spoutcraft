@@ -23,9 +23,9 @@ import java.util.HashMap;
 
 import net.minecraft.src.CraftingManager;
 
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.ShapedRecipe;
-import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.inventory.ShapedRecipe;
+import org.spoutcraft.api.material.Material;
 
 public class SimpleShapedRecipe extends ShapedRecipe implements SpoutcraftRecipe {
 	public SimpleShapedRecipe(ItemStack result) {

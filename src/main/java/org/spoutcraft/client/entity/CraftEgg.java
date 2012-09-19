@@ -22,8 +22,8 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityEgg;
 
-import org.spoutcraft.spoutcraftapi.entity.Egg;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.api.entity.Egg;
+import org.spoutcraft.api.entity.LivingEntity;
 
 public class CraftEgg extends AbstractProjectile implements Egg {
 	public CraftEgg(Entity entity) {

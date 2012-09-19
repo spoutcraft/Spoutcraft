@@ -27,13 +27,13 @@ import java.util.List;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.util.BlockIterator;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-import org.spoutcraft.spoutcraftapi.util.MutableLocation;
+import org.spoutcraft.api.block.Block;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.entity.EntitySkinType;
+import org.spoutcraft.api.entity.LivingEntity;
+import org.spoutcraft.api.util.BlockIterator;
+import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.api.util.MutableLocation;
 
 public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	public CraftLivingEntity(EntityLiving living) {
@@ -147,7 +147,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
 	public void damage(int amount, Entity source) {
 		net.minecraft.src.DamageSource reason = net.minecraft.src.DamageSource.generic;
 
-		if (source instanceof org.spoutcraft.spoutcraftapi.entity.HumanEntity) {
+		if (source instanceof org.spoutcraft.api.entity.HumanEntity) {
 			reason = net.minecraft.src.DamageSource.causePlayerDamage(((CraftHumanEntity)source).getMCPlayer());
 		} else if (source instanceof LivingEntity) {
 			reason = net.minecraft.src.DamageSource.causeMobDamage(((CraftLivingEntity)source).getEntityLiving());

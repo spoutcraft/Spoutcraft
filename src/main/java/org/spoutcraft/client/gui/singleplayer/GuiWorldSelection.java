@@ -28,12 +28,12 @@ import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.GuiTextDialog;
 import org.spoutcraft.client.gui.GuiTextDialog.DialogEventHandler;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.Screen;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericListView;
+import org.spoutcraft.api.gui.Screen;
 
 public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 	GenericLabel labelTitle;

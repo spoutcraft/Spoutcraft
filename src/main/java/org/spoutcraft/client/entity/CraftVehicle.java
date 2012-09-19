@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.spoutcraftapi.entity.Vehicle;
+import org.spoutcraft.api.entity.Vehicle;
 
 public abstract class CraftVehicle extends CraftEntity implements Vehicle {
 	public CraftVehicle(net.minecraft.src.Entity entity) {

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityChicken;
 
-import org.spoutcraft.spoutcraftapi.entity.Chicken;
+import org.spoutcraft.api.entity.Chicken;
 
 public class CraftChicken extends CraftAnimals implements Chicken {
 	public CraftChicken(EntityChicken entity) {

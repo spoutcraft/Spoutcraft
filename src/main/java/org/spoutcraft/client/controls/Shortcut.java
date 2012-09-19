@@ -29,7 +29,7 @@ import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet3Chat;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
+import org.spoutcraft.api.keyboard.AbstractBinding;
 
 public class Shortcut extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 4365592803468257957L;

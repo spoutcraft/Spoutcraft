@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings;
 import java.util.UUID;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
 
 public class FancyWeatherButton extends AutomatedCheckBox {
 	UUID fancyGraphics;

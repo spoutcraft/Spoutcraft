@@ -27,19 +27,19 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.spoutcraft.client.player.SpoutPlayer;
-import org.spoutcraft.spoutcraftapi.World;
-import org.spoutcraft.spoutcraftapi.entity.Arrow;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.entity.TextEntity;
-import org.spoutcraft.spoutcraftapi.property.PropertyObject;
-import org.spoutcraft.spoutcraftapi.property.Property;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.util.MutableLocation;
-import org.spoutcraft.spoutcraftapi.util.MutableVector;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.api.World;
+import org.spoutcraft.api.entity.Arrow;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.entity.EntitySkinType;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.entity.TextEntity;
+import org.spoutcraft.api.property.PropertyObject;
+import org.spoutcraft.api.property.Property;
+import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.api.util.Location;
+import org.spoutcraft.api.util.MutableLocation;
+import org.spoutcraft.api.util.MutableVector;
+import org.spoutcraft.api.util.Vector;
 
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;

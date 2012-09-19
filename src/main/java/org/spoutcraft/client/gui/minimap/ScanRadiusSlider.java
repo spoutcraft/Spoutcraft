@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.spoutcraft.spoutcraftapi.ChatColor;
-import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
+import org.spoutcraft.api.ChatColor;
+import org.spoutcraft.api.event.screen.SliderDragEvent;
+import org.spoutcraft.api.gui.GenericSlider;
 
 public class ScanRadiusSlider extends GenericSlider {
 	private static final int MIN_RADIUS = 0, MAX_RADIUS = 7;

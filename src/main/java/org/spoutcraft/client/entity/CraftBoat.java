@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityBoat;
 
-import org.spoutcraft.spoutcraftapi.entity.Boat;
+import org.spoutcraft.api.entity.Boat;
 
 public class CraftBoat extends CraftVehicle implements Boat {
 	protected EntityBoat boat;

@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.gui;
 
-import org.spoutcraft.spoutcraftapi.gui.KeyManager;
-import org.spoutcraft.spoutcraftapi.gui.Keyboard;
+import org.spoutcraft.api.gui.KeyManager;
+import org.spoutcraft.api.gui.Keyboard;
 
 public class SimpleKeyManager implements KeyManager {
 	public boolean isKeyDown(Keyboard key) {

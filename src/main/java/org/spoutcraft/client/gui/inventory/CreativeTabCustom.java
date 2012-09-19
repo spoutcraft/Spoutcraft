@@ -27,9 +27,9 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.api.material.CustomItem;
+import org.spoutcraft.api.material.CustomBlock;
 
 public class CreativeTabCustom extends CreativeTabs{
 	

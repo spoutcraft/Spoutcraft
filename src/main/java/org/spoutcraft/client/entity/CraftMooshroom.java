@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMooshroom;
 
-import org.spoutcraft.spoutcraftapi.entity.Mooshroom;
+import org.spoutcraft.api.entity.Mooshroom;
 
 public class CraftMooshroom extends CraftCow implements Mooshroom {
 	public CraftMooshroom(EntityMooshroom entity) {

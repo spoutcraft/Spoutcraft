@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiParticle;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.spoutcraftapi.gui.GenericGradient;
+import org.spoutcraft.api.gui.GenericGradient;
 
 public abstract class GuiSpoutScreen extends GuiScreen {
 	protected boolean instancesCreated = false;

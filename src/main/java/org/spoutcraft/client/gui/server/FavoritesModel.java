@@ -32,8 +32,8 @@ import org.yaml.snakeyaml.Yaml;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class FavoritesModel extends ServerModel {
 	public FavoritesModel() {

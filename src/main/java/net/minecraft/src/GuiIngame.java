@@ -14,11 +14,11 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
-import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
-import org.spoutcraft.spoutcraftapi.gui.ServerPlayerList;
-import org.spoutcraft.spoutcraftapi.player.ChatMessage;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.ChatTextBox;
+import org.spoutcraft.api.gui.InGameHUD;
+import org.spoutcraft.api.gui.ServerPlayerList;
+import org.spoutcraft.api.player.ChatMessage;
 // Spout End
 
 public class GuiIngame extends Gui

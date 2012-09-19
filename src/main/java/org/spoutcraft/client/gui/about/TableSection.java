@@ -24,10 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.Widget;
 
 public class TableSection extends Section {
 	private int maxCaption = 0;

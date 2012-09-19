@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityTNTPrimed;
 
-import org.spoutcraft.spoutcraftapi.entity.TNTPrimed;
+import org.spoutcraft.api.entity.TNTPrimed;
 
 public class CraftTNTPrimed extends CraftEntity implements TNTPrimed {
 	public CraftTNTPrimed(EntityTNTPrimed entity) {

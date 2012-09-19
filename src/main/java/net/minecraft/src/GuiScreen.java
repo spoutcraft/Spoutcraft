@@ -18,15 +18,15 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.*;
 import org.spoutcraft.client.packet.*;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
-import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
-import org.spoutcraft.spoutcraftapi.gui.*;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox.ComboBoxView;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.event.screen.SliderDragEvent;
+import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
+import org.spoutcraft.api.gui.*;
+import org.spoutcraft.api.gui.GenericComboBox.ComboBoxView;
+import org.spoutcraft.api.inventory.ItemStack;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.spoutcraftapi.gui.Slot;
+import org.spoutcraft.api.gui.Slot;
 
 // Spout End
 
@@ -711,9 +711,9 @@ public class GuiScreen extends Gui
 					Control control = (Control) widget;
 					if (control.isFocus()) {
 						if (Keyboard.getEventKeyState()) {
-							handled = control.onKeyPressed(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+							handled = control.onKeyPressed(org.spoutcraft.api.gui.Keyboard.getKey(Keyboard.getEventKey()));
 						} else {
-							handled = control.onKeyReleased(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(Keyboard.getEventKey()));
+							handled = control.onKeyReleased(org.spoutcraft.api.gui.Keyboard.getKey(Keyboard.getEventKey()));
 						}
 					}
 					if (handled) {

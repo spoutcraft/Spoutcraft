@@ -28,10 +28,10 @@ import java.util.zip.Inflater;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.block.Chunk;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.block.Chunk;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketCustomMultiBlockOverride implements CompressablePacket {
 	private int chunkX;

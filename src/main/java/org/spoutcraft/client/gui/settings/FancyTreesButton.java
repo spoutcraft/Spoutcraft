@@ -24,7 +24,7 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
 
 public class FancyTreesButton extends AutomatedCheckBox {
 	UUID fancyGraphics;

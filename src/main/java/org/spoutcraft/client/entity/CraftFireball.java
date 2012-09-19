@@ -22,10 +22,10 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.EntityFireball;
 import net.minecraft.src.EntityLiving;
 
-import org.spoutcraft.spoutcraftapi.entity.Fireball;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.util.MutableVector;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.api.entity.Fireball;
+import org.spoutcraft.api.entity.LivingEntity;
+import org.spoutcraft.api.util.MutableVector;
+import org.spoutcraft.api.util.Vector;
 
 public class CraftFireball extends AbstractProjectile implements Fireball {
 	public CraftFireball(EntityFireball entity) {

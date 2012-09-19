@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
-import org.spoutcraft.spoutcraftapi.gui.CheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.CheckBox;
+import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class ShowEntitiesCheckbox extends GenericCheckBox {
 	public ShowEntitiesCheckbox() {

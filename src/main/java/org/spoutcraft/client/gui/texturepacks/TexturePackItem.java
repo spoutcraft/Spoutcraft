@@ -33,10 +33,10 @@ import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.MinecraftTessellator;
 
 public class TexturePackItem implements ListWidgetItem {
 	protected final static Map<String, Integer> texturePackSize = new HashMap<String, Integer>();

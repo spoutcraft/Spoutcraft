@@ -23,9 +23,9 @@ import java.util.ArrayList;
 
 import net.minecraft.src.CraftingManager;
 
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.inventory.ShapelessRecipe;
-import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.inventory.ShapelessRecipe;
+import org.spoutcraft.api.material.Material;
 
 public class SimpleShapelessRecipe extends ShapelessRecipe implements SpoutcraftRecipe {
 	public SimpleShapelessRecipe(ItemStack result) {

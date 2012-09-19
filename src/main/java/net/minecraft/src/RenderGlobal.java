@@ -23,7 +23,7 @@ import org.spoutcraft.client.TileEntityComparator;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
-import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.api.gui.Color;
 
 // Spout End
 

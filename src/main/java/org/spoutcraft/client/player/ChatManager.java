@@ -50,11 +50,11 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.gui.ChatTextBox;
 
-public class ChatManager implements org.spoutcraft.spoutcraftapi.player.ChatManager {
+public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	public int commandScroll = 0;
 	public int messageScroll = 0;
 	public int chatScroll = 0;

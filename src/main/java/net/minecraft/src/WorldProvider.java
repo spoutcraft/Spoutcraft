@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.Color;
+import org.spoutcraft.api.gui.Color;
 import com.pclewis.mcpatcher.mod.Colorizer;
 // Spout End
 

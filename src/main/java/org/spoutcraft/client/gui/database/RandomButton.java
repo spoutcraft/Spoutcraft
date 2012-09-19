@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.database;
 
 import java.util.Random;
 
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
 
 public class RandomButton extends SortButton {
 	Random rand = new Random();

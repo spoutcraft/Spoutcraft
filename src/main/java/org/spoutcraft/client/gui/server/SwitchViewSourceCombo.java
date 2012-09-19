@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericComboBox;
 
 public class SwitchViewSourceCombo extends GenericComboBox {
 	private GuiFavorites gui;

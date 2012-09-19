@@ -22,10 +22,10 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.spoutcraftapi.gui.Screen;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketControlAction implements SpoutPacket {
 	protected UUID screen;

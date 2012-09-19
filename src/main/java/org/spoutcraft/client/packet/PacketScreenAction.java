@@ -22,9 +22,9 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.gui.ScreenType;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketScreenAction implements SpoutPacket {
 	protected byte action = -1;

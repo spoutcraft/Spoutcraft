@@ -19,7 +19,7 @@
  */
 package org.spoutcraft.client.inventory;
 
-import org.spoutcraft.spoutcraftapi.inventory.Recipe;
+import org.spoutcraft.api.inventory.Recipe;
 
 public interface SpoutcraftRecipe extends Recipe {
 	void addToCraftingManager();

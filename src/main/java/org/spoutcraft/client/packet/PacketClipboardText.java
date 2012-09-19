@@ -22,8 +22,8 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 
 import org.spoutcraft.client.player.ChatManager;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketClipboardText implements SpoutPacket {
 	protected String text;

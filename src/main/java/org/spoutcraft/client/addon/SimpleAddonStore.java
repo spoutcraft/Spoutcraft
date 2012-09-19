@@ -32,10 +32,10 @@ import org.yaml.snakeyaml.Yaml;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.addon.AddonStore;
-import org.spoutcraft.spoutcraftapi.addon.AddonStore.DownloadEventDelegate;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.addon.AddonStore;
+import org.spoutcraft.api.addon.AddonStore.DownloadEventDelegate;
 
 public class SimpleAddonStore implements AddonStore {
 	private HashMap<String, AddonInfo> addons = new HashMap<String, AddonInfo>();

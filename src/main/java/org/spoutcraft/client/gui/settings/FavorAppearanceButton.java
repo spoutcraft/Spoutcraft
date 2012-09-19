@@ -20,10 +20,10 @@
 package org.spoutcraft.client.gui.settings;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericRadioButton;
-import org.spoutcraft.spoutcraftapi.gui.Label;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericRadioButton;
+import org.spoutcraft.api.gui.Label;
 
 public class FavorAppearanceButton extends GenericRadioButton {
 	Label label;

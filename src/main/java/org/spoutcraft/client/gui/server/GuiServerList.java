@@ -27,17 +27,17 @@ import org.spoutcraft.client.gui.database.GuiAPIDisplay;
 import org.spoutcraft.client.gui.database.RandomButton;
 import org.spoutcraft.client.gui.database.SearchField;
 import org.spoutcraft.client.gui.database.SortButton;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericListView;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.Widget;
 
 public class GuiServerList extends GuiAPIDisplay {
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();

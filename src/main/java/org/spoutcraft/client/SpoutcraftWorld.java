@@ -30,28 +30,28 @@ import net.minecraft.src.WorldInfo;
 
 import org.spoutcraft.client.block.SpoutcraftChunk;
 import org.spoutcraft.client.entity.CraftEntity;
-import org.spoutcraft.spoutcraftapi.BlockChangeDelegate;
-import org.spoutcraft.spoutcraftapi.ChunkSnapshot;
-import org.spoutcraft.spoutcraftapi.Effect;
-import org.spoutcraft.spoutcraftapi.TreeType;
-import org.spoutcraft.spoutcraftapi.World;
-import org.spoutcraft.spoutcraftapi.block.Biome;
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.block.Chunk;
-import org.spoutcraft.spoutcraftapi.entity.Arrow;
-import org.spoutcraft.spoutcraftapi.entity.CreatureType;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.entity.Item;
-import org.spoutcraft.spoutcraftapi.entity.LightningStrike;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.generator.BlockPopulator;
-import org.spoutcraft.spoutcraftapi.generator.ChunkGenerator;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.util.FastLocation;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-import org.spoutcraft.spoutcraftapi.util.MutableLocation;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.api.BlockChangeDelegate;
+import org.spoutcraft.api.ChunkSnapshot;
+import org.spoutcraft.api.Effect;
+import org.spoutcraft.api.TreeType;
+import org.spoutcraft.api.World;
+import org.spoutcraft.api.block.Biome;
+import org.spoutcraft.api.block.Block;
+import org.spoutcraft.api.block.Chunk;
+import org.spoutcraft.api.entity.Arrow;
+import org.spoutcraft.api.entity.CreatureType;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.entity.Item;
+import org.spoutcraft.api.entity.LightningStrike;
+import org.spoutcraft.api.entity.LivingEntity;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.generator.BlockPopulator;
+import org.spoutcraft.api.generator.ChunkGenerator;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.util.FastLocation;
+import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.api.util.MutableLocation;
+import org.spoutcraft.api.util.Vector;
 
 public class SpoutcraftWorld implements World {
 	private final net.minecraft.src.World handle;
@@ -73,7 +73,7 @@ public class SpoutcraftWorld implements World {
 		return handle.spawnHostileMobs;
 	}
 
-	public int getMixedBrightnessAt(org.spoutcraft.spoutcraftapi.material.Block block, int x, int y, int z) {
+	public int getMixedBrightnessAt(org.spoutcraft.api.material.Block block, int x, int y, int z) {
 		net.minecraft.src.Block b = null;
 		if (block.getRawId() < net.minecraft.src.Block.blocksList.length) {
 			b = net.minecraft.src.Block.blocksList[block.getRawId()];

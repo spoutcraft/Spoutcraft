@@ -37,9 +37,9 @@ import org.yaml.snakeyaml.Yaml;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.AbstractAPIModel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.Orientation;
+import org.spoutcraft.api.gui.GenericListView;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.Orientation;
 
 public class ServerListModel extends AbstractAPIModel {
 	protected TIntObjectHashMap<ServerDataBaseEntry> dbEntries = new TIntObjectHashMap<ServerDataBaseEntry>();

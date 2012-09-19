@@ -21,7 +21,7 @@ package org.spoutcraft.client.gui.database;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.api.gui.GenericTextField;
 
 public class SearchField extends GenericTextField implements UrlElement {
 	private AbstractAPIModel model;

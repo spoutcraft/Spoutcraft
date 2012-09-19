@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityFlying;
 
-import org.spoutcraft.spoutcraftapi.entity.Flying;
+import org.spoutcraft.api.entity.Flying;
 
 public class CraftFlying extends CraftLivingEntity implements Flying {
 	public CraftFlying(EntityFlying entity) {

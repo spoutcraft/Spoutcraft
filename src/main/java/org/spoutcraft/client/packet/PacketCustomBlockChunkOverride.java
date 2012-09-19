@@ -30,11 +30,11 @@ import net.minecraft.src.Chunk;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket {
 	protected static final int[] lightingBlockList = new int[32768 * 4];

@@ -22,16 +22,16 @@ package org.spoutcraft.client.gui.server;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
-import org.spoutcraft.spoutcraftapi.gui.Keyboard;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.TextField;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.api.gui.Keyboard;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.TextField;
 
 public class GuiAddFavorite extends GuiScreen {
 	private TextField textIp, textTitle;

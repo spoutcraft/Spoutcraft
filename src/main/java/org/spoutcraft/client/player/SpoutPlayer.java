@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 
 import org.spoutcraft.client.entity.CraftHumanEntity;
-import org.spoutcraft.spoutcraftapi.entity.Player;
+import org.spoutcraft.api.entity.Player;
 
 public class SpoutPlayer extends CraftHumanEntity implements Player {
 	public SpoutPlayer(net.minecraft.src.EntityPlayer handle) {

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySkeleton;
 
-import org.spoutcraft.spoutcraftapi.entity.Skeleton;
+import org.spoutcraft.api.entity.Skeleton;
 
 public class CraftSkeleton extends CraftMonster implements Skeleton {
 	public CraftSkeleton(EntitySkeleton entity) {

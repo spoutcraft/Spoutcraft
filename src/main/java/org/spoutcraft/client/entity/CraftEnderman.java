@@ -21,9 +21,9 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityEnderman;
 
-import org.spoutcraft.spoutcraftapi.entity.Enderman;
-import org.spoutcraft.spoutcraftapi.material.Material;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.entity.Enderman;
+import org.spoutcraft.api.material.Material;
+import org.spoutcraft.api.material.MaterialData;
 
 public class CraftEnderman extends CraftMonster implements Enderman {
 	public CraftEnderman(EntityEnderman entity) {

@@ -42,12 +42,12 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.controls.GuiControls;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.packet.PacketKeyBinding;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.ScreenType;
-import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
-import org.spoutcraft.spoutcraftapi.keyboard.KeyBinding;
-import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingManager;
-import org.spoutcraft.spoutcraftapi.keyboard.KeyBindingPress;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.ScreenType;
+import org.spoutcraft.api.keyboard.AbstractBinding;
+import org.spoutcraft.api.keyboard.KeyBinding;
+import org.spoutcraft.api.keyboard.KeyBindingManager;
+import org.spoutcraft.api.keyboard.KeyBindingPress;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<KeyBinding> bindings;
@@ -341,7 +341,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 		if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, !keyReleased, screen));
 		} else if (binding.getDelegate() != null) { //Client side
-			KeyBindingPress event = new KeyBindingPress(org.spoutcraft.spoutcraftapi.gui.Keyboard.getKey(key), binding, ScreenType.getType(screen));
+			KeyBindingPress event = new KeyBindingPress(org.spoutcraft.api.gui.Keyboard.getKey(key), binding, ScreenType.getType(screen));
 			if (!keyReleased) {
 				binding.getDelegate().onKeyPress(event);
 			} else {

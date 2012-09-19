@@ -26,7 +26,7 @@ import net.minecraft.src.GuiSleepMP;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.api.Spoutcraft;
 
 /**
  * Main Zanminimap class where everything happens

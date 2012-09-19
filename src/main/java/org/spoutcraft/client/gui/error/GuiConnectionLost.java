@@ -29,17 +29,17 @@ import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
-import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.GenericTexture;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiConnectionLost extends GuiScreen {
 	public static String lastServerIp;

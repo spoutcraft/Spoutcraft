@@ -16,9 +16,9 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.packet.PacketFullVersion;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.packet.PacketClientAddons;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.addon.ServerAddon;
 // Spout End
 
 public class Packet18Animation extends Packet {

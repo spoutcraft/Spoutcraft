@@ -22,10 +22,10 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.player.SkyManager;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.player.SkyManager;
 
 public class PacketSky implements SpoutPacket {
 	private int cloudY, stars, sunPercent, moonPercent;

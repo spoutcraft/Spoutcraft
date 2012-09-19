@@ -24,8 +24,8 @@ import java.io.IOException;
 import net.minecraft.src.Entity;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketSetVelocity implements SpoutPacket {
 	private double motX = 0;

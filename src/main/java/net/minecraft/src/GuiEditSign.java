@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.api.Spoutcraft;
 
 public class GuiEditSign extends GuiScreen {
 	/** The title string that is displayed in the top-center of the screen. */

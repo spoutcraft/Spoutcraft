@@ -29,8 +29,8 @@ import net.minecraft.client.Minecraft;
 import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.input.Keyboard;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericButton;
 
 public class FancyShadersButton extends GenericButton {
 	UUID fancyGraphics;

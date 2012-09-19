@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySpider;
 
-import org.spoutcraft.spoutcraftapi.entity.Spider;
+import org.spoutcraft.api.entity.Spider;
 
 public class CraftSpider extends CraftMonster implements Spider {
 	public CraftSpider(EntitySpider entity) {

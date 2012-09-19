@@ -34,8 +34,8 @@ import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.FilterItem;
 import org.spoutcraft.client.gui.FilterModel;
 import org.spoutcraft.client.gui.mainmenu.MainMenu;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class WorldModel extends FilterModel {
 	ISaveFormat access;

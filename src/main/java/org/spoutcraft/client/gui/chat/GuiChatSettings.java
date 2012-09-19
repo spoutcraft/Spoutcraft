@@ -27,16 +27,16 @@ import net.minecraft.src.GuiScreen;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.ChatTextBox;
-import org.spoutcraft.spoutcraftapi.gui.CheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.Label;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.ChatTextBox;
+import org.spoutcraft.api.gui.CheckBox;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.Label;
 
 public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;

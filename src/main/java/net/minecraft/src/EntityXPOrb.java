@@ -2,9 +2,9 @@ package net.minecraft.src;
 
 // Spout Start
 import org.spoutcraft.client.entity.CraftExperienceOrb;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class EntityXPOrb extends Entity {

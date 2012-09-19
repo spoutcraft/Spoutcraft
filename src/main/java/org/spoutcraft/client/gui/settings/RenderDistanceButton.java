@@ -23,8 +23,8 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.player.RenderDistance;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.player.RenderDistance;
 
 public class RenderDistanceButton extends AutomatedButton {
 	RenderDistance distance = RenderDistance.getRenderDistanceFromValue(ConfigReader.renderDistance);

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityVillager;
 
-import org.spoutcraft.spoutcraftapi.entity.Villager;
+import org.spoutcraft.api.entity.Villager;
 
 public class CraftVillager extends CraftCreature implements Villager {
 	public CraftVillager(EntityVillager entity) {

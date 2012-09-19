@@ -21,9 +21,9 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketClientAddons implements SpoutPacket {
 	private String[] addons;

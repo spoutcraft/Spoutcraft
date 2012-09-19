@@ -22,8 +22,8 @@ package org.spoutcraft.client.gui.settings;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.SliderDragEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericSlider;
+import org.spoutcraft.api.event.screen.SliderDragEvent;
+import org.spoutcraft.api.gui.GenericSlider;
 
 public class BrightnessSlider extends GenericSlider {
 	public BrightnessSlider() {

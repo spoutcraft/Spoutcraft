@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMagmaCube;
 
-import org.spoutcraft.spoutcraftapi.entity.MagmaCube;
+import org.spoutcraft.api.entity.MagmaCube;
 
 public class CraftMagmaCube extends CraftSlime implements MagmaCube {
 	public CraftMagmaCube(EntityMagmaCube entity) {

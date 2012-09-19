@@ -25,18 +25,18 @@ import org.bukkit.ChatColor;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.LinkButton;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
-import org.spoutcraft.spoutcraftapi.gui.Keyboard;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
-import org.spoutcraft.spoutcraftapi.gui.TextField;
-import org.spoutcraft.spoutcraftapi.gui.GenericListView;
-import org.spoutcraft.spoutcraftapi.gui.WidgetAnchor;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.api.gui.Keyboard;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.TextField;
+import org.spoutcraft.api.gui.GenericListView;
+import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiFavorites extends GuiScreen {
 	@SuppressWarnings("unused")

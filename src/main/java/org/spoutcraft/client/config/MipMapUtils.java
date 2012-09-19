@@ -33,8 +33,8 @@ import org.lwjgl.opengl.GLContext;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 
 public class MipMapUtils {
 	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();

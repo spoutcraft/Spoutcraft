@@ -10,8 +10,8 @@ import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
 import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.special.Resources;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.util.FixedLocation;
 // Spout End
 
 public class EntityPlayerSP extends EntityPlayer {

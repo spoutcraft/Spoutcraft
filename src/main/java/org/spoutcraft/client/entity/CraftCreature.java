@@ -22,8 +22,8 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityLiving;
 
-import org.spoutcraft.spoutcraftapi.entity.Creature;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.api.entity.Creature;
+import org.spoutcraft.api.entity.LivingEntity;
 
 public class CraftCreature extends CraftLivingEntity implements Creature {
 	public CraftCreature(EntityCreature entity) {

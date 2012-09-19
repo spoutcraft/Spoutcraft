@@ -25,13 +25,13 @@ import java.util.List;
 
 import org.lwjgl.Sys;
 
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.Color;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
-import org.spoutcraft.spoutcraftapi.gui.RenderPriority;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.Color;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericTexture;
+import org.spoutcraft.api.gui.RenderPriority;
+import org.spoutcraft.api.gui.Widget;
 
 public class ImageSection extends Section {
 	private GuiNewAbout screen;

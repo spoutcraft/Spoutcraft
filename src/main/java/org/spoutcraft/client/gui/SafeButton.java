@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui;
 
-import org.spoutcraft.spoutcraftapi.ChatColor;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.api.ChatColor;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericButton;
 
 public abstract class SafeButton extends GenericButton {
 	private String warningText = ChatColor.RED + "Really?";

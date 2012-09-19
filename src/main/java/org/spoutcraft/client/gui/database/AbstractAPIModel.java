@@ -35,9 +35,9 @@ import org.bukkit.ChatColor;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.api.gui.GenericListWidgetItem;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public abstract class AbstractAPIModel extends AbstractListModel {
 	protected List<UrlElement> urlElements = new LinkedList<UrlElement>();

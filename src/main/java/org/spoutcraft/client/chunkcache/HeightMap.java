@@ -29,7 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.spoutcraft.spoutcraftapi.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
 import org.spoutcraft.client.io.FileUtil;
 
 public class HeightMap {

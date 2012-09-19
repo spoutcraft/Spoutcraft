@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.util.FastLocation;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.api.entity.ActivePlayer;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.api.util.FastLocation;
+import org.spoutcraft.api.util.FixedLocation;
 
 public class Block {
 
@@ -606,7 +606,7 @@ public class Block {
 			FixedLocation target = player.getLastClickedLocation();
 			if (target != null) {
 
-				org.spoutcraft.spoutcraftapi.material.Block b = target.getBlock().getType();
+				org.spoutcraft.api.material.Block b = target.getBlock().getType();
 				if (b instanceof CustomBlock) {
 					return b.getHardness() < 0.0F ? 0.0F : (!entityhuman.canHarvestBlock(this) ? 1.0F / b.getHardness() / 100.0F : entityhuman.getCurrentPlayerStrVsBlock(this) / b.getHardness() / 30.0F);
 				}

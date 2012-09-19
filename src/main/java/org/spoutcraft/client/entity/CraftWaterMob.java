@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityWaterMob;
 
-import org.spoutcraft.spoutcraftapi.entity.WaterMob;
+import org.spoutcraft.api.entity.WaterMob;
 
 public class CraftWaterMob extends CraftCreature implements WaterMob {
 	public CraftWaterMob(EntityWaterMob entity) {

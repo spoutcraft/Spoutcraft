@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySilverfish;
 
-import org.spoutcraft.spoutcraftapi.entity.Silverfish;
+import org.spoutcraft.api.entity.Silverfish;
 
 public class CraftSilverfish extends CraftMonster implements Silverfish {
 	public CraftSilverfish(EntitySilverfish entity) {

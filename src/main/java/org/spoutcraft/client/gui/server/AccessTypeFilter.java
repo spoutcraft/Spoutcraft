@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.spoutcraft.client.gui.database.AbstractAPIModel;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericComboBox;
 
 public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 	private String[] strings = { "All", "Open", "Whitelisted", "Graylisted", "Blacklisted"};

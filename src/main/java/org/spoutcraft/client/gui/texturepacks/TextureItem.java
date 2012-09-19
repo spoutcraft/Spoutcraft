@@ -44,8 +44,8 @@ import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class TextureItem implements ListWidgetItem {
 	private int id;

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityZombie;
 
-import org.spoutcraft.spoutcraftapi.entity.Zombie;
+import org.spoutcraft.api.entity.Zombie;
 
 public class CraftZombie extends CraftMonster implements Zombie {
 	public CraftZombie(EntityZombie entity) {

@@ -21,9 +21,9 @@ package org.spoutcraft.client.gui.singleplayer;
 
 import org.spoutcraft.client.gui.FilterItem;
 import org.spoutcraft.client.gui.FilterModel;
-import org.spoutcraft.spoutcraftapi.ChatColor;
-import org.spoutcraft.spoutcraftapi.event.screen.TextFieldChangeEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericTextField;
+import org.spoutcraft.api.ChatColor;
+import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
+import org.spoutcraft.api.gui.GenericTextField;
 
 public class WorldSearchField extends GenericTextField implements FilterItem {
 	private FilterModel model;

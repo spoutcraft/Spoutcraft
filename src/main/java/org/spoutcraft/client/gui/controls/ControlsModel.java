@@ -28,7 +28,7 @@ import net.minecraft.src.KeyBinding;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
+import org.spoutcraft.api.gui.AbstractListModel;
 
 public class ControlsModel extends AbstractListModel {
 	private GuiControls gui;
@@ -70,7 +70,7 @@ public class ControlsModel extends AbstractListModel {
 
 		if (gui.checkBindings.isChecked()) {
 			//Plugin controls
-			for (org.spoutcraft.spoutcraftapi.keyboard.KeyBinding binding:manager.getAllBindings()) {
+			for (org.spoutcraft.api.keyboard.KeyBinding binding:manager.getAllBindings()) {
 				items.add(new KeyBindingItem(binding, this));
 			}
 		}

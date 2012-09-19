@@ -7,8 +7,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class RenderItem extends Render {
@@ -69,11 +69,11 @@ public class RenderItem extends Render {
 		boolean custom = false;
 		BlockDesign design = null;
 		if (itemStack.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
+			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(itemStack.getItemDamage());
 			if (item != null) {
 				String textureURI = item.getTexture();
 				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
+					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(itemStack.getItemDamage());
 					design = block != null ? block.getBlockDesign() : null;
 					textureURI = design != null ? design.getTexureURL() : null;
 				}
@@ -86,7 +86,7 @@ public class RenderItem extends Render {
 				}
 			}
 			
-			/*org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
+			/*org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var10.getItemDamage());
 			design = block != null ? block.getBlockDesign() : null;
 			if (design != null && design.getTextureAddon() != null && design.getTexureURL() != null) {
 				Texture texture = CustomTextureManager.getTextureFromUrl(design.getTextureAddon(), design.getTexureURL());
@@ -100,7 +100,7 @@ public class RenderItem extends Render {
 		
 		if (design != null && custom) {
 			//GL11.glScalef(0.25F, 0.25F, 0.25F);
-			design.renderItemstack((org.spoutcraft.spoutcraftapi.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
+			design.renderItemstack((org.spoutcraft.api.entity.Item)itemEntity.spoutEntity, (float)x, (float)(yOffset + bounceAmmount), (float)z, rotation, 0.25F, random);
 		}
 		else{	
 			GL11.glPushMatrix();
@@ -240,11 +240,11 @@ public class RenderItem extends Render {
 		BlockDesign design = null;
 		if (var3 == 318) {
 			
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(var4);
+			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(var4);
 			if (item != null) {
 				String textureURI = item.getTexture();
 				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(var4);
+					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(var4);
 					design = block != null ? block.getBlockDesign() : null;
 					textureURI = design != null ? design.getTexureURL() : null;
 				}

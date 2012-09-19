@@ -23,9 +23,9 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.*;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.*;
 
 public class InGameScreen extends GenericScreen implements InGameHUD {
 	protected HealthBar health;

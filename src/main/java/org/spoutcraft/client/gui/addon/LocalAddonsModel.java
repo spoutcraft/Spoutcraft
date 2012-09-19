@@ -22,13 +22,13 @@ package org.spoutcraft.client.gui.addon;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.addon.ServerAddon;
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.MinecraftFont;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.addon.ServerAddon;
+import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.MinecraftFont;
 
 public class LocalAddonsModel extends AbstractListModel {
 	private GuiAddonsLocal gui = null;

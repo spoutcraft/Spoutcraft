@@ -22,17 +22,17 @@ package org.spoutcraft.client.block;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.BlockRedstoneWire;
 
-import org.spoutcraft.spoutcraftapi.material.Liquid;
-import org.spoutcraft.spoutcraftapi.material.Material;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.World;
-import org.spoutcraft.spoutcraftapi.block.Biome;
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.block.BlockFace;
-import org.spoutcraft.spoutcraftapi.block.BlockState;
-import org.spoutcraft.spoutcraftapi.block.Chunk;
-import org.spoutcraft.spoutcraftapi.util.FastLocation;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
+import org.spoutcraft.api.material.Liquid;
+import org.spoutcraft.api.material.Material;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.api.World;
+import org.spoutcraft.api.block.Biome;
+import org.spoutcraft.api.block.Block;
+import org.spoutcraft.api.block.BlockFace;
+import org.spoutcraft.api.block.BlockState;
+import org.spoutcraft.api.block.Chunk;
+import org.spoutcraft.api.util.FastLocation;
+import org.spoutcraft.api.util.FixedLocation;
 
 public class SpoutcraftBlock implements Block {
 	private final SpoutcraftChunk chunk;
@@ -344,7 +344,7 @@ public class SpoutcraftBlock implements Block {
 		}
 	}
 
-	public org.spoutcraft.spoutcraftapi.material.Block getType() {
+	public org.spoutcraft.api.material.Block getType() {
 		short customId = chunk.getCustomBlockId(x, y, z);
 		if (customId != 0) {
 			return MaterialData.getCustomBlock(customId);

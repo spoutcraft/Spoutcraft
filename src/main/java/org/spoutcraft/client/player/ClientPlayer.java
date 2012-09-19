@@ -26,15 +26,15 @@ import net.minecraft.src.EntityPlayerSP;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.InGameScreen;
-import org.spoutcraft.spoutcraftapi.GameMode;
-import org.spoutcraft.spoutcraftapi.entity.ActivePlayer;
-import org.spoutcraft.spoutcraftapi.gui.InGameHUD;
-import org.spoutcraft.spoutcraftapi.gui.Screen;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.player.RenderDistance;
-import org.spoutcraft.spoutcraftapi.util.FixedLocation;
-import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.util.MutableLocation;
+import org.spoutcraft.api.GameMode;
+import org.spoutcraft.api.entity.ActivePlayer;
+import org.spoutcraft.api.gui.InGameHUD;
+import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.player.RenderDistance;
+import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.api.util.Location;
+import org.spoutcraft.api.util.MutableLocation;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	private static ClientPlayer instance = null;

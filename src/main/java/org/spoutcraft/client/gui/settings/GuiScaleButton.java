@@ -24,8 +24,8 @@ import net.minecraft.src.ScaledResolution;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.spoutcraftapi.event.screen.ButtonClickEvent;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
+import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.api.gui.GenericButton;
 
 public class GuiScaleButton extends GenericButton {
 	GameSettingsScreen parent;

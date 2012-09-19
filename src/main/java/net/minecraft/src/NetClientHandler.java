@@ -29,7 +29,7 @@ import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
+import org.spoutcraft.api.entity.LivingEntity;
 // Spout End
 
 public class NetClientHandler extends NetHandler {

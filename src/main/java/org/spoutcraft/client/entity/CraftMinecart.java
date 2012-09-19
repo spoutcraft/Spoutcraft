@@ -21,9 +21,9 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMinecart;
 
-import org.spoutcraft.spoutcraftapi.entity.Minecart;
-import org.spoutcraft.spoutcraftapi.util.MutableVector;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.api.entity.Minecart;
+import org.spoutcraft.api.util.MutableVector;
+import org.spoutcraft.api.util.Vector;
 
 public class CraftMinecart extends CraftVehicle implements Minecart {
 	/**

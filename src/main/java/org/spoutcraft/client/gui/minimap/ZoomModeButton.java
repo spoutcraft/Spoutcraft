@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.minimap;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericComboBox;
 
 public class ZoomModeButton extends GenericComboBox {
 	public ZoomModeButton() {

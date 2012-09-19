@@ -26,19 +26,19 @@ import java.util.TimerTask;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 
-import org.spoutcraft.spoutcraftapi.ChatColor;
+import org.spoutcraft.api.ChatColor;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.client.gui.ScreenUtil;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericListWidget;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
-import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
-import org.spoutcraft.spoutcraftapi.keyboard.AbstractBinding;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericListWidget;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.RenderUtil;
+import org.spoutcraft.api.keyboard.AbstractBinding;
 
 public class GuiAmbigousInput extends GuiSpoutScreen {
 	private Label title;

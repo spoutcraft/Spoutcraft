@@ -31,7 +31,7 @@ import net.minecraft.src.World;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
+import org.spoutcraft.api.Spoutcraft;
 
 public class MapCalculator implements Runnable {
 	/**

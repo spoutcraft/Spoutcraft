@@ -23,7 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.gui.*;
+import org.spoutcraft.api.gui.*;
 
 public class CustomScreen extends GuiScreen {
 	public CustomScreen(PopupScreen screen) {

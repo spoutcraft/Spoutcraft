@@ -1,9 +1,27 @@
+/*
+ * This file is part of SpoutcraftAPI.
+ *
+ * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * SpoutcraftAPI is licensed under the GNU Lesser General Public License.
+ *
+ * SpoutcraftAPI is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SpoutcraftAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.bukkit;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.Maps;
 
 /**
  * All supported color values for chat
@@ -109,8 +127,8 @@ public enum ChatColor {
 	private final char code;
 	private final boolean isFormat;
 	private final String toString;
-	private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap();
-	private final static Map<Character, ChatColor> BY_CHAR = Maps.newHashMap();
+	private final static Map<Integer, ChatColor> BY_ID = new HashMap<Integer, ChatColor>();
+	private final static Map<Character, ChatColor> BY_CHAR = new HashMap<Character, ChatColor>();
 
 	private ChatColor(char code, int intCode) {
 		this(code, intCode, false);
@@ -189,7 +207,7 @@ public enum ChatColor {
 	 * Gets the color represented by the specified color code
 	 *
 	 * @param code Code to check
-	 * @return Associative {@link Color} with the given code, or null if it doesn't exist
+	 * @return Associative color with the given code, or null if it doesn't exist
 	 */
 	public static ChatColor getByCode(final int code) {
 		return BY_ID.get(code);
@@ -199,7 +217,7 @@ public enum ChatColor {
 	 * Translates a string using an alternate color code character into a string that uses the internal
 	 * ChatColor.COLOR_CODE color code character. The alternate color code character will only be replaced
 	 * if it is immediately followed by 0-9, A-F, or a-f.
-	 *
+	 * 
 	 * @param altColorChar The alternate color code character to replace. Ex: &
 	 * @param textToTranslate Text containing the alternate color code character.
 	 * @return Text containing the ChatColor.COLOR_CODE color code character.

@@ -35,8 +35,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketCacheFile implements CompressablePacket {
 	private String plugin;

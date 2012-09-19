@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 // Spout Start
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
-import org.spoutcraft.spoutcraftapi.material.CustomItem;
+import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.api.material.CustomItem;
 // Spout End
 
 public class GuiContainerCreative extends InventoryEffectRenderer {

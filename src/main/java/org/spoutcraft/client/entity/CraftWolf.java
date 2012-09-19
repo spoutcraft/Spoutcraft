@@ -22,10 +22,10 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.EntityWolf;
 import net.minecraft.src.PathEntity;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.entity.AnimalTamer;
-import org.spoutcraft.spoutcraftapi.entity.Player;
-import org.spoutcraft.spoutcraftapi.entity.Wolf;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.entity.AnimalTamer;
+import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.api.entity.Wolf;
 
 public class CraftWolf extends CraftAnimals implements Wolf {
 	private AnimalTamer owner;

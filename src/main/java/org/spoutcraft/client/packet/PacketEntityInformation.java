@@ -33,9 +33,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldClient;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketEntityInformation implements CompressablePacket {
 	private boolean compressed = false;

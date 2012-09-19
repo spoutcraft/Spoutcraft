@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.gui.controls;
 
-import org.spoutcraft.spoutcraftapi.gui.ListWidget;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public abstract class ControlsBasicItem implements ListWidgetItem {
 	private ListWidget widget;

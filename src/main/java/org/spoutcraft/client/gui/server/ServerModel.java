@@ -22,8 +22,8 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.gui.AbstractListModel;
-import org.spoutcraft.spoutcraftapi.gui.ListWidgetItem;
+import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class ServerModel extends AbstractListModel {
 	protected List<ServerItem> items = new ArrayList<ServerItem>();

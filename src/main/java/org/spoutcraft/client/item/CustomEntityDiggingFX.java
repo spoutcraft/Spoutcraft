@@ -27,7 +27,7 @@ import net.minecraft.src.EntityDiggingFX;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.World;
 
-import org.spoutcraft.spoutcraftapi.block.design.GenericBlockDesign;
+import org.spoutcraft.api.block.design.GenericBlockDesign;
 
 public class CustomEntityDiggingFX extends EntityDiggingFX {
 	private Texture textureBinding = null;

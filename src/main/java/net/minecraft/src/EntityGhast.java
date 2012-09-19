@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 // Spout Start
 import org.spoutcraft.client.entity.CraftGhast;
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
+import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 
 public class EntityGhast extends EntityFlying implements IMob {

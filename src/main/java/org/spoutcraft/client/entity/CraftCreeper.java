@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityCreeper;
 
-import org.spoutcraft.spoutcraftapi.entity.Creeper;
+import org.spoutcraft.api.entity.Creeper;
 
 public class CraftCreeper extends CraftMonster implements Creeper {
 	public CraftCreeper(EntityCreeper entity) {

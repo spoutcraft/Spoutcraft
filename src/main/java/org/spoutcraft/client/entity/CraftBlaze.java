@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityBlaze;
 
-import org.spoutcraft.spoutcraftapi.entity.Blaze;
+import org.spoutcraft.api.entity.Blaze;
 
 public class CraftBlaze extends CraftMonster implements Blaze {
 	public CraftBlaze(EntityBlaze entity) {

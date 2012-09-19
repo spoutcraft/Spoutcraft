@@ -25,10 +25,10 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityFX;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.util.Location;
-import org.spoutcraft.spoutcraftapi.util.Vector;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.util.Location;
+import org.spoutcraft.api.util.Vector;
 
 public class PacketParticle implements SpoutPacket {
 	String name;

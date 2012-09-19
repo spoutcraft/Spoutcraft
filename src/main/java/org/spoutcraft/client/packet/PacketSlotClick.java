@@ -22,9 +22,9 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.spoutcraftapi.gui.Slot;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.gui.Slot;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketSlotClick implements SpoutPacket {
 	private UUID screen;

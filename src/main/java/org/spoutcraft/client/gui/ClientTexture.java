@@ -23,8 +23,8 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.GenericTexture;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.GenericTexture;
 
 public class ClientTexture extends GenericTexture {
 	public ClientTexture(String path) {
@@ -46,7 +46,7 @@ public class ClientTexture extends GenericTexture {
 	}
 
 	@Override
-	public org.spoutcraft.spoutcraftapi.gui.Texture setUrl(String url) {
+	public org.spoutcraft.api.gui.Texture setUrl(String url) {
 		Texture t = CustomTextureManager.getTextureFromJar(url);
 		if (t != null) {
 			setOriginalHeight(t.getImageHeight());

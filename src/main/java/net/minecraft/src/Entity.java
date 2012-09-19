@@ -80,7 +80,7 @@ public abstract class Entity {
 	public boolean isAirBorne;
 	// Spout Start
 	public boolean partiallyInWater = false;
-	public org.spoutcraft.spoutcraftapi.entity.Entity spoutEntity;
+	public org.spoutcraft.api.entity.Entity spoutEntity;
 	public UUID uniqueId = UUID.randomUUID();
 	public boolean wasOnGround;
 	public boolean clientonly = false;

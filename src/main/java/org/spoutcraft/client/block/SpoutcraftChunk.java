@@ -31,11 +31,11 @@ import net.minecraft.client.Minecraft;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.block.Chunk;
-import org.spoutcraft.spoutcraftapi.entity.Entity;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.block.Block;
+import org.spoutcraft.api.block.Chunk;
+import org.spoutcraft.api.entity.Entity;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 
 public class SpoutcraftChunk implements Chunk {
 	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();

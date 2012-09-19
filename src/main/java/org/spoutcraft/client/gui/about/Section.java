@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.Widget;
 
 public abstract class Section {
 	private int x = 0;

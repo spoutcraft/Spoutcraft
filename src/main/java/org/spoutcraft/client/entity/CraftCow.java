@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityCow;
 
-import org.spoutcraft.spoutcraftapi.entity.Cow;
+import org.spoutcraft.api.entity.Cow;
 
 public class CraftCow extends CraftAnimals implements Cow {
 	public CraftCow(EntityCow entity) {

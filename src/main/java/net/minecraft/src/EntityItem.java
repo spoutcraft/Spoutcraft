@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 // Spout Start
 import org.spoutcraft.client.entity.CraftItem;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class EntityItem extends Entity {

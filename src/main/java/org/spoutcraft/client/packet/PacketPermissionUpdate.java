@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketPermissionUpdate implements SpoutPacket {
 private Map<String, Boolean> permissions;

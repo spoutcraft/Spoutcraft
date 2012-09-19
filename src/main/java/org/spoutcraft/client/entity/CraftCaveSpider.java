@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityCaveSpider;
 
-import org.spoutcraft.spoutcraftapi.entity.CaveSpider;
+import org.spoutcraft.api.entity.CaveSpider;
 
 public class CraftCaveSpider extends CraftSpider implements CaveSpider {
 	public CraftCaveSpider(EntityCaveSpider entity) {

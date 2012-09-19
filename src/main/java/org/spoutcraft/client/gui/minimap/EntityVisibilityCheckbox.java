@@ -21,8 +21,8 @@ package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.src.Entity;
 
-import org.spoutcraft.spoutcraftapi.gui.CheckBox;
-import org.spoutcraft.spoutcraftapi.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.CheckBox;
+import org.spoutcraft.api.gui.GenericCheckBox;
 
 public class EntityVisibilityCheckbox extends GenericCheckBox {
 	private Class<? extends Entity> clazz;

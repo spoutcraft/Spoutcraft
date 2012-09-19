@@ -6,7 +6,7 @@ import net.minecraft.src.EntityPig;
 import net.minecraft.src.ModelBase;
 import net.minecraft.src.RenderLiving;
 // Spout Start
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
+import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 
 public class RenderPig extends RenderLiving {

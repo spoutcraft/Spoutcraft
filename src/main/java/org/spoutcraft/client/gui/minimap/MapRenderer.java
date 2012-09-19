@@ -31,8 +31,8 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.gui.RenderUtil;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.gui.RenderUtil;
 
 public class MapRenderer {
 	/** Direction you're facing */

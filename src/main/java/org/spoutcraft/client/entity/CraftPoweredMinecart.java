@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMinecart;
 
-import org.spoutcraft.spoutcraftapi.entity.PoweredMinecart;
+import org.spoutcraft.api.entity.PoweredMinecart;
 
 public class CraftPoweredMinecart extends CraftMinecart implements PoweredMinecart {
 	public CraftPoweredMinecart(EntityMinecart entity) {

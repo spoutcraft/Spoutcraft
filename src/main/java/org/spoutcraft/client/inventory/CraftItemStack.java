@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.inventory;
 
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.material.Material;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.material.Material;
 
 public class CraftItemStack extends ItemStack {
 	protected net.minecraft.src.ItemStack item;

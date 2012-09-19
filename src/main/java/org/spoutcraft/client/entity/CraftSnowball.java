@@ -22,8 +22,8 @@ package org.spoutcraft.client.entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntitySnowball;
 
-import org.spoutcraft.spoutcraftapi.entity.LivingEntity;
-import org.spoutcraft.spoutcraftapi.entity.Snowball;
+import org.spoutcraft.api.entity.LivingEntity;
+import org.spoutcraft.api.entity.Snowball;
 
 public class CraftSnowball extends AbstractProjectile implements Snowball {
 	public CraftSnowball(EntitySnowball entity) {

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import org.lwjgl.opengl.GL11;
 // Spout Start
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public class RenderBiped extends RenderLiving {
@@ -45,7 +45,7 @@ public class RenderBiped extends RenderLiving {
 				GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			// Spout Start
-			} else if (Item.itemsList[var3.itemID].isFull3D() || var3.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var3.getItemDamage()) instanceof org.spoutcraft.spoutcraftapi.material.Tool) {
+			} else if (Item.itemsList[var3.itemID].isFull3D() || var3.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var3.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
 			// Spout End
 				var4 = 0.625F;
 				GL11.glTranslatef(0.0F, 0.1875F, 0.0F);

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityGiantZombie;
 
-import org.spoutcraft.spoutcraftapi.entity.Giant;
+import org.spoutcraft.api.entity.Giant;
 
 public class CraftGiant extends CraftMonster implements Giant {
 	public CraftGiant(EntityGiantZombie entity) {

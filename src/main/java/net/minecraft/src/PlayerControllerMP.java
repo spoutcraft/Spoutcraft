@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.spoutcraft.spoutcraftapi.Spoutcraft; // Spout
+import org.spoutcraft.api.Spoutcraft; // Spout
 
 import net.minecraft.client.Minecraft;
 

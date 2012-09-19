@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityGhast;
 
-import org.spoutcraft.spoutcraftapi.entity.Ghast;
+import org.spoutcraft.api.entity.Ghast;
 
 public class CraftGhast extends CraftFlying implements Ghast {
 	public CraftGhast(EntityGhast entity) {

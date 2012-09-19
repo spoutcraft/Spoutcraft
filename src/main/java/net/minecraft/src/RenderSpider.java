@@ -8,7 +8,7 @@ import net.minecraft.src.RenderLiving;
 import org.lwjgl.opengl.GL11;
 
 // Spout Start
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
+import org.spoutcraft.api.entity.EntitySkinType;
 // Spout End
 
 public class RenderSpider extends RenderLiving {

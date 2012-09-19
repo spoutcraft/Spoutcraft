@@ -21,9 +21,9 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.item.GenericCustomTool;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.item.GenericCustomTool;
 
 public class PacketGenericTool implements SpoutPacket {
 	GenericCustomTool item = new GenericCustomTool();

@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.ModelNarrowtux;
 import org.spoutcraft.client.special.VIP;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.player.accessories.AccessoryHandler;
 import org.spoutcraft.client.player.accessories.AccessoryType;
 // Spout End
@@ -294,7 +294,7 @@ public class RenderPlayer extends RenderLiving {
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 			}
 			// Spout Start
-			else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.spoutcraftapi.material.Tool) {
+			else if (Item.itemsList[var21.itemID].isFull3D() || var21.itemID == Item.flint.shiftedIndex && MaterialData.getCustomItem(var21.getItemDamage()) instanceof org.spoutcraft.api.material.Tool) {
 			//spout end
 				var6 = 0.625F;
 				if (Item.itemsList[var21.itemID].shouldRotateAroundWhenRendering()) {

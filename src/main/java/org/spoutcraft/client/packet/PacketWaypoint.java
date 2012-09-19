@@ -25,8 +25,8 @@ import java.util.Date;
 
 import org.spoutcraft.client.gui.minimap.MinimapConfig;
 import org.spoutcraft.client.gui.minimap.Waypoint;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketWaypoint implements SpoutPacket {
 	private double x, y, z;

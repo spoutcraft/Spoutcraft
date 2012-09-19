@@ -51,7 +51,7 @@ import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
 import org.spoutcraft.client.gui.minimap.GuiMoveMinimap;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.spoutcraftapi.gui.*;
+import org.spoutcraft.api.gui.*;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {

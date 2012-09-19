@@ -39,7 +39,7 @@ import org.spoutcraft.client.SpoutClient;
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import org.spoutcraft.spoutcraftapi.addon.Addon;
+import org.spoutcraft.api.addon.Addon;
 
 public class AddonInfo {
 	private Addon addon;

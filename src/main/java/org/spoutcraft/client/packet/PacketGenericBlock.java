@@ -21,10 +21,10 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
-import org.spoutcraft.spoutcraftapi.material.block.GenericCustomBlock;
+import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.api.material.block.GenericCustomBlock;
 
 public class PacketGenericBlock implements SpoutPacket {
 	GenericCustomBlock block = new GenericCustomBlock();

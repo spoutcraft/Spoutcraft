@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.spoutcraftapi.gui.GenericComboBox;
+import org.spoutcraft.api.gui.GenericComboBox;
 
 public class CountryButton extends GenericComboBox implements UrlElement {
 	ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();

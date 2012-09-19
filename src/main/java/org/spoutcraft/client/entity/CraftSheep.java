@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySheep;
 
-import org.spoutcraft.spoutcraftapi.entity.Sheep;
+import org.spoutcraft.api.entity.Sheep;
 
 public class CraftSheep extends CraftAnimals implements Sheep {
 	public CraftSheep(EntitySheep entity) {

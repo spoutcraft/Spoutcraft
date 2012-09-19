@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityWeatherEffect;
 
-import org.spoutcraft.spoutcraftapi.entity.Weather;
+import org.spoutcraft.api.entity.Weather;
 
 public class CraftWeather extends CraftEntity implements Weather {
 	public CraftWeather(EntityWeatherEffect entity) {

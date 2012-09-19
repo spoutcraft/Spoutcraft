@@ -21,9 +21,9 @@ package org.spoutcraft.client.inventory;
 
 import net.minecraft.src.IInventory;
 
-import org.spoutcraft.spoutcraftapi.block.Block;
-import org.spoutcraft.spoutcraftapi.block.BlockFace;
-import org.spoutcraft.spoutcraftapi.inventory.DoubleChestInventory;
+import org.spoutcraft.api.block.Block;
+import org.spoutcraft.api.block.BlockFace;
+import org.spoutcraft.api.inventory.DoubleChestInventory;
 
 public class CraftDoubleInventory extends CraftInventory implements DoubleChestInventory {
 	protected Block top;

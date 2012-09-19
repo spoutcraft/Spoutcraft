@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntitySlime;
 
-import org.spoutcraft.spoutcraftapi.entity.Slime;
+import org.spoutcraft.api.entity.Slime;
 
 public class CraftSlime extends CraftLivingEntity implements Slime {
 	public CraftSlime(EntitySlime entity) {

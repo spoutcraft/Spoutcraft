@@ -7,8 +7,8 @@ import java.util.Random;
 import org.lwjgl.opengl.GL12;
 import org.newdawn.slick.opengl.Texture;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.block.design.BlockDesign;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.block.design.BlockDesign;
+import org.spoutcraft.api.material.MaterialData;
 
 import com.pclewis.mcpatcher.mod.TileSize;
 import com.pclewis.mcpatcher.mod.Colorizer;
@@ -39,11 +39,11 @@ public class ItemRenderer {
 		boolean custom = false;
 		BlockDesign design = null;
 		if (par2ItemStack.itemID == 318) {
-			org.spoutcraft.spoutcraftapi.material.CustomItem item = MaterialData.getCustomItem(par2ItemStack.getItemDamage());
+			org.spoutcraft.api.material.CustomItem item = MaterialData.getCustomItem(par2ItemStack.getItemDamage());
 			if (item != null) {
 				String textureURI = item.getTexture();
 				if (textureURI == null) {
-					org.spoutcraft.spoutcraftapi.material.CustomBlock block = MaterialData.getCustomBlock(par2ItemStack.getItemDamage());
+					org.spoutcraft.api.material.CustomBlock block = MaterialData.getCustomBlock(par2ItemStack.getItemDamage());
 					design = block != null ? block.getBlockDesign() : null;
 					textureURI = design != null ? design.getTexureURL() : null;
 				}

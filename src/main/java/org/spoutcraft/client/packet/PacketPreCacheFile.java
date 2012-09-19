@@ -28,8 +28,8 @@ import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.spoutcraftapi.io.SpoutInputStream;
-import org.spoutcraft.spoutcraftapi.io.SpoutOutputStream;
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketPreCacheFile implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];

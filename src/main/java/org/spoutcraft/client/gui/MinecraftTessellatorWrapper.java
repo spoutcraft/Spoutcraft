@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.spoutcraftapi.gui.MinecraftTessellator;
+import org.spoutcraft.api.gui.MinecraftTessellator;
 
 public class MinecraftTessellatorWrapper implements MinecraftTessellator {
 	public void draw() {

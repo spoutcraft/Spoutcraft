@@ -10,9 +10,9 @@ import java.util.Random;
 import org.spoutcraft.client.entity.CraftLivingEntity;
 import org.spoutcraft.client.entity.EntityData;
 import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.spoutcraftapi.entity.EntitySkinType;
-import org.spoutcraft.spoutcraftapi.material.CustomBlock;
-import org.spoutcraft.spoutcraftapi.material.MaterialData;
+import org.spoutcraft.api.entity.EntitySkinType;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 // Spout End
 
 public abstract class EntityLiving extends Entity {
@@ -1074,8 +1074,8 @@ public abstract class EntityLiving extends Entity {
 					int x = MathHelper.floor_double(this.posX);
 					int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
 					int z = MathHelper.floor_double(this.posZ);
-					org.spoutcraft.spoutcraftapi.World world = this.worldObj.world;
-					org.spoutcraft.spoutcraftapi.block.Chunk chunk = world.getChunkAt(x, y, z);
+					org.spoutcraft.api.World world = this.worldObj.world;
+					org.spoutcraft.api.block.Chunk chunk = world.getChunkAt(x, y, z);
 					short customId = chunk.getCustomBlockId(x, y, z);
 					if (customId > 0) {
 						CustomBlock block = MaterialData.getCustomBlock(customId);

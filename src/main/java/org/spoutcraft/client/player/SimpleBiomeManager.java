@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.spoutcraft.spoutcraftapi.player.BiomeManager;
+import org.spoutcraft.api.player.BiomeManager;
 
 public class SimpleBiomeManager implements BiomeManager {
 	private HashMap<String,Boolean> changedSnow = new HashMap<String,Boolean>();

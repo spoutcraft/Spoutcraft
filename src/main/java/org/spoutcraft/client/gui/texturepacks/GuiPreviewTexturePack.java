@@ -28,18 +28,18 @@ import net.minecraft.src.Item;
 import net.minecraft.src.StringTranslate;
 
 import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.spoutcraftapi.Spoutcraft;
-import org.spoutcraft.spoutcraftapi.addon.Addon;
-import org.spoutcraft.spoutcraftapi.gui.Button;
-import org.spoutcraft.spoutcraftapi.gui.GenericButton;
-import org.spoutcraft.spoutcraftapi.gui.GenericItemWidget;
-import org.spoutcraft.spoutcraftapi.gui.GenericLabel;
-import org.spoutcraft.spoutcraftapi.gui.GenericScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.ItemWidget;
-import org.spoutcraft.spoutcraftapi.gui.Label;
-import org.spoutcraft.spoutcraftapi.gui.ScrollArea;
-import org.spoutcraft.spoutcraftapi.gui.Widget;
-import org.spoutcraft.spoutcraftapi.inventory.ItemStack;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericItemWidget;
+import org.spoutcraft.api.gui.GenericLabel;
+import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.api.gui.ItemWidget;
+import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.ScrollArea;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.api.inventory.ItemStack;
 
 public class GuiPreviewTexturePack extends GuiSpoutScreen {
 	private GuiScreen parent;

@@ -21,7 +21,7 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityFallingSand;
 
-import org.spoutcraft.spoutcraftapi.entity.FallingSand;
+import org.spoutcraft.api.entity.FallingSand;
 
 public class CraftFallingSand extends CraftEntity implements FallingSand {
 	public CraftFallingSand(EntityFallingSand entity) {
