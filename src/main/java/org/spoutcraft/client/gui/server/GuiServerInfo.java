@@ -46,6 +46,8 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.GenericTexture;
 import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.api.gui.ScrollBarPolicy;
 import org.spoutcraft.api.gui.Texture;
 
 public class GuiServerInfo extends GuiSpoutScreen {
@@ -92,6 +94,8 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		getScreen().attachWidget(spoutcraft, buttonJoin);
 
 		content = new GenericScrollArea();
+		content.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
+		
 		getScreen().attachWidget(spoutcraft, content);
 
 		labelTitle = new GenericLabel(item.getTitle());
@@ -297,10 +301,17 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelAddress.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
 
 		top += 16;
-
+		
 		labelMotdLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
 		labelMotd.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
-
+		
+		labelMotd.setWrapLines(true);
+		labelMotd.recalculateLines();
+		
+		if (labelMotd.getLines().length > 1) {
+			top += 10;
+		}
+		
 		top += 16;
 
 		labelPlayersLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
