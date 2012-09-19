@@ -115,6 +115,7 @@ public class FavoritesModel extends ServerModel {
 						addServer(title, ip, port, databaseId);
 					}
 				}
+				buffer.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
