@@ -55,7 +55,6 @@ public class WidgetType {
 	public static WidgetType Polygon = new WidgetType(GenericPolygon.class, 26);
 	public static WidgetType Slot = new WidgetType(GenericSlot.class, 27);
 
-
 	private final int id;
 	private final boolean client;
 	private final Class<? extends Widget> widgetClass;

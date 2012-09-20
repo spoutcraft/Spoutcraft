@@ -20,6 +20,7 @@
 package org.spoutcraft.client.gui.minimap;
 
 import java.util.HashMap;
+
 import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.Entity;

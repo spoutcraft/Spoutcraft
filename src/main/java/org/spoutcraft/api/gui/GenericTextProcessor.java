@@ -203,7 +203,7 @@ public class GenericTextProcessor implements TextProcessor {
 			return false;
 		}
 		textBuffer.insert(cursor++, c);
-		if (!formatText()) { // if function call wasn't successful, revert changes
+		if (!formatText()) { // If function call wasn't successful, revert changes
 			deleteChar(--cursor);
 			return false;
 		}
@@ -216,7 +216,7 @@ public class GenericTextProcessor implements TextProcessor {
 		}
 
 		textBuffer.insert(cursor, s);
-		if (!formatText()) { // if function call wasn't successful, revert changes
+		if (!formatText()) { // If function call wasn't successful, revert changes
 			textBuffer.delete(cursor, cursor + s.length());
 			formatText();
 			return false;
@@ -253,10 +253,10 @@ public class GenericTextProcessor implements TextProcessor {
 		boolean skipIterator = false;
 		final int spaceCharWidth = font.getTextWidth(STR_SPACE);
 
-		// virtually split text in parts that don't exceed the line width
+		// Virtually split text in parts that don't exceed the line width
 		lineBreaks.clear();
 		while (st.hasMoreTokens() || skipIterator) {
-			// get word and its length
+			// Get word and its length
 			if (!skipIterator) {
 				word = st.nextToken();
 			}
@@ -264,19 +264,19 @@ public class GenericTextProcessor implements TextProcessor {
 			wordWidth = font.getTextWidth(word);
 			position += word.length();
 
-			// if word is a newline directive, add a linebreak
+			// If word is a newline directive, add a linebreak
 			if (word.equals(STR_NEWLINE)) {
 				lineWidth = 0;
 				lineBreaks.add(position);
 				continue;
-			// allow one whitespace not to be handled as part of the previous word (word-wrapping)
+			// Allow one whitespace not to be handled as part of the previous word (word-wrapping)
 			} else if (!previousSpace && word.equals(STR_SPACE)) {
 				lineWidth += spaceCharWidth;
 				previousSpace = true;
 				continue;
 			}
 
-			// split very long words
+			// Split very long words
 			if (wordWidth > width) {
 				int i = word.length();
 				while (i > 0 && wordWidth > width)
@@ -286,7 +286,7 @@ public class GenericTextProcessor implements TextProcessor {
 				lineWidth = 0;
 				word = word.substring(i);
 				skipIterator = true;
-			// check if this word would exceed the max-width of the line
+			// Check if this word would exceed the max-width of the line
 			} else if (lineWidth + wordWidth > width) {
 				if (lineBreaks.size() + 1 < lineLimit) {
 					lineBreaks.add(position - word.length());
@@ -298,17 +298,17 @@ public class GenericTextProcessor implements TextProcessor {
 			}
 			previousSpace = false;
 		}
-		// check if we're at line limit
+		// Check if we're at line limit
 		if (lineBreaks.size() >= lineLimit) {
 			return false;
 		}
 
-		// create a line break at the end (–> indizes easier)
+		// Create a line break at the end (–> indizes easier)
 		if (!lineBreaks.contains(textBuffer.length())) {
 			lineBreaks.add(textBuffer.length());
 		}
 
-		// split text into parts using the virtual line breaks
+		// Split text into parts using the virtual line breaks
 		formattedText.clear();
 		for (int i = 0; i < lineBreaks.size() && i < lineLimit; ++i) {
 			position = lineBreaks.get(i);

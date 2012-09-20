@@ -22,15 +22,15 @@ package org.spoutcraft.client.block;
 import net.minecraft.src.InventoryLargeChest;
 import net.minecraft.src.TileEntityChest;
 
-import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.inventory.CraftDoubleInventory;
-import org.spoutcraft.client.inventory.CraftInventory;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.BlockState;
 import org.spoutcraft.api.block.Chest;
 import org.spoutcraft.api.inventory.DoubleChestInventory;
 import org.spoutcraft.api.inventory.Inventory;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.inventory.CraftDoubleInventory;
+import org.spoutcraft.client.inventory.CraftInventory;
 
 public class CraftChest extends CraftBlockState implements Chest {
 	private final SpoutcraftWorld world;

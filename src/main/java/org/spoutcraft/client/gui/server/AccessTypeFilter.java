@@ -22,9 +22,9 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.client.gui.database.AbstractAPIModel;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.api.gui.GenericComboBox;
 
 public class AccessTypeFilter extends GenericComboBox implements UrlElement {
 	private String[] strings = { "All", "Open", "Whitelisted", "Graylisted", "Blacklisted"};

@@ -53,7 +53,8 @@ public class NetworkUtils {
 			String str;
 			while ((str = in.readLine()) != null);
 			in.close();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	public static void openInBrowser(String url) {
@@ -77,7 +78,7 @@ public class NetworkUtils {
 	 * be attempted&mdash;see {@link #resolve(String)} for implementation details.
 	 * <p>
 	 * This method is the equivalent of passing <code>true</code> to {@link #resolve(String, int, boolean)}.
-	 * 
+	 *
 	 * @param hostname the DNS hostname to resolve.
 	 * @param port the port number to encapsulate within the <code>InetSocketAddress</code>.
 	 * @return an {@link InetSocketAddress}, which may be marked unresolved if hostname lookup failed.
@@ -98,7 +99,7 @@ public class NetworkUtils {
 	 * results, a regular DNS lookup will be attempted.
 	 * <p>
 	 * If the given <code>hostname</code> represents an IP address, it will not be resolved.
-	 * 
+	 *
 	 * @param hostname the DNS hostname to resolve.
 	 * @param port the port number to encapsulate within the <code>InetSocketAddress</code>.
 	 * @param srv whether to attempt a SRV record lookup.
@@ -131,7 +132,7 @@ public class NetworkUtils {
 	 * (that is, the lowest priority value) is selected. This implementation does not take
 	 * into account relative weights for records with identical priorities, and behavior in
 	 * such cases is undefined.
-	 * 
+	 *
 	 * @param hostname the DNS hostname to on which to perform a SRV lookup.
 	 * @return an {@link InetSocketAddress}, or <code>null</code> if no SRV record was found.
 	 * @throws TextParseException if the hostname is malformed.

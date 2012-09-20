@@ -33,10 +33,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.ClientTexture;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.mainmenu.MainMenu;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -45,6 +41,10 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ClientTexture;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.mainmenu.MainMenu;
 
 public class GuiNewAbout extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -55,11 +55,11 @@ public class GuiNewAbout extends GuiSpoutScreen {
 	private int sectionMargin = 20, columnMargin = 20;
 	private ClientTexture textureSpoutcraft, textureMinecraft;
 	private static HashMap<String, Object> root;
-	
+
 	static {
 		updateRoot();
 	}
-	
+
 	private static void updateRoot() {
 		try {
 			root = (HashMap<String, Object>) (new Yaml()).load((new URL("http://get.spout.org/about.yml")).openStream());

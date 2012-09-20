@@ -87,7 +87,9 @@ public class SettingsHandler {
 	 * @throws FileNotFoundException
 	 */
 	public SettingsHandler(File out) throws FileNotFoundException {
-		if (!out.exists()) throw new FileNotFoundException("The out does not exist.");
+		if (!out.exists()) {
+			throw new FileNotFoundException("The out does not exist.");
+		}
 		this.out = out;
 	}
 
@@ -106,7 +108,9 @@ public class SettingsHandler {
 	 */
 	public void setCached(Boolean cached) {
 		this.cached = cached;
-		if (this.cached = false) this.cache = null;
+		if (this.cached = false) {
+			this.cache = null;
+		}
 	}
 
 	/**
@@ -136,8 +140,9 @@ public class SettingsHandler {
 				} catch (Exception ignored) {
 				}
 				try {
-					if (output != null)
+					if (output != null) {
 						output.close();
+					}
 				} catch (Exception ignored) {
 				}
 			}
@@ -168,8 +173,9 @@ public class SettingsHandler {
 				} catch (Exception ignored) {
 				}
 				try {
-					if (output != null)
+					if (output != null) {
 						output.close();
+					}
 				} catch (Exception ignored) {
 				}
 			}

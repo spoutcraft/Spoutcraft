@@ -154,7 +154,7 @@ public class EffectRenderer {
 			byte var7 = 4;
 
 			// Spout Start
-			//TODO this needs to be moved into BlockDesign's API
+			// TODO This needs to be moved into BlockDesign's API
 			boolean custom = false;
 			GenericBlockDesign design = null;
 			Texture customTexture = null;

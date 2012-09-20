@@ -39,15 +39,6 @@ import net.minecraft.src.StringTranslate;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.special.Holiday;
-import org.spoutcraft.client.special.Resources;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -60,6 +51,15 @@ import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.api.gui.Texture;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
+import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.special.Holiday;
+import org.spoutcraft.client.special.Resources;
 
 public class MainMenu extends GuiScreen {
 	public static String mcVersion = "Unknown Version";
@@ -70,10 +70,10 @@ public class MainMenu extends GuiScreen {
 	Label splashText, buildNumber, animate, debugText;
 	static String timeOfDay = "";
 	final static List<String> backgrounds = new ArrayList<String>();
-	//Animate click delay
+	// Animate click delay
 	private static final int CLICK_DELAY = 7;
 	int clickDelay = 0;
-	//debug
+	// Debug
 	long lastTime = System.currentTimeMillis();
 	int lastFPS = 0;
 	int fpsDelay = 1;
@@ -91,10 +91,10 @@ public class MainMenu extends GuiScreen {
 			splashText.setText(holiday.getSplash());
 		}
 
-		//Randomize background order
+		// Randomize background order
 		Random rand = new Random();
-		//Randomize by swapping the first background with a random background in the list
-		//Repeat sufficient times
+		// Randomize by swapping the first background with a random background in the list
+		// Repeat sufficient times
 		for (int i = 0; i < backgrounds.size() * 2; i++) {
 			int newIndex = rand.nextInt(backgrounds.size());
 			String temp = backgrounds.get(0);
@@ -137,7 +137,7 @@ public class MainMenu extends GuiScreen {
 			} else {
 				break;
 			}
-			builder.setLength(0); //reset
+			builder.setLength(0); // Reset
 		}
 	}
 
@@ -146,7 +146,7 @@ public class MainMenu extends GuiScreen {
 		try {
 			if (splashes.isEmpty()) {
 				File splashTextFile = new File(FileUtil.getConfigDir(), "splashes.txt");
-				//refresh every day
+				// Refresh every day
 				if (!splashTextFile.exists() || (System.currentTimeMillis() - splashTextFile.lastModified() > (1L * 24 * 60 * 60 * 1000))) {
 					URL test = new URL("http://cdn.spout.org/splashes.txt");
 					HttpURLConnection urlConnect = (HttpURLConnection) test.openConnection();
@@ -157,9 +157,9 @@ public class MainMenu extends GuiScreen {
 					if (temp.exists()) {
 						temp.delete();
 					}
-					
+
 					splashTextFile.delete();
-					
+
 					FileUtils.copyInputStreamToFile(urlConnect.getInputStream(), temp);
 					FileUtils.moveFile(temp, splashTextFile);
 				}
@@ -174,7 +174,7 @@ public class MainMenu extends GuiScreen {
 			return splashes.get((new Random()).nextInt(splashes.size()));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "I <3 Spout's "+e.getMessage();
+			return "I <3 Spout's " + e.getMessage();
 		} finally {
 			if (br != null) {
 				try {
@@ -202,9 +202,9 @@ public class MainMenu extends GuiScreen {
 	public void initGui() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		int textWidth;
-		
+
 		StringTranslate translate = StringTranslate.getInstance();
-		
+
 		fastLogin.setGeometry(width - 110, height - 205, 100, 20);
 
 		singleplayer = new GenericButton(translate.translateKey("menu.singleplayer"));
@@ -376,7 +376,6 @@ public class MainMenu extends GuiScreen {
 }
 
 class ScaledTexture extends GenericTexture {
-
 	float scale;
 
 	ScaledTexture(String path) {
@@ -398,7 +397,6 @@ class ScaledTexture extends GenericTexture {
 }
 
 class BackgroundTexture extends GenericTexture {
-
 	static final int PAN_TIME = 600;
 	static final int EXTRA_PAN_TIME = 150;
 	static final int HEIGHT_PERCENT = 70;
@@ -438,7 +436,7 @@ class BackgroundTexture extends GenericTexture {
 				((MCRenderDelegate) Spoutcraft.getRenderDelegate()).drawTexture(tex, (int) this.getActualWidth(), (int) this.getActualHeight(), white, false, -1, -1, false, GL11.GL_LINEAR);
 			}
 		} else {
-			RenderUtil.drawRectangle(0, 0, (int) getWidth(), (int) getHeight(), 0xff000000); 
+			RenderUtil.drawRectangle(0, 0, (int) getWidth(), (int) getHeight(), 0xff000000);
 		}
 		GL11.glPopMatrix();
 	}

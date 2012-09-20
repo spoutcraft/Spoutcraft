@@ -19,11 +19,11 @@
  */
 package org.spoutcraft.client.gui.singleplayer;
 
-import org.spoutcraft.client.gui.FilterItem;
-import org.spoutcraft.client.gui.FilterModel;
 import org.spoutcraft.api.ChatColor;
 import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
 import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.client.gui.FilterItem;
+import org.spoutcraft.client.gui.FilterModel;
 
 public class WorldSearchField extends GenericTextField implements FilterItem {
 	private FilterModel model;
@@ -31,7 +31,7 @@ public class WorldSearchField extends GenericTextField implements FilterItem {
 	public WorldSearchField(FilterModel model) {
 		this.model = model;
 		model.getFilters().add(this);
-		setPlaceholder(ChatColor.GRAY + "Search ...");
+		setPlaceholder(ChatColor.GRAY + "Search...");
 	}
 
 	@Override
@@ -51,5 +51,4 @@ public class WorldSearchField extends GenericTextField implements FilterItem {
 		}
 		return false;
 	}
-
 }

@@ -22,9 +22,9 @@ package org.spoutcraft.client.gui;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.spoutcraft.client.gui.singleplayer.WorldItem;
 import org.spoutcraft.api.gui.AbstractListModel;
 import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.client.gui.singleplayer.WorldItem;
 
 public abstract class FilterModel extends AbstractListModel {
 	protected ArrayList<ListWidgetItem> filteredItems = new ArrayList<ListWidgetItem>();

@@ -46,18 +46,17 @@ public class PacketManager {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Sends a minecraft custom packet to the server
-	 * 
+	 *
 	 * @param channel the channel name
 	 * @param data the data array
 	 */
 	public void sendCustomPacket(String channel, byte[] data) {
 		sendPacket(new Packet250CustomPayload(channel, data));
 	}
-	
-	
+
 	private void sendPacket(Packet packet) {
 		EntityClientPlayerMP player = (EntityClientPlayerMP)mc.thePlayer;
 		if (player != null) {

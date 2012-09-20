@@ -29,6 +29,9 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.newdawn.slick.util.Log;
+import org.newdawn.slick.util.LogSystem;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -39,35 +42,6 @@ import net.minecraft.src.WorldClient;
 
 import org.bukkit.ChatColor;
 
-import org.newdawn.slick.util.Log;
-import org.newdawn.slick.util.LogSystem;
-import org.spoutcraft.client.addon.SimpleAddonStore;
-import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.config.MipMapUtils;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.entity.CraftCameraEntity;
-import org.spoutcraft.client.entity.CraftEntity;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.gui.SimpleKeyManager;
-import org.spoutcraft.client.gui.SimpleWidgetManager;
-import org.spoutcraft.client.gui.minimap.MinimapConfig;
-import org.spoutcraft.client.gui.server.ServerManager;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
-import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
-import org.spoutcraft.client.inventory.SimpleMaterialManager;
-import org.spoutcraft.client.io.CRCManager;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.FileDownloadThread;
-import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.packet.CustomPacket;
-import org.spoutcraft.client.packet.PacketAddonData;
-import org.spoutcraft.client.packet.PacketEntityInformation;
-import org.spoutcraft.client.packet.PacketManager;
-import org.spoutcraft.client.player.ChatManager;
-import org.spoutcraft.client.player.ClientPlayer;
-import org.spoutcraft.client.player.SimpleBiomeManager;
-import org.spoutcraft.client.player.SimpleSkyManager;
 import org.spoutcraft.api.Client;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.World;
@@ -97,6 +71,33 @@ import org.spoutcraft.api.player.SkyManager;
 import org.spoutcraft.api.property.PropertyObject;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.Location;
+import org.spoutcraft.client.addon.SimpleAddonStore;
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.MipMapUtils;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.entity.CraftCameraEntity;
+import org.spoutcraft.client.entity.CraftEntity;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.gui.SimpleKeyManager;
+import org.spoutcraft.client.gui.SimpleWidgetManager;
+import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.server.ServerManager;
+import org.spoutcraft.client.gui.texturepacks.TexturePacksDatabaseModel;
+import org.spoutcraft.client.gui.texturepacks.TexturePacksModel;
+import org.spoutcraft.client.inventory.SimpleMaterialManager;
+import org.spoutcraft.client.io.CRCManager;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.FileDownloadThread;
+import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.packet.CustomPacket;
+import org.spoutcraft.client.packet.PacketAddonData;
+import org.spoutcraft.client.packet.PacketEntityInformation;
+import org.spoutcraft.client.packet.PacketManager;
+import org.spoutcraft.client.player.ChatManager;
+import org.spoutcraft.client.player.ClientPlayer;
+import org.spoutcraft.client.player.SimpleBiomeManager;
+import org.spoutcraft.client.player.SimpleSkyManager;
 
 public class SpoutClient extends PropertyObject implements Client {
 	private static SpoutClient instance = null;
@@ -190,7 +191,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			new SpoutClient();
 			Spoutcraft.setClient(instance);
 
-			//must be done after construtor
+			// Must be done after construtor
 			ServerAddon addon = new ServerAddon("Spoutcraft", version, null);
 			instance.addonManager.addFakeAddon(addon);
 
@@ -257,7 +258,7 @@ public class SpoutClient extends PropertyObject implements Client {
 		}
 		return getHandle().thePlayer.worldObj.world;
 	}
-	
+
 	public net.minecraft.src.World getRawWorld() {
 		if (getHandle() == null || getHandle().thePlayer == null) {
 			return null;
@@ -334,11 +335,11 @@ public class SpoutClient extends PropertyObject implements Client {
 	public void setSpoutVersion(long version) {
 		server = version;
 	}
-	
+
 	public boolean isSpoutActive() {
 		return active;
 	}
-	
+
 	public void setSpoutActive(boolean active) {
 		this.active = active;
 	}

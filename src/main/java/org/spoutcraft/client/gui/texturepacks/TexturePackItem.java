@@ -32,11 +32,12 @@ import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
 import org.bukkit.ChatColor;
-import org.spoutcraft.client.SpoutClient;
+
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.MinecraftTessellator;
+import org.spoutcraft.client.SpoutClient;
 
 public class TexturePackItem implements ListWidgetItem {
 	protected final static Map<String, Integer> texturePackSize = new HashMap<String, Integer>();
@@ -76,23 +77,23 @@ public class TexturePackItem implements ListWidgetItem {
 
 	public void render(int x, int y, int width, int height) {
 		updateQueue();
-		
-		if(tick == 1) {
+
+		if (tick == 1) {
 			packList.setTexturePack(getPack());
 			SpoutClient.getHandle().renderEngine.refreshTextures();
 			model.currentGui.setLoading(false);
 			tick = -1;
 		}
-		if(tick == 0) {
+		if (tick == 0) {
 			tick++;
 		}
 
 		MinecraftTessellator tessellator = Spoutcraft.getTessellator();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
-		font.drawStringWithShadow(getName(), x+29, y+2, 0xffffffff);
-		font.drawStringWithShadow(pack.func_77531_d(), x+29, y+11, 0xffaaaaaa);
-		font.drawStringWithShadow(pack.func_77537_e(), x+29, y+20, 0xffaaaaaa);
+		font.drawStringWithShadow(getName(), x + 29, y + 2, 0xffffffff);
+		font.drawStringWithShadow(pack.func_77531_d(), x + 29, y + 11, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.func_77537_e(), x + 29, y + 20, 0xffaaaaaa);
 
 		String sTileSize;
 		if (tileSize != -1) {
@@ -103,7 +104,7 @@ public class TexturePackItem implements ListWidgetItem {
 		int w = font.getStringWidth(sTileSize);
 		font.drawStringWithShadow(sTileSize, width - 5 - w, y + 2, 0xffaaaaaa);
 
-		//TODO: Show database information (author/member who posted it)
+		// TODO Show database information (author/member who posted it)
 
 		pack.func_77535_b(SpoutClient.getHandle().renderEngine);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -141,7 +142,8 @@ public class TexturePackItem implements ListWidgetItem {
 			if (db != -1) {
 				try {
 					id = Integer.valueOf(name.substring(db + 4, name.length()));
-				} catch(NumberFormatException e) {}
+				} catch(NumberFormatException e) {
+				}
 				name = name.substring(0, db);
 		}
 			name = name.replaceAll("_", " ");

@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.client.Minecraft;
+
+import org.spoutcraft.client.SpoutClient;
 
 public class MCPatcherUtils {
 	private static String minecraftVersion;

@@ -21,10 +21,10 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.gui.ScreenUtil;
 
 public class PacketOpenScreen implements SpoutPacket {
 	ScreenType type = null;

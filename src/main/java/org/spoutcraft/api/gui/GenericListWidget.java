@@ -93,7 +93,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 			selected = items.size()-1;
 		}
 
-		//Check if selection is visible
+		// Check if selection is visible
 		ensureVisible(getItemRect(selected));
 		return this;
 	}
@@ -208,7 +208,7 @@ public class GenericListWidget extends GenericScrollable implements ListWidget {
 		super.writeData(output);
 		output.writeInt(selected); // Write which item is selected.
 		output.writeInt(0); // Write number of items first!
-		//Don't transmit clientside items because of the interface ListWidgetItem
+		// Don't transmit clientside items because of the interface ListWidgetItem
 	}
 
 	@Override

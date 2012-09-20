@@ -35,11 +35,11 @@ import java.util.List;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import org.yaml.snakeyaml.Yaml;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.AbstractAPIModel;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.Orientation;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.AbstractAPIModel;
 
 public class ServerListModel extends AbstractAPIModel {
 	protected TIntObjectHashMap<ServerDataBaseEntry> dbEntries = new TIntObjectHashMap<ServerDataBaseEntry>();
@@ -47,7 +47,7 @@ public class ServerListModel extends AbstractAPIModel {
 
 	public ServerListModel() {
 		API = "http://servers.spout.org/api2.php";
-//		refreshAPIData(API + "?random", 0, true);
+		//refreshAPIData(API + "?random", 0, true);
 		loadCountries();
 	}
 
@@ -57,7 +57,9 @@ public class ServerListModel extends AbstractAPIModel {
 
 	private void loadCountries() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed) SpoutClient.disableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.disableSandbox();
+		}
 		new Thread() {
 			public void run() {
 				//long start = System.currentTimeMillis();
@@ -93,7 +95,9 @@ public class ServerListModel extends AbstractAPIModel {
 				}
 			}
 		}.start();
-		if (wasSandboxed) SpoutClient.enableSandbox();
+		if (wasSandboxed) {
+			SpoutClient.enableSandbox();
+		}
 	}
 
 	public String getDefaultUrl() {

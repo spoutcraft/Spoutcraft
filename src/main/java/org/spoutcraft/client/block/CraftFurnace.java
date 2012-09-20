@@ -21,11 +21,11 @@ package org.spoutcraft.client.block;
 
 import net.minecraft.src.TileEntityFurnace;
 
-import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.inventory.CraftInventory;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.Furnace;
 import org.spoutcraft.api.inventory.Inventory;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.inventory.CraftInventory;
 
 public class CraftFurnace extends CraftBlockState implements Furnace {
 	private final SpoutcraftWorld world;

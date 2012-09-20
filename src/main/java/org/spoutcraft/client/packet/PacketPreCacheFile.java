@@ -22,14 +22,14 @@ package org.spoutcraft.client.packet;
 import java.io.File;
 import java.io.IOException;
 
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.api.io.SpoutInputStream;
-import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketPreCacheFile implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];

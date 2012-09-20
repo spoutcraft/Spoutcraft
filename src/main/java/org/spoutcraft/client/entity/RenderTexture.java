@@ -49,7 +49,7 @@ public class RenderTexture extends RenderEntity {
 		tessellator.startDrawingQuads();
 		double h = entityT.height * 0.014;
 		double w = entityT.width * 0.014;
-		tessellator.addVertexWithUV(w/2, -h/2, 0, 0.0D, 0.0D); //draw corners
+		tessellator.addVertexWithUV(w/2, -h/2, 0, 0.0D, 0.0D); // Draw corners
 		tessellator.addVertexWithUV(-w/2, -h/2, 0, entityT.texture.getWidth(), 0.0D);
 		tessellator.addVertexWithUV(-w/2, h/2, 0, entityT.texture.getWidth(), entityT.texture.getHeight());
 		tessellator.addVertexWithUV(w/2, h/2, 0, 0.0D, entityT.texture.getHeight());

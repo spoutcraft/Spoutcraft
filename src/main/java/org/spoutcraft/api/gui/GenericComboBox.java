@@ -89,7 +89,7 @@ public class GenericComboBox extends GenericButton implements ComboBox {
 
 		screen.attachWidget(getAddon(), view);
 		view.setVisible(true);
-		view.setPriority(RenderPriority.Lowest); //Makes it the top-most widget
+		view.setPriority(RenderPriority.Lowest); // Makes it the top-most widget
 		view.setFocus(true);
 		view.setSelection(view.getSelectedRow());
 		return this;

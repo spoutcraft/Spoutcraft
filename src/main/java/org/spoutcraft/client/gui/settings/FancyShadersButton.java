@@ -24,13 +24,14 @@ import com.pclewis.mcpatcher.mod.Shaders;
 import java.io.File;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-
 import org.apache.commons.io.FilenameUtils;
 import org.lwjgl.input.Keyboard;
-import org.spoutcraft.client.config.ConfigReader;
+
+import net.minecraft.client.Minecraft;
+
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class FancyShadersButton extends GenericButton {
 	UUID fancyGraphics;

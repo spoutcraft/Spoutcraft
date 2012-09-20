@@ -19,14 +19,14 @@
  */
 package org.spoutcraft.client.player.accessories;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
-import org.lwjgl.opengl.GL11;
 
 public class Tail extends Accessory {
-
 	public ModelRenderer Tail;
 
 	public Tail(ModelBiped mb) {

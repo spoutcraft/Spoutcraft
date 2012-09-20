@@ -21,18 +21,20 @@ package org.spoutcraft.client.gui.inventory;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.GuiContainerCreative;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.material.CustomItem;
 import org.spoutcraft.api.material.CustomBlock;
 
 public class CreativeTabCustom extends CreativeTabs{
-	
 	public CreativeTabCustom(int inty, String string) {
 		super(inty, string);
 	}
@@ -51,9 +53,9 @@ public class CreativeTabCustom extends CreativeTabs{
 	public void displayAllReleventItems(List par1List) {
 		CustomItem[] iteml = MaterialData.getCustomItems();
 		List<Integer> rawDatas = new ArrayList<Integer>();
-		
-		for(CustomItem ci : iteml) {
-			if(rawDatas.contains(ci.getRawData())) {
+
+		for (CustomItem ci : iteml) {
+			if (rawDatas.contains(ci.getRawData())) {
 				continue;
 			}
 			ItemStack is = new ItemStack(ci.getRawId(), 1, ci.getRawData());
@@ -61,5 +63,4 @@ public class CreativeTabCustom extends CreativeTabs{
 			par1List.add(is);
 		}
 	}
-	
 }

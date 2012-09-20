@@ -44,15 +44,15 @@ public class KeyBindingItem extends ControlsBasicItem {
 	public void render(int x, int y, int width, int height) {
 		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow("B", x+2, y+2, 0xff0000ff);
+		font.drawStringWithShadow("B", x + 2, y + 2, 0xff0000ff);
 		int w = font.getStringWidth("B");
-		String keyString = parent.getEditingItem() == this?"> <":binding.toString();
+		String keyString = parent.getEditingItem() == this ? "> <" : binding.toString();
 		int w2 = font.getStringWidth(keyString);
-		font.drawStringWithShadow(keyString, width - w2, y+2, 0xffcccccc);
-		font.drawStringWithShadow(binding.getAddonName(), x+w+4, y+11, 0xffffffff);
+		font.drawStringWithShadow(keyString, width - w2, y + 2, 0xffcccccc);
+		font.drawStringWithShadow(binding.getAddonName(), x + w + 4, y + 11, 0xffffffff);
 		String fitting = r.getFittingText(getName(), width - w - w2 - 4);
 
-		font.drawStringWithShadow(fitting, x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
+		font.drawStringWithShadow(fitting, x + w + 4, y + 2, !isConflicting() ? 0xffffffff:0xffff0000);
 	}
 
 	@Override

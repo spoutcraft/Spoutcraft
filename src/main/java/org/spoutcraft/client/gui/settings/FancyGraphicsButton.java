@@ -23,9 +23,9 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.CheckBox;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class FancyGraphicsButton extends AutomatedButton {
 	public boolean custom = false;

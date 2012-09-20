@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui.chat;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class ChatOpacitySlider extends GenericSlider {
 	public ChatOpacitySlider() {
@@ -30,7 +30,7 @@ public class ChatOpacitySlider extends GenericSlider {
 	}
 
 	private void updateText() {
-		setText("Background opacity: " + (int) (getSliderPosition()*100) + "%");
+		setText("Background Opacity: " + (int) (getSliderPosition()*100) + "%");
 	}
 
 	@Override

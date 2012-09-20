@@ -23,9 +23,9 @@ import java.io.IOException;
 
 import net.minecraft.src.*;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketSkinURL implements SpoutPacket {
 	public int entityId;
@@ -71,17 +71,17 @@ public class PacketSkinURL implements SpoutPacket {
 	public void run(int PlayerId) {
 		EntityPlayer e = SpoutClient.getInstance().getPlayerFromId(entityId);
 		if (e != null) {
-			//Check if these are the mc skin/cape, if so, use defaults instead
+			// Check if these are the Minecraft skin/cape, if so, use defaults instead
 			String mcSkin = "http://s3.amazonaws.com/MinecraftSkins/" + e.username + ".png";
 			String mcCape = "http://s3.amazonaws.com/MinecraftCloaks/" + e.username + ".png";
 			if (this.skinURL.equalsIgnoreCase(mcSkin)) {
-				this.skinURL = "http://static.spout.org/skin/" + e.username + ".png";
+				this.skinURL = "http://cdn.spout.org/skin/" + e.username + ".png";
 			}
 			if (this.cloakURL.equalsIgnoreCase(mcCape)) {
 				if (e.vip != null) {
 					this.cloakURL = e.vip.getCape();
 				} else {
-					this.cloakURL = "http://static.spout.org/skin/" + e.username + ".png";
+					this.cloakURL = "http://cdn.spout.org/skin/" + e.username + ".png";
 				}
 			}
 

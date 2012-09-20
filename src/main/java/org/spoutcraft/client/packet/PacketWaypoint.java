@@ -23,10 +23,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.spoutcraft.client.gui.minimap.MinimapConfig;
-import org.spoutcraft.client.gui.minimap.Waypoint;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.gui.minimap.MinimapConfig;
+import org.spoutcraft.client.gui.minimap.Waypoint;
 
 public class PacketWaypoint implements SpoutPacket {
 	private double x, y, z;

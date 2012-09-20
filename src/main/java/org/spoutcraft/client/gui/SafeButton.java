@@ -60,6 +60,7 @@ public abstract class SafeButton extends GenericButton {
 			currentThread.interrupt();
 			currentThread = null;
 		}
+
 		if (reallyShown) {
 			executeAction();
 			reallyShown = false;

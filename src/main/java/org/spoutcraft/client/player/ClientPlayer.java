@@ -24,8 +24,6 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EntityPlayerSP;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.InGameScreen;
 import org.spoutcraft.api.GameMode;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.gui.InGameHUD;
@@ -35,6 +33,8 @@ import org.spoutcraft.api.player.RenderDistance;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.Location;
 import org.spoutcraft.api.util.MutableLocation;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.InGameScreen;
 
 public class ClientPlayer extends SpoutPlayer implements ActivePlayer {
 	private static ClientPlayer instance = null;

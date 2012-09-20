@@ -153,13 +153,13 @@ public class CustomTextureManager {
 			}
 
 			Texture texture = null;
-			//Check inside jar
+			// Check inside jar
 			try {
 				InputStream stream = Minecraft.class.getResourceAsStream(path);
 				texture = TextureLoader.getTexture(path.toLowerCase().endsWith(".png") ? "PNG" : "JPG", stream, true,  GL11.GL_NEAREST);
 				stream.close();
 			} catch (Exception e) { }
-			//Check MCP/Eclipse Path
+			// Check MCP/Eclipse Path
 			if (texture == null) {
 				String pathToJar;
 				File jar = new File(CustomTextureManager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
@@ -204,7 +204,7 @@ public class CustomTextureManager {
 
 	public static Texture getTextureFromUrl(String url) {
 		Texture tex = getTextureFromUrl(null, url);
-		/*if(tex == null) {
+		/*if (tex == null) {
 			tex = CustomTextureManager.getTextureFromJar("/res/block/spout.png");
 		}*/
 		return tex;
@@ -226,11 +226,11 @@ public class CustomTextureManager {
 		}
 	}
 
-	public static String getTexturePathFromUrl(String url) { //only used for sky, null-checks not needed!
+	public static String getTexturePathFromUrl(String url) { // Only used for sky, null checks not needed!
 		return getTexturePathFromUrl(null, url);
 	}
 
-	public static String getTexturePathFromUrl(String plugin, String url) { // only used above!
+	public static String getTexturePathFromUrl(String plugin, String url) { // Only used above!
 		if (!isTextureDownloaded(plugin, url)) {
 			return null;
 		}

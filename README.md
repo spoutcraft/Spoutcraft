@@ -15,13 +15,30 @@ Copyright (c) 2011-2012, SpoutDev <<http://www.spout.org/>>
 
 ## Getting the Source
 The latest and greatest source can be found on [GitHub].  
-Download the latest builds from [Jenkins]. [![Build Status](http://build.spout.org/job/spoutcraft/badge/icon)][Jenkins]
+Download the latest builds from [Jenkins]. [![Build Status](http://build.spout.org/job/Spoutcraft/badge/icon)][Jenkins]  
+View the latest [Javadoc].
 
 ## Compiling the Source
 Spoutcraft uses Maven to handle its dependencies.
 
 * Install [Maven 2 or 3](http://maven.apache.org/download.html)  
-* Checkout this repo and run: `mvn clean package`
+* Checkout this repo and run: `mvn clean install`
+
+## Using with Your Project
+For those using [Maven](http://maven.apache.org/download.html) to manage project dependencies, simply include the following in your pom.xml:
+
+    <dependency>
+        <groupId>org.spoutcraft</groupId>
+        <artifactId>spoutcraft</artifactId>
+        <version>1.3.2-SNAPSHOT</version>
+    </dependency>
+
+If you do not already have repo.spout.org in your repository list, you will need to add this also:
+
+    <repository>
+        <id>spout-repo</id>
+        <url>http://repo.spout.org</url>
+    </repository>
 
 ## Coding and Pull Request Formatting
 * Generally follow the Oracle coding standards.
@@ -41,9 +58,10 @@ Spoutcraft uses Maven to handle its dependencies.
 [License]: http://www.gnu.org/licenses/lgpl.html
 [Website]: http://www.spout.org
 [Forums]: http://forums.spout.org
-[GitHub]: https://github.com/spoutdev/spoutcraft
-[Jenkins]: http://build.spout.org/job/spoutcraft
-[Issues]: http://issues.spout.org/browse/spoutcraft
+[GitHub]: https://github.com/SpoutDev/Spoutcraft
+[Javadoc]: http://jd.spout.org/legacy/client/latest
+[Jenkins]: http://build.spout.org/job/Spoutcraft
+[Issues]: http://issues.spout.org/browse/Spoutcraft
 [Twitter]: http://spout.in/twitter
 [Twitter Logo]: http://cdn.spout.org/img/button/twitter_follow_us.png
 [Facebook]: http://spout.in/facebook

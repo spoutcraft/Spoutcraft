@@ -22,12 +22,12 @@ package org.spoutcraft.client.block;
 import net.minecraft.src.BlockJukeBox;
 import net.minecraft.src.TileEntityRecordPlayer;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.api.Effect;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.Jukebox;
 import org.spoutcraft.api.material.Item;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftJukebox extends CraftBlockState implements Jukebox {
 	private final SpoutcraftWorld world;

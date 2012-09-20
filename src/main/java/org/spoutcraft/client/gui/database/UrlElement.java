@@ -25,6 +25,7 @@ public interface UrlElement {
 	 * @return
 	 */
 	boolean isActive();
+
 	/**
 	 * Should return something like 'key=value&key2=val'
 	 * &-signs are inserted automagically.

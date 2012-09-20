@@ -26,16 +26,16 @@ import java.util.Set;
 
 import com.google.common.collect.MapMaker;
 import gnu.trove.map.hash.TIntFloatHashMap;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import net.minecraft.client.Minecraft;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.Chunk;
 import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class SpoutcraftChunk implements Chunk {
 	public static final Set<SpoutcraftChunk> loadedChunks = new HashSet<SpoutcraftChunk>();
@@ -104,7 +104,7 @@ public class SpoutcraftChunk implements Chunk {
 	}
 
 	public byte[] getRawBlockIds() {
-		//TODO: fix
+		// TODO Fix
 		return null;
 	}
 

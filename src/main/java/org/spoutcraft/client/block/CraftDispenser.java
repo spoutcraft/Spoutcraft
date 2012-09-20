@@ -24,12 +24,12 @@ import java.util.Random;
 import net.minecraft.src.BlockDispenser;
 import net.minecraft.src.TileEntityDispenser;
 
-import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.inventory.CraftInventory;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.Dispenser;
 import org.spoutcraft.api.inventory.Inventory;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.SpoutcraftWorld;
+import org.spoutcraft.client.inventory.CraftInventory;
 
 public class CraftDispenser extends CraftBlockState implements Dispenser {
 	private final SpoutcraftWorld world;

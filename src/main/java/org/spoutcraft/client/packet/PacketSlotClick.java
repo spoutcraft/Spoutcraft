@@ -55,10 +55,10 @@ public class PacketSlotClick implements SpoutPacket {
 
 	public void writeData(SpoutOutputStream output) throws IOException {
 		output.writeLong(screen.getMostSignificantBits());
-		output.writeLong(screen.getLeastSignificantBits());//16
+		output.writeLong(screen.getLeastSignificantBits()); // 16
 		output.writeLong(slot.getMostSignificantBits());
-		output.writeLong(slot.getLeastSignificantBits());//32
-		output.write(mouseClick);//mouseClick will usually be 0 (left) or 1 (right) - so this is safe unless the mouse has... 257 buttons :P
+		output.writeLong(slot.getLeastSignificantBits()); // 32
+		output.write(mouseClick); // mouseClick will usually be 0 (left) or 1 (right) - so this is safe unless the mouse has... 257 buttons :P
 		output.writeBoolean(holdingShift);//34
 	}
 

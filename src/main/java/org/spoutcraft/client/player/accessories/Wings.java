@@ -23,8 +23,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
-
-
 public class Wings extends Accessory{
 	ModelRenderer LeftWingPart1;
 	ModelRenderer LeftWingPart2;
@@ -44,7 +42,7 @@ public class Wings extends Accessory{
 	ModelRenderer RightWingPart6;
 	ModelRenderer RightWingPart7;
 	ModelRenderer RightWingPart8;
-	
+
 	public Wings(ModelBiped mb) {
 		super(mb);
 		LeftWingPart1 = new ModelRenderer(mb, 56, 0);
@@ -52,7 +50,7 @@ public class Wings extends Accessory{
 		LeftWingPart1.setRotationPoint(0F, 0F, 0F);
 		LeftWingPart1.setTextureSize(64, 32);
 		LeftWingPart1.mirror = true;
-		setRotation(LeftWingPart1, 0F, 0.5007752F, 0.0174533F);	
+		setRotation(LeftWingPart1, 0F, 0.5007752F, 0.0174533F);
 		LeftWingPart2 = new ModelRenderer(mb, 50, 0);
 		LeftWingPart2.addBox(-1F, 0F, 4F, 1, 10, 2);
 		LeftWingPart2.setRotationPoint(0F, 0F, 0F);
@@ -156,9 +154,8 @@ public class Wings extends Accessory{
 		RightWingPart8.mirror = true;
 		setRotation(RightWingPart8, 0.0174533F, -0.6229429F, 0F);
 	}
-	
-	private void setRotation(ModelRenderer model, float x, float y, float z)
-	{
+
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 	  model.rotateAngleX = x;
 	  model.rotateAngleY = y;
 	  model.rotateAngleZ = z;
@@ -190,5 +187,4 @@ public class Wings extends Accessory{
 	public AccessoryType getType() {
 		return AccessoryType.WINGS;
 	}
-
 }

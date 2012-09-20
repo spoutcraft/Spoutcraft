@@ -23,9 +23,6 @@ import net.minecraft.src.StringTranslate;
 
 import org.lwjgl.Sys;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -36,6 +33,9 @@ import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.addon.LocalAddonsModel.AddonItem;
 
 public class GuiAddonsLocal extends GuiSpoutScreen {
 	private GenericLabel labelTitle;
@@ -49,9 +49,9 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
-		
+
 		StringTranslate t = StringTranslate.getInstance();
-		
+
 		labelTitle = new GenericLabel(t.translateKey("spout.addon.title", "Installed Addons"));
 		addonsView = new GenericListView(model);
 		addonOptions = new GenericScrollArea();
@@ -59,12 +59,12 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 		checkInternetAccess = new GenericCheckBox(t.translateKey("spout.addon.internet", "Internet Access"));
 		buttonMainMenu = new GenericButton(t.translateKey("gui.done", "Main Menu"));
 		buttonDatabase = new GenericButton(t.translateKey("spout.addon.database", "Database"));
-		buttonDatabase.setTooltip(t.translateKey("spout.addon.tip.database", "Coming soon!"));
+		buttonDatabase.setTooltip(t.translateKey("spout.addon.tip.database", "Feature discontinued"));
 		buttonDatabase.setEnabled(false);
 		buttonOpenFolder = new GenericButton(t.translateKey("spout.addon.open", "Open Addons Folder"));
 		buttonOpenFolder.setTooltip(t.translateKey("spout.addon.tip.open", "Place your addons here manually"));
 		buttonOpenConfiguration = new GenericButton(t.translateKey("spout.addon.config", "Configuration"));
-		buttonOpenConfiguration.setTooltip(t.translateKey("spout.addon.tip.config", "Open Addon-specific configuration"));
+		buttonOpenConfiguration.setTooltip(t.translateKey("spout.addon.tip.config", "Open addon configuration"));
 
 		getScreen().attachWidget(spoutcraft, addonsView);
 		getScreen().attachWidget(spoutcraft, addonOptions);
@@ -142,12 +142,12 @@ public class GuiAddonsLocal extends GuiSpoutScreen {
 
 	@Override
 	protected void buttonClicked(Button btn) {
-		//TODO parent screen
+		// TODO Parent screen
 		if (btn.equals(buttonMainMenu)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonDatabase)) {
-			//TODO database screen
+			// TODO Database screen
 		}
 		if (btn.equals(checkPluginEnabled)) {
 			AddonItem item = (AddonItem) addonsView.getSelectedItem();

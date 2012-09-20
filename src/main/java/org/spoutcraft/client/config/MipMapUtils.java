@@ -20,8 +20,6 @@
 package org.spoutcraft.client.config;
 
 import gnu.trove.map.hash.TIntIntHashMap;
-import org.newdawn.slick.opengl.Texture;
-
 import org.lwjgl.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -29,12 +27,13 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
+import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MipMapUtils {
 	private static TIntIntHashMap mipmapLevels = new TIntIntHashMap();
@@ -206,7 +205,7 @@ public class MipMapUtils {
 
 			if (currentFade <= 0.0f) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-				GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F); //default blend state
+				GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F); // Default blend state
 
 				updateTerrain = false;
 				GL11.glPopMatrix();
@@ -224,7 +223,7 @@ public class MipMapUtils {
 				EXTFramebufferObject.glGenerateMipmapEXT(GL11.GL_TEXTURE_2D);
 				break;
 		}
-		GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F); //more strict blend state
+		GL11.glAlphaFunc(GL11.GL_GEQUAL, 0.3F); // More strict blend state
 		GL11.glPopMatrix();
 	}
 }

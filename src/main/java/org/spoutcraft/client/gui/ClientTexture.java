@@ -22,9 +22,9 @@ package org.spoutcraft.client.gui;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.GenericTexture;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class ClientTexture extends GenericTexture {
 	public ClientTexture(String path) {

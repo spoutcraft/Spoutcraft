@@ -21,16 +21,15 @@ package org.spoutcraft.client.gui;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.gui.GuiTextDialog.DialogEventHandler;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.client.gui.GuiTextDialog.DialogEventHandler;
 
 public class GuiTextDialog extends GuiSpoutScreen {
-
 	private String title, text;
 	private GenericLabel labelTitle;
 	private GenericTextField textText;
@@ -94,7 +93,7 @@ public class GuiTextDialog extends GuiSpoutScreen {
 	public void setText(String text) {
 		this.text = text;
 		if (textText != null) {
-			textText.setText(text);  //redundant text is redundant
+			textText.setText(text); // Redundant text is redundant
 		}
 	}
 
@@ -107,5 +106,4 @@ public class GuiTextDialog extends GuiSpoutScreen {
 		public void onDone(GuiTextDialog dialog);
 		public void onCancel(GuiTextDialog dialog);
 	}
-
 }

@@ -23,22 +23,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.RenderPlayer;
-import org.apache.commons.lang3.tuple.Pair;
+
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.special.VIP;
 
 public class AccessoryHandler {
-
 	private static Map<String, Set<Pair<Accessory, String>>> sacs = new HashMap<String, Set<Pair<Accessory, String>>>();
 	private static Set<String> downloaded = new HashSet<String>();
 	private static RenderPlayer renderer = (RenderPlayer) RenderManager.instance.entityRenderMap.get(EntityPlayer.class);
 	private static ModelBiped modelBipedMain = ((RenderPlayer) RenderManager.instance.entityRenderMap.get(EntityPlayer.class)).modelBipedMain;
-	
+
 	private AccessoryHandler() {
 	}
 
@@ -51,14 +53,14 @@ public class AccessoryHandler {
 		if (acs == null) {
 			acs = new HashSet<Pair<Accessory, String>>();
 		}
-		
+
 		Set<Pair<Accessory, String>> toRemove = new HashSet<Pair<Accessory, String>>();
 		for(Pair<Accessory, String> pr : acs) {
 			if(pr.getLeft().getType().equals(n.getType())) {
 				toRemove.add(pr);
 			}
 		}
-		
+
 		acs.removeAll(toRemove);
 		acs.add(Pair.of(n, url));
 		sacs.put(player, acs);
@@ -171,19 +173,18 @@ public class AccessoryHandler {
 	public static boolean isHandled(String username) {
 		return sacs.containsKey(username);
 	}
-	
+
 	public static boolean hasAccessory(String username, AccessoryType type) {
-		
 		if (!sacs.containsKey(username)) {
 			return false;
 		}
-		
+
 		for (Pair<Accessory, String> accessory : sacs.get(username)) {
 			if (accessory.getLeft().getType().equals(type)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

@@ -32,7 +32,7 @@ public class RenderDistanceChangeEvent extends Event<RenderDistanceChangeEvent> 
 	}
 
 	public RenderDistance getCurrentRenderDistance() {
-		return null; // TODO: get method in player
+		return null; // TODO Get method in player
 	}
 
 	public RenderDistance getNewRenderDistance() {

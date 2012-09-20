@@ -144,7 +144,7 @@ public class FileDownloadThread extends Thread {
 						next.move();
 						//System.out.println("File moved to: " + next.directory.getCanonicalPath());
 						try {
-							sleep(10); //cool off after heavy network useage
+							sleep(10); // Cool off after heavy network useage
 						} catch (InterruptedException e) {}
 					}
 					if (next.getCompletedAction() != null) {

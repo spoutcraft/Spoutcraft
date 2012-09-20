@@ -47,7 +47,7 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 	public abstract int getKey();
 
 	public boolean conflicts(ControlsBasicItem other) {
-		//TODO better handling for modifiers
+		// TODO Better handling for modifiers
 		return  getKey() != -128 && getKey() == other.getKey() && getModifiers() == other.getModifiers();
 	}
 
@@ -68,7 +68,7 @@ public abstract class ControlsBasicItem implements ListWidgetItem {
 	}
 
 	public void setModifiers(int m) {
-		//Unused
+		// Unused
 	}
 
 	public int getModifiers() {

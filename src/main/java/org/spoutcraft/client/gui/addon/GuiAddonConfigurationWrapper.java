@@ -19,14 +19,14 @@
  */
 package org.spoutcraft.client.gui.addon;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiAddonConfigurationWrapper extends GuiSpoutScreen {
 	private GuiAddonsLocal parent = null;
@@ -79,7 +79,7 @@ public class GuiAddonConfigurationWrapper extends GuiSpoutScreen {
 		buttonDone.setX(width - 10 - 200).setY(top).setHeight(20).setWidth(200);
 	}
 
-	@Override 
+	@Override
 	public void buttonClicked(Button btn) {
 		if (btn == buttonDone) {
 			mc.displayGuiScreen(parent);

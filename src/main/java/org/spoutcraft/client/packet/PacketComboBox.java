@@ -22,12 +22,12 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.entity.ActivePlayer;
 import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketComboBox implements SpoutPacket {
 	private GenericComboBox box;

@@ -23,14 +23,12 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
-
-
 public class Bracelet extends Accessory{
 	public ModelRenderer bipedFrontBracelet;
 	public ModelRenderer bipedLeftBracelet;
 	public ModelRenderer bipedBackBracelet;
 	public ModelRenderer bipedRightBracelet;
-	
+
 	public Bracelet(ModelBiped mb) {
 		super(mb);
 		bipedFrontBracelet = new ModelRenderer(mb, 0, 0);
@@ -73,5 +71,4 @@ public class Bracelet extends Accessory{
 	public AccessoryType getType() {
 		return AccessoryType.BRACELET;
 	}
-
 }

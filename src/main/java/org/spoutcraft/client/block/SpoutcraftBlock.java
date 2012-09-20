@@ -308,20 +308,20 @@ public class SpoutcraftBlock implements Block {
 	 */
 	public static BlockFace notchToBlockFace(int notch) {
 		switch (notch) {
-		case 0:
-			return BlockFace.DOWN;
-		case 1:
-			return BlockFace.UP;
-		case 2:
-			return BlockFace.EAST;
-		case 3:
-			return BlockFace.WEST;
-		case 4:
-			return BlockFace.NORTH;
-		case 5:
-			return BlockFace.SOUTH;
-		default:
-			return BlockFace.SELF;
+			case 0:
+				return BlockFace.DOWN;
+			case 1:
+				return BlockFace.UP;
+			case 2:
+				return BlockFace.EAST;
+			case 3:
+				return BlockFace.WEST;
+			case 4:
+				return BlockFace.NORTH;
+			case 5:
+				return BlockFace.SOUTH;
+			default:
+				return BlockFace.SELF;
 		}
 	}
 
@@ -354,10 +354,10 @@ public class SpoutcraftBlock implements Block {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o == null) {
+		if (o == null) {
 			return false;
 		}
-		if(!(o instanceof SpoutcraftBlock)) {
+		if (!(o instanceof SpoutcraftBlock)) {
 			return false;
 		}
 		SpoutcraftBlock other = (SpoutcraftBlock) o;

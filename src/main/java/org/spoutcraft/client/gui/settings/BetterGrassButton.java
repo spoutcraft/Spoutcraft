@@ -21,8 +21,8 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class BetterGrassButton extends AutomatedButton {
 	public BetterGrassButton() {

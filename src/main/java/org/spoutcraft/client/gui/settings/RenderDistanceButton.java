@@ -21,10 +21,10 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.player.RenderDistance;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class RenderDistanceButton extends AutomatedButton {
 	RenderDistance distance = RenderDistance.getRenderDistanceFromValue(ConfigReader.renderDistance);

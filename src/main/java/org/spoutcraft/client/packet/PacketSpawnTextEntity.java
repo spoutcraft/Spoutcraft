@@ -23,9 +23,9 @@ import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.entity.EntityText;
 
 public class PacketSpawnTextEntity implements SpoutPacket {
 	private String text;

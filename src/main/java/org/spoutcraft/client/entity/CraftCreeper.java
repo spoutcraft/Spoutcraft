@@ -44,7 +44,7 @@ public class CraftCreeper extends CraftMonster implements Creeper {
 	public void setPowered(boolean powered) {
 		//Entity entity = this.getEntityCreeper().spoutEntity;
 
-		//TODO add event!
+		// TODO Add event!
 		if (powered) {
 			getEntityCreeper().setPowered(true);
 		} else {

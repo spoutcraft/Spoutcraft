@@ -47,7 +47,6 @@ public class UniqueItemStringMap {
 	}
 
 	private static Integer getIdFromFile(String key) {
-
 		synchronized(config) {
 			key = encodeKey(key);
 			if (config.getProperty(key) == null) {
@@ -62,17 +61,14 @@ public class UniqueItemStringMap {
 				}
 			}
 		}
-
 	}
 
 	private static void setIdInFile(String key, int id) {
-
 		synchronized(config) {
 			key = encodeKey(key);
 			config.setProperty(key, id);
 			config.save();
 		}
-
 	}*/
 
 	private static String encodeKey(String key) {
@@ -106,13 +102,12 @@ public class UniqueItemStringMap {
 		int testId = idCounter.incrementAndGet() & 0x0FFFF;
 
 		while (!success || id == null) {
-
 			id = forward.get(string);
 			if (id != null) {
 				return id;
 			}
 
-			if (reverse.containsKey(testId)) { // id already in use
+			if (reverse.containsKey(testId)) { // ID already in use
 				testId = idCounter.incrementAndGet() & 0x0FFFF;
 				if (testId == 65535 || testId < 1024) {
 					throw new RuntimeException("[Spout] Out of custom item ids");
@@ -122,27 +117,26 @@ public class UniqueItemStringMap {
 
 			String oldString = reverse.putIfAbsent(testId, string);
 
-			if (oldString == null) { // reverse link success
+			if (oldString == null) { // Reverse link success
 				Integer oldId = forward.putIfAbsent(string, testId);
-				if (oldId != null) { // forward link failed
-					reverse.remove(testId, string); // remove reverse link
+				if (oldId != null) { // Forward link failed
+					reverse.remove(testId, string); // Remove reverse link
 					continue;
 				}
 				id = testId;
-			} else { // reverse link failed
+			} else { // Reverse link failed
 				continue;
 			}
 
 			reverseStable.put(testId, string);
 
-//			setIdInFile(decodeKey(string), id);
+			//setIdInFile(decodeKey(string), id);
 
 			success = true;
 
 		}
 
 		return id;
-
 	}
 
 	/**

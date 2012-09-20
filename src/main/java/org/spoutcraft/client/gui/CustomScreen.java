@@ -22,8 +22,8 @@ package org.spoutcraft.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.gui.*;
+import org.spoutcraft.client.SpoutClient;
 
 public class CustomScreen extends GuiScreen {
 	public CustomScreen(PopupScreen screen) {
@@ -53,7 +53,7 @@ public class CustomScreen extends GuiScreen {
 
 		bg.setVisible(screen.isBgVisible());
 		SpoutClient.disableSandbox();
-		drawWidgets(x, y, z); //already sandboxed
+		drawWidgets(x, y, z); // Already sandboxed
 	}
 
 	@Override

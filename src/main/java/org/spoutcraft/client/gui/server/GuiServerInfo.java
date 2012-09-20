@@ -33,10 +33,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.LinkButton;
-import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -49,6 +45,10 @@ import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.ScrollBarPolicy;
 import org.spoutcraft.api.gui.Texture;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.LinkButton;
+import org.spoutcraft.client.util.NetworkUtils;
 
 public class GuiServerInfo extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonOpenBrowser, buttonRefresh, buttonAddFavorite, buttonJoin;
@@ -95,7 +95,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 
 		content = new GenericScrollArea();
 		content.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
-		
+
 		getScreen().attachWidget(spoutcraft, content);
 
 		labelTitle = new GenericLabel(item.getTitle());
@@ -301,17 +301,17 @@ public class GuiServerInfo extends GuiSpoutScreen {
 		labelAddress.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
 
 		top += 16;
-		
+
 		labelMotdLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
 		labelMotd.setX(valueLeft).setY(top).setWidth(width - valueLeft - 5).setHeight(11);
-		
+
 		labelMotd.setWrapLines(true);
 		labelMotd.recalculateLines();
-		
+
 		if (labelMotd.getLines().length > 1) {
 			top += 10;
 		}
-		
+
 		top += 16;
 
 		labelPlayersLabel.setX(labelLeft).setY(top).setWidth(width - 10).setHeight(11);
@@ -437,7 +437,7 @@ public class GuiServerInfo extends GuiSpoutScreen {
 				linkSite.setUrl(URLDecoder.decode((String) i.get("site"), "UTF-8"));
 				linkForum.setUrl(URLDecoder.decode((String) i.get("forumurl"), "UTF-8"));
 				boolean spoutcraft = i.get("spoutcraft").equals("1");
-				labelSpoutcraft.setText(spoutcraft?"Required":"Not Required");
+				labelSpoutcraft.setText(spoutcraft ? "Required" : "Not Required");
 				labelMCVersion.setText(URLDecoder.decode((String) i.get("mcversion"), "UTF-8"));
 				labelCategory.setText(URLDecoder.decode((String) i.get("category"), "UTF-8"));
 				if (i.containsKey("gallery")) {

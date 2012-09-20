@@ -22,10 +22,10 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.keyboard.KeyBinding;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketKeyBinding implements SpoutPacket {
 	private String id;

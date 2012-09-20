@@ -78,7 +78,7 @@ public class GuiAbout extends GuiScreen {
 		int height = getInvertedScaledHeight(this.height );
 		String browseUrl = null;
 		if (mouseX >= this.width - 12 && mouseY <= this.width) {
-			//do nothing if we clicked on the bar slider itself
+			// Do nothing if we clicked on the slider bar itself
 			if (mouseY > height + 16 && mouseY < this.height - 50) {
 				setScrolled(getScrolled() + 0.1f);
 			} else if (mouseY < height && mouseY > 30) {
@@ -110,7 +110,7 @@ public class GuiAbout extends GuiScreen {
 	@Override
 	public void mouseMovedOrUp(int mouseX, int mouseY, int click) {
 		hoveringLink = false;
-		if (click != 0) { //still dragging
+		if (click != 0) { // Still dragging
 			if (holdingScrollBar) {
 				int height = getInvertedScaledHeight(this.height);
 				if (mouseY > height + 16) {
@@ -187,7 +187,7 @@ public class GuiAbout extends GuiScreen {
 		scrollArea.setBottomColor(scrollBarColor2);
 		scrollArea.render();
 
-		//Right half
+		// Right half
 		int top = 0;
 		drawScaledString("What is Spoutcraft?", this.width / 2 - 200, top, 0xffffff); top += 10;
 		drawScaledString("Spoutcraft is a modification for the", this.width / 2 - 200, top, 0x808080); top += 10;
@@ -210,8 +210,8 @@ public class GuiAbout extends GuiScreen {
 
 		drawScaledString("Who is SpoutDev?", this.width / 2 - 200, top, 0xffffff); top += 10;
 		drawScaledString("SpoutDev is the team behind Spout, ", this.width / 2 - 200, top, 0x808080); top += 10;
-		drawScaledString("SpoutAPI, Spoutcraft, SpoutcraftAPI,", this.width / 2 - 200, top, 0x808080); top += 10;
-		drawScaledString("and the Spoutcraft Launcher.", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("SpoutAPI, Spoutcraft,", this.width / 2 - 200, top, 0x808080); top += 10;
+		drawScaledString("and Spoutcraft Launcher.", this.width / 2 - 200, top, 0x808080); top += 10;
 
 		top += 20;
 
@@ -230,7 +230,7 @@ public class GuiAbout extends GuiScreen {
 		drawScaledString("Apache Foundation - Code", this.width / 2 - 200, top, 0x808080); top += 10;
 		drawScaledString("ThVortex - FontRenderer fixes", this.width / 2 - 200, top, 0x808080); top += 10;
 
-		//Left half
+		// Left half
 		top = 0;
 		drawScaledString("Sponsors", this.width / 2 + 30, top, 0xffffff); top += 10;
 
@@ -320,7 +320,7 @@ public class GuiAbout extends GuiScreen {
 			GL11.glPopMatrix();
 		}
 
-		//draw tooltips
+		// Draw tooltips
 		if (isInBoundingRect(beastNodeX, beastNodeY, 33, 147, x, y)) {
 			drawTooltip(
 				"BeastNode provides high quality Minecraft and web hosting at affordable\n" +
@@ -390,7 +390,7 @@ public class GuiAbout extends GuiScreen {
 		((GuiButton)this.controlList.get(0)).drawButton(this.mc, x, y);
 		//super.drawScreen(x, x, z);
 
-		//Shadow magic
+		// Shadow magic
 		GL11.glEnable(3042 /*GL_BLEND*/);
 		GL11.glBlendFunc(770, 771);
 		GL11.glDisable(3008 /*GL_ALPHA_TEST*/);

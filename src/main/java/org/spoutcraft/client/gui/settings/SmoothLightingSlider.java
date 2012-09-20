@@ -21,9 +21,9 @@ package org.spoutcraft.client.gui.settings;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class SmoothLightingSlider extends GenericSlider {
 	public SmoothLightingSlider() {

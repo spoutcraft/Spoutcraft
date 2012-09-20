@@ -22,8 +22,8 @@ package org.spoutcraft.client.player;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 
-import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.api.entity.Player;
+import org.spoutcraft.client.entity.CraftHumanEntity;
 
 public class SpoutPlayer extends CraftHumanEntity implements Player {
 	public SpoutPlayer(net.minecraft.src.EntityPlayer handle) {

@@ -26,15 +26,15 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.TileEntitySign;
 import net.minecraft.src.World;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketOpenSignGUI implements SpoutPacket {
 	int x,y,z;
 
 	public int getNumBytes() {
-		return 12; //Never be too lazy to calculate !
+		return 12; // Never be too lazy to calculate !
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
@@ -52,7 +52,7 @@ public class PacketOpenSignGUI implements SpoutPacket {
 	public void run(int playerId) {
 		World world = SpoutClient.getHandle().theWorld;
 		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if (te!=null && te instanceof TileEntitySign) {
+		if (te != null && te instanceof TileEntitySign) {
 			TileEntitySign sign = (TileEntitySign)te;
 			GuiEditSign gui = new GuiEditSign(sign);
 			SpoutClient.getHandle().displayGuiScreen(gui);

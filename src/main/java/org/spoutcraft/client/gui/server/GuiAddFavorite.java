@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.server;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.event.screen.TextFieldChangeEvent;
@@ -32,6 +31,7 @@ import org.spoutcraft.api.gui.GenericTextField;
 import org.spoutcraft.api.gui.Keyboard;
 import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.TextField;
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiAddFavorite extends GuiScreen {
 	private TextField textIp, textTitle;
@@ -149,7 +149,7 @@ public class GuiAddFavorite extends GuiScreen {
 				return;
 			}
 			if (update) {
-				//Update original item
+				// Update original item
 				toUpdate.update(item);
 			} else {
 				SpoutClient.getInstance().getServerManager().getFavorites().addServer(item);
@@ -188,7 +188,6 @@ public class GuiAddFavorite extends GuiScreen {
 				item.setPort(ServerItem.DEFAULT_PORT);
 			}
 		}
-
 	}
 
 	@Override

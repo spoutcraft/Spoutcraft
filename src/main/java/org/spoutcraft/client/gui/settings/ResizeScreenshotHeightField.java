@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.gui.Control;
 import org.spoutcraft.api.gui.GenericTextField;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class ResizeScreenshotHeightField extends GenericTextField {
 	public ResizeScreenshotHeightField() {

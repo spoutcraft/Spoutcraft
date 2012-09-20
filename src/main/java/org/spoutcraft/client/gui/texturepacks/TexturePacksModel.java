@@ -26,8 +26,8 @@ import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.gui.AbstractListModel;
+import org.spoutcraft.client.SpoutClient;
 
 public class TexturePacksModel extends AbstractListModel {
 	TexturePackList textures = SpoutClient.getHandle().texturePackList;

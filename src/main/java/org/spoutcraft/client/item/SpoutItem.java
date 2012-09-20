@@ -64,7 +64,7 @@ public class SpoutItem extends Item {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
 				CustomBlock block = MaterialData.getCustomBlock(damage);
-				//This is an item with no block component, return success
+				// Item with no block component, return success
 				if (block == null) {
 					return true;
 				}
@@ -118,7 +118,7 @@ public class SpoutItem extends Item {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean hasEffect(ItemStack par1ItemStack) {
 		return shiftedIndex == MaterialData.flint.getRawId() ? false : super.hasEffect(par1ItemStack);

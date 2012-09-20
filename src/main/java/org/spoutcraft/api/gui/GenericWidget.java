@@ -151,7 +151,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 	public UUID getId() {
 		return id;
 	}
-	
+
 	public void setId(UUID id) {
 		this.id = id;
 	}

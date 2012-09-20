@@ -23,8 +23,6 @@ import java.util.List;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -37,6 +35,8 @@ import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.TextField;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiListEdit extends GuiSpoutScreen {
 	private Label title, helpLabel;
@@ -103,7 +103,7 @@ public class GuiListEdit extends GuiSpoutScreen {
 		top += 5;
 
 		int totalWidth = Math.min(width - 9, 200 * 3 + 10);
-		int cellWidth = (totalWidth - 10)/3;
+		int cellWidth = (totalWidth - 10) / 3;
 		int left = width / 2 - totalWidth / 2;
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;

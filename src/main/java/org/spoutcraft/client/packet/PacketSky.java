@@ -21,11 +21,11 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.player.SkyManager;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketSky implements SpoutPacket {
 	private int cloudY, stars, sunPercent, moonPercent;
@@ -105,21 +105,21 @@ public class PacketSky implements SpoutPacket {
 		}
 		SkyManager sky = SpoutClient.getInstance().getSkyManager();
 
-		//Sky
+		// Sky
 		if (skyColor.isOverride()) {
 			sky.setSkyColor(null);
 		} else if (!skyColor.isInvalid()) {
 			sky.setSkyColor(skyColor);
 		}
 
-		//Fog
+		// Fog
 		if (fogColor.isOverride()) {
 			sky.setFogColor(null);
 		} else if (!fogColor.isInvalid()) {
 			sky.setFogColor(fogColor);
 		}
 
-		//Cloud
+		// Cloud
 		if (cloudColor.isOverride()) {
 			sky.setCloudColor(null);
 		} else if (!cloudColor.isInvalid()) {

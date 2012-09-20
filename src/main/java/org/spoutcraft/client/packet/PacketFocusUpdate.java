@@ -22,13 +22,13 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.util.UUID;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.gui.Control;
 import org.spoutcraft.api.gui.InGameHUD;
 import org.spoutcraft.api.gui.PopupScreen;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketFocusUpdate implements SpoutPacket {
 	private Control control;

@@ -59,5 +59,4 @@ public class Holiday {
 	public String getName() {
 		return name;
 	}
-
 }

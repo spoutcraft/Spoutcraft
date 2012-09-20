@@ -19,13 +19,13 @@
  */
 package org.spoutcraft.client.block;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.api.World;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.BlockState;
 import org.spoutcraft.api.block.Chunk;
 import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftBlockState implements BlockState {
 	private final SpoutcraftWorld world;

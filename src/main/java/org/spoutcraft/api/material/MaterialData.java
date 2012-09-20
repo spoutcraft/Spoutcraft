@@ -374,13 +374,13 @@ public class MaterialData {
 	public static final Item ghastTear = new GenericItem("Ghast Tear", 370);
 	public static final Item goldNugget = new GenericItem("Gold Nugget", 371);
 	public static final Item netherWart = new GenericItem("Nether Wart", 372);
-	//Potions - Base
+	// Potions - Base
 	public static final Item waterBottle = new Potion("Water Bottle", 373, 0);
 	public static final Item awkwardPotion = new Potion("Awkward Potion", 373, 16);
 	public static final Item thickPotion = new Potion("Thick Potion", 373, 32);
 	public static final Item mundanePotion = new Potion("Mundane Potion", 373, 64);
 	public static final Item mundanePotionExtended = new Potion("Mundane Potion", 373, 8192);
-	//Potions - Positive
+	// Potions - Positive
 	public static final Item potionOfRegeneration = new Potion("Potion of Regeneration", 373, 8193);
 	public static final Item potionOfRegenerationExtended = new Potion("Potion of Regeneration", 373, 8257);
 	public static final Item potionOfRegenerationII = new Potion("Potion of Regeneration II", 373, 8225);
@@ -396,7 +396,7 @@ public class MaterialData {
 	public static final Item potionOfStrength = new Potion("Potion of Strength", 373, 8201);
 	public static final Item potionOfStrengthExtended = new Potion("Potion of Strength", 373, 8265);
 	public static final Item potionOfStrengthII = new Potion("Potion of Strength II", 373, 8233);
-	//Potions - Negative
+	// Potions - Negative
 	public static final Item potionOfPoison = new Potion("Potion of Poison", 373, 8196);
 	public static final Item potionOfPoisonExtended = new Potion("Potion of Poison", 373, 8260);
 	public static final Item potionOfPoisonII = new Potion("Potion of Poison II", 373, 8228);
@@ -409,14 +409,14 @@ public class MaterialData {
 	public static final Item potionOfHarming = new Potion("Potion of Harming", 373, 8204);
 	public static final Item potionOfHarmingReverted = new Potion("Potion of Harming", 373, 8268);
 	public static final Item potionOfHarmingII = new Potion("Potion of Harming II", 373, 8236);
-	//Potions - Unbrewable
+	// Potions - Unbrewable
 	public static final Item potionOfRegenerationIIExtended = new Potion("Potion of Regeneration II", 373, 8289);
 	public static final Item potionOfSwiftnessIIExtended = new Potion("Potion of Swiftness II", 373, 8290);
 	public static final Item potionOfStrengthIIExtended = new Potion("Potion of Strength II", 373, 8297);
 	public static final Item potionOfPoisonIIExtended = new Potion("Potion of Poison II", 373, 8292);
-	//Splash Potions - Base
+	// Splash Potions - Base
 	public static final Item splashMundanePotion = new Potion("Splash Mundane Potion", 373, 16384);
-	//Splash Potions - Positive
+	// Splash Potions - Positive
 	public static final Item splashPotionOfRegeneration = new Potion("Splash Potion of Regeneration", 373, 16385);
 	public static final Item splashPotionOfRegenerationExtended = new Potion("Splash Potion of Regeneration", 373, 16449);
 	public static final Item splashPotionOfRegenerationII = new Potion("Splash Potion of Regeneration II", 373, 16417);
@@ -432,7 +432,7 @@ public class MaterialData {
 	public static final Item splashPotionOfStrength = new Potion("Splash Potion of Strength", 373, 16393);
 	public static final Item splashPotionOfStrengthExtended = new Potion("Splash Potion of Strength", 373, 16457);
 	public static final Item splashPotionOfStrengthII = new Potion("Splash Potion of Strength II", 373, 16425);
-	//Splash Potions - Negative
+	// Splash Potions - Negative
 	public static final Item splashPotionOfPoison = new Potion("Splash Potion of Poison", 373, 16388);
 	public static final Item splashPotionOfPoisonExtended = new Potion("Splash Potion of Poison", 373, 16452);
 	public static final Item splashPotionOfPoisonII = new Potion("Splash Potion of Poison II", 373, 16420);
@@ -446,7 +446,7 @@ public class MaterialData {
 	public static final Item splashPotionOfHarmingReverted = new Potion("Splash Potion of Harming", 373, 16460);
 	public static final Item splashPotionOfHarmingII = new Potion("Splash Potion of Harming II", 373, 16428);
 
-	//Splash Potions - Unbrewable
+	// Splash Potions - Unbrewable
 	//public static final Item splashPotionOfRegenerationIIExtended = new Potion("Splash Potion of Regeneration II", 373, 16481);
 	//public static final Item splashPotionOfSwiftnessIIExtended = new Potion("Splash Potion of Swiftness II", 373, 16482);
 	//public static final Item splashPotionOfStrengthIIExtended = new Potion("Splash Potion of Strength II", 373, 16489);
@@ -503,7 +503,7 @@ public class MaterialData {
 	}
 
 	public static void reset() {
-		//reset all values
+		// Reset all values
 		for (int i = 0; i < idLookup.length; i++) {
 			idLookup[i] = null;
 		}

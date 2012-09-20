@@ -36,23 +36,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleFileCache {
-	
 	private static final int VERSION = 1;
 	private static final String PREFIX = "SPC";
-	
+
 	private final File dir;
 	private final Comparator<File> fileCompare = new FileCompare();
 	private final long limit;
 	private final int entries;
-	
+
 	private final ConcurrentHashMap<Long, FATEntry> FATMap = new ConcurrentHashMap<Long, FATEntry>();
 	private final ConcurrentHashMap<Integer, long[]> FATIMap = new ConcurrentHashMap<Integer, long[]>();
 	private final ConcurrentHashMap<Long, Reference<byte[]>> cache = new ConcurrentHashMap<Long, Reference<byte[]>>();
 	private final ConcurrentLinkedQueue<MapEntry> newHashQueue = new ConcurrentLinkedQueue<MapEntry>();
-	
+
 	private final AtomicInteger entriesPending = new AtomicInteger();
 	private final AtomicInteger fileCount = new AtomicInteger();
-	
+
 	public SimpleFileCache(File dir, int entries, long limit) throws IOException {
 		this.dir = dir;
 		this.limit = limit;
@@ -66,17 +65,17 @@ public class SimpleFileCache {
 				dir.mkdirs();
 			}
 		}
-		
+
 		File[] files = dir.listFiles();
 		Arrays.sort(files, fileCompare);
-		
+
 		prune(files);
-		
+
 		files = dir.listFiles();
 		Arrays.sort(files, fileCompare);
-		
+
 		readFAT(files);
-		
+
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {
 				writePending();
@@ -84,14 +83,14 @@ public class SimpleFileCache {
 			}
 		}));
 	}
-	
+
 	private void prune() {
 		File[] files = dir.listFiles();
 		Arrays.sort(files, fileCompare);
-		
+
 		prune(files);
 	}
-	
+
 	private void prune(File[] files) {
 		int size = 0;
 
@@ -110,7 +109,7 @@ public class SimpleFileCache {
 			}
 		}
 	}
-	
+
 	private void readFAT(File[] files) throws IOException {
 		for (File f : files) {
 			if (!isValid(f)) {
@@ -146,14 +145,14 @@ public class SimpleFileCache {
 			}
 		}
 	}
-	
+
 	private byte[] readFile(int id, long needle) throws IOException {
 		File f = getFileFromInt(id);
 
 		if (!isValid(f)) {
 			return null;
 		}
-		
+
 		byte[] returnArray = null;
 
 		DataInputStream din = new DataInputStream(new FileInputStream(f));
@@ -168,7 +167,7 @@ public class SimpleFileCache {
 				return null;
 			}
 			long[] hash = new long[entries];
-			
+
 			for (int i = 0; i < entries; i++) {
 				hash[i] = din.readLong();
 			}
@@ -196,42 +195,42 @@ public class SimpleFileCache {
 		}
 
 		return returnArray;
-		
+
 	}
-	
+
 	public long putData(byte[] data) {
 		MapEntry entry = new MapEntry(data);
-		
+
 		cache.put(entry.getHash(), new HardReference<byte[]>(entry.getData()));
 		newHashQueue.add(entry);
-		
+
 		entriesPending.decrementAndGet();
-		
+
 		checkFileWrite();
-		
+
 		return entry.getHash();
 	}
-	
+
 	public byte[] getData(long hash) {
-		
+
 		Reference<byte[]> ref = cache.get(hash);
 
 		byte[] data = null;
-		
+
 		if (ref != null) {
 			data = ref.get();
 		}
-		
+
 		if (data != null) {
 			return data;
 		}
-		
+
 		FATEntry entry = FATMap.get(hash);
-		
+
 		if (entry == null) {
 			return null;
 		}
-		
+
 		try {
 			data = readFile(entry.getId(), hash);
 		} catch (IOException e) {
@@ -240,27 +239,27 @@ public class SimpleFileCache {
 
 		return data;
 	}
-	
+
 	public long[] getNearby(long hash, int range) {
 		FATEntry entry = FATMap.get(hash);
-		
+
 		if (entry == null) {
 			return null;
 		}
-		
+
 		long[] fileHashes = FATIMap.get(entry.getId());
-		
+
 		if (fileHashes == null) {
 			System.out.println("Cache FAT inverse map failure");
 			return null;
 		}
 
 		int index = entry.getIndex();
-		
+
 		if (fileHashes[index] != hash) {
 			throw new IllegalStateException("FAT inverse map mismatch, expected " + hash + ", got " + fileHashes[index]);
 		}
-		
+
 		int start = index - range;
 		int end = index + range;
 		if (start < 0) {
@@ -269,7 +268,7 @@ public class SimpleFileCache {
 		if (end > fileHashes.length) {
 			end = fileHashes.length;
 		}
-		
+
 		long[] nearby = new long[end - start];
 
 		int i = index;
@@ -288,7 +287,7 @@ public class SimpleFileCache {
 		}
 		return nearby;
 	}
-	
+
 	private void checkFileWrite() {
 		boolean success = false;
 		while (!success) {
@@ -303,17 +302,17 @@ public class SimpleFileCache {
 			}
 		}
 	}
-	
+
 	private void writePending() {
 		int id = fileCount.getAndIncrement();
-				
+
 		ArrayList<MapEntry> entryList = new ArrayList<MapEntry>(entries << 1);
-		
+
 		MapEntry entry;
 		while ((entry = newHashQueue.poll()) != null) {
 			entryList.add(entry);
 		}
-		
+
 		if (entryList.size() > 0) {
 			new DataWriteThread(id, entryList).start();
 		}
@@ -334,7 +333,7 @@ public class SimpleFileCache {
 		}
 		return false;
 	}
-			
+
 	public int getIntFromName(File file) {
 		try {
 			String fileName = file.getName();
@@ -356,24 +355,24 @@ public class SimpleFileCache {
 			return 0;
 		}
 	}
-	
+
 	public File getFileFromInt(int id) {
 		return new File(dir, PREFIX + id);
 	}
-	
+
 	private class FileCompare implements Comparator<File> {
 
-		public int compare(File f1, File f2) {	
+		public int compare(File f1, File f2) {
 			return getIntFromName(f1) - getIntFromName(f2);
 		}
 
 	}
-	
+
 	private class DataWriteThread extends Thread {
-		
+
 		private final List<MapEntry> entryList;
 		private final int id;
-		
+
 		public DataWriteThread(int id, List<MapEntry> entryList) {
 			this.id = id;
 			this.entryList = entryList;
@@ -381,9 +380,9 @@ public class SimpleFileCache {
 
 		public void run() {
 			File file = getFileFromInt(id);
-			
+
 			DataOutputStream dos = null;
-			
+
 			try {
 				dos = new DataOutputStream(new FileOutputStream(file));
 
@@ -399,7 +398,7 @@ public class SimpleFileCache {
 			} catch (IOException ioe) {
 				throw new RuntimeException(ioe);
 			}
-			
+
 			if (dos != null) {
 				try {
 					dos.close();
@@ -407,7 +406,7 @@ public class SimpleFileCache {
 					throw new RuntimeException(ioe);
 				}
 			}
-			
+
 			long[] hashArray = new long[entries];
 			int i = 0;
 			for (MapEntry e : entryList) {
@@ -418,30 +417,30 @@ public class SimpleFileCache {
 			FATIMap.put(id, hashArray);
 		}
 	}
-	
+
 	private static class FATEntry {
 		private final int id;
 		private final int index;
-		
+
 		public FATEntry(int id, int index) {
 			this.id = id;
 			this.index = index;
 		}
-		
+
 		public int getId() {
 			return id;
 		}
-		
+
 		public int getIndex() {
 			return index;
 		}
-		
+
 	}
-	
+
 	private static class MapEntry {
 		private final long hash;
 		private final byte[] data;
-		
+
 		public MapEntry(byte[] data) {
 			if (data.length != 2048) {
 				throw new IllegalArgumentException("Data length must be 2048 bytes long");
@@ -450,18 +449,17 @@ public class SimpleFileCache {
 			System.arraycopy(data, 0, this.data, 0, data.length);
 			this.hash = PartitionChunk.hash(this.data);
 		}
-		
+
 		public long getHash() {
 			return hash;
 		}
-		
+
 		public byte[] getData() {
 			return data;
 		}
 	}
 
 	public class HardReference<T> extends SoftReference<T> {
-
 		private final T hard;
 
 		@Override

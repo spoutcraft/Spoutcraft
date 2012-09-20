@@ -22,26 +22,23 @@ package org.spoutcraft.client.player.accessories;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 
-
-
 public abstract class Accessory {
 	private ModelBiped model;
-	
+
 	public Accessory(ModelBiped model) {
 		this.model = model;
 	}
-	
+
 	public ModelBiped getModel() {
 		return model;
 	}
-	
+
 	public void render(EntityPlayer player, float f) {
 	}
 
 	public void render(EntityPlayer player, float f, float par2) {
 		render(player, f);
 	}
-	
-	public abstract AccessoryType getType();
 
+	public abstract AccessoryType getType();
 }

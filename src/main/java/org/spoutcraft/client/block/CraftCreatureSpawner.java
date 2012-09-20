@@ -21,10 +21,10 @@ package org.spoutcraft.client.block;
 
 import net.minecraft.src.TileEntityMobSpawner;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.api.block.Block;
 import org.spoutcraft.api.block.CreatureSpawner;
 import org.spoutcraft.api.entity.CreatureType;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftCreatureSpawner extends CraftBlockState implements CreatureSpawner {
 	private final SpoutcraftWorld world;

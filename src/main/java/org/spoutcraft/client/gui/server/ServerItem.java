@@ -26,16 +26,16 @@ import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.MirrorUtils;
-import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.RenderUtil;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
+import org.spoutcraft.client.io.MirrorUtils;
+import org.spoutcraft.client.util.NetworkUtils;
 
 public class ServerItem implements ListWidgetItem {
 	/**
@@ -50,10 +50,10 @@ public class ServerItem implements ListWidgetItem {
 	protected String title;
 
 	protected int databaseId = -1;
-	
+
 	protected Boolean acceptsTextures;
 
-	//Options from the serverlist API
+	// Options from the serverlist API
 	protected String country = null;
 
 	public static final int OPEN = 0;
@@ -84,11 +84,11 @@ public class ServerItem implements ListWidgetItem {
 	public void setShowPing(boolean showPing) {
 		this.showPing = showPing;
 	}
-	
+
 	public boolean isShowPing() {
 		return showPing;
 	}
-	
+
 	public void update(ServerItem other) {
 		this.ip = other.ip;
 		this.port = other.port;
@@ -151,7 +151,7 @@ public class ServerItem implements ListWidgetItem {
 		int margin1 = 0;
 		int margin2 = 0;
 
-		
+
 		if (getPing() > 0 && (!isPolling() || showPingWhilePolling)) {
 			if (isShowPing()) {
 				String sping = getPing() + " ms";
@@ -164,7 +164,7 @@ public class ServerItem implements ListWidgetItem {
 			margin2 = playerswidth;
 			font.drawStringWithShadow(sPlayers, x + width - playerswidth - 2, y + 11, 0xaaaaaa);
 		}
-		
+
 
 		font.drawStringWithShadow(r.getFittingText(title, width - margin1 - marginleft), x + marginleft, y + 2, 0xffffff);
 		String sMotd = "";
@@ -201,7 +201,7 @@ public class ServerItem implements ListWidgetItem {
 
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 
-		//FANCY ICONS!
+		// Fancy icons
 		int xOffset = 0;
 		int yOffset = 0;
 		if (isPolling() && isShowPing()) {
@@ -236,7 +236,7 @@ public class ServerItem implements ListWidgetItem {
 			font.drawStringWithShadow(ip, x+marginleft, y+20, 0xaaaaaa);
 		}
 
-		//Icon Drawing
+		// Icon drawing
 		int iconMargin = 2;
 
 		if (country != null) {
@@ -257,13 +257,13 @@ public class ServerItem implements ListWidgetItem {
 			String name = "lock";
 			switch(accessType) {
 			case WHITELIST:
-				name="whitelist";
+				name = "whitelist";
 				break;
 			case GRAYLIST:
-				name="graylist";
+				name = "graylist";
 				break;
 			case BLACKLIST:
-				name="blacklist";
+				name = "blacklist";
 				break;
 			}
 			Texture lockIcon = CustomTextureManager.getTextureFromJar("/res/" + name + ".png");
@@ -274,7 +274,7 @@ public class ServerItem implements ListWidgetItem {
 			iconMargin += 5 + 7;
 		}
 
-		//TODO: outdated version alert
+		// TODO outdated version alert
 		/*if (!mcversion.equals(latestMC)) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x+width/5, y-0.5F, 0);
@@ -304,7 +304,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setIp(String ip) {
 		this.ip = ip;
-		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); // Force poll update
 	}
 
 	public int getPort() {
@@ -313,7 +313,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setPort(int port) {
 		this.port = port;
-		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); // Force poll update
 	}
 
 	public String getTitle() {
@@ -330,7 +330,7 @@ public class ServerItem implements ListWidgetItem {
 
 	public void setDatabaseId(int databaseId) {
 		this.databaseId = databaseId;
-		this.pollResult = PollResult.getPoll(ip, port, databaseId); //force poll update
+		this.pollResult = PollResult.getPoll(ip, port, databaseId); // Force poll update
 	}
 
 	public int getPing() {
@@ -388,11 +388,11 @@ public class ServerItem implements ListWidgetItem {
 	public void setShowPingWhilePolling(boolean b) {
 		this.showPingWhilePolling = b;
 	}
-	
+
 	public Boolean getAcceptsTextures() {
 		return this.acceptsTextures;
 	}
-	
+
 	public void setAcceptsTextures(boolean acceptsTextures) {
 		this.acceptsTextures = acceptsTextures;
 	}

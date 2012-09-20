@@ -3,10 +3,10 @@ package net.minecraft.src;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-//Spout Start
+// Spout Start
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
-//Spout End
+// Spout End
 import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;

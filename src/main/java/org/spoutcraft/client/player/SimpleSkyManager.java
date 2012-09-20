@@ -21,10 +21,10 @@ package org.spoutcraft.client.player;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.player.SkyManager;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class SimpleSkyManager implements SkyManager {
 	private int cloudHeight = -999;
@@ -100,7 +100,7 @@ public class SimpleSkyManager implements SkyManager {
 
 	public void setSunTextureUrl(String Url) {
 		if (sunUrl != null) {
-			//TODO release image?
+			// TODO release image?
 		}
 		sunUrl = Url;
 		if (Url != null) {
@@ -132,7 +132,7 @@ public class SimpleSkyManager implements SkyManager {
 
 	public void setMoonTextureUrl(String Url) {
 		if (moonUrl != null) {
-			//TODO release image?
+			// TODO release image?
 		}
 		moonUrl = Url;
 		if (Url != null) {

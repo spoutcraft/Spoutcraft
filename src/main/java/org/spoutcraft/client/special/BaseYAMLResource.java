@@ -37,7 +37,7 @@ public class BaseYAMLResource implements YAMLResource {
 
 	public synchronized boolean updateYAML() {
 		if (cached == null) {
-			//Setup cached processor
+			// Setup cached processor
 			cached = new Configuration(localCache);
 			cached.load();
 			return true;

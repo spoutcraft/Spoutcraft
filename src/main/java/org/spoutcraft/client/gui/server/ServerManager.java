@@ -72,7 +72,7 @@ public class ServerManager {
 		this.screenName = name;
 		SpoutClient.getHandle().displayGuiScreen(new GuiConnecting(SpoutClient.getHandle(), new ServerData(name, ip+":"+port)));
 	}
-	
+
 	public void join(SpoutServerData serverData, GuiScreen from, String name) {
 		this.joinedFrom = from;
 		this.screenName = name;

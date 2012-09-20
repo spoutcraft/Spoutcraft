@@ -194,10 +194,10 @@ public class PollResult {
 				input = new DataInputStream(sock.getInputStream());
 				output = new DataOutputStream(sock.getOutputStream());
 
-				//Packet id is 254!
+				// Packet ID is 254
 				output.write(254);
 
-				//Server will return a packet 255 with the data as string
+				// Server will return a packet 255 with the data as string
 				if (input.read() != 255) {
 					ping = PING_BAD_MESSAGE;
 					return;

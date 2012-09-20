@@ -22,13 +22,13 @@ package org.spoutcraft.client.packet;
 import java.io.IOException;
 import java.io.File;
 
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.sound.QueuedSound;
-import org.spoutcraft.api.io.SpoutInputStream;
-import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketDownloadMusic implements SpoutPacket {
 	int x, y, z;
@@ -80,7 +80,7 @@ public class PacketDownloadMusic implements SpoutPacket {
 		} else {
 			song = new File(directory, fileName);
 		}
-		
+
 		QueuedSound action = new QueuedSound(song, x, y, z, volume, distance, soundEffect);
 		Download download = new Download(fileName, directory, url, action);
 		action.setNotify(!download.isDownloaded() && notify);

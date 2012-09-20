@@ -25,7 +25,7 @@ import java.util.HashMap;
  * Represents the possible types of tint available for block colors
  */
 public enum TintType {
-	//so it turns out that redstone is actually based on the metadata ...
+	// Redstone is actually based on the metadata...
 	NONE, GRASS, TALL_GRASS, FOLIAGE, PINE, BIRCH, REDSTONE, GLASS, WATER, COLORMULT;
 	public static final HashMap<String, TintType> map;
 

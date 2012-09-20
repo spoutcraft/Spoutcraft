@@ -61,7 +61,7 @@ public class Point implements Animatable{
 
 	@Override
 	public String toString() {
-		return "Point{x="+x+"; y="+y+"}";
+		return "Point{x=" + x + "; y=" + y + "}";
 	}
 
 	public Animatable getValueAt(double p, Animatable startValue, Animatable endValue) {

@@ -30,7 +30,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
-
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
@@ -38,14 +37,14 @@ import net.minecraft.src.FontRenderer;
 
 import org.bukkit.ChatColor;
 
+import org.spoutcraft.api.gui.ListWidget;
+import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.ButtonUpdater;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.util.NetworkUtils;
-import org.spoutcraft.api.gui.ListWidget;
-import org.spoutcraft.api.gui.ListWidgetItem;
 
 public class TextureItem implements ListWidgetItem {
 	private int id;
@@ -101,8 +100,7 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public void render(int x, int y, int width, int height) {
-		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance()
-				.getRenderDelegate();
+		MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
 		String sResolution = resolution + "x";
@@ -125,8 +123,7 @@ public class TextureItem implements ListWidgetItem {
 			sStatus = size + " Bytes";
 		}
 		if (isDownloading()) {
-			sStatus = "Downloading: " + ChatColor.WHITE
-					+ download.getProgress() + "%";
+			sStatus = "Downloading: " + ChatColor.WHITE + download.getProgress() + "%";
 		}
 		if (downloadFail != null) {
 			sStatus = downloadFail;
@@ -136,8 +133,7 @@ public class TextureItem implements ListWidgetItem {
 		}
 		if (sStatus != null) {
 			sWidth = font.getStringWidth(sStatus);
-			font.drawStringWithShadow(sStatus, x + width - sWidth - 2, y + 11,
-					0xffaaaaaa);
+			font.drawStringWithShadow(sStatus, x + width - sWidth - 2, y + 11, 0xffaaaaaa);
 		}
 
 		String author = "by " + ChatColor.WHITE + getAuthor();
@@ -220,8 +216,7 @@ public class TextureItem implements ListWidgetItem {
 	}
 
 	public void updateInstalled() {
-		installed = (new File(SpoutClient.getInstance().getTexturePackFolder(),
-				getFileName()).exists());
+		installed = (new File(SpoutClient.getInstance().getTexturePackFolder(), getFileName()).exists());
 	}
 
 	public boolean isInstalled() {
@@ -265,19 +260,14 @@ public class TextureItem implements ListWidgetItem {
 			boolean cancelled = false;
 			try {
 				NetworkUtils
-						.pingUrl("http://textures.spout.org/download.php?id="
-								+ item.getId());
+						.pingUrl("http://textures.spout.org/download.php?id=" + item.getId());
 				fileName = item.getFileName();
 				folder = SpoutClient.getInstance().getTexturePackFolder();
-				url = new URL("http://static.spout.org/texturedl/"
-						+ item.getId() + "/" + item.getFileName());
-				File temp = new File(FileUtil.getTempDir(),
-						FileUtil.getFileName(url.toString()));
+				url = new URL("http://static.spout.org/texturedl/" + item.getId() + "/" + item.getFileName());
+				File temp = new File(FileUtil.getTempDir(), FileUtil.getFileName(url.toString()));
 				URLConnection conn = url.openConnection();
 				System.setProperty("http.agent", "");
-				conn.setRequestProperty(
-						"User-Agent",
-						"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
+				conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
 				conn.setReadTimeout(10000);
 
 				FileOutputStream fos = new FileOutputStream(temp);
@@ -300,8 +290,7 @@ public class TextureItem implements ListWidgetItem {
 					if (length > 0 && totalBytes > (last + step)) {
 						last = totalBytes;
 						long mb = totalBytes / (1024 * 1024);
-						System.out.println("Downloading: " + url + " " + mb
-								+ "MB/" + (length / (1024 * 1024)));
+						System.out.println("Downloading: " + url + " " + mb + "MB/" + (length / (1024 * 1024)));
 					}
 					try {
 						Thread.sleep(25);

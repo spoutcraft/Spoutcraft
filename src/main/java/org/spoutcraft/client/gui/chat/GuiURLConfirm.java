@@ -28,8 +28,6 @@ import java.net.URI;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.gui.SafeButton;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -39,6 +37,8 @@ import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.SafeButton;
 
 public class GuiURLConfirm extends GuiScreen {
 	private Button doneButton = null, doneAndNeverAskButton = null, cancelButton = null, copyLinkButton = null;

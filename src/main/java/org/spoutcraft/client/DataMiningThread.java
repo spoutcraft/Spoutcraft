@@ -84,7 +84,7 @@ public class DataMiningThread extends Thread {
 		try {
 			URL url = new URL(Url);
 			HttpURLConnection con = (HttpURLConnection)(url.openConnection());
-			System.setProperty("http.agent", ""); //Spoofing the user agent is required to track stats
+			System.setProperty("http.agent", ""); // Spoofing the user agent is required to track stats
 			con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.100 Safari/534.30");
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String str;

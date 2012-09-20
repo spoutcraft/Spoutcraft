@@ -21,12 +21,6 @@ package org.spoutcraft.client.gui.server;
 
 import org.lwjgl.Sys;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.FilterButton;
-import org.spoutcraft.client.gui.database.GuiAPIDisplay;
-import org.spoutcraft.client.gui.database.RandomButton;
-import org.spoutcraft.client.gui.database.SearchField;
-import org.spoutcraft.client.gui.database.SortButton;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -38,6 +32,12 @@ import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.FilterButton;
+import org.spoutcraft.client.gui.database.GuiAPIDisplay;
+import org.spoutcraft.client.gui.database.RandomButton;
+import org.spoutcraft.client.gui.database.SearchField;
+import org.spoutcraft.client.gui.database.SortButton;
 
 public class GuiServerList extends GuiAPIDisplay {
 	private ServerListModel model = SpoutClient.getInstance().getServerManager().getServerList();
@@ -69,7 +69,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		byName = new SortButton("Name", "sortBy=name", model);
 		byFreeSlots = new SortButton("Free Slots", "sortBy=freeslots", false, model);
 		byPlayers = new SortButton("Players Online", "sortBy=players", false, model);
-//		byPing = new SortButton("Ping", "sortBy=ping", model);
+		//byPing = new SortButton("Ping", "sortBy=ping", model);
 		random = new RandomButton(model);
 		hasPlayers = new FilterButton("Has Players", "hasplayers", model);
 		notFull = new FilterButton("Not Full", "notfull", model);
@@ -117,7 +117,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		filters.setX(5).setY(top);
 		getScreen().attachWidget(spoutcraft, filters);
 
-		//Filter init {
+		// Filter init {
 		int ftop = 5;
 		filterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filters.attachWidget(spoutcraft, filterTitle);
@@ -163,10 +163,10 @@ public class GuiServerList extends GuiAPIDisplay {
 		model.addUrlElement(byPlayers);
 		ftop += 25;
 
-//		byPing.setWidth(100).setHeight(20).setX(5).setY(ftop);
-//		filters.attachWidget(spoutcraft, byPing);
-//		model.addUrlElement(byPing);
-//		ftop += 25;
+		/*byPing.setWidth(100).setHeight(20).setX(5).setY(ftop);
+		filters.attachWidget(spoutcraft, byPing);
+		model.addUrlElement(byPing);
+		ftop += 25;*/
 
 		hasPlayers.setWidth(100).setHeight(20).setX(5).setY(ftop);
 		filters.attachWidget(spoutcraft, hasPlayers);
@@ -188,7 +188,7 @@ public class GuiServerList extends GuiAPIDisplay {
 		model.addUrlElement(buttonCountry);
 		ftop += 25;
 
-		//Stretch to real width
+		// Stretch to real width
 		int fw = filters.getViewportSize(Orientation.HORIZONTAL);
 		fw-=10;
 		for (Widget w:filters.getAttachedWidgets()) {
@@ -198,10 +198,9 @@ public class GuiServerList extends GuiAPIDisplay {
 		if (!instancesCreated) {
 			featured.setSelected(true);
 		}
-		//Filter init }
+		// Filter init }
 
-		view.setX((int) filters.getWidth() + filters.getX() + 5).setY(top)
-			.setWidth((int) (width - filters.getWidth() - 10 - filters.getX())).setHeight(height - top - 55);
+		view.setX((int) filters.getWidth() + filters.getX() + 5).setY(top).setWidth((int) (width - filters.getWidth() - 10 - filters.getX())).setHeight(height - top - 55);
 		getScreen().attachWidget(spoutcraft, view);
 
 		top += view.getHeight() + 5;

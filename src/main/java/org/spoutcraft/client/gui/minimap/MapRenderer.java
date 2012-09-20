@@ -454,7 +454,7 @@ public class MapRenderer {
 			String xy = format((float) Minecraft.theMinecraft.thePlayer.posX) + ", " + format((float) Minecraft.theMinecraft.thePlayer.posZ);
 			int m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
 			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 146, 0xffffff);
-			xy = Integer.toString((int) (Minecraft.theMinecraft.thePlayer.posY - 1.620d)); //substract eyes pos
+			xy = Integer.toString((int) (Minecraft.theMinecraft.thePlayer.posY - 1.620d)); // Substract eyes pos
 			m = Minecraft.theMinecraft.fontRenderer.getStringWidth(xy) / 2;
 			Minecraft.theMinecraft.fontRenderer.drawString(xy, scWidth * 2 - 32 * 2 - m, 156, 0xffffff);
 			if (MinimapConfig.getInstance().getFocussedWaypoint() != null) {

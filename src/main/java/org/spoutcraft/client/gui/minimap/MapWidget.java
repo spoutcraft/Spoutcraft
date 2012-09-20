@@ -28,14 +28,12 @@ import java.util.Date;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
-import org.lwjgl.opengl.GL11;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.chunkcache.HeightMap;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.animation.PropertyAnimation;
 import org.spoutcraft.api.gui.GenericScrollable;
@@ -47,13 +45,15 @@ import org.spoutcraft.api.gui.ScrollBarPolicy;
 import org.spoutcraft.api.gui.WidgetType;
 import org.spoutcraft.api.property.Property;
 import org.spoutcraft.api.util.map.TIntPairObjectHashMap;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.HeightMap;
 
 public class MapWidget extends GenericScrollable {
 	static TIntObjectHashMap<TIntPairObjectHashMap<Map>> chunks = new TIntObjectHashMap<TIntPairObjectHashMap<Map>>(250);
 	static int levelOfDetail = 1;
 	static final int MIN_LOD = 1;
 	static HeightMap heightMap;
-	static Map blankMap = new Map(1); //singleton instance used to indicate no pixels to draw in a chunk
+	static Map blankMap = new Map(1); // Singleton instance used to indicate no pixels to draw in a chunk
 	double scale = 1f;
 	boolean dirty = true;
 	GuiScreen parent = null;
@@ -254,9 +254,9 @@ public class MapWidget extends GenericScrollable {
 		int scrollX = (int) (getScrollPosition(Orientation.HORIZONTAL) / scale);
 		int scrollY = (int) (getScrollPosition(Orientation.VERTICAL) / scale);
 
-		int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
-				minChunkZ = heightMap.getMinZ() + scrollY / 16, 
-				maxChunkX = 0, 
+		int 	minChunkX = heightMap.getMinX() + scrollX / 16,
+				minChunkZ = heightMap.getMinZ() + scrollY / 16,
+				maxChunkX = 0,
 				maxChunkZ = 0;
 		int horiz = (int) (getWidth() / 16 / scale) + 1;
 		int vert = (int) (getHeight() / 16 / scale) + 1;
@@ -286,8 +286,8 @@ public class MapWidget extends GenericScrollable {
 		try {
 			BufferedImage fullImage = renderFullImage();
 
-			//Creates a file named 'minimap 3-29-2012.png' in the desktop, if possible
-			//Otherwise saves to screenshots. Appends "(1)", etc as needed to avoid overwriting existing files
+			// Creates a file named 'minimap 3-29-2012.png' in the desktop, if possible
+			// Otherwise saves to screenshots. Appends "(1)", etc as needed to avoid overwriting existing files
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			String fileName = "minimap " + df.format(new Date());
 			File desktop = new File(System.getProperty("user.home"), "Desktop");
@@ -335,9 +335,9 @@ public class MapWidget extends GenericScrollable {
 		GL11.glScaled(scale, scale, scale);
 		GL11.glTranslatef(-heightMap.getMinX() * 16, -heightMap.getMinZ() * 16, 0);
 
-		int 	minChunkX = heightMap.getMinX() + scrollX / 16, 
-				minChunkZ = heightMap.getMinZ() + scrollY / 16, 
-				maxChunkX = 0, 
+		int 	minChunkX = heightMap.getMinX() + scrollX / 16,
+				minChunkZ = heightMap.getMinZ() + scrollY / 16,
+				maxChunkX = 0,
 				maxChunkZ = 0;
 		int horiz = (int) (getWidth() / 16 / scale) + 1;
 		int vert = (int) (getHeight() / 16 / scale) + 1;

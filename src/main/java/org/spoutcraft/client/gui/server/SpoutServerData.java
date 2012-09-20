@@ -19,18 +19,16 @@
  */
 package org.spoutcraft.client.gui.server;
 
-import org.spoutcraft.client.SpoutClient;
-
 import net.minecraft.src.ServerData;
 
+import org.spoutcraft.client.SpoutClient;
+
 /**
- * Extends ServerData to store additional spout server details. 
- *
+ * Extends ServerData to store additional spout server details.
  */
 public class SpoutServerData extends ServerData {
-
 	private ServerItem serverItem;
-	
+
 	/**
 	 * Construct more closely matches Minecraft ServerData
 	 * @param name - Server Name
@@ -52,13 +50,13 @@ public class SpoutServerData extends ServerData {
 		setServerItem(serverItem);
 		if (serverItem.getAcceptsTextures() != null) setAcceptsTextures(serverItem.getAcceptsTextures());
 	}
-	
+
 	@Override
 	public void setAcceptsTextures(boolean accepts) {
 		this.getServerItem().setAcceptsTextures(accepts);
 		super.setAcceptsTextures(accepts);
 	}
-	
+
 	/**
 	 * Sets the serveritem entry for this server
 	 * @param uid
@@ -66,7 +64,7 @@ public class SpoutServerData extends ServerData {
 	public void setServerItem(ServerItem serverItem) {
 		this.serverItem = serverItem;
 	}
-	
+
 	/**
 	 * Gets the serveritem entry for this server
 	 * @return

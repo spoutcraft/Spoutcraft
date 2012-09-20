@@ -24,9 +24,6 @@ import java.util.List;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -37,6 +34,9 @@ import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiChatSettings extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -84,7 +84,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax.");
 		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
 
-		buttonAdvancedMentions = new GenericButton("Advanced Options");
+		buttonAdvancedMentions = new GenericButton("Configure");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted.");
 
 		buttonConfigureIgnores = new GenericButton("Configure");

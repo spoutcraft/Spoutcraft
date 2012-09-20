@@ -25,13 +25,6 @@ import java.util.List;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.ButtonUpdater;
-import org.spoutcraft.client.gui.database.GuiAPIDisplay;
-import org.spoutcraft.client.gui.database.RandomButton;
-import org.spoutcraft.client.gui.database.SearchField;
-import org.spoutcraft.client.gui.database.SortButton;
-import org.spoutcraft.client.gui.texturepacks.TextureItem.Download;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.animation.Animation;
@@ -51,6 +44,13 @@ import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.Rectangle;
 import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ButtonUpdater;
+import org.spoutcraft.client.gui.database.GuiAPIDisplay;
+import org.spoutcraft.client.gui.database.RandomButton;
+import org.spoutcraft.client.gui.database.SearchField;
+import org.spoutcraft.client.gui.database.SortButton;
+import org.spoutcraft.client.gui.texturepacks.TextureItem.Download;
 
 public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<AnimationStopEvent>, ButtonUpdater {
 	private Label screenTitle, sortFilterTitle;
@@ -157,8 +157,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		buttonMainMenu.setX(right).setY(top).setWidth(cellWidth).setHeight(20);
 		getScreen().attachWidget(spoutcraft, buttonMainMenu);
 
-		//Filter init
-
+		// Filter init
 		int ftop = 5;
 		sortFilterTitle.setX(5).setY(ftop).setHeight(11).setWidth(100);
 		filter.attachWidget(spoutcraft, sortFilterTitle);
@@ -184,7 +183,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		filter.attachWidget(spoutcraft, filterResolution);
 		ftop += 25;
 
-		//Stretch to real width
+		// Stretch to real width
 		int fw = filter.getViewportSize(Orientation.HORIZONTAL);
 		fw-=10;
 		for (Widget w:filter.getAttachedWidgets()) {
@@ -232,7 +231,7 @@ public class GuiTexturePacksDatabase extends GuiAPIDisplay implements Listener<A
 		if (model.isLoading()) {
 			buttonRefresh.setEnabled(false);
 			buttonRefresh.setText("Loading...");
-			buttonRefresh.setDisabledColor(new Color(0f,1f,0f));
+			buttonRefresh.setDisabledColor(new Color(0f, 1f, 0f));
 		} else {
 			buttonRefresh.setEnabled(true);
 			buttonRefresh.setText("Refresh");

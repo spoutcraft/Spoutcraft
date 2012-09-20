@@ -114,7 +114,7 @@ public class UniqueItemStringMap {
 			if (reverse.containsKey(testId)) { // id already in use
 				testId = idCounter.incrementAndGet() & 0x0FFFF;
 				if (testId == 65535 || testId < 1024) {
-					throw new RuntimeException("[Spout] Out of custom item ids");
+					throw new RuntimeException("[Spout] Out of custom item IDs");
 				}
 				continue;
 			}

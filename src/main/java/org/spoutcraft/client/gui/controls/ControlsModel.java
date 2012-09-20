@@ -25,10 +25,10 @@ import java.util.List;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.KeyBinding;
 
+import org.spoutcraft.api.gui.AbstractListModel;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.api.gui.AbstractListModel;
 
 public class ControlsModel extends AbstractListModel {
 	private GuiControls gui;
@@ -46,7 +46,7 @@ public class ControlsModel extends AbstractListModel {
 		items.clear();
 
 		if (gui.checkVanilla.isChecked()) {
-			//Vanilla items
+			// Minecraft items
 			int n = 0;
 			for (KeyBinding binding:options.keyBindings) {
 				items.add(new VanillaBindingItem(n, binding, this));
@@ -55,27 +55,27 @@ public class ControlsModel extends AbstractListModel {
 		}
 
 		if (gui.checkSpoutcraft.isChecked()) {
-			//Spoutcraft items
+			// Spoutcraft items
 			for (KeyBinding binding:options.spoutcraftBindings) {
 				items.add(new SpoutcraftBindingItem(binding, this));
 			}
 		}
 
 		if (gui.checkShortcuts.isChecked()) {
-			//Shortcuts
+			// Shortcuts
 			for (Shortcut sh:manager.getAllShortcuts()) {
 				items.add(new ShortcutBindingItem(sh, this));
 			}
 		}
 
 		if (gui.checkBindings.isChecked()) {
-			//Plugin controls
+			// Plugin controls
 			for (org.spoutcraft.api.keyboard.KeyBinding binding:manager.getAllBindings()) {
 				items.add(new KeyBindingItem(binding, this));
 			}
 		}
 
-		//Check for conflicting keys
+		// Check for conflicting keys
 		outer: for (ControlsBasicItem item1:items) {
 			for (ControlsBasicItem item2:items) {
 				if (!item1.equals(item2)) {

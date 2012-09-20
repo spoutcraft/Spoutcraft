@@ -22,8 +22,8 @@ package org.spoutcraft.client.gui.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.gui.GenericComboBox;
+import org.spoutcraft.client.SpoutClient;
 
 public class SwitchViewSourceCombo extends GenericComboBox {
 	private GuiFavorites gui;
@@ -39,12 +39,12 @@ public class SwitchViewSourceCombo extends GenericComboBox {
 	@Override
 	public void onSelectionChanged(int i, String text) {
 		switch(i) {
-		case 0:
-			gui.setModel(SpoutClient.getInstance().getServerManager().getFavorites());
-			break;
-		case 1:
-			gui.setModel(SpoutClient.getInstance().getServerManager().getLANModel());
-			break;
+			case 0:
+				gui.setModel(SpoutClient.getInstance().getServerManager().getFavorites());
+				break;
+			case 1:
+				gui.setModel(SpoutClient.getInstance().getServerManager().getLANModel());
+				break;
 		}
 		gui.updateButtons();
 		super.onSelectionChanged(i, text);

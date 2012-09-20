@@ -29,7 +29,7 @@ public class SearchField extends GenericTextField implements UrlElement {
 	public SearchField(AbstractAPIModel model) {
 		setMaximumCharacters(0);
 		this.model = model;
-		setPlaceholder(ChatColor.GRAY + "Search");
+		setPlaceholder(ChatColor.GRAY + "Search...");
 	}
 
 	@Override

@@ -19,10 +19,10 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.chat.GuiChatSettings;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.chat.GuiChatSettings;
 
 public class ChatButton extends GenericButton {
 	GameSettingsScreen parent;

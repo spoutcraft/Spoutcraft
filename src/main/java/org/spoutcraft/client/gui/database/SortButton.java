@@ -87,8 +87,8 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 			super.render();
 		} else {
 			MCRenderDelegate r = (MCRenderDelegate) SpoutClient.getInstance().getRenderDelegate();
-			String texture ="";
-			if (isSelected()&&topdown||!isSelected()&&preferredOrder) {
+			String texture = "";
+			if (isSelected() && topdown || !isSelected() && preferredOrder) {
 				texture = "ui/box_ascending.png";
 			} else {
 				texture = "ui/box_descending.png";
@@ -112,8 +112,8 @@ public class SortButton extends GenericRadioButton implements UrlElement {
 	}
 
 	public String getUrlPart() {
-		String dir = topdown?"asc":"desc";
-		String surl = url + (allowSorting?"&order=" + dir:"");
+		String dir = topdown ? "asc" : "desc";
+		String surl = url + (allowSorting ? "&order=" + dir : "");
 		return surl;
 	}
 

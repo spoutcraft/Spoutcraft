@@ -25,9 +25,9 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import net.minecraft.src.Chunk;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
+
+import net.minecraft.src.Chunk;
 
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
@@ -96,7 +96,7 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = lightingBlockList;
 					SpoutClient.getInstance().getRawWorld().updateAllLightTypes(chunkX * 16 + bx, by, chunkZ * 16 + bz);
 					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = old;
-					
+
 				}
 			}
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);

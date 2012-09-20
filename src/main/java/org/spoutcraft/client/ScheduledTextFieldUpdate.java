@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client;
 
-import org.spoutcraft.client.packet.PacketControlAction;
 import org.spoutcraft.api.gui.Screen;
 import org.spoutcraft.api.gui.TextField;
+import org.spoutcraft.client.packet.PacketControlAction;
 
 public class ScheduledTextFieldUpdate implements Runnable {
 	private static final long DELAY_TIME = 500;

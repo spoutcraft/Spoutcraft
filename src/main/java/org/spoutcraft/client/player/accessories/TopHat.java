@@ -23,8 +23,6 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
-
-
 public class TopHat extends Accessory{
 	public ModelRenderer bipedBottomHat;
 	public ModelRenderer bipedTopHat;
@@ -36,7 +34,7 @@ public class TopHat extends Accessory{
 		bipedTopHat = new ModelRenderer(model, 0, 13);
 		bipedTopHat.addBox(-3.5F, -17F, -3.5F, 7, 8, 7);
 	}
-	
+
 	@Override
 	public void render(EntityPlayer plr, float f) {
 		bipedBottomHat.rotateAngleY = getModel().bipedHead.rotateAngleY;
@@ -55,5 +53,4 @@ public class TopHat extends Accessory{
 	public AccessoryType getType() {
 		return AccessoryType.TOPHAT;
 	}
-
 }

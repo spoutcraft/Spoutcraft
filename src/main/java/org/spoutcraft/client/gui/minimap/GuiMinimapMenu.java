@@ -21,7 +21,6 @@ package org.spoutcraft.client.gui.minimap;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -34,6 +33,7 @@ import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Gradient;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiMinimapMenu extends GuiScreen {
 	private Button doneButton = null, positionButton = null, advancedMobsButton = null;
@@ -202,5 +202,4 @@ public class GuiMinimapMenu extends GuiScreen {
 			mc.displayGuiScreen(new GuiAdvancedEntitySettings(this));
 		}
 	}
-
 }

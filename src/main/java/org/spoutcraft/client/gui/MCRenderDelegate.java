@@ -53,9 +53,6 @@ import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.MipMapUtils;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.api.gui.ArmorBar;
 import org.spoutcraft.api.gui.BubbleBar;
@@ -92,6 +89,9 @@ import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.MipMapUtils;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class MCRenderDelegate implements RenderDelegate {
 	private Color scrollBarColor = new Color(0.26F, 0.26F, 0.26F, 0.33F);
@@ -137,9 +137,9 @@ public class MCRenderDelegate implements RenderDelegate {
 					int x = (int) bar.getScreenX() + icon * bar.getIconOffset();
 					boolean full = (icon + 1) * armorPercentPerIcon <= armorPercent;
 					boolean half = (icon + 1) * armorPercentPerIcon < armorPercent + armorPercentPerIcon;
-					if (full) { // white armor (filled in)
+					if (full) { // White armor (filled in)
 						RenderUtil.drawTexturedModalRectangle(x, y, 34, 9, 9, 9, 0f);
-					} else if (half) { // half filled in
+					} else if (half) { // Half filled in
 						RenderUtil.drawTexturedModalRectangle(x, y, 25, 9, 9, 9, 0f);
 					} else {
 						RenderUtil.drawTexturedModalRectangle(x, y, 16, 9, 9, 9, 0f);
@@ -698,7 +698,7 @@ public class MCRenderDelegate implements RenderDelegate {
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend) {
 		drawTexture(textureBinding, width, height, color, blend, -1, -1, false);
 	}
-	
+
 	public void drawTexture(Texture textureBinding, int width, int height, Color color, boolean blend, int left, int top, boolean mipmap) {
 		drawTexture(textureBinding, width, height, color, blend, left, top, mipmap, GL11.GL_NEAREST);
 	}
@@ -822,7 +822,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslated(-scrollLeft, -scrollTop, 0);
 		GL11.glPushMatrix();
 
-		//Render scrollarea contents
+		// Render scrollarea contents
 		gs.renderContents();
 
 		GL11.glPopMatrix();
@@ -832,7 +832,7 @@ public class MCRenderDelegate implements RenderDelegate {
 
 		GL11.glDisable(2896 /*GL_LIGHTING*/);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		//Draw scrollbars
+		// Draw scrollbars
 		if (gs.needsScrollBar(Orientation.HORIZONTAL)) {
 			Minecraft mc = SpoutClient.getHandle();
 			int texture = mc.renderEngine.getTexture("/gui/allitems.png");
@@ -866,7 +866,7 @@ public class MCRenderDelegate implements RenderDelegate {
 		GL11.glTranslated(0, 5, 0);
 		int currentHeight = 0;
 		for (ListWidgetItem item : lw.getItems()) {
-			//Only render visible items
+			// Only render visible items
 			if (currentHeight >= scrollTop - item.getHeight() && currentHeight <= scrollBottom) {
 				// Draw selection border
 				if (lw.isSelected(item)) {
@@ -874,7 +874,7 @@ public class MCRenderDelegate implements RenderDelegate {
 					RenderUtil.drawRectangle(5, currentHeight, lw.getViewportSize(Orientation.HORIZONTAL) - 4, currentHeight + item.getHeight(), new Color(0.0F, 0.0F, 0.0F).toInt());
 				}
 
-				//Render actual item
+				// Render actual item
 				GL11.glPushMatrix();
 				item.render(5, currentHeight, lw.getViewportSize(Orientation.HORIZONTAL) - 9, item.getHeight());
 				GL11.glPopMatrix();

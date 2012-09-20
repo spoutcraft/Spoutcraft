@@ -21,9 +21,9 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityItem;
 
-import org.spoutcraft.client.inventory.CraftItemStack;
 import org.spoutcraft.api.entity.Item;
 import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.client.inventory.CraftItemStack;
 
 public class CraftItem extends CraftEntity implements Item {
 	private EntityItem item;

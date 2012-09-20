@@ -65,7 +65,7 @@ public class GenericContainer extends GenericWidget implements Container {
 		child.shiftXPos(super.getX());
 		child.shiftYPos(super.getY());
 		child.setAnchor(super.getAnchor());
-		// Relayout if we are already using layout - otherwise this will return immediately
+		// Relay out if we are already using layout - otherwise this will return immediately
 		if (getScreen() != null) {
 			Addon addon = child.getAddon();
 			getScreen().attachWidget(addon, child);

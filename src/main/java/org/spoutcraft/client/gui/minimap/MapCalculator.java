@@ -29,9 +29,9 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.Material;
 import net.minecraft.src.World;
 
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.api.Spoutcraft;
 
 public class MapCalculator implements Runnable {
 	/**
@@ -40,9 +40,9 @@ public class MapCalculator implements Runnable {
 	 * Yourself came up with the algorithm, I'm sure it makes sense to someone
 	 * 
 	 * @param x
-	 *			Color to multiply
+	 *    Color to multiply
 	 * @param y
-	 *			Other color to multiply
+	 *    Other color to multiply
 	 * @return multiplied color
 	 */
 	public int colorMult(int x, int y) {
@@ -77,8 +77,7 @@ public class MapCalculator implements Runnable {
 		if (MinimapConfig.getInstance().isCavemap()) {
 			Chunk chunk = world.getChunkFromBlockCoords(x, z);
 			cmdist.setSeed((x & 0xffff) | ((z & 0xffff) << 16));
-			float dist = distance((int) Minecraft.theMinecraft.thePlayer.posX,
-					(int) Minecraft.theMinecraft.thePlayer.posZ, x, z);
+			float dist = distance((int) Minecraft.theMinecraft.thePlayer.posX, (int) Minecraft.theMinecraft.thePlayer.posZ, x, z);
 			int y = (int) Minecraft.theMinecraft.thePlayer.posY;
 			if (dist > 5)
 				y -= (cmdist.nextInt((int) (dist)) - ((int) dist / 2));
@@ -131,8 +130,7 @@ public class MapCalculator implements Runnable {
 		int color24 = 0;
 
 		try {
-			if (MinimapConfig.getInstance().isColor()
-					&& !MinimapConfig.getInstance().isCavemap()) {
+			if (MinimapConfig.getInstance().isColor() && !MinimapConfig.getInstance().isCavemap()) {
 				if (x == (int) map.getPlayerX() && z == (int) map.getPlayerZ())
 					return 0xff0000;
 				if ((world.getBlockMaterial(x, y + 1, z) == Material.ice) || (world.getBlockMaterial(x, y + 1, z) == Material.snow)) {
@@ -198,21 +196,21 @@ public class MapCalculator implements Runnable {
 				if (map.zoom != MinimapConfig.getInstance().getZoom()) {
 					map.zoom = MinimapConfig.getInstance().getZoom();
 					switch (map.zoom) {
-					case 0:
-						map.renderSize = Map.ZOOM_0;
-						break;
-					case 1:
-						map.renderSize = Map.ZOOM_1;
-						break;
-					case 2:
-						map.renderSize = Map.ZOOM_2;
-						break;
-					case 3:
-						map.renderSize = Map.ZOOM_3;
-						break;
-					default:
-						map.renderSize = Map.ZOOM_2;
-						break;
+						case 0:
+							map.renderSize = Map.ZOOM_0;
+							break;
+						case 1:
+							map.renderSize = Map.ZOOM_1;
+							break;
+						case 2:
+							map.renderSize = Map.ZOOM_2;
+							break;
+						case 3:
+							map.renderSize = Map.ZOOM_3;
+							break;
+						default:
+							map.renderSize = Map.ZOOM_2;
+							break;
 					}
 					map.renderOff = map.renderSize / 2;
 					map.clear();
@@ -230,13 +228,15 @@ public class MapCalculator implements Runnable {
 					int worldY = getBlockHeight(data, worldX, worldZ);
 
 					int pixelX = worldX - startX;
-					if (pixelX >= renderSize)
+					if (pixelX >= renderSize) {
 						pixelX -= renderSize;
+					}
 
 					int pixelZ = worldZ - startZ;
 					pixelZ = renderSize - pixelZ;
-					if (pixelZ >= renderSize)
+					if (pixelZ >= renderSize) {
 						pixelZ -= renderSize;
+					}
 
 					if (square || MinimapUtils.insideCircle(startX + renderSize / 2, startZ + renderSize / 2, renderSize / 2, worldX, worldZ)) {
 						int color = getBlockColor(data, worldX, worldY, worldZ);
@@ -331,10 +331,8 @@ public class MapCalculator implements Runnable {
 		try {
 			for (int dx = -radius; dx <= radius; dx++) {
 				for (int dy = -radius; dy <= radius; dy++) {
-					if (x + dx < map.renderSize && x + dx > 0
-							&& y + dy < map.renderSize && y + dy > 0) {
-						if (MinimapUtils.insideCircle(x, y, radius, x + dx, y
-								+ dy)) {
+					if (x + dx < map.renderSize && x + dx > 0 && y + dy < map.renderSize && y + dy > 0) {
+						if (MinimapUtils.insideCircle(x, y, radius, x + dx, y + dy)) {
 							map.setColorPixel(x + dx, y + dy, color);
 						}
 					}
@@ -364,9 +362,9 @@ public class MapCalculator implements Runnable {
 						}
 					}
 				}
-//				long dur = System.currentTimeMillis() - start;
-//				int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
-//				System.out.println("Took " + dur + "ms to scan "+chunks+" chunks.\nThat is " + (float) (dur/(float)chunks) + " per chunk!");
+				//long dur = System.currentTimeMillis() - start;
+				//int chunks = (int) Math.pow(MinimapConfig.getInstance().getScanRadius() * 2, 2);
+				//System.out.println("Took " + dur + "ms to scan "+chunks+" chunks.\nThat is " + (float) (dur/(float)chunks) + " per chunk!");
 				mapCalc();
 
 				entityCalc();
@@ -415,8 +413,7 @@ public class MapCalculator implements Runnable {
 	 * Called each tick of the render.
 	 */
 	void onRenderTick() {
-		if (Minecraft.theMinecraft != null
-				&& Minecraft.theMinecraft.theWorld != null) {
+		if (Minecraft.theMinecraft != null && Minecraft.theMinecraft.theWorld != null) {
 			tryARender();
 		}
 	}

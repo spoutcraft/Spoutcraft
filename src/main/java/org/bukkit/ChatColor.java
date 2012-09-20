@@ -198,7 +198,7 @@ public enum ChatColor {
 	 * Translates a string using an alternate color code character into a string that uses the internal
 	 * ChatColor.COLOR_CODE color code character. The alternate color code character will only be replaced
 	 * if it is immediately followed by 0-9, A-F, or a-f.
-	 * 
+	 *
 	 * @param altColorChar The alternate color code character to replace. Ex: &
 	 * @param textToTranslate Text containing the alternate color code character.
 	 * @return Text containing the ChatColor.COLOR_CODE color code character.

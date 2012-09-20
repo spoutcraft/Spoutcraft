@@ -28,8 +28,6 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldInfo;
 
-import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.entity.CraftEntity;
 import org.spoutcraft.api.BlockChangeDelegate;
 import org.spoutcraft.api.ChunkSnapshot;
 import org.spoutcraft.api.Effect;
@@ -52,6 +50,8 @@ import org.spoutcraft.api.util.FastLocation;
 import org.spoutcraft.api.util.FixedLocation;
 import org.spoutcraft.api.util.MutableLocation;
 import org.spoutcraft.api.util.Vector;
+import org.spoutcraft.client.block.SpoutcraftChunk;
+import org.spoutcraft.client.entity.CraftEntity;
 
 public class SpoutcraftWorld implements World {
 	private final net.minecraft.src.World handle;
@@ -396,7 +396,7 @@ public class SpoutcraftWorld implements World {
 	}
 
 	public Environment getEnvironment() {
-		//TODO: get the environments
+		// TODO Get the environments
 		return environment;
 	}
 
@@ -482,7 +482,7 @@ public class SpoutcraftWorld implements World {
 	}
 
 	public Entity getEntityFromUUID(UUID id) {
-		// TODO
+		// TODO ?
 		throw new UnsupportedOperationException("Not yet implemented!");
 	}
 }

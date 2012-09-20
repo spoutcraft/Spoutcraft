@@ -62,34 +62,34 @@ public class ChunkNetCache {
 	public static AtomicBoolean cacheInUse = new AtomicBoolean(false);
 
 	public static byte[] handle(byte[] chunkData, int decompressedSize, int compressedSize, int numChunks, int cx, int cz) throws IOException {
-		
+
 		int d = totalData.addAndGet(compressedSize);
 		int c = chunks.addAndGet(numChunks);
 
 		if (c != 0) {
 			averageChunkSize.set((10 * d)/c);
 		}
-		
+
 		if ((decompressedSize & 0x01) == 0) {
 			int h = 0;
 			int segments = decompressedSize >> 11;
 			updateCacheAttempts(h, segments);
 			return crop(chunkData, decompressedSize);
 		}
-		
+
 		int dataLength = PartitionChunk.getInt(chunkData, 0, decompressedSize - 5);
 		long CRC = PartitionChunk.getHash(chunkData, 0, decompressedSize - 13);
-		
+
 		int segments = dataLength >> 11;
 		if ((dataLength & 0x7FF) != 0) {
 			segments++;
 		}
-		
+
 		byte[] newChunkData = new byte[dataLength];
 		System.arraycopy(chunkData, 0, newChunkData, 0, dataLength);
 
 		int cacheHit = 0;
-		
+
 		for (int i = 0; i < segments; i++) {
 			long hash = PartitionChunk.getHash(chunkData, i, dataLength);
 			byte[] partitionData = p.getData(hash);
@@ -133,19 +133,19 @@ public class ChunkNetCache {
 			System.out.println("Cache Error: CRC mismatch, received: " + CRC + " CRC of data: " + CRCNew);
 			System.out.println("Cache Error: Chunk coords: " + cx + " " + cz);
 		}
-		
+
 		cacheInUse.set(true);
-		
+
 		return newChunkData;
 	}
-	
+
 	private static void updateCacheAttempts(int h, int segments) {
 		int a = cacheAttempts.addAndGet(segments);
 		if (a != 0) {
 			hitPercentage.set((100 * h) / a);
 		}
 	}
-	
+
 	public static void sendHashHints(long[] array) {
 		int s = 0;
 		while (s < array.length) {
@@ -158,7 +158,7 @@ public class ChunkNetCache {
 			s += 10;
 		}
 	}
-	
+
 	public static byte[] crop(byte[] in, int maxLength) {
 		if (in.length <= maxLength) {
 			return in;
@@ -168,7 +168,7 @@ public class ChunkNetCache {
 			return newArray;
 		}
 	}
-	
+
 	public static void reset() {
 		hashes.clear();
 		//p.prune();

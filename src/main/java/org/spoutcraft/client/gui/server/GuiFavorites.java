@@ -23,8 +23,6 @@ import net.minecraft.src.GuiScreen;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.LinkButton;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.Color;
@@ -37,14 +35,14 @@ import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.TextField;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.LinkButton;
 
 public class GuiFavorites extends GuiScreen {
 	private GuiScreen parent;
 
 	// GUI stuff
-	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit,
-			buttonMainMenu, buttonServerList, buttonQuickJoin, buttonMoveUp,
-			buttonMoveDown, buttonRefresh, buttonGetISeeYou;
+	private Button buttonJoin, buttonAdd, buttonDelete, buttonEdit, buttonMainMenu, buttonServerList, buttonQuickJoin, buttonMoveUp, buttonMoveDown, buttonRefresh, buttonGetISeeYou;
 	private GenericLabel labelDescriptionISeeYou, labelLookingForServers;
 	private TextField textQuickJoin;
 	private GenericListView view;
@@ -60,8 +58,7 @@ public class GuiFavorites extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		Addon spoutcraft = SpoutClient.getInstance().getAddonManager()
-				.getAddon("spoutcraft");
+		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("spoutcraft");
 
 		int selection = 0;
 		if (comboSource != null) {
@@ -89,16 +86,14 @@ public class GuiFavorites extends GuiScreen {
 		buttonRefresh.setHeight(20).setWidth(100).setX(width - 105).setY(5);
 		getScreen().attachWidget(spoutcraft, buttonRefresh);
 
-		boolean helpVisible = (buttonGetISeeYou != null) ? buttonGetISeeYou
-				.isVisible() : false;
+		boolean helpVisible = (buttonGetISeeYou != null) ? buttonGetISeeYou.isVisible() : false;
 
 		int viewheight = height - 110;
 		view = new GenericListView(model);
 		view.setX(5).setY(30).setWidth(width - 10).setHeight(viewheight);
 		getScreen().attachWidget(spoutcraft, view);
 
-		buttonGetISeeYou = new LinkButton("Get " + ChatColor.BOLD + "I See You"
-				+ ChatColor.RESET + " now", "http://spout.in/iseeyou");
+		buttonGetISeeYou = new LinkButton("Get " + ChatColor.BOLD + "I See You" + ChatColor.RESET + " now", "http://spout.in/iseeyou");
 		labelLookingForServers = new GenericLabel("Looking for servers in your local network ...");
 		labelLookingForServers.setX(15).setVisible(helpVisible);
 		labelLookingForServers.setPriority(RenderPriority.Low);
@@ -116,8 +111,7 @@ public class GuiFavorites extends GuiScreen {
 		labelDescriptionISeeYou.recalculateLines();
 
 		int lh = (int) labelDescriptionISeeYou.getHeight();
-		labelDescriptionISeeYou
-				.setY((int) (30 + 16 + (viewheight / 2 - (lh + 25 + 16) / 2)));
+		labelDescriptionISeeYou.setY((int) (30 + 16 + (viewheight / 2 - (lh + 25 + 16) / 2)));
 		labelDescriptionISeeYou.setX(15);
 		labelDescriptionISeeYou.setVisible(helpVisible);
 		getScreen().attachWidget(spoutcraft, labelDescriptionISeeYou);
@@ -138,13 +132,12 @@ public class GuiFavorites extends GuiScreen {
 		int center = left + cellWidth + 5;
 		int right = center + cellWidth + 5;
 
-		String text = SpoutClient.getHandle().gameSettings.lastServer.replace(
-				"_", ":");
-		if (textQuickJoin != null)
+		String text = SpoutClient.getHandle().gameSettings.lastServer.replace("_", ":");
+		if (textQuickJoin != null) {
 			text = textQuickJoin.getText();
+		}
 		textQuickJoin = new QuickJoin();
-		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16)
-				.setWidth(cellWidth * 2 + 5 - 4);
+		textQuickJoin.setX(left + 2).setY(top + 2).setHeight(16).setWidth(cellWidth * 2 + 5 - 4);
 		textQuickJoin.setMaximumCharacters(0);
 		textQuickJoin.setText(text);
 		getScreen().attachWidget(spoutcraft, textQuickJoin);
@@ -192,12 +185,10 @@ public class GuiFavorites extends GuiScreen {
 				doQuickJoin();
 				return true;
 			} else {
-				buttonQuickJoin
-						.setEnabled(textQuickJoin.getText().length() > 0);
+				buttonQuickJoin.setEnabled(textQuickJoin.getText().length() > 0);
 			}
 			return false;
 		}
-
 	}
 
 	@Override
@@ -208,8 +199,7 @@ public class GuiFavorites extends GuiScreen {
 	@Override
 	public void buttonClicked(Button btn) {
 		if (btn.equals(buttonMainMenu)) {
-			SpoutClient.getHandle().displayGuiScreen(
-					new org.spoutcraft.client.gui.mainmenu.MainMenu());
+			SpoutClient.getHandle().displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 		}
 		if (btn.equals(buttonServerList)) {
 			SpoutClient.getHandle().displayGuiScreen(new GuiServerList());
@@ -225,15 +215,13 @@ public class GuiFavorites extends GuiScreen {
 				ServerItem item = (ServerItem) view.getSelectedItem();
 				address = item.ip + ":" + item.port;
 			}
-			SpoutClient.getHandle().displayGuiScreen(
-					new GuiAddFavorite(address, this));
+			SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(address, this));
 		}
 		if (btn.equals(buttonEdit)) {
 			ServerItem item = (ServerItem) view.getSelectedItem();
 			// Produces a "hang" why ever :(
 			if (item != null) {
-				SpoutClient.getHandle().displayGuiScreen(
-						new GuiAddFavorite(item, this));
+				SpoutClient.getHandle().displayGuiScreen(new GuiAddFavorite(item, this));
 			} else {
 				updateButtons();
 			}
@@ -244,8 +232,7 @@ public class GuiFavorites extends GuiScreen {
 				item = (ServerItem) model.getItem(view.getSelectedRow());
 			}
 			if (item != null) {
-				SpoutClient.getInstance().getServerManager()
-						.join(item, this, "Favorites");
+				SpoutClient.getInstance().getServerManager().join(item, this, "Favorites");
 			} else {
 				// Just in case something weird happens
 				updateButtons();
@@ -296,13 +283,10 @@ public class GuiFavorites extends GuiScreen {
 			if (!adress.isEmpty()) {
 				String split[] = adress.split(":");
 				String ip = split[0];
-				int port = split.length > 1 ? Integer.parseInt(split[1])
-						: ServerItem.DEFAULT_PORT;
-				SpoutClient.getHandle().gameSettings.lastServer = adress
-						.replace(":", "_");
+				int port = split.length > 1 ? Integer.parseInt(split[1]) : ServerItem.DEFAULT_PORT;
+				SpoutClient.getHandle().gameSettings.lastServer = adress.replace(":", "_");
 				SpoutClient.getHandle().gameSettings.saveOptions();
-				SpoutClient.getInstance().getServerManager()
-						.join(ip, port, this, "Favorites");
+				SpoutClient.getInstance().getServerManager().join(ip, port, this, "Favorites");
 			}
 		} catch (Exception e) {
 		}
@@ -333,8 +317,7 @@ public class GuiFavorites extends GuiScreen {
 				buttonAdd.setEnabled(false);
 			} else {
 				ServerItem item = (ServerItem) view.getSelectedItem();
-				if (SpoutClient.getInstance().getServerManager().getFavorites()
-						.containsSever(item)) {
+				if (SpoutClient.getInstance().getServerManager().getFavorites().containsSever(item)) {
 					buttonAdd.setEnabled(false);
 				}
 			}
@@ -402,7 +385,7 @@ public class GuiFavorites extends GuiScreen {
 	}
 
 	public void setISeeYouHelpVisible(boolean visible) {
-//		view.setVisible(!visible);
+		//view.setVisible(!visible);
 		buttonGetISeeYou.setVisible(visible);
 		labelDescriptionISeeYou.setVisible(visible);
 		labelLookingForServers.setVisible(visible);

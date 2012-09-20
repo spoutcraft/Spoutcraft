@@ -241,7 +241,7 @@ public class CraftInventory implements Inventory {
 	public HashMap<Integer, ItemStack> addItem(ItemStack... items) {
 		HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
 
-		/* TODO: some optimization
+		/* TODO some optimization
 		 *  - Create a 'firstPartial' with a 'fromIndex'
 		 *  - Record the lastPartial per Material
 		 *  - Cache firstEmpty result
@@ -299,7 +299,7 @@ public class CraftInventory implements Inventory {
 	public HashMap<Integer, ItemStack> removeItem(ItemStack... items) {
 		HashMap<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
 
-		// TODO: optimization
+		// TODO Optimization
 
 		for (int i = 0; i < items.length; i++) {
 			ItemStack item = items[i];

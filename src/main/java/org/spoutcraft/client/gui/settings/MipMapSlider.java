@@ -19,10 +19,10 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.MipMapUtils;
 
 public class MipMapSlider extends GenericSlider {
 	public MipMapSlider() {

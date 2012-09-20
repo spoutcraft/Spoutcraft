@@ -601,13 +601,13 @@ public class EntityRenderer {
 		// Spout Start
 		World world = this.mc.theWorld;
 
-	//	if(Thread.currentThread().getPriority() != 10) {
-	//		Thread.currentThread().setPriority(10);
-	//	}
+		/*if(Thread.currentThread().getPriority() != 10) {
+			Thread.currentThread().setPriority(10);
+		}*/
 		
-		//keep this off
-		//advanced GL causes rendering holes
-		//TODO: fix
+		// Keep this off
+		// Advanced GL causes rendering holes
+		// TODO Fix
 		mc.gameSettings.advancedOpengl = false;
 		/*if (Shaders.isEnabled()) {
 			mc.gameSettings.fancyGraphics = true;

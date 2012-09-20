@@ -23,6 +23,7 @@ import java.util.LinkedList;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
+
 import org.spoutcraft.api.Spoutcraft;
 
 public class GenericPolygon extends GenericWidget implements Polygon {

@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
 public class FileUtil {
 	/**
 	 * This method copies one file to another location
-	 * 
+	 *
 	 * @param inFile the source filename
 	 * @param outFile the target filename
 	 * @return true on success

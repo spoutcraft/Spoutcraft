@@ -32,7 +32,6 @@ public interface Block {
 	@SPOnly
 	public float getHardness();
 
-
 	/**
 	 * Sets the hardness of this block
 	 * @param hardness to set to

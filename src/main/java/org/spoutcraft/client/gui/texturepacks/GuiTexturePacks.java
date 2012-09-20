@@ -20,19 +20,19 @@
 package org.spoutcraft.client.gui.texturepacks;
 
 import java.io.File;
-import org.apache.commons.io.FileUtils;
 
-import org.lwjgl.Sys;
 import com.pclewis.mcpatcher.mod.TextureUtils;
+import org.apache.commons.io.FileUtils;
+import org.lwjgl.Sys;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackCustom;
+
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -40,6 +40,7 @@ import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.Label;
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiTexturePacks extends GuiScreen {
 	private GenericListView view;
@@ -54,12 +55,12 @@ public class GuiTexturePacks extends GuiScreen {
 		if (instancesCreated) {
 			return;
 		}
-		
+
 		StringTranslate t = StringTranslate.getInstance();
-		
+
 		model.update();
 		screenTitle = new GenericLabel(t.translateKey("texturePack.title", "Texture Packs"));
-		loadingTexture = new GenericLabel(ChatColor.GREEN+t.translateKey("spout.texturepack.loading", "Loading texture..."));
+		loadingTexture = new GenericLabel(ChatColor.GREEN + t.translateKey("spout.texturepack.loading", "Loading texture..."));
 		view = new GenericListView(model);
 		buttonDone = new GenericButton(t.translateKey("gui.done", "Main Menu"));
 		buttonOpenFolder = new GenericButton(t.translateKey("texturePack.openFolder", "Open Folder"));
@@ -81,12 +82,12 @@ public class GuiTexturePacks extends GuiScreen {
 		int swidth = mc.fontRenderer.getStringWidth(screenTitle.getText());
 		screenTitle.setY(top).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
 		getScreen().attachWidget(spoutcraft, screenTitle);
-		
+
 		swidth = mc.fontRenderer.getStringWidth(loadingTexture.getText());
 		loadingTexture.setVisible(false);
 		loadingTexture.setY(top).setX(width / 2 + swidth).setHeight(11).setWidth(swidth);
 		getScreen().attachWidget(spoutcraft, loadingTexture);
-		
+
 		top+=15;
 
 		view.setX(5).setY(top).setWidth(width - 10).setHeight(height - top - 55);
@@ -146,7 +147,7 @@ public class GuiTexturePacks extends GuiScreen {
 		if (btn.equals(buttonSelect) && view.getSelectedRow() != -1) {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
 			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
-			if(!current) {
+			if (!current) {
 				item.select();
 				updateButtons();
 			} else {
@@ -174,7 +175,7 @@ public class GuiTexturePacks extends GuiScreen {
 			TexturePackItem item = model.getItem(view.getSelectedRow());
 			boolean current = item.getPack() == TextureUtils.getSelectedTexturePack();
 			buttonSelect.setEnabled(true);
-			if(current) {
+			if (current) {
 				buttonSelect.setText(t.translateKey("spout.texturepack.preview.button", "Preview"));
 			} else {
 				buttonSelect.setText(t.translateKey("spout.texturepack.select", "Select"));
@@ -205,10 +206,11 @@ public class GuiTexturePacks extends GuiScreen {
 
 					Thread.sleep(25);
 				}
-			} catch(Exception e) { }
+			} catch(Exception e) {
+			}
 		}
 	}
-	
+
 	public void setLoading(boolean newValue) {
 		loadingTexture.setVisible(newValue);
 	}

@@ -19,13 +19,9 @@
  */
 package org.spoutcraft.client.gui.minimap;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Mouse;
 
-import org.apache.commons.lang3.ArrayUtils;
-
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.chunkcache.HeightMap;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -40,6 +36,9 @@ import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.Point;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.chunkcache.HeightMap;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiOverviewMap extends GuiSpoutScreen {
 	private MapWidget map;
@@ -124,21 +123,21 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 			map.zoomBy(1.5);
 		}
 		if (btn == buttonZoomOut) {
-			map.zoomBy(1.0/1.5);
+			map.zoomBy(1.0 / 1.5);
 		}
 		if (btn == buttonShowPlayer) {
 			map.showPlayer(500);
 		}
 		if (btn == buttonWaypoint) {
 			switch(waypoint_mode) {
-			case WAYPOINT_ADD:
-				int x = coords.getX();
-				int z = coords.getY();
-				SpoutClient.getHandle().displayGuiScreen(new GuiAddWaypoint(this, x, y, z));
-				break;
-			case WAYPOINT_EDIT:
-				SpoutClient.getHandle().displayGuiScreen(new GuiAddWaypoint(this, clickedWaypoint));
-				break;
+				case WAYPOINT_ADD:
+					int x = coords.getX();
+					int z = coords.getY();
+					SpoutClient.getHandle().displayGuiScreen(new GuiAddWaypoint(this, x, y, z));
+					break;
+				case WAYPOINT_EDIT:
+					SpoutClient.getHandle().displayGuiScreen(new GuiAddWaypoint(this, clickedWaypoint));
+					break;
 			}
 			setMenuVisible(false);
 		}
@@ -147,14 +146,14 @@ public class GuiOverviewMap extends GuiSpoutScreen {
 		}
 		if (btn == buttonFocus) {
 			switch(focus_mode) {
-			case FOCUS_SET:
-				if (clickedWaypoint != null) {
-					MinimapConfig.getInstance().setFocussedWaypoint(clickedWaypoint);
-				}
-				break;
-			case FOCUS_REMOVE:
-				MinimapConfig.getInstance().setFocussedWaypoint(null);
-				break;
+				case FOCUS_SET:
+					if (clickedWaypoint != null) {
+						MinimapConfig.getInstance().setFocussedWaypoint(clickedWaypoint);
+					}
+					break;
+				case FOCUS_REMOVE:
+					MinimapConfig.getInstance().setFocussedWaypoint(null);
+					break;
 			}
 			setMenuVisible(false);
 		}

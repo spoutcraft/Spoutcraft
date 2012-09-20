@@ -55,7 +55,7 @@ public class MirrorUtils {
 			while (iterator.hasNext()) {
 				Entry<String, Integer> e = iterator.next();
 				String mirror = "http://" + e.getKey();
-				if (isAddressReachable(mirror, 250)) { //short timeout for fast mirrors
+				if (isAddressReachable(mirror, 250)) { // Short timeout for fast mirrors
 					goodMirrors.add(e.getKey());
 				}
 			}

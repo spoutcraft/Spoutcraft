@@ -89,14 +89,14 @@ public class SpoutWorth {
 		long percent = getAverageFPS() * 100 / idealFPS;
 		long percentCur = currentFPS * 100 / idealFPS;
 
-		//Increase our ideal standards if we are looking for best performance
+		// Increase our ideal standards if we are looking for best performance
 		if (ConfigReader.automateMode == 0) {
 			percent -= 10;
 			percentCur -= 10;
-		} else if (ConfigReader.automateMode == 1) { //Decrease our ideal standards if we are looking for balanced performance
+		} else if (ConfigReader.automateMode == 1) { // Decrease our ideal standards if we are looking for balanced performance
 			percent += 15;
 			percentCur += 15;
-		} else if (ConfigReader.automateMode == 2) { //Decrease our ideal standards if we are looking for best appearance
+		} else if (ConfigReader.automateMode == 2) { // Decrease our ideal standards if we are looking for best appearance
 			percent += 40;
 			percentCur += 40;
 		}

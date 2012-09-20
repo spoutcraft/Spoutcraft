@@ -62,8 +62,8 @@ public class GuiIngame extends Gui
 	 * Render the ingame overlay with quick icon bar, ...
 	 */
 	// Spout Start
-	//TODO Rewrite again, it's in a horrible state, i'm surprised it works...
-	//Most of function rewritten
+	// TODO Rewrite again, it's in a horrible state, i'm surprised it works...
+	// Most of function rewritten
 	public void renderGameOverlay(float f, boolean flag, int i, int j)
 	{
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();

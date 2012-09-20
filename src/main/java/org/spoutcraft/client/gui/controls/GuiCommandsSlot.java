@@ -21,11 +21,11 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.FontRenderer;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.Shortcut;
 import org.spoutcraft.api.gui.GenericListWidget;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.controls.Shortcut;
 
 public class GuiCommandsSlot extends GenericListWidget {
 	GuiEditShortcut parent;
@@ -73,11 +73,11 @@ public class GuiCommandsSlot extends GenericListWidget {
 
 		public void render(int x, int y, int width, int height) {
 			FontRenderer font = SpoutClient.getHandle().fontRenderer;
-			parent.drawString(font, cmd, x+2, y+2, 0xffffff);
+			parent.drawString(font, cmd, x + 2, y + 2, 0xffffff);
 			if (cmd.startsWith("/")) {
-				parent.drawString(font, "Command", x+2, y+13, 0xaaaaaa);
+				parent.drawString(font, "Command", x + 2, y + 13, 0xaaaaaa);
 			} else {
-				parent.drawString(font, "Chat Message", x+2, y+13, 0xaaaaaa);
+				parent.drawString(font, "Chat Message", x + 2, y + 13, 0xaaaaaa);
 			}
 		}
 

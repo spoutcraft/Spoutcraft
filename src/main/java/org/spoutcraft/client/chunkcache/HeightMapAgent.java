@@ -19,10 +19,10 @@
  */
 package org.spoutcraft.client.chunkcache;
 
+import net.minecraft.src.Chunk;
+
 import org.spoutcraft.client.chunkcache.HeightMap.HeightChunk;
 import org.spoutcraft.client.gui.minimap.MinimapUtils;
-
-import net.minecraft.src.Chunk;
 
 public class HeightMapAgent {
 	public static void scanChunk(Chunk chunk) {
@@ -37,7 +37,7 @@ public class HeightMapAgent {
 							byte id = (byte) chunk.getBlockID(x, h, z);
 							byte data = (byte) chunk.getBlockMetadata(x, h, z);
 
-							//Check if block above is snow
+							// Check if block above is snow
 							if (chunk.getBlockID(x, h + 1, z) == 78) {
 								id = 78;
 							}
@@ -49,7 +49,8 @@ public class HeightMapAgent {
 				}
 			}
 		}
-		catch (ArrayIndexOutOfBoundsException ignore) { }
+		catch (ArrayIndexOutOfBoundsException ignore) {
+		}
 	}
 
 	public static void save() {

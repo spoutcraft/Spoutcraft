@@ -30,20 +30,20 @@ import java.util.List;
 
 import org.yaml.snakeyaml.Yaml;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.addon.AddonStore;
 import org.spoutcraft.api.addon.AddonStore.DownloadEventDelegate;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.FileUtil;
 
 public class SimpleAddonStore implements AddonStore {
 	private HashMap<String, AddonInfo> addons = new HashMap<String, AddonInfo>();
 	private boolean loading = false;
 
 	public void downloadAddon(int databaseId, DownloadEventDelegate delegate) {
-		// TODO download the addon
-		// TODO create new instance of AddonInfo with the databaseId and register here.
+		// TODO Download the addon
+		// TODO Create new instance of AddonInfo with the databaseId and register here.
 		/* Addon addon = Spoutcraft.getAddonManager().loadAddon(addonFile);
 		AddonInfo info = new AddonInfo(addon);
 		info.setDatabaseId(databaseId);
@@ -52,8 +52,8 @@ public class SimpleAddonStore implements AddonStore {
 	}
 
 	public void downloadAddon(String name, DownloadEventDelegate delegate) {
-		// TODO get database-id and call
-		/* downloadAddon(databaseId, delegate); */
+		// TODO Get database ID and call
+		//downloadAddon(databaseId, delegate);
 	}
 
 	public boolean hasUpdate(Addon addon) {
@@ -124,7 +124,6 @@ public class SimpleAddonStore implements AddonStore {
 					info.setEnabled((Boolean) item.get("enabled"));
 					info.setHasInternetAccess((Boolean) item.get("internetAccess"));
 					addons.put(name, info);
-
 				} catch (ClassCastException ignore) {
 					ignore.printStackTrace();
 				} catch (NullPointerException e) {
@@ -132,9 +131,9 @@ public class SimpleAddonStore implements AddonStore {
 				}
 			}
 		}
-		catch (FileNotFoundException ignore) {} 
+		catch (FileNotFoundException ignore) {}
 		catch (Exception e) {
-			e.printStackTrace(); 
+			e.printStackTrace();
 		}
 		finally {
 			loading = false;

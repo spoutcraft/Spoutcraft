@@ -64,7 +64,7 @@ public class GenericCustomItem implements CustomItem {
 	}
 
 	public int getRawId() {
-		return 318; //flint
+		return 318; // Flint
 	}
 
 	public int getRawData() {

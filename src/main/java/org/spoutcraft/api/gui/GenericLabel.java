@@ -41,7 +41,6 @@ public class GenericLabel extends GenericWidget implements BasicLabel {
 	protected boolean shadow = true;
 
 	public GenericLabel() {
-
 	}
 
 	public int getVersion() {

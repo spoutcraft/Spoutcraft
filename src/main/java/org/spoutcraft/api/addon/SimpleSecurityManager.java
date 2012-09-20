@@ -221,12 +221,12 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPackageAccess(String pckg) {
-		//TODO doesn't the classloader handle this already?
+		// TODO Doesn't the classloader handle this already?
 	}
 
 	@Override
 	public void checkPackageDefinition(String pckg) {
-		//TODO doesn't the classloader handle this already?
+		// TODO Doesn't the classloader handle this already?
 	}
 
 	@Override
@@ -252,7 +252,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 				}
 			}
 
-			checkAccess(); //TODO handle on case by case basis
+			checkAccess(); // TODO Handle on case by case basis
 		}
 	}
 
@@ -285,7 +285,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission per, Object context) {
-		checkAccess(); //TODO handle on case by case basis
+		checkAccess(); // TODO Handle on case by case basis
 	}
 
 	@Override
@@ -307,7 +307,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 	public void checkRead(String file) {
 		if (isLocked()) {
 			if (file.endsWith(".class") || file.endsWith(".jar")) {
-				return; //class loader will have already decided it's safe if we got here
+				return; // Class loader will have already decided it's safe if we got here
 			}
 			if (!hasFileAccess(file)) {
 				System.out.println("Reading from " + file);
@@ -333,7 +333,7 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
-		checkAccess(); //TODO check launcher options?
+		checkAccess(); // TODO Check launcher options?
 	}
 
 	@Override
@@ -358,22 +358,22 @@ public final class SimpleSecurityManager extends SecurityManager {
 
 	public static boolean hasFileAccess(String file) {
 		if (file.startsWith(Spoutcraft.getAddonFolder().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		if (file.startsWith(Spoutcraft.getAudioCache().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		if (file.startsWith(Spoutcraft.getTemporaryCache().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		if (file.startsWith(Spoutcraft.getTextureCache().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		if (file.startsWith(Spoutcraft.getTexturePackFolder().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		if (file.startsWith(Spoutcraft.getStatsFolder().getPath())) {
-			return true; //allow access
+			return true; // Allow access
 		}
 		return false;
 	}

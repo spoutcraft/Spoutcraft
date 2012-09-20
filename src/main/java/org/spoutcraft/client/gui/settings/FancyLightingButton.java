@@ -23,8 +23,8 @@ import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class FancyLightingButton extends AutomatedCheckBox {
 	UUID fancyGraphics;

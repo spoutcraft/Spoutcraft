@@ -27,10 +27,10 @@ import java.nio.ByteBuffer;
 import net.minecraft.src.Packet;
 import net.minecraft.src.NetHandler;
 
-import org.spoutcraft.client.PacketDecompressionThread;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.PacketDecompressionThread;
+import org.spoutcraft.client.SpoutClient;
 
 public class CustomPacket extends Packet {
 	public SpoutPacket packet;
@@ -67,14 +67,14 @@ public class CustomPacket extends Packet {
 		final boolean prevOutdated = outdated;
 		int packetId = -1;
 		packetId = input.readShort();
-		int version = input.readShort(); //packet version
-		int length = input.readInt(); //packet size
+		int version = input.readShort(); // Packet version
+		int length = input.readInt(); // Packet size
 		//System.out.println("Reading Packet: " + PacketType.getPacketFromId(packetId) + " Size: " + length + " bytes, version: " + version);
 		if (packetId > -1 && version > -1) {
 			try {
 				this.packet = PacketType.getPacketFromId(packetId).getPacketClass().newInstance();
 			} catch (Exception e) {
-				System.out.println("Failed to identify packet id: " + packetId);
+				System.out.println("Failed to identify packet ID: " + packetId);
 				//e.printStackTrace();
 			}
 		}
@@ -85,9 +85,9 @@ public class CustomPacket extends Packet {
 				return;
 			} else if (packet.getVersion() != version) {
 				input.skipBytes(length);
-				//Keep server admins from going insane :p
+				// Keep server admins from going insane
 				if (nags[packetId]-- > 0) {
-					System.out.println("Invalid Packet Id: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
+					System.out.println("Invalid Packet ID: " + packetId + ". Current v: " + packet.getVersion() + " Receieved v: " + version + " Skipping contents.");
 				}
 				outdated = outdated ? true : version > packet.getVersion();
 			} else {

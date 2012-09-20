@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.entity;
 
-import org.spoutcraft.client.SpoutcraftWorld;
 import org.spoutcraft.api.entity.TextEntity;
 import org.spoutcraft.api.util.FixedLocation;
+import org.spoutcraft.client.SpoutcraftWorld;
 
 public class CraftTextEntity extends CraftEntity implements TextEntity {
 	public CraftTextEntity(FixedLocation location) {

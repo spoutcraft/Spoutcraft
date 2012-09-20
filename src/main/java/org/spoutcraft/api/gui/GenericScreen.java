@@ -72,8 +72,8 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 			}
 		}
 		list = allwidgets.toArray(list);
-		
-		//TODO: why is this happening?
+
+		// TODO Why is this happening?
 		for (Widget w : list) {
 			if (w.getScreen() == null) {
 				w.setScreen(this);

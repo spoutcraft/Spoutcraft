@@ -24,9 +24,9 @@ import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiSleepMP;
 
+import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.api.Spoutcraft;
 
 /**
  * Main Zanminimap class where everything happens
@@ -69,11 +69,13 @@ public class ZanMinimap {
 	 * @param mc Minecraft instance to initialize obfhub.game with
 	 */
 	public void onRenderTick() {
-		if (Minecraft.theMinecraft.thePlayer == null || SpoutClient.getInstance().getWorld() == null)
+		if (Minecraft.theMinecraft.thePlayer == null || SpoutClient.getInstance().getWorld() == null) {
 			return;
+		}
 
-		if (Minecraft.theMinecraft.currentScreen != null && !(isTransparentMenu() || isChatMenu()))
+		if (Minecraft.theMinecraft.currentScreen != null && !(isTransparentMenu() || isChatMenu())) {
 			return;
+		}
 
 		if (!MinimapConfig.getInstance().isEnabled()) {
 			return;

@@ -25,11 +25,11 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.*;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class GameSettingsScreen extends GuiScreen {
 	private Button doneButton = null;
@@ -78,7 +78,7 @@ public class GameSettingsScreen extends GuiScreen {
 
 		Color grey = new Color(0.80F, 0.80F, 0.80F, 0.65F);
 
-		//Controls + Audio
+		// Controls and audio
 		label = new GenericLabel("Controls and Audio Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -139,7 +139,7 @@ public class GameSettingsScreen extends GuiScreen {
 
 		top += 22;
 
-		//Graphics
+		// Graphics
 		label = new GenericLabel("Graphical Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);
@@ -154,28 +154,26 @@ public class GameSettingsScreen extends GuiScreen {
 		screen.attachWidget(spoutcraft, linebreak);
 		top += 6;
 
-		Label message = new GenericLabel("Spoutworth here, your loyal butler and assistant. Can I be of \n" +
-										"assistance? Yes? Excellent. I will be managing your graphical and\n" +
-										"performance settings to maximize framerate and quality. You can\n" +
-										"adjust my priorities, or dismiss me and manually select settings.");
+		// TODO Clean up references to Spoutworth and remove message
+		Label message = new GenericLabel("");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
 
 		if (ConfigReader.automatePerformance) {
 			screen.attachWidget(spoutcraft, message);
 
-			top += 47;
+			//top += 47;
 		}
 
 		RadioButton button;
 		button = (RadioButton) new FavorPerformanceButton("Favor Performance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
-		button.setTooltip("Spoutworth will attempt to provide smooth framerates, potentially at the cost of appearance.");
+		button.setTooltip("Spoutcraft will attempt to provide smooth framerates, potentially at the cost of appearance.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 0);
 
 		button = (RadioButton) new OptimalGameplayButton("Balanced Gameplay", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
-		button.setTooltip("Spoutworth will attempt to provide reasonable framerates and appearance.");
+		button.setTooltip("Spoutcraft will attempt to provide reasonable framerates and appearance.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 1);
 
@@ -183,13 +181,13 @@ public class GameSettingsScreen extends GuiScreen {
 
 		button = (RadioButton) new FavorAppearanceButton("Favor Appearance", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
-		button.setTooltip("Spoutworth will attempt to provide the best appearance, but potentially at the cost of framerates.");
+		button.setTooltip("Spoutcraft will attempt to provide the best appearance, but potentially at the cost of framerates.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 2);
 
 		button = (RadioButton) new ManualSelectionButton("Manual Selection", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
-		button.setTooltip("Dismiss Spoutworth and adjust the settings manually yourself.");
+		button.setTooltip("Disable automatic performance settings and adjust the settings manually.");
 		screen.attachWidget(spoutcraft, button);
 		button.setSelected(!ConfigReader.automatePerformance);
 
@@ -293,7 +291,7 @@ public class GameSettingsScreen extends GuiScreen {
 
 		top += 5;
 
-		//Performance
+		// Performance
 		label = new GenericLabel("Performance Settings");
 		size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(top);

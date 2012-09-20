@@ -65,5 +65,4 @@ public class MinimapModeButton extends GenericComboBox {
 				break;
 		}
 	}
-
 }

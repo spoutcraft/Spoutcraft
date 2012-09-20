@@ -22,9 +22,9 @@ package org.spoutcraft.client.packet;
 import java.io.File;
 import java.io.IOException;
 
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.io.FileUtil;
 
 public class PacketCacheDeleteFile implements SpoutPacket {
 	private String plugin;
@@ -48,11 +48,11 @@ public class PacketCacheDeleteFile implements SpoutPacket {
 	}
 
 	public void run(int playerId) {
-		//TODO: Fix, security vulnerability: http://pastie.org/private/qdmx5veidnood1ectllkcq
-		//File file = FileUtil.findFile(plugin, fileName);
-		//if (file != null) {
-		//	file.delete();
-		//}
+		// TODO Fix security vulnerability: http://pastie.org/private/qdmx5veidnood1ectllkcq
+		/*File file = FileUtil.findFile(plugin, fileName);
+		if (file != null) {
+			file.delete();
+		}*/
 	}
 
 	public void failure(int playerId) {

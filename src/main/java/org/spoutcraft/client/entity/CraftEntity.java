@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.spoutcraft.client.player.SpoutPlayer;
 import org.spoutcraft.api.World;
 import org.spoutcraft.api.entity.Arrow;
 import org.spoutcraft.api.entity.Entity;
@@ -40,6 +39,7 @@ import org.spoutcraft.api.util.Location;
 import org.spoutcraft.api.util.MutableLocation;
 import org.spoutcraft.api.util.MutableVector;
 import org.spoutcraft.api.util.Vector;
+import org.spoutcraft.client.player.SpoutPlayer;
 
 public class CraftEntity extends PropertyObject implements Entity {
 	protected net.minecraft.src.Entity handle = null;

@@ -77,7 +77,9 @@ public class DifficultyButton extends GenericButton {
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.gameSettings.difficulty++;
-		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) Minecraft.theMinecraft.gameSettings.difficulty = 0;
+		if (Minecraft.theMinecraft.gameSettings.difficulty > 3) {
+			Minecraft.theMinecraft.gameSettings.difficulty = 0;
+		}
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 }

@@ -23,11 +23,11 @@ import java.io.IOException;
 
 import net.minecraft.src.GuiYesNo;
 
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.CustomScreen;
 import org.spoutcraft.client.io.FileDownloadThread;
-import org.spoutcraft.api.io.SpoutInputStream;
-import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketPreCacheCompleted implements SpoutPacket {
 	public PacketPreCacheCompleted() {
@@ -46,13 +46,10 @@ public class PacketPreCacheCompleted implements SpoutPacket {
 	public void run(int playerId) {
 		FileDownloadThread.preCacheCompleted.set(System.currentTimeMillis());
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(this);
-		if (
-				!(SpoutClient.getHandle().currentScreen instanceof CustomScreen) &&
-				!(SpoutClient.getHandle().currentScreen instanceof GuiYesNo)
-				) {
-			//Closes Downloading Terrain
+		if (!(SpoutClient.getHandle().currentScreen instanceof CustomScreen) && !(SpoutClient.getHandle().currentScreen instanceof GuiYesNo)) {
+			// Closes downloading terrain
 			SpoutClient.getHandle().displayGuiScreen(null, false);
-			//Prevent closing a plugin created menu from opening the downloading terrain
+			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
 		}
 	}

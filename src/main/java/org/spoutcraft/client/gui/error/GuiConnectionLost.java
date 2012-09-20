@@ -26,6 +26,7 @@ import net.minecraft.src.RenderEngine;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -139,7 +140,7 @@ class LocalTexture extends GenericTexture {
 	public void render() {
 		Texture texture = CustomTextureManager.getTextureFromJar(getUrl());
 		if (texture != null) {
-			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); // moves texture into place
+			GL11.glTranslatef((float) getScreenX(), (float) getScreenY(), 0); // Moves texture into place
 			((MCRenderDelegate)Spoutcraft.getRenderDelegate()).drawTexture(texture, (int)getWidth(), (int)getHeight(), isDrawingAlphaChannel());
 		}
 	}

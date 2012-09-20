@@ -22,10 +22,10 @@ package org.spoutcraft.client.gui.settings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Block;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class ClearWaterToggleButton extends GenericCheckBox {
 	public ClearWaterToggleButton() {

@@ -27,7 +27,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 import net.minecraft.src.StringTranslate;
 
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -40,6 +39,7 @@ import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.ScrollArea;
 import org.spoutcraft.api.gui.Widget;
 import org.spoutcraft.api.inventory.ItemStack;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiPreviewTexturePack extends GuiSpoutScreen {
 	private GuiScreen parent;
@@ -56,27 +56,25 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 	@Override
 	protected void createInstances() {
 		StringTranslate t = StringTranslate.getInstance();
-		
+
 		Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 		buttonDone = new GenericButton(t.translateKey("gui.done", "Done"));
 		scroll = new GenericScrollArea();
-		title = new GenericLabel(t.translateKey("spout.texturepack.preview.title", "Preview of selected Texture pack"));
+		title = new GenericLabel(t.translateKey("spout.texturepack.preview.title", "Texture Pack Preview"));
 		getScreen().attachWidgets(spoutcraft, scroll, buttonDone, title);
 
 		for (Block block : Block.blocksList) {
 			if (block == null) {
 				continue;
 			}
-			GenericItemWidget icon = new GenericItemWidget(new ItemStack(
-					block.blockID));
+			GenericItemWidget icon = new GenericItemWidget(new ItemStack(block.blockID));
 			previewIcons.add(icon);
 		}
 		for (Item item : Item.itemsList) {
 			if (item == null) {
 				continue;
 			}
-			GenericItemWidget icon = new GenericItemWidget(new ItemStack(
-					item.shiftedIndex));
+			GenericItemWidget icon = new GenericItemWidget(new ItemStack(item.shiftedIndex));
 			previewIcons.add(icon);
 		}
 		scroll.attachWidgets(spoutcraft, previewIcons.toArray(new Widget[0]));
@@ -87,11 +85,9 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 		int top = 10;
 
 		int swidth = mc.fontRenderer.getStringWidth(title.getText());
-		title.setY(top).setX(width / 2 - swidth / 2).setHeight(11)
-				.setWidth(swidth);
+		title.setY(top).setX(width / 2 - swidth / 2).setHeight(11).setWidth(swidth);
 
-		scroll.setGeometry(5, title.getY() + 16, width - 10,
-				height - title.getY() - 16 - 5 - 5 - 20);
+		scroll.setGeometry(5, title.getY() + 16, width - 10, height - title.getY() - 16 - 5 - 5 - 20);
 
 		buttonDone.setGeometry(width - 205, height - 25, 200, 20);
 
@@ -105,7 +101,7 @@ public class GuiPreviewTexturePack extends GuiSpoutScreen {
 			icon.setGeometry(0,0,SIZE,SIZE);
 			icon.setX(i % fitting * (SIZE + 5) + 5);
 			icon.setY(line * (SIZE + 5) + 5);
-			if(i % fitting == fitting - 1) {
+			if (i % fitting == fitting - 1) {
 				line ++;
 			}
 			i++;

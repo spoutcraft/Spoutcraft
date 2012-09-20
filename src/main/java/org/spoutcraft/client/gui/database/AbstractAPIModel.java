@@ -33,11 +33,11 @@ import org.yaml.snakeyaml.Yaml;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.database.UrlElement;
 import org.spoutcraft.api.gui.AbstractListModel;
 import org.spoutcraft.api.gui.GenericListWidgetItem;
 import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.database.UrlElement;
 
 public abstract class AbstractAPIModel extends AbstractListModel {
 	protected List<UrlElement> urlElements = new LinkedList<UrlElement>();
@@ -131,19 +131,21 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					//Put a fancy error message on the list!
+					// Put a fancy error message on the list!
 					clear();
 					effectiveCache = new LinkedList<ListWidgetItem>();
 					//String error = e1.getClass().getSimpleName().replaceAll("Exception", "");
 					//error = error.replaceAll("([A-Z])", " $1").trim();
 					effectiveCache.add(new GenericListWidgetItem(ChatColor.RED + "Could not load items!", e1.getMessage(), ""));
 					return;
-				} catch (Exception e) {}
+				} catch (Exception e) {
+				}
 				finally {
 					setLoading(false);
 					try {
 						reader.close();
-					} catch (Exception e) {}
+					} catch (Exception e) {
+					}
 				}
 			}
 		};
@@ -197,11 +199,11 @@ public abstract class AbstractAPIModel extends AbstractListModel {
 		int i = 0;
 		for (UrlElement element:urlElements) {
 			if (element.isActive()) {
-				if (i>0) {
+				if (i > 0) {
 					url+="&";
 				}
 				url += element.getUrlPart();
-				i++; //Only increment for active elements
+				i++; // Only increment for active elements
 			}
 		}
 		if (i != 0) {

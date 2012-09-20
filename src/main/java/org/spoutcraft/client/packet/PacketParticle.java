@@ -100,5 +100,4 @@ public class PacketParticle implements SpoutPacket {
 	public int getVersion() {
 		return 0;
 	}
-
 }

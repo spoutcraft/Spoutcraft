@@ -201,7 +201,7 @@ public class FileUtil {
 		end = end == -1 || lastDot > end ? url.length() : end;
 		String result = url.substring(slash + 1, end).replaceAll("%20", " ");
 		if (url.contains("?")) {
-			//Use hashcode instead.
+			// Use hashcode instead
 			String ext = FilenameUtils.getExtension(result);
 			result = url.hashCode() + (!ext.isEmpty()?"." + ext:"");
 		}

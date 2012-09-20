@@ -31,12 +31,12 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.CRCManager;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.api.io.SpoutInputStream;
-import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketCacheFile implements CompressablePacket {
 	private String plugin;
@@ -57,7 +57,7 @@ public class PacketCacheFile implements CompressablePacket {
 		this.fileName = FileUtil.getFileName(file.getPath());
 	}
 
-	//TODO move to separate thread?
+	// TODO move to separate thread?
 	public void compress() {
 		if (!compressed) {
 			Deflater deflater = new Deflater();

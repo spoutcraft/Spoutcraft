@@ -23,12 +23,10 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
-
-
 public class NotchHat extends Accessory{
 	public ModelRenderer NotchHatTop;
 	public ModelRenderer NotchHatBottom;
-	
+
 	public NotchHat(ModelBiped mb) {
 		super(mb);
 		NotchHatTop = new ModelRenderer(mb, 0, 0);
@@ -55,5 +53,4 @@ public class NotchHat extends Accessory{
 	public AccessoryType getType() {
 		return AccessoryType.NOTCHHAT;
 	}
-
 }

@@ -37,11 +37,11 @@ public class HeightMap {
 	private final static int INITIAL_CAPACITY = 500;
 	private final TIntPairObjectHashMap<HeightChunk> cache = new TIntPairObjectHashMap<HeightChunk>(INITIAL_CAPACITY);
 	private static final HashMap<String, HeightMap> heightMaps = new HashMap<String, HeightMap>();
-	private static HeightMap lastMap = null; //Faster access to last height-map (which will be the case in most cases)
+	private static HeightMap lastMap = null; // Faster access to last height-map (which will be the case in most cases)
 	private int minX = 0, maxX = 0, minZ = 0, maxZ = 0;
 	private boolean initBounds = false;
 	private File file = null;
-	private HeightChunk lastChunk = null; //Faster access to last accessed chunk
+	private HeightChunk lastChunk = null; // Faster access to last accessed chunk
 	private static HeightMapSaveThread saveThread;
 	private boolean dirty = true;
 
@@ -78,11 +78,11 @@ public class HeightMap {
 		public void setBlockId(int x, int z, byte id) {
 			idmap[z << 4 | x] = id;
 		}
-		
+
 		public byte getData(int x, int z) {
 			return datamap[z << 4 | x];
 		}
-		
+
 		public void setData(int x, int z, byte data) {
 			datamap[z << 4 | x] = data;
 		}
@@ -100,13 +100,13 @@ public class HeightMap {
 
 	public static HeightMap getHeightMap(String worldName, File file) {
 		if (lastMap != null && lastMap.getWorldName().equals(worldName)) {
-//			lastMap.file = file;
+			//lastMap.file = file;
 			return lastMap;
 		}
 		HeightMap ret = null;
 		if (heightMaps.containsKey(worldName)) {
 			ret = heightMaps.get(worldName);
-//			ret.file = file;
+			//ret.file = file;
 		} else {
 			HeightMap map = new HeightMap(worldName);
 			map.file = file;
@@ -133,13 +133,12 @@ public class HeightMap {
 	 * maxZ:int
 	 * height-map:short[], where map[0] is at minX, minZ and map[last] is at maxX, maxZ
 	 */
-
 	public void load() {
 		synchronized (cache) {
 			clear();
 			try {
 				DataInputStream in = new DataInputStream(new FileInputStream(file));
-				
+
 				int version = 0;
 				if (file.getAbsolutePath().endsWith(".hm2")) {
 					version = in.readInt(); // Read version
@@ -152,7 +151,7 @@ public class HeightMap {
 				String name = builder.toString();
 				if (!name.equals(getWorldName())) {
 					System.out.println("World names do not match: " + name + " [file] != " + getWorldName() + " [game]. Compensating...");
-					//TODO compensate
+					// TODO Compensate
 				}
 				minX = in.readInt();
 				maxX = in.readInt();
@@ -213,7 +212,7 @@ public class HeightMap {
 			int z = chunk.z;
 			cache.put(x, z, chunk);
 			if (!initBounds) {
-				minX = x; 
+				minX = x;
 				maxX = x;
 				minZ = z;
 				maxZ = z;
@@ -230,13 +229,13 @@ public class HeightMap {
 	public void save() {
 		if (!dirty) {
 			return;
-			//Don't need to save when not touched...
+			// Don't need to save when not touched...
 		}
 		synchronized (cache) {
 			try {
 				File progress = new File(file.getAbsoluteFile() + ".inProgress.hm2");
 				DataOutputStream out = new DataOutputStream(new FileOutputStream(progress));
-				out.writeInt(1); // this is the version
+				out.writeInt(1); // This is the version
 
 				String name = getWorldName();
 				out.writeShort(name.length());
@@ -263,7 +262,7 @@ public class HeightMap {
 				}
 				out.close();
 
-				//Make sure that we don't loose older stuff when someone quits.
+				// Make sure that we don't loose older stuff when someone quits.
 				File older = new File(file.getAbsoluteFile() + ".old");
 				file.renameTo(older);
 				progress.renameTo(file);
@@ -300,18 +299,18 @@ public class HeightMap {
 		return oldFormat;
 	}
 
-//	public boolean hasHeight(int x, int z) {
-//		synchronized (cache) {
-//			return cache.containsKey(x, z);
-//		}
-//	}
+	/*public boolean hasHeight(int x, int z) {
+		synchronized (cache) {
+			return cache.containsKey(x, z);
+		}
+	}*/
 
 	public HeightChunk getChunk(int x, int z) {
 		return getChunk(x, z, false);
 	}
 
 	public HeightChunk getChunk(int x, int z, boolean force) {
-		dirty = true; //We don't know what they do with the chunk, so it could be dirtied...
+		dirty = true; // We don't know what they do with the chunk, so it could be dirtied...
 		if (lastChunk != null && lastChunk.x == x && lastChunk.z == z) {
 			return lastChunk;
 		} else {
@@ -361,7 +360,7 @@ public class HeightMap {
 			}
 		}
 	}
-	
+
 	public byte getData(int x, int z) {
 		int cX = (x >> 4);
 		int cZ = (z >> 4);
@@ -437,5 +436,4 @@ public class HeightMap {
 	public boolean isDirty() {
 		return dirty;
 	}
-
 }

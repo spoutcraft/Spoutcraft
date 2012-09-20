@@ -40,5 +40,4 @@ public class ZoomModeButton extends GenericComboBox {
 	public void onSelectionChanged(int i, String text) {
 		MinimapConfig.getInstance().setZoom(i);
 	}
-
 }

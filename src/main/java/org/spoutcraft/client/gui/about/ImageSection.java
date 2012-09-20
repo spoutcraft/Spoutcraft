@@ -49,7 +49,7 @@ public class ImageSection extends Section {
 
 			@Override
 			public void render() {
-				//Don't render ;)
+				// Don't render ;)
 			}
 
 			@Override
@@ -131,7 +131,7 @@ public class ImageSection extends Section {
 			}
 			this.images.add(image);
 
-			//TODO description
+			// TODO Description
 		}
 	}
 }

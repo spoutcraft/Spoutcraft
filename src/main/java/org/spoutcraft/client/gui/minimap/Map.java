@@ -72,7 +72,7 @@ public class Map {
 
 	public int updatedist = 4;
 
-	//Denotes the width or the diameter of a map
+	// Denotes the width or the diameter of a map
 	public static final int ZOOM_3 = 512;
 	public static final int ZOOM_2 = 256;
 	public static final int ZOOM_1 = 128;
@@ -80,7 +80,7 @@ public class Map {
 
 	public int renderSize = 256;
 
-	public int renderOff = 128; //used instead of dividing renderSize by two
+	public int renderOff = 128; // Used instead of dividing renderSize by two
 
 	/**
 	 * Map image to which the map is rendered to.
@@ -120,11 +120,11 @@ public class Map {
 	}
 
 	public final int toImageX(int worldz) {
-		return worldz; //return wrapIndex((int) (( -(worldz - playerZ)) + originOffsetX), imageSize);
+		return worldz; // return wrapIndex((int) (( -(worldz - playerZ)) + originOffsetX), imageSize);
 	}
 
 	public final int toImageY(int worldx) {
-		return worldx;//return wrapIndex( (int) ((worldx - playerX) + originOffsetY), imageSize);
+		return worldx; // return wrapIndex( (int) ((worldx - playerX) + originOffsetY), imageSize);
 	}
 
 	public void setColorPixel(int worldx, int worldz, int color24) {

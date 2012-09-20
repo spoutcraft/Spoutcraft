@@ -26,14 +26,14 @@ import java.util.Map.Entry;
 
 import net.minecraft.src.Entity;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 	GuiMinimapMenu parent = null;
@@ -100,7 +100,7 @@ public class GuiAdvancedEntitySettings extends GuiSpoutScreen {
 				top += 22;
 			}
 		}
-		scroll.updateInnerSize(); 
+		scroll.updateInnerSize();
 
 		buttonDone.setGeometry(width / 2 + 5, height - 25, 150, 20);
 	}

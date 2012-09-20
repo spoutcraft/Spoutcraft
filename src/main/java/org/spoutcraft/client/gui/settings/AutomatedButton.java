@@ -19,8 +19,8 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class AutomatedButton extends GenericButton {
 	public AutomatedButton() {

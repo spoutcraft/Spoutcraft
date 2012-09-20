@@ -21,9 +21,9 @@ package org.spoutcraft.client.entity;
 
 import net.minecraft.src.EntityMinecart;
 
-import org.spoutcraft.client.inventory.CraftInventory;
 import org.spoutcraft.api.entity.StorageMinecart;
 import org.spoutcraft.api.inventory.Inventory;
+import org.spoutcraft.client.inventory.CraftInventory;
 
 public class CraftStorageMinecart extends CraftMinecart implements StorageMinecart {
 	private CraftInventory inventory;

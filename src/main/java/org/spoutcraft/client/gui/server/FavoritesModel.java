@@ -30,10 +30,10 @@ import java.util.HashMap;
 
 import org.yaml.snakeyaml.Yaml;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.api.gui.AbstractListModel;
 import org.spoutcraft.api.gui.ListWidgetItem;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.FileUtil;
 
 public class FavoritesModel extends ServerModel {
 	public FavoritesModel() {
@@ -59,16 +59,21 @@ public class FavoritesModel extends ServerModel {
 						int port = ServerItem.DEFAULT_PORT;
 						int databaseId = -1;
 						Boolean acceptsTextures = null;
-						if (item.containsKey("title"))
+						if (item.containsKey("title")) {
 							title = (String) item.get("title");
-						if (item.containsKey("ip"))
+						}
+						if (item.containsKey("ip")) {
 							ip = (String) item.get("ip");
-						if (item.containsKey("port"))
+						}
+						if (item.containsKey("port")) {
 							port = (Integer) item.get("port");
-						if (item.containsKey("databaseid"))
+						}
+						if (item.containsKey("databaseid")) {
 							databaseId = (Integer) item.get("databaseid");
-						if (item.containsKey("acceptsTextures"))
+						}
+						if (item.containsKey("acceptsTextures")) {
 							acceptsTextures = (Boolean) item.get("acceptsTextures");
+						}
 						addServer(title, ip, port, databaseId, acceptsTextures);
 					}
 				} catch (FileNotFoundException e) {
@@ -78,15 +83,17 @@ public class FavoritesModel extends ServerModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (wasSandboxed)
+			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
+			}
 		}
 	}
 
 	private void importLegacyTXT() {
 		boolean wasSandboxed = SpoutClient.isSandboxed();
-		if (wasSandboxed)
+		if (wasSandboxed) {
 			SpoutClient.disableSandbox();
+		}
 		File favorites = new File(FileUtil.getCacheDir(), "favorites.txt");
 		if (favorites.exists()) {
 			FileReader reader;
@@ -96,8 +103,9 @@ public class FavoritesModel extends ServerModel {
 				BufferedReader buffer = new BufferedReader(reader);
 				while (true) {
 					String line = buffer.readLine();
-					if (line == null)
+					if (line == null) {
 						break;
+					}
 					String args[] = line.split(">");
 					if (args.length == 2) {
 						String title = args[0];
@@ -124,7 +132,7 @@ public class FavoritesModel extends ServerModel {
 				e.printStackTrace();
 			}
 
-			// favorites.delete(); TODO: Check if that is working first...
+			//favorites.delete(); // TODO Check if that is working first...
 		}
 		if (wasSandboxed) {
 			SpoutClient.enableSandbox();
@@ -152,11 +160,13 @@ public class FavoritesModel extends ServerModel {
 		}
 		try {
 			boolean wasSandboxed = SpoutClient.isSandboxed();
-			if (wasSandboxed)
+			if (wasSandboxed) {
 				SpoutClient.disableSandbox();
+			}
 			yaml.dump(list, new FileWriter(getFile()));
-			if (wasSandboxed)
+			if (wasSandboxed) {
 				SpoutClient.enableSandbox();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

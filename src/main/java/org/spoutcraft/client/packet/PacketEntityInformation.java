@@ -32,10 +32,10 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.WorldClient;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.entity.Entity;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketEntityInformation implements CompressablePacket {
 	private boolean compressed = false;

@@ -30,11 +30,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.pclewis.mcpatcher.mod.Shaders;
+
 import net.minecraft.src.Entity;
 
 import org.bukkit.util.config.Configuration;
 import org.bukkit.util.config.ConfigurationNode;
-import com.pclewis.mcpatcher.mod.Shaders;
+
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.FileUtil;
 

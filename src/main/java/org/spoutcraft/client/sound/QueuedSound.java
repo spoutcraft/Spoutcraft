@@ -50,7 +50,7 @@ public class QueuedSound implements Runnable {
 	private boolean play() {
 		if (song.exists()) {
 			if (notify) {
-				SpoutClient.getInstance().getActivePlayer().showAchievement("Download Complete!", song.getName(), 2256 /*Gold Record*/);
+				SpoutClient.getInstance().getActivePlayer().showAchievement("Download Complete!", song.getName(), 2256); // Gold Record
 			}
 			SoundManager sndManager = SpoutClient.getHandle().sndManager;
 			if (!sndManager.hasSoundEffect(song.getName().toString(), 0) && soundEffect) {

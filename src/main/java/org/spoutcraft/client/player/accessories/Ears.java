@@ -24,14 +24,12 @@ import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 
 public class Ears extends Accessory {
-
 	public ModelRenderer bipedEars2;
 
 	public Ears(ModelBiped mb) {
 		super(mb);
 		bipedEars2 = new ModelRenderer(mb, 0, 0);
 		bipedEars2.addBox(-3F, -6F, -1F, 6, 6, 1);
-
 	}
 
 	@Override

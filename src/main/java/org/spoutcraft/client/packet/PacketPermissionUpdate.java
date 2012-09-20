@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketPermissionUpdate implements SpoutPacket {
 private Map<String, Boolean> permissions;
@@ -77,5 +77,4 @@ private Map<String, Boolean> permissions;
 
 	@Override
 	public void failure(int playerId) {}
-
 }

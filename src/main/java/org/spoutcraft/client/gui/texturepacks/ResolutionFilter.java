@@ -22,9 +22,9 @@ package org.spoutcraft.client.gui.texturepacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.spoutcraft.api.gui.GenericComboBox;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.database.UrlElement;
-import org.spoutcraft.api.gui.GenericComboBox;
 
 public class ResolutionFilter extends GenericComboBox implements UrlElement {
 	TexturePacksDatabaseModel model = SpoutClient.getInstance().getTexturePacksDatabaseModel();

@@ -42,12 +42,12 @@ public class VanillaBindingItem extends ControlsBasicItem {
 
 	public void render(int x, int y, int width, int height) {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
-		font.drawStringWithShadow("V", x+2, y+2, 0xffffff00);
+		font.drawStringWithShadow("V", x + 2, y + 2, 0xffffff00);
 		int w = font.getStringWidth("V");
-		font.drawStringWithShadow(getName(), x+w+4, y+2, !isConflicting()?0xffffffff:0xffff0000);
-		String keyString = parent.getEditingItem() == this?"> <" : getDisplayKey();;
+		font.drawStringWithShadow(getName(), x + w + 4, y + 2, !isConflicting() ? 0xffffffff:0xffff0000);
+		String keyString = parent.getEditingItem() == this ? "> <" : getDisplayKey();;
 		w = font.getStringWidth(keyString);
-		font.drawStringWithShadow(keyString, width - w, y+2, 0xffcccccc);
+		font.drawStringWithShadow(keyString, width - w, y + 2, 0xffcccccc);
 	}
 
 	public String getDisplayKey() {
@@ -97,7 +97,7 @@ public class VanillaBindingItem extends ControlsBasicItem {
 				binding == settings.keyBindRight ||
 				binding == settings.keyBindJump ||
 				binding == settings.keyBindSneak;
-			//Allow overlaps
+			// Allow overlaps
 			if (flightKey && movementKey) {
 				return false;
 			}

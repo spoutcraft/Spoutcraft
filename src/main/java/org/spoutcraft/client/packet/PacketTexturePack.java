@@ -24,13 +24,13 @@ import java.io.File;
 
 import net.minecraft.src.RenderEngine;
 
+import org.spoutcraft.api.io.SpoutInputStream;
+import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.io.Download;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.texture.TexturePackAction;
-import org.spoutcraft.api.io.SpoutInputStream;
-import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketTexturePack implements SpoutPacket {
 	private static byte[] downloadBuffer = new byte[16384];

@@ -22,7 +22,7 @@ package org.spoutcraft.api.util;
 public interface Vector extends FixedVector {
 	/**
 	 * Set the X component.
-	 * 
+	 *
 	 * @param x
 	 * @return this vector
 	 */
@@ -30,7 +30,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Set the Y component.
-	 * 
+	 *
 	 * @param y
 	 * @return this vector
 	 */
@@ -38,7 +38,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Set the Z component.
-	 * 
+	 *
 	 * @param z
 	 * @return this vector
 	 */
@@ -46,7 +46,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Adds the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -54,7 +54,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Subtracts the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -62,7 +62,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Multiplies the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -70,7 +70,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Divides the vector by another.
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -78,7 +78,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Copies another vector
-	 * 
+	 *
 	 * @param vec
 	 * @return the same vector
 	 */
@@ -86,7 +86,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Sets this vector to the midpoint between this vector and another.
-	 * 
+	 *
 	 * @param other
 	 * @return this same vector (now a midpoint)
 	 */
@@ -94,7 +94,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Gets a new midpoint vector between this vector and another.
-	 * 
+	 *
 	 * @param other
 	 * @return a new midpoint vector
 	 */
@@ -102,7 +102,7 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Performs scalar multiplication, multiplying all components with a scalar.
-	 * 
+	 *
 	 * @param m
 	 * @return the same vector
 	 */
@@ -110,11 +110,11 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Calculates the cross product of this vector with another. The cross product is defined as:
-	 * 
+	 *
 	 * x = y1 * z2 - y2 * z1<br/>
 	 * y = z1 * x2 - z2 * x1<br/>
 	 * z = x1 * y2 - x2 * y1
-	 * 
+	 *
 	 * @param o
 	 * @return the same vector
 	 */
@@ -122,14 +122,14 @@ public interface Vector extends FixedVector {
 
 	/**
 	 * Converts this vector to a unit vector (a vector with length of 1).
-	 * 
+	 *
 	 * @return the same vector
 	 */
 	public Vector normalize();
 
 	/**
 	 * Zero this vector's components.
-	 * 
+	 *
 	 * @return the same vector
 	 */
 	public Vector zero();

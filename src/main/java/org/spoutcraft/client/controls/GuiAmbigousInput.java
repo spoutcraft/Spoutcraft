@@ -27,8 +27,6 @@ import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Item;
 
 import org.spoutcraft.api.ChatColor;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.ScreenUtil;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
@@ -39,6 +37,8 @@ import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.RenderUtil;
 import org.spoutcraft.api.keyboard.AbstractBinding;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.ScreenUtil;
 
 public class GuiAmbigousInput extends GuiSpoutScreen {
 	private Label title;

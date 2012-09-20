@@ -99,11 +99,11 @@ public class ChatTextBox extends GenericWidget implements Widget {
 					continue;
 				}
 				double opacity = 1D;
-	
+
 				if (message.getAge() > getFadeoutTicks() - 20) {
 					opacity = 1D - ((double) message.getAge() - (double) getFadeoutTicks()) / 20d;
 				}
-	
+
 				if (opacity > 1.0d) {
 					opacity = 1.0d;
 				}

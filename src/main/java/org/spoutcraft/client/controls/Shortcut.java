@@ -28,8 +28,8 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.Packet3Chat;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.keyboard.AbstractBinding;
+import org.spoutcraft.client.SpoutClient;
 
 public class Shortcut extends AbstractBinding implements Serializable {
 	private static final long serialVersionUID = 4365592803468257957L;
@@ -68,11 +68,11 @@ public class Shortcut extends AbstractBinding implements Serializable {
 	public void setCommands(ArrayList<String> commands) {
 		this.commands = commands;
 	}
-	
+
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}
-	
+
 	public int getDelay() {
 		return delay;
 	}
@@ -95,7 +95,7 @@ public class Shortcut extends AbstractBinding implements Serializable {
 	public void summon(int key, final boolean keyReleased, final int screen) {
 		new Thread() {
 			public void run() {
-				if (keyReleased && screen == 0) { 
+				if (keyReleased && screen == 0) {
 					for (String cmd:getCommands()) {
 						if (SpoutClient.getHandle().isMultiplayerWorld()) {
 							EntityClientPlayerMP player = (EntityClientPlayerMP)SpoutClient.getHandle().thePlayer;

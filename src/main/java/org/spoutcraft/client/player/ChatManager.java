@@ -33,10 +33,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.yaml.snakeyaml.Yaml;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.yaml.snakeyaml.Yaml;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.ChatAllowedCharacters;
@@ -47,12 +46,12 @@ import net.minecraft.src.GuiPlayerInfo;
 
 import org.bukkit.ChatColor;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
-import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.gui.ChatTextBox;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.io.FileUtil;
 
 public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	public int commandScroll = 0;
@@ -72,7 +71,7 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 			int cursor = chat.cursorPosition;
 
 			if (message.length() > 99 && message.startsWith("/")) {
-				return false; //block long commands
+				return false; // Block long commands
 			}
 
 			if (ChatAllowedCharacters.allowedCharacters.indexOf(character) > -1 || character > 32) {
@@ -158,11 +157,11 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 				cursor += tabHelp.length() + 1;
 				updateMessage(message, chat);
 				updateCursor(cursor, chat);
-			} else { //Not handled
+			} else { // Not handled
 				return false;
 			}
 
-			//Handled
+			// Handled
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -285,11 +284,11 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 				lastWord = lastWord.substring(0, lastWord.length() - 1);
 			}
 			if (lastWord.length() > 2) {
-				//Check nearby players
+				// Check nearby players
 				Player p = SpoutClient.getInstance().getPlayer(lastWord);
 				String playerName = p != null ? p.getName() : null;
 
-				//Check server player list
+				// Check server player list
 				if (playerName == null && SpoutClient.getHandle().isMultiplayerWorld()) {
 					int delta = Integer.MAX_VALUE;
 					String best = null;
@@ -313,7 +312,7 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 					}
 				}
 
-				//Autocomplete
+				// Autocomplete
 				if (playerName != null && playerName.length() > lastWord.length()) {
 					message = message.substring(0, message.length() - 1) + "|" + ChatColor.YELLOW + playerName.substring(lastWord.length()) + ChatColor.RESET;
 					tabHelp = playerName.substring(lastWord.length());
@@ -379,7 +378,7 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	}
 
 	public static String formatUrl(String message) {
-		//TODO make this work w/o whiting out all the text that follows...
+		// TODO Make this work without writing out all the text that follows...
 		/*
 		int start = -1;
 		if (start == -1) {

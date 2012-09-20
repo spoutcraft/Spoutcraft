@@ -136,7 +136,7 @@ public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 			if (item == null) {
 				active = false;
 			} else {
-				//TODO special value-based handling perhaps?
+				// TODO special value-based handling perhaps?
 			}
 		} catch(ClassCastException e1) {
 			active = false;

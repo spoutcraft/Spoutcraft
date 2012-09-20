@@ -48,7 +48,7 @@ public final class SimpleCommandMap implements CommandMap {
 	private void setDefaultCommands(final Client client) {
 		register("bukkit", new VersionCommand("version", client));
 		register("bukkit", new ReloadCommand("reload", client));
-		register("bukkit", new AddonsCommand("plugins", client));
+		register("bukkit", new AddonsCommand("addons", client));
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class SimpleCommandMap implements CommandMap {
 			throw new CommandException("Unhandled exception executing '" + commandLine + "' in " + target, ex);
 		}
 
-		// return true as command was handled
+		// Return true as command was handled
 		return true;
 	}
 
@@ -175,16 +175,16 @@ public final class SimpleCommandMap implements CommandMap {
 		public VersionCommand(String name, Client client) {
 			super(name);
 			this.client = client;
-			this.description = "Gets the version of this spoutcraft including any plugins in use";
-			this.usageMessage = "/version [plugin name]";
+			this.description = "Gets the version of Spoutcraft including any plugins in use";
+			this.usageMessage = "/version [addon name]";
 			this.setAliases(Arrays.asList("ver", "about"));
 		}
 
 		@Override
 		public boolean execute(CommandSender sender, String currentAlias, String[] args) {
 			if (args.length == 0) {
-				sender.sendMessage("This spoutcraft is running " + ChatColor.GREEN + client.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + client.getVersion());
-				sender.sendMessage("This spoutcraft is also sporting some funky dev build of Bukkit!");
+				sender.sendMessage("Spoutcraft is running " + ChatColor.GREEN + client.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + client.getVersion());
+				sender.sendMessage("Spoutcraft is also sporting some funky dev build of Bukkit!");
 			} else {
 				StringBuilder name = new StringBuilder();
 
@@ -218,8 +218,8 @@ public final class SimpleCommandMap implements CommandMap {
 						}
 					}
 				} else {
-					sender.sendMessage("This spoutcraft is not running any plugin by that name.");
-					sender.sendMessage("Use /plugins to get a list of plugins.");
+					sender.sendMessage("Spoutcraft is not running any addon by that name.");
+					sender.sendMessage("Use /addons to get a list of addons.");
 				}
 			}
 
@@ -256,17 +256,18 @@ public final class SimpleCommandMap implements CommandMap {
 		public ReloadCommand(String name, Client client) {
 			super(name);
 			this.client = client;
-			this.description = "Reloads the spoutcraft configuration and plugins";
+			this.description = "Reloads Spoutcraft configuration and addons";
 			this.usageMessage = "/reload";
 			this.setAliases(Arrays.asList("rl"));
 		}
 
 		@Override
 		public boolean execute(CommandSender sender, String currentAlias, String[] args) {
-
-			/*
-			 * if (sender.isOp()) { spoutcraft.reload(); sender.sendMessage(ChatColor.GREEN + "Reload complete."); } else { sender.sendMessage(ChatColor.RED + "You do not have sufficient access to reload this spoutcraft."); }
-			 */
+			/*if (sender.isOp()) {
+					spoutcraft.reload(); sender.sendMessage(ChatColor.GREEN + "Reload complete.");
+				} else {
+					sender.sendMessage(ChatColor.RED + "You do not have sufficient access to reload Spoutcraft.");
+			}*/
 			return true;
 		}
 	}
@@ -277,8 +278,8 @@ public final class SimpleCommandMap implements CommandMap {
 		public AddonsCommand(String name, Client client) {
 			super(name);
 			this.client = client;
-			this.description = "Gets a list of plugins running on the spoutcraft";
-			this.usageMessage = "/plugins";
+			this.description = "Gets a list of addons running on Spoutcraft";
+			this.usageMessage = "/addons";
 			this.setAliases(Arrays.asList("pl"));
 		}
 

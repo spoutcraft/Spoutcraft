@@ -23,8 +23,6 @@ import org.lwjgl.input.Mouse;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
@@ -36,6 +34,8 @@ import org.spoutcraft.api.gui.GenericSlider;
 import org.spoutcraft.api.gui.Gradient;
 import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.api.gui.Slider;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiMoveMinimap extends GuiSpoutScreen {
 	private Label title;
@@ -140,7 +140,4 @@ public class GuiMoveMinimap extends GuiSpoutScreen {
 			sliderScale.setSliderPosition(1f / 4f);
 		}
 	}
-
-
-
 }

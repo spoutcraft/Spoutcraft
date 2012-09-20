@@ -21,9 +21,9 @@ package org.spoutcraft.client;
 
 import java.util.Comparator;
 
-import org.spoutcraft.api.material.MaterialData;
-
 import net.minecraft.src.ItemStack;
+
+import org.spoutcraft.api.material.MaterialData;
 
 public class MCItemStackComparator implements Comparator {
 	final boolean byName;

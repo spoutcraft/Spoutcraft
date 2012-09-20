@@ -40,21 +40,21 @@
 
 	<!-- Source code access -->
 	<scm>
-		<developerConnection>scm:git:git@github.com:spoutdev/spoutcraft.git</developerConnection>
-		<connection>scm:git:git://github.com/spoutdev/spoutcraft.git</connection>
-		<url>https://github.com/spoutdev/spoutcraft</url>
+		<developerConnection>scm:git:git@github.com:SpoutDev/Spoutcraft.git</developerConnection>
+		<connection>scm:git:git://github.com/SpoutDev/Spoutcraft.git</connection>
+		<url>https://github.com/SpoutDev/Spoutcraft</url>
 	</scm>
 
 	<!-- Build server -->
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://build.spout.org/job/spoutcraft</url>
+		<url>http://build.spout.org/job/Spoutcraft</url>
 	</ciManagement>
 
 	<!-- Issue tracker -->
 	<issueManagement>
 		<system>jira</system>
-		<url>http://issues.spout.org/browse/spoutcraft</url>
+		<url>http://issues.spout.org/browse/Spoutcraft</url>
 	</issueManagement>
 
 	<!-- Dependency repositories -->
@@ -93,7 +93,7 @@
 
 	<!-- Build settings -->
 	<build>
-		<defaultGoal>clean package</defaultGoal>
+		<defaultGoal>clean install</defaultGoal>
 
 		<!-- Resources -->
 		<resources>
@@ -208,6 +208,18 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
+											<groupId>de.cuina.fireandfuel</groupId>
+											<artifactId>codecjlayermp3</artifactId>
+											<version>r2</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
+											<groupId>cc.thedudeguy</groupId>
+											<artifactId>codecjorbis</artifactId>
+											<version>r0</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>commons-io</groupId>
 											<artifactId>commons-io</artifactId>
 											<version>2.4</version>
@@ -232,6 +244,12 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
+											<groupId>javax.jmdns</groupId>
+											<artifactId>jmdns</artifactId>
+											<version>3.4.1</version>
+											<stripVersion>true</stripVersion>
+										</dependency>
+										<dependency>
 											<groupId>org.spout</groupId>
 											<artifactId>slick</artifactId>
 											<version>0.4-SNAPSHOT</version>
@@ -247,24 +265,6 @@
 											<groupId>net.sf.trove4j</groupId>
 											<artifactId>trove4j</artifactId>
 											<version>3.0.3</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>javax.jmdns</groupId>
-											<artifactId>jmdns</artifactId>
-											<version>3.4.1</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>de.cuina.fireandfuel</groupId>
-											<artifactId>codecjlayermp3</artifactId>
-											<version>r2</version>
-											<stripVersion>true</stripVersion>
-										</dependency>
-										<dependency>
-											<groupId>cc.thedudeguy</groupId>
-											<artifactId>codecjorbis</artifactId>
-											<version>r0</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 									</dependencies>
@@ -623,41 +623,6 @@
 						<exclude>**/*</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-			<!-- JAR dependency addition plugin -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.7.1</version>
-				<executions>
-					<execution>
-						<configuration>
-							<filters>
-								<filter>
-									<artifact>org.spoutcraft:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.txt</exclude>
-									</excludes>
-								</filter>
-							</filters>
-							<artifactSet>
-								<includes>
-									<include>org.spoutcraft:*</include>
-								</includes>
-							</artifactSet>
-						</configuration>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 

@@ -39,6 +39,7 @@ import net.minecraft.src.GuiStats;
 import net.minecraft.src.GuiWinGame;
 import net.minecraft.src.StatFileWriter;
 
+import org.spoutcraft.api.gui.*;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.controls.GuiAmbigousInput;
 import org.spoutcraft.client.gui.chat.GuiChatSettings;
@@ -51,62 +52,60 @@ import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
 import org.spoutcraft.client.gui.minimap.GuiMoveMinimap;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.gui.settings.GameSettingsScreen;
-import org.spoutcraft.api.gui.*;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {
 		GuiScreen toOpen = null;
 		StatFileWriter statfile = SpoutClient.getHandle().statFileWriter;
-		switch(type)
-		{
-		case CHAT_SCREEN:
-			toOpen = new GuiChat();
-			break;
-		case SLEEP_SCREEN:
-			toOpen = new GuiSleepMP();
-			break;
-		case PLAYER_INVENTORY:
-			toOpen = new GuiInventory(SpoutClient.getHandle().thePlayer);
-			break;
-		case INGAME_MENU:
-			toOpen = new GuiIngameMenu();
-			break;
-		case OPTIONS_MENU:
-			toOpen = new GameSettingsScreen(new GuiIngameMenu());
-			break;
-		case VIDEO_SETTINGS_MENU:
-			toOpen = new GameSettingsScreen(new GuiIngameMenu());
-			break;
-		case CONTROLS_MENU:
-			toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
-			break;
-		case ACHIEVEMENTS_SCREEN:
-			toOpen = new GuiAchievements(statfile);
-			break;
-		case STATISTICS_SCREEN:
-			toOpen = new GuiStats(new GuiIngameMenu(), statfile);
-			break;
-		case GAME_OVER_SCREEN:
-			toOpen = new GuiGameOver();
-			break;
-		case CHANGE_LANGUAGE:
-			toOpen = new GuiLanguage(new GameSettingsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
-			break;
-		case MINIMAP_SETTINGS:
-			toOpen = new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu()));
-			break;
-		case CHAT_SETTINGS:
-			toOpen = new GuiChatSettings(new GameSettingsScreen(new GuiIngameMenu()));
-			break;
-		case MOVE_MINIMAP:
-			toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu())));
-			break;
-		case OVERVIEW_MAP:
-			toOpen = new GuiOverviewMap();
-			break;
-		case WIN_GAME:
-			toOpen = new GuiWinGame();
-			break;
+		switch(type) {
+			case CHAT_SCREEN:
+				toOpen = new GuiChat();
+				break;
+			case SLEEP_SCREEN:
+				toOpen = new GuiSleepMP();
+				break;
+			case PLAYER_INVENTORY:
+				toOpen = new GuiInventory(SpoutClient.getHandle().thePlayer);
+				break;
+			case INGAME_MENU:
+				toOpen = new GuiIngameMenu();
+				break;
+			case OPTIONS_MENU:
+				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				break;
+			case VIDEO_SETTINGS_MENU:
+				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				break;
+			case CONTROLS_MENU:
+				toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
+				break;
+			case ACHIEVEMENTS_SCREEN:
+				toOpen = new GuiAchievements(statfile);
+				break;
+			case STATISTICS_SCREEN:
+				toOpen = new GuiStats(new GuiIngameMenu(), statfile);
+				break;
+			case GAME_OVER_SCREEN:
+				toOpen = new GuiGameOver();
+				break;
+			case CHANGE_LANGUAGE:
+				toOpen = new GuiLanguage(new GameSettingsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
+				break;
+			case MINIMAP_SETTINGS:
+				toOpen = new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu()));
+				break;
+			case CHAT_SETTINGS:
+				toOpen = new GuiChatSettings(new GameSettingsScreen(new GuiIngameMenu()));
+				break;
+			case MOVE_MINIMAP:
+				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu())));
+				break;
+			case OVERVIEW_MAP:
+				toOpen = new GuiOverviewMap();
+				break;
+			case WIN_GAME:
+				toOpen = new GuiWinGame();
+				break;
 		}
 		SpoutClient.getHandle().displayGuiScreen(toOpen);
 	}

@@ -74,7 +74,7 @@ public class PasswordTextProcessor implements TextProcessor {
 	}
 
 	public void setMaximumLines(int max) {
-		// ignore (can only be 1)
+		// Ignore (can only be 1)
 	}
 
 	public String getText() {

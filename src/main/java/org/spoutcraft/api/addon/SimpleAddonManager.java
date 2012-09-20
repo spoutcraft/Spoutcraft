@@ -332,7 +332,6 @@ public class SimpleAddonManager implements AddonManager {
 	 *
 	 * @param <TEvent> Event subclass
 	 * @param event Event to handle
-	 * @author lahwran
 	 */
 	public <TEvent extends Event<TEvent>> void callEvent(TEvent event) {
 		HandlerList<TEvent> handlerlist = event.getHandlers();

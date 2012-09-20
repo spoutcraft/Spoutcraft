@@ -19,9 +19,9 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class FlightSpeedSlider extends GenericSlider {
 	public FlightSpeedSlider() {

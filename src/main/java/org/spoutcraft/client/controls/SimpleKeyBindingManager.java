@@ -38,16 +38,16 @@ import net.minecraft.src.Block;
 import net.minecraft.src.BlockWorkbench;
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.controls.GuiControls;
-import org.spoutcraft.client.io.FileUtil;
-import org.spoutcraft.client.packet.PacketKeyBinding;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.keyboard.AbstractBinding;
 import org.spoutcraft.api.keyboard.KeyBinding;
 import org.spoutcraft.api.keyboard.KeyBindingManager;
 import org.spoutcraft.api.keyboard.KeyBindingPress;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.controls.GuiControls;
+import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.packet.PacketKeyBinding;
 
 public class SimpleKeyBindingManager implements KeyBindingManager {
 	private ArrayList<KeyBinding> bindings;
@@ -137,9 +137,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			SpoutClient.disableSandbox();
 		}
 		Yaml yaml = new Yaml();
-		yaml.setBeanAccess(BeanAccess.FIELD); // to ignore transient fields!!
+		yaml.setBeanAccess(BeanAccess.FIELD); // To ignore transient fields
 		try {
-			//KeyBindings saving
+			// KeyBindings saving
 			FileWriter writer = new FileWriter(getBindingsFile());
 			ArrayList<Object> kbsave = new ArrayList<Object>();
 			for (KeyBinding binding:bindings) {
@@ -153,7 +153,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 			}
 			yaml.dump(kbsave, writer);
 
-			//Shortcuts saving
+			// Shortcuts saving
 			writer = new FileWriter(getShortcutsFile());
 			ArrayList<Object> shsave = new ArrayList<Object>();
 			for (Shortcut sh:shortcuts) {
@@ -218,7 +218,7 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 				} else if (item.containsKey("plugin")) {
 					addonName = (String) item.get("plugin");
 				} else {
-					continue; //Invalid item
+					continue; // Invalid item
 				}
 				KeyBinding binding = new KeyBinding(key, addonName, id, description);
 				binding.setRawModifiers(modifiers);
@@ -338,9 +338,9 @@ public class SimpleKeyBindingManager implements KeyBindingManager {
 	}
 
 	public void summon(KeyBinding binding, int key, boolean keyReleased, int screen) {
-		if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { //Server side
+		if (binding.getDelegate() == null &&  binding.getUniqueId() != null) { // Server-side
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyBinding(binding, key, !keyReleased, screen));
-		} else if (binding.getDelegate() != null) { //Client side
+		} else if (binding.getDelegate() != null) { // Client-side
 			KeyBindingPress event = new KeyBindingPress(org.spoutcraft.api.gui.Keyboard.getKey(key), binding, ScreenType.getType(screen));
 			if (!keyReleased) {
 				binding.getDelegate().onKeyPress(event);

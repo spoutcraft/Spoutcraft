@@ -24,10 +24,10 @@ import java.io.IOException;
 import net.minecraft.src.*;
 import net.minecraft.client.Minecraft;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.api.player.RenderDistance;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketRenderDistance implements SpoutPacket {
 	protected byte view = -1;

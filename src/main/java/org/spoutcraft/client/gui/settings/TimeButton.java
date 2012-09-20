@@ -19,10 +19,10 @@
  */
 package org.spoutcraft.client.gui.settings;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.config.ConfigReader;
 
 public class TimeButton extends GenericButton {
 	public TimeButton() {

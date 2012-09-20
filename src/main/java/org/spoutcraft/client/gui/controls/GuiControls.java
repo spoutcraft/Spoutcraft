@@ -21,14 +21,6 @@ package org.spoutcraft.client.gui.controls;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.controls.Shortcut;
-import org.spoutcraft.client.controls.SimpleKeyBindingManager;
-import org.spoutcraft.client.gui.ButtonUpdater;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.controls.ControlsBasicItem;
-import org.spoutcraft.client.gui.controls.KeyBindingItem;
-import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
 import org.spoutcraft.api.ChatColor;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
@@ -42,6 +34,14 @@ import org.spoutcraft.api.gui.Keyboard;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.ScrollArea;
 import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.controls.Shortcut;
+import org.spoutcraft.client.controls.SimpleKeyBindingManager;
+import org.spoutcraft.client.gui.ButtonUpdater;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.controls.ControlsBasicItem;
+import org.spoutcraft.client.gui.controls.KeyBindingItem;
+import org.spoutcraft.client.gui.controls.ShortcutBindingItem;
 
 public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 	private GenericLabel labelTitle, labelDescription;
@@ -81,7 +81,7 @@ public class GuiControls extends GuiSpoutScreen implements ButtonUpdater {
 		view = new GenericListView(model);
 		model.setCurrentGui(this);
 
-		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR + "Vanilla Bindings");
+		checkVanilla = new ControlsCheckBox(this, VANILLA_COLOR + "Minecraft Bindings");
 		checkSpoutcraft = new ControlsCheckBox(this, SPOUTCRAFT_COLOR + "Spoutcraft Bindings");
 		checkShortcuts = new ControlsCheckBox(this, SHORTCUTS_COLOR + "Shortcuts");
 		checkBindings = new ControlsCheckBox(this, BINDINGS_COLOR + "Bindings");
