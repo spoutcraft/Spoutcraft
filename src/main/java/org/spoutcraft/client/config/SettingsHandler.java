@@ -198,7 +198,7 @@ public class SettingsHandler {
 				}
 				result.put(args[0], args[1]);
 			}
-
+			br.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -406,6 +406,7 @@ public class SettingsHandler {
 				result.put(i, line);
 				i ++;
 			}
+			br.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

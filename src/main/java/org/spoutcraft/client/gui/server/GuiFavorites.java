@@ -39,7 +39,6 @@ import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.WidgetAnchor;
 
 public class GuiFavorites extends GuiScreen {
-	@SuppressWarnings("unused")
 	private GuiScreen parent;
 
 	// GUI stuff

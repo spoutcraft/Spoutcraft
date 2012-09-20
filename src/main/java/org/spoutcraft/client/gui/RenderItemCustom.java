@@ -22,7 +22,6 @@ package org.spoutcraft.client.gui;
 import net.minecraft.src.*;
 
 public class RenderItemCustom extends RenderItem {
-	@SuppressWarnings("unused")
 	private double width, height, depth;
 
 	public RenderItemCustom() {

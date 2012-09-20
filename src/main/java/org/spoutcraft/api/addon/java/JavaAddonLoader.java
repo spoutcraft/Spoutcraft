@@ -81,6 +81,7 @@ public final class JavaAddonLoader implements AddonLoader {
 			JarEntry entry = jar.getJarEntry("addon.yml");
 
 			if (entry == null) {
+				jar.close();
 				throw new InvalidAddonException(new FileNotFoundException("Jar does not contain addon.yml"));
 			}
 
