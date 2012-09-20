@@ -181,6 +181,8 @@ public class SimpleFileCache {
 					if (hash[i] == needle) {
 						returnArray = array;
 					}
+				} else {
+					System.out.println("Hash in file " + f.getAbsolutePath() + " has hash data mismatch");
 				}
 			}
 		} finally {
@@ -267,8 +269,23 @@ public class SimpleFileCache {
 		if (end > fileHashes.length) {
 			end = fileHashes.length;
 		}
+		
 		long[] nearby = new long[end - start];
-		System.arraycopy(fileHashes, start, nearby, 0, nearby.length);
+
+		int i = index;
+		int j = index + 1;
+		int k = 0;
+		while (i >= start || j < end) {
+			if (i >= start) {
+				nearby[k++] = fileHashes[i--];
+			}
+			if (j < end) {
+				nearby[k++] = fileHashes[j++];
+			}
+		}
+		if (k != nearby.length) {
+			throw new IllegalStateException("File hash array length calculation error");
+		}
 		return nearby;
 	}
 	

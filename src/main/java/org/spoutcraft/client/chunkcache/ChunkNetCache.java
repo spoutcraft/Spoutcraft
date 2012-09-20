@@ -71,6 +71,9 @@ public class ChunkNetCache {
 		}
 		
 		if ((decompressedSize & 0x01) == 0) {
+			int h = 0;
+			int segments = decompressedSize >> 11;
+			updateCacheAttempts(h, segments);
 			return crop(chunkData, decompressedSize);
 		}
 		
@@ -107,26 +110,22 @@ public class ChunkNetCache {
 				if (nearby != null) {
 					for (int j = 0; j < nearby.length; j++) {
 						long nearbyHash = nearby[j];
-						if (!hashes.contains(nearbyHash) && nearbyHash != 0) {
+						if (nearbyHash != 0 && hashes.add(nearbyHash)) {
 							hashQueue.add(nearbyHash);
-							hashes.add(nearbyHash);
 						}
 					}
 				}
-				long[] nearbyHashes = new long[hashQueue.size()];
-				for (int j = 0; j < nearbyHashes.length; j++) {
-					nearbyHashes[j] = hashQueue.get(j);
+				nearby = new long[hashQueue.size()];
+				for (int j = 0; j < nearby.length; j++) {
+					nearby[j] = hashQueue.get(j);
 				}
 				hashQueue.clear();
-				sendHashHints(nearbyHashes);
+				sendHashHints(nearby);
 			}
 		}
 
 		int h = hits.addAndGet(cacheHit);
-		int a = cacheAttempts.addAndGet(segments);
-		if (a != 0) {
-			hitPercentage.set((100 * h) / a);
-		}
+		updateCacheAttempts(h, segments);
 
 		long CRCNew = PartitionChunk.hash(newChunkData);
 
@@ -140,15 +139,24 @@ public class ChunkNetCache {
 		return newChunkData;
 	}
 	
+	private static void updateCacheAttempts(int h, int segments) {
+		int a = cacheAttempts.addAndGet(segments);
+		if (a != 0) {
+			hitPercentage.set((100 * h) / a);
+		}
+	}
+	
 	public static void sendHashHints(long[] array) {
-		byte[] hashes = new byte[array.length << 3];
-		for (int i = 0; i < array.length; i++) {
-			PartitionChunk.setHash(hashes, i, array[i], 0);
+		int s = 0;
+		while (s < array.length) {
+			int hashCount = Math.min(10, array.length - s);
+			byte[] hashes = new byte[hashCount << 3];
+			for (int i = 0; i < hashCount; i++) {
+				PartitionChunk.setHash(hashes, i, array[i + s], 0);
+			}
+			SpoutClient.getInstance().getPacketManager().sendCustomPacket("ChkCache:setHash", hashes);
+			s += 10;
 		}
-		if(hashes.length < 1) {
-			hashes = new byte[1];
-		}
-		SpoutClient.getInstance().getPacketManager().sendCustomPacket("ChkCache:setHash", hashes);
 	}
 	
 	public static byte[] crop(byte[] in, int maxLength) {

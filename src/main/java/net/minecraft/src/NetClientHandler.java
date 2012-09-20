@@ -430,10 +430,7 @@ public class NetClientHandler extends NetHandler {
 	// Spout End
 	public void handleFlying(Packet10Flying par1Packet10Flying) {
 		// Spout Start
-		if (!cachePacketSent) {
-			cachePacketSent = true;
-			this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
-		}
+		sendCacheSetupPacket();
 		// Spout End
 		EntityClientPlayerMP var2 = this.mc.thePlayer;
 		double var3 = var2.posX;
@@ -731,9 +728,21 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleSpawnPosition(Packet6SpawnPosition par1Packet6SpawnPosition) {
+		// Spout Start
+		sendCacheSetupPacket();
+		// Spout End
 		this.mc.thePlayer.setSpawnChunk(new ChunkCoordinates(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition));
 		this.mc.theWorld.getWorldInfo().setSpawnPosition(par1Packet6SpawnPosition.xPosition, par1Packet6SpawnPosition.yPosition, par1Packet6SpawnPosition.zPosition);
 	}
+	
+	// Spout Start
+	private void sendCacheSetupPacket() {
+		if (!cachePacketSent) {
+			cachePacketSent = true;
+			this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
+		}
+	}
+	// Spout End
 
 	/**
 	 * Packet handler
