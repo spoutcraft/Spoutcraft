@@ -145,7 +145,6 @@ public class SimpleFileCache {
 					try {
 						din.close();
 					} catch (IOException ioe) {
-						throw new RuntimeException(ioe);
 					}
 				}
 			}
@@ -199,7 +198,6 @@ public class SimpleFileCache {
 				try {
 					din.close();
 				} catch (IOException ioe) {
-					throw new RuntimeException(ioe);
 				}
 			}
 		}
@@ -427,7 +425,6 @@ public class SimpleFileCache {
 					try {
 						dos.close();
 					} catch (IOException ioe) {
-						throw new RuntimeException(ioe);
 					}
 				}
 			}
