@@ -234,6 +234,12 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			if (this.displayHeight <= 0) {
 				this.displayHeight = 1;
 			}
+			//Spout start
+			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
+			Display.setFullscreen(this.fullscreen);
+			Display.setVSyncEnabled(this.gameSettings.enableVsync);
+			Display.update();
+			//Spout end
 		} else {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
