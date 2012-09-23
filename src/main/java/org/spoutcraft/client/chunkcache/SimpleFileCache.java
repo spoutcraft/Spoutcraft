@@ -34,9 +34,11 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class SimpleFileCache {
-	private static final int VERSION = 1;
+	private static final int VERSION = 2;
 	private static final String PREFIX = "SPC";
 
 	private final File dir;
@@ -78,7 +80,7 @@ public class SimpleFileCache {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {
-				writePending();
+				writePending(true);
 				prune();
 			}
 		}));
@@ -119,8 +121,12 @@ public class SimpleFileCache {
 			DataInputStream din = new DataInputStream(new FileInputStream(f));
 			try {
 				int version = din.readInt();
-				if (version > VERSION) {
-					throw new IOException("File version higher than expected, " + version);
+				if (version < VERSION) {
+					System.out.println("File " + f.getAbsolutePath() + " has out of date version " + version);
+					continue;
+				} else if (version > VERSION){
+					System.out.println("File " + f.getAbsolutePath() + " has unknown version " + version);
+					continue;
 				}
 				int entries = din.readInt();
 				if (entries > (this.entries * 2)) {
@@ -158,8 +164,9 @@ public class SimpleFileCache {
 		DataInputStream din = new DataInputStream(new FileInputStream(f));
 		try {
 			int version = din.readInt();
-			if (version > VERSION) {
-				throw new IOException("File version higher than expected, " + version);
+			if (version != VERSION) {
+				System.out.println("File " + f.getAbsolutePath() + " has out of date version " + version);
+				return null;
 			}
 			int entries = din.readInt();
 			if (entries > (this.entries * 2)) {
@@ -171,6 +178,9 @@ public class SimpleFileCache {
 			for (int i = 0; i < entries; i++) {
 				hash[i] = din.readLong();
 			}
+			
+			din = new DataInputStream(new GZIPInputStream(din));
+			
 			for (int i = 0; i < entries; i++) {
 				byte[] array = new byte[2048];
 				din.readFully(array);
@@ -234,6 +244,8 @@ public class SimpleFileCache {
 		try {
 			data = readFile(entry.getId(), hash);
 		} catch (IOException e) {
+			System.out.println("Unable to read file " + entry.getId() + " " + e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 
@@ -297,13 +309,13 @@ public class SimpleFileCache {
 			} else {
 				success = entriesPending.compareAndSet(old, old + entries);
 				if (success) {
-					writePending();
+					writePending(false);
 				}
 			}
 		}
 	}
 
-	private void writePending() {
+	private void writePending(boolean blocking) {
 		int id = fileCount.getAndIncrement();
 
 		ArrayList<MapEntry> entryList = new ArrayList<MapEntry>(entries << 1);
@@ -314,7 +326,15 @@ public class SimpleFileCache {
 		}
 
 		if (entryList.size() > 0) {
-			new DataWriteThread(id, entryList).start();
+			Thread t = new DataWriteThread(id, entryList);
+			t.start();
+			if (blocking) {
+				try {
+					t.join();
+				} catch (InterruptedException ie) {
+					throw new RuntimeException(ie);
+				}
+			}
 		}
 	}
 
@@ -374,6 +394,7 @@ public class SimpleFileCache {
 		private final int id;
 
 		public DataWriteThread(int id, List<MapEntry> entryList) {
+			super("SimpleFileCache file write thread, fileid " + id);
 			this.id = id;
 			this.entryList = entryList;
 		}
@@ -391,19 +412,23 @@ public class SimpleFileCache {
 				for (MapEntry e : entryList) {
 					dos.writeLong(e.getHash());
 				}
+
+				dos = new DataOutputStream(new GZIPOutputStream(dos));
+				
+				int i = 0;
 				for (MapEntry e : entryList) {
 					byte[] data = e.getData();
 					dos.write(data, 0, data.length);
 				}
 			} catch (IOException ioe) {
 				throw new RuntimeException(ioe);
-			}
-
-			if (dos != null) {
-				try {
-					dos.close();
-				} catch (IOException ioe) {
-					throw new RuntimeException(ioe);
+			} finally {
+				if (dos != null) {
+					try {
+						dos.close();
+					} catch (IOException ioe) {
+						throw new RuntimeException(ioe);
+					}
 				}
 			}
 
