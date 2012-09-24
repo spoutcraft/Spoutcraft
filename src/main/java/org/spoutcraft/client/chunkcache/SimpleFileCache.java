@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -242,7 +243,14 @@ public class SimpleFileCache {
 		try {
 			data = readFile(entry.getId(), hash);
 		} catch (IOException e) {
-			System.out.println("Unable to read file " + entry.getId() + " " + e.getMessage());
+			File f = getFileFromInt(entry.getId());
+			f.delete();
+			FATMap.remove(hash);
+			long[] fileHashes = FATIMap.remove(entry.getId());
+			for (long h : fileHashes) {
+				FATMap.remove(h);
+			}
+			System.out.println("Deleting corrupted chunk cache file " + entry.getId() + ", " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}

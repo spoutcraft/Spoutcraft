@@ -504,6 +504,16 @@ public class NetClientHandler extends NetHandler {
 	 * Handle Packet51MapChunk (full chunk update of blocks, metadata, light levels, and optionally biome data)
 	 */
 	public void handleMapChunk(Packet51MapChunk par1Packet51MapChunk) {
+		// Spout - start
+		if (par1Packet51MapChunk.yChMax == -1 && par1Packet51MapChunk.yChMin == -1) {
+			getNetManager().networkShutdown("Spout Cache Error - Corrupt File Deleted", new Object[0]);
+			kick("Spout Cache Error - Corrupt File Deleted");
+			return;
+		}
+		if (worldClient == null) {
+			return;
+		}
+		// Spout - end
 		if (par1Packet51MapChunk.includeInitialize) {
 			if (par1Packet51MapChunk.yChMin == 0) {
 				this.worldClient.doPreChunk(par1Packet51MapChunk.xCh, par1Packet51MapChunk.zCh, false);
@@ -538,16 +548,22 @@ public class NetClientHandler extends NetHandler {
 	public void handleBlockChange(Packet53BlockChange par1Packet53BlockChange) {
 		this.worldClient.setBlockAndMetadataAndInvalidate(par1Packet53BlockChange.xPosition, par1Packet53BlockChange.yPosition, par1Packet53BlockChange.zPosition, par1Packet53BlockChange.type, par1Packet53BlockChange.metadata);
 	}
-
-	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
+	
+	// Spout - start
+	public void kick(String reason) {
 		if(this.mc.thePlayer != null) {
 			this.mc.thePlayer.closeScreen(); // Spout - close the active screen first!
 		}
 		this.netManager.networkShutdown("disconnect.kicked", new Object[0]);
 		this.field_72554_f = true;
 		this.mc.loadWorld((WorldClient)null);
-		this.mc.displayGuiScreen(new GuiDisconnected("disconnect.disconnected", "disconnect.genericReason", new Object[] {par1Packet255KickDisconnect.reason}));
+		this.mc.displayGuiScreen(new GuiDisconnected("disconnect.disconnected", "disconnect.genericReason", new Object[] {reason}));
 	}
+
+	public void handleKickDisconnect(Packet255KickDisconnect par1Packet255KickDisconnect) {
+		kick(par1Packet255KickDisconnect.reason);
+	}
+	// Spout - end
 
 	public void handleErrorMessage(String par1Str, Object[] par2ArrayOfObj) {
 		if (!this.field_72554_f) {

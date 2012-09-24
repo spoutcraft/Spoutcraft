@@ -112,7 +112,13 @@ public class Packet51MapChunk extends Packet {
 		} finally {
 			var4.end();
 		}
-		this.field_73596_g = ChunkNetCache.handle(inflateBuffer, length, this.tempLength, this.includeInitialize ? 16 : var2, xCh, zCh);
+		byte[] uncachedData = ChunkNetCache.handle(inflateBuffer, length, this.tempLength, this.includeInitialize ? 16 : var2, xCh, zCh);
+		if (uncachedData == null) {
+			yChMin = -1;
+			yChMax = -1;
+		} else {
+			this.field_73596_g = uncachedData;
+		}
 		SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketCustomBlockChunkOverride(xCh, zCh));
 		// Spout End
 	}

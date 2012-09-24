@@ -281,6 +281,11 @@ public class TcpConnection implements NetworkManager {
 		boolean var1 = false;
 
 		try {
+			// Spout - start
+			if (this.isTerminating) {
+				return false;
+			}
+			// Spout - end
 			Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler());
 
 			if (var2 != null) {

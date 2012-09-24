@@ -99,6 +99,7 @@ public class ChunkNetCache {
 				hash = p.putData(partition);
 			} else if (partitionData == null) {
 				System.out.println("Cache Error: Unable to find hash " + Long.toHexString(hash));
+				return null;
 			} else {
 				cacheHit++;
 				PartitionChunk.copyToChunkData(newChunkData, i, partitionData, dataLength);
@@ -132,6 +133,7 @@ public class ChunkNetCache {
 		if (CRCNew != CRC) {
 			System.out.println("Cache Error: CRC mismatch, received: " + CRC + " CRC of data: " + CRCNew);
 			System.out.println("Cache Error: Chunk coords: " + cx + " " + cz);
+			return null;
 		}
 
 		cacheInUse.set(true);
