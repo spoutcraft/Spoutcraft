@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2012</currentYear>
 		<minecraftVersion>1.3.2</minecraftVersion>
-		<lwjglVersion>2.8.3</lwjglVersion>
+		<lwjglVersion>2.4</lwjglVersion>
 		<mcpVersion>72</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
@@ -202,7 +202,7 @@
 									<targetPath>${project.basedir}/lib</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
@@ -250,9 +250,9 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>org.spout</groupId>
+											<groupId>slick</groupId>
 											<artifactId>slick</artifactId>
-											<version>0.4-SNAPSHOT</version>
+											<version>274</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
@@ -274,21 +274,21 @@
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl_util</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>net.java.jinput</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>jinput</artifactId>
-											<version>2.0.5</version>
+											<version>1.0.0-b01</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 									</dependencies>
@@ -299,7 +299,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-windows</classifier>
@@ -315,7 +315,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-osx</classifier>
@@ -331,7 +331,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-linux</classifier>
@@ -707,20 +707,6 @@
 									<goal>exec</goal>
 								</goals>
 							</execution>
-							<execution>
-								<id>reobfuscate-mc</id>
-								<configuration>
-									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
-									<arguments>
-										<argument>runtime/reobfuscate.py</argument>
-										<argument>%*</argument>
-									</arguments>
-								</configuration>
-								<phase>process-classes</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
 						</executions>
 					</plugin>
 				</plugins>
@@ -772,6 +758,22 @@
 									<goal>exec</goal>
 								</goals>
 							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- For final release JAR only -->
+		<profile>
+			<id>mcp-final</id>
+			<build>
+				<plugins>
+					<!-- Program executor plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
 							<!-- Reobfuscate Minecraft using MCP -->
 							<execution>
 								<id>reobfuscate-mc</id>
