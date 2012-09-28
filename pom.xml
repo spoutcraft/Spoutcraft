@@ -530,69 +530,6 @@
 							<goal>copy</goal>
 						</goals>
 					</execution>
-					<!-- Copy compiled classes to target directory -->
-					<execution>
-						<id>copy-compiled</id>
-						<configuration>
-							<verbose>false</verbose>
-							<resources>
-								<resource>
-									<runIf>
-										{{
-											if (new File(project.basedir, "target").isDirectory()) { return true; }
-											return false;
-										}}
-									</runIf>
-									<directory>${project.basedir}/reobf/minecraft</directory>
-									<targetPath>${project.basedir}/target/classes</targetPath>
-									<include>**/*</include>
-									<preservePath>true</preservePath>
-								</resource>
-							</resources>
-						</configuration>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
-					<!-- Copy compiled jar to user folder -->
-					<execution>
-						<id>install-artifact</id>
-						<configuration>
-							<verbose>false</verbose>
-							<resources>
-								<resource>
-									<runIf>{{ osName.contains("Windows") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/AppData/Roaming/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<resource>
-									<runIf>{{ osName.contains("Mac") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/Application Support/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<resource>
-									<runIf>{{ osName.contains("Linux") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
-							</resources>
-						</configuration>
-						<phase>install</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
 			<!-- Version strip plugin -->
@@ -622,6 +559,22 @@
 					<excludes>
 						<exclude>**/*</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<!-- Javadoc generation plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<bottom><![CDATA[Copyright (c) {inceptionYear}-{currentYear}, <a href="${project.organization.url}" target="_blank">${project.organization.name}</a>. ${project.name} is licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">GNU Lesser General Public License Version 3</a>]]></bottom>
+					<doctitle><![CDATA[${project.name} ${releaseVersion} b${buildNumber} - ${maven.build.timestamp}]]></doctitle>
+					<windowtitle>Javadoc | ${project.name} ${releaseVersion} b${buildNumber}</windowtitle>
+					<author>false</author>
+					<version>false</version>
+					<detectLinks>true</detectLinks>
+					<linksource>true</linksource>
+					<sourcepath>${project.basedir}/src/main/java/org/spoutcraft/api</sourcepath>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -787,6 +740,77 @@
 								<phase>process-sources</phase>
 								<goals>
 									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- File downloading plugin -->
+					<plugin>
+						<groupId>com.github.goldin</groupId>
+						<artifactId>copy-maven-plugin</artifactId>
+						<version>0.2.5</version>
+						<executions>
+							<!-- Copy compiled classes to target directory -->
+							<execution>
+								<id>copy-compiled</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>
+												{{
+													if (new File(project.basedir, "target").isDirectory()) { return true; }
+													return false;
+												}}
+											</runIf>
+											<directory>${project.basedir}/reobf/minecraft</directory>
+											<targetPath>${project.basedir}/target/classes</targetPath>
+											<include>**/*</include>
+											<preservePath>true</preservePath>
+										</resource>
+									</resources>
+								</configuration>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+							</execution>
+							<!-- Copy compiled jar to user folder -->
+							<execution>
+								<id>install-artifact</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>{{ osName.contains("Windows") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/AppData/Roaming/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<resource>
+											<runIf>{{ osName.contains("Mac") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/Application Support/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<resource>
+											<runIf>{{ osName.contains("Linux") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
+									</resources>
+								</configuration>
+								<phase>install</phase>
+								<goals>
+									<goal>copy</goal>
 								</goals>
 							</execution>
 						</executions>
