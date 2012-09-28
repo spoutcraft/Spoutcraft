@@ -29,7 +29,7 @@ public class MinimapUtils {
 
 	public static String getWorldName() {
 		String worldName = "MpServer";
-		if(SpoutClient.getHandle().isIntegratedServerRunning()) {
+		if (SpoutClient.getHandle().isIntegratedServerRunning()) {
 			worldName = SpoutClient.getHandle().getIntegratedServer().getWorldName();
 		}
 		if (worldName.equals("MpServer") && org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp != null) {

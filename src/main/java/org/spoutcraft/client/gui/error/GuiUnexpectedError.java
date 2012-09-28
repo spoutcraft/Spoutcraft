@@ -29,13 +29,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
+
 import org.bukkit.ChatColor;
 
-import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
@@ -46,13 +47,12 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
-
+import org.spoutcraft.client.SpoutClient;
 
 public class GuiUnexpectedError extends GuiScreen {
-
 	private Throwable caused;
 	private GenericLabel hastebinLink;
-	
+
 	private String hastebinURL;
 	private boolean generated = false;
 
@@ -81,26 +81,26 @@ public class GuiUnexpectedError extends GuiScreen {
 		hastebinLink.setTextColor(grey);
 		screen.attachWidget(spoutcraft, hastebinLink);
 		generateHastie();
-		
-		Button button = new CopyErrorURL(this).setText("Copy link");
+
+		Button button = new CopyErrorURL(this).setText("Copy Link");
 		button.setHeight(20).setWidth(80);
-		button.setX((int) (hastebinLink.getWidth()+hastebinLink.getX()+10.0));
+		button.setX((int) (hastebinLink.getWidth() + hastebinLink.getX() + 10.0));
 		button.setY(top-5);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		
+
 		top += 25;
 
 		button = new ReportErrorButton().setText("Report");
 		button.setHeight(20).setWidth(70);
-		button.setX((int) (width / 2 - button.getWidth() - button.getWidth()/2));
+		button.setX((int) (width / 2 - button.getWidth() - button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
-		
+
 		button = new IgnoreErrorButton().setText("Ignore");
 		button.setHeight(20).setWidth(70);
-		button.setX((int) (width / 2 + button.getWidth() /2));
+		button.setX((int) (width / 2 + button.getWidth() / 2));
 		button.setY(top);
 		button.setAlign(WidgetAnchor.TOP_CENTER);
 		screen.attachWidget(spoutcraft, button);
@@ -113,8 +113,8 @@ public class GuiUnexpectedError extends GuiScreen {
 	}
 
 	private void generateHastie() {
-		if(generated) {
-			hastebinLink.setText("Error link: "+ChatColor.GREEN+hastebinURL);
+		if (generated) {
+			hastebinLink.setText("Error Link: " + ChatColor.GREEN+hastebinURL);
 			return;
 		}
 		try {
@@ -124,7 +124,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("Stack Trace:").append("\n");
 			builder.append("    Exception: ").append(caused.getClass().getSimpleName()).append("\n");
 			builder.append("    Trace:").append("\n");
-			for(StackTraceElement ele : caused.getStackTrace()) {
+			for (StackTraceElement ele : caused.getStackTrace()) {
 				builder.append("        ").append(ele.toString()).append("\n");
 			}
 			builder.append("-----------------------------------").append("\n");
@@ -140,7 +140,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("    OpenGL Version: ").append(GL11.glGetString(GL11.GL_VERSION)).append("\n");
 			builder.append("    OpenGL Vendor: ").append(GL11.glGetString(GL11.GL_VENDOR)).append("\n");
 			String message = builder.toString();
-			
+
 			PasteBinAPI pastebin = new PasteBinAPI("963f01dd506cb3f607a487bc34b60d16");
 			String response = pastebin.makePaste(message, "ser_" + System.currentTimeMillis(), "text");
 			System.out.println("pastebin response: " + response);
@@ -154,13 +154,13 @@ public class GuiUnexpectedError extends GuiScreen {
 
 				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				String line = rd.readLine();
-				hastebinURL = "hastebin.com/"+line.substring(8, line.length()-2); //get rid of the json stuff
+				hastebinURL = "hastebin.com/" + line.substring(8, line.length() - 2); // Get rid of the JSON stuff
 				wr.close();
 				rd.close();
 			} else {
 				hastebinURL = response;
 			}
-			hastebinLink.setText("Error: "+ChatColor.GREEN+hastebinURL);
+			hastebinLink.setText("Error: " + ChatColor.GREEN+hastebinURL);
 			generated = true;
 		} catch (Exception e) {
 			hastebinLink.setText("Connection error!");
@@ -171,27 +171,25 @@ public class GuiUnexpectedError extends GuiScreen {
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(hastebinURL), null);
 	}
 }
+
 class CopyErrorURL extends GenericButton {
-	
 	private GuiUnexpectedError error;
 	CopyErrorURL(GuiUnexpectedError error) {
 		this.error = error;
 	}
-	
+
 	public void onButtonClick(ButtonClickEvent event) {
 		error.copyErrorToClipboard();
 	}
 }
 
 class IgnoreErrorButton extends GenericButton {
-
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.displayGuiScreen(new org.spoutcraft.client.gui.mainmenu.MainMenu());
 	}
 }
 
 class ReportErrorButton extends GenericButton {
-
 	public void onButtonClick(ButtonClickEvent event) {
 		SpoutClient.disableSandbox();
 		try {
@@ -206,7 +204,6 @@ class ReportErrorButton extends GenericButton {
 }
 
 class ExitGameButton extends GenericButton {
-
 	public void onButtonClick(ButtonClickEvent event) {
 		Minecraft.theMinecraft.shutdownMinecraftApplet();
 	}

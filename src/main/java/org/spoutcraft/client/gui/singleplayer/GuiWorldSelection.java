@@ -23,17 +23,17 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.GuiScreen;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.ButtonUpdater;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
-import org.spoutcraft.client.gui.GuiTextDialog;
-import org.spoutcraft.client.gui.GuiTextDialog.DialogEventHandler;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericListView;
 import org.spoutcraft.api.gui.Screen;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.ButtonUpdater;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
+import org.spoutcraft.client.gui.GuiTextDialog;
+import org.spoutcraft.client.gui.GuiTextDialog.DialogEventHandler;
 
 public class GuiWorldSelection extends GuiSpoutScreen implements ButtonUpdater {
 	GenericLabel labelTitle;

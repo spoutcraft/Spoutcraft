@@ -642,7 +642,7 @@ public class MaterialData {
 		Object o = idLookup[id];
 		Material[] materials;
 		Material mat;
-		if(idLookup[id] == null) {
+		if (idLookup[id] == null) {
 			return null;
 		}
 		if (o instanceof Material) {
@@ -793,7 +793,7 @@ public class MaterialData {
 	}
 
 	/**
-	 * Gets the associated material with it's notchian name
+	 * Gets the associated material with its notchian name
 	 * @param name to lookup
 	 * @return material, or null if none found
 	 */

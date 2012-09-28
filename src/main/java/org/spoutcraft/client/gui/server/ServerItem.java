@@ -274,7 +274,7 @@ public class ServerItem implements ListWidgetItem {
 			iconMargin += 5 + 7;
 		}
 
-		// TODO outdated version alert
+		// TODO Outdated version alert
 		/*if (!mcversion.equals(latestMC)) {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(x+width/5, y-0.5F, 0);

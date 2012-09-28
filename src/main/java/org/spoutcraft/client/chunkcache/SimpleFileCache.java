@@ -61,8 +61,8 @@ public class SimpleFileCache {
 		this.entries = entries;
 		this.entriesPending.set(this.entries);
 
-		if(!dir.isDirectory()) {
-			if(dir.isFile()) {
+		if (!dir.isDirectory()) {
+			if (dir.isFile()) {
 				throw new IOException("Unable to open cache directory");
 			} else {
 				dir.mkdirs();
@@ -97,16 +97,16 @@ public class SimpleFileCache {
 	private void prune(File[] files) {
 		int size = 0;
 
-		for(File file : files) {
-			if(file.isFile()) {
+		for (File file : files) {
+			if (file.isFile()) {
 				size += file.length();
 			}
 		}
 		int cnt = 0;
 
-		while(size > (limit << 10) && cnt < files.length) {
+		while (size > (limit << 10) && cnt < files.length) {
 			File current = files[cnt++];
-			if(current.isFile()) {
+			if (current.isFile()) {
 				size -= current.length();
 				current.delete();
 			}
@@ -178,9 +178,9 @@ public class SimpleFileCache {
 			for (int i = 0; i < entries; i++) {
 				hash[i] = din.readLong();
 			}
-			
+
 			din = new DataInputStream(new GZIPInputStream(din));
-			
+
 			for (int i = 0; i < entries; i++) {
 				byte[] array = new byte[2048];
 				din.readFully(array);
@@ -363,7 +363,7 @@ public class SimpleFileCache {
 	public int getIntFromName(File file) {
 		try {
 			String fileName = file.getName();
-			if(fileName == null || fileName.length() < 3) {
+			if (fileName == null || fileName.length() < 3) {
 				return 0;
 			}
 			int id = Integer.parseInt(file.getName().substring(3));
@@ -420,7 +420,7 @@ public class SimpleFileCache {
 				}
 
 				dos = new DataOutputStream(new GZIPOutputStream(dos));
-				
+
 				int i = 0;
 				for (MapEntry e : entryList) {
 					byte[] data = e.getData();

@@ -30,12 +30,12 @@ import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericGradient;
 import org.spoutcraft.api.gui.Gradient;
 import org.spoutcraft.api.gui.RenderUtil;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiAbout extends GuiScreen {
 	private float scrolled = 0f;

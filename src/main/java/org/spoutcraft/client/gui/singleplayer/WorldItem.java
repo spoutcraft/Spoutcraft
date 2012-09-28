@@ -29,11 +29,11 @@ import net.minecraft.src.SaveFormatComparator;
 import net.minecraft.src.StringTranslate;
 import net.minecraft.src.WorldInfo;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.api.gui.ListWidget;
 import org.spoutcraft.api.gui.ListWidgetItem;
 import org.spoutcraft.api.gui.MinecraftFont;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
 
 public class WorldItem implements ListWidgetItem {
 	private ListWidget widget;

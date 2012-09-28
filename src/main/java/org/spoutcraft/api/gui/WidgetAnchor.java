@@ -26,7 +26,7 @@ public enum WidgetAnchor {
 	 * Widget anchors allow you to place widgets that
 	 * stick or "anchor" to a point on the screen
 	 *
-	 * A widget's coordinates refer to it's top left
+	 * A widget's coordinates refer to its top left
 	 * corner and anchors change the point they are
 	 * relative to on the screen
 	 *

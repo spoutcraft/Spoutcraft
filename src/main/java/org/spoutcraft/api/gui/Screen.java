@@ -28,14 +28,14 @@ import org.spoutcraft.api.addon.Addon;
 @UnsafeClass
 public interface Screen extends Widget {
 	/**
-	 * Get's an array of all the attached widgets to this screen. Modifying this array will not affect the screen.
+	 * Gets an array of all the attached widgets to this screen. Modifying this array will not affect the screen.
 	 *
 	 * @return array of all widgets
 	 */
 	public Widget[] getAttachedWidgets();
 
 	/**
-	 * Get's an array of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
+	 * Gets an array of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
 	 *
 	 * @param recursive whether to get widgets attached to screens attached to this screen.
 	 * @return array of all widgets
@@ -43,14 +43,14 @@ public interface Screen extends Widget {
 	public Widget[] getAttachedWidgets(boolean recursive);
 
 	/**
-	 * Get's a set of all the attached widgets to this screen. Modifying this array will not affect the screen.
+	 * Gets a set of all the attached widgets to this screen. Modifying this array will not affect the screen.
 	 *
 	 * @return set of all widgets
 	 */
 	public Set<Widget> getAttachedWidgetsAsSet();
 
 	/**
-	 * Get's a set of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
+	 * Gets a set of all the attached widgets to this screen, and if recursive, any widgets of screens attached to this screen.
 	 *
 	 * @param recursive whether to get widgets attached to screens attached to this screen.
 	 * @return set of all widgets
@@ -109,7 +109,7 @@ public interface Screen extends Widget {
 	public boolean containsWidget(UUID id);
 
 	/**
-	 * Get's the widget that is associated with the given id, or null if none was found
+	 * Gets the widget that is associated with the given id, or null if none was found
 	 *
 	 * @param id to search for
 	 * @return widget, or null if none found.

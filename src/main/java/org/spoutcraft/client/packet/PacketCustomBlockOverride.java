@@ -21,10 +21,10 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
+import org.spoutcraft.client.SpoutClient;
 
 public class PacketCustomBlockOverride implements SpoutPacket {
 	private int x;

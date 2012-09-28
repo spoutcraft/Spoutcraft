@@ -27,9 +27,6 @@ import net.minecraft.src.RenderEngine;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
@@ -41,6 +38,9 @@ import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.GenericTexture;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class GuiConnectionLost extends GuiScreen {
 	public static String lastServerIp;
