@@ -605,23 +605,6 @@ public class NetClientHandler extends NetHandler {
 	 */
 	public void addToSendQueue(Packet par1Packet) {
 		if (!this.field_72554_f) {
-			// Spout Start
-			if (queued) {
-				int id = par1Packet.getPacketId();
-				//Always must send movement packets :(
-				if (System.currentTimeMillis() < packetQueueTime && (id > 13 || id < 10)) {
-					queue.add(par1Packet);
-					return;
-				}
-				else {
-					queued = false;
-					packetQueueTime = 0L;
-					for (Packet p : queue) {
-						this.netManager.addToSendQueue(p);
-					}
-				}
-			}
-			// Spout End
 			this.netManager.addToSendQueue(par1Packet);
 		}
 	}
