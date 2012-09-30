@@ -85,7 +85,7 @@ public class PacketDecompressionThread extends Thread {
 			while (i.hasNext()) {
 				SpoutPacket packet = i.next();
 				try {
-					SpoutClient.getHandle().mcProfiler.startSection(packet.getPacketType());
+					SpoutClient.getHandle().mcProfiler.startSection(packet.getPacketType().name());
 					packet.run(SpoutClient.getHandle().thePlayer.entityId);
 					i.remove();
 				} catch (Exception e) {
