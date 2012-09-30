@@ -414,7 +414,7 @@ public class SettingsHandler {
 			}
 			br.close();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 
 		return result;
