@@ -165,7 +165,7 @@ public class Tessellator {
 
 			if (this.vertexCount > 0) {
 				// Spout HD start
-				if (this.texture >= 0) {
+				if (this.texture >= 0 && textureOverride <= 1) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
 				// Spout HD End
@@ -191,7 +191,7 @@ public class Tessellator {
 					GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
 					// Spout Start
-					if(textureOverride > 0 && texture < 0)
+					if(textureOverride > 1 || (textureOverride > 0 && texture < 0))
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureOverride);
 					// Spout End
 				}
