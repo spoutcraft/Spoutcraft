@@ -265,6 +265,14 @@ public class RenderPlayer extends RenderLiving {
 		}
 
 		ItemStack var21 = par1EntityPlayer.inventory.getCurrentItem();
+		//Spout start
+		//Remove air items
+		if (var21 != null && var21.itemID == 0) {
+			System.out.println("Warning: Removing Air Item");
+			par1EntityPlayer.inventory.mainInventory[par1EntityPlayer.inventory.currentItem] = null;
+			var21 = null;
+		}
+		//Spout end
 		if (var21 != null) {
 			GL11.glPushMatrix();
 			this.modelBipedMain.bipedRightArm.postRender(0.0625F);
