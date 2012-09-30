@@ -204,6 +204,14 @@ public class RenderBlocks {
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 		var5.setColorOpaque_F(var10, var10, var10);
 		var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 1);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var27)) {
+			var27 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+ 		// Spout HD end
 		var28 = (var27 & 15) << 4;
 		var29 = var27 & 240;
 		var30 = (double)((float)var28 / 256.0F);
