@@ -1,6 +1,8 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.mod.Shaders;
+import com.pclewis.mcpatcher.mod.SuperTessellator;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -40,7 +42,7 @@ public class Tessellator {
 	/**
 	 * The number of vertices to be drawn in the next draw call. Reset to 0 between draw calls.
 	 */
-	private int vertexCount = 0;
+	public int vertexCount = 0; // Spout HD private -> public
 
 	/** The first coordinate to be used for the texture. */
 	private double textureU;
@@ -69,19 +71,19 @@ public class Tessellator {
 	private boolean hasNormals = false;
 
 	/** The index into the raw buffer to be used for the next data. */
-	private int rawBufferIndex = 0;
+	public int rawBufferIndex = 0; // Spout HD private -> public
 
 	/**
 	 * The number of vertices manually added to the given draw call. This differs from vertexCount because it adds extra
 	 * vertices when converting quads to triangles.
 	 */
-	private int addedVertices = 0;
+	public int addedVertices = 0; // Spout HD private -> public
 
 	/** Disables all color information for the following draw call. */
-	private boolean isColorDisabled = false;
+	private boolean isColorDisabled = false; 
 
 	/** The draw mode currently being used by the tessellator. */
-	private int drawMode;
+	public int drawMode; // Spout HD private -> public
 
 	/**
 	 * An offset to be applied along the x-axis for all vertices in this draw call.
@@ -102,10 +104,10 @@ public class Tessellator {
 	private int normal;
 
 	/** The static instance of the Tessellator. */
-	public static final Tessellator instance = new Tessellator(2097152);
+	public static final Tessellator instance = new SuperTessellator(2097152); // Spout HD Tessellator -> SuperTessellator
 
 	/** Whether this tessellator is currently in draw mode. */
-	private boolean isDrawing = false;
+	public boolean isDrawing = false;  // Spout HD private -> public
 
 	/** Whether we are currently using VBO or not. */
 	private boolean useVBO = false;
@@ -123,15 +125,16 @@ public class Tessellator {
 	private int vboCount = 10;
 
 	/** The size of the buffers used (in integers). */
-	private int bufferSize;
+	public int bufferSize; // Spout HD private -> public
 	// Spout Start
+	public int texture = -1;
 	public int textureOverride = 0;
 	private ByteBuffer shadersBuffer;
 	private ShortBuffer shadersShortBuffer;
 	private short[] shadersData;
 	// Spout End
 
-	private Tessellator(int par1) {
+	public Tessellator(int par1) { // Spout HD private -> public
 		this.bufferSize = par1;
 		this.byteBuffer = GLAllocation.createDirectByteBuffer(par1 * 4);
 		this.intBuffer = this.byteBuffer.asIntBuffer();
@@ -161,6 +164,11 @@ public class Tessellator {
 			this.isDrawing = false;
 
 			if (this.vertexCount > 0) {
+				// Spout HD start
+				if (this.texture >= 0) {
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
+				}
+				// Spout HD End
 				this.intBuffer.clear();
 				this.intBuffer.put(this.rawBuffer, 0, this.rawBufferIndex);
 				this.byteBuffer.position(0);
@@ -269,7 +277,7 @@ public class Tessellator {
 	/**
 	 * Clears the tessellator state in preparation for new drawing.
 	 */
-	private void reset() {
+	public void reset() { //Spout HD private -> public
 		this.shadersBuffer.clear(); // Spout
 		this.vertexCount = 0;
 		this.byteBuffer.clear();
