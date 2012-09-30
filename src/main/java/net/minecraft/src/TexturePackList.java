@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
+import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TextureUtils; // Spout HD
 import java.io.File;
 import java.util.ArrayList;

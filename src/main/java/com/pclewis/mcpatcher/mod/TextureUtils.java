@@ -45,6 +45,7 @@ import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TextureWaterFlowFX;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TextureUtils$1;
 
 public class TextureUtils {
@@ -78,6 +79,7 @@ public class TextureUtils {
 
 	public static boolean setTileSize() {
 		int var0 = getTileSize();
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 
 		if (var0 == TileSize.int_size) {
 			return false;
