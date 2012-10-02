@@ -89,6 +89,7 @@ public class ConfigReader {
 	public static int resizedScreenshotHeight = 3200;
 	public static float chatOpacity = 0.5f;
 	public static int mainMenuState = defaultMenuState();
+	public static boolean connectedTextures = true;
 
 	// Launcher settings
 	public static boolean fastLogin = false;

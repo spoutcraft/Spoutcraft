@@ -7,6 +7,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
+import org.spoutcraft.client.config.ConfigReader;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 public class CTMUtils {
+	/*
     private static final boolean enableGlass = true;
     private static final boolean enableGlassPane = true;
     private static final boolean enableBookshelf = true;
@@ -21,7 +23,7 @@ public class CTMUtils {
     private static final boolean enableStandard = true;
     private static final boolean enableNonStandard = true;
     private static final boolean enableOutline = false;
-
+	*/
     static final int BLOCK_ID_LOG = 17;
     static final int BLOCK_ID_GLASS = 20;
     static final int BLOCK_ID_BED = 26;
@@ -61,7 +63,7 @@ public class CTMUtils {
                 Arrays.fill(blockOverrides, null);
                 Arrays.fill(tileOverrides, null);
 
-                if (enableStandard || enableNonStandard) {
+                if (ConfigReader.connectedTextures) {
                     for (String s : TexturePackAPI.listResources("/ctm", ".properties")) {
                         registerOverride(TileOverride.create(s.replace(".properties", ""), null));
                     }
@@ -69,41 +71,31 @@ public class CTMUtils {
 
                 Properties properties = new Properties();
 
-                if (enableGlass) {
+                if (ConfigReader.connectedTextures) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
 
-                if (enableGlassPane) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_GLASS_PANE);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableBookshelf) {
+                    
                     properties.clear();
                     properties.setProperty("method", "bookshelf");
                     properties.setProperty("connect", "block");
                     properties.setProperty("blockIDs", "" + BLOCK_ID_BOOKSHELF);
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableSandstone) {
+                    
                     properties.clear();
                     properties.setProperty("method", "sandstone");
                     properties.setProperty("connect", "tile");
                     properties.setProperty("tileIDs", "" + TILE_NUM_SANDSTONE_SIDE);
                     properties.setProperty("metadata", "0");
                     registerOverride(TileOverride.create("/ctm", properties));
-                }
-
-                if (enableOutline) {
-                    setupOutline();
                 }
 
                 RenderPassAPI.instance.clear();
@@ -139,7 +131,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int face, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!enableStandard || !check(blockAccess, block.blockID) || face < 0 || face > 5) {
+        if (!check(blockAccess, block.blockID) || face < 0 || face > 5) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, face)) {
             return true;
@@ -151,7 +143,7 @@ public class CTMUtils {
 
     public static boolean setup(RenderBlocks renderBlocks, Block block, int i, int j, int k, int origTexture) {
         IBlockAccess blockAccess = renderBlocks.blockAccess;
-        if (!enableNonStandard || !check(blockAccess, block.blockID)) {
+        if (!check(blockAccess, block.blockID)) {
             return false;
         } else if (getConnectedTexture(renderBlocks, blockAccess, block, origTexture, i, j, k, -1)) {
             return true;
@@ -233,7 +225,8 @@ public class CTMUtils {
         }
     }
 
-    private static void setupOutline() {
+    @SuppressWarnings("unused")
+	private static void setupOutline() {
         BufferedImage terrain = TexturePackAPI.getImage("/terrain.png");
         if (terrain == null) {
             return;

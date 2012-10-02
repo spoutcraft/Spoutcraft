@@ -274,18 +274,22 @@ public class TexturePackAPI {
                 long memDiff = -(runtime.totalMemory() - runtime.freeMemory());
 
                 texturePack = newPack;
-                for (ChangeHandler handler : handlers) {
-                    try {
-                        handler.onChange();
-                    } catch (Throwable e) {
-                        e.printStackTrace();
-                    }
-                }
+                change();
 
                 System.gc();
                 timeDiff += System.currentTimeMillis();
                 memDiff += runtime.totalMemory() - runtime.freeMemory();
                 changing = false;
+            }
+        }
+        
+        public static void change() {
+        	for (ChangeHandler handler : handlers) {
+                try {
+                    handler.onChange();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
             }
         }
 
