@@ -21,15 +21,18 @@ package org.spoutcraft.client.packet;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import net.minecraft.src.Chunk;
+import net.minecraft.src.EnumSkyBlock;
+import net.minecraft.src.World;
 
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.packet.LightingThread.LightingData;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
@@ -37,7 +40,7 @@ import org.spoutcraft.api.material.CustomBlock;
 import org.spoutcraft.api.material.MaterialData;
 
 public class PacketCustomBlockChunkOverride implements CompressablePacket {
-	protected static final int[] lightingBlockList = new int[32768 * 4];
+	private static LightingThread thread;
 	private int chunkX;
 	private int chunkZ;
 	private boolean hasData = false;
@@ -80,6 +83,11 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 				return;
 			}
 
+			if (thread == null) {
+				thread = new LightingThread();
+				thread.start();
+			}
+
 			ByteBuffer buffer = ByteBuffer.allocate(data.length);
 			buffer.put(data);
 			short[] customIds = new short[16*16*256];
@@ -87,20 +95,10 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 			for (int i = 0; i < customIds.length; i++) {
 				customIds[i] = buffer.getShort(i * 3);
 				customData[i] = buffer.get((i * 3) + 2);
-				CustomBlock cb = MaterialData.getCustomBlock(customIds[i]);
-				if (cb != null && cb.getLightLevel() != 0) {
-					int bx = (i >> 12) & 0xF;
-					int by = i & 0xFF;
-					int bz = (i >> 8) & 0xF;
-					int[] old = SpoutClient.getInstance().getRawWorld().lightUpdateBlockList;
-					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = lightingBlockList;
-					SpoutClient.getInstance().getRawWorld().updateAllLightTypes(chunkX * 16 + bx, by, chunkZ * 16 + bz);
-					SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = old;
-
-				}
 			}
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockIds(customIds);
 			Spoutcraft.getWorld().getChunkAt(chunkX, chunkZ).setCustomBlockData(customData);
+			thread.queue.add(new LightingData(chunkX, chunkZ, customIds));
 		}
 	}
 
@@ -165,5 +163,48 @@ public class PacketCustomBlockChunkOverride implements CompressablePacket {
 
 	public boolean isCompressed() {
 		return compressed;
+	}
+}
+
+class LightingThread extends Thread {
+	final LinkedBlockingDeque<LightingData> queue = new LinkedBlockingDeque<LightingData>();
+	final int[] lightingBlockList = new int[32768 * 4];
+	LightingThread() {
+		super("Lighting Thread");
+		setDaemon(true);
+	}
+
+	@Override
+	public void run() {
+		while(!this.isInterrupted()) {
+			try {
+				LightingData data = queue.take();
+				World world = SpoutClient.getHandle().theWorld;
+				if (world != null && world.chunkProvider.chunkExists(data.cx, data.cz)) {
+					for (int i = 0; i < data.ids.length; i++) {
+						CustomBlock cb = MaterialData.getCustomBlock(data.ids[i]);
+						if (cb != null && cb.getLightLevel() != 0) {
+							int bx = (i >> 12) & 0xF;
+							int by = i & 0xFF;
+							int bz = (i >> 8) & 0xF;
+							world.updateLightByType(lightingBlockList, EnumSkyBlock.Sky, data.cx * 16 + bx, by, data.cz * 16 + bz);
+							world.updateLightByType(lightingBlockList, EnumSkyBlock.Block, data.cx * 16 + bx, by, data.cz * 16 + bz);
+						}
+					}
+				}
+			} catch (InterruptedException e) {
+				return;
+			}
+		}
+	}
+
+	static class LightingData{
+		final int cx, cz;
+		final short[] ids;
+		LightingData(int cx, int cz, short[] ids) {
+			this.cx = cx;
+			this.cz = cz;
+			this.ids = ids;
+		}
 	}
 }
