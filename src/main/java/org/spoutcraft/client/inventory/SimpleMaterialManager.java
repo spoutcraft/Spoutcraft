@@ -19,6 +19,7 @@
  */
 package org.spoutcraft.client.inventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gnu.trove.map.hash.TIntByteHashMap;
@@ -253,11 +254,17 @@ public class SimpleMaterialManager implements MaterialManager {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getToolTip(ItemStack is) {
 		net.minecraft.src.ItemStack itemstack = new net.minecraft.src.ItemStack(is.getTypeId(), is.getAmount(), is.getDurability());
-		@SuppressWarnings("unchecked")
-		List<String> list = itemstack.getItemNameandInformation();
+		Item rawItem = Item.itemsList[itemstack.itemID];
+		List<String> list;
+		if (rawItem != null) {
+			list = itemstack.getItemNameandInformation();
+		} else {
+			list = new ArrayList<String>();
+		}
 		Material item = MaterialData.getMaterial(is.getTypeId(), is.getDurability());
 		String custom = item != null ? String.format(item.getName(), String.valueOf(is.getDurability())) : null;
 		if (custom != null && is.getTypeId() != Item.potion.shiftedIndex) {
