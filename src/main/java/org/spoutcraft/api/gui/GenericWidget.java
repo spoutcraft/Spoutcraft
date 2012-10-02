@@ -265,7 +265,7 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 		if (getScreen() == null) {
 			return Spoutcraft.getRenderDelegate().getScreenHeight();
 		}
-		return getScreen().getWidth();
+		return getScreen().getHeight();
 	}
 
 	public Widget setX(int pos) {
