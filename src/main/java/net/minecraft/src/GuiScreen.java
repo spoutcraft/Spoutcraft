@@ -1022,9 +1022,6 @@ public class GuiScreen extends Gui
 		if (!wasSandboxed) {
 			SpoutClient.enableSandbox();
 		}
-		
-		//TODO this should not be needed
-		widget.setScreen(getScreen());
 
 		int left = (int) widget.getActualX();
 		int top = (int) widget.getActualY();
