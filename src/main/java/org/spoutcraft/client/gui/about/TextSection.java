@@ -70,7 +70,7 @@ public class TextSection extends Section {
 	@Override
 	public void init(GuiNewAbout screen, String title, Object yaml) {
 		setTitle(title);
-		if(yaml instanceof String) {
+		if (yaml instanceof String) {
 			setText((String) yaml);
 		}
 	}

@@ -89,6 +89,7 @@ public class ConfigReader {
 	public static int resizedScreenshotHeight = 3200;
 	public static float chatOpacity = 0.5f;
 	public static int mainMenuState = defaultMenuState();
+	public static boolean connectedTextures = true;
 
 	// Launcher settings
 	public static boolean fastLogin = false;
@@ -236,12 +237,12 @@ public class ConfigReader {
 			ConfigReader.signDistance = Integer.MAX_VALUE;
 		}
 	}
-	
+
 	public static int defaultMenuState() {
-		if(Shaders.isOpenGL(3)) {
+		if (Shaders.isOpenGL(3)) {
 			return 1;
 		}
-		if(Shaders.isOpenGL(2)) {
+		if (Shaders.isOpenGL(2)) {
 			return 2;
 		}
 		return 3;

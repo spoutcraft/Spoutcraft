@@ -66,7 +66,7 @@ public class ImageSection extends Section {
 		for (Image img:images) {
 			ret.add(img.texture);
 			ret.add(img.button);
-			if(img.description != null) {
+			if (img.description != null) {
 				ret.add(img.description);
 			}
 		}
@@ -91,7 +91,7 @@ public class ImageSection extends Section {
 			img.button.setGeometry(x, y, getWidth(), theight);
 			int h = theight + 5;
 
-			if(img.description != null) {
+			if (img.description != null) {
 				img.description.setX(x);
 				img.description.setY(y + theight + 5);
 				img.description.setWidth(getWidth());
@@ -125,7 +125,7 @@ public class ImageSection extends Section {
 			});
 			image.url = attr.get("website");
 			image.texture.setTooltip(attr.get("tooltip"));
-			if(attr.containsKey("description") && !attr.get("description").isEmpty()) {
+			if (attr.containsKey("description") && !attr.get("description").isEmpty()) {
 				image.description = new GenericLabel(attr.get("description"));
 				image.description.setTextColor(new Color(0xaaaaaa));
 			}

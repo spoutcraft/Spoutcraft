@@ -71,7 +71,7 @@ public interface Widget extends PropertyInterface{
 	public void writeData(SpoutOutputStream output) throws IOException;
 
 	/**
-	 * Get's the plugin that attached this widget to the screen, or null if this screen is unattached.
+	 * Gets the plugin that attached this widget to the screen, or null if this screen is unattached.
 	 * @return plugin that attached this widget to the screen
 	 */
 	public Addon getAddon();
@@ -252,14 +252,14 @@ public interface Widget extends PropertyInterface{
 	public void setContainer(Container container);
 
 	/**
-	 * Container Layout - Set whether the widget will be resized with it's container
+	 * Container Layout - Set whether the widget will be resized with its container
 	 * @param fixed if it is a static size
 	 * @return the container
 	 */
 	public Widget setFixed(boolean fixed);
 
 	/**
-	 * Container Layout - Whether the widget is fixed size inside it's container
+	 * Container Layout - Whether the widget is fixed size inside its container
 	 * @return
 	 */
 	public boolean isFixed();

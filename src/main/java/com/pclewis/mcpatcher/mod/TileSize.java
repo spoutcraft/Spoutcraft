@@ -1,6 +1,8 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
+
 import java.lang.reflect.Field;
 
 public final class TileSize {

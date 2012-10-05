@@ -76,13 +76,13 @@ public class VIP {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public float getScale() {
 		return scale;
 	}
-	
+
 	public String getArmor(int id) {
-		if(armorBaseUrl != null) {
+		if (armorBaseUrl != null) {
 			return armorBaseUrl + "_" + id + ".png";
 		} else {
 			return null;

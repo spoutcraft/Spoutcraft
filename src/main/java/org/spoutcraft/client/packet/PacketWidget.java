@@ -149,6 +149,9 @@ public class PacketWidget implements SpoutPacket {
 						if (SpoutClient.getHandle().currentScreen instanceof CustomScreen) {
 							((CustomScreen)SpoutClient.getHandle().currentScreen).update((PopupScreen)widget);
 						}
+					} else {
+						mainScreen.closePopup();
+						mainScreen.attachPopupScreen((PopupScreen)widget);
 					}
 				} else {
 					mainScreen.attachPopupScreen((PopupScreen)widget);

@@ -31,8 +31,6 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.WorldSettings;
 import net.minecraft.src.WorldType;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.GuiSpoutScreen;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
 import org.spoutcraft.api.gui.GenericButton;
@@ -43,6 +41,8 @@ import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.GenericTextField;
 import org.spoutcraft.api.gui.Orientation;
 import org.spoutcraft.api.gui.ScrollBarPolicy;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiCreateWorld extends GuiSpoutScreen {
 	private GenericButton buttonDone, buttonCancel, buttonNewSeed;
@@ -86,15 +86,15 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		checkHardcore = new GenericCheckBox("Hardcore Mode");
 		checkHardcore.setTooltip("You only live once!");
 		checkHardcore.setChecked(false);
-		
+
 		checkGenerateStructures = new GenericCheckBox("Generate Structures");
 		checkGenerateStructures.setTooltip("Villages, Dungeons, Strongholds, etc.");
 		checkGenerateStructures.setChecked(true);
-		
+
 		allowCheats = new GenericCheckBox("Allow Cheats");
 		allowCheats.setTooltip("Enable cheating.");
 		allowCheats.setChecked(false);
-		
+
 		bonusChest = new GenericCheckBox("Bonus Chests");
 		bonusChest.setTooltip("Enable bonus Chests.");
 		bonusChest.setChecked(false);
@@ -122,7 +122,7 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 
 		scrollArea = new GenericScrollArea();
 		scrollArea.setScrollBarPolicy(Orientation.HORIZONTAL, ScrollBarPolicy.SHOW_NEVER);
-		
+
 		Addon spoutcraft = SpoutClient.getInstance().getAddonManager().getAddon("Spoutcraft");
 		getScreen().attachWidgets(spoutcraft, labelTitle, scrollArea, buttonDone, buttonCancel);
 		scrollArea.attachWidgets(spoutcraft, allowCheats, bonusChest, comboGameType, comboWorldType, checkHardcore, checkGenerateStructures, textName, textSeed, labelName, labelSeed, labelGameType, labelWorldType, labelFilePreview, buttonNewSeed);
@@ -165,15 +165,15 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 		comboWorldType.setX(fright).setY(ftop).setWidth(200).setHeight(20);
 
 		ftop += 25;
-		
+
 		checkHardcore.setX(fright - 50).setY(ftop).setWidth(200).setHeight(20);
-		
+
 		allowCheats.setX(fright + 150).setY(ftop).setWidth(200).setHeight(20);
-		
+
 		ftop += 25;
 
 		checkGenerateStructures.setX(fright - 50).setY(ftop).setWidth(200).setHeight(20);
-		
+
 		bonusChest.setX(fright + 150).setY(ftop).setWidth(200).setHeight(20);
 
 		scrollArea.updateInnerSize();
@@ -222,14 +222,14 @@ public class GuiCreateWorld extends GuiSpoutScreen {
 			if (comboGameType.getSelectedItem().equals("Adventure")) {
 				var9 = EnumGameType.ADVENTURE;
 			}
-			
+
 			boolean hardcore = checkHardcore.isChecked();
 
 			WorldSettings ws = new WorldSettings(seed, var9, checkGenerateStructures.isChecked(), hardcore, WorldType.worldTypes[comboWorldType.getSelectedRow()]);
-			if(bonusChest.isChecked()) {
+			if (bonusChest.isChecked()) {
 				ws.enableBonusChest();
 			}
-			if(allowCheats.isChecked()) {
+			if (allowCheats.isChecked()) {
 				ws.enableCommands();
 			}
 			this.mc.launchIntegratedServer(getEffectiveSaveName(), textName.getText(), ws);

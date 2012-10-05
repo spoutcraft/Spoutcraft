@@ -1,7 +1,5 @@
 package com.pclewis.mcpatcher.mod;
 
-import com.pclewis.mcpatcher.MCPatcherUtils;
-import com.pclewis.mcpatcher.mod.TextureUtils$1;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -46,6 +44,10 @@ import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TextureWaterFlowFX;
 
+import com.pclewis.mcpatcher.MCPatcherUtils;
+import com.pclewis.mcpatcher.TexturePackAPI;
+import com.pclewis.mcpatcher.mod.TextureUtils$1;
+
 public class TextureUtils {
 	private static boolean animatedFire = true;
 	private static boolean animatedLava = true;
@@ -77,6 +79,7 @@ public class TextureUtils {
 
 	public static boolean setTileSize() {
 		int var0 = getTileSize();
+		TexturePackAPI.ChangeHandler.checkForTexturePackChange();
 
 		if (var0 == TileSize.int_size) {
 			return false;
@@ -391,9 +394,9 @@ public class TextureUtils {
 				}
 			}
 		}
-		
+
 		if (image == null) {
-			//Search local files (downloaded texture)
+			// Search local files (downloaded texture)
 			FileImageInputStream imageStream = null;
 			try {
 				File test = new File(texture);

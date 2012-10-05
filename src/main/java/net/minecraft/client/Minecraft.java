@@ -470,12 +470,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		} else if (screen == null && this.thePlayer.health <= 0) {
 			screen = new GuiGameOver();
 		}
-		
-		//Reset Gui
-		if (screen instanceof org.spoutcraft.client.gui.mainmenu.MainMenu || screen instanceof org.spoutcraft.client.gui.server.GuiFavorites || screen instanceof org.spoutcraft.client.gui.error.GuiConnectionLost) {
-			ClientPlayer.getInstance().resetMainScreen();
-			SpoutClient.getInstance().setSpoutActive(false);
-		}
 
 		ScreenType display = ScreenUtil.getType(screen);
 

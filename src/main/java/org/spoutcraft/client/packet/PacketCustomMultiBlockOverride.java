@@ -68,10 +68,7 @@ public class PacketCustomMultiBlockOverride implements CompressablePacket {
 			byte data = result.get(index+6);
 			chunk.setCustomBlockId(x, y, z, id);
 			chunk.setCustomBlockData(x, y, z, data);
-			int[] old = SpoutClient.getInstance().getRawWorld().lightUpdateBlockList;
-			SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = PacketCustomBlockChunkOverride.lightingBlockList;
 			SpoutClient.getInstance().getRawWorld().updateAllLightTypes(x, y, z);
-			SpoutClient.getInstance().getRawWorld().lightUpdateBlockList = old;
 		}
 	}
 

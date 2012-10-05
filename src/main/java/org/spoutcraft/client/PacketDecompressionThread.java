@@ -85,6 +85,7 @@ public class PacketDecompressionThread extends Thread {
 			while (i.hasNext()) {
 				SpoutPacket packet = i.next();
 				try {
+					SpoutClient.getHandle().mcProfiler.startSection(packet.getPacketType().name());
 					packet.run(SpoutClient.getHandle().thePlayer.entityId);
 					i.remove();
 				} catch (Exception e) {
@@ -92,6 +93,8 @@ public class PacketDecompressionThread extends Thread {
 					System.out.println("Unexpected Exception: " + packet.getPacketType());
 					e.printStackTrace();
 					System.out.println("------------------------");
+				} finally {
+					SpoutClient.getHandle().mcProfiler.endSection();
 				}
 			}
 		}

@@ -5,7 +5,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
 import org.spoutcraft.client.config.ConfigReader;
+
+import com.pclewis.mcpatcher.mod.CTMUtils;
 import com.pclewis.mcpatcher.mod.Colorizer;
+import com.pclewis.mcpatcher.mod.GlassPaneRenderer;
 import com.pclewis.mcpatcher.mod.Shaders;
 // Spout End
 
@@ -175,6 +178,14 @@ public class RenderBlocks {
 		var5.setBrightness(var25);
 		var5.setColorOpaque_F(var9, var9, var9);
 		int var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 0);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var27)) {
+			var27 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		//Spout HD end
 		int var28 = (var27 & 15) << 4;
 		int var29 = var27 & 240;
 		double var30 = (double)((float)var28 / 256.0F);
@@ -193,6 +204,14 @@ public class RenderBlocks {
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3 + 1, par4));
 		var5.setColorOpaque_F(var10, var10, var10);
 		var27 = par1Block.getBlockTexture(this.blockAccess, par2, par3, par4, 1);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var27)) {
+			var27 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+ 		// Spout HD end
 		var28 = (var27 & 15) << 4;
 		var29 = var27 & 240;
 		var30 = (double)((float)var28 / 256.0F);
@@ -321,6 +340,15 @@ public class RenderBlocks {
 		if (this.overrideBlockTexture >= 0) {
 			var34 = this.overrideBlockTexture;
 		}
+		
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1BlockBrewingStand, par2, par3, par4, var34)) {
+			var34 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1BlockBrewingStand)) {
+			return false;
+		}
+		// Spout HD end
 
 		int var35 = (var34 & 15) << 4;
 		int var36 = var34 & 240;
@@ -457,6 +485,14 @@ public class RenderBlocks {
 		this.renderTorchAtAngle(par1Block, (double)par2 + var11, (double)par3 + var9, (double)par4 + var13, 0.0D, 0.0D);
 		this.renderTorchAtAngle(par1Block, (double)par2 + var15, (double)par3 + var9, (double)par4 + var17, 0.0D, 0.0D);
 		int var19 = par1Block.getBlockTextureFromSide(1);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var19)) {
+			var19 = CTMUtils.newTextureIndex;
+			var8 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
 		int var20 = (var19 & 15) << 4;
 		int var21 = var19 & 240;
 		double var22 = (double)((float)var20 / 256.0F);
@@ -796,6 +832,14 @@ public class RenderBlocks {
 		if (this.overrideBlockTexture >= 0) {
 			var14 = this.overrideBlockTexture;
 		}
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var14)) {
+			var14 = CTMUtils.newTextureIndex;
+			var8 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		//Spout HD end
 
 		int var15 = (var14 & 15) << 4;
 		int var16 = var14 & 240;
@@ -974,6 +1018,15 @@ public class RenderBlocks {
 		if (this.overrideBlockTexture >= 0) {
 			var18 = this.overrideBlockTexture;
 		}
+		
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var18)) {
+			var18 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
 
 		int var19 = (var18 & 15) << 4;
 		int var20 = var18 & 240;
@@ -1258,6 +1311,16 @@ public class RenderBlocks {
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var10 = par1Block.getBlockBrightness(this.blockAccess, par2, par3, par4) * 0.75F;
 		var5.setColorOpaque_F(var10, var10, var10);
+		
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var6)) {
+			var6 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
+		
 		int var11 = (var6 & 15) << 4;
 		int var12 = var6 & 240;
 		double var13 = (double)((float)var11 / 256.0F);
@@ -1378,6 +1441,14 @@ public class RenderBlocks {
 
 		var5.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var6)) {
+			var6 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
 		int var7 = (var6 & 15) << 4;
 		int var8 = var6 & 240;
 		double var9 = (double)((float)var7 / 256.0F);
@@ -1595,6 +1666,16 @@ public class RenderBlocks {
 		}
 
 		var5.setColorOpaque_F(var10, var11, var12);
+
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var7)) {
+			var7 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
+
 		int var13 = (var7 & 15) << 4;
 		int var14 = var7 & 240;
 		double var15 = (double)((float)var13 / 256.0F);
@@ -1782,6 +1863,14 @@ public class RenderBlocks {
 
 		var5.setBrightness(par1BlockRail.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		var5.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1BlockRail, par2, par3, par4, var7)) {
+			var7 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1BlockRail)) {
+			return false;
+		}
+		// Spout HD end
 		int var8 = (var7 & 15) << 4;
 		int var9 = var7 & 240;
 		double var10 = (double)((float)var8 / 256.0F);
@@ -1851,6 +1940,14 @@ public class RenderBlocks {
 		var5.setBrightness(par1Block.getMixedBrightnessForBlock(this.blockAccess, par2, par3, par4));
 		float var7 = 1.0F;
 		var5.setColorOpaque_F(var7, var7, var7);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var6)) {
+			var6 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
 		int var22 = (var6 & 15) << 4;
 		int var8 = var6 & 240;
 		double var9 = (double)((float)var22 / 256.0F);
@@ -1905,6 +2002,14 @@ public class RenderBlocks {
 		float var10 = (float)(var8 >> 8 & 255) / 255.0F;
 		float var11 = (float)(var8 & 255) / 255.0F;
 		var5.setColorOpaque_F(var7 * var9, var7 * var10, var7 * var11);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var6)) {
+			var6 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		//Spout HD end
 		var8 = (var6 & 15) << 4;
 		int var21 = var6 & 240;
 		double var22 = (double)((float)var8 / 256.0F);
@@ -2028,10 +2133,16 @@ public class RenderBlocks {
 		boolean var59 = par1BlockPane.canThisPaneConnectToThisBlockID(this.blockAccess.getBlockId(par2, par3, par4 + 1));
 		boolean var60 = par1BlockPane.canThisPaneConnectToThisBlockID(this.blockAccess.getBlockId(par2 - 1, par3, par4));
 		boolean var61 = par1BlockPane.canThisPaneConnectToThisBlockID(this.blockAccess.getBlockId(par2 + 1, par3, par4));
+		// Spout HD start
+		GlassPaneRenderer.render(this, this.overrideBlockTexture, par1BlockPane, par2, par3, par4, var58, var59, var60, var61);
+		// Spout HD end
 		boolean var62 = par1BlockPane.shouldSideBeRendered(this.blockAccess, par2, par3 + 1, par4, 1);
 		boolean var63 = par1BlockPane.shouldSideBeRendered(this.blockAccess, par2, par3 - 1, par4, 0);
 		if ((!var60 || !var61) && (var60 || var61 || var58 || var59)) {
 			if (var60 && !var61) {
+				// Spout HD start
+				if (!GlassPaneRenderer.active) {
+				// Spout HD end
 				var6.addVertexWithUV(var38, (double)(par3 + 1), var46, var16, var22);
 				var6.addVertexWithUV(var38, (double)(par3 + 0), var46, var16, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var18, var24);
@@ -2040,6 +2151,9 @@ public class RenderBlocks {
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var16, var24);
 				var6.addVertexWithUV(var38, (double)(par3 + 0), var46, var18, var24);
 				var6.addVertexWithUV(var38, (double)(par3 + 1), var46, var18, var22);
+				// Spout HD start
+				}
+				// Spout HD end
 				if (!var59 && !var58) {
 					var6.addVertexWithUV(var40, (double)(par3 + 1), var56, var28, var32);
 					var6.addVertexWithUV(var40, (double)(par3 + 0), var56, var28, var36);
@@ -2073,6 +2187,9 @@ public class RenderBlocks {
 					var6.addVertexWithUV(var40, (double)par3 - 0.01D, var54, var28, var34);
 				}
 			} else if (!var60 && var61) {
+				// Spout HD start
+				if (!GlassPaneRenderer.active) {
+				// Spout HD end
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var46, var18, var22);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var18, var24);
 				var6.addVertexWithUV(var42, (double)(par3 + 0), var46, var20, var24);
@@ -2081,6 +2198,9 @@ public class RenderBlocks {
 				var6.addVertexWithUV(var42, (double)(par3 + 0), var46, var18, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var20, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var46, var20, var22);
+				// Spout HD start
+				}
+				// Spout HD end
 				if (!var59 && !var58) {
 					var6.addVertexWithUV(var40, (double)(par3 + 1), var54, var28, var32);
 					var6.addVertexWithUV(var40, (double)(par3 + 0), var54, var28, var36);
@@ -2115,6 +2235,9 @@ public class RenderBlocks {
 				}
 			}
 		} else {
+			// Spout HD start
+			if (!GlassPaneRenderer.active) {
+			// Spout HD end
 			var6.addVertexWithUV(var38, (double)(par3 + 1), var46, var16, var22);
 			var6.addVertexWithUV(var38, (double)(par3 + 0), var46, var16, var24);
 			var6.addVertexWithUV(var42, (double)(par3 + 0), var46, var20, var24);
@@ -2123,6 +2246,9 @@ public class RenderBlocks {
 			var6.addVertexWithUV(var42, (double)(par3 + 0), var46, var16, var24);
 			var6.addVertexWithUV(var38, (double)(par3 + 0), var46, var20, var24);
 			var6.addVertexWithUV(var38, (double)(par3 + 1), var46, var20, var22);
+			// Spout HD start
+			}
+			// Spout HD end
 			if (var62) {
 				var6.addVertexWithUV(var38, (double)(par3 + 1) + 0.01D, var56, var30, var36);
 				var6.addVertexWithUV(var42, (double)(par3 + 1) + 0.01D, var56, var30, var32);
@@ -2192,6 +2318,9 @@ public class RenderBlocks {
 
 		if ((!var58 || !var59) && (var60 || var61 || var58 || var59)) {
 			if (var58 && !var59) {
+				// Spout HD start
+				if (!GlassPaneRenderer.active) {
+				// Spout HD end
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var44, var16, var22);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var44, var16, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var18, var24);
@@ -2200,6 +2329,9 @@ public class RenderBlocks {
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var16, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var44, var18, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var44, var18, var22);
+				// Spout HD start
+				}
+				// Spout HD end
 				if (!var61 && !var60) {
 					var6.addVertexWithUV(var50, (double)(par3 + 1), var46, var28, var32);
 					var6.addVertexWithUV(var50, (double)(par3 + 0), var46, var28, var36);
@@ -2233,6 +2365,9 @@ public class RenderBlocks {
 					var6.addVertexWithUV(var52, (double)par3, var46, var28, var32);
 				}
 			} else if (!var58 && var59) {
+				// Spout HD start
+				if (!GlassPaneRenderer.active) {
+				// Spout HD end
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var46, var18, var22);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var18, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var48, var20, var24);
@@ -2241,6 +2376,9 @@ public class RenderBlocks {
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var48, var18, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 0), var46, var20, var24);
 				var6.addVertexWithUV(var40, (double)(par3 + 1), var46, var20, var22);
+				// Spout HD start
+				}
+				// Spout HD end
 				if (!var61 && !var60) {
 					var6.addVertexWithUV(var52, (double)(par3 + 1), var46, var28, var32);
 					var6.addVertexWithUV(var52, (double)(par3 + 0), var46, var28, var36);
@@ -2275,6 +2413,9 @@ public class RenderBlocks {
 				}
 			}
 		} else {
+			// Spout HD start
+			if (!GlassPaneRenderer.active) {
+			// Spout HD end
 			var6.addVertexWithUV(var40, (double)(par3 + 1), var48, var16, var22);
 			var6.addVertexWithUV(var40, (double)(par3 + 0), var48, var16, var24);
 			var6.addVertexWithUV(var40, (double)(par3 + 0), var44, var20, var24);
@@ -2283,6 +2424,9 @@ public class RenderBlocks {
 			var6.addVertexWithUV(var40, (double)(par3 + 0), var44, var16, var24);
 			var6.addVertexWithUV(var40, (double)(par3 + 0), var48, var20, var24);
 			var6.addVertexWithUV(var40, (double)(par3 + 1), var48, var20, var22);
+			// Spout HD start
+			}
+			// Spout HD end
 			if (var62) {
 				var6.addVertexWithUV(var52, (double)(par3 + 1), var48, var30, var36);
 				var6.addVertexWithUV(var52, (double)(par3 + 1), var44, var30, var32);
@@ -2481,6 +2625,15 @@ public class RenderBlocks {
 		// Spout End
 		Tessellator var9 = Tessellator.instance;
 		int var10 = par1Block.getBlockTextureFromSideAndMetadata(0, par2);
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, (int)par3, (int)par5, (int)par7, var10)) {
+			var10 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
+		}
+		// Spout HD end
+
 		if (this.overrideBlockTexture >= 0) {
 			var10 = this.overrideBlockTexture;
 		}
@@ -2562,6 +2715,14 @@ public class RenderBlocks {
 		if (this.overrideBlockTexture >= 0) {
 			var6 = this.overrideBlockTexture;
 		}
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var6)) {
+			var6 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return false;
+		}
+		// Spout HD end
 
 		int var7 = (var6 & 15) << 4;
 		int var8 = var6 & 240;
@@ -2732,6 +2893,14 @@ public class RenderBlocks {
 				var26 -= var32;
 				var28 -= var32;
 				var30 -= var32;
+				// Spout HD start
+				if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var34)) {
+					var34 = CTMUtils.newTextureIndex;
+					var5 = CTMUtils.newTessellator;
+				} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+					return false;
+				}
+				// Spout HD end
 				int var36 = (var34 & 15) << 4;
 				var37 = var34 & 240;
 				double var38 = ((double)var36 + 8.0D) / 256.0D;
@@ -2782,6 +2951,15 @@ public class RenderBlocks {
 				}
 
 				int var66 = par1Block.getBlockTextureFromSideAndMetadata(var34 + 2, var23);
+				// Spout HD start
+				if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1Block, par2, par3, par4, var66)) {
+					var66 = CTMUtils.newTextureIndex;
+					var5 = CTMUtils.newTessellator;
+				} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+					return false;
+				}
+				//Spout HD end
+
 				int var39 = (var66 & 15) << 4;
 				int var67 = var66 & 240;
 				if (this.renderAllFaces || var12[var34]) {
@@ -4058,6 +4236,14 @@ public class RenderBlocks {
 		var7 = var7 + 2 - var9;
 		int var10 = 4 + var9 * 2;
 		int var11 = 5 + var9 * 2;
+		// Spout HD start
+		if (this.overrideBlockTexture < 0 && CTMUtils.setup(this, par1BlockCocoa, par2, par3, par4, var7)) {
+			var7 = CTMUtils.newTextureIndex;
+			var5 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1BlockCocoa)) {
+			return false;
+		}
+		// Spout HD end
 		int var12 = (var7 & 15) << 4;
 		int var13 = var7 & 240;
 		double var14 = 15.0D - (double)var10;
@@ -4648,12 +4834,23 @@ public class RenderBlocks {
 	}
 
 	public void renderBottomFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(0.0F, -1.0F, 0.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 0, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;
@@ -4735,12 +4932,23 @@ public class RenderBlocks {
 	}
 
 	public void renderTopFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(0.0F, 1.0F, 0.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 1, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;
@@ -4822,12 +5030,23 @@ public class RenderBlocks {
 	}
 
 	public void renderEastFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(0.0F, 0.0F, -1.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 2, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;
@@ -4916,12 +5135,23 @@ public class RenderBlocks {
 	}
 
 	public void renderWestFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(0.0F, 0.0F, 1.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 3, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;
@@ -5010,12 +5240,23 @@ public class RenderBlocks {
 	}
 
 	public void renderNorthFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(-1.0F, 0.0F, 0.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 4, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;
@@ -5104,12 +5345,23 @@ public class RenderBlocks {
 	}
 
 	public void renderSouthFace(Block par1Block, double par2, double par4, double par6, int par8) {
-		if(Shaders.isEnabled())
+		// Spout start
+		if(Shaders.isEnabled()) {
 			Tessellator.instance.setNormal(1.0F, 0.0F, 0.0F);
+		}
+		// Spout end
 		Tessellator var9 = Tessellator.instance;
 		if (this.overrideBlockTexture >= 0) {
 			par8 = this.overrideBlockTexture;
+		// Spout HD start
+			CTMUtils.reset();
+		} else if (CTMUtils.setup(this, par1Block, (int)par2, (int)par4, (int)par6, 5, par8)) {
+			par8 = CTMUtils.newTextureIndex;
+			var9 = CTMUtils.newTessellator;
+		} else if (CTMUtils.skipDefaultRendering(par1Block)) {
+			return;
 		}
+		// Spout HD end
 
 		int var10 = (par8 & 15) << 4;
 		int var11 = par8 & 240;

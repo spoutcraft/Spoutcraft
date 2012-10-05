@@ -56,15 +56,9 @@ public class GuiIngameMenu extends GuiScreen
 			// Spout Start
 			HeightMapAgent.save();
 			// Spout End
-			
-			boolean mp = this.mc.isIntegratedServerRunning(); // Spout
+			par1GuiButton.enabled = false;			
 			mc.statFileWriter.readStat(StatList.leaveGameStat, 1);
-
-			if (mc.isIntegratedServerRunning())
-			{
-				mc.theWorld.sendQuittingDisconnectingPacket();
-			}
-
+			mc.theWorld.sendQuittingDisconnectingPacket();
 			mc.loadWorld(null);
 			// Spout Start
 			this.mc.displayGuiScreen(SpoutClient.getInstance().getServerManager().getJoinedFrom()); // Spout

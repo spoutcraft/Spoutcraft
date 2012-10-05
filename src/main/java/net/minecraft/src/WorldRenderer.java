@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import com.pclewis.mcpatcher.mod.CTMUtils;
 import com.pclewis.mcpatcher.mod.Shaders;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,7 +101,11 @@ public class WorldRenderer {
 
 	public void updateRenderer() {
 		// Spout Start
-		if(this.needsUpdate) {
+		CTMUtils.start();
+
+		if (!this.needsUpdate) {
+			CTMUtils.finish();
+		} else {
 			++chunksUpdated;
 			int x = this.posX;
 			int y = this.posY;
@@ -306,8 +311,8 @@ public class WorldRenderer {
 			this.tileEntities.removeAll(tileRenderers);
 			this.isChunkLit = Chunk.isLit;
 			this.isInitialized = true;
-			
 			blockRenderer.customIds = null;
+			CTMUtils.finish();
 		}
 	}
 

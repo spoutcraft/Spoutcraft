@@ -55,8 +55,8 @@ public class AccessoryHandler {
 		}
 
 		Set<Pair<Accessory, String>> toRemove = new HashSet<Pair<Accessory, String>>();
-		for(Pair<Accessory, String> pr : acs) {
-			if(pr.getLeft().getType().equals(n.getType())) {
+		for (Pair<Accessory, String> pr : acs) {
+			if (pr.getLeft().getType().equals(n.getType())) {
 				toRemove.add(pr);
 			}
 		}

@@ -215,9 +215,12 @@ public abstract class GenericScreen extends GenericWidget implements Screen {
 		for (RenderPriority priority : rvalues) {
 			for (Widget widget : widgets.keySet()) {
 				if (widget.getPriority() == priority && canRender(widget)) {
-					GL11.glPushMatrix();
-					widget.render();
-					GL11.glPopMatrix();
+					try {
+						GL11.glPushMatrix();
+						widget.render();
+					} finally {
+						GL11.glPopMatrix();
+					}
 				}
 			}
 		}

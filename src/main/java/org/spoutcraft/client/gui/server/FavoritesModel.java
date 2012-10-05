@@ -196,7 +196,7 @@ public class FavoritesModel extends ServerModel {
 			gui.updateButtons();
 		}
 	}
-	
+
 	public void addServer(String title, String ip, int port, int databaseId, Boolean acceptsTextures) {
 		ServerItem item = new ServerItem(title, ip, port, databaseId);
 		item.setShowPing(true);
@@ -210,7 +210,7 @@ public class FavoritesModel extends ServerModel {
 			gui.updateButtons();
 		}
 	}
-	
+
 	public void removeServer(ServerItem selectedItem) {
 		items.remove(selectedItem);
 		sizeChanged();

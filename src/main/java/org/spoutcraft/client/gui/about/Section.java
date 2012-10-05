@@ -43,7 +43,7 @@ public abstract class Section {
 		types.put(identify, clazz);
 	}
 	public static Section getSection(String type) {
-		if(types.containsKey(type)) {
+		if (types.containsKey(type)) {
 			try {
 				return types.get(type).newInstance();
 			} catch (InstantiationException e) {

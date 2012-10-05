@@ -24,13 +24,13 @@ import org.newdawn.slick.opengl.Texture;
 
 import net.minecraft.src.FontRenderer;
 
-import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.gui.MCRenderDelegate;
-import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.RadioButton;
+import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.MCRenderDelegate;
+import org.spoutcraft.client.io.CustomTextureManager;
 
 public class SortButton extends GenericRadioButton implements UrlElement {
 	boolean topdown = true;

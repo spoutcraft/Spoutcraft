@@ -14,18 +14,19 @@
 	and when connecting to a server with SpoutPlugin, it allows you to unlock most of the features of SpoutPlugin, such as custom blocks, 
 	items, texture packs, etc. It also gives several speed improvements, a minimap, an overview map, custom shaders, etc.</description>
 
+	<!-- Build properties -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<currentYear>2012</currentYear>
 		<minecraftVersion>1.3.2</minecraftVersion>
-		<lwjglVersion>2.8.3</lwjglVersion>
+		<lwjglVersion>2.4</lwjglVersion>
 		<mcpVersion>72</mcpVersion>
 		<buildNumber>0</buildNumber>
 	</properties>
 
 	<!-- Company information -->
 	<organization>
-		<name>SpoutDev</name>
+		<name>Spout LLC</name>
 		<url>http://www.spout.org</url>
 	</organization>
 
@@ -95,7 +96,7 @@
 	<build>
 		<defaultGoal>clean install</defaultGoal>
 
-		<!-- Resources -->
+		<!-- Static resources -->
 		<resources>
 			<resource>
 				<filtering>false</filtering>
@@ -202,7 +203,7 @@
 									<targetPath>${project.basedir}/lib</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
@@ -250,9 +251,9 @@
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>org.spout</groupId>
+											<groupId>slick</groupId>
 											<artifactId>slick</artifactId>
-											<version>0.4-SNAPSHOT</version>
+											<version>274</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
@@ -274,21 +275,21 @@
 									<targetPath>${project.basedir}/jars/bin</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl_util</artifactId>
 											<version>${lwjglVersion}</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 										<dependency>
-											<groupId>net.java.jinput</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>jinput</artifactId>
-											<version>2.0.5</version>
+											<version>1.0.0-b01</version>
 											<stripVersion>true</stripVersion>
 										</dependency>
 									</dependencies>
@@ -299,7 +300,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-windows</classifier>
@@ -315,7 +316,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-osx</classifier>
@@ -331,7 +332,7 @@
 									<targetPath>${project.basedir}/jars/bin/natives</targetPath>
 									<dependencies>
 										<dependency>
-											<groupId>org.lwjgl.lwjgl</groupId>
+											<groupId>net.minecraft</groupId>
 											<artifactId>lwjgl-platform</artifactId>
 											<version>${lwjglVersion}</version>
 											<classifier>natives-linux</classifier>
@@ -530,69 +531,6 @@
 							<goal>copy</goal>
 						</goals>
 					</execution>
-					<!-- Copy compiled classes to target directory -->
-					<execution>
-						<id>copy-compiled</id>
-						<configuration>
-							<verbose>false</verbose>
-							<resources>
-								<resource>
-									<runIf>
-										{{
-											if (new File(project.basedir, "target").isDirectory()) { return true; }
-											return false;
-										}}
-									</runIf>
-									<directory>${project.basedir}/reobf/minecraft</directory>
-									<targetPath>${project.basedir}/target/classes</targetPath>
-									<include>**/*</include>
-									<preservePath>true</preservePath>
-								</resource>
-							</resources>
-						</configuration>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
-					<!-- Copy compiled jar to user folder -->
-					<execution>
-						<id>install-artifact</id>
-						<configuration>
-							<verbose>false</verbose>
-							<resources>
-								<resource>
-									<runIf>{{ osName.contains("Windows") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/AppData/Roaming/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<resource>
-									<runIf>{{ osName.contains("Mac") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/Application Support/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<resource>
-									<runIf>{{ osName.contains("Linux") }}</runIf>
-									<directory>${project.basedir}/target</directory>
-									<targetPath>${user.home}/.spoutcraft/bin</targetPath>
-									<include>${project.artifactId}-${project.version}.jar</include>
-									<destFileName>${project.artifactId}.jar</destFileName>
-									<preservePath>true</preservePath>
-								</resource>
-								<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
-							</resources>
-						</configuration>
-						<phase>install</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
 			<!-- Version strip plugin -->
@@ -622,6 +560,22 @@
 					<excludes>
 						<exclude>**/*</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<!-- Javadoc generation plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<bottom><![CDATA[Copyright (c) {inceptionYear}-{currentYear}, <a href="${project.organization.url}" target="_blank">${project.organization.name}</a>. ${project.name} is licensed under <a href="http://www.gnu.org/licenses/lgpl.html" target="_blank">GNU Lesser General Public License Version 3</a>]]></bottom>
+					<doctitle><![CDATA[${project.name} ${releaseVersion} b${buildNumber} - ${maven.build.timestamp}]]></doctitle>
+					<windowtitle>Javadoc | ${project.name} ${releaseVersion} b${buildNumber}</windowtitle>
+					<author>false</author>
+					<version>false</version>
+					<detectLinks>true</detectLinks>
+					<linksource>true</linksource>
+					<sourcepath>${project.basedir}/src/main/java/org/spoutcraft/api</sourcepath>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -700,7 +654,7 @@
 	<profiles>
 		<!-- Activate on Windows -->
 		<profile>
-			<id>mcp-windows</id>
+			<id>mcp-win</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<os>
@@ -737,20 +691,6 @@
 									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
 									<arguments>
 										<argument>runtime/recompile.py</argument>
-										<argument>%*</argument>
-									</arguments>
-								</configuration>
-								<phase>process-classes</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>reobfuscate-mc</id>
-								<configuration>
-									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
-									<arguments>
-										<argument>runtime/reobfuscate.py</argument>
 										<argument>%*</argument>
 									</arguments>
 								</configuration>
@@ -810,6 +750,108 @@
 									<goal>exec</goal>
 								</goals>
 							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- For final release JAR only on Windows -->
+		<profile>
+			<id>mcp-final-win</id>
+			<build>
+				<plugins>
+					<!-- Program executor plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
+							<!-- Reobfuscate Minecraft using MCP -->
+							<execution>
+								<id>reobfuscate-mc</id>
+								<configuration>
+									<executable>${project.basedir}/runtime/bin/python/python_mcp</executable>
+									<arguments>
+										<argument>runtime/reobfuscate.py</argument>
+										<argument>"$@"</argument>
+									</arguments>
+								</configuration>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- File downloading plugin -->
+					<plugin>
+						<groupId>com.github.goldin</groupId>
+						<artifactId>copy-maven-plugin</artifactId>
+						<version>0.2.5</version>
+						<executions>
+							<!-- Copy compiled classes to target directory -->
+							<execution>
+								<id>copy-compiled</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>
+												{{
+													if (new File(project.basedir, "target").isDirectory()) { return true; }
+													return false;
+												}}
+											</runIf>
+											<directory>${project.basedir}/reobf/minecraft</directory>
+											<targetPath>${project.basedir}/target/classes</targetPath>
+											<include>**/*</include>
+											<preservePath>true</preservePath>
+										</resource>
+									</resources>
+								</configuration>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+							</execution>
+							<!-- Copy compiled jar to user folder -->
+							<execution>
+								<id>install-artifact</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>{{ osName.contains("Windows") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/AppData/Roaming/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
+									</resources>
+								</configuration>
+								<phase>install</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- For final release JAR only on Unix/Mac -->
+		<profile>
+			<id>mcp-final-unix</id>
+			<build>
+				<plugins>
+					<!-- Program executor plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<version>1.2.1</version>
+						<executions>
 							<!-- Reobfuscate Minecraft using MCP -->
 							<execution>
 								<id>reobfuscate-mc</id>
@@ -823,6 +865,69 @@
 								<phase>process-sources</phase>
 								<goals>
 									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- File downloading plugin -->
+					<plugin>
+						<groupId>com.github.goldin</groupId>
+						<artifactId>copy-maven-plugin</artifactId>
+						<version>0.2.5</version>
+						<executions>
+							<!-- Copy compiled classes to target directory -->
+							<execution>
+								<id>copy-compiled</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>
+												{{
+													if (new File(project.basedir, "target").isDirectory()) { return true; }
+													return false;
+												}}
+											</runIf>
+											<directory>${project.basedir}/reobf/minecraft</directory>
+											<targetPath>${project.basedir}/target/classes</targetPath>
+											<include>**/*</include>
+											<preservePath>true</preservePath>
+										</resource>
+									</resources>
+								</configuration>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy</goal>
+								</goals>
+							</execution>
+							<!-- Copy compiled jar to user folder -->
+							<execution>
+								<id>install-artifact</id>
+								<configuration>
+									<verbose>false</verbose>
+									<resources>
+										<resource>
+											<runIf>{{ osName.contains("Mac") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/Application Support/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<resource>
+											<runIf>{{ osName.contains("Linux") }}</runIf>
+											<directory>${project.basedir}/target</directory>
+											<targetPath>${user.home}/.spoutcraft/bin</targetPath>
+											<include>${project.artifactId}-${project.version}.jar</include>
+											<destFileName>${project.artifactId}.jar</destFileName>
+											<preservePath>true</preservePath>
+										</resource>
+										<!-- TODO: Copy lib folder to user folder .spoutcraft/bin/lib -->
+									</resources>
+								</configuration>
+								<phase>install</phase>
+								<goals>
+									<goal>copy</goal>
 								</goals>
 							</execution>
 						</executions>

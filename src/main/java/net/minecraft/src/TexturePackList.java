@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.pclewis.mcpatcher.MCPatcherUtils; // Spout HD
+import com.pclewis.mcpatcher.TexturePackAPI;
 import com.pclewis.mcpatcher.mod.TextureUtils; // Spout HD
 import java.io.File;
 import java.util.ArrayList;
@@ -210,6 +211,10 @@ public class TexturePackList {
 
 	public boolean a(TexturePackImplementation var1) {
 		return this.setTexturePack(var1);
+	}
+
+	public TexturePackImplementation getDefaultTexturePack() {
+		return (TexturePackImplementation)field_77314_a;
 	}
 	// Spout HD End
 }

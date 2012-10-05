@@ -30,9 +30,9 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 
-import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.RenderUtil;
+import org.spoutcraft.client.SpoutClient;
 
 public class MapRenderer {
 	/** Direction you're facing */
@@ -57,7 +57,7 @@ public class MapRenderer {
 
 	/**
 	 * Do rendering
-	 * 
+	 *
 	 * @param scWidth
 	 *			screen width
 	 * @param scHeight
@@ -237,13 +237,13 @@ public class MapRenderer {
 	}
 
 	private void renderEntities() {
-		if(!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
+		if (!Spoutcraft.hasPermission("spout.client.minimap.showentities")) {
 			return;
 		}
-		if(!MinimapConfig.getInstance().isShowingEntities()) {
+		if (!MinimapConfig.getInstance().isShowingEntities()) {
 			return;
 		}
-		double playerX = map.getPlayerX(); 
+		double playerX = map.getPlayerX();
 		double playerZ = map.getPlayerZ();
 
 		synchronized (map.watchedEntities) {

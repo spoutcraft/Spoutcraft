@@ -172,7 +172,7 @@ public class CustomTextureManager {
 					pathToJar = URLDecoder.decode(pathToJar, "UTF-8");
 				} catch (java.io.UnsupportedEncodingException ignore) { }
 
-				File relative = new File(pathToJar + "/../../" + path);
+				File relative = new File(pathToJar + "/../../src/main/resources" + path.substring(4));
 
 				try {
 					pathToJar = relative.getCanonicalPath();

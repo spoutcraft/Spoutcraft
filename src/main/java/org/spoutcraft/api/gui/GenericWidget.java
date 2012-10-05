@@ -226,12 +226,12 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 			case TOP_CENTER:
 			case CENTER_CENTER:
 			case BOTTOM_CENTER:
-				left += getScreen().getWidth() / 2;
+				left += getScreenWidth() / 2;
 				break;
 			case TOP_RIGHT:
 			case CENTER_RIGHT:
 			case BOTTOM_RIGHT:
-				left += getScreen().getWidth();
+				left += getScreenWidth();
 				break;
 		}
 		return left;
@@ -243,15 +243,29 @@ public abstract class GenericWidget extends PropertyObject implements Widget {
 			case CENTER_LEFT:
 			case CENTER_CENTER:
 			case CENTER_RIGHT:
-				top += getScreen().getHeight() / 2;
+				top += getScreenHeight() / 2;
 				break;
 			case BOTTOM_LEFT:
 			case BOTTOM_CENTER:
 			case BOTTOM_RIGHT:
-				top += getScreen().getHeight();
+				top += getScreenHeight();
 				break;
 		}
 		return top;
+	}
+
+	private double getScreenWidth() {
+		if (getScreen() == null) {
+			return Spoutcraft.getRenderDelegate().getScreenWidth();
+		}
+		return getScreen().getWidth();
+	}
+
+	private double getScreenHeight() {
+		if (getScreen() == null) {
+			return Spoutcraft.getRenderDelegate().getScreenHeight();
+		}
+		return getScreen().getHeight();
 	}
 
 	public Widget setX(int pos) {

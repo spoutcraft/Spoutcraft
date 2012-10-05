@@ -28,6 +28,7 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
+import org.spoutcraft.client.player.ClientPlayer;
 import org.spoutcraft.client.util.NetworkUtils;
 import org.spoutcraft.api.entity.LivingEntity;
 // Spout End
@@ -80,6 +81,9 @@ public class NetClientHandler extends NetHandler {
 
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerIp = par2Str; // Spout
 		org.spoutcraft.client.gui.error.GuiConnectionLost.lastServerPort = par3; // Spout
+		
+		ClientPlayer.getInstance().resetMainScreen();
+		SpoutClient.getInstance().setSpoutActive(false);
 		// Spout End
 	}
 
@@ -99,6 +103,11 @@ public class NetClientHandler extends NetHandler {
 
 		this.netManager = null;
 		this.worldClient = null;
+		
+		//Spout start
+		ClientPlayer.getInstance().resetMainScreen();
+		SpoutClient.getInstance().setSpoutActive(false);
+		//Spout end
 	}
 
 	/**
@@ -605,23 +614,6 @@ public class NetClientHandler extends NetHandler {
 	 */
 	public void addToSendQueue(Packet par1Packet) {
 		if (!this.field_72554_f) {
-			// Spout Start
-			if (queued) {
-				int id = par1Packet.getPacketId();
-				//Always must send movement packets :(
-				if (System.currentTimeMillis() < packetQueueTime && (id > 13 || id < 10)) {
-					queue.add(par1Packet);
-					return;
-				}
-				else {
-					queued = false;
-					packetQueueTime = 0L;
-					for (Packet p : queue) {
-						this.netManager.addToSendQueue(p);
-					}
-				}
-			}
-			// Spout End
 			this.netManager.addToSendQueue(par1Packet);
 		}
 	}

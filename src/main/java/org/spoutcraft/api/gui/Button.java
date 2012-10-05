@@ -25,7 +25,7 @@ import org.spoutcraft.api.event.screen.ButtonClickEvent;
 @UnsafeClass
 public interface Button extends Control, Label {
 	/**
-	 * Get's the text that is displayed when the control is disabled
+	 * Gets the text that is displayed when the control is disabled
 	 *
 	 * @return disabled text
 	 */
@@ -40,7 +40,7 @@ public interface Button extends Control, Label {
 	public Button setDisabledText(String text);
 
 	/**
-	 * Get's the color of the control while the mouse is hovering over it
+	 * Gets the color of the control while the mouse is hovering over it
 	 *
 	 * @return color
 	 */
