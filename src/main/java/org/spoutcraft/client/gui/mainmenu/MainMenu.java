@@ -34,6 +34,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.src.GuiIngameMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.StringTranslate;
 
@@ -321,7 +322,7 @@ public class MainMenu extends GuiScreen {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-			mc.displayGuiScreen(new GuiAdvancedOptions(this));
+			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 		}
 
 		long time = System.currentTimeMillis();

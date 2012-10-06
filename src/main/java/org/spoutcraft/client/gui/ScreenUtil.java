@@ -52,6 +52,7 @@ import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
 import org.spoutcraft.client.gui.minimap.GuiMoveMinimap;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {
@@ -71,13 +72,13 @@ public class ScreenUtil {
 				toOpen = new GuiIngameMenu();
 				break;
 			case OPTIONS_MENU:
-				toOpen = new GuiAdvancedOptions(new GuiIngameMenu());
+				toOpen = GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu());
 				break;
 			case VIDEO_SETTINGS_MENU:
-				toOpen = new GuiAdvancedOptions(new GuiIngameMenu());
+				toOpen = GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu());
 				break;
 			case CONTROLS_MENU:
-				toOpen = new GuiControls(new GuiAdvancedOptions(new GuiIngameMenu()));
+				toOpen = new GuiControls(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case ACHIEVEMENTS_SCREEN:
 				toOpen = new GuiAchievements(statfile);
@@ -89,16 +90,16 @@ public class ScreenUtil {
 				toOpen = new GuiGameOver();
 				break;
 			case CHANGE_LANGUAGE:
-				toOpen = new GuiLanguage(new GuiAdvancedOptions(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
+				toOpen = new GuiLanguage(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
 				break;
 			case MINIMAP_SETTINGS:
-				toOpen = new GuiMinimapMenu(new GuiAdvancedOptions(new GuiIngameMenu()));
+				toOpen = new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case CHAT_SETTINGS:
-				toOpen = new GuiChatSettings(new GuiAdvancedOptions(new GuiIngameMenu()));
+				toOpen = new GuiChatSettings(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu()));
 				break;
 			case MOVE_MINIMAP:
-				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GuiAdvancedOptions(new GuiIngameMenu())));
+				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(GuiSimpleOptions.constructOptionsScreen(new GuiIngameMenu())));
 				break;
 			case OVERVIEW_MAP:
 				toOpen = new GuiOverviewMap();
