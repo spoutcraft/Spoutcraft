@@ -79,7 +79,7 @@ public class ConfigReader {
 	public static boolean ignorePeople = false;
 	public static boolean chatUsesRegex;
 	public static boolean clientLight = false;
-	public static float flightSpeedMultiplier = 2.0F;
+	public static float flightSpeedFactor = 1.0F;
 	public static boolean askBeforeOpeningUrl = true;
 	public static boolean replaceTools = false;
 	public static boolean replaceBlocks = false;

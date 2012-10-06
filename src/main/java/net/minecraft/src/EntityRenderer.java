@@ -813,7 +813,6 @@ public class EntityRenderer {
 			this.mc.renderGlobal.clipRenderersByFrustum(var14, par1);
 			if (var13 == 0) {
 				this.mc.mcProfiler.endStartSection("updatechunks");
-				//FIXME Something changed here with 1.3...
 				while (!this.mc.renderGlobal.updateRenderers(var4, false) && par2 != 0L) {
 					long var15 = par2 - System.nanoTime();
 

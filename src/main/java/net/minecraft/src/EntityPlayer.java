@@ -1062,9 +1062,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			float var11 = this.jumpMovementFactor;
 			this.jumpMovementFactor =this.capabilities.getFlySpeed();
 			// Spout Start
-			jumpMovementFactor *= ConfigReader.flightSpeedMultiplier;
+			jumpMovementFactor *= ConfigReader.flightSpeedFactor;
 			if (this.isSprinting()) {
-				jumpMovementFactor += ConfigReader.flightSpeedMultiplier / 10;
+				jumpMovementFactor += ConfigReader.flightSpeedFactor / 10;
 			}
 			// Spout End
 			super.moveEntityWithHeading(par1, par2);

@@ -189,11 +189,11 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.capabilities.isFlying) {
 				// Spout Start
 				if (this.movementInput.flyingDown) { 
-					this.motionY -= 0.15D * ConfigReader.flightSpeedMultiplier;
+					this.motionY -= 0.15D * ConfigReader.flightSpeedFactor;
 				}
 
 				if (this.movementInput.flyingUp) {
-					this.motionY += 0.15D * ConfigReader.flightSpeedMultiplier;
+					this.motionY += 0.15D * ConfigReader.flightSpeedFactor;
 				}
 				// Spout End
 			}

@@ -26,7 +26,7 @@ import org.spoutcraft.client.config.ConfigReader;
 public class FlightSpeedSlider extends GenericSlider {
 	public FlightSpeedSlider() {
 		super("Flight Speed");
-		this.setSliderPosition(ConfigReader.flightSpeedMultiplier / 10);
+		this.setSliderPosition(ConfigReader.flightSpeedFactor / 10);
 		setTooltip("Flight Speed Multiplier\nAlters how fast you fly in creative. 1X is vanilla speed.");
 	}
 
@@ -38,7 +38,7 @@ public class FlightSpeedSlider extends GenericSlider {
 
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		ConfigReader.flightSpeedMultiplier = event.getNewPosition() * 10;
+		ConfigReader.flightSpeedFactor = event.getNewPosition() * 10;
 		ConfigReader.write();
 	}
 }
