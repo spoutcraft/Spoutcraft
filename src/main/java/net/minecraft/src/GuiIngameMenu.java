@@ -3,7 +3,8 @@ package net.minecraft.src;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.HeightMapAgent;
 import org.spoutcraft.client.gui.server.GuiFavorites;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -50,7 +51,7 @@ public class GuiIngameMenu extends GuiScreen
 	{
 		switch(par1GuiButton.id) {
 		case 0:
-			this.mc.displayGuiScreen(new GameSettingsScreen(this)); // Spout
+			this.mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this)); // Spout
 			break;
 		case 1:
 			// Spout Start

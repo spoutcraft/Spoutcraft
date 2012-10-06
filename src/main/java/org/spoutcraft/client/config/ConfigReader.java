@@ -90,6 +90,7 @@ public class ConfigReader {
 	public static float chatOpacity = 0.5f;
 	public static int mainMenuState = defaultMenuState();
 	public static boolean connectedTextures = true;
+	public static boolean advancedOptions = false;
 
 	// Launcher settings
 	public static boolean fastLogin = false;

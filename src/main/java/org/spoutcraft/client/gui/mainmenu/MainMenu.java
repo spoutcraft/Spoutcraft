@@ -55,7 +55,8 @@ import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.config.ConfigReader;
 import org.spoutcraft.client.gui.MCRenderDelegate;
 import org.spoutcraft.client.gui.addon.GuiAddonsLocal;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
+import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.io.FileUtil;
 import org.spoutcraft.client.special.Holiday;
@@ -295,7 +296,7 @@ public class MainMenu extends GuiScreen {
 			this.mc.displayGuiScreen(new org.spoutcraft.client.gui.about.GuiNewAbout(this));
 		}
 		if (options == btn) {
-			mc.displayGuiScreen(new GameSettingsScreen(this));
+			mc.displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(this));
 		}
 		if (quit == btn) {
 			mc.shutdownMinecraftApplet();
@@ -320,7 +321,7 @@ public class MainMenu extends GuiScreen {
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			mc.displayGuiScreen(new org.spoutcraft.client.gui.texturepacks.GuiTexturePacks());
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-			mc.displayGuiScreen(new GameSettingsScreen(this));
+			mc.displayGuiScreen(new GuiAdvancedOptions(this));
 		}
 
 		long time = System.currentTimeMillis();

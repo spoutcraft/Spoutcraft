@@ -51,7 +51,7 @@ import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiMinimapMenu;
 import org.spoutcraft.client.gui.minimap.GuiMoveMinimap;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
-import org.spoutcraft.client.gui.settings.GameSettingsScreen;
+import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 
 public class ScreenUtil {
 	public static void open(ScreenType type) {
@@ -71,13 +71,13 @@ public class ScreenUtil {
 				toOpen = new GuiIngameMenu();
 				break;
 			case OPTIONS_MENU:
-				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				toOpen = new GuiAdvancedOptions(new GuiIngameMenu());
 				break;
 			case VIDEO_SETTINGS_MENU:
-				toOpen = new GameSettingsScreen(new GuiIngameMenu());
+				toOpen = new GuiAdvancedOptions(new GuiIngameMenu());
 				break;
 			case CONTROLS_MENU:
-				toOpen = new GuiControls(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiControls(new GuiAdvancedOptions(new GuiIngameMenu()));
 				break;
 			case ACHIEVEMENTS_SCREEN:
 				toOpen = new GuiAchievements(statfile);
@@ -89,16 +89,16 @@ public class ScreenUtil {
 				toOpen = new GuiGameOver();
 				break;
 			case CHANGE_LANGUAGE:
-				toOpen = new GuiLanguage(new GameSettingsScreen(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
+				toOpen = new GuiLanguage(new GuiAdvancedOptions(new GuiIngameMenu()), SpoutClient.getHandle().gameSettings);
 				break;
 			case MINIMAP_SETTINGS:
-				toOpen = new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiMinimapMenu(new GuiAdvancedOptions(new GuiIngameMenu()));
 				break;
 			case CHAT_SETTINGS:
-				toOpen = new GuiChatSettings(new GameSettingsScreen(new GuiIngameMenu()));
+				toOpen = new GuiChatSettings(new GuiAdvancedOptions(new GuiIngameMenu()));
 				break;
 			case MOVE_MINIMAP:
-				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GameSettingsScreen(new GuiIngameMenu())));
+				toOpen = new GuiMoveMinimap(new GuiMinimapMenu(new GuiAdvancedOptions(new GuiIngameMenu())));
 				break;
 			case OVERVIEW_MAP:
 				toOpen = new GuiOverviewMap();
@@ -117,7 +117,7 @@ public class ScreenUtil {
 		}
 		if (gui instanceof CustomScreen) {
 			screen = ScreenType.CUSTOM_SCREEN;
-		} else if (gui instanceof GameSettingsScreen) {
+		} else if (gui instanceof GuiAdvancedOptions) {
 			screen = ScreenType.VIDEO_SETTINGS_MENU;
 		} else if (gui instanceof GuiAchievements) {
 			screen = ScreenType.ACHIEVEMENTS_SCREEN;
