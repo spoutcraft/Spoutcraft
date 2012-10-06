@@ -5,9 +5,11 @@ import net.minecraft.src.GuiScreen;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
 import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.CheckBox;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.Control;
 import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.api.gui.GenericGradient;
 import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
@@ -24,21 +26,20 @@ import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
 import org.spoutcraft.client.gui.settings.controls.FavorAppearanceButton;
 import org.spoutcraft.client.gui.settings.controls.FavorPerformanceButton;
 import org.spoutcraft.client.gui.settings.controls.FieldOfViewSlider;
-import org.spoutcraft.client.gui.settings.controls.InvertMouseButton;
 import org.spoutcraft.client.gui.settings.controls.LanguagesButton;
 import org.spoutcraft.client.gui.settings.controls.ManualSelectionButton;
 import org.spoutcraft.client.gui.settings.controls.MinimapButton;
 import org.spoutcraft.client.gui.settings.controls.MusicSlider;
 import org.spoutcraft.client.gui.settings.controls.OptimalGameplayButton;
 import org.spoutcraft.client.gui.settings.controls.ResetButton;
-import org.spoutcraft.client.gui.settings.controls.SensitivitySlider;
 import org.spoutcraft.client.gui.settings.controls.SoundEffectsSlider;
 
 public class GuiSimpleOptions extends GuiScreen {
 	GuiScreen parent = null;
-	Button switchToAdvancedButton, doneButton;
+	Button doneButton;
 	GenericScrollArea scroll;
 	Label title;
+	CheckBox switchToAdvancedCheck;
 	
 	public static GuiScreen constructOptionsScreen(GuiScreen parent) {
 		return ConfigReader.advancedOptions ? new GuiAdvancedOptions(parent) : new GuiSimpleOptions(parent);
@@ -58,7 +59,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
-		GenericLabel label = new GenericLabel("Simple Game Settings");
+		GenericLabel label = new GenericLabel("Game Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
@@ -71,10 +72,11 @@ public class GuiSimpleOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
 		
-		switchToAdvancedButton = new GenericButton("Switch");
-		switchToAdvancedButton.setTooltip("Switch to advanced game settings");
-		switchToAdvancedButton.setX(width - 55).setY(5).setWidth(50).setHeight(20);
-		getScreen().attachWidget(spoutcraft, switchToAdvancedButton);
+		switchToAdvancedCheck = new GenericCheckBox("Advanced");
+		switchToAdvancedCheck.setChecked(false);
+		switchToAdvancedCheck.setX(5).setY(3).setWidth(100).setHeight(20);
+		switchToAdvancedCheck.setPriority(RenderPriority.Low);
+		getScreen().attachWidget(spoutcraft, switchToAdvancedCheck);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
@@ -204,7 +206,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		if (btn == doneButton) {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
-		if (btn == switchToAdvancedButton) {
+		if (btn == switchToAdvancedCheck) {
 			ConfigReader.advancedOptions = true;
 			ConfigReader.write();
 			SpoutClient.getHandle().displayGuiScreen(new GuiAdvancedOptions(parent));

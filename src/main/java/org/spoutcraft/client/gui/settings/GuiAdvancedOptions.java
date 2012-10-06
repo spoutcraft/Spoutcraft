@@ -89,7 +89,8 @@ import org.spoutcraft.client.gui.settings.controls.WaterBiomeColorsButton;
 import org.spoutcraft.client.gui.settings.controls.WeatherToggleButton;
 
 public class GuiAdvancedOptions extends GuiScreen {
-	private Button doneButton = null, switchToSimpleButton;
+	private Button doneButton = null;
+	private CheckBox switchToSimpleCheck;
 	public final GuiScreen parent;
 	private GenericScrollArea scrollArea;
 
@@ -112,7 +113,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		screen.setHeight(height - 24 - 30).setWidth(width).setY(24).setX(0);
 		getScreen().attachWidget(spoutcraft, screen);
 
-		GenericLabel label = new GenericLabel("Advanced Game Settings");
+		GenericLabel label = new GenericLabel("Game Settings");
 		int size = Spoutcraft.getMinecraftFont().getTextWidth(label.getText());
 		label.setX((int) (width / 2 - size / 2)).setY(10);
 		label.setFixed(true).setPriority(RenderPriority.Lowest);
@@ -125,11 +126,12 @@ public class GuiAdvancedOptions extends GuiScreen {
 		control.setWidth(150).setHeight(20).setX(left).setY(height - 25);
 		getScreen().attachWidget(spoutcraft, control);
 		
-		switchToSimpleButton = new GenericButton("Switch");
-		switchToSimpleButton.setTooltip("Switch to simple game settings");
-		switchToSimpleButton.setAlign(WidgetAnchor.CENTER_CENTER);
-		switchToSimpleButton.setX(width - 55).setY(5).setWidth(50).setHeight(20);
-		getScreen().attachWidget(spoutcraft, switchToSimpleButton);
+		switchToSimpleCheck = new GenericCheckBox("Advanced");
+		switchToSimpleCheck.setChecked(true);
+		switchToSimpleCheck.setAlign(WidgetAnchor.CENTER_CENTER);
+		switchToSimpleCheck.setX(5).setY(3).setWidth(100).setHeight(20);
+		switchToSimpleCheck.setPriority(RenderPriority.Low);
+		getScreen().attachWidget(spoutcraft, switchToSimpleCheck);
 
 		doneButton = new GenericButton("Done");
 		doneButton.setAlign(WidgetAnchor.CENTER_CENTER);
@@ -550,7 +552,7 @@ public class GuiAdvancedOptions extends GuiScreen {
 		if (btn.equals(doneButton)) {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
-		if (btn.equals(switchToSimpleButton)) {
+		if (btn.equals(switchToSimpleCheck)) {
 			ConfigReader.advancedOptions = false;
 			ConfigReader.write();
 			SpoutClient.getHandle().displayGuiScreen(new GuiSimpleOptions(parent));
