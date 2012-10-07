@@ -79,17 +79,17 @@ public class PacketSkinURL implements SpoutPacket {
 				this.skinURL = "http://cdn.spout.org/game/vanilla/skin/" + e.username + ".png";
 			}
 			if (this.cloakURL.equalsIgnoreCase(mcCape)) {
-				if (e.vip != null) {
+				if (e.vip != null && e.vip.getCape() != null) {
 					this.cloakURL = e.vip.getCape();
 				} else {
 					this.cloakURL = "http://cdn.spout.org/game/vanilla/cape/" + e.username + ".png";
 				}
 			}
 
-			if (!this.skinURL.equals("none")) {
+			if (!"none".equals(this.skinURL)) {
 				e.skinUrl = this.skinURL;
 			}
-			if (!this.cloakURL.equals("none")) {
+			if (!"none".equals(this.cloakURL)) {
 				e.updateCloak(cloakURL);
 			}
 			if (release) {
