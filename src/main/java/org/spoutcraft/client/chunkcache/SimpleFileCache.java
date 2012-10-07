@@ -118,12 +118,14 @@ public class SimpleFileCache {
 			if (!isValid(f)) {
 				continue;
 			}
+			boolean delete = false;
 			int id = getIntFromName(f);
 			DataInputStream din = new DataInputStream(new FileInputStream(f));
 			try {
 				int version = din.readInt();
 				if (version < VERSION) {
-					System.out.println("File " + f.getAbsolutePath() + " has out of date version " + version);
+					System.out.println("File " + f.getAbsolutePath() + " has out of date version " + version + ", deleting");
+					delete = true;
 					continue;
 				} else if (version > VERSION){
 					System.out.println("File " + f.getAbsolutePath() + " has unknown version " + version);
@@ -147,6 +149,9 @@ public class SimpleFileCache {
 						din.close();
 					} catch (IOException ioe) {
 					}
+				}
+				if (delete) {
+					f.delete();
 				}
 			}
 		}
