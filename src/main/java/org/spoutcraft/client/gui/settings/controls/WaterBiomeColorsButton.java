@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,19 +23,19 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class WaterBiomeColorsButton extends GenericCheckBox {
 	public WaterBiomeColorsButton() {
 		super("Water Biome Colors");
-		this.setChecked(ConfigReader.waterBiomeColors);
+		this.setChecked(Configuration.isWaterBiomeColors());
 		setTooltip("Water Biome Colors\nOn - water will have colors adjusted for biomes\nOff - vanilla water colors.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.waterBiomeColors = !ConfigReader.waterBiomeColors;
-		ConfigReader.write();
+		Configuration.setWaterBiomeColors(!Configuration.isWaterBiomeColors());
+		Configuration.write();
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

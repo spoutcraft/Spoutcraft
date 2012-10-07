@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.HDImageBufferDownload;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.TileEntityComparator;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.CustomTextureManager;
 import org.spoutcraft.client.spoutworth.SpoutWorth;
 import org.spoutcraft.api.gui.Color;
@@ -310,7 +310,7 @@ public class RenderGlobal implements IWorldAccess {
 	 */
 	public void loadRenderers() {
 		if (this.theWorld != null) {
-			Block.leaves.setGraphicsLevel(ConfigReader.fancyTrees); // Spout
+			Block.leaves.setGraphicsLevel(Configuration.isFancyTrees()); // Spout
 			this.renderDistance = this.mc.gameSettings.renderDistance;
 			int var2;
 			int var3;
@@ -327,7 +327,7 @@ public class RenderGlobal implements IWorldAccess {
 
 			int var7 = 64 << 3 - this.renderDistance;
 			// Spout Start
-			if (ConfigReader.farView) {
+			if (Configuration.isFarView()) {
 				var7 = 512;
 			} else if (var7 > 400) {
 				var7 = 400;
@@ -898,7 +898,7 @@ public class RenderGlobal implements IWorldAccess {
 			Shaders.glEnableWrapper(GL11.GL_FOG); // Spout
 			GL11.glColor3f(var3, var4, var5);
 			// Spout Start
-			if (ConfigReader.sky) {
+			if (Configuration.isSky()) {
 				GL11.glCallList(this.glSkyList);
 			}
 			Shaders.glDisableWrapper(GL11.GL_FOG);
@@ -913,7 +913,7 @@ public class RenderGlobal implements IWorldAccess {
 			float var11;
 			float var12;
 			// Spout Start
-			if (var24 != null && ConfigReader.sky) {
+			if (var24 != null && Configuration.isSky()) {
 				Shaders.glDisableWrapper(GL11.GL_TEXTURE_2D);
 				// Spout End
 				GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -1012,7 +1012,7 @@ public class RenderGlobal implements IWorldAccess {
 			float var20 = this.theWorld.getStarBrightness(par1) * var8;
 
 			Shaders.setCelestialPosition(); // Spout
-			if (var12 > 0.0F && ConfigReader.stars) { // Spout (added stars condition)
+			if (var12 > 0.0F && Configuration.isStars()) { // Spout (added stars condition)
 				GL11.glColor4f(var20, var20, var20, var20);
 				GL11.glCallList(this.starGLCallList);
 			}
@@ -1070,7 +1070,7 @@ public class RenderGlobal implements IWorldAccess {
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, -((float)(var25 - 16.0D)), 0.0F);
 			// Spout Start
-			if (ConfigReader.sky) {
+			if (Configuration.isSky()) {
 				GL11.glCallList(this.glSkyList2);
 			}
 			// Spout End
@@ -1082,7 +1082,7 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void renderClouds(float par1) {
 		// Spout Start
-		if (!SpoutClient.getInstance().getSkyManager().isCloudsVisible() || !ConfigReader.sky) {
+		if (!SpoutClient.getInstance().getSkyManager().isCloudsVisible() || !Configuration.isSky()) {
 			return;
 		}
 		// Spout End
@@ -1723,7 +1723,7 @@ public class RenderGlobal implements IWorldAccess {
 				return (EntityFX)var21;
 			} else {
 				// Spout Start
-				if (!org.spoutcraft.client.config.ConfigReader.fancyParticles) {
+				if (!org.spoutcraft.client.config.Configuration.isFancyParticles()) {
 					var22 = 6D;
 				}
 				// Spout End

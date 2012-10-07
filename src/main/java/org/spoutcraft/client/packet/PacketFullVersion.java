@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,21 +25,21 @@ import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 
 public class PacketFullVersion implements SpoutPacket {
-	private long version;
+	private String version;
 
 	public PacketFullVersion() {
 	}
 
 	public PacketFullVersion(String versionString) {
-		version = 1700L;
+		version = "1700";
 	}
 
 	public void readData(SpoutInputStream input) throws IOException {
-		version = input.readLong();
+		//version = input.readLong();
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeLong(version);
+		output.writeString(version);
 	}
 
 	public void run(int playerId) {

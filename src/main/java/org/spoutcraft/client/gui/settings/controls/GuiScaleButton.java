@@ -25,7 +25,7 @@ import net.minecraft.src.ScaledResolution;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 
 public class GuiScaleButton extends GenericButton {
@@ -37,21 +37,23 @@ public class GuiScaleButton extends GenericButton {
 
 	@Override
 	public String getText() {
-		switch (ConfigReader.guiScale) {
+		switch (Configuration.getGuiScale()) {
 			case 0: return "GUI Scale: Auto";
 			case 1: return "GUI Scale: Small";
 			case 2: return "GUI Scale: Normal";
 			case 3: return "GUI Scale: Large";
 		}
-		return "Unknown State: " + ConfigReader.guiScale;
+		return "Unknown State: " + Configuration.getGuiScale();
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.guiScale += 1;
-		ConfigReader.guiScale &= 3;
-		Minecraft.theMinecraft.gameSettings.guiScale = ConfigReader.guiScale;
-		ConfigReader.write();
+		int guiScale = Configuration.getGuiScale();
+		guiScale += 1;
+		guiScale &= 3;
+		Minecraft.theMinecraft.gameSettings.guiScale = guiScale;
+		Configuration.setGuiScale(guiScale);
+		Configuration.write();
 
 		// Redisplay the video screen.
 		ScaledResolution var3 = new ScaledResolution(Minecraft.theMinecraft.gameSettings, Minecraft.theMinecraft.displayWidth, Minecraft.theMinecraft.displayHeight);

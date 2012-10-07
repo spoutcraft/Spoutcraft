@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -24,21 +24,21 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyLightingButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyLightingButton(UUID fancyGraphics) {
 		super("Fancy Light");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyLight);
+		setChecked(Configuration.isFancyLight());
 		setTooltip("Fancy Light\nFast - lower quality, faster\nFancy - higher quality, slower\nFancy Light applies more advanced occluded lighting over blocks.\nWorks best with smooth lighting.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyLight = !ConfigReader.fancyLight;
-		ConfigReader.write();
+		Configuration.setFancyLight(!Configuration.isFancyLight());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 
 		if (Minecraft.theMinecraft.theWorld != null) {

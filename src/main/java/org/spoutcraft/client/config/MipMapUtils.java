@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ public class MipMapUtils {
 	public static void initializeMipMaps() {
 		initialized = false;
 		GL11.glPushMatrix();
-		if (ConfigReader.mipmapsPercent > 0F) {
+		if (Configuration.getMipmapsPercent() > 0F) {
 			int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 			initalizeTexture(terrain);
 
@@ -63,7 +63,7 @@ public class MipMapUtils {
 				}
 			}
 
-			MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
+			MipMapUtils.targetFade = Configuration.getMipmapsPercent();
 			initialized = true;
 		}
 		GL11.glPopMatrix();
@@ -104,10 +104,10 @@ public class MipMapUtils {
 	}
 
 	public static void update() {
-		if (!initialized && ConfigReader.mipmapsPercent > 0F) {
+		if (!initialized && Configuration.getMipmapsPercent() > 0F) {
 			initializeMipMaps();
 		}
-		MipMapUtils.targetFade = ConfigReader.mipmapsPercent;
+		MipMapUtils.targetFade = Configuration.getMipmapsPercent();
 		int terrain = Minecraft.theMinecraft.renderEngine.getTexture("/terrain.png");
 		update(terrain);
 
@@ -129,9 +129,9 @@ public class MipMapUtils {
 	public static void update(int texture) {
 		GL11.glPushMatrix();
 		if (MipMapUtils.mode == 3) {
-			MipMapUtils.updateTerrain = ConfigReader.mipmapsPercent > 0F;
+			MipMapUtils.updateTerrain = Configuration.getMipmapsPercent() > 0F;
 			GL11.glBindTexture(3553, texture);
-			if (ConfigReader.mipmapsPercent > 0F) {
+			if (Configuration.getMipmapsPercent() > 0F) {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST_MIPMAP_LINEAR);
 			} else {
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
@@ -140,7 +140,7 @@ public class MipMapUtils {
 			return;
 		}
 
-		if (ConfigReader.mipmapsPercent > 0F) {
+		if (Configuration.getMipmapsPercent() > 0F) {
 			MipMapUtils.updateTerrain = true;
 
 			GL11.glBindTexture(3553, texture);

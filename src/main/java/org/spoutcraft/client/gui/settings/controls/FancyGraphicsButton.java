@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.CheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyGraphicsButton extends AutomatedButton {
 	public boolean custom = false;
@@ -36,19 +36,19 @@ public class FancyGraphicsButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		return "Graphics: " + (custom ? "Custom" : (ConfigReader.fancyGraphics ? "Fancy" :"Fast"));
+		return "Graphics: " + (custom ? "Custom" : (Configuration.isFancyGraphics() ? "Fancy" :"Fast"));
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyGraphics = !ConfigReader.fancyGraphics;
+		Configuration.setFancyGraphics(!Configuration.isFancyGraphics());
 		for (CheckBox check : linkedButtons) {
-			if (check.isChecked() != ConfigReader.fancyGraphics) {
-				check.setChecked(ConfigReader.fancyGraphics);
+			if (check.isChecked() != Configuration.isFancyGraphics()) {
+				check.setChecked(Configuration.isFancyGraphics());
 				check.onButtonClick(event);
 			}
 		}
-		Minecraft.theMinecraft.gameSettings.fancyGraphics = ConfigReader.fancyGraphics;
+		Minecraft.theMinecraft.gameSettings.fancyGraphics = Configuration.isFancyGraphics();
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}
@@ -58,7 +58,7 @@ public class FancyGraphicsButton extends AutomatedButton {
 	public void setLinkedButtons(List<CheckBox> linked) {
 		linkedButtons = linked;
 		for (CheckBox check : linkedButtons) {
-			if (check.isChecked() != ConfigReader.fancyGraphics) {
+			if (check.isChecked() != Configuration.isFancyGraphics()) {
 				custom = true;
 				break;
 			}

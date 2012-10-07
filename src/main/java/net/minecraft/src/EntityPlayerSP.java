@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 // Spout Start
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.GuiAddWaypoint;
 import org.spoutcraft.client.gui.minimap.GuiOverviewMap;
 import org.spoutcraft.client.packet.PacketRenderDistance;
@@ -189,11 +189,11 @@ public class EntityPlayerSP extends EntityPlayer {
 			if (this.capabilities.isFlying) {
 				// Spout Start
 				if (this.movementInput.flyingDown) { 
-					this.motionY -= 0.15D * ConfigReader.flightSpeedFactor;
+					this.motionY -= 0.15D * Configuration.getFlightSpeedFactor();
 				}
 
 				if (this.movementInput.flyingUp) {
-					this.motionY += 0.15D * ConfigReader.flightSpeedFactor;
+					this.motionY += 0.15D * Configuration.getFlightSpeedFactor();
 				}
 				// Spout End
 			}

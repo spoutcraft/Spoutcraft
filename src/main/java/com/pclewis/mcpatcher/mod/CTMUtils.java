@@ -7,7 +7,7 @@ import net.minecraft.src.IBlockAccess;
 import net.minecraft.src.RenderBlocks;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -63,7 +63,7 @@ public class CTMUtils {
                 Arrays.fill(blockOverrides, null);
                 Arrays.fill(tileOverrides, null);
 
-                if (ConfigReader.connectedTextures) {
+                if (Configuration.isConnectedTextures()) {
                     for (String s : TexturePackAPI.listResources("/ctm", ".properties")) {
                         registerOverride(TileOverride.create(s.replace(".properties", ""), null));
                     }
@@ -71,7 +71,7 @@ public class CTMUtils {
 
                 Properties properties = new Properties();
 
-                if (ConfigReader.connectedTextures) {
+                if (Configuration.isConnectedTextures()) {
                     properties.clear();
                     properties.setProperty("method", "glass");
                     properties.setProperty("connect", "block");

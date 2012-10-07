@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -24,21 +24,21 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class BiomeColorsButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public BiomeColorsButton(UUID fancyGraphics) {
 		super("Fancy Biome Colors");
 		this.fancyGraphics = fancyGraphics;
-		this.setChecked(ConfigReader.fancyBiomeColors);
+		this.setChecked(Configuration.isFancyBiomeColors());
 		setTooltip("Biome Colors\nFast - caches colors for grass and water per chunk.\nMay cause sharp changes in color near chunk edges.\nFancy - normal coloring for grass and water.\nCalculates color for water and grass for each block.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyBiomeColors = !ConfigReader.fancyBiomeColors;
-		ConfigReader.write();
+		Configuration.setFancyBiomeColors(!Configuration.isFancyBiomeColors());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 
 		if (Minecraft.theMinecraft.theWorld != null) {

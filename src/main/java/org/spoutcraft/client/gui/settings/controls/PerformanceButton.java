@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ import org.lwjgl.opengl.Display;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class PerformanceButton extends AutomatedButton {
 	public PerformanceButton() {
@@ -33,21 +33,21 @@ public class PerformanceButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		switch (ConfigReader.performance) {
+		switch (Configuration.getPerformance()) {
 			case 0: return "Performance: Max FPS";
 			case 1: return "Performance: Balanced";
 			case 2: return "Performance: Power Saver";
 			case 3: return "Performance: Vsync";
 		}
-		return "Unknown State: " + ConfigReader.performance;
+		return "Unknown State: " + Configuration.getPerformance();
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.performance += 1;
-		ConfigReader.performance &= 3;
-		ConfigReader.write();
-		Minecraft.theMinecraft.gameSettings.limitFramerate = ConfigReader.performance;
-		Display.setVSyncEnabled(ConfigReader.performance == 3);
+		Configuration.setPerformance(Configuration.getPerformance() + 1);
+		Configuration.setPerformance(Configuration.getPerformance() & 3);
+		Configuration.write();
+		Minecraft.theMinecraft.gameSettings.limitFramerate = Configuration.getPerformance();
+		Display.setVSyncEnabled(Configuration.getPerformance() == 3);
 	}
 }

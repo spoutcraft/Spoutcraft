@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ResizeScreenshotButton extends GenericCheckBox {
 	public ResizeScreenshotButton() {
 		super("Resize Screenshots");
-		setChecked(ConfigReader.resizeScreenshots);
+		setChecked(Configuration.isResizeScreenshots());
 		setTooltip("Screenshots will be rendered at an alternate dimension.\nOFF - (Default) Screenshots are the size of your window.\nON - Screenshots are the specified dimension.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.resizeScreenshots = !ConfigReader.resizeScreenshots;
-		ConfigReader.write();
+		Configuration.setResizeScreenshots(!Configuration.isResizeScreenshots());
+		Configuration.write();
 	}
 }

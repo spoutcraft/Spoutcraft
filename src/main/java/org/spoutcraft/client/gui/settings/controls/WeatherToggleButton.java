@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,12 +22,12 @@ package org.spoutcraft.client.gui.settings.controls;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class WeatherToggleButton extends GenericCheckBox {
 	public WeatherToggleButton() {
 		super("Weather");
-		setChecked(ConfigReader.weather);
+		setChecked(Configuration.isWeather());
 		setEnabled(SpoutClient.getInstance().isWeatherCheat());
 		setTooltip("Weather\nON - weather is active, slower\nOFF  - weather is not active, faster\nThe weather controls rain, snow and thunderstorms.");
 	}
@@ -42,7 +42,7 @@ public class WeatherToggleButton extends GenericCheckBox {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.weather = !ConfigReader.weather;
-		ConfigReader.write();
+		Configuration.setWeather(!Configuration.isWeather());
+		Configuration.write();
 	}
 }

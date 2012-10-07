@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -24,21 +24,21 @@ import java.util.UUID;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyTreesButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyTreesButton(UUID fancyGraphics) {
 		super("Fancy Trees");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyTrees);
+		setChecked(Configuration.isFancyTrees());
 		setTooltip("Trees\nFast - lower quality, faster\nFancy - higher quality, slower\nFast trees have opaque leaves.\nFancy trees have transparent leaves.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyTrees = !ConfigReader.fancyTrees;
-		ConfigReader.write();
+		Configuration.setFancyTrees(!Configuration.isFancyTrees());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 
 		if (Minecraft.theMinecraft.theWorld != null) {

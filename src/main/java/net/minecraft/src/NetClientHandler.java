@@ -25,7 +25,7 @@ import org.lwjgl.input.Keyboard;
 
 // Spout Start
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileDownloadThread;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 import org.spoutcraft.client.player.ClientPlayer;
@@ -546,7 +546,7 @@ public class NetClientHandler extends NetHandler {
 
 			if (!par1Packet51MapChunk.includeInitialize || !(this.worldClient.provider instanceof WorldProviderSurface)) {
 				// Spout Start
-				if (ConfigReader.clientLight) {
+				if (Configuration.isClientLight()) {
 					var2.resetRelightChecks();
 				}
 				// Spout End

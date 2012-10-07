@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class HotbarQuickKeysButton extends GenericCheckBox {
 	public HotbarQuickKeysButton() {
 		super("Num Keys Switch Items");
-		setChecked(ConfigReader.hotbarQuickKeysEnabled);
+		setChecked(Configuration.isHotbarQuickKeysEnabled());
 		setTooltip("The 0-9 keys switch through the hotbar items\nOFF - 0-9 keys do not switch through hotbar items\nON - (Default) 0-9 keys switch through hotbar items");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.hotbarQuickKeysEnabled = !ConfigReader.hotbarQuickKeysEnabled;
-		ConfigReader.write();
+		Configuration.setHotbarQuickKeysEnabled(!Configuration.isHotbarQuickKeysEnabled());
+		Configuration.write();
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,20 +23,20 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class BrightnessSlider extends GenericSlider {
 	public BrightnessSlider() {
 		super("Brightness");
-		setSliderPosition(ConfigReader.brightnessSlider);
+		setSliderPosition(Configuration.getBrightnessSlider());
 		setTooltip("Increases the brightness of darker objects\nOFF - standard brightness\n100% - maximum brightness for darker objects\nThis options does not change the brightness of\nfully black objects");
 	}
 
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		ConfigReader.brightnessSlider = event.getNewPosition();
-		ConfigReader.write();
-		Minecraft.theMinecraft.gameSettings.gammaSetting = ConfigReader.brightnessSlider;
+		Configuration.setBrightnessSlider(event.getNewPosition());
+		Configuration.write();
+		Minecraft.theMinecraft.gameSettings.gammaSetting = Configuration.getBrightnessSlider();
 	}
 
 	public String getText() {

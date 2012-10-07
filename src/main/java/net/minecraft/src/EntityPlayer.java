@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.entity.CraftHumanEntity;
 import org.spoutcraft.client.special.Holiday;
 import org.spoutcraft.client.special.Resources;
@@ -1062,9 +1062,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			float var11 = this.jumpMovementFactor;
 			this.jumpMovementFactor =this.capabilities.getFlySpeed();
 			// Spout Start
-			jumpMovementFactor *= ConfigReader.flightSpeedFactor;
+			jumpMovementFactor *= Configuration.getFlightSpeedFactor();
 			if (this.isSprinting()) {
-				jumpMovementFactor += ConfigReader.flightSpeedFactor / 10;
+				jumpMovementFactor += Configuration.getFlightSpeedFactor() / 10;
 			}
 			// Spout End
 			super.moveEntityWithHeading(par1, par2);

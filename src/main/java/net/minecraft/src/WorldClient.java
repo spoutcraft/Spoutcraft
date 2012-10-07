@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 import net.minecraft.client.Minecraft;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 public class WorldClient extends World {
@@ -275,7 +275,7 @@ public class WorldClient extends World {
 		Random var5 = new Random();
 
 		// Spout Start
-		int num = ConfigReader.fancyParticles ? 1000 : 250;
+		int num = Configuration.isFancyParticles() ? 1000 : 250;
 		for (int var6 = 0; var6 < num; ++var6) {
 		// Spout End
 			int var7 = par1 + this.rand.nextInt(var4) - this.rand.nextInt(var4);

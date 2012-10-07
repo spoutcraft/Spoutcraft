@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.Label;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FavorPerformanceButton extends GenericRadioButton {
 	Label label;
@@ -34,9 +34,9 @@ public class FavorPerformanceButton extends GenericRadioButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.automatePerformance = true;
-		ConfigReader.automateMode = 0;
-		ConfigReader.write();
+		Configuration.setAutomatePerformance(true);
+		Configuration.setAutomateMode(0);
+		Configuration.write();
 		label.setTextColor(new Color(1F, 1F, 1F, 1F));
 	}
 }

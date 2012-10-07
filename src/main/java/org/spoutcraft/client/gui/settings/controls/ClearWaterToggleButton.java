@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -25,12 +25,12 @@ import net.minecraft.src.Block;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ClearWaterToggleButton extends GenericCheckBox {
 	public ClearWaterToggleButton() {
 		super("Clear Water");
-		setChecked(ConfigReader.clearWater);
+		setChecked(Configuration.isClearWater());
 		setEnabled(SpoutClient.getInstance().isClearWaterCheat());
 		setTooltip("Clear Water\nOFF - (default) standard water view\nON - can see deeper through water, no longer obscures vision\nClear water is very resource demanding!");
 	}
@@ -45,8 +45,8 @@ public class ClearWaterToggleButton extends GenericCheckBox {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.clearWater = !ConfigReader.clearWater;
-		ConfigReader.write();
+		Configuration.setClearWater(!Configuration.isClearWater());
+		Configuration.write();
 
 		Block.waterStill.setLightOpacity(isChecked() ? 1 : 3);
 		Block.waterMoving.setLightOpacity(isChecked() ? 1 : 3);

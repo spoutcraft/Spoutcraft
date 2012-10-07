@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -20,18 +20,18 @@
 package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class SmoothFPSButton extends AutomatedCheckBox {
 	public SmoothFPSButton() {
 		super("Smooth FPS");
-		setChecked(ConfigReader.smoothFPS);
+		setChecked(Configuration.isSmoothFPS());
 		setTooltip("Stabilizes FPS by flushing the graphic driver buffers\nOFF - no stabilization, FPS may fluctuate\nON - FPS stabilization\nThis option is graphic driver dependant and its effect\nis not always visible");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.smoothFPS = !ConfigReader.smoothFPS;
-		ConfigReader.write();
+		Configuration.setSmoothFPS(!Configuration.isSmoothFPS());
+		Configuration.write();
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,19 +22,19 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FarViewButton extends AutomatedCheckBox {
 	public FarViewButton() {
 		super("Far View");
-		setChecked(ConfigReader.farView);
+		setChecked(Configuration.isFarView());
 		setTooltip("Far View\nOFF - (default) standard view distance\nON - 3x view distance\nFar View is very resource demanding!\n3x view distance => 9x chunks to be loaded => FPS / 9\nStandard view distances: 32, 64, 128, 256\nFar view distances: 96, 192, 384, 512");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.farView = !ConfigReader.farView;
-		ConfigReader.write();
+		Configuration.setFarView(!Configuration.isFarView());
+		Configuration.write();
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

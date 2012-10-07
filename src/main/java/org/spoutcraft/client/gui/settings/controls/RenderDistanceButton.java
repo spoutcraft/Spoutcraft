@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@ import net.minecraft.client.Minecraft;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.player.RenderDistance;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class RenderDistanceButton extends AutomatedButton {
-	RenderDistance distance = RenderDistance.getRenderDistanceFromValue(ConfigReader.renderDistance);
+	RenderDistance distance = RenderDistance.getRenderDistanceFromValue(Configuration.getRenderDistance());
 	public RenderDistanceButton() {
 		setTooltip("Visible distance\nFar - 256m (slower\nNormal - 128m\nShort - 64m (faster)\nTiny - 32m (fastest)");
 	}
@@ -41,16 +41,16 @@ public class RenderDistanceButton extends AutomatedButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		if (SpoutClient.getInstance().getActivePlayer() != null) {
 			distance = SpoutClient.getInstance().getActivePlayer().getNextRenderDistance();
-			ConfigReader.renderDistance = distance.getValue();
+			Configuration.setRenderDistance(distance.getValue());
 		} else {
-			ConfigReader.renderDistance++;
-			if (ConfigReader.renderDistance > 3) {
-				ConfigReader.renderDistance = 0;
+			Configuration.setRenderDistance(Configuration.getRenderDistance() + 1);
+			if (Configuration.getRenderDistance() > 3) {
+				Configuration.setRenderDistance(0);
 			}
-			distance = RenderDistance.getRenderDistanceFromValue(ConfigReader.renderDistance);
+			distance = RenderDistance.getRenderDistanceFromValue(Configuration.getRenderDistance());
 		}
 		Minecraft.theMinecraft.gameSettings.renderDistance = distance.getValue();
-		ConfigReader.write();
+		Configuration.write();
 		Minecraft.theMinecraft.gameSettings.saveOptions();
 	}
 }

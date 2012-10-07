@@ -11,7 +11,7 @@ import java.util.Random;
 // Spout Start
 import org.spoutcraft.client.block.SpoutcraftChunk;
 // Spout End
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class Chunk {
 

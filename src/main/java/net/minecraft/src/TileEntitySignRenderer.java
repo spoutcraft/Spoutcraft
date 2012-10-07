@@ -3,7 +3,7 @@ package net.minecraft.src;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader; // Spout
+import org.spoutcraft.client.config.Configuration; // Spout
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 
@@ -54,7 +54,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer {
 		if (viewer == null) {
 			viewer = Minecraft.theMinecraft.thePlayer;
 		}
-		if (ConfigReader.signDistance == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (ConfigReader.signDistance * ConfigReader.signDistance)) {
+		if (Configuration.getSignDistance() == Integer.MAX_VALUE || viewer != null && par1TileEntitySign.getDistanceFrom(viewer.posX, viewer.posY, viewer.posZ) < (Configuration.getSignDistance() * Configuration.getSignDistance())) {
 		FontRenderer var17 = this.getFontRenderer();
 		var12 = 0.016666668F * var10;
 		GL11.glTranslatef(0.0F, 0.5F * var10, 0.07F * var10);

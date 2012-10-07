@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,19 +21,19 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class SkyToggleButton extends GenericCheckBox {
 	public SkyToggleButton() {
 		super("Sky");
-		setChecked(ConfigReader.sky);
+		setChecked(Configuration.isSky());
 		//setEnabled(SpoutClient.getInstance().isSkyCheat());
 		setTooltip("Sky\nON - sky is visible, slower\nOFF  - sky is not visible, faster\nWhen sky is OFF the moon and sun are still visible.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.sky = !ConfigReader.sky;
-		ConfigReader.write();
+		Configuration.setSky(!Configuration.isSky());
+		Configuration.write();
 	}
 }

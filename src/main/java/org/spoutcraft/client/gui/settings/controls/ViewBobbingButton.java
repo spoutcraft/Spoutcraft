@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,19 +23,19 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ViewBobbingButton extends GenericCheckBox {
 	public ViewBobbingButton() {
 		super("View Bobbing");
-		setChecked(ConfigReader.viewBobbing);
+		setChecked(Configuration.isViewBobbing());
 		setTooltip("More realistic movement.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.viewBobbing = !ConfigReader.viewBobbing;
-		Minecraft.theMinecraft.gameSettings.viewBobbing = ConfigReader.viewBobbing;
-		ConfigReader.write();
+		Configuration.setViewBobbing(!Configuration.isViewBobbing());
+		Minecraft.theMinecraft.gameSettings.viewBobbing = Configuration.isViewBobbing();
+		Configuration.write();
 	}
 }

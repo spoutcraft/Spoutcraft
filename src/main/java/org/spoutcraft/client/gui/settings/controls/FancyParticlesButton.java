@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,21 +22,21 @@ package org.spoutcraft.client.gui.settings.controls;
 import java.util.UUID;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyParticlesButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyParticlesButton(UUID fancyGraphics) {
 		super("Fancy Particles");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyParticles);
+		setChecked(Configuration.isFancyParticles());
 		setTooltip("Fancy Light\nFast - lower quality, faster\nFancy - higher quality, slower\nFast Particles renders fewer particles, and only those nearyby.\nFancy particles renders all particles.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyParticles = !ConfigReader.fancyParticles;
-		ConfigReader.write();
+		Configuration.setFancyParticles(!Configuration.isFancyParticles());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 	}
 }

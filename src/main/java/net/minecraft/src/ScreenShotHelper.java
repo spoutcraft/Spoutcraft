@@ -14,7 +14,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ScreenShotHelper {
 
@@ -26,7 +26,7 @@ public class ScreenShotHelper {
 	// Spout End
 
 	public static String saveScreenshot(File par0File, int par1, int par2) {
-		if(ConfigReader.resizeScreenshots) return saveResizedScreenshot(par0File, ConfigReader.resizedScreenshotWidth, ConfigReader.resizedScreenshotHeight);
+		if(Configuration.isResizeScreenshots()) return saveResizedScreenshot(par0File, Configuration.getResizedScreenshotWidth(), Configuration.getResizedScreenshotHeight());
 		else return saveScreenshot(par0File, (String)null, par1, par2);
 	}
 

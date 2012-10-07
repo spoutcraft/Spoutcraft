@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 // Spout Start
 import org.spoutcraft.client.MCItemStackComparator;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.addon.Addon;
@@ -79,11 +79,11 @@ public abstract class GuiContainer extends GuiScreen
 			orderByAlphabet.setTooltip("Will sort the inventory contents by their name");
 			orderById.setTooltip("Will sort the inventory contents by their id");
 			
-			replaceTools = new GenericCheckBox("Replace tools").setChecked(ConfigReader.replaceTools);
+			replaceTools = new GenericCheckBox("Replace tools").setChecked(Configuration.isReplaceTools());
 			replaceTools.setGeometry(10, 130, 75, 20);
 			replaceTools.setTooltip("Replaces used up tools with spares from your inventory");
 			
-			replaceBlocks = new GenericCheckBox("Replace blocks").setChecked(ConfigReader.replaceBlocks);
+			replaceBlocks = new GenericCheckBox("Replace blocks").setChecked(Configuration.isReplaceBlocks());
 			replaceBlocks.setGeometry(10, 155, 75, 20);
 			replaceBlocks.setTooltip("Replaces used up blocks with spares from your inventory");
 			
@@ -130,14 +130,14 @@ public abstract class GuiContainer extends GuiScreen
 			}
 		}
 		if (btn == replaceTools) {
-			ConfigReader.replaceTools = !ConfigReader.replaceTools;
-			((GenericCheckBox)replaceTools).setChecked(ConfigReader.replaceTools);
-			ConfigReader.write();
+			Configuration.setReplaceTools(!Configuration.isReplaceTools());
+			((GenericCheckBox)replaceTools).setChecked(Configuration.isReplaceTools());
+			Configuration.write();
 		}
 		if (btn == replaceBlocks) {
-			ConfigReader.replaceBlocks = !ConfigReader.replaceBlocks;
-			((GenericCheckBox)replaceBlocks).setChecked(ConfigReader.replaceBlocks);
-			ConfigReader.write();
+			Configuration.setReplaceBlocks(!Configuration.isReplaceBlocks());
+			((GenericCheckBox)replaceBlocks).setChecked(Configuration.isReplaceBlocks());
+			Configuration.write();
 		}
 	}
 	

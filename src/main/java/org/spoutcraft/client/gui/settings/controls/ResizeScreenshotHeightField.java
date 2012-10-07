@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,19 +21,19 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.gui.Control;
 import org.spoutcraft.api.gui.GenericTextField;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ResizeScreenshotHeightField extends GenericTextField {
 	public ResizeScreenshotHeightField() {
 		setTooltip("The height to resize the screenshot to.");
 		setText("");
-		setPlaceholder("" + ConfigReader.resizedScreenshotHeight);
+		setPlaceholder("" + Configuration.getResizedScreenshotHeight());
 		setMaximumCharacters(4);
 	}
 
 	@Override
 	public void onTick() {
-		setEnabled(ConfigReader.resizeScreenshots);
+		setEnabled(Configuration.isResizeScreenshots());
 		super.onTick();
 	}
 
@@ -43,8 +43,8 @@ public class ResizeScreenshotHeightField extends GenericTextField {
 		try {
 			int height = Integer.parseInt(getText());
 			if (height < 1) throw new RuntimeException("Must be at least 1");
-			ConfigReader.resizedScreenshotHeight = height;
-			ConfigReader.write();
+			Configuration.setResizedScreenshotHeight(height);
+			Configuration.write();
 			setPlaceholder("" + height);
 		} catch(Exception e) {
 			setText("");
@@ -60,8 +60,8 @@ public class ResizeScreenshotHeightField extends GenericTextField {
 			try {
 				int height = Integer.parseInt(getText());
 				if (height < 1) throw new RuntimeException("Must be at least 1");
-				ConfigReader.resizedScreenshotHeight = height;
-				ConfigReader.write();
+				Configuration.setResizedScreenshotHeight(height);
+				Configuration.write();
 				setText("");
 				setPlaceholder("" + height);
 			} catch(Exception e) {

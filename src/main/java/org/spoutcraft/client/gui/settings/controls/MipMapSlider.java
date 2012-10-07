@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.config.MipMapUtils;
 
 public class MipMapSlider extends GenericSlider {
 	public MipMapSlider() {
 		super("Terrain Mipmaps");
-		this.setSliderPosition(ConfigReader.mipmapsPercent);
+		this.setSliderPosition(Configuration.getMipmapsPercent());
 		setTooltip("Terrain Mipmaps\nON - reduces the pixelation in far off terrain. However, not all \ngraphic cards support it, and some texture packs handle it poorly.\nOFF - Normal Minecraft terrain.");
 	}
 
@@ -41,8 +41,8 @@ public class MipMapSlider extends GenericSlider {
 
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		ConfigReader.mipmapsPercent = event.getNewPosition();
-		ConfigReader.write();
+		Configuration.setMipmapsPercent(event.getNewPosition());
+		Configuration.write();
 		MipMapUtils.update();
 	}
 }

@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.GL11;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.chunkcache.ChunkNetCache;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.minimap.ZanMinimap;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.gui.ChatTextBox;
@@ -175,7 +175,7 @@ public class GuiIngame extends Gui
 		if (this.mc.gameSettings.showDebugInfo) {
 			this.mc.mcProfiler.startSection("debug");
 			GL11.glPushMatrix();
-			if (ConfigReader.fastDebug != 2) {
+			if (Configuration.getFastDebug() != 2) {
 				font.drawStringWithShadow("Minecraft 1.3.2 (" + this.mc.debug + ")", 2, 2, 16777215);
 				font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
 				font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
@@ -571,7 +571,7 @@ public class GuiIngame extends Gui
 	 */
 	public void addChatMessage(String message) {
 		/* Spout start */
-		if (!ConfigReader.showJoinMessages && message.toLowerCase().contains("joined the game")) {
+		if (!Configuration.isShowJoinMessages() && message.toLowerCase().contains("joined the game")) {
 			return;
 		}
 

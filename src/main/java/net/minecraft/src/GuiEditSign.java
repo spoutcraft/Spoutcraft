@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 // Spout End
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.api.Spoutcraft;
 
 public class GuiEditSign extends GuiScreen {
@@ -197,7 +197,7 @@ public class GuiEditSign extends GuiScreen {
 		drawCenteredString(fontRenderer, screenTitle, width / 2, 40, 0xffffff);
 
 		// Spout Start
-		if (org.spoutcraft.client.config.ConfigReader.showChatColors) {
+		if (org.spoutcraft.client.config.Configuration.isShowChatColors()) {
 			for (int c = 0; c < 16; c++) {
 				ChatColor value = ChatColor.getByCode(c);
 				String name = value.name().toLowerCase();

@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,19 +22,19 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class ServerLightButton extends AutomatedCheckBox {
 	public ServerLightButton() {
 		super("Client Light");
-		setChecked(ConfigReader.clientLight);
+		setChecked(Configuration.isClientLight());
 		setTooltip("Recalculates the light from servers in multiplayer.\n\nDisabling the recalculation is faster, but may result in odd\nlight patterns or light holes.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.clientLight = !ConfigReader.clientLight;
-		ConfigReader.write();
+		Configuration.setClientLight(!Configuration.isClientLight());
+		Configuration.write();
 	}
 
 	@Override

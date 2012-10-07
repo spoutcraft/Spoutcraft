@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings.controls;
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class TimeButton extends GenericButton {
 	public TimeButton() {
@@ -32,12 +32,12 @@ public class TimeButton extends GenericButton {
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.time) {
+		switch(Configuration.getTime()) {
 			case 0: return "Time: Default";
 			case 1: return "Time: Night";
 			case 2: return "Time: Day";
 		}
-		return "Unknown State: " + ConfigReader.time;
+		return "Unknown State: " + Configuration.getTime();
 	}
 
 	@Override
@@ -50,10 +50,10 @@ public class TimeButton extends GenericButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.time++;
-		if (ConfigReader.time > 2) {
-			ConfigReader.time = 0;
+		Configuration.setTime(Configuration.getTime() + 1);
+		if (Configuration.getTime() > 2) {
+			Configuration.setTime(0);
 		}
-		ConfigReader.write();
+		Configuration.write();
 	}
 }

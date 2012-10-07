@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,21 +22,21 @@ package org.spoutcraft.client.gui.settings.controls;
 import java.util.UUID;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyCloudsButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyCloudsButton(UUID fancyGraphics) {
 		super("Fancy Clouds");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyClouds);
+		setChecked(Configuration.isFancyClouds());
 		setTooltip("Clouds\nFast - lower quality, faster\nFancy - higher quality, slower\nFast clouds are rendered 2D.\nFancy clouds are rendered 3D.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyClouds = !ConfigReader.fancyClouds;
-		ConfigReader.write();
+		Configuration.setFancyClouds(!Configuration.isFancyClouds());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 	}
 }

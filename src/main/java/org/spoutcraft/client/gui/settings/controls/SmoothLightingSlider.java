@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,23 +23,23 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.SliderDragEvent;
 import org.spoutcraft.api.gui.GenericSlider;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class SmoothLightingSlider extends GenericSlider {
 	public SmoothLightingSlider() {
 		super("Smooth Lighting");
-		setSliderPosition(ConfigReader.smoothLighting);
+		setSliderPosition(Configuration.getSmoothLighting());
 		setTooltip("Smooth lighting\nOFF - no smooth lighting (faster)\n1% - light smooth lighting (slower)\n100% - dark smooth lighting (slower)");
 	}
 
 	@Override
 	public void onSliderDrag(SliderDragEvent event) {
-		ConfigReader.smoothLighting = event.getNewPosition();
-		Minecraft.theMinecraft.gameSettings.ambientOcclusion = ConfigReader.smoothLighting > 0F;
+		Configuration.setSmoothLighting(event.getNewPosition());
+		Minecraft.theMinecraft.gameSettings.ambientOcclusion = Configuration.getSmoothLighting() > 0F;
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
 		}
-		ConfigReader.write();
+		Configuration.write();
 	}
 
 	public String getText() {

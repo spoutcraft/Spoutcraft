@@ -11,7 +11,7 @@ import org.lwjgl.input.Mouse;
 import java.io.File;
 import org.bukkit.ChatColor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.chat.GuiURLConfirm;
 import org.spoutcraft.api.gui.ChatBar;
 // Spout End
@@ -142,7 +142,7 @@ public class GuiChat extends GuiScreen
 			drawString(fontRenderer, line, chatWidget.getCursorX(), chatWidget.getCursorY() - 12 * size--, color);
 		}
 		
-		if (ConfigReader.showChatColors) {
+		if (Configuration.isShowChatColors()) {
 			for(int c = 0; c < 16; c++) {
 				ChatColor value = ChatColor.getByCode(c);
 				String name = value.name().toLowerCase();
@@ -231,7 +231,7 @@ public class GuiChat extends GuiScreen
 	// Spout Start
 	public static void interruptChat() {
 		if (Minecraft.theMinecraft.currentScreen instanceof GuiChat) {
-			if (ConfigReader.showDamageAlerts) {
+			if (Configuration.isShowDamageAlerts()) {
 				GuiChat chat = (GuiChat) Minecraft.theMinecraft.currentScreen;
 				GuiChat.lastChat = chat.message;
 				Minecraft.theMinecraft.displayGuiScreen(null);

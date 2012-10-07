@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.spoutcraft.client.ChunkComparator;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 // Spout
 import gnu.trove.map.hash.TLongObjectHashMap;

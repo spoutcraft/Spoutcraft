@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -31,14 +31,14 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericButton;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyShadersButton extends GenericButton {
 	UUID fancyGraphics;
 	public FancyShadersButton(UUID fancyGraphics) {
 		super("Fancy Shaders");
 		this.fancyGraphics = fancyGraphics;
-		setEnabled(ConfigReader.isShadersSupported());
+		setEnabled(Configuration.isShadersSupported());
 		setTooltip("Shaders\nShaders are post-processing effects for the graphics\nThey can have a serious impact on performance.");
 	}
 
@@ -52,7 +52,7 @@ public class FancyShadersButton extends GenericButton {
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.shaderType) {
+		switch(Configuration.getShaderType()) {
 			case 0: return "Shaders: OFF";
 			case 1: return "Shaders: Low";
 			case 2: return "Shaders: Medium";
@@ -65,21 +65,21 @@ public class FancyShadersButton extends GenericButton {
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-			ConfigReader.shaderType = 0;
+			Configuration.setShaderType(0);
 		} else {
-			ConfigReader.shaderType++;
+			Configuration.setShaderType(Configuration.getShaderType() + 1);
 		}
-		if (ConfigReader.shaderType > 3) {
+		if (Configuration.getShaderType() > 3) {
 			File shadersDir = new File(Minecraft.getMinecraftDir(), "shaders");
 			if (!hasShaders(shadersDir) || shadersDir.listFiles().length != 18) { //18 shader files
-				ConfigReader.shaderType = 0;
+				Configuration.setShaderType(0);
 			}
 		}
-		if (ConfigReader.shaderType > 4) {
-			ConfigReader.shaderType = 0;
+		if (Configuration.getShaderType() > 4) {
+			Configuration.setShaderType(0);
 		}
-		ConfigReader.write();
-		Shaders.setMode(ConfigReader.shaderType);
+		Configuration.write();
+		Shaders.setMode(Configuration.getShaderType());
 	}
 
 	private boolean hasShaders(File dir) {

@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileUtil;
 
 public class Shaders {
@@ -295,7 +295,7 @@ public class Shaders {
 		if (!isShadowPass) {
 			mc = var0;
 			if (!isInitialized) {
-				init(ConfigReader.shaderType);
+				init(Configuration.getShaderType());
 			}
 
 			if (mc.displayWidth != renderWidth || mc.displayHeight != renderHeight) {

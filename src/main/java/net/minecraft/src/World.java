@@ -14,7 +14,7 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.client.SpoutcraftWorld;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.entity.EntityText;
 import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.material.CustomBlock;
@@ -2311,7 +2311,7 @@ public abstract class World implements IBlockAccess {
 
 		this.theProfiler.startSection("playerCheckLight");
 
-		if (!this.playerEntities.isEmpty() && ConfigReader.clientLight) { // Spout
+		if (!this.playerEntities.isEmpty() && Configuration.isClientLight()) { // Spout
 			var1 = this.rand.nextInt(this.playerEntities.size());
 			var2 = (EntityPlayer)this.playerEntities.get(var1);
 			var3 = MathHelper.floor_double(var2.posX) + this.rand.nextInt(11) - 5;
@@ -3038,7 +3038,7 @@ public abstract class World implements IBlockAccess {
 	 */
 	public void setWorldTime(long par1) {
 		// Spout Start
-		if (ConfigReader.time != 0) {
+		if (Configuration.getTime() != 0) {
 			return;
 		}
 		// Spout End

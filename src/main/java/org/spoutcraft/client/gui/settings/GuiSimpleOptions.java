@@ -19,7 +19,7 @@ import org.spoutcraft.api.gui.RadioButton;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.WidgetAnchor;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.settings.controls.ChatButton;
 import org.spoutcraft.client.gui.settings.controls.ControlsButton;
 import org.spoutcraft.client.gui.settings.controls.DifficultyButton;
@@ -42,7 +42,7 @@ public class GuiSimpleOptions extends GuiScreen {
 	CheckBox switchToAdvancedCheck;
 	
 	public static GuiScreen constructOptionsScreen(GuiScreen parent) {
-		return ConfigReader.advancedOptions ? new GuiAdvancedOptions(parent) : new GuiSimpleOptions(parent);
+		return Configuration.isAdvancedOptions() ? new GuiAdvancedOptions(parent) : new GuiSimpleOptions(parent);
 	}
 	
 	public GuiSimpleOptions(GuiScreen parent) {
@@ -158,7 +158,7 @@ public class GuiSimpleOptions extends GuiScreen {
 		Label message = new GenericLabel("");
 		message.setWidth(150).setHeight(20).setX(left).setY(top);
 
-		if (ConfigReader.automatePerformance) {
+		if (Configuration.isAutomatePerformance()) {
 			screen.attachWidget(spoutcraft, message);
 
 			//top += 47;
@@ -169,13 +169,13 @@ public class GuiSimpleOptions extends GuiScreen {
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide smooth framerates, potentially at the cost of appearance.");
 		screen.attachWidget(spoutcraft, button);
-		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 0);
+		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 0);
 
 		button = (RadioButton) new OptimalGameplayButton("Balanced Gameplay", message).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide reasonable framerates and appearance.");
 		screen.attachWidget(spoutcraft, button);
-		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 1);
+		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 1);
 
 		top += 22;
 
@@ -183,13 +183,13 @@ public class GuiSimpleOptions extends GuiScreen {
 		button.setWidth(150).setHeight(20).setX(left).setY(top);
 		button.setTooltip("Spoutcraft will attempt to provide the best appearance, but potentially at the cost of framerates.");
 		screen.attachWidget(spoutcraft, button);
-		button.setSelected(ConfigReader.automatePerformance && ConfigReader.automateMode == 2);
+		button.setSelected(Configuration.isAutomatePerformance() && Configuration.getAutomateMode() == 2);
 
 		button = (RadioButton) new ManualSelectionButton("Manual Selection", message, parent).setGroup(1).setAlign(WidgetAnchor.TOP_CENTER);
 		button.setWidth(150).setHeight(20).setX(right).setY(top);
 		button.setTooltip("Disable automatic performance settings and adjust the settings manually.");
 		screen.attachWidget(spoutcraft, button);
-		button.setSelected(!ConfigReader.automatePerformance);
+		button.setSelected(!Configuration.isAutomatePerformance());
 
 		top += 22;
 		// TODO add option controls to the scroll area
@@ -207,8 +207,8 @@ public class GuiSimpleOptions extends GuiScreen {
 			SpoutClient.getHandle().displayGuiScreen(parent);
 		}
 		if (btn == switchToAdvancedCheck) {
-			ConfigReader.advancedOptions = true;
-			ConfigReader.write();
+			Configuration.setAdvancedOptions(true);
+			Configuration.write();
 			SpoutClient.getHandle().displayGuiScreen(new GuiAdvancedOptions(parent));
 		}
 	}

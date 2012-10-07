@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class AutosaveButton extends AutomatedButton {
 	public AutosaveButton() {
@@ -31,7 +31,7 @@ public class AutosaveButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.autosave) {
+		switch(Configuration.getAutosave()) {
 			case 0: return "Autosave: 30 min";
 			case 1: return "Autosave: 3 min";
 			case 2: return "Autosave: 1 min";
@@ -39,16 +39,16 @@ public class AutosaveButton extends AutomatedButton {
 			case 4: return "Autosave: 10 sec";
 			case 5: return "Autosave: 2 sec";
 		}
-		return "Unknown State: " + ConfigReader.autosave;
+		return "Unknown State: " + Configuration.getAutosave();
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.autosave++;
-		if (ConfigReader.autosave > 5) {
-			ConfigReader.autosave = 0;
+		Configuration.setAutosave(Configuration.getAutosave() + 1);
+		if (Configuration.getAutosave() > 5) {
+			Configuration.setAutosave(0);
 		}
-		ConfigReader.write();
+		Configuration.write();
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			//Minecraft.theMinecraft.theWorld.autosavePeriod = getAutosaveTicks();
@@ -56,7 +56,7 @@ public class AutosaveButton extends AutomatedButton {
 	}
 
 	public static int getAutosaveTicks() {
-		switch(ConfigReader.autosave) {
+		switch(Configuration.getAutosave()) {
 			case 0: return 30 * 60 * 20;
 			case 1: return 3 * 60 * 20;
 			case 2: return 60 * 20;

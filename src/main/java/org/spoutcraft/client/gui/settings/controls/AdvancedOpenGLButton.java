@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class AdvancedOpenGLButton extends AutomatedButton {
 	public AdvancedOpenGLButton() {
@@ -31,22 +31,22 @@ public class AdvancedOpenGLButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		switch (ConfigReader.advancedOpenGL) {
+		switch (Configuration.getAdvancedOpenGL()) {
 			case 0: return "Advanced OpenGL: OFF";
 			case 1: return "Advanced OpenGL: Fast";
 			case 2: return "Advanced OpenGL: Fancy";
 		}
-		return "Unknown State: " + ConfigReader.advancedOpenGL;
+		return "Unknown State: " + Configuration.getAdvancedOpenGL();
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.advancedOpenGL++;
-		if (ConfigReader.advancedOpenGL > 2) {
-			ConfigReader.advancedOpenGL = 0;
+		Configuration.setAdvancedOpenGL(Configuration.getAdvancedOpenGL() + 1);
+		if (Configuration.getAdvancedOpenGL() > 2) {
+			Configuration.setAdvancedOpenGL(0);
 		}
-		ConfigReader.write();
-		Minecraft.theMinecraft.gameSettings.advancedOpengl = ConfigReader.advancedOpenGL != 0;
+		Configuration.write();
+		Minecraft.theMinecraft.gameSettings.advancedOpengl = Configuration.getAdvancedOpenGL() != 0;
 		Minecraft.theMinecraft.renderGlobal.setAllRenderesVisible();
 	}
 }

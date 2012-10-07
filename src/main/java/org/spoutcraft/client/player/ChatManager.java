@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -50,8 +51,9 @@ import org.spoutcraft.api.Spoutcraft;
 import org.spoutcraft.api.entity.Player;
 import org.spoutcraft.api.gui.ChatTextBox;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.packet.PacketCustomBlockChunkOverride;
 
 public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	public int commandScroll = 0;
@@ -357,6 +359,18 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Garbage Collection Complete!");
 				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + (Runtime.getRuntime().freeMemory() - mem) / (1024D * 1024D) + " mb of memory freed");
 				return true;
+			} else if (command.startsWith("/loadchunks")) {
+				int amt = Integer.parseInt(command.split(" ")[1]);
+				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.YELLOW.toString() + "Forcing server to load " + amt + " chunks...");
+				Random r = new Random();
+				for (int i = 0; i < amt; i++) {
+					int cx = (r.nextBoolean() ? -1 : 1) * r.nextInt(1000);
+					int cz = (r.nextBoolean() ? -1 : 1) * r.nextInt(1000);
+					PacketCustomBlockChunkOverride packet = new PacketCustomBlockChunkOverride(cx, cz);
+					SpoutClient.getInstance().getPacketManager().sendSpoutPacket(packet);
+				}
+				SpoutClient.getHandle().ingameGUI.addChatMessage(ChatColor.GREEN.toString() + "Loaded " + amt + " chunks!");
+				return true;
 			}
 		} catch (Exception e) {}
 		return false;
@@ -463,11 +477,11 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	}
 
 	public boolean isHighlightingWords() {
-		return ConfigReader.highlightMentions;
+		return Configuration.isHighlightMentions();
 	}
 
 	public boolean isIgnoringPlayers() {
-		return ConfigReader.ignorePeople;
+		return Configuration.isIgnorePeople();
 	}
 
 	public int getScroll() {
@@ -475,14 +489,14 @@ public class ChatManager implements org.spoutcraft.api.player.ChatManager {
 	}
 
 	public boolean isShowingJoins() {
-		return ConfigReader.showJoinMessages;
+		return Configuration.isShowJoinMessages();
 	}
 
 	public boolean isUsingRegex() {
-		return ConfigReader.chatUsesRegex;
+		return Configuration.isChatUsesRegex();
 	}
 
 	public float getOpacity() {
-		return ConfigReader.chatOpacity;
+		return Configuration.getChatOpacity();
 	}
 }

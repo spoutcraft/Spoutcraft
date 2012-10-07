@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class SignDistanceButton extends AutomatedButton {
 	public SignDistanceButton() {
@@ -29,18 +29,18 @@ public class SignDistanceButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		return "Sign Distance: " + (ConfigReader.signDistance != Integer.MAX_VALUE ? ConfigReader.signDistance : "Infinite");
+		return "Sign Distance: " + (Configuration.getSignDistance() != Integer.MAX_VALUE ? Configuration.getSignDistance() : "Infinite");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		if (ConfigReader.signDistance < 128) {
-			ConfigReader.signDistance *= 2;
-		} else if (ConfigReader.signDistance == 128) {
-			ConfigReader.signDistance = Integer.MAX_VALUE;
+		if (Configuration.getSignDistance() < 128) {
+			Configuration.setSignDistance(Configuration.getSignDistance() * 2);
+		} else if (Configuration.getSignDistance() == 128) {
+			Configuration.setSignDistance(Integer.MAX_VALUE);
 		} else {
-			ConfigReader.signDistance = 8;
+			Configuration.setSignDistance(8);
 		}
-		ConfigReader.write();
+		Configuration.write();
 	}
 }

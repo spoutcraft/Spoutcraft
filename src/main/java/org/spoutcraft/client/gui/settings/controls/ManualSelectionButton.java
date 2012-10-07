@@ -26,7 +26,7 @@ import org.spoutcraft.api.gui.Color;
 import org.spoutcraft.api.gui.GenericRadioButton;
 import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
 
 public class ManualSelectionButton extends GenericRadioButton {
@@ -40,12 +40,12 @@ public class ManualSelectionButton extends GenericRadioButton {
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.automatePerformance = false;
-		if (!ConfigReader.advancedOptions) {
-			ConfigReader.advancedOptions = true;
+		Configuration.setAutomatePerformance(false);
+		if (!Configuration.isAdvancedOptions()) {
+			Configuration.setAdvancedOptions(true);
 			SpoutClient.getHandle().displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(parent));
 		}
-		ConfigReader.write();
+		Configuration.write();
 		label.setTextColor(new Color(0.45F, 0.45F, 0.45F, 0.45F));
 	}
 }

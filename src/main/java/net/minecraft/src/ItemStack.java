@@ -5,7 +5,7 @@ import java.util.List;
 
 // Spout Start
 import net.minecraft.src.NBTTagList;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.inventory.InventoryUtil;
 // Spout End
 
@@ -106,7 +106,7 @@ public class ItemStack { // Spout final -> gone
 			par1EntityPlayer.addStat(StatList.objectUseStats[this.itemID], 1);
 		}
 		// Spout Start
-		if (var10 && stackSize == 0 && getItem() instanceof ItemBlock && ConfigReader.replaceBlocks) {
+		if (var10 && stackSize == 0 && getItem() instanceof ItemBlock && Configuration.isReplaceBlocks()) {
 			InventoryUtil.replaceItem(this.itemID, getItem().getMetadata(this.getItemDamage()));
 		}
 		// Spout End
@@ -254,7 +254,7 @@ public class ItemStack { // Spout final -> gone
 				this.itemDamage = 0;
 				
 				// Spout Start
-				if (stackSize == 0 && ConfigReader.replaceTools) {
+				if (stackSize == 0 && Configuration.isReplaceTools()) {
 					InventoryUtil.replaceItem(this.itemID, -1);
 				}
 				// Spout End

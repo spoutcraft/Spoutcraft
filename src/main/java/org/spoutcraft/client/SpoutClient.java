@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -70,10 +70,9 @@ import org.spoutcraft.api.player.BiomeManager;
 import org.spoutcraft.api.player.SkyManager;
 import org.spoutcraft.api.property.PropertyObject;
 import org.spoutcraft.api.util.FixedLocation;
-import org.spoutcraft.api.util.Location;
 import org.spoutcraft.client.addon.SimpleAddonStore;
 import org.spoutcraft.client.block.SpoutcraftChunk;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.config.MipMapUtils;
 import org.spoutcraft.client.controls.SimpleKeyBindingManager;
 import org.spoutcraft.client.entity.CraftCameraEntity;
@@ -179,7 +178,7 @@ public class SpoutClient extends PropertyObject implements Client {
 	static {
 		dataMiningThread.start();
 		Packet.addIdClassMapping(195, true, true, CustomPacket.class);
-		ConfigReader.read();
+		Configuration.read();
 		Keyboard.setKeyManager(new SimpleKeyManager());
 		CraftEntity.registerTypes();
 		FileUtil.migrateOldFiles();
@@ -312,19 +311,19 @@ public class SpoutClient extends PropertyObject implements Client {
 		//	ConfigReader.sky = true;
 		//}
 		if (!isClearWaterCheat()) {
-			ConfigReader.clearWater = false;
+			Configuration.setClearWater(false);
 		}
 		//if (!isStarsCheat()) {
 		//	ConfigReader.stars = true;
 		//}
 		if (!isWeatherCheat()) {
-			ConfigReader.weather = true;
+			Configuration.setWeather(true);
 		}
 		if (!isTimeCheat()) {
-			ConfigReader.time = 0;
+			Configuration.setTime(0);
 		}
 		if (!isVoidFogCheat()) {
-			ConfigReader.voidFog = true;
+			Configuration.setVoidFog(true);
 		}
 	}
 
@@ -346,6 +345,7 @@ public class SpoutClient extends PropertyObject implements Client {
 
 	public void onTick() {
 		tick++;
+		Configuration.onTick();
 		getHandle().mcProfiler.startSection("httpdownloads");
 		FileDownloadThread.getInstance().onTick();
 		getHandle().mcProfiler.endStartSection("packet_decompression");
@@ -413,7 +413,7 @@ public class SpoutClient extends PropertyObject implements Client {
 			player.setPlayer(getHandle().thePlayer);
 			getHandle().thePlayer.spoutEntity = player;
 		}
-		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled() && ConfigReader.isHasClipboardAccess()) {
+		if (player.getHandle() instanceof EntityClientPlayerMP && isSpoutEnabled()) {
 			clipboardThread = new ClipboardThread((EntityClientPlayerMP)player.getHandle());
 			clipboardThread.start();
 		} else if (clipboardThread != null) {

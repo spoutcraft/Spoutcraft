@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,19 +23,19 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class Anaglyph3DButton extends GenericCheckBox {
 	public Anaglyph3DButton() {
 		super("3D Anaglyph");
-		setChecked(ConfigReader.anaglyph3D);
+		setChecked(Configuration.isAnaglyph3D());
 		setTooltip("3D mode used with red-cyan 3D glasses.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.anaglyph3D = !ConfigReader.anaglyph3D;
-		Minecraft.theMinecraft.gameSettings.anaglyph = ConfigReader.anaglyph3D;
+		Configuration.setAnaglyph3D(!Configuration.isAnaglyph3D());
+		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
 		Minecraft.theMinecraft.renderEngine.refreshTextures();
 	}
 }

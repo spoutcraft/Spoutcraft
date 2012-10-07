@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -23,21 +23,21 @@ import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 import com.pclewis.mcpatcher.TexturePackAPI;
 
 public class ConnectedTexturesButton extends GenericCheckBox {
 	public ConnectedTexturesButton() {
 		super("Connected Textures");
-		setChecked(ConfigReader.connectedTextures);
+		setChecked(Configuration.isConnectedTextures());
 		setTooltip("Connects textures of identical blocks next to each other for aesthetics.\n\nCertain texture packs may add additional enhancements");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.connectedTextures = !ConfigReader.connectedTextures;
-		ConfigReader.write();
+		Configuration.setConnectedTextures(!Configuration.isConnectedTextures());
+		Configuration.write();
 		
 		TexturePackAPI.ChangeHandler.change();
 		if (Minecraft.theMinecraft.theWorld != null) {

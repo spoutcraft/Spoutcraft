@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ import org.spoutcraft.api.gui.GenericTextField;
 import org.spoutcraft.api.gui.RenderPriority;
 import org.spoutcraft.api.gui.TextField;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class GuiAddWaypoint extends GuiScreen {
 	Button done, cancel, delete;

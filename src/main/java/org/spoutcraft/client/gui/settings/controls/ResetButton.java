@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.src.GuiScreen;
 
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.SafeButton;
 import org.spoutcraft.client.gui.settings.GuiAdvancedOptions;
 import org.spoutcraft.client.gui.settings.GuiSimpleOptions;
@@ -38,8 +38,8 @@ public class ResetButton extends SafeButton {
 
 	@Override
 	protected void executeAction() {
-		ConfigReader.restoreDefaults();
-		ConfigReader.write();
+		Configuration.restoreDefaults();
+		Configuration.write();
 
 		SpoutClient.getHandle().displayGuiScreen(GuiSimpleOptions.constructOptionsScreen(parent));
 	}

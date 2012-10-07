@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@ package org.spoutcraft.client.gui.settings.controls;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
 import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class DelayedTooltipCheckbox extends GenericCheckBox {
 	public DelayedTooltipCheckbox() {
 		super("Delayed Tooltips");
 		setTooltip("If ticked, widgets wait 500 ms\nuntil they show their tooltips.");
-		setChecked(ConfigReader.delayedTooltips);
+		setChecked(Configuration.isDelayedTooltips());
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.delayedTooltips = !ConfigReader.delayedTooltips;
-		ConfigReader.write();
+		Configuration.setDelayedTooltips(!Configuration.isDelayedTooltips());
+		Configuration.write();
 	}
 }

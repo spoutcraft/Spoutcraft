@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ package org.spoutcraft.client.gui.settings.controls;
 import net.minecraft.client.Minecraft;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class BetterGrassButton extends AutomatedButton {
 	public BetterGrassButton() {
@@ -31,21 +31,21 @@ public class BetterGrassButton extends AutomatedButton {
 
 	@Override
 	public String getText() {
-		switch(ConfigReader.betterGrass) {
+		switch(Configuration.getBetterGrass()) {
 			case 0: return "Better Grass: OFF";
 			case 1: return "Better Grass: Fast";
 			case 2: return "Better Grass: Fancy";
 		}
-		return "Unknown State: " + ConfigReader.betterGrass;
+		return "Unknown State: " + Configuration.getBetterGrass();
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.betterGrass++;
-		if (ConfigReader.betterGrass > 2) {
-			ConfigReader.betterGrass = 0;
+		Configuration.setBetterGrass(Configuration.getBetterGrass() + 1);
+		if (Configuration.getBetterGrass() > 2) {
+			Configuration.setBetterGrass(0);
 		}
-		ConfigReader.write();
+		Configuration.write();
 
 		if (Minecraft.theMinecraft.theWorld != null) {
 			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();

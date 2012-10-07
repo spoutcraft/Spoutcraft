@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -22,21 +22,21 @@ package org.spoutcraft.client.gui.settings.controls;
 import java.util.UUID;
 
 import org.spoutcraft.api.event.screen.ButtonClickEvent;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 
 public class FancyWeatherButton extends AutomatedCheckBox {
 	UUID fancyGraphics;
 	public FancyWeatherButton(UUID fancyGraphics) {
 		super("Fancy Weather");
 		this.fancyGraphics = fancyGraphics;
-		setChecked(ConfigReader.fancyWeather);
+		setChecked(Configuration.isFancyWeather());
 		setTooltip("Fancy Weather\nDefault - as set by setting Graphics\nFast  - light rain/snow, faster\nFancy - heavy rain/snow, slower\nOFF - no rain/snow, fastest\nWhen rain is OFF the splashes and rain sounds\nare still active.");
 	}
 
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
-		ConfigReader.fancyWeather = !ConfigReader.fancyWeather;
-		ConfigReader.write();
+		Configuration.setFancyWeather(!Configuration.isFancyWeather());
+		Configuration.write();
 		((FancyGraphicsButton)getScreen().getWidget(fancyGraphics)).custom = true;
 	}
 }

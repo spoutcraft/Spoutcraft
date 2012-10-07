@@ -1,7 +1,7 @@
 /*
  * This file is part of Spoutcraft.
  *
- * Copyright (c) 2011-2012, SpoutDev <http://www.spout.org/>
+ * Copyright (c) 2011-2012, Spout LLC <http://www.spout.org/>
  * Spoutcraft is licensed under the GNU Lesser General Public License.
  *
  * Spoutcraft is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ import org.spoutcraft.api.gui.GenericLabel;
 import org.spoutcraft.api.gui.GenericScrollArea;
 import org.spoutcraft.api.gui.Label;
 import org.spoutcraft.client.SpoutClient;
-import org.spoutcraft.client.config.ConfigReader;
+import org.spoutcraft.client.config.Configuration;
 import org.spoutcraft.client.gui.GuiSpoutScreen;
 
 public class GuiChatSettings extends GuiSpoutScreen {
@@ -58,31 +58,31 @@ public class GuiChatSettings extends GuiSpoutScreen {
 
 		checkShowMentions = new GenericCheckBox("Show Highlights/Mentions");
 		checkShowMentions.setTooltip("Highlight chat messages where your name or words you specified are mentioned.");
-		checkShowMentions.setChecked(ConfigReader.highlightMentions);
+		checkShowMentions.setChecked(Configuration.isHighlightMentions());
 
 		checkShowJoins = new GenericCheckBox("Show Joins");
 		checkShowJoins.setTooltip("Show player join messages when a new player logs in.");
-		checkShowJoins.setChecked(ConfigReader.showJoinMessages);
+		checkShowJoins.setChecked(Configuration.isShowJoinMessages());
 
 		checkShowColors = new GenericCheckBox("Show Color Help/Guide");
 		checkShowColors.setTooltip("Shows an on-screen guide for chat colors.");
-		checkShowColors.setChecked(ConfigReader.showChatColors);
+		checkShowColors.setChecked(Configuration.isShowChatColors());
 
 		checkCloseOnDamage = new GenericCheckBox("Close Chat Window on Damage");
 		checkCloseOnDamage.setTooltip("Close the chat screen if your player is damaged.\nYour message will be saved.");
-		checkCloseOnDamage.setChecked(ConfigReader.showDamageAlerts);
+		checkCloseOnDamage.setChecked(Configuration.isShowDamageAlerts());
 
 		checkGrabMouse = new GenericCheckBox("Chat Window Grabs Mouse");
 		checkGrabMouse.setTooltip("Opening the chat screen grabs the mouse.\nON, players can not look around - default behavior\nOFF, players can look and pan the screen during chat.");
-		checkGrabMouse.setChecked(ConfigReader.chatGrabsMouse);
+		checkGrabMouse.setChecked(Configuration.isChatGrabsMouse());
 
 		checkIgnorePeople = new GenericCheckBox("Ignore List");
 		checkIgnorePeople.setTooltip("Prevents displaying chat messages from players in your ignore list.");
-		checkIgnorePeople.setChecked(ConfigReader.ignorePeople);
+		checkIgnorePeople.setChecked(Configuration.isIgnorePeople());
 
 		checkParseRegex = new GenericCheckBox("Enable Regex Usage");
 		checkParseRegex.setTooltip("Parse highlighted words and ignored players using regular expression syntax.");
-		checkParseRegex.setChecked(ConfigReader.chatUsesRegex);
+		checkParseRegex.setChecked(Configuration.isChatUsesRegex());
 
 		buttonAdvancedMentions = new GenericButton("Configure");
 		buttonAdvancedMentions.setTooltip("Configure words to be highlighted.");
@@ -156,7 +156,7 @@ public class GuiChatSettings extends GuiSpoutScreen {
 				}
 			}
 		};
-		boolean regex = ConfigReader.chatUsesRegex;
+		boolean regex = Configuration.isChatUsesRegex();
 		if (btn == buttonAdvancedMentions) {
 			GuiListEdit editor = new GuiListEdit(save, "Highlight List", regex?"You can use regular expressions.":"", this, SpoutClient.getInstance().getChatManager().wordHighlight);
 			mc.displayGuiScreen(editor);
@@ -168,32 +168,32 @@ public class GuiChatSettings extends GuiSpoutScreen {
 			return;
 		}
 		if (btn == checkShowMentions) {
-			ConfigReader.highlightMentions = checkShowMentions.isChecked();
+			Configuration.setHighlightMentions(checkShowMentions.isChecked());
 		}
 		if (btn == checkShowJoins) {
-			ConfigReader.showJoinMessages = checkShowJoins.isChecked();
+			Configuration.setShowJoinMessages(checkShowJoins.isChecked());
 			if (chat != null) {
 				chat.reparse();
 			}
 		}
 		if (btn == checkShowColors) {
-			ConfigReader.showChatColors = checkShowColors.isChecked();
+			Configuration.setShowChatColors(checkShowColors.isChecked());
 		}
 		if (btn == checkCloseOnDamage) {
-			ConfigReader.showDamageAlerts = checkCloseOnDamage.isChecked();
+			Configuration.setShowDamageAlerts(checkCloseOnDamage.isChecked());
 		}
 		if (btn == checkIgnorePeople) {
-			ConfigReader.ignorePeople = checkIgnorePeople.isChecked();
+			Configuration.setIgnorePeople(checkIgnorePeople.isChecked());
 		}
 		if (btn == checkGrabMouse) {
-			ConfigReader.chatGrabsMouse = checkGrabMouse.isChecked();
+			Configuration.setChatGrabsMouse(checkGrabMouse.isChecked());
 		}
 		if (btn == checkParseRegex) {
-			ConfigReader.chatUsesRegex = checkParseRegex.isChecked();
+			Configuration.setChatUsesRegex(checkParseRegex.isChecked());
 			if (chat != null) {
 				chat.reparse();
 			}
 		}
-		ConfigReader.write();
+		Configuration.write();
 	}
 }
