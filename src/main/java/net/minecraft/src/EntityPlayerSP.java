@@ -38,7 +38,7 @@ public class EntityPlayerSP extends EntityPlayer {
 		this.dimension = par4;
 		// Spout Start
 		if (par3Session != null && par3Session.username != null && par3Session.username.length() > 0) {
-			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
+			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par3Session.username) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par3Session.username));
 			if (vip != null) {
 				this.displayName = vip.getTitle();

@@ -23,7 +23,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		this.stepHeight = 0.0F;
 		// Spout Start
 		if (par2Str != null && par2Str.length() > 0) {
-			this.skinUrl = "http://static.spout.org/skin/" + ChatColor.stripColor(par2Str) + ".png";
+			this.skinUrl = "http://cdn.spout.org/game/vanilla/skin/" + ChatColor.stripColor(par2Str) + ".png";
 			this.vip = Resources.getVIP(ChatColor.stripColor(par2Str));
 		}
 		// Spout End

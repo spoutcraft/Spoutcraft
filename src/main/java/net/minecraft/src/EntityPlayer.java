@@ -287,7 +287,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 	public void updateCloak() {
 		// Spout Start
-		updateCloak("http://static.spout.org/cape/" + ChatColor.stripColor(this.username) + ".png");
+		updateCloak("http://cdn.spout.org/game/vanilla/cape/" + ChatColor.stripColor(this.username) + ".png");
 		// Spout End
 	}
 
