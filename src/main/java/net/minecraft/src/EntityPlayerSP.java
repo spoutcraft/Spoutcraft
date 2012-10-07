@@ -212,10 +212,8 @@ public class EntityPlayerSP extends EntityPlayer {
 			var1 *= 1.1F;
 		}
 
-		// Spout Start
-		float landMoveFactor = this.speedOnGround * ((isSprinting() || runToggle) ? 1.3F : 1F);
+		float landMoveFactor = this.speedOnGround * (isSprinting() ? 1.3F : 1F);
 		var1 *= (landMoveFactor * this.getSpeedModifier() / this.speedOnGround + 1.0F) / 2.0F;
-		// Spout End
 		if (this.isUsingItem() && this.getItemInUse().itemID == Item.bow.shiftedIndex) {
 			int var2 = this.getItemInUseDuration();
 			float var3 = (float)var2 / 20.0F;
@@ -442,7 +440,8 @@ public class EntityPlayerSP extends EntityPlayer {
 				fogKey = settings.keyBindToggleFog;
 				settings.keyBindToggleFog = new KeyBinding("key.fog", -1);
 				if (view != newView) {
-					settings.renderDistance = newView;
+					Configuration.setRenderDistance(newView);
+					Configuration.write();
 					if (this instanceof EntityClientPlayerMP && Spoutcraft.getClient().isSpoutEnabled()) {
 						SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRenderDistance((byte)newView));
 					}
