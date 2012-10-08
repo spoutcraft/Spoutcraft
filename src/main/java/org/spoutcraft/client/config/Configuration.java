@@ -154,7 +154,6 @@ public class Configuration {
 				}
 			}
 			config.save();
-		} catch (FileNotFoundException ignore) {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -173,14 +172,14 @@ public class Configuration {
 		org.lwjgl.opengl.Display.setVSyncEnabled(Configuration.getPerformance() == 3);
 
 		if (!isShadersSupported()) {
-			setShaderType(0);
+			Configuration.shaderType = 0;
 		}
 		Shaders.setMode(getShaderType());
 
 		if (Configuration.getSignDistance() < 8) {
-			Configuration.setSignDistance(8);
+			signDistance = 8;
 		} else if (Configuration.getSignDistance() >= 128 && Configuration.getSignDistance() != Integer.MAX_VALUE) {
-			Configuration.setSignDistance(Integer.MAX_VALUE);
+			signDistance = Integer.MAX_VALUE;
 		}
 	}
 
