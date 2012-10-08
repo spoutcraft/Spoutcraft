@@ -236,7 +236,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 	@Override
 	public void handleKeyPress(int i, boolean keyReleased) {
 		if (SpoutClient.getInstance().isSpoutEnabled()) {
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyPress((byte)i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN));
+			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketKeyPress(i, keyReleased, (MovementInputFromOptions)movementInput, ScreenType.GAME_SCREEN));
 		}
 
 		super.handleKeyPress(i, keyReleased);
