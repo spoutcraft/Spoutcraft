@@ -298,7 +298,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		VIP vip = Resources.getVIP(tempName);
 		playerCloakUrl = cloak;
 		if (vip != null) {
-			playerCloakUrl = vip.getCape();
+			if (vip.getCape() !=null) {
+				playerCloakUrl = vip.getCape();
+			}
 		} else {
 			Holiday holiday = Resources.getHoliday();
 			if (holiday != null) {
