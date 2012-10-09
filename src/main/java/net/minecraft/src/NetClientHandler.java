@@ -747,7 +747,7 @@ public class NetClientHandler extends NetHandler {
 	private void sendCacheSetupPacket() {
 		if (!cachePacketSent) {
 			cachePacketSent = true;
-			this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
+		//	this.netManager.addToSendQueue(new Packet250CustomPayload("ChkCache:setHash", new byte[1]));
 		}
 	}
 	// Spout End
