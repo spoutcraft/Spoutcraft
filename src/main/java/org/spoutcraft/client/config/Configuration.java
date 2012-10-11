@@ -96,6 +96,7 @@ public class Configuration {
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
 	private static transient boolean dirty = false;
+	private static transient vsync = false;
 
 	public static synchronized void read() {
 		//Cleanup old
@@ -159,6 +160,7 @@ public class Configuration {
 		}
 	}
 
+
 	private static void updateMCConfig() {
 		Minecraft.theMinecraft.gameSettings.anaglyph = Configuration.isAnaglyph3D();
 		Minecraft.theMinecraft.gameSettings.renderDistance = Configuration.getRenderDistance();
@@ -169,7 +171,10 @@ public class Configuration {
 		Minecraft.theMinecraft.gameSettings.gammaSetting = Configuration.getBrightnessSlider();
 
 		Minecraft.theMinecraft.gameSettings.limitFramerate = Configuration.getPerformance();
-		org.lwjgl.opengl.Display.setVSyncEnabled(Configuration.getPerformance() == 3);
+		if (vsync != (Configuration.getPerformance() == 3)) {
+			vsync = Configuration.getPerformance() == 3;
+			org.lwjgl.opengl.Display.setVSyncEnabled(vsync);
+		}
 
 		if (!isShadersSupported()) {
 			Configuration.shaderType = 0;
