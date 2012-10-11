@@ -96,7 +96,7 @@ public class Configuration {
 	//Config-specific
 	private static transient Map<String, Object> defaultSettings = new HashMap<String, Object>();
 	private static transient boolean dirty = false;
-	private static transient vsync = false;
+	private static transient boolean vsync = false;
 
 	public static synchronized void read() {
 		//Cleanup old
