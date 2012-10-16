@@ -83,14 +83,9 @@ public class PacketPreCacheFile implements SpoutPacket {
 		
 		//invalidate File types if CRC doesn't match
 		if (!url && cached) {
-			try {
-				byte[] data = new byte[FileUtils.readFileToByteArray(expected).length];
-				long crc = FileUtil.getCRC(expected, data);
-				if (crc != expectedCRC) {
-					cached = false;
-				}
-			} catch (IOException e) {
-				System.out.println("Cannot verify CRC on file [" + fileName + "]");
+			long crc = FileUtil.getCRC(expected, new byte[(int) expected.length()]);
+			if (crc != expectedCRC) {
+				cached = false;
 			}
 		}
 		
