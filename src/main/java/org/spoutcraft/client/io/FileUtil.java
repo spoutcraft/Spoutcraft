@@ -36,10 +36,13 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.src.GuiYesNo;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.CustomScreen;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
 
 public class FileUtil {
 	private static final String[] validExtensions = {"txt", "yml", "xml", "png", "jpg", "ogg", "midi", "wav", "zip"};
@@ -309,7 +312,9 @@ public class FileUtil {
 		//unzip
 		File target = FileUtil.getCacheDir();
 		
-		
+		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
+			((GuiPrecache)SpoutClient.getHandle().currentScreen).statusText.setText("Loading Textures...");
+		}
 		
 		try {
 			ZipFile zip = new ZipFile(precacheFile);
@@ -363,29 +368,13 @@ public class FileUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//load textures
 		
-				/*
-				this.fileName = FileUtil.getFileName(this.fileName);
-				if (!FileUtil.canCache(fileName)) {
-					System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
-					return;
-				}
-				File directory = new File(FileUtil.getCacheDir(), plugin);
-				if (!directory.exists()) {
-					directory.mkdir();
-				}
-				File cache = new File(directory, fileName);
-				try {
-					FileUtils.writeByteArrayToFile(cache, fileData);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				if (cache.exists() && FileUtil.isImageFile(fileName)) {
-					CustomTextureManager.getTextureFromUrl(plugin, fileName);
-				}
-				
-				
-				*/
+		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
+			// Closes downloading terrain
+			SpoutClient.getHandle().displayGuiScreen(null, false);
+			// Prevent closing a plugin created menu from opening the downloading terrain
+			SpoutClient.getHandle().clearPreviousScreen();
+		}
+		
 	}
 }

@@ -3,13 +3,10 @@ package org.spoutcraft.client.packet;
 import java.io.File;
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.src.MovementInputFromOptions;
-
-import org.spoutcraft.api.gui.ScreenType;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
+import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.FileUtil;
 
 public class PacketValidatePrecache implements SpoutPacket {
@@ -39,6 +36,9 @@ public class PacketValidatePrecache implements SpoutPacket {
 
 	@Override
 	public void run(int playerId) {
+		
+		//display precache gui.
+		SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
 		
 		//if crc matches, use ours. if not, request new precache
 		String zName;
