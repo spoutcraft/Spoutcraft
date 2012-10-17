@@ -584,7 +584,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					System.out.println("    " + f.getName() + " : " + f.get(null));
 				}
 			} catch (Exception ignore) { }
-			throw new RuntimeException("OpenGL Error occured!");
+			throw new RuntimeException("OpenGL Exception: (" + par1Str + ", " + var3 + ")");
 			// Spout End
 		}
 	}
