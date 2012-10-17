@@ -19,20 +19,26 @@
  */
 package org.spoutcraft.client.io;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.spoutcraft.client.SpoutClient;
 
 public class FileUtil {
@@ -297,5 +303,89 @@ public class FileUtil {
 	public static boolean canCache(String fileUrl) {
 		String filename = FileUtil.getFileName(fileUrl);
 		return FilenameUtils.isExtension(filename, validExtensions);
+	}
+	
+	public static void loadPrecache(File precacheFile) {
+		//unzip
+		File target = FileUtil.getCacheDir();
+		
+		
+		
+		try {
+			ZipFile zip = new ZipFile(precacheFile);
+			Enumeration entries = zip.entries();
+			
+			while (entries.hasMoreElements())
+			{
+				// grab a zip file entry
+				ZipEntry entry = (ZipEntry) entries.nextElement();
+				
+				if (entry.isDirectory()) {
+					continue;
+				}
+				
+				File targetPath = new File(target, entry.getName());
+				
+				if (!targetPath.getParentFile().exists()) {
+					targetPath.getParentFile().mkdirs();
+				}
+				
+				if (targetPath.exists() && entry.getCrc() == FileUtil.getCRC(targetPath, new byte[(int) targetPath.length()])) {
+					continue;
+				}
+				
+				BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
+				int currentByte;
+				byte[] buf = new byte[1024];
+				
+				FileOutputStream fos = new FileOutputStream(targetPath);
+				BufferedOutputStream dest = new BufferedOutputStream(fos, 1024);
+				
+				while ((currentByte = is.read(buf, 0, 1024)) != -1) {
+					dest.write(buf, 0, currentByte);
+				}
+				dest.flush();
+				dest.close();
+				is.close();
+				
+				if (targetPath.exists() && FileUtil.isImageFile(targetPath.getName())) {
+					
+					CustomTextureManager.getTextureFromUrl(targetPath.getParentFile().getName(), targetPath.getName());
+				}
+			}
+			
+			zip.close();
+			
+		} catch (ZipException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//load textures
+		
+				/*
+				this.fileName = FileUtil.getFileName(this.fileName);
+				if (!FileUtil.canCache(fileName)) {
+					System.out.println("WARNING, " + plugin + " tried to cache an invalid file type: " + fileName);
+					return;
+				}
+				File directory = new File(FileUtil.getCacheDir(), plugin);
+				if (!directory.exists()) {
+					directory.mkdir();
+				}
+				File cache = new File(directory, fileName);
+				try {
+					FileUtils.writeByteArrayToFile(cache, fileData);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				if (cache.exists() && FileUtil.isImageFile(fileName)) {
+					CustomTextureManager.getTextureFromUrl(plugin, fileName);
+				}
+				
+				
+				*/
 	}
 }
