@@ -123,6 +123,7 @@ public class GuiUnexpectedError extends GuiScreen {
 			builder.append("-----------------------------------").append("\n");
 			builder.append("Stack Trace:").append("\n");
 			builder.append("    Exception: ").append(caused.getClass().getSimpleName()).append("\n");
+			builder.append("    Message: ").append(caused.getMessage()).append("\n");
 			builder.append("    Trace:").append("\n");
 			for (StackTraceElement ele : caused.getStackTrace()) {
 				builder.append("        ").append(ele.toString()).append("\n");
