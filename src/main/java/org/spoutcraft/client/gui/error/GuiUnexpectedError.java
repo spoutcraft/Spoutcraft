@@ -35,6 +35,10 @@ import net.minecraft.client.ClientBrandRetriever;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiScreen;
 
+import com.pclewis.mcpatcher.mod.Shaders;
+import com.pclewis.mcpatcher.mod.TextureUtils;
+import com.pclewis.mcpatcher.mod.TileSize;
+
 import org.bukkit.ChatColor;
 
 import org.spoutcraft.api.Spoutcraft;
@@ -129,6 +133,12 @@ public class GuiUnexpectedError extends GuiScreen {
 				builder.append("        ").append(ele.toString()).append("\n");
 			}
 			builder.append("-----------------------------------").append("\n");
+
+			builder.append("Minecraft Information:\n");
+			builder.append("    Texture Pack: ").append(TextureUtils.getTexturePackName(TextureUtils.getSelectedTexturePack())).append("\n");
+			builder.append("    Texture Pack Res: ").append(TileSize.int_size + "x").append("\n");
+			builder.append("    Shaders: ").append(Boolean.toString(Shaders.isEnabled())).append("\n");
+
 			builder.append("System Information:\n");
 			builder.append("    Operating System: ").append(System.getProperty("os.name")).append("\n");
 			builder.append("    Operating System Version: ").append(System.getProperty("os.version")).append("\n");
