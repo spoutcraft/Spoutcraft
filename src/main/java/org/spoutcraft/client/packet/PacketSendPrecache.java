@@ -117,9 +117,9 @@ public class PacketSendPrecache implements CompressablePacket {
 		
 		String zName;
 		if (serverName==null || serverName.isEmpty()) {
-			zName = "unnamedserver.zip";
+			zName = "0.zip";
 		} else {
-			zName = serverName.replaceAll("[^a-zA-Z0-9]", "").trim() + ".zip";
+			zName = serverName + ".zip";
 		}
 		
 		File cachedZip = new File(FileUtil.getCacheDir(), zName);
