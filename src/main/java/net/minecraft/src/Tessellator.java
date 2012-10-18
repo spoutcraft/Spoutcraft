@@ -128,7 +128,6 @@ public class Tessellator {
 	public int bufferSize; // Spout HD private -> public
 	// Spout Start
 	public int texture = -1;
-	public int textureOverride = 0;
 	private ByteBuffer shadersBuffer;
 	private ShortBuffer shadersShortBuffer;
 	private short[] shadersData;
@@ -165,7 +164,7 @@ public class Tessellator {
 
 			if (this.vertexCount > 0) {
 				// Spout HD start
-				if (this.texture >= 0 && textureOverride <= 1) {
+				if (this.texture >= 0) {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture);
 				}
 				// Spout HD End
@@ -189,11 +188,6 @@ public class Tessellator {
 					}
 
 					GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-
-					// Spout Start
-					if(textureOverride > 1 || (textureOverride > 0 && texture < 0))
-						GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureOverride);
-					// Spout End
 				}
 
 				if (this.hasBrightness) {
@@ -415,10 +409,10 @@ public class Tessellator {
 		// Spout Start
 		if(Shaders.isEnabled()) {
 			if(this.drawMode == 7 && convertQuadsToTriangles && (addedVertices+1)%4==0&&hasNormals) {
-				this.rawBuffer[rawBufferIndex+6] = rawBuffer[rawBufferIndex - 18];
+				this.rawBuffer[this.rawBufferIndex + 6] = this.rawBuffer[this.rawBufferIndex + -18];
 				this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
 				this.rawBuffer[this.rawBufferIndex + 14] = this.rawBuffer[this.rawBufferIndex + -2];
-				this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
+
 			}
 			this.shadersBuffer.putShort(this.shadersData[0]).putShort(this.shadersData[1]);
 		}
