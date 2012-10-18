@@ -37,6 +37,7 @@ import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.GuiYesNo;
+import net.minecraft.src.RenderManager;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -354,7 +355,6 @@ public class FileUtil {
 				is.close();
 				
 				if (targetPath.exists() && FileUtil.isImageFile(targetPath.getName())) {
-					
 					CustomTextureManager.getTextureFromUrl(targetPath.getParentFile().getName(), targetPath.getName());
 				}
 			}
@@ -369,12 +369,15 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		
+		if (Minecraft.theMinecraft.theWorld != null) {
+			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		}
+		
 		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			// Closes downloading terrain
 			SpoutClient.getHandle().displayGuiScreen(null, false);
 			// Prevent closing a plugin created menu from opening the downloading terrain
 			SpoutClient.getHandle().clearPreviousScreen();
 		}
-		
 	}
 }
