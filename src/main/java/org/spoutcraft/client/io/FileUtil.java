@@ -309,7 +309,7 @@ public class FileUtil {
 		return FilenameUtils.isExtension(filename, validExtensions);
 	}
 	
-	public static void loadPrecache(File precacheFile) {
+	public static void loadPrecache(File precacheFile, boolean reloadRenderer) {
 		//unzip
 		File target = FileUtil.getCacheDir();
 		
@@ -369,10 +369,11 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		
-		if (Minecraft.theMinecraft.theWorld != null) {
-			Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+		if (reloadRenderer == true) {
+			if (Minecraft.theMinecraft.theWorld != null) {
+				Minecraft.theMinecraft.renderGlobal.updateAllRenderers();
+			}
 		}
-		
 		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			// Closes downloading terrain
 			SpoutClient.getHandle().displayGuiScreen(null, false);

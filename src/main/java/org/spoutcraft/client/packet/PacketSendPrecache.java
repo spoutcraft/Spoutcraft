@@ -138,7 +138,7 @@ public class PacketSendPrecache implements CompressablePacket {
 		}
 		
 		//unzip
-		FileUtil.loadPrecache(cachedZip);
+		FileUtil.loadPrecache(cachedZip, true);
 		
 		
 		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());

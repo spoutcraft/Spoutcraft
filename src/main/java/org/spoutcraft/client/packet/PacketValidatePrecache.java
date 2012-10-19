@@ -56,7 +56,7 @@ public class PacketValidatePrecache implements SpoutPacket {
 		if (!cachedZip.exists() || crc != this.crc) {
 			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache());
 		} else {
-			FileUtil.loadPrecache(cachedZip);
+			FileUtil.loadPrecache(cachedZip, false);
 		}
 	}
 
