@@ -181,9 +181,13 @@ public class RenderManager {
 		if (var10 != null) {
 			// Spout start
 			var10.setRenderManager(this);
+			try {
 			// Spout end
 			var10.doRender(par1Entity, par2, par4, par6, par8, par9);
 			var10.doRenderShadowAndFire(par1Entity, par2, par4, par6, par8, par9);
+			// Spout start
+			} catch(NullPointerException ignore) { }
+			// Spout end
 		}
 	}
 
