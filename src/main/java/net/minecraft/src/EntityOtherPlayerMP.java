@@ -87,7 +87,7 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 		}
 
 		this.legYaw += (var5 - this.legYaw) * 0.4F;
-		this.field_70754_ba += this.legYaw;
+		this.legSwing += this.legYaw;
 
 		if (!this.isItemInUse && this.isEating() && this.inventory.mainInventory[this.inventory.currentItem] != null) {
 			ItemStack var6 = this.inventory.mainInventory[this.inventory.currentItem];
@@ -170,8 +170,12 @@ public class EntityOtherPlayerMP extends EntityPlayer {
 	/**
 	 * Returns true if the command sender is allowed to use the given command.
 	 */
-	public boolean canCommandSenderUseCommand(String par1Str) {
+	public boolean canCommandSenderUseCommand(int par1, String par2Str) {
 		return false;
+	}
+
+	public ChunkCoordinates func_82114_b() {
+		return new ChunkCoordinates(MathHelper.floor_double(this.posX + 0.5D), MathHelper.floor_double(this.posY + 0.5D), MathHelper.floor_double(this.posZ + 0.5D));
 	}
 
 	// Spout Start
