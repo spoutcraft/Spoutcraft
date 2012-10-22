@@ -103,11 +103,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 		boolean var14 = var9 != 0.0D || var11 != 0.0D;
 
 		if (this.ridingEntity != null) {
-			if (var14) {
-				this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.motionX, -999.0D, -999.0D, this.motionZ, this.onGround));
-			} else {
-				this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-			}
+			this.sendQueue.addToSendQueue(new Packet13PlayerLookMove(this.motionX, -999.0D, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
 
 			var13 = false;
 		} else if (var13 && var14) {
@@ -116,7 +112,7 @@ public class EntityClientPlayerMP extends EntityPlayerSP {
 			this.sendQueue.addToSendQueue(new Packet11PlayerPosition(this.posX, this.boundingBox.minY, this.posY, this.posZ, this.onGround));
 		} else if (var14) {
 			this.sendQueue.addToSendQueue(new Packet12PlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-		} else if (this.wasOnGround != this.onGround) {
+		} else {
 			this.sendQueue.addToSendQueue(new Packet10Flying(this.onGround));
 		}
 
