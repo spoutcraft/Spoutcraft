@@ -128,7 +128,7 @@ public class EntityItem extends Entity {
 
 		++this.age;
 
-		if (this.age >= 6000) {
+		if (!this.worldObj.isRemote && this.age >= 6000) {
 			this.setDead();
 		}
 	}
@@ -139,18 +139,22 @@ public class EntityItem extends Entity {
 		} else if (par1EntityItem.isEntityAlive() && this.isEntityAlive()) {
 			if (par1EntityItem.item.getItem() != this.item.getItem()) {
 				return false;
-			} else if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage()) {
-				return false;
-			} else if (par1EntityItem.item.stackSize < this.item.stackSize) {
-				return par1EntityItem.func_70289_a(this);
-			} else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize()) {
-				return false;
+			} else if (!par1EntityItem.item.hasTagCompound() && !this.item.hasTagCompound()) {
+				if (par1EntityItem.item.getItem().getHasSubtypes() && par1EntityItem.item.getItemDamage() != this.item.getItemDamage()) {
+					return false;
+				} else if (par1EntityItem.item.stackSize < this.item.stackSize) {
+					return par1EntityItem.func_70289_a(this);
+				} else if (par1EntityItem.item.stackSize + this.item.stackSize > par1EntityItem.item.getMaxStackSize()) {
+					return false;
+				} else {
+					par1EntityItem.item.stackSize += this.item.stackSize;
+					par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
+					par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
+					this.setDead();
+					return true;
+				}
 			} else {
-				par1EntityItem.item.stackSize += this.item.stackSize;
-				par1EntityItem.delayBeforeCanPickup = Math.max(par1EntityItem.delayBeforeCanPickup, this.delayBeforeCanPickup);
-				par1EntityItem.age = Math.min(par1EntityItem.age, this.age);
-				this.setDead();
-				return true;
+				return false;
 			}
 		} else {
 			return false;
@@ -253,7 +257,7 @@ public class EntityItem extends Entity {
 	 * Gets the username of the entity.
 	 */
 	public String getEntityName() {
-		return StatCollector.translateToLocal("item." + this.item.func_77977_a());
+		return StatCollector.translateToLocal("item." + this.item.getItemName());
 	}
 
 	/**
