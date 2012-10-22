@@ -44,35 +44,31 @@ public class ContainerChest extends Container {
 		return this.lowerChestInventory.isUseableByPlayer(par1EntityPlayer);
 	}
 
-	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
-	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 < this.numRows * 9) {
-				if (!this.mergeItemStack(var4, this.numRows * 9, this.inventorySlots.size(), true)) {
+			if (par2 < this.numRows * 9) {
+				if (!this.mergeItemStack(var5, this.numRows * 9, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 0, this.numRows * 9, false)) {
+			} else if (!this.mergeItemStack(var5, 0, this.numRows * 9, false)) {
 				return null;
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 		}
 
-		return var2;
+		return var3;
 	}
-
 	/**
 	 * Callback for when the crafting gui is closed.
 	 */

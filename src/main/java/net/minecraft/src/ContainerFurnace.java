@@ -85,56 +85,53 @@ public class ContainerFurnace extends Container {
 		return this.furnace.isUseableByPlayer(par1EntityPlayer);
 	}
 
-	/**
-	 * Called to transfer a stack from one inventory to the other eg. when shift clicking.
-	 */
-	public ItemStack transferStackInSlot(int par1) {
-		ItemStack var2 = null;
-		Slot var3 = (Slot)this.inventorySlots.get(par1);
+	public ItemStack func_82846_b(EntityPlayer par1EntityPlayer, int par2) {
+		ItemStack var3 = null;
+		Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var3 != null && var3.getHasStack()) {
-			ItemStack var4 = var3.getStack();
-			var2 = var4.copy();
+		if (var4 != null && var4.getHasStack()) {
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
 
-			if (par1 == 2) {
-				if (!this.mergeItemStack(var4, 3, 39, true)) {
+			if (par2 == 2) {
+				if (!this.mergeItemStack(var5, 3, 39, true)) {
 					return null;
 				}
 
-				var3.onSlotChange(var4, var2);
-			} else if (par1 != 1 && par1 != 0) {
-				if (FurnaceRecipes.smelting().getSmeltingResult(var4.getItem().shiftedIndex) != null) {
-					if (!this.mergeItemStack(var4, 0, 1, false)) {
+				var4.onSlotChange(var5, var3);
+			} else if (par2 != 1 && par2 != 0) {
+				if (FurnaceRecipes.smelting().getSmeltingResult(var5.getItem().shiftedIndex) != null) {
+					if (!this.mergeItemStack(var5, 0, 1, false)) {
 						return null;
 					}
-				} else if (TileEntityFurnace.isItemFuel(var4)) {
-					if (!this.mergeItemStack(var4, 1, 2, false)) {
+				} else if (TileEntityFurnace.isItemFuel(var5)) {
+					if (!this.mergeItemStack(var5, 1, 2, false)) {
 						return null;
 					}
-				} else if (par1 >= 3 && par1 < 30) {
-					if (!this.mergeItemStack(var4, 30, 39, false)) {
+				} else if (par2 >= 3 && par2 < 30) {
+					if (!this.mergeItemStack(var5, 30, 39, false)) {
 						return null;
 					}
-				} else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false)) {
+				} else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 3, 30, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(var4, 3, 39, false)) {
+			} else if (!this.mergeItemStack(var5, 3, 39, false)) {
 				return null;
 			}
 
-			if (var4.stackSize == 0) {
-				var3.putStack((ItemStack)null);
+			if (var5.stackSize == 0) {
+				var4.putStack((ItemStack)null);
 			} else {
-				var3.onSlotChanged();
+				var4.onSlotChanged();
 			}
 
-			if (var4.stackSize == var2.stackSize) {
+			if (var5.stackSize == var3.stackSize) {
 				return null;
 			}
 
-			var3.onPickupFromSlot(var4);
+			var4.func_82870_a(par1EntityPlayer, var5);
 		}
 
-		return var2;
+		return var3;
 	}
 }
