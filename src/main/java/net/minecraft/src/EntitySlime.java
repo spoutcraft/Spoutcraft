@@ -74,7 +74,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 	 * Returns the name of the sound played when the slime jumps.
 	 */
 	protected String getJumpSound() {
-		return "mob.slime";
+		return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 			int var2 = this.getSlimeSize();
 
 			if (this.canEntityBeSeen(par1EntityPlayer) && this.getDistanceSqToEntity(par1EntityPlayer) < 0.6D * (double)var2 * 0.6D * (double)var2 && par1EntityPlayer.attackEntityFrom(DamageSource.causeMobDamage(this), this.getAttackStrength())) {
-				this.worldObj.playSoundAtEntity(this, "mob.slimeattack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+				this.worldObj.playSoundAtEntity(this, "mob.attack", 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			}
 		}
 	}
@@ -213,14 +213,14 @@ public class EntitySlime extends EntityLiving implements IMob {
 	 * Returns the sound this mob makes when it is hurt.
 	 */
 	protected String getHurtSound() {
-		return "mob.slime";
+		return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
 	}
 
 	/**
 	 * Returns the sound this mob makes on death.
 	 */
 	protected String getDeathSound() {
-		return "mob.slime";
+		return "mob.slime." + (this.getSlimeSize() > 1 ? "big" : "small");
 	}
 
 	/**
@@ -235,7 +235,22 @@ public class EntitySlime extends EntityLiving implements IMob {
 	 */
 	public boolean getCanSpawnHere() {
 		Chunk var1 = this.worldObj.getChunkFromBlockCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ));
-		return this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && this.rand.nextInt(4) != 1 ? false : ((this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) && this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D ? super.getCanSpawnHere() : false);
+
+		if (this.worldObj.getWorldInfo().getTerrainType() == WorldType.FLAT && this.rand.nextInt(4) != 1) {
+			return false;
+		} else {
+			if (this.getSlimeSize() == 1 || this.worldObj.difficultySetting > 0) {
+				if (this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ)) == BiomeGenBase.swampland && this.posY > 50.0D && this.posY < 70.0D && this.worldObj.getBlockLightValue(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) <= this.rand.nextInt(8)) {
+					return super.getCanSpawnHere();
+				}
+
+				if (this.rand.nextInt(10) == 0 && var1.getRandomWithSeed(987234911L).nextInt(10) == 0 && this.posY < 40.0D) {
+					return super.getCanSpawnHere();
+				}
+			}
+
+			return false;
+		}
 	}
 
 	/**
@@ -257,7 +272,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 	 * Returns true if the slime makes a sound when it jumps (based upon the slime's size)
 	 */
 	protected boolean makesSoundOnJump() {
-		return this.getSlimeSize() > 1;
+		return this.getSlimeSize() > 0;
 	}
 
 	/**
