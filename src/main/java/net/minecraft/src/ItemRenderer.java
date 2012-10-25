@@ -21,7 +21,7 @@ public class ItemRenderer {
 	private float equippedProgress = 0.0F;
 	private float prevEquippedProgress = 0.0F;
 	private RenderBlocks renderBlocksInstance = new RenderBlocks();
-	private MapItemRenderer mapItemRenderer;
+	public final MapItemRenderer mapItemRenderer;
 	private int equippedItemSlot = -1;
 	// Spout Start
 	private Random rand = new Random();
@@ -252,7 +252,7 @@ public class ItemRenderer {
 		float var20;
 
 		if (var17 != null) {
-			var18 = Item.itemsList[var17.itemID].getColorFromDamage(var17.getItemDamage(), 0);
+			var18 = Item.itemsList[var17.itemID].func_82790_a(var17, 0);
 			var20 = (float)(var18 >> 16 & 255) / 255.0F;
 			var21 = (float)(var18 >> 8 & 255) / 255.0F;
 			var10 = (float)(var18 & 255) / 255.0F;
@@ -303,7 +303,7 @@ public class ItemRenderer {
 				var26 = (RenderPlayer)var24;
 				var13 = 1.0F;
 				GL11.glScalef(var13, var13, var13);
-				var26.drawFirstPersonHand();
+				var26.func_82441_a(this.mc.thePlayer);
 				GL11.glPopMatrix();
 			}
 
@@ -331,7 +331,9 @@ public class ItemRenderer {
 			var28.addVertexWithUV((double)(0 - var27), (double)(0 - var27), 0.0D, 0.0D, 0.0D);
 			var28.draw();
 			MapData var16 = Item.map.getMapData(var17, this.mc.theWorld);
-			this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var16);
+			if (var16 != null) {
+				this.mapItemRenderer.renderMap(this.mc.thePlayer, this.mc.renderEngine, var16);
+			}
 			GL11.glPopMatrix();
 		} else if (var17 != null) {
 			GL11.glPushMatrix();
@@ -418,7 +420,7 @@ public class ItemRenderer {
 
 			if (var17.getItem().requiresMultipleRenderPasses()) {
 				this.renderItem(var3, var17, 0);
-				int var25 = Item.itemsList[var17.itemID].getColorFromDamage(var17.getItemDamage(), 1);
+				int var25 = Item.itemsList[var17.itemID].func_82790_a(var17, 1);
 				var13 = (float)(var25 >> 16 & 255) / 255.0F;
 				var14 = (float)(var25 >> 8 & 255) / 255.0F;
 				var15 = (float)(var25 & 255) / 255.0F;
@@ -429,7 +431,7 @@ public class ItemRenderer {
 			}
 
 			GL11.glPopMatrix();
-		} else {
+		} else if (!var3.func_82150_aj()) {
 			GL11.glPushMatrix();
 			var7 = 0.8F;
 			var20 = var3.getSwingProgress(par1);
@@ -455,7 +457,7 @@ public class ItemRenderer {
 			var26 = (RenderPlayer)var24;
 			var13 = 1.0F;
 			GL11.glScalef(var13, var13, var13);
-			var26.drawFirstPersonHand();
+			var26.func_82441_a(this.mc.thePlayer);
 			GL11.glPopMatrix();
 		}
 
