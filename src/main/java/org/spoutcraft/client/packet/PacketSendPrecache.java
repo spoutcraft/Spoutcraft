@@ -14,13 +14,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
-import org.spoutcraft.client.io.CustomTextureManager;
-import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.precache.PrecacheManager;
+import org.spoutcraft.client.precache.PrecacheTuple;
 
 public class PacketSendPrecache implements CompressablePacket {
 	
 	private byte[] fileData;
-	private String serverName;
+	private String plugin;
+	private String version;
 	private boolean compressed = false;
 	
 	public PacketSendPrecache() {
@@ -87,7 +88,8 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 	
 	public void readData(SpoutInputStream input) throws IOException {
-		this.serverName = input.readString();
+		this.plugin = input.readString();
+		this.version = input.readString();
 		compressed = input.readBoolean();
 		int size = input.readInt();
 		this.fileData = new byte[size];
@@ -95,7 +97,8 @@ public class PacketSendPrecache implements CompressablePacket {
 	}
 
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeString(serverName);
+		output.writeString(plugin);
+		output.writeString(version);
 		output.writeBoolean(compressed);
 		output.writeInt(fileData.length);
 		output.write(fileData);
@@ -115,32 +118,25 @@ public class PacketSendPrecache implements CompressablePacket {
 	
 	public void run(int playerId) {
 		
-		String zName;
-		if (serverName==null || serverName.isEmpty()) {
-			zName = "0.zip";
-		} else {
-			zName = serverName + ".zip";
-		}
-		
-		File cachedZip = new File(FileUtil.getCacheDir(), zName);
-		
-		System.out.println("Received Precache File");
-		
-		if (cachedZip.exists()) {
-			cachedZip.delete();
+		File zip = PrecacheManager.getPluginPreCacheFile(plugin, version);
+		if (zip.exists()) {
+			zip.delete();
 		}
 		
 		try {
-			FileUtils.writeByteArrayToFile(cachedZip, fileData);
+			FileUtils.writeByteArrayToFile(zip, fileData);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//unzip
-		FileUtil.loadPrecache(cachedZip, true);
+		PrecacheTuple plugin = PrecacheManager.getPrecacheTuple(this.plugin, version);
+		if (plugin != null) {
+			PrecacheManager.setCached(plugin);
+		}
 		
+		PrecacheManager.doNextCache();
 		
-		((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
+		//((EntityClientPlayerMP)Minecraft.theMinecraft.thePlayer).sendQueue.addToSendQueue(new Packet0KeepAlive());
 	}
 }

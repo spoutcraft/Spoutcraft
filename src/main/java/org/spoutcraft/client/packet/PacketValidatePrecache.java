@@ -2,61 +2,67 @@ package org.spoutcraft.client.packet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import net.java.games.util.plugins.Plugin;
 
 import org.spoutcraft.api.io.SpoutInputStream;
 import org.spoutcraft.api.io.SpoutOutputStream;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.FileUtil;
+import org.spoutcraft.client.precache.PrecacheManager;
+import org.spoutcraft.client.precache.PrecacheTuple;
 
 public class PacketValidatePrecache implements SpoutPacket {
 	
-	long crc;
-	String serverName;
+	int count;
+	PrecacheTuple[] plugins;
 	
 	public PacketValidatePrecache() {
 	}
 	
-	public PacketValidatePrecache(long crc, String serverName) {
-		this.crc = crc;
-		this.serverName = serverName;
-	}
-	
 	@Override
 	public void readData(SpoutInputStream input) throws IOException {
-		crc = input.readLong();
-		serverName = input.readString();
+		count = input.readInt();
+		plugins = new PrecacheTuple[count];
+		if (count > 0) {
+			for(int i = 0; i<count; i++) {
+				String plugin = input.readString();
+				String version = input.readString();
+				long crc = input.readLong();
+				plugins[i] = new PrecacheTuple(plugin, version, crc);
+			}
+		}
 	}
 
 	@Override
 	public void writeData(SpoutOutputStream output) throws IOException {
-		output.writeLong(crc);
-		output.writeString(serverName);
+		output.writeInt(count);
+		for (int i=0; i<count; i++) {
+			output.writeString(plugins[i].getPlugin());
+			output.writeString(plugins[i].getVersion());
+			output.writeLong(plugins[i].getCrc());
+		}
 	}
 
 	@Override
 	public void run(int playerId) {
 		
-		//display precache gui.
-		SpoutClient.getHandle().displayGuiScreen(new GuiPrecache(), false);
+		PrecacheManager.showPreloadGui();
 		
-		//if crc matches, use ours. if not, request new precache
-		String zName;
-		if (serverName==null || serverName.isEmpty()) {
-			zName = "0.zip";
-		} else {
-			zName = serverName + ".zip";
+		PrecacheManager.reset();
+		
+		//fill precache list
+		for (PrecacheTuple plugin : plugins) {
+			PrecacheManager.addPlugin(plugin);
 		}
 		
-		File cachedZip = new File(FileUtil.getCacheDir(), zName);
-		long crc = FileUtil.getCRC(cachedZip, new byte[(int) cachedZip.length()]);
-		
-		System.out.println("Received Precache Validation Request: Server CRC = " + String.valueOf(this.crc) + ", Client CRC = " + String.valueOf(crc));
-		
-		if (!cachedZip.exists() || crc != this.crc) {
-			SpoutClient.getInstance().getPacketManager().sendSpoutPacket(new PacketRequestPrecache());
+		if(PrecacheManager.hasNextCache()) {
+			PrecacheManager.doNextCache();
 		} else {
-			FileUtil.loadPrecache(cachedZip, false);
+			PrecacheManager.loadPrecache(false);
 		}
 	}
 
@@ -74,4 +80,5 @@ public class PacketValidatePrecache implements SpoutPacket {
 	public int getVersion() {
 		return 0;
 	}
+
 }

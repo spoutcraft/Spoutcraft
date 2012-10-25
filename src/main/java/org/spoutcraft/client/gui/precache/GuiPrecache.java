@@ -19,7 +19,7 @@ public class GuiPrecache extends GuiScreen {
 		statusText = new GenericLabel();
 		statusText.setAnchor(WidgetAnchor.CENTER_CENTER);
 		statusText.setAlign(WidgetAnchor.CENTER_CENTER);
-		statusText.setText("Downloading Textures...");
+		statusText.setText("Checking Plugin Caches...");
 		
 		getScreen().attachWidget(spoutcraft, statusText);
 	}
