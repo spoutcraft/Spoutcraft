@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import org.spoutcraft.client.entity.CraftSkeleton; // Spout
 
@@ -219,8 +218,7 @@ public class EntitySkeleton extends EntityMob implements IRangedAttackMob {
 		this.field_82172_bs = this.rand.nextFloat() < field_82181_as[this.worldObj.difficultySetting];
 
 		if (this.getCurrentItemOrArmor(4) == null) {
-			Calendar var1 = Calendar.getInstance();
-			var1.setTime(new Date());
+			Calendar var1 = this.worldObj.func_83015_S();
 
 			if (var1.get(2) + 1 == 10 && var1.get(5) == 31 && this.rand.nextFloat() < 0.25F) {
 				this.func_70062_b(4, new ItemStack(this.rand.nextFloat() < 0.1F ? Block.pumpkinLantern : Block.pumpkin));

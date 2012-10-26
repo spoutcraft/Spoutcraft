@@ -270,7 +270,7 @@ public abstract class Container {
 						var7.putStack(var8);
 						var7.func_82870_a(par4EntityPlayer, var11);
 					}
-				} else if (!var7.getHasStack() && var8 != null) {
+				} else if (!var7.getHasStack() && var8 != null && var7.isItemValid(var8)) {
 					var6.setInventorySlotContents(par2, (ItemStack)null);
 					var7.putStack(var8);
 				}

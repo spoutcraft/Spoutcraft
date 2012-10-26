@@ -84,7 +84,7 @@ public class EntityWolf extends EntityTameable {
 	/**
 	 * Plays step sound at given x, y, z for the entity
 	 */
-	protected void playStepSound(int var1, int var2, int var3, int var4) {
+	protected void playStepSound(int par1, int par2, int par3, int par4) {
 		this.worldObj.playSoundAtEntity(this, "mob.wolf.step", 0.15F, 1.0F);
 	}
 

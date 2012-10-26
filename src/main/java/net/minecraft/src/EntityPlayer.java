@@ -698,14 +698,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 	}
 
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout protected -> public
-		if (!par1DamageSource.isUnblockable() && this.isBlocking()) {
-			par2 = 1 + par2 >> 1;
-		}
+		if (!this.field_83001_bt) {
+			if (!par1DamageSource.isUnblockable() && this.isBlocking()) {
+				par2 = 1 + par2 >> 1;
+			}
 
-		par2 = this.applyArmorCalculations(par1DamageSource, par2);
-		par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
-		this.addExhaustion(par1DamageSource.getHungerDamage());
-		this.health -= par2;
+			par2 = this.applyArmorCalculations(par1DamageSource, par2);
+			par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
+			this.addExhaustion(par1DamageSource.getHungerDamage());
+			this.health -= par2;
+		}
 	}
 
 	public void displayGUIFurnace(TileEntityFurnace par1TileEntityFurnace) {}

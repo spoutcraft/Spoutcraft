@@ -247,22 +247,22 @@ public class Block {
 	protected boolean isBlockContainer;
 
 	/** minimum X for the block bounds (local coordinates) */
-	public double minX;
+	protected double minX;
 
 	/** minimum Y for the block bounds (local coordinates) */
-	public double minY;
+	protected double minY;
 
 	/** minimum Z for the block bounds (local coordinates) */
-	public double minZ;
+	protected double minZ;
 
 	/** maximum X for the block bounds (local coordinates) */
-	public double maxX;
+	protected double maxX;
 
 	/** maximum Y for the block bounds (local coordinates) */
-	public double maxY;
+	protected double maxY;
 
 	/** maximum Z for the block bounds (local coordinates) */
-	public double maxZ;
+	protected double maxZ;
 
 	/** Sound of stepping on the block */
 	public StepSound stepSound;
@@ -427,7 +427,7 @@ public class Block {
 	/**
 	 * Sets the bounds of the block.  minX, minY, minZ, maxX, maxY, maxZ
 	 */
-	public void setBlockBounds(float par1, float par2, float par3, float par4, float par5, float par6) {
+	protected final void setBlockBounds(float par1, float par2, float par3, float par4, float par5, float par6) {
 		this.minX = (double)par1;
 		this.minY = (double)par2;
 		this.minZ = (double)par3;
@@ -894,6 +894,30 @@ public class Block {
 	 * Updates the blocks bounds based on its current state. Args: world, x, y, z
 	 */
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {}
+
+	public final double func_83009_v() {
+		return this.minX;
+	}
+
+	public final double func_83007_w() {
+		return this.maxX;
+	}
+
+	public final double func_83008_x() {
+		return this.minY;
+	}
+
+	public final double func_83010_y() {
+		return this.maxY;
+	}
+
+	public final double func_83005_z() {
+		return this.minZ;
+	}
+
+	public final double func_83006_A() {
+		return this.maxZ;
+	}
 
 	public int getBlockColor() {
 		return 16777215;

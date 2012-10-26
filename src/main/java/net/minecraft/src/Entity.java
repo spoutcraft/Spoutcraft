@@ -1296,7 +1296,7 @@ public abstract class Entity {
 	}
 
 	public int func_82147_ab() {
-		return 300;
+		return 500;
 	}
 
 	public void setVelocity(double par1, double par3, double par5) {

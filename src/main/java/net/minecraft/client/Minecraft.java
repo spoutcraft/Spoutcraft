@@ -146,6 +146,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 	
 	/** The profiler instance */
 	public final Profiler mcProfiler = new Profiler();
+	private long field_83002_am = -1L;
 
 	private static File minecraftDir = null;
 	public volatile boolean running = true;
@@ -244,7 +245,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			Display.setDisplayMode(new DisplayMode(this.displayWidth, this.displayHeight));
 		}
 
-		Display.setTitle("Minecraft Minecraft 1.4");
+		Display.setTitle("Minecraft Minecraft 1.4.2");
 		System.out.println("LWJGL Version: " + Sys.getVersion());
 
 		try {
@@ -1348,6 +1349,18 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					KeyBinding.onTick(Keyboard.getEventKey());
 				}
 
+				if (this.field_83002_am > 0L) {
+					if (getSystemTime() - this.field_83002_am >= 6000L) {
+						throw new ReportedException(new CrashReport("Manually triggered debug crash", new Throwable()));
+					}
+
+					if (!Keyboard.isKeyDown(46) || !Keyboard.isKeyDown(61)) {
+						this.field_83002_am = -1L;
+					}
+				} else if (Keyboard.isKeyDown(46) && Keyboard.isKeyDown(61)) {
+					this.field_83002_am = getSystemTime();
+				}
+
 				if (Keyboard.getEventKeyState()) {
 					if (Keyboard.getEventKey() == 87) {
 						this.toggleFullscreen();
@@ -1463,7 +1476,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 					this.playerController.onStoppedUsingItem(this.thePlayer);
 				}
 
-				label326:
+				label338:
 				while (true) {
 					if (!this.gameSettings.keyBindAttack.isPressed()) {
 						while (this.gameSettings.keyBindUseItem.isPressed()) {
@@ -1474,7 +1487,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 							if (this.gameSettings.keyBindPickBlock.isPressed()) {
 								continue;
 							}
-							break label326;
+							break label338;
 						}
 					}
 				}

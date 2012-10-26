@@ -1060,16 +1060,16 @@ public class EntityRenderer {
 					float var23 = this.random.nextFloat();
 					if (var20 > 0) {
 						if (Block.blocksList[var20].blockMaterial == Material.lava) {
-							this.mc.effectRenderer.addEffect(new EntitySmokeFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].minY, (double)((float)var18 + var23), 0.0D, 0.0D, 0.0D));
+							this.mc.effectRenderer.addEffect(new EntitySmokeFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x(), (double)((float)var18 + var23), 0.0D, 0.0D, 0.0D));
 						} else {
 							++var14;
 							if (this.random.nextInt(var14) == 0) {
 								var8 = (double)((float)var17 + var22);
-								var10 = (double)((float)var19 + 0.1F) - Block.blocksList[var20].minY;
+								var10 = (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x();
 								var12 = (double)((float)var18 + var23);
 							}
 
-							this.mc.effectRenderer.addEffect(new EntityRainFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].minY, (double)((float)var18 + var23)));
+							this.mc.effectRenderer.addEffect(new EntityRainFX(var3, (double)((float)var17 + var22), (double)((float)var19 + 0.1F) - Block.blocksList[var20].func_83008_x(), (double)((float)var18 + var23)));
 						}
 					}
 				}

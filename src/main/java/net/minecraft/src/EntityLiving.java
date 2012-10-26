@@ -162,6 +162,7 @@ public abstract class EntityLiving extends Entity {
 	public int field_82173_br = 0;
 	protected boolean field_82172_bs = false;
 	private boolean field_82179_bU = false;
+	protected boolean field_83001_bt = false;
 
 	/**
 	 * The number of updates over which the new position and rotation are to be applied to the entity.
@@ -958,9 +959,11 @@ public abstract class EntityLiving extends Entity {
 	 * with the reduced value. Args: damageAmount
 	 */
 	public void damageEntity(DamageSource par1DamageSource, int par2) { // Spout - protected to public!
-		par2 = this.applyArmorCalculations(par1DamageSource, par2);
-		par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
-		this.health -= par2;
+		if (!this.field_83001_bt) {
+			par2 = this.applyArmorCalculations(par1DamageSource, par2);
+			par2 = this.applyPotionDamageCalculations(par1DamageSource, par2);
+			this.health -= par2;
+		}
 	}
 
 	/**
@@ -1278,6 +1281,7 @@ public abstract class EntityLiving extends Entity {
 		par1NBTTagCompound.setShort("AttackTime", (short)this.attackTime);
 		par1NBTTagCompound.setBoolean("CanPickUpLoot", this.field_82172_bs);
 		par1NBTTagCompound.setBoolean("PersistenceRequired", this.field_82179_bU);
+		par1NBTTagCompound.setBoolean("Invulnerable", this.field_83001_bt);
 		NBTTagList var2 = new NBTTagList();
 
 		for (int var3 = 0; var3 < this.field_82182_bS.length; ++var3) {
@@ -1333,6 +1337,7 @@ public abstract class EntityLiving extends Entity {
 		this.attackTime = par1NBTTagCompound.getShort("AttackTime");
 		this.field_82172_bs = par1NBTTagCompound.getBoolean("CanPickUpLoot");
 		this.field_82179_bU = par1NBTTagCompound.getBoolean("PersistenceRequired");
+		this.field_83001_bt = par1NBTTagCompound.getBoolean("Invulnerable");
 		NBTTagList var2;
 		int var3;
 
@@ -1484,7 +1489,7 @@ public abstract class EntityLiving extends Entity {
 		this.worldObj.theProfiler.endSection();
 		this.worldObj.theProfiler.startSection("looting");
 
-		if (!this.worldObj.isRemote && this.field_82172_bs) {
+		if (!this.worldObj.isRemote && this.field_82172_bs && this.worldObj.func_82736_K().func_82766_b("mobGriefing")) {
 			var2 = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(1.0D, 0.0D, 1.0D));
 			var12 = var2.iterator();
 
@@ -1538,6 +1543,7 @@ public abstract class EntityLiving extends Entity {
 
 							this.func_70062_b(var6, var14);
 							this.field_82174_bp[var6] = 2.0F;
+							this.field_82179_bU = true;
 							this.onItemPickup(var13, 1);
 							var13.setDead();
 						}

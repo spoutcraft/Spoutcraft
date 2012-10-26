@@ -3,6 +3,7 @@ package net.minecraft.src;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1983,17 +1984,17 @@ public abstract class World implements IBlockAccess {
 	/**
 	 * Creates an explosion. Args: entity, x, y, z, strength
 	 */
-	public Explosion createExplosion(Entity var1, double var2, double var4, double var6, float var8, boolean var9) {
-		return this.newExplosion(var1, var2, var4, var6, var8, false, var9);
+	public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9) {
+		return this.newExplosion(par1Entity, par2, par4, par6, par8, false, par9);
 	}
 
 	/**
 	 * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
 	 */
-	public Explosion newExplosion(Entity var1, double var2, double var4, double var6, float var8, boolean var9, boolean var10) {
-		Explosion var11 = new Explosion(this, var1, var2, var4, var6, var8);
-		var11.isFlaming = var9;
-		var11.field_82755_b = var10;
+	public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9, boolean par10) {
+		Explosion var11 = new Explosion(this, par1Entity, par2, par4, par6, par8);
+		var11.isFlaming = par9;
+		var11.field_82755_b = par10;
 		var11.doExplosionA();
 		var11.doExplosionB(true);
 		return var11;
@@ -3379,6 +3380,12 @@ public abstract class World implements IBlockAccess {
 	public Vec3Pool func_82732_R() {
 		return this.field_82741_K;
 	}
+	
+	public Calendar func_83015_S() {
+		this.field_83016_L.setTimeInMillis(System.currentTimeMillis());
+		return this.field_83016_L;
+	}
+
 	// Spout Start
 	public void doColorfulStuff() {
 		for(int i = 0; i < this.playerEntities.size(); ++i) {

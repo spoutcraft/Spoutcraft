@@ -200,34 +200,34 @@ public class EffectRenderer {
 		if (var5 != 0) {
 			Block var6 = Block.blocksList[var5];
 			float var7 = 0.1F;
-			double var8 = (double)par1 + this.rand.nextDouble() * (var6.maxX - var6.minX - (double)(var7 * 2.0F)) + (double)var7 + var6.minX;
-			double var10 = (double)par2 + this.rand.nextDouble() * (var6.maxY - var6.minY - (double)(var7 * 2.0F)) + (double)var7 + var6.minY;
-			double var12 = (double)par3 + this.rand.nextDouble() * (var6.maxZ - var6.minZ - (double)(var7 * 2.0F)) + (double)var7 + var6.minZ;
+			double var8 = (double)par1 + this.rand.nextDouble() * (var6.func_83007_w() - var6.func_83009_v() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83009_v();
+			double var10 = (double)par2 + this.rand.nextDouble() * (var6.func_83010_y() - var6.func_83008_x() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83008_x();
+			double var12 = (double)par3 + this.rand.nextDouble() * (var6.func_83006_A() - var6.func_83005_z() - (double)(var7 * 2.0F)) + (double)var7 + var6.func_83005_z();
 
 			if (par4 == 0) {
-				var10 = (double)par2 + var6.minY - (double)var7;
+				var10 = (double)par2 + var6.func_83008_x() - (double)var7;
 			}
 
 			if (par4 == 1) {
-				var10 = (double)par2 + var6.maxY + (double)var7;
+				var10 = (double)par2 + var6.func_83010_y() + (double)var7;
 			}
 
 			if (par4 == 2) {
-				var12 = (double)par3 + var6.minZ - (double)var7;
+				var12 = (double)par3 + var6.func_83005_z() - (double)var7;
 			}
 
 			if (par4 == 3) {
-				var12 = (double)par3 + var6.maxZ + (double)var7;
+				var12 = (double)par3 + var6.func_83006_A() + (double)var7;
 			}
 
 			if (par4 == 4) {
-				var8 = (double)par1 + var6.minX - (double)var7;
+				var8 = (double)par1 + var6.func_83009_v() - (double)var7;
 			}
 
 			if (par4 == 5) {
-				var8 = (double)par1 + var6.maxX + (double)var7;
+				var8 = (double)par1 + var6.func_83007_w() + (double)var7;
 			}
-
+		}
 			// Spout Start
 			boolean custom = false;
 			GenericBlockDesign design = null;
