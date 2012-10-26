@@ -227,6 +227,7 @@ public class GuiIngame extends Gui {
 		} else {
 			font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 		}
+		GL11.glPopMatrix();
 
 		if (this.recordPlayingUpFor > 0) {
 			this.mc.mcProfiler.startSection("overlayMessage");
