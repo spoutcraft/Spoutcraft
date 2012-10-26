@@ -3,6 +3,10 @@ package net.minecraft.src;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
+import com.pclewis.mcpatcher.mod.TextureUtils;
+import com.pclewis.mcpatcher.mod.TileSize;
+
 import net.minecraft.client.Minecraft;
 
 public class TextureCompassFX extends TextureFX {
@@ -53,7 +57,7 @@ public class TextureCompassFX extends TextureFX {
 		int var16;
 
 			// Spout HD Start
-		for (int var1 = 0; var1 < TileSize.int_numPixels; ++var1) {
+		for (int var10 = 0; var10 < TileSize.int_numPixels; ++var10) {
 			// Spout HD End
 			int var11 = var8[var10] >> 24 & 255;
 			int var12 = var8[var10] >> 16 & 255;

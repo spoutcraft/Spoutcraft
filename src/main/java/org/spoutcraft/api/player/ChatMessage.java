@@ -159,64 +159,65 @@ public class ChatMessage {
 	}
 
 	public static ChatMessage parseMessage(String unparsed) {
-		String player = null;
-		boolean highlighted = false;
-		unparsed = Spoutcraft.getChatManager().formatChatColors(unparsed);
-		String message = unparsed;
-		for (Pattern p:messagePatterns) {
-			Matcher m = p.matcher(ChatColor.stripColor(unparsed));
-			if (m.matches()) {
-				player = m.group(1);
-				message = m.group(2);
-				break;
-			}
-		}
-		String playerName = Spoutcraft.getActivePlayer().getName();
-		if (!playerName.equals(player)) { //Don't highlight our own messages
-			if (message.contains(playerName)) {
-				highlighted = true;
-			} else {
-				for (String highlightWord:Spoutcraft.getChatManager().getWordsToHighlight()) {
-					if (Spoutcraft.getChatManager().isUsingRegex()) {
-						try {
-							if (message.matches(".*"+highlightWord+".*")) {
-								highlighted = true;
-								break;
-							}
-						} catch (PatternSyntaxException e) {}
-					} else {
-						if (message.contains(highlightWord)) {
-							highlighted = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (player != null) {
-			player = ChatColor.stripColor(player);
-		}
-		ChatMessage ret = new ChatMessage(unparsed, message, highlighted, player);
-		if (message.contains("has joined")) {
-			ret.setJoinMessage(true);
-		}
-		if (ret.hasPlayer()) {
-			for (String name:Spoutcraft.getChatManager().getIgnoredPlayers()) {
-				if (Spoutcraft.getChatManager().isUsingRegex()) {
-					try {
-						if (ret.getPlayer().matches(".*"+name+".*")) {
-							ret.setIgnoredPerson(true);
-							break;
-						}
-					} catch (PatternSyntaxException e) {}
-				} else {
-					if (ret.getPlayer().equalsIgnoreCase(name)) {
-						ret.setIgnoredPerson(true);
-						break;
-					}
-				}
-			}
-		}
-		return ret;
+//		String player = null;
+//		boolean highlighted = false;
+//		unparsed = Spoutcraft.getChatManager().formatChatColors(unparsed);
+//		String message = unparsed;
+//		for (Pattern p:messagePatterns) {
+//			Matcher m = p.matcher(ChatColor.stripColor(unparsed));
+//			if (m.matches()) {
+//				player = m.group(1);
+//				message = m.group(2);
+//				break;
+//			}
+//		}
+//		String playerName = Spoutcraft.getActivePlayer().getName();
+//		if (!playerName.equals(player)) { //Don't highlight our own messages
+//			if (message.contains(playerName)) {
+//				highlighted = true;
+//			} else {
+//				for (String highlightWord:Spoutcraft.getChatManager().getWordsToHighlight()) {
+//					if (Spoutcraft.getChatManager().isUsingRegex()) {
+//						try {
+//							if (message.matches(".*"+highlightWord+".*")) {
+//								highlighted = true;
+//								break;
+//							}
+//						} catch (PatternSyntaxException e) {}
+//					} else {
+//						if (message.contains(highlightWord)) {
+//							highlighted = true;
+//							break;
+//						}
+//					}
+//				}
+//			}
+//		}
+//		if (player != null) {
+//			player = ChatColor.stripColor(player);
+//		}
+//		ChatMessage ret = new ChatMessage(unparsed, message, highlighted, player);
+//		if (message.contains("has joined")) {
+//			ret.setJoinMessage(true);
+//		}
+//		if (ret.hasPlayer()) {
+//			for (String name:Spoutcraft.getChatManager().getIgnoredPlayers()) {
+//				if (Spoutcraft.getChatManager().isUsingRegex()) {
+//					try {
+//						if (ret.getPlayer().matches(".*"+name+".*")) {
+//							ret.setIgnoredPerson(true);
+//							break;
+//						}
+//					} catch (PatternSyntaxException e) {}
+//				} else {
+//					if (ret.getPlayer().equalsIgnoreCase(name)) {
+//						ret.setIgnoredPerson(true);
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		return ret;
+		return null;
 	}
 }

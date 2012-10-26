@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.List;
 
+import org.spoutcraft.client.SpoutClient;
+
 public class GuiDisconnected extends GuiScreen {
 
 	/** The error message. */

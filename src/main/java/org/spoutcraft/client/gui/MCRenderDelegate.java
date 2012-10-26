@@ -258,7 +258,7 @@ public class MCRenderDelegate implements RenderDelegate {
 			data = temp;
 		}
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getData()), 0, 0);
+		renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, 1, data), 0, 0);
 		GL11.glPopMatrix();
 		GL11.glScaled(16D / item.getWidth(), 16D / item.getHeight(), 1);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -958,7 +958,7 @@ public class MCRenderDelegate implements RenderDelegate {
 				id = 318;
 				data = temp;
 			}
-			renderer.drawItemIntoGui(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, id, data, Item.itemsList[id].getIconFromDamage(item.getDurability()), 0, 0);
+			renderer.renderItemIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
 			renderer.renderItemOverlayIntoGUI(SpoutClient.getHandle().fontRenderer, SpoutClient.getHandle().renderEngine, new net.minecraft.src.ItemStack(id, item.getAmount(), data), 0, 0);
 		}
 		GL11.glEnable(GL11.GL_LIGHTING);

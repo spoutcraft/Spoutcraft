@@ -652,7 +652,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleChat(Packet3Chat par1Packet3Chat) {
-		this.mc.ingameGUI.addChatMessage(par1Packet3Chat.message);
+		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Packet3Chat.message);
 	}
 
 	public void handleAnimation(Packet18Animation par1Packet18Animation) {
@@ -1069,17 +1069,6 @@ public class NetClientHandler extends NetHandler {
 			this.mc.displayGuiScreen(new GuiWinGame());
 		} else if (var3 == 5) {
 			GameSettings var5 = this.mc.gameSettings;
-			// Spout Start - keep old chat GUI
-			if (var4 == 0) {
-				this.mc.displayGuiScreen(new GuiScreenDemo());
-			} else if (var4 == 101) {
-				this.mc.ingameGUI.addChatMessageTranslate("demo.help.movement", new Object[] {Keyboard.getKeyName(var5.keyBindForward.keyCode), Keyboard.getKeyName(var5.keyBindLeft.keyCode), Keyboard.getKeyName(var5.keyBindBack.keyCode), Keyboard.getKeyName(var5.keyBindRight.keyCode)});
-			} else if (var4 == 102) {
-				this.mc.ingameGUI.addChatMessageTranslate("demo.help.jump", new Object[] {Keyboard.getKeyName(var5.keyBindJump.keyCode)});
-			} else if (var4 == 103) {
-				this.mc.ingameGUI.addChatMessageTranslate("demo.help.inventory", new Object[] {Keyboard.getKeyName(var5.keyBindInventory.keyCode)});
-			}
-			// Spout end
 		}
 	}
 
@@ -1100,7 +1089,6 @@ public class NetClientHandler extends NetHandler {
 		} else {
 			this.mc.theWorld.playAuxSFX(par1Packet61DoorChange.sfxID, par1Packet61DoorChange.posX, par1Packet61DoorChange.posY, par1Packet61DoorChange.posZ, par1Packet61DoorChange.auxData);
 		}
-	}
 	}
 
 	/**

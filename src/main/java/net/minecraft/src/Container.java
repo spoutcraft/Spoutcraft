@@ -22,7 +22,9 @@ public abstract class Container {
 	protected List crafters = new ArrayList();
 	private Set playerList = new HashSet();
 	// Spout Start
-	public abstract IInventory getIInventory();
+	public IInventory getIInventory() {
+		return null;
+	}
 	
 	public boolean isSortableInventory() {
 		return false;

@@ -167,7 +167,5 @@ public interface Client extends PropertyInterface {
 
 	public WidgetManager getWidgetManager();
 
-	public ChatManager getChatManager();
-
 	public boolean hasPermission(String permission);
 }

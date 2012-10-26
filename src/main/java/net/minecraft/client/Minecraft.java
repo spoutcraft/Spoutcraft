@@ -527,7 +527,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 
 			if (theWorld == null && thePlayer == null && this.ingameGUI != null) {
-				this.ingameGUI.clearChatMessages();
+				this.ingameGUI.getChatGUI().func_73761_a();
 			}
 
 			if (previousScreen != null || screen != null) {
@@ -843,7 +843,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			this.checkGLError("Post render");
 			++this.fpsCounter;
 			boolean var5 = this.isGamePaused;
-			this.isGamePaused = this.isSingleplayer() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame() && !this.theIntegratedServer.func_71344_c();
+			this.isGamePaused = this.isSingleplayer() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame() && !this.theIntegratedServer.getPublic();
 
 			if (this.isIntegratedServerRunning() && this.thePlayer != null && this.thePlayer.sendQueue != null && this.isGamePaused != var5) {
 				((MemoryConnection)this.thePlayer.sendQueue.getNetManager()).setGamePaused(this.isGamePaused);
@@ -911,7 +911,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		if (Keyboard.isKeyDown(60)) {
 			if (!this.isTakingScreenshot) {
 				this.isTakingScreenshot = true;
-				if(theWorld != null) this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight)); // Spout - Null check && keep old chat gui code
+				if(theWorld != null) this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight)); // Spout - Null check && keep old chat gui code
 			}
 		} else {
 			this.isTakingScreenshot = false;
@@ -1444,7 +1444,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 			}
 
 			while (this.gameSettings.keyBindChat.isPressed() && var4) {
-				this.displayGuiScreen(new GuiChat());  // Spout removed "/" in GuiChat constructor
+				this.displayGuiScreen(new GuiChat("/"));
 			}
 
 			// Spout Start
@@ -1454,10 +1454,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 				thePlayer.sendChatMessage(ChatColor.RED + "Debug Console Opened");
 			}
 			if (currentScreen == null && Keyboard.getEventKey() == Keyboard.KEY_SLASH) {
-				GuiChat chat = new GuiChat();
-				chat.message = "/";
-				chat.cursorPosition = 1;
-				this.displayGuiScreen(chat);
+				this.displayGuiScreen(new GuiChat("/"));
 			}
 			// Spout End
 
@@ -1827,7 +1824,6 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		for (int var7 = 2; var7 < par0ArrayOfStr.length; ++var7) {
 			String var8 = par0ArrayOfStr[var7];
 			String var9 = var7 == par0ArrayOfStr.length - 1 ? null : par0ArrayOfStr[var7 + 1];
-
 			boolean var10 = false;
 
 			if (!var8.equals("-demo") && !var8.equals("--demo")) {
@@ -1866,7 +1862,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		JPanel var12 = new JPanel();
 		var13.setLayout(new BorderLayout());
 		var12.setPreferredSize(new Dimension(854, 480));
-		var13.add(var11, "Center");
+		var13.add(var12, "Center");
 		var13.pack();
 		var13.setLocationRelativeTo((Component)null);
 		var13.setVisible(true);
@@ -1875,11 +1871,11 @@ public abstract class Minecraft implements Runnable, IPlayerUsage {
 		MinecraftApplet var15 = new MinecraftApplet();
 		var15.setStub(var14);
 		var14.setLayout(new BorderLayout());
-		var14.add(var13, "Center");
+		var14.add(var15, "Center");
 		var14.validate();
 		var13.removeAll();
 		var13.setLayout(new BorderLayout());
-		var13.add(var9, "Center");
+		var13.add(var14, "Center");
 		var13.validate();
 		var15.init();
 		var15.start();

@@ -57,7 +57,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 	public EntityDragon(World par1World) {
 		super(par1World);
 		this.dragonPartArray = new EntityDragonPart[] {this.dragonPartHead = new EntityDragonPart(this, "head", 6.0F, 6.0F), this.dragonPartBody = new EntityDragonPart(this, "body", 8.0F, 8.0F), this.dragonPartTail1 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail2 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartTail3 = new EntityDragonPart(this, "tail", 4.0F, 4.0F), this.dragonPartWing1 = new EntityDragonPart(this, "wing", 4.0F, 4.0F), this.dragonPartWing2 = new EntityDragonPart(this, "wing", 4.0F, 4.0F)};
-		this.setEntityHealth(this.maxHealth);
+		this.setEntityHealth(this.getMaxHealth());
 		this.texture = "/mob/enderdragon/ender.png";
 		this.setSize(16.0F, 8.0F);
 		this.noClip = true;
@@ -488,7 +488,7 @@ public class EntityDragon extends EntityLiving implements IBossDisplayData, IEnt
 		this.target = null;
 
 		if (par2DamageSource.getEntity() instanceof EntityPlayer || par2DamageSource == DamageSource.explosion) {
-			this.superAttackFrom(par2DamageSource, par3);
+			this.func_82195_e(par2DamageSource, par3);
 		}
 
 		return true;

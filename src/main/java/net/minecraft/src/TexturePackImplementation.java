@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
+import com.pclewis.mcpatcher.MCPatcherUtils;
+
 public abstract class TexturePackImplementation implements ITexturePack {
 
 	/**

@@ -140,7 +140,7 @@ public class ItemBlock extends Item {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		Block.blocksList[this.blockID].getSubBlocks(par1, par2CreativeTabs, par3List);
 	}
-	
+
 // Spout Start
 	//fix metadata for double slabs
 	public int getMetadata(int damage) {
@@ -150,9 +150,4 @@ public class ItemBlock extends Item {
 		return super.getMetadata(damage);
 	}
 // Spout End
- // Spout HD Start
-	public int getColorFromDamage(int var1, int var2) {
-		return Colorizer.getItemColorFromDamage(super.getColorFromDamage(var1, var2), this.blockID, var1);
-	}
- // Spout HD End
 }

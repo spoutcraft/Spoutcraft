@@ -27,7 +27,6 @@ import com.pclewis.mcpatcher.mod.TextureUtils;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.src.FontRenderer;
-import net.minecraft.src.TexturePackBase;
 import net.minecraft.src.TexturePackImplementation;
 import net.minecraft.src.TexturePackList;
 
@@ -92,8 +91,8 @@ public class TexturePackItem implements ListWidgetItem {
 		FontRenderer font = SpoutClient.getHandle().fontRenderer;
 
 		font.drawStringWithShadow(getName(), x + 29, y + 2, 0xffffffff);
-		font.drawStringWithShadow(pack.func_77531_d(), x + 29, y + 11, 0xffaaaaaa);
-		font.drawStringWithShadow(pack.func_77537_e(), x + 29, y + 20, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.getFirstDescriptionLine(), x + 29, y + 11, 0xffaaaaaa);
+		font.drawStringWithShadow(pack.getSecondDescriptionLine(), x + 29, y + 20, 0xffaaaaaa);
 
 		String sTileSize;
 		if (tileSize != -1) {
@@ -106,7 +105,7 @@ public class TexturePackItem implements ListWidgetItem {
 
 		// TODO Show database information (author/member who posted it)
 
-		pack.func_77535_b(SpoutClient.getHandle().renderEngine);
+		pack.bindThumbnailTexture(SpoutClient.getHandle().renderEngine);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		tessellator.startDrawingQuads();
 		tessellator.setColorOpaque(255,255,255);
@@ -133,7 +132,7 @@ public class TexturePackItem implements ListWidgetItem {
 
 	public String getName() {
 		if (title == null) {
-			String name = pack.func_77538_c();
+			String name = pack.texturePackFileName;
 			int suffix = name.lastIndexOf(".zip");
 			if (suffix != -1) {
 				name = name.substring(0, suffix);

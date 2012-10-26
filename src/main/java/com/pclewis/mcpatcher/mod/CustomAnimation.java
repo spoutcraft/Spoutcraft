@@ -1,9 +1,6 @@
 package com.pclewis.mcpatcher.mod;
 
 import com.pclewis.mcpatcher.MCPatcherUtils;
-import com.pclewis.mcpatcher.mod.CustomAnimation$Delegate;
-import com.pclewis.mcpatcher.mod.CustomAnimation$Strip;
-import com.pclewis.mcpatcher.mod.CustomAnimation$Tile;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -291,7 +291,7 @@ public class TcpConnection implements INetworkManager {
 				return false;
 			}
 			// Spout - end
-			Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler());
+			Packet var2 = Packet.readPacket(this.socketInputStream, this.theNetHandler.isServerHandler(), this.networkSocket);
 
 			if (var2 != null) {
 				if (var2 instanceof Packet252SharedKey && !this.isInputBeingDecrypted) {

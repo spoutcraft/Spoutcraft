@@ -340,7 +340,7 @@ public class EntityPlayerSP extends EntityPlayer {
 	}
 
 	public void addChatMessage(String par1Str) {
-		this.mc.ingameGUI.addChatMessageTranslate(par1Str); // Spout - keep old chat GUI
+		this.mc.ingameGUI.getChatGUI().printChatMessage(par1Str);
 	}
 
 	public void addStat(StatBase par1StatBase, int par2) {

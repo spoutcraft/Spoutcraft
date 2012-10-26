@@ -4,8 +4,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.spoutcraft.client.config.Configuration;
 
 public class GuiChat extends GuiScreen {
 	private String field_73898_b = "";
@@ -310,7 +314,7 @@ public class GuiChat extends GuiScreen {
 		if (Minecraft.theMinecraft.currentScreen instanceof GuiChat) {
 			if (Configuration.isShowDamageAlerts()) {
 				GuiChat chat = (GuiChat) Minecraft.theMinecraft.currentScreen;
-				GuiChat.lastChat = chat.message;
+				GuiChat.lastChat = chat.inputField.getText();
 				Minecraft.theMinecraft.displayGuiScreen(null);
 			}
 		}

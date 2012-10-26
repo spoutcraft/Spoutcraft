@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.awt.image.BufferedImage;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;

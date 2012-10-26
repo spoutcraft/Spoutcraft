@@ -1,10 +1,24 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.spoutcraft.api.Spoutcraft;
+import org.spoutcraft.api.addon.Addon;
+import org.spoutcraft.api.gui.Button;
+import org.spoutcraft.api.gui.GenericButton;
+import org.spoutcraft.api.gui.GenericCheckBox;
+import org.spoutcraft.api.gui.Widget;
+import org.spoutcraft.client.MCItemStackComparator;
+import org.spoutcraft.client.config.Configuration;
+import org.spoutcraft.client.inventory.InventoryUtil;
 
 public abstract class GuiContainer extends GuiScreen {
 
@@ -145,7 +159,7 @@ public abstract class GuiContainer extends GuiScreen {
 				if (orig < 9 && player) {
 					continue;
 				}
-				handleMouseClick(null, orig, 0, false); //pick up the item
+				handleMouseClick(null, orig, 0, 0); //pick up the item
 				
 				for (int j = 0; j < inventory.getSizeInventory(); j++) {
 					if (j != i) {
@@ -156,7 +170,7 @@ public abstract class GuiContainer extends GuiScreen {
 							if (slot < 9 && player) {
 								continue;
 							}
-							handleMouseClick(null, slot, 0, false); //merge with the existing stack we found
+							handleMouseClick(null, slot, 0, 0); //merge with the existing stack we found
 							
 							//Move onto the next item to merge if this one is completely used up
 							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
@@ -170,7 +184,7 @@ public abstract class GuiContainer extends GuiScreen {
 				//If we didn't merge all of the item, put it back
 				ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
 				if (cursor != null) {
-					handleMouseClick(null, orig, 0, false);
+					handleMouseClick(null, orig, 0, 0);
 				}
 			}
 		}
@@ -205,14 +219,14 @@ public abstract class GuiContainer extends GuiScreen {
 						int newSlot = pass;
 						if (origSlot != newSlot) {
 							//Left click pick up item
-							handleMouseClick(null, origSlot, 0, false);
+							handleMouseClick(null, origSlot, 0, 0);
 							
 							//Left click place item down
-							handleMouseClick(null, newSlot, 0, false);
+							handleMouseClick(null, newSlot, 0, 0);
 							
 							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
 							if (cursor != null) {
-								handleMouseClick(null, origSlot, 0, false);
+								handleMouseClick(null, origSlot, 0, 0);
 							}
 						}
 						break;
@@ -250,15 +264,15 @@ public abstract class GuiContainer extends GuiScreen {
 						Slot origSlot = getSlotFromPosition(item.position);
 						Slot newSlot = getSlotFromPosition(pass);
 						if (newSlot != origSlot) {
-							handleMouseClick(origSlot, 0, 0, false);
+							handleMouseClick(origSlot, 0, 0, 0);
 							
 							//Left click place item down
 							
-							handleMouseClick(newSlot, 0, 0, false);
+							handleMouseClick(newSlot, 0, 0, 0);
 							
 							ItemStack cursor = Minecraft.theMinecraft.thePlayer.inventory.getItemStack();
 							if (cursor != null) {
-								handleMouseClick(origSlot, 0, 0, false);
+								handleMouseClick(origSlot, 0, 0, 0);
 							}
 						}
 						break;
@@ -276,7 +290,6 @@ public abstract class GuiContainer extends GuiScreen {
 		return InventoryUtil.getSlotFromPosition(pos, inventorySlots);
 	}
 	// Spout End
-	}
 
 	/**
 	 * Draws the screen and all the components in it.

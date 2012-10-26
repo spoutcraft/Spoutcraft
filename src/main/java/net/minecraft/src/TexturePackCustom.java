@@ -58,7 +58,7 @@ public class TexturePackCustom extends TexturePackImplementation {
 	/**
 	 * Open the texture pack's file and initialize texturePackZipFile
 	 */
-	private void openTexturePackFile() {
+	public void openTexturePackFile() {
 		if (this.texturePackZipFile == null) {
 			try {
 				this.texturePackZipFile = new ZipFile(this.texturePackFile);

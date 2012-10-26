@@ -38,8 +38,7 @@ public class RenderEngine {
 	public TexturePackList texturePack; // Spout private -> public
 	private BufferedImage missingTextureImage = new BufferedImage(64, 64, 2);
 	// Spout Start
-	public TexturePackBase oldPack = null;
-
+	public ITexturePack oldPack = null;
 	// Spout End
 
 	public RenderEngine(TexturePackList par1TexturePackList, GameSettings par2GameSettings) {

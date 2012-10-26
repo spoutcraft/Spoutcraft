@@ -59,7 +59,7 @@ public class SpoutItem extends Item {
 	}
 
 	@Override
-	public boolean tryPlaceIntoWorld(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face, float xOffset, float yOffset, float zOffset) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int face, float xOffset, float yOffset, float zOffset) {
 		if (stack.itemID == MaterialData.flint.getRawId()) {
 			int damage = stack.getItemDamage();
 			if (damage >= 1024) {
@@ -74,7 +74,7 @@ public class SpoutItem extends Item {
 				return false;
 			}
 		}
-		return super.tryPlaceIntoWorld(stack, player, world, x, y, z, face, xOffset, yOffset, zOffset);
+		return super.onItemUse(stack, player, world, x, y, z, face, xOffset, yOffset, zOffset);
 	}
 
 	// From super class

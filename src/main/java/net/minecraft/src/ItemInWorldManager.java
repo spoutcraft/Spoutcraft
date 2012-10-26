@@ -55,12 +55,12 @@ public class ItemInWorldManager {
 	}
 
 	public void updateBlockRemoving() {
-		++this.field_73100_i;
+		++this.curblockDamage;
 		int var1;
 		float var4;
 		int var5;
 
-		if (this.curblockDamage) {
+		if (this.field_73097_j) {
 			var1 = this.curblockDamage - this.field_73093_n;
 			int var2 = this.theWorld.getBlockId(this.posX, this.posY, this.posZ);
 
@@ -168,7 +168,7 @@ public class ItemInWorldManager {
 	 */
 	public void destroyBlockInWorldPartially(int par1, int par2, int par3) {
 		this.isPartiallyDestroyedBlockWhole = false;
-		this.theWorld.destroyBlockInWorldPartially(this.initialDamage.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
+		this.theWorld.destroyBlockInWorldPartially(this.thisPlayerMP.entityId, this.partiallyDestroyedBlockX, this.partiallyDestroyedBlockY, this.partiallyDestroyedBlockZ, -1);
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class ItemInWorldManager {
 		int var5 = this.theWorld.getBlockMetadata(par1, par2, par3);
 
 		if (var4 != null) {
-			var4.onBlockHarvested(this.theWorld, par1, par2, par3, var5, this.initialDamage);
+			var4.onBlockHarvested(this.theWorld, par1, par2, par3, var5, this.thisPlayerMP);
 		}
 
 		boolean var6 = this.theWorld.setBlockWithNotify(par1, par2, par3, 0);

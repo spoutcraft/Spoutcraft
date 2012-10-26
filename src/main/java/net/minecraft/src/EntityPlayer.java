@@ -495,7 +495,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 			var2 *= 1.0F - (float)(this.getActivePotionEffect(Potion.digSlowdown).getAmplifier() + 1) * 0.2F;
 		}
 
-		if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this.inventory)) {
+		if (this.isInsideOfMaterial(Material.water) && !EnchantmentHelper.getAquaAffinityModifier(this)) {
 			var2 /= 5.0F;
 		}
 
@@ -1230,7 +1230,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
 		for (this.experienceTotal += par1; this.experience >= 1.0F; this.experience /= (float)this.xpBarCap()) {
 			this.experience = (this.experience - 1.0F) * (float)this.xpBarCap();
-			this.increaseLevel();
+			//this.increaseLevel();
+			experienceLevel++;
 		}
 	}
 

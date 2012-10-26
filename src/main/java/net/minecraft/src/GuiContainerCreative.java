@@ -633,15 +633,15 @@ public class GuiContainerCreative extends InventoryEffectRenderer {
 		int var5 = guiLeft - 26;
 		boolean inside = x >= var5 && x <= var5 + 28 && y >= var7 && y <= var7 + 32;
 		if(inside) {
-			func_74190_a("Custom Items", x, y);
+			drawCreativeTabHoveringText("Custom Items", x, y);
 			if(isClicked) {
 				selectedTabIndex = CreativeTabs.tabSpout.getTabIndex();
 				ContainerCreative var3 = (ContainerCreative)this.inventorySlots;
 				var3.itemList.clear();
 				CreativeTabs.tabSpout.displayAllReleventItems(var3.itemList);
-				this.field_74237_t.func_73790_e(false);
-				this.field_74237_t.setCanLoseFocus(true);
-				this.field_74237_t.setFocused(false);
+				this.searchField.setVisible(false);
+				this.searchField.setCanLoseFocus(true);
+				this.searchField.setFocused(false);
 				this.currentScroll = 0.0F;
 				var3.scrollTo(0.0F);
 			}

@@ -24,9 +24,9 @@ public class WorldProviderHell extends WorldProvider {
 		// Spout Start
 		Color fogColor = SpoutClient.getInstance().getSkyManager().getFogColor();
 		if (fogColor != null) {
-			return Vec3.getVec3Pool().getVecFromPool(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
+			return Vec3.createVectorHelper(fogColor.getRedF(), fogColor.getGreenF(), fogColor.getBlueF());
 		} else {
-			return Vec3.getVec3Pool().getVecFromPool((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
+			return Vec3.createVectorHelper((double)Colorizer.netherFogColor[0], (double)Colorizer.netherFogColor[1], (double)Colorizer.netherFogColor[2]);
 		}
 		// Spout End
 	}

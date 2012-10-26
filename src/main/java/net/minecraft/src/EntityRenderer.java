@@ -1366,8 +1366,8 @@ public class EntityRenderer {
 		}
 
 		if (this.mc.gameSettings.anaglyph) {
-			float var23 = (this.fogColorRed * 30.0F + this.fogColorGreen * 59.0F + this.fogColorBlue * 11.0F) / 100.0F;
-			float var17 = (this.fogColorRed * 30.0F + this.fogColorGreen * 70.0F) / 100.0F;
+			var23 = (this.fogColorRed * 30.0F + this.fogColorGreen * 59.0F + this.fogColorBlue * 11.0F) / 100.0F;
+			var17 = (this.fogColorRed * 30.0F + this.fogColorGreen * 70.0F) / 100.0F;
 			float var18 = (this.fogColorRed * 30.0F + this.fogColorBlue * 70.0F) / 100.0F;
 			this.fogColorRed = var23;
 			this.fogColorGreen = var17;

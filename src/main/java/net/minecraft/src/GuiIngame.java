@@ -44,6 +44,15 @@ public class GuiIngame extends Gui {
 		this.mc = par1Minecraft;
 		this.persistantChatGUI = new GuiNewChat(par1Minecraft);
 	}
+	
+	// Spout Start
+	private final ZanMinimap map = new ZanMinimap();
+	private static boolean needsUpdate = true;
+
+	public static void dirtySurvival() {
+		needsUpdate = true;
+	}
+	// Spout End
 
 	/**
 	 * Render the ingame overlay with quick icon bar, ...
@@ -51,8 +60,7 @@ public class GuiIngame extends Gui {
 	// Spout Start
 	// TODO Rewrite again, it's in a horrible state, i'm surprised it works...
 	// Most of function rewritten
-	public void renderGameOverlay(float par1, boolean par2, int par3, int par4) {
-
+	public void renderGameOverlay(float f, boolean flag, int i, int j) {
 		InGameHUD mainScreen = SpoutClient.getInstance().getActivePlayer().getMainScreen();
 
 		ScaledResolution scaledRes = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
@@ -63,7 +71,7 @@ public class GuiIngame extends Gui {
 		GL11.glEnable(GL11.GL_BLEND);
 
 		if (Minecraft.isFancyGraphicsEnabled()) {
-			this.renderVignette(this.mc.thePlayer.getBrightness(par1), var6, var7);
+			this.renderVignette(this.mc.thePlayer.getBrightness(f), screenWidth, screenHeight);
 		} else {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
@@ -131,21 +139,20 @@ public class GuiIngame extends Gui {
 		
 		map.onRenderTick();
 
-			GL11.glDisable(GL11.GL_BLEND);
-			this.mc.mcProfiler.startSection("actionBar");
-			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-			RenderHelper.enableGUIStandardItemLighting();
+		GL11.glDisable(GL11.GL_BLEND);
+		this.mc.mcProfiler.startSection("actionBar");
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.enableGUIStandardItemLighting();
 
-			for (var18 = 0; var18 < 9; ++var18) {
-				var19 = var6 / 2 - 90 + var18 * 20 + 2;
-				var20 = var7 - 16 - 3;
-				this.renderInventorySlot(var18, var19, var20, par1);
-			}
-
-			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-			this.mc.mcProfiler.endSection();
+		for (var15 = 0; var15 < 9; ++var15) {
+			int x = screenWidth / 2 - 90 + var15 * 20 + 2;
+			var17 = screenHeight - 16 - 3;
+			this.renderInventorySlot(var15, x, var17, f);
 		}
+
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		this.mc.mcProfiler.endSection();
 
 		float var33;
 
@@ -168,45 +175,63 @@ public class GuiIngame extends Gui {
 		mainScreen.render();
 		SpoutClient.disableSandbox();
 
-		if (this.mc.gameSettings.showDebugInfo) {
-			this.mc.mcProfiler.startSection("debug");
-			GL11.glPushMatrix();
-			var8.drawStringWithShadow("Minecraft 1.4 (" + this.mc.debug + ")", 2, 2, 16777215);
-			var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
-			var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
-			var8.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
-			var8.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
+		this.mc.mcProfiler.startSection("debug");
+		GL11.glPushMatrix();
+		if (Configuration.getFastDebug() != 2) {
+			font.drawStringWithShadow("Minecraft 1.4.2 (" + this.mc.debug + ")", 2, 2, 16777215);
+			font.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
+			font.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
+			font.drawStringWithShadow(this.mc.debugInfoEntities(), 2, 32, 16777215);
+			font.drawStringWithShadow(this.mc.getWorldProviderName(), 2, 42, 16777215);
 			long var41 = Runtime.getRuntime().maxMemory();
 			long var34 = Runtime.getRuntime().totalMemory();
 			long var42 = Runtime.getRuntime().freeMemory();
 			long var43 = var34 - var42;
 			String var45 = "Used memory: " + var43 * 100L / var41 + "% (" + var43 / 1024L / 1024L + "MB) of " + var41 / 1024L / 1024L + "MB";
-			this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 2, 14737632);
+			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 2, 14737632);
 			var45 = "Allocated memory: " + var34 * 100L / var41 + "% (" + var34 / 1024L / 1024L + "MB)";
-			this.drawString(var8, var45, var6 - var8.getStringWidth(var45) - 2, 12, 14737632);
-			var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
-			var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
-			var23 = MathHelper.floor_double(this.mc.thePlayer.posZ);
-			this.drawString(var8, String.format("x: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posX), Integer.valueOf(var47), Integer.valueOf(var47 >> 4), Integer.valueOf(var47 & 15)}), 2, 64, 14737632);
-			this.drawString(var8, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
-			this.drawString(var8, String.format("z: %.5f (%d) // c: %d (%d)", new Object[] {Double.valueOf(this.mc.thePlayer.posZ), Integer.valueOf(var23), Integer.valueOf(var23 >> 4), Integer.valueOf(var23 & 15)}), 2, 80, 14737632);
-			var24 = MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-			this.drawString(var8, "f: " + var24 + " (" + Direction.field_82373_c[var24] + ") / " + MathHelper.wrapAngleTo180_float(this.mc.thePlayer.rotationYaw), 2, 88, 14737632);
+			this.drawString(font, var45, screenWidth - font.getStringWidth(var45) - 2, 12, 14737632);
+			if(SpoutClient.getInstance().isCoordsCheat()) {
+				this.drawString(font, String.format("x: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posX)}), 2, 64, 14737632);
+				this.drawString(font, String.format("y: %.3f (feet pos, %.3f eyes pos)", new Object[] {Double.valueOf(this.mc.thePlayer.boundingBox.minY), Double.valueOf(this.mc.thePlayer.posY)}), 2, 72, 14737632);
+				this.drawString(font, String.format("z: %.5f", new Object[] {Double.valueOf(this.mc.thePlayer.posZ)}), 2, 80, 14737632);
+				this.drawString(font, "f: " + (MathHelper.floor_double((double)(this.mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3), 2, 88, 14737632);
+			}
+			int var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
+			int var22 = MathHelper.floor_double(this.mc.thePlayer.posY);
+			int var233 = MathHelper.floor_double(this.mc.thePlayer.posZ);
 
-			if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var23)) {
-				Chunk var53 = this.mc.theWorld.getChunkFromBlockCoords(var47, var23);
-				this.drawString(var8, "lc: " + (var53.getTopFilledSegment() + 15) + " b: " + var53.getBiomeGenForWorldCoords(var47 & 15, var23 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var53.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var23 & 15) + " sl: " + var53.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var23 & 15) + " rl: " + var53.getBlockLightValue(var47 & 15, var22, var23 & 15, 0), 2, 96, 14737632);
+			if (this.mc.theWorld != null && this.mc.theWorld.blockExists(var47, var22, var233)) {
+				Chunk var48 = this.mc.theWorld.getChunkFromBlockCoords(var47, var233);
+				this.drawString(font, "lc: " + (var48.getTopFilledSegment() + 15) + " b: " + var48.getBiomeGenForWorldCoords(var47 & 15, var233 & 15, this.mc.theWorld.getWorldChunkManager()).biomeName + " bl: " + var48.getSavedLightValue(EnumSkyBlock.Block, var47 & 15, var22, var233 & 15) + " sl: " + var48.getSavedLightValue(EnumSkyBlock.Sky, var47 & 15, var22, var233 & 15) + " rl: " + var48.getBlockLightValue(var47 & 15, var22, var233 & 15, 0), 2, 96, 14737632);
 			}
 
-			this.drawString(var8, String.format("ws: %.3f, fs: %.3f, g: %b, fl: %d", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround), Integer.valueOf(this.mc.theWorld.getHeightValue(var47, var23))}), 2, 104, 14737632);
-			GL11.glPopMatrix();
-			this.mc.mcProfiler.endSection();
+			this.drawString(font, String.format("ws: %.3f, fs: %.3f, g: %b", new Object[] {Float.valueOf(this.mc.thePlayer.capabilities.getWalkSpeed()), Float.valueOf(this.mc.thePlayer.capabilities.getFlySpeed()), Boolean.valueOf(this.mc.thePlayer.onGround)}), 2, 104, 14737632);
+			// Spout Start
+			boolean cacheInUse = ChunkNetCache.cacheInUse.get();
+			int y = 115;
+			font.drawStringWithShadow("Network Info", 2, y += 11, 0xFFFFFF);
+			if (!cacheInUse) {
+				font.drawStringWithShadow("Chunk Network Cache: Inactive", 22, y += 11, 0xE0E0E0);
+			} else {
+				font.drawStringWithShadow("Chunk Network Cache: Active", 22, y += 11, 0xE0E0E0);
+				font.drawStringWithShadow("Cache hit: " + ChunkNetCache.hitPercentage.get() + "%", 22, y += 10, 0xE0E0E0);
+			}
+			font.drawStringWithShadow("Average Cube Size: " + ChunkNetCache.averageChunkSize.get() / 10.0 + " bytes", 22, y += 10, 0xE0E0E0);
+			long logTime = System.currentTimeMillis() - ChunkNetCache.loggingStart.get();
+			long kbpsUp = (80000L * ChunkNetCache.totalPacketUp.get()) / 1024 / logTime;
+			long kbpsDown = (80000L * ChunkNetCache.totalPacketDown.get()) / 1024 / logTime;
+			font.drawStringWithShadow("Upstream: " + (kbpsUp / 10.0) + "kbps (" + (ChunkNetCache.totalPacketUp.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
+			font.drawStringWithShadow("Downstream: " + (kbpsDown / 10.0) + "kbps (" + (ChunkNetCache.totalPacketDown.get() / 1024) + "kB)", 22, y += 11, 0xE0E0E0);
+			// Spout End
+		} else {
+			font.drawStringWithShadow(Integer.toString(Minecraft.framesPerSecond), 4, 2, 0xFFE303);
 		}
 
 		if (this.recordPlayingUpFor > 0) {
 			this.mc.mcProfiler.startSection("overlayMessage");
-			var33 = (float)this.recordPlayingUpFor - par1;
-			var12 = (int)(var33 * 256.0F / 20.0F);
+			var33 = (float)this.recordPlayingUpFor - f;
+			int var12 = (int)(var33 * 256.0F / 20.0F);
 
 			if (var12 > 255) {
 				var12 = 255;
@@ -214,16 +239,16 @@ public class GuiIngame extends Gui {
 
 			if (var12 > 0) {
 				GL11.glPushMatrix();
-				GL11.glTranslatef((float)(var6 / 2), (float)(var7 - 48), 0.0F);
+				GL11.glTranslatef((float)(screenWidth / 2), (float)(screenHeight - 48), 0.0F);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				var13 = 16777215;
+				int var13 = 16777215;
 
 				if (this.recordIsPlaying) {
 					var13 = Color.HSBtoRGB(var33 / 50.0F, 0.7F, 0.6F) & 16777215;
 				}
 
-				var8.drawString(this.recordPlaying, -font.getStringWidth(this.recordPlaying) / 2, -4, var13 + (var12 << 24));
+				font.drawString(this.recordPlaying, -font.getStringWidth(this.recordPlaying) / 2, -4, var13 + (var12 << 24));
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glPopMatrix();
 			}
@@ -235,7 +260,7 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glPushMatrix();
-		GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
+		GL11.glTranslatef(0.0F, (float)(screenHeight - 48), 0.0F);
 		this.mc.mcProfiler.startSection("chat");
 		this.persistantChatGUI.drawChat(this.updateCounter);
 		this.mc.mcProfiler.endSection();
@@ -245,33 +270,34 @@ public class GuiIngame extends Gui {
 			this.mc.mcProfiler.startSection("playerList");
 			NetClientHandler var37 = this.mc.thePlayer.sendQueue;
 			List var39 = var37.playerInfoList;
-			var13 = var37.currentServerMaxPlayers;
-			var40 = var13;
+			int var13 = var37.currentServerMaxPlayers;
+			int var40 = var13;
 
+			int var38;
 			for (var38 = 1; var40 > 20; var40 = (var13 + var38 - 1) / var38) {
 				++var38;
 			}
 
-			var16 = 300 / var38;
+			int var16 = 300 / var38;
 
 			if (var16 > 150) {
 				var16 = 150;
 			}
 
-			var17 = (var6 - var38 * var16) / 2;
+			var17 = (screenWidth - var38 * var16) / 2;
 			byte var44 = 10;
 			drawRect(var17 - 1, var44 - 1, var17 + var16 * var38, var44 + 9 * var40, Integer.MIN_VALUE);
 
-			for (var19 = 0; var19 < var13; ++var19) {
-				var20 = var17 + var19 % var38 * var16;
-				var47 = var44 + var19 / var38 * 9;
+			for (int var19 = 0; var19 < var13; ++var19) {
+				int var20 = var17 + var19 % var38 * var16;
+				int var47 = var44 + var19 / var38 * 9;
 				drawRect(var20, var47, var20 + var16 - 1, var47 + 8, 553648127);
 				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 				GL11.glEnable(GL11.GL_ALPHA_TEST);
 
 				if (var19 < var39.size()) {
 					GuiPlayerInfo var46 = (GuiPlayerInfo)var39.get(var19);
-					var8.drawStringWithShadow(var46.name, var20, var47, 16777215);
+					font.drawStringWithShadow(var46.name, var20, var47, 16777215);
 					this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/icons.png"));
 					byte var50 = 0;
 					boolean var48 = false;

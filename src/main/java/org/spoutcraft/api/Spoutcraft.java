@@ -267,10 +267,6 @@ public final class Spoutcraft {
 		return client.getWidgetManager();
 	}
 
-	public static ChatManager getChatManager() {
-		return client.getChatManager();
-	}
-
 	public static boolean hasPermission(String permission) {
 		return client.hasPermission(permission);
 	}

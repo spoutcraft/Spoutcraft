@@ -55,7 +55,7 @@ public class TexturePackList {
 	/**
 	 * Create the "texturepacks" and "texturepacks-mp-cache" directories if they don't already exist.
 	 */
-	private void createTexturePackDirs() {
+	public void createTexturePackDirs() { // Spout private -> public
 		if (!this.texturePackDir.isDirectory()) {
 			this.texturePackDir.delete();
 			this.texturePackDir.mkdirs();
