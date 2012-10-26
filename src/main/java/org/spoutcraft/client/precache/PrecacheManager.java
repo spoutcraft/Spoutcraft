@@ -2,7 +2,10 @@ package org.spoutcraft.client.precache;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -14,6 +17,9 @@ import java.util.zip.ZipFile;
 
 import net.minecraft.client.Minecraft;
 
+import org.spoutcraft.api.block.design.GenericBlockDesign;
+import org.spoutcraft.api.material.CustomBlock;
+import org.spoutcraft.api.material.MaterialData;
 import org.spoutcraft.client.SpoutClient;
 import org.spoutcraft.client.gui.precache.GuiPrecache;
 import org.spoutcraft.client.io.CustomTextureManager;
@@ -190,7 +196,10 @@ public class PrecacheManager {
 						dest.close();
 						is.close();
 						
-						if (target.exists() && FileUtil.isImageFile(target.getName())) {
+						if (target.exists() && target.getName().endsWith(".sbd")) {
+							loadDesign(target);
+						}
+						else if (target.exists() && FileUtil.isImageFile(target.getName())) {
 							CustomTextureManager.getTextureFromUrl(plugin.getPlugin(), target.getName());
 						}
 						
@@ -235,6 +244,36 @@ public class PrecacheManager {
 		if (SpoutClient.getHandle().currentScreen instanceof GuiPrecache) {
 			((GuiPrecache)SpoutClient.getHandle().currentScreen).statusText.setText(text);
 			((GuiPrecache)SpoutClient.getHandle().currentScreen).statusText.onTick();
+		}
+	}
+	
+	public static void loadDesign(File file) {
+		short customId = -1;
+		byte data = 0;
+		GenericBlockDesign design = null;
+		
+		try {
+			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+			customId = in.readShort();
+			data = in.readByte();
+			design = new GenericBlockDesign();	
+			design.read(in);
+			
+		} catch (EOFException e) {
+			//data input stream always throws EOFException when complete
+			//e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (design != null && design.isReset()) {
+				design = null;
+			}
+			if (customId != -1) {
+				CustomBlock block = MaterialData.getCustomBlock(customId);
+				if (block != null) {
+					block.setBlockDesign(design, data);
+				}
+			}
 		}
 	}
 }
