@@ -1,14 +1,24 @@
 package net.minecraft.src;
 
 public class GuiShareToLan extends GuiScreen {
-	private final GuiScreen field_74092_a;
-	private GuiButton field_74090_b;
-	private GuiButton field_74091_c;
-	private String field_74089_d = "survival";
-	private boolean field_74093_m = false;
+
+	/**
+	 * A reference to the screen object that created this. Used for navigating between screens.
+	 */
+	private final GuiScreen parentScreen;
+	private GuiButton buttonAllowCommandsToggle;
+	private GuiButton buttonGameMode;
+
+	/**
+	 * The currently selected game mode. One of 'survival', 'creative', or 'adventure'
+	 */
+	private String gameMode = "survival";
+
+	/** True if 'Allow Cheats' is currently enabled */
+	private boolean allowCommands = false;
 
 	public GuiShareToLan(GuiScreen par1GuiScreen) {
-		this.field_74092_a = par1GuiScreen;
+		this.parentScreen = par1GuiScreen;
 	}
 
 	/**
@@ -18,20 +28,20 @@ public class GuiShareToLan extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(101, this.width / 2 - 155, this.height - 28, 150, 20, StatCollector.translateToLocal("lanServer.start")));
 		this.controlList.add(new GuiButton(102, this.width / 2 + 5, this.height - 28, 150, 20, StatCollector.translateToLocal("gui.cancel")));
-		this.controlList.add(this.field_74091_c = new GuiButton(104, this.width / 2 - 155, 100, 150, 20, StatCollector.translateToLocal("selectWorld.gameMode")));
-		this.controlList.add(this.field_74090_b = new GuiButton(103, this.width / 2 + 5, 100, 150, 20, StatCollector.translateToLocal("selectWorld.allowCommands")));
+		this.controlList.add(this.buttonGameMode = new GuiButton(104, this.width / 2 - 155, 100, 150, 20, StatCollector.translateToLocal("selectWorld.gameMode")));
+		this.controlList.add(this.buttonAllowCommandsToggle = new GuiButton(103, this.width / 2 + 5, 100, 150, 20, StatCollector.translateToLocal("selectWorld.allowCommands")));
 		this.func_74088_g();
 	}
 
 	private void func_74088_g() {
 		StringTranslate var1 = StringTranslate.getInstance();
-		this.field_74091_c.displayString = var1.translateKey("selectWorld.gameMode") + " " + var1.translateKey("selectWorld.gameMode." + this.field_74089_d);
-		this.field_74090_b.displayString = var1.translateKey("selectWorld.allowCommands") + " ";
+		this.buttonGameMode.displayString = var1.translateKey("selectWorld.gameMode") + " " + var1.translateKey("selectWorld.gameMode." + this.gameMode);
+		this.buttonAllowCommandsToggle.displayString = var1.translateKey("selectWorld.allowCommands") + " ";
 
-		if (this.field_74093_m) {
-			this.field_74090_b.displayString = this.field_74090_b.displayString + var1.translateKey("options.on");
+		if (this.allowCommands) {
+			this.buttonAllowCommandsToggle.displayString = this.buttonAllowCommandsToggle.displayString + var1.translateKey("options.on");
 		} else {
-			this.field_74090_b.displayString = this.field_74090_b.displayString + var1.translateKey("options.off");
+			this.buttonAllowCommandsToggle.displayString = this.buttonAllowCommandsToggle.displayString + var1.translateKey("options.off");
 		}
 	}
 
@@ -40,23 +50,23 @@ public class GuiShareToLan extends GuiScreen {
 	 */
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 102) {
-			this.mc.displayGuiScreen(this.field_74092_a);
+			this.mc.displayGuiScreen(this.parentScreen);
 		} else if (par1GuiButton.id == 104) {
-			if (this.field_74089_d.equals("survival")) {
-				this.field_74089_d = "creative";
-			} else if (this.field_74089_d.equals("creative")) {
-				this.field_74089_d = "adventure";
+			if (this.gameMode.equals("survival")) {
+				this.gameMode = "creative";
+			} else if (this.gameMode.equals("creative")) {
+				this.gameMode = "adventure";
 			} else {
-				this.field_74089_d = "survival";
+				this.gameMode = "survival";
 			}
 
 			this.func_74088_g();
 		} else if (par1GuiButton.id == 103) {
-			this.field_74093_m = !this.field_74093_m;
+			this.allowCommands = !this.allowCommands;
 			this.func_74088_g();
 		} else if (par1GuiButton.id == 101) {
 			this.mc.displayGuiScreen((GuiScreen)null);
-			String var2 = this.mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(this.field_74089_d), this.field_74093_m);
+			String var2 = this.mc.getIntegratedServer().shareToLAN(EnumGameType.getByName(this.gameMode), this.allowCommands);
 			String var3 = "";
 
 			if (var2 != null) {
@@ -65,7 +75,7 @@ public class GuiShareToLan extends GuiScreen {
 				var3 = this.mc.thePlayer.translateString("commands.publish.failed", new Object[0]);
 			}
 
-			this.mc.ingameGUI.addChatMessage(var3);
+			this.mc.ingameGUI.getChatGUI().printChatMessage(var3);
 		}
 	}
 

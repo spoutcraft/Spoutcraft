@@ -1,36 +1,21 @@
 package net.minecraft.src;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-// Spout Start
-import org.spoutcraft.client.MCItemStackComparator;
-import org.spoutcraft.client.config.Configuration;
-import org.spoutcraft.client.inventory.InventoryUtil;
-import org.spoutcraft.api.Spoutcraft;
-import org.spoutcraft.api.addon.Addon;
-import org.spoutcraft.api.gui.Button;
-import org.spoutcraft.api.gui.GenericButton;
-import org.spoutcraft.api.gui.GenericCheckBox;
-import org.spoutcraft.api.gui.Widget;
-import org.spoutcraft.api.material.MaterialData;
-// Spout End
 
-public abstract class GuiContainer extends GuiScreen
-{
+public abstract class GuiContainer extends GuiScreen {
+
 	/** Stacks renderer. Icons, stack size, health, etc... */
-	protected static RenderItem itemRenderer;
+	protected static RenderItem itemRenderer; //Spout
 
 	/** The X size of the inventory window in pixels. */
-	protected int xSize;
+	protected int xSize = 176;
 
 	/** The Y size of the inventory window in pixels. */
-	protected int ySize;
+	protected int ySize = 166;
 
 	/** A list of the players inventory slots. */
 	public Container inventorySlots;
@@ -44,32 +29,29 @@ public abstract class GuiContainer extends GuiScreen
 	 * Starting Y position for the Gui. Inconsistent use for Gui backgrounds.
 	 */
 	protected int guiTop;
-	
+
 	// Spout Start
 	private Button orderByAlphabet, orderById, replaceTools, replaceBlocks;
-	// Spout Start
-	
 	static {
-	    itemRenderer = GuiScreen.ourItemRenderer; // Spout
+	    itemRenderer = GuiScreen.ourItemRenderer;
 	}
+	// Spout Start
+
+	private Slot field_82320_o;
 
 	public GuiContainer(Container par1Container) {
-		xSize = 176;
-		ySize = 166;
-		inventorySlots = par1Container;
+		this.inventorySlots = par1Container;
 	}
 
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
-	@Override
 	public void initGui() {
 		super.initGui();
-		mc.thePlayer.craftingInventory = inventorySlots;
-		guiLeft = (width - xSize) / 2;
-		guiTop = (height - ySize) / 2;
-
-	// Spout Start	
+		this.mc.thePlayer.craftingInventory = this.inventorySlots;
+		this.guiLeft = (this.width - this.xSize) / 2;
+		this.guiTop = (this.height - this.ySize) / 2;
+		// Spout Start	
 		if(Spoutcraft.hasPermission("spout.client.sortinventory")) {
 			Addon spoutcraft = Spoutcraft.getAddonManager().getAddon("Spoutcraft");
 			orderByAlphabet = new GenericButton("Sort A-Z");
@@ -294,144 +276,70 @@ public abstract class GuiContainer extends GuiScreen
 		return InventoryUtil.getSlotFromPosition(pos, inventorySlots);
 	}
 	// Spout End
+	}
 
 	/**
 	 * Draws the screen and all the components in it.
 	 */
-	public void drawScreen(int par1, int par2, float par3)
-	{
-		drawDefaultBackground();
-		int i = guiLeft;
-		int j = guiTop;
-		drawGuiContainerBackgroundLayer(par3, par1, par2);
+	public void drawScreen(int par1, int par2, float par3) {
+		this.drawDefaultBackground();
+		int var4 = this.guiLeft;
+		int var5 = this.guiTop;
+		this.drawGuiContainerBackgroundLayer(par3, par1, par2);
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		RenderHelper.disableStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		super.drawScreen(par1, par2, par3);
 		RenderHelper.enableGUIStandardItemLighting();
 		GL11.glPushMatrix();
-		GL11.glTranslatef(i, j, 0.0F);
+		GL11.glTranslatef((float)var4, (float)var5, 0.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		Slot slot = null;
-		int k = 240;
-		int i1 = 240;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)k / 1.0F, (float)i1 / 1.0F);
+		this.field_82320_o = null;
+		short var6 = 240;
+		short var7 = 240;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)var6 / 1.0F, (float)var7 / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		for (int l = 0; l < inventorySlots.inventorySlots.size(); l++)
-		{
-			Slot slot1 = (Slot)inventorySlots.inventorySlots.get(l);
-			drawSlotInventory(slot1);
+		for (int var10 = 0; var10 < this.inventorySlots.inventorySlots.size(); ++var10) {
+			Slot var11 = (Slot)this.inventorySlots.inventorySlots.get(var10);
+			this.drawSlotInventory(var11);
 
-			if (isMouseOverSlot(slot1, par1, par2))
-			{
-				slot = slot1;
+			if (this.isMouseOverSlot(var11, par1, par2)) {
+				this.field_82320_o = var11;
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
-				int j1 = slot1.xDisplayPosition;
-				int k1 = slot1.yDisplayPosition;
-				drawGradientRect(j1, k1, j1 + 16, k1 + 16, 0x80ffffff, 0x80ffffff);
+				int var8 = var11.xDisplayPosition;
+				int var9 = var11.yDisplayPosition;
+				this.drawGradientRect(var8, var9, var8 + 16, var9 + 16, -2130706433, -2130706433);
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
 
-		InventoryPlayer inventoryplayer = mc.thePlayer.inventory;
+		this.drawGuiContainerForegroundLayer(par1, par2);
+		InventoryPlayer var12 = this.mc.thePlayer.inventory;
 
-		// Spout Start
-//		if (inventoryplayer.getItemStack() != null)
-//		{
-//			GL11.glTranslatef(0.0F, 0.0F, 32F);
-//			zLevel = 200F;
-//			itemRenderer.zLevel = 200F;
-//			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
-//			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, inventoryplayer.getItemStack(), par1 - i - 8, par2 - j - 8);
-//			zLevel = 0.0F;
-//			itemRenderer.zLevel = 0.0F;
-//		}
-		// Spout End
-		
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		drawGuiContainerForegroundLayer();
+		if (var12.getItemStack() != null) {
+			GL11.glTranslatef(0.0F, 0.0F, 32.0F);
+			this.zLevel = 200.0F;
+			itemRenderer.zLevel = 200.0F;
+			itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), par1 - var4 - 8, par2 - var5 - 8);
+			itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var12.getItemStack(), par1 - var4 - 8, par2 - var5 - 8);
+			this.zLevel = 0.0F;
+			itemRenderer.zLevel = 0.0F;
+		}
 
-		if (inventoryplayer.getItemStack() == null && slot != null && slot.getHasStack())
-		{
-			ItemStack itemstack = slot.getStack();
-			// Spout Start
-			List<String> list = itemstack.getItemNameandInformation();
-			org.spoutcraft.api.material.Material item = MaterialData.getMaterial(slot.getStack().itemID, (short)(slot.getStack().getItemDamage()));
-			String custom = item != null ? String.format(item.getName(), String.valueOf(slot.getStack().getItemDamage())) : null;
-			if (custom != null && slot.getStack().itemID != Item.potion.shiftedIndex && !item.equals(MaterialData.writtenBook)) {
-				list.set(0, custom);
-			}
-			if(list.size() > 0)
-			{
-				/*int j2 = 0;
-				for(int k2 = 0; k2 < list.size(); k2++)
-				{
-					int i3 = fontRenderer.getStringWidth((String)list.get(k2));
-					if(i3 > j2)
-					{
-						j2 = i3;
-					}
-				}
-
-				int l2 = (i - k) + 12;
-				int j3 = j - l - 12;
-				int k3 = j2;
-				int l3 = 8;
-				if(list.size() > 1)
-				{
-					l3 += 2 + (list.size() - 1) * 10;
-				}
-				zLevel = 300F;
-				itemRenderer.zLevel = 300F;
-				int i4 = 0xf0100010;
-				drawGradientRect(l2 - 3, j3 - 4, l2 + k3 + 3, j3 - 3, i4, i4);
-				drawGradientRect(l2 - 3, j3 + l3 + 3, l2 + k3 + 3, j3 + l3 + 4, i4, i4);
-				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, j3 + l3 + 3, i4, i4);
-				drawGradientRect(l2 - 4, j3 - 3, l2 - 3, j3 + l3 + 3, i4, i4);
-				drawGradientRect(l2 + k3 + 3, j3 - 3, l2 + k3 + 4, j3 + l3 + 3, i4, i4);
-				int j4 = 0x505000ff;
-				int k4 = (j4 & 0xfefefe) >> 1 | j4 & 0xff000000;
-				drawGradientRect(l2 - 3, (j3 - 3) + 1, (l2 - 3) + 1, (j3 + l3 + 3) - 1, j4, k4);
-				drawGradientRect(l2 + k3 + 2, (j3 - 3) + 1, l2 + k3 + 3, (j3 + l3 + 3) - 1, j4, k4);
-				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
-				drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
-				 */
-				String tooltip = "";
-				int lines = 0;
-				for(int l4 = 0; l4 < list.size(); l4++)
-				{
-					String s = (String)list.get(l4);
-					if(l4 == 0)
-					{
-						s = (new StringBuilder()).append("\247").append(Integer.toHexString(itemstack.getRarity().rarityColor)).append(s).toString();
-					} else
-					{
-						s = (new StringBuilder()).append("\2477").append(s).toString();
-					}
-					//fontRenderer.drawStringWithShadow(s, l2, j3, -1);
-					/*if(l4 == 0)
-					{
-						j3 += 2;
-					}
-					j3 += 10;*/
-					tooltip += s + "\n";
-					lines++;
-				}
-				tooltip = tooltip.trim();
-				super.drawTooltip(tooltip, (par1 - guiLeft) + 8, par2 - guiTop - lines * 6);
-				// Spout End
-				zLevel = 0.0F;
-				itemRenderer.zLevel = 0.0F;
-			}
+		if (var12.getItemStack() == null && this.field_82320_o != null && this.field_82320_o.getHasStack()) {
+			ItemStack var13 = this.field_82320_o.getStack();
+			this.func_74184_a(var13, par1 - var4, par2 - var5);
 		}
 
 		GL11.glPopMatrix();
-		super.drawScreen(par1, par2, par3);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		RenderHelper.enableStandardItemLighting();
 	}
 
 	protected void func_74184_a(ItemStack par1ItemStack, int par2, int par3) {
@@ -439,7 +347,7 @@ public abstract class GuiContainer extends GuiScreen
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		List var4 = par1ItemStack.getItemNameandInformation();
+		List var4 = par1ItemStack.func_82840_a(this.mc.thePlayer, this.mc.gameSettings.field_82882_x);
 
 		if (!var4.isEmpty()) {
 			int var5 = 0;
@@ -500,7 +408,11 @@ public abstract class GuiContainer extends GuiScreen
 		}
 	}
 
-	protected void func_74190_a(String par1Str, int par2, int par3) {
+	/**
+	 * Draws the text when mouse is over creative inventory tab. Params: current creative tab to be checked, current mouse
+	 * x position, current mouse y position.
+	 */
+	protected void drawCreativeTabHoveringText(String par1Str, int par2, int par3) {
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -527,98 +439,59 @@ public abstract class GuiContainer extends GuiScreen
 		this.zLevel = 0.0F;
 		itemRenderer.zLevel = 0.0F;
 	}
-	
+
 	/**
-	 * Draw the foreground layer for the GuiContainer (everythin in front of the items)
+	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
-	protected void drawGuiContainerForegroundLayer()
-	{
-	}
+	protected void drawGuiContainerForegroundLayer(int par1, int par2) {}
 
 	/**
 	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
-	protected abstract void drawGuiContainerBackgroundLayer(float f, int i, int j);
+	protected abstract void drawGuiContainerBackgroundLayer(float var1, int var2, int var3);
 
 	/**
 	 * Draws an inventory slot
 	 */
-	private void drawSlotInventory(Slot par1Slot)
-	{
-		int i = par1Slot.xDisplayPosition;
-		int j = par1Slot.yDisplayPosition;
-		ItemStack itemstack = par1Slot.getStack();
-		boolean flag = false;
-		int k = i;
-		int i1 = j;
-		zLevel = 100F;
-		itemRenderer.zLevel = 100F;
+	private void drawSlotInventory(Slot par1Slot) {
+		int var2 = par1Slot.xDisplayPosition;
+		int var3 = par1Slot.yDisplayPosition;
+		ItemStack var4 = par1Slot.getStack();
+		boolean var5 = false;
+		this.zLevel = 100.0F;
+		itemRenderer.zLevel = 100.0F;
 
-		if (itemstack == null)
-		{
-			int j1 = par1Slot.getBackgroundIconIndex();
+		if (var4 == null) {
+			int var6 = par1Slot.getBackgroundIconIndex();
 
-			if (j1 >= 0)
-			{
+			if (var6 >= 0) {
 				GL11.glDisable(GL11.GL_LIGHTING);
-				mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
-				drawTexturedModalRect(k, i1, (j1 % 16) * 16, (j1 / 16) * 16, 16, 16);
+				this.mc.renderEngine.bindTexture(this.mc.renderEngine.getTexture("/gui/items.png"));
+				this.drawTexturedModalRect(var2, var3, var6 % 16 * 16, var6 / 16 * 16, 16, 16);
 				GL11.glEnable(GL11.GL_LIGHTING);
-				flag = true;
+				var5 = true;
 			}
 		}
 
-		if (!flag)
-		{
-			itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, i1);
-			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, k, i1);
+		if (!var5) {
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			itemRenderer.func_82406_b(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
+			itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.renderEngine, var4, var2, var3);
 		}
 
 		itemRenderer.zLevel = 0.0F;
-		zLevel = 0.0F;
-
-		if (this == null)
-		{
-			zLevel = 100F;
-			itemRenderer.zLevel = 100F;
-
-			if (itemstack == null)
-			{
-				int l = par1Slot.getBackgroundIconIndex();
-
-				if (l >= 0)
-				{
-					GL11.glDisable(GL11.GL_LIGHTING);
-					mc.renderEngine.bindTexture(mc.renderEngine.getTexture("/gui/items.png"));
-					drawTexturedModalRect(i, j, (l % 16) * 16, (l / 16) * 16, 16, 16);
-					GL11.glEnable(GL11.GL_LIGHTING);
-					flag = true;
-				}
-			}
-
-			if (!flag)
-			{
-				itemRenderer.renderItemIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
-				itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, itemstack, i, j);
-			}
-
-			itemRenderer.zLevel = 0.0F;
-			zLevel = 0.0F;
-		}
+		this.zLevel = 0.0F;
 	}
 
 	/**
 	 * Returns the slot at the given coordinates or null if there is none.
 	 */
-	private Slot getSlotAtPosition(int par1, int par2)
-	{
-		for (int i = 0; i < inventorySlots.inventorySlots.size(); i++)
-		{
-			Slot slot = (Slot)inventorySlots.inventorySlots.get(i);
+	private Slot getSlotAtPosition(int par1, int par2) {
+		for (int var3 = 0; var3 < this.inventorySlots.inventorySlots.size(); ++var3) {
+			Slot var4 = (Slot)this.inventorySlots.inventorySlots.get(var3);
 
-			if (isMouseOverSlot(slot, par1, par2))
-			{
-				return slot;
+			if (this.isMouseOverSlot(var4, par1, par2)) {
+				return var4;
 			}
 		}
 
@@ -628,25 +501,22 @@ public abstract class GuiContainer extends GuiScreen
 	/**
 	 * Called when the mouse is clicked.
 	 */
-	protected void mouseClicked(int par1, int par2, int par3)
-	{
+	protected void mouseClicked(int par1, int par2, int par3) {
 		super.mouseClicked(par1, par2, par3);
+		boolean var4 = par3 == this.mc.gameSettings.keyBindPickBlock.keyCode + 100;
 
-		if (par3 == 0 || par3 == 1)
-		{
-			Slot slot = getSlotAtPosition(par1, par2);
-			int i = guiLeft;
-			int j = guiTop;
-			boolean flag = par1 < i || par2 < j || par1 >= i + xSize || par2 >= j + ySize;
-			int k = -1;
+		if (par3 == 0 || par3 == 1 || var4) {
+			Slot var5 = this.getSlotAtPosition(par1, par2);
+			int var6 = this.guiLeft;
+			int var7 = this.guiTop;
+			boolean var8 = par1 < var6 || par2 < var7 || par1 >= var6 + this.xSize || par2 >= var7 + this.ySize;
+			int var9 = -1;
 
-			if (slot != null)
-			{
-				k = slot.slotNumber;
+			if (var5 != null) {
+				var9 = var5.slotNumber;
 			}
 
-			if (flag)
-			{
+			if (var8) {
 				// Spout Start
 				boolean isSpoutSlot = false;
 				for(Widget w : getScreen().getAttachedWidgets(true)) {
@@ -658,15 +528,18 @@ public abstract class GuiContainer extends GuiScreen
 					}
 				}
 				if(!isSpoutSlot) {
-					k = -999;
+					var9 = -999;
 				}
 				// Spout End
 			}
 
-			if (k != -1)
-			{
-				boolean flag1 = k != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
-				handleMouseClick(slot, k, par3, flag1);
+			if (var9 != -1) {
+				if (var4) {
+					this.handleMouseClick(var5, var9, par3, 3);
+				} else {
+					boolean var10 = var9 != -999 && (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54));
+					this.handleMouseClick(var5, var9, par3, var10 ? 1 : 0);
+				}
 			}
 		}
 	}
@@ -674,11 +547,10 @@ public abstract class GuiContainer extends GuiScreen
 	/**
 	 * Returns if the passed mouse position is over the specified slot.
 	 */
-	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3)
-	{
+	private boolean isMouseOverSlot(Slot par1Slot, int par2, int par3) {
 		return this.func_74188_c(par1Slot.xDisplayPosition, par1Slot.yDisplayPosition, 16, 16, par2, par3);
 	}
-	
+
 	protected boolean func_74188_c(int par1, int par2, int par3, int par4, int par5, int par6) {
 		int var7 = this.guiLeft;
 		int var8 = this.guiTop;
@@ -687,60 +559,66 @@ public abstract class GuiContainer extends GuiScreen
 		return par5 >= par1 - 1 && par5 < par1 + par3 + 1 && par6 >= par2 - 1 && par6 < par2 + par4 + 1;
 	}
 
-	protected void handleMouseClick(Slot par1Slot, int par2, int par3, boolean par4)
-	{
-		if (par1Slot != null)
-		{
+	protected void handleMouseClick(Slot par1Slot, int par2, int par3, int par4) {
+		if (par1Slot != null) {
 			par2 = par1Slot.slotNumber;
 		}
-		mc.playerController.windowClick(inventorySlots.windowId, par2, par3, par4, mc.thePlayer);
+
+		this.mc.playerController.windowClick(this.inventorySlots.windowId, par2, par3, par4, this.mc.thePlayer);
 	}
 
 	/**
 	 * Fired when a key is typed. This is the equivalent of KeyListener.keyTyped(KeyEvent e).
 	 */
-	protected void keyTyped(char par1, int par2)
-	{
-		if (par2 == 1 || par2 == mc.gameSettings.keyBindInventory.keyCode)
-		{
-			mc.thePlayer.closeScreen();
+	protected void keyTyped(char par1, int par2) {
+		if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode) {
+			this.mc.thePlayer.closeScreen();
 		}
+
+		this.func_82319_a(par2);
+
+		if (par2 == this.mc.gameSettings.keyBindPickBlock.keyCode && this.field_82320_o != null && this.field_82320_o.getHasStack()) {
+			this.handleMouseClick(this.field_82320_o, this.field_82320_o.slotNumber, this.ySize, 3);
+		}
+	}
+
+	protected boolean func_82319_a(int par1) {
+		if (this.mc.thePlayer.inventory.getItemStack() == null && this.field_82320_o != null) {
+			for (int var2 = 0; var2 < 9; ++var2) {
+				if (par1 == 2 + var2) {
+					this.handleMouseClick(this.field_82320_o, this.field_82320_o.slotNumber, var2, 2);
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**
 	 * Called when the screen is unloaded. Used to disable keyboard repeat events
 	 */
-	public void onGuiClosed()
-	{
-		if (mc.thePlayer == null)
-		{
-			return;
-		}
-		else
-		{
-			inventorySlots.onCraftGuiClosed(mc.thePlayer);
-			return;
+	public void onGuiClosed() {
+		if (this.mc.thePlayer != null) {
+			this.inventorySlots.onCraftGuiClosed(this.mc.thePlayer);
 		}
 	}
 
 	/**
 	 * Returns true if this GUI should pause the game when it is displayed in single-player
 	 */
-	public boolean doesGuiPauseGame()
-	{
+	public boolean doesGuiPauseGame() {
 		return false;
 	}
 
 	/**
 	 * Called from the main game loop to update the screen.
 	 */
-	public void updateScreen()
-	{
+	public void updateScreen() {
 		super.updateScreen();
 
-		if (!mc.thePlayer.isEntityAlive() || mc.thePlayer.isDead)
-		{
-			mc.thePlayer.closeScreen();
+		if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead) {
+			this.mc.thePlayer.closeScreen();
 		}
 	}
 }
